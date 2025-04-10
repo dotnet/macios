@@ -15,18 +15,11 @@ using Foundation;
 using Security;
 using CoreFoundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace Network {
-
-#if NET
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-#endif
 	public class NWUdpMetadata : NWProtocolMetadata {
 
 		[Preserve (Conditional = true)]

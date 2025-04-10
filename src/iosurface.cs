@@ -194,6 +194,9 @@ namespace IOSurface {
 		[Internal, Export ("initWithProperties:")]
 		NativeHandle Constructor (NSDictionary properties);
 
+		/// <param name="properties">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (properties.GetDictionary ()!)")]
 		NativeHandle Constructor (IOSurfaceOptions properties);
 

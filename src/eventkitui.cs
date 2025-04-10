@@ -25,6 +25,16 @@ namespace EventKitUI {
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/EventKitUI/Reference/EKEventViewControllerClassRef/index.html">Apple documentation for <c>EKEventViewController</c></related>
 	[BaseType (typeof (UIViewController), Delegates = new string [] { "WeakDelegate" }, Events = new Type [] { typeof (EKEventViewDelegate) })]
 	interface EKEventViewController {
+		/// <param name="nibName">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="bundle">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Creates a new <see cref="T:EventKitUI.EKEventViewController" /> from the specified Nib name in the specified <paramref name="bundle" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithNibName:bundle:")]
 		[PostGet ("NibBundle")]
 		NativeHandle Constructor ([NullAllowed] string nibName, [NullAllowed] NSBundle bundle);
@@ -101,10 +111,23 @@ namespace EventKitUI {
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/EventKitUI/Reference/EKEventEditViewControllerClassRef/index.html">Apple documentation for <c>EKEventEditViewController</c></related>
 	[BaseType (typeof (UINavigationController), Delegates = new string [] { "WeakEditViewDelegate" }, Events = new Type [] { typeof (EKEventEditViewDelegate) })]
 	interface EKEventEditViewController : UIAppearance {
+		/// <param name="nibName">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="bundle">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Creates a new <see cref="T:EventKitUI.EKEventEditViewController" /> from the specified Nib name in the specified <paramref name="bundle" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithNibName:bundle:")]
 		[PostGet ("NibBundle")]
 		NativeHandle Constructor ([NullAllowed] string nibName, [NullAllowed] NSBundle bundle);
 
+		/// <param name="rootViewController">To be added.</param>
+		/// <summary>Creates a new <see cref="T:EventKitUI.EKEventEditViewController" /> with the specified root view controller.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithRootViewController:")]
 		[PostGet ("ViewControllers")] // that will PostGet TopViewController and VisibleViewController too
 		NativeHandle Constructor (UIViewController rootViewController);
@@ -184,13 +207,34 @@ namespace EventKitUI {
 		   Delegates = new string [] { "WeakDelegate" },
 		   Events = new Type [] { typeof (EKCalendarChooserDelegate) })]
 	interface EKCalendarChooser {
+		/// <param name="nibName">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="bundle">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Creates a new <see cref="T:EventKitUI.EKCalendarChooser" /> from the specified Nib name in the specified <paramref name="bundle" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithNibName:bundle:")]
 		[PostGet ("NibBundle")]
 		NativeHandle Constructor ([NullAllowed] string nibName, [NullAllowed] NSBundle bundle);
 
+		/// <param name="selectionStyle">To be added.</param>
+		/// <param name="displayStyle">To be added.</param>
+		/// <param name="eventStore">To be added.</param>
+		/// <summary>Creates a new <see cref="T:EventKitUI.EKCalendarChooser" /> with the specified selection style, display style, and event store.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithSelectionStyle:displayStyle:eventStore:")]
 		NativeHandle Constructor (EKCalendarChooserSelectionStyle selectionStyle, EKCalendarChooserDisplayStyle displayStyle, EKEventStore eventStore);
 
+		/// <param name="selectionStyle">To be added.</param>
+		/// <param name="displayStyle">To be added.</param>
+		/// <param name="entityType">To be added.</param>
+		/// <param name="eventStore">To be added.</param>
+		/// <summary>Creates a new <see cref="T:EventKitUI.EKCalendarChooser" /> with the provided data.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithSelectionStyle:displayStyle:entityType:eventStore:")]
 		NativeHandle Constructor (EKCalendarChooserSelectionStyle selectionStyle, EKCalendarChooserDisplayStyle displayStyle, EKEntityType entityType, EKEventStore eventStore);
 

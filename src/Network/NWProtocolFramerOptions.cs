@@ -18,26 +18,13 @@ using CoreFoundation;
 using Security;
 using IntPtr = System.IntPtr;
 
-#if !NET
-using OS_nw_protocol_options = System.IntPtr;
-using NativeHandle = System.IntPtr;
-#else
 using OS_nw_protocol_options = ObjCRuntime.NativeHandle;
-#endif
 
 namespace Network {
-
-#if NET
 	[SupportedOSPlatform ("tvos16.0")]
 	[SupportedOSPlatform ("macos13.0")]
 	[SupportedOSPlatform ("ios16.0")]
 	[SupportedOSPlatform ("maccatalyst16.0")]
-#else
-	[TV (16, 0)]
-	[Mac (13, 0)]
-	[iOS (16, 0)]
-	[MacCatalyst (16, 0)]
-#endif
 	public class NSProtocolFramerOptions : NWProtocolOptions {
 
 		[Preserve (Conditional = true)]

@@ -34,6 +34,8 @@ namespace NaturalLanguage {
 	[BaseType (typeof (NSObject))]
 	interface NLLanguageRecognizer {
 
+		/// <summary>Creates a new <see cref="T:NaturalLanguage.NLLanguageRecognizer" /> with default values.</summary>
+		/// <remarks />
 		[DesignatedInitializer]
 		[Export ("init")]
 		NativeHandle Constructor ();
@@ -208,6 +210,9 @@ namespace NaturalLanguage {
 	[DisableDefaultCtor]
 	[BaseType (typeof (NSObject))]
 	interface NLTokenizer {
+		/// <param name="unit">The unit into which the tokenizer will separate text.</param>
+		/// <summary>Creates a new tokenizer that breaks text up into the specified semantic <paramref name="unit" />s.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithUnit:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NLTokenUnit unit);
@@ -269,11 +274,17 @@ namespace NaturalLanguage {
 	[DisableDefaultCtor]
 	[BaseType (typeof (NSObject))]
 	interface NLTagger {
+		/// <param name="tagSchemes">The taggging schemes that detail the classifications to return.</param>
+		/// <summary>Initializes a tagger that classifies tokens according the the identified tagging schemes.</summary>
+		/// <remarks>To be added.</remarks>
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		[Export ("initWithTagSchemes:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor ([Params] NSString [] tagSchemes);
 
+		/// <param name="tagSchemes">The taggging schemes that detail the classifications to return.</param>
+		/// <summary>Initializes a tagger that classifies tokens according the the provided tagging schemes.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (Array.ConvertAll (tagSchemes, e => e.GetConstant ()!))")]
 		NativeHandle Constructor ([Params] NLTagScheme [] tagSchemes);
 

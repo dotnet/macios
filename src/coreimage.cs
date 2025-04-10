@@ -102,6 +102,9 @@ namespace CoreImage {
 		[Export ("colorWithString:")]
 		CIColor FromString (string representation);
 
+		/// <param name="c">To be added.</param>
+		/// <summary>Creates a new CIColor with the specified color.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithCGColor:")]
 		NativeHandle Constructor (CGColor c);
@@ -251,6 +254,9 @@ namespace CoreImage {
 		[Export ("stringRepresentation")]
 		string StringRepresentation ();
 
+		/// <param name="color">To be added.</param>
+		/// <summary>Creates a new CIColor with the specified color.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithColor:")]
 		NativeHandle Constructor (Color color);
 	}
@@ -272,6 +278,8 @@ namespace CoreImage {
 	[DisableDefaultCtor]
 	interface CIContext {
 		// marked iOS5 but it's not working in iOS8.0
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("init")]
 		NativeHandle Constructor ();
@@ -2244,6 +2252,9 @@ namespace CoreImage {
 		[return: NullAllowed]
 		CIFilterGenerator FromUrl (NSUrl aURL);
 
+		/// <param name="aURL">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithContentsOfURL:")]
 		NativeHandle Constructor (NSUrl aURL);
 
@@ -2356,6 +2367,9 @@ namespace CoreImage {
 		[Export ("shapeWithRect:")]
 		CIFilterShape FromRect (CGRect rect);
 
+		/// <param name="rect">To be added.</param>
+		/// <summary>Creates a new CIFilterShape that limits filter operations to the specified rectangle.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithRect:")]
 		NativeHandle Constructor (CGRect rect);
 
@@ -2837,13 +2851,30 @@ namespace CoreImage {
 		[Export ("emptyImage")]
 		CIImage EmptyImage { get; }
 
+		/// <param name="image">CoreGraphics image.</param>
+		/// <summary>Initializes a CoreImage Image from a CoreGraphics bitmap representation</summary>
+		/// <remarks>
+		///         </remarks>
 		[Export ("initWithCGImage:")]
 		NativeHandle Constructor (CGImage image);
 
+		/// <param name="image">CoreGraphics image.</param>
+		/// <param name="d">
+		///           <para>Metadata to initialize with, as an NSDictionary.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Initializes a CoreImage Image from a CoreGraphics bitmap representation</summary>
+		/// <remarks>
+		///         </remarks>
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		[Export ("initWithCGImage:options:")]
 		NativeHandle Constructor (CGImage image, [NullAllowed] NSDictionary d);
 
+		/// <param name="image">CoreGraphics image.</param>
+		/// <param name="options">Options to initialize the image with.</param>
+		/// <summary>Initializes a CoreImage Image from a CoreGraphics bitmap representation</summary>
+		/// <remarks>
+		///         </remarks>
 		[Wrap ("this (image, options.GetDictionary ())")]
 		NativeHandle Constructor (CGImage image, [NullAllowed] CIImageInitializationOptionsWithMetadata options);
 
@@ -2881,18 +2912,44 @@ namespace CoreImage {
 		[Wrap ("this (layer, options.GetDictionary ())")]
 		NativeHandle Constructor (CGLayer layer, [NullAllowed] CIImageInitializationOptions options);
 
+		/// <param name="data">Image data, in a format supported by the system.</param>
+		/// <summary>Creates a new CIImage from the specified data.   The image data must be premultiplied.</summary>
+		/// <remarks>
+		///         </remarks>
 		[Export ("initWithData:")]
 		NativeHandle Constructor (NSData data);
 
+		/// <param name="data">Image data, in a format supported by the system.</param>
+		/// <param name="d">
+		///           <para>Extra configuration options, as an NSDictionary.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Creates a new CIImage from the specified data.   The image data must be premultiplied.</summary>
+		/// <remarks>
+		///         </remarks>
 		[Export ("initWithData:options:")]
 		NativeHandle Constructor (NSData data, [NullAllowed] NSDictionary d);
 
+		/// <param name="data">Image data, in a format supported by the system.</param>
+		/// <param name="options">Options to initialize the image with.</param>
+		/// <summary>Creates a new CIImage from the specified data.   The image data must be premultiplied.</summary>
+		/// <remarks>
+		///         </remarks>
 		[Wrap ("this (data, options.GetDictionary ())")]
 		NativeHandle Constructor (NSData data, [NullAllowed] CIImageInitializationOptionsWithMetadata options);
 
 		[Export ("initWithBitmapData:bytesPerRow:size:format:colorSpace:")]
 		NativeHandle Constructor (NSData d, nint bytesPerRow, CGSize size, int /* CIFormat = int */ pixelFormat, [NullAllowed] CGColorSpace colorSpace);
 
+		/// <param name="glTextureName">To be added.</param>
+		/// <param name="size">To be added.</param>
+		/// <param name="flipped">To be added.</param>
+		/// <param name="colorSpace">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 12, 0)]
 		[Deprecated (PlatformName.MacOSX, 10, 14)]
 		[Deprecated (PlatformName.TvOS, 10, 14)]
@@ -2900,60 +2957,133 @@ namespace CoreImage {
 		[Export ("initWithTexture:size:flipped:colorSpace:")]
 		NativeHandle Constructor (int /* unsigned int */ glTextureName, CGSize size, bool flipped, [NullAllowed] CGColorSpace colorSpace);
 
+		/// <param name="url">Location of the image data.</param>
+		/// <summary>Initializes a CoreImage image from the contents of the file pointed by the specified url.</summary>
+		/// <remarks>
+		///         </remarks>
 		[Export ("initWithContentsOfURL:")]
 		NativeHandle Constructor (NSUrl url);
 
+		/// <param name="url">Location of the image data.</param>
+		/// <param name="d">
+		///           <para>Extra configuration options, as an NSDictionary.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Initializes a CoreImage image from the contents of the file pointed by the specified url.</summary>
+		/// <remarks>
+		///         </remarks>
 		[Export ("initWithContentsOfURL:options:")]
 		NativeHandle Constructor (NSUrl url, [NullAllowed] NSDictionary d);
 
+		/// <param name="url">Location of the image data.</param>
+		/// <param name="options">Options to initialize the image with.</param>
+		/// <summary>Initializes a CoreImage image from the contents of the file pointed by the specified url.</summary>
+		/// <remarks>
+		///         </remarks>
 		[Wrap ("this (url, options.GetDictionary ())")]
 		NativeHandle Constructor (NSUrl url, [NullAllowed] CIImageInitializationOptions options);
 
+		/// <param name="surface">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("initWithIOSurface:")]
 		NativeHandle Constructor (IOSurface.IOSurface surface);
 
+		/// <param name="surface">To be added.</param>
+		/// <param name="options">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("initWithIOSurface:options:")]
 		NativeHandle Constructor (IOSurface.IOSurface surface, [NullAllowed] NSDictionary options);
 
+		/// <param name="surface">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("this (surface, options.GetDictionary ())")]
 		NativeHandle Constructor (IOSurface.IOSurface surface, [NullAllowed] CIImageInitializationOptions options);
 
+		/// <param name="imageBuffer">CoreVideo image buffer.</param>
+		/// <summary>Initializes a CoreImage image from the contents of the specified CoreVideo image buffer.</summary>
+		/// <remarks>
+		///         </remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("initWithCVImageBuffer:")]
 		NativeHandle Constructor (CVImageBuffer imageBuffer);
 
+		/// <param name="imageBuffer">Holds the data that is the basis of the image.</param>
+		/// <param name="dict">Dictionary of strings to objects, holding the options to be applied during construction. (See <see cref="T:CoreImage.CIImageInitializationOptions" />)<para tool="nullallowed">This parameter can be <see langword="null" />.</para></param>
+		/// <summary>Constructs a <see cref="T:CoreImage.CIImage" /> using the options in <paramref name="dict" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("initWithCVImageBuffer:options:")]
 		NativeHandle Constructor (CVImageBuffer imageBuffer, [NullAllowed] NSDictionary<NSString, NSObject> dict);
 
+		/// <param name="imageBuffer">To be added.</param>
+		/// <param name="dict">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Internal] // This overload is needed for our strong dictionary support (but only for Unified, since for Classic the generic version is transformed to this signature)
 		[Sealed]
 		[Export ("initWithCVImageBuffer:options:")]
 		NativeHandle Constructor (CVImageBuffer imageBuffer, [NullAllowed] NSDictionary dict);
 
+		/// <param name="imageBuffer">CoreVideo image buffer.</param>
+		/// <param name="options">Options to initialize the image with.</param>
+		/// <summary>Initializes a CoreImage image from the contents of the specified CoreVideo image buffer.</summary>
+		/// <remarks>
+		///         </remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("this (imageBuffer, options.GetDictionary ())")]
 		NativeHandle Constructor (CVImageBuffer imageBuffer, [NullAllowed] CIImageInitializationOptions options);
 
+		/// <param name="buffer">The pixel buffer that supplies the data for the image.</param>
+		/// <summary>Constructs a <see cref="T:CoreImage.CIImage" /> with the supplied <paramref name="buffer" /> data.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("initWithCVPixelBuffer:")]
 		NativeHandle Constructor (CVPixelBuffer buffer);
 
+		/// <param name="buffer">The data that forms the basis of the image.</param>
+		/// <param name="dict">
+		///           <para>A dictionary of strings to objects defining the options to be applied during construction. (See <see cref="T:CoreImage.CIImageInitializationOptions" />).</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Constructs a <see cref="T:CoreImage.CIImage" /> from the data in <paramref name="buffer" />, applying the options specified in <paramref name="dict" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("initWithCVPixelBuffer:options:")]
 		NativeHandle Constructor (CVPixelBuffer buffer, [NullAllowed] NSDictionary dict);
 
+		/// <param name="buffer">Holds the data that is the basis of the image.</param>
+		/// <param name="options">The options to be applied during initialization.</param>
+		/// <summary>Constructs a <see cref="T:CoreImage.CIImage" /> using <paramref name="options" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("this (buffer, options.GetDictionary ())")]
 		NativeHandle Constructor (CVPixelBuffer buffer, [NullAllowed] CIImageInitializationOptions options);
 
+		/// <param name="color">Color to use for the image.</param>
+		/// <summary>Creates an image with infinite dimensions that is filled with the specified color.</summary>
+		/// <remarks>
+		///         </remarks>
 		[Export ("initWithColor:")]
 		NativeHandle Constructor (CIColor color);
 
+		/// <param name="texture">The <see cref="T:Metal.IMTLTexture" /> that is the basis for the <see cref="T:CoreImage.CIImage" />.</param>
+		/// <param name="options">
+		///           <para>A dictionary of strings to objects that hold the configuration options.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Constructs a <see cref="T:CoreImage.CIImage" /> using the <paramref name="options" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("initWithMTLTexture:options:")]
 		NativeHandle Constructor (IMTLTexture texture, [NullAllowed] NSDictionary options);
@@ -3232,16 +3362,33 @@ namespace CoreImage {
 		int FormatRgbXh { get; }
 
 		// UIKit extensions
+		/// <param name="image">UIKit image.</param>
+		/// <summary>Initializes a CoreImage image from a UIKit image.</summary>
+		/// <remarks>
+		///         </remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("initWithImage:")]
 		NativeHandle Constructor (UIImage image);
 
+		/// <param name="image">UIKit image.</param>
+		/// <param name="options">
+		///           <para>Extra configuration options, as an NSDictionary.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Initializes a CoreImage image from a UIKit image.</summary>
+		/// <remarks>
+		///         </remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("initWithImage:options:")]
 		NativeHandle Constructor (UIImage image, [NullAllowed] NSDictionary options);
 
+		/// <param name="image">UIKit image.</param>
+		/// <param name="options">Options to initialize the image with.</param>
+		/// <summary>Initializes a CoreImage image from a UIKit image.</summary>
+		/// <remarks>
+		///         </remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Wrap ("this (image, options.GetDictionary ())")]
@@ -3540,10 +3687,17 @@ namespace CoreImage {
 		[NullAllowed, Export ("portraitEffectsMatte")]
 		AVPortraitEffectsMatte PortraitEffectsMatte { get; }
 
+		/// <param name="matte">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("initWithPortaitEffectsMatte:options:")] // selector typo, rdar filled 42894821
 		NativeHandle Constructor (AVPortraitEffectsMatte matte, [NullAllowed] NSDictionary options);
 
+		/// <param name="matte">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("initWithPortaitEffectsMatte:")] // selector typo, rdar filled 42894821
 		NativeHandle Constructor (AVPortraitEffectsMatte matte);
@@ -3602,10 +3756,17 @@ namespace CoreImage {
 
 		// CIImage_AVDepthData category
 
+		/// <param name="data">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("initWithDepthData:options:")]
 		NativeHandle Constructor (AVDepthData data, [NullAllowed] NSDictionary options);
 
+		/// <param name="data">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("initWithDepthData:")]
 		NativeHandle Constructor (AVDepthData data);
@@ -4068,9 +4229,18 @@ namespace CoreImage {
 		[return: NullAllowed]
 		CIImageAccumulator FromRectangle (CGRect extent, CIFormat format, CGColorSpace colorSpace);
 
+		/// <param name="rectangle">To be added.</param>
+		/// <param name="format">To be added.</param>
+		/// <summary>Creates a new image accumulator from the specified rectangle and using the specified format.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithExtent:format:")]
 		NativeHandle Constructor (CGRect rectangle, CIFormat format);
 
+		/// <param name="extent">To be added.</param>
+		/// <param name="format">To be added.</param>
+		/// <param name="colorSpace">To be added.</param>
+		/// <summary>Creates a new image accumulator from the specified rectangle and using the specified format and color space.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithExtent:format:colorSpace:")]
 		NativeHandle Constructor (CGRect extent, CIFormat format, CGColorSpace colorSpace);
 
@@ -4156,6 +4326,9 @@ namespace CoreImage {
 		[Export ("samplerWithImage:options:")]
 		CISampler FromImage (CIImage sourceImag, [NullAllowed] NSDictionary options);
 
+		/// <param name="sourceImage">The image from which to sample.</param>
+		/// <summary>Creates a new sampler from a source image.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithImage:")]
 		NativeHandle Constructor (CIImage sourceImage);
 
@@ -4264,14 +4437,23 @@ namespace CoreImage {
 		[Export ("vectorWithString:")]
 		CIVector FromString (string representation);
 
+		/// <param name="p">To be added.</param>
+		/// <summary>Creates a new CIVector for the specified point.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("initWithCGPoint:")]
 		NativeHandle Constructor (CGPoint p);
 
+		/// <param name="r">To be added.</param>
+		/// <summary>Creates a new CIVector and fills it with the X, Y, height, and width values.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("initWithCGRect:")]
 		NativeHandle Constructor (CGRect r);
 
+		/// <param name="r">To be added.</param>
+		/// <summary>Creates a new CIVector by flattening the six values in an affine transform into the first six posistions in the new CIVector.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("initWithCGAffineTransform:")]
 		NativeHandle Constructor (CGAffineTransform r);
@@ -4289,6 +4471,9 @@ namespace CoreImage {
 		[Export ("initWithX:Y:Z:W:")]
 		NativeHandle Constructor (nfloat x, nfloat y, nfloat z, nfloat w);
 
+		/// <param name="representation">To be added.</param>
+		/// <summary>Creates a new CIVector from the specified string representation.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithString:")]
 		NativeHandle Constructor (string representation);
 
@@ -7657,12 +7842,25 @@ namespace CoreImage {
 	[DisableDefaultCtor] // Handle is null if created thru `init`
 	interface CIRenderDestination {
 
+		/// <param name="pixelBuffer">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithPixelBuffer:")]
 		NativeHandle Constructor (CVPixelBuffer pixelBuffer);
 
+		/// <param name="surface">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithIOSurface:")]
 		NativeHandle Constructor (IOSurface.IOSurface surface);
 
+		/// <param name="texture">To be added.</param>
+		/// <param name="commandBuffer">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithMTLTexture:commandBuffer:")]
 		NativeHandle Constructor (IMTLTexture texture, [NullAllowed] IMTLCommandBuffer commandBuffer);
 

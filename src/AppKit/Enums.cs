@@ -2823,6 +2823,7 @@ namespace AppKit {
 		[Obsolete ("Use 'Word' instead.")]
 		hWord,
 #endif
+		/// <summary>To be added.</summary>
 		Word = 1,
 		/// <summary>To be added.</summary>
 		Sentence,

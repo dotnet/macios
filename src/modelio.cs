@@ -148,16 +148,52 @@ namespace ModelIO {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MDLAsset : NSCopying {
+		/// <param name="url">To be added.</param>
+		/// <summary>Creates a new MDLAsset by loading the file at the specified URL.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithURL:")]
 		NativeHandle Constructor (NSUrl url);
 
+		/// <param name="url">To be added.</param>
+		/// <param name="vertexDescriptor">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="bufferAllocator">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Creates a new MDLAsset by loading the file at the specified URL into the buffers provided by the buffer allocator, and formatting the data in memory as described by the vertex descriptor.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithURL:vertexDescriptor:bufferAllocator:")]
 		NativeHandle Constructor ([NullAllowed] NSUrl url, [NullAllowed] MDLVertexDescriptor vertexDescriptor, [NullAllowed] IMDLMeshBufferAllocator bufferAllocator);
 
+		/// <param name="bufferAllocator">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Creates a new Model IO asset by using the provided <paramref name="bufferAllocator" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("initWithBufferAllocator:")]
 		NativeHandle Constructor ([NullAllowed] IMDLMeshBufferAllocator bufferAllocator);
 
+		/// <param name="url">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="vertexDescriptor">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="bufferAllocator">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="preserveTopology">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>Creates a new MDLAsset by loading the file at the specified URL into the buffers provided by the buffer allocator, and formatting the data in memory as described by the vertex descriptor.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithURL:vertexDescriptor:bufferAllocator:preserveTopology:error:")]
 		NativeHandle Constructor (NSUrl url, [NullAllowed] MDLVertexDescriptor vertexDescriptor, [NullAllowed] IMDLMeshBufferAllocator bufferAllocator, bool preserveTopology, out NSError error);
 
@@ -771,6 +807,16 @@ namespace ModelIO {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MDLLight))]
 	interface MDLLightProbe {
+		/// <param name="reflectiveTexture">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="irradianceTexture">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Creates a new MDLLightProbe instance with the specified reflectance and radiance textures.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithReflectiveTexture:irradianceTexture:")]
 		NativeHandle Constructor ([NullAllowed] MDLTexture reflectiveTexture, [NullAllowed] MDLTexture irradianceTexture);
 
@@ -825,6 +871,10 @@ namespace ModelIO {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MDLMaterial : MDLNamed, INSFastEnumeration {
+		/// <param name="name">To be added.</param>
+		/// <param name="scatteringFunction">To be added.</param>
+		/// <summary>Creates a new named material with the specified scattering function.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithName:scatteringFunction:")]
 		NativeHandle Constructor (string name, MDLScatteringFunction scatteringFunction);
 
@@ -943,10 +993,19 @@ namespace ModelIO {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MDLMaterialProperty : MDLNamed, NSCopying {
+		/// <param name="name">To be added.</param>
+		/// <param name="semantic">To be added.</param>
+		/// <summary>Creates a new MDLMaterialProperty with the specified name and semantic.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithName:semantic:")]
 		NativeHandle Constructor (string name, MDLMaterialSemantic semantic);
 
+		/// <param name="name">To be added.</param>
+		/// <param name="semantic">To be added.</param>
+		/// <param name="value">To be added.</param>
+		/// <summary>Creates a new MDLMaterialProperty with the specified name, semantic, and value.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithName:semantic:float:")]
 		NativeHandle Constructor (string name, MDLMaterialSemantic semantic, float value);
 
@@ -977,15 +1036,44 @@ namespace ModelIO {
 		NativeHandle Constructor (string name, MDLMaterialSemantic semantic, MatrixFloat4x4 value);
 #endif
 
+		/// <param name="name">To be added.</param>
+		/// <param name="semantic">To be added.</param>
+		/// <param name="url">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Creates a new MDLMaterialProperty with the specified name and semantic, by loading the resource at the specified URL.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithName:semantic:URL:")]
 		NativeHandle Constructor (string name, MDLMaterialSemantic semantic, [NullAllowed] NSUrl url);
 
+		/// <param name="name">To be added.</param>
+		/// <param name="semantic">To be added.</param>
+		/// <param name="stringValue">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Creates a new MDLMaterialProperty with the specified name, semantic, and value.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithName:semantic:string:")]
 		NativeHandle Constructor (string name, MDLMaterialSemantic semantic, [NullAllowed] string stringValue);
 
+		/// <param name="name">To be added.</param>
+		/// <param name="semantic">To be added.</param>
+		/// <param name="textureSampler">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Creates a new MDLMaterialProperty with the specified name, semantic, and texture sampler.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithName:semantic:textureSampler:")]
 		NativeHandle Constructor (string name, MDLMaterialSemantic semantic, [NullAllowed] MDLTextureSampler textureSampler);
 
+		/// <param name="name">To be added.</param>
+		/// <param name="semantic">To be added.</param>
+		/// <param name="color">To be added.</param>
+		/// <summary>Creates a new color MDLMaterialProperty with the specified name, semantic, and color.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithName:semantic:color:")]
 		NativeHandle Constructor (string name, MDLMaterialSemantic semantic, CGColor color);
 
@@ -1128,6 +1216,10 @@ namespace ModelIO {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MDLMaterialPropertyConnection : MDLNamed {
+		/// <param name="output">To be added.</param>
+		/// <param name="input">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithOutput:input:")]
 		NativeHandle Constructor (MDLMaterialProperty output, MDLMaterialProperty input);
 
@@ -1155,6 +1247,11 @@ namespace ModelIO {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MDLMaterialPropertyNode : MDLNamed {
+		/// <param name="inputs">To be added.</param>
+		/// <param name="outputs">To be added.</param>
+		/// <param name="function">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithInputs:outputs:evaluationFunction:")]
 		NativeHandle Constructor (MDLMaterialProperty [] inputs, MDLMaterialProperty [] outputs, Action<MDLMaterialPropertyNode> function);
 
@@ -1182,6 +1279,10 @@ namespace ModelIO {
 	[BaseType (typeof (MDLMaterialPropertyNode))]
 	[DisableDefaultCtor]
 	interface MDLMaterialPropertyGraph {
+		/// <param name="nodes">To be added.</param>
+		/// <param name="connections">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithNodes:connections:")]
 		NativeHandle Constructor (MDLMaterialPropertyNode [] nodes, MDLMaterialPropertyConnection [] connections);
 
@@ -1209,6 +1310,12 @@ namespace ModelIO {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MDLObject))]
 	interface MDLMesh {
+		/// <param name="bufferAllocator">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Creates a new Model IO mesh with the specified buffer allocator.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("initWithBufferAllocator:")]
 		NativeHandle Constructor ([NullAllowed] IMDLMeshBufferAllocator bufferAllocator);
@@ -1703,6 +1810,13 @@ namespace ModelIO {
 		[Export ("initWithType:length:")]
 		NativeHandle Constructor (MDLMeshBufferType type, nuint length);
 
+		/// <param name="type">To be added.</param>
+		/// <param name="data">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Creates a new mesh buffer that contains the specified data.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithType:data:")]
 		NativeHandle Constructor (MDLMeshBufferType type, [NullAllowed] NSData data);
 
@@ -1787,6 +1901,15 @@ namespace ModelIO {
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		NativeHandle Constructor ([NullAllowed] NSData pixelData, bool topLeftOrigin, [NullAllowed] string name, Vector2i dimensions, nint rowStride, nuint channelCount, MDLTextureChannelEncoding channelEncoding, bool isCube);
 
+		/// <param name="sourceTexture">To be added.</param>
+		/// <param name="name">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="smoothness">To be added.</param>
+		/// <param name="contrast">To be added.</param>
+		/// <summary>Creates a new normal map from the provided source texture and specified smoothness and contrast.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initByGeneratingNormalMapWithTexture:name:smoothness:contrast:")]
 		NativeHandle Constructor (MDLTexture sourceTexture, [NullAllowed] string name, float smoothness, float contrast);
 	}
@@ -2019,6 +2142,9 @@ namespace ModelIO {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MDLPhysicallyPlausibleLight))]
 	interface MDLPhotometricLight {
+		/// <param name="url">To be added.</param>
+		/// <summary>Creates a new MDLPhotometricLight from IES data that is contained at the specified URL.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithIESProfile:")]
 		NativeHandle Constructor (NSUrl url);
 
@@ -2487,6 +2613,11 @@ namespace ModelIO {
 		[Export ("initWithName:indexBuffer:indexCount:indexType:geometryType:material:topology:")]
 		NativeHandle Constructor (string name, IMDLMeshBuffer indexBuffer, nuint indexCount, MDLIndexBitDepth indexType, MDLGeometryType geometryType, [NullAllowed] MDLMaterial material, [NullAllowed] MDLSubmeshTopology topology);
 
+		/// <param name="indexBuffer">To be added.</param>
+		/// <param name="indexType">To be added.</param>
+		/// <param name="geometryType">To be added.</param>
+		/// <summary>Creates a new MDLSubmesh with the specified parameters.</summary>
+		/// <remarks>If either <paramref name="indexType" /> or <paramref name="geometryType" /> do not match the type of data in <paramref name="indexBuffer" />, then a new buffer is created and filled with converted data.</remarks>
 		[Export ("initWithMDLSubmesh:indexType:geometryType:")]
 		NativeHandle Constructor (MDLSubmesh indexBuffer, MDLIndexBitDepth indexType, MDLGeometryType geometryType);
 
@@ -2573,6 +2704,9 @@ namespace ModelIO {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // designated
 	interface MDLTexture : MDLNamed {
+		/// <summary>Default constructor, initializes a new instance of this class.</summary>
+		/// <remarks>
+		///         </remarks>
 		[DesignatedInitializer]
 		[Export ("init")]
 		NativeHandle Constructor ();
@@ -2849,9 +2983,16 @@ namespace ModelIO {
 	[DesignatedDefaultCtor]
 	interface MDLTransform : MDLTransformComponent, NSCopying {
 
+		/// <param name="component">To be added.</param>
+		/// <summary>Creates a new MDLTransform from the specified transform component.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithTransformComponent:")]
 		NativeHandle Constructor (IMDLTransformComponent component);
 
+		/// <param name="component">To be added.</param>
+		/// <param name="resetsTransform">To be added.</param>
+		/// <summary>Creates a new transform that represents the specified transform <paramref name="component" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("initWithTransformComponent:resetsTransform:")]
 		NativeHandle Constructor (IMDLTransformComponent component, bool resetsTransform);
@@ -3090,6 +3231,13 @@ namespace ModelIO {
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		NativeHandle Constructor ([NullAllowed] NSData pixelData, bool topLeftOrigin, [NullAllowed] string name, Vector2i dimensions, nint rowStride, nuint channelCount, MDLTextureChannelEncoding channelEncoding, bool isCube);
 
+		/// <param name="url">To be added.</param>
+		/// <param name="name">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Creates a new MDLUrlTexture with the specified URL and name.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithURL:name:")]
 		NativeHandle Constructor (NSUrl url, [NullAllowed] string name);
 
@@ -3201,6 +3349,13 @@ namespace ModelIO {
 	[BaseType (typeof (NSObject))]
 	interface MDLMeshBufferMap {
 		// FIXME: provide better API.
+		/// <param name="bytes">To be added.</param>
+		/// <param name="deallocator">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Creates a new mesh buffer map.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithBytes:deallocator:")]
 		NativeHandle Constructor (IntPtr bytes, [NullAllowed] Action deallocator);
 
@@ -3217,6 +3372,9 @@ namespace ModelIO {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MDLVertexDescriptor : NSCopying {
+		/// <param name="vertexDescriptor">To be added.</param>
+		/// <summary>Performs a deep copy of <paramref name="vertexDescriptor" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithVertexDescriptor:")]
 		NativeHandle Constructor (MDLVertexDescriptor vertexDescriptor);
 
@@ -3307,10 +3465,20 @@ namespace ModelIO {
 		[Export ("initWithAsset:divisions:interiorNBWidth:exteriorNBWidth:patchRadius:")]
 		NativeHandle Constructor (MDLAsset asset, int divisions, float interiorNBWidth, float exteriorNBWidth, float patchRadius);
 
+		/// <param name="asset">To be added.</param>
+		/// <param name="divisions">To be added.</param>
+		/// <param name="patchRadius">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("initWithAsset:divisions:patchRadius:")]
 		NativeHandle Constructor (MDLAsset asset, int divisions, float patchRadius);
 
+		/// <param name="voxelData">To be added.</param>
+		/// <param name="boundingBox">To be added.</param>
+		/// <param name="voxelExtent">To be added.</param>
+		/// <summary>Creates a new MDLVoxelArray from the provided voxel data, bounding box, and voxel extent.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithData:boundingBox:voxelExtent:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		NativeHandle Constructor (NSData voxelData, MDLAxisAlignedBoundingBox boundingBox, float voxelExtent);
@@ -3649,6 +3817,9 @@ namespace ModelIO {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MDLSubmeshTopology {
+		/// <param name="submesh">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("initWithSubmesh:")]
 		NativeHandle Constructor (MDLSubmesh submesh);
@@ -4180,6 +4351,10 @@ namespace ModelIO {
 		[Export ("jointRestTransforms")]
 		MDLMatrix4x4Array JointRestTransforms { get; }
 
+		/// <param name="name">To be added.</param>
+		/// <param name="jointPaths">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithName:jointPaths:")]
 		NativeHandle Constructor (string name, string [] jointPaths);
 	}
@@ -4220,6 +4395,10 @@ namespace ModelIO {
 		[Export ("scales")]
 		MDLAnimatedVector3Array Scales { get; }
 
+		/// <param name="name">To be added.</param>
+		/// <param name="jointPaths">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithName:jointPaths:")]
 		NativeHandle Constructor (string name, string [] jointPaths);
 	}
@@ -4287,6 +4466,9 @@ namespace ModelIO {
 	[DisableDefaultCtor]
 	interface MDLRelativeAssetResolver : MDLAssetResolver {
 
+		/// <param name="asset">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithAsset:")]
 		NativeHandle Constructor (MDLAsset asset);
 
@@ -4305,6 +4487,9 @@ namespace ModelIO {
 	[DisableDefaultCtor]
 	interface MDLPathAssetResolver : MDLAssetResolver {
 
+		/// <param name="path">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithPath:")]
 		NativeHandle Constructor (string path);
 
@@ -4320,6 +4505,9 @@ namespace ModelIO {
 	[DisableDefaultCtor]
 	interface MDLBundleAssetResolver : MDLAssetResolver {
 
+		/// <param name="path">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithBundle:")]
 		NativeHandle Constructor (string path);
 

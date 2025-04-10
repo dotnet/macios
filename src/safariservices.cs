@@ -63,6 +63,9 @@ namespace SafariServices {
 	interface SFContentBlockerManager {
 
 #if !XAMCORE_5_0
+		/// <summary>Default constructor, initializes a new instance of this class.</summary>
+		/// <remarks>
+		///         </remarks>
 		[Obsolete ("Constructor marked as unavailable.")]
 		[Export ("init")]
 		NativeHandle Constructor ();
@@ -151,21 +154,42 @@ namespace SafariServices {
 	[BaseType (typeof (UIViewController))]
 	[DisableDefaultCtor] // NSGenericException Reason: Misuse of SFSafariViewController interface. Use initWithURL:entersReaderIfAvailable:
 	interface SFSafariViewController {
+		/// <param name="nibName">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="bundle">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithNibName:bundle:")]
 		[PostGet ("NibBundle")]
 		NativeHandle Constructor ([NullAllowed] string nibName, [NullAllowed] NSBundle bundle);
 
+		/// <param name="url">To be added.</param>
+		/// <param name="configuration">To be added.</param>
+		/// <summary>Creates a new browsing interface with the provided URL and configuration.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("initWithURL:configuration:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSUrl url, SFSafariViewControllerConfiguration configuration);
 
+		/// <param name="url">To be added.</param>
+		/// <param name="entersReaderIfAvailable">To be added.</param>
+		/// <summary>Developers should not use this deprecated constructor. Developers should use '.ctor (NSUrl, SFSafariViewControllerConfiguration)' instead.</summary>
+		/// <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use '.ctor (NSUrl, SFSafariViewControllerConfiguration)' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use '.ctor (NSUrl, SFSafariViewControllerConfiguration)' instead.")]
 		[DesignatedInitializer]
 		[Export ("initWithURL:entersReaderIfAvailable:")]
 		NativeHandle Constructor (NSUrl url, bool entersReaderIfAvailable);
 
+		/// <param name="url">To be added.</param>
+		/// <summary>Creates a new browsing interface with the provided URL.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithURL:")]
 		NativeHandle Constructor (NSUrl url);
 
@@ -345,6 +369,14 @@ namespace SafariServices {
 	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'ASWebAuthenticationSession' instead.")]
 	interface SFAuthenticationSession {
+		/// <param name="url">To be added.</param>
+		/// <param name="callbackUrlScheme">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>Creates a new authentication session for the resource at the specified URL.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithURL:callbackURLScheme:completionHandler:")]
 		NativeHandle Constructor (NSUrl url, [NullAllowed] string callbackUrlScheme, SFAuthenticationCompletionHandler completionHandler);
 

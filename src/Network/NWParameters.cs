@@ -21,66 +21,36 @@ using OS_nw_parameters = System.IntPtr;
 using nw_parameters_attribution_t = System.IntPtr;
 using OS_nw_privacy_context = System.IntPtr;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace Network {
-
-#if NET
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-#endif
 	public class NWParameters : NativeObject {
 		[Preserve (Conditional = true)]
-#if NET
 		internal NWParameters (NativeHandle handle, bool owns) : base (handle, owns) { }
-#else
-		public NWParameters (NativeHandle handle, bool owns) : base (handle, owns) { }
-#endif
 
 #if !COREBUILD
-#if NET
 		[SupportedOSPlatform ("tvos16.0")]
 		[SupportedOSPlatform ("macos13.0")]
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("maccatalyst16.0")]
-#else
-		[TV (16, 0)]
-		[Mac (13, 0)]
-		[iOS (16, 0)]
-#endif
 		[DllImport (Constants.NetworkLibrary)]
 		static extern OS_nw_parameters nw_parameters_create_application_service ();
 
-#if NET
 		[SupportedOSPlatform ("tvos16.0")]
 		[SupportedOSPlatform ("macos13.0")]
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("maccatalyst16.0")]
-#else
-		[TV (16, 0)]
-		[Mac (13, 0)]
-		[iOS (16, 0)]
-#endif
 		public static NWParameters CreateApplicationService () => new NWParameters (nw_parameters_create_application_service (), true);
 
 		static unsafe BlockLiteral* DEFAULT_CONFIGURATION () => (BlockLiteral*) NWParametersConstants._DefaultConfiguration;
 
 		static unsafe BlockLiteral* DISABLE_PROTOCOL () => (BlockLiteral*) NWParametersConstants._ProtocolDisable;
 
-#if !NET
-		delegate void nw_parameters_configure_protocol_block_t (IntPtr block, IntPtr iface);
-		static nw_parameters_configure_protocol_block_t static_ConfigureHandler = TrampolineConfigureHandler;
-
-		[MonoPInvokeCallback (typeof (nw_parameters_configure_protocol_block_t))]
-#else
 		[UnmanagedCallersOnly]
-#endif
 		static void TrampolineConfigureHandler (IntPtr block, IntPtr iface)
 		{
 			var del = BlockLiteral.GetTarget<Action<NWProtocolOptions>> (block);
@@ -95,10 +65,14 @@ namespace Network {
 						castedOptions = new NWProtocolUdpOptions (iface, owns: false);
 					} else if (definition.Equals (NWProtocolDefinition.CreateTlsDefinition ())) {
 						castedOptions = new NWProtocolTlsOptions (iface, owns: false);
+#pragma warning disable CA1416 // This call site is reachable on: 'ios' 12.2 and later, 'maccatalyst' 12.2 and later, 'macOS/OSX' 12.0 and later, 'tvos' 12.2 and later. 'NWProtocolIPOptions' is only supported on: 'ios' 13.0 and later, 'maccatalyst' 13.0 and later, 'tvos' 13.0 and later
 					} else if (definition.Equals (NWProtocolDefinition.CreateIPDefinition ())) {
 						castedOptions = new NWProtocolIPOptions (iface, owns: false);
+#pragma warning restore CA1416
+#pragma warning disable CA1416 // This call site is reachable on: 'ios' 12.2 and later, 'maccatalyst' 12.2 and later, 'macOS/OSX' 12.0 and later, 'tvos' 12.2 and later. 'NWWebSocketOptions' is only supported on: 'ios' 13.0 and later, 'maccatalyst' 13.0 and later, 'tvos' 13.0 and later.
 					} else if (definition.Equals (NWProtocolDefinition.CreateWebSocketDefinition ())) {
 						castedOptions = new NWWebSocketOptions (iface, owns: false);
+#pragma warning restore CA1416
 					}
 
 					try {
@@ -121,13 +95,8 @@ namespace Network {
 				return DEFAULT_CONFIGURATION ();
 			}
 
-#if NET
 			delegate* unmanaged<IntPtr, IntPtr, void> trampoline = &TrampolineConfigureHandler;
 			var block = new BlockLiteral (trampoline, callback, typeof (NWParameters), nameof (TrampolineConfigureHandler));
-#else
-			var block = new BlockLiteral ();
-			block.SetupBlockUnsafe (static_ConfigureHandler, callback);
-#endif
 			*callbackBlock = block;
 			disposeReturnValue = true;
 			return callbackBlock;
@@ -232,27 +201,17 @@ namespace Network {
 		}
 
 #if MONOMAC
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("ios")]
-#else
-		[NoTV]
-		[NoiOS]
-#endif
 		[DllImport (Constants.NetworkLibrary)]
 		unsafe static extern IntPtr nw_parameters_create_custom_ip (byte custom_ip_protocol_number, BlockLiteral* configure_ip);
 
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("ios")]
-#else
-		[NoTV]
-		[NoiOS]
-#endif
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public unsafe static NWParameters CreateCustomIP (byte protocolNumber, Action<NWProtocolOptions>? configureCustomIP = null)
 		{
@@ -437,14 +396,7 @@ namespace Network {
 			nw_parameters_clear_prohibited_interface_types (GetCheckedHandle ());
 		}
 
-#if !NET
-		delegate byte nw_parameters_iterate_interfaces_block_t (IntPtr block, IntPtr iface);
-		static nw_parameters_iterate_interfaces_block_t static_iterateProhibitedHandler = TrampolineIterateProhibitedHandler;
-
-		[MonoPInvokeCallback (typeof (nw_parameters_iterate_interfaces_block_t))]
-#else
 		[UnmanagedCallersOnly]
-#endif
 		static byte TrampolineIterateProhibitedHandler (IntPtr block, IntPtr iface)
 		{
 			var del = BlockLiteral.GetTarget<Func<NWInterface, bool>> (block);
@@ -467,25 +419,13 @@ namespace Network {
 		public void IterateProhibitedInterfaces (Func<NWInterface, bool> iterationCallback)
 		{
 			unsafe {
-#if NET
 				delegate* unmanaged<IntPtr, IntPtr, byte> trampoline = &TrampolineIterateProhibitedHandler;
 				using var block = new BlockLiteral (trampoline, iterationCallback, typeof (NWParameters), nameof (TrampolineIterateProhibitedHandler));
-#else
-				using var block = new BlockLiteral ();
-				block.SetupBlockUnsafe (static_iterateProhibitedHandler, iterationCallback);
-#endif
 				nw_parameters_iterate_prohibited_interfaces (GetCheckedHandle (), &block);
 			}
 		}
 
-#if !NET
-		delegate byte nw_parameters_iterate_interface_types_block_t (IntPtr block, NWInterfaceType type);
-		static nw_parameters_iterate_interface_types_block_t static_IterateProhibitedTypeHandler = TrampolineIterateProhibitedTypeHandler;
-
-		[MonoPInvokeCallback (typeof (nw_parameters_iterate_interface_types_block_t))]
-#else
 		[UnmanagedCallersOnly]
-#endif
 		static byte TrampolineIterateProhibitedTypeHandler (IntPtr block, NWInterfaceType type)
 		{
 			var del = BlockLiteral.GetTarget<Func<NWInterfaceType, bool>> (block);
@@ -504,13 +444,8 @@ namespace Network {
 		public void IterateProhibitedInterfaces (Func<NWInterfaceType, bool> callback)
 		{
 			unsafe {
-#if NET
 				delegate* unmanaged<IntPtr, NWInterfaceType, byte> trampoline = &TrampolineIterateProhibitedTypeHandler;
 				using var block = new BlockLiteral (trampoline, callback, typeof (NWParameters), nameof (TrampolineIterateProhibitedTypeHandler));
-#else
-				using var block = new BlockLiteral ();
-				block.SetupBlockUnsafe (static_IterateProhibitedTypeHandler, callback);
-#endif
 				nw_parameters_iterate_prohibited_interface_types (GetCheckedHandle (), &block);
 			}
 		}
@@ -610,137 +545,80 @@ namespace Network {
 			set => nw_parameters_set_include_peer_to_peer (GetCheckedHandle (), value.AsByte ());
 		}
 
-#if NET
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (13, 0)]
-		[iOS (13, 0)]
-#endif
 		[DllImport (Constants.NetworkLibrary)]
 		static extern byte nw_parameters_get_prohibit_constrained (IntPtr parameters);
 
-#if NET
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (13, 0)]
-		[iOS (13, 0)]
-#endif
 		[DllImport (Constants.NetworkLibrary)]
 		static extern void nw_parameters_set_prohibit_constrained (IntPtr parameters, byte prohibit_constrained);
 
-#if NET
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (13, 0)]
-		[iOS (13, 0)]
-#endif
 		public bool ProhibitConstrained {
 			get => nw_parameters_get_prohibit_constrained (GetCheckedHandle ()) != 0;
 			set => nw_parameters_set_prohibit_constrained (GetCheckedHandle (), value.AsByte ());
 		}
 
-#if NET
 		[SupportedOSPlatform ("tvos15.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (15, 0)]
-		[iOS (15, 0)]
-		[MacCatalyst (15, 0)]
-#endif
 		[DllImport (Constants.NetworkLibrary)]
 		static extern void nw_parameters_set_attribution (OS_nw_parameters parameters, NWParametersAttribution attribution);
 
-#if NET
 		[SupportedOSPlatform ("tvos15.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (15, 0)]
-		[iOS (15, 0)]
-		[MacCatalyst (15, 0)]
-#endif
 		[DllImport (Constants.NetworkLibrary)]
 		static extern NWParametersAttribution nw_parameters_get_attribution (OS_nw_parameters parameters);
 
-#if NET
 		[SupportedOSPlatform ("tvos15.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (15, 0)]
-		[iOS (15, 0)]
-		[MacCatalyst (15, 0)]
-#endif
 		public NWParametersAttribution Attribution {
 			get => nw_parameters_get_attribution (GetCheckedHandle ());
 			set => nw_parameters_set_attribution (GetCheckedHandle (), value);
 		}
 
-#if NET
 		[SupportedOSPlatform ("tvos15.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (15, 0)]
-		[iOS (15, 0)]
-		[MacCatalyst (15, 0)]
-#endif
 		[DllImport (Constants.NetworkLibrary)]
 		static extern void nw_parameters_set_privacy_context (OS_nw_parameters parameters, OS_nw_privacy_context privacy_context);
 
-#if NET
 		[SupportedOSPlatform ("tvos15.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (15, 0)]
-		[iOS (15, 0)]
-		[MacCatalyst (15, 0)]
-#endif
 		public void SetPrivacyContext (NWPrivacyContext privacyContext)
 		{
 			nw_parameters_set_privacy_context (GetCheckedHandle (), privacyContext.Handle);
 			GC.KeepAlive (privacyContext);
 		}
 
-#if NET
 		[SupportedOSPlatform ("tvos15.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (15, 0)]
-		[iOS (15, 0)]
-		[MacCatalyst (15, 0)]
-#endif
 		[DllImport (Constants.NetworkLibrary)]
 		static unsafe extern OS_nw_parameters nw_parameters_create_quic (void* configureQuic);
 
-#if NET
 		[SupportedOSPlatform ("tvos15.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (15, 0)]
-		[iOS (15, 0)]
-		[MacCatalyst (15, 0)]
-#endif
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public unsafe static NWParameters CreateQuic (Action<NWProtocolOptions>? configureQuic = null)
 		{
@@ -755,42 +633,24 @@ namespace Network {
 			return new NWParameters (ptr, owns: true);
 		}
 
-#if NET
 		[SupportedOSPlatform ("tvos16.0")]
 		[SupportedOSPlatform ("macos13.0")]
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("maccatalyst16.0")]
-#else
-		[TV (16, 0)]
-		[Mac (13, 0)]
-		[iOS (16, 0)]
-#endif
 		[DllImport (Constants.NetworkLibrary)]
 		static extern byte nw_parameters_requires_dnssec_validation (OS_nw_parameters parameters);
 
-#if NET
 		[SupportedOSPlatform ("tvos16.0")]
 		[SupportedOSPlatform ("macos13.0")]
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("maccatalyst16.0")]
-#else
-		[TV (16, 0)]
-		[Mac (13, 0)]
-		[iOS (16, 0)]
-#endif
 		[DllImport (Constants.NetworkLibrary)]
 		static extern void nw_parameters_set_requires_dnssec_validation (OS_nw_parameters parameters, byte requires_dnssec_validation);
 
-#if NET
 		[SupportedOSPlatform ("tvos16.0")]
 		[SupportedOSPlatform ("macos13.0")]
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("maccatalyst16.0")]
-#else
-		[TV (16, 0)]
-		[Mac (13, 0)]
-		[iOS (16, 0)]
-#endif
 		public bool RequiresDnssecValidation {
 			get => nw_parameters_requires_dnssec_validation (GetCheckedHandle ()) != 0;
 			set => nw_parameters_set_requires_dnssec_validation (GetCheckedHandle (), value.AsByte ());

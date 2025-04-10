@@ -5498,6 +5498,11 @@ namespace Intents {
 		[Wrap ("INPersonHandleLabelExtensions.GetValue (WeakLabel)")]
 		INPersonHandleLabel Label { get; }
 
+		/// <param name="value">To be added.</param>
+		/// <param name="type">To be added.</param>
+		/// <param name="label">To be added.</param>
+		/// <summary>Creates a new person handle with the specified details.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("this (value, type, label.GetConstant ())")]
 		NativeHandle Constructor (string value, INPersonHandleType type, INPersonHandleLabel label);
@@ -6744,6 +6749,13 @@ namespace Intents {
 		[DesignatedInitializer]
 		NativeHandle Constructor ([NullAllowed] INDateComponentsRange dateCreated, [NullAllowed] INPerson recipient, INCallCapabilityOptions callCapabilities, INCallRecordTypeOptions callTypes, [NullAllowed] NSNumber unseen);
 
+		/// <param name="dateCreated">To be added.</param>
+		/// <param name="recipient">To be added.</param>
+		/// <param name="callCapabilities">To be added.</param>
+		/// <param name="callTypes">To be added.</param>
+		/// <param name="unseen">To be added.</param>
+		/// <summary>Creates a new call search intent with the specified details.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("this (dateCreated, recipient, callCapabilities, callTypes, new NSNumber (unseen))")]
 		NativeHandle Constructor ([NullAllowed] INDateComponentsRange dateCreated, [NullAllowed] INPerson recipient, INCallCapabilityOptions callCapabilities, INCallRecordTypeOptions callTypes, bool unseen);

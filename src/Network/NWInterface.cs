@@ -18,27 +18,16 @@ using CoreFoundation;
 
 using OS_nw_interface = System.IntPtr;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace Network {
-
-#if NET
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-#endif
 	public class NWInterface : NativeObject {
 		[Preserve (Conditional = true)]
-#if NET
 		internal NWInterface (NativeHandle handle, bool owns) : base (handle, owns) { }
-#else
-		public NWInterface (NativeHandle handle, bool owns) : base (handle, owns) { }
-#endif
 
 #if !COREBUILD
 		[DllImport (Constants.NetworkLibrary)]

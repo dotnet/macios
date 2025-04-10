@@ -741,6 +741,9 @@ namespace PdfKit {
 	[BaseType (typeof (PdfAction), Name = "PDFActionGoTo")]
 	interface PdfActionGoTo {
 
+		/// <param name="destination">To be added.</param>
+		/// <summary>Creates a new go-to PDF action with the specified <paramref name="destination" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithDestination:")]
 		NativeHandle Constructor (PdfDestination destination);
@@ -758,6 +761,9 @@ namespace PdfKit {
 	[BaseType (typeof (PdfAction), Name = "PDFActionNamed")]
 	interface PdfActionNamed {
 
+		/// <param name="name">To be added.</param>
+		/// <summary>Creates a new named PDF action with the specified <paramref name="name" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithName:")]
 		NativeHandle Constructor (PdfActionNamedName name);
@@ -805,6 +811,8 @@ namespace PdfKit {
 	[BaseType (typeof (PdfAction), Name = "PDFActionResetForm")]
 	interface PdfActionResetForm {
 		// - (instancetype)init NS_DESIGNATED_INITIALIZER;
+		/// <summary>Creates a new form reset action with default values.</summary>
+		/// <remarks />
 		[Export ("init")]
 		[DesignatedInitializer]
 		NativeHandle Constructor ();
@@ -832,6 +840,9 @@ namespace PdfKit {
 	[BaseType (typeof (PdfAction), Name = "PDFActionURL")]
 	interface PdfActionUrl {
 
+		/// <param name="url">To be added.</param>
+		/// <summary>Creates a new URL PDF action with the specified URL.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithURL:")]
 		NativeHandle Constructor (NSUrl url);
@@ -849,11 +860,24 @@ namespace PdfKit {
 	[BaseType (typeof (NSObject), Name = "PDFAnnotation")]
 	interface PdfAnnotation : NSCoding, NSCopying {
 
+		/// <param name="bounds">To be added.</param>
+		/// <param name="annotationType">To be added.</param>
+		/// <param name="properties">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("initWithBounds:forType:withProperties:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (CGRect bounds, NSString annotationType, [NullAllowed] NSDictionary properties);
 
+		/// <param name="bounds">To be added.</param>
+		/// <param name="annotationType">To be added.</param>
+		/// <param name="properties">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("this (bounds, annotationType.GetConstant ()!, properties)")]
 		NativeHandle Constructor (CGRect bounds, PdfAnnotationKey annotationType, [NullAllowed] NSDictionary properties);
@@ -1852,6 +1876,10 @@ namespace PdfKit {
 		[Field ("kPDFDestinationUnspecifiedValue")]
 		nfloat UnspecifiedValue { get; }
 
+		/// <param name="page">To be added.</param>
+		/// <param name="point">To be added.</param>
+		/// <summary>Creates a new PDF destination object for the specified point on the specified page.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithPage:atPoint:")]
 		NativeHandle Constructor (PdfPage page, CGPoint point);
@@ -1951,14 +1979,22 @@ namespace PdfKit {
 		NSString PageIndexKey { get; }
 
 		// - (instancetype)init NS_DESIGNATED_INITIALIZER;
+		/// <summary>Creates a new PDF document object with default values.</summary>
+		/// <remarks />
 		[Export ("init")]
 		[DesignatedInitializer]
 		NativeHandle Constructor ();
 
+		/// <param name="url">To be added.</param>
+		/// <summary>Creates a new PDF document object from the data at the specified URL.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithURL:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSUrl url);
 
+		/// <param name="data">To be added.</param>
+		/// <summary>Creates a new PDF document object with the specified data.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithData:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSData data);
@@ -2453,6 +2489,8 @@ namespace PdfKit {
 	interface PdfOutline {
 
 		// - (instancetype)init NS_DESIGNATED_INITIALIZER;
+		/// <summary>Creates a new PDF outline object with default values.</summary>
+		/// <remarks />
 		[Export ("init")]
 		[DesignatedInitializer]
 		NativeHandle Constructor ();
@@ -2538,10 +2576,15 @@ namespace PdfKit {
 	interface PdfPage : NSCopying {
 
 		// - (instancetype)init NS_DESIGNATED_INITIALIZER;
+		/// <summary>Creates a new PDF page object with default values.</summary>
+		/// <remarks />
 		[Export ("init")]
 		[DesignatedInitializer]
 		NativeHandle Constructor ();
 
+		/// <param name="image">To be added.</param>
+		/// <summary>Creates a new PDF page object from the specified <paramref name="image" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithImage:")]
 		NativeHandle Constructor (NSImage image);
 
@@ -2778,6 +2821,9 @@ namespace PdfKit {
 	[DisableDefaultCtor] // An uncaught exception was raised: init: not a valid initializer for PDFSelection
 	interface PdfSelection : NSCopying {
 
+		/// <param name="document">To be added.</param>
+		/// <summary>Creates a new, empty, PDF selection object.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithDocument:")]
 		NativeHandle Constructor (PdfDocument document);
@@ -2884,6 +2930,12 @@ namespace PdfKit {
 	[BaseType (typeof (NSView), Name = "PDFThumbnailView")]
 	interface PdfThumbnailView : NSCoding {
 
+		/// <param name="frame">Frame used by the view, expressed in iOS points.</param>
+		/// <summary>Initializes the PdfThumbnailView with the specified frame.</summary>
+		/// <remarks>
+		///           <para>This constructor is used to programmatically create a new instance of PdfThumbnailView with the specified dimension in the frame.   The object will only be displayed once it has been added to a view hierarchy by calling AddSubview in a containing view.</para>
+		///           <para>This constructor is not invoked when deserializing objects from storyboards or XIB filesinstead the constructor that takes an NSCoder parameter is invoked.</para>
+		///         </remarks>
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect frame);
 
@@ -2994,6 +3046,12 @@ namespace PdfKit {
 	NSMenuDelegate, NSAnimationDelegate
 #endif
 	{
+		/// <param name="frame">Frame used by the view, expressed in iOS points.</param>
+		/// <summary>Initializes the PdfView with the specified frame.</summary>
+		/// <remarks>
+		///           <para>This constructor is used to programmatically create a new instance of PdfView with the specified dimension in the frame.   The object will only be displayed once it has been added to a view hierarchy by calling AddSubview in a containing view.</para>
+		///           <para>This constructor is not invoked when deserializing objects from storyboards or XIB filesinstead the constructor that takes an NSCoder parameter is invoked.</para>
+		///         </remarks>
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect frame);
 

@@ -563,6 +563,10 @@ namespace CoreMidi {
 		[Export ("profileID")]
 		NSData ProfileId { get; }
 
+		/// <param name="data">To be added.</param>
+		/// <param name="inName">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithData:name:")]
 		NativeHandle Constructor (NSData data, string inName);
 
@@ -600,6 +604,10 @@ namespace CoreMidi {
 		[Export ("disabledProfiles")]
 		MidiCIProfile [] DisabledProfiles { get; }
 
+		/// <param name="enabled">To be added.</param>
+		/// <param name="disabled">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithEnabledProfiles:disabledProfiles:")]
 		NativeHandle Constructor (MidiCIProfile [] enabled, MidiCIProfile [] disabled);
 

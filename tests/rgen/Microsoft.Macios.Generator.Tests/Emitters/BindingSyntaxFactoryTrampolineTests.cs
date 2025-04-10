@@ -221,7 +221,7 @@ namespace NS {
 	}
 }
 ";
-			
+
 			yield return [
 				voidReturnType,
 				null!

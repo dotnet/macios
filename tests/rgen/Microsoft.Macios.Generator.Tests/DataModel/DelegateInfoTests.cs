@@ -344,7 +344,7 @@ namespace NS {
 					]
 				)
 			];
-			
+
 			const string customDelegateForcedType = @"
 using System;
 using Foundation;

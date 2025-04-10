@@ -10,7 +10,7 @@ namespace Microsoft.Macios.Generator.DataModel;
 /// Readonly structure that describes a parameter in a delegate. This class contains less information
 /// than Parameter since some of the extra fields make no sense in delegates.
 /// </summary>
-[StructLayout(LayoutKind.Auto)]
+[StructLayout (LayoutKind.Auto)]
 readonly partial struct DelegateParameter : IEquatable<DelegateParameter> {
 
 	/// <summary>
@@ -42,7 +42,7 @@ readonly partial struct DelegateParameter : IEquatable<DelegateParameter> {
 	/// True if the parameter represents the 'this' pointer.
 	/// </summary>
 	public bool IsThis { get; init; }
-	
+
 	/// <summary>
 	/// The reference type used.
 	/// </summary>
@@ -54,7 +54,7 @@ readonly partial struct DelegateParameter : IEquatable<DelegateParameter> {
 		Name = name;
 		Type = type;
 	}
-	
+
 	/// <inheritdoc/>
 	public bool Equals (DelegateParameter other)
 	{

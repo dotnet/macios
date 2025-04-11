@@ -128,6 +128,11 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	/// Returns, if the type is an array, if its elements are a wrapped object from the objc world.
 	/// </summary>
 	public bool ArrayElementTypeIsWrapped { get; init; }
+	
+	/// <summary>
+	/// Returns, if the type is an array, if its elements implement the INativeObject interface.
+	/// </summary>
+	public bool ArrayElementIsINativeObject { get; init; }
 
 	readonly bool isNSObject = false;
 
@@ -259,6 +264,7 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 			IsArray = true;
 			ArrayElementType = arraySymbol.ElementType.SpecialType;
 			ArrayElementTypeIsWrapped = arraySymbol.ElementType.IsWrapped ();
+			ArrayElementIsINativeObject = arraySymbol.ElementType.IsINativeObject ();
 		}
 
 		// try to get the named type symbol to have more educated decisions

@@ -59,7 +59,7 @@ static partial class BindingSyntaxFactory {
 		return StaticInvocationGenericExpression ("CFArray", "ArrayFromHandle",
 			nsObjectType, argsList, suppressNullableWarning);
 	}
-	
+
 	/// <summary>
 	/// Generates a call to the method NSArray.ArrayFromHandle&lt;T&gt; to create a collection of NSObjects.
 	/// </summary>

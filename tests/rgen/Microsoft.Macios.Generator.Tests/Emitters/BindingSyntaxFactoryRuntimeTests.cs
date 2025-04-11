@@ -765,7 +765,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 		var declaration = RetainAndAutoreleaseNativeObject (arguments);
 		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
 	}
-	
+
 	class TestDataGetCFArrayFromHandle : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{
@@ -789,7 +789,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
 	}
-	
+
 	[Theory]
 	[ClassData (typeof (TestDataGetCFArrayFromHandle))]
 	void GetCFArrayFromHandleTests (string objectType, ImmutableArray<ArgumentSyntax> arguments, string expectedDeclaration)
@@ -797,7 +797,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 		var declaration = GetCFArrayFromHandle (objectType, arguments);
 		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
 	}
-	
+
 	class TestDataGetNSArrayFromHandle : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{
@@ -821,7 +821,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
 	}
-	
+
 	[Theory]
 	[ClassData (typeof (TestDataGetNSArrayFromHandle))]
 	void GetNSArrayFromHandleTests (string objectType, ImmutableArray<ArgumentSyntax> arguments, string expectedDeclaration)

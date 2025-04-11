@@ -128,7 +128,7 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	/// Returns, if the type is an array, if its elements are a wrapped object from the objc world.
 	/// </summary>
 	public bool ArrayElementTypeIsWrapped { get; init; }
-	
+
 	/// <summary>
 	/// Returns, if the type is an array, if its elements implement the INativeObject interface.
 	/// </summary>

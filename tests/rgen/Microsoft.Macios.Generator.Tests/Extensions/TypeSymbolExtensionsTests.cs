@@ -1859,7 +1859,7 @@ public partial class MyClass {
 		Assert.NotNull (symbol);
 		Assert.Equal (expectedResult, symbol.Type.IsWrapped ());
 	}
-	
+
 	class TestDataIsINativeObject : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{
@@ -1998,7 +1998,7 @@ public partial class MyClass {
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
 	}
-	
+
 	[Theory]
 	[AllSupportedPlatformsClassData<TestDataIsINativeObject>]
 	void IsINativeObjectTests (ApplePlatform platform, string inputText, bool expectedResult)

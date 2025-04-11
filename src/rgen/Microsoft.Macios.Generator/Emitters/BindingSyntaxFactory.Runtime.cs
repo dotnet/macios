@@ -52,11 +52,26 @@ static partial class BindingSyntaxFactory {
 	/// <param name="args">The arguments to bass to the ArrayFromHandle method.</param>
 	/// <param name="suppressNullableWarning">If we should suppress the nullable warning.</param>
 	/// <returns>The expression that calls ArrayFromHandle method.</returns>
-	public static ExpressionSyntax GetNSArrayFromHandle (string nsObjectType, ImmutableArray<ArgumentSyntax> args,
+	public static ExpressionSyntax GetCFArrayFromHandle (string nsObjectType, ImmutableArray<ArgumentSyntax> args,
 		bool suppressNullableWarning = false)
 	{
 		var argsList = ArgumentList (SeparatedList<ArgumentSyntax> (args.ToSyntaxNodeOrTokenArray ()));
 		return StaticInvocationGenericExpression ("CFArray", "ArrayFromHandle",
+			nsObjectType, argsList, suppressNullableWarning);
+	}
+	
+	/// <summary>
+	/// Generates a call to the method NSArray.ArrayFromHandle&lt;T&gt; to create a collection of NSObjects.
+	/// </summary>
+	/// <param name="nsObjectType">The type of the object to use as T</param>
+	/// <param name="args">The arguments to bass to the ArrayFromHandle method.</param>
+	/// <param name="suppressNullableWarning">If we should suppress the nullable warning.</param>
+	/// <returns>The expression that calls ArrayFromHandle method.</returns>
+	public static ExpressionSyntax GetNSArrayFromHandle (string nsObjectType, ImmutableArray<ArgumentSyntax> args,
+		bool suppressNullableWarning = false)
+	{
+		var argsList = ArgumentList (SeparatedList<ArgumentSyntax> (args.ToSyntaxNodeOrTokenArray ()));
+		return StaticInvocationGenericExpression ("NSArray", "ArrayFromHandle",
 			nsObjectType, argsList, suppressNullableWarning);
 	}
 

@@ -105,7 +105,7 @@ static partial class BindingSyntaxFactory {
 				
 				// NSObject[] => CFArray.ArrayFromHandle<Foundation.NSMetadataItem> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle ("results")))!;
 				{ ReturnType.IsArray: true, ReturnType.ArrayElementTypeIsWrapped: true } => 
-					GetNSArrayFromHandle (property.ReturnType.FullyQualifiedName, [Argument (objMsgSend)], suppressNullableWarning: !property.ReturnType.IsNullable),
+					GetCFArrayFromHandle (property.ReturnType.FullyQualifiedName, [Argument (objMsgSend)], suppressNullableWarning: !property.ReturnType.IsNullable),
 				
 				// Runtime.GetNSObject<Foundation.NSObject> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle ("delegate")));
 				{ ReturnType.IsArray: false, ReturnType.IsNSObject: true } => 

@@ -765,5 +765,69 @@ public class BindingSyntaxFactoryRuntimeTests {
 		var declaration = RetainAndAutoreleaseNativeObject (arguments);
 		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
 	}
+	
+	class TestDataGetCFArrayFromHandle : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
+		{
+			yield return [
+				"NSObject",
+				ImmutableArray.Create (
+					Argument (IdentifierName ("arg1"))),
+				"CFArray.ArrayFromHandle<NSObject> (arg1)",
+			];
+
+			yield return [
+				"NSString",
+				ImmutableArray.Create (
+					Argument (IdentifierName ("arg1")),
+					Argument (IdentifierName ("arg2")),
+					Argument (IdentifierName ("arg3"))
+				),
+				"CFArray.ArrayFromHandle<NSString> (arg1, arg2, arg3)",
+			];
+		}
+
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
+	}
+	
+	[Theory]
+	[ClassData (typeof (TestDataGetCFArrayFromHandle))]
+	void GetCFArrayFromHandleTests (string objectType, ImmutableArray<ArgumentSyntax> arguments, string expectedDeclaration)
+	{
+		var declaration = GetCFArrayFromHandle (objectType, arguments);
+		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
+	}
+	
+	class TestDataGetNSArrayFromHandle : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
+		{
+			yield return [
+				"NSObject",
+				ImmutableArray.Create (
+					Argument (IdentifierName ("arg1"))),
+				"NSArray.ArrayFromHandle<NSObject> (arg1)",
+			];
+
+			yield return [
+				"NSString",
+				ImmutableArray.Create (
+					Argument (IdentifierName ("arg1")),
+					Argument (IdentifierName ("arg2")),
+					Argument (IdentifierName ("arg3"))
+				),
+				"NSArray.ArrayFromHandle<NSString> (arg1, arg2, arg3)",
+			];
+		}
+
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
+	}
+	
+	[Theory]
+	[ClassData (typeof (TestDataGetNSArrayFromHandle))]
+	void GetNSArrayFromHandleTests (string objectType, ImmutableArray<ArgumentSyntax> arguments, string expectedDeclaration)
+	{
+		var declaration = GetNSArrayFromHandle (objectType, arguments);
+		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
+	}
 
 }

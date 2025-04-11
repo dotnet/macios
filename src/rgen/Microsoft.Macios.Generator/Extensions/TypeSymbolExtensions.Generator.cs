@@ -192,7 +192,7 @@ static partial class TypeSymbolExtensions {
 		// pointers do not need stret
 		if (returnType is IPointerTypeSymbol)
 			return false;
-		
+
 		if (X86NeedStret (returnType))
 			return true;
 

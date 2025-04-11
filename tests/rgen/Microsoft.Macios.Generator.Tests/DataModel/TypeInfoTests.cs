@@ -417,7 +417,7 @@ namespace NS {
 	public class MyClass {
 		public unsafe void ProcessPointer (int* pointer)
 		{
-			if (pointer == null)
+			if (pointer is null)
 			{
 				return;
 			}
@@ -440,6 +440,6 @@ namespace NS {
 		// ensure that the method has a single parameter
 		Assert.Single (changes.Value.Parameters);
 		// ensure that the first parameter is a pointer
-		Assert.True (changes.Value.Parameters[0].Type.IsPointer);
+		Assert.True (changes.Value.Parameters [0].Type.IsPointer);
 	}
 }

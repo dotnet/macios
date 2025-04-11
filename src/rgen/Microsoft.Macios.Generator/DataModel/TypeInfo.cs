@@ -169,7 +169,7 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	/// If the parameter is a delegate. The method information of the invoke.
 	/// </summary>
 	public DelegateInfo? Delegate { get; init; } = null;
-	
+
 	/// <summary>
 	/// If the type is a pointer type.
 	/// </summary>

@@ -24,7 +24,7 @@ static partial class BindingSyntaxFactory {
 		return Argument (LiteralExpression (kind, Literal (literal)));
 	}
 
-	static ExpressionSyntax StaticInvocationExpression (string staticClassName, string methodName,
+	static ExpressionSyntax StaticInvocationExpression (ExpressionSyntax staticClassName, string methodName,
 		ImmutableArray<ArgumentSyntax> arguments, bool suppressNullableWarning = false)
 	{
 		var argumentList = ArgumentList (
@@ -33,7 +33,7 @@ static partial class BindingSyntaxFactory {
 		var invocation = InvocationExpression (
 			MemberAccessExpression (
 				SyntaxKind.SimpleMemberAccessExpression,
-				IdentifierName (staticClassName),
+				staticClassName,
 				IdentifierName (methodName).WithTrailingTrivia (Space)
 			)
 		).WithArgumentList (argumentList);
@@ -44,14 +44,14 @@ static partial class BindingSyntaxFactory {
 	}
 
 
-	static ExpressionSyntax StaticInvocationGenericExpression (string staticClassName, string methodName,
+	static ExpressionSyntax StaticInvocationGenericExpression (ExpressionSyntax staticClassName, string methodName,
 		string genericName,
 		ArgumentListSyntax argumentList, bool suppressNullableWarning = false)
 	{
 		var invocation = InvocationExpression (
 			MemberAccessExpression (
 				SyntaxKind.SimpleMemberAccessExpression,
-				IdentifierName (staticClassName),
+				staticClassName,
 				GenericName (
 						Identifier (methodName))
 					.WithTypeArgumentList (TypeArgumentList (

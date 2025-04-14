@@ -12,7 +12,7 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 namespace Microsoft.Macios.Generator.Emitters;
 
 static partial class BindingSyntaxFactory {
-	public const string Runtime = "Runtime";
+	public static readonly ExpressionSyntax Runtime = GetIdentifierName ("Runtime");
 	public const string ClassPtr = "class_ptr";
 
 	/// <summary>
@@ -56,7 +56,7 @@ static partial class BindingSyntaxFactory {
 		bool suppressNullableWarning = false)
 	{
 		var argsList = ArgumentList (SeparatedList<ArgumentSyntax> (args.ToSyntaxNodeOrTokenArray ()));
-		return StaticInvocationGenericExpression ("CFArray", "ArrayFromHandle",
+		return StaticInvocationGenericExpression (GetIdentifierName ("CFArray"), "ArrayFromHandle",
 			nsObjectType, argsList, suppressNullableWarning);
 	}
 
@@ -71,7 +71,7 @@ static partial class BindingSyntaxFactory {
 		bool suppressNullableWarning = false)
 	{
 		var argsList = ArgumentList (SeparatedList<ArgumentSyntax> (args.ToSyntaxNodeOrTokenArray ()));
-		return StaticInvocationGenericExpression ("NSArray", "ArrayFromHandle",
+		return StaticInvocationGenericExpression (GetIdentifierName ("NSArray"), "ArrayFromHandle",
 			nsObjectType, argsList, suppressNullableWarning);
 	}
 
@@ -291,7 +291,7 @@ static partial class BindingSyntaxFactory {
 			return null;
 		return MemberAccessExpression (
 			SyntaxKind.SimpleMemberAccessExpression,
-			IdentifierName ("NSValue"),
+			GetIdentifierName ("NSValue"),
 			IdentifierName (memberName));
 	}
 
@@ -357,7 +357,7 @@ static partial class BindingSyntaxFactory {
 			return null;
 		return MemberAccessExpression (
 			SyntaxKind.SimpleMemberAccessExpression,
-			IdentifierName ("NSNumber"),
+			GetIdentifierName ("NSNumber"),
 			IdentifierName (memberName));
 	}
 
@@ -404,7 +404,7 @@ static partial class BindingSyntaxFactory {
 		return InvocationExpression (
 				MemberAccessExpression (
 					SyntaxKind.SimpleMemberAccessExpression,
-					IdentifierName ("NSArray"),
+					GetIdentifierName ("NSArray"),
 					GenericName ("ArrayFromHandleFunc")
 						.WithTypeArgumentList (genericsList)
 						.WithTrailingTrivia (Space)))
@@ -423,7 +423,7 @@ static partial class BindingSyntaxFactory {
 
 		return InvocationExpression (MemberAccessExpression (
 			SyntaxKind.SimpleMemberAccessExpression,
-			IdentifierName ("NSArray"),
+			GetIdentifierName ("NSArray"),
 			IdentifierName ("FromNSObjects").WithTrailingTrivia (Space)))
 			.WithArgumentList (argumentList);
 	}

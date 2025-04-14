@@ -158,7 +158,7 @@ static partial class BindingSyntaxFactory {
 		};
 		// syntax that calls the NSArray factory method using the parameter: NSArray.FromNSObjects (targetTensors);
 		var factoryInvocation = InvocationExpression (MemberAccessExpression (SyntaxKind.SimpleMemberAccessExpression,
-				IdentifierName ("NSArray"), IdentifierName (nsArrayFactoryMethod).WithTrailingTrivia (Space)))
+				GetIdentifierName ("NSArray"), IdentifierName (nsArrayFactoryMethod).WithTrailingTrivia (Space)))
 			.WithArgumentList (
 				ArgumentList (SingletonSeparatedList (
 					Argument (IdentifierName (parameter.Name)))));
@@ -352,7 +352,7 @@ static partial class BindingSyntaxFactory {
 		var factoryInvocation = InvocationExpression (
 			MemberAccessExpression (
 				SyntaxKind.SimpleMemberAccessExpression,
-				IdentifierName ("NSNumber"),
+				GetIdentifierName ("NSNumber"),
 				IdentifierName (factoryMethod).WithTrailingTrivia (Space))
 		);
 
@@ -441,7 +441,7 @@ static partial class BindingSyntaxFactory {
 		var factoryInvocation = InvocationExpression (
 			MemberAccessExpression (
 				SyntaxKind.SimpleMemberAccessExpression,
-				IdentifierName ("NSValue"),
+				GetIdentifierName ("NSValue"),
 				IdentifierName (factoryMethod).WithTrailingTrivia (Space))
 		).WithArgumentList (ArgumentList (SingletonSeparatedList (
 			Argument (IdentifierName (parameter.Name)))));

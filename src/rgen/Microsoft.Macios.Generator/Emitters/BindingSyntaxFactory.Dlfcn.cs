@@ -18,8 +18,8 @@ namespace Microsoft.Macios.Generator.Emitters;
 /// </summary>
 static partial class BindingSyntaxFactory {
 	readonly static ExpressionSyntax Dlfcn = GetIdentifierName (
-		@namespace: ["ObjCRuntime"], 
-		@class: "Dlfcn", 
+		@namespace: ["ObjCRuntime"],
+		@class: "Dlfcn",
 		isGlobal: true);
 
 	/// <summary>

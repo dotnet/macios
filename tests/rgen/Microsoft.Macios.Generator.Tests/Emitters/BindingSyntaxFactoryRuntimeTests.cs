@@ -829,7 +829,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 		var declaration = GetNSArrayFromHandle (objectType, arguments);
 		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
 	}
-	
+
 	class TestDataGetIdentifierNameTests : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{
@@ -840,30 +840,30 @@ public class BindingSyntaxFactoryRuntimeTests {
 				false,
 				"NSObject",
 			];
-			
+
 			yield return [
 				null!,
 				"NSObject",
 				true,
 				"NSObject",
 			];
-			
+
 			// single namespace
 			yield return [
-				new [] {"Foundation"},
+				new [] { "Foundation" },
 				"NSObject",
 				false,
 				"Foundation.NSObject",
 			];
-			
+
 			// global single namespace
 			yield return [
-				new [] {"Foundation"},
+				new [] { "Foundation" },
 				"NSObject",
 				true,
 				"global::Foundation.NSObject",
 			];
-			
+
 			// multiple namespaces
 			yield return [
 				new [] {
@@ -894,7 +894,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 
 	[Theory]
 	[ClassData (typeof (TestDataGetIdentifierNameTests))]
-	void GetIdentifierNameTests (string[]? @namespace, string @class, bool isGlobal, string expectedDeclaration)
+	void GetIdentifierNameTests (string []? @namespace, string @class, bool isGlobal, string expectedDeclaration)
 	{
 		var declaration = GetIdentifierName (@namespace, @class, isGlobal);
 		Assert.Equal (expectedDeclaration, declaration.ToFullString ());

@@ -92,7 +92,7 @@ static partial class BindingSyntaxFactory {
 		return InvocationExpression (
 				MemberAccessExpression (
 					SyntaxKind.SimpleMemberAccessExpression,
-					IdentifierName ("Selector"),
+					Selector,
 					IdentifierName ("GetHandle").WithTrailingTrivia (Space)))
 			.WithArgumentList (args);
 	}

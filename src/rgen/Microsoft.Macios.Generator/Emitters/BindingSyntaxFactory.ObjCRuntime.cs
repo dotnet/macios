@@ -21,6 +21,10 @@ namespace Microsoft.Macios.Generator.Emitters;
 static partial class BindingSyntaxFactory {
 	readonly static string objc_msgSend = "objc_msgSend";
 	readonly static string objc_msgSendSuper = "objc_msgSendSuper";
+	readonly static ExpressionSyntax Selector = GetIdentifierName (
+		@namespace: ["ObjCRuntime"], 
+		@class: "Selector", 
+		isGlobal: true);
 
 	/// <summary>
 	/// Returns the expression needed to cast a parameter to its native type.
@@ -728,7 +732,7 @@ static partial class BindingSyntaxFactory {
 			Token (SyntaxKind.ReadOnlyKeyword).WithTrailingTrivia (Space));
 		// generates: Selector.GetHandle (selector);
 		var getHandleInvocation = InvocationExpression (MemberAccessExpression (SyntaxKind.SimpleMemberAccessExpression,
-					IdentifierName ("Selector"), IdentifierName ("GetHandle").WithTrailingTrivia (Space)))
+					Selector, IdentifierName ("GetHandle").WithTrailingTrivia (Space)))
 			.WithArgumentList (
 				ArgumentList (
 					SingletonSeparatedList (

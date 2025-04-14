@@ -193,14 +193,14 @@ static partial class BindingSyntaxFactory {
 	/// <param name="isGlobal">If the global alias qualifier will be used. This will only be used if the namespace
 	/// was provided.</param>
 	/// <returns>The identifier expression for a given class.</returns>
-	internal static ExpressionSyntax GetIdentifierName (string[]? @namespace, string @class, bool isGlobal = false)
+	internal static ExpressionSyntax GetIdentifierName (string []? @namespace, string @class, bool isGlobal = false)
 	{
 		// retrieve the name syntax for the namespace
 		if (@namespace is null) {
 			// if we have no namespace, we do not care about it being global
 			return IdentifierName (@class);
 		}
-		
+
 		var fullNamespace = string.Join (".", @namespace);
 		if (isGlobal) {
 			return MemberAccessExpression (
@@ -208,7 +208,7 @@ static partial class BindingSyntaxFactory {
 				AliasQualifiedName (
 					IdentifierName (
 						Token (SyntaxKind.GlobalKeyword)),
-					IdentifierName(fullNamespace)),
+					IdentifierName (fullNamespace)),
 				IdentifierName (@class));
 		}
 
@@ -216,7 +216,7 @@ static partial class BindingSyntaxFactory {
 			IdentifierName (fullNamespace),
 			IdentifierName (@class));
 	}
-	
+
 	/// <summary>
 	/// Helper method that will return the Identifier name for a class. 
 	/// </summary>

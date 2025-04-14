@@ -14,8 +14,8 @@ namespace Microsoft.Macios.Generator.Emitters;
 static partial class BindingSyntaxFactory {
 	public static readonly ExpressionSyntax Runtime = GetIdentifierName ("Runtime");
 	public static readonly ExpressionSyntax CFString = GetIdentifierName (
-		@namespace: ["CoreFoundation"], 
-		@class: "CFString", 
+		@namespace: ["CoreFoundation"],
+		@class: "CFString",
 		isGlobal: true);
 	public const string ClassPtr = "class_ptr";
 

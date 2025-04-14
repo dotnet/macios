@@ -30,8 +30,8 @@ static partial class BindingSyntaxFactory {
 		@class: "NSNumber",
 		isGlobal: true);
 	public readonly static TypeSyntax NativeHandle = GetIdentifierName (
-		@namespace: ["ObjCRuntime"], 
-		@class: "NativeHandle", 
+		@namespace: ["ObjCRuntime"],
+		@class: "NativeHandle",
 		isGlobal: true);
 
 	/// <summary>

@@ -14,12 +14,12 @@ namespace Microsoft.Macios.Generator.Emitters;
 static partial class BindingSyntaxFactory {
 	public static readonly ExpressionSyntax Runtime = GetIdentifierName ("Runtime");
 	public static readonly ExpressionSyntax NSArray = GetIdentifierName (
-		@namespace: ["Foundation"], 
-		@class: "NSArray", 
+		@namespace: ["Foundation"],
+		@class: "NSArray",
 		isGlobal: true);
 	public static readonly ExpressionSyntax CFArray = GetIdentifierName (
-		@namespace: ["CoreFoundation"], 
-		@class: "CFArray", 
+		@namespace: ["CoreFoundation"],
+		@class: "CFArray",
 		isGlobal: true);
 	public const string ClassPtr = "class_ptr";
 

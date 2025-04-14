@@ -22,12 +22,12 @@ static partial class BindingSyntaxFactory {
 	readonly static string objc_msgSend = "objc_msgSend";
 	readonly static string objc_msgSendSuper = "objc_msgSendSuper";
 	public static readonly TypeSyntax NSValue = GetIdentifierName (
-		@namespace: ["Foundation"], 
-		@class: "NSValue", 
+		@namespace: ["Foundation"],
+		@class: "NSValue",
 		isGlobal: true);
 	public static readonly TypeSyntax NSNumber = GetIdentifierName (
-		@namespace: ["Foundation"], 
-		@class: "NSNumber", 
+		@namespace: ["Foundation"],
+		@class: "NSNumber",
 		isGlobal: true);
 
 	/// <summary>

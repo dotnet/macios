@@ -211,7 +211,7 @@ public static partial class AVCaptureDeviceTypeExtensions
 	/// Retrieves the <see cref="AVCaptureDeviceTypeExtensions" /> value represented by the backing field value in <paramref name="handle" />.
 	/// </summary>
 	/// <param name="handle">The native handle with the name of the constant to retrieve.</param>
-	public static AVCaptureDeviceType GetValue (NativeHandle handle)
+	public static AVCaptureDeviceType GetValue (global::ObjCRuntime.NativeHandle handle)
 	{
 		using var str = Runtime.GetNSObject<NSString> (handle)!;
 		return GetValue (str);
@@ -221,7 +221,7 @@ public static partial class AVCaptureDeviceTypeExtensions
 	/// Retrieves the <see cref="AVCaptureDeviceTypeExtensions" /> value represented by the backing field value in <paramref name="handle" />.
 	/// </summary>
 	/// <param name="handle">The native handle with the name of the constant to retrieve.</param>
-	public static AVCaptureDeviceType? GetNullableValue (NativeHandle handle)
+	public static AVCaptureDeviceType? GetNullableValue (global::ObjCRuntime.NativeHandle handle)
 	{
 		using var str = Runtime.GetNSObject<NSString> (handle);
 		if (str is null)

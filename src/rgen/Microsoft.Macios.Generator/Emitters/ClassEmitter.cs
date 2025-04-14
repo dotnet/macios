@@ -66,7 +66,7 @@ public {bindingContext.Changes.Name} () : base (NSObjectFlag.Empty)
 		classBlock.WriteDocumentation (Documentation.Class.DefaultInitWithHandle (bindingContext.Changes.Name));
 		classBlock.AppendGeneratedCodeAttribute ();
 		classBlock.AppendEditorBrowsableAttribute (EditorBrowsableState.Advanced);
-		classBlock.WriteLine ($"protected internal {bindingContext.Changes.Name} (NativeHandle handle) : base (handle) {{}}");
+		classBlock.WriteLine ($"protected internal {bindingContext.Changes.Name} ({NativeHandle} handle) : base (handle) {{}}");
 	}
 
 	/// <summary>
@@ -341,10 +341,10 @@ public static NSObject {name} (NSObject objectToObserve, EventHandler<{eventType
 
 			if (!bindingContext.Changes.IsStatic) {
 				classBlock.AppendGeneratedCodeAttribute (optimizable: true);
-				classBlock.WriteLine ($"static readonly NativeHandle {ClassPtr} = Class.GetHandle (\"{registrationName}\");");
+				classBlock.WriteLine ($"static readonly {NativeHandle} {ClassPtr} = Class.GetHandle (\"{registrationName}\");");
 				classBlock.WriteLine ();
 				classBlock.WriteDocumentation (Documentation.Class.ClassHandle (bindingContext.Changes.Name));
-				classBlock.WriteLine ($"public override NativeHandle ClassHandle => {ClassPtr};");
+				classBlock.WriteLine ($"public override {NativeHandle} ClassHandle => {ClassPtr};");
 				classBlock.WriteLine ();
 
 				EmitDefaultConstructors (bindingContext: bindingContext,

@@ -22,8 +22,8 @@ static partial class BindingSyntaxFactory {
 	readonly static string objc_msgSend = "objc_msgSend";
 	readonly static string objc_msgSendSuper = "objc_msgSendSuper";
 	readonly static ExpressionSyntax Selector = GetIdentifierName (
-		@namespace: ["ObjCRuntime"], 
-		@class: "Selector", 
+		@namespace: ["ObjCRuntime"],
+		@class: "Selector",
 		isGlobal: true);
 
 	/// <summary>

@@ -506,7 +506,7 @@ static partial class TypeSymbolExtensions {
 	}
 
 	/// <summary>
-	/// Returns if the symbol is a INativeObject or inherits from a INativeObject.
+	/// Returns if the symbol is an INativeObject or inherits from an INativeObject.
 	/// </summary>
 	/// <param name="symbol">The symbol to check if it is an INativeObject.</param>
 	/// <returns>True if the symbol implement INativeObject or inherits from one, false otherwise.</returns>

@@ -21,6 +21,14 @@ namespace Microsoft.Macios.Generator.Emitters;
 static partial class BindingSyntaxFactory {
 	readonly static string objc_msgSend = "objc_msgSend";
 	readonly static string objc_msgSendSuper = "objc_msgSendSuper";
+	public static readonly TypeSyntax NSValue = GetIdentifierName (
+		@namespace: ["Foundation"], 
+		@class: "NSValue", 
+		isGlobal: true);
+	public static readonly TypeSyntax NSNumber = GetIdentifierName (
+		@namespace: ["Foundation"], 
+		@class: "NSNumber", 
+		isGlobal: true);
 
 	/// <summary>
 	/// Returns the expression needed to cast a parameter to its native type.
@@ -352,7 +360,7 @@ static partial class BindingSyntaxFactory {
 		var factoryInvocation = InvocationExpression (
 			MemberAccessExpression (
 				SyntaxKind.SimpleMemberAccessExpression,
-				GetIdentifierName ("NSNumber"),
+				NSNumber,
 				IdentifierName (factoryMethod).WithTrailingTrivia (Space))
 		);
 
@@ -441,7 +449,7 @@ static partial class BindingSyntaxFactory {
 		var factoryInvocation = InvocationExpression (
 			MemberAccessExpression (
 				SyntaxKind.SimpleMemberAccessExpression,
-				GetIdentifierName ("NSValue"),
+				NSValue,
 				IdentifierName (factoryMethod).WithTrailingTrivia (Space))
 		).WithArgumentList (ArgumentList (SingletonSeparatedList (
 			Argument (IdentifierName (parameter.Name)))));
@@ -501,11 +509,11 @@ static partial class BindingSyntaxFactory {
 		// use a switch to decide which of the constructors we are going to use to build the array.
 		var lambdaFunctionVariable = "obj";
 		var nsNumberExpr = ObjectCreationExpression (
-				IdentifierName ("NSNumber").WithLeadingTrivia (Space).WithTrailingTrivia (Space))
+				NSNumber.WithLeadingTrivia (Space).WithTrailingTrivia (Space))
 			.WithArgumentList (ArgumentList (SingletonSeparatedList (
 				Argument (IdentifierName (lambdaFunctionVariable)))));
 		var nsValueExpr = ObjectCreationExpression (
-				IdentifierName ("NSValue").WithLeadingTrivia (Space).WithTrailingTrivia (Space))
+				NSValue.WithLeadingTrivia (Space).WithTrailingTrivia (Space))
 			.WithArgumentList (ArgumentList (SingletonSeparatedList (
 				Argument (IdentifierName (lambdaFunctionVariable)))));
 		var smartEnumExpr = InvocationExpression (MemberAccessExpression (

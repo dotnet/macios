@@ -12,7 +12,7 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 namespace Microsoft.Macios.Generator.Emitters;
 
 static partial class BindingSyntaxFactory {
-	public static readonly ExpressionSyntax Runtime = GetIdentifierName ("Runtime");
+	public static readonly TypeSyntax Runtime = GetIdentifierName ("Runtime");
 	public const string ClassPtr = "class_ptr";
 
 	/// <summary>

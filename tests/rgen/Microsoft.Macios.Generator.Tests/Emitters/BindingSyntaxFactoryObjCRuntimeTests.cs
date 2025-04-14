@@ -179,26 +179,26 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 			// not nullable string[]
 			yield return [
 				new Parameter (0, ReturnTypeForArray ("string", isNullable: false), "myParam"),
-				"var nsa_myParam = NSArray.FromStrings (myParam);",
+				"var nsa_myParam = global::Foundation.NSArray.FromStrings (myParam);",
 				false
 			];
 
 			yield return [
 				new Parameter (0, ReturnTypeForArray ("string", isNullable: false), "myParam"),
-				"using var nsa_myParam = NSArray.FromStrings (myParam);",
+				"using var nsa_myParam = global::Foundation.NSArray.FromStrings (myParam);",
 				true
 			];
 
 			// nullable string []
 			yield return [
 				new Parameter (0, ReturnTypeForArray ("string", isNullable: true), "myParam"),
-				"var nsa_myParam = myParam is null ? null : NSArray.FromStrings (myParam);",
+				"var nsa_myParam = myParam is null ? null : global::Foundation.NSArray.FromStrings (myParam);",
 				false
 			];
 
 			yield return [
 				new Parameter (0, ReturnTypeForArray ("string", isNullable: true), "myParam"),
-				"using var nsa_myParam = myParam is null ? null : NSArray.FromStrings (myParam);",
+				"using var nsa_myParam = myParam is null ? null : global::Foundation.NSArray.FromStrings (myParam);",
 				true
 			];
 
@@ -206,25 +206,25 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 
 			yield return [
 				new Parameter (0, ReturnTypeForArray ("NSString", isNullable: false), "myParam"),
-				"var nsa_myParam = NSArray.FromNSObjects (myParam);",
+				"var nsa_myParam = global::Foundation.NSArray.FromNSObjects (myParam);",
 				false
 			];
 
 			yield return [
 				new Parameter (0, ReturnTypeForArray ("NSString", isNullable: false), "myParam"),
-				"using var nsa_myParam = NSArray.FromNSObjects (myParam);",
+				"using var nsa_myParam = global::Foundation.NSArray.FromNSObjects (myParam);",
 				true
 			];
 
 			yield return [
 				new Parameter (0, ReturnTypeForArray ("NSString", isNullable: true), "myParam"),
-				"var nsa_myParam = myParam is null ? null : NSArray.FromNSObjects (myParam);",
+				"var nsa_myParam = myParam is null ? null : global::Foundation.NSArray.FromNSObjects (myParam);",
 				false
 			];
 
 			yield return [
 				new Parameter (0, ReturnTypeForArray ("NSString", isNullable: true), "myParam"),
-				"using var nsa_myParam = myParam is null ? null : NSArray.FromNSObjects (myParam);",
+				"using var nsa_myParam = myParam is null ? null : global::Foundation.NSArray.FromNSObjects (myParam);",
 				true
 			];
 		}
@@ -544,7 +544,7 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 					name: "myParam") {
 					BindAs = new (ReturnTypeForNSObject ("Foundation.NSNumber")),
 				},
-				"var nsb_myParam = NSArray.FromNSObjects (obj => new NSNumber (obj), myParam);"
+				"var nsb_myParam = global::Foundation.NSArray.FromNSObjects (obj => new NSNumber (obj), myParam);"
 			];
 
 			// nsvalue
@@ -555,7 +555,7 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 					name: "myParam") {
 					BindAs = new (ReturnTypeForNSObject ("Foundation.NSValue")),
 				},
-				"var nsb_myParam = NSArray.FromNSObjects (obj => new NSValue (obj), myParam);"
+				"var nsb_myParam = global::Foundation.NSArray.FromNSObjects (obj => new NSValue (obj), myParam);"
 			];
 
 			// smart enum
@@ -566,7 +566,7 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 					name: "myParam") {
 					BindAs = new (ReturnTypeForNSObject ("Foundation.NSString")),
 				},
-				"var nsb_myParam = NSArray.FromNSObjects (obj => obj.GetConstant(), myParam);"
+				"var nsb_myParam = global::Foundation.NSArray.FromNSObjects (obj => obj.GetConstant(), myParam);"
 			];
 		}
 
@@ -607,7 +607,7 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 					name: "myParam") {
 					BindAs = new (ReturnTypeForNSObject ("Foundation.NSNumber")),
 				},
-				"var nsb_myParam = NSArray.FromNSObjects (obj => new NSNumber (obj), myParam);"
+				"var nsb_myParam = global::Foundation.NSArray.FromNSObjects (obj => new NSNumber (obj), myParam);"
 			];
 
 			// nsvalue	
@@ -628,7 +628,7 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 					name: "myParam") {
 					BindAs = new (ReturnTypeForNSObject ("Foundation.NSValue")),
 				},
-				"var nsb_myParam = NSArray.FromNSObjects (obj => new NSValue (obj), myParam);"
+				"var nsb_myParam = global::Foundation.NSArray.FromNSObjects (obj => new NSValue (obj), myParam);"
 			];
 
 			// smart enum
@@ -649,7 +649,7 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 					name: "myParam") {
 					BindAs = new (ReturnTypeForNSObject ("Foundation.NSString")),
 				},
-				"var nsb_myParam = NSArray.FromNSObjects (obj => obj.GetConstant(), myParam);"
+				"var nsb_myParam = global::Foundation.NSArray.FromNSObjects (obj => obj.GetConstant(), myParam);"
 			];
 
 			//missing attr
@@ -742,7 +742,7 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 
 			yield return [
 				GetBindFromAuxVariable (parameter)!,
-				"using var nsb_myParam = NSArray.FromNSObjects (obj => new NSNumber (obj), myParam);",
+				"using var nsb_myParam = global::Foundation.NSArray.FromNSObjects (obj => new NSNumber (obj), myParam);",
 			];
 
 			parameter = new (
@@ -766,7 +766,7 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 
 			yield return [
 				GetBindFromAuxVariable (parameter)!,
-				"using var nsb_myParam = NSArray.FromNSObjects (obj => new NSValue (obj), myParam);",
+				"using var nsb_myParam = global::Foundation.NSArray.FromNSObjects (obj => new NSValue (obj), myParam);",
 			];
 
 			parameter = new (
@@ -790,7 +790,7 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 
 			yield return [
 				GetBindFromAuxVariable (parameter)!,
-				"using var nsb_myParam = NSArray.FromNSObjects (obj => obj.GetConstant(), myParam);",
+				"using var nsb_myParam = global::Foundation.NSArray.FromNSObjects (obj => obj.GetConstant(), myParam);",
 			];
 		}
 

@@ -13,6 +13,14 @@ namespace Microsoft.Macios.Generator.Emitters;
 
 static partial class BindingSyntaxFactory {
 	public static readonly ExpressionSyntax Runtime = GetIdentifierName ("Runtime");
+	public static readonly ExpressionSyntax NSArray = GetIdentifierName (
+		@namespace: ["Foundation"], 
+		@class: "NSArray", 
+		isGlobal: true);
+	public static readonly ExpressionSyntax CFArray = GetIdentifierName (
+		@namespace: ["CoreFoundation"], 
+		@class: "CFArray", 
+		isGlobal: true);
 	public const string ClassPtr = "class_ptr";
 
 	/// <summary>
@@ -56,7 +64,7 @@ static partial class BindingSyntaxFactory {
 		bool suppressNullableWarning = false)
 	{
 		var argsList = ArgumentList (SeparatedList<ArgumentSyntax> (args.ToSyntaxNodeOrTokenArray ()));
-		return StaticInvocationGenericExpression (GetIdentifierName ("CFArray"), "ArrayFromHandle",
+		return StaticInvocationGenericExpression (CFArray, "ArrayFromHandle",
 			nsObjectType, argsList, suppressNullableWarning);
 	}
 
@@ -71,7 +79,7 @@ static partial class BindingSyntaxFactory {
 		bool suppressNullableWarning = false)
 	{
 		var argsList = ArgumentList (SeparatedList<ArgumentSyntax> (args.ToSyntaxNodeOrTokenArray ()));
-		return StaticInvocationGenericExpression (GetIdentifierName ("NSArray"), "ArrayFromHandle",
+		return StaticInvocationGenericExpression (NSArray, "ArrayFromHandle",
 			nsObjectType, argsList, suppressNullableWarning);
 	}
 
@@ -180,7 +188,7 @@ static partial class BindingSyntaxFactory {
 		return InvocationExpression (
 				MemberAccessExpression (
 					SyntaxKind.SimpleMemberAccessExpression,
-					IdentifierName ("CFArray"),
+					CFArray,
 					IdentifierName ("StringArrayFromHandle").WithTrailingTrivia (Space)))
 			.WithArgumentList (argumentList);
 	}
@@ -404,7 +412,7 @@ static partial class BindingSyntaxFactory {
 		return InvocationExpression (
 				MemberAccessExpression (
 					SyntaxKind.SimpleMemberAccessExpression,
-					GetIdentifierName ("NSArray"),
+					NSArray,
 					GenericName ("ArrayFromHandleFunc")
 						.WithTypeArgumentList (genericsList)
 						.WithTrailingTrivia (Space)))
@@ -423,7 +431,7 @@ static partial class BindingSyntaxFactory {
 
 		return InvocationExpression (MemberAccessExpression (
 			SyntaxKind.SimpleMemberAccessExpression,
-			GetIdentifierName ("NSArray"),
+			NSArray,
 			IdentifierName ("FromNSObjects").WithTrailingTrivia (Space)))
 			.WithArgumentList (argumentList);
 	}

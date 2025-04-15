@@ -305,7 +305,7 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 		{
 			yield return [
 				new Parameter (0, ReturnTypeForString (), "myParam"),
-				"var nsmyParam = CFString.CreateNative (myParam);",
+				"var nsmyParam = global::CoreFoundation.CFString.CreateNative (myParam);",
 			];
 
 			yield return [

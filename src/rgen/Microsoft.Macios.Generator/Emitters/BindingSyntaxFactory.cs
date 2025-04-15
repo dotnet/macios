@@ -234,8 +234,8 @@ static partial class BindingSyntaxFactory {
 	internal static ExpressionSyntax AsRef (string objectType, ImmutableArray<ArgumentSyntax> arguments)
 	{
 		var unsafeType = GetIdentifierName (
-			@namespace: ["System", "Runtime", "CompilerServices"], 
-			@class: "Unsafe", 
+			@namespace: ["System", "Runtime", "CompilerServices"],
+			@class: "Unsafe",
 			isGlobal: true);
 		var argsList = ArgumentList (SeparatedList<ArgumentSyntax> (arguments.ToSyntaxNodeOrTokenArray ()));
 		return StaticInvocationGenericExpression (unsafeType, "AsRef",

@@ -920,10 +920,10 @@ public class BindingSyntaxFactoryRuntimeTests {
 				"global::System.Runtime.CompilerServices.Unsafe.AsRef<NSString> (arg1, arg2, arg3)"
 			];
 		}
-		
+
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
 	}
-	
+
 	[Theory]
 	[ClassData (typeof (TestDataAsRefTests))]
 	void AsRefTests (string objectType, ImmutableArray<ArgumentSyntax> arguments, string expectedDeclaration)

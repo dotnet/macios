@@ -443,7 +443,7 @@ using (var m3 = new MemoryStream())
 	public void WriteBlockForExpressions ()
 	{
 		// create an expression list and ensure that the final bloc is correct
-		var expectedString = 
+		var expectedString =
 @"public void Test ()
 {
 	Single? __xamarin_nullified__1 = null;
@@ -480,7 +480,7 @@ using (var m3 = new MemoryStream())
 							SyntaxKind.PointerIndirectionExpression,
 							IdentifierName("value"))).WithLeadingTrivia (Whitespace ("\t"))))
 			};
-		
+
 		using (var methodBlock = baseBlock.CreateBlock ("public void Test ()", true)) {
 			methodBlock.Write (members);
 		}

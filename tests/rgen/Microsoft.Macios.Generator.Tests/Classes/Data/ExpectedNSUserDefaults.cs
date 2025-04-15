@@ -113,7 +113,7 @@ public partial class NSUserDefaults
 		get
 		{
 			if (_CompletedInitialSyncNotification is null)
-				_CompletedInitialSyncNotification = Dlfcn.GetStringConstant (Libraries.Foundation.Handle, "NSUbiquitousUserDefaultsCompletedInitialSyncNotification")!;
+				_CompletedInitialSyncNotification = global::ObjCRuntime.Dlfcn.GetStringConstant (Libraries.Foundation.Handle, "NSUbiquitousUserDefaultsCompletedInitialSyncNotification")!;
 			return _CompletedInitialSyncNotification;
 		}
 	}
@@ -127,7 +127,7 @@ public partial class NSUserDefaults
 		get
 		{
 			if (_DidChangeAccountsNotification is null)
-				_DidChangeAccountsNotification = Dlfcn.GetStringConstant (Libraries.Foundation.Handle, "NSUbiquitousUserDefaultsDidChangeAccountsNotification")!;
+				_DidChangeAccountsNotification = global::ObjCRuntime.Dlfcn.GetStringConstant (Libraries.Foundation.Handle, "NSUbiquitousUserDefaultsDidChangeAccountsNotification")!;
 			return _DidChangeAccountsNotification;
 		}
 	}
@@ -141,7 +141,7 @@ public partial class NSUserDefaults
 		get
 		{
 			if (_NoCloudAccountNotification is null)
-				_NoCloudAccountNotification = Dlfcn.GetStringConstant (Libraries.Foundation.Handle, "NSUbiquitousUserDefaultsNoCloudAccountNotification")!;
+				_NoCloudAccountNotification = global::ObjCRuntime.Dlfcn.GetStringConstant (Libraries.Foundation.Handle, "NSUbiquitousUserDefaultsNoCloudAccountNotification")!;
 			return _NoCloudAccountNotification;
 		}
 	}
@@ -155,7 +155,7 @@ public partial class NSUserDefaults
 		get
 		{
 			if (_SizeLimitExceededNotification is null)
-				_SizeLimitExceededNotification = Dlfcn.GetStringConstant (Libraries.Foundation.Handle, "NSUserDefaultsSizeLimitExceededNotification")!;
+				_SizeLimitExceededNotification = global::ObjCRuntime.Dlfcn.GetStringConstant (Libraries.Foundation.Handle, "NSUserDefaultsSizeLimitExceededNotification")!;
 			return _SizeLimitExceededNotification;
 		}
 	}

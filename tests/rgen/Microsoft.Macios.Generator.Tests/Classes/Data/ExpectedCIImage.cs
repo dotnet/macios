@@ -121,7 +121,7 @@ public partial class CIImage
 		get
 		{
 			if (_DidProcessEditingNotification is null)
-				_DidProcessEditingNotification = Dlfcn.GetStringConstant (Libraries.TestNamespace.Handle, "kCIFormatLA8")!;
+				_DidProcessEditingNotification = global::ObjCRuntime.Dlfcn.GetStringConstant (Libraries.TestNamespace.Handle, "kCIFormatLA8")!;
 			return _DidProcessEditingNotification;
 		}
 	}
@@ -140,7 +140,7 @@ public partial class CIImage
 		[SupportedOSPlatform ("maccatalyst13.1")]
 		get
 		{
-			return Dlfcn.GetInt32 (Libraries.TestNamespace.Handle, "kCIFormatABGR8");
+			return global::ObjCRuntime.Dlfcn.GetInt32 (Libraries.TestNamespace.Handle, "kCIFormatABGR8");
 		}
 	}
 
@@ -158,7 +158,7 @@ public partial class CIImage
 		[SupportedOSPlatform ("maccatalyst13.1")]
 		get
 		{
-			return Dlfcn.GetInt32 (Libraries.TestNamespace.Handle, "kCIFormatLA8");
+			return global::ObjCRuntime.Dlfcn.GetInt32 (Libraries.TestNamespace.Handle, "kCIFormatLA8");
 		}
 
 		[SupportedOSPlatform ("macos14.0")]
@@ -167,7 +167,7 @@ public partial class CIImage
 		[SupportedOSPlatform ("maccatalyst17.0")]
 		set
 		{
-			Dlfcn.SetInt32 (Libraries.TestNamespace.Handle, "kCIFormatLA8", value);
+			global::ObjCRuntime.Dlfcn.SetInt32 (Libraries.TestNamespace.Handle, "kCIFormatLA8", value);
 		}
 	}
 
@@ -185,7 +185,7 @@ public partial class CIImage
 		[SupportedOSPlatform ("maccatalyst13.1")]
 		get
 		{
-			return Dlfcn.GetInt32 (Libraries.TestNamespace.Handle, "FormatRGBA16Int");
+			return global::ObjCRuntime.Dlfcn.GetInt32 (Libraries.TestNamespace.Handle, "FormatRGBA16Int");
 		}
 	}
 

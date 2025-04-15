@@ -126,7 +126,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 			yield return [
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1"))),
-				"CFString.FromHandle (arg1)"
+				"global::CoreFoundation.CFString.FromHandle (arg1)"
 			];
 
 			yield return [
@@ -134,7 +134,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 					Argument (IdentifierName ("arg1")),
 					Argument (IdentifierName ("arg2")),
 					Argument (IdentifierName ("arg3"))),
-				"CFString.FromHandle (arg1, arg2, arg3)"
+				"global::CoreFoundation.CFString.FromHandle (arg1, arg2, arg3)"
 			];
 		}
 

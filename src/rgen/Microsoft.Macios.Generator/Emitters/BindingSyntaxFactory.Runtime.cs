@@ -13,6 +13,10 @@ namespace Microsoft.Macios.Generator.Emitters;
 
 static partial class BindingSyntaxFactory {
 	public static readonly ExpressionSyntax Runtime = GetIdentifierName ("Runtime");
+	public static readonly ExpressionSyntax CFString = GetIdentifierName (
+		@namespace: ["CoreFoundation"],
+		@class: "CFString",
+		isGlobal: true);
 	public const string ClassPtr = "class_ptr";
 
 	/// <summary>
@@ -200,7 +204,7 @@ static partial class BindingSyntaxFactory {
 		return InvocationExpression (
 				MemberAccessExpression (
 					SyntaxKind.SimpleMemberAccessExpression,
-					IdentifierName ("CFString"),
+					CFString,
 					IdentifierName ("FromHandle").WithTrailingTrivia (Space)))
 			.WithArgumentList (argumentList);
 	}
@@ -217,7 +221,7 @@ static partial class BindingSyntaxFactory {
 		return InvocationExpression (
 				MemberAccessExpression (
 					SyntaxKind.SimpleMemberAccessExpression,
-					IdentifierName ("CFString"),
+					CFString,
 					IdentifierName ("CreateNative").WithTrailingTrivia (Space))
 			).WithArgumentList (argumentList);
 	}

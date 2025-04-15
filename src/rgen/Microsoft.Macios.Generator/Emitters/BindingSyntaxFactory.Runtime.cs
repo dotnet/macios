@@ -20,7 +20,7 @@ static partial class BindingSyntaxFactory {
 	public static readonly ExpressionSyntax CFArray = GetIdentifierName (
 		@namespace: ["CoreFoundation"],
 		@class: "CFArray",
-    isGlobal: true);
+	isGlobal: true);
 	public static readonly ExpressionSyntax CFString = GetIdentifierName (
 		@namespace: ["CoreFoundation"],
 		@class: "CFString",

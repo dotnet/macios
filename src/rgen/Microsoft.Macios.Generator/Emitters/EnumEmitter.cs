@@ -36,7 +36,7 @@ class EnumEmitter : ICodeEmitter {
 			using (var getterBlock = propertyBlock.CreateBlock ("get", true)) {
 				getterBlock.WriteLine ($"fixed (IntPtr *storage = &values [{index}])");
 				getterBlock.WriteLine (
-					$"\treturn Dlfcn.CachePointer (Libraries.{libraryName}.Handle, \"{fieldData.SymbolName}\", storage);");
+					$"\treturn Dlfcn.CachePointer ({Libraries}.{libraryName}.Handle, \"{fieldData.SymbolName}\", storage);");
 			}
 		}
 	}
@@ -272,7 +272,7 @@ return GetValue (str);
 $@"public static NSString? GetDomain (this {bindingContext.Changes.Name} self)
 {{
 	if ({backingFieldName} is null)
-		{backingFieldName} = Dlfcn.GetStringConstant (Libraries.{libraryName}.Handle, ""{bindingTypeData.ErrorDomain}"");
+		{backingFieldName} = Dlfcn.GetStringConstant ({Libraries}.{libraryName}.Handle, ""{bindingTypeData.ErrorDomain}"");
 	return {backingFieldName};
 }}
 ");

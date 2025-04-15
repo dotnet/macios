@@ -25,7 +25,7 @@ public static partial class CustomLibraryEnumExtensions
 		get
 		{
 			fixed (IntPtr *storage = &values [0])
-				return Dlfcn.CachePointer (Libraries.customlibrary.Handle, "None", storage);
+				return Dlfcn.CachePointer (global::ObjCRuntime.Libraries.customlibrary.Handle, "None", storage);
 		}
 	}
 
@@ -35,7 +35,7 @@ public static partial class CustomLibraryEnumExtensions
 		get
 		{
 			fixed (IntPtr *storage = &values [1])
-				return Dlfcn.CachePointer (Libraries.customlibrary.Handle, "Medium", storage);
+				return Dlfcn.CachePointer (global::ObjCRuntime.Libraries.customlibrary.Handle, "Medium", storage);
 		}
 	}
 
@@ -45,7 +45,7 @@ public static partial class CustomLibraryEnumExtensions
 		get
 		{
 			fixed (IntPtr *storage = &values [2])
-				return Dlfcn.CachePointer (Libraries.customlibrary.Handle, "High", storage);
+				return Dlfcn.CachePointer (global::ObjCRuntime.Libraries.customlibrary.Handle, "High", storage);
 		}
 	}
 

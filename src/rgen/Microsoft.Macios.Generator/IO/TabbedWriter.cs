@@ -9,6 +9,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.CodeAnalysis;
 
 namespace Microsoft.Macios.Generator.IO;
 
@@ -17,6 +18,7 @@ abstract class TabbedWriter<T> : IDisposable, IAsyncDisposable where T : TextWri
 	protected readonly IndentedTextWriter Writer;
 	protected readonly T InnerWriter;
 	protected bool IsBlock;
+	const string tabString = "\t";
 
 	/// <summary>
 	/// Created a new tabbed string builder that will use the given sb to write code.
@@ -27,7 +29,7 @@ abstract class TabbedWriter<T> : IDisposable, IAsyncDisposable where T : TextWri
 	public TabbedWriter (T innerTextWriter, int currentCount = 0, bool block = false)
 	{
 		InnerWriter = innerTextWriter;
-		Writer = new IndentedTextWriter (innerTextWriter, "\t");
+		Writer = new IndentedTextWriter (innerTextWriter, tabString);
 		IsBlock = block;
 		if (IsBlock) {
 			// increase by 1 because we are in a block
@@ -259,6 +261,26 @@ abstract class TabbedWriter<T> : IDisposable, IAsyncDisposable where T : TextWri
 				await WriteLineAsync (line);
 			}
 		}
+		return this;
+	}
+
+	/// <summary>
+	/// Writes a collection of statements. This method will normalize the whitespace of the statements to ensure
+	/// that the indentation is correct.
+	/// </summary>
+	/// <param name="statements">IEnumerable with the statements to write in the text writer.</param>
+	/// <param name="verifyTrivia">If we should skip the trivia verification. The default is true.</param>
+	/// <returns>The current builder.</returns>
+	public TabbedWriter<T> Write (IEnumerable<SyntaxNode> statements, bool verifyTrivia = true)
+	{
+		foreach (var node in statements) {
+			var currentNode = node;
+			if (verifyTrivia)
+				currentNode = currentNode.NormalizeWhitespace (indentation: tabString, eol: Writer.NewLine);
+			WriteRaw (currentNode.ToString ());
+			WriteLine ();
+		}
+
 		return this;
 	}
 

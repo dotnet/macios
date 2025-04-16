@@ -120,10 +120,10 @@ readonly partial struct Binding {
 			enumMembers = value;
 			// populate the enum index for fast lookup using the symbol name
 			for (var index = 0; index < enumMembers.Length; index++) {
-				var member = enumMembers[index];
+				var member = enumMembers [index];
 				if (member.Selector is null)
 					continue;
-				enumIndex[member.Selector] = index;
+				enumIndex [member.Selector] = index;
 			}
 		}
 	}
@@ -131,7 +131,7 @@ readonly partial struct Binding {
 	/// <summary>
 	/// Returns all the selectors for the enum members.
 	/// </summary>
-	public ImmutableArray<string> EnumMemberSelectors => [..enumIndex.Keys];
+	public ImmutableArray<string> EnumMemberSelectors => [.. enumIndex.Keys];
 
 	readonly Dictionary<string, int> propertyIndex = new ();
 	readonly ImmutableArray<Property> properties = [];
@@ -145,7 +145,7 @@ readonly partial struct Binding {
 			properties = value;
 			// populate the property index for fast lookup using the symbol name
 			for (var index = 0; index < properties.Length; index++) {
-				var property = properties[index];
+				var property = properties [index];
 				// there are two type of properties, those that are fields and those that are properties
 				if (property.Selector is null)
 					continue;
@@ -157,7 +157,7 @@ readonly partial struct Binding {
 	/// <summary>
 	/// Return sall the selectors for the properties.
 	/// </summary>
-	public ImmutableArray<string> PropertySelectors => [..propertyIndex.Keys];
+	public ImmutableArray<string> PropertySelectors => [.. propertyIndex.Keys];
 
 	readonly Dictionary<string, int> constructorIndex = new ();
 	readonly ImmutableArray<Constructor> constructors = [];
@@ -171,7 +171,7 @@ readonly partial struct Binding {
 			constructors = value;
 			// populate the constructor index for fast lookup using the symbol name
 			for (var index = 0; index < constructors.Length; index++) {
-				var constructor = constructors[index];
+				var constructor = constructors [index];
 				if (constructor.Selector is null)
 					continue;
 				constructorIndex [constructor.Selector] = index;
@@ -182,7 +182,7 @@ readonly partial struct Binding {
 	/// <summary>
 	/// Returns all the selectors for the constructors.
 	/// </summary>
-	public ImmutableArray<string> ConstructorSelectors => [..constructorIndex.Keys];
+	public ImmutableArray<string> ConstructorSelectors => [.. constructorIndex.Keys];
 
 	readonly Dictionary<string, int> eventsIndex = new ();
 	readonly ImmutableArray<Event> events = [];
@@ -196,7 +196,7 @@ readonly partial struct Binding {
 			events = value;
 			// populate the event index for fast lookup using the symbol name
 			for (var index = 0; index < events.Length; index++) {
-				var eventItem = events[index];
+				var eventItem = events [index];
 				eventsIndex [eventItem.Name] = index;
 			}
 		}
@@ -205,7 +205,7 @@ readonly partial struct Binding {
 	/// <summary>
 	/// Returns all the selectors for the events.
 	/// </summary>
-	public ImmutableArray<string> EventSelectors => [..eventsIndex.Keys];
+	public ImmutableArray<string> EventSelectors => [.. eventsIndex.Keys];
 
 	readonly Dictionary<string, int> methodIndex = new ();
 	readonly ImmutableArray<Method> methods = [];
@@ -219,7 +219,7 @@ readonly partial struct Binding {
 			methods = value;
 			// populate the method index for fast lookup using the symbol name
 			for (var index = 0; index < methods.Length; index++) {
-				var method = methods[index];
+				var method = methods [index];
 				if (method.Selector is null)
 					continue;
 				methodIndex [method.Selector] = index;
@@ -230,7 +230,7 @@ readonly partial struct Binding {
 	/// <summary>
 	/// Returns all the selectors for the methods.
 	/// </summary>
-	public ImmutableArray<string> MethodSelectors => [..methodIndex.Keys];
+	public ImmutableArray<string> MethodSelectors => [.. methodIndex.Keys];
 
 	delegate bool SkipDelegate<in T> (T declarationSyntax, SemanticModel semanticModel);
 
@@ -256,7 +256,7 @@ readonly partial struct Binding {
 		members = bucket.ToImmutable ();
 	}
 
-	static bool TryGetFromIndex<T> (string selector, ImmutableArray<T> collection, Dictionary<string, int> index, [NotNullWhen (true)]out T? value)
+	static bool TryGetFromIndex<T> (string selector, ImmutableArray<T> collection, Dictionary<string, int> index, [NotNullWhen (true)] out T? value)
 		where T : struct
 	{
 		if (index.TryGetValue (selector, out var indexValue)) {

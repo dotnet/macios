@@ -266,7 +266,7 @@ public class TestClass {
 		string presentSelector = "AVCaptureDeviceTypeBuiltInMicrophone";
 		string missingSelector = "AVCaptureDeviceTypeBuiltInWideAngleCamera";
 
-		var binding = new Binding(
+		var binding = new Binding (
 			bindingInfo: bindingInfo,
 			name: "TestBinding",
 			@namespace: ["TestNamespace"],
@@ -278,7 +278,7 @@ public class TestClass {
 					libraryName: "AVCaptureDeviceTypeBuiltInMicrophone",
 					libraryPath: null,
 					fieldData: new (presentSelector),
-					symbolAvailability: new(),
+					symbolAvailability: new (),
 					attributes: []),
 			],
 		};
@@ -296,7 +296,7 @@ public class TestClass {
 		string presentSelector = "name";
 		string missingSelector = "surname";
 
-		var binding = new Binding(
+		var binding = new Binding (
 			bindingInfo: bindingInfo,
 			name: "TestBinding",
 			@namespace: ["TestNamespace"],
@@ -350,7 +350,7 @@ public class TestClass {
 		string presentSelector = "initWithName:";
 		string missingSelector = "initWithName:Surname:";
 
-		var binding = new Binding(
+		var binding = new Binding (
 			bindingInfo: bindingInfo,
 			name: "TestBinding",
 			@namespace: ["TestNamespace"],
@@ -385,7 +385,7 @@ public class TestClass {
 		string presentSelector = "Changed";
 		string missingSelector = "Added";
 
-		var binding = new Binding(
+		var binding = new Binding (
 			bindingInfo: bindingInfo,
 			name: "TestBinding",
 			@namespace: ["TestNamespace"],
@@ -433,7 +433,7 @@ public class TestClass {
 		string presentSelector = "withName:";
 		string missingSelector = "withName:Surname:";
 
-		var binding = new Binding(
+		var binding = new Binding (
 			bindingInfo: bindingInfo,
 			name: "TestBinding",
 			@namespace: ["TestNamespace"],

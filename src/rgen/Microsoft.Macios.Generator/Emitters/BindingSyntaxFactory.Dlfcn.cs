@@ -17,7 +17,10 @@ namespace Microsoft.Macios.Generator.Emitters;
 /// Syntax factory for the Dlfcn calls.
 /// </summary>
 static partial class BindingSyntaxFactory {
-	readonly static string Dlfcn = "Dlfcn";
+	readonly static ExpressionSyntax Dlfcn = GetIdentifierName (
+		@namespace: ["ObjCRuntime"],
+		@class: "Dlfcn",
+		isGlobal: true);
 
 	/// <summary>
 	/// Get the syntax needed to access a library handle.
@@ -537,7 +540,7 @@ static partial class BindingSyntaxFactory {
 		var getIndirectInvocation = InvocationExpression (
 			MemberAccessExpression (
 				SyntaxKind.SimpleMemberAccessExpression,
-				IdentifierName (Dlfcn),
+				Dlfcn,
 				IdentifierName ("GetIndirect").WithTrailingTrivia (Space)
 			)
 		).WithArgumentList (ArgumentList (SeparatedList<ArgumentSyntax> (getIndirectArguments)).NormalizeWhitespace ());
@@ -556,7 +559,7 @@ static partial class BindingSyntaxFactory {
 		var dlsymInvocation = InvocationExpression (
 			MemberAccessExpression (
 				SyntaxKind.SimpleMemberAccessExpression,
-				IdentifierName (Dlfcn),
+				Dlfcn,
 				IdentifierName ("dlsym").WithTrailingTrivia (Space)
 			)
 		).WithArgumentList (ArgumentList (SeparatedList<ArgumentSyntax> (arguments)).NormalizeWhitespace ());

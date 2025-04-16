@@ -24,7 +24,7 @@ static partial class BindingSyntaxFactory {
 		return Argument (LiteralExpression (kind, Literal (literal)));
 	}
 
-	static ExpressionSyntax StaticInvocationExpression (string staticClassName, string methodName,
+	static ExpressionSyntax StaticInvocationExpression (ExpressionSyntax staticClassName, string methodName,
 		ImmutableArray<ArgumentSyntax> arguments, bool suppressNullableWarning = false)
 	{
 		var argumentList = ArgumentList (
@@ -33,7 +33,7 @@ static partial class BindingSyntaxFactory {
 		var invocation = InvocationExpression (
 			MemberAccessExpression (
 				SyntaxKind.SimpleMemberAccessExpression,
-				IdentifierName (staticClassName),
+				staticClassName,
 				IdentifierName (methodName).WithTrailingTrivia (Space)
 			)
 		).WithArgumentList (argumentList);
@@ -44,14 +44,14 @@ static partial class BindingSyntaxFactory {
 	}
 
 
-	static ExpressionSyntax StaticInvocationGenericExpression (string staticClassName, string methodName,
+	static ExpressionSyntax StaticInvocationGenericExpression (ExpressionSyntax staticClassName, string methodName,
 		string genericName,
 		ArgumentListSyntax argumentList, bool suppressNullableWarning = false)
 	{
 		var invocation = InvocationExpression (
 			MemberAccessExpression (
 				SyntaxKind.SimpleMemberAccessExpression,
-				IdentifierName (staticClassName),
+				staticClassName,
 				GenericName (
 						Identifier (methodName))
 					.WithTypeArgumentList (TypeArgumentList (
@@ -183,4 +183,45 @@ static partial class BindingSyntaxFactory {
 			IdentifierName (variableName).WithTrailingTrivia (Space),
 			value.WithLeadingTrivia (Space));
 	}
+
+	/// <summary>
+	/// Returns the expression required for an identifier name. The method will add the namespace and global qualifier
+	/// if needed based on the parameters.
+	/// </summary>
+	/// <param name="namespace">The namespace of the class. This can be null.</param>
+	/// <param name="class">The class name.</param>
+	/// <param name="isGlobal">If the global alias qualifier will be used. This will only be used if the namespace
+	/// was provided.</param>
+	/// <returns>The identifier expression for a given class.</returns>
+	internal static ExpressionSyntax GetIdentifierName (string []? @namespace, string @class, bool isGlobal = false)
+	{
+		// retrieve the name syntax for the namespace
+		if (@namespace is null) {
+			// if we have no namespace, we do not care about it being global
+			return IdentifierName (@class);
+		}
+
+		var fullNamespace = string.Join (".", @namespace);
+		if (isGlobal) {
+			return MemberAccessExpression (
+				SyntaxKind.SimpleMemberAccessExpression,
+				AliasQualifiedName (
+					IdentifierName (
+						Token (SyntaxKind.GlobalKeyword)),
+					IdentifierName (fullNamespace)),
+				IdentifierName (@class));
+		}
+
+		return QualifiedName (
+			IdentifierName (fullNamespace),
+			IdentifierName (@class));
+	}
+
+	/// <summary>
+	/// Helper method that will return the Identifier name for a class. 
+	/// </summary>
+	/// <param name="class">The class whose identifier we want to retrieve.</param>
+	/// <returns>The identifier name expression for a given class.</returns>
+	internal static ExpressionSyntax GetIdentifierName (string @class)
+		=> IdentifierName (@class);
 }

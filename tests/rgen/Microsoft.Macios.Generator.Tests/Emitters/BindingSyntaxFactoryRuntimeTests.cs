@@ -573,7 +573,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1"))),
 				false,
-				"Runtime.GetNSObject<NSString> (arg1)"
+				"global::ObjCRuntime.Runtime.GetNSObject<NSString> (arg1)"
 			];
 
 			yield return [
@@ -581,7 +581,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1"))),
 				true,
-				"Runtime.GetNSObject<NSString> (arg1)!"
+				"global::ObjCRuntime.Runtime.GetNSObject<NSString> (arg1)!"
 			];
 
 			yield return [
@@ -592,7 +592,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 					Argument (IdentifierName ("arg3"))
 				),
 				false,
-				"Runtime.GetNSObject<NSNumber> (arg1, arg2, arg3)"
+				"global::ObjCRuntime.Runtime.GetNSObject<NSNumber> (arg1, arg2, arg3)"
 			];
 
 			yield return [
@@ -603,7 +603,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 					Argument (IdentifierName ("arg3"))
 				),
 				true,
-				"Runtime.GetNSObject<NSNumber> (arg1, arg2, arg3)!"
+				"global::ObjCRuntime.Runtime.GetNSObject<NSNumber> (arg1, arg2, arg3)!"
 			];
 		}
 
@@ -626,7 +626,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1"))),
 				false,
-				"Runtime.GetINativeObject<NSString> (arg1)"
+				"global::ObjCRuntime.Runtime.GetINativeObject<NSString> (arg1)"
 			];
 
 			yield return [
@@ -634,7 +634,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1"))),
 				true,
-				"Runtime.GetINativeObject<NSString> (arg1)!"
+				"global::ObjCRuntime.Runtime.GetINativeObject<NSString> (arg1)!"
 			];
 
 			yield return [
@@ -645,7 +645,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 					Argument (IdentifierName ("arg3"))
 				),
 				false,
-				"Runtime.GetINativeObject<NSNumber> (arg1, arg2, arg3)"
+				"global::ObjCRuntime.Runtime.GetINativeObject<NSNumber> (arg1, arg2, arg3)"
 			];
 
 			yield return [
@@ -656,7 +656,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 					Argument (IdentifierName ("arg3"))
 				),
 				true,
-				"Runtime.GetINativeObject<NSNumber> (arg1, arg2, arg3)!"
+				"global::ObjCRuntime.Runtime.GetINativeObject<NSNumber> (arg1, arg2, arg3)!"
 			];
 		}
 
@@ -712,7 +712,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 			yield return [
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1"))),
-				"Runtime.RetainAndAutoreleaseNSObject (arg1)",
+				"global::ObjCRuntime.Runtime.RetainAndAutoreleaseNSObject (arg1)",
 			];
 
 			yield return [
@@ -721,7 +721,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 					Argument (IdentifierName ("arg2")),
 					Argument (IdentifierName ("arg3"))
 				),
-				"Runtime.RetainAndAutoreleaseNSObject (arg1, arg2, arg3)",
+				"global::ObjCRuntime.Runtime.RetainAndAutoreleaseNSObject (arg1, arg2, arg3)",
 			];
 		}
 
@@ -742,7 +742,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 			yield return [
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1"))),
-				"Runtime.RetainAndAutoreleaseNativeObject (arg1)",
+				"global::ObjCRuntime.Runtime.RetainAndAutoreleaseNativeObject (arg1)",
 			];
 
 			yield return [
@@ -751,7 +751,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 					Argument (IdentifierName ("arg2")),
 					Argument (IdentifierName ("arg3"))
 				),
-				"Runtime.RetainAndAutoreleaseNativeObject (arg1, arg2, arg3)",
+				"global::ObjCRuntime.Runtime.RetainAndAutoreleaseNativeObject (arg1, arg2, arg3)",
 			];
 		}
 

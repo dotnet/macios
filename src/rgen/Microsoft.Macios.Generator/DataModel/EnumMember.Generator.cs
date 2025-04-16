@@ -16,6 +16,12 @@ readonly partial struct EnumMember {
 	public FieldInfo<EnumValue>? FieldInfo { get; }
 
 	/// <summary>
+	/// Return the native selector that references the enum value.
+	/// </summary>
+	public string? Selector => FieldInfo?.FieldData.SymbolName;
+
+
+	/// <summary>
 	/// Create a new change that happened on a member.
 	/// </summary>
 	/// <param name="name">The name of the changed member.</param>

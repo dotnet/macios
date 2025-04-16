@@ -33,7 +33,7 @@ namespace NS {
 
 			yield return [
 				arrayNSObjectResult,
-				"global::ObjCRuntime.Runtime.RetainAndAutoreleaseNSObject (NSArray.FromNSObjects (auxVariable))"
+				"global::ObjCRuntime.Runtime.RetainAndAutoreleaseNSObject (global::Foundation.NSArray.FromNSObjects (auxVariable))"
 			];
 
 			const string nsObjectResult = @"

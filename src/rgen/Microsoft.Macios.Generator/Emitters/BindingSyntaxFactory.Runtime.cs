@@ -12,7 +12,10 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 namespace Microsoft.Macios.Generator.Emitters;
 
 static partial class BindingSyntaxFactory {
-	public static readonly ExpressionSyntax Runtime = GetIdentifierName ("Runtime");
+	public static readonly ExpressionSyntax Runtime = GetIdentifierName (
+		@namespace: ["ObjCRuntime"],
+		@class: "Runtime",
+ 		isGlobal: true);
 	public static readonly ExpressionSyntax CFString = GetIdentifierName (
 		@namespace: ["CoreFoundation"],
 		@class: "CFString",

@@ -33,7 +33,7 @@ namespace NS {
 
 			yield return [
 				arrayNSObjectResult,
-				"Runtime.RetainAndAutoreleaseNSObject (NSArray.FromNSObjects (auxVariable))"
+				"global::ObjCRuntime.Runtime.RetainAndAutoreleaseNSObject (NSArray.FromNSObjects (auxVariable))"
 			];
 
 			const string nsObjectResult = @"
@@ -51,7 +51,7 @@ namespace NS {
 
 			yield return [
 				nsObjectResult,
-				"Runtime.RetainAndAutoreleaseNSObject (auxVariable)"
+				"global::ObjCRuntime.Runtime.RetainAndAutoreleaseNSObject (auxVariable)"
 			];
 
 			const string nativeObjectResult = @"
@@ -70,7 +70,7 @@ namespace NS {
 
 			yield return [
 				nativeObjectResult,
-				"Runtime.RetainAndAutoreleaseNativeObject (auxVariable)"
+				"global::ObjCRuntime.Runtime.RetainAndAutoreleaseNativeObject (auxVariable)"
 			];
 
 			const string protocolResult = @"
@@ -89,7 +89,7 @@ namespace NS {
 
 			yield return [
 				protocolResult,
-				"Runtime.RetainAndAutoreleaseNSObject (auxVariable)"
+				"global::ObjCRuntime.Runtime.RetainAndAutoreleaseNSObject (auxVariable)"
 			];
 
 			const string systemStringResult = @"

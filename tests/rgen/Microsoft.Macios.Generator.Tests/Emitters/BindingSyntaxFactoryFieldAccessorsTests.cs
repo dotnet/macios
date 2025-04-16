@@ -519,7 +519,7 @@ namespace CoreGraphics {
 ";
 
 			yield return [nsArrayFieldProperty,
-				"Runtime.GetNSObject<Foundation.NSArray> (global::ObjCRuntime.Dlfcn.GetIndirect (Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\"))!"];
+				"global::ObjCRuntime.Runtime.GetNSObject<Foundation.NSArray> (global::ObjCRuntime.Dlfcn.GetIndirect (Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\"))!"];
 
 			const string nsNumberFieldProperty = @"
 using System;
@@ -540,7 +540,7 @@ namespace CoreGraphics {
 ";
 
 			yield return [nsNumberFieldProperty,
-				"Runtime.GetNSObject<Foundation.NSNumber> (global::ObjCRuntime.Dlfcn.GetIndirect (Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\"))!"];
+				"global::ObjCRuntime.Runtime.GetNSObject<Foundation.NSNumber> (global::ObjCRuntime.Dlfcn.GetIndirect (Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\"))!"];
 
 			const string sbyteEnumFieldProperty = @"
 using System;

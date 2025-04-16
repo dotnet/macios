@@ -5,10 +5,14 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Macios.Generator.Attributes;
 using Microsoft.Macios.Generator.Availability;
 using Microsoft.Macios.Generator.IO;
 using Xunit;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Microsoft.Macios.Generator.Tests.IO;
 
@@ -433,5 +437,54 @@ using (var m3 = new MemoryStream())
 			usingBlock.WriteLine ("// this is an example with several usings");
 		}
 		Assert.Equal (expecteString, baseBlock.ToCode ());
+	}
+
+	[Fact]
+	public void WriteBlockForExpressions ()
+	{
+		// create an expression list and ensure that the final bloc is correct
+		var expectedString =
+@"public void Test ()
+{
+	Single? __xamarin_nullified__1 = null;
+	if (value is not null)
+		__xamarin_nullified__1 = *value;
+}
+";
+		var baseBlock = new TabbedStringBuilder (sb);
+		var members = new List<SyntaxNode> {
+			LocalDeclarationStatement(
+				VariableDeclaration(
+						NullableType(
+							IdentifierName("Single")))
+					.WithVariables(
+						SingletonSeparatedList<VariableDeclaratorSyntax>(
+							VariableDeclarator(
+									Identifier("__xamarin_nullified__1"))
+								.WithInitializer(
+									EqualsValueClause(
+										LiteralExpression(
+											SyntaxKind.NullLiteralExpression)))))),
+			IfStatement(
+				IsPatternExpression(
+					IdentifierName("value"),
+					UnaryPattern(
+						ConstantPattern(
+							LiteralExpression(
+								SyntaxKind.NullLiteralExpression)))),
+				ExpressionStatement(
+					AssignmentExpression(
+						SyntaxKind.SimpleAssignmentExpression,
+						IdentifierName("__xamarin_nullified__1"),
+						PrefixUnaryExpression(
+							SyntaxKind.PointerIndirectionExpression,
+							IdentifierName("value"))).WithLeadingTrivia (Whitespace ("\t"))))
+			};
+
+		using (var methodBlock = baseBlock.CreateBlock ("public void Test ()", true)) {
+			methodBlock.Write (members);
+		}
+
+		Assert.Equal (expectedString, baseBlock.ToCode ());
 	}
 }

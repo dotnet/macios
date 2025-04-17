@@ -12,19 +12,19 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 namespace Microsoft.Macios.Generator.Emitters;
 
 static partial class BindingSyntaxFactory {
-	public static readonly ExpressionSyntax Runtime = GetIdentifierName (
+	public static readonly TypeSyntax Runtime = GetIdentifierName (
 		@namespace: ["ObjCRuntime"],
 		@class: "Runtime",
  		isGlobal: true);
-	public static readonly ExpressionSyntax NSArray = GetIdentifierName (
+	public static readonly TypeSyntax NSArray = GetIdentifierName (
 		@namespace: ["Foundation"],
 		@class: "NSArray",
 		isGlobal: true);
-	public static readonly ExpressionSyntax CFArray = GetIdentifierName (
+	public static readonly TypeSyntax CFArray = GetIdentifierName (
 		@namespace: ["CoreFoundation"],
 		@class: "CFArray",
 	isGlobal: true);
-	public static readonly ExpressionSyntax CFString = GetIdentifierName (
+	public static readonly TypeSyntax CFString = GetIdentifierName (
 		@namespace: ["CoreFoundation"],
 		@class: "CFString",
 		isGlobal: true);

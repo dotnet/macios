@@ -16,7 +16,12 @@ readonly partial struct Constructor {
 	/// <summary>
 	/// The data of the export attribute used to mark the value as a property binding. 
 	/// </summary>
-	public ExportData<ObjCBindings.Constructor> ExportMethodData { get; }
+	public ExportData<ObjCBindings.Constructor> ExportMethodData { get; init; }
+
+	/// <summary>
+	/// Return the native selector that references the enum value.
+	/// </summary>
+	public string? Selector => ExportMethodData.Selector;
 
 	public static bool TryCreate (ConstructorDeclarationSyntax declaration, RootContext context,
 		[NotNullWhen (true)] out Constructor? change)

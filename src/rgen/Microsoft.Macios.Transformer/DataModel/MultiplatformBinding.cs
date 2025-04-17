@@ -34,7 +34,7 @@ readonly struct MultiplatformBinding {
 	IEnumerable<string> GetSelectorsEnumerable (Func<Binding, ImmutableArray<string>> getSelectors)
 	{
 		HashSet<string> visited = new ();
-		foreach (var (_, binding)in Bindings) {
+		foreach (var (_, binding) in Bindings) {
 			foreach (var selector in getSelectors (binding)) {
 				if (visited.Add (selector)) {
 					// only return the selector if it was not already visited
@@ -48,7 +48,7 @@ readonly struct MultiplatformBinding {
 	/// Creates a new instance of the struct using the provided bindings.
 	/// </summary>
 	/// <param name="bindings"></param>
-	public MultiplatformBinding (params (PlatformName Platform, Binding Binding)[] bindings)
+	public MultiplatformBinding (params (PlatformName Platform, Binding Binding) [] bindings)
 	{
 		Bindings = new Dictionary<PlatformName, Binding> ();
 		foreach (var (platform, binding) in bindings)

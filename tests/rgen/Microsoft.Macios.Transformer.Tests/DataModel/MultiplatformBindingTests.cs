@@ -18,7 +18,7 @@ public class MultiplatformBindingTests {
 	{
 		// build a number of bindings to test against, we will provide different members so that we can
 		var info = new BindingInfo (
-			baseTypeData: new(),
+			baseTypeData: new (),
 			bindingType: BindingType.Class);
 		var className = "MyClass";
 		var nameSpace = ImmutableArray.Create<string> ("NS");
@@ -29,13 +29,13 @@ public class MultiplatformBindingTests {
 			@namespace: nameSpace,
 			fullyQualifiedSymbol: fullyQualifiedSymbol,
 			bindingInfo: info,
-			symbolAvailability: new(),
+			symbolAvailability: new (),
 			attributes: []
 		) {
 			Base = "object",
 			Interfaces = ImmutableArray<string>.Empty,
 			Attributes = [
-				new("ObjCBindings.BindingTypeAttribute<ObjCBindings.Class>")
+				new ("ObjCBindings.BindingTypeAttribute<ObjCBindings.Class>")
 			],
 			UsingDirectives = new HashSet<string> { "ObjCBindings" },
 			Modifiers = [
@@ -43,9 +43,9 @@ public class MultiplatformBindingTests {
 				SyntaxFactory.Token (SyntaxKind.PartialKeyword)
 			],
 			Constructors = [
-				new(
+				new (
 					type: className,
-					symbolAvailability: new(),
+					symbolAvailability: new (),
 					attributes: [],
 					modifiers: [
 						SyntaxFactory.Token (SyntaxKind.PublicKeyword)
@@ -54,22 +54,22 @@ public class MultiplatformBindingTests {
 				) {
 					ExportMethodData = new ("init"),
 				},
-				new(
+				new (
 					type: className,
-					symbolAvailability: new(),
+					symbolAvailability: new (),
 					attributes: [],
 					modifiers: [
 						SyntaxFactory.Token (SyntaxKind.PublicKeyword)
 					],
 					parameters: [
-						new Parameter(0, ReturnTypeForBool (), "flag"),
+						new Parameter (0, ReturnTypeForBool (), "flag"),
 					]
 				) {
 					ExportMethodData = new ("initWithFlag:"),
 				},
-				new(
+				new (
 					type: className,
-					symbolAvailability: new(),
+					symbolAvailability: new (),
 					attributes: [],
 					modifiers: [
 						SyntaxFactory.Token (SyntaxKind.PublicKeyword)
@@ -102,7 +102,7 @@ public class MultiplatformBindingTests {
 						SyntaxFactory.Token (SyntaxKind.PublicKeyword),
 						SyntaxFactory.Token (SyntaxKind.PartialKeyword),
 					],
-					ExportPropertyData = new ExportData("name")
+					ExportPropertyData = new ExportData ("name")
 				},
 				new (
 					name: "FrameworkConstant",
@@ -150,7 +150,7 @@ public class MultiplatformBindingTests {
 						SyntaxFactory.Token (SyntaxKind.PublicKeyword),
 						SyntaxFactory.Token (SyntaxKind.PartialKeyword),
 					],
-					ExportPropertyData = new ExportData("ios")
+					ExportPropertyData = new ExportData ("ios")
 				},
 			],
 			Methods = [
@@ -254,13 +254,13 @@ public class MultiplatformBindingTests {
 			@namespace: nameSpace,
 			fullyQualifiedSymbol: fullyQualifiedSymbol,
 			bindingInfo: info,
-			symbolAvailability: new(),
+			symbolAvailability: new (),
 			attributes: []
 		) {
 			Base = "object",
 			Interfaces = ImmutableArray<string>.Empty,
 			Attributes = [
-				new("ObjCBindings.BindingTypeAttribute<ObjCBindings.Class>")
+				new ("ObjCBindings.BindingTypeAttribute<ObjCBindings.Class>")
 			],
 			UsingDirectives = new HashSet<string> { "ObjCBindings" },
 			Modifiers = [
@@ -268,9 +268,9 @@ public class MultiplatformBindingTests {
 				SyntaxFactory.Token (SyntaxKind.PartialKeyword)
 			],
 			Constructors = [
-				new(
+				new (
 					type: className,
-					symbolAvailability: new(),
+					symbolAvailability: new (),
 					attributes: [],
 					modifiers: [
 						SyntaxFactory.Token (SyntaxKind.PublicKeyword)
@@ -279,22 +279,22 @@ public class MultiplatformBindingTests {
 				) {
 					ExportMethodData = new ("init"),
 				},
-				new(
+				new (
 					type: className,
-					symbolAvailability: new(),
+					symbolAvailability: new (),
 					attributes: [],
 					modifiers: [
 						SyntaxFactory.Token (SyntaxKind.PublicKeyword)
 					],
 					parameters: [
-						new Parameter(0, ReturnTypeForBool (), "flag"),
+						new Parameter (0, ReturnTypeForBool (), "flag"),
 					]
 				) {
 					ExportMethodData = new ("initWithFlag:"),
 				},
-				new(
+				new (
 					type: className,
-					symbolAvailability: new(),
+					symbolAvailability: new (),
 					attributes: [],
 					modifiers: [
 						SyntaxFactory.Token (SyntaxKind.PublicKeyword)
@@ -327,7 +327,7 @@ public class MultiplatformBindingTests {
 						SyntaxFactory.Token (SyntaxKind.PublicKeyword),
 						SyntaxFactory.Token (SyntaxKind.PartialKeyword),
 					],
-					ExportPropertyData = new ExportData("name")
+					ExportPropertyData = new ExportData ("name")
 				},
 				new (
 					name: "FrameworkConstant",
@@ -375,7 +375,7 @@ public class MultiplatformBindingTests {
 						SyntaxFactory.Token (SyntaxKind.PublicKeyword),
 						SyntaxFactory.Token (SyntaxKind.PartialKeyword),
 					],
-					ExportPropertyData = new ExportData("tvos")
+					ExportPropertyData = new ExportData ("tvos")
 				},
 			],
 			Methods = [
@@ -479,13 +479,13 @@ public class MultiplatformBindingTests {
 			@namespace: nameSpace,
 			fullyQualifiedSymbol: fullyQualifiedSymbol,
 			bindingInfo: info,
-			symbolAvailability: new(),
+			symbolAvailability: new (),
 			attributes: []
 		) {
 			Base = "object",
 			Interfaces = ImmutableArray<string>.Empty,
 			Attributes = [
-				new("ObjCBindings.BindingTypeAttribute<ObjCBindings.Class>")
+				new ("ObjCBindings.BindingTypeAttribute<ObjCBindings.Class>")
 			],
 			UsingDirectives = new HashSet<string> { "ObjCBindings" },
 			Modifiers = [
@@ -493,9 +493,9 @@ public class MultiplatformBindingTests {
 				SyntaxFactory.Token (SyntaxKind.PartialKeyword)
 			],
 			Constructors = [
-				new(
+				new (
 					type: className,
-					symbolAvailability: new(),
+					symbolAvailability: new (),
 					attributes: [],
 					modifiers: [
 						SyntaxFactory.Token (SyntaxKind.PublicKeyword)
@@ -504,22 +504,22 @@ public class MultiplatformBindingTests {
 				) {
 					ExportMethodData = new ("init"),
 				},
-				new(
+				new (
 					type: className,
-					symbolAvailability: new(),
+					symbolAvailability: new (),
 					attributes: [],
 					modifiers: [
 						SyntaxFactory.Token (SyntaxKind.PublicKeyword)
 					],
 					parameters: [
-						new Parameter(0, ReturnTypeForBool (), "flag"),
+						new Parameter (0, ReturnTypeForBool (), "flag"),
 					]
 				) {
 					ExportMethodData = new ("initWithFlag:"),
 				},
-				new(
+				new (
 					type: className,
-					symbolAvailability: new(),
+					symbolAvailability: new (),
 					attributes: [],
 					modifiers: [
 						SyntaxFactory.Token (SyntaxKind.PublicKeyword)
@@ -552,7 +552,7 @@ public class MultiplatformBindingTests {
 						SyntaxFactory.Token (SyntaxKind.PublicKeyword),
 						SyntaxFactory.Token (SyntaxKind.PartialKeyword),
 					],
-					ExportPropertyData = new ExportData("name")
+					ExportPropertyData = new ExportData ("name")
 				},
 				new (
 					name: "FrameworkConstant",
@@ -600,7 +600,7 @@ public class MultiplatformBindingTests {
 						SyntaxFactory.Token (SyntaxKind.PublicKeyword),
 						SyntaxFactory.Token (SyntaxKind.PartialKeyword),
 					],
-					ExportPropertyData = new ExportData("catalyst")
+					ExportPropertyData = new ExportData ("catalyst")
 				},
 			],
 			Methods = [
@@ -704,13 +704,13 @@ public class MultiplatformBindingTests {
 			@namespace: nameSpace,
 			fullyQualifiedSymbol: fullyQualifiedSymbol,
 			bindingInfo: info,
-			symbolAvailability: new(),
+			symbolAvailability: new (),
 			attributes: []
 		) {
 			Base = "object",
 			Interfaces = ImmutableArray<string>.Empty,
 			Attributes = [
-				new("ObjCBindings.BindingTypeAttribute<ObjCBindings.Class>")
+				new ("ObjCBindings.BindingTypeAttribute<ObjCBindings.Class>")
 			],
 			UsingDirectives = new HashSet<string> { "ObjCBindings" },
 			Modifiers = [
@@ -718,9 +718,9 @@ public class MultiplatformBindingTests {
 				SyntaxFactory.Token (SyntaxKind.PartialKeyword)
 			],
 			Constructors = [
-				new(
+				new (
 					type: className,
-					symbolAvailability: new(),
+					symbolAvailability: new (),
 					attributes: [],
 					modifiers: [
 						SyntaxFactory.Token (SyntaxKind.PublicKeyword)
@@ -729,22 +729,22 @@ public class MultiplatformBindingTests {
 				) {
 					ExportMethodData = new ("init"),
 				},
-				new(
+				new (
 					type: className,
-					symbolAvailability: new(),
+					symbolAvailability: new (),
 					attributes: [],
 					modifiers: [
 						SyntaxFactory.Token (SyntaxKind.PublicKeyword)
 					],
 					parameters: [
-						new Parameter(0, ReturnTypeForBool (), "flag"),
+						new Parameter (0, ReturnTypeForBool (), "flag"),
 					]
 				) {
 					ExportMethodData = new ("initWithFlag:"),
 				},
-				new(
+				new (
 					type: className,
-					symbolAvailability: new(),
+					symbolAvailability: new (),
 					attributes: [],
 					modifiers: [
 						SyntaxFactory.Token (SyntaxKind.PublicKeyword)
@@ -777,7 +777,7 @@ public class MultiplatformBindingTests {
 						SyntaxFactory.Token (SyntaxKind.PublicKeyword),
 						SyntaxFactory.Token (SyntaxKind.PartialKeyword),
 					],
-					ExportPropertyData = new ExportData("name")
+					ExportPropertyData = new ExportData ("name")
 				},
 				new (
 					name: "FrameworkConstant",
@@ -825,7 +825,7 @@ public class MultiplatformBindingTests {
 						SyntaxFactory.Token (SyntaxKind.PublicKeyword),
 						SyntaxFactory.Token (SyntaxKind.PartialKeyword),
 					],
-					ExportPropertyData = new ExportData("macos")
+					ExportPropertyData = new ExportData ("macos")
 				},
 			],
 			Methods = [

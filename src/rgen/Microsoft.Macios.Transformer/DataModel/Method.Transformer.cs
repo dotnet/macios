@@ -26,6 +26,11 @@ readonly partial struct Method {
 	}
 
 	/// <summary>
+	/// Return the native selector that references the enum value.
+	/// </summary>
+	public string? Selector => ExportMethodData?.Selector;
+
+	/// <summary>
 	/// Returns the bind from data if present in the binding.
 	/// </summary>
 	public BindAsData? BindAs => BindAsAttribute;

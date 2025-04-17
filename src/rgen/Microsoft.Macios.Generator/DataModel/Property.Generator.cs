@@ -145,6 +145,21 @@ readonly partial struct Property {
 		init => requiresDirtyCheck = value;
 	}
 
+	/// <summary>
+	/// Return the native selector that references the enum value.
+	/// </summary>
+	public string? Selector {
+		get {
+			if (IsField) {
+				return ExportFieldData.Value.FieldData.SymbolName;
+			}
+			if (IsProperty) {
+				return ExportPropertyData.Value.Selector;
+			}
+			return null;
+		}
+	}
+
 	static FieldInfo<ObjCBindings.Property>? GetFieldInfo (RootContext context, IPropertySymbol propertySymbol)
 	{
 		// grab the last port of the namespace

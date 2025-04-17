@@ -1,13 +1,20 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
+#pragma warning disable APL0003
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.Macios.Generator.Attributes;
 using Microsoft.Macios.Generator.DataModel;
 using Xamarin.Tests;
 using Xamarin.Utils;
 using Xunit;
+using Constructor = Microsoft.Macios.Generator.DataModel.Constructor;
+using Method = Microsoft.Macios.Generator.DataModel.Method;
+using Property = Microsoft.Macios.Generator.DataModel.Property;
+using static Microsoft.Macios.Generator.Tests.TestDataFactory;
 
 namespace Microsoft.Macios.Generator.Tests.DataModel;
 
@@ -250,5 +257,213 @@ public class TestClass {
 		Assert.NotNull (node);
 		var semanticModel = compilation.GetSemanticModel (sourceTrees [0]);
 		Assert.Equal (expected, Binding.Skip (node, semanticModel));
+	}
+
+	[Fact]
+	public void EnumIndexTest ()
+	{
+		var bindingInfo = new BindingInfo (new BindingTypeData<ObjCBindings.SmartEnum> ());
+		string presentSelector = "AVCaptureDeviceTypeBuiltInMicrophone";
+		string missingSelector = "AVCaptureDeviceTypeBuiltInWideAngleCamera";
+
+		var binding = new Binding (
+			bindingInfo: bindingInfo,
+			name: "TestBinding",
+			@namespace: ["TestNamespace"],
+			fullyQualifiedSymbol: "TestNamespace.TestBinding",
+			symbolAvailability: new ()) {
+			EnumMembers = [
+				new (
+					name: "BuiltInMicrophone",
+					libraryName: "AVCaptureDeviceTypeBuiltInMicrophone",
+					libraryPath: null,
+					fieldData: new (presentSelector),
+					symbolAvailability: new (),
+					attributes: []),
+			],
+		};
+		EnumMember? member;
+		Assert.False (binding.TryGetEnumValue (missingSelector, out member));
+		Assert.Null (member);
+		Assert.True (binding.TryGetEnumValue (presentSelector, out member));
+		Assert.NotNull (member);
+	}
+
+	[Fact]
+	public void PropertyIndexTest ()
+	{
+		var bindingInfo = new BindingInfo (new BindingTypeData<ObjCBindings.Class> ());
+		string presentSelector = "name";
+		string missingSelector = "surname";
+
+		var binding = new Binding (
+			bindingInfo: bindingInfo,
+			name: "TestBinding",
+			@namespace: ["TestNamespace"],
+			fullyQualifiedSymbol: "TestNamespace.TestBinding",
+			symbolAvailability: new ()) {
+			Properties = [
+				new (
+					name: "Name",
+					returnType: ReturnTypeForString (),
+					symbolAvailability: new (),
+					attributes: [
+						new ("ObjCBindings.ExportAttribute<ObjCBindings.Property>", ["name"])
+					],
+					modifiers: [
+						SyntaxFactory.Token (SyntaxKind.PublicKeyword),
+						SyntaxFactory.Token (SyntaxKind.PartialKeyword),
+					],
+					accessors: [
+						new (
+							accessorKind: AccessorKind.Getter,
+							symbolAvailability: new (),
+							exportPropertyData: null,
+							attributes: [],
+							modifiers: []
+						),
+						new (
+							accessorKind: AccessorKind.Setter,
+							symbolAvailability: new (),
+							exportPropertyData: null,
+							attributes: [],
+							modifiers: []
+						),
+					]
+				) {
+					ExportPropertyData = new ("name")
+				}
+			]
+		};
+
+		Property? member;
+		Assert.False (binding.TryGetProperty (missingSelector, out member));
+		Assert.Null (member);
+		Assert.True (binding.TryGetProperty (presentSelector, out member));
+		Assert.NotNull (member);
+	}
+
+	[Fact]
+	public void ConstructorIndexTest ()
+	{
+		var bindingInfo = new BindingInfo (new BindingTypeData<ObjCBindings.Class> ());
+		string presentSelector = "initWithName:";
+		string missingSelector = "initWithName:Surname:";
+
+		var binding = new Binding (
+			bindingInfo: bindingInfo,
+			name: "TestBinding",
+			@namespace: ["TestNamespace"],
+			fullyQualifiedSymbol: "TestNamespace.TestBinding",
+			symbolAvailability: new ()) {
+			Constructors = [
+				new (
+					type: "MyClass",
+					symbolAvailability: new (),
+					attributes: [],
+					modifiers: [
+						SyntaxFactory.Token (SyntaxKind.PublicKeyword)
+					],
+					parameters: []
+				) {
+					ExportMethodData = new (presentSelector)
+				}
+			]
+		};
+
+		Constructor? member;
+		Assert.False (binding.TryGetConstructor (missingSelector, out member));
+		Assert.Null (member);
+		Assert.True (binding.TryGetConstructor (presentSelector, out member));
+		Assert.NotNull (member);
+	}
+
+	[Fact]
+	public void EventIndexTest ()
+	{
+		var bindingInfo = new BindingInfo (new BindingTypeData<ObjCBindings.Class> ());
+		string presentSelector = "Changed";
+		string missingSelector = "Added";
+
+		var binding = new Binding (
+			bindingInfo: bindingInfo,
+			name: "TestBinding",
+			@namespace: ["TestNamespace"],
+			fullyQualifiedSymbol: "TestNamespace.TestBinding",
+			symbolAvailability: new ()) {
+			Events = [
+				new (
+					name: "Changed",
+					type: "System.EventHandler",
+					symbolAvailability: new (),
+					attributes: [],
+					modifiers: [
+						SyntaxFactory.Token (SyntaxKind.PublicKeyword),
+					],
+					accessors: [
+						new (
+							accessorKind: AccessorKind.Add,
+							symbolAvailability: new (),
+							exportPropertyData: null,
+							attributes: [],
+							modifiers: []
+						),
+						new (
+							accessorKind: AccessorKind.Remove,
+							symbolAvailability: new (),
+							exportPropertyData: null,
+							attributes: [],
+							modifiers: []
+						)
+					])
+			],
+		};
+
+		Event? member;
+		Assert.False (binding.TryGetEvent (missingSelector, out member));
+		Assert.Null (member);
+		Assert.True (binding.TryGetEvent (presentSelector, out member));
+		Assert.NotNull (member);
+	}
+
+	[Fact]
+	public void MethodIndexTest ()
+	{
+		var bindingInfo = new BindingInfo (new BindingTypeData<ObjCBindings.Class> ());
+		string presentSelector = "withName:";
+		string missingSelector = "withName:Surname:";
+
+		var binding = new Binding (
+			bindingInfo: bindingInfo,
+			name: "TestBinding",
+			@namespace: ["TestNamespace"],
+			fullyQualifiedSymbol: "TestNamespace.TestBinding",
+			symbolAvailability: new ()) {
+			Methods = [
+				new (
+					type: "NS.MyClass",
+					name: "SetName",
+					returnType: ReturnTypeForVoid (),
+					symbolAvailability: new (),
+					exportMethodData: new ("withName:"),
+					attributes: [
+						new ("ObjCBindings.ExportAttribute<ObjCBindings.Method>", ["withName:"])
+					],
+					modifiers: [
+						SyntaxFactory.Token (SyntaxKind.PublicKeyword),
+						SyntaxFactory.Token (SyntaxKind.PartialKeyword),
+					],
+					parameters: [
+						new (position: 0, type: ReturnTypeForString (), name: "name")
+					]
+				),
+			]
+		};
+
+		Method? member;
+		Assert.False (binding.TryGetMethod (missingSelector, out member));
+		Assert.Null (member);
+		Assert.True (binding.TryGetMethod (presentSelector, out member));
+		Assert.NotNull (member);
 	}
 }

@@ -18,9 +18,9 @@ namespace Microsoft.Macios.Generator.Tests.Emitters;
 public class BindingSyntaxFactoryRuntimeTests {
 
 	[Theory]
-	[InlineData ("Test", "Selector.GetHandle (\"Test\")")]
-	[InlineData ("name", "Selector.GetHandle (\"name\")")]
-	[InlineData ("setName:", "Selector.GetHandle (\"setName:\")")]
+	[InlineData ("Test", "global::ObjCRuntime.Selector.GetHandle (\"Test\")")]
+	[InlineData ("name", "global::ObjCRuntime.Selector.GetHandle (\"name\")")]
+	[InlineData ("setName:", "global::ObjCRuntime.Selector.GetHandle (\"setName:\")")]
 	void SelectorGetHandleTests (string selector, string expectedDeclaration)
 	{
 		var declaration = SelectorGetHandle (selector);
@@ -35,7 +35,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 				"IntPtr_objc_msgSend",
 				"string",
 				ImmutableArray<ArgumentSyntax>.Empty,
-				"global::ObjCRuntime.Messaging.IntPtr_objc_msgSend (this.Handle, Selector.GetHandle (\"string\"))"
+				"global::ObjCRuntime.Messaging.IntPtr_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"string\"))"
 			];
 
 			// one param extra
@@ -46,7 +46,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 				"IntPtr_objc_msgSend",
 				"string",
 				args,
-				"global::ObjCRuntime.Messaging.IntPtr_objc_msgSend (this.Handle, Selector.GetHandle (\"string\"), arg1)"
+				"global::ObjCRuntime.Messaging.IntPtr_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"string\"), arg1)"
 			];
 
 			// several params
@@ -59,7 +59,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 				"IntPtr_objc_msgSend",
 				"string",
 				args,
-				"global::ObjCRuntime.Messaging.IntPtr_objc_msgSend (this.Handle, Selector.GetHandle (\"string\"), arg1, arg2, arg3)"
+				"global::ObjCRuntime.Messaging.IntPtr_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"string\"), arg1, arg2, arg3)"
 			];
 
 			// out parameter
@@ -71,7 +71,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 				"IntPtr_objc_msgSend",
 				"string",
 				args,
-				"global::ObjCRuntime.Messaging.IntPtr_objc_msgSend (this.Handle, Selector.GetHandle (\"string\"), &errorValue)"
+				"global::ObjCRuntime.Messaging.IntPtr_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"string\"), &errorValue)"
 			];
 
 		}
@@ -96,7 +96,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 			yield return [
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1"))),
-				"CFArray.StringArrayFromHandle (arg1)"
+				"global::CoreFoundation.CFArray.StringArrayFromHandle (arg1)"
 			];
 
 			yield return [
@@ -104,7 +104,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 					Argument (IdentifierName ("arg1")),
 					Argument (IdentifierName ("arg2")),
 					Argument (IdentifierName ("arg3"))),
-				"CFArray.StringArrayFromHandle (arg1, arg2, arg3)"
+				"global::CoreFoundation.CFArray.StringArrayFromHandle (arg1, arg2, arg3)"
 			];
 		}
 
@@ -352,7 +352,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 				"int",
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1"))),
-				"NSArray.ArrayFromHandleFunc<int> (arg1)"
+				"global::Foundation.NSArray.ArrayFromHandleFunc<int> (arg1)"
 			];
 
 			yield return [
@@ -361,7 +361,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 					Argument (IdentifierName ("arg1")),
 					Argument (IdentifierName ("arg2")),
 					Argument (IdentifierName ("arg3"))),
-				"NSArray.ArrayFromHandleFunc<string> (arg1, arg2, arg3)"
+				"global::Foundation.NSArray.ArrayFromHandleFunc<string> (arg1, arg2, arg3)"
 			];
 		}
 
@@ -414,7 +414,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 			yield return [
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1"))),
-				"NSArray.FromNSObjects (arg1)"
+				"global::Foundation.NSArray.FromNSObjects (arg1)"
 			];
 
 			yield return [
@@ -422,7 +422,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 					Argument (IdentifierName ("arg1")),
 					Argument (IdentifierName ("arg2")),
 					Argument (IdentifierName ("arg3"))),
-				"NSArray.FromNSObjects (arg1, arg2, arg3)"
+				"global::Foundation.NSArray.FromNSObjects (arg1, arg2, arg3)"
 			];
 		}
 
@@ -773,7 +773,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 				"NSObject",
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1"))),
-				"CFArray.ArrayFromHandle<NSObject> (arg1)",
+				"global::CoreFoundation.CFArray.ArrayFromHandle<NSObject> (arg1)",
 			];
 
 			yield return [
@@ -783,7 +783,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 					Argument (IdentifierName ("arg2")),
 					Argument (IdentifierName ("arg3"))
 				),
-				"CFArray.ArrayFromHandle<NSString> (arg1, arg2, arg3)",
+				"global::CoreFoundation.CFArray.ArrayFromHandle<NSString> (arg1, arg2, arg3)",
 			];
 		}
 
@@ -805,7 +805,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 				"NSObject",
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1"))),
-				"NSArray.ArrayFromHandle<NSObject> (arg1)",
+				"global::Foundation.NSArray.ArrayFromHandle<NSObject> (arg1)",
 			];
 
 			yield return [
@@ -815,7 +815,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 					Argument (IdentifierName ("arg2")),
 					Argument (IdentifierName ("arg3"))
 				),
-				"NSArray.ArrayFromHandle<NSString> (arg1, arg2, arg3)",
+				"global::Foundation.NSArray.ArrayFromHandle<NSString> (arg1, arg2, arg3)",
 			];
 		}
 

@@ -21,6 +21,10 @@ namespace Microsoft.Macios.Generator.Emitters;
 static partial class BindingSyntaxFactory {
 	readonly static string objc_msgSend = "objc_msgSend";
 	readonly static string objc_msgSendSuper = "objc_msgSendSuper";
+	readonly static TypeSyntax Selector = GetIdentifierName (
+		@namespace: ["ObjCRuntime"],
+		@class: "Selector",
+		isGlobal: true);
 	public static readonly TypeSyntax NSValue = GetIdentifierName (
 		@namespace: ["Foundation"],
 		@class: "NSValue",
@@ -170,7 +174,7 @@ static partial class BindingSyntaxFactory {
 		};
 		// syntax that calls the NSArray factory method using the parameter: NSArray.FromNSObjects (targetTensors);
 		var factoryInvocation = InvocationExpression (MemberAccessExpression (SyntaxKind.SimpleMemberAccessExpression,
-				GetIdentifierName ("NSArray"), IdentifierName (nsArrayFactoryMethod).WithTrailingTrivia (Space)))
+				NSArray, IdentifierName (nsArrayFactoryMethod).WithTrailingTrivia (Space)))
 			.WithArgumentList (
 				ArgumentList (SingletonSeparatedList (
 					Argument (IdentifierName (parameter.Name)))));
@@ -740,7 +744,7 @@ static partial class BindingSyntaxFactory {
 			Token (SyntaxKind.ReadOnlyKeyword).WithTrailingTrivia (Space));
 		// generates: Selector.GetHandle (selector);
 		var getHandleInvocation = InvocationExpression (MemberAccessExpression (SyntaxKind.SimpleMemberAccessExpression,
-					IdentifierName ("Selector"), IdentifierName ("GetHandle").WithTrailingTrivia (Space)))
+					Selector, IdentifierName ("GetHandle").WithTrailingTrivia (Space)))
 			.WithArgumentList (
 				ArgumentList (
 					SingletonSeparatedList (

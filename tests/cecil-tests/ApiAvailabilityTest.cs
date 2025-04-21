@@ -193,7 +193,6 @@ namespace Cecil.Tests {
 			"Foundation.NSString Foundation.NSUrl::UbiquitousItemIsDownloadingKey()",
 			"Foundation.NSUrl.get_UbiquitousItemIsDownloadingKey()",
 			"Foundation.NSUrlSessionConfiguration.BackgroundSessionConfiguration(System.String)",
-			"Foundation.NSUserDefaults..ctor(System.String)",
 			"GameController.GCGamepadSnapShotDataV100",
 			"GameController.GCMicroGamepadSnapshot.TryGetSnapshotData(Foundation.NSData, out GameController.GCMicroGamepadSnapshotData&)",
 			"GameController.GCMicroGamepadSnapshot.TryGetSnapshotData(Foundation.NSData, out GameController.GCMicroGamepadSnapShotDataV100&)",

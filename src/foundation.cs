@@ -7287,12 +7287,12 @@ namespace Foundation {
 
 		[Internal]
 		[Export ("initWithUser:")]
-		IntPtr InitWithUserName (string username);
+		IntPtr _InitWithUserName (string username);
 
 		[Internal]
 		[MacCatalyst (13, 1)]
 		[Export ("initWithSuiteName:")]
-		IntPtr InitWithSuiteName ([NullAllowed] string suiteName);
+		IntPtr _InitWithSuiteName ([NullAllowed] string suiteName);
 
 		[Export ("objectForKey:")]
 		[Internal]

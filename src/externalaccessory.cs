@@ -201,6 +201,10 @@ namespace ExternalAccessory {
 	// Objective-C exception thrown.  Name: EASessionInitException Reason: -init not supported. use -initWithAccessory:forProtocol.
 	[DisableDefaultCtor]
 	interface EASession {
+		/// <param name="accessory">To be added.</param>
+		/// <param name="protocol">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithAccessory:forProtocol:")]
 		NativeHandle Constructor (EAAccessory accessory, string protocol);
 
@@ -298,6 +302,16 @@ namespace ExternalAccessory {
 #endif
 	interface EAWiFiUnconfiguredAccessoryBrowser {
 
+		/// <param name="accessoryBrowserDelegate">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="queue">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (14, 0)] // the headers lie, not usable until at least Mac Catalyst 14.0
 		[NoTV]
 		[Export ("initWithDelegate:queue:")]

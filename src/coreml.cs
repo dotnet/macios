@@ -166,6 +166,10 @@ namespace CoreML {
 		[Export ("dictionary")]
 		NSDictionary<NSString, MLFeatureValue> Dictionary { get; }
 
+		/// <param name="dictionary">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>Constructor that creates a <see cref="T:CoreML.MLDictionaryFeatureProvider" /> based on the specified <paramref name="dictionary" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithDictionary:error:")]
 		NativeHandle Constructor (NSDictionary<NSString, NSObject> dictionary, out NSError error);
 	}
@@ -831,6 +835,11 @@ namespace CoreML {
 
 		// From MLMultiArray (Creation) Category
 
+		/// <param name="shape">To be added.</param>
+		/// <param name="dataType">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>Creates a new MLMultiArray with the specified shape and data type.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithShape:dataType:error:")]
 		NativeHandle Constructor (NSNumber [] shape, MLMultiArrayDataType dataType, out NSError error);
 
@@ -838,6 +847,14 @@ namespace CoreML {
 		[Export ("initWithShape:dataType:strides:")]
 		NativeHandle Constructor (NSNumber [] shape, MLMultiArrayDataType dataType, NSNumber [] strides);
 
+		/// <param name="dataPointer">To be added.</param>
+		/// <param name="shape">To be added.</param>
+		/// <param name="dataType">To be added.</param>
+		/// <param name="strides">To be added.</param>
+		/// <param name="deallocator">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>Creates a new MLMultiArray with the specified details.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithDataPointer:shape:dataType:strides:deallocator:error:")]
 		NativeHandle Constructor (IntPtr dataPointer, NSNumber [] shape, MLMultiArrayDataType dataType, NSNumber [] strides, [NullAllowed] Action<IntPtr> deallocator, out NSError error);
 
@@ -1032,9 +1049,16 @@ namespace CoreML {
 		[Export ("array")]
 		IMLFeatureProvider [] Array { get; }
 
+		/// <param name="array">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithFeatureProviderArray:")]
 		NativeHandle Constructor (IMLFeatureProvider [] array);
 
+		/// <param name="dictionary">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithDictionary:error:")]
 		NativeHandle Constructor (NSDictionary<NSString, NSArray> dictionary, out NSError error);
 	}
@@ -1066,6 +1090,11 @@ namespace CoreML {
 	interface MLCustomModel {
 
 		// [Abstract]
+		/// <param name="modelDescription">To be added.</param>
+		/// <param name="parameters">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithModelDescription:parameterDictionary:error:")]
 		NativeHandle Constructor (MLModelDescription modelDescription, NSDictionary<NSString, NSObject> parameters, out NSError error);
 

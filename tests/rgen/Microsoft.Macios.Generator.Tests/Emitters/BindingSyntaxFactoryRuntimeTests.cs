@@ -18,9 +18,9 @@ namespace Microsoft.Macios.Generator.Tests.Emitters;
 public class BindingSyntaxFactoryRuntimeTests {
 
 	[Theory]
-	[InlineData ("Test", "Selector.GetHandle (\"Test\")")]
-	[InlineData ("name", "Selector.GetHandle (\"name\")")]
-	[InlineData ("setName:", "Selector.GetHandle (\"setName:\")")]
+	[InlineData ("Test", "global::ObjCRuntime.Selector.GetHandle (\"Test\")")]
+	[InlineData ("name", "global::ObjCRuntime.Selector.GetHandle (\"name\")")]
+	[InlineData ("setName:", "global::ObjCRuntime.Selector.GetHandle (\"setName:\")")]
 	void SelectorGetHandleTests (string selector, string expectedDeclaration)
 	{
 		var declaration = SelectorGetHandle (selector);
@@ -35,7 +35,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 				"IntPtr_objc_msgSend",
 				"string",
 				ImmutableArray<ArgumentSyntax>.Empty,
-				"global::ObjCRuntime.Messaging.IntPtr_objc_msgSend (this.Handle, Selector.GetHandle (\"string\"))"
+				"global::ObjCRuntime.Messaging.IntPtr_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"string\"))"
 			];
 
 			// one param extra
@@ -46,7 +46,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 				"IntPtr_objc_msgSend",
 				"string",
 				args,
-				"global::ObjCRuntime.Messaging.IntPtr_objc_msgSend (this.Handle, Selector.GetHandle (\"string\"), arg1)"
+				"global::ObjCRuntime.Messaging.IntPtr_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"string\"), arg1)"
 			];
 
 			// several params
@@ -59,7 +59,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 				"IntPtr_objc_msgSend",
 				"string",
 				args,
-				"global::ObjCRuntime.Messaging.IntPtr_objc_msgSend (this.Handle, Selector.GetHandle (\"string\"), arg1, arg2, arg3)"
+				"global::ObjCRuntime.Messaging.IntPtr_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"string\"), arg1, arg2, arg3)"
 			];
 
 			// out parameter
@@ -71,7 +71,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 				"IntPtr_objc_msgSend",
 				"string",
 				args,
-				"global::ObjCRuntime.Messaging.IntPtr_objc_msgSend (this.Handle, Selector.GetHandle (\"string\"), &errorValue)"
+				"global::ObjCRuntime.Messaging.IntPtr_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle (\"string\"), &errorValue)"
 			];
 
 		}
@@ -96,7 +96,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 			yield return [
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1"))),
-				"CFArray.StringArrayFromHandle (arg1)"
+				"global::CoreFoundation.CFArray.StringArrayFromHandle (arg1)"
 			];
 
 			yield return [
@@ -104,7 +104,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 					Argument (IdentifierName ("arg1")),
 					Argument (IdentifierName ("arg2")),
 					Argument (IdentifierName ("arg3"))),
-				"CFArray.StringArrayFromHandle (arg1, arg2, arg3)"
+				"global::CoreFoundation.CFArray.StringArrayFromHandle (arg1, arg2, arg3)"
 			];
 		}
 
@@ -126,7 +126,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 			yield return [
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1"))),
-				"CFString.FromHandle (arg1)"
+				"global::CoreFoundation.CFString.FromHandle (arg1)"
 			];
 
 			yield return [
@@ -134,7 +134,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 					Argument (IdentifierName ("arg1")),
 					Argument (IdentifierName ("arg2")),
 					Argument (IdentifierName ("arg3"))),
-				"CFString.FromHandle (arg1, arg2, arg3)"
+				"global::CoreFoundation.CFString.FromHandle (arg1, arg2, arg3)"
 			];
 		}
 
@@ -352,7 +352,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 				"int",
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1"))),
-				"NSArray.ArrayFromHandleFunc<int> (arg1)"
+				"global::Foundation.NSArray.ArrayFromHandleFunc<int> (arg1)"
 			];
 
 			yield return [
@@ -361,7 +361,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 					Argument (IdentifierName ("arg1")),
 					Argument (IdentifierName ("arg2")),
 					Argument (IdentifierName ("arg3"))),
-				"NSArray.ArrayFromHandleFunc<string> (arg1, arg2, arg3)"
+				"global::Foundation.NSArray.ArrayFromHandleFunc<string> (arg1, arg2, arg3)"
 			];
 		}
 
@@ -414,7 +414,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 			yield return [
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1"))),
-				"NSArray.FromNSObjects (arg1)"
+				"global::Foundation.NSArray.FromNSObjects (arg1)"
 			];
 
 			yield return [
@@ -422,7 +422,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 					Argument (IdentifierName ("arg1")),
 					Argument (IdentifierName ("arg2")),
 					Argument (IdentifierName ("arg3"))),
-				"NSArray.FromNSObjects (arg1, arg2, arg3)"
+				"global::Foundation.NSArray.FromNSObjects (arg1, arg2, arg3)"
 			];
 		}
 
@@ -573,7 +573,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1"))),
 				false,
-				"Runtime.GetNSObject<NSString> (arg1)"
+				"global::ObjCRuntime.Runtime.GetNSObject<NSString> (arg1)"
 			];
 
 			yield return [
@@ -581,7 +581,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1"))),
 				true,
-				"Runtime.GetNSObject<NSString> (arg1)!"
+				"global::ObjCRuntime.Runtime.GetNSObject<NSString> (arg1)!"
 			];
 
 			yield return [
@@ -592,7 +592,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 					Argument (IdentifierName ("arg3"))
 				),
 				false,
-				"Runtime.GetNSObject<NSNumber> (arg1, arg2, arg3)"
+				"global::ObjCRuntime.Runtime.GetNSObject<NSNumber> (arg1, arg2, arg3)"
 			];
 
 			yield return [
@@ -603,7 +603,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 					Argument (IdentifierName ("arg3"))
 				),
 				true,
-				"Runtime.GetNSObject<NSNumber> (arg1, arg2, arg3)!"
+				"global::ObjCRuntime.Runtime.GetNSObject<NSNumber> (arg1, arg2, arg3)!"
 			];
 		}
 
@@ -626,7 +626,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1"))),
 				false,
-				"Runtime.GetINativeObject<NSString> (arg1)"
+				"global::ObjCRuntime.Runtime.GetINativeObject<NSString> (arg1)"
 			];
 
 			yield return [
@@ -634,7 +634,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1"))),
 				true,
-				"Runtime.GetINativeObject<NSString> (arg1)!"
+				"global::ObjCRuntime.Runtime.GetINativeObject<NSString> (arg1)!"
 			];
 
 			yield return [
@@ -645,7 +645,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 					Argument (IdentifierName ("arg3"))
 				),
 				false,
-				"Runtime.GetINativeObject<NSNumber> (arg1, arg2, arg3)"
+				"global::ObjCRuntime.Runtime.GetINativeObject<NSNumber> (arg1, arg2, arg3)"
 			];
 
 			yield return [
@@ -656,7 +656,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 					Argument (IdentifierName ("arg3"))
 				),
 				true,
-				"Runtime.GetINativeObject<NSNumber> (arg1, arg2, arg3)!"
+				"global::ObjCRuntime.Runtime.GetINativeObject<NSNumber> (arg1, arg2, arg3)!"
 			];
 		}
 
@@ -703,7 +703,200 @@ public class BindingSyntaxFactoryRuntimeTests {
 	void IntPtrZeroCheckTests (string variableName, ExpressionSyntax falseExpression, bool suppressNullableWarning, string expectedDeclaration)
 	{
 		var declaration = IntPtrZeroCheck (variableName, falseExpression, suppressNullableWarning);
-		var str = declaration.ToString ();
+		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
+	}
+
+	class TestDataRetainAndAutoreleaseNSObject : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
+		{
+			yield return [
+				ImmutableArray.Create (
+					Argument (IdentifierName ("arg1"))),
+				"global::ObjCRuntime.Runtime.RetainAndAutoreleaseNSObject (arg1)",
+			];
+
+			yield return [
+				ImmutableArray.Create (
+					Argument (IdentifierName ("arg1")),
+					Argument (IdentifierName ("arg2")),
+					Argument (IdentifierName ("arg3"))
+				),
+				"global::ObjCRuntime.Runtime.RetainAndAutoreleaseNSObject (arg1, arg2, arg3)",
+			];
+		}
+
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
+	}
+
+	[Theory]
+	[ClassData (typeof (TestDataRetainAndAutoreleaseNSObject))]
+	void RetainAndAutoreleaseNSObjectTests (ImmutableArray<ArgumentSyntax> arguments, string expectedDeclaration)
+	{
+		var declaration = RetainAndAutoreleaseNSObject (arguments);
+		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
+	}
+
+	class TestDataRetainAndAutoreleaseNativeObject : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
+		{
+			yield return [
+				ImmutableArray.Create (
+					Argument (IdentifierName ("arg1"))),
+				"global::ObjCRuntime.Runtime.RetainAndAutoreleaseNativeObject (arg1)",
+			];
+
+			yield return [
+				ImmutableArray.Create (
+					Argument (IdentifierName ("arg1")),
+					Argument (IdentifierName ("arg2")),
+					Argument (IdentifierName ("arg3"))
+				),
+				"global::ObjCRuntime.Runtime.RetainAndAutoreleaseNativeObject (arg1, arg2, arg3)",
+			];
+		}
+
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
+	}
+
+	[Theory]
+	[ClassData (typeof (TestDataRetainAndAutoreleaseNativeObject))]
+	void RetainAndAutoreleaseNativeObjectTests (ImmutableArray<ArgumentSyntax> arguments, string expectedDeclaration)
+	{
+		var declaration = RetainAndAutoreleaseNativeObject (arguments);
+		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
+	}
+
+	class TestDataGetCFArrayFromHandle : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
+		{
+			yield return [
+				"NSObject",
+				ImmutableArray.Create (
+					Argument (IdentifierName ("arg1"))),
+				"global::CoreFoundation.CFArray.ArrayFromHandle<NSObject> (arg1)",
+			];
+
+			yield return [
+				"NSString",
+				ImmutableArray.Create (
+					Argument (IdentifierName ("arg1")),
+					Argument (IdentifierName ("arg2")),
+					Argument (IdentifierName ("arg3"))
+				),
+				"global::CoreFoundation.CFArray.ArrayFromHandle<NSString> (arg1, arg2, arg3)",
+			];
+		}
+
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
+	}
+
+	[Theory]
+	[ClassData (typeof (TestDataGetCFArrayFromHandle))]
+	void GetCFArrayFromHandleTests (string objectType, ImmutableArray<ArgumentSyntax> arguments, string expectedDeclaration)
+	{
+		var declaration = GetCFArrayFromHandle (objectType, arguments);
+		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
+	}
+
+	class TestDataGetNSArrayFromHandle : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
+		{
+			yield return [
+				"NSObject",
+				ImmutableArray.Create (
+					Argument (IdentifierName ("arg1"))),
+				"global::Foundation.NSArray.ArrayFromHandle<NSObject> (arg1)",
+			];
+
+			yield return [
+				"NSString",
+				ImmutableArray.Create (
+					Argument (IdentifierName ("arg1")),
+					Argument (IdentifierName ("arg2")),
+					Argument (IdentifierName ("arg3"))
+				),
+				"global::Foundation.NSArray.ArrayFromHandle<NSString> (arg1, arg2, arg3)",
+			];
+		}
+
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
+	}
+
+	[Theory]
+	[ClassData (typeof (TestDataGetNSArrayFromHandle))]
+	void GetNSArrayFromHandleTests (string objectType, ImmutableArray<ArgumentSyntax> arguments, string expectedDeclaration)
+	{
+		var declaration = GetNSArrayFromHandle (objectType, arguments);
+		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
+	}
+
+	class TestDataGetIdentifierNameTests : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
+		{
+			// no namespace
+			yield return [
+				null!,
+				"NSObject",
+				false,
+				"NSObject",
+			];
+
+			yield return [
+				null!,
+				"NSObject",
+				true,
+				"NSObject",
+			];
+
+			// single namespace
+			yield return [
+				new [] { "Foundation" },
+				"NSObject",
+				false,
+				"Foundation.NSObject",
+			];
+
+			// global single namespace
+			yield return [
+				new [] { "Foundation" },
+				"NSObject",
+				true,
+				"global::Foundation.NSObject",
+			];
+
+			// multiple namespaces
+			yield return [
+				new [] {
+					"System",
+					"Runtime",
+					"CompilerServices",
+				},
+				"Unsafe",
+				false,
+				"System.Runtime.CompilerServices.Unsafe"
+			];
+
+			// global multiple namespaces
+			yield return [
+				new [] {
+					"System",
+					"Runtime",
+					"CompilerServices",
+				},
+				"Unsafe",
+				true,
+				"global::System.Runtime.CompilerServices.Unsafe"
+			];
+		}
+
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
+	}
+
+	[Theory]
+	[ClassData (typeof (TestDataGetIdentifierNameTests))]
+	void GetIdentifierNameTests (string []? @namespace, string @class, bool isGlobal, string expectedDeclaration)
+	{
+		var declaration = GetIdentifierName (@namespace, @class, isGlobal);
 		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
 	}
 

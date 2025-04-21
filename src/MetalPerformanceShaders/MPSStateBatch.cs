@@ -16,14 +16,12 @@ using Foundation;
 using Metal;
 
 namespace MetalPerformanceShaders {
-#if NET
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
-#endif
 	public static partial class MPSStateBatch {
 
 		[DllImport (Constants.MetalPerformanceShadersLibrary)]
@@ -60,17 +58,14 @@ namespace MetalPerformanceShaders {
 			GC.KeepAlive (commandBuffer);
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		[DllImport (Constants.MetalPerformanceShadersLibrary)]
 		static extern nuint MPSStateBatchResourceSize (IntPtr batch);
 
 		// Using 'NSArray<MPSState>' instead of `MPSState[]` because array 'Handle' matters.
-#if NET
 		/// <param name="stateBatch">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
@@ -79,7 +74,6 @@ namespace MetalPerformanceShaders {
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public static nuint GetResourceSize (NSArray<MPSState> stateBatch)
 		{
 			if (stateBatch is null)

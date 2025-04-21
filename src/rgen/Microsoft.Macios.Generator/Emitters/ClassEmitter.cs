@@ -16,6 +16,7 @@ using Microsoft.Macios.Generator.Formatters;
 using Microsoft.Macios.Generator.IO;
 using ObjCBindings;
 using static Microsoft.Macios.Generator.Emitters.BindingSyntaxFactory;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using Property = Microsoft.Macios.Generator.DataModel.Property;
 
 namespace Microsoft.Macios.Generator.Emitters;
@@ -118,12 +119,12 @@ public {bindingContext.Changes.Name} () : base (NSObjectFlag.Empty)
 					if (property.IsReferenceType) {
 						getterBlock.WriteRaw (
 $@"if ({backingField} is null)
-	{backingField} = {FieldConstantGetter (property)}
+	{backingField} = {ExpressionStatement (FieldConstantGetter (property))}
 return {backingField};
 ");
 					} else {
 						// directly return the call from the getter
-						getterBlock.WriteLine ($"return {FieldConstantGetter (property)}");
+						getterBlock.WriteLine ($"return {ExpressionStatement (FieldConstantGetter (property))}");
 					}
 				}
 
@@ -140,7 +141,7 @@ return {backingField};
 						setterBlock.WriteLine ($"{backingField} = value;");
 					}
 					// call the native code
-					setterBlock.WriteLine ($"{FieldConstantSetter (property, "value")}");
+					setterBlock.WriteLine ($"{ExpressionStatement (FieldConstantSetter (property, "value"))}");
 				}
 			}
 		}
@@ -180,26 +181,17 @@ return {backingField};
 					}
 					// depending on the property definition, we might need a temp variable to store
 					// the return value
-					if (property.UseTempReturn) {
-						var (tempVar, tempDeclaration) = GetReturnValueAuxVariable (property.ReturnType);
-						getterBlock.WriteRaw (
+					var (tempVar, tempDeclaration) = GetReturnValueAuxVariable (property.ReturnType);
+					getterBlock.WriteRaw (
 $@"{tempDeclaration}
 if (IsDirectBinding) {{
-	{invocations.Getter.Send}
+	{ExpressionStatement (invocations.Getter.Send)}
 }} else {{
-	{invocations.Getter.SendSuper}
+	{ExpressionStatement (invocations.Getter.SendSuper)}
 }}
+GC.KeepAlive (this);
 return {tempVar};
 ");
-					} else {
-						getterBlock.WriteRaw (
-$@"if (IsDirectBinding) {{
-	return {invocations.Getter.Send}
-}} else {{
-	return {invocations.Getter.SendSuper}
-}}
-");
-					}
 				}
 
 				var setter = property.GetAccessor (AccessorKind.Setter);

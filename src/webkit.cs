@@ -2123,6 +2123,9 @@ namespace WebKit {
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (NSView))]
 	partial interface WebFrameView {
+		/// <param name="frameRect">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect frameRect);
 
@@ -2731,6 +2734,9 @@ namespace WebKit {
 		[Export ("initWithFrame:frameName:groupName:")]
 		NativeHandle Constructor (CGRect frame, [NullAllowed] string frameName, [NullAllowed] string groupName);
 
+		/// <param name="frame">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect frame);
 

@@ -19,28 +19,17 @@ using CoreFoundation;
 using OS_nw_endpoint = System.IntPtr;
 using OS_nw_txt_record = System.IntPtr;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace Network {
-
-#if NET
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-#endif
 
 	public class NWEndpoint : NativeObject {
 		[Preserve (Conditional = true)]
-#if NET
 		internal NWEndpoint (NativeHandle handle, bool owns) : base (handle, owns) { }
-#else
-		public NWEndpoint (NativeHandle handle, bool owns) : base (handle, owns) { }
-#endif
 
 #if !COREBUILD
 		[DllImport (Constants.NetworkLibrary)]
@@ -177,27 +166,17 @@ namespace Network {
 		///         <remarks>To be added.</remarks>
 		public string? BonjourServiceDomain => Marshal.PtrToStringAnsi (nw_endpoint_get_bonjour_service_domain (GetCheckedHandle ()));
 
-#if NET
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (13, 0)]
-		[iOS (13, 0)]
-#endif
 		[DllImport (Constants.NetworkLibrary, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
 		static extern OS_nw_endpoint nw_endpoint_create_url (IntPtr url);
 
-#if NET
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (13, 0)]
-		[iOS (13, 0)]
-#endif
 		public static NWEndpoint? Create (string url)
 		{
 			if (url is null)
@@ -209,53 +188,30 @@ namespace Network {
 			return new NWEndpoint (handle, owns: true);
 		}
 
-#if NET
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (13, 0)]
-		[iOS (13, 0)]
-#endif
 		[DllImport (Constants.NetworkLibrary, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr nw_endpoint_get_url (OS_nw_endpoint endpoint);
 
-#if NET
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (13, 0)]
-		[iOS (13, 0)]
-#endif
 		public string? Url => Marshal.PtrToStringAnsi (nw_endpoint_get_url (GetCheckedHandle ()));
 
-
-#if NET
 		[SupportedOSPlatform ("tvos16.0")]
 		[SupportedOSPlatform ("macos13.0")]
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("maccatalyst16.0")]
-#else
-		[TV (16, 0)]
-		[Mac (13, 0)]
-		[iOS (16, 0)]
-#endif
 		[DllImport (Constants.NetworkLibrary)]
 		static extern unsafe byte* nw_endpoint_get_signature (OS_nw_endpoint endpoint, nuint* out_signature_length);
 
-#if NET
 		[SupportedOSPlatform ("tvos16.0")]
 		[SupportedOSPlatform ("macos13.0")]
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("maccatalyst16.0")]
-#else
-		[TV (16, 0)]
-		[Mac (13, 0)]
-		[iOS (16, 0)]
-#endif
 		public ReadOnlySpan<byte> Signature {
 			get {
 				unsafe {
@@ -269,29 +225,17 @@ namespace Network {
 			}
 		}
 
-#if NET
 		[SupportedOSPlatform ("tvos16.0")]
 		[SupportedOSPlatform ("macos13.0")]
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("maccatalyst16.0")]
-#else
-		[TV (16, 0)]
-		[Mac (13, 0)]
-		[iOS (16, 0)]
-#endif
 		[DllImport (Constants.NetworkLibrary)]
 		static extern OS_nw_txt_record nw_endpoint_copy_txt_record (OS_nw_endpoint endpoint);
 
-#if NET
 		[SupportedOSPlatform ("tvos16.0")]
 		[SupportedOSPlatform ("macos13.0")]
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("maccatalyst16.0")]
-#else
-		[TV (16, 0)]
-		[Mac (13, 0)]
-		[iOS (16, 0)]
-#endif
 		public NWTxtRecord? TxtRecord {
 			get {
 				var record = nw_endpoint_copy_txt_record (GetCheckedHandle ());

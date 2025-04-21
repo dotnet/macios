@@ -8,20 +8,11 @@ using ObjCRuntime;
 
 #nullable enable
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace Metal {
-
-#if NET
 	[SupportedOSPlatform ("ios16.0")]
 	[SupportedOSPlatform ("maccatalyst16.0")]
 	[SupportedOSPlatform ("macos13.0")]
 	[SupportedOSPlatform ("tvos16.0")]
-#else
-	[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
-#endif
 	public class MTLIOCompressionContext : DisposableObject {
 
 		[Preserve (Conditional = true)]

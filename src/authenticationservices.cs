@@ -356,6 +356,10 @@ namespace AuthenticationServices {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface ASCredentialServiceIdentifier : NSCopying, NSSecureCoding {
+		/// <param name="identifier">To be added.</param>
+		/// <param name="type">To be added.</param>
+		/// <summary>Constructs a new <see cref="T:AuthenticationServices.ASCredentialServiceIdentifier" /> with the specified <paramref name="identifier" /> and of the specified <paramref name="type" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithIdentifier:type:")]
 		NativeHandle Constructor (string identifier, ASCredentialServiceIdentifierType type);
 
@@ -378,6 +382,11 @@ namespace AuthenticationServices {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface ASPasswordCredentialIdentity : NSCopying, NSSecureCoding, ASCredentialIdentity {
+		/// <param name="serviceIdentifier">To be added.</param>
+		/// <param name="user">To be added.</param>
+		/// <param name="recordIdentifier">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithServiceIdentifier:user:recordIdentifier:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (ASCredentialServiceIdentifier serviceIdentifier, string user, [NullAllowed] string recordIdentifier);
@@ -491,6 +500,10 @@ namespace AuthenticationServices {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface ASPasswordCredential : NSCopying, NSSecureCoding, ASAuthorizationCredential {
+		/// <param name="user">To be added.</param>
+		/// <param name="password">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithUser:password:")]
 		NativeHandle Constructor (string user, string password);
 
@@ -524,6 +537,11 @@ namespace AuthenticationServices {
 	[DisableDefaultCtor]
 	interface ASWebAuthenticationSession {
 
+		/// <param name="url">To be added.</param>
+		/// <param name="callbackUrlScheme">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 17, 4, message: "Use the 'ASWebAuthenticationSessionCallback' overload instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 17, 4, message: "Use the 'ASWebAuthenticationSessionCallback' overload instead.")]
 		[Deprecated (PlatformName.MacOSX, 14, 4, message: "Use the 'ASWebAuthenticationSessionCallback' overload instead.")]

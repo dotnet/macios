@@ -3062,6 +3062,12 @@ namespace CoreAnimation {
 		[Export ("functionWithControlPoints::::")]
 		CAMediaTimingFunction FromControlPoints (float c1x, float c1y, float c2x, float c2y); /* all float, not CGFloat */
 
+		/// <param name="c1x">To be added.</param>
+		/// <param name="c1y">To be added.</param>
+		/// <param name="c2x">To be added.</param>
+		/// <param name="c2y">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithControlPoints::::")]
 		NativeHandle Constructor (float c1x, float c1y, float c2x, float c2y); /* all float, not CGFloat */
 

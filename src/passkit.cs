@@ -614,6 +614,9 @@ namespace PassKit {
 	[BaseType (typeof (UIViewController), Delegates = new string [] { "Delegate" }, Events = new Type [] { typeof (PKPaymentAuthorizationViewControllerDelegate) })]
 	[DisableDefaultCtor]
 	interface PKPaymentAuthorizationViewController {
+		/// <param name="request">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithPaymentRequest:")]
 		NativeHandle Constructor (PKPaymentRequest request);
@@ -1181,13 +1184,29 @@ namespace PassKit {
 	[DisableDefaultCtor]
 	interface PKAddPassesViewController {
 
+		/// <param name="nibName">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="bundle">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithNibName:bundle:")]
 		[PostGet ("NibBundle")]
 		NativeHandle Constructor ([NullAllowed] string nibName, [NullAllowed] NSBundle bundle);
 
+		/// <param name="pass">To be added.</param>
+		/// <summary>Creates a new <see cref="T:PassKit.PKAddPassesViewController" /> that displays the specified <paramref name="pass" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithPass:")]
 		NativeHandle Constructor (PKPass pass);
 
+		/// <param name="pass">To be added.</param>
+		/// <summary>Creates a new <see cref="T:PassKit.PKAddPassesViewController" /> for the specifies passes.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithPasses:")]
 		NativeHandle Constructor (PKPass [] pass);
 
@@ -1255,6 +1274,9 @@ namespace PassKit {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // designated
 	interface PKAddPaymentPassRequest : NSSecureCoding {
+		/// <summary>Default constructor, initializes a new instance of this class.</summary>
+		/// <remarks>
+		///         </remarks>
 		[DesignatedInitializer]
 		[Export ("init")]
 		NativeHandle Constructor ();
@@ -1303,6 +1325,9 @@ namespace PassKit {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface PKAddPaymentPassRequestConfiguration : NSSecureCoding {
+		/// <param name="encryptionScheme">To be added.</param>
+		/// <summary>Creates a new <see cref="T:PassKit.PKAddPaymentPassRequestConfiguration" />. In iOS 9, the only valid <paramref name="encryptionScheme" /> is <see cref="P:PassKit.PKEncryptionScheme.Ecc_V2" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithEncryptionScheme:")]
 		NativeHandle Constructor (NSString encryptionScheme);
@@ -1400,6 +1425,13 @@ namespace PassKit {
 		[Export ("canAddPaymentPass")]
 		bool CanAddPaymentPass { get; }
 
+		/// <param name="configuration">To be added.</param>
+		/// <param name="viewControllerDelegate">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithRequestConfiguration:delegate:")]
 		NativeHandle Constructor (PKAddPaymentPassRequestConfiguration configuration, [NullAllowed] IPKAddPaymentPassViewControllerDelegate viewControllerDelegate);
@@ -1481,6 +1513,12 @@ namespace PassKit {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (PKObject))]
 	interface PKPass : NSSecureCoding, NSCopying {
+		/// <param name="data">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>Creates a new <see cref="T:PassKit.PKPass" />, possibly returning an error.</summary>
+		/// <remarks>
+		///           <para>If <paramref name="error" /> is not <see langword="null" />, it will indicate an error in creation and the resulting <see cref="T:PassKit.PKPass" /> should not be used.</para>
+		///         </remarks>
 		[Export ("initWithData:error:")]
 		NativeHandle Constructor (NSData data, out NSError error);
 
@@ -1932,6 +1970,10 @@ namespace PassKit {
 		// note: named like UIButton method
 		PKPaymentButton FromType (PKPaymentButtonType buttonType, PKPaymentButtonStyle buttonStyle);
 
+		/// <param name="type">To be added.</param>
+		/// <param name="style">To be added.</param>
+		/// <summary>Creates a new Pass Kit payment button with the specified <paramref name="type" /> and <paramref name="style" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("initWithPaymentButtonType:paymentButtonStyle:")]
 		[DesignatedInitializer]
@@ -1961,6 +2003,9 @@ namespace PassKit {
 		[Export ("addPassButtonWithStyle:")]
 		PKAddPassButton Create (PKAddPassButtonStyle addPassButtonStyle);
 
+		/// <param name="style">To be added.</param>
+		/// <summary>Creates a new button, with the specified button <paramref name="style" />, for adding passes to the Wallet.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithAddPassButtonStyle:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (PKAddPassButtonStyle style);
@@ -2041,6 +2086,9 @@ namespace PassKit {
 		[NullAllowed, Export ("delegate", ArgumentSemantic.Weak)]
 		IPKPaymentAuthorizationControllerDelegate Delegate { get; set; }
 
+		/// <param name="request">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithPaymentRequest:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (PKPaymentRequest request);
@@ -2228,6 +2276,10 @@ namespace PassKit {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // there's a designated initializer and it does not accept null
 	interface PKLabeledValue {
+		/// <param name="label">To be added.</param>
+		/// <param name="value">To be added.</param>
+		/// <summary>Creates a new <see cref="T:PassKit.PKLabeledValue" /> with the specified label and value.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithLabel:value:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (string label, string value);
@@ -2379,6 +2431,13 @@ namespace PassKit {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface PKPaymentAuthorizationResult {
+		/// <param name="status">To be added.</param>
+		/// <param name="errors">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithStatus:errors:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (PKPaymentAuthorizationStatus status, [NullAllowed] NSError [] errors);
@@ -2405,6 +2464,9 @@ namespace PassKit {
 	[DisableDefaultCtor]
 	interface PKPaymentRequestUpdate {
 
+		/// <param name="paymentSummaryItems">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithPaymentSummaryItems:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (PKPaymentSummaryItem [] paymentSummaryItems);
@@ -2448,6 +2510,14 @@ namespace PassKit {
 	[DisableDefaultCtor]
 	interface PKPaymentRequestShippingContactUpdate {
 
+		/// <param name="errors">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="paymentSummaryItems">To be added.</param>
+		/// <param name="shippingMethods">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithErrors:paymentSummaryItems:shippingMethods:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor ([NullAllowed] NSError [] errors, PKPaymentSummaryItem [] paymentSummaryItems, PKShippingMethod [] shippingMethods);
@@ -2471,6 +2541,9 @@ namespace PassKit {
 	interface PKPaymentRequestShippingMethodUpdate {
 
 		// inlined
+		/// <param name="paymentSummaryItems">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithPaymentSummaryItems:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (PKPaymentSummaryItem [] paymentSummaryItems);
@@ -2493,6 +2566,9 @@ namespace PassKit {
 		NSError [] Errors { get; set; }
 
 		// inlined
+		/// <param name="paymentSummaryItems">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithPaymentSummaryItems:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (PKPaymentSummaryItem [] paymentSummaryItems);

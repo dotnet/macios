@@ -144,26 +144,13 @@ namespace Foundation {
 		}
 	}
 
-#if NET
-	/// <summary>Provides data for the  event.</summary>
-	///     <remarks>
-	///     </remarks>
-	[SupportedOSPlatform ("ios")]
-	[SupportedOSPlatform ("maccatalyst")]
-	[SupportedOSPlatform ("macos")]
-	[SupportedOSPlatform ("tvos")]
-#endif
+	/// <summary>Provides data for an event based on a posted <see cref="NSNotification" /> object.</summary>
 	public class NSNotificationEventArgs : EventArgs {
-		/// <summary>The underlying NSNotification object from the posted notification.</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>
-		///         </remarks>
+		/// <summary>The underlying <see cref="NSNotification" /> object from the posted notification.</summary>
 		public NSNotification Notification { get; private set; }
-		/// <param name="notification">To be added.</param>
-		///         <summary>Initializes a new instance of the NSNotificationEventArgs class.</summary>
-		///         <remarks>
-		///         </remarks>
+
+		/// <summary>Initializes a new instance of the <see cref="NSNotificationEventArgs" /> class.</summary>
+		/// <param name="notification">The underlying <see cref="NSNotification" /> object from the posted notification.</param>
 		public NSNotificationEventArgs (NSNotification notification)
 		{
 			Notification = notification;

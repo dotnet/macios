@@ -403,4 +403,43 @@ namespace NS {
 		Assert.NotNull (changes);
 		Assert.Equal (expected, changes);
 	}
+
+	[Theory]
+	[AllSupportedPlatforms]
+	void TypeInfoIsPointer (ApplePlatform platform)
+	{
+		var inputText = @"
+using System;
+using ObjCRuntime;
+using System.Collections.Generic;
+
+namespace NS {
+	public class MyClass {
+		public unsafe void ProcessPointer (int* pointer)
+		{
+			if (pointer is null)
+			{
+				return;
+			}
+
+			// Modify the value at the pointer
+			*pointer += 10;
+		}
+	}
+}
+";
+		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
+		Assert.Single (syntaxTrees);
+		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
+		var declaration = syntaxTrees [0].GetRoot ()
+			.DescendantNodes ().OfType<MethodDeclarationSyntax> ()
+			.FirstOrDefault ();
+		Assert.NotNull (declaration);
+		Assert.True (Method.TryCreate (declaration, semanticModel, out var changes));
+		Assert.NotNull (changes);
+		// ensure that the method has a single parameter
+		Assert.Single (changes.Value.Parameters);
+		// ensure that the first parameter is a pointer
+		Assert.True (changes.Value.Parameters [0].Type.IsPointer);
+	}
 }

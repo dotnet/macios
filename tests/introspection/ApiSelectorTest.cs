@@ -1340,15 +1340,6 @@ namespace Introspection {
 			// MPSGraphExecutable
 			case "initWithMPSGraphPackageAtURL:compilationDescriptor:":
 			case "initWithCoreMLPackageAtURL:compilationDescriptor:":
-			// NSAttributedString
-			case "initWithHTML:documentAttributes:":
-			case "initWithRTF:documentAttributes:":
-			case "initWithRTFD:documentAttributes:":
-			case "initWithURL:options:documentAttributes:error:":
-			case "initWithFileURL:options:documentAttributes:error:":
-			// NSUrlProtectionSpace
-			case "initWithHost:port:protocol:realm:authenticationMethod:":
-			case "initWithProxyHost:port:type:realm:authenticationMethod:":
 			// NSUserDefaults
 			case "initWithSuiteName:":
 			case "initWithUser:":
@@ -1360,25 +1351,17 @@ namespace Introspection {
 			case "initWithProfileNumber:profileLabel:defaultProfile:":
 			case "initWithProfileNumber:profileName:":
 			case "initWithProfileNumber:profileLabel:":
-			// MPSCnnBinaryConvolutionNode and MPSCnnBinaryFullyConnectedNode
-			case "initWithSource:weights:outputBiasTerms:outputScaleTerms:inputBiasTerms:inputScaleTerms:type:flags:":
 			// UISegmentedControl
 			case "initWithItems:":
 			// CLBeaconRegion
 			case "initWithUUID:identifier:":
 			case "initWithUUID:major:identifier:":
 			case "initWithUUID:major:minor:identifier:":
-			// Intents
-			case "initWithPersonHandle:nameComponents:displayName:image:contactIdentifier:customIdentifier:isMe:suggestionType:":
-			case "initWithPersonHandle:nameComponents:displayName:image:contactIdentifier:customIdentifier:isContactSuggestion:suggestionType:":
 			// NEHotspotConfiguration
 			case "initWithSSID:":
 			case "initWithSSID:passphrase:isWEP:":
 			case "initWithSSIDPrefix:":
 			case "initWithSSIDPrefix:passphrase:isWEP:":
-			// MapKit
-			case "initExcludingCategories:":
-			case "initIncludingCategories:":
 				var mi = m as MethodInfo;
 				return mi is not null && !mi.IsPublic && (mi.ReturnType.Name == "IntPtr" || mi.ReturnType.Name == "NativeHandle");
 			// NSAppleEventDescriptor

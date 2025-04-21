@@ -49,7 +49,7 @@ static partial class BindingSyntaxFactory {
 		return default;
 	}
 
-	internal static (StatementSyntax Send, StatementSyntax SendSuper) GetGetterInvocations (in Property property,
+	internal static (ExpressionSyntax Send, ExpressionSyntax SendSuper) GetGetterInvocations (in Property property,
 		string? selector, string? sendMethod, string? superSendMethod)
 	{
 		// if any of the methods is null, return a throw statement for both
@@ -63,19 +63,11 @@ static partial class BindingSyntaxFactory {
 		if (getterSend is null || getterSuperSend is null) {
 			return (ThrowNotImplementedException (), ThrowNotImplementedException ());
 		}
-		// the invocations depend on the property requiring a temp return variable or not
-		if (property.UseTempReturn) {
-			// get the getter invocation and assign it to the return variable 
-			return (
-				Send: ExpressionStatement (AssignVariable (Nomenclator.GetReturnVariableName (property.ReturnType), getterSend)),
-				SendSuper: ExpressionStatement (AssignVariable (Nomenclator.GetReturnVariableName (property.ReturnType), getterSuperSend))
-			);
-		}
-		// this is the simplest case, we just need to call the method and return the result, for that we
-		// use the MessagingInvocation method for each of the methods
+
+		// get the getter invocation and assign it to the return variable 
 		return (
-			Send: ExpressionStatement (getterSend),
-			SendSuper: ExpressionStatement (getterSuperSend)
+			Send: AssignVariable (Nomenclator.GetReturnVariableName (property.ReturnType), getterSend),
+			SendSuper: AssignVariable (Nomenclator.GetReturnVariableName (property.ReturnType), getterSuperSend)
 		);
 
 #pragma warning disable format
@@ -113,7 +105,7 @@ static partial class BindingSyntaxFactory {
 				
 				// NSObject[] => CFArray.ArrayFromHandle<Foundation.NSMetadataItem> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle ("results")))!;
 				{ ReturnType.IsArray: true, ReturnType.ArrayElementTypeIsWrapped: true } => 
-					GetNSArrayFromHandle (property.ReturnType.FullyQualifiedName, [Argument (objMsgSend)], suppressNullableWarning: !property.ReturnType.IsNullable),
+					GetCFArrayFromHandle (property.ReturnType.FullyQualifiedName, [Argument (objMsgSend)], suppressNullableWarning: !property.ReturnType.IsNullable),
 				
 				// Runtime.GetNSObject<Foundation.NSObject> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle ("delegate")));
 				{ ReturnType.IsArray: false, ReturnType.IsNSObject: true } => 

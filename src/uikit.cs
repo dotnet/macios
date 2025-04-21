@@ -7556,6 +7556,13 @@ namespace UIKit {
 		[Export ("initWithFontAttributes:")]
 		NativeHandle Constructor (NSDictionary attributes);
 
+		/// <param name="attributes">List of desired font attributes.</param>
+		/// <summary>Creates a font descriptor using the specified font attributes.</summary>
+		/// <remarks>
+		///           <para>
+		///           </para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[DesignatedInitializer]
 		[Wrap ("this (attributes.GetDictionary ()!)")]
 		NativeHandle Constructor (UIFontAttributes attributes);
@@ -24892,6 +24899,9 @@ namespace UIKit {
 		[Export ("initWithTypeIdentifiersForAcceptingClass:")]
 		NativeHandle Constructor (Class itemProviderReadingClass);
 
+		/// <param name="itemProviderReadingType">To be added.</param>
+		/// <summary>Creates a new paste configuration that specifies that the types in the specified type identifiers array can be pasted and/or dropped.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (new Class (itemProviderReadingType))")]
 		NativeHandle Constructor (Type itemProviderReadingType);
 

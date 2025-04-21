@@ -113,6 +113,9 @@ static partial class TypeSymbolExtensions {
 	public static BindFromData? GetBindFromData (this ISymbol symbol)
 		=> GetAttribute<BindFromData> (symbol, AttributesNames.BindFromAttribute, BindFromData.TryParse);
 
+	public static ForcedTypeData? GetForceTypeData (this ISymbol symbol)
+		=> GetAttribute<ForcedTypeData> (symbol, AttributesNames.ForcedTypeAttribute, ForcedTypeData.TryParse);
+
 	public static bool X86NeedStret (ITypeSymbol returnType)
 	{
 		if (!returnType.IsValueType || returnType.SpecialType == SpecialType.System_Enum ||
@@ -186,6 +189,10 @@ static partial class TypeSymbolExtensions {
 	/// <returns>If the type represented by the symtol needs a stret call variant.</returns>
 	public static bool NeedsStret (this ITypeSymbol returnType, Compilation compilation)
 	{
+		// pointers do not need stret
+		if (returnType is IPointerTypeSymbol)
+			return false;
+
 		if (X86NeedStret (returnType))
 			return true;
 

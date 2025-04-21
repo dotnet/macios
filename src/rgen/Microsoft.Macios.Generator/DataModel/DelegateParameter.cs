@@ -1,9 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 using System;
-using System.Diagnostics.CodeAnalysis;
+using System.Runtime.InteropServices;
 using System.Text;
-using Microsoft.CodeAnalysis;
 
 namespace Microsoft.Macios.Generator.DataModel;
 
@@ -11,7 +10,8 @@ namespace Microsoft.Macios.Generator.DataModel;
 /// Readonly structure that describes a parameter in a delegate. This class contains less information
 /// than Parameter since some of the extra fields make no sense in delegates.
 /// </summary>
-readonly struct DelegateParameter : IEquatable<DelegateParameter> {
+[StructLayout (LayoutKind.Auto)]
+readonly partial struct DelegateParameter : IEquatable<DelegateParameter> {
 
 	/// <summary>
 	/// Parameter position in the method.
@@ -55,18 +55,6 @@ readonly struct DelegateParameter : IEquatable<DelegateParameter> {
 		Type = type;
 	}
 
-	public static bool TryCreate (IParameterSymbol symbol,
-		[NotNullWhen (true)] out DelegateParameter? parameter)
-	{
-		parameter = new (symbol.Ordinal, new (symbol.Type), symbol.Name) {
-			IsOptional = symbol.IsOptional,
-			IsParams = symbol.IsParams,
-			IsThis = symbol.IsThis,
-			ReferenceKind = symbol.RefKind.ToReferenceKind (),
-		};
-		return true;
-	}
-
 	/// <inheritdoc/>
 	public bool Equals (DelegateParameter other)
 	{
@@ -81,6 +69,8 @@ readonly struct DelegateParameter : IEquatable<DelegateParameter> {
 		if (IsParams != other.IsParams)
 			return false;
 		if (IsThis != other.IsThis)
+			return false;
+		if (ForcedType != other.ForcedType)
 			return false;
 		return ReferenceKind == other.ReferenceKind;
 	}
@@ -125,7 +115,9 @@ readonly struct DelegateParameter : IEquatable<DelegateParameter> {
 		sb.Append ($"IsOptional: {IsOptional}, ");
 		sb.Append ($"IsParams: {IsParams}, ");
 		sb.Append ($"IsThis: {IsThis}, ");
-		sb.Append ($"ReferenceKind: {ReferenceKind} ");
+		sb.Append ($"ReferenceKind: {ReferenceKind}, ");
+		sb.Append ($"ForcedType: {ForcedType?.ToString () ?? "null"} ");
+		sb.Append ('}');
 		return sb.ToString ();
 	}
 }

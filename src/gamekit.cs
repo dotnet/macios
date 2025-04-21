@@ -653,12 +653,20 @@ namespace GameKit {
 		[Export ("initWithLeaderboardIdentifier:forPlayer:")]
 		NativeHandle Constructor (string identifier, string playerID);
 
-		/// <param name="identifier">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <remarks>To be added.</remarks>
+#if XAMCORE_5_0
+		/// <summary>Create a new <see cref="GKScore" /> for the specified leaderboard.</summary>
+		/// <param name="identifier">The identifier for the leaderboard the score is sent to.</param>
+#else
+		/// <summary>Create a new <see cref="GKScore" /> for the specified leaderboard.</summary>
+		/// <param name="categoryOrIdentifier">The identifier for the leaderboard the score is sent to.</param>
+#endif
 		[MacCatalyst (13, 1)]
 		[Export ("initWithLeaderboardIdentifier:")]
+#if XAMCORE_5_0
 		NativeHandle Constructor (string identifier);
+#else
+		NativeHandle Constructor (string categoryOrIdentifier);
+#endif
 
 		[NullAllowed]
 		[MacCatalyst (13, 1)]
@@ -1674,6 +1682,9 @@ namespace GameKit {
 		[Async]
 		void ResetAchivements ([NullAllowed] Action<NSError> completionHandler);
 
+		/// <summary>Default constructor that initializes a new instance of this class with no parameters.</summary>
+		/// <remarks>
+		///         </remarks>
 		[Wrap ("this ((string) null!)")]
 		NativeHandle Constructor ();
 

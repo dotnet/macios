@@ -374,6 +374,7 @@ namespace AudioUnit {
 		[Obsolete ("Use the 'Main' element instead.")]
 		Master = 0, // 0
 #endif
+		/// <summary>To be added.</summary>
 		Main = 0, // 0
 	}
 

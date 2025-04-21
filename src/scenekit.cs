@@ -3352,6 +3352,10 @@ namespace SceneKit {
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		NativeHandle Constructor (NSUrl url, [NullAllowed] NSDictionary options);
 
+		/// <param name="url">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (url, options.GetDictionary ())")]
 		NativeHandle Constructor (NSUrl url, SCNSceneLoadingOptions options);
 
@@ -3359,6 +3363,10 @@ namespace SceneKit {
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		NativeHandle Constructor (NSData data, [NullAllowed] NSDictionary options);
 
+		/// <param name="data">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (data, options.GetDictionary ())")]
 		NativeHandle Constructor (NSData data, SCNSceneLoadingOptions options);
 
@@ -4200,6 +4208,10 @@ namespace SceneKit {
 		[NullAllowed]
 		EAGLContext EAGLContext { get; set; }
 
+		/// <param name="frame">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("this (frame, options.GetDictionary ())")]
 		NativeHandle Constructor (CGRect frame, [NullAllowed] SCNRenderingOptions options);
@@ -4207,6 +4219,12 @@ namespace SceneKit {
 		[Export ("initWithFrame:options:")]
 		NativeHandle Constructor (CGRect frame, [NullAllowed] NSDictionary options);
 
+		/// <param name="frame">Frame used by the view, expressed in iOS points.</param>
+		/// <summary>Initializes the SCNView with the specified frame.</summary>
+		/// <remarks>
+		///           <para>This constructor is used to programmatically create a new instance of SCNView with the specified dimension in the frame.   The object will only be displayed once it has been added to a view hierarchy by calling AddSubview in a containing view.</para>
+		///           <para>This constructor is not invoked when deserializing objects from storyboards or XIB filesinstead the constructor that takes an NSCoder parameter is invoked.</para>
+		///         </remarks>
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect frame);
 

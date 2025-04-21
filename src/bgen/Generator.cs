@@ -1809,8 +1809,15 @@ public partial class Generator : IMemberGatherer {
 				print ("public partial class {0} : DictionaryContainer {{", typeName);
 				indent++;
 				sw.WriteLine ("#if !COREBUILD");
+				if (BindingTouch.SupportsXmlDocumentation) {
+					print ($"/// <summary>Creates a new <see cref=\"{typeName}\" /> with default (empty) values.</summary>");
+				}
 				print ("[Preserve (Conditional = true)]");
 				print ("public {0} () : base (new NSMutableDictionary ()) {{}}\n", typeName);
+				if (BindingTouch.SupportsXmlDocumentation) {
+					print ($"/// <summary>Creates a new <see cref=\"{typeName}\" /> from the values that are specified in <paramref name=\"dictionary\" />.</summary>");
+					print ($"/// <param name=\"dictionary\">The dictionary to use to populate the properties of this type.</param>");
+				}
 				print ("[Preserve (Conditional = true)]");
 				print ("public {0} (NSDictionary? dictionary) : base (dictionary) {{}}\n", typeName);
 
@@ -2012,7 +2019,15 @@ public partial class Generator : IMemberGatherer {
 				indent++;
 			}
 
+			if (BindingTouch.SupportsXmlDocumentation) {
+				print ($"/// <summary>Provides data for an event based on a posted <see cref=\"NSNotification\" /> object.</summary>");
+			}
 			print ("public partial class {0} : NSNotificationEventArgs {{", eventType.Name); indent++;
+
+			if (BindingTouch.SupportsXmlDocumentation) {
+				print ($"/// <summary>Initializes a new instance of the <see cref=\"{eventType.Name}\" /> class.</summary>");
+				print ($"/// <param name=\"notification\">The underlying <see cref=\"NSNotification\" /> object from the posted notification.</param>");
+			}
 			print ("public {0} (NSNotification notification) : base (notification) \n{{\n}}\n", eventType.Name);
 			int i = 0;
 			foreach (var prop in eventType.GetProperties (BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)) {
@@ -7068,7 +7083,15 @@ public partial class Generator : IMemberGatherer {
 
 				var pars = eventArgTypes [eaclass];
 
+				if (BindingTouch.SupportsXmlDocumentation) {
+					print ("/// <summary>Provides data for an event based on an Objective-C protocol method.</summary>");
+				}
 				print ("public partial class {0} : EventArgs {{", eaclass); indent++;
+				if (BindingTouch.SupportsXmlDocumentation) {
+					print ($"/// <summary>Create a new instance of the <see cref=\"{eaclass}\" /> with the specified event data.</summary>");
+					foreach (var p in pars.Skip (1))
+						print ($"/// <param name=\"{p.Name.GetSafeParamName ()}\">The value for the <see cref=\"{GetPublicParameterName (p)}\" /> property.</param>");
+				}
 				print ("public {0} ({1})", eaclass, RenderParameterDecl (pars.Skip (1), true));
 				print ("{");
 				indent++;

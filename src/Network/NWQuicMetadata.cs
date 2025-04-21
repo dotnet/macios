@@ -8,32 +8,17 @@ using Security;
 using OS_nw_protocol_metadata = System.IntPtr;
 using SecProtocolMetadataRef = System.IntPtr;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 #nullable enable
 
 namespace Network {
-
-#if NET
 	[SupportedOSPlatform ("tvos15.0")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios15.0")]
 	[SupportedOSPlatform ("maccatalyst")]
-#else
-	[TV (15, 0)]
-	[iOS (15, 0)]
-	[MacCatalyst (15, 0)]
-#endif
 	public class NWQuicMetadata : NWProtocolMetadata {
 
 		[Preserve (Conditional = true)]
-#if NET
 		internal NWQuicMetadata (NativeHandle handle, bool owns) : base (handle, owns) { }
-#else
-		public NWQuicMetadata (NativeHandle handle, bool owns) : base (handle, owns) { }
-#endif
 
 		[DllImport (Constants.NetworkLibrary)]
 		static extern ulong nw_quic_get_remote_idle_timeout (OS_nw_protocol_metadata metadata);

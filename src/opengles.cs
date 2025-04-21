@@ -50,9 +50,16 @@ namespace OpenGLES {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // init now marked with NS_UNAVAILABLE
 	interface EAGLContext {
+		/// <param name="api">To be added.</param>
+		/// <summary>Creates a new EAGL context that supports the specified rendering API.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithAPI:")]
 		NativeHandle Constructor (EAGLRenderingAPI api);
 
+		/// <param name="api">To be added.</param>
+		/// <param name="sharegroup">To be added.</param>
+		/// <summary>Creates a new EAGL context in the specified share group and that supports the specified rendering API.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithAPI:sharegroup:")]
 		NativeHandle Constructor (EAGLRenderingAPI api, EAGLSharegroup sharegroup);

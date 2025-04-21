@@ -740,6 +740,9 @@ namespace MediaLibrary {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MLMediaLibrary {
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithOptions:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSDictionary<NSString, NSObject> options);

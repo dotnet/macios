@@ -23,8 +23,6 @@ namespace Cecil.Tests {
 			"Foundation.NSString::.ctor(System.String,System.Int32,System.Int32)",
 			"Foundation.NSString::.ctor(System.String)",
 			"Foundation.NSThread::.ctor(Foundation.NSObject,ObjCRuntime.Selector,Foundation.NSObject)",
-			"Foundation.NSUrlProtectionSpace::.ctor(System.String,System.Int32,System.String,System.String,System.String,System.Boolean)",
-			"Foundation.NSUrlProtectionSpace::.ctor(System.String,System.Int32,System.String,System.String,System.String)",
 			"Foundation.NSUserDefaults::.ctor(System.String,Foundation.NSUserDefaultsType)",
 			"Foundation.NSUuid::.ctor(System.Byte[])",
 			"GameplayKit.GKPath::.ctor(System.Numerics.Vector2[],System.Single,System.Boolean)",

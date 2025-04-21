@@ -22,6 +22,11 @@ readonly partial struct Constructor {
 		init => overrideExportData = value;
 	}
 
+	/// <summary>
+	/// Return the native selector that references the enum value.
+	/// </summary>
+	public string? Selector => ExportMethodData?.Selector;
+
 	public Constructor (string type,
 		SymbolAvailability symbolAvailability,
 		Dictionary<string, List<AttributeData>> attributes,

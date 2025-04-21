@@ -539,6 +539,9 @@ namespace MediaPlayer {
 		[Export ("collectionWithItems:")]
 		MPMediaItemCollection FromItems (MPMediaItem [] items);
 
+		/// <param name="items">To be added.</param>
+		/// <summary>Creates a new <see cref="T:MediaPlayer.MPMediaItemCollection" /> from the provided <paramref name="items" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithItems:")]
 		NativeHandle Constructor (MPMediaItem [] items);
@@ -659,6 +662,9 @@ namespace MediaPlayer {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (UIViewController), Delegates = new string [] { "WeakDelegate" }, Events = new Type [] { typeof (MPMediaPickerControllerDelegate) })]
 	interface MPMediaPickerController {
+		/// <param name="mediaTypes">To be added.</param>
+		/// <summary>Creates a new <see cref="T:MediaPlayer.MPMediaPickerController" /> for media with the specified <paramref name="mediaTypes" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithMediaTypes:")]
 		NativeHandle Constructor (MPMediaType mediaTypes);
@@ -761,6 +767,9 @@ namespace MediaPlayer {
 	// Objective-C exception thrown.  Name: MPMediaItemCollectionInitException Reason: -init is not supported, use -initWithItems:
 	[DisableDefaultCtor]
 	interface MPMediaPlaylist : NSSecureCoding {
+		/// <param name="items">To be added.</param>
+		/// <summary>Creates a new <see cref="T:MediaPlayer.MPMediaPlaylist" /> from the specified <paramref name="items" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithItems:")]
 		NativeHandle Constructor (MPMediaItem [] items);
 
@@ -918,6 +927,12 @@ namespace MediaPlayer {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MPMediaQuery : NSSecureCoding, NSCopying {
+		/// <param name="filterPredicates">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithFilterPredicates:")]
 		NativeHandle Constructor ([NullAllowed] NSSet filterPredicates);
@@ -1438,6 +1453,9 @@ namespace MediaPlayer {
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 	[BaseType (typeof (NSObject))]
 	interface MPMoviePlayerController : MPMediaPlayback {
+		/// <param name="url">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[DesignatedInitializer]
 		[Export ("initWithContentURL:")]
@@ -1976,6 +1994,9 @@ namespace MediaPlayer {
 	[MacCatalyst (14, 0)] // docs says 13.0 but this throws: NSInvalidArgumentException Reason: MPMoviePlayerViewController is no longer available. Use AVPlayerViewController in AVKit.
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 	interface MPMoviePlayerViewController {
+		/// <param name="url">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithContentURL:")]
 		NativeHandle Constructor (NSUrl url);
@@ -1994,6 +2015,9 @@ namespace MediaPlayer {
 	[DisableDefaultCtor]
 	interface MPMusicPlayerController : MPMediaPlayback {
 
+		/// <summary>Default constructor that initializes a new instance of this class with no parameters.</summary>
+		/// <remarks>
+		///         </remarks>
 		[Export ("init")]
 		[Deprecated (PlatformName.iOS, 11, 3)]
 		[NoTV]
@@ -2175,6 +2199,12 @@ namespace MediaPlayer {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (UIView))]
 	interface MPVolumeView {
+		/// <param name="frame">Frame used by the view, expressed in iOS points.</param>
+		/// <summary>Initializes the MPVolumeView with the specified frame.</summary>
+		/// <remarks>
+		///           <para>This constructor is used to programmatically create a new instance of MPVolumeView with the specified dimension in the frame.   The object will only be displayed once it has been added to a view hierarchy by calling AddSubview in a containing view.</para>
+		///           <para>This constructor is not invoked when deserializing objects from storyboards or XIB filesinstead the constructor that takes an NSCoder parameter is invoked.</para>
+		///         </remarks>
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect frame);
 
@@ -2518,6 +2548,9 @@ namespace MediaPlayer {
 	[DisableDefaultCtor] // crash if used
 	interface MPContentItem {
 
+		/// <param name="identifier">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithIdentifier:")]
 		NativeHandle Constructor (string identifier);
@@ -3241,6 +3274,19 @@ namespace MediaPlayer {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // pre-emptive
 	interface MPNowPlayingInfoLanguageOption {
+		/// <param name="languageOptionType">To be added.</param>
+		/// <param name="languageTag">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="languageOptionCharacteristics">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="displayName">To be added.</param>
+		/// <param name="identifier">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithType:languageTag:characteristics:displayName:identifier:")]
 		NativeHandle Constructor (MPNowPlayingInfoLanguageOptionType languageOptionType, string languageTag, [NullAllowed] NSString [] languageOptionCharacteristics, string displayName, string identifier);
 
@@ -3306,6 +3352,14 @@ namespace MediaPlayer {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // pre-emptive
 	interface MPNowPlayingInfoLanguageOptionGroup {
+		/// <param name="languageOptions">To be added.</param>
+		/// <param name="defaultLanguageOption">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="allowEmptySelection">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithLanguageOptions:defaultLanguageOption:allowEmptySelection:")]
 		NativeHandle Constructor (MPNowPlayingInfoLanguageOption [] languageOptions, [NullAllowed] MPNowPlayingInfoLanguageOption defaultLanguageOption, bool allowEmptySelection);
 
@@ -3420,6 +3474,9 @@ namespace MediaPlayer {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MPMediaPlaylistCreationMetadata {
+		/// <param name="name">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithName:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (string name);
@@ -3454,6 +3511,8 @@ namespace MediaPlayer {
 	[BaseType (typeof (NSObject))]
 	interface MPMusicPlayerQueueDescriptor : NSSecureCoding {
 
+		/// <summary>Default constructor, initializes a new instance of this class.</summary>
+		/// <remarks />
 		[Export ("init")]
 		[Deprecated (PlatformName.iOS, 11, 3)]
 		[Deprecated (PlatformName.TvOS, 11, 3)]
@@ -3467,9 +3526,15 @@ namespace MediaPlayer {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPMusicPlayerQueueDescriptor))]
 	interface MPMusicPlayerMediaItemQueueDescriptor {
+		/// <param name="query">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithQuery:")]
 		NativeHandle Constructor (MPMediaQuery query);
 
+		/// <param name="itemCollection">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithItemCollection:")]
 		NativeHandle Constructor (MPMediaItemCollection itemCollection);
 
@@ -3514,6 +3579,9 @@ namespace MediaPlayer {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPMusicPlayerQueueDescriptor))]
 	interface MPMusicPlayerStoreQueueDescriptor {
+		/// <param name="storeIDs">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithStoreIDs:")]
 		NativeHandle Constructor (string [] storeIDs);
 
@@ -3607,6 +3675,9 @@ namespace MediaPlayer {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MPMusicPlayerPlayParameters : NSSecureCoding {
+		/// <param name="dictionary">To be added.</param>
+		/// <summary>Creates a new music player play parameters object with the provided dictionary of parameters.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithDictionary:")]
 		NativeHandle Constructor (NSDictionary dictionary);
 
@@ -3623,6 +3694,9 @@ namespace MediaPlayer {
 	[BaseType (typeof (MPMusicPlayerQueueDescriptor))]
 	[DisableDefaultCtor]
 	interface MPMusicPlayerPlayParametersQueueDescriptor {
+		/// <param name="playParametersQueue">To be added.</param>
+		/// <summary>Creates a new queue descriptor from the specified queue.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithPlayParametersQueue:")]
 		NativeHandle Constructor (MPMusicPlayerPlayParameters [] playParametersQueue);
 

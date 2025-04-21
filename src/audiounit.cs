@@ -131,10 +131,25 @@ namespace AudioUnit {
 		[Export ("registerSubclass:asComponentDescription:name:version:")] // AUAudioUnitImplementation
 		void RegisterSubclass (Class cls, AudioComponentDescription componentDescription, string name, uint version);
 
+		/// <param name="componentDescription">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="outError">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Creates a new <see cref="T:AudioUnit.AUAudioUnit" /> with the specified values.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithComponentDescription:options:error:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (AudioComponentDescription componentDescription, AudioComponentInstantiationOptions options, [NullAllowed] out NSError outError);
 
+		/// <param name="componentDescription">To be added.</param>
+		/// <param name="outError">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Creates a new <see cref="T:AudioUnit.AUAudioUnit" /> with the specified values.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithComponentDescription:error:")]
 		NativeHandle Constructor (AudioComponentDescription componentDescription, [NullAllowed] out NSError outError);
 
@@ -673,6 +688,13 @@ namespace AudioUnit {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface AUAudioUnitBus {
+		/// <param name="format">A value that provides a detailed description of the channels and formats of audio data.</param>
+		/// <param name="outError">
+		///           <para>A location to which to record success or failure.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Creates a new <see cref="T:AudioUnit.AUAudioUnitBus" /> with the specified <paramref name="format" /> and reports success or failure to <paramref name="outError" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithFormat:error:")]
 		NativeHandle Constructor (AVAudioFormat format, [NullAllowed] out NSError outError);
 
@@ -772,10 +794,19 @@ namespace AudioUnit {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface AUAudioUnitBusArray : INSFastEnumeration {
+		/// <param name="owner">The owner of the bus array.</param>
+		/// <param name="busType">Whether the bus array will be for input or output.</param>
+		/// <param name="busArray">The bus array whose members to copy.</param>
+		/// <summary>Creates a new <see cref="T:AudioUnit.AUAudioUnitBusArray" />, with the specified owner ant type, by copying the buses in <paramref name="busArray" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithAudioUnit:busType:busses:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (AUAudioUnit owner, AUAudioUnitBusType busType, AUAudioUnitBus [] busArray);
 
+		/// <param name="owner">The owner of the bus array.</param>
+		/// <param name="busType">Whether the bus array will be for input or output.</param>
+		/// <summary>Creates a new <see cref="T:AudioUnit.AUAudioUnitBusArray" /> with the specified owner ant type.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithAudioUnit:busType:")]
 		NativeHandle Constructor (AUAudioUnit owner, AUAudioUnitBusType busType);
 

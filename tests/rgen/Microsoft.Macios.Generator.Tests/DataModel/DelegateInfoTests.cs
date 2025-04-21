@@ -344,6 +344,61 @@ namespace NS {
 					]
 				)
 			];
+
+			const string customDelegateForcedType = @"
+using System;
+using Foundation;
+using ObjCBindings;
+
+namespace NS {
+
+	public class MyNSObject : NSObject {
+	}
+
+	public class MyClass {
+		public delegate int? Callback([ForcedType] MyNSObject name);
+
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				customDelegateForcedType,
+				new Method (
+					type: "NS.MyClass",
+					name: "MyMethod",
+					returnType: ReturnTypeForVoid (),
+					symbolAvailability: new (),
+					exportMethodData: new (),
+					attributes: [],
+					modifiers: [
+						SyntaxFactory.Token (SyntaxKind.PublicKeyword),
+					],
+					parameters: [
+						new (
+							position: 0,
+							type: ReturnTypeForDelegate (
+								"NS.MyClass.Callback",
+								delegateInfo: new (
+									name: "Invoke",
+									returnType: ReturnTypeForInt (isNullable: true),
+									parameters: [
+										new (
+											position: 0,
+											type: ReturnTypeForNSObject (nsObjectName: "NS.MyNSObject"),
+											name: "name"
+										) {
+											ForcedType = new (),
+										},
+									]
+								)
+							),
+							name: "cb"
+						)
+					]
+				)
+			];
 		}
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();

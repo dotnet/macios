@@ -129,6 +129,11 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	/// </summary>
 	public bool ArrayElementTypeIsWrapped { get; init; }
 
+	/// <summary>
+	/// Returns, if the type is an array, if its elements implement the INativeObject interface.
+	/// </summary>
+	public bool ArrayElementIsINativeObject { get; init; }
+
 	readonly bool isNSObject = false;
 
 	/// <summary>
@@ -169,6 +174,11 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	/// If the parameter is a delegate. The method information of the invoke.
 	/// </summary>
 	public DelegateInfo? Delegate { get; init; } = null;
+
+	/// <summary>
+	/// If the type is a pointer type.
+	/// </summary>
+	public bool IsPointer { get; init; }
 
 	/// <summary>
 	/// True if the symbol represents a generic type.
@@ -242,6 +252,7 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		IsStruct = symbol.TypeKind == TypeKind.Struct;
 		IsInterface = symbol.TypeKind == TypeKind.Interface;
 		IsDelegate = symbol.TypeKind == TypeKind.Delegate;
+		IsPointer = symbol is IPointerTypeSymbol;
 		IsNativeIntegerType = symbol.IsNativeIntegerType;
 		IsNativeEnum = symbol.HasAttribute (AttributesNames.NativeAttribute);
 		IsProtocol = symbol.HasAttribute (AttributesNames.ProtocolAttribute);
@@ -259,6 +270,7 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 			IsArray = true;
 			ArrayElementType = arraySymbol.ElementType.SpecialType;
 			ArrayElementTypeIsWrapped = arraySymbol.ElementType.IsWrapped ();
+			ArrayElementIsINativeObject = arraySymbol.ElementType.IsINativeObject ();
 		}
 
 		// try to get the named type symbol to have more educated decisions

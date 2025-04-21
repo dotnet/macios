@@ -1682,6 +1682,9 @@ namespace GameKit {
 		[Async]
 		void ResetAchivements ([NullAllowed] Action<NSError> completionHandler);
 
+		/// <summary>Default constructor that initializes a new instance of this class with no parameters.</summary>
+		/// <remarks>
+		///         </remarks>
 		[Wrap ("this ((string) null!)")]
 		NativeHandle Constructor ();
 

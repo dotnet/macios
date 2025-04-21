@@ -1557,6 +1557,12 @@ namespace HomeKit {
 	[BaseType (typeof (UIView))]
 	interface HMCameraView {
 		// inlined ctor
+		/// <param name="frame">Frame used by the view, expressed in iOS points.</param>
+		/// <summary>Initializes the HMCameraView with the specified frame.</summary>
+		/// <remarks>
+		///           <para>This constructor is used to programmatically create a new instance of HMCameraView with the specified dimension in the frame.   The object will only be displayed once it has been added to a view hierarchy by calling AddSubview in a containing view.</para>
+		///           <para>This constructor is not invoked when deserializing objects from storyboards or XIB filesinstead the constructor that takes an NSCoder parameter is invoked.</para>
+		///         </remarks>
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect frame);
 
@@ -2029,6 +2035,10 @@ namespace HomeKit {
 		[Export ("initWithSignificantEvent:offset:")]
 		NativeHandle Constructor (NSString significantEvent, [NullAllowed] NSDateComponents offset);
 
+		/// <param name="significantEvent">To be added.</param>
+		/// <param name="offset">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (HMSignificantEventExtensions.GetConstant (significantEvent)!, offset)")]
 		NativeHandle Constructor (HMSignificantEvent significantEvent, [NullAllowed] NSDateComponents offset);
 
@@ -2059,6 +2069,10 @@ namespace HomeKit {
 		[Export ("initWithSignificantEvent:offset:")]
 		NativeHandle Constructor (NSString significantEvent, [NullAllowed] NSDateComponents offset);
 
+		/// <param name="significantEvent">To be added.</param>
+		/// <param name="offset">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (HMSignificantEventExtensions.GetConstant (significantEvent)!, offset)")]
 		NativeHandle Constructor (HMSignificantEvent significantEvent, [NullAllowed] NSDateComponents offset);
 

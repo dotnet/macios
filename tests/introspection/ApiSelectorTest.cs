@@ -1340,9 +1340,6 @@ namespace Introspection {
 			// MPSGraphExecutable
 			case "initWithMPSGraphPackageAtURL:compilationDescriptor:":
 			case "initWithCoreMLPackageAtURL:compilationDescriptor:":
-			// NSUrlProtectionSpace
-			case "initWithHost:port:protocol:realm:authenticationMethod:":
-			case "initWithProxyHost:port:type:realm:authenticationMethod:":
 			// NSUserDefaults
 			case "initWithSuiteName:":
 			case "initWithUser:":
@@ -1365,9 +1362,6 @@ namespace Introspection {
 			case "initWithSSID:passphrase:isWEP:":
 			case "initWithSSIDPrefix:":
 			case "initWithSSIDPrefix:passphrase:isWEP:":
-			// MapKit
-			case "initExcludingCategories:":
-			case "initIncludingCategories:":
 				var mi = m as MethodInfo;
 				return mi is not null && !mi.IsPublic && (mi.ReturnType.Name == "IntPtr" || mi.ReturnType.Name == "NativeHandle");
 			// NSAppleEventDescriptor

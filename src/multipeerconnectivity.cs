@@ -35,6 +35,9 @@ namespace MultipeerConnectivity {
 	[DisableDefaultCtor] // NSInvalidArgumentException Reason: -[MCPeerID init]: unrecognized selector sent to instance 0x7d721090
 	partial interface MCPeerID : NSCopying, NSSecureCoding {
 
+		/// <param name="myDisplayName">The name for the peer.</param>
+		/// <summary>Constructor that assigns to the <see cref="P:MultipeerConnectivity.MCPeerID.DisplayName" /> property.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithDisplayName:")]
 		NativeHandle Constructor (string myDisplayName);
@@ -55,6 +58,9 @@ namespace MultipeerConnectivity {
 	[DisableDefaultCtor] // crash when calling `description` selector
 	partial interface MCSession {
 
+		/// <param name="myPeerID">The identity of the local peer.</param>
+		/// <summary>Constructs a session with the specified identity for the local peer.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithPeer:")]
 		NativeHandle Constructor (MCPeerID myPeerID);
 
@@ -293,6 +299,14 @@ namespace MultipeerConnectivity {
 	[DisableDefaultCtor] // NSInvalidArgumentException -[MCNearbyServiceAdvertiser init]: unrecognized selector sent to instance 0x19195e50
 	partial interface MCNearbyServiceAdvertiser {
 
+		/// <param name="myPeerID">To be added.</param>
+		/// <param name="info">A small dictionary to aide discovery (see <see cref="P:MultipeerConnectivity.MCNearbyServiceAdvertiser.DiscoveryInfo" />).<para tool="nullallowed">This parameter can be <see langword="null" />.</para></param>
+		/// <param name="serviceType">A string between 1 and 15 characters long, identifying the protocol being used.</param>
+		/// <summary>Creates an object identified as <paramref name="myPeerID" /> for the specific <paramref name="serviceType" />.</summary>
+		/// <remarks>
+		///           <para>The <paramref name="serviceType" /> must be a string, between 1 and 15 characters long, identifying the network protocol being advertised. A common pattern is "{company_name}-{apptype}", e.g., <c>xamarin-txtchat</c>.</para>
+		///           <para>The <paramref name="info" /> dictionary has size and content limitations (see <see cref="P:MultipeerConnectivity.MCNearbyServiceAdvertiser.DiscoveryInfo" />). </para>
+		///         </remarks>
 		[DesignatedInitializer]
 		[Export ("initWithPeer:discoveryInfo:serviceType:")]
 		NativeHandle Constructor (MCPeerID myPeerID, [NullAllowed] NSDictionary info, string serviceType);
@@ -395,6 +409,12 @@ namespace MultipeerConnectivity {
 	[DisableDefaultCtor] // NSInvalidArgumentException -[MCNearbyServiceBrowser init]: unrecognized selector sent to instance 0x15519a70
 	partial interface MCNearbyServiceBrowser {
 
+		/// <param name="myPeerID">The ID of the local peer.</param>
+		/// <param name="serviceType">The network protocol.</param>
+		/// <summary>Constructs a browser for the specified <paramref name="serviceType" /> protocol, identifying the local peer as <paramref name="myPeerID" />.</summary>
+		/// <remarks>
+		///           <para>The <paramref name="serviceType" /> must be a string, between 1 and 15 characters long, identifying the network protocol being advertised. A common pattern is "{company_name}-{apptype}", e.g., <c>xamarin-txtchat</c>.</para>
+		///         </remarks>
 		[DesignatedInitializer]
 		[Export ("initWithPeer:serviceType:")]
 		NativeHandle Constructor (MCPeerID myPeerID, string serviceType);
@@ -507,14 +527,34 @@ namespace MultipeerConnectivity {
 	[BaseType (typeof (UIViewController))]
 	[DisableDefaultCtor] // NSInvalidArgumentException -[MCPeerPickerViewController initWithNibName:bundle:]: unrecognized selector sent to instance 0x15517b90
 	partial interface MCBrowserViewController : MCNearbyServiceBrowserDelegate {
+		/// <param name="nibName">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="bundle">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Creates a new multipeer browser view controller from the named NIB in the specified bundle.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithNibName:bundle:")]
 		[PostGet ("NibBundle")]
 		NativeHandle Constructor ([NullAllowed] string nibName, [NullAllowed] NSBundle bundle);
 
+		/// <param name="browser">To be added.</param>
+		/// <param name="session">To be added.</param>
+		/// <summary>Constructor where the service type and options are defined in <paramref name="browser" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithBrowser:session:")]
 		NativeHandle Constructor (MCNearbyServiceBrowser browser, MCSession session);
 
+		/// <param name="serviceType">To be added.</param>
+		/// <param name="session">To be added.</param>
+		/// <summary>Constructor that advertises the <paramref name="serviceType" /> network protocol.</summary>
+		/// <remarks>
+		///           <para>The <paramref name="serviceType" /> must be a string, between 1 and 15 characters long, identifying the network protocol being advertised. A common pattern is "{company_name}-{apptype}", e.g., <c>xamarin-txtchat</c>.</para>
+		///         </remarks>
 		[Export ("initWithServiceType:session:")]
 		NativeHandle Constructor (string serviceType, MCSession session);
 
@@ -626,6 +666,14 @@ namespace MultipeerConnectivity {
 	[DisableDefaultCtor] // NSInvalidArgumentException Reason: -[MCAdvertiserAssistant init]: unrecognized selector sent to instance 0x7ea7fa40
 	interface MCAdvertiserAssistant {
 
+		/// <param name="serviceType">A string between 1 and 15 characters long, identifying the protocol being used.</param>
+		/// <param name="info">A small dictionary to aide discovery (see <see cref="P:MultipeerConnectivity.MCAdvertiserAssistant.DiscoveryInfo" />).<para tool="nullallowed">This parameter can be <see langword="null" />.</para></param>
+		/// <param name="session">To be added.</param>
+		/// <summary>Creates an object for the specific <paramref name="serviceType" /> and <paramref name="session" />.</summary>
+		/// <remarks>
+		///           <para>The <paramref name="serviceType" /> must be a string, between 1 and 15 characters long, identifying the network protocol being advertised. A common pattern is "{company_name}-{apptype}", e.g., <c>xamarin-txtchat</c>.</para>
+		///           <para>The <paramref name="info" /> dictionary has size and content limitations (see <see cref="P:MultipeerConnectivity.MCAdvertiserAssistant.DiscoveryInfo" />). </para>
+		///         </remarks>
 		[DesignatedInitializer]
 		[Export ("initWithServiceType:discoveryInfo:session:")]
 		NativeHandle Constructor (string serviceType, [NullAllowed] NSDictionary info, MCSession session);

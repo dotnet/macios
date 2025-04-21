@@ -34,6 +34,16 @@ namespace ContactsUI {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (UIViewController))]
 	interface CNContactPickerViewController {
+		/// <param name="nibName">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="bundle">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Creates a new <see cref="T:ContactsUI.CNContactPickerViewController" /> from the specified <paramref name="nibName" /> in the specified <paramref name="bundle" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithNibName:bundle:")]
 		[PostGet ("NibBundle")]
 		NativeHandle Constructor ([NullAllowed] string nibName, [NullAllowed] NSBundle bundle);
@@ -188,6 +198,16 @@ namespace ContactsUI {
 	[BaseType (typeof (UIViewController))]
 #endif
 	interface CNContactViewController {
+		/// <param name="nibName">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="bundle">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Creates a new <see cref="T:ContactsUI.CNContactViewController" /> from the specified <paramref name="nibName" /> in the specified <paramref name="bundle" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithNibName:bundle:")]
 #if !MONOMAC
 		[PostGet ("NibBundle")]

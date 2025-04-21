@@ -1094,8 +1094,8 @@ namespace ObjCRuntime {
 		[UnconditionalSuppressMessage ("", "IL2026", Justification = "The APIs this method tries to access are marked by other means, so this is linker-safe.")]
 		// IL2065: Value passed to implicit 'this' parameter of method 'System.Type.GetMethod(String)' can not be statically determined and may not meet 'DynamicallyAccessedMembersAttribute' requirements."),
 		[UnconditionalSuppressMessage ("", "IL2065", Justification = "The APIs this method tries to access are marked by other means, so this is linker-safe.")]
-		// IL2062: Value passed to parameter 'interfaceType' of method 'System.Type.GetInterfaceMap(Type)' can not be statically determined and may not meet 'DynamicallyAccessedMembersAttribute' requirements."),
-		[UnconditionalSuppressMessage ("", "IL2062", Justification = "The APIs this method tries to access are marked by other means, so this is linker-safe.")]
+		// IL2072: ObjCRuntime.Runtime.GetBlockWrapperCreator(MethodInfo, Int32): 'interfaceType' argument does not satisfy 'DynamicallyAccessedMemberTypes.PublicMethods', 'DynamicallyAccessedMemberTypes.NonPublicMethods' in call to 'System.Type.GetInterfaceMap(Type)'. The return value of method 'System.Type.GetInterfaces()' does not have matching annotations. The source value must declare at least the same requirements as those declared on the target location it is assigned to.
+		[UnconditionalSuppressMessage ("", "IL2072", Justification = "The APIs this method tries to access are marked by other means, so this is linker-safe.")]
 #endif
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		static MethodInfo? GetBlockWrapperCreator (MethodInfo method, int parameter)

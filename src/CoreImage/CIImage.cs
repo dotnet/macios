@@ -35,6 +35,26 @@ using CoreVideo;
 #nullable enable
 
 namespace CoreImage {
+	/// <summary>When passed to <see cref="M:CoreImage.CIImage.GetAutoAdjustmentFilters(CoreImage.CIAutoAdjustmentFilterOptions)" />, limits the results.</summary>
+	///     <remarks>
+	///       <para>The sample below shows a typical use.</para>
+	///       <example>
+	///         <code lang="csharp lang-csharp"><![CDATA[
+	/// void PrepareFixes (CIImage img)
+	/// {
+	///     var opt = new CIAutoAdjustmentFilterOptions () {
+	///     	RedEye = true,
+	///     	AutoAdjustCrop = true
+	///     };
+	///     CIImage img = null;
+	///     foreach (var filter in img.GetAutoAdjustmentFilters (opt)) {
+	///     	filter.Image = img;
+	///     	img = filter.OutputImage;
+	///     }
+	/// }
+	/// ]]></code>
+	///       </example>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

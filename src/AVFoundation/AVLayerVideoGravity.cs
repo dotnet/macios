@@ -35,6 +35,8 @@ using ObjCRuntime;
 
 namespace AVFoundation {
 	// Convenience enum for native strings - AVAnimation.h
+	/// <summary>An enumeration whose values specify how a video should resize itself to display within a layer's <see cref="P:CoreAnimation.CALayer.Bounds" />.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum AVLayerVideoGravity {
 		/// <summary>To be added.</summary>
 		ResizeAspect,

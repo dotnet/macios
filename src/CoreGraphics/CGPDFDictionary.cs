@@ -39,6 +39,12 @@ using ObjCRuntime;
 using CoreFoundation;
 
 namespace CoreGraphics {
+	/// <summary>Represents a PDF Dictionary.</summary>
+	///     <remarks>Dictionaries are used extensively in the PDF file format.
+	///     Instances of this class represent dictionaries in your documents
+	///     and the methods in this class can be used to look up the values in
+	///     the dictionary or iterate over all of the elements of
+	///     it.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -72,6 +78,12 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		unsafe extern static byte CGPDFDictionaryGetBoolean (/* CGPDFDictionaryRef */ IntPtr dict, /* const char* */ IntPtr key, /* CGPDFBoolean* */ byte* value);
 
+		/// <param name="key">The name of the element to get out of the dictionary.</param>
+		///         <param name="result">The boolean value, if the function returns true.</param>
+		///         <summary>Looks up a boolean value by name on the dictionary.</summary>
+		///         <returns>true if the value was found on the dictionary and the out parameter set to the value.   If the value is false, the result of the out parameter is undefined.</returns>
+		///         <remarks>
+		///         </remarks>
 		public bool GetBoolean (string key, out bool result)
 		{
 			if (key is null)
@@ -121,6 +133,12 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		unsafe extern static byte CGPDFDictionaryGetName (/* CGPDFDictionaryRef */ IntPtr dict, /* const char* */ IntPtr key, /* const char ** */ IntPtr* value);
 
+		/// <param name="key">The name of the element to get out of the dictionary.</param>
+		///         <param name="result">The name, if the function returns true.</param>
+		///         <summary>Looks up a name in the dictionary.</summary>
+		///         <returns>true if the value was found on the dictionary and the out parameter set to the value.   If the value is false, the result of the out parameter is undefined.</returns>
+		///         <remarks>
+		///         </remarks>
 		public bool GetName (string key, out string? result)
 		{
 			if (key is null)
@@ -138,6 +156,12 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		unsafe extern static byte CGPDFDictionaryGetDictionary (/* CGPDFDictionaryRef */ IntPtr dict, /* const char* */ IntPtr key, /* CGPDFDictionaryRef* */ IntPtr* result);
 
+		/// <param name="key">The name of the element to get out of the dictionary.</param>
+		///         <param name="result">The dictionary, if the function returns true.</param>
+		///         <summary>Looks up a dictionary value by name on the dictionary.</summary>
+		///         <returns>true if the value was found on the dictionary and the out parameter set to the value.   If the value is false, the result of the out parameter is undefined.</returns>
+		///         <remarks>
+		///         </remarks>
 		public bool GetDictionary (string key, out CGPDFDictionary? result)
 		{
 			if (key is null)
@@ -156,6 +180,12 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		unsafe extern static byte CGPDFDictionaryGetStream (/* CGPDFDictionaryRef */ IntPtr dict, /* const char* */ IntPtr key, /* CGPDFStreamRef* */ IntPtr* value);
 
+		/// <param name="key">The name of the element to get out of the dictionary.</param>
+		///         <param name="result">The stream, if the function returns true.</param>
+		///         <summary>Looks up a CGPDFStream in the dictionary.</summary>
+		///         <returns>true if the value was found on the dictionary and the out parameter set to the value.   If the value is false, the result of the out parameter is undefined.</returns>
+		///         <remarks>
+		///         </remarks>
 		public bool GetStream (string key, out CGPDFStream? result)
 		{
 			if (key is null)
@@ -174,6 +204,12 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		unsafe extern static byte CGPDFDictionaryGetArray (/* CGPDFDictionaryRef */ IntPtr dict, /* const char* */ IntPtr key, /* CGPDFArrayRef* */ IntPtr* value);
 
+		/// <param name="key">The name of the element to get out of the dictionary.</param>
+		///         <param name="array">The array, if the function returns true.</param>
+		///         <summary>Looks up an array value by name on the dictionary.</summary>
+		///         <returns>true if the value was found on the dictionary and the out parameter set to the value.   If the value is false, the result of the out parameter is undefined.</returns>
+		///         <remarks>
+		///         </remarks>
 		public bool GetArray (string key, out CGPDFArray? array)
 		{
 			if (key is null)
@@ -192,6 +228,11 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		unsafe extern static void CGPDFDictionaryApplyFunction (/* CGPDFDictionaryRef */ IntPtr dic, delegate* unmanaged<IntPtr, IntPtr, IntPtr, void> function, /* void* */ IntPtr info);
 
+		/// <param name="key">To be added.</param>
+		///     <param name="value">To be added.</param>
+		///     <param name="info">To be added.</param>
+		///     <summary>To be added.</summary>
+		///     <remarks>To be added.</remarks>
 		public delegate void ApplyCallback (string? key, object? value, object? info);
 
 		[UnmanagedCallersOnly]
@@ -206,6 +247,10 @@ namespace CoreGraphics {
 				callback (Marshal.PtrToStringUTF8 (key), CGPDFObject.FromHandle (pdfObject), data.Item2);
 		}
 
+		/// <param name="callback">To be added.</param>
+		///         <param name="info">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void Apply (ApplyCallback callback, object? info = null)
 		{
 			var data = new Tuple<ApplyCallback, object?> (callback, info);
@@ -227,6 +272,9 @@ namespace CoreGraphics {
 				callback (Marshal.PtrToStringUTF8 (key), new CGPDFObject (pdfObject));
 		}
 
+		/// <param name="callback">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void Apply (Action<string?, CGPDFObject> callback)
 		{
 			GCHandle gch = GCHandle.Alloc (callback);
@@ -241,6 +289,12 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		unsafe extern static byte CGPDFDictionaryGetString (/* CGPDFDictionaryRef */ IntPtr dict, /* const char* */ IntPtr key, /* CGPDFStringRef* */ IntPtr* value);
 
+		/// <param name="key">The name of the element to get out of the dictionary.</param>
+		///         <param name="result">The string, if the function returns true.</param>
+		///         <summary>Looks up a string in the dictionary.</summary>
+		///         <returns>true if the value was found on the dictionary and the out parameter set to the value.   If the value is false, the result of the out parameter is undefined.</returns>
+		///         <remarks>
+		///         </remarks>
 		public bool GetString (string key, out string? result)
 		{
 			if (key is null)

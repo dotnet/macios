@@ -33,7 +33,7 @@ namespace NS {
 
 			yield return [
 				arrayNSObjectResult,
-				"NSArray.FromNSObjects (auxVariable).GetHandle ()"
+				"global::ObjCRuntime.Runtime.RetainAndAutoreleaseNSObject (global::Foundation.NSArray.FromNSObjects (auxVariable))"
 			];
 
 			const string nsObjectResult = @"
@@ -51,7 +51,45 @@ namespace NS {
 
 			yield return [
 				nsObjectResult,
-				"auxVariable.GetHandle ()"
+				"global::ObjCRuntime.Runtime.RetainAndAutoreleaseNSObject (auxVariable)"
+			];
+
+			const string nativeObjectResult = @"
+using System;
+using Foundation;
+using Security;
+
+namespace NS {
+
+	public delegate SecKeyChain Callback ();
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				nativeObjectResult,
+				"global::ObjCRuntime.Runtime.RetainAndAutoreleaseNativeObject (auxVariable)"
+			];
+
+			const string protocolResult = @"
+using System;
+using Foundation;
+using Metal;
+
+namespace NS {
+
+	public delegate IMTLTexture Callback ();
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				protocolResult,
+				"global::ObjCRuntime.Runtime.RetainAndAutoreleaseNSObject (auxVariable)"
 			];
 
 			const string systemStringResult = @"
@@ -170,6 +208,22 @@ namespace NS {
 
 			yield return [
 				intReturnType,
+				"auxVariable"
+			];
+
+			const string voidReturnType = @"
+using System;
+
+namespace NS {
+	public delegate void Callback()
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				voidReturnType,
 				null!
 			];
 		}

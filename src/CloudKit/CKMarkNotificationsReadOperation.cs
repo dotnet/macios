@@ -15,6 +15,9 @@ using NativeHandle = System.IntPtr;
 #endif
 
 namespace CloudKit {
+	/// <summary>Marks push notifications as read. Typically used by apps that use push notifications to track record changes.</summary>
+	///     <remarks>To be added.</remarks>
+	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CloudKit/Reference/CKMarkNotificationsReadOperation_class/index.html">Apple documentation for <c>CKMarkNotificationsReadOperation</c></related>
 	[Register ("CKMarkNotificationsReadOperation", SkipRegistration = true)]
 #if NET
 	[UnsupportedOSPlatform ("ios", "Use 'CKDatabaseSubscription', 'CKFetchDatabaseChangesOperation' and 'CKFetchRecordZoneChangesOperation' instead.")]
@@ -77,6 +80,10 @@ namespace CloudKit {
 		}
 	} /* class CKMarkNotificationsReadOperation */
 
+	/// <param name="notificationIDsMarkedRead">To be added.</param>
+	///     <param name="operationError">To be added.</param>
+	///     <summary>Delegate for the <see cref="P:CloudKit.CKMarkNotificationsReadOperation.Completed" /> property.</summary>
+	///     <remarks>To be added.</remarks>
 	[EditorBrowsable (EditorBrowsableState.Never)]
 	public delegate void CKMarkNotificationsReadHandler (CKNotificationID [] notificationIDsMarkedRead, NSError operationError);
 }

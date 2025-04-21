@@ -12,6 +12,8 @@ namespace CoreMotion {
 
 	// CMDeviceMotion.h
 #if NET
+	/// <summary>Encapsulates the accuracy and field strength of the magnetometer after calibration.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]

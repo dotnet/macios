@@ -40,9 +40,15 @@ namespace ScriptingBridge {
 	[BaseType (typeof (NSObject))]
 	interface SBObject : NSCoding {
 
+		/// <param name="properties">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithProperties:")]
 		NativeHandle Constructor (NSDictionary properties);
 
+		/// <param name="data">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithData:")]
 		NativeHandle Constructor (NSObject data);
 
@@ -67,21 +73,45 @@ namespace ScriptingBridge {
 		[Export ("initWithCapacity:")]
 		NativeHandle Constructor (nuint capacity);
 
+		/// <param name="name">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("objectWithName:")]
 		NSObject ObjectWithName (string name);
 
+		/// <param name="identifier">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("objectWithID:")]
 		NSObject ObjectWithID (NSObject identifier);
 
+		/// <param name="location">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("objectAtLocation:")]
 		NSObject ObjectAtLocation (NSObject location);
 
+		/// <param name="selector">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("arrayByApplyingSelector:")]
 		NSObject [] ArrayByApplyingSelector (Selector selector);
 
+		/// <param name="aSelector">To be added.</param>
+		///         <param name="argument">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("arrayByApplyingSelector:withObject:")]
 		NSObject [] ArrayByApplyingSelector (Selector aSelector, NSObject argument);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("get")]
 		NSObject [] Get ();
 	}
@@ -113,12 +143,21 @@ namespace ScriptingBridge {
 	[BaseType (typeof (SBObject), Delegates = new string [] { "WeakDelegate" }, Events = new Type [] { typeof (SBApplicationDelegate) })]
 	[DisableDefaultCtor] // An uncaught exception was raised: *** -[SBApplication init]: should never be used.
 	interface SBApplication : NSCoding {
+		/// <param name="url">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithURL:")]
 		NativeHandle Constructor (NSUrl url);
 
+		/// <param name="pid">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithProcessIdentifier:")]
 		NativeHandle Constructor (int /* pid_t = int */ pid);
 
+		/// <param name="ident">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithBundleIdentifier:")]
 		NativeHandle Constructor (string ident);
 
@@ -137,6 +176,10 @@ namespace ScriptingBridge {
 		[Export ("applicationWithProcessIdentifier:")]
 		IntPtr _FromProcessIdentifier (int /* pid_t = int */ pid);
 
+		/// <param name="className">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("classForScriptingClass:")]
 		Class ClassForScripting (string className);
 
@@ -146,6 +189,8 @@ namespace ScriptingBridge {
 		[Export ("isRunning")]
 		bool IsRunning { get; }
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("activate")]
 		void Activate ();
 

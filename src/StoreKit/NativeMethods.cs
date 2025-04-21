@@ -8,6 +8,8 @@ namespace StoreKit {
 
 	partial class SKReceiptRefreshRequest {
 #if NET
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]

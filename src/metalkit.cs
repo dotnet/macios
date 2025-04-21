@@ -311,6 +311,11 @@ namespace MetalKit {
 		[Export ("newTextureWithContentsOfURL:options:completionHandler:"), Internal]
 		void FromUrl (NSUrl url, [NullAllowed] NSDictionary options, MTKTextureLoaderCallback completionHandler);
 
+		/// <param name="url">The location of the image data to load.</param>
+		///         <param name="options">Options for loading the texture data.</param>
+		///         <param name="completionHandler">A handler to run after the texture is loaded.</param>
+		///         <summary>Creates a new Metal texture from the resource at the specified <paramref name="url" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("FromUrl (url, options.GetDictionary (), completionHandler)")]
 		[Async]
 		void FromUrl (NSUrl url, [NullAllowed] MTKTextureLoaderOptions options, MTKTextureLoaderCallback completionHandler);
@@ -318,6 +323,11 @@ namespace MetalKit {
 		[Export ("newTextureWithData:options:completionHandler:"), Internal]
 		void FromData (NSData data, [NullAllowed] NSDictionary options, MTKTextureLoaderCallback completionHandler);
 
+		/// <param name="data">The texture data.</param>
+		///         <param name="options">Options for loading the texture data.</param>
+		///         <param name="completionHandler">A handler to run after the texture is loaded.</param>
+		///         <summary>Creates and returns a Metal texture from the specified image data and options, and runs a completion handler when it completes.</summary>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("FromData (data, options.GetDictionary (), completionHandler)")]
 		[Async]
 		void FromData (NSData data, [NullAllowed] MTKTextureLoaderOptions options, MTKTextureLoaderCallback completionHandler);
@@ -325,6 +335,11 @@ namespace MetalKit {
 		[Export ("newTextureWithCGImage:options:completionHandler:"), Internal]
 		void FromCGImage (CGImage cgImage, [NullAllowed] NSDictionary options, MTKTextureLoaderCallback completionHandler);
 
+		/// <param name="cgImage">A Core Graphics image.</param>
+		///         <param name="options">Options for loading the texture data.</param>
+		///         <param name="completionHandler">A handler to run after the texture is loaded.</param>
+		///         <summary>Creates and returns a Metal texture from the specified Core Graphics image and options, and runs a completion handler when it completes.</summary>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("FromCGImage (cgImage, options.GetDictionary (), completionHandler)")]
 		[Async]
 		void FromCGImage (CGImage cgImage, [NullAllowed] MTKTextureLoaderOptions options, MTKTextureLoaderCallback completionHandler);
@@ -333,6 +348,12 @@ namespace MetalKit {
 		[return: NullAllowed]
 		IMTLTexture FromUrl (NSUrl url, [NullAllowed] NSDictionary options, out NSError error);
 
+		/// <param name="url">The location of the image data to load.</param>
+		///         <param name="options">Options for loading the texture data.</param>
+		///         <param name="error">Contains the error, if one occurred.</param>
+		///         <summary>Creates a new Metal texture from the resource at the specified <paramref name="url" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("FromUrl (url, options.GetDictionary (), out error)")]
 		[return: NullAllowed]
 		IMTLTexture FromUrl (NSUrl url, [NullAllowed] MTKTextureLoaderOptions options, out NSError error);
@@ -342,6 +363,11 @@ namespace MetalKit {
 		[Async]
 		void FromUrls (NSUrl [] urls, [NullAllowed] NSDictionary options, MTKTextureLoaderArrayCallback completionHandler);
 
+		/// <param name="urls">The locations of the image data to load.</param>
+		///         <param name="options">Options for loading the texture data.</param>
+		///         <param name="completionHandler">A handler to run after the texture is loaded.</param>
+		///         <summary>Creates an array of new Metal textures from the resources at the specified <paramref name="urls" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("FromUrls (urls, options.GetDictionary (), completionHandler)")]
 		[Async]
@@ -351,6 +377,12 @@ namespace MetalKit {
 		[Export ("newTexturesWithContentsOfURLs:options:error:")]
 		IMTLTexture [] FromUrls (NSUrl [] urls, [NullAllowed] NSDictionary options, out NSError error);
 
+		/// <param name="urls">The locations of the image data to load.</param>
+		///         <param name="options">Options for loading the texture data.</param>
+		///         <param name="error">Contains the error, if one occurred.</param>
+		///         <summary>Creates an array of new Metal textures from the resources at the specified <paramref name="urls" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("FromUrls (urls, options.GetDictionary (), out error)")]
 		IMTLTexture [] FromUrls (NSUrl [] urls, [NullAllowed] MTKTextureLoaderOptions options, out NSError error);
@@ -359,6 +391,12 @@ namespace MetalKit {
 		[return: NullAllowed]
 		IMTLTexture FromData (NSData data, [NullAllowed] NSDictionary options, out NSError error);
 
+		/// <param name="data">The texture data.</param>
+		///         <param name="options">Options for loading the texture data.</param>
+		///         <param name="error">Contains the error, if one occurred.</param>
+		///         <summary>Creates and returns a Metal texture from the specified image data and options.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("FromData (data, options.GetDictionary (), out error)")]
 		[return: NullAllowed]
 		IMTLTexture FromData (NSData data, [NullAllowed] MTKTextureLoaderOptions options, out NSError error);
@@ -367,6 +405,12 @@ namespace MetalKit {
 		[return: NullAllowed]
 		IMTLTexture FromCGImage (CGImage cgImage, [NullAllowed] NSDictionary options, out NSError error);
 
+		/// <param name="cgImage">A Core Graphics image.</param>
+		///         <param name="options">Options for loading the texture data.</param>
+		///         <param name="error">Contains the error, if one occurred.</param>
+		///         <summary>Creates and returns a Metal texture from the specified Core Graphics image and options.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("FromCGImage (cgImage, options.GetDictionary (), out error)")]
 		[return: NullAllowed]
 		IMTLTexture FromCGImage (CGImage cgImage, [NullAllowed] MTKTextureLoaderOptions options, out NSError error);
@@ -424,6 +468,11 @@ namespace MetalKit {
 		[Async]
 		void FromTexture (MDLTexture texture, [NullAllowed] NSDictionary options, MTKTextureLoaderCallback completionHandler);
 
+		/// <param name="texture">The texture to load.</param>
+		///         <param name="options">Options for loading the texture data.</param>
+		///         <param name="completionHandler">A handler to run after the texture is loaded.</param>
+		///         <summary>Creates a new Metal texture from the specified <paramref name="texture" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("FromTexture (texture, options.GetDictionary (), completionHandler)")]
 		[Async]
@@ -434,6 +483,12 @@ namespace MetalKit {
 		[return: NullAllowed]
 		IMTLTexture FromTexture (MDLTexture texture, [NullAllowed] NSDictionary options, out NSError error);
 
+		/// <param name="texture">The texture to load.</param>
+		///         <param name="options">Options for loading the texture data.</param>
+		///         <param name="error">Contains the error, if one occurred.</param>
+		///         <summary>Creates a new Metal texture from the specified <paramref name="texture" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("FromTexture (texture, options.GetDictionary (), out error)")]
 		[return: NullAllowed]

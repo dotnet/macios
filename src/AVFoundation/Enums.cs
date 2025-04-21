@@ -443,7 +443,9 @@ namespace AVFoundation {
 	[Native]
 	// NSInteger - AVCaptureDevice.h
 	public enum AVCaptureDeviceTransportControlsPlaybackMode : long {
+		/// <summary>To be added.</summary>
 		NotPlaying,
+		/// <summary>To be added.</summary>
 		Playing,
 	}
 
@@ -456,9 +458,13 @@ namespace AVFoundation {
 	[Native]
 	// NSInteger - AVCaptureSession.h
 	public enum AVVideoFieldMode : long {
+		/// <summary>Both top and bottom interlaced video fields should be passed through.</summary>
 		Both,
+		/// <summary>Only the top interlaced video field should be passed through.</summary>
 		TopOnly,
+		/// <summary>Only the bottom interlaced video field should be passed through.</summary>
 		BottomOnly,
+		/// <summary>The top and bottom fields should be de-interlaced.</summary>
 		Deinterlace,
 	}
 
@@ -590,6 +596,7 @@ namespace AVFoundation {
 		BadParam = -50,
 		/// <summary>Indicates that another app with higher priority preempted the operation.</summary>
 		InsufficientPriority = 0x21707269, // '!pri'
+		/// <summary>Indicates that a required resource, such as an audio input, is not available on the device.</summary>
 		ResourceNotAvailable = 0x21726573, // '!res'
 		/// <summary>Indicates that an unspecified error occurred.</summary>
 		Unspecified = 0x77686174, // 'what'
@@ -977,12 +984,19 @@ namespace AVFoundation {
 	[NoMacCatalyst]
 	[Native]
 	public enum AVContentAuthorizationStatus : long {
+		/// <summary>To be added.</summary>
 		Unknown,
+		/// <summary>To be added.</summary>
 		Completed,
+		/// <summary>To be added.</summary>
 		Cancelled,
+		/// <summary>To be added.</summary>
 		TimedOut,
+		/// <summary>To be added.</summary>
 		Busy,
+		/// <summary>To be added.</summary>
 		NotAvailable,
+		/// <summary>To be added.</summary>
 		NotPossible,
 	}
 

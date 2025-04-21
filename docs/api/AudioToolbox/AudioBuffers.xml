@@ -1,14 +1,92 @@
 <Documentation>
   <Docs DocId="M:AudioToolbox.AudioBuffers.Dispose(System.Boolean)">
-        <param name="disposing">
-          <para>If set to <see langword="true" />, the method is invoked directly and will dispose managed and unmanaged resources;   If set to <see langword="false" /> the method is being called by the garbage collector finalizer and should only release unmanaged resources.</para>
-        </param>
-        <summary>Releases the resources used by the AudioBuffers object.</summary>
-        <remarks>
-          <para>This Dispose method releases the resources used by the AudioBuffers class.</para>
-          <para>This method is called by both the Dispose() method and the object finalizer (Finalize).    When invoked by the Dispose method, the parameter disposing <paramref name="disposing" /> is set to <see langword="true" /> and any managed object references that this object holds are also disposed or released;  when invoked by the object finalizer, on the finalizer thread the value is set to <see langword="false" />. </para>
-          <para>Calling the Dispose method when the application is finished using the AudioBuffers ensures that all external resources used by this managed object are released as soon as possible.  Once developers have invoked the Dispose method, the object is no longer useful and developers should no longer make any calls to it.</para>
-          <para>  For more information on how to override this method and on the Dispose/IDisposable pattern, read the ``Implementing a Dispose Method'' document at https://msdn.microsoft.com/en-us/library/fs2xkftw.aspx</para>
-        </remarks>
-      </Docs>
+    <param name="disposing">
+      <para>If set to <see langword="true" />, the method is invoked directly and will dispose managed and unmanaged resources;   If set to <see langword="false" /> the method is being called by the garbage collector finalizer and should only release unmanaged resources.</para>
+    </param>
+    <summary>Releases the resources used by the AudioBuffers object.</summary>
+    <remarks>
+      <para>This Dispose method releases the resources used by the AudioBuffers class.</para>
+      <para>This method is called by both the Dispose() method and the object finalizer (Finalize).    When invoked by the Dispose method, the parameter disposing <paramref name="disposing" /> is set to <see langword="true" /> and any managed object references that this object holds are also disposed or released;  when invoked by the object finalizer, on the finalizer thread the value is set to <see langword="false" />. </para>
+      <para>Calling the Dispose method when the application is finished using the AudioBuffers ensures that all external resources used by this managed object are released as soon as possible.  Once developers have invoked the Dispose method, the object is no longer useful and developers should no longer make any calls to it.</para>
+      <para>  For more information on how to override this method and on the Dispose/IDisposable pattern, read the ``Implementing a Dispose Method'' document at https://msdn.microsoft.com/en-us/library/fs2xkftw.aspx</para>
+    </remarks>
+  </Docs>
+  <Docs DocId="T:AudioToolbox.AudioBuffers">
+    <summary>Encapsulated a series of AudioBuffers.</summary>
+    <remarks>
+      <para>
+	The AudioBuffers class encapsulates one or more <see cref="T:AudioToolbox.AudioBuffer" /> structures.  It
+	can be used to examine the contents of an AudioBuffer when you
+	create the instance from an IntPtr that points to the C-based
+	AudioBufferList array or as a way of creating buffers that can
+	be passed to C-based APIs when you use the constructor that
+	takes a count argument.
+      </para>
+      <para>
+	If you cast this object to an IntPtr, you will get the address
+	to the underlying data structure which you can pass to any C
+	APIs that requires a pointer to the object.
+      </para>
+      <para> 
+	For interleaved stereo audio buffers (for example when
+	the Left and Right audio packets are in a single stream) there
+	is a single AudioBuffer which contains both the left and right
+	sample in the buffer.  For non-interleaved stereo buffers,
+	there are two buffers, the left samples are stored in one buffer and the right samples are stored on the other one.  
+      </para>
+      <para>
+	This is an immutable data structure, if you are looking for a mutable version, see the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Audio%20Toolbox%20Mutable%20Audio%20Buffer%20List&amp;scope=Xamarin" title="T:AudioToolbox.MutableAudioBufferList">T:AudioToolbox.MutableAudioBufferList</a></format>.
+      </para>
+      <para>
+	If you create an object with a number of set buffers, or your
+	set the "owns" parameter in your constructor to true, then
+	Dispose will call Marshal.FreeHGlobal on the underlying buffer.
+      </para>
+      <example>
+        <code lang="c#"><![CDATA[
+//
+// Consuming an AudioBufferList from a pointer provided by C code
+//
+void Process (IntPtr audioBufferListPtr)
+{
+    var buffers = new AudioBuffers (audioBufferListPtr);
+    for (int i = 0; i < buffers.Count; i++){
+	var audioBuffer = buffers [i];
+	Console.WriteLine ("Data={0} DataByteSize={1}", audioBuffer.Data, audioBuffer.DataByteSize);
+    }
+}
+
+//
+// Creating an AudioBuffers structure 
+//
+AudioBuffers SetupBuffers (int n = 2, int size = 4096)
+{
+    var buffers = new AudioBuffers (n);
+    for (int i = 0; i < n; i++){
+        var buffer = Marshal.AllocHGlobal (size);
+	buffers.SetData (i, buffer, size);
+    }
+    return buffers;
+}
+
+void ReleaseBuffers (AudioBuffers buffers)
+{
+    for (int i = 0; i < buffers.Count; i++){
+        var buf = buffers [i];
+        Marshal.ReleaseHGlobal (buf.Data);                
+    }
+    buffers.Dispose ();
+}
+
+void ProcessBuffers (AudioBuffers buffers)
+{
+    // Call C-function that takes an AudioBufferList pointer:
+
+    // The cast extracts the data.
+    c_function ((IntPtr) buffers);
+}
+]]></code>
+      </example>
+    </remarks>
+  </Docs>
 </Documentation>

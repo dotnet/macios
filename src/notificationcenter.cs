@@ -28,10 +28,17 @@ namespace NotificationCenter {
 	[Deprecated (PlatformName.MacOSX, 11, 0)]
 	interface NCWidgetController {
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("widgetController")]
 		NCWidgetController GetWidgetController ();
 
+		/// <param name="flag">To be added.</param>
+		///         <param name="bundleID">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setHasContent:forWidgetWithBundleIdentifier:")]
 		void SetHasContent (bool flag, string bundleID);
 	}
@@ -45,9 +52,16 @@ namespace NotificationCenter {
 	[BaseType (typeof (NSObject))]
 	interface NCWidgetProviding {
 
+		/// <param name="completionHandler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("widgetPerformUpdateWithCompletionHandler:")]
 		void WidgetPerformUpdate (Action<NCUpdateResult> completionHandler);
 
+		/// <param name="defaultMarginInsets">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("widgetMarginInsetsForProposedMarginInsets:"), DelegateName ("NCWidgetProvidingMarginInsets"), DefaultValueFromArgument ("defaultMarginInsets")]
 		[Deprecated (PlatformName.iOS, 10, 0)]
 		UIEdgeInsets GetWidgetMarginInsets (UIEdgeInsets defaultMarginInsets);
@@ -65,14 +79,22 @@ namespace NotificationCenter {
 #endif
 		}
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[Export ("widgetDidBeginEditing")]
 		void WidgetDidBeginEditing ();
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[Export ("widgetDidEndEditing")]
 		void WidgetDidEndEditing ();
 
+		/// <param name="activeDisplayMode">To be added.</param>
+		///         <param name="maxSize">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[Export ("widgetActiveDisplayModeDidChange:withMaximumSize:")]
 		void WidgetActiveDisplayModeDidChange (NCWidgetDisplayMode activeDisplayMode, CGSize maxSize);
@@ -141,6 +163,10 @@ namespace NotificationCenter {
 	[Deprecated (PlatformName.MacOSX, 11, 0)]
 	[BaseType (typeof (NSViewController), Delegates = new string [] { "Delegate" }, Events = new Type [] { typeof (NCWidgetListViewDelegate) })]
 	interface NCWidgetListViewController {
+		/// <param name="nibNameOrNull">To be added.</param>
+		/// <param name="nibBundleOrNull">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithNibName:bundle:")]
 		NativeHandle Constructor ([NullAllowed] string nibNameOrNull, [NullAllowed] NSBundle nibBundleOrNull);
 
@@ -183,6 +209,10 @@ namespace NotificationCenter {
 		[Export ("viewControllerAtRow:makeIfNecessary:")]
 		NSViewController GetViewController (nuint row, bool makeIfNecesary);
 
+		/// <param name="viewController">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("rowForViewController:")]
 		nuint GetRow (NSViewController viewController);
 	}
@@ -199,6 +229,9 @@ namespace NotificationCenter {
 		[Export ("widgetList:viewControllerForRow:"), DelegateName ("NCWidgetListViewGetController"), DefaultValue (null)]
 		NSViewController GetViewControllerForRow (NCWidgetListViewController list, nuint row);
 
+		/// <param name="list">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("widgetListPerformAddAction:"), DelegateName ("NCWidgetListViewController")]
 		void PerformAddAction (NCWidgetListViewController list);
 
@@ -219,6 +252,10 @@ namespace NotificationCenter {
 	[Deprecated (PlatformName.MacOSX, 11, 0)]
 	[BaseType (typeof (NSViewController), Delegates = new string [] { "Delegate" }, Events = new Type [] { typeof (NCWidgetSearchViewDelegate) })]
 	interface NCWidgetSearchViewController {
+		/// <param name="nibNameOrNull">To be added.</param>
+		/// <param name="nibBundleOrNull">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithNibName:bundle:")]
 		NativeHandle Constructor ([NullAllowed] string nibNameOrNull, [NullAllowed] NSBundle nibBundleOrNull);
 
@@ -275,10 +312,17 @@ namespace NotificationCenter {
 		void SearchForTerm (NCWidgetSearchViewController controller, string searchTerm, nuint max);
 #endif
 
+		/// <param name="controller">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("widgetSearchTermCleared:"), EventArgs ("NSWidgetSearchViewController"), DefaultValue (false)]
 		void TermCleared (NCWidgetSearchViewController controller);
 
+		/// <param name="controller">To be added.</param>
+		///         <param name="obj">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("widgetSearch:resultSelected:"), EventArgs ("NSWidgetSearchResultSelected"), DefaultValue (false)]
 		void ResultSelected (NCWidgetSearchViewController controller, NSObject obj);

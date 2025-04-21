@@ -63,15 +63,29 @@ namespace SafariServices {
 	interface SFContentBlockerManager {
 
 #if !XAMCORE_5_0
+		/// <summary>Default constructor, initializes a new instance of this class.</summary>
+		/// <remarks>
+		///         </remarks>
 		[Obsolete ("Constructor marked as unavailable.")]
 		[Export ("init")]
 		NativeHandle Constructor ();
 #endif
 
+		/// <param name="identifier">To be added.</param>
+		///         <param name="completionHandler">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Relaods the specified content blocker and runs a completion handler when the operation completes.</summary>
+		///         <remarks>To be added.</remarks>
 		[Async]
 		[Static, Export ("reloadContentBlockerWithIdentifier:completionHandler:")]
 		void ReloadContentBlocker (string identifier, [NullAllowed] Action<NSError> completionHandler);
 
+		/// <param name="identifier">To be added.</param>
+		///         <param name="completionHandler">To be added.</param>
+		///         <summary>Passes the state of the specified content blocker to the provided <paramref name="completionHandler" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 4)]
 		[Static]
 		[Async]
@@ -98,11 +112,31 @@ namespace SafariServices {
 		[Static, Export ("defaultReadingList")]
 		SSReadingList DefaultReadingList { get; }
 
+		/// <param name="url">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static, Export ("supportsURL:")]
 		// Apple says it's __nonnull so let's be safe and maintain compatibility with our current behaviour
 		[PreSnippet ("if (url is null) return false;", Optimizable = true)]
 		bool SupportsUrl ([NullAllowed] NSUrl url);
 
+		/// <param name="url">To be added.</param>
+		///         <param name="title">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="previewText">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("addReadingListItemWithURL:title:previewText:error:")]
 		bool Add (NSUrl url, [NullAllowed] string title, [NullAllowed] string previewText, out NSError error);
 
@@ -120,21 +154,42 @@ namespace SafariServices {
 	[BaseType (typeof (UIViewController))]
 	[DisableDefaultCtor] // NSGenericException Reason: Misuse of SFSafariViewController interface. Use initWithURL:entersReaderIfAvailable:
 	interface SFSafariViewController {
+		/// <param name="nibName">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="bundle">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithNibName:bundle:")]
 		[PostGet ("NibBundle")]
 		NativeHandle Constructor ([NullAllowed] string nibName, [NullAllowed] NSBundle bundle);
 
+		/// <param name="url">To be added.</param>
+		/// <param name="configuration">To be added.</param>
+		/// <summary>Creates a new browsing interface with the provided URL and configuration.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("initWithURL:configuration:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSUrl url, SFSafariViewControllerConfiguration configuration);
 
+		/// <param name="url">To be added.</param>
+		/// <param name="entersReaderIfAvailable">To be added.</param>
+		/// <summary>Developers should not use this deprecated constructor. Developers should use '.ctor (NSUrl, SFSafariViewControllerConfiguration)' instead.</summary>
+		/// <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use '.ctor (NSUrl, SFSafariViewControllerConfiguration)' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use '.ctor (NSUrl, SFSafariViewControllerConfiguration)' instead.")]
 		[DesignatedInitializer]
 		[Export ("initWithURL:entersReaderIfAvailable:")]
 		NativeHandle Constructor (NSUrl url, bool entersReaderIfAvailable);
 
+		/// <param name="url">To be added.</param>
+		/// <summary>Creates a new browsing interface with the provided URL.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithURL:")]
 		NativeHandle Constructor (NSUrl url);
 
@@ -218,19 +273,48 @@ namespace SafariServices {
 	[BaseType (typeof (NSObject))]
 	[Protocol]
 	partial interface SFSafariViewControllerDelegate {
+		/// <param name="controller">To be added.</param>
+		///         <param name="url">To be added.</param>
+		///         <param name="title">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Method that is called to retrieve the activity items for the requested action.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("safariViewController:activityItemsForURL:title:")]
 		UIActivity [] GetActivityItems (SFSafariViewController controller, NSUrl url, [NullAllowed] string title);
 
+		/// <param name="controller">To be added.</param>
+		///         <summary>Method that is called when the user dismisses the view.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("safariViewControllerDidFinish:")]
 		void DidFinish (SFSafariViewController controller);
 
+		/// <param name="controller">To be added.</param>
+		///         <param name="didLoadSuccessfully">To be added.</param>
+		///         <summary>Method that is called after the first URL is loaded.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("safariViewController:didCompleteInitialLoad:")]
 		void DidCompleteInitialLoad (SFSafariViewController controller, bool didLoadSuccessfully);
 
+		/// <param name="controller">To be added.</param>
+		///         <param name="url">To be added.</param>
+		///         <param name="title">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("safariViewController:excludedActivityTypesForURL:title:")]
 		string [] GetExcludedActivityTypes (SFSafariViewController controller, NSUrl url, [NullAllowed] string title);
 
+		/// <param name="controller">To be added.</param>
+		///         <param name="url">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("safariViewController:initialLoadDidRedirectToURL:")]
 		void InitialLoadDidRedirectToUrl (SFSafariViewController controller, NSUrl url);
@@ -285,12 +369,25 @@ namespace SafariServices {
 	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'ASWebAuthenticationSession' instead.")]
 	interface SFAuthenticationSession {
+		/// <param name="url">To be added.</param>
+		/// <param name="callbackUrlScheme">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>Creates a new authentication session for the resource at the specified URL.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithURL:callbackURLScheme:completionHandler:")]
 		NativeHandle Constructor (NSUrl url, [NullAllowed] string callbackUrlScheme, SFAuthenticationCompletionHandler completionHandler);
 
+		/// <summary>Starts authentication process, displaying an interface to the user.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("start")]
 		bool Start ();
 
+		/// <summary>Cancels the authentication session.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("cancel")]
 		void Cancel ();
 	}
@@ -301,6 +398,9 @@ namespace SafariServices {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SFSafariApplication {
+		/// <param name="completionHandler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Async]
 		[Export ("getActiveWindowWithCompletionHandler:")]
@@ -311,25 +411,44 @@ namespace SafariServices {
 		[Export ("getAllWindowsWithCompletionHandler:")]
 		void GetAllWindows (Action<SFSafariWindow []> completionHandler);
 
+		/// <param name="url">To be added.</param>
+		///         <param name="completionHandler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Async]
 		[Export ("openWindowWithURL:completionHandler:")]
 		void OpenWindow (NSUrl url, [NullAllowed] Action<SFSafariWindow> completionHandler);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("setToolbarItemsNeedUpdate")]
 		void SetToolbarItemsNeedUpdate ();
 
+		/// <param name="identifier">To be added.</param>
+		///         <param name="completionHandler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("showPreferencesForExtensionWithIdentifier:completionHandler:")]
 		void ShowPreferencesForExtension (string identifier, [NullAllowed] Action<NSError> completionHandler);
 
+		/// <param name="messageName">To be added.</param>
+		///         <param name="identifier">To be added.</param>
+		///         <param name="userInfo">To be added.</param>
+		///         <param name="completionHandler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Advice ("Unavailable to extensions.")]
 		[Static]
 		[Async]
 		[Export ("dispatchMessageWithName:toExtensionWithIdentifier:userInfo:completionHandler:")]
 		void DispatchMessage (string messageName, string identifier, [NullAllowed] NSDictionary<NSString, NSObject> userInfo, [NullAllowed] Action<NSError> completionHandler);
 
+		/// <param name="completionHandler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Async]
 		[Export ("getHostApplicationWithCompletionHandler:")]
@@ -342,12 +461,21 @@ namespace SafariServices {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SFSafariPage : NSSecureCoding, NSCopying {
+		/// <param name="messageName">To be added.</param>
+		///         <param name="userInfo">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("dispatchMessageToScriptWithName:userInfo:")]
 		void DispatchMessageToScript (string messageName, [NullAllowed] NSDictionary userInfo);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("reload")]
 		void Reload ();
 
+		/// <param name="completionHandler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Async]
 		[Export ("getPagePropertiesWithCompletionHandler:")]
 		void GetPageProperties (Action<SFSafariPageProperties> completionHandler);
@@ -456,10 +584,16 @@ namespace SafariServices {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SFSafariTab : NSSecureCoding, NSCopying {
+		/// <param name="completionHandler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Async]
 		[Export ("getActivePageWithCompletionHandler:")]
 		void GetActivePage (Action<SFSafariPage> completionHandler);
 
+		/// <param name="completionHandler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Async]
 		[Export ("getPagesWithCompletionHandler:")]
 		void GetPages (Action<SFSafariPage []> completionHandler);
@@ -468,6 +602,9 @@ namespace SafariServices {
 		[Export ("getContainingWindowWithCompletionHandler:")]
 		void GetContainingWindow (Action<SFSafariWindow> completionHandler);
 
+		/// <param name="completionHandler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Async]
 		[Export ("activateWithCompletionHandler:")]
 		void Activate ([NullAllowed] Action completionHandler);
@@ -485,19 +622,35 @@ namespace SafariServices {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SFSafariToolbarItem : NSSecureCoding, NSCopying {
+		/// <param name="enabled">To be added.</param>
+		///         <param name="badgeText">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'SetEnabled (bool)' or 'SetBadgeText' instead.")]
 		[Export ("setEnabled:withBadgeText:")]
 		void SetEnabled (bool enabled, [NullAllowed] string badgeText);
 
+		/// <param name="enabled">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setEnabled:")]
 		void SetEnabled (bool enabled);
 
+		/// <param name="badgeText">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setBadgeText:")]
 		void SetBadgeText ([NullAllowed] string badgeText);
 
+		/// <param name="image">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setImage:")]
 		void SetImage ([NullAllowed] NSImage image);
 
+		/// <param name="label">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setLabel:")]
 		void SetLabel ([NullAllowed] string label);
 
@@ -511,6 +664,9 @@ namespace SafariServices {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SFSafariWindow : NSSecureCoding, NSCopying {
+		/// <param name="completionHandler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Async]
 		[Export ("getActiveTabWithCompletionHandler:")]
 		void GetActiveTab (Action<SFSafariTab> completionHandler);
@@ -519,10 +675,18 @@ namespace SafariServices {
 		[Export ("getAllTabsWithCompletionHandler:")]
 		void GetAllTabs (Action<SFSafariTab []> completionHandler);
 
+		/// <param name="url">To be added.</param>
+		///         <param name="activateTab">To be added.</param>
+		///         <param name="completionHandler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Async]
 		[Export ("openTabWithURL:makeActiveIfPossible:completionHandler:")]
 		void OpenTab (NSUrl url, bool activateTab, [NullAllowed] Action<SFSafariTab> completionHandler);
 
+		/// <param name="completionHandler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Async]
 		[Export ("getToolbarItemWithCompletionHandler:")]
 		void GetToolbarItem (Action<SFSafariToolbarItem> completionHandler);

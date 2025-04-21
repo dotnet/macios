@@ -19,6 +19,8 @@ namespace GameController {
 	// GCGamepadSnapshot.h
 	// float_t are 4 bytes (at least for ARM64)
 #if NET
+	/// <summary>The state of a <see cref="T:GameController.GCGamepad" />. Produced by <see cref="M:GameController.GCGamepadSnapshot.TryGetSnapshotData(Foundation.NSData,GameController.GCGamepadSnapShotDataV100@)" />.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]

@@ -11,6 +11,8 @@ using ObjCRuntime;
 namespace MediaToolbox {
 
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -29,6 +31,10 @@ namespace MediaToolbox {
 			CMMediaType mediaType);
 
 #if NET
+		/// <param name="mediaType">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -50,6 +56,11 @@ namespace MediaToolbox {
 			CMMediaType mediaType, uint mediaSubType);
 
 #if NET
+		/// <param name="mediaType">To be added.</param>
+		///         <param name="mediaSubType">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]

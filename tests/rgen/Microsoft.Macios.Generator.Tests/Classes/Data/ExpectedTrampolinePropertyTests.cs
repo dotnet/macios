@@ -22,11 +22,11 @@ public partial class TrampolinePropertyTests
 {
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selCompletionHandlerX = "completionHandler";
-	static readonly NativeHandle selCompletionHandlerXHandle = Selector.GetHandle ("completionHandler");
+	static readonly NativeHandle selCompletionHandlerXHandle = global::ObjCRuntime.Selector.GetHandle ("completionHandler");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selSetCompletionHandler_X = "setCompletionHandler:";
-	static readonly NativeHandle selSetCompletionHandler_XHandle = Selector.GetHandle ("setCompletionHandler:");
+	static readonly NativeHandle selSetCompletionHandler_XHandle = global::ObjCRuntime.Selector.GetHandle ("setCompletionHandler:");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	static readonly NativeHandle class_ptr = Class.GetHandle ("TrampolinePropertyTests");
@@ -120,10 +120,11 @@ public partial class TrampolinePropertyTests
 		{
 			System.Action ret;
 			if (IsDirectBinding) {
-				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle ("completionHandler"));
+				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("completionHandler"));
 			} else {
-				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, Selector.GetHandle ("completionHandler"));
+				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("completionHandler"));
 			}
+			GC.KeepAlive (this);
 			return ret;
 		}
 

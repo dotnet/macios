@@ -38,6 +38,8 @@ using Foundation;
 namespace CoreText {
 
 	// Utility enum for constant strings in ObjC
+	/// <summary>An enumeration whose values specify constants providing access to names associated with a <see cref="T:CoreText.CTFont" />.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum CTFontNameKey {
 		/// <summary>To be added.</summary>
 		Copyright,

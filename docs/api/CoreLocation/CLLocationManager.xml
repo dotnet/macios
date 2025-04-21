@@ -221,26 +221,38 @@ locationManager.StartRangingBeacons(beaconRegion)
     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CoreLocation/Reference/CLLocationManager_Class/index.html">Apple documentation for <c>CLLocationManager</c></related>
   </Docs>
   <Docs DocId="M:CoreLocation.CLLocationManager.IsMonitoringAvailable(ObjCRuntime.Class)">
-        <param name="regionClass">Objective-C class, must derive from CLRegion.</param>
-        <summary>Determines whether the device supports region monitoring for the specified kind of CLRegion.</summary>
-        <returns>True if the device supports it, false otherwise.</returns>
-        <remarks>
-          <para>
+    <param name="regionClass">Objective-C class, must derive from CLRegion.</param>
+    <summary>Determines whether the device supports region monitoring for the specified kind of CLRegion.</summary>
+    <returns>True if the device supports it, false otherwise.</returns>
+    <remarks>
+      <para>
             This method merely determines whether region monitoring is
             available in the hardware, it does not determine whether the
             user has enabled location services or whether the
             application has been granted permission to use this.  You
             must request permission separately.
           </para>
-          <para>
+      <para>
             To determine whether you have permission to access
             location services, use <see cref="T:CoreLocation.CLLocationManager" />.
           </para>
-          <example>
-            <code lang="csharp lang-csharp"><![CDATA[
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
 var isAvail = CLLocationManager.IsMonitoringAvailable(typeof(CLCircularRegion));                
                 ]]></code>
-          </example>
-        </remarks>
-      </Docs>
+      </example>
+    </remarks>
+  </Docs>
+  <Docs DocId="M:CoreLocation.CLLocationManager.AllowDeferredLocationUpdatesUntil(System.Double,System.Double)">
+    <param name="distance">A distance, in meters, after which location updates should be delivered.</param>
+    <param name="timeout">A time, in seconds, after which location updates should be delivered.</param>
+    <summary>Suggests that location updates are deferred until either <paramref name="distance" /> has been traveled or <paramref name="timeout" /> has passed.</summary>
+    <remarks>
+      <para>Application developers must implement <see cref="T:CoreLocation.CLLocationManagerDelegate" /> and assign the <see cref="P:CoreLocation.CLLocationManager.Delegate" /> property prior to calling this method, or they will receive a runtime exception.</para>
+      <para>Application developers who require GPS-accurate location information when their application is in the background, but do not need that information in near-real-time should use this method to defer delivery. Deferred delivery consumes significantly less power.</para>
+      <para>This method is only a request. Location updates may occur even if the application is in deferred mode. If updates occur when the application is in deferred mode, the application will stay in deferred mode.</para>
+      <para>If the application is in the foreground, location updates are not delayed.</para>
+      <para>This method requires GPS hardware to be available, <see cref="P:CoreLocation.CLLocationManager.DistanceFilter" /> to be <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Location%20CLLocation%20Distance%20None&amp;scope=Xamarin" title="P:CoreLocation.CLLocationDistance.None">P:CoreLocation.CLLocationDistance.None</a></format>, and <see cref="P:CoreLocation.CLLocationManager.DesiredAccuracy" /> be either <see cref="P:CoreLocation.CLLocation.AccuracyBest" /> or <see cref="P:CoreLocation.CLLocation.AccurracyBestForNavigation" />.</para>
+    </remarks>
+  </Docs>
 </Documentation>

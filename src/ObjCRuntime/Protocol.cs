@@ -16,6 +16,9 @@ using NativeHandle = System.IntPtr;
 #endif
 
 namespace ObjCRuntime {
+	/// <summary>Representation of an Objective-C protocol.</summary>
+	///     <remarks>
+	///     </remarks>
 	public partial class Protocol : INativeObject {
 #if !COREBUILD
 		NativeHandle handle;

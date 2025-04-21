@@ -35,6 +35,8 @@ namespace AppKit {
 
 #if MONOMAC
 	// Class to access C functions
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public partial class AppKitFramework {
 
 		/// <summary>To be added.</summary>

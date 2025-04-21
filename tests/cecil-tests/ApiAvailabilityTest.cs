@@ -69,7 +69,7 @@ namespace Cecil.Tests {
 			} finally {
 				Console.WriteLine ($"There's a total of {totalWarnings} warnings.");
 			}
-			Assert.AreEqual (762, totalWarnings, "Total warnings"); // this is just to see how the warning count changes as issues are fixed.
+			Assert.AreEqual (530, totalWarnings, "Total warnings"); // this is just to see how the warning count changes as issues are fixed.
 		}
 
 		public record ObsoletedFailure : IComparable {
@@ -218,13 +218,9 @@ namespace Cecil.Tests {
 			"HomeKit.HMEventTrigger.CreatePredicateForEvaluatingTriggerOccurringAfterSignificantEvent(HomeKit.HMSignificantEvent, Foundation.NSDateComponents)",
 			"HomeKit.HMEventTrigger.CreatePredicateForEvaluatingTriggerOccurringBeforeSignificantEvent(HomeKit.HMSignificantEvent, Foundation.NSDateComponents)",
 			"MapKit.MKOverlayView",
-			"MediaPlayer.MPVolumeSettings.AlertHide()",
-			"MediaPlayer.MPVolumeSettings.AlertShow()",
 			"MetalPerformanceShaders.MPSCnnConvolutionDescriptor.GetConvolutionDescriptor(System.UIntPtr, System.UIntPtr, System.UIntPtr, System.UIntPtr, MetalPerformanceShaders.MPSCnnNeuron)",
-			"MetalPerformanceShaders.MPSCnnFullyConnected..ctor(Metal.IMTLDevice, MetalPerformanceShaders.MPSCnnConvolutionDescriptor, System.Single[], System.Single[], MetalPerformanceShaders.MPSCnnConvolutionFlags)",
 			"MetalPerformanceShaders.MPSCnnNeuron MetalPerformanceShaders.MPSCnnConvolution::Neuron()",
 			"MetalPerformanceShaders.MPSCnnNeuron MetalPerformanceShaders.MPSCnnConvolutionDescriptor::Neuron()",
-			"MetalPerformanceShaders.MPSCnnNeuronPReLU..ctor(Metal.IMTLDevice, System.Single[])",
 			"MetalPerformanceShaders.MPSMatrixDescriptor.Create(System.UIntPtr, System.UIntPtr, System.UIntPtr, MetalPerformanceShaders.MPSDataType)",
 			"MetalPerformanceShaders.MPSMatrixDescriptor.GetRowBytesFromColumns(System.UIntPtr, MetalPerformanceShaders.MPSDataType)",
 			"MobileCoreServices.UTType.CopyAllTags(System.String, System.String)",

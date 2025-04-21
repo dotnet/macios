@@ -52,6 +52,9 @@ public partial class Generator {
 		if (!is_abstract) {
 			v = GetVisibility (filter.DefaultCtorVisibility);
 			if (v.Length > 0) {
+				if (BindingTouch.SupportsXmlDocumentation) {
+					print ($"/// <summary>Creates a new <see cref=\"{type_name.Replace ('<', '{').Replace ('>', '}')}\" /> with default values.</summary>");
+				}
 				print_generated_code ();
 				print ("{0}{1} () : base (\"{2}\")", v, type.Name, native_name);
 				PrintEmptyBody ();
@@ -64,17 +67,40 @@ public partial class Generator {
 			// since it was not generated code we never fixed the .ctor(IntPtr) visibility for unified
 			intptrctor_visibility = MethodAttributes.FamORAssem;
 		}
+		if (BindingTouch.SupportsXmlDocumentation) {
+			print ("/// <summary>A constructor used when creating managed representations of unmanaged objects. Called by the runtime.</summary>");
+			print ("/// <param name=\"handle\">A pointer (handle) to the unmanaged object.</param>");
+			print ("/// <remarks>");
+			print ("///     <para>");
+			print ("///         This constructor is invoked by the runtime infrastructure (<see cref=\"ObjCRuntime.Runtime.GetNSObject(ObjCRuntime.NativeHandle)\" />) to create a new managed representation for a pointer to an unmanaged Objective-C object.");
+			print ("///         Developers should not invoke this method directly, instead they should call <see cref=\"ObjCRuntime.Runtime.GetNSObject(ObjCRuntime.NativeHandle)\" /> as it will prevent two instances of a managed object pointing to the same native object.");
+			print ("///     </para>");
+			print ("/// </remarks>");
+		}
 		print_generated_code ();
 		print ("{0}{1} ({2} handle) : base (handle)", GetVisibility (intptrctor_visibility), type_name, NativeHandleType);
 		PrintEmptyBody ();
 
 		// NSObjectFlag constructor - always present (needed to implement NSCoder for subclasses)
+		if (BindingTouch.SupportsXmlDocumentation) {
+			print ("/// <summary>Constructor to call on derived classes to skip initialization and merely allocate the object.</summary>");
+			print ("/// <param name=\"t\">Unused sentinel value, pass NSObjectFlag.Empty.</param>");
+		}
 		print_generated_code ();
 		print ("[EditorBrowsable (EditorBrowsableState.Advanced)]");
 		print ("protected {0} (NSObjectFlag t) : base (t)", type_name);
 		PrintEmptyBody ();
 
 		// NSCoder constructor - all filters conforms to NSCoding
+		if (BindingTouch.SupportsXmlDocumentation) {
+			print ($"/// <summary>A constructor that initializes the object from the data stored in the unarchiver object.</summary>");
+			print ($"/// <param name=\"coder\">The unarchiver object.</param>");
+			print ($"/// <remarks>");
+			print ($"///   <para>This constructor is provided to allow the class to be initialized from an unarchiver (for example, during NIB deserialization). This is part of the <see cref=\"Foundation.NSCoding\" /> protocol.</para>");
+			print ($"///   <para>If developers want to create a subclass of this object and continue to support deserialization from an archive, they should implement a constructor with an identical signature: taking a single parameter of type <see cref=\"Foundation.NSCoder\" /> and decorate it with the <c>[Export(\"initWithCoder:\"]</c> attribute.</para>");
+			print ($"///   <para>The state of this object can also be serialized by using the <see cref=\"Foundation.INSCoding.EncodeTo\" /> companion method.</para>");
+			print ($"/// </remarks>");
+		}
 		print_generated_code ();
 		print ("[EditorBrowsable (EditorBrowsableState.Advanced)]");
 		print ("[Export (\"initWithCoder:\")]");

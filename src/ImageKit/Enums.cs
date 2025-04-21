@@ -35,6 +35,8 @@ using ObjCRuntime;
 
 namespace ImageKit {
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[Native]
 	public enum IKCameraDeviceViewDisplayMode : long {
 		None = -1,
@@ -44,6 +46,8 @@ namespace ImageKit {
 		Icon = 1,
 	};
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[Native]
 	public enum IKCameraDeviceViewTransferMode : long {
 		/// <summary>To be added.</summary>
@@ -52,6 +56,8 @@ namespace ImageKit {
 		Memory = 1,
 	};
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[Native]
 	public enum IKDeviceBrowserViewDisplayMode : long {
 		/// <summary>To be added.</summary>
@@ -63,6 +69,8 @@ namespace ImageKit {
 	};
 
 	// Untyped enum in ObjC
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum IKImageBrowserCellState : int {
 		/// <summary>To be added.</summary>
 		NoImage = 0,
@@ -72,6 +80,8 @@ namespace ImageKit {
 		Ready = 2,
 	};
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[Flags]
 	[Native]
 	public enum IKCellsStyle : ulong {
@@ -88,6 +98,8 @@ namespace ImageKit {
 	};
 
 	//used as a value for the IKImageBrowserGroupStyleKey in the NSDictionary that defines a group in IKImageBrowserView
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[Native]
 	public enum IKGroupStyle : long {
 		/// <summary>To be added.</summary>
@@ -97,6 +109,8 @@ namespace ImageKit {
 	};
 
 	// Untyped enum in ObjC
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum IKImageBrowserDropOperation : int {
 		/// <summary>To be added.</summary>
 		On = 0,
@@ -104,6 +118,8 @@ namespace ImageKit {
 		Before = 1,
 	};
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[Native]
 	public enum IKScannerDeviceViewTransferMode : long {
 		/// <summary>To be added.</summary>
@@ -112,6 +128,8 @@ namespace ImageKit {
 		Memory = 1,
 	};
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[Native]
 	public enum IKScannerDeviceViewDisplayMode : long {
 		None = -1,
@@ -121,6 +139,8 @@ namespace ImageKit {
 		Advanced = 1,
 	};
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[Flags]
 	public enum IKFilterBrowserPanelStyleMask : uint {
 		/// <summary>To be added.</summary>

@@ -44,6 +44,20 @@ using CoreServices;
 #nullable disable
 
 namespace Foundation {
+	/// <summary>The security protocol to use for an NSStream.</summary>
+	///     <remarks>
+	///       <para>
+	/// 	This value controls which security
+	/// 	protocol an NSStream  uses to transfer the data on the stream, from
+	/// 	nothing, to a specific version of SSL or TLS, or best
+	/// 	possible.
+	///       </para>
+	///       <para>
+	/// 	Transport Layer Security (TLS) and its predecessor, Secure
+	/// 	Sockets Layer (SSL), are cryptographic protocols designed to
+	/// 	provide communication security over streams.
+	///       </para>
+	///     </remarks>
 	public enum NSStreamSocketSecurityLevel {
 		/// <summary>Do not use any security protocol.</summary>
 		None,
@@ -59,6 +73,14 @@ namespace Foundation {
 		Unknown,
 	}
 
+	/// <summary>Possible values for the service type for an NSStream.</summary>
+	///     <remarks>
+	///       <para>
+	/// 	The service type of an NSStream determine which kind of
+	/// 	service a stream is providing.  The Background and Video and
+	/// 	VoIP affect the audio routing and can control whether an application is suspended or not.
+	///       </para>
+	///     </remarks>
 	public enum NSStreamServiceType {
 		/// <summary>Default: the stream does not support a background, video or voice operation.</summary>
 		Default,
@@ -73,6 +95,9 @@ namespace Foundation {
 	}
 
 #if NET
+	/// <summary>Configuration options for SOCKS proxy servers.</summary>
+	///     <remarks>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -301,6 +326,11 @@ namespace Foundation {
 			writeStream = Runtime.GetNSObject<NSOutputStream> (write);
 		}
 
+		/// <param name="socket">To be added.</param>
+		///         <param name="readStream">To be added.</param>
+		///         <param name="writeStream">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static void CreatePairWithSocket (CFSocket socket,
 							 out NSInputStream readStream,
 												 out NSOutputStream writeStream)
@@ -315,6 +345,14 @@ namespace Foundation {
 			AssignStreams (read, write, out readStream, out writeStream);
 		}
 
+		/// <param name="family">To be added.</param>
+		///         <param name="type">To be added.</param>
+		///         <param name="proto">To be added.</param>
+		///         <param name="endpoint">To be added.</param>
+		///         <param name="readStream">To be added.</param>
+		///         <param name="writeStream">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static void CreatePairWithPeerSocketSignature (AddressFamily family, SocketType type,
 															  ProtocolType proto, IPEndPoint endpoint,
 															  out NSInputStream readStream,
@@ -330,6 +368,11 @@ namespace Foundation {
 			}
 		}
 
+		/// <param name="endpoint">To be added.</param>
+		///         <param name="readStream">To be added.</param>
+		///         <param name="writeStream">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static void CreatePairWithSocketToHost (IPEndPoint endpoint,
 													   out NSInputStream readStream,
 													   out NSOutputStream writeStream)

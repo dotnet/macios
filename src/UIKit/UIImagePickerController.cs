@@ -75,6 +75,8 @@ namespace UIKit {
 #endif
 	}
 
+	/// <summary>Provides data for the <see cref="E:UIKit.UIImagePickerController.FinishedPickingMedia" /> event.</summary>
+	///     <remarks>These arguments are available if you use the <see cref="E:UIKit.UIImagePickerController.FinishedPickingMedia" /> event in <see cref="T:UIKit.UIImagePickerController" />.</remarks>
 	public partial class UIImagePickerMediaPickedEventArgs {
 		/// <summary>Indicates the media type.</summary>
 		///         <value>To be added.</value>

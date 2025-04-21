@@ -15,30 +15,22 @@ using ObjCRuntime;
 using Foundation;
 using CoreFoundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace Network {
 
 	//
 	// The content context, there are a few pre-configured content contexts for sending
 	// available as static properties on this class
 	//
-#if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-#endif
 	public class NWContentContext : NativeObject {
 		bool global;
 		[Preserve (Conditional = true)]
-#if NET
 		internal NWContentContext (NativeHandle handle, bool owns) : base (handle, owns)
-#else
-		public NWContentContext (NativeHandle handle, bool owns) : base (handle, owns)
-#endif
 		{
 		}
 
@@ -55,6 +47,8 @@ namespace Network {
 			return new NWContentContext (handle, owns: true, global: true);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected internal override void Release ()
 		{
 			if (global)
@@ -65,6 +59,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		extern static IntPtr nw_content_context_create (IntPtr contextIdentifier);
 
+		/// <param name="contextIdentifier">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NWContentContext (string contextIdentifier)
 		{
 			if (contextIdentifier is null)
@@ -148,6 +145,10 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		extern static IntPtr nw_content_context_copy_protocol_metadata (IntPtr handle, IntPtr protocol);
 
+		/// <param name="protocolDefinition">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public NWProtocolMetadata? GetProtocolMetadata (NWProtocolDefinition protocolDefinition)
 		{
 			if (protocolDefinition is null)
@@ -171,6 +172,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		extern static void nw_content_context_set_metadata_for_protocol (IntPtr handle, IntPtr protocolMetadata);
 
+		/// <param name="protocolMetadata">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void SetMetadata (NWProtocolMetadata protocolMetadata)
 		{
 			if (protocolMetadata is null)
@@ -179,14 +183,7 @@ namespace Network {
 			GC.KeepAlive (protocolMetadata);
 		}
 
-#if !NET
-		delegate void ProtocolIterator (IntPtr block, IntPtr definition, IntPtr metadata);
-		static ProtocolIterator static_ProtocolIterator = TrampolineProtocolIterator;
-
-		[MonoPInvokeCallback (typeof (ProtocolIterator))]
-#else
 		[UnmanagedCallersOnly]
-#endif
 		static void TrampolineProtocolIterator (IntPtr block, IntPtr definition, IntPtr metadata)
 		{
 			var del = BlockLiteral.GetTarget<Action<NWProtocolDefinition?, NWProtocolMetadata?>> (block);
@@ -201,17 +198,15 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		unsafe static extern void nw_content_context_foreach_protocol_metadata (IntPtr handle, BlockLiteral* callback);
 
+		/// <param name="callback">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void IterateProtocolMetadata (Action<NWProtocolDefinition?, NWProtocolMetadata?> callback)
 		{
 			unsafe {
-#if NET
 				delegate* unmanaged<IntPtr, IntPtr, IntPtr, void> trampoline = &TrampolineProtocolIterator;
 				using var block = new BlockLiteral (trampoline, callback, typeof (NWContentContext), nameof (TrampolineProtocolIterator));
-#else
-				using var block = new BlockLiteral ();
-				block.SetupBlockUnsafe (static_ProtocolIterator, callback);
-#endif
 				nw_content_context_foreach_protocol_metadata (GetCheckedHandle (), &block);
 			}
 		}

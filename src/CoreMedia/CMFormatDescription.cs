@@ -27,6 +27,8 @@ using AudioToolbox;
 
 namespace CoreMedia {
 
+	/// <summary>Describes media data for audio, video, text and time codes </summary>
+	///     <remarks>Some properties apply to all media types, while some others only apply to specific media types.   They are prefixed with Audio or Video in those cases.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -399,6 +401,8 @@ namespace CoreMedia {
 #endif
 	}
 
+	/// <summary>A <see cref="T:CoreMedia.CMFormatDescription" /> that describes an audio format.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -413,6 +417,8 @@ namespace CoreMedia {
 		// TODO: Move more audio specific methods here
 	}
 
+	/// <summary>A <see cref="T:CoreMedia.CMFormatDescription" /> that describes video.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -606,17 +612,29 @@ namespace CoreMedia {
 			return CMVideoFormatDescriptionGetCleanAperture (Handle, originIsAtTopLeft.AsByte ());
 		}
 
+		/// <param name="usePixelAspectRatio">To be added.</param>
+		///         <param name="useCleanAperture">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CGSize GetPresentationDimensions (bool usePixelAspectRatio, bool useCleanAperture)
 		{
 			return CMVideoFormatDescriptionGetPresentationDimensions (Handle, usePixelAspectRatio.AsByte (), useCleanAperture.AsByte ());
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSObject? []? GetExtensionKeysCommonWithImageBuffers ()
 		{
 			var arr = CMVideoFormatDescriptionGetExtensionKeysCommonWithImageBuffers ();
 			return CFArray.ArrayFromHandle<NSString> (arr);
 		}
 
+		/// <param name="imageBuffer">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool VideoMatchesImageBuffer (CVImageBuffer imageBuffer)
 		{
 			if (imageBuffer is null)
@@ -640,6 +658,13 @@ namespace CoreMedia {
 			/* CFDictionaryRef */ IntPtr extensions,
 			/* CMFormatDescriptionRef* */ IntPtr* formatDescriptionOut);
 
+		/// <param name="parameterSets">To be added.</param>
+		///         <param name="nalUnitHeaderLength">To be added.</param>
+		///         <param name="extensions">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]

@@ -9,88 +9,88 @@ using Xamarin.MacDev.Tasks;
 using Xamarin.Utils;
 using Xamarin.Localization.MSBuild;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Xamarin.MacDev.Tasks {
 	public class ParseDeviceSpecificBuildInformation : XamarinTask {
 		#region Inputs
 
 		[Required]
-		public string Architectures { get; set; }
+		public string Architectures { get; set; } = "";
 
 		[Required]
-		public string IntermediateOutputPath { get; set; }
+		public string IntermediateOutputPath { get; set; } = "";
 
 		[Required]
-		public string OutputPath { get; set; }
+		public string OutputPath { get; set; } = "";
 
 		[Required]
-		public string TargetiOSDevice { get; set; }
+		public string TargetiOSDevice { get; set; } = "";
 
 		#endregion
 
 		#region Outputs
 
 		[Output]
-		public string DeviceSpecificIntermediateOutputPath { get; set; }
+		public string DeviceSpecificIntermediateOutputPath { get; set; } = "";
 
 		[Output]
-		public string DeviceSpecificOutputPath { get; set; }
+		public string DeviceSpecificOutputPath { get; set; } = "";
 
 		[Output]
-		public string TargetArchitectures { get; set; }
+		public string TargetArchitectures { get; set; } = "";
 
 		[Output]
-		public string TargetDeviceModel { get; set; }
+		public string TargetDeviceModel { get; set; } = "";
 
 		[Output]
-		public string TargetDeviceOSVersion { get; set; }
+		public string TargetDeviceOSVersion { get; set; } = "";
 
 		#endregion
 
 		public override bool Execute ()
 		{
-			TargetArchitecture architectures, deviceArchitectures, target = TargetArchitecture.Default;
+			var target = TargetArchitecture.Default;
 			string targetOperatingSystem;
-			PDictionary plist, device;
-			PString value, os;
 
 			switch (Platform) {
 			case ApplePlatform.TVOS:
 				targetOperatingSystem = "tvOS";
 				break;
-			default:
+			case ApplePlatform.iOS:
 				targetOperatingSystem = "iOS";
 				break;
+			default:
+				throw new InvalidOperationException (string.Format (MSBStrings.InvalidPlatform, Platform));
 			}
 
-			if (!Enum.TryParse (Architectures, out architectures)) {
+			if (!Enum.TryParse<TargetArchitecture> (Architectures, out var architectures)) {
 				Log.LogError (MSBStrings.E0057, Architectures);
 				return false;
 			}
 
-			if ((plist = PObject.FromString (TargetiOSDevice) as PDictionary) is null) {
+			var plist = PObject.FromString (TargetiOSDevice) as PDictionary;
+			if (plist is null) {
 				Log.LogError (MSBStrings.E0058);
 				return false;
 			}
 
-			if (!plist.TryGetValue ("device", out device)) {
+			if (!plist.TryGetValue<PDictionary> ("device", out var device)) {
 				Log.LogError (MSBStrings.E0059);
 				return false;
 			}
 
-			if (!device.TryGetValue ("architecture", out value)) {
+			if (!device.TryGetValue<PString> ("architecture", out var value)) {
 				Log.LogError (MSBStrings.E0060);
 				return false;
 			}
 
-			if (!Enum.TryParse (value.Value, out deviceArchitectures) || deviceArchitectures == TargetArchitecture.Default) {
+			if (!Enum.TryParse<TargetArchitecture> (value.Value, out var deviceArchitectures) || deviceArchitectures == TargetArchitecture.Default) {
 				Log.LogError (MSBStrings.E0061, value.Value);
 				return false;
 			}
 
-			if (!device.TryGetValue ("os", out os)) {
+			if (!device.TryGetValue<PString> ("os", out var os)) {
 				Log.LogError (MSBStrings.E0062);
 				return false;
 			}

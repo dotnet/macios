@@ -38,6 +38,9 @@ using ObjCRuntime;
 using CoreFoundation;
 
 namespace CoreGraphics {
+	/// <summary>Represents a PDF array</summary>
+	///     <remarks>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -188,6 +191,12 @@ namespace CoreGraphics {
 			return 0;
 		}
 
+		/// <param name="index">To be added.</param>
+		///     <param name="value">To be added.</param>
+		///     <param name="info">To be added.</param>
+		///     <summary>To be added.</summary>
+		///     <returns>To be added.</returns>
+		///     <remarks>To be added.</remarks>
 		public delegate bool ApplyCallback (nint index, object? value, object? info);
 
 		[SupportedOSPlatform ("ios")]
@@ -197,6 +206,11 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		unsafe extern static byte CGPDFArrayApplyBlock (/* CGPDFArrayRef */ IntPtr array, /* CGPDFArrayApplierBlock */ BlockLiteral* block, /* void* */ IntPtr info);
 
+		/// <param name="callback">To be added.</param>
+		///         <param name="info">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]

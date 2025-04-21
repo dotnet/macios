@@ -28,6 +28,8 @@ using NativeHandle = System.IntPtr;
 namespace Security {
 
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
@@ -44,6 +46,9 @@ namespace Security {
 		[DllImport (Constants.SecurityLibrary)]
 		extern static IntPtr sec_certificate_create (IntPtr seccertificateHandle);
 
+		/// <param name="certificate">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public SecCertificate2 (SecCertificate certificate)
 		{
 			if (certificate is null)

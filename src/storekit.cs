@@ -599,6 +599,9 @@ namespace StoreKit {
 		[Export ("initWithReceiptProperties:")]
 		NativeHandle Constructor ([NullAllowed] NSDictionary properties);
 
+		/// <param name="receiptProperties">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (receiptProperties.GetDictionary ())")]
 		NativeHandle Constructor ([NullAllowed] SKReceiptProperties receiptProperties);
 
@@ -723,6 +726,10 @@ namespace StoreKit {
 		[Async]
 		void LoadProduct (NSDictionary parameters, [NullAllowed] Action<bool, NSError> callback);
 
+		/// <param name="parameters">To be added.</param>
+		///         <param name="callback">To be added.</param>
+		///         <summary>Loads the product that is specified by the specified product <paramref name="parameters" /> and runs the provided <paramref name="callback" /> when the operation completes.</summary>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("LoadProduct (parameters.GetDictionary ()!, callback)")]
 		[Async]
 		void LoadProduct (StoreProductParameters parameters, [NullAllowed] Action<bool, NSError> callback);
@@ -947,6 +954,13 @@ namespace StoreKit {
 		[Export ("loadWithOptions:completionHandler:")]
 		void Load (NSDictionary options, [NullAllowed] Action<bool, NSError> completionHandler);
 
+		/// <param name="options">Setup options object.</param>
+		///         <param name="completionHandler">
+		///           <para>A handler to run after the load operation completes</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Loads a setup view with the specified <paramref name="options" /> and runs a handler when the view is loaded.</summary>
+		///         <remarks>To be added.</remarks>
 		[Async]
 		[Wrap ("Load (options.GetDictionary ()!, completionHandler)")]
 		void Load (SKCloudServiceSetupOptions options, Action<bool, NSError> completionHandler);

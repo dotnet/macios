@@ -13,18 +13,6 @@ XTRO_DOTNET_PLATFORMS=$(DOTNET_PLATFORMS)
 ANNOTATIONS_DIR=.
 DOTNET_ANNOTATIONS_DIR=api-annotations-dotnet
 
-# The PCSC framework causes compilation errors if CTCarrier.h is included,
-# but we don't need the PCSC framework (we don't bind it), so just exclude it.
-CORETELEPHONY_HEADERS = \
-	-exclude PCSC \
-	-i CoreTelephony/CoreTelephonyDefines.h \
-	-i CoreTelephony/CTCarrier.h \
-	-i CoreTelephony/CTCall.h \
-	-i CoreTelephony/CTCallCenter.h \
-	-i CoreTelephony/CTTelephonyNetworkInfo.h \
-	-i CoreTelephony/CTSubscriber.h \
-	-i CoreTelephony/CTSubscriberInfo.h \
-
 all-local::
 
 clean-local::
@@ -50,105 +38,117 @@ $(XTRO_REPORT): $(wildcard xtro-report/*.cs) $(wildcard xtro-report/*.csproj) xt
 $(XTRO_SANITY): $(wildcard xtro-sanity/*.cs) $(wildcard xtro-sanity/*.csproj) $(wildcard $(TOP)/tools/common/*.cs) Makefile
 	$(Q_GEN) unset MSBUILD_EXE_PATH && $(DOTNET) build xtro-sanity/xtro-sanity.csproj /bl:xtro-sanity.binlog $(DOTNET_BUILD_VERBOSITY)
 
-XIOS_ARCH = arm64
-XIOS_PCH = iphoneos$(IOS_SDK_VERSION)-$(XIOS_ARCH).pch
+CORETELEPHONY_HEADERS = \
+	-i CoreTelephony/CoreTelephonyDefines.h \
+	-i CoreTelephony/CTCarrier.h \
+	-i CoreTelephony/CTCall.h \
+	-i CoreTelephony/CTCallCenter.h \
+	-i CoreTelephony/CTTelephonyNetworkInfo.h \
+	-i CoreTelephony/CTSubscriber.h \
+	-i CoreTelephony/CTSubscriberInfo.h \
+
+SWIFT_FRAMEWORKS = \
+	CoreTransferable \
+	LockedCameraCapture \
+	TranslationUIProvider \
+
+COMMON_IGNORED_FRAMEWORKS = \
+	$(SWIFT_FRAMEWORKS) \
+	_CoreNFC_UIKit \
+	AssetsLibrary \
+	BrowserEngineCore \
+	BrowserKit \
+	FactoryOTALogger \
+	FactoryOTANetworkUtils \
+	FactoryOTAWifiUtils \
+	JavaNativeFoundation \
+	Matter \
+	ParavirtualizedGraphics \
+
+IGNORED_IOS_FRAMEWORKS = \
+	$(COMMON_IGNORED_FRAMEWORKS) \
+
+IGNORED_TVOS_FRAMEWORKS = \
+	$(COMMON_IGNORED_FRAMEWORKS) \
+
+IGNORED_MACOS_FRAMEWORKS = \
+	$(COMMON_IGNORED_FRAMEWORKS) \
+	AccessorySetupKit \
+
+IGNORED_MACCATALYST_FRAMEWORKS = \
+	$(COMMON_IGNORED_FRAMEWORKS) \
+	_CoreNFC_UIKit \
+	AccessorySetupKit \
+	AGL \
+	AudioVideoBridging \
+	CalendarStore \
+	Carbon \
+	ClockKit \
+	DiscRecordingUI \
+	FSKit \
+	GLKit \
+	ICADevices \
+	InputMethodKit \
+	InstallerPlugins \
+	IOBluetooth \
+	IOBluetoothUI \
+	LDAP \
+	Python \
+	Quartz \
+	QuickLookUI \
+	SecurityInterface \
+	Virtualization \
+
+COMMON_SHARPIE_ARGUMENTS = \
+	--xcode $(XCODE) \
+	-a arm64 \
+	-modules false \
+
+IOS_SHARPIE_ARGUMENTS = \
+	$(COMMON_SHARPIE_ARGUMENTS) \
+	$(CORETELEPHONY_HEADERS) \
+
+TVOS_SHARPIE_ARGUMENTS = \
+	$(COMMON_SHARPIE_ARGUMENTS) \
+
+MACCATALYST_SHARPIE_ARGUMENTS = \
+	$(COMMON_SHARPIE_ARGUMENTS) \
+	$(CORETELEPHONY_HEADERS) \
+
+MACOS_SHARPIE_ARGUMENTS = \
+	$(COMMON_SHARPIE_ARGUMENTS) \
+	$(CORETELEPHONY_HEADERS) \
+
+IOS_PLATFORM=iphoneos$(IOS_SDK_VERSION)
+TVOS_PLATFORM=appletvos$(TVOS_SDK_VERSION)
+MACOS_PLATFORM=macosx$(MACOS_SDK_VERSION)
+MACCATALYST_PLATFORM=ios$(MACCATALYST_SDK_VERSION)-macabi
+
 XIOS_RID = ios-arm64
-
-$(XIOS_PCH): .stamp-check-sharpie
-	$(SHARPIE) sdk-db --xcode $(XCODE) -s iphoneos$(IOS_SDK_VERSION) -a $(XIOS_ARCH) \
-	-modules false \
-	-exclude BrowserEngineCore \
-	-exclude FactoryOTAWifiUtils \
-	-exclude FactoryOTALogger \
-	-exclude FactoryOTANetworkUtils \
-	-exclude AssetsLibrary \
-	-exclude BrowserKit \
-	-exclude LockedCameraCapture \
-	-exclude Matter \
-	-exclude _CoreNFC_UIKit \
-	-exclude TranslationUIProvider \
-	-i ThreadNetwork/THClient.h \
-	$(CORETELEPHONY_HEADERS) \
-
-XTVOS_ARCH = arm64
-XTVOS_PCH = appletvos$(TVOS_SDK_VERSION)-$(XTVOS_ARCH).pch
 XTVOS_RID = tvos-arm64
-
-$(XTVOS_PCH): .stamp-check-sharpie
-	$(SHARPIE) sdk-db --xcode $(XCODE) -s appletvos$(TVOS_SDK_VERSION) -a $(XTVOS_ARCH) \
-		-modules false \
-		-exclude BrowserEngineCore \
-		-exclude BrowserKit \
-		-exclude LockedCameraCapture \
-		-exclude Matter \
-		-exclude TranslationUIProvider \
-
-XMACOS_ARCH = x86_64
-XMACOS_PCH = macosx$(MACOS_SDK_VERSION)-$(XMACOS_ARCH).pch
-XMACOS_RID = osx-x64
-
-$(XMACOS_PCH): .stamp-check-sharpie
-	$(SHARPIE) sdk-db --xcode $(XCODE) -s macosx$(MACOS_SDK_VERSION) -a $(XMACOS_ARCH) \
-		-modules false \
-		-exclude AccessorySetupKit \
-		-exclude BrowserEngineCore \
-		-exclude BrowserKit \
-		-exclude JavaNativeFoundation \
-		-exclude LockedCameraCapture \
-		-exclude Matter \
-		-exclude ParavirtualizedGraphics \
-		-exclude TranslationUIProvider \
-		$(CORETELEPHONY_HEADERS) \
-
-XMACCATALYST_ARCH = x86_64
-XMACCATALYST_PCH = ios$(MACCATALYST_SDK_VERSION)-macabi-$(XMACCATALYST_ARCH).pch
-XMACCATALYST_RID = maccatalyst-x64
-
-$(XMACCATALYST_PCH): .stamp-check-sharpie
-	$(SHARPIE) sdk-db --xcode $(XCODE) -s ios$(MACCATALYST_SDK_VERSION)-macabi -a $(XMACCATALYST_ARCH) \
-	-modules false \
-	-exclude _CoreNFC_UIKit \
-	-exclude AccessorySetupKit \
-	-exclude AGL \
-	-exclude AudioVideoBridging \
-	-exclude BrowserEngineCore \
-	-exclude BrowserKit \
-	-exclude AssetsLibrary \
-	-exclude CalendarStore \
-	-exclude Carbon \
-	-exclude ClockKit \
-	-exclude DiscRecordingUI \
-	-exclude FSKit \
-	-exclude GLKit \
-	-exclude ICADevices \
-	-exclude InputMethodKit \
-	-exclude InstallerPlugins \
-	-exclude IOBluetooth \
-	-exclude IOBluetoothUI \
-	-exclude JavaNativeFoundation \
-	-exclude LDAP \
-	-exclude LockedCameraCapture \
-	-exclude Matter \
-	-exclude Python \
-	-exclude Quartz \
-	-exclude QuickLookUI \
-	-exclude SecurityInterface \
-	-exclude Virtualization \
-	-exclude TranslationUIProvider \
-	-i HomeKit/HomeKit.h \
-	$(CORETELEPHONY_HEADERS) \
+XMACOS_RID = osx-arm64
+XMACCATALYST_RID = maccatalyst-arm64
 
 define DotNetAssembly
+X$(2)_PCH = $($(2)_PLATFORM)-arm64.pch
+$$(X$(2)_PCH): .stamp-check-sharpie
+	$(SHARPIE) sdk-db -s $($(2)_PLATFORM) $$($(2)_SHARPIE_ARGUMENTS) $$(foreach framework,$$(IGNORED_$(2)_FRAMEWORKS),-exclude $$(framework))
+
+pch:: $$(X$(2)_PCH)
+
 ifdef TESTS_USE_SYSTEM
 X$(2)_DOTNET ?= $(DOTNET_DIR)/packs/$($(X$(2)_RID)_NUGET_RUNTIME_NAME)/$($(2)_WORKLOAD_VERSION)/runtimes/$(X$(2)_RID)/lib/$(DOTNET_TFM)/$(DOTNET_$(2)_ASSEMBLY_NAME).dll
 else
 X$(2)_DOTNET ?= $(DOTNET_DESTDIR)/$($(X$(2)_RID)_NUGET_RUNTIME_NAME)/runtimes/$(X$(2)_RID)/lib/$(DOTNET_TFM)/$(DOTNET_$(2)_ASSEMBLY_NAME).dll
 endif
 
-dotnet-$(1)-$($(2)_SDK_VERSION).g.cs: .stamp-check-sharpie
-	$$(SHARPIE) query -bind $$(X$(2)_PCH) > $$@
+$(3)-$($(2)_SDK_VERSION).g.cs: .stamp-check-sharpie $$(X$(2)_PCH)
+	$$(SHARPIE) query -bind $$(XIOS_$(2)) > $$@
+
+gen-$(3): $(3)-$$($(2)_SDK_VERSION).g.cs
+gen-all:: gen-$(3)
 endef
-$(foreach platform,$(XTRO_DOTNET_PLATFORMS),$(eval $(call DotNetAssembly,$(platform),$(shell echo $(platform) | tr a-z A-Z))))
+$(foreach platform,$(XTRO_DOTNET_PLATFORMS),$(eval $(call DotNetAssembly,$(platform),$(shell echo $(platform) | tr a-z A-Z),$(shell echo $(platform) | tr A-Z a-z))))
 
 pch-info.proj: Makefile
 	$(Q) rm -f $@.tmp
@@ -159,44 +159,6 @@ pch-info.proj: Makefile
 	$(Q) printf "\\t</PropertyGroup>\\n" >> $@.tmp
 	$(Q) printf "</Project>\\n" >> $@.tmp
 	$(Q_GEN) mv $@.tmp $@
-
-ios-$(IOS_SDK_VERSION).g.cs: $(XIOS_PCH)
-
-ifdef INCLUDE_IOS
-gen-ios: ios-$(IOS_SDK_VERSION).g.cs .stamp-check-sharpie
-	$(SHARPIE) query -bind $(XIOS_PCH) > ios-$(IOS_SDK_VERSION).g.cs
-else
-gen-ios: ; @true
-endif
-
-tvos-$(TVOS_SDK_VERSION).g.cs: $(XTVOS_PCH)
-
-ifdef INCLUDE_TVOS
-gen-tvos: tvos-$(TVOS_SDK_VERSION).g.cs .stamp-check-sharpie
-	$(SHARPIE) query -bind $(XTVOS_PCH) > tvos-$(TVOS_SDK_VERSION).g.cs
-else
-gen-tvos: ; @true
-endif
-
-macos-$(MACOS_SDK_VERSION).g.cs: $(XMACOS_PCH)
-
-ifdef INCLUDE_MAC
-gen-macos: macos-$(MACOS_SDK_VERSION).g.cs .stamp-check-sharpie
-	$(SHARPIE) query -bind $(XMACOS_PCH) > macos-$(MACOS_SDK_VERSION).g.cs
-else
-gen-macos: ; @true
-endif
-
-maccatalyst-$(MACCATALYST_SDK_VERSION).g.cs: $(XMACCATALYST_PCH)
-
-ifdef INCLUDE_MACCATALYST
-gen-maccatalyst: maccatalyst-$(MACCATALYST_SDK_VERSION).g.cs .stamp-check-sharpie
-	$(SHARPIE) query -bind $(XMACCATALYST_PCH) > maccatalyst-$(MACCATALYST_SDK_VERSION).g.cs
-else
-gen-maccatalyst: ; @true
-endif
-
-gen-all: gen-ios gen-tvos gen-macos gen-maccatalyst
 
 report-dotnet/index.html: $(XTRO_REPORT) .stamp-dotnet-classify
 	$(Q) rm -rf report-dotnet

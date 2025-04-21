@@ -36,7 +36,8 @@ using ObjCRuntime;
 using System.Runtime.Versioning;
 
 namespace CoreFoundation {
-
+	/// <summary>A class whose static fields define error domains for <see cref="P:CoreFoundation.CFException.Domain" />.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -66,6 +67,9 @@ namespace CoreFoundation {
 		}
 	}
 
+	/// <summary>Class that contains keys that identify exception data values.</summary>
+	///     <remarks>To be added.</remarks>
+	///     <!-- TODO: Unused? Couldn't find any references 2013-05-02 -->
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -99,6 +103,8 @@ namespace CoreFoundation {
 		}
 	}
 
+	/// <summary>Represents an exception arising from a Core Foundation <c>CFError</c>, having an error domain, a domain-specific error code, and perhaps additional information.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

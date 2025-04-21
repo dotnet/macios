@@ -21,6 +21,8 @@ using Foundation;
 namespace VideoToolbox {
 
 #if NET
+	/// <summary>Extensions class for <see cref="T:CoreVideo.CVPixelBuffer" />.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("tvos")]
@@ -36,6 +38,11 @@ namespace VideoToolbox {
 		// intentionally not exposing the (NSDictionary options) argument
 		// since header docs indicate that there are no options available
 		// as of 9.0/10.11 and to always pass NULL
+		/// <param name="pixelBuffer">To be added.</param>
+		///         <param name="image">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static VTStatus ToCGImage (this CVPixelBuffer pixelBuffer, out CGImage? image)
 		{
 			if (pixelBuffer is null)

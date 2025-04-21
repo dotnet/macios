@@ -16,6 +16,13 @@ namespace MetalPerformanceShaders {
 		[DllImport (Constants.MetalPerformanceShadersLibrary)]
 		extern static byte MPSSupportsMTLDevice (/* __nullable id <MTLDevice> */ IntPtr device);
 
+		/// <param name="device">To be added.</param>
+		///         <summary>Determines if the device is supported.</summary>
+		///         <returns>
+		///           <see langword="true" /> if <paramref name="device" /> is supported. Oterwise, returns <see langword="false" /></returns>
+		///         <remarks>
+		///           <para>Before copying shaders to a new device, application developers should call the <see cref="M:MetalPerformanceShaders.MPSKernel.Supports(Metal.IMTLDevice)" /> method to determine if the <paramref name="device" /> is supported.</para>
+		///         </remarks>
 		public static bool Supports (IMTLDevice device)
 		{
 			bool result = MPSSupportsMTLDevice (device.GetHandle ()) != 0;
@@ -23,27 +30,17 @@ namespace MetalPerformanceShaders {
 			return result;
 		}
 
-#if NET
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (13, 0)]
-		[iOS (13, 0)]
-#endif
 		[DllImport (Constants.MetalPerformanceShadersLibrary)]
 		static extern /* id<MTLDevice> _Nullable */ IntPtr MPSGetPreferredDevice (nuint options);
 
-#if NET
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (13, 0)]
-		[iOS (13, 0)]
-#endif
 		public static IMTLDevice? GetPreferredDevice (MPSDeviceOptions options)
 		{
 			var h = MPSGetPreferredDevice ((nuint) (ulong) options);
@@ -74,72 +71,59 @@ namespace MetalPerformanceShaders {
 			}
 		}
 
-#if NET
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		[DllImport (Constants.MetalPerformanceShadersLibrary)]
 		static extern void MPSHintTemporaryMemoryHighWaterMark (IntPtr commandBuffer, nuint bytes);
 
-#if NET
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public static void HintTemporaryMemoryHighWaterMark (IMTLCommandBuffer commandBuffer, nuint sizeInBytes)
 		{
 			MPSHintTemporaryMemoryHighWaterMark (commandBuffer.GetHandle (), sizeInBytes);
 			GC.KeepAlive (commandBuffer);
 		}
 
-#if NET
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		[DllImport (Constants.MetalPerformanceShadersLibrary)]
 		static extern void MPSSetHeapCacheDuration (IntPtr commandBuffer, double seconds);
 
-#if NET
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="seconds">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public static void SetHeapCacheDuration (IMTLCommandBuffer commandBuffer, double seconds)
 		{
 			MPSSetHeapCacheDuration (commandBuffer.GetHandle (), seconds);
 			GC.KeepAlive (commandBuffer);
 		}
-#endif
+#endif // !COREBUILD
 	}
 
 #if !COREBUILD
 	public partial class MPSImage {
-
-#if NET
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[iOS (13, 0)]
-#endif
 		[DllImport (Constants.MetalPerformanceShadersLibrary)]
 		static extern MPSImageType MPSGetImageType (IntPtr image);
 
-#if NET
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[iOS (13, 0)]
-#endif
 		public MPSImageType ImageType => MPSGetImageType (Handle);
 	}
 
@@ -169,6 +153,12 @@ namespace MetalPerformanceShaders {
 
 	public partial class MPSImageThresholdBinary {
 
+		/// <param name="device">The device on which the filter will run.</param>
+		///         <param name="thresholdValue">The value above which pixels will be brightened to the maximum value.</param>
+		///         <param name="maximumValue">The value to which to brighten pixels brighter than the threshold.</param>
+		///         <param name="transform">A color transform that maps 3-channel pixels to single-channel values.</param>
+		///         <summary>Constructs a new <c>MPSImageThresholdBinary</c> with the specified values.</summary>
+		///         <remarks>To be added.</remarks>
 		public MPSImageThresholdBinary (IMTLDevice device, float thresholdValue, float maximumValue, /*[NullAllowed]*/ float [] transform)
 			: base (NSObjectFlag.Empty)
 		{
@@ -190,6 +180,12 @@ namespace MetalPerformanceShaders {
 
 	public partial class MPSImageThresholdBinaryInverse {
 
+		/// <param name="device">The device on which the filter will run.</param>
+		///         <param name="thresholdValue">The value above which pixels will be darkened to 0 brightness.</param>
+		///         <param name="maximumValue">The value to which to brighten pixels that are dimmer than the threshold.</param>
+		///         <param name="transform">A color transform that maps 3-channel pixels to single-channel values.</param>
+		///         <summary>Constructs a new <c>MPSImageThresholdBinaryInverse</c> with the specified values.</summary>
+		///         <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		public MPSImageThresholdBinaryInverse (IMTLDevice device, float thresholdValue, float maximumValue, /*[NullAllowed]*/ float [] transform)
 			: base (NSObjectFlag.Empty)
@@ -210,6 +206,12 @@ namespace MetalPerformanceShaders {
 
 	public partial class MPSImageThresholdTruncate {
 
+		/// <param name="device">The device on which the filter will run.</param>
+		///         <param name="thresholdValue">The value to which pixel brightensses will be clamped.</param>
+		///         <param name="transform">A color transform that maps 3-channel pixels to single-channel values.</param>
+		///         <summary>Constructs a new <c>MPSImageThresholdTruncate</c> with the specified values.</summary>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		public MPSImageThresholdTruncate (IMTLDevice device, float thresholdValue, /*[NullAllowed]*/ float [] transform)
 			: base (NSObjectFlag.Empty)
@@ -230,6 +232,11 @@ namespace MetalPerformanceShaders {
 
 	public partial class MPSImageThresholdToZero {
 
+		/// <param name="device">The device on which the filter will run.</param>
+		///         <param name="thresholdValue">The value above which pixels will be left unchanged.</param>
+		///         <param name="transform">A color transform that maps 3-channel pixels to single-channel values.</param>
+		///         <summary>Constructs a new <c>MPSImageThresholdToZero</c> with the specified values.</summary>
+		///         <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		public MPSImageThresholdToZero (IMTLDevice device, float thresholdValue, /*[NullAllowed]*/ float [] transform)
 			: base (NSObjectFlag.Empty)
@@ -250,6 +257,11 @@ namespace MetalPerformanceShaders {
 
 	public partial class MPSImageThresholdToZeroInverse {
 
+		/// <param name="device">The device on which the filter will run.</param>
+		///         <param name="thresholdValue">The value above which pixels will be darkened to 0.</param>
+		///         <param name="transform">A color transform that maps 3-channel pixels to single-channel values.</param>
+		///         <summary>Constructs a new <c>MPSImageThresholdToZeroInverse</c> with the specified values.</summary>
+		///         <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		public MPSImageThresholdToZeroInverse (IMTLDevice device, float thresholdValue, /*[NullAllowed]*/ float [] transform)
 			: base (NSObjectFlag.Empty)
@@ -270,6 +282,10 @@ namespace MetalPerformanceShaders {
 
 	public partial class MPSImageSobel {
 
+		/// <param name="device">The device on which the filter will run.</param>
+		///         <param name="transform">An array of 3 floating point values that is dot-multiplied with the components of the color to produce a gray scale tone.</param>
+		///         <summary>Constructs a new <c>MPSImageSobel</c> with the specified device and color transform.</summary>
+		///         <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		public MPSImageSobel (IMTLDevice device, float [] transform)
 			: base (NSObjectFlag.Empty)
@@ -293,6 +309,13 @@ namespace MetalPerformanceShaders {
 
 	public partial class MPSCnnConvolution {
 
+		/// <param name="device">To be added.</param>
+		///         <param name="convolutionDescriptor">To be added.</param>
+		///         <param name="kernelWeights">To be added.</param>
+		///         <param name="biasTerms">To be added.</param>
+		///         <param name="flags">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		public MPSCnnConvolution (IMTLDevice device, MPSCnnConvolutionDescriptor convolutionDescriptor, float [] kernelWeights, float [] biasTerms, MPSCnnConvolutionFlags flags)
 			: base (NSObjectFlag.Empty)
@@ -309,18 +332,21 @@ namespace MetalPerformanceShaders {
 	}
 
 	public partial class MPSCnnFullyConnected {
-
-#if NET
+		/// <param name="device">To be added.</param>
+		///         <param name="convolutionDescriptor">To be added.</param>
+		///         <param name="kernelWeights">To be added.</param>
+		///         <param name="biasTerms">To be added.</param>
+		///         <param name="flags">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[ObsoletedOSPlatform ("tvos11.0", "Use any of the other 'DesignatedInitializer' ctors.")]
 		[ObsoletedOSPlatform ("ios11.0", "Use any of the other 'DesignatedInitializer' ctors.")]
-#else
-		[Deprecated (PlatformName.TvOS, 11, 0, message: "Use any of the other 'DesignatedInitializer' ctors.")]
-		[Deprecated (PlatformName.iOS, 11, 0, message: "Use any of the other 'DesignatedInitializer' ctors.")]
-#endif
+		[ObsoletedOSPlatform ("macos", "Use any of the other 'DesignatedInitializer' ctors.")]
+		[ObsoletedOSPlatform ("maccatalyst", "Use any of the other 'DesignatedInitializer' ctors.")]
 		public MPSCnnFullyConnected (IMTLDevice device, MPSCnnConvolutionDescriptor convolutionDescriptor, float [] kernelWeights, float [] biasTerms, MPSCnnConvolutionFlags flags)
 			: base (NSObjectFlag.Empty)
 		{
@@ -378,6 +404,8 @@ namespace MetalPerformanceShaders {
 		}
 	}
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public partial class MPSImageLaplacianPyramid {
 		[DesignatedInitializer]
 		public MPSImageLaplacianPyramid (IMTLDevice device, nuint kernelWidth, nuint kernelHeight, float [] kernelWeights) : base (NSObjectFlag.Empty)
@@ -394,6 +422,8 @@ namespace MetalPerformanceShaders {
 		}
 	}
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public partial class MPSImageLaplacianPyramidSubtract {
 		[DesignatedInitializer]
 		public MPSImageLaplacianPyramidSubtract (IMTLDevice device, nuint kernelWidth, nuint kernelHeight, float [] kernelWeights) : base (NSObjectFlag.Empty)
@@ -410,6 +440,8 @@ namespace MetalPerformanceShaders {
 		}
 	}
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public partial class MPSImageLaplacianPyramidAdd {
 		[DesignatedInitializer]
 		public MPSImageLaplacianPyramidAdd (IMTLDevice device, nuint kernelWidth, nuint kernelHeight, float [] kernelWeights) : base (NSObjectFlag.Empty)
@@ -427,13 +459,20 @@ namespace MetalPerformanceShaders {
 	}
 
 	public partial class MPSCnnBinaryConvolutionNode {
-#if NET
+		/// <summary>Create a new <see cref="MPSCnnBinaryConvolutionNode" /> instance.</summary>
+		/// <param name="sourceNode">An <see cref="MPSNNImageNode" /> node for the source image.</param>
+		/// <param name="weights">An <see cref="IMPSCnnConvolutionDataSource" /> instance that provides weights and biases.</param>
+		/// <param name="outputBiasTerms">An array of bias terms to be applied to the convolution output.</param>
+		/// <param name="outputScaleTerms">An array of scale terms to be applied to the convolution output.</param>
+		/// <param name="inputBiasTerms">An array of bias terms to be applied to the input before convulution and input scaling.</param>
+		/// <param name="inputScaleTerms">An array of scale terms to be applied to the input before convulution and input scaling.</param>
+		/// <param name="type">Which type of binary convulution to use.</param>
+		/// <param name="flags">Any flags for the new instance.</param>
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
-		public static MPSCnnBinaryConvolutionNode Create (MPSNNImageNode sourceNode, IMPSCnnConvolutionDataSource weights, float [] outputBiasTerms, float [] outputScaleTerms, float [] inputBiasTerms, float [] inputScaleTerms, MPSCnnBinaryConvolutionType type, MPSCnnBinaryConvolutionFlags flags)
+		public static MPSCnnBinaryConvolutionNode Create (MPSNNImageNode sourceNode, IMPSCnnConvolutionDataSource weights, float []? outputBiasTerms, float []? outputScaleTerms, float []? inputBiasTerms, float []? inputScaleTerms, MPSCnnBinaryConvolutionType type, MPSCnnBinaryConvolutionFlags flags)
 		{
 			unsafe {
 				fixed (void* outputBiasTermsHandle = outputBiasTerms)
@@ -444,32 +483,46 @@ namespace MetalPerformanceShaders {
 			}
 		}
 
-#if NET
+		/// <summary>Create a new <see cref="MPSCnnBinaryConvolutionNode" /> instance.</summary>
+		/// <param name="sourceNode">An <see cref="MPSNNImageNode" /> node for the source image.</param>
+		/// <param name="weights">An <see cref="IMPSCnnConvolutionDataSource" /> instance that provides weights and biases.</param>
+		/// <param name="outputBiasTerms">An array of bias terms to be applied to the convolution output.</param>
+		/// <param name="outputScaleTerms">An array of scale terms to be applied to the convolution output.</param>
+		/// <param name="inputBiasTerms">An array of bias terms to be applied to the input before convulution and input scaling.</param>
+		/// <param name="inputScaleTerms">An array of scale terms to be applied to the input before convulution and input scaling.</param>
+		/// <param name="type">Which type of binary convulution to use.</param>
+		/// <param name="flags">Any flags for the new instance.</param>
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
-		public MPSCnnBinaryConvolutionNode (MPSNNImageNode sourceNode, IMPSCnnConvolutionDataSource weights, float [] outputBiasTerms, float [] outputScaleTerms, float [] inputBiasTerms, float [] inputScaleTerms, MPSCnnBinaryConvolutionType type, MPSCnnBinaryConvolutionFlags flags) : base (NSObjectFlag.Empty)
+		public MPSCnnBinaryConvolutionNode (MPSNNImageNode sourceNode, IMPSCnnConvolutionDataSource weights, float []? outputBiasTerms, float []? outputScaleTerms, float []? inputBiasTerms, float []? inputScaleTerms, MPSCnnBinaryConvolutionType type, MPSCnnBinaryConvolutionFlags flags) : base (NSObjectFlag.Empty)
 		{
 			unsafe {
 				fixed (void* outputBiasTermsHandle = outputBiasTerms)
 				fixed (void* outputScaleTermsHandle = outputScaleTerms)
 				fixed (void* inputBiasTermsHandle = inputBiasTerms)
 				fixed (void* inputScaleTermsHandle = inputScaleTerms)
-					InitializeHandle (InitWithSource (sourceNode, weights, (IntPtr) outputBiasTermsHandle, (IntPtr) outputScaleTermsHandle, (IntPtr) inputBiasTermsHandle, (IntPtr) inputScaleTermsHandle, type, flags));
+					InitializeHandle (_InitWithSource (sourceNode, weights, (IntPtr) outputBiasTermsHandle, (IntPtr) outputScaleTermsHandle, (IntPtr) inputBiasTermsHandle, (IntPtr) inputScaleTermsHandle, type, flags));
 			}
 		}
 	}
 
 	public partial class MPSCnnBinaryFullyConnectedNode {
-#if NET
+		/// <summary>Create a new <see cref="MPSCnnBinaryConvolutionNode" /> instance.</summary>
+		/// <param name="sourceNode">An <see cref="MPSNNImageNode" /> node for the source image.</param>
+		/// <param name="weights">An <see cref="IMPSCnnConvolutionDataSource" /> instance that provides weights and biases.</param>
+		/// <param name="outputBiasTerms">An array of bias terms to be applied to the convolution output.</param>
+		/// <param name="outputScaleTerms">An array of scale terms to be applied to the convolution output.</param>
+		/// <param name="inputBiasTerms">An array of bias terms to be applied to the input before convulution and input scaling.</param>
+		/// <param name="inputScaleTerms">An array of scale terms to be applied to the input before convulution and input scaling.</param>
+		/// <param name="type">Which type of binary convulution to use.</param>
+		/// <param name="flags">Any flags for the new instance.</param>
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
-		public new static MPSCnnBinaryFullyConnectedNode Create (MPSNNImageNode sourceNode, IMPSCnnConvolutionDataSource weights, float [] outputBiasTerms, float [] outputScaleTerms, float [] inputBiasTerms, float [] inputScaleTerms, MPSCnnBinaryConvolutionType type, MPSCnnBinaryConvolutionFlags flags)
+		public new static MPSCnnBinaryFullyConnectedNode Create (MPSNNImageNode sourceNode, IMPSCnnConvolutionDataSource weights, float []? outputBiasTerms, float []? outputScaleTerms, float []? inputBiasTerms, float []? inputScaleTerms, MPSCnnBinaryConvolutionType type, MPSCnnBinaryConvolutionFlags flags)
 		{
 			unsafe {
 				fixed (void* outputBiasTermsHandle = outputBiasTerms)
@@ -480,22 +533,29 @@ namespace MetalPerformanceShaders {
 			}
 		}
 
-#if NET
+		/// <summary>Create a new <see cref="MPSCnnBinaryConvolutionNode" /> instance.</summary>
+		/// <param name="sourceNode">An <see cref="MPSNNImageNode" /> node for the source image.</param>
+		/// <param name="weights">An <see cref="IMPSCnnConvolutionDataSource" /> instance that provides weights and biases.</param>
+		/// <param name="outputBiasTerms">An array of bias terms to be applied to the convolution output.</param>
+		/// <param name="outputScaleTerms">An array of scale terms to be applied to the convolution output.</param>
+		/// <param name="inputBiasTerms">An array of bias terms to be applied to the input before convulution and input scaling.</param>
+		/// <param name="inputScaleTerms">An array of scale terms to be applied to the input before convulution and input scaling.</param>
+		/// <param name="type">Which type of binary convulution to use.</param>
+		/// <param name="flags">Any flags for the new instance.</param>
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
-		public MPSCnnBinaryFullyConnectedNode (MPSNNImageNode sourceNode, IMPSCnnConvolutionDataSource weights, float [] outputBiasTerms, float [] outputScaleTerms, float [] inputBiasTerms, float [] inputScaleTerms, MPSCnnBinaryConvolutionType type, MPSCnnBinaryConvolutionFlags flags) : base (NSObjectFlag.Empty)
+		public MPSCnnBinaryFullyConnectedNode (MPSNNImageNode sourceNode, IMPSCnnConvolutionDataSource weights, float []? outputBiasTerms, float []? outputScaleTerms, float []? inputBiasTerms, float []? inputScaleTerms, MPSCnnBinaryConvolutionType type, MPSCnnBinaryConvolutionFlags flags) : base (NSObjectFlag.Empty)
 		{
 			unsafe {
 				fixed (void* outputBiasTermsHandle = outputBiasTerms)
 				fixed (void* outputScaleTermsHandle = outputScaleTerms)
 				fixed (void* inputBiasTermsHandle = inputBiasTerms)
 				fixed (void* inputScaleTermsHandle = inputScaleTerms)
-					InitializeHandle (InitWithSource (sourceNode, weights, (IntPtr) outputBiasTermsHandle, (IntPtr) outputScaleTermsHandle, (IntPtr) inputBiasTermsHandle, (IntPtr) inputScaleTermsHandle, type, flags));
+					InitializeHandle (_InitWithSource (sourceNode, weights, (IntPtr) outputBiasTermsHandle, (IntPtr) outputScaleTermsHandle, (IntPtr) inputBiasTermsHandle, (IntPtr) inputScaleTermsHandle, type, flags));
 			}
 		}
 	}
-#endif
+#endif // COREBUILD
 }

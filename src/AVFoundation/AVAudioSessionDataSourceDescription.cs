@@ -12,6 +12,8 @@ using System;
 #if !MONOMAC
 
 namespace AVFoundation {
+	/// <summary>Enumerates physical locations of data sources on AV devices.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum AVAudioDataSourceLocation {
 		/// <summary>To be added.</summary>
 		Unknown,
@@ -21,6 +23,8 @@ namespace AVFoundation {
 		Lower,
 	}
 
+	/// <summary>Enumerates physical orientations of data sources on AV devices.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum AVAudioDataSourceOrientation {
 		/// <summary>To be added.</summary>
 		Unknown,
@@ -38,6 +42,8 @@ namespace AVFoundation {
 		Right,
 	}
 
+	/// <summary>Enumerates microphone directivity values.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum AVAudioDataSourcePolarPattern {
 		/// <summary>To be added.</summary>
 		Unknown,
@@ -49,6 +55,9 @@ namespace AVFoundation {
 		Subcardioid,
 	}
 
+	/// <summary>Describes a data source of an <see cref="T:AVFoundation.AVAudioSession" /> object.</summary>
+	///     <remarks>To be added.</remarks>
+	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVAudioSessionDataSourceDescription_class/index.html">Apple documentation for <c>AVAudioSessionDataSourceDescription</c></related>
 	public partial class AVAudioSessionDataSourceDescription {
 		static internal AVAudioDataSourceLocation ToLocation (NSString? l)
 		{

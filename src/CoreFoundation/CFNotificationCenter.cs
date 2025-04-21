@@ -23,6 +23,10 @@ using System.Collections.Generic;
 
 namespace CoreFoundation {
 
+	/// <summary>Flags that determine how notifications should be handled when the application is running in the background.</summary>
+	///     <remarks>
+	///       <para />
+	///     </remarks>
 	[Native] // CFIndex
 	public enum CFNotificationSuspensionBehavior : long {
 		/// <summary>The notifications will be dropped while the application is in the background.</summary>
@@ -42,6 +46,10 @@ namespace CoreFoundation {
 	//
 	// This is needed because the API itself is not great.
 	//
+	/// <summary>Token returned by a call to <see cref="M:CoreFoundation.CFNotificationCenter.AddObserver(System.String,ObjCRuntime.INativeObject,System.Action{System.String,Foundation.NSDictionary},CoreFoundation.CFNotificationSuspensionBehavior)" /> that can be used to unregister observers.</summary>
+	///     <remarks>
+	///       <para />
+	///     </remarks>
 	public class CFNotificationObserverToken {
 		internal CFNotificationObserverToken (string stringName)
 		{
@@ -56,6 +64,28 @@ namespace CoreFoundation {
 	}
 
 
+	/// <summary>Notification hub for the application.</summary>
+	///     <remarks>
+	///       <para>
+	/// 	The CFNotificationCenter is a hub that is used to listen to
+	/// 	broadcast messages and post broadcast messages in an
+	/// 	application.    The messages that are posted are synchronous.
+	///       </para>
+	///       <para>
+	/// 	Posting a notification is a synchronous process, which means
+	/// 	that invoking one of the Post messages on the notification
+	/// 	center will block execution until all of the notification
+	/// 	handlers have completed running.
+	///       </para>
+	///       <para>
+	/// 	While the <see cref="T:Foundation.NSNotificationCenter" /> also
+	/// 	provides a notification hub, they are separate from each
+	/// 	other.  The CFNotificationCenter provides three hubs: an
+	/// 	application local hub, the Darwin hub (for OS-global
+	/// 	notifications) and a distributed hub (only available on Mac).
+	///
+	///       </para>
+	///     </remarks>
 	public class CFNotificationCenter : NativeObject {
 		// If this becomes public for some reason, and more than three instances are created, you should revisit the lookup code
 		[Preserve (Conditional = true)]

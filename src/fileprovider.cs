@@ -366,6 +366,11 @@ namespace FileProvider {
 	[BaseType (typeof (NSObject))]
 	interface NSFileProviderDomain {
 
+		/// <param name="identifier">To be added.</param>
+		/// <param name="displayName">To be added.</param>
+		/// <param name="pathRelativeToDocumentStorage">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoMac]
 		[Export ("initWithIdentifier:displayName:pathRelativeToDocumentStorage:")]
 		NativeHandle Constructor (string identifier, string displayName, string pathRelativeToDocumentStorage);
@@ -680,11 +685,20 @@ namespace FileProvider {
 		[Export ("defaultManager", ArgumentSemantic.Strong)]
 		NSFileProviderManager DefaultManager { get; }
 
+		/// <param name="containerItemIdentifier">To be added.</param>
+		///         <param name="completion">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("signalEnumeratorForContainerItemIdentifier:completionHandler:")]
 		// Not Async'ified on purpose, because this can switch from app to extension.
 		void SignalEnumerator (string containerItemIdentifier, Action<NSError> completion);
 
 		// Not Async'ified on purpose, because the task must be accesed while the completion action is performing...
+		/// <param name="task">To be added.</param>
+		///         <param name="identifier">To be added.</param>
+		///         <param name="completion">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("registerURLSessionTask:forItemWithIdentifier:completionHandler:")]
 		void Register (NSUrlSessionTask task, string identifier, Action<NSError> completion);
 
@@ -702,36 +716,64 @@ namespace FileProvider {
 		[Export ("documentStorageURL")]
 		NSUrl DocumentStorageUrl { get; }
 
+		/// <param name="placeholderUrl">To be added.</param>
+		///         <param name="metadata">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[Static]
 		[Export ("writePlaceholderAtURL:withMetadata:error:")]
 		bool WritePlaceholder (NSUrl placeholderUrl, INSFileProviderItem metadata, out NSError error);
 
+		/// <param name="url">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[Static]
 		[Export ("placeholderURLForURL:")]
 		NSUrl GetPlaceholderUrl (NSUrl url);
 
+		/// <param name="domain">To be added.</param>
+		///         <param name="completionHandler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Async]
 		[Export ("addDomain:completionHandler:")]
 		void AddDomain (NSFileProviderDomain domain, Action<NSError> completionHandler);
 
+		/// <param name="domain">To be added.</param>
+		///         <param name="completionHandler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Async]
 		[Export ("removeDomain:completionHandler:")]
 		void RemoveDomain (NSFileProviderDomain domain, Action<NSError> completionHandler);
 
+		/// <param name="completionHandler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Async]
 		[Export ("getDomainsWithCompletionHandler:")]
 		void GetDomains (Action<NSFileProviderDomain [], NSError> completionHandler);
 
+		/// <param name="completionHandler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Async]
 		[Export ("removeAllDomainsWithCompletionHandler:")]
 		void RemoveAllDomains (Action<NSError> completionHandler);
 
+		/// <param name="domain">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("managerForDomain:")]
 		[return: NullAllowed]

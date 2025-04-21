@@ -33,6 +33,8 @@ using Foundation;
 namespace CoreImage {
 
 	// convenience enum for CIDetectorAccuracy[High|Low] internal fields in CIDetector (coreimage.cs)
+	/// <summary>An enumeration whose values specify the accuracy of face detection.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum FaceDetectorAccuracy {
 		/// <summary>Low detection accuracy.</summary>
 		High,

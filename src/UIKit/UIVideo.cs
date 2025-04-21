@@ -39,7 +39,13 @@ namespace UIKit {
 		}
 	}
 
+	/// <summary>Static class that exposes some helper methods for manipulating video.</summary>
+	///     <remarks>To be added.</remarks>
 	public static class UIVideo {
+		/// <param name="path">To be added.</param>
+		///     <param name="error">To be added.</param>
+		///     <summary>A delegate signature that is invoked after the video is saved.</summary>
+		///     <remarks>To be added.</remarks>
 		public delegate void SaveStatus (string path, NSError error);
 
 		[DllImport (Constants.UIKitLibrary)]

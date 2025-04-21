@@ -7,6 +7,8 @@ namespace Foundation {
 
 #if MONOMAC || __MACCATALYST__
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public static class NSScriptCommandDescriptionDictionaryKeys {
 		private static NSString cmdClass = new NSString ("CommandClass");
 		/// <summary>To be added.</summary>
@@ -55,8 +57,13 @@ namespace Foundation {
 		}
 	}
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public partial class NSScriptCommandDescriptionDictionary {
 
+		/// <param name="arg">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void Add (NSScriptCommandArgumentDescription arg)
 		{
 			if (arg is null)
@@ -68,6 +75,10 @@ namespace Foundation {
 			}
 		}
 
+		/// <param name="arg">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool Remove (NSScriptCommandArgumentDescription arg)
 		{
 			if (arg is null)

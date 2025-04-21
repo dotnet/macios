@@ -23,6 +23,10 @@ namespace AppKit {
 				Handle = InitWithSize (size);
 		}
 
+		/// <param name="size">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("maccatalyst")]
@@ -32,6 +36,10 @@ namespace AppKit {
 			return new NSTextContainer (size, false);
 		}
 
+		/// <param name="containerSize">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[UnsupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("maccatalyst")]

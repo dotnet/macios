@@ -15,6 +15,8 @@ using ObjCRuntime;
 namespace UIKit {
 
 #if IOS
+	/// <summary>Extension methods for the <see cref="T:UIKit.UIDeviceOrientation" /> class.</summary>
+	///     <remarks>To be added.</remarks>
 	public static class UIDeviceOrientationExtensions {
 		/// <param name="orientation">To be added.</param>
 		///         <summary>Returns <see langword="true" /> if one of the short edges is lowest.</summary>
@@ -45,6 +47,13 @@ namespace UIKit {
 		}
 	}
 
+	/// <summary>Extension methods for the UIInterfaceOrientation enumeration.</summary>
+	///     <remarks>
+	///       <para>The extension methods in this class provide some
+	///       convenience methods to use with enumerations of the
+	///       UIInterfaceOrientation type.
+	///       </para>
+	///     </remarks>
 	public static class UIInterfaceOrientationExtensions {
 		/// <param name="orientation">The value to operate on.</param>
 		///         <summary>Determines if the orientation is one of the portrait orientations.</summary>

@@ -19,6 +19,10 @@ using UIKit;
 
 namespace ObjCRuntime {
 
+	/// <summary>Provides information about the Xamarin.iOS Runtime.</summary>
+	///     <remarks>
+	///     </remarks>
+	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/SysSound/">SysSound</related>
 	public static partial class Runtime {
 #if !COREBUILD
 #if NET
@@ -172,6 +176,7 @@ namespace ObjCRuntime {
 	}
 
 #if !__MACCATALYST__
+	/// <summary>Used to represent the host on which this app is running.</summary>
 	public enum Arch {
 		/// <summary>Running on a physical device.</summary>
 		DEVICE,

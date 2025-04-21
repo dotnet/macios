@@ -1115,6 +1115,10 @@ namespace GameplayKit {
 		[Export ("initWithGraphNodes:radius:")]
 		NativeHandle Constructor (GKGraphNode [] nodes, float radius);
 
+		/// <param name="graphNodes">To be added.</param>
+		/// <param name="radius">To be added.</param>
+		/// <summary>Creates a new <see cref="T:GameplayKit.GKPath" /> with the specified <paramref name="graphNodes" /> and <paramref name="radius" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (nodes: graphNodes, radius: radius)")] // Avoid breaking change
 		NativeHandle Constructor (GKGraphNode2D [] graphNodes, float radius);
 

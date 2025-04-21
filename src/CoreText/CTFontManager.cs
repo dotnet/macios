@@ -45,6 +45,8 @@ using CGGlyph = System.UInt16;
 namespace CoreText {
 
 	// defined as uint32_t - /System/Library/Frameworks/CoreText.framework/Headers/CTFontManager.h
+	/// <summary>An enumeration whose values specify the scope for font registration.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum CTFontManagerScope : uint {
 		/// <summary>To be added.</summary>
 		None = 0,
@@ -64,6 +66,8 @@ namespace CoreText {
 	}
 
 	// defined as uint32_t - /System/Library/Frameworks/CoreText.framework/Headers/CTFontManager.h
+	/// <summary>An enumeration whose values specify values for auto-activation of fonts.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum CTFontManagerAutoActivation : uint {
 		/// <summary>To be added.</summary>
 		Default = 0,
@@ -83,12 +87,19 @@ namespace CoreText {
 		PromptUser = 3,
 	}
 
+	/// <summary>Manages the central CoreText Font System.</summary>
+	///     <remarks>
+	///     </remarks>
 	public partial class CTFontManager {
 
 #if MONOMAC
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern byte CTFontManagerIsSupportedFont (IntPtr url);
 
+		/// <param name="url">To be added.</param>
+		///         <summary>Developers should not use this deprecated method. </summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("ios")]
@@ -106,6 +117,11 @@ namespace CoreText {
 
 		[DllImport (Constants.CoreTextLibrary)]
 		unsafe static extern byte CTFontManagerRegisterFontsForURL (IntPtr fontUrl, CTFontManagerScope scope, IntPtr* error);
+		/// <param name="fontUrl">To be added.</param>
+		///         <param name="scope">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSError? RegisterFontsForUrl (NSUrl fontUrl, CTFontManagerScope scope)
 		{
 			if (fontUrl is null)
@@ -164,6 +180,11 @@ namespace CoreText {
 		[DllImport (Constants.CoreTextLibrary)]
 		unsafe static extern byte CTFontManagerRegisterFontsForURLs (IntPtr arrayRef, CTFontManagerScope scope, IntPtr* error_array);
 
+		/// <param name="fontUrls">To be added.</param>
+		///         <param name="scope">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -231,6 +252,11 @@ namespace CoreText {
 		[DllImport (Constants.CoreTextLibrary)]
 		unsafe static extern byte CTFontManagerUnregisterFontsForURL (IntPtr fotUrl, CTFontManagerScope scope, IntPtr* error);
 
+		/// <param name="fontUrl">To be added.</param>
+		///         <param name="scope">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSError? UnregisterFontsForUrl (NSUrl fontUrl, CTFontManagerScope scope)
 		{
 			if (fontUrl is null)
@@ -264,6 +290,11 @@ namespace CoreText {
 		[DllImport (Constants.CoreTextLibrary)]
 		unsafe static extern byte CTFontManagerUnregisterFontsForURLs (IntPtr arrayRef, CTFontManagerScope scope, IntPtr* error_array);
 
+		/// <param name="fontUrls">To be added.</param>
+		///         <param name="scope">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -319,6 +350,10 @@ namespace CoreText {
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern /* CFArrayRef */ IntPtr CTFontManagerCreateFontDescriptorsFromURL (/* CFURLRef */ IntPtr fileURL);
 
+		/// <param name="url">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -353,6 +388,36 @@ namespace CoreText {
 		[DllImport (Constants.CoreTextLibrary)]
 		unsafe static extern byte CTFontManagerRegisterGraphicsFont (IntPtr cgfont, IntPtr* error);
 
+		/// <param name="font">The CoreGraphics font to register with the CoreText font system.</param>
+		///         <param name="error">On return the error, if any.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>True on success, false on error.</returns>
+		///         <remarks>
+		///           <para>
+		/// 	    You can use this feature to register fonts that you
+		/// 	    download from the network, or to use fonts that are for
+		/// 	    example embedded as a resource in your executable or some
+		/// 	    other database.
+		///
+		/// 	  </para>
+		///           <example>
+		///             <code lang="csharp lang-csharp"><![CDATA[
+		/// // 
+		/// // Load font into byte array from a file.
+		/// //
+		/// byte [] myBuffer = GetEmbeddedResource ("myResource");
+		/// CGFont font = CGFont.CreateFromProvider (new CGDataProvider (myBuffer, 0, myBuffer.Count));
+		/// if (CTFontManager.RegisterGraphicsFont (font, out error)){
+		/// 	//
+		/// 	// access font
+		/// 	//
+		///
+		/// 	// Release font after we use it.
+		/// 	CTFontManager.UnregisterGraphicsFont (font, out error);
+		/// }
+		/// ]]></code>
+		///           </example>
+		///         </remarks>
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("ios")]
@@ -394,6 +459,29 @@ namespace CoreText {
 		[DllImport (Constants.CoreTextLibrary)]
 		unsafe static extern byte CTFontManagerUnregisterGraphicsFont (IntPtr cgfont, IntPtr* error);
 
+		/// <param name="font">The CoreGraphics font to unregister with the CoreText font system.</param>
+		///         <param name="error">On return the error, if any.</param>
+		///         <summary>Unregisters a CoreGraphics Font from the CoreText font system.</summary>
+		///         <returns>True on success, false on error.</returns>
+		///         <remarks>
+		///           <example>
+		///             <code lang="csharp lang-csharp"><![CDATA[
+		/// // 
+		/// // Load font into byte array from a file.
+		/// //
+		/// byte [] myBuffer = GetEmbeddedResource ("myResource");
+		/// CGFont font = CGFont.CreateFromProvider (new CGDataProvider (myBuffer, 0, myBuffer.Count));
+		/// if (CTFontManager.RegisterGraphicsFont (font, out error)){
+		/// 	//
+		/// 	// access font
+		/// 	//
+		///
+		/// 	// Release font after we use it.
+		/// 	CTFontManager.UnregisterGraphicsFont (font, out error);
+		/// }
+		/// ]]></code>
+		///           </example>
+		///         </remarks>
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("ios")]
@@ -438,7 +526,10 @@ namespace CoreText {
 			}
 		}
 
+		/// <summary>Observer for receiving notifications when fonts are added to the registry.</summary>
+		///     <remarks>To be added.</remarks>
 		public static partial class Notifications {
+			/// <include file="../../docs/api/CoreText.CTFontManager/Notifications.xml" path="/Documentation/Docs[@DocId='M:CoreText.CTFontManager.Notifications.ObserveRegisteredFontsChanged(System.EventHandler{Foundation.NSNotificationEventArgs})']/*" />
 			public static NSObject ObserveRegisteredFontsChanged (EventHandler<NSNotificationEventArgs> handler)
 			{
 				return NSNotificationCenter.DefaultCenter.AddObserver (RegisteredFontsChangedNotification, notification => handler (null, new NSNotificationEventArgs (notification)));

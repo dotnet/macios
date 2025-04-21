@@ -16,6 +16,25 @@ using Foundation;
 
 namespace UIKit {
 
+	/// <summary>Attributes used to describe a font, used by <see cref="T:UIKit.UIFontDescriptor" /></summary>
+	///     <remarks>
+	///       <para>
+	/// 	This type defines the attributes used to describe a font, like
+	/// 	the font family, the font name, the character set, typographic features, glyph
+	/// 	advancement, advanced typesetting features and others.
+	///       </para>
+	///       <para>
+	/// 	Typically you create objects of this instance to create a <see cref="T:UIKit.UIFontDescriptor" />. 
+	///       </para>
+	///       <example>
+	///         <code lang="csharp lang-csharp"><![CDATA[
+	/// var attributes = new UIFontAttributes () {
+	///     Size = 14,
+	///     Matrix = MyTransform
+	/// };
+	/// ]]></code>
+	///       </example>
+	///     </remarks>
 	public class UIFontAttributes : DictionaryContainer {
 		/// <summary>Creates an empty UIFontAttributes.</summary>
 		///         <remarks>
@@ -626,6 +645,8 @@ namespace UIKit {
 	}
 
 	// that's a convenience enum that maps to UIFontDescriptorXXX which are internal (hidden) NSString
+	/// <summary>An enumeration whose values can be passed to <see cref="M:UIKit.UIFontDescriptor.GetMatchingFontDescriptors(UIKit.UIFontDescriptorAttribute[])" /> to specify which keys must be matched.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum UIFontDescriptorAttribute {
 		/// <summary>Key to specify that font family must be matched.</summary>
 		Family,
@@ -653,6 +674,8 @@ namespace UIKit {
 		TextStyle,
 	}
 
+	/// <summary>A <see cref="T:Foundation.DictionaryContainer" /> that describes the symbolic traits of a <see cref="T:UIKit.UIFont" />. Returned by <see cref="P:UIKit.UIFontAttributes.Traits" />.</summary>
+	///     <remarks>To be added.</remarks>
 	public class UIFontTraits : DictionaryContainer {
 		/// <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>

@@ -36,6 +36,9 @@ using ObjCRuntime;
 using Foundation;
 
 namespace CoreGraphics {
+	/// <summary>CGContext backed by an in-memory bitmap.</summary>
+	///     <remarks>To be added.</remarks>
+	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/Drawing/">Example_Drawing</related>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

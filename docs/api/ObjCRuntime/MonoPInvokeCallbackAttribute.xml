@@ -1,0 +1,38 @@
+<Documentation>
+  <Docs DocId="T:ObjCRuntime.MonoPInvokeCallbackAttribute">
+    <summary>Attribute used to annotate functions that will be called back from the unmanaged world.</summary>
+    <remarks>
+      <para>
+       This attribute is valid on static functions and it is used by
+       Mono's Ahead of Time Compiler to generate the code necessary to
+       support native call calling back into managed code.
+      </para>
+      <para>
+	In regular ECMA CIL programs this happens automatically, and
+	it is not necessary to flag anything specially, but with pure
+	Ahead of Time compilation the compiler needs to know which
+	methods will be called from the unmanaged code.
+
+      </para>
+      <para>
+	In the current version of Xamarin.iOS, only static functions can
+	be called back from unmanaged code.
+      </para>
+      <para>
+	  You must specify the type of the delegate that this code
+	  will be called as.  The following example shows the scenario
+	  in which this is used:
+
+	 </para>
+      <code lang="csharp lang-csharp"><![CDATA[using System;
+	delegate void DrawPatternCallback (IntPtr voidptr, IntPtr cgcontextref);
+
+	[MonoPInvokeCallback (typeof (DrawPatternCallback))]
+	static void DrawCallback (IntPtr voidptr, IntPtr cgcontextptr)
+	{
+		// This method is called from the C library
+	}
+]]></code>
+    </remarks>
+  </Docs>
+</Documentation>

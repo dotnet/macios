@@ -7,6 +7,10 @@ namespace Foundation {
 	public partial class NSOutputStream : NSStream {
 		const string selWriteMaxLength = "write:maxLength:";
 
+		/// <param name="buffer">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public nint Write (byte [] buffer)
 		{
 			if (buffer is null)

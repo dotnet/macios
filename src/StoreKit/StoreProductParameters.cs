@@ -35,8 +35,13 @@ using ObjCRuntime;
 
 namespace StoreKit {
 
+	/// <summary>A subclass of <see cref="T:Foundation.DictionaryContainer" /> that, when passed to <see cref="M:StoreKit.SKStoreProductViewController.LoadProduct(StoreKit.StoreProductParameters,System.Action{System.Boolean,Foundation.NSError})" />, specifies the product to be displayed.</summary>
+	///     <remarks>To be added.</remarks>
 	public partial class StoreProductParameters : DictionaryContainer {
 #if !COREBUILD
+		/// <param name="iTunesItemIdentifier">To be added.</param>
+		///         <summary>Creates a new <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:StoreKit.StoreProductParameters.StoreProductParameters&amp;scope=Xamarin" title="T:StoreKit.StoreProductParameters.StoreProductParameters">T:StoreKit.StoreProductParameters.StoreProductParameters</a></format> for the specified ITunes identifier.</summary>
+		///         <remarks>To be added.</remarks>
 		public StoreProductParameters (int iTunesItemIdentifier)
 			: this ()
 		{

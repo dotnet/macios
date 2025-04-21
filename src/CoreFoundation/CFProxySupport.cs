@@ -40,6 +40,9 @@ using CFNetwork;
 
 namespace CoreFoundation {
 	// Utility enum for string constants in ObjC
+	/// <summary>An enum of <see cref="T:CoreFoundation.CFProxy" /> proxy types.</summary>
+	///     <remarks>
+	///     </remarks>
 	public enum CFProxyType {
 		/// <summary>No proxy should be used.</summary>
 		None,
@@ -57,6 +60,9 @@ namespace CoreFoundation {
 		SOCKS,
 	}
 
+	/// <summary>Provides information about a proxy.</summary>
+	///     <remarks>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -375,6 +381,8 @@ namespace CoreFoundation {
 		}
 	}
 
+	/// <summary>Configuration settings used by <see cref="M:CoreFoundation.CFNetwork.GetProxiesForURL(Foundation.NSUrl,CoreFoundation.CFProxySettings)" />.</summary>
+	///     <remarks>Returned by <see cref="M:CoreFoundation.CFNetwork.GetSystemProxySettings" />.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -660,6 +668,11 @@ namespace CoreFoundation {
 			}
 		}
 
+		/// <param name="uri">The target Uri to connect to.</param>
+		///         <param name="proxySettings">The proxy settings as returned by <see cref="M:CoreFoundation.CFNetwork.GetSystemProxySettings" />.</param>
+		///         <summary>Gets an array of <see cref="T:CoreFoundation.CFProxy" /> objects suitable to use for connecting to <paramref name="uri" />.</summary>
+		///         <returns>Returns an array of <see cref="T:CoreFoundation.CFProxy" /> objects suitable to use for connecting to <paramref name="uri" />.</returns>
+		///         <remarks>This method serves as a convenience wrapper for <see cref="M:CoreFoundation.CFNetwork.GetProxiesForURL(Foundation.NSUrl,CoreFoundation.CFProxySettings)" />.</remarks>
 		public static CFProxy []? GetProxiesForUri (Uri uri, CFProxySettings? proxySettings)
 		{
 			if (uri is null)
@@ -675,6 +688,10 @@ namespace CoreFoundation {
 		[DllImport (Constants.CFNetworkLibrary)]
 		extern static /* CFDictionaryRef __nullable */ IntPtr CFNetworkCopySystemProxySettings ();
 
+		/// <summary>Gets the system's proxy configuration settings.</summary>
+		///         <returns>A <see cref="T:CoreFoundation.CFProxySettings" /> with the system's proxy settings.</returns>
+		///         <remarks>These settings are used by <see cref="M:CoreFoundation.CFNetwork.GetProxiesForURL(Foundation.NSUrl,CoreFoundation.CFProxySettings)" /> and 
+		/// 	<format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Foundation%20Get%20Proxies%20For%20Uri&amp;scope=Xamarin" title="M:CoreFoundation.GetProxiesForUri*">M:CoreFoundation.GetProxiesForUri*</a></format>.</remarks>
 		public static CFProxySettings? GetSystemProxySettings ()
 		{
 			IntPtr native = CFNetworkCopySystemProxySettings ();
@@ -1117,6 +1134,7 @@ namespace CoreFoundation {
 			}
 		}
 
+		/// <include file="../../docs/api/CoreFoundation/CFNetwork.xml" path="/Documentation/Docs[@DocId='M:CoreFoundation.CFNetwork.GetDefaultProxy']/*" />
 		public static IWebProxy GetDefaultProxy ()
 		{
 			return new CFWebProxy ();

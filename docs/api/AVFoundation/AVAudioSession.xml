@@ -405,7 +405,7 @@ void Setup ()
     </remarks>
   </Docs>
   <Docs DocId="M:AVFoundation.AVAudioSession.SetCategory(Foundation.NSString,Foundation.NSError@)">
-        <param name="theCategory">One of 
+    <param name="theCategory">One of 
 	<see cref="P:AVFoundation.AVAudioSession.CategoryAmbient" />, 
 	<see cref="P:AVFoundation.AVAudioSession.CategorySoloAmbient" />, 
 	<see cref="P:AVFoundation.AVAudioSession.CategoryPlayback" />, 
@@ -414,19 +414,19 @@ void Setup ()
 	<see cref="P:AVFoundation.AVAudioSession.CategoryAudioProcessing" />, 
 	<see cref="P:AVFoundation.AVAudioSession.CategoryMultiRoute" />.
 	</param>
-        <param name="outError">On failure, this contains the error details.</param>
-        <summary>Weakly typed; Requests a change to the <see cref="P:AVFoundation.AVAudioSession.Category" />.</summary>
-        <returns>true on success, false on error.   If there is an error the outError parameter contains the new instance of NSError describing the problem.</returns>
-        <remarks>
-          <para>
+    <param name="outError">On failure, this contains the error details.</param>
+    <summary>Weakly typed; Requests a change to the <see cref="P:AVFoundation.AVAudioSession.Category" />.</summary>
+    <returns>true on success, false on error.   If there is an error the outError parameter contains the new instance of NSError describing the problem.</returns>
+    <remarks>
+      <para>
 	    In general, you should set the category before activating
 	    your audio session with <see cref="M:AVFoundation.AVAudioSession.SetActive(System.Boolean,AVFoundation.AVAudioSessionSetActiveOptions,Foundation.NSError@)" />.
 	    If you change the category at runtime, the route will change. 
 	  </para>
-        </remarks>
-      </Docs>
+    </remarks>
+  </Docs>
   <Docs DocId="M:AVFoundation.AVAudioSession.SetCategory(Foundation.NSString)">
-        <param name="theCategory">One of 
+    <param name="theCategory">One of 
 	<see cref="P:AVFoundation.AVAudioSession.CategoryAmbient" />, 
 	<see cref="P:AVFoundation.AVAudioSession.CategorySoloAmbient" />, 
 	<see cref="P:AVFoundation.AVAudioSession.CategoryPlayback" />, 
@@ -435,20 +435,20 @@ void Setup ()
 	<see cref="P:AVFoundation.AVAudioSession.CategoryAudioProcessing" />, 
 	<see cref="P:AVFoundation.AVAudioSession.CategoryMultiRoute" />.
 	</param>
-        <summary>Weakly typed;  Requests a change to the <see cref="P:AVFoundation.AVAudioSession.Category" />.</summary>
-        <returns>
+    <summary>Weakly typed;  Requests a change to the <see cref="P:AVFoundation.AVAudioSession.Category" />.</summary>
+    <returns>
 	  null on success, or an instance of NSError in case of failure with the details about the error.
 	</returns>
-        <remarks>
-          <para>
+    <remarks>
+      <para>
 	    In general, you should set the category before activating
 	    your audio session with <see cref="M:AVFoundation.AVAudioSession.SetActive(System.Boolean,AVFoundation.AVAudioSessionSetActiveOptions,Foundation.NSError@)" />.
 	    If you change the category at runtime, the route will change. 
 	  </para>
-        </remarks>
-      </Docs>
+    </remarks>
+  </Docs>
   <Docs DocId="M:AVFoundation.AVAudioSession.SetCategory(System.String,AVFoundation.AVAudioSessionCategoryOptions,Foundation.NSError@)">
-        <param name="category">One of 
+    <param name="category">One of 
 	<see cref="P:AVFoundation.AVAudioSession.CategoryAmbient" />, 
 	<see cref="P:AVFoundation.AVAudioSession.CategorySoloAmbient" />, 
 	<see cref="P:AVFoundation.AVAudioSession.CategoryPlayback" />, 
@@ -456,17 +456,17 @@ void Setup ()
 	<see cref="P:AVFoundation.AVAudioSession.CategoryPlayAndRecord" />, 
 	<see cref="P:AVFoundation.AVAudioSession.CategoryAudioProcessing" />, 
 	<see cref="P:AVFoundation.AVAudioSession.CategoryMultiRoute" />.</param>
-        <param name="options">Options on how to handle audio.</param>
-        <param name="outError">On failure, this contains the error details.</param>
-        <summary>Weakly typed;  Requests a change to the <see cref="P:AVFoundation.AVAudioSession.Category" />.</summary>
-        <returns>
-          <see langword="true" /> if the request was successful, otherwise the outError parameter contains an instance of NSError describing the problem.</returns>
-        <remarks>
-          <para>
+    <param name="options">Options on how to handle audio.</param>
+    <param name="outError">On failure, this contains the error details.</param>
+    <summary>Weakly typed;  Requests a change to the <see cref="P:AVFoundation.AVAudioSession.Category" />.</summary>
+    <returns>
+      <see langword="true" /> if the request was successful, otherwise the outError parameter contains an instance of NSError describing the problem.</returns>
+    <remarks>
+      <para>
 	    In general, you should set the category before activating
 	    your audio session with <see cref="M:AVFoundation.AVAudioSession.SetActive(System.Boolean,AVFoundation.AVAudioSessionSetActiveOptions,Foundation.NSError@)" />.
 	    If you change the category at runtime, the route will change. 
 	  </para>
-        </remarks>
-      </Docs>
+    </remarks>
+  </Docs>
 </Documentation>

@@ -31,10 +31,6 @@ using NSWindow = Foundation.NSObject;
 using NSResponder = Foundation.NSObject;
 #endif
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace GameKit {
 
 	/// <summary>A delegate used with <see cref="M:GameKit.GKLocalPlayer.LoadFriends(GameKit.GKFriendsHandler)" /> and <see cref="M:GameKit.GKMatchmaker.FindPlayers(GameKit.GKMatchRequest,GameKit.GKFriendsHandler)" /> that defines behavior after the request completes.</summary>
@@ -647,14 +643,6 @@ namespace GameKit {
 	[Deprecated (PlatformName.MacCatalyst, 14, 0, message: "Use 'GKLeaderboardEntry' instead.")]
 	[BaseType (typeof (NSObject))]
 	interface GKScore : NSSecureCoding {
-		[Deprecated (PlatformName.iOS, 7, 0, message: "Use 'InitWithLeaderboardIdentifier' instead.")]
-		[Deprecated (PlatformName.MacOSX, 10, 10, message: "Use 'InitWithLeaderboardIdentifier' instead.")]
-		[MacCatalyst (13, 1)]
-		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'InitWithLeaderboardIdentifier' instead.")]
-		[Internal]
-		[Export ("initWithCategory:")]
-		IntPtr InitWithCategory ([NullAllowed] string category);
-
 		[MacCatalyst (13, 1)]
 		[Export ("initWithLeaderboardIdentifier:player:")]
 		NativeHandle Constructor (string identifier, GKPlayer player);
@@ -665,10 +653,20 @@ namespace GameKit {
 		[Export ("initWithLeaderboardIdentifier:forPlayer:")]
 		NativeHandle Constructor (string identifier, string playerID);
 
+#if XAMCORE_5_0
+		/// <summary>Create a new <see cref="GKScore" /> for the specified leaderboard.</summary>
+		/// <param name="identifier">The identifier for the leaderboard the score is sent to.</param>
+#else
+		/// <summary>Create a new <see cref="GKScore" /> for the specified leaderboard.</summary>
+		/// <param name="categoryOrIdentifier">The identifier for the leaderboard the score is sent to.</param>
+#endif
 		[MacCatalyst (13, 1)]
-		[Internal]
 		[Export ("initWithLeaderboardIdentifier:")]
-		IntPtr InitWithLeaderboardIdentifier (string identifier);
+#if XAMCORE_5_0
+		NativeHandle Constructor (string identifier);
+#else
+		NativeHandle Constructor (string categoryOrIdentifier);
+#endif
 
 		[NullAllowed]
 		[MacCatalyst (13, 1)]
@@ -809,14 +807,7 @@ namespace GameKit {
 		IGKLeaderboardViewControllerDelegate Delegate { get; set; }
 
 		[NullAllowed] // by default this property is null
-		[Export ("category",
-			// Way to go, Apple
-#if MONOMAC
-			ArgumentSemantic.Copy
-#else
-			ArgumentSemantic.Copy //iOS 8 this changed to Copy for iOS
-#endif
-		)]
+		[Export ("category", ArgumentSemantic.Copy)]
 		string Category { get; set; }
 
 		[Export ("timeScope", ArgumentSemantic.Assign)]
@@ -1197,15 +1188,6 @@ namespace GameKit {
 		[Export ("match:player:didChangeState:"), EventArgs ("GKState")]
 		void StateChanged (GKMatch match, string playerId, GKPlayerConnectionState state);
 
-#if MONOMAC
-#if !NET
-		// This API was removed or never existed. Can't cleanly remove due to EventsArgs/Delegate
-		[Obsolete ("It will never be called.")]
-		[Export ("xamarin:selector:removed:"), EventArgs ("GKPlayerError")]
-		void ConnectionFailed (GKMatch match, string playerId, NSError error);
-#endif
-#endif
-
 		[Export ("match:didFailWithError:"), EventArgs ("GKError")]
 		void Failed (GKMatch match, [NullAllowed] NSError error);
 
@@ -1282,6 +1264,9 @@ namespace GameKit {
 		GKPlayerStateUpdateHandler PlayerStateUpdateHandler { get; set; }
 		//void SetPlayerStateUpdateHandler (GKPlayerStateUpdateHandler handler);
 
+		/// <param name="handler">To be added.</param>
+		///         <summary>Sets the handler that is run when a player's voice chat status changes.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("setPlayerVoiceChatStateDidChangeHandler:", ArgumentSemantic.Copy)]
 		void SetPlayerVoiceChatStateChangeHandler (Action<GKPlayer, GKVoiceChatPlayerState> handler);
@@ -1622,15 +1607,9 @@ namespace GameKit {
 		[Export ("matchmakerViewController:didFailWithError:"), EventArgs ("GKError")]
 		void DidFailWithError (GKMatchmakerViewController viewController, NSError error);
 
-#if !NET && !XAMCORE_5_0
-		[Abstract]
-#endif
 		[Export ("matchmakerViewController:didFindMatch:"), EventArgs ("GKMatch")]
 		void DidFindMatch (GKMatchmakerViewController viewController, GKMatch match);
 
-#if !NET && !XAMCORE_5_0
-		[Abstract]
-#endif
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 8, 0, message: "Use 'DidFindHostedPlayers' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 10, message: "Use 'DidFindHostedPlayers' instead.")]
@@ -1639,9 +1618,6 @@ namespace GameKit {
 		[Export ("matchmakerViewController:didFindPlayers:"), EventArgs ("GKPlayers")]
 		void DidFindPlayers (GKMatchmakerViewController viewController, string [] playerIDs);
 
-#if !NET && !XAMCORE_5_0
-		[Abstract]
-#endif
 		[MacCatalyst (13, 1)]
 		[Export ("matchmakerViewController:didFindHostedPlayers:"), EventArgs ("GKMatchmakingPlayers")]
 		void DidFindHostedPlayers (GKMatchmakerViewController viewController, GKPlayer [] playerIDs);
@@ -1706,6 +1682,9 @@ namespace GameKit {
 		[Async]
 		void ResetAchivements ([NullAllowed] Action<NSError> completionHandler);
 
+		/// <summary>Default constructor that initializes a new instance of this class with no parameters.</summary>
+		/// <remarks>
+		///         </remarks>
 		[Wrap ("this ((string) null!)")]
 		NativeHandle Constructor ();
 
@@ -2125,9 +2104,7 @@ namespace GameKit {
 		[Export ("handleMatchEnded:")]
 		void HandleMatchEnded (GKTurnBasedMatch match);
 
-#if !MONOMAC || NET || XAMCORE_5_0
 		[Abstract]
-#endif
 		[Export ("handleTurnEventForMatch:didBecomeActive:")]
 		[Deprecated (PlatformName.iOS, 6, 0)]
 		[Deprecated (PlatformName.MacOSX, 10, 10)]
@@ -2414,9 +2391,6 @@ namespace GameKit {
 		[Export ("turnBasedMatchmakerViewController:didFailWithError:")]
 		void FailedWithError (GKTurnBasedMatchmakerViewController viewController, NSError error);
 
-#if !NET && !XAMCORE_5_0
-		[Abstract]
-#endif
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'GKTurnBasedEventListener.ReceivedTurnEvent' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 11, message: "Use 'GKTurnBasedEventListener.ReceivedTurnEvent' instead.")]
@@ -2425,9 +2399,6 @@ namespace GameKit {
 		[Export ("turnBasedMatchmakerViewController:didFindMatch:")]
 		void FoundMatch (GKTurnBasedMatchmakerViewController viewController, GKTurnBasedMatch match);
 
-#if !NET && !XAMCORE_5_0
-		[Abstract]
-#endif
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'GKTurnBasedEventListener.WantsToQuitMatch' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 11, message: "Use 'GKTurnBasedEventListener.WantsToQuitMatch' instead.")]
@@ -2516,9 +2487,7 @@ namespace GameKit {
 		GKAchievement Achievement { get; }
 	}
 
-#if NET
 	[DisableDefaultCtor] // the native 'init' method returned nil.
-#endif
 	[MacCatalyst (13, 1)]
 	[BaseType (
 #if MONOMAC
@@ -2839,14 +2808,11 @@ namespace GameKit {
 	[MacCatalyst (13, 1)]
 	[Model, Protocol, BaseType (typeof (NSObject))]
 	interface GKTurnBasedEventListener {
-#if NET
 		[NoMac]
-#endif
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 8, 0, message: "Use 'DidRequestMatchWithOtherPlayers' instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'DidRequestMatchWithOtherPlayers' instead.")]
-		[Deprecated (PlatformName.MacOSX, 10, 0, message: "Use 'DidRequestMatchWithOtherPlayers' instead.")]
 		[Export ("player:didRequestMatchWithPlayers:")]
 		void DidRequestMatchWithPlayers (GKPlayer player, string [] playerIDsToInvite);
 

@@ -41,7 +41,8 @@ using Foundation;
 using System.Runtime.Versioning;
 
 namespace AudioToolbox {
-
+	/// <summary>Encapsulates global audio-file information.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -206,6 +207,10 @@ namespace AudioToolbox {
 			return NSArray.ArrayFromHandleFunc (ptr, l => CFString.FromHandle (l));
 		}
 
+		/// <param name="fileType">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static string? []? GetMIMETypes (AudioFileType fileType)
 		{
 			if (!TryGetGlobalInfo (AudioFileGlobalProperty.MIMETypesForType, fileType, out var ptr))

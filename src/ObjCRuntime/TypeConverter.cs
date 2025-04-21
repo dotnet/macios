@@ -11,6 +11,11 @@ using Foundation;
 
 namespace ObjCRuntime {
 
+	/// <summary>Converts Obj-C type encodings to managed types.</summary>
+	///     <remarks>
+	///       <para>This class provides a way of converting Objective-C encoded type strings to .NET and viceversa.   The full details about type encodings are available <format type="html"><a href="https://developer.apple.com/documentation/DeveloperTools/gcc-4.0.1/gcc/Type-encoding.html">here</a></format>.
+	///     </para>
+	///     </remarks>
 	public static class TypeConverter {
 #if !COREBUILD
 		/*

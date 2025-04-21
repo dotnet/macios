@@ -32,6 +32,11 @@
 
 namespace Foundation {
 	public partial class NSUrlRequest {
+		/// <summary>Returns a string representation of the value of the current instance.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public override string ToString ()
 		{
 			return Url is not null ? Url.AbsoluteString : base.ToString ();

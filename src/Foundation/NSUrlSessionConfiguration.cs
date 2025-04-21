@@ -47,6 +47,10 @@ namespace Foundation {
 		}
 
 #if NET
+		/// <param name="identifier">To be added.</param>
+		///         <summary>Developers should not use this deprecated method. Developers should use 'CreateBackgroundSessionConfiguration' instead.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -64,6 +68,10 @@ namespace Foundation {
 			return config;
 		}
 
+		/// <param name="identifier">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSUrlSessionConfiguration CreateBackgroundSessionConfiguration (string identifier)
 		{
 			var config = NSUrlSessionConfiguration._CreateBackgroundSessionConfiguration (identifier);

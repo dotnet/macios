@@ -45,6 +45,8 @@ using System.Runtime.Versioning;
 
 namespace AudioToolbox {
 
+	/// <summary>An enumeration whose values flag whether a <see cref="T:AudioToolbox.AudioFileStreamProperty" /> is cached.</summary>
+	///     <remarks>To be added.</remarks>
 	[Flags]
 	public enum AudioFileStreamPropertyFlag { // UInt32 in AudioFileStream_PropertyListenerProc
 		/// <summary>To be added.</summary>
@@ -53,6 +55,8 @@ namespace AudioToolbox {
 		CacheProperty = 2,
 	}
 
+	/// <summary>An enumeration whose values indicate the status following calls to the <see cref="M:AudioToolbox.AudioFileStream.Seek(System.Int64,System.Int64@,System.Boolean@)" /> or <see cref="M:AudioToolbox.AudioFileStream.ParseBytes(System.Byte[],System.Int32,System.Int32,System.Boolean)" /> methods.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum AudioFileStreamStatus { // Implictly cast to OSType
 		/// <summary>To be added.</summary>
 		Ok = 0,
@@ -82,6 +86,8 @@ namespace AudioToolbox {
 		DiscontinuityCantRecover = 0x64736321,
 	}
 
+	/// <summary>An enumeration whose values represent properties of <see cref="T:AudioToolbox.AudioFileStream" />.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum AudioFileStreamProperty { // UInt32 AudioFileStreamPropertyID
 		/// <summary>To be added.</summary>
 		ReadyToProducePackets = 0x72656479,
@@ -123,6 +129,10 @@ namespace AudioToolbox {
 		InfoDictionary = 0x696e666f,
 	}
 
+	/// <summary>Provides data for the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Audio%20Toolbox%20Property%20Found%20Event%20Args%20Property%20Found&amp;scope=Xamarin" title="E:AudioToolbox.PropertyFoundEventArgs.PropertyFound">E:AudioToolbox.PropertyFoundEventArgs.PropertyFound</a></format> event.</summary>
+	///     <remarks>
+	///     </remarks>
+	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/StreamingAudio/">StreamingAudio</related>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -157,6 +167,10 @@ namespace AudioToolbox {
 		}
 	}
 
+	/// <summary>Provides data for the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Audio%20Toolbox%20Packet%20Received%20Event%20Args%20Packet%20Decoded&amp;scope=Xamarin" title="E:AudioToolbox.PacketReceivedEventArgs.PacketDecoded">E:AudioToolbox.PacketReceivedEventArgs.PacketDecoded</a></format> event.</summary>
+	///     <remarks>
+	///     </remarks>
+	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/StreamingAudio/">StreamingAudio</related>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -196,6 +210,28 @@ namespace AudioToolbox {
 		}
 	}
 
+	/// <summary>Process partial audio files.</summary>
+	///     <remarks>
+	///       <para>
+	/// 	You use AudioFileStream when you want to decode audio content
+	/// 	that does not live in an local file or if you want to decode
+	/// 	it in chunks.  New data is fed into the AudioFileStream using
+	/// 	one of the ParseBytes method and decoded audio is provided on
+	/// 	the PacketDecoded event (or the OnPacketDecoded virtual
+	/// 	method) and information about the stream is raised on the
+	/// 	PropertyFound event (or the OnPropertyFound virtual method).
+	///       </para>
+	///       <para>
+	/// 	This can be used to parse audio files when you are streaming audio from the network for example.
+	///       </para>
+	///       <para>
+	/// 	The methods and properties in this class update the <see cref="P:AudioToolbox.AudioFileStream.LastError" />
+	/// 	property to track any potential errors during parsing, but
+	/// 	without throwing an exception.
+	///
+	///       </para>
+	///     </remarks>
+	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/StreamingAudio/">StreamingAudio</related>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -498,6 +534,24 @@ namespace AudioToolbox {
 			}
 		}
 
+		/// <param name="property">Property ID to fetch.</param>
+		///         <param name="size">The size in bytes of the property.</param>
+		///         <summary>Low-level routine used to fetch arbitrary property values from the underlying AudioFileStream object.</summary>
+		///         <returns>If the return value from this method is different that IntPtr.Zero, the value pointed to contains the value of the property.</returns>
+		///         <remarks>
+		///           <para>
+		/// 	    This method will query the underlying AudioFileStream
+		/// 	    object for the size of the specified property and allocate
+		/// 	    the memory needed for it using Marshal.AllocHGlobal
+		/// 	    method.   
+		/// 	  </para>
+		///           <para>
+		/// 	    You are responsible for releasing the memory allocated by this method by calling Marshal.FreeHGlobal. 
+		/// 	  </para>
+		///           <para>
+		/// 	    This updates the <see cref="P:AudioToolbox.AudioFileStream.LastError" /> property.
+		/// 	  </para>
+		///         </remarks>
 		public IntPtr GetProperty (AudioFileStreamProperty property, out int size)
 		{
 			bool writable;
@@ -585,6 +639,12 @@ namespace AudioToolbox {
 			int inPropertyDataSize,
 			IntPtr inPropertyData);
 
+		/// <param name="property">The property to set.</param>
+		///         <param name="dataSize">The size of the data to set.</param>
+		///         <param name="propertyData">Pointer to the property data.</param>
+		///         <summary>Low-level property setting API.   Use the exposed managed properties instead.</summary>
+		///         <returns>true if the operation successful.</returns>
+		///         <remarks>Most properties have been exposed with C# properties, there should be no need to call this directly, unless new properties are introduced that are not bound by MonoTouch.</remarks>
 		public bool SetProperty (AudioFileStreamProperty property, int dataSize, IntPtr propertyData)
 		{
 			if (propertyData == IntPtr.Zero)
@@ -811,6 +871,15 @@ namespace AudioToolbox {
 			}
 		}
 
+		/// <param name="packet">Packet number to map.</param>
+		///         <summary>Maps a packet number to an audio frame number in the audio file stream.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///           <para>
+		/// 	    This updates the <see cref="P:AudioToolbox.AudioFileStream.LastError" /> property.
+		/// 	  </para>
+		///         </remarks>
 		public long PacketToFrame (long packet)
 		{
 			AudioFramePacketTranslation buffer;
@@ -826,6 +895,15 @@ namespace AudioToolbox {
 			}
 		}
 
+		/// <param name="frame">The audio frame number.</param>
+		///         <param name="frameOffsetInPacket">The frame offset in the packet.</param>
+		///         <summary>Returns the packet number and the frame offset in the packet (on the out parameter) corresponding to the requested audio frame.</summary>
+		///         <returns>The packet number that corresponds to the specified frame.</returns>
+		///         <remarks>
+		///           <para>
+		/// 	    This updates the <see cref="P:AudioToolbox.AudioFileStream.LastError" /> property.
+		/// 	  </para>
+		///         </remarks>
 		public long FrameToPacket (long frame, out int frameOffsetInPacket)
 		{
 			AudioFramePacketTranslation buffer;
@@ -844,6 +922,16 @@ namespace AudioToolbox {
 			}
 		}
 
+		/// <param name="packet">Packet number.</param>
+		///         <param name="isEstimate">On return, the value will be true if the byte offset is an estimate.</param>
+		///         <summary>Maps a packet number to a byte number in the audio file stream.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///           <para>
+		/// 	    This updates the <see cref="P:AudioToolbox.AudioFileStream.LastError" /> property.
+		/// 	  </para>
+		///         </remarks>
 		public long PacketToByte (long packet, out bool isEstimate)
 		{
 			AudioBytePacketTranslation buffer;
@@ -862,6 +950,16 @@ namespace AudioToolbox {
 			}
 		}
 
+		/// <param name="byteval">The location in the file.</param>
+		///         <param name="byteOffsetInPacket">Return value, byte offset within the packet.</param>
+		///         <param name="isEstimate">Return value, whether the return is an estimate or not.</param>
+		///         <summary>Maps a position in the file to an audio packet.</summary>
+		///         <returns>The packet number that corresponds to this byte in the file.</returns>
+		///         <remarks>
+		///           <para>
+		/// 	    This updates the <see cref="P:AudioToolbox.AudioFileStream.LastError" /> property.
+		/// 	  </para>
+		///         </remarks>
 		public long ByteToPacket (long byteval, out int byteOffsetInPacket, out bool isEstimate)
 		{
 			AudioBytePacketTranslation buffer;

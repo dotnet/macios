@@ -41,6 +41,8 @@ using NativeHandle = System.IntPtr;
 namespace Security {
 
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 #else
@@ -81,6 +83,8 @@ namespace Security {
 	}
 
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 #else
@@ -116,6 +120,8 @@ namespace Security {
 	// create the structure for them with the proper data
 	//
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 #else
@@ -134,6 +140,8 @@ namespace Security {
 	}
 
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 #else
@@ -177,6 +185,8 @@ namespace Security {
 	}
 
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 #else
@@ -211,6 +221,12 @@ namespace Security {
 		}
 
 #if NET
+		/// <param name="pathToTool">To be added.</param>
+		///         <param name="flags">To be added.</param>
+		///         <param name="args">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos10.7", "Use the Service Management framework or the launchd-launched helper tool instead.")]
@@ -247,6 +263,10 @@ namespace Security {
 			Dispose (0, disposing);
 		}
 
+		/// <param name="flags">To be added.</param>
+		///         <param name="disposing">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public virtual void Dispose (AuthorizationFlags flags, bool disposing)
 		{
 			if (Handle != IntPtr.Zero && Owns)
@@ -254,6 +274,10 @@ namespace Security {
 			base.Dispose (disposing);
 		}
 
+		/// <param name="flags">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static Authorization? Create (AuthorizationFlags flags)
 		{
 			return Create (null, null, flags);
@@ -268,6 +292,12 @@ namespace Security {
 			}
 		}
 
+		/// <param name="parameters">To be added.</param>
+		///         <param name="environment">To be added.</param>
+		///         <param name="flags">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static Authorization? Create (AuthorizationParameters? parameters, AuthorizationEnvironment? environment, AuthorizationFlags flags)
 		{
 			AuthorizationItemSet pars = new AuthorizationItemSet ();

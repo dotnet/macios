@@ -92,6 +92,11 @@ namespace SpriteKit {
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		SCNHitTestResult [] HitTest (CGPoint thePoint, [NullAllowed] NSDictionary options);
 
+		/// <param name="thePoint">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("HitTest (thePoint, options.GetDictionary ())")]
 		SCNHitTestResult [] HitTest (CGPoint thePoint, SCNHitTestOptions options);
 
@@ -313,34 +318,60 @@ namespace SpriteKit {
 		void MoveToParent (SKNode parent);
 
 		// Moved from SpriteKit to GameplayKit header in iOS 10 beta 1
+		/// <param name="nodes">To be added.</param>
+		///         <summary>Creates a new <see cref="T:GameplayKit.GKPolygonObstacle" /> for each <see cref="T:SpriteKit.SKNode" /> in <paramref name="nodes" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("obstaclesFromNodeBounds:")]
 		GKPolygonObstacle [] ObstaclesFromNodeBounds (SKNode [] nodes);
 
 		// Moved from SpriteKit to GameplayKit header in iOS 10 beta 1
+		/// <param name="nodes">To be added.</param>
+		///         <summary>Creates a new <see cref="T:GameplayKit.GKPolygonObstacle" /> for each <see cref="P:SpriteKit.SKNode.PhysicsBody" /> in the <see cref="T:SpriteKit.SKNode" /> object in <paramref name="nodes" /></summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("obstaclesFromNodePhysicsBodies:")]
 		GKPolygonObstacle [] ObstaclesFromNodePhysicsBodies (SKNode [] nodes);
 
 		// Moved from SpriteKit to GameplayKit header in iOS 10 beta 1
+		/// <param name="sprites">To be added.</param>
+		///         <param name="accuracy">To be added.</param>
+		///         <summary>Creates a new <see cref="T:GameplayKit.GKPolygonObstacle" /> by converting the <see cref="P:SpriteKit.SKSpriteNode.Texture" /> of each <see cref="T:SpriteKit.SKNode" /> object in <paramref name="sprites" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("obstaclesFromSpriteTextures:accuracy:")]
 		GKPolygonObstacle [] ObstaclesFromSpriteTextures (SKNode [] sprites, float accuracy);
 
 		// Extensions from GameplayKit, inlined to avoid ugly static extension syntax
+		/// <param name="sprites">To be added.</param>
+		///         <param name="accuracy">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("obstaclesFromSpriteTextures:accuracy:")]
 		GKPolygonObstacle [] GetObstaclesFromSpriteTextures (SKNode [] sprites, float accuracy);
 
+		/// <param name="nodes">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("obstaclesFromNodeBounds:")]
 		GKPolygonObstacle [] GetObstaclesFromNodeBounds (SKNode [] nodes);
 
+		/// <param name="nodes">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("obstaclesFromNodePhysicsBodies:")]
@@ -1460,6 +1491,12 @@ namespace SpriteKit {
 	 : NSSecureCoding
 #endif
 		{
+		/// <param name="frame">Frame used by the view, expressed in iOS points.</param>
+		/// <summary>Initializes the SKView with the specified frame.</summary>
+		/// <remarks>
+		///           <para>This constructor is used to programmatically create a new instance of SKView with the specified dimension in the frame.   The object will only be displayed once it has been added to a view hierarchy by calling AddSubview in a containing view.</para>
+		///           <para>This constructor is not invoked when deserializing objects from storyboards or XIB filesinstead the constructor that takes an NSCoder parameter is invoked.</para>
+		///         </remarks>
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect frame);
 
@@ -1715,6 +1752,10 @@ namespace SpriteKit {
 		CGImage CGImage { get; }
 
 		// Static Category from GameplayKit
+		/// <param name="noiseMap">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("textureWithNoiseMap:")]

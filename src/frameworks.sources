@@ -961,10 +961,8 @@ GAMEKIT_API_SOURCES = \
 
 GAMEKIT_SOURCES = \
 	GameKit/GKGameCenterViewController.cs \
-	GameKit/GKLocalPlayerListener.cs \
 	GameKit/GameKit2.cs \
 	GameKit/GKCompat.cs \
-	GameKit/GKScore.cs \
 
 # GameplayKit
 
@@ -1160,7 +1158,6 @@ MEDIAPLAYER_SOURCES = \
 	MediaPlayer/MPMediaItemArtwork.cs \
 	MediaPlayer/MPMediaQuery.cs \
 	MediaPlayer/MPNowPlayingInfoCenter.cs \
-	MediaPlayer/MPRemoteCommandCenter.cs \
 	MediaPlayer/MPSkipIntervalCommand.cs \
 	MediaPlayer/MPVolumeSettings.cs \
 
@@ -1199,7 +1196,6 @@ METAL_SOURCES = \
 	Metal/MTLBlitPassSampleBufferAttachmentDescriptorArray.cs \
 	Metal/MTLCommandBuffer.cs \
 	Metal/MTLCommandQueue.cs \
-	Metal/MTLCompat.cs \
 	Metal/MTLIOCompression.cs \
 	Metal/MTLComputeCommandEncoder.cs \
 	Metal/MTLComputePassSampleBufferAttachmentDescriptorArray.cs \
@@ -1235,18 +1231,15 @@ METALPERFORMANCESHADERS_CORE_SOURCES = \
 	MetalPerformanceShaders/MPSKernel.cs \
 
 METALPERFORMANCESHADERS_SOURCES = \
-	MetalPerformanceShaders/MPSCompat.cs \
 	MetalPerformanceShaders/MPSImageBatch.cs \
 	MetalPerformanceShaders/MPSImageScale.cs \
 	MetalPerformanceShaders/MPSCnnConvolutionDescriptor.cs \
 	MetalPerformanceShaders/MPSCnnNeuron.cs \
 	MetalPerformanceShaders/MPSCnnKernel.cs \
-	MetalPerformanceShaders/MPSMatrixDescriptor.cs \
 	MetalPerformanceShaders/MPSNDArray.cs \
 	MetalPerformanceShaders/MPSNDArrayDescriptor.cs \
 	MetalPerformanceShaders/MPSNDArrayIdentity.cs \
 	MetalPerformanceShaders/MPSNNGraph.cs \
-	MetalPerformanceShaders/MPSImageHistogram.cs \
 	MetalPerformanceShaders/MPSStateBatch.cs \
 	MetalPerformanceShaders/MPSStateResourceList.cs \
 
@@ -1922,6 +1915,7 @@ SHARED_CORE_SOURCES = \
 	ObjCBindings/ExportTag.cs \
 	ObjCBindings/FieldAttribute.cs \
 	ObjCBindings/FieldTag.cs \
+	ObjCBindings/ForcedTypeAttribute.cs \
 	ObjCRuntime/ArgumentSemantic.cs \
 	ObjCRuntime/BindAsAttribute.cs \
 	ObjCRuntime/Blocks.cs \

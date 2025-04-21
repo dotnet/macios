@@ -187,6 +187,11 @@ namespace UIKit {
 			}
 		}
 
+		/// <summary>Returns a string representation of the value of the current instance.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public override string ToString ()
 		{
 			nfloat r, g, b, a;

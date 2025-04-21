@@ -586,6 +586,9 @@ namespace AVFoundation {
 		[Field ("AVVideoAverageNonDroppableFrameRateKey")]
 		NSString AverageNonDroppableFrameRateKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoiOS, NoTV]
 		[NoMacCatalyst]
 		[Field ("AVVideoEncoderSpecificationKey")]
@@ -645,6 +648,9 @@ namespace AVFoundation {
 		[Field ("AVVideoCodecJPEG")]
 		NSString CodecJPEG { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'AVVideoCodecType' enum instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'AVVideoCodecType' enum instead.")]
 		[Deprecated (PlatformName.TvOS, 11, 0, message: "Use 'AVVideoCodecType' enum instead.")]
@@ -654,6 +660,9 @@ namespace AVFoundation {
 		[Field ("AVVideoCodecAppleProRes4444")]
 		NSString AppleProRes4444 { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'AVVideoCodecType' enum instead.")]
 		[NoiOS, NoTV]
 		[NoMacCatalyst]
@@ -947,6 +956,10 @@ namespace AVFoundation {
 		[Export ("initWithFormat:packetCapacity:maximumPacketSize:")]
 		NativeHandle Constructor (AVAudioFormat format, uint packetCapacity, nint maximumPacketSize);
 
+		/// <param name="format">To be added.</param>
+		/// <param name="packetCapacity">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithFormat:packetCapacity:")]
 		NativeHandle Constructor (AVAudioFormat format, uint packetCapacity);
 
@@ -1066,15 +1079,29 @@ namespace AVFoundation {
 		[Export ("running")]
 		bool Running { [Bind ("isRunning")] get; }
 
+		/// <param name="node">To be added.</param>
+		///         <summary>Attaches <paramref name="node" /> to the audio engine.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("attachNode:")]
 		void AttachNode (AVAudioNode node);
 
+		/// <param name="node">To be added.</param>
+		///         <summary>Detaches <paramref name="node" /> from the audio engine.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("detachNode:")]
 		void DetachNode (AVAudioNode node);
 
 		[Export ("connect:to:fromBus:toBus:format:")]
 		void Connect (AVAudioNode sourceNode, AVAudioNode targetNode, nuint sourceBus, nuint targetBus, [NullAllowed] AVAudioFormat format);
 
+		/// <param name="sourceNode">To be added.</param>
+		///         <param name="targetNode">To be added.</param>
+		///         <param name="format">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Connects <paramref name="sourceNode" /> to <paramref name="targetNode" /> with the specified <paramref name="format" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("connect:to:format:")]
 		void Connect (AVAudioNode sourceNode, AVAudioNode targetNode, [NullAllowed] AVAudioFormat format);
 
@@ -1085,18 +1112,30 @@ namespace AVFoundation {
 		[Export ("disconnectNodeInput:bus:")]
 		void DisconnectNodeInput (AVAudioNode node, nuint bus);
 
+		/// <param name="node">To be added.</param>
+		///         <summary>Disconnects all input connections from <paramref name="node" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("disconnectNodeInput:")]
 		void DisconnectNodeInput (AVAudioNode node);
 
 		[Export ("disconnectNodeOutput:bus:")]
 		void DisconnectNodeOutput (AVAudioNode node, nuint bus);
 
+		/// <param name="node">To be added.</param>
+		///         <summary>Disconnects all output connections from <paramref name="node" /></summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("disconnectNodeOutput:")]
 		void DisconnectNodeOutput (AVAudioNode node);
 
+		/// <summary>Prepares the audio engine for playing.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("prepare")]
 		void Prepare ();
 
+		/// <param name="outError">To be added.</param>
+		///         <summary>Starts the engine an stores an error, if one occurs, in <paramref name="outError" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("startAndReturnError:")]
 		bool StartAndReturnError (out NSError outError);
 
@@ -1106,6 +1145,8 @@ namespace AVFoundation {
 		[Export ("reset")]
 		void Reset ();
 
+		/// <summary>Stops the audio engine.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("stop")]
 		void Stop ();
 
@@ -1130,10 +1171,26 @@ namespace AVFoundation {
 		[Export ("autoShutdownEnabled")]
 		bool AutoShutdownEnabled { [Bind ("isAutoShutdownEnabled")] get; set; }
 
+		/// <param name="mode">To be added.</param>
+		///         <param name="pcmFormat">To be added.</param>
+		///         <param name="maximumFrameCount">To be added.</param>
+		///         <param name="outError">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("enableManualRenderingMode:format:maximumFrameCount:error:")]
 		bool EnableManualRenderingMode (AVAudioEngineManualRenderingMode mode, AVAudioFormat pcmFormat, uint maximumFrameCount, out NSError outError);
 
+		/// <param name="numberOfFrames">To be added.</param>
+		///         <param name="buffer">To be added.</param>
+		///         <param name="outError">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("renderOffline:toBuffer:error:")]
 		AVAudioEngineManualRenderingStatus RenderOffline (uint numberOfFrames, AVAudioPcmBuffer buffer, [NullAllowed] out NSError outError);
@@ -1180,10 +1237,18 @@ namespace AVFoundation {
 		[Export ("manualRenderingSampleTime")]
 		long ManualRenderingSampleTime { get; }
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("disableManualRenderingMode")]
 		void DisableManualRenderingMode ();
 
+		/// <param name="sourceNode">To be added.</param>
+		///         <param name="destinationNode">To be added.</param>
+		///         <param name="format">To be added.</param>
+		///         <param name="tapHandler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 13, 0)]
 		[Deprecated (PlatformName.iOS, 16, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 0)]
@@ -1192,6 +1257,12 @@ namespace AVFoundation {
 		[Export ("connectMIDI:to:format:block:")]
 		void ConnectMidi (AVAudioNode sourceNode, AVAudioNode destinationNode, [NullAllowed] AVAudioFormat format, [NullAllowed] AUMidiOutputEventBlock tapHandler);
 
+		/// <param name="sourceNode">To be added.</param>
+		///         <param name="destinationNodes">To be added.</param>
+		///         <param name="format">To be added.</param>
+		///         <param name="tapHandler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 13, 0)]
 		[Deprecated (PlatformName.iOS, 16, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 9, 0)]
@@ -1200,18 +1271,32 @@ namespace AVFoundation {
 		[Export ("connectMIDI:toNodes:format:block:")]
 		void ConnectMidi (AVAudioNode sourceNode, AVAudioNode [] destinationNodes, [NullAllowed] AVAudioFormat format, [NullAllowed] AUMidiOutputEventBlock tapHandler);
 
+		/// <param name="sourceNode">To be added.</param>
+		///         <param name="destinationNode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("disconnectMIDI:from:")]
 		void DisconnectMidi (AVAudioNode sourceNode, AVAudioNode destinationNode);
 
+		/// <param name="sourceNode">To be added.</param>
+		///         <param name="destinationNodes">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("disconnectMIDI:fromNodes:")]
 		void DisconnectMidi (AVAudioNode sourceNode, AVAudioNode [] destinationNodes);
 
+		/// <param name="node">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("disconnectMIDIInput:")]
 		void DisconnectMidiInput (AVAudioNode node);
 
+		/// <param name="node">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("disconnectMIDIOutput:")]
 		void DisconnectMidiOutput (AVAudioNode node);
@@ -1338,6 +1423,9 @@ namespace AVFoundation {
 		[Export ("filterParameters")]
 		AVAudioUnitEQFilterParameters FilterParameters { get; }
 
+		/// <param name="preset">To be added.</param>
+		///         <summary>Loads the specified <see cref="T:AVFoundation.AVAudioUnitReverbPreset" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("loadFactoryReverbPreset:")]
 		void LoadFactoryReverbPreset (AVAudioUnitReverbPreset preset);
 	}
@@ -1345,21 +1433,43 @@ namespace AVFoundation {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface AVAudioFile {
+		/// <param name="fileUrl">To be added.</param>
+		/// <param name="outError">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initForReading:error:")]
 		NativeHandle Constructor (NSUrl fileUrl, out NSError outError);
 
+		/// <param name="fileUrl">To be added.</param>
+		/// <param name="format">To be added.</param>
+		/// <param name="interleaved">To be added.</param>
+		/// <param name="outError">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initForReading:commonFormat:interleaved:error:")]
 		NativeHandle Constructor (NSUrl fileUrl, AVAudioCommonFormat format, bool interleaved, out NSError outError);
 
 		[Export ("initForWriting:settings:error:"), Internal]
 		NativeHandle Constructor (NSUrl fileUrl, NSDictionary settings, out NSError outError);
 
+		/// <param name="fileUrl">To be added.</param>
+		/// <param name="settings">To be added.</param>
+		/// <param name="outError">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (fileUrl, settings.GetDictionary ()!, out outError)")]
 		NativeHandle Constructor (NSUrl fileUrl, AudioSettings settings, out NSError outError);
 
 		[Export ("initForWriting:settings:commonFormat:interleaved:error:"), Internal]
 		NativeHandle Constructor (NSUrl fileUrl, NSDictionary settings, AVAudioCommonFormat format, bool interleaved, out NSError outError);
 
+		/// <param name="fileUrl">To be added.</param>
+		/// <param name="settings">To be added.</param>
+		/// <param name="format">To be added.</param>
+		/// <param name="interleaved">To be added.</param>
+		/// <param name="outError">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (fileUrl, settings.GetDictionary ()!, format, interleaved, out outError)")]
 		NativeHandle Constructor (NSUrl fileUrl, AudioSettings settings, AVAudioCommonFormat format, bool interleaved, out NSError outError);
 
@@ -1387,12 +1497,28 @@ namespace AVFoundation {
 		[Export ("framePosition")]
 		long FramePosition { get; set; }
 
+		/// <param name="buffer">To be added.</param>
+		///         <param name="outError">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("readIntoBuffer:error:")]
 		bool ReadIntoBuffer (AVAudioPcmBuffer buffer, out NSError outError);
 
+		/// <param name="buffer">To be added.</param>
+		///         <param name="frames">To be added.</param>
+		///         <param name="outError">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("readIntoBuffer:frameCount:error:")]
 		bool ReadIntoBuffer (AVAudioPcmBuffer buffer, uint /* AVAudioFrameCount = uint32_t */ frames, out NSError outError);
 
+		/// <param name="buffer">To be added.</param>
+		///         <param name="outError">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("writeFromBuffer:error:")]
 		bool WriteFromBuffer (AVAudioPcmBuffer buffer, out NSError outError);
 
@@ -1750,6 +1876,11 @@ namespace AVFoundation {
 						 // note: sample source (header) suggest it comes from AVAudioEngine properties
 	interface AVAudioInputNode : AVAudioMixing {
 
+		/// <param name="format">To be added.</param>
+		///         <param name="block">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("setManualRenderingInputPCMFormat:inputBlock:")]
 		bool SetManualRenderingInputPcmFormat (AVAudioFormat format, AVAudioIONodeInputBlock block);
@@ -1787,6 +1918,10 @@ namespace AVFoundation {
 	[DisableDefaultCtor] // crash in tests
 	interface AVAudioPcmBuffer {
 
+		/// <param name="format">To be added.</param>
+		/// <param name="frameCapacity">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithPCMFormat:frameCapacity:")]
 		NativeHandle Constructor (AVAudioFormat format, uint /* AVAudioFrameCount = uint32_t */ frameCapacity);
@@ -1838,6 +1973,12 @@ namespace AVFoundation {
 	[DisableDefaultCtor]
 	interface AVAudioPlayer {
 
+		/// <summary>Preloads the playback buffers.</summary>
+		///         <returns>
+		///           <see langword="true" /> if successful.</returns>
+		///         <remarks>
+		///           <para>The <see cref="M:AVFoundation.AVAudioPlayer.Play" /> function will call this method if necessary, but application developers may choose to explicitly call it in order to minimize startup lag.</para>
+		///         </remarks>
 		[Export ("prepareToPlay")]
 		bool PrepareToPlay ();
 
@@ -1847,6 +1988,8 @@ namespace AVFoundation {
 		[Export ("pause")]
 		void Pause ();
 
+		/// <summary>Stops sound playback asynchronously.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("stop")]
 		void Stop ();
 
@@ -1887,6 +2030,10 @@ namespace AVFoundation {
 		[Export ("volume")]
 		float Volume { get; set; } // defined as 'float'
 
+		/// <param name="volume">To be added.</param>
+		///         <param name="duration">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("setVolume:fadeDuration:")]
 		void SetVolume (float volume, double duration);
@@ -1908,6 +2055,10 @@ namespace AVFoundation {
 		[Export ("meteringEnabled")]
 		bool MeteringEnabled { [Bind ("isMeteringEnabled")] get; set; }
 
+		/// <summary>Determines the average and peak power for the channels in the <see cref="T:AVFoundation.AVAudioPlayer" />.</summary>
+		///         <remarks>
+		///           <para>This method must be called prior to accessing <see cref="M:AVFoundation.AVAudioPlayer.AveragePower(System.nuint)" /> or <see cref="M:AVFoundation.AVAudioPlayer.PeakPower(System.nuint)" />.</para>
+		///         </remarks>
 		[Export ("updateMeters")]
 		void UpdateMeters ();
 
@@ -1929,6 +2080,21 @@ namespace AVFoundation {
 		[Export ("pan")]
 		float Pan { get; set; } // defined as 'float'
 
+		/// <param name="time">To be added.</param>
+		///         <summary>Begins playback at a certain delay, relative to the current playback time.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>
+		///           <para>The value of <paramref name="time" /> must be greater than or equal to the <see cref="P:AVFoundation.AVAudioPlayer.DeviceCurrentTime" /> property (use <see cref="P:AVFoundation.AVAudioPlayer.CurrentTime" /> to move the playhead back in time, if necessary). </para>
+		///           <para>Multiple <see cref="T:AVFoundation.AVAudioPlayer" />s can be synchronized using this method:</para>
+		///           <example>
+		///             <code lang="csharp lang-csharp"><![CDATA[
+		/// var shortStartDelay = 0.01;
+		/// var now = player.DeviceCurrentTime;
+		/// player.PlayAtTime(now + shortStartDelay);
+		/// player2.PlayAtTime(now + shortStartDelay);
+		///           ]]></code>
+		///           </example>
+		///         </remarks>
 		[Export ("playAtTime:")]
 		bool PlayAtTime (double time);
 
@@ -2015,12 +2181,26 @@ namespace AVFoundation {
 	[Model]
 	[Protocol]
 	interface AVAudioPlayerDelegate {
+		/// <param name="player">To be added.</param>
+		///         <param name="flag">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("audioPlayerDidFinishPlaying:successfully:"), CheckDisposed]
 		void FinishedPlaying (AVAudioPlayer player, bool flag);
 
+		/// <param name="player">To be added.</param>
+		///         <param name="error">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("audioPlayerDecodeErrorDidOccur:error:")]
 		void DecoderError (AVAudioPlayer player, [NullAllowed] NSError error);
 
+		/// <param name="player">To be added.</param>
+		///         <summary>Developers should not use this deprecated method. </summary>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[Deprecated (PlatformName.iOS, 8, 0)]
 		[Deprecated (PlatformName.TvOS, 9, 0)]
@@ -2029,6 +2209,9 @@ namespace AVFoundation {
 		[Export ("audioPlayerBeginInterruption:")]
 		void BeginInterruption (AVAudioPlayer player);
 
+		/// <param name="player">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[Export ("audioPlayerEndInterruption:")]
 		[Deprecated (PlatformName.iOS, 6, 0)]
@@ -2061,61 +2244,164 @@ namespace AVFoundation {
 		[Export ("playing")]
 		bool Playing { [Bind ("isPlaying")] get; }
 
+		/// <param name="buffer">To be added.</param>
+		///         <param name="completionHandler">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Schedules playback from <paramref name="buffer" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Async]
 		[Export ("scheduleBuffer:completionHandler:")]
 		void ScheduleBuffer (AVAudioPcmBuffer buffer, [NullAllowed] Action completionHandler);
 
+		/// <param name="buffer">To be added.</param>
+		///         <param name="when">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="options">To be added.</param>
+		///         <param name="completionHandler">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Schedules playback from <paramref name="buffer" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Async]
 		[Export ("scheduleBuffer:atTime:options:completionHandler:")]
 		void ScheduleBuffer (AVAudioPcmBuffer buffer, [NullAllowed] AVAudioTime when, AVAudioPlayerNodeBufferOptions options, [NullAllowed] Action completionHandler);
 
+		/// <param name="buffer">To be added.</param>
+		///         <param name="callbackType">To be added.</param>
+		///         <param name="completionHandler">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Async]
 		[MacCatalyst (13, 1)]
 		[Export ("scheduleBuffer:completionCallbackType:completionHandler:")]
 		void ScheduleBuffer (AVAudioPcmBuffer buffer, AVAudioPlayerNodeCompletionCallbackType callbackType, [NullAllowed] Action<AVAudioPlayerNodeCompletionCallbackType> completionHandler);
 
+		/// <param name="buffer">The buffer to play.</param>
+		///         <param name="when">The time at which to play the buffer. May be <see langword="null" />.<para tool="nullallowed">This parameter can be <see langword="null" />.</para></param>
+		///         <param name="options">Playback options, such as priority or whether to loop the playback.</param>
+		///         <param name="callbackType">When to call the callback in the playback life cycle.</param>
+		///         <param name="completionHandler">The handler to call during the playback life cycle. May be <see langword="null" />.<para tool="nullallowed">This parameter can be <see langword="null" />.</para></param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Async]
 		[MacCatalyst (13, 1)]
 		[Export ("scheduleBuffer:atTime:options:completionCallbackType:completionHandler:")]
 		void ScheduleBuffer (AVAudioPcmBuffer buffer, [NullAllowed] AVAudioTime when, AVAudioPlayerNodeBufferOptions options, AVAudioPlayerNodeCompletionCallbackType callbackType, [NullAllowed] Action<AVAudioPlayerNodeCompletionCallbackType> completionHandler);
 
+		/// <param name="file">To be added.</param>
+		///         <param name="when">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="completionHandler">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Schedules the playing of the specified audio <paramref name="file" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Async]
 		[Export ("scheduleFile:atTime:completionHandler:")]
 		void ScheduleFile (AVAudioFile file, [NullAllowed] AVAudioTime when, [NullAllowed] Action completionHandler);
 
+		/// <param name="file">To be added.</param>
+		///         <param name="when">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="callbackType">To be added.</param>
+		///         <param name="completionHandler">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Async]
 		[MacCatalyst (13, 1)]
 		[Export ("scheduleFile:atTime:completionCallbackType:completionHandler:")]
 		void ScheduleFile (AVAudioFile file, [NullAllowed] AVAudioTime when, AVAudioPlayerNodeCompletionCallbackType callbackType, [NullAllowed] Action<AVAudioPlayerNodeCompletionCallbackType> completionHandler);
 
+		/// <param name="file">To be added.</param>
+		///         <param name="startFrame">To be added.</param>
+		///         <param name="numberFrames">To be added.</param>
+		///         <param name="when">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="completionHandler">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Schedules the playing of a portion of the audio <paramref name="file" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Async]
 		[Export ("scheduleSegment:startingFrame:frameCount:atTime:completionHandler:")]
 		void ScheduleSegment (AVAudioFile file, long startFrame, uint /* AVAudioFrameCount = uint32_t */ numberFrames, [NullAllowed] AVAudioTime when, [NullAllowed] Action completionHandler);
 
+		/// <param name="file">To be added.</param>
+		///         <param name="startFrame">To be added.</param>
+		///         <param name="numberFrames">To be added.</param>
+		///         <param name="when">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="callbackType">To be added.</param>
+		///         <param name="completionHandler">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Async]
 		[MacCatalyst (13, 1)]
 		[Export ("scheduleSegment:startingFrame:frameCount:atTime:completionCallbackType:completionHandler:")]
 		void ScheduleSegment (AVAudioFile file, long startFrame, uint numberFrames, [NullAllowed] AVAudioTime when, AVAudioPlayerNodeCompletionCallbackType callbackType, [NullAllowed] Action<AVAudioPlayerNodeCompletionCallbackType> completionHandler);
 
+		/// <summary>Stops playback and clears all scheduled events.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("stop")]
 		void Stop ();
 
+		/// <param name="frameCount">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("prepareWithFrameCount:")]
 		void PrepareWithFrameCount (uint /* AVAudioFrameCount = uint32_t */ frameCount);
 
 		[Export ("play")]
 		void Play ();
 
+		/// <param name="when">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("playAtTime:")]
 		void PlayAtTime ([NullAllowed] AVAudioTime when);
 
 		[Export ("pause")]
 		void Pause ();
 
+		/// <param name="playerTime">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Export ("nodeTimeForPlayerTime:")]
 		AVAudioTime GetNodeTimeFromPlayerTime (AVAudioTime playerTime);
 
+		/// <param name="nodeTime">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Export ("playerTimeForNodeTime:")]
 		AVAudioTime GetPlayerTimeFromNodeTime (AVAudioTime nodeTime);
@@ -2128,28 +2414,46 @@ namespace AVFoundation {
 	interface AVAudioRecorder {
 		[Export ("initWithURL:settings:error:")]
 		[Internal]
-		IntPtr InitWithUrl (NSUrl url, NSDictionary settings, out NSError error);
+		IntPtr _InitWithUrl (NSUrl url, NSDictionary settings, out NSError error);
 
 		[Internal]
 		[MacCatalyst (13, 1)]
 		[Export ("initWithURL:format:error:")]
-		IntPtr InitWithUrl (NSUrl url, AVAudioFormat format, out NSError outError);
+		IntPtr _InitWithUrl (NSUrl url, AVAudioFormat format, out NSError outError);
 
+		/// <summary>Prepares the recorder for efficient startup.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>
+		///           <para>This method creates or erases a file for recording.</para>
+		///           <para>The <see cref="M:AVFoundation.AVAudioRecorder.Record" /> method will call this method if ncessary, but application developers may choose to explicitly call it in order to minimize startup lag.</para>
+		///         </remarks>
 		[Export ("prepareToRecord")]
 		bool PrepareToRecord ();
 
+		/// <summary>Begins recording. This method is asynchronous.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("record")]
 		bool Record ();
 
+		/// <param name="duration">The number of seconds to record.</param>
+		///         <summary>Begins recording for a specific duration.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("recordForDuration:")]
 		bool RecordFor (double duration);
 
 		[Export ("pause")]
 		void Pause ();
 
+		/// <summary>Stops recording asynchronously.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("stop")]
 		void Stop ();
 
+		/// <summary>Delete's the current recording.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("deleteRecording")]
 		bool DeleteRecording ();
 
@@ -2208,6 +2512,10 @@ namespace AVFoundation {
 		[Export ("meteringEnabled")]
 		bool MeteringEnabled { [Bind ("isMeteringEnabled")] get; set; }
 
+		/// <summary>Calculates the <see cref="M:AVFoundation.AVAudioRecorder.AveragePower(System.nuint)" /> and <see cref="M:AVFoundation.AVAudioRecorder.PeakPower(System.nuint)" /> properties.</summary>
+		///         <remarks>
+		///           <para>The <see cref="P:AVFoundation.AVAudioRecorder.MeteringEnabled" /> property must be <see langword="true" /> for this method to operate correctly.</para>
+		///         </remarks>
 		[Export ("updateMeters")]
 		void UpdateMeters ();
 
@@ -2226,10 +2534,21 @@ namespace AVFoundation {
 		[Export ("channelAssignments", ArgumentSemantic.Copy), NullAllowed]
 		AVAudioSessionChannelDescription [] ChannelAssignments { get; set; }
 
+		/// <param name="time">A value greater than or equal to <see cref="P:AVFoundation.AVAudioRecorder.currentTime" />. Specifies a time in seconds.</param>
+		///         <summary>Begins recording at a specific time.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>Begins recording at a specific time.  Can be used for exactly periodic recordings or recordings that occur with precise offsets to each other.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("recordAtTime:")]
 		bool RecordAt (double time);
 
+		/// <param name="time">A value greater than or equal to <see cref="P:AVFoundation.AVAudioRecorder.currentTime" />. Specifies a time in seconds.</param>
+		///         <param name="duration">Duration, in seconds, of the recording.</param>
+		///         <summary>Begins recording at a specific time, with a given duration.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>
+		///           <para>The recording will automatically stop after <paramref name="duration" /> seconds.</para>
+		///         </remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("recordAtTime:forDuration:")]
 		bool RecordAt (double time, double duration);
@@ -2263,12 +2582,26 @@ namespace AVFoundation {
 	[TV (17, 0)]
 	[MacCatalyst (13, 1)]
 	interface AVAudioRecorderDelegate {
+		/// <param name="recorder">To be added.</param>
+		///         <param name="flag">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("audioRecorderDidFinishRecording:successfully:"), CheckDisposed]
 		void FinishedRecording (AVAudioRecorder recorder, bool flag);
 
+		/// <param name="recorder">To be added.</param>
+		///         <param name="error">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("audioRecorderEncodeErrorDidOccur:error:")]
 		void EncoderError (AVAudioRecorder recorder, [NullAllowed] NSError error);
 
+		/// <param name="recorder">To be added.</param>
+		///         <summary>Developers should not use this deprecated method. </summary>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[Deprecated (PlatformName.iOS, 8, 0)]
 		[MacCatalyst (13, 1)]
@@ -2277,6 +2610,9 @@ namespace AVFoundation {
 		[NoTV]
 		void BeginInterruption (AVAudioRecorder recorder);
 
+		/// <param name="recorder">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[Deprecated (PlatformName.iOS, 6, 0)]
 		[MacCatalyst (13, 1)]
@@ -2345,6 +2681,9 @@ namespace AVFoundation {
 	[DisableDefaultCtor] // for binary compatibility this is added in AVAudioSession.cs w/[Obsolete]
 	interface AVAudioSession {
 
+		/// <summary>Factory method that returns the shared <see cref="T:AVFoundation.AVAudioSession" /> object.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("sharedInstance"), Static]
@@ -2375,34 +2714,81 @@ namespace AVFoundation {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'AVAudioSession.Notification.Observe*' methods instead.")]
 		IAVAudioSessionDelegate Delegate { get; set; }
 
+		/// <param name="beActive">Set to true to activate audio, false to deactivate it.</param>
+		///         <param name="outError">On failure, this contains the error details.</param>
+		///         <summary>Activates or deactivates the audio session for the application.</summary>
+		///         <returns>true on success, false on error.   If there is an error the outError parameter contains the new instance of NSError describing the problem.</returns>
+		///         <remarks>
+		///           <para>
+		/// 	    Audio activation can fail if an application with a higher audio priority than yours is currently running.
+		/// 	  </para>
+		///           <para>
+		/// 	    Audio deactivation can fail if there are running audio
+		/// 	    operations in progress (playback, recording, audio queues
+		/// 	    or conversions).
+		/// 	  </para>
+		///         </remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("setActive:error:")]
 		bool SetActive (bool beActive, out NSError outError);
 
+		/// <param name="beActive">Set to true to activate audio, false to deactivate it.</param>
+		///         <summary>Activates or deactivates the audio session for the application.</summary>
+		///         <returns>null on success, or an instance of NSError on failure.</returns>
+		///         <remarks>
+		///           <para>
+		/// 	    Audio activation can fail if an application with a higher audio priority than yours is currently running.
+		/// 	  </para>
+		///           <para>
+		/// 	    Audio deactivation can fail if there are running audio
+		/// 	    operations in progress (playback, recording, audio queues
+		/// 	    or conversions).
+		/// 	  </para>
+		///         </remarks>
 		[return: NullAllowed]
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Wrap ("SetActive (beActive, out var outError) ? null : outError")]
 		NSError SetActive (bool beActive);
 
+		/// <include file="../docs/api/AVFoundation/AVAudioSession.xml" path="/Documentation/Docs[@DocId='M:AVFoundation.AVAudioSession.SetCategory(Foundation.NSString,Foundation.NSError@)']/*" />
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("setCategory:error:")]
 		bool SetCategory (NSString theCategory, out NSError outError);
 
+		/// <include file="../docs/api/AVFoundation/AVAudioSession.xml" path="/Documentation/Docs[@DocId='M:AVFoundation.AVAudioSession.SetCategory(Foundation.NSString)']/*" />
 		[return: NullAllowed]
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Wrap ("SetCategory (theCategory, out var outError) ? null : outError")]
 		NSError SetCategory (NSString theCategory);
 
+		/// <param name="category">The desired category.</param>
+		///         <summary>Requests a change to the <see cref="P:AVFoundation.AVAudioSession.Category" />.</summary>
+		///         <returns>
+		/// 	  null on success, or an instance of NSError in case of failure with the details about the error.
+		/// 	</returns>
+		///         <remarks>
+		///           <para>
+		/// 	    In general, you should set the category before activating
+		/// 	    your audio session with <see cref="M:AVFoundation.AVAudioSession.SetActive(System.Boolean,AVFoundation.AVAudioSessionSetActiveOptions,Foundation.NSError@)" />.
+		/// 	    If you change the category at runtime, the route will change. 
+		/// 	  </para>
+		///         </remarks>
 		[return: NullAllowed]
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Wrap ("SetCategory (category.GetConstant ()!, out var outError) ? null : outError")]
 		NSError SetCategory (AVAudioSessionCategory category);
 
+		/// <param name="sampleRate">To be added.</param>
+		///         <param name="outError">On failure, this contains the error details.</param>
+		///         <summary>Application developers should not use this deprecated method. Instead use <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:AVFoundation.AVAudioSession.SetPreferredSampleRate(Double, out NSError)&amp;scope=Xamarin" title="M:AVFoundation.AVAudioSession.SetPreferredSampleRate(Double, out NSError)">M:AVFoundation.AVAudioSession.SetPreferredSampleRate(Double, out NSError)</a></format></summary>
+		///         <returns>
+		///           <see langword="true" /> if the request was successful, otherwise the outError parameter contains an instance of NSError describing the problem.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoTV, NoMac]
 		[Deprecated (PlatformName.iOS, 6, 0, message: "Use 'SetPreferredSampleRate' instead.")]
 		[MacCatalyst (13, 1)]
@@ -2410,6 +2796,12 @@ namespace AVFoundation {
 		[Export ("setPreferredHardwareSampleRate:error:")]
 		bool SetPreferredHardwareSampleRate (double sampleRate, out NSError outError);
 
+		/// <param name="duration">To be added.</param>
+		///         <param name="outError">On failure, this contains the error details.</param>
+		///         <summary>Sets the preferred duration, in seconds, of the IO buffer.</summary>
+		///         <returns>
+		///           <see langword="true" /> if the request was successful, otherwise the outError parameter contains an instance of NSError describing the problem.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("setPreferredIOBufferDuration:error:")]
@@ -2436,6 +2828,20 @@ namespace AVFoundation {
 		[Export ("mode")]
 		NSString Mode { get; }
 
+		/// <param name="mode">The value should be one of 
+		/// 	<see cref="P:AVFoundation.AVAudioSession.ModeDefault" />,
+		/// 	<see cref="P:AVFoundation.AVAudioSession.ModeVoiceChat" />,
+		/// 	<see cref="P:AVFoundation.AVAudioSession.ModeGameChat" />,
+		/// 	<see cref="P:AVFoundation.AVAudioSession.ModeVideoRecording" />,
+		/// 	<see cref="P:AVFoundation.AVAudioSession.ModeMeasurement" />,
+		/// 	<see cref="P:AVFoundation.AVAudioSession.ModeMoviePlayback" /> or
+		/// 	<see cref="P:AVFoundation.AVAudioSession.ModeVideoChat" />.
+		///       </param>
+		///         <param name="error">On failure, this contains the error details.</param>
+		///         <summary>Requests a specific mode.</summary>
+		///         <returns>
+		///           <see langword="true" /> if the request was successful, otherwise the outError parameter contains an instance of NSError describing the problem.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("setMode:error:")]
@@ -2628,11 +3034,41 @@ namespace AVFoundation {
 		[Field ("AVAudioSessionModeVoicePrompt")]
 		NSString VoicePrompt { get; }
 
+		/// <param name="active">Set to true to activate audio, false to deactivate it.</param>
+		///         <param name="options">Options to control the audio activation.</param>
+		///         <param name="outError">On failure, this contains the error details.</param>
+		///         <summary>Activates and deactivates the audio session for the application.</summary>
+		///         <returns>
+		///           <see langword="true" /> if the request was successful, otherwise the outError parameter contains an instance of NSError describing the problem.</returns>
+		///         <remarks>
+		///           <para>
+		/// 	    Audio activation can fail if an application with a higher audio priority than yours is currently running.
+		/// 	  </para>
+		///           <para>
+		/// 	    Audio deactivation can fail if there are running audio
+		/// 	    operations in progress (playback, recording, audio queues
+		/// 	    or conversions).
+		/// 	  </para>
+		///         </remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("setActive:withOptions:error:")]
 		bool SetActive (bool active, AVAudioSessionSetActiveOptions options, out NSError outError);
 
+		/// <param name="active">Set to true to activate audio, false to deactivate it.</param>
+		///         <param name="options">Options to control the audio activation.</param>
+		///         <summary>Activates and deactivates the audio session for the application.</summary>
+		///         <returns>null on success, or an instance of NSError on failure.</returns>
+		///         <remarks>
+		///           <para>
+		/// 	    Audio activation can fail if an application with a higher audio priority than yours is currently running.
+		/// 	  </para>
+		///           <para>
+		/// 	    Audio deactivation can fail if there are running audio
+		/// 	    operations in progress (playback, recording, audio queues
+		/// 	    or conversions).
+		/// 	  </para>
+		///         </remarks>
 		[return: NullAllowed]
 		[NoMac]
 		[MacCatalyst (13, 1)]
@@ -2647,11 +3083,23 @@ namespace AVFoundation {
 		[Export ("availableCategories")]
 		string [] AvailableCategories { get; }
 
+		/// <include file="../docs/api/AVFoundation/AVAudioSession.xml" path="/Documentation/Docs[@DocId='M:AVFoundation.AVAudioSession.SetCategory(System.String,AVFoundation.AVAudioSessionCategoryOptions,Foundation.NSError@)']/*" />
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("setCategory:withOptions:error:")]
 		bool SetCategory (string category, AVAudioSessionCategoryOptions options, out NSError outError);
 
+		/// <param name="category">The desired category.</param>
+		///         <param name="options">Options on how to handle audio.</param>
+		///         <summary>Requests a change to the <see cref="P:AVFoundation.AVAudioSession.Category" />.</summary>
+		///         <returns>null on success, or an instance of NSError in case of failure with the details about the error.</returns>
+		///         <remarks>
+		///           <para>
+		/// 	    In general, you should set the category before activating
+		/// 	    your audio session with <see cref="M:AVFoundation.AVAudioSession.SetActive(System.Boolean,AVFoundation.AVAudioSessionSetActiveOptions,Foundation.NSError@)" />.
+		/// 	    If you change the category at runtime, the route will change. 
+		/// 	  </para>
+		///         </remarks>
 		[return: NullAllowed]
 		[NoMac]
 		[MacCatalyst (13, 1)]
@@ -2663,6 +3111,13 @@ namespace AVFoundation {
 		[Wrap ("SetCategory (category.GetConstant ()!, options, out outError)")]
 		bool SetCategory (AVAudioSessionCategory category, AVAudioSessionCategoryOptions options, out NSError outError);
 
+		/// <param name="category">To be added.</param>
+		///         <param name="mode">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <param name="outError">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("setCategory:mode:options:error:")]
@@ -2706,6 +3161,12 @@ namespace AVFoundation {
 		[Export ("availableModes")]
 		string [] AvailableModes { get; }
 
+		/// <param name="portOverride">To be added.</param>
+		///         <param name="outError">On failure, this contains the error details.</param>
+		///         <summary>Requests to temporarily change the output audio port.</summary>
+		///         <returns>
+		///           <see langword="true" /> if the request was successful, otherwise the outError parameter contains an instance of NSError describing the problem.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("overrideOutputAudioPort:error:")]
@@ -2727,6 +3188,12 @@ namespace AVFoundation {
 		[Export ("currentRoute")]
 		AVAudioSessionRouteDescription CurrentRoute { get; }
 
+		/// <param name="sampleRate">To be added.</param>
+		///         <param name="error">On failure, this contains the error details.</param>
+		///         <summary>Sets the preferred sample rate, in Hz.</summary>
+		///         <returns>
+		///           <see langword="true" /> if the request was successful, otherwise the outError parameter contains an instance of NSError describing the problem.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("setPreferredSampleRate:error:")]
@@ -2824,6 +3291,12 @@ namespace AVFoundation {
 		[Export ("supportedOutputChannelLayouts")]
 		AVAudioChannelLayout [] SupportedOutputChannelLayouts { get; }
 
+		/// <param name="gain">To be added.</param>
+		///         <param name="outError">On failure, this contains the error details.</param>
+		///         <summary>Requests a specific gain level.</summary>
+		///         <returns>
+		///           <see langword="true" /> if the request was successful, otherwise the outError parameter contains an instance of NSError describing the problem.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("setInputGain:error:")]
@@ -3104,18 +3577,42 @@ namespace AVFoundation {
 		[Export ("outputDataSource"), NullAllowed]
 		AVAudioSessionDataSourceDescription OutputDataSource { get; }
 
+		/// <param name="dataSource">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="outError">On failure, this contains the error details.</param>
+		///         <summary>Selects the specified <paramref name="dataSource" />.</summary>
+		///         <returns>
+		///           <see langword="true" /> if the request was successful, otherwise the outError parameter contains an instance of NSError describing the problem.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("setInputDataSource:error:")]
 		[PostGet ("InputDataSource")]
 		bool SetInputDataSource ([NullAllowed] AVAudioSessionDataSourceDescription dataSource, out NSError outError);
 
+		/// <param name="dataSource">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="outError">On failure, this contains the error details.</param>
+		///         <summary>Selects the specific output <paramref name="dataSource" />.</summary>
+		///         <returns>
+		///           <see langword="true" /> if the request was successful, otherwise the outError parameter contains an instance of NSError describing the problem.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("setOutputDataSource:error:")]
 		[PostGet ("OutputDataSource")]
 		bool SetOutputDataSource ([NullAllowed] AVAudioSessionDataSourceDescription dataSource, out NSError outError);
 
+		/// <param name="responseCallback">To be added.</param>
+		///         <summary>Presents a standard UI to the app user, asking for permission to record.</summary>
+		///         <remarks>
+		///           <para>This method will be called automatically the first time the application's <see cref="P:AVFoundation.AVAudioSession.Category" /> is set to a category that includes recording. Or, the application developer can call this method explicitly to control the presentation.</para>
+		///           <para>Unlike most other privacy settings, there is not a corresponding method to check the status.</para>
+		///         </remarks>
 		[Deprecated (PlatformName.iOS, 17, 0, message: "Please use 'AVAudioApplication.RequestRecordPermission' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 17, 0, message: "Please use 'AVAudioApplication.RequestRecordPermission' instead.")]
 		[NoTV, NoMac]
@@ -3123,6 +3620,15 @@ namespace AVFoundation {
 		[Export ("requestRecordPermission:")]
 		void RequestRecordPermission (AVPermissionGranted responseCallback);
 
+		/// <param name="inPort">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="outError">On failure, this contains the error details.</param>
+		///         <summary>Sets the preferred input data source.</summary>
+		///         <returns>
+		///           <see langword="true" /> if the request was successful, otherwise the outError parameter contains an instance of NSError describing the problem.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("setPreferredInput:error:")]
@@ -3152,6 +3658,10 @@ namespace AVFoundation {
 		[Export ("setPreferredInputNumberOfChannels:error:")]
 		bool SetPreferredInputNumberOfChannels (nint count, out NSError outError);
 
+		/// <summary>Retrieves the preferred number of input channels.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
+		///         <altmember cref="M:AVFoundation.AVAudioSession.SetPreferredInputNumberOfChannels" />
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("preferredInputNumberOfChannels")]
@@ -3162,6 +3672,10 @@ namespace AVFoundation {
 		[Export ("setPreferredOutputNumberOfChannels:error:")]
 		bool SetPreferredOutputNumberOfChannels (nint count, out NSError outError);
 
+		/// <summary>Retrieves the preferred number of output channels.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
+		///         <altmember cref="M:AVFoundation.AVAudioSession.SetPreferredOutputNumberOfChannels" />
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("preferredOutputNumberOfChannels")]
@@ -3251,11 +3765,27 @@ namespace AVFoundation {
 		[Notification (typeof (AVAudioSessionSecondaryAudioHintEventArgs))]
 		NSString SilenceSecondaryAudioHintNotification { get; }
 
+		/// <param name="ioType">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoTV, NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("setAggregatedIOPreference:error:")]
 		bool SetAggregatedIOPreference (AVAudioSessionIOType ioType, out NSError error);
 
+		/// <param name="category">To be added.</param>
+		///         <param name="mode">To be added.</param>
+		///         <param name="policy">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <param name="outError">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("setCategory:mode:routeSharingPolicy:options:error:")]
@@ -3613,12 +4143,19 @@ namespace AVFoundation {
 	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 	interface AVAudioSessionDelegate {
+		/// <summary>Developers can override this method to react to interruptions of an audio session.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("beginInterruption")]
 		void BeginInterruption ();
 
+		/// <summary>Developers can override this method to react to the end of an interruption of an audio session.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("endInterruption")]
 		void EndInterruption ();
 
+		/// <param name="isInputAvailable">To be added.</param>
+		///         <summary>Developers can override this method to react to a change in availability of audio inputs.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("inputIsAvailableChanged:")]
 		void InputIsAvailableChanged (bool isInputAvailable);
 
@@ -3773,9 +4310,19 @@ namespace AVFoundation {
 		[Export ("version")]
 		nuint Version { get; }
 
+		/// <param name="url">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>Loads the audio presets that are stored at <paramref name="url" />. If an error occurs, stores it in <paramref name="error" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("loadAudioUnitPresetAtURL:error:")]
 		bool LoadAudioUnitPreset (NSUrl url, out NSError error);
 
+		/// <param name="audioComponentDescription">A value that contains the manufacturer, name, and version of the underlying audio unit hardware.</param>
+		///         <param name="options">A value that controls whether the unit will be loaded in or out of process.</param>
+		///         <param name="completionHandler">A handler to run when the operation is complete.</param>
+		///         <summary>Creates and returns a new <see cref="T:AVFoundation.AVAudioUnit" /> from the specified <paramref name="audioComponentDescription" />, running a handler after it has created it.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("instantiateWithComponentDescription:options:completionHandler:")]
@@ -3833,6 +4380,9 @@ namespace AVFoundation {
 		[Export ("wetDryMix")]
 		float WetDryMix { get; set; } /* float, not CGFloat */
 
+		/// <param name="preset">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("loadFactoryPreset:")]
 		void LoadFactoryPreset (AVAudioUnitDistortionPreset preset);
 	}
@@ -3841,6 +4391,9 @@ namespace AVFoundation {
 	[BaseType (typeof (AVAudioUnit))]
 	[DisableDefaultCtor] // returns a nil handle
 	interface AVAudioUnitEffect {
+		/// <param name="audioComponentDescription">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithAudioComponentDescription:")]
 		NativeHandle Constructor (AudioComponentDescription audioComponentDescription);
 
@@ -3909,6 +4462,9 @@ namespace AVFoundation {
 	[BaseType (typeof (AVAudioUnit))]
 	[DisableDefaultCtor] // returns a nil handle
 	interface AVAudioUnitGenerator : AVAudioMixing {
+		/// <param name="audioComponentDescription">To be added.</param>
+		/// <summary>Creates a new <see cref="T:AVFoundation.AVAudioUnitGenerator" /> generator or remote generator.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithAudioComponentDescription:")]
 		NativeHandle Constructor (AudioComponentDescription audioComponentDescription);
 
@@ -3923,39 +4479,91 @@ namespace AVFoundation {
 	[BaseType (typeof (AVAudioUnit), Name = "AVAudioUnitMIDIInstrument")]
 	[DisableDefaultCtor] // returns a nil handle
 	interface AVAudioUnitMidiInstrument : AVAudioMixing {
+		/// <param name="audioComponentDescription">To be added.</param>
+		/// <summary>Creates a new <see cref="T:AVFoundation.AVAudioUnitMidiInstrument" /> from the specified description.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithAudioComponentDescription:")]
 		NativeHandle Constructor (AudioComponentDescription audioComponentDescription);
 
+		/// <param name="note">To be added.</param>
+		///         <param name="velocity">To be added.</param>
+		///         <param name="channel">To be added.</param>
+		///         <summary>Sends a start note event.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("startNote:withVelocity:onChannel:")]
 		void StartNote (byte note, byte velocity, byte channel);
 
+		/// <param name="note">To be added.</param>
+		///         <param name="channel">To be added.</param>
+		///         <summary>Sends a stop note event.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("stopNote:onChannel:")]
 		void StopNote (byte note, byte channel);
 
+		/// <param name="controller">To be added.</param>
+		///         <param name="value">To be added.</param>
+		///         <param name="channel">To be added.</param>
+		///         <summary>Sends a MIDI controller event..</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("sendController:withValue:onChannel:")]
 		void SendController (byte controller, byte value, byte channel);
 
+		/// <param name="pitchbend">To be added.</param>
+		///         <param name="channel">To be added.</param>
+		///         <summary>Sends a MIDI pitch-bend event.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("sendPitchBend:onChannel:")]
 		void SendPitchBend (ushort pitchbend, byte channel);
 
+		/// <param name="pressure">To be added.</param>
+		///         <param name="channel">To be added.</param>
+		///         <summary>Sends a MIDI pressure event.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("sendPressure:onChannel:")]
 		void SendPressure (byte pressure, byte channel);
 
+		/// <param name="key">To be added.</param>
+		///         <param name="value">To be added.</param>
+		///         <param name="channel">To be added.</param>
+		///         <summary>Sends a MIDI polyphonic key pressure event for the specified <paramref name="key" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("sendPressureForKey:withValue:onChannel:")]
 		void SendPressureForKey (byte key, byte value, byte channel);
 
+		/// <param name="program">To be added.</param>
+		///         <param name="channel">To be added.</param>
+		///         <summary>Sends MIDI program change and bank select events.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("sendProgramChange:onChannel:")]
 		void SendProgramChange (byte program, byte channel);
 
+		/// <param name="program">To be added.</param>
+		///         <param name="bankMSB">To be added.</param>
+		///         <param name="bankLSB">To be added.</param>
+		///         <param name="channel">To be added.</param>
+		///         <summary>Sends MIDI program change and bank select events.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("sendProgramChange:bankMSB:bankLSB:onChannel:")]
 		void SendProgramChange (byte program, byte bankMSB, byte bankLSB, byte channel);
 
+		/// <param name="midiStatus">To be added.</param>
+		///         <param name="data1">To be added.</param>
+		///         <param name="data2">To be added.</param>
+		///         <summary>Sends a two-byte MIDI event.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("sendMIDIEvent:data1:data2:")]
 		void SendMidiEvent (byte midiStatus, byte data1, byte data2);
 
+		/// <param name="midiStatus">To be added.</param>
+		///         <param name="data1">To be added.</param>
+		///         <summary>Sends a one-byte MIDI event.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("sendMIDIEvent:data1:")]
 		void SendMidiEvent (byte midiStatus, byte data1);
 
+		/// <param name="midiData">To be added.</param>
+		///         <summary>Sends a MIDI system-exclusive event.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("sendMIDISysExEvent:")]
 		void SendMidiSysExEvent (NSData midiData);
 	}
@@ -3985,12 +4593,30 @@ namespace AVFoundation {
 		[Export ("globalTuning")]
 		float GlobalTuning { get; set; } /* float, not CGFloat */
 
+		/// <param name="bankUrl">To be added.</param>
+		///         <param name="program">To be added.</param>
+		///         <param name="bankMSB">To be added.</param>
+		///         <param name="bankLSB">To be added.</param>
+		///         <param name="outError">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("loadSoundBankInstrumentAtURL:program:bankMSB:bankLSB:error:")]
 		bool LoadSoundBank (NSUrl bankUrl, byte program, byte bankMSB, byte bankLSB, out NSError outError);
 
+		/// <param name="instrumentUrl">To be added.</param>
+		///         <param name="outError">To be added.</param>
+		///         <summary>Configures the <see cref="T:AVFoundation.AVAudioUnitSampler" /> by loading the specified instrument.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("loadInstrumentAtURL:error:")]
 		bool LoadInstrument (NSUrl instrumentUrl, out NSError outError);
 
+		/// <param name="audioFiles">To be added.</param>
+		///         <param name="outError">To be added.</param>
+		///         <summary>Configures the <see cref="T:AVFoundation.AVAudioUnitSampler" /> by loading the specified <paramref name="audioFiles" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("loadAudioFilesAtURLs:error:")]
 		bool LoadAudioFiles (NSUrl [] audioFiles, out NSError outError);
 
@@ -4009,6 +4635,9 @@ namespace AVFoundation {
 		[Export ("wetDryMix")]
 		float WetDryMix { get; set; } /* float, not CGFloat */
 
+		/// <param name="preset">To be added.</param>
+		///         <summary>Sets the reverb to a factory preset.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("loadFactoryPreset:")]
 		void LoadFactoryPreset (AVAudioUnitReverbPreset preset);
 	}
@@ -4018,6 +4647,9 @@ namespace AVFoundation {
 	[BaseType (typeof (AVAudioUnit))]
 	[DisableDefaultCtor] // returns a nil handle
 	interface AVAudioUnitTimeEffect {
+		/// <param name="audioComponentDescription">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithAudioComponentDescription:")]
 		NativeHandle Constructor (AudioComponentDescription audioComponentDescription);
 
@@ -4031,6 +4663,9 @@ namespace AVFoundation {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (AVAudioUnitTimeEffect))]
 	interface AVAudioUnitTimePitch {
+		/// <param name="audioComponentDescription">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithAudioComponentDescription:")]
 		NativeHandle Constructor (AudioComponentDescription audioComponentDescription);
 
@@ -4054,6 +4689,9 @@ namespace AVFoundation {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (AVAudioUnitTimeEffect))]
 	interface AVAudioUnitVarispeed {
+		/// <param name="audioComponentDescription">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithAudioComponentDescription:")]
 		NativeHandle Constructor (AudioComponentDescription audioComponentDescription);
 
@@ -4064,15 +4702,31 @@ namespace AVFoundation {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface AVAudioTime {
+		/// <param name="timestamp">To be added.</param>
+		/// <param name="sampleRate">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithAudioTimeStamp:sampleRate:")]
 		NativeHandle Constructor (ref AudioTimeStamp timestamp, double sampleRate);
 
+		/// <param name="hostTime">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithHostTime:")]
 		NativeHandle Constructor (ulong hostTime);
 
+		/// <param name="sampleTime">To be added.</param>
+		/// <param name="sampleRate">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithSampleTime:atRate:")]
 		NativeHandle Constructor (long sampleTime, double sampleRate);
 
+		/// <param name="hostTime">To be added.</param>
+		/// <param name="sampleTime">To be added.</param>
+		/// <param name="sampleRate">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithHostTime:sampleTime:atRate:")]
 		NativeHandle Constructor (ulong hostTime, long sampleTime, double sampleRate);
 
@@ -4112,24 +4766,56 @@ namespace AVFoundation {
 		[Export ("audioTimeStamp")]
 		AudioTimeStamp AudioTimeStamp { get; }
 
+		/// <param name="timestamp">To be added.</param>
+		///         <param name="sampleRate">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static, Export ("timeWithAudioTimeStamp:sampleRate:")]
 		AVAudioTime FromAudioTimeStamp (ref AudioTimeStamp timestamp, double sampleRate);
 
+		/// <param name="hostTime">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static, Export ("timeWithHostTime:")]
 		AVAudioTime FromHostTime (ulong hostTime);
 
+		/// <param name="sampleTime">To be added.</param>
+		///         <param name="sampleRate">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static, Export ("timeWithSampleTime:atRate:")]
 		AVAudioTime FromSampleTime (long sampleTime, double sampleRate);
 
+		/// <param name="hostTime">To be added.</param>
+		///         <param name="sampleTime">To be added.</param>
+		///         <param name="sampleRate">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static, Export ("timeWithHostTime:sampleTime:atRate:")]
 		AVAudioTime FromHostTime (ulong hostTime, long sampleTime, double sampleRate);
 
+		/// <param name="seconds">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static, Export ("hostTimeForSeconds:")]
 		ulong HostTimeForSeconds (double seconds);
 
+		/// <param name="hostTime">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static, Export ("secondsForHostTime:")]
 		double SecondsForHostTime (ulong hostTime);
 
+		/// <param name="anchorTime">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("extrapolateTimeFromAnchor:")]
 		[return: NullAllowed]
 		AVAudioTime ExtrapolateTimeFromAnchor (AVAudioTime anchorTime);
@@ -4141,6 +4827,10 @@ namespace AVFoundation {
 						 // you get an instance that way and try to use it, it will inmediatelly crash also tested in ObjC app same result
 	interface AVAudioConverter {
 
+		/// <param name="fromFormat">To be added.</param>
+		/// <param name="toFormat">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initFromFormat:toFormat:")]
 		NativeHandle Constructor (AVAudioFormat fromFormat, AVAudioFormat toFormat);
 
@@ -4207,9 +4897,27 @@ namespace AVFoundation {
 		[Export ("primeInfo", ArgumentSemantic.Assign)]
 		AVAudioConverterPrimeInfo PrimeInfo { get; set; }
 
+		/// <param name="outputBuffer">To be added.</param>
+		///         <param name="inputBuffer">To be added.</param>
+		///         <param name="outError">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("convertToBuffer:fromBuffer:error:")]
 		bool ConvertToBuffer (AVAudioPcmBuffer outputBuffer, AVAudioPcmBuffer inputBuffer, [NullAllowed] out NSError outError);
 
+		/// <param name="outputBuffer">To be added.</param>
+		///         <param name="outError">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="inputHandler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("convertToBuffer:error:withInputFromBlock:")]
 		AVAudioConverterOutputStatus ConvertToBuffer (AVAudioBuffer outputBuffer, [NullAllowed] out NSError outError, AVAudioConverterInputHandler inputHandler);
 
@@ -5280,9 +5988,19 @@ namespace AVFoundation {
 		[Static, Export ("assetReaderTrackOutputWithTrack:outputSettings:")]
 		AVAssetReaderTrackOutput FromTrack (AVAssetTrack track, [NullAllowed] NSDictionary outputSettings);
 
+		/// <param name="track">To be added.</param>
+		///         <param name="settings">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static, Wrap ("FromTrack (track, settings.GetDictionary ())")]
 		AVAssetReaderTrackOutput Create (AVAssetTrack track, [NullAllowed] AudioSettings settings);
 
+		/// <param name="track">To be added.</param>
+		///         <param name="settings">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static, Wrap ("FromTrack (track, settings.GetDictionary ())")]
 		AVAssetReaderTrackOutput Create (AVAssetTrack track, [NullAllowed] AVVideoSettingsUncompressed settings);
 
@@ -5290,9 +6008,17 @@ namespace AVFoundation {
 		[Export ("initWithTrack:outputSettings:")]
 		NativeHandle Constructor (AVAssetTrack track, [NullAllowed] NSDictionary outputSettings);
 
+		/// <param name="track">To be added.</param>
+		/// <param name="settings">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (track, settings.GetDictionary ())")]
 		NativeHandle Constructor (AVAssetTrack track, [NullAllowed] AudioSettings settings);
 
+		/// <param name="track">To be added.</param>
+		/// <param name="settings">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (track, settings.GetDictionary ())")]
 		NativeHandle Constructor (AVAssetTrack track, [NullAllowed] AVVideoSettingsUncompressed settings);
 
@@ -5336,6 +6062,10 @@ namespace AVFoundation {
 		[Export ("initWithAudioTracks:audioSettings:")]
 		NativeHandle Constructor (AVAssetTrack [] audioTracks, [NullAllowed] NSDictionary audioSettings);
 
+		/// <param name="audioTracks">To be added.</param>
+		/// <param name="settings">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (audioTracks, settings.GetDictionary ())")]
 		NativeHandle Constructor (AVAssetTrack [] audioTracks, [NullAllowed] AudioSettings settings);
 
@@ -5376,6 +6106,11 @@ namespace AVFoundation {
 		[Export ("assetReaderVideoCompositionOutputWithVideoTracks:videoSettings:")]
 		AVAssetReaderVideoCompositionOutput WeakFromTracks (AVAssetTrack [] videoTracks, [NullAllowed] NSDictionary videoSettings);
 
+		/// <param name="videoTracks">To be added.</param>
+		///         <param name="settings">To be added.</param>
+		///         <summary>Factory method to create a <see cref="T:AVFoundation.AVAssetReaderVideoCompositionOutput" /> with the specified <paramref name="videoTracks" /> and <paramref name="settings" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakFromTracks (videoTracks, settings.GetDictionary ())")]
 		[Static]
 		AVAssetReaderVideoCompositionOutput Create (AVAssetTrack [] videoTracks, [NullAllowed] CVPixelBufferAttributes settings);
@@ -5384,6 +6119,10 @@ namespace AVFoundation {
 		[Export ("initWithVideoTracks:videoSettings:")]
 		NativeHandle Constructor (AVAssetTrack [] videoTracks, [NullAllowed] NSDictionary videoSettings);
 
+		/// <param name="videoTracks">To be added.</param>
+		/// <param name="settings">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (videoTracks, settings.GetDictionary ())")]
 		NativeHandle Constructor (AVAssetTrack [] videoTracks, [NullAllowed] CVPixelBufferAttributes settings);
 
@@ -5671,9 +6410,19 @@ namespace AVFoundation {
 		[Export ("canApplyOutputSettings:forMediaType:")]
 		bool CanApplyOutputSettings ([NullAllowed] NSDictionary outputSettings, string mediaType);
 
+		/// <param name="outputSettings">To be added.</param>
+		///         <param name="mediaType">To be added.</param>
+		///         <summary>Whether this <see cref="T:AVFoundation.AVAssetWriter" /> supports the <paramref name="outputSettings" /> for the <paramref name="mediaType" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("CanApplyOutputSettings (outputSettings.GetDictionary (), mediaType)")]
 		bool CanApplyOutputSettings (AudioSettings outputSettings, string mediaType);
 
+		/// <param name="outputSettings">To be added.</param>
+		///         <param name="mediaType">To be added.</param>
+		///         <summary>Whether this <see cref="T:AVFoundation.AVAssetWriter" /> supports the <paramref name="outputSettings" /> for the <paramref name="mediaType" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("CanApplyOutputSettings (outputSettings.GetDictionary (), mediaType)")]
 		bool CanApplyOutputSettings (AVVideoSettingsCompressed outputSettings, string mediaType);
 
@@ -5785,9 +6534,19 @@ namespace AVFoundation {
 		[Export ("initWithMediaType:outputSettings:sourceFormatHint:")]
 		NativeHandle Constructor (string mediaType, [NullAllowed] NSDictionary outputSettings, [NullAllowed] CMFormatDescription sourceFormatHint);
 
+		/// <param name="mediaType">To be added.</param>
+		/// <param name="outputSettings">To be added.</param>
+		/// <param name="sourceFormatHint">To be added.</param>
+		/// <summary>Creates a new <see cref="T:AVFoundation.AVAssetWriterInput" /> with the specified <paramref name="mediaType" />, <paramref name="outputSettings" />, and <paramref name="sourceFormatHint" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (mediaType, outputSettings.GetDictionary (), sourceFormatHint)")]
 		NativeHandle Constructor (string mediaType, [NullAllowed] AudioSettings outputSettings, [NullAllowed] CMFormatDescription sourceFormatHint);
 
+		/// <param name="mediaType">To be added.</param>
+		/// <param name="outputSettings">To be added.</param>
+		/// <param name="sourceFormatHint">To be added.</param>
+		/// <summary>Creates a new <see cref="T:AVFoundation.AVAssetWriterInput" /> with the specified <paramref name="mediaType" />, <paramref name="outputSettings" />, and <paramref name="sourceFormatHint" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (mediaType, outputSettings.GetDictionary (), sourceFormatHint)")]
 		NativeHandle Constructor (string mediaType, [NullAllowed] AVVideoSettingsCompressed outputSettings, [NullAllowed] CMFormatDescription sourceFormatHint);
 
@@ -5795,10 +6554,22 @@ namespace AVFoundation {
 		[Export ("assetWriterInputWithMediaType:outputSettings:sourceFormatHint:")]
 		AVAssetWriterInput Create (string mediaType, [NullAllowed] NSDictionary outputSettings, [NullAllowed] CMFormatDescription sourceFormatHint);
 
+		/// <param name="mediaType">To be added.</param>
+		///         <param name="outputSettings">To be added.</param>
+		///         <param name="sourceFormatHint">To be added.</param>
+		///         <summary>Static factory method to create a new <see cref="T:AVFoundation.AVAssetWriterInput" /> with the specified <paramref name="mediaType" />, <paramref name="outputSettings" />, and <paramref name="sourceFormatHint" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Wrap ("Create(mediaType, outputSettings.GetDictionary (), sourceFormatHint)")]
 		AVAssetWriterInput Create (string mediaType, [NullAllowed] AudioSettings outputSettings, [NullAllowed] CMFormatDescription sourceFormatHint);
 
+		/// <param name="mediaType">To be added.</param>
+		///         <param name="outputSettings">To be added.</param>
+		///         <param name="sourceFormatHint">To be added.</param>
+		///         <summary>Static factory method to create a new <see cref="T:AVFoundation.AVAssetWriterInput" /> with the specified <paramref name="mediaType" />, <paramref name="outputSettings" />, and <paramref name="sourceFormatHint" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Wrap ("Create(mediaType, outputSettings.GetDictionary (), sourceFormatHint)")]
 		AVAssetWriterInput Create (string mediaType, [NullAllowed] AVVideoSettingsCompressed outputSettings, [NullAllowed] CMFormatDescription sourceFormatHint);
@@ -5829,9 +6600,23 @@ namespace AVFoundation {
 		[Static, Export ("assetWriterInputWithMediaType:outputSettings:")]
 		AVAssetWriterInput FromType (string mediaType, [NullAllowed] NSDictionary outputSettings);
 
+		/// <param name="mediaType">To be added.</param>
+		///         <param name="outputSettings">
+		///           <para>The dictionary should contain configuration
+		/// 	  information using keys from the <see cref="T:AVFoundation.AVAudioSettings" /> and <see cref="T:AVFoundation.AVVideo" />.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Static factory method to create a new <see cref="T:AVFoundation.AVAssetWriterInput" /> with the specified <paramref name="mediaType" /> and <paramref name="outputSettings" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static, Wrap ("FromType (mediaType, outputSettings.GetDictionary ())")]
 		AVAssetWriterInput Create (string mediaType, [NullAllowed] AudioSettings outputSettings);
 
+		/// <param name="mediaType">To be added.</param>
+		///         <param name="outputSettings">To be added.</param>
+		///         <summary>Static factory method to create a new <see cref="T:AVFoundation.AVAssetWriterInput" /> with the specified <paramref name="mediaType" /> and <paramref name="outputSettings" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static, Wrap ("FromType (mediaType, outputSettings.GetDictionary ())")]
 		AVAssetWriterInput Create (string mediaType, [NullAllowed] AVVideoSettingsCompressed outputSettings);
 
@@ -5839,9 +6624,17 @@ namespace AVFoundation {
 		[Export ("initWithMediaType:outputSettings:")]
 		NativeHandle Constructor (string mediaType, [NullAllowed] NSDictionary outputSettings);
 
+		/// <param name="mediaType">To be added.</param>
+		/// <param name="outputSettings">To be added.</param>
+		/// <summary>Creates a new <see cref="T:AVFoundation.AVAssetWriterInput" /> with the specified <paramref name="mediaType" /> and <paramref name="outputSettings" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (mediaType, outputSettings.GetDictionary ())")]
 		NativeHandle Constructor (string mediaType, [NullAllowed] AudioSettings outputSettings);
 
+		/// <param name="mediaType">To be added.</param>
+		/// <param name="outputSettings">To be added.</param>
+		/// <summary>Creates a new <see cref="T:AVFoundation.AVAssetWriterInput" /> with the specified <paramref name="mediaType" /> and <paramref name="outputSettings" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (mediaType, outputSettings.GetDictionary ())")]
 		NativeHandle Constructor (string mediaType, [NullAllowed] AVVideoSettingsCompressed outputSettings);
 
@@ -6001,6 +6794,11 @@ namespace AVFoundation {
 		[Static, Export ("assetWriterInputPixelBufferAdaptorWithAssetWriterInput:sourcePixelBufferAttributes:")]
 		AVAssetWriterInputPixelBufferAdaptor FromInput (AVAssetWriterInput input, [NullAllowed] NSDictionary sourcePixelBufferAttributes);
 
+		/// <param name="input">To be added.</param>
+		///         <param name="attributes">To be added.</param>
+		///         <summary>Factory method to create an <see cref="T:AVFoundation.AVAssetWriterInputPixelBufferAdaptor" /> with the specified s<paramref name="input" /> and <paramref name="attributes" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static, Wrap ("FromInput (input, attributes.GetDictionary ())")]
 		AVAssetWriterInputPixelBufferAdaptor Create (AVAssetWriterInput input, [NullAllowed] CVPixelBufferAttributes attributes);
 
@@ -6008,6 +6806,10 @@ namespace AVFoundation {
 		[Export ("initWithAssetWriterInput:sourcePixelBufferAttributes:")]
 		NativeHandle Constructor (AVAssetWriterInput input, [NullAllowed] NSDictionary sourcePixelBufferAttributes);
 
+		/// <param name="input">To be added.</param>
+		/// <param name="attributes">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (input, attributes.GetDictionary ())")]
 		NativeHandle Constructor (AVAssetWriterInput input, [NullAllowed] CVPixelBufferAttributes attributes);
 
@@ -6044,10 +6846,19 @@ namespace AVFoundation {
 		[Static, Export ("URLAssetWithURL:options:")]
 		AVUrlAsset FromUrl (NSUrl url, [NullAllowed] NSDictionary options);
 
+		/// <param name="url">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>Creates a new <see cref="T:AVFoundation.AVUrlAsset" /> for the specified <paramref name="url" /> and <paramref name="options" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Wrap ("FromUrl (url, options.GetDictionary ())")]
 		AVUrlAsset Create (NSUrl url, [NullAllowed] AVUrlAssetOptions options);
 
+		/// <param name="url">To be added.</param>
+		///         <summary>Creates a new <see cref="T:AVFoundation.AVUrlAsset" /> for the specified <paramref name="url" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Wrap ("FromUrl (url, (NSDictionary) null!)")]
 		AVUrlAsset Create (NSUrl url);
@@ -6056,9 +6867,16 @@ namespace AVFoundation {
 		[Export ("initWithURL:options:")]
 		NativeHandle Constructor (NSUrl url, [NullAllowed] NSDictionary options);
 
+		/// <param name="url">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>Creates a new <see cref="T:AVFoundation.AVUrlAsset" /> for the specified <paramref name="url" /> and <paramref name="options" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (url, options.GetDictionary ())")]
 		NativeHandle Constructor (NSUrl url, [NullAllowed] AVUrlAssetOptions options);
 
+		/// <param name="url">To be added.</param>
+		/// <summary>Creates a new <see cref="T:AVFoundation.AVUrlAsset" /> for the specified <paramref name="url" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (url, (NSDictionary) null!)")]
 		NativeHandle Constructor (NSUrl url);
 
@@ -10894,9 +11712,25 @@ namespace AVFoundation {
 	[BaseType (typeof (NSObject), Name = "AVMIDIPlayer")]
 	interface AVMidiPlayer {
 
+		/// <param name="contentsUrl">To be added.</param>
+		/// <param name="soundBankUrl">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="outError">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithContentsOfURL:soundBankURL:error:")]
 		NativeHandle Constructor (NSUrl contentsUrl, [NullAllowed] NSUrl soundBankUrl, out NSError outError);
 
+		/// <param name="data">To be added.</param>
+		/// <param name="sounddBankUrl">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="outError">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithData:soundBankURL:error:")]
 		NativeHandle Constructor (NSData data, [NullAllowed] NSUrl sounddBankUrl, out NSError outError);
 
@@ -10918,6 +11752,8 @@ namespace AVFoundation {
 		[Export ("currentPosition")]
 		double CurrentPosition { get; set; }
 
+		/// <summary>Prepares to play the sequence by executing pre-roll behaviors.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("prepareToPlay")]
 		void PrepareToPlay ();
 
@@ -10925,6 +11761,8 @@ namespace AVFoundation {
 		[Async]
 		void Play ([NullAllowed] Action completionHandler);
 
+		/// <summary>Stops playing the sequence.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("stop")]
 		void Stop ();
 	}
@@ -11505,6 +12343,9 @@ namespace AVFoundation {
 		[Field ("AVFragmentedMovieTrackSegmentsDidChangeNotification")]
 		NSString SegmentsDidChangeNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[Deprecated (PlatformName.MacOSX, 10, 11, message: "Use either 'AVFragmentedMovieTrackTimeRangeDidChangeNotification' or 'AVFragmentedMovieTrackSegmentsDidChangeNotification' instead. In either case, you can assume that the sender's 'TotalSampleDataLength' has changed.")]
 		[NoMacCatalyst]
@@ -11743,6 +12584,9 @@ namespace AVFoundation {
 		[Field ("AVErrorFileTypeKey")]
 		NSString FileType { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoTV]
 		[NoMacCatalyst]
@@ -12030,6 +12874,10 @@ namespace AVFoundation {
 		[Export ("initWithAsset:presetName:")]
 		NativeHandle Constructor (AVAsset asset, string presetName);
 
+		/// <param name="asset">To be added.</param>
+		/// <param name="preset">To be added.</param>
+		/// <summary>Creates an export session from an AVAsset and a preset.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (asset, preset.GetConstant ())")]
 		NativeHandle Constructor (AVAsset asset, AVAssetExportSessionPreset preset);
 
@@ -12986,10 +13834,16 @@ namespace AVFoundation {
 		[Field ("AVCaptureSessionPresetInputPriority")]
 		NSString PresetInputPriority { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoiOS, NoMacCatalyst, NoTV]
 		[Field ("AVCaptureSessionPreset320x240")]
 		NSString Preset320x240 { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoiOS, NoMacCatalyst, NoTV]
 		[Field ("AVCaptureSessionPreset960x540")]
 		NSString Preset960x540 { get; }
@@ -13323,6 +14177,9 @@ namespace AVFoundation {
 		[Export ("activeVideoStabilizationMode")]
 		AVCaptureVideoStabilizationMode ActiveVideoStabilizationMode { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Unavailable (PlatformName.MacCatalyst)]
 		[NoiOS]
 		[NoTV]
@@ -13568,6 +14425,9 @@ namespace AVFoundation {
 		[NullAllowed, Export ("audioSettings", ArgumentSemantic.Copy)]
 		NSDictionary WeakAudioSettings { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakAudioSettings")]
 		[NullAllowed]
 		AudioSettings AudioSettings { get; set; }
@@ -13895,6 +14755,11 @@ namespace AVFoundation {
 		[return: NullAllowed]
 		NSDictionary GetWeakRecommendedVideoSettings (string videoCodecType, string outputFileType);
 
+		/// <param name="videoCodecType">The codec to check.</param>
+		///         <param name="outputFileType">The output file type to check.</param>
+		///         <summary>Returns the recommended settings for the specified codec type and output file type.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (14, 0)]
 		[Wrap ("new AVPlayerItemVideoOutputSettings (GetWeakRecommendedVideoSettings (videoCodecType, outputFileType)!)")]
 		[return: NullAllowed]
@@ -13983,6 +14848,9 @@ namespace AVFoundation {
 		[NullAllowed]
 		NSDictionary WeakAudioSettings { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
 		[Wrap ("WeakAudioSettings")]
@@ -14933,6 +15801,10 @@ namespace AVFoundation {
 		[Export ("supportedPhotoCodecTypesForFileType:")]
 		NSString [] _GetSupportedPhotoCodecTypesForFileType (string fileType);
 
+		/// <param name="fileType">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (14, 0)]
 		[Wrap ("Array.ConvertAll (_GetSupportedPhotoCodecTypesForFileType (fileType), s => AVVideoCodecTypeExtensions.GetValue (s))")]
@@ -15474,6 +16346,10 @@ namespace AVFoundation {
 		[return: NullAllowed]
 		AVCaptureDevice GetDefaultDevice (NSString mediaType);
 
+		/// <param name="mediaType">The media type for which to get the default device.</param>
+		///         <summary>Returns the default device for the provided media type.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Wrap ("GetDefaultDevice (mediaType.GetConstant ()!)")]
@@ -15490,6 +16366,10 @@ namespace AVFoundation {
 		[Export ("hasMediaType:")]
 		bool HasMediaType (string mediaType);
 
+		/// <param name="mediaType">The media type to check.</param>
+		///         <summary>Whether the device can provide the <paramref name="mediaType" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("HasMediaType ((string) mediaType.GetConstant ())")]
 		bool HasMediaType (AVMediaTypes mediaType);
@@ -15774,6 +16654,10 @@ namespace AVFoundation {
 		bool FaceDrivenAutoFocusEnabled { [Bind ("isFaceDrivenAutoFocusEnabled")] get; set; }
 
 		// Either AVMediaTypeVideo or AVMediaTypeAudio.
+		/// <param name="mediaType">To be added.</param>
+		///         <param name="completion">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Wrap ("RequestAccessForMediaType (mediaType == AVAuthorizationMediaType.Video ? AVMediaTypes.Video.GetConstant ()! : AVMediaTypes.Audio.GetConstant ()!, completion)")]
@@ -15786,6 +16670,10 @@ namespace AVFoundation {
 		void RequestAccessForMediaType (NSString avMediaTypeToken, AVRequestAccessStatus completion);
 
 		// Calling this method with any media type other than AVMediaTypeVideo or AVMediaTypeAudio raises an exception.
+		/// <param name="mediaType">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Wrap ("GetAuthorizationStatus (mediaType == AVAuthorizationMediaType.Video ? AVMediaTypes.Video.GetConstant ()! : AVMediaTypes.Audio.GetConstant ()!)")]
@@ -15916,6 +16804,12 @@ namespace AVFoundation {
 		[Export ("defaultDeviceWithDeviceType:mediaType:position:")]
 		AVCaptureDevice _DefaultDeviceWithDeviceType (NSString deviceType, [NullAllowed] string mediaType, AVCaptureDevicePosition position);
 
+		/// <param name="deviceType">The device type to use for capture.</param>
+		///         <param name="mediaType">The media type for which to get the default device.</param>
+		///         <param name="position">Whether the device is front facing, back facing, or unspecified.</param>
+		///         <summary>Returns the default device for the provided device and media types and front or back facing position.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (14, 0)]
 		[Static]
 		[return: NullAllowed]
@@ -17087,6 +17981,10 @@ namespace AVFoundation {
 		[Export ("textStyleRuleWithTextMarkupAttributes:")]
 		AVTextStyleRule FromTextMarkupAttributes (NSDictionary textMarkupAttributes);
 
+		/// <param name="textMarkupAttributes">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Static]
 		[Wrap ("FromTextMarkupAttributes (textMarkupAttributes.GetDictionary ()!)")]
@@ -17098,6 +17996,14 @@ namespace AVFoundation {
 		[Export ("textStyleRuleWithTextMarkupAttributes:textSelector:")]
 		AVTextStyleRule FromTextMarkupAttributes (NSDictionary textMarkupAttributes, [NullAllowed] string textSelector);
 
+		/// <param name="textMarkupAttributes">To be added.</param>
+		///         <param name="textSelector">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Static]
 		[Wrap ("FromTextMarkupAttributes (textMarkupAttributes.GetDictionary ()!, textSelector)")]
@@ -17107,6 +18013,9 @@ namespace AVFoundation {
 		[Protected]
 		NativeHandle Constructor (NSDictionary textMarkupAttributes);
 
+		/// <param name="attributes">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (attributes.GetDictionary ()!)")]
 		NativeHandle Constructor (CMTextMarkupAttributes attributes);
 
@@ -17115,6 +18024,10 @@ namespace AVFoundation {
 		[Protected]
 		NativeHandle Constructor (NSDictionary textMarkupAttributes, [NullAllowed] string textSelector);
 
+		/// <param name="attributes">To be added.</param>
+		/// <param name="textSelector">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (attributes.GetDictionary ()!, textSelector)")]
 		NativeHandle Constructor (CMTextMarkupAttributes attributes, string textSelector);
 	}
@@ -17734,6 +18647,9 @@ namespace AVFoundation {
 		[Field ("AVVideoColorPrimaries_ITU_R_709_2")]
 		NSString Itu_R_709_2 { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoiOS, NoTV, NoMacCatalyst]
 		[Field ("AVVideoColorPrimaries_EBU_3213")]
 		NSString Ebu_3213 { get; }
@@ -17770,6 +18686,9 @@ namespace AVFoundation {
 		[Field ("AVVideoTransferFunction_ITU_R_709_2")]
 		NSString AVVideoTransferFunction_Itu_R_709_2 { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoiOS, NoTV, NoMacCatalyst]
 		[Obsolete ("Use 'Smpte_240M_1995' instead.")]
 		[Field ("AVVideoTransferFunction_SMPTE_240M_1995")]
@@ -17819,6 +18738,9 @@ namespace AVFoundation {
 		[Field ("AVVideoYCbCrMatrix_ITU_R_601_4")]
 		NSString Itu_R_601_4 { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoiOS, NoTV, NoMacCatalyst]
 		[Field ("AVVideoYCbCrMatrix_SMPTE_240M_1995")]
 		NSString Smpte_240M_1995 { get; }
@@ -18047,10 +18969,16 @@ namespace AVFoundation {
 		[Export ("initWithOutputSettings:")]
 		IntPtr _FromOutputSettings ([NullAllowed] NSDictionary outputSettings);
 
+		/// <param name="attributes">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Wrap ("this (attributes.GetDictionary (), AVPlayerItemVideoOutput.InitMode.PixelAttributes)")]
 		NativeHandle Constructor (CVPixelBufferAttributes attributes);
 
+		/// <param name="settings">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[MacCatalyst (13, 1)]
 		[Wrap ("this (settings.GetDictionary (), AVPlayerItemVideoOutput.InitMode.OutputSettings)")]
@@ -18066,6 +18994,11 @@ namespace AVFoundation {
 #endif
 
 #if !XAMCORE_5_0
+		/// <param name="itemTime">To be added.</param>
+		///         <param name="outItemTimeForDisplay">To be added.</param>
+		///         <summary>Returns an image and a specific time for the requested <paramref name="itemTime" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Sealed]
 #endif
 		[Export ("copyPixelBufferForItemTime:itemTimeForDisplay:")]
@@ -18467,6 +19400,9 @@ namespace AVFoundation {
 		[Export ("currentVideoFrameRate")]
 		float CurrentVideoFrameRate { get; } // defined as 'float'
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoTV]
 		[NoMacCatalyst]
@@ -19067,6 +20003,9 @@ namespace AVFoundation {
 	[BaseType (typeof (NSObject))]
 	interface AVSpeechSynthesisVoice : NSSecureCoding {
 
+		/// <summary>All available <see cref="T:AVFoundation.AVSpeechSynthesisVoice" />s.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static, Export ("speechVoices")]
 		AVSpeechSynthesisVoice [] GetSpeechVoices ();
 
@@ -19076,10 +20015,34 @@ namespace AVFoundation {
 		[Static, Export ("currentLanguageCode")]
 		string CurrentLanguageCode { get; }
 
+		/// <param name="language">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Retrieves a voice for a given BCP-47 tag plus locale identifier.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>
+		///           <para>This method can retrieve voices for a locale by passing a locale identifier as well as a language code, as shown in the following example, which speaks with an Australian accent:</para>
+		///           <example>
+		///             <code lang="csharp lang-csharp"><![CDATA[
+		/// var su = new AVSpeechUtterance("Once a jolly swagman camped by a billabong") {
+		///     Rate = 0.33f,
+		///     Voice = AVSpeechSynthesisVoice.FromLanguage("en-AU")
+		/// };
+		///               ]]></code>
+		///           </example>
+		///         </remarks>
 		[return: NullAllowed]
 		[Static, Export ("voiceWithLanguage:")]
 		AVSpeechSynthesisVoice FromLanguage ([NullAllowed] string language);
 
+		/// <param name="identifier">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[return: NullAllowed]
 		[Static, Export ("voiceWithIdentifier:")]
@@ -19144,9 +20107,17 @@ namespace AVFoundation {
 	[BaseType (typeof (NSObject))]
 	interface AVSpeechUtterance : NSCopying, NSSecureCoding {
 
+		/// <param name="speechString">To be added.</param>
+		///         <summary>Factory method to create an <see cref="T:AVFoundation.AVSpeechUtterance" /> for the <paramref name="speechString" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static, Export ("speechUtteranceWithString:")]
 		AVSpeechUtterance FromString (string speechString);
 
+		/// <param name="speechString">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("speechUtteranceWithAttributedString:")]
@@ -19294,6 +20265,9 @@ namespace AVFoundation {
 		[Export ("mixToTelephonyUplink")]
 		bool MixToTelephonyUplink { get; set; }
 
+		/// <param name="utterance">To be added.</param>
+		///         <summary>Begins synthesizing speech for, or enqueues for synthesis, the <paramref name="utterance" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("speakUtterance:")]
 		void SpeakUtterance (AVSpeechUtterance utterance);
 
@@ -19306,9 +20280,18 @@ namespace AVFoundation {
 		[Export ("writeUtterance:toBufferCallback:toMarkerCallback:")]
 		void WriteUtterance (AVSpeechUtterance utterance, AVSpeechSynthesizerBufferCallback bufferCallback, AVSpeechSynthesizerMarkerCallback markerCallback);
 
+		/// <param name="boundary">To be added.</param>
+		///         <summary>Stops speech playback, either immediately or after the current word.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("stopSpeakingAtBoundary:")]
 		bool StopSpeaking (AVSpeechBoundary boundary);
 
+		/// <param name="boundary">Whether to stop immediately or to complete the current word.</param>
+		///         <summary>Instructs speech synthesis to pause at the <paramref name="boundary" />.</summary>
+		///         <returns>
+		///           <see langword="true" /> if synthesis was paused successfully.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("pauseSpeakingAtBoundary:")]
 		bool PauseSpeaking (AVSpeechBoundary boundary);
 
@@ -19351,6 +20334,10 @@ namespace AVFoundation {
 	[BaseType (typeof (NSObject))]
 	[Protocol]
 	interface AVSpeechSynthesizerDelegate {
+		/// <param name="synthesizer">To be added.</param>
+		///         <param name="utterance">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("speechSynthesizer:didStartSpeechUtterance:")]
 #if XAMCORE_5_0
 		[EventArgs ("AVSpeechSynthesizerUtterance")]
@@ -19359,6 +20346,10 @@ namespace AVFoundation {
 #endif
 		void DidStartSpeechUtterance (AVSpeechSynthesizer synthesizer, AVSpeechUtterance utterance);
 
+		/// <param name="synthesizer">To be added.</param>
+		///         <param name="utterance">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("speechSynthesizer:didFinishSpeechUtterance:")]
 #if XAMCORE_5_0
 		[EventArgs ("AVSpeechSynthesizerUtterance")]
@@ -19367,6 +20358,10 @@ namespace AVFoundation {
 #endif
 		void DidFinishSpeechUtterance (AVSpeechSynthesizer synthesizer, AVSpeechUtterance utterance);
 
+		/// <param name="synthesizer">To be added.</param>
+		///         <param name="utterance">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("speechSynthesizer:didPauseSpeechUtterance:")]
 #if XAMCORE_5_0
 		[EventArgs ("AVSpeechSynthesizerUtterance")]
@@ -19375,6 +20370,10 @@ namespace AVFoundation {
 #endif
 		void DidPauseSpeechUtterance (AVSpeechSynthesizer synthesizer, AVSpeechUtterance utterance);
 
+		/// <param name="synthesizer">To be added.</param>
+		///         <param name="utterance">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("speechSynthesizer:didContinueSpeechUtterance:")]
 #if XAMCORE_5_0
 		[EventArgs ("AVSpeechSynthesizerUtterance")]
@@ -19383,6 +20382,10 @@ namespace AVFoundation {
 #endif
 		void DidContinueSpeechUtterance (AVSpeechSynthesizer synthesizer, AVSpeechUtterance utterance);
 
+		/// <param name="synthesizer">To be added.</param>
+		///         <param name="utterance">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("speechSynthesizer:didCancelSpeechUtterance:")]
 #if XAMCORE_5_0
 		[EventArgs ("AVSpeechSynthesizerUtterance")]
@@ -19391,6 +20394,11 @@ namespace AVFoundation {
 #endif
 		void DidCancelSpeechUtterance (AVSpeechSynthesizer synthesizer, AVSpeechUtterance utterance);
 
+		/// <param name="synthesizer">To be added.</param>
+		///         <param name="characterRange">To be added.</param>
+		///         <param name="utterance">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("speechSynthesizer:willSpeakRangeOfSpeechString:utterance:")]
 		[EventArgs ("AVSpeechSynthesizerWillSpeak")]
 #if XAMCORE_5_0
@@ -19759,12 +20767,27 @@ namespace AVFoundation {
 	[BaseType (typeof (NSObject))]
 	interface AVAudioSequencer {
 
+		/// <param name="engine">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithAudioEngine:")]
 		NativeHandle Constructor (AVAudioEngine engine);
 
+		/// <param name="fileUrl">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <param name="outError">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("loadFromURL:options:error:")]
 		bool Load (NSUrl fileUrl, AVMusicSequenceLoadOptions options, out NSError outError);
 
+		/// <param name="data">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <param name="outError">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("loadFromData:options:error:")]
 		bool Load (NSData data, AVMusicSequenceLoadOptions options, out NSError outError);
 
@@ -19774,9 +20797,17 @@ namespace AVFoundation {
 		[Export ("dataWithSMPTEResolution:error:")]
 		NSData GetData (nint smpteResolution, out NSError outError);
 
+		/// <param name="beats">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("secondsForBeats:")]
 		double GetSeconds (double beats);
 
+		/// <param name="seconds">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("beatsForSeconds:")]
 		double GetBeats (double seconds);
 
@@ -19819,18 +20850,36 @@ namespace AVFoundation {
 		[Export ("rate")]
 		float Rate { get; set; }
 
+		/// <param name="inBeats">To be added.</param>
+		///         <param name="outError">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("hostTimeForBeats:error:")]
 		ulong GetHostTime (double inBeats, out NSError outError);
 
+		/// <param name="inHostTime">To be added.</param>
+		///         <param name="outError">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("beatsForHostTime:error:")]
 		double GetBeats (ulong inHostTime, out NSError outError);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("prepareToPlay")]
 		void PrepareToPlay ();
 
+		/// <param name="outError">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("startAndReturnError:")]
 		bool Start (out NSError outError);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("stop")]
 		void Stop ();
 
@@ -20195,12 +21244,24 @@ namespace AVFoundation {
 		[Export ("sharedAudioUnitComponentManager")]
 		AVAudioUnitComponentManager SharedInstance { get; }
 
+		/// <param name="predicate">To be added.</param>
+		///         <summary>Finds all of the audio units that are matched by the specified predicate.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("componentsMatchingPredicate:")]
 		AVAudioUnitComponent [] GetComponents (NSPredicate predicate);
 
+		/// <param name="testHandler">To be added.</param>
+		///         <summary>Finds all of the audio units that are matched by the specified test handler.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("componentsPassingTest:")]
 		AVAudioUnitComponent [] GetComponents (AVAudioUnitComponentFilter testHandler);
 
+		/// <param name="desc">To be added.</param>
+		///         <summary>Finds all of the audio units that match the specified description.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("componentsMatchingDescription:")]
 		AVAudioUnitComponent [] GetComponents (AudioComponentDescription desc);
 
@@ -20369,6 +21430,11 @@ namespace AVFoundation {
 		[Export ("contentKeySessionWithKeySystem:storageDirectoryAtURL:")]
 		AVContentKeySession Create (NSString keySystem, NSUrl storageUrl);
 
+		/// <param name="keySystem">The key system for the session.</param>
+		///         <param name="storageUrl">The directory at which to store abnormal termination reports</param>
+		///         <summary>Creates a new session for the provided error storage URL and set of decryption keys.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Wrap ("Create (keySystem.GetConstant ()!, storageUrl)")]
 		AVContentKeySession Create (AVContentKeySystem keySystem, NSUrl storageUrl);
@@ -20419,6 +21485,11 @@ namespace AVFoundation {
 		[Export ("invalidatePersistableContentKey:options:completionHandler:")]
 		void InvalidatePersistableContentKey (NSData persistableContentKeyData, [NullAllowed] NSDictionary options, Action<NSData, NSError> handler);
 
+		/// <param name="persistableContentKeyData">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <param name="handler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Async]
 		[NoTV, NoMac]
 		[MacCatalyst (13, 1)]
@@ -20431,6 +21502,11 @@ namespace AVFoundation {
 		[Export ("invalidateAllPersistableContentKeysForApp:options:completionHandler:")]
 		void InvalidateAllPersistableContentKeys (NSData appIdentifier, [NullAllowed] NSDictionary options, Action<NSData, NSError> handler);
 
+		/// <param name="appIdentifier">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <param name="handler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Async]
 		[NoTV, NoMac]
 		[MacCatalyst (13, 1)]
@@ -20647,7 +21723,6 @@ namespace AVFoundation {
 	}
 
 	[MacCatalyst (13, 1)]
-	[DisableDefaultCtor]
 	[BaseType (typeof (NSObject))]
 	interface AVRouteDetector {
 		/// <summary>To be added.</summary>

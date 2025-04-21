@@ -23,6 +23,8 @@ using dispatch_queue_t = System.IntPtr;
 
 namespace CoreFoundation {
 
+	/// <summary>Memory pressure flags surfaced by the <see cref="T:CoreFoundation.DispatchSource.MemoryPressure" /> dispatch source.</summary>
+	///     <remarks>Determins the reason for invoking a memory pressure handler, or to configure the memory pressure handler.</remarks>
 	[Flags]
 	public enum MemoryPressureFlags {
 		/// <summary>The system memory pressure condition has returned to normal.</summary>
@@ -33,6 +35,8 @@ namespace CoreFoundation {
 		Critical = 4,
 	}
 
+	/// <summary>Enumerates process state transitions to monitor for <see cref="T:CoreFoundation.DispatchSource.ProcessMonitor" />.</summary>
+	///     <remarks>To be added.</remarks>
 	[Flags]
 	public enum ProcessMonitorFlags : uint {
 		/// <summary>To be added.</summary>
@@ -45,6 +49,8 @@ namespace CoreFoundation {
 		Signal = 0x08000000,
 	}
 
+	/// <summary>Type of Vnode monitoring operation to perform on a file.</summary>
+	///     <remarks>This enumeration is used with the <see cref="T:CoreFoundation.DispatchSource.VnodeMonitor" /> class.</remarks>
 	[Flags]
 	public enum VnodeMonitorKind : uint {
 		/// <summary>The file was removed from the file system due to the unlink(2) system call.</summary>
@@ -63,6 +69,7 @@ namespace CoreFoundation {
 		Revoke = 0x40,
 	}
 
+	/// <include file="../../docs/api/CoreFoundation/DispatchSource.xml" path="/Documentation/Docs[@DocId='T:CoreFoundation.DispatchSource']/*" />
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -250,6 +257,13 @@ namespace CoreFoundation {
 			}
 		}
 
+		/// <summary>Base class for dispatch sources that allow applications to trigger an event handler on the target queue.</summary>
+		///     <remarks>
+		///       <para>Applications can post data onto a <see cref="T:CoreFoundation.DispatchSource.Data" /> by calling the <see cref="M:CoreFoundation.DispatchSource.Data.MergeData(System.IntPtr)" /> method.   The data is surfaced is then available in to the handler in the <see cref="P:CoreFoundation.DispatchSource.Data.PendingData" /> property.   </para>
+		///       <para>
+		///       </para>
+		///       <para>If multiple calls to MergeData are done, the result surfaced by PendingData will depend on whether you created a <see cref="T:CoreFoundation.DispatchSource.DataAdd" /> which will add the values together or a <see cref="T:CoreFoundation.DispatchSource.DataOr" /> which will or the values together.</para>
+		///     </remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -283,6 +297,12 @@ namespace CoreFoundation {
 			}
 		}
 
+		/// <summary>Dispatch sources that allow applications to trigger an event handler on the target queue.</summary>
+		///     <remarks>
+		///       <para>Applications can post data onto a <see cref="T:CoreFoundation.DispatchSource.DataAdd" /> by calling the <see cref="M:CoreFoundation.DispatchSource.Data.MergeData(System.IntPtr)" /> method.   The data is surfaced is then available in to the handler in the <see cref="P:CoreFoundation.DispatchSource.Data.PendingData" /> property which will contain the cumulative addition of all the values posted with MergeData.</para>
+		///       <para>
+		///       </para>
+		///     </remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -319,6 +339,8 @@ namespace CoreFoundation {
 			}
 		}
 
+		/// <summary>Dispatch sources that allow applications to trigger an event handler on the target queue.</summary>
+		///     <remarks>Applications can post data onto a <see cref="T:CoreFoundation.DispatchSource.DataOr" /> by calling the <see cref="M:CoreFoundation.DispatchSource.Data.MergeData(System.IntPtr)" /> method.   The data is surfaced is then available in to the handler in the <see cref="P:CoreFoundation.DispatchSource.Data.PendingData" /> property which will contain the cumulative logical or of all the values posted with MergeData.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -354,6 +376,25 @@ namespace CoreFoundation {
 			}
 		}
 
+		/// <summary>Base class for dispatch sources that allow applications to monitor a Mach port.</summary>
+		///     <remarks>
+		///       <para>This is a base class that exposes the <see cref="P:CoreFoundation.DispatchSource.Mach.MachPort" /> property.   Use one of the subclasses to monitor a state changes in mach ports.</para>
+		///       <list type="bullet">
+		///         <item>
+		///           <term>
+		///             <see cref="T:CoreFoundation.DispatchSource.MachReceive" />
+		///             <para />
+		///           </term>
+		///         </item>
+		///         <item>
+		///           <term>
+		///             <see cref="T:CoreFoundation.DispatchSource.MachSend" />
+		///             <para />
+		///           </term>
+		///         </item>
+		///       </list>
+		///       <para />
+		///     </remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -374,6 +415,8 @@ namespace CoreFoundation {
 			}
 		}
 
+		/// <summary>Dispatch sources of this type monitors a mach port with a send right for state changes. </summary>
+		///     <remarks>You can use this DispatchSource to monitor both send right state changes as well as the destruction of the corresponding port’s receiver rights.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -422,6 +465,8 @@ namespace CoreFoundation {
 			}
 		}
 
+		/// <summary>Dispatch Sources of this type monitor a mach port with a receive right for state changes.  </summary>
+		///     <remarks>The event handler will be invoked on the target queue when a message on the mach port is waiting to be received.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -461,6 +506,7 @@ namespace CoreFoundation {
 		}
 
 
+		/// <include file="../../docs/api/CoreFoundation.DispatchSource/MemoryPressure.xml" path="/Documentation/Docs[@DocId='T:CoreFoundation.DispatchSource.MemoryPressure']/*" />
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -508,6 +554,8 @@ namespace CoreFoundation {
 			}
 		}
 
+		/// <summary>Dispatch Source of this type monitor processes for state changes</summary>
+		///     <remarks>This dispatch source can monitor processes terminating, forking, exceeding or being signaled.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -515,8 +563,22 @@ namespace CoreFoundation {
 		public class ProcessMonitor : DispatchSource {
 			static IntPtr type_proc;
 
+			/// <param name="handle">To be added.</param>
+			///         <param name="owns">To be added.</param>
+			///         <summary>To be added.</summary>
+			///         <remarks>To be added.</remarks>
 			public ProcessMonitor (IntPtr handle, bool owns) : base (handle, owns) { }
+			/// <param name="handle">To be added.</param>
+			///         <summary>To be added.</summary>
+			///         <remarks>To be added.</remarks>
 			public ProcessMonitor (IntPtr handle) : base (handle, false) { }
+			/// <param name="processId">The process ID to monitor.</param>
+			///         <param name="monitorKind">The kind of monitoring desired fo the specified process.</param>
+			///         <param name="queue">The target queue for this dispatch source object.   Pass null to use the default target queue (the default priority global concurrent queue).</param>
+			///         <summary>To be added.</summary>
+			///         <remarks>
+			///           <para />
+			///         </remarks>
 			public ProcessMonitor (int processId, ProcessMonitorFlags monitorKind = ProcessMonitorFlags.Exit, DispatchQueue? queue = null)
 			{
 
@@ -551,6 +613,7 @@ namespace CoreFoundation {
 			}
 		}
 
+		/// <include file="../../docs/api/CoreFoundation.DispatchSource/ReadMonitor.xml" path="/Documentation/Docs[@DocId='T:CoreFoundation.DispatchSource.ReadMonitor']/*" />
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -613,6 +676,11 @@ namespace CoreFoundation {
 			}
 		}
 
+		/// <summary>Sources of this type monitor signals delivered to the current process.</summary>
+		///     <remarks>
+		///       <para>Unlike signal handlers specified via sigaction(), the execution of the event handler block does not interrupt the current thread of execution; therefore the handler block is not limited to the use of signal safe interfaces defined in sigaction(2).  Furthermore, multiple observers of a given signal are supported; thus allowing applications and libraries to cooperate safely. However, a dispatch source does not install a signal handler or otherwise alter the behavior of signal delivery.  Therefore, applications must ignore or at least catch any signal that terminates a process by default. </para>
+		///       <para />
+		///     </remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -667,6 +735,7 @@ namespace CoreFoundation {
 			}
 		}
 
+		/// <include file="../../docs/api/CoreFoundation.DispatchSource/Timer.xml" path="/Documentation/Docs[@DocId='T:CoreFoundation.DispatchSource.Timer']/*" />
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -734,6 +803,7 @@ namespace CoreFoundation {
 			}
 		}
 
+		/// <include file="../../docs/api/CoreFoundation.DispatchSource/VnodeMonitor.xml" path="/Documentation/Docs[@DocId='T:CoreFoundation.DispatchSource.VnodeMonitor']/*" />
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -781,6 +851,11 @@ namespace CoreFoundation {
 			[DllImport (Constants.libcLibrary)]
 			internal extern static int close (int fd);
 
+			/// <param name="path">Path to a file to monitor.</param>
+			///         <param name="vnodeKind">The kind of monitoring to perform.</param>
+			///         <param name="queue">The target queue for this dispatch source object.   Pass null to use the default target queue (the default priority global concurrent queue).</param>
+			///         <summary>Creates a VNode monitor for the specified file path to monitor the specified set of events on it.</summary>
+			///         <remarks>To be added.</remarks>
 			public VnodeMonitor (string path, VnodeMonitorKind vnodeKind, DispatchQueue? queue = null)
 			{
 				if (path is null)
@@ -803,6 +878,9 @@ namespace CoreFoundation {
 					InitializeHandle (handle);
 			}
 
+			/// <param name="disposing">To be added.</param>
+			///         <summary>To be added.</summary>
+			///         <remarks>To be added.</remarks>
 			protected override void Dispose (bool disposing)
 			{
 				if (fd != -1) {
@@ -832,6 +910,7 @@ namespace CoreFoundation {
 
 		}
 
+		/// <include file="../../docs/api/CoreFoundation.DispatchSource/WriteMonitor.xml" path="/Documentation/Docs[@DocId='T:CoreFoundation.DispatchSource.WriteMonitor']/*" />
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -848,6 +927,10 @@ namespace CoreFoundation {
 			///         <remarks>To be added.</remarks>
 			public WriteMonitor (IntPtr handle) : base (handle, false) { }
 
+			/// <param name="fileDescriptor">To be added.</param>
+			///         <param name="queue">The target queue for this dispatch source object.   Pass null to use the default target queue (the default priority global concurrent queue).</param>
+			///         <summary>Creates a file descriptor monitor that invokes the event handler when writing to the file descriptor wont block.</summary>
+			///         <remarks>To be added.</remarks>
 			public WriteMonitor (int fileDescriptor, DispatchQueue? queue = null)
 			{
 				if (type_write == IntPtr.Zero)

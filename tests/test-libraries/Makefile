@@ -342,6 +342,16 @@ all-local:: .libs/$(1).xcframework
 endef
 $(foreach testFramework,$(TEST_FRAMEWORKS),$(eval $(call TestFrameworkXCFramework,$(testFramework))))
 
+define TestFrameworkXCFrameworkPlatformSpecific
+$(1)_$(2)_XCFRAMEWORKS += $$(foreach xcframeworkPlatform,$$(XCFRAMEWORK_$(2)_PLATFORMS),.libs/$$(xcframeworkPlatform)/$(1).framework)
+$(1)_$(2)_XCTARGETS += $$(foreach xcframeworkPlatform,$$(XCFRAMEWORK_$(2)_PLATFORMS),.libs/$$(xcframeworkPlatform)/$(1).framework.stamp)
+.libs/$(3)/$(1).xcframework: $$($(1)_$(2)_XCTARGETS) Makefile
+	$$(Q) rm -rf $$@
+	$$(Q_GEN) $$(XCODE_DEVELOPER_ROOT)/usr/bin/xcodebuild -quiet -create-xcframework $$(foreach fw,$$($(1)_$(2)_XCFRAMEWORKS),-framework $$(fw)) -output $$@
+all-local:: .libs/$(3)/$(1).xcframework
+endef
+$(foreach platform,$(DOTNET_PLATFORMS),$(foreach testFramework,$(TEST_FRAMEWORKS),$(eval $(call TestFrameworkXCFrameworkPlatformSpecific,$(testFramework),$(platform),$(shell echo $(platform) | tr 'A-Z' 'a-z')))))
+
 # create an xcframework of libraries
 define TestLibraryXCFramework
 $(1)_XCFRAMEWORKS += $$(foreach xcframeworkPlatform,$$(XCFRAMEWORK_PLATFORMS),.libs/$$(xcframeworkPlatform)/$(1).a)
@@ -359,10 +369,16 @@ define ZippedXcframework
 	$$(Q_ZIP) cd .libs && $(ZIP) -r "$$(notdir $$@)" "$$(notdir $$<)"
 all-local:: .libs/$(1).xcframework.zip
 endef
-#$(foreach testFramework,$(TEST_FRAMEWORKS),$(call ZippedXcframework,$(testFramework)))
 $(foreach testFramework,$(TEST_FRAMEWORKS),$(eval $(call ZippedXcframework,$(testFramework))))
 $(eval $(call ZippedXcframework,libtest))
 $(eval $(call ZippedXcframework,libtest2))
+
+define ZippedXcframeworkPlatformSpecific
+.libs/$(3)/$(1).xcframework.zip: .libs/$(3)/$(1).xcframework
+	$$(Q_ZIP) cd .libs/$(3) && $(ZIP) -r "$$(notdir $$@)" "$$(notdir $$<)"
+all-local:: .libs/$(3)/$(1).xcframework.zip
+endef
+$(foreach platform,$(DOTNET_PLATFORMS),$(foreach testFramework,$(TEST_FRAMEWORKS),$(eval $(call ZippedXcframeworkPlatformSpecific,$(testFramework),$(platform),$(shell echo $(platform) | tr 'A-Z' 'a-z')))))
 
 include $(TOP)/mk/rules.mk
 

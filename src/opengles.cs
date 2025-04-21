@@ -50,13 +50,27 @@ namespace OpenGLES {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // init now marked with NS_UNAVAILABLE
 	interface EAGLContext {
+		/// <param name="api">To be added.</param>
+		/// <summary>Creates a new EAGL context that supports the specified rendering API.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithAPI:")]
 		NativeHandle Constructor (EAGLRenderingAPI api);
 
+		/// <param name="api">To be added.</param>
+		/// <param name="sharegroup">To be added.</param>
+		/// <summary>Creates a new EAGL context in the specified share group and that supports the specified rendering API.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithAPI:sharegroup:")]
 		NativeHandle Constructor (EAGLRenderingAPI api, EAGLSharegroup sharegroup);
 
+		/// <param name="context">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Makes the supplied <paramref name="context" /> the context that contains the OpenGL ES state.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static, Export ("setCurrentContext:")]
 		bool SetCurrentContext ([NullAllowed] EAGLContext context);
 

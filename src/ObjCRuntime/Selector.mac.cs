@@ -28,6 +28,9 @@ using System;
 using System.Runtime.InteropServices;
 
 namespace ObjCRuntime {
+	/// <summary>Represents an Objective-C selector in managed code.</summary>
+	///     <remarks>
+	///     </remarks>
 	public partial class Selector {
 		internal static readonly IntPtr Init = Selector.GetHandle ("init");
 		internal static readonly IntPtr InitWithCoder = Selector.GetHandle ("initWithCoder:");

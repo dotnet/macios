@@ -1,0 +1,41 @@
+<Documentation>
+  <Docs DocId="T:AddressBook.ABPersonAddressKey">
+    <summary>
+      <see cref="T:Foundation.NSDictionary" /> keys for use
+      with <see cref="T:AddressBook.ABPerson" /> addresses.
+    </summary>
+    <remarks>
+      <para>
+        A single <see cref="T:Foundation.NSDictionary" /> instance
+        stores a single address, with the dictionary keys and values holding
+        different parts of the address:
+      </para>
+      <code lang="csharp lang-csharp"><![CDATA[// Address from: https://en.wikipedia.org/wiki/Address_(geography)#United_States
+NSDictionary address = NSDictionary.FromObjectsAndKeys(
+    new NSObject[]{
+        new NSString("455 Larkspur Dr."),
+        new NSString("California Springs"),
+        new NSString("CA"),
+        new NSString("92926"),
+        new NSString("USA"),
+        new NSString("us"),
+    },
+    new NSObject[]{
+        ABPersonAddressKey.Street,
+        ABPersonAddressKey.City,
+        ABPersonAddressKey.State,
+        ABPersonAddressKey.Zip,
+        ABPersonAddressKey.Country,
+        ABPersonAddressKey.CountryCode,
+    }
+);
+ABMutableDictionaryMultiValue addresses = new ABMutableDictionaryMultiValue() {
+  { address, ABLabel.Home },
+};
+ABPerson person = GetMeSomePerson();
+person.SetAddresses(addresses);]]></code>
+    </remarks>
+    <altmember cref="M:AddressBook.ABPerson.GetAddresses" />
+    <altmember cref="M:AddressBook.ABPerson.SetAddresses(AddressBook.ABMultiValue{Foundation.NSDictionary})" />
+  </Docs>
+</Documentation>

@@ -35,6 +35,9 @@ using AudioToolbox;
 #nullable enable
 
 namespace AVFoundation {
+	/// <summary>Manages audio settings for players and recorders.</summary>
+	///     <remarks>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

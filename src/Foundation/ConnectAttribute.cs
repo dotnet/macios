@@ -26,6 +26,17 @@ using System;
 
 namespace Foundation {
 
+	/// <summary>Exposes a property as an Interface Builder Outlet.</summary>
+	///     <remarks>
+	///       <para>
+	/// 	This property must be applied to properties that represent an
+	/// 	Interface Builder Outlet on a XIB file to properly support
+	/// 	loading XIB files.  The name of the property must match the
+	/// 	name of the outlet declared in Interface Builder.
+	///       </para>
+	///       <para>
+	/// 	This attribute and the property that it is applied to are automatically added by Xamarin Studio to any outlets in use that have been exposed in a class.</para>
+	///     </remarks>
 	[AttributeUsage (AttributeTargets.Property)]
 	public sealed class ConnectAttribute : Attribute {
 		string? name;

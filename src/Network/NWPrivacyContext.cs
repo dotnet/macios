@@ -9,32 +9,18 @@ using OS_nw_privacy_context = System.IntPtr;
 using OS_nw_resolver_config = System.IntPtr;
 using OS_nw_proxy_config = System.IntPtr;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace Network {
-#if NET
 	[SupportedOSPlatform ("tvos15.0")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios15.0")]
 	[SupportedOSPlatform ("maccatalyst")]
-#else
-	[TV (15, 0)]
-	[iOS (15, 0)]
-	[MacCatalyst (15, 0)]
-#endif
 	public class NWPrivacyContext : NativeObject {
 
 		public static NWPrivacyContext Default =>
 			new NWPrivacyContext (NWPrivacyContextConstants._DefaultContext, false);
 
 		[Preserve (Conditional = true)]
-#if NET
 		internal NWPrivacyContext (NativeHandle handle, bool owns) : base (handle, owns) { }
-#else
-		public NWPrivacyContext (NativeHandle handle, bool owns) : base (handle, owns) { }
-#endif
 
 		[DllImport (Constants.NetworkLibrary)]
 		static extern unsafe OS_nw_privacy_context nw_privacy_context_create (IntPtr description);
@@ -70,25 +56,17 @@ namespace Network {
 			GC.KeepAlive (fallbackResolverConfig);
 		}
 
-#if NET
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("macos14.0")]
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
-#else
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
-#endif
 		[DllImport (Constants.NetworkLibrary)]
 		static extern void nw_privacy_context_add_proxy (OS_nw_privacy_context privacy_context, OS_nw_proxy_config proxy_config);
 
-#if NET
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("macos14.0")]
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
-#else
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
-#endif
 		public void AddProxy (NWProxyConfig proxyConfig)
 		{
 			if (proxyConfig is null)
@@ -97,25 +75,17 @@ namespace Network {
 			GC.KeepAlive (proxyConfig);
 		}
 
-#if NET
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("macos14.0")]
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
-#else
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
-#endif
 		[DllImport (Constants.NetworkLibrary)]
 		static extern void nw_privacy_context_clear_proxies (OS_nw_privacy_context privacy_context);
 
-#if NET
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("macos14.0")]
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
-#else
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
-#endif
 		public void ClearProxies ()
 		{
 			nw_privacy_context_clear_proxies (GetCheckedHandle ());

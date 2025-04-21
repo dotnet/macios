@@ -26,19 +26,19 @@
     <altmember cref="T:AddressBook.ABMutableStringMultiValue" />
   </Docs>
   <Docs DocId="M:AddressBook.ABMultiValue`1.GetIndexForIdentifier(System.Int32)">
-        <param name="identifier">
+    <param name="identifier">
           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Int%2032&amp;scope=Xamarin" title="T:System.Int32">T:System.Int32</a></format> containing the
           <see cref="P:AddressBook.ABMultiValueEntry`1.Identifier" />
           to lookup.
         </param>
-        <summary>
+    <summary>
           Gets the index within this collection of the
           <see cref="T:AddressBook.ABMultiValueEntry`1" />
           entry having an
           <see cref="P:AddressBook.ABMultiValueEntry`1.Identifier" />
           value equal to <paramref name="identifier" />.
         </summary>
-        <returns>
+    <returns>
           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Int%2032&amp;scope=Xamarin" title="T:System.Int32">T:System.Int32</a></format> containing the index within
           the collection of the
           <see cref="T:AddressBook.ABMultiValueEntry`1" />
@@ -46,7 +46,62 @@
           <see cref="P:AddressBook.ABMultiValueEntry`1.Identifier" />
           value equal to <paramref name="identifier" />.
         </returns>
-        <remarks>
-        </remarks>
-      </Docs>
+    <remarks>
+    </remarks>
+  </Docs>
+  <Docs DocId="T:AddressBook.ABMultiValue`1">
+    <typeparam name="T">
+      The type of value stored in the <c>ABMultiValue&lt;T&gt;</c> collection.
+    </typeparam>
+    <summary>
+      A collection of
+      <see cref="T:AddressBook.ABMultiValueEntry`1" /> entries.
+    </summary>
+    <remarks>
+      <para>
+        <c>ABMultiValue&lt;T&gt;</c> instances are used for
+        <see cref="T:AddressBook.ABPerson" /> properties which
+        are collections of values of the same type.  For example,
+        <see cref="M:AddressBook.ABPerson.GetPhones" /> returns
+        a <c>ABMultiValue&lt;string&gt;</c> containing phone numbers.
+      </para>
+      <para>
+        A <c>ABMultiValue&lt;T&gt;</c> is a collection of
+        <see cref="T:AddressBook.ABMultiValueEntry`1" /> entries,
+        where each entry contains a
+        <see cref="P:AddressBook.ABMultiValueEntry`1.Value" />,
+        <see cref="P:AddressBook.ABMultiValueEntry`1.Label" />,
+        and
+        <see cref="P:AddressBook.ABMultiValueEntry`1.Identifier" />.
+      </para>
+      <para>
+        Supported operations include:
+      </para>
+      <list type="bullet">
+        <item>
+          <term>
+            Getting values, labels, and identifiers:
+            <see cref="P:AddressBook.ABMultiValue`1.Count" />,
+            <see cref="M:AddressBook.ABMultiValue`1.System#Collections#IEnumerable#GetEnumerator" />,
+            <see cref="M:AddressBook.ABMultiValue`1.GetFirstIndexOfValue(Foundation.NSObject)" />,
+            <see cref="M:AddressBook.ABMultiValue`1.GetIndexForIdentifier(System.Int32)" />,
+            <see cref="M:AddressBook.ABMultiValue`1.GetValues" />,
+            <see cref="P:AddressBook.ABMultiValue`1.Item(System.nint)" />.
+          </term>
+        </item>
+        <item>
+          <term>
+            Getting Property Information:
+            <see cref="P:AddressBook.ABMultiValue`1.PropertyType" />.
+          </term>
+        </item>
+        <item>
+          <term>
+            Changing properties:
+            <see cref="M:AddressBook.ABMultiValue`1.ToMutableMultiValue" />.
+          </term>
+        </item>
+      </list>
+    </remarks>
+  </Docs>
 </Documentation>

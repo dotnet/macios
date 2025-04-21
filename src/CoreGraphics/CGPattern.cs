@@ -39,6 +39,8 @@ using Foundation;
 namespace CoreGraphics {
 
 	// untyped enum -> CGPattern.h
+	/// <summary>Pattern styling style.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum CGPatternTiling {
 		/// <summary>No distortion.</summary>
 		NoDistortion,
@@ -60,6 +62,10 @@ namespace CoreGraphics {
 	}
 
 
+	/// <summary>A pattern to draw in a CGContext.</summary>
+	///     <remarks>To be added.</remarks>
+	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/Drawing/">Example_Drawing</related>
+	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/QuartzSample/">QuartzSample</related>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -77,6 +83,9 @@ namespace CoreGraphics {
 		protected internal override void Release () => CGPatternRelease (Handle);
 
 		// This is what we expose on the API
+		/// <param name="ctx">The CGContext on which the pattern is being drawn.</param>
+		///     <summary>Callback signature used to draw patterns on the screen.</summary>
+		///     <remarks>This is the delegate that is passed to the CGPattern method.</remarks>
 		public delegate void DrawPattern (CGContext ctx);
 
 		[DllImport (Constants.CoreGraphicsLibrary)]

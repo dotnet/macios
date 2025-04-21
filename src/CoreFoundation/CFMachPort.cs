@@ -35,6 +35,14 @@ namespace CoreFoundation {
 	delegate void CFMachPortCallBack (IntPtr cfMachPort, IntPtr msg, IntPtr size, IntPtr info);
 #endif
 
+	/// <summary>Basic access to the underlying operating system Mach Port and integration with run loops.</summary>
+	///     <remarks>
+	///       <para>
+	/// 	The main use is to integrate Mach Ports into a <see cref="T:CoreFoundation.CFRunLoop" />.  Use the <see cref="M:CoreFoundation.CFMachPort.CreateRunLoopSource" />
+	/// 	to create a <see cref="T:CoreFoundation.CFRunLoopSource" /> that can
+	/// 	then be added into the <see cref="T:CoreFoundation.CFRunLoop" />.
+	///       </para>
+	///     </remarks>
 	public class CFMachPort : NativeObject {
 		delegate void CFMachPortCallBack (IntPtr cfmachport, IntPtr msg, nint len, IntPtr context);
 

@@ -24,6 +24,10 @@ namespace UIKit {
 
 	partial class UIImage {
 #if IOS
+		/// <param name="image">The image saved.</param>
+		///     <param name="error">Errors, if any.</param>
+		///     <summary>A delegate signature for getting a notification when the file has been saved.</summary>
+		///     <remarks>To be added.</remarks>
 		public delegate void SaveStatus (UIImage image, NSError error);
 
 		[DllImport (Constants.UIKitLibrary)]

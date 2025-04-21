@@ -575,6 +575,72 @@ namespace NS {
 				}
 			];
 
+			const string returnTypeForceTypeAttribute = @"
+using System;
+using Foundation;
+using ObjCBindings;
+
+namespace NS {
+	public class MyClass {
+		[return: ForcedType]
+		public int MyMethod () {}
+	}
+}
+";
+
+			yield return [
+				returnTypeForceTypeAttribute,
+				new Method (
+					type: "NS.MyClass",
+					name: "MyMethod",
+					returnType: ReturnTypeForInt (),
+					symbolAvailability: new (),
+					exportMethodData: new (),
+					attributes: [
+						new ("ObjCBindings.ForcedTypeAttribute"),
+					],
+					modifiers: [
+						SyntaxFactory.Token (SyntaxKind.PublicKeyword),
+					],
+					parameters: []
+				) {
+					ForcedType = new (),
+				}
+			];
+
+			const string returnTypeForceTypeOwnsAttribute = @"
+using System;
+using Foundation;
+using ObjCBindings;
+
+namespace NS {
+	public class MyClass {
+		[return: ForcedType (true)]
+		public int MyMethod () {}
+	}
+}
+";
+
+			yield return [
+				returnTypeForceTypeOwnsAttribute,
+				new Method (
+					type: "NS.MyClass",
+					name: "MyMethod",
+					returnType: ReturnTypeForInt (),
+					symbolAvailability: new (),
+					exportMethodData: new (),
+					attributes: [
+						new ("ObjCBindings.ForcedTypeAttribute", ["true"]),
+					],
+					modifiers: [
+						SyntaxFactory.Token (SyntaxKind.PublicKeyword),
+					],
+					parameters: []
+				) {
+					ForcedType = new (true),
+				}
+			];
+
 			const string parameterBindFromAttr = @"
 using System;
 using Foundation;
@@ -606,6 +672,78 @@ namespace NS {
 								new ("ObjCBindings.BindFromAttribute", ["Foundation.NSNumber"]),
 							],
 							BindAs = new (ReturnTypeForNSObject ("Foundation.NSNumber")),
+						}
+					]
+				)
+			];
+
+			const string parameterForceTypeAttr = @"
+using System;
+using Foundation;
+using ObjCBindings;
+
+namespace NS {
+	public class MyClass {
+		public void MyMethod ([ForcedType] int value) {}
+	}
+}
+";
+
+			yield return [
+				parameterForceTypeAttr,
+				new Method (
+					type: "NS.MyClass",
+					name: "MyMethod",
+					returnType: ReturnTypeForVoid (),
+					symbolAvailability: new (),
+					exportMethodData: new (),
+					attributes: [
+					],
+					modifiers: [
+						SyntaxFactory.Token (SyntaxKind.PublicKeyword),
+					],
+					parameters: [
+						new (0, ReturnTypeForInt (), "value") {
+							Attributes = [
+								new ("ObjCBindings.ForcedTypeAttribute"),
+							],
+							ForcedType = new (),
+						}
+					]
+				)
+			];
+
+			const string parameterForceTypeOwnsAttr = @"
+using System;
+using Foundation;
+using ObjCBindings;
+
+namespace NS {
+	public class MyClass {
+		public void MyMethod ([ForcedType (true)] int value) {}
+	}
+}
+";
+
+			yield return [
+				parameterForceTypeOwnsAttr,
+				new Method (
+					type: "NS.MyClass",
+					name: "MyMethod",
+					returnType: ReturnTypeForVoid (),
+					symbolAvailability: new (),
+					exportMethodData: new (),
+					attributes: [
+					],
+					modifiers: [
+						SyntaxFactory.Token (SyntaxKind.PublicKeyword),
+					],
+					parameters: [
+						new (0, ReturnTypeForInt (), "value") {
+							Attributes = [
+								new ("ObjCBindings.ForcedTypeAttribute", ["true"]),
+							],
+							ForcedType = new (true),
 						}
 					]
 				)

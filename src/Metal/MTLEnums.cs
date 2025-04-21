@@ -842,16 +842,6 @@ namespace Metal {
 		FileNotFound,
 	}
 
-#if !NET // this enum/error was removed from the headers a few years ago (the macOS 10.12 SDK has it, the 10.13 SDK doesn't)
-	[Native]
-	[ErrorDomain ("MTLRenderPipelineErrorDomain")]
-	public enum MTLRenderPipelineError : ulong {
-		Internal = 1,
-		Unsupported,
-		InvalidInput,
-	}
-#endif
-
 	/// <summary>Holds a comparison test. When the comparison test passes, the incoming fragment is compared to the stored data at the specified location.</summary>
 	[Native]
 	public enum MTLCompareFunction : ulong {
@@ -994,10 +984,6 @@ namespace Metal {
 		ShaderWrite = 0x0002,
 		/// <summary>A value that indicates that the texture will be used as a color, depth, or stencil render target in a rendering pass.</summary>
 		RenderTarget = 0x0004,
-#if !NET
-		[Obsolete ("This option is unavailable.")]
-		Blit = 0x0008,
-#endif
 		/// <summary>A value that indicates that the texture will be used for creating new textures.</summary>
 		PixelFormatView = 0x0010,
 

@@ -30,6 +30,7 @@ using NativeHandle = System.IntPtr;
 #endif
 
 namespace ObjCRuntime {
+	/// <include file="../../docs/api/ObjCRuntime/Class.xml" path="/Documentation/Docs[@DocId='T:ObjCRuntime.Class']/*" />
 	public partial class Class : INativeObject
 #if !COREBUILD
 	, IEquatable<Class>
@@ -261,6 +262,11 @@ namespace ObjCRuntime {
 			return Messaging.IntPtr_objc_msgSend (obj, Selector.GetHandle (Selector.Class));
 		}
 
+		/// <param name="class">The Objective-C class.</param>
+		///         <summary>This method looks up the managed type for a given Objective-C class.</summary>
+		///         <returns>The managed type for the specified Objective-C class.</returns>
+		///         <remarks>
+		///         </remarks>
 		public static Type? Lookup (Class? @class)
 		{
 			if (@class is null)

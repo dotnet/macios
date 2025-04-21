@@ -20,6 +20,7 @@ using NativeHandle = System.IntPtr;
 #endif
 
 namespace UIKit {
+	/// <include file="../../docs/api/UIKit/UIFontFeature.xml" path="/Documentation/Docs[@DocId='T:UIKit.UIFontFeature']/*" />
 	public class UIFontFeature : INativeObject {
 		static NSObject [] keys = new NSObject [] { UIFontDescriptor.UIFontFeatureTypeIdentifierKey, UIFontDescriptor.UIFontFeatureSelectorIdentifierKey };
 

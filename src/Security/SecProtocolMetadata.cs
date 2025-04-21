@@ -25,6 +25,8 @@ using NativeHandle = System.IntPtr;
 
 namespace Security {
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
@@ -163,6 +165,11 @@ namespace Security {
 		[DllImport (Constants.SecurityLibrary)]
 		extern static byte sec_protocol_metadata_challenge_parameters_are_equal (IntPtr metadataA, IntPtr metadataB);
 
+		/// <param name="metadataA">To be added.</param>
+		///         <param name="metadataB">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static bool ChallengeParametersAreEqual (SecProtocolMetadata metadataA, SecProtocolMetadata metadataB)
 		{
 			if (metadataA is null)
@@ -178,6 +185,11 @@ namespace Security {
 		[DllImport (Constants.SecurityLibrary)]
 		extern static byte sec_protocol_metadata_peers_are_equal (IntPtr metadataA, IntPtr metadataB);
 
+		/// <param name="metadataA">To be added.</param>
+		///         <param name="metadataB">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static bool PeersAreEqual (SecProtocolMetadata metadataA, SecProtocolMetadata metadataB)
 		{
 			if (metadataA is null)
@@ -210,6 +222,9 @@ namespace Security {
 		[DllImport (Constants.SecurityLibrary)]
 		unsafe static extern byte sec_protocol_metadata_access_distinguished_names (IntPtr handle, BlockLiteral* callback);
 
+		/// <param name="callback">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void SetDistinguishedNamesForPeerHandler (Action<DispatchData> callback)
 		{
@@ -249,6 +264,9 @@ namespace Security {
 		[DllImport (Constants.SecurityLibrary)]
 		unsafe static extern byte sec_protocol_metadata_access_ocsp_response (IntPtr handle, BlockLiteral* callback);
 
+		/// <param name="callback">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void SetOcspResponseForPeerHandler (Action<DispatchData> callback)
 		{
@@ -288,6 +306,9 @@ namespace Security {
 		[DllImport (Constants.SecurityLibrary)]
 		unsafe static extern byte sec_protocol_metadata_access_peer_certificate_chain (IntPtr handle, BlockLiteral* callback);
 
+		/// <param name="callback">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void SetCertificateChainForPeerHandler (Action<SecCertificate> callback)
 		{
@@ -326,6 +347,9 @@ namespace Security {
 		[DllImport (Constants.SecurityLibrary)]
 		unsafe static extern byte sec_protocol_metadata_access_supported_signature_algorithms (IntPtr handle, BlockLiteral* callback);
 
+		/// <param name="callback">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void SetSignatureAlgorithmsForPeerHandler (Action<ushort> callback)
 		{

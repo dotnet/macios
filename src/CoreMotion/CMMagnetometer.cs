@@ -15,6 +15,8 @@ namespace CoreMotion {
 
 	// CMMagnetometer.h
 #if NET
+	/// <summary>Represents the 3-axis magnetometer data in microteslas.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]

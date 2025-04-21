@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.Macios.Generator.Attributes;
 using Microsoft.Macios.Generator.Extensions;
 
 namespace Microsoft.Macios.Generator.DataModel;
@@ -89,6 +90,8 @@ readonly partial struct Parameter : IEquatable<Parameter> {
 			return false;
 		if (BindAs != other.BindAs)
 			return false;
+		if (ForcedType != other.ForcedType)
+			return false;
 		if (Type.Delegate != other.Type.Delegate)
 			return false;
 
@@ -144,6 +147,7 @@ readonly partial struct Parameter : IEquatable<Parameter> {
 		sb.Append ($"DefaultValue: {DefaultValue}, ");
 		sb.Append ($"ReferenceKind: {ReferenceKind}, ");
 		sb.Append ($"BindAs: {BindAs?.ToString () ?? "null"}, ");
+		sb.Append ($"ForcedType: {ForcedType?.ToString () ?? "null"}, ");
 		sb.Append ($"Delegate: {Type.Delegate?.ToString () ?? "null"} }}");
 		return sb.ToString ();
 	}

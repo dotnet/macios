@@ -718,12 +718,20 @@ namespace CarPlay {
 	interface CPListSection : NSSecureCoding {
 
 #if !XAMCORE_5_0
+		/// <param name="items">To be added.</param>
+		/// <param name="header">To be added.</param>
+		/// <param name="sectionIndexTitle">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("base (true ? throw new InvalidOperationException (Constants.BrokenBinding) : NSObjectFlag.Empty)")]
 		[Obsolete ("Use '.ctor (ICPListTemplateItem [], string, string)' constructor instead. Warning: this will throw InvalidOperationException at runtime.")]
 		NativeHandle Constructor (CPListItem [] items, [NullAllowed] string header, [NullAllowed] string sectionIndexTitle);
 #endif
 
 #if !XAMCORE_5_0
+		/// <param name="items">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("base (true ? throw new InvalidOperationException (Constants.BrokenBinding) : NSObjectFlag.Empty)")]
 		[Obsolete ("Use '.ctor (ICPListTemplateItem [], string, string)' constructor instead. Warning: this will throw InvalidOperationException at runtime.")]
 		NativeHandle Constructor (CPListItem [] items);
@@ -1576,6 +1584,9 @@ namespace CarPlay {
 	[BaseType (typeof (UIWindow))]
 	interface CPWindow {
 
+		/// <param name="frame">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect frame);
 

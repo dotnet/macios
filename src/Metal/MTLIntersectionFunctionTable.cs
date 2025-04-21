@@ -7,24 +7,15 @@ using ObjCRuntime;
 #nullable enable
 
 namespace Metal {
-
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
-#endif
 	// add some extension methods to make the API of the protocol nicer
 	public static class MTLIntersectionFunctionTableExtensions {
-
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios14.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]
-#else
-		[iOS (14, 0)]
-		[NoTV]
-#endif
 		public static void SetBuffers (this IMTLIntersectionFunctionTable table, IMTLBuffer [] buffers, nuint [] offsets, NSRange range)
 		{
 			if (buffers is null)

@@ -38,6 +38,7 @@ namespace ObjCRuntime {
 	//
 	// CAScroll is a NSString backed enum, we will fetch the right NSString value and handle the type conversion.
 	//
+	/// <include file="../../docs/api/ObjCRuntime/BindAsAttribute.xml" path="/Documentation/Docs[@DocId='T:ObjCRuntime.BindAsAttribute']/*" />
 	[AttributeUsage (AttributeTargets.ReturnValue | AttributeTargets.Property | AttributeTargets.Parameter, AllowMultiple = false)]
 	public class BindAsAttribute : Attribute {
 		/// <param name="type">The managed type.</param>

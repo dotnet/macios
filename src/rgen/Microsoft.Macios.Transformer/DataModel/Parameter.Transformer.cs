@@ -16,6 +16,11 @@ readonly partial struct Parameter {
 	/// </summary>
 	public BindAsData? BindAs => BindAsAttribute;
 
+	/// <summary>
+	/// Returns the forced type data if present in the binding.
+	/// </summary>
+	public ForcedTypeData? ForcedType => ForcedTypeAttribute;
+
 	public static bool TryCreate (IParameterSymbol symbol, ParameterSyntax declaration, SemanticModel semanticModel,
 		[NotNullWhen (true)] out Parameter? parameter)
 	{

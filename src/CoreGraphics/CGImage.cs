@@ -39,6 +39,8 @@ namespace CoreGraphics {
 
 #if MONOMAC || __MACCATALYST__
 	// uint32_t -> CGWindow.h (OSX SDK only)
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[Flags]
@@ -56,6 +58,8 @@ namespace CoreGraphics {
 	}
 
 	// uint32_t -> CGWindow.h (OSX SDK only)
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[Flags]
@@ -76,6 +80,18 @@ namespace CoreGraphics {
 #endif
 
 	// uint32_t -> CGImage.h
+	/// <summary>Specifies the bitmap layout information.</summary>
+	///     <remarks>
+	///       <para>
+	/// Quartz supports a number of color models: red, green and blue (RGB), cyan, magenta, yellow and key black (CMYK) and grayscale.    Additionally, it is possible to specify an alpha channel that determines the transparency of the color when compositing an image with another one.
+	/// </para>
+	///       <para>
+	/// This enumeration determines the in-memory organization of the data and includes the color model, whether there is an alpha channel present and whether the component values have been premultiplied.
+	/// </para>
+	///       <para>
+	/// Pre-multiplication means that the values for red, green and blue have already been multiplied by the alpha value.   This helps speed up rendering as it avoids three multiplications per pixel at render time.
+	/// </para>
+	///     </remarks>
 	public enum CGImageAlphaInfo : uint {
 		/// <summary>Used for CMYK processing, 32-bits per pixel, 8-bits per channel (CMYK).</summary>
 		None,
@@ -95,6 +111,8 @@ namespace CoreGraphics {
 		Only,
 	}
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum CGImagePixelFormatInfo : uint {
 		/// <summary>To be added.</summary>
 		Packed = 0,
@@ -111,6 +129,21 @@ namespace CoreGraphics {
 	}
 
 	// uint32_t -> CGImage.h
+	/// <summary>Bitmap encoding.</summary>
+	///     <remarks>
+	///       <para>
+	/// This enumeration specifies the layout information for the component data in a bitmap.
+	/// </para>
+	///       <para>
+	/// Quartz supports a number of color models: red, green and blue (RGB), cyan, magenta, yellow and key black (CMYK) and grayscale.    Additionally, it is possible to specify an alpha channel that determines the transparency of the color when compositing an image with another one.
+	/// </para>
+	///       <para>
+	/// This enumeration determines the in-memory organization of the data and includes the color model, whether there is an alpha channel present and whether the component values have been premultiplied.
+	/// </para>
+	///       <para>
+	/// Pre-multiplication means that the values for red, green and blue have already been multiplied by the alpha value.   This helps speed up rendering as it avoids three multiplications per pixel at render time.
+	/// </para>
+	///     </remarks>
 	[Flags]
 	public enum CGBitmapFlags : uint {
 		/// <summary>Used for CMYK processing, 32-bits per pixel, 8-bits per channel (CMYK). </summary>
@@ -151,6 +184,8 @@ namespace CoreGraphics {
 		ByteOrder32Big = (4 << 12),
 	}
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[Flags]
 	public enum CGImageByteOrderInfo : uint {
 		/// <summary>To be added.</summary>
@@ -167,6 +202,9 @@ namespace CoreGraphics {
 		ByteOrder32Big = (4 << 12),
 	}
 
+	/// <summary>Represents bitmap images and bitmap masks.</summary>
+	///     <remarks>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -287,6 +325,11 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern IntPtr CGWindowListCreateImage (CGRect screenBounds, CGWindowListOption windowOption, uint windowID, CGWindowImageOption imageOption);
 
+		/// <param name="windownumber">To be added.</param>
+		///         <param name="bounds">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("maccatalyst")]
 		[ObsoletedOSPlatform ("maccatalyst18.0", "Use ScreenCaptureKit instead.")]
 		[UnsupportedOSPlatform ("ios")]
@@ -398,6 +441,10 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* CGImageRef */ IntPtr CGImageCreateCopy (/* CGImageRef */ IntPtr image);
 
+		/// <summary>Makes a copy of the image.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>Duplicates the image.</remarks>
 		public CGImage? Clone ()
 		{
 			var h = CGImageCreateCopy (Handle);
@@ -407,6 +454,11 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* CGImageRef */ IntPtr CGImageCreateCopyWithColorSpace (/* CGImageRef */ IntPtr image, /* CGColorSpaceRef */ IntPtr space);
 
+		/// <param name="cs">To be added.</param>
+		///         <summary>Creates a copy of the image based on the specified colorspace.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>This method could return null if the image is a mask, or if there is a colorspace component mismatch between the images.</remarks>
 		public CGImage? WithColorSpace (CGColorSpace? cs)
 		{
 			var h = CGImageCreateCopyWithColorSpace (Handle, cs.GetHandle ());
@@ -417,6 +469,12 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* CGImageRef */ IntPtr CGImageCreateWithImageInRect (/* CGImageRef */ IntPtr image, CGRect rect);
 
+		/// <param name="rect">Region to copy.</param>
+		///         <summary>Creates a new image with the dimensions specified in the rectangle</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public CGImage? WithImageInRect (CGRect rect)
 		{
 			var h = CGImageCreateWithImageInRect (Handle, rect);
@@ -426,6 +484,12 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* CGImageRef */ IntPtr CGImageCreateWithMask (/* CGImageRef */ IntPtr image, /* CGImageRef */ IntPtr mask);
 
+		/// <param name="mask">The mask.</param>
+		///         <summary>Creates a new image that has been masked with the specified mask.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public CGImage? WithMask (CGImage mask)
 		{
 			if (mask is null)

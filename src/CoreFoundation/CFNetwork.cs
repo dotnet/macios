@@ -8,6 +8,8 @@ namespace CoreFoundation {
 
 	// note: Make sure names are identical/consistent with NSUrlError.*
 	// they share the same values but there's more entries in CFNetworkErrors
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum CFNetworkErrors {
 		/// <summary>To be added.</summary>
 		HostNotFound = 1,

@@ -10,6 +10,8 @@
 #nullable disable
 
 namespace UIKit {
+	/// <summary>Extension class that, together with the <see cref="T:UIKit.IUIViewControllerTransitionCoordinatorContext" /> interface, comprise the UIViewControllerTransitionCoordinatorContext protocol.</summary>
+	///     <remarks>To be added.</remarks>
 	public static partial class UIViewControllerTransitionCoordinatorContext_Extensions {
 		/// <param name="This">The instance on which this method operates.</param>
 		///         <param name="kind">To be added.</param>

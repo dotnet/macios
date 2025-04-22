@@ -25317,9 +25317,9 @@ namespace AppKit {
 		NSAttributedString AttributedString { get; set; }
 
 
-		///
-		/// NSLayoutPhaseInterface
-		///
+		//
+		// NSLayoutPhaseInterface
+		//
 
 		[Export ("willSetLineFragmentRect:forGlyphRange:usedRect:baselineOffset:")]
 		void WillSetLineFragment (ref CGRect lineRect, NSRange glyphRange, ref CGRect usedRect, ref nfloat baselineOffset);

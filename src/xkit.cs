@@ -3795,25 +3795,25 @@ namespace UIKit {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	partial interface NSTextContainer : NSTextLayoutOrientationProvider, NSSecureCoding {
-		[NoMac]
 		[MacCatalyst (13, 1)]
 		[DesignatedInitializer]
 		[Export ("initWithSize:")]
 		NativeHandle Constructor (CGSize size);
 
+		[Deprecated (PlatformName.MacOSX, 10, 11, "Use 'new NSTextContainer (CGSize)' instead.")]
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]
 		[Export ("initWithContainerSize:"), Internal]
 		[Sealed]
-		IntPtr InitWithContainerSize (CGSize size);
+		IntPtr _InitWithContainerSize (CGSize size);
 
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]
 		[Export ("initWithSize:"), Internal]
 		[Sealed]
-		IntPtr InitWithSize (CGSize size);
+		IntPtr _InitWithSize (CGSize size);
 
 		[NullAllowed] // by default this property is null
 		[Export ("layoutManager", ArgumentSemantic.Assign)]

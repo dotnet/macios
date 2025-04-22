@@ -9,7 +9,6 @@ namespace Cecil.Tests {
 			"AppKit.NSBitmapImageRep::.ctor(Foundation.NSObjectFlag,Foundation.NSObjectFlag)",
 			"AppKit.NSOpenGLPixelFormat::.ctor(AppKit.NSOpenGLPixelFormatAttribute[])",
 			"AppKit.NSOpenGLPixelFormat::.ctor(System.Object[])",
-			"AppKit.NSTextContainer::.ctor(CoreGraphics.CGSize,System.Boolean)",
 			"CoreFoundation.CFMutableString::.ctor(CoreFoundation.CFString,System.IntPtr)",
 			"CoreFoundation.CFMutableString::.ctor(System.String,System.IntPtr)",
 			"CoreFoundation.CFSocket::Initialize(CoreFoundation.CFRunLoop,CoreFoundation.CFSocket/CreateSocket)",

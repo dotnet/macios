@@ -1301,57 +1301,53 @@ namespace CoreLocation {
 		/// <param name="proximityUuid">The unique ID of the iBeacons of interest.</param>
 		/// <param name="identifier">The name of the region to be created.</param>
 		/// <summary>Constructor that produces a region identified by <paramref name="identifier" /> that reports iBeacons associated with the <paramref name="proximityUuid" />.</summary>
-		/// <remarks>To be added.</remarks>
-		[NoMac]
+		[Internal]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use the 'Create' method or the constructor using 'CLBeaconIdentityConstraint' instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use the 'Create' method or the constructor using 'CLBeaconIdentityConstraint' instead.")]
 		[Export ("initWithProximityUUID:identifier:")]
-		NativeHandle Constructor (NSUuid proximityUuid, string identifier);
+		NativeHandle _InitWithProximityUuid (NSUuid proximityUuid, string identifier);
 
-		[NoMac]
 		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Internal] // signature conflict with deprecated API
 		[Export ("initWithUUID:identifier:")]
-		IntPtr _Constructor (NSUuid uuid, string identifier);
+		IntPtr _InitWithUuid (NSUuid uuid, string identifier);
 
 		/// <param name="proximityUuid">The unique ID of the iBeacons of interest.</param>
 		/// <param name="major">Can be used by the app developer for any purpose.</param>
 		/// <param name="identifier">The name of the region to be created.</param>
 		/// <summary>Constructor that produces a region identified by <paramref name="identifier" /> that reports iBeacons associated with the <paramref name="proximityUuid" /> and that assigns the <see cref="P:CoreLocation.CLBeaconRegion.Major" /> property.</summary>
-		/// <remarks>To be added.</remarks>
-		[NoMac]
+		[Internal]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use the 'Create' method or the constructor using 'CLBeaconIdentityConstraint' instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use the 'Create' method or the constructor using 'CLBeaconIdentityConstraint' instead.")]
 		[Export ("initWithProximityUUID:major:identifier:")]
-		NativeHandle Constructor (NSUuid proximityUuid, ushort major, string identifier);
+		NativeHandle _InitWithProximityUuid (NSUuid proximityUuid, ushort major, string identifier);
 
 		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Internal] // signature conflict with deprecated API
 		[Export ("initWithUUID:major:identifier:")]
-		IntPtr _Constructor (NSUuid uuid, ushort major, string identifier);
+		IntPtr _InitWithUuid (NSUuid uuid, ushort major, string identifier);
 
 		/// <param name="proximityUuid">The unique ID of the iBeacons of interest.</param>
 		/// <param name="major">Can be used by the app developer for any purpose.</param>
 		/// <param name="minor">Can be used by the app developer for any purpose.</param>
 		/// <param name="identifier">The name of the region to be created.</param>
-		/// <summary>Constructor that produces a region identified by <paramref name="identifier" /> that reports iBeacons associated with the <paramref name="proximityUuid" /> and that assigns the <see cref="P:CoreLocation.CLBeaconRegion.Major" /><see cref="P:CoreLocation.CLBeaconRegion.Minor" /> properties.</summary>
-		/// <remarks>To be added.</remarks>
-		[NoMac]
+		/// <summary>Constructor that produces a region identified by <paramref name="identifier" /> that reports iBeacons associated with the <paramref name="proximityUuid" /> and that assigns the <see cref="P:CoreLocation.CLBeaconRegion.Major" /> and <see cref="P:CoreLocation.CLBeaconRegion.Minor" /> properties.</summary>
+		[Internal]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use the 'Create' method or the constructor using 'CLBeaconIdentityConstraint' instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use the 'Create' method or the constructor using 'CLBeaconIdentityConstraint' instead.")]
 		[Export ("initWithProximityUUID:major:minor:identifier:")]
-		NativeHandle Constructor (NSUuid proximityUuid, ushort major, ushort minor, string identifier);
+		NativeHandle _InitWithProximityUuid (NSUuid proximityUuid, ushort major, ushort minor, string identifier);
 
 		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Internal] // signature conflict with deprecated API
 		[Export ("initWithUUID:major:minor:identifier:")]
-		IntPtr _Constructor (NSUuid uuid, ushort major, ushort minor, string identifier);
+		IntPtr _InitWithUuid (NSUuid uuid, ushort major, ushort minor, string identifier);
 
 		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]

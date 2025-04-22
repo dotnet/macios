@@ -33,21 +33,12 @@ using ObjCRuntime;
 using Foundation;
 using System;
 using System.Runtime.InteropServices;
-#if NET
-#else
-using NativeHandle = System.IntPtr;
-#endif
 
 namespace Security {
-
-#if NET
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
-#else
-	[MacCatalyst (15,0)]
-#endif
 	// Untyped enum in ObjC
 	public enum AuthorizationStatus {
 		/// <summary>To be added.</summary>
@@ -82,14 +73,10 @@ namespace Security {
 		BadAddress = -60033,
 	}
 
-#if NET
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
-#else
-	[MacCatalyst (15,0)]
-#endif
 	// typedef UInt32 AuthorizationFlags;
 	[Flags]
 	public enum AuthorizationFlags : int {
@@ -105,12 +92,8 @@ namespace Security {
 		DestroyRights = 1 << 3,
 		/// <summary>To be added.</summary>
 		PreAuthorize = 1 << 4,
-#if NET
 		[SupportedOSPlatform ("maccatalyst17.0")]
 		[SupportedOSPlatform ("macos14.0")]
-#else
-		[Mac(14, 0), MacCatalyst(17, 0)]
-#endif
 		SkipInternalAuth = 1 << 9,
 		NoData = 1 << 20,
 	}
@@ -119,14 +102,10 @@ namespace Security {
 	// For ease of use, we let the user pass the AuthorizationParameters, and we
 	// create the structure for them with the proper data
 	//
-#if NET
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
-#else
-	[MacCatalyst (15,0)]
-#endif
 	public class AuthorizationParameters {
 		/// <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
@@ -139,14 +118,10 @@ namespace Security {
 		public string? IconPath;
 	}
 
-#if NET
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
-#else
-	[MacCatalyst (15,0)]
-#endif
 	public class AuthorizationEnvironment {
 		/// <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
@@ -159,12 +134,8 @@ namespace Security {
 		public bool AddToSharedCredentialPool;
 	}
 
-#if NET
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
-#else
-	[MacCatalyst (15,0)]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	struct AuthorizationItem {
 		public IntPtr /* AuthorizationString = const char * */ name;
@@ -173,43 +144,27 @@ namespace Security {
 		public int /* UInt32 */ flags;  // zero
 	}
 
-#if NET
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
-#else
-	[MacCatalyst (15,0)]
-#endif
 	unsafe struct AuthorizationItemSet {
 		public int /* UInt32 */ count;
 		public AuthorizationItem* /* AuthorizationItem* */ ptrToAuthorization;
 	}
 
-#if NET
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
-#else
-	[MacCatalyst (15,0)]
-#endif
 	public unsafe class Authorization : DisposableObject {
 		[DllImport (Constants.SecurityLibrary)]
 		unsafe extern static int /* OSStatus = int */ AuthorizationCreate (AuthorizationItemSet* rights, AuthorizationItemSet* environment, AuthorizationFlags flags, IntPtr* auth);
 
-#if NET
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
-		[ObsoletedOSPlatform ("macos10.7", "Use the Service Management framework or the launchd-launched helper tool instead.")]
-#else
-		[Deprecated (PlatformName.MacOSX, 10,7)]
-#endif
-#if NET
+		[ObsoletedOSPlatform ("maccatalyst", "Use the Service Management framework or the launchd-launched helper tool instead.")]
+		[ObsoletedOSPlatform ("macos", "Use the Service Management framework or the launchd-launched helper tool instead.")]
 		[DllImport (Constants.SecurityLibrary)]
 		extern static int /* OSStatus = int */ AuthorizationExecuteWithPrivileges (IntPtr handle, IntPtr pathToTool, AuthorizationFlags flags, IntPtr args, IntPtr FILEPtr);
-#else
-		[DllImport (Constants.SecurityLibrary)]
-		extern static int /* OSStatus = int */ AuthorizationExecuteWithPrivileges (IntPtr handle, string pathToTool, AuthorizationFlags flags, string? []? args, IntPtr FILEPtr);
-#endif
 
 		[DllImport (Constants.SecurityLibrary)]
 		extern static int /* OSStatus = int */ AuthorizationFree (IntPtr handle, AuthorizationFlags flags);
@@ -220,7 +175,6 @@ namespace Security {
 		{
 		}
 
-#if NET
 		/// <param name="pathToTool">To be added.</param>
 		///         <param name="flags">To be added.</param>
 		///         <param name="args">To be added.</param>
@@ -229,10 +183,8 @@ namespace Security {
 		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
-		[ObsoletedOSPlatform ("macos10.7", "Use the Service Management framework or the launchd-launched helper tool instead.")]
-#else
-		[Deprecated (PlatformName.MacOSX, 10,7)]
-#endif
+		[ObsoletedOSPlatform ("maccatalyst", "Use the Service Management framework or the launchd-launched helper tool instead.")]
+		[ObsoletedOSPlatform ("macos", "Use the Service Management framework or the launchd-launched helper tool instead.")]
 		public int ExecuteWithPrivileges (string pathToTool, AuthorizationFlags flags, string []? args)
 		{
 			string? []? arguments = args!;
@@ -247,15 +199,11 @@ namespace Security {
 					arguments = array;
 				}
 			}
-#if NET
 			using var pathToToolStr = new TransientString (pathToTool);
 			var argsPtr = TransientString.AllocStringArray (arguments);
 			var retval = AuthorizationExecuteWithPrivileges (Handle, pathToToolStr, flags, argsPtr, IntPtr.Zero);
 			TransientString.FreeStringArray (argsPtr, args is null ? 0 : args.Length);
 			return retval;
-#else
-			return AuthorizationExecuteWithPrivileges (Handle, pathToTool, flags, arguments, IntPtr.Zero);
-#endif
 		}
 
 		protected override void Dispose (bool disposing)

@@ -17,29 +17,16 @@ using System.Runtime.InteropServices;
 using ObjCRuntime;
 
 namespace Security {
-
-#if !NET
-	unsafe delegate SslStatus SslReadFunc (IntPtr connection, IntPtr data, /* size_t* */ nint* dataLength);
-
-	unsafe delegate SslStatus SslWriteFunc (IntPtr connection, IntPtr data, /* size_t* */ nint* dataLength);
-#endif
-
-#if NET
 	/// <summary>Class that represents an SSL connection.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-	[ObsoletedOSPlatform ("macos10.15", Constants.UseNetworkInstead)]
+	[ObsoletedOSPlatform ("macos", Constants.UseNetworkInstead)]
 	[ObsoletedOSPlatform ("tvos13.0", Constants.UseNetworkInstead)]
 	[ObsoletedOSPlatform ("ios13.0", Constants.UseNetworkInstead)]
-	[ObsoletedOSPlatform ("maccatalyst13.0", Constants.UseNetworkInstead)]
-#else
-	[Deprecated (PlatformName.MacOSX, 10, 15, message: Constants.UseNetworkInstead)]
-	[Deprecated (PlatformName.iOS, 13, 0, message: Constants.UseNetworkInstead)]
-	[Deprecated (PlatformName.TvOS, 13, 0, message: Constants.UseNetworkInstead)]
-#endif
+	[ObsoletedOSPlatform ("maccatalyst", Constants.UseNetworkInstead)]
 	public abstract class SslConnection : IDisposable {
 
 		GCHandle handle;
@@ -50,12 +37,6 @@ namespace Security {
 		{
 			handle = GCHandle.Alloc (this);
 			ConnectionId = GCHandle.ToIntPtr (handle);
-#if !NET
-			unsafe {
-				ReadFunc = Read;
-				WriteFunc = Write;
-			}
-#endif
 		}
 
 		~SslConnection ()
@@ -86,34 +67,21 @@ namespace Security {
 		///         <remarks>To be added.</remarks>
 		public IntPtr ConnectionId { get; private set; }
 
-#if NET
 		unsafe internal delegate* unmanaged<IntPtr, IntPtr, nint*, SslStatus> ReadFunc { get { return &Read; } }
 		unsafe internal delegate* unmanaged<IntPtr, IntPtr, nint*, SslStatus> WriteFunc { get { return &Write; } }
-#else
-		internal SslReadFunc ReadFunc { get; private set; }
-		internal SslWriteFunc WriteFunc { get; private set; }
-#endif
 
 		public abstract SslStatus Read (IntPtr data, ref nint dataLength);
 
 		public abstract SslStatus Write (IntPtr data, ref nint dataLength);
 
-#if NET
 		[UnmanagedCallersOnly]
-#else
-		[MonoPInvokeCallback (typeof (SslReadFunc))]
-#endif
 		unsafe static SslStatus Read (IntPtr connection, IntPtr data, nint* dataLength)
 		{
 			var c = (SslConnection) GCHandle.FromIntPtr (connection).Target!;
 			return c.Read (data, ref System.Runtime.CompilerServices.Unsafe.AsRef<nint> (dataLength));
 		}
 
-#if NET
 		[UnmanagedCallersOnly]
-#else
-		[MonoPInvokeCallback (typeof (SslWriteFunc))]
-#endif
 		unsafe static SslStatus Write (IntPtr connection, IntPtr data, nint* dataLength)
 		{
 			var c = (SslConnection) GCHandle.FromIntPtr (connection).Target!;
@@ -122,14 +90,12 @@ namespace Security {
 	}
 
 
-#if NET
 	/// <summary>Class that allows reading and writing to an SSL stream connection.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	// a concrete connection based on a managed Stream
 	public class SslStreamConnection : SslConnection {
 

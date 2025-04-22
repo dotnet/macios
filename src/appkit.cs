@@ -8165,7 +8165,7 @@ namespace AppKit {
 
 		[Internal]
 		[Export ("initWithColors:atLocations:colorSpace:")]
-		NativeHandle _InitWithColorsAtLocationsAndColorSpace (NSColor[] colorArray, /* CGFloat */ IntPtr locations, NSColorSpace colorSpace);
+		NativeHandle _InitWithColorsAtLocationsAndColorSpace (NSColor [] colorArray, /* CGFloat */ IntPtr locations, NSColorSpace colorSpace);
 
 		[Export ("drawFromPoint:toPoint:options:")]
 		void DrawFromPoint (CGPoint startingPoint, CGPoint endingPoint, NSGradientDrawingOptions options);

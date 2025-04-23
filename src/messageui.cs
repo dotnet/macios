@@ -124,6 +124,12 @@ namespace MessageUI {
 	///     </remarks>
 	interface IMFMailComposeViewControllerDelegate { }
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:MessageUI.MFMailComposeViewControllerDelegate" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:MessageUI.MFMailComposeViewControllerDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:MessageUI.MFMailComposeViewControllerDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:MessageUI.MFMailComposeViewControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[BaseType (typeof (NSObject))]
 	[Model]
 	[Protocol]

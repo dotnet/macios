@@ -35,6 +35,9 @@ using NSImage = UIKit.UIImage;
 #endif
 
 namespace MediaPlayer {
+	/// <summary>Abstract base class for <see cref="T:MediaPlayer.MPMediaItem" /> and <see cref="T:MediaPlayer.MPMediaItemCollection" /> classes.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPMediaEntity_ClassReference/index.html">Apple documentation for <c>MPMediaEntity</c></related>
 	[BaseType (typeof (NSObject))]
 #if !MONOMAC
 	[TV (14, 0)]
@@ -907,6 +910,8 @@ namespace MediaPlayer {
 		string CloudGlobalId { get; }
 	}
 
+	/// <summary>Properties of a <see cref="T:MediaPlayer.MPMediaPlaylist" />, such as name, attributes, and seed items.</summary>
+	/// <remarks>To be added.</remarks>
 	[Mac (10, 16)]
 	[MacCatalyst (13, 1)]
 	[Static]
@@ -1438,6 +1443,8 @@ namespace MediaPlayer {
 		MPTimedMetadata [] TimedMetadata { get; }
 	}
 
+	/// <summary>Interface that, together with the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Media%20Player%20MPMedia%20Playback_%20Extensions&amp;scope=Xamarin" title="T:MediaPlayer.MPMediaPlayback_Extensions">T:MediaPlayer.MPMediaPlayback_Extensions</a></format> class, comprise the MPMediaPlayback protocol.</summary>
+	/// <remarks>To be added.</remarks>
 	[NoMac]
 	[TV (16, 0)]
 	[MacCatalyst (13, 1)]
@@ -2077,6 +2084,11 @@ namespace MediaPlayer {
 		MPMoviePlayerController MoviePlayer { get; }
 	}
 
+	/// <summary>A class that plays media items from the device's <see cref="T:MediaPlayer.MPMediaLibrary" />.</summary>
+	/// <remarks>
+	///       <para>This class may only be used from the application's main thread.</para>
+	///     </remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPMusicPlayerController_ClassReference/index.html">Apple documentation for <c>MPMusicPlayerController</c></related>
 	[NoMac]
 	[TV (14, 0)]
 	[MacCatalyst (13, 1)]
@@ -2270,6 +2282,9 @@ namespace MediaPlayer {
 		NSString VolumeDidChangeNotification { get; }
 	}
 
+	/// <summary>A <see cref="T:UIKit.UIView" /> that presents a slider control used to set the system output volume..</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPVolumeView_Class/index.html">Apple documentation for <c>MPVolumeView</c></related>
 	[NoMac]
 	[TV (14, 0)]
 	[MacCatalyst (13, 1)]
@@ -2619,6 +2634,9 @@ namespace MediaPlayer {
 		NSString PropertyExcludeFromSuggestions { get; }
 	}
 
+	/// <summary>User-meaningful information about an <see cref="T:MediaPlayer.MPMediaItem" />.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPContentItem_Ref/index.html">Apple documentation for <c>MPContentItem</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // crash if used
@@ -2957,6 +2975,9 @@ namespace MediaPlayer {
 		bool EndpointAvailable { get; }
 	}
 
+	/// <summary>Class that app developers can use to add and remove actions (commands) on targets (players).</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPRemoteCommand_Ref/index.html">Apple documentation for <c>MPRemoteCommand</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // NSGenericException Reason: MPRemoteCommands cannot be initialized externally.
@@ -2999,6 +3020,9 @@ namespace MediaPlayer {
 		void RemoveTarget ([NullAllowed] NSObject target, [NullAllowed] Selector action);
 	}
 
+	/// <summary>A <see cref="T:MediaPlayer.MPRemoteCommand" /> that alters the playback rate.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPChangePlaybackRateCommand_Ref/index.html">Apple documentation for <c>MPChangePlaybackRateCommand</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPRemoteCommand))]
 	[DisableDefaultCtor] // NSGenericException Reason: MPChangePlaybackRateCommands cannot be initialized externally.
@@ -3011,6 +3035,9 @@ namespace MediaPlayer {
 		NSNumber [] SupportedPlaybackRates { get; set; }
 	}
 
+	/// <summary>Holds the current <see cref="T:MediaPlayer.MPShuffleType" />.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/MediaPlayer/MPChangeShuffleModeCommand">Apple documentation for <c>MPChangeShuffleModeCommand</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPRemoteCommand))]
 	[DisableDefaultCtor] // NSGenericException Reason: MPChangeShuffleModeCommand cannot be initialized externally.
@@ -3022,6 +3049,9 @@ namespace MediaPlayer {
 		MPShuffleType CurrentShuffleType { get; set; }
 	}
 
+	/// <summary>Holds the current <see cref="T:MediaPlayer.MPRepeatType" />.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/MediaPlayer/MPChangeRepeatModeCommand">Apple documentation for <c>MPChangeRepeatModeCommand</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPRemoteCommand))]
 	[DisableDefaultCtor] // NSGenericException Reason: MPChangeRepeatModeCommand cannot be initialized externally.
@@ -3033,6 +3063,9 @@ namespace MediaPlayer {
 		MPRepeatType CurrentRepeatType { get; set; }
 	}
 
+	/// <summary>Additional information for feedback commands defined in <see cref="T:MediaPlayer.MPRemoteCommandCenter" />.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPFeedbackCommand/index.html">Apple documentation for <c>MPFeedbackCommand</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPRemoteCommand))]
 	[DisableDefaultCtor] // NSGenericException Reason: MPFeedbackCommands cannot be initialized externally.
@@ -3058,6 +3091,9 @@ namespace MediaPlayer {
 		string LocalizedShortTitle { get; set; }
 	}
 
+	/// <summary>Additional information for rating commands defined in <see cref="T:MediaPlayer.MPRemoteCommandCenter" />.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPRatingCommand_Ref/index.html">Apple documentation for <c>MPRatingCommand</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPRemoteCommand))]
 	[DisableDefaultCtor] // NSGenericException Reason: MPRatingCommands cannot be initialized externally.
@@ -3086,6 +3122,9 @@ namespace MediaPlayer {
 		NSArray _PreferredIntervals { get; set; }
 	}
 
+	/// <summary>Class that handles events from external media players.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPRemoteCommandCenter_Ref/index.html">Apple documentation for <c>MPRemoteCommandCenter</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -3224,6 +3263,9 @@ namespace MediaPlayer {
 		MPChangePlaybackPositionCommand ChangePlaybackPositionCommand { get; }
 	}
 
+	/// <summary>Class that provides information about a player command.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPRemoteCommandEvent_Ref/index.html">Apple documentation for <c>MPRemoteCommandEvent</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // NSGenericException Reason: MPRemoteCommandEvents cannot be initialized externally.
@@ -3242,6 +3284,9 @@ namespace MediaPlayer {
 		double /* NSTimeInterval */ Timestamp { get; }
 	}
 
+	/// <summary>Provides the playback rate for a media item.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPChangePlaybackRateCommandEvent_Ref/index.html">Apple documentation for <c>MPChangePlaybackRateCommandEvent</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPRemoteCommandEvent))]
 	[DisableDefaultCtor] // NSGenericException Reason: MPChangePlaybackRateCommandEvents cannot be initialized externally.
@@ -3254,6 +3299,9 @@ namespace MediaPlayer {
 		float PlaybackRate { get; } // float, not CGFloat
 	}
 
+	/// <summary>Additional information for the rating properties defined in <see cref="T:MediaPlayer.MPRemoteCommandCenter" />.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPRatingCommandEvent_Ref/index.html">Apple documentation for <c>MPRatingCommandEvent</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPRemoteCommandEvent))]
 	[DisableDefaultCtor] // NSGenericException Reason: MPRatingCommandEvents cannot be initialized externally.
@@ -3266,6 +3314,9 @@ namespace MediaPlayer {
 		float Rating { get; } // float, not CGFloat
 	}
 
+	/// <summary>Additional information for the seek properties defined in <see cref="T:MediaPlayer.MPRemoteCommandCenter" />.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPSeekCommandEvent_Ref/index.html">Apple documentation for <c>MPSeekCommandEvent</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPRemoteCommandEvent))]
 	[DisableDefaultCtor] // Name: NSGenericException Reason: MPSeekCommandEvents cannot be initialized externally.
@@ -3278,6 +3329,9 @@ namespace MediaPlayer {
 		MPSeekCommandEventType Type { get; }
 	}
 
+	/// <summary>The time interval rate of an external media player.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPSkipIntervalCommandEvent_Ref/index.html">Apple documentation for <c>MPSkipIntervalCommandEvent</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPRemoteCommandEvent))]
 	[DisableDefaultCtor] // NSGenericException Reason: MPSkipIntervalCommandEvents cannot be initialized externally.
@@ -3290,6 +3344,9 @@ namespace MediaPlayer {
 		double /* NSTimeInterval */ Interval { get; }
 	}
 
+	/// <summary>Additional information for the feedback properties defined in <see cref="T:MediaPlayer.MPRemoteCommandCenter" />.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPFeedbackCommandEvent_Ref/index.html">Apple documentation for <c>MPFeedbackCommandEvent</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPRemoteCommandEvent))]
 	[DisableDefaultCtor]
@@ -3302,6 +3359,9 @@ namespace MediaPlayer {
 		bool Negative { [Bind ("isNegative")] get; }
 	}
 
+	/// <summary>To be added.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/MediaPlayer/MPChangeLanguageOptionCommandEvent">Apple documentation for <c>MPChangeLanguageOptionCommandEvent</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPRemoteCommandEvent))]
 	[DisableDefaultCtor] // NSGenericException Reason: MPChangeLanguageOptionCommandEvents cannot be initialized externally.
@@ -3320,6 +3380,9 @@ namespace MediaPlayer {
 		MPChangeLanguageOptionSetting Setting { get; }
 	}
 
+	/// <summary>Associates a <see cref="T:MediaPlayer.MPShuffleType" /> and a boolean specifying whether the shuffle mode should be preserved.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/MediaPlayer/MPChangeShuffleModeCommandEvent">Apple documentation for <c>MPChangeShuffleModeCommandEvent</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPRemoteCommandEvent))]
 	[DisableDefaultCtor] // NSGenericException Reason: MPChangeShuffleModeCommandEvent cannot be initialized externally.
@@ -3338,6 +3401,9 @@ namespace MediaPlayer {
 		bool PreservesShuffleMode { get; }
 	}
 
+	/// <summary>Associates a <see cref="T:MediaPlayer.MPRepeatType" /> and a boolean specifying whether the repeat mode should be preserved.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/MediaPlayer/MPChangeRepeatModeCommandEvent">Apple documentation for <c>MPChangeRepeatModeCommandEvent</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPRemoteCommandEvent))]
 	[DisableDefaultCtor] // NSGenericException Reason: MPChangeRepeatModeCommandEvent cannot be initialized externally.
@@ -3356,6 +3422,9 @@ namespace MediaPlayer {
 		bool PreservesRepeatMode { get; }
 	}
 
+	/// <summary>To be added.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/MediaPlayer/MPNowPlayingInfoLanguageOption">Apple documentation for <c>MPNowPlayingInfoLanguageOption</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // pre-emptive
@@ -3434,6 +3503,9 @@ namespace MediaPlayer {
 		bool IsAutomaticAudibleLanguageOption { get; }
 	}
 
+	/// <summary>To be added.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/MediaPlayer/MPNowPlayingInfoLanguageOptionGroup">Apple documentation for <c>MPNowPlayingInfoLanguageOptionGroup</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // pre-emptive
@@ -3536,12 +3608,18 @@ namespace MediaPlayer {
 		NSString VoiceOverTranslation { get; }
 	}
 
+	/// <summary>To be added.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/MediaPlayer/MPChangePlaybackPositionCommand">Apple documentation for <c>MPChangePlaybackPositionCommand</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPRemoteCommand))]
 	[DisableDefaultCtor] // Objective-C exception thrown.  Name: NSGenericException Reason: MPChangePlaybackPositionCommands cannot be initialized externally.
 	interface MPChangePlaybackPositionCommand {
 	}
 
+	/// <summary>To be added.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/MediaPlayer/MPChangePlaybackPositionCommandEvent">Apple documentation for <c>MPChangePlaybackPositionCommandEvent</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPRemoteCommandEvent))]
 	[DisableDefaultCtor] // Objective-C exception thrown.  Name: NSGenericException Reason: MPChangePlaybackPositionCommandEvents cannot be initialized externally.
@@ -3590,6 +3668,8 @@ namespace MediaPlayer {
 		string DescriptionText { get; set; }
 	}
 
+	/// <summary>Base class for descriptors for store and audio item queues.</summary>
+	/// <remarks>To be added.</remarks>
 	[NoMac]
 	[TV (14, 0)]
 	[MacCatalyst (13, 1)]
@@ -3660,6 +3740,8 @@ namespace MediaPlayer {
 		void SetEndTime (double endTime, MPMediaItem mediaItem);
 	}
 
+	/// <summary>Implements modification of media items in a player queue, selecting them by their store identifier.s</summary>
+	/// <remarks>To be added.</remarks>
 	[NoMac]
 	[TV (14, 0)]
 	[MacCatalyst (13, 1)]
@@ -3704,6 +3786,8 @@ namespace MediaPlayer {
 		void SetEndTime (double endTime, string storeID);
 	}
 
+	/// <summary>An immutable queue of media items for playing..</summary>
+	/// <remarks>To be added.</remarks>
 	[NoMac]
 	[TV (14, 0)]
 	[MacCatalyst (13, 1)]
@@ -3722,6 +3806,8 @@ namespace MediaPlayer {
 		NSString DidChangeNotification { get; }
 	}
 
+	/// <summary>A mutable queue of media items for playing.</summary>
+	/// <remarks>To be added.</remarks>
 	[NoMac]
 	[TV (14, 0)]
 	[MacCatalyst (13, 1)]
@@ -3741,6 +3827,8 @@ namespace MediaPlayer {
 		void RemoveItem (MPMediaItem item);
 	}
 
+	/// <summary>An application controller for changing the currently playing queue.</summary>
+	/// <remarks>To be added.</remarks>
 	[NoMac]
 	[TV (14, 0)]
 	[MacCatalyst (13, 1)]
@@ -3765,6 +3853,8 @@ namespace MediaPlayer {
 		void Perform (Action<MPMusicPlayerControllerMutableQueue> queueTransaction, Action<MPMusicPlayerControllerQueue, NSError> completionHandler);
 	}
 
+	/// <summary>Contains a dictionary of Music Kit parameters for items to play.</summary>
+	/// <remarks>To be added.</remarks>
 	[NoMac]
 	[TV (14, 0)]
 	[MacCatalyst (13, 1)]
@@ -3784,6 +3874,8 @@ namespace MediaPlayer {
 		NSDictionary Dictionary { get; }
 	}
 
+	/// <summary>Class for manipulating start times and play order based on the play parameter results of MusicKit APIs.</summary>
+	/// <remarks>To be added.</remarks>
 	[NoMac]
 	[TV (14, 0)]
 	[MacCatalyst (13, 1)]

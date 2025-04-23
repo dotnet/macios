@@ -394,6 +394,8 @@ namespace CarPlay {
 	/// <summary>Interface defining necessary methods for the <see cref="T:CarPlay.ICPBarButtonProviding" /> protocol.</summary>
 	interface ICPBarButtonProviding { }
 
+	/// <summary>Interface defining necessary methods for the <see cref="T:CarPlay.ICPBarButtonProviding" /> protocol.</summary>
+	/// <remarks>To be added.</remarks>
 	[NoTV, NoMac]
 	[Protocol]
 	interface CPBarButtonProviding {

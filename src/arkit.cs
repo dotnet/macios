@@ -1072,6 +1072,8 @@ namespace ARKit {
 		void CaptureHighResolutionFrame (Action<ARFrame, NSError> handler);
 	}
 
+	/// <summary>Interface defining methods that respond to events in an <see cref="T:ARKit.ARSession" />.</summary>
+	/// <remarks>To be added.</remarks>
 	[NoTV, NoMac]
 	[Protocol]
 	interface ARSessionObserver {

@@ -76,9 +76,16 @@ namespace ReplayKit {
 	[BaseType (typeof (NSObject))]
 	interface RPPreviewViewControllerDelegate {
 
+		/// <param name="previewController">To be added.</param>
+		/// <summary>Method that is called when the previewer is ready to be dismissed.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("previewControllerDidFinish:")]
 		void DidFinish (RPPreviewViewController previewController);
 
+		/// <param name="previewController">To be added.</param>
+		/// <param name="activityTypes">To be added.</param>
+		/// <summary>Method that is called when the previewer is ready to be dismissed.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("previewController:didFinishWithActivityTypes:")]
@@ -227,6 +234,14 @@ namespace ReplayKit {
 	[BaseType (typeof (NSObject))]
 	interface RPScreenRecorderDelegate {
 
+		/// <param name="screenRecorder">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <param name="previewViewController">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Developers should not use this deprecated method. Developers should use 'DidStopRecording(RPScreenRecorder,RPPreviewViewController,NSError)' instead.</summary>
+		/// <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.TvOS, 10, 0, message: "Use 'DidStopRecording(RPScreenRecorder,RPPreviewViewController,NSError)' instead.")]
 		[Deprecated (PlatformName.iOS, 10, 0, message: "Use 'DidStopRecording(RPScreenRecorder,RPPreviewViewController,NSError)' instead.")]
 		[NoMac]
@@ -235,10 +250,24 @@ namespace ReplayKit {
 		[Export ("screenRecorder:didStopRecordingWithError:previewViewController:")]
 		void DidStopRecording (RPScreenRecorder screenRecorder, NSError error, [NullAllowed] RPPreviewViewController previewViewController);
 
+		/// <param name="screenRecorder">To be added.</param>
+		/// <param name="previewViewController">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="error">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("screenRecorder:didStopRecordingWithPreviewViewController:error:")]
 		void DidStopRecording (RPScreenRecorder screenRecorder, [NullAllowed] RPPreviewViewController previewViewController, [NullAllowed] NSError error);
 
+		/// <param name="screenRecorder">To be added.</param>
+		/// <summary>Method that is called when the availability status changes.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("screenRecorderDidChangeAvailability:")]
 		void DidChangeAvailability (RPScreenRecorder screenRecorder);
 	}
@@ -368,12 +397,27 @@ namespace ReplayKit {
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface RPBroadcastControllerDelegate {
+		/// <param name="broadcastController">The controller for the broadcast that finsihed.</param>
+		/// <param name="error">
+		///           <para>The error, if any, that ended the broadcast.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("broadcastController:didFinishWithError:")]
 		void DidFinish (RPBroadcastController broadcastController, [NullAllowed] NSError error);
 
+		/// <param name="broadcastController">To be added.</param>
+		/// <param name="serviceInfo">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("broadcastController:didUpdateServiceInfo:")]
 		void DidUpdateServiceInfo (RPBroadcastController broadcastController, NSDictionary<NSString, INSCoding> serviceInfo);
 
+		/// <param name="broadcastController">To be added.</param>
+		/// <param name="broadcastUrl">To be added.</param>
+		/// <summary>Method that is called when the broadcast URL is updated.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("broadcastController:didUpdateBroadcastURL:")]
 		void DidUpdateBroadcastUrl (RPBroadcastController broadcastController, NSUrl broadcastUrl);

@@ -590,15 +590,35 @@ namespace CarPlay {
 	[BaseType (typeof (NSObject))]
 	interface CPInterfaceControllerDelegate {
 
+		/// <param name="aTemplate">The template that will appear.</param>
+		/// <param name="animated">
+		///           <see langword="true" /> if the transition is automated. Otherwise, <see langword="false" />.</param>
+		/// <summary>Method that is called when a template is about to appear.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("templateWillAppear:animated:")]
 		void TemplateWillAppear (CPTemplate aTemplate, bool animated);
 
+		/// <param name="aTemplate">The template that appeared.</param>
+		/// <param name="animated">
+		///           <see langword="true" /> if the transition is automated. Otherwise, <see langword="false" />.</param>
+		/// <summary>Method that is called when a template appears.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("templateDidAppear:animated:")]
 		void TemplateDidAppear (CPTemplate aTemplate, bool animated);
 
+		/// <param name="aTemplate">The template that will disappear.</param>
+		/// <param name="animated">
+		///           <see langword="true" /> if the transition is automated. Otherwise, <see langword="false" />.</param>
+		/// <summary>Method that is called when a template is about to disappear.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("templateWillDisappear:animated:")]
 		void TemplateWillDisappear (CPTemplate aTemplate, bool animated);
 
+		/// <param name="aTemplate">The template that disappeared.</param>
+		/// <param name="animated">
+		///           <see langword="true" /> if the transition is automated. Otherwise, <see langword="false" />.</param>
+		/// <summary>Method that is called when a template disappears.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("templateDidDisappear:animated:")]
 		void TemplateDidDisappear (CPTemplate aTemplate, bool animated);
 	}
@@ -627,9 +647,17 @@ namespace CarPlay {
 		[Export ("application:didDisconnectCarInterfaceController:fromWindow:")]
 		void DidDisconnectCarInterfaceController (UIApplication application, CPInterfaceController interfaceController, CPWindow window);
 
+		/// <param name="application">The application in which a navigation alert was selected.</param>
+		/// <param name="navigationAlert">The selected navigation alert.</param>
+		/// <summary>Method that is called when the user selects a navigation alert.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("application:didSelectNavigationAlert:")]
 		void DidSelectNavigationAlert (UIApplication application, CPNavigationAlert navigationAlert);
 
+		/// <param name="application">The application in which a maneuver was selected.</param>
+		/// <param name="maneuver">The selected maneuver.</param>
+		/// <summary>Method that is called when the user selects a maneuver.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("application:didSelectManeuver:")]
 		void DidSelectManeuver (UIApplication application, CPManeuver maneuver);
 	}
@@ -1129,63 +1157,151 @@ namespace CarPlay {
 		[Export ("mapTemplateShouldProvideNavigationMetadata:")]
 		bool ShouldProvideNavigationMetadata (CPMapTemplate mapTemplate);
 
+		/// <param name="mapTemplate">The template for the map to query.</param>
+		/// <param name="maneuver">The maneuver about which to query.</param>
+		/// <summary>Method that is called to determine whether a navigation maneuver notification should be shown when the app is running in the background.</summary>
+		/// <returns>
+		///           <see langword="true" /> if the notification should be shown. Otherwise, <see langword="false" />.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("mapTemplate:shouldShowNotificationForManeuver:")]
 		bool ShouldShowNotificationForManeuver (CPMapTemplate mapTemplate, CPManeuver maneuver);
 
+		/// <param name="mapTemplate">The template for the map to query.</param>
+		/// <param name="maneuver">To be added.</param>
+		/// <param name="travelEstimates">The travel estimates about which to query.</param>
+		/// <summary>Method that is called to determine whether the specified travel estimate updates should be shown when the app is running in the background.</summary>
+		/// <returns>
+		///           <see langword="true" /> if the specified travel estimate updates should be shown. Otherwise, <see langword="false" />.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("mapTemplate:shouldUpdateNotificationForManeuver:withTravelEstimates:")]
 		bool ShouldUpdateNotificationForManeuver (CPMapTemplate mapTemplate, CPManeuver maneuver, CPTravelEstimates travelEstimates);
 
+		/// <param name="mapTemplate">The template for the map to query.</param>
+		/// <param name="navigationAlert">The navigation alert about which to query.</param>
+		/// <summary>Method that is called to determine whether a navigation alert should be shown when the app is running in the background.</summary>
+		/// <returns>
+		///           <see langword="true" /> if the navigation alert should be shown. Otherwise, <see langword="false" />.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("mapTemplate:shouldShowNotificationForNavigationAlert:")]
 		bool ShouldShowNotificationForNavigationAlert (CPMapTemplate mapTemplate, CPNavigationAlert navigationAlert);
 
+		/// <param name="mapTemplate">The template for the map for which a panning interface was shown.</param>
+		/// <summary>Method that is called when a panning interface is shown.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("mapTemplateDidShowPanningInterface:")]
 		void DidShowPanningInterface (CPMapTemplate mapTemplate);
 
+		/// <param name="mapTemplate">The template for the map on which a panning interface will be dismissed.</param>
+		/// <summary>Method that is called just before a panning interface is dismissed.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("mapTemplateWillDismissPanningInterface:")]
 		void WillDismissPanningInterface (CPMapTemplate mapTemplate);
 
+		/// <param name="mapTemplate">The template for the map whose panning interface was dismissed.</param>
+		/// <summary>Method that is called when a panning interface is dismissed.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("mapTemplateDidDismissPanningInterface:")]
 		void DidDismissPanningInterface (CPMapTemplate mapTemplate);
 
+		/// <param name="mapTemplate">The template for the map for which a pan was started.</param>
+		/// <param name="direction">The direction of the pan.</param>
+		/// <summary>Method that is called when a pan begins.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("mapTemplate:panBeganWithDirection:")]
 		void PanBegan (CPMapTemplate mapTemplate, CPPanDirection direction);
 
+		/// <param name="mapTemplate">The template for the map for which a pan was ended.</param>
+		/// <param name="direction">The direction of the pan.</param>
+		/// <summary>Method that is called when a pan ends.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("mapTemplate:panEndedWithDirection:")]
 		void PanEnded (CPMapTemplate mapTemplate, CPPanDirection direction);
 
+		/// <param name="mapTemplate">The template for the map to pan.</param>
+		/// <param name="direction">The direction to pan.</param>
+		/// <summary>Pans the map.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("mapTemplate:panWithDirection:")]
 		void Pan (CPMapTemplate mapTemplate, CPPanDirection direction);
 
+		/// <param name="mapTemplate">The template for the map that is panning.</param>
+		/// <summary>Method that is called when a pan gesture starts.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("mapTemplateDidBeginPanGesture:")]
 		void DidBeginPanGesture (CPMapTemplate mapTemplate);
 
+		/// <param name="mapTemplate">The template for the map whose pan gesture was updated.</param>
+		/// <param name="translation">To be added.</param>
+		/// <param name="velocity">The pan velocity.</param>
+		/// <summary>Method that is called when a pan gesture is updated.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("mapTemplate:didUpdatePanGestureWithTranslation:velocity:")]
 		void DidUpdatePanGesture (CPMapTemplate mapTemplate, CGPoint translation, CGPoint velocity);
 
+		/// <param name="mapTemplate">The template for the map whose pan gesture ended.</param>
+		/// <param name="velocity">To be added.</param>
+		/// <summary>Method that is called when a panning interface ends.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("mapTemplate:didEndPanGestureWithVelocity:")]
 		void DidEndPanGesture (CPMapTemplate mapTemplate, CGPoint velocity);
 
+		/// <param name="mapTemplate">The template for the map for which a navigation alert will be shown.</param>
+		/// <param name="navigationAlert">The navigation alert that will be shown.</param>
+		/// <summary>Method that is called just before a navigation alert is shown.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("mapTemplate:willShowNavigationAlert:")]
 		void WillShowNavigationAlert (CPMapTemplate mapTemplate, CPNavigationAlert navigationAlert);
 
+		/// <param name="mapTemplate">The template for the map for which a navigation alert was shown.</param>
+		/// <param name="navigationAlert">The alert that was shown.</param>
+		/// <summary>Method that is called when a navigation alert is shown.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("mapTemplate:didShowNavigationAlert:")]
 		void DidShowNavigationAlert (CPMapTemplate mapTemplate, CPNavigationAlert navigationAlert);
 
+		/// <param name="mapTemplate">The template for the map for which a navigation alert will be dismissed.</param>
+		/// <param name="navigationAlert">The alert that will be dismissed.</param>
+		/// <param name="dismissalContext">The reason the alert will be dismissed.</param>
+		/// <summary>Method that is called just before a navigation alert is dismissed.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("mapTemplate:willDismissNavigationAlert:dismissalContext:")]
 		void WillDismissNavigationAlert (CPMapTemplate mapTemplate, CPNavigationAlert navigationAlert, CPNavigationAlertDismissalContext dismissalContext);
 
+		/// <param name="mapTemplate">The template for the map whose navigation alert was canceled.</param>
+		/// <param name="navigationAlert">The alert that was canceled.</param>
+		/// <param name="dismissalContext">The reason the alert was dismissed.</param>
+		/// <summary>Method that is called when a navigation alert is canceled.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("mapTemplate:didDismissNavigationAlert:dismissalContext:")]
 		void DidDismissNavigationAlert (CPMapTemplate mapTemplate, CPNavigationAlert navigationAlert, CPNavigationAlertDismissalContext dismissalContext);
 
+		/// <param name="mapTemplate">To be added</param>
+		/// <param name="trip">To be added.</param>
+		/// <param name="routeChoice">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("mapTemplate:selectedPreviewForTrip:usingRouteChoice:")]
 		void SelectedPreview (CPMapTemplate mapTemplate, CPTrip trip, CPRouteChoice routeChoice);
 
+		/// <param name="mapTemplate">The template for the map on which a trip was started.</param>
+		/// <param name="trip">The trip that started.</param>
+		/// <param name="routeChoice">The route choice for the trip that started.</param>
+		/// <summary>Method that is called when a trip starts.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("mapTemplate:startedTrip:usingRouteChoice:")]
 		void StartedTrip (CPMapTemplate mapTemplate, CPTrip trip, CPRouteChoice routeChoice);
 
+		/// <param name="mapTemplate">The template for the map whose navigation was canceled.</param>
+		/// <summary>Method that is called when navigation is canceled.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("mapTemplateDidCancelNavigation:")]
 		void DidCancelNavigation (CPMapTemplate mapTemplate);
 
+		/// <param name="mapTemplate">The template for the map that .</param>
+		/// <param name="maneuver">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("mapTemplate:displayStyleForManeuver:")]
 		CPManeuverDisplayStyle GetDisplayStyle (CPMapTemplate mapTemplate, CPManeuver maneuver);
 	}
@@ -1328,6 +1444,9 @@ namespace CarPlay {
 		[Export ("searchTemplate:selectedResult:completionHandler:")]
 		void SelectedResult (CPSearchTemplate searchTemplate, CPListItem item, Action completionHandler);
 
+		/// <param name="searchTemplate">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("searchTemplateSearchButtonPressed:")]
 		void SearchButtonPressed (CPSearchTemplate searchTemplate);
 	}

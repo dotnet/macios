@@ -2113,6 +2113,9 @@ namespace CoreAnimation {
 	[Deprecated (PlatformName.iOS, 12, 0, message: "Use 'CAMetalLayer' instead.")]
 	[BaseType (typeof (CALayer))]
 	interface CAEAGLLayer : EAGLDrawable {
+		/// <summary>Creates and returns a new <see cref="T:CoreAnimation.CALayer" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("layer"), New, Static]
 		CALayer Create ();
 

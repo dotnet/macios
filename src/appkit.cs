@@ -18750,6 +18750,9 @@ namespace AppKit {
 	[NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	partial interface NSTableColumn : NSUserInterfaceItemIdentification, NSCoding {
+		/// <param name="identifier">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithIdentifier:")]
 		[Sealed]
 		NativeHandle Constructor (string identifier);
@@ -21950,22 +21953,46 @@ namespace AppKit {
 	[BaseType (typeof (NSObject))]
 	[Model, Protocol]
 	interface NSToolbarDelegate {
+		/// <param name="toolbar">To be added.</param>
+		/// <param name="itemIdentifier">To be added.</param>
+		/// <param name="willBeInserted">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Export ("toolbar:itemForItemIdentifier:willBeInsertedIntoToolbar:"), DelegateName ("NSToolbarWillInsert"), DefaultValue (null)]
 		NSToolbarItem WillInsertItem (NSToolbar toolbar, string itemIdentifier, bool willBeInserted);
 
+		/// <param name="toolbar">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("toolbarDefaultItemIdentifiers:"), DelegateName ("NSToolbarIdentifiers"), DefaultValue (null)]
 		string [] DefaultItemIdentifiers (NSToolbar toolbar);
 
+		/// <param name="toolbar">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("toolbarAllowedItemIdentifiers:"), DelegateName ("NSToolbarIdentifiers"), DefaultValue (null)]
 		string [] AllowedItemIdentifiers (NSToolbar toolbar);
 
+		/// <param name="toolbar">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("toolbarSelectableItemIdentifiers:"), DelegateName ("NSToolbarIdentifiers"), DefaultValue (null)]
 		string [] SelectableItemIdentifiers (NSToolbar toolbar);
 
+		/// <param name="notification">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("toolbarWillAddItem:"), EventArgs ("NSNotification")]
 		void WillAddItem (NSNotification notification);
 
+		/// <param name="notification">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("toolbarDidRemoveItem:"), EventArgs ("NSNotification")]
 		void DidRemoveItem (NSNotification notification);
 
@@ -22287,6 +22314,11 @@ namespace AppKit {
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface NSTouchBarDelegate {
+		/// <param name="touchBar">To be added.</param>
+		/// <param name="identifier">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("touchBar:makeItemForIdentifier:"), DelegateName ("NSTouchBarMakeItem"), DefaultValue (null)]
 		[return: NullAllowed]
 		NSTouchBarItem MakeItem (NSTouchBar touchBar, string identifier);

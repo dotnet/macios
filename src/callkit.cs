@@ -582,42 +582,91 @@ namespace CallKit {
 		[Export ("providerDidReset:")]
 		void DidReset (CXProvider provider);
 
+		/// <param name="provider">The provider to which the provider delegate belongs.</param>
+		/// <summary>The system began a call for the app.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("providerDidBegin:")]
 		void DidBegin (CXProvider provider);
 
+		/// <param name="provider">The provider to which the provider delegate belongs.</param>
+		/// <param name="transaction">The transaction to run.</param>
+		/// <summary>Atomically runs the actions that are contained in the <paramref name="transaction" />.</summary>
+		/// <returns>
+		///           <see langword="true" /> if the transaction succeeded. Otherwise, <see langword="false" />.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("provider:executeTransaction:")]
 		bool ExecuteTransaction (CXProvider provider, CXTransaction transaction);
 
+		/// <param name="provider">The provider to which the provider delegate belongs.</param>
+		/// <param name="action">The start call action to perform.</param>
+		/// <summary>Performs a start call action.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("provider:performStartCallAction:")]
 		void PerformStartCallAction (CXProvider provider, CXStartCallAction action);
 
+		/// <param name="provider">The provider to which the provider delegate belongs.</param>
+		/// <param name="action">The answer call action to perform.</param>
+		/// <summary>Performs an answer call action.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("provider:performAnswerCallAction:")]
 		void PerformAnswerCallAction (CXProvider provider, CXAnswerCallAction action);
 
+		/// <param name="provider">The provider to which the provider delegate belongs.</param>
+		/// <param name="action">The end call action to perform.</param>
+		/// <summary>Performs an end call action.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("provider:performEndCallAction:")]
 		void PerformEndCallAction (CXProvider provider, CXEndCallAction action);
 
+		/// <param name="provider">The provider to which the provider delegate belongs.</param>
+		/// <param name="action">The hold call action to perform.</param>
+		/// <summary>Performs a hold call action.</summary>
+		/// <remarks>This method can also be used to resume, or unhold, a call.</remarks>
 		[Export ("provider:performSetHeldCallAction:")]
 		void PerformSetHeldCallAction (CXProvider provider, CXSetHeldCallAction action);
 
+		/// <param name="provider">The provider to which the provider delegate belongs.</param>
+		/// <param name="action">The set muted call action to perform.</param>
+		/// <summary>Performs a set muted call action.</summary>
+		/// <remarks>This method can also be used to unmute a call.</remarks>
 		[Export ("provider:performSetMutedCallAction:")]
 		void PerformSetMutedCallAction (CXProvider provider, CXSetMutedCallAction action);
 
+		/// <param name="provider">The provider to which the provider delegate belongs.</param>
+		/// <param name="action">The set group call action to perform.</param>
+		/// <summary>Performs a set group call action.</summary>
+		/// <remarks>This method can also be used to unset a group call.</remarks>
 		[Export ("provider:performSetGroupCallAction:")]
 		void PerformSetGroupCallAction (CXProvider provider, CXSetGroupCallAction action);
 
+		/// <param name="provider">The provider to which the provider delegate belongs.</param>
+		/// <param name="action">The DTMF play call action to perform.</param>
+		/// <summary>Performs a DTMF play call action.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("provider:performPlayDTMFCallAction:")]
 		void PerformPlayDtmfCallAction (CXProvider provider, CXPlayDtmfCallAction action);
 
+		/// <param name="provider">The provider to which the provider delegate belongs.</param>
+		/// <param name="action">The action that timed out.</param>
+		/// <summary>Method that is called when a timeout is hit before an action is finished performing.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("provider:timedOutPerformingAction:")]
 		void TimedOutPerformingAction (CXProvider provider, CXAction action);
 
 		// Xcode 12 beta 1 issue, AVAudioSession does not appear on Mac OS X but this methods do: https://github.com/xamarin/maccore/issues/2257 
+		/// <param name="provider">The provider to which the provider delegate belongs.</param>
+		/// <param name="audioSession">To be added.</param>
+		/// <summary>The system activated a telephony-priority audio session for the call.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("provider:didActivateAudioSession:")]
 		void DidActivateAudioSession (CXProvider provider, AVAudioSession audioSession);
 
+		/// <param name="provider">The provider to which the provider delegate belongs.</param>
+		/// <param name="audioSession">The audio session that was deactivated.</param>
+		/// <summary>The system deactivated an audio session that the app had been using for a call.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("provider:didDeactivateAudioSession:")]

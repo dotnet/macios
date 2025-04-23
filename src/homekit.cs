@@ -105,15 +105,29 @@ namespace HomeKit {
 	[BaseType (typeof (NSObject))]
 	partial interface HMHomeManagerDelegate {
 
+		/// <param name="manager">To be added.</param>
+		/// <summary>A home in <paramref name="manager" /> was updated.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("homeManagerDidUpdateHomes:")]
 		void DidUpdateHomes (HMHomeManager manager);
 
+		/// <param name="manager">To be added.</param>
+		/// <summary>The primary home in <paramref name="manager" /> was updated.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("homeManagerDidUpdatePrimaryHome:")]
 		void DidUpdatePrimaryHome (HMHomeManager manager);
 
+		/// <param name="manager">To be added.</param>
+		/// <param name="home">To be added.</param>
+		/// <summary>The <paramref name="home" /> was added to <paramref name="manager" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("homeManager:didAddHome:"), EventArgs ("HMHomeManager")]
 		void DidAddHome (HMHomeManager manager, HMHome home);
 
+		/// <param name="manager">To be added.</param>
+		/// <param name="home">To be added.</param>
+		/// <summary>The <paramref name="home" /> was removed from <paramref name="manager" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("homeManager:didRemoveHome:"), EventArgs ("HMHomeManager")]
 		void DidRemoveHome (HMHomeManager manager, HMHome home);
 
@@ -263,32 +277,66 @@ namespace HomeKit {
 	[BaseType (typeof (NSObject))]
 	partial interface HMAccessoryDelegate {
 
+		/// <param name="accessory">To be added.</param>
+		/// <summary>The <paramref name="accessory" /> updated its name.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("accessoryDidUpdateName:")]
 		void DidUpdateName (HMAccessory accessory);
 
+		/// <param name="accessory">To be added.</param>
+		/// <param name="service">To be added.</param>
+		/// <summary>The <paramref name="accessory" /> updated the name of <paramref name="service" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("accessory:didUpdateNameForService:"), EventArgs ("HMAccessoryUpdate")]
 		void DidUpdateNameForService (HMAccessory accessory, HMService service);
 
+		/// <param name="accessory">To be added.</param>
+		/// <param name="service">To be added.</param>
+		/// <summary>The <paramref name="accessory" /> updated the service type for <paramref name="service" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("accessory:didUpdateAssociatedServiceTypeForService:"), EventArgs ("HMAccessoryUpdate")]
 		void DidUpdateAssociatedServiceType (HMAccessory accessory, HMService service);
 
+		/// <param name="accessory">To be added.</param>
+		/// <summary>The <paramref name="accessory" /> updated its services.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("accessoryDidUpdateServices:")]
 		void DidUpdateServices (HMAccessory accessory);
 
+		/// <param name="accessory">The accessory to which the profile was added.</param>
+		/// <param name="profile">The profile that was added.</param>
+		/// <summary>Method that is called when <paramref name="profile" /> was added to <paramref name="accessory" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (14, 0)]
 		[Export ("accessory:didAddProfile:"), EventArgs ("HMAccessoryProfile")]
 		void DidAddProfile (HMAccessory accessory, HMAccessoryProfile profile);
 
+		/// <param name="accessory">The accessory from which the profile was removed.</param>
+		/// <param name="profile">The profile that was removed.</param>
+		/// <summary>Method that is called when <paramref name="profile" /> was removed from <paramref name="accessory" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (14, 0)]
 		[Export ("accessory:didRemoveProfile:"), EventArgs ("HMAccessoryProfile")]
 		void DidRemoveProfile (HMAccessory accessory, HMAccessoryProfile profile);
 
+		/// <param name="accessory">To be added.</param>
+		/// <summary>Delegate method called by the system when the accessory's network visibility has changed.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("accessoryDidUpdateReachability:")]
 		void DidUpdateReachability (HMAccessory accessory);
 
+		/// <param name="accessory">To be added.</param>
+		/// <param name="service">To be added.</param>
+		/// <param name="characteristic">To be added.</param>
+		/// <summary>The <paramref name="accessory" /> updated the value of <paramref name="characteristic" /> on <paramref name="service" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("accessory:service:didUpdateValueForCharacteristic:"), EventArgs ("HMAccessoryServiceUpdateCharacteristic")]
 		void DidUpdateValueForCharacteristic (HMAccessory accessory, HMService service, HMCharacteristic characteristic);
 
+		/// <param name="accessory">The accessory whose firmware version was updated.</param>
+		/// <param name="firmwareVersion">The new firmware version.</param>
+		/// <summary>Method that is called when the firmware version of <paramref name="accessory" /> is updated to <paramref name="firmwareVersion" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (14, 0)]
 		[Export ("accessory:didUpdateFirmwareVersion:"), EventArgs ("HMAccessoryFirmwareVersion")]
 		void DidUpdateFirmwareVersion (HMAccessory accessory, string firmwareVersion);
@@ -1032,97 +1080,225 @@ namespace HomeKit {
 	[BaseType (typeof (NSObject))]
 	partial interface HMHomeDelegate {
 
+		/// <param name="home">To be added.</param>
+		/// <summary>The name of the <paramref name="home" /> was updated.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("homeDidUpdateName:")]
 		void DidUpdateNameForHome (HMHome home);
 
+		/// <param name="home">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (14, 0)]
 		[Export ("homeDidUpdateAccessControlForCurrentUser:")]
 		void DidUpdateAccessControlForCurrentUser (HMHome home);
 
+		/// <param name="home">To be added.</param>
+		/// <param name="accessory">To be added.</param>
+		/// <summary>The <paramref name="accessory" /> was added to <paramref name="home" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("home:didAddAccessory:"), EventArgs ("HMHomeAccessory")]
 		void DidAddAccessory (HMHome home, HMAccessory accessory);
 
+		/// <param name="home">To be added.</param>
+		/// <param name="accessory">To be added.</param>
+		/// <summary>The <paramref name="accessory" /> was removed from <paramref name="home" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("home:didRemoveAccessory:"), EventArgs ("HMHomeAccessory")]
 		void DidRemoveAccessory (HMHome home, HMAccessory accessory);
 
+		/// <param name="home">To be added.</param>
+		/// <param name="user">To be added.</param>
+		/// <summary>The <paramref name="user" /> was added to <paramref name="home" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("home:didAddUser:"), EventArgs ("HMHomeUser")]
 		void DidAddUser (HMHome home, HMUser user);
 
+		/// <param name="home">To be added.</param>
+		/// <param name="user">To be added.</param>
+		/// <summary>The <paramref name="user" /> was removed from <paramref name="home" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("home:didRemoveUser:"), EventArgs ("HMHomeUser")]
 		void DidRemoveUser (HMHome home, HMUser user);
 
+		/// <param name="home">To be added.</param>
+		/// <param name="room">To be added.</param>
+		/// <param name="accessory">To be added.</param>
+		/// <summary>The <paramref name="accessory" /> was assigned to <paramref name="room" />, which belongs to <paramref name="home" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("home:didUpdateRoom:forAccessory:"), EventArgs ("HMHomeRoomAccessory")]
 		void DidUpdateRoom (HMHome home, HMRoom room, HMAccessory accessory);
 
+		/// <param name="home">To be added.</param>
+		/// <param name="room">To be added.</param>
+		/// <summary>The <paramref name="room" /> was added to <paramref name="home" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("home:didAddRoom:"), EventArgs ("HMHomeRoom")]
 		void DidAddRoom (HMHome home, HMRoom room);
 
+		/// <param name="home">To be added.</param>
+		/// <param name="room">To be added.</param>
+		/// <summary>The <paramref name="room" /> was removed from <paramref name="home" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("home:didRemoveRoom:"), EventArgs ("HMHomeRoom")]
 		void DidRemoveRoom (HMHome home, HMRoom room);
 
+		/// <param name="home">To be added.</param>
+		/// <param name="room">To be added.</param>
+		/// <summary>The name of the <paramref name="room" />, which belongs to <paramref name="home" />, was updated.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("home:didUpdateNameForRoom:"), EventArgs ("HMHomeRoom")]
 		void DidUpdateNameForRoom (HMHome home, HMRoom room);
 
+		/// <param name="home">To be added.</param>
+		/// <param name="zone">To be added.</param>
+		/// <summary>The <paramref name="zone" /> was added to <paramref name="home" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("home:didAddZone:"), EventArgs ("HMHomeZone")]
 		void DidAddZone (HMHome home, HMZone zone);
 
+		/// <param name="home">To be added.</param>
+		/// <param name="zone">To be added.</param>
+		/// <summary>The <paramref name="zone" /> was removed from <paramref name="home" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("home:didRemoveZone:"), EventArgs ("HMHomeZone")]
 		void DidRemoveZone (HMHome home, HMZone zone);
 
+		/// <param name="home">To be added.</param>
+		/// <param name="zone">To be added.</param>
+		/// <summary>The name of the <paramref name="zone" />, which belongs to <paramref name="home" />, was updated.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("home:didUpdateNameForZone:"), EventArgs ("HMHomeZone")]
 		void DidUpdateNameForZone (HMHome home, HMZone zone);
 
+		/// <param name="home">To be added.</param>
+		/// <param name="room">To be added.</param>
+		/// <param name="zone">To be added.</param>
+		/// <summary>The <paramref name="room" /> was added to <paramref name="zone" />, which belongs to <paramref name="home" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("home:didAddRoom:toZone:"), EventArgs ("HMHomeRoomZone")]
 		void DidAddRoomToZone (HMHome home, HMRoom room, HMZone zone);
 
+		/// <param name="home">To be added.</param>
+		/// <param name="room">To be added.</param>
+		/// <param name="zone">To be added.</param>
+		/// <summary>The <paramref name="room" /> was removed from <paramref name="zone" />, which belongs to <paramref name="home" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("home:didRemoveRoom:fromZone:"), EventArgs ("HMHomeRoomZone")]
 		void DidRemoveRoomFromZone (HMHome home, HMRoom room, HMZone zone);
 
+		/// <param name="home">To be added.</param>
+		/// <param name="group">To be added.</param>
+		/// <summary>The <paramref name="group" /> was added to <paramref name="home" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("home:didAddServiceGroup:"), EventArgs ("HMHomeServiceGroup")]
 		void DidAddServiceGroup (HMHome home, HMServiceGroup group);
 
+		/// <param name="home">To be added.</param>
+		/// <param name="group">To be added.</param>
+		/// <summary>The <paramref name="group" /> was removed from <paramref name="home" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("home:didRemoveServiceGroup:"), EventArgs ("HMHomeServiceGroup")]
 		void DidRemoveServiceGroup (HMHome home, HMServiceGroup group);
 
+		/// <param name="home">To be added.</param>
+		/// <param name="group">To be added.</param>
+		/// <summary>The name of the <paramref name="group" />, which belongs to <paramref name="home" />, was updated.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("home:didUpdateNameForServiceGroup:"), EventArgs ("HMHomeServiceGroup")]
 		void DidUpdateNameForServiceGroup (HMHome home, HMServiceGroup group);
 
+		/// <param name="home">To be added.</param>
+		/// <param name="service">To be added.</param>
+		/// <param name="group">To be added.</param>
+		/// <summary>The <paramref name="service" /> was added to <paramref name="group" />, which belongs to <paramref name="home" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("home:didAddService:toServiceGroup:"), EventArgs ("HMHomeServiceServiceGroup")]
 		void DidAddService (HMHome home, HMService service, HMServiceGroup group);
 
+		/// <param name="home">To be added.</param>
+		/// <param name="service">To be added.</param>
+		/// <param name="group">To be added.</param>
+		/// <summary>The <paramref name="service" /> was removed from <paramref name="group" />, which belongs to <paramref name="home" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("home:didRemoveService:fromServiceGroup:"), EventArgs ("HMHomeServiceServiceGroup")]
 		void DidRemoveService (HMHome home, HMService service, HMServiceGroup group);
 
+		/// <param name="home">To be added.</param>
+		/// <param name="actionSet">To be added.</param>
+		/// <summary>The <paramref name="actionSet" /> was added to <paramref name="home" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("home:didAddActionSet:"), EventArgs ("HMHomeActionSet")]
 		void DidAddActionSet (HMHome home, HMActionSet actionSet);
 
+		/// <param name="home">To be added.</param>
+		/// <param name="actionSet">To be added.</param>
+		/// <summary>The <paramref name="actionSet" /> was removed from <paramref name="home" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("home:didRemoveActionSet:"), EventArgs ("HMHomeActionSet")]
 		void DidRemoveActionSet (HMHome home, HMActionSet actionSet);
 
+		/// <param name="home">To be added.</param>
+		/// <param name="actionSet">To be added.</param>
+		/// <summary>The name of the <paramref name="actionSet" />, which belongs to <paramref name="home" />, was updated.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("home:didUpdateNameForActionSet:"), EventArgs ("HMHomeActionSet")]
 		void DidUpdateNameForActionSet (HMHome home, HMActionSet actionSet);
 
+		/// <param name="home">To be added.</param>
+		/// <param name="actionSet">To be added.</param>
+		/// <summary>The an action in <paramref name="actionSet" />, which belongs to <paramref name="home" />, was updated.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("home:didUpdateActionsForActionSet:"), EventArgs ("HMHomeActionSet")]
 		void DidUpdateActionsForActionSet (HMHome home, HMActionSet actionSet);
 
+		/// <param name="home">To be added.</param>
+		/// <param name="trigger">To be added.</param>
+		/// <summary>The <paramref name="trigger" /> was added to <paramref name="home" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("home:didAddTrigger:"), EventArgs ("HMHomeTrigger")]
 		void DidAddTrigger (HMHome home, HMTrigger trigger);
 
+		/// <param name="home">To be added.</param>
+		/// <param name="trigger">To be added.</param>
+		/// <summary>The <paramref name="trigger" /> was removed from <paramref name="home" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("home:didRemoveTrigger:"), EventArgs ("HMHomeTrigger")]
 		void DidRemoveTrigger (HMHome home, HMTrigger trigger);
 
+		/// <param name="home">To be added.</param>
+		/// <param name="trigger">To be added.</param>
+		/// <summary>The name of the <paramref name="trigger" />, which belongs to <paramref name="home" />, was updated.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("home:didUpdateNameForTrigger:"), EventArgs ("HMHomeTrigger")]
 		void DidUpdateNameForTrigger (HMHome home, HMTrigger trigger);
 
+		/// <param name="home">To be added.</param>
+		/// <param name="trigger">To be added.</param>
+		/// <summary>The  <paramref name="trigger" />, which belongs to <paramref name="home" />, was updated.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("home:didUpdateTrigger:"), EventArgs ("HMHomeTrigger")]
 		void DidUpdateTrigger (HMHome home, HMTrigger trigger);
 
+		/// <param name="home">To be added.</param>
+		/// <param name="accessory">To be added.</param>
+		/// <summary>The <paramref name="accessory" />, which belongs to <paramref name="home" />, was unblocked.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("home:didUnblockAccessory:"), EventArgs ("HMHomeAccessory")]
 		void DidUnblockAccessory (HMHome home, HMAccessory accessory);
 
+		/// <param name="home">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <param name="accessory">To be added.</param>
+		/// <summary>The <paramref name="error" /> occurred in <paramref name="accessory" />, which belongs to <paramref name="home" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("home:didEncounterError:forAccessory:"), EventArgs ("HMHomeErrorAccessory")]
 		void DidEncounterError (HMHome home, NSError error, HMAccessory accessory);
 
+		/// <param name="home">To be added.</param>
+		/// <param name="homeHubState">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (14, 0)]
 		[Export ("home:didUpdateHomeHubState:"), EventArgs ("HMHomeHubState")]
 		void DidUpdateHomeHubState (HMHome home, HMHomeHubState homeHubState);
@@ -1964,9 +2140,19 @@ namespace HomeKit {
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface HMCameraStreamControlDelegate {
+		/// <param name="cameraStreamControl">To be added.</param>
+		/// <summary>Called by the system when the <paramref name="cameraStreamControl" /> successfully starts the video stream.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("cameraStreamControlDidStartStream:")]
 		void DidStartStream (HMCameraStreamControl cameraStreamControl);
 
+		/// <param name="cameraStreamControl">To be added.</param>
+		/// <param name="error">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Called by the system when the <paramref name="cameraStreamControl" /> video stream stops.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("cameraStreamControl:didStopStreamWithError:")]
 		void DidStopStream (HMCameraStreamControl cameraStreamControl, [NullAllowed] NSError error);
 	}
@@ -2032,9 +2218,23 @@ namespace HomeKit {
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface HMCameraSnapshotControlDelegate {
+		/// <param name="cameraSnapshotControl">To be added.</param>
+		/// <param name="snapshot">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="error">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("cameraSnapshotControl:didTakeSnapshot:error:")]
 		void DidTakeSnapshot (HMCameraSnapshotControl cameraSnapshotControl, [NullAllowed] HMCameraSnapshot snapshot, [NullAllowed] NSError error);
 
+		/// <param name="cameraSnapshotControl">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (14, 0)]
 		[Export ("cameraSnapshotControlDidUpdateMostRecentSnapshot:")]
 		void DidUpdateMostRecentSnapshot (HMCameraSnapshotControl cameraSnapshotControl);

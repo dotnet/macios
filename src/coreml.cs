@@ -1033,6 +1033,13 @@ namespace CoreML {
 		[Export ("evaluateOnCPUWithInputs:outputs:error:")]
 		bool EvaluateOnCpu (MLMultiArray [] inputs, MLMultiArray [] outputs, [NullAllowed] out NSError error);
 
+		/// <param name="commandBuffer">To be added.</param>
+		/// <param name="inputs">To be added.</param>
+		/// <param name="outputs">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>Sets <paramref name="outputs" /> by applying <paramref name="inputs" /> to the function described by <paramref name="commandBuffer" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("encodeToCommandBuffer:inputs:outputs:error:")]
 		bool Encode (IMTLCommandBuffer commandBuffer, IMTLTexture [] inputs, IMTLTexture [] outputs, [NullAllowed] out NSError error);
 	}

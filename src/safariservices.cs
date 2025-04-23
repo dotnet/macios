@@ -521,35 +521,72 @@ namespace SafariServices {
 	[NoMacCatalyst]
 	[Protocol]
 	interface SFSafariExtensionHandling {
+		/// <param name="messageName">To be added.</param>
+		/// <param name="page">To be added.</param>
+		/// <param name="userInfo">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("messageReceivedWithName:fromPage:userInfo:")]
 		void MessageReceived (string messageName, SFSafariPage page, [NullAllowed] NSDictionary userInfo);
 
+		/// <param name="window">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("toolbarItemClickedInWindow:")]
 		void ToolbarItemClicked (SFSafariWindow window);
 
+		/// <param name="window">To be added.</param>
+		/// <param name="validationHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Async (ResultTypeName = "SFValidationResult")]
 		[Export ("validateToolbarItemInWindow:validationHandler:")]
 		void ValidateToolbarItem (SFSafariWindow window, Action<bool, NSString> validationHandler);
 
+		/// <param name="command">To be added.</param>
+		/// <param name="page">To be added.</param>
+		/// <param name="userInfo">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("contextMenuItemSelectedWithCommand:inPage:userInfo:")]
 		void ContextMenuItemSelected (string command, SFSafariPage page, [NullAllowed] NSDictionary userInfo);
 
+		/// <param name="window">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("popoverWillShowInWindow:")]
 		void PopoverWillShow (SFSafariWindow window);
 
+		/// <param name="window">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("popoverDidCloseInWindow:")]
 		void PopoverDidClose (SFSafariWindow window);
 
 		[Export ("popoverViewController")]
 		SFSafariExtensionViewController PopoverViewController { get; }
 
+		/// <param name="command">To be added.</param>
+		/// <param name="page">To be added.</param>
+		/// <param name="userInfo">To be added.</param>
+		/// <param name="validationHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Async (ResultTypeName = "SFExtensionValidationResult")]
 		[Export ("validateContextMenuItemWithCommand:inPage:userInfo:validationHandler:")]
 		void ValidateContextMenuItem (string command, SFSafariPage page, [NullAllowed] NSDictionary<NSString, NSObject> userInfo, SFExtensionValidationHandler validationHandler);
 
+		/// <param name="messageName">To be added.</param>
+		/// <param name="userInfo">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("messageReceivedFromContainingAppWithName:userInfo:")]
 		void MessageReceivedFromContainingApp (string messageName, [NullAllowed] NSDictionary<NSString, NSObject> userInfo);
 
+		/// <param name="url">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("additionalRequestHeadersForURL:completionHandler:")]
 		void AdditionalRequestHeaders (NSUrl url, Action<NSDictionary<NSString, NSString>> completionHandler);
 
@@ -733,6 +770,10 @@ namespace SafariServices {
 	[NoMacCatalyst]
 	[BaseType (typeof (NSViewController))]
 	interface SFSafariExtensionViewController {
+		/// <param name="nibNameOrNull">To be added.</param>
+		/// <param name="nibBundleOrNull">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithNibName:bundle:")]
 		NativeHandle Constructor ([NullAllowed] string nibNameOrNull, [NullAllowed] NSBundle nibBundleOrNull);
 

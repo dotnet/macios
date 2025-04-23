@@ -465,15 +465,30 @@ namespace StoreKit {
 		[Abstract]
 		void UpdatedTransactions (SKPaymentQueue queue, SKPaymentTransaction [] transactions);
 
+		/// <param name="queue">To be added.</param>
+		/// <param name="transactions">To be added.</param>
+		/// <summary>Method that is called after transactions have been removed from the queue.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("paymentQueue:removedTransactions:")]
 		void RemovedTransactions (SKPaymentQueue queue, SKPaymentTransaction [] transactions);
 
+		/// <param name="queue">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>Method that is called when an error occurs while restoring transactions.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("paymentQueue:restoreCompletedTransactionsFailedWithError:")]
 		void RestoreCompletedTransactionsFailedWithError (SKPaymentQueue queue, NSError error);
 
+		/// <param name="queue">To be added.</param>
+		/// <summary>Method that is called after transactions have been restored.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("paymentQueueRestoreCompletedTransactionsFinished:")]
 		void RestoreCompletedTransactionsFinished (SKPaymentQueue queue);
 
+		/// <param name="queue">To be added.</param>
+		/// <param name="downloads">To be added.</param>
+		/// <summary>Method that is called when one or more downloads has been updated by the queue.</summary>
+		/// <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 16, 0)]
 		[Deprecated (PlatformName.MacOSX, 13, 0)]
 		[Deprecated (PlatformName.TvOS, 16, 0)]
@@ -481,6 +496,12 @@ namespace StoreKit {
 		[Export ("paymentQueue:updatedDownloads:")]
 		void UpdatedDownloads (SKPaymentQueue queue, SKDownload [] downloads);
 
+		/// <param name="queue">The payment queue on which the payment was made.</param>
+		/// <param name="payment">The payment.</param>
+		/// <param name="product">The product that was paid for.</param>
+		/// <summary>Called to indicate that the user has started an in-app App Store purchase.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("paymentQueue:shouldAddStorePayment:forProduct:")]
 		bool ShouldAddStorePayment (SKPaymentQueue queue, SKPayment payment, SKProduct product);
@@ -582,9 +603,16 @@ namespace StoreKit {
 	[Model]
 	[Protocol]
 	interface SKRequestDelegate {
+		/// <param name="request">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("requestDidFinish:")]
 		void RequestFinished (SKRequest request);
 
+		/// <param name="request">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("request:didFailWithError:"), EventArgs ("SKRequestError")]
 		void RequestFailed (SKRequest request, NSError error);
 	}
@@ -769,6 +797,9 @@ namespace StoreKit {
 	[Model]
 	[Protocol]
 	interface SKStoreProductViewControllerDelegate {
+		/// <param name="controller">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("productViewControllerDidFinish:"), EventArgs ("SKStoreProductViewController")]
 		void Finished (SKStoreProductViewController controller);
 	}
@@ -1007,6 +1038,9 @@ namespace StoreKit {
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface SKCloudServiceSetupViewControllerDelegate {
+		/// <param name="cloudServiceSetupViewController">The view controller that was dismissed.</param>
+		/// <summary>Method that is called after the setup view has been dismissed.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("cloudServiceSetupViewControllerDidDismiss:")]
 		void DidDismiss (SKCloudServiceSetupViewController cloudServiceSetupViewController);
 	}

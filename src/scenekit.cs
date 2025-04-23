@@ -649,9 +649,15 @@ namespace SceneKit {
 	[Model] // Figured I would keep the model for convenience, as all the methods here are optional
 	[BaseType (typeof (NSObject))]
 	interface SCNCameraControllerDelegate {
+		/// <param name="cameraController">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("cameraInertiaWillStartForController:")]
 		void CameraInertiaWillStart (SCNCameraController cameraController);
 
+		/// <param name="cameraController">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("cameraInertiaDidEndForController:")]
 		void CameraInertiaDidEnd (SCNCameraController cameraController);
 	}
@@ -2709,6 +2715,14 @@ namespace SceneKit {
 	[BaseType (typeof (NSObject))]
 	[Model, Protocol]
 	interface SCNNodeRendererDelegate {
+		/// <param name="node">To be added.</param>
+		/// <param name="renderer">To be added.</param>
+		/// <param name="arguments">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("renderNode:renderer:arguments:")]
 		void Render (SCNNode node, SCNRenderer renderer, NSDictionary arguments);
 	}
@@ -2858,6 +2872,10 @@ namespace SceneKit {
 		[Export ("program:unbindValueForSymbol:atLocation:programID:renderer:")]
 		void UnbindValue (SCNProgram program, string symbol, uint /* unsigned int */ location, uint /* unsigned int */ programID, SCNRenderer renderer);
 
+		/// <param name="program">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("program:handleError:")]
 		void HandleError (SCNProgram program, NSError error);
 
@@ -3228,6 +3246,15 @@ namespace SceneKit {
 	[BaseType (typeof (NSObject))]
 	interface SCNSceneExportDelegate {
 
+		/// <param name="image">To be added.</param>
+		/// <param name="documentUrl">To be added.</param>
+		/// <param name="originalImageUrl">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("writeImage:withSceneDocumentURL:originalImageURL:")]
 		[return: NullAllowed]
 		NSUrl WriteImage (NSImage image, NSUrl documentUrl, [NullAllowed] NSUrl originalImageUrl);
@@ -3832,24 +3859,50 @@ namespace SceneKit {
 	[BaseType (typeof (NSObject))]
 	interface SCNSceneRendererDelegate {
 
+		/// <param name="renderer">To be added.</param>
+		/// <param name="scene">To be added.</param>
+		/// <param name="timeInSeconds">To be added.</param>
+		/// <summary>Developers may override this method to do processing immediately prior to the rendering of the scene.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("renderer:willRenderScene:atTime:")]
 		void WillRenderScene (ISCNSceneRenderer renderer, SCNScene scene, double timeInSeconds);
 
+		/// <param name="renderer">To be added.</param>
+		/// <param name="scene">To be added.</param>
+		/// <param name="timeInSeconds">To be added.</param>
+		/// <summary>This method is called shortly after the scene has been rendered.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("renderer:didRenderScene:atTime:")]
 		void DidRenderScene (ISCNSceneRenderer renderer, SCNScene scene, double timeInSeconds);
 
+		/// <param name="renderer">To be added.</param>
+		/// <param name="timeInSeconds">To be added.</param>
+		/// <summary>Developers may override this method to perform processing prior to any actions, animations, or physics simulations.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("renderer:updateAtTime:")]
 		void Update (ISCNSceneRenderer renderer, double timeInSeconds);
 
+		/// <param name="renderer">To be added.</param>
+		/// <param name="timeInSeconds">To be added.</param>
+		/// <summary>Developers may override this method to react to the completion of animations.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("renderer:didApplyAnimationsAtTime:")]
 		void DidApplyAnimations (ISCNSceneRenderer renderer, double timeInSeconds);
 
+		/// <param name="renderer">To be added.</param>
+		/// <param name="timeInSeconds">To be added.</param>
+		/// <summary>This method is called shortly after physics have been simulated.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("renderer:didSimulatePhysicsAtTime:")]
 		void DidSimulatePhysics (ISCNSceneRenderer renderer, double timeInSeconds);
 
+		/// <param name="renderer">To be added.</param>
+		/// <param name="atTime">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("renderer:didApplyConstraintsAtTime:")]
 		void DidApplyConstraints (ISCNSceneRenderer renderer, double atTime);
@@ -4687,10 +4740,18 @@ namespace SceneKit {
 		[Export ("program", ArgumentSemantic.Retain)]
 		SCNProgram Program { get; set; }
 
+		/// <param name="symbol">To be added.</param>
+		/// <param name="handler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("handleBindingOfSymbol:usingBlock:")]
 		void HandleBinding (string symbol, [NullAllowed] SCNBindingHandler handler);
 
+		/// <param name="symbol">To be added.</param>
+		/// <param name="handler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("handleUnbindingOfSymbol:usingBlock:")]
 		void HandleUnbinding (string symbol, [NullAllowed] SCNBindingHandler handler);
@@ -5272,12 +5333,24 @@ namespace SceneKit {
 	[BaseType (typeof (NSObject))]
 	interface SCNPhysicsContactDelegate {
 
+		/// <param name="world">To be added.</param>
+		/// <param name="contact">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("physicsWorld:didBeginContact:"), EventArgs ("SCNPhysicsContact")]
 		void DidBeginContact (SCNPhysicsWorld world, SCNPhysicsContact contact);
 
+		/// <param name="world">To be added.</param>
+		/// <param name="contact">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("physicsWorld:didUpdateContact:"), EventArgs ("SCNPhysicsContact")]
 		void DidUpdateContact (SCNPhysicsWorld world, SCNPhysicsContact contact);
 
+		/// <param name="world">To be added.</param>
+		/// <param name="contact">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("physicsWorld:didEndContact:"), EventArgs ("SCNPhysicsContact")]
 		void DidEndContact (SCNPhysicsWorld world, SCNPhysicsContact contact);
 	}
@@ -6189,9 +6262,20 @@ namespace SceneKit {
 	[BaseType (typeof (NSObject))]
 	interface SCNAvoidOccluderConstraintDelegate {
 
+		/// <param name="constraint">To be added.</param>
+		/// <param name="occluder">To be added.</param>
+		/// <param name="node">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("avoidOccluderConstraint:shouldAvoidOccluder:forNode:")]
 		bool ShouldAvoidOccluder (SCNAvoidOccluderConstraint constraint, SCNNode occluder, SCNNode node);
 
+		/// <param name="constraint">To be added.</param>
+		/// <param name="occluder">To be added.</param>
+		/// <param name="node">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("avoidOccluderConstraint:didAvoidOccluder:forNode:")]
 		void DidAvoidOccluder (SCNAvoidOccluderConstraint constraint, SCNNode occluder, SCNNode node);
 	}

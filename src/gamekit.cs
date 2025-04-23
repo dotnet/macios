@@ -93,15 +93,40 @@ namespace GameKit {
 		[Abstract]
 		string ParticipantID ();
 
+		/// <param name="voiceChatService">To be added.</param>
+		/// <param name="data">To be added.</param>
+		/// <param name="participantID">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("voiceChatService:sendRealTimeData:toParticipantID:")]
 		void SendRealTimeData (GKVoiceChatService voiceChatService, NSData data, string participantID);
 
+		/// <param name="voiceChatService">To be added.</param>
+		/// <param name="participantID">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("voiceChatService:didStartWithParticipantID:")]
 		void Started (GKVoiceChatService voiceChatService, string participantID);
 
+		/// <param name="voiceChatService">To be added.</param>
+		/// <param name="participantID">To be added.</param>
+		/// <param name="error">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("voiceChatService:didNotStartWithParticipantID:error:")]
 		void FailedToConnect (GKVoiceChatService voiceChatService, string participantID, [NullAllowed] NSError error);
 
+		/// <param name="voiceChatService">To be added.</param>
+		/// <param name="participantID">To be added.</param>
+		/// <param name="error">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("voiceChatService:didStopWithParticipantID:error:")]
 		void Stopped (GKVoiceChatService voiceChatService, string participantID, [NullAllowed] NSError error);
 
@@ -1130,9 +1155,17 @@ namespace GameKit {
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface GKSavedGameListener {
+		/// <param name="player">To be added.</param>
+		/// <param name="savedGame">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("player:didModifySavedGame:")]
 		void DidModifySavedGame (GKPlayer player, GKSavedGame savedGame);
 
+		/// <param name="player">To be added.</param>
+		/// <param name="savedGames">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("player:hasConflictingSavedGames:")]
 		void HasConflictingSavedGames (GKPlayer player, GKSavedGame [] savedGames);
 	}
@@ -1234,6 +1267,11 @@ namespace GameKit {
 	[Protocol]
 	interface GKMatchDelegate {
 
+		/// <param name="match">To be added.</param>
+		/// <param name="data">To be added.</param>
+		/// <param name="playerId">To be added.</param>
+		/// <summary>Developers should not use this deprecated method. Developers should use 'DataReceivedFromPlayer (GKMatch,NSData,GKPlayer)' instead.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 8, 0, message: "Use 'DataReceivedFromPlayer (GKMatch,NSData,GKPlayer)' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 10, message: "Use 'DataReceivedFromPlayer (GKMatch,NSData,GKPlayer)' instead.")]
@@ -1242,6 +1280,11 @@ namespace GameKit {
 		[Export ("match:didReceiveData:fromPlayer:"), EventArgs ("GKData")]
 		void DataReceived (GKMatch match, NSData data, string playerId);
 
+		/// <param name="match">To be added.</param>
+		/// <param name="playerId">To be added.</param>
+		/// <param name="state">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 8, 0, message: "Use 'StateChangedForPlayer (GKMatch,GKPlayer,GKPlayerConnectionState)' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 8, message: "Use 'StateChangedForPlayer (GKMatch,GKPlayer,GKPlayerConnectionState)' instead.")]
@@ -1250,9 +1293,21 @@ namespace GameKit {
 		[Export ("match:player:didChangeState:"), EventArgs ("GKState")]
 		void StateChanged (GKMatch match, string playerId, GKPlayerConnectionState state);
 
+		/// <param name="match">To be added.</param>
+		/// <param name="error">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Method that is called when a match cannot connect to any of the players.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("match:didFailWithError:"), EventArgs ("GKError")]
 		void Failed (GKMatch match, [NullAllowed] NSError error);
 
+		/// <param name="match">To be added.</param>
+		/// <param name="playerId">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 8, 0, message: "Use 'ShouldReinviteDisconnectedPlayer' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 10, message: "Use 'ShouldReinviteDisconnectedPlayer' instead.")]
@@ -1261,18 +1316,39 @@ namespace GameKit {
 		[Export ("match:shouldReinvitePlayer:"), DelegateName ("GKMatchReinvitation"), DefaultValue (true)]
 		bool ShouldReinvitePlayer (GKMatch match, string playerId);
 
+		/// <param name="match">To be added.</param>
+		/// <param name="data">To be added.</param>
+		/// <param name="player">To be added.</param>
+		/// <summary>Method that is called when data is received from a player.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("match:didReceiveData:fromRemotePlayer:"), EventArgs ("GKMatchReceivedDataFromRemotePlayer")]
 		void DataReceivedFromPlayer (GKMatch match, NSData data, GKPlayer player);
 
+		/// <param name="match">To be added.</param>
+		/// <param name="player">To be added.</param>
+		/// <param name="state">To be added.</param>
+		/// <summary>Method that is called when a player's connection state changes.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("match:player:didChangeConnectionState:"), EventArgs ("GKMatchConnectionChanged")]
 		void StateChangedForPlayer (GKMatch match, GKPlayer player, GKPlayerConnectionState state);
 
+		/// <param name="match">To be added.</param>
+		/// <param name="player">To be added.</param>
+		/// <summary>Method that is called when a player is disconnected from a two-player match.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("match:shouldReinviteDisconnectedPlayer:")]
 		[DelegateName ("GKMatchReinvitationForDisconnectedPlayer"), DefaultValue (true)]
 		bool ShouldReinviteDisconnectedPlayer (GKMatch match, GKPlayer player);
 
+		/// <param name="match">To be added.</param>
+		/// <param name="data">To be added.</param>
+		/// <param name="recipient">To be added.</param>
+		/// <param name="player">To be added.</param>
+		/// <summary>Method that is called when the <paramref name="recipient" /> recieves data from another <paramref name="player" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("match:didReceiveData:forRecipient:fromRemotePlayer:"), EventArgs ("GKDataReceivedForRecipient")]
 		void DataReceivedForRecipient (GKMatch match, NSData data, GKPlayer recipient, GKPlayer player);
@@ -1618,6 +1694,10 @@ namespace GameKit {
 	: GKViewController
 #endif
 	{
+		/// <param name="nibNameOrNull">To be added.</param>
+		/// <param name="nibBundleOrNull">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
 		[Export ("initWithNibName:bundle:")]
@@ -1721,6 +1801,10 @@ namespace GameKit {
 		[Export ("matchmakerViewController:didFindHostedPlayers:"), EventArgs ("GKMatchmakingPlayers")]
 		void DidFindHostedPlayers (GKMatchmakerViewController viewController, GKPlayer [] playerIDs);
 
+		/// <param name="viewController">To be added.</param>
+		/// <param name="playerID">To be added.</param>
+		/// <summary>Developers should not use this deprecated method. Developers should use 'HostedPlayerDidAccept' instead.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 8, 0, message: "Use 'HostedPlayerDidAccept' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 10, message: "Use 'HostedPlayerDidAccept' instead.")]
@@ -1729,6 +1813,10 @@ namespace GameKit {
 		[Export ("matchmakerViewController:didReceiveAcceptFromHostedPlayer:"), EventArgs ("GKPlayer")]
 		void ReceivedAcceptFromHostedPlayer (GKMatchmakerViewController viewController, string playerID);
 
+		/// <param name="viewController">To be added.</param>
+		/// <param name="playerID">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("matchmakerViewController:hostedPlayerDidAccept:"), EventArgs ("GKMatchmakingPlayer")]
 		void HostedPlayerDidAccept (GKMatchmakerViewController viewController, GKPlayer playerID);
@@ -2097,6 +2185,10 @@ namespace GameKit {
 #if MONOMAC
 	[BaseType (typeof (NSViewController), Events = new Type [] { typeof (GKFriendRequestComposeViewControllerDelegate) }, Delegates = new string [] { "WeakComposeViewDelegate" })]
 	interface GKFriendRequestComposeViewController : GKViewController {
+		/// <param name="nibNameOrNull">To be added.</param>
+		/// <param name="nibBundleOrNull">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithNibName:bundle:")]
 		[NoiOS]
 		NativeHandle Constructor ([NullAllowed] string nibNameOrNull, [NullAllowed] NSBundle nibBundleOrNull);
@@ -2252,12 +2344,18 @@ namespace GameKit {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 		void HandleInviteFromGameCenter (NSString [] playersToInvite);
 
+		/// <param name="match">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 7, 0, message: "Use 'HandleTurnEvent' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 9, message: "Use 'HandleTurnEvent' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'HandleTurnEvent' instead.")]
 		[Export ("handleTurnEventForMatch:")]
 		void HandleTurnEventForMatch (GKTurnBasedMatch match);
 
+		/// <param name="match">To be added.</param>
+		/// <summary>Developers should not use this deprecated method. </summary>
+		/// <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 7, 0)]
 		[Deprecated (PlatformName.MacOSX, 10, 10)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
@@ -2594,6 +2692,10 @@ namespace GameKit {
 	interface GKTurnBasedMatchmakerViewController : UIAppearance
 #endif
 		{
+		/// <param name="nibNameOrNull">To be added.</param>
+		/// <param name="nibBundleOrNull">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
 		[Export ("initWithNibName:bundle:")]
@@ -2754,6 +2856,10 @@ namespace GameKit {
 	: GKViewController
 #endif
 	{
+		/// <param name="nibNameOrNull">To be added.</param>
+		/// <param name="nibBundleOrNull">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
 		[Export ("initWithNibName:bundle:")]
@@ -2898,27 +3004,51 @@ namespace GameKit {
 	[BaseType (typeof (NSObject))]
 	[Protocol]
 	interface GKChallengeEventHandlerDelegate {
+		/// <param name="challenge">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("localPlayerDidSelectChallenge:")]
 		void LocalPlayerSelectedChallenge (GKChallenge challenge);
 
+		/// <param name="challenge">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("shouldShowBannerForLocallyReceivedChallenge:")]
 		[DelegateName ("GKChallengePredicate"), DefaultValue (true)]
 		bool ShouldShowBannerForLocallyReceivedChallenge (GKChallenge challenge);
 
+		/// <param name="challenge">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("localPlayerDidReceiveChallenge:")]
 		void LocalPlayerReceivedChallenge (GKChallenge challenge);
 
+		/// <param name="challenge">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("shouldShowBannerForLocallyCompletedChallenge:")]
 		[DelegateName ("GKChallengePredicate"), DefaultValue (true)]
 		bool ShouldShowBannerForLocallyCompletedChallenge (GKChallenge challenge);
 
+		/// <param name="challenge">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("localPlayerDidCompleteChallenge:")]
 		void LocalPlayerCompletedChallenge (GKChallenge challenge);
 
+		/// <param name="challenge">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("shouldShowBannerForRemotelyCompletedChallenge:")]
 		[DelegateName ("GKChallengePredicate"), DefaultValue (true)]
 		bool ShouldShowBannerForRemotelyCompletedChallenge (GKChallenge challenge);
 
+		/// <param name="challenge">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("remotePlayerDidCompleteChallenge:")]
 		void RemotePlayerCompletedChallenge (GKChallenge challenge);
 	}
@@ -3039,15 +3169,33 @@ namespace GameKit {
 	[MacCatalyst (13, 1)]
 	[Model, Protocol, BaseType (typeof (NSObject))]
 	interface GKChallengeListener {
+		/// <param name="player">To be added.</param>
+		/// <param name="challenge">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("player:wantsToPlayChallenge:")]
 		void WantsToPlayChallenge (GKPlayer player, GKChallenge challenge);
 
+		/// <param name="player">To be added.</param>
+		/// <param name="challenge">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("player:didReceiveChallenge:")]
 		void DidReceiveChallenge (GKPlayer player, GKChallenge challenge);
 
+		/// <param name="player">To be added.</param>
+		/// <param name="challenge">To be added.</param>
+		/// <param name="friendPlayer">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("player:didCompleteChallenge:issuedByFriend:")]
 		void DidCompleteChallenge (GKPlayer player, GKChallenge challenge, GKPlayer friendPlayer);
 
+		/// <param name="player">To be added.</param>
+		/// <param name="challenge">To be added.</param>
+		/// <param name="friendPlayer">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("player:issuedChallengeWasCompleted:byFriend:")]
 		void IssuedChallengeWasCompleted (GKPlayer player, GKChallenge challenge, GKPlayer friendPlayer);
 	}
@@ -3055,10 +3203,18 @@ namespace GameKit {
 	[MacCatalyst (13, 1)]
 	[Protocol, Model, BaseType (typeof (NSObject))]
 	interface GKInviteEventListener {
+		/// <param name="player">To be added.</param>
+		/// <param name="invite">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("player:didAcceptInvite:")]
 		void DidAcceptInvite (GKPlayer player, GKInvite invite);
 
+		/// <param name="player">To be added.</param>
+		/// <param name="playerIDs">To be added.</param>
+		/// <summary>Developers should not use this deprecated method. Developers should use 'DidRequestMatch (GKPlayer player, GKPlayer[] recipientPlayers)' instead.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoMac]
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 8, 0, message: "Use 'DidRequestMatch (GKPlayer player, GKPlayer[] recipientPlayers)' instead.")]
@@ -3067,6 +3223,10 @@ namespace GameKit {
 		[Export ("player:didRequestMatchWithPlayers:")]
 		void DidRequestMatch (GKPlayer player, string [] playerIDs);
 
+		/// <param name="player">To be added.</param>
+		/// <param name="recipientPlayers">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("player:didRequestMatchWithRecipients:")]
 		void DidRequestMatch (GKPlayer player, GKPlayer [] recipientPlayers);
@@ -3075,6 +3235,10 @@ namespace GameKit {
 	[MacCatalyst (13, 1)]
 	[Model, Protocol, BaseType (typeof (NSObject))]
 	interface GKTurnBasedEventListener {
+		/// <param name="player">To be added.</param>
+		/// <param name="playerIDsToInvite">To be added.</param>
+		/// <summary>Developers should not use this deprecated method. Developers should use 'DidRequestMatchWithOtherPlayers' instead.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoMac]
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 8, 0, message: "Use 'DidRequestMatchWithOtherPlayers' instead.")]
@@ -3083,25 +3247,58 @@ namespace GameKit {
 		[Export ("player:didRequestMatchWithPlayers:")]
 		void DidRequestMatchWithPlayers (GKPlayer player, string [] playerIDsToInvite);
 
+		/// <param name="player">To be added.</param>
+		/// <param name="match">To be added.</param>
+		/// <param name="becameActive">To be added.</param>
+		/// <summary>Method that is called to activate a turn for <paramref name="player" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("player:receivedTurnEventForMatch:didBecomeActive:")]
 		void ReceivedTurnEvent (GKPlayer player, GKTurnBasedMatch match, bool becameActive);
 
+		/// <param name="player">To be added.</param>
+		/// <param name="match">To be added.</param>
+		/// <summary>Method that is called after the <paramref name="match" /> is ended.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("player:matchEnded:")]
 		void MatchEnded (GKPlayer player, GKTurnBasedMatch match);
 
+		/// <param name="player">To be added.</param>
+		/// <param name="exchange">To be added.</param>
+		/// <param name="match">To be added.</param>
+		/// <summary>Method that is called when <paramref name="player" /> receives a request for an <paramref name="exchange" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("player:receivedExchangeRequest:forMatch:")]
 		void ReceivedExchangeRequest (GKPlayer player, GKTurnBasedExchange exchange, GKTurnBasedMatch match);
 
+		/// <param name="player">To be added.</param>
+		/// <param name="exchange">To be added.</param>
+		/// <param name="match">To be added.</param>
+		/// <summary>Method that is called after <paramref name="player" /> cancels the <paramref name="exchange" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("player:receivedExchangeCancellation:forMatch:")]
 		void ReceivedExchangeCancellation (GKPlayer player, GKTurnBasedExchange exchange, GKTurnBasedMatch match);
 
+		/// <param name="player">To be added.</param>
+		/// <param name="replies">To be added.</param>
+		/// <param name="exchange">To be added.</param>
+		/// <param name="match">To be added.</param>
+		/// <summary>Method that is called after the <paramref name="exchange" /> with <paramref name="player" /> completes.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("player:receivedExchangeReplies:forCompletedExchange:forMatch:")]
 		void ReceivedExchangeReplies (GKPlayer player, GKTurnBasedExchangeReply [] replies, GKTurnBasedExchange exchange, GKTurnBasedMatch match);
 
+		/// <param name="player">To be added.</param>
+		/// <param name="playersToInvite">To be added.</param>
+		/// <summary>Method that is called when <paramref name="player" /> requests a match with <paramref name="playersToInvite" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("player:didRequestMatchWithOtherPlayers:")]
 		void DidRequestMatchWithOtherPlayers (GKPlayer player, GKPlayer [] playersToInvite);
 
+		/// <param name="player">To be added.</param>
+		/// <param name="match">To be added.</param>
+		/// <summary>Method that is called after <paramref name="player" /> indicates that they desire to quit the match.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("player:wantsToQuitMatch:")]
 		void WantsToQuitMatch (GKPlayer player, GKTurnBasedMatch match);
@@ -3269,21 +3466,50 @@ namespace GameKit {
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'GKLocalPlayerListener' instead.")]
 	[Protocol]
 	interface GKGameSessionEventListener {
+		/// <param name="session">To be added.</param>
+		/// <param name="player">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("session:didAddPlayer:")]
 		void DidAddPlayer (GKGameSession session, GKCloudPlayer player);
 
+		/// <param name="session">To be added.</param>
+		/// <param name="player">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("session:didRemovePlayer:")]
 		void DidRemovePlayer (GKGameSession session, GKCloudPlayer player);
 
+		/// <param name="session">To be added.</param>
+		/// <param name="player">To be added.</param>
+		/// <param name="newState">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("session:player:didChangeConnectionState:")]
 		void DidChangeConnectionState (GKGameSession session, GKCloudPlayer player, GKConnectionState newState);
 
+		/// <param name="session">To be added.</param>
+		/// <param name="player">To be added.</param>
+		/// <param name="data">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("session:player:didSaveData:")]
 		void DidSaveData (GKGameSession session, GKCloudPlayer player, NSData data);
 
+		/// <param name="session">To be added.</param>
+		/// <param name="data">To be added.</param>
+		/// <param name="player">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("session:didReceiveData:fromPlayer:")]
 		void DidReceiveData (GKGameSession session, NSData data, GKCloudPlayer player);
 
+		/// <param name="session">To be added.</param>
+		/// <param name="message">To be added.</param>
+		/// <param name="data">To be added.</param>
+		/// <param name="player">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("session:didReceiveMessage:withData:fromPlayer:")]
 		void DidReceiveMessage (GKGameSession session, string message, NSData data, GKCloudPlayer player);
 	}
@@ -3341,6 +3567,10 @@ namespace GameKit {
 	[BaseType (typeof (NSViewController))]
 	interface GKChallengesViewController : GKViewController {
 
+		/// <param name="nibName">To be added.</param>
+		/// <param name="bundle">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithNibName:bundle:")]
 		NativeHandle Constructor ([NullAllowed] string nibName, [NullAllowed] NSBundle bundle);
 
@@ -3374,15 +3604,33 @@ namespace GameKit {
 	[Model]
 	[Protocol]
 	interface GKSessionDelegate {
+		/// <param name="session">To be added.</param>
+		/// <param name="peerID">To be added.</param>
+		/// <param name="state">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("session:peer:didChangeState:")]
 		void PeerChangedState (GKSession session, string peerID, GKPeerConnectionState state);
 
+		/// <param name="session">To be added.</param>
+		/// <param name="peerID">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("session:didReceiveConnectionRequestFromPeer:")]
 		void PeerConnectionRequest (GKSession session, string peerID);
 
+		/// <param name="session">To be added.</param>
+		/// <param name="peerID">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("session:connectionWithPeerFailed:withError:")]
 		void PeerConnectionFailed (GKSession session, string peerID, NSError error);
 
+		/// <param name="session">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("session:didFailWithError:")]
 		void FailedWithError (GKSession session, NSError error);
 	}

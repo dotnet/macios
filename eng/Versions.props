@@ -10,7 +10,7 @@
     <MicrosoftNETCoreAppRefPackageVersion>10.0.0-preview.4.25217.10</MicrosoftNETCoreAppRefPackageVersion>
     <MicrosoftNETWorkloadEmscriptenCurrentManifest80100TransportVersion>8.0.0-rtm.23511.3</MicrosoftNETWorkloadEmscriptenCurrentManifest80100TransportVersion>
     <MicrosoftNETRuntimeMonoTargetsSdkPackageVersion>9.0.0-rc.2.24462.10</MicrosoftNETRuntimeMonoTargetsSdkPackageVersion>
-    <MicrosoftTemplateEngineTasksVersion>7.0.100-alpha.1.21601.1</MicrosoftTemplateEngineTasksVersion>
+    <MicrosoftTemplateEngineAuthoringTasksPackageVersion>9.0.201</MicrosoftTemplateEngineAuthoringTasksPackageVersion>
     <MicrosoftDotNetCecilPackageVersion>0.11.5-alpha.25125.1</MicrosoftDotNetCecilPackageVersion>
     <MicrosoftDotNetXHarnessiOSSharedPackageVersion>10.0.0-prerelease.25207.6</MicrosoftDotNetXHarnessiOSSharedPackageVersion>
     <MicrosoftDotNetArcadeSdkPackageVersion>9.0.0-beta.25058.5</MicrosoftDotNetArcadeSdkPackageVersion>

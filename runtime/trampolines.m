@@ -1137,36 +1137,8 @@ void *xamarin_nsvalue_to_scnmatrix4             (NSValue *value, void *ptr, Mono
 void *
 xamarin_nsvalue_to_scnvector3 (NSValue *value, void *ptr, MonoClass *managedType, void *context, GCHandle *exception_gchandle)
 {
-#if TARGET_OS_IOS && defined (__arm__)
-	// In earlier versions of iOS [NSValue SCNVector3Value] would return 4
-	// floats. This does not cause problems on 64-bit architectures, because
-	// the 4 floats end up in floating point registers that doesn't need to be
-	// preserved. On 32-bit architectures it becomes a real problem though,
-	// since objc_msgSend_stret will be called, and the return value will be
-	// written to the stack. Writing 4 floats to the stack, when clang
-	// allocates 3 bytes, is a bad idea. There's no radar since this has
-	// already been fixed in iOS, it only affects older versions.
-
-	// So we have to avoid the SCNVector3Value selector on 32-bit
-	// architectures, since we can't influence how clang generates the call.
-	// Instead use [NSValue getValue:]. Interestingly enough this function has
-	// the same bug: it will write 4 floats on 32-bit architectures (and
-	// amazingly 4 *doubles* on 64-bit architectures - this has been filed as
-	// radar 33104111), but since we control the input buffer, we can just
-	// allocate the necessary bytes. And for good measure allocate 32 bytes,
-	// just to be sure.
-
-	SCNVector3 *valueptr = (SCNVector3 *) xamarin_calloc (32);
-	[value getValue: valueptr];
-	if (ptr) {
-		memcpy (ptr, valueptr, sizeof (SCNVector3));
-		xamarin_free (valueptr);
-		valueptr = (SCNVector3 *) ptr;
-	}
-#else
 	SCNVector3 *valueptr = (SCNVector3 *) (ptr ? ptr : xamarin_calloc (sizeof (SCNVector3)));
 	*valueptr = [value SCNVector3Value];
-#endif
 
 	return valueptr;
 }

@@ -16,8 +16,6 @@ using System.Runtime.InteropServices;
 
 namespace AppKit {
 	public partial class NSGradient : NSObject {
-		static IntPtr selInitWithColorsAtLocationsColorSpace = Selector.GetHandle ("initWithColors:atLocations:colorSpace:");
-
 		// The signature of this ObjC method is
 		// - (id)initWithColorsAndLocations:(NSColor *)firstColor, ... NS_REQUIRES_NIL_TERMINATION;
 		// where colors and locations (as CGFloats between 0.0 and 1.0) alternate until nil
@@ -33,82 +31,84 @@ namespace AppKit {
 		// Per NSGradient.h, this initializer calls the designated initializer (below) with a
 		// color space of NSColorSpace.GenericRGBColorSpace, so we will do the same.
 
-		/// <param name="colors">To be added.</param>
-		///         <param name="locations">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Create a new <see cref="NSGradient" /> instance with the specified colors and color locations.</summary>
+		/// <param name="colors">The colors for the new gradient.</param>
+		/// <param name="locations">The locations for each color in the new gradient. Each location must be a value between 0.0 and 1.0.</param>
+		/// <remarks>This gradient is created in the <a cref="NSColorSpace.GenericRGBColorSpace" /> generic RGB color space.</remarks>
 		public NSGradient (NSColor [] colors, float [] locations) :
 			this (colors, locations, NSColorSpace.GenericRGBColorSpace)
 		{
 		}
 
-		/// <param name="colors">To be added.</param>
-		///         <param name="locations">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Create a new <see cref="NSGradient" /> instance with the specified colors and color locations.</summary>
+		/// <param name="colors">The colors for the new gradient.</param>
+		/// <param name="locations">The locations for each color in the new gradient. Each location must be a value between 0.0 and 1.0.</param>
+		/// <remarks>This gradient is created in the <a cref="NSColorSpace.GenericRGBColorSpace" /> generic RGB color space.</remarks>
 		public NSGradient (NSColor [] colors, double [] locations) :
 			this (colors, locations, NSColorSpace.GenericRGBColorSpace)
 		{
 		}
 
-		/// <param name="colors">To be added.</param>
-		///         <param name="locations">To be added.</param>
-		///         <param name="colorSpace">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
-		public NSGradient (NSColor [] colors, float [] locations, NSColorSpace colorSpace)
+		/// <summary>Create a new <see cref="NSGradient" /> instance with the specified colors and color locations.</summary>
+		/// <param name="colors">The colors for the new gradient.</param>
+		/// <param name="locations">The locations for each color in the new gradient. Each location must be a value between 0.0 and 1.0.</param>
+		/// <remarks>This gradient is created in the <a cref="NSColorSpace.GenericRGBColorSpace" /> generic RGB color space.</remarks>
+		public NSGradient (NSColor [] colors, nfloat [] locations)
+			: this (colors, locations, NSColorSpace.GenericRGBColorSpace)
 		{
-			unsafe {
-				double [] converted = Array.ConvertAll<float, double> (locations, new Converter<float, double> (a => (double) a));
-				fixed (void* locationPtr = converted) {
-					Initialize (colors, locationPtr, colorSpace);
-				}
-			}
 		}
 
-		/// <param name="colors">To be added.</param>
-		///         <param name="locations">To be added.</param>
-		///         <param name="colorSpace">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Create a new <see cref="NSGradient" /> instance with the specified colors and color locations.</summary>
+		/// <param name="colors">The colors for the new gradient.</param>
+		/// <param name="locations">The locations for each color in the new gradient. Each location must be a value between 0.0 and 1.0.</param>
+		/// <param name="colorSpace">The color space for the new gradient.</param>
+		public NSGradient (NSColor [] colors, float [] locations, NSColorSpace colorSpace)
+			: this (colors, Array.ConvertAll<float, nfloat> (locations, new Converter<float, nfloat> (a => (nfloat) a)), colorSpace)
+		{
+		}
+
+		/// <summary>Create a new <see cref="NSGradient" /> instance with the specified colors and color locations.</summary>
+		/// <param name="colors">The colors for the new gradient.</param>
+		/// <param name="locations">The locations for each color in the new gradient. Each location must be a value between 0.0 and 1.0.</param>
+		/// <param name="colorSpace">The color space for the new gradient.</param>
 		public NSGradient (NSColor [] colors, double [] locations, NSColorSpace colorSpace) : base (NSObjectFlag.Empty)
 		{
 			unsafe {
+				if (IntPtr.Size != 8)
+					throw new PlatformNotSupportedException ("Use the overload that takes an array of 'nfloat' values as locations instead.");
+
 				fixed (void* locationPtr = locations) {
-					Initialize (colors, locationPtr, colorSpace);
+					Initialize (colors, locations?.Length, (IntPtr) locationPtr, colorSpace);
 				}
 			}
 		}
 
-		unsafe void Initialize (NSColor [] colors, void* locationPtr, NSColorSpace colorSpace)
+		/// <summary>Create a new <see cref="NSGradient" /> instance with the specified colors and color locations.</summary>
+		/// <param name="colors">The colors for the new gradient.</param>
+		/// <param name="locations">The locations for each color in the new gradient. Each location must be a value between 0.0 and 1.0.</param>
+		/// <param name="colorSpace">The color space for the new gradient.</param>
+		public NSGradient (NSColor [] colors, nfloat [] locations, NSColorSpace colorSpace)
+			: base (NSObjectFlag.Empty)
+		{
+			unsafe {
+				fixed (void* locationPtr = locations) {
+					Initialize (colors, locations?.Length, (IntPtr) locationPtr, colorSpace);
+				}
+			}
+		}
+
+		void Initialize (NSColor [] colors, int? locationCount, IntPtr locations, NSColorSpace colorSpace)
 		{
 			if (colors is null)
-				throw new ArgumentNullException ("colors");
-			if (locationPtr is null)
-				throw new ArgumentNullException ("locationPtr");
-			if (colorSpace is null)
-				throw new ArgumentNullException ("colorSpace");
+				ThrowHelper.ThrowArgumentNullException (nameof (colors));
 
-			var nsa_colorArray = NSArray.FromNSObjects (colors);
-			var nsa_colorArrayHandle = nsa_colorArray.Handle;
-			var colorSpaceHandle = colorSpace.Handle;
+			if (locationCount is null)
+				ThrowHelper.ThrowArgumentNullException (nameof (locations));
 
-			IntPtr locations = new IntPtr (locationPtr);
-#if NET
-			if (IsDirectBinding) {
-				Handle = ObjCRuntime.Messaging.NativeHandle_objc_msgSend_NativeHandle_NativeHandle_NativeHandle (this.Handle, selInitWithColorsAtLocationsColorSpace, nsa_colorArrayHandle, locations, colorSpaceHandle);
-			} else {
-				Handle = ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper_NativeHandle_NativeHandle_NativeHandle (this.SuperHandle, selInitWithColorsAtLocationsColorSpace, nsa_colorArrayHandle, locations, colorSpaceHandle);
-			}
-#else
-			if (IsDirectBinding) {
-				Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr_IntPtr (this.Handle, selInitWithColorsAtLocationsColorSpace, nsa_colorArrayHandle, locations, colorSpaceHandle);
-			} else {
-				Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr_IntPtr (this.SuperHandle, selInitWithColorsAtLocationsColorSpace, nsa_colorArrayHandle, locations, colorSpaceHandle);
-			}
-#endif
-			nsa_colorArray.Dispose ();
-			GC.KeepAlive (colorSpace);
+			if (colors.Length != locationCount)
+				ThrowHelper.ThrowArgumentOutOfRangeException (nameof (locations), string.Format ("The number of colors ({0}) and the number of locations ({1}) must be equal.", colors.Length, locationCount));
+
+			InitializeHandle (_InitWithColorsAtLocationsAndColorSpace (colors, locations, colorSpace), "initWithColors:atLocations:colorSpace:");
 		}
 	}
 }

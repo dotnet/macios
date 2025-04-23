@@ -462,7 +462,12 @@ namespace AppKit {
 		void BeginSheet ([NullAllowed] NSWindow window, [NullAllowed] NSObject modalDelegate, [NullAllowed] Selector didEndSelector, IntPtr contextInfo);
 
 		[Export ("beginSheetModalForWindow:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="Window">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void BeginSheet ([NullAllowed] NSWindow Window, [NullAllowed] Action<NSModalResponse> handler);
 
 		[Export ("window")]
@@ -6506,7 +6511,12 @@ namespace AppKit {
 		bool AllowsDocumentSharing { get; }
 
 		[Export ("shareDocumentWithSharingService:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="sharingService">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void ShareDocument (NSSharingService sharingService, [NullAllowed] Action<bool> completionHandler);
 
 		[Export ("prepareSharingServicePicker:")]
@@ -8162,7 +8172,10 @@ namespace AppKit {
 
 		// See AppKit/NSGradiant.cs
 		//[Export ("initWithColorsAndLocations:")]
-		//[Export ("initWithColors:atLocations:colorSpace:")]
+
+		[Internal]
+		[Export ("initWithColors:atLocations:colorSpace:")]
+		NativeHandle _InitWithColorsAtLocationsAndColorSpace (NSColor [] colorArray, /* CGFloat */ IntPtr locations, NSColorSpace colorSpace);
 
 		[Export ("drawFromPoint:toPoint:options:")]
 		void DrawFromPoint (CGPoint startingPoint, CGPoint endingPoint, NSGradientDrawingOptions options);
@@ -25317,9 +25330,9 @@ namespace AppKit {
 		NSAttributedString AttributedString { get; set; }
 
 
-		///
-		/// NSLayoutPhaseInterface
-		///
+		//
+		// NSLayoutPhaseInterface
+		//
 
 		[Export ("willSetLineFragmentRect:forGlyphRange:usedRect:baselineOffset:")]
 		void WillSetLineFragment (ref CGRect lineRect, NSRange glyphRange, ref CGRect usedRect, ref nfloat baselineOffset);

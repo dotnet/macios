@@ -207,7 +207,14 @@ namespace VideoSubscriberAccount {
 		///         <summary>Checks whether the user has provided permission for the app to access their subscription information.</summary>
 		///         <remarks>To be added.</remarks>
 		[NoMac]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="options">If not empty, may contain the key .</param>
+			<summary>Checks whether the user has provided permission for the app to access their subscription information.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous CheckAccessStatus operation.  The value of the TResult parameter is of type System.Action&lt;VideoSubscriberAccount.VSAccountAccessStatus,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("checkAccessStatusWithOptions:completionHandler:")]
 		void CheckAccessStatus (NSDictionary options, Action<VSAccountAccessStatus, NSError> completionHandler);
 
@@ -217,7 +224,24 @@ namespace VideoSubscriberAccount {
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[NoMac]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="accountMetadataRequest">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous Enqueue operation.  The value of the TResult parameter is of type System.Action&lt;VideoSubscriberAccount.VSAccountMetadata,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The EnqueueAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""",
+			XmlDocsWithOutParameter = """
+			<param name="accountMetadataRequest">To be added.</param>
+			<param name="result">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("enqueueAccountMetadataRequest:completionHandler:")]
 		VSAccountManagerResult Enqueue (VSAccountMetadataRequest accountMetadataRequest, Action<VSAccountMetadata, NSError> completionHandler);
 

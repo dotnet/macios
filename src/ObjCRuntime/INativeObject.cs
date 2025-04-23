@@ -4,10 +4,6 @@ using System;
 using System.Runtime.CompilerServices;
 using Foundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace ObjCRuntime {
 
 	/// <summary>A simple interface that is used to expose the unmanaged object pointer in various classes in Xamarin.iOS.</summary>
@@ -26,13 +22,11 @@ namespace ObjCRuntime {
 		}
 #endif
 
-#if NET
 		// The method will be implemented via custom linker step if the managed static registrar is used
 		// for classes which have an (NativeHandle, bool) or (IntPtr, bool) constructor.
 		// This method will be made public when the managed static registrar is used.
 		[MethodImpl (MethodImplOptions.NoInlining)]
 		internal static virtual INativeObject? _Xamarin_ConstructINativeObject (NativeHandle handle, bool owns) => null;
-#endif
 	}
 
 #if !COREBUILD
@@ -55,16 +49,6 @@ namespace ObjCRuntime {
 			return self.Handle;
 		}
 
-#if !NET
-		public static NativeHandle GetCheckedHandle (this INativeObject self)
-		{
-			var h = self.Handle;
-			if (h == NativeHandle.Zero)
-				ObjCRuntime.ThrowHelper.ThrowObjectDisposedException (self);
-
-			return h;
-		}
-#endif
 #pragma warning restore RBI0014
 
 		internal static void CallWithPointerToFirstElementAndCount<T> (T [] array, string arrayVariableName, Action<IntPtr, nuint> callback)

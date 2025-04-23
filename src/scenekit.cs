@@ -34,26 +34,15 @@ using CoreFoundation;
 using Foundation;
 using ObjCRuntime;
 
-#if NET
 using NMatrix4 = global::CoreGraphics.NMatrix4;
 using NVector3 = global::CoreGraphics.NVector3;
 using Vector3 = global::CoreGraphics.NVector3;
 using Vector4 = global::System.Numerics.Vector4;
-#else
-using NMatrix4 = global::OpenTK.NMatrix4;
-using NVector3 = global::OpenTK.NVector3;
-using Vector3 = global::OpenTK.NVector3;
-using Vector4 = global::OpenTK.Vector4;
-#endif
 
 using CoreAnimation;
 using CoreImage;
 
-#if NET
 using AnimationType = global::SceneKit.ISCNAnimationProtocol;
-#else
-using AnimationType = global::CoreAnimation.CAAnimation;
-#endif
 
 using CoreGraphics;
 using SpriteKit;
@@ -90,32 +79,14 @@ using NSImage = global::UIKit.UIImage;
 using NSBezierPath = global::UIKit.UIBezierPath;
 #endif
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace SceneKit {
 	/// <summary>Callback used to reflect progress during execution of <see cref="M:SceneKit.SCNSceneSource.SceneFromOptions(SceneKit.SCNSceneLoadingOptions,SceneKit.SCNSceneSourceStatusHandler)" />.</summary>
 	[MacCatalyst (13, 1)]
 	delegate void SCNSceneSourceStatusHandler (float /* float, not CGFloat */ totalProgress, SCNSceneSourceStatus status, NSError error, ref bool stopLoading);
 
-#if NET
 	delegate void SCNAnimationDidStartHandler (SCNAnimation animation, ISCNAnimatable receiver);
-#else
-	[Obsolete ("Use 'SCNAnimationDidStartHandler2' instead.")]
-	delegate void SCNAnimationDidStartHandler (SCNAnimation animation, SCNAnimatable receiver);
 
-	delegate void SCNAnimationDidStartHandler2 (SCNAnimation animation, ISCNAnimatable receiver);
-#endif
-
-#if NET
 	delegate void SCNAnimationDidStopHandler (SCNAnimation animation, ISCNAnimatable receiver, bool completed);
-#else
-	[Obsolete ("Use 'SCNAnimationDidStopHandler2' instead.")]
-	delegate void SCNAnimationDidStopHandler (SCNAnimation animation, SCNAnimatable receiver, bool completed);
-
-	delegate void SCNAnimationDidStopHandler2 (SCNAnimation animation, ISCNAnimatable receiver, bool completed);
-#endif
 
 	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:SceneKit.SCNAnimatable" />.</summary>
 	///     <remarks>
@@ -139,15 +110,9 @@ namespace SceneKit {
 		[Abstract]
 		[MacCatalyst (13, 1)]
 		[Export ("addAnimation:forKey:")]
-#if !NET
-		void AddAnimation (CAAnimation animation, [NullAllowed] NSString key);
-#else
 		void AddAnimation (ISCNAnimationProtocol scnAnimation, [NullAllowed] string key);
-#endif
 
-#if NET
 		[Abstract]
-#endif
 		[MacCatalyst (13, 1)]
 		[Export ("addAnimationPlayer:forKey:")]
 		void AddAnimation (SCNAnimationPlayer player, [NullAllowed] NSString key);
@@ -156,9 +121,7 @@ namespace SceneKit {
 		[Export ("removeAllAnimations")]
 		void RemoveAllAnimations ();
 
-#if NET
 		[Abstract]
-#endif
 		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("removeAllAnimationsWithBlendOutDuration:")]
 		void RemoveAllAnimationsWithBlendOutDuration (nfloat duration);
@@ -171,9 +134,7 @@ namespace SceneKit {
 		[Export ("animationKeys")]
 		NSString [] GetAnimationKeys ();
 
-#if NET
 		[Abstract]
-#endif
 		[return: NullAllowed]
 		[MacCatalyst (13, 1)]
 		[Export ("animationPlayerForKey:")]
@@ -225,16 +186,12 @@ namespace SceneKit {
 		[Export ("removeAnimationForKey:fadeOutDuration:")]
 		void RemoveAnimation (NSString key, nfloat duration);
 
-#if NET
 		[Abstract]
-#endif
 		[MacCatalyst (13, 1)]
 		[Export ("removeAnimationForKey:blendOutDuration:")]
 		void RemoveAnimationUsingBlendOutDuration (NSString key, nfloat blendOutDuration);
 
-#if NET
 		[Abstract]
-#endif
 		[Deprecated (PlatformName.TvOS, 11, 0, message: "Use 'SCNAnimationPlayer.Speed' instead.")]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'SCNAnimationPlayer.Speed' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'SCNAnimationPlayer.Speed' instead.")]
@@ -1278,12 +1235,6 @@ namespace SceneKit {
 		[MacCatalyst (13, 1)]
 		[Field ("SCNHitTestOptionCategoryBitMask")]
 		NSString OptionCategoryBitMaskKey { get; }
-
-#if !NET
-		[Obsolete ("Use 'SearchModeKey' instead.")]
-		[Field ("SCNHitTestOptionSearchMode")]
-		NSString OptionSearchModeKey { get; }
-#endif
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
@@ -2792,14 +2743,7 @@ namespace SceneKit {
 		nint CornerSegmentCount { get; set; }
 	}
 
-#if NET
 	delegate void SCNBufferBindingHandler (ISCNBufferStream buffer, SCNNode node, ISCNShadable shadable, SCNRenderer renderer);
-#else
-	[Obsolete ("Use 'SCNBufferBindingHandler2' instead.")]
-	delegate void SCNBufferBindingHandler (ISCNBufferStream buffer, SCNNode node, SCNShadable shadable, SCNRenderer renderer);
-
-	delegate void SCNBufferBindingHandler2 (ISCNBufferStream buffer, SCNNode node, ISCNShadable shadable, SCNRenderer renderer);
-#endif // NET
 
 	/// <summary>Performs custom rendering using shaders written in OpenGL Shading Language.</summary>
 	///     
@@ -2825,19 +2769,9 @@ namespace SceneKit {
 		[Export ("fragmentFunctionName")]
 		string FragmentFunctionName { get; set; }
 
-#if NET
 		[MacCatalyst (13, 1)]
 		[Export ("handleBindingOfBufferNamed:frequency:usingBlock:")]
 		void HandleBinding (string name, SCNBufferFrequency frequency, SCNBufferBindingHandler handler);
-#else
-		[Obsolete ("Use 'HandleBinding' overload with 'SCNBufferBindingHandler2' parameter instead.")]
-		[Export ("handleBindingOfBufferNamed:frequency:usingBlock:")]
-		void HandleBinding (string name, SCNBufferFrequency frequency, SCNBufferBindingHandler handler);
-
-		[Sealed]
-		[Export ("handleBindingOfBufferNamed:frequency:usingBlock:")]
-		void HandleBinding (string name, SCNBufferFrequency frequency, SCNBufferBindingHandler2 handler);
-#endif // NET
 
 		[Export ("delegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakDelegate { get; set; }
@@ -2870,11 +2804,7 @@ namespace SceneKit {
 
 		[Export ("semanticForSymbol:")]
 		[return: NullAllowed]
-#if NET
 		NSString GetSemantic (string symbol);
-#else
-		NSString GetSemanticForSymbol (string symbol);
-#endif
 
 		/// <summary>Represents the value associated with the constant SCNProgramMappingChannelKey</summary>
 		///         <value>
@@ -3696,9 +3626,7 @@ namespace SceneKit {
 		[Export ("context")]
 		IntPtr Context { get; }
 
-#if NET
 		[Abstract]
-#endif
 		[NoTV]
 		[NoMacCatalyst]
 		[Deprecated (PlatformName.MacOSX, 10, 10)]
@@ -3766,123 +3694,108 @@ namespace SceneKit {
 
 		[Abstract]
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="objects">The objects to prepare.</param>
+			<summary>Prepares the provided objects for rendering on a background thread.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous Prepare operation.  The value of the TResult parameter is of type System.Action&lt;System.Boolean&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("prepareObjects:withCompletionHandler:")]
 		void Prepare (NSObject [] objects, [NullAllowed] Action<bool> completionHandler);
 
-#if NET
-		[Abstract] // this protocol existed before iOS 9 (or OSX 10.11) and we cannot add abstract members to it (breaking changes)
-#endif
+		[Abstract]
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="scene">The scene to present.</param>
+			<param name="transition">The transistion to use to present the scene.</param>
+			<param name="pointOfView">The point of view to which to present the scene.</param>
+			<summary>Displays the provided scene.</summary>
+			<returns>A task that represents the asynchronous PresentScene operation</returns>
+			<remarks>
+			          <para copied="true">The PresentSceneAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("presentScene:withTransition:incomingPointOfView:completionHandler:")]
 		void PresentScene (SCNScene scene, SKTransition transition, [NullAllowed] SCNNode pointOfView, [NullAllowed] Action completionHandler);
 
-#if NET
-		[Abstract] // this protocol existed before iOS 9 (or OSX 10.11) and we cannot add abstract members to it (breaking changes)
-#endif
+		[Abstract]
 		[MacCatalyst (13, 1)]
 		[Export ("nodesInsideFrustumWithPointOfView:")]
 		SCNNode [] GetNodesInsideFrustum (SCNNode pointOfView);
 
-#if NET
-		[Abstract] // this protocol existed before iOS 9 (or OSX 10.11) and we cannot add abstract members to it (breaking changes)
-#endif
+		[Abstract]
 		[MacCatalyst (13, 1)]
 		[Export ("debugOptions", ArgumentSemantic.Assign)]
 		SCNDebugOptions DebugOptions { get; set; }
 
-#if NET
-		[Abstract] // this protocol existed before iOS 9 (or OSX 10.11) and we cannot add abstract members to it (breaking changes)
-#endif
+		[Abstract]
 		[MacCatalyst (13, 1)]
 		[Export ("renderingAPI")]
 		SCNRenderingApi RenderingApi { get; }
 
-#if NET
-		[Abstract] // this protocol existed before iOS 9 (or OSX 10.11) and we cannot add abstract members to it (breaking changes)
-#endif
+		[Abstract]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("currentRenderCommandEncoder")]
 		IMTLRenderCommandEncoder CurrentRenderCommandEncoder { get; }
 
-#if NET
-		[Abstract] // this protocol existed before iOS 9 (or OSX 10.11) and we cannot add abstract members to it (breaking changes)
-#endif
+		[Abstract]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("device")]
 		IMTLDevice Device { get; }
 
-#if NET
-		[Abstract] // this protocol existed before iOS 9 (or OSX 10.11) and we cannot add abstract members to it (breaking changes)
-#endif
+		[Abstract]
 		[MacCatalyst (13, 1)]
 		[Export ("colorPixelFormat")]
 		MTLPixelFormat ColorPixelFormat { get; }
 
-#if NET
-		[Abstract] // this protocol existed before iOS 9 (or OSX 10.11) and we cannot add abstract members to it (breaking changes)
-#endif
+		[Abstract]
 		[MacCatalyst (13, 1)]
 		[Export ("depthPixelFormat")]
 		MTLPixelFormat DepthPixelFormat { get; }
 
-#if NET
-		[Abstract] // this protocol existed before iOS 9 (or OSX 10.11) and we cannot add abstract members to it (breaking changes)
-#endif
+		[Abstract]
 		[MacCatalyst (13, 1)]
 		[Export ("stencilPixelFormat")]
 		MTLPixelFormat StencilPixelFormat { get; }
 
-#if NET
-		[Abstract] // this protocol existed before iOS 9 (or OSX 10.11) and we cannot add abstract members to it (breaking changes)
-#endif
+		[Abstract]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("commandQueue")]
 		IMTLCommandQueue CommandQueue { get; }
 
-#if NET
-		[Abstract] // this protocol existed before iOS 9 (or OSX 10.11) and we cannot add abstract members to it (breaking changes)
-#endif
+		[Abstract]
 		[MacCatalyst (13, 1)]
 		[Export ("audioEngine")]
 		AVAudioEngine AudioEngine { get; }
 
-#if NET
-		[Abstract] // this protocol existed before iOS 9 (or OSX 10.11) and we cannot add abstract members to it (breaking changes)
-#endif
+		[Abstract]
 		[MacCatalyst (13, 1)]
 		[Export ("audioEnvironmentNode")]
 		[DebuggerBrowsable (DebuggerBrowsableState.Never)]
 		AVAudioEnvironmentNode AudioEnvironmentNode { get; }
 
-#if NET
-		[Abstract] // this protocol existed before iOS 9 (or OSX 10.11) and we cannot add abstract members to it (breaking changes)
-#endif
+		[Abstract]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("audioListener", ArgumentSemantic.Retain)]
 		[DebuggerBrowsable (DebuggerBrowsableState.Never)]
 		SCNNode AudioListener { get; set; }
 
-#if NET
-		[Abstract] // this protocol existed before iOS 9 (or OSX 10.11) and we cannot add abstract members to it (breaking changes)
-#endif
+		[Abstract]
 		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("temporalAntialiasingEnabled")]
 		bool TemporalAntialiasingEnabled { [Bind ("isTemporalAntialiasingEnabled")] get; set; }
 
-#if NET
-		[Abstract] // this protocol existed before iOS 9 (or OSX 10.11) and we cannot add abstract members to it (breaking changes)
-#endif
+		[Abstract]
 		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("currentViewport")]
 		CGRect CurrentViewport { get; }
 
-#if NET
-		[Abstract] // this protocol existed before iOS 9 (or OSX 10.11) and we cannot add abstract members to it (breaking changes)
-#endif
+		[Abstract]
 		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("usesReverseZ")]
@@ -3891,9 +3804,7 @@ namespace SceneKit {
 		[TV (14, 0)]
 		[iOS (14, 0)]
 		[MacCatalyst (14, 0)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("currentRenderPassDescriptor")]
 		MTLRenderPassDescriptor CurrentRenderPassDescriptor { get; }
 
@@ -4267,11 +4178,9 @@ namespace SceneKit {
 		bool DrawableResizesAsynchronously { get; set; }
 	}
 
-#if NET
 	/// <summary>Completion handler for use with <see cref="M:SceneKit.SCNAnimationEvent.Create(System.nfloat,SceneKit.SCNAnimationEventHandler)" />.</summary>
 	[MacCatalyst (13, 1)]
 	delegate void SCNAnimationEventHandler (AnimationType animation, NSObject animatedObject, bool playingBackward);
-#endif
 
 	/// <summary>Performs a function at a specific time during an animation.</summary>
 	///     
@@ -4280,15 +4189,8 @@ namespace SceneKit {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SCNAnimationEvent {
-
-#if NET
 		[Static, Export ("animationEventWithKeyTime:block:")]
 		SCNAnimationEvent Create (nfloat keyTime, SCNAnimationEventHandler eventHandler);
-#else
-		[Internal]
-		[Static, Export ("animationEventWithKeyTime:block:")]
-		SCNAnimationEvent Create (nfloat keyTime, Action<IntPtr, NSObject, bool> handler);
-#endif
 	}
 
 	/// <summary>An <see cref="T:SceneKit.SCNGeometry" /> created from a 2D path, optionally extruded into three dimensions.</summary>
@@ -4592,9 +4494,7 @@ namespace SceneKit {
 		[Export ("removeAllActions")]
 		void RemoveAllActions ();
 
-#if NET
 		[Abstract]
-#endif
 		[MacCatalyst (13, 1)]
 		[Export ("actionKeys")]
 		string [] ActionKeys { get; }
@@ -4618,11 +4518,7 @@ namespace SceneKit {
 		SCNActionTimingMode TimingMode { get; set; }
 
 		[NullAllowed, Export ("timingFunction", ArgumentSemantic.Assign)]
-#if NET
 		Func<float, float> TimingFunction { get; set; }
-#else
-		Func<float, float> TimingFunction2 { get; set; }
-#endif
 
 		[Export ("speed")]
 		nfloat Speed { get; set; }
@@ -6142,23 +6038,9 @@ namespace SceneKit {
 		[Export ("usesSceneTimeBase")]
 		bool UsesSceneTimeBase { get; set; }
 
-#if !NET
-		[Sealed]
-		[NullAllowed, Export ("animationDidStart", ArgumentSemantic.Copy)]
-		SCNAnimationDidStartHandler2 AnimationDidStart2 { get; set; }
-
-		[Obsolete ("Use 'AnimationDidStart2' instead.")]
-#endif
 		[NullAllowed, Export ("animationDidStart", ArgumentSemantic.Copy)]
 		SCNAnimationDidStartHandler AnimationDidStart { get; set; }
 
-#if !NET
-		[Sealed]
-		[NullAllowed, Export ("animationDidStop", ArgumentSemantic.Copy)]
-		SCNAnimationDidStopHandler2 AnimationDidStop2 { get; set; }
-
-		[Obsolete ("Use 'AnimationDidStop2' instead.")]
-#endif
 		[NullAllowed, Export ("animationDidStop", ArgumentSemantic.Copy)]
 		SCNAnimationDidStopHandler AnimationDidStop { get; set; }
 

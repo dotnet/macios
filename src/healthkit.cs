@@ -816,27 +816,63 @@ namespace HealthKit {
 		HKAuthorizationStatus GetAuthorizationStatus (HKObjectType type);
 
 		// FIXME NS_EXTENSION_UNAVAILABLE("Not available to extensions") ;
-		[Async]
+		[Async (XmlDocs = """
+			<param name="typesToShare">To be added.</param>
+			<param name="typesToRead">To be added.</param>
+			<summary>Requests autorization to save and read user data and runs an action after a determination has been made.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous RequestAuthorizationToShare operation.  The value of the TResult parameter is of type System.Action&lt;System.Boolean,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("requestAuthorizationToShareTypes:readTypes:completion:")]
 		void RequestAuthorizationToShare ([NullAllowed] NSSet typesToShare, [NullAllowed] NSSet typesToRead, Action<bool, NSError> completion);
 
 		// FIXME NS_EXTENSION_UNAVAILABLE("Not available to extensions") ;
-		[Async]
+		[Async (XmlDocs = """
+			<param name="obj">To be added.</param>
+			<summary>Asynchronously saves <paramref name="obj" />.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous SaveObject operation.  The value of the TResult parameter is of type System.Action&lt;System.Boolean,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("saveObject:withCompletion:")]
 		void SaveObject (HKObject obj, Action<bool, NSError> completion);
 
 		// FIXME NS_EXTENSION_UNAVAILABLE("Not available to extensions") ;
-		[Async]
+		[Async (XmlDocs = """
+			<param name="objects">To be added.</param>
+			<summary>Asynchronously saves the objects that are contained in  <paramref name="objects" />.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous SaveObjects operation.  The value of the TResult parameter is of type System.Action&lt;System.Boolean,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("saveObjects:withCompletion:")]
 		void SaveObjects (HKObject [] objects, Action<bool, NSError> completion);
 
 		// FIXME NS_EXTENSION_UNAVAILABLE("Not available to extensions") ;
-		[Async]
+		[Async (XmlDocs = """
+			<param name="obj">To be added.</param>
+			<summary>Deletes and object from the store and runs an action after it has been deleted.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous DeleteObject operation.  The value of the TResult parameter is of type System.Action&lt;System.Boolean,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("deleteObject:withCompletion:")]
 		void DeleteObject (HKObject obj, Action<bool, NSError> completion);
 
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="objects">To be added.</param>
+			<summary>Deletes the specified <paramref name="objects" /> from the store and runs a completion handler when it is finished.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous DeleteObjects operation.  The value of the TResult parameter is of type System.Action&lt;System.Boolean,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("deleteObjects:withCompletion:")]
 		void DeleteObjects (HKObject [] objects, Action<bool, NSError> completion);
 
@@ -895,12 +931,27 @@ namespace HealthKit {
 		HKBloodTypeObject GetBloodType (out NSError error);
 
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="type">The object type for which to enable background notifications.</param>
+			<param name="frequency">The maximum allowed update frequency.</param>
+			<summary>Enable the background delivery of notifications of the specified type and runs an action after delivery has been disabled.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous EnableBackgroundDelivery operation.  The value of the TResult parameter is of type System.Action&lt;System.Boolean,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("enableBackgroundDeliveryForType:frequency:withCompletion:")]
 		void EnableBackgroundDelivery (HKObjectType type, HKUpdateFrequency frequency, Action<bool, NSError> completion);
 
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="type">The object type for which to disable background notifications.</param>
+			<summary>Disables the background delivery of notifications of the specified type and runs an action after delivery has been disabled.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous DisableBackgroundDelivery operation.  The value of the TResult parameter is of type System.Action&lt;System.Boolean,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("disableBackgroundDeliveryForType:withCompletion:")]
 		void DisableBackgroundDelivery (HKObjectType type, Action<bool, NSError> completion);
 
@@ -950,14 +1001,31 @@ namespace HealthKit {
 		void ResumeWorkoutSession (HKWorkoutSession workoutSession);
 
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="workoutConfiguration">To be added.</param>
+			<summary>Launches or wakes the Watch app for the workout.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous StartWatchApp operation.  The value of the TResult parameter is of type System.Action&lt;System.Boolean,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("startWatchAppWithWorkoutConfiguration:completion:")]
 		void StartWatchApp (HKWorkoutConfiguration workoutConfiguration, Action<bool, NSError> completion);
 
 		// HKUserPreferences category
 
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="quantityTypes">To be added.</param>
+			<summary>Asynchronously gets the preffered units as a <see cref="T:Foundation.NSDictionary" /> of <see cref="T:HealthKit.HKQuantityType" />-&gt;<see cref="T:HealthKit.HKUnit" />.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous GetPreferredUnits operation.  The value of the TResult parameter is of type System.Action&lt;Foundation.NSDictionary,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The GetPreferredUnitsAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("preferredUnitsForQuantityTypes:completion:")]
 		void GetPreferredUnits (NSSet quantityTypes, Action<NSDictionary, NSError> completion);
 
@@ -967,7 +1035,13 @@ namespace HealthKit {
 		[Field ("HKUserPreferencesDidChangeNotification")]
 		NSString UserPreferencesDidChangeNotification { get; }
 
-		[Async]
+		[Async (XmlDocs = """
+			<param name="typesToShare">The types for which to request share authorization status.</param>
+			<param name="typesToRead">The types for which to request read authorization status.</param>
+			<summary>Queries the the authorization request status of the specified types.</summary>
+			<returns>A task that contains the value that communicates whether the app needs to request user permission.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[MacCatalyst (13, 1)]
 		[Export ("getRequestStatusForAuthorizationToShareTypes:readTypes:completion:")]
 		void GetRequestStatusForAuthorizationToShare (NSSet<HKSampleType> typesToShare, NSSet<HKObjectType> typesToRead, HKHealthStoreGetRequestStatusForAuthorizationToShareHandler completion);
@@ -4795,10 +4869,28 @@ namespace HealthKit {
 		[Export ("initWithHealthStore:device:")]
 		NativeHandle Constructor (HKHealthStore healthStore, [NullAllowed] HKDevice device);
 
-		[Async, Export ("insertRouteData:completion:")]
+		[Async (XmlDocs = """
+			<param name="routeData">The route data to add.</param>
+			<summary>Adds the specified route data to the route and returns a task that contains the success status and any error that occurred.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous InsertRouteData operation.  The value of the TResult parameter is of type System.Action&lt;System.Boolean,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			"""), Export ("insertRouteData:completion:")]
 		void InsertRouteData (CLLocation [] routeData, Action<bool, NSError> completion);
 
-		[Async, Protected, Export ("finishRouteWithWorkout:metadata:completion:")]
+		[Async (XmlDocs = """
+			<param name="workout">The workout to which to add the route.</param>
+			<param name="metadata">The metadata for the route.</param>
+			<summary>Finalizes the route and saves it to the workout, returning a task that contains the route and any errors that occurred.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous FinishRoute operation.  The value of the TResult parameter is of type System.Action&lt;HealthKit.HKWorkoutRoute,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The FinishRouteAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			"""), Protected, Export ("finishRouteWithWorkout:metadata:completion:")]
 		void FinishRoute (HKWorkout workout, [NullAllowed] NSDictionary metadata, Action<HKWorkoutRoute, NSError> completion);
 
 		/// <param name="workout">The workout to which to add the route.</param>
@@ -4806,11 +4898,22 @@ namespace HealthKit {
 		///         <param name="completion">A handler to run when the operation completes.</param>
 		///         <summary>Finalizes the route and saves it to the workout.</summary>
 		///         <remarks>To be added.</remarks>
-		[Async, Wrap ("FinishRoute (workout, metadata.GetDictionary (), completion)")]
+		[Async (XmlDocs = """
+			<param name="workout">The workout to which to add the route.</param>
+			<param name="metadata">The metadata for the route.</param>
+			<summary>Finalizes the route and saves it to the workout, returning a task that contains the route.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			"""), Wrap ("FinishRoute (workout, metadata.GetDictionary (), completion)")]
 		void FinishRoute (HKWorkout workout, HKMetadata metadata, Action<HKWorkoutRoute, NSError> completion);
 
 		[MacCatalyst (13, 1)]
-		[Async, Protected]
+		[Async (XmlDocs = """
+			<param name="metadata">The metadata to add.</param>
+			<summary>Adds the provided metadata to the route and returns a task that contains a success code and any errors that occurred.</summary>
+			<returns>A task that contains a success code and any errors that occurred.</returns>
+			<remarks>To be added.</remarks>
+			"""), Protected]
 		[Export ("addMetadata:completion:")]
 		void AddMetadata (NSDictionary metadata, HKWorkoutRouteBuilderAddMetadataHandler completion);
 
@@ -4819,7 +4922,12 @@ namespace HealthKit {
 		///         <summary>Adds the provided metadata to the route and runs a handler when the operation completes.</summary>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
-		[Async, Wrap ("AddMetadata (metadata.GetDictionary ()!, completion)")]
+		[Async (XmlDocs = """
+			<param name="metadata">The metadata to add.</param>
+			<summary>Adds the provided metadata to the route and returns a task that contains a success code and any errors that occurred.</summary>
+			<returns>A task that contains a success code and any errors that occurred.</returns>
+			<remarks>To be added.</remarks>
+			"""), Wrap ("AddMetadata (metadata.GetDictionary ()!, completion)")]
 		void AddMetadata (HKMetadata metadata, HKWorkoutRouteBuilderAddMetadataHandler completion);
 	}
 
@@ -4875,19 +4983,39 @@ namespace HealthKit {
 		[Export ("initWithHealthStore:configuration:device:")]
 		NativeHandle Constructor (HKHealthStore healthStore, HKWorkoutConfiguration configuration, [NullAllowed] HKDevice device);
 
-		[Async]
+		[Async (XmlDocs = """
+			<param name="startDate">The date and time the workout starts.</param>
+			<summary>Starts the workout at the sepcified time, begins collecting workout data, and returns a task that contains a success status and any error that occurred.</summary>
+			<returns>A task that contains a success status and any error that occurred.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("beginCollectionWithStartDate:completion:")]
 		void BeginCollection (NSDate startDate, HKWorkoutBuilderCompletionHandler completionHandler);
 
-		[Async]
+		[Async (XmlDocs = """
+			<param name="samples">The samples to add.</param>
+			<summary>Adds the specified samples and returns a task that contains a success status and any error that occurred.</summary>
+			<returns>A task that contains a success status and any error that occurred.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("addSamples:completion:")]
 		void Add (HKSample [] samples, HKWorkoutBuilderCompletionHandler completionHandler);
 
-		[Async]
+		[Async (XmlDocs = """
+			<param name="workoutEvents">The workout events to add.</param>
+			<summary>Adds the specified workout events and returns a task that contains a success status and any error that occurred.</summary>
+			<returns>A task that contains a success status and any error that occurred.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("addWorkoutEvents:completion:")]
 		void Add (HKWorkoutEvent [] workoutEvents, HKWorkoutBuilderCompletionHandler completionHandler);
 
-		[Async, Protected]
+		[Async (XmlDocs = """
+			<param name="metadata">The metadata to add.</param>
+			<summary>Adds the specified metadata and returns a task that contains a success status and any error that occurred.</summary>
+			<returns>A task that contains a success status and any error that occurred.</returns>
+			<remarks>To be added.</remarks>
+			"""), Protected]
 		[Export ("addMetadata:completion:")]
 		void Add (NSDictionary metadata, HKWorkoutBuilderCompletionHandler completionHandler);
 
@@ -4896,11 +5024,21 @@ namespace HealthKit {
 		///         <summary>Adds the specified metadata to the workout and runs a handler when the operation completes.</summary>
 		///         <remarks>To be added.</remarks>
 		///         <remarks>To be added.</remarks>
-		[Async]
+		[Async (XmlDocs = """
+			<param name="metadata">The metadata to add.</param>
+			<summary>Adds the specified metadata and returns a task that contains a success status and any error that occurred.</summary>
+			<returns>A task that contains a success status and any error that occurred.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Wrap ("Add (metadata.GetDictionary ()!, completionHandler)")]
 		void Add (HKMetadata metadata, HKWorkoutBuilderCompletionHandler completionHandler);
 
-		[Async]
+		[Async (XmlDocs = """
+			<param name="endDate">The end time of the workout.</param>
+			<summary>Ends the workout and returns a task that contains a success status and any error that occured.</summary>
+			<returns>A task that contains a success status and any error that occured.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("endCollectionWithEndDate:completion:")]
 		void EndCollection (NSDate endDate, HKWorkoutBuilderCompletionHandler completionHandler);
 
@@ -5002,7 +5140,12 @@ namespace HealthKit {
 		[Export ("insertQuantity:date:error:")]
 		bool Insert (HKQuantity quantity, NSDate date, [NullAllowed] out NSError error);
 
-		[Async, Protected]
+		[Async (XmlDocs = """
+			<param name="metadata">The metadata to add to the series.</param>
+			<summary>Finishes and saves the series and returns a task that contains the sample data.</summary>
+			<returns>A task that contains the sample data.</returns>
+			<remarks>To be added.</remarks>
+			"""), Protected]
 		[Export ("finishSeriesWithMetadata:completion:")]
 		void FinishSeries ([NullAllowed] NSDictionary metadata, HKQuantitySeriesSampleBuilderFinishSeriesDelegate completionHandler);
 
@@ -5010,7 +5153,12 @@ namespace HealthKit {
 		///         <param name="completionHandler">A handler to run when the operation completes.</param>
 		///         <summary>Finishes and saves the series.</summary>
 		///         <remarks>To be added.</remarks>
-		[Async]
+		[Async (XmlDocs = """
+			<param name="metadata">The metadata to add to the series.</param>
+			<summary>Finishes and saves the series and returns a task that contains the sample data.</summary>
+			<returns>A task that contains the sample data.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Wrap ("FinishSeries (metadata.GetDictionary (), completionHandler)")]
 		void FinishSeries ([NullAllowed] HKMetadata metadata, HKQuantitySeriesSampleBuilderFinishSeriesDelegate completionHandler);
 

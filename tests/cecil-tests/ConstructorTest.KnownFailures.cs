@@ -7,7 +7,6 @@ namespace Cecil.Tests {
 		static HashSet<string> knownFailuresNonDefaultCtorDoesNotCallBaseDefaultCtor = new HashSet<string> {
 			"AppKit.ActionDispatcher::.ctor(System.EventHandler)",
 			"AppKit.NSAlertDidEndDispatcher::.ctor(System.Action`1<System.IntPtr>)",
-			"AppKit.NSGradient::.ctor(AppKit.NSColor[],System.Single[],AppKit.NSColorSpace)",
 			"AppKit.NSTextContainer::.ctor(CoreGraphics.CGSize,System.Boolean)",
 			"AVFoundation.InternalAVAudioSessionDelegate::.ctor(AVFoundation.AVAudioSession)",
 			"CarPlay.CPListSection::.ctor(CarPlay.CPListItem[],System.String,System.String)",

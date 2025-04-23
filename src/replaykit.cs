@@ -105,7 +105,12 @@ namespace ReplayKit {
 		[Deprecated (PlatformName.TvOS, 10, 0, message: "Use 'StartRecording (Action<NSError>)' instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'StartRecording (Action<NSError>)' instead.")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="microphoneEnabled">To be added.</param>
+			<summary>Asynchronously starts recording the screen, controlling whether recording is enabled.</summary>
+			<returns>A task that represents the asynchronous StartRecording operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("startRecordingWithMicrophoneEnabled:handler:")]
 		void StartRecording (bool microphoneEnabled, [NullAllowed] Action<NSError> handler);
 
@@ -170,7 +175,12 @@ namespace ReplayKit {
 		RPCameraPosition CameraPosition { get; set; }
 
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="captureHandler">To be added.</param>
+			<summary>Starts recording.</summary>
+			<returns>A task that represents the asynchronous StartCapture operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("startCaptureWithHandler:completionHandler:")]
 		void StartCapture ([NullAllowed] Action<CMSampleBuffer, RPSampleBufferType, NSError> captureHandler, [NullAllowed] Action<NSError> completionHandler);
 
@@ -266,7 +276,12 @@ namespace ReplayKit {
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Static]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="preferredExtension">To be added.</param>
+			<summary>Asynchronously presents the UI for choosing a broadcast activity view controller, attempts to load the user's choice.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("loadBroadcastActivityViewControllerWithPreferredExtension:handler:")]
 		void LoadBroadcastActivityViewController ([NullAllowed] string preferredExtension, Action<RPBroadcastActivityViewController, NSError> handler);
 	}

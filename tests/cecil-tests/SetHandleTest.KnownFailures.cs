@@ -7,7 +7,6 @@ namespace Cecil.Tests {
 		static HashSet<string> knownFailuresNobodyCallsHandleSetter = new HashSet<string> {
 			"AddressBook.ABGroup::.ctor(AddressBook.ABRecord)",
 			"AppKit.NSBitmapImageRep::.ctor(Foundation.NSObjectFlag,Foundation.NSObjectFlag)",
-			"AppKit.NSGradient::Initialize(AppKit.NSColor[],System.Void*,AppKit.NSColorSpace)",
 			"AppKit.NSOpenGLPixelFormat::.ctor(AppKit.NSOpenGLPixelFormatAttribute[])",
 			"AppKit.NSOpenGLPixelFormat::.ctor(System.Object[])",
 			"AppKit.NSTextContainer::.ctor(CoreGraphics.CGSize,System.Boolean)",

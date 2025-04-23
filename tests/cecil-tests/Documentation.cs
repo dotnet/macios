@@ -219,11 +219,13 @@ namespace Cecil.Tests {
 			string name = "";
 			if (tr.IsNested) {
 				var decl = tr.DeclaringType;
-				while (decl.IsNested) {
+				while (true) {
 					name = decl.Name + "." + name;
+					if (!decl.IsNested)
+						break;
 					decl = decl.DeclaringType;
 				}
-				name = decl.Namespace + "." + decl.Name + "." + name;
+				name = decl.Namespace + "." + name;
 			} else {
 				name = tr.Namespace + ".";
 			}

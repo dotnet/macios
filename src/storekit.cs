@@ -731,7 +731,12 @@ namespace StoreKit {
 		///         <summary>Loads the product that is specified by the specified product <paramref name="parameters" /> and runs the provided <paramref name="callback" /> when the operation completes.</summary>
 		///         <remarks>To be added.</remarks>
 		[Wrap ("LoadProduct (parameters.GetDictionary ()!, callback)")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="parameters">To be added.</param>
+			<summary>Returns a task that loads the product that is specified by the specified product <paramref name="parameters" />.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void LoadProduct (StoreProductParameters parameters, [NullAllowed] Action<bool, NSError> callback);
 
 		[Async]
@@ -950,7 +955,17 @@ namespace StoreKit {
 		[NullAllowed, Export ("delegate", ArgumentSemantic.Weak)]
 		ISKCloudServiceSetupViewControllerDelegate Delegate { get; set; }
 
-		[Async]
+		[Async (XmlDocs = """
+			<param name="options">A dictionary of setup options.</param>
+			<summary>Loads a setup view with the specified <paramref name="options" /> and runs a handler when the view is loaded.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous Load operation.  The value of the TResult parameter is of type System.Action&lt;System.Boolean,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The LoadAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("loadWithOptions:completionHandler:")]
 		void Load (NSDictionary options, [NullAllowed] Action<bool, NSError> completionHandler);
 
@@ -961,7 +976,12 @@ namespace StoreKit {
 		///         </param>
 		///         <summary>Loads a setup view with the specified <paramref name="options" /> and runs a handler when the view is loaded.</summary>
 		///         <remarks>To be added.</remarks>
-		[Async]
+		[Async (XmlDocs = """
+			<param name="options">Setup options object.</param>
+			<summary>Asynchronously loads a setup view with the specified <paramref name="options" />, returning a task that indicates success or failure and includes an error, if one occurred.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Wrap ("Load (options.GetDictionary ()!, completionHandler)")]
 		void Load (SKCloudServiceSetupOptions options, Action<bool, NSError> completionHandler);
 	}
@@ -1117,12 +1137,29 @@ namespace StoreKit {
 		void RequestCapabilities (Action<SKCloudServiceCapability, NSError> completionHandler);
 
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="clientToken">To be added.</param>
+			<summary>Developers should not use this deprecated method. Developers should use 'RequestUserToken' instead.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous RequestPersonalizationToken operation.  The value of the TResult parameter is of type System.Action&lt;Foundation.NSString,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("requestPersonalizationTokenForClientToken:withCompletionHandler:")]
 		void RequestPersonalizationToken (string clientToken, Action<NSString, NSError> completionHandler);
 
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="developerToken">The JWT token to authenticate the developer.</param>
+			<summary>Requests the user code for accessing personalized music content, passing the code and an error, if present, to the provided handler.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous RequestUserToken operation.  The value of the TResult parameter is of type System.Action&lt;Foundation.NSString,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The RequestUserTokenAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("requestUserTokenForDeveloperToken:completionHandler:")]
 		void RequestUserToken (string developerToken, Action<NSString, NSError> completionHandler);
 
@@ -1156,11 +1193,24 @@ namespace StoreKit {
 		[Export ("defaultController")]
 		SKProductStorePromotionController Default { get; }
 
-		[Async]
+		[Async (XmlDocs = """
+			<param name="product">The product whose visibility to fetch.</param>
+			<summary>Fetches the visibility of the specified product on the device.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous FetchStorePromotionVisibility operation.  The value of the TResult parameter is of type System.Action&lt;StoreKit.SKProductStorePromotionVisibility,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("fetchStorePromotionVisibilityForProduct:completionHandler:")]
 		void FetchStorePromotionVisibility (SKProduct product, [NullAllowed] Action<SKProductStorePromotionVisibility, NSError> completionHandler);
 
-		[Async]
+		[Async (XmlDocs = """
+			<param name="promotionVisibility">The new visibility.</param>
+			<param name="product">The product whose visibility to update.</param>
+			<summary>Updates the visibility of the specified product on the device.</summary>
+			<returns>A task that represents the asynchronous Update operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("updateStorePromotionVisibility:forProduct:completionHandler:")]
 		void Update (SKProductStorePromotionVisibility promotionVisibility, SKProduct product, [NullAllowed] Action<NSError> completionHandler);
 
@@ -1168,7 +1218,15 @@ namespace StoreKit {
 		[Export ("fetchStorePromotionOrderWithCompletionHandler:")]
 		void FetchStorePromotionOrder ([NullAllowed] Action<SKProduct [], NSError> completionHandler);
 
-		[Async]
+		[Async (XmlDocs = """
+			<param name="storePromotionOrder">An array of products in the desired order.</param>
+			<summary>Updates the product order on the device.</summary>
+			<returns>A task that represents the asynchronous Update operation</returns>
+			<remarks>
+			          <para copied="true">The UpdateAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("updateStorePromotionOrder:completionHandler:")]
 		void Update (SKProduct [] storePromotionOrder, [NullAllowed] Action<NSError> completionHandler);
 	}

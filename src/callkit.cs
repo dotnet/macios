@@ -320,17 +320,35 @@ namespace CallKit {
 		[Export ("callObserver", ArgumentSemantic.Strong)]
 		CXCallObserver CallObserver { get; }
 
-		[Async]
+		[Async (XmlDocs = """
+			<param name="transaction">The transaction to run.</param>
+			<summary>Requests that the system run a transaction.</summary>
+			<returns>A task that represents the asynchronous RequestTransaction operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("requestTransaction:completion:")]
 		void RequestTransaction (CXTransaction transaction, Action<NSError> completion);
 
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="actions">To be added.</param>
+			<summary>Requests that the specified actions be performed by the provider, and runs a handler on the call controller's queue when the operation is complete.</summary>
+			<returns>A task that represents the asynchronous RequestTransaction operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("requestTransactionWithActions:completion:")]
 		void RequestTransaction (CXAction [] actions, Action<NSError> completion);
 
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="action">The transaction that is being requested.</param>
+			<summary>Requests that the specified action be performed by the provider, and runs a handler on the call controller's queue when the operation is complete.</summary>
+			<returns>A task that represents the asynchronous RequestTransaction operation</returns>
+			<remarks>
+			          <para copied="true">The RequestTransactionAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("requestTransactionWithAction:completion:")]
 		void RequestTransaction (CXAction action, Action<NSError> completion);
 	}
@@ -408,11 +426,24 @@ namespace CallKit {
 		[Export ("sharedInstance")]
 		CXCallDirectoryManager SharedInstance { get; }
 
-		[Async]
+		[Async (XmlDocs = """
+			<param name="identifier">The unique id of the directory extension to check.</param>
+			<summary>Asynchronously reloads the identified directory extension.</summary>
+			<returns>A task that represents the asynchronous ReloadExtension operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("reloadExtensionWithIdentifier:completionHandler:")]
 		void ReloadExtension (string identifier, [NullAllowed] Action<NSError> completion);
 
-		[Async]
+		[Async (XmlDocs = """
+			<param name="identifier">The unique id of the directory extension to check.</param>
+			<summary>Asynchronously gets the enabled status of the identified extension.</summary>
+			<returns>A task that processes the enabled status of the extension.</returns>
+			<remarks>
+			          <para copied="true">The GetEnabledStatusForExtensionAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("getEnabledStatusForExtensionWithIdentifier:completionHandler:")]
 		void GetEnabledStatusForExtension (string identifier, Action<CXCallDirectoryEnabledStatus, NSError> completion);
 
@@ -609,7 +640,16 @@ namespace CallKit {
 		[Export ("setDelegate:queue:")]
 		void SetDelegate ([NullAllowed] ICXProviderDelegate aDelegate, [NullAllowed] DispatchQueue queue);
 
-		[Async]
+		[Async (XmlDocs = """
+			<param name="uuid">The identifier of the call.</param>
+			<param name="update">An object that contains the updated parameters for the call.</param>
+			<summary>Reports a new incoming call to the system.</summary>
+			<returns>A task that represents the asynchronous ReportNewIncomingCall operation</returns>
+			<remarks>
+			          <para copied="true">The ReportNewIncomingCallAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("reportNewIncomingCallWithUUID:update:completion:")]
 		void ReportNewIncomingCall (NSUuid uuid, CXCallUpdate update, Action<NSError> completion);
 

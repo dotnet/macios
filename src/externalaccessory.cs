@@ -192,7 +192,15 @@ namespace ExternalAccessory {
 		[NoMacCatalyst] // selector does not respond
 		[NoMac]
 		[Export ("showBluetoothAccessoryPickerWithNameFilter:completion:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="predicate">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>A task that represents the asynchronous ShowBluetoothAccessoryPicker operation</returns>
+			<remarks>
+			          <para copied="true">The ShowBluetoothAccessoryPickerAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void ShowBluetoothAccessoryPicker ([NullAllowed] NSPredicate predicate, [NullAllowed] Action<NSError> completion);
 	}
 

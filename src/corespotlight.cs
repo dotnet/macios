@@ -165,7 +165,12 @@ namespace CoreSpotlight {
 		///         <summary>Indexes the specified searchable items and runs <paramref name="completionHandler" /> when finished.</summary>
 		///         <remarks>To be added.</remarks>
 		[Export ("indexSearchableItems:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="items">The items to index.</param>
+			<summary>Asynchronously indexes the specified searchable items.</summary>
+			<returns>A task that represents the asynchronous Index operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void Index (CSSearchableItem [] items, [NullAllowed] Action<NSError> completionHandler);
 
 		/// <param name="identifiers">To be added.</param>
@@ -176,7 +181,12 @@ namespace CoreSpotlight {
 		///         <summary>Removes the identified items and runs <paramref name="completionHandler" /> when finished.</summary>
 		///         <remarks>To be added.</remarks>
 		[Export ("deleteSearchableItemsWithIdentifiers:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="identifiers">To be added.</param>
+			<summary>Asynchronously removes the identified items.</summary>
+			<returns>A task that represents the asynchronous Delete operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void Delete (string [] identifiers, [NullAllowed] Action<NSError> completionHandler);
 
 		/// <param name="domainIdentifiers">The domain identifier for the items to delete.</param>
@@ -185,7 +195,12 @@ namespace CoreSpotlight {
 		///         <summary>Removes all items from the specified domains and runs <paramref name="completionHandler" /> after the index change is journaled.</summary>
 		///         <remarks>To be added.</remarks>
 		[Export ("deleteSearchableItemsWithDomainIdentifiers:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="domainIdentifiers">The domain identifier for the items to delete.</param>
+			<summary>Asynchronously removes all items from the specified domains.</summary>
+			<returns>A task that represents the asynchronous DeleteWithDomain operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void DeleteWithDomain (string [] domainIdentifiers, [NullAllowed] Action<NSError> completionHandler);
 
 		/// <param name="completionHandler">

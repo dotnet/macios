@@ -133,6 +133,10 @@ public partial class Generator {
 		if (is_abstract && (v.Length == 0))
 			v = "protected ";
 		if (v.Length > 0) {
+			if (BindingTouch.SupportsXmlDocumentation) {
+				print ($"/// <summary>Creates a new <see cref=\"{type_name}\" /> with the specified name.</summary>");
+				print ($"/// <param name=\"name\">The name of the filter to create.</param>");
+			}
 			print_generated_code ();
 			print ("{0} {1} (string name) : base (CreateFilter (name))", v, type_name);
 			PrintEmptyBody ();
@@ -184,6 +188,8 @@ public partial class Generator {
 				continue;
 
 			print ("");
+
+			WriteDocumentation (p);
 
 			// an export will be present (only) if it's defined in a protocol
 			var export = AttributeManager.GetCustomAttribute<ExportAttribute> (p);

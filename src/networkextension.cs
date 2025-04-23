@@ -290,7 +290,15 @@ namespace NetworkExtension {
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'OpenWithLocalFlowEndpoint' instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'OpenWithLocalFlowEndpoint' instead.")]
 		[Export ("openWithLocalEndpoint:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="localEndpoint">To be added.</param>
+			<summary>Opens the flow.</summary>
+			<returns>A task that represents the asynchronous OpenWithLocalEndpoint operation</returns>
+			<remarks>
+			          <para copied="true">The OpenWithLocalEndpointAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void OpenWithLocalEndpoint ([NullAllowed] NWHostEndpoint localEndpoint, Action<NSError> completionHandler);
 
 		/// <param name="error">
@@ -375,7 +383,12 @@ namespace NetworkExtension {
 		///         <summary>Starts the proxy with the specified <paramref name="options" /> and runs <paramref name="completionHandler" /> after the operation is complete.</summary>
 		///         <remarks>To be added.</remarks>
 		[Export ("startProxyWithOptions:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="options">To be added.</param>
+			<summary>Asynchronously starts the proxy with the specified <paramref name="options" />.</summary>
+			<returns>A task that represents the asynchronous StartProxy operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void StartProxy ([NullAllowed] NSDictionary<NSString, NSObject> options, Action<NSError> completionHandler);
 
 		/// <param name="reason">To be added.</param>
@@ -383,7 +396,15 @@ namespace NetworkExtension {
 		///         <summary>Stops the proxy with the specified <paramref name="reason" /> and runs <paramref name="completionHandler" /> when the operation is complete.</summary>
 		///         <remarks>To be added.</remarks>
 		[Export ("stopProxyWithReason:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="reason">To be added.</param>
+			<summary>Stops the proxy with the specified <paramref name="reason" /> and returns when the operation is complete.</summary>
+			<returns>A task that represents the asynchronous StopProxy operation</returns>
+			<remarks>
+			          <para copied="true">The StopProxyAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void StopProxy (NEProviderStopReason reason, Action completionHandler);
 
 		/// <param name="error">
@@ -452,7 +473,15 @@ namespace NetworkExtension {
 		///         <summary>Writes the provided <paramref name="data" /> to the flow and runs <paramref name="completionHandler" /> when the operation is complete.</summary>
 		///         <remarks>To be added.</remarks>
 		[Export ("writeData:withCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="data">To be added.</param>
+			<summary>Writes the provided <paramref name="data" /> to the flow and returns when the operation is complete.</summary>
+			<returns>A task that represents the asynchronous WriteData operation</returns>
+			<remarks>
+			          <para copied="true">The WriteDataAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void WriteData (NSData data, Action<NSError> completionHandler);
 
 		/// <summary>Gets a description of the remote endpoint.</summary>
@@ -499,7 +528,16 @@ namespace NetworkExtension {
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'WriteDatagramsAndFlowEndpoints' instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'WriteDatagramsAndFlowEndpoints' instead.")]
 		[Export ("writeDatagrams:sentByEndpoints:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="datagrams">To be added.</param>
+			<param name="remoteEndpoints">To be added.</param>
+			<summary>Asynchronously writes the provided <paramref name="datagrams" /> to the specified <paramref name="remoteEndpoints" /> and returns when the operation is complete.</summary>
+			<returns>A task that represents the asynchronous WriteDatagrams operation</returns>
+			<remarks>
+			          <para copied="true">The WriteDatagramsAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void WriteDatagrams (NSData [] datagrams, NWEndpoint [] remoteEndpoints, Action<NSError> completionHandler);
 
 		/// <summary>Gets a description of the local endpoint.</summary>
@@ -690,7 +728,14 @@ namespace NetworkExtension {
 		///         <summary>Handles a user remediation request and runs <paramref name="completionHandler" /> after changing the rules.</summary>
 		///         <remarks>To be added.</remarks>
 		[Export ("handleRemediationForFlow:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="flow">To be added.</param>
+			<summary>Asynchronously handles a user remediation request.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous HandleRemediationForFlow operation.  The value of the TResult parameter is of type System.Action&lt;NetworkExtension.NEFilterControlVerdict&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void HandleRemediationForFlow (NEFilterFlow flow, Action<NEFilterControlVerdict> completionHandler);
 
 		/// <param name="flow">To be added.</param>
@@ -698,7 +743,17 @@ namespace NetworkExtension {
 		///         <summary>Handles new filter rules and runs <paramref name="completionHandler" /> after changing the rules.</summary>
 		///         <remarks>To be added.</remarks>
 		[Export ("handleNewFlow:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="flow">To be added.</param>
+			<summary>Asynchronously handles new filter rules.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous HandleNewFlow operation.  The value of the TResult parameter is of type System.Action&lt;NetworkExtension.NEFilterControlVerdict&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The HandleNewFlowAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void HandleNewFlow (NEFilterFlow flow, Action<NEFilterControlVerdict> completionHandler);
 
 		/// <summary>Method that is called to notify the Filter Data Provider that the filtering rules changed..</summary>
@@ -1088,7 +1143,15 @@ namespace NetworkExtension {
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
 		[Export ("stopFilterWithReason:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="reason">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>A task that represents the asynchronous StopFilter operation</returns>
+			<remarks>
+			          <para copied="true">The StopFilterAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void StopFilter (NEProviderStopReason reason, Action completionHandler);
 
 		[iOS (13, 0)] // new in this (base) type
@@ -1764,7 +1827,17 @@ namespace NetworkExtension {
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 		[Export ("displayMessage:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="message">To be added.</param>
+			<summary>Displays a message to the user and passes a Boolean result to a completion handler when it is finished.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous DisplayMessage operation.  The value of the TResult parameter is of type System.Action&lt;System.Boolean&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The DisplayMessageAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void DisplayMessage (string message, Action<bool> completionHandler);
 
 		[NoiOS]
@@ -1947,7 +2020,14 @@ namespace NetworkExtension {
 		///         <summary>Method that is called to handle messages from the containing app.</summary>
 		///         <remarks>To be added.</remarks>
 		[Export ("handleAppMessage:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="messageData">To be added.</param>
+			<summary>Method that is called to handle messages from the containing app.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous HandleAppMessage operation.  The value of the TResult parameter is of type System.Action&lt;Foundation.NSData&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void HandleAppMessage (NSData messageData, [NullAllowed] Action<NSData> completionHandler);
 
 		/// <param name="tunnelNetworkSettings">
@@ -1961,7 +2041,15 @@ namespace NetworkExtension {
 		///         <summary>Updates the network settings for the tunnel.</summary>
 		///         <remarks>To be added.</remarks>
 		[Export ("setTunnelNetworkSettings:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="tunnelNetworkSettings">To be added.</param>
+			<summary>Updates the network settings for the tunnel.</summary>
+			<returns>A task that represents the asynchronous SetTunnelNetworkSettings operation</returns>
+			<remarks>
+			          <para copied="true">The SetTunnelNetworkSettingsAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void SetTunnelNetworkSettings ([NullAllowed] NETunnelNetworkSettings tunnelNetworkSettings, [NullAllowed] Action<NSError> completionHandler);
 
 		/// <summary>Gets the tunnel configuration.</summary>
@@ -3019,7 +3107,15 @@ namespace NetworkExtension {
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'Network.NWConnection.Send' instead.")]
 		[Deprecated (PlatformName.TvOS, 18, 0, message: "Use 'Network.NWConnection.Send' instead.")]
 		[Export ("write:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="data">To be added.</param>
+			<summary>Writes the provided <paramref name="data" /> to the connection and runs a completion handler when the operation completes.</summary>
+			<returns>A task that represents the asynchronous Write operation</returns>
+			<remarks>
+			          <para copied="true">The WriteAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void Write (NSData data, Action<NSError> completion);
 
 		/// <summary>Closes the connection for write operations.</summary>
@@ -3088,7 +3184,18 @@ namespace NetworkExtension {
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'Security.SecProtocolOptions.SetVerifyBlock' instead.")]
 		[Deprecated (PlatformName.TvOS, 18, 0, message: "Use 'Security.SecProtocolOptions.SetVerifyBlock' instead.")]
 		[Export ("evaluateTrustForConnection:peerCertificateChain:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="connection">To be added.</param>
+			<param name="peerCertificateChain">To be added.</param>
+			<summary>When implemented by the developer, overrides the default trust evaluation and runs a completion handler when the operation is complete.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous EvaluateTrust operation.  The value of the TResult parameter is of type System.Action&lt;Security.SecTrust&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The EvaluateTrustAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void EvaluateTrust (NWTcpConnection connection, NSArray peerCertificateChain, Action<SecTrust> completion);
 		// note: it's not clear (from headers) but based on other API it's likely to accept a mix of SecIdentity
 		// and SecCertificate - both *NOT* NSObject -> because of that NSArray is used above
@@ -3266,7 +3373,12 @@ namespace NetworkExtension {
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'Network.NWConnection.Send' instead.")]
 		[Deprecated (PlatformName.TvOS, 18, 0, message: "Use 'Network.NWConnection.Send' instead.")]
 		[Export ("writeMultipleDatagrams:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="datagramArray">To be added.</param>
+			<summary>Writes the datagrams in the provided <paramref name="datagramArray" /> to the endpoint, and runs a completion handler when the operation completes.</summary>
+			<returns>A task that represents the asynchronous WriteMultipleDatagrams operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void WriteMultipleDatagrams (NSData [] datagramArray, Action<NSError> completionHandler);
 
 		/// <param name="datagram">To be added.</param>
@@ -3278,7 +3390,15 @@ namespace NetworkExtension {
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'Network.NWConnection.Send' instead.")]
 		[Deprecated (PlatformName.TvOS, 18, 0, message: "Use 'Network.NWConnection.Send' instead.")]
 		[Export ("writeDatagram:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="datagram">To be added.</param>
+			<summary>Writes the provided <paramref name="datagram" /> to the endpoint, and runs a completion handler when the operation completes.</summary>
+			<returns>A task that represents the asynchronous WriteDatagram operation</returns>
+			<remarks>
+			          <para copied="true">The WriteDatagramAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void WriteDatagram (NSData datagram, Action<NSError> completionHandler);
 
 		/// <summary>Cancels the UDP session.</summary>
@@ -3549,7 +3669,12 @@ namespace NetworkExtension {
 		///         <summary>Starts the tunnel.</summary>
 		///         <remarks>To be added.</remarks>
 		[Export ("startTunnelWithOptions:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="options">To be added.</param>
+			<summary>Starts the tunnel.</summary>
+			<returns>A task that represents the asynchronous StartTunnel operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void StartTunnel ([NullAllowed] NSDictionary<NSString, NSObject> options, Action<NSError> completionHandler);
 
 		/// <param name="reason">To be added.</param>
@@ -3557,7 +3682,15 @@ namespace NetworkExtension {
 		///         <summary>Stops the Tunnel.</summary>
 		///         <remarks>To be added.</remarks>
 		[Export ("stopTunnelWithReason:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="reason">To be added.</param>
+			<summary>Stops the Tunnel.</summary>
+			<returns>A task that represents the asynchronous StopTunnel operation</returns>
+			<remarks>
+			          <para copied="true">The StopTunnelAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void StopTunnel (NEProviderStopReason reason, Action completionHandler);
 
 		/// <param name="error">
@@ -3793,7 +3926,12 @@ namespace NetworkExtension {
 		///         <param name="completionHandler">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[Async]
+		[Async (XmlDocs = """
+			<param name="options">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>A task that represents the asynchronous StartProxy operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("startProxyWithOptions:completionHandler:")]
 		void StartProxy ([NullAllowed] NSDictionary options, Action<NSError> completionHandler);
 
@@ -3801,7 +3939,15 @@ namespace NetworkExtension {
 		///         <param name="completionHandler">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[Async]
+		[Async (XmlDocs = """
+			<param name="reason">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>A task that represents the asynchronous StopProxy operation</returns>
+			<remarks>
+			          <para copied="true">The StopProxyAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("stopProxyWithReason:completionHandler:")]
 		void StopProxy (NEProviderStopReason reason, Action completionHandler);
 
@@ -4073,7 +4219,12 @@ namespace NetworkExtension {
 		///         </param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[Async]
+		[Async (XmlDocs = """
+			<param name="configuration">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>A task that represents the asynchronous ApplyConfiguration operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("applyConfiguration:completionHandler:")]
 		void ApplyConfiguration (NEHotspotConfiguration configuration, [NullAllowed] Action<NSError> completionHandler);
 

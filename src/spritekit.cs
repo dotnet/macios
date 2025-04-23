@@ -254,7 +254,15 @@ namespace SpriteKit {
 		[Export ("runAction:")]
 		void RunAction (SKAction action);
 
-		[Async]
+		[Async (XmlDocs = """
+			<param name="action">The action to add and run.</param>
+			<summary>Asynchronously adds an action to the node that will be processed in the next animation loop.</summary>
+			<returns>A task that represents the asynchronous RunAction operation</returns>
+			<remarks>
+			          <para copied="true">The RunActionAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("runAction:completion:")]
 		void RunAction (SKAction action, Action completionHandler);
 
@@ -1718,7 +1726,12 @@ namespace SpriteKit {
 
 		[Static]
 		[Export ("preloadTextures:withCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="textures">To be added.</param>
+			<summary>Asynchronously loads the textures into memory.</summary>
+			<returns>A task that represents the asynchronous PreloadTextures operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		// note: unlike SKTextureAtlas completion can't be null (or it crash)
 		void PreloadTextures (SKTexture [] textures, Action completion);
 
@@ -1806,14 +1819,26 @@ namespace SpriteKit {
 
 		[Static]
 		[Export ("preloadTextureAtlases:withCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="textures">To be added.</param>
+			<summary>Asynchronously preloads the specified list of texture atlases.</summary>
+			<returns>A task that represents the asynchronous PreloadTextures operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		// Unfortunate name, should have been PreloadTextureAtlases
 		void PreloadTextures (SKTextureAtlas [] textures, Action completion);
 
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("preloadTextureAtlasesNamed:withCompletionHandler:")]
-		[Async (ResultTypeName = "SKTextureAtlasLoadResult")]
+		[Async (ResultTypeName = "SKTextureAtlasLoadResult", XmlDocs = """
+			<param name="atlasNames">To be added.</param>
+			<summary>Loads the named atlases and calls a completion handler after they are loaded.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous PreloadTextureAtlases operation.   The value of the TResult parameter is of type <c>Action&lt;SpriteKit.SKTextureAtlasLoadResult&gt;</c>.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void PreloadTextureAtlases (string [] atlasNames, SKTextureAtlasLoadCallback completionHandler);
 
 		[Export ("preloadWithCompletionHandler:")]

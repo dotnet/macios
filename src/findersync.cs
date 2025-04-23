@@ -62,7 +62,13 @@ namespace FinderSync {
 		///         <param name="completion">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[Async, Export ("setLastUsedDate:forItemWithURL:completion:")]
+		[Async (XmlDocs = """
+			<param name="lastUsedDate">To be added.</param>
+			<param name="itemUrl">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			"""), Export ("setLastUsedDate:forItemWithURL:completion:")]
 		void SetLastUsedDate (NSDate lastUsedDate, NSUrl itemUrl, Action<NSError> completion);
 
 		/// <param name="itemUrl">To be added.</param>
@@ -78,7 +84,13 @@ namespace FinderSync {
 		///         <param name="completion">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[Async]
+		[Async (XmlDocs = """
+			<param name="tagData">To be added.</param>
+			<param name="itemUrl">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("setTagData:forItemWithURL:completion:")]
 		void SetTagData ([NullAllowed] NSData tagData, NSUrl itemUrl, Action<NSError> completion);
 

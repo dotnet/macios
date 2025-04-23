@@ -24,7 +24,7 @@
     <!-- Ignore TargetFramework reference group related warnings, these are workload packs not functional NuGets. -->
     <!-- NU5105: The package version '#.#.#-alpha.##+hash' uses SemVer 2.0.0 or components of SemVer 1.0.0 that are not supported on legacy clients. Change the package version to a SemVer 1.0.0 string. If the version contains a release label it must start with a letter. This message can be ignored if the package is not intended for older clients. -->
     <NoWarn>$(NoWarn);NU5105;NU5128;NU5131</NoWarn>
-    <!-- Properties to control ref, runtime, and tool pack creation managed by packages/microsoft.dotnet.sharedframework.sdk/9.0.0-beta.25058.5/targets/sharedfx.targets -->
+    <!-- Properties to control ref, runtime, and tool pack creation managed by https://github.com/dotnet/arcade/blob/2b1931c05dd6ceb89120131a8b39eaa81735179a/src/Microsoft.DotNet.SharedFramework.Sdk/targets/sharedfx.targets -->
     <SharedFrameworkName>Microsoft.$(_PlatformName)</SharedFrameworkName>
     <SharedFrameworkFriendlyName>.NET $(BundledNETCoreAppTargetFrameworkVersion) - $(SharedFrameworkName)</SharedFrameworkFriendlyName>
     <SkipInstallerBuild>true</SkipInstallerBuild>
@@ -49,6 +49,11 @@
     <None Include="$(_RepositoryPath)/LICENSE" Pack="true" PackagePath="/" />
     <None Include="$(MSBuildThisFileDirectory)Icon.png" Pack="true" PackagePath="/" />
     <Content Include="$(_packagePath)**" Pack="true" PackagePath="/" />
+  </ItemGroup>
+
+  <!-- Always include symbols in runtime packs, otherwise set %(FilesToPackage.IsSymbolFile) to true to only include in symbols.nupkg files -->
+  <ItemGroup Condition=" '$(PlatformPackageType)' == 'RuntimePack' ">
+    <Content Include="$(_packagePath)**\*.pdb" Pack="true" PackagePath="/" />
   </ItemGroup>
 
   <ItemGroup>
@@ -77,10 +82,7 @@
     </PropertyGroup>
     <ItemGroup Condition=" '$(PlatformPackageType)' == 'TargetingPack' or '$(PlatformPackageType)' == 'RuntimePack' " >
       <_FxAssembliesToPackage Include="$(_packagePath)$(_PackTargetPath)/*.dll" />
-      <_FxAssembliesDocsToPackage Include="$(_packagePath)$(_PackTargetPath)/*.xml" />
-      <FilesToPackage Include="@(_FxAssembliesToPackage);@(_FxAssembliesDocsToPackage)" TargetPath="$(_PackTargetPath)" />
-      <!-- Always include symbols in runtime packs so that they can be deployed when debugging, otherwise set @(IsSymbolFile) metadata to only include in the symbols.nupkg file -->
-      <FilesToPackage Include="@(_FxAssembliesToPackage->'%(RelativeDir)%(Filename).pdb')" TargetPath="$(_PackTargetPath)" Condition=" '$(PlatformPackageType)' == 'RuntimePack' " />
+      <FilesToPackage Include="@(_FxAssembliesToPackage)" TargetPath="$(_PackTargetPath)" />
       <FilesToPackage Include="@(_FxAssembliesToPackage->'%(RelativeDir)%(Filename).pdb')" TargetPath="$(_PackTargetPath)" IsSymbolFile="true" Condition=" '$(PlatformPackageType)' != 'RuntimePack' " />
       <NativeRuntimeAsset Include="$(_packagePath)$(_PackNativePath)/*.a" />
       <NativeRuntimeAsset Include="$(_packagePath)$(_PackNativePath)/*.dylib" />
@@ -89,7 +91,7 @@
     </ItemGroup>
     <ItemGroup Condition=" '$(PlatformPackageType)' == 'ToolPack' " >
       <_ToolsFilesToPackage Include="$(_packagePath)**" Exclude="$(_packagePath)*.pdb" />
-      <_ToolsSymbolsToPackage Include="$(_packagePath)*.pdb" />
+      <_ToolsSymbolsToPackage Include="$(_packagePath)**\*.pdb" />
       <FilesToPackage Include="@(_ToolsFilesToPackage)" TargetPath="%(RecursiveDir)" />
       <FilesToPackage Include="@(_ToolsSymbolsToPackage)" TargetPath="%(RecursiveDir)" IsSymbolFile="true" />
     </ItemGroup>

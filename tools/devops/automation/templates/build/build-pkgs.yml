@@ -75,7 +75,13 @@ steps:
             displayName: 'Publish Build Artifacts'
             path: $(Build.SourcesDirectory)/package
             artifact: '${{ parameters.uploadPrefix }}not-signed-package'
-            continueOnError: true
+
+        - template: ../common/publish-pipeline-artifact.yml
+          parameters:
+            use1ES: ${{ parameters.use1ES }}
+            displayName: Publish Build Artifact Symbols
+            path: $(Build.SourcesDirectory)/symbols
+            artifact: ${{ parameters.uploadPrefix }}not-signed-package-symbols
 
         - bash: |
             set -x

@@ -74,9 +74,6 @@ namespace AppKit {
 		public NSGradient (NSColor [] colors, double [] locations, NSColorSpace colorSpace) : base (NSObjectFlag.Empty)
 		{
 			unsafe {
-				if (IntPtr.Size != 8)
-					throw new PlatformNotSupportedException ("Use the overload that takes an array of 'nfloat' values as locations instead.");
-
 				fixed (void* locationPtr = locations) {
 					Initialize (colors, locations?.Length, (IntPtr) locationPtr, colorSpace);
 				}

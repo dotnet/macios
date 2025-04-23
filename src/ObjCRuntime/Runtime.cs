@@ -327,12 +327,6 @@ namespace ObjCRuntime {
 				throw ErrorHelper.CreateError (8001, msg);
 			}
 
-			if (IntPtr.Size != sizeof (nint)) {
-				string msg = $"Native type size mismatch between {AssemblyName} and the executing architecture. {AssemblyName} was built for {(IntPtr.Size == 4 ? 64 : 32)}-bit, while the current process is {(IntPtr.Size == 4 ? 32 : 64)}-bit.";
-				NSLog (msg);
-				throw ErrorHelper.CreateError (8010, msg);
-			}
-
 			if (System.Runtime.GCSettings.IsServerGC) {
 				var msg = $".NET for {PlatformName} does not support server garbage collection.";
 				NSLog (msg);
@@ -2545,9 +2539,6 @@ namespace ObjCRuntime {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		static bool GetIsARM64CallingConvention ()
 		{
-			if (IntPtr.Size != 8)
-				return false;
-
 			unsafe {
 				return NXGetLocalArchInfo ()->Name.StartsWith ("arm64", StringComparison.OrdinalIgnoreCase);
 			}

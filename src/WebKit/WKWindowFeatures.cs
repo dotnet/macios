@@ -48,8 +48,6 @@ namespace WebKit {
 		{
 			if (number is null)
 				return null;
-			else if (IntPtr.Size == 4)
-				return (nfloat) number.FloatValue;
 			else
 				return (nfloat) number.DoubleValue;
 		}

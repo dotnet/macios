@@ -151,11 +151,9 @@ namespace ObjCRuntime {
 			public IntPtr retain_tramp;
 			public IntPtr static_tramp;
 			public IntPtr ctor_tramp;
-			public IntPtr x86_double_abi_stret_tramp;
 			public IntPtr static_fpret_single_tramp;
 			public IntPtr static_fpret_double_tramp;
 			public IntPtr static_stret_tramp;
-			public IntPtr x86_double_abi_static_stret_tramp;
 			public IntPtr long_tramp;
 			public IntPtr static_long_tramp;
 #if MONOMAC

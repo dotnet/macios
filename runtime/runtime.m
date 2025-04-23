@@ -110,11 +110,9 @@ struct Trampolines {
 	void* retain_tramp;
 	void* static_tramp;
 	void* ctor_tramp;
-	void* x86_double_abi_stret_tramp;
 	void* static_fpret_single_tramp;
 	void* static_fpret_double_tramp;
 	void* static_stret_tramp;
-	void* x86_double_abi_static_stret_tramp;
 	void* long_tramp;
 	void* static_long_tramp;
 #if MONOMAC
@@ -171,19 +169,9 @@ static struct Trampolines trampolines = {
 	(void *) &xamarin_retain_trampoline,
 	(void *) &xamarin_static_trampoline,
 	(void *) &xamarin_ctor_trampoline,
-#if defined (__i386__)
-	(void *) &xamarin_x86_double_abi_stret_trampoline,
-#else
-	NULL,
-#endif
 	(void *) &xamarin_static_fpret_single_trampoline,
 	(void *) &xamarin_static_fpret_double_trampoline,
 	(void *) &xamarin_static_stret_trampoline,
-#if defined (__i386__)
-	(void *) &xamarin_static_x86_double_abi_stret_trampoline,
-#else
-	NULL,
-#endif
 	(void *) &xamarin_longret_trampoline,
 	(void *) &xamarin_static_longret_trampoline,
 #if MONOMAC

@@ -237,6 +237,10 @@ extern void mono_gc_init_finalizer_thread (void);
 int
 xamarin_main (int argc, char *argv[], enum XamarinLaunchMode launch_mode)
 {
+#ifdef DEBUG
+	monotouch_start_launch_timer ();
+#endif
+
 	// + 1 for the initial "monotouch" +1 for the final NULL = +2.
 	// This is not an exact number (it will most likely be lower, since there
 	// are other arguments besides --app-arg), but it's a guaranteed and bound

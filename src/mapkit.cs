@@ -1927,7 +1927,12 @@ namespace MapKit {
 		void Start (MKMapSnapshotCompletionHandler completionHandler);
 
 		[Export ("startWithQueue:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="queue">The dispatch queue to which to add the request.</param>
+			<summary>Puts a request that a snapshot be generated on the provided dispatch queue, returning a task that provides the snapshot when it is ready.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void Start (DispatchQueue queue, MKMapSnapshotCompletionHandler completionHandler);
 
 		[Export ("cancel")]

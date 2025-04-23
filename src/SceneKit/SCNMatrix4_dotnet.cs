@@ -23,8 +23,6 @@ SOFTWARE.
 
  */
 
-#if NET
-
 #if !MONOMAC
 #define PFLOAT_SINGLE
 #endif
@@ -1338,6 +1336,3 @@ namespace SceneKit {
 #endif
 	}
 }
-
-#endif // NET
-

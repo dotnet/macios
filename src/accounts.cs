@@ -95,7 +95,14 @@ namespace Accounts {
 		ACAccount [] FindAccounts (ACAccountType accountType);
 
 		[Export ("saveAccount:withCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="account">The account to be saved.</param>
+			<summary>Attempts to save an <see cref="T:Accounts.ACAccount" /> to the Accounts database.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous SaveAccount operation.   The value of the TResult parameter is a Accounts.ACAccountStoreSaveCompletionHandler.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void SaveAccount (ACAccount account, ACAccountStoreSaveCompletionHandler completionHandler);
 
 #if NET
@@ -105,7 +112,14 @@ namespace Accounts {
 		[Deprecated (PlatformName.iOS, 6, 0, message: "Use 'RequestAccess (ACAccountType, AccountStoreOptions, ACRequestCompletionHandler)' instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'RequestAccess (ACAccountType, AccountStoreOptions, ACRequestCompletionHandler)' instead.")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="accountType">The type of account for which access is being requested.</param>
+			<summary>Requests access to a type of social account.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous RequestAccess operation.   The value of the TResult parameter is a Accounts.ACRequestCompletionHandler.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void RequestAccess (ACAccountType accountType, ACRequestCompletionHandler completionHandler);
 
 		/// <include file="../docs/api/Accounts/ACAccountStore.xml" path="/Documentation/Docs[@DocId='P:Accounts.ACAccountStore.ChangeNotification']/*" />
@@ -117,12 +131,25 @@ namespace Accounts {
 		NSString ChangeNotification { get; }
 
 		[Export ("renewCredentialsForAccount:completion:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="account">The account whose credentials require renewing.</param>
+			<summary>Attempts to renew credentials if they have become invalid.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous RenewCredentials operation.  The value of the TResult parameter is of type System.Action&lt;Accounts.ACAccountCredentialRenewResult,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void RenewCredentials (ACAccount account, Action<ACAccountCredentialRenewResult, NSError> completionHandler);
 
 		[Protected]
 		[Export ("requestAccessToAccountsWithType:options:completion:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="accountType">To be added.</param>
+			<param name="options">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void RequestAccess (ACAccountType accountType, [NullAllowed] NSDictionary options, ACRequestCompletionHandler completion);
 
 		/// <param name="accountType">The type of account for which access is being requested.</param>
@@ -142,11 +169,27 @@ namespace Accounts {
 		///         </remarks>
 		///         <altmember cref="T:Accounts.AccountStoreOptions" />
 		[Wrap ("RequestAccess (accountType, options.GetDictionary (), completion)")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="accountType">To be added.</param>
+			<param name="options">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void RequestAccess (ACAccountType accountType, [NullAllowed] AccountStoreOptions options, ACRequestCompletionHandler completion);
 
 		[Export ("removeAccount:withCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="account">The account to remove.</param>
+			<summary>Removes the specified <paramref name="account" /> from the account store, and runs a completion handler after the operation is complete.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous RemoveAccount operation.   The value of the TResult parameter is a Accounts.ACAccountStoreRemoveCompletionHandler.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The RemoveAccountAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void RemoveAccount (ACAccount account, ACAccountStoreRemoveCompletionHandler completionHandler);
 	}
 

@@ -741,7 +741,12 @@ namespace FileProvider {
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
 		[Static]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="domain">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>A task that represents the asynchronous AddDomain operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("addDomain:completionHandler:")]
 		void AddDomain (NSFileProviderDomain domain, Action<NSError> completionHandler);
 
@@ -750,7 +755,12 @@ namespace FileProvider {
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
 		[Static]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="domain">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>A task that represents the asynchronous RemoveDomain operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("removeDomain:completionHandler:")]
 		void RemoveDomain (NSFileProviderDomain domain, Action<NSError> completionHandler);
 

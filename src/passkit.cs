@@ -170,7 +170,14 @@ namespace PassKit {
 		///         <summary>Presents a standard UX for adding multiple passes.</summary>
 		///         <remarks>To be added.</remarks>
 		[Export ("addPasses:withCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="passes">To be added.</param>
+			<summary>Presents a standard UX for adding multiple passes.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous AddPasses operation.  The value of the TResult parameter is of type System.Action&lt;PassKit.PKPassLibraryAddPassesStatus&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void AddPasses (PKPass [] passes, [NullAllowed] Action<PKPassLibraryAddPassesStatus> completion);
 
 		/// <include file="../docs/api/PassKit/PKPassLibrary.xml" path="/Documentation/Docs[@DocId='P:PassKit.PKPassLibrary.DidChangeNotification']/*" />
@@ -221,7 +228,15 @@ namespace PassKit {
 		[Deprecated (PlatformName.iOS, 13, 4, message: "Use 'ActivateSecureElementPass' instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'ActivateSecureElementPass' instead.")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="paymentPass">To be added.</param>
+			<param name="activationData">To be added.</param>
+			<summary>Activates the specified <paramref name="paymentPass" /> with the activation code in <paramref name="activationData" />.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous ActivatePaymentPass operation.  The value of the TResult parameter is of type System.Action&lt;System.Boolean,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("activatePaymentPass:withActivationData:completion:")]
 		void ActivatePaymentPass (PKPaymentPass paymentPass, NSData activationData, [NullAllowed] Action<bool, NSError> completion);
 
@@ -243,7 +258,18 @@ namespace PassKit {
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'ActivatePaymentPass (PKPaymentPass, NSData, Action<bool, NSError> completion)' instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'ActivatePaymentPass (PKPaymentPass, NSData, Action<bool, NSError> completion)' instead.")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="paymentPass">To be added.</param>
+			<param name="activationCode">To be added.</param>
+			<summary>Activates the specified <paramref name="paymentPass" /> with the activation code in <paramref name="activationCode" />.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous ActivatePaymentPass operation.  The value of the TResult parameter is of type System.Action&lt;System.Boolean,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The ActivatePaymentPassAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("activatePaymentPass:withActivationCode:completion:")]
 		void ActivatePaymentPass (PKPaymentPass paymentPass, string activationCode, [NullAllowed] Action<bool, NSError> completion);
 

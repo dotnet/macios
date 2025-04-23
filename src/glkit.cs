@@ -834,7 +834,16 @@ namespace GLKit {
 		///         <remarks>
 		///         </remarks>
 		[Export ("textureWithContentsOfFile:options:queue:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="file">The file that contains the texture.</param>
+			<param name="textureOperations">An NSDictionary populated with configuration options.   Alternatively, use the strongly-typed version of this method that takes a GLKTextureOperations object.This parameter can be .</param>
+			<param name="queue">The queue on which the callback method will be invoked, or null to invoke the method on the main dispatch queue.This parameter can be .</param>
+			<summary>Asynchronously loads a texture.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous BeginTextureLoad operation.   The value of the TResult parameter is a <see cref="T:GLKit.GLKTextureLoaderCallback" />.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void BeginTextureLoad (string file, [NullAllowed] NSDictionary textureOperations, [NullAllowed] DispatchQueue queue, GLKTextureLoaderCallback onComplete);
 
 		/// <param name="filePath">The file that contains the texture.</param>
@@ -851,7 +860,16 @@ namespace GLKit {
 		///         <remarks>
 		///         </remarks>
 		[Export ("textureWithContentsOfURL:options:queue:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="filePath">The file that contains the texture.</param>
+			<param name="textureOperations">An NSDictionary populated with configuration options.   Alternatively, use the strongly-typed version of this method that takes a GLKTextureOperations object.This parameter can be .</param>
+			<param name="queue">The queue on which the callback method will be invoked, or null to invoke the method on the main dispatch queue.This parameter can be .</param>
+			<summary>Asynchronously loads a texture.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous BeginTextureLoad operation.   The value of the TResult parameter is a <see cref="T:GLKit.GLKTextureLoaderCallback" />.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void BeginTextureLoad (NSUrl filePath, [NullAllowed] NSDictionary textureOperations, [NullAllowed] DispatchQueue queue, GLKTextureLoaderCallback onComplete);
 
 		/// <param name="data">NSData object that contains the bitmap that will be loaded into the texture.</param>
@@ -868,7 +886,16 @@ namespace GLKit {
 		///         <remarks>
 		///         </remarks>
 		[Export ("textureWithContentsOfData:options:queue:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="data">NSData object that contains the bitmap that will be loaded into the texture.</param>
+			<param name="textureOperations">An NSDictionary populated with configuration options.   Alternatively, use the strongly-typed version of this method that takes a GLKTextureOperations object.This parameter can be .</param>
+			<param name="queue">The queue on which the callback method will be invoked, or null to invoke the method on the main dispatch queue.This parameter can be .</param>
+			<summary>Asynchronously loads a texture.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous BeginTextureLoad operation.   The value of the TResult parameter is a <see cref="T:GLKit.GLKTextureLoaderCallback" />.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void BeginTextureLoad (NSData data, [NullAllowed] NSDictionary textureOperations, [NullAllowed] DispatchQueue queue, GLKTextureLoaderCallback onComplete);
 
 		/// <param name="image">CGImage that contains the image to be loaded into the texture.</param>
@@ -885,7 +912,16 @@ namespace GLKit {
 		///         <remarks>
 		///         </remarks>
 		[Export ("textureWithCGImage:options:queue:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="image">CGImage that contains the image to be loaded into the texture.</param>
+			<param name="textureOperations">An NSDictionary populated with configuration options.   Alternatively, use the strongly-typed version of this method that takes a GLKTextureOperations object.This parameter can be .</param>
+			<param name="queue">The queue on which the callback method will be invoked, or null to invoke the method on the main dispatch queue.This parameter can be .</param>
+			<summary>Asynchronously loads a texture.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous BeginTextureLoad operation.   The value of the TResult parameter is a <see cref="T:GLKit.GLKTextureLoaderCallback" />.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void BeginTextureLoad (CGImage image, [NullAllowed] NSDictionary textureOperations, [NullAllowed] DispatchQueue queue, GLKTextureLoaderCallback onComplete);
 
 		[Export ("cubeMapWithContentsOfFiles:options:queue:completionHandler:"), Internal]
@@ -906,7 +942,16 @@ namespace GLKit {
 		///         <remarks>
 		///         </remarks>
 		[Export ("cubeMapWithContentsOfFile:options:queue:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="fileName">File name where the data will be loaded from.</param>
+			<param name="textureOperations">An NSDictionary populated with configuration options.   Alternatively, use the strongly-typed version of this method that takes a GLKTextureOperations object.This parameter can be .</param>
+			<param name="queue">The queue on which the callback method will be invoked, or null to invoke the method on the main dispatch queue.This parameter can be .</param>
+			<summary>Asynchronously loads a cube map.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous BeginLoadCubeMap operation.   The value of the TResult parameter is a <see cref="T:GLKit.GLKTextureLoaderCallback" />.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void BeginLoadCubeMap (string fileName, [NullAllowed] NSDictionary textureOperations, [NullAllowed] DispatchQueue queue, GLKTextureLoaderCallback onComplete);
 
 		/// <param name="filePath">The file that contains the texture.</param>
@@ -923,7 +968,16 @@ namespace GLKit {
 		///         <remarks>
 		///         </remarks>
 		[Export ("cubeMapWithContentsOfURL:options:queue:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="filePath">The file that contains the texture.</param>
+			<param name="textureOperations">An NSDictionary populated with configuration options.   Alternatively, use the strongly-typed version of this method that takes a GLKTextureOperations object.This parameter can be .</param>
+			<param name="queue">The queue on which the callback method will be invoked, or null to invoke the method on the main dispatch queue.This parameter can be .</param>
+			<summary>Asynchronously loads a cube map.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous BeginLoadCubeMap operation.   The value of the TResult parameter is a <see cref="T:GLKit.GLKTextureLoaderCallback" />.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void BeginLoadCubeMap (NSUrl filePath, [NullAllowed] NSDictionary textureOperations, [NullAllowed] DispatchQueue queue, GLKTextureLoaderCallback onComplete);
 
 		[Export ("textureWithName:scaleFactor:bundle:options:queue:completionHandler:")]

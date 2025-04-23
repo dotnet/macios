@@ -453,7 +453,17 @@ namespace Photos {
 		int RequestData (PHAssetResource forResource, [NullAllowed] PHAssetResourceRequestOptions options, Action<NSData> handler, Action<NSError> completionHandler);
 
 		[Export ("writeDataForAssetResource:toFile:options:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="forResource">The resource from which to get the data.</param>
+			<param name="fileURL">The file to write to.</param>
+			<param name="options">Object that contains a progress handler and a value that specifes whether the network may be used. This parameter may be .</param>
+			<summary>Asynchronously writes the data at the provided URL to the specified asset resource.</summary>
+			<returns>A task that represents the asynchronous WriteData operation</returns>
+			<remarks>
+			          <para copied="true">The WriteDataAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void WriteData (PHAssetResource forResource, NSUrl fileURL, [NullAllowed] PHAssetResourceRequestOptions options, Action<NSError> completionHandler);
 
 		[Export ("cancelDataRequest:")]
@@ -1524,7 +1534,12 @@ namespace Photos {
 		///         <param name="handler">A handler that takes the Live Photo and an error and is run on the main thread when the processing is complete.</param>
 		///         <summary>Prepares an edited Live Photo for playback.</summary>
 		///         <remarks>To be added.</remarks>
-		[Async]
+		[Async (XmlDocs = """
+			<param name="targetSize">The size of the output view to target.</param>
+			<summary>Asynchronously prepares an edited Live Photo for playback, returning a task that provides the live photo.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Wrap ("_PrepareLivePhotoForPlayback (targetSize, null, handler)")]
 		void PrepareLivePhotoForPlayback (CGSize targetSize, Action<PHLivePhoto, NSError> handler);
 
@@ -1536,7 +1551,15 @@ namespace Photos {
 		///         <param name="handler">A handler that takes the Live Photo and an error and is run on the main thread when the processing is complete.</param>
 		///         <summary>Prepares an edited Live Photo for playback.</summary>
 		///         <remarks>To be added.</remarks>
-		[Async]
+		[Async (XmlDocs = """
+			<param name="targetSize">The size of the output view to target.</param>
+			<param name="options">Live Photo processing options.This parameter can be .</param>
+			<summary>Asynchronously prepares an edited Live Photo for playback, returning a task that provides the live photo.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous PrepareLivePhotoForPlayback operation.  The value of the TResult parameter is of type <c>Action&lt;Photos.PHLivePhoto,Foundation.NSError&gt;</c>.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Wrap ("_PrepareLivePhotoForPlayback (targetSize, (options as NSDictionary), handler)", IsVirtual = true)]
 		void PrepareLivePhotoForPlayback (CGSize targetSize, [NullAllowed] NSDictionary<NSString, NSObject> options, Action<PHLivePhoto, NSError> handler);
 
@@ -1550,7 +1573,16 @@ namespace Photos {
 		///         <summary>Prepares an edited Live Photo for playback.</summary>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="targetSize">The size of the output view to target.</param>
+			<param name="options">
+			          <para>Live Photo processing options.</para>
+			          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+			        </param>
+			<summary>Asynchronously prepares an edited Live Photo for playback, returning a task that provides the live photo.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Wrap ("_PrepareLivePhotoForPlayback (targetSize, options.GetDictionary (), handler)")]
 		void PrepareLivePhotoForPlayback (CGSize targetSize, [NullAllowed] PHLivePhotoEditingOption options, Action<PHLivePhoto, NSError> handler);
 
@@ -1562,7 +1594,12 @@ namespace Photos {
 		///         <param name="handler">A handler that receives an error and is run on the main thread when the processing is complete.</param>
 		///         <summary>Saves a Live Photo.</summary>
 		///         <remarks>To be added.</remarks>
-		[Async]
+		[Async (XmlDocs = """
+			<param name="output">The photo editing output to which to save the photo.</param>
+			<summary>Asynchronously saves a Live Photo, returning a task that indicates success or failure.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Wrap ("_SaveLivePhoto (output, null, handler)")]
 		void SaveLivePhoto (PHContentEditingOutput output, Action<bool, NSError> handler);
 
@@ -1574,7 +1611,16 @@ namespace Photos {
 		///         <param name="handler">A handler that takes a <see langword="bool" /> and an error and is run when rendering completes.</param>
 		///         <summary>Saves a Live Photo.</summary>
 		///         <remarks>To be added.</remarks>
-		[Async]
+		[Async (XmlDocs = """
+			<param name="output">The photo editing output to which to save the photo.</param>
+			<param name="options">
+			          <para>The Live Photo processing options to use, if any.</para>
+			          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+			        </param>
+			<summary>Asynchronously saves a Live Photo, returning a task that provides a tuple that contains a Boolean value that indicates succes or faiure and an error, if one was encountered.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Wrap ("_SaveLivePhoto (output, options, handler)", IsVirtual = true)]
 		void SaveLivePhoto (PHContentEditingOutput output, [NullAllowed] NSDictionary<NSString, NSObject> options, Action<bool, NSError> handler);
 
@@ -1588,7 +1634,16 @@ namespace Photos {
 		///         <summary>Saves a Live Photo.</summary>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="output">The photo editing output to which to save the photo.</param>
+			<param name="options">
+			          <para>The Live Photo processing options to use, if any.</para>
+			          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+			        </param>
+			<summary>Asynchronously saves a Live Photo, returning a task that contains any error that was encountered.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Wrap ("_SaveLivePhoto (output, options.GetDictionary (), handler)")]
 		void SaveLivePhoto (PHContentEditingOutput output, [NullAllowed] PHLivePhotoEditingOption options, Action<bool, NSError> handler);
 

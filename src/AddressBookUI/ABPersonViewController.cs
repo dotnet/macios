@@ -173,6 +173,8 @@ namespace AddressBookUI {
 				h (this, e);
 		}
 
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		public event EventHandler<ABPersonViewPerformDefaultActionEventArgs> PerformDefaultAction {
 			add { EnsureEventDelegate ().performDefaultAction += value; }
 			remove { EnsureEventDelegate ().performDefaultAction -= value; }

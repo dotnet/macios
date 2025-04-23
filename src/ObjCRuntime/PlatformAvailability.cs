@@ -277,39 +277,6 @@ namespace ObjCRuntime {
 
 			return platform;
 		}
-
-#if !COREBUILD && !NET
-#if MONOMAC
-		const int sys1 = 1937339185;
-		const int sys2 = 1937339186;
-
-		// Deprecated in OSX 10.8 - but no good alternative is (yet) available
-#if NET
-		[SupportedOSPlatform ("macos")]
-		[ObsoletedOSPlatform ("macos10.8")]
-#else
-		[Deprecated (PlatformName.MacOSX, 10, 8)]
-#endif
-		[DllImport ("/System/Library/Frameworks/Carbon.framework/Versions/Current/Carbon")]
-		static extern int Gestalt (int selector, out int result);
-
-		static int osx_major, osx_minor;
-
-		public static bool CheckSystemVersion (int major, int minor)
-		{
-			if (osx_major == 0) {
-				Gestalt (sys1, out osx_major);
-				Gestalt (sys2, out osx_minor);
-			}
-			return osx_major > major || (osx_major == major && osx_minor >= minor);
-		}
-#else
-		public static bool CheckSystemVersion (int major, int minor)
-		{
-			return UIDevice.CurrentDevice.CheckSystemVersion (major, minor);
-		}
-#endif
-#endif
 	}
 
 	[AttributeUsage (AttributeTargets.All, AllowMultiple = true)]
@@ -521,21 +488,6 @@ namespace ObjCRuntime {
 			: base ((Platform) ((ulong) major << 16 | (ulong) minor << 8 | (ulong) subminor))
 		{
 		}
-
-#if !NET
-		[Obsolete ("Use the overload that takes '(major, minor)', since iOS is always 64-bit.")]
-		public iOSAttribute (byte major, byte minor, bool onlyOn64 = false)
-			: this (major, minor, 0, onlyOn64)
-		{
-		}
-
-		[Obsolete ("Use the overload that takes '(major, minor, subminor)', since iOS is always 64-bit.")]
-		public iOSAttribute (byte major, byte minor, byte subminor, bool onlyOn64)
-			: base ((Platform) ((ulong) major << 48 | (ulong) minor << 40 | (ulong) subminor << 32) | (onlyOn64 ? Platform.iOS_Arch64 : Platform.None))
-		{
-		}
-#endif
-
 	}
 
 	[AttributeUsage (AttributeTargets.All, AllowMultiple = false)]
@@ -544,53 +496,14 @@ namespace ObjCRuntime {
 #endif
 	public sealed class MacAttribute : AvailabilityAttribute {
 		public MacAttribute (byte major, byte minor)
-#if NET
 			: this (major, minor, 0)
-#else
-			: this (major, minor, 0, false)
-#endif
 		{
 		}
-
-#if !NET
-		[Obsolete ("Use the overload that takes '(major, minor, subminor)', since macOS is always 64-bit.")]
-		public MacAttribute (byte major, byte minor, bool onlyOn64 = false)
-			: this (major, minor, 0, onlyOn64)
-		{
-		}
-
-		[Obsolete ("Use the overload that takes '(major, minor, subminor)', since macOS is always 64-bit.")]
-		public MacAttribute (byte major, byte minor, PlatformArchitecture arch)
-			: this (major, minor, 0, arch)
-		{
-		}
-#endif
 
 		public MacAttribute (byte major, byte minor, byte subminor)
-#if NET
 			: base ((Platform) ((ulong) major << 48 | (ulong) minor << 40 | (ulong) subminor << 32))
-#else
-			: this (major, minor, subminor, false)
-#endif
 		{
 		}
-
-#if !NET
-		[Obsolete ("Use the overload that takes '(major, minor, subminor)', since macOS is always 64-bit.")]
-		public MacAttribute (byte major, byte minor, byte subminor, bool onlyOn64)
-			: base ((Platform) ((ulong) major << 48 | (ulong) minor << 40 | (ulong) subminor << 32) | (onlyOn64 ? Platform.Mac_Arch64 : Platform.None))
-		{
-		}
-#endif
-
-#if !NET
-		[Obsolete ("Use the overload that takes '(major, minor, subminor)', since macOS is always 64-bit.")]
-		public MacAttribute (byte major, byte minor, byte subminor, PlatformArchitecture arch)
-			: base ((Platform) ((ulong) major << 48 | (ulong) minor << 40 | (ulong) subminor << 32) | (arch == PlatformArchitecture.Arch64 ? Platform.Mac_Arch64 : Platform.None))
-		{
-		}
-#endif
-
 	}
 }
 

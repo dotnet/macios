@@ -2251,7 +2251,12 @@ namespace AVFoundation {
 		///         </param>
 		///         <summary>Schedules playback from <paramref name="buffer" />.</summary>
 		///         <remarks>To be added.</remarks>
-		[Async]
+		[Async (XmlDocs = """
+			<param name="buffer">The buffer to play.</param>
+			<summary>To be added.</summary>
+			<returns>A task that represents the asynchronous ScheduleBuffer operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("scheduleBuffer:completionHandler:")]
 		void ScheduleBuffer (AVAudioPcmBuffer buffer, [NullAllowed] Action completionHandler);
 
@@ -2267,7 +2272,14 @@ namespace AVFoundation {
 		///         </param>
 		///         <summary>Schedules playback from <paramref name="buffer" />.</summary>
 		///         <remarks>To be added.</remarks>
-		[Async]
+		[Async (XmlDocs = """
+			<param name="buffer">The buffer to play.</param>
+			<param name="when">The time at which to play the buffer. May be <see langword="null" />.</param>
+			<param name="options">Playback options, such as priority or whether to loop the playback.</param>
+			<summary>Asynchronously schedules playback from <paramref name="buffer" />, returning a task that indicates success or failure.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("scheduleBuffer:atTime:options:completionHandler:")]
 		void ScheduleBuffer (AVAudioPcmBuffer buffer, [NullAllowed] AVAudioTime when, AVAudioPlayerNodeBufferOptions options, [NullAllowed] Action completionHandler);
 
@@ -2279,7 +2291,13 @@ namespace AVFoundation {
 		///         </param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[Async]
+		[Async (XmlDocs = """
+			<param name="buffer">The buffer to play.</param>
+			<param name="callbackType">When to call the callback in the playback life cycle.</param>
+			<summary>To be added.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[MacCatalyst (13, 1)]
 		[Export ("scheduleBuffer:completionCallbackType:completionHandler:")]
 		void ScheduleBuffer (AVAudioPcmBuffer buffer, AVAudioPlayerNodeCompletionCallbackType callbackType, [NullAllowed] Action<AVAudioPlayerNodeCompletionCallbackType> completionHandler);
@@ -2291,7 +2309,15 @@ namespace AVFoundation {
 		///         <param name="completionHandler">The handler to call during the playback life cycle. May be <see langword="null" />.<para tool="nullallowed">This parameter can be <see langword="null" />.</para></param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[Async]
+		[Async (XmlDocs = """
+			<param name="buffer">The buffer to play.</param>
+			<param name="when">The time at which to play the buffer. May be <see langword="null" />.</param>
+			<param name="options">Playback options, such as priority or whether to loop the playback.</param>
+			<param name="callbackType">When to call the callback in the playback life cycle.</param>
+			<summary>To be added.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[MacCatalyst (13, 1)]
 		[Export ("scheduleBuffer:atTime:options:completionCallbackType:completionHandler:")]
 		void ScheduleBuffer (AVAudioPcmBuffer buffer, [NullAllowed] AVAudioTime when, AVAudioPlayerNodeBufferOptions options, AVAudioPlayerNodeCompletionCallbackType callbackType, [NullAllowed] Action<AVAudioPlayerNodeCompletionCallbackType> completionHandler);
@@ -2307,7 +2333,13 @@ namespace AVFoundation {
 		///         </param>
 		///         <summary>Schedules the playing of the specified audio <paramref name="file" />.</summary>
 		///         <remarks>To be added.</remarks>
-		[Async]
+		[Async (XmlDocs = """
+			<param name="file">To be added.</param>
+			<param name="when">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>A task that represents the asynchronous ScheduleFile operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("scheduleFile:atTime:completionHandler:")]
 		void ScheduleFile (AVAudioFile file, [NullAllowed] AVAudioTime when, [NullAllowed] Action completionHandler);
 
@@ -2323,7 +2355,14 @@ namespace AVFoundation {
 		///         </param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[Async]
+		[Async (XmlDocs = """
+			<param name="file">To be added.</param>
+			<param name="when">To be added.</param>
+			<param name="callbackType">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[MacCatalyst (13, 1)]
 		[Export ("scheduleFile:atTime:completionCallbackType:completionHandler:")]
 		void ScheduleFile (AVAudioFile file, [NullAllowed] AVAudioTime when, AVAudioPlayerNodeCompletionCallbackType callbackType, [NullAllowed] Action<AVAudioPlayerNodeCompletionCallbackType> completionHandler);
@@ -2341,7 +2380,18 @@ namespace AVFoundation {
 		///         </param>
 		///         <summary>Schedules the playing of a portion of the audio <paramref name="file" />.</summary>
 		///         <remarks>To be added.</remarks>
-		[Async]
+		[Async (XmlDocs = """
+			<param name="file">To be added.</param>
+			<param name="startFrame">To be added.</param>
+			<param name="numberFrames">To be added.</param>
+			<param name="when">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>A task that represents the asynchronous ScheduleSegment operation</returns>
+			<remarks>
+			          <para copied="true">The ScheduleSegmentAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("scheduleSegment:startingFrame:frameCount:atTime:completionHandler:")]
 		void ScheduleSegment (AVAudioFile file, long startFrame, uint /* AVAudioFrameCount = uint32_t */ numberFrames, [NullAllowed] AVAudioTime when, [NullAllowed] Action completionHandler);
 
@@ -2359,7 +2409,16 @@ namespace AVFoundation {
 		///         </param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[Async]
+		[Async (XmlDocs = """
+			<param name="file">To be added.</param>
+			<param name="startFrame">To be added.</param>
+			<param name="numberFrames">To be added.</param>
+			<param name="when">To be added.</param>
+			<param name="callbackType">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[MacCatalyst (13, 1)]
 		[Export ("scheduleSegment:startingFrame:frameCount:atTime:completionCallbackType:completionHandler:")]
 		void ScheduleSegment (AVAudioFile file, long startFrame, uint numberFrames, [NullAllowed] AVAudioTime when, AVAudioPlayerNodeCompletionCallbackType callbackType, [NullAllowed] Action<AVAudioPlayerNodeCompletionCallbackType> completionHandler);
@@ -4326,7 +4385,18 @@ namespace AVFoundation {
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("instantiateWithComponentDescription:options:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="audioComponentDescription">A value that contains the manufacturer, name, and version of the underlying audio unit hardware.</param>
+			<param name="options">A value that controls whether the unit will be loaded in or out of process.</param>
+			<summary>Creates and returns a new <see cref="T:AVFoundation.AVAudioUnit" /> from the specified <paramref name="audioComponentDescription" />, running a handler after it has created it.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous FromComponentDescription operation.  The value of the TResult parameter is of type System.Action&lt;AVFoundation.AVAudioUnit,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The FromComponentDescriptionAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void FromComponentDescription (AudioComponentDescription audioComponentDescription, AudioComponentInstantiationOptions options, Action<AVAudioUnit, NSError> completionHandler);
 
 		/// <summary>Gets the audio unit as an Audio Toolbox audio unit.</summary>
@@ -5597,7 +5667,17 @@ namespace AVFoundation {
 
 		// AVSampleBufferAudioRenderer_AVSampleBufferAudioRendererQueueManagement
 
-		[Async]
+		[Async (XmlDocs = """
+			<param name="time">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous Flush operation.  The value of the TResult parameter is of type System.Action&lt;System.Boolean&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The FlushAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("flushFromSourceTime:completionHandler:")]
 		void Flush (CMTime time, Action<bool> completionHandler);
 
@@ -5668,7 +5748,18 @@ namespace AVFoundation {
 		[Export ("addRenderer:")]
 		void Add (IAVQueuedSampleBufferRendering renderer);
 
-		[Async]
+		[Async (XmlDocs = """
+			<param name="renderer">To be added.</param>
+			<param name="time">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous Remove operation.  The value of the TResult parameter is of type System.Action&lt;System.Boolean&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The RemoveAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("removeRenderer:atTime:completionHandler:")]
 		void Remove (IAVQueuedSampleBufferRendering renderer, CMTime time, [NullAllowed] Action<bool> completionHandler);
 
@@ -5710,7 +5801,12 @@ namespace AVFoundation {
 		CMSampleBuffer CreateSampleBuffer (AVSampleBufferRequest request);
 
 		[Static]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="sbuf">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("notifyOfDataReadyForSampleBuffer:completionHandler:")]
 		void NotifyOfDataReady (CMSampleBuffer sbuf, Action<bool, NSError> completionHandler);
 
@@ -13030,7 +13126,23 @@ namespace AVFoundation {
 
 		[MacCatalyst (13, 1)]
 		[Static, Export ("determineCompatibilityOfExportPreset:withAsset:outputFileType:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="presetName">The preset name (,
+			,
+			,
+			,
+			,
+			,
+			 or 
+			).</param>
+			<param name="asset">To be added.</param>
+			<param name="outputFileType">To be added.</param>
+			<summary>Determines whether the specified preset is compatible with the asset and output file type.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous DetermineCompatibilityOfExportPreset operation.  The value of the TResult parameter is of type System.Action&lt;System.Boolean&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void DetermineCompatibilityOfExportPreset (string presetName, AVAsset asset, [NullAllowed] string outputFileType, Action<bool> isCompatibleResult);
 
 		/// <param name="presetName">The preset to check.</param>
@@ -13039,7 +13151,14 @@ namespace AVFoundation {
 		///         <param name="isCompatibleResult">An action to run with the result of the check.</param>
 		///         <summary>Determines if a preset is compatible with an asset and output type, passing the result to <parmref name="isCompatibleResult" />.</summary>
 		///         <remarks>To be added.</remarks>
-		[Async]
+		[Async (XmlDocs = """
+			<param name="presetName">The preset to check.</param>
+			<param name="asset">The asset against which to check the preset.</param>
+			<param name="outputFileType">The output file type against which to check the preset.</param>
+			<summary>Asynchronously determines if a preset is compatible with an asset and output type, returning a task that tells if it is.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Wrap ("DetermineCompatibilityOfExportPreset (presetName, asset, outputFileType.GetConstant (), isCompatibleResult)")]
 		void DetermineCompatibilityOfExportPreset (string presetName, AVAsset asset, [NullAllowed] AVFileTypes outputFileType, Action<bool> isCompatibleResult);
 
@@ -15734,7 +15853,17 @@ namespace AVFoundation {
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("setPreparedPhotoSettingsArray:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="preparedPhotoSettingsArray">To be added.</param>
+			<summary>Prepares the photo capture output for future requests with the provided photo settings, and runs a completion handler when it is finished.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous SetPreparedPhotoSettings operation.  The value of the TResult parameter is of type System.Action&lt;System.Boolean,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The SetPreparedPhotoSettingsAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void SetPreparedPhotoSettings (AVCapturePhotoSettings [] preparedPhotoSettingsArray, [NullAllowed] Action<bool, NSError> completionHandler);
 
 		/// <summary>Gets a value that tells whether the device can fuse two camera images to produce 1 higher quality image.</summary>
@@ -16661,12 +16790,24 @@ namespace AVFoundation {
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Wrap ("RequestAccessForMediaType (mediaType == AVAuthorizationMediaType.Video ? AVMediaTypes.Video.GetConstant ()! : AVMediaTypes.Audio.GetConstant ()!, completion)")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="mediaType">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void RequestAccessForMediaType (AVAuthorizationMediaType mediaType, AVRequestAccessStatus completion);
 
 		[MacCatalyst (13, 1)]
 		[Static, Export ("requestAccessForMediaType:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="avMediaTypeToken">The type of media for which access is being requested. Should be a value defined in .</param>
+			<summary>Requests the application user's permission, if necessary, to capture the <paramref name="avMediaTypeToken" />.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous RequestAccessForMediaType operation.   The value of the TResult parameter is a AVFoundation.AVRequestAccessStatus.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void RequestAccessForMediaType (NSString avMediaTypeToken, AVRequestAccessStatus completion);
 
 		// Calling this method with any media type other than AVMediaTypeVideo or AVMediaTypeAudio raises an exception.
@@ -16866,13 +17007,28 @@ namespace AVFoundation {
 		[NoMac]
 		[MacCatalyst (14, 0)]
 		[Export ("setExposureModeCustomWithDuration:ISO:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="duration">To be added.</param>
+			<param name="ISO">To be added.</param>
+			<summary>Locks the exposure for the provided duration and ISO, and runs a completion handler when it is finished.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous LockExposure operation.  The value of the TResult parameter is of type System.Action&lt;CoreMedia.CMTime&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void LockExposure (CMTime duration, float /* float, not CGFloat */ ISO, [NullAllowed] Action<CMTime> completionHandler);
 
 		[NoMac]
 		[MacCatalyst (14, 0)]
 		[Export ("setExposureTargetBias:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="bias">Bias to apply to the exposure target.  You can pass  if you do not want to specify a value, and instead want to use the current value.</param>
+			<summary>Sets the exposure target bias (measured in Exposure Value units).</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous SetExposureTargetBias operation.  The value of the TResult parameter is of type System.Action&lt;CoreMedia.CMTime&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void SetExposureTargetBias (float /* float, not CGFloat */ bias, [NullAllowed] Action<CMTime> completionHandler);
 
 		[NoMac]
@@ -16883,7 +17039,19 @@ namespace AVFoundation {
 		[NoMac]
 		[MacCatalyst (14, 0)]
 		[Export ("setFocusModeLockedWithLensPosition:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="lensPosition">Sets the lens position, must be a value between 0.0
+				  and 1.0.  The zero value representing the shortest position
+				  that the camera can focus and one representing the furthest
+				  position that it can focus. If you do not want to set the lens position, pass the
+				  
+				  value.</param>
+			<summary>Locks the lens position at the specified position.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous SetFocusModeLocked operation.  The value of the TResult parameter is of type System.Action&lt;CoreMedia.CMTime&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void SetFocusModeLocked (float /* float, not CGFloat */ lensPosition, [NullAllowed] Action<CMTime> completionHandler);
 
 		[NoMac]
@@ -16904,7 +17072,17 @@ namespace AVFoundation {
 		[NoMac]
 		[MacCatalyst (14, 0)]
 		[Export ("setWhiteBalanceModeLockedWithDeviceWhiteBalanceGains:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="whiteBalanceGains">To be added.</param>
+			<summary>Locks the device's white balance to the provided device-specific gains.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous SetWhiteBalanceModeLockedWithDeviceWhiteBalanceGains operation.  The value of the TResult parameter is of type System.Action&lt;CoreMedia.CMTime&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The SetWhiteBalanceModeLockedWithDeviceWhiteBalanceGainsAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <see cref="M:AVFoundation.AVCaptureDevice.LockForConfiguration(Foundation.NSError@)" copied="true" />
+			        </remarks>
+			""")]
 		void SetWhiteBalanceModeLockedWithDeviceWhiteBalanceGains (AVCaptureWhiteBalanceGains whiteBalanceGains, [NullAllowed] Action<CMTime> completionHandler);
 
 		[NoMac]
@@ -17778,11 +17956,25 @@ namespace AVFoundation {
 		bool UsesAirPlayVideoWhileAirPlayScreenIsActive { get; set; }
 
 		[Export ("seekToTime:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="time">Seek time target.</param>
+			<summary>Seeks to a specific location in the playback stream.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous Seek operation.   The value of the TResult parameter is a <see cref="T:AVFoundation.AVCompletion" />.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void Seek (CMTime time, AVCompletion completion);
 
 		[Export ("seekToTime:toleranceBefore:toleranceAfter:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="time">To be added.</param>
+			<param name="toleranceBefore">To be added.</param>
+			<param name="toleranceAfter">To be added.</param>
+			<summary>Seeks to a specific time, with a specified tolerance. May be higher performane than non-tolerant seek.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void Seek (CMTime time, CMTime toleranceBefore, CMTime toleranceAfter, AVCompletion completion);
 
 		[MacCatalyst (13, 1)]
@@ -17791,7 +17983,14 @@ namespace AVFoundation {
 
 		[MacCatalyst (13, 1)]
 		[Export ("seekToDate:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="date">Target data to seek to</param>
+			<summary>Asynchronously seeks to a specific time in the playback stream.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous Seek operation.   The value of the TResult parameter is a <see cref="T:AVFoundation.AVCompletion" />.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void Seek (NSDate date, AVCompletion onComplete);
 
 		[MacCatalyst (13, 1)]
@@ -17802,7 +18001,17 @@ namespace AVFoundation {
 		void SetRate (float /* defined as 'float' */ rate, CMTime itemTime, CMTime hostClockTime);
 
 		[Export ("prerollAtRate:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="rate">Playback rate.</param>
+			<summary>Starts loading media into the playback buffers.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous Preroll operation.   The value of the TResult parameter is a <see cref="T:AVFoundation.AVCompletion" />.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The PrerollAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void Preroll (float /* defined as 'float' */ rate, [NullAllowed] AVCompletion onComplete);
 
 		[Export ("cancelPendingPrerolls")]
@@ -18251,14 +18460,28 @@ namespace AVFoundation {
 		NSString TimeJumpedNotification { get; }
 
 		[Export ("seekToTime:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="time">Seek time target.</param>
+			<summary>Seeks to a specific location in the playback stream</summary>
+			<returns>
+			          <para>A task that represents the asynchronous Seek operation.   The value of the TResult parameter is a <see cref="T:AVFoundation.AVCompletion" />.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void Seek (CMTime time, [NullAllowed] AVCompletion completion);
 
 		[Export ("cancelPendingSeeks")]
 		void CancelPendingSeeks ();
 
 		[Export ("seekToTime:toleranceBefore:toleranceAfter:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="time">Seek time target.</param>
+			<param name="toleranceBefore">To be added.</param>
+			<param name="toleranceAfter">To be added.</param>
+			<summary>Asynchronously seeks to the specified <paramref name="time" />, within the specified tolerances..</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void Seek (CMTime time, CMTime toleranceBefore, CMTime toleranceAfter, [NullAllowed] AVCompletion completion);
 
 		[Export ("selectMediaOption:inMediaSelectionGroup:")]
@@ -18307,7 +18530,23 @@ namespace AVFoundation {
 
 		[MacCatalyst (13, 1)]
 		[Export ("seekToDate:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="date">Date to seek to.</param>
+			<summary>Seeks the player to the specified date.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous Seek operation.   The value of the TResult parameter is a <see cref="T:AVFoundation.AVCompletion" />.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The SeekAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			        </remarks>
+			""",
+			XmlDocsWithOutParameter = """
+			<param name="date">To be added.</param>
+			<param name="result">To be added.</param>
+			<summary>Asynchronously seeks to the specified <paramref name="date" /> and indicates if it succeeded.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		bool Seek (NSDate date, AVCompletion completion);
 
 		[MacCatalyst (13, 1)]
@@ -21473,13 +21712,29 @@ namespace AVFoundation {
 		[Export ("renewExpiringResponseDataForContentKeyRequest:")]
 		void RenewExpiringResponseData (AVContentKeyRequest contentKeyRequest);
 
-		[Async]
+		[Async (XmlDocs = """
+			<param name="persistableContentKeyData">The existing persistable content key data.</param>
+			<summary>Asynchronously creates a secure temporary key for the provided persistent key, and returns the result.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous MakeSecureToken operation.  The value of the TResult parameter is of type System.Action&lt;Foundation.NSData,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The MakeSecureTokenAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[TV (17, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("makeSecureTokenForExpirationDateOfPersistableContentKey:completionHandler:")]
 		void MakeSecureToken (NSData persistableContentKeyData, Action<NSData, NSError> handler);
 
-		[Async]
+		[Async (XmlDocs = """
+			<param name="persistableContentKeyData">To be added.</param>
+			<param name="options">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[TV (17, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("invalidatePersistableContentKey:options:completionHandler:")]
@@ -21490,13 +21745,25 @@ namespace AVFoundation {
 		///         <param name="handler">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[Async]
+		[Async (XmlDocs = """
+			<param name="persistableContentKeyData">To be added.</param>
+			<param name="options">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[NoTV, NoMac]
 		[MacCatalyst (13, 1)]
 		[Wrap ("InvalidatePersistableContentKey (persistableContentKeyData, options.GetDictionary (), handler)")]
 		void InvalidatePersistableContentKey (NSData persistableContentKeyData, [NullAllowed] AVContentKeySessionServerPlaybackContextOptions options, Action<NSData, NSError> handler);
 
-		[Async]
+		[Async (XmlDocs = """
+			<param name="appIdentifier">To be added.</param>
+			<param name="options">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[TV (17, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("invalidateAllPersistableContentKeysForApp:options:completionHandler:")]
@@ -21507,7 +21774,13 @@ namespace AVFoundation {
 		///         <param name="handler">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[Async]
+		[Async (XmlDocs = """
+			<param name="appIdentifier">To be added.</param>
+			<param name="options">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[NoTV, NoMac]
 		[MacCatalyst (13, 1)]
 		[Wrap ("InvalidateAllPersistableContentKeys (appIdentifier, options.GetDictionary (), handler)")]
@@ -21604,7 +21877,19 @@ namespace AVFoundation {
 		NSDictionary<NSString, NSObject> Options { get; }
 
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="appIdentifier">To be added.</param>
+			<param name="contentIdentifier">To be added.</param>
+			<param name="options">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous MakeStreamingContentKeyRequestData operation.  The value of the TResult parameter is of type System.Action&lt;Foundation.NSData,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The MakeStreamingContentKeyRequestDataAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("makeStreamingContentKeyRequestDataForApp:contentIdentifier:options:completionHandler:")]
 		void MakeStreamingContentKeyRequestData (NSData appIdentifier, [NullAllowed] NSData contentIdentifier, [NullAllowed] NSDictionary<NSString, NSObject> options, Action<NSData, NSError> handler);
 

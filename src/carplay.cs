@@ -1098,7 +1098,12 @@ namespace CarPlay {
 		[Export ("presentNavigationAlert:animated:")]
 		void PresentNavigationAlert (CPNavigationAlert navigationAlert, bool animated);
 
-		[Async]
+		[Async (XmlDocs = """
+			<param name="animated">To be added.</param>
+			<summary>Asynchronously dismisses the animation.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("dismissNavigationAlertAnimated:completion:")]
 		void DismissNavigationAlert (bool animated, Action<bool> completion);
 

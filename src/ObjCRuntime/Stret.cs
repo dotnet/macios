@@ -38,144 +38,6 @@ using Foundation;
 
 namespace ObjCRuntime {
 	class Stret {
-		static bool IsHomogeneousAggregateSmallEnough_Armv7k (Type t, int members)
-		{
-			// https://github.com/llvm-mirror/clang/blob/82f6d5c9ae84c04d6e7b402f72c33638d1fb6bc8/lib/CodeGen/TargetInfo.cpp#L5516-L5519
-			return members <= 4;
-		}
-#if !RGEN
-		static bool IsHomogeneousAggregateBaseType_Armv7k (Type t, Generator generator)
-		{
-			// https://github.com/llvm-mirror/clang/blob/82f6d5c9ae84c04d6e7b402f72c33638d1fb6bc8/lib/CodeGen/TargetInfo.cpp#L5500-L5514
-#if BGENERATOR
-			if (t == generator.TypeCache.System_Float || t == generator.TypeCache.System_Double || t == generator.TypeCache.System_nfloat)
-				return true;
-#else
-			if (t == typeof (float) || t == typeof (double) || t == typeof (nfloat))
-				return true;
-#endif
-
-			return false;
-		}
-
-		static bool IsHomogeneousAggregate_Armv7k (List<Type> fieldTypes, Generator generator)
-		{
-			// Very simplified version of https://github.com/llvm-mirror/clang/blob/82f6d5c9ae84c04d6e7b402f72c33638d1fb6bc8/lib/CodeGen/TargetInfo.cpp#L4051
-			// since C# supports a lot less types than clang does.
-
-			if (fieldTypes.Count == 0)
-				return false;
-
-			if (!IsHomogeneousAggregateSmallEnough_Armv7k (fieldTypes [0], fieldTypes.Count))
-				return false;
-
-			if (!IsHomogeneousAggregateBaseType_Armv7k (fieldTypes [0], generator))
-				return false;
-
-			for (int i = 1; i < fieldTypes.Count; i++) {
-				if (fieldTypes [0] != fieldTypes [i])
-					return false;
-			}
-
-			return true;
-		}
-#endif
-
-#if BGENERATOR
-		public static bool ArmNeedStret (Type returnType, Generator generator)
-		{
-			bool has32bitArm;
-#if BGENERATOR
-			has32bitArm = generator.CurrentPlatform != PlatformName.TvOS && generator.CurrentPlatform != PlatformName.MacOSX;
-#elif MONOMAC || __TVOS__
-			has32bitArm = false;
-#else
-			has32bitArm = true;
-#endif
-			if (!has32bitArm)
-				return false;
-
-			Type t = returnType;
-
-			if (!t.IsValueType || t.IsEnum || IsBuiltInType (t))
-				return false;
-
-			var fieldTypes = new List<Type> ();
-			var size = GetValueTypeSize (t, fieldTypes, false, generator);
-
-			bool isWatchOS;
-#if BGENERATOR
-			isWatchOS = generator.CurrentPlatform == PlatformName.WatchOS;
-#else
-			isWatchOS = false;
-#endif
-
-			if (isWatchOS) {
-				// According to clang watchOS passes arguments bigger than 16 bytes by reference.
-				// https://github.com/llvm-mirror/clang/blob/82f6d5c9ae84c04d6e7b402f72c33638d1fb6bc8/lib/CodeGen/TargetInfo.cpp#L5248-L5250
-				// https://github.com/llvm-mirror/clang/blob/82f6d5c9ae84c04d6e7b402f72c33638d1fb6bc8/lib/CodeGen/TargetInfo.cpp#L5542-L5543
-				if (size <= 16)
-					return false;
-
-				// Except homogeneous aggregates, which are not stret either.
-				if (IsHomogeneousAggregate_Armv7k (fieldTypes, generator))
-					return false;
-			}
-
-			bool isiOS;
-#if BGENERATOR
-			isiOS = generator.CurrentPlatform == PlatformName.iOS;
-#elif __IOS__
-			isiOS = true;
-#else
-			isiOS = false;
-#endif
-
-			if (isiOS) {
-				if (size <= 4 && fieldTypes.Count == 1) {
-					switch (fieldTypes [0].FullName) {
-					case "System.Char":
-					case "System.Byte":
-					case "System.SByte":
-					case "System.UInt16":
-					case "System.Int16":
-					case "System.UInt32":
-					case "System.Int32":
-					case "System.IntPtr":
-					case "System.UIntPtr":
-					case "System.nuint":
-					case "System.nint":
-						return false;
-						// floating-point types are stret
-					}
-				}
-			}
-
-			return true;
-		}
-#endif // BGENERATOR
-
-#if BGENERATOR || RGEN
-		public static bool X86NeedStret (Type returnType, Generator generator)
-		{
-			Type t = returnType;
-
-			if (!t.IsValueType || t.IsEnum || IsBuiltInType (t))
-				return false;
-
-			var fieldTypes = new List<Type> ();
-			var size = GetValueTypeSize (t, fieldTypes, false, generator);
-
-			if (size > 8)
-				return true;
-
-			if (fieldTypes.Count == 3)
-				return true;
-
-			return false;
-		}
-#endif // BGENERATOR
-
 		public static bool X86_64NeedStret (Type returnType, Generator generator)
 		{
 			Type t = returnType;
@@ -184,12 +46,12 @@ namespace ObjCRuntime {
 				return false;
 
 			var fieldTypes = new List<Type> ();
-			return GetValueTypeSize (t, fieldTypes, true, generator) > 16;
+			return GetValueTypeSize (t, fieldTypes, generator) > 16;
 		}
 
 		// IL2070: 'this' argument does not satisfy 'DynamicallyAccessedMemberTypes.PublicFields', 'DynamicallyAccessedMemberTypes.NonPublicFields' in call to 'System.Type.GetFields(BindingFlags)'. The parameter 'type' of method 'ObjCRuntime.Stret.GetValueTypeSize(Type, List<Type>, Boolean, Object)' does not have matching annotations. The source value must declare at least the same requirements as those declared on the target location it is assigned to.
 		[UnconditionalSuppressMessage ("", "IL2070", Justification = "Computing the size of a struct is safe, because the trimmer can't remove fields that would affect the size of a marshallable struct (it could affect marshalling behavior).")]
-		internal static int GetValueTypeSize (Type type, List<Type> fieldTypes, bool is_64_bits, Generator generator)
+		internal static int GetValueTypeSize (Type type, List<Type> fieldTypes, Generator generator)
 		{
 			int size = 0;
 			int maxElementSize = 1;
@@ -203,11 +65,11 @@ namespace ObjCRuntime {
 					var fieldOffset = (FieldOffsetAttribute) Attribute.GetCustomAttribute (field, typeof (FieldOffsetAttribute));
 #endif
 					var elementSize = 0;
-					GetValueTypeSize (type, field.FieldType, fieldTypes, is_64_bits, ref elementSize, ref maxElementSize, generator);
+					GetValueTypeSize (type, field.FieldType, fieldTypes, ref elementSize, ref maxElementSize, generator);
 					size = Math.Max (size, elementSize + fieldOffset.Value);
 				}
 			} else {
-				GetValueTypeSize (type, type, fieldTypes, is_64_bits, ref size, ref maxElementSize, generator);
+				GetValueTypeSize (type, type, fieldTypes, ref size, ref maxElementSize, generator);
 			}
 
 			if (size % maxElementSize != 0)
@@ -226,10 +88,10 @@ namespace ObjCRuntime {
 
 		static bool IsBuiltInType (Type type)
 		{
-			return IsBuiltInType (type, true /* doesn't matter */, out var _);
+			return IsBuiltInType (type, out var _);
 		}
 
-		internal static bool IsBuiltInType (Type type, bool is_64_bits, out int type_size)
+		internal static bool IsBuiltInType (Type type, out int type_size)
 		{
 			type_size = 0;
 
@@ -239,14 +101,14 @@ namespace ObjCRuntime {
 			if (type.Namespace == "ObjCRuntime") {
 				switch (type.Name) {
 				case "NativeHandle":
-					type_size = is_64_bits ? 8 : 4;
+					type_size = 8;
 					return true;
 				}
 				return false;
 			} else if (type.Namespace == "System.Runtime.InteropServices") {
 				switch (type.Name) {
 				case "NFloat":
-					type_size = is_64_bits ? 8 : 4;
+					type_size = 8;
 					return true;
 				}
 				return false;
@@ -280,7 +142,7 @@ namespace ObjCRuntime {
 			case "UIntPtr":
 			case "nuint":
 			case "nint":
-				type_size = is_64_bits ? 8 : 4;
+				type_size = 8;
 				return true;
 			case "Void":
 				return true;
@@ -291,14 +153,14 @@ namespace ObjCRuntime {
 
 		// IL2070: 'this' argument does not satisfy 'DynamicallyAccessedMemberTypes.PublicFields', 'DynamicallyAccessedMemberTypes.NonPublicFields' in call to 'System.Type.GetFields(BindingFlags)'. The parameter 'type' of method 'ObjCRuntime.Stret.GetValueTypeSize(Type, Type, List<Type>, Boolean, Int32&, Int32&, Object)' does not have matching annotations. The source value must declare at least the same requirements as those declared on the target location it is assigned to.
 		[UnconditionalSuppressMessage ("", "IL2070", Justification = "Computing the size of a struct is safe, because the trimmer can't remove fields that would affect the size of a marshallable struct (it could affect marshalling behavior).")]
-		static void GetValueTypeSize (Type original_type, Type type, List<Type> field_types, bool is_64_bits, ref int size, ref int max_element_size, Generator generator)
+		static void GetValueTypeSize (Type original_type, Type type, List<Type> field_types, ref int size, ref int max_element_size, Generator generator)
 		{
 			// FIXME:
 			// SIMD types are not handled correctly here (they need 16-bit alignment).
 			// However we don't annotate those types in any way currently, so first we'd need to 
 			// add the proper attributes so that the generator can distinguish those types from other types.
 
-			if (IsBuiltInType (type, is_64_bits, out var type_size) && type_size > 0) {
+			if (IsBuiltInType (type, out var type_size) && type_size > 0) {
 				field_types.Add (type);
 				size = AlignAndAdd (original_type, size, type_size, ref max_element_size);
 				return;
@@ -312,7 +174,7 @@ namespace ObjCRuntime {
 				var marshalAs = (MarshalAsAttribute) Attribute.GetCustomAttribute (field, typeof (MarshalAsAttribute));
 #endif
 				if (marshalAs is null) {
-					GetValueTypeSize (original_type, field.FieldType, field_types, is_64_bits, ref size, ref max_element_size, generator);
+					GetValueTypeSize (original_type, field.FieldType, field_types, ref size, ref max_element_size, generator);
 					continue;
 				}
 
@@ -320,7 +182,7 @@ namespace ObjCRuntime {
 				switch (marshalAs.Value) {
 				case UnmanagedType.ByValArray:
 					var types = new List<Type> ();
-					GetValueTypeSize (original_type, field.FieldType.GetElementType (), types, is_64_bits, ref type_size, ref max_element_size, generator);
+					GetValueTypeSize (original_type, field.FieldType.GetElementType (), types, ref type_size, ref max_element_size, generator);
 					multiplier = marshalAs.SizeConst;
 					break;
 				case UnmanagedType.U1:
@@ -353,16 +215,7 @@ namespace ObjCRuntime {
 #if BGENERATOR
 		public static bool NeedStret (Type returnType, Generator generator)
 		{
-			if (X86NeedStret (returnType, generator))
-				return true;
-
-			if (X86_64NeedStret (returnType, generator))
-				return true;
-
-			if (ArmNeedStret (returnType, generator))
-				return true;
-
-			return false;
+			return X86_64NeedStret (returnType, generator);
 		}
 #endif // BGENERATOR
 	}

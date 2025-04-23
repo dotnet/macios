@@ -637,17 +637,31 @@ namespace UIKit {
 		[return: NullAllowed]
 		string GetItemTitle (UICloudSharingController csc);
 
+		/// <param name="csc">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("itemThumbnailDataForCloudSharingController:")]
 		[return: NullAllowed]
 		NSData GetItemThumbnailData (UICloudSharingController csc);
 
+		/// <param name="csc">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("itemTypeForCloudSharingController:")]
 		[return: NullAllowed]
 		string GetItemType (UICloudSharingController csc);
 
+		/// <param name="csc">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("cloudSharingControllerDidSaveShare:")]
 		void DidSaveShare (UICloudSharingController csc);
 
+		/// <param name="csc">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("cloudSharingControllerDidStopSharing:")]
 		void DidStopSharing (UICloudSharingController csc);
 	}
@@ -846,6 +860,10 @@ namespace UIKit {
 	[Protocol]
 	interface UIAccelerometerDelegate {
 #pragma warning disable 618
+		/// <param name="accelerometer">To be added.</param>
+		/// <param name="acceleration">To be added.</param>
+		/// <summary>Indicates that an acceleration measurement has occurred.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("accelerometer:didAccelerate:"), EventArgs ("UIAccelerometer"), EventName ("Acceleration")]
 		void DidAccelerate (UIAccelerometer accelerometer, UIAcceleration acceleration);
 #pragma warning restore 618
@@ -1249,19 +1267,32 @@ namespace UIKit {
 	[MacCatalyst (13, 1)]
 	[Protocol (IsInformal = true)]
 	interface UIAccessibilityContainer {
+		/// <summary>Returns the number of elements in the accessibility container.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("accessibilityElementCount")]
 		nint AccessibilityElementCount ();
 
 		[Export ("accessibilityElementAtIndex:")]
 		NSObject GetAccessibilityElementAt (nint index);
 
+		/// <param name="element">The element whose index to get.</param>
+		/// <summary>Returns the index of <paramref name="element" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("indexOfAccessibilityElement:")]
 		nint GetIndexOfAccessibilityElement (NSObject element);
 
+		/// <summary>Returns the elements in the accessibility container.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("accessibilityElements")]
 		[MacCatalyst (13, 1)]
 		NSObject GetAccessibilityElements ();
 
+		/// <param name="elements">To be added.</param>
+		/// <summary>Assigns <paramref name="elements" /> to the contents of the accessibilty container.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("setAccessibilityElements:")]
 		void SetAccessibilityElements ([NullAllowed] NSObject elements);
@@ -1742,12 +1773,21 @@ namespace UIKit {
 		[Export ("actionSheet:clickedButtonAtIndex:"), EventArgs ("UIButton")]
 		void Clicked (UIActionSheet actionSheet, nint buttonIndex);
 
+		/// <param name="actionSheet">To be added.</param>
+		/// <summary>Indicates that the UIActionSheet was canceled.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("actionSheetCancel:"), EventArgs ("UIActionSheet")]
 		void Canceled (UIActionSheet actionSheet);
 
+		/// <param name="actionSheet">To be added.</param>
+		/// <summary>Indicates that the action sheet is about to be presented.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("willPresentActionSheet:"), EventArgs ("UIActionSheet")]
 		void WillPresent (UIActionSheet actionSheet);
 
+		/// <param name="actionSheet">To be added.</param>
+		/// <summary>Indicates that the action sheet was presented to the user.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("didPresentActionSheet:"), EventArgs ("UIActionSheet")]
 		void Presented (UIActionSheet actionSheet);
 
@@ -2005,12 +2045,37 @@ namespace UIKit {
 		[return: NullAllowed]
 		NSObject GetItemForActivity (UIActivityViewController activityViewController, [NullAllowed] NSString activityType);
 
+		/// <param name="activityViewController">To be added.</param>
+		/// <param name="activityType">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>If the specified  provides NSData, this method returns the Uniform Type Identifier (UTI) of the item.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("activityViewController:dataTypeIdentifierForActivityType:")]
 		string GetDataTypeIdentifierForActivity (UIActivityViewController activityViewController, [NullAllowed] NSString activityType);
 
+		/// <param name="activityViewController">To be added.</param>
+		/// <param name="activityType">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Returns the subject for the specified  .</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("activityViewController:subjectForActivityType:")]
 		string GetSubjectForActivity (UIActivityViewController activityViewController, [NullAllowed] NSString activityType);
 
+		/// <param name="activityViewController">To be added.</param>
+		/// <param name="activityType">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="suggestedSize">To be added.</param>
+		/// <summary>Returns the preview image for the specified .</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("activityViewController:thumbnailImageForActivityType:suggestedSize:")]
 		UIImage GetThumbnailImageForActivity (UIActivityViewController activityViewController, [NullAllowed] NSString activityType, CGSize suggestedSize);
 
@@ -2237,12 +2302,21 @@ namespace UIKit {
 		[Export ("alertView:clickedButtonAtIndex:"), EventArgs ("UIButton")]
 		void Clicked (UIAlertView alertview, nint buttonIndex);
 
+		/// <param name="alertView">To be added.</param>
+		/// <summary>Indicates that this UIAlertView is about to be canceled.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("alertViewCancel:"), EventArgs ("UIAlertView")]
 		void Canceled (UIAlertView alertView);
 
+		/// <param name="alertView">To be added.</param>
+		/// <summary>Indicates that this UIAlertView will shortly be presented to the application user.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("willPresentAlertView:"), EventArgs ("UIAlertView")]
 		void WillPresent (UIAlertView alertView);
 
+		/// <param name="alertView">To be added.</param>
+		/// <summary>Indicates that this UIAlertView has been presented to the application user.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("didPresentAlertView:"), EventArgs ("UIAlertView")]
 		void Presented (UIAlertView alertView);
 
@@ -2252,6 +2326,10 @@ namespace UIKit {
 		[Export ("alertView:didDismissWithButtonIndex:"), EventArgs ("UIButton")]
 		void Dismissed (UIAlertView alertView, nint buttonIndex);
 
+		/// <param name="alertView">To be added.</param>
+		/// <summary>Whether the first non-cancel button in this UIAlertView should be enabled.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("alertViewShouldEnableFirstOtherButton:"), DelegateName ("UIAlertViewPredicate"), DefaultValue (true)]
 		bool ShouldEnableFirstOtherButton (UIAlertView alertView);
 	}
@@ -2348,12 +2426,20 @@ namespace UIKit {
 		[NullAllowed]
 		Class ObjectRestorationClass { get; }
 
+		/// <param name="coder">To be added.</param>
+		/// <summary>Encodes state-related information.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("encodeRestorableStateWithCoder:")]
 		void EncodeRestorableState (NSCoder coder);
 
+		/// <param name="coder">To be added.</param>
+		/// <summary>Decodes and restores state.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("decodeRestorableStateWithCoder:")]
 		void DecodeRestorableState (NSCoder coder);
 
+		/// <summary>Indicates that the application has finished restoring state.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("applicationFinishedRestoringState")]
 		void ApplicationFinishedRestoringState ();
 	}
@@ -2421,9 +2507,15 @@ namespace UIKit {
 		[Export ("addAnimations:delayFactor:")]
 		void AddAnimations (Action animation, nfloat delayFactor);
 
+		/// <param name="animation">To be added.</param>
+		/// <summary>Appends the specified <paramref name="animation" /><format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action&amp;scope=Xamarin" title="T:System.Action">T:System.Action</a></format> to the callback list.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("addAnimations:")]
 		void AddAnimations (Action animation);
 
+		/// <param name="completion">To be added.</param>
+		/// <summary>Adds the <paramref name="completion" /> to run when the animation(s) end.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("addCompletion:")]
 		void AddCompletion (Action<UIViewAnimatingPosition> completion);
 
@@ -4057,18 +4149,37 @@ namespace UIKit {
 	[Protocol]
 	interface UIApplicationDelegate {
 
+		/// <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
+		/// <summary>The application has finished launching.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("applicationDidFinishLaunching:")]
 		void FinishedLaunching (UIApplication application);
 
+		/// <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
+		/// <param name="launchOptions">An NSDictionary with the launch options, can be null.   Possible key values are UIApplication's LaunchOption static properties.</param>
+		/// <summary>Indicates that launching has finished and the app will shortly begin running.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("application:didFinishLaunchingWithOptions:")]
 		bool FinishedLaunching (UIApplication application, [NullAllowed] NSDictionary launchOptions);
 
+		/// <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
+		/// <summary>The app has moved from the inactive to actie state.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("applicationDidBecomeActive:")]
 		void OnActivated (UIApplication application);
 
+		/// <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
+		/// <summary>The app is about to move from the active state to the inactive state.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("applicationWillResignActive:")]
 		void OnResignActivation (UIApplication application);
 
+		/// <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
+		/// <param name="url">To be added.</param>
+		/// <summary>Developers should use <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIApplication%20Delegate%20Open%20Url&amp;scope=Xamarin" title="M:UIKit.UIApplicationDelegate.OpenUrl*">M:UIKit.UIApplicationDelegate.OpenUrl*</a></format> rather than this deprecated method.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Override 'OpenUrl (UIApplication, NSUrl, NSDictionary)'. The later will be called if both are implemented.")]
 		[MacCatalyst (13, 1)]
@@ -4080,15 +4191,29 @@ namespace UIKit {
 		bool HandleOpenURL (UIApplication application, NSUrl url);
 #endif
 
+		/// <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
+		/// <summary>The app has received a low-memory warning from the system.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("applicationDidReceiveMemoryWarning:")]
 		void ReceiveMemoryWarning (UIApplication application);
 
+		/// <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
+		/// <summary>Indicates that the app is about to terminate.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("applicationWillTerminate:")]
 		void WillTerminate (UIApplication application);
 
+		/// <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
+		/// <summary>Indicates a significant change in time, such as midnight, change to Daylight Savings, or a shift in timezone.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("applicationSignificantTimeChange:")]
 		void ApplicationSignificantTimeChange (UIApplication application);
 
+		/// <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
+		/// <param name="newStatusBarOrientation">To be added.</param>
+		/// <param name="duration">To be added.</param>
+		/// <summary>Indicates that the orientation of the status bar is about to change.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[Export ("application:willChangeStatusBarOrientation:duration:")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'ViewWillTransitionToSize' instead.")]
@@ -4096,6 +4221,10 @@ namespace UIKit {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'ViewWillTransitionToSize' instead.")]
 		void WillChangeStatusBarOrientation (UIApplication application, UIInterfaceOrientation newStatusBarOrientation, double duration);
 
+		/// <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
+		/// <param name="oldStatusBarOrientation">The status bar's previous orientation.</param>
+		/// <summary>Indicates that the orientation of the status bar has changed.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[Export ("application:didChangeStatusBarOrientation:")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'ViewWillTransitionToSize' instead.")]
@@ -4103,6 +4232,10 @@ namespace UIKit {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'ViewWillTransitionToSize' instead.")]
 		void DidChangeStatusBarOrientation (UIApplication application, UIInterfaceOrientation oldStatusBarOrientation);
 
+		/// <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
+		/// <param name="newStatusBarFrame">To be added.</param>
+		/// <summary>Indicates that the frame of the status bar is about to change.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[Export ("application:willChangeStatusBarFrame:")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'ViewWillTransitionToSize' instead.")]
@@ -4110,6 +4243,10 @@ namespace UIKit {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'ViewWillTransitionToSize' instead.")]
 		void WillChangeStatusBarFrame (UIApplication application, CGRect newStatusBarFrame);
 
+		/// <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
+		/// <param name="oldStatusBarFrame">The status bar's previous Frame.</param>
+		/// <summary>Indicates that the frame of the status bar has changed.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[Export ("application:didChangeStatusBarFrame:")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'ViewWillTransitionToSize' instead.")]
@@ -4117,18 +4254,34 @@ namespace UIKit {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'ViewWillTransitionToSize' instead.")]
 		void ChangedStatusBarFrame (UIApplication application, CGRect oldStatusBarFrame);
 
+		/// <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
+		/// <param name="deviceToken">To be added.</param>
+		/// <summary>Indicates that the device successfully registered with Apple Push Service.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("application:didRegisterForRemoteNotificationsWithDeviceToken:")]
 		void RegisteredForRemoteNotifications (UIApplication application, NSData deviceToken);
 
+		/// <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>Indicates that Apple Push Service did not successfully compete the registration process.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("application:didFailToRegisterForRemoteNotificationsWithError:")]
 		void FailedToRegisterForRemoteNotifications (UIApplication application, NSError error);
 
+		/// <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
+		/// <param name="userInfo">A dictionary whose "aps" key contains information related to the notification</param>
+		/// <summary>Indicates that the app received a remote notification.</summary>
+		/// <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 10, 0, message: "Use 'UNUserNotificationCenterDelegate.WillPresentNotification/DidReceiveNotificationResponse' for user visible notifications and 'ReceivedRemoteNotification' for silent remote notifications.")]
 		[Deprecated (PlatformName.TvOS, 10, 0, message: "Use 'UNUserNotificationCenterDelegate.WillPresentNotification/DidReceiveNotificationResponse' for user visible notifications and 'ReceivedRemoteNotification' for silent remote notifications.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'UNUserNotificationCenterDelegate.WillPresentNotification/DidReceiveNotificationResponse' for user visible notifications and 'ReceivedRemoteNotification' for silent remote notifications.")]
 		[Export ("application:didReceiveRemoteNotification:")]
 		void ReceivedRemoteNotification (UIApplication application, NSDictionary userInfo);
 
+		/// <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
+		/// <param name="notification">To be added.</param>
+		/// <summary>Indicates that the app received a local notification.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 10, 0, message: "Use 'UNUserNotificationCenterDelegate.WillPresentNotification/DidReceiveNotificationResponse' instead.")]
 		[MacCatalyst (13, 1)]
@@ -4136,18 +4289,41 @@ namespace UIKit {
 		[Export ("application:didReceiveLocalNotification:")]
 		void ReceivedLocalNotification (UIApplication application, UILocalNotification notification);
 
+		/// <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
+		/// <summary>Indicates that the application has entered the background.</summary>
+		/// <remarks>
+		///           <para>Apps should complete processing this method in approximately 5 seconds. If more time is necessary, applications can call <see cref="M:UIKit.UIApplication.BeginBackgroundTask(System.String,System.Action)" />.</para>
+		///         </remarks>
 		[Export ("applicationDidEnterBackground:")]
 		void DidEnterBackground (UIApplication application);
 
+		/// <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
+		/// <summary>Indicates that the application is about to enter the foreground.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("applicationWillEnterForeground:")]
 		void WillEnterForeground (UIApplication application);
 
+		/// <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
+		/// <summary>Indicates that protected files are about to be encrypted and unavailable for reading.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("applicationProtectedDataWillBecomeUnavailable:")]
 		void ProtectedDataWillBecomeUnavailable (UIApplication application);
 
+		/// <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
+		/// <summary>Protected files are now available.</summary>
+		/// <remarks>
+		///           <para>Content protection encrypts and restricts access to protected files in certain situations, such as when the device is locked. This method will be called when the device is unlocked and the files are available for reading.</para>
+		///         </remarks>
 		[Export ("applicationProtectedDataDidBecomeAvailable:")]
 		void ProtectedDataDidBecomeAvailable (UIApplication application);
 
+		/// <param name="application">Reference to this application (<see cref="P:UIKit.UIApplication.SharedApplication" />).</param>
+		/// <param name="url">The <see cref="T:Foundation.NSUrl" /> specified by the calling application.</param>
+		/// <param name="sourceApplication">The bundle ID of the calling application.</param>
+		/// <param name="annotation">Optional property-list data passed by the calling application.</param>
+		/// <summary>Loads a resource from the specified URL.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Override 'OpenUrl (UIApplication, NSUrl, NSDictionary)'. The later will be called if both are implemented.")]
 		[MacCatalyst (13, 1)]
@@ -4155,6 +4331,12 @@ namespace UIKit {
 		[Export ("application:openURL:sourceApplication:annotation:")]
 		bool OpenUrl (UIApplication application, NSUrl url, string sourceApplication, NSObject annotation);
 
+		/// <param name="app">To be added.</param>
+		/// <param name="url">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>Indicates that the application should open the specified <paramref name="url" /> with context from <paramref name="options" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("application:openURL:options:")]
 		bool OpenUrl (UIApplication app, NSUrl url, NSDictionary options);
@@ -4175,18 +4357,39 @@ namespace UIKit {
 		//
 		// 6.0
 		//
+		/// <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
+		/// <param name="launchOptions">An NSDictionary with the launch options, can be null.   Possible key values are UIApplication's LaunchOption static properties.</param>
+		/// <summary>Indicates that the app is about to finish its launching procedures.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("application:willFinishLaunchingWithOptions:")]
 		bool WillFinishLaunching (UIApplication application, [NullAllowed] NSDictionary launchOptions);
 
+		/// <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
+		/// <param name="forWindow">To be added.</param>
+		/// <summary>The interface orientations supported by the app.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("application:supportedInterfaceOrientationsForWindow:")]
 		UIInterfaceOrientationMask GetSupportedInterfaceOrientations (UIApplication application, [NullAllowed][Transient] UIWindow forWindow);
 
+		/// <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
+		/// <param name="restorationIdentifierComponents">An array of identifiers that identify the path to the desired view controller, which should be last.</param>
+		/// <param name="coder">To be added.</param>
+		/// <summary>Retrieves the UIViewController identified by the last value in the restorationIdentifierComponents parameter.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Export ("application:viewControllerWithRestorationIdentifierPath:coder:")]
 		UIViewController GetViewController (UIApplication application, string [] restorationIdentifierComponents, NSCoder coder);
 
+		/// <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
+		/// <param name="coder">To be added.</param>
+		/// <summary>Whether the application should save application state information.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 13, 2, message: "Use 'ShouldSaveSecureApplicationState' instead.")]
 		[Deprecated (PlatformName.TvOS, 13, 2, message: "Use 'ShouldSaveSecureApplicationState' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'ShouldSaveSecureApplicationState' instead.")]
@@ -4199,6 +4402,11 @@ namespace UIKit {
 		[Export ("application:shouldSaveSecureApplicationState:")]
 		bool ShouldSaveSecureApplicationState (UIApplication application, NSCoder coder);
 
+		/// <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
+		/// <param name="coder">To be added.</param>
+		/// <summary>Whether the application should restore saved state information.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 13, 2, message: "Use 'ShouldRestoreSecureApplicationState' instead.")]
 		[Deprecated (PlatformName.TvOS, 13, 2, message: "Use 'ShouldRestoreSecureApplicationState' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'ShouldRestoreSecureApplicationState' instead.")]
@@ -4211,9 +4419,17 @@ namespace UIKit {
 		[Export ("application:shouldRestoreSecureApplicationState:")]
 		bool ShouldRestoreSecureApplicationState (UIApplication application, NSCoder coder);
 
+		/// <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
+		/// <param name="coder">To be added.</param>
+		/// <summary>Indicates that the app is about to store application state data.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("application:willEncodeRestorableStateWithCoder:")]
 		void WillEncodeRestorableState (UIApplication application, NSCoder coder);
 
+		/// <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
+		/// <param name="coder">To be added.</param>
+		/// <summary>Indicates that the app should restore highest-level state.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("application:didDecodeRestorableStateWithCoder:")]
 		void DidDecodeRestorableState (UIApplication application, NSCoder coder);
 
@@ -4226,13 +4442,27 @@ namespace UIKit {
 		[Export ("accessibilityPerformMagicTap")]
 		bool AccessibilityPerformMagicTap ();
 
+		/// <param name="application">Handle to the UIApplication.</param>
+		/// <param name="userInfo">To be added.</param>
+		/// <param name="completionHandler">Callback to invoke to notify the operating system of the result of the background fetch operation.</param>
+		/// <summary>Indicates that the app received a remote notification.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("application:didReceiveRemoteNotification:fetchCompletionHandler:")]
 		void DidReceiveRemoteNotification (UIApplication application, NSDictionary userInfo, Action<UIBackgroundFetchResult> completionHandler);
 
+		/// <param name="application">To be added.</param>
+		/// <param name="sessionIdentifier">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>Raised when events relating to a background <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:UIKit.NSUrlSession&amp;scope=Xamarin" title="T:UIKit.NSUrlSession">T:UIKit.NSUrlSession</a></format> are waiting to be processed.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("application:handleEventsForBackgroundURLSession:completionHandler:")]
 		void HandleEventsForBackgroundUrl (UIApplication application, string sessionIdentifier, Action completionHandler);
 
+		/// <param name="application">Handle to the UIApplication.</param>
+		/// <param name="completionHandler">Callback to invoke to notify the operating system of the result of the background fetch operation.</param>
+		/// <summary>Indicates that the application can begin a fetch operation if it has data to download.</summary>
+		/// <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use a 'BGAppRefreshTask' from 'BackgroundTasks' framework.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use a 'BGAppRefreshTask' from 'BackgroundTasks' framework.")]
 		[MacCatalyst (13, 1)]
@@ -4243,6 +4473,12 @@ namespace UIKit {
 		// 
 		// 8.0
 		//
+		/// <param name="application">The <see cref="T:UIKit.UIApplication" /> singleton.</param>
+		/// <param name="userActivity">The user activity identifier.</param>
+		/// <param name="completionHandler">System-provided callback that can be called with appropriate <see cref="T:UIKit.UIResponder" /> or <see cref="T:UIKit.UIDocument" /> objects.</param>
+		/// <summary>Informs the app that there is data associated with continuing a task specified as a <see cref="T:Foundation.NSUserActivity" /> object, and then returns whether the app continued the activity.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("application:continueUserActivity:restorationHandler:")]
 		bool ContinueUserActivity (UIApplication application, NSUserActivity userActivity, UIApplicationRestorationHandler completionHandler);
@@ -4255,6 +4491,10 @@ namespace UIKit {
 		void DidFailToContinueUserActivitiy (UIApplication application, string userActivityType, NSError error);
 #endif
 
+		/// <param name="application">To be added.</param>
+		/// <param name="notificationSettings">To be added.</param>
+		/// <summary>Developers should not use this deprecated method. Developers should use 'UNUserNotificationCenter.RequestAuthorization' instead.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 10, 0, message: "Use 'UNUserNotificationCenter.RequestAuthorization' instead.")]
 		[MacCatalyst (13, 1)]
@@ -4262,6 +4502,12 @@ namespace UIKit {
 		[Export ("application:didRegisterUserNotificationSettings:")]
 		void DidRegisterUserNotificationSettings (UIApplication application, UIUserNotificationSettings notificationSettings);
 
+		/// <param name="application">To be added.</param>
+		/// <param name="actionIdentifier">To be added.</param>
+		/// <param name="localNotification">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>Informs the app that the user selected an action identified by the <paramref name="actionIdentifier" /> value from an alert of a <see cref="T:UIKit.UILocalNotification" /> object, and executes the <paramref name="completionHandler" /> block after it completes the action.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 10, 0, message: "Use 'UNUserNotificationCenterDelegate.DidReceiveNotificationResponse' instead.")]
 		[MacCatalyst (13, 1)]
@@ -4269,6 +4515,13 @@ namespace UIKit {
 		[Export ("application:handleActionWithIdentifier:forLocalNotification:completionHandler:")]
 		void HandleAction (UIApplication application, string actionIdentifier, UILocalNotification localNotification, Action completionHandler);
 
+		/// <param name="application">To be added.</param>
+		/// <param name="actionIdentifier">To be added.</param>
+		/// <param name="localNotification">To be added.</param>
+		/// <param name="responseInfo">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>Informs the app of a custom action to perform based on a local notification, and includes the <paramref name="actionIdentifier" /> value, <paramref name="responseInfo" /> data from the notification, and <paramref name="completionHandler" /> for the app developer to run after performing the action.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 10, 0, message: "Use 'UNUserNotificationCenterDelegate.DidReceiveNotificationResponse' instead.")]
 		[MacCatalyst (13, 1)]
@@ -4276,6 +4529,12 @@ namespace UIKit {
 		[Export ("application:handleActionWithIdentifier:forLocalNotification:withResponseInfo:completionHandler:")]
 		void HandleAction (UIApplication application, string actionIdentifier, UILocalNotification localNotification, NSDictionary responseInfo, Action completionHandler);
 
+		/// <param name="application">To be added.</param>
+		/// <param name="actionIdentifier">To be added.</param>
+		/// <param name="remoteNotificationInfo">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>Informs the app of a custom action to perform based on a push notification, and includes the <paramref name="actionIdentifier" /> value, <paramref name="remoteNotificationInfo" /> data from the notification, and <paramref name="completionHandler" /> for the app developer to run after performing the action.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 10, 0, message: "Use 'UNUserNotificationCenterDelegate.DidReceiveNotificationResponse' instead.")]
 		[MacCatalyst (13, 1)]
@@ -4283,6 +4542,13 @@ namespace UIKit {
 		[Export ("application:handleActionWithIdentifier:forRemoteNotification:completionHandler:")]
 		void HandleAction (UIApplication application, string actionIdentifier, NSDictionary remoteNotificationInfo, Action completionHandler);
 
+		/// <param name="application">To be added.</param>
+		/// <param name="actionIdentifier">To be added.</param>
+		/// <param name="remoteNotificationInfo">To be added.</param>
+		/// <param name="responseInfo">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>Informs the app of a custom action to perform based on a remote notification, and includes the <paramref name="actionIdentifier" /> value, <paramref name="remoteNotificationInfo" /> data from the notification, and <paramref name="completionHandler" /> for the app developer to run after performing the action.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 10, 0, message: "Use 'UNUserNotificationCenterDelegate.DidReceiveNotificationResponse' instead.")]
 		[MacCatalyst (13, 1)]
@@ -4290,35 +4556,71 @@ namespace UIKit {
 		[Export ("application:handleActionWithIdentifier:forRemoteNotification:withResponseInfo:completionHandler:")]
 		void HandleAction (UIApplication application, string actionIdentifier, NSDictionary remoteNotificationInfo, NSDictionary responseInfo, Action completionHandler);
 
+		/// <param name="application">To be added.</param>
+		/// <param name="shortcutItem">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>Called by the system when the user initiates a Home screen quick action, unless the interaction was handled in <see cref="M:UIKit.UIApplicationDelegate.WillFinishLaunching(UIKit.UIApplication,Foundation.NSDictionary)" /> or <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIApplication%20Delegate%20Did%20Finish%20Launching&amp;scope=Xamarin" title="M:UIKit.UIApplicationDelegate.DidFinishLaunching*">M:UIKit.UIApplicationDelegate.DidFinishLaunching*</a></format>.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("application:performActionForShortcutItem:completionHandler:")]
 		void PerformActionForShortcutItem (UIApplication application, UIApplicationShortcutItem shortcutItem, UIOperationHandler completionHandler);
 
+		/// <param name="application">The <see cref="T:UIKit.UIApplication" /> singleton for the app.</param>
+		/// <param name="userActivityType">The user activity identifier.</param>
+		/// <summary>Informs the app that the user is attempting to continue a <paramref name="userActivityType" /> action for which data might not be available, and returns to notify the user that the app will continue the activity.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("application:willContinueUserActivityWithType:")]
 		bool WillContinueUserActivity (UIApplication application, string userActivityType);
 
+		/// <param name="application">To be added.</param>
+		/// <param name="userActivity">To be added.</param>
+		/// <summary>Informs the app that the <see cref="T:Foundation.NSUserActivity" /> object in <paramref name="userActivity" /> has been updated.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("application:didUpdateUserActivity:")]
 		void UserActivityUpdated (UIApplication application, NSUserActivity userActivity);
 
+		/// <param name="application">To be added.</param>
+		/// <param name="extensionPointIdentifier">To be added.</param>
+		/// <summary>Requests permission from the app to run app extensions based on the extension point identified by <paramref name="extensionPointIdentifier" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("application:shouldAllowExtensionPointIdentifier:")]
 		bool ShouldAllowExtensionPointIdentifier (UIApplication application, NSString extensionPointIdentifier);
 
+		/// <param name="application">To be added.</param>
+		/// <param name="userInfo">To be added.</param>
+		/// <param name="reply">To be added.</param>
+		/// <summary>A watchkit extension has made a request.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("application:handleWatchKitExtensionRequest:reply:")]
 		void HandleWatchKitExtensionRequest (UIApplication application, [NullAllowed] NSDictionary userInfo, Action<NSDictionary> reply);
 
+		/// <param name="application">To be added.</param>
+		/// <summary>The system calls this method when the developer's app should ask the user for access to HealthKit data.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("applicationShouldRequestHealthAuthorization:")]
 		void ShouldRequestHealthAuthorization (UIApplication application);
 
+		/// <param name="application">To be added.</param>
+		/// <param name="cloudKitShareMetadata">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("application:userDidAcceptCloudKitShareWithMetadata:")]
 		void UserDidAcceptCloudKitShare (UIApplication application, CKShareMetadata cloudKitShareMetadata);
 
+		/// <param name="application">The application that created the intent.</param>
+		/// <param name="intent">The intent.</param>
+		/// <param name="completionHandler">A handler to run after the operation completes.</param>
+		/// <summary>The system is requesting that the application handle the specified <paramref name="intent" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 14, 0, message: "Use 'GetHandlerForIntent' instead.")]
 		[NoTV]
 		[MacCatalyst (13, 1)]
@@ -5135,6 +5437,10 @@ namespace UIKit {
 		[Export ("collectionView:prefetchItemsAtIndexPaths:")]
 		void PrefetchItems (UICollectionView collectionView, NSIndexPath [] indexPaths);
 
+		/// <param name="collectionView">To be added.</param>
+		/// <param name="indexPaths">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("collectionView:cancelPrefetchingForItemsAtIndexPaths:")]
 		void CancelPrefetching (UICollectionView collectionView, NSIndexPath [] indexPaths);
 	}
@@ -5165,20 +5471,44 @@ namespace UIKit {
 		[Export ("collectionView:cellForItemAtIndexPath:")]
 		UICollectionViewCell GetCell (UICollectionView collectionView, NSIndexPath indexPath);
 
+		/// <param name="collectionView">The collection view that originated the request.</param>
+		/// <summary>The number of sections in this UICollectionViewDataSource.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("numberOfSectionsInCollectionView:")]
 		nint NumberOfSections (UICollectionView collectionView);
 
+		/// <param name="collectionView">The collection view that originated the request.</param>
+		/// <param name="elementKind">To be added.</param>
+		/// <param name="indexPath">To be added.</param>
+		/// <summary>The reusable view used for the supplementary element at the specified indexPath.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("collectionView:viewForSupplementaryElementOfKind:atIndexPath:")]
 		UICollectionReusableView GetViewForSupplementaryElement (UICollectionView collectionView, NSString elementKind, NSIndexPath indexPath);
 
+		/// <param name="collectionView">The collection view that originated the request.</param>
+		/// <param name="indexPath">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("collectionView:canMoveItemAtIndexPath:")]
 		bool CanMoveItem (UICollectionView collectionView, NSIndexPath indexPath);
 
+		/// <param name="collectionView">The collection view that originated the request.</param>
+		/// <param name="sourceIndexPath">To be added.</param>
+		/// <param name="destinationIndexPath">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("collectionView:moveItemAtIndexPath:toIndexPath:")]
 		void MoveItem (UICollectionView collectionView, NSIndexPath sourceIndexPath, NSIndexPath destinationIndexPath);
 
+		/// <param name="collectionView">The collection view that originated the request.</param>
+		/// <summary>Requests the index titles for the items in the specified collection view.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[return: NullAllowed]
 		[Export ("indexTitlesForCollectionView:")]
@@ -5197,62 +5527,147 @@ namespace UIKit {
 	[Protocol]
 	[BaseType (typeof (NSObject))]
 	interface UICollectionViewDelegate : UIScrollViewDelegate {
+		/// <param name="collectionView">The collection view that originated the request.</param>
+		/// <param name="indexPath">To be added.</param>
+		/// <summary>Whether the cell at the specified indexPath should allow itself to be highlighted.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("collectionView:shouldHighlightItemAtIndexPath:")]
 		bool ShouldHighlightItem (UICollectionView collectionView, NSIndexPath indexPath);
 
+		/// <param name="collectionView">The collection view that originated the request.</param>
+		/// <param name="indexPath">To be added.</param>
+		/// <summary>Indicates that the cell at the specified indexPath has been highlighted.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("collectionView:didHighlightItemAtIndexPath:")]
 		void ItemHighlighted (UICollectionView collectionView, NSIndexPath indexPath);
 
+		/// <param name="collectionView">The collection view that originated the request.</param>
+		/// <param name="indexPath">To be added.</param>
+		/// <summary>Indicates that the cell at the specified indexPath has been unhighlighted.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("collectionView:didUnhighlightItemAtIndexPath:")]
 		void ItemUnhighlighted (UICollectionView collectionView, NSIndexPath indexPath);
 
+		/// <param name="collectionView">The collection view that originated the request.</param>
+		/// <param name="indexPath">To be added.</param>
+		/// <summary>Whether the cell at the specified indexPath allows itself to be selected.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("collectionView:shouldSelectItemAtIndexPath:")]
 		bool ShouldSelectItem (UICollectionView collectionView, NSIndexPath indexPath);
 
+		/// <param name="collectionView">The collection view that originated the request.</param>
+		/// <param name="indexPath">To be added.</param>
+		/// <summary>Whether the cell at the specified indexPath should allow itself to be deselected.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("collectionView:shouldDeselectItemAtIndexPath:")]
 		bool ShouldDeselectItem (UICollectionView collectionView, NSIndexPath indexPath);
 
+		/// <param name="collectionView">The collection view that originated the request.</param>
+		/// <param name="indexPath">To be added.</param>
+		/// <summary>Indicates that the cell at the specified indexPath has been selected.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("collectionView:didSelectItemAtIndexPath:")]
 		void ItemSelected (UICollectionView collectionView, NSIndexPath indexPath);
 
+		/// <param name="collectionView">The collection view that originated the request.</param>
+		/// <param name="indexPath">To be added.</param>
+		/// <summary>Indicates that the cell at the specified indexPath has been deselected.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("collectionView:didDeselectItemAtIndexPath:")]
 		void ItemDeselected (UICollectionView collectionView, NSIndexPath indexPath);
 
+		/// <param name="collectionView">The collection view that originated the request.</param>
+		/// <param name="cell">To be added.</param>
+		/// <param name="indexPath">To be added.</param>
+		/// <summary>The <paramref name="cell" /> is about to be displayed.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("collectionView:willDisplayCell:forItemAtIndexPath:")]
 		void WillDisplayCell (UICollectionView collectionView, UICollectionViewCell cell, NSIndexPath indexPath);
 
+		/// <param name="collectionView">The collection view that originated the request.</param>
+		/// <param name="view">To be added.</param>
+		/// <param name="elementKind">To be added.</param>
+		/// <param name="indexPath">To be added.</param>
+		/// <summary>The supplementary <paramref name="view" /> is about to be displayed.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("collectionView:willDisplaySupplementaryView:forElementKind:atIndexPath:")]
 		void WillDisplaySupplementaryView (UICollectionView collectionView, UICollectionReusableView view, string elementKind, NSIndexPath indexPath);
 
+		/// <param name="collectionView">The collection view that originated the request.</param>
+		/// <param name="cell">To be added.</param>
+		/// <param name="indexPath">To be added.</param>
+		/// <summary>Indicates that the cell at the specified indexPath has been removed.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("collectionView:didEndDisplayingCell:forItemAtIndexPath:")]
 		void CellDisplayingEnded (UICollectionView collectionView, UICollectionViewCell cell, NSIndexPath indexPath);
 
+		/// <param name="collectionView">The collection view that originated the request.</param>
+		/// <param name="view">To be added.</param>
+		/// <param name="elementKind">To be added.</param>
+		/// <param name="indexPath">To be added.</param>
+		/// <summary>Indicates that the supplementary view at the specified indexPath has been removed.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("collectionView:didEndDisplayingSupplementaryView:forElementOfKind:atIndexPath:")]
 		void SupplementaryViewDisplayingEnded (UICollectionView collectionView, UICollectionReusableView view, NSString elementKind, NSIndexPath indexPath);
 
+		/// <param name="collectionView">The collection view that originated the request.</param>
+		/// <param name="indexPath">To be added.</param>
+		/// <summary>Whether the cell at the specified indexPath should show an Action menu.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'GetContextMenuConfiguration' instead.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use 'GetContextMenuConfiguration' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'GetContextMenuConfiguration' instead.")]
 		[Export ("collectionView:shouldShowMenuForItemAtIndexPath:")]
 		bool ShouldShowMenu (UICollectionView collectionView, NSIndexPath indexPath);
 
+		/// <param name="collectionView">The collection view that originated the request.</param>
+		/// <param name="action">To be added.</param>
+		/// <param name="indexPath">To be added.</param>
+		/// <param name="sender">To be added.</param>
+		/// <summary>Whether the cell at the specified <paramref name="indexPath" /> supports the specified action.</summary>
+		/// <returns>The default value is <see langword="false" />.</returns>
+		/// <remarks>
+		///           <para>This method is called after <see cref="M:UIKit.UICollectionViewDelegate_Extensions.ShouldShowMenu(UIKit.IUICollectionViewDelegate,UIKit.UICollectionView,Foundation.NSIndexPath)" /> and allows the developer to remove particular menu items from the displayed editing menu.</para>
+		///         </remarks>
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'GetContextMenuConfiguration' instead.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use 'GetContextMenuConfiguration' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'GetContextMenuConfiguration' instead.")]
 		[Export ("collectionView:canPerformAction:forItemAtIndexPath:withSender:")]
 		bool CanPerformAction (UICollectionView collectionView, Selector action, NSIndexPath indexPath, NSObject sender);
 
+		/// <param name="collectionView">The collection view that originated the request.</param>
+		/// <param name="action">To be added.</param>
+		/// <param name="indexPath">To be added.</param>
+		/// <param name="sender">To be added.</param>
+		/// <summary>Whether the cell at the specified indexPath supports the specified Copy or Paste action.</summary>
+		/// <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'GetContextMenuConfiguration' instead.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use 'GetContextMenuConfiguration' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'GetContextMenuConfiguration' instead.")]
 		[Export ("collectionView:performAction:forItemAtIndexPath:withSender:")]
 		void PerformAction (UICollectionView collectionView, Selector action, NSIndexPath indexPath, NSObject sender);
 
+		/// <param name="collectionView">The collection view that originated the request.</param>
+		/// <param name="fromLayout">To be added.</param>
+		/// <param name="toLayout">To be added.</param>
+		/// <summary>The UICollectionViewTransitionLayout to be used when moving from the specified fromLayout to the toLayout.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("collectionView:transitionLayoutForOldLayout:newLayout:")]
 		UICollectionViewTransitionLayout TransitionLayout (UICollectionView collectionView, UICollectionViewLayout fromLayout, UICollectionViewLayout toLayout);
 
+		/// <param name="collectionView">The collection view that originated the request.</param>
+		/// <param name="originalIndexPath">To be added.</param>
+		/// <param name="proposedIndexPath">To be added.</param>
+		/// <summary>When overridden, allows the developer to modify the final location of a moved item. (For instance, to disallow a move to a particular <paramref name="proposedIndexPath" />.)</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 15, 0, message: "Use 'GetTargetIndexPathForMoveOfItemFromOriginalIndexPath' instead.")]
 		[Deprecated (PlatformName.TvOS, 15, 0, message: "Use 'GetTargetIndexPathForMoveOfItemFromOriginalIndexPath' instead.")]
 		[MacCatalyst (13, 1)]
@@ -5260,6 +5675,11 @@ namespace UIKit {
 		[Export ("collectionView:targetIndexPathForMoveFromItemAtIndexPath:toProposedIndexPath:")]
 		NSIndexPath GetTargetIndexPathForMove (UICollectionView collectionView, NSIndexPath originalIndexPath, NSIndexPath proposedIndexPath);
 
+		/// <param name="collectionView">The collection view that originated the request.</param>
+		/// <param name="proposedContentOffset">To be added.</param>
+		/// <summary>When overridden, allows the developer to modify the content offset for layout and animation changes.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("collectionView:targetContentOffsetForProposedContentOffset:")]
 		CGPoint GetTargetContentOffset (UICollectionView collectionView, CGPoint proposedContentOffset);
@@ -5269,18 +5689,44 @@ namespace UIKit {
 		[Export ("collectionView:canEditItemAtIndexPath:")]
 		bool CanEditItem (UICollectionView collectionView, NSIndexPath indexPath);
 
+		/// <param name="collectionView">The <see cref="T:UIKit.UICollectionView" /> is associated with <c>this</c>.</param>
+		/// <param name="indexPath">The <see cref="T:Foundation.NSIndexPath" /> of the item being checked.</param>
+		/// <summary>Whether the item at <paramref name="indexPath" /> can be focused.</summary>
+		/// <returns>Returns <see langword="true" /> if the item can be focused.</returns>
+		/// <remarks>
+		///           <para>If this method is not implemented, the item's <see cref="P:UIKit.UIView.CanBecomeFocused" /> property will be checked.</para>
+		///         </remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("collectionView:canFocusItemAtIndexPath:")]
 		bool CanFocusItem (UICollectionView collectionView, NSIndexPath indexPath);
 
+		/// <param name="collectionView">The collection view that originated the request.</param>
+		/// <param name="context">To be added.</param>
+		/// <summary>When overridden, allows the developer to prevent the focus change specified in <paramref name="context" />.</summary>
+		/// <returns>
+		///           <see langword="true" /> if the focus specified in <paramref name="context" /> is allowed.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("collectionView:shouldUpdateFocusInContext:")]
 		bool ShouldUpdateFocus (UICollectionView collectionView, UICollectionViewFocusUpdateContext context);
 
+		/// <param name="collectionView">The collection view that originated the request.</param>
+		/// <param name="context">Metadata for the focus change.</param>
+		/// <param name="coordinator">The <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIFocus%20Animation%20Controller&amp;scope=Xamarin" title="T:UIKit.UIFocusAnimationController">T:UIKit.UIFocusAnimationController</a></format> coordinating the focus-change animations.</param>
+		/// <summary>Indicates that the focus changed as detailed in the <paramref name="context" />.</summary>
+		/// <remarks>
+		///           <para>The values of <see cref="P:UIKit.UICollectionViewFocusUpdateContext.PreviouslyFocusedIndexPath" /> and <see cref="P:UIKit.UICollectionViewFocusUpdateContext.NextFocusedIndexPath" /> may be <see langword="null" /> if focus was previously not within, or just departed, the <paramref name="collectionView" />.</para>
+		///         </remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("collectionView:didUpdateFocusInContext:withAnimationCoordinator:")]
 		void DidUpdateFocus (UICollectionView collectionView, UICollectionViewFocusUpdateContext context, UIFocusAnimationCoordinator coordinator);
 
+		/// <param name="collectionView">The collection view that originated the request.</param>
+		/// <summary>When overridden, allows the developer to specify the item that should initially receive focus.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>
+		///           <para>The value returned by this method will be ignored on re-entry if the <paramref name="collectionView" /> object's <see cref="P:UIKit.UICollectionView.RemembersLastFocusedIndexPath" /> is <see langword="true" />. </para>
+		///         </remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("indexPathForPreferredFocusedViewInCollectionView:")]
 		[return: NullAllowed]
@@ -5294,6 +5740,12 @@ namespace UIKit {
 		[Export ("collectionView:targetIndexPathForMoveOfItemFromOriginalIndexPath:atCurrentIndexPath:toProposedIndexPath:")]
 		NSIndexPath GetTargetIndexPathForMoveOfItemFromOriginalIndexPath (UICollectionView collectionView, NSIndexPath originalIndexPath, NSIndexPath currentIndexPath, NSIndexPath proposedIndexPath);
 
+		/// <param name="collectionView">The collection view that originated the request.</param>
+		/// <param name="indexPath">The index path to the item.</param>
+		/// <param name="context">The spring-loaded interaction context.</param>
+		/// <summary>Method that is called to indicate whether the identified item should springload in the specified context.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("collectionView:shouldSpringLoadItemAtIndexPath:withContext:")]
@@ -5500,6 +5952,12 @@ namespace UIKit {
 	[Model]
 	[Protocol]
 	interface UICollectionViewDelegateFlowLayout {
+		/// <param name="collectionView">To be added.</param>
+		/// <param name="layout">To be added.</param>
+		/// <param name="indexPath">To be added.</param>
+		/// <summary>The size of the specified item's cell.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("collectionView:layout:sizeForItemAtIndexPath:")]
 		CGSize GetSizeForItem (UICollectionView collectionView, UICollectionViewLayout layout, NSIndexPath indexPath);
 
@@ -6823,18 +7281,40 @@ namespace UIKit {
 	[Protocol]
 	[Model]
 	interface UICollisionBehaviorDelegate {
+		/// <param name="behavior">To be added.</param>
+		/// <param name="firstItem">To be added.</param>
+		/// <param name="secondItem">To be added.</param>
+		/// <param name="atPoint">To be added.</param>
+		/// <summary>Indicates that contact between dynamic items has begun.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("collisionBehavior:beganContactForItem:withItem:atPoint:")]
 		[EventArgs ("UICollisionBeganContact")]
 		void BeganContact (UICollisionBehavior behavior, IUIDynamicItem firstItem, IUIDynamicItem secondItem, CGPoint atPoint);
 
+		/// <param name="behavior">To be added.</param>
+		/// <param name="firstItem">To be added.</param>
+		/// <param name="secondItem">To be added.</param>
+		/// <summary>Indicates that the two dynamic items have stopped contacting each other.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("collisionBehavior:endedContactForItem:withItem:")]
 		[EventArgs ("UICollisionEndedContact")]
 		void EndedContact (UICollisionBehavior behavior, IUIDynamicItem firstItem, IUIDynamicItem secondItem);
 
+		/// <param name="behavior">To be added.</param>
+		/// <param name="dynamicItem">To be added.</param>
+		/// <param name="boundaryIdentifier">The identifier of the boundary collided with. If <see langword="null" />, the collision was with the reference boundary.<para tool="nullallowed">This parameter can be <see langword="null" />.</para></param>
+		/// <param name="atPoint">To be added.</param>
+		/// <summary>Indicates that boundary contact has begun between the dynamicItem and the boundaryIdentifier.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("collisionBehavior:beganContactForItem:withBoundaryIdentifier:atPoint:")]
 		[EventArgs ("UICollisionBeganBoundaryContact")]
 		void BeganBoundaryContact (UICollisionBehavior behavior, IUIDynamicItem dynamicItem, [NullAllowed] NSObject boundaryIdentifier, CGPoint atPoint);
 
+		/// <param name="behavior">To be added.</param>
+		/// <param name="dynamicItem">To be added.</param>
+		/// <param name="boundaryIdentifier">The identifier of the boundary collided with. If <see langword="null" />, the collision was with the reference boundary.<para tool="nullallowed">This parameter can be <see langword="null" />.</para></param>
+		/// <summary>Indicates that the dynamicItem has stopped contacting the boundary.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("collisionBehavior:endedContactForItem:withBoundaryIdentifier:")]
 		[EventArgs ("UICollisionEndedBoundaryContact")]
 		void EndedBoundaryContact (UICollisionBehavior behavior, IUIDynamicItem dynamicItem, [NullAllowed] NSObject boundaryIdentifier);
@@ -7922,21 +8402,50 @@ namespace UIKit {
 	[Model]
 	[Protocol]
 	interface UIGestureRecognizerDelegate {
+		/// <param name="recognizer">To be added.</param>
+		/// <param name="touch">To be added.</param>
+		/// <summary>Whether the recognizer should receive the specified touch.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("gestureRecognizer:shouldReceiveTouch:"), DefaultValue (true), DelegateName ("UITouchEventArgs")]
 		bool ShouldReceiveTouch (UIGestureRecognizer recognizer, UITouch touch);
 
+		/// <param name="gestureRecognizer">To be added.</param>
+		/// <param name="otherGestureRecognizer">To be added.</param>
+		/// <summary>Whether the two gesture recognizers should be allowed to recognize gestures simultaneously.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("gestureRecognizer:shouldRecognizeSimultaneouslyWithGestureRecognizer:"), DelegateName ("UIGesturesProbe"), DefaultValue (false)]
 		bool ShouldRecognizeSimultaneously (UIGestureRecognizer gestureRecognizer, UIGestureRecognizer otherGestureRecognizer);
 
+		/// <param name="recognizer">To be added.</param>
+		/// <summary>Whether the gesture recognition should begin.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("gestureRecognizerShouldBegin:"), DelegateName ("UIGestureProbe"), DefaultValue (true)]
 		bool ShouldBegin (UIGestureRecognizer recognizer);
 
+		/// <param name="gestureRecognizer">To be added.</param>
+		/// <param name="otherGestureRecognizer">To be added.</param>
+		/// <summary>Whether there is a dynamic failure requirement between the specified gesture recognizers.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("gestureRecognizer:shouldBeRequiredToFailByGestureRecognizer:"), DelegateName ("UIGesturesProbe"), DefaultValue (false)]
 		bool ShouldBeRequiredToFailBy (UIGestureRecognizer gestureRecognizer, UIGestureRecognizer otherGestureRecognizer);
 
+		/// <param name="gestureRecognizer">To be added.</param>
+		/// <param name="otherGestureRecognizer">To be added.</param>
+		/// <summary>Whether the specified gestureRecognizer should be required to fail by the otherGestureRecognizer.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("gestureRecognizer:shouldRequireFailureOfGestureRecognizer:"), DelegateName ("UIGesturesProbe"), DefaultValue (false)]
 		bool ShouldRequireFailureOf (UIGestureRecognizer gestureRecognizer, UIGestureRecognizer otherGestureRecognizer);
 
+		/// <param name="gestureRecognizer">To be added.</param>
+		/// <param name="press">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("gestureRecognizer:shouldReceivePress:"), DelegateName ("UIGesturesPress"), DefaultValue (false)]
 		bool ShouldReceivePress (UIGestureRecognizer gestureRecognizer, UIPress press);
@@ -8778,12 +9287,22 @@ namespace UIKit {
 		[Export ("characterRangeAtPoint:")]
 		UITextRange GetCharacterRangeAtPoint (CGPoint point);
 
+		/// <param name="atPosition">To be added.</param>
+		/// <param name="inDirection">To be added.</param>
+		/// <summary>Returns a dictionary of style properties for text at the <paramref name="atPosition" /> position.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("textStylingAtPosition:inDirection:")]
 		NSDictionary GetTextStyling (UITextPosition atPosition, UITextStorageDirection inDirection);
 
 		[Export ("positionWithinRange:atCharacterOffset:")]
 		UITextPosition GetPosition (UITextRange withinRange, nint atCharacterOffset);
 
+		/// <param name="position">To be added.</param>
+		/// <param name="range">To be added.</param>
+		/// <summary>Calculates and returns the offset into <paramref name="range" /> of the character that is in <paramref name="position" /> in the document.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("characterOffsetOfPosition:withinRange:")]
 		nint GetCharacterOffsetOfPosition (UITextPosition position, UITextRange range);
 
@@ -8812,12 +9331,19 @@ namespace UIKit {
 		[Notification]
 		NSString CurrentInputModeDidChangeNotification { get; }
 
+		/// <summary>The recognition of dictation failed.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("dictationRecognitionFailed")]
 		void DictationRecognitionFailed ();
 
+		/// <summary>The recording of dictation ended.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("dictationRecordingDidEnd")]
 		void DictationRecordingDidEnd ();
 
+		/// <param name="dictationResult">To be added.</param>
+		/// <summary>Inserts a dictation result at the current position.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("insertDictationResult:")]
 		void InsertDictationResult (NSArray dictationResult);
 
@@ -8825,26 +9351,50 @@ namespace UIKit {
 		[Export ("selectionRectsForRange:")]
 		UITextSelectionRect [] GetSelectionRects (UITextRange range);
 
+		/// <param name="inRange">To be added.</param>
+		/// <param name="replacementText">To be added.</param>
+		/// <summary>Asks whether the text in <paramref name="inRange" /> should be replaced with <paramref name="replacementText" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("shouldChangeTextInRange:replacementText:")]
 		bool ShouldChangeTextInRange (UITextRange inRange, string replacementText);
 
+		/// <param name="placeholder">To be added.</param>
+		/// <summary>Returns the rectangle in which to display the animated dictation result placeholder.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("frameForDictationResultPlaceholder:")]
 		CGRect GetFrameForDictationResultPlaceholder (NSObject placeholder);
 
+		/// <summary>Returns the placeholder object to use before dictation results are finished being generated.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("insertDictationResultPlaceholder")]
 		NSObject InsertDictationResultPlaceholder ();
 
+		/// <param name="placeholder">To be added.</param>
+		/// <param name="willInsertResult">To be added.</param>
+		/// <summary>The <paramref name="placeholder" /> is no longer needed.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("removeDictationResultPlaceholder:willInsertResult:")]
 		void RemoveDictationResultPlaceholder (NSObject placeholder, bool willInsertResult);
 
+		/// <param name="point">To be added.</param>
+		/// <summary>Begins displaying the floating cursor at the specified <paramref name="point" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("beginFloatingCursorAtPoint:")]
 		void BeginFloatingCursor (CGPoint point);
 
+		/// <param name="point">To be added.</param>
+		/// <summary>Moves the floating curor to the specified <paramref name="point" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("updateFloatingCursorAtPoint:")]
 		void UpdateFloatingCursor (CGPoint point);
 
+		/// <summary>Ends display of the floating cursor.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("endFloatingCursor")]
 		void EndFloatingCursor ();
@@ -10522,6 +11072,10 @@ namespace UIKit {
 	[Model]
 	[Protocol]
 	interface UIBarPositioningDelegate {
+		/// <param name="barPositioning">To be added.</param>
+		/// <summary>Returns the position for <paramref name="barPositioning" /> after it has been added to the user interface.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("positionForBar:")]
 		[DelegateName ("Func<IUIBarPositioning,UIBarPosition>"), NoDefaultValue]
 		UIBarPosition GetPositionForBar (IUIBarPositioning barPositioning);
@@ -11509,33 +12063,76 @@ namespace UIKit {
 	[Model]
 	[Protocol]
 	interface UIDocumentInteractionControllerDelegate {
+		/// <param name="controller">To be added.</param>
+		/// <param name="action">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Developers should not use this deprecated method, which determines whether the specified controller should support the specified action.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 6, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 		[Export ("documentInteractionController:canPerformAction:"), DelegateName ("UIDocumentInteractionProbe"), DefaultValue (false)]
 		bool CanPerformAction (UIDocumentInteractionController controller, [NullAllowed] Selector action);
 
+		/// <param name="controller">To be added.</param>
+		/// <param name="action">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Developers should not use this deprecated method. </summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 6, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 		[Export ("documentInteractionController:performAction:"), DelegateName ("UIDocumentInteractionProbe"), DefaultValue (false)]
 		bool PerformAction (UIDocumentInteractionController controller, [NullAllowed] Selector action);
 
+		/// <param name="controller">To be added.</param>
+		/// <param name="application">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Indicates that the controller's document has been handed off to the specified application.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("documentInteractionController:didEndSendingToApplication:")]
 		[EventArgs ("UIDocumentSendingToApplication")]
 		void DidEndSendingToApplication (UIDocumentInteractionController controller, [NullAllowed] string application);
 
+		/// <param name="controller">To be added.</param>
+		/// <param name="application">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Indicates that the controller's document is about to be handed off to the specified application.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("documentInteractionController:willBeginSendingToApplication:")]
 		[EventArgs ("UIDocumentSendingToApplication")]
 		void WillBeginSendingToApplication (UIDocumentInteractionController controller, [NullAllowed] string application);
 
+		/// <param name="controller">To be added.</param>
+		/// <summary>Indicates that the controller has dismissed its "Open In..." menu.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("documentInteractionControllerDidDismissOpenInMenu:")]
 		void DidDismissOpenInMenu (UIDocumentInteractionController controller);
 
+		/// <param name="controller">To be added.</param>
+		/// <summary>Indicates that the controller has dismissed its "Options" menu.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("documentInteractionControllerDidDismissOptionsMenu:")]
 		void DidDismissOptionsMenu (UIDocumentInteractionController controller);
 
+		/// <param name="controller">To be added.</param>
+		/// <summary>Indicates that the controller has ended its document preview.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("documentInteractionControllerDidEndPreview:")]
 		void DidEndPreview (UIDocumentInteractionController controller);
 
+		/// <param name="controller">To be added.</param>
+		/// <summary>The RectangleF used as the starting point for animating the display of a document preview.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("documentInteractionControllerRectForPreview:"), DelegateName ("UIDocumentInteractionRectangle"), DefaultValue (null)]
 		CGRect RectangleForPreview (UIDocumentInteractionController controller);
 
@@ -11544,19 +12141,36 @@ namespace UIKit {
 #if XAMCORE_5_0
 		[Export ("documentInteractionControllerViewControllerForPreview:"), DelegateName ("UIDocumentPreviewController"), DefaultValue (null)]
 #else
+		/// <param name="controller">To be added.</param>
+		/// <summary>The UIViewController that provides the document preview.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("documentInteractionControllerViewControllerForPreview:"), DelegateName ("UIDocumentViewController"), DefaultValue (null)]
 #endif
 		UIViewController ViewControllerForPreview (UIDocumentInteractionController controller);
 
+		/// <param name="controller">To be added.</param>
+		/// <summary>The UIView to use as the starting point for the animation preview. If null, the preview fades into place.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("documentInteractionControllerViewForPreview:"), DelegateName ("UIDocumentViewForPreview"), DefaultValue (null)]
 		UIView ViewForPreview (UIDocumentInteractionController controller);
 
+		/// <param name="controller">To be added.</param>
+		/// <summary>Indicates that document preview is about to start.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("documentInteractionControllerWillBeginPreview:")]
 		void WillBeginPreview (UIDocumentInteractionController controller);
 
+		/// <param name="controller">To be added.</param>
+		/// <summary>Indicates that the "Open In..." menu is about to be presented to the app user.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("documentInteractionControllerWillPresentOpenInMenu:")]
 		void WillPresentOpenInMenu (UIDocumentInteractionController controller);
 
+		/// <param name="controller">To be added.</param>
+		/// <summary>Indicates that the "Options" menu is about to be presented to the app user.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("documentInteractionControllerWillPresentOptionsMenu:")]
 		void WillPresentOptionsMenu (UIDocumentInteractionController controller);
 	}
@@ -11729,9 +12343,16 @@ namespace UIKit {
 	[Model]
 	[Protocol]
 	interface UIImagePickerControllerDelegate {
+		/// <param name="picker">To be added.</param>
+		/// <param name="info">To be added.</param>
+		/// <summary>Indicates that the user has picked a picture or movie.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("imagePickerController:didFinishPickingMediaWithInfo:"), EventArgs ("UIImagePickerMediaPicked")]
 		void FinishedPickingMedia (UIImagePickerController picker, NSDictionary info);
 
+		/// <param name="picker">To be added.</param>
+		/// <summary>Indicates that the user cancelled the media-picking operation.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("imagePickerControllerDidCancel:"), EventArgs ("UIImagePickerController")]
 		void Canceled (UIImagePickerController picker);
 	}
@@ -12081,15 +12702,33 @@ namespace UIKit {
 	[Model]
 	[Protocol]
 	interface UINavigationBarDelegate {
+		/// <param name="navigationBar">To be added.</param>
+		/// <param name="item">To be added.</param>
+		/// <summary>Called by the system shortly after the  has been popped from the navigation stack.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("navigationBar:didPopItem:")]
 		void DidPopItem (UINavigationBar navigationBar, UINavigationItem item);
 
+		/// <param name="navigationBar">To be added.</param>
+		/// <param name="item">To be added.</param>
+		/// <summary>Called by the system prior to popping the .</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("navigationBar:shouldPopItem:")]
 		bool ShouldPopItem (UINavigationBar navigationBar, UINavigationItem item);
 
+		/// <param name="navigationBar">To be added.</param>
+		/// <param name="item">To be added.</param>
+		/// <summary>Called by the system shortly after the  has been pushed onto the navigation stack.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("navigationBar:didPushItem:")]
 		void DidPushItem (UINavigationBar navigationBar, UINavigationItem item);
 
+		/// <param name="navigationBar">To be added.</param>
+		/// <param name="item">To be added.</param>
+		/// <summary>Called by the system prior to pushing the  onto the navigation stack.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("navigationBar:shouldPushItem:")]
 		bool ShouldPushItem (UINavigationBar navigationBar, UINavigationItem item);
 
@@ -12446,12 +13085,26 @@ namespace UIKit {
 	[Protocol]
 	interface UINavigationControllerDelegate {
 
+		/// <param name="navigationController">To be added.</param>
+		/// <param name="viewController">To be added.</param>
+		/// <param name="animated">To be added.</param>
+		/// <summary>Called by the system shortly before the  is displayed.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("navigationController:willShowViewController:animated:"), EventArgs ("UINavigationController")]
 		void WillShowViewController (UINavigationController navigationController, [Transient] UIViewController viewController, bool animated);
 
+		/// <param name="navigationController">To be added.</param>
+		/// <param name="viewController">To be added.</param>
+		/// <param name="animated">To be added.</param>
+		/// <summary>Extension method called shortly after the <paramref name="viewController" /> has been made visible.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("navigationController:didShowViewController:animated:"), EventArgs ("UINavigationController")]
 		void DidShowViewController (UINavigationController navigationController, [Transient] UIViewController viewController, bool animated);
 
+		/// <param name="navigationController">To be added.</param>
+		/// <summary>Can be overridden to dynamically specify the supported orientations of the .</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("navigationControllerSupportedInterfaceOrientations:")]
@@ -12459,6 +13112,10 @@ namespace UIKit {
 		[DelegateName ("Func<UINavigationController,UIInterfaceOrientationMask>")]
 		UIInterfaceOrientationMask SupportedInterfaceOrientations (UINavigationController navigationController);
 
+		/// <param name="navigationController">To be added.</param>
+		/// <summary>Can be overridden to set the preferred interface orientation of the .</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("navigationControllerPreferredInterfaceOrientationForPresentation:")]
@@ -12466,11 +13123,23 @@ namespace UIKit {
 		[NoDefaultValue]
 		UIInterfaceOrientation GetPreferredInterfaceOrientation (UINavigationController navigationController);
 
+		/// <param name="navigationController">To be added.</param>
+		/// <param name="animationController">To be added.</param>
+		/// <summary>Called by the system to retrieve an interactive transition animation.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("navigationController:interactionControllerForAnimationController:")]
 		[DelegateName ("Func<UINavigationController,IUIViewControllerAnimatedTransitioning,IUIViewControllerInteractiveTransitioning>")]
 		[NoDefaultValue]
 		IUIViewControllerInteractiveTransitioning GetInteractionControllerForAnimationController (UINavigationController navigationController, IUIViewControllerAnimatedTransitioning animationController);
 
+		/// <param name="navigationController">To be added.</param>
+		/// <param name="operation">To be added.</param>
+		/// <param name="fromViewController">To be added.</param>
+		/// <param name="toViewController">To be added.</param>
+		/// <summary>Called by the system to retrieve the transition animation for the <paramref name="operation" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("navigationController:animationControllerForOperation:fromViewController:toViewController:")]
 		[DelegateName ("Func<UINavigationController,UINavigationControllerOperation,UIViewController,UIViewController,IUIViewControllerAnimatedTransitioning>")]
 		[NoDefaultValue]
@@ -12690,18 +13359,37 @@ namespace UIKit {
 	[Model]
 	[Protocol]
 	interface UIPageViewControllerDelegate {
+		/// <param name="pageViewController">To be added.</param>
+		/// <param name="finished">To be added.</param>
+		/// <param name="previousViewControllers">To be added.</param>
+		/// <param name="completed">To be added.</param>
+		/// <summary>Indicates that animation has completed.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("pageViewController:didFinishAnimating:previousViewControllers:transitionCompleted:"), EventArgs ("UIPageViewFinishedAnimation")]
 		void DidFinishAnimating (UIPageViewController pageViewController, bool finished, UIViewController [] previousViewControllers, bool completed);
 
+		/// <param name="pageViewController">To be added.</param>
+		/// <param name="orientation">To be added.</param>
+		/// <summary>The location of the spine of the UIPageViewController.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("pageViewController:spineLocationForInterfaceOrientation:"), DelegateName ("UIPageViewSpineLocationCallback")]
 		[DefaultValue (UIPageViewControllerSpineLocation.Mid)]
 		UIPageViewControllerSpineLocation GetSpineLocation (UIPageViewController pageViewController, UIInterfaceOrientation orientation);
 
+		/// <param name="pageViewController">To be added.</param>
+		/// <param name="pendingViewControllers">To be added.</param>
+		/// <summary>Indicates that a transition is about to begin.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("pageViewController:willTransitionToViewControllers:"), EventArgs ("UIPageViewControllerTransition")]
 		void WillTransition (UIPageViewController pageViewController, UIViewController [] pendingViewControllers);
 
+		/// <param name="pageViewController">To be added.</param>
+		/// <summary>The supported interface orientations.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("pageViewControllerSupportedInterfaceOrientations:")]
@@ -12709,6 +13397,10 @@ namespace UIKit {
 		[DefaultValue (UIInterfaceOrientationMask.All)]
 		UIInterfaceOrientationMask SupportedInterfaceOrientations (UIPageViewController pageViewController);
 
+		/// <param name="pageViewController">To be added.</param>
+		/// <summary>The preferred orientation of the UIPageViewController.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("pageViewControllerPreferredInterfaceOrientationForPresentation:")]
@@ -12732,9 +13424,17 @@ namespace UIKit {
 		[Export ("pageViewController:viewControllerAfterViewController:"), DelegateName ("UIPageViewGetViewController"), DefaultValue (null)]
 		UIViewController GetNextViewController (UIPageViewController pageViewController, UIViewController referenceViewController);
 
+		/// <param name="pageViewController">To be added.</param>
+		/// <summary>The number of pages to be shown in the page indicator.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("presentationCountForPageViewController:"), DelegateName ("UIPageViewGetNumber"), DefaultValue (1)]
 		nint GetPresentationCount (UIPageViewController pageViewController);
 
+		/// <param name="pageViewController">To be added.</param>
+		/// <summary>The index of the page to be highlighted in the page indicator.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("presentationIndexForPageViewController:"), DelegateName ("UIPageViewGetNumber"), DefaultValue (1)]
 		nint GetPresentationIndex (UIPageViewController pageViewController);
 	}
@@ -14305,45 +15005,91 @@ namespace UIKit {
 	[Protocol]
 	interface UIScrollViewDelegate {
 
+		/// <param name="scrollView">Scroll view where the scrolling occurred.</param>
+		/// <summary>Indicates that the specified scrollView has scrolled.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("scrollViewDidScroll:"), EventArgs ("UIScrollView")]
 		void Scrolled (UIScrollView scrollView);
 
+		/// <param name="scrollView">Scroll view whose content is about to be scrolled.</param>
+		/// <summary>Indicates that dragging has begun.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("scrollViewWillBeginDragging:"), EventArgs ("UIScrollView")]
 		void DraggingStarted (UIScrollView scrollView);
 
+		/// <param name="scrollView">Scroll view where the content finished scrolling.</param>
+		/// <param name="willDecelerate">
+		///           <see langword="true" /> if the scrolling movement will continue (but decelerate) after the user lifts their finger. If <see langword="false" /> then the scrolling stops immediately upon touch-up.</param>
+		/// <summary>Indicates that dragging has completed.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("scrollViewDidEndDragging:willDecelerate:"), EventArgs ("Dragging")]
 		void DraggingEnded (UIScrollView scrollView, [EventName ("decelerate")] bool willDecelerate);
 
+		/// <param name="scrollView">Scroll view object that is decelerating the scrolling content.</param>
+		/// <summary>Indicates that deceleration of a scrolling event has begun.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("scrollViewWillBeginDecelerating:"), EventArgs ("UIScrollView")]
 		void DecelerationStarted (UIScrollView scrollView);
 
+		/// <param name="scrollView">Scroll view object that is decelerating the scrolling content.</param>
+		/// <summary>Indicates that deceleration relating to a scroll event has ended.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("scrollViewDidEndDecelerating:"), EventArgs ("UIScrollView")]
 		void DecelerationEnded (UIScrollView scrollView);
 
+		/// <param name="scrollView">Scroll view that is performing a scrolling animation.</param>
+		/// <summary>Indicates that all animations relating to scrolling have completed.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("scrollViewDidEndScrollingAnimation:"), EventArgs ("UIScrollView")]
 		void ScrollAnimationEnded (UIScrollView scrollView);
 
+		/// <param name="scrollView">Scroll view displaying the content.</param>
+		/// <summary>The UIView to scale when zooming is requested.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("viewForZoomingInScrollView:"), DelegateName ("UIScrollViewGetZoomView"), DefaultValue ("null")]
 		UIView ViewForZoomingInScrollView (UIScrollView scrollView);
 
+		/// <param name="scrollView">Scroll view requesting whether scroll is allowed.</param>
+		/// <summary>Whether a scroll to the beginning of the scrollView should be permitted.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("scrollViewShouldScrollToTop:"), DelegateName ("UIScrollViewCondition"), DefaultValue ("true")]
 		bool ShouldScrollToTop (UIScrollView scrollView);
 
+		/// <param name="scrollView">Scroll view that was scrolled.</param>
+		/// <summary>Indicates that the specified scrollView's scrolling has ended at the top.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("scrollViewDidScrollToTop:"), EventArgs ("UIScrollView")]
 		void ScrolledToTop (UIScrollView scrollView);
 
 		[Export ("scrollViewDidEndZooming:withView:atScale:"), EventArgs ("ZoomingEnded")]
 		void ZoomingEnded (UIScrollView scrollView, UIView withView, nfloat atScale);
 
+		/// <param name="scrollView">Scroll view being zoomed.</param>
+		/// <summary>Indicates that the specified scrollView has zoomed.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("scrollViewDidZoom:"), EventArgs ("UIScrollView")]
 		void DidZoom (UIScrollView scrollView);
 
+		/// <param name="scrollView">Scroll view containing the content.</param>
+		/// <param name="view">The content view about to be zoomed.</param>
+		/// <summary>Indicates that zooming has begun.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("scrollViewWillBeginZooming:withView:"), EventArgs ("UIScrollViewZooming")]
 		void ZoomingStarted (UIScrollView scrollView, UIView view);
 
+		/// <param name="scrollView">Scroll view where user touch ended.</param>
+		/// <param name="velocity">The velocity of the scroll view (in points) when the touch ended.</param>
+		/// <param name="targetContentOffset">The expected offset when the scrolling action decelerates to a stop.</param>
+		/// <summary>Indicates that dragging is about to end.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("scrollViewWillEndDragging:withVelocity:targetContentOffset:"), EventArgs ("WillEndDragging")]
 		void WillEndDragging (UIScrollView scrollView, CGPoint velocity, ref CGPoint targetContentOffset);
 
+		/// <param name="scrollView">The scroll view whose insets changed.</param>
+		/// <summary>Method that is called when the inset values change.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("scrollViewDidChangeAdjustedContentInset:")]
 		void DidChangeAdjustedContentInset (UIScrollView scrollView);
@@ -14353,10 +15099,18 @@ namespace UIKit {
 	[Protocol, Model]
 	[BaseType (typeof (UIScrollViewDelegate))]
 	interface UIScrollViewAccessibilityDelegate {
+		/// <param name="scrollView">To be added.</param>
+		/// <summary>Gets a string that represents the current relative progress through a document or collection of documents. (For example, "Volume 34 of 51.")</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("accessibilityScrollStatusForScrollView:")]
 		[return: NullAllowed]
 		string GetAccessibilityScrollStatus (UIScrollView scrollView);
 
+		/// <param name="scrollView">The scrollview for which to get the attributed status.</param>
+		/// <summary>Gets an attributed string that represents the current relative progress through a document or collection of documents. (For example, "Volume 34 of 51.")</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("accessibilityAttributedScrollStatusForScrollView:")]
 		[return: NullAllowed]
@@ -14577,32 +15331,65 @@ namespace UIKit {
 	[Model]
 	[Protocol]
 	interface UISearchBarDelegate {
+		/// <param name="searchBar">To be added.</param>
+		/// <summary>Whether editing of the search text should be allowed.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("searchBarShouldBeginEditing:"), DefaultValue (true), DelegateName ("UISearchBarPredicate")]
 		bool ShouldBeginEditing (UISearchBar searchBar);
 
+		/// <param name="searchBar">To be added.</param>
+		/// <summary>Indicates that the user has begun editing the search text.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("searchBarTextDidBeginEditing:"), EventArgs ("UISearchBar")]
 		void OnEditingStarted (UISearchBar searchBar);
 
+		/// <param name="searchBar">To be added.</param>
+		/// <summary>Whether the editing of the search text should end.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("searchBarShouldEndEditing:"), DelegateName ("UISearchBarPredicate"), DefaultValue (true)]
 		bool ShouldEndEditing (UISearchBar searchBar);
 
+		/// <param name="searchBar">To be added.</param>
+		/// <summary>Indicates that the user has stopped editing the text field.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("searchBarTextDidEndEditing:"), EventArgs ("UISearchBar")]
 		void OnEditingStopped (UISearchBar searchBar);
 
+		/// <param name="searchBar">To be added.</param>
+		/// <param name="searchText">To be added.</param>
+		/// <summary>Indicates that the search text has changed.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("searchBar:textDidChange:"), EventArgs ("UISearchBarTextChanged")]
 		void TextChanged (UISearchBar searchBar, string searchText);
 
+		/// <param name="searchBar">To be added.</param>
+		/// <param name="range">To be added.</param>
+		/// <param name="text">To be added.</param>
+		/// <summary>Whether the text in the specified range should be replaced with the specified text.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("searchBar:shouldChangeTextInRange:replacementText:"), DefaultValue (true), DelegateName ("UISearchBarRangeEventArgs")]
 		bool ShouldChangeTextInRange (UISearchBar searchBar, NSRange range, string text);
 
+		/// <param name="searchBar">To be added.</param>
+		/// <summary>Indicates that the search button was tapped.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("searchBarSearchButtonClicked:"), EventArgs ("UISearchBar")]
 		void SearchButtonClicked (UISearchBar searchBar);
 
+		/// <param name="searchBar">To be added.</param>
+		/// <summary>Indicates that the bookmark button was tapped.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("searchBarBookmarkButtonClicked:"), EventArgs ("UISearchBar")]
 		void BookmarkButtonClicked (UISearchBar searchBar);
 
+		/// <param name="searchBar">To be added.</param>
+		/// <summary>Indicates that the cancel button was tapped.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("searchBarCancelButtonClicked:"), EventArgs ("UISearchBar")]
@@ -14611,6 +15398,9 @@ namespace UIKit {
 		[Export ("searchBar:selectedScopeButtonIndexDidChange:"), EventArgs ("UISearchBarButtonIndex")]
 		void SelectedScopeButtonIndexChanged (UISearchBar searchBar, nint selectedScope);
 
+		/// <param name="searchBar">To be added.</param>
+		/// <summary>Indicates that the list button was tapped.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 
@@ -14757,18 +15547,33 @@ namespace UIKit {
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	partial interface UISearchControllerDelegate {
+		/// <param name="searchController">To be added.</param>
+		/// <summary>The <paramref name="searchController" /> is about to be presented.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("willPresentSearchController:")]
 		void WillPresentSearchController (UISearchController searchController);
 
+		/// <param name="searchController">To be added.</param>
+		/// <summary>The <paramref name="searchController" /> was presented.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("didPresentSearchController:")]
 		void DidPresentSearchController (UISearchController searchController);
 
+		/// <param name="searchController">To be added.</param>
+		/// <summary>The <paramref name="searchController" /> is about to be dismissed.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("willDismissSearchController:")]
 		void WillDismissSearchController (UISearchController searchController);
 
+		/// <param name="searchController">To be added.</param>
+		/// <summary>The <paramref name="searchController" /> was dismissed.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("didDismissSearchController:")]
 		void DidDismissSearchController (UISearchController searchController);
 
+		/// <param name="searchController">To be added.</param>
+		/// <summary>Presents the <paramref name="searchController" /> to the user.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("presentSearchController:")]
 		void PresentSearchController (UISearchController searchController);
 
@@ -14876,56 +15681,97 @@ namespace UIKit {
 	[MacCatalyst (13, 1)]
 	interface UISearchDisplayDelegate {
 
+		/// <param name="controller">To be added.</param>
+		/// <summary>Indicates that searching is about to start.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("searchDisplayControllerWillBeginSearch:")]
 		[Deprecated (PlatformName.iOS, 8, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 		void WillBeginSearch (UISearchDisplayController controller);
 
+		/// <param name="controller">To be added.</param>
+		/// <summary>Developers should not use this deprecated method. </summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("searchDisplayControllerDidBeginSearch:")]
 		[Deprecated (PlatformName.iOS, 8, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 		void DidBeginSearch (UISearchDisplayController controller);
 
+		/// <param name="controller">To be added.</param>
+		/// <summary>Indicates that search is about to finish.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("searchDisplayControllerWillEndSearch:")]
 		[Deprecated (PlatformName.iOS, 8, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 		void WillEndSearch (UISearchDisplayController controller);
 
+		/// <param name="controller">To be added.</param>
+		/// <summary>Indicates that searching has ended.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("searchDisplayControllerDidEndSearch:")]
 		[Deprecated (PlatformName.iOS, 8, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 		void DidEndSearch (UISearchDisplayController controller);
 
+		/// <param name="controller">To be added.</param>
+		/// <param name="tableView">To be added.</param>
+		/// <summary>Indicates that the controller has loaded its UITableView of results.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("searchDisplayController:didLoadSearchResultsTableView:")]
 		[Deprecated (PlatformName.iOS, 8, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 		void DidLoadSearchResults (UISearchDisplayController controller, UITableView tableView);
 
+		/// <param name="controller">To be added.</param>
+		/// <param name="tableView">To be added.</param>
+		/// <summary>Indicates that the controller is about to unload its UITableView of results.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("searchDisplayController:willUnloadSearchResultsTableView:")]
 		[Deprecated (PlatformName.iOS, 8, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 		void WillUnloadSearchResults (UISearchDisplayController controller, UITableView tableView);
 
+		/// <param name="controller">To be added.</param>
+		/// <param name="tableView">To be added.</param>
+		/// <summary>Indicates that the controller is about to show its UITableView of results.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("searchDisplayController:willShowSearchResultsTableView:")]
 		[Deprecated (PlatformName.iOS, 8, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 		void WillShowSearchResults (UISearchDisplayController controller, UITableView tableView);
 
+		/// <param name="controller">To be added.</param>
+		/// <param name="tableView">To be added.</param>
+		/// <summary>Indicates that the controller has begun displayed its UITableView of results.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("searchDisplayController:didShowSearchResultsTableView:")]
 		[Deprecated (PlatformName.iOS, 8, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 		void DidShowSearchResults (UISearchDisplayController controller, UITableView tableView);
 
+		/// <param name="controller">To be added.</param>
+		/// <param name="tableView">To be added.</param>
+		/// <summary>Indicates that the controller is about to hide its UITableView of results.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("searchDisplayController:willHideSearchResultsTableView:")]
 		[Deprecated (PlatformName.iOS, 8, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 		void WillHideSearchResults (UISearchDisplayController controller, UITableView tableView);
 
+		/// <param name="controller">To be added.</param>
+		/// <param name="tableView">To be added.</param>
+		/// <summary>Indicates that the controller hid its table view of results.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("searchDisplayController:didHideSearchResultsTableView:")]
 		[Deprecated (PlatformName.iOS, 8, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 		void DidHideSearchResults (UISearchDisplayController controller, UITableView tableView);
 
+		/// <param name="controller">To be added.</param>
+		/// <param name="forSearchString">To be added.</param>
+		/// <summary>Whether data should be reloaded, given the change in search string.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("searchDisplayController:shouldReloadTableForSearchString:")]
 		[Deprecated (PlatformName.iOS, 8, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
@@ -15731,24 +16577,46 @@ namespace UIKit {
 	[Model]
 	[Protocol]
 	interface UITabBarDelegate {
+		/// <param name="tabbar">To be added.</param>
+		/// <param name="item">To be added.</param>
+		/// <summary>Indicates that the specified UITabBarItem was selected.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("tabBar:didSelectItem:"), EventArgs ("UITabBarItem")]
 		void ItemSelected (UITabBar tabbar, UITabBarItem item);
 
+		/// <param name="tabbar">To be added.</param>
+		/// <param name="items">To be added.</param>
+		/// <summary>Indicates that customization is about to begin on the specified UITabBarItems.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("tabBar:willBeginCustomizingItems:"), EventArgs ("UITabBarItems")]
 		void WillBeginCustomizingItems (UITabBar tabbar, UITabBarItem [] items);
 
+		/// <param name="tabbar">To be added.</param>
+		/// <param name="items">To be added.</param>
+		/// <summary>Indicates that customizing the specified UITabBarItems has begun.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("tabBar:didBeginCustomizingItems:"), EventArgs ("UITabBarItems")]
 		void DidBeginCustomizingItems (UITabBar tabbar, UITabBarItem [] items);
 
+		/// <param name="tabbar">To be added.</param>
+		/// <param name="items">To be added.</param>
+		/// <param name="changed">To be added.</param>
+		/// <summary>Indicates that customization is about to end on the specified UITabBarItems.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("tabBar:willEndCustomizingItems:changed:"), EventArgs ("UITabBarFinalItems")]
 		void WillEndCustomizingItems (UITabBar tabbar, UITabBarItem [] items, bool changed);
 
+		/// <param name="tabbar">To be added.</param>
+		/// <param name="items">To be added.</param>
+		/// <param name="changed">To be added.</param>
+		/// <summary>Indicates that customization of the specified items has ended.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("tabBar:didEndCustomizingItems:changed:"), EventArgs ("UITabBarFinalItems")]
@@ -15763,27 +16631,54 @@ namespace UIKit {
 	[Protocol]
 	interface UITabBarControllerDelegate {
 
+		/// <param name="tabBarController">To be added.</param>
+		/// <param name="viewController">To be added.</param>
+		/// <summary>Whether the specified UIViewController should be made active.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("tabBarController:shouldSelectViewController:"), DefaultValue (true), DelegateName ("UITabBarSelection")]
 		bool ShouldSelectViewController (UITabBarController tabBarController, UIViewController viewController);
 
+		/// <param name="tabBarController">To be added.</param>
+		/// <param name="viewController">To be added.</param>
+		/// <summary>Indicates that the app user selected an item from the tab bar.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("tabBarController:didSelectViewController:"), EventArgs ("UITabBarSelection")]
 		void ViewControllerSelected (UITabBarController tabBarController, UIViewController viewController);
 
+		/// <param name="tabBarController">To be added.</param>
+		/// <param name="viewControllers">To be added.</param>
+		/// <summary>Indicates that the tab bar customization sheet is about to be displayed.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("tabBarController:willBeginCustomizingViewControllers:"), EventArgs ("UITabBarCustomize")]
 		void OnCustomizingViewControllers (UITabBarController tabBarController, UIViewController [] viewControllers);
 
+		/// <param name="tabBarController">To be added.</param>
+		/// <param name="viewControllers">To be added.</param>
+		/// <param name="changed">To be added.</param>
+		/// <summary>Indicates that the tab bar customization sheet is about to be dismissed.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("tabBarController:willEndCustomizingViewControllers:changed:"), EventArgs ("UITabBarCustomizeChange")]
 		void OnEndCustomizingViewControllers (UITabBarController tabBarController, UIViewController [] viewControllers, bool changed);
 
+		/// <param name="tabBarController">To be added.</param>
+		/// <param name="viewControllers">To be added.</param>
+		/// <param name="changed">To be added.</param>
+		/// <summary>Indicates that the customization sheet was dismissed.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("tabBarController:didEndCustomizingViewControllers:changed:"), EventArgs ("UITabBarCustomizeChange")]
 		void FinishedCustomizingViewControllers (UITabBarController tabBarController, UIViewController [] viewControllers, bool changed);
 
+		/// <param name="tabBarController">To be added.</param>
+		/// <summary>The supported orientations for presentation of the tab bar controller.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("tabBarControllerSupportedInterfaceOrientations:")]
@@ -15791,6 +16686,10 @@ namespace UIKit {
 		[DelegateName ("Func<UITabBarController,UIInterfaceOrientationMask>")]
 		UIInterfaceOrientationMask SupportedInterfaceOrientations (UITabBarController tabBarController);
 
+		/// <param name="tabBarController">To be added.</param>
+		/// <summary>The preferred orientation for presentation of the tab bar controller.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("tabBarControllerPreferredInterfaceOrientationForPresentation:")]
@@ -15798,12 +16697,23 @@ namespace UIKit {
 		[DelegateName ("Func<UITabBarController,UIInterfaceOrientation>")]
 		UIInterfaceOrientation GetPreferredInterfaceOrientation (UITabBarController tabBarController);
 
+		/// <param name="tabBarController">To be added.</param>
+		/// <param name="animationController">To be added.</param>
+		/// <summary>Retrieves the UIViewControllerInteractiveTransitioning used during an interactive transition.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("tabBarController:interactionControllerForAnimationController:")]
 		[NoDefaultValue]
 		[DelegateName ("Func<UITabBarController,IUIViewControllerAnimatedTransitioning,IUIViewControllerInteractiveTransitioning>")]
 		IUIViewControllerInteractiveTransitioning GetInteractionControllerForAnimationController (UITabBarController tabBarController,
 													 IUIViewControllerAnimatedTransitioning animationController);
 
+		/// <param name="tabBarController">To be added.</param>
+		/// <param name="fromViewController">To be added.</param>
+		/// <param name="toViewController">To be added.</param>
+		/// <summary>Retrieves the UIViewControllerAnimatedTransitioning used during a non-interactive transition.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("tabBarController:animationControllerForTransitionFromViewController:toViewController:")]
 		[NoDefaultValue]
 		[DelegateName ("Func<UITabBarController,UIViewController,UIViewController,IUIViewControllerAnimatedTransitioning>")]
@@ -16391,6 +17301,10 @@ namespace UIKit {
 		[Export ("tableView:prefetchRowsAtIndexPaths:")]
 		void PrefetchRows (UITableView tableView, NSIndexPath [] indexPaths);
 
+		/// <param name="tableView">To be added.</param>
+		/// <param name="indexPaths">To be added.</param>
+		/// <summary>Cancels the prefetching of table data.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("tableView:cancelPrefetchingForRowsAtIndexPaths:")]
 		void CancelPrefetching (UITableView tableView, NSIndexPath [] indexPaths);
 	}
@@ -16904,6 +17818,10 @@ namespace UIKit {
 		[Abstract]
 		UITableViewCell GetCell (UITableView tableView, NSIndexPath indexPath);
 
+		/// <param name="tableView">Table view displaying the sections.</param>
+		/// <summary>Returns the number of sections that are required to display the data.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("numberOfSectionsInTableView:")]
 		nint NumberOfSections (UITableView tableView);
 
@@ -16915,12 +17833,26 @@ namespace UIKit {
 		[return: NullAllowed]
 		string TitleForFooter (UITableView tableView, nint section);
 
+		/// <param name="tableView">Table view containing the row.</param>
+		/// <param name="indexPath">Location of the row.</param>
+		/// <summary>Whether the row located at  should be editable.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("tableView:canEditRowAtIndexPath:")]
 		bool CanEditRow (UITableView tableView, NSIndexPath indexPath);
 
+		/// <param name="tableView">Table view containing the row.</param>
+		/// <param name="indexPath">Location of the row.</param>
+		/// <summary>Whether the row located at  can be moved to another location in the table view.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("tableView:canMoveRowAtIndexPath:")]
 		bool CanMoveRow (UITableView tableView, NSIndexPath indexPath);
 
+		/// <param name="tableView">Table view that is displaying the index.</param>
+		/// <summary>Returns an array of titles to be displayed as an index on the table view.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("sectionIndexTitlesForTableView:")]
 		[return: NullAllowed]
@@ -16930,9 +17862,19 @@ namespace UIKit {
 		[Export ("tableView:sectionForSectionIndexTitle:atIndex:")]
 		nint SectionFor (UITableView tableView, string title, nint atIndex);
 
+		/// <param name="tableView">Table view requesting insertion or deletion.</param>
+		/// <param name="editingStyle">Cell editing style requested for the row at <paramref name="indexPath" />, such as <see cref="F:UIKit.UITableViewCellEditingStyle.Insert" /> or <see cref="F:UIKit.UITableViewCellEditingStyle.Delete" />.</param>
+		/// <param name="indexPath">Location of the row.</param>
+		/// <summary>Commits the insertion or deletion of the specified row.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("tableView:commitEditingStyle:forRowAtIndexPath:")]
 		void CommitEditingStyle (UITableView tableView, UITableViewCellEditingStyle editingStyle, NSIndexPath indexPath);
 
+		/// <param name="tableView">Table view containing the row being moved.</param>
+		/// <param name="sourceIndexPath">Location of the row to be moved.</param>
+		/// <param name="destinationIndexPath">New location of the row.</param>
+		/// <summary>Called when a row has been moved so that the data source can 'implement' the changed row position that has been performed in the user interface. This ensures the data is kept in-sync with what is being displayed.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("tableView:moveRowAtIndexPath:toIndexPath:")]
 		void MoveRow (UITableView tableView, NSIndexPath sourceIndexPath, NSIndexPath destinationIndexPath);
 	}
@@ -16945,9 +17887,19 @@ namespace UIKit {
 	[Protocol]
 	interface UITableViewDelegate {
 
+		/// <param name="tableView">Table view containing the row.</param>
+		/// <param name="cell">Cell view that is going to be used to draw the row.</param>
+		/// <param name="indexPath">Location of the row.</param>
+		/// <summary>Indicates that the cell at the specified indexPath is about to be shown.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("tableView:willDisplayCell:forRowAtIndexPath:")]
 		void WillDisplay (UITableView tableView, UITableViewCell cell, NSIndexPath indexPath);
 
+		/// <param name="tableView">Table view.</param>
+		/// <param name="indexPath">Location of the row.</param>
+		/// <summary>The height of the cell at the specified indexPath.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("tableView:heightForRowAtIndexPath:")]
 		nfloat GetHeightForRow (UITableView tableView, NSIndexPath indexPath);
 
@@ -16963,64 +17915,141 @@ namespace UIKit {
 		[Export ("tableView:viewForFooterInSection:")]
 		UIView GetViewForFooter (UITableView tableView, nint section);
 
+		/// <param name="tableView">The table view containing the row/cell accessory that has been tapped.</param>
+		/// <param name="indexPath">The location of the row in the table view.</param>
+		/// <summary>Indictes that the user has tapped the accessory / disclosure buttom at the specified indexPath.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("tableView:accessoryButtonTappedForRowWithIndexPath:")]
 		void AccessoryButtonTapped (UITableView tableView, NSIndexPath indexPath);
 
+		/// <param name="tableView">Table view containing the row.</param>
+		/// <param name="indexPath">Location of the row about to be selected.</param>
+		/// <summary>Indicates the the cell at the specified indexPath is about to be selected.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("tableView:willSelectRowAtIndexPath:")]
 		[return: NullAllowed]
 		NSIndexPath WillSelectRow (UITableView tableView, NSIndexPath indexPath);
 
+		/// <param name="tableView">The table involved.</param>
+		/// <param name="indexPath">The index path of the row about to be de-selected.</param>
+		/// <summary>Indicates that the cell at the specified indexPath is about to be deselected.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("tableView:willDeselectRowAtIndexPath:")]
 		[return: NullAllowed]
 		NSIndexPath WillDeselectRow (UITableView tableView, NSIndexPath indexPath);
 
+		/// <param name="tableView">Table view containing the row.</param>
+		/// <param name="indexPath">Location of the row that has become selected.</param>
+		/// <summary>Indicates that the call at the specified indexPath has been selected.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("tableView:didSelectRowAtIndexPath:")]
 		void RowSelected (UITableView tableView, NSIndexPath indexPath);
 
+		/// <param name="tableView">Table view containing the row.</param>
+		/// <param name="indexPath">Location of the row that has become de-selected.</param>
+		/// <summary>Indicates that the cell at the specified indexPath has been deselected.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("tableView:didDeselectRowAtIndexPath:")]
 		void RowDeselected (UITableView tableView, NSIndexPath indexPath);
 
+		/// <param name="tableView">Table view that is going to be editable.</param>
+		/// <param name="indexPath">Location of the row.</param>
+		/// <summary>The UITableViewCellEditingStyle for the specified indexPath.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("tableView:editingStyleForRowAtIndexPath:")]
 		UITableViewCellEditingStyle EditingStyleForRow (UITableView tableView, NSIndexPath indexPath);
 
+		/// <param name="tableView">Table view being edited.</param>
+		/// <param name="indexPath">Location of the row that may be deleted.</param>
+		/// <summary>When overridden, changes the default title of the delete confirmation button.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("tableView:titleForDeleteConfirmationButtonForRowAtIndexPath:")]
 		[return: NullAllowed]
 		string TitleForDeleteConfirmation (UITableView tableView, NSIndexPath indexPath);
 
+		/// <param name="tableView">Table view that contains the row.</param>
+		/// <param name="indexPath">Location of the row.</param>
+		/// <summary>Whether the cell at the specified indexPath should be indented while it is being edited.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("tableView:shouldIndentWhileEditingRowAtIndexPath:")]
 		bool ShouldIndentWhileEditing (UITableView tableView, NSIndexPath indexPath);
 
+		/// <param name="tableView">Table view about to be edited.</param>
+		/// <param name="indexPath">Location of the row that has been swiped.</param>
+		/// <summary>Indicates that the cell at the specified indexPath is about to be edited.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("tableView:willBeginEditingRowAtIndexPath:")]
 		void WillBeginEditing (UITableView tableView, NSIndexPath indexPath);
 
+		/// <param name="tableView">Table view being edited.</param>
+		/// <param name="indexPath">Location of the row.</param>
+		/// <summary>Indicates that editing of the cell at the specified indexPath has finished.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("tableView:didEndEditingRowAtIndexPath:")]
 		void DidEndEditing (UITableView tableView, NSIndexPath indexPath);
 
+		/// <param name="tableView">Table view containing the row to be moved.</param>
+		/// <param name="sourceIndexPath">The original location of the row being moved.</param>
+		/// <param name="proposedIndexPath">The location in the table view where the row has been dropped. The location can be altered by this method.</param>
+		/// <summary>Used to change a cell move destination, for example, to prevent dropping a cell in a certain position.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("tableView:targetIndexPathForMoveFromRowAtIndexPath:toProposedIndexPath:")]
 		NSIndexPath CustomizeMoveTarget (UITableView tableView, NSIndexPath sourceIndexPath, NSIndexPath proposedIndexPath);
 
+		/// <param name="tableView">Table view containing the row.</param>
+		/// <param name="indexPath">Location of the row.</param>
+		/// <summary>The indentation level for the cell at the specified indexPath.</summary>
+		/// <returns>
+		///         </returns>
+		/// <remarks>
+		///           <para>Note that custom UITableViewCell's do not respect IndentationLevel automatically. Application developers must override <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UITable%20View%20Controller%20Layout%20Subviews&amp;scope=Xamarin" title="M:UIKit.UITableViewController.LayoutSubviews*">M:UIKit.UITableViewController.LayoutSubviews*</a></format>.</para>
+		///         </remarks>
 		[Export ("tableView:indentationLevelForRowAtIndexPath:")]
 		nint IndentationLevel (UITableView tableView, NSIndexPath indexPath);
 
 		// Copy Paste support
+		/// <param name="tableView">Table view containing the row.</param>
+		/// <param name="rowAtindexPath">Location of the row that the user is selecting.</param>
+		/// <summary>Whether the cell at the specified rowAtIndexPath should show an action menu.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'GetContextMenuConfiguration' instead.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use 'GetContextMenuConfiguration' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'GetContextMenuConfiguration' instead.")]
 		[Export ("tableView:shouldShowMenuForRowAtIndexPath:")]
 		bool ShouldShowMenu (UITableView tableView, NSIndexPath rowAtindexPath);
 
+		/// <param name="tableView">Table view containing the row.</param>
+		/// <param name="action">A selector identifying the Copy or Paste method (ie. <see cref="M:UIKit.UIResponder.Copy(Foundation.NSObject)" /> or <see cref="M:UIKit.UIResponder.Paste(Foundation.NSObject)" />).</param>
+		/// <param name="indexPath">Location of the row.</param>
+		/// <param name="sender">Object that initially triggere the Copy or Paste.</param>
+		/// <summary>Whether the cell at the specified indexPath can perform the specified Copy or Paste operation.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'GetContextMenuConfiguration' instead.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use 'GetContextMenuConfiguration' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'GetContextMenuConfiguration' instead.")]
 		[Export ("tableView:canPerformAction:forRowAtIndexPath:withSender:")]
 		bool CanPerformAction (UITableView tableView, Selector action, NSIndexPath indexPath, NSObject sender);
 
+		/// <param name="tableView">Table view containing the row.</param>
+		/// <param name="action">A selector identifying the Copy or Paste method (ie. <see cref="M:UIKit.UIResponder.Copy(Foundation.NSObject)" /> or <see cref="M:UIKit.UIResponder.Paste(Foundation.NSObject)" />).</param>
+		/// <param name="indexPath">Location of the row where the copy or paste operation was selected.</param>
+		/// <param name="sender">Object that triggered the copy or paste operation.</param>
+		/// <summary>Performs the specified Copy or Paste action.</summary>
+		/// <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'GetContextMenuConfiguration' instead.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use 'GetContextMenuConfiguration' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'GetContextMenuConfiguration' instead.")]
@@ -17035,6 +18064,11 @@ namespace UIKit {
 		[Export ("tableView:willDisplayFooterView:forSection:")]
 		void WillDisplayFooterView (UITableView tableView, [NullAllowed] UIView footerView, nint section);
 
+		/// <param name="tableView">The <see cref="T:UIKit.UITableView" /> being displayed.</param>
+		/// <param name="cell">The <see cref="T:UIKit.UITableViewCell" /> that has just been removed.</param>
+		/// <param name="indexPath">The <see cref="T:Foundation.NSIndexPath" /> specifying the <paramref name="cell" />.</param>
+		/// <summary>Indicates that the cell has just been removed.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("tableView:didEndDisplayingCell:forRowAtIndexPath:")]
 		void CellDisplayingEnded (UITableView tableView, UITableViewCell cell, NSIndexPath indexPath);
 
@@ -17044,15 +18078,33 @@ namespace UIKit {
 		[Export ("tableView:didEndDisplayingFooterView:forSection:")]
 		void FooterViewDisplayingEnded (UITableView tableView, UIView footerView, nint section);
 
+		/// <param name="tableView">The <see cref="T:UIKit.UITableView" /> in which the row is located.</param>
+		/// <param name="rowIndexPath">The location of the row being highlighted.</param>
+		/// <summary>Whether the cell at the specified indexPath should be highlighted.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("tableView:shouldHighlightRowAtIndexPath:")]
 		bool ShouldHighlightRow (UITableView tableView, NSIndexPath rowIndexPath);
 
+		/// <param name="tableView">The <see cref="T:UIKit.UITableView" /> containing the row.</param>
+		/// <param name="rowIndexPath">Location of the row being highlighted.</param>
+		/// <summary>Indicates that the cell at the specified indexPath has been highlighted.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("tableView:didHighlightRowAtIndexPath:")]
 		void RowHighlighted (UITableView tableView, NSIndexPath rowIndexPath);
 
+		/// <param name="tableView">The <see cref="T:UIKit.UITableView" /> containing the row.</param>
+		/// <param name="rowIndexPath">The row being unhighlighted.</param>
+		/// <summary>Indicates that the cell at the specified indexPath has been unhighlighted.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("tableView:didUnhighlightRowAtIndexPath:")]
 		void RowUnhighlighted (UITableView tableView, NSIndexPath rowIndexPath);
 
+		/// <param name="tableView">To be added.</param>
+		/// <param name="indexPath">To be added.</param>
+		/// <summary>An estimate of the height for the specified indexPath. Implementations should perform minimal calculation, as it is called repeatedly.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("tableView:estimatedHeightForRowAtIndexPath:")]
 		nfloat EstimatedHeight (UITableView tableView, NSIndexPath indexPath);
 
@@ -17062,6 +18114,11 @@ namespace UIKit {
 		[Export ("tableView:estimatedHeightForFooterInSection:")]
 		nfloat EstimatedHeightForFooter (UITableView tableView, nint section);
 
+		/// <param name="tableView">To be added.</param>
+		/// <param name="indexPath">To be added.</param>
+		/// <summary>Returns an array of row actions to display after the user swipes the row in the <paramref name="tableView" /> table view that is identified by <paramref name="indexPath" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'GetTrailingSwipeActionsConfiguration' instead.")]
 		[MacCatalyst (13, 1)]
@@ -17069,18 +18126,39 @@ namespace UIKit {
 		[Export ("tableView:editActionsForRowAtIndexPath:")]
 		UITableViewRowAction [] EditActionsForRow (UITableView tableView, NSIndexPath indexPath);
 
+		/// <param name="tableView">To be added.</param>
+		/// <param name="indexPath">To be added.</param>
+		/// <summary>Whether the row at the specified <paramref name="indexPath" /> may receive focus.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("tableView:canFocusRowAtIndexPath:")]
 		bool CanFocusRow (UITableView tableView, NSIndexPath indexPath);
 
+		/// <param name="tableView">To be added.</param>
+		/// <param name="context">To be added.</param>
+		/// <summary>TCalled prior to the <paramref name="tableView" /> either losing or receiving focus. If either focus environment returns <see langword="false" />, the focus update is canceled.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("tableView:shouldUpdateFocusInContext:")]
 		bool ShouldUpdateFocus (UITableView tableView, UITableViewFocusUpdateContext context);
 
+		/// <param name="tableView">To be added.</param>
+		/// <param name="context">A <see cref="T:UIKit.UITableViewFocusUpdateContext" /> object containing metadata.</param>
+		/// <param name="coordinator">A <see cref="T:UIKit.UIFocusAnimationCoordinator" /> object containing metadata.</param>
+		/// <summary>Indicates that the focus changed as detailed in the <paramref name="context" />.</summary>
+		/// <remarks>
+		///           <para>The values of <see cref="P:UIKit.UITableViewFocusUpdateContext.PreviouslyFocusedIndexPath" /> and <see cref="P:UIKit.UITableViewFocusUpdateContext.NextFocusedIndexPath" /> may be <see langword="null" /> if focus was previously not within, or just departed, the <paramref name="tableView" />.</para>
+		///         </remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("tableView:didUpdateFocusInContext:withAnimationCoordinator:")]
 		void DidUpdateFocus (UITableView tableView, UITableViewFocusUpdateContext context, UIFocusAnimationCoordinator coordinator);
 
+		/// <param name="tableView">To be added.</param>
+		/// <summary>The index path of the table's preferred focus view.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("indexPathForPreferredFocusedViewInTableView:")]
 		[return: NullAllowed]
@@ -17090,18 +18168,34 @@ namespace UIKit {
 		[Export ("tableView:selectionFollowsFocusForRowAtIndexPath:")]
 		bool GetSelectionFollowsFocusForRow (UITableView tableView, NSIndexPath indexPath);
 
+		/// <param name="tableView">The table view for which to get the configuration.</param>
+		/// <param name="indexPath">The index path to the row for which to get the configuration.</param>
+		/// <summary>Returns the swipe action configuration for swipes that begin from the leading edge.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("tableView:leadingSwipeActionsConfigurationForRowAtIndexPath:")]
 		[return: NullAllowed]
 		UISwipeActionsConfiguration GetLeadingSwipeActionsConfiguration (UITableView tableView, NSIndexPath indexPath);
 
+		/// <param name="tableView">The table view for which to get the configuration.</param>
+		/// <param name="indexPath">The index path to the row for which to get the configuration.</param>
+		/// <summary>Returns the swipe action configuration for swipes that begin from the trailing edge.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("tableView:trailingSwipeActionsConfigurationForRowAtIndexPath:")]
 		[return: NullAllowed]
 		UISwipeActionsConfiguration GetTrailingSwipeActionsConfiguration (UITableView tableView, NSIndexPath indexPath);
 
+		/// <param name="tableView">The table view to query.</param>
+		/// <param name="indexPath">The index path to the row to query.</param>
+		/// <param name="context">The spring loading context to query.</param>
+		/// <summary>Method that is called to indicate whether the identified row should springload in the specified context.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("tableView:shouldSpringLoadRowAtIndexPath:withContext:")]
@@ -17473,28 +18567,60 @@ namespace UIKit {
 	[Protocol]
 	interface UITextFieldDelegate {
 
+		/// <param name="textField">To be added.</param>
+		/// <summary>Whether editing should begin in the specified text field.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("textFieldShouldBeginEditing:"), DelegateName ("UITextFieldCondition"), DefaultValue (true)]
 		bool ShouldBeginEditing (UITextField textField);
 
+		/// <param name="textField">To be added.</param>
+		/// <summary>Indicates that editing has begun on the specified text field.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("textFieldDidBeginEditing:"), EventArgs ("UITextField"), EventName ("Started")]
 		void EditingStarted (UITextField textField);
 
+		/// <param name="textField">To be added.</param>
+		/// <summary>Whether editing should stop in the specified text field.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("textFieldShouldEndEditing:"), DelegateName ("UITextFieldCondition"), DefaultValue (true)]
 		bool ShouldEndEditing (UITextField textField);
 
+		/// <param name="textField">The text field for which editing ended.</param>
+		/// <summary>Indicates that editing has ended in the specified text field.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("textFieldDidEndEditing:"), EventArgs ("UITextField"), EventName ("Ended")]
 		void EditingEnded (UITextField textField);
 
+		/// <param name="textField">The text field for which editing ended.</param>
+		/// <param name="reason">The reason that editing ended.</param>
+		/// <summary>Indicates that editing has ended in the specified text field for the specified reason.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("textFieldDidEndEditing:reason:"), EventArgs ("UITextFieldEditingEnded"), EventName ("EndedWithReason")]
 		void EditingEnded (UITextField textField, UITextFieldDidEndEditingReason reason);
 
+		/// <param name="textField">To be added.</param>
+		/// <summary>Whether the specified text field's current contents should be removed.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("textFieldShouldClear:"), DelegateName ("UITextFieldCondition"), DefaultValue ("true")]
 		bool ShouldClear (UITextField textField);
 
+		/// <param name="textField">To be added.</param>
+		/// <summary>Whether the text field should process the pressing of the return button.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("textFieldShouldReturn:"), DelegateName ("UITextFieldCondition"), DefaultValue ("true")]
 		bool ShouldReturn (UITextField textField);
 
+		/// <param name="textField">To be added.</param>
+		/// <param name="range">To be added.</param>
+		/// <param name="replacementString">To be added.</param>
+		/// <summary>Whether the specified text should be changed.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("textField:shouldChangeCharactersInRange:replacementString:"), DelegateName ("UITextFieldChange"), DefaultValue ("true")]
 		bool ShouldChangeCharacters (UITextField textField, NSRange range, string replacementString);
 
@@ -17766,27 +18892,59 @@ namespace UIKit {
 	[Protocol]
 	interface UITextViewDelegate {
 
+		/// <param name="textView">To be added.</param>
+		/// <summary>Whether editing should begin in the specified UITextView.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("textViewShouldBeginEditing:"), DelegateName ("UITextViewCondition"), DefaultValue ("true")]
 		bool ShouldBeginEditing (UITextView textView);
 
+		/// <param name="textView">To be added.</param>
+		/// <summary>Whether editing should end in the specified UITextView.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("textViewShouldEndEditing:"), DelegateName ("UITextViewCondition"), DefaultValue ("true")]
 		bool ShouldEndEditing (UITextView textView);
 
+		/// <param name="textView">To be added.</param>
+		/// <summary>Indicates editing has begun in the specified UITextView.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("textViewDidBeginEditing:"), EventArgs ("UITextView"), EventName ("Started")]
 		void EditingStarted (UITextView textView);
 
+		/// <param name="textView">To be added.</param>
+		/// <summary>Indicates that editing has ended in the specified UITextView.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("textViewDidEndEditing:"), EventArgs ("UITextView"), EventName ("Ended")]
 		void EditingEnded (UITextView textView);
 
+		/// <param name="textView">To be added.</param>
+		/// <param name="range">To be added.</param>
+		/// <param name="text">To be added.</param>
+		/// <summary>Whether the specified text should be replaced in the UITextView.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("textView:shouldChangeTextInRange:replacementText:"), DelegateName ("UITextViewChange"), DefaultValue ("true")]
 		bool ShouldChangeText (UITextView textView, NSRange range, string text);
 
+		/// <param name="textView">To be added.</param>
+		/// <summary>Indicates the text or text attributes in the specified UITextView were changed by the app user.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("textViewDidChange:"), EventArgs ("UITextView")]
 		void Changed (UITextView textView);
 
+		/// <param name="textView">To be added.</param>
+		/// <summary>Indicates the text selection has changed in the specified UITextView.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("textViewDidChangeSelection:"), EventArgs ("UITextView")]
 		void SelectionChanged (UITextView textView);
 
+		/// <param name="textView">To be added.</param>
+		/// <param name="URL">To be added.</param>
+		/// <param name="characterRange">To be added.</param>
+		/// <summary>Whether the specified UITextView should allow user interaction with the specified URL in the given range of text.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 10, 0, message: "Use the 'ShouldInteractWithUrl' overload that takes 'UITextItemInteraction' instead.")]
 		[Deprecated (PlatformName.TvOS, 10, 0, message: "Use the 'ShouldInteractWithUrl' overload that takes 'UITextItemInteraction' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use the 'ShouldInteractWithUrl' overload that takes 'UITextItemInteraction' instead.")]
@@ -17797,12 +18955,25 @@ namespace UIKit {
 		bool ShouldInteractWithUrl (UITextView textView, NSUrl URL, NSRange characterRange);
 #endif
 
+		/// <param name="textView">To be added.</param>
+		/// <param name="textAttachment">To be added.</param>
+		/// <param name="characterRange">To be added.</param>
+		/// <summary>Developers should not use this deprecated method. Developers should use the 'ShouldInteractWithTextAttachment' overload that takes 'UITextItemInteraction' instead.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 10, 0, message: "Use the 'ShouldInteractWithTextAttachment' overload that takes 'UITextItemInteraction' instead.")]
 		[Deprecated (PlatformName.TvOS, 10, 0, message: "Use the 'ShouldInteractWithTextAttachment' overload that takes 'UITextItemInteraction' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use the 'ShouldInteractWithTextAttachment' overload that takes 'UITextItemInteraction' instead.")]
 		[Export ("textView:shouldInteractWithTextAttachment:inRange:"), DelegateName ("Func<UITextView,NSTextAttachment,NSRange,bool>"), DefaultValue ("true")]
 		bool ShouldInteractWithTextAttachment (UITextView textView, NSTextAttachment textAttachment, NSRange characterRange);
 
+		/// <param name="textView">The text view that has the attachment.</param>
+		/// <param name="url">To be added.</param>
+		/// <param name="characterRange">The character range of the URL in the text view.</param>
+		/// <param name="interaction">The interaction type to check.</param>
+		/// <summary>Whether the specified UITextView should allow user interaction with the specified URL in the given range of text.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 10, 0, message: "Use the 'ShouldInteractWithTextAttachment' overload that takes 'UITextItemInteraction' instead.")]
 		[Deprecated (PlatformName.TvOS, 10, 0, message: "Use the 'ShouldInteractWithTextAttachment' overload that takes 'UITextItemInteraction' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use the 'ShouldInteractWithTextAttachment' overload that takes 'UITextItemInteraction' instead.")]
@@ -17810,6 +18981,13 @@ namespace UIKit {
 		[Export ("textView:shouldInteractWithURL:inRange:interaction:"), DelegateApiName ("AllowUrlInteraction"), DelegateName ("UITextViewDelegateShouldInteractUrlDelegate"), DefaultValue ("true")]
 		bool ShouldInteractWithUrl (UITextView textView, NSUrl url, NSRange characterRange, UITextItemInteraction interaction);
 
+		/// <param name="textView">The text view that has the attachment.</param>
+		/// <param name="textAttachment">The attachment.</param>
+		/// <param name="characterRange">The character range where the attachment is attached.</param>
+		/// <param name="interaction">The interaction type to check.</param>
+		/// <summary>Whether the specified UITextView should allow user interaction with the specified URL in the given range of text.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 17, 0, message: "Replaced by 'GetPrimaryAction' and 'GetMenuConfiguration'.")]
 		[Deprecated (PlatformName.TvOS, 17, 0, message: "Replaced by 'GetPrimaryAction' and 'GetMenuConfiguration'.")]
 		[Deprecated (PlatformName.MacCatalyst, 17, 0, message: "Replaced by 'GetPrimaryAction' and 'GetMenuConfiguration'.")]
@@ -18164,12 +19342,23 @@ namespace UIKit {
 	[Model]
 	[Protocol]
 	interface UIVideoEditorControllerDelegate {
+		/// <param name="editor">To be added.</param>
+		/// <param name="editedVideoPath">To be added.</param>
+		/// <summary>Called after the movie was successfully saved.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("videoEditorController:didSaveEditedVideoToPath:"), EventArgs ("UIPath"), EventName ("Saved")]
 		void VideoSaved (UIVideoEditorController editor, [EventName ("path")] string editedVideoPath);
 
+		/// <param name="editor">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>Called when the UIVideoEditorController failed to load or save a movie.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("videoEditorController:didFailWithError:"), EventArgs ("NSError", true)]
 		void Failed (UIVideoEditorController editor, NSError error);
 
+		/// <param name="editor">To be added.</param>
+		/// <summary>Indicates that the app user cancelled the movie editing.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("videoEditorControllerDidCancel:")]
 		void UserCancelled (UIVideoEditorController editor);
 	}
@@ -20472,10 +21661,17 @@ namespace UIKit {
 		[Export ("animateTransition:")]
 		void AnimateTransition (IUIViewControllerContextTransitioning transitionContext);
 
+		/// <param name="transitionContext">To be added.</param>
+		/// <summary>Gets the <see cref="T:UIKit.IUIViewControllerAnimatedTransitioning" /> used for the transition.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("interruptibleAnimatorForTransition:")]
 		IUIViewImplicitlyAnimating GetInterruptibleAnimator (IUIViewControllerContextTransitioning transitionContext);
 
+		/// <param name="transitionCompleted">To be added.</param>
+		/// <summary>Indicates that the animation has ended.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("animationEnded:")]
 		void AnimationEnded (bool transitionCompleted);
 	}
@@ -20507,18 +21703,45 @@ namespace UIKit {
 	[Model, BaseType (typeof (NSObject))]
 	[Protocol]
 	partial interface UIViewControllerTransitioningDelegate {
+		/// <param name="presented">To be added.</param>
+		/// <param name="presenting">To be added.</param>
+		/// <param name="source">To be added.</param>
+		/// <summary>Returns the animation controller that is used when <paramref name="presenting" /> presents <paramref name="presented" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("animationControllerForPresentedController:presentingController:sourceController:")]
 		IUIViewControllerAnimatedTransitioning GetAnimationControllerForPresentedController (UIViewController presented, UIViewController presenting, UIViewController source);
 
+		/// <param name="dismissed">To be added.</param>
+		/// <summary>When a dismissal animation is called, this method can be overridden to provide a custom UIViewControllerAnimatedTransitioning.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("animationControllerForDismissedController:")]
 		IUIViewControllerAnimatedTransitioning GetAnimationControllerForDismissedController (UIViewController dismissed);
 
+		/// <param name="animator">To be added.</param>
+		/// <summary>When a controller is presented and an interaction desired, this method can be overridden to provide a custom UIViewControllerInteractiveTransitioning.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("interactionControllerForPresentation:")]
 		IUIViewControllerInteractiveTransitioning GetInteractionControllerForPresentation (IUIViewControllerAnimatedTransitioning animator);
 
+		/// <param name="animator">To be added.</param>
+		/// <summary>When a controller is dismissed and an interaction is desired, this method can be overridden to provide a custom UIViewControllerInteractiveTransitioning.|When a dismissal interaction is called and an interaction animation is desired, t</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("interactionControllerForDismissal:")]
 		IUIViewControllerInteractiveTransitioning GetInteractionControllerForDismissal (IUIViewControllerAnimatedTransitioning animator);
 
+		/// <param name="presentedViewController">To be added.</param>
+		/// <param name="presentingViewController">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="sourceViewController">To be added.</param>
+		/// <summary>Returns the presentation controller that is used when <paramref name="presentingViewController" /> presents <paramref name="presentedViewController" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("presentationControllerForPresentedViewController:presentingViewController:sourceViewController:")]
 		UIPresentationController GetPresentationControllerForPresentedViewController (UIViewController presentedViewController, [NullAllowed] UIViewController presentingViewController, UIViewController sourceViewController);
@@ -21279,16 +22502,29 @@ namespace UIKit {
 	[Model]
 	[Protocol]
 	interface UISplitViewControllerDelegate {
+		/// <param name="splitViewController">The split view controller.</param>
+		/// <summary>Returns the supported interface orientations for <paramref name="splitViewController" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("splitViewControllerSupportedInterfaceOrientations:"), DelegateName ("Func<UISplitViewController,UIInterfaceOrientationMask>"), DefaultValue (UIInterfaceOrientationMask.All)]
 		UIInterfaceOrientationMask SupportedInterfaceOrientations (UISplitViewController splitViewController);
 
+		/// <param name="splitViewController">Designates the split view controller that will be presented onscreen.</param>
+		/// <summary>Returns the preferred user interface orientation to use when presenting <paramref name="splitViewController" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("splitViewControllerPreferredInterfaceOrientationForPresentation:"), DelegateName ("Func<UISplitViewController,UIInterfaceOrientation>"), DefaultValue (UIInterfaceOrientation.Unknown)]
 		UIInterfaceOrientation GetPreferredInterfaceOrientationForPresentation (UISplitViewController splitViewController);
 
+		/// <param name="svc">The split view controller whose display mode is changing.</param>
+		/// <param name="pc">Specified popover controller.</param>
+		/// <param name="aViewController">Specified view controller.</param>
+		/// <summary>Indicates that the UISplitViewController is about to be presented.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[Export ("splitViewController:popoverController:willPresentViewController:"), EventArgs ("UISplitViewPresent")]
 		[Deprecated (PlatformName.iOS, 8, 0, message: "Use 'UISearchController' instead.")]
@@ -21296,6 +22532,12 @@ namespace UIKit {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'UISearchController' instead.")]
 		void WillPresentViewController (UISplitViewController svc, UIPopoverController pc, UIViewController aViewController);
 
+		/// <param name="svc">The split view controller whose display mode is changing.</param>
+		/// <param name="aViewController">Specified view controller.</param>
+		/// <param name="barButtonItem">An enumeration of the predefined <see cref="T:UIKit.UIBarButtonItem" />s.</param>
+		/// <param name="pc">Specified popover controller.</param>
+		/// <summary>Indicates that the UISplitViewController is about to be hidden.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[Export ("splitViewController:willHideViewController:withBarButtonItem:forPopoverController:"), EventArgs ("UISplitViewHide")]
 		[Deprecated (PlatformName.iOS, 8, 0, message: "Use 'UISearchController' instead.")]
@@ -21303,6 +22545,11 @@ namespace UIKit {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'UISearchController' instead.")]
 		void WillHideViewController (UISplitViewController svc, UIViewController aViewController, UIBarButtonItem barButtonItem, UIPopoverController pc);
 
+		/// <param name="svc">The split view controller whose display mode is changing.</param>
+		/// <param name="aViewController">Specified view controller.</param>
+		/// <param name="button">An enumeration of the predefined <see cref="T:UIKit.UIBarButtonItem" />s.</param>
+		/// <summary>Indicates that the UISplitViewController is about to be shown.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[Export ("splitViewController:willShowViewController:invalidatingBarButtonItem:"), EventArgs ("UISplitViewShow")]
 		[Deprecated (PlatformName.iOS, 8, 0, message: "Use 'UISearchController' instead.")]
@@ -21310,6 +22557,12 @@ namespace UIKit {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'UISearchController' instead.")]
 		void WillShowViewController (UISplitViewController svc, UIViewController aViewController, UIBarButtonItem button);
 
+		/// <param name="svc">The designated split view controller whose action might be triggered.</param>
+		/// <param name="viewController">The specified view controller.</param>
+		/// <param name="inOrientation">The specified orientation.</param>
+		/// <summary>Developers should not use this deprecated method. Developers should use 'UISearchController' instead.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[Export ("splitViewController:shouldHideViewController:inOrientation:"), DelegateName ("UISplitViewControllerHidePredicate"), DefaultValue (true)]
 		[Deprecated (PlatformName.iOS, 8, 0, message: "Use 'UISearchController' instead.")]
@@ -21317,34 +22570,73 @@ namespace UIKit {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'UISearchController' instead.")]
 		bool ShouldHideViewController (UISplitViewController svc, UIViewController viewController, UIInterfaceOrientation inOrientation);
 
+		/// <param name="svc">The split view controller whose display mode is changing.</param>
+		/// <param name="displayMode">TThe new display mode that will be applied.</param>
+		/// <summary>The split view controller <paramref name="svc" /> will change its display mode to <paramref name="displayMode" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("splitViewController:willChangeToDisplayMode:"), EventArgs ("UISplitViewControllerDisplayMode")]
 		void WillChangeDisplayMode (UISplitViewController svc, UISplitViewControllerDisplayMode displayMode);
 
+		/// <param name="svc">Split view controller whose action might be triggered.</param>
+		/// <summary>Returns the display mode for the <paramref name="svc" /> action.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("targetDisplayModeForActionInSplitViewController:"), DelegateName ("UISplitViewControllerFetchTargetForActionHandler"), DefaultValue (UISplitViewControllerDisplayMode.Automatic)]
 		UISplitViewControllerDisplayMode GetTargetDisplayModeForAction (UISplitViewController svc);
 
+		/// <param name="splitViewController">Designates the split view controller that has its primary view being updated.</param>
+		/// <param name="vc">The view controller that is being displayed in the primary position.</param>
+		/// <param name="sender">The action making the request.</param>
+		/// <summary>Shows <paramref name="vc" /> in the primary position.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("splitViewController:showViewController:sender:"), DelegateName ("UISplitViewControllerDisplayEvent"), DefaultValue (false)]
 		bool EventShowViewController (UISplitViewController splitViewController, UIViewController vc, NSObject sender);
 
+		/// <param name="splitViewController">Designates the split view controller that has its secondary view being updated.</param>
+		/// <param name="vc">The view controller that is being displayed in the secondary position.</param>
+		/// <param name="sender">The action making the request.</param>
+		/// <summary>Returns true if the delegate will display the detail view itself, rather than relying on <paramref name="splitViewController" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("splitViewController:showDetailViewController:sender:"), DelegateName ("UISplitViewControllerDisplayEvent"), DefaultValue (false)]
 		bool EventShowDetailViewController (UISplitViewController splitViewController, UIViewController vc, NSObject sender);
 
+		/// <param name="splitViewController">Designates the split view controller whose interface is collapsing.</param>
+		/// <summary>Returns the primary view controller for the collapsing view controller <paramref name="splitViewController" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("primaryViewControllerForCollapsingSplitViewController:"), DelegateName ("UISplitViewControllerGetViewController"), DefaultValue (null)]
 		UIViewController GetPrimaryViewControllerForCollapsingSplitViewController (UISplitViewController splitViewController);
 
+		/// <param name="splitViewController">To be added.</param>
+		/// <summary>Returns the primary view controller for the expanding view controller <paramref name="splitViewController" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("primaryViewControllerForExpandingSplitViewController:"), DelegateName ("UISplitViewControllerGetViewController"), DefaultValue (null)]
 		UIViewController GetPrimaryViewControllerForExpandingSplitViewController (UISplitViewController splitViewController);
 
+		/// <param name="splitViewController">Designates the split view controller with the collapsing interface.</param>
+		/// <param name="secondaryViewController">Designates the secondary view controller for the split view interface.</param>
+		/// <param name="primaryViewController">Designates the primary view controller for the split view interface.</param>
+		/// <summary>Collapses the secondary view controller on <paramref name="splitViewController" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("splitViewController:collapseSecondaryViewController:ontoPrimaryViewController:"), DelegateName ("UISplitViewControllerCanCollapsePredicate"), DefaultValue (true)]
 		bool CollapseSecondViewController (UISplitViewController splitViewController, UIViewController secondaryViewController, UIViewController primaryViewController);
 
+		/// <param name="splitViewController">The split view controller with the expanding interface.</param>
+		/// <param name="primaryViewController">Primary view controller specified for the expanded split view interface.</param>
+		/// <summary>Returns a new secondary view controller to use in split-view mode, or nil to use the default.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("splitViewController:separateSecondaryViewControllerFromPrimaryViewController:"), DelegateName ("UISplitViewControllerGetSecondaryViewController"), DefaultValue (null)]
 		UIViewController SeparateSecondaryViewController (UISplitViewController splitViewController, UIViewController primaryViewController);
@@ -21688,12 +22980,24 @@ namespace UIKit {
 	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 	interface UIPopoverControllerDelegate {
+		/// <param name="popoverController">To be added.</param>
+		/// <summary>Indicates that the UIPopover was dismissed.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("popoverControllerDidDismissPopover:"), EventArgs ("UIPopoverController")]
 		void DidDismiss (UIPopoverController popoverController);
 
+		/// <param name="popoverController">To be added.</param>
+		/// <summary>Whether the popover should be dismissed.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("popoverControllerShouldDismissPopover:"), DelegateName ("UIPopoverControllerCondition"), DefaultValue ("true")]
 		bool ShouldDismiss (UIPopoverController popoverController);
 
+		/// <param name="popoverController">To be added.</param>
+		/// <param name="rect">To be added.</param>
+		/// <param name="view">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("popoverController:willRepositionPopoverToRect:inView:"), EventArgs ("UIPopoverControllerReposition")]
 		void WillReposition (UIPopoverController popoverController, ref CGRect rect, ref UIView view);
 	}
@@ -21777,14 +23081,28 @@ namespace UIKit {
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	partial interface UIAdaptivePresentationControllerDelegate {
+		/// <param name="forPresentationController">To be added.</param>
+		/// <summary>Returns the new presentation style to use after a change to the <paramref name="forPresentationController" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[IgnoredInDelegate]
 		[Export ("adaptivePresentationStyleForPresentationController:")]
 		UIModalPresentationStyle GetAdaptivePresentationStyle (UIPresentationController forPresentationController);
 
+		/// <param name="controller">To be added.</param>
+		/// <param name="style">To be added.</param>
+		/// <summary>The view controller to use for the specified <paramref name="style" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("presentationController:viewControllerForAdaptivePresentationStyle:"),
 			DelegateName ("UIAdaptivePresentationWithStyleRequested"), DefaultValue (null)]
 		UIViewController GetViewControllerForAdaptivePresentation (UIPresentationController controller, UIModalPresentationStyle style);
 
+		/// <param name="controller">To be added.</param>
+		/// <param name="traitCollection">To be added.</param>
+		/// <summary>The presentation style to use for the specified <paramref name="controller" /> and <paramref name="traitCollection" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("adaptivePresentationStyleForPresentationController:traitCollection:"),
 			DelegateName ("UIAdaptivePresentationStyleWithTraitsRequested"), DefaultValue (UIModalPresentationStyle.None)]
@@ -21795,6 +23113,11 @@ namespace UIKit {
 			EventName ("PrepareAdaptive"), EventArgs ("UIPrepareAdaptivePresentationArgs")]
 		void PrepareAdaptivePresentationController (UIPresentationController presentationController, UIPresentationController adaptivePresentationController);
 
+		/// <param name="presentationController">To be added.</param>
+		/// <param name="style">To be added.</param>
+		/// <param name="transitionCoordinator">To be added.</param>
+		/// <summary>Called prior to presentation.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("presentationController:willPresentWithAdaptiveStyle:transitionCoordinator:"),
 			EventName ("WillPresentController"), EventArgs ("UIWillPresentAdaptiveStyle")]
@@ -21841,19 +23164,34 @@ namespace UIKit {
 	[Protocol, Model]
 	[BaseType (typeof (UIAdaptivePresentationControllerDelegate))]
 	partial interface UIPopoverPresentationControllerDelegate {
+		/// <param name="popoverPresentationController">To be added.</param>
+		/// <summary>The popover that is controlled by <paramref name="popoverPresentationController" /> will be presented soon.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("prepareForPopoverPresentation:"), EventName ("PrepareForPresentation")]
 		void PrepareForPopoverPresentation (UIPopoverPresentationController popoverPresentationController);
 
+		/// <param name="popoverPresentationController">To be added.</param>
+		/// <summary>Asks if the popover that is controlled by <paramref name="popoverPresentationController" /> should be dismissed.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Replaced by 'ShouldDismiss'.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Replaced by 'ShouldDismiss'.")]
 		[Export ("popoverPresentationControllerShouldDismissPopover:"), DelegateName ("ShouldDismiss"), DefaultValue (true)]
 		bool ShouldDismissPopover (UIPopoverPresentationController popoverPresentationController);
 
+		/// <param name="popoverPresentationController">To be added.</param>
+		/// <summary>The popover that is controlled by <paramref name="popoverPresentationController" /> was dismissed.</summary>
+		/// <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Replaced by 'DidDismiss'.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Replaced by 'DidDismiss'.")]
 		[Export ("popoverPresentationControllerDidDismissPopover:"), EventName ("DidDismiss")]
 		void DidDismissPopover (UIPopoverPresentationController popoverPresentationController);
 
+		/// <param name="popoverPresentationController">To be added.</param>
+		/// <param name="targetRect">To be added.</param>
+		/// <param name="inView">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("popoverPresentationController:willRepositionPopoverToRect:inView:"),
 			EventName ("WillReposition"), EventArgs ("UIPopoverPresentationControllerReposition")]
 		void WillRepositionPopover (UIPopoverPresentationController popoverPresentationController, ref CGRect targetRect, ref UIView inView);
@@ -22044,24 +23382,48 @@ namespace UIKit {
 	[BaseType (typeof (NSObject))]
 	partial interface UIPrinterPickerControllerDelegate {
 
+		/// <param name="printerPickerController">The printer picker controller that is being displayed.</param>
+		/// <summary>Gets the parent view controller of the <paramref name="printerPickerController" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("printerPickerControllerParentViewController:")]
 		UIViewController GetParentViewController (UIPrinterPickerController printerPickerController);
 
+		/// <param name="printerPickerController">The printer picker controller that is being displayed.</param>
+		/// <param name="printer">Designated printer for consideration by the delegate.</param>
+		/// <summary>The <paramref name="printerPickerController" /> should show <paramref name="printer" /> to the user.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("printerPickerController:shouldShowPrinter:")]
 		bool ShouldShowPrinter (UIPrinterPickerController printerPickerController, UIPrinter printer);
 
+		/// <param name="printerPickerController">The printer picker controller that is being displayed.</param>
+		/// <summary>The <paramref name="printerPickerController" /> is about to be presented.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("printerPickerControllerWillPresent:")]
 		void WillPresent (UIPrinterPickerController printerPickerController);
 
+		/// <param name="printerPickerController">The printer picker controller that is being displayed.</param>
+		/// <summary>TThe <paramref name="printerPickerController" /> was presented.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("printerPickerControllerDidPresent:")]
 		void DidPresent (UIPrinterPickerController printerPickerController);
 
+		/// <param name="printerPickerController">The printer picker controller that is being displayed.</param>
+		/// <summary>The <paramref name="printerPickerController" /> is about to be dismissed.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("printerPickerControllerWillDismiss:")]
 		void WillDismiss (UIPrinterPickerController printerPickerController);
 
+		/// <param name="printerPickerController">The printer picker controller that is being displayed.</param>
+		/// <summary>The <paramref name="printerPickerController" /> was dismissed.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("printerPickerControllerDidDismiss:")]
 		void DidDismiss (UIPrinterPickerController printerPickerController);
 
+		/// <param name="printerPickerController">The printer picker controller that is being displayed.</param>
+		/// <summary>The <paramref name="printerPickerController" /> selected a printer.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("printerPickerControllerDidSelectPrinter:")]
 		void DidSelectPrinter (UIPrinterPickerController printerPickerController);
 	}
@@ -22157,35 +23519,72 @@ namespace UIKit {
 	[Model]
 	[Protocol]
 	interface UIPrintInteractionControllerDelegate {
+		/// <param name="printInteractionController">To be added.</param>
+		/// <summary>Returns the parent UIViewController for managing the printing-options view.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("printInteractionControllerParentViewController:"), DefaultValue (null), DelegateName ("UIPrintInteraction")]
 		UIViewController GetViewController (UIPrintInteractionController printInteractionController);
 
+		/// <param name="printInteractionController">To be added.</param>
+		/// <param name="paperList">To be added.</param>
+		/// <summary>Retrieves an object holding the paper size and printing area to use for a printing job.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("printInteractionController:choosePaper:"), DefaultValue (null), DelegateName ("UIPrintInteractionPaperList")]
 		UIPrintPaper ChoosePaper (UIPrintInteractionController printInteractionController, UIPrintPaper [] paperList);
 
+		/// <param name="printInteractionController">To be added.</param>
+		/// <summary>Indicates that the printing-options interface is about to be displayed.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("printInteractionControllerWillPresentPrinterOptions:"), EventArgs ("UIPrintInteraction")]
 		void WillPresentPrinterOptions (UIPrintInteractionController printInteractionController);
 
+		/// <param name="printInteractionController">To be added.</param>
+		/// <summary>Indicates that the printing-options user interface has been presented.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("printInteractionControllerDidPresentPrinterOptions:"), EventArgs ("UIPrintInteraction")]
 		void DidPresentPrinterOptions (UIPrintInteractionController printInteractionController);
 
+		/// <param name="printInteractionController">To be added.</param>
+		/// <summary>Indicates that the printing-options user interface will be dismissed.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("printInteractionControllerWillDismissPrinterOptions:"), EventArgs ("UIPrintInteraction")]
 		void WillDismissPrinterOptions (UIPrintInteractionController printInteractionController);
 
+		/// <param name="printInteractionController">To be added.</param>
+		/// <summary>Indicates that the printer user interface has been dismissed.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("printInteractionControllerDidDismissPrinterOptions:"), EventArgs ("UIPrintInteraction")]
 		void DidDismissPrinterOptions (UIPrintInteractionController printInteractionController);
 
+		/// <param name="printInteractionController">To be added.</param>
+		/// <summary>Indicates that the print job is about to begin.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("printInteractionControllerWillStartJob:"), EventArgs ("UIPrintInteraction")]
 		void WillStartJob (UIPrintInteractionController printInteractionController);
 
+		/// <param name="printInteractionController">To be added.</param>
+		/// <summary>Indicates that the print job has ended.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("printInteractionControllerDidFinishJob:"), EventArgs ("UIPrintInteraction")]
 		void DidFinishJob (UIPrintInteractionController printInteractionController);
 
+		/// <param name="printInteractionController">To be added.</param>
+		/// <param name="paper">To be added.</param>
+		/// <summary>The length to use when cutting the page.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("printInteractionController:cutLengthForPaper:")]
 		[NoDefaultValue]
 		[DelegateName ("Func<UIPrintInteractionController,UIPrintPaper,nfloat>")]
 		nfloat CutLengthForPaper (UIPrintInteractionController printInteractionController, UIPrintPaper paper);
 
+		/// <param name="printInteractionController">To be added.</param>
+		/// <param name="availableBehaviors">To be added.</param>
+		/// <summary>Gets the <see cref="T:UIKit.UIPrinterCutterBehavior" /> for the print job.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("printInteractionController:chooseCutterBehavior:"), DefaultValue ("UIPrinterCutterBehavior.NoCut"), DelegateName ("UIPrintInteractionCutterBehavior")]
 		UIPrinterCutterBehavior ChooseCutterBehavior (UIPrintInteractionController printInteractionController, NSNumber [] availableBehaviors);
@@ -23338,10 +24737,17 @@ namespace UIKit {
 		[Export ("documentPicker:didPickDocumentAtURL:"), EventArgs ("UIDocumentPicked")]
 		void DidPickDocument (UIDocumentPickerViewController controller, NSUrl url);
 
+		/// <param name="controller">The controller that made the request.</param>
+		/// <param name="urls">The URLS that were picked.</param>
+		/// <summary>Developers may implement this method to respond after the user selects documents.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("documentPicker:didPickDocumentsAtURLs:"), EventArgs ("UIDocumentPickedAtUrls"), EventName ("DidPickDocumentAtUrls")]
 		void DidPickDocument (UIDocumentPickerViewController controller, NSUrl [] urls);
 
+		/// <param name="controller">To be added.</param>
+		/// <summary>The user dismissed the picker.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("documentPickerWasCancelled:")]
 		void WasCancelled (UIDocumentPickerViewController controller);
 	}
@@ -23421,6 +24827,9 @@ namespace UIKit {
 		[return: NullAllowed]
 		NSAttributedString GetAccessibilityAttributedContent (nint lineNumber);
 
+		/// <summary>Gets an attributes string that represents the text for the current page.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("accessibilityAttributedPageContent")]
 		[return: NullAllowed]
@@ -23444,6 +24853,10 @@ namespace UIKit {
 		string GetTextForGuidedAccessRestriction (string restrictionIdentifier);
 
 		// Optional
+		/// <param name="restrictionIdentifier">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("detailTextForGuidedAccessRestrictionWithIdentifier:")]
 		string GetDetailTextForGuidedAccessRestriction (string restrictionIdentifier);
 	}
@@ -23602,6 +25015,9 @@ namespace UIKit {
 		[Export ("isTransparentFocusItem")]
 		bool IsTransparentFocusItem { get; }
 
+		/// <param name="hint">The focus movement hint.</param>
+		/// <summary>Called when a focus change may soon happen.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("didHintFocusMovement:")]
 		void DidHintFocusMovement (UIFocusMovementHint hint);
@@ -23831,6 +25247,10 @@ namespace UIKit {
 		[Export ("previewInteractionDidCancel:")]
 		void DidCancel (UIPreviewInteraction previewInteraction);
 
+		/// <param name="previewInteraction">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("previewInteractionShouldBegin:")]
 		[DelegateName ("Func<UIPreviewInteraction,bool>"), DefaultValue (true)]
 		bool ShouldBegin (UIPreviewInteraction previewInteraction);
@@ -24224,51 +25644,128 @@ namespace UIKit {
 		[Export ("dragInteraction:itemsForBeginningSession:")]
 		UIDragItem [] GetItemsForBeginningSession (UIDragInteraction interaction, IUIDragSession session);
 
+		/// <param name="interaction">The interaction that is making the request.</param>
+		/// <param name="item">The item for which to get a preview.</param>
+		/// <param name="session">The drag session.</param>
+		/// <summary>Method that is called to get a targeted drag preview for animating the lift.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("dragInteraction:previewForLiftingItem:session:")]
 		[return: NullAllowed]
 		UITargetedDragPreview GetPreviewForLiftingItem (UIDragInteraction interaction, UIDragItem item, IUIDragSession session);
 
+		/// <param name="interaction">The interaction that is making the request.</param>
+		/// <param name="animator">An animator to run custom parallel animations and in which the developer may optionally add a completion handler.</param>
+		/// <param name="session">The session.</param>
+		/// <summary>Method that is called before each item with a lift preview is about to lift.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("dragInteraction:willAnimateLiftWithAnimator:session:")]
 		void WillAnimateLift (UIDragInteraction interaction, IUIDragAnimating animator, IUIDragSession session);
 
+		/// <param name="interaction">The interaction that is making the request.</param>
+		/// <param name="session">The session that will begin.</param>
+		/// <summary>Method that is called when a session is about to begin.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("dragInteraction:sessionWillBegin:")]
 		void SessionWillBegin (UIDragInteraction interaction, IUIDragSession session);
 
+		/// <param name="interaction">The interaction that is making the request.</param>
+		/// <param name="session">The session to query.</param>
+		/// <summary>Method that is called to find out if the session allows items to be moved, instead of copied.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("dragInteraction:sessionAllowsMoveOperation:")]
 		bool SessionAllowsMoveOperation (UIDragInteraction interaction, IUIDragSession session);
 
+		/// <param name="interaction">The interaction that is making the request.</param>
+		/// <param name="session">The session to query.</param>
+		/// <summary>Method that is called to find out if the application only supports drag and drop operations to and from itself.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("dragInteraction:sessionIsRestrictedToDraggingApplication:")]
 		bool SessionIsRestrictedToDraggingApplication (UIDragInteraction interaction, IUIDragSession session);
 
+		/// <param name="interaction">The interaction that is making the request.</param>
+		/// <param name="session">The session to query.</param>
+		/// <summary>Method that is called to find out whether the application prefers full size previews in the source view.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("dragInteraction:prefersFullSizePreviewsForSession:")]
 		bool PrefersFullSizePreviews (UIDragInteraction interaction, IUIDragSession session);
 
+		/// <param name="interaction">The interaction that is making the request.</param>
+		/// <param name="session">The drag session.</param>
+		/// <summary>Method that is called when the drag point moves.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("dragInteraction:sessionDidMove:")]
 		void SessionDidMove (UIDragInteraction interaction, IUIDragSession session);
 
+		/// <param name="interaction">The interaction that is making the request.</param>
+		/// <param name="session">The session that will end.</param>
+		/// <param name="operation">The operation that will end the session.</param>
+		/// <summary>Method that is called when a session is about to end.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("dragInteraction:session:willEndWithOperation:")]
 		void SessionWillEnd (UIDragInteraction interaction, IUIDragSession session, UIDropOperation operation);
 
+		/// <param name="interaction">The interaction that is making the request.</param>
+		/// <param name="session">The session that ended.</param>
+		/// <param name="operation">The resulting drag and drop operation.</param>
+		/// <summary>Method that is called when the drag session ends.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("dragInteraction:session:didEndWithOperation:")]
 		void SessionDidEnd (UIDragInteraction interaction, IUIDragSession session, UIDropOperation operation);
 
+		/// <param name="interaction">The interaction that is making the request.</param>
+		/// <param name="session">The session that ended and transferred the items.</param>
+		/// <summary>Method that is called after the dropped items have been received.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("dragInteraction:sessionDidTransferItems:")]
 		void SessionDidTransferItems (UIDragInteraction interaction, IUIDragSession session);
 
+		/// <param name="interaction">The interaction that is making the request.</param>
+		/// <param name="session">The session to which to add items.</param>
+		/// <param name="point">The touch location in the view's coordinate system.</param>
+		/// <summary>Method that is called to add drag items to a drag session in response to a gesture by the user.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("dragInteraction:itemsForAddingToSession:withTouchAtPoint:")]
 		UIDragItem [] GetItemsForAddingToSession (UIDragInteraction interaction, IUIDragSession session, CGPoint point);
 
+		/// <param name="interaction">The interaction that is making the request.</param>
+		/// <param name="sessions">The sessions from which to choose.</param>
+		/// <param name="point">The touch point in the view's coordinate system.</param>
+		/// <summary>Method that is called to disambiguate to which session to add items when multiple sessions are active.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("dragInteraction:sessionForAddingItems:withTouchAtPoint:")]
 		[return: NullAllowed]
 		IUIDragSession GetSessionForAddingItems (UIDragInteraction interaction, IUIDragSession [] sessions, CGPoint point);
 
+		/// <param name="interaction">The interaction that is making the request.</param>
+		/// <param name="session">The session to which items will be added.</param>
+		/// <param name="items">The items to add.</param>
+		/// <param name="addingInteraction">The interaction that will add the items.</param>
+		/// <summary>Method that is called when items are about to be added to the session.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("dragInteraction:session:willAddItems:forInteraction:")]
 		void WillAddItems (UIDragInteraction interaction, IUIDragSession session, UIDragItem [] items, UIDragInteraction addingInteraction);
 
+		/// <param name="interaction">The interaction that is making the request.</param>
+		/// <param name="item">The item for which to get a preview.</param>
+		/// <param name="defaultPreview">The default drag preview for the item.</param>
+		/// <summary>Method that is called for each visible item in a drag session when the user cancels the drag session.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("dragInteraction:previewForCancellingItem:withDefault:")]
 		[return: NullAllowed]
 		UITargetedDragPreview GetPreviewForCancellingItem (UIDragInteraction interaction, UIDragItem item, UITargetedDragPreview defaultPreview);
 
+		/// <param name="interaction">The interaction that is making the request.</param>
+		/// <param name="item">The item whose cancellation will be animated.</param>
+		/// <param name="animator">An animator to run custom parallel animations and in which the developer may optionally add a completion handler.</param>
+		/// <summary>Method that is called before the animation of each item in a cancellation begins.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("dragInteraction:item:willAnimateCancelWithAnimator:")]
 		void WillAnimateCancel (UIDragInteraction interaction, UIDragItem item, IUIDragAnimating animator);
 	}
@@ -24297,32 +25794,73 @@ namespace UIKit {
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface UIDropInteractionDelegate {
+		/// <param name="interaction">The interaction to check.</param>
+		/// <param name="session">The session to query.</param>
+		/// <summary>Returns <see langword="true" /> if the specified <paramref name="interaction" /> can handle the specified <paramref name="session" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("dropInteraction:canHandleSession:"), DelegateName ("Func<UIDropInteraction,IUIDropSession,bool>"), NoDefaultValue]
 		bool CanHandleSession (UIDropInteraction interaction, IUIDropSession session);
 
+		/// <param name="interaction">The interaction that is making the request.</param>
+		/// <param name="session">The session that entered the view for the interaction.</param>
+		/// <summary>Method that is called when the user drags the drop session into the view for the drop interaction.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("dropInteraction:sessionDidEnter:"), EventArgs ("UIDropInteraction")]
 		void SessionDidEnter (UIDropInteraction interaction, IUIDropSession session);
 
+		/// <param name="interaction">The interaction that is making the request.</param>
+		/// <param name="session">The session that was changed.</param>
+		/// <summary>Method that is called when the touch point moves into or within the view, or when drag items are added while the touch point is within the view.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("dropInteraction:sessionDidUpdate:"), DelegateName ("Func<UIDropInteraction,IUIDropSession,UIDropProposal>"), NoDefaultValue]
 		UIDropProposal SessionDidUpdate (UIDropInteraction interaction, IUIDropSession session);
 
+		/// <param name="interaction">The interaction that is making the request.</param>
+		/// <param name="session">The session that left the view for the interaction.</param>
+		/// <summary>Method that is called when the user drags the drop session out of the view for the drop interaction.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("dropInteraction:sessionDidExit:"), EventArgs ("UIDropInteraction")]
 		void SessionDidExit (UIDropInteraction interaction, IUIDropSession session);
 
+		/// <param name="interaction">The interaction that is making the request.</param>
+		/// <param name="session">The session that contains the items to drop.</param>
+		/// <summary>Method that is called to consume data from the item providers in the drop session.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("dropInteraction:performDrop:"), EventArgs ("UIDropInteraction")]
 		void PerformDrop (UIDropInteraction interaction, IUIDropSession session);
 
+		/// <param name="interaction">The interaction that is making the request.</param>
+		/// <param name="session">The session that has concluded.</param>
+		/// <summary>Method that is called after the drop is performed and all animations have completed.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("dropInteraction:concludeDrop:"), EventArgs ("UIDropInteraction")]
 		void ConcludeDrop (UIDropInteraction interaction, IUIDropSession session);
 
+		/// <param name="interaction">The interaction that is making the request.</param>
+		/// <param name="session">The session that ended.</param>
+		/// <summary>Method that is called to allow the developer to release all resources for the completed drop session.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("dropInteraction:sessionDidEnd:"), EventArgs ("UIDropInteraction")]
 		void SessionDidEnd (UIDropInteraction interaction, IUIDropSession session);
 
+		/// <param name="interaction">The interaction that is making the request.</param>
+		/// <param name="item">The item for which to get a preview.</param>
+		/// <param name="defaultPreview">The default preview for the item.</param>
+		/// <summary>Method that is called for each drag item to allow the developer to provide a custom preview.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("dropInteraction:previewForDroppingItem:withDefault:")]
 		[return: NullAllowed]
 		[DelegateName ("UIDropInteractionPreviewForItem"), NoDefaultValue]
 		UITargetedDragPreview GetPreviewForDroppingItem (UIDropInteraction interaction, UIDragItem item, UITargetedDragPreview defaultPreview);
 
+		/// <param name="interaction">The interaction that is making the request.</param>
+		/// <param name="item">The item whose drop to animate.</param>
+		/// <param name="animator">An animator to run custom parallel animations and in which the developer may optionally add a completion handler.</param>
+		/// <summary>Method that is called for each visible drag item just before the drop is animated.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("dropInteraction:item:willAnimateDropWithAnimator:"), EventArgs ("UIDropInteractionAnimation")]
 		void WillAnimateDrop (UIDropInteraction interaction, UIDragItem item, IUIDragAnimating animator);
 	}
@@ -24420,22 +25958,52 @@ namespace UIKit {
 		[Export ("collectionView:itemsForBeginningDragSession:atIndexPath:")]
 		UIDragItem [] GetItemsForBeginningDragSession (UICollectionView collectionView, IUIDragSession session, NSIndexPath indexPath);
 
+		/// <param name="collectionView">The originating collection view.</param>
+		/// <param name="session">The drag session to which to add items.</param>
+		/// <param name="indexPath">The index path to the item to add.</param>
+		/// <param name="point">The point that the user touched, in the collection view coordinate space.</param>
+		/// <summary>Adds the items at the index path to the drag session.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("collectionView:itemsForAddingToDragSession:atIndexPath:point:")]
 		UIDragItem [] GetItemsForAddingToDragSession (UICollectionView collectionView, IUIDragSession session, NSIndexPath indexPath, CGPoint point);
 
+		/// <param name="collectionView">To be added.</param>
+		/// <param name="indexPath">To be added.</param>
+		/// <summary>Gets the preview parameters for the item at the specified index path.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("collectionView:dragPreviewParametersForItemAtIndexPath:")]
 		[return: NullAllowed]
 		UIDragPreviewParameters GetDragPreviewParameters (UICollectionView collectionView, NSIndexPath indexPath);
 
+		/// <param name="collectionView">The originating collection view.</param>
+		/// <param name="session">The session that is about to begin.</param>
+		/// <summary>Method that is called just before a drag session begins.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("collectionView:dragSessionWillBegin:")]
 		void DragSessionWillBegin (UICollectionView collectionView, IUIDragSession session);
 
+		/// <param name="collectionView">The originating collection view.</param>
+		/// <param name="session">The session that is ending.</param>
+		/// <summary>Method that is called when the user cancels or completes the drag session.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("collectionView:dragSessionDidEnd:")]
 		void DragSessionDidEnd (UICollectionView collectionView, IUIDragSession session);
 
+		/// <param name="collectionView">To be added.</param>
+		/// <param name="session">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("collectionView:dragSessionAllowsMoveOperation:")]
 		bool DragSessionAllowsMoveOperation (UICollectionView collectionView, IUIDragSession session);
 
+		/// <param name="collectionView">To be added.</param>
+		/// <param name="session">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("collectionView:dragSessionIsRestrictedToDraggingApplication:")]
 		bool DragSessionIsRestrictedToDraggingApplication (UICollectionView collectionView, IUIDragSession session);
 	}
@@ -24450,21 +26018,52 @@ namespace UIKit {
 		[Export ("collectionView:performDropWithCoordinator:")]
 		void PerformDrop (UICollectionView collectionView, IUICollectionViewDropCoordinator coordinator);
 
+		/// <param name="collectionView">The collection view to query.</param>
+		/// <param name="session">The drop session with the drag type data.</param>
+		/// <summary>Returns a Boolean value that tells whether the collection view can handle drops from the data in the session.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("collectionView:canHandleDropSession:")]
 		bool CanHandleDropSession (UICollectionView collectionView, IUIDropSession session);
 
+		/// <param name="collectionView">The originating collection view.</param>
+		/// <param name="session">The drop session.</param>
+		/// <summary>Method that is called when the drop point enters the collection view.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("collectionView:dropSessionDidEnter:")]
 		void DropSessionDidEnter (UICollectionView collectionView, IUIDropSession session);
 
+		/// <param name="collectionView">The originating collection view.</param>
+		/// <param name="session">The drop session.</param>
+		/// <param name="destinationIndexPath">
+		///           <para>The index path where the content would be dropped if it were dropped at the time of the method call.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Method that is called when the drop point over the collection view changes.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("collectionView:dropSessionDidUpdate:withDestinationIndexPath:")]
 		UICollectionViewDropProposal DropSessionDidUpdate (UICollectionView collectionView, IUIDropSession session, [NullAllowed] NSIndexPath destinationIndexPath);
 
+		/// <param name="collectionView">The originating collection view.</param>
+		/// <param name="session">The drop session.</param>
+		/// <summary>Method that is called when the drop point leaves the collection view.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("collectionView:dropSessionDidExit:")]
 		void DropSessionDidExit (UICollectionView collectionView, IUIDropSession session);
 
+		/// <param name="collectionView">The originating collection view.</param>
+		/// <param name="session">The drop session.</param>
+		/// <summary>Method that is called when the drop session ends.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("collectionView:dropSessionDidEnd:")]
 		void DropSessionDidEnd (UICollectionView collectionView, IUIDropSession session);
 
+		/// <param name="collectionView">The originating collection view.</param>
+		/// <param name="indexPath">To be added.</param>
+		/// <summary>Returns the drag preview parameters for the item at the specified index path.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("collectionView:dropPreviewParametersForItemAtIndexPath:")]
 		[return: NullAllowed]
 		UIDragPreviewParameters GetDropPreviewParameters (UICollectionView collectionView, NSIndexPath indexPath);
@@ -24603,22 +26202,52 @@ namespace UIKit {
 		[Export ("tableView:itemsForBeginningDragSession:atIndexPath:")]
 		UIDragItem [] GetItemsForBeginningDragSession (UITableView tableView, IUIDragSession session, NSIndexPath indexPath);
 
+		/// <param name="tableView">The originating table view.</param>
+		/// <param name="session">The session to which to add the items.</param>
+		/// <param name="indexPath">The index path to the added row.</param>
+		/// <param name="point">The point, in the table view's coordinate system, of the user's touch.</param>
+		/// <summary>Adds the items at the index path to the drag session.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("tableView:itemsForAddingToDragSession:atIndexPath:point:")]
 		UIDragItem [] GetItemsForAddingToDragSession (UITableView tableView, IUIDragSession session, NSIndexPath indexPath, CGPoint point);
 
+		/// <param name="tableView">The table view for which to get drag preview parameters.</param>
+		/// <param name="indexPath">The index path to the row for which to get drag preview parameters.</param>
+		/// <summary>Gets the preview parameters for the item at the specified index path.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("tableView:dragPreviewParametersForRowAtIndexPath:")]
 		[return: NullAllowed]
 		UIDragPreviewParameters GetDragPreviewParameters (UITableView tableView, NSIndexPath indexPath);
 
+		/// <param name="tableView">The originating table view.</param>
+		/// <param name="session">The session that will begin.</param>
+		/// <summary>Method that is called just before a drag session begins.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("tableView:dragSessionWillBegin:")]
 		void DragSessionWillBegin (UITableView tableView, IUIDragSession session);
 
+		/// <param name="tableView">The originating table view.</param>
+		/// <param name="session">The session that ended.</param>
+		/// <summary>Method that is called when the user cancels or completes the drag session.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("tableView:dragSessionDidEnd:")]
 		void DragSessionDidEnd (UITableView tableView, IUIDragSession session);
 
+		/// <param name="tableView">To be added.</param>
+		/// <param name="session">To be added.</param>
+		/// <summary>Whether the drag session can move items within the developer's app.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("tableView:dragSessionAllowsMoveOperation:")]
 		bool DragSessionAllowsMoveOperation (UITableView tableView, IUIDragSession session);
 
+		/// <param name="tableView">To be added.</param>
+		/// <param name="session">To be added.</param>
+		/// <summary>Gets whether the drag session may only act within the developer's app.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("tableView:dragSessionIsRestrictedToDraggingApplication:")]
 		bool DragSessionIsRestrictedToDraggingApplication (UITableView tableView, IUIDragSession session);
 	}
@@ -24633,21 +26262,49 @@ namespace UIKit {
 		[Export ("tableView:performDropWithCoordinator:")]
 		void PerformDrop (UITableView tableView, IUITableViewDropCoordinator coordinator);
 
+		/// <param name="tableView">The target table view.</param>
+		/// <param name="session">The drop session.</param>
+		/// <summary>Returns a Boolean value that tells whether the table view can handle drops from the data in the session.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("tableView:canHandleDropSession:")]
 		bool CanHandleDropSession (UITableView tableView, IUIDropSession session);
 
+		/// <param name="tableView">The current target of the drop.</param>
+		/// <param name="session">The drop session that entered.</param>
+		/// <summary>Method that is called when the drop point enters the table view.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("tableView:dropSessionDidEnter:")]
 		void DropSessionDidEnter (UITableView tableView, IUIDropSession session);
 
+		/// <param name="tableView">The current drop target.</param>
+		/// <param name="session">The drop session.</param>
+		/// <param name="destinationIndexPath">The index path to the currently targeted row. This parameter can be <see langword="null" />.</param>
+		/// <summary>Method that is called when the drop point over the table view changes.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("tableView:dropSessionDidUpdate:withDestinationIndexPath:")]
 		UITableViewDropProposal DropSessionDidUpdate (UITableView tableView, IUIDropSession session, [NullAllowed] NSIndexPath destinationIndexPath);
 
+		/// <param name="tableView">The view that was tracking the operation.</param>
+		/// <param name="session">The drop session that exited.</param>
+		/// <summary>Method that is called when the drop point leaves the table view.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("tableView:dropSessionDidExit:")]
 		void DropSessionDidExit (UITableView tableView, IUIDropSession session);
 
+		/// <param name="tableView">The original intended target table view.</param>
+		/// <param name="session">The session that ended.</param>
+		/// <summary>Method that is called when the drop session ends.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("tableView:dropSessionDidEnd:")]
 		void DropSessionDidEnd (UITableView tableView, IUIDropSession session);
 
+		/// <param name="tableView">The table view for which to get the preview parameters.</param>
+		/// <param name="indexPath">The index path to the row for which to get the preview parameters.</param>
+		/// <summary>Returns the drag preview parameters for the item at the specified index path.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("tableView:dropPreviewParametersForRowAtIndexPath:")]
 		[return: NullAllowed]
 		UIDragPreviewParameters GetDropPreviewParameters (UITableView tableView, NSIndexPath indexPath);
@@ -24831,19 +26488,44 @@ namespace UIKit {
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface UITextDragDelegate {
+		/// <param name="textDraggableView">The originating view.</param>
+		/// <param name="dragRequest">The drag request.</param>
+		/// <summary>Method that is called to get custom drag items.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("textDraggableView:itemsForDrag:")]
 		UIDragItem [] GetItemsForDrag (IUITextDraggable textDraggableView, IUITextDragRequest dragRequest);
 
+		/// <param name="textDraggableView">The originating view.</param>
+		/// <param name="item">The item for which to get a lift preview.</param>
+		/// <param name="session">The drag session.</param>
+		/// <summary>Method that is called to get a preview for the item that is lifting.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("textDraggableView:dragPreviewForLiftingItem:session:")]
 		[return: NullAllowed]
 		UITargetedDragPreview GetPreviewForLiftingItem (IUITextDraggable textDraggableView, UIDragItem item, IUIDragSession session);
 
+		/// <param name="textDraggableView">The originating view.</param>
+		/// <param name="animator">The animator to use for adding animations.</param>
+		/// <param name="session">The drag session.</param>
+		/// <summary>Method that is called just before an item lift is animated.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("textDraggableView:willAnimateLiftWithAnimator:session:")]
 		void WillAnimateLift (IUITextDraggable textDraggableView, IUIDragAnimating animator, IUIDragSession session);
 
+		/// <param name="textDraggableView">The orginating view.</param>
+		/// <param name="session">The drag session that will begin.</param>
+		/// <summary>Method that is called just before a drag session begins.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("textDraggableView:dragSessionWillBegin:")]
 		void DragSessionWillBegin (IUITextDraggable textDraggableView, IUIDragSession session);
 
+		/// <param name="textDraggableView">The orginating view.</param>
+		/// <param name="session">The drag session that ended.</param>
+		/// <param name="operation">The operation that ended the session.</param>
+		/// <summary>Method that is called when the user cancels or completes the drag session.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("textDraggableView:dragSessionDidEnd:withOperation:")]
 		void DragSessionDidEnd (IUITextDraggable textDraggableView, IUIDragSession session, UIDropOperation operation);
 	}
@@ -24921,28 +26603,65 @@ namespace UIKit {
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface UITextDropDelegate {
+		/// <param name="textDroppableView">The currently non-editable receiving view.</param>
+		/// <param name="drop">The drop request.</param>
+		/// <summary>Method that is called to determine whether a non-editable text view can accept drops.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("textDroppableView:willBecomeEditableForDrop:")]
 		UITextDropEditability WillBecomeEditable (IUITextDroppable textDroppableView, IUITextDropRequest drop);
 
+		/// <param name="textDroppableView">The receiving view.</param>
+		/// <param name="drop">The drop request for which to get a proposal.</param>
+		/// <summary>Method that is called to get the drop proposal.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("textDroppableView:proposalForDrop:")]
 		UITextDropProposal GetProposalForDrop (IUITextDroppable textDroppableView, IUITextDropRequest drop);
 
+		/// <param name="textDroppableView">The receiving view.</param>
+		/// <param name="drop">The drop request.</param>
+		/// <summary>Method that is called just before the drop is performed.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("textDroppableView:willPerformDrop:")]
 		void WillPerformDrop (IUITextDroppable textDroppableView, IUITextDropRequest drop);
 
+		/// <param name="textDroppableView">The receiving view.</param>
+		/// <param name="defaultPreview">The system-provided default preview.</param>
+		/// <summary>Method that is called once to get the drag preview to use for dropping all the items.</summary>
+		/// <returns>
+		///           <para>Developers can return <see langword="null" /> to cause the default preview to be used.</para>
+		///         </returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("textDroppableView:previewForDroppingAllItemsWithDefault:")]
 		[return: NullAllowed]
 		UITargetedDragPreview GetPreviewForDroppingAllItems (IUITextDroppable textDroppableView, UITargetedDragPreview defaultPreview);
 
+		/// <param name="textDroppableView">The receiving view.</param>
+		/// <param name="session">The session that entered.</param>
+		/// <summary>Method that is called when the drop point enters the text view.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("textDroppableView:dropSessionDidEnter:")]
 		void DropSessionDidEnter (IUITextDroppable textDroppableView, IUIDropSession session);
 
+		/// <param name="textDroppableView">The receiving view.</param>
+		/// <param name="session">The session that was updated.</param>
+		/// <summary>Method that is called when the drop point over the text view changes.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("textDroppableView:dropSessionDidUpdate:")]
 		void DropSessionDidUpdate (IUITextDroppable textDroppableView, IUIDropSession session);
 
+		/// <param name="textDroppableView">The previously receiving view.</param>
+		/// <param name="session">The session that exited.</param>
+		/// <summary>Method that is called when the drop point leaves the text view.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("textDroppableView:dropSessionDidExit:")]
 		void DropSessionDidExit (IUITextDroppable textDroppableView, IUIDropSession session);
 
+		/// <param name="textDroppableView">The destination view.</param>
+		/// <param name="session">The drop session that ended.</param>
+		/// <summary>Method that is called when the drop session ends.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("textDroppableView:dropSessionDidEnd:")]
 		void DropSessionDidEnd (IUITextDroppable textDroppableView, IUIDropSession session);
 	}
@@ -25026,6 +26745,9 @@ namespace UIKit {
 		[Export ("shouldAllowInteraction:withContext:")]
 		bool ShouldAllowInteraction (UISpringLoadedInteraction interaction, IUISpringLoadedInteractionContext context);
 
+		/// <param name="interaction">The interaction that finished.</param>
+		/// <summary>Method that is called when the user cancels or carries out the spring-loaded interaction.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("interactionDidFinish:")]
 		void InteractionDidFinish (UISpringLoadedInteraction interaction);
 	}
@@ -25157,15 +26879,37 @@ namespace UIKit {
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface UITextPasteDelegate {
+		/// <param name="textPasteConfigurationSupporting">The receiving object.</param>
+		/// <param name="item">The paste item.</param>
+		/// <summary>Method that is called to transform the paste item as it is pasted.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("textPasteConfigurationSupporting:transformPasteItem:")]
 		void TransformPasteItem (IUITextPasteConfigurationSupporting textPasteConfigurationSupporting, IUITextPasteItem item);
 
+		/// <param name="textPasteConfigurationSupporting">The receiving object.</param>
+		/// <param name="itemStrings">The strings to combine.</param>
+		/// <param name="textRange">The range in which to paste or drop the combined strings.</param>
+		/// <summary>Method that is called to combine multiple attributed strings.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("textPasteConfigurationSupporting:combineItemAttributedStrings:forRange:")]
 		NSAttributedString CombineItemAttributedStrings (IUITextPasteConfigurationSupporting textPasteConfigurationSupporting, NSAttributedString [] itemStrings, UITextRange textRange);
 
+		/// <param name="textPasteConfigurationSupporting">The receiving object.</param>
+		/// <param name="attributedString">To be added.</param>
+		/// <param name="textRange">The range in which to paste or drop the string.</param>
+		/// <summary>Method that is called to incorporate the pasted data into the application content.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("textPasteConfigurationSupporting:performPasteOfAttributedString:toRange:")]
 		UITextRange PerformPaste (IUITextPasteConfigurationSupporting textPasteConfigurationSupporting, NSAttributedString attributedString, UITextRange textRange);
 
+		/// <param name="textPasteConfigurationSupporting">The receiving object.</param>
+		/// <param name="attributedString">The string to paste.</param>
+		/// <param name="textRange">The range in which to paste or drop the string.</param>
+		/// <summary>Returns a Boolean value that tells the system whether to animate the paste operation.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("textPasteConfigurationSupporting:shouldAnimatePasteOfAttributedString:toRange:")]
 		bool ShouldAnimatePaste (IUITextPasteConfigurationSupporting textPasteConfigurationSupporting, NSAttributedString attributedString, UITextRange textRange);
 	}
@@ -25255,9 +26999,16 @@ namespace UIKit {
 		[NullAllowed, Export ("pasteConfiguration", ArgumentSemantic.Copy)]
 		UIPasteConfiguration PasteConfiguration { get; set; }
 
+		/// <param name="itemProviders">The item providers for the items to paste.</param>
+		/// <summary>Performs the paste.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("pasteItemProviders:")]
 		void Paste (NSItemProvider [] itemProviders);
 
+		/// <param name="itemProviders">The ittem providers to check.</param>
+		/// <summary>Returns <see langword="true" /> if the responder can paste from the specified item providers.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("canPasteItemProviders:")]
 		bool CanPaste (NSItemProvider [] itemProviders);
 	}
@@ -25394,26 +27145,60 @@ namespace UIKit {
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface UIDocumentBrowserViewControllerDelegate {
+		/// <param name="controller">The controller in which the URLs were picked .</param>
+		/// <param name="documentUrls">The chosen URLs.</param>
+		/// <summary>Developers may implement this method to respond after the user selects document URLs.</summary>
+		/// <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 12, 0, message: "Use 'DidPickDocumentsAtUrls (UIDocumentBrowserViewController, NSUrl[])' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'DidPickDocumentsAtUrls (UIDocumentBrowserViewController, NSUrl[])' instead.")]
 		[Export ("documentBrowser:didPickDocumentURLs:")]
 		void DidPickDocumentUrls (UIDocumentBrowserViewController controller, NSUrl [] documentUrls);
 
+		/// <param name="controller">The controller that made the request.</param>
+		/// <param name="importHandler">The handler to run after the document is created.</param>
+		/// <summary>Developers may implement this method to respond to a request to create a new document.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("documentBrowser:didRequestDocumentCreationWithHandler:")]
 		void DidRequestDocumentCreation (UIDocumentBrowserViewController controller, Action<NSUrl, UIDocumentBrowserImportMode> importHandler);
 
+		/// <param name="controller">The controller that imported the document.</param>
+		/// <param name="sourceUrl">The original document URL.</param>
+		/// <param name="destinationUrl">The imported document's URL.</param>
+		/// <summary>Developers may implement this method to respond after a document is imported.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("documentBrowser:didImportDocumentAtURL:toDestinationURL:")]
 		void DidImportDocument (UIDocumentBrowserViewController controller, NSUrl sourceUrl, NSUrl destinationUrl);
 
+		/// <param name="controller">The controller that failed to import the document.</param>
+		/// <param name="documentUrl">The document's original URL.</param>
+		/// <param name="error">
+		///           <para>The error that occurred.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Developers may implement this method to respond when the application fails to import a document.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("documentBrowser:failedToImportDocumentAtURL:error:")]
 		void FailedToImportDocument (UIDocumentBrowserViewController controller, NSUrl documentUrl, [NullAllowed] NSError error);
 
+		/// <param name="controller">The controller that is making the request.</param>
+		/// <param name="documentUrls">URLs to the documents to share.</param>
+		/// <summary>Returns an array of custom application activities for an activity view.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("documentBrowser:applicationActivitiesForDocumentURLs:")]
 		UIActivity [] GetApplicationActivities (UIDocumentBrowserViewController controller, NSUrl [] documentUrls);
 
+		/// <param name="controller">The controller that is about to present the activity.</param>
+		/// <param name="activityViewController">The activity that will be presented.</param>
+		/// <summary>Developers may implement this method to prepare for the display of an activity view.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("documentBrowser:willPresentActivityViewController:")]
 		void WillPresent (UIDocumentBrowserViewController controller, UIActivityViewController activityViewController);
 
+		/// <param name="controller">To be added.</param>
+		/// <param name="documentUrls">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("documentBrowser:didPickDocumentsAtURLs:")]
 		void DidPickDocumentsAtUrls (UIDocumentBrowserViewController controller, NSUrl [] documentUrls);
@@ -25671,6 +27456,9 @@ namespace UIKit {
 	[BaseType (typeof (NSObject))]
 	interface UIPencilInteractionDelegate {
 
+		/// <param name="interaction">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 17, 5, message: "Use 'DidReceiveTap' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 17, 5, message: "Use 'DidReceiveTap' instead.")]
 		[Export ("pencilInteractionDidTap:")]

@@ -165,9 +165,17 @@ namespace PhotosUI {
 		[Export ("livePhotoView:canBeginPlaybackWithStyle:")]
 		bool CanBeginPlayback (PHLivePhotoView livePhotoView, PHLivePhotoViewPlaybackStyle playbackStyle);
 
+		/// <param name="livePhotoView">To be added.</param>
+		/// <param name="playbackStyle">To be added.</param>
+		/// <summary>Method that is called just before playback begins.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("livePhotoView:willBeginPlaybackWithStyle:")]
 		void WillBeginPlayback (PHLivePhotoView livePhotoView, PHLivePhotoViewPlaybackStyle playbackStyle);
 
+		/// <param name="livePhotoView">To be added.</param>
+		/// <param name="playbackStyle">To be added.</param>
+		/// <summary>Method that is called aftr playback ends.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("livePhotoView:didEndPlaybackWithStyle:")]
 		void DidEndPlayback (PHLivePhotoView livePhotoView, PHLivePhotoViewPlaybackStyle playbackStyle);
 

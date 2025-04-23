@@ -882,6 +882,9 @@ namespace PdfKit {
 		[Wrap ("this (bounds, annotationType.GetConstant ()!, properties)")]
 		NativeHandle Constructor (CGRect bounds, PdfAnnotationKey annotationType, [NullAllowed] NSDictionary properties);
 
+		/// <param name="bounds">To be added.</param>
+		/// <summary>Developers should not use this deprecated constructor. Developers should use '.ctor (CGRect, PDFAnnotationKey, NSDictionary)' instead.</summary>
+		/// <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use '.ctor (CGRect, PDFAnnotationKey, NSDictionary)' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 12, message: "Use '.ctor (CGRect, PDFAnnotationKey, NSDictionary)' instead.")]
 		[NoMacCatalyst]

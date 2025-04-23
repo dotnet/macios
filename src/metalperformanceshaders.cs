@@ -9708,12 +9708,25 @@ namespace MetalPerformanceShaders {
 		[Export ("paddingMethod")]
 		MPSNNPaddingMethod PaddingMethod { get; }
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("label")]
 		string GetLabel ();
 
+		/// <param name="sourceImages">To be added.</param>
+		/// <param name="sourceStates">To be added.</param>
+		/// <param name="kernel">To be added.</param>
+		/// <param name="inDescriptor">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("destinationImageDescriptorForSourceImages:sourceStates:forKernel:suggestedDescriptor:")]
 		MPSImageDescriptor GetDestinationImageDescriptor (MPSImage [] sourceImages, [NullAllowed] MPSState [] sourceStates, MPSKernel kernel, MPSImageDescriptor inDescriptor);
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("inverse")]
 		[return: NullAllowed]

@@ -66,6 +66,9 @@ namespace MapKit {
 		[NullAllowed]
 		string Subtitle { get; }
 
+		/// <param name="value">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("setCoordinate:")]
 		[MacCatalyst (13, 1)]
 		void SetCoordinate (CLLocationCoordinate2D value);
@@ -90,6 +93,10 @@ namespace MapKit {
 		[Export ("boundingMapRect")]
 		MKMapRect BoundingMapRect { get; }
 
+		/// <param name="rect">The area being checked for intersection with this <see cref="T:MapKit.MKOverlay" />.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("intersectsMapRect:")]
 		bool Intersects (MKMapRect rect);
 
@@ -838,39 +845,82 @@ namespace MapKit {
 	[Protocol]
 	[MacCatalyst (13, 1)]
 	interface MKMapViewDelegate {
+		/// <param name="mapView">To be added.</param>
+		/// <param name="animated">To be added.</param>
+		/// <summary>Indicates the region displayed by <paramref name="mapView" /> is about to change.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("mapView:regionWillChangeAnimated:"), EventArgs ("MKMapViewChange")]
 		void RegionWillChange (MKMapView mapView, bool animated);
 
+		/// <param name="mapView">To be added.</param>
+		/// <param name="animated">To be added.</param>
+		/// <summary>Indicates the region displayed by <paramref name="mapView" /> has changed.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("mapView:regionDidChangeAnimated:"), EventArgs ("MKMapViewChange")]
 		void RegionChanged (MKMapView mapView, bool animated);
 
+		/// <param name="mapView">To be added.</param>
+		/// <summary>Indicates that loading of map data is about to begin.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("mapViewWillStartLoadingMap:")]
 		void WillStartLoadingMap (MKMapView mapView);
 
+		/// <param name="mapView">To be added.</param>
+		/// <summary>Indicates that loading of map data has completed.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("mapViewDidFinishLoadingMap:")]
 		void MapLoaded (MKMapView mapView);
 
+		/// <param name="mapView">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>Indicates an <paramref name="error" /> caused loading to fail.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("mapViewDidFailLoadingMap:withError:"), EventArgs ("NSError", true)]
 		void LoadingMapFailed (MKMapView mapView, NSError error);
 
+		/// <param name="mapView">To be added.</param>
+		/// <param name="annotation">To be added.</param>
+		/// <summary>Returns the <see cref="T:MapKit.MKAnnotationView" /> associated with the <paramref name="annotation" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("mapView:viewForAnnotation:"), DelegateName ("MKMapViewAnnotation"), DefaultValue (null)]
 		[return: NullAllowed]
 		MKAnnotationView GetViewForAnnotation (MKMapView mapView, IMKAnnotation annotation);
 
+		/// <param name="mapView">To be added.</param>
+		/// <param name="views">To be added.</param>
+		/// <summary>Called when an annotation view (or views) have been added to <paramref name="mapView" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("mapView:didAddAnnotationViews:"), EventArgs ("MKMapViewAnnotation")]
 		void DidAddAnnotationViews (MKMapView mapView, MKAnnotationView [] views);
 
+		/// <param name="mapView">To be added.</param>
+		/// <param name="view">To be added.</param>
+		/// <param name="control">To be added.</param>
+		/// <summary>Called when the callout accessory <paramref name="control" /> has been tapped.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoMac]
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("mapView:annotationView:calloutAccessoryControlTapped:"), EventArgs ("MKMapViewAccessoryTapped")]
 		void CalloutAccessoryControlTapped (MKMapView mapView, MKAnnotationView view, UIControl control);
 
+		/// <param name="mapView">To be added.</param>
+		/// <param name="annotationView">To be added.</param>
+		/// <param name="newState">To be added.</param>
+		/// <param name="oldState">To be added.</param>
+		/// <summary>Called when the drag state has changed from <paramref name="oldState" /> to <paramref name="newState" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("mapView:annotationView:didChangeDragState:fromOldState:"), EventArgs ("MKMapViewDragState")]
 		void ChangedDragState (MKMapView mapView, MKAnnotationView annotationView, MKAnnotationViewDragState newState, MKAnnotationViewDragState oldState);
 
+		/// <param name="mapView">To be added.</param>
+		/// <param name="overlay">To be added.</param>
+		/// <summary>Use MKOverlayRenderer.RendererForOverlay instead</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[NoMac]
 		[NoTV]
 		[Export ("mapView:viewForOverlay:"), DelegateName ("MKMapViewOverlay"), DefaultValue (null)]
@@ -879,6 +929,10 @@ namespace MapKit {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'MKOverlayRenderer.RendererForOverlay' instead.")]
 		MKOverlayView GetViewForOverlay (MKMapView mapView, IMKOverlay overlay);
 
+		/// <param name="mapView">To be added.</param>
+		/// <param name="overlayViews">To be added.</param>
+		/// <summary>Developers should not use this deprecated method. Developers should use 'DidAddOverlayRenderers' instead.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoMac]
 		[NoTV]
 		[Export ("mapView:didAddOverlayViews:"), EventArgs ("MKOverlayViews")]
@@ -887,12 +941,24 @@ namespace MapKit {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'DidAddOverlayRenderers' instead.")]
 		void DidAddOverlayViews (MKMapView mapView, MKOverlayView overlayViews);
 
+		/// <param name="mapView">To be added.</param>
+		/// <param name="view">To be added.</param>
+		/// <summary>Indicates that the specified <see cref="T:MapKit.MKAnnotationView" /> has been selected.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("mapView:didSelectAnnotationView:"), EventArgs ("MKAnnotationView")]
 		void DidSelectAnnotationView (MKMapView mapView, MKAnnotationView view);
 
+		/// <param name="mapView">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>Indicates that the attempt to locate the current user has failed due to <paramref name="error" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("mapView:didFailToLocateUserWithError:"), EventArgs ("NSError", true)]
 		void DidFailToLocateUser (MKMapView mapView, NSError error);
 
+		/// <param name="mapView">To be added.</param>
+		/// <param name="view">To be added.</param>
+		/// <summary>Indicates that <paramref name="view" /> has been deselected.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("mapView:didDeselectAnnotationView:"), EventArgs ("MKAnnotationView")]
 		void DidDeselectAnnotationView (MKMapView mapView, MKAnnotationView view);
 
@@ -904,35 +970,74 @@ namespace MapKit {
 		[Export ("mapView:didDeselectAnnotation:"), EventArgs ("MKAnnotation")]
 		void DidDeselectAnnotation (MKMapView mapView, IMKAnnotation annotation);
 
+		/// <param name="mapView">To be added.</param>
+		/// <summary>Indicates that the system will start attempting to locate the user.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("mapViewWillStartLocatingUser:")]
 		void WillStartLocatingUser (MKMapView mapView);
 
+		/// <param name="mapView">To be added.</param>
+		/// <summary>Indicates the system has stopped attemptig to locate the user.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("mapViewDidStopLocatingUser:")]
 		void DidStopLocatingUser (MKMapView mapView);
 
+		/// <param name="mapView">To be added.</param>
+		/// <param name="userLocation">To be added.</param>
+		/// <summary>Indicates the system has provided an update to the user's location.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("mapView:didUpdateUserLocation:"), EventArgs ("MKUserLocation")]
 		void DidUpdateUserLocation (MKMapView mapView, MKUserLocation userLocation);
 
+		/// <param name="mapView">To be added.</param>
+		/// <param name="mode">To be added.</param>
+		/// <param name="animated">To be added.</param>
+		/// <summary>Indicates a change in the active <see cref="T:MapKit.MKUserTrackingMode" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("mapView:didChangeUserTrackingMode:animated:"), EventArgs ("MMapViewUserTracking")]
 		void DidChangeUserTrackingMode (MKMapView mapView, MKUserTrackingMode mode, bool animated);
 
+		/// <param name="mapView">The <see cref="T:MapKit.MKMapView" /> being rendered.</param>
+		/// <param name="overlay">The overlay requiring a renderer.</param>
+		/// <summary>Calculates he <see cref="T:MapKit.MKOverlayRenderer" /> appropriate to the <paramref name="overlay" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("mapView:rendererForOverlay:"), DelegateName ("MKRendererForOverlayDelegate"), DefaultValue (null)]
 		MKOverlayRenderer OverlayRenderer (MKMapView mapView, IMKOverlay overlay);
 
+		/// <param name="mapView">To be added.</param>
+		/// <param name="renderers">To be added.</param>
+		/// <summary>Called when an overlay renderer (or renderers) have been added to <paramref name="mapView" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("mapView:didAddOverlayRenderers:"), EventArgs ("MKDidAddOverlayRenderers")]
 		void DidAddOverlayRenderers (MKMapView mapView, MKOverlayRenderer [] renderers);
 
+		/// <param name="mapView">To be added.</param>
+		/// <summary>Indicates that rendering of <paramref name="mapView" /> is about to begin.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("mapViewWillStartRenderingMap:")]
 		void WillStartRenderingMap (MKMapView mapView);
 
+		/// <param name="mapView">To be added.</param>
+		/// <param name="fullyRendered">To be added.</param>
+		/// <summary>Indicates that rendering of <paramref name="mapView" /> has completed.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("mapViewDidFinishRenderingMap:fullyRendered:"), EventArgs ("MKDidFinishRenderingMap")]
 		void DidFinishRenderingMap (MKMapView mapView, bool fullyRendered);
 
+		/// <param name="mapView">To be added.</param>
+		/// <param name="memberAnnotations">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("mapView:clusterAnnotationForMemberAnnotations:"), DelegateName ("MKCreateClusterAnnotation"), DefaultValue (null)]
 		MKClusterAnnotation CreateClusterAnnotation (MKMapView mapView, IMKAnnotation [] memberAnnotations);
 
+		/// <param name="mapView">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("mapViewDidChangeVisibleRegion:")]
 		void DidChangeVisibleRegion (MKMapView mapView);
@@ -2252,9 +2357,18 @@ namespace MapKit {
 	[Model]
 	[BaseType (typeof (NSObject))]
 	interface MKLocalSearchCompleterDelegate {
+		/// <param name="completer">The search completer to which this delegate belongs.</param>
+		/// <summary>The search completer updated the results with new search completions.</summary>
+		/// <remarks>
+		///           <para>After this method is called, developers can check the <see cref="P:MapKit.MKLocalSearchCompleter.Results" /> property for the newest results.</para>
+		///         </remarks>
 		[Export ("completerDidUpdateResults:")]
 		void DidUpdateResults (MKLocalSearchCompleter completer);
 
+		/// <param name="completer">The search completer to which this delegate belongs.</param>
+		/// <param name="error">The error that occured.</param>
+		/// <summary>The search completer encountered an error while searching for completions.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("completer:didFailWithError:")]
 		void DidFail (MKLocalSearchCompleter completer, NSError error);
 	}

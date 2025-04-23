@@ -85,9 +85,15 @@ namespace GameplayKit {
 	[BaseType (typeof (NSObject))]
 	interface GKAgentDelegate {
 
+		/// <param name="agent">To be added.</param>
+		/// <summary>Method that is called before <paramref name="agent" /> performs a simulation step.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("agentWillUpdate:")]
 		void AgentWillUpdate (GKAgent agent);
 
+		/// <param name="agent">To be added.</param>
+		/// <summary>Method that is called after <paramref name="agent" /> has performed a simulation step.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("agentDidUpdate:")]
 		void AgentDidUpdate (GKAgent agent);
 	}
@@ -537,15 +543,30 @@ namespace GameplayKit {
 		[Export ("applyGameModelUpdate:")]
 		void ApplyGameModelUpdate (IGKGameModelUpdate gameModelUpdate);
 
+		/// <param name="player">To be added.</param>
+		/// <summary>Gets the score for the specified <paramref name="player" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("scoreForPlayer:")]
 		nint GetScore (IGKGameModelPlayer player);
 
+		/// <param name="player">To be added.</param>
+		/// <summary>Returns a Boolean value that tells whether the <paramref name="player" /> won.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("isWinForPlayer:")]
 		bool IsWin (IGKGameModelPlayer player);
 
+		/// <param name="player">To be added.</param>
+		/// <summary>Returns a Boolean value that tells whether the <paramref name="player" /> lost.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("isLossForPlayer:")]
 		bool IsLoss (IGKGameModelPlayer player);
 
+		/// <param name="gameModelUpdate">To be added.</param>
+		/// <summary>Removes the specified changes from the game's state.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("unapplyGameModelUpdate:")]
 		void UnapplyGameModelUpdate (IGKGameModelUpdate gameModelUpdate);

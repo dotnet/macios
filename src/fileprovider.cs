@@ -519,9 +519,16 @@ namespace FileProvider {
 		[Export ("enumerateItemsForObserver:startingAtPage:")]
 		void EnumerateItems (INSFileProviderEnumerationObserver observer, NSData startPage);
 
+		/// <param name="observer">To be added.</param>
+		/// <param name="syncAnchor">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("enumerateChangesForObserver:fromSyncAnchor:")]
 		void EnumerateChanges (INSFileProviderChangeObserver observer, NSData syncAnchor);
 
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("currentSyncAnchorWithCompletionHandler:")]
 		void CurrentSyncAnchor (Action<NSData> completionHandler);
 	}
@@ -559,29 +566,50 @@ namespace FileProvider {
 		[Export ("contentType", ArgumentSemantic.Copy)]
 		UTType GetContentType ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("capabilities")]
 		NSFileProviderItemCapabilities GetCapabilities ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Export ("documentSize", ArgumentSemantic.Copy)]
 		NSNumber GetDocumentSize ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Export ("childItemCount", ArgumentSemantic.Copy)]
 		NSNumber GetChildItemCount ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Export ("creationDate", ArgumentSemantic.Copy)]
 		NSDate GetCreationDate ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Export ("contentModificationDate", ArgumentSemantic.Copy)]
 		NSDate GetContentModificationDate ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Export ("lastUsedDate", ArgumentSemantic.Copy)]
 		NSDate GetLastUsedDate ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Export ("tagData", ArgumentSemantic.Copy)]
 		NSData GetTagData ();
@@ -599,39 +627,72 @@ namespace FileProvider {
 		[Export ("isTrashed")]
 		bool IsTrashed ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("isUploaded")]
 		bool IsUploaded ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("isUploading")]
 		bool IsUploading ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Export ("uploadingError", ArgumentSemantic.Copy)]
 		NSError GetUploadingError ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("isDownloaded")]
 		bool IsDownloaded ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("isDownloading")]
 		bool IsDownloading ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Export ("downloadingError", ArgumentSemantic.Copy)]
 		NSError GetDownloadingError ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("isMostRecentVersionDownloaded")]
 		bool IsMostRecentVersionDownloaded ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("isShared")]
 		bool IsShared ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("isSharedByCurrentUser")]
 		bool IsSharedByCurrentUser ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Export ("ownerNameComponents")]
 		NSPersonNameComponents GetOwnerNameComponents ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Export ("mostRecentEditorNameComponents")]
 		NSPersonNameComponents GetMostRecentEditorNameComponents ();
@@ -641,6 +702,9 @@ namespace FileProvider {
 		[Export ("versionIdentifier")]
 		NSData GetVersionIdentifier ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Export ("userInfo")]
 		NSDictionary GetUserInfo ();

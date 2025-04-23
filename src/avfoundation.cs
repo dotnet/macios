@@ -6274,18 +6274,36 @@ namespace AVFoundation {
 		[Export ("resourceLoader:shouldWaitForLoadingOfRequestedResource:")]
 		bool ShouldWaitForLoadingOfRequestedResource (AVAssetResourceLoader resourceLoader, AVAssetResourceLoadingRequest loadingRequest);
 
+		/// <param name="resourceLoader">To be added.</param>
+		/// <param name="loadingRequest">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("resourceLoader:didCancelLoadingRequest:")]
 		void DidCancelLoadingRequest (AVAssetResourceLoader resourceLoader, AVAssetResourceLoadingRequest loadingRequest);
 
+		/// <param name="resourceLoader">To be added.</param>
+		/// <param name="authenticationChallenge">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("resourceLoader:shouldWaitForResponseToAuthenticationChallenge:")]
 		bool ShouldWaitForResponseToAuthenticationChallenge (AVAssetResourceLoader resourceLoader, NSUrlAuthenticationChallenge authenticationChallenge);
 
+		/// <param name="resourceLoader">To be added.</param>
+		/// <param name="authenticationChallenge">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("resourceLoader:didCancelAuthenticationChallenge:")]
 		void DidCancelAuthenticationChallenge (AVAssetResourceLoader resourceLoader, NSUrlAuthenticationChallenge authenticationChallenge);
 
+		/// <param name="resourceLoader">To be added.</param>
+		/// <param name="renewalRequest">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("resourceLoader:shouldWaitForRenewalOfRequestedResource:")]
 		bool ShouldWaitForRenewalOfRequestedResource (AVAssetResourceLoader resourceLoader, AVAssetResourceRenewalRequest renewalRequest);
@@ -13341,6 +13359,8 @@ namespace AVFoundation {
 		[Export ("startVideoCompositionRequest:")]
 		void StartVideoCompositionRequest (AVAsynchronousVideoCompositionRequest asyncVideoCompositionRequest);
 
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("cancelAllPendingVideoCompositionRequests")]
 		void CancelAllPendingVideoCompositionRequests ();
 
@@ -13504,18 +13524,40 @@ namespace AVFoundation {
 	[Protocol]
 	[DisableDefaultCtor]
 	interface AVVideoCompositionValidationHandling {
+		/// <param name="videoComposition">To be added.</param>
+		/// <param name="key">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("videoComposition:shouldContinueValidatingAfterFindingInvalidValueForKey:")]
 		bool ShouldContinueValidatingAfterFindingInvalidValueForKey (AVVideoComposition videoComposition, string key);
 
+		/// <param name="videoComposition">To be added.</param>
+		/// <param name="timeRange">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("videoComposition:shouldContinueValidatingAfterFindingEmptyTimeRange:")]
 		bool ShouldContinueValidatingAfterFindingEmptyTimeRange (AVVideoComposition videoComposition, CMTimeRange timeRange);
 
+		/// <param name="videoComposition">To be added.</param>
+		/// <param name="videoCompositionInstruction">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("videoComposition:shouldContinueValidatingAfterFindingInvalidTimeRangeInInstruction:")]
 		bool ShouldContinueValidatingAfterFindingInvalidTimeRangeInInstruction (AVVideoComposition videoComposition, AVVideoCompositionInstruction videoCompositionInstruction);
 
+		/// <param name="videoComposition">To be added.</param>
+		/// <param name="videoCompositionInstruction">To be added.</param>
+		/// <param name="layerInstruction">To be added.</param>
+		/// <param name="asset">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("videoComposition:shouldContinueValidatingAfterFindingInvalidTrackIDInInstruction:layerInstruction:asset:")]
 		bool ShouldContinueValidatingAfterFindingInvalidTrackIDInInstruction (AVVideoComposition videoComposition, AVVideoCompositionInstruction videoCompositionInstruction, AVVideoCompositionLayerInstruction layerInstruction, AVAsset asset);
@@ -14432,9 +14474,22 @@ namespace AVFoundation {
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface AVCaptureDepthDataOutputDelegate {
+		/// <param name="output">The output that provided the data.</param>
+		/// <param name="depthData">The captured data.</param>
+		/// <param name="timestamp">The time the data was captured.</param>
+		/// <param name="connection">The capture connection.</param>
+		/// <summary>Method that is called when depth data is output.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("depthDataOutput:didOutputDepthData:timestamp:connection:")]
 		void DidOutputDepthData (AVCaptureDepthDataOutput output, AVDepthData depthData, CMTime timestamp, AVCaptureConnection connection);
 
+		/// <param name="output">The output that dropped the data.</param>
+		/// <param name="depthData">The dropped data.</param>
+		/// <param name="timestamp">The time the data was captured.</param>
+		/// <param name="connection">The capture connection.</param>
+		/// <param name="reason">The reason the depth data was dropped.</param>
+		/// <summary>Method that is called when depth data is dropped.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("depthDataOutput:didDropDepthData:timestamp:connection:reason:")]
 		void DidDropDepthData (AVCaptureDepthDataOutput output, AVDepthData depthData, CMTime timestamp, AVCaptureConnection connection, AVCaptureOutputDataDroppedReason reason);
 	}
@@ -14925,10 +14980,20 @@ namespace AVFoundation {
 	[Model]
 	[Protocol]
 	interface AVCaptureVideoDataOutputSampleBufferDelegate {
+		/// <param name="captureOutput">The capture output on which the frame was captured.</param>
+		/// <param name="sampleBuffer">The video frame data, part of a small finite pool of buffers.</param>
+		/// <param name="connection">The connection on which the video frame was received.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("captureOutput:didOutputSampleBuffer:fromConnection:")]
 		// CMSampleBufferRef		
 		void DidOutputSampleBuffer (AVCaptureOutput captureOutput, CMSampleBuffer sampleBuffer, AVCaptureConnection connection);
 
+		/// <param name="captureOutput">The capture output on which the frame was captured.</param>
+		/// <param name="sampleBuffer">Buffer containing information about the dropped frame;   No video data is actually included.</param>
+		/// <param name="connection">The connection on which the video frame was received.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("captureOutput:didDropSampleBuffer:fromConnection:")]
 		void DidDropSampleBuffer (AVCaptureOutput captureOutput, CMSampleBuffer sampleBuffer, AVCaptureConnection connection);
 	}
@@ -14986,6 +15051,11 @@ namespace AVFoundation {
 	[Model]
 	[Protocol]
 	interface AVCaptureAudioDataOutputSampleBufferDelegate {
+		/// <param name="captureOutput">To be added.</param>
+		/// <param name="sampleBuffer">To be added.</param>
+		/// <param name="connection">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("captureOutput:didOutputSampleBuffer:fromConnection:")]
 		void DidOutputSampleBuffer (AVCaptureOutput captureOutput, CMSampleBuffer sampleBuffer, AVCaptureConnection connection);
 	}
@@ -15126,6 +15196,11 @@ namespace AVFoundation {
 	[TV (17, 0)]
 	[MacCatalyst (13, 1)]
 	interface AVCaptureFileOutputRecordingDelegate {
+		/// <param name="captureOutput">To be added.</param>
+		/// <param name="outputFileUrl">To be added.</param>
+		/// <param name="connections">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("captureOutput:didStartRecordingToOutputFileAtURL:fromConnections:")]
 		void DidStartRecording (AVCaptureFileOutput captureOutput, NSUrl outputFileUrl, NSObject [] connections);
 
@@ -15137,10 +15212,20 @@ namespace AVFoundation {
 		[Export ("captureOutput:didFinishRecordingToOutputFileAtURL:fromConnections:error:"), CheckDisposed]
 		void FinishedRecording (AVCaptureFileOutput captureOutput, NSUrl outputFileUrl, NSObject [] connections, [NullAllowed] NSError error);
 
+		/// <param name="captureOutput">To be added.</param>
+		/// <param name="outputFileUrl">To be added.</param>
+		/// <param name="connections">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (18, 0), iOS (18, 0), TV (18, 0)]
 		[Export ("captureOutput:didPauseRecordingToOutputFileAtURL:fromConnections:")]
 		void DidPauseRecording (AVCaptureFileOutput captureOutput, NSUrl outputFileUrl, AVCaptureConnection [] connections);
 
+		/// <param name="captureOutput">To be added.</param>
+		/// <param name="outputFileUrl">To be added.</param>
+		/// <param name="connections">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (18, 0), iOS (18, 0), TV (18, 0)]
 		[Export ("captureOutput:didResumeRecordingToOutputFileAtURL:fromConnections:")]
 		void DidResumeRecording (AVCaptureFileOutput captureOutput, NSUrl outputFileUrl, AVCaptureConnection [] connections);
@@ -15197,6 +15282,11 @@ namespace AVFoundation {
 	[Model]
 	[Protocol]
 	interface AVCaptureMetadataOutputObjectsDelegate {
+		/// <param name="captureOutput">To be added.</param>
+		/// <param name="metadataObjects">To be added.</param>
+		/// <param name="connection">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("captureOutput:didOutputMetadataObjects:fromConnection:")]
 		void DidOutputMetadataObjects (AVCaptureMetadataOutput captureOutput, AVMetadataObject [] metadataObjects, AVCaptureConnection connection);
 	}
@@ -15645,15 +15735,28 @@ namespace AVFoundation {
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface AVCapturePhotoCaptureDelegate {
+		/// <param name="captureOutput">To be added.</param>
+		/// <param name="resolvedSettings">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("captureOutput:willBeginCaptureForResolvedSettings:")]
 		void WillBeginCapture (AVCapturePhotoOutput captureOutput, AVCaptureResolvedPhotoSettings resolvedSettings);
 
+		/// <param name="captureOutput">To be added.</param>
+		/// <param name="resolvedSettings">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("captureOutput:willCapturePhotoForResolvedSettings:")]
 		void WillCapturePhoto (AVCapturePhotoOutput captureOutput, AVCaptureResolvedPhotoSettings resolvedSettings);
 
+		/// <param name="captureOutput">To be added.</param>
+		/// <param name="resolvedSettings">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("captureOutput:didCapturePhotoForResolvedSettings:")]
 		void DidCapturePhoto (AVCapturePhotoOutput captureOutput, AVCaptureResolvedPhotoSettings resolvedSettings);
 
+		/// <include file="../docs/api/AVFoundation/AVCapturePhotoCaptureDelegate_Extensions.xml" path="/Documentation/Docs[@DocId='M:AVFoundation.AVCapturePhotoCaptureDelegate_Extensions.DidFinishProcessingPhoto(AVFoundation.IAVCapturePhotoCaptureDelegate,AVFoundation.AVCapturePhotoOutput,CoreMedia.CMSampleBuffer,CoreMedia.CMSampleBuffer,AVFoundation.AVCaptureResolvedPhotoSettings,AVFoundation.AVCaptureBracketedStillImageSettings,Foundation.NSError)']/*" />
 		[NoMac, NoTV]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use the 'DidFinishProcessingPhoto' overload accepting a 'AVCapturePhoto' instead.")]
 		[MacCatalyst (13, 1)]
@@ -15661,6 +15764,26 @@ namespace AVFoundation {
 		[Export ("captureOutput:didFinishProcessingPhotoSampleBuffer:previewPhotoSampleBuffer:resolvedSettings:bracketSettings:error:")]
 		void DidFinishProcessingPhoto (AVCapturePhotoOutput captureOutput, [NullAllowed] CMSampleBuffer photoSampleBuffer, [NullAllowed] CMSampleBuffer previewPhotoSampleBuffer, AVCaptureResolvedPhotoSettings resolvedSettings, [NullAllowed] AVCaptureBracketedStillImageSettings bracketSettings, [NullAllowed] NSError error);
 
+		/// <param name="captureOutput">To be added.</param>
+		/// <param name="rawSampleBuffer">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="previewPhotoSampleBuffer">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="resolvedSettings">To be added.</param>
+		/// <param name="bracketSettings">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="error">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoMac, NoTV]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use the 'DidFinishProcessingPhoto' overload accepting a 'AVCapturePhoto' instead.")]
 		[MacCatalyst (13, 1)]
@@ -15668,20 +15791,49 @@ namespace AVFoundation {
 		[Export ("captureOutput:didFinishProcessingRawPhotoSampleBuffer:previewPhotoSampleBuffer:resolvedSettings:bracketSettings:error:")]
 		void DidFinishProcessingRawPhoto (AVCapturePhotoOutput captureOutput, [NullAllowed] CMSampleBuffer rawSampleBuffer, [NullAllowed] CMSampleBuffer previewPhotoSampleBuffer, AVCaptureResolvedPhotoSettings resolvedSettings, [NullAllowed] AVCaptureBracketedStillImageSettings bracketSettings, [NullAllowed] NSError error);
 
+		/// <param name="output">To be added.</param>
+		/// <param name="photo">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (14, 0)]
 		[Export ("captureOutput:didFinishProcessingPhoto:error:")]
 		void DidFinishProcessingPhoto (AVCapturePhotoOutput output, AVCapturePhoto photo, [NullAllowed] NSError error);
 
+		/// <param name="captureOutput">To be added.</param>
+		/// <param name="outputFileUrl">To be added.</param>
+		/// <param name="resolvedSettings">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("captureOutput:didFinishRecordingLivePhotoMovieForEventualFileAtURL:resolvedSettings:")]
 		void DidFinishRecordingLivePhotoMovie (AVCapturePhotoOutput captureOutput, NSUrl outputFileUrl, AVCaptureResolvedPhotoSettings resolvedSettings);
 
+		/// <param name="captureOutput">To be added.</param>
+		/// <param name="outputFileUrl">To be added.</param>
+		/// <param name="duration">To be added.</param>
+		/// <param name="photoDisplayTime">To be added.</param>
+		/// <param name="resolvedSettings">To be added.</param>
+		/// <param name="error">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("captureOutput:didFinishProcessingLivePhotoToMovieFileAtURL:duration:photoDisplayTime:resolvedSettings:error:")]
 		void DidFinishProcessingLivePhotoMovie (AVCapturePhotoOutput captureOutput, NSUrl outputFileUrl, CMTime duration, CMTime photoDisplayTime, AVCaptureResolvedPhotoSettings resolvedSettings, [NullAllowed] NSError error);
 
+		/// <param name="captureOutput">To be added.</param>
+		/// <param name="resolvedSettings">To be added.</param>
+		/// <param name="error">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("captureOutput:didFinishCaptureForResolvedSettings:error:")]
 		void DidFinishCapture (AVCapturePhotoOutput captureOutput, AVCaptureResolvedPhotoSettings resolvedSettings, [NullAllowed] NSError error);
 
@@ -18872,6 +19024,11 @@ namespace AVFoundation {
 	[Protocol, Model]
 	interface AVPlayerItemMetadataOutputPushDelegate : AVPlayerItemOutputPushDelegate {
 
+		/// <param name="output">To be added.</param>
+		/// <param name="groups">To be added.</param>
+		/// <param name="track">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("metadataOutput:didOutputTimedMetadataGroups:fromPlayerItemTrack:")]
 		void DidOutputTimedMetadataGroups (AVPlayerItemMetadataOutput output, AVTimedMetadataGroup [] groups, [NullAllowed] AVPlayerItemTrack track);
@@ -19258,9 +19415,15 @@ namespace AVFoundation {
 	[Model]
 	[Protocol]
 	interface AVPlayerItemOutputPullDelegate {
+		/// <param name="sender">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("outputMediaDataWillChange:")]
 		void OutputMediaDataWillChange (AVPlayerItemOutput sender);
 
+		/// <param name="output">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("outputSequenceWasFlushed:")]
 		void OutputSequenceWasFlushed (AVPlayerItemOutput output);
 	}
@@ -19270,6 +19433,9 @@ namespace AVFoundation {
 	[Model]
 	[Protocol]
 	interface AVPlayerItemOutputPushDelegate {
+		/// <param name="output">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("outputSequenceWasFlushed:")]
 		void OutputSequenceWasFlushed (AVPlayerItemOutput output);
 	}
@@ -19281,6 +19447,12 @@ namespace AVFoundation {
 	[Model]
 	[Protocol]
 	interface AVPlayerItemLegibleOutputPushDelegate {
+		/// <param name="output">To be added.</param>
+		/// <param name="strings">To be added.</param>
+		/// <param name="nativeSamples">To be added.</param>
+		/// <param name="itemTime">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("legibleOutput:didOutputAttributedStrings:nativeSampleBuffers:forItemTime:")]
 		void DidOutputAttributedStrings (AVPlayerItemLegibleOutput output, NSAttributedString [] strings, CMSampleBuffer [] nativeSamples, CMTime itemTime);
@@ -20861,24 +21033,59 @@ namespace AVFoundation {
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface AVAssetDownloadDelegate : NSUrlSessionTaskDelegate {
+		/// <param name="session">To be added.</param>
+		/// <param name="assetDownloadTask">To be added.</param>
+		/// <param name="timeRange">To be added.</param>
+		/// <param name="loadedTimeRanges">To be added.</param>
+		/// <param name="timeRangeExpectedToLoad">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("URLSession:assetDownloadTask:didLoadTimeRange:totalTimeRangesLoaded:timeRangeExpectedToLoad:")]
 		void DidLoadTimeRange (NSUrlSession session, AVAssetDownloadTask assetDownloadTask, CMTimeRange timeRange, NSValue [] loadedTimeRanges, CMTimeRange timeRangeExpectedToLoad);
 
+		/// <param name="session">To be added.</param>
+		/// <param name="assetDownloadTask">To be added.</param>
+		/// <param name="resolvedMediaSelection">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("URLSession:assetDownloadTask:didResolveMediaSelection:")]
 		void DidResolveMediaSelection (NSUrlSession session, AVAssetDownloadTask assetDownloadTask, AVMediaSelection resolvedMediaSelection);
 
+		/// <param name="session">To be added.</param>
+		/// <param name="assetDownloadTask">To be added.</param>
+		/// <param name="location">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (15, 0)]
 		[Export ("URLSession:assetDownloadTask:didFinishDownloadingToURL:")]
 		void DidFinishDownloadingToUrl (NSUrlSession session, AVAssetDownloadTask assetDownloadTask, NSUrl location);
 
+		/// <param name="session">To be added.</param>
+		/// <param name="aggregateAssetDownloadTask">To be added.</param>
+		/// <param name="location">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (15, 0)]
 		[Export ("URLSession:aggregateAssetDownloadTask:willDownloadToURL:")]
 		void WillDownloadToUrl (NSUrlSession session, AVAggregateAssetDownloadTask aggregateAssetDownloadTask, NSUrl location);
 
+		/// <param name="session">To be added.</param>
+		/// <param name="aggregateAssetDownloadTask">To be added.</param>
+		/// <param name="mediaSelection">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (15, 0)]
 		[Export ("URLSession:aggregateAssetDownloadTask:didCompleteForMediaSelection:")]
 		void DidCompleteForMediaSelection (NSUrlSession session, AVAggregateAssetDownloadTask aggregateAssetDownloadTask, AVMediaSelection mediaSelection);
 
+		/// <param name="session">To be added.</param>
+		/// <param name="aggregateAssetDownloadTask">To be added.</param>
+		/// <param name="timeRange">To be added.</param>
+		/// <param name="loadedTimeRanges">To be added.</param>
+		/// <param name="timeRangeExpectedToLoad">To be added.</param>
+		/// <param name="mediaSelection">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (15, 0)]
 		[Export ("URLSession:aggregateAssetDownloadTask:didLoadTimeRange:totalTimeRangesLoaded:timeRangeExpectedToLoad:forMediaSelection:")]
 		void DidLoadTimeRange (NSUrlSession session, AVAggregateAssetDownloadTask aggregateAssetDownloadTask, CMTimeRange timeRange, NSValue [] loadedTimeRanges, CMTimeRange timeRangeExpectedToLoad, AVMediaSelection mediaSelection);
@@ -21602,30 +21809,64 @@ namespace AVFoundation {
 		[Export ("contentKeySession:didProvideContentKeyRequest:")]
 		void DidProvideContentKeyRequest (AVContentKeySession session, AVContentKeyRequest keyRequest);
 
+		/// <param name="session">To be added.</param>
+		/// <param name="keyRequest">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("contentKeySession:didProvideRenewingContentKeyRequest:")]
 		void DidProvideRenewingContentKeyRequest (AVContentKeySession session, AVContentKeyRequest keyRequest);
 
+		/// <param name="session">To be added.</param>
+		/// <param name="keyRequest">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("contentKeySession:didProvidePersistableContentKeyRequest:")]
 		void DidProvidePersistableContentKeyRequest (AVContentKeySession session, AVPersistableContentKeyRequest keyRequest);
 
+		/// <param name="session">To be added.</param>
+		/// <param name="keyRequest">To be added.</param>
+		/// <param name="err">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("contentKeySession:contentKeyRequest:didFailWithError:")]
 		void DidFail (AVContentKeySession session, AVContentKeyRequest keyRequest, NSError err);
 
+		/// <param name="session">To be added.</param>
+		/// <param name="keyRequest">To be added.</param>
+		/// <param name="retryReason">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("contentKeySession:shouldRetryContentKeyRequest:reason:")]
 		bool ShouldRetryContentKeyRequest (AVContentKeySession session, AVContentKeyRequest keyRequest, string retryReason);
 
+		/// <param name="session">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("contentKeySessionContentProtectionSessionIdentifierDidChange:")]
 		void DidChange (AVContentKeySession session);
 
+		/// <param name="session">The session that is supplying the information for the event.</param>
+		/// <param name="persistableContentKey">The updated key.</param>
+		/// <param name="keyIdentifier">The identifier for the updated key.</param>
+		/// <summary>Developers may override this method to handle a request  for a an updated <paramref name="persistableContentKey" /> that was made with the specified <paramref name="keyIdentifier" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[TV (17, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("contentKeySession:didUpdatePersistableContentKey:forContentKeyIdentifier:")]
 		void DidUpdate (AVContentKeySession session, NSData persistableContentKey, NSObject keyIdentifier);
 
+		/// <param name="session">To be added.</param>
+		/// <param name="keyRequest">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("contentKeySession:contentKeyRequestDidSucceed:")]
 		void DidSucceed (AVContentKeySession session, AVContentKeyRequest keyRequest);
 
+		/// <param name="session">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("contentKeySessionDidGenerateExpiredSessionReport:")]
 		void DidGenerateExpiredSessionReport (AVContentKeySession session);
@@ -22037,18 +22278,35 @@ namespace AVFoundation {
 	[TV (17, 0), NoMac]
 	[Protocol]
 	interface AVCapturePhotoFileDataRepresentationCustomizer {
+		/// <param name="photo">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("replacementMetadataForPhoto:")]
 		[return: NullAllowed]
 		NSDictionary<NSString, NSObject> GetReplacementMetadata (AVCapturePhoto photo);
 
+		/// <param name="replacementEmbeddedThumbnailPhotoFormatOut">To be added.</param>
+		/// <param name="photo">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("replacementEmbeddedThumbnailPixelBufferWithPhotoFormat:forPhoto:")]
 		[return: NullAllowed]
 		CVPixelBuffer GetReplacementEmbeddedThumbnail ([NullAllowed] out NSDictionary<NSString, NSObject> replacementEmbeddedThumbnailPhotoFormatOut, AVCapturePhoto photo);
 
+		/// <param name="photo">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("replacementDepthDataForPhoto:")]
 		[return: NullAllowed]
 		AVDepthData GetReplacementDepthData (AVCapturePhoto photo);
 
+		/// <param name="photo">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("replacementPortraitEffectsMatteForPhoto:")]
 		[return: NullAllowed]
 		AVPortraitEffectsMatte GetReplacementPortraitEffectsMatte (AVCapturePhoto photo);

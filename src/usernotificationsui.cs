@@ -59,6 +59,10 @@ namespace UserNotificationsUI {
 		[Export ("didReceiveNotification:")]
 		void DidReceiveNotification (UNNotification notification);
 
+		/// <param name="response">To be added.</param>
+		/// <param name="completion">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("didReceiveNotificationResponse:completionHandler:")]
 		void DidReceiveNotificationResponse (UNNotificationResponse response, Action<UNNotificationContentExtensionResponseOption> completion);
 
@@ -71,9 +75,13 @@ namespace UserNotificationsUI {
 		[Export ("mediaPlayPauseButtonTintColor", ArgumentSemantic.Copy)]
 		UIColor MediaPlayPauseButtonTintColor { get; }
 
+		/// <summary>Method that is called when the user presses the play button.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("mediaPlay")]
 		void PlayMedia ();
 
+		/// <summary>Method that is called when the user presses the pause button.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("mediaPause")]
 		void PauseMedia ();
 	}

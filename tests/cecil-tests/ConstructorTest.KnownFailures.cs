@@ -30,7 +30,6 @@ namespace Cecil.Tests {
 			"Foundation.NSSynchronizationContextDispatcher::.ctor(System.Threading.SendOrPostCallback,System.Object)",
 			"Foundation.NSThread::.ctor(Foundation.NSObject,ObjCRuntime.Selector,Foundation.NSObject)",
 			"Foundation.NSTimerActionDispatcher::.ctor(System.Action`1<Foundation.NSTimer>)",
-			"Foundation.NSUserDefaults::.ctor(System.String,Foundation.NSUserDefaultsType)",
 			"GameplayKit.GKPath::.ctor(System.Numerics.Vector2[],System.Single,System.Boolean)",
 			"GameplayKit.GKPath::.ctor(System.Numerics.Vector3[],System.Single,System.Boolean)",
 			"HomeKit.HMMatterHome::.ctor(Foundation.NSCoder)",

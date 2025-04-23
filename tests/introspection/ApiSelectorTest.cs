@@ -1340,9 +1340,6 @@ namespace Introspection {
 			// MPSGraphExecutable
 			case "initWithMPSGraphPackageAtURL:compilationDescriptor:":
 			case "initWithCoreMLPackageAtURL:compilationDescriptor:":
-			// NSUserDefaults
-			case "initWithSuiteName:":
-			case "initWithUser:":
 			// GKScore
 			case "initWithCategory:":
 			case "initWithLeaderboardIdentifier:":

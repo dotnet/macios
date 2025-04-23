@@ -82,6 +82,13 @@ namespace IntentsUI {
 		[Export ("configureWithInteraction:context:completion:")]
 		void Configure (INInteraction interaction, INUIHostedViewContext context, Action<CGSize> completion);
 
+		/// <param name="parameters">To be added.</param>
+		/// <param name="interaction">To be added.</param>
+		/// <param name="interactiveBehavior">To be added.</param>
+		/// <param name="context">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("configureViewForParameters:ofInteraction:interactiveBehavior:context:completion:")]
 		void ConfigureView (NSSet<INParameter> parameters, INInteraction interaction, INUIInteractiveBehavior interactiveBehavior, INUIHostedViewContext context, INUIHostedViewControllingConfigureViewHandler completionHandler);

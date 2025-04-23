@@ -24,8 +24,6 @@ namespace Cecil.Tests {
 			"Foundation.NSMutableArray`1::.ctor(TValue[])",
 			"Foundation.NSObject::.ctor(Foundation.NSObjectFlag)",
 			"Foundation.NSObject::.ctor(ObjCRuntime.NativeHandle,System.Boolean)",
-			"Foundation.NSString::.ctor(System.String,System.Int32,System.Int32)",
-			"Foundation.NSString::.ctor(System.String)",
 			"Foundation.NSSynchronizationContextDispatcher::.ctor(System.Threading.SendOrPostCallback,System.Object)",
 			"Foundation.NSThread::.ctor(Foundation.NSObject,ObjCRuntime.Selector,Foundation.NSObject)",
 			"Foundation.NSTimerActionDispatcher::.ctor(System.Action`1<Foundation.NSTimer>)",

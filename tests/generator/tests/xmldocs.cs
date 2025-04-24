@@ -36,6 +36,13 @@ namespace XmlDocumentation {
 		[Notification (typeof (TEventArgs))]
 		NSString TEventArgs { get; }
 
+		/// <summary>
+		/// Summary for T1.AsyncMethod
+		/// </summary>
+		[Async (ResultTypeName = "AsyncMethodResultTypeName")]
+		[Export ("asyncMethod")]
+		void AsyncMethod (Action<int, long, NSError> completionHandler);
+
 		/// <summary>Summary for T1.DoSomething</summary>
 		[Async (XmlDocs = """
 						<summary>Summary for async version of T1.DoSomething</summary>

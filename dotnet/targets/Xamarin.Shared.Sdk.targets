@@ -787,7 +787,7 @@
 		<!-- Figure out which frameworks are really dynamic libraries, and only publish those -->
 		<FilterStaticFrameworks
 			SessionId="$(BuildSessionId)"
-			Condition="'$(IsMacEnabled)' == 'true'"
+			Condition="'$(IsMacEnabled)' == 'true' And '@(_FrameworkToPublish->Count())' != '0'"
 			FrameworkToPublish="@(_FrameworkToPublish)"
 		>
 			<Output TaskParameter="FrameworkToPublish" ItemName="_FilteredFrameworkToPublish" />
@@ -804,7 +804,7 @@
 
 		 -->
 		<GetFullPaths
-			Condition="'$(IsMacEnabled)' == 'true'"
+			Condition="'$(IsMacEnabled)' == 'true' And '@(_FilteredFrameworkToPublish->Count())' != '0'"
 			SessionId="$(BuildSessionId)"
 			Items="@(_FilteredFrameworkToPublish)"
 			Metadata="Identity;SourceDirectory"
@@ -2415,6 +2415,7 @@ global using nfloat = global::System.Runtime.InteropServices.NFloat%3B
 
 		-->
 		<GetFileSystemEntries
+			Condition="'@(_BindingPackagesFromReferencedAssembliesDirectoriesExists->Count())' != '0'"
 			SessionId="$(BuildSessionIdIfConnected)"
 			DirectoryPath="@(_BindingPackagesFromReferencedAssembliesDirectoriesExists)"
 			Pattern="*"

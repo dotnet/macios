@@ -73,7 +73,7 @@
 
       </para>
       <para>
-	Dispatch queue is <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Threading%20Synchronization%20Context&amp;scope=Xamarin" title="T:System.Threading.SynchronizationContext">T:System.Threading.SynchronizationContext</a></format> aware and unless there is
+	Dispatch queue is <see cref="T:System.Threading.SynchronizationContext" /> aware and unless there is
 	custom synchronization context set for the thread it will install its own synchronization context to
 	ensure any context dispatch ends up on same dispatch queue.
       </para>

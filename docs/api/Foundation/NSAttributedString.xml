@@ -87,7 +87,7 @@ label.AttributedText = myText;
       <para>
 	While both <see cref="T:CoreText.CTStringAttributes" /> and <see cref="T:UIKit.UIStringAttributes" /> are useful to
 	create attributes that can later be used with attributed
-	strings, it is also possible to use the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=C:Foundation.NSAttributedString(string,UIKit.UIFont,UIKit.UIColor,UIKit.UIColor,UIKit.UIColor,UIKit.NSParagraphStyle,Foundation.NSLigatureType,float,Foundation.NSUnderlineStyle,UIKit.NSShadow,float,Foundation.NSUnderlineStyle&amp;scope=Xamarin" title="C:Foundation.NSAttributedString(string,UIKit.UIFont,UIKit.UIColor,UIKit.UIColor,UIKit.UIColor,UIKit.NSParagraphStyle,Foundation.NSLigatureType,float,Foundation.NSUnderlineStyle,UIKit.NSShadow,float,Foundation.NSUnderlineStyle">C:Foundation.NSAttributedString(string,UIKit.UIFont,UIKit.UIColor,UIKit.UIColor,UIKit.UIColor,UIKit.NSParagraphStyle,Foundation.NSLigatureType,float,Foundation.NSUnderlineStyle,UIKit.NSShadow,float,Foundation.NSUnderlineStyle</a></format> constructor
+	strings, it is also possible to use the <see cref="C:Foundation.NSAttributedString(string,UIKit.UIFont,UIKit.UIColor,UIKit.UIColor,UIKit.UIColor,UIKit.NSParagraphStyle,Foundation.NSLigatureType,float,Foundation.NSUnderlineStyle,UIKit.NSShadow,float,Foundation.NSUnderlineStyle" /> constructor
 	with C# named parameters for quickly creating attributed
 	strings inline.
       </para>

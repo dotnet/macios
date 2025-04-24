@@ -153,7 +153,7 @@ namespace AddressBook {
 		///             <see cref="P:AddressBook.ABMultiValueEntry`1.Value" /> and
 		///             <see cref="P:AddressBook.ABMultiValueEntry`1.Label" />
 		///             properties will result in a
-		///             <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Not%20Supported%20Exception&amp;scope=Xamarin" title="T:System.NotSupportedException">T:System.NotSupportedException</a></format>.
+		///             <see cref="T:System.NotSupportedException" />.
 		///           </para>
 		///         </remarks>
 		public bool IsReadOnly {
@@ -236,7 +236,7 @@ namespace AddressBook {
 		///           <see cref="T:AddressBook.ABMultiValueEntry`1" />.
 		///         </summary>
 		///         <value>
-		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Int%2032&amp;scope=Xamarin" title="T:System.Int32">T:System.Int32</a></format> which is the identifier of the
+		///           A <see cref="T:System.Int32" /> which is the identifier of the
 		///           <see cref="T:AddressBook.ABMultiValueEntry`1" />.
 		///         </value>
 		///         <remarks>
@@ -336,7 +336,7 @@ namespace AddressBook {
 		///           <see cref="T:AddressBook.ABMultiValue`1" />.
 		///         </summary>
 		///         <value>
-		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Int%2032&amp;scope=Xamarin" title="T:System.Int32">T:System.Int32</a></format> containing the number of entries in
+		///           A <see cref="T:System.Int32" /> containing the number of entries in
 		///           the <see cref="T:AddressBook.ABMultiValue`1" />.
 		///         </value>
 		///         <remarks>
@@ -361,7 +361,7 @@ namespace AddressBook {
 		///         </summary>
 		///         <returns>
 		///           An
-		///           <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Collections%20IEnumerator&amp;scope=Xamarin" title="T:System.Collections.IEnumerator">T:System.Collections.IEnumerator</a></format>
+		///           <see cref="T:System.Collections.IEnumerator" />
 		///           which will return all entries in the
 		///           <see cref="T:AddressBook.ABMultiValue`1" />.
 		///         </returns>
@@ -378,7 +378,7 @@ namespace AddressBook {
 		///         </summary>
 		///         <returns>
 		///           An
-		///           <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Collections%20Generic%20IEnumerator{%20Address%20Book%20ABMulti%20Value%20Entry`%201}&amp;scope=Xamarin" title="T:System.Collections.Generic.IEnumerator&lt;AddressBook.ABMultiValueEntry&lt;T&gt;&gt;">T:System.Collections.Generic.IEnumerator&lt;AddressBook.ABMultiValueEntry&lt;T&gt;&gt;</a></format>
+		///           <see cref="T:System.Collections.Generic.IEnumerator&lt;AddressBook.ABMultiValueEntry&lt;T&gt;&gt;" />
 		///           which will return all entries in the
 		///           <see cref="T:AddressBook.ABMultiValue`1" />.
 		///         </returns>
@@ -400,7 +400,7 @@ namespace AddressBook {
 		///         </summary>
 		///         <returns>
 		///           <para>
-		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Int%2032&amp;scope=Xamarin" title="T:System.Int32">T:System.Int32</a></format> containing the first index of
+		///           A <see cref="T:System.Int32" /> containing the first index of
 		///           <paramref name="value" /> within the collection.
 		///           If <paramref name="value" /> isn't present, <c>-1</c> is returned.
 		///           </para>
@@ -425,7 +425,7 @@ namespace AddressBook {
 		///           <see cref="T:AddressBook.ABMultiValue`1" />.
 		///         </summary>
 		///         <returns>
-		///           An <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Collections%20IEnumerator&amp;scope=Xamarin" title="T:System.Collections.IEnumerator">T:System.Collections.IEnumerator</a></format>
+		///           An <see cref="T:System.Collections.IEnumerator" />
 		///           which will return all entries in the
 		///           <see cref="T:AddressBook.ABMultiValue`1" />.
 		///         </returns>
@@ -573,7 +573,7 @@ namespace AddressBook {
 	}
 
 	/// <summary>
-	///       A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:AddressBook.ABMultiValue{Foundation.NSString}&amp;scope=Xamarin" title="T:AddressBook.ABMultiValue{Foundation.NSString}">T:AddressBook.ABMultiValue{Foundation.NSString}</a></format>
+	///       A <see cref="T:AddressBook.ABMultiValue{Foundation.NSString}" />
 	///       which supports changing values.
 	///     </summary>
 	///     <remarks>

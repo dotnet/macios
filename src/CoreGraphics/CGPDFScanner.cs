@@ -190,7 +190,7 @@ namespace CoreGraphics {
 		unsafe extern static byte CGPDFScannerPopString (/* CGPDFScannerRef */ IntPtr scanner, /* CGPDFStringRef* */ IntPtr* value);
 
 		/// <param name="value">To be added.</param>
-		///         <summary>Pops a <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> object from the stack of <c>this</c> <see cref="T:CoreGraphics.CGPDFScanner" /> object, returns that object by using the <paramref name="value" /> parameter, and then returns whether this method succeeded.</summary>
+		///         <summary>Pops a <see cref="T:System.String" /> object from the stack of <c>this</c> <see cref="T:CoreGraphics.CGPDFScanner" /> object, returns that object by using the <paramref name="value" /> parameter, and then returns whether this method succeeded.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		public bool TryPop (out string? value)

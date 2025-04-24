@@ -687,7 +687,7 @@ namespace AVFoundation {
 	}
 
 	// Convenience enum for native strings (defined in AVAudioSettings.h)
-	/// <summary>An enumeration whose values specify valid rate-converstion algorithms. Used with <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=AVFoundation%20AVAudio%20Settings%20Sample%20Rate%20Converter%20Algorithm&amp;scope=Xamarin" title="P:AVFoundation.AVAudioSettings.SampleRateConverterAlgorithm">P:AVFoundation.AVAudioSettings.SampleRateConverterAlgorithm</a></format>.</summary>
+	/// <summary>An enumeration whose values specify valid rate-converstion algorithms. Used with <see cref="P:AVFoundation.AVAudioSettings.SampleRateConverterAlgorithm" />.</summary>
 	/// <remarks>To be added.</remarks>
 	public enum AVSampleRateConverterAlgorithm : int {
 		/// <summary>To be added.</summary>
@@ -929,7 +929,7 @@ namespace AVFoundation {
 		Linear = 3,
 	}
 
-	/// <summary>Enumerates possible values of the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=AVFoundation%20AVSample%20Buffer%20Status&amp;scope=Xamarin" title="P:AVFoundation.AVSampleBuffer.Status">P:AVFoundation.AVSampleBuffer.Status</a></format> field.</summary>
+	/// <summary>Enumerates possible values of the <see cref="P:AVFoundation.AVSampleBuffer.Status" /> field.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]

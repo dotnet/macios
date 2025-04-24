@@ -1,7 +1,7 @@
 <Documentation>
   <Docs DocId="M:AddressBook.ABPerson.System#IComparable#CompareTo(System.Object)">
     <param name="o">
-          The <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Object&amp;scope=Xamarin" title="T:System.Object">T:System.Object</a></format> to compare
+          The <see cref="T:System.Object" /> to compare
           to this instance.
         </param>
     <summary>
@@ -13,7 +13,7 @@
         </summary>
     <returns>
       <para>
-            A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Int%2032&amp;scope=Xamarin" title="T:System.Int32">T:System.Int32</a></format> that indicates
+            A <see cref="T:System.Int32" /> that indicates
             whether this instance precedes, follows,
             or appears in the same position in the sort order as
             <paramref name="o" />.
@@ -61,7 +61,7 @@
         </summary>
     <returns>
       <para>
-            A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Int%2032&amp;scope=Xamarin" title="T:System.Int32">T:System.Int32</a></format> that indicates
+            A <see cref="T:System.Int32" /> that indicates
             whether this instance precedes, follows,
             or appears in the same position in the sort order as
             <paramref name="other" />.
@@ -116,7 +116,7 @@
         </summary>
     <returns>
       <para>
-            A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Int%2032&amp;scope=Xamarin" title="T:System.Int32">T:System.Int32</a></format> that indicates
+            A <see cref="T:System.Int32" /> that indicates
             whether this instance precedes, follows,
             or appears in the same position in the sort order as
             <paramref name="other" />.
@@ -178,7 +178,7 @@
             <see cref="M:AddressBook.ABPerson.GetVCards(AddressBook.ABPerson[])" />,
             <see cref="M:AddressBook.ABPerson.GetDates" />,
             <see cref="M:AddressBook.ABPerson.GetEmails" />,
-            <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Address%20Book%20ABPerson%20Get%20Instant%20Messages&amp;scope=Xamarin" title="M:AddressBook.ABPerson.GetInstantMessages*">M:AddressBook.ABPerson.GetInstantMessages*</a></format>,
+            <see cref="M:AddressBook.ABPerson.GetInstantMessages*" />,
             <see cref="M:AddressBook.ABPerson.GetPhones" />,
             <see cref="M:AddressBook.ABPerson.GetProperty(AddressBook.ABPersonProperty)" />,
             <see cref="M:AddressBook.ABPerson.GetPropertyType(AddressBook.ABPersonProperty)" />,

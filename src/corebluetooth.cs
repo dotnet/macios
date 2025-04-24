@@ -765,7 +765,7 @@ namespace CoreBluetooth {
 		CBCharacteristic Characteristic { get; }
 	}
 
-	/// <summary>A mutable <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:Corebluetooth.CBDescriptor&amp;scope=Xamarin" title="T:Corebluetooth.CBDescriptor">T:Corebluetooth.CBDescriptor</a></format>.</summary>
+	/// <summary>A mutable <see cref="T:Corebluetooth.CBDescriptor" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CoreBluetooth/Reference/CBMutableDescriptor_Class/index.html">Apple documentation for <c>CBMutableDescriptor</c></related>
 	[MacCatalyst (13, 1)]
@@ -1159,7 +1159,7 @@ namespace CoreBluetooth {
 		///         <value>Array of CBCharacteristic objects.</value>
 		///         <remarks>
 		/// 	  The contents of this property are only updated after you
-		/// 	  have initiated a characteristic discovery using the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Bluetooth%20CBPeripheral%20Discover%20Characteristic&amp;scope=Xamarin" title="E:CoreBluetooth.CBPeripheral.DiscoverCharacteristic">E:CoreBluetooth.CBPeripheral.DiscoverCharacteristic</a></format>
+		/// 	  have initiated a characteristic discovery using the <see cref="E:CoreBluetooth.CBPeripheral.DiscoverCharacteristic" />
 		/// 	  method.
 		/// 	</remarks>
 		[Export ("characteristics", ArgumentSemantic.Retain)]
@@ -1397,7 +1397,7 @@ namespace CoreBluetooth {
 		nuint MaximumUpdateValueLength { get; }
 	}
 
-	/// <summary>Manages published services per the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:Coreblutooth.CBPeripheral&amp;scope=Xamarin" title="T:Coreblutooth.CBPeripheral">T:Coreblutooth.CBPeripheral</a></format> device's GATT database.</summary>
+	/// <summary>Manages published services per the <see cref="T:Coreblutooth.CBPeripheral" /> device's GATT database.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CoreBluetooth/Reference/CBPeripheralManager_Class/index.html">Apple documentation for <c>CBPeripheralManager</c></related>
 	[MacCatalyst (13, 1)]

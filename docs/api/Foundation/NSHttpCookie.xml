@@ -11,7 +11,7 @@
 	For more complex scenarios that also require one or more of
 	comments, expiration, a port, a secure setting and a version,
 	you can either use the constructor that takes an
-	<format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Net%20Cookie&amp;scope=Xamarin" title="T:System.Net.Cookie">T:System.Net.Cookie</a></format>.
+	<see cref="T:System.Net.Cookie" />.
       </para>
       <para>
 	Alternatively, you can create it by passing an

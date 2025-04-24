@@ -524,7 +524,7 @@ namespace GameplayKit {
 
 	/// <summary>The current game state. Particularly useful in conjunction with <see cref="T:GameplayKit.GKMinMaxStrategist" />.</summary>
 	///     <remarks>
-	///       <para>When <see cref="T:GameplayKit.GKMinMaxStrategist" /> is used as an AI opponent, it uses <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:Gameplay.IGKGameModel&amp;scope=Xamarin" title="T:Gameplay.IGKGameModel">T:Gameplay.IGKGameModel</a></format> objects to describe the game's state and <see cref="T:GameplayKit.IGKGameModelUpdate" /> objects to describe potential moves. (See the "AI Opponent" section in the remarks at <see cref="N:GameplayKit" />)</para>
+	///       <para>When <see cref="T:GameplayKit.GKMinMaxStrategist" /> is used as an AI opponent, it uses <see cref="T:Gameplay.IGKGameModel" /> objects to describe the game's state and <see cref="T:GameplayKit.IGKGameModelUpdate" /> objects to describe potential moves. (See the "AI Opponent" section in the remarks at <see cref="N:GameplayKit" />)</para>
 	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]

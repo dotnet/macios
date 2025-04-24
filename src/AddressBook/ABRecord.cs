@@ -152,7 +152,7 @@ namespace AddressBook {
 		extern static int ABRecordGetRecordID (IntPtr record);
 		/// <summary>Gets the unique ID of the record.</summary>
 		///         <value>
-		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Int%2032&amp;scope=Xamarin" title="T:System.Int32">T:System.Int32</a></format> which is the unique ID of the record.
+		///           A <see cref="T:System.Int32" /> which is the unique ID of the record.
 		///         </value>
 		///         <remarks>
 		///           <para>
@@ -184,7 +184,7 @@ namespace AddressBook {
 		///           Returns the composite name of the <see cref="T:AddressBook.ABRecord" />.
 		///         </summary>
 		///         <returns>
-		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> containing
+		///           A <see cref="T:System.String" /> containing
 		///           the composite name of the <see cref="T:AddressBook.ABRecord" />.
 		///         </returns>
 		///         <remarks>

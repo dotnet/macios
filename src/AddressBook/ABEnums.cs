@@ -150,7 +150,7 @@ namespace AddressBook {
 		FirstNamePhonetic,
 		/// <summary>
 		///           The
-		///           <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Address%20Book%20ABPerson%20Get%20Instant%20Messages&amp;scope=Xamarin" title="M:AddressBook.ABPerson.GetInstantMessages*">M:AddressBook.ABPerson.GetInstantMessages*</a></format>
+		///           <see cref="M:AddressBook.ABPerson.GetInstantMessages*" />
 		///           multi-value property.
 		///         </summary>
 		InstantMessage,
@@ -281,7 +281,7 @@ namespace AddressBook {
 		/// <summary>Invalid property type.</summary>
 		Invalid = 0,
 		/// <summary>
-		///           The property holds a <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> value.
+		///           The property holds a <see cref="T:System.String" /> value.
 		///         </summary>
 		String = 0x1,
 		/// <summary>
@@ -308,13 +308,13 @@ namespace AddressBook {
 		MultiString = MultiMask | String,
 		/// <summary>
 		///           The property holds a
-		///           <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:AddressBook.ABMultiValue{Foundation.NSNumber}&amp;scope=Xamarin" title="T:AddressBook.ABMultiValue{Foundation.NSNumber}">T:AddressBook.ABMultiValue{Foundation.NSNumber}</a></format>
+		///           <see cref="T:AddressBook.ABMultiValue{Foundation.NSNumber}" />
 		///           value.
 		///         </summary>
 		MultiInteger = MultiMask | Integer,
 		/// <summary>
 		///           The property holds a
-		///           <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:AddressBook.ABMultiValue{Foundation.NSNumber}&amp;scope=Xamarin" title="T:AddressBook.ABMultiValue{Foundation.NSNumber}">T:AddressBook.ABMultiValue{Foundation.NSNumber}</a></format>
+		///           <see cref="T:AddressBook.ABMultiValue{Foundation.NSNumber}" />
 		///           value.
 		///         </summary>
 		MultiReal = MultiMask | Real,

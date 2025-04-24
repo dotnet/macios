@@ -1822,7 +1822,7 @@ namespace SceneKit {
 		NSString ShadowFarClippingKey { get; }
 	}
 
-	/// <summary>Constants for use with the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=P:SceneKit.SCNMaterial.LightingModel&amp;scope=Xamarin" title="P:SceneKit.SCNMaterial.LightingModel">P:SceneKit.SCNMaterial.LightingModel</a></format> property, which defines the way lights and materials combine to produce a particular rendered color.</summary>
+	/// <summary>Constants for use with the <see cref="P:SceneKit.SCNMaterial.LightingModel" /> property, which defines the way lights and materials combine to produce a particular rendered color.</summary>
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface SCNLightingModel {
@@ -5522,7 +5522,7 @@ namespace SceneKit {
 		nuint CategoryBitMask { get; set; }
 	}
 
-	/// <summary>Valid options for use with <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Scene%20Kit%20SCNPhysics%20World%20Contact%20Test&amp;scope=Xamarin" title="M:SceneKit.SCNPhysicsWorld.ContactTest*">M:SceneKit.SCNPhysicsWorld.ContactTest*</a></format>.</summary>
+	/// <summary>Valid options for use with <see cref="M:SceneKit.SCNPhysicsWorld.ContactTest*" />.</summary>
 	[MacCatalyst (13, 1)]
 	[StrongDictionary ("SCNPhysicsTestKeys")]
 	interface SCNPhysicsTest {
@@ -5673,7 +5673,7 @@ namespace SceneKit {
 		NSValue [] Transforms { get; }
 	}
 
-	/// <summary>Defines valid keys for use with the <c>options</c> dictionary passed to <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Scene%20Kit%20SCNPhysics%20Shape%20Create&amp;scope=Xamarin" title="M:SceneKit.SCNPhysicsShape.Create*">M:SceneKit.SCNPhysicsShape.Create*</a></format>.</summary>
+	/// <summary>Defines valid keys for use with the <c>options</c> dictionary passed to <see cref="M:SceneKit.SCNPhysicsShape.Create*" />.</summary>
 	[MacCatalyst (13, 1)]
 	[Static]
 	[EditorBrowsable (EditorBrowsableState.Advanced)]

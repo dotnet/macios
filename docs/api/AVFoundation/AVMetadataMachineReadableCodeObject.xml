@@ -6,7 +6,7 @@
       <list type="table">
         <listheader>
           <term>Barcode type</term>
-          <description>Constant for use with <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=AVFoundation%20AVMetadata%20Output%20Metadata%20Object%20Type&amp;scope=Xamarin" title="P:AVFoundation.AVMetadataOutput.MetadataObjectType">P:AVFoundation.AVMetadataOutput.MetadataObjectType</a></format></description>
+          <description>Constant for use with <see cref="P:AVFoundation.AVMetadataOutput.MetadataObjectType" /></description>
         </listheader>
         <item>
           <term>Aztec</term>

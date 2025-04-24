@@ -176,7 +176,7 @@ class MyInputQueue : InputAudioQueue {
       <para> 
 	When processing an input or output queue, you might want to
 	listen to a few property changes raised by the queues during
-	their processing (See the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Audio%20Tool%20Box%20Audio%20Queue%20Property&amp;scope=Xamarin" title="E:AudioToolBox.AudioQueueProperty">E:AudioToolBox.AudioQueueProperty</a></format> for a
+	their processing (See the <see cref="E:AudioToolBox.AudioQueueProperty" /> for a
 	list of events that you can listen to).  To do this, use the
 	<see cref="M:AudioToolbox.AudioQueue.AddListener(AudioToolbox.AudioQueueProperty,AudioToolbox.AudioQueue.AudioQueuePropertyChanged)" />
 	method to add a listener and use the <see cref="M:AudioToolbox.AudioQueue.RemoveListener(AudioToolbox.AudioQueueProperty,AudioToolbox.AudioQueue.AudioQueuePropertyChanged)" />

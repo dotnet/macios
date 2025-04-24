@@ -5026,7 +5026,7 @@ namespace CoreData {
 		NSFetchRequest FetchRequest { get; }
 	}
 
-	/// <summary>The results of a <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Data%20NSBatch%20Delete%20Query&amp;scope=Xamarin" title="T:CoreData.NSBatchDeleteQuery">T:CoreData.NSBatchDeleteQuery</a></format>.</summary>
+	/// <summary>The results of a <see cref="T:CoreData.NSBatchDeleteQuery" />.</summary>
 	/// <remarks>To be added.</remarks>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/CoreData/NSBatchDeleteResult">Apple documentation for <c>NSBatchDeleteResult</c></related>
 	[MacCatalyst (13, 1)]

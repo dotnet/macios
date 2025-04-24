@@ -530,7 +530,7 @@ namespace MapKit {
 		}
 
 		/// <param name="other">To be added.</param>
-		///         <summary>Whether this <see cref="T:MapKit.MKMapRect" /> has the same <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Map%20Kit%20Origin&amp;scope=Xamarin" title="P:MapKit.Origin">P:MapKit.Origin</a></format> and <see cref="F:MapKit.MKMapRect.Size" /> values as the <paramref name="other" />.</summary>
+		///         <summary>Whether this <see cref="T:MapKit.MKMapRect" /> has the same <see cref="P:MapKit.Origin" /> and <see cref="F:MapKit.MKMapRect.Size" /> values as the <paramref name="other" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		public override bool Equals (object? other)

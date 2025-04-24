@@ -2285,7 +2285,7 @@ namespace UIKit {
 		///         <value>
 		///         </value>
 		///         <remarks>
-		/// 	  The object must hold an individual <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:AssetsLibrary:ALAsset&amp;scope=Xamarin" title="T:AssetsLibrary:ALAsset">T:AssetsLibrary:ALAsset</a></format>, <see cref="T:Foundation.NSAttributedString" />, <see cref="T:Foundation.NSString" />, <see cref="T:Foundation.NSUrl" />, <see cref="T:UIKit.UIImage" />.  Or you can provide a
+		/// 	  The object must hold an individual <see cref="T:AssetsLibrary:ALAsset" />, <see cref="T:Foundation.NSAttributedString" />, <see cref="T:Foundation.NSString" />, <see cref="T:Foundation.NSUrl" />, <see cref="T:UIKit.UIImage" />.  Or you can provide a
 		/// 	  collection of those objects by passing an NSDictionary or an
 		/// 	  NSArray with those objects.
 		/// 	</remarks>
@@ -2327,7 +2327,7 @@ namespace UIKit {
 	// You're supposed to implement this protocol in your UIView subclasses, not provide
 	// a implementation for only this protocol, which is why there is no model to subclass.
 	//
-	/// <summary>Interface that, together with the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIInput%20View%20Audio%20Feedback_%20Extensions&amp;scope=Xamarin" title="T:UIKit.UIInputViewAudioFeedback_Extensions">T:UIKit.UIInputViewAudioFeedback_Extensions</a></format> class, comprise the UIInputViewAudioFeedback protocol.</summary>
+	/// <summary>Interface that, together with the <see cref="T:UIKit.UIInputViewAudioFeedback_Extensions" /> class, comprise the UIInputViewAudioFeedback protocol.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
@@ -2756,7 +2756,7 @@ namespace UIKit {
 	/// <remarks>
 	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:UIKit.UIAppearance" />.</para>
 	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:UIKit.UIAppearance" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIAppearance_%20Extensions&amp;scope=Xamarin" title="T:UIKit.UIAppearance_Extensions">T:UIKit.UIAppearance_Extensions</a></format> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:UIKit.UIAppearance_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
@@ -2797,7 +2797,7 @@ namespace UIKit {
 		[Export ("baselineRelativeArrangement")]
 		bool BaselineRelativeArrangement { [Bind ("isBaselineRelativeArrangement")] get; set; }
 
-		/// <summary>Whether subviews are arranged relative to this <see cref="T:UIKit.UIStackView" />'s <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIView%20Layout%20Margin&amp;scope=Xamarin" title="P:UIKit.UIView.LayoutMargin">P:UIKit.UIView.LayoutMargin</a></format>.</summary>
+		/// <summary>Whether subviews are arranged relative to this <see cref="T:UIKit.UIStackView" />'s <see cref="P:UIKit.UIView.LayoutMargin" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("layoutMarginsRelativeArrangement")]
@@ -2884,7 +2884,7 @@ namespace UIKit {
 	/// <remarks>
 	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:UIKit.UIObjectRestoration" />.</para>
 	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:UIKit.UIObjectRestoration" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIObject%20Restoration_%20Extensions&amp;scope=Xamarin" title="T:UIKit.UIObjectRestoration_Extensions">T:UIKit.UIObjectRestoration_Extensions</a></format> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:UIKit.UIObjectRestoration_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	[BaseType (typeof (NSObject))]
 	[Model]
@@ -2975,13 +2975,13 @@ namespace UIKit {
 	interface UIViewImplicitlyAnimating : UIViewAnimating {
 		/// <param name="animation">To be added.</param>
 		/// <param name="delayFactor">To be added.</param>
-		/// <summary>Appends the specified <paramref name="animation" /><format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action&amp;scope=Xamarin" title="T:System.Action">T:System.Action</a></format> to the callback list.</summary>
+		/// <summary>Appends the specified <paramref name="animation" /><see cref="T:System.Action" /> to the callback list.</summary>
 		/// <remarks>To be added.</remarks>
 		[Export ("addAnimations:delayFactor:")]
 		void AddAnimations (Action animation, nfloat delayFactor);
 
 		/// <param name="animation">To be added.</param>
-		/// <summary>Appends the specified <paramref name="animation" /><format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action&amp;scope=Xamarin" title="T:System.Action">T:System.Action</a></format> to the callback list.</summary>
+		/// <summary>Appends the specified <paramref name="animation" /><see cref="T:System.Action" /> to the callback list.</summary>
 		/// <remarks>To be added.</remarks>
 		[Export ("addAnimations:")]
 		void AddAnimations (Action animation);
@@ -3148,7 +3148,7 @@ namespace UIKit {
 		void CommitViewController (IUIViewControllerPreviewing previewingContext, UIViewController viewControllerToCommit);
 	}
 
-	/// <summary>Interface that, together with the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIView%20Controller%20Restoration_%20Extensions&amp;scope=Xamarin" title="T:UIKit.UIViewControllerRestoration_Extensions">T:UIKit.UIViewControllerRestoration_Extensions</a></format> class, comprise the UIViewControllerRestoration protocol.</summary>
+	/// <summary>Interface that, together with the <see cref="T:UIKit.UIViewControllerRestoration_Extensions" /> class, comprise the UIViewControllerRestoration protocol.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
@@ -3174,7 +3174,7 @@ namespace UIKit {
 	/// <summary>Provides data for the  event.</summary>
 	[MacCatalyst (13, 1)]
 	interface UIStatusBarOrientationChangeEventArgs {
-		/// <summary>The new orientation of the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIStatus%20Bar&amp;scope=Xamarin" title="T:UIKit.UIStatusBar">T:UIKit.UIStatusBar</a></format>.</summary>
+		/// <summary>The new orientation of the <see cref="T:UIKit.UIStatusBar" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[NoTV]
@@ -3222,7 +3222,7 @@ namespace UIKit {
 		bool LocationLaunch { get; }
 	}
 
-	/// <summary>A <see cref="T:Foundation.DictionaryContainer" /> that holds options for use with calls to <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIApplication%20Open%20URL&amp;scope=Xamarin" title="M:UIApplication.OpenURL*">M:UIApplication.OpenURL*</a></format>.</summary>
+	/// <summary>A <see cref="T:Foundation.DictionaryContainer" /> that holds options for use with calls to <see cref="M:UIApplication.OpenURL*" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[StrongDictionary ("UIApplicationOpenUrlOptionKeys")]
@@ -3585,7 +3585,7 @@ namespace UIKit {
 		///         <value>Represents the value associated with the constant UIApplicationLaunchOptionsURLKey.
 		///         </value>
 		///         <remarks>
-		///           <para>This key is used with the <see cref="T:Foundation.NSDictionary" /> passed to <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)&amp;scope=Xamarin" title="M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)">M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)</a></format></para>
+		///           <para>This key is used with the <see cref="T:Foundation.NSDictionary" /> passed to <see cref="M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)" /></para>
 		///         </remarks>
 		[Field ("UIApplicationLaunchOptionsURLKey")]
 		NSString LaunchOptionsUrlKey { get; }
@@ -3594,7 +3594,7 @@ namespace UIKit {
 		///         <value>Represents the value associated with the constant UIApplicationLaunchOptionsSourceApplicationKey
 		///         </value>
 		///         <remarks>
-		///           <para>This key is used with the <see cref="T:Foundation.NSDictionary" /> passed to <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)&amp;scope=Xamarin" title="M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)">M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)</a></format></para>
+		///           <para>This key is used with the <see cref="T:Foundation.NSDictionary" /> passed to <see cref="M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)" /></para>
 		///         </remarks>
 		[Field ("UIApplicationLaunchOptionsSourceApplicationKey")]
 		NSString LaunchOptionsSourceApplicationKey { get; }
@@ -3603,7 +3603,7 @@ namespace UIKit {
 		///         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
 		///         <remarks>
 		///           <para>The value associated with this key will be an NSDictionary with the payload from the remote notification that was received. </para>
-		///           <para>This key is used with the <see cref="T:Foundation.NSDictionary" /> passed to <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)&amp;scope=Xamarin" title="M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)">M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)</a></format></para>
+		///           <para>This key is used with the <see cref="T:Foundation.NSDictionary" /> passed to <see cref="M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)" /></para>
 		///         </remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
@@ -3615,7 +3615,7 @@ namespace UIKit {
 		///           Represents the value associated with the constant UIApplicationLaunchOptionsAnnotationKey
 		///         </value>
 		///         <remarks>
-		///           <para>This key is used with the <see cref="T:Foundation.NSDictionary" /> passed to <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)&amp;scope=Xamarin" title="M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)">M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)</a></format></para>
+		///           <para>This key is used with the <see cref="T:Foundation.NSDictionary" /> passed to <see cref="M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)" /></para>
 		///         </remarks>
 		[Field ("UIApplicationLaunchOptionsAnnotationKey")]
 		NSString LaunchOptionsAnnotationKey { get; }
@@ -3746,7 +3746,7 @@ namespace UIKit {
 		///         <value>Represents the value associated with the constant UIApplicationLaunchOptionsLocationKey</value>
 		///         <remarks>
 		///           <para>The value of this key will be an NSNumber.   The application should respond by creating a <see cref="T:CoreLocation.CLLocationManager" /> instance to and get the information from that object.</para>
-		///           <para>This key is used with the <see cref="T:Foundation.NSDictionary" /> passed to <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)&amp;scope=Xamarin" title="M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)">M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)</a></format>.</para>
+		///           <para>This key is used with the <see cref="T:Foundation.NSDictionary" /> passed to <see cref="M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)" />.</para>
 		///         </remarks>
 		[Field ("UIApplicationLaunchOptionsLocationKey")]
 		NSString LaunchOptionsLocationKey { get; }
@@ -3770,7 +3770,7 @@ namespace UIKit {
 		///           <para>
 		///             This key will be present on the launch options if a local notification was delivered and the application was not running.
 		///           </para>
-		///           <para>This key is used with the <see cref="T:Foundation.NSDictionary" /> passed to <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)&amp;scope=Xamarin" title="M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)">M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)</a></format></para>
+		///           <para>This key is used with the <see cref="T:Foundation.NSDictionary" /> passed to <see cref="M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)" /></para>
 		///         </remarks>
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 10, 0, message: "Use 'UNUserNotificationCenterDelegate.DidReceiveNotificationResponse' instead.")]
@@ -3800,7 +3800,7 @@ namespace UIKit {
 		///         <value>
 		///         </value>
 		///         <remarks>
-		///           <para>This key is used with the <see cref="T:Foundation.NSDictionary" /> passed to <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)&amp;scope=Xamarin" title="M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)">M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)</a></format></para>
+		///           <para>This key is used with the <see cref="T:Foundation.NSDictionary" /> passed to <see cref="M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)" /></para>
 		///         </remarks>
 		[Field ("UIApplicationLaunchOptionsBluetoothCentralsKey")]
 		NSString LaunchOptionsBluetoothCentralsKey { get; }
@@ -3809,7 +3809,7 @@ namespace UIKit {
 		///         <value>
 		///         </value>
 		///         <remarks>
-		///           <para>This key is used with the <see cref="T:Foundation.NSDictionary" /> passed to <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)&amp;scope=Xamarin" title="M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)">M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)</a></format></para>
+		///           <para>This key is used with the <see cref="T:Foundation.NSDictionary" /> passed to <see cref="M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)" /></para>
 		///         </remarks>
 		[Field ("UIApplicationLaunchOptionsBluetoothPeripheralsKey")]
 		NSString LaunchOptionsBluetoothPeripheralsKey { get; }
@@ -3817,7 +3817,7 @@ namespace UIKit {
 		/// <summary>The presence of this key indicates that the application was launched via a shortcut item.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>
-		///           <para>This key is used with the <see cref="T:Foundation.NSDictionary" /> passed to <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)&amp;scope=Xamarin" title="M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)">M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)</a></format></para>
+		///           <para>This key is used with the <see cref="T:Foundation.NSDictionary" /> passed to <see cref="M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)" /></para>
 		///         </remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
@@ -4029,7 +4029,7 @@ namespace UIKit {
 		///         <value>
 		///         </value>
 		///         <remarks>
-		///           <para>This key is used with the <see cref="T:Foundation.NSDictionary" /> passed to <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)&amp;scope=Xamarin" title="M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)">M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)</a></format></para>
+		///           <para>This key is used with the <see cref="T:Foundation.NSDictionary" /> passed to <see cref="M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)" /></para>
 		///         </remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("UIApplicationLaunchOptionsUserActivityDictionaryKey")]
@@ -4039,7 +4039,7 @@ namespace UIKit {
 		///         <value>
 		///         </value>
 		///         <remarks>
-		///           <para>This key is used with the <see cref="T:Foundation.NSDictionary" /> passed to <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)&amp;scope=Xamarin" title="M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)">M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)</a></format></para>
+		///           <para>This key is used with the <see cref="T:Foundation.NSDictionary" /> passed to <see cref="M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)" /></para>
 		///         </remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("UIApplicationLaunchOptionsUserActivityTypeKey")]
@@ -4735,7 +4735,7 @@ namespace UIKit {
 
 		/// <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
 		/// <param name="url">To be added.</param>
-		/// <summary>Developers should use <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIApplication%20Delegate%20Open%20Url&amp;scope=Xamarin" title="M:UIKit.UIApplicationDelegate.OpenUrl*">M:UIKit.UIApplicationDelegate.OpenUrl*</a></format> rather than this deprecated method.</summary>
+		/// <summary>Developers should use <see cref="M:UIKit.UIApplicationDelegate.OpenUrl*" /> rather than this deprecated method.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[NoTV]
@@ -5019,7 +5019,7 @@ namespace UIKit {
 		/// <param name="application">To be added.</param>
 		/// <param name="sessionIdentifier">To be added.</param>
 		/// <param name="completionHandler">To be added.</param>
-		/// <summary>Raised when events relating to a background <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:UIKit.NSUrlSession&amp;scope=Xamarin" title="T:UIKit.NSUrlSession">T:UIKit.NSUrlSession</a></format> are waiting to be processed.</summary>
+		/// <summary>Raised when events relating to a background <see cref="T:UIKit.NSUrlSession" /> are waiting to be processed.</summary>
 		/// <remarks>To be added.</remarks>
 		[Export ("application:handleEventsForBackgroundURLSession:completionHandler:")]
 		void HandleEventsForBackgroundUrl (UIApplication application, string sessionIdentifier, Action completionHandler);
@@ -5129,7 +5129,7 @@ namespace UIKit {
 		/// <param name="application">To be added.</param>
 		/// <param name="shortcutItem">To be added.</param>
 		/// <param name="completionHandler">To be added.</param>
-		/// <summary>Called by the system when the user initiates a Home screen quick action, unless the interaction was handled in <see cref="M:UIKit.UIApplicationDelegate.WillFinishLaunching(UIKit.UIApplication,Foundation.NSDictionary)" /> or <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIApplication%20Delegate%20Did%20Finish%20Launching&amp;scope=Xamarin" title="M:UIKit.UIApplicationDelegate.DidFinishLaunching*">M:UIKit.UIApplicationDelegate.DidFinishLaunching*</a></format>.</summary>
+		/// <summary>Called by the system when the user initiates a Home screen quick action, unless the interaction was handled in <see cref="M:UIKit.UIApplicationDelegate.WillFinishLaunching(UIKit.UIApplication,Foundation.NSDictionary)" /> or <see cref="M:UIKit.UIApplicationDelegate.DidFinishLaunching*" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
@@ -6400,7 +6400,7 @@ namespace UIKit {
 
 		/// <param name="collectionView">The collection view that originated the request.</param>
 		/// <param name="context">Metadata for the focus change.</param>
-		/// <param name="coordinator">The <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIFocus%20Animation%20Controller&amp;scope=Xamarin" title="T:UIKit.UIFocusAnimationController">T:UIKit.UIFocusAnimationController</a></format> coordinating the focus-change animations.</param>
+		/// <param name="coordinator">The <see cref="T:UIKit.UIFocusAnimationController" /> coordinating the focus-change animations.</param>
 		/// <summary>Indicates that the focus changed as detailed in the <paramref name="context" />.</summary>
 		/// <remarks>
 		///           <para>The values of <see cref="P:UIKit.UICollectionViewFocusUpdateContext.PreviouslyFocusedIndexPath" /> and <see cref="P:UIKit.UICollectionViewFocusUpdateContext.NextFocusedIndexPath" /> may be <see langword="null" /> if focus was previously not within, or just departed, the <paramref name="collectionView" />.</para>
@@ -10161,7 +10161,7 @@ namespace UIKit {
 
 	interface IUIKeyInput { }
 
-	/// <summary>Interface that, together with the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIKey%20Input_%20Extensions&amp;scope=Xamarin" title="T:UIKit.UIKeyInput_Extensions">T:UIKit.UIKeyInput_Extensions</a></format> class, comprise the UIKeyInput protocol.</summary>
+	/// <summary>Interface that, together with the <see cref="T:UIKit.UIKeyInput_Extensions" /> class, comprise the UIKeyInput protocol.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
@@ -10678,7 +10678,7 @@ namespace UIKit {
 	/// <remarks>
 	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:UIKit.UITextInputTokenizer" />.</para>
 	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:UIKit.UITextInputTokenizer" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIText%20Input%20Tokenizer_%20Extensions&amp;scope=Xamarin" title="T:UIKit.UITextInputTokenizer_Extensions">T:UIKit.UITextInputTokenizer_Extensions</a></format> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:UIKit.UITextInputTokenizer_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
@@ -12382,7 +12382,7 @@ namespace UIKit {
 	/// <remarks>
 	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:UIKit.UIBarPositioning" />.</para>
 	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:UIKit.UIBarPositioning" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIBar%20Positioning_%20Extensions&amp;scope=Xamarin" title="T:UIKit.UIBarPositioning_Extensions">T:UIKit.UIBarPositioning_Extensions</a></format> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:UIKit.UIBarPositioning_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
@@ -15693,7 +15693,7 @@ namespace UIKit {
 	/// <remarks>
 	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:UIKit.UIContentContainer" />.</para>
 	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:UIKit.UIContentContainer" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIContent%20Container_%20Extensions&amp;scope=Xamarin" title="T:UIKit.UIContentContainer_Extensions">T:UIKit.UIContentContainer_Extensions</a></format> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:UIKit.UIContentContainer_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
@@ -15751,7 +15751,7 @@ namespace UIKit {
 	/// <remarks>
 	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:UIKit.UIAppearanceContainer" />.</para>
 	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:UIKit.UIAppearanceContainer" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIAppearance%20Container_%20Extensions&amp;scope=Xamarin" title="T:UIKit.UIAppearanceContainer_Extensions">T:UIKit.UIAppearanceContainer_Extensions</a></format> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:UIKit.UIAppearanceContainer_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	[Protocol, Model]
 	[MacCatalyst (13, 1)]
@@ -15874,7 +15874,7 @@ namespace UIKit {
 	/// <remarks>
 	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:UIKit.IUIPreviewActionItem" />.</para>
 	///       <para>If you create objects that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:UIKit.IUIPreviewActionItem" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIPreview%20Action%20Item_%20Extensions&amp;scope=Xamarin" title="T:UIKit.UIPreviewActionItem_Extensions">T:UIKit.UIPreviewActionItem_Extensions</a></format> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:UIKit.UIPreviewActionItem_Extensions" /> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
@@ -16720,7 +16720,7 @@ namespace UIKit {
 		[Export ("zooming")]
 		bool Zooming { [Bind ("isZooming")] get; }
 
-		/// <summary>Returns <see langword="true" /> if the scroll view is bouncing back to the zoom scaling limits specified by<format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIScroll%20View%20Minimum%20Scroll%20View&amp;scope=Xamarin" title="P:UIKit.UIScrollView.MinimumScrollView">P:UIKit.UIScrollView.MinimumScrollView</a></format> and <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIScroll%20View%20Maximum%20Scroll%20View&amp;scope=Xamarin" title="P:UIKit.UIScrollView.MaximumScrollView">P:UIKit.UIScrollView.MaximumScrollView</a></format>. Read-only.</summary>
+		/// <summary>Returns <see langword="true" /> if the scroll view is bouncing back to the zoom scaling limits specified by<see cref="P:UIKit.UIScrollView.MinimumScrollView" /> and <see cref="P:UIKit.UIScrollView.MaximumScrollView" />. Read-only.</summary>
 		///         <value>
 		///         </value>
 		///         <remarks>
@@ -20465,7 +20465,7 @@ namespace UIKit {
 		/// <returns>
 		///         </returns>
 		/// <remarks>
-		///           <para>Note that custom UITableViewCell's do not respect IndentationLevel automatically. Application developers must override <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UITable%20View%20Controller%20Layout%20Subviews&amp;scope=Xamarin" title="M:UIKit.UITableViewController.LayoutSubviews*">M:UIKit.UITableViewController.LayoutSubviews*</a></format>.</para>
+		///           <para>Note that custom UITableViewCell's do not respect IndentationLevel automatically. Application developers must override <see cref="M:UIKit.UITableViewController.LayoutSubviews*" />.</para>
 		///         </remarks>
 		[Export ("tableView:indentationLevelForRowAtIndexPath:")]
 		nint IndentationLevel (UITableView tableView, NSIndexPath indexPath);
@@ -21752,7 +21752,7 @@ namespace UIKit {
 	///     <remarks>
 	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:UIKit.UIToolbarDelegate" />.</para>
 	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:UIKit.UIToolbarDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIToolbar%20Delegate_%20Extensions&amp;scope=Xamarin" title="T:UIKit.UIToolbarDelegate_Extensions">T:UIKit.UIToolbarDelegate_Extensions</a></format> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:UIKit.UIToolbarDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	interface IUIToolbarDelegate { }
 
@@ -23990,7 +23990,7 @@ namespace UIKit {
 	/// <remarks>
 	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:UIKit.UITraitEnvironment" />.</para>
 	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:UIKit.UITraitEnvironment" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UITrait%20Environment_%20Extensions&amp;scope=Xamarin" title="T:UIKit.UITraitEnvironment_Extensions">T:UIKit.UITraitEnvironment_Extensions</a></format> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:UIKit.UITraitEnvironment_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	[BaseType (typeof (NSObject))]
 	[Model]
@@ -25858,7 +25858,7 @@ namespace UIKit {
 		NSObject Sender { get; }
 	}
 
-	/// <summary>Interface that, together with the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIPopover%20Background%20View%20Methods_%20Extensions&amp;scope=Xamarin" title="T:UIKit.UIPopoverBackgroundViewMethods_Extensions">T:UIKit.UIPopoverBackgroundViewMethods_Extensions</a></format> class, comprise the UIPopoverBackgroundViewMethods protocol.</summary>
+	/// <summary>Interface that, together with the <see cref="T:UIKit.UIPopoverBackgroundViewMethods_Extensions" /> class, comprise the UIPopoverBackgroundViewMethods protocol.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
@@ -27201,7 +27201,7 @@ namespace UIKit {
 		/// <param name="width">To be added.</param>
 		/// <param name="font">To be added.</param>
 		/// <param name="breakMode">To be added.</param>
-		/// <summary>Developers should use <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Foundation%20NSString%20Draw%20String(%20Core%20Graphics%20CGRect%20, %20UIKit%20UIString%20Attributes%20)&amp;scope=Xamarin" title="M:Foundation.NSString.DrawString(CoreGraphics.CGRect, UIKit.UIStringAttributes)">M:Foundation.NSString.DrawString(CoreGraphics.CGRect, UIKit.UIStringAttributes)</a></format> rather than this deprecated method..</summary>
+		/// <summary>Developers should use <see cref="M:Foundation.NSString.DrawString(CoreGraphics.CGRect, UIKit.UIStringAttributes)" /> rather than this deprecated method..</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>
 		///           <para>(More documentation for this node is coming)</para>
@@ -27232,7 +27232,7 @@ namespace UIKit {
 		// note: duplicate from maccore's foundation.cs where it's binded on NSString2 (for Classic)
 		/// <param name="rect">To be added.</param>
 		/// <param name="font">To be added.</param>
-		/// <summary>Developers should use <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Foundation%20NSString%20Draw%20String(%20Core%20Graphics%20CGRect%20, %20UIKit%20UIString%20Attributes%20)&amp;scope=Xamarin" title="M:Foundation.NSString.DrawString(CoreGraphics.CGRect, UIKit.UIStringAttributes)">M:Foundation.NSString.DrawString(CoreGraphics.CGRect, UIKit.UIStringAttributes)</a></format> rather than this deprecated method.</summary>
+		/// <summary>Developers should use <see cref="M:Foundation.NSString.DrawString(CoreGraphics.CGRect, UIKit.UIStringAttributes)" /> rather than this deprecated method.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>
 		///           <para>(More documentation for this node is coming)</para>
@@ -27248,7 +27248,7 @@ namespace UIKit {
 		/// <param name="rect">To be added.</param>
 		/// <param name="font">To be added.</param>
 		/// <param name="mode">To be added.</param>
-		/// <summary>Developers should use <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Foundation%20NSString%20Draw%20String(%20Core%20Graphics%20CGRect%20, %20UIKit%20UIString%20Attributes%20)&amp;scope=Xamarin" title="M:Foundation.NSString.DrawString(CoreGraphics.CGRect, UIKit.UIStringAttributes)">M:Foundation.NSString.DrawString(CoreGraphics.CGRect, UIKit.UIStringAttributes)</a></format> rather than this deprecated method.</summary>
+		/// <summary>Developers should use <see cref="M:Foundation.NSString.DrawString(CoreGraphics.CGRect, UIKit.UIStringAttributes)" /> rather than this deprecated method.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>
 		///           <para>(More documentation for this node is coming)</para>
@@ -27265,7 +27265,7 @@ namespace UIKit {
 		/// <param name="font">To be added.</param>
 		/// <param name="mode">To be added.</param>
 		/// <param name="alignment">To be added.</param>
-		/// <summary>Developers should use <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Foundation%20NSString%20Draw%20String(%20Core%20Graphics%20CGRect%20, %20UIKit%20UIString%20Attributes%20)&amp;scope=Xamarin" title="M:Foundation.NSString.DrawString(CoreGraphics.CGRect, UIKit.UIStringAttributes)">M:Foundation.NSString.DrawString(CoreGraphics.CGRect, UIKit.UIStringAttributes)</a></format> rather than this deprecated method.</summary>
+		/// <summary>Developers should use <see cref="M:Foundation.NSString.DrawString(CoreGraphics.CGRect, UIKit.UIStringAttributes)" /> rather than this deprecated method.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>
 		///           <para>(More documentation for this node is coming)</para>
@@ -28132,7 +28132,7 @@ namespace UIKit {
 
 	// note: used (internally, not exposed) by UITableView and UICollectionView for state restoration
 	// user objects must adopt the protocol
-	/// <summary>Interface that, together with the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIData%20Source%20Model%20Association_%20Extensions&amp;scope=Xamarin" title="T:UIKit.UIDataSourceModelAssociation_Extensions">T:UIKit.UIDataSourceModelAssociation_Extensions</a></format> class, comprise the UIDataSourceModelAssociation protocol.</summary>
+	/// <summary>Interface that, together with the <see cref="T:UIKit.UIDataSourceModelAssociation_Extensions" /> class, comprise the UIDataSourceModelAssociation protocol.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
@@ -28758,7 +28758,7 @@ namespace UIKit {
 		bool ShouldUpdateFocus (UIFocusUpdateContext context);
 
 		/// <param name="context">Metadata for the focus change.</param>
-		/// <param name="coordinator">The <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIFocus%20Animation%20Controller&amp;scope=Xamarin" title="T:UIKit.UIFocusAnimationController">T:UIKit.UIFocusAnimationController</a></format> coordinating the focus-change animations.</param>
+		/// <param name="coordinator">The <see cref="T:UIKit.UIFocusAnimationController" /> coordinating the focus-change animations.</param>
 		/// <summary>Delegate method called shortly after focus has changed to a new <see cref="T:UIKit.UIView" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]

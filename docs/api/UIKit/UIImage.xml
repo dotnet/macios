@@ -4,7 +4,7 @@
     <remarks>
       <para>
 	Image objects do not provide direct access to the underlying
-	image - they are immutable. The methods <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:UIKit.UIImage.AsJPEG()&amp;scope=Xamarin" title="M:UIKit.UIImage.AsJPEG()">M:UIKit.UIImage.AsJPEG()</a></format> or <see cref="M:UIKit.UIImage.AsPNG" /> will provide the
+	image - they are immutable. The methods <see cref="M:UIKit.UIImage.AsJPEG()" /> or <see cref="M:UIKit.UIImage.AsPNG" /> will provide the
 	underlying image data as a JPEG or PNG.
       </para>
       <para>
@@ -24,7 +24,7 @@
 
       <list type="bullet"><item><term>.tiff</term></item><item><term>.jpg, .jpeg</term></item><item><term>.gif</term></item><item><term>.bmp</term></item><item><term>.ico</term></item><item><term>.cur</term></item><item><term>.xbm</term></item></list></para>
       <para>
-	Starting with iOS 8, the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:UIKIt.UIImage.FromBundle(System.String,Foundation.NSBundle,UIKIt.UITraitCollection)&amp;scope=Xamarin" title="M:UIKIt.UIImage.FromBundle(System.String,Foundation.NSBundle,UIKIt.UITraitCollection)">M:UIKIt.UIImage.FromBundle(System.String,Foundation.NSBundle,UIKIt.UITraitCollection)</a></format>
+	Starting with iOS 8, the <see cref="M:UIKIt.UIImage.FromBundle(System.String,Foundation.NSBundle,UIKIt.UITraitCollection)" />
 	method can be used to load a UIImage that takes into
 	consideration a <see cref="T:UIKit.UITraitCollection" />.  This can
 	automatically load the proper image for the specified

@@ -15,7 +15,7 @@ namespace EventKitUI {
 
 	// untyped enum -> EKCalendarChooser.h
 	// iOS 9 promoted this to an NSInteger - which breaks compatibility
-	/// <summary>An enumeration whose values specify whether a single or multiple calendars can be chosen by an <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:MonoTuoch.EventKitUI.EKCalendarChooser&amp;scope=Xamarin" title="T:MonoTuoch.EventKitUI.EKCalendarChooser">T:MonoTuoch.EventKitUI.EKCalendarChooser</a></format> object.</summary>
+	/// <summary>An enumeration whose values specify whether a single or multiple calendars can be chosen by an <see cref="T:MonoTuoch.EventKitUI.EKCalendarChooser" /> object.</summary>
 	///     <remarks>To be added.</remarks>
 	[Native]
 	public enum EKCalendarChooserSelectionStyle : long {

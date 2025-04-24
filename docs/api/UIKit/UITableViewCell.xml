@@ -20,9 +20,9 @@
 	All of the predefined styles have <see cref="P:UIKit.UITableViewCell.TextLabel" /> and <see cref="P:UIKit.UITableViewCell.DetailTextLabel" />
 	properties of type <see cref="T:UIKit.UILabel" />
 	and all but <see cref="F:UIKit.UITableViewCellStyle.Value2" /> have a
-	<format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UITable%20View%20Cell%20Image&amp;scope=Xamarin" title="P:UIKit.UITableViewCell.Image">P:UIKit.UITableViewCell.Image</a></format> of type
+	<see cref="P:UIKit.UITableViewCell.Image" /> of type
 	<see cref="T:UIKit.UIImage" />. Assignment to the
-	<format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UITable%20View%20Cell%20Image&amp;scope=Xamarin" title="P:UIKit.UITableViewCell.Image">P:UIKit.UITableViewCell.Image</a></format>
+	<see cref="P:UIKit.UITableViewCell.Image" />
 	property of a cell initialized with the <see cref="F:UIKit.UITableViewCellStyle.Value2" /> style
 	will result in a runtime exception.
       </para>

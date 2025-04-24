@@ -40,7 +40,7 @@ namespace StoreKit {
 	public partial class StoreProductParameters : DictionaryContainer {
 #if !COREBUILD
 		/// <param name="iTunesItemIdentifier">To be added.</param>
-		///         <summary>Creates a new <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:StoreKit.StoreProductParameters.StoreProductParameters&amp;scope=Xamarin" title="T:StoreKit.StoreProductParameters.StoreProductParameters">T:StoreKit.StoreProductParameters.StoreProductParameters</a></format> for the specified ITunes identifier.</summary>
+		///         <summary>Creates a new <see cref="T:StoreKit.StoreProductParameters.StoreProductParameters" /> for the specified ITunes identifier.</summary>
 		///         <remarks>To be added.</remarks>
 		public StoreProductParameters (int iTunesItemIdentifier)
 			: this ()

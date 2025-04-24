@@ -45,23 +45,23 @@ namespace AudioUnit {
 	///       <para />
 	///     </remarks>
 	public enum AudioComponentType : uint { // OSType in AudioComponentDescription
-		/// <summary>An effect component, when set, you want to set a component subtype in the <see cref="F:AudioUnit.AudioComponentDescription.ComponentSubType" /> to one of the values from <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Audio%20Unit%20AUAudio%20Unit%20Sub%20Type%20Output&amp;scope=Xamarin" title="T:AudioUnit.AUAudioUnitSubType.Output">T:AudioUnit.AUAudioUnitSubType.Output</a></format></summary>
+		/// <summary>An effect component, when set, you want to set a component subtype in the <see cref="F:AudioUnit.AudioComponentDescription.ComponentSubType" /> to one of the values from <see cref="T:AudioUnit.AUAudioUnitSubType.Output" /></summary>
 		Output = 0x61756f75, //'auou',
 		/// <summary>A music device component, when set, you want to set a component subtype in the <see cref="F:AudioUnit.AudioComponentDescription.ComponentSubType" /> to one of the values from <see cref="T:AudioUnit.AudioTypeMusicDevice" /></summary>
 		MusicDevice = 0x61756d75, // 'aumu'
 		/// <summary>An effect component that can also work on MIDI control messages.</summary>
 		MusicEffect = 0x61756d66, // 'aumf'
-		/// <summary>An format converter component, when set, you want to set a component subtype in the <see cref="F:AudioUnit.AudioComponentDescription.ComponentSubType" /> to one of the values from <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Audio%20Unit%20AUAudio%20Unit%20Sub%20Type%20Format%20Converter&amp;scope=Xamarin" title="T:AudioUnit.AUAudioUnitSubType.FormatConverter">T:AudioUnit.AUAudioUnitSubType.FormatConverter</a></format></summary>
+		/// <summary>An format converter component, when set, you want to set a component subtype in the <see cref="F:AudioUnit.AudioComponentDescription.ComponentSubType" /> to one of the values from <see cref="T:AudioUnit.AUAudioUnitSubType.FormatConverter" /></summary>
 		FormatConverter = 0x61756663, // 'aufc'
-		/// <summary>An effect component, when set, you want to set a component subtype in the <see cref="F:AudioUnit.AudioComponentDescription.ComponentSubType" /> to one of the values from <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Audio%20Unit%20AUAudio%20Unit%20Sub%20Type%20Effect&amp;scope=Xamarin" title="T:AudioUnit.AUAudioUnitSubType.Effect">T:AudioUnit.AUAudioUnitSubType.Effect</a></format></summary>
+		/// <summary>An effect component, when set, you want to set a component subtype in the <see cref="F:AudioUnit.AudioComponentDescription.ComponentSubType" /> to one of the values from <see cref="T:AudioUnit.AUAudioUnitSubType.Effect" /></summary>
 		Effect = 0x61756678, // 'aufx'
-		/// <summary>A mixer component, when set, you want to set a component subtype in the <see cref="F:AudioUnit.AudioComponentDescription.ComponentSubType" /> to one of the values from <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Audio%20Unit%20AUAudio%20Unit%20Sub%20Type%20Mixer&amp;scope=Xamarin" title="T:AudioUnit.AUAudioUnitSubType.Mixer">T:AudioUnit.AUAudioUnitSubType.Mixer</a></format></summary>
+		/// <summary>A mixer component, when set, you want to set a component subtype in the <see cref="F:AudioUnit.AudioComponentDescription.ComponentSubType" /> to one of the values from <see cref="T:AudioUnit.AUAudioUnitSubType.Mixer" /></summary>
 		Mixer = 0x61756d78, // 'aumx'
-		/// <summary>A panner component that will pan a single audio input to a single output. When set, you want to set a component subtype in the <see cref="F:AudioUnit.AudioComponentDescription.ComponentSubType" /> to one of the values from <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Audio%20Unit%20AUAudio%20Unit%20Sub%20Type%20Panner&amp;scope=Xamarin" title="T:AudioUnit.AUAudioUnitSubType.Panner">T:AudioUnit.AUAudioUnitSubType.Panner</a></format></summary>
+		/// <summary>A panner component that will pan a single audio input to a single output. When set, you want to set a component subtype in the <see cref="F:AudioUnit.AudioComponentDescription.ComponentSubType" /> to one of the values from <see cref="T:AudioUnit.AUAudioUnitSubType.Panner" /></summary>
 		Panner = 0x6175706e, // 'aupn'
 		/// <summary>An offline effect component, used to process data from files or to perform offline audio processing (not real time)</summary>
 		OfflineEffect = 0x61756f6c, // 'auol'
-		/// <summary>A generator component, when set, you want to set a component subtype in the <see cref="F:AudioUnit.AudioComponentDescription.ComponentSubType" /> to one of the values from <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Audio%20Unit%20AUAudio%20Unit%20Sub%20Type%20Generator&amp;scope=Xamarin" title="T:AudioUnit.AUAudioUnitSubType.Generator">T:AudioUnit.AUAudioUnitSubType.Generator</a></format></summary>
+		/// <summary>A generator component, when set, you want to set a component subtype in the <see cref="F:AudioUnit.AudioComponentDescription.ComponentSubType" /> to one of the values from <see cref="T:AudioUnit.AUAudioUnitSubType.Generator" /></summary>
 		Generator = 0x6175676e, // 'augn'
 #if NET
 		/// <summary>A MIDI processor component, they can receive MIDI input and generate MIDI output, but they do not actually produce audio.</summary>

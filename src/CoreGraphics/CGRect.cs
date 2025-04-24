@@ -216,7 +216,7 @@ namespace CoreGraphics {
 		///         </value>
 		///         <remarks>
 		///           <attribution license="cc4" from="Microsoft" modified="false" />
-		///           <para>The value of the <see cref="P:CoreGraphics.CGRect.Bottom" /> property represents the y-coordinate of the first point at the bottom edge of the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:CoreGraphics.CGRect.Rectangle&amp;scope=Xamarin" title="T:CoreGraphics.CGRect.Rectangle">T:CoreGraphics.CGRect.Rectangle</a></format> that is not contained in the <see cref="T:CoreGraphics.CGRect" />.</para>
+		///           <para>The value of the <see cref="P:CoreGraphics.CGRect.Bottom" /> property represents the y-coordinate of the first point at the bottom edge of the <see cref="T:CoreGraphics.CGRect.Rectangle" /> that is not contained in the <see cref="T:CoreGraphics.CGRect" />.</para>
 		///         </remarks>
 		public nfloat Bottom {
 			get { return Y + Height; }
@@ -513,7 +513,7 @@ namespace CoreGraphics {
 				height == rect.height;
 		}
 
-		/// <summary>Returns the hash code for this <see cref="T:CoreGraphics.CGRect" /> structure. For information about the use of hash codes, see <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Object%20Get%20Hash%20Code&amp;scope=Xamarin" title="M:System.Object.GetHashCode*">M:System.Object.GetHashCode*</a></format> .</summary>
+		/// <summary>Returns the hash code for this <see cref="T:CoreGraphics.CGRect" /> structure. For information about the use of hash codes, see <see cref="M:System.Object.GetHashCode*" /> .</summary>
 		///         <returns>
 		///           <attribution license="cc4" from="Microsoft" modified="false" />
 		///           <para>An integer that represents the hash code for this rectangle.</para>

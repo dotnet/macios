@@ -270,7 +270,7 @@ namespace Accounts {
 		NSString LinkedIn { get; }
 	}
 
-	/// <summary>A class that encapsulates keys necessary for Facebook requests. Used with <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:Accounts.ACAccountStore.RequestAccess (Accounts.ACAccountType,Accounts.AccountStoreOptions,Accounts.ACRequestCompletionHandler)&amp;scope=Xamarin" title="M:Accounts.ACAccountStore.RequestAccess (Accounts.ACAccountType,Accounts.AccountStoreOptions,Accounts.ACRequestCompletionHandler)">M:Accounts.ACAccountStore.RequestAccess (Accounts.ACAccountType,Accounts.AccountStoreOptions,Accounts.ACRequestCompletionHandler)</a></format>.</summary>
+	/// <summary>A class that encapsulates keys necessary for Facebook requests. Used with <see cref="M:Accounts.ACAccountStore.RequestAccess (Accounts.ACAccountType,Accounts.AccountStoreOptions,Accounts.ACRequestCompletionHandler)" />.</summary>
 	[Deprecated (PlatformName.iOS, 11, 0, message: "Use Facebook SDK instead.")]
 	[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use Facebook SDK instead.")]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use Facebook SDK instead.")]
@@ -327,7 +327,7 @@ namespace Accounts {
 		NSString OnlyMe { get; }
 	}
 
-	/// <summary>Key to use when accessing Tencent Weibo accounts. Used with <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:Accounts.ACAccountStore.RequestAccess (Accounts.ACAccountType,Accounts.AccountStoreOptions,Accounts.ACRequestCompletionHandler)&amp;scope=Xamarin" title="M:Accounts.ACAccountStore.RequestAccess (Accounts.ACAccountType,Accounts.AccountStoreOptions,Accounts.ACRequestCompletionHandler)">M:Accounts.ACAccountStore.RequestAccess (Accounts.ACAccountType,Accounts.AccountStoreOptions,Accounts.ACRequestCompletionHandler)</a></format>.</summary>
+	/// <summary>Key to use when accessing Tencent Weibo accounts. Used with <see cref="M:Accounts.ACAccountStore.RequestAccess (Accounts.ACAccountType,Accounts.AccountStoreOptions,Accounts.ACRequestCompletionHandler)" />.</summary>
 	[Deprecated (PlatformName.iOS, 11, 0, message: "Use Tencent Weibo SDK instead.")]
 	[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use Tencent Weibo SDK instead.")]
 	[MacCatalyst (13, 1)]

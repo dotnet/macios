@@ -475,7 +475,7 @@ namespace UIKit {
 		/// <summary>Whether the <see cref="T:UIKit.NSLayoutManager" /> currently contains any areas of noncontiguous layout.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>
-		///           <para>Even if <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20NSLayout%20Manager%20Allows%20Non%20Continguous%20Layout&amp;scope=Xamarin" title="P:UIKit.NSLayoutManager.AllowsNonContinguousLayout">P:UIKit.NSLayoutManager.AllowsNonContinguousLayout</a></format> is <see langword="true" />, this method may return <see langword="false" />, for instance, if layout is complete.</para>
+		///           <para>Even if <see cref="P:UIKit.NSLayoutManager.AllowsNonContinguousLayout" /> is <see langword="true" />, this method may return <see langword="false" />, for instance, if layout is complete.</para>
 		///         </remarks>
 		[Export ("hasNonContiguousLayout")]
 		bool HasNonContiguousLayout { get; }
@@ -576,7 +576,7 @@ namespace UIKit {
 		/// <param name="characterRange">To be added.</param>
 		///         <summary>Forces the <see cref="T:UIKit.NSLayoutManager" /> to generate glyphs for the specified characters, if it has not already done so.</summary>
 		///         <remarks>
-		///           <para>The <see cref="T:UIKit.NSLayoutManager" /> may calculate glyphs for a range larger than the <paramref name="characterRange" />. If <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20NSLayout%20Manager%20Allows%20Non%20Continguous%20Layout&amp;scope=Xamarin" title="P:UIKit.NSLayoutManager.AllowsNonContinguousLayout">P:UIKit.NSLayoutManager.AllowsNonContinguousLayout</a></format> is <see langword="false" />, the range will always extend to the beginning of the text.</para>
+		///           <para>The <see cref="T:UIKit.NSLayoutManager" /> may calculate glyphs for a range larger than the <paramref name="characterRange" />. If <see cref="P:UIKit.NSLayoutManager.AllowsNonContinguousLayout" /> is <see langword="false" />, the range will always extend to the beginning of the text.</para>
 		///         </remarks>
 		[Export ("ensureGlyphsForCharacterRange:")]
 #if NET
@@ -588,7 +588,7 @@ namespace UIKit {
 		/// <param name="glyphRange">To be added.</param>
 		///         <summary>Forces the <see cref="T:UIKit.NSLayoutManager" /> to generate glyphs for the specified glyph range, if it has not already done so.</summary>
 		///         <remarks>
-		///           <para>The <see cref="T:UIKit.NSLayoutManager" /> may calculate glyphs for a range larger than the <paramref name="glyphRange" />. If <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20NSLayout%20Manager%20Allows%20Non%20Continguous%20Layout&amp;scope=Xamarin" title="P:UIKit.NSLayoutManager.AllowsNonContinguousLayout">P:UIKit.NSLayoutManager.AllowsNonContinguousLayout</a></format> is <see langword="false" />, the range will always extend to the beginning of the text.</para>
+		///           <para>The <see cref="T:UIKit.NSLayoutManager" /> may calculate glyphs for a range larger than the <paramref name="glyphRange" />. If <see cref="P:UIKit.NSLayoutManager.AllowsNonContinguousLayout" /> is <see langword="false" />, the range will always extend to the beginning of the text.</para>
 		///         </remarks>
 		[Export ("ensureGlyphsForGlyphRange:")]
 		void EnsureGlyphsForGlyphRange (NSRange glyphRange);
@@ -596,7 +596,7 @@ namespace UIKit {
 		/// <param name="characterRange">To be added.</param>
 		///         <summary>Forces the <see cref="T:UIKit.NSLayoutManager" /> to layout the specified characters, if it has not already done so.</summary>
 		///         <remarks>
-		///           <para>The <see cref="T:UIKit.NSLayoutManager" /> may layout an area larger than the <paramref name="characterRange" />. If <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20NSLayout%20Manager%20Allows%20Non%20Continguous%20Layout&amp;scope=Xamarin" title="P:UIKit.NSLayoutManager.AllowsNonContinguousLayout">P:UIKit.NSLayoutManager.AllowsNonContinguousLayout</a></format> is <see langword="false" />, the range will always extend to the beginning of the text.</para>
+		///           <para>The <see cref="T:UIKit.NSLayoutManager" /> may layout an area larger than the <paramref name="characterRange" />. If <see cref="P:UIKit.NSLayoutManager.AllowsNonContinguousLayout" /> is <see langword="false" />, the range will always extend to the beginning of the text.</para>
 		///         </remarks>
 		[Export ("ensureLayoutForCharacterRange:")]
 #if NET
@@ -608,7 +608,7 @@ namespace UIKit {
 		/// <param name="glyphRange">To be added.</param>
 		///         <summary>Forces the <see cref="T:UIKit.NSLayoutManager" /> to layout the specified glyphs, if it has not already done so.</summary>
 		///         <remarks>
-		///           <para>The <see cref="T:UIKit.NSLayoutManager" /> may layout a larger range than the specified <paramref name="glyphRange" />. If <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20NSLayout%20Manager%20Allows%20Non%20Continguous%20Layout&amp;scope=Xamarin" title="P:UIKit.NSLayoutManager.AllowsNonContinguousLayout">P:UIKit.NSLayoutManager.AllowsNonContinguousLayout</a></format> is <see langword="false" />, the range will always extend to the beginning of the text.</para>
+		///           <para>The <see cref="T:UIKit.NSLayoutManager" /> may layout a larger range than the specified <paramref name="glyphRange" />. If <see cref="P:UIKit.NSLayoutManager.AllowsNonContinguousLayout" /> is <see langword="false" />, the range will always extend to the beginning of the text.</para>
 		///         </remarks>
 		[Export ("ensureLayoutForGlyphRange:")]
 		void EnsureLayoutForGlyphRange (NSRange glyphRange);
@@ -616,7 +616,7 @@ namespace UIKit {
 		/// <param name="container">To be added.</param>
 		///         <summary>Forces the <see cref="T:UIKit.NSLayoutManager" /> to layout the specified <see cref="T:UIKit.NSTextContainer" />, if it has not already done so.</summary>
 		///         <remarks>
-		///           <para>The <see cref="T:UIKit.NSLayoutManager" /> may layout more than the specified <paramref name="container" />. If <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20NSLayout%20Manager%20Allows%20Non%20Continguous%20Layout&amp;scope=Xamarin" title="P:UIKit.NSLayoutManager.AllowsNonContinguousLayout">P:UIKit.NSLayoutManager.AllowsNonContinguousLayout</a></format> is <see langword="false" />, the range will always extend to the beginning of the text.</para>
+		///           <para>The <see cref="T:UIKit.NSLayoutManager" /> may layout more than the specified <paramref name="container" />. If <see cref="P:UIKit.NSLayoutManager.AllowsNonContinguousLayout" /> is <see langword="false" />, the range will always extend to the beginning of the text.</para>
 		///         </remarks>
 		[Export ("ensureLayoutForTextContainer:")]
 		void EnsureLayoutForTextContainer (NSTextContainer container);
@@ -687,7 +687,7 @@ namespace UIKit {
 		/// <summary>The number of glyphs in the <see cref="T:UIKit.NSLayoutManager" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>
-		///           <para>If <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20NSLayout%20Manager%20Allows%20Non%20Continuous%20Layout&amp;scope=Xamarin" title="P:UIKit.NSLayoutManager.AllowsNonContinuousLayout">P:UIKit.NSLayoutManager.AllowsNonContinuousLayout</a></format> is <see langword="false" />, this method will force glyph generation for all characters.</para>
+		///           <para>If <see cref="P:UIKit.NSLayoutManager.AllowsNonContinuousLayout" /> is <see langword="false" />, this method will force glyph generation for all characters.</para>
 		///         </remarks>
 		[Export ("numberOfGlyphs")]
 #if NET || !MONOMAC
@@ -699,7 +699,7 @@ namespace UIKit {
 
 		/// <param name="glyphIndex">To be added.</param>
 		/// <param name="isValidIndex">To be added.</param>
-		/// <summary>Developers should use <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20NSLayout%20Manager%20Get%20Glyph&amp;scope=Xamarin" title="M:UIKit.NSLayoutManager.GetGlyph*">M:UIKit.NSLayoutManager.GetGlyph*</a></format> rather than this deprecated method.</summary>
+		/// <summary>Developers should use <see cref="M:UIKit.NSLayoutManager.GetGlyph*" /> rather than this deprecated method.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[Export ("glyphAtIndex:isValidIndex:")]
@@ -718,7 +718,7 @@ namespace UIKit {
 #endif // MONOMAC
 
 		/// <param name="glyphIndex">To be added.</param>
-		/// <summary>Developers should not use this deprecated method. Developers should use <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20NSLayout%20Manager%20Get%20Glyph&amp;scope=Xamarin" title="M:UIKit.NSLayoutManager.GetGlyph*">M:UIKit.NSLayoutManager.GetGlyph*</a></format> instead.</summary>
+		/// <summary>Developers should not use this deprecated method. Developers should use <see cref="M:UIKit.NSLayoutManager.GetGlyph*" /> instead.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[Export ("glyphAtIndex:")]
@@ -4255,7 +4255,7 @@ namespace UIKit {
 		NSString ColumnTerminatorsAttributeName { get; }
 	}
 
-	/// <summary>Interface that, together with the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20NSText%20Layout%20Orientation%20Provider_%20Extensions&amp;scope=Xamarin" title="T:UIKit.NSTextLayoutOrientationProvider_Extensions">T:UIKit.NSTextLayoutOrientationProvider_Extensions</a></format> class, comprise the NSTextLayoutOrientationProvider protocol.</summary>
+	/// <summary>Interface that, together with the <see cref="T:UIKit.NSTextLayoutOrientationProvider_Extensions" /> class, comprise the NSTextLayoutOrientationProvider protocol.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]

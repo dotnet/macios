@@ -22,7 +22,7 @@ namespace Contacts {
 	///     <remarks>
 	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:Contacts.ICNKeyDescriptor" />.</para>
 	///       <para>If you create objects that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:Contacts.ICNKeyDescriptor" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Contacts%20CNKey%20Descriptor_%20Extensions&amp;scope=Xamarin" title="T:Contacts.CNKeyDescriptor_Extensions">T:Contacts.CNKeyDescriptor_Extensions</a></format> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:Contacts.CNKeyDescriptor_Extensions" /> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	interface ICNKeyDescriptor { }
 
@@ -30,7 +30,7 @@ namespace Contacts {
 	/// <remarks>
 	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:Contacts.ICNKeyDescriptor" />.</para>
 	///       <para>If you create objects that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:Contacts.ICNKeyDescriptor" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Contacts%20CNKey%20Descriptor_%20Extensions&amp;scope=Xamarin" title="T:Contacts.CNKeyDescriptor_Extensions">T:Contacts.CNKeyDescriptor_Extensions</a></format> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:Contacts.CNKeyDescriptor_Extensions" /> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
@@ -372,7 +372,7 @@ namespace Contacts {
 		[Field ("CNContactUrlAddressesKey")]
 		NSString UrlAddresses { get; }
 
-		/// <summary>Key identifying the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Contacts%20CNContact%20Relations&amp;scope=Xamarin" title="P:Contacts.CNContact.Relations">P:Contacts.CNContact.Relations</a></format> property.</summary>
+		/// <summary>Key identifying the <see cref="P:Contacts.CNContact.Relations" /> property.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("CNContactRelationsKey")]
@@ -2883,19 +2883,19 @@ namespace Contacts {
 	[EditorBrowsable (EditorBrowsableState.Advanced)]
 	interface CNSocialProfileKey { // Can be used in KVO
 
-		/// <summary>The key associated with <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Contacts%20CNSocial%20Service%20Url%20String&amp;scope=Xamarin" title="P:Contacts.CNSocialService.UrlString">P:Contacts.CNSocialService.UrlString</a></format>.</summary>
+		/// <summary>The key associated with <see cref="P:Contacts.CNSocialService.UrlString" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("CNSocialProfileURLStringKey")]
 		NSString UrlString { get; }
 
-		/// <summary>The key associated with <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Contacts%20CNSocial%20Service%20Username&amp;scope=Xamarin" title="P:Contacts.CNSocialService.Username">P:Contacts.CNSocialService.Username</a></format>.</summary>
+		/// <summary>The key associated with <see cref="P:Contacts.CNSocialService.Username" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("CNSocialProfileUsernameKey")]
 		NSString Username { get; }
 
-		/// <summary>The key associated with <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Contacts%20CNSocial%20Service%20User%20Identifier&amp;scope=Xamarin" title="P:Contacts.CNSocialService.UserIdentifier">P:Contacts.CNSocialService.UserIdentifier</a></format>.</summary>
+		/// <summary>The key associated with <see cref="P:Contacts.CNSocialService.UserIdentifier" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("CNSocialProfileUserIdentifierKey")]

@@ -3315,7 +3315,7 @@ namespace Foundation {
 	/// <remarks>
 	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:Foundation.NSCoding" />.</para>
 	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:Foundation.NSCoding" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Foundation%20NSCoding_%20Extensions&amp;scope=Xamarin" title="T:Foundation.NSCoding_Extensions">T:Foundation.NSCoding_Extensions</a></format> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:Foundation.NSCoding_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	[BaseType (typeof (NSObject))]
 	[Model]
@@ -3358,7 +3358,7 @@ namespace Foundation {
 	/// <remarks>
 	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:Foundation.NSCopying" />.</para>
 	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:Foundation.NSCopying" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Foundation%20NSCopying_%20Extensions&amp;scope=Xamarin" title="T:Foundation.NSCopying_Extensions">T:Foundation.NSCopying_Extensions</a></format> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:Foundation.NSCopying_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	[BaseType (typeof (NSObject))]
 	[Model]
@@ -3382,7 +3382,7 @@ namespace Foundation {
 	/// <remarks>
 	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:Foundation.NSMutableCopying" />.</para>
 	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:Foundation.NSMutableCopying" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Foundation%20NSMutable%20Copying_%20Extensions&amp;scope=Xamarin" title="T:Foundation.NSMutableCopying_Extensions">T:Foundation.NSMutableCopying_Extensions</a></format> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:Foundation.NSMutableCopying_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	[BaseType (typeof (NSObject))]
 	[Model]
@@ -7308,7 +7308,7 @@ namespace Foundation {
 		void SortUsingDescriptors (NSSortDescriptor [] sortDescriptors);
 	}
 
-	/// <summary>Defines an extension method for <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:NSMutableOrderedSet&amp;scope=Xamarin" title="T:NSMutableOrderedSet">T:NSMutableOrderedSet</a></format> objects, allowing them to be sorted using <see cref="T:Foundation.NSSortDescriptor" /> objects.</summary>
+	/// <summary>Defines an extension method for <see cref="T:NSMutableOrderedSet" /> objects, allowing them to be sorted using <see cref="T:Foundation.NSSortDescriptor" /> objects.</summary>
 	/// <remarks>To be added.</remarks>
 	[Category, BaseType (typeof (NSMutableOrderedSet))]
 	partial interface NSKeyValueSorting_NSMutableOrderedSet {
@@ -10198,7 +10198,7 @@ namespace Foundation {
 	/// <param name="location">To be added.</param>
 	/// <param name="response">To be added.</param>
 	/// <param name="error">To be added.</param>
-	/// <summary>Completion handler for calls to <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Foundation%20NSUrl%20Session%20Create%20Download%20Task&amp;scope=Xamarin" title="M:Foundation.NSUrlSession.CreateDownloadTask*">M:Foundation.NSUrlSession.CreateDownloadTask*</a></format> and <see cref="M:Foundation.NSUrlSession.CreateDownloadTaskFromResumeData(Foundation.NSData,Foundation.NSUrlDownloadSessionResponse)" />.</summary>
+	/// <summary>Completion handler for calls to <see cref="M:Foundation.NSUrlSession.CreateDownloadTask*" /> and <see cref="M:Foundation.NSUrlSession.CreateDownloadTaskFromResumeData(Foundation.NSData,Foundation.NSUrlDownloadSessionResponse)" />.</summary>
 	/// <remarks>To be added.</remarks>
 	delegate void NSUrlDownloadSessionResponse (NSUrl location, NSUrlResponse response, NSError error);
 
@@ -15219,7 +15219,7 @@ namespace Foundation {
 		/// <param name="typeIdentifier">A Universal Type Identifier (UTI) indicating the type of data to load.</param>
 		/// <param name="completionHandler">The method called after the data is loaded.</param>
 		/// <summary>Implement this method to customize the loading of data by an <see cref="T:Foundation.NSItemProvider" />.</summary>
-		/// <returns>An <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:Monotouch.Foundation.NSProgress&amp;scope=Xamarin" title="T:Monotouch.Foundation.NSProgress">T:Monotouch.Foundation.NSProgress</a></format> object reflecting the data-loading operation.</returns>
+		/// <returns>An <see cref="T:Monotouch.Foundation.NSProgress" /> object reflecting the data-loading operation.</returns>
 		/// <remarks>
 		///           <para>The <paramref name="typeIdentifier" /> must be in the set of values returned by <see cref="M:Foundation.NSItemProviderWriting_Extensions.GetWritableTypeIdentifiersForItemProvider(Foundation.INSItemProviderWriting)" />.</para>
 		///         </remarks>
@@ -18593,8 +18593,8 @@ namespace Foundation {
 		NSUrl PresentedItemURL { get; }
 #endif
 
-		/// <summary>Gets the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:Monotouch.Foundation.NSOperationQueue&amp;scope=Xamarin" title="T:Monotouch.Foundation.NSOperationQueue">T:Monotouch.Foundation.NSOperationQueue</a></format> on which presenter-related methods are executed.</summary>
-		/// <value>The <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:Monotouch.Foundation.NSOperationQueue&amp;scope=Xamarin" title="T:Monotouch.Foundation.NSOperationQueue">T:Monotouch.Foundation.NSOperationQueue</a></format> on which methods are executed.</value>
+		/// <summary>Gets the <see cref="T:Monotouch.Foundation.NSOperationQueue" /> on which presenter-related methods are executed.</summary>
+		/// <value>The <see cref="T:Monotouch.Foundation.NSOperationQueue" /> on which methods are executed.</value>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("presentedItemOperationQueue", ArgumentSemantic.Retain)]
@@ -19397,7 +19397,7 @@ namespace Foundation {
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface NSExtensionRequestHandling {
-		/// <param name="context">The <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:Monotouch.Foundation.NSExtensionContext&amp;scope=Xamarin" title="T:Monotouch.Foundation.NSExtensionContext">T:Monotouch.Foundation.NSExtensionContext</a></format> containing extension-relevant data.</param>
+		/// <param name="context">The <see cref="T:Monotouch.Foundation.NSExtensionContext" /> containing extension-relevant data.</param>
 		/// <summary>Developers can implement this method to prepare their extension for the host application request.</summary>
 		/// <remarks>
 		///           <para>Developers who implement this method must call <c>base.BeginRequestWithExtensionContext(context)</c> within their implementation.</para>
@@ -19408,7 +19408,7 @@ namespace Foundation {
 		void BeginRequestWithExtensionContext (NSExtensionContext context);
 	}
 
-	/// <summary>Interface that, together with the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Foundation%20NSLocking_%20Extensions&amp;scope=Xamarin" title="T:Foundation.NSLocking_Extensions">T:Foundation.NSLocking_Extensions</a></format> class, comprise the NSLocking protocol.</summary>
+	/// <summary>Interface that, together with the <see cref="T:Foundation.NSLocking_Extensions" /> class, comprise the NSLocking protocol.</summary>
 	/// <remarks>To be added.</remarks>
 	[Protocol]
 	interface NSLocking {

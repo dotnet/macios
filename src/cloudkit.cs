@@ -1640,7 +1640,7 @@ namespace CloudKit {
 	/// <remarks>
 	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:CloudKit.CKRecordValue" />.</para>
 	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:CloudKit.CKRecordValue" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Cloud%20Kit%20CKRecord%20Value_%20Extensions&amp;scope=Xamarin" title="T:CloudKit.CKRecordValue_Extensions">T:CloudKit.CKRecordValue_Extensions</a></format> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:CloudKit.CKRecordValue_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]

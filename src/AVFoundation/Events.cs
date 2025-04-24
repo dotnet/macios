@@ -59,7 +59,7 @@ namespace AVFoundation {
 		public NSError Error { get; private set; }
 	}
 
-	/// <summary>Provides data for the <see cref="E:AVFoundation.AVAudioSession.InputAvailabilityChanged" /> and <see cref="E:AVFoundation.AVAudioSession.InputAvailabilityChanged" /> and <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=AVFoundation%20AVStatus%20Event%20Args%20Input%20Availability%20Changed&amp;scope=Xamarin" title="E:AVFoundation.AVStatusEventArgs.InputAvailabilityChanged">E:AVFoundation.AVStatusEventArgs.InputAvailabilityChanged</a></format> events.</summary>
+	/// <summary>Provides data for the <see cref="E:AVFoundation.AVAudioSession.InputAvailabilityChanged" /> and <see cref="E:AVFoundation.AVAudioSession.InputAvailabilityChanged" /> and <see cref="E:AVFoundation.AVStatusEventArgs.InputAvailabilityChanged" /> events.</summary>
 	///     <remarks>
 	///     </remarks>
 	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/AVTouchSample/">avTouch</related>

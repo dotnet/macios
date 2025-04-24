@@ -140,7 +140,7 @@ namespace UIKit {
 		///         <summary>Loads an image from a resource embedded in the assembly.</summary>
 		///         <returns>The image loaded from the specified assembly.</returns>
 		///         <remarks>
-		///           <para>If the passed parameter for assembly is null, then the resource is looked up in the calling assembly using <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Reflection%20Assembly%20Get%20Calling%20Assembly&amp;scope=Xamarin" title="M:System.Reflection.Assembly.GetCallingAssembly*">M:System.Reflection.Assembly.GetCallingAssembly*</a></format>.</para>
+		///           <para>If the passed parameter for assembly is null, then the resource is looked up in the calling assembly using <see cref="M:System.Reflection.Assembly.GetCallingAssembly*" />.</para>
 		///           <para tool="threads">This can be used from a background thread.</para>
 		///         </remarks>
 		[MethodImpl (MethodImplOptions.NoInlining)]

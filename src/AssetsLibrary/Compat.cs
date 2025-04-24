@@ -229,7 +229,7 @@ namespace AssetsLibrary {
 		///         <param name="metadata">To be added.</param>
 		///         <summary>Changes the data to <paramref name="imageData" /> and the metadata to <paramref name="metadata" />.</summary>
 		///         <returns>
-		///           <para>A task that represents the asynchronous SetImageData operation.   The value of the TResult parameter is a <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Assets%20Library%20ALAssets%20Library%20Write%20Completion%20Delegate&amp;scope=Xamarin" title="T:AssetsLibrary.ALAssetsLibraryWriteCompletionDelegate">T:AssetsLibrary.ALAssetsLibraryWriteCompletionDelegate</a></format>.</para>
+		///           <para>A task that represents the asynchronous SetImageData operation.   The value of the TResult parameter is a <see cref="T:AssetsLibrary.ALAssetsLibraryWriteCompletionDelegate" />.</para>
 		///           <para>Application developers should check the <see cref="P:AssetsLibrary.ALAsset.Editable" /> property priot to using this method.</para>
 		///         </returns>
 		///         <remarks>To be added.</remarks>
@@ -282,7 +282,7 @@ namespace AssetsLibrary {
 		///         <param name="metadata">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <returns>
-		///           <para>A task that represents the asynchronous WriteModifiedImageToSavedToPhotosAlbum operation.   The value of the TResult parameter is a <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Assets%20Library%20ALAssets%20Library%20Write%20Completion%20Delegate&amp;scope=Xamarin" title="T:AssetsLibrary.ALAssetsLibraryWriteCompletionDelegate">T:AssetsLibrary.ALAssetsLibraryWriteCompletionDelegate</a></format>.</para>
+		///           <para>A task that represents the asynchronous WriteModifiedImageToSavedToPhotosAlbum operation.   The value of the TResult parameter is a <see cref="T:AssetsLibrary.ALAssetsLibraryWriteCompletionDelegate" />.</para>
 		///           <para>Application developers should check the <see cref="P:AssetsLibrary.ALAsset.Editable" /> property prior to calling htis method.</para>
 		///         </returns>
 		///         <remarks>To be added.</remarks>
@@ -306,7 +306,7 @@ namespace AssetsLibrary {
 		/// <param name="videoPathURL">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <returns>
-		///           <para>A task that represents the asynchronous WriteModifiedVideoToSavedPhotosAlbum operation.   The value of the TResult parameter is a <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Assets%20Library%20ALAssets%20Library%20Write%20Completion%20Delegate&amp;scope=Xamarin" title="T:AssetsLibrary.ALAssetsLibraryWriteCompletionDelegate">T:AssetsLibrary.ALAssetsLibraryWriteCompletionDelegate</a></format>.</para>
+		///           <para>A task that represents the asynchronous WriteModifiedVideoToSavedPhotosAlbum operation.   The value of the TResult parameter is a <see cref="T:AssetsLibrary.ALAssetsLibraryWriteCompletionDelegate" />.</para>
 		///         </returns>
 		///         <remarks>To be added.</remarks>
 		public unsafe virtual Task<NSUrl> WriteModifiedVideoToSavedPhotosAlbumAsync (NSUrl videoPathURL)
@@ -982,7 +982,7 @@ namespace AssetsLibrary {
 		///         <param name="metadata">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <returns>
-		///           <para>A task that represents the asynchronous WriteImageToSavedPhotosAlbum operation.   The value of the TResult parameter is a <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Assets%20Library%20ALAssets%20Library%20Write%20Completion%20Delegate&amp;scope=Xamarin" title="T:AssetsLibrary.ALAssetsLibraryWriteCompletionDelegate">T:AssetsLibrary.ALAssetsLibraryWriteCompletionDelegate</a></format>.</para>
+		///           <para>A task that represents the asynchronous WriteImageToSavedPhotosAlbum operation.   The value of the TResult parameter is a <see cref="T:AssetsLibrary.ALAssetsLibraryWriteCompletionDelegate" />.</para>
 		///         </returns>
 		///         <remarks>To be added.</remarks>
 		public unsafe virtual Task<NSUrl> WriteImageToSavedPhotosAlbumAsync (NSData imageData, NSDictionary metadata)
@@ -1007,7 +1007,7 @@ namespace AssetsLibrary {
 		///         <param name="metadata">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <returns>
-		///           <para>A task that represents the asynchronous WriteImageToSavedPhotosAlbum operation.   The value of the TResult parameter is a <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Assets%20Library%20ALAssets%20Library%20Write%20Completion%20Delegate&amp;scope=Xamarin" title="T:AssetsLibrary.ALAssetsLibraryWriteCompletionDelegate">T:AssetsLibrary.ALAssetsLibraryWriteCompletionDelegate</a></format>.</para>
+		///           <para>A task that represents the asynchronous WriteImageToSavedPhotosAlbum operation.   The value of the TResult parameter is a <see cref="T:AssetsLibrary.ALAssetsLibraryWriteCompletionDelegate" />.</para>
 		///         </returns>
 		///         <remarks>To be added.</remarks>
 		public unsafe virtual Task<NSUrl> WriteImageToSavedPhotosAlbumAsync (CGImage imageData, NSDictionary metadata)
@@ -1032,7 +1032,7 @@ namespace AssetsLibrary {
 		///         <param name="orientation">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <returns>
-		///           <para>A task that represents the asynchronous WriteImageToSavedPhotosAlbum operation.   The value of the TResult parameter is a <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Assets%20Library%20ALAssets%20Library%20Write%20Completion%20Delegate&amp;scope=Xamarin" title="T:AssetsLibrary.ALAssetsLibraryWriteCompletionDelegate">T:AssetsLibrary.ALAssetsLibraryWriteCompletionDelegate</a></format>.</para>
+		///           <para>A task that represents the asynchronous WriteImageToSavedPhotosAlbum operation.   The value of the TResult parameter is a <see cref="T:AssetsLibrary.ALAssetsLibraryWriteCompletionDelegate" />.</para>
 		///         </returns>
 		///         <remarks>To be added.</remarks>
 		public unsafe virtual Task<NSUrl> WriteImageToSavedPhotosAlbumAsync (CGImage imageData, ALAssetOrientation orientation)
@@ -1055,7 +1055,7 @@ namespace AssetsLibrary {
 		/// <param name="videoPathURL">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <returns>
-		///           <para>A task that represents the asynchronous WriteVideoToSavedPhotosAlbum operation.   The value of the TResult parameter is a <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Assets%20Library%20ALAssets%20Library%20Write%20Completion%20Delegate&amp;scope=Xamarin" title="T:AssetsLibrary.ALAssetsLibraryWriteCompletionDelegate">T:AssetsLibrary.ALAssetsLibraryWriteCompletionDelegate</a></format>.</para>
+		///           <para>A task that represents the asynchronous WriteVideoToSavedPhotosAlbum operation.   The value of the TResult parameter is a <see cref="T:AssetsLibrary.ALAssetsLibraryWriteCompletionDelegate" />.</para>
 		///         </returns>
 		///         <remarks>
 		///           <para copied="true">The WriteVideoToSavedPhotosAlbumAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>

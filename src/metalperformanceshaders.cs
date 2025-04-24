@@ -8094,7 +8094,7 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (MPSNNImageNode sourceNode);
 	}
 
-	/// <summary>A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Metal%20Performance%20Shaders%20MPSCNNNeuron%20Node&amp;scope=Xamarin" title="T:MetalPerformanceShaders.MPSCNNNeuronNode">T:MetalPerformanceShaders.MPSCNNNeuronNode</a></format> that represents a tanh activation function.</summary>
+	/// <summary>A <see cref="T:MetalPerformanceShaders.MPSCNNNeuronNode" /> that represents a tanh activation function.</summary>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnNeuronNode), Name = "MPSCNNNeuronTanHNode")]
 	[DisableDefaultCtor] // 'init' is unavailable

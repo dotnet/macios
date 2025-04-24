@@ -141,7 +141,7 @@ namespace AudioToolbox {
 		FilePosition = -40,
 	}
 
-	/// <summary>An enumeration whose values specify the <c>permissions</c> argument in the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Audio%20Toolbox%20Audio%20File%20Open&amp;scope=Xamarin" title="M:AudioToolbox.AudioFile.Open*">M:AudioToolbox.AudioFile.Open*</a></format> method.</summary>
+	/// <summary>An enumeration whose values specify the <c>permissions</c> argument in the <see cref="M:AudioToolbox.AudioFile.Open*" /> method.</summary>
 	///     <remarks>To be added.</remarks>
 	[Flags]
 	public enum AudioFilePermission {
@@ -153,7 +153,7 @@ namespace AudioToolbox {
 		ReadWrite = 0x03,
 	}
 
-	/// <summary>An enumeration whose values are valid flags for the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Audio%20Toolbox%20Audio%20File%20Create&amp;scope=Xamarin" title="M:AudioToolbox.AudioFile.Create*">M:AudioToolbox.AudioFile.Create*</a></format> method.</summary>
+	/// <summary>An enumeration whose values are valid flags for the <see cref="M:AudioToolbox.AudioFile.Create*" /> method.</summary>
 	///     <remarks>To be added.</remarks>
 	[Flags]
 	public enum AudioFileFlags { // UInt32 in AudioFileCreateWithURL()
@@ -419,7 +419,7 @@ namespace AudioToolbox {
 		}
 	}
 
-	/// <summary>An enumeration whose values specify the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Audio%20File%20Mark%20Type&amp;scope=Xamarin" title="P:AudioFileMark.Type">P:AudioFileMark.Type</a></format> property.</summary>
+	/// <summary>An enumeration whose values specify the <see cref="P:AudioFileMark.Type" /> property.</summary>
 	///     <remarks>To be added.</remarks>
 	public enum AudioFileMarkerType : uint // UInt32 in AudioFileMarkerType - AudioFile.h
 	{

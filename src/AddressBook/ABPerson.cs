@@ -785,8 +785,8 @@ namespace AddressBook {
 	///         Labels are used with
 	///         <see cref="M:AddressBook.ABAddressBook.LocalizedLabel(Foundation.NSString)" />,
 	///         <see cref="P:AddressBook.ABMultiValueEntry`1.Label" />,
-	///         <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:AddressBook.ABMultiValue`1.Add(`0,Foundation.NSString)&amp;scope=Xamarin" title="M:AddressBook.ABMultiValue`1.Add(`0,Foundation.NSString)">M:AddressBook.ABMultiValue`1.Add(`0,Foundation.NSString)</a></format>, and
-	///         <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:AddressBook.ABMultiValue`1.Insert(System.Int32,`0,Foundation.NSString)&amp;scope=Xamarin" title="M:AddressBook.ABMultiValue`1.Insert(System.Int32,`0,Foundation.NSString)">M:AddressBook.ABMultiValue`1.Insert(System.Int32,`0,Foundation.NSString)</a></format>.
+	///         <see cref="M:AddressBook.ABMultiValue`1.Add(`0,Foundation.NSString)" />, and
+	///         <see cref="M:AddressBook.ABMultiValue`1.Insert(System.Int32,`0,Foundation.NSString)" />.
 	///       </para>
 	///     </remarks>
 	[SupportedOSPlatform ("ios")]
@@ -921,7 +921,7 @@ namespace AddressBook {
 		///           Gets the localized name of a <paramref name="property" />.
 		///         </summary>
 		///         <returns>
-		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> containing the localized
+		///           A <see cref="T:System.String" /> containing the localized
 		///           name of a <paramref name="property" />.
 		///         </returns>
 		///         <remarks>
@@ -937,7 +937,7 @@ namespace AddressBook {
 		///           Gets the localized name of a <paramref name="propertyId" />.
 		///         </summary>
 		///         <returns>
-		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> containing the localized
+		///           A <see cref="T:System.String" /> containing the localized
 		///           name of a <paramref name="propertyId" />.
 		///         </returns>
 		///         <remarks>
@@ -1138,7 +1138,7 @@ namespace AddressBook {
 		///           Gets or sets the <see cref="T:AddressBook.ABPerson" />'s first name.
 		///         </summary>
 		///         <value>
-		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> containing
+		///           A <see cref="T:System.String" /> containing
 		///           the <see cref="T:AddressBook.ABPerson" />'s first name.
 		///         </value>
 		///         <remarks>
@@ -1153,7 +1153,7 @@ namespace AddressBook {
 		///           phonetic pronounciation.
 		///         </summary>
 		///         <value>
-		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> containing
+		///           A <see cref="T:System.String" /> containing
 		///           the <see cref="T:AddressBook.ABPerson" />'s first name
 		///           phonetic pronounciation.
 		///         </value>
@@ -1168,7 +1168,7 @@ namespace AddressBook {
 		///           Gets or sets the <see cref="T:AddressBook.ABPerson" />'s last name.
 		///         </summary>
 		///         <value>
-		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> containing
+		///           A <see cref="T:System.String" /> containing
 		///           the <see cref="T:AddressBook.ABPerson" />'s last name.
 		///         </value>
 		///         <remarks>
@@ -1183,7 +1183,7 @@ namespace AddressBook {
 		///           phonetic pronounciation.
 		///         </summary>
 		///         <value>
-		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> containing
+		///           A <see cref="T:System.String" /> containing
 		///           the <see cref="T:AddressBook.ABPerson" />'s last name phonetic pronounciation.
 		///         </value>
 		///         <remarks>
@@ -1197,7 +1197,7 @@ namespace AddressBook {
 		///           Gets or sets the <see cref="T:AddressBook.ABPerson" />'s middle name.
 		///         </summary>
 		///         <value>
-		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> containing
+		///           A <see cref="T:System.String" /> containing
 		///           the <see cref="T:AddressBook.ABPerson" />'s middle name.
 		///         </value>
 		///         <remarks>
@@ -1212,7 +1212,7 @@ namespace AddressBook {
 		///           phonetic pronounciation.
 		///         </summary>
 		///         <value>
-		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> containing
+		///           A <see cref="T:System.String" /> containing
 		///           the <see cref="T:AddressBook.ABPerson" />'s middle name phonetic pronounciation.
 		///         </value>
 		///         <remarks>
@@ -1226,7 +1226,7 @@ namespace AddressBook {
 		///           Gets or sets the <see cref="T:AddressBook.ABPerson" />'s prefix.
 		///         </summary>
 		///         <value>
-		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> containing
+		///           A <see cref="T:System.String" /> containing
 		///           the <see cref="T:AddressBook.ABPerson" />'s prefix.
 		///         </value>
 		///         <remarks>
@@ -1240,7 +1240,7 @@ namespace AddressBook {
 		///           Gets or sets the <see cref="T:AddressBook.ABPerson" />'s suffix.
 		///         </summary>
 		///         <value>
-		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> containing
+		///           A <see cref="T:System.String" /> containing
 		///           the <see cref="T:AddressBook.ABPerson" />'s suffix.
 		///         </value>
 		///         <remarks>
@@ -1254,7 +1254,7 @@ namespace AddressBook {
 		///           Gets or sets the <see cref="T:AddressBook.ABPerson" />'s nickname.
 		///         </summary>
 		///         <value>
-		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> containing
+		///           A <see cref="T:System.String" /> containing
 		///           the <see cref="T:AddressBook.ABPerson" />'s nickname.
 		///         </value>
 		///         <remarks>
@@ -1268,7 +1268,7 @@ namespace AddressBook {
 		///           Gets or sets the <see cref="T:AddressBook.ABPerson" />'s organization.
 		///         </summary>
 		///         <value>
-		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> containing
+		///           A <see cref="T:System.String" /> containing
 		///           the <see cref="T:AddressBook.ABPerson" />'s organization.
 		///         </value>
 		///         <remarks>
@@ -1282,7 +1282,7 @@ namespace AddressBook {
 		///           Gets or sets the <see cref="T:AddressBook.ABPerson" />'s job title.
 		///         </summary>
 		///         <value>
-		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> containing
+		///           A <see cref="T:System.String" /> containing
 		///           the <see cref="T:AddressBook.ABPerson" />'s job title.
 		///         </value>
 		///         <remarks>
@@ -1296,7 +1296,7 @@ namespace AddressBook {
 		///           Gets or sets the <see cref="T:AddressBook.ABPerson" />'s department.
 		///         </summary>
 		///         <value>
-		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> containing
+		///           A <see cref="T:System.String" /> containing
 		///           the <see cref="T:AddressBook.ABPerson" />'s department.
 		///         </value>
 		///         <remarks>
@@ -1383,7 +1383,7 @@ namespace AddressBook {
 		///           Gets or sets the <see cref="T:AddressBook.ABPerson" />'s note.
 		///         </summary>
 		///         <value>
-		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> containing
+		///           A <see cref="T:System.String" /> containing
 		///           the <see cref="T:AddressBook.ABPerson" />'s note.
 		///         </value>
 		///         <remarks>
@@ -1708,7 +1708,7 @@ namespace AddressBook {
 		///           Gets the specified property.
 		///         </summary>
 		///         <returns>
-		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Object&amp;scope=Xamarin" title="T:System.Object">T:System.Object</a></format> containing the value of the specified property.
+		///           A <see cref="T:System.Object" /> containing the value of the specified property.
 		///         </returns>
 		///         <remarks>
 		///         </remarks>

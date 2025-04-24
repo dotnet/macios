@@ -425,7 +425,7 @@ namespace CoreMidi {
 		/// <summary>Represents the value associated with the constant MIDINetworkBonjourServiceType</summary>
 		///         <value>
 		///         </value>
-		///         <remarks>You can pass this type to <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:Foundation.NSNetServiceBrowser.SearchForServices(System.String type, System.String domain)&amp;scope=Xamarin" title="M:Foundation.NSNetServiceBrowser.SearchForServices(System.String type, System.String domain)">M:Foundation.NSNetServiceBrowser.SearchForServices(System.String type, System.String domain)</a></format> to find MIDI devices available
+		///         <remarks>You can pass this type to <see cref="M:Foundation.NSNetServiceBrowser.SearchForServices(System.String type, System.String domain)" /> to find MIDI devices available
 		///         over bonjour.</remarks>
 		[Field ("MIDINetworkBonjourServiceType")]
 		NSString NetworkBonjourServiceType { get; }

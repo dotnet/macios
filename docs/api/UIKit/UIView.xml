@@ -16,7 +16,7 @@
           <term>
             Visualization: UIView instances are responsible for displaying
             their content, typically this is done by implementing a draw
-            method using either <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Graphics&amp;scope=Xamarin" title="N:CoreGraphics">N:CoreGraphics</a></format>,
+            method using either <see cref="N:CoreGraphics" />,
             OpenGL or customizing some of their visual properties.  Views 
             also have built-in support for animating elements of the view.  
           </term>
@@ -301,7 +301,7 @@ var myView = new UIView (new RectangleF (0, 0, 100, 100));
         
       </para>
       <para>
-        When the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIView%20Bound&amp;scope=Xamarin" title="P:UIKit.UIView.Bound">P:UIKit.UIView.Bound</a></format> property is changed, the size of the view is affected
+        When the <see cref="P:UIKit.UIView.Bound" /> property is changed, the size of the view is affected
         relative to the <see cref="P:UIKit.UIView.Center" /> property.
       </para>
       <format type="text/html">
@@ -311,12 +311,12 @@ var myView = new UIView (new RectangleF (0, 0, 100, 100));
       <para>Developers can animate changes in the geometry or appearance of a UIView by creating a new <see cref="T:UIKit.UIViewPropertyAnimator" />, configuring it, and calling its <see cref="M:UIKit.UIViewPropertyAnimator.StartAnimation(System.Double)" /> method. Developers can update the animations (for example, to cancel it) by calling the <see cref="M:UIKit.UIViewPropertyAnimator.AddAnimations(System.Action,System.nfloat)" /> method while the animation is in progress. The <format type="text/html"><a href="https://developer.xamarin.com/recipes/ios/animation/coreanimation/animate_a_uiview_using_uikit/">Animate a UIView using UIKit</a></format> recipe shows how to create an cancel an animation by using the <see cref="T:UIKit.UIViewPropertyAnimator" /> class.</para>
       <para>
         Alternatively, developers can create animations by calling the
-        <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:UIKit.UIView.BeginAnimations(string)&amp;scope=Xamarin" title="M:UIKit.UIView.BeginAnimations(string)">M:UIKit.UIView.BeginAnimations(string)</a></format> method, configuring the animation, making the
+        <see cref="M:UIKit.UIView.BeginAnimations(string)" /> method, configuring the animation, making the
         changes to the animatable properties and then completing the
         transaction by calling <see cref="M:UIKit.UIView.CommitAnimations" />.
       </para>
       <para>
-        After the developer calls <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:UIKit.UIView.BeginAnimations(string)&amp;scope=Xamarin" title="M:UIKit.UIView.BeginAnimations(string)">M:UIKit.UIView.BeginAnimations(string)</a></format>, they can
+        After the developer calls <see cref="M:UIKit.UIView.BeginAnimations(string)" />, they can
         call the following methods to configure the animation:
       </para>
       <list type="bullet">
@@ -372,7 +372,7 @@ UIView.CommitAnimations ();
       </example>
       <para>
         Alternatively, developers can create transactions and set configuration
-        options in the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIView%20Animate&amp;scope=Xamarin" title="M:UIKit.UIView.Animate*">M:UIKit.UIView.Animate*</a></format> collection of methods. These methods take, in a single call, the delay, the duration, an animation block, and an action to be invoked when the animation
+        options in the <see cref="M:UIKit.UIView.Animate*" /> collection of methods. These methods take, in a single call, the delay, the duration, an animation block, and an action to be invoked when the animation
         completes. However, Apple also discourages the use of these APIs. Their use is shown below:
       </para>
       <example>
@@ -389,7 +389,7 @@ UIView.Animate (duration, delay, UIViewAnimationOption.Autoreverse,
           ]]></code>
       </example>
       <para>
-        The above is the basic set of animations that are directly supported by the UIView class. For finer control over animations, developers can use the  <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Animation&amp;scope=Xamarin" title="N:CoreAnimation">N:CoreAnimation</a></format> API to animate properties on their UI elements. While implicit animation is disabled for the default layer of a UIView, developers can extend the <see cref="T:UIKit.UIView" /> class to create a derived UIView that contain a derived <see cref="T:CoreAnimation.CALayer" /> that handles animation action keys correctly. Developers should note that animated properties that are changed when adding a subview will be animated during the addition if their default value differs from the final value. For example, the "bounds" and "position" keys, if captured and animated, will cause added subviews to animate in from the origin of the screen.
+        The above is the basic set of animations that are directly supported by the UIView class. For finer control over animations, developers can use the  <see cref="N:CoreAnimation" /> API to animate properties on their UI elements. While implicit animation is disabled for the default layer of a UIView, developers can extend the <see cref="T:UIKit.UIView" /> class to create a derived UIView that contain a derived <see cref="T:CoreAnimation.CALayer" /> that handles animation action keys correctly. Developers should note that animated properties that are changed when adding a subview will be animated during the addition if their default value differs from the final value. For example, the "bounds" and "position" keys, if captured and animated, will cause added subviews to animate in from the origin of the screen.
       </para>
       <example>
         <para>To enable implicit animation, the developer first creates a custom layer that supplies customized animations for the keys or combinations of keys that the layer will handle. The following custom layer example animates the corner radius and transparency for custom views that use it:</para>
@@ -459,16 +459,16 @@ fadeAndRound = () =>
         To perform some work in a background thread that must
         update any of the UIView properties, or to invoke any of the
         UIView static methods, developers should use either the
-        <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:Foundation.NSObject.BeginInvokeOnMainThread()&amp;scope=Xamarin" title="M:Foundation.NSObject.BeginInvokeOnMainThread()">M:Foundation.NSObject.BeginInvokeOnMainThread()</a></format> or
-        <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:Foundation.NSObject.InvokeOnMainThread()&amp;scope=Xamarin" title="M:Foundation.NSObject.InvokeOnMainThread()">M:Foundation.NSObject.InvokeOnMainThread()</a></format> methods.  Both
+        <see cref="M:Foundation.NSObject.BeginInvokeOnMainThread()" /> or
+        <see cref="M:Foundation.NSObject.InvokeOnMainThread()" /> methods.  Both
         methods take a C# delegate or lambda that is invoked on the main
         thread.
       </para>
       <para>
-        The <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:Foundation.NSObject.InvokeOnMainThread()&amp;scope=Xamarin" title="M:Foundation.NSObject.InvokeOnMainThread()">M:Foundation.NSObject.InvokeOnMainThread()</a></format> method will
+        The <see cref="M:Foundation.NSObject.InvokeOnMainThread()" /> method will
         invoke the specified delegate method synchronously on the main
         thread. The
-        <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:Foundation.NSObject.BeginInvokeOnMainThread()&amp;scope=Xamarin" title="M:Foundation.NSObject.BeginInvokeOnMainThread()">M:Foundation.NSObject.BeginInvokeOnMainThread()</a></format> will queue
+        <see cref="M:Foundation.NSObject.BeginInvokeOnMainThread()" /> will queue
         the action to be executed on the main thread.
       </para>
       <para>
@@ -526,7 +526,7 @@ public static void EnsureInvokedOnMainThread (Action action)
       </format>
       <para>
         Subclasses of UIView should chain into either the UIView
-        constructor that is initialized with an initial frame (<format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=C:UIKit.UIView(System.Drawing.RectangleF)&amp;scope=Xamarin" title="C:UIKit.UIView(System.Drawing.RectangleF)">C:UIKit.UIView(System.Drawing.RectangleF)</a></format>). The following code shows one way to do this:
+        constructor that is initialized with an initial frame (<see cref="C:UIKit.UIView(System.Drawing.RectangleF)" />). The following code shows one way to do this:
       </para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
@@ -540,7 +540,7 @@ public class MyView : UIView {
       </example>
       <para>
         In an object that will be deserialized from an archive produced by the
-        UI designer, the developer must chain to the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=C:UIKit.UIView(Foundation.NSCoder)&amp;scope=Xamarin" title="C:UIKit.UIView(Foundation.NSCoder)">C:UIKit.UIView(Foundation.NSCoder)</a></format>
+        UI designer, the developer must chain to the <see cref="C:UIKit.UIView(Foundation.NSCoder)" />
         constructor and  flag the constructor as being the one
         implementing the selector "initWithCoder:", as shown in the code below:
       </para>
@@ -569,7 +569,7 @@ public class MyView : UIView {
       <para>
         To implement custom drawing code in a view, developers can subclass the
         UIView and override the <see cref="M:UIKit.UIView.Draw(CoreGraphics.CGRect)" />
-        method. The drawing code placed in the Draw method can use <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Graphics&amp;scope=Xamarin" title="N:CoreGraphics">N:CoreGraphics</a></format> to draw with. The steps to draw
+        method. The drawing code placed in the Draw method can use <see cref="N:CoreGraphics" /> to draw with. The steps to draw
         with Core Graphics are:
       </para>
       <list type="bullet">
@@ -785,7 +785,7 @@ else {
         <h2>Views and CALayers</h2>
       </format>
       <para>
-        Each UIView is backed by a <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Animation&amp;scope=Xamarin" title="N:CoreAnimation">N:CoreAnimation</a></format> Layer (<see cref="T:CoreAnimation.CALayer" />).  A CALayer
+        Each UIView is backed by a <see cref="N:CoreAnimation" /> Layer (<see cref="T:CoreAnimation.CALayer" />).  A CALayer
         represents the GPU-backed bitmap that is used to render the view
         into the screen.  Painting into a UIView  actually
         paints into the CALayer.
@@ -998,7 +998,7 @@ public class BlueLayer : CALayer
     <param name="animation">The animation identifier.</param>
     <summary>Indicates the beginning of an animation block.</summary>
     <remarks>
-      <para>Application developers should prefer to use the more compact syntax of the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIView%20Animate&amp;scope=Xamarin" title="M:UIKit.UIView.Animate*">M:UIKit.UIView.Animate*</a></format> method.</para>
+      <para>Application developers should prefer to use the more compact syntax of the <see cref="M:UIKit.UIView.Animate*" /> method.</para>
       <para>Older versions of iOS used a matched set of <see cref="M:UIKit.UIView.BeginAnimations(System.String,System.IntPtr)" /> and <see cref="M:UIKit.UIView.CommitAnimations" /> to specify an animation block. The following code, taken from the "Animate a UIView using UIKit" recipe, shows the technique:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[

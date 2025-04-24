@@ -26,7 +26,7 @@
       </para>
       <para>
 	To set the pasteboard contents to an image, use the
-	<format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIPaste%20Board%20Image&amp;scope=Xamarin" title="P:UIKit.UIPasteBoard.Image">P:UIKit.UIPasteBoard.Image</a></format>.  
+	<see cref="P:UIKit.UIPasteBoard.Image" />.  
 	property.
       </para>
       <para>
@@ -36,7 +36,7 @@
       </para>
       <para>
 	To set the values to arbitrary data types, use the
-	<format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIPaste%20Board%20Set%20Data&amp;scope=Xamarin" title="M:UIKit.UIPasteBoard.SetData*">M:UIKit.UIPasteBoard.SetData*</a></format> method.
+	<see cref="M:UIKit.UIPasteBoard.SetData*" /> method.
       </para>
       <para>
 	You can use the convenience properties <see cref="P:UIKit.UIPasteboard.String" />, <see cref="P:UIKit.UIPasteboard.Strings" />, <see cref="P:UIKit.UIPasteboard.Image" />, <see cref="P:UIKit.UIPasteboard.Images" />, <see cref="P:UIKit.UIPasteboard.Url" />, <see cref="P:UIKit.UIPasteboard.Urls" />, <see cref="P:UIKit.UIPasteboard.Color" /> and <see cref="P:UIKit.UIPasteboard.Colors" /> to set and get

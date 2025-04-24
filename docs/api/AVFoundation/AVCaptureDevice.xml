@@ -197,7 +197,7 @@ void Setup ()
           <para />
         </value>
         <remarks>
-          <para>Setting this property requires the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=P:AVFoundation.AVCaptureDevice.ActiveFormat’s&amp;scope=Xamarin" title="P:AVFoundation.AVCaptureDevice.ActiveFormat’s">P:AVFoundation.AVCaptureDevice.ActiveFormat’s</a></format> IsVideoHdrSupported to be <see langword="true" />, otherwise you will get an exception.</para>
+          <para>Setting this property requires the <see cref="P:AVFoundation.AVCaptureDevice.ActiveFormat’s" /> IsVideoHdrSupported to be <see langword="true" />, otherwise you will get an exception.</para>
           <para />
           <para>Setting the <see cref="P:AVFoundation.AVCaptureDevice.ActiveFormat" /> property will change this to <see langword="false" />.  </para>
           <para />

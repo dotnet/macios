@@ -13,14 +13,14 @@
 	There are several subclasses of CALayer that developers can use:
 	<see cref="T:CoreAnimation.CAEmitterLayer" />, 
 	<see cref="T:CoreAnimation.CAGradientLayer" />, 
-	<format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:CoreAnimation.CAEAGLLayer/CAOpenGLLayer&amp;scope=Xamarin" title="T:CoreAnimation.CAEAGLLayer/CAOpenGLLayer">T:CoreAnimation.CAEAGLLayer/CAOpenGLLayer</a></format>, 
+	<see cref="T:CoreAnimation.CAEAGLLayer/CAOpenGLLayer" />, 
 	<see cref="T:CoreAnimation.CAReplicatorLayer" />, 
 	<see cref="T:CoreAnimation.CAScrollLayer" />, 
 	<see cref="T:CoreAnimation.CAShapeLayer" />, 
 	<see cref="T:CoreAnimation.CATextLayer" />, 
 	<see cref="T:CoreAnimation.CATiledLayer" />, 
 	<see cref="T:CoreAnimation.CATransformLayer" /> and 
-	<format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Animation%20QCComposition%20Layer&amp;scope=Xamarin" title="T:CoreAnimation.QCCompositionLayer">T:CoreAnimation.QCCompositionLayer</a></format>.
+	<see cref="T:CoreAnimation.QCCompositionLayer" />.
 
       </para>
       <format type="text/html">
@@ -194,14 +194,14 @@ public class MyLayer : CALayer {
       </example>
       <para>
 	On macOS, CALayers are optional.  To enable them, you must set
-	the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=App%20Kit%20NSView%20Wants%20Layer&amp;scope=Xamarin" title="P:AppKit.NSView.WantsLayer">P:AppKit.NSView.WantsLayer</a></format> property
+	the <see cref="P:AppKit.NSView.WantsLayer" /> property
 	to true.  You can change the layer for an NSView by setting
-	the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=App%20Kit%20NSView%20Layer&amp;scope=Xamarin" title="P:AppKit.NSView.Layer">P:AppKit.NSView.Layer</a></format> property.
+	the <see cref="P:AppKit.NSView.Layer" /> property.
 
       </para>
       <para>
 	On macOS, to change the default layer class used for a given
-	NSView, you can override the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=App%20Kit%20Make%20Backing%20Layer&amp;scope=Xamarin" title="M:AppKit.MakeBackingLayer*">M:AppKit.MakeBackingLayer*</a></format> method.
+	NSView, you can override the <see cref="M:AppKit.MakeBackingLayer*" /> method.
 
       </para>
     </remarks>

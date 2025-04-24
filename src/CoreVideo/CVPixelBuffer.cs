@@ -421,8 +421,8 @@ namespace CoreVideo {
 		extern static /* void* __nullable */ IntPtr CVPixelBufferGetBaseAddress (
 			/* CVPixelBufferRef __nonnull */ IntPtr pixelBuffer);
 
-		/// <summary>Pointers to the base address storing the pixels.   Must call <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Video%20CVPixel%20Buffer%20Lock&amp;scope=Xamarin" title="M:CoreVideo.CVPixelBuffer.Lock*">M:CoreVideo.CVPixelBuffer.Lock*</a></format> to to lock the base address</summary>
-		///         <value>Pointer to the base address storing the pixels, or <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Int%20Ptr%20Zero&amp;scope=Xamarin" title="P:System.IntPtr.Zero">P:System.IntPtr.Zero</a></format> if the pixel buffer is not locked.</value>
+		/// <summary>Pointers to the base address storing the pixels.   Must call <see cref="M:CoreVideo.CVPixelBuffer.Lock*" /> to to lock the base address</summary>
+		///         <value>Pointer to the base address storing the pixels, or <see cref="P:System.IntPtr.Zero" /> if the pixel buffer is not locked.</value>
 		///         <remarks>To be added.</remarks>
 		public IntPtr BaseAddress {
 			get {

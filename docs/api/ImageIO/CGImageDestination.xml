@@ -17,7 +17,7 @@
       <para>In the classic API, those methods were called FromUrl, FromData and Create respectively.   But this naming was incorrect, as it did not really create an image destination from a url, or a data.  In the Unified API, they have all been turned into <see cref="M:ImageIO.CGImageDestination.Create(Foundation.NSMutableData,System.String,System.Int32,ImageIO.CGImageDestinationOptions)" /> methods.</para>
       <para>
       </para>
-      <para>Once you have created the image, you can call <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Image%20IOCGImage%20Destination%20Add%20Image&amp;scope=Xamarin" title="M:ImageIO.CGImageDestination.AddImage*">M:ImageIO.CGImageDestination.AddImage*</a></format> or <see cref="M:ImageIO.CGImageDestination.AddImageAndMetadata(CoreGraphics.CGImage,ImageIO.CGImageMetadata,ImageIO.CGImageDestinationOptions)" /> to add one or more images.   </para>
+      <para>Once you have created the image, you can call <see cref="M:ImageIO.CGImageDestination.AddImage*" /> or <see cref="M:ImageIO.CGImageDestination.AddImageAndMetadata(CoreGraphics.CGImage,ImageIO.CGImageMetadata,ImageIO.CGImageDestinationOptions)" /> to add one or more images.   </para>
       <para>
       </para>
       <para>To write out the image, you must call the <see cref="M:ImageIO.CGImageDestination.Close" /> method.   </para>

@@ -16,7 +16,7 @@ namespace Photos {
 			get { return _ObjectAtIndexedSubscript (index); }
 		}
 
-		/// <summary>A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Collections%20Generic%20IEnumerator&amp;scope=Xamarin" title="T:System.Collections.Generic.IEnumerator">T:System.Collections.Generic.IEnumerator</a></format> that can iterate over the assets in the <see cref="T:Photos.PHFetchResult" />.</summary>
+		/// <summary>A <see cref="T:System.Collections.Generic.IEnumerator" /> that can iterate over the assets in the <see cref="T:Photos.PHFetchResult" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		public IEnumerator<NSObject> GetEnumerator ()

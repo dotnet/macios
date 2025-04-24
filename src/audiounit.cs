@@ -1160,7 +1160,7 @@ namespace AudioUnit {
 
 		/// <param name="observer">The block that is called after the parameter changes.</param>
 		///         <summary>Adds a observer for the parameter and returns a token that developers can use to identify it.</summary>
-		///         <returns>A token that can be passed to the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:RemoveParameterObserver*&amp;scope=Xamarin" title="M:RemoveParameterObserver*">M:RemoveParameterObserver*</a></format> and <see cref="M:AudioUnit.AUParameter.SetValue(System.Single,AudioUnit.AUParameterObserverToken,System.UInt64,AudioUnit.AUParameterAutomationEventType)" /> methods.</returns>
+		///         <returns>A token that can be passed to the <see cref="M:RemoveParameterObserver*" /> and <see cref="M:AudioUnit.AUParameter.SetValue(System.Single,AudioUnit.AUParameterObserverToken,System.UInt64,AudioUnit.AUParameterAutomationEventType)" /> methods.</returns>
 		///         <remarks>To be added.</remarks>
 		[Wrap ("new AUParameterObserverToken { ObserverToken = TokenByAddingParameterObserver (observer) }")]
 		AUParameterObserverToken CreateTokenByAddingParameterObserver (AUParameterObserver observer);

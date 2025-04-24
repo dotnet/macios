@@ -352,7 +352,7 @@ namespace CoreImage {
 		CIContext FromMetalDevice (IMTLDevice device, [NullAllowed] NSDictionary options);
 
 		/// <param name="device">The source <see cref="T:Metal.IMTLDevice" />.</param>
-		///         <param name="options">The desired options for the new <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:CoreImag.CIContext&amp;scope=Xamarin" title="T:CoreImag.CIContext">T:CoreImag.CIContext</a></format>.<para tool="nullallowed">This parameter can be <see langword="null" />.</para></param>
+		///         <param name="options">The desired options for the new <see cref="T:CoreImag.CIContext" />.<para tool="nullallowed">This parameter can be <see langword="null" />.</para></param>
 		///         <summary>Creates a new <see cref="T:CoreImage.CIContext" /> from the provided Metal <paramref name="device" />, applying the specified options.</summary>
 		///         <returns>A new <see cref="T:CoreImage.CIContext" />.</returns>
 		///         <remarks>To be added.</remarks>
@@ -5035,7 +5035,7 @@ namespace CoreImage {
 		NSString TypeText { get; }
 	}
 
-	/// <summary>Locations of the eyes and mouths in a detected face. In video sequences, attempts to maintain a consistent <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Image%20CIFace%20Feature%20Tracking%20ID&amp;scope=Xamarin" title="P:CoreImage.CIFaceFeature.TrackingID">P:CoreImage.CIFaceFeature.TrackingID</a></format>.</summary>
+	/// <summary>Locations of the eyes and mouths in a detected face. In video sequences, attempts to maintain a consistent <see cref="P:CoreImage.CIFaceFeature.TrackingID" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CoreImage/Reference/CIFaceFeature/index.html">Apple documentation for <c>CIFaceFeature</c></related>
 	[BaseType (typeof (CIFeature))]
@@ -5595,7 +5595,7 @@ namespace CoreImage {
 		NSData Message { get; set; }
 	}
 
-	/// <summary>Generates an Aztec code for the specified <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Image%20CIAztec%20Code%20Generator%20Message&amp;scope=Xamarin" title="P:CoreImage.CIAztecCodeGenerator.Message">P:CoreImage.CIAztecCodeGenerator.Message</a></format>.</summary>
+	/// <summary>Generates an Aztec code for the specified <see cref="P:CoreImage.CIAztecCodeGenerator.Message" />.</summary>
 	///     <remarks>
 	///       <para>The Aztec code is defined at <format type="text/html"><a href="https://www.iso.org/iso/iso_catalogue/catalogue_tc/catalogue_detail.htm?csnumber=41548">www.iso.org/iso/iso_catalogue/catalogue_tc/catalogue_detail.htm?csnumber=41548</a></format>.</para>
 	///     </remarks>
@@ -6194,7 +6194,7 @@ namespace CoreImage {
 	interface CIDissolveTransition {
 	}
 
-	/// <summary>A <see cref="T:CoreImage.CIBlendFilter" /> that divides the color values of its <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=CIBlend%20Filter%20Image&amp;scope=Xamarin" title="P:CIBlendFilter.Image">P:CIBlendFilter.Image</a></format> and <see cref="P:CoreImage.CIBlendFilter.BackgroundImage" />.</summary>
+	/// <summary>A <see cref="T:CoreImage.CIBlendFilter" /> that divides the color values of its <see cref="P:CIBlendFilter.Image" /> and <see cref="P:CoreImage.CIBlendFilter.BackgroundImage" />.</summary>
 	[CoreImageFilter]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIBlendFilter))]
@@ -11762,14 +11762,14 @@ namespace CoreImage {
 		[Export ("radius1")]
 		float Radius1 { get; set; }
 
-		/// <summary>Gets or sets the color at the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Image%20CIColor%20Radius%200&amp;scope=Xamarin" title="P:CoreImage.CIColor.Radius0">P:CoreImage.CIColor.Radius0</a></format> location in the gradient.</summary>
+		/// <summary>Gets or sets the color at the <see cref="P:CoreImage.CIColor.Radius0" /> location in the gradient.</summary>
 		/// <value>To be added.</value>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("color0", ArgumentSemantic.Retain)]
 		CIColor Color0 { get; set; }
 
-		/// <summary>Gets or sets the color at the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Image%20CIColor%20Radius%201&amp;scope=Xamarin" title="P:CoreImage.CIColor.Radius1">P:CoreImage.CIColor.Radius1</a></format> location in the gradient.</summary>
+		/// <summary>Gets or sets the color at the <see cref="P:CoreImage.CIColor.Radius1" /> location in the gradient.</summary>
 		/// <value>To be added.</value>
 		/// <remarks>To be added.</remarks>
 		[Abstract]

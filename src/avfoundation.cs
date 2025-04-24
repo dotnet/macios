@@ -1036,7 +1036,7 @@ namespace AVFoundation {
 		uint ByteLength { get; set; }
 	}
 
-	/// <summary>Associates an <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=AVFoundation%20AVAudio%20Node%20Bus&amp;scope=Xamarin" title="T:AVFoundation.AVAudioNodeBus">T:AVFoundation.AVAudioNodeBus</a></format> and an optional <see cref="T:AVFoundation.AVAudioNode" />.</summary>
+	/// <summary>Associates an <see cref="T:AVFoundation.AVAudioNodeBus" /> and an optional <see cref="T:AVFoundation.AVAudioNode" />.</summary>
 	/// <remarks>To be added.</remarks>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/AVFoundation/AVAudioConnectionPoint">Apple documentation for <c>AVAudioConnectionPoint</c></related>
 	[MacCatalyst (13, 1)]
@@ -1070,7 +1070,7 @@ namespace AVFoundation {
 	[MacCatalyst (13, 1)]
 	delegate AVAudioEngineManualRenderingStatus AVAudioEngineManualRenderingBlock (/* AVAudioFrameCount = uint */ uint numberOfFrames, AudioBuffers outBuffer, [NullAllowed] /* OSStatus */ ref int outError);
 
-	/// <summary>A group of connected <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:AVFounding.AVAudioNode&amp;scope=Xamarin" title="T:AVFounding.AVAudioNode">T:AVFounding.AVAudioNode</a></format> objects, each of which performs a processing or IO task.</summary>
+	/// <summary>A group of connected <see cref="T:AVFounding.AVAudioNode" /> objects, each of which performs a processing or IO task.</summary>
 	/// <remarks>To be added.</remarks>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVAudioEngine_Class/index.html">Apple documentation for <c>AVAudioEngine</c></related>
 	[MacCatalyst (13, 1)]
@@ -3034,7 +3034,7 @@ namespace AVFoundation {
 
 		/// <param name="sampleRate">To be added.</param>
 		///         <param name="outError">On failure, this contains the error details.</param>
-		///         <summary>Application developers should not use this deprecated method. Instead use <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:AVFoundation.AVAudioSession.SetPreferredSampleRate(Double, out NSError)&amp;scope=Xamarin" title="M:AVFoundation.AVAudioSession.SetPreferredSampleRate(Double, out NSError)">M:AVFoundation.AVAudioSession.SetPreferredSampleRate(Double, out NSError)</a></format></summary>
+		///         <summary>Application developers should not use this deprecated method. Instead use <see cref="M:AVFoundation.AVAudioSession.SetPreferredSampleRate(Double, out NSError)" /></summary>
 		///         <returns>
 		///           <see langword="true" /> if the request was successful, otherwise the outError parameter contains an instance of NSError describing the problem.</returns>
 		///         <remarks>To be added.</remarks>
@@ -17033,7 +17033,7 @@ namespace AVFoundation {
 		/// True if the current combination of session preset, current hardware and format supports image stabilization, false otherwise.
 		///      </value>
 		///         <remarks>
-		///           <para>The hardware, the current session preset as set on the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:P:AVFoundation.AVCaptureSession.SessionPreset&amp;scope=Xamarin" title="T:P:AVFoundation.AVCaptureSession.SessionPreset">T:P:AVFoundation.AVCaptureSession.SessionPreset</a></format> and the <see cref="P:AVFoundation.AVCaptureDevice.ActiveFormat" /> all have an effect on whether image stabilization is supported.</para>
+		///           <para>The hardware, the current session preset as set on the <see cref="T:P:AVFoundation.AVCaptureSession.SessionPreset" /> and the <see cref="P:AVFoundation.AVCaptureDevice.ActiveFormat" /> all have an effect on whether image stabilization is supported.</para>
 		///           <para>
 		///           </para>
 		///         </remarks>
@@ -21682,7 +21682,7 @@ namespace AVFoundation {
 		/// <param name="urlAsset">To be added.</param>
 		///         <param name="destinationUrl">To be added.</param>
 		///         <param name="options">To be added.</param>
-		///         <summary>Gets a <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:AVFoundation.AVAssetDownloadTask &amp;scope=Xamarin" title="T:AVFoundation.AVAssetDownloadTask ">T:AVFoundation.AVAssetDownloadTask </a></format> for the specified asset, destination, and options.</summary>
+		///         <summary>Gets a <see cref="T:AVFoundation.AVAssetDownloadTask " /> for the specified asset, destination, and options.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[Wrap ("GetAssetDownloadTask (urlAsset, destinationUrl, options.GetDictionary ())")]
@@ -21698,7 +21698,7 @@ namespace AVFoundation {
 		///         <param name="title">To be added.</param>
 		///         <param name="artworkData">To be added.</param>
 		///         <param name="options">To be added.</param>
-		///         <summary>Gets a <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:AVFoundation.AVAssetDownloadTask &amp;scope=Xamarin" title="T:AVFoundation.AVAssetDownloadTask ">T:AVFoundation.AVAssetDownloadTask </a></format> for the specified asset, title, artwork, and options.</summary>
+		///         <summary>Gets a <see cref="T:AVFoundation.AVAssetDownloadTask " /> for the specified asset, title, artwork, and options.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
@@ -21827,13 +21827,13 @@ namespace AVFoundation {
 		[Export ("videoSettings", ArgumentSemantic.Copy), NullAllowed]
 		NSDictionary WeakVideoSettings { get; }
 
-		/// <summary>Gets or sets the compressed video settings to use when creating a <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:onoTouch.AVFoundation.AVAssetWriterInput&amp;scope=Xamarin" title="T:onoTouch.AVFoundation.AVAssetWriterInput">T:onoTouch.AVFoundation.AVAssetWriterInput</a></format> object.</summary>
+		/// <summary>Gets or sets the compressed video settings to use when creating a <see cref="T:onoTouch.AVFoundation.AVAssetWriterInput" /> object.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakVideoSettings")]
 		AVVideoSettingsCompressed CompressedVideoSettings { get; }
 
-		/// <summary>Gets or sets the uncompressed video settings to use when creating a <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:onoTouch.AVFoundation.AVAssetWriterInput&amp;scope=Xamarin" title="T:onoTouch.AVFoundation.AVAssetWriterInput">T:onoTouch.AVFoundation.AVAssetWriterInput</a></format> object.</summary>
+		/// <summary>Gets or sets the uncompressed video settings to use when creating a <see cref="T:onoTouch.AVFoundation.AVAssetWriterInput" /> object.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakVideoSettings")]

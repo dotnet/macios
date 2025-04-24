@@ -335,7 +335,7 @@ namespace MediaToolbox {
 	}
 
 	// uint32_t -> MTAudioProcessingTap.h
-	/// <summary>An enumeration that specifies the flags to be used with calls to the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=C:MediaToolbox.MTAudioProcessingTap.ctor(MediaToolbox.MTAudioProcessingTapCallbacks,MediaToolbox.MTAudioProcessingTapCreationFlags)&amp;scope=Xamarin" title="C:MediaToolbox.MTAudioProcessingTap.ctor(MediaToolbox.MTAudioProcessingTapCallbacks,MediaToolbox.MTAudioProcessingTapCreationFlags)">C:MediaToolbox.MTAudioProcessingTap.ctor(MediaToolbox.MTAudioProcessingTapCallbacks,MediaToolbox.MTAudioProcessingTapCreationFlags)</a></format> constructor.</summary>
+	/// <summary>An enumeration that specifies the flags to be used with calls to the <see cref="C:MediaToolbox.MTAudioProcessingTap.ctor(MediaToolbox.MTAudioProcessingTapCallbacks,MediaToolbox.MTAudioProcessingTapCreationFlags)" /> constructor.</summary>
 	///     <remarks>To be added.</remarks>
 	[Flags]
 	public enum MTAudioProcessingTapCreationFlags : uint {
@@ -346,7 +346,7 @@ namespace MediaToolbox {
 	}
 
 	// uint32_t -> MTAudioProcessingTap.h
-	/// <summary>An enumeration that specifies flags to be used with the <see cref="M:MediaToolbox.MTAudioProcessingTap.GetSourceAudio(System.nint,AudioToolbox.AudioBuffers,MediaToolbox.MTAudioProcessingTapFlags@,CoreMedia.CMTimeRange@,System.nint@)" /> method, and the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=C:MediaToolbox.MTAudioProcessingTapProcessCallback&amp;scope=Xamarin" title="C:MediaToolbox.MTAudioProcessingTapProcessCallback">C:MediaToolbox.MTAudioProcessingTapProcessCallback</a></format> and <see cref="C:MediaToolbox.MTAudioProcessingTapProcessDelegate" /> constructors.</summary>
+	/// <summary>An enumeration that specifies flags to be used with the <see cref="M:MediaToolbox.MTAudioProcessingTap.GetSourceAudio(System.nint,AudioToolbox.AudioBuffers,MediaToolbox.MTAudioProcessingTapFlags@,CoreMedia.CMTimeRange@,System.nint@)" /> method, and the <see cref="C:MediaToolbox.MTAudioProcessingTapProcessCallback" /> and <see cref="C:MediaToolbox.MTAudioProcessingTapProcessDelegate" /> constructors.</summary>
 	///     <remarks>To be added.</remarks>
 	[Flags]
 	public enum MTAudioProcessingTapFlags : uint {
@@ -367,7 +367,7 @@ namespace MediaToolbox {
 		InvalidArgument = -12780,
 	}
 
-	/// <summary>Holds the set of callbacks passed to the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=C:MediaToolbox.MTAudioProcessingTap.ctor(MediaToolbox.MTAudioProcessingTapCallbacks,MediaToolbox.MTAudioProcessingTapCreationFlags)&amp;scope=Xamarin" title="C:MediaToolbox.MTAudioProcessingTap.ctor(MediaToolbox.MTAudioProcessingTapCallbacks,MediaToolbox.MTAudioProcessingTapCreationFlags)">C:MediaToolbox.MTAudioProcessingTap.ctor(MediaToolbox.MTAudioProcessingTapCallbacks,MediaToolbox.MTAudioProcessingTapCreationFlags)</a></format> constructor.</summary>
+	/// <summary>Holds the set of callbacks passed to the <see cref="C:MediaToolbox.MTAudioProcessingTap.ctor(MediaToolbox.MTAudioProcessingTapCallbacks,MediaToolbox.MTAudioProcessingTapCreationFlags)" /> constructor.</summary>
 	///     <remarks>To be added.</remarks>
 	public class MTAudioProcessingTapCallbacks {
 		/// <param name="process">To be added.</param>

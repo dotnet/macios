@@ -101,7 +101,7 @@ namespace MapKit {
 	}
 
 	// NSUInteger -> MKTypes.h
-	/// <summary>An enumeration whose values represent various errors that can occur with <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Map%20Kit%20MKDirections%20Calculate%20Route&amp;scope=Xamarin" title="T:MapKit.MKDirections.CalculateRoute">T:MapKit.MKDirections.CalculateRoute</a></format> and <see cref="M:MapKit.MKDirections.CalculateETA(MapKit.MKETAHandler)" />.</summary>
+	/// <summary>An enumeration whose values represent various errors that can occur with <see cref="T:MapKit.MKDirections.CalculateRoute" /> and <see cref="M:MapKit.MKDirections.CalculateETA(MapKit.MKETAHandler)" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]

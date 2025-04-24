@@ -1043,7 +1043,7 @@ namespace Photos {
 	/// <summary>A continuation handler for that is called by the Photos application to show progress for an image request.</summary>
 	delegate void PHAssetImageProgressHandler (double progress, NSError error, out bool stop, NSDictionary info);
 
-	/// <summary>Options used when retrieving images with the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:PHImageManager&amp;scope=Xamarin" title="T:PHImageManager">T:PHImageManager</a></format> singleton.</summary>
+	/// <summary>Options used when retrieving images with the <see cref="T:PHImageManager" /> singleton.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Photos/Reference/PHImageRequestOptions_Class/index.html">Apple documentation for <c>PHImageRequestOptions</c></related>
 	[MacCatalyst (13, 1)]
@@ -1086,7 +1086,7 @@ namespace Photos {
 	/// <summary>Delegate type used with <see cref="P:Photos.PHVideoRequestOptions.ProgressHandler" />.</summary>
 	delegate void PHAssetVideoProgressHandler (double progress, NSError error, out bool stop, NSDictionary info);
 
-	/// <summary>Options used when retrieiving videos with the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Photos%20PHPhoto%20Manager&amp;scope=Xamarin" title="T:Photos.PHPhotoManager">T:Photos.PHPhotoManager</a></format> singleton.</summary>
+	/// <summary>Options used when retrieiving videos with the <see cref="T:Photos.PHPhotoManager" /> singleton.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Photos/Reference/PHVideoRequestOptions_Class/index.html">Apple documentation for <c>PHVideoRequestOptions</c></related>
 	[MacCatalyst (13, 1)]

@@ -238,7 +238,7 @@ namespace CoreSpotlight {
 
 	delegate void CSSearchableIndexEndIndexHandler ([NullAllowed] NSError error);
 
-	/// <summary>Extension methods for <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:CoreServices.CSSearchableIndex&amp;scope=Xamarin" title="T:CoreServices.CSSearchableIndex">T:CoreServices.CSSearchableIndex</a></format>.</summary>
+	/// <summary>Extension methods for <see cref="T:CoreServices.CSSearchableIndex" />.</summary>
 	[NoTV] // CS_TVOS_UNAVAILABLE
 	[MacCatalyst (13, 1)]
 	[Category]
@@ -2580,7 +2580,7 @@ namespace CoreSpotlight {
 		[Export ("start")]
 		void Start ();
 
-		/// <summary>Cancels the current search and calls <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Spotlight%20Completion%20Handler&amp;scope=Xamarin" title="P:CoreSpotlight.CompletionHandler">P:CoreSpotlight.CompletionHandler</a></format>, if present, with <see cref="F:CoreSpotlight.CSSearchQueryErrorCode.Cancelled" />.</summary>
+		/// <summary>Cancels the current search and calls <see cref="P:CoreSpotlight.CompletionHandler" />, if present, with <see cref="F:CoreSpotlight.CSSearchQueryErrorCode.Cancelled" />.</summary>
 		///         <remarks>To be added.</remarks>
 		[Export ("cancel")]
 		void Cancel ();

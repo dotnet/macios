@@ -271,7 +271,7 @@ namespace QuickLook {
 	///     <remarks>
 	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:QuickLook.QLPreviewItem" />.</para>
 	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:QuickLook.QLPreviewItem" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Quick%20Look%20QLPreview%20Item_%20Extensions&amp;scope=Xamarin" title="T:QuickLook.QLPreviewItem_Extensions">T:QuickLook.QLPreviewItem_Extensions</a></format> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:QuickLook.QLPreviewItem_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	interface IQLPreviewItem { }
 

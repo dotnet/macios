@@ -415,7 +415,7 @@ namespace AddressBook {
 		///           records in the address book.
 		///         </summary>
 		///         <value>
-		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Int%2032&amp;scope=Xamarin" title="T:System.Int32">T:System.Int32</a></format> containing the number of
+		///           A <see cref="T:System.Int32" /> containing the number of
 		///           <see cref="T:AddressBook.ABPerson" />
 		///           records in the address book.
 		///         </value>
@@ -483,7 +483,7 @@ namespace AddressBook {
 		///           Gets the number of groups in the address book.
 		///         </summary>
 		///         <value>
-		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Int%2032&amp;scope=Xamarin" title="T:System.Int32">T:System.Int32</a></format> containing the number of
+		///           A <see cref="T:System.Int32" /> containing the number of
 		///           <see cref="T:AddressBook.ABGroup" /> records
 		///           in the address book.
 		///         </value>
@@ -539,7 +539,7 @@ namespace AddressBook {
 		///           Localize a record-property label into the current UI language.
 		///         </summary>
 		///         <returns>
-		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> containing the localized
+		///           A <see cref="T:System.String" /> containing the localized
 		///           version of the record-property label <paramref name="label" />.
 		///         </returns>
 		///         <remarks>
@@ -659,7 +659,7 @@ namespace AddressBook {
 		///           in the address book.
 		///         </summary>
 		///         <returns>
-		///           An <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Collections%20IEnumerator&amp;scope=Xamarin" title="T:System.Collections.IEnumerator">T:System.Collections.IEnumerator</a></format>
+		///           An <see cref="T:System.Collections.IEnumerator" />
 		///           which will return all records and groups in the address book.
 		///         </returns>
 		///         <remarks>
@@ -675,7 +675,7 @@ namespace AddressBook {
 		///         </summary>
 		///         <returns>
 		///           An
-		///           <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Collections%20Generic%20IEnumerator{%20Address%20Book%20ABRecord}&amp;scope=Xamarin" title="T:System.Collections.Generic.IEnumerator{AddressBook.ABRecord}">T:System.Collections.Generic.IEnumerator{AddressBook.ABRecord}</a></format>
+		///           <see cref="T:System.Collections.Generic.IEnumerator{AddressBook.ABRecord}" />
 		///           which will return all records and groups in the address book.
 		///         </returns>
 		///         <remarks>
@@ -692,7 +692,7 @@ namespace AddressBook {
 		[DllImport (Constants.AddressBookLibrary)]
 		extern static IntPtr ABAddressBookGetGroupWithRecordID (IntPtr addressBook, int /* ABRecordID */ recordId);
 		/// <param name="recordId">
-		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Int%2032&amp;scope=Xamarin" title="T:System.Int32">T:System.Int32</a></format> containing the record ID.
+		///           A <see cref="T:System.Int32" /> containing the record ID.
 		///         </param>
 		///         <summary>
 		///           Returns the <see cref="T:AddressBook.ABGroup" />
@@ -717,7 +717,7 @@ namespace AddressBook {
 		[DllImport (Constants.AddressBookLibrary)]
 		extern static IntPtr ABAddressBookGetPersonWithRecordID (IntPtr addressBook, int /* ABRecordID */ recordId);
 		/// <param name="recordId">
-		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Int%2032&amp;scope=Xamarin" title="T:System.Int32">T:System.Int32</a></format> containing the record ID.
+		///           A <see cref="T:System.Int32" /> containing the record ID.
 		///         </param>
 		///         <summary>
 		///           Returns the <see cref="T:AddressBook.ABPerson" />
@@ -742,7 +742,7 @@ namespace AddressBook {
 		[DllImport (Constants.AddressBookLibrary)]
 		extern static IntPtr ABAddressBookCopyPeopleWithName (IntPtr addressBook, IntPtr name);
 		/// <param name="name">
-		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> containing the name of the person
+		///           A <see cref="T:System.String" /> containing the name of the person
 		///           to search for.
 		///         </param>
 		///         <summary>

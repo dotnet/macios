@@ -225,7 +225,7 @@ else
           <term>The <see cref="E:UIKit.UIScrollView.Scrolled" /> event is raised repeatedly;</term>
         </item>
         <item>
-          <term>The <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIScroll%20Develeration%20Ended&amp;scope=Xamarin" title="E:UIKit.UIScroll.DevelerationEnded">E:UIKit.UIScroll.DevelerationEnded</a></format> event is raised.</term>
+          <term>The <see cref="E:UIKit.UIScroll.DevelerationEnded" /> event is raised.</term>
         </item>
       </list>
       <para>

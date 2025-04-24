@@ -3443,7 +3443,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INBookRestaurantReservationIntentResponse" /> appropriate to the <see cref="T:Intents.INBookRestaurantReservationIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="T:System.Action`1" /> with an <see cref="T:Intents.INBookRestaurantReservationIntentResponse" /> appropriate to the <see cref="T:Intents.INBookRestaurantReservationIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleBookRestaurantReservation:completion:")]
@@ -3639,7 +3639,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INCancelWorkoutIntentResponse" /> appropriate to the <see cref="T:Intents.INCancelWorkoutIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="T:System.Action`1" /> with an <see cref="T:Intents.INCancelWorkoutIntentResponse" /> appropriate to the <see cref="T:Intents.INCancelWorkoutIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleCancelWorkout:completion:")]
@@ -4327,7 +4327,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INEndWorkoutIntentResponse" /> appropriate to the <see cref="T:Intents.INEndWorkoutIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="T:System.Action`1" /> with an <see cref="T:Intents.INEndWorkoutIntentResponse" /> appropriate to the <see cref="T:Intents.INEndWorkoutIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleEndWorkout:completion:")]
@@ -4367,7 +4367,7 @@ namespace Intents {
 		INEndWorkoutIntentResponseCode Code { get; }
 	}
 
-	/// <summary>Defines the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Intents%20IINIntent%20Handler%20Provider&amp;scope=Xamarin" title="M:Intents.IINIntentHandlerProvider*">M:Intents.IINIntentHandlerProvider*</a></format> interface implemented by <see cref="T:Intents.INExtension" />.</summary>
+	/// <summary>Defines the <see cref="M:Intents.IINIntentHandlerProvider*" /> interface implemented by <see cref="T:Intents.INExtension" />.</summary>
 	/// <remarks>
 	///     </remarks>
 	[TV (14, 0)]
@@ -4418,7 +4418,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INGetAvailableRestaurantReservationBookingDefaultsIntentResponse" /> appropriate to the <see cref="T:Intents.INGetAvailableRestaurantReservationBookingDefaultsIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="T:System.Action`1" /> with an <see cref="T:Intents.INGetAvailableRestaurantReservationBookingDefaultsIntentResponse" /> appropriate to the <see cref="T:Intents.INGetAvailableRestaurantReservationBookingDefaultsIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleGetAvailableRestaurantReservationBookingDefaults:completion:")]
@@ -4524,7 +4524,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INGetAvailableRestaurantReservationBookingsIntentResponse" /> appropriate to the <see cref="T:Intents.INGetAvailableRestaurantReservationBookingsIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="T:System.Action`1" /> with an <see cref="T:Intents.INGetAvailableRestaurantReservationBookingsIntentResponse" /> appropriate to the <see cref="T:Intents.INGetAvailableRestaurantReservationBookingsIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleGetAvailableRestaurantReservationBookings:completion:")]
@@ -4609,7 +4609,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INGetRestaurantGuestIntentResponse" /> appropriate to the <see cref="T:Intents.INGetRestaurantGuestIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="T:System.Action`1" /> with an <see cref="T:Intents.INGetRestaurantGuestIntentResponse" /> appropriate to the <see cref="T:Intents.INGetRestaurantGuestIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleGetRestaurantGuest:completion:")]
@@ -4672,7 +4672,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INGetRideStatusIntentResponse" /> appropriate to the <see cref="T:Intents.INGetRideStatusIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="T:System.Action`1" /> with an <see cref="T:Intents.INGetRideStatusIntentResponse" /> appropriate to the <see cref="T:Intents.INGetRideStatusIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleGetRideStatus:completion:")]
@@ -4786,7 +4786,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INGetUserCurrentRestaurantReservationBookingsIntentResponse" /> appropriate to the <see cref="T:Intents.INGetUserCurrentRestaurantReservationBookingsIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="T:System.Action`1" /> with an <see cref="T:Intents.INGetUserCurrentRestaurantReservationBookingsIntentResponse" /> appropriate to the <see cref="T:Intents.INGetUserCurrentRestaurantReservationBookingsIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleGetUserCurrentRestaurantReservationBookings:completion:")]
@@ -5185,7 +5185,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INListRideOptionsIntentResponse" /> appropriate to the <see cref="T:Intents.INListRideOptionsIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="T:System.Action`1" /> with an <see cref="T:Intents.INListRideOptionsIntentResponse" /> appropriate to the <see cref="T:Intents.INListRideOptionsIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleListRideOptions:completion:")]
@@ -5522,7 +5522,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INPauseWorkoutIntentResponse" /> appropriate to the <see cref="T:Intents.INPauseWorkoutIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="T:System.Action`1" /> with an <see cref="T:Intents.INPauseWorkoutIntentResponse" /> appropriate to the <see cref="T:Intents.INPauseWorkoutIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handlePauseWorkout:completion:")]
@@ -6145,7 +6145,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INRequestPaymentIntentResponse" /> appropriate to the <see cref="T:Intents.INRequestPaymentIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="T:System.Action`1" /> with an <see cref="T:Intents.INRequestPaymentIntentResponse" /> appropriate to the <see cref="T:Intents.INRequestPaymentIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleRequestPayment:completion:")]
@@ -6271,7 +6271,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INRequestRideIntentResponse" /> appropriate to the <see cref="T:Intents.INRequestRideIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="T:System.Action`1" /> with an <see cref="T:Intents.INRequestRideIntentResponse" /> appropriate to the <see cref="T:Intents.INRequestRideIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleRequestRide:completion:")]
@@ -6688,7 +6688,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INResumeWorkoutIntentResponse" /> appropriate to the <see cref="T:Intents.INResumeWorkoutIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="T:System.Action`1" /> with an <see cref="T:Intents.INResumeWorkoutIntentResponse" /> appropriate to the <see cref="T:Intents.INResumeWorkoutIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleResumeWorkout:completion:")]
@@ -7056,7 +7056,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INSaveProfileInCarIntentResponse" /> appropriate to the <see cref="T:Intents.INSaveProfileInCarIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="T:System.Action`1" /> with an <see cref="T:Intents.INSaveProfileInCarIntentResponse" /> appropriate to the <see cref="T:Intents.INSaveProfileInCarIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleSaveProfileInCar:completion:")]
@@ -7174,7 +7174,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INSearchCallHistoryIntentResponse" /> appropriate to the <see cref="T:Intents.INSearchCallHistoryIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="T:System.Action`1" /> with an <see cref="T:Intents.INSearchCallHistoryIntentResponse" /> appropriate to the <see cref="T:Intents.INSearchCallHistoryIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleSearchCallHistory:completion:")]
@@ -7356,7 +7356,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INSearchForMessagesIntentResponse" /> appropriate to the <see cref="T:Intents.INSearchForMessagesIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="T:System.Action`1" /> with an <see cref="T:Intents.INSearchForMessagesIntentResponse" /> appropriate to the <see cref="T:Intents.INSearchForMessagesIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleSearchForMessages:completion:")]
@@ -7493,7 +7493,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INSearchForPhotosIntentResponse" /> appropriate to the <see cref="T:Intents.INSearchForPhotosIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="T:System.Action`1" /> with an <see cref="T:Intents.INSearchForPhotosIntentResponse" /> appropriate to the <see cref="T:Intents.INSearchForPhotosIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleSearchForPhotos:completion:")]
@@ -7662,7 +7662,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INSendMessageIntentResponse" /> appropriate to the <see cref="T:Intents.INSendMessageIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="T:System.Action`1" /> with an <see cref="T:Intents.INSendMessageIntentResponse" /> appropriate to the <see cref="T:Intents.INSendMessageIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleSendMessage:completion:")]
@@ -7789,7 +7789,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INSendPaymentIntentResponse" /> appropriate to the <see cref="T:Intents.INSendPaymentIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="T:System.Action`1" /> with an <see cref="T:Intents.INSendPaymentIntentResponse" /> appropriate to the <see cref="T:Intents.INSendPaymentIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleSendPayment:completion:")]
@@ -7900,7 +7900,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INSetAudioSourceInCarIntentResponse" /> appropriate to the <see cref="T:Intents.INSetAudioSourceInCarIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="T:System.Action`1" /> with an <see cref="T:Intents.INSetAudioSourceInCarIntentResponse" /> appropriate to the <see cref="T:Intents.INSetAudioSourceInCarIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleSetAudioSourceInCar:completion:")]
@@ -8027,7 +8027,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INSetClimateSettingsInCarIntentResponse" /> appropriate to the <see cref="T:Intents.INSetClimateSettingsInCarIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="T:System.Action`1" /> with an <see cref="T:Intents.INSetClimateSettingsInCarIntentResponse" /> appropriate to the <see cref="T:Intents.INSetClimateSettingsInCarIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleSetClimateSettingsInCar:completion:")]
@@ -8193,7 +8193,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INSetDefrosterSettingsInCarIntentResponse" /> appropriate to the <see cref="T:Intents.INSetDefrosterSettingsInCarIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="T:System.Action`1" /> with an <see cref="T:Intents.INSetDefrosterSettingsInCarIntentResponse" /> appropriate to the <see cref="T:Intents.INSetDefrosterSettingsInCarIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleSetDefrosterSettingsInCar:completion:")]
@@ -8280,7 +8280,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INSetMessageAttributeIntentResponse" /> appropriate to the <see cref="T:Intents.INSetMessageAttributeIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="T:System.Action`1" /> with an <see cref="T:Intents.INSetMessageAttributeIntentResponse" /> appropriate to the <see cref="T:Intents.INSetMessageAttributeIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleSetMessageAttribute:completion:")]
@@ -8380,7 +8380,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INSetProfileInCarIntentResponse" /> appropriate to the <see cref="T:Intents.INSetProfileInCarIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="T:System.Action`1" /> with an <see cref="T:Intents.INSetProfileInCarIntentResponse" /> appropriate to the <see cref="T:Intents.INSetProfileInCarIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleSetProfileInCar:completion:")]
@@ -8490,7 +8490,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INSetRadioStationIntentResponse" /> appropriate to the <see cref="T:Intents.INSetRadioStationIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="T:System.Action`1" /> with an <see cref="T:Intents.INSetRadioStationIntentResponse" /> appropriate to the <see cref="T:Intents.INSetRadioStationIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleSetRadioStation:completion:")]
@@ -8621,7 +8621,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INSetSeatSettingsInCarIntentResponse" /> appropriate to the <see cref="T:Intents.INSetSeatSettingsInCarIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="T:System.Action`1" /> with an <see cref="T:Intents.INSetSeatSettingsInCarIntentResponse" /> appropriate to the <see cref="T:Intents.INSetSeatSettingsInCarIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleSetSeatSettingsInCar:completion:")]
@@ -8912,7 +8912,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INStartAudioCallIntentResponse" /> appropriate to the <see cref="T:Intents.INStartAudioCallIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="T:System.Action`1" /> with an <see cref="T:Intents.INStartAudioCallIntentResponse" /> appropriate to the <see cref="T:Intents.INStartAudioCallIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleStartAudioCall:completion:")]
@@ -9017,7 +9017,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INStartPhotoPlaybackIntentResponse" /> appropriate to the <see cref="T:Intents.INStartPhotoPlaybackIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="T:System.Action`1" /> with an <see cref="T:Intents.INStartPhotoPlaybackIntentResponse" /> appropriate to the <see cref="T:Intents.INStartPhotoPlaybackIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleStartPhotoPlayback:completion:")]
@@ -9114,7 +9114,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INStartVideoCallIntentResponse" /> appropriate to the <see cref="T:Intents.INStartVideoCallIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="T:System.Action`1" /> with an <see cref="T:Intents.INStartVideoCallIntentResponse" /> appropriate to the <see cref="T:Intents.INStartVideoCallIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleStartVideoCall:completion:")]
@@ -9197,7 +9197,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INStartWorkoutIntentResponse" /> appropriate to the <see cref="T:Intents.INStartWorkoutIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="T:System.Action`1" /> with an <see cref="T:Intents.INStartWorkoutIntentResponse" /> appropriate to the <see cref="T:Intents.INStartWorkoutIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleStartWorkout:completion:")]
@@ -9598,7 +9598,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INActivateCarSignalIntentResponse" /> appropriate to the <see cref="T:Intents.INActivateCarSignalIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="T:System.Action`1" /> with an <see cref="T:Intents.INActivateCarSignalIntentResponse" /> appropriate to the <see cref="T:Intents.INActivateCarSignalIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleActivateCarSignal:completion:")]
@@ -9876,7 +9876,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INGetCarLockStatusIntentResponse" /> appropriate to the <see cref="T:Intents.INGetCarLockStatusIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="T:System.Action`1" /> with an <see cref="T:Intents.INGetCarLockStatusIntentResponse" /> appropriate to the <see cref="T:Intents.INGetCarLockStatusIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleGetCarLockStatus:completion:")]
@@ -9944,7 +9944,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INGetCarPowerLevelStatusIntentResponse" /> appropriate to the <see cref="T:Intents.INGetCarPowerLevelStatusIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="T:System.Action`1" /> with an <see cref="T:Intents.INGetCarPowerLevelStatusIntentResponse" /> appropriate to the <see cref="T:Intents.INGetCarPowerLevelStatusIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleGetCarPowerLevelStatus:completion:")]
@@ -10597,7 +10597,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INSetCarLockStatusIntentResponse" /> appropriate to the <see cref="T:Intents.INSetCarLockStatusIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="T:System.Action`1" /> with an <see cref="T:Intents.INSetCarLockStatusIntentResponse" /> appropriate to the <see cref="T:Intents.INSetCarLockStatusIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleSetCarLockStatus:completion:")]
@@ -10755,7 +10755,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INAddTasksIntentResponse" /> appropriate to the <see cref="T:Intents.INAddTasksIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="T:System.Action`1" /> with an <see cref="T:Intents.INAddTasksIntentResponse" /> appropriate to the <see cref="T:Intents.INAddTasksIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleAddTasks:completion:")]
@@ -10868,7 +10868,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INAppendToNoteIntentResponse" /> appropriate to the <see cref="T:Intents.INAppendToNoteIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="T:System.Action`1" /> with an <see cref="T:Intents.INAppendToNoteIntentResponse" /> appropriate to the <see cref="T:Intents.INAppendToNoteIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleAppendToNote:completion:")]
@@ -11195,7 +11195,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INCancelRideIntentResponse" /> appropriate to the <see cref="T:Intents.INCancelRideIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="T:System.Action`1" /> with an <see cref="T:Intents.INCancelRideIntentResponse" /> appropriate to the <see cref="T:Intents.INCancelRideIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleCancelRide:completion:")]
@@ -11261,7 +11261,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INCreateNoteIntentResponse" /> appropriate to the <see cref="T:Intents.INCreateNoteIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="T:System.Action`1" /> with an <see cref="T:Intents.INCreateNoteIntentResponse" /> appropriate to the <see cref="T:Intents.INCreateNoteIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleCreateNote:completion:")]
@@ -11349,7 +11349,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INAddTasksIntentResponse" /> appropriate to the <see cref="T:Intents.INAddTasksIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="T:System.Action`1" /> with an <see cref="T:Intents.INAddTasksIntentResponse" /> appropriate to the <see cref="T:Intents.INAddTasksIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleCreateTaskList:completion:")]
@@ -11480,7 +11480,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INGetVisualCodeIntentResponse" /> appropriate to the <see cref="T:Intents.INGetVisualCodeIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="T:System.Action`1" /> with an <see cref="T:Intents.INGetVisualCodeIntentResponse" /> appropriate to the <see cref="T:Intents.INGetVisualCodeIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleGetVisualCode:completion:")]
@@ -12051,7 +12051,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INSearchForAccountsIntentResponse" /> appropriate to the <see cref="T:Intents.INSearchForAccountsIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="T:System.Action`1" /> with an <see cref="T:Intents.INSearchForAccountsIntentResponse" /> appropriate to the <see cref="T:Intents.INSearchForAccountsIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleSearchForAccounts:completion:")]
@@ -12183,7 +12183,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INSearchForNotebookItemsIntentResponse" /> appropriate to the <see cref="T:Intents.INSearchForNotebookItemsIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="T:System.Action`1" /> with an <see cref="T:Intents.INSearchForNotebookItemsIntentResponse" /> appropriate to the <see cref="T:Intents.INSearchForNotebookItemsIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleSearchForNotebookItems:completion:")]
@@ -12497,7 +12497,7 @@ namespace Intents {
 
 		/// <param name="sendRideFeedbackintent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INSendRideFeedbackIntentResponse" /> appropriate to the <see cref="T:Intents.INSendRideFeedbackIntent" /> <paramref name="sendRideFeedbackintent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="T:System.Action`1" /> with an <see cref="T:Intents.INSendRideFeedbackIntentResponse" /> appropriate to the <see cref="T:Intents.INSendRideFeedbackIntent" /> <paramref name="sendRideFeedbackintent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleSendRideFeedback:completion:")]
@@ -12576,7 +12576,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INSetTaskAttributeIntentResponse" /> appropriate to the <see cref="T:Intents.INSetTaskAttributeIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="T:System.Action`1" /> with an <see cref="T:Intents.INSetTaskAttributeIntentResponse" /> appropriate to the <see cref="T:Intents.INSetTaskAttributeIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleSetTaskAttribute:completion:")]
@@ -13077,7 +13077,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INTransferMoneyIntentResponse" /> appropriate to the <see cref="T:Intents.INTransferMoneyIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="T:System.Action`1" /> with an <see cref="T:Intents.INTransferMoneyIntentResponse" /> appropriate to the <see cref="T:Intents.INTransferMoneyIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleTransferMoney:completion:")]

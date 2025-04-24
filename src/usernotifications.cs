@@ -1271,7 +1271,7 @@ namespace UserNotifications {
 	}
 
 	/// <summary>System-provided class that lets the developer schedule and manage notifications.</summary>
-	/// <remarks>Developers use <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=User%20Notifications%20UNUser%20Notification%20Center%20Current%20Notification%20Center&amp;scope=Xamarin" title="M:UserNotifications.UNUserNotificationCenter.CurrentNotificationCenter*">M:UserNotifications.UNUserNotificationCenter.CurrentNotificationCenter*</a></format> to obtain the singleton that coordinates and schedules notifications.</remarks>
+	/// <remarks>Developers use <see cref="M:UserNotifications.UNUserNotificationCenter.CurrentNotificationCenter*" /> to obtain the singleton that coordinates and schedules notifications.</remarks>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/UserNotifications/UNUserNotificationCenter">Apple documentation for <c>UNUserNotificationCenter</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]

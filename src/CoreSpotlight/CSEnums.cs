@@ -55,7 +55,7 @@ namespace CoreSpotlight {
 		Cancelled = -2003,
 	}
 
-	/// <summary>Enumerates file protection options in calls to <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Spotlight%20CSSearchable%20Index%20From%20Name&amp;scope=Xamarin" title="M:CoreSpotlight.CSSearchableIndex.FromName*">M:CoreSpotlight.CSSearchableIndex.FromName*</a></format>.</summary>
+	/// <summary>Enumerates file protection options in calls to <see cref="M:CoreSpotlight.CSSearchableIndex.FromName*" />.</summary>
 	[NoTV]
 	[NoMac]
 	[MacCatalyst (13, 1)]

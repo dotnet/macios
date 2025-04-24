@@ -147,7 +147,7 @@ var effectInBuffer = new vImageBuffer () {
   <Docs DocId="T:CoreGraphics.CGContext">
     <summary>Graphics context and primitives to draw in them.</summary>
     <remarks>
-      <para>A <see cref="T:CoreGraphics.CGContext" /> is a Quartz 2D destination for drawing. It holds parameters and their states (set with functions such as <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Graphics%20CGContext%20Set%20Fill%20Color&amp;scope=Xamarin" title="M:CoreGraphics.CGContext.SetFillColor*">M:CoreGraphics.CGContext.SetFillColor*</a></format>) and device information (for instance, <see cref="M:CoreGraphics.CGContext.ConvertSizeToDeviceSpace(CoreGraphics.CGSize)" />). <see cref="T:CoreGraphics.CGContext" />s may represent a screen area, a bitmap, a PDF document, or a printer.</para>
+      <para>A <see cref="T:CoreGraphics.CGContext" /> is a Quartz 2D destination for drawing. It holds parameters and their states (set with functions such as <see cref="M:CoreGraphics.CGContext.SetFillColor*" />) and device information (for instance, <see cref="M:CoreGraphics.CGContext.ConvertSizeToDeviceSpace(CoreGraphics.CGSize)" />). <see cref="T:CoreGraphics.CGContext" />s may represent a screen area, a bitmap, a PDF document, or a printer.</para>
       <para>There are a limited number of <see cref="T:CoreGraphics.CGContext" />s available and application developer's should be conscientious about disposing of them after use. Generally, that means putting the drawing code in <c>using</c> blocks, as shown in the following example:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[

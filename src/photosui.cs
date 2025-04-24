@@ -73,7 +73,7 @@ namespace PhotosUI {
 		bool ShouldShowCancelConfirmation { get; }
 	}
 
-	/// <summary>A <see cref="T:UIKit.UIView" /> that displays a <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:Photo.PHLivePhoto&amp;scope=Xamarin" title="T:Photo.PHLivePhoto">T:Photo.PHLivePhoto</a></format>.</summary>
+	/// <summary>A <see cref="T:UIKit.UIView" /> that displays a <see cref="T:Photo.PHLivePhoto" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/PhotosUI/PHLivePhotoView">Apple documentation for <c>PHLivePhotoView</c></related>
 	[MacCatalyst (13, 1)]

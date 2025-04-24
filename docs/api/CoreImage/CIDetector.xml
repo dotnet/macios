@@ -5,7 +5,7 @@
       <para>
 	CIDetector is a general API to perform image analysis on an
 	image, but as of iOS5 only face detection is supported.  You
-	initiate the face detection by calling the static method <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:CoreImage.CIDetector.CreateFaceDetector(CoreImage.CIContext,bool)&amp;scope=Xamarin" title="M:CoreImage.CIDetector.CreateFaceDetector(CoreImage.CIContext,bool)">M:CoreImage.CIDetector.CreateFaceDetector(CoreImage.CIContext,bool)</a></format>
+	initiate the face detection by calling the static method <see cref="M:CoreImage.CIDetector.CreateFaceDetector(CoreImage.CIContext,bool)" />
 	and then get the results by calling one of the FeaturesInImage
 	overloads.
       </para>

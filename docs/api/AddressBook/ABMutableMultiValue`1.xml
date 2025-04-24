@@ -22,17 +22,17 @@
         <item>
           <term>
             Creating properties:
-            <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=C:AddressBook.ABMutableDateMultiValue.ctor&amp;scope=Xamarin" title="C:AddressBook.ABMutableDateMultiValue.ctor">C:AddressBook.ABMutableDateMultiValue.ctor</a></format>,
-            <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=C:AddressBook.ABMutableDictionaryMultiValue.ctor&amp;scope=Xamarin" title="C:AddressBook.ABMutableDictionaryMultiValue.ctor">C:AddressBook.ABMutableDictionaryMultiValue.ctor</a></format>,
-            <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=C:AddressBook.ABMutableStringMultiValue.ctor&amp;scope=Xamarin" title="C:AddressBook.ABMutableStringMultiValue.ctor">C:AddressBook.ABMutableStringMultiValue.ctor</a></format>.
+            <see cref="C:AddressBook.ABMutableDateMultiValue.ctor" />,
+            <see cref="C:AddressBook.ABMutableDictionaryMultiValue.ctor" />,
+            <see cref="C:AddressBook.ABMutableStringMultiValue.ctor" />.
           </term>
         </item>
         <item>
           <term>
             Creating properties:
-            <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=C:AddressBook.ABMutableDateMultiValue.ctor&amp;scope=Xamarin" title="C:AddressBook.ABMutableDateMultiValue.ctor">C:AddressBook.ABMutableDateMultiValue.ctor</a></format>,
-            <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=C:AddressBook.ABMutableDictionaryMultiValue.ctor&amp;scope=Xamarin" title="C:AddressBook.ABMutableDictionaryMultiValue.ctor">C:AddressBook.ABMutableDictionaryMultiValue.ctor</a></format>,
-            <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=C:AddressBook.ABMutableStringMultiValue.ctor&amp;scope=Xamarin" title="C:AddressBook.ABMutableStringMultiValue.ctor">C:AddressBook.ABMutableStringMultiValue.ctor</a></format>.
+            <see cref="C:AddressBook.ABMutableDateMultiValue.ctor" />,
+            <see cref="C:AddressBook.ABMutableDictionaryMultiValue.ctor" />,
+            <see cref="C:AddressBook.ABMutableStringMultiValue.ctor" />.
           </term>
         </item>
       </list>

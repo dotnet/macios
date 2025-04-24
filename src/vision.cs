@@ -2132,7 +2132,7 @@ namespace Vision {
 		VNTranslationalImageRegistrationRequestRevision CurrentRevision { get; }
 	}
 
-	/// <summary>A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:VNImageRegistrationRequest&amp;scope=Xamarin" title="T:VNImageRegistrationRequest">T:VNImageRegistrationRequest</a></format> that attempts to use homography to align source images.</summary>
+	/// <summary>A <see cref="T:VNImageRegistrationRequest" /> that attempts to use homography to align source images.</summary>
 	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (VNImageRegistrationRequest))]
@@ -2771,7 +2771,7 @@ namespace Vision {
 
 	/// <summary>Abstract base-class for vision-processing request.</summary>
 	///     <remarks>
-	///       <para>Currently, the only descendant of this class is <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:CoreVision.VNImageBasedRequest&amp;scope=Xamarin" title="T:CoreVision.VNImageBasedRequest">T:CoreVision.VNImageBasedRequest</a></format>.</para>
+	///       <para>Currently, the only descendant of this class is <see cref="T:CoreVision.VNImageBasedRequest" />.</para>
 	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Abstract]

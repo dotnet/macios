@@ -5,7 +5,7 @@
     </value>
     <remarks>
       <attribution license="cc4" from="Microsoft" modified="false" />
-      <para>Changing the <see cref="P:CoreGraphics.CGRect.Width" /> property will also cause a change in the <see cref="P:CoreGraphics.CGRect.Right" /> property of the <see cref="T:CoreGraphics.CGRect" />. The units the rectangle is drawn in is determined by the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Drawing%20Graphics%20Page%20Unit&amp;scope=Xamarin" title="P:System.Drawing.Graphics.PageUnit">P:System.Drawing.Graphics.PageUnit</a></format> and <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Drawing%20Graphics%20Page%20Scale&amp;scope=Xamarin" title="P:System.Drawing.Graphics.PageScale">P:System.Drawing.Graphics.PageScale</a></format> properties of the graphics object used for drawing. The default unit is pixels.</para>
+      <para>Changing the <see cref="P:CoreGraphics.CGRect.Width" /> property will also cause a change in the <see cref="P:CoreGraphics.CGRect.Right" /> property of the <see cref="T:CoreGraphics.CGRect" />. The units the rectangle is drawn in is determined by the <see cref="P:System.Drawing.Graphics.PageUnit" /> and <see cref="P:System.Drawing.Graphics.PageScale" /> properties of the graphics object used for drawing. The default unit is pixels.</para>
     </remarks>
   </Docs>
   <Docs DocId="P:CoreGraphics.CGRect.Height">
@@ -14,7 +14,7 @@
     </value>
     <remarks>
       <attribution license="cc4" from="Microsoft" modified="false" />
-      <para>Changing the <see cref="P:CoreGraphics.CGRect.Height" /> property will also cause a change in the <see cref="P:CoreGraphics.CGRect.Bottom" /> property of the <see cref="T:CoreGraphics.CGRect" />. The units the rectangle is drawn in is determined by the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Drawing%20Graphics%20Page%20Unit&amp;scope=Xamarin" title="P:System.Drawing.Graphics.PageUnit">P:System.Drawing.Graphics.PageUnit</a></format> and <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Drawing%20Graphics%20Page%20Scale&amp;scope=Xamarin" title="P:System.Drawing.Graphics.PageScale">P:System.Drawing.Graphics.PageScale</a></format> properties of the graphics object used for drawing. The default unit is pixels.</para>
+      <para>Changing the <see cref="P:CoreGraphics.CGRect.Height" /> property will also cause a change in the <see cref="P:CoreGraphics.CGRect.Bottom" /> property of the <see cref="T:CoreGraphics.CGRect" />. The units the rectangle is drawn in is determined by the <see cref="P:System.Drawing.Graphics.PageUnit" /> and <see cref="P:System.Drawing.Graphics.PageScale" /> properties of the graphics object used for drawing. The default unit is pixels.</para>
     </remarks>
   </Docs>
   <Docs DocId="P:CoreGraphics.CGRect.Width">
@@ -23,7 +23,7 @@
     </value>
     <remarks>
       <attribution license="cc4" from="Microsoft" modified="false" />
-      <para>Changing the <see cref="P:CoreGraphics.CGRect.Width" /> property will also cause a change in the <see cref="P:CoreGraphics.CGRect.Right" /> property of the <see cref="T:CoreGraphics.CGRect" />. The units the rectangle is drawn in is determined by the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Drawing%20Graphics%20Page%20Unit&amp;scope=Xamarin" title="P:System.Drawing.Graphics.PageUnit">P:System.Drawing.Graphics.PageUnit</a></format> and <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Drawing%20Graphics%20Page%20Scale&amp;scope=Xamarin" title="P:System.Drawing.Graphics.PageScale">P:System.Drawing.Graphics.PageScale</a></format> properties of the graphics object used for drawing. The default unit is pixels.</para>
+      <para>Changing the <see cref="P:CoreGraphics.CGRect.Width" /> property will also cause a change in the <see cref="P:CoreGraphics.CGRect.Right" /> property of the <see cref="T:CoreGraphics.CGRect" />. The units the rectangle is drawn in is determined by the <see cref="P:System.Drawing.Graphics.PageUnit" /> and <see cref="P:System.Drawing.Graphics.PageScale" /> properties of the graphics object used for drawing. The default unit is pixels.</para>
     </remarks>
   </Docs>
   <Docs DocId="P:CoreGraphics.CGRect.Height">
@@ -32,7 +32,7 @@
     </value>
     <remarks>
       <attribution license="cc4" from="Microsoft" modified="false" />
-      <para>Changing the <see cref="P:CoreGraphics.CGRect.Height" /> property will also cause a change in the <see cref="P:CoreGraphics.CGRect.Bottom" /> property of the <see cref="T:CoreGraphics.CGRect" />. The units the rectangle is drawn in is determined by the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Drawing%20Graphics%20Page%20Unit&amp;scope=Xamarin" title="P:System.Drawing.Graphics.PageUnit">P:System.Drawing.Graphics.PageUnit</a></format> and <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Drawing%20Graphics%20Page%20Scale&amp;scope=Xamarin" title="P:System.Drawing.Graphics.PageScale">P:System.Drawing.Graphics.PageScale</a></format> properties of the graphics object used for drawing. The default unit is pixels.</para>
+      <para>Changing the <see cref="P:CoreGraphics.CGRect.Height" /> property will also cause a change in the <see cref="P:CoreGraphics.CGRect.Bottom" /> property of the <see cref="T:CoreGraphics.CGRect" />. The units the rectangle is drawn in is determined by the <see cref="P:System.Drawing.Graphics.PageUnit" /> and <see cref="P:System.Drawing.Graphics.PageScale" /> properties of the graphics object used for drawing. The default unit is pixels.</para>
     </remarks>
   </Docs>
   <Docs DocId="M:CoreGraphics.CGRect.Union(CoreGraphics.CGRect,CoreGraphics.CGRect)">
@@ -52,7 +52,7 @@
       </Docs>
   <Docs DocId="M:CoreGraphics.CGRect.Equals(System.Object)">
         <param name="obj">
-          <attribution license="cc4" from="Microsoft" modified="false" />The <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Object&amp;scope=Xamarin" title="T:System.Object">T:System.Object</a></format> to test. </param>
+          <attribution license="cc4" from="Microsoft" modified="false" />The <see cref="T:System.Object" /> to test. </param>
         <summary>Tests whether <paramref name="obj" /> is a <see cref="T:CoreGraphics.CGRect" /> structure with the same location and size of this <see cref="T:CoreGraphics.CGRect" /> structure.</summary>
         <returns>
           <attribution license="cc4" from="Microsoft" modified="false" />
@@ -63,7 +63,7 @@
       </Docs>
   <Docs DocId="M:CoreGraphics.CGRect.Equals(CoreGraphics.CGRect)">
         <param name="rect">
-          <attribution license="cc4" from="Microsoft" modified="false" />The <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Object&amp;scope=Xamarin" title="T:System.Object">T:System.Object</a></format> to test. </param>
+          <attribution license="cc4" from="Microsoft" modified="false" />The <see cref="T:System.Object" /> to test. </param>
         <summary>Tests whether <paramref name="rect" /> is a <see cref="T:CoreGraphics.CGRect" /> structure with the same location and size of this <see cref="T:CoreGraphics.CGRect" /> structure.</summary>
         <returns>
           <attribution license="cc4" from="Microsoft" modified="false" />

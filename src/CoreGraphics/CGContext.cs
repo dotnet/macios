@@ -674,7 +674,7 @@ namespace CoreGraphics {
 		/// <param name="space">The desired <see cref="T:CoreGraphics.CGColorSpace" />.</param>
 		///         <summary>Specifies the <see cref="T:CoreGraphics.CGColorSpace" /> to be used in the context.</summary>
 		///         <remarks>
-		///           <para>This method must be called prior to using <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:CoreGraphics.CGContext.SetFillColor(float[])&amp;scope=Xamarin" title="M:CoreGraphics.CGContext.SetFillColor(float[])">M:CoreGraphics.CGContext.SetFillColor(float[])</a></format>.</para>
+		///           <para>This method must be called prior to using <see cref="M:CoreGraphics.CGContext.SetFillColor(float[])" />.</para>
 		///         </remarks>
 		public void SetFillColorSpace (CGColorSpace? space)
 		{
@@ -687,7 +687,7 @@ namespace CoreGraphics {
 			/* CGColorSpaceRef __nullable */ IntPtr space);
 
 		/// <param name="space">The desired <see cref="T:CoreGraphics.CGColorSpace" />.</param>
-		///         <summary>Sets the <see cref="T:CoreGraphics.CGColorSpace" /> to be used with <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:CoreGraphics.CGContext.SetStrokeColor(float[])&amp;scope=Xamarin" title="M:CoreGraphics.CGContext.SetStrokeColor(float[])">M:CoreGraphics.CGContext.SetStrokeColor(float[])</a></format>.</summary>
+		///         <summary>Sets the <see cref="T:CoreGraphics.CGColorSpace" /> to be used with <see cref="M:CoreGraphics.CGContext.SetStrokeColor(float[])" />.</summary>
 		///         <remarks>To be added.</remarks>
 		public void SetStrokeColorSpace (CGColorSpace? space)
 		{
@@ -1059,7 +1059,7 @@ namespace CoreGraphics {
 
 		/// <param name="str">To be added.</param>
 		///         <param name="count">To be added.</param>
-		///         <summary>This method has been deprecated in favor of <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Text&amp;scope=Xamarin" title="N:CoreText">N:CoreText</a></format>.</summary>
+		///         <summary>This method has been deprecated in favor of <see cref="N:CoreText" />.</summary>
 		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -1078,7 +1078,7 @@ namespace CoreGraphics {
 		}
 
 		/// <param name="str">To be added.</param>
-		///         <summary>This method has been deprecated in favor of <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Text&amp;scope=Xamarin" title="N:CoreText">N:CoreText</a></format>.</summary>
+		///         <summary>This method has been deprecated in favor of <see cref="N:CoreText" />.</summary>
 		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -1103,7 +1103,7 @@ namespace CoreGraphics {
 
 		/// <param name="bytes">To be added.</param>
 		///         <param name="count">To be added.</param>
-		///         <summary>This method has been deprecated in favor of <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Text&amp;scope=Xamarin" title="N:CoreText">N:CoreText</a></format>.</summary>
+		///         <summary>This method has been deprecated in favor of <see cref="N:CoreText" />.</summary>
 		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -1121,7 +1121,7 @@ namespace CoreGraphics {
 		}
 
 		/// <param name="bytes">To be added.</param>
-		///         <summary>This method has been deprecated in favor of <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Text&amp;scope=Xamarin" title="N:CoreText">N:CoreText</a></format>.</summary>
+		///         <summary>This method has been deprecated in favor of <see cref="N:CoreText" />.</summary>
 		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -1222,7 +1222,7 @@ namespace CoreGraphics {
 			/* const CGGlyph * __nullable */ ushort []? glyphs, /* size_t */ nint count);
 
 		/// <param name="glyphs">To be added.</param>
-		///         <summary>This method has been deprecated in favor of <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Text&amp;scope=Xamarin" title="N:CoreText">N:CoreText</a></format>.</summary>
+		///         <summary>This method has been deprecated in favor of <see cref="N:CoreText" />.</summary>
 		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -1237,7 +1237,7 @@ namespace CoreGraphics {
 
 		/// <param name="glyphs">To be added.</param>
 		///         <param name="count">To be added.</param>
-		///         <summary>This method has been deprecated in favor of <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Text&amp;scope=Xamarin" title="N:CoreText">N:CoreText</a></format>.</summary>
+		///         <summary>This method has been deprecated in favor of <see cref="N:CoreText" />.</summary>
 		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]

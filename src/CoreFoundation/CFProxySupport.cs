@@ -691,7 +691,7 @@ namespace CoreFoundation {
 		/// <summary>Gets the system's proxy configuration settings.</summary>
 		///         <returns>A <see cref="T:CoreFoundation.CFProxySettings" /> with the system's proxy settings.</returns>
 		///         <remarks>These settings are used by <see cref="M:CoreFoundation.CFNetwork.GetProxiesForURL(Foundation.NSUrl,CoreFoundation.CFProxySettings)" /> and 
-		/// 	<format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Foundation%20Get%20Proxies%20For%20Uri&amp;scope=Xamarin" title="M:CoreFoundation.GetProxiesForUri*">M:CoreFoundation.GetProxiesForUri*</a></format>.</remarks>
+		/// 	<see cref="M:CoreFoundation.GetProxiesForUri*" />.</remarks>
 		public static CFProxySettings? GetSystemProxySettings ()
 		{
 			IntPtr native = CFNetworkCopySystemProxySettings ();

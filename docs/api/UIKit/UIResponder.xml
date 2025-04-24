@@ -21,7 +21,7 @@
       <list type="number">
         <item>
           <term>
-            The <see cref="T:UIKit.UIView" /> where the touch took place is determined by using the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:UIKit.UIView.HitTest(System.Drawing.PointF, UIKit.UIEvent*&amp;scope=Xamarin" title="M:UIKit.UIView.HitTest(System.Drawing.PointF, UIKit.UIEvent*">M:UIKit.UIView.HitTest(System.Drawing.PointF, UIKit.UIEvent*</a></format> 
+            The <see cref="T:UIKit.UIView" /> where the touch took place is determined by using the <see cref="M:UIKit.UIView.HitTest(System.Drawing.PointF, UIKit.UIEvent*" /> 
             and the touch is sent to that view.   
           </term>
         </item>
@@ -29,7 +29,7 @@
           <term>
             If the view did not handle the event, the message is sents
             to its <see cref="T:UIKit.UIViewController" /> if
-            there is one, or to its <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIView%20Super%20View&amp;scope=Xamarin" title="P:UIKit.UIView.SuperView">P:UIKit.UIView.SuperView</a></format> if there is no
+            there is one, or to its <see cref="P:UIKit.UIView.SuperView" /> if there is no
             view controller.
             
           </term>
@@ -49,7 +49,7 @@
         To receive messages UIResponders override the <see cref="P:UIKit.UIResponder.CanBecomeFirstResponder" />
         property to return true and are notified that they became the
         first responder when the <see cref="M:UIKit.UIResponder.BecomeFirstResponder" />
-        is invoked.  The system calls <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIResponder%20Resign%20First%20Responder&amp;scope=Xamarin" title="M:UIKit.UIResponder.ResignFirstResponder*">M:UIKit.UIResponder.ResignFirstResponder*</a></format>
+        is invoked.  The system calls <see cref="M:UIKit.UIResponder.ResignFirstResponder*" />
         to notify a the first responder that the first responder is
         changing.  Text input responders will typically override both
         methods to activate and deactivate the virtual keyboard.

@@ -112,8 +112,8 @@ namespace Foundation {
 			return ((NSNumber) value).Int32Value;
 		}
 
-		/// <param name="key">The identifier of the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20UInt%2032&amp;scope=Xamarin" title="T:System.UInt32">T:System.UInt32</a></format>.</param>
-		///         <summary>Returns the nullable <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20UInt%2032&amp;scope=Xamarin" title="T:System.UInt32">T:System.UInt32</a></format> associated with <paramref name="key" />.</summary>
+		/// <param name="key">The identifier of the <see cref="T:System.UInt32" />.</param>
+		///         <summary>Returns the nullable <see cref="T:System.UInt32" /> associated with <paramref name="key" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		protected uint? GetUInt32Value (NSString key)
@@ -187,8 +187,8 @@ namespace Foundation {
 			return ((NSNumber) value).UInt64Value;
 		}
 
-		/// <param name="key">The identifier of the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20UInt%2032&amp;scope=Xamarin" title="T:System.UInt32">T:System.UInt32</a></format>.</param>
-		///         <summary>Returns the nullable <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20UInt%2032&amp;scope=Xamarin" title="T:System.UInt32">T:System.UInt32</a></format> associated with <paramref name="key" />.</summary>
+		/// <param name="key">The identifier of the <see cref="T:System.UInt32" />.</param>
+		///         <summary>Returns the nullable <see cref="T:System.UInt32" /> associated with <paramref name="key" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		protected uint? GetUIntValue (NSString key)
@@ -494,8 +494,8 @@ namespace Foundation {
 		}
 
 		/// <param name="key">The identifier to be associated with the array.</param>
-		///         <param name="values">The <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> array to be associated with <paramref name="key" />.</param>
-		///         <summary>Associates the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> array <paramref name="values" /> with <paramref name="key" />.</summary>
+		///         <param name="values">The <see cref="T:System.String" /> array to be associated with <paramref name="key" />.</param>
+		///         <summary>Associates the <see cref="T:System.String" /> array <paramref name="values" /> with <paramref name="key" />.</summary>
 		///         <remarks>To be added.</remarks>
 		protected void SetArrayValue (NSString key, string []? values)
 		{

@@ -143,7 +143,7 @@ namespace Contacts {
 		ValidationTypeMismatch = 301,
 		/// <summary>The validation attempt was misconfigured.</summary>
 		ValidationConfigurationError = 302,
-		/// <summary>The <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Contacts%20CNPredicate&amp;scope=Xamarin" title="T:Contacts.CNPredicate">T:Contacts.CNPredicate</a></format> is invalid.</summary>
+		/// <summary>The <see cref="T:Contacts.CNPredicate" /> is invalid.</summary>
 		PredicateInvalid = 400,
 		/// <summary>A policy validation error.</summary>
 		PolicyViolation = 500,

@@ -147,7 +147,7 @@ namespace AddressBook {
 		///           The name of the group.
 		///         </summary>
 		///         <value>
-		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> containing the name of the group.
+		///           A <see cref="T:System.String" /> containing the name of the group.
 		///         </value>
 		///         <remarks>
 		///         </remarks>
@@ -204,7 +204,7 @@ namespace AddressBook {
 		///           Returns an enumerator that iterates through all members in the group.
 		///         </summary>
 		///         <returns>
-		///           An <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Collections%20IEnumerator&amp;scope=Xamarin" title="T:System.Collections.IEnumerator">T:System.Collections.IEnumerator</a></format>
+		///           An <see cref="T:System.Collections.IEnumerator" />
 		///           which will return all members in the group.
 		///         </returns>
 		///         <remarks>
@@ -219,7 +219,7 @@ namespace AddressBook {
 		///         </summary>
 		///         <returns>
 		///           An
-		///           <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Collections%20Generic%20IEnumerator{%20Address%20Book%20ABRecord}&amp;scope=Xamarin" title="T:System.Collections.Generic.IEnumerator{AddressBook.ABRecord}">T:System.Collections.Generic.IEnumerator{AddressBook.ABRecord}</a></format>
+		///           <see cref="T:System.Collections.Generic.IEnumerator{AddressBook.ABRecord}" />
 		///           which will return all members in the group.
 		///         </returns>
 		///         <remarks>

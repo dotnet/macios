@@ -8,7 +8,7 @@
     <param name="dataPacketDescription">If this parameter is not null,
     your callback should fill out the array with packet descriptions,
     one for each packet provided to the AudioBuffer's data .</param>
-    <summary>Delegate associated with the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Audio%20Toolbox%20Audio%20Converter%20Audio%20Converter%20Complex%20Input%20Data&amp;scope=Xamarin" title="E:AudioToolbox.AudioConverter.AudioConverterComplexInputData">E:AudioToolbox.AudioConverter.AudioConverterComplexInputData</a></format> event.</summary>
+    <summary>Delegate associated with the <see cref="E:AudioToolbox.AudioConverter.AudioConverterComplexInputData" /> event.</summary>
     <returns>Status code indicating the result of this operation.</returns>
     <remarks>
       <para>

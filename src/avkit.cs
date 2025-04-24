@@ -183,7 +183,7 @@ namespace AVKit {
 	///     </remarks>
 	interface IAVPictureInPictureControllerDelegate { }
 
-	/// <summary>Delegate object providing methods for the application's <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIView%20Controller%20Delegate&amp;scope=Xamarin" title="T:UIKit.UIViewControllerDelegate">T:UIKit.UIViewControllerDelegate</a></format> at the start and stop of picture-in-picture video playback.</summary>
+	/// <summary>Delegate object providing methods for the application's <see cref="T:UIKit.UIViewControllerDelegate" /> at the start and stop of picture-in-picture video playback.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AVKit/Reference/AVPictureInPictureControllerDelegate_Protocol/index.html">Apple documentation for <c>AVPictureInPictureControllerDelegate</c></related>
 	[TV (14, 0)]

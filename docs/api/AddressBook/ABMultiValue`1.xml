@@ -27,7 +27,7 @@
   </Docs>
   <Docs DocId="M:AddressBook.ABMultiValue`1.GetIndexForIdentifier(System.Int32)">
     <param name="identifier">
-          A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Int%2032&amp;scope=Xamarin" title="T:System.Int32">T:System.Int32</a></format> containing the
+          A <see cref="T:System.Int32" /> containing the
           <see cref="P:AddressBook.ABMultiValueEntry`1.Identifier" />
           to lookup.
         </param>
@@ -39,7 +39,7 @@
           value equal to <paramref name="identifier" />.
         </summary>
     <returns>
-          A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Int%2032&amp;scope=Xamarin" title="T:System.Int32">T:System.Int32</a></format> containing the index within
+          A <see cref="T:System.Int32" /> containing the index within
           the collection of the
           <see cref="T:AddressBook.ABMultiValueEntry`1" />
           entry having an

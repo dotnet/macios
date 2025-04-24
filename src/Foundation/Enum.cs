@@ -1041,7 +1041,7 @@ namespace Foundation {
 		WithoutDeletingBackupItem = 1 << 1,
 	}
 
-	/// <summary>An enumeration of special directories for use with <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Foundation%20NSFile%20Manager%20Get%20URLs&amp;scope=Xamarin" title="M:Foundation.NSFileManager.GetURLs*">M:Foundation.NSFileManager.GetURLs*</a></format>.</summary>
+	/// <summary>An enumeration of special directories for use with <see cref="M:Foundation.NSFileManager.GetURLs*" />.</summary>
 	/// <remarks>Some of these constants when used can return more than one value (for example AllApplicationsDirectory).</remarks>
 	[Native]
 	public enum NSSearchPathDirectory : ulong {
@@ -1618,7 +1618,7 @@ namespace Foundation {
 		All,
 	}
 
-	/// <summary>A flagging enumeration whose values specify options in calls to <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=NSFoundation%20NSCalendar%20Components&amp;scope=Xamarin" title="M:NSFoundation.NSCalendar.Components*">M:NSFoundation.NSCalendar.Components*</a></format> and <see cref="M:Foundation.NSCalendar.DateByAddingComponents(Foundation.NSDateComponents,Foundation.NSDate,Foundation.NSDateComponentsWrappingBehavior)" />.</summary>
+	/// <summary>A flagging enumeration whose values specify options in calls to <see cref="M:NSFoundation.NSCalendar.Components*" /> and <see cref="M:Foundation.NSCalendar.DateByAddingComponents(Foundation.NSDateComponents,Foundation.NSDate,Foundation.NSDateComponentsWrappingBehavior)" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Flags]
 	[Native]
@@ -1686,7 +1686,7 @@ namespace Foundation {
 		CallSignaling = 11,
 	}
 
-	/// <summary>A flagging enumeration that specifies sorting options in calls to <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=NSFoundation%20NSMutable%20Ordered%20Set%20Sort&amp;scope=Xamarin" title="M:NSFoundation.NSMutableOrderedSet.Sort*">M:NSFoundation.NSMutableOrderedSet.Sort*</a></format>.</summary>
+	/// <summary>A flagging enumeration that specifies sorting options in calls to <see cref="M:NSFoundation.NSMutableOrderedSet.Sort*" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Flags]
 	[Native]
@@ -1697,7 +1697,7 @@ namespace Foundation {
 		Stable = 1 << 4,
 	}
 
-	/// <summary>A flagging enumeration that can be used with the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=C:Foundation.NSData(Foundation.NSData,Foundation.NSDataBase64DecodingOptions&amp;scope=Xamarin" title="C:Foundation.NSData(Foundation.NSData,Foundation.NSDataBase64DecodingOptions">C:Foundation.NSData(Foundation.NSData,Foundation.NSDataBase64DecodingOptions</a></format> constructor.</summary>
+	/// <summary>A flagging enumeration that can be used with the <see cref="C:Foundation.NSData(Foundation.NSData,Foundation.NSDataBase64DecodingOptions" /> constructor.</summary>
 	/// <remarks>To be added.</remarks>
 	[Flags]
 	[Native]
@@ -1741,7 +1741,7 @@ namespace Foundation {
 		RejectProtectionSpace = 3,
 	}
 
-	/// <summary>An enumeration whose values specify the state of a <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Foundation%20NSSession%20Task&amp;scope=Xamarin" title="T:Foundation.NSSessionTask">T:Foundation.NSSessionTask</a></format>.</summary>
+	/// <summary>An enumeration whose values specify the state of a <see cref="T:Foundation.NSSessionTask" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
 	public enum NSUrlSessionTaskState : long {
@@ -2154,7 +2154,7 @@ namespace Foundation {
 		Abbreviated,
 	}
 
-	/// <summary>Enumerates the manner in which a <see cref="T:Foundation.NSCoder" /> fails. (See <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Foundation%20NSCoder%20Failure%20Policy&amp;scope=Xamarin" title="P:Foundation.NSCoder.FailurePolicy">P:Foundation.NSCoder.FailurePolicy</a></format>)</summary>
+	/// <summary>Enumerates the manner in which a <see cref="T:Foundation.NSCoder" /> fails. (See <see cref="P:Foundation.NSCoder.FailurePolicy" />)</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]

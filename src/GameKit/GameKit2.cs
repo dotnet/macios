@@ -234,7 +234,7 @@ namespace GameKit {
 		public GKPeerConnectionState State { get; private set; }
 	}
 
-	/// <summary>Provides data for the <see cref="E:GameKit.GKSession.Failed" />, <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Game%20Kit%20GKPeer%20Connection%20Event%20Args%20Connection%20Request&amp;scope=Xamarin" title="E:GameKit.GKPeerConnectionEventArgs.ConnectionRequest">E:GameKit.GKPeerConnectionEventArgs.ConnectionRequest</a></format> and <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Game%20Kit%20GKPeer%20Connection%20Event%20Args%20Failed&amp;scope=Xamarin" title="E:GameKit.GKPeerConnectionEventArgs.Failed">E:GameKit.GKPeerConnectionEventArgs.Failed</a></format> events.</summary>
+	/// <summary>Provides data for the <see cref="E:GameKit.GKSession.Failed" />, <see cref="E:GameKit.GKPeerConnectionEventArgs.ConnectionRequest" /> and <see cref="E:GameKit.GKPeerConnectionEventArgs.Failed" /> events.</summary>
 	///     <remarks>
 	///     </remarks>
 	public class GKPeerConnectionEventArgs : EventArgs {

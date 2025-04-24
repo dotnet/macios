@@ -102,7 +102,7 @@ void Teardown ()
 ]]></code>
       </example>
       <para>
-        Similarly, if your object implements <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20IDisposable&amp;scope=Xamarin" title="T:System.IDisposable">T:System.IDisposable</a></format> (including any object derived from <see cref="T:Foundation.NSObject" />)
+        Similarly, if your object implements <see cref="T:System.IDisposable" /> (including any object derived from <see cref="T:Foundation.NSObject" />)
         you MUST call <see cref="M:Foundation.NSNotificationCenter.RemoveObservers(System.Collections.Generic.IEnumerable{Foundation.NSObject})" /> or <c>notificationToken.Dispose()</c> in your <c>Dispose</c> function: 
       </para>
       <example>

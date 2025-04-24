@@ -5,7 +5,7 @@
       <para>
         Collection Views allow content to be displayed using arbitrary layouts. Grid-like layouts can use the <see cref="T:UIKit.UICollectionViewFlowLayout" /> or application developers can subtype <see cref="T:UIKit.UICollectionViewLayout" /> to create their own flexible pattern.
       </para>
-      <para>The layout of the <see cref="T:UIKit.UICollectionViewCell" />s in a <see cref="T:UIKit.UICollectionView" /> is controlled by a <see cref="T:UIKit.UICollectionViewLayout" />, which can be passed in to the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=C:UIKit.UICollectionView(UICollectionViewLayout)&amp;scope=Xamarin" title="C:UIKit.UICollectionView(UICollectionViewLayout)">C:UIKit.UICollectionView(UICollectionViewLayout)</a></format> constructor or can changed with <see cref="M:UIKit.UICollectionView.SetCollectionViewLayout*" />. </para>
+      <para>The layout of the <see cref="T:UIKit.UICollectionViewCell" />s in a <see cref="T:UIKit.UICollectionView" /> is controlled by a <see cref="T:UIKit.UICollectionViewLayout" />, which can be passed in to the <see cref="C:UIKit.UICollectionView(UICollectionViewLayout)" /> constructor or can changed with <see cref="M:UIKit.UICollectionView.SetCollectionViewLayout*" />. </para>
       <para>Application developers can create fully custom layouts by subclassing either <see cref="T:UIKit.UICollectionViewFlowLayout" /> or <see cref="T:UIKit.UICollectionViewLayout" />. </para>
       <para>
         The key methods to override are:

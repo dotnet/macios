@@ -141,7 +141,7 @@ namespace PassKit {
 		NSSet<PKSecureElementPass> GetPasses (string readerIdentifier);
 
 		/// <param name="passType">To be added.</param>
-		///         <summary>The passes in the user's pass library whose <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Pass%20Kit%20PKPass%20Type%20Pass%20Type&amp;scope=Xamarin" title="P:PassKit.PKPassType.PassType">P:PassKit.PKPassType.PassType</a></format> matches <paramref name="passType" />.</summary>
+		///         <summary>The passes in the user's pass library whose <see cref="P:PassKit.PKPassType.PassType" /> matches <paramref name="passType" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
@@ -1622,7 +1622,7 @@ namespace PassKit {
 		[Export ("organizationName", ArgumentSemantic.Copy)]
 		string OrganizationName { get; }
 
-		/// <summary>Identifies the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Pass%20Kit%20PKPass%20PKPass%20Type&amp;scope=Xamarin" title="P:PassKit.PKPass.PKPassType">P:PassKit.PKPass.PKPassType</a></format>.</summary>
+		/// <summary>Identifies the <see cref="P:PassKit.PKPass.PKPassType" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("passTypeIdentifier", ArgumentSemantic.Copy)]

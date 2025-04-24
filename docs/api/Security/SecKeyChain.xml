@@ -9,7 +9,7 @@
     <remarks>
       <para>
 	    The returned NSData is a binary blob, if you want to get a
-	    high-level representation, use <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Security%20Sec%20Key%20Chain%20Query%20As%20Record&amp;scope=Xamarin" title="M:Security.SecKeyChain.QueryAsRecord*">M:Security.SecKeyChain.QueryAsRecord*</a></format>
+	    high-level representation, use <see cref="M:Security.SecKeyChain.QueryAsRecord*" />
 	    instead.
 	  </para>
       <para>
@@ -33,7 +33,7 @@
     <remarks>
       <para>
 	    The returned NSData is a binary blob, if you want to get a
-	    high-level representation, use <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Security%20Sec%20Key%20Chain%20Query%20As%20Record&amp;scope=Xamarin" title="M:Security.SecKeyChain.QueryAsRecord*">M:Security.SecKeyChain.QueryAsRecord*</a></format>
+	    high-level representation, use <see cref="M:Security.SecKeyChain.QueryAsRecord*" />
 	    instead.
 	  </para>
       <para>
@@ -53,7 +53,7 @@
     <remarks>
       <para>
 	    The returned NSData is a binary blob, if you want to get a
-	    high-level representation, use <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Security%20Sec%20Key%20Chain%20Query%20As%20Record&amp;scope=Xamarin" title="M:Security.SecKeyChain.QueryAsRecord*">M:Security.SecKeyChain.QueryAsRecord*</a></format>
+	    high-level representation, use <see cref="M:Security.SecKeyChain.QueryAsRecord*" />
 	    instead.
 	  </para>
       <para>
@@ -78,7 +78,7 @@
     <remarks>
       <para>
 	    The returned NSData is a binary blob, if you want to get a
-	    high-level representation, use <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Security%20Sec%20Key%20Chain%20Query%20As%20Record&amp;scope=Xamarin" title="M:Security.SecKeyChain.QueryAsRecord*">M:Security.SecKeyChain.QueryAsRecord*</a></format>
+	    high-level representation, use <see cref="M:Security.SecKeyChain.QueryAsRecord*" />
 	    instead.
 	  </para>
       <para>
@@ -159,7 +159,7 @@
 	keychain.
       </para>
       <para>
-	Use <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Security%20Sec%20Key%20Chain%20Query%20As%20Record&amp;scope=Xamarin" title="M:Security.SecKeyChain.QueryAsRecord*">M:Security.SecKeyChain.QueryAsRecord*</a></format> to get
+	Use <see cref="M:Security.SecKeyChain.QueryAsRecord*" /> to get
 	a strongly typed SecRecord with the results of your query.
       </para>
       <example>

@@ -69,7 +69,7 @@ namespace UIKit {
 		}
 
 		/// <summary>Returns an enumerator that lists all of the child <see cref="T:UIKit.UIView" />s</summary>
-		///         <returns>An <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Collections%20IEnumerator&amp;scope=Xamarin" title="T:System.Collections.IEnumerator">T:System.Collections.IEnumerator</a></format> of the <see cref="T:UIKit.UIView" />s that are children of this <see cref="T:UIKit.UIViewController" />.</returns>
+		///         <returns>An <see cref="T:System.Collections.IEnumerator" /> of the <see cref="T:UIKit.UIView" />s that are children of this <see cref="T:UIKit.UIViewController" />.</returns>
 		///         <remarks>
 		///         </remarks>
 		public IEnumerator GetEnumerator ()

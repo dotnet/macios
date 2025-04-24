@@ -46,7 +46,7 @@ namespace NetworkExtension {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NEVpnIkeAuthenticationMethod : long {
-		/// <summary>In IKEv2, supports extended authentication if <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Network%20Extension%20NEVpn%20Protocol%20Ip%20Sec%20Extended%20Authentication&amp;scope=Xamarin" title="T:NetworkExtension.NEVpnProtocolIpSec.ExtendedAuthentication">T:NetworkExtension.NEVpnProtocolIpSec.ExtendedAuthentication</a></format> is <see langword="true" />.</summary>
+		/// <summary>In IKEv2, supports extended authentication if <see cref="T:NetworkExtension.NEVpnProtocolIpSec.ExtendedAuthentication" /> is <see langword="true" />.</summary>
 		None = 0,
 		/// <summary>A certificate and private key.</summary>
 		Certificate = 1,

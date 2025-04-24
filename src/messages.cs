@@ -97,7 +97,7 @@ namespace Messages {
 		CGSize GetContentSizeThatFits (CGSize size);
 	}
 
-	/// <summary>A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:Speech.UIViewController&amp;scope=Xamarin" title="T:Speech.UIViewController">T:Speech.UIViewController</a></format> that, when extended by the developer, is used to present a custom user-experience within the Messages app.</summary>
+	/// <summary>A <see cref="T:Speech.UIViewController" /> that, when extended by the developer, is used to present a custom user-experience within the Messages app.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Messages/MSMessagesAppViewController">Apple documentation for <c>MSMessagesAppViewController</c></related>
 	[MacCatalyst (14, 0)]

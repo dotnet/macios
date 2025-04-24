@@ -75,7 +75,7 @@ namespace ARKit {
 	[ErrorDomain ("ARErrorDomain")]
 	[Native]
 	public enum ARErrorCode : long {
-		/// <summary>The requested <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=ARKit%20ARSession%20Configuration&amp;scope=Xamarin" title="T:ARKit.ARSessionConfiguration">T:ARKit.ARSessionConfiguration</a></format> is not compatible with the device.</summary>
+		/// <summary>The requested <see cref="T:ARKit.ARSessionConfiguration" /> is not compatible with the device.</summary>
 		UnsupportedConfiguration = 100,
 		/// <summary>A suitable capture device could not be found.</summary>
 		SensorUnavailable = 101,
@@ -183,15 +183,15 @@ namespace ARKit {
 		Vertical = 1 << 1,
 	}
 
-	/// <summary>Enumerates environmental texturing strategies used with <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=ARKit%20ARWorld%20Tracking%20Probe%20Anchor&amp;scope=Xamarin" title="T:ARKit.ARWorldTrackingProbeAnchor">T:ARKit.ARWorldTrackingProbeAnchor</a></format> objects.</summary>
+	/// <summary>Enumerates environmental texturing strategies used with <see cref="T:ARKit.ARWorldTrackingProbeAnchor" /> objects.</summary>
 	[NoTV, NoMac]
 	[Native]
 	public enum AREnvironmentTexturing : long {
 		/// <summary>Environmental texture-map generation is not in use.</summary>
 		None,
-		/// <summary>The developer creates and places <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=ARKit%20ARWorld%20Tracking%20Probe%20Anchor&amp;scope=Xamarin" title="T:ARKit.ARWorldTrackingProbeAnchor">T:ARKit.ARWorldTrackingProbeAnchor</a></format> objects.</summary>
+		/// <summary>The developer creates and places <see cref="T:ARKit.ARWorldTrackingProbeAnchor" /> objects.</summary>
 		Manual,
-		/// <summary>The system automatically creates and places <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=ARKit%20ARWorld%20Tracking%20Probe%20Anchor&amp;scope=Xamarin" title="T:ARKit.ARWorldTrackingProbeAnchor">T:ARKit.ARWorldTrackingProbeAnchor</a></format> objects. .</summary>
+		/// <summary>The system automatically creates and places <see cref="T:ARKit.ARWorldTrackingProbeAnchor" /> objects. .</summary>
 		Automatic,
 	}
 
@@ -1396,7 +1396,7 @@ namespace ARKit {
 		bool SupportsFrameSemantics (ARFrameSemantics frameSemantics);
 	}
 
-	/// <summary>A <see cref="T:Foundation.DictionaryContainer" /> that defines the features available in <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=ARKit%20ARBlend%20Shape%20Location&amp;scope=Xamarin" title="T:ARKit.ARBlendShapeLocation">T:ARKit.ARBlendShapeLocation</a></format> .</summary>
+	/// <summary>A <see cref="T:Foundation.DictionaryContainer" /> that defines the features available in <see cref="T:ARKit.ARBlendShapeLocation" /> .</summary>
 	///     <remarks>
 	///       <para>All values are in the range [0..1], where 0.0 indicates the neutral state and 1.0 indicates maximum displacement.</para>
 	///     </remarks>

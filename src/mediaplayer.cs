@@ -461,7 +461,7 @@ namespace MediaPlayer {
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		NSString DateAddedProperty { get; }
 
-		/// <summary>Backing store for the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Media%20Player%20Media%20Item%20Playback%20Store%20ID&amp;scope=Xamarin" title="P:MediaPlayer.MediaItem.PlaybackStoreID">P:MediaPlayer.MediaItem.PlaybackStoreID</a></format> property.</summary>
+		/// <summary>Backing store for the <see cref="P:MediaPlayer.MediaItem.PlaybackStoreID" /> property.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
@@ -1115,7 +1115,7 @@ namespace MediaPlayer {
 	interface MPMediaPredicate : NSSecureCoding {
 	}
 
-	/// <summary>A type of <see cref="T:MediaPlayer.MPMediaPredicate" /> that evaluates <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Media%20Player%20MPMedia%20Item%20Property&amp;scope=Xamarin" title="T:MediaPlayer.MPMediaItemProperty">T:MediaPlayer.MPMediaItemProperty</a></format>s.</summary>
+	/// <summary>A type of <see cref="T:MediaPlayer.MPMediaPredicate" /> that evaluates <see cref="T:MediaPlayer.MPMediaItemProperty" />s.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPMediaPropertyPredicate_ClassReference/index.html">Apple documentation for <c>MPMediaPropertyPredicate</c></related>
 	[NoMac]
@@ -1443,7 +1443,7 @@ namespace MediaPlayer {
 		MPTimedMetadata [] TimedMetadata { get; }
 	}
 
-	/// <summary>Interface that, together with the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Media%20Player%20MPMedia%20Playback_%20Extensions&amp;scope=Xamarin" title="T:MediaPlayer.MPMediaPlayback_Extensions">T:MediaPlayer.MPMediaPlayback_Extensions</a></format> class, comprise the MPMediaPlayback protocol.</summary>
+	/// <summary>Interface that, together with the <see cref="T:MediaPlayer.MPMediaPlayback_Extensions" /> class, comprise the MPMediaPlayback protocol.</summary>
 	/// <remarks>To be added.</remarks>
 	[NoMac]
 	[TV (16, 0)]

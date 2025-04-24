@@ -129,7 +129,7 @@ namespace AudioToolbox {
 		InfoDictionary = 0x696e666f,
 	}
 
-	/// <summary>Provides data for the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Audio%20Toolbox%20Property%20Found%20Event%20Args%20Property%20Found&amp;scope=Xamarin" title="E:AudioToolbox.PropertyFoundEventArgs.PropertyFound">E:AudioToolbox.PropertyFoundEventArgs.PropertyFound</a></format> event.</summary>
+	/// <summary>Provides data for the <see cref="E:AudioToolbox.PropertyFoundEventArgs.PropertyFound" /> event.</summary>
 	///     <remarks>
 	///     </remarks>
 	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/StreamingAudio/">StreamingAudio</related>
@@ -167,7 +167,7 @@ namespace AudioToolbox {
 		}
 	}
 
-	/// <summary>Provides data for the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Audio%20Toolbox%20Packet%20Received%20Event%20Args%20Packet%20Decoded&amp;scope=Xamarin" title="E:AudioToolbox.PacketReceivedEventArgs.PacketDecoded">E:AudioToolbox.PacketReceivedEventArgs.PacketDecoded</a></format> event.</summary>
+	/// <summary>Provides data for the <see cref="E:AudioToolbox.PacketReceivedEventArgs.PacketDecoded" /> event.</summary>
 	///     <remarks>
 	///     </remarks>
 	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/StreamingAudio/">StreamingAudio</related>

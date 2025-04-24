@@ -396,7 +396,7 @@ public class AnimalCell : UICollectionViewCell
         <returns>A supplementary <see cref="T:UIKit.UICollectionReusableView" /> that is either newly allocated or recycled from the reuse queue..</returns>
         <remarks>
           <para>The application developer must have registered a class or nib file using either <see cref="M:UIKit.UICollectionView.RegisterClassForSupplementaryView(System.Type,UIKit.UICollectionElementKindSection,System.String)" /> or <see cref="M:UIKit.UICollectionView.RegisterNibForSupplementaryView(UIKit.UINib,UIKit.UICollectionElementKindSection,System.String)" /> prior to calling this method.</para>
-          <para>If the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:UIKIt.UICollectionReusableView&amp;scope=Xamarin" title="T:UIKIt.UICollectionReusableView">T:UIKIt.UICollectionReusableView</a></format> is not newly allocated but is being recycled, this method will call that cell's <see cref="M:UIKit.UICollectionReusableView.PrepareForReuse" /> method.</para>
+          <para>If the <see cref="T:UIKIt.UICollectionReusableView" /> is not newly allocated but is being recycled, this method will call that cell's <see cref="M:UIKit.UICollectionReusableView.PrepareForReuse" /> method.</para>
         </remarks>
       </Docs>
 </Documentation>

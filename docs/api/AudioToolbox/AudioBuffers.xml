@@ -35,7 +35,7 @@
 	there are two buffers, the left samples are stored in one buffer and the right samples are stored on the other one.  
       </para>
       <para>
-	This is an immutable data structure, if you are looking for a mutable version, see the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Audio%20Toolbox%20Mutable%20Audio%20Buffer%20List&amp;scope=Xamarin" title="T:AudioToolbox.MutableAudioBufferList">T:AudioToolbox.MutableAudioBufferList</a></format>.
+	This is an immutable data structure, if you are looking for a mutable version, see the <see cref="T:AudioToolbox.MutableAudioBufferList" />.
       </para>
       <para>
 	If you create an object with a number of set buffers, or your

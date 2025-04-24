@@ -24,7 +24,7 @@ namespace CarPlay {
 	interface NSUnitLength : NSUnit { }
 	interface NSUnitAngle : NSUnit { }
 
-	/// <summary>Enumerates the styles for a <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Car%20Play%20CPAlert&amp;scope=Xamarin" title="T:CarPlay.CPAlert">T:CarPlay.CPAlert</a></format> object's action button.</summary>
+	/// <summary>Enumerates the styles for a <see cref="T:CarPlay.CPAlert" /> object's action button.</summary>
 	[NoTV, NoMac]
 	[Native]
 	enum CPAlertActionStyle : ulong {
@@ -1519,7 +1519,7 @@ namespace CarPlay {
 	/// <summary>Delegate object used by <see cref="T:CarPlay.CPSessionConfiguration" />.</summary>
 	interface ICPSessionConfigurationDelegate { }
 
-	/// <summary>Abstract implementation of <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=I:Carlay.ICPSessionConfigurationDelegate&amp;scope=Xamarin" title="I:Carlay.ICPSessionConfigurationDelegate">I:Carlay.ICPSessionConfigurationDelegate</a></format>.</summary>
+	/// <summary>Abstract implementation of <see cref="I:Carlay.ICPSessionConfigurationDelegate" />.</summary>
 	[NoTV, NoMac]
 #if NET
 	[Protocol, Model]

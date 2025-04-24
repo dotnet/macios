@@ -16,7 +16,7 @@ using ObjCRuntime;
 
 namespace MediaPlayer {
 	// NSInteger -> MPMoviePlayerController.h
-	/// <summary>An enumeration of possible states in which the <see cref="T:MediaPlayer.MPMoviePlayerController" /> may be. Used with the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Media%20Player%20MPMovie%20Cotnroller%20Playback%20State&amp;scope=Xamarin" title="P:MediaPlayer.MPMovieCotnroller.PlaybackState">P:MediaPlayer.MPMovieCotnroller.PlaybackState</a></format> property.</summary>
+	/// <summary>An enumeration of possible states in which the <see cref="T:MediaPlayer.MPMoviePlayerController" /> may be. Used with the <see cref="P:MediaPlayer.MPMovieCotnroller.PlaybackState" /> property.</summary>
 	[NoMac]
 	[NoTV]
 	[Deprecated (PlatformName.iOS, 9, 0)]

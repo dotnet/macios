@@ -133,7 +133,7 @@ namespace CoreAnimation {
 	///     <remarks>
 	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:CoreAnimation.CAMediaTiming" />.</para>
 	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:CoreAnimation.CAMediaTiming" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Animation%20CAMedia%20Timing_%20Extensions&amp;scope=Xamarin" title="T:CoreAnimation.CAMediaTiming_Extensions">T:CoreAnimation.CAMediaTiming_Extensions</a></format> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:CoreAnimation.CAMediaTiming_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	interface ICAMediaTiming { }
 
@@ -2660,7 +2660,7 @@ namespace CoreAnimation {
 		///           <para>
 		/// 	    If you need to pass CoreGraphics objects, or retrieve
 		/// 	    elements from the key frame that might contain CoreGraphics
-		/// 	    objects, you should use the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:CoreAnimation.CAKeyFrameAnimation.SetValues&amp;scope=Xamarin" title="M:CoreAnimation.CAKeyFrameAnimation.SetValues">M:CoreAnimation.CAKeyFrameAnimation.SetValues</a></format> and
+		/// 	    objects, you should use the <see cref="M:CoreAnimation.CAKeyFrameAnimation.SetValues" /> and
 		/// 	    <see cref="M:CoreAnimation.CAKeyFrameAnimation.GetValuesAs``1" /> methods instead.
 		///
 		/// 	  </para>

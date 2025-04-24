@@ -384,7 +384,7 @@ namespace MultipeerConnectivity {
 		IMCNearbyServiceAdvertiserDelegate Delegate { get; set; }
 
 		/// <summary>The identity by which this device will be known on the peer network.</summary>
-		///         <value>This will contain the data passed in to the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=C:MultipeerConnectivity.MCNearbyServiceAdvertiser(MultipeerConnectivity.MCPeerID,Foundation.NSDictionary,string)&amp;scope=Xamarin" title="C:MultipeerConnectivity.MCNearbyServiceAdvertiser(MultipeerConnectivity.MCPeerID,Foundation.NSDictionary,string)">C:MultipeerConnectivity.MCNearbyServiceAdvertiser(MultipeerConnectivity.MCPeerID,Foundation.NSDictionary,string)</a></format> constructor.</value>
+		///         <value>This will contain the data passed in to the <see cref="C:MultipeerConnectivity.MCNearbyServiceAdvertiser(MultipeerConnectivity.MCPeerID,Foundation.NSDictionary,string)" /> constructor.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("myPeerID")]
 		MCPeerID MyPeerID { get; }
@@ -395,7 +395,7 @@ namespace MultipeerConnectivity {
 		NSDictionary DiscoveryInfo { get; }
 
 		/// <summary>The network protocol this peer supports.</summary>
-		///         <value>This will contain the data passed in to the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=C:MultipeerConnectivity.MCNearbyServiceAdvertiser(MultipeerConnectivity.MCPeerID,Foundation.NSDictionary,string)&amp;scope=Xamarin" title="C:MultipeerConnectivity.MCNearbyServiceAdvertiser(MultipeerConnectivity.MCPeerID,Foundation.NSDictionary,string)">C:MultipeerConnectivity.MCNearbyServiceAdvertiser(MultipeerConnectivity.MCPeerID,Foundation.NSDictionary,string)</a></format> constructor.</value>
+		///         <value>This will contain the data passed in to the <see cref="C:MultipeerConnectivity.MCNearbyServiceAdvertiser(MultipeerConnectivity.MCPeerID,Foundation.NSDictionary,string)" /> constructor.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("serviceType")]
 		string ServiceType { get; }
@@ -726,13 +726,13 @@ namespace MultipeerConnectivity {
 		NSDictionary DiscoveryInfo { get; }
 
 		/// <summary>The <see cref="T:MultipeerConnectivity.MCSession" /> into which peers will be placed.</summary>
-		///         <value>Passed in to the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=C:MultipeerConnectivity.MCAdvertiserAssistant(string,Foundation.NSDictionary, MultipeerConnectivity.MCSession)&amp;scope=Xamarin" title="C:MultipeerConnectivity.MCAdvertiserAssistant(string,Foundation.NSDictionary, MultipeerConnectivity.MCSession)">C:MultipeerConnectivity.MCAdvertiserAssistant(string,Foundation.NSDictionary, MultipeerConnectivity.MCSession)</a></format> constructor.</value>
+		///         <value>Passed in to the <see cref="C:MultipeerConnectivity.MCAdvertiserAssistant(string,Foundation.NSDictionary, MultipeerConnectivity.MCSession)" /> constructor.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("session")]
 		MCSession Session { get; }
 
 		/// <summary>A string, between 1 and 15 characters long, identifying the network protocol being advertised.</summary>
-		///         <value>Passed in to the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=C:MultipeerConnectivity.MCAdvertiserAssistant(string,Foundation.NSDictionary, MultipeerConnectivity.MCSession)&amp;scope=Xamarin" title="C:MultipeerConnectivity.MCAdvertiserAssistant(string,Foundation.NSDictionary, MultipeerConnectivity.MCSession)">C:MultipeerConnectivity.MCAdvertiserAssistant(string,Foundation.NSDictionary, MultipeerConnectivity.MCSession)</a></format> constructor.</value>
+		///         <value>Passed in to the <see cref="C:MultipeerConnectivity.MCAdvertiserAssistant(string,Foundation.NSDictionary, MultipeerConnectivity.MCSession)" /> constructor.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("serviceType")]
 		string ServiceType { get; }

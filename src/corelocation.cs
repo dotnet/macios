@@ -375,9 +375,9 @@ namespace CoreLocation {
 		NSObject WeakDelegate { get; set; }
 
 		/// <summary>The minimum horizontal distance, in meters, the device has to move before issuing a location update.</summary>
-		///         <value>The default value is <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Location%20CLLocation%20Distance%20None&amp;scope=Xamarin" title="P:CoreLocation.CLLocationDistance.None">P:CoreLocation.CLLocationDistance.None</a></format>.</value>
+		///         <value>The default value is <see cref="P:CoreLocation.CLLocationDistance.None" />.</value>
 		///         <remarks>
-		///           <para>If this value is set to <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Location%20CLLocation%20Distance%20None&amp;scope=Xamarin" title="P:CoreLocation.CLLocationDistance.None">P:CoreLocation.CLLocationDistance.None</a></format>, the app will receive all location updates.</para>
+		///           <para>If this value is set to <see cref="P:CoreLocation.CLLocationDistance.None" />, the app will receive all location updates.</para>
 		///         </remarks>
 		[Export ("distanceFilter", ArgumentSemantic.Assign)]
 		double DistanceFilter { get; set; }

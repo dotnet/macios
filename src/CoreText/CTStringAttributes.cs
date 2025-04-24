@@ -76,7 +76,7 @@ namespace CoreText {
 		PatternDashDotDot = 0x0400,
 	}
 
-	/// <summary>An enumeration whose values specify the importance of ligatures in a <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Text%20CTString&amp;scope=Xamarin" title="T:CoreText.CTString">T:CoreText.CTString</a></format>.</summary>
+	/// <summary>An enumeration whose values specify the importance of ligatures in a <see cref="T:CoreText.CTString" />.</summary>
 	///     <remarks>To be added.</remarks>
 	///     <altmember cref="T:CoreText.CTStringAttributes.LigatureFormation" />
 	public enum CTLigatureFormation {

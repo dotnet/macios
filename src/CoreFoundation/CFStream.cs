@@ -590,7 +590,7 @@ namespace CoreFoundation {
 
 		#region Events
 
-		/// <summary>An <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Event%20Args&amp;scope=Xamarin" title="T:System.EventArgs">T:System.EventArgs</a></format> used by several events in <see cref="T:CoreFoundation.CFString" />.</summary>
+		/// <summary>An <see cref="T:System.EventArgs" /> used by several events in <see cref="T:CoreFoundation.CFString" />.</summary>
 		///     <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]

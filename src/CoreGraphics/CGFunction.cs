@@ -37,7 +37,7 @@ using ObjCRuntime;
 using Foundation;
 
 namespace CoreGraphics {
-	/// <summary>A callback function to be used with various <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Graphics&amp;scope=Xamarin" title="N:CoreGraphics">N:CoreGraphics</a></format> functions.</summary>
+	/// <summary>A callback function to be used with various <see cref="N:CoreGraphics" /> functions.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]

@@ -193,7 +193,7 @@ namespace GameController {
 		///         <summary>Tries to obtain v100 snapshot data from an NSData object.</summary>
 		///         <returns>
 		///           <see langword="true" /> if the data could be retrieved. Otherwise, <see langword="false" />.</returns>
-		///         <remarks>When the return value is <see langword="false" />, <paramref name="snapshotData" /> will contain <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Int%20Ptr%20Zero&amp;scope=Xamarin" title="F:System.IntPtr.Zero">F:System.IntPtr.Zero</a></format>.</remarks>
+		///         <remarks>When the return value is <see langword="false" />, <paramref name="snapshotData" /> will contain <see cref="F:System.IntPtr.Zero" />.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]

@@ -395,7 +395,7 @@ namespace CoreFoundation {
 		///
 		/// Source to be added.
 		///   	   </param>
-		///         <param name="mode">The mode to add the source to.  If you use <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Foundation%20CFRun%20Loop%20Common%20Modes&amp;scope=Xamarin" title="P:CoreFoundation.CFRunLoop.CommonModes">P:CoreFoundation.CFRunLoop.CommonModes</a></format> the source is added to all common modes.        </param>
+		///         <param name="mode">The mode to add the source to.  If you use <see cref="P:CoreFoundation.CFRunLoop.CommonModes" /> the source is added to all common modes.        </param>
 		///         <summary>Adds a new source to the run loop on the specified mode.</summary>
 		///         <remarks>To be added.</remarks>
 		public void AddSource (CFRunLoopSource source, NSString mode)
@@ -439,7 +439,7 @@ namespace CoreFoundation {
 
 		/// <param name="source">Run loop source to remove</param>
 		///         <param name="mode">
-		/// The mode to remove it from.  If you use <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Foundation%20CFRun%20Loop%20Common%20Modes&amp;scope=Xamarin" title="P:CoreFoundation.CFRunLoop.CommonModes">P:CoreFoundation.CFRunLoop.CommonModes</a></format> the source is removed from all common modes.
+		/// The mode to remove it from.  If you use <see cref="P:CoreFoundation.CFRunLoop.CommonModes" /> the source is removed from all common modes.
 		///   	   </param>
 		///         <summary>Removes a source from the runloop.</summary>
 		///         <remarks>

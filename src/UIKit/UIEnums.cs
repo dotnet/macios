@@ -1212,8 +1212,8 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UITableViewCell.h
-	/// <summary>An enumeration of standard accessory controls that can be used by a <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:UIKIt.UITableViewCell&amp;scope=Xamarin" title="T:UIKIt.UITableViewCell">T:UIKIt.UITableViewCell</a></format>.</summary>
-	/// <remarks>Set the type of accessory to display in a <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:UIKIt.UITableViewCell&amp;scope=Xamarin" title="T:UIKIt.UITableViewCell">T:UIKIt.UITableViewCell</a></format> using the <see cref="P:UIKit.UITableViewCell.Accessory" /> property.</remarks>
+	/// <summary>An enumeration of standard accessory controls that can be used by a <see cref="T:UIKIt.UITableViewCell" />.</summary>
+	/// <remarks>Set the type of accessory to display in a <see cref="T:UIKIt.UITableViewCell" /> using the <see cref="P:UIKit.UITableViewCell.Accessory" /> property.</remarks>
 	[Native ("UITableViewCellAccessoryType")]
 	[MacCatalyst (13, 1)]
 	public enum UITableViewCellAccessory : long {
@@ -1874,7 +1874,7 @@ namespace UIKit {
 
 	// NSInteger -> UIAccessibility.h
 	/// <summary>An enumeration indicating the scrolling direction desired.</summary>
-	/// <remarks>Used as the argument to <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Foundation%20NSObject%20Accessibility%20Scroll&amp;scope=Xamarin" title="M:Foundation.NSObject.AccessibilityScroll*">M:Foundation.NSObject.AccessibilityScroll*</a></format> to generate a scrolling action.</remarks>
+	/// <remarks>Used as the argument to <see cref="M:Foundation.NSObject.AccessibilityScroll*" /> to generate a scrolling action.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UIAccessibilityScrollDirection : long {
@@ -2291,7 +2291,7 @@ namespace UIKit {
 	// NSInteger -> UIImage.h
 	/// <summary>An enumeration whose values specify rendering modes for a <see cref="T:UIKit.UIImage" />.</summary>
 	/// <remarks>
-	///       <para>A template image is used as a mask to create the final image. A template image inherits the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIImage%20Tint%20Color&amp;scope=Xamarin" title="P:UIKit.UIImage.TintColor">P:UIKit.UIImage.TintColor</a></format> of its parent. Application developers who do not want this behavior should use <see cref="F:UIKit.UIImageRenderingMode.AlwaysOriginal" />.</para>
+	///       <para>A template image is used as a mask to create the final image. A template image inherits the <see cref="P:UIKit.UIImage.TintColor" /> of its parent. Application developers who do not want this behavior should use <see cref="F:UIKit.UIImageRenderingMode.AlwaysOriginal" />.</para>
 	///     </remarks>
 	[Native]
 	public enum UIImageRenderingMode : long {
@@ -2317,7 +2317,7 @@ namespace UIKit {
 
 	// NSInteger -> UINavigationController.h
 	/// <summary>An enumeration whose values specify operations on <see cref="T:UIKit.UINavigationController" />.</summary>
-	/// <remarks>This enumeration is used in calls to <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UINavigation%20Controller%20Get%20Animation%20Controller&amp;scope=Xamarin" title="M:UIKit.UINavigationController.GetAnimationController*">M:UIKit.UINavigationController.GetAnimationController*</a></format>.</remarks>
+	/// <remarks>This enumeration is used in calls to <see cref="M:UIKit.UINavigationController.GetAnimationController*" />.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UINavigationControllerOperation : long {
@@ -2935,7 +2935,7 @@ namespace UIKit {
 		PrimaryOverlay = OneOverSecondary,
 	}
 
-	/// <summary>Enumerates characteristics of the button displayed in a table row. Used with the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=C:UIKit.UITableViewRowAction(UIKit.UITableViewRowActionStyle,string ,Action`1,Foundation.NSIndexPath)&amp;scope=Xamarin" title="C:UIKit.UITableViewRowAction(UIKit.UITableViewRowActionStyle,string ,Action`1,Foundation.NSIndexPath)">C:UIKit.UITableViewRowAction(UIKit.UITableViewRowActionStyle,string ,Action`1,Foundation.NSIndexPath)</a></format> constructor.</summary>
+	/// <summary>Enumerates characteristics of the button displayed in a table row. Used with the <see cref="C:UIKit.UITableViewRowAction(UIKit.UITableViewRowActionStyle,string ,Action`1,Foundation.NSIndexPath)" /> constructor.</summary>
 	[Native]
 	[NoTV]
 	[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'UIContextualActionStyle' and corresponding APIs instead.")]

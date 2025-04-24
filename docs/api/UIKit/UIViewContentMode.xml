@@ -126,7 +126,7 @@
           <term>
             <see cref="F:UIKit.UIViewContentMode.ScaleAspectFit" />
           </term>
-          <description>Scales the contents so that everything is visible, while preserving the aspect ratio.   Any areas that are not filled become transparent. (In the image, the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIImage%20Background%20Color&amp;scope=Xamarin" title="P:UIKit.UIImage.BackgroundColor">P:UIKit.UIImage.BackgroundColor</a></format> was set to black to emphasize the scaling behavior.)</description>
+          <description>Scales the contents so that everything is visible, while preserving the aspect ratio.   Any areas that are not filled become transparent. (In the image, the <see cref="P:UIKit.UIImage.BackgroundColor" /> was set to black to emphasize the scaling behavior.)</description>
           <description>
             <img href="~/UIKit/_images/UIViewContentMode.ScaleAspectFit.png" alt="Image layout for the specified content mode" />
           </description>

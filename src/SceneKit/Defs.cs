@@ -187,7 +187,7 @@ namespace SceneKit {
 		OutsideExtent,
 	}
 
-	/// <summary>Enumeration specifying the order in which particles emitted by a <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Scene%20Kit%20SCNParticle%20Scene&amp;scope=Xamarin" title="T:SceneKit.SCNParticleScene">T:SceneKit.SCNParticleScene</a></format> are rendered.</summary>
+	/// <summary>Enumeration specifying the order in which particles emitted by a <see cref="T:SceneKit.SCNParticleScene" /> are rendered.</summary>
 	///     <remarks>
 	///       <para>Along with <see cref="P:SceneKit.SCNParticleSystem.BlendMode" />, <see cref="P:SceneKit.SCNParticleSystem.SortingMode" /> affects the appearance of overlapping particles.</para>
 	///     </remarks>

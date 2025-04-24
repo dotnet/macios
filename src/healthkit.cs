@@ -2822,7 +2822,7 @@ namespace HealthKit {
 		NativeHandle Constructor (HKQuantityType quantityType, [NullAllowed] NSPredicate quantitySamplePredicate, HKStatisticsOptions options, NSDate anchorDate, NSDateComponents intervalComponents);
 	}
 
-	/// <summary>Results handler for <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=C:HKStatisticsQuery&amp;scope=Xamarin" title="C:HKStatisticsQuery">C:HKStatisticsQuery</a></format>.</summary>
+	/// <summary>Results handler for <see cref="C:HKStatisticsQuery" />.</summary>
 	delegate void HKStatisticsQueryHandler (HKStatisticsQuery query, HKStatistics result, NSError error);
 
 	/// <summary>An <see cref="T:HealthKit.HKQuery" /> that can calculate basic statistics (such as the sum and mean) on its constituent data.</summary>
@@ -3379,7 +3379,7 @@ namespace HealthKit {
 		StateOfMind,
 	}
 
-	/// <summary>Enumerates the types of <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Health%20Kit%20HKCategory&amp;scope=Xamarin" title="T:HealthKit.HKCategory">T:HealthKit.HKCategory</a></format>; currently there is only the one form (Sleep Analysis).</summary>
+	/// <summary>Enumerates the types of <see cref="T:HealthKit.HKCategory" />; currently there is only the one form (Sleep Analysis).</summary>
 	[Mac (13, 0)]
 	[MacCatalyst (13, 1)]
 	enum HKCategoryTypeIdentifier {
@@ -5241,7 +5241,7 @@ namespace HealthKit {
 
 	/// <param name="samples">The samples that were added.</param>
 	///     <param name="error">The error, if one occurred.</param>
-	///     <summary>Completion handler for <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Health%20Kit%20HKQuantity%20Series%20Sample%20Builder%20Finish%20Series&amp;scope=Xamarin" title="T:HealthKit.HKQuantitySeriesSampleBuilder.FinishSeries">T:HealthKit.HKQuantitySeriesSampleBuilder.FinishSeries</a></format>.</summary>
+	///     <summary>Completion handler for <see cref="T:HealthKit.HKQuantitySeriesSampleBuilder.FinishSeries" />.</summary>
 	delegate void HKQuantitySeriesSampleBuilderFinishSeriesDelegate (HKQuantitySample [] samples, NSError error);
 
 	/// <summary>Builds quantity sample series.</summary>

@@ -8,8 +8,8 @@
         Labels are used with
         <see cref="M:AddressBook.ABAddressBook.LocalizedLabel(Foundation.NSString)" />,
         <see cref="P:AddressBook.ABMultiValueEntry`1.Label" />,
-        <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:AddressBook.ABMultiValue`1.Add(`0,Foundation.NSString)&amp;scope=Xamarin" title="M:AddressBook.ABMultiValue`1.Add(`0,Foundation.NSString)">M:AddressBook.ABMultiValue`1.Add(`0,Foundation.NSString)</a></format>, and
-        <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:AddressBook.ABMultiValue`1.Insert(System.Int32,`0,Foundation.NSString)&amp;scope=Xamarin" title="M:AddressBook.ABMultiValue`1.Insert(System.Int32,`0,Foundation.NSString)">M:AddressBook.ABMultiValue`1.Insert(System.Int32,`0,Foundation.NSString)</a></format>.
+        <see cref="M:AddressBook.ABMultiValue`1.Add(`0,Foundation.NSString)" />, and
+        <see cref="M:AddressBook.ABMultiValue`1.Insert(System.Int32,`0,Foundation.NSString)" />.
       </para>
     </remarks>
     <altmember cref="M:AddressBook.ABPerson.GetRelatedNames" />

@@ -41,7 +41,7 @@ namespace CoreML {
 		Image = 4,
 		/// <summary>A multidimensional array feature.</summary>
 		MultiArray = 5,
-		/// <summary>A dictionary / map feature. The dictionary is of type <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Object&amp;scope=Xamarin" title="T:System.Object">T:System.Object</a></format> -&gt; <see cref="T:Foundation.NSNumber" />.</summary>
+		/// <summary>A dictionary / map feature. The dictionary is of type <see cref="T:System.Object" /> -&gt; <see cref="T:Foundation.NSNumber" />.</summary>
 		Dictionary = 6,
 		/// <summary>Sequence data, such as a time series or words ordered as text.</summary>
 		[MacCatalyst (13, 1)]
@@ -253,7 +253,7 @@ namespace CoreML {
 	interface MLFeatureProvider {
 
 		/// <summary>The names of the feature, as defined by the <see cref="T:CoreML.MLModel" />.</summary>
-		/// <value>The <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:Monotouch.Foundation.NSSet&amp;scope=Xamarin" title="T:Monotouch.Foundation.NSSet">T:Monotouch.Foundation.NSSet</a></format> of feature names.</value>
+		/// <value>The <see cref="T:Monotouch.Foundation.NSSet" /> of feature names.</value>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("featureNames")]
@@ -287,19 +287,19 @@ namespace CoreML {
 		[Export ("undefined")]
 		bool Undefined { [Bind ("isUndefined")] get; }
 
-		/// <summary>Gets the underlying <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Int%2064&amp;scope=Xamarin" title="T:System.Int64">T:System.Int64</a></format> feature value.</summary>
+		/// <summary>Gets the underlying <see cref="T:System.Int64" /> feature value.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("int64Value")]
 		long Int64Value { get; }
 
-		/// <summary>Gets the underlying <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Double&amp;scope=Xamarin" title="T:System.Double">T:System.Double</a></format> feature value.</summary>
+		/// <summary>Gets the underlying <see cref="T:System.Double" /> feature value.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("doubleValue")]
 		double DoubleValue { get; }
 
-		/// <summary>Gets the underlying <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> feature value.</summary>
+		/// <summary>Gets the underlying <see cref="T:System.String" /> feature value.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("stringValue")]

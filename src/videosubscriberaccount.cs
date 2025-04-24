@@ -152,7 +152,7 @@ namespace VideoSubscriberAccount {
 
 		/// <param name="accountManager">To be added.</param>
 		///         <param name="viewController">To be added.</param>
-		///         <summary>Developers override this to specify the <see cref="T:UIKit.UIViewController" /> to be shown when the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:VideoSubscriberAccounts.VSAccountManager&amp;scope=Xamarin" title="T:VideoSubscriberAccounts.VSAccountManager">T:VideoSubscriberAccounts.VSAccountManager</a></format> requires user interaction.</summary>
+		///         <summary>Developers override this to specify the <see cref="T:UIKit.UIViewController" /> to be shown when the <see cref="T:VideoSubscriberAccounts.VSAccountManager" /> requires user interaction.</summary>
 		///         <remarks>To be added.</remarks>
 		[Abstract]
 #if NET
@@ -202,7 +202,7 @@ namespace VideoSubscriberAccount {
 		[NullAllowed, Export ("delegate", ArgumentSemantic.Weak)]
 		IVSAccountManagerDelegate Delegate { get; set; }
 
-		/// <param name="options">If not empty, may contain the key <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Video%20Subscriber%20Account%20VSCheck%20Access%20Option%20Keys&amp;scope=Xamarin" title="P:VideoSubscriberAccount.VSCheckAccessOptionKeys">P:VideoSubscriberAccount.VSCheckAccessOptionKeys</a></format>.</param>
+		/// <param name="options">If not empty, may contain the key <see cref="P:VideoSubscriberAccount.VSCheckAccessOptionKeys" />.</param>
 		///         <param name="completionHandler">Called by the system with the results of the permission check.</param>
 		///         <summary>Checks whether the user has provided permission for the app to access their subscription information.</summary>
 		///         <remarks>To be added.</remarks>
@@ -281,7 +281,7 @@ namespace VideoSubscriberAccount {
 	[DisableDefaultCtor]
 	interface VSAccountManagerResult {
 
-		/// <summary>Informs the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:VideoSubscriberAccounts.VSAccountManager&amp;scope=Xamarin" title="T:VideoSubscriberAccounts.VSAccountManager">T:VideoSubscriberAccounts.VSAccountManager</a></format> that the app no longer needs the requested work.</summary>
+		/// <summary>Informs the <see cref="T:VideoSubscriberAccounts.VSAccountManager" /> that the app no longer needs the requested work.</summary>
 		///         <remarks>To be added.</remarks>
 		[Export ("cancel")]
 		void Cancel ();

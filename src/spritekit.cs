@@ -2974,7 +2974,7 @@ namespace SpriteKit {
 
 	/// <include file="../docs/api/SpriteKit/SKPhysicsWorldBodiesEnumeratorHandler.xml" path="/Documentation/Docs[@DocId='T:SpriteKit.SKPhysicsWorldBodiesEnumeratorHandler']/*" />
 	delegate void SKPhysicsWorldBodiesEnumeratorHandler (SKPhysicsBody body, out bool stop);
-	/// <summary>The delegate used for enumerating bodies that fall along a ray when used with <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:SpriteKit.SKPhysicsWorld.EnumerateBodies(System.Drawing.PointF,System.Drawing.PointF,SpriteKit.SKPhysicsWorldBodiesAlongRayStartEnumeratorHandler*&amp;scope=Xamarin" title="M:SpriteKit.SKPhysicsWorld.EnumerateBodies(System.Drawing.PointF,System.Drawing.PointF,SpriteKit.SKPhysicsWorldBodiesAlongRayStartEnumeratorHandler*">M:SpriteKit.SKPhysicsWorld.EnumerateBodies(System.Drawing.PointF,System.Drawing.PointF,SpriteKit.SKPhysicsWorldBodiesAlongRayStartEnumeratorHandler*</a></format>.</summary>
+	/// <summary>The delegate used for enumerating bodies that fall along a ray when used with <see cref="M:SpriteKit.SKPhysicsWorld.EnumerateBodies(System.Drawing.PointF,System.Drawing.PointF,SpriteKit.SKPhysicsWorldBodiesAlongRayStartEnumeratorHandler*" />.</summary>
 	delegate void SKPhysicsWorldBodiesAlongRayStartEnumeratorHandler (SKPhysicsBody body, CGPoint point, CGVector normal, out bool stop);
 
 	/// <include file="../docs/api/SpriteKit/SKPhysicsWorld.xml" path="/Documentation/Docs[@DocId='T:SpriteKit.SKPhysicsWorld']/*" />

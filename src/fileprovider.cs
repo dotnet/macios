@@ -561,10 +561,10 @@ namespace FileProvider {
 		void CurrentSyncAnchor (Action<NSData> completionHandler);
 	}
 
-	/// <summary>An item provided by an <see cref="T:FileProvider.INSFileProviderItem" />. (A type alias for <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=File%20Provider%20NSFile%20Provider%20Item%20Protocol&amp;scope=Xamarin" title="T:FileProvider.NSFileProviderItemProtocol">T:FileProvider.NSFileProviderItemProtocol</a></format>.)</summary>
+	/// <summary>An item provided by an <see cref="T:FileProvider.INSFileProviderItem" />. (A type alias for <see cref="T:FileProvider.NSFileProviderItemProtocol" />.)</summary>
 	interface INSFileProviderItem { }
 
-	/// <summary>An item provided by an <see cref="T:FileProvider.INSFileProviderItem" />. (A type alias for <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=File%20Provider%20NSFile%20Provider%20Item%20Protocol&amp;scope=Xamarin" title="T:FileProvider.NSFileProviderItemProtocol">T:FileProvider.NSFileProviderItemProtocol</a></format>.)</summary>
+	/// <summary>An item provided by an <see cref="T:FileProvider.INSFileProviderItem" />. (A type alias for <see cref="T:FileProvider.NSFileProviderItemProtocol" />.)</summary>
 	/// <remarks>To be added.</remarks>
 	[NoMacCatalyst]
 	[Protocol]

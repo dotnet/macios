@@ -3,20 +3,17 @@
   <PropertyGroup>
     <!-- Versions updated by maestro -->
     <MicrosoftNETSdkPackageVersion>10.0.100-preview.5.25223.119</MicrosoftNETSdkPackageVersion>
-    <MicrosoftNETILLinkTasksPackageVersion>10.0.0-preview.4.25217.10</MicrosoftNETILLinkTasksPackageVersion>
+    <MicrosoftNETILLinkTasksPackageVersion>10.0.0-preview.4.25223.119</MicrosoftNETILLinkTasksPackageVersion>
     <MicrosoftNETILLinkPackageVersion>10.0.0-preview.4.25223.119</MicrosoftNETILLinkPackageVersion>
     <MicrosoftDotNetBuildTasksFeedPackageVersion>10.0.0-beta.25223.119</MicrosoftDotNetBuildTasksFeedPackageVersion>
-    <MicrosoftDotNetSharedFrameworkSdkVersion>8.0.0-beta.24413.2</MicrosoftDotNetSharedFrameworkSdkVersion>
-    <MicrosoftNETCoreAppRefPackageVersion>10.0.0-preview.4.25217.10</MicrosoftNETCoreAppRefPackageVersion>
-    <MicrosoftNETWorkloadEmscriptenCurrentManifest80100TransportVersion>8.0.0-rtm.23511.3</MicrosoftNETWorkloadEmscriptenCurrentManifest80100TransportVersion>
+    <MicrosoftDotNetSharedFrameworkSdkVersion>10.0.0-beta.25223.119</MicrosoftDotNetSharedFrameworkSdkVersion>
+    <MicrosoftNETCoreAppRefPackageVersion>10.0.0-preview.4.25223.119</MicrosoftNETCoreAppRefPackageVersion>
     <MicrosoftNETRuntimeMonoTargetsSdkPackageVersion>10.0.0-preview.4.25223.119</MicrosoftNETRuntimeMonoTargetsSdkPackageVersion>
     <MicrosoftTemplateEngineTasksVersion>7.0.100-alpha.1.21601.1</MicrosoftTemplateEngineTasksVersion>
-    <MicrosoftDotNetCecilPackageVersion>0.11.5-alpha.25125.1</MicrosoftDotNetCecilPackageVersion>
+    <MicrosoftDotNetCecilPackageVersion>0.11.5-alpha.25223.119</MicrosoftDotNetCecilPackageVersion>
     <MicrosoftDotNetXHarnessiOSSharedPackageVersion>10.0.0-prerelease.25207.6</MicrosoftDotNetXHarnessiOSSharedPackageVersion>
     <MicrosoftDotNetArcadeSdkPackageVersion>10.0.0-beta.25223.119</MicrosoftDotNetArcadeSdkPackageVersion>
     <!-- Manually updated versions -->
-    <Emscriptennet7WorkloadVersion>$(MicrosoftNETWorkloadEmscriptenCurrentManifest80100Version)</Emscriptennet7WorkloadVersion>
-    <EmscriptenWorkloadVersion>$(MicrosoftNETWorkloadEmscriptenCurrentManifest80100Version)</EmscriptenWorkloadVersion>
     <MicrosoftDotnetSdkInternalPackageVersion>$(MicrosoftNETSdkPackageVersion)</MicrosoftDotnetSdkInternalPackageVersion>
     <!-- This is a subscription of the .NET 9 latest stable versions of our packages -->
     <MicrosoftMacCatalystSdknet90_184PackageVersion>18.4.9289</MicrosoftMacCatalystSdknet90_184PackageVersion>

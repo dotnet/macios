@@ -8,27 +8,18 @@
       <Uri>https://github.com/dotnet/dotnet</Uri>
       <Sha>721dc7a2a59416b21fc49447d264009d708d6000</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.NET.ILLink.Tasks" Version="10.0.0-preview.4.25217.10" CoherentParentDependency="Microsoft.NET.Sdk">
-      <Uri>https://github.com/dotnet/runtime</Uri>
-      <Sha>e1702c393a1ef71b211f51d00beedec0151c9f25</Sha>
+    <Dependency Name="Microsoft.NET.ILLink.Tasks" Version="10.0.0-preview.4.25223.119">
+      <Uri>https://github.com/dotnet/dotnet</Uri>
+      <Sha>721dc7a2a59416b21fc49447d264009d708d6000</Sha>
     </Dependency>
-    <!-- Set TRACKING_DOTNET_RUNTIME_SEPARATELY to something in Make.config if removing the CoherentParentDependency on Microsoft.NET.Sdk -->
-    <Dependency Name="Microsoft.NETCore.App.Ref" Version="10.0.0-preview.4.25217.10" CoherentParentDependency="Microsoft.NET.Sdk">
-      <Uri>https://github.com/dotnet/runtime</Uri>
-      <Sha>e1702c393a1ef71b211f51d00beedec0151c9f25</Sha>
+    <!-- Set TRACKING_DOTNET_RUNTIME_SEPARATELY to something in Make.config if changing the version outside of dependency flow -->
+    <Dependency Name="Microsoft.NETCore.App.Ref" Version="10.0.0-preview.4.25223.119">
+      <Uri>https://github.com/dotnet/dotnet</Uri>
+      <Sha>721dc7a2a59416b21fc49447d264009d708d6000</Sha>
     </Dependency>
-    <!-- This is required for our test apps to build; in some cases Microsoft.AspNetCore.App is pulled in, and when building test apps the build needs to be able to resolve that -->
-    <Dependency Name="Microsoft.AspNetCore.App.Ref" Version="10.0.0-preview.4.25218.4" CoherentParentDependency="Microsoft.NET.Sdk">
-      <Uri>https://github.com/dotnet/aspnetcore</Uri>
-      <Sha>efe40be07df5055d0d52810899349612e88c89a3</Sha>
-    </Dependency>
-    <Dependency Name="Microsoft.NET.Workload.Emscripten.Current.Manifest-10.0.100.Transport" Version="10.0.0-preview.4.25176.1" CoherentParentDependency="Microsoft.NETCore.App.Ref">
-      <Uri>https://github.com/dotnet/emsdk</Uri>
-      <Sha>e7ebd8aa0424ba4dc6ac03419954c3287d891faa</Sha>
-    </Dependency>
-    <Dependency Name="Microsoft.DotNet.Cecil" Version="0.11.5-alpha.25125.1" CoherentParentDependency="Microsoft.NETCore.App.Ref">
-      <Uri>https://github.com/dotnet/cecil</Uri>
-      <Sha>f7a78a77069262841fe3c3c6b89ff243fc43cefc</Sha>
+    <Dependency Name="Microsoft.DotNet.Cecil" Version="0.11.5-alpha.25223.119">
+      <Uri>https://github.com/dotnet/dotnet</Uri>
+      <Sha>721dc7a2a59416b21fc49447d264009d708d6000</Sha>
     </Dependency>
     <!-- This is a subscription of the .NET 9 latest stable versions of our packages -->
     <Dependency Name="Microsoft.MacCatalyst.Sdk.net9.0_18.4" Version="18.4.9289">
@@ -71,6 +62,10 @@
   </ProductDependencies>
   <ToolsetDependencies>
     <Dependency Name="Microsoft.DotNet.Build.Tasks.Feed" Version="10.0.0-beta.25223.119">
+      <Uri>https://github.com/dotnet/dotnet</Uri>
+      <Sha>721dc7a2a59416b21fc49447d264009d708d6000</Sha>
+    </Dependency>
+    <Dependency Name="Microsoft.DotNet.SharedFramework.Sdk" Version="10.0.0-beta.25223.119">
       <Uri>https://github.com/dotnet/dotnet</Uri>
       <Sha>721dc7a2a59416b21fc49447d264009d708d6000</Sha>
     </Dependency>

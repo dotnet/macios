@@ -55,9 +55,6 @@
     <Compile Include="$(RootTestsDirectory)\common\TestRuntime.cs">
         <Link>TestRuntime.cs</Link>
     </Compile>
-    <Compile Include="$(RootTestsDirectory)\common\TestRuntime.RunAsync.cs">
-        <Link>TestRuntime.RunAsync.cs</Link>
-    </Compile>
     <Compile Include="$(ThisTestDirectory)\..\ILReader.cs">
       <Link>ILReader.cs</Link>
     </Compile>

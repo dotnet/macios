@@ -2102,6 +2102,7 @@ namespace AppKit {
 		[Export ("imageRepsWithData:")]
 		NSImageRep [] ImageRepsWithData (NSData data);
 
+		[return: NullAllowed]
 		[Static]
 		[Export ("imageRepWithData:")]
 		NSImageRep ImageRepFromData (NSData data);
@@ -2145,16 +2146,20 @@ namespace AppKit {
 		[Export ("setCompression:factor:")]
 		void SetCompressionFactor (NSTiffCompression compression, float /* float, not CGFloat */ factor);
 
+		[NullAllowed]
 		[Export ("TIFFRepresentation")]
 		NSData TiffRepresentation { get; }
 
+		[return: NullAllowed]
 		[Export ("TIFFRepresentationUsingCompression:factor:")]
 		NSData TiffRepresentationUsingCompressionFactor (NSTiffCompression comp, float /* float, not CGFloat */ factor);
 
+		[return: NullAllowed]
 		[Static]
 		[Export ("TIFFRepresentationOfImageRepsInArray:")]
 		NSData ImagesAsTiff (NSImageRep [] imageReps);
 
+		[return: NullAllowed]
 		[Static]
 		[Export ("TIFFRepresentationOfImageRepsInArray:usingCompression:factor:")]
 		NSData ImagesAsTiff (NSImageRep [] imageReps, NSTiffCompression comp, float /* float, not CGFloat */ factor);
@@ -2164,6 +2169,7 @@ namespace AppKit {
 		//[Export ("getTIFFCompressionTypes:count:")]
 		//void GetTiffCompressionTypes (const NSTIFFCompression list, int numTypes);
 
+		[return: NullAllowed]
 		[Static]
 		[Export ("localizedNameForTIFFCompressionType:")]
 		string LocalizedNameForTiffCompressionType (NSTiffCompression compression);
@@ -2172,7 +2178,7 @@ namespace AppKit {
 		bool CanBeCompressedUsing (NSTiffCompression compression);
 
 		[Export ("colorizeByMappingGray:toColor:blackMapping:whiteMapping:")]
-		void Colorize (nfloat midPoint, NSColor midPointColor, NSColor shadowColor, NSColor lightColor);
+		void Colorize (nfloat midPoint, [NullAllowed] NSColor midPointColor, [NullAllowed] NSColor shadowColor, [NullAllowed] NSColor lightColor);
 
 		[Export ("incrementalLoadFromData:complete:")]
 		nint IncrementalLoad (NSData data, bool complete);
@@ -2180,6 +2186,7 @@ namespace AppKit {
 		[Export ("setColor:atX:y:")]
 		void SetColorAt (NSColor color, nint x, nint y);
 
+		[return: NullAllowed]
 		[Export ("colorAtX:y:")]
 		NSColor ColorAt (nint x, nint y);
 
@@ -2189,20 +2196,24 @@ namespace AppKit {
 		//[Export ("setPixel:atX:y:")]
 		//void SetPixel (int[] p, int x, int y);
 
+		[NullAllowed]
 		[Export ("CGImage")]
 		CGImage CGImage { get; }
 
 		[Export ("colorSpace")]
 		NSColorSpace ColorSpace { get; }
 
+		[return: NullAllowed]
 		[Export ("bitmapImageRepByConvertingToColorSpace:renderingIntent:")]
 		NSBitmapImageRep ConvertingToColorSpace (NSColorSpace targetSpace, NSColorRenderingIntent renderingIntent);
 
+		[return: NullAllowed]
 		[Export ("bitmapImageRepByRetaggingWithColorSpace:")]
 		NSBitmapImageRep RetaggedWithColorSpace (NSColorSpace newSpace);
 
+		[return: NullAllowed]
 		[Export ("representationUsingType:properties:")]
-		NSData RepresentationUsingTypeProperties (NSBitmapImageFileType storageType, [NullAllowed] NSDictionary properties);
+		NSData RepresentationUsingTypeProperties (NSBitmapImageFileType storageType, NSDictionary properties);
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>

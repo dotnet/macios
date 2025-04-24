@@ -64,7 +64,7 @@ namespace Xamarin.MacDev.Tasks {
 					//If the file lengths differ, it means local and remote versions are different
 					if (fileInfo.Length != localInfo.length) {
 						changedFiles.Add (new TaskItem (file));
-						TryAddPdbFile(file, changedFiles);
+						TryAddPdbFile (file, changedFiles);
 
 						continue;
 					}
@@ -97,13 +97,13 @@ namespace Xamarin.MacDev.Tasks {
 			var reportFileList = new Dictionary<string, (long length, Guid mvid)> ();
 
 			//Expected format of the report file lines (defined in the CalculateAssembliesReport task): Foo.dll/23189/768C814C-05C3-4563-9B53-35FEF571968E
-			foreach (var line in File.ReadLines(ReportFile!.ItemSpec)) {
-				string[] lineParts = line.Split (["/"], StringSplitOptions.RemoveEmptyEntries);
+			foreach (var line in File.ReadLines (ReportFile!.ItemSpec)) {
+				string [] lineParts = line.Split (["/"], StringSplitOptions.RemoveEmptyEntries);
 
 				// Skip lines that don't match the expected format
-				if (lineParts.Length == 3 && long.TryParse (lineParts [1], out long fileLength) && Guid.TryParse(lineParts [2], out Guid mvid)) {
+				if (lineParts.Length == 3 && long.TryParse (lineParts [1], out long fileLength) && Guid.TryParse (lineParts [2], out Guid mvid)) {
 					// Adds file name, length and MVID to the dictionary
-					reportFileList.Add(lineParts [0], (fileLength, mvid));
+					reportFileList.Add (lineParts [0], (fileLength, mvid));
 				}
 			}
 

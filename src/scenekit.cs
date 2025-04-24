@@ -3983,11 +3983,11 @@ namespace SceneKit {
 		[Export ("prepareObjects:withCompletionHandler:")]
 		void Prepare (NSObject [] objects, [NullAllowed] Action<bool> completionHandler);
 
-        /// <summary>Displays the provided scene.</summary>
-        /// <param name="scene">The scene to present.</param>
-        /// <param name="transition">The transistion to use to present the scene.</param>
-        /// <param name="pointOfView">The point of view to which to present the scene.</param>
-        /// <param name="completionHandler">A handler to run after the scene is presented.</param>
+		/// <summary>Displays the provided scene.</summary>
+		/// <param name="scene">The scene to present.</param>
+		/// <param name="transition">The transistion to use to present the scene.</param>
+		/// <param name="pointOfView">The point of view to which to present the scene.</param>
+		/// <param name="completionHandler">A handler to run after the scene is presented.</param>
 		[Abstract] // this protocol existed before iOS 9 (or OSX 10.11) and we cannot add abstract members to it (breaking changes)
 		[MacCatalyst (13, 1)]
 		[Async (XmlDocs = """

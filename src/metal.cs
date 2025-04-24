@@ -2005,7 +2005,7 @@ namespace Metal {
 		[Export ("parentRelativeLevel")]
 		nuint ParentRelativeLevel { get; }
 
-        /// <summary>Returns the base slice of the parent texture from which the target texture was created.</summary>
+		/// <summary>Returns the base slice of the parent texture from which the target texture was created.</summary>
 		[Abstract]
 		[MacCatalyst (13, 1)]
 		[Export ("parentRelativeSlice")]

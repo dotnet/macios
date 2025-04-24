@@ -10040,9 +10040,9 @@ namespace Intents {
 	[Deprecated (PlatformName.MacCatalyst, 15, 0)]
 	[Protocol]
 	interface INPayBillIntentHandling {
-        /// <summary>Developers may implement this method to schedule bill payment.</summary>
-        /// <param name="intent">Specifies the user's intention.</param>
-        /// <param name="completion">Completion method that must be called by the override.</param>
+		/// <summary>Developers may implement this method to schedule bill payment.</summary>
+		/// <param name="intent">Specifies the user's intention.</param>
+		/// <param name="completion">Completion method that must be called by the override.</param>
 		[Abstract]
 		[Export ("handlePayBill:completion:")]
 		void HandlePayBill (INPayBillIntent intent, Action<INPayBillIntentResponse> completion);
@@ -10393,10 +10393,10 @@ namespace Intents {
 	[Deprecated (PlatformName.MacCatalyst, 15, 0)]
 	[Protocol]
 	interface INSearchForBillsIntentHandling {
-        /// <summary>Developers may implement this method to customize bill searches.</summary>
+		/// <summary>Developers may implement this method to customize bill searches.</summary>
 		/// <param name="intent">Specifies the user's intention.</param>
-        /// <param name="completion">Completion method that must be called by the override.</param>
-        [Abstract]
+		/// <param name="completion">Completion method that must be called by the override.</param>
+		[Abstract]
 		[Export ("handleSearchForBills:completion:")]
 		void HandleSearch (INSearchForBillsIntent intent, Action<INSearchForBillsIntentResponse> completion);
 

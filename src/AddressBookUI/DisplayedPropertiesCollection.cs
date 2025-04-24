@@ -20,7 +20,7 @@ namespace AddressBookUI {
 
 	delegate T ABFunc<T> ();
 
-	/// <summary>A collection of <see cref="T:AddresssBook.ABPersonProperty" />s returned by the <see cref="P:AddressBookUI.ABPeoplePickerNavigationController.DisplayedProperties" /> and <see cref="P:AddressBookUI.ABPersonViewController.DisplayedProperties" /> properties.</summary>
+	/// <summary>A collection of <see cref="AddresssBook.ABPersonProperty" />s returned by the <see cref="AddressBookUI.ABPeoplePickerNavigationController.DisplayedProperties" /> and <see cref="AddressBookUI.ABPersonViewController.DisplayedProperties" /> properties.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]

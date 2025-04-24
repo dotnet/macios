@@ -34,7 +34,7 @@ namespace CloudKit {
 			return new CKUserIdentityLookupInfo (email, 0);
 		}
 
-		/// <summary>Creates a new <see cref="T:CloudKit.CKUserIdentityLookupInfo" /> using the specified <paramref name="phoneNumber" />.</summary>
+		/// <summary>Creates a new <see cref="CloudKit.CKUserIdentityLookupInfo" /> using the specified <paramref name="phoneNumber" />.</summary>
 		/// <param name="phoneNumber">The phone number to use in the lookup.</param>
 		/// <returns>A new <see cref="CKUserIdentityLookupInfo" /> instance for the specified phone number.</returns>
 		public static CKUserIdentityLookupInfo FromPhoneNumber (string phoneNumber)

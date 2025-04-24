@@ -1,6 +1,6 @@
 <Documentation>
   <Docs DocId="T:CoreImage.CIModTransition">
-    <summary>A <see cref="T:CoreImage.CITransitionFilter" /> that reveals the background image via a series of irregularly shaped holes.</summary>
+    <summary>A <see cref="CoreImage.CITransitionFilter" /> that reveals the background image via a series of irregularly shaped holes.</summary>
     <remarks>
       <para>The following example shows this filter in use</para>
       <example>

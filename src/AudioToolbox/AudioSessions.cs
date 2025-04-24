@@ -36,7 +36,7 @@ using ObjCRuntime;
 
 namespace AudioToolbox {
 
-	/// <summary>An enumeration whose values can be returned by the <see cref="M:AudioToolbox.AudioSession.SetActive(System.Boolean,AudioToolbox.AudioSessionActiveFlags)" /> method or the <see cref="P:AudioToolbox.AudioSessionException.ErrorCode" /> property.</summary>
+	/// <summary>An enumeration whose values can be returned by the <see cref="AudioToolbox.AudioSession.SetActive(System.Boolean,AudioToolbox.AudioSessionActiveFlags)" /> method or the <see cref="AudioToolbox.AudioSessionException.ErrorCode" /> property.</summary>
 	public enum AudioSessionErrors { // Implictly cast to OSType 
 		/// <summary>To be added.</summary>
 		None = 0,
@@ -129,7 +129,7 @@ namespace AudioToolbox {
 		RouteConfigurationChange = 8,
 	}
 
-	/// <summary>An enumeration whose values indicate whether the application should resume after an interruption. Returned by the <see cref="P:AudioToolbox.AudioSession.InterruptionType" /> property.</summary>
+	/// <summary>An enumeration whose values indicate whether the application should resume after an interruption. Returned by the <see cref="AudioToolbox.AudioSession.InterruptionType" /> property.</summary>
 	public enum AudioSessionInterruptionType { // UInt32 AudioSessionInterruptionType
 		/// <summary>To be added.</summary>
 		ShouldResume = 1769108333, // 'irsm'
@@ -211,7 +211,7 @@ namespace AudioToolbox {
 	/// <summary>The fine detail over the audio mode, an extension to the AudioSession Category</summary>
 	///     <remarks>	    This property is used to do the fine-level control over
 	/// 	    the audio session.  The major component is determined by
-	/// 	    the <see cref="P:AudioToolbox.AudioSession.Category" />
+	/// 	    the <see cref="AudioToolbox.AudioSession.Category" />
 	/// 	    property and this is used to tune whether the session
 	/// 	    behaves in the default mode (what every app got in the pre
 	/// 	    iOS 5.0 days), Voice Chat, Video Recording or is being
@@ -229,13 +229,13 @@ namespace AudioToolbox {
 		Default = 0x64666c74,
 		/// <summary>
 		///
-		/// 	  Used when you want to perform voice chats over a network connection.    The audio stack is configured for voice recording, the default system microphone is used and sets the <see cref="P:AudioToolbox.AudioSession.OverrideCategoryEnableBluetoothInput" /> to true. 
+		/// 	  Used when you want to perform voice chats over a network connection.    The audio stack is configured for voice recording, the default system microphone is used and sets the <see cref="AudioToolbox.AudioSession.OverrideCategoryEnableBluetoothInput" /> to true. 
 		///
 		/// 	</summary>
 		VoiceChat = 0x76636374,
 		/// <summary>Configures the audio for video recording, and uses the microphone closer to the camera as its input.</summary>
 		VideoRecording = 0x76726364,
-		/// <summary>Used when you want to measure the audio, so no gains are applied to the data.   This is used when setting the <see cref="P:AudioToolbox.AudioSession.Category" /> property to PlayAndRecord or RecordAudio values.</summary>
+		/// <summary>Used when you want to measure the audio, so no gains are applied to the data.   This is used when setting the <see cref="AudioToolbox.AudioSession.Category" /> property to PlayAndRecord or RecordAudio values.</summary>
 		Measurement = 0x6d736d74,   // 'msmt'
 		/// <summary>Set by GameKit, users should not set this directly.  Use VoiceChat instead. </summary>
 		GameChat = 0x676d6374,  // 'gmct'

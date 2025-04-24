@@ -29,7 +29,7 @@ using System.IO;
 #nullable enable
 
 namespace ObjCRuntime {
-	/// <summary>Link targets available for <see cref="T:ObjCRuntime.LinkWithAttribute" /></summary>
+	/// <summary>Link targets available for <see cref="ObjCRuntime.LinkWithAttribute" /></summary>
 	///     <remarks>
 	///       <para>LinkTarget may be combined for native libraries which target multiple platforms.</para>
 	///       <para>The LinkTarget value for LinkWith attributes is deprecated and ignored, instead any native libraries are inspected to determine the architectures they actually contain.</para>
@@ -44,7 +44,7 @@ namespace ObjCRuntime {
 		ArmV6 = 2,
 		/// <summary>A flag that signifies that the native library supports the ARMv7 architecture.</summary>
 		ArmV7 = 4,
-		/// <summary>A flag that specifies that the native library targets the Thumb subset of <see cref="F:ObjCRuntime.LinkTarget.ArmV6" /> or <see cref="F:ObjCRuntime.LinkTarget.ArmV7" />.</summary>
+		/// <summary>A flag that specifies that the native library targets the Thumb subset of <see cref="ObjCRuntime.LinkTarget.ArmV6" /> or <see cref="ObjCRuntime.LinkTarget.ArmV7" />.</summary>
 		Thumb = 8,
 		/// <summary>A flag that signifies that the native library supports the ARMv7s architecture.</summary>
 		ArmV7s = 16,
@@ -181,7 +181,7 @@ namespace ObjCRuntime {
 		}
 
 		/// <summary>The target platform (or platforms) that this library is built for.</summary>
-		///         <value>A bitwise-or'ing of <see cref="T:ObjCRuntime.LinkTarget" />.</value>
+		///         <value>A bitwise-or'ing of <see cref="ObjCRuntime.LinkTarget" />.</value>
 		///         <remarks>
 		///           <para>This field is ignored, Xamarin.iOS will instead look in the native library to see which architectures are present in the library.</para>
 		///         </remarks>

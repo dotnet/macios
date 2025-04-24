@@ -108,7 +108,7 @@ namespace SceneKit {
 		}
 	}
 
-	/// <summary>Valid keys for the <c>options</c> dictionary used with <see cref="M:SceneKit.SCNPhysicsShape.Create*" />.</summary>
+	/// <summary>Valid keys for the <c>options</c> dictionary used with <see cref="SceneKit.SCNPhysicsShape.Create*" />.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]

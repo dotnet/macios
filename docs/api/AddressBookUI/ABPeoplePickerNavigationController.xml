@@ -1,6 +1,6 @@
 <Documentation>
   <Docs DocId="T:AddressBookUI.ABPeoplePickerNavigationController">
-    <summary>A <see cref="T:UIKit.UINavigationController" /> that allows the application user to select a contact or contact information from an <see cref="T:AddressBook.ABAddressBook" />.</summary>
+    <summary>A <see cref="UIKit.UINavigationController" /> that allows the application user to select a contact or contact information from an <see cref="AddressBook.ABAddressBook" />.</summary>
     <remarks>
       <para>In iOS 8 and later bringing up a people-picker navigtion controller does not require the app to have access to a user’s contacts, and the user will not be prompted to grant access. If the app does not itself have access to the user’s contacts, a temporary copy of the contact selected by the user will be returned to the app.</para>
       <para>
@@ -14,12 +14,12 @@
 	properties in this class.   
       </para>
       <para>
-	The predicates are: <see cref="P:AddressBookUI.ABPeoplePickerNavigationController.PredicateForEnablingPerson" />,
-	<see cref="P:AddressBookUI.ABPeoplePickerNavigationController.PredicateForSelectionOfPerson" />
-	and <see cref="P:AddressBookUI.ABPeoplePickerNavigationController.PredicateForSelectionOfProperty" />.
+	The predicates are: <see cref="AddressBookUI.ABPeoplePickerNavigationController.PredicateForEnablingPerson" />,
+	<see cref="AddressBookUI.ABPeoplePickerNavigationController.PredicateForSelectionOfPerson" />
+	and <see cref="AddressBookUI.ABPeoplePickerNavigationController.PredicateForSelectionOfProperty" />.
       </para>
       <para>
-	The predicates can use the various members in <see cref="T:AddressBookUI.ABPersonPredicateKey" /> as
+	The predicates can use the various members in <see cref="AddressBookUI.ABPersonPredicateKey" /> as
 	constants in the above predicates, or you can use the hardcoded strings shown below.
       </para>
       <para>

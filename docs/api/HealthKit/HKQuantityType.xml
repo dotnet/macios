@@ -1,6 +1,6 @@
 <Documentation>
   <Docs DocId="T:HealthKit.HKQuantityType">
-    <summary>A <see cref="T:HKSampleType" /> that represents either a cumulative or discrete sample.</summary>
+    <summary>A <see cref="HKSampleType" /> that represents either a cumulative or discrete sample.</summary>
     <remarks>
       <para>Use the factory method Create to create a new instance of this type.</para>
       <para />

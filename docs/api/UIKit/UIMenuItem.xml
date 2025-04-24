@@ -3,8 +3,8 @@
     <summary>Creates menu items that are attached to the editing menu.</summary>
     <remarks>
       <para>
-        <see cref="T:UIKit.UIMenuItem" />s are menu items that appear on the editing menu after the system menu items. <see cref="T:UIKit.UIMenuItem" />s are managed by a <see cref="T:UIKit.UIMenuController" /> and should be added to that object's <see cref="P:UIKit.UIMenuController.MenuItems" /> property. </para>
-      <para>As the following code, taken from the "Touches_GestureRecognizer" sample demonstrates, the <see cref="P:UIKit.UIMenuItem.Action" /> property is used to associate the <see cref="T:UIKit.UIMenuItem" /> with a method decorated with the <see cref="T:Foundation.ExportAttribute" /> attribute.</para>
+        <see cref="UIKit.UIMenuItem" />s are menu items that appear on the editing menu after the system menu items. <see cref="UIKit.UIMenuItem" />s are managed by a <see cref="UIKit.UIMenuController" /> and should be added to that object's <see cref="UIKit.UIMenuController.MenuItems" /> property. </para>
+      <para>As the following code, taken from the "Touches_GestureRecognizer" sample demonstrates, the <see cref="UIKit.UIMenuItem.Action" /> property is used to associate the <see cref="UIKit.UIMenuItem" /> with a method decorated with the <see cref="Foundation.ExportAttribute" /> attribute.</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
 void ShowResetMenu (UILongPressGestureRecognizer gestureRecognizer)

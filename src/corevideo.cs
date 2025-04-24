@@ -58,7 +58,7 @@ namespace CoreVideo {
 		NSString NonPropagatedAttachmentsKey { get; }
 	}
 
-	/// <summary>A <see cref="T:CoreVideo.CVBuffer" /> that stores image data.</summary>
+	/// <summary>A <see cref="CoreVideo.CVBuffer" /> that stores image data.</summary>
 	[Partial]
 	interface CVImageBuffer : CVBuffer {
 
@@ -623,7 +623,7 @@ namespace CoreVideo {
 		ItuR2020,
 	}
 
-	/// <summary>A <see cref="T:CoreVideo.CVImageBuffer" /> that holds pixels.</summary>
+	/// <summary>A <see cref="CoreVideo.CVImageBuffer" /> that holds pixels.</summary>
 	[Partial]
 	interface CVPixelBuffer {
 
@@ -786,7 +786,7 @@ namespace CoreVideo {
 		NSString MetadataExtension { get; }
 	}
 
-	/// <summary>A reusable set of <see cref="T:CoreVideo.CVPixelBuffer" />s.</summary>
+	/// <summary>A reusable set of <see cref="CoreVideo.CVPixelBuffer" />s.</summary>
 	[Partial]
 	interface CVPixelBufferPool {
 		/// <summary>To be added.</summary>

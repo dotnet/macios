@@ -30,11 +30,11 @@ namespace AssetsLibrary {
 
 	/// <param name="group">To be added.</param>
 	///     <param name="stop">To be added.</param>
-	///     <summary>A delegate that is used as the <c>enumerationBlock</c> parameter in calls to the <see cref="M:AssetsLibrary.ALAssetsLibrary.Enumerate(AssetsLibrary.ALAssetsGroupType,AssetsLibrary.ALAssetsLibraryGroupsEnumerationResultsDelegate,System.Action{Foundation.NSError})" /> method.</summary>
+	///     <summary>A delegate that is used as the <c>enumerationBlock</c> parameter in calls to the <see cref="AssetsLibrary.ALAssetsLibrary.Enumerate(AssetsLibrary.ALAssetsGroupType,AssetsLibrary.ALAssetsLibraryGroupsEnumerationResultsDelegate,System.Action{Foundation.NSError})" /> method.</summary>
 	///     <remarks>To be added.</remarks>
 	public delegate void ALAssetsLibraryGroupsEnumerationResultsDelegate (ALAssetsGroup group, ref bool stop);
 
-	/// <summary>An enumeration whose values specify various errors relating to <see cref="T:AssetsLibrary.ALAsset" />s.</summary>
+	/// <summary>An enumeration whose values specify various errors relating to <see cref="AssetsLibrary.ALAsset" />s.</summary>
 	///     <remarks>To be added.</remarks>
 	///     <!-- TODO: Unused? -->
 	[EditorBrowsable (EditorBrowsableState.Never)]
@@ -73,7 +73,7 @@ namespace AssetsLibrary {
 		///         <summary>Returns the error domain associated with the AssetsLibrary.ALAssetsError value</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>
-		///           <para>See the <see cref="T:Foundation.NSError" /> for information on how to use the error domains when reporting errors.</para>
+		///           <para>See the <see cref="Foundation.NSError" /> for information on how to use the error domains when reporting errors.</para>
 		///         </remarks>
 		public static NSString? GetDomain (this ALAssetsError self)
 		{
@@ -91,24 +91,24 @@ namespace AssetsLibrary {
 		/// <summary>The default orientation.
 		///         </summary>
 		Up = 0,
-		/// <summary>The asset has been rotated 180 degrees from <see cref="F:AssetsLibrary.ALAssetOrientation.Up" />.</summary>
+		/// <summary>The asset has been rotated 180 degrees from <see cref="AssetsLibrary.ALAssetOrientation.Up" />.</summary>
 		Down = 1,
-		/// <summary>The asset has been rotated 90 degrees counter-clockwise from <see cref="F:AssetsLibrary.ALAssetOrientation.Up" />.
+		/// <summary>The asset has been rotated 90 degrees counter-clockwise from <see cref="AssetsLibrary.ALAssetOrientation.Up" />.
 		///         </summary>
 		Left = 2,
-		/// <summary>The asset has been rotated 90 degrees clockwise from <see cref="F:AssetsLibrary.ALAssetOrientation.Up" />.
+		/// <summary>The asset has been rotated 90 degrees clockwise from <see cref="AssetsLibrary.ALAssetOrientation.Up" />.
 		///         </summary>
 		Right = 3,
 		/// <summary>The asset has been horizontally mirrored.
 		///         </summary>
 		UpMirrored = 4,
-		/// <summary>The asset has been rotated 180 degrees from <see cref="F:AssetsLibrary.ALAssetOrientation.Up" /> and then horizontally mirrored.
+		/// <summary>The asset has been rotated 180 degrees from <see cref="AssetsLibrary.ALAssetOrientation.Up" /> and then horizontally mirrored.
 		///         </summary>
 		DownMirrored = 5,
-		/// <summary>The asset has been horizontally mirrorer and then rotated 90 degrees counter-clockwise from <see cref="F:AssetsLibrary.ALAssetOrientation.Up" />.
+		/// <summary>The asset has been horizontally mirrorer and then rotated 90 degrees counter-clockwise from <see cref="AssetsLibrary.ALAssetOrientation.Up" />.
 		///         </summary>
 		LeftMirrored = 6,
-		/// <summary>The asset has been horizontally mirrored and then rotated 90 degrees clockwise from <see cref="F:AssetsLibrary.ALAssetOrientation.Up" />.
+		/// <summary>The asset has been horizontally mirrored and then rotated 90 degrees clockwise from <see cref="AssetsLibrary.ALAssetOrientation.Up" />.
 		///         </summary>
 		RightMirrored = 7,
 	}
@@ -150,7 +150,7 @@ namespace AssetsLibrary {
 		Unknown = 2,
 	}
 
-	/// <summary>An enumeration whose values specify the authorization status of a <see cref="T:AssetsLibrary.ALAssetsLibrary" />. Retrieved by the <see cref="P:AssetsLibrary.ALAssetsLibrary.AuthorizationStatus" /> property.</summary>
+	/// <summary>An enumeration whose values specify the authorization status of a <see cref="AssetsLibrary.ALAssetsLibrary" />. Retrieved by the <see cref="AssetsLibrary.ALAssetsLibrary.AuthorizationStatus" /> property.</summary>
 	///     <remarks>To be added.</remarks>
 	[EditorBrowsable (EditorBrowsableState.Never)]
 	[Obsolete (Constants.AssetsLibraryRemoved)]
@@ -229,8 +229,8 @@ namespace AssetsLibrary {
 		///         <param name="metadata">To be added.</param>
 		///         <summary>Changes the data to <paramref name="imageData" /> and the metadata to <paramref name="metadata" />.</summary>
 		///         <returns>
-		///           <para>A task that represents the asynchronous SetImageData operation.   The value of the TResult parameter is a <see cref="T:AssetsLibrary.ALAssetsLibraryWriteCompletionDelegate" />.</para>
-		///           <para>Application developers should check the <see cref="P:AssetsLibrary.ALAsset.Editable" /> property priot to using this method.</para>
+		///           <para>A task that represents the asynchronous SetImageData operation.   The value of the TResult parameter is a <see cref="AssetsLibrary.ALAssetsLibraryWriteCompletionDelegate" />.</para>
+		///           <para>Application developers should check the <see cref="AssetsLibrary.ALAsset.Editable" /> property priot to using this method.</para>
 		///         </returns>
 		///         <remarks>To be added.</remarks>
 		public unsafe virtual Task<NSUrl> SetImageDataAsync (NSData imageData, NSDictionary metadata)
@@ -243,7 +243,7 @@ namespace AssetsLibrary {
 		///           <para>To be added.</para>
 		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
 		///         </param>
-		///         <summary>Modifies the <see cref="T:AssetsLibrary.ALAsset" /> to refer to the <paramref name="videoPathURL" />.</summary>
+		///         <summary>Modifies the <see cref="AssetsLibrary.ALAsset" /> to refer to the <paramref name="videoPathURL" />.</summary>
 		///         <remarks>To be added.</remarks>
 		public unsafe virtual void SetVideoAtPath (NSUrl videoPathURL, global::System.Action<NSUrl, NSError>? completionBlock)
 		{
@@ -282,8 +282,8 @@ namespace AssetsLibrary {
 		///         <param name="metadata">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <returns>
-		///           <para>A task that represents the asynchronous WriteModifiedImageToSavedToPhotosAlbum operation.   The value of the TResult parameter is a <see cref="T:AssetsLibrary.ALAssetsLibraryWriteCompletionDelegate" />.</para>
-		///           <para>Application developers should check the <see cref="P:AssetsLibrary.ALAsset.Editable" /> property prior to calling htis method.</para>
+		///           <para>A task that represents the asynchronous WriteModifiedImageToSavedToPhotosAlbum operation.   The value of the TResult parameter is a <see cref="AssetsLibrary.ALAssetsLibraryWriteCompletionDelegate" />.</para>
+		///           <para>Application developers should check the <see cref="AssetsLibrary.ALAsset.Editable" /> property prior to calling htis method.</para>
 		///         </returns>
 		///         <remarks>To be added.</remarks>
 		public unsafe virtual Task<NSUrl> WriteModifiedImageToSavedToPhotosAlbumAsync (NSData imageData, NSDictionary metadata)
@@ -306,7 +306,7 @@ namespace AssetsLibrary {
 		/// <param name="videoPathURL">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <returns>
-		///           <para>A task that represents the asynchronous WriteModifiedVideoToSavedPhotosAlbum operation.   The value of the TResult parameter is a <see cref="T:AssetsLibrary.ALAssetsLibraryWriteCompletionDelegate" />.</para>
+		///           <para>A task that represents the asynchronous WriteModifiedVideoToSavedPhotosAlbum operation.   The value of the TResult parameter is a <see cref="AssetsLibrary.ALAssetsLibraryWriteCompletionDelegate" />.</para>
 		///         </returns>
 		///         <remarks>To be added.</remarks>
 		public unsafe virtual Task<NSUrl> WriteModifiedVideoToSavedPhotosAlbumAsync (NSUrl videoPathURL)
@@ -332,7 +332,7 @@ namespace AssetsLibrary {
 			}
 		}
 
-		/// <summary>The original version, if the <see cref="T:AssetsLibrary.ALAsset" /> is a modification.</summary>
+		/// <summary>The original version, if the <see cref="AssetsLibrary.ALAsset" /> is a modification.</summary>
 		///         <value>
 		///           <see langword="null" /> if the <c>this</c> is not a modified version.</value>
 		///         <remarks>To be added.</remarks>
@@ -354,7 +354,7 @@ namespace AssetsLibrary {
 		///
 		/// 	  </para>
 		///           <para>
-		/// 	    Starting with iOS 5, you can also use <see cref="M:AssetsLibrary.ALAsset.AspectRatioThumbnail" />
+		/// 	    Starting with iOS 5, you can also use <see cref="AssetsLibrary.ALAsset.AspectRatioThumbnail" />
 		/// 	    property to get a thumbnail that preserves the original
 		/// 	    aspect ratio of the image, instead of the square/cropped
 		/// 	    version returned by this property.
@@ -737,7 +737,7 @@ namespace AssetsLibrary {
 		}
 
 		/// <param name="asset">The asset being added.</param>
-		///         <summary>Adds an asset to an existing <see cref="T:AssetsLibrary.ALAssetsGroup" />.</summary>
+		///         <summary>Adds an asset to an existing <see cref="AssetsLibrary.ALAssetsGroup" />.</summary>
 		///         <returns>
 		///           <see langword="true" /> if the <paramref name="asset" /> was added successfully.</returns>
 		///         <remarks>To be added.</remarks>
@@ -842,7 +842,7 @@ namespace AssetsLibrary {
 		/// <summary>Name of this group.</summary>
 		///         <value>The name of the group.</value>
 		///         <remarks>To be added.</remarks>
-		///         <altmember cref="M:AssetsLibrary.ALAssetsGroup.PersistentGroup" />
+		///         <altmember cref="AssetsLibrary.ALAssetsGroup.PersistentGroup" />
 		public NSString Name {
 			get {
 				throw new InvalidOperationException (Constants.AssetsLibraryRemoved);
@@ -859,7 +859,7 @@ namespace AssetsLibrary {
 		}
 
 		/// <summary>To be added.</summary>
-		///         <value>The persistent ID of the <see cref="T:AssetsLibrary.ALAssetsGroup" />.</value>
+		///         <value>The persistent ID of the <see cref="AssetsLibrary.ALAssetsGroup" />.</value>
 		///         <remarks>To be added.</remarks>
 		public string PersistentID {
 			get {
@@ -867,7 +867,7 @@ namespace AssetsLibrary {
 			}
 		}
 
-		/// <summary>A unique reference URL for the <see cref="T:AssetsLibrary.ALAssetsGroup" />.</summary>
+		/// <summary>A unique reference URL for the <see cref="AssetsLibrary.ALAssetsGroup" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public NSUrl PropertyUrl {
@@ -910,7 +910,7 @@ namespace AssetsLibrary {
 		/// <param name="name">The name of the asset group to be created.</param>
 		///         <param name="resultBlock">Executed if there is no error during the asset creation.</param>
 		///         <param name="failureBlock">Executed if there was a failure, such as from the user denying the application from accessing the library.</param>
-		///         <summary>Creates an asset group (such as an album of photographs) to the <see cref="T:AssetsLibrary.ALAssetsLibrary" />.</summary>
+		///         <summary>Creates an asset group (such as an album of photographs) to the <see cref="AssetsLibrary.ALAssetsLibrary" />.</summary>
 		///         <remarks>To be added.</remarks>
 		public unsafe virtual void AddAssetsGroupAlbum (string name, global::System.Action<ALAssetsGroup> resultBlock, global::System.Action<NSError> failureBlock)
 		{
@@ -982,7 +982,7 @@ namespace AssetsLibrary {
 		///         <param name="metadata">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <returns>
-		///           <para>A task that represents the asynchronous WriteImageToSavedPhotosAlbum operation.   The value of the TResult parameter is a <see cref="T:AssetsLibrary.ALAssetsLibraryWriteCompletionDelegate" />.</para>
+		///           <para>A task that represents the asynchronous WriteImageToSavedPhotosAlbum operation.   The value of the TResult parameter is a <see cref="AssetsLibrary.ALAssetsLibraryWriteCompletionDelegate" />.</para>
 		///         </returns>
 		///         <remarks>To be added.</remarks>
 		public unsafe virtual Task<NSUrl> WriteImageToSavedPhotosAlbumAsync (NSData imageData, NSDictionary metadata)
@@ -1007,7 +1007,7 @@ namespace AssetsLibrary {
 		///         <param name="metadata">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <returns>
-		///           <para>A task that represents the asynchronous WriteImageToSavedPhotosAlbum operation.   The value of the TResult parameter is a <see cref="T:AssetsLibrary.ALAssetsLibraryWriteCompletionDelegate" />.</para>
+		///           <para>A task that represents the asynchronous WriteImageToSavedPhotosAlbum operation.   The value of the TResult parameter is a <see cref="AssetsLibrary.ALAssetsLibraryWriteCompletionDelegate" />.</para>
 		///         </returns>
 		///         <remarks>To be added.</remarks>
 		public unsafe virtual Task<NSUrl> WriteImageToSavedPhotosAlbumAsync (CGImage imageData, NSDictionary metadata)
@@ -1032,7 +1032,7 @@ namespace AssetsLibrary {
 		///         <param name="orientation">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <returns>
-		///           <para>A task that represents the asynchronous WriteImageToSavedPhotosAlbum operation.   The value of the TResult parameter is a <see cref="T:AssetsLibrary.ALAssetsLibraryWriteCompletionDelegate" />.</para>
+		///           <para>A task that represents the asynchronous WriteImageToSavedPhotosAlbum operation.   The value of the TResult parameter is a <see cref="AssetsLibrary.ALAssetsLibraryWriteCompletionDelegate" />.</para>
 		///         </returns>
 		///         <remarks>To be added.</remarks>
 		public unsafe virtual Task<NSUrl> WriteImageToSavedPhotosAlbumAsync (CGImage imageData, ALAssetOrientation orientation)
@@ -1055,7 +1055,7 @@ namespace AssetsLibrary {
 		/// <param name="videoPathURL">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <returns>
-		///           <para>A task that represents the asynchronous WriteVideoToSavedPhotosAlbum operation.   The value of the TResult parameter is a <see cref="T:AssetsLibrary.ALAssetsLibraryWriteCompletionDelegate" />.</para>
+		///           <para>A task that represents the asynchronous WriteVideoToSavedPhotosAlbum operation.   The value of the TResult parameter is a <see cref="AssetsLibrary.ALAssetsLibraryWriteCompletionDelegate" />.</para>
 		///         </returns>
 		///         <remarks>
 		///           <para copied="true">The WriteVideoToSavedPhotosAlbumAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
@@ -1066,7 +1066,7 @@ namespace AssetsLibrary {
 			throw new InvalidOperationException (Constants.AssetsLibraryRemoved);
 		}
 
-		/// <summary>Reflects the permissions of the application to access the <see cref="T:AssetsLibrary.ALAssetsLibrary" />.</summary>
+		/// <summary>Reflects the permissions of the application to access the <see cref="AssetsLibrary.ALAssetsLibrary" />.</summary>
 		///         <value>The current status of the application.</value>
 		///         <remarks>To be added.</remarks>
 		public static ALAuthorizationStatus AuthorizationStatus {
@@ -1126,10 +1126,10 @@ namespace AssetsLibrary {
 		//
 		// Notifications
 		//
-		/// <summary>Notification posted by the <see cref="T:AssetsLibrary.ALAssetsLibrary" /> class.</summary>
+		/// <summary>Notification posted by the <see cref="AssetsLibrary.ALAssetsLibrary" /> class.</summary>
 		///     <remarks>
-		///       <para>This is a static class which contains various helper methods that allow developers to observe events posted in the iOS notification hub (<see cref="T:Foundation.NSNotificationCenter" />).</para>
-		///       <para>The methods defined in this class post events invoke the provided method or lambda with a <see cref="T:Foundation.NSNotificationEventArgs" /> parameter which contains strongly typed properties for the notification arguments.</para>
+		///       <para>This is a static class which contains various helper methods that allow developers to observe events posted in the iOS notification hub (<see cref="Foundation.NSNotificationCenter" />).</para>
+		///       <para>The methods defined in this class post events invoke the provided method or lambda with a <see cref="Foundation.NSNotificationEventArgs" /> parameter which contains strongly typed properties for the notification arguments.</para>
 		///     </remarks>
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		[Obsolete (Constants.AssetsLibraryRemoved)]

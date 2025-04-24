@@ -3,9 +3,9 @@
     <summary>Maps hardware key presses to custom actions.</summary>
     <remarks>
       <para>
-        <see cref="T:UIKit.UIKeyCommand" /> objects are only generated with an attached hardware keyboard.</para>
-      <para>To create keyboard accelerators, developers must create a <see cref="T:ObjCRuntime.Selector" /> that is associated with 
-        a method of type <c><![CDATA[Action<UIKeyCommand>]]></c> with an appropriate <see cref="T:Foundation.ExportAttribute" />:</para>
+        <see cref="UIKit.UIKeyCommand" /> objects are only generated with an attached hardware keyboard.</para>
+      <para>To create keyboard accelerators, developers must create a <see cref="ObjCRuntime.Selector" /> that is associated with 
+        a method of type <c><![CDATA[Action<UIKeyCommand>]]></c> with an appropriate <see cref="Foundation.ExportAttribute" />:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
 [Export("NewFileAccelerator:")]

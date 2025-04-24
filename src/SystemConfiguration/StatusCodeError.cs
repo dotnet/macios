@@ -17,7 +17,7 @@ using ObjCRuntime;
 namespace SystemConfiguration {
 
 	// https://developer.apple.com/library/mac/#documentation/SystemConfiguration/Reference/SystemConfiguration_Utilities/Reference/reference.html
-	/// <summary>Provides access to a text description associated with a <see cref="T:SystemConfiguation.StatusCode" />.</summary>
+	/// <summary>Provides access to a text description associated with a <see cref="SystemConfiguation.StatusCode" />.</summary>
 	///     <remarks>To be added.</remarks>
 	public static class StatusCodeError {
 		[DllImport (Constants.SystemConfigurationLibrary)]

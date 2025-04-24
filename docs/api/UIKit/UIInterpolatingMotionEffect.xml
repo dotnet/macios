@@ -1,6 +1,6 @@
 <Documentation>
   <Docs DocId="T:UIKit.UIInterpolatingMotionEffect">
-    <summary>A <see cref="T:UIKit.UIMotionEffect" /> that maps the device vertical and horizontal tilt into values on a keypath.</summary>
+    <summary>A <see cref="UIKit.UIMotionEffect" /> that maps the device vertical and horizontal tilt into values on a keypath.</summary>
     <remarks>
       <para>
 	Objects of the instance UIInterpolatingMotionEffect take the

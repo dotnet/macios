@@ -57,7 +57,7 @@ namespace CoreLocation {
 		///           </para>
 		///           <para>
 		///             To determine whether you have permission to access
-		///             location services, use <see cref="T:CoreLocation.CLLocationManager" />.
+		///             location services, use <see cref="CoreLocation.CLLocationManager" />.
 		///           </para>
 		///         </remarks>
 		public static bool IsMonitoringAvailable (Type t)

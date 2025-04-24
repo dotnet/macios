@@ -13,9 +13,9 @@
       </para>
       <para>
 	This is typically used by developers when implementing their
-	own <see cref="T:UIKIt.UIViewController" /> as well
+	own <see cref="UIKIt.UIViewController" /> as well
 	by a handful of classes that are UITraitCollection aware, like
-	<see cref="T:UIKIt.UIImage" /> and <see cref="T:UIKIt.UIImageAsset" />.
+	<see cref="UIKIt.UIImage" /> and <see cref="UIKIt.UIImageAsset" />.
 
       </para>
     </remarks>

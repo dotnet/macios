@@ -17,7 +17,7 @@ using ObjCRuntime;
 
 namespace CoreMedia {
 
-	/// <summary>A time value that represents a rational number <see cref="F:CoreMedia.CMTime.Value" />/<see cref="P:CoreMedia.CMTime.Timescale" />.</summary>
+	/// <summary>A time value that represents a rational number <see cref="CoreMedia.CMTime.Value" />/<see cref="CoreMedia.CMTime.Timescale" />.</summary>
 	///     <remarks>To be added.</remarks>
 	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/AVCaptureFrames/">avcaptureframes</related>
 	[SupportedOSPlatform ("ios")]
@@ -27,7 +27,7 @@ namespace CoreMedia {
 	[StructLayout (LayoutKind.Sequential)]
 	public partial struct CMTime {
 		// CMTimeFlags -> uint32_t -> CMTime.h
-		/// <summary>An enumeration whose values are flags used by <see cref="T:CoreMedia.CMTime" />.</summary>
+		/// <summary>An enumeration whose values are flags used by <see cref="CoreMedia.CMTime" />.</summary>
 		///     <remarks>To be added.</remarks>
 		[Flags]
 		public enum Flags : uint {

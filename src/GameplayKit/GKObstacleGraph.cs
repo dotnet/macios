@@ -24,7 +24,7 @@ namespace GameplayKit {
 		public virtual GKGraphNode2D [] GetNodes (GKPolygonObstacle obstacle)
 #else
 		/// <param name="obstacle">To be added.</param>
-		///         <summary>Returns the array of <see cref="T:GameplayKit.GKGraphNode2D" /> corresponding to the <paramref name="obstacle" />.</summary>
+		///         <summary>Returns the array of <see cref="GameplayKit.GKGraphNode2D" /> corresponding to the <paramref name="obstacle" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		public GKGraphNode2D [] GetNodes (GKPolygonObstacle obstacle)
@@ -51,8 +51,8 @@ namespace GameplayKit {
 		/// <param name="coder">The unarchiver object.</param>
 		///         <summary>A constructor that initializes the object from the data stored in the unarchiver object.</summary>
 		///         <remarks>
-		///           <para>This constructor is provided to allow the class to be initialized from an unarchiver (for example, during NIB deserialization).   This is part of the <see cref="T:Foundation.NSCoding" />  protocol.</para>
-		///           <para>If developers want to create a subclass of this object and continue to support deserialization from an archive, they should implement a constructor with an identical signature: taking a single parameter of type <see cref="T:Foundation.NSCoder" /> and decorate it with the [Export("initWithCoder:"] attribute declaration.</para>
+		///           <para>This constructor is provided to allow the class to be initialized from an unarchiver (for example, during NIB deserialization).   This is part of the <see cref="Foundation.NSCoding" />  protocol.</para>
+		///           <para>If developers want to create a subclass of this object and continue to support deserialization from an archive, they should implement a constructor with an identical signature: taking a single parameter of type <see cref="Foundation.NSCoder" /> and decorate it with the [Export("initWithCoder:"] attribute declaration.</para>
 		///           <para>The state of this object can also be serialized by using the companion method, EncodeTo.</para>
 		///         </remarks>
 		public GKObstacleGraph (NSCoder coder) : base (coder)

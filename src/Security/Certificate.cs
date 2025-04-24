@@ -56,7 +56,7 @@ namespace Security {
 		///         <remarks>
 		///           <para>The returned token is the CoreFoundation type identifier (CFType) that has been assigned to this class.</para>
 		///           <para>This can be used to determine type identity between different CoreFoundation objects.</para>
-		///           <para>You can retrieve the type of a CoreFoundation object by invoking the <see cref="M:CoreFoundation.CFType.GetTypeID(System.IntPtr)" /> on the native handle of the object</para>
+		///           <para>You can retrieve the type of a CoreFoundation object by invoking the <see cref="CoreFoundation.CFType.GetTypeID(System.IntPtr)" /> on the native handle of the object</para>
 		///           <example>
 		///             <code lang="csharp lang-csharp"><![CDATA[bool isSecCertificate = (CFType.GetTypeID (foo.Handle) == SecCertificate.GetTypeID ());]]></code>
 		///           </example>
@@ -219,7 +219,7 @@ namespace Security {
 		extern static /* CFDictionaryRef */ IntPtr SecCertificateCopyValues (/* SecCertificateRef */ IntPtr certificate, /* CFArrayRef */ IntPtr keys, /* CFErrorRef _Nullable * */ IntPtr error);
 
 		/// <summary>To be added.</summary>
-		///         <returns>The return type is <see cref="T:Security.SecKey" /> on iOS and <see cref="T:Foundation.NSData" /> on MacOS.</returns>
+		///         <returns>The return type is <see cref="Security.SecKey" /> on iOS and <see cref="Foundation.NSData" /> on MacOS.</returns>
 		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("ios")]
@@ -496,7 +496,7 @@ namespace Security {
 		///         <remarks>
 		///           <para>The returned token is the CoreFoundation type identifier (CFType) that has been assigned to this class.</para>
 		///           <para>This can be used to determine type identity between different CoreFoundation objects.</para>
-		///           <para>You can retrieve the type of a CoreFoundation object by invoking the <see cref="M:CoreFoundation.CFType.GetTypeID(System.IntPtr)" /> on the native handle of the object</para>
+		///           <para>You can retrieve the type of a CoreFoundation object by invoking the <see cref="CoreFoundation.CFType.GetTypeID(System.IntPtr)" /> on the native handle of the object</para>
 		///           <example>
 		///             <code lang="csharp lang-csharp"><![CDATA[bool isSecIdentity = (CFType.GetTypeID (foo.Handle) == SecIdentity.GetTypeID ());]]></code>
 		///           </example>
@@ -658,7 +658,7 @@ namespace Security {
 		///         <remarks>
 		///           <para>The returned token is the CoreFoundation type identifier (CFType) that has been assigned to this class.</para>
 		///           <para>This can be used to determine type identity between different CoreFoundation objects.</para>
-		///           <para>You can retrieve the type of a CoreFoundation object by invoking the <see cref="M:CoreFoundation.CFType.GetTypeID(System.IntPtr)" /> on the native handle of the object</para>
+		///           <para>You can retrieve the type of a CoreFoundation object by invoking the <see cref="CoreFoundation.CFType.GetTypeID(System.IntPtr)" /> on the native handle of the object</para>
 		///           <example>
 		///             <code lang="csharp lang-csharp"><![CDATA[bool isSecKey = (CFType.GetTypeID (foo.Handle) == SecKey.GetTypeID ());]]></code>
 		///           </example>
@@ -1139,7 +1139,7 @@ namespace Security {
 		[DllImport (Constants.SecurityLibrary)]
 		unsafe static extern IntPtr /* SecKeyRef _Nullable */ SecKeyCreateRandomKey (IntPtr /* CFDictionaryRef* */ parameters, IntPtr* /* CFErrorRef** */ error);
 
-		/// <param name="parameters">A dictionary of <see cref="T:Security.SecKeyGenerationParameters" /> values, keyed by keys from <see cref="T:Security.SecKeyParameters" />.</param>
+		/// <param name="parameters">A dictionary of <see cref="Security.SecKeyGenerationParameters" /> values, keyed by keys from <see cref="Security.SecKeyParameters" />.</param>
 		///         <param name="error">A location in which to write codes for any errors that occur.</param>
 		///         <summary>Creates and returns a new key pair.</summary>
 		///         <returns>A new key pair.</returns>
@@ -1165,7 +1165,7 @@ namespace Security {
 
 		/// <param name="keyType">Whether to create a DSA elliptic curve or RSA key.</param>
 		///         <param name="keySizeInBits">To be added.</param>
-		///         <param name="parameters">A dictionary of <see cref="T:Security.SecKeyGenerationParameters" /> values, keyed by keys from <see cref="T:Security.SecKeyParameters" />.</param>
+		///         <param name="parameters">A dictionary of <see cref="Security.SecKeyGenerationParameters" /> values, keyed by keys from <see cref="Security.SecKeyParameters" />.</param>
 		///         <param name="error">A location in which to write codes for any errors that occur.</param>
 		///         <summary>Creates and returns a new key pair.</summary>
 		///         <returns>A new key pair.</returns>

@@ -15,7 +15,7 @@
     <summary>Encapsulated a series of AudioBuffers.</summary>
     <remarks>
       <para>
-	The AudioBuffers class encapsulates one or more <see cref="T:AudioToolbox.AudioBuffer" /> structures.  It
+	The AudioBuffers class encapsulates one or more <see cref="AudioToolbox.AudioBuffer" /> structures.  It
 	can be used to examine the contents of an AudioBuffer when you
 	create the instance from an IntPtr that points to the C-based
 	AudioBufferList array or as a way of creating buffers that can
@@ -35,7 +35,7 @@
 	there are two buffers, the left samples are stored in one buffer and the right samples are stored on the other one.  
       </para>
       <para>
-	This is an immutable data structure, if you are looking for a mutable version, see the <see cref="T:AudioToolbox.MutableAudioBufferList" />.
+	This is an immutable data structure, if you are looking for a mutable version, see the <see cref="AudioToolbox.MutableAudioBufferList" />.
       </para>
       <para>
 	If you create an object with a number of set buffers, or your

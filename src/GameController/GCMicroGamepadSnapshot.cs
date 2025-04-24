@@ -73,8 +73,8 @@ namespace GameController {
 		unsafe static extern /* NSData * __nullable */ IntPtr NSDataFromGCMicroGamepadSnapShotDataV100 (
 			/* __nullable */ GCMicroGamepadSnapShotDataV100* snapshotData);
 
-		/// <summary>Converts the snapshot to an <see cref="T:Foundation.NSData" /> object.</summary>
-		///         <returns>An <see cref="T:Foundation.NSData" /> object that contains the snapshot data.</returns>
+		/// <summary>Converts the snapshot to an <see cref="Foundation.NSData" /> object.</summary>
+		///         <returns>An <see cref="Foundation.NSData" /> object that contains the snapshot data.</returns>
 		///         <remarks>To be added.</remarks>
 		public NSData? ToNSData ()
 		{
@@ -193,7 +193,7 @@ namespace GameController {
 		///         <summary>Tries to obtain v100 snapshot data from an NSData object.</summary>
 		///         <returns>
 		///           <see langword="true" /> if the data could be retrieved. Otherwise, <see langword="false" />.</returns>
-		///         <remarks>When the return value is <see langword="false" />, <paramref name="snapshotData" /> will contain <see cref="F:System.IntPtr.Zero" />.</remarks>
+		///         <remarks>When the return value is <see langword="false" />, <paramref name="snapshotData" /> will contain <see cref="System.IntPtr.Zero" />.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]

@@ -41,7 +41,7 @@ namespace CoreText {
 
 	#region Typesetter Values
 
-	/// <summary>Options applicable to a <see cref="T:CoreText:CTTypesetter" /> object.</summary>
+	/// <summary>Options applicable to a <see cref="CoreText:CTTypesetter" /> object.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]

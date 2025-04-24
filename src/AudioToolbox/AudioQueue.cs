@@ -261,7 +261,7 @@ namespace AudioToolbox {
 #endif
 	}
 
-	/// <summary>An enumeration whose values specify the Time Pitch algorithm. Used with <see cref="F:AudioToolbox.AudioQueueProperty.TimePitchAlgorithm" />.</summary>
+	/// <summary>An enumeration whose values specify the Time Pitch algorithm. Used with <see cref="AudioToolbox.AudioQueueProperty.TimePitchAlgorithm" />.</summary>
 	///     <remarks>To be added.</remarks>
 	public enum AudioQueueTimePitchAlgorithm : uint {
 		/// <summary>To be added.</summary>
@@ -276,7 +276,7 @@ namespace AudioToolbox {
 		Varispeed = 0x76737064,                 // vspd
 	}
 
-	/// <summary>An enumeration whose values are used for the <see cref="P:AudioToolbox.AudioQueue.HardwareCodecPolicy" /> property.</summary>
+	/// <summary>An enumeration whose values are used for the <see cref="AudioToolbox.AudioQueue.HardwareCodecPolicy" /> property.</summary>
 	///     <remarks>To be added.</remarks>
 	public enum AudioQueueHardwareCodecPolicy { // A AudioQueuePropertyID (UInt32)
 		/// <summary>To be added.</summary>
@@ -320,12 +320,12 @@ namespace AudioToolbox {
 	///     <remarks>
 	///       <para>
 	/// 	The PostEffects, PreEffects, Siphon values are used both when
-	/// 	creating a audio queue tap (using <see cref="M:AudioToolbox.AudioQueue.CreateProcessingTap(AudioToolbox.AudioQueueProcessingTapDelegate,AudioToolbox.AudioQueueProcessingTapFlags,AudioToolbox.AudioQueueStatus@)" />)
-	/// 	and are provided to the tap callback (of type <see cref="T:AudioToolbox.AudioQueueProcessingTapDelegate" />).
+	/// 	creating a audio queue tap (using <see cref="AudioToolbox.AudioQueue.CreateProcessingTap(AudioToolbox.AudioQueueProcessingTapDelegate,AudioToolbox.AudioQueueProcessingTapFlags,AudioToolbox.AudioQueueStatus@)" />)
+	/// 	and are provided to the tap callback (of type <see cref="AudioToolbox.AudioQueueProcessingTapDelegate" />).
 	///
 	///       </para>
 	///       <para>
-	/// 	The StartOfStream and EndOfStream are returned by <see cref="T:AudioToolbox.AudioQueueProcessingTap" />'s
+	/// 	The StartOfStream and EndOfStream are returned by <see cref="AudioToolbox.AudioQueueProcessingTap" />'s
 	/// 	GetSourceAudio method.
 	///
 	///       </para>
@@ -397,7 +397,7 @@ namespace AudioToolbox {
 		}
 	}
 
-	/// <summary>A class that encapsulates values used as <c>parameterEvents</c> in calls to the <see cref="M:AudioToolbox.InputAudioQueue.EnqueueBuffer(AudioToolbox.AudioQueueBuffer*)" /> method. </summary>
+	/// <summary>A class that encapsulates values used as <c>parameterEvents</c> in calls to the <see cref="AudioToolbox.InputAudioQueue.EnqueueBuffer(AudioToolbox.AudioQueueBuffer*)" /> method. </summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -452,7 +452,7 @@ namespace AudioToolbox {
 		public float PeakPower;
 	}
 
-	/// <summary>Channel assignments used as a parameter to the <see cref="M:AudioToolbox.AudioQueue.SetChannelAssignments(AudioToolbox.AudioQueueChannelAssignment[])" /> method.</summary>
+	/// <summary>Channel assignments used as a parameter to the <see cref="AudioToolbox.AudioQueue.SetChannelAssignments(AudioToolbox.AudioQueueChannelAssignment[])" /> method.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -477,7 +477,7 @@ namespace AudioToolbox {
 
 	delegate void AudioQueuePropertyListener (IntPtr userData, IntPtr AQ, AudioQueueProperty id);
 
-	/// <summary>Provides data for the <see cref="E:AudioToolbox.OutputAudioQueue.BufferCompleted" /> event.</summary>
+	/// <summary>Provides data for the <see cref="AudioToolbox.OutputAudioQueue.BufferCompleted" /> event.</summary>
 	///     <remarks>
 	///     </remarks>
 	[SupportedOSPlatform ("ios")]
@@ -515,7 +515,7 @@ namespace AudioToolbox {
 		}
 	}
 
-	/// <summary>Provides data for the <see cref="E:AudioToolbox.InputAudioQueue.InputCompleted" /> event.</summary>
+	/// <summary>Provides data for the <see cref="AudioToolbox.InputAudioQueue.InputCompleted" /> event.</summary>
 	///     <remarks>
 	///     </remarks>
 	[SupportedOSPlatform ("ios")]
@@ -728,10 +728,10 @@ namespace AudioToolbox {
 		///         <returns>AudioQueueStatus.Ok on success, otherwise the error. </returns>
 		///         <remarks>
 		///           <para>
-		/// 	    Use the <see cref="M:AudioToolbox.AudioQueue.AllocateBufferWithPacketDescriptors(System.Int32,System.Int32,System.IntPtr@)" /> to allocate buffers that will be used with variable bit
+		/// 	    Use the <see cref="AudioToolbox.AudioQueue.AllocateBufferWithPacketDescriptors(System.Int32,System.Int32,System.IntPtr@)" /> to allocate buffers that will be used with variable bit
 		/// 	    rate encodings.
 		/// 	  </para>
-		///           <para>Use <see cref="M:AudioToolbox.AudioQueue.FreeBuffer(System.IntPtr)" /> to dispose the buffer.</para>
+		///           <para>Use <see cref="AudioToolbox.AudioQueue.FreeBuffer(System.IntPtr)" /> to dispose the buffer.</para>
 		///         </remarks>
 		public AudioQueueStatus AllocateBuffer (int bufferSize, out IntPtr audioQueueBuffer)
 		{
@@ -746,7 +746,7 @@ namespace AudioToolbox {
 		///         <summary>Allocates an audio buffer associated with this AudioQueue</summary>
 		///         <returns>AudioQueueStatus.Ok on success, otherwise the error. </returns>
 		///         <remarks>
-		/// 	  Use <see cref="M:AudioToolbox.AudioQueue.FreeBuffer(System.IntPtr)" /> to dispose the buffer.
+		/// 	  Use <see cref="AudioToolbox.AudioQueue.FreeBuffer(System.IntPtr)" /> to dispose the buffer.
 		///         </remarks>
 		public unsafe AudioQueueStatus AllocateBuffer (int bufferSize, out AudioQueueBuffer* audioQueueBuffer)
 		{
@@ -766,10 +766,10 @@ namespace AudioToolbox {
 		///         <returns>AudioQueueStatus.Ok on success and the audioQueueBuffer pointing to the buffer, otherwise the error.</returns>
 		///         <remarks>
 		///           <para>
-		/// 	    Use the <see cref="M:AudioToolbox.AudioQueue.AllocateBuffer(System.Int32,AudioToolbox.AudioQueueBuffer*@)" /> to allocate buffers that will be used with fixed bit
+		/// 	    Use the <see cref="AudioToolbox.AudioQueue.AllocateBuffer(System.Int32,AudioToolbox.AudioQueueBuffer*@)" /> to allocate buffers that will be used with fixed bit
 		/// 	    rate encodings.
 		/// 	  </para>
-		///           <para>Use <see cref="M:AudioToolbox.AudioQueue.FreeBuffer(System.IntPtr)" /> to dispose the buffer.</para>
+		///           <para>Use <see cref="AudioToolbox.AudioQueue.FreeBuffer(System.IntPtr)" /> to dispose the buffer.</para>
 		///         </remarks>
 		public AudioQueueStatus AllocateBufferWithPacketDescriptors (int bufferSize, int nPackets, out IntPtr audioQueueBuffer)
 		{
@@ -1176,7 +1176,7 @@ namespace AudioToolbox {
 		}
 
 		/// <param name="property">To be added.</param>
-		///     <summary>The delegate to be used with the <see cref="M:AudioToolbox.AudioQueue.AddListener(AudioToolbox.AudioQueueProperty,AudioToolbox.AudioQueue.AudioQueuePropertyChanged)" /> and <see cref="M:AudioToolbox.AudioQueue.RemoveListener(AudioToolbox.AudioQueueProperty,AudioToolbox.AudioQueue.AudioQueuePropertyChanged)" /> methods.</summary>
+		///     <summary>The delegate to be used with the <see cref="AudioToolbox.AudioQueue.AddListener(AudioToolbox.AudioQueueProperty,AudioToolbox.AudioQueue.AudioQueuePropertyChanged)" /> and <see cref="AudioToolbox.AudioQueue.RemoveListener(AudioToolbox.AudioQueueProperty,AudioToolbox.AudioQueue.AudioQueuePropertyChanged)" /> methods.</summary>
 		///     <remarks>To be added.</remarks>
 		public delegate void AudioQueuePropertyChanged (AudioQueueProperty property);
 
@@ -1475,8 +1475,8 @@ namespace AudioToolbox {
 		///
 		/// 	  Certain file format produce a MagicCookie that
 		/// 	  contains audio metadata.  When playing back or recording, you need to copy
-		/// 	  this magic cookie from the AudioQueue to the <see cref="T:AudioToolbox.AudioFileStream" /> by copying this property to the 
-		/// 	  <see cref="P:AudioToolbox.AudioFileStream.MagicCookie" />
+		/// 	  this magic cookie from the AudioQueue to the <see cref="AudioToolbox.AudioFileStream" /> by copying this property to the 
+		/// 	  <see cref="AudioToolbox.AudioFileStream.MagicCookie" />
 		/// 	  property.   
 		/// 	</remarks>
 		public byte [] MagicCookie {
@@ -1549,7 +1549,7 @@ namespace AudioToolbox {
 		///         </value>
 		///         <remarks>
 		///           <para>
-		/// 	    Enable level metering in your audio queue if you want to read the level meters with the <see cref="P:AudioToolbox.AudioQueue.CurrentLevelMeter" /> or <see cref="P:AudioToolbox.AudioQueue.CurrentLevelMeterDB" /> properties.n
+		/// 	    Enable level metering in your audio queue if you want to read the level meters with the <see cref="AudioToolbox.AudioQueue.CurrentLevelMeter" /> or <see cref="AudioToolbox.AudioQueue.CurrentLevelMeterDB" /> properties.n
 		/// 	  </para>
 		///         </remarks>
 		public bool EnableLevelMetering {
@@ -1729,7 +1729,7 @@ namespace AudioToolbox {
 	/// <summary>Holds the state for an AudioQueue processing tap.</summary>
 	///     <remarks>
 	///       <para>
-	/// 	Instances of this class are returned by the <see cref="M:AudioToolbox.AudioQueue.CreateProcessingTap(AudioToolbox.AudioQueueProcessingTapDelegate,AudioToolbox.AudioQueueProcessingTapFlags,AudioToolbox.AudioQueueStatus@)" />
+	/// 	Instances of this class are returned by the <see cref="AudioToolbox.AudioQueue.CreateProcessingTap(AudioToolbox.AudioQueueProcessingTapDelegate,AudioToolbox.AudioQueueProcessingTapFlags,AudioToolbox.AudioQueueStatus@)" />
 	/// 	from AudioQueue and hold the state to the audio processing tap that was created as well as containing information like MaxFrames and the ProcessingFormat.
 	///       </para>
 	///       <para>
@@ -2048,7 +2048,7 @@ namespace AudioToolbox {
 		/// 	    This method is invoked when the audio system has
 		/// 	    completely filled one of the buffers with audio data.  You
 		/// 	    would override this method to process the data, to either
-		/// 	    save the raw bytes to disk, encode them using the <see cref="T:AudioToolbox.AudioFile" /> or do some
+		/// 	    save the raw bytes to disk, encode them using the <see cref="AudioToolbox.AudioFile" /> or do some
 		/// 	    real-time processing with the audio packets.  
 		/// 	  </para>
 		///           <para>
@@ -2132,9 +2132,9 @@ namespace AudioToolbox {
 	/// 	This object is used to track discontinuities in the Audio Queue's audio.   
 	///       </para>
 	///       <para>
-	/// 	You create these objects by calling <see cref="M:AudioToolbox.AudioQueue.CreateTimeline" />
+	/// 	You create these objects by calling <see cref="AudioToolbox.AudioQueue.CreateTimeline" />
 	/// 	method and use them to probe audio discontinuities by calling
-	/// 	the <see cref="M:AudioToolbox.AudioQueue.GetCurrentTime(AudioToolbox.AudioQueueTimeline,AudioToolbox.AudioTimeStamp@,System.Boolean@)" />
+	/// 	the <see cref="AudioToolbox.AudioQueue.GetCurrentTime(AudioToolbox.AudioQueueTimeline,AudioToolbox.AudioTimeStamp@,System.Boolean@)" />
 	/// 	method.
 	///       </para>
 	///     </remarks>

@@ -18,7 +18,7 @@ using ObjCRuntime;
 
 namespace Metal {
 
-	/// <summary>Argument values for use with <see cref="T:Metal.MTLBlendOperation" />.</summary>
+	/// <summary>Argument values for use with <see cref="Metal.MTLBlendOperation" />.</summary>
 	[Native]
 	public enum MTLBlendFactor : ulong {
 		/// <summary>To be added.</summary>
@@ -971,7 +971,7 @@ namespace Metal {
 		WriteCombined,
 	}
 
-	/// <summary>Enumerates the ways in which a <see cref="T:Metal.IMTLTexture" /> may be used.</summary>
+	/// <summary>Enumerates the ways in which a <see cref="Metal.IMTLTexture" /> may be used.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	[Flags]

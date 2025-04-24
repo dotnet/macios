@@ -12,7 +12,7 @@
       <para>
         <img href="~/CoreGraphics/_images/CGPathDrawingMode.EvenOddRule.png" alt="Graphic illustrating the even-odd winding rule" />
       </para>
-      <para>The following example shows a more complex situation. The top path is drawn with the "even-odd rule" (<see cref="F:CoreGraphics.CGPathDrawingMode.EOFillStroke" />) while the bottom is filled with the "non-zero winding rule" (<see cref="F:CoreGraphics.CGPathDrawingMode.FillStroke" />). In both cases, the path is both stroked in red and filled in green.</para>
+      <para>The following example shows a more complex situation. The top path is drawn with the "even-odd rule" (<see cref="CoreGraphics.CGPathDrawingMode.EOFillStroke" />) while the bottom is filled with the "non-zero winding rule" (<see cref="CoreGraphics.CGPathDrawingMode.FillStroke" />). In both cases, the path is both stroked in red and filled in green.</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
  public override void Draw (RectangleF rect)

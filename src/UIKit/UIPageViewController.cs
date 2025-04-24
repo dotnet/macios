@@ -14,7 +14,7 @@ namespace UIKit {
 		/// <param name="style">To be added.</param>
 		///         <param name="navigationOrientation">To be added.</param>
 		///         <param name="spineLocation">To be added.</param>
-		///         <summary>Creates an initialized <see cref="T:UIKit.UIPageViewController" /> object by using a <see cref="T:UIKit.UIPageViewControllerTransitionStyle" /> of transition between pages, a <see cref="T:UIKit.UIPageViewControllerNavigationOrientation" /> orientation of navigation, and a <paramref name="spineLocation" />.</summary>
+		///         <summary>Creates an initialized <see cref="UIKit.UIPageViewController" /> object by using a <see cref="UIKit.UIPageViewControllerTransitionStyle" /> of transition between pages, a <see cref="UIKit.UIPageViewControllerNavigationOrientation" /> orientation of navigation, and a <paramref name="spineLocation" />.</summary>
 		///         <remarks>To be added.</remarks>
 		public UIPageViewController (UIPageViewControllerTransitionStyle style, UIPageViewControllerNavigationOrientation navigationOrientation, UIPageViewControllerSpineLocation spineLocation) : this (style, navigationOrientation, NSDictionary.FromObjectsAndKeys (new object [] { spineLocation }, new object [] { OptionSpineLocationKey }))
 		{

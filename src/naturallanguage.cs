@@ -34,7 +34,7 @@ namespace NaturalLanguage {
 	[BaseType (typeof (NSObject))]
 	interface NLLanguageRecognizer {
 
-		/// <summary>Creates a new <see cref="T:NaturalLanguage.NLLanguageRecognizer" /> with default values.</summary>
+		/// <summary>Creates a new <see cref="NaturalLanguage.NLLanguageRecognizer" /> with default values.</summary>
 		/// <remarks />
 		[DesignatedInitializer]
 		[Export ("init")]
@@ -52,7 +52,7 @@ namespace NaturalLanguage {
 		[Export ("processString:")]
 		void Process (string @string);
 
-		/// <summary>Resets the recognizer, discarding recognition results and any text supplied to <see cref="M:NaturalLanguage.NLLanguageRecognizer.Process(System.String)" />.</summary>
+		/// <summary>Resets the recognizer, discarding recognition results and any text supplied to <see cref="NaturalLanguage.NLLanguageRecognizer.Process(System.String)" />.</summary>
 		///         <remarks>To be added.</remarks>
 		[Export ("reset")]
 		void Reset ();
@@ -61,7 +61,7 @@ namespace NaturalLanguage {
 		[NullAllowed, Export ("dominantLanguage")]
 		NSString _DominantLanguage { get; }
 
-		/// <summary>Gets the language in which the text that was analyzed with <see cref="M:NaturalLanguage.NLLanguageRecognizer.Process(System.String)" /> was most likely written.</summary>
+		/// <summary>Gets the language in which the text that was analyzed with <see cref="NaturalLanguage.NLLanguageRecognizer.Process(System.String)" /> was most likely written.</summary>
 		///         <value>The the language in which the text was most likely written.</value>
 		///         <remarks>To be added.</remarks>
 		[Wrap ("NLLanguageExtensions.GetValue (_DominantLanguage)")]
@@ -69,8 +69,8 @@ namespace NaturalLanguage {
 
 		// left in case the user does not want to get a c# dict
 		/// <param name="maxHypotheses">The maximum number of hypotheses to return.</param>
-		/// <summary>Returns a dictionary of probabilities, keyed by language, that describes the most likely languages in which the text that was analyzed with <see cref="M:NaturalLanguage.NLLanguageRecognizer.Process(System.String)" /> was written.</summary>
-		/// <returns>A dictionary of probabilities, keyed by language, that describes the most likely languages in which the text that was analyzed with <see cref="M:NaturalLanguage.NLLanguageRecognizer.Process(System.String)" /> was written.</returns>
+		/// <summary>Returns a dictionary of probabilities, keyed by language, that describes the most likely languages in which the text that was analyzed with <see cref="NaturalLanguage.NLLanguageRecognizer.Process(System.String)" /> was written.</summary>
+		/// <returns>A dictionary of probabilities, keyed by language, that describes the most likely languages in which the text that was analyzed with <see cref="NaturalLanguage.NLLanguageRecognizer.Process(System.String)" /> was written.</returns>
 		/// <remarks>To be added.</remarks>
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		[Export ("languageHypothesesWithMaximum:")]
@@ -99,7 +99,7 @@ namespace NaturalLanguage {
 		}
 	}
 
-	/// <summary>Contains a configuration for a <see cref="T:NaturalLanguage.NLModel" />.</summary>
+	/// <summary>Contains a configuration for a <see cref="NaturalLanguage.NLModel" />.</summary>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface NLModelConfiguration : NSCopying, NSSecureCoding {
@@ -206,7 +206,7 @@ namespace NaturalLanguage {
 	///     <param name="flags">Tokenizer hints.</param>
 	///     <param name="stop">
 	///       <see langword="false" /> to stop enumerating.</param>
-	///     <summary>Delegate to apply to tokens as they are enumerated by <see cref="M:NaturalLanguage.NLTokenizer.EnumerateTokens(Foundation.NSRange,NaturalLanguage.NLTokenizerEnumerateContinuationHandler)" />.</summary>
+	///     <summary>Delegate to apply to tokens as they are enumerated by <see cref="NaturalLanguage.NLTokenizer.EnumerateTokens(Foundation.NSRange,NaturalLanguage.NLTokenizerEnumerateContinuationHandler)" />.</summary>
 	delegate void NLTokenizerEnumerateContinuationHandler (NSRange tokenRange, NLTokenizerAttributes flags, out bool stop);
 
 	/// <summary>Breaks a text up into semantic units.</summary>
@@ -274,7 +274,7 @@ namespace NaturalLanguage {
 	///     <param name="tokenRange">The token range to process.</param>
 	///     <param name="stop">
 	///       <see langword="false" /> to stop enumerating.</param>
-	///     <summary>Delegate to apply to tokens as they are enumerated by <see cref="M:NaturalLanguage.NLTagger.EnumerateTags(Foundation.NSRange,NaturalLanguage.NLTokenUnit,NaturalLanguage.NLTagScheme,NaturalLanguage.NLTaggerOptions,NaturalLanguage.NLTaggerEnumerateTagsContinuationHandler)" />.</summary>
+	///     <summary>Delegate to apply to tokens as they are enumerated by <see cref="NaturalLanguage.NLTagger.EnumerateTags(Foundation.NSRange,NaturalLanguage.NLTokenUnit,NaturalLanguage.NLTagScheme,NaturalLanguage.NLTaggerOptions,NaturalLanguage.NLTaggerEnumerateTagsContinuationHandler)" />.</summary>
 	delegate void NLTaggerEnumerateTagsContinuationHandler (NSString tag, NSRange tokenRange, out bool stop);
 
 	/// <summary>Analyzes text and produces an enumerable list of tags drawn from a specified set of tag schemas.</summary>

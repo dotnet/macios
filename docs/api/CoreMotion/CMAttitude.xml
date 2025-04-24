@@ -2,7 +2,7 @@
   <Docs DocId="T:CoreMotion.CMAttitude">
     <summary>Used to pull spacial information from the device in either quaternion, rotation matrix or with 3D angles (roll, pitch and yaw).</summary>
     <remarks>
-      <para>This class describes the attitude of the device (see <see cref="T:CoreMotion.CMAttitude" />) relative to an initial attitude (see <see cref="M:CoreMotion.CMMotionManager.StartDeviceMotionUpdates(CMAttitudeReferenceFrame)" />). The axes of rotation are defined as:</para>
+      <para>This class describes the attitude of the device (see <see cref="CoreMotion.CMAttitude" />) relative to an initial attitude (see <see cref="CoreMotion.CMMotionManager.StartDeviceMotionUpdates(CMAttitudeReferenceFrame)" />). The axes of rotation are defined as:</para>
       <para>
         <img href="~/CoreMotion/_images/CoreMotion.CMAttitude.Axes.png" alt="Illustration of the axes relative to device orientation" />
       </para>
@@ -38,17 +38,17 @@
         <item>
           <term>Euler Angles</term>
           <description>
-            <see cref="P:CoreMotion.CMAttitude.Roll" />, <see cref="P:CoreMotion.CMAttitude.Pitch" />, <see cref="P:CoreMotion.CMAttitude.Yaw" />.</description>
+            <see cref="CoreMotion.CMAttitude.Roll" />, <see cref="CoreMotion.CMAttitude.Pitch" />, <see cref="CoreMotion.CMAttitude.Yaw" />.</description>
         </item>
         <item>
           <term>Rotation Matrix</term>
           <description>
-            <see cref="P:CoreMotion.CMAttitude.RotationMatrix" />.</description>
+            <see cref="CoreMotion.CMAttitude.RotationMatrix" />.</description>
         </item>
         <item>
           <term>Quaternion</term>
           <description>
-            <see cref="P:CoreMotion.Quaternion" />
+            <see cref="CoreMotion.Quaternion" />
           </description>
         </item>
       </list>

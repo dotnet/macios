@@ -21,7 +21,7 @@ using Foundation;
 namespace VideoToolbox {
 
 #if NET
-	/// <summary>Extensions class for <see cref="T:CoreVideo.CVPixelBuffer" />.</summary>
+	/// <summary>Extensions class for <see cref="CoreVideo.CVPixelBuffer" />.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]

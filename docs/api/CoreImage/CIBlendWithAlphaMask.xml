@@ -1,6 +1,6 @@
 <Documentation>
   <Docs DocId="T:CoreImage.CIBlendWithAlphaMask">
-    <summary>A <see cref="T:CoreImage.CIBlendWithMask" /> that uses a mask image to blend foreground and background images.</summary>
+    <summary>A <see cref="CoreImage.CIBlendWithMask" /> that uses a mask image to blend foreground and background images.</summary>
     <remarks>
       <para>The following example shows this filter in use</para>
       <example>

@@ -28,7 +28,7 @@ using System;
 
 namespace ObjCRuntime {
 
-	/// <summary>A <see cref="T:System.Attribute" /> that indicates that a UIKit (for iOS) or AppKit (for macOS) method or class is thread-safe.</summary>
+	/// <summary>A <see cref="System.Attribute" /> that indicates that a UIKit (for iOS) or AppKit (for macOS) method or class is thread-safe.</summary>
 	///     <remarks>
 	///       <para>
 	/// 	This attribute is used to signal that the methods in the class that this is applied to, or the method that this is applied to can safely be called from a background thread.

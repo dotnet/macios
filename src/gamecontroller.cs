@@ -47,10 +47,10 @@ namespace GameController {
 
 		// NOTE: ArgumentSemantic.Weak if ARC, ArgumentSemantic.Assign otherwise;
 		// currently MonoTouch is not ARC, neither is Xammac, so go with assign.
-		/// <summary>The <see cref="T:GameController.GCControllerElement" /> that <c>this</c> is a part of.</summary>
+		/// <summary>The <see cref="GameController.GCControllerElement" /> that <c>this</c> is a part of.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>
-		///           <para>If <c>this</c> is an element of another <see cref="T:GameController.GCControllerElement" />, this will hold the "parent" <see cref="T:GameController.GCControllerElement" />. (The D-Pad can be read as either a pair of <see cref="T:GameController.GCControllerAxisInput" /> elements or as four <see cref="T:GameController.GCControllerButtonInput" /> elements.)</para>
+		///           <para>If <c>this</c> is an element of another <see cref="GameController.GCControllerElement" />, this will hold the "parent" <see cref="GameController.GCControllerElement" />. (The D-Pad can be read as either a pair of <see cref="GameController.GCControllerAxisInput" /> elements or as four <see cref="GameController.GCControllerButtonInput" /> elements.)</para>
 		///         </remarks>
 		[NullAllowed]
 		[Export ("collection", ArgumentSemantic.Assign)]
@@ -98,10 +98,10 @@ namespace GameController {
 		GCSystemGestureState PreferredSystemGestureState { get; set; }
 	}
 
-	/// <summary>The delegate used as the value-changed handler for <see cref="P:GameController.GCControllerAxisInput.ValueChangedHandler" />.</summary>
+	/// <summary>The delegate used as the value-changed handler for <see cref="GameController.GCControllerAxisInput.ValueChangedHandler" />.</summary>
 	delegate void GCControllerAxisValueChangedHandler (GCControllerAxisInput axis, float /* float, not CGFloat */ value);
 
-	/// <summary>A <see cref="T:GameController.GCControllerElement" /> representing a joystick.</summary>
+	/// <summary>A <see cref="GameController.GCControllerElement" /> representing a joystick.</summary>
 	///     
 	///     
 	///     
@@ -131,11 +131,11 @@ namespace GameController {
 		}
 	}
 
-	/// <summary>Handler that can be passed to the <see cref="M:GameController.GCControllerButtonInput.SetPressedChangedHandler(GameController.GCControllerButtonValueChanged)" /> method to respond to changes to button states.</summary>
+	/// <summary>Handler that can be passed to the <see cref="GameController.GCControllerButtonInput.SetPressedChangedHandler(GameController.GCControllerButtonValueChanged)" /> method to respond to changes to button states.</summary>
 	delegate void GCControllerButtonValueChanged (GCControllerButtonInput button, float /* float, not CGFloat */ buttonValue, bool pressed);
 	delegate void GCControllerButtonTouchedChanged (GCControllerButtonInput button, float value, bool pressed, bool touched);
 
-	/// <summary>A <see cref="T:GameController.GCControllerElement" /> representing a game-controller button.</summary>
+	/// <summary>A <see cref="GameController.GCControllerElement" /> representing a game-controller button.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GameController/Reference/GCControllerButtonInput_Ref/index.html">Apple documentation for <c>GCControllerButtonInput</c></related>
 	[MacCatalyst (13, 1)]
@@ -205,10 +205,10 @@ namespace GameController {
 		bool Touched { [Bind ("isTouched")] get; }
 	}
 
-	/// <summary>The delegate used as the value-changed handler for <see cref="P:GameController.GCControllerDirectionPad.ValueChangedHandler" />.</summary>
+	/// <summary>The delegate used as the value-changed handler for <see cref="GameController.GCControllerDirectionPad.ValueChangedHandler" />.</summary>
 	delegate void GCControllerDirectionPadValueChangedHandler (GCControllerDirectionPad dpad, float /* float, not CGFloat */ xValue, float /* float, not CGFloat */ yValue);
 
-	/// <summary>A <see cref="T:GameController.GCControllerElement" /> representing a direction-pad.</summary>
+	/// <summary>A <see cref="GameController.GCControllerElement" /> representing a direction-pad.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GameController/Reference/GCControllerDirectionPad_Ref/index.html">Apple documentation for <c>GCControllerDirectionPad</c></related>
 	[MacCatalyst (13, 1)]
@@ -266,7 +266,7 @@ namespace GameController {
 		void SetValue (float xAxis, float yAxis);
 	}
 
-	/// <summary>The delegate used as the value-changed handler for <see cref="P:GameController.GCGamepad.ValueChangedHandler" />.</summary>
+	/// <summary>The delegate used as the value-changed handler for <see cref="GameController.GCGamepad.ValueChangedHandler" />.</summary>
 	delegate void GCGamepadValueChangedHandler (GCGamepad gamepad, GCControllerElement element);
 
 	/// <summary>A gamepad with two shoulder buttons, a D-Pad, and a directional button array..</summary>
@@ -375,12 +375,12 @@ namespace GameController {
 		NativeHandle Constructor (GCController controller, NSData data);
 	}
 
-	/// <summary>The delegate used as the value-changed handler for <see cref="P:GameController.GCExtendedGamepad.ValueChangedHandler" />.</summary>
+	/// <summary>The delegate used as the value-changed handler for <see cref="GameController.GCExtendedGamepad.ValueChangedHandler" />.</summary>
 	delegate void GCExtendedGamepadValueChangedHandler (GCExtendedGamepad gamepad, GCControllerElement element);
 
 	/// <summary>A gamepad with two shoulder buttons, two triggers, two thumbsticks, a D-Pad, and a directional button array.</summary>
 	///     <remarks>
-	///       <para>Application developers should not instantiate this class. Rather, they should use the instance read from the <see cref="P:GameController.GCController.ExtendedGamepad" /> property.</para>
+	///       <para>Application developers should not instantiate this class. Rather, they should use the instance read from the <see cref="GameController.GCController.ExtendedGamepad" /> property.</para>
 	///     </remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GameController/Reference/GCExtendedGamePad_Ref/index.html">Apple documentation for <c>GCExtendedGamepad</c></related>
 	[MacCatalyst (13, 1)]
@@ -598,10 +598,10 @@ namespace GameController {
 		nint PlayerIndex { get; set; }
 #endif
 
-		/// <summary>If not null, the <see cref="T:GameController.GCController" /> is a standard controller.</summary>
+		/// <summary>If not null, the <see cref="GameController.GCController" /> is a standard controller.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		///         <altmember cref="P:GameController.GCController.ExtendedGamepad" />
+		///         <altmember cref="GameController.GCController.ExtendedGamepad" />
 		[Deprecated (PlatformName.MacOSX, 10, 12)]
 		[Deprecated (PlatformName.iOS, 10, 0)]
 		[Deprecated (PlatformName.TvOS, 10, 0)]
@@ -610,10 +610,10 @@ namespace GameController {
 		[Export ("gamepad", ArgumentSemantic.Retain)]
 		GCGamepad Gamepad { get; }
 
-		/// <summary>If not null, the <see cref="T:GameController.GCController" /> is an extended controller.</summary>
+		/// <summary>If not null, the <see cref="GameController.GCController" /> is an extended controller.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		///         <altmember cref="P:GameController.GCController.Gamepad" />
+		///         <altmember cref="GameController.GCController.Gamepad" />
 		[NullAllowed]
 		[Export ("extendedGamepad", ArgumentSemantic.Retain)]
 		GCExtendedGamepad ExtendedGamepad { get; }

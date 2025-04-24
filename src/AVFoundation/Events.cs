@@ -35,7 +35,7 @@ using ObjCRuntime;
 #nullable enable
 
 namespace AVFoundation {
-	/// <summary>Provides data for the <see cref="E:AVFoundation.AVAudioRecorder.EncoderError" /> and <see cref="E:AVFoundation.AVAudioRecorder.EncoderError" /> events.</summary>
+	/// <summary>Provides data for the <see cref="AVFoundation.AVAudioRecorder.EncoderError" /> and <see cref="AVFoundation.AVAudioRecorder.EncoderError" /> events.</summary>
 	///     <remarks>
 	///     </remarks>
 	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/AVTouchSample/">avTouch</related>
@@ -59,7 +59,7 @@ namespace AVFoundation {
 		public NSError Error { get; private set; }
 	}
 
-	/// <summary>Provides data for the <see cref="E:AVFoundation.AVAudioSession.InputAvailabilityChanged" /> and <see cref="E:AVFoundation.AVAudioSession.InputAvailabilityChanged" /> and <see cref="E:AVFoundation.AVStatusEventArgs.InputAvailabilityChanged" /> events.</summary>
+	/// <summary>Provides data for the <see cref="AVFoundation.AVAudioSession.InputAvailabilityChanged" /> and <see cref="AVFoundation.AVAudioSession.InputAvailabilityChanged" /> and <see cref="AVFoundation.AVStatusEventArgs.InputAvailabilityChanged" /> events.</summary>
 	///     <remarks>
 	///     </remarks>
 	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/AVTouchSample/">avTouch</related>
@@ -298,7 +298,7 @@ namespace AVFoundation {
 	}
 #endif // !TVOS
 
-	/// <summary>Provides data for the <see cref="E:AVFoundation.AVAudioSession.SampleRateChanged" /> event.</summary>
+	/// <summary>Provides data for the <see cref="AVFoundation.AVAudioSession.SampleRateChanged" /> event.</summary>
 	///     <remarks>
 	///     </remarks>
 	[SupportedOSPlatform ("ios")]
@@ -320,7 +320,7 @@ namespace AVFoundation {
 		public double SampleRate { get; private set; }
 	}
 
-	/// <summary>Provides data for the <see cref="E:AVFoundation.AVAudioSession.OutputChannelsChanged" /> and <see cref="E:AVFoundation.AVAudioSession.OutputChannelsChanged" /> events.</summary>
+	/// <summary>Provides data for the <see cref="AVFoundation.AVAudioSession.OutputChannelsChanged" /> and <see cref="AVFoundation.AVAudioSession.OutputChannelsChanged" /> events.</summary>
 	///     <remarks>
 	///     </remarks>
 	[SupportedOSPlatform ("ios")]
@@ -342,7 +342,7 @@ namespace AVFoundation {
 		public int NumberOfChannels { get; private set; }
 	}
 
-	/// <summary>Provides data for the <see cref="E:AVFoundation.AVAudioSession.CategoryChanged" /> event.</summary>
+	/// <summary>Provides data for the <see cref="AVFoundation.AVAudioSession.CategoryChanged" /> event.</summary>
 	///     <remarks>
 	///     </remarks>
 	[SupportedOSPlatform ("ios")]

@@ -17,7 +17,7 @@ namespace GameplayKit {
 	public partial class GKEntity {
 
 		/// <param name="componentType">To be added.</param>
-		///         <summary>Removes the element in <see cref="P:GameplayKit.GKEntity.Components" /> of the specified <paramref name="componentType" />.</summary>
+		///         <summary>Removes the element in <see cref="GameplayKit.GKEntity.Components" /> of the specified <paramref name="componentType" />.</summary>
 		///         <remarks>To be added.</remarks>
 		public void RemoveComponent (Type componentType)
 		{
@@ -25,7 +25,7 @@ namespace GameplayKit {
 		}
 
 		/// <param name="componentType">To be added.</param>
-		///         <summary>Retrieves the element in <see cref="P:GameplayKit.GKEntity.Components" /> of the specified <paramref name="componentType" />.</summary>
+		///         <summary>Retrieves the element in <see cref="GameplayKit.GKEntity.Components" /> of the specified <paramref name="componentType" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		public GKComponent? GetComponent (Type componentType)

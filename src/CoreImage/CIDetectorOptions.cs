@@ -14,7 +14,7 @@ using ObjCRuntime;
 
 namespace CoreImage {
 
-	/// <summary>Options for use with face detection. Used with <see cref="M:CoreImage.CIDetector.CreateFaceDetector(CoreImage.CIContext,System.Nullable{CoreImage.FaceDetectorAccuracy},System.Nullable{System.Single},System.Nullable{System.Boolean})" />.</summary>
+	/// <summary>Options for use with face detection. Used with <see cref="CoreImage.CIDetector.CreateFaceDetector(CoreImage.CIContext,System.Nullable{CoreImage.FaceDetectorAccuracy},System.Nullable{System.Single},System.Nullable{System.Boolean})" />.</summary>
 	///     <remarks>To be added.</remarks>
 	public partial class CIDetectorOptions {
 

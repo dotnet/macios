@@ -18,7 +18,7 @@ using Foundation;
 namespace VideoSubscriberAccount {
 	public partial class VSAccountManager {
 
-		/// <param name="accessOptions">If not empty, may contain the key <see cref="P:VideoSubscriberAccount.VSCheckAccessOptionKeys" />.</param>
+		/// <param name="accessOptions">If not empty, may contain the key <see cref="VideoSubscriberAccount.VSCheckAccessOptionKeys" />.</param>
 		///         <param name="completionHandler">Called by the system with the results of the permission check.</param>
 		///         <summary>Checks whether the user has provided permission for the app to access their subscription information.</summary>
 		///         <remarks>To be added.</remarks>

@@ -3,13 +3,13 @@
     <param name="proxyAutoConfigurationScript">JavaScript source to be executed to obtain a list of proxies to use.</param>
     <param name="targetUri">To be added.</param>
     <summary>Executes the provided javascript source to determine a list of proxies to use for connecting to the target URL.</summary>
-    <returns>Returns an array of <see cref="T:CoreFoundation.CFProxy" /> objects suitable to use for connecting to <paramref name="targetUri" />.</returns>
-    <remarks>This method serves as a convenience wrapper for <see cref="M:CoreFoundation.CFNetwork.GetProxiesForAutoConfigureationScript(Foundation.NSString proxyAutoConfigurationScript, Uri targetUri)" />.</remarks>
+    <returns>Returns an array of <see cref="CoreFoundation.CFProxy" /> objects suitable to use for connecting to <paramref name="targetUri" />.</returns>
+    <remarks>This method serves as a convenience wrapper for <see cref="CoreFoundation.CFNetwork.GetProxiesForAutoConfigureationScript(Foundation.NSString proxyAutoConfigurationScript, Uri targetUri)" />.</remarks>
   </Docs>
   <Docs DocId="M:CoreFoundation.CFNetwork.GetDefaultProxy">
-        <summary>Gets a custom <see cref="T:System.Net.IWebProxy" /> suitable for use with the standard .NET web request APIs.</summary>
-        <returns>A custom <see cref="T:System.Net.IWebProxy" /> which uses <see cref="M:CoreFoundation.CFNetwork.GetProxiesForUri(System.Uri,CoreFoundation.CFProxySettings)" /> to find a suitable proxy Uri to use.</returns>
+        <summary>Gets a custom <see cref="System.Net.IWebProxy" /> suitable for use with the standard .NET web request APIs.</summary>
+        <returns>A custom <see cref="System.Net.IWebProxy" /> which uses <see cref="CoreFoundation.CFNetwork.GetProxiesForUri(System.Uri,CoreFoundation.CFProxySettings)" /> to find a suitable proxy Uri to use.</returns>
         <remarks>
-          <see cref="T:System.Net.WebRequest" /> Uses this method to initialize its <see cref="P:System.Net.WebRequest.Proxy" /> property.</remarks>
+          <see cref="System.Net.WebRequest" /> Uses this method to initialize its <see cref="System.Net.WebRequest.Proxy" /> property.</remarks>
       </Docs>
 </Documentation>

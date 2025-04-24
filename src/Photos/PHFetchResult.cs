@@ -16,7 +16,7 @@ namespace Photos {
 			get { return _ObjectAtIndexedSubscript (index); }
 		}
 
-		/// <summary>A <see cref="T:System.Collections.Generic.IEnumerator" /> that can iterate over the assets in the <see cref="T:Photos.PHFetchResult" />.</summary>
+		/// <summary>A <see cref="System.Collections.Generic.IEnumerator" /> that can iterate over the assets in the <see cref="Photos.PHFetchResult" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		public IEnumerator<NSObject> GetEnumerator ()
@@ -27,7 +27,7 @@ namespace Photos {
 				yield return this [i];
 		}
 
-		/// <summary>Returns an <see cref="System.Collections.IEnumerator" /> of the assets in the <see cref="T:Photos.PHFetchResult" />.</summary>
+		/// <summary>Returns an <see cref="System.Collections.IEnumerator" /> of the assets in the <see cref="Photos.PHFetchResult" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		IEnumerator IEnumerable.GetEnumerator ()

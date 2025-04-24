@@ -17,7 +17,7 @@ using CoreFoundation;
 
 namespace GameKit {
 #if !MONOMAC && !TVOS
-	/// <summary>Provides data for the <see cref="E:GameKit.GKSession.ReceiveData" /> event.</summary>
+	/// <summary>Provides data for the <see cref="GameKit.GKSession.ReceiveData" /> event.</summary>
 	///     <remarks>
 	///     </remarks>
 	public class GKDataReceivedEventArgs : EventArgs {
@@ -203,7 +203,7 @@ namespace GameKit {
 	}
 #endif // !TVOS
 
-	/// <summary>Provides data for the <see cref="E:GameKit.GKSession.PeerChanged" /> event.</summary>
+	/// <summary>Provides data for the <see cref="GameKit.GKSession.PeerChanged" /> event.</summary>
 	///     <remarks>
 	///     </remarks>
 	public class GKPeerChangedStateEventArgs : EventArgs {
@@ -234,7 +234,7 @@ namespace GameKit {
 		public GKPeerConnectionState State { get; private set; }
 	}
 
-	/// <summary>Provides data for the <see cref="E:GameKit.GKSession.Failed" />, <see cref="E:GameKit.GKPeerConnectionEventArgs.ConnectionRequest" /> and <see cref="E:GameKit.GKPeerConnectionEventArgs.Failed" /> events.</summary>
+	/// <summary>Provides data for the <see cref="GameKit.GKSession.Failed" />, <see cref="GameKit.GKPeerConnectionEventArgs.ConnectionRequest" /> and <see cref="GameKit.GKPeerConnectionEventArgs.Failed" /> events.</summary>
 	///     <remarks>
 	///     </remarks>
 	public class GKPeerConnectionEventArgs : EventArgs {

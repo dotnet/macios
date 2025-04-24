@@ -6,13 +6,13 @@
     <remarks>
       <para>
         Labels are used with
-        <see cref="M:AddressBook.ABAddressBook.LocalizedLabel(Foundation.NSString)" />,
-        <see cref="P:AddressBook.ABMultiValueEntry`1.Label" />,
-        <see cref="M:AddressBook.ABMultiValue`1.Add(`0,Foundation.NSString)" />, and
-        <see cref="M:AddressBook.ABMultiValue`1.Insert(System.Int32,`0,Foundation.NSString)" />.
+        <see cref="AddressBook.ABAddressBook.LocalizedLabel(Foundation.NSString)" />,
+        <see cref="AddressBook.ABMultiValueEntry`1.Label" />,
+        <see cref="AddressBook.ABMultiValue`1.Add(`0,Foundation.NSString)" />, and
+        <see cref="AddressBook.ABMultiValue`1.Insert(System.Int32,`0,Foundation.NSString)" />.
       </para>
     </remarks>
-    <altmember cref="M:AddressBook.ABPerson.GetDates" />
-    <altmember cref="M:AddressBook.ABPerson.SetDates(AddressBook.ABMultiValue{Foundation.NSDate})" />
+    <altmember cref="AddressBook.ABPerson.GetDates" />
+    <altmember cref="AddressBook.ABPerson.SetDates(AddressBook.ABMultiValue{Foundation.NSDate})" />
   </Docs>
 </Documentation>

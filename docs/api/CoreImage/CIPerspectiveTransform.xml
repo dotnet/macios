@@ -1,6 +1,6 @@
 <Documentation>
   <Docs DocId="T:CoreImage.CIPerspectiveTransform">
-    <summary>A <see cref="T:CoreImage.CIFilter" /> that applies a transform the simulates perspective.</summary>
+    <summary>A <see cref="CoreImage.CIFilter" /> that applies a transform the simulates perspective.</summary>
     <remarks>
       <para>The following example shows this filter in use</para>
       <example>

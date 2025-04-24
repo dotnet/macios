@@ -506,7 +506,7 @@ namespace SystemConfiguration {
 
 		/// <param name="flags">The current reachability flags for the NetworkReachability object.</param>
 		///     <summary>Signature for the SetCallback method on NetworkReachability.</summary>
-		///     <remarks>Methods with this signature are invoked in response to changes in the <see cref="T:SystemConfiguration.NetworkReachability" /> state.</remarks>
+		///     <remarks>Methods with this signature are invoked in response to changes in the <see cref="SystemConfiguration.NetworkReachability" /> state.</remarks>
 		public delegate void Notification (NetworkReachabilityFlags flags);
 
 		Notification? notification;
@@ -533,7 +533,7 @@ namespace SystemConfiguration {
 		/// <param name="callback">The method to invoke on a network reachability change.</param>
 		///         <summary>Configures the method to be invoked when network reachability changes.</summary>
 		///         <returns>True if the operation succeeded, false otherwise.</returns>
-		///         <remarks>The notification is invoked on either the runloop configured in the call to <see cref="M:SystemConfiguration.NetworkReachability.Schedule(CoreFoundation.CFRunLoop,System.String)" />, or dispatched on the queue specified with <see cref="M:SystemConfiguration.NetworkReachability.SetDispatchQueue(CoreFoundation.DispatchQueue)" /></remarks>
+		///         <remarks>The notification is invoked on either the runloop configured in the call to <see cref="SystemConfiguration.NetworkReachability.Schedule(CoreFoundation.CFRunLoop,System.String)" />, or dispatched on the queue specified with <see cref="SystemConfiguration.NetworkReachability.SetDispatchQueue(CoreFoundation.DispatchQueue)" /></remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -656,7 +656,7 @@ namespace SystemConfiguration {
 
 		/// <summary>Schedules the delivery of the events (what is set with SetCallback) on the current loop.</summary>
 		///         <returns>True if the operation succeeded, false otherwise.</returns>
-		///         <remarks>This schedules using the <see cref="P:CoreFoundation.CFRunLoop.Current" /> and the <see cref="P:CoreFoundation.CFRunLoop.ModeDefault" />.</remarks>
+		///         <remarks>This schedules using the <see cref="CoreFoundation.CFRunLoop.Current" /> and the <see cref="CoreFoundation.CFRunLoop.ModeDefault" />.</remarks>
 		public bool Schedule ()
 		{
 			return Schedule (CFRunLoop.Current, CFRunLoop.ModeDefault);
@@ -720,7 +720,7 @@ namespace SystemConfiguration {
 
 		/// <summary>Removes the NetworkRechability from the given run loop.</summary>
 		///         <returns>True if the operation succeeded, false otherwise.</returns>
-		///         <remarks>This unschedules the notifications from the <see cref="P:CoreFoundation.CFRunLoop.Current" /> and the <see cref="P:CoreFoundation.CFRunLoop.ModeDefault" />.</remarks>
+		///         <remarks>This unschedules the notifications from the <see cref="CoreFoundation.CFRunLoop.Current" /> and the <see cref="CoreFoundation.CFRunLoop.ModeDefault" />.</remarks>
 		public bool Unschedule ()
 		{
 			return Unschedule (CFRunLoop.Current, CFRunLoop.ModeDefault);
@@ -748,7 +748,7 @@ namespace SystemConfiguration {
 
 #if NET
 		/// <param name="queue">The queue on which the notification will be posted.   Pass <see langword="null" /> to disable notifications on the specified queue.</param>
-		///         <summary>Specifies the <see cref="T:CoreFoundation.DispatchQueue" /> to be used for callbacks.</summary>
+		///         <summary>Specifies the <see cref="CoreFoundation.DispatchQueue" /> to be used for callbacks.</summary>
 		///         <returns>True on success, false on failure.</returns>
 		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]

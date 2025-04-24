@@ -110,7 +110,7 @@ namespace PassKit {
 		PinLockout,
 	}
 
-	/// <summary>Enumeration of valid states of a <see cref="T:PassKit.PKPaymentPass" /> payment card.</summary>
+	/// <summary>Enumeration of valid states of a <see cref="PassKit.PKPaymentPass" /> payment card.</summary>
 	[NoMac]
 	[Deprecated (PlatformName.iOS, 13, 4, message: "Use 'PKSecureElementPassActivationState' instead.")]
 	[MacCatalyst (13, 1)]
@@ -179,7 +179,7 @@ namespace PassKit {
 		All = PostalAddress | Phone | Email | Name,
 	}
 
-	/// <summary>Enumerates available styles for <see cref="T:PassKit.PKPaymentButton" /> objects.</summary>
+	/// <summary>Enumerates available styles for <see cref="PassKit.PKPaymentButton" /> objects.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum PKPaymentButtonStyle : long {
@@ -194,7 +194,7 @@ namespace PassKit {
 		Automatic = 3,
 	}
 
-	/// <summary>Enumerates the types of <see cref="T:PassKit.PKPaymentButton" /> objects.</summary>
+	/// <summary>Enumerates the types of <see cref="PassKit.PKPaymentButton" /> objects.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum PKPaymentButtonType : long {
@@ -285,7 +285,7 @@ namespace PassKit {
 		SystemCancelled,
 	}
 
-	/// <summary>Enumerates results that are used in calls to <see cref="M:PassKit.PKPassLibrary.RequestAutomaticPassPresentationSuppression(System.Action{PassKit.PKAutomaticPassPresentationSuppressionResult})" />.</summary>
+	/// <summary>Enumerates results that are used in calls to <see cref="PassKit.PKPassLibrary.RequestAutomaticPassPresentationSuppression(System.Action{PassKit.PKAutomaticPassPresentationSuppressionResult})" />.</summary>
 	[Mac (11, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -319,7 +319,7 @@ namespace PassKit {
 		EMoney,
 	}
 
-	/// <summary>Enumerates whether a payment associated with a <see cref="T:PassKit.PKShippingMethod" /> is pending or final.</summary>
+	/// <summary>Enumerates whether a payment associated with a <see cref="PassKit.PKShippingMethod" /> is pending or final.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum PKPaymentSummaryItemType : ulong {

@@ -31,7 +31,7 @@ namespace CoreVideo {
 		///         <remarks>
 		///           <para>The returned token is the CoreFoundation type identifier (CFType) that has been assigned to this class.</para>
 		///           <para>This can be used to determine type identity between different CoreFoundation objects.</para>
-		///           <para>You can retrieve the type of a CoreFoundation object by invoking the <see cref="M:CoreFoundation.CFType.GetTypeID(System.IntPtr)" /> on the native handle of the object</para>
+		///           <para>You can retrieve the type of a CoreFoundation object by invoking the <see cref="CoreFoundation.CFType.GetTypeID(System.IntPtr)" /> on the native handle of the object</para>
 		///           <example>
 		///             <code lang="csharp lang-csharp"><![CDATA[bool isCVPixelBuffer = (CFType.GetTypeID (foo.Handle) == CVPixelBuffer.GetTypeID ());]]></code>
 		///           </example>
@@ -421,8 +421,8 @@ namespace CoreVideo {
 		extern static /* void* __nullable */ IntPtr CVPixelBufferGetBaseAddress (
 			/* CVPixelBufferRef __nonnull */ IntPtr pixelBuffer);
 
-		/// <summary>Pointers to the base address storing the pixels.   Must call <see cref="M:CoreVideo.CVPixelBuffer.Lock*" /> to to lock the base address</summary>
-		///         <value>Pointer to the base address storing the pixels, or <see cref="P:System.IntPtr.Zero" /> if the pixel buffer is not locked.</value>
+		/// <summary>Pointers to the base address storing the pixels.   Must call <see cref="CoreVideo.CVPixelBuffer.Lock*" /> to to lock the base address</summary>
+		///         <value>Pointer to the base address storing the pixels, or <see cref="System.IntPtr.Zero" /> if the pixel buffer is not locked.</value>
 		///         <remarks>To be added.</remarks>
 		public IntPtr BaseAddress {
 			get {

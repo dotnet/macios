@@ -155,7 +155,7 @@ namespace OpenGLES {
 		bool TexImage (IOSurface.IOSurface ioSurface, nuint target, nuint internalFormat, uint width, uint height, nuint format, nuint type, uint plane);
 	}
 
-	/// <summary>Interface that, together with the <see cref="T:OpenGLES.EAGLDrawable_Extensions" /> class, comprise the EAGLDrawable protocol.</summary>
+	/// <summary>Interface that, together with the <see cref="OpenGLES.EAGLDrawable_Extensions" /> class, comprise the EAGLDrawable protocol.</summary>
 	/// <remarks>To be added.</remarks>
 	[NoMac]
 	[NoMacCatalyst]

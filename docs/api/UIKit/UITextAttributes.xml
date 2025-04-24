@@ -25,8 +25,8 @@ myNavController.NavigationBar.SetTitleTextAttributes (attrs);
 	UITextAttributes without having to remember the properties
 	that you want to set.  The above sample renders like this: <img href="~/UIKit/_images/UITextAttributes.png" /></para>
       <para> As of iOS5, you can set the text attributes on the
-	following items: <see cref="T:UIKit.UIBarItem" />,
-	<see cref="T:UIKit.UINavigationBar" />, <see cref="T:UIKit.UISearchBar" /> and <see cref="T:UIKit.UISegmentedControl" />.
+	following items: <see cref="UIKit.UIBarItem" />,
+	<see cref="UIKit.UINavigationBar" />, <see cref="UIKit.UISearchBar" /> and <see cref="UIKit.UISegmentedControl" />.
       </para>
     </remarks>
   </Docs>

@@ -23,8 +23,8 @@
 	  </para>
           <para>
 	    You can check the actual limits for input and output image
-	    sizes by checking the <see cref="P:CoreImage.CIContext.InputImageMaximumSize" />
-	    and the <see cref="P:CoreImage.CIContext.OutputImageMaximumSize" />
+	    sizes by checking the <see cref="CoreImage.CIContext.InputImageMaximumSize" />
+	    and the <see cref="CoreImage.CIContext.OutputImageMaximumSize" />
 	    properties.
 
 	  </para>

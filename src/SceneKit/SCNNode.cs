@@ -69,6 +69,10 @@ namespace SceneKit {
 			}
 		}
 
+		/// <param name="key">To be added.</param>
+		/// <param name="duration">To be added.</param>
+		/// <summary>Removes the animation that is identified by the provided <paramref name="key" />, fading it out over <paramref name="duration" /> seconds.</summary>
+		/// <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]

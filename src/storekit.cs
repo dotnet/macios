@@ -461,6 +461,10 @@ namespace StoreKit {
 	[Deprecated (PlatformName.TvOS, 18, 0 /* Apple's replacement requires Swift */ )]
 	interface SKPaymentTransactionObserver {
 
+		/// <param name="queue">To be added.</param>
+		/// <param name="transactions">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("paymentQueue:updatedTransactions:")]
 		[Abstract]
 		void UpdatedTransactions (SKPaymentQueue queue, SKPaymentTransaction [] transactions);
@@ -606,6 +610,10 @@ namespace StoreKit {
 		/// <param name="request">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[Export ("requestDidFinish:")]
 		void RequestFinished (SKRequest request);
 
@@ -613,7 +621,10 @@ namespace StoreKit {
 		/// <param name="error">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[Export ("request:didFailWithError:"), EventArgs ("SKRequestError")]
+		[Export ("request:didFailWithError:"), EventArgs ("SKRequestError", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void RequestFailed (SKRequest request, NSError error);
 	}
 
@@ -714,9 +725,16 @@ namespace StoreKit {
 	[Model]
 	[Protocol]
 	interface SKProductsRequestDelegate {
+		/// <param name="request">To be added.</param>
+		/// <param name="response">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("productsRequest:didReceiveResponse:")]
 		[Abstract]
-		[EventArgs ("SKProductsRequestResponse")]
+		[EventArgs ("SKProductsRequestResponse", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void ReceivedResponse (SKProductsRequest request, SKProductsResponse response);
 	}
 
@@ -800,7 +818,10 @@ namespace StoreKit {
 		/// <param name="controller">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[Export ("productViewControllerDidFinish:"), EventArgs ("SKStoreProductViewController")]
+		[Export ("productViewControllerDidFinish:"), EventArgs ("SKStoreProductViewController", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void Finished (SKStoreProductViewController controller);
 	}
 
@@ -1153,20 +1174,44 @@ namespace StoreKit {
 		SKCloudServiceAuthorizationStatus AuthorizationStatus { get; }
 
 		[Static]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Requests permission from the user to access the device's music library.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous RequestAuthorization operation.  The value of the TResult parameter is of type System.Action&lt;StoreKit.SKCloudServiceAuthorizationStatus&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("requestAuthorization:")]
 		void RequestAuthorization (Action<SKCloudServiceAuthorizationStatus> handler);
 
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Requests the storefront identifier for the device.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous RequestStorefrontIdentifier operation.  The value of the TResult parameter is of type System.Action&lt;Foundation.NSString,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("requestStorefrontIdentifierWithCompletionHandler:")]
 		void RequestStorefrontIdentifier (Action<NSString, NSError> completionHandler);
 
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Requests the country code for the user's iTunes account and passes the code and an error, if present, to the provided handler.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous RequestStorefrontCountryCode operation.  The value of the TResult parameter is of type System.Action&lt;Foundation.NSString,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("requestStorefrontCountryCodeWithCompletionHandler:")]
 		void RequestStorefrontCountryCode (Action<NSString, NSError> completionHandler);
 
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Requests the current capabilities of the music library on the device.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous RequestCapabilities operation.  The value of the TResult parameter is of type System.Action&lt;StoreKit.SKCloudServiceCapability,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("requestCapabilitiesWithCompletionHandler:")]
 		void RequestCapabilities (Action<SKCloudServiceCapability, NSError> completionHandler);
 
@@ -1248,7 +1293,13 @@ namespace StoreKit {
 		[Export ("updateStorePromotionVisibility:forProduct:completionHandler:")]
 		void Update (SKProductStorePromotionVisibility promotionVisibility, SKProduct product, [NullAllowed] Action<NSError> completionHandler);
 
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Fetches the override that controls the product order on the device.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous FetchStorePromotionOrder operation.  The value of the TResult parameter is of type System.Action&lt;StoreKit.SKProduct[],Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("fetchStorePromotionOrderWithCompletionHandler:")]
 		void FetchStorePromotionOrder ([NullAllowed] Action<SKProduct [], NSError> completionHandler);
 

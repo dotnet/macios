@@ -367,7 +367,14 @@ namespace CallKit {
 		[Export ("addIdentificationEntryWithNextSequentialPhoneNumber:label:")]
 		void AddIdentificationEntry (/* CXCallDirectoryPhoneNumber -> int64_t */ long phoneNumber, string label);
 
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Completes the call directory extension request.</summary>
+			<returns>A task that accepts the result of the request completion.</returns>
+			<remarks>
+			          <para copied="true">The CompleteRequestAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("completeRequestWithCompletionHandler:")]
 		void CompleteRequest ([NullAllowed] Action<bool> completion);
 
@@ -409,6 +416,10 @@ namespace CallKit {
 	[BaseType (typeof (NSObject))]
 	interface CXCallDirectoryExtensionContextDelegate {
 
+		/// <param name="extensionContext">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("requestFailedForExtensionContext:withError:")]
 		void RequestFailed (CXCallDirectoryExtensionContext extensionContext, NSError error);
@@ -475,6 +486,10 @@ namespace CallKit {
 	[BaseType (typeof (NSObject))]
 	interface CXCallObserverDelegate {
 
+		/// <param name="callObserver">The object on which this method operates.</param>
+		/// <param name="call">The new call.</param>
+		/// <summary>Method that is called when the call changes.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("callObserver:callChanged:")]
 		void CallChanged (CXCallObserver callObserver, CXCall call);
@@ -578,6 +593,9 @@ namespace CallKit {
 	[BaseType (typeof (NSObject))]
 	interface CXProviderDelegate {
 
+		/// <param name="provider">The provider to which the provider delegate belongs.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("providerDidReset:")]
 		void DidReset (CXProvider provider);

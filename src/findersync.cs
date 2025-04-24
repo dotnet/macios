@@ -136,12 +136,21 @@ namespace FinderSync {
 		[Export ("requestBadgeIdentifierForURL:")]
 		void RequestBadgeIdentifier (NSUrl url);
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Export ("toolbarItemName")]
 		string ToolbarItemName { get; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Export ("toolbarItemImage", ArgumentSemantic.Copy)]
 		NSImage ToolbarItemImage { get; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Export ("toolbarItemToolTip")]
 		string ToolbarItemToolTip { get; }
 

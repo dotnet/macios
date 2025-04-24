@@ -317,6 +317,9 @@ namespace CoreTelephony {
 	[NoMacCatalyst]
 	[Protocol]
 	interface CTSubscriberDelegate {
+		/// <param name="subscriber">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("subscriberTokenRefreshed:")]
 		void SubscriberTokenRefreshed (CTSubscriber subscriber);

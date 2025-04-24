@@ -106,6 +106,14 @@ namespace UIKit
 			return FromVisualFormat (format, formatOptions, metrics, views);
 		}
 
+		/// <param name="view1">To be added.</param>
+		/// <param name="attribute1">To be added.</param>
+		/// <param name="relation">To be added.</param>
+		/// <param name="multiplier">To be added.</param>
+		/// <param name="constant">To be added.</param>
+		/// <summary>Static factory method for creating a constraint.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		public static NSLayoutConstraint Create (NSObject view1, NSLayoutAttribute attribute1, NSLayoutRelation relation, nfloat multiplier, nfloat constant)
 		{
 			return NSLayoutConstraint.Create (view1, attribute1, relation, null, NSLayoutAttribute.NoAttribute, multiplier, constant);
@@ -123,8 +131,9 @@ namespace UIKit
 		}
 
 		// This solves the duplicate selector export problem while not breaking the API.
+		/// <include file="../../docs/api/UIKit/NSLayoutConstraint.xml" path="/Documentation/Docs[@DocId='M:UIKit.NSLayoutConstraint.Create(Foundation.NSObject,UIKit.NSLayoutAttribute,UIKit.NSLayoutRelation,Foundation.NSObject,UIKit.NSLayoutAttribute,System.Runtime.InteropServices.NFloat,System.Runtime.InteropServices.NFloat)']/*" />
 		public static NSLayoutConstraint Create (NSObject view1, NSLayoutAttribute attribute1, NSLayoutRelation relation,
-				NSObject view2, NSLayoutAttribute attribute2, nfloat multiplier, nfloat constant)
+					NSObject view2, NSLayoutAttribute attribute2, nfloat multiplier, nfloat constant)
 		{
 			return Create ((INativeObject) view1, attribute1, relation, view2, attribute2, multiplier, constant);
 		}

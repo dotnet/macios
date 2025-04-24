@@ -1208,6 +1208,11 @@ namespace CoreData {
 		[Export ("objectAtIndexPath:")]
 		NSObject ObjectAt (NSIndexPath path);
 
+		/// <param name="title">To be added.</param>
+		/// <param name="atIndex">To be added.</param>
+		/// <summary>Returns the section number for the specified <paramref name="title" /> and index.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("sectionForSectionIndexTitle:atIndex:")]
 		// name like UITableViewSource's similar (and linked) selector
 		nint SectionFor (string title, nint atIndex);
@@ -1271,6 +1276,12 @@ namespace CoreData {
 		[Export ("controller:didChangeObject:atIndexPath:forChangeType:newIndexPath:")]
 		void DidChangeObject (NSFetchedResultsController controller, NSObject anObject, [NullAllowed] NSIndexPath indexPath, NSFetchedResultsChangeType type, [NullAllowed] NSIndexPath newIndexPath);
 
+		/// <param name="controller">To be added.</param>
+		/// <param name="sectionInfo">To be added.</param>
+		/// <param name="sectionIndex">To be added.</param>
+		/// <param name="type">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("controller:didChangeSection:atIndex:forChangeType:")]
 		void DidChangeSection (NSFetchedResultsController controller, INSFetchedResultsSectionInfo sectionInfo, nuint sectionIndex, NSFetchedResultsChangeType type);
 
@@ -2623,6 +2634,19 @@ namespace CoreData {
 		[Export ("oldVersionNumber")]
 		nuint OldVersionNumber { get; }
 
+		/// <param name="sourceObject">To be added.</param>
+		/// <param name="newVersion">To be added.</param>
+		/// <param name="oldVersion">To be added.</param>
+		/// <param name="cachedSnapshot">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="persistedSnapshot">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithSource:newVersion:oldVersion:cachedSnapshot:persistedSnapshot:")]
 #if XAMCORE_5_0

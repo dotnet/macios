@@ -261,6 +261,16 @@ namespace HealthKit {
 #if !NET
 		[Obsolete ("Use the overload that takes HKAnchoredObjectResultHandler2 instead")]
 #endif
+		/// <param name="type">To be added.</param>
+		/// <param name="predicate">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="anchor">To be added.</param>
+		/// <param name="limit">To be added.</param>
+		/// <param name="completion">To be added.</param>
+		/// <summary>Developers should not use this deprecated constructor. </summary>
+		/// <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 9, 0)]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
@@ -274,6 +284,19 @@ namespace HealthKit {
 		NativeHandle Constructor (HKSampleType type, [NullAllowed] NSPredicate predicate, nuint anchor, nuint limit, HKAnchoredObjectResultHandler2 completion);
 #endif
 
+		/// <param name="type">To be added.</param>
+		/// <param name="predicate">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="anchor">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="limit">To be added.</param>
+		/// <param name="handler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("initWithType:predicate:anchor:limit:resultsHandler:")]
 		NativeHandle Constructor (HKSampleType type, [NullAllowed] NSPredicate predicate, [NullAllowed] HKQueryAnchor anchor, nuint limit, HKAnchoredObjectUpdateHandler handler);
@@ -629,19 +652,60 @@ namespace HealthKit {
 		[Export ("value")]
 		nint Value { get; }
 
+		/// <param name="type">To be added.</param>
+		/// <param name="value">To be added.</param>
+		/// <param name="startDate">To be added.</param>
+		/// <param name="endDate">To be added.</param>
+		/// <param name="metadata">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static]
 		[Export ("categorySampleWithType:value:startDate:endDate:metadata:")]
 		[EditorBrowsable (EditorBrowsableState.Advanced)] // this is not the one we want to be seen (compat only)
 		HKCategorySample FromType (HKCategoryType type, nint value, NSDate startDate, NSDate endDate, [NullAllowed] NSDictionary metadata);
 
+		/// <param name="type">To be added.</param>
+		/// <param name="value">To be added.</param>
+		/// <param name="startDate">To be added.</param>
+		/// <param name="endDate">To be added.</param>
+		/// <param name="metadata">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static]
 		[Wrap ("FromType (type, value, startDate, endDate, metadata.GetDictionary ())")]
 		HKCategorySample FromType (HKCategoryType type, nint value, NSDate startDate, NSDate endDate, HKMetadata metadata);
 
+		/// <param name="type">To be added.</param>
+		/// <param name="value">To be added.</param>
+		/// <param name="startDate">To be added.</param>
+		/// <param name="endDate">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static]
 		[Export ("categorySampleWithType:value:startDate:endDate:")]
 		HKCategorySample FromType (HKCategoryType type, nint value, NSDate startDate, NSDate endDate);
 
+		/// <param name="type">To be added.</param>
+		/// <param name="value">To be added.</param>
+		/// <param name="startDate">To be added.</param>
+		/// <param name="endDate">To be added.</param>
+		/// <param name="device">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="metadata">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Creates and returns a new <see cref="T:HealthKit.HKCategorySample" /> of the specified type, with the specified values.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("categorySampleWithType:value:startDate:endDate:device:metadata:")]
@@ -876,6 +940,11 @@ namespace HealthKit {
 		[Export ("deleteObjects:withCompletion:")]
 		void DeleteObjects (HKObject [] objects, Action<bool, NSError> completion);
 
+		/// <param name="objectType">To be added.</param>
+		/// <param name="predicate">To be added.</param>
+		/// <param name="completion">A handler to run when the operation completes.</param>
+		/// <summary>Deletes the objects that match the specified <paramref name="objectType" /> and <paramref name="predicate" /> from the store and runs a completion handler when it is finished.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("deleteObjectsOfType:predicate:withCompletion:")]
 		void DeleteObjects (HKObjectType objectType, NSPredicate predicate, Action<bool, nuint, NSError> completion);
@@ -956,12 +1025,24 @@ namespace HealthKit {
 		void DisableBackgroundDelivery (HKObjectType type, Action<bool, NSError> completion);
 
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Disables the background delivery of notifications and runs an action after delivery has been disabled.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous DisableAllBackgroundDelivery operation.  The value of the TResult parameter is of type System.Action&lt;System.Boolean,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("disableAllBackgroundDeliveryWithCompletion:")]
 		void DisableAllBackgroundDelivery (Action<bool, NSError> completion);
 
 		// FIXME NS_EXTENSION_UNAVAILABLE("Not available to extensions") ;
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Requests authorization for an extension to read and write data, and runs a completion handler that receives a Boolean success value and an error object.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous HandleAuthorizationForExtension operation.  The value of the TResult parameter is of type System.Action&lt;System.Boolean,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[MacCatalyst (13, 1)]
 		[Export ("handleAuthorizationForExtensionWithCompletion:")]
 		void HandleAuthorizationForExtension (Action<bool, NSError> completion);
@@ -2269,6 +2350,11 @@ namespace HealthKit {
 
 		// HKQuery (HKCategorySamplePredicates) Category
 
+		/// <param name="operatorType">To be added.</param>
+		/// <param name="value">To be added.</param>
+		/// <summary> Creates and returns a predicate that can be used to check the value of a category sample.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static]
 		[Export ("predicateForCategorySamplesWithOperatorType:value:")]
 		NSPredicate GetPredicateForCategorySamples (NSPredicateOperatorType operatorType, nint value);
@@ -2532,6 +2618,19 @@ namespace HealthKit {
 		[NullAllowed, Export ("sortDescriptors")]
 		NSSortDescriptor [] SortDescriptors { get; }
 
+		/// <param name="sampleType">To be added.</param>
+		/// <param name="predicate">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="limit">To be added.</param>
+		/// <param name="sortDescriptors">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="resultsHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithSampleType:predicate:limit:sortDescriptors:resultsHandler:")]
 		NativeHandle Constructor (HKSampleType sampleType, [NullAllowed] NSPredicate predicate, nuint limit, [NullAllowed] NSSortDescriptor [] sortDescriptors, HKSampleQueryResultsHandler resultsHandler);
 
@@ -3907,6 +4006,10 @@ namespace HealthKit {
 		[Export ("unitDividedByUnit:")]
 		HKUnit UnitDividedBy (HKUnit unit);
 
+		/// <param name="power">To be added.</param>
+		/// <summary>Returns a unit that is the result of raising <see langword="this" /> unit by <paramref name="power" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("unitRaisedToPower:")]
 		HKUnit UnitRaisedToPower (nint power);
 
@@ -4408,6 +4511,20 @@ namespace HealthKit {
 		[Export ("includeDocumentData")]
 		bool IncludeDocumentData { get; }
 
+		/// <param name="documentType">To be added.</param>
+		/// <param name="predicate">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="limit">To be added.</param>
+		/// <param name="sortDescriptors">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="includeDocumentData">To be added.</param>
+		/// <param name="resultsHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithDocumentType:predicate:limit:sortDescriptors:includeDocumentData:resultsHandler:")]
 		NativeHandle Constructor (HKDocumentType documentType, [NullAllowed] NSPredicate predicate, nuint limit, [NullAllowed] NSSortDescriptor [] sortDescriptors, bool includeDocumentData, Action<HKDocumentQuery, HKDocumentSample [], bool, NSError> resultsHandler);
 	}
@@ -4553,6 +4670,10 @@ namespace HealthKit {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface HKQueryAnchor : NSSecureCoding, NSCopying {
+		/// <param name="value">The anchor value, used before iOS 9.0, from which to construct an anchor object.</param>
+		/// <summary>Returns an anchor object for the specified anchor value. (Anchor values were used before iOS 9.0)</summary>
+		/// <returns>An anchor object for the specified anchor value. (Anchor values were used before iOS 9.0)</returns>
+		/// <remarks>To be added.</remarks>
 		[Static]
 		[Export ("anchorFromValue:")]
 		HKQueryAnchor Create (nuint value);
@@ -5042,7 +5163,11 @@ namespace HealthKit {
 		[Export ("endCollectionWithEndDate:completion:")]
 		void EndCollection (NSDate endDate, HKWorkoutBuilderCompletionHandler completionHandler);
 
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Saves a new workout, created with the collected data, to the Health Store. Returns a handler that contains a success status and any error that occurred.</summary>
+			<returns>A handler that contains a success status and any error that occurred.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("finishWorkoutWithCompletion:")]
 		void FinishWorkout (HKWorkoutBuilderCompletionHandler completionHandler);
 

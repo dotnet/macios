@@ -284,7 +284,13 @@ namespace CloudKit {
 		CKDatabase GetDatabase (CKDatabaseScope databaseScope);
 
 		[Export ("accountStatusWithCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Retrieves the current user's <see cref="T:CloudKit.CKAccountStatus" />.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous GetAccountStatus operation.  The value of the TResult parameter is of type System.Action&lt;CloudKit.CKAccountStatus,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void GetAccountStatus (Action<CKAccountStatus, NSError> completionHandler);
 
 		[Deprecated (PlatformName.MacOSX, 14, 0)]
@@ -318,7 +324,13 @@ namespace CloudKit {
 		void RequestApplicationPermission (CKApplicationPermissions applicationPermission, Action<CKApplicationPermissionStatus, NSError> completionHandler);
 
 		[Export ("fetchUserRecordIDWithCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Retrieves the <see cref="T:CloudKit.CKRecordID" /> of the current user.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous FetchUserRecordId operation.  The value of the TResult parameter is of type System.Action&lt;CloudKit.CKRecordID,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void FetchUserRecordId (Action<CKRecordID, NSError> completionHandler);
 
 		[Deprecated (PlatformName.MacOSX, 14, 0)]
@@ -327,7 +339,15 @@ namespace CloudKit {
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("discoverAllIdentitiesWithCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Fetches all user records in the <see cref="T:CloudKit.CKContainer" /> that correspond to an entry in the user's address book.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous DiscoverAllIdentities operation.  The value of the TResult parameter is of type System.Action&lt;CloudKit.CKUserIdentity[],Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para>The "identity discovery" methods in <see cref="T:CloudKit.CKContainer" /> allow the developer to implement "friends who also use" functionality in their apps. These methods can be used to find user records in the CloudKit container that correspond to entries in the user's address book. No information about the user, beyond the fact that they use the app and agreed to share that status, is available from the <see cref="T:CloudKit.CKContainer" />.</para>
+			        </remarks>
+			""")]
 		void DiscoverAllIdentities (Action<CKUserIdentity [], NSError> completionHandler);
 
 		[Deprecated (PlatformName.MacOSX, 14, 0)]
@@ -393,7 +413,13 @@ namespace CloudKit {
 		[NoTV] // does not answer on devices
 		[MacCatalyst (13, 1)]
 		[Export ("fetchAllLongLivedOperationIDsWithCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Returns an array that contains the identifiers for all the currently active long-lived operations.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous FetchAllLongLivedOperationIDs operation.  The value of the TResult parameter is of type System.Action&lt;Foundation.NSDictionary&lt;Foundation.NSString,Foundation.NSOperation&gt;,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void FetchAllLongLivedOperationIDs (Action<NSDictionary<NSString, NSOperation>, NSError> completionHandler);
 
 		[NoTV] // does not answer on devices
@@ -532,7 +558,13 @@ namespace CloudKit {
 		void PerformQuery (CKQuery query, [NullAllowed] CKRecordZoneID zoneId, Action<CKRecord [], NSError> completionHandler);
 
 		[Export ("fetchAllRecordZonesWithCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Retrieves all record zones, with low priority.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous FetchAllRecordZones operation.  The value of the TResult parameter is of type System.Action&lt;CloudKit.CKRecordZone[],Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void FetchAllRecordZones (Action<CKRecordZone [], NSError> completionHandler);
 
 		[Export ("fetchRecordZoneWithID:completionHandler:")]
@@ -582,7 +614,13 @@ namespace CloudKit {
 
 		[MacCatalyst (13, 1)]
 		[Export ("fetchAllSubscriptionsWithCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Retrieves all the <see cref="T:CloudKit.CKSubscription" /> objects from the database.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous FetchAllSubscriptions operation.  The value of the TResult parameter is of type System.Action&lt;CloudKit.CKSubscription[],Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void FetchAllSubscriptions (Action<CKSubscription [], NSError> completionHandler);
 
 		[MacCatalyst (13, 1)]

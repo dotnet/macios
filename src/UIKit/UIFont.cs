@@ -258,6 +258,14 @@ namespace UIKit {
 
 
 #if NET
+		/// <param name="size">To be added.</param>
+		/// <param name="weight">To be added.</param>
+		/// <summary>Gets the system font for specified <paramref name="size" /> and <paramref name="weight" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
@@ -268,6 +276,14 @@ namespace UIKit {
 		}
 
 #if NET
+		/// <param name="size">To be added.</param>
+		/// <param name="weight">To be added.</param>
+		/// <summary>The system monospaced font specialized for digits, in the specified size and weight.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
@@ -279,6 +295,14 @@ namespace UIKit {
 		}
 
 #if NET
+		/// <param name="fontSize">To be added.</param>
+		/// <param name="weight">To be added.</param>
+		/// <summary>Gets the monospaced <see cref="T:UIKit.UIFont" /> preferred by the system for displaying digits, of the specified <paramref name="fontSize" /> and <paramref name="weight" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
@@ -383,6 +407,14 @@ namespace UIKit {
 		}
 
 #if NET
+		/// <param name="descriptor">To be added.</param>
+		/// <param name="pointSize">To be added.</param>
+		/// <summary>Factory method that creates a UIFont from the specified descriptor.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
@@ -393,12 +425,31 @@ namespace UIKit {
 			return ptr == IntPtr.Zero ? null : new UIFont (ptr);
 		}
 
+		/// <param name="name">The name of the font to create.</param>
+		/// <param name="size">The size of the font to create.</param>
+		/// <summary>Creates a font of the specified size.</summary>
+		/// <returns>
+		///         </returns>
+		/// <remarks>
+		///           <para>
+		///           </para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		public static UIFont FromName (string name, nfloat size)
 		{
 			var ptr = _FromName (name, size);
 			return ptr == IntPtr.Zero ? null : new UIFont (ptr);
 		}
 
+		/// <param name="size">The size of the font, as measure in points.</param>
+		/// <summary>Creates a system font of the specified size.</summary>
+		/// <returns>
+		///         </returns>
+		/// <remarks>
+		///           <para>
+		///           </para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		public static UIFont SystemFontOfSize (nfloat size)
 		{
 			var ptr = _SystemFontOfSize (size);
@@ -419,6 +470,14 @@ namespace UIKit {
 		}
 
 #if NET
+		/// <param name="size">To be added.</param>
+		/// <param name="weight">To be added.</param>
+		/// <summary>Returns the default system font in specified <paramref name="size" /> and <paramref name="weight" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
@@ -429,18 +488,42 @@ namespace UIKit {
 			return ptr == IntPtr.Zero ? null : new UIFont (ptr);
 		}
 
+		/// <param name="size">The size of the font.</param>
+		/// <summary>Returns a boldfaced font of the standard system font in the size specified.</summary>
+		/// <returns>
+		///         </returns>
+		/// <remarks>
+		///           <para>
+		///           </para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		public static UIFont BoldSystemFontOfSize (nfloat size)
 		{
 			var ptr = _BoldSystemFontOfSize (size);
 			return ptr == IntPtr.Zero ? null : new UIFont (ptr);
 		}
 
+		/// <param name="size">The size of the font to create.</param>
+		/// <summary>Creates an italicized system font of the specified size.</summary>
+		/// <returns>
+		///         </returns>
+		/// <remarks>
+		///           <para>
+		///           </para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		public static UIFont ItalicSystemFontOfSize (nfloat size)
 		{
 			var ptr = _ItalicSystemFontOfSize (size);
 			return ptr == IntPtr.Zero ? null : new UIFont (ptr);
 		}
 
+		/// <param name="size">The new font size (in points).</param>
+		/// <summary>Returns a new font based on the current one, with the new specified size.</summary>
+		/// <returns>The new font at the specified size.</returns>
+		/// <remarks>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		public virtual UIFont WithSize (nfloat size)
 		{
 			var ptr = _WithSize (size);

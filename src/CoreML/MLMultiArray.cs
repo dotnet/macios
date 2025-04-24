@@ -29,6 +29,11 @@ namespace CoreML {
 			return NSArray.ArrayFromHandle<nint> (handle, (v) => (nint) Messaging.IntPtr_objc_msgSend (v, Selector.GetHandle ("integerValue")));
 		}
 
+		/// <param name="shape">To be added.</param>
+		/// <param name="dataType">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>Creates a new MLMultiArray with the specified shape and data type.</summary>
+		/// <remarks>To be added.</remarks>
 		public MLMultiArray (nint [] shape, MLMultiArrayDataType dataType, out NSError error)
 			: this (ConvertArray (shape), dataType, out error)
 		{
@@ -54,12 +59,20 @@ namespace CoreML {
 			set { SetObject (value, key); }
 		}
 
+		/// <param name="indices">A multidimensional coordinate for the object to get.</param>
+		/// <summary>Retrieves the element at <paramref name="indices" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		public NSNumber GetObject (params nint [] indices)
 		{
 			using (var arr = NSArray.FromNSObjects<nint> (NSNumber.FromNInt, indices))
 				return GetObjectInternal (arr.GetHandle ());
 		}
 
+		/// <param name="obj">The new value</param>
+		/// <param name="indices">The multidimensional coordinate of the item to set</param>
+		/// <summary>Sets the element at <paramref name="indices" />.</summary>
+		/// <remarks>To be added.</remarks>
 		public void SetObject (NSNumber obj, params nint [] indices)
 		{
 			using (var arr = NSArray.FromNSObjects<nint> (NSNumber.FromNInt, indices))

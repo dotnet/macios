@@ -194,6 +194,11 @@ namespace Foundation {
 			return false;
 		}
 
+		/// <param name="key">To be added.</param>
+		/// <param name="result">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		public bool TryDecode (string key, out nint result)
 		{
 			if (ContainsKey (key)) {

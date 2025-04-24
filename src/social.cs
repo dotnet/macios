@@ -179,7 +179,16 @@ namespace Social {
 
 		// async 
 		[Export ("performRequestWithHandler:")]
-		[Async (ResultTypeName = "SLRequestResult")]
+		[Async (ResultTypeName = "SLRequestResult", XmlDocs = """
+			<summary>Asynchronously makes the request.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous PerformRequest operation.  The value of the TResult parameter is of type System.Action&lt;Foundation.NSData,Foundation.NSHttpUrlResponse,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The PerformRequestAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void PerformRequest (Action<NSData, NSHttpUrlResponse, NSError> handler);
 	}
 

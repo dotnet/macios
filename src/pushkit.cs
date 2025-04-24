@@ -118,10 +118,20 @@ namespace PushKit {
 	[Protocol]
 	[BaseType (typeof (NSObject))]
 	interface PKPushRegistryDelegate {
+		/// <param name="registry">To be added.</param>
+		/// <param name="credentials">To be added.</param>
+		/// <param name="type">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("pushRegistry:didUpdatePushCredentials:forType:"), EventArgs ("PKPushRegistryUpdated"), EventName ("CredentialsUpdated")]
 		void DidUpdatePushCredentials (PKPushRegistry registry, PKPushCredentials credentials, string type);
 
+		/// <param name="registry">To be added.</param>
+		/// <param name="payload">To be added.</param>
+		/// <param name="type">To be added.</param>
+		/// <summary>Developers should not use this deprecated method. Developers should use the 'DidReceiveIncomingPushWithPayload' overload accepting an 'Action' argument instead.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoMac]
 #if !NET
 		[Abstract] // now optional in iOS 11

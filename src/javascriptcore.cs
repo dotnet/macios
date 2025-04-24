@@ -228,9 +228,17 @@ namespace JavaScriptCore {
 		[Export ("defineProperty:descriptor:")]
 		void DefineProperty (string property, NSObject descriptor);
 
+		/// <param name="index">To be added.</param>
+		/// <summary>Returns the value at the specified <paramref name="index" />, or <c>undefined</c> if none exists.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("valueAtIndex:")]
 		JSValue GetValueAt (nuint index);
 
+		/// <param name="value">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>Sets the item at the specified index to the specified value.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("setValue:atIndex:")]
 		void SetValue (JSValue value, nuint index);
 

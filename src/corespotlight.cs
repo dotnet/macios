@@ -238,12 +238,24 @@ namespace CoreSpotlight {
 	[BaseType (typeof (CSSearchableIndex))]
 	interface CSSearchableIndex_CSOptionalBatchingExtension {
 
+		/// <summary>Begins an index update batch.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("beginIndexBatch")]
 		void BeginIndexBatch ();
 
+		/// <param name="clientState">To be added.</param>
+		/// <param name="completionHandler">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Ends an index update batch, relying on the 250 bytes of information for crash recovery, and calls <paramref name="completionHandler" /> when finished.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("endIndexBatchWithClientState:completionHandler:")]
 		void EndIndexBatch (NSData clientState, [NullAllowed] Action<NSError> completionHandler);
 
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>Fetches the client state and runs <paramref name="completionHandler" /> when finished..</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("fetchLastClientStateWithCompletionHandler:")]
 		void FetchLastClientState (CSSearchableIndexFetchHandler completionHandler);
 

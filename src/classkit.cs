@@ -465,6 +465,14 @@ namespace ClassKit {
 	[BaseType (typeof (NSObject))]
 	interface CLSDataStoreDelegate {
 
+		/// <param name="identifier">The identifier for the context to create.</param>
+		/// <param name="parentContext">The parent context for the context to create.</param>
+		/// <param name="parentIdentifierPath">The identifier path for the parent of the context to create.</param>
+		/// <summary>Requests a context for the provided parameters.</summary>
+		/// <returns>A new ClassKit store context.</returns>
+		/// <remarks>
+		///           <para>ClassKit contexts are used to arrange nested content, such as chapters and sections of a lesson plan, in order to organize and track student progress and tests. ClassKit supports a maximum of 8 layers of content nesting.</para>
+		///         </remarks>
 		[Abstract]
 		[Export ("createContextForIdentifier:parentContext:parentIdentifierPath:")]
 		[return: NullAllowed]
@@ -505,7 +513,11 @@ namespace ClassKit {
 		[NullAllowed, Export ("delegate", ArgumentSemantic.Weak)]
 		NSObject WeakDelegate { get; set; }
 
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Asynchronously saves the data store and returns a task that represents the operation.</summary>
+			<returns>A task that represents the operation.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("saveWithCompletion:")]
 		void Save ([NullAllowed] Action<NSError> completion);
 
@@ -580,6 +592,10 @@ namespace ClassKit {
 	[NoTV]
 	[Protocol]
 	interface CLSContextProvider {
+		/// <param name="context">To be added.</param>
+		/// <param name="completion">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("updateDescendantsOfContext:completion:")]
 		void UpdateDescendants (CLSContext context, Action<NSError> completion);

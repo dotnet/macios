@@ -59,6 +59,9 @@
 !incorrect-protocol-member! +NSPasteboardReading::readableTypesForPasteboard: is REQUIRED and should be abstract
 !incorrect-protocol-member! +NSWindowRestoration::restoreWindowWithIdentifier:state:completionHandler: is REQUIRED and should be abstract
 
+# This init method is bound manually, because the managed signature is identical to another init method.
+!missing-selector! NSTextContainer::initWithContainerSize: not bound
+
 ## unsorted
 
 !missing-enum! NSWritingDirectionFormatType not bound
@@ -133,8 +136,6 @@
 !missing-selector! NSMutableAttributedString::fixAttributesInRange: not bound
 !missing-selector! NSString::boundingRectWithSize:options:attributes: not bound
 !missing-selector! NSString::drawWithRect:options:attributes: not bound
-!missing-selector! NSTextContainer::initWithContainerSize: not bound
-!missing-selector! NSTextContainer::initWithSize: not bound
 !missing-selector! NSTextContainer::lineFragmentRectForProposedRect:sweepDirection:movementDirection:remainingRect: not bound
 !missing-selector! NSTextStorage::attributeRuns not bound
 !missing-selector! NSTextStorage::characters not bound

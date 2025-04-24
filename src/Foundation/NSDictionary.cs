@@ -177,6 +177,14 @@ namespace Foundation {
 				return FromObjectsAndKeysInternal (no, nk);
 		}
 
+		/// <param name="objects">Array of values for the dictionary.</param>
+		/// <param name="keys">Array of keys for the dictionary.</param>
+		/// <param name="count">Number of items to use in the creation, the number must be less than or equal to the number of elements on the arrays.</param>
+		/// <summary>Creates a dictionary from a set of values and keys.</summary>
+		/// <returns>
+		///         </returns>
+		/// <remarks>
+		///         </remarks>
 		public static NSDictionary FromObjectsAndKeys (NSObject [] objects, NSObject [] keys, nint count)
 		{
 			if (objects is null)
@@ -193,6 +201,18 @@ namespace Foundation {
 				return FromObjectsAndKeysInternal (no, nk);
 		}
 
+		/// <param name="objects">Array of values for the dictionary.</param>
+		/// <param name="keys">Array of keys for the dictionary.</param>
+		/// <param name="count">Number of items to use in the creation, the number must be less than or equal to the number of elements on the arrays.</param>
+		/// <summary>Creates a dictionary from a set of values and keys.</summary>
+		/// <returns>
+		///         </returns>
+		/// <remarks>
+		///           <para>
+		/// 	    The keys and values will first be boxed into
+		/// 	    NSObjects using <see cref="M:Foundation.NSObject.FromObject(System.Object)" />.
+		/// 	  </para>
+		///         </remarks>
 		public static NSDictionary FromObjectsAndKeys (object [] objects, object [] keys, nint count)
 		{
 			if (objects is null)

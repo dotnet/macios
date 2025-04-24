@@ -28,6 +28,11 @@ namespace QuickLookUI {
 		[Abstract]
 		nint NumberOfPreviewItemsInPreviewPanel (QLPreviewPanel panel);
 
+		/// <param name="panel">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("previewPanel:previewItemAtIndex:")]
 		[Abstract]
 		IQLPreviewItem PreviewItemAtIndex (QLPreviewPanel panel, nint index);

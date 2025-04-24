@@ -781,6 +781,11 @@ namespace PdfKit {
 	[BaseType (typeof (PdfAction), Name = "PDFActionRemoteGoTo")]
 	interface PdfActionRemoteGoTo {
 
+		/// <param name="pageIndex">To be added.</param>
+		/// <param name="point">To be added.</param>
+		/// <param name="fileUrl">To be added.</param>
+		/// <summary>Creates a new remote go-to PDF action for going to the specified <paramref name="point" /> on the page at <paramref name="pageIndex" /> in the document at the specified <paramref name="fileUrl" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithPageIndex:atPoint:fileURL:")]
 		NativeHandle Constructor (nint pageIndex, CGPoint point, NSUrl fileUrl);
@@ -2248,6 +2253,10 @@ namespace PdfKit {
 		[Export ("pageCount")]
 		nint PageCount { get; }
 
+		/// <param name="index">The index of the page to get.</param>
+		/// <summary>Returns the page at the specified zero-based index.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("pageAtIndex:")]
 		[return: NullAllowed]
 		PdfPage GetPage (nint index);
@@ -2259,12 +2268,23 @@ namespace PdfKit {
 		[Export ("indexForPage:")]
 		nint GetPageIndex (PdfPage page);
 
+		/// <param name="page">The page to insert.</param>
+		/// <param name="index">The index at which to insert the page.</param>
+		/// <summary>Inserts the provided <paramref name="page" /> at the specified <paramref name="index" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("insertPage:atIndex:")]
 		void InsertPage (PdfPage page, nint index);
 
+		/// <param name="index">The index of the page to remove.</param>
+		/// <summary>Removes the page at the specified <paramref name="index" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("removePageAtIndex:")]
 		void RemovePage (nint index);
 
+		/// <param name="indexA">The index of the first page to exchange.</param>
+		/// <param name="indexB">The index of the second page to exchange.</param>
+		/// <summary>Swaps the page at <paramref name="indexA" /> with the one at <paramref name="indexB" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("exchangePageAtIndex:withPageAtIndex:")]
 		void ExchangePages (nint indexA, nint indexB);
 
@@ -2370,6 +2390,13 @@ namespace PdfKit {
 		[return: NullAllowed]
 		PdfSelection GetSelection (PdfPage startPage, CGPoint startPoint, PdfPage endPage, CGPoint endPoint);
 
+		/// <param name="startPage">The page at the start of the selection.</param>
+		/// <param name="startCharIndex">The character index on the start page for the start of the selection.</param>
+		/// <param name="endPage">The page at the end of the selection.</param>
+		/// <param name="endCharIndex">The character index on the end page for the end of the selection.</param>
+		/// <summary>Returns a selection for the region that is described by the specified parameters.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("selectionFromPage:atCharacterIndex:toPage:atCharacterIndex:")]
 		[return: NullAllowed]
 		PdfSelection GetSelection (PdfPage startPage, nint startCharIndex, PdfPage endPage, nint endCharIndex);
@@ -2418,19 +2445,28 @@ namespace PdfKit {
 		/// <param name="notification">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[Export ("documentDidUnlock:"), EventArgs ("NSNotification")]
+		[Export ("documentDidUnlock:"), EventArgs ("NSNotification", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidUnlock (NSNotification notification);
 
 		/// <param name="notification">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[Export ("documentDidBeginDocumentFind:"), EventArgs ("NSNotification")]
+		[Export ("documentDidBeginDocumentFind:"), EventArgs ("NSNotification", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidBeginDocumentFind (NSNotification notification);
 
 		/// <param name="sender">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[Export ("didMatchString:"), EventArgs ("PdfSelection")]
+		[Export ("didMatchString:"), EventArgs ("PdfSelection", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidMatchString (PdfSelection sender);
 
 		/// <summary>To be added.</summary>
@@ -2443,6 +2479,11 @@ namespace PdfKit {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Delegate invoked by the object to get a value.</summary>
+			<value>To be added.</value>
+			<remarks>Developers assign a function, delegate or anonymous method to this property to return a value to the object.   If developers assign a value to this property, it this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[MacCatalyst (13, 1)]
 		[DelegateName ("ClassForAnnotationTypeDelegate"), DefaultValue (null)]
 		[Export ("classForAnnotationType:")]
@@ -2462,25 +2503,37 @@ namespace PdfKit {
 		/// <param name="notification">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[Export ("documentDidEndDocumentFind:"), EventArgs ("NSNotification")]
+		[Export ("documentDidEndDocumentFind:"), EventArgs ("NSNotification", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void FindFinished (NSNotification notification);
 
 		/// <param name="notification">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[Export ("documentDidBeginPageFind:"), EventArgs ("NSNotification")]
+		[Export ("documentDidBeginPageFind:"), EventArgs ("NSNotification", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void PageFindStarted (NSNotification notification);
 
 		/// <param name="notification">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[Export ("documentDidEndPageFind:"), EventArgs ("NSNotification")]
+		[Export ("documentDidEndPageFind:"), EventArgs ("NSNotification", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void PageFindFinished (NSNotification notification);
 
 		/// <param name="notification">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[Export ("documentDidFindMatch:"), EventArgs ("NSNotification")]
+		[Export ("documentDidFindMatch:"), EventArgs ("NSNotification", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void MatchFound (NSNotification notification);
 	}
 
@@ -2526,10 +2579,18 @@ namespace PdfKit {
 		[Export ("index")]
 		nint Index { get; }
 
+		/// <param name="index">To be added.</param>
+		/// <summary>Returns the child outline object at the specified <paramref name="index" /> in the children of this outline node.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Export ("childAtIndex:")]
 		PdfOutline Child (nint index);
 
+		/// <param name="child">The outline to insert.</param>
+		/// <param name="index">The index at which to insert the child outline.</param>
+		/// <summary>Inserts the specified node in the list of children at the specified index.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("insertChild:atIndex:")]
 		void InsertChild (PdfOutline child, nint index);
 
@@ -2756,6 +2817,10 @@ namespace PdfKit {
 		[NullAllowed]
 		NSAttributedString AttributedString { get; }
 
+		/// <param name="index">The index of the character for which to get its bounding box.</param>
+		/// <summary>Returns a rectangle that describes the bounds for the character at the specified index.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("characterBoundsAtIndex:")]
 		CGRect GetCharacterBounds (nint index);
 
@@ -2878,6 +2943,11 @@ namespace PdfKit {
 		[Export ("numberOfTextRangesOnPage:")]
 		nuint GetNumberOfTextRanges (PdfPage page);
 
+		/// <param name="index">To be added.</param>
+		/// <param name="page">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("rangeAtIndex:onPage:")]
 		NSRange GetRange (nuint index, PdfPage page);
 
@@ -2899,9 +2969,15 @@ namespace PdfKit {
 		[Export ("addSelections:")]
 		void AddSelections (PdfSelection [] selections);
 
+		/// <param name="succeed">To be added.</param>
+		/// <summary>Extends the end of the selection to the position that is indicated by <paramref name="succeed" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("extendSelectionAtEnd:")]
 		void ExtendSelectionAtEnd (nint succeed);
 
+		/// <param name="precede">To be added.</param>
+		/// <summary>Extends the beginning of the selection to the position that is indicated by <paramref name="precede" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("extendSelectionAtStart:")]
 		void ExtendSelectionAtStart (nint precede);
 
@@ -3731,6 +3807,16 @@ namespace PdfKit {
 	[Model]
 	interface PdfViewDelegate {
 		//from docs: 'By default, the scale factor is restricted to a range between 0.1 and 10.0 inclusive.'
+		/// <param name="sender">To be added.</param>
+		/// <param name="scale">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>To be added.</summary>
+			<value>To be added.</value>
+			<remarks>To be added.</remarks>
+			""")]
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]
@@ -3741,7 +3827,10 @@ namespace PdfKit {
 		///         <param name="url">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[Export ("PDFViewWillClickOnLink:withURL:"), EventArgs ("PdfViewUrl")]
+		[Export ("PDFViewWillClickOnLink:withURL:"), EventArgs ("PdfViewUrl", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void WillClickOnLink (PdfView sender, NSUrl url);
 
 		// from the docs: 'By default, this method uses the string, if any, associated with the
@@ -3751,6 +3840,11 @@ namespace PdfKit {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>To be added.</summary>
+			<value>To be added.</value>
+			<remarks>To be added.</remarks>
+			""")]
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]
@@ -3760,13 +3854,19 @@ namespace PdfKit {
 		/// <param name="sender">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[Export ("PDFViewPerformFind:"), EventArgs ("PdfView")]
+		[Export ("PDFViewPerformFind:"), EventArgs ("PdfView", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void PerformFind (PdfView sender);
 
 		/// <param name="sender">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[Export ("PDFViewPerformGoToPage:"), EventArgs ("PdfView")]
+		[Export ("PDFViewPerformGoToPage:"), EventArgs ("PdfView", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void PerformGoToPage (PdfView sender);
 
 		/// <param name="sender">To be added.</param>
@@ -3775,14 +3875,20 @@ namespace PdfKit {
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]
-		[Export ("PDFViewPerformPrint:"), EventArgs ("PdfView")]
+		[Export ("PDFViewPerformPrint:"), EventArgs ("PdfView", XmlDocs = """
+			<summary>To be added.</summary>
+			<remarks>To be added.</remarks>
+			""")]
 		void PerformPrint (PdfView sender);
 
 		/// <param name="sender">To be added.</param>
 		///         <param name="action">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[Export ("PDFViewOpenPDF:forRemoteGoToAction:"), EventArgs ("PdfViewAction")]
+		[Export ("PDFViewOpenPDF:forRemoteGoToAction:"), EventArgs ("PdfViewAction", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void OpenPdf (PdfView sender, PdfActionRemoteGoTo action);
 
 		[iOS (13, 0)]

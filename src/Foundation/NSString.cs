@@ -156,23 +156,23 @@ namespace Foundation {
 			NSObject.DangerousRelease (handle);
 		}
 
-		/// <param name="str">A string.</param>
-		///         <summary>Creates an NSString from a C# string.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Creates an <see cref="NSString" /> from a C# string.</summary>
+		/// <param name="str">A C# string to create an <see cref="NSString" /> from.</param>
 		public NSString (string str)
+			: base (NSObjectFlag.Empty)
 		{
 			if (str is null)
-				throw new ArgumentNullException ("str");
+				throw new ArgumentNullException (nameof (str));
 
-			Handle = CreateWithCharacters (Handle, str, 0, str.Length);
+			InitializeHandle (CreateWithCharacters (Handle, str, 0, str.Length));
 		}
 
-		/// <param name="value">To be added.</param>
-		///         <param name="start">To be added.</param>
-		///         <param name="length">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Creates an <see cref="NSString" /> from a C# string.</summary>
+		/// <param name="value">A C# string to create an <see cref="NSString" /> from.</param>
+		/// <param name="start">The starting index of the <paramref name="value" /> string to create the <see cref="NSString" /> from.</param>
+		/// <param name="length">The length, starting at <paramref name="start" />, of the <paramref name="value" /> string to create the <see cref="NSString" /> from.</param>
 		public NSString (string value, int start, int length)
+			: base (NSObjectFlag.Empty)
 		{
 			if (value is null)
 				throw new ArgumentNullException (nameof (value));
@@ -183,7 +183,7 @@ namespace Foundation {
 			if (length < 0 || start > value.Length - length)
 				throw new ArgumentOutOfRangeException (nameof (length));
 
-			Handle = CreateWithCharacters (Handle, value, start, length);
+			InitializeHandle (CreateWithCharacters (Handle, value, start, length));
 		}
 
 		/// <summary>Returns a string representation of the value of the current instance.</summary>

@@ -269,6 +269,9 @@ namespace Foundation {
 			return num.NUIntValue;
 		}
 
+		/// <param name="value">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		public NSNumber (nfloat value) :
 			this ((double) value)
 		{
@@ -283,6 +286,10 @@ namespace Foundation {
 			}
 		}
 
+		/// <param name="value">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		public static NSNumber FromNFloat (nfloat value)
 		{
 			return (FromDouble ((double) value));

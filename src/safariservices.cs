@@ -563,6 +563,9 @@ namespace SafariServices {
 		[Export ("popoverDidCloseInWindow:")]
 		void PopoverDidClose (SFSafariWindow window);
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Export ("popoverViewController")]
 		SFSafariExtensionViewController PopoverViewController { get; }
 

@@ -71,6 +71,11 @@ namespace CoreAudioKit {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface AUAudioUnitViewConfiguration : NSSecureCoding {
+		/// <param name="width">To be added.</param>
+		/// <param name="height">To be added.</param>
+		/// <param name="hostHasController">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithWidth:height:hostHasController:")]
 		NativeHandle Constructor (nfloat width, nfloat height, bool hostHasController);
 
@@ -88,9 +93,16 @@ namespace CoreAudioKit {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (AUAudioUnit))]
 	interface AUAudioUnitViewControllerExtensions {
+		/// <param name="availableViewConfigurations">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("supportedViewConfigurations:")]
 		NSIndexSet GetSupportedViewConfigurations (AUAudioUnitViewConfiguration [] availableViewConfigurations);
 
+		/// <param name="viewConfiguration">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("selectViewConfiguration:")]
 		void SelectViewConfiguration (AUAudioUnitViewConfiguration viewConfiguration);
 	}
@@ -100,6 +112,9 @@ namespace CoreAudioKit {
 	[Protocol]
 	interface AUCustomViewPersistentData {
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[NullAllowed, Export ("customViewPersistentData", ArgumentSemantic.Assign)]
 		NSDictionary<NSString, NSObject> CustomViewPersistentData { get; set; }

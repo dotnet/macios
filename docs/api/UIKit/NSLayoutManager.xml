@@ -8,19 +8,31 @@
     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/NSLayoutManager_Class_TextKit/index.html">Apple documentation for <c>NSLayoutManager</c></related>
   </Docs>
   <Docs DocId="P:UIKit.NSLayoutManager.AllowsNonContiguousLayout">
-        <summary>Whether layout can be done for a portion of the document without laying-out being recalculated from the beginning.</summary>
-        <value>The default value is <see langword="false" />.</value>
+    <summary>Whether layout can be done for a portion of the document without laying-out being recalculated from the beginning.</summary>
+    <value>The default value is <see langword="false" />.</value>
+    <remarks>
+      <para>Setting this value to <see langword="true" /> allows the <see cref="T:UIKit.NSLayoutManager" /> to perform noncontiguous layout. In large documents, this can significantly increase performance, since the layout does not need to performed from the beginning of the document.</para>
+      <para>Application developers can use the <c>EnsureLayout...</c> methods with noncontiguous methods to confirm that particular portions of the text are being laid out properly.</para>
+      <para>The <see cref="P:UIKit.UITextView.LayoutManager" /> is instantiated with its <see cref="P:UIKit.NSLayoutManager.AllowsNonContiguousLayout" /> property set to <see langword="true" />.</para>
+    </remarks>
+    <altmember cref="P:UIKit.NSLayoutManager.HasNonContiguousLayout" />
+    <altmember cref="M:UIKit.NSLayoutManager.EnsureGlyphsForCharacterRange" />
+    <altmember cref="M:UIKit.NSLayoutManager.EnsureGlyphsForGlyphRange" />
+    <altmember cref="M:UIKit.NSLayoutManager.EnsureLayoutForCharacterRange" />
+    <altmember cref="M:UIKit.NSLayoutManager.EnsureLayoutForGlyphRange" />
+    <altmember cref="M:UIKit.NSLayoutManager.EnsureLayoutForTextContainer" />
+    <altmember cref="M:UIKit.NSLayoutManager.EnsureLayoutForBoundingRect" />
+  </Docs>
+  <Docs DocId="M:UIKit.NSLayoutManager.DrawStrikethrough(Foundation.NSRange,Foundation.NSUnderlineStyle,System.Runtime.InteropServices.NFloat,CoreGraphics.CGRect,Foundation.NSRange,CoreGraphics.CGPoint)">
+        <param name="glyphRange">The range of glyphs to be struck through.</param>
+        <param name="strikethroughVal">The drawing style of the strikethrough (for instance, dashed or solid).</param>
+        <param name="baselineOffset">Distance above the baseline to draw the strikethrough.</param>
+        <param name="lineRect">The line fragment rectangle containing <paramref name="glyphRange" />.</param>
+        <param name="lineGlyphRange">All glyphs within <paramref name="lineRect" />.</param>
+        <param name="containerOrigin">The origin of the <paramref name="lineRect" /> objects containing <see cref="T:UIKit.NSTextContainer" />.</param>
+        <summary>Draws a strikethrough line through the glyphs in <paramref name="glyphRange" />.</summary>
         <remarks>
-          <para>Setting this value to <see langword="true" /> allows the <see cref="T:UIKit.NSLayoutManager" /> to perform noncontiguous layout. In large documents, this can significantly increase performance, since the layout does not need to performed from the beginning of the document.</para>
-          <para>Application developers can use the <c>EnsureLayout...</c> methods with noncontiguous methods to confirm that particular portions of the text are being laid out properly.</para>
-          <para>The <see cref="P:UIKit.UITextView.LayoutManager" /> is instantiated with its <see cref="P:UIKit.NSLayoutManager.AllowsNonContiguousLayout" /> property set to <see langword="true" />.</para>
+          <para>Developers should generally use the simpler <see cref="M:UIKit.NSLayoutManager.Strikethrough(Foundation.NSRange,Foundation.NSUnderlineStyle,CoreGraphics.CGRect,Foundation.NSRange,CoreGraphics.CGPoint)" /> method.</para>
         </remarks>
-        <altmember cref="P:UIKit.NSLayoutManager.HasNonContiguousLayout" />
-        <altmember cref="M:UIKit.NSLayoutManager.EnsureGlyphsForCharacterRange" />
-        <altmember cref="M:UIKit.NSLayoutManager.EnsureGlyphsForGlyphRange" />
-        <altmember cref="M:UIKit.NSLayoutManager.EnsureLayoutForCharacterRange" />
-        <altmember cref="M:UIKit.NSLayoutManager.EnsureLayoutForGlyphRange" />
-        <altmember cref="M:UIKit.NSLayoutManager.EnsureLayoutForTextContainer" />
-        <altmember cref="M:UIKit.NSLayoutManager.EnsureLayoutForBoundingRect" />
       </Docs>
 </Documentation>

@@ -4,7 +4,7 @@
     <remarks>
       <para>
                 The <see cref="UIKit.UIScrollView" /> class is a container that provides scrolling, zooming, and panning functionality of its content
-                view. Because the <see cref="UIKit.UIScrollView" /> class provides out-of-the-box functionality for   scrolling and paging, it is generally used as the basis for <see cref="UIKit.UIView" />s whose content is larger than the <see cref="UIKit.UIScrollView" />'s <see cref="UIKit.UIView.Frame" />. The need for and range of scrolling is specified by the application developer setting the <see cref="UIKit.UIScrollView" />'s <see cref="UIKit.UIScrollView.ContentSize" /> to a <see cref="System.Drawing.SizeF" />
+                view. Because the <see cref="UIKit.UIScrollView" /> class provides out-of-the-box functionality for   scrolling and paging, it is generally used as the basis for <see cref="UIKit.UIView" />s whose content is larger than the <see cref="UIKit.UIScrollView" />'s <see cref="UIKit.UIView.Frame" />. The need for and range of scrolling is specified by the application developer setting the <see cref="UIKit.UIScrollView" />'s <see cref="UIKit.UIScrollView.ContentSize" /> to a <see cref="CGSize" />
                 greater than the <see cref="UIKit.UIScrollView" />'s <see cref="UIKit.UIView.Frame" />.
             </para>
       <para>
@@ -13,8 +13,8 @@
       <list type="bullet">
         <item>
           <term>
-                        Add a single large subview, generally with a <see cref="UIKit.UIView.Frame" /> whose <see cref="System.Drawing.RectangleF.Location" />
-                        is [0,0] and whose <see cref="System.Drawing.SizeF" /> is the same as the  <see cref="UIKit.UIScrollView" />'s <see cref="UIKit.UIScrollView.ContentSize" />; or 
+                        Add a single large subview, generally with a <see cref="UIKit.UIView.Frame" /> whose <see cref="CGRect.Location" />
+                        is [0,0] and whose <see cref="CGSize" /> is the same as the  <see cref="UIKit.UIScrollView" />'s <see cref="UIKit.UIScrollView.ContentSize" />; or 
                     </term>
         </item>
         <item>
@@ -38,8 +38,8 @@
       <para>
                 The following image, drawn from the "Scroll View" demo in the "iOS Standard Controls" sample, illustrates the simplest use-case: a single large subview (in this case, a <see cref="UIKit.UIImageView" />) whose image size
                 matches the <see cref="UIKit.UIScrollView" />'s <see cref="UIKit.UIScrollView.ContentSize" />. The <see cref="UIKit.UIScrollView.ContentOffset" /> of the  <see cref="UIKit.UIScrollView" /> corresponds to the image pixel showing
-                at the origin of the <see cref="UIKit.UIImageView" /> (e.g., <see cref="System.Drawing.PointF" /> [215, 145]). The <see cref="UIKit.UIScrollView.ContentSize" /> of the <see cref="UIKit.UIScrollView" /> defines the scroll limits. When the <see cref="UIKit.UIScrollView.ContentSize" /> is larger than the <see cref="UIKit.UIScrollView" />'s <see cref="UIKit.UIView.Frame" />, one gets scrolling behavior. If <see cref="UIKit.UIScrollView.ContentSize" /> is not set or is
-                set to too small a <see cref="System.Drawing.RectangleF" />, one doesn't (however, <see cref="UIKit.UIScrollView.AlwaysBounceVertical" /> and <see cref="UIKit.UIScrollView.AlwaysBounceHorizontal" /> can be used to allow dragging even in this situation.)
+                at the origin of the <see cref="UIKit.UIImageView" /> (e.g., <see cref="CGPoint" /> [215, 145]). The <see cref="UIKit.UIScrollView.ContentSize" /> of the <see cref="UIKit.UIScrollView" /> defines the scroll limits. When the <see cref="UIKit.UIScrollView.ContentSize" /> is larger than the <see cref="UIKit.UIScrollView" />'s <see cref="UIKit.UIView.Frame" />, one gets scrolling behavior. If <see cref="UIKit.UIScrollView.ContentSize" /> is not set or is
+                set to too small a <see cref="CGRect" />, one doesn't (however, <see cref="UIKit.UIScrollView.AlwaysBounceVertical" /> and <see cref="UIKit.UIScrollView.AlwaysBounceHorizontal" /> can be used to allow dragging even in this situation.)
             </para>
       <para>
         <img href="~/UIKit/_images/UIKit.UIScrollView.Slide2.png" alt="Diagram of content size in a scroll view" />
@@ -56,7 +56,7 @@
         <code lang="csharp lang-csharp"><![CDATA[
 // create our scroll view
 scrollView = new UIScrollView (
-new RectangleF (0, 0, this.View.Frame.Width, this.View.Frame.Height - this.NavigationController.NavigationBar.Frame.Height));
+new CGRect (0, 0, this.View.Frame.Width, this.View.Frame.Height - this.NavigationController.NavigationBar.Frame.Height));
 this.View.AddSubview (scrollView);
 
 // create our image view
@@ -114,7 +114,7 @@ for (int i = 0; i &lt; controllers.Count; i++)
 {
 	// set their location and size, each one is moved to the 
 	// right by the width of the previous
-	RectangleF viewFrame = new RectangleF (
+	CGRect viewFrame = new CGRect (
 	scrlMain.Frame.Width * i,
 	scrlMain.Frame.Y,
 	scrlMain.Frame.Width,
@@ -126,7 +126,7 @@ for (int i = 0; i &lt; controllers.Count; i++)
 }
 
 // set our scroll view content size (width = number of pages * scroll view width)
-scrlMain.ContentSize = new SizeF (
+scrlMain.ContentSize = new CGSize (
 scrlMain.Frame.Width * controllers.Count, scrlMain.Frame.Height);
                 ]]></code>
       </example>

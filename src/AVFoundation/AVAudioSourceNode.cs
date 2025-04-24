@@ -26,7 +26,7 @@ namespace AVFoundation {
 	// Note: broken = made to work with a workaround, which makes this even messier.
 	//
 
-	/// <summary>The delegate that will be called in a callback from <see cref="AudioToolbox.AVAudioSourceNode" />.</summary>
+	/// <summary>The delegate that will be called in a callback from <see cref="AVAudioSourceNode" />.</summary>
 	/// <returns>An OSStatus result code. Return 0 to indicate success.</returns>
 	/// <param name="isSilence">Indicates whether the supplied audio data only contains silence.</param>
 	/// <param name="timestamp">The timestamp the audio renders (HAL time).</param>
@@ -60,7 +60,7 @@ namespace AVFoundation {
 		}
 #endif // !XAMCORE_5_0
 
-		/// <summary>Creates an <see cref="AudioToolbox.AVAudioSourceNode" /> with the specified callback to render audio.</summary>
+		/// <summary>Creates an <see cref="AVAudioSourceNode" /> with the specified callback to render audio.</summary>
 		/// <param name="renderHandler">The callback that will be called to supply audio data.</param>
 #if XAMCORE_5_0
 		public AVAudioSourceNode (AVAudioSourceNodeRenderHandler renderHandler)
@@ -71,7 +71,7 @@ namespace AVFoundation {
 		{
 		}
 
-		/// <summary>Creates an <see cref="AudioToolbox.AVAudioSourceNode" /> with the specified callback to render audio.</summary>
+		/// <summary>Creates an <see cref="AVAudioSourceNode" /> with the specified callback to render audio.</summary>
 		/// <param name="format">The format of the PCM audio data the callback supplies.</param>
 		/// <param name="renderHandler">The callback that will be called to supply audio data.</param>
 #if XAMCORE_5_0

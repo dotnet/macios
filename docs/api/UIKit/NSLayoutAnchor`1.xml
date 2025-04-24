@@ -3,7 +3,7 @@
     <typeparam name="AnchorType">Whether the generating anchor is an <see cref="UIKit.NSLayoutXAxisAnchor" />, an <see cref="UIKit.NSLayoutYAxisAnchor" />, or an <see cref="UIKit.NSLayoutDimension" />.</typeparam>
     <summary>Generates <see cref="UIKit.NSLayoutConstraint" /> objects based on the value of the <see cref="UIKit.NSLayoutConstraint" /> associated with <c>this</c>.</summary>
     <remarks>
-      <para>The <see cref="UIKit.NSLayoutAnchor`1" /> class, introduced in iOS 9, allows layout constraints to be specified in code, in a fluent manner. For example:</para>
+      <para>The <see cref="UIKit.NSLayoutAnchor{AnchorType}" /> class, introduced in iOS 9, allows layout constraints to be specified in code, in a fluent manner. For example:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
 blueView = new ContentView(UIColor.Blue);

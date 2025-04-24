@@ -87,7 +87,7 @@ namespace AddressBook {
 	///             Managing group members:
 	///             <see cref="AddressBook.ABGroup.Add(AddressBook.ABRecord)" />,
 	///             <see cref="AddressBook.ABGroup.Remove(AddressBook.ABRecord)" />,
-	///             <see cref="AddressBook.ABGroup.System#Collections#IEnumerable#GetEnumerator" />,
+	///             <see cref="AddressBook.ABGroup.GetEnumerator" />,
 	///             <see cref="AddressBook.ABGroup.GetMembers(AddressBook.ABPersonSortBy)" />.
 	///           </term>
 	///         </item>
@@ -219,7 +219,7 @@ namespace AddressBook {
 		///         </summary>
 		///         <returns>
 		///           An
-		///           <see cref="System.Collections.Generic.IEnumerator{AddressBook.ABRecord}" />
+		///           <see cref="System.Collections.Generic.IEnumerator{T}" /> of <see cref="AddressBook.ABRecord" />
 		///           which will return all members in the group.
 		///         </returns>
 		///         <remarks>

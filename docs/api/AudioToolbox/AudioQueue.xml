@@ -153,8 +153,8 @@ class MyInputQueue : InputAudioQueue {
       </para>
       <para>
 	When you use AudioQueues, you must allocate buffers for
-	playback or recording.  You use the <see cref="AudioToolbox.AudioQueue.AllocateBuffer(System.Int32,AudioToolbox.AudioQueueBuffer*@)" /> method or the
-	<see cref="AudioToolbox.AudioQueue.AllocateBufferWithPacketDescriptors(System.Int32,System.Int32,System.IntPtr@)" />
+	playback or recording.  You use the <see cref="AudioToolbox.AudioQueue.AllocateBuffer(System.Int32,out AudioToolbox.AudioQueueBuffer*)" /> method or the
+	<see cref="AudioToolbox.AudioQueue.AllocateBufferWithPacketDescriptors(System.Int32,System.Int32,out System.IntPtr)" />
 	to allocate them and you use the <see cref="AudioToolbox.AudioQueue.FreeBuffer(System.IntPtr)" /> to release them.
 	You keep a collection of buffers around that the underlying
 	hardware can use to either playback audio, or record into.  As
@@ -176,7 +176,7 @@ class MyInputQueue : InputAudioQueue {
       <para> 
 	When processing an input or output queue, you might want to
 	listen to a few property changes raised by the queues during
-	their processing (See the <see cref="AudioToolBox.AudioQueueProperty" /> for a
+	their processing (See the <see cref="AudioToolbox.AudioQueueProperty" /> for a
 	list of events that you can listen to).  To do this, use the
 	<see cref="AudioToolbox.AudioQueue.AddListener(AudioToolbox.AudioQueueProperty,AudioToolbox.AudioQueue.AudioQueuePropertyChanged)" />
 	method to add a listener and use the <see cref="AudioToolbox.AudioQueue.RemoveListener(AudioToolbox.AudioQueueProperty,AudioToolbox.AudioQueue.AudioQueuePropertyChanged)" />

@@ -4,7 +4,7 @@
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="MediaPlayer.MPMoviePlayerController.Notifications" />.<see cref="MediaPlayer.MPMoviePlayerController.Notifications.ObservePlaybackDidFinish*" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="MediaPlayer.MPMoviePlayerController.Notifications" />.<see cref="MediaPlayer.MPMoviePlayerController.Notifications.ObservePlaybackDidFinish" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
@@ -72,7 +72,7 @@ void Setup ()
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="MediaPlayer.MPMoviePlayerController.Notifications" />.<see cref="MPMoviePlayerController.Notifications.ObserveDidEnterFullscreen*" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="MediaPlayer.MPMoviePlayerController.Notifications" />.<see cref="MPMoviePlayerController.Notifications.ObserveDidEnterFullscreen" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
@@ -136,7 +136,7 @@ void Setup ()
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="MediaPlayer.MPMoviePlayerController.Notifications" />.<see cref="MPMoviePlayerController.Notifications.ObserveTypesAvailable*" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="MediaPlayer.MPMoviePlayerController.Notifications" />.<see cref="MPMoviePlayerController.Notifications.ObserveTypesAvailable" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
@@ -200,7 +200,7 @@ void Setup ()
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="MediaPlayer.MPMoviePlayerController.Notifications" />.<see cref="MPMoviePlayerController.Notifications.ObserveSourceTypeAvailable*" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="MediaPlayer.MPMoviePlayerController.Notifications" />.<see cref="MPMoviePlayerController.Notifications.ObserveSourceTypeAvailable" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
@@ -264,7 +264,7 @@ void Setup ()
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="MediaPlayer.MPMoviePlayerController.Notifications" />.<see cref="MPMoviePlayerController.Notifications.ObserveDurationAvailable*" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="MediaPlayer.MPMoviePlayerController.Notifications" />.<see cref="MPMoviePlayerController.Notifications.ObserveDurationAvailable" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
@@ -328,7 +328,7 @@ void Setup ()
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="MediaPlayer.MPMoviePlayerController.Notifications" />.<see cref="MPMoviePlayerController.Notifications.ObserveNaturalSizeAvailable*" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="MediaPlayer.MPMoviePlayerController.Notifications" />.<see cref="MPMoviePlayerController.Notifications.ObserveNaturalSizeAvailable" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
@@ -392,7 +392,7 @@ void Setup ()
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="MediaPlayer.MPMoviePlayerController.Notifications" />.<see cref="MediaPlayer.MPMoviePlayerController.Notifications.ObserveThumbnailImageRequestDidFinish*" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="MediaPlayer.MPMoviePlayerController.Notifications" />.<see cref="MediaPlayer.MPMoviePlayerController.Notifications.ObserveThumbnailImageRequestDidFinish" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
@@ -464,7 +464,7 @@ void Setup ()
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="MediaPlayer.MPMoviePlayerController.Notifications" />.<see cref="MediaPlayer.MPMoviePlayerController.Notifications.ObserveTimedMetadataUpdated*" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="MediaPlayer.MPMoviePlayerController.Notifications" />.<see cref="MediaPlayer.MPMoviePlayerController.Notifications.ObserveTimedMetadataUpdated" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
@@ -532,7 +532,7 @@ void Setup ()
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="MediaPlayer.MPMoviePlayerController.Notifications" />.<see cref="MPMoviePlayerController.Notifications.ObserveMoviePlayerReadyForDisplayDidChange*" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="MediaPlayer.MPMoviePlayerController.Notifications" />.<see cref="MPMoviePlayerController.Notifications.ObserveMoviePlayerReadyForDisplayDidChange" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
@@ -596,7 +596,7 @@ void Setup ()
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="MediaPlayer.MPMoviePlayerController.Notifications" />.<see cref="MPMoviePlayerController.Notifications.ObserveScalingModeDidChange*" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="MediaPlayer.MPMoviePlayerController.Notifications" />.<see cref="MPMoviePlayerController.Notifications.ObserveScalingModeDidChange" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
@@ -660,7 +660,7 @@ void Setup ()
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="MediaPlayer.MPMoviePlayerController.Notifications" />.<see cref="MPMoviePlayerController.Notifications.ObservePlaybackStateDidChange*" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="MediaPlayer.MPMoviePlayerController.Notifications" />.<see cref="MPMoviePlayerController.Notifications.ObservePlaybackStateDidChange" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
@@ -724,7 +724,7 @@ void Setup ()
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="MediaPlayer.MPMoviePlayerController.Notifications" />.<see cref="MPMoviePlayerController.Notifications.ObserveLoadStateDidChange*" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="MediaPlayer.MPMoviePlayerController.Notifications" />.<see cref="MPMoviePlayerController.Notifications.ObserveLoadStateDidChange" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
@@ -788,7 +788,7 @@ void Setup ()
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="MediaPlayer.MPMoviePlayerController.Notifications" />.<see cref="MPMoviePlayerController.Notifications.ObserveNowPlayingMovieDidChange*" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="MediaPlayer.MPMoviePlayerController.Notifications" />.<see cref="MPMoviePlayerController.Notifications.ObserveNowPlayingMovieDidChange" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
@@ -852,7 +852,7 @@ void Setup ()
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="MediaPlayer.MPMoviePlayerController.Notifications" />.<see cref="MediaPlayer.MPMoviePlayerController.Notifications.ObserveWillEnterFullscreen*" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="MediaPlayer.MPMoviePlayerController.Notifications" />.<see cref="MediaPlayer.MPMoviePlayerController.Notifications.ObserveWillEnterFullscreen" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
@@ -922,7 +922,7 @@ void Setup ()
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="MediaPlayer.MPMoviePlayerController.Notifications" />.<see cref="MediaPlayer.MPMoviePlayerController.Notifications.ObserveWillExitFullscreen*" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="MediaPlayer.MPMoviePlayerController.Notifications" />.<see cref="MediaPlayer.MPMoviePlayerController.Notifications.ObserveWillExitFullscreen" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
@@ -992,7 +992,7 @@ void Setup ()
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="MediaPlayer.MPMoviePlayerController.Notifications" />.<see cref="MPMoviePlayerController.Notifications.ObserveDidExitFullscreen*" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="MediaPlayer.MPMoviePlayerController.Notifications" />.<see cref="MPMoviePlayerController.Notifications.ObserveDidExitFullscreen" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
@@ -1056,7 +1056,7 @@ void Setup ()
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="MediaPlayer.MPMoviePlayerController.Notifications" />.<see cref="MPMoviePlayerController.Notifications.ObserveMediaPlaybackIsPreparedToPlayDidChange*" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="MediaPlayer.MPMoviePlayerController.Notifications" />.<see cref="MPMoviePlayerController.Notifications.ObserveMediaPlaybackIsPreparedToPlayDidChange" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[

@@ -137,7 +137,7 @@ namespace CoreMidi {
 		/// <summary>Returns the number of sources in the system.</summary>
 		///         <value>
 		///         </value>
-		///         <remarks>Use the <see cref="CoreMidi.MidiEndpoint.GetSource(int)" /> to fetch a specific source (represented by a MidiEndpoint).</remarks>
+		///         <remarks>Use the <see cref="CoreMidi.MidiEndpoint.GetSource(nint)" /> to fetch a specific source (represented by a MidiEndpoint).</remarks>
 		public static nint SourceCount {
 			get {
 				return MIDIGetNumberOfSources ();
@@ -158,7 +158,7 @@ namespace CoreMidi {
 		/// <summary>The number of external devices connected to this system.</summary>
 		///         <value>
 		///         </value>
-		///         <remarks>You can retrieve a specific MIDI device by using the <see cref="CoreMidi.Midi.GetExternalDevice(int)" />.</remarks>
+		///         <remarks>You can retrieve a specific MIDI device by using the <see cref="CoreMidi.Midi.GetExternalDevice(nint)" />.</remarks>
 		public static nint ExternalDeviceCount {
 			get {
 				return MIDIGetNumberOfExternalDevices ();
@@ -168,7 +168,7 @@ namespace CoreMidi {
 		/// <summary>The number of MIDI devices in the system (do not confused with external connected devices).</summary>
 		///         <value>
 		///         </value>
-		///         <remarks>You can retrieve a specific MIDI device by using the <see cref="CoreMidi.Midi.GetDevice(int)" />.</remarks>
+		///         <remarks>You can retrieve a specific MIDI device by using the <see cref="CoreMidi.Midi.GetDevice(nint)" />.</remarks>
 		public static nint DeviceCount {
 			get {
 				return MIDIGetNumberOfDevices ();
@@ -1794,7 +1794,7 @@ namespace CoreMidi {
 	/// 	generators, or a generator and a keyboard.
 	///       </para>
 	///       <para>
-	/// 	To obtain a MidiDevice, use the <see cref="CoreMidi.Midi.GetDevice(int)" /> or the <see cref="CoreMidi.Midi.GetExternalDevice(int)" /> methods.
+	/// 	To obtain a MidiDevice, use the <see cref="CoreMidi.Midi.GetDevice(nint)" /> or the <see cref="CoreMidi.Midi.GetExternalDevice(nint)" /> methods.
 	///
 	///       </para>
 	///     </remarks>
@@ -3008,7 +3008,7 @@ namespace CoreMidi {
 	//
 	// The notification EventArgs
 	//
-	/// <summary>Provides data for the <see cref="CoreMidi.MidiClient.ObjectRemoved" /> and <see cref="CoreMidi.ObjectAddedOrRemovedEventArgs.ObjectRemoved" /> events.</summary>
+	/// <summary>Provides data for the <see cref="CoreMidi.MidiClient.ObjectAdded" /> and <see cref="CoreMidi.MidiClient.ObjectRemoved" /> events.</summary>
 	///     <remarks>
 	///     </remarks>
 	[SupportedOSPlatform ("ios")]
@@ -3103,7 +3103,7 @@ namespace CoreMidi {
 		public int ErrorCode { get; set; }
 	}
 
-	/// <summary>Provides data for the <see cref="CoreMidi.MidiPort.MessageReceived" /> and <see cref="CoreMidi.MidiPacketsEventArgs.MessageReceived" /> events.</summary>
+	/// <summary>Provides data for the <see cref="CoreMidi.MidiPort.MessageReceived" /> and <see cref="CoreMidi.MidiEndpoint.MessageReceived" /> events.</summary>
 	///     <remarks>
 	///     </remarks>
 	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/CoreMidiSample/">CoreMidiSample</related>

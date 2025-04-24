@@ -699,7 +699,7 @@ namespace UIKit {
 
 		/// <param name="glyphIndex">To be added.</param>
 		/// <param name="isValidIndex">To be added.</param>
-		/// <summary>Developers should use <see cref="UIKit.NSLayoutManager.GetGlyph*" /> rather than this deprecated method.</summary>
+		/// <summary>Developers should use <see cref="UIKit.NSLayoutManager.GetGlyph" /> rather than this deprecated method.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[Export ("glyphAtIndex:isValidIndex:")]
@@ -718,7 +718,7 @@ namespace UIKit {
 #endif // MONOMAC
 
 		/// <param name="glyphIndex">To be added.</param>
-		/// <summary>Developers should not use this deprecated method. Developers should use <see cref="UIKit.NSLayoutManager.GetGlyph*" /> instead.</summary>
+		/// <summary>Developers should not use this deprecated method. Developers should use <see cref="UIKit.NSLayoutManager.GetGlyph" /> instead.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[Export ("glyphAtIndex:")]
@@ -1081,7 +1081,7 @@ namespace UIKit {
 		[Export ("lineFragmentUsedRectForGlyphAtIndex:effectiveRange:withoutAdditionalLayout:")]
 		CGRect GetLineFragmentUsedRect (nuint glyphIndex, out /* nullable NSRangePointer */ NSRange effectiveGlyphRange, bool withoutAdditionalLayout);
 
-		/// <summary>The <see cref="System.Drawing.RectangleF" /> needed for the insertion point.</summary>
+		/// <summary>The <see cref="CGRect" /> needed for the insertion point.</summary>
 		///         <value>Returns the rectangle defining the extra line fragment for the insertion point or {0,0,0,0} if there is no such retangle.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("extraLineFragmentRect")]
@@ -1341,7 +1341,7 @@ namespace UIKit {
 		/// <summary>The bounding rectangle, in container coordinates, for the glyphs in the specified range.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>
-		///           <para>The returned <see cref="System.Drawing.RectangleF" /> includes the area needed for all marks associated with the glyphs, including the area needed for glyphs that draw outside of their line fragment rectangle and for marks such as underlining.</para>
+		///           <para>The returned <see cref="CGRect" /> includes the area needed for all marks associated with the glyphs, including the area needed for glyphs that draw outside of their line fragment rectangle and for marks such as underlining.</para>
 		///         </remarks>
 		[Export ("boundingRectForGlyphRange:inTextContainer:")]
 #if NET
@@ -1391,10 +1391,10 @@ namespace UIKit {
 
 		/// <param name="point">To be added.</param>
 		/// <param name="container">To be added.</param>
-		/// <summary>Developers should call <see cref="UIKit.NSLayoutManager.GetGlyphIndex(CoreGraphics.CGPoint,UIKit.NSTextContainer,System.nfloat@)" /> rather than this primitive method.</summary>
+		/// <summary>Developers should call <see cref="UIKit.NSLayoutManager.GetGlyphIndex(CoreGraphics.CGPoint,UIKit.NSTextContainer,out System.Runtime.InteropServices.NFloat)" /> rather than this primitive method.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>
-		///           <para>This method is public for overriding purposes. Developers should call <see cref="UIKit.NSLayoutManager.GetGlyphIndex(CoreGraphics.CGPoint,UIKit.NSTextContainer,System.nfloat@)" />  rather than this primitive method.</para>
+		///           <para>This method is public for overriding purposes. Developers should call <see cref="UIKit.NSLayoutManager.GetGlyphIndex(CoreGraphics.CGPoint,UIKit.NSTextContainer,ref System.Runtime.InteropServices.NFloat)" />  rather than this primitive method.</para>
 		///         </remarks>
 		[Export ("glyphIndexForPoint:inTextContainer:")]
 #if NET
@@ -3008,7 +3008,7 @@ namespace UIKit {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // Handle is nil
 	interface NSLayoutAnchor<AnchorType> : NSCopying, NSCoding {
-		/// <param name="anchor">The <see cref="UIKit.NSLayoutAnchor`1" /> whose constraint value should be copied.</param>
+		/// <param name="anchor">The <see cref="UIKit.NSLayoutAnchor{AnchorType}" /> whose constraint value should be copied.</param>
 		///         <summary>Creates a <see cref="UIKit.NSLayoutConstraint" /> whose value is equal to that of the constraint of the <paramref name="anchor" />.</summary>
 		///         <returns>A new <see cref="UIKit.NSLayoutConstraint" />.</returns>
 		///         <remarks>
@@ -3021,7 +3021,7 @@ namespace UIKit {
 		NSLayoutConstraint ConstraintEqualTo (NSLayoutAnchor<AnchorType> anchor);
 #endif
 
-		/// <param name="anchor">The <see cref="UIKit.NSLayoutAnchor`1" /> whose constraint value should be used.</param>
+		/// <param name="anchor">The <see cref="UIKit.NSLayoutAnchor{AnchorType}" /> whose constraint value should be used.</param>
 		///         <summary>Creates a <see cref="UIKit.NSLayoutConstraint" /> whose value is at least equal to that of the constraint of the <paramref name="anchor" />.</summary>
 		///         <returns>A new <see cref="UIKit.NSLayoutConstraint" />.</returns>
 		///         <remarks>
@@ -3034,7 +3034,7 @@ namespace UIKit {
 		NSLayoutConstraint ConstraintGreaterThanOrEqualTo (NSLayoutAnchor<AnchorType> anchor);
 #endif
 
-		/// <param name="anchor">The <see cref="UIKit.NSLayoutAnchor`1" /> whose constraint value should be used.</param>
+		/// <param name="anchor">The <see cref="UIKit.NSLayoutAnchor{AnchorType}" /> whose constraint value should be used.</param>
 		///         <summary>Creates a <see cref="UIKit.NSLayoutConstraint" /> whose value is at most equal to that of the constraint of the <paramref name="anchor" />.</summary>
 		///         <returns>A new <see cref="UIKit.NSLayoutConstraint" />.</returns>
 		///         <remarks>
@@ -3047,7 +3047,7 @@ namespace UIKit {
 		NSLayoutConstraint ConstraintLessThanOrEqualTo (NSLayoutAnchor<AnchorType> anchor);
 #endif
 
-		/// <param name="anchor">The <see cref="UIKit.NSLayoutAnchor`1" /> whose constraint value should be used.</param>
+		/// <param name="anchor">The <see cref="UIKit.NSLayoutAnchor{AnchorType}" /> whose constraint value should be used.</param>
 		/// <param name="constant">The number of logical pixels to add to the value of <paramref name="anchor" />.</param>
 		/// <summary>Creates a <see cref="UIKit.NSLayoutConstraint" /> whose value is equal to that of the constraint of the <paramref name="anchor" /> plus <paramref name="constant" /> pixels.</summary>
 		/// <returns>
@@ -3062,7 +3062,7 @@ namespace UIKit {
 		NSLayoutConstraint ConstraintEqualTo (NSLayoutAnchor<AnchorType> anchor, nfloat constant);
 #endif
 
-		/// <param name="anchor">The <see cref="UIKit.NSLayoutAnchor`1" /> whose constraint value should be used.</param>
+		/// <param name="anchor">The <see cref="UIKit.NSLayoutAnchor{AnchorType}" /> whose constraint value should be used.</param>
 		/// <param name="constant">The number of logical pixels to add to the value of <paramref name="anchor" />.</param>
 		/// <summary>Creates a <see cref="UIKit.NSLayoutConstraint" /> whose value is at least equal to that of the constraint of the <paramref name="anchor" /> plus <paramref name="constant" /> pixels.</summary>
 		/// <returns>A new <see cref="UIKit.NSLayoutConstraint" />.</returns>
@@ -3076,7 +3076,7 @@ namespace UIKit {
 		NSLayoutConstraint ConstraintGreaterThanOrEqualTo (NSLayoutAnchor<AnchorType> anchor, nfloat constant);
 #endif
 
-		/// <param name="anchor">The <see cref="UIKit.NSLayoutAnchor`1" /> whose constraint value should be used.</param>
+		/// <param name="anchor">The <see cref="UIKit.NSLayoutAnchor{AnchorType}" /> whose constraint value should be used.</param>
 		/// <param name="constant">The number of logical pixels to add to the value of <paramref name="anchor" />.</param>
 		/// <summary>Creates a <see cref="UIKit.NSLayoutConstraint" /> whose value is at most equal to that of the constraint of the <paramref name="anchor" /> plus <paramref name="constant" /> pixels.</summary>
 		/// <returns>A new <see cref="UIKit.NSLayoutConstraint" />.</returns>
@@ -3115,7 +3115,7 @@ namespace UIKit {
 		NSLayoutConstraint [] ConstraintsAffectingLayout { get; }
 	}
 
-	/// <summary>An <see cref="UIKit.NSLayoutAnchor`1" /> whose methods create horizontal <see cref="UIKit.NSLayoutConstraint" /> objects.</summary>
+	/// <summary>An <see cref="UIKit.NSLayoutAnchor{AnchorType}" /> whose methods create horizontal <see cref="UIKit.NSLayoutConstraint" /> objects.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AppKit/Reference/NSLayoutXAxisAnchor/index.html">Apple documentation for <c>NSLayoutXAxisAnchor</c></related>
 	[MacCatalyst (13, 1)]
@@ -3162,7 +3162,7 @@ namespace UIKit {
 		NSLayoutConstraint ConstraintLessThanOrEqualToSystemSpacingAfterAnchor (NSLayoutXAxisAnchor anchor, nfloat multiplier);
 	}
 
-	/// <summary>An <see cref="UIKit.NSLayoutAnchor`1" /> whose methods create vertical <see cref="UIKit.NSLayoutConstraint" /> objects.</summary>
+	/// <summary>An <see cref="UIKit.NSLayoutAnchor{AnchorType}" /> whose methods create vertical <see cref="UIKit.NSLayoutConstraint" /> objects.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AppKit/Reference/NSLayoutYAxisAnchor/index.html">Apple documentation for <c>NSLayoutYAxisAnchor</c></related>
 	[MacCatalyst (13, 1)]
@@ -3209,14 +3209,14 @@ namespace UIKit {
 		NSLayoutConstraint ConstraintLessThanOrEqualToSystemSpacingBelowAnchor (NSLayoutYAxisAnchor anchor, nfloat multiplier);
 	}
 
-	/// <summary>An <see cref="UIKit.NSLayoutAnchor`1" /> whose methods create dimensional <see cref="UIKit.NSLayoutConstraint" /> objects.</summary>
+	/// <summary>An <see cref="UIKit.NSLayoutAnchor{AnchorType}" /> whose methods create dimensional <see cref="UIKit.NSLayoutConstraint" /> objects.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AppKit/Reference/NSLayoutDimension_ClassReference/index.html">Apple documentation for <c>NSLayoutDimension</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSLayoutAnchor<NSLayoutDimension>))]
 	[DisableDefaultCtor] // Handle is nil
 	interface NSLayoutDimension {
-		/// <param name="constant">An <see cref="System.nfloat" /> specifying the desired constant value.</param>
+		/// <param name="constant">An <see cref="nfloat" /> specifying the desired constant value.</param>
 		/// <summary>Creates a <see cref="UIKit.NSLayoutConstraint" /> whose value is equal to that of the constraint of the <paramref name="constant" /> in logical pixels.</summary>
 		/// <returns>
 		///         </returns>
@@ -3256,7 +3256,7 @@ namespace UIKit {
 		NSLayoutConstraint ConstraintLessThanOrEqualTo (nfloat constant);
 #endif
 
-		/// <param name="anchor">The <see cref="UIKit.NSLayoutAnchor`1" /> whose constraint value should be copied.</param>
+		/// <param name="anchor">The <see cref="UIKit.NSLayoutAnchor{AnchorType}" /> whose constraint value should be copied.</param>
 		/// <param name="multiplier">The value by which to multiply the <paramref name="anchor" />.</param>
 		/// <summary>Creates a <see cref="UIKit.NSLayoutConstraint" /> whose value is equal to that of the constraint of the <paramref name="anchor" /> multiplied by <paramref name="multiplier" />.</summary>
 		/// <returns>
@@ -3271,7 +3271,7 @@ namespace UIKit {
 		NSLayoutConstraint ConstraintEqualTo (NSLayoutDimension anchor, nfloat multiplier);
 #endif
 
-		/// <param name="anchor">The <see cref="UIKit.NSLayoutAnchor`1" /> whose constraint value should be copied.</param>
+		/// <param name="anchor">The <see cref="UIKit.NSLayoutAnchor{AnchorType}" /> whose constraint value should be copied.</param>
 		/// <param name="multiplier">To be added.</param>
 		/// <summary>Creates a <see cref="UIKit.NSLayoutConstraint" /> whose value is at least equal to that of the constraint of the <paramref name="anchor" /> multiplied by <paramref name="multiplier" />.</summary>
 		/// <returns>A new <see cref="UIKit.NSLayoutConstraint" />.</returns>
@@ -3285,7 +3285,7 @@ namespace UIKit {
 		NSLayoutConstraint ConstraintGreaterThanOrEqualTo (NSLayoutDimension anchor, nfloat multiplier);
 #endif
 
-		/// <param name="anchor">The <see cref="UIKit.NSLayoutAnchor`1" /> whose constraint value should be copied.</param>
+		/// <param name="anchor">The <see cref="UIKit.NSLayoutAnchor{AnchorType}" /> whose constraint value should be copied.</param>
 		/// <param name="multiplier">To be added.</param>
 		/// <summary>Creates a <see cref="UIKit.NSLayoutConstraint" /> whose value is at most equal to that of the constraint of the <paramref name="anchor" /> times <paramref name="multiplier" />.</summary>
 		/// <returns>A new <see cref="UIKit.NSLayoutConstraint" />.</returns>
@@ -3299,7 +3299,7 @@ namespace UIKit {
 		NSLayoutConstraint ConstraintLessThanOrEqualTo (NSLayoutDimension anchor, nfloat multiplier);
 #endif
 
-		/// <param name="anchor">The <see cref="UIKit.NSLayoutAnchor`1" /> whose constraint value should be copied.</param>
+		/// <param name="anchor">The <see cref="UIKit.NSLayoutAnchor{AnchorType}" /> whose constraint value should be copied.</param>
 		/// <param name="multiplier">The value by which to multiply the <paramref name="anchor" />.</param>
 		/// <param name="constant">The number of logical pixels to add to the value of <paramref name="anchor" />.</param>
 		/// <summary>Creates a <see cref="UIKit.NSLayoutConstraint" /> whose value is equal to that of the constraint of the <paramref name="anchor" /> multiplied by <paramref name="multiplier" /> plus <paramref name="constant" /> pixels.</summary>
@@ -3315,7 +3315,7 @@ namespace UIKit {
 		NSLayoutConstraint ConstraintEqualTo (NSLayoutDimension anchor, nfloat multiplier, nfloat constant);
 #endif
 
-		/// <param name="anchor">The <see cref="UIKit.NSLayoutAnchor`1" /> whose constraint value should be copied.</param>
+		/// <param name="anchor">The <see cref="UIKit.NSLayoutAnchor{AnchorType}" /> whose constraint value should be copied.</param>
 		/// <param name="multiplier">To be added.</param>
 		/// <param name="constant">The number of logical pixels to add.</param>
 		/// <summary>Creates a <see cref="UIKit.NSLayoutConstraint" /> whose value is at least equal to that of the constraint of the <paramref name="anchor" /> multiplied by <paramref name="multiplier" /> and adding <paramref name="constant" /> logical pixels.</summary>
@@ -3330,7 +3330,7 @@ namespace UIKit {
 		NSLayoutConstraint ConstraintGreaterThanOrEqualTo (NSLayoutDimension anchor, nfloat multiplier, nfloat constant);
 #endif
 
-		/// <param name="anchor">The <see cref="UIKit.NSLayoutAnchor`1" /> whose constraint value should be copied.</param>
+		/// <param name="anchor">The <see cref="UIKit.NSLayoutAnchor{AnchorType}" /> whose constraint value should be copied.</param>
 		/// <param name="multiplier">To be added.</param>
 		/// <param name="constant">The number of logical pixels to add.</param>
 		/// <summary>Creates a <see cref="UIKit.NSLayoutConstraint" /> whose value is at most equal to that of the constraint of the <paramref name="anchor" /> times the <paramref name="multiplier" /> plus <paramref name="constant" /> logical pixels.</summary>

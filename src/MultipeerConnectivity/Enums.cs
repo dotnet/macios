@@ -12,7 +12,7 @@ using ObjCRuntime;
 namespace MultipeerConnectivity {
 
 	// NSInteger -> MCSession.h
-	/// <summary>An enumeration whose values specify whether a message's delivery is guaranteed. Used with <see cref="MultipeerConnectivity.MCSession.SendData(Foundation.NSData,MultipeerConnectivity.MCPeerID[],MultipeerConnectivity.MCSessionSendDataMode,Foundation.NSError@)" />.</summary>
+	/// <summary>An enumeration whose values specify whether a message's delivery is guaranteed. Used with <see cref="MultipeerConnectivity.MCSession.SendData(Foundation.NSData,MultipeerConnectivity.MCPeerID[],MultipeerConnectivity.MCSessionSendDataMode,out Foundation.NSError)" />.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MCSessionSendDataMode : long {

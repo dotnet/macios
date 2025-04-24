@@ -17,7 +17,7 @@ using ObjCRuntime;
 
 namespace CoreMedia {
 
-	/// <summary>A time value that represents a rational number <see cref="CoreMedia.CMTime.Value" />/<see cref="CoreMedia.CMTime.Timescale" />.</summary>
+	/// <summary>A time value that represents a rational number <see cref="CoreMedia.CMTime.Value" />/<see cref="CoreMedia.CMTime.TimeScale" />.</summary>
 	///     <remarks>To be added.</remarks>
 	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/AVCaptureFrames/">avcaptureframes</related>
 	[SupportedOSPlatform ("ios")]

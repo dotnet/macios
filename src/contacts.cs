@@ -2345,7 +2345,7 @@ namespace Contacts {
 		string LocalizeLabel (NSString labelKey);
 	}
 
-	/// <summary>Defines string constants whose values define the names of various <see cref="Contacts.CNLabeledValue`1" /> objects.</summary>
+	/// <summary>Defines string constants whose values define the names of various <see cref="Contacts.CNLabeledValue{ValueType}" /> objects.</summary>
 	[MacCatalyst (13, 1)]
 	[Static]
 	[EditorBrowsable (EditorBrowsableState.Advanced)]
@@ -2368,7 +2368,7 @@ namespace Contacts {
 		[Field ("CNLabelSchool")]
 		NSString School { get; }
 
-		/// <summary>A <see cref="Contacts.CNLabeledValue`1" /> with an unknown label.</summary>
+		/// <summary>A <see cref="Contacts.CNLabeledValue{ValueType}" /> with an unknown label.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("CNLabelOther")]

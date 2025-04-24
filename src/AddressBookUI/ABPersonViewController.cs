@@ -15,7 +15,7 @@ using Foundation;
 using ObjCRuntime;
 
 namespace AddressBookUI {
-	/// <summary>Provides data for the <see cref="AddressBookUI.ABUnknownPersonViewController.PerformDefaultAction" /> and <see cref="AddressBookUI.ABPersonViewPerformDefaultActionEventArgs.PerformDefaultAction" /> events.</summary>
+	/// <summary>Provides data for the <see cref="AddressBookUI.ABUnknownPersonViewController.PerformDefaultAction" /> and <see cref="AddressBookUI.ABPersonViewController.PerformDefaultAction" /> events.</summary>
 	///     <remarks>
 	///     </remarks>
 	[SupportedOSPlatform ("ios")]

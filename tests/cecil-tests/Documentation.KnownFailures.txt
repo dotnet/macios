@@ -7977,6 +7977,10 @@ M:AssetsLibrary.ALAssetRepresentation.GetBytes(System.IntPtr,System.Int64,System
 M:AssetsLibrary.ALAssetsFilter.#ctor(ObjCRuntime.NativeHandle)
 M:AssetsLibrary.ALAssetsGroup.#ctor(ObjCRuntime.NativeHandle)
 M:AssetsLibrary.ALAssetsLibrary.#ctor(ObjCRuntime.NativeHandle)
+M:AssetsLibrary.ALAssetsLibrary.Notifications.ObserveChanged(Foundation.NSObject,System.EventHandler{AssetsLibrary.ALAssetLibraryChangedEventArgs})
+M:AssetsLibrary.ALAssetsLibrary.Notifications.ObserveChanged(Foundation.NSObject,System.EventHandler{Foundation.NSNotificationEventArgs})
+M:AssetsLibrary.ALAssetsLibrary.Notifications.ObserveChanged(System.EventHandler{AssetsLibrary.ALAssetLibraryChangedEventArgs})
+M:AssetsLibrary.ALAssetsLibrary.Notifications.ObserveChanged(System.EventHandler{Foundation.NSNotificationEventArgs})
 M:AudioToolbox.AudioBuffers.Finalize
 M:AudioToolbox.AudioBuffers.op_Explicit(AudioToolbox.AudioBuffers)~System.IntPtr
 M:AudioToolbox.AudioConverter.add_InputData(AudioToolbox.AudioConverterComplexInputData)

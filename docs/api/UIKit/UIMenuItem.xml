@@ -15,7 +15,7 @@ void ShowResetMenu (UILongPressGestureRecognizer gestureRecognizer)
 	    var location = gestureRecognizer.LocationInView (gestureRecognizer.View);
 	    BecomeFirstResponder ();
 	    menuController.MenuItems = new [] { resetMenuItem };
-	    menuController.SetTargetRect (new RectangleF (location.X, location.Y, 0, 0), gestureRecognizer.View);
+	    menuController.SetTargetRect (new CGRect (location.X, location.Y, 0, 0), gestureRecognizer.View);
 	    menuController.MenuVisible = true;
 	    imageForReset = gestureRecognizer.View;
 	  }
@@ -23,9 +23,9 @@ void ShowResetMenu (UILongPressGestureRecognizer gestureRecognizer)
 [Export("ResetImage")]
 void ResetImage (UIMenuController controller)
 {
-  var mid = new PointF ((imageForReset.Bounds.Left + imageForReset.Bounds.Right) / 2, (imageForReset.Bounds.Top + imageForReset.Bounds.Bottom) / 2);
+  var mid = new CGPoint ((imageForReset.Bounds.Left + imageForReset.Bounds.Right) / 2, (imageForReset.Bounds.Top + imageForReset.Bounds.Bottom) / 2);
   var locationInSuperview = imageForReset.ConvertPointToView (mid, imageForReset.Superview);
-  imageForReset.Layer.AnchorPoint = new PointF (0.5f, 0.5f);
+  imageForReset.Layer.AnchorPoint = new CGPoint (0.5f, 0.5f);
   imageForReset.Center =locationInSuperview;
 
   UIView.BeginAnimations (null, IntPtr.Zero);

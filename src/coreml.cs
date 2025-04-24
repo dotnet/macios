@@ -548,7 +548,7 @@ namespace CoreML {
 
 	/// <summary>Encapsulates a trained machine-learning model.</summary>
 	///     <remarks>
-	///       <para>The <see cref="CoreML.MLModel" /> class encapsulates a machine-learning model that maps a predefined set of input features to a predefined set of output features. Models are generally stored as .mlmodel files but these must be "compiled" into a .mlmodelc directory prior to inferencing. This compilation step generally occurs prior to deploymenty, but may be performed on the device with the time-consuming <see cref="CoreML.MLModel.CompileModel(Foundation.NSUrl,Foundation.NSError@)" /> method.</para>
+	///       <para>The <see cref="CoreML.MLModel" /> class encapsulates a machine-learning model that maps a predefined set of input features to a predefined set of output features. Models are generally stored as .mlmodel files but these must be "compiled" into a .mlmodelc directory prior to inferencing. This compilation step generally occurs prior to deploymenty, but may be performed on the device with the time-consuming <see cref="CoreML.MLModel.CompileModel(Foundation.NSUrl,out Foundation.NSError)" /> method.</para>
 	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]

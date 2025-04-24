@@ -59,7 +59,7 @@ namespace GameKit {
 	delegate void GKInviteHandler (GKInvite invite, string [] playerIDs);
 	/// <param name="activity">To be added.</param>
 	/// <param name="error">To be added.</param>
-	/// <summary>A delegate used with <see cref="GameKit.GKMatchmaker.QueryActivity(GameKit.GKQueryHandler)" /> and <see cref="GameKit.GKMatchmaker.QueryPlayerGroupActivity(System.nint,GameKit.GKQueryHandler)" /> to specify behavior after the query is completed.</summary>
+	/// <summary>A delegate used with <see cref="GameKit.GKMatchmaker.QueryActivity(GameKit.GKQueryHandler)" /> and <see cref="GameKit.GKMatchmaker.QueryPlayerGroupActivity(System.IntPtr,GameKit.GKQueryHandler)" /> to specify behavior after the query is completed.</summary>
 	/// <remarks>To be added.</remarks>
 	delegate void GKQueryHandler (nint activity, NSError error);
 	/// <param name="achivements">To be added.</param>
@@ -111,7 +111,7 @@ namespace GameKit {
 	/// <param name="composeController">To be added.</param>
 	/// <param name="issuedChallenge">To be added.</param>
 	/// <param name="sentPlayerIDs">To be added.</param>
-	/// <summary>Completion handler for for the <see cref="GameKit.GKScore.ChallengeComposeControllerAsync(System.String,GameKit.GKPlayer[],UIKit.UIViewController@)" /> method.</summary>
+	/// <summary>Completion handler for for the <see cref="GameKit.GKScore.ChallengeComposeControllerAsync(System.String,GameKit.GKPlayer[],out UIKit.UIViewController)" /> method.</summary>
 	/// <remarks>To be added.</remarks>
 	delegate void GKChallengeComposeHandler (UIViewController composeController, bool issuedChallenge, string [] sentPlayerIDs);
 	delegate void GKChallengeComposeHandler2 (UIViewController composeController, bool issuedChallenge, [NullAllowed] GKPlayer [] sentPlayers);
@@ -2284,24 +2284,37 @@ namespace GameKit {
 
 		[MacCatalyst (13, 1)]
 		[Async (ResultTypeName = "GKChallengeComposeResult", XmlDocs = """
-			<param name="message">An editable message to display to the other players. May be .</param>
-			<param name="players">The players to challenge.</param>
 			<summary>Provides a view controller that can be used to send a challenge, with a message, to other players.</summary>
+			<param name="message">An editable message to display to the other players. May be <see langword="null" />.</param>
+			<param name="players">The players to challenge.</param>
 			<returns>
-			          <para>A task that represents the asynchronous ChallengeComposeController operation.   The value of the TResult parameter is of type GameKit.GKChallengeComposeResult.  Holds the return values from the asynchronous method .</para>
-			        </returns>
+			  <para>A task that represents the asynchronous ChallengeComposeController operation. The value of the TResult parameter is of type GameKit.GKChallengeComposeResult. Holds the return values from the asynchronous method.</para>
+			</returns>
 			<remarks>To be added.</remarks>
 			""",
+#if __MACOS__
 			XmlDocsWithOutParameter = """
+			<summary>Asynchronously provides a view controller that can be used to send a challenge, with a message, to other players, returning a task with the response result.</summary>
 			<param name="message">An editable message to display to the other players. May be <see langword="null" />.</param>
 			<param name="players">The players to challenge.</param>
 			<param name="result">The view controller that displays the result of the challenge. May be <see langword="null" />.</param>
-			<summary>Asynchronously provides a view controller that can be used to send a challenge, with a message, to other players, returning a task with the response result.</summary>
-			<returns>To be added.</returns>
 			<remarks>
-			          <para>The type of the <paramref name="result" /> out argument is <see cref="UIKit.UIViewController" /> on iOS and <see cref="AppKit.NSViewController" /> on MacOS.</para>
-			        </remarks>
-			""")]
+			  <para>The type of the <paramref name="result" /> out argument is <see cref="T:UIKit.UIViewController" /> on iOS, tvOS and Mac Catalyst and <see cref="AppKit.NSViewController" /> on macOS.</para>
+			</remarks>
+			"""
+#else
+			XmlDocsWithOutParameter = """
+			<summary>Asynchronously provides a view controller that can be used to send a challenge, with a message, to other players, returning a task with the response result.</summary>
+			<param name="message">An editable message to display to the other players. May be <see langword="null" />.</param>
+			<param name="players">The players to challenge.</param>
+			<param name="result">The view controller that displays the result of the challenge. May be <see langword="null" />.</param>
+			<remarks>
+			  <para>The type of the <paramref name="result" /> out argument is <see cref="UIKit.UIViewController" /> on iOS, tvOS and Mac Catalyst and <see cref="T:AppKit.NSViewController" /> on macOS.</para>
+			</remarks>
+			"""
+#endif
+
+			)]
 		[Deprecated (PlatformName.iOS, 17, 0)]
 		[Deprecated (PlatformName.MacOSX, 14, 0)]
 		[Deprecated (PlatformName.TvOS, 17, 0)]

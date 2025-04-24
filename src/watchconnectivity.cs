@@ -16,7 +16,7 @@ namespace WatchConnectivity {
 
 	/// <summary>The reply handler for use with <see cref="WatchConnectivity.WCSessionDelegate_Extensions.DidReceiveMessageData(WatchConnectivity.IWCSessionDelegate,WatchConnectivity.WCSession,Foundation.NSData,WatchConnectivity.WCSessionReplyDataHandler)" />.</summary>
 	delegate void WCSessionReplyHandler (NSDictionary<NSString, NSObject> replyMessage);
-	/// <summary>The reply handler for use with <see cref="WatchConnectivity.WCSessionDelegate.DidReceiveMessageData*" />.</summary>
+	/// <summary>The reply handler for use with <see cref="WatchConnectivity.WCSessionDelegate.DidReceiveMessageData" />.</summary>
 	delegate void WCSessionReplyDataHandler (NSData replyMessage);
 
 	/// <summary>Mediates the transfer of information between a WatchKit extension app and the container app on the device.</summary>

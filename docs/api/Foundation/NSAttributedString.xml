@@ -185,7 +185,7 @@ var text = new NSAttributedString (
         <returns>IntPtr handle to a native NSDictionary class.</returns>
         <remarks>
           <para>
-	    In general, you should use the <see cref="Foundation.NSAttributedString.LowLevelGetAttributes(System.nint,Foundation.NSRange@)" />
+	    In general, you should use the <see cref="Foundation.NSAttributedString.LowLevelGetAttributes(System.IntPtr,out Foundation.NSRange)" />
 	    methods, which will return a high-level NSDictionary.
 	  </para>
           <para>

@@ -421,7 +421,7 @@ namespace CoreVideo {
 		extern static /* void* __nullable */ IntPtr CVPixelBufferGetBaseAddress (
 			/* CVPixelBufferRef __nonnull */ IntPtr pixelBuffer);
 
-		/// <summary>Pointers to the base address storing the pixels.   Must call <see cref="CoreVideo.CVPixelBuffer.Lock*" /> to to lock the base address</summary>
+		/// <summary>Pointers to the base address storing the pixels.   Must call <see cref="CoreVideo.CVPixelBuffer.Lock" /> to to lock the base address</summary>
 		///         <value>Pointer to the base address storing the pixels, or <see cref="System.IntPtr.Zero" /> if the pixel buffer is not locked.</value>
 		///         <remarks>To be added.</remarks>
 		public IntPtr BaseAddress {

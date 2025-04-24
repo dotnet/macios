@@ -48,7 +48,7 @@ PresentViewController (alert, animated: true, completionHandler: null);
       </list>
       <para>
       </para>
-      <para>Those properties will allow the <see cref="UIKit.UIViewController.PresentViewController*" /> determine where to display your action sheet.   If you are responding to a tap from a bar button item (like the screenshot above), you can just cast the sender parameter to a UIBarButtonItem, for example:</para>
+      <para>Those properties will allow the <see cref="UIKit.UIViewController.PresentViewController" /> determine where to display your action sheet.   If you are responding to a tap from a bar button item (like the screenshot above), you can just cast the sender parameter to a UIBarButtonItem, for example:</para>
       <para>
       </para>
       <example>

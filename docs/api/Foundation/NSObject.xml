@@ -28,7 +28,7 @@
 	registered with the Objective-C runtime with a name based on
 	the full .NET typename which is an implementation detail.  If
 	you need to ensure that a C# class is exposed with a specific
-	name in the Objective-C runtime, you can apply the <see cref="ObjCRuntime.RegisterAttribute" /> to the
+	name in the Objective-C runtime, you can apply the <see cref="RegisterAttribute" /> to the
 	class and specify the name that you want your class to have.
 
       </para>
@@ -66,7 +66,7 @@ public class _MySampleView : UIView {
       </para>
       <para>
 	Objective-C methods are surfaced to C# as virtual methods that
-	have the special <see cref="ObjCRuntime.ExportAttribute" /> applied to
+	have the special <see cref="ExportAttribute" /> applied to
 	them.  This attribute is used by the compiler to map C# names
 	to Objective-C names.  These attributes are shown in the API
 	documentation on top of each function, to help you identify
@@ -83,7 +83,7 @@ public class _MySampleView : UIView {
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
 public class MyView : UISlider {
-	public override void Draw (RectangleF rect)
+	public override void Draw (CGRect rect)
 	{
 		// Let the base class draw first
 		base.Draw (rect);
@@ -100,7 +100,7 @@ public class MyView : UISlider {
 	By default, only methods that have been overwritten will be
 	exposed to the Objective-C world.  If you want to expose an
 	arbitrary C# method to the Objective-C world, you need to
-	apply the <see cref="ObjCRuntime.ExportAttribute" /> to your
+	apply the <see cref="ExportAttribute" /> to your
 	public method.  And this can be done to both static and
 	instance methods.  Once the attribute is applied, the method
 	will be exposed to Objective-C and the standard data type
@@ -189,7 +189,7 @@ public class StringUtilities : NSObject {
       </format>
       <para>
 	In MonoTouch, most Objective-C protocols are mapped to classes
-	that have the <see cref="ObjCRuntime.ModelAttribute" /> applied to
+	that have the <see cref="ModelAttribute" /> applied to
 	them.  And the way that you adopt a protocol is by subclassing
 	and overwriting the methods that you want to adopt.
 
@@ -201,7 +201,7 @@ public class StringUtilities : NSObject {
 	and provide the name of the protocol that you want to adopt.
 	Typically, when adopting a protocol, you will also have to
 	list all of the Objective-C selectors that you are adopting
-	using the <see cref="ObjCRuntime.ExportAttribute" />.
+	using the <see cref="ExportAttribute" />.
 
       </para>
       <example>
@@ -232,7 +232,7 @@ public class MyLockeingObject : NSObject {
       </para>
       <para>
 	To expose a C# property to the Key-Value coding system all you
-	need to do is add the <see cref="ObjCRuntime.ExportAttribute" /> to your
+	need to do is add the <see cref="ExportAttribute" /> to your
 	property. The names must only contain ASCII characters, start
 	with a lowercase letter, and must not contain any spaces.
 
@@ -248,9 +248,9 @@ public class CircleLayer : CALayer {
 ]]></code>
       </example>
       <para>
-	You use the <see cref="Foundation.ValueForKey(Foundation.NSString);*" />
+	You use the <see cref="ValueForKey(Foundation.NSString)" />
 	methods to lookup a property using a name, and you use the of
-	functions <see cref="Foundation.SetValueForKey(Foundation.NSObject,Foundation.NSString);*" /> methods to set the value for the
+	functions <see cref="SetValueForKey(Foundation.NSObject,Foundation.NSString)" /> methods to set the value for the
 	specified property.  For example, you could call
 	foo.ValueForKey ("user") to grab the value of the user
 	property in an object.  
@@ -264,8 +264,8 @@ public class CircleLayer : CALayer {
 	and then request the address property on the user, then it
 	would request the phone property on the address and finally
 	request the mobile property on the phone and finally use the
-	result as the value.  You use the <see cref="Foundation.ValueForKeyPath(Foundation.NSString);*" /> to lookup a property using
-	a keypath, and you use the <see cref="Foundation.SetValueForKeyPath(Foundation.NSObject, Foundation.NSString);*" /> to set a value using a
+	result as the value.  You use the <see cref="ValueForKeyPath(Foundation.NSString)" /> to lookup a property using
+	a keypath, and you use the <see cref="SetValueForKeyPath(Foundation.NSObject, Foundation.NSString)" /> to set a value using a
 	keypath.
 
       </para>
@@ -310,7 +310,7 @@ public class CircleLayer : CALayer {
 // This is taken from Xamarin.iOS's source code:
 //
 [Export ("initWithFrame:")]
-public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
+public UIView (CGRect frame) : base (NSObjectFlag.Empty)
 {
 // Invoke the init method now.
 	var initWithFrame = new Selector ("initWithFrame:").Handle;
@@ -340,8 +340,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
 	    IntPtr are boxed as NSValue containing a pointer.
 	  </para>
       <para>
-	    System.Drawing.SizeF, System.Drawing.RectangleF,
-	    System.Drawing.PointF,
+	    CGSize, CGRect,
+	    CGPoint,
 	    MonoTouch.CoreGraphics.CGAffineTransform,
 	    MonoTouch.UIKit.UIEdgeInsets and
 	    MonoTouch.CoreAnimation.CATransform3D are boxed as an

@@ -5309,7 +5309,7 @@ namespace CoreImage {
 		[Export ("roiForInput:arguments:outputRect:")]
 		CGRect GetRegionOfInterest (int input, [NullAllowed] NSDictionary<NSString, NSObject> arguments, CGRect outputRect);
 
-		/// <param name="input">An index into the array of <see cref="CoreImage.ICIImageProcessorInput" /> objects passed to <see cref="CoreImage.CIImageProcessorKernel.Apply(CoreGraphics.CGRect,CoreImage.CIImage[],Foundation.NSDictionary{Foundation.NSString,Foundation.NSObject},Foundation.NSError@)" /> or <see cref="CoreImage.CIImageProcessorKernel.Process(CoreImage.ICIImageProcessorInput[],Foundation.NSDictionary{Foundation.NSString,Foundation.NSObject},CoreImage.ICIImageProcessorOutput,Foundation.NSError@)" />.</param>
+		/// <param name="input">An index into the array of <see cref="CoreImage.ICIImageProcessorInput" /> objects passed to <see cref="CoreImage.CIImageProcessorKernel.Apply(CoreGraphics.CGRect,CoreImage.CIImage[],Foundation.NSDictionary{Foundation.NSString,Foundation.NSObject},out Foundation.NSError)" /> or <see cref="CoreImage.CIImageProcessorKernel.Process(CoreImage.ICIImageProcessorInput[],Foundation.NSDictionary{Foundation.NSString,Foundation.NSObject},CoreImage.ICIImageProcessorOutput,out Foundation.NSError)" />.</param>
 		///         <summary>The color space of the <see cref="CoreImage.ICIImageProcessorInput" /> at index <paramref name="input" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>

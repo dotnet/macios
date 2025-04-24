@@ -23,7 +23,7 @@ namespace CoreFoundation {
 
 	// untyped enum from CFMessagePort.h
 	// used as a return value of type SInt32 (always 4 bytes)
-	/// <summary>This enumeration contains status codes for <see cref="CoreFoundation.CFMessagePort.SendRequest(System.Int32,Foundation.NSData,System.Double,System.Double,Foundation.NSString,Foundation.NSData@)" />.</summary>
+	/// <summary>This enumeration contains status codes for <see cref="CoreFoundation.CFMessagePort.SendRequest(System.Int32,Foundation.NSData,System.Double,System.Double,Foundation.NSString,out Foundation.NSData)" />.</summary>
 	///     <remarks>To be added.</remarks>
 	public enum CFMessagePortSendRequestStatus {
 		/// <summary>The message was sent, and any expected reply was received.</summary>

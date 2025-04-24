@@ -24,7 +24,7 @@
 
       <list type="bullet"><item><term>.tiff</term></item><item><term>.jpg, .jpeg</term></item><item><term>.gif</term></item><item><term>.bmp</term></item><item><term>.ico</term></item><item><term>.cur</term></item><item><term>.xbm</term></item></list></para>
       <para>
-	Starting with iOS 8, the <see cref="UIKIt.UIImage.FromBundle(System.String,Foundation.NSBundle,UIKIt.UITraitCollection)" />
+	Starting with iOS 8, the <see cref="UIKit.UIImage.FromBundle(System.String,Foundation.NSBundle,UIKit.UITraitCollection)" />
 	method can be used to load a UIImage that takes into
 	consideration a <see cref="UIKit.UITraitCollection" />.  This can
 	automatically load the proper image for the specified
@@ -78,7 +78,7 @@ void Setup ()
         <summary>Notification constant for VoiceOverStatusDidChange</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="UIKit.UIImage.Notifications.ObserveVoiceOverStatusDidChange*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="UIKit.UIImage.Notifications.ObserveVoiceOverStatusDidChange" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style

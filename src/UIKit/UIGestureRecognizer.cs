@@ -109,7 +109,7 @@ namespace UIKit {
 
 		/// <summary>Subtype of <see cref="UIKit.UIGestureRecognizer.Token" />, which is returned by <see cref="UIKit.UIView.AddGestureRecognizer(UIKit.UIGestureRecognizer)" />.</summary>
 		///     <remarks>To be added.</remarks>
-		///     <altmember cref="UIKit.UIGestureRecognizer+ParametrizedDispatch" />
+		///     <altmember cref="UIKit.UIGestureRecognizer.ParametrizedDispatch" />
 		///     <related type="externalDocumentation" href="https://developer.apple.com/reference/UIKit/__UIGestureRecognizerParameterlessToken">Apple documentation for <c>__UIGestureRecognizerParameterlessToken</c></related>
 		[Register ("__UIGestureRecognizerParameterlessToken")]
 		public class ParameterlessDispatch : Token {
@@ -132,7 +132,7 @@ namespace UIKit {
 
 		/// <summary>Subtype of <see cref="UIKit.UIGestureRecognizer.Token" />.</summary>
 		///     <remarks>To be added.</remarks>
-		///     <altmember cref="UIKit.UIGestureRecognizer+ParameterlessDispatch" />
+		///     <altmember cref="UIKit.UIGestureRecognizer.ParameterlessDispatch" />
 		///     <related type="externalDocumentation" href="https://developer.apple.com/reference/UIKit/__UIGestureRecognizerParametrizedToken">Apple documentation for <c>__UIGestureRecognizerParametrizedToken</c></related>
 		[Register ("__UIGestureRecognizerParametrizedToken")]
 		public class ParametrizedDispatch : Token {

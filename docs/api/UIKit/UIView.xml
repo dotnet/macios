@@ -217,11 +217,11 @@ myView.AddGestureRecognizer (recognizer);
       <para>
         UIViews are typically created by invoking the constructor that takes
         a frame as its parameter (the frame is of type
-        <see cref="System.Drawing.RectangleF" />), for example:
+        <see cref="CGRect" />), for example:
       </para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
-var myView = new UIView (new RectangleF (0, 0, 100, 100));
+var myView = new UIView (new CGRect (0, 0, 100, 100));
 ]]></code>
       </example>
       <para>
@@ -253,7 +253,7 @@ var myView = new UIView (new RectangleF (0, 0, 100, 100));
         </item>
         <item>
           <term>
-            <see cref="UIKit.UIView.InsertSubview(UIKit.UIView,System.nint)" />
+            <see cref="UIKit.UIView.InsertSubview(UIKit.UIView,System.IntPtr)" />
           </term>
         </item>
         <item>
@@ -278,7 +278,7 @@ var myView = new UIView (new RectangleF (0, 0, 100, 100));
       </format>
       <para>
         Each view is created with an initial <see cref="UIKit.UIView.Frame" />.  The Frame is a
-        <see cref="System.Drawing.RectangleF" /> structure that represents both the size and the initial
+        <see cref="CGRect" /> structure that represents both the size and the initial
         position for the view.  The coordinates for the Frame are used to
         specify the position relative to its superview.
       </para>
@@ -308,7 +308,7 @@ var myView = new UIView (new RectangleF (0, 0, 100, 100));
         <h2>Animation</h2>
       </format>
       <para>Apple recommends that app developers use the <see cref="UIKit.UIViewPropertyAnimator" /> class to implement animations on their <see cref="UIKit.UIView" /> objects. Apple also discourages, but has not deprecated, any other animation APIs on the <see cref="UIKit.UIView" /> class. Additionally, developers can implement implicit animations for some or all properties by creating a custom views that has a custom <see cref="UIKit.UIView.Layer" /> property that provides animation actions for animation keys.</para>
-      <para>Developers can animate changes in the geometry or appearance of a UIView by creating a new <see cref="UIKit.UIViewPropertyAnimator" />, configuring it, and calling its <see cref="UIKit.UIViewPropertyAnimator.StartAnimation(System.Double)" /> method. Developers can update the animations (for example, to cancel it) by calling the <see cref="UIKit.UIViewPropertyAnimator.AddAnimations(System.Action,System.nfloat)" /> method while the animation is in progress. The <format type="text/html"><a href="https://developer.xamarin.com/recipes/ios/animation/coreanimation/animate_a_uiview_using_uikit/">Animate a UIView using UIKit</a></format> recipe shows how to create an cancel an animation by using the <see cref="UIKit.UIViewPropertyAnimator" /> class.</para>
+      <para>Developers can animate changes in the geometry or appearance of a UIView by creating a new <see cref="UIKit.UIViewPropertyAnimator" />, configuring it, and calling its <see cref="UIKit.UIViewPropertyAnimator.StartAnimation(System.Double)" /> method. Developers can update the animations (for example, to cancel it) by calling the <see cref="UIKit.UIViewPropertyAnimator.AddAnimations(System.Action,nfloat)" /> method while the animation is in progress. The <format type="text/html"><a href="https://developer.xamarin.com/recipes/ios/animation/coreanimation/animate_a_uiview_using_uikit/">Animate a UIView using UIKit</a></format> recipe shows how to create an cancel an animation by using the <see cref="UIKit.UIViewPropertyAnimator" /> class.</para>
       <para>
         Alternatively, developers can create animations by calling the
         <see cref="UIKit.UIView.BeginAnimations(string)" /> method, configuring the animation, making the
@@ -365,22 +365,22 @@ var myView = new UIView (new RectangleF (0, 0, 100, 100));
 UIView.BeginAnimations (null);
 UIView.SetAnimationDuration (5);
 UIView.SetAnimationCurve (UIViewAnimationCurve.EaseOut);
-view.Bounds = new RectangleF (0, 0, 100, 100);
-view.Position = new PointF (200, 200);
+view.Bounds = new CGRect (0, 0, 100, 100);
+view.Position = new CGPoint (200, 200);
 UIView.CommitAnimations ();
 ]]></code>
       </example>
       <para>
         Alternatively, developers can create transactions and set configuration
-        options in the <see cref="UIKit.UIView.Animate*" /> collection of methods. These methods take, in a single call, the delay, the duration, an animation block, and an action to be invoked when the animation
+        options in <see cref="Animate(double,Action)" />, <see cref="Animate(double,Action,Action)" />, <see cref="Animate(double,double,UIViewAnimationOptions,Action,Action)" /> or <see cref="Animate(double,nfloat,nfloat,double,UIViewAnimationOptions,Action,Action{bool})" />. These methods take, in a single call, the delay, the duration, an animation block, and an action to be invoked when the animation
         completes. However, Apple also discourages the use of these APIs. Their use is shown below:
       </para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
 UIView.Animate (duration, delay, UIViewAnimationOption.Autoreverse,
   delegate {
-      view.Bounds = new RectangleF (0, 0, 100, 100);
-      view.Position = new PointF (200, 200);
+      view.Bounds = new CGRect (0, 0, 100, 100);
+      view.Position = new CGPoint (200, 200);
    },
    delegate {
        Console.WriteLine ("Animation completed");
@@ -526,12 +526,12 @@ public static void EnsureInvokedOnMainThread (Action action)
       </format>
       <para>
         Subclasses of UIView should chain into either the UIView
-        constructor that is initialized with an initial frame (<see cref="UIKit.UIView(System.Drawing.RectangleF)" />). The following code shows one way to do this:
+        constructor that is initialized with an initial frame (<see cref="UIKit.UIView(CGRect)" />). The following code shows one way to do this:
       </para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
 public class MyView : UIView {
-    public MyView (RectangleF frame) : base (frame)
+    public MyView (CGRect frame) : base (frame)
     {
         // Your initialization code goes here
     }
@@ -592,7 +592,7 @@ public class MyView : UIView {
       </para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
-public override void Draw (RectangleF rect)
+public override void Draw (CGRect rect)
 {
     base.Draw (rect);
 
@@ -604,10 +604,10 @@ public override void Draw (RectangleF rect)
 
     var path = new CGPath ();
 
-    path.AddLines(new PointF[]{
-        new PointF(100,200),
-        new PointF(160,100), 
-        new PointF(220,200)
+    path.AddLines(new CGPoint[]{
+        new CGPoint(100,200),
+        new CGPoint(160,100), 
+        new CGPoint(220,200)
     });
 
     path.CloseSubpath();
@@ -816,7 +816,7 @@ view.Layer.CornerRadius = 4;
         <code lang="csharp lang-csharp"><![CDATA[
 view.Layer.ShadowColor = new CGColor (1, 0, 0);
 view.Layer.ShadowOpacity = 1.0f;
-view.Layer.ShadowOffset = new SizeF (0, 4);
+view.Layer.ShadowOffset = new CGSize (0, 4);
         ]]></code>
       </example>
       <para>
@@ -856,7 +856,7 @@ public class BlueView : UIView
         return new Class (typeof (BlueLayer));
     }
 
-    public override void Draw (RectangleF rect)
+    public override void Draw (CGRect rect)
     {
         // Do nothing, the Layer will do all the drawing
     }
@@ -938,8 +938,8 @@ public class BlueLayer : CALayer
       </format>
       <para>iOS user interfaces are built from <see cref="UIKit.UIView" /> hierarchies. Parent-child relationships determine not only the visual aspects of the UI, but determine how the application responds to touch events and orientation changes.</para>
       <para>View relationships may be built programmatically or via XIB files. <see cref="UIKit.UIView" />s may have many <see cref="UIKit.UIView.Subviews" /> but only one <see cref="UIKit.UIView.Superview" />.</para>
-      <para>The most common way to add subviews is to use <see cref="UIKit.UIView.AddSubview(UIKit.UIView)" />, which appends the child view to the list of <see cref="UIKit.UIView.Subviews" />. More precise control of ordering during insertion may be done with the <see cref="UIKit.UIView.InsertSubview(UIKit.UIView,System.nint)" />, <see cref="UIKit.UIView.InsertSubviewAbove(UIKit.UIView,UIKit.UIView)" />, and <see cref="UIKit.UIView.InsertSubviewBelow(UIKit.UIView,UIKit.UIView)" /> methods.</para>
-      <para>The ordering of <see cref="UIKit.UIView.Subviews" /> may be manipulated with the <see cref="UIKit.UIView.BringSubviewToFront(UIKit.UIView)" />, <see cref="UIKit.UIView.SendSubviewToBack(UIKit.UIView)" />, and <see cref="UIKit.UIView.ExchangeSubview(System.nint,System.nint)" /> methods.</para>
+      <para>The most common way to add subviews is to use <see cref="UIKit.UIView.AddSubview(UIKit.UIView)" />, which appends the child view to the list of <see cref="UIKit.UIView.Subviews" />. More precise control of ordering during insertion may be done with the <see cref="UIKit.UIView.InsertSubview(UIKit.UIView,System.IntPtr)" />, <see cref="UIKit.UIView.InsertSubviewAbove(UIKit.UIView,UIKit.UIView)" />, and <see cref="UIKit.UIView.InsertSubviewBelow(UIKit.UIView,UIKit.UIView)" /> methods.</para>
+      <para>The ordering of <see cref="UIKit.UIView.Subviews" /> may be manipulated with the <see cref="UIKit.UIView.BringSubviewToFront(UIKit.UIView)" />, <see cref="UIKit.UIView.SendSubviewToBack(UIKit.UIView)" />, and <see cref="UIKit.UIView.ExchangeSubview(System.IntPtr,System.IntPtr)" /> methods.</para>
       <format type="text/html">
         <h2>Focus</h2>
       </format>
@@ -998,7 +998,7 @@ public class BlueLayer : CALayer
     <param name="animation">The animation identifier.</param>
     <summary>Indicates the beginning of an animation block.</summary>
     <remarks>
-      <para>Application developers should prefer to use the more compact syntax of the <see cref="UIKit.UIView.Animate*" /> method.</para>
+      <para>Application developers should prefer to use the more compact syntax of <see cref="Animate(double,Action)" />, <see cref="Animate(double,Action,Action)" />, <see cref="Animate(double,double,UIViewAnimationOptions,Action,Action)" /> or <see cref="Animate(double,nfloat,nfloat,double,UIViewAnimationOptions,Action,Action{bool})" />.</para>
       <para>Older versions of iOS used a matched set of <see cref="UIKit.UIView.BeginAnimations(System.String,System.IntPtr)" /> and <see cref="UIKit.UIView.CommitAnimations" /> to specify an animation block. The following code, taken from the "Animate a UIView using UIKit" recipe, shows the technique:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
@@ -1011,7 +1011,7 @@ UIView.SetAnimationRepeatAutoreverses (true);
 UIView.SetAnimationDelegate (this);
 UIView.SetAnimationDidStopSelector (
   new Selector ("slideAnimationFinished:"));
-_imageView.Center = new PointF (UIScreen.MainScreen.Bounds.Right -
+_imageView.Center = new CGPoint (UIScreen.MainScreen.Bounds.Right -
   _imageView.Frame.Width / 2, _imageView.Center.Y);
 UIView.CommitAnimations ();
               ]]></code>
@@ -1096,7 +1096,7 @@ void Setup ()
         <summary>Notification constant for VoiceOverStatusDidChange</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="UIKit.UIView.Notifications.ObserveVoiceOverStatusDidChange*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="UIKit.UIView.Notifications.ObserveVoiceOverStatusDidChange" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style

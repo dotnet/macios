@@ -274,7 +274,7 @@ namespace CoreMedia {
 	}
 
 	// uint32_t -> CMBlockBuffer.h
-	/// <summary>An enumeration of flags to be used with <see cref="CoreMedia.CMBlockBuffer.CreateEmpty(System.UInt32,CoreMedia.CMBlockBufferFlags,CoreMedia.CMBlockBufferError@)" />.</summary>
+	/// <summary>An enumeration of flags to be used with <see cref="CoreMedia.CMBlockBuffer.CreateEmpty(System.UInt32,CoreMedia.CMBlockBufferFlags,out CoreMedia.CMBlockBufferError)" />.</summary>
 	[Flags]
 	[MacCatalyst (13, 1)]
 	public enum CMBlockBufferFlags : uint {
@@ -388,7 +388,7 @@ namespace CoreMedia {
 	}
 
 	// untyped enum (used as OSStatus) -> CMSync.h
-	/// <summary>An enumeration whose values specify errors returned by <see cref="CoreMedia.CMClockOrTimebase.GetRelativeRateAndAnchorTime(CoreMedia.CMClockOrTimebase,CoreMedia.CMClockOrTimebase,System.Double@,CoreMedia.CMTime@,CoreMedia.CMTime@)" />.</summary>
+	/// <summary>An enumeration whose values specify errors returned by <see cref="CoreMedia.CMClockOrTimebase.GetRelativeRateAndAnchorTime(CoreMedia.CMClockOrTimebase,CoreMedia.CMClockOrTimebase,ref System.Double,ref CoreMedia.CMTime,ref CoreMedia.CMTime)" />.</summary>
 	[MacCatalyst (13, 1)]
 	public enum CMSyncError : int {
 		/// <summary>To be added.</summary>

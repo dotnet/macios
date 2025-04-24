@@ -153,7 +153,7 @@ namespace AVFoundation {
 
 		/// <summary>The preferred microphone direction.</summary>
 		///         <value>The current setting for the microphone direction, one of PolarPatternOmnidirectional, PolarPatternCardioid, PolarPatternSubcardioid from <see cref="AVFoundation.AVAudioSession" /></value>
-		///         <remarks>To change this property, call the <see cref="AVFoundation.AVAudioSessionDataSourceDescription.SetPreferredPolarPattern(AVFoundation.AVAudioDataSourcePolarPattern,Foundation.NSError@)" />.</remarks>
+		///         <remarks>To change this property, call the <see cref="AVFoundation.AVAudioSessionDataSourceDescription.SetPreferredPolarPattern(AVFoundation.AVAudioDataSourcePolarPattern,out Foundation.NSError)" />.</remarks>
 		public AVAudioDataSourcePolarPattern PreferredPolarPattern {
 			get {
 				return ToPolarPattern (PreferredPolarPattern_);

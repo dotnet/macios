@@ -297,7 +297,7 @@ namespace ModelIO {
 
 		/// <summary>Gets the smallest box that contains all of the objects in the asset.</summary>
 		///         <value>To be added.</value>
-		///         <remarks>If any of the asset's contents contain timed information, application developers should use <see cref="ModelIO.MDLObject.BoundingBoxAtTime*" />, instead.</remarks>
+		///         <remarks>If any of the asset's contents contain timed information, application developers should use <see cref="ModelIO.MDLObject.BoundingBoxAtTime" />, instead.</remarks>
 		[Export ("boundingBox")]
 		MDLAxisAlignedBoundingBox BoundingBox {
 			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]

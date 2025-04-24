@@ -6,8 +6,8 @@
       <para>To use a custom <see cref="UIKit.UIInputView" />, application developers should assign the custom class to the <see cref="UIKit.UITextView.InputView" /> property:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
-var textField = new UITextField(new RectangleF(20, 40, 300, 41));
-var inputView = new MyCustomInputView(new RectangleF(0, 0, UIScreen.MainScreen.Bounds.Width, 80), UIInputViewStyle.Keyboard);
+var textField = new UITextField(new CGRect(20, 40, 300, 41));
+var inputView = new MyCustomInputView(new CGRect(0, 0, UIScreen.MainScreen.Bounds.Width, 80), UIInputViewStyle.Keyboard);
 textField.InputView = inputView;
           ]]></code>
       </example>

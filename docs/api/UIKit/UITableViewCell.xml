@@ -11,7 +11,7 @@
       </para>
       <para>
 	There are four predefined <see cref="UIKit.UITableViewCell" /> styles, which can
-	be created by using the <see cref="UIKit.UITableViewCell.#ctor(UIKit.UITableViewCellStyle,Foundation.NSString)" /> constructor. These predefined styles appear as follows:
+	be created by using the <see cref="UIKit.UITableViewCell.UITableViewCell(UIKit.UITableViewCellStyle,Foundation.NSString)" /> constructor. These predefined styles appear as follows:
       </para>
       <para>
         <img href="~/UIKit/_images/UIKit.UITableViewCellStyle.png" alt="Image showing the different cell styles." />

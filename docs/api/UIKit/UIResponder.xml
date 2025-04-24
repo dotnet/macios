@@ -21,7 +21,7 @@
       <list type="number">
         <item>
           <term>
-            The <see cref="UIKit.UIView" /> where the touch took place is determined by using the <see cref="UIKit.UIView.HitTest(System.Drawing.PointF, UIKit.UIEvent*" /> 
+            The <see cref="UIKit.UIView" /> where the touch took place is determined by using the <see cref="UIKit.UIView.HitTest(CGPoint, UIKit.UIEvent" /> 
             and the touch is sent to that view.   
           </term>
         </item>
@@ -49,7 +49,7 @@
         To receive messages UIResponders override the <see cref="UIKit.UIResponder.CanBecomeFirstResponder" />
         property to return true and are notified that they became the
         first responder when the <see cref="UIKit.UIResponder.BecomeFirstResponder" />
-        is invoked.  The system calls <see cref="UIKit.UIResponder.ResignFirstResponder*" />
+        is invoked.  The system calls <see cref="UIKit.UIResponder.ResignFirstResponder" />
         to notify a the first responder that the first responder is
         changing.  Text input responders will typically override both
         methods to activate and deactivate the virtual keyboard.
@@ -149,7 +149,7 @@
           //
           public class SelectableLabel : UILabel {
           
-          public SelectableLabel (RectangleF rect) : base (rect)
+          public SelectableLabel (CGRect rect) : base (rect)
           {
           UserInteractionEnabled = true;
           var gesture = new UILongPressGestureRecognizer (LongPress);

@@ -98,11 +98,7 @@ namespace Foundation {
 				return _FromIndex ((IntPtr) ptr, indexes.Length);
 		}
 
-		/// <summary>Copies the objects contained in the index-path to an array (not required for use with iOS <see cref="UIKit.UITableView" />).</summary>
-		///         <returns>
-		///         </returns>
-		///         <remarks>
-		///         </remarks>
+		/// <summary>Copies the objects contained in the index-path to an array.</summary>
 		public unsafe nuint [] GetIndexes ()
 		{
 			var ret = new nuint [Length];

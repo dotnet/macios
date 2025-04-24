@@ -4,7 +4,7 @@
     <param name="targetUri">To be added.</param>
     <summary>Executes the provided javascript source to determine a list of proxies to use for connecting to the target URL.</summary>
     <returns>Returns an array of <see cref="CoreFoundation.CFProxy" /> objects suitable to use for connecting to <paramref name="targetUri" />.</returns>
-    <remarks>This method serves as a convenience wrapper for <see cref="CoreFoundation.CFNetwork.GetProxiesForAutoConfigureationScript(Foundation.NSString proxyAutoConfigurationScript, Uri targetUri)" />.</remarks>
+    <remarks>This method serves as a convenience wrapper for <see cref="CoreFoundation.CFNetwork.GetProxiesForAutoConfigurationScript(Foundation.NSString, NSUrl)" />.</remarks>
   </Docs>
   <Docs DocId="M:CoreFoundation.CFNetwork.GetDefaultProxy">
         <summary>Gets a custom <see cref="System.Net.IWebProxy" /> suitable for use with the standard .NET web request APIs.</summary>

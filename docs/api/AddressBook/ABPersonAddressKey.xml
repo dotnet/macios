@@ -35,7 +35,8 @@ ABMutableDictionaryMultiValue addresses = new ABMutableDictionaryMultiValue() {
 ABPerson person = GetMeSomePerson();
 person.SetAddresses(addresses);]]></code>
     </remarks>
-    <altmember cref="AddressBook.ABPerson.GetAddresses" />
-    <altmember cref="AddressBook.ABPerson.SetAddresses(AddressBook.ABMultiValue{Foundation.NSDictionary})" />
+    <altmember cref="AddressBook.ABPerson.GetAllAddresses" />
+    <altmember cref="AddressBook.ABPerson.SetAddresses(ABMultiValue{NSDictionary})" />
+    <altmember cref="AddressBook.ABPerson.SetAddresses(ABMultiValue{PersonAddress})" />
   </Docs>
 </Documentation>

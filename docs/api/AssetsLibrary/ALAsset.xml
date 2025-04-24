@@ -18,7 +18,7 @@
 // This is taken from Xamarin.iOS's source code:
 //
 [Export ("initWithFrame:")]
-public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
+public UIView (CGRect frame) : base (NSObjectFlag.Empty)
 {
 // Invoke the init method now.
 	var initWithFrame = new Selector ("initWithFrame:").Handle;
@@ -54,7 +54,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <param name="videoPathURL">To be added.</param>
         <summary>Modifies the <see cref="AssetsLibrary.ALAsset" /> to refer to the <paramref name="videoPathURL" />.</summary>
         <returns>
-          <para>A task that represents the asynchronous SetVideoAtPath operation.   The value of the TResult parameter is a <see cref="AssetsLibrary.ALAssetsLibraryWriteCompletionDelegate" />.</para>
+          <para>A task that represents the asynchronous SetVideoAtPath operation. The value of the TResult parameter is a <see cref="NSUrl" />.</para>
         </returns>
         <remarks>
           <para>Application developers should check the <see cref="AssetsLibrary.ALAsset.Editable" /> property prior to calling this method.</para>

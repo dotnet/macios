@@ -37,7 +37,7 @@ namespace UIKit {
 	/// <summary>The visual style for a <see cref="UIKit.UIActivityIndicatorView" />.</summary>
 	/// <remarks>To be added.</remarks>
 	/// <altmember cref="UIKit.UIActivityIndicatorView" />
-	/// <altmember cref="UIKit.UIActivityIndicatorView+UIActivityIndicatorViewAppearance" />
+	/// <altmember cref="UIKit.UIActivityIndicatorView.UIActivityIndicatorViewAppearance" />
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UIActivityIndicatorViewStyle : long {
@@ -701,7 +701,7 @@ namespace UIKit {
 	// NSInteger -> UIDocument.h
 	/// <summary>An enumeration indicating whether the <see cref="UIKit.UIDocument" /> is being saved for the first time or should overwrite an existing save.</summary>
 	///     <remarks>
-	///       <para>One of these enumerated values is used as a parameter to <see cref="UIKit.UIDocument" />s various save-oriented functions (e.g., <see cref="UIKit.UIDocument.Save(Foundation.NSUrl,UIKit.UIDocumentSaveOperation,UIKit.UIOperationHandler)" />, <see cref="UIKit.UIDocument.GetFileAttributesToWrite(Foundation.NSUrl,UIKit.UIDocumentSaveOperation,Foundation.NSError@)" />, etc.).</para>
+	///       <para>One of these enumerated values is used as a parameter to <see cref="UIKit.UIDocument" />s various save-oriented functions (e.g., <see cref="UIKit.UIDocument.Save(Foundation.NSUrl,UIKit.UIDocumentSaveOperation,UIKit.UIOperationHandler)" />, <see cref="UIKit.UIDocument.GetFileAttributesToWrite(Foundation.NSUrl,UIKit.UIDocumentSaveOperation,out Foundation.NSError)" />, etc.).</para>
 	///     </remarks>
 	[Native]
 	[NoTV]
@@ -1212,8 +1212,8 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UITableViewCell.h
-	/// <summary>An enumeration of standard accessory controls that can be used by a <see cref="UIKIt.UITableViewCell" />.</summary>
-	/// <remarks>Set the type of accessory to display in a <see cref="UIKIt.UITableViewCell" /> using the <see cref="UIKit.UITableViewCell.Accessory" /> property.</remarks>
+	/// <summary>An enumeration of standard accessory controls that can be used by a <see cref="UIKit.UITableViewCell" />.</summary>
+	/// <remarks>Set the type of accessory to display in a <see cref="UIKit.UITableViewCell" /> using the <see cref="UIKit.UITableViewCell.Accessory" /> property.</remarks>
 	[Native ("UITableViewCellAccessoryType")]
 	[MacCatalyst (13, 1)]
 	public enum UITableViewCellAccessory : long {
@@ -1874,7 +1874,7 @@ namespace UIKit {
 
 	// NSInteger -> UIAccessibility.h
 	/// <summary>An enumeration indicating the scrolling direction desired.</summary>
-	/// <remarks>Used as the argument to <see cref="Foundation.NSObject.AccessibilityScroll*" /> to generate a scrolling action.</remarks>
+	/// <remarks>Used as the argument to <see cref="Foundation.NSObject.AccessibilityScroll" /> to generate a scrolling action.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UIAccessibilityScrollDirection : long {
@@ -2317,7 +2317,7 @@ namespace UIKit {
 
 	// NSInteger -> UINavigationController.h
 	/// <summary>An enumeration whose values specify operations on <see cref="UIKit.UINavigationController" />.</summary>
-	/// <remarks>This enumeration is used in calls to <see cref="UIKit.UINavigationController.GetAnimationController*" />.</remarks>
+	/// <remarks>This enumeration is used in calls to <see cref="UIKit.UINavigationController.GetAnimationController" />.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UINavigationControllerOperation : long {
@@ -2935,7 +2935,7 @@ namespace UIKit {
 		PrimaryOverlay = OneOverSecondary,
 	}
 
-	/// <summary>Enumerates characteristics of the button displayed in a table row. Used with the <see cref="UIKit.UITableViewRowAction(UIKit.UITableViewRowActionStyle,string ,Action`1,Foundation.NSIndexPath)" /> constructor.</summary>
+	/// <summary>Enumerates characteristics of the button displayed in a table row. Used with the <see cref="UIKit.UITableViewRowAction(UIKit.UITableViewRowActionStyle,string ,Action{T},Foundation.NSIndexPath)" /> constructor.</summary>
 	[Native]
 	[NoTV]
 	[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'UIContextualActionStyle' and corresponding APIs instead.")]

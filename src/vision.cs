@@ -2771,7 +2771,7 @@ namespace Vision {
 
 	/// <summary>Abstract base-class for vision-processing request.</summary>
 	///     <remarks>
-	///       <para>Currently, the only descendant of this class is <see cref="CoreVision.VNImageBasedRequest" />.</para>
+	///       <para>Currently, the only descendant of this class is <see cref="VNImageBasedRequest" />.</para>
 	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Abstract]
@@ -3046,7 +3046,7 @@ namespace Vision {
 
 	/// <summary>Coordinates the vision requests of a sequence of images (such as a video stream).</summary>
 	///     <remarks>
-	///       <para>The <see cref="Vision.VNSequenceRequestHandler" /> is the top-level object for multiple-image vision processing ( see <see cref="Vision.VNImageRequestHandler" /> for single). Developers instantiate a <see cref="Vision.VNSequenceRequestHandler" /> object with an image and image-processing options. Developers call <see cref="Vision.VNSequenceRequestHandler.Perform(Vision.VNRequest[],Foundation.NSUrl,ImageIO.CGImagePropertyOrientation,Foundation.NSError@)" /> with an array containing one or more <see cref="Vision.VNImageBasedRequest" /> objects (for instance, a <see cref="Vision.VNDetectFaceRectanglesRequest" />). The <see cref="Vision.VNRequestCompletionHandler" /> of the <see cref="Vision.VNImageBasedRequest" /> is called once for each detected object.  
+	///       <para>The <see cref="Vision.VNSequenceRequestHandler" /> is the top-level object for multiple-image vision processing ( see <see cref="Vision.VNImageRequestHandler" /> for single). Developers instantiate a <see cref="Vision.VNSequenceRequestHandler" /> object with an image and image-processing options. Developers call <see cref="Vision.VNSequenceRequestHandler.Perform(Vision.VNRequest[],Foundation.NSUrl,ImageIO.CGImagePropertyOrientation,out Foundation.NSError)" /> with an array containing one or more <see cref="Vision.VNImageBasedRequest" /> objects (for instance, a <see cref="Vision.VNDetectFaceRectanglesRequest" />). The <see cref="Vision.VNRequestCompletionHandler" /> of the <see cref="Vision.VNImageBasedRequest" /> is called once for each detected object.  
 	///         </para>
 	///     </remarks>
 	[MacCatalyst (13, 1)]

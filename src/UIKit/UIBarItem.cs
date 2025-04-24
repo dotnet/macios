@@ -27,9 +27,8 @@ namespace UIKit {
 		}
 
 		/// <param name="state">The state for which text attributes are to be set for the title.</param>
-		///         <summary>The text attributes of the title of the UIBarItem.</summary>
-		///         <returns>The <see cref="UIKit.UITextAttributes" /></returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>The text attributes of the title of the UIBarItem.</summary>
+		/// <returns>The <see cref="UIKit.UIStringAttributes" /></returns>
 		public TextAttributes GetTitleTextAttributes (UIControlState state)
 		{
 			using (var d = _GetTitleTextAttributes (state)) {

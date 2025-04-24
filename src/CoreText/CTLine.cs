@@ -253,7 +253,7 @@ namespace CoreText {
 		///         <returns>The width of the line, or zero if there are any errors.</returns>
 		///         <remarks>
 		///           <para>
-		/// 	    Use the <see cref="CoreText.CTLine.GetTypographicBounds(out float, out float, out float)" /> method to retrieve more information about the typographical features of the line.
+		/// 	    Use the <see cref="CoreText.CTLine.GetTypographicBounds(out nfloat, out nfloat, out nfloat)" /> method to retrieve more information about the typographical features of the line.
 		/// 	  </para>
 		///           <para>
 		/// 	    Starting with iOS 6.0, the <see cref="CoreText.CTLine.GetBounds(CoreText.CTLineBoundsOptions)" /> provides finer typorgraphical information than this method.

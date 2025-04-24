@@ -28,10 +28,10 @@ class MotionSquareViewController : UIViewController {
 
 	public override void ViewDidLoad ()
 	{
-		var reference = new UIView (new RectangleF (110, 110, 90, 90)) {
+		var reference = new UIView (new CGRect (110, 110, 90, 90)) {
 			BackgroundColor =  UIColor.Blue
 		};
-		var tracking = new UIView (new RectangleF (100, 100, 100, 100)) {
+		var tracking = new UIView (new CGRect (100, 100, 100, 100)) {
 			BackgroundColor =  UIColor.FromRGBA (.5f, .5f, .5f, .5f)
 		};
 		View.AddSubviews (reference, tracking);

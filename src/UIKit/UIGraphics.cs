@@ -144,7 +144,7 @@ namespace UIKit {
 		/// <summary>Pops the current image context.</summary>
 		///         <remarks>
 		///           <para>UIKit keeps a stack of image context, this method pops the current image context, and makes the new context at the top of the stack, the new default context.</para>
-		///           <para>If the current context was not created using the <see cref="UIKit.UIGraphics.BeginImageContextWithOptions(CoreGraphics.CGSize,System.Boolean,System.nfloat)" />
+		///           <para>If the current context was not created using the <see cref="UIKit.UIGraphics.BeginImageContextWithOptions(CoreGraphics.CGSize,System.Boolean,nfloat)" />
 		/// 	  or <see cref="UIKit.UIGraphics.BeginImageContext(CoreGraphics.CGSize)" />
 		/// 	  this method does nothing.</para>
 		///         </remarks>

@@ -35,7 +35,7 @@ namespace UIKit {
 		/// <param name="width">To be added.</param>
 		/// <param name="font">To be added.</param>
 		/// <param name="breakMode">To be added.</param>
-		/// <summary>Developers should use <see cref="Foundation.NSString.DrawString(CoreGraphics.CGRect, UIKit.UIStringAttributes)" /> rather than this deprecated method.</summary>
+		/// <summary>Developers should use <see cref="UIKit.NSStringDrawing.DrawString(NSString, CoreGraphics.CGRect, UIKit.UIStringAttributes)" /> rather than this deprecated method.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
@@ -59,7 +59,7 @@ namespace UIKit {
 		/// <param name="fontSize">To be added.</param>
 		/// <param name="breakMode">To be added.</param>
 		/// <param name="adjustment">To be added.</param>
-		/// <summary>Developers should use <see cref="Foundation.NSString.DrawString(CoreGraphics.CGRect, UIKit.UIStringAttributes)" /> rather than this deprecated method..</summary>
+		/// <summary>Developers should use <see cref="UIKit.NSStringDrawing.DrawString(NSString, CoreGraphics.CGRect, UIKit.UIStringAttributes)" /> rather than this deprecated method..</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
@@ -84,7 +84,7 @@ namespace UIKit {
 		/// <param name="actualFontSize">To be added.</param>
 		/// <param name="breakMode">To be added.</param>
 		/// <param name="adjustment">To be added.</param>
-		/// <summary>Developers should use <see cref="Foundation.NSString.DrawString(CoreGraphics.CGRect, UIKit.UIStringAttributes)" /> rather than this deprecated method.</summary>
+		/// <summary>Developers should use <see cref="UIKit.NSStringDrawing.DrawString(NSString, CoreGraphics.CGRect, UIKit.UIStringAttributes)" /> rather than this deprecated method.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
@@ -104,7 +104,7 @@ namespace UIKit {
 		/// <param name="This">To be added.</param>
 		///         <param name="rect">To be added.</param>
 		///         <param name="font">To be added.</param>
-		///         <summary>Developers should use <see cref="Foundation.NSString.DrawString(CoreGraphics.CGRect, UIKit.UIStringAttributes)" /> rather than this deprecated method.</summary>
+		///         <summary>Developers should use <see cref="UIKit.NSStringDrawing.DrawString(NSString, CoreGraphics.CGRect, UIKit.UIStringAttributes)" /> rather than this deprecated method.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
@@ -125,7 +125,7 @@ namespace UIKit {
 		///         <param name="rect">To be added.</param>
 		///         <param name="font">To be added.</param>
 		///         <param name="mode">To be added.</param>
-		///         <summary>Developers should use <see cref="Foundation.NSString.DrawString(CoreGraphics.CGRect, UIKit.UIStringAttributes)" /> rather than this deprecated method.</summary>
+		///         <summary>Developers should use <see cref="UIKit.NSStringDrawing.DrawString(NSString, CoreGraphics.CGRect, UIKit.UIStringAttributes)" /> rather than this deprecated method.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
@@ -147,7 +147,7 @@ namespace UIKit {
 		///         <param name="font">To be added.</param>
 		///         <param name="mode">To be added.</param>
 		///         <param name="alignment">To be added.</param>
-		///         <summary>Developers should use <see cref="Foundation.NSString.DrawString(CoreGraphics.CGRect, UIKit.UIStringAttributes)" /> rather than this deprecated method.</summary>
+		///         <summary>Developers should use <see cref="UIKit.NSStringDrawing.DrawString(NSString, CoreGraphics.CGRect, UIKit.UIStringAttributes)" /> rather than this deprecated method.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]

@@ -42,7 +42,7 @@ using NativeHandle = System.IntPtr;
 
 namespace GameplayKit {
 
-	/// <summary>Holds options for how nodes should be generated in a <see cref="GameplayKit.GKMeshGraph`1" />.</summary>
+	/// <summary>Holds options for how nodes should be generated in a <see cref="GameplayKit.GKMeshGraph{NodeType}" />.</summary>
 	[Native]
 	[Flags]
 	[MacCatalyst (13, 1)]
@@ -1419,7 +1419,7 @@ namespace GameplayKit {
 	///     <remarks>
 	///       <para>Unlike the <see cref="GameplayKit.GKRandomSource.SharedRandom" /> object, <see cref="GameplayKit.GKARC4RandomSource" /> objects do not share state with system-wide <c>arc4random</c> C functions. <see cref="GameplayKit.GKARC4RandomSource" /> objects are both deterministic and independent.</para>
 	///       <para>
-	///         <see cref="GameplayKit.GKARC4RandomSource" /> objects are generally good random sources, but may be predicted by analyzing the first 768 values generated. To avoid such possibilities, call <see cref="GameplayKit.GKARC4RandomSource.DropValues(System.nuint)" /> with a value of 768 or greater.</para>
+	///         <see cref="GameplayKit.GKARC4RandomSource" /> objects are generally good random sources, but may be predicted by analyzing the first 768 values generated. To avoid such possibilities, call <see cref="GameplayKit.GKARC4RandomSource.DropValues(System.UIntPtr)" /> with a value of 768 or greater.</para>
 	///     </remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GameplayKit/Reference/GKARC4RandomSource_Class/index.html">Apple documentation for <c>GKARC4RandomSource</c></related>
 	[MacCatalyst (13, 1)]
@@ -1437,7 +1437,7 @@ namespace GameplayKit {
 		/// <summary>Discards <paramref name="count" /> values. (See remarks).</summary>
 		/// <remarks>
 		///           <para>
-		///             <see cref="GameplayKit.GKARC4RandomSource" /> objects are generally good random sources, but may be predicted by analyzing the first 768 values generated. To avoid such possibilities, call <see cref="GameplayKit.GKARC4RandomSource.DropValues(System.nuint)" /> with a value of 768 or greater.</para>
+		///             <see cref="GameplayKit.GKARC4RandomSource" /> objects are generally good random sources, but may be predicted by analyzing the first 768 values generated. To avoid such possibilities, call <see cref="GameplayKit.GKARC4RandomSource.DropValues(System.UIntPtr)" /> with a value of 768 or greater.</para>
 		///         </remarks>
 		[Export ("dropValuesWithCount:")]
 		void DropValues (nuint count);
@@ -2075,7 +2075,7 @@ namespace GameplayKit {
 		NativeHandle Constructor (double squareSize);
 	}
 
-	/// <summary>A node in a <see cref="GameplayKit.GKOctree`1" />. Automatically managed by the <see cref="GameplayKit.GKOctree`1" /> as objects are added and removed.</summary>
+	/// <summary>A node in a <see cref="GameplayKit.GKOctree{ElementType}" />. Automatically managed by the <see cref="GameplayKit.GKOctree{ElementType}" /> as objects are added and removed.</summary>
 	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (NSObject))]

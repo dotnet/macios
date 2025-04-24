@@ -306,7 +306,7 @@ namespace Security {
 		///         <returns>Returns a stronglty typed SecRecord.</returns>
 		///         <remarks>
 		///           <para>
-		/// 	    Unlike the <see cref="Security.SecKeyChain.QueryAsData(Security.SecRecord,System.Boolean,System.Int32,Security.SecStatusCode@)" />
+		/// 	    Unlike the <see cref="Security.SecKeyChain.QueryAsData(Security.SecRecord,System.Boolean,System.Int32,out Security.SecStatusCode)" />
 		/// 	    methods which return a binary blob inside an NSData, this
 		/// 	    returns a strongly typed SecRecord that you can easily
 		/// 	    inspect.
@@ -2325,7 +2325,7 @@ namespace Security {
 		}
 	}
 
-	/// <summary>Contains parameters for use with <see cref="Security.SecKey.CreateRandomKey(Security.SecKeyType,System.Int32,Foundation.NSDictionary,Foundation.NSError@)" />.</summary>
+	/// <summary>Contains parameters for use with <see cref="Security.SecKey.CreateRandomKey(Security.SecKeyType,System.Int32,Foundation.NSDictionary,out Foundation.NSError)" />.</summary>
 	///     <remarks>To be added.</remarks>
 	public partial class SecKeyParameters : DictionaryContainer {
 		// For caching, as we can't reverse it easily.

@@ -10198,7 +10198,7 @@ namespace Foundation {
 	/// <param name="location">To be added.</param>
 	/// <param name="response">To be added.</param>
 	/// <param name="error">To be added.</param>
-	/// <summary>Completion handler for calls to <see cref="Foundation.NSUrlSession.CreateDownloadTask*" /> and <see cref="Foundation.NSUrlSession.CreateDownloadTaskFromResumeData(Foundation.NSData,Foundation.NSUrlDownloadSessionResponse)" />.</summary>
+	/// <summary>Completion handler for calls to <see cref="Foundation.NSUrlSession.CreateDownloadTask" /> and <see cref="Foundation.NSUrlSession.CreateDownloadTaskFromResumeData(Foundation.NSData,Foundation.NSUrlDownloadSessionResponse)" />.</summary>
 	/// <remarks>To be added.</remarks>
 	delegate void NSUrlDownloadSessionResponse (NSUrl location, NSUrlResponse response, NSError error);
 

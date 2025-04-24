@@ -8,7 +8,7 @@
 	UIKit APIs are not thread safe and should not be invoked from
 	a background thread.  If you must invoke a UIKit method from a
 	background thread, you should consider queueing a task using
-	the <see cref="Foundation.NSObject.BeginInvokeOnMainThread(Foundation.NSAction)" />
+	the <see cref="Foundation.NSObject.BeginInvokeOnMainThread(Action)" />
 	method.
 
       </para>

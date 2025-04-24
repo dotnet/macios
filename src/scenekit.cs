@@ -218,7 +218,7 @@ namespace SceneKit {
 
 		/// <param name="key">To be added.</param>
 		/// <param name="duration">To be added.</param>
-		/// <summary>Deprecated. Developers should use <see cref="SceneKit.SCNAnimatable.RemoveAnimationUsingBlendOutDuration(Foundation.NSString,System.nfloat)" />.</summary>
+		/// <summary>Deprecated. Developers should use <see cref="SceneKit.SCNAnimatable.RemoveAnimationUsingBlendOutDuration(Foundation.NSString,nfloat)" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Deprecated (PlatformName.TvOS, 11, 0, message: "Use 'RemoveAnimationUsingBlendOutDuration' instead.")]
@@ -4525,7 +4525,7 @@ namespace SceneKit {
 		bool DrawableResizesAsynchronously { get; set; }
 	}
 
-	/// <summary>Completion handler for use with <see cref="SceneKit.SCNAnimationEvent.Create(System.nfloat,SceneKit.SCNAnimationEventHandler)" />.</summary>
+	/// <summary>Completion handler for use with <see cref="SceneKit.SCNAnimationEvent.Create(nfloat,SceneKit.SCNAnimationEventHandler)" />.</summary>
 	[MacCatalyst (13, 1)]
 	delegate void SCNAnimationEventHandler (AnimationType animation, NSObject animatedObject, bool playingBackward);
 
@@ -5522,7 +5522,7 @@ namespace SceneKit {
 		nuint CategoryBitMask { get; set; }
 	}
 
-	/// <summary>Valid options for use with <see cref="SceneKit.SCNPhysicsWorld.ContactTest*" />.</summary>
+	/// <summary>Valid options for use with <see cref="SceneKit.SCNPhysicsWorld.ContactTest" />.</summary>
 	[MacCatalyst (13, 1)]
 	[StrongDictionary ("SCNPhysicsTestKeys")]
 	interface SCNPhysicsTest {
@@ -5673,7 +5673,7 @@ namespace SceneKit {
 		NSValue [] Transforms { get; }
 	}
 
-	/// <summary>Defines valid keys for use with the <c>options</c> dictionary passed to <see cref="SceneKit.SCNPhysicsShape.Create*" />.</summary>
+	/// <summary>Defines valid keys for use with the <c>options</c> dictionary passed to <see cref="SceneKit.SCNPhysicsShape.Create" />.</summary>
 	[MacCatalyst (13, 1)]
 	[Static]
 	[EditorBrowsable (EditorBrowsableState.Advanced)]

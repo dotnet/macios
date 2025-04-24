@@ -5,7 +5,7 @@
       <para>
         Collection Views allow content to be displayed using arbitrary layouts. Grid-like layouts can use the <see cref="UIKit.UICollectionViewFlowLayout" /> or application developers can subtype <see cref="UIKit.UICollectionViewLayout" /> to create their own flexible pattern.
       </para>
-      <para>The layout of the <see cref="UIKit.UICollectionViewCell" />s in a <see cref="UIKit.UICollectionView" /> is controlled by a <see cref="UIKit.UICollectionViewLayout" />, which can be passed in to the <see cref="UIKit.UICollectionView(UICollectionViewLayout)" /> constructor or can changed with <see cref="UIKit.UICollectionView.SetCollectionViewLayout*" />. </para>
+      <para>The layout of the <see cref="UIKit.UICollectionViewCell" />s in a <see cref="UIKit.UICollectionView" /> is controlled by a <see cref="UIKit.UICollectionViewLayout" />, which can be passed in to the <see cref="UIKit.UICollectionView(UICollectionViewLayout)" /> constructor or can changed with <see cref="UIKit.UICollectionView.SetCollectionViewLayout" />. </para>
       <para>Application developers can create fully custom layouts by subclassing either <see cref="UIKit.UICollectionViewFlowLayout" /> or <see cref="UIKit.UICollectionViewLayout" />. </para>
       <para>
         The key methods to override are:
@@ -58,9 +58,9 @@
           public override UICollectionViewLayoutAttributes LayoutAttributesForItem (NSIndexPath path)
           {
             UICollectionViewLayoutAttributes attributes = UICollectionViewLayoutAttributes.CreateForCell (path);
-            attributes.Size = new SizeF (ItemSize, ItemSize);
+            attributes.Size = new CGSize (ItemSize, ItemSize);
           
-            attributes.Center = new PointF (center.X + radius * (float)Math.Cos (2 * path.Row * Math.PI / cellCount),
+            attributes.Center = new CGPoint (center.X + radius * (float)Math.Cos (2 * path.Row * Math.PI / cellCount),
               center.Y + radius * (float)Math.Sin (2 * path.Row * Math.PI / cellCount));
             return attributes;
           }

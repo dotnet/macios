@@ -17,7 +17,7 @@ var leftHandContainer = new NSTextContainer(size);
 layoutManager.AddTextContainer(leftHandContainer);
 
 //Column 1
-var leftHandView = new UITextView(new RectangleF(new PointF(padding, padding), new SizeF(UIScreen.MainScreen.Bounds.Width / 2 - padding * 2, UIScreen.MainScreen.Bounds.Height - padding * 2)), leftHandContainer);
+var leftHandView = new UITextView(new CGRect(new CGPoint(padding, padding), new CGSize(UIScreen.MainScreen.Bounds.Width / 2 - padding * 2, UIScreen.MainScreen.Bounds.Height - padding * 2)), leftHandContainer);
 leftHandView.BackgroundColor = UIColor.Green;
 leftHandView.ScrollEnabled = false;
 AddSubview(leftHandView);
@@ -25,7 +25,7 @@ AddSubview(leftHandView);
 //Column 2
 var rightHandContainer = new NSTextContainer(size);
 layoutManager.AddTextContainer(rightHandContainer);
-var rightHandView = new UITextView(new RectangleF(new PointF(padding * 2 + size.Width, padding), size), rightHandContainer);
+var rightHandView = new UITextView(new CGRect(new CGPoint(padding * 2 + size.Width, padding), size), rightHandContainer);
 rightHandView.BackgroundColor = UIColor.Red;
 AddSubview(rightHandView);         
           ]]></code>

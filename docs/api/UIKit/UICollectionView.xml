@@ -118,14 +118,14 @@
       </para>
       <para>The following code, from the "Introduction to Collection Views" sample, shows how component view types are registered and reassigned. Each component role type has an <see cref="Foundation.NSString" /> identifier (for instance, the type <c>AnimalCell</c>, which is used for the cell role, has the identifier "AnimalCell", the others are not shown). The methods <see cref="UIKit.UICollectionView.RegisterClassForCell(System.Type,System.String)" /> and <see cref="UIKit.UICollectionView.RegisterClassForSupplementaryView(System.Type,UIKit.UICollectionElementKindSection,System.String)" /> register the classes for the cell and supplementary view roles, while the method <see cref="UIKit.UICollectionViewLayout.RegisterClassForDecorationView(System.Type,Foundation.NSString)" /> registers the decoration view with the  <see cref="UIKit.UICollectionViewLayout" /> that is the <see cref="UIKit.UICollectionView" />'s' <see cref="UIKit.UICollectionView.CollectionViewLayout" /> property.</para>
       <para>
-	It is very important that you provide a constructor that takes a RectangleF argument in any subclasses that you register with UICollectionView.   This is required because the classes are actually allocated by the Objective-C runtime, and you must initialize them.   The following example shows the expected constructor that you should provide:
+	It is very important that you provide a constructor that takes a CGRect argument in any subclasses that you register with UICollectionView.   This is required because the classes are actually allocated by the Objective-C runtime, and you must initialize them.   The following example shows the expected constructor that you should provide:
       </para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
 public class AnimalCell : UICollectionViewCell
 {
 [Export ("initWithFrame:")]
-  public AnimalCell (RectangleF frame) : base (frame) {}
+  public AnimalCell (CGRect frame) : base (frame) {}
 }
 ]]></code>
       </example>
@@ -139,7 +139,7 @@ public class AnimalCell : UICollectionViewCell
   public static NSString ClassId { get { return classId; } }
 
 [Export ("initWithFrame:")]
-  public AnimalCell (RectangleF frame) : base (frame) {}
+  public AnimalCell (CGRect frame) : base (frame) {}
 
 //..etc...
 }
@@ -317,22 +317,29 @@ public class SimpleCollectionViewController : UICollectionViewController
         <remarks>
           <para>The <see cref="UIKit.UICollectionView" /> maintains a highly-efficient reuse queue for offscreen components. This requires that the <see cref="UIKit.UICollectionView" /> be responsible for the lifecycle management of its component views. This method (and related methods such as <see cref="UIKit.UICollectionView.RegisterClassForSupplementaryView(System.Type,UIKit.UICollectionElementKindSection,System.String)" />) provide the <see cref="UIKit.UICollectionView" /> the knowledge of which types it needs to instantiate.</para>
           <para>The application developer may pass <see langword="null" /> as the <paramref name="reuseIdentifier" />, in which case the <paramref name="cellType" /> will be "un-registered" and no longer instantiated. The application developer may pass in a <paramref name="reuseIdentifier" /> previously associated with another type, in which case the old type will be "de-registered" and the new <paramref name="cellType" /> will be used.</para>
-          <para>It is very important that the type that you specify implements a public constructor that takes a <see cref="System.Drawing.RectangleF" /> parameter, this is used to initialize the class from an object allocated by Objective-C.   The following example shows the constructor in use:</para>
+          <para>It is very important that the type that you specify implements a public constructor that takes a <see cref="CoreGraphics.CGRect" /> parameter, this is used to initialize the class from an object allocated by Objective-C.   The following example shows the constructor in use:</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
 public class AnimalCell : UICollectionViewCell
 {
 [Export ("initWithFrame:")]
-  public AnimalCell (RectangleF frame) : base (frame) {}
+  public AnimalCell (CGRect frame) : base (frame) {}
 }
 ]]></code>
           </example>
           <para>Developers should not call this method if they have prototyped their <see cref="UIKit.UICollectionViewCell" /> type using a Storyboard. If they do so, they will overwrite the Storyboard-defined definition instantiation of the <see cref="UIKit.UICollectionViewCell" /> object's children.</para>
         </remarks>
-        <altmember cref="UIKit.UICollectionView.RegisterClassForSupplementaryView" />
-        <altmember cref="UIKit.UICollectionView.RegisterNibForCell" />
-        <altmember cref="UIKit.UICollectionView.RegisterNibForSupplementaryView" />
-        <altmember cref="UIKit.UICollectionViewLayout.RegisterClassForDecorationView" />
+        <altmember cref="UIKit.UICollectionView.RegisterClassForSupplementaryView(Type, NSString, string)" />
+        <altmember cref="UIKit.UICollectionView.RegisterClassForSupplementaryView(Type, NSString, NSString)" />
+        <altmember cref="UIKit.UICollectionView.RegisterClassForSupplementaryView(Type, UICollectionElementKindSection, string)" />
+        <altmember cref="UIKit.UICollectionView.RegisterClassForSupplementaryView(Type, UICollectionElementKindSection, NSString)" />
+        <altmember cref="UIKit.UICollectionView.RegisterNibForCell(UINib, string)" />
+        <altmember cref="UIKit.UICollectionView.RegisterNibForCell(UINib?, NSString)" />
+        <altmember cref="UIKit.UICollectionView.RegisterNibForSupplementaryView(UINib, UICollectionElementKindSection, string)" />
+        <altmember cref="UIKit.UICollectionView.RegisterNibForSupplementaryView(UINib, UICollectionElementKindSection, NSString)" />
+        <altmember cref="UIKit.UICollectionView.RegisterNibForSupplementaryView(UINib, NSString, NSString)" />
+        <altmember cref="UIKit.UICollectionViewLayout.RegisterClassForDecorationView(Type, NSString)" />
+        <altmember cref="UIKit.UICollectionViewLayout.RegisterClassForDecorationView(nint, NSString)" />
         <altmember cref="UIKit.UICollectionViewLayout.RegisterNibForDecorationView" />
       </Docs>
   <Docs DocId="M:UIKit.UICollectionView.RegisterClassForCell(System.Type,Foundation.NSString)">
@@ -342,22 +349,29 @@ public class AnimalCell : UICollectionViewCell
         <remarks>
           <para>The <see cref="UIKit.UICollectionView" /> maintains a highly-efficient reuse queue for offscreen components. This requires that the <see cref="UIKit.UICollectionView" /> be responsible for the lifecycle management of its component views. This method (and related methods such as <see cref="UIKit.UICollectionView.RegisterClassForSupplementaryView(System.Type,UIKit.UICollectionElementKindSection,System.String)" />) provide the <see cref="UIKit.UICollectionView" /> the knowledge of which types it needs to instantiate.</para>
           <para>The application developer may pass <see langword="null" /> as the <paramref name="reuseIdentifier" />, in which case the <paramref name="cellType" /> will be "un-registered" and no longer instantiated. The application developer may pass in a <paramref name="reuseIdentifier" /> previously associated with another type, in which case the old type will be "de-registered" and the new <paramref name="cellType" /> will be used.</para>
-          <para>It is very important that the type that you specify implements a public constructor that takes a <see cref="System.Drawing.RectangleF" /> parameter, this is used to initialize the class from an object allocated by Objective-C.   The following example shows the constructor in use:</para>
+          <para>It is very important that the type that you specify implements a public constructor that takes a <see cref="CoreGraphics.CGRect" /> parameter, this is used to initialize the class from an object allocated by Objective-C.   The following example shows the constructor in use:</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
 public class AnimalCell : UICollectionViewCell
 {
 [Export ("initWithFrame:")]
-  public AnimalCell (RectangleF frame) : base (frame) {}
+  public AnimalCell (CGRect frame) : base (frame) {}
 }
 ]]></code>
           </example>
           <para>Developers should not call this method if they have prototyped their <see cref="UIKit.UICollectionViewCell" /> type using a Storyboard. If they do so, they will overwrite the Storyboard-defined definition instantiation of the <see cref="UIKit.UICollectionViewCell" /> object's children.</para>
         </remarks>
-        <altmember cref="UIKit.UICollectionView.RegisterClassForSupplementaryView" />
-        <altmember cref="UIKit.UICollectionView.RegisterNibForCell" />
-        <altmember cref="UIKit.UICollectionView.RegisterNibForSupplementaryView" />
-        <altmember cref="UIKit.UICollectionViewLayout.RegisterClassForDecorationView" />
+        <altmember cref="UIKit.UICollectionView.RegisterClassForSupplementaryView(Type, NSString, string)" />
+        <altmember cref="UIKit.UICollectionView.RegisterClassForSupplementaryView(Type, NSString, NSString)" />
+        <altmember cref="UIKit.UICollectionView.RegisterClassForSupplementaryView(Type, UICollectionElementKindSection, string)" />
+        <altmember cref="UIKit.UICollectionView.RegisterClassForSupplementaryView(Type, UICollectionElementKindSection, NSString)" />
+        <altmember cref="UIKit.UICollectionView.RegisterNibForCell(UINib, string)" />
+        <altmember cref="UIKit.UICollectionView.RegisterNibForCell(UINib?, NSString)" />
+        <altmember cref="UIKit.UICollectionView.RegisterNibForSupplementaryView(UINib, UICollectionElementKindSection, string)" />
+        <altmember cref="UIKit.UICollectionView.RegisterNibForSupplementaryView(UINib, UICollectionElementKindSection, NSString)" />
+        <altmember cref="UIKit.UICollectionView.RegisterNibForSupplementaryView(UINib, NSString, NSString)" />
+        <altmember cref="UIKit.UICollectionViewLayout.RegisterClassForDecorationView(Type, NSString)" />
+        <altmember cref="UIKit.UICollectionViewLayout.RegisterClassForDecorationView(nint, NSString)" />
         <altmember cref="UIKit.UICollectionViewLayout.RegisterNibForDecorationView" />
       </Docs>
   <Docs DocId="M:UIKit.UICollectionView.RegisterClassForSupplementaryView(System.Type,UIKit.UICollectionElementKindSection,Foundation.NSString)">
@@ -372,10 +386,15 @@ public class AnimalCell : UICollectionViewCell
 	It is very important that you provide constructor that takes an IntPtr argument in any subclasses that you register.   This is required because the classes are actually allocated by the Objective-C runtime, and you must initialize them. 
       </para>
         </remarks>
-        <altmember cref="UIKit.UICollectionView.RegisterClassForCell" />
-        <altmember cref="UIKit.UICollectionView.RegisterNibForCell" />
-        <altmember cref="UIKit.UICollectionView.RegisterNibForSupplementaryView" />
-        <altmember cref="UIKit.UICollectionViewLayout.RegisterClassForDecorationView" />
+        <altmember cref="UIKit.UICollectionView.RegisterClassForCell(Type, string)" />
+        <altmember cref="UIKit.UICollectionView.RegisterClassForCell(Type, NSString)" />
+        <altmember cref="UIKit.UICollectionView.RegisterNibForCell(UINib, string)" />
+        <altmember cref="UIKit.UICollectionView.RegisterNibForCell(UINib?, NSString)" />
+        <altmember cref="UIKit.UICollectionView.RegisterNibForSupplementaryView(UINib, UICollectionElementKindSection, string)" />
+        <altmember cref="UIKit.UICollectionView.RegisterNibForSupplementaryView(UINib, UICollectionElementKindSection, NSString)" />
+        <altmember cref="UIKit.UICollectionView.RegisterNibForSupplementaryView(UINib, NSString, NSString)" />
+        <altmember cref="UIKit.UICollectionViewLayout.RegisterClassForDecorationView(Type, NSString)" />
+        <altmember cref="UIKit.UICollectionViewLayout.RegisterClassForDecorationView(nint, NSString)" />
         <altmember cref="UIKit.UICollectionViewLayout.RegisterNibForDecorationView" />
       </Docs>
   <Docs DocId="M:UIKit.UICollectionView.RegisterNibForSupplementaryView(UIKit.UINib,UIKit.UICollectionElementKindSection,Foundation.NSString)">
@@ -396,7 +415,7 @@ public class AnimalCell : UICollectionViewCell
         <returns>A supplementary <see cref="UIKit.UICollectionReusableView" /> that is either newly allocated or recycled from the reuse queue..</returns>
         <remarks>
           <para>The application developer must have registered a class or nib file using either <see cref="UIKit.UICollectionView.RegisterClassForSupplementaryView(System.Type,UIKit.UICollectionElementKindSection,System.String)" /> or <see cref="UIKit.UICollectionView.RegisterNibForSupplementaryView(UIKit.UINib,UIKit.UICollectionElementKindSection,System.String)" /> prior to calling this method.</para>
-          <para>If the <see cref="UIKIt.UICollectionReusableView" /> is not newly allocated but is being recycled, this method will call that cell's <see cref="UIKit.UICollectionReusableView.PrepareForReuse" /> method.</para>
+          <para>If the <see cref="UIKit.UICollectionReusableView" /> is not newly allocated but is being recycled, this method will call that cell's <see cref="UIKit.UICollectionReusableView.PrepareForReuse" /> method.</para>
         </remarks>
       </Docs>
 </Documentation>

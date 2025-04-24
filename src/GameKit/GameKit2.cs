@@ -234,7 +234,7 @@ namespace GameKit {
 		public GKPeerConnectionState State { get; private set; }
 	}
 
-	/// <summary>Provides data for the <see cref="GameKit.GKSession.Failed" />, <see cref="GameKit.GKPeerConnectionEventArgs.ConnectionRequest" /> and <see cref="GameKit.GKPeerConnectionEventArgs.Failed" /> events.</summary>
+	/// <summary>Provides data for the <see cref="GameKit.GKSession.Failed" />, <see cref="GameKit.GKSession.ConnectionRequest" /> and <see cref="GameKit.GKSession.ConnectionFailed" /> events.</summary>
 	///     <remarks>
 	///     </remarks>
 	public class GKPeerConnectionEventArgs : EventArgs {

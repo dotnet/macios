@@ -41,7 +41,7 @@ var tconstraint1 = NSLayoutConstraint.Create (toolbar, NSLayoutAttribute.Width, 
       <para> This binds the provided name with the view or binds the name with the number as a metric.</para>
     </param>
     <summary>Factory method for creating a constraint using Visual Format Language.</summary>
-    <returns>An array of layout constraints that are suitable to be added to a UIView using <see cref="UIKit.UIView.AddConstraints(UIKit.NSLayoutConstraint[])" /> method.</returns>
+    <returns>An array of layout constraints that are suitable to be added to a <see cref="View" /> using <see cref="View.AddConstraints(NSLayoutConstraint[])" /> method.</returns>
     <remarks>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
@@ -88,7 +88,7 @@ NSLayoutConstraint.ActivateConstraints(blueConstraints);
     </param>
     <param name="views">Dictionary containing mappings of names to UIViews.</param>
     <summary>Factory method for creating a constraint using Visual Format Language.</summary>
-    <returns>An array of layout constraints that are suitable to be added to a UIView using <see cref="UIKit.UIView.AddConstraints(UIKit.NSLayoutConstraint[])" /> method.</returns>
+    <returns>An array of layout constraints that are suitable to be added to a <see cref="View" /> using <see cref="View.AddConstraints(NSLayoutConstraint[])" /> method.</returns>
     <remarks>
       <para>It is easier to use the <see cref="UIKit.NSLayoutConstraint.FromVisualFormat(System.String,UIKit.NSLayoutFormatOptions,System.Object[])" /> overload as it combines support for both metrics and views in a single call.</para>
     </remarks>

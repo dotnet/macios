@@ -39,7 +39,7 @@
   <Docs DocId="M:Foundation.NSString.CreateNative(System.String)">
         <param name="str">C# String to wrap</param>
         <summary>Creates an Objective-C NSString from the C# string and returns a pointer to it.</summary>
-        <returns>Pointer to the NSString object, must be released with ReleaseNative.</returns>
+        <returns>Pointer to the <see cref="NSString" /> object, must be released with <see cref="ReleaseNative" />.</returns>
         <remarks>
           <para>
 	    This method creates an Objective-C NSString and returns an
@@ -51,7 +51,7 @@
 	  </para>
           <para>
 	    The memory associated with this object should be released
-	    by calling the <see cref="Foundation.NSString.ReleaseNative(System.IntPtr)" />
+	    by calling the <see cref="Foundation.NSString.ReleaseNative" />
 	    method.
 	  </para>
           <example>

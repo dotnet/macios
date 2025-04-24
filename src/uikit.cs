@@ -435,7 +435,7 @@ namespace UIKit {
 	///       </para>
 	///     </remarks>
 	/// <altmember cref="UIKit.UICollectionView.PerformBatchUpdates" />
-	/// <altmember cref="UIKIt.UIPageViewController.SetViewControllers" />
+	/// <altmember cref="UIKit.UIPageViewController.SetViewControllers" />
 	/// <altmember cref="UIKit.UIView.AnimateNotify" />
 	/// <altmember cref="UIKit.UIView.TransitionNotify" />
 	/// <altmember cref="UIKit.UIViewController.Transition" />
@@ -2285,7 +2285,7 @@ namespace UIKit {
 		///         <value>
 		///         </value>
 		///         <remarks>
-		/// 	  The object must hold an individual <see cref="AssetsLibrary:ALAsset" />, <see cref="Foundation.NSAttributedString" />, <see cref="Foundation.NSString" />, <see cref="Foundation.NSUrl" />, <see cref="UIKit.UIImage" />.  Or you can provide a
+		/// 	  The object must hold an individual <see cref="AssetsLibrary.ALAsset" />, <see cref="Foundation.NSAttributedString" />, <see cref="Foundation.NSString" />, <see cref="Foundation.NSUrl" />, <see cref="UIKit.UIImage" />.  Or you can provide a
 		/// 	  collection of those objects by passing an NSDictionary or an
 		/// 	  NSArray with those objects.
 		/// 	</remarks>
@@ -3222,7 +3222,7 @@ namespace UIKit {
 		bool LocationLaunch { get; }
 	}
 
-	/// <summary>A <see cref="Foundation.DictionaryContainer" /> that holds options for use with calls to <see cref="UIApplication.OpenURL*" />.</summary>
+	/// <summary>A <see cref="Foundation.DictionaryContainer" /> that holds options for use with calls to <see cref="UIApplication.OpenURL" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[StrongDictionary ("UIApplicationOpenUrlOptionKeys")]
@@ -4735,7 +4735,7 @@ namespace UIKit {
 
 		/// <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
 		/// <param name="url">To be added.</param>
-		/// <summary>Developers should use <see cref="UIKit.UIApplicationDelegate.OpenUrl*" /> rather than this deprecated method.</summary>
+		/// <summary>Developers should use <see cref="UIKit.UIApplicationDelegate.OpenUrl" /> rather than this deprecated method.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[NoTV]
@@ -5129,7 +5129,7 @@ namespace UIKit {
 		/// <param name="application">To be added.</param>
 		/// <param name="shortcutItem">To be added.</param>
 		/// <param name="completionHandler">To be added.</param>
-		/// <summary>Called by the system when the user initiates a Home screen quick action, unless the interaction was handled in <see cref="UIKit.UIApplicationDelegate.WillFinishLaunching(UIKit.UIApplication,Foundation.NSDictionary)" /> or <see cref="UIKit.UIApplicationDelegate.DidFinishLaunching*" />.</summary>
+		/// <summary>Called by the system when the user initiates a Home screen quick action, unless the interaction was handled in <see cref="UIKit.UIApplicationDelegate.WillFinishLaunching(UIKit.UIApplication,Foundation.NSDictionary)" /> or <see cref="UIKit.UIApplicationDelegate.DidFinishLaunching" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
@@ -10221,7 +10221,7 @@ namespace UIKit {
 		[Abstract]
 		[NullAllowed] // by default this property is null
 					  // This is declared as ArgumentSemantic.Copy, but UITextRange doesn't conform to NSCopying.
-					  // Also declaring it as ArgumentSemantic.Copy makes UIKIt crash: https://github.com/xamarin/xamarin-macios/issues/15677
+					  // Also declaring it as ArgumentSemantic.Copy makes UIKit crash: https://github.com/xamarin/xamarin-macios/issues/15677
 		[Export ("selectedTextRange")]
 		UITextRange SelectedTextRange { get; set; }
 
@@ -15401,7 +15401,7 @@ namespace UIKit {
 	///       <format type="text/html">
 	///         <h2>Customizing Appearance</h2>
 	///       </format>
-	///       <para>The appearance of the <see cref="UIKit.UIPickerView" /> can be customized by using the <see cref="UIKit.UIPickerView.UIPickerViewAppearance" /> class or by overriding the <see cref="UIKit.UIPickerViewModel.GetView(UIKit.UIPickerView,System.nint,System.nint,UIKit.UIView)" /> and <see cref="UIKit.UIPickerViewModel.GetRowHeight(UIKit.UIPickerView,System.nint)" /> methods in the <see cref="UIKit.UIPickerViewModel" />, as shown in the "Standard Controls" sample ("Picker With Custom Appearance").</para>
+	///       <para>The appearance of the <see cref="UIKit.UIPickerView" /> can be customized by using the <see cref="UIKit.UIPickerView.UIPickerViewAppearance" /> class or by overriding the <see cref="UIKit.UIPickerViewModel.GetView(UIKit.UIPickerView,System.IntPtr,System.IntPtr,UIKit.UIView)" /> and <see cref="UIKit.UIPickerViewModel.GetRowHeight(UIKit.UIPickerView,System.IntPtr)" /> methods in the <see cref="UIKit.UIPickerViewModel" />, as shown in the "Standard Controls" sample ("Picker With Custom Appearance").</para>
 	///     </remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIPickerView_Class/index.html">Apple documentation for <c>UIPickerView</c></related>
 	[NoTV]
@@ -15701,7 +15701,7 @@ namespace UIKit {
 	[Protocol]
 	partial interface UIContentContainer {
 		/// <summary>Gets the preferred size for the content of the container.</summary>
-		/// <value>The preferred <see cref="System.Drawing.SizeF" /> of the contents of <c>this</c> <see cref="UIKit.IUIContentContainer" />.</value>
+		/// <value>The preferred <see cref="CGSize" /> of the contents of <c>this</c> <see cref="UIKit.IUIContentContainer" />.</value>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("preferredContentSize")]
@@ -15724,7 +15724,7 @@ namespace UIKit {
 		/// <param name="contentContainer">The child container whose size is being request.</param>
 		/// <param name="parentContainerSize">The  of the .</param>
 		/// <summary>Gets the size of the content of the specified child <see cref="UIKit.IUIContentContainer" /> by using the size of the parent container.</summary>
-		/// <returns>The <see cref="System.Drawing.SizeF" /> of the content of the <paramref name="contentContainer" />.</returns>
+		/// <returns>The <see cref="CGSize" /> of the content of the <paramref name="contentContainer" />.</returns>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("sizeForChildContentContainer:withParentContainerSize:")]
@@ -16911,12 +16911,22 @@ namespace UIKit {
 		/// <param name="scrollView">Scroll view that was scrolled.</param>
 		/// <summary>Indicates that the specified scrollView's scrolling has ended at the top.</summary>
 		/// <remarks>To be added.</remarks>
-		[Export ("scrollViewDidScrollToTop:"), EventArgs ("UIScrollView", XmlDocs = """
+		[Export ("scrollViewDidScrollToTop:"), EventArgs ("UIScrollView",
+#if !__TVOS__
+		XmlDocs = """
 			<summary>Event raised by the object.</summary>
 			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
 			<altmember cref="UIKit.UIScrollView.Scrolled" />
 			<altmember cref="UIKit.UIScrollView.ScrollsToTop" />
-			""")]
+			"""
+#else
+		XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			<altmember cref="UIKit.UIScrollView.Scrolled" />
+			"""
+#endif
+		)]
 		void ScrolledToTop (UIScrollView scrollView);
 
 		/// <param name="scrollView">Scroll view containing the content being zoomed.</param>
@@ -19374,7 +19384,7 @@ namespace UIKit {
 		/// <summary>Represents the value associated with the constant UITableViewAutomaticDimension</summary>
 		///         <value>
 		///         </value>
-		///         <remarks>Return this value from <see cref="UIKit.UITableViewSource" /> (or <see cref="UIKit.UITableViewDelegate" />) methods that request dimension metrics when you want the UITableView to use a default value. For example, return this constant from <see cref="UIKit.UITableViewSource.GetHeightForHeader(UIKit.UITableView,System.nint)" /> or <see cref="UIKit.UITableViewSource.GetHeightForFooter(UIKit.UITableView,System.nint)" /> and the table view will use automatically use a height that accomodates the value returned from <see cref="UIKit.UITableViewSource.TitleForHeader(UIKit.UITableView,System.nint)" /> or <see cref="UIKit.UITableViewSource.TitleForFooter(UIKit.UITableView,System.nint)" /> respectively.</remarks>
+		///         <remarks>Return this value from <see cref="UIKit.UITableViewSource" /> (or <see cref="UIKit.UITableViewDelegate" />) methods that request dimension metrics when you want the UITableView to use a default value. For example, return this constant from <see cref="UIKit.UITableViewSource.GetHeightForHeader(UIKit.UITableView,System.IntPtr)" /> or <see cref="UIKit.UITableViewSource.GetHeightForFooter(UIKit.UITableView,System.IntPtr)" /> and the table view will use automatically use a height that accomodates the value returned from <see cref="UIKit.UITableViewSource.TitleForHeader(UIKit.UITableView,System.IntPtr)" /> or <see cref="UIKit.UITableViewSource.TitleForFooter(UIKit.UITableView,System.IntPtr)" /> respectively.</remarks>
 		[Field ("UITableViewAutomaticDimension")]
 		nfloat AutomaticDimension { get; }
 
@@ -19652,7 +19662,7 @@ namespace UIKit {
 		/// <summary>Called to populate the header for the specified section.</summary>
 		/// <returns>Text to display in the section header, or <see langword="null" /> if no title is required.</returns>
 		/// <remarks>
-		///           <para>Table views use a fixed style for the section header. To customize the appearance of the header, return a custom view from <see cref="UIKit.UITableViewSource.GetViewForHeader(UIKit.UITableView,System.nint)" /> instead of implementing this method.</para>
+		///           <para>Table views use a fixed style for the section header. To customize the appearance of the header, return a custom view from <see cref="UIKit.UITableViewSource.GetViewForHeader(UIKit.UITableView,System.IntPtr)" /> instead of implementing this method.</para>
 		///           <para>Declared in [UITableViewDataSource]</para>
 		///         </remarks>
 		[Export ("tableView:titleForHeaderInSection:")]
@@ -19664,7 +19674,7 @@ namespace UIKit {
 		/// <summary>Called to populate the footer for the specified section.</summary>
 		/// <returns>Text to display in the section footer, or <see langword="null" /> if no title is required.</returns>
 		/// <remarks>
-		///           <para>Table views use a fixed style for the section footer. To customize the appearance of the footer, return a custom view from <see cref="UIKit.UITableViewSource.GetViewForFooter(UIKit.UITableView,System.nint)" /> instead of implementing this method.</para>
+		///           <para>Table views use a fixed style for the section footer. To customize the appearance of the footer, return a custom view from <see cref="UIKit.UITableViewSource.GetViewForFooter(UIKit.UITableView,System.IntPtr)" /> instead of implementing this method.</para>
 		///           <para>Declared in [UITableViewDataSource]</para>
 		///         </remarks>
 		[Export ("tableView:titleForFooterInSection:")]
@@ -19726,7 +19736,7 @@ namespace UIKit {
 		/// <summary>Returns a view object to display at the start of the given section.</summary>
 		/// <returns>A view to be displayed at the start of the given <paramref name="section" />.</returns>
 		/// <remarks>
-		///           <para>Can either be a <see cref="UIKit.UILabel" />, <see cref="UIKit.UIImageView" /> or a custom view. This method requires <see cref="UIKit.UITableViewSource.GetHeightForHeader(UIKit.UITableView,System.nint)" /> to be implemented as well.</para>
+		///           <para>Can either be a <see cref="UIKit.UILabel" />, <see cref="UIKit.UIImageView" /> or a custom view. This method requires <see cref="UIKit.UITableViewSource.GetHeightForHeader(UIKit.UITableView,System.IntPtr)" /> to be implemented as well.</para>
 		///           <para>Declared in [UITableViewDelegate]</para>
 		///         </remarks>
 		[Export ("tableView:viewForHeaderInSection:")]
@@ -19737,7 +19747,7 @@ namespace UIKit {
 		/// <summary>Returns a view object to display at the end of the given section.</summary>
 		/// <returns>A view to be displayed at the end of the given <paramref name="section" />.</returns>
 		/// <remarks>
-		///           <para>Can either be a <see cref="UIKit.UILabel" />, <see cref="UIKit.UIImageView" /> or a custom view. This method requires <see cref="UIKit.UITableViewSource.GetHeightForFooter(UIKit.UITableView,System.nint)" /> to be implemented as well.</para>
+		///           <para>Can either be a <see cref="UIKit.UILabel" />, <see cref="UIKit.UIImageView" /> or a custom view. This method requires <see cref="UIKit.UITableViewSource.GetHeightForFooter(UIKit.UITableView,System.IntPtr)" /> to be implemented as well.</para>
 		///           <para>Declared in [UITableViewDelegate]</para>
 		///         </remarks>
 		[Export ("tableView:viewForFooterInSection:")]
@@ -20350,7 +20360,7 @@ namespace UIKit {
 		/// <summary>Returns a view object to display at the start of the given section.</summary>
 		/// <returns>A view to be displayed at the start of the given <paramref name="section" />.</returns>
 		/// <remarks>
-		///           <para>Can either be a <see cref="UIKit.UILabel" />, <see cref="UIKit.UIImageView" /> or a custom view. This method requires <see cref="UIKit.UITableViewSource.GetHeightForHeader(UIKit.UITableView,System.nint)" /> to be implemented as well.</para>
+		///           <para>Can either be a <see cref="UIKit.UILabel" />, <see cref="UIKit.UIImageView" /> or a custom view. This method requires <see cref="UIKit.UITableViewSource.GetHeightForHeader(UIKit.UITableView,System.IntPtr)" /> to be implemented as well.</para>
 		///         </remarks>
 		[Export ("tableView:viewForHeaderInSection:")]
 		UIView GetViewForHeader (UITableView tableView, nint section);
@@ -20360,7 +20370,7 @@ namespace UIKit {
 		/// <summary>Returns a view object to display at the end of the given section.</summary>
 		/// <returns>A view to be displayed at the end of the given <paramref name="section" />.</returns>
 		/// <remarks>
-		///           <para>Can either be a <see cref="UIKit.UILabel" />, <see cref="UIKit.UIImageView" /> or a custom view. This method requires <see cref="UIKit.UITableViewSource.GetHeightForFooter(UIKit.UITableView,System.nint)" /> to be implemented as well.</para>
+		///           <para>Can either be a <see cref="UIKit.UILabel" />, <see cref="UIKit.UIImageView" /> or a custom view. This method requires <see cref="UIKit.UITableViewSource.GetHeightForFooter(UIKit.UITableView,System.IntPtr)" /> to be implemented as well.</para>
 		///           <para>[UITableViewDelegate]</para>
 		///         </remarks>
 		[Export ("tableView:viewForFooterInSection:")]
@@ -20465,7 +20475,7 @@ namespace UIKit {
 		/// <returns>
 		///         </returns>
 		/// <remarks>
-		///           <para>Note that custom UITableViewCell's do not respect IndentationLevel automatically. Application developers must override <see cref="UIKit.UITableViewController.LayoutSubviews*" />.</para>
+		///           <para>Note that custom UITableViewCell's do not respect IndentationLevel automatically. Application developers must override <see cref="UIKit.UITableViewController.LayoutSubviews" />.</para>
 		///         </remarks>
 		[Export ("tableView:indentationLevelForRowAtIndexPath:")]
 		nint IndentationLevel (UITableView tableView, NSIndexPath indexPath);
@@ -26384,7 +26394,7 @@ namespace UIKit {
 			<param name="view">The view in whose coordinate space <paramref name="rect" /> is specified.</param>
 			<param name="animated">Whether to animate the display of the picker.</param>
 			<param name="result">To be added.</param>
-			<summary>Shows a <see cref="UIKit.UIPrinterPickerController" /> from this app as a popover that is anchored to a <see cref="System.Drawing.RectangleF" /> object contained in a <see cref="UIKit.UIView" /> view, with or without animation, depending on <paramref name="animated" />, returning a task that provides the result.</summary>
+			<summary>Shows a <see cref="UIKit.UIPrinterPickerController" /> from this app as a popover that is anchored to a <see cref="CGRect" /> object contained in a <see cref="UIKit.UIView" /> view, with or without animation, depending on <paramref name="animated" />, returning a task that provides the result.</summary>
 			<returns>To be added.</returns>
 			<remarks>To be added.</remarks>
 			""")]

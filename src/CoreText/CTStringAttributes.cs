@@ -76,7 +76,7 @@ namespace CoreText {
 		PatternDashDotDot = 0x0400,
 	}
 
-	/// <summary>An enumeration whose values specify the importance of ligatures in a <see cref="CoreText.CTString" />.</summary>
+	/// <summary>An enumeration whose values specify the importance of ligatures in a <see cref="CoreText.CTStringAttributes" />.</summary>
 	///     <remarks>To be added.</remarks>
 	///     <altmember cref="CoreText.CTStringAttributes.LigatureFormation" />
 	public enum CTLigatureFormation {

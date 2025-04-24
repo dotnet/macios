@@ -235,7 +235,7 @@ namespace HealthKit {
 	}
 
 #if NET
-	/// <summary>The completion handler for <see cref="HealthKit.HKAnchoredObjectQuery.#ctor(HealthKit.HKSampleType,Foundation.NSPredicate,System.nuint,System.nuint,HealthKit.HKAnchoredObjectResultHandler2)" />.</summary>
+	/// <summary>The completion handler for <see cref="HealthKit.HKAnchoredObjectQuery.HKAnchoredObjectQuery(HealthKit.HKSampleType,Foundation.NSPredicate,System.UIntPtr,System.UIntPtr,HealthKit.HKAnchoredObjectResultHandler2)" />.</summary>
 	/// <summary>Completion handler for anchored object queries.</summary>
 	delegate void HKAnchoredObjectResultHandler (HKAnchoredObjectQuery query, HKSample [] results, nuint newAnchor, NSError error);
 #else
@@ -1160,7 +1160,7 @@ namespace HealthKit {
 	/// <summary>Completion handler for <see cref="HealthKit.HKHealthStore.AddSamples(HealthKit.HKSample[],HealthKit.HKWorkout,HealthKit.HKStoreSampleAddedCallback)" />.</summary>
 	delegate void HKStoreSampleAddedCallback (bool success, NSError error);
 
-	/// <summary>Returned by <see cref="HealthKit.HKHealthStore.GetBiologicalSex(Foundation.NSError@)" />.</summary>
+	/// <summary>Returned by <see cref="HealthKit.HKHealthStore.GetBiologicalSex(out Foundation.NSError)" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/HealthKit/Reference/HKBiologicalSexObject_Class/index.html">Apple documentation for <c>HKBiologicalSexObject</c></related>
 	[Mac (13, 0)]
@@ -1171,7 +1171,7 @@ namespace HealthKit {
 		HKBiologicalSex BiologicalSex { get; }
 	}
 
-	/// <summary>Returned by <see cref="HealthKit.HKHealthStore.GetBloodType(Foundation.NSError@)" /></summary>
+	/// <summary>Returned by <see cref="HealthKit.HKHealthStore.GetBloodType(out Foundation.NSError)" /></summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/help/HKBloodTypeObject_Class/index.html">Apple documentation for <c>HKBloodTypeObject</c></related>
 	[Mac (13, 0)]
@@ -4979,7 +4979,7 @@ namespace HealthKit {
 
 	/// <param name="success">Whether the operation succeeded.</param>
 	///     <param name="error">The error that occurred, if <paramref name="success" /> was <see langword="false" />.</param>
-	///     <summary>Completion handler for adding metadata with <see cref="HealthKit.HKWorkoutRouteQuery.#ctor(HealthKit.HKWorkoutRoute,HealthKit.HKWorkoutRouteBuilderDataHandler)" />.</summary>
+	///     <summary>Completion handler for adding metadata with <see cref="HealthKit.HKWorkoutRouteQuery.HKWorkoutRouteQuery(HealthKit.HKWorkoutRoute,HealthKit.HKWorkoutRouteBuilderDataHandler)" />.</summary>
 	delegate void HKWorkoutRouteBuilderAddMetadataHandler (bool success, NSError error);
 	/// <summary>A class for adding geographical data to a workout as the user's location changes.</summary>
 	[Mac (13, 0)]
@@ -5068,7 +5068,7 @@ namespace HealthKit {
 
 	/// <param name="success">Whether the operation succeeded.</param>
 	///     <param name="error">The error that occurred, if <paramref name="success" /> was <see langword="false" />.</param>
-	///     <summary>Completion handler for adding metadata with <see cref="HealthKit.HKWorkoutRouteQuery.#ctor(HealthKit.HKWorkoutRoute,HealthKit.HKWorkoutRouteBuilderDataHandler)" />.</summary>
+	///     <summary>Completion handler for adding metadata with <see cref="HealthKit.HKWorkoutRouteQuery.HKWorkoutRouteQuery(HealthKit.HKWorkoutRoute,HealthKit.HKWorkoutRouteBuilderDataHandler)" />.</summary>
 	delegate void HKWorkoutBuilderCompletionHandler (bool success, NSError error);
 	/// <summary>Builds a workout from workout data as it is added.</summary>
 	[Mac (13, 0)]
@@ -5209,7 +5209,7 @@ namespace HealthKit {
 		void UpdateActivity (NSUuid uuid, NSDictionary<NSString, NSObject> metadata, HKWorkoutBuilderCompletionHandler completion);
 	}
 
-	/// <summary>A handler to pass to <see cref="HealthKit.HKQuantitySeriesSampleQuery.#ctor(HealthKit.HKQuantitySample,HealthKit.HKQuantitySeriesSampleQueryQuantityDelegate)" />.</summary>
+	/// <summary>A handler to pass to <see cref="HealthKit.HKQuantitySeriesSampleQuery.HKQuantitySeriesSampleQuery(HealthKit.HKQuantitySample,HealthKit.HKQuantitySeriesSampleQueryQuantityDelegate)" />.</summary>
 	delegate void HKQuantitySeriesSampleQueryQuantityDelegate (HKQuantitySeriesSampleQuery query, HKQuantity quantity, NSDate date, bool done, NSError error);
 	delegate void HKQuantitySeriesSampleQueryQuantityHandler (HKQuantitySeriesSampleQuery query, HKQuantity quantity, NSDateInterval date, bool done, NSError error);
 

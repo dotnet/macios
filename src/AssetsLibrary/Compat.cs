@@ -229,7 +229,6 @@ namespace AssetsLibrary {
 		///         <param name="metadata">To be added.</param>
 		///         <summary>Changes the data to <paramref name="imageData" /> and the metadata to <paramref name="metadata" />.</summary>
 		///         <returns>
-		///           <para>A task that represents the asynchronous SetImageData operation.   The value of the TResult parameter is a <see cref="AssetsLibrary.ALAssetsLibraryWriteCompletionDelegate" />.</para>
 		///           <para>Application developers should check the <see cref="AssetsLibrary.ALAsset.Editable" /> property priot to using this method.</para>
 		///         </returns>
 		///         <remarks>To be added.</remarks>
@@ -282,7 +281,6 @@ namespace AssetsLibrary {
 		///         <param name="metadata">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <returns>
-		///           <para>A task that represents the asynchronous WriteModifiedImageToSavedToPhotosAlbum operation.   The value of the TResult parameter is a <see cref="AssetsLibrary.ALAssetsLibraryWriteCompletionDelegate" />.</para>
 		///           <para>Application developers should check the <see cref="AssetsLibrary.ALAsset.Editable" /> property prior to calling htis method.</para>
 		///         </returns>
 		///         <remarks>To be added.</remarks>
@@ -305,9 +303,6 @@ namespace AssetsLibrary {
 
 		/// <param name="videoPathURL">To be added.</param>
 		///         <summary>To be added.</summary>
-		///         <returns>
-		///           <para>A task that represents the asynchronous WriteModifiedVideoToSavedPhotosAlbum operation.   The value of the TResult parameter is a <see cref="AssetsLibrary.ALAssetsLibraryWriteCompletionDelegate" />.</para>
-		///         </returns>
 		///         <remarks>To be added.</remarks>
 		public unsafe virtual Task<NSUrl> WriteModifiedVideoToSavedPhotosAlbumAsync (NSUrl videoPathURL)
 		{
@@ -842,7 +837,6 @@ namespace AssetsLibrary {
 		/// <summary>Name of this group.</summary>
 		///         <value>The name of the group.</value>
 		///         <remarks>To be added.</remarks>
-		///         <altmember cref="AssetsLibrary.ALAssetsGroup.PersistentGroup" />
 		public NSString Name {
 			get {
 				throw new InvalidOperationException (Constants.AssetsLibraryRemoved);
@@ -981,9 +975,6 @@ namespace AssetsLibrary {
 		/// <param name="imageData">To be added.</param>
 		///         <param name="metadata">To be added.</param>
 		///         <summary>To be added.</summary>
-		///         <returns>
-		///           <para>A task that represents the asynchronous WriteImageToSavedPhotosAlbum operation.   The value of the TResult parameter is a <see cref="AssetsLibrary.ALAssetsLibraryWriteCompletionDelegate" />.</para>
-		///         </returns>
 		///         <remarks>To be added.</remarks>
 		public unsafe virtual Task<NSUrl> WriteImageToSavedPhotosAlbumAsync (NSData imageData, NSDictionary metadata)
 		{
@@ -1006,9 +997,6 @@ namespace AssetsLibrary {
 		/// <param name="imageData">To be added.</param>
 		///         <param name="metadata">To be added.</param>
 		///         <summary>To be added.</summary>
-		///         <returns>
-		///           <para>A task that represents the asynchronous WriteImageToSavedPhotosAlbum operation.   The value of the TResult parameter is a <see cref="AssetsLibrary.ALAssetsLibraryWriteCompletionDelegate" />.</para>
-		///         </returns>
 		///         <remarks>To be added.</remarks>
 		public unsafe virtual Task<NSUrl> WriteImageToSavedPhotosAlbumAsync (CGImage imageData, NSDictionary metadata)
 		{
@@ -1031,9 +1019,6 @@ namespace AssetsLibrary {
 		/// <param name="imageData">To be added.</param>
 		///         <param name="orientation">To be added.</param>
 		///         <summary>To be added.</summary>
-		///         <returns>
-		///           <para>A task that represents the asynchronous WriteImageToSavedPhotosAlbum operation.   The value of the TResult parameter is a <see cref="AssetsLibrary.ALAssetsLibraryWriteCompletionDelegate" />.</para>
-		///         </returns>
 		///         <remarks>To be added.</remarks>
 		public unsafe virtual Task<NSUrl> WriteImageToSavedPhotosAlbumAsync (CGImage imageData, ALAssetOrientation orientation)
 		{
@@ -1054,9 +1039,6 @@ namespace AssetsLibrary {
 
 		/// <param name="videoPathURL">To be added.</param>
 		///         <summary>To be added.</summary>
-		///         <returns>
-		///           <para>A task that represents the asynchronous WriteVideoToSavedPhotosAlbum operation.   The value of the TResult parameter is a <see cref="AssetsLibrary.ALAssetsLibraryWriteCompletionDelegate" />.</para>
-		///         </returns>
 		///         <remarks>
 		///           <para copied="true">The WriteVideoToSavedPhotosAlbumAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
 		///           <para copied="true">To be added.</para>
@@ -1076,7 +1058,6 @@ namespace AssetsLibrary {
 		}
 
 		/// <include file="../../docs/api/AssetsLibrary/ALAssetsLibrary.xml" path="/Documentation/Docs[@DocId='P:AssetsLibrary.ALAssetsLibrary.ChangedNotification']/*" />
-		[Advice ("Use ALAssetsLibrary.Notifications.ObserveChanged helper method instead.")]
 		public static NSString ChangedNotification {
 			get {
 				throw new InvalidOperationException (Constants.AssetsLibraryRemoved);
@@ -1134,22 +1115,18 @@ namespace AssetsLibrary {
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		[Obsolete (Constants.AssetsLibraryRemoved)]
 		public static partial class Notifications {
-			/// <include file="../../docs/api/AssetsLibrary.ALAssetsLibrary/Notifications.xml" path="/Documentation/Docs[@DocId='M:AssetsLibrary.ALAssetsLibrary.Notifications.ObserveChanged(System.EventHandler{Foundation.NSNotificationEventArgs})']/*" />
 			public static NSObject ObserveChanged (EventHandler<NSNotificationEventArgs> handler)
 			{
 				throw new InvalidOperationException (Constants.AssetsLibraryRemoved);
 			}
-			/// <include file="../../docs/api/AssetsLibrary.ALAssetsLibrary/Notifications.xml" path="/Documentation/Docs[@DocId='M:AssetsLibrary.ALAssetsLibrary.Notifications.ObserveChanged(Foundation.NSObject,System.EventHandler{Foundation.NSNotificationEventArgs})']/*" />
 			public static NSObject ObserveChanged (NSObject objectToObserve, EventHandler<NSNotificationEventArgs> handler)
 			{
 				throw new InvalidOperationException (Constants.AssetsLibraryRemoved);
 			}
-			/// <include file="../../docs/api/AssetsLibrary.ALAssetsLibrary/Notifications.xml" path="/Documentation/Docs[@DocId='M:AssetsLibrary.ALAssetsLibrary.Notifications.ObserveChanged(System.EventHandler{AssetsLibrary.ALAssetLibraryChangedEventArgs})']/*" />
 			public static NSObject ObserveChanged (EventHandler<AssetsLibrary.ALAssetLibraryChangedEventArgs> handler)
 			{
 				throw new InvalidOperationException (Constants.AssetsLibraryRemoved);
 			}
-			/// <include file="../../docs/api/AssetsLibrary.ALAssetsLibrary/Notifications.xml" path="/Documentation/Docs[@DocId='M:AssetsLibrary.ALAssetsLibrary.Notifications.ObserveChanged(Foundation.NSObject,System.EventHandler{AssetsLibrary.ALAssetLibraryChangedEventArgs})']/*" />
 			public static NSObject ObserveChanged (NSObject objectToObserve, EventHandler<AssetsLibrary.ALAssetLibraryChangedEventArgs> handler)
 			{
 				throw new InvalidOperationException (Constants.AssetsLibraryRemoved);

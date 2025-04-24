@@ -461,7 +461,7 @@ namespace CoreMotion {
 	[MacCatalyst (13, 1)]
 	delegate void CMStepQueryHandler (nint numberOfSteps, NSError error);
 
-	/// <summary>The delegate used with <see cref="CoreMotion.CMStepCounter.StartStepCountingUpdates(Foundation.NSOperationQueue,System.nint,CoreMotion.CMStepUpdateHandler)" />.</summary>
+	/// <summary>The delegate used with <see cref="CoreMotion.CMStepCounter.StartStepCountingUpdates(Foundation.NSOperationQueue,System.IntPtr,CoreMotion.CMStepUpdateHandler)" />.</summary>
 	[MacCatalyst (13, 1)]
 	delegate void CMStepUpdateHandler (nint numberOfSteps, NSDate timestamp, NSError error);
 

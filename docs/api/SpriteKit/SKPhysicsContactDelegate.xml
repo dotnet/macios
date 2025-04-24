@@ -11,7 +11,7 @@ public override void DidBeginContact(SKPhysicsContact contact)
 	{
 		if(contact.BodyA.Node.Name == "BottomWall" || contact.BodyB.Node.Name == "BottomWall" || contact.BodyA.Node.Name == "TopWall" || contact.BodyB.Node.Name == "TopWall")
 		{
-			world.Gravity = new PointF(0, -world.Gravity.Y);
+			world.Gravity = new CGPoint(0, -world.Gravity.Y);
 		}
 	}
 }        

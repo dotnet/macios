@@ -36,7 +36,7 @@
       </para>
       <para>
 	To set the values to arbitrary data types, use the
-	<see cref="UIKit.UIPasteBoard.SetData*" /> method.
+	<see cref="UIKit.UIPasteBoard.SetData" /> method.
       </para>
       <para>
 	You can use the convenience properties <see cref="UIKit.UIPasteboard.String" />, <see cref="UIKit.UIPasteboard.Strings" />, <see cref="UIKit.UIPasteboard.Image" />, <see cref="UIKit.UIPasteboard.Images" />, <see cref="UIKit.UIPasteboard.Url" />, <see cref="UIKit.UIPasteboard.Urls" />, <see cref="UIKit.UIPasteboard.Color" /> and <see cref="UIKit.UIPasteboard.Colors" /> to set and get
@@ -87,7 +87,7 @@ UIPasteboard.General.String = "So hello";
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="UIKit.UIPasteboard.Notifications" />.<see cref="UIKit.UIPasteboard.Notifications.ObserveChanged*" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="UIKit.UIPasteboard.Notifications" />.<see cref="UIKit.UIPasteboard.Notifications.ObserveChanged" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
@@ -157,7 +157,7 @@ void Setup ()
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="UIKit.UIPasteboard.Notifications" />.<see cref="UIKit.UIPasteboard.Notifications.ObserveRemoved*" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="UIKit.UIPasteboard.Notifications" />.<see cref="UIKit.UIPasteboard.Notifications.ObserveRemoved" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[

@@ -691,7 +691,7 @@ namespace CoreFoundation {
 		/// <summary>Gets the system's proxy configuration settings.</summary>
 		///         <returns>A <see cref="CoreFoundation.CFProxySettings" /> with the system's proxy settings.</returns>
 		///         <remarks>These settings are used by <see cref="CoreFoundation.CFNetwork.GetProxiesForURL(Foundation.NSUrl,CoreFoundation.CFProxySettings)" /> and 
-		/// 	<see cref="CoreFoundation.GetProxiesForUri*" />.</remarks>
+		/// 	<see cref="GetProxiesForUri" />.</remarks>
 		public static CFProxySettings? GetSystemProxySettings ()
 		{
 			IntPtr native = CFNetworkCopySystemProxySettings ();

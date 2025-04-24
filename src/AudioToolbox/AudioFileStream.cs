@@ -55,7 +55,7 @@ namespace AudioToolbox {
 		CacheProperty = 2,
 	}
 
-	/// <summary>An enumeration whose values indicate the status following calls to the <see cref="AudioToolbox.AudioFileStream.Seek(System.Int64,System.Int64@,System.Boolean@)" /> or <see cref="AudioToolbox.AudioFileStream.ParseBytes(System.Byte[],System.Int32,System.Int32,System.Boolean)" /> methods.</summary>
+	/// <summary>An enumeration whose values indicate the status following calls to the <see cref="AudioToolbox.AudioFileStream.Seek(System.Int64,out System.Int64,out System.Boolean)" /> or <see cref="AudioToolbox.AudioFileStream.ParseBytes(System.Byte[],System.Int32,System.Int32,System.Boolean)" /> methods.</summary>
 	///     <remarks>To be added.</remarks>
 	public enum AudioFileStreamStatus { // Implictly cast to OSType
 		/// <summary>To be added.</summary>
@@ -129,7 +129,7 @@ namespace AudioToolbox {
 		InfoDictionary = 0x696e666f,
 	}
 
-	/// <summary>Provides data for the <see cref="AudioToolbox.PropertyFoundEventArgs.PropertyFound" /> event.</summary>
+	/// <summary>Provides data for the <see cref="AudioToolbox.AudioFileStream.PropertyFound" /> event.</summary>
 	///     <remarks>
 	///     </remarks>
 	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/StreamingAudio/">StreamingAudio</related>
@@ -167,7 +167,7 @@ namespace AudioToolbox {
 		}
 	}
 
-	/// <summary>Provides data for the <see cref="AudioToolbox.PacketReceivedEventArgs.PacketDecoded" /> event.</summary>
+	/// <summary>Provides data for the <see cref="AudioToolbox.AudioFileStream.PacketDecoded" /> event.</summary>
 	///     <remarks>
 	///     </remarks>
 	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/StreamingAudio/">StreamingAudio</related>

@@ -150,7 +150,7 @@ namespace AddressBook {
 		FirstNamePhonetic,
 		/// <summary>
 		///           The
-		///           <see cref="AddressBook.ABPerson.GetInstantMessages*" />
+		///           <see cref="AddressBook.ABPerson.GetInstantMessages" />
 		///           multi-value property.
 		///         </summary>
 		InstantMessage,
@@ -302,31 +302,31 @@ namespace AddressBook {
 		Dictionary = 0x5,
 		/// <summary>
 		///           The property holds a
-		///           <see cref="AddressBook.ABMultiValue`1" />
+		///           <see cref="AddressBook.ABMultiValue{T}" />
 		///           value.
 		///         </summary>
 		MultiString = MultiMask | String,
 		/// <summary>
 		///           The property holds a
-		///           <see cref="AddressBook.ABMultiValue{Foundation.NSNumber}" />
+		///           <see cref="AddressBook.ABMultiValue{T}" /> of <see cref="NSNumber" />
 		///           value.
 		///         </summary>
 		MultiInteger = MultiMask | Integer,
 		/// <summary>
 		///           The property holds a
-		///           <see cref="AddressBook.ABMultiValue{Foundation.NSNumber}" />
+		///           <see cref="AddressBook.ABMultiValue{T}" /> of <see cref="NSNumber" />
 		///           value.
 		///         </summary>
 		MultiReal = MultiMask | Real,
 		/// <summary>
 		///           The property holds a
-		///           <see cref="AddressBook.ABMultiValue{Foundation.NSDate}" />
+		///           <see cref="AddressBook.ABMultiValue{T}" /> of <see cref="NSDate" />
 		///           value.
 		///         </summary>
 		MultiDateTime = MultiMask | DateTime,
 		/// <summary>
 		///           The property holds a
-		///           <see cref="AddressBook.ABMultiValue{Foundation.NSDictionary}" />
+		///           <see cref="AddressBook.ABMultiValue{T}" /> of <see cref="NSDictionary" />
 		///           value.
 		///         </summary>
 		MultiDictionary = MultiMask | Dictionary,

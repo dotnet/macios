@@ -4,15 +4,15 @@
       The type of the value to store.
     </typeparam>
     <summary>
-      A <see cref="AddressBook.ABMultiValue`1" /> that supports editing.
+      A <see cref="AddressBook.ABMultiValue{T}" /> that supports editing.
     </summary>
     <remarks>
       <para>
         "Editing" includes adding and removing
-        <see cref="AddressBook.ABMultiValueEntry`1" /> entries
+        <see cref="AddressBook.ABMultiValueEntry{T}" /> entries
         and changing the
-        <see cref="AddressBook.ABMultiValueEntry`1.Value" /> and
-        <see cref="AddressBook.ABMultiValueEntry`1.Label" />
+        <see cref="AddressBook.ABMultiValueEntry{T}.Value" /> and
+        <see cref="AddressBook.ABMultiValueEntry{T}.Label" />
         properties on those entries.
       </para>
       <para>
@@ -22,22 +22,22 @@
         <item>
           <term>
             Creating properties:
-            <see cref="AddressBook.ABMutableDateMultiValue.ctor" />,
-            <see cref="AddressBook.ABMutableDictionaryMultiValue.ctor" />,
-            <see cref="AddressBook.ABMutableStringMultiValue.ctor" />.
+            <see cref="AddressBook.ABMutableDateMultiValue.ABMutableDateMultiValue" />,
+            <see cref="AddressBook.ABMutableDictionaryMultiValue.ABMutableDictionaryMultiValue" />,
+            <see cref="AddressBook.ABMutableStringMultiValue.ABMutableStringMultiValue" />.
           </term>
         </item>
         <item>
           <term>
             Creating properties:
-            <see cref="AddressBook.ABMutableDateMultiValue.ctor" />,
-            <see cref="AddressBook.ABMutableDictionaryMultiValue.ctor" />,
-            <see cref="AddressBook.ABMutableStringMultiValue.ctor" />.
+            <see cref="AddressBook.ABMutableDateMultiValue.ABMutableDateMultiValue" />,
+            <see cref="AddressBook.ABMutableDictionaryMultiValue.ABMutableDictionaryMultiValue" />,
+            <see cref="AddressBook.ABMutableStringMultiValue.ABMutableStringMultiValue" />.
           </term>
         </item>
       </list>
     </remarks>
-    <altmember cref="AddressBook.ABMultiValue`1.ToMutableMultiValue" />
+    <altmember cref="AddressBook.ABMultiValue{T}.ToMutableMultiValue" />
     <altmember cref="AddressBook.ABMutableDateMultiValue" />
     <altmember cref="AddressBook.ABMutableDictionaryMultiValue" />
     <altmember cref="AddressBook.ABMutableStringMultiValue" />

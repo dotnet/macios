@@ -5,7 +5,7 @@
     </value>
     <remarks>
       <attribution license="cc4" from="Microsoft" modified="false" />
-      <para>Changing the <see cref="CoreGraphics.CGRect.Width" /> property will also cause a change in the <see cref="CoreGraphics.CGRect.Right" /> property of the <see cref="CoreGraphics.CGRect" />. The units the rectangle is drawn in is determined by the <see cref="System.Drawing.Graphics.PageUnit" /> and <see cref="System.Drawing.Graphics.PageScale" /> properties of the graphics object used for drawing. The default unit is pixels.</para>
+      <para>Changing the <see cref="CoreGraphics.CGRect.Width" /> property will also cause a change in the <see cref="CoreGraphics.CGRect.Right" /> property of the <see cref="CoreGraphics.CGRect" />.</para>
     </remarks>
   </Docs>
   <Docs DocId="P:CoreGraphics.CGRect.Height">
@@ -14,7 +14,7 @@
     </value>
     <remarks>
       <attribution license="cc4" from="Microsoft" modified="false" />
-      <para>Changing the <see cref="CoreGraphics.CGRect.Height" /> property will also cause a change in the <see cref="CoreGraphics.CGRect.Bottom" /> property of the <see cref="CoreGraphics.CGRect" />. The units the rectangle is drawn in is determined by the <see cref="System.Drawing.Graphics.PageUnit" /> and <see cref="System.Drawing.Graphics.PageScale" /> properties of the graphics object used for drawing. The default unit is pixels.</para>
+      <para>Changing the <see cref="CoreGraphics.CGRect.Height" /> property will also cause a change in the <see cref="CoreGraphics.CGRect.Bottom" /> property of the <see cref="CoreGraphics.CGRect" />.</para>
     </remarks>
   </Docs>
   <Docs DocId="P:CoreGraphics.CGRect.Width">
@@ -23,7 +23,7 @@
     </value>
     <remarks>
       <attribution license="cc4" from="Microsoft" modified="false" />
-      <para>Changing the <see cref="CoreGraphics.CGRect.Width" /> property will also cause a change in the <see cref="CoreGraphics.CGRect.Right" /> property of the <see cref="CoreGraphics.CGRect" />. The units the rectangle is drawn in is determined by the <see cref="System.Drawing.Graphics.PageUnit" /> and <see cref="System.Drawing.Graphics.PageScale" /> properties of the graphics object used for drawing. The default unit is pixels.</para>
+      <para>Changing the <see cref="CoreGraphics.CGRect.Width" /> property will also cause a change in the <see cref="CoreGraphics.CGRect.Right" /> property of the <see cref="CoreGraphics.CGRect" />.</para>
     </remarks>
   </Docs>
   <Docs DocId="P:CoreGraphics.CGRect.Height">
@@ -32,7 +32,7 @@
     </value>
     <remarks>
       <attribution license="cc4" from="Microsoft" modified="false" />
-      <para>Changing the <see cref="CoreGraphics.CGRect.Height" /> property will also cause a change in the <see cref="CoreGraphics.CGRect.Bottom" /> property of the <see cref="CoreGraphics.CGRect" />. The units the rectangle is drawn in is determined by the <see cref="System.Drawing.Graphics.PageUnit" /> and <see cref="System.Drawing.Graphics.PageScale" /> properties of the graphics object used for drawing. The default unit is pixels.</para>
+      <para>Changing the <see cref="CoreGraphics.CGRect.Height" /> property will also cause a change in the <see cref="CoreGraphics.CGRect.Bottom" /> property of the <see cref="CoreGraphics.CGRect" />.</para>
     </remarks>
   </Docs>
   <Docs DocId="M:CoreGraphics.CGRect.Union(CoreGraphics.CGRect,CoreGraphics.CGRect)">

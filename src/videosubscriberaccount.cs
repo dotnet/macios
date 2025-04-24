@@ -281,7 +281,7 @@ namespace VideoSubscriberAccount {
 	[DisableDefaultCtor]
 	interface VSAccountManagerResult {
 
-		/// <summary>Informs the <see cref="VideoSubscriberAccounts.VSAccountManager" /> that the app no longer needs the requested work.</summary>
+		/// <summary>Informs the <see cref="VSAccountManager" /> that the app no longer needs the requested work.</summary>
 		///         <remarks>To be added.</remarks>
 		[Export ("cancel")]
 		void Cancel ();

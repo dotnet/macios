@@ -170,7 +170,7 @@ namespace Contacts {
 		MailingAddress,
 	}
 
-	/// <summary>Flagging enumeration that specifies keys that can be checked with <see cref="Contacts.CNContact.IsKeyAvailable(Foundation.NSString)" /> and <see cref="Contacts.CNContact.AreKeysAvailable``1(``0[])" />.</summary>
+	/// <summary>Flagging enumeration that specifies keys that can be checked with <see cref="Contacts.CNContact.IsKeyAvailable(Foundation.NSString)" /> and <see cref="Contacts.CNContact.AreKeysAvailable{T}(T[])" />.</summary>
 	[MacCatalyst (13, 1)]
 	[Flags]
 	public enum CNContactOptions : long {

@@ -25,7 +25,7 @@ namespace SystemConfiguration {
 			StatusErrorCode = statusErrorCode;
 		}
 
-		/// <summary>The <see cref="SystemConfiguration.StatusCode" /> wrapped in this <see cref="SystemConfigurtion.SystemConfigurationException" />.</summary>
+		/// <summary>The <see cref="SystemConfiguration.StatusCode" /> wrapped in this <see cref="SystemConfiguration.SystemConfigurationException" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public StatusCode StatusErrorCode { get; private set; }

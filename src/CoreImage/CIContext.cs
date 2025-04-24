@@ -86,7 +86,11 @@ namespace CoreImage {
 			}
 		}
 
+#if __MACOS__
+		/// <include file="../../docs/api/CoreImage/CIContextOptions.xml" path="/Documentation/Docs[@DocId='macOS:P:CoreImage.CIContextOptions.UseSoftwareRenderer']/*" />
+#else
 		/// <include file="../../docs/api/CoreImage/CIContextOptions.xml" path="/Documentation/Docs[@DocId='P:CoreImage.CIContextOptions.UseSoftwareRenderer']/*" />
+#endif
 		public bool UseSoftwareRenderer {
 			get {
 				var b = GetBoolValue (CIContext.UseSoftwareRenderer);

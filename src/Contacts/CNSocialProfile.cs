@@ -17,13 +17,13 @@ namespace Contacts {
 	/// <summary>Enumerates properties of social services that are always fetched.</summary>
 	///     <remarks>To be added.</remarks>
 	public enum CNSocialProfileOption {
-		/// <summary>Associated with the <see cref="Contacts.CNSocialService.UrlString" /> property.</summary>
+		/// <summary>Associated with the <see cref="Contacts.CNSocialProfileKey.UrlString" /> property.</summary>
 		UrlString,
-		/// <summary>Associated with the <see cref="Contacts.CNSocialService.Username" /> property.</summary>
+		/// <summary>Associated with the <see cref="Contacts.CNSocialProfileKey.Username" /> property.</summary>
 		Username,
-		/// <summary>Associated with the <see cref="Contacts.CNSocialService.UserIdentifier" /> property.</summary>
+		/// <summary>Associated with the <see cref="Contacts.CNSocialProfileKey.UserIdentifier" /> property.</summary>
 		UserIdentifier,
-		/// <summary>Associated with the <see cref="Contacts.CNSocialService.Service" /> property.</summary>
+		/// <summary>Associated with the <see cref="Contacts.CNSocialProfileKey.Service" /> property.</summary>
 		Service,
 	}
 

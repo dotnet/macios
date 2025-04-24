@@ -39,9 +39,7 @@ namespace CoreBluetooth {
 	// It's intentionally not called AdvertisementDataOptions because different options
 	// are valid in different contexts
 	//
-	/// <summary>Manages access to options used by <see cref="CoreBluetooth.StartAdvertising*" /> method.</summary>
-	///     <remarks>
-	///     </remarks>
+	/// <summary>Manages access to options used by <see cref="CBPeripheralManager.StartAdvertising(StartAdvertisingOptions)" />.</summary>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

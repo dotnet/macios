@@ -477,7 +477,7 @@ namespace MetalKit {
 			<param name="options">To be added.</param>
 			<summary>To be added.</summary>
 			<returns>
-			          <para>A task that represents the asynchronous FromName operation.   The value of the TResult parameter is a System.nfloat.</para>
+			          <para>A task that represents the asynchronous FromName operation.   The value of the TResult parameter is a <see cref="nfloat" />.</para>
 			        </returns>
 			<remarks>To be added.</remarks>
 			""")]
@@ -557,7 +557,7 @@ namespace MetalKit {
 			<param name="options">To be added.</param>
 			<summary>To be added.</summary>
 			<returns>
-			          <para>A task that represents the asynchronous FromNames operation.   The value of the TResult parameter is a System.nfloat.</para>
+			          <para>A task that represents the asynchronous FromNames operation.   The value of the TResult parameter is a <see cref="nfloat" />.</para>
 			        </returns>
 			<remarks>To be added.</remarks>
 			""")]

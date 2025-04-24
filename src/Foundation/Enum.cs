@@ -1028,7 +1028,7 @@ namespace Foundation {
 		ProducesRelativePathUrls = 1 << 4,
 	}
 
-	/// <summary>An enumeration of options for use with <see cref="Foundation.NSFileManager.Replace(Foundation.NSUrl,Foundation.NSUrl,System.String,Foundation.NSFileManagerItemReplacementOptions,Foundation.NSUrl@,Foundation.NSError@)" />.</summary>
+	/// <summary>An enumeration of options for use with <see cref="Foundation.NSFileManager.Replace(Foundation.NSUrl,Foundation.NSUrl,System.String,Foundation.NSFileManagerItemReplacementOptions,ref Foundation.NSUrl,out Foundation.NSError)" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Flags]
 	[Native]
@@ -1041,7 +1041,7 @@ namespace Foundation {
 		WithoutDeletingBackupItem = 1 << 1,
 	}
 
-	/// <summary>An enumeration of special directories for use with <see cref="Foundation.NSFileManager.GetURLs*" />.</summary>
+	/// <summary>An enumeration of special directories for use with <see cref="Foundation.NSFileManager.GetURLs" />.</summary>
 	/// <remarks>Some of these constants when used can return more than one value (for example AllApplicationsDirectory).</remarks>
 	[Native]
 	public enum NSSearchPathDirectory : ulong {
@@ -1618,7 +1618,7 @@ namespace Foundation {
 		All,
 	}
 
-	/// <summary>A flagging enumeration whose values specify options in calls to <see cref="NSFoundation.NSCalendar.Components*" /> and <see cref="Foundation.NSCalendar.DateByAddingComponents(Foundation.NSDateComponents,Foundation.NSDate,Foundation.NSDateComponentsWrappingBehavior)" />.</summary>
+	/// <summary>A flagging enumeration whose values specify options in calls to <see cref="NSFoundation.NSCalendar.Components" /> and <see cref="Foundation.NSCalendar.DateByAddingComponents(Foundation.NSDateComponents,Foundation.NSDate,Foundation.NSDateComponentsWrappingBehavior)" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Flags]
 	[Native]
@@ -1686,7 +1686,7 @@ namespace Foundation {
 		CallSignaling = 11,
 	}
 
-	/// <summary>A flagging enumeration that specifies sorting options in calls to <see cref="NSFoundation.NSMutableOrderedSet.Sort*" />.</summary>
+	/// <summary>A flagging enumeration that specifies sorting options in calls to <see cref="NSFoundation.NSMutableOrderedSet.Sort" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Flags]
 	[Native]
@@ -1697,7 +1697,7 @@ namespace Foundation {
 		Stable = 1 << 4,
 	}
 
-	/// <summary>A flagging enumeration that can be used with the <see cref="Foundation.NSData(Foundation.NSData,Foundation.NSDataBase64DecodingOptions" /> constructor.</summary>
+	/// <summary>A flagging enumeration that can be used with the <see cref="Foundation.NSData(Foundation.NSData,Foundation.NSDataBase64DecodingOptions)" /> constructor.</summary>
 	/// <remarks>To be added.</remarks>
 	[Flags]
 	[Native]

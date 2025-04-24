@@ -16,7 +16,7 @@
           <term>Number of sections – Returned from <see cref="UIKit.UICollectionViewDataSource.NumberOfSections(UIKit.UICollectionView)" /> method. Defaults to 1 if not implemented.</term>
         </item>
         <item>
-          <term>Number of items per section – Returned from <see cref="UIKit.UICollectionViewDataSource.GetItemsCount(UIKit.UICollectionView,System.nint)" /> method.</term>
+          <term>Number of items per section – Returned from <see cref="UIKit.UICollectionViewDataSource.GetItemsCount(UIKit.UICollectionView,System.IntPtr)" /> method.</term>
         </item>
       </list>
       <para>The <see cref="UIKit.UICollectionView" /> maintains a reuse queue, which efficiently reuses <see cref="UIKit.UICollectionReusableView" />s without allocating and de-allocating any more than necessary. The <see cref="UIKit.UICollectionViewDataSource.GetCell(UIKit.UICollectionView,Foundation.NSIndexPath)" /> and <see cref="UIKit.UICollectionViewDataSource.GetViewForSupplementaryElement(UIKit.UICollectionView,Foundation.NSString,Foundation.NSIndexPath)" /> are the functions that mutate the values of <see cref="UIKit.UICollectionReusableView" /> component views. Because these methods may be called frequently during scrolling (particularly <see cref="UIKit.UICollectionViewDataSource.GetCell(UIKit.UICollectionView,Foundation.NSIndexPath)" />), the application developer should avoid unnecessary calculation in them.</para>

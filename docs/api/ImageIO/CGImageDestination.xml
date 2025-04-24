@@ -17,7 +17,7 @@
       <para>In the classic API, those methods were called FromUrl, FromData and Create respectively.   But this naming was incorrect, as it did not really create an image destination from a url, or a data.  In the Unified API, they have all been turned into <see cref="ImageIO.CGImageDestination.Create(Foundation.NSMutableData,System.String,System.Int32,ImageIO.CGImageDestinationOptions)" /> methods.</para>
       <para>
       </para>
-      <para>Once you have created the image, you can call <see cref="ImageIO.CGImageDestination.AddImage*" /> or <see cref="ImageIO.CGImageDestination.AddImageAndMetadata(CoreGraphics.CGImage,ImageIO.CGImageMetadata,ImageIO.CGImageDestinationOptions)" /> to add one or more images.   </para>
+      <para>Once you have created the image, you can call <see cref="AddImage(CGImage,CGImageDestinationOptions)" />, <see cref="AddImage(CGImage,NSDictionary)" />, <see cref="AddImage(CGImageSource,int,CGImageDestinationOptions)" />, <see cref="AddImage(CGImageSource,int,NSDictionary)" />, <see cref="ImageIO.CGImageDestination.AddImageAndMetadata(CoreGraphics.CGImage,ImageIO.CGImageMetadata,ImageIO.CGImageDestinationOptions)" /> or <see cref="ImageIO.CGImageDestination.AddImageAndMetadata(CoreGraphics.CGImage,ImageIO.CGImageMetadata,NSDictionary)" /> to add one or more images.</para>
       <para>
       </para>
       <para>To write out the image, you must call the <see cref="ImageIO.CGImageDestination.Close" /> method.   </para>

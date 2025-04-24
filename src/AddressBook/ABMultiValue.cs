@@ -105,14 +105,14 @@ namespace AddressBook {
 	///       The type of the value to store.
 	///     </typeparam>
 	///     <summary>
-	///       A <see cref="AddressBook.ABMultiValue`1" /> entry.
+	///       A <see cref="AddressBook.ABMultiValue{T}" /> entry.
 	///     </summary>
 	///     <remarks>
 	///       <para>
 	///         A "tuple" of
-	///         (<see cref="AddressBook.ABMultiValueEntry`1.Value" />,
-	///         <see cref="AddressBook.ABMultiValueEntry`1.Label" />,
-	///         <see cref="AddressBook.ABMultiValueEntry`1.Identifier" />).
+	///         (<see cref="AddressBook.ABMultiValueEntry{T}.Value" />,
+	///         <see cref="AddressBook.ABMultiValueEntry{T}.Label" />,
+	///         <see cref="AddressBook.ABMultiValueEntry{T}.Identifier" />).
 	///       </para>
 	///     </remarks>
 	[SupportedOSPlatform ("ios")]
@@ -139,7 +139,7 @@ namespace AddressBook {
 
 		/// <summary>
 		///           Gets a value indicating whether the
-		///           <see cref="AddressBook.ABMultiValueEntry`1" />
+		///           <see cref="AddressBook.ABMultiValueEntry{T}" />
 		///           is read-only.
 		///         </summary>
 		///         <value>
@@ -150,8 +150,8 @@ namespace AddressBook {
 		///           <para>
 		///             If <c>IsReadOnly</c> is <see langword="true" />, attempts to
 		///             change the
-		///             <see cref="AddressBook.ABMultiValueEntry`1.Value" /> and
-		///             <see cref="AddressBook.ABMultiValueEntry`1.Label" />
+		///             <see cref="AddressBook.ABMultiValueEntry{T}.Value" /> and
+		///             <see cref="AddressBook.ABMultiValueEntry{T}.Label" />
 		///             properties will result in a
 		///             <see cref="System.NotSupportedException" />.
 		///           </para>
@@ -176,19 +176,19 @@ namespace AddressBook {
 		}
 
 		/// <summary>
-		///           The value of the <see cref="AddressBook.ABMultiValueEntry`1" />.
+		///           The value of the <see cref="AddressBook.ABMultiValueEntry{T}" />.
 		///         </summary>
 		///         <value>
 		///           A <typeparamref name="T" /> which is the value of the
-		///           <see cref="AddressBook.ABMultiValueEntry`1" />.
+		///           <see cref="AddressBook.ABMultiValueEntry{T}" />.
 		///         </value>
 		///         <remarks>
 		///         </remarks>
 		///         <exception cref="System.NotSupportedException">
-		///           <see cref="AddressBook.ABMultiValueEntry`1.IsReadOnly" />
+		///           <see cref="AddressBook.ABMultiValueEntry{T}.IsReadOnly" />
 		///           is <see langword="true" /> and the setter was invoked.
 		///         </exception>
-		///         <altmember cref="AddressBook.ABMultiValue`1.IsReadOnly" />
+		///         <altmember cref="AddressBook.ABMultiValue{T}.IsReadOnly" />
 		public T Value {
 			get {
 				AssertValid ();
@@ -204,19 +204,19 @@ namespace AddressBook {
 		}
 
 		/// <summary>
-		///           The label of the <see cref="AddressBook.ABMultiValueEntry`1" />.
+		///           The label of the <see cref="AddressBook.ABMultiValueEntry{T}" />.
 		///         </summary>
 		///         <value>
 		///           A <see cref="Foundation.NSString" /> which is the label
-		///           of the <see cref="AddressBook.ABMultiValueEntry`1" />.
+		///           of the <see cref="AddressBook.ABMultiValueEntry{T}" />.
 		///         </value>
 		///         <remarks>
 		///         </remarks>
 		///         <exception cref="System.NotSupportedException">
-		///           <see cref="AddressBook.ABMultiValueEntry`1.IsReadOnly" />
+		///           <see cref="AddressBook.ABMultiValueEntry{T}.IsReadOnly" />
 		///           is <see langword="true" /> and the setter was invoked.
 		///         </exception>
-		///         <altmember cref="AddressBook.ABMultiValue`1.IsReadOnly" />
+		///         <altmember cref="AddressBook.ABMultiValue{T}.IsReadOnly" />
 		public NSString? Label {
 			get {
 				AssertValid ();
@@ -233,19 +233,19 @@ namespace AddressBook {
 
 		/// <summary>
 		///           The identifier of the
-		///           <see cref="AddressBook.ABMultiValueEntry`1" />.
+		///           <see cref="AddressBook.ABMultiValueEntry{T}" />.
 		///         </summary>
 		///         <value>
 		///           A <see cref="System.Int32" /> which is the identifier of the
-		///           <see cref="AddressBook.ABMultiValueEntry`1" />.
+		///           <see cref="AddressBook.ABMultiValueEntry{T}" />.
 		///         </value>
 		///         <remarks>
 		///           Since multiple
-		///           <see cref="AddressBook.ABMultiValueEntry`1" />s within a
-		///           <see cref="AddressBook.ABMultiValue`1" /> can have the
+		///           <see cref="AddressBook.ABMultiValueEntry{T}" />s within a
+		///           <see cref="AddressBook.ABMultiValue{T}" /> can have the
 		///           same
-		///           <see cref="AddressBook.ABMultiValueEntry`1.Value" /> and
-		///           <see cref="AddressBook.ABMultiValueEntry`1.Label" />,
+		///           <see cref="AddressBook.ABMultiValueEntry{T}.Value" /> and
+		///           <see cref="AddressBook.ABMultiValueEntry{T}.Label" />,
 		///           use <c>Identifier</c> to differentiate between entries.
 		///         </remarks>
 		public int Identifier {
@@ -320,7 +320,7 @@ namespace AddressBook {
 		///         </summary>
 		///         <returns>
 		///           A <typeparamref name="T" /> array containing all
-		///           <see cref="AddressBook.ABMultiValueEntry`1.Value" />s
+		///           <see cref="AddressBook.ABMultiValueEntry{T}.Value" />s
 		///           within the collection.
 		///         </returns>
 		///         <remarks>
@@ -333,11 +333,11 @@ namespace AddressBook {
 
 		/// <summary>
 		///           The number of entries in the
-		///           <see cref="AddressBook.ABMultiValue`1" />.
+		///           <see cref="AddressBook.ABMultiValue{T}" />.
 		///         </summary>
 		///         <value>
 		///           A <see cref="System.Int32" /> containing the number of entries in
-		///           the <see cref="AddressBook.ABMultiValue`1" />.
+		///           the <see cref="AddressBook.ABMultiValue{T}" />.
 		///         </value>
 		///         <remarks>
 		///         </remarks>
@@ -357,13 +357,13 @@ namespace AddressBook {
 
 		/// <summary>
 		///           Returns an enumerator that iterates through all entries in the
-		///           <see cref="AddressBook.ABMultiValue`1" />.
+		///           <see cref="AddressBook.ABMultiValue{T}" />.
 		///         </summary>
 		///         <returns>
 		///           An
 		///           <see cref="System.Collections.IEnumerator" />
 		///           which will return all entries in the
-		///           <see cref="AddressBook.ABMultiValue`1" />.
+		///           <see cref="AddressBook.ABMultiValue{T}" />.
 		///         </returns>
 		///         <remarks>
 		///         </remarks>
@@ -374,13 +374,13 @@ namespace AddressBook {
 
 		/// <summary>
 		///           Returns an enumerator that iterates through all entries in the
-		///           <see cref="AddressBook.ABMultiValue`1" />.
+		///           <see cref="AddressBook.ABMultiValue{T}" />.
 		///         </summary>
 		///         <returns>
 		///           An
-		///           <see cref="System.Collections.Generic.IEnumerator&lt;AddressBook.ABMultiValueEntry&lt;T&gt;&gt;" />
+		///           <see cref="System.Collections.Generic.IEnumerator{T}" /> of <see cref="AddressBook.ABMultiValueEntry{T}" />
 		///           which will return all entries in the
-		///           <see cref="AddressBook.ABMultiValue`1" />.
+		///           <see cref="AddressBook.ABMultiValue{T}" />.
 		///         </returns>
 		///         <remarks>
 		///         </remarks>
@@ -422,12 +422,12 @@ namespace AddressBook {
 
 		/// <summary>
 		///           Returns an enumerator that iterates through all entries in the
-		///           <see cref="AddressBook.ABMultiValue`1" />.
+		///           <see cref="AddressBook.ABMultiValue{T}" />.
 		///         </summary>
 		///         <returns>
 		///           An <see cref="System.Collections.IEnumerator" />
 		///           which will return all entries in the
-		///           <see cref="AddressBook.ABMultiValue`1" />.
+		///           <see cref="AddressBook.ABMultiValue{T}" />.
 		///         </returns>
 		///         <remarks>
 		///         </remarks>
@@ -458,7 +458,7 @@ namespace AddressBook {
 
 		/// <summary>
 		///           Gets a value indicating whether the
-		///           <see cref="AddressBook.ABMutableMultiValue`1" />
+		///           <see cref="AddressBook.ABMutableMultiValue{T}" />
 		///           is read-only.
 		///         </summary>
 		///         <value>
@@ -475,7 +475,7 @@ namespace AddressBook {
 
 		/// <param name="value">
 		///           A <typeparamref name="T" /> to add to the
-		///           <see cref="AddressBook.ABMutableMultiValue`1" />.
+		///           <see cref="AddressBook.ABMutableMultiValue{T}" />.
 		///         </param>
 		///         <param name="label">
 		///           A <see cref="Foundation.NSString" /> to use
@@ -521,7 +521,7 @@ namespace AddressBook {
 	}
 
 	/// <summary>
-	///       A <see cref="AddressBook.ABMultiValue{Foundation.NSDate}" />
+	///       A <see cref="AddressBook.ABMultiValue{T}" /> of <see cref="Foundation.NSDate" />
 	///       which supports changing values.
 	///     </summary>
 	///     <remarks>
@@ -547,7 +547,7 @@ namespace AddressBook {
 	}
 
 	/// <summary>
-	///       A <see cref="AddressBook.ABMultiValue{Foundation.NSDictionary}" />
+	///       A <see cref="AddressBook.ABMultiValue{T}" /> of <see cref="Foundation.NSDictionary" />
 	///       which supports changing values.
 	///     </summary>
 	///     <remarks>
@@ -573,7 +573,7 @@ namespace AddressBook {
 	}
 
 	/// <summary>
-	///       A <see cref="AddressBook.ABMultiValue{Foundation.NSString}" />
+	///       A <see cref="AddressBook.ABMultiValue{T}" /> of <see cref="Foundation.NSString" />
 	///       which supports changing values.
 	///     </summary>
 	///     <remarks>

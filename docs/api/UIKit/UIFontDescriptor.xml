@@ -6,7 +6,7 @@
 	parameters they are interested in (font faces, font families,
 	font attributes, fallbacks).  You can consider these
 	descriptors queries, which you can later use to create a
-	concrete UIFont wit by using the <see cref="UIKit.UIFont.FromDescriptor(UIKit.UIFontDescriptor,System.nfloat)" /> method.
+	concrete UIFont wit by using the <see cref="UIKit.UIFont.FromDescriptor(UIKit.UIFontDescriptor,nfloat)" /> method.
       </para>
       <para>
 	These objects are immutable, once created, they can not be
@@ -14,7 +14,7 @@
 	precise font descriptor instance with new information.  You
 	can create a new UIFontDescriptor with more detailed font
 	attributes using the <see cref="UIKit.UIFontDescriptor.CreateWithAttributes(UIKit.UIFontAttributes)" />
-	method, extend one by explicitly setting a font face or font family using the <see cref="UIKit.UIFontDescriptor.CreateWithFace(System.String)" /> and <see cref="UIKit.UIFontDescriptor.CreateWithFamily(System.String)" /> methods, specify a desired font size or a transformation matrix with the <see cref="UIKit.UIFontDescriptor.CreateWithSize(System.nfloat)" /> and <see cref="UIKit.UIFontDescriptor.CreateWithMatrix(CoreGraphics.CGAffineTransform)" /> methods, or request that certain stylistic traits be present with <see cref="UIKit.UIFontDescriptor.CreateWithTraits(UIKit.UIFontDescriptorSymbolicTraits)" />.
+	method, extend one by explicitly setting a font face or font family using the <see cref="UIKit.UIFontDescriptor.CreateWithFace(System.String)" /> and <see cref="UIKit.UIFontDescriptor.CreateWithFamily(System.String)" /> methods, specify a desired font size or a transformation matrix with the <see cref="UIKit.UIFontDescriptor.CreateWithSize(nfloat)" /> and <see cref="UIKit.UIFontDescriptor.CreateWithMatrix(CoreGraphics.CGAffineTransform)" /> methods, or request that certain stylistic traits be present with <see cref="UIKit.UIFontDescriptor.CreateWithTraits(UIKit.UIFontDescriptorSymbolicTraits)" />.
 
       </para>
       <para>
@@ -30,7 +30,7 @@
       </para>
       <para> You can use the <see cref="UIKit.UIFontDescriptor.GetMatchingFontDescriptors(UIKit.UIFontDescriptorAttribute[])" /> method to get a set of UIFontDescriptors that match your
 	font explicitly, or you can use <see cref="UIKit.UIFontDescriptor.CreateWithTraits(UIKit.UIFontDescriptorSymbolicTraits)" />
-	and <see cref="UIKit.UIFont.FromDescriptor(UIKit.UIFontDescriptor,System.nfloat)" />
+	and <see cref="UIKit.UIFont.FromDescriptor(UIKit.UIFontDescriptor,nfloat)" />
 	methods to match implicitly.
       </para>
       <para>

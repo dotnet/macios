@@ -62,7 +62,7 @@ namespace UIKit {
 		///         <value>
 		///         </value>
 		///         <remarks>
-		///           <para>To implement dynamic type, application developers must act in reaction to <see cref="UIKit.UIApplication.Notifications.ObserveContentSizeCategoryChanged*" /> (see remarks and example at <see cref="UIKit.UIFont.GetPreferredFontForTextStyle(UIKit.UIFontTextStyle,UIKit.UITraitCollection)" />). </para>
+		///           <para>To implement dynamic type, application developers must act in reaction to <see cref="UIKit.UIApplication.Notifications.ObserveContentSizeCategoryChanged(EventHandler&lt;UIContentSizeCategoryChangedEventArgs&gt;)" /> (see remarks and example at <see cref="UIKit.UIFont.GetPreferredFontForTextStyle(UIKit.UIFontTextStyle,UIKit.UITraitCollection)" />). </para>
 		///           <para tool="threads">This can be used from a background thread.</para>
 		///         </remarks>
 		[SupportedOSPlatform ("ios")]
@@ -80,7 +80,7 @@ namespace UIKit {
 		///         <value>
 		///         </value>
 		///         <remarks>
-		///           <para>To implement dynamic type, application developers must act in reaction to <see cref="UIKit.UIApplication.Notifications.ObserveContentSizeCategoryChanged*" /> (see remarks and example at <see cref="UIKit.UIFont.GetPreferredFontForTextStyle(UIKit.UIFontTextStyle,UIKit.UITraitCollection)" />). </para>
+		///           <para>To implement dynamic type, application developers must act in reaction to <see cref="UIKit.UIApplication.Notifications.ObserveContentSizeCategoryChanged(EventHandler&lt;UIContentSizeCategoryChangedEventArgs&gt;)" /> (see remarks and example at <see cref="UIKit.UIFont.GetPreferredFontForTextStyle(UIKit.UIFontTextStyle,UIKit.UITraitCollection)" />). </para>
 		///           <para tool="threads">This can be used from a background thread.</para>
 		///         </remarks>
 		[SupportedOSPlatform ("ios")]
@@ -98,7 +98,7 @@ namespace UIKit {
 		///         <value>
 		///         </value>
 		///         <remarks>
-		///           <para>To implement dynamic type, application developers must act in reaction to <see cref="UIKit.UIApplication.Notifications.ObserveContentSizeCategoryChanged*" /> (see remarks and example at <see cref="UIKit.UIFont.GetPreferredFontForTextStyle(UIKit.UIFontTextStyle,UIKit.UITraitCollection)" />). </para>
+		///           <para>To implement dynamic type, application developers must act in reaction to <see cref="UIKit.UIApplication.Notifications.ObserveContentSizeCategoryChanged(EventHandler&lt;UIContentSizeCategoryChangedEventArgs&gt;)" /> (see remarks and example at <see cref="UIKit.UIFont.GetPreferredFontForTextStyle(UIKit.UIFontTextStyle,UIKit.UITraitCollection)" />). </para>
 		///           <para tool="threads">This can be used from a background thread.</para>
 		///         </remarks>
 		[SupportedOSPlatform ("ios")]
@@ -116,7 +116,7 @@ namespace UIKit {
 		///         <value>
 		///         </value>
 		///         <remarks>
-		///           <para>To implement dynamic type, application developers must act in reaction to <see cref="UIKit.UIApplication.Notifications.ObserveContentSizeCategoryChanged*" /> (see remarks and example at <see cref="UIKit.UIFont.GetPreferredFontForTextStyle(UIKit.UIFontTextStyle,UIKit.UITraitCollection)" />). </para>
+		///           <para>To implement dynamic type, application developers must act in reaction to <see cref="UIKit.UIApplication.Notifications.ObserveContentSizeCategoryChanged(EventHandler&lt;UIContentSizeCategoryChangedEventArgs&gt;)" /> (see remarks and example at <see cref="UIKit.UIFont.GetPreferredFontForTextStyle(UIKit.UIFontTextStyle,UIKit.UITraitCollection)" />). </para>
 		///           <para tool="threads">This can be used from a background thread.</para>
 		///         </remarks>
 		[SupportedOSPlatform ("ios")]
@@ -134,7 +134,7 @@ namespace UIKit {
 		///         <value>
 		///         </value>
 		///         <remarks>
-		///           <para>To implement dynamic type, application developers must act in reaction to <see cref="UIKit.UIApplication.Notifications.ObserveContentSizeCategoryChanged*" /> (see remarks and example at <see cref="UIKit.UIFont.GetPreferredFontForTextStyle(UIKit.UIFontTextStyle,UIKit.UITraitCollection)" />). </para>
+		///           <para>To implement dynamic type, application developers must act in reaction to <see cref="UIKit.UIApplication.Notifications.ObserveContentSizeCategoryChanged(EventHandler&lt;UIContentSizeCategoryChangedEventArgs&gt;)" /> (see remarks and example at <see cref="UIKit.UIFont.GetPreferredFontForTextStyle(UIKit.UIFontTextStyle,UIKit.UITraitCollection)" />). </para>
 		///           <para tool="threads">This can be used from a background thread.</para>
 		///         </remarks>
 		[SupportedOSPlatform ("ios")]
@@ -152,7 +152,7 @@ namespace UIKit {
 		///         <value>
 		///         </value>
 		///         <remarks>
-		///           <para>To implement dynamic type, application developers must act in reaction to <see cref="UIKit.UIApplication.Notifications.ObserveContentSizeCategoryChanged*" /> (see remarks and example at <see cref="UIKit.UIFont.GetPreferredFontForTextStyle(UIKit.UIFontTextStyle,UIKit.UITraitCollection)" />). </para>
+		///           <para>To implement dynamic type, application developers must act in reaction to <see cref="UIKit.UIApplication.Notifications.ObserveContentSizeCategoryChanged(EventHandler&lt;UIContentSizeCategoryChangedEventArgs&gt;)" /> (see remarks and example at <see cref="UIKit.UIFont.GetPreferredFontForTextStyle(UIKit.UIFontTextStyle,UIKit.UITraitCollection)" />). </para>
 		///           <para tool="threads">This can be used from a background thread.</para>
 		///         </remarks>
 		[SupportedOSPlatform ("ios")]

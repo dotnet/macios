@@ -391,13 +391,9 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static void CFRunLoopAddSource (/* CFRunLoopRef */ IntPtr rl, /* CFRunLoopSourceRef */ IntPtr source, /* CFStringRef */ IntPtr mode);
 
-		/// <param name="source">
-		///
-		/// Source to be added.
-		///   	   </param>
-		///         <param name="mode">The mode to add the source to.  If you use <see cref="CoreFoundation.CFRunLoop.CommonModes" /> the source is added to all common modes.        </param>
-		///         <summary>Adds a new source to the run loop on the specified mode.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Adds a new source to the run loop on the specified mode.</summary>
+		/// <param name="source">Source to be added.</param>
+		/// <param name="mode">The mode to add the source to. If you use <see cref="NSRunLoopMode.Common" /> the source is added to all common modes.</param>
 		public void AddSource (CFRunLoopSource source, NSString mode)
 		{
 			if (source is null)
@@ -437,15 +433,9 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static void CFRunLoopRemoveSource (/* CFRunLoopRef */ IntPtr rl, /* CFRunLoopSourceRef */ IntPtr source, /* CFStringRef */ IntPtr mode);
 
-		/// <param name="source">Run loop source to remove</param>
-		///         <param name="mode">
-		/// The mode to remove it from.  If you use <see cref="CoreFoundation.CFRunLoop.CommonModes" /> the source is removed from all common modes.
-		///   	   </param>
-		///         <summary>Removes a source from the runloop.</summary>
-		///         <remarks>
-		///           <para>
-		///           </para>
-		///         </remarks>
+		/// <summary>Removes a source from the runloop.</summary>
+		/// <param name="source">Run loop source to remove.</param>
+		/// <param name="mode">The mode to remove it from. If you use <see cref="NSRunLoopMode.Common" /> the source is removed from all common modes.</param>
 		public void RemoveSource (CFRunLoopSource source, NSString mode)
 		{
 			if (source is null)

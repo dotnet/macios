@@ -20,7 +20,7 @@
       </para>
       <para>
 	For low-level access to the metadat, this class exposes the
-	low-level <see cref="MediaPlayer.MPMediaItemCollection.ValueForProperty(Foundation.NSString)" />
+	low-level <see cref="MPMediaEntity.ValueForProperty(NSString)" />
 	method and various static properties with the suffix
 	"Property" and the return type NSString.
       </para>

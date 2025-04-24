@@ -122,7 +122,7 @@ namespace UIKit
 		/// <param name="view1">To be added.</param>
 		///         <param name="attribute1">To be added.</param>
 		///         <param name="relation">To be added.</param>
-		///         <summary>Static factory method to create a constraint based on a <see cref="UIKit.UIView" />, an <see cref="NSLayoutAttribute" />, and an <see cref="UIKit.NSLayoutRelation" />.</summary>
+		///         <summary>Static factory method to create a constraint based on a <see cref="View" />, an <see cref="NSLayoutAttribute" />, and an <see cref="NSLayoutRelation" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		public static NSLayoutConstraint Create (NSObject view1, NSLayoutAttribute attribute1, NSLayoutRelation relation)

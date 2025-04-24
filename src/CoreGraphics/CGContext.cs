@@ -36,7 +36,11 @@ using ObjCRuntime;
 using Foundation;
 
 namespace CoreGraphics {
-	/// <include file="../../docs/api/CoreGraphics/CGContext.xml" path="/Documentation/Docs[@DocId='T:CoreGraphics.CGContext']/*" />
+#if __MACOS__
+	/// <include file="../../docs/api/CoreGraphics/CGContext.xml" path="/Documentation/Docs[@DocId='T:CoreGraphics.CGContext' and contains(@Platforms,'macOS')]/*" />
+#else
+	/// <include file="../../docs/api/CoreGraphics/CGContext.xml" path="/Documentation/Docs[@DocId='T:CoreGraphics.CGContext' and not(@Platforms)]/*" />
+#endif
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -462,7 +466,7 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static void CGContextFillRect (/* CGContextRef */ IntPtr c, CGRect rect);
 
-		/// <param name="rect">The <see cref="System.Drawing.RectangleF" /> to be filled.</param>
+		/// <param name="rect">The <see cref="CGRect" /> to be filled.</param>
 		///         <summary>Paints the specified <paramref name="rect" />.</summary>
 		///         <remarks>To be added.</remarks>
 		public void FillRect (CGRect rect)
@@ -518,7 +522,7 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static void CGContextFillEllipseInRect (/* CGContextRef */ IntPtr context, CGRect rect);
 
-		/// <param name="rect">The <see cref="System.Drawing.RectangleF" /> defining the ellipse's extent.</param>
+		/// <param name="rect">The <see cref="CGRect" /> defining the ellipse's extent.</param>
 		///         <summary>Paints the ellipse defined by <paramref name="rect" />. Afterwards, the current path is reset.</summary>
 		///         <remarks>To be added.</remarks>
 		public void FillEllipseInRect (CGRect rect)
@@ -529,7 +533,7 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static void CGContextStrokeEllipseInRect (/* CGContextRef */ IntPtr context, CGRect rect);
 
-		/// <param name="rect">The <see cref="System.Drawing.RectangleF" /> defining the ellipse's extent.</param>
+		/// <param name="rect">The <see cref="CGRect" /> defining the ellipse's extent.</param>
 		///         <summary>Strokes the ellipse defined by <paramref name="rect" />. Afterwards, the current path is reset.</summary>
 		///         <remarks>To be added.</remarks>
 		public void StrokeEllipseInRect (CGRect rect)
@@ -674,7 +678,7 @@ namespace CoreGraphics {
 		/// <param name="space">The desired <see cref="CoreGraphics.CGColorSpace" />.</param>
 		///         <summary>Specifies the <see cref="CoreGraphics.CGColorSpace" /> to be used in the context.</summary>
 		///         <remarks>
-		///           <para>This method must be called prior to using <see cref="CoreGraphics.CGContext.SetFillColor(float[])" />.</para>
+		///           <para>This method must be called prior to using <see cref="CoreGraphics.CGContext.SetFillColor(nfloat[])" />.</para>
 		///         </remarks>
 		public void SetFillColorSpace (CGColorSpace? space)
 		{
@@ -687,7 +691,7 @@ namespace CoreGraphics {
 			/* CGColorSpaceRef __nullable */ IntPtr space);
 
 		/// <param name="space">The desired <see cref="CoreGraphics.CGColorSpace" />.</param>
-		///         <summary>Sets the <see cref="CoreGraphics.CGColorSpace" /> to be used with <see cref="CoreGraphics.CGContext.SetStrokeColor(float[])" />.</summary>
+		///         <summary>Sets the <see cref="CoreGraphics.CGColorSpace" /> to be used with <see cref="CoreGraphics.CGContext.SetStrokeColor(nfloat[])" />.</summary>
 		///         <remarks>To be added.</remarks>
 		public void SetStrokeColorSpace (CGColorSpace? space)
 		{
@@ -1435,7 +1439,7 @@ namespace CoreGraphics {
 		extern static CGPoint CGContextConvertPointToDeviceSpace (/* CGContextRef */ IntPtr context, CGPoint point);
 
 		/// <param name="point">A point in user-space coordinates.</param>
-		///         <summary>Returns a new <see cref="System.Drawing.PointF" /> that converts the user-space <paramref name="point" /> into device space.</summary>
+		///         <summary>Returns a new <see cref="CGPoint" /> that converts the user-space <paramref name="point" /> into device space.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		public CGPoint PointToDeviceSpace (CGPoint point)
@@ -1618,7 +1622,7 @@ namespace CoreGraphics {
 		/// <param name="auxiliaryInfo">A dictionary of auxiliary information. May be <see langword="null" />.</param>
 		///         <summary>With <see cref="CoreGraphics.CGContext.EndTransparencyLayer" />, encloses operations on a fully transparent layer.</summary>
 		///         <remarks>To be added.</remarks>
-		///         <altmember cref="CoreGraphics.CGContext.BeginTransparencyLayer" />
+		///         <altmember cref="CoreGraphics.CGContext.BeginTransparencyLayer(CGRect,NSDictionary)" />
 		public void BeginTransparencyLayer (NSDictionary? auxiliaryInfo = null)
 		{
 			CGContextBeginTransparencyLayer (Handle, auxiliaryInfo.GetHandle ());
@@ -1648,7 +1652,11 @@ namespace CoreGraphics {
 			CGContextEndTransparencyLayer (Handle);
 		}
 
-		/// <include file="../../docs/api/CoreGraphics/CGContext.xml" path="/Documentation/Docs[@DocId='M:CoreGraphics.CGContext.AsBitmapContext']/*" />
+#if __MACOS__
+		/// <include file="../../docs/api/CoreGraphics/CGContext.xml" path="/Documentation/Docs[@DocId='M:CoreGraphics.CGContext.AsBitmapContext' and contains(@Platforms,'macOS')]/*" />
+#else
+		/// <include file="../../docs/api/CoreGraphics/CGContext.xml" path="/Documentation/Docs[@DocId='M:CoreGraphics.CGContext.AsBitmapContext' and not(@Platforms)]/*" />
+#endif
 		public CGBitmapContext AsBitmapContext ()
 		{
 			return new CGBitmapContext (Handle, false);

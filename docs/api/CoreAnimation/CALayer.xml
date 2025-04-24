@@ -13,7 +13,7 @@
 	There are several subclasses of CALayer that developers can use:
 	<see cref="CoreAnimation.CAEmitterLayer" />, 
 	<see cref="CoreAnimation.CAGradientLayer" />, 
-	<see cref="CoreAnimation.CAEAGLLayer/CAOpenGLLayer" />, 
+	<see cref="CoreAnimation.CAEAGLLayer.CAOpenGLLayer" />, 
 	<see cref="CoreAnimation.CAReplicatorLayer" />, 
 	<see cref="CoreAnimation.CAScrollLayer" />, 
 	<see cref="CoreAnimation.CAShapeLayer" />, 
@@ -59,7 +59,7 @@ public class DemoLayer : CALayer {
   
      // Fill in circle
      context.SetFillColor (Color);
-     context.SetShadowWithColor (SizeF.Empty, 10.0f, glowColor);
+     context.SetShadowWithColor (CGSize.Empty, 10.0f, glowColor);
      context.EOFillPath();
   }
 }
@@ -108,7 +108,7 @@ public class DemoLayerDelegate2 : CALayerDelegate {
   {
      // Fill in circle
      context.SetFillColor (Color);
-     context.SetShadowWithColor (SizeF.Empty, 10.0f, glowColor);
+     context.SetShadowWithColor (CGSize.Empty, 10.0f, glowColor);
      context.EOFillPath();
   }
 }
@@ -201,7 +201,7 @@ public class MyLayer : CALayer {
       </para>
       <para>
 	On macOS, to change the default layer class used for a given
-	NSView, you can override the <see cref="AppKit.MakeBackingLayer*" /> method.
+	NSView, you can override the <see cref="AppKit.MakeBackingLayer" /> method.
 
       </para>
     </remarks>

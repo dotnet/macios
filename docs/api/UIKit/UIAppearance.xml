@@ -3,32 +3,713 @@
     <summary>Proxy class for styling the appearance of <see cref="UIKit" /> views.</summary>
     <remarks>
       <para>
-	The <see cref="UIKit.UIAppearance" /> class is a proxy that is created on demand to
+  The <see cref="UIKit.UIAppearance" /> class is a proxy that is created on demand to
         style views of a particular class.  The <c>UIAppearance</c> framework
-	is supported either as a way of styling all instances of a
-	particular class or by styling all instances of a particular
-	class that are contained in specific hierarchy.
+  is supported either as a way of styling all instances of a
+  particular class or by styling all instances of a particular
+  class that are contained in specific hierarchy.
       </para>
       <para> 
-	You can get the global proxy for a particular element by
-	accessing the static <see cref="UIKit.UIView.Appearance" /> property of that class.
+  You can get the global proxy for a particular element by
+  accessing the static <see cref="UIKit.UIView.Appearance" /> property of that class.
       </para>
       <para>
-	To obtain the <see cref="UIKit.UIAppearance" /> proxy for a particular class, you
-	should invoke the <see cref="UIKit.UIView.AppearanceWhenContainedIn(System.Type[])" /> method.  This
-	method takes a variable list of <see cref="System.Type" />
-	objects and it represents the set of containers that must be
-	present for the style to be applied.  You can use this as the
-	pattern used to apply the style to your elements.
+  To obtain the <see cref="UIKit.UIAppearance" /> proxy for a particular class, you
+  should invoke the <see cref="UIKit.UIView.AppearanceWhenContainedIn(System.Type[])" /> method.  This
+  method takes a variable list of <see cref="System.Type" />
+  objects and it represents the set of containers that must be
+  present for the style to be applied.  You can use this as the
+  pattern used to apply the style to your elements.
 
       </para>
       <para>
-	The following classes expose both the <see cref="UIKit.UIView.Appearance" /> property and
-	the <see cref="UIKit.UIView.AppearanceWhenContainedIn(System.Type[])" /> method:
+  The following classes expose both the <see cref="UIKit.UIView.Appearance" /> property and
+  the <see cref="UIKit.UIView.AppearanceWhenContainedIn(System.Type[])" /> method:
 
       </para>
-      <para tool="list-of-classes">
-        <see cref="AddressBookUI.ABPeoplePickerNavigationController" />, <see cref="ARKit.ARSCNView" />, <see cref="ARKit.ARSKView" />, <see cref="AVKit.AVRoutePickerView" />, <see cref="BusinessChat.BCChatButton" />, <see cref="CoreAudioKit.CAInterAppAudioSwitcherView" />, <see cref="CoreAudioKit.CAInterAppAudioTransportView" />, <see cref="CarPlay.CPWindow" />, <see cref="EventKitUI.EKEventEditViewController" />, <see cref="GameKit.GKAchievementViewController" />, <see cref="GameKit.GKFriendRequestComposeViewController" />, <see cref="GameKit.GKLeaderboardViewController" />, <see cref="GameKit.GKTurnBasedMatchmakerViewController" />, <see cref="GLKit.GLKView" />, <see cref="HealthKitUI.HKActivityRingView" />, <see cref="HomeKit.HMCameraView" />, <see cref="IntentsUI.INUIAddVoiceShortcutButton" />, <see cref="MessageUI.MFMailComposeViewController" />, <see cref="MessageUI.MFMessageComposeViewController" />, <see cref="MapKit.MKAnnotationView" />, <see cref="MapKit.MKCircleView" />, <see cref="MapKit.MKCompassButton" />, <see cref="MapKit.MKMapView" />, <see cref="MapKit.MKMarkerAnnotationView" />, <see cref="MapKit.MKOverlayPathView" />, <see cref="MapKit.MKOverlayView" />, <see cref="MapKit.MKPinAnnotationView" />, <see cref="MapKit.MKPolygonView" />, <see cref="MapKit.MKPolylineView" />, <see cref="MapKit.MKScaleView" />, <see cref="MapKit.MKUserTrackingBarButtonItem" />, <see cref="MapKit.MKUserTrackingButton" />, <see cref="MediaPlayer.MPVolumeView" />, <see cref="Messages.MSStickerBrowserView" />, <see cref="Messages.MSStickerView" />, <see cref="MetalKit.MTKView" />, <see cref="PdfKit.PdfThumbnailView" />, <see cref="PdfKit.PdfView" />, <see cref="PhotosUI.PHLivePhotoView" />, <see cref="PassKit.PKAddPassButton" />, <see cref="PassKit.PKPaymentButton" />, <see cref="ReplayKit.RPSystemBroadcastPickerView" />, <see cref="SceneKit.SCNView" />, <see cref="SpriteKit.SKView" />, <see cref="UIKit.UIActionSheet" />, <see cref="UIKit.UIActivityIndicatorView" />, <see cref="UIKit.UIAlertView" />, <see cref="UIKit.UIBarButtonItem" />, <see cref="UIKit.UIBarItem" />, <see cref="UIKit.UIButton" />, <see cref="UIKit.UICollectionReusableView" />, <see cref="UIKit.UICollectionView" />, <see cref="UIKit.UICollectionViewCell" />, <see cref="UIKit.UIControl" />, <see cref="UIKit.UIDatePicker" />, <see cref="UIKit.UIImageView" />, <see cref="UIKit.UIInputView" />, <see cref="UIKit.UILabel" />, <see cref="UIKit.UINavigationBar" />, <see cref="UIKit.UIPageControl" />, <see cref="UIKit.UIPickerView" />, <see cref="UIKit.UIPopoverBackgroundView" />, <see cref="UIKit.UIProgressView" />, <see cref="UIKit.UIRefreshControl" />, <see cref="UIKit.UIScrollView" />, <see cref="UIKit.UISearchBar" />, <see cref="UIKit.UISegmentedControl" />, <see cref="UIKit.UISlider" />, <see cref="UIKit.UIStackView" />, <see cref="UIKit.UIStepper" />, <see cref="UIKit.UISwitch" />, <see cref="UIKit.UITabBar" />, <see cref="UIKit.UITabBarItem" />, <see cref="UIKit.UITableView" />, <see cref="UIKit.UITableViewCell" />, <see cref="UIKit.UITableViewHeaderFooterView" />, <see cref="UIKit.UITextField" />, <see cref="UIKit.UITextView" />, <see cref="UIKit.UIToolbar" />, <see cref="UIKit.UIView" />, <see cref="UIKit.UIVisualEffectView" />, <see cref="UIKit.UIWebView" />, <see cref="UIKit.UIWindow" /> and <see cref="WebKit.WKWebView" />.</para>
+      <para>
+        <list type="bullet">
+          <item>
+          	<term><see cref="AddressBookUI.ABPeoplePickerNavigationController" /></term>
+          </item>
+          <item>
+          	<term><see cref="ARKit.ARSCNView" /></term>
+          </item>
+          <item>
+          	<term><see cref="ARKit.ARSKView" /></term>
+          </item>
+          <item>
+          	<term><see cref="AVKit.AVRoutePickerView" /></term>
+          </item>
+          <item>
+          	<term><see cref="BusinessChat.BCChatButton" /></term>
+          </item>
+          <item>
+          	<term><see cref="CoreAudioKit.CAInterAppAudioSwitcherView" /></term>
+          </item>
+          <item>
+          	<term><see cref="CoreAudioKit.CAInterAppAudioTransportView" /></term>
+          </item>
+          <item>
+          	<term><see cref="CarPlay.CPWindow" /></term>
+          </item>
+          <item>
+          	<term><see cref="EventKitUI.EKEventEditViewController" /></term>
+          </item>
+          <item>
+          	<term><see cref="GameKit.GKAchievementViewController" /></term>
+          </item>
+          <item>
+          	<term><see cref="GameKit.GKFriendRequestComposeViewController" /></term>
+          </item>
+          <item>
+          	<term><see cref="GameKit.GKLeaderboardViewController" /></term>
+          </item>
+          <item>
+          	<term><see cref="GameKit.GKTurnBasedMatchmakerViewController" /></term>
+          </item>
+          <item>
+          	<term><see cref="GLKit.GLKView" /></term>
+          </item>
+          <item>
+          	<term><see cref="HealthKitUI.HKActivityRingView" /></term>
+          </item>
+          <item>
+          	<term><see cref="HomeKit.HMCameraView" /></term>
+          </item>
+          <item>
+          	<term><see cref="IntentsUI.INUIAddVoiceShortcutButton" /></term>
+          </item>
+          <item>
+          	<term><see cref="MessageUI.MFMailComposeViewController" /></term>
+          </item>
+          <item>
+          	<term><see cref="MessageUI.MFMessageComposeViewController" /></term>
+          </item>
+          <item>
+          	<term><see cref="MapKit.MKAnnotationView" /></term>
+          </item>
+          <item>
+          	<term><see cref="MapKit.MKCircleView" /></term>
+          </item>
+          <item>
+          	<term><see cref="MapKit.MKCompassButton" /></term>
+          </item>
+          <item>
+          	<term><see cref="MapKit.MKMapView" /></term>
+          </item>
+          <item>
+          	<term><see cref="MapKit.MKMarkerAnnotationView" /></term>
+          </item>
+          <item>
+          	<term><see cref="MapKit.MKOverlayPathView" /></term>
+          </item>
+          <item>
+          	<term><see cref="MapKit.MKOverlayView" /></term>
+          </item>
+          <item>
+          	<term><see cref="MapKit.MKPinAnnotationView" /></term>
+          </item>
+          <item>
+          	<term><see cref="MapKit.MKPolygonView" /></term>
+          </item>
+          <item>
+          	<term><see cref="MapKit.MKPolylineView" /></term>
+          </item>
+          <item>
+          	<term><see cref="MapKit.MKScaleView" /></term>
+          </item>
+          <item>
+          	<term><see cref="MapKit.MKUserTrackingBarButtonItem" /></term>
+          </item>
+          <item>
+          	<term><see cref="MapKit.MKUserTrackingButton" /></term>
+          </item>
+          <item>
+          	<term><see cref="MediaPlayer.MPVolumeView" /></term>
+          </item>
+          <item>
+          	<term><see cref="Messages.MSStickerBrowserView" /></term>
+          </item>
+          <item>
+          	<term><see cref="Messages.MSStickerView" /></term>
+          </item>
+          <item>
+          	<term><see cref="MetalKit.MTKView" /></term>
+          </item>
+          <item>
+          	<term><see cref="PdfKit.PdfThumbnailView" /></term>
+          </item>
+          <item>
+          	<term><see cref="PdfKit.PdfView" /></term>
+          </item>
+          <item>
+          	<term><see cref="PhotosUI.PHLivePhotoView" /></term>
+          </item>
+          <item>
+          	<term><see cref="PassKit.PKAddPassButton" /></term>
+          </item>
+          <item>
+          	<term><see cref="PassKit.PKPaymentButton" /></term>
+          </item>
+          <item>
+          	<term><see cref="ReplayKit.RPSystemBroadcastPickerView" /></term>
+          </item>
+          <item>
+          	<term><see cref="SceneKit.SCNView" /></term>
+          </item>
+          <item>
+          	<term><see cref="SpriteKit.SKView" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UIActionSheet" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UIActivityIndicatorView" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UIAlertView" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UIBarButtonItem" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UIBarItem" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UIButton" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UICollectionReusableView" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UICollectionView" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UICollectionViewCell" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UIControl" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UIDatePicker" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UIImageView" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UIInputView" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UILabel" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UINavigationBar" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UIPageControl" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UIPickerView" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UIPopoverBackgroundView" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UIProgressView" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UIRefreshControl" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UIScrollView" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UISearchBar" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UISegmentedControl" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UISlider" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UIStackView" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UIStepper" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UISwitch" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UITabBar" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UITabBarItem" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UITableView" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UITableViewCell" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UITableViewHeaderFooterView" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UITextField" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UITextView" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UIToolbar" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UIView" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UIVisualEffectView" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UIWebView" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UIWindow" /></term>
+          </item>
+          <item>
+          	<term><see cref="WebKit.WKWebView" /></term>
+          </item>
+        </list>
+      </para>
+    </remarks>
+    <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIAppearance_Protocol/index.html">Apple documentation for <c>UIAppearance</c></related>
+  </Docs>
+  <Docs DocId="tvOS:T:UIKit.UIAppearance">
+    <summary>Proxy class for styling the appearance of <see cref="UIKit" /> views.</summary>
+    <remarks>
+      <para>
+  The <see cref="UIKit.UIAppearance" /> class is a proxy that is created on demand to
+        style views of a particular class.  The <c>UIAppearance</c> framework
+  is supported either as a way of styling all instances of a
+  particular class or by styling all instances of a particular
+  class that are contained in specific hierarchy.
+      </para>
+      <para> 
+  You can get the global proxy for a particular element by
+  accessing the static <see cref="UIKit.UIView.Appearance" /> property of that class.
+      </para>
+      <para>
+  To obtain the <see cref="UIKit.UIAppearance" /> proxy for a particular class, you
+  should invoke the <see cref="UIKit.UIView.AppearanceWhenContainedIn(System.Type[])" /> method.  This
+  method takes a variable list of <see cref="System.Type" />
+  objects and it represents the set of containers that must be
+  present for the style to be applied.  You can use this as the
+  pattern used to apply the style to your elements.
+
+      </para>
+      <para>
+  The following classes expose both the <see cref="UIKit.UIView.Appearance" /> property and
+  the <see cref="UIKit.UIView.AppearanceWhenContainedIn(System.Type[])" /> method:
+
+      </para>
+      <para>
+        <list type="bullet">
+          <item>
+          	<term><see cref="AVKit.AVRoutePickerView" /></term>
+          </item>
+          <item>
+          	<term><see cref="GameKit.GKTurnBasedMatchmakerViewController" /></term>
+          </item>
+          <item>
+          	<term><see cref="GLKit.GLKView" /></term>
+          </item>
+          <item>
+          	<term><see cref="HomeKit.HMCameraView" /></term>
+          </item>
+          <item>
+          	<term><see cref="MapKit.MKAnnotationView" /></term>
+          </item>
+          <item>
+          	<term><see cref="MapKit.MKMapView" /></term>
+          </item>
+          <item>
+          	<term><see cref="MapKit.MKMarkerAnnotationView" /></term>
+          </item>
+          <item>
+          	<term><see cref="MapKit.MKOverlayView" /></term>
+          </item>
+          <item>
+          	<term><see cref="MapKit.MKPinAnnotationView" /></term>
+          </item>
+          <item>
+          	<term><see cref="MapKit.MKScaleView" /></term>
+          </item>
+          <item>
+          	<term><see cref="MediaPlayer.MPVolumeView" /></term>
+          </item>
+          <item>
+          	<term><see cref="MetalKit.MTKView" /></term>
+          </item>
+          <item>
+          	<term><see cref="PdfKit.PdfThumbnailView" /></term>
+          </item>
+          <item>
+          	<term><see cref="PdfKit.PdfView" /></term>
+          </item>
+          <item>
+          	<term><see cref="PhotosUI.PHLivePhotoView" /></term>
+          </item>
+          <item>
+          	<term><see cref="SceneKit.SCNView" /></term>
+          </item>
+          <item>
+          	<term><see cref="SpriteKit.SKView" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UIActivityIndicatorView" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UIBarButtonItem" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UIBarItem" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UIButton" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UICollectionReusableView" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UICollectionView" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UICollectionViewCell" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UIControl" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UIImageView" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UIInputView" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UILabel" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UINavigationBar" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UIPageControl" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UIPopoverBackgroundView" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UIProgressView" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UIScrollView" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UISearchBar" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UISegmentedControl" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UIStackView" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UITabBar" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UITabBarItem" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UITableView" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UITableViewCell" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UITableViewHeaderFooterView" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UITextField" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UITextView" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UIView" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UIVisualEffectView" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UIWindow" /></term>
+          </item>
+        </list>
+      </para>
+    </remarks>
+    <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIAppearance_Protocol/index.html">Apple documentation for <c>UIAppearance</c></related>
+  </Docs>
+  <Docs DocId="MacCatalyst:T:UIKit.UIAppearance">
+    <summary>Proxy class for styling the appearance of <see cref="UIKit" /> views.</summary>
+    <remarks>
+      <para>
+  The <see cref="UIKit.UIAppearance" /> class is a proxy that is created on demand to
+        style views of a particular class.  The <c>UIAppearance</c> framework
+  is supported either as a way of styling all instances of a
+  particular class or by styling all instances of a particular
+  class that are contained in specific hierarchy.
+      </para>
+      <para> 
+  You can get the global proxy for a particular element by
+  accessing the static <see cref="UIKit.UIView.Appearance" /> property of that class.
+      </para>
+      <para>
+  To obtain the <see cref="UIKit.UIAppearance" /> proxy for a particular class, you
+  should invoke the <see cref="UIKit.UIView.AppearanceWhenContainedIn(System.Type[])" /> method.  This
+  method takes a variable list of <see cref="System.Type" />
+  objects and it represents the set of containers that must be
+  present for the style to be applied.  You can use this as the
+  pattern used to apply the style to your elements.
+
+      </para>
+      <para>
+  The following classes expose both the <see cref="UIKit.UIView.Appearance" /> property and
+  the <see cref="UIKit.UIView.AppearanceWhenContainedIn(System.Type[])" /> method:
+
+      </para>
+      <para>
+        <list type="bullet">
+          <item>
+          	<term><see cref="AVKit.AVRoutePickerView" /></term>
+          </item>
+          <item>
+          	<term><see cref="BusinessChat.BCChatButton" /></term>
+          </item>
+          <item>
+          	<term><see cref="EventKitUI.EKEventEditViewController" /></term>
+          </item>
+          <item>
+          	<term><see cref="GameKit.GKTurnBasedMatchmakerViewController" /></term>
+          </item>
+          <item>
+          	<term><see cref="HealthKitUI.HKActivityRingView" /></term>
+          </item>
+          <item>
+          	<term><see cref="HomeKit.HMCameraView" /></term>
+          </item>
+          <item>
+          	<term><see cref="IntentsUI.INUIAddVoiceShortcutButton" /></term>
+          </item>
+          <item>
+          	<term><see cref="MessageUI.MFMailComposeViewController" /></term>
+          </item>
+          <item>
+          	<term><see cref="MessageUI.MFMessageComposeViewController" /></term>
+          </item>
+          <item>
+          	<term><see cref="MapKit.MKAnnotationView" /></term>
+          </item>
+          <item>
+          	<term><see cref="MapKit.MKCircleView" /></term>
+          </item>
+          <item>
+          	<term><see cref="MapKit.MKCompassButton" /></term>
+          </item>
+          <item>
+          	<term><see cref="MapKit.MKMapView" /></term>
+          </item>
+          <item>
+          	<term><see cref="MapKit.MKMarkerAnnotationView" /></term>
+          </item>
+          <item>
+          	<term><see cref="MapKit.MKOverlayPathView" /></term>
+          </item>
+          <item>
+          	<term><see cref="MapKit.MKOverlayView" /></term>
+          </item>
+          <item>
+          	<term><see cref="MapKit.MKPinAnnotationView" /></term>
+          </item>
+          <item>
+          	<term><see cref="MapKit.MKPolygonView" /></term>
+          </item>
+          <item>
+          	<term><see cref="MapKit.MKPolylineView" /></term>
+          </item>
+          <item>
+          	<term><see cref="MapKit.MKScaleView" /></term>
+          </item>
+          <item>
+          	<term><see cref="MapKit.MKUserTrackingBarButtonItem" /></term>
+          </item>
+          <item>
+          	<term><see cref="MapKit.MKUserTrackingButton" /></term>
+          </item>
+          <item>
+          	<term><see cref="MediaPlayer.MPVolumeView" /></term>
+          </item>
+          <item>
+          	<term><see cref="Messages.MSStickerBrowserView" /></term>
+          </item>
+          <item>
+          	<term><see cref="Messages.MSStickerView" /></term>
+          </item>
+          <item>
+          	<term><see cref="MetalKit.MTKView" /></term>
+          </item>
+          <item>
+          	<term><see cref="PdfKit.PdfThumbnailView" /></term>
+          </item>
+          <item>
+          	<term><see cref="PdfKit.PdfView" /></term>
+          </item>
+          <item>
+          	<term><see cref="PhotosUI.PHLivePhotoView" /></term>
+          </item>
+          <item>
+          	<term><see cref="PassKit.PKAddPassButton" /></term>
+          </item>
+          <item>
+          	<term><see cref="PassKit.PKPaymentButton" /></term>
+          </item>
+          <item>
+          	<term><see cref="ReplayKit.RPSystemBroadcastPickerView" /></term>
+          </item>
+          <item>
+          	<term><see cref="SceneKit.SCNView" /></term>
+          </item>
+          <item>
+          	<term><see cref="SpriteKit.SKView" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UIActionSheet" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UIActivityIndicatorView" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UIAlertView" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UIBarButtonItem" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UIBarItem" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UIButton" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UICollectionReusableView" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UICollectionView" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UICollectionViewCell" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UIControl" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UIDatePicker" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UIImageView" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UIInputView" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UILabel" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UINavigationBar" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UIPageControl" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UIPickerView" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UIPopoverBackgroundView" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UIProgressView" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UIRefreshControl" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UIScrollView" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UISearchBar" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UISegmentedControl" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UISlider" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UIStackView" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UIStepper" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UISwitch" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UITabBar" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UITabBarItem" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UITableView" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UITableViewCell" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UITableViewHeaderFooterView" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UITextField" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UITextView" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UIToolbar" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UIView" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UIVisualEffectView" /></term>
+          </item>
+          <item>
+          	<term><see cref="UIKit.UIWindow" /></term>
+          </item>
+          <item>
+          	<term><see cref="WebKit.WKWebView" /></term>
+          </item>
+        </list>
+      </para>
     </remarks>
     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIAppearance_Protocol/index.html">Apple documentation for <c>UIAppearance</c></related>
   </Docs>

@@ -114,9 +114,9 @@
         </item>
       </list>
       <para>Subclasses are typically instantiated with a static <c>Create</c> factory method rather than a constructor.</para>
-      <para>In addition, SceneKit can load entire scenes from .DAE files with the <see cref="SceneKit.SCNScene.FromFile*" /> method.</para>
+      <para>In addition, SceneKit can load entire scenes from .DAE files with the <see cref="SceneKit.SCNScene.FromFile" /> method.</para>
       <para>Developers can create geometry from a ModelIO mesh using <see cref="SceneKit.SCNGeometry.FromMesh(ModelIO.MDLMesh)" />.</para>
-      <para>Finally, developers can create custom geometry using the <see cref="SceneKit.SCNGeometry.Create(SceneKit.SCNGeometrySource[], SceneKit.SCNGeometryElement[]*" /> method with arrays of appropriate <see cref="SceneKit.SCNGeometrySource" /> and <see cref="SceneKit.SCNGeometryElement" /> objects. The following shows the creation of a custom pyramid:</para>
+      <para>Finally, developers can create custom geometry using the <see cref="SceneKit.SCNGeometry.Create(SceneKit.SCNGeometrySource[], SceneKit.SCNGeometryElement[])" /> method with arrays of appropriate <see cref="SceneKit.SCNGeometrySource" /> and <see cref="SceneKit.SCNGeometryElement" /> objects. The following shows the creation of a custom pyramid:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
 //Lower-left

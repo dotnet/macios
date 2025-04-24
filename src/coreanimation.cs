@@ -2661,7 +2661,7 @@ namespace CoreAnimation {
 		/// 	    If you need to pass CoreGraphics objects, or retrieve
 		/// 	    elements from the key frame that might contain CoreGraphics
 		/// 	    objects, you should use the <see cref="CoreAnimation.CAKeyFrameAnimation.SetValues" /> and
-		/// 	    <see cref="CoreAnimation.CAKeyFrameAnimation.GetValuesAs``1" /> methods instead.
+		/// 	    <see cref="CoreAnimation.CAKeyFrameAnimation.GetValuesAs{T}" /> methods instead.
 		///
 		/// 	  </para>
 		///         </remarks>

@@ -4,7 +4,7 @@
     <remarks>
       <para>The <see cref="JavaScriptCore.JSContext" /> is the central object of the <c>JavaScriptCore</c> namespace. The <see cref="JavaScriptCore.JSContext" /> maintains a JavaScript environment (manipulated by the <see cref="JavaScriptCore.JSContext.Item(Foundation.NSObject)" /> property) and evaluates scripts with the <see cref="JavaScriptCore.JSContext.EvaluateScript(System.String,Foundation.NSUrl)" /> method.</para>
       <para>Application developers will often want to assign a delegate to the <see cref="JavaScriptCore.JSContext.ExceptionHandler" /> property to gain access, in their Xamarin.iOS code, of exceptions raised in the JavaScript realm.</para>
-      <para>The following example shows the basic use of <see cref="JavaScriptCore.JSContext" />. The context is instantiated and a simple exception handler is assigned. One of the <see cref="JavaScriptCore.JSValue.From*" /> method overloads is used to assign values to the JavaScript variables <c>arg1</c> and <c>arg2</c>. The <see cref="JavaScriptCore.JSContext.EvaluateScript(System.String,Foundation.NSUrl)" /> method evaluates the JavaScript and returns the result, which is converted back into a .NET object with the <see cref="JavaScriptCore.JSValue.ToInt32" /> method. </para>
+      <para>The following example shows the basic use of <see cref="JavaScriptCore.JSContext" />. The context is instantiated and a simple exception handler is assigned. One of the <see cref="JavaScriptCore.JSValue.From" /> method overloads is used to assign values to the JavaScript variables <c>arg1</c> and <c>arg2</c>. The <see cref="JavaScriptCore.JSContext.EvaluateScript(System.String,Foundation.NSUrl)" /> method evaluates the JavaScript and returns the result, which is converted back into a .NET object with the <see cref="JavaScriptCore.JSValue.ToInt32" /> method. </para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
 jsContext = new JSContext();
@@ -77,7 +77,7 @@ webView.LoadRequest(NSUrlRequest.FromUrl(new NSUrl("MyHtmlFile.html", false)));
       </example>
       <para>The above C# code:
         <list type="bullet"><item><term>Creates a <see cref="UIKit.UIWebView" /> which will be displayed to the end user;</term></item><item><term>Gets the <see cref="JavaScriptCore.JSContext" /> of the <see cref="UIKit.UIWebView" /> object's main frame;</term></item><item><term>Adds an exception handler so that JavaScript trouble will be visible to the Xamarin project;</term></item><item><term>Instantiates a new <c>MyJSExporter</c> object that, as described above, implements the <c>IMyJSVisibleProtocol</c>;</term></item><item><term>Adds that object to the <see cref="JavaScriptCore.JSContext" /> with the name <c>myCSharpObject</c>;</term></item><item><term>Loads an HTML file (see below)</term></item></list></para>
-      <para>Finally, the HTML file that is loaded into the <see cref="UIKIt.UIWebView" /> and into whose <see cref="JavaScriptCore.JSContext" /> the <c>MyJSExporter</c> object has been placed can access the object from within JavaScript:</para>
+      <para>Finally, the HTML file that is loaded into the <see cref="UIKit.UIWebView" /> and into whose <see cref="JavaScriptCore.JSContext" /> the <c>MyJSExporter</c> object has been placed can access the object from within JavaScript:</para>
       <example>
         <code lang="HTML"><![CDATA[
 <html>

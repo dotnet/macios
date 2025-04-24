@@ -20,7 +20,7 @@ namespace CoreGraphics {
 	///     <remarks>
 	///       <para>
 	/// 	CGRects structures define a rectangle using floating point
-	/// 	values of type <see cref="System.nfloat" /> and are defined
+	/// 	values of type <see cref="nfloat" /> and are defined
 	/// 	using an initial location (X,Y) as well as a size (Width,
 	/// 	Height). 
 	///       </para>
@@ -28,7 +28,7 @@ namespace CoreGraphics {
 	/// 	You can save the CGRect into an <see cref="Foundation.NSDictionary" /> by calling the
 	/// 	<see cref="CoreGraphics.CGRect.ToDictionary" />
 	/// 	method.   You can also get an CGRect out a serialized
-	/// 	dictionary by using the <see cref="CoreGraphics.CGRect.TryParse(Foundation.NSDictionary,CoreGraphics.CGRect@)" /> method. 
+	/// 	dictionary by using the <see cref="CoreGraphics.CGRect.TryParse(Foundation.NSDictionary,out CoreGraphics.CGRect)" /> method. 
 	///       </para>
 	///     </remarks>
 	[Serializable]
@@ -212,12 +212,10 @@ namespace CoreGraphics {
 		}
 
 		/// <summary>Gets the y-coordinate that is the sum of the <see cref="CoreGraphics.CGRect.Y" /> and <see cref="CoreGraphics.CGRect.Height" /> property values of this <see cref="CoreGraphics.CGRect" /> structure.</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>
-		///           <attribution license="cc4" from="Microsoft" modified="false" />
-		///           <para>The value of the <see cref="CoreGraphics.CGRect.Bottom" /> property represents the y-coordinate of the first point at the bottom edge of the <see cref="CoreGraphics.CGRect.Rectangle" /> that is not contained in the <see cref="CoreGraphics.CGRect" />.</para>
-		///         </remarks>
+		/// <remarks>
+		///   <attribution license="cc4" from="Microsoft" modified="false" />
+		///   <para>The value of the <see cref="CoreGraphics.CGRect.Bottom" /> property represents the y-coordinate of the first point at the bottom edge of the rectangle that is not contained in the <see cref="CoreGraphics.CGRect" />.</para>
+		/// </remarks>
 		public nfloat Bottom {
 			get { return Y + Height; }
 		}
@@ -513,7 +511,7 @@ namespace CoreGraphics {
 				height == rect.height;
 		}
 
-		/// <summary>Returns the hash code for this <see cref="CoreGraphics.CGRect" /> structure. For information about the use of hash codes, see <see cref="System.Object.GetHashCode*" /> .</summary>
+		/// <summary>Returns the hash code for this <see cref="CoreGraphics.CGRect" /> structure. For information about the use of hash codes, see <see cref="System.Object.GetHashCode" /> .</summary>
 		///         <returns>
 		///           <attribution license="cc4" from="Microsoft" modified="false" />
 		///           <para>An integer that represents the hash code for this rectangle.</para>
@@ -584,7 +582,7 @@ namespace CoreGraphics {
 		/// 	  </para>
 		///           <para>
 		/// 	    It is possible to create CGRect from a Dictionary using
-		/// 	    the <see cref="CoreGraphics.CGRect.TryParse(Foundation.NSDictionary,CoreGraphics.CGRect@)" />
+		/// 	    the <see cref="CoreGraphics.CGRect.TryParse(Foundation.NSDictionary,out CoreGraphics.CGRect)" />
 		/// 	    method. 
 		/// 	  </para>
 		///         </remarks>

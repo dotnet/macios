@@ -6,14 +6,14 @@
       <para>The following example demonstrates a simple dynamic system:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
-var blockSize = new SizeF(20, 20);
+var blockSize = new CGSize(20, 20);
 var node1 = new SKSpriteNode(UIColor.Red, blockSize) {
-	Position = new PointF(100, 100),
+	Position = new CGPoint(100, 100),
 	Name = "Red",
 	PhysicsBody = SKPhysicsBody.BodyWithRectangleOfSize(blockSize),
 };
 var node2 = new SKSpriteNode(UIColor.Green, blockSize) {
-	Position = new PointF(150, 100),
+	Position = new CGPoint(150, 100),
 	Name = "Green",
 	PhysicsBody = SKPhysicsBody.BodyWithRectangleOfSize(blockSize)
 };

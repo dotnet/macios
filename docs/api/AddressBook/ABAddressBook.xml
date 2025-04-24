@@ -17,7 +17,7 @@ if (addressBook != null) {
           ]]></code>
       </example>
     </remarks>
-    <altmember cref="AddressBook.ABAddressBok.GetAuthorizationStatus" />
+    <altmember cref="AddressBook.ABAddressBook.GetAuthorizationStatus" />
   </Docs>
   <Docs DocId="M:AddressBook.ABAddressBook.Dispose(System.Boolean)">
     <param name="disposing">
@@ -45,7 +45,7 @@ if (addressBook != null) {
         <item>
           <term>
             Managing address books:
-            <see cref="AddressBook.ABAddressBook.#ctor" />,
+            <see cref="AddressBook.ABAddressBook.ABAddressBook()" />,
             <see cref="AddressBook.ABAddressBook.HasUnsavedChanges" />,
             <see cref="AddressBook.ABAddressBook.Save" />,
             <see cref="AddressBook.ABAddressBook.Revert" />.
@@ -54,7 +54,7 @@ if (addressBook != null) {
         <item>
           <term>
             Accessing an address book:
-            <see cref="AddressBook.ABAddressBook.RequestAccess(System.Action{System.Boolean,Foundation.NSError})" />.
+            <see cref="RequestAccess" />.
           </term>
         </item>
         <item>
@@ -68,7 +68,7 @@ if (addressBook != null) {
             <see cref="AddressBook.ABAddressBook.GroupCount" />,
             <see cref="AddressBook.ABAddressBook.GetGroups(AddressBook.ABRecord)" />,
             <see cref="AddressBook.ABAddressBook.GetGroup(System.Int32)" />,
-            <see cref="AddressBook.ABAddressBook.System#Collections#IEnumerable#GetEnumerator" />.
+            <see cref="AddressBook.ABAddressBook.GetEnumerator" />.
           </term>
         </item>
         <item>

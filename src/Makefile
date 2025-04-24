@@ -82,6 +82,11 @@ MACCATALYST_GENERATOR_WARNASERROR=$(GENERATOR_WARNASERROR)
 # this is due to deprecated APIs used in the generated code.
 BGEN_WARNINGS_TO_FIX=BI1234
 
+# We ignore some xml docs warnings when building the core and apidefinition assemblies, because
+# the xml docs might want to reference generated APIs, so the compiler would warn about not
+# finding those APIs (because they haven't been generated yet).
+XML_DOCS_WARNINGS=CS0419,CS1574,CS1580
+
 #
 # Specific warnings we're ignoring from the C# compiler
 # We should look into each of these and see if they're really needed,
@@ -368,6 +373,7 @@ $($(2)_DOTNET_BUILD_DIR)/core-$(3).rsp: Makefile frameworks.sources $($(2)_DOTNE
 		-nullable+ \
 		-warnaserror+ \
 		-nowarn:1591 \
+		-nowarn:$(XML_DOCS_WARNINGS) \
 		-out:$($(2)_DOTNET_BUILD_DIR)/core-$(3).dll \
 		-doc:$($(2)_DOTNET_BUILD_DIR)/core-$(3).xml \
 		> $$@.tmp
@@ -383,6 +389,7 @@ $($(2)_DOTNET_BUILD_DIR)/apidefinition-$(3).rsp: Makefile frameworks.sources $($
 		-unsafe \
 		-target:library \
 		-nowarn:436,1591,CA1416,CS8981 \
+		-nowarn:$(XML_DOCS_WARNINGS) \
 		-warnaserror+ \
 		-out:$($(2)_DOTNET_BUILD_DIR)/apidefinition-$(3).dll \
 		-doc:$($(2)_DOTNET_BUILD_DIR)/apidefinition-$(3).xml \

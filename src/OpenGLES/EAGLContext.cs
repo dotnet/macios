@@ -17,6 +17,10 @@ namespace OpenGLES {
 		[DllImport (Constants.OpenGLESLibrary)]
 		unsafe extern static void EAGLGetVersion (nuint* major, nuint* minor);
 
+		/// <param name="major">To be added.</param>
+		/// <param name="minor">To be added.</param>
+		/// <summary>Writes the major and minor version numbers in the provided <see langword="out" /> parameters.</summary>
+		/// <remarks>To be added.</remarks>
 		public unsafe static void EAGLGetVersion (out nuint major, out nuint minor)
 		{
 			major = default;
@@ -25,6 +29,11 @@ namespace OpenGLES {
 		}
 
 #if NET
+		/// <param name="target">To be added.</param>
+		/// <param name="presentationTime">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
@@ -37,6 +46,12 @@ namespace OpenGLES {
 		}
 
 #if NET
+		/// <param name="target">To be added.</param>
+		/// <param name="presentationTime">To be added.</param>
+		/// <param name="mode">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("maccatalyst")]

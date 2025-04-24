@@ -713,6 +713,10 @@ namespace AVKit {
 		[Export ("canBeginTrimming")]
 		bool CanBeginTrimming { get; }
 
+		/// <param name="chapterNumber">To be added.</param>
+		/// <param name="chapterTitle">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("flashChapterNumber:chapterTitle:")]
 		void FlashChapter (nuint chapterNumber, [NullAllowed] string chapterTitle);
 
@@ -854,6 +858,10 @@ namespace AVKit {
 	[NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	interface AVCaptureViewDelegate {
+		/// <param name="captureView">To be added.</param>
+		/// <param name="fileOutput">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("captureView:startRecordingToFileOutput:")]
 		void StartRecording (AVCaptureView captureView, AVCaptureFileOutput fileOutput);

@@ -18,8 +18,6 @@ namespace Cecil.Tests {
 			"CoreGraphics.CGPattern::.ctor(CoreGraphics.CGRect,CoreGraphics.CGAffineTransform,System.Runtime.InteropServices.NFloat,System.Runtime.InteropServices.NFloat,CoreGraphics.CGPatternTiling,System.Boolean,CoreGraphics.CGPattern/DrawPattern)",
 			"Foundation.NSHttpCookie::CreateCookie(System.String,System.String,System.String,System.String,System.String,System.String,System.Nullable`1<System.Boolean>,System.Nullable`1<System.DateTime>,System.Nullable`1<System.Int32>,System.String,System.Nullable`1<System.Boolean>,System.Nullable`1<System.Int32>)",
 			"Foundation.NSKeyedUnarchiver::.ctor(Foundation.NSData)",
-			"Foundation.NSString::.ctor(System.String,System.Int32,System.Int32)",
-			"Foundation.NSString::.ctor(System.String)",
 			"Foundation.NSThread::.ctor(Foundation.NSObject,ObjCRuntime.Selector,Foundation.NSObject)",
 			"Foundation.NSUuid::.ctor(System.Byte[])",
 			"GameplayKit.GKPath::.ctor(System.Numerics.Vector2[],System.Single,System.Boolean)",

@@ -612,9 +612,7 @@ namespace CoreFoundation {
 		}
 
 		/// <summary>
-		///       <format type="text/html">
-		///         <a href="https://docs.microsoft.com/en-us/search/index?search=System%20Event%20Args&amp;scope=Xamarin" title="T:System.EventArgs">T:System.EventArgs</a>
-		///       </format> for the <see cref="E:CoreFoundation.CFSocket.AcceptEvent" /> event.</summary>
+		///       <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Event%20Args&amp;scope=Xamarin" title="T:System.EventArgs">T:System.EventArgs</a></format> for the <see cref="E:CoreFoundation.CFSocket.AcceptEvent" /> event.</summary>
 		///     <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -662,9 +660,7 @@ namespace CoreFoundation {
 		}
 
 		/// <summary>
-		///       <format type="text/html">
-		///         <a href="https://docs.microsoft.com/en-us/search/index?search=System%20Event%20Args&amp;scope=Xamarin" title="T:System.EventArgs">T:System.EventArgs</a>
-		///       </format> for the <see cref="E:CoreFoundation.CFSocket.ConnectEvent" /> event.</summary>
+		///       <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Event%20Args&amp;scope=Xamarin" title="T:System.EventArgs">T:System.EventArgs</a></format> for the <see cref="E:CoreFoundation.CFSocket.ConnectEvent" /> event.</summary>
 		///     <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]

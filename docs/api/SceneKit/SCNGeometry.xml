@@ -24,9 +24,7 @@
         </item>
         <item>
           <term>
-            <format type="text/html">
-              <a href="https://docs.microsoft.com/en-us/search/index?search=Scene%20Kit%20SCNCube&amp;scope=Xamarin" title="T:SceneKit.SCNBox">T:SceneKit.SCNBox</a>
-            </format>
+            <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Scene%20Kit%20SCNCube&amp;scope=Xamarin" title="T:SceneKit.SCNBox">T:SceneKit.SCNBox</a></format>
           </term>
           <description>A rectangular box.</description>
           <description>

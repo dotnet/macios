@@ -250,8 +250,7 @@ public class CircleLayer : CALayer {
       <para>
 	You use the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:Foundation.ValueForKey(Foundation.NSString);*&amp;scope=Xamarin" title="M:Foundation.ValueForKey(Foundation.NSString);*">M:Foundation.ValueForKey(Foundation.NSString);*</a></format>
 	methods to lookup a property using a name, and you use the of
-	functions <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:Foundation.ValueForKey(Foundation.NSObject,Foundation.NSString);*&amp;scope=Xamarin" title="M:Foundation.SetValueForKey(Foundation.NSObject,&#xA; Foundation.NSString)">M:Foundation.SetValueForKey(Foundation.NSObject,
- Foundation.NSString);*"</a></format> methods to set the value for the
+	functions <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:Foundation.ValueForKey(Foundation.NSObject,Foundation.NSString);*&amp;scope=Xamarin" title="M:Foundation.SetValueForKey(Foundation.NSObject,&#xA; Foundation.NSString)">M:Foundation.SetValueForKey(Foundation.NSObject,Foundation.NSString);*</a></format> methods to set the value for the
 	specified property.  For example, you could call
 	foo.ValueForKey ("user") to grab the value of the user
 	property in an object.  

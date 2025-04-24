@@ -48,9 +48,7 @@
         <item>
           <term>Quaternion</term>
           <description>
-            <format type="text/html">
-              <a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Motion%20Quaternion&amp;scope=Xamarin" title="P:CoreMotion.Quaternion">P:CoreMotion.Quaternion</a>
-            </format>
+            <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Motion%20Quaternion&amp;scope=Xamarin" title="P:CoreMotion.Quaternion">P:CoreMotion.Quaternion</a></format>
           </description>
         </item>
       </list>

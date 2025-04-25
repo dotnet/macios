@@ -144,6 +144,10 @@ namespace CoreImage {
 			return _FilterNamesInCategories (categories);
 		}
 
+		/// <param name="key">To be added.</param>
+		/// <summary>Gets the value that is identified by <paramref name="key" />.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		public NSObject? this [NSString key] {
 			get {
 				NSObject? result = ValueForKey (key.GetHandle ());

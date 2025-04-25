@@ -19,7 +19,7 @@ namespace Xamarin.Bundler {
 namespace ObjCRuntime {
 #endif
 	class RuntimeOptions {
-#if NET && !LEGACY_TOOLS
+#if !LEGACY_TOOLS
 		const string SocketsHandlerValue = "SocketsHttpHandler";
 #else
 		const string HttpClientHandlerValue = "HttpClientHandler";
@@ -45,13 +45,13 @@ namespace ObjCRuntime {
 			switch (value) {
 			// default
 			case null:
-#if NET && !LEGACY_TOOLS
+#if !LEGACY_TOOLS
 				return NSUrlSessionHandlerValue;
 #else
 				return HttpClientHandlerValue;
 #endif
 			case CFNetworkHandlerValue:
-#if NET && !LEGACY_TOOLS
+#if !LEGACY_TOOLS
 			case SocketsHandlerValue:
 #else
 			case HttpClientHandlerValue:
@@ -92,7 +92,7 @@ namespace ObjCRuntime {
 			if (options is not null) {
 				handler = options.http_message_handler;
 			} else {
-#if NET && !LEGACY_TOOLS
+#if !LEGACY_TOOLS
 				handler = NSUrlSessionHandlerValue;
 #else
 				handler = HttpClientHandlerValue;
@@ -111,7 +111,7 @@ namespace ObjCRuntime {
 				type = platformModule!.GetType ("Foundation", "NSUrlSessionHandler");
 				break;
 #else
-#if NET && !LEGACY_TOOLS
+#if !LEGACY_TOOLS
 			case SocketsHandlerValue:
 				type = httpModule.GetType ("System.Net.Http", "SocketsHttpHandler");
 				break;
@@ -148,7 +148,7 @@ namespace ObjCRuntime {
 			if (!File.Exists (plist_path))
 				return null;
 
-			using (var plist = NSDictionary.FromFile (plist_path)) {
+			using (var plist = NSMutableDictionary.FromFile (plist_path)) {
 				var options = new RuntimeOptions ();
 				options.http_message_handler = (NSString) plist ["HttpMessageHandler"];
 				return options;
@@ -162,7 +162,7 @@ namespace ObjCRuntime {
 			var options = RuntimeOptions.Read ();
 			// all types will be present as this is executed only when the linker is not enabled
 			var handler_name = options?.http_message_handler;
-#if NET && !LEGACY_TOOLS
+#if !LEGACY_TOOLS
 			// Note: no need to handle SocketsHandlerValue here because System.Net.Http handles
 			// creating a SocketsHttpHandler when configured to do so.
 			switch (handler_name) {

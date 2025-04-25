@@ -1259,7 +1259,12 @@ namespace UserNotifications {
 		///         <param name="completionHandler">A task that takes a <see langword="bool" /> success value and an error to process.</param>
 		///         <summary>Requests notification authorization with the specified options, and processes the result of the request.</summary>
 		///         <remarks>To be added.</remarks>
-		[Async]
+		[Async (XmlDocs = """
+			<param name="options">The options for the authorization request.</param>
+			<summary>Requests notification authorization with the specified options, and processes the result of the request.</summary>
+			<returns>A task that takes an authorization options object and returns a tuple that contains a boolean that indicates the result of the request and an error.</returns>
+			<remarks>The error in the returned tuple may be <see langword="null" />.</remarks>
+			""")]
 		[Export ("requestAuthorizationWithOptions:completionHandler:")]
 		void RequestAuthorization (UNAuthorizationOptions options, Action<bool, NSError> completionHandler);
 
@@ -1273,7 +1278,11 @@ namespace UserNotifications {
 		/// <param name="completionHandler">An action that takes an array of the currently registered notification categories and returns <see langword="void" />.</param>
 		///         <summary>Returns the currently registered notification categories for the app, processing them before they are returned.</summary>
 		///         <remarks>To be added.</remarks>
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Returns the currently registered notification categories for the app, processing them before they are returned.</summary>
+			<returns>A task that returns the set of the currently registered notification categories for the app.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Unavailable (PlatformName.TvOS)]
 		[Export ("getNotificationCategoriesWithCompletionHandler:")]
 		void GetNotificationCategories (Action<NSSet<UNNotificationCategory>> completionHandler);
@@ -1281,7 +1290,11 @@ namespace UserNotifications {
 		/// <param name="completionHandler">An action that takes a notification settings object and returns <see langword="void" />.</param>
 		///         <summary>Returns the notification settings object for the app, processing it before it is returned.</summary>
 		///         <remarks>To be added.</remarks>
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Returns the notification settings object for the app, processing it before it is returned.</summary>
+			<returns>A task that returns the notification settings for the app.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("getNotificationSettingsWithCompletionHandler:")]
 		void GetNotificationSettings (Action<UNNotificationSettings> completionHandler);
 
@@ -1289,14 +1302,23 @@ namespace UserNotifications {
 		///         <param name="completionHandler">An action that returns <see langword="void" /> and takes an out parameter for storing any errors that occur while trying to add the request.<para tool="nullallowed">This parameter can be <see langword="null" />.</para></param>
 		///         <summary>Adds the local notification that is specified by <paramref name="request" />, with the specified <paramref name="completionHandler" />.</summary>
 		///         <remarks>To be added.</remarks>
-		[Async]
+		[Async (XmlDocs = """
+			<param name="request">The data and settings for the notification.</param>
+			<summary>Asynchronously adds the local notification that is specified by <paramref name="request" />.</summary>
+			<returns>A task that represents the asynchronous AddNotificationRequest operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("addNotificationRequest:withCompletionHandler:")]
 		void AddNotificationRequest (UNNotificationRequest request, [NullAllowed] Action<NSError> completionHandler);
 
 		/// <param name="completionHandler">An action that takes an array of the pending notification requests and returns <see langword="void" />.</param>
 		///         <summary>Returns an array that contains the pending notification requests, processing them before returning them.</summary>
 		///         <remarks>To be added.</remarks>
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Returns an array that contains the pending notification requests, processing them before returning them.</summary>
+			<returns>A task that returns the array that contains the pending notification requests.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("getPendingNotificationRequestsWithCompletionHandler:")]
 		void GetPendingNotificationRequests (Action<UNNotificationRequest []> completionHandler);
 
@@ -1314,7 +1336,14 @@ namespace UserNotifications {
 		/// <param name="completionHandler">An action that takes an array of the delivered notifications and returns <see langword="void" />.</param>
 		///         <summary>Returns the delivered notifications that are still in the notification center, processing them before they are returned.</summary>
 		///         <remarks>To be added.</remarks>
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Returns the delivered notifications that are still in the notification center, processing them before they are returned.</summary>
+			<returns>The delivered notifications that are still in the notification center.</returns>
+			<remarks>
+			          <para copied="true">The GetDeliveredNotificationsAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Unavailable (PlatformName.TvOS)]
 		[Export ("getDeliveredNotificationsWithCompletionHandler:")]
 		void GetDeliveredNotifications (Action<UNNotification []> completionHandler);

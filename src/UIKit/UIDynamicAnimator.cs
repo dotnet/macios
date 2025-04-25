@@ -62,6 +62,7 @@ namespace UIKit {
 			AddBehavior (behavior);
 		}
 
+		/// <summary>Returns an enumerator that iterates over the dynamic behaviors in the animator.</summary>
 		IEnumerator<UIDynamicBehavior> IEnumerable<UIDynamicBehavior>.GetEnumerator ()
 		{
 			foreach (var behavior in Behaviors)

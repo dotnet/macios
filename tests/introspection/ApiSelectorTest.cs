@@ -1340,9 +1340,6 @@ namespace Introspection {
 			// MPSGraphExecutable
 			case "initWithMPSGraphPackageAtURL:compilationDescriptor:":
 			case "initWithCoreMLPackageAtURL:compilationDescriptor:":
-			// NSUserDefaults
-			case "initWithSuiteName:":
-			case "initWithUser:":
 			// GKScore
 			case "initWithCategory:":
 			case "initWithLeaderboardIdentifier:":
@@ -1371,9 +1368,6 @@ namespace Introspection {
 			case "initWithLocalIdentifier:":
 			case "initWithCollaborationIdentifier:":
 				return true;
-			// CloudKit
-			case "initWithExcludedZoneIDs:":
-			case "initWithZoneIDs:":
 			// DDDevicePickerViewController
 			case "initWithBrowseDescriptor:parameters:":
 				return true;

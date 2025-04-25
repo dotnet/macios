@@ -53,6 +53,9 @@ namespace Foundation {
 		{
 		}
 
+		/// <param name="capacity">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		public NSMutableOrderedSet (nint capacity) : base (capacity)
 		{
 		}
@@ -116,6 +119,10 @@ namespace Foundation {
 			return Runtime.GetINativeObject<NSSet<TKey>> (ret, false);
 		}
 
+		/// <param name="obj">To be added.</param>
+		/// <param name="atIndex">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		public void Insert (TKey obj, nint atIndex)
 		{
 			if (obj is null)
@@ -125,6 +132,10 @@ namespace Foundation {
 			GC.KeepAlive (obj);
 		}
 
+		/// <param name="objectAtIndex">To be added.</param>
+		/// <param name="newObject">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		public void Replace (nint objectAtIndex, TKey newObject)
 		{
 			if (newObject is null)

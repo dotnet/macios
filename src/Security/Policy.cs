@@ -36,22 +36,11 @@ using ObjCRuntime;
 using CoreFoundation;
 using Foundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace Security {
 
 	/// <summary>Encapsulates a security policy. A policy comprises a set of rules that specify how to evaluate a certificate for a certain level of trust.</summary>
 	///     <remarks>To be added.</remarks>
 	public partial class SecPolicy : NativeObject {
-#if !NET
-		public SecPolicy (NativeHandle handle)
-			: base (handle, false, true)
-		{
-		}
-#endif
-
 		[Preserve (Conditional = true)]
 		internal SecPolicy (NativeHandle handle, bool owns)
 			: base (handle, owns, true)
@@ -101,39 +90,5 @@ namespace Security {
 		///         </remarks>
 		[DllImport (Constants.SecurityLibrary, EntryPoint = "SecPolicyGetTypeID")]
 		public extern static nint GetTypeID ();
-
-#if !NET
-		public static bool operator == (SecPolicy? a, SecPolicy? b)
-		{
-			if (a is null)
-				return b is null;
-			else if (b is null)
-				return false;
-
-			return a.Handle == b.Handle;
-		}
-
-		public static bool operator != (SecPolicy? a, SecPolicy? b)
-		{
-			if (a is null)
-				return b is not null;
-			else if (b is null)
-				return true;
-			return a.Handle != b.Handle;
-		}
-
-		// For the .net profile `DisposableObject` implements both
-		// `Equals` and `GetHashCode` based on the Handle property.
-		public override bool Equals (object? other)
-		{
-			var o = other as SecPolicy;
-			return this == o;
-		}
-
-		public override int GetHashCode ()
-		{
-			return ((IntPtr) Handle).ToInt32 ();
-		}
-#endif
 	}
 }

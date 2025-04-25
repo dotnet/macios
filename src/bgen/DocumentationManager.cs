@@ -152,10 +152,11 @@ public class DocumentationManager {
 		} else {
 			if (tr.IsNested) {
 				var decl = tr.DeclaringType!;
-				while (decl.IsNested) {
-					name.Append (decl.Name);
-					name.Append ('.');
-					name.Append (name);
+				while (true) {
+					name.Insert (0, '.');
+					name.Insert (0, decl.Name);
+					if (!decl.IsNested)
+						break;
 					decl = decl.DeclaringType!;
 				}
 				name.Insert (0, '.');

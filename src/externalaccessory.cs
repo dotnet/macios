@@ -121,7 +121,10 @@ namespace ExternalAccessory {
 		/// <param name="accessory">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[Export ("accessoryDidDisconnect:"), EventArgs ("EAAccessory")]
+		[Export ("accessoryDidDisconnect:"), EventArgs ("EAAccessory", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void Disconnected (EAAccessory accessory);
 	}
 
@@ -192,7 +195,15 @@ namespace ExternalAccessory {
 		[NoMacCatalyst] // selector does not respond
 		[NoMac]
 		[Export ("showBluetoothAccessoryPickerWithNameFilter:completion:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="predicate">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>A task that represents the asynchronous ShowBluetoothAccessoryPicker operation</returns>
+			<remarks>
+			          <para copied="true">The ShowBluetoothAccessoryPickerAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void ShowBluetoothAccessoryPicker ([NullAllowed] NSPredicate predicate, [NullAllowed] Action<NSError> completion);
 	}
 
@@ -395,7 +406,10 @@ namespace ExternalAccessory {
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
 		[Abstract]
-		[Export ("accessoryBrowser:didUpdateState:"), EventArgs ("EAWiFiUnconfiguredAccessory")]
+		[Export ("accessoryBrowser:didUpdateState:"), EventArgs ("EAWiFiUnconfiguredAccessory", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidUpdateState (EAWiFiUnconfiguredAccessoryBrowser browser, EAWiFiUnconfiguredAccessoryBrowserState state);
 
 		/// <param name="browser">To be added.</param>
@@ -403,7 +417,10 @@ namespace ExternalAccessory {
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
 		[Abstract]
-		[Export ("accessoryBrowser:didFindUnconfiguredAccessories:"), EventArgs ("EAWiFiUnconfiguredAccessoryBrowser")]
+		[Export ("accessoryBrowser:didFindUnconfiguredAccessories:"), EventArgs ("EAWiFiUnconfiguredAccessoryBrowser", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidFindUnconfiguredAccessories (EAWiFiUnconfiguredAccessoryBrowser browser, NSSet accessories);
 
 		/// <param name="browser">To be added.</param>
@@ -411,7 +428,10 @@ namespace ExternalAccessory {
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
 		[Abstract]
-		[Export ("accessoryBrowser:didRemoveUnconfiguredAccessories:"), EventArgs ("EAWiFiUnconfiguredAccessoryBrowser")]
+		[Export ("accessoryBrowser:didRemoveUnconfiguredAccessories:"), EventArgs ("EAWiFiUnconfiguredAccessoryBrowser", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidRemoveUnconfiguredAccessories (EAWiFiUnconfiguredAccessoryBrowser browser, NSSet accessories);
 
 		/// <param name="browser">To be added.</param>
@@ -420,7 +440,10 @@ namespace ExternalAccessory {
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
 		[Abstract]
-		[Export ("accessoryBrowser:didFinishConfiguringAccessory:withStatus:"), EventArgs ("EAWiFiUnconfiguredAccessoryDidFinish")]
+		[Export ("accessoryBrowser:didFinishConfiguringAccessory:withStatus:"), EventArgs ("EAWiFiUnconfiguredAccessoryDidFinish", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidFinishConfiguringAccessory (EAWiFiUnconfiguredAccessoryBrowser browser, EAWiFiUnconfiguredAccessory accessory, EAWiFiUnconfiguredAccessoryConfigurationStatus status);
 	}
 }

@@ -40,11 +40,18 @@ namespace CoreImage {
 			}
 		}
 
+		/// <param name="values">To be added.</param>
+		/// <summary>Creates a new vector from the array of values.</summary>
+		/// <remarks>To be added.</remarks>
 		public CIVector (nfloat [] values) :
 			this (values, values?.Length ?? 0)
 		{
 		}
 
+		/// <param name="values">To be added.</param>
+		/// <param name="count">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithValues:count:")]
 		public unsafe CIVector (nfloat [] values, nint count) : base (NSObjectFlag.Empty)
@@ -65,6 +72,10 @@ namespace CoreImage {
 			}
 		}
 
+		/// <param name="values">To be added.</param>
+		/// <summary>Creates a vector from an array of values.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		public unsafe static CIVector FromValues (nfloat [] values)
 		{
 			if (values is null)

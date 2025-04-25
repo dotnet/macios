@@ -71,6 +71,8 @@ namespace GameKit {
 		//
 		// This delegate is used by the 
 		ReceiverObject? receiver;
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		public event EventHandler<GKDataReceivedEventArgs>? ReceiveData {
 			add {
 				if (receiver is null) {
@@ -111,6 +113,8 @@ namespace GameKit {
 			return (Mono_GKSessionDelegate) del;
 		}
 
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		public event EventHandler<GKPeerChangedStateEventArgs> PeerChanged {
 			add {
 				EnsureDelegate ().cbPeerChanged += value;
@@ -121,6 +125,8 @@ namespace GameKit {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		public event EventHandler<GKPeerConnectionEventArgs> ConnectionRequest {
 			add {
 				EnsureDelegate ().cbConnectionRequest += value;
@@ -131,6 +137,8 @@ namespace GameKit {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		public event EventHandler<GKPeerConnectionEventArgs> ConnectionFailed {
 			add {
 				EnsureDelegate ().cbConnectionFailed += value;
@@ -140,6 +148,8 @@ namespace GameKit {
 				EnsureDelegate ().cbConnectionFailed -= value;
 			}
 		}
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		public event EventHandler<GKPeerConnectionEventArgs> Failed {
 			add {
 				EnsureDelegate ().cbFailedWithError += value;

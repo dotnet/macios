@@ -96,19 +96,6 @@ namespace ObjCRuntime {
 			First = 0x100,
 		}
 
-#if MONOMAC && !NET
-		[DllImport (Constants.libcLibrary)]
-		internal static extern int dladdr (IntPtr addr, out Dl_info info);
-
-		internal struct Dl_info
-		{
-			internal IntPtr dli_fname; /* Pathname of shared object */
-			internal IntPtr dli_fbase; /* Base address of shared object */
-			internal IntPtr dli_sname; /* Name of nearest symbol */
-			internal IntPtr dli_saddr; /* Address of nearest symbol */
-		}
-#endif
-
 		/// <param name="handle">Handle previously returned by dlopen</param>
 		///         <summary>Closes and unloads the native shared library referenced by the handle.</summary>
 		///         <returns>A Unix error code, or zero on success.</returns>
@@ -484,18 +471,6 @@ namespace ObjCRuntime {
 
 			return (ulong) Marshal.ReadInt64 (indirect);
 		}
-
-#if !NET
-		[Obsolete ("Use 'SetInt64' for long values instead.")]
-		public static void SetUInt64 (IntPtr handle, string symbol, long value)
-		{
-			var indirect = dlsym (handle, symbol);
-			if (indirect == IntPtr.Zero)
-				return;
-
-			Marshal.WriteInt64 (indirect, (long) value);
-		}
-#endif
 
 		/// <param name="handle">Handle to the dynamic library previously opened with <see cref="M:ObjCRuntime.Dlfcn.dlopen(System.String,System.Int32)" />.</param>
 		///         <param name="symbol">Name of the public symbol in the dynamic library to look up.</param>

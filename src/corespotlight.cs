@@ -165,7 +165,12 @@ namespace CoreSpotlight {
 		///         <summary>Indexes the specified searchable items and runs <paramref name="completionHandler" /> when finished.</summary>
 		///         <remarks>To be added.</remarks>
 		[Export ("indexSearchableItems:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="items">The items to index.</param>
+			<summary>Asynchronously indexes the specified searchable items.</summary>
+			<returns>A task that represents the asynchronous Index operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void Index (CSSearchableItem [] items, [NullAllowed] Action<NSError> completionHandler);
 
 		/// <param name="identifiers">To be added.</param>
@@ -176,7 +181,12 @@ namespace CoreSpotlight {
 		///         <summary>Removes the identified items and runs <paramref name="completionHandler" /> when finished.</summary>
 		///         <remarks>To be added.</remarks>
 		[Export ("deleteSearchableItemsWithIdentifiers:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="identifiers">To be added.</param>
+			<summary>Asynchronously removes the identified items.</summary>
+			<returns>A task that represents the asynchronous Delete operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void Delete (string [] identifiers, [NullAllowed] Action<NSError> completionHandler);
 
 		/// <param name="domainIdentifiers">The domain identifier for the items to delete.</param>
@@ -185,7 +195,12 @@ namespace CoreSpotlight {
 		///         <summary>Removes all items from the specified domains and runs <paramref name="completionHandler" /> after the index change is journaled.</summary>
 		///         <remarks>To be added.</remarks>
 		[Export ("deleteSearchableItemsWithDomainIdentifiers:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="domainIdentifiers">The domain identifier for the items to delete.</param>
+			<summary>Asynchronously removes all items from the specified domains.</summary>
+			<returns>A task that represents the asynchronous DeleteWithDomain operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void DeleteWithDomain (string [] domainIdentifiers, [NullAllowed] Action<NSError> completionHandler);
 
 		/// <param name="completionHandler">
@@ -195,7 +210,14 @@ namespace CoreSpotlight {
 		///         <summary>Removes all items and runs <paramref name="completionHandler" /> when finished.</summary>
 		///         <remarks>To be added.</remarks>
 		[Export ("deleteAllSearchableItemsWithCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Asynchronously removes all items.</summary>
+			<returns>A task that represents the asynchronous DeleteAll operation</returns>
+			<remarks>
+			          <para copied="true">The DeleteAllAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void DeleteAll ([NullAllowed] Action<NSError> completionHandler);
 
 		// from interface CSExternalProvider (CSSearchableIndex)
@@ -223,12 +245,24 @@ namespace CoreSpotlight {
 	[BaseType (typeof (CSSearchableIndex))]
 	interface CSSearchableIndex_CSOptionalBatchingExtension {
 
+		/// <summary>Begins an index update batch.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("beginIndexBatch")]
 		void BeginIndexBatch ();
 
+		/// <param name="clientState">To be added.</param>
+		/// <param name="completionHandler">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Ends an index update batch, relying on the 250 bytes of information for crash recovery, and calls <paramref name="completionHandler" /> when finished.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("endIndexBatchWithClientState:completionHandler:")]
 		void EndIndexBatch (NSData clientState, [NullAllowed] Action<NSError> completionHandler);
 
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>Fetches the client state and runs <paramref name="completionHandler" /> when finished..</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("fetchLastClientStateWithCompletionHandler:")]
 		void FetchLastClientState (CSSearchableIndexFetchHandler completionHandler);
 

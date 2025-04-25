@@ -1,5 +1,3 @@
-#if NET
-
 using System;
 using System.Collections.Generic;
 
@@ -103,4 +101,3 @@ namespace ObjCRuntime {
 		}
 	}
 }
-#endif

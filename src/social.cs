@@ -179,7 +179,16 @@ namespace Social {
 
 		// async 
 		[Export ("performRequestWithHandler:")]
-		[Async (ResultTypeName = "SLRequestResult")]
+		[Async (ResultTypeName = "SLRequestResult", XmlDocs = """
+			<summary>Asynchronously makes the request.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous PerformRequest operation.  The value of the TResult parameter is of type System.Action&lt;Foundation.NSData,Foundation.NSHttpUrlResponse,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The PerformRequestAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void PerformRequest (Action<NSData, NSHttpUrlResponse, NSError> handler);
 	}
 
@@ -191,6 +200,16 @@ namespace Social {
 	[BaseType (typeof (SocialViewController))]
 	[DisableDefaultCtor] // see note on 'composeViewControllerForServiceType:'
 	interface SLComposeViewController {
+		/// <param name="nibName">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="bundle">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Creates a new compose view controller from the named NIB in the specified <paramref name="bundle" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithNibName:bundle:")]
 		[PostGet ("NibBundle")]
 		NativeHandle Constructor ([NullAllowed] string nibName, [NullAllowed] NSBundle bundle);
@@ -232,6 +251,16 @@ namespace Social {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (SocialViewController))]
 	interface SLComposeServiceViewController : SocialTextViewDelegate {
+		/// <param name="nibName">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="bundle">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Creates a new view controller from a named NIB in the provided bundle.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithNibName:bundle:")]
 		[PostGet ("NibBundle")]
 		NativeHandle Constructor ([NullAllowed] string nibName, [NullAllowed] NSBundle bundle);

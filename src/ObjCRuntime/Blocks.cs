@@ -100,7 +100,6 @@ namespace ObjCRuntime {
 		[DllImport ("__Internal")]
 		static extern IntPtr xamarin_get_block_descriptor ();
 
-#if NET
 		/// <summary>
 		/// Creates a block literal.
 		/// </summary>
@@ -146,18 +145,14 @@ namespace ObjCRuntime {
 			SetupFunctionPointerBlock ((IntPtr) trampoline, context, System.Text.Encoding.UTF8.GetBytes (trampolineSignature));
 		}
 
-#if NET
 		// Note that the code in this method shouldn't be called when using NativeAOT, so throw an exception in that case.
 		// IL2070: 'this' argument does not satisfy 'DynamicallyAccessedMemberTypes.PublicMethods', 'DynamicallyAccessedMemberTypes.NonPublicMethods' in call to 'System.Type.GetMethod(String, BindingFlags)'. The parameter 'trampolineType' of method 'ObjCRuntime.BlockLiteral.FindTrampoline(Type, String)' does not have matching annotations. The source value must declare at least the same requirements as those declared on the target location it is assigned to.
 		[UnconditionalSuppressMessage ("", "IL2070", Justification = "The APIs this method tries to access are marked by other means, so this is linker-safe.")]
-#endif
 		static MethodInfo FindTrampoline (Type trampolineType, string trampolineMethod)
 		{
-#if NET
 			// Note that the code in this method shouldn't be called when using NativeAOT, so throw an exception in that case.
 			if (Runtime.IsNativeAOT)
 				throw Runtime.CreateNativeAOTNotSupportedException ();
-#endif
 
 			var rv = trampolineType.GetMethod (trampolineMethod, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
 
@@ -203,7 +198,6 @@ namespace ObjCRuntime {
 			// We're good to go!
 			return Runtime.ComputeSignature (userMethod, true);
 		}
-#endif // NET
 
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		void SetupBlock (Delegate trampoline, Delegate target, bool safe)
@@ -227,11 +221,9 @@ namespace ObjCRuntime {
 			SetupBlockImpl (trampoline, target, safe, System.Text.Encoding.UTF8.GetBytes (signature));
 		}
 
-#if NET
 		// Note that the code in this method shouldn't be called when using any static registrar, so throw an exception in that case.
 		// IL2075: 'this' argument does not satisfy 'DynamicallyAccessedMemberTypes.PublicMethods' in call to 'System.Type.GetMethod(String)'. The return value of method 'ObjCRuntime.UserDelegateTypeAttribute.UserDelegateType.get' does not have matching annotations. The source value must declare at least the same requirements as those declared on the target location it is assigned to.
 		[UnconditionalSuppressMessage ("", "IL2075", Justification = "The APIs this method tries to access are marked by other means, so this is linker-safe.")]
-#endif
 		static bool TryGetUserDelegateType (MemberInfo provider, MethodInfo noUserDelegateTypeMethod, out MethodInfo userMethod)
 		{
 			var userDelegateType = provider.GetCustomAttribute<UserDelegateTypeAttribute> ()?.UserDelegateType;
@@ -329,10 +321,8 @@ namespace ObjCRuntime {
 			SetupBlock (trampoline, userDelegate, safe: true);
 		}
 
-#if NET
 		// IL2075: 'this' argument does not satisfy 'DynamicallyAccessedMemberTypes.PublicMethods' in call to 'System.Type.GetMethod(String)'. The return value of method 'ObjCRuntime.MonoPInvokeCallbackAttribute.DelegateType.get' does not have matching annotations. The source value must declare at least the same requirements as those declared on the target location it is assigned to.
 		[UnconditionalSuppressMessage ("", "IL2075", Justification = "Calling GetMethod('Invoke') on a delegate type will always find something, because the invoke method can't be linked away for a delegate.")]
-#endif
 		void VerifyBlockDelegates (Delegate trampoline, Delegate userDelegate)
 		{
 #if !MONOMAC && !__MACCATALYST__
@@ -429,21 +419,16 @@ namespace ObjCRuntime {
 			}
 		}
 
-#if NET
 		/// <typeparam name="T">Desired type to get, the delegate must be compatible with this type.</typeparam>
 		///         <summary>This method supports the Xamarin.iOS runtime and is not intended for use by application developers.</summary>
 		///         <returns>Returns a delegate of the given type that can be used to invoke the Objective-C block in the provided handle.</returns>
 		///         <remarks>
 		///         </remarks>
 		public T GetDelegateForBlock<T> () where T : System.MulticastDelegate
-#else
-		public T GetDelegateForBlock<T> () where T : class
-#endif
 		{
 			return Runtime.GetDelegateForBlock<T> (invoke);
 		}
 
-#if NET
 		/// <typeparam name="T">The type of the managed delegate to return.</typeparam>
 		///         <param name="block">The pointer to the native block.</param>
 		///         <summary>If this block represents a managed delegate, this method will return that managed delegate.</summary>
@@ -452,9 +437,6 @@ namespace ObjCRuntime {
 		///           <para>Behavior is undefined if this block does not represent a managed delegate.</para>
 		///         </remarks>
 		public unsafe static T GetTarget<T> (IntPtr block) where T : System.MulticastDelegate
-#else
-		public unsafe static T GetTarget<T> (IntPtr block) where T : class /* /* requires C# 7.3+: System.MulticastDelegate */
-#endif
 		{
 			return (T) ((BlockLiteral*) block)->Target;
 		}
@@ -475,7 +457,6 @@ namespace ObjCRuntime {
 			return descriptor->copy_helper == ((BlockDescriptor*) literal->block_descriptor)->copy_helper;
 		}
 
-#if NET
 		// This method should never be called when using the managed static registrar, so assert that never happens by throwing an exception in that case.
 		// This method doesn't necessarily work with NativeAOT, but this is covered by the exception, because the managed static registrar is required for NativeAOT.
 		//
@@ -483,14 +464,11 @@ namespace ObjCRuntime {
 		[UnconditionalSuppressMessage ("", "IL2075", Justification = "The APIs this method tries to access are marked by other means, so this is linker-safe.")]
 		// IL2072: 'interfaceType' argument does not satisfy 'DynamicallyAccessedMemberTypes.PublicMethods', 'DynamicallyAccessedMemberTypes.NonPublicMethods' in call to 'System.Type.GetInterfaceMap(Type)'. The return value of method 'System.Type.GetInterfaces()' does not have matching annotations. The source value must declare at least the same requirements as those declared on the target location it is assigned to.
 		[UnconditionalSuppressMessage ("", "IL2072", Justification = "The APIs this method tries to access are marked by other means, so this is linker-safe.")]
-#endif
 		static Type GetDelegateProxyType (MethodInfo minfo, uint token_ref, out MethodInfo baseMethod)
 		{
-#if NET
 			// Note that the code in this method doesn't necessarily work with NativeAOT, so assert that never happens by throwing an exception if using the managed static registrar (which is required for NativeAOT)
 			if (Runtime.IsManagedStaticRegistrar)
 				throw new System.Diagnostics.UnreachableException ();
-#endif
 
 			// A mirror of this method is also implemented in StaticRegistrar:GetDelegateProxyType
 			// If this method is changed, that method will probably have to be updated too (tests!!!)
@@ -532,7 +510,6 @@ namespace ObjCRuntime {
 			throw ErrorHelper.CreateError (8011, $"Unable to locate the delegate to block conversion attribute ([DelegateProxy]) for the return value for the method {baseMethod.DeclaringType.FullName}.{baseMethod.Name}. {Constants.PleaseFileBugReport}");
 		}
 
-#if NET
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		unsafe static IntPtr GetBlockForFunctionPointer (MethodInfo delegateInvokeMethod, object @delegate, string signature)
 		{
@@ -548,7 +525,6 @@ namespace ObjCRuntime {
 					return _Block_copy (&block);
 			}
 		}
-#endif // NET
 
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		[BindingImpl (BindingImplOptions.Optimizable)]
@@ -578,21 +554,17 @@ namespace ObjCRuntime {
 		}
 
 		[BindingImpl (BindingImplOptions.Optimizable)]
-#if NET
 		// This method should never be called when using the managed static registrar, so assert that never happens by throwing an exception in that case.
 		// This method doesn't necessarily work with NativeAOT, but this is covered by the exception, because the managed static registrar is required for NativeAOT.
 		//
 		// IL2075: 'this' argument does not satisfy 'DynamicallyAccessedMemberTypes.NonPublicFields' in call to 'System.Type.GetField(String, BindingFlags)'. The return value of method 'ObjCRuntime.BlockLiteral.GetDelegateProxyType(MethodInfo, UInt32, MethodInfo&)' does not have matching annotations. The source value must declare at least the same requirements as those declared on the target location it is assigned to.
 		// IL2075: 'this' argument does not satisfy 'DynamicallyAccessedMemberTypes.NonPublicMethods' in call to 'System.Type.GetMethod(String, BindingFlags)'. The return value of method 'ObjCRuntime.BlockLiteral.GetDelegateProxyType(MethodInfo, UInt32, MethodInfo&)' does not have matching annotations. The source value must declare at least the same requirements as those declared on the target location it is assigned to."
 		[UnconditionalSuppressMessage ("", "IL2075", Justification = "The APIs this method tries to access are marked by other means, so this is linker-safe.")]
-#endif
 		internal static IntPtr GetBlockForDelegate (MethodInfo minfo, object @delegate, uint token_ref, string signature)
 		{
-#if NET
 			// Note that the code in this method doesn't necessarily work with NativeAOT, so assert that never happens by throwing an exception if using the managed static registrar (which is required for NativeAOT)
 			if (Runtime.IsManagedStaticRegistrar)
 				throw new System.Diagnostics.UnreachableException ();
-#endif
 
 			if (@delegate is null)
 				return IntPtr.Zero;
@@ -600,10 +572,8 @@ namespace ObjCRuntime {
 			if (!(@delegate is Delegate))
 				throw ErrorHelper.CreateError (8016, $"Unable to convert delegate to block for the return value for the method {minfo.DeclaringType.FullName}.{minfo.Name}, because the input isn't a delegate, it's a {@delegate.GetType ().FullName}. {Constants.PleaseFileBugReport}");
 
-#if NET
 			if (Runtime.IsNativeAOT)
 				throw Runtime.CreateNativeAOTNotSupportedException ();
-#endif
 
 			Type delegateProxyType = GetDelegateProxyType (minfo, token_ref, out var baseMethod);
 			if (baseMethod is null)
@@ -611,11 +581,9 @@ namespace ObjCRuntime {
 			if (delegateProxyType is null)
 				throw ErrorHelper.CreateError (8012, $"Invalid DelegateProxyAttribute for the return value for the method {baseMethod.DeclaringType.FullName}.{baseMethod.Name}: DelegateType is null. {Constants.PleaseFileBugReport}");
 
-#if NET
 			var delegateInvokeMethod = delegateProxyType.GetMethod ("Invoke", BindingFlags.NonPublic | BindingFlags.Static);
 			if (delegateInvokeMethod is not null && delegateInvokeMethod.IsDefined (typeof (UnmanagedCallersOnlyAttribute), false))
 				return GetBlockForFunctionPointer (delegateInvokeMethod, @delegate, signature);
-#endif
 
 			var delegateProxyField = delegateProxyType.GetField ("Handler", BindingFlags.NonPublic | BindingFlags.Static);
 			if (delegateProxyField is null)
@@ -670,13 +638,7 @@ namespace ObjCRuntime {
 	// first use of the class
 
 	internal class BlockStaticDispatchClass {
-#if !NET
-		internal delegate void dispatch_block_t (IntPtr block);
-
-		[MonoPInvokeCallback (typeof (dispatch_block_t))]
-#else
 		[UnmanagedCallersOnly]
-#endif
 		internal static unsafe void TrampolineDispatchBlock (IntPtr block)
 		{
 			var del = BlockLiteral.GetTarget<Action> (block);
@@ -688,19 +650,9 @@ namespace ObjCRuntime {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		unsafe internal static BlockLiteral CreateBlock (Action action)
 		{
-#if NET
 			delegate* unmanaged<IntPtr, void> trampoline = &BlockStaticDispatchClass.TrampolineDispatchBlock;
 			return new BlockLiteral (trampoline, action, typeof (BlockStaticDispatchClass), nameof (TrampolineDispatchBlock));
-#else
-			var block = new BlockLiteral ();
-			block.SetupBlockUnsafe (static_dispatch_block, action);
-			return block;
-#endif
 		}
-
-#if !NET
-		internal static dispatch_block_t static_dispatch_block = TrampolineDispatchBlock;
-#endif
 	}
 
 	// This class will free the specified block when it's collected by the GC.

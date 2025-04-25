@@ -29,10 +29,6 @@ using ObjCRuntime;
 
 #nullable enable
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace ObjCRuntime {
 	/// <summary>Represents an Objective-C selector in managed code.</summary>
 	///     <remarks>

@@ -166,6 +166,10 @@ namespace CoreML {
 		[Export ("dictionary")]
 		NSDictionary<NSString, MLFeatureValue> Dictionary { get; }
 
+		/// <param name="dictionary">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>Constructor that creates a <see cref="T:CoreML.MLDictionaryFeatureProvider" /> based on the specified <paramref name="dictionary" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithDictionary:error:")]
 		NativeHandle Constructor (NSDictionary<NSString, NSObject> dictionary, out NSError error);
 	}
@@ -248,10 +252,17 @@ namespace CoreML {
 	[Protocol]
 	interface MLFeatureProvider {
 
+		/// <summary>The names of the feature, as defined by the <see cref="T:CoreML.MLModel" />.</summary>
+		/// <value>The <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:Monotouch.Foundation.NSSet&amp;scope=Xamarin" title="T:Monotouch.Foundation.NSSet">T:Monotouch.Foundation.NSSet</a></format> of feature names.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("featureNames")]
 		NSSet<NSString> FeatureNames { get; }
 
+		/// <param name="featureName">The feature whose value will be returned.</param>
+		/// <summary>Retrieves the value of the <paramref name="featureName" />.</summary>
+		/// <returns>The value of the <paramref name="featureName" />.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("featureValueForName:")]
 		[return: NullAllowed]
@@ -831,6 +842,11 @@ namespace CoreML {
 
 		// From MLMultiArray (Creation) Category
 
+		/// <param name="shape">To be added.</param>
+		/// <param name="dataType">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>Creates a new MLMultiArray with the specified shape and data type.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithShape:dataType:error:")]
 		NativeHandle Constructor (NSNumber [] shape, MLMultiArrayDataType dataType, out NSError error);
 
@@ -838,6 +854,14 @@ namespace CoreML {
 		[Export ("initWithShape:dataType:strides:")]
 		NativeHandle Constructor (NSNumber [] shape, MLMultiArrayDataType dataType, NSNumber [] strides);
 
+		/// <param name="dataPointer">To be added.</param>
+		/// <param name="shape">To be added.</param>
+		/// <param name="dataType">To be added.</param>
+		/// <param name="strides">To be added.</param>
+		/// <param name="deallocator">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>Creates a new MLMultiArray with the specified details.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithDataPointer:shape:dataType:strides:deallocator:error:")]
 		NativeHandle Constructor (IntPtr dataPointer, NSNumber [] shape, MLMultiArrayDataType dataType, NSNumber [] strides, [NullAllowed] Action<IntPtr> deallocator, out NSError error);
 
@@ -847,6 +871,10 @@ namespace CoreML {
 
 		// From MLMultiArray (NSNumberDataAccess) Category
 
+		/// <param name="idx">A numeric identifier for the object to get.</param>
+		/// <summary>Retrieves the element at <paramref name="idx" />, as if the array were single-dimensional.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("objectAtIndexedSubscript:")]
 		NSNumber GetObject (nint idx);
 
@@ -863,6 +891,10 @@ namespace CoreML {
 		// Bind 'key' as IntPtr to avoid multiple conversions (nint[] -> NSNumber[] -> NSArray)
 		NSNumber GetObjectInternal (IntPtr key);
 
+		/// <param name="obj">The new value.</param>
+		/// <param name="idx">A numeric identifier for the object to set.</param>
+		/// <summary>Sets the value at <paramref name="idx" /> to <paramref name="obj" />, as if the array were single-dimensional.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("setObject:atIndexedSubscript:")]
 		void SetObject (NSNumber obj, nint idx);
 
@@ -1003,19 +1035,42 @@ namespace CoreML {
 		//[Export ("initWithParameterDictionary:error:")]
 		//NativeHandle Constructor (NSDictionary<NSString, NSObject> parameters, [NullAllowed] out NSError error);
 
+		/// <param name="weights">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>Sets the internal weights of the layer.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("setWeightData:error:")]
 		bool SetWeightData (NSData [] weights, [NullAllowed] out NSError error);
 
+		/// <param name="inputShapes">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>Retrieves the output data shape, as an array of numbers describing the dimensions of the output tensor.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("outputShapesForInputShapes:error:")]
 		[return: NullAllowed]
 		NSArray [] GetOutputShapes (NSArray [] inputShapes, [NullAllowed] out NSError error);
 
+		/// <param name="inputs">To be added.</param>
+		/// <param name="outputs">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>Sets <paramref name="outputs" /> based on <paramref name="inputs" /> using the CPU to do the calculations.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("evaluateOnCPUWithInputs:outputs:error:")]
 		bool EvaluateOnCpu (MLMultiArray [] inputs, MLMultiArray [] outputs, [NullAllowed] out NSError error);
 
+		/// <param name="commandBuffer">To be added.</param>
+		/// <param name="inputs">To be added.</param>
+		/// <param name="outputs">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>Sets <paramref name="outputs" /> by applying <paramref name="inputs" /> to the function described by <paramref name="commandBuffer" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("encodeToCommandBuffer:inputs:outputs:error:")]
 		bool Encode (IMTLCommandBuffer commandBuffer, IMTLTexture [] inputs, IMTLTexture [] outputs, [NullAllowed] out NSError error);
 	}
@@ -1032,9 +1087,16 @@ namespace CoreML {
 		[Export ("array")]
 		IMLFeatureProvider [] Array { get; }
 
+		/// <param name="array">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithFeatureProviderArray:")]
 		NativeHandle Constructor (IMLFeatureProvider [] array);
 
+		/// <param name="dictionary">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithDictionary:error:")]
 		NativeHandle Constructor (NSDictionary<NSString, NSArray> dictionary, out NSError error);
 	}
@@ -1046,10 +1108,17 @@ namespace CoreML {
 	[Protocol]
 	interface MLBatchProvider {
 
+		/// <summary>The number of <see cref="T:CoreML.IMLFeatureProvider" /> objects in the current batch.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("count")]
 		nint Count { get; }
 
+		/// <param name="index">To be added.</param>
+		/// <summary>Gets the <see cref="T:CoreML.IMLFeatureProvider" /> at <paramref name="index" /> for the current batch.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("featuresAtIndex:")]
 		IMLFeatureProvider GetFeatures (nint index);
@@ -1066,6 +1135,11 @@ namespace CoreML {
 	interface MLCustomModel {
 
 		// [Abstract]
+		/// <param name="modelDescription">To be added.</param>
+		/// <param name="parameters">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithModelDescription:parameterDictionary:error:")]
 		NativeHandle Constructor (MLModelDescription modelDescription, NSDictionary<NSString, NSObject> parameters, out NSError error);
 

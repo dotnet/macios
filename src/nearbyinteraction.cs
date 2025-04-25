@@ -241,9 +241,7 @@ namespace NearbyInteraction {
 		bool SupportsCameraAssistance { get; }
 
 		[NoTV, NoMac, iOS (17, 0), MacCatalyst (17, 0)]
-#if XAMCORE_5_0
-		[Abstract]
-#endif
+		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("supportsExtendedDistanceMeasurement")]
 		bool SupportsExtendedDistanceMeasurement { get; }
 	}

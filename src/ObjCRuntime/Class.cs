@@ -25,10 +25,6 @@ using Registrar;
 using Xamarin.Bundler;
 #endif
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace ObjCRuntime {
 	/// <include file="../../docs/api/ObjCRuntime/Class.xml" path="/Documentation/Docs[@DocId='T:ObjCRuntime.Class']/*" />
 	public partial class Class : INativeObject
@@ -114,11 +110,7 @@ namespace ObjCRuntime {
 		}
 
 		[Preserve (Conditional = true)]
-#if NET
 		internal Class (NativeHandle handle, bool owns)
-#else
-		public Class (NativeHandle handle, bool owns)
-#endif
 		{
 			// Class(es) can't be freed, so we ignore the 'owns' parameter.
 			this.handle = handle;
@@ -341,7 +333,6 @@ namespace ObjCRuntime {
 			int type_token;
 
 			if (Runtime.IsManagedStaticRegistrar) {
-#if NET
 				mod_token = unchecked((int) Runtime.INVALID_TOKEN_REF);
 				type_token = unchecked((int) RegistrarHelper.LookupRegisteredTypeId (type));
 
@@ -351,9 +342,6 @@ namespace ObjCRuntime {
 
 				if (type_token == -1)
 					return IntPtr.Zero;
-#else
-				throw ErrorHelper.CreateError (99, Xamarin.Bundler.Errors.MX0099 /* Internal error */, "The managed static registrar is only available for .NET");
-#endif // NET
 			} else {
 				mod_token = type.Module.MetadataToken;
 				type_token = type.MetadataToken & ~0x02000000 /* TokenType.TypeDef */;
@@ -575,9 +563,6 @@ namespace ObjCRuntime {
 
 		static MemberInfo? ResolveToken (Assembly assembly, Module? module, uint token)
 		{
-#if !NET
-			return ResolveTokenNonManagedStatic (assembly, module, token);
-#else
 			if (!Runtime.IsManagedStaticRegistrar)
 				return ResolveTokenNonManagedStatic (assembly, module, token);
 
@@ -595,25 +580,20 @@ namespace ObjCRuntime {
 			default:
 				throw ErrorHelper.CreateError (8021, $"Unknown implicit token type: 0x{token_type:X}.");
 			}
-#endif // !NET
 		}
 
-#if NET
 		// This method should never be called when using the managed static registrar, so assert that never happens by throwing an exception in that case.
 		// This method doesn't necessarily work with NativeAOT, but this is covered by the exception, because the managed static registrar is required for NativeAOT.
 		//
 		// IL2026: Using member 'System.Reflection.Module.ResolveMethod(Int32)' which has 'RequiresUnreferencedCodeAttribute' can break functionality when trimming application code. Trimming changes metadata tokens.
 		// IL2026: Using member 'System.Reflection.Module.ResolveType(Int32)' which has 'RequiresUnreferencedCodeAttribute' can break functionality when trimming application code. Trimming changes metadata tokens.
 		[UnconditionalSuppressMessage ("", "IL2026", Justification = "The APIs this method tries to access are marked by other means, so this is linker-safe.")]
-#endif
 		static MemberInfo? ResolveTokenNonManagedStatic (Assembly assembly, Module? module, uint token)
 		{
-#if NET
 			// This method should never be called when using the managed static registrar, so assert that never happens by throwing an exception in that case.
 			// This also takes care of NativeAOT, because the managed static registrar is required when using NativeAOT.
 			if (Runtime.IsManagedStaticRegistrar)
 				throw new System.Diagnostics.UnreachableException ();
-#endif
 
 			// Finally resolve the token.
 			var token_type = token & 0xFF000000;
@@ -747,15 +727,11 @@ namespace ObjCRuntime {
 			// First check if there's a full token reference to this type
 			uint token;
 			if (Runtime.IsManagedStaticRegistrar) {
-#if NET
 				var id = RegistrarHelper.LookupRegisteredTypeId (type);
 				token = GetFullTokenReference (asm_name, unchecked((int) Runtime.INVALID_TOKEN_REF), 0x2000000 /* TokenType.TypeDef */ | unchecked((int) id));
 #if LOG_TYPELOAD
 				Runtime.NSLog ($"GetTokenReference ({type}, {throw_exception}) id: {id} token: 0x{token.ToString ("x")}");
 #endif
-#else
-				throw ErrorHelper.CreateError (99, Xamarin.Bundler.Errors.MX0099 /* Internal error */, "The managed static registrar is only available for .NET");
-#endif // NET
 			} else {
 				token = GetFullTokenReference (asm_name, type.Module.MetadataToken, type.MetadataToken);
 			}

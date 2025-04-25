@@ -379,9 +379,20 @@ namespace Photos {
 	[BaseType (typeof (PHAsset))]
 	interface PHAssetContentEditingInputExtensions {
 
+		/// <param name="options">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("requestContentEditingInputWithOptions:completionHandler:")]
 		nuint RequestContentEditingInput ([NullAllowed] PHContentEditingInputRequestOptions options, PHContentEditingHandler completionHandler);
 
+		/// <param name="requestID">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("cancelContentEditingInputRequest:")]
 		void CancelContentEditingInputRequest (nuint requestID);
 	}
@@ -434,6 +445,10 @@ namespace Photos {
 		[Export ("replaceAssetsAtIndexes:withAssets:")]
 		void ReplaceAssets (NSIndexSet indexes, PHObject [] assets);
 
+		/// <param name="fromIndexes">To be added.</param>
+		/// <param name="toIndex">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("moveAssetsAtIndexes:toIndex:")]
 		void MoveAssets (NSIndexSet fromIndexes, nuint toIndex);
 	}
@@ -453,7 +468,17 @@ namespace Photos {
 		int RequestData (PHAssetResource forResource, [NullAllowed] PHAssetResourceRequestOptions options, Action<NSData> handler, Action<NSError> completionHandler);
 
 		[Export ("writeDataForAssetResource:toFile:options:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="forResource">The resource from which to get the data.</param>
+			<param name="fileURL">The file to write to.</param>
+			<param name="options">Object that contains a progress handler and a value that specifes whether the network may be used. This parameter may be .</param>
+			<summary>Asynchronously writes the data at the provided URL to the specified asset resource.</summary>
+			<returns>A task that represents the asynchronous WriteData operation</returns>
+			<remarks>
+			          <para copied="true">The WriteDataAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void WriteData (PHAssetResource forResource, NSUrl fileURL, [NullAllowed] PHAssetResourceRequestOptions options, Action<NSError> completionHandler);
 
 		[Export ("cancelDataRequest:")]
@@ -805,6 +830,10 @@ namespace Photos {
 		[Export ("replaceChildCollectionsAtIndexes:withChildCollections:")]
 		void ReplaceChildCollection (NSIndexSet indexes, PHCollection [] collections);
 
+		/// <param name="indexes">To be added.</param>
+		/// <param name="toIndex">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("moveChildCollectionsAtIndexes:toIndex:")]
 		void MoveChildCollections (NSIndexSet indexes, nuint toIndex);
 	}
@@ -957,6 +986,10 @@ namespace Photos {
 		[Export ("count")]
 		nint Count { get; }
 
+		/// <param name="index">To be added.</param>
+		/// <summary>Returns that object at <paramref name="index" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("objectAtIndex:")]
 		NSObject ObjectAt (nint index);
 
@@ -1262,6 +1295,9 @@ namespace Photos {
 	[BaseType (typeof (NSObject))]
 	interface PHPhotoLibraryChangeObserver {
 
+		/// <param name="changeInstance">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("photoLibraryDidChange:")]
 		void PhotoLibraryDidChange (PHChange changeInstance);
@@ -1311,7 +1347,15 @@ namespace Photos {
 		[Deprecated (PlatformName.TvOS, 14, 0, message: "Use 'RequestAuthorization(PHAccessLevel, Action<PHAuthorizationStatus>)' overload instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 14, 0, message: "Use 'RequestAuthorization(PHAccessLevel, Action<PHAuthorizationStatus>)' overload instead.")]
 		[Static, Export ("requestAuthorization:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Asynchronously shows, if necessary, a permissions dialog allowing the user to allow or deny the application access to the photo library.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous RequestAuthorization operation.  The value of the TResult parameter is of type System.Action&lt;Photos.PHAuthorizationStatus&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The RequestAuthorizationAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			        </remarks>
+			""")]
 		void RequestAuthorization (Action<PHAuthorizationStatus> handler);
 
 		[TV (14, 0), iOS (14, 0)]
@@ -1378,6 +1422,10 @@ namespace Photos {
 		[Export ("cloudIdentifierMappingsForLocalIdentifiers:")]
 		NSDictionary<NSString, PHCloudIdentifierMapping> GetCloudIdentifierMappings (string [] localIdentifiers);
 
+		/// <param name="cloudIdentifiers">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[NoiOS]
 		[NoMacCatalyst]
@@ -1385,6 +1433,10 @@ namespace Photos {
 		[Export ("localIdentifiersForCloudIdentifiers:")]
 		string [] GetLocalIdentifiers (PHCloudIdentifier [] cloudIdentifiers);
 
+		/// <param name="localIdentifiers">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[NoiOS]
 		[NoMacCatalyst]
@@ -1524,7 +1576,12 @@ namespace Photos {
 		///         <param name="handler">A handler that takes the Live Photo and an error and is run on the main thread when the processing is complete.</param>
 		///         <summary>Prepares an edited Live Photo for playback.</summary>
 		///         <remarks>To be added.</remarks>
-		[Async]
+		[Async (XmlDocs = """
+			<param name="targetSize">The size of the output view to target.</param>
+			<summary>Asynchronously prepares an edited Live Photo for playback, returning a task that provides the live photo.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Wrap ("_PrepareLivePhotoForPlayback (targetSize, null, handler)")]
 		void PrepareLivePhotoForPlayback (CGSize targetSize, Action<PHLivePhoto, NSError> handler);
 
@@ -1536,7 +1593,15 @@ namespace Photos {
 		///         <param name="handler">A handler that takes the Live Photo and an error and is run on the main thread when the processing is complete.</param>
 		///         <summary>Prepares an edited Live Photo for playback.</summary>
 		///         <remarks>To be added.</remarks>
-		[Async]
+		[Async (XmlDocs = """
+			<param name="targetSize">The size of the output view to target.</param>
+			<param name="options">Live Photo processing options.This parameter can be .</param>
+			<summary>Asynchronously prepares an edited Live Photo for playback, returning a task that provides the live photo.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous PrepareLivePhotoForPlayback operation.  The value of the TResult parameter is of type <c>Action&lt;Photos.PHLivePhoto,Foundation.NSError&gt;</c>.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Wrap ("_PrepareLivePhotoForPlayback (targetSize, (options as NSDictionary), handler)", IsVirtual = true)]
 		void PrepareLivePhotoForPlayback (CGSize targetSize, [NullAllowed] NSDictionary<NSString, NSObject> options, Action<PHLivePhoto, NSError> handler);
 
@@ -1550,7 +1615,16 @@ namespace Photos {
 		///         <summary>Prepares an edited Live Photo for playback.</summary>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="targetSize">The size of the output view to target.</param>
+			<param name="options">
+			          <para>Live Photo processing options.</para>
+			          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+			        </param>
+			<summary>Asynchronously prepares an edited Live Photo for playback, returning a task that provides the live photo.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Wrap ("_PrepareLivePhotoForPlayback (targetSize, options.GetDictionary (), handler)")]
 		void PrepareLivePhotoForPlayback (CGSize targetSize, [NullAllowed] PHLivePhotoEditingOption options, Action<PHLivePhoto, NSError> handler);
 
@@ -1562,7 +1636,12 @@ namespace Photos {
 		///         <param name="handler">A handler that receives an error and is run on the main thread when the processing is complete.</param>
 		///         <summary>Saves a Live Photo.</summary>
 		///         <remarks>To be added.</remarks>
-		[Async]
+		[Async (XmlDocs = """
+			<param name="output">The photo editing output to which to save the photo.</param>
+			<summary>Asynchronously saves a Live Photo, returning a task that indicates success or failure.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Wrap ("_SaveLivePhoto (output, null, handler)")]
 		void SaveLivePhoto (PHContentEditingOutput output, Action<bool, NSError> handler);
 
@@ -1574,7 +1653,16 @@ namespace Photos {
 		///         <param name="handler">A handler that takes a <see langword="bool" /> and an error and is run when rendering completes.</param>
 		///         <summary>Saves a Live Photo.</summary>
 		///         <remarks>To be added.</remarks>
-		[Async]
+		[Async (XmlDocs = """
+			<param name="output">The photo editing output to which to save the photo.</param>
+			<param name="options">
+			          <para>The Live Photo processing options to use, if any.</para>
+			          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+			        </param>
+			<summary>Asynchronously saves a Live Photo, returning a task that provides a tuple that contains a Boolean value that indicates succes or faiure and an error, if one was encountered.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Wrap ("_SaveLivePhoto (output, options, handler)", IsVirtual = true)]
 		void SaveLivePhoto (PHContentEditingOutput output, [NullAllowed] NSDictionary<NSString, NSObject> options, Action<bool, NSError> handler);
 
@@ -1588,7 +1676,16 @@ namespace Photos {
 		///         <summary>Saves a Live Photo.</summary>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="output">The photo editing output to which to save the photo.</param>
+			<param name="options">
+			          <para>The Live Photo processing options to use, if any.</para>
+			          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+			        </param>
+			<summary>Asynchronously saves a Live Photo, returning a task that contains any error that was encountered.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Wrap ("_SaveLivePhoto (output, options.GetDictionary (), handler)")]
 		void SaveLivePhoto (PHContentEditingOutput output, [NullAllowed] PHLivePhotoEditingOption options, Action<bool, NSError> handler);
 
@@ -1602,18 +1699,30 @@ namespace Photos {
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface PHLivePhotoFrame {
+		/// <summary>Gets the image that will be processed.</summary>
+		/// <value>The image that will be processed.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("image")]
 		CIImage Image { get; }
 
+		/// <summary>Gets the time, in seconds from the beginning of the Live Photo, when the image appears.</summary>
+		/// <value>The time, in seconds from the beginning of the Live Photo, when the image appears.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("time")]
 		CMTime Time { get; }
 
+		/// <summary>Gets a value that tells whether the image is a still photo or a video frame.</summary>
+		/// <value>A value that tells whether the image is a still photo or a video frame.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("type")]
 		PHLivePhotoFrameType Type { get; }
 
+		/// <summary>Gets the relative scale of <see cref="T:Photos.IPHLivePhotoFrame" /> compared to the Live Photo.</summary>
+		/// <value>The relative scale of <see cref="T:Photos.IPHLivePhotoFrame" /> compared to the Live Photo.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("renderScale")]
 		nfloat RenderScale { get; }

@@ -54,6 +54,9 @@ namespace MapKit {
 	[Protocol]
 	[MacCatalyst (13, 1)]
 	interface MKAnnotation {
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Export ("coordinate")]
 		[Abstract]
 		CLLocationCoordinate2D Coordinate { get; }
@@ -66,6 +69,9 @@ namespace MapKit {
 		[NullAllowed]
 		string Subtitle { get; }
 
+		/// <param name="value">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("setCoordinate:")]
 		[MacCatalyst (13, 1)]
 		void SetCoordinate (CLLocationCoordinate2D value);
@@ -86,10 +92,17 @@ namespace MapKit {
 		// a readonly 'coordinate' property, so there's no need to re-declare it here
 		// (in fact it causes numerous build problems).
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("boundingMapRect")]
 		MKMapRect BoundingMapRect { get; }
 
+		/// <param name="rect">The area being checked for intersection with this <see cref="T:MapKit.MKOverlay" />.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("intersectsMapRect:")]
 		bool Intersects (MKMapRect rect);
 
@@ -110,6 +123,12 @@ namespace MapKit {
 		[PostGet ("Annotation")]
 		NativeHandle Constructor ([NullAllowed] IMKAnnotation annotation, [NullAllowed] string reuseIdentifier);
 
+		/// <param name="frame">Frame used by the view, expressed in iOS points.</param>
+		/// <summary>Initializes the MKAnnotationView with the specified frame.</summary>
+		/// <remarks>
+		///           <para>This constructor is used to programmatically create a new instance of MKAnnotationView with the specified dimension in the frame.   The object will only be displayed once it has been added to a view hierarchy by calling AddSubview in a containing view.</para>
+		///           <para>This constructor is not invoked when deserializing objects from storyboards or XIB filesinstead the constructor that takes an NSCoder parameter is invoked.</para>
+		///         </remarks>
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect frame);
 
@@ -271,6 +290,12 @@ namespace MapKit {
 	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'MKCircleRenderer' instead.")]
 	interface MKCircleView {
+		/// <param name="frame">Frame used by the view, expressed in iOS points.</param>
+		/// <summary>Initializes the MKCircleView with the specified frame.</summary>
+		/// <remarks>
+		///           <para>This constructor is used to programmatically create a new instance of MKCircleView with the specified dimension in the frame.   The object will only be displayed once it has been added to a view hierarchy by calling AddSubview in a containing view.</para>
+		///           <para>This constructor is not invoked when deserializing objects from storyboards or XIB filesinstead the constructor that takes an NSCoder parameter is invoked.</para>
+		///         </remarks>
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect frame);
 
@@ -469,6 +494,12 @@ namespace MapKit {
 	[BaseType (typeof (UIView), Delegates = new string [] { "WeakDelegate" }, Events = new Type [] { typeof (MKMapViewDelegate) })]
 	[MacCatalyst (13, 1)]
 	interface MKMapView {
+		/// <param name="frame">Frame used by the view, expressed in iOS points.</param>
+		/// <summary>Initializes the MKMapView with the specified frame.</summary>
+		/// <remarks>
+		///           <para>This constructor is used to programmatically create a new instance of MKMapView with the specified dimension in the frame.   The object will only be displayed once it has been added to a view hierarchy by calling AddSubview in a containing view.</para>
+		///           <para>This constructor is not invoked when deserializing objects from storyboards or XIB filesinstead the constructor that takes an NSCoder parameter is invoked.</para>
+		///         </remarks>
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect frame);
 
@@ -626,6 +657,10 @@ namespace MapKit {
 		[Export ("overlays")]
 		IMKOverlay [] Overlays { get; }
 
+		/// <param name="overlay">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("insertOverlay:atIndex:")]
 		[PostGet ("Overlays")]
 		void InsertOverlay (IMKOverlay overlay, nint index);
@@ -638,6 +673,10 @@ namespace MapKit {
 		[PostGet ("Overlays")]
 		void InsertOverlayBelow (IMKOverlay overlay, IMKOverlay sibling);
 
+		/// <param name="index1">The index of the first overlay.</param>
+		/// <param name="index2">The index of the second overlay.</param>
+		/// <summary>Swaps the index positions of two overlays.</summary>
+		/// <remarks>Changing the index positions of the overlays will swap their z-order on the map.</remarks>
 		[Export ("exchangeOverlayAtIndex:withOverlayAtIndex:")]
 		void ExchangeOverlays (nint index1, nint index2);
 
@@ -712,6 +751,11 @@ namespace MapKit {
 		[PostGet ("Overlays")]
 		void ExchangeOverlay (IMKOverlay overlay1, IMKOverlay overlay2);
 
+		/// <param name="overlay">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <param name="level">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("insertOverlay:atIndex:level:")]
 		[PostGet ("Overlays")]
 		void InsertOverlay (IMKOverlay overlay, nuint index, MKOverlayLevel level);
@@ -820,39 +864,118 @@ namespace MapKit {
 	[Protocol]
 	[MacCatalyst (13, 1)]
 	interface MKMapViewDelegate {
-		[Export ("mapView:regionWillChangeAnimated:"), EventArgs ("MKMapViewChange")]
+		/// <param name="mapView">To be added.</param>
+		/// <param name="animated">To be added.</param>
+		/// <summary>Indicates the region displayed by <paramref name="mapView" /> is about to change.</summary>
+		/// <remarks>To be added.</remarks>
+		[Export ("mapView:regionWillChangeAnimated:"), EventArgs ("MKMapViewChange", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void RegionWillChange (MKMapView mapView, bool animated);
 
-		[Export ("mapView:regionDidChangeAnimated:"), EventArgs ("MKMapViewChange")]
+		/// <param name="mapView">To be added.</param>
+		/// <param name="animated">To be added.</param>
+		/// <summary>Indicates the region displayed by <paramref name="mapView" /> has changed.</summary>
+		/// <remarks>To be added.</remarks>
+		[Export ("mapView:regionDidChangeAnimated:"), EventArgs ("MKMapViewChange", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void RegionChanged (MKMapView mapView, bool animated);
 
+		/// <param name="mapView">To be added.</param>
+		/// <summary>Indicates that loading of map data is about to begin.</summary>
+		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[Export ("mapViewWillStartLoadingMap:")]
 		void WillStartLoadingMap (MKMapView mapView);
 
+		/// <param name="mapView">To be added.</param>
+		/// <summary>Indicates that loading of map data has completed.</summary>
+		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[Export ("mapViewDidFinishLoadingMap:")]
 		void MapLoaded (MKMapView mapView);
 
-		[Export ("mapViewDidFailLoadingMap:withError:"), EventArgs ("NSError", true)]
+		/// <param name="mapView">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>Indicates an <paramref name="error" /> caused loading to fail.</summary>
+		/// <remarks>To be added.</remarks>
+		[Export ("mapViewDidFailLoadingMap:withError:"), EventArgs ("NSError", true, XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void LoadingMapFailed (MKMapView mapView, NSError error);
 
+		/// <param name="mapView">To be added.</param>
+		/// <param name="annotation">To be added.</param>
+		/// <summary>Returns the <see cref="T:MapKit.MKAnnotationView" /> associated with the <paramref name="annotation" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Delegate invoked by the object to get a value.</summary>
+			<value>To be added.</value>
+			<remarks>Developers assign a function, delegate or anonymous method to this property to return a value to the object.   If developers assign a value to this property, it this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[Export ("mapView:viewForAnnotation:"), DelegateName ("MKMapViewAnnotation"), DefaultValue (null)]
 		[return: NullAllowed]
 		MKAnnotationView GetViewForAnnotation (MKMapView mapView, IMKAnnotation annotation);
 
-		[Export ("mapView:didAddAnnotationViews:"), EventArgs ("MKMapViewAnnotation")]
+		/// <param name="mapView">To be added.</param>
+		/// <param name="views">To be added.</param>
+		/// <summary>Called when an annotation view (or views) have been added to <paramref name="mapView" />.</summary>
+		/// <remarks>To be added.</remarks>
+		[Export ("mapView:didAddAnnotationViews:"), EventArgs ("MKMapViewAnnotation", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidAddAnnotationViews (MKMapView mapView, MKAnnotationView [] views);
 
+		/// <param name="mapView">To be added.</param>
+		/// <param name="view">To be added.</param>
+		/// <param name="control">To be added.</param>
+		/// <summary>Called when the callout accessory <paramref name="control" /> has been tapped.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoMac]
 		[NoTV]
 		[MacCatalyst (13, 1)]
-		[Export ("mapView:annotationView:calloutAccessoryControlTapped:"), EventArgs ("MKMapViewAccessoryTapped")]
+		[Export ("mapView:annotationView:calloutAccessoryControlTapped:"), EventArgs ("MKMapViewAccessoryTapped", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void CalloutAccessoryControlTapped (MKMapView mapView, MKAnnotationView view, UIControl control);
 
+		/// <param name="mapView">To be added.</param>
+		/// <param name="annotationView">To be added.</param>
+		/// <param name="newState">To be added.</param>
+		/// <param name="oldState">To be added.</param>
+		/// <summary>Called when the drag state has changed from <paramref name="oldState" /> to <paramref name="newState" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
-		[Export ("mapView:annotationView:didChangeDragState:fromOldState:"), EventArgs ("MKMapViewDragState")]
+		[Export ("mapView:annotationView:didChangeDragState:fromOldState:"), EventArgs ("MKMapViewDragState", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void ChangedDragState (MKMapView mapView, MKAnnotationView annotationView, MKAnnotationViewDragState newState, MKAnnotationViewDragState oldState);
 
+		/// <param name="mapView">To be added.</param>
+		/// <param name="overlay">To be added.</param>
+		/// <summary>Use MKOverlayRenderer.RendererForOverlay instead</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Delegate invoked by the object to get a value.</summary>
+			<value>To be added.</value>
+			<remarks>Developers assign a function, delegate or anonymous method to this property to return a value to the object.   If developers assign a value to this property, it this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[NoMac]
 		[NoTV]
 		[Export ("mapView:viewForOverlay:"), DelegateName ("MKMapViewOverlay"), DefaultValue (null)]
@@ -861,21 +984,49 @@ namespace MapKit {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'MKOverlayRenderer.RendererForOverlay' instead.")]
 		MKOverlayView GetViewForOverlay (MKMapView mapView, IMKOverlay overlay);
 
+		/// <param name="mapView">To be added.</param>
+		/// <param name="overlayViews">To be added.</param>
+		/// <summary>Developers should not use this deprecated method. Developers should use 'DidAddOverlayRenderers' instead.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoMac]
 		[NoTV]
-		[Export ("mapView:didAddOverlayViews:"), EventArgs ("MKOverlayViews")]
+		[Export ("mapView:didAddOverlayViews:"), EventArgs ("MKOverlayViews", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[Deprecated (PlatformName.iOS, 7, 0, message: "Use 'DidAddOverlayRenderers' instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'DidAddOverlayRenderers' instead.")]
 		void DidAddOverlayViews (MKMapView mapView, MKOverlayView overlayViews);
 
-		[Export ("mapView:didSelectAnnotationView:"), EventArgs ("MKAnnotationView")]
+		/// <param name="mapView">To be added.</param>
+		/// <param name="view">To be added.</param>
+		/// <summary>Indicates that the specified <see cref="T:MapKit.MKAnnotationView" /> has been selected.</summary>
+		/// <remarks>To be added.</remarks>
+		[Export ("mapView:didSelectAnnotationView:"), EventArgs ("MKAnnotationView", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidSelectAnnotationView (MKMapView mapView, MKAnnotationView view);
 
-		[Export ("mapView:didFailToLocateUserWithError:"), EventArgs ("NSError", true)]
+		/// <param name="mapView">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>Indicates that the attempt to locate the current user has failed due to <paramref name="error" />.</summary>
+		/// <remarks>To be added.</remarks>
+		[Export ("mapView:didFailToLocateUserWithError:"), EventArgs ("NSError", true, XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidFailToLocateUser (MKMapView mapView, NSError error);
 
-		[Export ("mapView:didDeselectAnnotationView:"), EventArgs ("MKAnnotationView")]
+		/// <param name="mapView">To be added.</param>
+		/// <param name="view">To be added.</param>
+		/// <summary>Indicates that <paramref name="view" /> has been deselected.</summary>
+		/// <remarks>To be added.</remarks>
+		[Export ("mapView:didDeselectAnnotationView:"), EventArgs ("MKAnnotationView", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidDeselectAnnotationView (MKMapView mapView, MKAnnotationView view);
 
 		[NoMac, iOS (16, 0), MacCatalyst (16, 0), NoTV]
@@ -886,35 +1037,112 @@ namespace MapKit {
 		[Export ("mapView:didDeselectAnnotation:"), EventArgs ("MKAnnotation")]
 		void DidDeselectAnnotation (MKMapView mapView, IMKAnnotation annotation);
 
+		/// <param name="mapView">To be added.</param>
+		/// <summary>Indicates that the system will start attempting to locate the user.</summary>
+		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[Export ("mapViewWillStartLocatingUser:")]
 		void WillStartLocatingUser (MKMapView mapView);
 
+		/// <param name="mapView">To be added.</param>
+		/// <summary>Indicates the system has stopped attemptig to locate the user.</summary>
+		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[Export ("mapViewDidStopLocatingUser:")]
 		void DidStopLocatingUser (MKMapView mapView);
 
-		[Export ("mapView:didUpdateUserLocation:"), EventArgs ("MKUserLocation")]
+		/// <param name="mapView">To be added.</param>
+		/// <param name="userLocation">To be added.</param>
+		/// <summary>Indicates the system has provided an update to the user's location.</summary>
+		/// <remarks>To be added.</remarks>
+		[Export ("mapView:didUpdateUserLocation:"), EventArgs ("MKUserLocation", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidUpdateUserLocation (MKMapView mapView, MKUserLocation userLocation);
 
+		/// <param name="mapView">To be added.</param>
+		/// <param name="mode">To be added.</param>
+		/// <param name="animated">To be added.</param>
+		/// <summary>Indicates a change in the active <see cref="T:MapKit.MKUserTrackingMode" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
-		[Export ("mapView:didChangeUserTrackingMode:animated:"), EventArgs ("MMapViewUserTracking")]
+		[Export ("mapView:didChangeUserTrackingMode:animated:"), EventArgs ("MMapViewUserTracking", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidChangeUserTrackingMode (MKMapView mapView, MKUserTrackingMode mode, bool animated);
 
+		/// <param name="mapView">The <see cref="T:MapKit.MKMapView" /> being rendered.</param>
+		/// <param name="overlay">The overlay requiring a renderer.</param>
+		/// <summary>Calculates he <see cref="T:MapKit.MKOverlayRenderer" /> appropriate to the <paramref name="overlay" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Delegate invoked by the object to get a value.</summary>
+			<value>To be added.</value>
+			<remarks>Developers assign a function, delegate or anonymous method to this property to return a value to the object.   If developers assign a value to this property, it this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[Export ("mapView:rendererForOverlay:"), DelegateName ("MKRendererForOverlayDelegate"), DefaultValue (null)]
 		MKOverlayRenderer OverlayRenderer (MKMapView mapView, IMKOverlay overlay);
 
-		[Export ("mapView:didAddOverlayRenderers:"), EventArgs ("MKDidAddOverlayRenderers")]
+		/// <param name="mapView">To be added.</param>
+		/// <param name="renderers">To be added.</param>
+		/// <summary>Called when an overlay renderer (or renderers) have been added to <paramref name="mapView" />.</summary>
+		/// <remarks>To be added.</remarks>
+		[Export ("mapView:didAddOverlayRenderers:"), EventArgs ("MKDidAddOverlayRenderers", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidAddOverlayRenderers (MKMapView mapView, MKOverlayRenderer [] renderers);
 
+		/// <param name="mapView">To be added.</param>
+		/// <summary>Indicates that rendering of <paramref name="mapView" /> is about to begin.</summary>
+		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[Export ("mapViewWillStartRenderingMap:")]
 		void WillStartRenderingMap (MKMapView mapView);
 
-		[Export ("mapViewDidFinishRenderingMap:fullyRendered:"), EventArgs ("MKDidFinishRenderingMap")]
+		/// <param name="mapView">To be added.</param>
+		/// <param name="fullyRendered">To be added.</param>
+		/// <summary>Indicates that rendering of <paramref name="mapView" /> has completed.</summary>
+		/// <remarks>To be added.</remarks>
+		[Export ("mapViewDidFinishRenderingMap:fullyRendered:"), EventArgs ("MKDidFinishRenderingMap", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidFinishRenderingMap (MKMapView mapView, bool fullyRendered);
 
+		/// <param name="mapView">To be added.</param>
+		/// <param name="memberAnnotations">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Delegate invoked by the object to get a value.</summary>
+			<value>To be added.</value>
+			<remarks>Developers assign a function, delegate or anonymous method to this property to return a value to the object.   If developers assign a value to this property, it this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[MacCatalyst (13, 1)]
 		[Export ("mapView:clusterAnnotationForMemberAnnotations:"), DelegateName ("MKCreateClusterAnnotation"), DefaultValue (null)]
 		MKClusterAnnotation CreateClusterAnnotation (MKMapView mapView, IMKAnnotation [] memberAnnotations);
 
+		/// <param name="mapView">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>To be added.</summary>
+			<remarks>To be added.</remarks>
+			""")]
 		[MacCatalyst (13, 1)]
 		[Export ("mapViewDidChangeVisibleRegion:")]
 		void DidChangeVisibleRegion (MKMapView mapView);
@@ -934,6 +1162,12 @@ namespace MapKit {
 	[Deprecated (PlatformName.TvOS, 16, 0, message: "Use MKMarkerAnnotationView instead.")]
 	[MacCatalyst (13, 1)]
 	interface MKPinAnnotationView {
+		/// <param name="frame">Frame used by the view, expressed in iOS points.</param>
+		/// <summary>Initializes the MKPinAnnotationView with the specified frame.</summary>
+		/// <remarks>
+		///           <para>This constructor is used to programmatically create a new instance of MKPinAnnotationView with the specified dimension in the frame.   The object will only be displayed once it has been added to a view hierarchy by calling AddSubview in a containing view.</para>
+		///           <para>This constructor is not invoked when deserializing objects from storyboards or XIB filesinstead the constructor that takes an NSCoder parameter is invoked.</para>
+		///         </remarks>
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect frame);
 
@@ -951,6 +1185,9 @@ namespace MapKit {
 		[Export ("animatesDrop")]
 		bool AnimatesDrop { get; set; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Appearance]
 		[Export ("pinTintColor")]
@@ -1018,6 +1255,10 @@ namespace MapKit {
 		NativeHandle Constructor (CLLocationCoordinate2D coordinate, [NullAllowed] NSDictionary addressDictionary);
 
 		// This requires the AddressBook framework, which afaict isn't bound on Mac, tvOS and watchOS yet
+		/// <param name="coordinate">To be added.</param>
+		/// <param name="addressDictionary">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoMac]
 		[NoTV]
 		[MacCatalyst (13, 1)]
@@ -1111,10 +1352,18 @@ namespace MapKit {
 	[Model]
 	[Protocol]
 	interface MKReverseGeocoderDelegate {
+		/// <param name="geocoder">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("reverseGeocoder:didFailWithError:")]
 		void FailedWithError (MKReverseGeocoder geocoder, NSError error);
 
+		/// <param name="geocoder">To be added.</param>
+		/// <param name="placemark">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("reverseGeocoder:didFindPlacemark:")]
 		void FoundWithPlacemark (MKReverseGeocoder geocoder, MKPlacemark placemark);
@@ -1137,6 +1386,12 @@ namespace MapKit {
 		[Export ("overlay")]
 		IMKOverlay Overlay { get; }
 
+		/// <param name="frame">Frame used by the view, expressed in iOS points.</param>
+		/// <summary>Initializes the MKOverlayView with the specified frame.</summary>
+		/// <remarks>
+		///           <para>This constructor is used to programmatically create a new instance of MKOverlayView with the specified dimension in the frame.   The object will only be displayed once it has been added to a view hierarchy by calling AddSubview in a containing view.</para>
+		///           <para>This constructor is not invoked when deserializing objects from storyboards or XIB filesinstead the constructor that takes an NSCoder parameter is invoked.</para>
+		///         </remarks>
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect frame);
 
@@ -1160,9 +1415,18 @@ namespace MapKit {
 		[ThreadSafe]
 		MKMapRect MapRectForRect (CGRect rect);
 
+		/// <include file="../docs/api/MapKit/MKOverlayView.xml" path="/Documentation/Docs[@DocId='M:MapKit.MKOverlayView.CanDrawMapRect(MapKit.MKMapRect,System.Runtime.InteropServices.NFloat)']/*" />
 		[Export ("canDrawMapRect:zoomScale:")]
 		bool CanDrawMapRect (MKMapRect mapRect, /* MKZoomScale */ nfloat zoomScale);
 
+		/// <param name="mapRect">To be added.</param>
+		/// <param name="zoomScale">To be added.</param>
+		/// <param name="context">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Export ("drawMapRect:zoomScale:inContext:")]
 		[ThreadSafe]
 		void DrawMapRect (MKMapRect mapRect, /* MKZoomScale */ nfloat zoomScale, CGContext context);
@@ -1170,6 +1434,10 @@ namespace MapKit {
 		[Export ("setNeedsDisplayInMapRect:")]
 		void SetNeedsDisplay (MKMapRect mapRect);
 
+		/// <param name="mapRect">The <see cref="T:MapKit.MKMapRect" /> to invalidate.</param>
+		/// <param name="zoomScale">The zoom scale to invalidate.</param>
+		/// <summary>Invalidates the view in the specified <paramref name="mapRect" /> at the specified <paramref name="zoomScale" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("setNeedsDisplayInMapRect:zoomScale:")]
 		void SetNeedsDisplay (MKMapRect mapRect, /* MKZoomScale */ nfloat zoomScale);
 	}
@@ -1187,6 +1455,12 @@ namespace MapKit {
 		[Export ("initWithOverlay:")]
 		NativeHandle Constructor (IMKOverlay overlay);
 
+		/// <param name="frame">Frame used by the view, expressed in iOS points.</param>
+		/// <summary>Initializes the MKOverlayPathView with the specified frame.</summary>
+		/// <remarks>
+		///           <para>This constructor is used to programmatically create a new instance of MKOverlayPathView with the specified dimension in the frame.   The object will only be displayed once it has been added to a view hierarchy by calling AddSubview in a containing view.</para>
+		///           <para>This constructor is not invoked when deserializing objects from storyboards or XIB filesinstead the constructor that takes an NSCoder parameter is invoked.</para>
+		///         </remarks>
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect frame);
 
@@ -1227,9 +1501,17 @@ namespace MapKit {
 		[Export ("invalidatePath")]
 		void InvalidatePath ();
 
+		/// <param name="context">To be added.</param>
+		/// <param name="zoomScale">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("applyStrokePropertiesToContext:atZoomScale:")]
 		void ApplyStrokeProperties (CGContext context, /* MKZoomScale */ nfloat zoomScale);
 
+		/// <param name="context">To be added.</param>
+		/// <param name="zoomScale">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("applyFillPropertiesToContext:atZoomScale:")]
 		void ApplyFillProperties (CGContext context, /* MKZoomScale */ nfloat zoomScale);
 
@@ -1281,6 +1563,12 @@ namespace MapKit {
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'MKPolygonRenderer' instead.")]
 	[BaseType (typeof (MKOverlayPathView))]
 	interface MKPolygonView {
+		/// <param name="frame">Frame used by the view, expressed in iOS points.</param>
+		/// <summary>Initializes the MKPolygonView with the specified frame.</summary>
+		/// <remarks>
+		///           <para>This constructor is used to programmatically create a new instance of MKPolygonView with the specified dimension in the frame.   The object will only be displayed once it has been added to a view hierarchy by calling AddSubview in a containing view.</para>
+		///           <para>This constructor is not invoked when deserializing objects from storyboards or XIB filesinstead the constructor that takes an NSCoder parameter is invoked.</para>
+		///         </remarks>
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect frame);
 
@@ -1359,6 +1647,12 @@ namespace MapKit {
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'MKPolylineRenderer' instead.")]
 	[BaseType (typeof (MKOverlayPathView))]
 	interface MKPolylineView {
+		/// <param name="frame">Frame used by the view, expressed in iOS points.</param>
+		/// <summary>Initializes the MKPolylineView with the specified frame.</summary>
+		/// <remarks>
+		///           <para>This constructor is used to programmatically create a new instance of MKPolylineView with the specified dimension in the frame.   The object will only be displayed once it has been added to a view hierarchy by calling AddSubview in a containing view.</para>
+		///           <para>This constructor is not invoked when deserializing objects from storyboards or XIB filesinstead the constructor that takes an NSCoder parameter is invoked.</para>
+		///         </remarks>
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect frame);
 
@@ -1467,7 +1761,18 @@ namespace MapKit {
 		NativeHandle Constructor (MKLocalPointsOfInterestRequest request);
 
 		[Export ("startWithCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>To be added.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous Start operation.   The value of the TResult parameter is a <see cref="MapKit.MKLocalSearchCompletionHandler" />.</para>
+			        </returns>
+			<remarks>
+			          <para>(More documentation for this node is coming)</para>
+			          <para tool="threads">This can be used from a background thread.</para>
+			          <para copied="true">The StartAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para tool="threads" copied="true">This can be used from a background thread.</para>
+			        </remarks>
+			""")]
 		void Start (MKLocalSearchCompletionHandler completionHandler);
 
 		[Export ("cancel")]
@@ -1575,7 +1880,13 @@ namespace MapKit {
 		NativeHandle Constructor (MKDirectionsRequest request);
 
 		[Export ("calculateDirectionsWithCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Requests a directions calculation from Apple's servers and runs a completion handler when the request is complete.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous CalculateDirections operation.   The value of the TResult parameter is a <see cref="MapKit.MKDirectionsHandler" />.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void CalculateDirections (MKDirectionsHandler completionHandler);
 
 		[Export ("cancel")]
@@ -1588,7 +1899,16 @@ namespace MapKit {
 		bool Calculating { [Bind ("isCalculating")] get; }
 
 		[Export ("calculateETAWithCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Requests an ETA calculation from Apple's servers and runs a completion handler when the request is complete.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous CalculateETA operation.   The value of the TResult parameter is a <see cref="MapKit.MKETAHandler" />.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The CalculateETAAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void CalculateETA (MKETAHandler completionHandler);
 	}
 
@@ -1754,6 +2074,13 @@ namespace MapKit {
 		[Static, Export ("cameraLookingAtCenterCoordinate:fromEyeCoordinate:eyeAltitude:")]
 		MKMapCamera CameraLookingAtCenterCoordinate (CLLocationCoordinate2D centerCoordinate, CLLocationCoordinate2D eyeCoordinate, double eyeAltitude);
 
+		/// <param name="centerCoordinate">To be added.</param>
+		/// <param name="locationDistance">To be added.</param>
+		/// <param name="pitch">To be added.</param>
+		/// <param name="locationDirectionHeading">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static]
 		[MacCatalyst (13, 1)]
 		[Export ("cameraLookingAtCenterCoordinate:fromDistance:pitch:heading:")]
@@ -1871,11 +2198,25 @@ namespace MapKit {
 		NativeHandle Constructor (MKMapSnapshotOptions options);
 
 		[Export ("startWithCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>To be added.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous Start operation.   The value of the TResult parameter is a <see cref="MapKit.MKMapSnapshotCompletionHandler" />.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The StartAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void Start (MKMapSnapshotCompletionHandler completionHandler);
 
 		[Export ("startWithQueue:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="queue">The dispatch queue to which to add the request.</param>
+			<summary>Puts a request that a snapshot be generated on the provided dispatch queue, returning a task that provides the snapshot when it is ready.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void Start (DispatchQueue queue, MKMapSnapshotCompletionHandler completionHandler);
 
 		[Export ("cancel")]
@@ -1935,9 +2276,23 @@ namespace MapKit {
 		[Export ("invalidatePath")]
 		void InvalidatePath ();
 
+		/// <param name="context">To be added.</param>
+		/// <param name="zoomScale">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Export ("applyStrokePropertiesToContext:atZoomScale:")]
 		void ApplyStrokePropertiesToContext (CGContext context, /* MKZoomScale */ nfloat zoomScale);
 
+		/// <param name="context">To be added.</param>
+		/// <param name="zoomScale">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Export ("applyFillPropertiesToContext:atZoomScale:")]
 		void ApplyFillPropertiesToContext (CGContext context, /* MKZoomScale */ nfloat zoomScale);
 
@@ -1980,9 +2335,22 @@ namespace MapKit {
 		[Export ("mapRectForRect:")]
 		MKMapRect MapRectForRect (CGRect rect);
 
+		/// <param name="mapRect">To be added.</param>
+		/// <param name="zoomScale">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("canDrawMapRect:zoomScale:")]
 		bool CanDrawMapRect (MKMapRect mapRect, /* MKZoomScale */ nfloat zoomScale);
 
+		/// <param name="mapRect">To be added.</param>
+		/// <param name="zoomScale">To be added.</param>
+		/// <param name="context">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[ThreadSafe]
 		[Export ("drawMapRect:zoomScale:inContext:")]
 		void DrawMapRect (MKMapRect mapRect, /* MKZoomScale */ nfloat zoomScale, CGContext context);
@@ -1993,6 +2361,10 @@ namespace MapKit {
 		[Export ("setNeedsDisplayInMapRect:")]
 		void SetNeedsDisplay (MKMapRect mapRect);
 
+		/// <param name="mapRect">To be added.</param>
+		/// <param name="zoomScale">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("setNeedsDisplayInMapRect:zoomScale:")]
 		void SetNeedsDisplay (MKMapRect mapRect, /* MKZoomScale */ nfloat zoomScale);
 
@@ -2195,9 +2567,18 @@ namespace MapKit {
 	[Model]
 	[BaseType (typeof (NSObject))]
 	interface MKLocalSearchCompleterDelegate {
+		/// <param name="completer">The search completer to which this delegate belongs.</param>
+		/// <summary>The search completer updated the results with new search completions.</summary>
+		/// <remarks>
+		///           <para>After this method is called, developers can check the <see cref="P:MapKit.MKLocalSearchCompleter.Results" /> property for the newest results.</para>
+		///         </remarks>
 		[Export ("completerDidUpdateResults:")]
 		void DidUpdateResults (MKLocalSearchCompleter completer);
 
+		/// <param name="completer">The search completer to which this delegate belongs.</param>
+		/// <param name="error">The error that occured.</param>
+		/// <summary>The search completer encountered an error while searching for completions.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("completer:didFailWithError:")]
 		void DidFail (MKLocalSearchCompleter completer, NSError error);
 	}
@@ -2224,10 +2605,16 @@ namespace MapKit {
 	[Category]
 	[BaseType (typeof (NSUserActivity))]
 	interface NSUserActivity_MKMapItem {
+		/// <summary>Gets the mapkit item.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("mapItem")]
 		MKMapItem GetMapItem ();
 
+		/// <param name="item">The new mapkit item.</param>
+		/// <summary>Sets the mapkit item to <paramref name="item" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("setMapItem:")]
 		void SetMapItem (MKMapItem item);
@@ -2282,22 +2669,37 @@ namespace MapKit {
 		[Export ("subtitleVisibility", ArgumentSemantic.Assign)]
 		MKFeatureVisibility SubtitleVisibility { get; set; }
 
+		/// <summary>Gets or sets the background color of the balloon.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Appearance]
 		[NullAllowed, Export ("markerTintColor", ArgumentSemantic.Copy)]
 		UIColor MarkerTintColor { get; set; }
 
+		/// <summary>Gets or sets the tint to apply to the image or text of the glyph.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Appearance]
 		[NullAllowed, Export ("glyphTintColor", ArgumentSemantic.Copy)]
 		UIColor GlyphTintColor { get; set; }
 
+		/// <summary>Gets or sets the text to display in the marker balloon.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Appearance]
 		[NullAllowed, Export ("glyphText")]
 		string GlyphText { get; set; }
 
+		/// <summary>Gets or sets the image to display in the marker balloon.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Appearance]
 		[NullAllowed, Export ("glyphImage", ArgumentSemantic.Copy)]
 		UIImage GlyphImage { get; set; }
 
+		/// <summary>Gets or sets the image to display when the marker is selected.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Appearance]
 		[NullAllowed, Export ("selectedGlyphImage", ArgumentSemantic.Copy)]
 		UIImage SelectedGlyphImage { get; set; }
@@ -2355,11 +2757,11 @@ namespace MapKit {
 
 		[Internal]
 		[Export ("initIncludingCategories:")]
-		IntPtr InitIncludingCategories ([BindAs (typeof (MKPointOfInterestCategory []))] NSString [] categories);
+		IntPtr _InitIncludingCategories ([BindAs (typeof (MKPointOfInterestCategory []))] NSString [] categories);
 
 		[Internal]
 		[Export ("initExcludingCategories:")]
-		IntPtr InitExcludingCategories ([BindAs (typeof (MKPointOfInterestCategory []))] NSString [] categories);
+		IntPtr _InitExcludingCategories ([BindAs (typeof (MKPointOfInterestCategory []))] NSString [] categories);
 
 		[Export ("includesCategory:")]
 		bool IncludesCategory ([BindAs (typeof (MKPointOfInterestCategory))] NSString category);

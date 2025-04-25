@@ -1563,7 +1563,6 @@ SCENEKIT_API_SOURCES = \
 	SceneKit/Defs.cs \
 
 SCENEKIT_CORE_SOURCES = \
-	SceneKit/SCNMatrix4.cs \
 	SceneKit/SCNMatrix4_dotnet.cs \
 	SceneKit/SCNQuaternion.cs \
 	SceneKit/SCNVector3.cs \
@@ -1572,7 +1571,6 @@ SCENEKIT_CORE_SOURCES = \
 SCENEKIT_SOURCES = \
 	SceneKit/Constructors.cs \
 	SceneKit/SCNAnimatable.cs \
-	SceneKit/SCNCompat.cs \
 	SceneKit/SCNGeometrySource.cs \
 	SceneKit/SCNJavaScript.cs \
 	SceneKit/SCNNode.cs \
@@ -1939,7 +1937,6 @@ SHARED_CORE_SOURCES = \
 	ObjCRuntime/ObsoleteConstants.cs \
 	ObjCRuntime/PlatformAvailability.cs \
 	ObjCRuntime/PlatformAvailability2.cs \
-	ObjCRuntime/PlatformAvailabilityShadow.cs \
 	ObjCRuntime/Protocol.cs \
 	ObjCRuntime/Registrar.core.cs \
 	ObjCRuntime/RequiresSuperAttribute.cs \

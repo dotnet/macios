@@ -78,6 +78,22 @@ readonly partial struct Property {
 	/// <inheritdoc />
 	public bool Equals (Property other) => CoreEquals (other);
 
+	/// <summary>
+	/// Return the native selector that references the enum value.
+	/// </summary>
+	public string? Selector {
+		get {
+			if (IsField) {
+				return ExportFieldData?.SymbolName;
+			}
+
+			if (IsProperty) {
+				return ExportPropertyData?.Selector;
+			}
+			return null;
+		}
+	}
+
 	internal Property (string name,
 		TypeInfo returnType,
 		SymbolAvailability symbolAvailability,

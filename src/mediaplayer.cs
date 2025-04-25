@@ -539,6 +539,9 @@ namespace MediaPlayer {
 		[Export ("collectionWithItems:")]
 		MPMediaItemCollection FromItems (MPMediaItem [] items);
 
+		/// <param name="items">To be added.</param>
+		/// <summary>Creates a new <see cref="T:MediaPlayer.MPMediaItemCollection" /> from the provided <paramref name="items" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithItems:")]
 		NativeHandle Constructor (MPMediaItem [] items);
@@ -630,7 +633,14 @@ namespace MediaPlayer {
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("addItemWithProductID:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="productID">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous AddItem operation.  The value of the TResult parameter is of type System.Action&lt;MediaPlayer.MPMediaEntity[],Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 #if IOS
 		void AddItem (string productID, [NullAllowed] Action<MPMediaEntity [], NSError> completionHandler);
 #else
@@ -646,7 +656,18 @@ namespace MediaPlayer {
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="uuid">To be added.</param>
+			<param name="creationMetadata">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous GetPlaylist operation.  The value of the TResult parameter is of type System.Action&lt;MediaPlayer.MPMediaPlaylist,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The GetPlaylistAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("getPlaylistWithUUID:creationMetadata:completionHandler:")]
 		void GetPlaylist (NSUuid uuid, [NullAllowed] MPMediaPlaylistCreationMetadata creationMetadata, Action<MPMediaPlaylist, NSError> completionHandler);
 	}
@@ -659,6 +680,9 @@ namespace MediaPlayer {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (UIViewController), Delegates = new string [] { "WeakDelegate" }, Events = new Type [] { typeof (MPMediaPickerControllerDelegate) })]
 	interface MPMediaPickerController {
+		/// <param name="mediaTypes">To be added.</param>
+		/// <summary>Creates a new <see cref="T:MediaPlayer.MPMediaPickerController" /> for media with the specified <paramref name="mediaTypes" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithMediaTypes:")]
 		NativeHandle Constructor (MPMediaType mediaTypes);
@@ -741,13 +765,19 @@ namespace MediaPlayer {
 		///         <param name="mediaItemCollection">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[Export ("mediaPicker:didPickMediaItems:"), EventArgs ("ItemsPicked"), EventName ("ItemsPicked")]
+		[Export ("mediaPicker:didPickMediaItems:"), EventArgs ("ItemsPicked", XmlDocs = """
+			<summary>Event that is raised when items are picked.</summary>
+			<remarks>To be added.</remarks>
+			"""), EventName ("ItemsPicked")]
 		void MediaItemsPicked (MPMediaPickerController sender, MPMediaItemCollection mediaItemCollection);
 
 		/// <param name="sender">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[Export ("mediaPickerDidCancel:"), EventArgs ("MPMediaPickerController"), EventName ("DidCancel")]
+		[Export ("mediaPickerDidCancel:"), EventArgs ("MPMediaPickerController", XmlDocs = """
+			<summary>Method that is called after the user dismisses the picker by canceling it.</summary>
+			<remarks>To be added.</remarks>
+			"""), EventName ("DidCancel")]
 		void MediaPickerDidCancel (MPMediaPickerController sender);
 	}
 
@@ -761,6 +791,9 @@ namespace MediaPlayer {
 	// Objective-C exception thrown.  Name: MPMediaItemCollectionInitException Reason: -init is not supported, use -initWithItems:
 	[DisableDefaultCtor]
 	interface MPMediaPlaylist : NSSecureCoding {
+		/// <param name="items">To be added.</param>
+		/// <summary>Creates a new <see cref="T:MediaPlayer.MPMediaPlaylist" /> from the specified <paramref name="items" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithItems:")]
 		NativeHandle Constructor (MPMediaItem [] items);
 
@@ -833,7 +866,12 @@ namespace MediaPlayer {
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="productID">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>A task that represents the asynchronous AddItem operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("addItemWithProductID:completionHandler:")]
 		void AddItem (string productID, [NullAllowed] Action<NSError> completionHandler);
 
@@ -845,7 +883,15 @@ namespace MediaPlayer {
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="mediaItems">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>A task that represents the asynchronous AddMediaItems operation</returns>
+			<remarks>
+			          <para copied="true">The AddMediaItemsAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("addMediaItems:completionHandler:")]
 		void AddMediaItems (MPMediaItem [] mediaItems, [NullAllowed] Action<NSError> completionHandler);
 
@@ -918,6 +964,12 @@ namespace MediaPlayer {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MPMediaQuery : NSSecureCoding, NSCopying {
+		/// <param name="filterPredicates">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithFilterPredicates:")]
 		NativeHandle Constructor ([NullAllowed] NSSet filterPredicates);
@@ -1385,42 +1437,65 @@ namespace MediaPlayer {
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface MPMediaPlayback {
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("play")]
 		void Play ();
 
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("stop")]
 		void Stop ();
 
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("pause")]
 		void Pause ();
 
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("prepareToPlay")]
 		void PrepareToPlay ();
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("isPreparedToPlay")]
 		bool IsPreparedToPlay { get; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("currentPlaybackTime")]
 		double CurrentPlaybackTime { get; set; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("currentPlaybackRate")]
 		float CurrentPlaybackRate { get; set; } // float, not CGFloat
 
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("beginSeekingForward")]
 		void BeginSeekingForward ();
 
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("beginSeekingBackward")]
 		void BeginSeekingBackward ();
 
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("endSeeking")]
 		void EndSeeking ();
@@ -1438,6 +1513,9 @@ namespace MediaPlayer {
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 	[BaseType (typeof (NSObject))]
 	interface MPMoviePlayerController : MPMediaPlayback {
+		/// <param name="url">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[DesignatedInitializer]
 		[Export ("initWithContentURL:")]
@@ -1976,6 +2054,9 @@ namespace MediaPlayer {
 	[MacCatalyst (14, 0)] // docs says 13.0 but this throws: NSInvalidArgumentException Reason: MPMoviePlayerViewController is no longer available. Use AVPlayerViewController in AVKit.
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 	interface MPMoviePlayerViewController {
+		/// <param name="url">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithContentURL:")]
 		NativeHandle Constructor (NSUrl url);
@@ -1994,6 +2075,9 @@ namespace MediaPlayer {
 	[DisableDefaultCtor]
 	interface MPMusicPlayerController : MPMediaPlayback {
 
+		/// <summary>Default constructor that initializes a new instance of this class with no parameters.</summary>
+		/// <remarks>
+		///         </remarks>
 		[Export ("init")]
 		[Deprecated (PlatformName.iOS, 11, 3)]
 		[NoTV]
@@ -2175,6 +2259,12 @@ namespace MediaPlayer {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (UIView))]
 	interface MPVolumeView {
+		/// <param name="frame">Frame used by the view, expressed in iOS points.</param>
+		/// <summary>Initializes the MPVolumeView with the specified frame.</summary>
+		/// <remarks>
+		///           <para>This constructor is used to programmatically create a new instance of MPVolumeView with the specified dimension in the frame.   The object will only be displayed once it has been added to a view hierarchy by calling AddSubview in a containing view.</para>
+		///           <para>This constructor is not invoked when deserializing objects from storyboards or XIB filesinstead the constructor that takes an NSCoder parameter is invoked.</para>
+		///         </remarks>
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect frame);
 
@@ -2518,6 +2608,9 @@ namespace MediaPlayer {
 	[DisableDefaultCtor] // crash if used
 	interface MPContentItem {
 
+		/// <param name="identifier">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithIdentifier:")]
 		NativeHandle Constructor (string identifier);
@@ -2628,7 +2721,17 @@ namespace MediaPlayer {
 		[Deprecated (PlatformName.iOS, 14, 0, message: "Use 'CarPlay' API instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 14, 0, message: "Use 'CarPlay' API instead.")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="identifier">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous GetContentItem operation.  The value of the TResult parameter is of type System.Action&lt;MediaPlayer.MPContentItem,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The GetContentItemAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("contentItemForIdentifier:completionHandler:")]
 		void GetContentItem (string identifier, Action<MPContentItem, NSError> completionHandler);
 	}
@@ -3241,6 +3344,19 @@ namespace MediaPlayer {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // pre-emptive
 	interface MPNowPlayingInfoLanguageOption {
+		/// <param name="languageOptionType">To be added.</param>
+		/// <param name="languageTag">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="languageOptionCharacteristics">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="displayName">To be added.</param>
+		/// <param name="identifier">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithType:languageTag:characteristics:displayName:identifier:")]
 		NativeHandle Constructor (MPNowPlayingInfoLanguageOptionType languageOptionType, string languageTag, [NullAllowed] NSString [] languageOptionCharacteristics, string displayName, string identifier);
 
@@ -3306,6 +3422,14 @@ namespace MediaPlayer {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // pre-emptive
 	interface MPNowPlayingInfoLanguageOptionGroup {
+		/// <param name="languageOptions">To be added.</param>
+		/// <param name="defaultLanguageOption">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="allowEmptySelection">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithLanguageOptions:defaultLanguageOption:allowEmptySelection:")]
 		NativeHandle Constructor (MPNowPlayingInfoLanguageOption [] languageOptions, [NullAllowed] MPNowPlayingInfoLanguageOption defaultLanguageOption, bool allowEmptySelection);
 
@@ -3420,6 +3544,9 @@ namespace MediaPlayer {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MPMediaPlaylistCreationMetadata {
+		/// <param name="name">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithName:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (string name);
@@ -3454,6 +3581,8 @@ namespace MediaPlayer {
 	[BaseType (typeof (NSObject))]
 	interface MPMusicPlayerQueueDescriptor : NSSecureCoding {
 
+		/// <summary>Default constructor, initializes a new instance of this class.</summary>
+		/// <remarks />
 		[Export ("init")]
 		[Deprecated (PlatformName.iOS, 11, 3)]
 		[Deprecated (PlatformName.TvOS, 11, 3)]
@@ -3467,9 +3596,15 @@ namespace MediaPlayer {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPMusicPlayerQueueDescriptor))]
 	interface MPMusicPlayerMediaItemQueueDescriptor {
+		/// <param name="query">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithQuery:")]
 		NativeHandle Constructor (MPMediaQuery query);
 
+		/// <param name="itemCollection">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithItemCollection:")]
 		NativeHandle Constructor (MPMediaItemCollection itemCollection);
 
@@ -3514,6 +3649,9 @@ namespace MediaPlayer {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPMusicPlayerQueueDescriptor))]
 	interface MPMusicPlayerStoreQueueDescriptor {
+		/// <param name="storeIDs">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithStoreIDs:")]
 		NativeHandle Constructor (string [] storeIDs);
 
@@ -3596,7 +3734,17 @@ namespace MediaPlayer {
 		///         <param name="completionHandler">A handler to run when the operation completes.</param>
 		///         <summary>Performs the requested queue transformation and runs a handler when the operation is complete.</summary>
 		///         <remarks>To be added.</remarks>
-		[Async]
+		[Async (XmlDocs = """
+			<param name="queueTransaction">The action to perform while the queue is created.</param>
+			<summary>Performs the requested queue transformation and runs a handler when the operation is complete.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous Perform operation.  The value of the TResult parameter is of type System.Action&lt;MediaPlayer.MPMusicPlayerControllerQueue,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The PerformAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("performQueueTransaction:completionHandler:")]
 		void Perform (Action<MPMusicPlayerControllerMutableQueue> queueTransaction, Action<MPMusicPlayerControllerQueue, NSError> completionHandler);
 	}
@@ -3607,6 +3755,9 @@ namespace MediaPlayer {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MPMusicPlayerPlayParameters : NSSecureCoding {
+		/// <param name="dictionary">To be added.</param>
+		/// <summary>Creates a new music player play parameters object with the provided dictionary of parameters.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithDictionary:")]
 		NativeHandle Constructor (NSDictionary dictionary);
 
@@ -3623,6 +3774,9 @@ namespace MediaPlayer {
 	[BaseType (typeof (MPMusicPlayerQueueDescriptor))]
 	[DisableDefaultCtor]
 	interface MPMusicPlayerPlayParametersQueueDescriptor {
+		/// <param name="playParametersQueue">To be added.</param>
+		/// <summary>Creates a new queue descriptor from the specified queue.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithPlayParametersQueue:")]
 		NativeHandle Constructor (MPMusicPlayerPlayParameters [] playParametersQueue);
 
@@ -3664,6 +3818,9 @@ namespace MediaPlayer {
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface MPSystemMusicPlayerController {
+		/// <param name="queueDescriptor">The queue descriptor for the media items to play.</param>
+		/// <summary>Opens the Music app and plays the specified items.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("openToPlayQueueDescriptor:")]
@@ -3675,10 +3832,16 @@ namespace MediaPlayer {
 	[NoMac]
 	[MacCatalyst (13, 1)]
 	interface NSUserActivity_MediaPlayerAdditions {
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Export ("externalMediaContentIdentifier")]
 		NSString GetExternalMediaContentIdentifier ();
 
+		/// <param name="identifier">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("setExternalMediaContentIdentifier:")]
 		void SetExternalMediaContentIdentifier ([NullAllowed] NSString identifier);
 	}
@@ -3687,6 +3850,9 @@ namespace MediaPlayer {
 	[Category]
 	[BaseType (typeof (AVMediaSelectionOption))]
 	interface AVMediaSelectionOption_MPNowPlayingInfoLanguageOptionAdditions {
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("makeNowPlayingInfoLanguageOption")]
 		[return: NullAllowed]
 		MPNowPlayingInfoLanguageOption CreateNowPlayingInfoLanguageOption ();
@@ -3696,6 +3862,9 @@ namespace MediaPlayer {
 	[Category]
 	[BaseType (typeof (AVMediaSelectionGroup))]
 	interface AVMediaSelectionGroup_MPNowPlayingInfoLanguageOptionAdditions {
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("makeNowPlayingInfoLanguageOptionGroup")]
 		MPNowPlayingInfoLanguageOptionGroup CreateNowPlayingInfoLanguageOptionGroup ();
 	}

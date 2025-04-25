@@ -9,8 +9,6 @@
 
 // #define TRACE
 
-#if NET
-
 #nullable enable
 
 using System;
@@ -438,5 +436,3 @@ namespace ObjCRuntime {
 		}
 	}
 }
-
-#endif // NET

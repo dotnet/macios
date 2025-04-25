@@ -7,14 +7,10 @@ using CoreFoundation;
 using Foundation;
 
 namespace NaturalLanguage {
-
-
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	// nicer replacement for `NSDictionary<NSString, NSArray<NSNumber>>`
 	public class NLVectorDictionary : DictionaryContainer {
 

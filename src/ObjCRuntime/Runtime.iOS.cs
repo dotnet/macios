@@ -25,7 +25,6 @@ namespace ObjCRuntime {
 	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/SysSound/">SysSound</related>
 	public static partial class Runtime {
 #if !COREBUILD
-#if NET
 #if TVOS
 		internal const string ProductName = "Microsoft.tvOS";
 #elif IOS
@@ -40,46 +39,21 @@ namespace ObjCRuntime {
 #else
 #error Unknown platform
 #endif
-#else
-#if TVOS
-		internal const string ProductName = "Xamarin.TVOS";
-#elif IOS
-		internal const string ProductName = "Xamarin.iOS";
-#else
-#error Unknown platform
-#endif
-#if TVOS
-		internal const string AssemblyName = "Xamarin.TVOS.dll";
-#elif IOS
-		internal const string AssemblyName = "Xamarin.iOS.dll";
-#else
-#error Unknown platform
-#endif
-#endif
 
 #if !__MACCATALYST__
-#if NET
 		/// <summary>The architecture where the code is currently running.</summary>
 		///         <remarks>
 		///           <para>Use this to determine the architecture on which the program is currently running (device or simulator).</para>
 		///         </remarks>
 		public readonly static Arch Arch = (Arch) GetRuntimeArch ();
-#else
-		public static Arch Arch; // default: = Arch.DEVICE;
-#endif
 #endif
 
 		unsafe static void InitializePlatform (InitializationOptions* options)
 		{
-#if !__MACCATALYST__ && !NET
-			if (options->IsSimulator)
-				Arch = Arch.SIMULATOR;
-#endif
-
 			UIApplication.Initialize ();
 		}
 
-#if NET && !__MACCATALYST__
+#if !__MACCATALYST__
 		[SuppressGCTransition] // The native function is a single "return <constant>;" so this should be safe.
 		[DllImport ("__Internal")]
 		static extern int xamarin_get_runtime_arch ();
@@ -91,23 +65,6 @@ namespace ObjCRuntime {
 		static int GetRuntimeArch ()
 		{
 			return xamarin_get_runtime_arch ();
-		}
-#endif
-
-#if !NET
-		// This method is documented to be for diagnostic purposes only,
-		// and should not be considered stable API.
-		[EditorBrowsable (EditorBrowsableState.Never)]
-		static public List<WeakReference> GetSurfacedObjects ()
-		{
-			lock (lock_obj) {
-				var list = new List<WeakReference> (object_map.Count);
-
-				foreach (var kv in object_map)
-					list.Add (new WeakReference (kv.Value, true));
-
-				return list;
-			}
 		}
 #endif
 
@@ -176,6 +133,7 @@ namespace ObjCRuntime {
 	}
 
 #if !__MACCATALYST__
+	/// <summary>Used to represent the host on which this app is running.</summary>
 	public enum Arch {
 		/// <summary>Running on a physical device.</summary>
 		DEVICE,

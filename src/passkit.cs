@@ -170,7 +170,14 @@ namespace PassKit {
 		///         <summary>Presents a standard UX for adding multiple passes.</summary>
 		///         <remarks>To be added.</remarks>
 		[Export ("addPasses:withCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="passes">To be added.</param>
+			<summary>Presents a standard UX for adding multiple passes.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous AddPasses operation.  The value of the TResult parameter is of type System.Action&lt;PassKit.PKPassLibraryAddPassesStatus&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void AddPasses (PKPass [] passes, [NullAllowed] Action<PKPassLibraryAddPassesStatus> completion);
 
 		/// <include file="../docs/api/PassKit/PKPassLibrary.xml" path="/Documentation/Docs[@DocId='P:PassKit.PKPassLibrary.DidChangeNotification']/*" />
@@ -221,7 +228,15 @@ namespace PassKit {
 		[Deprecated (PlatformName.iOS, 13, 4, message: "Use 'ActivateSecureElementPass' instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'ActivateSecureElementPass' instead.")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="paymentPass">To be added.</param>
+			<param name="activationData">To be added.</param>
+			<summary>Activates the specified <paramref name="paymentPass" /> with the activation code in <paramref name="activationData" />.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous ActivatePaymentPass operation.  The value of the TResult parameter is of type System.Action&lt;System.Boolean,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("activatePaymentPass:withActivationData:completion:")]
 		void ActivatePaymentPass (PKPaymentPass paymentPass, NSData activationData, [NullAllowed] Action<bool, NSError> completion);
 
@@ -243,7 +258,18 @@ namespace PassKit {
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'ActivatePaymentPass (PKPaymentPass, NSData, Action<bool, NSError> completion)' instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'ActivatePaymentPass (PKPaymentPass, NSData, Action<bool, NSError> completion)' instead.")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="paymentPass">To be added.</param>
+			<param name="activationCode">To be added.</param>
+			<summary>Activates the specified <paramref name="paymentPass" /> with the activation code in <paramref name="activationCode" />.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous ActivatePaymentPass operation.  The value of the TResult parameter is of type System.Action&lt;System.Boolean,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The ActivatePaymentPassAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("activatePaymentPass:withActivationCode:completion:")]
 		void ActivatePaymentPass (PKPaymentPass paymentPass, string activationCode, [NullAllowed] Action<bool, NSError> completion);
 
@@ -276,6 +302,9 @@ namespace PassKit {
 		[Export ("canAddFelicaPass")]
 		bool CanAddFelicaPass { get; }
 
+		/// <param name="requestToken">To be added.</param>
+		/// <summary>Enables automatic display of the Apple Pay UI.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("endAutomaticPassPresentationSuppressionWithRequestToken:")]
@@ -480,7 +509,10 @@ namespace PassKit {
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'DidAuthorizePayment2' instead.")]
 		[Export ("paymentAuthorizationViewController:didAuthorizePayment:completion:")]
-		[EventArgs ("PKPaymentAuthorization")]
+		[EventArgs ("PKPaymentAuthorization", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the Delegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 #if !NET
 		[Abstract]
 #endif
@@ -493,12 +525,19 @@ namespace PassKit {
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("paymentAuthorizationViewController:didAuthorizePayment:handler:")]
-		[EventArgs ("PKPaymentAuthorizationResult")]
+		[EventArgs ("PKPaymentAuthorizationResult", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the Delegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidAuthorizePayment2 (PKPaymentAuthorizationViewController controller, PKPayment payment, Action<PKPaymentAuthorizationResult> completion);
 
 		/// <param name="controller">To be added.</param>
 		///         <summary>Indicates the payment authorization has completed.</summary>
 		///         <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the Delegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[Export ("paymentAuthorizationViewControllerDidFinish:")]
 		[Abstract]
 		void PaymentAuthorizationViewControllerDidFinish (PKPaymentAuthorizationViewController controller);
@@ -513,7 +552,10 @@ namespace PassKit {
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'DidSelectShippingMethod2' instead.")]
 		[Export ("paymentAuthorizationViewController:didSelectShippingMethod:completion:")]
-		[EventArgs ("PKPaymentShippingMethodSelected")]
+		[EventArgs ("PKPaymentShippingMethodSelected", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the Delegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidSelectShippingMethod (PKPaymentAuthorizationViewController controller, PKShippingMethod shippingMethod, PKPaymentShippingMethodSelected completion);
 
 		/// <param name="controller">To be added.</param>
@@ -523,7 +565,10 @@ namespace PassKit {
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("paymentAuthorizationViewController:didSelectShippingMethod:handler:")]
-		[EventArgs ("PKPaymentRequestShippingMethodUpdate")]
+		[EventArgs ("PKPaymentRequestShippingMethodUpdate", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the Delegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidSelectShippingMethod2 (PKPaymentAuthorizationViewController controller, PKShippingMethod shippingMethod, Action<PKPaymentRequestShippingMethodUpdate> completion);
 
 		/// <param name="controller">To be added.</param>
@@ -536,12 +581,19 @@ namespace PassKit {
 		[NoMac]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 		[Export ("paymentAuthorizationViewController:didSelectShippingAddress:completion:")]
-		[EventArgs ("PKPaymentShippingAddressSelected")]
+		[EventArgs ("PKPaymentShippingAddressSelected", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the Delegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidSelectShippingAddress (PKPaymentAuthorizationViewController controller, ABRecord address, PKPaymentShippingAddressSelected completion);
 
 		/// <param name="controller">To be added.</param>
 		///         <summary>Indicates that payment authorization will shortly begin.</summary>
 		///         <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the Delegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[MacCatalyst (13, 1)]
 		[Export ("paymentAuthorizationViewControllerWillAuthorizePayment:")]
 #if !NET
@@ -559,7 +611,10 @@ namespace PassKit {
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'DidSelectShippingContact' instead.")]
 		[Export ("paymentAuthorizationViewController:didSelectShippingContact:completion:")]
-		[EventArgs ("PKPaymentSelectedContact")]
+		[EventArgs ("PKPaymentSelectedContact", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the Delegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidSelectShippingContact (PKPaymentAuthorizationViewController controller, PKContact contact, PKPaymentShippingAddressSelected completion);
 
 		/// <param name="controller">To be added.</param>
@@ -569,7 +624,10 @@ namespace PassKit {
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("paymentAuthorizationViewController:didSelectShippingContact:handler:")]
-		[EventArgs ("PKPaymentRequestShippingContactUpdate")]
+		[EventArgs ("PKPaymentRequestShippingContactUpdate", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the Delegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidSelectShippingContact2 (PKPaymentAuthorizationViewController controller, PKContact contact, Action<PKPaymentRequestShippingContactUpdate> completion);
 
 		/// <param name="controller">To be added.</param>
@@ -582,7 +640,10 @@ namespace PassKit {
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'DidSelectPaymentMethod2' instead.")]
 		[Export ("paymentAuthorizationViewController:didSelectPaymentMethod:completion:")]
-		[EventArgs ("PKPaymentMethodSelected")]
+		[EventArgs ("PKPaymentMethodSelected", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the Delegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidSelectPaymentMethod (PKPaymentAuthorizationViewController controller, PKPaymentMethod paymentMethod, Action<PKPaymentSummaryItem []> completion);
 
 		/// <param name="controller">To be added.</param>
@@ -592,7 +653,10 @@ namespace PassKit {
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("paymentAuthorizationViewController:didSelectPaymentMethod:handler:")]
-		[EventArgs ("PKPaymentRequestPaymentMethodUpdate")]
+		[EventArgs ("PKPaymentRequestPaymentMethodUpdate", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the Delegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidSelectPaymentMethod2 (PKPaymentAuthorizationViewController controller, PKPaymentMethod paymentMethod, Action<PKPaymentRequestPaymentMethodUpdate> completion);
 
 		[iOS (14, 0)]
@@ -614,6 +678,9 @@ namespace PassKit {
 	[BaseType (typeof (UIViewController), Delegates = new string [] { "Delegate" }, Events = new Type [] { typeof (PKPaymentAuthorizationViewControllerDelegate) })]
 	[DisableDefaultCtor]
 	interface PKPaymentAuthorizationViewController {
+		/// <param name="request">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithPaymentRequest:")]
 		NativeHandle Constructor (PKPaymentRequest request);
@@ -1181,13 +1248,29 @@ namespace PassKit {
 	[DisableDefaultCtor]
 	interface PKAddPassesViewController {
 
+		/// <param name="nibName">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="bundle">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithNibName:bundle:")]
 		[PostGet ("NibBundle")]
 		NativeHandle Constructor ([NullAllowed] string nibName, [NullAllowed] NSBundle bundle);
 
+		/// <param name="pass">To be added.</param>
+		/// <summary>Creates a new <see cref="T:PassKit.PKAddPassesViewController" /> that displays the specified <paramref name="pass" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithPass:")]
 		NativeHandle Constructor (PKPass pass);
 
+		/// <param name="pass">To be added.</param>
+		/// <summary>Creates a new <see cref="T:PassKit.PKAddPassesViewController" /> for the specifies passes.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithPasses:")]
 		NativeHandle Constructor (PKPass [] pass);
 
@@ -1244,6 +1327,10 @@ namespace PassKit {
 		/// <param name="controller">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[Export ("addPassesViewControllerDidFinish:")]
 		void Finished (PKAddPassesViewController controller);
 	}
@@ -1255,6 +1342,9 @@ namespace PassKit {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // designated
 	interface PKAddPaymentPassRequest : NSSecureCoding {
+		/// <summary>Default constructor, initializes a new instance of this class.</summary>
+		/// <remarks>
+		///         </remarks>
 		[DesignatedInitializer]
 		[Export ("init")]
 		NativeHandle Constructor ();
@@ -1303,6 +1393,9 @@ namespace PassKit {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface PKAddPaymentPassRequestConfiguration : NSSecureCoding {
+		/// <param name="encryptionScheme">To be added.</param>
+		/// <summary>Creates a new <see cref="T:PassKit.PKAddPaymentPassRequestConfiguration" />. In iOS 9, the only valid <paramref name="encryptionScheme" /> is <see cref="P:PassKit.PKEncryptionScheme.Ecc_V2" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithEncryptionScheme:")]
 		NativeHandle Constructor (NSString encryptionScheme);
@@ -1400,6 +1493,13 @@ namespace PassKit {
 		[Export ("canAddPaymentPass")]
 		bool CanAddPaymentPass { get; }
 
+		/// <param name="configuration">To be added.</param>
+		/// <param name="viewControllerDelegate">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithRequestConfiguration:delegate:")]
 		NativeHandle Constructor (PKAddPaymentPassRequestConfiguration configuration, [NullAllowed] IPKAddPaymentPassViewControllerDelegate viewControllerDelegate);
@@ -1481,6 +1581,12 @@ namespace PassKit {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (PKObject))]
 	interface PKPass : NSSecureCoding, NSCopying {
+		/// <param name="data">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>Creates a new <see cref="T:PassKit.PKPass" />, possibly returning an error.</summary>
+		/// <remarks>
+		///           <para>If <paramref name="error" /> is not <see langword="null" />, it will indicate an error in creation and the resulting <see cref="T:PassKit.PKPass" /> should not be used.</para>
+		///         </remarks>
 		[Export ("initWithData:error:")]
 		NativeHandle Constructor (NSData data, out NSError error);
 
@@ -1932,6 +2038,10 @@ namespace PassKit {
 		// note: named like UIButton method
 		PKPaymentButton FromType (PKPaymentButtonType buttonType, PKPaymentButtonStyle buttonStyle);
 
+		/// <param name="type">To be added.</param>
+		/// <param name="style">To be added.</param>
+		/// <summary>Creates a new Pass Kit payment button with the specified <paramref name="type" /> and <paramref name="style" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("initWithPaymentButtonType:paymentButtonStyle:")]
 		[DesignatedInitializer]
@@ -1961,6 +2071,9 @@ namespace PassKit {
 		[Export ("addPassButtonWithStyle:")]
 		PKAddPassButton Create (PKAddPassButtonStyle addPassButtonStyle);
 
+		/// <param name="style">To be added.</param>
+		/// <summary>Creates a new button, with the specified button <paramref name="style" />, for adding passes to the Wallet.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithAddPassButtonStyle:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (PKAddPassButtonStyle style);
@@ -2041,6 +2154,9 @@ namespace PassKit {
 		[NullAllowed, Export ("delegate", ArgumentSemantic.Weak)]
 		IPKPaymentAuthorizationControllerDelegate Delegate { get; set; }
 
+		/// <param name="request">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithPaymentRequest:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (PKPaymentRequest request);
@@ -2228,6 +2344,10 @@ namespace PassKit {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // there's a designated initializer and it does not accept null
 	interface PKLabeledValue {
+		/// <param name="label">To be added.</param>
+		/// <param name="value">To be added.</param>
+		/// <summary>Creates a new <see cref="T:PassKit.PKLabeledValue" /> with the specified label and value.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithLabel:value:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (string label, string value);
@@ -2379,6 +2499,13 @@ namespace PassKit {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface PKPaymentAuthorizationResult {
+		/// <param name="status">To be added.</param>
+		/// <param name="errors">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithStatus:errors:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (PKPaymentAuthorizationStatus status, [NullAllowed] NSError [] errors);
@@ -2405,6 +2532,9 @@ namespace PassKit {
 	[DisableDefaultCtor]
 	interface PKPaymentRequestUpdate {
 
+		/// <param name="paymentSummaryItems">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithPaymentSummaryItems:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (PKPaymentSummaryItem [] paymentSummaryItems);
@@ -2448,6 +2578,14 @@ namespace PassKit {
 	[DisableDefaultCtor]
 	interface PKPaymentRequestShippingContactUpdate {
 
+		/// <param name="errors">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="paymentSummaryItems">To be added.</param>
+		/// <param name="shippingMethods">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithErrors:paymentSummaryItems:shippingMethods:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor ([NullAllowed] NSError [] errors, PKPaymentSummaryItem [] paymentSummaryItems, PKShippingMethod [] shippingMethods);
@@ -2471,6 +2609,9 @@ namespace PassKit {
 	interface PKPaymentRequestShippingMethodUpdate {
 
 		// inlined
+		/// <param name="paymentSummaryItems">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithPaymentSummaryItems:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (PKPaymentSummaryItem [] paymentSummaryItems);
@@ -2493,6 +2634,9 @@ namespace PassKit {
 		NSError [] Errors { get; set; }
 
 		// inlined
+		/// <param name="paymentSummaryItems">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithPaymentSummaryItems:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (PKPaymentSummaryItem [] paymentSummaryItems);

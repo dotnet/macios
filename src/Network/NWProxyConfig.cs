@@ -12,27 +12,14 @@ using OS_nw_relay_hop = System.IntPtr;
 using OS_nw_endpoint = System.IntPtr;
 using OS_nw_protocol_options = System.IntPtr;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace Network {
-
-#if NET
 	[SupportedOSPlatform ("tvos17.0")]
 	[SupportedOSPlatform ("macos14.0")]
 	[SupportedOSPlatform ("ios17.0")]
 	[SupportedOSPlatform ("maccatalyst17.0")]
-#else
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
-#endif
 	public class NWProxyConfig : NativeObject {
 		[Preserve (Conditional = true)]
-#if NET
 		internal NWProxyConfig (NativeHandle handle, bool owns) : base (handle, owns) { }
-#else
-		public NWProxyConfig (NativeHandle handle, bool owns) : base (handle, owns) { }
-#endif
 
 #if !COREBUILD
 		[DllImport (Constants.NetworkLibrary)]
@@ -167,14 +154,7 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static unsafe extern void nw_proxy_config_enumerate_match_domains (OS_nw_proxy_config config, /* nw_proxy_domain_enumerator_t */ BlockLiteral* enumerator);
 
-#if !NET
-		delegate void nw_proxy_config_enumerate_match_domains_t (IntPtr block, IntPtr domain);
-		static nw_proxy_config_enumerate_match_domains_t static_EnumerateMatchDomainHandler = TrampolineEnumerateMatchDomainHandler;
-
-		[MonoPInvokeCallback (typeof (nw_proxy_config_enumerate_match_domains_t))]
-#else
 		[UnmanagedCallersOnly]
-#endif
 		static void TrampolineEnumerateMatchDomainHandler (IntPtr block, IntPtr domainPtr)
 		{
 			var del = BlockLiteral.GetTarget<Action<string?>> (block);
@@ -191,13 +171,8 @@ namespace Network {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (handler));
 
 			unsafe {
-#if NET
 				delegate* unmanaged<IntPtr, IntPtr, void> trampoline = &TrampolineEnumerateMatchDomainHandler;
 				using var block = new BlockLiteral (trampoline, handler, typeof (NWProxyConfig), nameof (TrampolineEnumerateMatchDomainHandler));
-#else
-				using var block = new BlockLiteral ();
-				block.SetupBlockUnsafe (static_EnumerateMatchDomainHandler, handler);
-#endif
 				nw_proxy_config_enumerate_match_domains (GetCheckedHandle (), &block);
 			}
 		}
@@ -205,14 +180,7 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static unsafe extern void nw_proxy_config_enumerate_excluded_domains (OS_nw_proxy_config config, BlockLiteral* enumerator);
 
-#if !NET
-		delegate void nw_proxy_config_enumerate_exclude_domains_t (IntPtr block, IntPtr domain);
-		static nw_proxy_config_enumerate_exclude_domains_t static_EnumerateExcludeDomainHandler = TrampolineEnumerateExcludeDomainHandler;
-
-		[MonoPInvokeCallback (typeof (nw_proxy_config_enumerate_match_domains_t))]
-#else
 		[UnmanagedCallersOnly]
-#endif
 		static void TrampolineEnumerateExcludeDomainHandler (IntPtr block, IntPtr domainPtr)
 		{
 			var del = BlockLiteral.GetTarget<Action<string?>> (block);
@@ -229,13 +197,8 @@ namespace Network {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (handler));
 
 			unsafe {
-#if NET
 				delegate* unmanaged<IntPtr, IntPtr, void> trampoline = &TrampolineEnumerateExcludeDomainHandler;
 				using var block = new BlockLiteral (trampoline, handler, typeof (NWProxyConfig), nameof (TrampolineEnumerateExcludeDomainHandler));
-#else
-				using var block = new BlockLiteral ();
-				block.SetupBlockUnsafe (static_EnumerateExcludeDomainHandler, handler);
-#endif
 				nw_proxy_config_enumerate_excluded_domains (GetCheckedHandle (), &block);
 			}
 		}

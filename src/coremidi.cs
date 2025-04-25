@@ -387,6 +387,12 @@ namespace CoreMidi {
 		[Export ("hostWithName:netServiceName:netServiceDomain:")]
 		MidiNetworkHost Create (string hostName, string netServiceName, string netServiceDomain);
 
+		/// <param name="hostName">To be added.</param>
+		/// <param name="address">To be added.</param>
+		/// <param name="port">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static]
 		[Export ("hostWithName:address:port:")]
 		MidiNetworkHost Create (string hostName, string address, nint port);
@@ -563,6 +569,10 @@ namespace CoreMidi {
 		[Export ("profileID")]
 		NSData ProfileId { get; }
 
+		/// <param name="data">To be added.</param>
+		/// <param name="inName">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithData:name:")]
 		NativeHandle Constructor (NSData data, string inName);
 
@@ -600,6 +610,10 @@ namespace CoreMidi {
 		[Export ("disabledProfiles")]
 		MidiCIProfile [] DisabledProfiles { get; }
 
+		/// <param name="enabled">To be added.</param>
+		/// <param name="disabled">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithEnabledProfiles:disabledProfiles:")]
 		NativeHandle Constructor (MidiCIProfile [] enabled, MidiCIProfile [] disabled);
 

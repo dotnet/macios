@@ -491,9 +491,26 @@ namespace CoreMotion {
 		///         <summary>Queries for step-counting data.</summary>
 		///         <remarks>To be added.</remarks>
 		[Export ("queryStepCountStartingFrom:to:toQueue:withHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="start">To be added.</param>
+			<param name="end">To be added.</param>
+			<param name="queue">To be added.</param>
+			<summary>Queries for step-counting data.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous QueryStepCount operation.   The value of the TResult parameter is a CoreMotion.CMStepQueryHandler.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The QueryStepCountAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void QueryStepCount (NSDate start, NSDate end, NSOperationQueue queue, CMStepQueryHandler handler);
 
+		/// <param name="queue">To be added.</param>
+		/// <param name="stepCounts">To be added.</param>
+		/// <param name="handler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("startStepCountingUpdatesToQueue:updateOn:withHandler:")]
 		void StartStepCountingUpdates (NSOperationQueue queue, nint stepCounts, CMStepUpdateHandler handler);
 
@@ -615,7 +632,15 @@ namespace CoreMotion {
 		///         <summary>Requests pedometer data for the specified range.</summary>
 		///         <remarks>To be added.</remarks>
 		[Export ("queryPedometerDataFromDate:toDate:withHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="start">To be added.</param>
+			<param name="end">To be added.</param>
+			<summary>Requests pedometer data for the specified range.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous QueryPedometerData operation.  The value of the TResult parameter is of type System.Action&lt;CoreMotion.CMPedometerData,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void QueryPedometerData (NSDate start, NSDate end, Action<CMPedometerData, NSError> handler);
 
 		/// <param name="start">To be added.</param>
@@ -623,7 +648,14 @@ namespace CoreMotion {
 		///         <summary>Requests that the pedometer begin sending periodic updates to the app.</summary>
 		///         <remarks>To be added.</remarks>
 		[Export ("startPedometerUpdatesFromDate:withHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="start">To be added.</param>
+			<summary>Requests that the pedometer begin sending periodic updates to the app.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous StartPedometerUpdates operation.  The value of the TResult parameter is of type System.Action&lt;CoreMotion.CMPedometerData,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void StartPedometerUpdates (NSDate start, Action<CMPedometerData, NSError> handler);
 
 		/// <summary>Requests that the pedometer stop sending periodic updates to the app.</summary>
@@ -712,7 +744,19 @@ namespace CoreMotion {
 		///         <summary>Queries the device for stored motion activity.</summary>
 		///         <remarks>To be added.</remarks>
 		[Export ("queryActivityStartingFromDate:toDate:toQueue:withHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="start">To be added.</param>
+			<param name="end">To be added.</param>
+			<param name="queue">To be added.</param>
+			<summary>Queries the device for stored motion activity.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous QueryActivity operation.   The value of the TResult parameter is a <see cref="CoreMotion.CMMotionActivityQueryHandler" />.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The QueryActivityAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void QueryActivity (NSDate start, NSDate end, NSOperationQueue queue, CMMotionActivityQueryHandler handler);
 
 		/// <param name="queue">To be added.</param>
@@ -835,7 +879,17 @@ namespace CoreMotion {
 		///         <summary>Requests periodic updates of altitude-adjustment data.</summary>
 		///         <remarks>To be added.</remarks>
 		[Export ("startRelativeAltitudeUpdatesToQueue:withHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="queue">To be added.</param>
+			<summary>Requests periodic updates of altitude-adjustment data.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous StartRelativeAltitudeUpdates operation.  The value of the TResult parameter is of type System.Action&lt;CoreMotion.CMAltitudeData,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The StartRelativeAltitudeUpdatesAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void StartRelativeAltitudeUpdates (NSOperationQueue queue, Action<CMAltitudeData, NSError> handler);
 
 		/// <summary>Stops periodic updates of altitude-adjustment data.</summary>

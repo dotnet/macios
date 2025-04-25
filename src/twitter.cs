@@ -56,6 +56,14 @@ namespace Twitter {
 		[Export ("parameters")]
 		NSDictionary Parameters { get; }
 
+		/// <param name="url">To be added.</param>
+		/// <param name="parameters">
+		///           <para>HTTP parameters for this request.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="requestMethod">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithURL:parameters:requestMethod:")]
 		NativeHandle Constructor (NSUrl url, [NullAllowed] NSDictionary parameters, TWRequestMethod requestMethod);
 
@@ -88,6 +96,16 @@ namespace Twitter {
 	[Deprecated (PlatformName.iOS, 6, 0, message: "Use the 'Social' framework.")]
 	[BaseType (typeof (UIViewController))]
 	interface TWTweetComposeViewController {
+		/// <param name="nibName">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="bundle">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithNibName:bundle:")]
 		[PostGet ("NibBundle")]
 		NativeHandle Constructor ([NullAllowed] string nibName, [NullAllowed] NSBundle bundle);

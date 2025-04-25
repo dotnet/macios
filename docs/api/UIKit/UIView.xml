@@ -995,13 +995,13 @@ public class BlueLayer : CALayer
     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIView_Class/index.html">Apple documentation for <c>UIView</c></related>
   </Docs>
   <Docs DocId="M:UIKit.UIView.BeginAnimations(System.String)">
-        <param name="animation">The animation identifier.</param>
-        <summary>Indicates the beginning of an animation block.</summary>
-        <remarks>
-          <para>Application developers should prefer to use the more compact syntax of the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIView%20Animate&amp;scope=Xamarin" title="M:UIKit.UIView.Animate*">M:UIKit.UIView.Animate*</a></format> method.</para>
-          <para>Older versions of iOS used a matched set of <see cref="M:UIKit.UIView.BeginAnimations(System.String,System.IntPtr)" /> and <see cref="M:UIKit.UIView.CommitAnimations" /> to specify an animation block. The following code, taken from the "Animate a UIView using UIKit" recipe, shows the technique:</para>
-          <example>
-            <code lang="csharp lang-csharp"><![CDATA[
+    <param name="animation">The animation identifier.</param>
+    <summary>Indicates the beginning of an animation block.</summary>
+    <remarks>
+      <para>Application developers should prefer to use the more compact syntax of the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIView%20Animate&amp;scope=Xamarin" title="M:UIKit.UIView.Animate*">M:UIKit.UIView.Animate*</a></format> method.</para>
+      <para>Older versions of iOS used a matched set of <see cref="M:UIKit.UIView.BeginAnimations(System.String,System.IntPtr)" /> and <see cref="M:UIKit.UIView.CommitAnimations" /> to specify an animation block. The following code, taken from the "Animate a UIView using UIKit" recipe, shows the technique:</para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
 UIView.BeginAnimations ("slideAnimation");
 
 UIView.SetAnimationDuration (2);
@@ -1015,10 +1015,26 @@ _imageView.Center = new PointF (UIScreen.MainScreen.Bounds.Right -
   _imageView.Frame.Width / 2, _imageView.Center.Y);
 UIView.CommitAnimations ();
               ]]></code>
-          </example>
+      </example>
+    </remarks>
+    <altmember cref="M:UIKit.UIView.CommitAnimations" />
+    <related type="recipe" href="https://developer.xamarin.com/ios/Recipes/Animation/CoreAnimation/Animate_a_UIView_using_UIKit" />
+    <!-- TODO: Switch to UUID-based URL -->
+  </Docs>
+  <Docs DocId="M:UIKit.UIView.AnimateNotify(System.Double,System.Double,System.Runtime.InteropServices.NFloat,System.Runtime.InteropServices.NFloat,UIKit.UIViewAnimationOptions,System.Action,UIKit.UICompletionHandler)">
+        <param name="duration">Duration in seconds for the animation.</param>
+        <param name="delay">Delay before the animation begins.</param>
+        <param name="springWithDampingRatio">Damping ratio set for spring animation when it is approaching its quiescent state. Value between 0 and 1 representing the amount of damping to apply to the spring effect.</param>
+        <param name="initialSpringVelocity">Initial spring velocity prior to attachment. The initial velocity of the spring, in points per second.</param>
+        <param name="options">Animation options.</param>
+        <param name="animations">Code containing the changes that you will apply to your view.</param>
+        <param name="completion">
+          <para>The method to invoke when the animation has completed.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <summary>Executes a view animation that uses a timing curve that corresponds to the activity of a physical spring.</summary>
+        <remarks>
+          <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
         </remarks>
-        <altmember cref="M:UIKit.UIView.CommitAnimations" />
-        <related type="recipe" href="https://developer.xamarin.com/ios/Recipes/Animation/CoreAnimation/Animate_a_UIView_using_UIKit" />
-        <!-- TODO: Switch to UUID-based URL -->
       </Docs>
 </Documentation>

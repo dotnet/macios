@@ -18,82 +18,52 @@ using nw_advertise_descriptor_t = System.IntPtr;
 using OS_nw_advertise_descriptor = System.IntPtr;
 using OS_nw_txt_record = System.IntPtr;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace Network {
-#if NET
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-#endif
 	public class NWAdvertiseDescriptor : NativeObject {
 		[Preserve (Conditional = true)]
-#if NET
 		internal NWAdvertiseDescriptor (NativeHandle handle, bool owns) : base (handle, owns)
-#else
-		public NWAdvertiseDescriptor (NativeHandle handle, bool owns) : base (handle, owns)
-#endif
 		{ }
 
-#if NET
 		[SupportedOSPlatform ("tvos16.0")]
 		[SupportedOSPlatform ("macos13.0")]
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("maccatalyst16.0")]
-#else
-		[TV (16, 0)]
-		[Mac (13, 0)]
-		[iOS (16, 0)]
-#endif
 		[DllImport (Constants.NetworkLibrary)]
 		static extern OS_nw_advertise_descriptor nw_advertise_descriptor_create_application_service (IntPtr application_service_name);
 
+		[SupportedOSPlatform ("tvos16.0")]
+		[SupportedOSPlatform ("macos13.0")]
+		[SupportedOSPlatform ("ios16.0")]
+		[SupportedOSPlatform ("maccatalyst16.0")]
 		static OS_nw_advertise_descriptor nw_advertise_descriptor_create_application_service (string application_service_name)
 		{
 			using var namePtr = new TransientString (application_service_name);
 			return nw_advertise_descriptor_create_application_service (namePtr);
 		}
 
-#if NET
 		[SupportedOSPlatform ("tvos16.0")]
 		[SupportedOSPlatform ("macos13.0")]
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("maccatalyst16.0")]
-#else
-		[TV (16, 0)]
-		[Mac (13, 0)]
-		[iOS (16, 0)]
-#endif
 		public NWAdvertiseDescriptor (string applicationServiceName) : base (nw_advertise_descriptor_create_application_service (applicationServiceName), true) { }
 
-#if NET
 		[SupportedOSPlatform ("tvos16.0")]
 		[SupportedOSPlatform ("macos13.0")]
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("maccatalyst16.0")]
-#else
-		[TV (16, 0)]
-		[Mac (13, 0)]
-		[iOS (16, 0)]
-#endif
 		[DllImport (Constants.NetworkLibrary)]
 		static extern IntPtr nw_advertise_descriptor_get_application_service_name (OS_nw_advertise_descriptor advertise_descriptor);
 
-#if NET
 		[SupportedOSPlatform ("tvos16.0")]
 		[SupportedOSPlatform ("macos13.0")]
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("maccatalyst16.0")]
-#else
-		[TV (16, 0)]
-		[Mac (13, 0)]
-		[iOS (16, 0)]
-#endif
 		public string? ApplicationServiceName {
 			get {
 				var appNamePtr = nw_advertise_descriptor_get_application_service_name (GetCheckedHandle ());
@@ -156,39 +126,24 @@ namespace Network {
 			get => nw_advertise_descriptor_get_no_auto_rename (GetCheckedHandle ()) != 0;
 		}
 
-#if NET
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (13, 0)]
-		[iOS (13, 0)]
-#endif
 		[DllImport (Constants.NetworkLibrary)]
 		static extern OS_nw_txt_record nw_advertise_descriptor_copy_txt_record_object (OS_nw_advertise_descriptor advertise_descriptor);
 
-#if NET
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (13, 0)]
-		[iOS (13, 0)]
-#endif
 		[DllImport (Constants.NetworkLibrary)]
 		static extern void nw_advertise_descriptor_set_txt_record_object (OS_nw_advertise_descriptor advertise_descriptor, OS_nw_txt_record txt_record);
 
-#if NET
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (13, 0)]
-		[iOS (13, 0)]
-#endif
 		public NWTxtRecord TxtRecord {
 			get => new NWTxtRecord (nw_advertise_descriptor_copy_txt_record_object (GetCheckedHandle ()), owns: true);
 			set {

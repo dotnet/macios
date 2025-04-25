@@ -23,103 +23,103 @@ public partial class PropertyTests
 {
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selCountX = "count";
-	static readonly NativeHandle selCountXHandle = Selector.GetHandle ("count");
+	static readonly NativeHandle selCountXHandle = global::ObjCRuntime.Selector.GetHandle ("count");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selLineSpacingX = "lineSpacing";
-	static readonly NativeHandle selLineSpacingXHandle = Selector.GetHandle ("lineSpacing");
+	static readonly NativeHandle selLineSpacingXHandle = global::ObjCRuntime.Selector.GetHandle ("lineSpacing");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selSetLineSpacing_X = "setLineSpacing:";
-	static readonly NativeHandle selSetLineSpacing_XHandle = Selector.GetHandle ("setLineSpacing:");
+	static readonly NativeHandle selSetLineSpacing_XHandle = global::ObjCRuntime.Selector.GetHandle ("setLineSpacing:");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selSizesX = "sizes";
-	static readonly NativeHandle selSizesXHandle = Selector.GetHandle ("sizes");
+	static readonly NativeHandle selSizesXHandle = global::ObjCRuntime.Selector.GetHandle ("sizes");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selContainsAttachmentsX = "containsAttachments";
-	static readonly NativeHandle selContainsAttachmentsXHandle = Selector.GetHandle ("containsAttachments");
+	static readonly NativeHandle selContainsAttachmentsXHandle = global::ObjCRuntime.Selector.GetHandle ("containsAttachments");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selNameX = "name";
-	static readonly NativeHandle selNameXHandle = Selector.GetHandle ("name");
+	static readonly NativeHandle selNameXHandle = global::ObjCRuntime.Selector.GetHandle ("name");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selSetName_X = "setName:";
-	static readonly NativeHandle selSetName_XHandle = Selector.GetHandle ("setName:");
+	static readonly NativeHandle selSetName_XHandle = global::ObjCRuntime.Selector.GetHandle ("setName:");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selSurnamesX = "surnames";
-	static readonly NativeHandle selSurnamesXHandle = Selector.GetHandle ("surnames");
+	static readonly NativeHandle selSurnamesXHandle = global::ObjCRuntime.Selector.GetHandle ("surnames");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selSetSurnames_X = "setSurnames:";
-	static readonly NativeHandle selSetSurnames_XHandle = Selector.GetHandle ("setSurnames:");
+	static readonly NativeHandle selSetSurnames_XHandle = global::ObjCRuntime.Selector.GetHandle ("setSurnames:");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selAttributedStringByInflectingStringX = "attributedStringByInflectingString";
-	static readonly NativeHandle selAttributedStringByInflectingStringXHandle = Selector.GetHandle ("attributedStringByInflectingString");
+	static readonly NativeHandle selAttributedStringByInflectingStringXHandle = global::ObjCRuntime.Selector.GetHandle ("attributedStringByInflectingString");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selDelegateX = "delegate";
-	static readonly NativeHandle selDelegateXHandle = Selector.GetHandle ("delegate");
+	static readonly NativeHandle selDelegateXHandle = global::ObjCRuntime.Selector.GetHandle ("delegate");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selSetDelegate_X = "setDelegate:";
-	static readonly NativeHandle selSetDelegate_XHandle = Selector.GetHandle ("setDelegate:");
+	static readonly NativeHandle selSetDelegate_XHandle = global::ObjCRuntime.Selector.GetHandle ("setDelegate:");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selResultsX = "results";
-	static readonly NativeHandle selResultsXHandle = Selector.GetHandle ("results");
+	static readonly NativeHandle selResultsXHandle = global::ObjCRuntime.Selector.GetHandle ("results");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selSizeX = "size";
-	static readonly NativeHandle selSizeXHandle = Selector.GetHandle ("size");
+	static readonly NativeHandle selSizeXHandle = global::ObjCRuntime.Selector.GetHandle ("size");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selAlphanumericCharacterSetX = "alphanumericCharacterSet";
-	static readonly NativeHandle selAlphanumericCharacterSetXHandle = Selector.GetHandle ("alphanumericCharacterSet");
+	static readonly NativeHandle selAlphanumericCharacterSetXHandle = global::ObjCRuntime.Selector.GetHandle ("alphanumericCharacterSet");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selLocaleX = "locale";
-	static readonly NativeHandle selLocaleXHandle = Selector.GetHandle ("locale");
+	static readonly NativeHandle selLocaleXHandle = global::ObjCRuntime.Selector.GetHandle ("locale");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selSetLocale_X = "setLocale:";
-	static readonly NativeHandle selSetLocale_XHandle = Selector.GetHandle ("setLocale:");
+	static readonly NativeHandle selSetLocale_XHandle = global::ObjCRuntime.Selector.GetHandle ("setLocale:");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selIsForPersonMassUseX = "isForPersonMassUse";
-	static readonly NativeHandle selIsForPersonMassUseXHandle = Selector.GetHandle ("isForPersonMassUse");
+	static readonly NativeHandle selIsForPersonMassUseXHandle = global::ObjCRuntime.Selector.GetHandle ("isForPersonMassUse");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selSetForPersonMassUse_X = "setForPersonMassUse:";
-	static readonly NativeHandle selSetForPersonMassUse_XHandle = Selector.GetHandle ("setForPersonMassUse:");
+	static readonly NativeHandle selSetForPersonMassUse_XHandle = global::ObjCRuntime.Selector.GetHandle ("setForPersonMassUse:");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selIsLenientX = "isLenient";
-	static readonly NativeHandle selIsLenientXHandle = Selector.GetHandle ("isLenient");
+	static readonly NativeHandle selIsLenientXHandle = global::ObjCRuntime.Selector.GetHandle ("isLenient");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selSetLenient_X = "setLenient:";
-	static readonly NativeHandle selSetLenient_XHandle = Selector.GetHandle ("setLenient:");
+	static readonly NativeHandle selSetLenient_XHandle = global::ObjCRuntime.Selector.GetHandle ("setLenient:");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selCanDrawX = "canDraw";
-	static readonly NativeHandle selCanDrawXHandle = Selector.GetHandle ("canDraw");
+	static readonly NativeHandle selCanDrawXHandle = global::ObjCRuntime.Selector.GetHandle ("canDraw");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selSetCanDraw_X = "setCanDraw:";
-	static readonly NativeHandle selSetCanDraw_XHandle = Selector.GetHandle ("setCanDraw:");
+	static readonly NativeHandle selSetCanDraw_XHandle = global::ObjCRuntime.Selector.GetHandle ("setCanDraw:");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selCenterX = "Center";
-	static readonly NativeHandle selCenterXHandle = Selector.GetHandle ("Center");
+	static readonly NativeHandle selCenterXHandle = global::ObjCRuntime.Selector.GetHandle ("Center");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selSetCenter_X = "setCenter:";
-	static readonly NativeHandle selSetCenter_XHandle = Selector.GetHandle ("setCenter:");
+	static readonly NativeHandle selSetCenter_XHandle = global::ObjCRuntime.Selector.GetHandle ("setCenter:");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	static readonly NativeHandle class_ptr = Class.GetHandle ("PropertyTests");
@@ -221,10 +221,11 @@ public partial class PropertyTests
 		{
 			Foundation.NSCharacterSet ret;
 			if (IsDirectBinding) {
-				ret = Runtime.GetNSObject<Foundation.NSCharacterSet> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle ("alphanumericCharacterSet")))!;
+				ret = global::ObjCRuntime.Runtime.GetNSObject<Foundation.NSCharacterSet> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("alphanumericCharacterSet")))!;
 			} else {
-				ret = Runtime.GetNSObject<Foundation.NSCharacterSet> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, Selector.GetHandle ("alphanumericCharacterSet")))!;
+				ret = global::ObjCRuntime.Runtime.GetNSObject<Foundation.NSCharacterSet> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("alphanumericCharacterSet")))!;
 			}
+			GC.KeepAlive (this);
 			return ret;
 		}
 	}
@@ -244,10 +245,11 @@ public partial class PropertyTests
 		{
 			Foundation.NSAttributedString ret;
 			if (IsDirectBinding) {
-				ret = Runtime.GetNSObject<Foundation.NSAttributedString> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle ("attributedStringByInflectingString")))!;
+				ret = global::ObjCRuntime.Runtime.GetNSObject<Foundation.NSAttributedString> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("attributedStringByInflectingString")))!;
 			} else {
-				ret = Runtime.GetNSObject<Foundation.NSAttributedString> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, Selector.GetHandle ("attributedStringByInflectingString")))!;
+				ret = global::ObjCRuntime.Runtime.GetNSObject<Foundation.NSAttributedString> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("attributedStringByInflectingString")))!;
 			}
+			GC.KeepAlive (this);
 			return ret;
 		}
 	}
@@ -265,11 +267,14 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("maccatalyst13.1")]
 		get
 		{
+			bool ret;
 			if (IsDirectBinding) {
-				return NSNumber.ToBool (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle ("canDraw")));
+				ret = NSNumber.ToBool (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("canDraw")));
 			} else {
-				return NSNumber.ToBool (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, Selector.GetHandle ("canDraw")));
+				ret = NSNumber.ToBool (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("canDraw")));
 			}
+			GC.KeepAlive (this);
+			return ret;
 		}
 
 		[SupportedOSPlatform ("macos")]
@@ -295,11 +300,14 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("maccatalyst13.1")]
 		get
 		{
+			CoreGraphics.CGPoint ret;
 			if (IsDirectBinding) {
-				return NSValue.ToCGPoint (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle ("Center")));
+				ret = NSValue.ToCGPoint (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("Center")));
 			} else {
-				return NSValue.ToCGPoint (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, Selector.GetHandle ("Center")));
+				ret = NSValue.ToCGPoint (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("Center")));
 			}
+			GC.KeepAlive (this);
+			return ret;
 		}
 
 		[SupportedOSPlatform ("macos")]
@@ -325,11 +333,14 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("maccatalyst13.1")]
 		get
 		{
+			bool ret;
 			if (IsDirectBinding) {
-				return global::ObjCRuntime.Messaging.bool_objc_msgSend (this.Handle, Selector.GetHandle ("containsAttachments")) != 0;
+				ret = global::ObjCRuntime.Messaging.bool_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("containsAttachments")) != 0;
 			} else {
-				return global::ObjCRuntime.Messaging.bool_objc_msgSendSuper (this.Handle, Selector.GetHandle ("containsAttachments")) != 0;
+				ret = global::ObjCRuntime.Messaging.bool_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("containsAttachments")) != 0;
 			}
+			GC.KeepAlive (this);
+			return ret;
 		}
 	}
 
@@ -346,11 +357,14 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("maccatalyst13.1")]
 		get
 		{
+			UIntPtr ret;
 			if (IsDirectBinding) {
-				return global::ObjCRuntime.Messaging.UIntPtr_objc_msgSend (this.Handle, Selector.GetHandle ("count"));
+				ret = global::ObjCRuntime.Messaging.UIntPtr_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("count"));
 			} else {
-				return global::ObjCRuntime.Messaging.UIntPtr_objc_msgSendSuper (this.Handle, Selector.GetHandle ("count"));
+				ret = global::ObjCRuntime.Messaging.UIntPtr_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("count"));
 			}
+			GC.KeepAlive (this);
+			return ret;
 		}
 	}
 
@@ -367,11 +381,14 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("maccatalyst13.1")]
 		get
 		{
+			bool ret;
 			if (IsDirectBinding) {
-				return global::ObjCRuntime.Messaging.bool_objc_msgSend (this.Handle, Selector.GetHandle ("isForPersonMassUse")) != 0;
+				ret = global::ObjCRuntime.Messaging.bool_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("isForPersonMassUse")) != 0;
 			} else {
-				return global::ObjCRuntime.Messaging.bool_objc_msgSendSuper (this.Handle, Selector.GetHandle ("isForPersonMassUse")) != 0;
+				ret = global::ObjCRuntime.Messaging.bool_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("isForPersonMassUse")) != 0;
 			}
+			GC.KeepAlive (this);
+			return ret;
 		}
 
 		[SupportedOSPlatform ("macos")]
@@ -397,11 +414,14 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("maccatalyst13.1")]
 		get
 		{
+			bool ret;
 			if (IsDirectBinding) {
-				return global::ObjCRuntime.Messaging.bool_objc_msgSend (this.Handle, Selector.GetHandle ("isLenient")) != 0;
+				ret = global::ObjCRuntime.Messaging.bool_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("isLenient")) != 0;
 			} else {
-				return global::ObjCRuntime.Messaging.bool_objc_msgSendSuper (this.Handle, Selector.GetHandle ("isLenient")) != 0;
+				ret = global::ObjCRuntime.Messaging.bool_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("isLenient")) != 0;
 			}
+			GC.KeepAlive (this);
+			return ret;
 		}
 
 		[SupportedOSPlatform ("macos")]
@@ -427,11 +447,14 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("maccatalyst13.1")]
 		get
 		{
+			nfloat ret;
 			if (IsDirectBinding) {
-				return global::ObjCRuntime.Messaging.nfloat_objc_msgSend (this.Handle, Selector.GetHandle ("lineSpacing"));
+				ret = global::ObjCRuntime.Messaging.nfloat_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("lineSpacing"));
 			} else {
-				return global::ObjCRuntime.Messaging.nfloat_objc_msgSendSuper (this.Handle, Selector.GetHandle ("lineSpacing"));
+				ret = global::ObjCRuntime.Messaging.nfloat_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("lineSpacing"));
 			}
+			GC.KeepAlive (this);
+			return ret;
 		}
 
 		[SupportedOSPlatform ("macos")]
@@ -459,10 +482,11 @@ public partial class PropertyTests
 		{
 			Foundation.NSLocale ret;
 			if (IsDirectBinding) {
-				ret = Runtime.GetNSObject<Foundation.NSLocale> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle ("locale")))!;
+				ret = global::ObjCRuntime.Runtime.GetNSObject<Foundation.NSLocale> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("locale")))!;
 			} else {
-				ret = Runtime.GetNSObject<Foundation.NSLocale> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, Selector.GetHandle ("locale")))!;
+				ret = global::ObjCRuntime.Runtime.GetNSObject<Foundation.NSLocale> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("locale")))!;
 			}
+			GC.KeepAlive (this);
 			return ret;
 		}
 
@@ -489,11 +513,14 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("maccatalyst13.1")]
 		get
 		{
+			CoreGraphics.CGPoint[] ret;
 			if (IsDirectBinding) {
-				return NSArray.ArrayFromHandleFunc<CoreGraphics.CGPoint> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle ("Center")), NSValue.ToCGPoint, false);
+				ret = global::Foundation.NSArray.ArrayFromHandleFunc<CoreGraphics.CGPoint> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("Center")), NSValue.ToCGPoint, false);
 			} else {
-				return NSArray.ArrayFromHandleFunc<CoreGraphics.CGPoint> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, Selector.GetHandle ("Center")), NSValue.ToCGPoint, false);
+				ret = global::Foundation.NSArray.ArrayFromHandleFunc<CoreGraphics.CGPoint> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("Center")), NSValue.ToCGPoint, false);
 			}
+			GC.KeepAlive (this);
+			return ret;
 		}
 
 		[SupportedOSPlatform ("macos")]
@@ -519,11 +546,14 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("maccatalyst13.1")]
 		get
 		{
+			string ret;
 			if (IsDirectBinding) {
-				return CFString.FromHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle ("name")), false)!;
+				ret = global::CoreFoundation.CFString.FromHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("name")), false)!;
 			} else {
-				return CFString.FromHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, Selector.GetHandle ("name")), false)!;
+				ret = global::CoreFoundation.CFString.FromHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("name")), false)!;
 			}
+			GC.KeepAlive (this);
+			return ret;
 		}
 
 		[SupportedOSPlatform ("macos")]
@@ -549,11 +579,14 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("maccatalyst13.1")]
 		get
 		{
+			string? ret;
 			if (IsDirectBinding) {
-				return CFString.FromHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle ("name")), false);
+				ret = global::CoreFoundation.CFString.FromHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("name")), false);
 			} else {
-				return CFString.FromHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, Selector.GetHandle ("name")), false);
+				ret = global::CoreFoundation.CFString.FromHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("name")), false);
 			}
+			GC.KeepAlive (this);
+			return ret;
 		}
 
 		[SupportedOSPlatform ("macos")]
@@ -579,11 +612,14 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("maccatalyst13.1")]
 		get
 		{
+			string[] ret;
 			if (IsDirectBinding) {
-				return CFArray.StringArrayFromHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle ("surnames")), false)!;
+				ret = global::CoreFoundation.CFArray.StringArrayFromHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("surnames")), false)!;
 			} else {
-				return CFArray.StringArrayFromHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, Selector.GetHandle ("surnames")), false)!;
+				ret = global::CoreFoundation.CFArray.StringArrayFromHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("surnames")), false)!;
 			}
+			GC.KeepAlive (this);
+			return ret;
 		}
 
 		[SupportedOSPlatform ("macos")]
@@ -609,11 +645,14 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("maccatalyst13.1")]
 		get
 		{
+			AVFoundation.AVCaptureReactionType ret;
 			if (IsDirectBinding) {
-				return global::AVFoundation.AVCaptureReactionTypeExtensions.GetValue (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle ("canDraw")));
+				ret = global::AVFoundation.AVCaptureReactionTypeExtensions.GetValue (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("canDraw")));
 			} else {
-				return global::AVFoundation.AVCaptureReactionTypeExtensions.GetValue (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, Selector.GetHandle ("canDraw")));
+				ret = global::AVFoundation.AVCaptureReactionTypeExtensions.GetValue (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("canDraw")));
 			}
+			GC.KeepAlive (this);
+			return ret;
 		}
 
 		[SupportedOSPlatform ("macos")]
@@ -641,10 +680,11 @@ public partial class PropertyTests
 		{
 			Foundation.NSMetadataItem[] ret;
 			if (IsDirectBinding) {
-				ret = CFArray.ArrayFromHandle<Foundation.NSMetadataItem> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle ("results")))!;
+				ret = global::CoreFoundation.CFArray.ArrayFromHandle<Foundation.NSMetadataItem> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("results")))!;
 			} else {
-				ret = CFArray.ArrayFromHandle<Foundation.NSMetadataItem> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, Selector.GetHandle ("results")))!;
+				ret = global::CoreFoundation.CFArray.ArrayFromHandle<Foundation.NSMetadataItem> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("results")))!;
 			}
+			GC.KeepAlive (this);
 			return ret;
 		}
 	}
@@ -662,11 +702,14 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("maccatalyst13.1")]
 		get
 		{
+			CoreGraphics.CGSize ret;
 			if (IsDirectBinding) {
-				return global::ObjCRuntime.Messaging.CGSize_objc_msgSend (this.Handle, Selector.GetHandle ("size"));
+				ret = global::ObjCRuntime.Messaging.CGSize_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("size"));
 			} else {
-				return global::ObjCRuntime.Messaging.CGSize_objc_msgSendSuper (this.Handle, Selector.GetHandle ("size"));
+				ret = global::ObjCRuntime.Messaging.CGSize_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("size"));
 			}
+			GC.KeepAlive (this);
+			return ret;
 		}
 	}
 
@@ -683,11 +726,14 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("maccatalyst13.1")]
 		get
 		{
+			nuint[] ret;
 			if (IsDirectBinding) {
-				return global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle ("sizes"));
+				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("sizes"));
 			} else {
-				return global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, Selector.GetHandle ("sizes"));
+				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("sizes"));
 			}
+			GC.KeepAlive (this);
+			return ret;
 		}
 	}
 
@@ -706,10 +752,11 @@ public partial class PropertyTests
 		{
 			Foundation.NSObject? ret;
 			if (IsDirectBinding) {
-				ret = Runtime.GetNSObject<Foundation.NSObject> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle ("delegate")));
+				ret = global::ObjCRuntime.Runtime.GetNSObject<Foundation.NSObject> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("delegate")));
 			} else {
-				ret = Runtime.GetNSObject<Foundation.NSObject> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, Selector.GetHandle ("delegate")));
+				ret = global::ObjCRuntime.Runtime.GetNSObject<Foundation.NSObject> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("delegate")));
 			}
+			GC.KeepAlive (this);
 			return ret;
 		}
 

@@ -35,6 +35,9 @@ namespace MultipeerConnectivity {
 	[DisableDefaultCtor] // NSInvalidArgumentException Reason: -[MCPeerID init]: unrecognized selector sent to instance 0x7d721090
 	partial interface MCPeerID : NSCopying, NSSecureCoding {
 
+		/// <param name="myDisplayName">The name for the peer.</param>
+		/// <summary>Constructor that assigns to the <see cref="P:MultipeerConnectivity.MCPeerID.DisplayName" /> property.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithDisplayName:")]
 		NativeHandle Constructor (string myDisplayName);
@@ -55,6 +58,9 @@ namespace MultipeerConnectivity {
 	[DisableDefaultCtor] // crash when calling `description` selector
 	partial interface MCSession {
 
+		/// <param name="myPeerID">The identity of the local peer.</param>
+		/// <summary>Constructs a session with the specified identity for the local peer.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithPeer:")]
 		NativeHandle Constructor (MCPeerID myPeerID);
 
@@ -101,7 +107,23 @@ namespace MultipeerConnectivity {
 		///         <remarks>
 		///           <para>Note that the return value only indicates successful enqueueing of the resource for transmission, not a confirmation of delivery. Delivery success or failure is passed in to the <paramref name="completionHandler" />.</para>
 		///         </remarks>
-		[Async]
+		[Async (XmlDocs = """
+			<param name="resourceUrl">The URL to the resource.</param>
+			<param name="resourceName">The name of the resource.</param>
+			<param name="peerID">The ID of the receiving peer.</param>
+			<summary>Enqueues for delivery to <paramref name="peerID" /> the resource at <paramref name="resourceUrl" />.</summary>
+			<returns>A task that represents the asynchronous SendResource operation</returns>
+			<remarks>To be added.</remarks>
+			""",
+			XmlDocsWithOutParameter = """
+			<param name="resourceUrl">The URL to the resource.</param>
+			<param name="resourceName">The name of the resource.</param>
+			<param name="peerID">The ID of the receiving peer.</param>
+			<param name="result">A progress result.</param>
+			<summary>Asynchronously enqueues for delivery to <paramref name="resourceName" /> the resource at <paramref name="resourceUrl" />, returning a task that represents the operation.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[return: NullAllowed]
 		[Export ("sendResourceAtURL:withName:toPeer:withCompletionHandler:")]
 		NSProgress SendResource (NSUrl resourceUrl, string resourceName, MCPeerID peerID, [NullAllowed] Action<NSError> completionHandler);
@@ -174,7 +196,33 @@ namespace MultipeerConnectivity {
 		#region Custom Discovery Category
 
 		/// <include file="../docs/api/MultipeerConnectivity/MCSession.xml" path="/Documentation/Docs[@DocId='M:MultipeerConnectivity.MCSession.NearbyConnectionDataForPeer(MultipeerConnectivity.MCPeerID,MultipeerConnectivity.MCSessionNearbyConnectionDataForPeerCompletionHandler)']/*" />
-		[Async]
+		[Async (XmlDocs = """
+			<param name="peerID">Created from data serialized on a remote peer.</param>
+			<summary>Creates the necessary data for a  manually-managed peer connection.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous NearbyConnectionDataForPeer operation.   The value of the TResult parameter is a <see cref="MultipeerConnectivity.MCSessionNearbyConnectionDataForPeerCompletionHandler" />.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The NearbyConnectionDataForPeerAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">Application developers may use a non-Multipeer Connectivity discovery technique, such as Bonjour / <see cref="T:Foundation.NSNetService" />, and manually manage peer connection. However, the <paramref name="peerID" /> used here and in <see cref="M:MultipeerConnectivity.MCSession.ConnectPeer(MultipeerConnectivity.MCPeerID,Foundation.NSData)" /> must originate from a <see cref="T:Foundation.NSKeyedArchiver" /> serializing an <see cref="T:MultipeerConnectivity.MCPeerID" /> on the remote peer. (This raises the question: if discovery and enough message-passing code to transmit the <paramref name="peerID" /> is done by Bonjour, what's the advantage of using MPC for further communication? One answer might be the evolution of a legacy system, another answer might lie in the simpler message- and resource-passing of MPC.)</para>
+			          <para copied="true">Once the application developer has the <paramref name="peerID" />, the rest of the code to connect a peer would be:</para>
+			          <example copied="true">
+			            <code lang="csharp lang-csharp"><![CDATA[
+			//User code: Perhaps using Bonjour or other discovery and messaging service
+			var peerID = DeserializedPeerID();
+			//Request connection data, with completionHandler lambda as continuation
+			session.NearbyConnectionDataForPeer(peerID, (connectionData, error) => { 
+			    if(error is not null){
+			        //Note: peerID is serialized version, connectionData is passed in to continuation
+			        session.ConnectPeer(peerID, connectionData);
+			    }else{
+			         throw new Exception(error);
+			    }
+			});              
+			              ]]></code>
+			          </example>
+			        </remarks>
+			""")]
 		[Export ("nearbyConnectionDataForPeer:withCompletionHandler:")]
 		void NearbyConnectionDataForPeer (MCPeerID peerID, MCSessionNearbyConnectionDataForPeerCompletionHandler completionHandler);
 
@@ -293,6 +341,14 @@ namespace MultipeerConnectivity {
 	[DisableDefaultCtor] // NSInvalidArgumentException -[MCNearbyServiceAdvertiser init]: unrecognized selector sent to instance 0x19195e50
 	partial interface MCNearbyServiceAdvertiser {
 
+		/// <param name="myPeerID">To be added.</param>
+		/// <param name="info">A small dictionary to aide discovery (see <see cref="P:MultipeerConnectivity.MCNearbyServiceAdvertiser.DiscoveryInfo" />).<para tool="nullallowed">This parameter can be <see langword="null" />.</para></param>
+		/// <param name="serviceType">A string between 1 and 15 characters long, identifying the protocol being used.</param>
+		/// <summary>Creates an object identified as <paramref name="myPeerID" /> for the specific <paramref name="serviceType" />.</summary>
+		/// <remarks>
+		///           <para>The <paramref name="serviceType" /> must be a string, between 1 and 15 characters long, identifying the network protocol being advertised. A common pattern is "{company_name}-{apptype}", e.g., <c>xamarin-txtchat</c>.</para>
+		///           <para>The <paramref name="info" /> dictionary has size and content limitations (see <see cref="P:MultipeerConnectivity.MCNearbyServiceAdvertiser.DiscoveryInfo" />). </para>
+		///         </remarks>
 		[DesignatedInitializer]
 		[Export ("initWithPeer:discoveryInfo:serviceType:")]
 		NativeHandle Constructor (MCPeerID myPeerID, [NullAllowed] NSDictionary info, string serviceType);
@@ -395,6 +451,12 @@ namespace MultipeerConnectivity {
 	[DisableDefaultCtor] // NSInvalidArgumentException -[MCNearbyServiceBrowser init]: unrecognized selector sent to instance 0x15519a70
 	partial interface MCNearbyServiceBrowser {
 
+		/// <param name="myPeerID">The ID of the local peer.</param>
+		/// <param name="serviceType">The network protocol.</param>
+		/// <summary>Constructs a browser for the specified <paramref name="serviceType" /> protocol, identifying the local peer as <paramref name="myPeerID" />.</summary>
+		/// <remarks>
+		///           <para>The <paramref name="serviceType" /> must be a string, between 1 and 15 characters long, identifying the network protocol being advertised. A common pattern is "{company_name}-{apptype}", e.g., <c>xamarin-txtchat</c>.</para>
+		///         </remarks>
 		[DesignatedInitializer]
 		[Export ("initWithPeer:serviceType:")]
 		NativeHandle Constructor (MCPeerID myPeerID, string serviceType);
@@ -507,14 +569,34 @@ namespace MultipeerConnectivity {
 	[BaseType (typeof (UIViewController))]
 	[DisableDefaultCtor] // NSInvalidArgumentException -[MCPeerPickerViewController initWithNibName:bundle:]: unrecognized selector sent to instance 0x15517b90
 	partial interface MCBrowserViewController : MCNearbyServiceBrowserDelegate {
+		/// <param name="nibName">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="bundle">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Creates a new multipeer browser view controller from the named NIB in the specified bundle.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithNibName:bundle:")]
 		[PostGet ("NibBundle")]
 		NativeHandle Constructor ([NullAllowed] string nibName, [NullAllowed] NSBundle bundle);
 
+		/// <param name="browser">To be added.</param>
+		/// <param name="session">To be added.</param>
+		/// <summary>Constructor where the service type and options are defined in <paramref name="browser" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithBrowser:session:")]
 		NativeHandle Constructor (MCNearbyServiceBrowser browser, MCSession session);
 
+		/// <param name="serviceType">To be added.</param>
+		/// <param name="session">To be added.</param>
+		/// <summary>Constructor that advertises the <paramref name="serviceType" /> network protocol.</summary>
+		/// <remarks>
+		///           <para>The <paramref name="serviceType" /> must be a string, between 1 and 15 characters long, identifying the network protocol being advertised. A common pattern is "{company_name}-{apptype}", e.g., <c>xamarin-txtchat</c>.</para>
+		///         </remarks>
 		[Export ("initWithServiceType:session:")]
 		NativeHandle Constructor (string serviceType, MCSession session);
 
@@ -626,6 +708,14 @@ namespace MultipeerConnectivity {
 	[DisableDefaultCtor] // NSInvalidArgumentException Reason: -[MCAdvertiserAssistant init]: unrecognized selector sent to instance 0x7ea7fa40
 	interface MCAdvertiserAssistant {
 
+		/// <param name="serviceType">A string between 1 and 15 characters long, identifying the protocol being used.</param>
+		/// <param name="info">A small dictionary to aide discovery (see <see cref="P:MultipeerConnectivity.MCAdvertiserAssistant.DiscoveryInfo" />).<para tool="nullallowed">This parameter can be <see langword="null" />.</para></param>
+		/// <param name="session">To be added.</param>
+		/// <summary>Creates an object for the specific <paramref name="serviceType" /> and <paramref name="session" />.</summary>
+		/// <remarks>
+		///           <para>The <paramref name="serviceType" /> must be a string, between 1 and 15 characters long, identifying the network protocol being advertised. A common pattern is "{company_name}-{apptype}", e.g., <c>xamarin-txtchat</c>.</para>
+		///           <para>The <paramref name="info" /> dictionary has size and content limitations (see <see cref="P:MultipeerConnectivity.MCAdvertiserAssistant.DiscoveryInfo" />). </para>
+		///         </remarks>
 		[DesignatedInitializer]
 		[Export ("initWithServiceType:discoveryInfo:session:")]
 		NativeHandle Constructor (string serviceType, [NullAllowed] NSDictionary info, MCSession session);

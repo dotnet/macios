@@ -669,9 +669,18 @@ namespace iTunesLibrary {
 		[return: NullAllowed]
 		ITLibrary GetLibrary (string requestedAPIVersion, ITLibInitOptions options, [NullAllowed] out NSError error);
 
+		/// <param name="requestedAPIVersion">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithAPIVersion:error:")]
 		NativeHandle Constructor (string requestedAPIVersion, [NullAllowed] out NSError error);
 
+		/// <param name="requestedAPIVersion">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithAPIVersion:options:error:")]
 		NativeHandle Constructor (string requestedAPIVersion, ITLibInitOptions options, [NullAllowed] out NSError error);

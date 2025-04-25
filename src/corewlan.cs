@@ -786,6 +786,9 @@ namespace CoreWlan {
 		[Export ("networkProfile")]
 		NSObject NetworkProfile ();
 
+		/// <param name="networkProfile">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithNetworkProfile:")]
 		NativeHandle Constructor (CWNetworkProfile networkProfile);
 

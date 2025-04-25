@@ -19,24 +19,14 @@ using Security;
 using sec_protocol_metadata_t = System.IntPtr;
 using dispatch_queue_t = System.IntPtr;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace Security {
-#if NET
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-#endif
 	public class SecProtocolMetadata : NativeObject {
-#if !NET
-		internal SecProtocolMetadata (NativeHandle handle) : base (handle, false) { }
-#endif
-
 		// This type is only ever surfaced in response to callbacks in TLS/Network and documented as read-only
 		// if this ever changes, make this public[tv
 		[Preserve (Conditional = true)]
@@ -59,23 +49,17 @@ namespace Security {
 		///         <remarks>To be added.</remarks>
 		public DispatchData? PeerPublicKey => CreateDispatchData (sec_protocol_metadata_copy_peer_public_key (GetCheckedHandle ()));
 
-#if NET
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
-		[ObsoletedOSPlatform ("macos10.15", "Use 'NegotiatedTlsProtocolVersion' instead.")]
+		[ObsoletedOSPlatform ("maccatalyst", "Use 'NegotiatedTlsProtocolVersion' instead.")]
+		[ObsoletedOSPlatform ("macos", "Use 'NegotiatedTlsProtocolVersion' instead.")]
 		[ObsoletedOSPlatform ("tvos13.0", "Use 'NegotiatedTlsProtocolVersion' instead.")]
 		[ObsoletedOSPlatform ("ios13.0", "Use 'NegotiatedTlsProtocolVersion' instead.")]
-#else
-		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use 'NegotiatedTlsProtocolVersion' instead.")]
-		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'NegotiatedTlsProtocolVersion' instead.")]
-		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use 'NegotiatedTlsProtocolVersion' instead.")]
-#endif
 		[DllImport (Constants.SecurityLibrary)]
 		extern static SslProtocol sec_protocol_metadata_get_negotiated_protocol_version (IntPtr handle);
 
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -83,76 +67,37 @@ namespace Security {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
-		[ObsoletedOSPlatform ("macos10.15", "Use 'NegotiatedTlsProtocolVersion' instead.")]
+		[ObsoletedOSPlatform ("maccatalyst", "Use 'NegotiatedTlsProtocolVersion' instead.")]
+		[ObsoletedOSPlatform ("macos", "Use 'NegotiatedTlsProtocolVersion' instead.")]
 		[ObsoletedOSPlatform ("tvos13.0", "Use 'NegotiatedTlsProtocolVersion' instead.")]
 		[ObsoletedOSPlatform ("ios13.0", "Use 'NegotiatedTlsProtocolVersion' instead.")]
-#else
-		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use 'NegotiatedTlsProtocolVersion' instead.")]
-		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'NegotiatedTlsProtocolVersion' instead.")]
-		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use 'NegotiatedTlsProtocolVersion' instead.")]
-#endif
 		public SslProtocol NegotiatedProtocolVersion => sec_protocol_metadata_get_negotiated_protocol_version (GetCheckedHandle ());
 
-#if NET
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (13, 0)]
-		[iOS (13, 0)]
-#endif
 		[DllImport (Constants.SecurityLibrary)]
 		static extern TlsProtocolVersion sec_protocol_metadata_get_negotiated_tls_protocol_version (IntPtr handle);
 
-#if NET
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (13, 0)]
-		[iOS (13, 0)]
-#endif
 		public TlsProtocolVersion NegotiatedTlsProtocolVersion => sec_protocol_metadata_get_negotiated_tls_protocol_version (GetCheckedHandle ());
 
-#if NET
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (13, 0)]
-		[iOS (13, 0)]
-#endif
 		[DllImport (Constants.SecurityLibrary)]
 		static extern TlsCipherSuite sec_protocol_metadata_get_negotiated_tls_ciphersuite (IntPtr handle);
 
-#if NET
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (13, 0)]
-		[iOS (13, 0)]
-#endif
 		public TlsCipherSuite NegotiatedTlsCipherSuite => sec_protocol_metadata_get_negotiated_tls_ciphersuite (GetCheckedHandle ());
-
-#if !NET
-		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'NegotiatedTlsCipherSuite' instead.")]
-		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use 'NegotiatedTlsCipherSuite' instead.")]
-		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use 'NegotiatedTlsCipherSuite' instead.")]
-		[DllImport (Constants.SecurityLibrary)]
-		extern static SslCipherSuite sec_protocol_metadata_get_negotiated_ciphersuite (IntPtr handle);
-#endif
-
-#if !NET
-		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'NegotiatedTlsCipherSuite' instead.")]
-		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use 'NegotiatedTlsCipherSuite' instead.")]
-		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use 'NegotiatedTlsCipherSuite' instead.")]
-		public SslCipherSuite NegotiatedCipherSuite => sec_protocol_metadata_get_negotiated_ciphersuite (GetCheckedHandle ());
-#endif
 
 		[DllImport (Constants.SecurityLibrary)]
 		extern static byte sec_protocol_metadata_get_early_data_accepted (IntPtr handle);
@@ -202,14 +147,7 @@ namespace Security {
 			return result;
 		}
 
-#if !NET
-		delegate void sec_protocol_metadata_access_distinguished_names_handler_t (IntPtr block, IntPtr dispatchData);
-		static sec_protocol_metadata_access_distinguished_names_handler_t static_DistinguishedNamesForPeer = TrampolineDistinguishedNamesForPeer;
-
-		[MonoPInvokeCallback (typeof (sec_protocol_metadata_access_distinguished_names_handler_t))]
-#else
 		[UnmanagedCallersOnly]
-#endif
 		static void TrampolineDistinguishedNamesForPeer (IntPtr block, IntPtr data)
 		{
 			var del = BlockLiteral.GetTarget<Action<DispatchData>> (block);
@@ -232,26 +170,14 @@ namespace Security {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (callback));
 
 			unsafe {
-#if NET
 				delegate* unmanaged<IntPtr, IntPtr, void> trampoline = &TrampolineDistinguishedNamesForPeer;
 				using var block = new BlockLiteral (trampoline, callback, typeof (SecProtocolMetadata), nameof (TrampolineDistinguishedNamesForPeer));
-#else
-				using var block = new BlockLiteral ();
-				block.SetupBlockUnsafe (static_DistinguishedNamesForPeer, callback);
-#endif
 				if (sec_protocol_metadata_access_distinguished_names (GetCheckedHandle (), &block) == 0)
 					throw new InvalidOperationException ("Distinguished names are not accessible.");
 			}
 		}
 
-#if !NET
-		delegate void sec_protocol_metadata_access_ocsp_response_handler_t (IntPtr block, IntPtr dispatchData);
-		static sec_protocol_metadata_access_ocsp_response_handler_t static_OcspReposeForPeer = TrampolineOcspReposeForPeer;
-
-		[MonoPInvokeCallback (typeof (sec_protocol_metadata_access_ocsp_response_handler_t))]
-#else
 		[UnmanagedCallersOnly]
-#endif
 		static void TrampolineOcspReposeForPeer (IntPtr block, IntPtr data)
 		{
 			var del = BlockLiteral.GetTarget<Action<DispatchData>> (block);
@@ -274,26 +200,14 @@ namespace Security {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (callback));
 
 			unsafe {
-#if NET
 				delegate* unmanaged<IntPtr, IntPtr, void> trampoline = &TrampolineOcspReposeForPeer;
 				using var block = new BlockLiteral (trampoline, callback, typeof (SecProtocolMetadata), nameof (TrampolineOcspReposeForPeer));
-#else
-				using var block = new BlockLiteral ();
-				block.SetupBlockUnsafe (static_OcspReposeForPeer, callback);
-#endif
 				if (sec_protocol_metadata_access_ocsp_response (GetCheckedHandle (), &block) == 0)
 					throw new InvalidOperationException ("The OSCP response is not accessible.");
 			}
 		}
 
-#if !NET
-		delegate void sec_protocol_metadata_access_peer_certificate_chain_handler_t (IntPtr block, IntPtr certificate);
-		static sec_protocol_metadata_access_peer_certificate_chain_handler_t static_CertificateChainForPeer = TrampolineCertificateChainForPeer;
-
-		[MonoPInvokeCallback (typeof (sec_protocol_metadata_access_peer_certificate_chain_handler_t))]
-#else
 		[UnmanagedCallersOnly]
-#endif
 		static void TrampolineCertificateChainForPeer (IntPtr block, IntPtr certificate)
 		{
 			var del = BlockLiteral.GetTarget<Action<SecCertificate>> (block);
@@ -316,26 +230,14 @@ namespace Security {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (callback));
 
 			unsafe {
-#if NET
 				delegate* unmanaged<IntPtr, IntPtr, void> trampoline = &TrampolineCertificateChainForPeer;
 				using var block = new BlockLiteral (trampoline, callback, typeof (SecProtocolMetadata), nameof (TrampolineCertificateChainForPeer));
-#else
-				using var block = new BlockLiteral ();
-				block.SetupBlockUnsafe (static_CertificateChainForPeer, callback);
-#endif
 				if (sec_protocol_metadata_access_peer_certificate_chain (GetCheckedHandle (), &block) == 0)
 					throw new InvalidOperationException ("The peer certificates are not accessible.");
 			}
 		}
 
-#if !NET
-		delegate void sec_protocol_metadata_access_supported_signature_algorithms_handler_t (IntPtr block, ushort signatureAlgorithm);
-		static sec_protocol_metadata_access_supported_signature_algorithms_handler_t static_SignatureAlgorithmsForPeer = TrampolineSignatureAlgorithmsForPeer;
-
-		[MonoPInvokeCallback (typeof (sec_protocol_metadata_access_supported_signature_algorithms_handler_t))]
-#else
 		[UnmanagedCallersOnly]
-#endif
 		static void TrampolineSignatureAlgorithmsForPeer (IntPtr block, ushort signatureAlgorithm)
 		{
 			var del = BlockLiteral.GetTarget<Action<ushort>> (block);
@@ -357,13 +259,8 @@ namespace Security {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (callback));
 
 			unsafe {
-#if NET
 				delegate* unmanaged<IntPtr, ushort, void> trampoline = &TrampolineSignatureAlgorithmsForPeer;
 				using var block = new BlockLiteral (trampoline, callback, typeof (SecProtocolMetadata), nameof (TrampolineSignatureAlgorithmsForPeer));
-#else
-				using var block = new BlockLiteral ();
-				block.SetupBlockUnsafe (static_SignatureAlgorithmsForPeer, callback);
-#endif
 				if (sec_protocol_metadata_access_supported_signature_algorithms (GetCheckedHandle (), &block) != 0)
 					throw new InvalidOperationException ("The supported signature list is not accessible.");
 			}
@@ -401,51 +298,29 @@ namespace Security {
 			return handle == IntPtr.Zero ? null : new DispatchData (handle, owns: true);
 		}
 
-#if NET
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (13, 0)]
-		[iOS (13, 0)]
-#endif
 		[DllImport (Constants.SecurityLibrary)]
 		static extern /* const char* */ IntPtr sec_protocol_metadata_get_server_name (IntPtr /* sec_protocol_metadata_t */ handle);
 
-#if NET
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (13, 0)]
-		[iOS (13, 0)]
-#endif
 		public string? ServerName => Marshal.PtrToStringAnsi (sec_protocol_metadata_get_server_name (GetCheckedHandle ()));
 
-#if NET
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (13, 0)]
-		[iOS (13, 0)]
-#endif
 		[DllImport (Constants.SecurityLibrary)]
 		unsafe static extern byte sec_protocol_metadata_access_pre_shared_keys (IntPtr /* sec_protocol_metadata_t */ handle, BlockLiteral* block);
 
 		public delegate void SecAccessPreSharedKeysHandler (DispatchData psk, DispatchData pskIdentity);
 
-#if !NET
-		internal delegate void AccessPreSharedKeysHandler (IntPtr block, IntPtr dd_psk, IntPtr dd_psk_identity);
-		static readonly AccessPreSharedKeysHandler presharedkeys = TrampolineAccessPreSharedKeys;
-
-		[MonoPInvokeCallback (typeof (AccessPreSharedKeysHandler))]
-#else
 		[UnmanagedCallersOnly]
-#endif
 		static void TrampolineAccessPreSharedKeys (IntPtr block, IntPtr psk, IntPtr psk_identity)
 		{
 			var del = BlockLiteral.GetTarget<Action<DispatchData?, DispatchData?>> (block);
@@ -453,15 +328,10 @@ namespace Security {
 				del (CreateDispatchData (psk), CreateDispatchData (psk_identity));
 		}
 
-#if NET
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (13, 0)]
-		[iOS (13, 0)]
-#endif
 		// no [Async] as it can be called multiple times
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public bool AccessPreSharedKeys (SecAccessPreSharedKeysHandler handler)
@@ -470,13 +340,8 @@ namespace Security {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (handler));
 
 			unsafe {
-#if NET
 				delegate* unmanaged<IntPtr, IntPtr, IntPtr, void> trampoline = &TrampolineAccessPreSharedKeys;
 				using var block = new BlockLiteral (trampoline, handler, typeof (SecProtocolMetadata), nameof (TrampolineAccessPreSharedKeys));
-#else
-				using var block = new BlockLiteral ();
-				block.SetupBlockUnsafe (presharedkeys, handler);
-#endif
 				return sec_protocol_metadata_access_pre_shared_keys (GetCheckedHandle (), &block) != 0;
 			}
 		}

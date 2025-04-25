@@ -314,6 +314,12 @@ namespace AddressBookUI {
 				h (this, e);
 		}
 
+		/// <summary>Prior to iOS 8, this event handler was called when the user selected a contact.</summary>
+		/// <remarks>
+		///           <para>In iOS 8 and above, in addition to subscribing to this event, also subscribe to <see cref="E:AddressBookUI.ABPeoplePickerNavigationController.SelectPerson2" />.</para>
+		///           <para>Set <see cref="P:AddressBookUI.ABPeoplePickerSelectPersonEventArgs.Continue" /> to <see langword="true" /> to display the contact and dismiss the picker.</para>
+		///           <para>Set <see cref="P:AddressBookUI.ABPeoplePickerSelectPersonEventArgs.Continue" /> to <see langword="false" /> to do nothing.</para>
+		///         </remarks>
 		public event EventHandler<ABPeoplePickerSelectPersonEventArgs> SelectPerson {
 			add {
 				EnsureEventDelegate<InternalABPeoplePickerNavigationControllerDelegate> ().selectPerson += value;
@@ -323,6 +329,8 @@ namespace AddressBookUI {
 			}
 		}
 
+		/// <summary>In iOS8 and above, this event handler is called after a person has been selected by the user.</summary>
+		/// <remarks>To be added.</remarks>
 		public event EventHandler<ABPeoplePickerSelectPerson2EventArgs> SelectPerson2 {
 			add {
 				EnsureEventDelegate<InternalABPeoplePickerNavigationControllerDelegate> ().selectPerson2 += value;
@@ -332,6 +340,11 @@ namespace AddressBookUI {
 			}
 		}
 
+		/// <summary>Prior to iOS 8, this event handler was called when the user selected one of the person’s properties.</summary>
+		/// <remarks>
+		///           <para>In addition to subscribing to this event, also subscribe to <see cref="E:AddressBookUI.ABPeoplePickerNavigationController.PerformAction2" /> in iOS 8 and above.
+		///           </para>
+		///         </remarks>
 		public event EventHandler<ABPeoplePickerPerformActionEventArgs> PerformAction {
 			add {
 				EnsureEventDelegate<InternalABPeoplePickerNavigationControllerDelegate> ().performAction += value;
@@ -341,6 +354,8 @@ namespace AddressBookUI {
 			}
 		}
 
+		/// <summary>In iOS8 and above, this event handler will be called after a person has been selected by the user.</summary>
+		/// <remarks>To be added.</remarks>
 		public event EventHandler<ABPeoplePickerPerformAction2EventArgs> PerformAction2 {
 			add {
 				EnsureEventDelegate<InternalABPeoplePickerNavigationControllerDelegate> ().performAction2 += value;
@@ -350,6 +365,12 @@ namespace AddressBookUI {
 			}
 		}
 
+		/// <summary>iOS will call event handler when the user taps Cancel.</summary>
+		/// <remarks>
+		///           <para>If the developer does not subscribe to this event, the people picker will dismiss itself when the user taps cancel.</para>
+		///           <para />
+		///           <para>Note: Prior to iOS 8, the event handler was responsible for dismissing the people picker.</para>
+		///         </remarks>
 		public event EventHandler Cancelled {
 			add {
 				EnsureEventDelegate<InternalABPeoplePickerNavigationControllerDelegate> ().cancelled += value;

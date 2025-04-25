@@ -13,10 +13,6 @@ using Foundation;
 
 #nullable enable
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace ObjCRuntime {
 	//
 	// The DisposableObject class is intended to be a base class for many native data
@@ -96,7 +92,6 @@ namespace ObjCRuntime {
 			return h;
 		}
 
-#if NET
 		public override int GetHashCode ()
 		{
 			return handle.GetHashCode ();
@@ -127,6 +122,5 @@ namespace ObjCRuntime {
 				return true;
 			return a.Handle != b.Handle;
 		}
-#endif
 	}
 }

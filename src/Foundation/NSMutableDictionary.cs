@@ -85,6 +85,12 @@ namespace Foundation {
 				return FromObjectsAndKeysInternal (no, nk);
 		}
 
+		/// <param name="objects">To be added.</param>
+		/// <param name="keys">To be added.</param>
+		/// <param name="count">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		public static NSMutableDictionary FromObjectsAndKeys (NSObject [] objects, NSObject [] keys, nint count)
 		{
 			if (objects is null)
@@ -101,6 +107,12 @@ namespace Foundation {
 				return FromObjectsAndKeysInternal (no, nk);
 		}
 
+		/// <param name="objects">To be added.</param>
+		/// <param name="keys">To be added.</param>
+		/// <param name="count">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		public static NSMutableDictionary FromObjectsAndKeys (object [] objects, object [] keys, nint count)
 		{
 			if (objects is null)

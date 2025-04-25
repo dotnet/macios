@@ -103,10 +103,8 @@ namespace Registrar {
 
 #if MMP || MTOUCH || BUNDLER
 		static string NFloatTypeName { get => Driver.IsDotNet ? "System.Runtime.InteropServices.NFloat" : "System.nfloat"; }
-#elif NET
-		const string NFloatTypeName = "System.Runtime.InteropServices.NFloat";
 #else
-		const string NFloatTypeName = "System.nfloat";
+		const string NFloatTypeName = "System.Runtime.InteropServices.NFloat";
 #endif
 
 		Dictionary<TAssembly, object> assemblies = new Dictionary<TAssembly, object> (); // Use Dictionary instead of HashSet to avoid pulling in System.Core.dll.
@@ -1359,29 +1357,13 @@ namespace Registrar {
 			}
 		}
 #elif MONOMAC
-#if NET
 		internal const string AssemblyName = "Microsoft.macOS";
-#else
-		internal const string AssemblyName = "Xamarin.Mac";
-#endif
 #elif TVOS
-#if NET
 		internal const string AssemblyName = "Microsoft.tvOS";
-#else
-		internal const string AssemblyName = "Xamarin.TVOS";
-#endif
 #elif __MACCATALYST__
-#if NET
 		internal const string AssemblyName = "Microsoft.MacCatalyst";
-#else
-		internal const string AssemblyName = "Xamarin.MacCatalyst";
-#endif
 #elif IOS
-#if NET
 		internal const string AssemblyName = "Microsoft.iOS";
-#else
-		internal const string AssemblyName = "Xamarin.iOS";
-#endif
 #else
 #error Unknown platform
 #endif

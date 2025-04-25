@@ -25,13 +25,17 @@ static partial class BindingSyntaxFactory {
 		// based on the return type of the delegate we build a statement that will return the expected value
 		return typeInfo.Delegate.ReturnType switch {
 
-			//  NSArray.FromNSObjects(auxVariable).GetHandle ()
+			//  Runtime.RetainAndAutoreleaseNSObject (NSArray.FromNSObjects(auxVariable))
 			{ IsArray: true, ArrayElementTypeIsWrapped: true }
-				=> GetHandle (NSArrayFromNSObjects ([Argument (IdentifierName (auxVariableName))])),
-
-			// auxVariable.GetHandle ()
+				=> RetainAndAutoreleaseNSObject ([Argument(NSArrayFromNSObjects ([Argument (IdentifierName (auxVariableName))]))]),
+			
+			// Runtime.RetainAndAutoreleaseNativeObject (auxVariable)
+			{ IsArray: false, IsINativeObject: true, IsNSObject: false, IsInterface: false}
+				=> RetainAndAutoreleaseNativeObject ([Argument(IdentifierName (auxVariableName))]),
+			
+			// Runtime.RetainAndAutoreleaseNSObject (auxVariable)
 			{ IsArray: false, IsWrapped: true }
-				=> GetHandle (IdentifierName(auxVariableName)),
+				=> RetainAndAutoreleaseNSObject ([Argument (IdentifierName(auxVariableName))]),
 			
 			//  NSString.CreateNative (auxVariable, true);
 			{ SpecialType: SpecialType.System_String }
@@ -41,15 +45,12 @@ static partial class BindingSyntaxFactory {
 			{ IsNativeEnum: true }
 				=> CastToNative (auxVariableName, typeInfo.Delegate.ReturnType),
 			
-			// auxVariable.GetHandle ()
-			{ IsINativeObject: true }
-				=> GetHandle (IdentifierName (auxVariableName)),
-			
 			// auxVariable ? (byte) 1 : (byte) 0; 
 			{ SpecialType: SpecialType.System_Boolean } 
 				=> CastToByte (auxVariableName, typeInfo.Delegate.ReturnType),
 			
-			_ => null
+			// default case, return the value as is
+			_ => IdentifierName (auxVariableName),
 
 		};
 #pragma warning restore format

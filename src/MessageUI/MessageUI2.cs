@@ -56,6 +56,8 @@ namespace MessageUI {
 			return (Mono_MFMailComposeViewControllerDelegate) del;
 		}
 
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		public event EventHandler<MFComposeResultEventArgs> Finished {
 			add {
 				EnsureDelegate ().cbFinished += value;
@@ -120,6 +122,8 @@ namespace MessageUI {
 			return (Mono_MFMessageComposeViewControllerDelegate) del;
 		}
 
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		public event EventHandler<MFMessageComposeResultEventArgs> Finished {
 			add {
 				EnsureDelegate ().cbFinished += value;

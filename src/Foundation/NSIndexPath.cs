@@ -17,6 +17,14 @@ using ObjCRuntime;
 namespace Foundation {
 
 	public partial class NSIndexPath {
+		/// <param name="indexes">
+		/// Array of indexes to make the index-path.
+		///   	   </param>
+		/// <summary>Creates an <see cref="T:Foundation.NSIndexPath" /> with the indexes specified in the provided array of native integers.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>
+		///           <para />
+		///         </remarks>
 		public unsafe static NSIndexPath Create (params nint [] indexes)
 		{
 			if (indexes is null)
@@ -26,6 +34,15 @@ namespace Foundation {
 				return _FromIndex ((IntPtr) ptr, indexes.Length);
 		}
 
+		/// <param name="indexes">
+		/// Array of indexes to make the index-path.
+		///   	   </param>
+		/// <summary>Creates an <see cref="T:Foundation.NSIndexPath" /> with the indexes specified in the provided array of native unsigned integers.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>
+		///           <para>
+		///           </para>
+		///         </remarks>
 		public unsafe static NSIndexPath Create (params nuint [] indexes)
 		{
 			if (indexes is null)

@@ -387,6 +387,11 @@ namespace Foundation {
 			}
 		}
 
+		/// <param name="readStream">To be added.</param>
+		/// <param name="writeStream">To be added.</param>
+		/// <param name="bufferSize">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		public static void CreateBoundPair (out NSInputStream readStream, out NSOutputStream writeStream, nint bufferSize)
 		{
 			IntPtr read, write;

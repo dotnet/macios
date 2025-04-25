@@ -104,9 +104,13 @@ namespace LinkAnyTest {
 
 		void TimedWait (Task task)
 		{
-			var rv = task.Wait (TimeSpan.FromMinutes (1));
-			if (rv)
-				return;
+			try {
+				var rv = task.Wait (TimeSpan.FromMinutes (1));
+				if (rv)
+					return;
+			} catch (AggregateException ae) {
+				throw ae.InnerExceptions [0];
+			}
 
 			TestRuntime.IgnoreInCI ("This test times out randomly in CI due to bad network.");
 			Assert.Fail ("Test timed out");

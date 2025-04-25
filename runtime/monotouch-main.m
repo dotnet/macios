@@ -185,7 +185,7 @@ inline void debug_launch_time_print (const char *msg)
  * in release builds.
  */
 
-#if defined (__arm__) || defined(__aarch64__)
+#if defined(__aarch64__)
 #if !defined (CORECLR_RUNTIME)
 extern void mono_gc_init_finalizer_thread (void);
 #endif
@@ -201,7 +201,7 @@ extern void mono_gc_init_finalizer_thread (void);
 - (id) init
 {
 	if (self = [super init]) {
-#if defined (__arm__) || defined(__aarch64__)
+#if defined(__aarch64__)
 		[self start];
 #endif
 #if !TARGET_OS_OSX
@@ -214,7 +214,7 @@ extern void mono_gc_init_finalizer_thread (void);
 
 - (void) start
 {
-#if defined (__arm__) || defined(__aarch64__)
+#if defined(__aarch64__)
 #if !defined (CORECLR_RUNTIME)
 	mono_gc_init_finalizer_thread ();
 #endif

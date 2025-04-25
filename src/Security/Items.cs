@@ -44,10 +44,6 @@ using ObjCRuntime;
 using UIKit;
 #endif
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace Security {
 
 	/// <summary>The kind of SecRecord.</summary>
@@ -80,35 +76,29 @@ namespace Security {
 		WhenUnlocked,
 		/// <summary>The data is only available after the first time the device has been unlocked after booting.</summary>
 		AfterFirstUnlock,
-#if NET
 		/// <summary>Always available.</summary>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-		[ObsoletedOSPlatform ("macos10.14", "Use 'AfterFirstUnlock' or a better suited option instead.")]
-		[ObsoletedOSPlatform ("ios12.0", "Use 'AfterFirstUnlock' or a better suited option instead.")]
-#else
-		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'AfterFirstUnlock' or a better suited option instead.")]
-		[Deprecated (PlatformName.iOS, 12, 0, message: "Use 'AfterFirstUnlock' or a better suited option instead.")]
-#endif
+		[ObsoletedOSPlatform ("macos", "Use 'AfterFirstUnlock' or a better suited option instead.")]
+		[ObsoletedOSPlatform ("ios", "Use 'AfterFirstUnlock' or a better suited option instead.")]
+		[ObsoletedOSPlatform ("tvos", "Use 'AfterFirstUnlock' or a better suited option instead.")]
+		[ObsoletedOSPlatform ("maccatalyst", "Use 'AfterFirstUnlock' or a better suited option instead.")]
 		Always,
 		/// <summary>Limits access to the item to this device and the device being unlocked.</summary>
 		WhenUnlockedThisDeviceOnly,
 		/// <summary>The data is only available after the first time the device has been unlocked after booting.</summary>
 		AfterFirstUnlockThisDeviceOnly,
-#if NET
 		/// <summary>Always available.</summary>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-		[ObsoletedOSPlatform ("macos10.14", "Use 'AfterFirstUnlockThisDeviceOnly' or a better suited option instead.")]
-		[ObsoletedOSPlatform ("ios12.0", "Use 'AfterFirstUnlockThisDeviceOnly' or a better suited option instead.")]
-#else
-		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'AfterFirstUnlockThisDeviceOnly' or a better suited option instead.")]
-		[Deprecated (PlatformName.iOS, 12, 0, message: "Use 'AfterFirstUnlockThisDeviceOnly' or a better suited option instead.")]
-#endif
+		[ObsoletedOSPlatform ("macos", "Use 'AfterFirstUnlockThisDeviceOnly' or a better suited option instead.")]
+		[ObsoletedOSPlatform ("ios", "Use 'AfterFirstUnlockThisDeviceOnly' or a better suited option instead.")]
+		[ObsoletedOSPlatform ("tvos", "Use 'AfterFirstUnlockThisDeviceOnly' or a better suited option instead.")]
+		[ObsoletedOSPlatform ("maccatalyst", "Use 'AfterFirstUnlockThisDeviceOnly' or a better suited option instead.")]
 		AlwaysThisDeviceOnly,
 		/// <summary>Limits access to the item to both this device and requires a passcode to be set and the data is only available if the device is currently unlocked.</summary>
 		WhenPasscodeSetThisDeviceOnly,
@@ -209,13 +199,11 @@ namespace Security {
 		Default = 1953261156,
 	}
 
-#if NET
 	/// <include file="../../docs/api/Security/SecKeyChain.xml" path="/Documentation/Docs[@DocId='T:Security.SecKeyChain']/*" />
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class SecKeyChain : INativeObject {
 
 		internal SecKeyChain (NativeHandle handle)
@@ -455,11 +443,11 @@ namespace Security {
 
 		}
 #if MONOMAC
-#if NET
-		[ObsoletedOSPlatform ("macos10.10")]
-#else
-		[Deprecated (PlatformName.MacOSX, 10,10)]
-#endif
+		[SupportedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("macos")]
+		[UnsupportedOSPlatform ("ios")]
+		[UnsupportedOSPlatform ("tvos")]
+		[UnsupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.SecurityLibrary)]
 		extern static SecStatusCode SecKeychainAddGenericPassword (
 			IntPtr keychain,
@@ -471,11 +459,11 @@ namespace Security {
 			byte [] passwordData,
 			IntPtr itemRef);
 
-#if NET
-		[ObsoletedOSPlatform ("macos10.10")]
-#else
-		[Deprecated (PlatformName.MacOSX, 10,10)]
-#endif
+		[SupportedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("macos")]
+		[UnsupportedOSPlatform ("ios")]
+		[UnsupportedOSPlatform ("tvos")]
+		[UnsupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.SecurityLibrary)]
 		unsafe extern static SecStatusCode SecKeychainFindGenericPassword (
 			IntPtr keychainOrArray,
@@ -487,11 +475,11 @@ namespace Security {
 			IntPtr* passwordData,
 			IntPtr itemRef);
 
-#if NET
-		[ObsoletedOSPlatform ("macos10.10")]
-#else
-		[Deprecated (PlatformName.MacOSX, 10,10)]
-#endif
+		[SupportedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("macos")]
+		[UnsupportedOSPlatform ("ios")]
+		[UnsupportedOSPlatform ("tvos")]
+		[UnsupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.SecurityLibrary)]
 		extern static SecStatusCode SecKeychainAddInternetPassword (
 			IntPtr keychain,
@@ -510,11 +498,11 @@ namespace Security {
 			byte [] passwordData,
 			IntPtr itemRef);
 
-#if NET
-		[ObsoletedOSPlatform ("macos10.10")]
-#else
-		[Deprecated (PlatformName.MacOSX, 10,10)]
-#endif
+		[SupportedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("macos")]
+		[UnsupportedOSPlatform ("ios")]
+		[UnsupportedOSPlatform ("tvos")]
+		[UnsupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.SecurityLibrary)]
 		unsafe extern static SecStatusCode SecKeychainFindInternetPassword (
 			IntPtr keychain,
@@ -533,11 +521,11 @@ namespace Security {
 			IntPtr* passwordData,
 			IntPtr itemRef);
 
-#if NET
-		[ObsoletedOSPlatform ("macos10.10")]
-#else
-		[Deprecated (PlatformName.MacOSX, 10,10)]
-#endif
+		[SupportedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("macos")]
+		[UnsupportedOSPlatform ("ios")]
+		[UnsupportedOSPlatform ("tvos")]
+		[UnsupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.SecurityLibrary)]
 		extern static SecStatusCode SecKeychainItemFreeContent (IntPtr attrList, IntPtr data);
 
@@ -552,6 +540,11 @@ namespace Security {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
+		[SupportedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("macos")]
+		[UnsupportedOSPlatform ("ios")]
+		[UnsupportedOSPlatform ("tvos")]
+		[UnsupportedOSPlatform ("maccatalyst")]
 		public static SecStatusCode AddInternetPassword (
 			string serverName,
 			string accountName,
@@ -609,6 +602,11 @@ namespace Security {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
+		[SupportedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("macos")]
+		[UnsupportedOSPlatform ("ios")]
+		[UnsupportedOSPlatform ("tvos")]
+		[UnsupportedOSPlatform ("maccatalyst")]
 		public static SecStatusCode FindInternetPassword (
 			string serverName,
 			string accountName,
@@ -690,6 +688,11 @@ namespace Security {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
+		[SupportedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("macos")]
+		[UnsupportedOSPlatform ("ios")]
+		[UnsupportedOSPlatform ("tvos")]
+		[UnsupportedOSPlatform ("maccatalyst")]
 		public static SecStatusCode AddGenericPassword (string serviceName, string accountName, byte [] password)
 		{
 			byte []? serviceNameBytes = null;
@@ -719,6 +722,11 @@ namespace Security {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
+		[SupportedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("macos")]
+		[UnsupportedOSPlatform ("ios")]
+		[UnsupportedOSPlatform ("tvos")]
+		[UnsupportedOSPlatform ("maccatalyst")]
 		public static SecStatusCode FindGenericPassword (string serviceName, string accountName, out byte []? password)
 		{
 			password = null;
@@ -875,7 +883,6 @@ namespace Security {
 		}
 	}
 
-#if NET
 	/// <summary>Tracks a set of properties from the keychain.</summary>
 	///     <remarks>
 	///       <para>
@@ -903,7 +910,6 @@ namespace Security {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class SecRecord : IDisposable {
 		// Fix <= iOS 6 Behaviour - Desk #83099
 		// NSCFDictionary: mutating method sent to immutable object
@@ -1144,7 +1150,6 @@ namespace Security {
 		}
 
 #if !MONOMAC
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -1152,7 +1157,6 @@ namespace Security {
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("macos")]
-#endif
 		public string? SyncViewHint {
 			get {
 				return FetchString (SecAttributeKey.SyncViewHint);
@@ -1162,7 +1166,6 @@ namespace Security {
 			}
 		}
 
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -1170,7 +1173,6 @@ namespace Security {
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public SecTokenID TokenID {
 			get {
 				return SecTokenIDExtensions.GetValue (Fetch<NSString> (SecKeyGenerationAttributeKeys.TokenIDKey.GetHandle ())!);
@@ -1303,7 +1305,7 @@ namespace Security {
 			}
 		}
 
-		/// <summary>Accout name.</summary>
+		/// <summary>Account name.</summary>
 		///         <value />
 		///         <remarks>Used by GenericPassword and InternetPassword kinds.</remarks>
 		public string? Account {
@@ -1335,6 +1337,13 @@ namespace Security {
 		///           <para />
 		///         </value>
 		///         <remarks>Set this value to a string that will be displayed to the user when the authentication takes place for the item to give the user some context for the request.</remarks>
+		[SupportedOSPlatform ("ios")]
+		[UnsupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[ObsoletedOSPlatform ("ios14.0", "Use 'LAContext.InteractionNotAllowed' instead.")]
+		[ObsoletedOSPlatform ("tvos14.0", "Use 'LAContext.InteractionNotAllowed' instead.")]
+		[ObsoletedOSPlatform ("maccatalyst", "Use 'LAContext.InteractionNotAllowed' instead.")]
 		public string? UseOperationPrompt {
 			get {
 				return FetchString (SecItem.UseOperationPrompt);
@@ -1344,7 +1353,6 @@ namespace Security {
 			}
 		}
 
-#if NET
 		/// <summary>Developers should not use this deprecated property. Developers should use AuthenticationUI property</summary>
 		///         <value>
 		///           <para />
@@ -1354,10 +1362,9 @@ namespace Security {
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-		[ObsoletedOSPlatform ("ios9.0", "Use 'AuthenticationUI' property instead.")]
-#else
-		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'AuthenticationUI' property instead.")]
-#endif
+		[ObsoletedOSPlatform ("tvos", "Use 'AuthenticationUI' property instead.")]
+		[ObsoletedOSPlatform ("maccatalyst", "Use 'AuthenticationUI' property instead.")]
+		[ObsoletedOSPlatform ("ios", "Use 'AuthenticationUI' property instead.")]
 		public bool UseNoAuthenticationUI {
 			get {
 				return Fetch (SecItem.UseNoAuthenticationUI) == CFBoolean.TrueHandle;
@@ -1367,7 +1374,6 @@ namespace Security {
 			}
 		}
 #endif
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -1375,7 +1381,6 @@ namespace Security {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public SecAuthenticationUI AuthenticationUI {
 			get {
 				var s = Fetch<NSString> (SecItem.UseAuthenticationUI);
@@ -1387,7 +1392,6 @@ namespace Security {
 		}
 
 #if !TVOS
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -1395,7 +1399,6 @@ namespace Security {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]
-#endif
 		public LocalAuthentication.LAContext? AuthenticationContext {
 			get {
 				return Fetch<LocalAuthentication.LAContext> (SecItem.UseAuthenticationContext);
@@ -1831,7 +1834,6 @@ namespace Security {
 			}
 		}
 
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -1839,7 +1841,6 @@ namespace Security {
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public bool PersistentReference {
 			get {
 				return Fetch (SecAttributeKey.PersistentReference) == CFBoolean.TrueHandle;
@@ -1849,15 +1850,10 @@ namespace Security {
 			}
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[iOS (13, 0)]
-		[TV (13, 0)]
-#endif
 		public bool UseDataProtectionKeychain {
 			get {
 				return Fetch (SecItem.UseDataProtectionKeychain) == CFBoolean.TrueHandle;
@@ -2091,14 +2087,18 @@ namespace Security {
 				return WhenUnlocked;
 			case SecAccessible.AfterFirstUnlock:
 				return AfterFirstUnlock;
+#pragma warning disable CA1422 // This call site is reachable on: 'ios' 12.2 and later, 'maccatalyst' 12.2 and later, 'macOS/OSX' 12.0 and later, 'tvos' 12.2 and later. 'SecAccessible.Always' is obsoleted on: 'ios' 12.0 and later (Use 'AfterFirstUnlock' or a better suited option instead.), 'maccatalyst' 12.0 and later (Use 'AfterFirstUnlock' or a better suited option instead.), 'macOS/OSX' 10.14 and later (Use 'AfterFirstUnlock' or a better suited option instead.).
 			case SecAccessible.Always:
 				return Always;
+#pragma warning restore CA1422
 			case SecAccessible.WhenUnlockedThisDeviceOnly:
 				return WhenUnlockedThisDeviceOnly;
 			case SecAccessible.AfterFirstUnlockThisDeviceOnly:
 				return AfterFirstUnlockThisDeviceOnly;
+#pragma warning disable CA1422 // This call site is reachable on: 'ios' 12.2 and later, 'maccatalyst' 12.2 and later, 'macOS/OSX' 12.0 and later, 'tvos' 12.2 and later. 'SecAccessible.AlwaysThisDeviceOnly' is obsoleted on: 'ios' 12.0 and later (Use 'AfterFirstUnlockThisDeviceOnly' or a better suited option instead.), 'maccatalyst' 12.0 and later (Use 'AfterFirstUnlockThisDeviceOnly' or a better suited option instead.), 'macOS/OSX' 10.14 and later (Use 'AfterFirstUnlockThisDeviceOnly' or a better suited option instead.).
 			case SecAccessible.AlwaysThisDeviceOnly:
 				return AlwaysThisDeviceOnly;
+#pragma warning restore CA1422
 			case SecAccessible.WhenPasscodeSetThisDeviceOnly:
 				return WhenPasscodeSetThisDeviceOnly;
 			default:
@@ -2116,14 +2116,18 @@ namespace Security {
 				return SecAccessible.WhenUnlocked;
 			if (CFType.Equal (handle, AfterFirstUnlock))
 				return SecAccessible.AfterFirstUnlock;
+#pragma warning disable CA1422 // This call site is reachable on: 'ios' 12.2 and later, 'maccatalyst' 12.2 and later, 'macOS/OSX' 12.0 and later, 'tvos' 12.2 and later. 'SecAccessible.Always' is obsoleted on: 'ios' 12.0 and later (Use 'AfterFirstUnlock' or a better suited option instead.), 'maccatalyst' 12.0 and later (Use 'AfterFirstUnlock' or a better suited option instead.), 'macOS/OSX' 10.14 and later (Use 'AfterFirstUnlock' or a better suited option instead.).
 			if (CFType.Equal (handle, Always))
 				return SecAccessible.Always;
+#pragma warning restore CA1422
 			if (CFType.Equal (handle, WhenUnlockedThisDeviceOnly))
 				return SecAccessible.WhenUnlockedThisDeviceOnly;
 			if (CFType.Equal (handle, AfterFirstUnlockThisDeviceOnly))
 				return SecAccessible.AfterFirstUnlockThisDeviceOnly;
+#pragma warning disable CA1422 // This call site is reachable on: 'ios' 12.2 and later, 'maccatalyst' 12.2 and later, 'macOS/OSX' 12.0 and later, 'tvos' 12.2 and later. 'SecAccessible.AlwaysThisDeviceOnly' is obsoleted on: 'ios' 12.0 and later (Use 'AfterFirstUnlockThisDeviceOnly' or a better suited option instead.), 'maccatalyst' 12.0 and later (Use 'AfterFirstUnlockThisDeviceOnly' or a better suited option instead.), 'macOS/OSX' 10.14 and later (Use 'AfterFirstUnlockThisDeviceOnly' or a better suited option instead.).
 			if (CFType.Equal (handle, AlwaysThisDeviceOnly))
 				return SecAccessible.AlwaysThisDeviceOnly;
+#pragma warning restore CA1422
 			if (CFType.Equal (handle, WhenUnlockedThisDeviceOnly))
 				return SecAccessible.WhenUnlockedThisDeviceOnly;
 			return SecAccessible.Invalid;
@@ -2288,14 +2292,12 @@ namespace Security {
 		}
 	}
 
-#if NET
 	/// <summary>An exception based on a <see cref="T:Security.SecStatusCode" />.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class SecurityException : Exception {
 		static string ToMessage (SecStatusCode code)
 		{
@@ -2329,7 +2331,6 @@ namespace Security {
 		// For caching, as we can't reverse it easily.
 		SecAccessControl? _secAccessControl;
 
-#if NET
 		/// <summary>Gets or sets the access control for the new key.</summary>
 		///         <value>The access control for the new key.</value>
 		///         <remarks>To be added.</remarks>
@@ -2337,7 +2338,6 @@ namespace Security {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public SecAccessControl AccessControl {
 			get {
 				return _secAccessControl!;
@@ -2376,7 +2376,6 @@ namespace Security {
 		// For caching, as we can't reverse it easily.
 		SecAccessControl? _secAccessControl;
 
-#if NET
 		/// <summary>Gets or sets the access control for the new key.</summary>
 		///         <value>The access control for the new key.</value>
 		///         <remarks>To be added.</remarks>
@@ -2384,7 +2383,6 @@ namespace Security {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public SecAccessControl AccessControl {
 			get {
 				return _secAccessControl!;
@@ -2398,7 +2396,6 @@ namespace Security {
 			}
 		}
 
-#if NET
 		/// <summary>Gets or sets the token ID.</summary>
 		///         <value>The token ID.</value>
 		///         <remarks>To be added.</remarks>
@@ -2406,7 +2403,6 @@ namespace Security {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public SecTokenID TokenID {
 			get {
 				return SecTokenIDExtensions.GetValue (GetNSStringValue (SecKeyGenerationAttributeKeys.TokenIDKey)!);

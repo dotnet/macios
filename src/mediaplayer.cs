@@ -620,7 +620,13 @@ namespace MediaPlayer {
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>To be added.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous RequestAuthorization operation.  The value of the TResult parameter is of type System.Action&lt;MediaPlayer.MPMediaLibraryAuthorizationStatus&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("requestAuthorization:")]
 		void RequestAuthorization (Action<MPMediaLibraryAuthorizationStatus> handler);
 
@@ -2027,6 +2033,9 @@ namespace MediaPlayer {
 		[Export ("keyspace")]
 		string Keyspace { get; }
 
+		/// <summary>The timed metadata.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Export ("value")]
 		NSObject Value { get; }
 
@@ -2207,7 +2216,14 @@ namespace MediaPlayer {
 		///         <summary>Puts the first item in the queue into the buffer and runs a handler after the item has been buffered.</summary>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Puts the first item in the queue into the buffer and runs a handler after the item has been buffered.</summary>
+			<returns>A task that represents the asynchronous PrepareToPlay operation</returns>
+			<remarks>
+			          <para copied="true">The PrepareToPlayAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("prepareToPlayWithCompletionHandler:")]
 		void PrepareToPlay (Action<NSError> completionHandler);
 

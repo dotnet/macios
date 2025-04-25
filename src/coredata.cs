@@ -1227,10 +1227,17 @@ namespace CoreData {
 		[Export ("sectionIndexTitles")]
 		string [] GetSectionIndexTitles ();
 #else
+		/// <param name="sectionName">To be added.</param>
+		/// <summary>Returns the section index titles for the specified section name.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("sectionIndexTitleForSectionName:")]
 		[return: NullAllowed]
 		string GetSectionIndexTitle (string sectionName);
 
+		/// <summary>Returns an array that contains the section index titles.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("sectionIndexTitles")]
 		string [] SectionIndexTitles { get; }
 #endif
@@ -1408,6 +1415,10 @@ namespace CoreData {
 		[return: NullAllowed]
 		NSObject NewValue (NSRelationshipDescription forRelationship, NSManagedObjectID forObjectI, [NullAllowed] NSManagedObjectContext context, out NSError error);
 
+		/// <param name="storeUrl">To be added.</param>
+		/// <summary>Returns the identifier for the store at <paramref name="storeUrl" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static]
 		[Export ("identifierForNewStoreAtURL:")]
 #if NET
@@ -1695,6 +1706,10 @@ namespace CoreData {
 		[Export ("didTurnIntoFault")]
 		void DidTurnIntoFault ();
 
+		/// <param name="key">To be added.</param>
+		/// <summary>Returns the value for the property that is identified by the specified <paramref name="key" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("valueForKey:")]
 		[return: NullAllowed]
 #if NET
@@ -1703,6 +1718,10 @@ namespace CoreData {
 		IntPtr ValueForKey (string key);
 #endif
 
+		/// <param name="value">To be added.</param>
+		/// <param name="key">To be added.</param>
+		/// <summary>Sets the receiver's value for the property that is specified by the provided <paramref name="key" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("setValue:forKey:")]
 #if NET
 		void SetValue ([NullAllowed] NSObject value, string key);
@@ -1710,6 +1729,10 @@ namespace CoreData {
 		void SetValue (IntPtr value, string key);
 #endif
 
+		/// <param name="key">To be added.</param>
+		/// <summary>Returns the receiver's internal primitive value for the property that is specified by the provided <paramref name="key" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("primitiveValueForKey:")]
 		[return: NullAllowed]
 #if NET
@@ -1718,6 +1741,10 @@ namespace CoreData {
 		IntPtr PrimitiveValueForKey (string key);
 #endif
 
+		/// <param name="value">To be added.</param>
+		/// <param name="key">To be added.</param>
+		/// <summary>Sets the receiver's internal primitive value for the property that is specified by the provided <paramref name="key" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("setPrimitiveValue:forKey:")]
 #if NET
 		void SetPrimitiveValue ([NullAllowed] NSObject value, string key);
@@ -1725,6 +1752,13 @@ namespace CoreData {
 		void SetPrimitiveValue (IntPtr value, string key);
 #endif
 
+		/// <param name="keys">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Returns a dictionary that contains property values for the specified <paramref name="keys" /> from before the last fetch or save.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("committedValuesForKeys:")]
 #if XAMCORE_5_0
 		NSDictionary<NSString, NSObject> GetCommittedValues ([NullAllowed] string[] keys);
@@ -1922,6 +1956,15 @@ namespace CoreData {
 		[Export ("detectConflictsForObject:")]
 		void DetectConflictsForObject (NSManagedObject object1);
 
+		/// <param name="keyPath">To be added.</param>
+		/// <param name="object1">To be added.</param>
+		/// <param name="change">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="context">To be added.</param>
+		/// <summary>Observes the object that is identified by the provided object and keypath for changes.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("observeValueForKeyPath:ofObject:change:context:")]
 #if XAMCORE_5_0
 		void ObserveValue ([NullAllowed] string keyPath, [NullAllowed] NSObject object1, [NullAllowed] NSDictionary<NSString, NSObject> change, IntPtr context);
@@ -1936,6 +1979,10 @@ namespace CoreData {
 		[Export ("processPendingChanges")]
 		void ProcessPendingChanges ();
 
+		/// <param name="object1">To be added.</param>
+		/// <param name="store">To be added.</param>
+		/// <summary>Assigns <paramref name="object1" /> to <paramref name="store" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("assignObject:toPersistentStore:")]
 #if NET
 		void AssignObject (NSObject object1, NSPersistentStore store);
@@ -2361,6 +2408,13 @@ namespace CoreData {
 		[Export ("init")]
 		NativeHandle Constructor ();
 
+		/// <param name="bundles">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("mergedModelFromBundles:")]
 		[return: NullAllowed]
 #if NET
@@ -2468,6 +2522,14 @@ namespace CoreData {
 		NSDictionary LocalizationDictionary { get; set; }
 #endif
 
+		/// <param name="bundles">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="metadata">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("mergedModelFromBundles:forStoreMetadata:")]
 		[return: NullAllowed]
 #if XAMCORE_5_0
@@ -2504,6 +2566,14 @@ namespace CoreData {
 		[Export ("versionIdentifiers", ArgumentSemantic.Copy)]
 		NSSet VersionIdentifiers { get; set; }
 
+		/// <param name="configuration">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="metadata">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("isConfiguration:compatibleWithStoreMetadata:")]
 #if XAMCORE_5_0
 		bool IsConfigurationCompatibleWithStoreMetadata ([NullAllowed] string configuration, NSDictionary<NSString, NSObject> metadata);
@@ -2674,6 +2744,11 @@ namespace CoreData {
 		[Export ("initWithMergeType:")]
 		NativeHandle Constructor (NSMergePolicyType ty);
 
+		/// <param name="list">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>Attempts to resolve the specified conflicts, and reports any errors.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("resolveConflicts:error:")]
 #if NET
 		bool ResolveConflicts (NSMergeConflict [] list, out NSError error);
@@ -3645,7 +3720,16 @@ namespace CoreData {
 		///         <summary>Loads the persistent stores in the container and runs a completion handler when finished.</summary>
 		///         <remarks>To be added.</remarks>
 		[Export ("loadPersistentStoresWithCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Loads the persistent stores in the container and runs a completion handler when finished.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous LoadPersistentStores operation.  The value of the TResult parameter is of type System.Action&lt;CoreData.NSPersistentStoreDescription,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The LoadPersistentStoresAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void LoadPersistentStores (Action<NSPersistentStoreDescription, NSError> block);
 
 		/// <summary>Creates and returns a private managed object context.</summary>

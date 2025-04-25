@@ -302,9 +302,9 @@ public partial class PropertyTests
 		{
 			CoreGraphics.CGPoint ret;
 			if (IsDirectBinding) {
-				ret = NSValue.ToCGPoint (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend_stret (this.Handle, global::ObjCRuntime.Selector.GetHandle ("Center")));
+				ret = NSValue.ToCGPoint (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("Center")));
 			} else {
-				ret = NSValue.ToCGPoint (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper_stret (this.Handle, global::ObjCRuntime.Selector.GetHandle ("Center")));
+				ret = NSValue.ToCGPoint (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("Center")));
 			}
 			GC.KeepAlive (this);
 			return ret;
@@ -647,9 +647,9 @@ public partial class PropertyTests
 		{
 			AVFoundation.AVCaptureReactionType ret;
 			if (IsDirectBinding) {
-				ret = global::AVFoundation.AVCaptureReactionTypeExtensions.GetValue (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend_stret (this.Handle, global::ObjCRuntime.Selector.GetHandle ("canDraw")));
+				ret = global::AVFoundation.AVCaptureReactionTypeExtensions.GetValue (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("canDraw")));
 			} else {
-				ret = global::AVFoundation.AVCaptureReactionTypeExtensions.GetValue (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper_stret (this.Handle, global::ObjCRuntime.Selector.GetHandle ("canDraw")));
+				ret = global::AVFoundation.AVCaptureReactionTypeExtensions.GetValue (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("canDraw")));
 			}
 			GC.KeepAlive (this);
 			return ret;
@@ -704,9 +704,9 @@ public partial class PropertyTests
 		{
 			CoreGraphics.CGSize ret;
 			if (IsDirectBinding) {
-				ret = global::ObjCRuntime.Messaging.CGSize_objc_msgSend_stret (this.Handle, global::ObjCRuntime.Selector.GetHandle ("size"));
+				ret = global::ObjCRuntime.Messaging.CGSize_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("size"));
 			} else {
-				ret = global::ObjCRuntime.Messaging.CGSize_objc_msgSendSuper_stret (this.Handle, global::ObjCRuntime.Selector.GetHandle ("size"));
+				ret = global::ObjCRuntime.Messaging.CGSize_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("size"));
 			}
 			GC.KeepAlive (this);
 			return ret;

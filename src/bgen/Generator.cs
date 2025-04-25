@@ -3034,62 +3034,18 @@ public partial class Generator : IMemberGatherer {
 		bool x64_stret = Stret.X86_64NeedStret (returnType, this);
 		bool aligned = AttributeManager.HasAttribute<AlignAttribute> (mi);
 
-		if (CurrentPlatform == PlatformName.MacOSX || CurrentPlatform == PlatformName.MacCatalyst) {
-			if (x64_stret) {
-				print ("if (global::ObjCRuntime.Runtime.IsARM64CallingConvention) {");
-				indent++;
-				GenerateInvoke (false, supercall, mi, minfo, selector, args, category_type, false);
-				indent--;
-				print ("} else {");
-				indent++;
-				GenerateInvoke (x64_stret, supercall, mi, minfo, selector, args, category_type, aligned && x64_stret);
-				indent--;
-				print ("}");
-			} else {
-				GenerateInvoke (false, supercall, mi, minfo, selector, args, category_type, false);
-			}
-			return;
-		}
-
-		bool arm_stret = Stret.ArmNeedStret (returnType, this);
-		bool x86_stret = Stret.X86NeedStret (returnType, this);
-		bool is_stret_multi = arm_stret || x86_stret || x64_stret;
-		bool need_multi_path = is_stret_multi;
-
-		if (need_multi_path) {
-			if (is_stret_multi) {
-				// First check for arm64
-				print ("if (global::ObjCRuntime.Runtime.IsARM64CallingConvention) {");
-				indent++;
-				GenerateInvoke (false, supercall, mi, minfo, selector, args, category_type, false);
-				indent--;
-				// If we're not arm64, but we're 64-bit, then we're x86_64
-				print ("} else if (IntPtr.Size == 8) {");
-				indent++;
-				GenerateInvoke (x64_stret, supercall, mi, minfo, selector, args, category_type, aligned && x64_stret);
-				indent--;
-				// if we're not 64-bit, but we're on device, then we're 32-bit arm
-				print ("} else if (Runtime.Arch == Arch.DEVICE) {");
-				indent++;
-				GenerateInvoke (arm_stret, supercall, mi, minfo, selector, args, category_type, aligned && arm_stret);
-				indent--;
-				// if we're none of the above, we're x86
-				print ("} else {");
-				indent++;
-				GenerateInvoke (x86_stret, supercall, mi, minfo, selector, args, category_type, aligned && x86_stret);
-				indent--;
-				print ("}");
-			} else {
-				print ("if (IntPtr.Size == 8) {");
-				indent++;
-				GenerateInvoke (x64_stret, supercall, mi, minfo, selector, args, category_type, aligned && x64_stret);
-				indent--;
-				print ("} else {");
-				indent++;
-				GenerateInvoke (x86_stret, supercall, mi, minfo, selector, args, category_type, aligned && x86_stret);
-				indent--;
-				print ("}");
-			}
+		if (x64_stret) {
+			// First check for arm64
+			print ("if (global::ObjCRuntime.Runtime.IsARM64CallingConvention) {");
+			indent++;
+			GenerateInvoke (false, supercall, mi, minfo, selector, args, category_type, false);
+			indent--;
+			// If we're not arm64, then we're x86_64
+			print ("} else {");
+			indent++;
+			GenerateInvoke (x64_stret, supercall, mi, minfo, selector, args, category_type, aligned && x64_stret);
+			indent--;
+			print ("}");
 		} else {
 			GenerateInvoke (false, supercall, mi, minfo, selector, args, category_type, false);
 		}

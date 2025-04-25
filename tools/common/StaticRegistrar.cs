@@ -747,7 +747,7 @@ namespace Registrar {
 			ErrorHelper.Show (ErrorHelper.CreateWarning (code, message, args));
 		}
 
-		public static int GetValueTypeSize (TypeDefinition type, bool is_64_bits)
+		public static int GetValueTypeSize (TypeDefinition type)
 		{
 			switch (type.FullName) {
 			case "System.Char": return 2;
@@ -764,15 +764,15 @@ namespace Registrar {
 			case "System.UInt64": return 8;
 			case "System.IntPtr":
 			case "System.nuint":
-			case "System.nint": return is_64_bits ? 8 : 4;
+			case "System.nint": return 8;
 			default:
 				if (type.FullName == NFloatTypeName)
-					return is_64_bits ? 8 : 4;
+					return 8;
 				int size = 0;
 				foreach (FieldDefinition field in type.Fields) {
 					if (field.IsStatic)
 						continue;
-					int s = GetValueTypeSize (field.FieldType.Resolve (), is_64_bits);
+					int s = GetValueTypeSize (field.FieldType.Resolve ());
 					if (s == -1)
 						return -1;
 					size += s;
@@ -783,7 +783,7 @@ namespace Registrar {
 
 		protected override int GetValueTypeSize (TypeReference type)
 		{
-			return GetValueTypeSize (type.Resolve (), Is64Bits);
+			return GetValueTypeSize (type.Resolve ());
 		}
 
 		public override bool HasReleaseAttribute (MethodDefinition method)
@@ -804,16 +804,6 @@ namespace Registrar {
 		protected override bool IsSimulatorOrDesktop {
 			get {
 				return App.Platform == ApplePlatform.MacOSX || App.IsSimulatorBuild;
-			}
-		}
-
-		protected override bool Is64Bits {
-			get {
-				if (IsSingleAssembly)
-					return App.Is64Build;
-
-				// Target can be null when mmp is run for multiple assemblies
-				return Target is not null ? Target.Is64Build : App.Is64Build;
 			}
 		}
 
@@ -2422,7 +2412,7 @@ namespace Registrar {
 			case "System.UIntPtr":
 				name.Append ('p');
 				body.AppendLine ("void *v{0};", size);
-				size += Is64Bits ? 8 : 4;
+				size += 8;
 				break;
 			default:
 				bool found = false;
@@ -3525,8 +3515,6 @@ namespace Registrar {
 			case Trampoline.StaticLong:
 			case Trampoline.StaticDouble:
 			case Trampoline.StaticSingle:
-			case Trampoline.X86_DoubleABI_StaticStretTrampoline:
-			case Trampoline.X86_DoubleABI_StretTrampoline:
 			case Trampoline.StaticStret:
 			case Trampoline.Stret:
 			case Trampoline.CopyWithZone2:

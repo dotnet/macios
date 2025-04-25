@@ -85,7 +85,16 @@ namespace Twitter {
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
 		[Export ("performRequestWithHandler:")]
-		[Async (ResultTypeName = "TWRequestResult")]
+		[Async (ResultTypeName = "TWRequestResult", XmlDocs = """
+			<summary>To be added.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous PerformRequest operation.   The value of the TResult parameter is of type <c>Action&lt;Twitter.TWRequestResult&gt;</c>.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The PerformRequestAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void PerformRequest (TWRequestHandler handler);
 	}
 

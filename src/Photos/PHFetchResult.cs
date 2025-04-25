@@ -8,6 +8,10 @@ using System.Collections.Generic;
 
 namespace Photos {
 	public partial class PHFetchResult : IEnumerable<NSObject> {
+		/// <param name="index">To be added.</param>
+		/// <summary>Returns the asset at <paramref name="index" />.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		public NSObject this [nint index] {
 			get { return _ObjectAtIndexedSubscript (index); }
 		}

@@ -406,6 +406,9 @@ namespace Metal {
 		[Export ("presentDrawable:atTime:")]
 		void PresentDrawable (IMTLDrawable drawable, double presentationTime);
 
+		/// <summary>Presents the specified <paramref name="drawable" /> after the previous drawable has been displayed for <paramref name="duration" /> seconds.</summary>
+		/// <param name="drawable">The drawable to present immediately after the command buffer is scheduled to run.</param>
+		/// <param name="duration">The minimum display time of the previous drawable.</param>
 		[Abstract]
 		[Introduced (PlatformName.MacCatalyst, 13, 4)]
 		[Export ("presentDrawable:afterMinimumDuration:")]
@@ -419,21 +422,25 @@ namespace Metal {
 		[Export ("renderCommandEncoderWithDescriptor:")]
 		IMTLRenderCommandEncoder CreateRenderCommandEncoder (MTLRenderPassDescriptor renderPassDescriptor);
 
+		/// <summary>Returns the time, in seconds, when the GPU started scheduling the command buffer.</summary>
 		[Abstract]
 		[MacCatalyst (13, 1)]
 		[Export ("kernelStartTime")]
 		double /* CFTimeInterval */ KernelStartTime { get; }
 
+		/// <summary>Returns the time, in seconds, when the GPU finished scheduling the command buffer.</summary>
 		[Abstract]
 		[MacCatalyst (13, 1)]
 		[Export ("kernelEndTime")]
 		double /* CFTimeInterval */ KernelEndTime { get; }
 
+		/// <summary>Returns the time, in seconds, when the GPU started running the command buffer.</summary>
 		[Abstract]
 		[MacCatalyst (13, 1)]
 		[Export ("GPUStartTime")]
 		double /* CFTimeInterval */ GpuStartTime { get; }
 
+		/// <summary>Returns the time, in seconds, when the GPU stopped running the command buffer.</summary>
 		[Abstract]
 		[MacCatalyst (13, 1)]
 		[Export ("GPUEndTime")]
@@ -644,6 +651,10 @@ namespace Metal {
 		[Export ("dispatchThreadgroupsWithIndirectBuffer:indirectBufferOffset:threadsPerThreadgroup:")]
 		void DispatchThreadgroups (IMTLBuffer indirectBuffer, nuint indirectBufferOffset, MTLSize threadsPerThreadgroup);
 
+		/// <summary>Encodes <paramref name="buffers" /> to the argument buffer.</summary>
+		/// <param name="buffers">An array of buffers in an argument buffer.</param>
+		/// <param name="offsets">The byte offsets of <paramref name="buffers" /> in the containing buffer.</param>
+		/// <param name="range">Indices into the target buffer of the buffers in <paramref name="buffers" />. Either Metal index IDs or the index members of <see cref="T:Metal.MTLArgumentDescriptor" />s.</param>
 		[Abstract]
 		[Export ("setBuffers:offsets:withRange:")]
 		void SetBuffers (IntPtr buffers, IntPtr offsets, NSRange range);
@@ -698,11 +709,14 @@ namespace Metal {
 		[Export ("setStageInRegionWithIndirectBuffer:indirectBufferOffset:")]
 		void SetStageInRegion (IMTLBuffer indirectBuffer, nuint indirectBufferOffset);
 
+		/// <summary>Captures all GPU work up to the current fence.</summary>
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("updateFence:")]
 		void Update (IMTLFence fence);
 
+		/// <summary>Prevents additional GPU work by the encoder until the <paramref name="fence" /> is reached.</summary>
+		/// <param name="fence">The fence to wait for.</param>
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("waitForFence:")]
@@ -857,6 +871,7 @@ namespace Metal {
 		[Abstract, Export ("threadExecutionWidth")]
 		nuint ThreadExecutionWidth { get; }
 
+		/// <summary>Returns the descriptive label for the compute pipeline state.</summary>
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[NullAllowed, Export ("label")]
@@ -1011,11 +1026,15 @@ namespace Metal {
 		[Abstract, Export ("copyFromBuffer:sourceOffset:toBuffer:destinationOffset:size:")]
 		void CopyFromBuffer (IMTLBuffer sourceBuffer, nuint sourceOffset, IMTLBuffer destinationBuffer, nuint destinationOffset, nuint size);
 
+		/// <summary>Captures GPU work that was enqueued by the encoder for the specified <paramref name="fence" />.</summary>
+		/// <param name="fence">The fence to update.</param>
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("updateFence:")]
 		void Update (IMTLFence fence);
 
+		/// <summary>Prevents additional GPU work by the encoder until the <paramref name="fence" /> is reached.</summary>
+		/// <param name="fence">The fence to wait to be updated.</param>
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("waitForFence:")]
@@ -1130,6 +1149,7 @@ namespace Metal {
 		[Abstract, Export ("name")]
 		string Name { get; }
 
+		/// <summary>Returns the number of threads per threadgroup on the device.</summary>
 		[Abstract]
 		[MacCatalyst (13, 1)]
 		[Export ("maxThreadsPerThreadgroup")]
@@ -1161,6 +1181,7 @@ namespace Metal {
 		[Export ("depth24Stencil8PixelFormatSupported")]
 		bool Depth24Stencil8PixelFormatSupported { [Bind ("isDepth24Stencil8PixelFormatSupported")] get; }
 
+		/// <summary>Gets the size and alignment of a texture with specified description, when allocated from a heap.</summary>
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("heapTextureSizeAndAlignWithDescriptor:")]
@@ -1171,6 +1192,7 @@ namespace Metal {
 		[Export ("heapBufferSizeAndAlignWithLength:options:")]
 		MTLSizeAndAlign GetHeapBufferSizeAndAlignWithLength (nuint length, MTLResourceOptions options);
 
+		/// <summary>Creates and returns a new heap.</summary>
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("newHeapWithDescriptor:")]
@@ -1210,6 +1232,11 @@ namespace Metal {
 		[return: Release]
 		IMTLBuffer CreateBuffer (IntPtr pointer, nuint length, MTLResourceOptions options);
 
+		/// <summary>Creates and returns a new buffer that is wrapped around the specified data, and runs an optional <paramref name="deallocator" /> when the memory is deallocated.</summary>
+		/// <param name="pointer">The data to wrap.</param>
+		/// <param name="length">The length of the data to wrap.</param>
+		/// <param name="options">Options for creating the buffer.</param>
+		/// <param name="deallocator">The deallocator to use when deleting the buffer.</param>
 		[Abstract, Export ("newBufferWithBytesNoCopy:length:options:deallocator:")]
 		[return: NullAllowed]
 		[return: Release]
@@ -1233,6 +1260,7 @@ namespace Metal {
 		[return: Release]
 		IMTLTexture CreateTexture (MTLTextureDescriptor descriptor);
 
+		/// <summary>Creates a Metal texture with the specified values.</summary>
 		[Abstract]
 		[MacCatalyst (13, 1)]
 		[return: NullAllowed]
@@ -1305,6 +1333,7 @@ namespace Metal {
 		[Async]
 		void CreateLibrary (string source, MTLCompileOptions options, Action<IMTLLibrary, NSError> completionHandler);
 
+		/// <summary>Creates and returns a new library from the functions in the specified bundle.</summary>
 		[Abstract]
 		[MacCatalyst (13, 1)]
 		[Export ("newDefaultLibraryWithBundle:error:")]
@@ -1386,17 +1415,20 @@ namespace Metal {
 		[Abstract, Export ("newComputePipelineStateWithFunction:options:completionHandler:")]
 		void CreateComputePipelineState (IMTLFunction computeFunction, MTLPipelineOption options, Action<IMTLComputePipelineState, MTLComputePipelineReflection, NSError> completionHandler);
 
+		/// <summary>Creates a new pipeline state from the specified compute pipeline descriptor, options, and completion handler, and stores reflection information in the <paramref name="reflection" /><see langword="out" /> parameter.</summary>
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("newComputePipelineStateWithDescriptor:options:reflection:error:")]
 		[return: Release]
 		IMTLComputePipelineState CreateComputePipelineState (MTLComputePipelineDescriptor descriptor, MTLPipelineOption options, out MTLComputePipelineReflection reflection, out NSError error);
 
+		/// <summary>Creates a new pipeline state from the specified compute pipeline descriptor, options, and completion handler.</summary>
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("newComputePipelineStateWithDescriptor:options:completionHandler:")]
 		void CreateComputePipelineState (MTLComputePipelineDescriptor descriptor, MTLPipelineOption options, MTLNewComputePipelineStateWithReflectionCompletionHandler completionHandler);
 
+		/// <summary>Creates and returns a new fence for tracking and managing dependencies between command encoders.</summary>
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("newFence")]
@@ -1410,6 +1442,7 @@ namespace Metal {
 		[Abstract, Export ("supportsFeatureSet:")]
 		bool SupportsFeatureSet (MTLFeatureSet featureSet);
 
+		/// <summary>Returns a Boolean value that tells whether the device supports the specified texture count.</summary>
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("supportsTextureSampleCount:")]
@@ -1420,21 +1453,25 @@ namespace Metal {
 		[Export ("removable")]
 		bool Removable { [Bind ("isRemovable")] get; }
 
+		/// <summary>Gets the texture read-write support tier.</summary>
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("readWriteTextureSupport")]
 		MTLReadWriteTextureTier ReadWriteTextureSupport { get; }
 
+		/// <summary>Returns the argument buffer support tier.</summary>
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("argumentBuffersSupport")]
 		MTLArgumentBuffersTier ArgumentBuffersSupport { get; }
 
+		/// <summary>Returns a Boolean value that tells whether raster order groups are supported.</summary>
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("rasterOrderGroupsSupported")]
 		bool RasterOrderGroupsSupported { [Bind ("areRasterOrderGroupsSupported")] get; }
 
+		/// <summary>Creates and returns a new library from the functions at the specified URL.</summary>
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("newLibraryWithURL:error:")]
@@ -1442,6 +1479,8 @@ namespace Metal {
 		[return: Release]
 		IMTLLibrary CreateLibrary (NSUrl url, [NullAllowed] out NSError error);
 
+		/// <summary>Gets the minimum alignment required for a linear texture in the given pixel format.</summary>
+		/// <param name="format">The pixel format. Depth, stencil, and compressed formats are not supported.</param>
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("minimumLinearTextureAlignmentForPixelFormat:")]
@@ -1452,6 +1491,7 @@ namespace Metal {
 		[Export ("minimumTextureBufferAlignmentForPixelFormat:")]
 		nuint GetMinimumTextureBufferAlignment (MTLPixelFormat format);
 
+		/// <summary>Gets the largest available length of memory for threadgroups.</summary>
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("maxThreadgroupMemoryLength")]
@@ -1462,16 +1502,22 @@ namespace Metal {
 		[Export ("maxArgumentBufferSamplerCount")]
 		nuint MaxArgumentBufferSamplerCount { get; }
 
+		/// <summary>Returns a Boolean value that tells whether programmable sample positions are supported.</summary>
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("programmableSamplePositionsSupported")]
 		bool ProgrammableSamplePositionsSupported { [Bind ("areProgrammableSamplePositionsSupported")] get; }
 
+		/// <summary>Provides the default sample positions for the specified sample <paramref name="count" />.</summary>
+		/// <param name="positions">Array that will be filled with the default sample postions.</param>
+		/// <param name="count">The number of positions, which determines the set of default positions.</param>
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("getDefaultSamplePositions:count:")]
 		void GetDefaultSamplePositions (IntPtr positions, nuint count);
 
+		/// <summary>Creates an encoder for the specified array of arguments.</summary>
+		/// <param name="arguments">An array of arguments within a buffer.</param>
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("newArgumentEncoderWithArguments:")]
@@ -1512,11 +1558,13 @@ namespace Metal {
 		[Export ("maxBufferLength")]
 		nuint MaxBufferLength { get; }
 
+		/// <summary>Gets the registry ID.</summary>
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("registryID")]
 		ulong RegistryId { get; }
 
+		/// <summary>Gets the size, in bytes, of all the resources that the device has allocated.</summary>
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("currentAllocatedSize")]
@@ -1898,21 +1946,27 @@ namespace Metal {
 		[Abstract, Export ("presentAtTime:")]
 		void Present (double presentationTime);
 
+		/// <summary>Causes the drawable to be presented at least <paramref name="duration" /> seconds after the previous drawable has been presented.</summary>
+		/// <param name="duration">The minimum time after which to display the drawable.</param>
 		[Abstract]
 		[Introduced (PlatformName.MacCatalyst, 13, 4)]
 		[Export ("presentAfterMinimumDuration:")]
 		void PresentAfter (double duration);
 
+		/// <summary>Causes the provided <paramref name="block" /> to be run after the drawable is displayed.</summary>
+		/// <param name="block">The code that will be called after the drawable is displayed.</param>
 		[Abstract]
 		[Introduced (PlatformName.MacCatalyst, 13, 4)]
 		[Export ("addPresentedHandler:")]
 		void AddPresentedHandler (Action<IMTLDrawable> block);
 
+		/// <summary>Returns the time, in seconds, when the host displayed this drawable.</summary>
 		[Abstract]
 		[Introduced (PlatformName.MacCatalyst, 13, 4)]
 		[Export ("presentedTime")]
 		double /* CFTimeInterval */ PresentedTime { get; }
 
+		/// <summary>Returns the positive integer that identifies the drawable.</summary>
 		[Abstract]
 		[Introduced (PlatformName.MacCatalyst, 13, 4)]
 		[Export ("drawableID")]
@@ -1938,33 +1992,39 @@ namespace Metal {
 		[Abstract, Export ("rootResource")]
 		IMTLResource RootResource { get; }
 
+		/// <summary>Returns the parent texture.</summary>
 		[Abstract]
 		[MacCatalyst (13, 1)]
 		[NullAllowed] // by default this property is null
 		[Export ("parentTexture")]
 		IMTLTexture ParentTexture { get; }
 
+		/// <summary>Returns the base level of the parent texture from which the target texture was created.</summary>
 		[Abstract]
 		[MacCatalyst (13, 1)]
 		[Export ("parentRelativeLevel")]
 		nuint ParentRelativeLevel { get; }
 
+		/// <summary>Returns the base slice of the parent texture from which the target texture was created.</summary>
 		[Abstract]
 		[MacCatalyst (13, 1)]
 		[Export ("parentRelativeSlice")]
 		nuint ParentRelativeSlice { get; }
 
+		/// <summary>Returns the buffer for the target texture.</summary>
 		[Abstract]
 		[MacCatalyst (13, 1)]
 		[NullAllowed] // by default this property is null
 		[Export ("buffer")]
 		IMTLBuffer Buffer { get; }
 
+		/// <summary>Gets the offset into the parent texture where the the target texture data begins.</summary>
 		[Abstract]
 		[MacCatalyst (13, 1)]
 		[Export ("bufferOffset")]
 		nuint BufferOffset { get; }
 
+		/// <summary>Gets the bytes per row in the buffer for the target texture.</summary>
 		[Abstract]
 		[MacCatalyst (13, 1)]
 		[Export ("bufferBytesPerRow")]
@@ -2047,10 +2107,12 @@ namespace Metal {
 		[return: Release]
 		IMTLTexture CreateTextureView (MTLPixelFormat pixelFormat);
 
+		/// <summary>Gets a description of how the texture can be used. (For example, as a write target for compute shaders.)</summary>
 		[Abstract]
 		[Export ("usage")]
 		MTLTextureUsage Usage { get; }
 
+		/// <summary>Creates and returns a Metal texture that shares the same memory as the source object, but that is interpreted with the new pixel format.</summary>
 		[Abstract]
 		[Export ("newTextureViewWithPixelFormat:textureType:levels:slices:")]
 		[return: NullAllowed]
@@ -2073,11 +2135,13 @@ namespace Metal {
 		[Export ("replaceRegion:mipmapLevel:withBytes:bytesPerRow:")]
 		void ReplaceRegion (MTLRegion region, nuint level, IntPtr pixelBytes, nuint bytesPerRow);
 
+		/// <summary>Gets the IOSurface that was used to create this texture, if one was used.</summary>
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[NullAllowed, Export ("iosurface")]
 		IOSurface.IOSurface IOSurface { get; }
 
+		/// <summary>Returns the IOSurface plane used by the surface that is returned from <see cref="IOSurface" />.</summary>
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("iosurfacePlane")]
@@ -2880,12 +2944,17 @@ namespace Metal {
 		[Export ("functionConstantsDictionary")]
 		NSDictionary<NSString, MTLFunctionConstant> FunctionConstants { get; }
 
+		/// <summary>Creates a new argument encoder for the specified buffer index.</summary>
+		/// <param name="bufferIndex">Index into a graphics function or compute function of the argument buffer.</param>
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("newArgumentEncoderWithBufferIndex:")]
 		[return: Release]
 		IMTLArgumentEncoder CreateArgumentEncoder (nuint bufferIndex);
 
+		/// <summary>Creates a new argument encoder for the specified buffer index and reflection argument.</summary>
+		/// <param name="bufferIndex">Index into a graphics function or compute function of the argument buffer.</param>
+		/// <param name="reflection">The resulting reflection data.</param>
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("newArgumentEncoderWithBufferIndex:reflection:")]
@@ -3217,16 +3286,23 @@ namespace Metal {
 		[Export ("setStencilStoreAction:")]
 		void SetStencilStoreAction (MTLStoreAction storeAction);
 
+		/// <summary>Sets the store action options on the color attachment at the specified index.</summary>
+		/// <param name="storeActionOptions">The action to set.</param>
+		/// <param name="colorAttachmentIndex">The index of the color attachment.</param>
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("setColorStoreActionOptions:atIndex:")]
 		void SetColorStoreActionOptions (MTLStoreActionOptions storeActionOptions, nuint colorAttachmentIndex);
 
+		// <summary>Sets the store action options on the depth attachment.</summary>
+		// <param name="storeActionOptions">The action options to set.</param>
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("setDepthStoreActionOptions:")]
 		void SetDepthStoreActionOptions (MTLStoreActionOptions storeActionOptions);
 
+		/// <summary>Sets the store action options on the stencil attachment.</summary>
+		/// <param name="storeActionOptions">The action options to set.</param>
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("setStencilStoreActionOptions:")]
@@ -3295,6 +3371,7 @@ namespace Metal {
 		[Abstract, Export ("setCullMode:")]
 		void SetCullMode (MTLCullMode cullMode);
 
+		/// <summary>Sets a value that controls how clipped values are handled.</summary>
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("setDepthClipMode:")]
@@ -3384,6 +3461,7 @@ namespace Metal {
 		[Abstract, Export ("setStencilReferenceValue:")]
 		void SetStencilReferenceValue (uint /* uint32_t */ referenceValue);
 
+		/// <summary>Sets the front and back reference stencil values.</summary>
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("setStencilFrontReferenceValue:backReferenceValue:")]
@@ -3396,16 +3474,19 @@ namespace Metal {
 		[Abstract, Export ("setVisibilityResultMode:offset:")]
 		void SetVisibilityResultMode (MTLVisibilityResultMode mode, nuint offset);
 
+		/// <summary>Sets a value that controls how color results are handled after a rendering pass.</summary>
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("setColorStoreAction:atIndex:")]
 		void SetColorStoreAction (MTLStoreAction storeAction, nuint colorAttachmentIndex);
 
+		/// <summary>Sets a value that controls how depth results are handled after a rendering pass.</summary>
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("setDepthStoreAction:")]
 		void SetDepthStoreAction (MTLStoreAction storeAction);
 
+		/// <summary>Sets a value that controls how stencil results are handled after a rendering pass.</summary>
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("setStencilStoreAction:")]
@@ -3449,6 +3530,7 @@ namespace Metal {
 		[Abstract, Export ("drawIndexedPrimitives:indexCount:indexType:indexBuffer:indexBufferOffset:")]
 		void DrawIndexedPrimitives (MTLPrimitiveType primitiveType, nuint indexCount, MTLIndexType indexType, IMTLBuffer indexBuffer, nuint indexBufferOffset);
 
+		/// <summary>Draws a range of primitives.</summary>
 		[Abstract]
 		[MacCatalyst (13, 1)]
 		[Export ("drawPrimitives:vertexStart:vertexCount:instanceCount:baseInstance:")]
@@ -3459,6 +3541,7 @@ namespace Metal {
 		[Export ("drawIndexedPrimitives:indexCount:indexType:indexBuffer:indexBufferOffset:instanceCount:baseVertex:baseInstance:")]
 		void DrawIndexedPrimitives (MTLPrimitiveType primitiveType, nuint indexCount, MTLIndexType indexType, IMTLBuffer indexBuffer, nuint indexBufferOffset, nuint instanceCount, nint baseVertex, nuint baseInstance);
 
+		/// <summary>Draws a range of primitives.</summary>
 		[Abstract]
 		[MacCatalyst (13, 1)]
 		[Export ("drawPrimitives:indirectBuffer:indirectBufferOffset:")]
@@ -3551,21 +3634,25 @@ namespace Metal {
 		[Export ("textureBarrier")]
 		void TextureBarrier ();
 
+		/// <summary>Captures all GPU work up to the current fence.</summary>
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("updateFence:afterStages:")]
 		void Update (IMTLFence fence, MTLRenderStages stages);
 
+		/// <summary>Prevents additional GPU work by the encoder until the <paramref name="fence" /> is reached.</summary>
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("waitForFence:beforeStages:")]
 		void Wait (IMTLFence fence, MTLRenderStages stages);
 
+		/// <summary>Sets the offset and stride value for a tessellation buffer.</summary>
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("setTessellationFactorBuffer:offset:instanceStride:")]
 		void SetTessellationFactorBuffer ([NullAllowed] IMTLBuffer buffer, nuint offset, nuint instanceStride);
 
+		/// <summary>Sets the offset and stride value for a tessellation buffer.</summary>
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("setTessellationFactorScale:")]
@@ -3605,36 +3692,55 @@ namespace Metal {
 		[Export ("setScissorRects:count:")]
 		void SetScissorRects (IntPtr scissorRects, nuint count);
 
+		/// <summary>Sets the store action options on the color attachment at the specified index.</summary>
+		/// <param name="storeActionOptions">The action options to set.</param>
+		/// <param name="colorAttachmentIndex">The index of the color attachment.</param>
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("setColorStoreActionOptions:atIndex:")]
 		void SetColorStoreActionOptions (MTLStoreActionOptions storeActionOptions, nuint colorAttachmentIndex);
 
+		/// <summary>Sets the store action options on the depth attachment.</summary>
+		/// <param name="storeActionOptions">The action options to set.</param>
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("setDepthStoreActionOptions:")]
 		void SetDepthStoreActionOptions (MTLStoreActionOptions storeActionOptions);
 
+		/// <summary>Sets the store action options on the stencil attachment.</summary>
+		/// <param name="storeActionOptions">The action options to set.</param>
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("setStencilStoreActionOptions:")]
 		void SetStencilStoreActionOptions (MTLStoreActionOptions storeActionOptions);
 
+		/// <summary>Marks the specified resource as usable by a render pass.</summary>
+		/// <param name="resource">The resource to use.</param>
+		/// <param name="usage">Whether to read, write, or sample the resource.</param>
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("useResource:usage:")]
 		void UseResource (IMTLResource resource, MTLResourceUsage usage);
 
+		/// <summary>Marks the specified resources as usable by a render pass.</summary>
+		/// <param name="resources">The resources to use.</param>
+		/// <param name="count">The number of resources.</param>
+		/// <param name="usage">Whether to read, write, or sample the resource.</param>
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("useResources:count:usage:")]
 		void UseResources (IMTLResource [] resources, nuint count, MTLResourceUsage usage);
 
+		/// <summary>Marks the specified heap as usable by a render pass.</summary>
+		/// <param name="heap">The heap from which to read resources that are wrapped in an argument buffer.</param>
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("useHeap:")]
 		void UseHeap (IMTLHeap heap);
 
+		/// <summary>Marks the specified heaps as usable by a render pass.</summary>
+		/// <param name="heaps">The heaps from which to read resources that are wrapped in an argument buffer.</param>
+		/// <param name="count">The number of heaps.</param>
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("useHeaps:count:")]
@@ -4401,6 +4507,7 @@ namespace Metal {
 		[Export ("setPurgeableState:")]
 		MTLPurgeableState SetPurgeableState (MTLPurgeableState state);
 
+		/// <summary>Returns the current allcoated size of the heap.</summary>
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("currentAllocatedSize")]
@@ -4494,6 +4601,7 @@ namespace Metal {
 		[Abstract, Export ("cpuCacheMode")]
 		MTLCpuCacheMode CpuCacheMode { get; }
 
+		/// <summary>Returns a description of the location and permissions of the resource.</summary>
 		[Abstract]
 		[MacCatalyst (13, 1)]
 		[Export ("storageMode")]
@@ -4506,16 +4614,19 @@ namespace Metal {
 		[Abstract, Export ("setPurgeableState:")]
 		MTLPurgeableState SetPurgeableState (MTLPurgeableState state);
 
+		/// <summary>Returns the heap that sub-allocated the resource.</summary>
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[NullAllowed, Export ("heap")]
 		IMTLHeap Heap { get; }
 
+		/// <summary>Makes the resource aliasable.</summary>
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("makeAliasable")]
 		void MakeAliasable ();
 
+		/// <summary>Returns a Boolean value that tells whether future sub-allocations can alias the resource's memory.</summary>
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("isAliasable")]
@@ -4526,6 +4637,7 @@ namespace Metal {
 		[Export ("setOwnerWithIdentity:")]
 		int SetOwnerWithIdentity (uint taskIdToken);
 
+		/// <summary>Returns the allocated size of the resource.</summary>
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("allocatedSize")]

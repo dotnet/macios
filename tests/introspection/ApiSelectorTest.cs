@@ -1363,9 +1363,6 @@ namespace Introspection {
 			case "initWithLocalIdentifier:":
 			case "initWithCollaborationIdentifier:":
 				return true;
-			// CloudKit
-			case "initWithExcludedZoneIDs:":
-			case "initWithZoneIDs:":
 			// DDDevicePickerViewController
 			case "initWithBrowseDescriptor:parameters:":
 				return true;

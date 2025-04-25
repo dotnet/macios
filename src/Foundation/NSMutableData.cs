@@ -77,6 +77,8 @@ namespace Foundation {
 			}
 		}
 
+		/// <summary>Gets an enumerator for the bytes in the mutable data.</summary>
+		/// <returns>An enumerator for the bytes in the mutable data.</returns>
 		IEnumerator<byte> IEnumerable<byte>.GetEnumerator ()
 		{
 			IntPtr source = Bytes;

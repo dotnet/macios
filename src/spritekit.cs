@@ -2060,7 +2060,7 @@ namespace SpriteKit {
 
 		[MacCatalyst (13, 1)]
 		[Export ("vectorFloat3Value", ArgumentSemantic.Assign)]
-		Vector3 VectorFloat3Value {
+		Vector3 FloatVector3Value {
 			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 			get;
 			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
@@ -2069,7 +2069,7 @@ namespace SpriteKit {
 
 		[MacCatalyst (13, 1)]
 		[Export ("vectorFloat4Value", ArgumentSemantic.Assign)]
-		Vector4 VectorFloat4Value {
+		Vector4 FloatVector4Value {
 			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 			get;
 			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]

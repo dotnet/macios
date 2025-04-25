@@ -3029,9 +3029,7 @@ namespace CoreAnimation {
 		CGPoint EndPoint { get; set; }
 
 #if NET
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>The gradient type displayed.</summary>
 		CAGradientLayerType LayerType {
 			[Wrap ("CAGradientLayerTypeExtensions.GetValue (WeakLayerType)")]
 			get;

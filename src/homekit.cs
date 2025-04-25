@@ -795,7 +795,15 @@ namespace HomeKit {
 
 		[NoTV]
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="targetValue">To be added.</param>
+			<summary>Asynchronously updates <paramref name="targetValue" />.</summary>
+			<returns>A task that represents the asynchronous UpdateTargetValue operation</returns>
+			<remarks>
+			          <para copied="true">The UpdateTargetValueAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("updateTargetValue:completionHandler:")]
 		void UpdateTargetValue (INSCopying targetValue, Action<NSError> completion);
 	}

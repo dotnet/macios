@@ -2167,7 +2167,13 @@ namespace PassKit {
 		///         </param>
 		///         <summary>Presents the payment authorization UI and runs a handler after the sheet is displayed.</summary>
 		///         <remarks>The developer must use the <see cref="M:PassKit.PKPaymentAuthorizationController.Dismiss(System.Action)" /> method to dismiss the payment authorization UI.</remarks>
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Presents the payment authorization UI and runs a handler after the sheet is displayed.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous Present operation.  The value of the TResult parameter is of type System.Action&lt;System.Boolean&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("presentWithCompletion:")]
 		void Present ([NullAllowed] Action<bool> completion);
 
@@ -2177,7 +2183,16 @@ namespace PassKit {
 		///         </param>
 		///         <summary>Dismisses the payment authorization UI and runs the specified completion handler.</summary>
 		///         <remarks>Developers call this method to dismiss the payment authorization UI, typically when they receive a call to the <see cref="M:PassKit.PKPaymentAuthorizationControllerDelegate.DidFinish(PassKit.PKPaymentAuthorizationController)" /> method.</remarks>
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Dismisses the payment authorization UI and runs the specified completion handler.</summary>
+			<returns>A task that represents the asynchronous Dismiss operation</returns>
+			<remarks>
+			          <para>The DismissAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <see cref="M:PassKit.PKPaymentAuthorizationControllerDelegate.DidFinish(PassKit.PKPaymentAuthorizationController)" />
+			          <para copied="true">The DismissAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <see cref="M:PassKit.PKPaymentAuthorizationControllerDelegate.DidFinish(PassKit.PKPaymentAuthorizationController)" copied="true" />
+			        </remarks>
+			""")]
 		[Export ("dismissWithCompletion:")]
 		void Dismiss ([NullAllowed] Action completion);
 
@@ -2751,15 +2766,19 @@ namespace PassKit {
 	[DisableDefaultCtor]
 	interface PKSecureElementPass {
 
+		/// <summary>An obfuscated unique identifier for the account number of the payment card. (Read-only)</summary>
 		[Export ("primaryAccountIdentifier")]
 		string PrimaryAccountIdentifier { get; }
 
+		/// <summary>A version of the <see cref="PrimaryAccountIdentifier" /> to be displayed to the user. (Read-only)</summary>
 		[Export ("primaryAccountNumberSuffix")]
 		string PrimaryAccountNumberSuffix { get; }
 
+		/// <summary>The device-specific account number. (Read-only)</summary>
 		[Export ("deviceAccountIdentifier", ArgumentSemantic.Strong)]
 		string DeviceAccountIdentifier { get; }
 
+		/// <summary>A version of the <see cref="DeviceAccountIdentifier" /> to be displayed to the user. (Read-only)</summary>
 		[Export ("deviceAccountNumberSuffix", ArgumentSemantic.Strong)]
 		string DeviceAccountNumberSuffix { get; }
 

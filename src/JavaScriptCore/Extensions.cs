@@ -45,11 +45,19 @@ namespace JavaScriptCore {
 			}
 		}
 
+		/// <param name="index">To be added.</param>
+		/// <summary>Gets or sets the item that is indexed by the provided <paramref name="index" />.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		public JSValue this [nuint index] {
 			get { return _ObjectAtIndexedSubscript (index); }
 			set { _SetObject (value, index); }
 		}
 
+		/// <param name="key">To be added.</param>
+		/// <summary>Gets or sets the item that is indexed by the provided <paramref name="key" />.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		public JSValue this [NSObject key] {
 			get { return _ObjectForKeyedSubscript (key); }
 			set { _SetObject (value, key); }

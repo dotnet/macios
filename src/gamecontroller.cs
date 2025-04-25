@@ -641,7 +641,14 @@ namespace GameController {
 		///         <summary>Starts discovery of nearby wireless controllers, and runs the provided completion handler when all discoverable controllers are discovered.</summary>
 		///         <remarks>To be added.</remarks>
 		[Static, Export ("startWirelessControllerDiscoveryWithCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Starts discovery of nearby wireless controllers, and runs the provided completion handler when all discoverable controllers are discovered.</summary>
+			<returns>A task that represents the asynchronous StartWirelessControllerDiscovery operation</returns>
+			<remarks>
+			          <para copied="true">The StartWirelessControllerDiscoveryAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void StartWirelessControllerDiscovery ([NullAllowed] Action completionHandler);
 
 		/// <summary>Stops discovering nearby wireless controllers.</summary>

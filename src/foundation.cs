@@ -13209,6 +13209,7 @@ namespace Foundation {
 		[Export ("completionBlock", ArgumentSemantic.Copy)]
 		Action CompletionBlock { get; set; }
 
+		/// <summary>Blocks the current thread until this operation finishes.</summary>
 		[Export ("waitUntilFinished")]
 		void WaitUntilFinished ();
 
@@ -14092,6 +14093,11 @@ namespace Foundation {
 		[Export ("pathForResource:ofType:inDirectory:forLocalization:")]
 		string PathForResource (string name, [NullAllowed] string ofType, string subpath, string localizationName);
 
+		/// <summary>Get a localized version of the string for the specified key in the specified table.</summary>
+		/// <param name="key">The key to lookup</param>
+		/// <param name="value">The value to return if the key is null, or the key was not found on the localization table.</param>
+		/// <param name="table">The table to search, if the value is null, this uses the Localizable.strings table.</param>
+		/// <summary>A localized version of the string for the specified key in the specified table.</summary>
 		[Export ("localizedStringForKey:value:table:")]
 		NSString GetLocalizedString ([NullAllowed] NSString key, [NullAllowed] NSString value, [NullAllowed] NSString table);
 
@@ -14994,7 +15000,12 @@ namespace Foundation {
 		///           <para>The <paramref name="typeIdentifier" /> must be in the set of values returned by <see cref="M:Foundation.NSItemProviderWriting_Extensions.GetWritableTypeIdentifiersForItemProvider(Foundation.INSItemProviderWriting)" />.</para>
 		///         </remarks>
 		[Abstract]
-		[Async, Export ("loadDataWithTypeIdentifier:forItemProviderCompletionHandler:")]
+		[Async (XmlDocs = """
+			<param name="typeIdentifier">A Universal Type Identifier (UTI) indicating the type of data to load.</param>
+			<summary>Asynchronously loads data for the identified type from an item provider, returning a task that contains the data.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			"""), Export ("loadDataWithTypeIdentifier:forItemProviderCompletionHandler:")]
 		[return: NullAllowed]
 		NSProgress LoadData (string typeIdentifier, Action<NSData, NSError> completionHandler);
 	}
@@ -16351,9 +16362,16 @@ namespace Foundation {
 		[Export ("numberFromString:")]
 		NSNumber NumberFromString (string text);
 
+#if !XAMCORE_5_0
+		[Obsolete ("Use 'GetLocalizedString' instead.")]
 		[Static]
 		[Export ("localizedStringFromNumber:numberStyle:")]
 		string LocalizedStringFromNumbernumberStyle (NSNumber num, NSNumberFormatterStyle nstyle);
+#endif
+
+		[Static]
+		[Export ("localizedStringFromNumber:numberStyle:")]
+		string GetLocalizedString (NSNumber number, NSNumberFormatterStyle numberStyle);
 
 		//Detected properties
 		[Export ("numberStyle")]
@@ -18280,6 +18298,14 @@ namespace Foundation {
 	[Model]
 	[Protocol]
 	partial interface NSFilePresenter {
+		/// <summary>Gets URL of presented item.</summary>
+		/// <value>
+		///         </value>
+		/// <remarks>
+		///           <para>
+		///           </para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Abstract]
 		[Export ("presentedItemURL", ArgumentSemantic.Retain)]
 		[NullAllowed]
@@ -18289,6 +18315,9 @@ namespace Foundation {
 		NSUrl PresentedItemURL { get; }
 #endif
 
+		/// <summary>Gets the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:Monotouch.Foundation.NSOperationQueue&amp;scope=Xamarin" title="T:Monotouch.Foundation.NSOperationQueue">T:Monotouch.Foundation.NSOperationQueue</a></format> on which presenter-related methods are executed.</summary>
+		/// <value>The <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:Monotouch.Foundation.NSOperationQueue&amp;scope=Xamarin" title="T:Monotouch.Foundation.NSOperationQueue">T:Monotouch.Foundation.NSOperationQueue</a></format> on which methods are executed.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("presentedItemOperationQueue", ArgumentSemantic.Retain)]
 #if NET

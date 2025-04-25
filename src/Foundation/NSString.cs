@@ -151,6 +151,9 @@ namespace Foundation {
 			return CreateWithCharacters (handle, value, start, length, autorelease);
 		}
 
+		/// <param name="handle">Handle to the Objective-C native NSString object.</param>
+		/// <summary>Releases a native Objective-C string.</summary>
+		/// <remarks>Use this method to release Objective-C NSString handles that were previously allocated with <see cref="M:Foundation.NSString.CreateNative(System.String)" />.</remarks>
 		public static void ReleaseNative (NativeHandle handle)
 		{
 			NSObject.DangerousRelease (handle);
@@ -196,6 +199,10 @@ namespace Foundation {
 			return FromHandle (Handle);
 		}
 
+		/// <param name="str">The NSString.</param>
+		/// <summary>Converts the NSString to a CIL/C# string.</summary>
+		/// <returns />
+		/// <remarks>To be added.</remarks>
 		public static implicit operator string (NSString str)
 		{
 			if (((object) str) is null)
@@ -210,6 +217,9 @@ namespace Foundation {
 			return new NSString (str);
 		}
 
+		/// <summary>Utility method that returns a string from a pointer that points to an Objective-C NSString object.</summary>
+		/// <param name="usrhandle">Pointer to an Objective-C NSString object (not the managed NSString object).</param>
+		/// <returns>The Objective-C string in the NSString as a C# string.</returns>
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		[Obsolete ("Use of 'CFString.FromHandle' offers better performance.")]
 		public static string FromHandle (NativeHandle usrhandle)
@@ -217,6 +227,10 @@ namespace Foundation {
 			return FromHandle (usrhandle, false);
 		}
 
+		/// <summary>Utility method that returns a string from a pointer that points to an Objective-C NSString object.</summary>
+		/// <param name="handle">Pointer to an Objective-C NSString object (not the managed NSString object).</param>
+		/// <param name="owns">Whether the <paramref name="handle" /> should be released or not.</param>
+		/// <returns>The Objective-C string in the NSString as a C# string.</returns>
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		[Obsolete ("Use of 'CFString.FromHandle' offers better performance.")]
 		public static string FromHandle (NativeHandle handle, bool owns)

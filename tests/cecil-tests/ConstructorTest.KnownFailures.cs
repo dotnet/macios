@@ -22,7 +22,6 @@ namespace Cecil.Tests {
 			"Foundation.NSObject::.ctor(Foundation.NSObjectFlag)",
 			"Foundation.NSObject::.ctor(ObjCRuntime.NativeHandle,System.Boolean)",
 			"Foundation.NSSynchronizationContextDispatcher::.ctor(System.Threading.SendOrPostCallback,System.Object)",
-			"Foundation.NSThread::.ctor(Foundation.NSObject,ObjCRuntime.Selector,Foundation.NSObject)",
 			"Foundation.NSTimerActionDispatcher::.ctor(System.Action`1<Foundation.NSTimer>)",
 			"GameplayKit.GKPath::.ctor(System.Numerics.Vector2[],System.Single,System.Boolean)",
 			"GameplayKit.GKPath::.ctor(System.Numerics.Vector3[],System.Single,System.Boolean)",

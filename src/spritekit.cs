@@ -45,9 +45,14 @@ using NSEvent = System.Object;
 namespace SpriteKit {
 	/// <summary>The delegate that acts as the enumeration handler for <see cref="M:SpriteKit.SKNode.EnumerateChildNodes(System.String,SpriteKit.SKNodeChildEnumeratorHandler)" />.</summary>
 	delegate void SKNodeChildEnumeratorHandler (SKNode node, out bool stop);
+#if !XAMCORE_5_0
 	/// <summary>A method that maps <paramref name="time" />, a value between 0 and 1, to a return value between 0 snd 1.</summary>
 	///     <remarks>Application developers should assign this delegate to a method that returns 0 for a <paramref name="time" /> value of 0, and 1 for a <paramref name="time" /> value of 1.</remarks>
 	delegate float SKActionTimingFunction2 (float /* float, not CGFloat */ time);
+#endif
+	/// <summary>A method that maps <paramref name="time" />, a value between 0 and 1, to a return value between 0 snd 1.</summary>
+	/// <remarks>Application developers should assign this delegate to a method that returns 0 for a <paramref name="time" /> value of 0, and 1 for a <paramref name="time" /> value of 1.</remarks>
+	delegate float SKActionTimingFunction (float /* float, not CGFloat */ time);
 
 	/// <summary>Renders a Scene Kit image as a textured 2D image. Used to incorporate Scene Kit content into a Sprite Kit app.</summary>
 	///     
@@ -2575,9 +2580,23 @@ namespace SpriteKit {
 		[Static, Export ("strengthBy:duration:")]
 		SKAction StrengthBy (float /* float, not CGFloat */ strength, double sec);
 
+		/// <summary>Sets the function that transforms the times at which actions occur.</summary>
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("timingFunction", ArgumentSemantic.Assign)]
+#if XAMCORE_5_0
+		SKActionTimingFunction TimingFunction { get; set; }
+#else
+		[Obsolete ("Use 'TimingFunction' instead.")]
 		SKActionTimingFunction2 TimingFunction2 { get; set; }
+#endif
+
+#if !XAMCORE_5_0
+		/// <summary>Sets the function that transforms the times at which actions occur.</summary>
+		[MacCatalyst (13, 1)]
+		[NullAllowed, Export ("timingFunction", ArgumentSemantic.Assign)]
+		[Sealed]
+		SKActionTimingFunction TimingFunction { get; set; }
+#endif
 
 		[MacCatalyst (13, 1)]
 		[Static, Export ("falloffBy:duration:")]

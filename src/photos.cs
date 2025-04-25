@@ -345,6 +345,7 @@ namespace Photos {
 		[Export ("networkAccessAllowed", ArgumentSemantic.Assign)]
 		bool NetworkAccessAllowed { [Bind ("isNetworkAccessAllowed")] get; set; }
 
+		/// <summary>Gets or sets the progress handler.</summary>
 		[NullAllowed, Export ("progressHandler", ArgumentSemantic.Copy)]
 		PHProgressHandler ProgressHandler { get; set; }
 
@@ -379,9 +380,20 @@ namespace Photos {
 	[BaseType (typeof (PHAsset))]
 	interface PHAssetContentEditingInputExtensions {
 
+		/// <param name="options">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("requestContentEditingInputWithOptions:completionHandler:")]
 		nuint RequestContentEditingInput ([NullAllowed] PHContentEditingInputRequestOptions options, PHContentEditingHandler completionHandler);
 
+		/// <param name="requestID">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("cancelContentEditingInputRequest:")]
 		void CancelContentEditingInputRequest (nuint requestID);
 	}
@@ -434,6 +446,10 @@ namespace Photos {
 		[Export ("replaceAssetsAtIndexes:withAssets:")]
 		void ReplaceAssets (NSIndexSet indexes, PHObject [] assets);
 
+		/// <param name="fromIndexes">To be added.</param>
+		/// <param name="toIndex">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("moveAssetsAtIndexes:toIndex:")]
 		void MoveAssets (NSIndexSet fromIndexes, nuint toIndex);
 	}
@@ -815,6 +831,10 @@ namespace Photos {
 		[Export ("replaceChildCollectionsAtIndexes:withChildCollections:")]
 		void ReplaceChildCollection (NSIndexSet indexes, PHCollection [] collections);
 
+		/// <param name="indexes">To be added.</param>
+		/// <param name="toIndex">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("moveChildCollectionsAtIndexes:toIndex:")]
 		void MoveChildCollections (NSIndexSet indexes, nuint toIndex);
 	}
@@ -967,6 +987,10 @@ namespace Photos {
 		[Export ("count")]
 		nint Count { get; }
 
+		/// <param name="index">To be added.</param>
+		/// <summary>Returns that object at <paramref name="index" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("objectAtIndex:")]
 		NSObject ObjectAt (nint index);
 
@@ -1183,6 +1207,7 @@ namespace Photos {
 		[Export ("requestExportSessionForVideo:options:exportPreset:resultHandler:")]
 		int /* PHImageRequestID = int32_t */ RequestExportSession (PHAsset asset, [NullAllowed] PHVideoRequestOptions options, string exportPreset, PHImageManagerRequestExportHandler resultHandler);
 
+		/// <summary>Requests the AV Foundation objects that the asset comprises.</summary>
 		[MacCatalyst (13, 1)]
 		[Export ("requestAVAssetForVideo:options:resultHandler:")]
 #if NET
@@ -1272,6 +1297,9 @@ namespace Photos {
 	[BaseType (typeof (NSObject))]
 	interface PHPhotoLibraryChangeObserver {
 
+		/// <param name="changeInstance">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("photoLibraryDidChange:")]
 		void PhotoLibraryDidChange (PHChange changeInstance);
@@ -1321,7 +1349,15 @@ namespace Photos {
 		[Deprecated (PlatformName.TvOS, 14, 0, message: "Use 'RequestAuthorization(PHAccessLevel, Action<PHAuthorizationStatus>)' overload instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 14, 0, message: "Use 'RequestAuthorization(PHAccessLevel, Action<PHAuthorizationStatus>)' overload instead.")]
 		[Static, Export ("requestAuthorization:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Asynchronously shows, if necessary, a permissions dialog allowing the user to allow or deny the application access to the photo library.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous RequestAuthorization operation.  The value of the TResult parameter is of type System.Action&lt;Photos.PHAuthorizationStatus&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The RequestAuthorizationAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			        </remarks>
+			""")]
 		void RequestAuthorization (Action<PHAuthorizationStatus> handler);
 
 		[TV (14, 0), iOS (14, 0)]
@@ -1388,6 +1424,10 @@ namespace Photos {
 		[Export ("cloudIdentifierMappingsForLocalIdentifiers:")]
 		NSDictionary<NSString, PHCloudIdentifierMapping> GetCloudIdentifierMappings (string [] localIdentifiers);
 
+		/// <param name="cloudIdentifiers">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[NoiOS]
 		[NoMacCatalyst]
@@ -1395,6 +1435,10 @@ namespace Photos {
 		[Export ("localIdentifiersForCloudIdentifiers:")]
 		string [] GetLocalIdentifiers (PHCloudIdentifier [] cloudIdentifiers);
 
+		/// <param name="localIdentifiers">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[NoiOS]
 		[NoMacCatalyst]
@@ -1657,18 +1701,30 @@ namespace Photos {
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface PHLivePhotoFrame {
+		/// <summary>Gets the image that will be processed.</summary>
+		/// <value>The image that will be processed.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("image")]
 		CIImage Image { get; }
 
+		/// <summary>Gets the time, in seconds from the beginning of the Live Photo, when the image appears.</summary>
+		/// <value>The time, in seconds from the beginning of the Live Photo, when the image appears.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("time")]
 		CMTime Time { get; }
 
+		/// <summary>Gets a value that tells whether the image is a still photo or a video frame.</summary>
+		/// <value>A value that tells whether the image is a still photo or a video frame.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("type")]
 		PHLivePhotoFrameType Type { get; }
 
+		/// <summary>Gets the relative scale of <see cref="T:Photos.IPHLivePhotoFrame" /> compared to the Live Photo.</summary>
+		/// <value>The relative scale of <see cref="T:Photos.IPHLivePhotoFrame" /> compared to the Live Photo.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("renderScale")]
 		nfloat RenderScale { get; }

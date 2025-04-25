@@ -26,6 +26,11 @@ namespace GameplayKit {
 			return GetNodeAt<GKGridGraphNode> (position);
 		}
 #endif
+		/// <typeparam name="NodeType">To be added.</typeparam>
+		/// <param name="position">To be added.</param>
+		/// <summary>Gets the node at the specified <paramref name="position" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		public NodeType? GetNodeAt<NodeType> (Vector2i position) where NodeType : GKGridGraphNode
 		{
 			return Runtime.GetNSObject<NodeType> (_GetNodeAt (position));

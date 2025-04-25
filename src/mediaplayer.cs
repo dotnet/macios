@@ -620,7 +620,13 @@ namespace MediaPlayer {
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>To be added.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous RequestAuthorization operation.  The value of the TResult parameter is of type System.Action&lt;MediaPlayer.MPMediaLibraryAuthorizationStatus&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("requestAuthorization:")]
 		void RequestAuthorization (Action<MPMediaLibraryAuthorizationStatus> handler);
 
@@ -765,13 +771,19 @@ namespace MediaPlayer {
 		///         <param name="mediaItemCollection">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[Export ("mediaPicker:didPickMediaItems:"), EventArgs ("ItemsPicked"), EventName ("ItemsPicked")]
+		[Export ("mediaPicker:didPickMediaItems:"), EventArgs ("ItemsPicked", XmlDocs = """
+			<summary>Event that is raised when items are picked.</summary>
+			<remarks>To be added.</remarks>
+			"""), EventName ("ItemsPicked")]
 		void MediaItemsPicked (MPMediaPickerController sender, MPMediaItemCollection mediaItemCollection);
 
 		/// <param name="sender">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[Export ("mediaPickerDidCancel:"), EventArgs ("MPMediaPickerController"), EventName ("DidCancel")]
+		[Export ("mediaPickerDidCancel:"), EventArgs ("MPMediaPickerController", XmlDocs = """
+			<summary>Method that is called after the user dismisses the picker by canceling it.</summary>
+			<remarks>To be added.</remarks>
+			"""), EventName ("DidCancel")]
 		void MediaPickerDidCancel (MPMediaPickerController sender);
 	}
 
@@ -1431,42 +1443,65 @@ namespace MediaPlayer {
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface MPMediaPlayback {
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("play")]
 		void Play ();
 
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("stop")]
 		void Stop ();
 
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("pause")]
 		void Pause ();
 
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("prepareToPlay")]
 		void PrepareToPlay ();
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("isPreparedToPlay")]
 		bool IsPreparedToPlay { get; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("currentPlaybackTime")]
 		double CurrentPlaybackTime { get; set; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("currentPlaybackRate")]
 		float CurrentPlaybackRate { get; set; } // float, not CGFloat
 
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("beginSeekingForward")]
 		void BeginSeekingForward ();
 
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("beginSeekingBackward")]
 		void BeginSeekingBackward ();
 
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("endSeeking")]
 		void EndSeeking ();
@@ -1998,6 +2033,9 @@ namespace MediaPlayer {
 		[Export ("keyspace")]
 		string Keyspace { get; }
 
+		/// <summary>The timed metadata.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Export ("value")]
 		NSObject Value { get; }
 
@@ -2178,7 +2216,14 @@ namespace MediaPlayer {
 		///         <summary>Puts the first item in the queue into the buffer and runs a handler after the item has been buffered.</summary>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Puts the first item in the queue into the buffer and runs a handler after the item has been buffered.</summary>
+			<returns>A task that represents the asynchronous PrepareToPlay operation</returns>
+			<remarks>
+			          <para copied="true">The PrepareToPlayAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("prepareToPlayWithCompletionHandler:")]
 		void PrepareToPlay (Action<NSError> completionHandler);
 
@@ -3789,6 +3834,9 @@ namespace MediaPlayer {
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface MPSystemMusicPlayerController {
+		/// <param name="queueDescriptor">The queue descriptor for the media items to play.</param>
+		/// <summary>Opens the Music app and plays the specified items.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("openToPlayQueueDescriptor:")]
@@ -3800,10 +3848,16 @@ namespace MediaPlayer {
 	[NoMac]
 	[MacCatalyst (13, 1)]
 	interface NSUserActivity_MediaPlayerAdditions {
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Export ("externalMediaContentIdentifier")]
 		NSString GetExternalMediaContentIdentifier ();
 
+		/// <param name="identifier">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("setExternalMediaContentIdentifier:")]
 		void SetExternalMediaContentIdentifier ([NullAllowed] NSString identifier);
 	}
@@ -3812,6 +3866,9 @@ namespace MediaPlayer {
 	[Category]
 	[BaseType (typeof (AVMediaSelectionOption))]
 	interface AVMediaSelectionOption_MPNowPlayingInfoLanguageOptionAdditions {
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("makeNowPlayingInfoLanguageOption")]
 		[return: NullAllowed]
 		MPNowPlayingInfoLanguageOption CreateNowPlayingInfoLanguageOption ();
@@ -3821,6 +3878,9 @@ namespace MediaPlayer {
 	[Category]
 	[BaseType (typeof (AVMediaSelectionGroup))]
 	interface AVMediaSelectionGroup_MPNowPlayingInfoLanguageOptionAdditions {
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("makeNowPlayingInfoLanguageOptionGroup")]
 		MPNowPlayingInfoLanguageOptionGroup CreateNowPlayingInfoLanguageOptionGroup ();
 	}

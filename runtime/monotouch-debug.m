@@ -328,7 +328,7 @@ void monotouch_configure_debugging ()
 		unsetenv ("__XAMARIN_DEBUG_CONNECT_TIMEOUT__");
 	}
 
-#if MONOTOUCH && (defined(__i386__) || defined (__x86_64__))
+#if MONOTOUCH && defined (__x86_64__)
 	// Try to read shared memory as well
 	key_t shmkey;
 	if (xamarin_launch_mode == XamarinLaunchModeApp) {
@@ -411,7 +411,7 @@ void monotouch_configure_debugging ()
 						}
 					}
 				} else if (!strncmp ("USB Debugging: ", line, 15) && (connection_mode == NULL || !strcmp (connection_mode, "default"))) {
-#if defined(__arm__) || defined(__aarch64__)
+#if defined(__aarch64__)
 					debugging_mode = !strncmp ("USB Debugging: 1", line, 16) ? DebuggingModeUsb : DebuggingModeWifi;
 #endif
 				} else if (!strncmp ("Port: ", line, 6) && monodevelop_port == -1) {
@@ -992,7 +992,7 @@ monotouch_process_connection (int fd)
 			if (!strcmp (prof, "no")) {
 				/* disabled */
 			} else if (!strncmp (prof, "log:", 4)) {
-#if defined(__i386__) || defined (__x86_64__)
+#if defined (__x86_64__)
 				profiler_description = strdup (prof);
 #else
 				use_fd = true;

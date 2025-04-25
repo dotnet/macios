@@ -802,6 +802,20 @@ namespace GLKit {
 		[return: NullAllowed]
 		GLKTextureInfo CubeMapFromUrl (NSUrl url, [NullAllowed] NSDictionary textureOperations, out NSError error);
 
+		/// <param name="name">To be added.</param>
+		/// <param name="scaleFactor">To be added.</param>
+		/// <param name="bundle">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="options">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="outError">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static]
 		[Export ("textureWithName:scaleFactor:bundle:options:error:")]
 		[return: NullAllowed]
@@ -816,6 +830,10 @@ namespace GLKit {
 		[Export ("initWithShareContext:")]
 		NativeHandle Constructor (NSOpenGLContext context);
 
+		/// <param name="sharegroup">Share context where the textures will be loaded.</param>
+		/// <summary>Creates a GLKTextureLoader for an EAGLSharegroup, used for asynchronous texture loading.</summary>
+		/// <remarks>
+		///         </remarks>
 		[NoMac]
 		[Export ("initWithSharegroup:")]
 		NativeHandle Constructor (EAGLSharegroup sharegroup);
@@ -980,8 +998,39 @@ namespace GLKit {
 			""")]
 		void BeginLoadCubeMap (NSUrl filePath, [NullAllowed] NSDictionary textureOperations, [NullAllowed] DispatchQueue queue, GLKTextureLoaderCallback onComplete);
 
+		/// <param name="name">To be added.</param>
+		/// <param name="scaleFactor">To be added.</param>
+		/// <param name="bundle">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="options">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="queue">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="block">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("textureWithName:scaleFactor:bundle:options:queue:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="name">To be added.</param>
+			<param name="scaleFactor">To be added.</param>
+			<param name="bundle">To be added.</param>
+			<param name="options">To be added.</param>
+			<param name="queue">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous BeginTextureLoad operation.   The value of the TResult parameter is a <see cref="T:GLKit.GLKTextureLoaderCallback" />.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The BeginTextureLoadAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void BeginTextureLoad (string name, nfloat scaleFactor, [NullAllowed] NSBundle bundle, [NullAllowed] NSDictionary<NSString, NSNumber> options, [NullAllowed] DispatchQueue queue, GLKTextureLoaderCallback block);
 
 		/// <summary>Represents the value associated with the constant GLKTextureLoaderApplyPremultiplication</summary>
@@ -1053,6 +1102,12 @@ namespace GLKit {
 	[Deprecated (PlatformName.TvOS, 12, 0, message: "Use 'Metal' instead.")]
 	[BaseType (typeof (UIView), Delegates = new string [] { "WeakDelegate" }, Events = new Type [] { typeof (GLKViewDelegate) })]
 	interface GLKView {
+		/// <param name="frame">Frame used by the view, expressed in iOS points.</param>
+		/// <summary>Initializes the GLKView with the specified frame.</summary>
+		/// <remarks>
+		///           <para>This constructor is used to programmatically create a new instance of GLKView with the specified dimension in the frame.   The object will only be displayed once it has been added to a view hierarchy by calling AddSubview in a containing view.</para>
+		///           <para>This constructor is not invoked when deserializing objects from storyboards or XIB filesinstead the constructor that takes an NSCoder parameter is invoked.</para>
+		///         </remarks>
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect frame);
 
@@ -1128,6 +1183,10 @@ namespace GLKit {
 		[Export ("enableSetNeedsDisplay")]
 		bool EnableSetNeedsDisplay { get; set; }
 
+		/// <param name="frame">To be added.</param>
+		/// <param name="context">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithFrame:context:")]
 		NativeHandle Constructor (CGRect frame, EAGLContext context);
 
@@ -1173,8 +1232,15 @@ namespace GLKit {
 	[Model]
 	[Protocol]
 	interface GLKViewDelegate {
+		/// <param name="view">To be added.</param>
+		/// <param name="rect">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
-		[Export ("glkView:drawInRect:"), EventArgs ("GLKViewDraw")]
+		[Export ("glkView:drawInRect:"), EventArgs ("GLKViewDraw", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DrawInRect (GLKView view, CGRect rect);
 	}
 
@@ -1184,6 +1250,16 @@ namespace GLKit {
 	[Deprecated (PlatformName.TvOS, 12, 0, message: "Use 'Metal' instead.")]
 	[BaseType (typeof (UIViewController))]
 	interface GLKViewController : GLKViewDelegate {
+		/// <param name="nibName">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="bundle">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Creates a new <see cref="T:GLKit.GLKViewController" /> from the specified Nib name in the specified <paramref name="bundle" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithNibName:bundle:")]
 		[PostGet ("NibBundle")]
 		NativeHandle Constructor ([NullAllowed] string nibName, [NullAllowed] NSBundle bundle);
@@ -1286,10 +1362,17 @@ namespace GLKit {
 	[Model]
 	[Protocol]
 	interface GLKViewControllerDelegate {
+		/// <param name="controller">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("glkViewControllerUpdate:")]
 		void Update (GLKViewController controller);
 
+		/// <param name="controller">To be added.</param>
+		/// <param name="pause">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("glkViewController:willPause:")]
 		void WillPause (GLKViewController controller, bool pause);
 	}

@@ -210,7 +210,14 @@ namespace CoreSpotlight {
 		///         <summary>Removes all items and runs <paramref name="completionHandler" /> when finished.</summary>
 		///         <remarks>To be added.</remarks>
 		[Export ("deleteAllSearchableItemsWithCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Asynchronously removes all items.</summary>
+			<returns>A task that represents the asynchronous DeleteAll operation</returns>
+			<remarks>
+			          <para copied="true">The DeleteAllAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void DeleteAll ([NullAllowed] Action<NSError> completionHandler);
 
 		// from interface CSExternalProvider (CSSearchableIndex)
@@ -238,12 +245,24 @@ namespace CoreSpotlight {
 	[BaseType (typeof (CSSearchableIndex))]
 	interface CSSearchableIndex_CSOptionalBatchingExtension {
 
+		/// <summary>Begins an index update batch.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("beginIndexBatch")]
 		void BeginIndexBatch ();
 
+		/// <param name="clientState">To be added.</param>
+		/// <param name="completionHandler">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Ends an index update batch, relying on the 250 bytes of information for crash recovery, and calls <paramref name="completionHandler" /> when finished.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("endIndexBatchWithClientState:completionHandler:")]
 		void EndIndexBatch (NSData clientState, [NullAllowed] Action<NSError> completionHandler);
 
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>Fetches the client state and runs <paramref name="completionHandler" /> when finished..</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("fetchLastClientStateWithCompletionHandler:")]
 		void FetchLastClientState (CSSearchableIndexFetchHandler completionHandler);
 

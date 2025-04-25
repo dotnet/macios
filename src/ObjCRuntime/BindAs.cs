@@ -205,17 +205,7 @@ namespace ObjCRuntime {
 		static System.Single xamarin_nsnumber_to_float (IntPtr value) { if (value == IntPtr.Zero) return default (System.Single); return Runtime.GetNSObject<NSNumber> (value)?.FloatValue ?? default (System.Single); }
 		static System.Double xamarin_nsnumber_to_double (IntPtr value) { if (value == IntPtr.Zero) return default (System.Double); return Runtime.GetNSObject<NSNumber> (value)?.DoubleValue ?? default (System.Double); }
 		static System.Boolean xamarin_nsnumber_to_bool (IntPtr value) { if (value == IntPtr.Zero) return default (System.Boolean); return Runtime.GetNSObject<NSNumber> (value)?.BoolValue ?? default (System.Boolean); }
-		static nfloat xamarin_nsnumber_to_nfloat (IntPtr value)
-		{
-			if (value == IntPtr.Zero)
-				return default (nfloat);
-			var number = Runtime.GetNSObject<NSNumber> (value);
-			if (number is null)
-				return default (nfloat);
-			if (IntPtr.Size == 4)
-				return (nfloat) number.FloatValue;
-			return (nfloat) number.DoubleValue;
-		}
+		static nfloat xamarin_nsnumber_to_nfloat (IntPtr value) { if (value == IntPtr.Zero) return default (nfloat); return (nfloat?) Runtime.GetNSObject<NSNumber> (value)?.DoubleValue ?? default (nfloat); }
 
 		static System.SByte? xamarin_nsnumber_to_nullable_sbyte (IntPtr value) { return Runtime.GetNSObject<NSNumber> (value)?.SByteValue ?? null; }
 		static System.Byte? xamarin_nsnumber_to_nullable_byte (IntPtr value) { return Runtime.GetNSObject<NSNumber> (value)?.ByteValue ?? null; }
@@ -230,17 +220,7 @@ namespace ObjCRuntime {
 		static System.Single? xamarin_nsnumber_to_nullable_float (IntPtr value) { return Runtime.GetNSObject<NSNumber> (value)?.FloatValue ?? null; }
 		static System.Double? xamarin_nsnumber_to_nullable_double (IntPtr value) { return Runtime.GetNSObject<NSNumber> (value)?.DoubleValue ?? null; }
 		static System.Boolean? xamarin_nsnumber_to_nullable_bool (IntPtr value) { return Runtime.GetNSObject<NSNumber> (value)?.BoolValue ?? null; }
-		static nfloat? xamarin_nsnumber_to_nullable_nfloat (IntPtr value)
-		{
-			if (value == IntPtr.Zero)
-				return null;
-			var number = Runtime.GetNSObject<NSNumber> (value);
-			if (number is null)
-				return null;
-			if (IntPtr.Size == 4)
-				return (nfloat) number.FloatValue;
-			return (nfloat) number.DoubleValue;
-		}
+		static nfloat? xamarin_nsnumber_to_nullable_nfloat (IntPtr value) { return (nfloat?) Runtime.GetNSObject<NSNumber> (value)?.DoubleValue ?? null; }
 
 		static IntPtr xamarin_sbyte_to_nsnumber (System.SByte value) { return NSNumber.FromSByte (value).DangerousRetain ().DangerousAutorelease ().Handle; }
 		static IntPtr xamarin_byte_to_nsnumber (System.Byte value) { return NSNumber.FromByte (value).DangerousRetain ().DangerousAutorelease ().Handle; }
@@ -255,12 +235,7 @@ namespace ObjCRuntime {
 		static IntPtr xamarin_float_to_nsnumber (System.Single value) { return NSNumber.FromFloat (value).DangerousRetain ().DangerousAutorelease ().Handle; }
 		static IntPtr xamarin_double_to_nsnumber (System.Double value) { return NSNumber.FromDouble (value).DangerousRetain ().DangerousAutorelease ().Handle; }
 		static IntPtr xamarin_bool_to_nsnumber (System.Boolean value) { return NSNumber.FromBoolean (value).DangerousRetain ().DangerousAutorelease ().Handle; }
-		static IntPtr xamarin_nfloat_to_nsnumber (nfloat value)
-		{
-			if (IntPtr.Size == 4)
-				return NSNumber.FromFloat ((float) value).DangerousRetain ().DangerousAutorelease ().Handle;
-			return NSNumber.FromDouble ((double) value).DangerousRetain ().DangerousAutorelease ().Handle;
-		}
+		static IntPtr xamarin_nfloat_to_nsnumber (nfloat value) { return NSNumber.FromDouble ((double) value).DangerousRetain ().DangerousAutorelease ().Handle; }
 
 		static IntPtr xamarin_nullable_sbyte_to_nsnumber (System.SByte? value) { if (!value.HasValue) return IntPtr.Zero; return NSNumber.FromSByte (value.Value).DangerousRetain ().DangerousAutorelease ().Handle; }
 		static IntPtr xamarin_nullable_byte_to_nsnumber (System.Byte? value) { if (!value.HasValue) return IntPtr.Zero; return NSNumber.FromByte (value.Value).DangerousRetain ().DangerousAutorelease ().Handle; }
@@ -275,13 +250,6 @@ namespace ObjCRuntime {
 		static IntPtr xamarin_nullable_float_to_nsnumber (System.Single? value) { if (!value.HasValue) return IntPtr.Zero; return NSNumber.FromFloat (value.Value).DangerousRetain ().DangerousAutorelease ().Handle; }
 		static IntPtr xamarin_nullable_double_to_nsnumber (System.Double? value) { if (!value.HasValue) return IntPtr.Zero; return NSNumber.FromDouble (value.Value).DangerousRetain ().DangerousAutorelease ().Handle; }
 		static IntPtr xamarin_nullable_bool_to_nsnumber (System.Boolean? value) { if (!value.HasValue) return IntPtr.Zero; return NSNumber.FromBoolean (value.Value).DangerousRetain ().DangerousAutorelease ().Handle; }
-		static IntPtr xamarin_nullable_nfloat_to_nsnumber (nfloat? value)
-		{
-			if (!value.HasValue)
-				return IntPtr.Zero;
-			if (IntPtr.Size == 4)
-				return NSNumber.FromFloat ((float) value.Value).DangerousRetain ().DangerousAutorelease ().Handle;
-			return NSNumber.FromDouble ((double) value.Value).DangerousRetain ().DangerousAutorelease ().Handle;
-		}
+		static IntPtr xamarin_nullable_nfloat_to_nsnumber (nfloat? value) { if (!value.HasValue) return IntPtr.Zero; return NSNumber.FromDouble ((double) value.Value).DangerousRetain ().DangerousAutorelease ().Handle; }
 	}
 }

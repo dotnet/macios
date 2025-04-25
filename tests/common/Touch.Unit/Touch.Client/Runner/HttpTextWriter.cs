@@ -76,7 +76,7 @@ namespace MonoTouch.NUnit {
 					throw new Exception ("Failed to send data.");
 				}
 				Console.WriteLine ("Resending data: {0} Length: {1} to: {2} Attempts left: {3}", action, uploadData.Length, url.AbsoluteString, attempts_left);
-			};
+			}
 		}
 
 		async void SendThread ()

@@ -387,6 +387,12 @@ namespace CoreMidi {
 		[Export ("hostWithName:netServiceName:netServiceDomain:")]
 		MidiNetworkHost Create (string hostName, string netServiceName, string netServiceDomain);
 
+		/// <param name="hostName">To be added.</param>
+		/// <param name="address">To be added.</param>
+		/// <param name="port">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static]
 		[Export ("hostWithName:address:port:")]
 		MidiNetworkHost Create (string hostName, string address, nint port);

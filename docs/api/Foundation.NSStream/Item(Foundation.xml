@@ -1,0 +1,130 @@
+<Documentation>
+  <Docs DocId="P:Foundation.NSStream.Item(Foundation.NSString)">
+        <param name="key">The property to set on the NSStream.</param>
+        <summary>Sets a configuration key on the NSStream.</summary>
+        <value>
+        </value>
+        <remarks>
+          <para>
+	    The following is a list of possible keys that you can use, and the possible values to use
+          </para>
+          <para>
+            <list type="table">
+              <listheader>
+                <term>Key</term>
+                <description>Possible Values</description>
+              </listheader>
+              <item>
+                <term>
+                  <see cref="P:Foundation.NSStream.SocketSecurityLevelKey" />
+                </term>
+                <description>
+                  <para>
+		  The security level used by the SSL/TLS stack.   It should be one of:
+                  </para>
+                  <para>
+                    <list type="bullet">
+                      <item>
+                        <term>
+                          <see cref="P:Foundation.NSStream.SocketSecurityLevelNone" />: No security level set for the stream.</term>
+                      </item>
+                      <item>
+                        <term>
+                          <see cref="P:Foundation.NSStream.SocketSecurityLevelSslV2" />: Use SSLv2 on the stream.</term>
+                      </item>
+                      <item>
+                        <term>
+                          <see cref="P:Foundation.NSStream.SocketSecurityLevelSslV3" />: Use SSLv3 on the stream.</term>
+                      </item>
+                      <item>
+                        <term>
+                          <see cref="P:Foundation.NSStream.SocketSecurityLevelTlsV1" />: Use TLSv1 on the stream.</term>
+                      </item>
+                      <item>
+                        <term>
+                          <see cref="P:Foundation.NSStream.SocketSecurityLevelNegotiatedSsl" />: Use the highest possible security protocol that can be negotiated on the stream.</term>
+                      </item>
+                    </list>
+                  </para>
+                </description>
+              </item>
+              <item>
+                <term>
+                  <see cref="P:Foundation.NSStream.SocksProxyConfigurationKey" />
+                </term>
+                <description>
+                  <para>Set to a dictionary of configuration information for a SOCKS proxy.</para>
+                  <para>The list of possible values in this dictionary include:</para>
+                  <para>
+                    <list type="bullet">
+                      <item>
+                        <term>
+                          <see cref="P:Foundation.NSStream.SocksProxyHostKey" />: NSString containing the SOCKS proxy host name.</term>
+                      </item>
+                      <item>
+                        <term>
+                          <see cref="P:Foundation.NSStream.SocksProxyPortKey" />: NSNumber containing the SOCKS proxy host port.</term>
+                      </item>
+                      <item>
+                        <term>
+                          <see cref="P:Foundation.NSStream.SocksProxyVersionKey" />: The SOCKS proxy server version, use <see cref="P:Foundation.NSStream.SocksProxyVersion4" />
+		      or <see cref="P:Foundation.NSStream.SocksProxyVersion5" />.
+		    </term>
+                      </item>
+                      <item>
+                        <term>
+                          <see cref="P:Foundation.NSStream.SocksProxyUserKey" />: NSString containing the SOCKS proxy user name.</term>
+                      </item>
+                      <item>
+                        <term>
+                          <see cref="P:Foundation.NSStream.SocksProxyPasswordKey" />: NSString containing the SOCKS proxy password.</term>
+                      </item>
+                    </list>
+                  </para>
+                </description>
+              </item>
+              <item>
+                <term>
+                  <see cref="P:Foundation.NSStream.DataWrittenToMemoryStreamKey" />
+                </term>
+                <description>Value is the NSData that is collecting data on the stream (get only).</description>
+              </item>
+              <item>
+                <term>
+                  <see cref="P:Foundation.NSStream.FileCurrentOffsetKey" />
+                </term>
+                <description>NSNumber containing the position on the stream.</description>
+              </item>
+              <item>
+                <term>
+                  <see cref="P:Foundation.NSStream.NetworkServiceType" />
+                </term>
+                <description>
+                  <para>Type of service that the stream is providing, one of:</para>
+                  <para>
+                    <list type="bullet">
+                      <item>
+                        <term>
+                          <see cref="P:Foundation.NSStream.NetworkServiceTypeBackground" />: Background data.</term>
+                      </item>
+                      <item>
+                        <term>
+                          <see cref="P:Foundation.NSStream.NetworkServiceTypeVideo" />: Video data.</term>
+                      </item>
+                      <item>
+                        <term>
+                          <see cref="P:Foundation.NSStream.NetworkServiceTypeVoice" />: Voice service.</term>
+                      </item>
+                      <item>
+                        <term>
+                          <see cref="P:Foundation.NSStream.NetworkServiceTypeVoIP" />: Voice Over IP.</term>
+                      </item>
+                    </list>
+                  </para>
+                </description>
+              </item>
+            </list>
+          </para>
+        </remarks>
+      </Docs>
+</Documentation>

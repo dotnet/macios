@@ -186,4 +186,13 @@ void Setup ()
     <altmember cref="M:UIKit.UITableView.RegisterClassForCellReuse" />
     <altmember cref="M:UIKit.UITableView.RegisterNibForCellReuse" />
   </Docs>
+  <Docs DocId="M:UIKit.UITableView.MoveSection(System.IntPtr,System.IntPtr)">
+        <param name="fromSection">Index of the section to move.</param>
+        <param name="toSection">Destination index for the section. The section currently at this index is moved up or down to accomodate the moved section.</param>
+        <summary>Moves a section to a new location in the table view.</summary>
+        <remarks>
+          <para>This method can be combined with other MoveSection, <see cref="M:UIKit.UITableView.InsertSections(Foundation.NSIndexSet,UIKit.UITableViewRowAnimation)" /> and <see cref="M:UIKit.UITableView.DeleteSections(Foundation.NSIndexSet,UIKit.UITableViewRowAnimation)" /> operations within an animation block defined by <see cref="M:UIKit.UITableView.BeginUpdates" /> and <see cref="M:UIKit.UITableView.EndUpdates" />, so that all the changes occur in a single animation.</para>
+          <para>Unlike the insertion and deletion methods, moving a section does not use an animation paramter. Moved sections always animate straight from their starting position to their new position. Only one section can be moved per method call, however to move multiple sections application developers can call this method repeatedly within a <see cref="M:UIKit.UITableView.BeginUpdates" />-<see cref="M:UIKit.UITableView.EndUpdates" /> animation block.</para>
+        </remarks>
+      </Docs>
 </Documentation>

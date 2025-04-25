@@ -405,6 +405,11 @@
             Summary for T2.#ctor(String)
             </summary>
         </member>
+        <member name="M:XmlDocumentation.T1.AsyncMethod(System.Action{System.Int32,System.Int64,Foundation.NSError})">
+            <summary>
+            Summary for T1.AsyncMethod
+            </summary>
+        </member>
         <member name="M:XmlDocumentation.T1.DoSomething(System.Action)">
             <summary>Summary for T1.DoSomething</summary>
         </member>
@@ -503,6 +508,20 @@
             ]]></code>
               </example>
             </remarks>
+        </member>
+        <member name="T:XmlDocumentation.AsyncMethodResultTypeName">
+            <summary>This class holds the return values for an asynchronous operation.</summary>
+        </member>
+        <member name="P:XmlDocumentation.AsyncMethodResultTypeName.Arg1">
+            <summary>The result value from the asynchronous operation.</summary>
+        </member>
+        <member name="P:XmlDocumentation.AsyncMethodResultTypeName.Arg2">
+            <summary>The result value from the asynchronous operation.</summary>
+        </member>
+        <member name="M:XmlDocumentation.AsyncMethodResultTypeName.#ctor(System.Int32,System.Int64)">
+            <summary>Creates a new instance of this class.</summary>
+            <param name="arg1">Result value from an asynchronous operation.</param>
+            <param name="arg2">Result value from an asynchronous operation.</param>
         </member>
         <member name="T:XmlDocumentation.TClass">
             <summary>TClass</summary>

@@ -193,17 +193,13 @@ namespace CoreAnimation {
 			set { WeakAlignmentMode = (NSString) value; }
 		}
 #endif // !NET
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets a value that controls how text will be truncated, if necessary, for display.</summary>
 		public CATextLayerTruncationMode TextTruncationMode {
 			get { return CATextLayerTruncationModeExtensions.GetValue (WeakTruncationMode); }
 			set { WeakTruncationMode = value.GetConstant ()!; }
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the text alignment mode.</summary>
 		public CATextLayerAlignmentMode TextAlignmentMode {
 			get { return CATextLayerAlignmentModeExtensions.GetValue (WeakAlignmentMode); }
 			set { WeakAlignmentMode = value.GetConstant ()!; }

@@ -76,9 +76,16 @@ namespace ReplayKit {
 	[BaseType (typeof (NSObject))]
 	interface RPPreviewViewControllerDelegate {
 
+		/// <param name="previewController">To be added.</param>
+		/// <summary>Method that is called when the previewer is ready to be dismissed.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("previewControllerDidFinish:")]
 		void DidFinish (RPPreviewViewController previewController);
 
+		/// <param name="previewController">To be added.</param>
+		/// <param name="activityTypes">To be added.</param>
+		/// <summary>Method that is called when the previewer is ready to be dismissed.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("previewController:didFinishWithActivityTypes:")]
@@ -115,15 +122,29 @@ namespace ReplayKit {
 		void StartRecording (bool microphoneEnabled, [NullAllowed] Action<NSError> handler);
 
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Starts the recording and runs a handler when the recording starts.</summary>
+			<returns>A task that represents the asynchronous StartRecording operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("startRecordingWithHandler:")]
 		void StartRecording ([NullAllowed] Action<NSError> handler);
 
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Stops the recording and runs a handler when the recording stops.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous StopRecording operation.  The value of the TResult parameter is of type System.Action&lt;ReplayKit.RPPreviewViewController,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("stopRecordingWithHandler:")]
 		void StopRecording ([NullAllowed] Action<RPPreviewViewController, NSError> handler);
 
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Discards the recording.</summary>
+			<returns>A task that represents the asynchronous DiscardRecording operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("discardRecordingWithHandler:")]
 		void DiscardRecording (Action handler);
 
@@ -185,7 +206,14 @@ namespace ReplayKit {
 		void StartCapture ([NullAllowed] Action<CMSampleBuffer, RPSampleBufferType, NSError> captureHandler, [NullAllowed] Action<NSError> completionHandler);
 
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Stops screen and audio recording.</summary>
+			<returns>A task that represents the asynchronous StopCapture operation</returns>
+			<remarks>
+			          <para copied="true">The StopCaptureAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("stopCaptureWithHandler:")]
 		void StopCapture ([NullAllowed] Action<NSError> handler);
 
@@ -227,6 +255,14 @@ namespace ReplayKit {
 	[BaseType (typeof (NSObject))]
 	interface RPScreenRecorderDelegate {
 
+		/// <param name="screenRecorder">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <param name="previewViewController">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Developers should not use this deprecated method. Developers should use 'DidStopRecording(RPScreenRecorder,RPPreviewViewController,NSError)' instead.</summary>
+		/// <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.TvOS, 10, 0, message: "Use 'DidStopRecording(RPScreenRecorder,RPPreviewViewController,NSError)' instead.")]
 		[Deprecated (PlatformName.iOS, 10, 0, message: "Use 'DidStopRecording(RPScreenRecorder,RPPreviewViewController,NSError)' instead.")]
 		[NoMac]
@@ -235,10 +271,24 @@ namespace ReplayKit {
 		[Export ("screenRecorder:didStopRecordingWithError:previewViewController:")]
 		void DidStopRecording (RPScreenRecorder screenRecorder, NSError error, [NullAllowed] RPPreviewViewController previewViewController);
 
+		/// <param name="screenRecorder">To be added.</param>
+		/// <param name="previewViewController">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="error">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("screenRecorder:didStopRecordingWithPreviewViewController:error:")]
 		void DidStopRecording (RPScreenRecorder screenRecorder, [NullAllowed] RPPreviewViewController previewViewController, [NullAllowed] NSError error);
 
+		/// <param name="screenRecorder">To be added.</param>
+		/// <summary>Method that is called when the availability status changes.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("screenRecorderDidChangeAvailability:")]
 		void DidChangeAvailability (RPScreenRecorder screenRecorder);
 	}
@@ -266,7 +316,15 @@ namespace ReplayKit {
 		NativeHandle Constructor ([NullAllowed] string nibName, [NullAllowed] NSBundle bundle);
 
 		[Static]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Asynchronously presents the UI for choosing a broadcast activity view controller, and attempts to load the user's choice.</summary>
+			<returns>A task that asynchronously presents the UI for choosing a broadcast activity view controller and attempts to load the user's choice.</returns>
+			<remarks>
+			          <para>The LoadBroadcastActivityViewControllerAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">The LoadBroadcastActivityViewControllerAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("loadBroadcastActivityViewControllerWithHandler:")]
 		void LoadBroadcastActivityViewController (Action<RPBroadcastActivityViewController, NSError> handler);
 
@@ -297,6 +355,14 @@ namespace ReplayKit {
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface RPBroadcastActivityViewControllerDelegate {
+		/// <param name="broadcastActivityViewController">The selection UI to be dismissed. Optional. <see langword="null" /> if the user canceled setup.</param>
+		/// <param name="broadcastController">
+		///           <para>The broadcast controller.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="error">The error that occurred, if present. Otherwise, <see langword="null" />.<para tool="nullallowed">This parameter can be <see langword="null" />.</para></param>
+		/// <summary>Method that is called when the broadcast activity view controller selection UI is about to be dismissed.</summary>
+		/// <remarks>If <paramref name="error" /> is <see langword="null" /> then the system is configured for broadcasting.</remarks>
 		[Abstract]
 		[Export ("broadcastActivityViewController:didFinishWithBroadcastController:error:")]
 		void DidFinish (RPBroadcastActivityViewController broadcastActivityViewController, [NullAllowed] RPBroadcastController broadcastController, [NullAllowed] NSError error);
@@ -338,7 +404,11 @@ namespace ReplayKit {
 		[NullAllowed]
 		string BroadcastExtensionBundleID { get; }
 
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Starts a new broadcast.</summary>
+			<returns>A task that represents the asynchronous StartBroadcast operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("startBroadcastWithHandler:")]
 		void StartBroadcast (Action<NSError> handler);
 
@@ -348,7 +418,14 @@ namespace ReplayKit {
 		[Export ("resumeBroadcast")]
 		void ResumeBroadcast ();
 
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Ends the broadcast.</summary>
+			<returns>A task that represents the asynchronous FinishBroadcast operation</returns>
+			<remarks>
+			          <para copied="true">The FinishBroadcastAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("finishBroadcastWithHandler:")]
 		void FinishBroadcast (Action<NSError> handler);
 	}
@@ -368,12 +445,27 @@ namespace ReplayKit {
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface RPBroadcastControllerDelegate {
+		/// <param name="broadcastController">The controller for the broadcast that finsihed.</param>
+		/// <param name="error">
+		///           <para>The error, if any, that ended the broadcast.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("broadcastController:didFinishWithError:")]
 		void DidFinish (RPBroadcastController broadcastController, [NullAllowed] NSError error);
 
+		/// <param name="broadcastController">To be added.</param>
+		/// <param name="serviceInfo">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("broadcastController:didUpdateServiceInfo:")]
 		void DidUpdateServiceInfo (RPBroadcastController broadcastController, NSDictionary<NSString, INSCoding> serviceInfo);
 
+		/// <param name="broadcastController">To be added.</param>
+		/// <param name="broadcastUrl">To be added.</param>
+		/// <summary>Method that is called when the broadcast URL is updated.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("broadcastController:didUpdateBroadcastURL:")]
 		void DidUpdateBroadcastUrl (RPBroadcastController broadcastController, NSUrl broadcastUrl);
@@ -404,9 +496,20 @@ namespace ReplayKit {
 	[Category]
 	[BaseType (typeof (NSExtensionContext))]
 	interface NSExtensionContext_RPBroadcastExtension {
+		/// <param name="handler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("loadBroadcastingApplicationInfoWithCompletion:")]
 		void LoadBroadcastingApplicationInfo (LoadBroadcastingHandler handler);
 
+		/// <param name="broadcastURL">To be added.</param>
+		/// <param name="broadcastConfiguration">To be added.</param>
+		/// <param name="setupInfo">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Developers should not use this deprecated method. Developers should use 'CompleteRequest(NSUrl,NSDictionary&lt;NSString,INSCoding&gt;)' instead.</summary>
+		/// <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.TvOS, 11, 0, message: "Use 'CompleteRequest(NSUrl,NSDictionary<NSString,INSCoding>)' instead.")]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'CompleteRequest(NSUrl,NSDictionary<NSString,INSCoding>)' instead.")]
 		[NoMac]
@@ -415,6 +518,13 @@ namespace ReplayKit {
 		[Export ("completeRequestWithBroadcastURL:broadcastConfiguration:setupInfo:")]
 		void CompleteRequest (NSUrl broadcastURL, RPBroadcastConfiguration broadcastConfiguration, [NullAllowed] NSDictionary<NSString, INSCoding> setupInfo);
 
+		/// <param name="broadcastURL">To be added.</param>
+		/// <param name="setupInfo">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("completeRequestWithBroadcastURL:setupInfo:")]
 		void CompleteRequest (NSUrl broadcastURL, [NullAllowed] NSDictionary<NSString, INSCoding> setupInfo);

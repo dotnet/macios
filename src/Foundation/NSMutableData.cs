@@ -39,6 +39,11 @@ namespace Foundation {
 			}
 		}
 
+		/// <param name="bytes">To be added.</param>
+		/// <param name="start">To be added.</param>
+		/// <param name="len">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		public void AppendBytes (byte [] bytes, nint start, nint len)
 		{
 			if (bytes is null)
@@ -72,6 +77,8 @@ namespace Foundation {
 			}
 		}
 
+		/// <summary>Gets an enumerator for the bytes in the mutable data.</summary>
+		/// <returns>An enumerator for the bytes in the mutable data.</returns>
 		IEnumerator<byte> IEnumerable<byte>.GetEnumerator ()
 		{
 			IntPtr source = Bytes;

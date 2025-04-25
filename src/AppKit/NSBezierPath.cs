@@ -40,6 +40,10 @@ using CoreGraphics;
 namespace AppKit {
 	public partial class NSBezierPath {
 
+		/// <param name="pattern">To be added.</param>
+		/// <param name="phase">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		public unsafe void GetLineDash (out nfloat [] pattern, out nfloat phase)
 		{
 			nint length;
@@ -52,6 +56,10 @@ namespace AppKit {
 				_GetLineDash ((IntPtr) ptr, out length, out phase);
 		}
 
+		/// <param name="pattern">To be added.</param>
+		/// <param name="phase">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		public unsafe void SetLineDash (nfloat [] pattern, nfloat phase)
 		{
 			if (pattern is null)
@@ -61,6 +69,11 @@ namespace AppKit {
 				_SetLineDash ((IntPtr) ptr, pattern.Length, phase);
 		}
 
+		/// <param name="index">To be added.</param>
+		/// <param name="points">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		public unsafe NSBezierPathElement ElementAt (nint index, out CGPoint [] points)
 		{
 			NSBezierPathElement bpe;
@@ -80,6 +93,10 @@ namespace AppKit {
 			return bpe;
 		}
 
+		/// <param name="points">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		public unsafe void SetAssociatedPointsAtIndex (CGPoint [] points, nint index)
 		{
 			if (points is null)

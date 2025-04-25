@@ -458,6 +458,10 @@ namespace EventKit {
 		[Export ("recurrenceEndWithEndDate:")]
 		EKRecurrenceEnd FromEndDate (NSDate endDate);
 
+		/// <param name="occurrenceCount">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static]
 		[Export ("recurrenceEndWithOccurrenceCount:")]
 		EKRecurrenceEnd FromOccurrenceCount (nint occurrenceCount);
@@ -558,12 +562,21 @@ namespace EventKit {
 		NSObject [] SetPositions { get; }
 #endif
 
+		/// <param name="type">To be added.</param>
+		/// <param name="interval">To be added.</param>
+		/// <param name="end">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initRecurrenceWithFrequency:interval:end:")]
 		NativeHandle Constructor (EKRecurrenceFrequency type, nint interval, [NullAllowed] EKRecurrenceEnd end);
 
+		/// <include file="../docs/api/EventKit/EKRecurrenceRule.xml" path="/Documentation/Docs[@DocId='M:EventKit.EKRecurrenceRule.#ctor(EventKit.EKRecurrenceFrequency,System.IntPtr,EventKit.EKRecurrenceDayOfWeek[],Foundation.NSNumber[],Foundation.NSNumber[],Foundation.NSNumber[],Foundation.NSNumber[],Foundation.NSNumber[],EventKit.EKRecurrenceEnd)']/*" />
 		[Export ("initRecurrenceWithFrequency:interval:daysOfTheWeek:daysOfTheMonth:monthsOfTheYear:weeksOfTheYear:daysOfTheYear:setPositions:end:")]
 		NativeHandle Constructor (EKRecurrenceFrequency type, nint interval, [NullAllowed] EKRecurrenceDayOfWeek [] days, [NullAllowed] NSNumber [] monthDays, [NullAllowed] NSNumber [] months,
-					[NullAllowed] NSNumber [] weeksOfTheYear, [NullAllowed] NSNumber [] daysOfTheYear, [NullAllowed] NSNumber [] setPositions, [NullAllowed] EKRecurrenceEnd end);
+						[NullAllowed] NSNumber [] weeksOfTheYear, [NullAllowed] NSNumber [] daysOfTheYear, [NullAllowed] NSNumber [] setPositions, [NullAllowed] EKRecurrenceEnd end);
 
 	}
 

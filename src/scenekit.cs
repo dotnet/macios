@@ -107,6 +107,23 @@ namespace SceneKit {
 	[Model, Protocol]
 	[BaseType (typeof (NSObject))]
 	interface SCNAnimatable {
+		/// <summary>Adds <paramref name="scnAnimation" />, identified with the specified <paramref name="key" />.</summary>
+		/// <param name="scnAnimation">The animation to add.</param>
+		/// <param name="key">The animation key.</param>
+		/// <remarks>
+		///   <para>The following example shows how a rotation animation can be added to a <see cref="T:SceneKit.SCNGeometry" /> object:</para>
+		///   <example>
+		///     <code lang="csharp lang-csharp"><![CDATA[
+		/// var animation = new CABasicAnimation ();
+		/// animation.KeyPath = "rotation";
+		/// var v = new SCNVector4 (1.0f, 1.0f, 0.0f, (float) (Math.PI * 2.0));
+		/// animation.To = NSValue.FromVector (v);
+		/// animation.Duration = 5.0f;
+		/// animation.RepeatCount = float.MaxValue; //repeat forever
+		/// animatableObject.AddAnimation (animation, (NSString) "rotation");
+		///     ]]></code>
+		///   </example>
+		/// </remarks>
 		[Abstract]
 		[MacCatalyst (13, 1)]
 		[Export ("addAnimation:forKey:")]
@@ -117,6 +134,8 @@ namespace SceneKit {
 		[Export ("addAnimationPlayer:forKey:")]
 		void AddAnimation (SCNAnimationPlayer player, [NullAllowed] NSString key);
 
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("removeAllAnimations")]
 		void RemoveAllAnimations ();
@@ -126,10 +145,16 @@ namespace SceneKit {
 		[Export ("removeAllAnimationsWithBlendOutDuration:")]
 		void RemoveAllAnimationsWithBlendOutDuration (nfloat duration);
 
+		/// <param name="key">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("removeAnimationForKey:")]
 		void RemoveAnimation (NSString key);
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("animationKeys")]
 		NSString [] GetAnimationKeys ();
@@ -140,6 +165,10 @@ namespace SceneKit {
 		[Export ("animationPlayerForKey:")]
 		SCNAnimationPlayer GetAnimationPlayer (NSString key);
 
+		/// <param name="key">To be added.</param>
+		/// <summary>Developers should not use this deprecated method. Developers should use 'GetAnimationPlayer' instead.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Deprecated (PlatformName.TvOS, 11, 0, message: "Use 'GetAnimationPlayer' instead.")]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'GetAnimationPlayer' instead.")]
@@ -150,6 +179,9 @@ namespace SceneKit {
 		[return: NullAllowed]
 		CAAnimation GetAnimation (NSString key);
 
+		/// <param name="key">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Deprecated (PlatformName.TvOS, 11, 0, message: "Use 'SCNAnimationPlayer.Paused' instead.")]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'SCNAnimationPlayer.Paused' instead.")]
@@ -159,6 +191,9 @@ namespace SceneKit {
 		[Export ("pauseAnimationForKey:")]
 		void PauseAnimation (NSString key);
 
+		/// <param name="key">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Deprecated (PlatformName.TvOS, 11, 0, message: "Use 'SCNAnimationPlayer.Paused' instead.")]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'SCNAnimationPlayer.Paused' instead.")]
@@ -168,6 +203,10 @@ namespace SceneKit {
 		[Export ("resumeAnimationForKey:")]
 		void ResumeAnimation (NSString key);
 
+		/// <param name="key">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Deprecated (PlatformName.TvOS, 11, 0, message: "Use 'SCNAnimationPlayer.Paused' instead.")]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'SCNAnimationPlayer.Paused' instead.")]
@@ -177,6 +216,10 @@ namespace SceneKit {
 		[Export ("isAnimationForKeyPaused:")]
 		bool IsAnimationPaused (NSString key);
 
+		/// <param name="key">To be added.</param>
+		/// <param name="duration">To be added.</param>
+		/// <summary>Deprecated. Developers should use <see cref="M:SceneKit.SCNAnimatable.RemoveAnimationUsingBlendOutDuration(Foundation.NSString,System.nfloat)" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Deprecated (PlatformName.TvOS, 11, 0, message: "Use 'RemoveAnimationUsingBlendOutDuration' instead.")]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'RemoveAnimationUsingBlendOutDuration' instead.")]
@@ -186,11 +229,19 @@ namespace SceneKit {
 		[Export ("removeAnimationForKey:fadeOutDuration:")]
 		void RemoveAnimation (NSString key, nfloat duration);
 
+		/// <param name="key">The key for the animation to remove.</param>
+		/// <param name="blendOutDuration">The duration, in seconds, over which to blend the animation out.</param>
+		/// <summary>Removes the specified animation, blending it out over the specified duration.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[MacCatalyst (13, 1)]
 		[Export ("removeAnimationForKey:blendOutDuration:")]
 		void RemoveAnimationUsingBlendOutDuration (NSString key, nfloat blendOutDuration);
 
+		/// <param name="speed">To be added.</param>
+		/// <param name="key">To be added.</param>
+		/// <summary>Deprecated. Developers should use <see cref="P:SceneKit.SCNAnimationPlayer.Speed" />, instead.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Deprecated (PlatformName.TvOS, 11, 0, message: "Use 'SCNAnimationPlayer.Speed' instead.")]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'SCNAnimationPlayer.Speed' instead.")]
@@ -292,15 +343,29 @@ namespace SceneKit {
 	[Model, Protocol]
 	[BaseType (typeof (NSObject))]
 	interface SCNBoundingVolume {
+		/// <param name="min">To be added.</param>
+		/// <param name="max">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("getBoundingBoxMin:max:")]
 		bool GetBoundingBox (ref SCNVector3 min, ref SCNVector3 max);
 
+		/// <param name="min">To be added.</param>
+		/// <param name="max">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("setBoundingBoxMin:max:")]
 		void SetBoundingBox (ref SCNVector3 min, ref SCNVector3 max);
 
+		/// <param name="center">To be added.</param>
+		/// <param name="radius">To be added.</param>
+		/// <summary>Returns <see langword="true" />, and fills <paramref name="center" /> and <paramref name="radius" /> with the bounding sphere data, if the geometry object has volume. Otherwise, returns <see langword="false" /> and the parameters are undefined.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("getBoundingSphereCenter:radius:")]
 		bool GetBoundingSphere (ref SCNVector3 center, ref nfloat radius);
@@ -336,6 +401,13 @@ namespace SceneKit {
 		[Export ("chamferSegmentCount")]
 		nint ChamferSegmentCount { get; set; }
 
+		/// <param name="width">To be added.</param>
+		/// <param name="height">To be added.</param>
+		/// <param name="length">To be added.</param>
+		/// <param name="chamferRadius">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("boxWithWidth:height:length:chamferRadius:")]
 		SCNBox Create (nfloat width, nfloat height, nfloat length, nfloat chamferRadius);
 	}
@@ -611,26 +683,44 @@ namespace SceneKit {
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface SCNCameraControlConfiguration {
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("autoSwitchToFreeCamera")]
 		bool AutoSwitchToFreeCamera { get; set; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("allowsTranslation")]
 		bool AllowsTranslation { get; set; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("flyModeVelocity")]
 		nfloat FlyModeVelocity { get; set; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("panSensitivity")]
 		nfloat PanSensitivity { get; set; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("truckSensitivity")]
 		nfloat TruckSensitivity { get; set; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("rotationSensitivity")]
 		nfloat RotationSensitivity { get; set; }
@@ -649,9 +739,15 @@ namespace SceneKit {
 	[Model] // Figured I would keep the model for convenience, as all the methods here are optional
 	[BaseType (typeof (NSObject))]
 	interface SCNCameraControllerDelegate {
+		/// <param name="cameraController">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("cameraInertiaWillStartForController:")]
 		void CameraInertiaWillStart (SCNCameraController cameraController);
 
+		/// <param name="cameraController">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("cameraInertiaDidEndForController:")]
 		void CameraInertiaDidEnd (SCNCameraController cameraController);
 	}
@@ -732,6 +828,11 @@ namespace SceneKit {
 		[Export ("beginInteraction:withViewport:")]
 		void BeginInteraction (CGPoint location, CGSize viewport);
 
+		/// <param name="location">To be added.</param>
+		/// <param name="viewport">To be added.</param>
+		/// <param name="sensitivity">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("continueInteraction:withViewport:sensitivity:")]
 		void ContinueInteraction (CGPoint location, CGSize viewport, nfloat sensitivity);
 
@@ -760,6 +861,11 @@ namespace SceneKit {
 		[Export ("capSegmentCount")]
 		nint CapSegmentCount { get; set; }
 
+		/// <param name="capRadius">To be added.</param>
+		/// <param name="height">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("capsuleWithCapRadius:height:")]
 		SCNCapsule Create (nfloat capRadius, nfloat height);
 	}
@@ -785,6 +891,12 @@ namespace SceneKit {
 		[Export ("heightSegmentCount")]
 		nint HeightSegmentCount { get; set; }
 
+		/// <param name="topRadius">To be added.</param>
+		/// <param name="bottomRadius">To be added.</param>
+		/// <param name="height">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("coneWithTopRadius:bottomRadius:height:")]
 		SCNCone Create (nfloat topRadius, nfloat bottomRadius, nfloat height);
 	}
@@ -807,6 +919,11 @@ namespace SceneKit {
 		[Export ("heightSegmentCount")]
 		nint HeightSegmentCount { get; set; }
 
+		/// <param name="radius">To be added.</param>
+		/// <param name="height">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("cylinderWithRadius:height:")]
 		SCNCylinder Create (nfloat radius, nfloat height);
 	}
@@ -873,12 +990,23 @@ namespace SceneKit {
 		[Export ("name", ArgumentSemantic.Copy)]
 		string Name { get; set; }
 
+		/// <param name="material">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>Inserts the specified <paramref name="material" /> at the specified <paramref name="index" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("insertMaterial:atIndex:")]
 		void InsertMaterial (SCNMaterial material, nint index);
 
+		/// <param name="index">To be added.</param>
+		/// <summary>Removes the material at the specified index.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("removeMaterialAtIndex:")]
 		void RemoveMaterial (nint index);
 
+		/// <param name="materialIndex">To be added.</param>
+		/// <param name="newMaterial">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("replaceMaterialAtIndex:withMaterial:")]
 		void ReplaceMaterial (nint materialIndex, SCNMaterial newMaterial);
 
@@ -898,6 +1026,10 @@ namespace SceneKit {
 		[Export ("geometrySourcesForSemantic:")]
 		SCNGeometrySource [] GetGeometrySourcesForSemantic (string semantic);
 
+		/// <param name="elementIndex">To be added.</param>
+		/// <summary>Gets the element at <paramref name="elementIndex" /> in the geometry's list of elements.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("geometryElementAtIndex:")]
 		SCNGeometryElement GetGeometryElement (nint elementIndex);
 
@@ -971,6 +1103,17 @@ namespace SceneKit {
 		[Export ("dataStride")]
 		nint DataStride { get; }
 
+		/// <param name="data">To be added.</param>
+		/// <param name="geometrySourceSemantic">To be added.</param>
+		/// <param name="vectorCount">To be added.</param>
+		/// <param name="floatComponents">To be added.</param>
+		/// <param name="componentsPerVector">To be added.</param>
+		/// <param name="bytesPerComponent">To be added.</param>
+		/// <param name="offset">To be added.</param>
+		/// <param name="stride">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("geometrySourceWithData:semantic:vectorCount:floatComponents:componentsPerVector:bytesPerComponent:dataOffset:dataStride:")]
 		[Static]
 		SCNGeometrySource FromData (NSData data, NSString geometrySourceSemantic, nint vectorCount, bool floatComponents, nint componentsPerVector, nint bytesPerComponent, nint offset, nint stride);
@@ -987,6 +1130,15 @@ namespace SceneKit {
 		[Export ("geometrySourceWithTextureCoordinates:count:"), Internal]
 		SCNGeometrySource FromTextureCoordinates (IntPtr texcoords, nint count);
 
+		/// <param name="mtlBuffer">To be added.</param>
+		/// <param name="vertexFormat">To be added.</param>
+		/// <param name="geometrySourceSemantic">To be added.</param>
+		/// <param name="vertexCount">To be added.</param>
+		/// <param name="offset">To be added.</param>
+		/// <param name="stride">To be added.</param>
+		/// <summary>Factory method to create a new <see cref="T:SceneKit.SCNGeometrySource" /> from a data buffer.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("geometrySourceWithBuffer:vertexFormat:semantic:vertexCount:dataOffset:dataStride:")]
@@ -1083,6 +1235,16 @@ namespace SceneKit {
 		[Export ("bytesPerIndex")]
 		nint BytesPerIndex { get; }
 
+		/// <param name="data">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="primitiveType">To be added.</param>
+		/// <param name="primitiveCount">To be added.</param>
+		/// <param name="bytesPerIndex">To be added.</param>
+		/// <summary>Creates a new geometry element from the provided values.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static]
 		[Export ("geometryElementWithData:primitiveType:primitiveCount:bytesPerIndex:")]
 		SCNGeometryElement FromData ([NullAllowed] NSData data, SCNGeometryPrimitiveType primitiveType, nint primitiveCount, nint bytesPerIndex);
@@ -1286,6 +1448,10 @@ namespace SceneKit {
 		[Export ("node")]
 		SCNNode Node { get; }
 
+		/// <param name="channel">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("textureCoordinatesWithMappingChannel:")]
 		CGPoint GetTextureCoordinatesWithMappingChannel (nint channel);
 	}
@@ -2201,6 +2367,10 @@ namespace SceneKit {
 		[Export ("presentationNode")]
 		SCNNode PresentationNode { get; }
 
+		/// <param name="child">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>Inserts the provided <paramref name="child" /> node at the specified <paramref name="index" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("insertChildNode:atIndex:")]
 		void InsertChildNode (SCNNode child, nint index);
 
@@ -2709,6 +2879,14 @@ namespace SceneKit {
 	[BaseType (typeof (NSObject))]
 	[Model, Protocol]
 	interface SCNNodeRendererDelegate {
+		/// <param name="node">To be added.</param>
+		/// <param name="renderer">To be added.</param>
+		/// <param name="arguments">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("renderNode:renderer:arguments:")]
 		void Render (SCNNode node, SCNRenderer renderer, NSDictionary arguments);
 	}
@@ -2731,6 +2909,11 @@ namespace SceneKit {
 		[Export ("heightSegmentCount")]
 		nint HeightSegmentCount { get; set; }
 
+		/// <param name="width">To be added.</param>
+		/// <param name="height">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("planeWithWidth:height:")]
 		SCNPlane Create (nfloat width, nfloat height);
 
@@ -2844,6 +3027,14 @@ namespace SceneKit {
 	[Model, Protocol]
 	interface SCNProgramDelegate {
 
+		/// <param name="program">To be added.</param>
+		/// <param name="symbol">To be added.</param>
+		/// <param name="location">To be added.</param>
+		/// <param name="programID">To be added.</param>
+		/// <param name="renderer">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Unavailable (PlatformName.iOS)]
 		[NoTV]
 		[NoMacCatalyst]
@@ -2851,6 +3042,13 @@ namespace SceneKit {
 		[Export ("program:bindValueForSymbol:atLocation:programID:renderer:")]
 		bool BindValue (SCNProgram program, string symbol, uint /* unsigned int */ location, uint /* unsigned int */ programID, SCNRenderer renderer);
 
+		/// <param name="program">To be added.</param>
+		/// <param name="symbol">To be added.</param>
+		/// <param name="location">To be added.</param>
+		/// <param name="programID">To be added.</param>
+		/// <param name="renderer">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Unavailable (PlatformName.iOS)]
 		[NoTV]
 		[NoMacCatalyst]
@@ -2858,9 +3056,17 @@ namespace SceneKit {
 		[Export ("program:unbindValueForSymbol:atLocation:programID:renderer:")]
 		void UnbindValue (SCNProgram program, string symbol, uint /* unsigned int */ location, uint /* unsigned int */ programID, SCNRenderer renderer);
 
+		/// <param name="program">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("program:handleError:")]
 		void HandleError (SCNProgram program, NSError error);
 
+		/// <param name="program">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoTV]
 		[Deprecated (PlatformName.MacOSX, 10, 10, message: "Use the SCNProgram's Opaque property instead.")]
@@ -2893,6 +3099,12 @@ namespace SceneKit {
 		[Export ("lengthSegmentCount")]
 		nint LengthSegmentCount { get; set; }
 
+		/// <param name="width">To be added.</param>
+		/// <param name="height">To be added.</param>
+		/// <param name="length">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("pyramidWithWidth:height:length:")]
 		SCNPyramid Create (nfloat width, nfloat height, nfloat length);
 	}
@@ -3228,6 +3440,15 @@ namespace SceneKit {
 	[BaseType (typeof (NSObject))]
 	interface SCNSceneExportDelegate {
 
+		/// <param name="image">To be added.</param>
+		/// <param name="documentUrl">To be added.</param>
+		/// <param name="originalImageUrl">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("writeImage:withSceneDocumentURL:originalImageURL:")]
 		[return: NullAllowed]
 		NSUrl WriteImage (NSImage image, NSUrl documentUrl, [NullAllowed] NSUrl originalImageUrl);
@@ -3581,6 +3802,9 @@ namespace SceneKit {
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface SCNSceneRenderer {
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("delegate", ArgumentSemantic.Weak), NullAllowed]
 		NSObject WeakSceneRendererDelegate { get; set; }
@@ -3601,15 +3825,24 @@ namespace SceneKit {
 		[Export ("playing")]
 		bool Playing { [Bind ("isPlaying")] get; set; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("loops")]
 		bool Loops { get; set; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("pointOfView", ArgumentSemantic.Retain)]
 		[NullAllowed]
 		SCNNode PointOfView { get; set; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("autoenablesDefaultLighting")]
 		bool AutoenablesDefaultLighting { get; set; }
@@ -3621,6 +3854,9 @@ namespace SceneKit {
 		[Export ("jitteringEnabled")]
 		bool JitteringEnabled { [Bind ("isJitteringEnabled")] get; set; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[NoMacCatalyst]
 		[Export ("context")]
@@ -3634,6 +3870,11 @@ namespace SceneKit {
 		[Export ("currentTime")]
 		double CurrentTime { get; set; }
 
+		/// <param name="thePoint">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("hitTest:options:")]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
@@ -3647,22 +3888,34 @@ namespace SceneKit {
 		[Wrap ("HitTest (thePoint, options.GetDictionary ())")]
 		SCNHitTestResult [] HitTest (CGPoint thePoint, SCNHitTestOptions options);
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[MacCatalyst (13, 1)]
 		[Export ("showsStatistics")]
 		bool ShowsStatistics { get; set; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[MacCatalyst (13, 1)]
 		[Export ("sceneTime")]
 		double SceneTimeInSeconds { get; set; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[MacCatalyst (13, 1)]
 		[NullAllowed]
 		[Export ("scene", ArgumentSemantic.Retain)]
 		SCNScene Scene { get; set; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		// It seems swift has this property listed as an optional[0] and an Apple sample[1] sets this to null
 		// [0]: https://developer.apple.com/documentation/scenekit/scnscenerenderer/1524051-overlayskscene
@@ -3672,26 +3925,51 @@ namespace SceneKit {
 		[Export ("overlaySKScene", ArgumentSemantic.Retain)]
 		SKScene OverlayScene { get; set; }
 
+		/// <param name="node">To be added.</param>
+		/// <param name="pointOfView">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[MacCatalyst (13, 1)]
 		[Export ("isNodeInsideFrustum:withPointOfView:")]
 		bool IsNodeInsideFrustum (SCNNode node, SCNNode pointOfView);
 
+		/// <param name="point">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[MacCatalyst (13, 1)]
 		[Export ("projectPoint:")]
 		SCNVector3 ProjectPoint (SCNVector3 point);
 
+		/// <param name="point">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[MacCatalyst (13, 1)]
 		[Export ("unprojectPoint:")]
 		SCNVector3 UnprojectPoint (SCNVector3 point);
 
+		/// <param name="obj">To be added.</param>
+		/// <param name="abortHandler">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[MacCatalyst (13, 1)]
 		[Export ("prepareObject:shouldAbortBlock:")]
 		bool Prepare (NSObject obj, [NullAllowed] Func<bool> abortHandler);
 
+		/// <param name="objects">The objects to prepare.</param>
+		/// <param name="completionHandler">A handler that receives <see langword="true" /> if preparation of all scene resources succeeded, or <see langword="false" /> if not.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[MacCatalyst (13, 1)]
 		[Async (XmlDocs = """
@@ -3705,7 +3983,12 @@ namespace SceneKit {
 		[Export ("prepareObjects:withCompletionHandler:")]
 		void Prepare (NSObject [] objects, [NullAllowed] Action<bool> completionHandler);
 
-		[Abstract]
+		/// <summary>Displays the provided scene.</summary>
+		/// <param name="scene">The scene to present.</param>
+		/// <param name="transition">The transistion to use to present the scene.</param>
+		/// <param name="pointOfView">The point of view to which to present the scene.</param>
+		/// <param name="completionHandler">A handler to run after the scene is presented.</param>
+		[Abstract] // this protocol existed before iOS 9 (or OSX 10.11) and we cannot add abstract members to it (breaking changes)
 		[MacCatalyst (13, 1)]
 		[Async (XmlDocs = """
 			<param name="scene">The scene to present.</param>
@@ -3721,62 +4004,74 @@ namespace SceneKit {
 		[Export ("presentScene:withTransition:incomingPointOfView:completionHandler:")]
 		void PresentScene (SCNScene scene, SKTransition transition, [NullAllowed] SCNNode pointOfView, [NullAllowed] Action completionHandler);
 
+		/// <summary>Returns the nodes that are contained in the frustrum that is defined by the provided node.</summary>
 		[Abstract]
 		[MacCatalyst (13, 1)]
 		[Export ("nodesInsideFrustumWithPointOfView:")]
 		SCNNode [] GetNodesInsideFrustum (SCNNode pointOfView);
 
+		/// <summary>A value that controls which, if any, debug overlays to show in the rendered output.</summary>
 		[Abstract]
 		[MacCatalyst (13, 1)]
 		[Export ("debugOptions", ArgumentSemantic.Assign)]
 		SCNDebugOptions DebugOptions { get; set; }
 
+		/// <summary>Returns the rendering API that is used to render the scene.</summary>
 		[Abstract]
 		[MacCatalyst (13, 1)]
 		[Export ("renderingAPI")]
 		SCNRenderingApi RenderingApi { get; }
 
+		/// <summary>Returns the current command encoder that is used for rendering.</summary>
 		[Abstract]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("currentRenderCommandEncoder")]
 		IMTLRenderCommandEncoder CurrentRenderCommandEncoder { get; }
 
+		/// <summary>Returns the metal device that is used for rendering.</summary>
 		[Abstract]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("device")]
 		IMTLDevice Device { get; }
 
+		/// <summary>Returns the format for color pixels.</summary>
 		[Abstract]
 		[MacCatalyst (13, 1)]
 		[Export ("colorPixelFormat")]
 		MTLPixelFormat ColorPixelFormat { get; }
 
+		/// <summary>Returns the format for depth pixels.</summary>
 		[Abstract]
 		[MacCatalyst (13, 1)]
 		[Export ("depthPixelFormat")]
 		MTLPixelFormat DepthPixelFormat { get; }
 
+		/// <summary>Returns the format for stencil pixels.</summary>
 		[Abstract]
 		[MacCatalyst (13, 1)]
 		[Export ("stencilPixelFormat")]
 		MTLPixelFormat StencilPixelFormat { get; }
 
+		/// <summary>Returns the command queue.</summary>
 		[Abstract]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("commandQueue")]
 		IMTLCommandQueue CommandQueue { get; }
 
+		/// <summary>Returns the audio engine that is used to render sounds in the scene</summary>
 		[Abstract]
 		[MacCatalyst (13, 1)]
 		[Export ("audioEngine")]
 		AVAudioEngine AudioEngine { get; }
 
+		/// <summary>Returns the audio environment node for the scene.</summary>
 		[Abstract]
 		[MacCatalyst (13, 1)]
 		[Export ("audioEnvironmentNode")]
 		[DebuggerBrowsable (DebuggerBrowsableState.Never)]
 		AVAudioEnvironmentNode AudioEnvironmentNode { get; }
 
+		/// <summary>The node that represents the position of the listener in the scene.</summary>
 		[Abstract]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("audioListener", ArgumentSemantic.Retain)]
@@ -3832,24 +4127,50 @@ namespace SceneKit {
 	[BaseType (typeof (NSObject))]
 	interface SCNSceneRendererDelegate {
 
+		/// <param name="renderer">To be added.</param>
+		/// <param name="scene">To be added.</param>
+		/// <param name="timeInSeconds">To be added.</param>
+		/// <summary>Developers may override this method to do processing immediately prior to the rendering of the scene.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("renderer:willRenderScene:atTime:")]
 		void WillRenderScene (ISCNSceneRenderer renderer, SCNScene scene, double timeInSeconds);
 
+		/// <param name="renderer">To be added.</param>
+		/// <param name="scene">To be added.</param>
+		/// <param name="timeInSeconds">To be added.</param>
+		/// <summary>This method is called shortly after the scene has been rendered.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("renderer:didRenderScene:atTime:")]
 		void DidRenderScene (ISCNSceneRenderer renderer, SCNScene scene, double timeInSeconds);
 
+		/// <param name="renderer">To be added.</param>
+		/// <param name="timeInSeconds">To be added.</param>
+		/// <summary>Developers may override this method to perform processing prior to any actions, animations, or physics simulations.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("renderer:updateAtTime:")]
 		void Update (ISCNSceneRenderer renderer, double timeInSeconds);
 
+		/// <param name="renderer">To be added.</param>
+		/// <param name="timeInSeconds">To be added.</param>
+		/// <summary>Developers may override this method to react to the completion of animations.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("renderer:didApplyAnimationsAtTime:")]
 		void DidApplyAnimations (ISCNSceneRenderer renderer, double timeInSeconds);
 
+		/// <param name="renderer">To be added.</param>
+		/// <param name="timeInSeconds">To be added.</param>
+		/// <summary>This method is called shortly after physics have been simulated.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("renderer:didSimulatePhysicsAtTime:")]
 		void DidSimulatePhysics (ISCNSceneRenderer renderer, double timeInSeconds);
 
+		/// <param name="renderer">To be added.</param>
+		/// <param name="atTime">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("renderer:didApplyConstraintsAtTime:")]
 		void DidApplyConstraints (ISCNSceneRenderer renderer, double atTime);
@@ -3875,6 +4196,10 @@ namespace SceneKit {
 		[Export ("segmentCount")]
 		nint SegmentCount { get; set; }
 
+		/// <param name="radius">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("sphereWithRadius:")]
 		SCNSphere Create (nfloat radius);
 
@@ -3913,6 +4238,11 @@ namespace SceneKit {
 		[Export ("chamferRadius")]
 		nfloat ChamferRadius { get; set; }
 
+		/// <param name="str">To be added.</param>
+		/// <param name="extrusionDepth">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("textWithString:extrusionDepth:")]
 		SCNText Create ([NullAllowed] NSObject str, nfloat extrusionDepth);
 
@@ -3955,6 +4285,11 @@ namespace SceneKit {
 		[Export ("pipeSegmentCount")]
 		nint PipeSegmentCount { get; set; }
 
+		/// <param name="ringRadius">To be added.</param>
+		/// <param name="pipeRadius">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("torusWithRingRadius:pipeRadius:")]
 		SCNTorus Create (nfloat ringRadius, nfloat pipeRadius);
 	}
@@ -4039,6 +4374,12 @@ namespace SceneKit {
 		[Export ("heightSegmentCount")]
 		nint HeightSegmentCount { get; set; }
 
+		/// <param name="innerRadius">To be added.</param>
+		/// <param name="outerRadius">To be added.</param>
+		/// <param name="height">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("tubeWithInnerRadius:outerRadius:height:")]
 		SCNTube Create (nfloat innerRadius, nfloat outerRadius, nfloat height);
 	}
@@ -4189,6 +4530,11 @@ namespace SceneKit {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SCNAnimationEvent {
+		/// <param name="keyTime">To be added.</param>
+		/// <param name="eventHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("animationEventWithKeyTime:block:")]
 		SCNAnimationEvent Create (nfloat keyTime, SCNAnimationEventHandler eventHandler);
 	}
@@ -4216,6 +4562,11 @@ namespace SceneKit {
 		[Export ("chamferProfile", ArgumentSemantic.Copy)]
 		NSBezierPath ChamferProfile { get; set; }
 
+		/// <param name="path">To be added.</param>
+		/// <param name="extrusionDepth">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("shapeWithPath:extrusionDepth:")]
 		SCNShape Create ([NullAllowed] NSBezierPath path, nfloat extrusionDepth);
 	}
@@ -4241,13 +4592,25 @@ namespace SceneKit {
 		[Export ("unifiesNormals")]
 		bool UnifiesNormals { get; set; }
 
+		/// <param name="weight">To be added.</param>
+		/// <param name="targetIndex">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("setWeight:forTargetAtIndex:")]
 		void SetWeight (nfloat weight, nuint targetIndex);
 
+		/// <param name="weight">To be added.</param>
+		/// <param name="targetName">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("setWeight:forTargetNamed:")]
 		void SetWeight (nfloat weight, string targetName);
 
+		/// <param name="targetIndex">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("weightForTargetAtIndex:")]
 		nfloat GetWeight (nuint targetIndex);
 
@@ -4342,6 +4705,10 @@ namespace SceneKit {
 		[Static, Export ("inverseKinematicsConstraintWithChainRootNode:")]
 		SCNIKConstraint Create (SCNNode chainRootNode);
 
+		/// <param name="angle">To be added.</param>
+		/// <param name="node">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("setMaxAllowedRotationAngle:forJoint:")]
 		void SetMaxAllowedRotationAnglet (nfloat angle, SCNNode node);
 
@@ -4429,9 +4796,25 @@ namespace SceneKit {
 		[Export ("worldSpaceDistance")]
 		nfloat WorldSpaceDistance { get; }
 
+		/// <param name="geometry">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="screenSpaceRadius">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("levelOfDetailWithGeometry:screenSpaceRadius:")]
 		SCNLevelOfDetail CreateWithScreenSpaceRadius ([NullAllowed] SCNGeometry geometry, nfloat screenSpaceRadius);
 
+		/// <param name="geometry">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="worldSpaceDistance">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("levelOfDetailWithGeometry:worldSpaceDistance:")]
 		SCNLevelOfDetail CreateWithWorldSpaceDistance ([NullAllowed] SCNGeometry geometry, nfloat worldSpaceDistance);
 	}
@@ -4461,35 +4844,75 @@ namespace SceneKit {
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface SCNActionable {
+		/// <param name="action">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("runAction:")]
 		void RunAction (SCNAction action);
 
+		/// <param name="action">To be added.</param>
+		/// <param name="block">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("runAction:completionHandler:")]
 		void RunAction (SCNAction action, [NullAllowed] Action block);
 
+		/// <param name="action">To be added.</param>
+		/// <param name="key">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("runAction:forKey:")]
 		void RunAction (SCNAction action, [NullAllowed] string key);
 
+		/// <param name="action">To be added.</param>
+		/// <param name="key">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="block">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("runAction:forKey:completionHandler:")]
 		void RunAction (SCNAction action, [NullAllowed] string key, [NullAllowed] Action block);
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("hasActions")]
 		bool HasActions ();
 
+		/// <param name="key">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("actionForKey:")]
 		[return: NullAllowed]
 		SCNAction GetAction (string key);
 
+		/// <param name="key">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("removeActionForKey:")]
 		void RemoveAction (string key);
 
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("removeAllActions")]
 		void RemoveAllActions ();
@@ -4517,6 +4940,7 @@ namespace SceneKit {
 		[Export ("timingMode")]
 		SCNActionTimingMode TimingMode { get; set; }
 
+		/// <summary>Sets the function that transforms the times at which actions occur.</summary>
 		[NullAllowed, Export ("timingFunction", ArgumentSemantic.Assign)]
 		Func<float, float> TimingFunction { get; set; }
 
@@ -4526,6 +4950,13 @@ namespace SceneKit {
 		[Export ("reversedAction")]
 		SCNAction ReversedAction ();
 
+		/// <param name="deltaX">To be added.</param>
+		/// <param name="deltaY">To be added.</param>
+		/// <param name="deltaZ">To be added.</param>
+		/// <param name="durationInSeconds">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("moveByX:y:z:duration:")]
 		SCNAction MoveBy (nfloat deltaX, nfloat deltaY, nfloat deltaZ, double durationInSeconds);
 
@@ -4535,24 +4966,62 @@ namespace SceneKit {
 		[Static, Export ("moveTo:duration:")]
 		SCNAction MoveTo (SCNVector3 location, double durationInSeconds);
 
+		/// <param name="xAngle">To be added.</param>
+		/// <param name="yAngle">To be added.</param>
+		/// <param name="zAngle">To be added.</param>
+		/// <param name="durationInSeconds">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("rotateByX:y:z:duration:")]
 		SCNAction RotateBy (nfloat xAngle, nfloat yAngle, nfloat zAngle, double durationInSeconds);
 
+		/// <param name="angle">To be added.</param>
+		/// <param name="axis">To be added.</param>
+		/// <param name="durationInSeconds">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("rotateByAngle:aroundAxis:duration:")]
 		SCNAction RotateBy (nfloat angle, SCNVector3 axis, double durationInSeconds);
 
+		/// <param name="xAngle">To be added.</param>
+		/// <param name="yAngle">To be added.</param>
+		/// <param name="zAngle">To be added.</param>
+		/// <param name="durationInSeconds">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("rotateToX:y:z:duration:")]
 		SCNAction RotateTo (nfloat xAngle, nfloat yAngle, nfloat zAngle, double durationInSeconds);
 
+		/// <param name="xAngle">To be added.</param>
+		/// <param name="yAngle">To be added.</param>
+		/// <param name="zAngle">To be added.</param>
+		/// <param name="durationInSeconds">To be added.</param>
+		/// <param name="shortestUnitArc">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("rotateToX:y:z:duration:shortestUnitArc:")]
 		SCNAction RotateTo (nfloat xAngle, nfloat yAngle, nfloat zAngle, double durationInSeconds, bool shortestUnitArc);
 
 		[Static, Export ("rotateToAxisAngle:duration:")]
 		SCNAction RotateTo (SCNVector4 axisAngle, double durationInSeconds);
 
+		/// <param name="scale">To be added.</param>
+		/// <param name="durationInSeconds">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("scaleBy:duration:")]
 		SCNAction ScaleBy (nfloat scale, double durationInSeconds);
 
+		/// <param name="scale">To be added.</param>
+		/// <param name="durationInSeconds">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("scaleTo:duration:")]
 		SCNAction ScaleTo (nfloat scale, double durationInSeconds);
 
@@ -4562,6 +5031,11 @@ namespace SceneKit {
 		[Static, Export ("group:")]
 		SCNAction Group (SCNAction [] actions);
 
+		/// <param name="action">To be added.</param>
+		/// <param name="count">To be added.</param>
+		/// <summary>Creates an action that repeats <paramref name="action" /> for <paramref name="count" /> number of times.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("repeatAction:count:")]
 		SCNAction RepeatAction (SCNAction action, nuint count);
 
@@ -4574,9 +5048,19 @@ namespace SceneKit {
 		[Static, Export ("fadeOutWithDuration:")]
 		SCNAction FadeOut (double durationInSeconds);
 
+		/// <param name="factor">To be added.</param>
+		/// <param name="durationInSeconds">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("fadeOpacityBy:duration:")]
 		SCNAction FadeOpacityBy (nfloat factor, double durationInSeconds);
 
+		/// <param name="opacity">To be added.</param>
+		/// <param name="durationInSeconds">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("fadeOpacityTo:duration:")]
 		SCNAction FadeOpacityTo (nfloat opacity, double durationInSeconds);
 
@@ -4687,10 +5171,18 @@ namespace SceneKit {
 		[Export ("program", ArgumentSemantic.Retain)]
 		SCNProgram Program { get; set; }
 
+		/// <param name="symbol">To be added.</param>
+		/// <param name="handler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("handleBindingOfSymbol:usingBlock:")]
 		void HandleBinding (string symbol, [NullAllowed] SCNBindingHandler handler);
 
+		/// <param name="symbol">To be added.</param>
+		/// <param name="handler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("handleUnbindingOfSymbol:usingBlock:")]
 		void HandleUnbinding (string symbol, [NullAllowed] SCNBindingHandler handler);
@@ -4741,6 +5233,9 @@ namespace SceneKit {
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface SCNTechniqueSupport {
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[MacCatalyst (13, 1)]
 		[Export ("technique", ArgumentSemantic.Copy)]
@@ -4953,9 +5448,19 @@ namespace SceneKit {
 		[Static, Export ("linearGravityField")]
 		SCNPhysicsField CreateLinearGravityField ();
 
+		/// <param name="smoothness">To be added.</param>
+		/// <param name="speed">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("noiseFieldWithSmoothness:animationSpeed:")]
 		SCNPhysicsField CreateNoiseField (nfloat smoothness, nfloat speed);
 
+		/// <param name="smoothness">To be added.</param>
+		/// <param name="speed">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("turbulenceFieldWithSmoothness:animationSpeed:")]
 		SCNPhysicsField CreateTurbulenceField (nfloat smoothness, nfloat speed);
 
@@ -5272,13 +5777,34 @@ namespace SceneKit {
 	[BaseType (typeof (NSObject))]
 	interface SCNPhysicsContactDelegate {
 
-		[Export ("physicsWorld:didBeginContact:"), EventArgs ("SCNPhysicsContact")]
+		/// <param name="world">To be added.</param>
+		/// <param name="contact">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
+		[Export ("physicsWorld:didBeginContact:"), EventArgs ("SCNPhysicsContact", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakContactDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidBeginContact (SCNPhysicsWorld world, SCNPhysicsContact contact);
 
-		[Export ("physicsWorld:didUpdateContact:"), EventArgs ("SCNPhysicsContact")]
+		/// <param name="world">To be added.</param>
+		/// <param name="contact">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
+		[Export ("physicsWorld:didUpdateContact:"), EventArgs ("SCNPhysicsContact", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakContactDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidUpdateContact (SCNPhysicsWorld world, SCNPhysicsContact contact);
 
-		[Export ("physicsWorld:didEndContact:"), EventArgs ("SCNPhysicsContact")]
+		/// <param name="world">To be added.</param>
+		/// <param name="contact">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
+		[Export ("physicsWorld:didEndContact:"), EventArgs ("SCNPhysicsContact", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakContactDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidEndContact (SCNPhysicsWorld world, SCNPhysicsContact contact);
 	}
 
@@ -5435,12 +5961,24 @@ namespace SceneKit {
 		[Export ("chassisBody")]
 		SCNPhysicsBody ChassisBody { get; }
 
+		/// <param name="value">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("applyEngineForce:forWheelAtIndex:")]
 		void ApplyEngineForce (nfloat value, nint index);
 
+		/// <param name="value">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("setSteeringAngle:forWheelAtIndex:")]
 		void SetSteeringAngle (nfloat value, nint index);
 
+		/// <param name="value">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("applyBrakingForce:forWheelAtIndex:")]
 		void ApplyBrakingForce (nfloat value, nint index);
 	}
@@ -6189,9 +6727,20 @@ namespace SceneKit {
 	[BaseType (typeof (NSObject))]
 	interface SCNAvoidOccluderConstraintDelegate {
 
+		/// <param name="constraint">To be added.</param>
+		/// <param name="occluder">To be added.</param>
+		/// <param name="node">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("avoidOccluderConstraint:shouldAvoidOccluder:forNode:")]
 		bool ShouldAvoidOccluder (SCNAvoidOccluderConstraint constraint, SCNNode occluder, SCNNode node);
 
+		/// <param name="constraint">To be added.</param>
+		/// <param name="occluder">To be added.</param>
+		/// <param name="node">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("avoidOccluderConstraint:didAvoidOccluder:forNode:")]
 		void DidAvoidOccluder (SCNAvoidOccluderConstraint constraint, SCNNode occluder, SCNNode node);
 	}

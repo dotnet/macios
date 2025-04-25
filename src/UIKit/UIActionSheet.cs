@@ -59,10 +59,10 @@ namespace UIKit {
 		}
 #endif
 
-		/// <param name="title">To be added.</param>
-		///         <param name="del">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Initialize a <see cref="UIActionSheet" /> with a title and a delegate that will handle taps.</summary>
+		/// <param name="title">A title to be displayed in the title area of the action sheet.</param>
+		/// <param name="del">A delegate that will respond to taps in the action sheet.</param>
+		/// <remarks>Pass <see langword="null" /> to <paramref name="title" /> if there is no text to display in the title area.</remarks>
 		public UIActionSheet (string title, IUIActionSheetDelegate del)
 		: this (title, del, null, null, (string) null) { }
 

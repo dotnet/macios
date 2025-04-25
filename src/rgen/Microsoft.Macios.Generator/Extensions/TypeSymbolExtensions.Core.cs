@@ -280,10 +280,9 @@ static partial class TypeSymbolExtensions {
 	/// Try to get the size of a built-in type.
 	/// </summary>
 	/// <param name="symbol">The symbol under test.</param>
-	/// <param name="is64bits">The platform target.</param>
 	/// <param name="size">The size of the native type.</param>
 	/// <returns>True if we could calculate the size.</returns>
-	internal static bool TryGetBuiltInTypeSize (this ITypeSymbol symbol, bool is64bits, out int size)
+	internal static bool TryGetBuiltInTypeSize (this ITypeSymbol symbol, out int size)
 	{
 		if (symbol.IsNested ()) {
 			size = 0;
@@ -300,13 +299,13 @@ static partial class TypeSymbolExtensions {
 
 		var (currentSize, result) = symbolInfo switch { 
 			{ SpecialType: SpecialType.System_Void } => (0, true), 
-			{ ContainingNamespace: "ObjCRuntime", Name: "NativeHandle" } => (is64bits ? 8 : 4, true), 
-			{ ContainingNamespace: "System.Runtime.InteropServices", Name: "NFloat" } => (is64bits ? 8 : 4, true), 
+			{ ContainingNamespace: "ObjCRuntime", Name: "NativeHandle" } => (8, true), 
+			{ ContainingNamespace: "System.Runtime.InteropServices", Name: "NFloat" } => (8, true), 
 			{ ContainingNamespace: "System", Name: "Char" or "Boolean" or "SByte" or "Byte" } => (1, true), 
 			{ ContainingNamespace: "System", Name: "Int16" or "UInt16" } => (2, true), 
 			{ ContainingNamespace: "System", Name: "Single" or "Int32" or "UInt32" } => (4, true), 
 			{ ContainingNamespace: "System", Name: "Double" or "Int64" or "UInt64" } => (8, true), 
-			{ ContainingNamespace: "System", Name: "IntPtr" or "UIntPtr" or "nuint" or "nint" } => (is64bits ? 8 : 4, true),
+			{ ContainingNamespace: "System", Name: "IntPtr" or "UIntPtr" or "nuint" or "nint" } => (8, true),
 			_ => (0, false)
 		};
 #pragma warning restore format
@@ -315,7 +314,7 @@ static partial class TypeSymbolExtensions {
 	}
 
 	static bool TryGetBuiltInTypeSize (this ITypeSymbol type)
-		=> TryGetBuiltInTypeSize (type, true /* doesn't matter */, out _);
+		=> TryGetBuiltInTypeSize (type, out _);
 
 	static int AlignAndAdd (int size, int add, ref int maxElementSize)
 	{
@@ -327,7 +326,7 @@ static partial class TypeSymbolExtensions {
 
 
 	static void GetValueTypeSize (this ITypeSymbol originalSymbol, ITypeSymbol type, List<ITypeSymbol> fieldSymbols,
-		bool is64Bits, ref int size,
+		ref int size,
 		ref int maxElementSize)
 	{
 		// FIXME:
@@ -335,7 +334,7 @@ static partial class TypeSymbolExtensions {
 		// However, we don't annotate those types in any way currently, so first we'd need to 
 		// add the proper attributes so that the generator can distinguish those types from other types.
 
-		if (type.TryGetBuiltInTypeSize (is64Bits, out var typeSize) && typeSize > 0) {
+		if (type.TryGetBuiltInTypeSize (out var typeSize) && typeSize > 0) {
 			fieldSymbols.Add (type);
 			size = AlignAndAdd (size, typeSize, ref maxElementSize);
 			return;
@@ -345,7 +344,7 @@ static partial class TypeSymbolExtensions {
 		foreach (var field in type.GetStructFields ()) {
 			var marshalAs = field.GetMarshalAs ();
 			if (marshalAs is null) {
-				GetValueTypeSize (originalSymbol, field.Type, fieldSymbols, is64Bits, ref size, ref maxElementSize);
+				GetValueTypeSize (originalSymbol, field.Type, fieldSymbols, ref size, ref maxElementSize);
 				continue;
 			}
 
@@ -355,7 +354,7 @@ static partial class TypeSymbolExtensions {
 			case UnmanagedType.ByValArray:
 				var types = new List<ITypeSymbol> ();
 				var arrayTypeSymbol = (field as IArrayTypeSymbol)!;
-				GetValueTypeSize (originalSymbol, arrayTypeSymbol.ElementType, types, is64Bits, ref typeSize, ref maxElementSize);
+				GetValueTypeSize (originalSymbol, arrayTypeSymbol.ElementType, types, ref typeSize, ref maxElementSize);
 				multiplier = sizeConst;
 				break;
 			case UnmanagedType.U1:
@@ -390,9 +389,8 @@ static partial class TypeSymbolExtensions {
 	/// </summary>
 	/// <param name="type">The type symbol whose size we want to get.</param>
 	/// <param name="fieldTypes">The fileds of the struct.</param>
-	/// <param name="is64Bits">If the calculation is for a 64b machine.</param>
 	/// <returns></returns>
-	internal static int GetValueTypeSize (this ITypeSymbol type, List<ITypeSymbol> fieldTypes, bool is64Bits)
+	internal static int GetValueTypeSize (this ITypeSymbol type, List<ITypeSymbol> fieldTypes)
 	{
 		int size = 0;
 		int maxElementSize = 1;
@@ -402,11 +400,11 @@ static partial class TypeSymbolExtensions {
 			foreach (var field in type.GetStructFields ()) {
 				var fieldOffset = field.GetFieldOffset ();
 				var elementSize = 0;
-				GetValueTypeSize (type, field.Type, fieldTypes, is64Bits, ref elementSize, ref maxElementSize);
+				GetValueTypeSize (type, field.Type, fieldTypes, ref elementSize, ref maxElementSize);
 				size = Math.Max (size, elementSize + fieldOffset);
 			}
 		} else {
-			GetValueTypeSize (type, type, fieldTypes, is64Bits, ref size, ref maxElementSize);
+			GetValueTypeSize (type, type, fieldTypes, ref size, ref maxElementSize);
 		}
 
 		if (size % maxElementSize != 0)

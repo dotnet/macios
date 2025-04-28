@@ -23,8 +23,6 @@ namespace Cecil.Tests {
 			"ScreenCaptureKit.SCContentFilter::.ctor(ScreenCaptureKit.SCDisplay,ScreenCaptureKit.SCRunningApplication[],ScreenCaptureKit.SCWindow[],ScreenCaptureKit.SCContentFilterOption)",
 			"ScreenCaptureKit.SCContentFilter::.ctor(ScreenCaptureKit.SCDisplay,ScreenCaptureKit.SCWindow[],ScreenCaptureKit.SCContentFilterOption)",
 			"Security.SecTrust2::.ctor(Security.SecTrust)",
-			"SpriteKit.SKVideoNode::.ctor(Foundation.NSUrl)",
-			"SpriteKit.SKVideoNode::.ctor(System.String)",
 		};
 	}
 }

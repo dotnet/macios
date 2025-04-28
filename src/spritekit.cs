@@ -1499,33 +1499,31 @@ namespace SpriteKit {
 		[Static, Export ("videoNodeWithAVPlayer:")]
 		SKVideoNode FromPlayer (AVPlayer player);
 
-		[Static, Export ("videoNodeWithVideoFileNamed:"), Internal]
-		SKVideoNode VideoNodeWithVideoFileNamed (string videoFile);
+		/// <summary>Create a video node from the named video file.</summary>
+		/// <param name="videoFile">The video file to create the <see cref="SKVideoNode" /> from.</param>
+		[Static, Export ("videoNodeWithFileNamed:")]
+		SKVideoNode FromFile (string videoFile);
 
-		[Static, Export ("videoNodeWithFileNamed:"), Internal]
-		SKVideoNode VideoNodeWithFileNamed (string videoFile);
-
-		[Static, Export ("videoNodeWithVideoURL:"), Internal]
-		SKVideoNode VideoNodeWithVideoURL (NSUrl videoURL);
-
-		[Static, Export ("videoNodeWithURL:"), Internal]
-		SKVideoNode VideoNodeWithURL (NSUrl videoURL);
+		/// <summary>Creates a video node from the file at the specified URL.</summary>
+		/// <param name="videoUrl">The video url to create the <see cref="SKVideoNode" /> from.</param>
+		[Static, Export ("videoNodeWithURL:")]
+		SKVideoNode FromUrl (NSUrl videoUrl);
 
 		[DesignatedInitializer]
 		[Export ("initWithAVPlayer:")]
 		NativeHandle Constructor (AVPlayer player);
 
-		[Export ("initWithVideoFileNamed:"), Internal]
-		IntPtr InitWithVideoFileNamed (string videoFile);
+		/// <summary>Create a video node from the named video file.</summary>
+		/// <param name="videoFile">The video file to create the <see cref="SKVideoNode" /> from.</param>
+		[Export ("initWithFileNamed:")]
+		[DesignatedInitializer]
+		NativeHandle Constructor (string videoFile);
 
-		[Export ("initWithFileNamed:"), Internal]
-		IntPtr InitWithFileNamed (string videoFile);
-
-		[Export ("initWithVideoURL:"), Internal]
-		IntPtr InitWithVideoURL (NSUrl url);
-
-		[Export ("initWithURL:"), Internal]
-		IntPtr InitWithURL (NSUrl url);
+		/// <summary>Creates a video node from the file at the specified URL.</summary>
+		/// <param name="url">The video url to create the <see cref="SKVideoNode" /> from.</param>
+		[Export ("initWithURL:")]
+		[DesignatedInitializer]
+		NativeHandle Constructor (NSUrl url);
 
 		[Export ("play")]
 		void Play ();

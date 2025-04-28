@@ -46,8 +46,6 @@ namespace Cecil.Tests {
 			"ModelIO.MDLMesh::.ctor(System.Numerics.Vector3,CoreGraphics.NVector3i,System.Boolean,ModelIO.MDLGeometryType,ModelIO.IMDLMeshBufferAllocator)",
 			"ModelIO.MDLMesh::.ctor(System.Numerics.Vector3,System.Boolean,ModelIO.MDLGeometryType,ModelIO.IMDLMeshBufferAllocator)",
 			"ModelIO.MDLNoiseTexture::.ctor(System.Single,System.String,CoreGraphics.NVector2i,ModelIO.MDLTextureChannelEncoding,ModelIO.MDLNoiseTextureType)",
-			"SpriteKit.SKVideoNode::.ctor(Foundation.NSUrl)",
-			"SpriteKit.SKVideoNode::.ctor(System.String)",
 			"SpriteKit.SKWarpGeometryGrid::.ctor(System.IntPtr,System.IntPtr,System.Numerics.Vector2[],System.Numerics.Vector2[])",
 			"UIKit.UIControlEventProxy::.ctor(UIKit.UIControl,System.EventHandler)",
 			"UIKit.UIImageStatusDispatcher::.ctor(UIKit.UIImage/SaveStatus)",

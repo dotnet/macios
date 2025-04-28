@@ -43,6 +43,8 @@ namespace Intents {
 	interface NSUnitMass : NSUnit { }
 	interface NSUnitPower : NSUnit { }
 
+	/// <summary>Enumerates the results of an <see cref="T:Intents.INBookRestaurantReservationIntent" />.</summary>
+	/// <remarks>To be added.</remarks>
 	[Unavailable (PlatformName.MacOSX)]
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -73,6 +75,8 @@ namespace Intents {
 		VideoCall = (1 << 1),
 	}
 
+	/// <summary>Enumerates the record types for audio or video calls.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INCallRecordType : long {
@@ -275,6 +279,8 @@ namespace Intents {
 		Success,
 	}
 
+	/// <summary>Enumerates results codes for the <see cref="T:Intents.INGetAvailableRestaurantReservationBookingDefaultsIntent" />.</summary>
+	/// <remarks>To be added.</remarks>
 	[Unavailable (PlatformName.MacOSX)]
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -287,6 +293,8 @@ namespace Intents {
 		Unspecified,
 	}
 
+	/// <summary>Enumerates results codes for the <see cref="T:Intents.INGetAvailableRestaurantReservationBookingsIntent" />.</summary>
+	/// <remarks>To be added.</remarks>
 	[Unavailable (PlatformName.MacOSX)]
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -301,6 +309,8 @@ namespace Intents {
 		FailureRequestUnspecified,
 	}
 
+	/// <summary>Enumerates results codes for the <see cref="T:Intents.INGetRestaurantGuestIntent" />.</summary>
+	/// <remarks>To be added.</remarks>
 	[Unavailable (PlatformName.MacOSX)]
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -337,6 +347,8 @@ namespace Intents {
 		FailureRequiringAppLaunchServiceTemporarilyUnavailable,
 	}
 
+	/// <summary>Enumerates results codes for the <see cref="T:Intents.INGetUserCurrentRestaurantReservationBookingsIntent" />.</summary>
+	/// <remarks>To be added.</remarks>
 	[Unavailable (PlatformName.MacOSX)]
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -351,6 +363,8 @@ namespace Intents {
 		Unspecified,
 	}
 
+	/// <summary>Enumerates errors associated with Intents / SiriKit.</summary>
+	/// <remarks>To be added.</remarks>
 	[TV (14, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -424,6 +438,8 @@ namespace Intents {
 		NoAppIntent = 10001,
 	}
 
+	/// <summary>Enumerates the state of an intent handling response.</summary>
+	/// <remarks>To be added.</remarks>
 	[TV (14, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -445,6 +461,8 @@ namespace Intents {
 		UserConfirmationRequired,
 	}
 
+	/// <summary>Enumerates the direction of information flow relative to the device.</summary>
+	/// <remarks>To be added.</remarks>
 	[TV (14, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -825,6 +843,8 @@ namespace Intents {
 		FailureRequiringAppLaunchRideScheduledTooFar,
 	}
 
+	/// <summary>Enumerates the status of a restaurant reservation.</summary>
+	/// <remarks>To be added.</remarks>
 	[Unavailable (PlatformName.MacOSX)]
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -1208,6 +1228,8 @@ namespace Intents {
 		FailureRequiringAppLaunch,
 	}
 
+	/// <summary>Enumerates the authorization of the developer's Intent.</summary>
+	/// <remarks>To be added.</remarks>
 	[Unavailable (PlatformName.MacOSX)]
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -1339,6 +1361,8 @@ namespace Intents {
 		Success = 8,
 	}
 
+	/// <summary>Enumerates the kind of thing a <see cref="T:Intents.INVocabulary" /> string represents.</summary>
+	/// <remarks>To be added.</remarks>
 	[Unavailable (PlatformName.MacOSX)]
 	[TV (14, 0)]
 	[MacCatalyst (13, 1)]
@@ -3409,6 +3433,8 @@ namespace Intents {
 		string GuestProvidedSpecialRequestText { get; set; }
 	}
 
+	/// <summary>Interface to resolve, confirm and handle Siri requests for the corresponding action.</summary>
+	/// <remarks>To be added.</remarks>
 	[NoTV]
 	[Unavailable (PlatformName.MacOSX)]
 	[MacCatalyst (13, 1)]
@@ -3603,6 +3629,8 @@ namespace Intents {
 		INSpeakableString WorkoutName { get; }
 	}
 
+	/// <summary>Interface to resolve, confirm and handle Siri requests for the corresponding action.</summary>
+	/// <remarks>To be added.</remarks>
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
 	[MacCatalyst (13, 1)]
@@ -4289,6 +4317,8 @@ namespace Intents {
 		INSpeakableString WorkoutName { get; }
 	}
 
+	/// <summary>Interface to resolve, confirm and handle Siri requests for the corresponding action.</summary>
+	/// <remarks>To be added.</remarks>
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
 	[MacCatalyst (13, 1)]
@@ -4337,6 +4367,9 @@ namespace Intents {
 		INEndWorkoutIntentResponseCode Code { get; }
 	}
 
+	/// <summary>Defines the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Intents%20IINIntent%20Handler%20Provider&amp;scope=Xamarin" title="M:Intents.IINIntentHandlerProvider*">M:Intents.IINIntentHandlerProvider*</a></format> interface implemented by <see cref="T:Intents.INExtension" />.</summary>
+	/// <remarks>
+	///     </remarks>
 	[TV (14, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol]
@@ -4375,6 +4408,8 @@ namespace Intents {
 		INRestaurant Restaurant { get; set; }
 	}
 
+	/// <summary>Interface to resolve, confirm and handle Siri requests for the corresponding action.</summary>
+	/// <remarks>To be added.</remarks>
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
 	[MacCatalyst (13, 1)]
@@ -4479,6 +4514,8 @@ namespace Intents {
 		NSDate LatestBookingDateForResults { get; set; }
 	}
 
+	/// <summary>Interface to resolve, confirm and handle Siri requests for the corresponding action.</summary>
+	/// <remarks>To be added.</remarks>
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
 	[MacCatalyst (13, 1)]
@@ -4562,6 +4599,8 @@ namespace Intents {
 	interface INGetRestaurantGuestIntent {
 	}
 
+	/// <summary>Interface to resolve, confirm and handle Siri requests for the corresponding action.</summary>
+	/// <remarks>To be added.</remarks>
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
 	[MacCatalyst (13, 1)]
@@ -4623,6 +4662,8 @@ namespace Intents {
 		NativeHandle Constructor ();
 	}
 
+	/// <summary>Interface to resolve, confirm and handle Siri requests for the corresponding action.</summary>
+	/// <remarks>To be added.</remarks>
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
 	[MacCatalyst (13, 1)]
@@ -4735,6 +4776,8 @@ namespace Intents {
 		NSDate EarliestBookingDateForResults { get; set; }
 	}
 
+	/// <summary>Interface to resolve, confirm and handle Siri requests for the corresponding action.</summary>
+	/// <remarks>To be added.</remarks>
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
 	[MacCatalyst (13, 1)]
@@ -5132,6 +5175,8 @@ namespace Intents {
 		CLPlacemark DropOffLocation { get; }
 	}
 
+	/// <summary>Interface to resolve, confirm and handle Siri requests for the corresponding action.</summary>
+	/// <remarks>To be added.</remarks>
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
 	[MacCatalyst (13, 1)]
@@ -5467,6 +5512,8 @@ namespace Intents {
 		INSpeakableString WorkoutName { get; }
 	}
 
+	/// <summary>Interface to resolve, confirm and handle Siri requests for the corresponding action.</summary>
+	/// <remarks>To be added.</remarks>
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
 	[MacCatalyst (13, 1)]
@@ -6088,6 +6135,8 @@ namespace Intents {
 		string Note { get; }
 	}
 
+	/// <summary>Interface to resolve, confirm and handle Siri requests for the corresponding action.</summary>
+	/// <remarks>To be added.</remarks>
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
 	[MacCatalyst (13, 1)]
@@ -6212,6 +6261,8 @@ namespace Intents {
 		INDateComponentsRange ScheduledPickupTime { get; }
 	}
 
+	/// <summary>Interface to resolve, confirm and handle Siri requests for the corresponding action.</summary>
+	/// <remarks>To be added.</remarks>
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
 	[MacCatalyst (13, 1)]
@@ -6627,6 +6678,8 @@ namespace Intents {
 		INSpeakableString WorkoutName { get; }
 	}
 
+	/// <summary>Interface to resolve, confirm and handle Siri requests for the corresponding action.</summary>
+	/// <remarks>To be added.</remarks>
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
 	[MacCatalyst (13, 1)]
@@ -6991,6 +7044,8 @@ namespace Intents {
 		string ProfileName { get; }
 	}
 
+	/// <summary>Interface to resolve, confirm and handle Siri requests for the corresponding action.</summary>
+	/// <remarks>To be added.</remarks>
 	[Deprecated (PlatformName.iOS, 15, 0)]
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
@@ -7107,6 +7162,8 @@ namespace Intents {
 		NSNumber WeakUnseen { get; }
 	}
 
+	/// <summary>Interface to resolve, confirm and handle Siri requests for the corresponding action.</summary>
+	/// <remarks>To be added.</remarks>
 	[NoMac]
 	[Deprecated (PlatformName.iOS, 15, 0)]
 	[NoTV]
@@ -7289,6 +7346,8 @@ namespace Intents {
 		INConditionalOperator ConversationIdentifiersOperator { get; }
 	}
 
+	/// <summary>Interface to resolve, confirm and handle Siri requests for the corresponding action.</summary>
+	/// <remarks>To be added.</remarks>
 	[NoMac]
 	[NoTV]
 	[MacCatalyst (13, 1)]
@@ -7422,6 +7481,8 @@ namespace Intents {
 		INConditionalOperator PeopleInPhotoOperator { get; }
 	}
 
+	/// <summary>Interface to resolve, confirm and handle Siri requests for the corresponding action.</summary>
+	/// <remarks>To be added.</remarks>
 	[Deprecated (PlatformName.iOS, 15, 0)]
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
@@ -7592,6 +7653,8 @@ namespace Intents {
 		nuint RecipientCount { get; set; }
 	}
 
+	/// <summary>Interface to resolve, confirm and handle Siri requests for the corresponding action.</summary>
+	/// <remarks>To be added.</remarks>
 	[NoTV]
 	[MacCatalyst (13, 1)]
 	[Protocol]
@@ -7716,6 +7779,8 @@ namespace Intents {
 		string Note { get; }
 	}
 
+	/// <summary>Interface to resolve, confirm and handle Siri requests for the corresponding action.</summary>
+	/// <remarks>To be added.</remarks>
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
 	[MacCatalyst (13, 1)]
@@ -7823,6 +7888,8 @@ namespace Intents {
 		INRelativeReference RelativeAudioSourceReference { get; }
 	}
 
+	/// <summary>Interface to resolve, confirm and handle Siri requests for the corresponding action.</summary>
+	/// <remarks>To be added.</remarks>
 	[Deprecated (PlatformName.iOS, 15, 0)]
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
@@ -7948,6 +8015,8 @@ namespace Intents {
 		INSpeakableString CarName { get; }
 	}
 
+	/// <summary>Interface to resolve, confirm and handle Siri requests for the corresponding action.</summary>
+	/// <remarks>To be added.</remarks>
 	[Deprecated (PlatformName.iOS, 15, 0)]
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
@@ -8112,6 +8181,8 @@ namespace Intents {
 		INSpeakableString CarName { get; }
 	}
 
+	/// <summary>Interface to resolve, confirm and handle Siri requests for the corresponding action.</summary>
+	/// <remarks>To be added.</remarks>
 	[Deprecated (PlatformName.iOS, 15, 0)]
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
@@ -8199,6 +8270,8 @@ namespace Intents {
 		INMessageAttribute Attribute { get; }
 	}
 
+	/// <summary>Interface to resolve, confirm and handle Siri requests for the corresponding action.</summary>
+	/// <remarks>To be added.</remarks>
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
 	[MacCatalyst (13, 1)]
@@ -8295,6 +8368,8 @@ namespace Intents {
 		INSpeakableString CarName { get; }
 	}
 
+	/// <summary>Interface to resolve, confirm and handle Siri requests for the corresponding action.</summary>
+	/// <remarks>To be added.</remarks>
 	[Deprecated (PlatformName.iOS, 15, 0)]
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
@@ -8403,6 +8478,8 @@ namespace Intents {
 		NSNumber PresetNumber { get; }
 	}
 
+	/// <summary>Interface to resolve, confirm and handle Siri requests for the corresponding action.</summary>
+	/// <remarks>To be added.</remarks>
 	[Deprecated (PlatformName.iOS, 15, 0)]
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
@@ -8532,6 +8609,8 @@ namespace Intents {
 		INSpeakableString CarName { get; }
 	}
 
+	/// <summary>Interface to resolve, confirm and handle Siri requests for the corresponding action.</summary>
+	/// <remarks>To be added.</remarks>
 	[Deprecated (PlatformName.iOS, 15, 0)]
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
@@ -8675,6 +8754,8 @@ namespace Intents {
 
 	interface IINSpeakable { }
 
+	/// <summary>Interface defining attributes of utterances made or heard by Siri.</summary>
+	/// <remarks>To be added.</remarks>
 	[TV (14, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol]
@@ -8819,6 +8900,8 @@ namespace Intents {
 		INPerson [] Contacts { get; }
 	}
 
+	/// <summary>Interface to resolve, confirm and handle Siri requests for the corresponding action.</summary>
+	/// <remarks>To be added.</remarks>
 	[NoMac]
 	[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'INStartCallIntentHandling' instead.")]
 	[NoTV]
@@ -8922,6 +9005,8 @@ namespace Intents {
 		INConditionalOperator PeopleInPhotoOperator { get; }
 	}
 
+	/// <summary>Interface to resolve, confirm and handle Siri requests for the corresponding action.</summary>
+	/// <remarks>To be added.</remarks>
 	[Deprecated (PlatformName.iOS, 15, 0)]
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
@@ -9017,6 +9102,8 @@ namespace Intents {
 		INPerson [] Contacts { get; }
 	}
 
+	/// <summary>Interface to resolve, confirm and handle Siri requests for the corresponding action.</summary>
+	/// <remarks>To be added.</remarks>
 	[NoMac]
 	[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'INStartCallIntentHandling' instead.")]
 	[NoTV]
@@ -9100,6 +9187,8 @@ namespace Intents {
 		NSNumber IsOpenEnded { get; }
 	}
 
+	/// <summary>Interface to resolve, confirm and handle Siri requests for the corresponding action.</summary>
+	/// <remarks>To be added.</remarks>
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
 	[MacCatalyst (13, 1)]
@@ -9442,6 +9531,8 @@ namespace Intents {
 		INWorkoutLocationTypeResolutionResult GetConfirmationRequired (NSObject itemToConfirm, nint reason);
 	}
 
+	/// <summary>Optional methods for the <see cref="T:Foundation.NSUserActivity" /> interface.</summary>
+	/// <remarks>To be added.</remarks>
 	[TV (14, 0)]
 	[MacCatalyst (13, 1)]
 	[Category]
@@ -9497,6 +9588,8 @@ namespace Intents {
 		INCarSignalOptions Signals { get; }
 	}
 
+	/// <summary>Interface to resolve, confirm and handle Siri requests for the corresponding action.</summary>
+	/// <remarks>To be added.</remarks>
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
 	[MacCatalyst (13, 1)]
@@ -9773,6 +9866,8 @@ namespace Intents {
 		INSpeakableString CarName { get; }
 	}
 
+	/// <summary>Interface to resolve, confirm and handle Siri requests for the corresponding action.</summary>
+	/// <remarks>To be added.</remarks>
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
 	[MacCatalyst (13, 1)]
@@ -9839,6 +9934,8 @@ namespace Intents {
 		INSpeakableString CarName { get; }
 	}
 
+	/// <summary>Interface to resolve, confirm and handle Siri requests for the corresponding action.</summary>
+	/// <remarks>To be added.</remarks>
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
 	[MacCatalyst (13, 1)]
@@ -10033,6 +10130,8 @@ namespace Intents {
 		INDateComponentsRange DueDate { get; }
 	}
 
+	/// <summary>Interface to resolve, confirm and handle Siri requests for the corresponding action.</summary>
+	/// <remarks>To be added.</remarks>
 	[Deprecated (PlatformName.iOS, 15, 0)]
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
@@ -10386,6 +10485,8 @@ namespace Intents {
 		INDateComponentsRange DueDateRange { get; }
 	}
 
+	/// <summary>Interface to resolve, confirm and handle Siri requests for the corresponding action.</summary>
+	/// <remarks>To be added.</remarks>
 	[Deprecated (PlatformName.iOS, 15, 0)]
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
@@ -10486,6 +10587,8 @@ namespace Intents {
 		INSpeakableString CarName { get; }
 	}
 
+	/// <summary>Interface to resolve, confirm and handle Siri requests for the corresponding action.</summary>
+	/// <remarks>To be added.</remarks>
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
 	[MacCatalyst (13, 1)]
@@ -10643,6 +10746,8 @@ namespace Intents {
 		INTaskPriority Priority { get; }
 	}
 
+	/// <summary>Interface to resolve, confirm and handle Siri requests for the corresponding action.</summary>
+	/// <remarks>To be added.</remarks>
 	[NoMac, NoTV]
 	[MacCatalyst (13, 1)]
 	[Protocol]
@@ -10752,6 +10857,8 @@ namespace Intents {
 		INNoteContent Content { get; }
 	}
 
+	/// <summary>Interface to resolve, confirm and handle Siri requests for the corresponding action.</summary>
+	/// <remarks>To be added.</remarks>
 	[Deprecated (PlatformName.iOS, 15, 0)]
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
@@ -11079,6 +11186,8 @@ namespace Intents {
 		string RideIdentifier { get; }
 	}
 
+	/// <summary>Interface to resolve, confirm and handle Siri requests for the corresponding action.</summary>
+	/// <remarks>To be added.</remarks>
 	[NoMac, NoTV]
 	[MacCatalyst (13, 1)]
 	[Protocol]
@@ -11143,6 +11252,8 @@ namespace Intents {
 		INSpeakableString GroupName { get; }
 	}
 
+	/// <summary>Interface to resolve, confirm and handle Siri requests for the corresponding action.</summary>
+	/// <remarks>To be added.</remarks>
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[Protocol]
@@ -11227,6 +11338,8 @@ namespace Intents {
 		INSpeakableString GroupName { get; }
 	}
 
+	/// <summary>Interface to resolve, confirm and handle Siri requests for the corresponding action.</summary>
+	/// <remarks>To be added.</remarks>
 	[Deprecated (PlatformName.iOS, 15, 0)]
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
@@ -11356,6 +11469,8 @@ namespace Intents {
 		INVisualCodeType VisualCodeType { get; }
 	}
 
+	/// <summary>Interface to resolve, confirm and handle Siri requests for the corresponding action.</summary>
+	/// <remarks>To be added.</remarks>
 	[Deprecated (PlatformName.iOS, 15, 0)]
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
@@ -11927,6 +12042,8 @@ namespace Intents {
 		INBalanceType RequestedBalanceType { get; }
 	}
 
+	/// <summary>Interface to resolve, confirm and handle Siri requests for the corresponding action.</summary>
+	/// <remarks>To be added.</remarks>
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[Protocol]
@@ -12057,6 +12174,8 @@ namespace Intents {
 		string NotebookItemIdentifier { get; }
 	}
 
+	/// <summary>Interface to resolve, confirm and handle Siri requests for the corresponding action.</summary>
+	/// <remarks>To be added.</remarks>
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[Protocol]
@@ -12369,6 +12488,8 @@ namespace Intents {
 		INCurrencyAmount Tip { get; set; }
 	}
 
+	/// <summary>Interface to resolve, confirm and handle Siri requests for the corresponding action.</summary>
+	/// <remarks>To be added.</remarks>
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[Protocol]
@@ -12446,6 +12567,8 @@ namespace Intents {
 		INTemporalEventTrigger TemporalEventTrigger { get; }
 	}
 
+	/// <summary>Interface to resolve, confirm and handle Siri requests for the corresponding action.</summary>
+	/// <remarks>To be added.</remarks>
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[Protocol]
@@ -12943,6 +13066,8 @@ namespace Intents {
 		string TransactionNote { get; }
 	}
 
+	/// <summary>Interface to resolve, confirm and handle Siri requests for the corresponding action.</summary>
+	/// <remarks>To be added.</remarks>
 	[Deprecated (PlatformName.iOS, 15, 0)]
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]

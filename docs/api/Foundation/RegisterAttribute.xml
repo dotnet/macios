@@ -1,0 +1,39 @@
+<Documentation>
+  <Docs DocId="T:Foundation.RegisterAttribute">
+    <summary>Used to register a class to the Objective-C runtime.</summary>
+    <remarks>
+      <para>While all classes derived from the <see cref="T:Foundation.NSObject" /> class are exposed to
+      the Objective-C world, in some cases you might want to expose
+      the class using a different name to the runtime.</para>
+      <para>
+	In addition, if you want your classes to be available on the iOS designer, you need to annotate those classes with the Register attribute.
+      </para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
+// This class is never surfaced to Objective-C's runtime
+class NotSurfaced {}
+
+// This class is automatically surfaced to Objective-C's 
+// runtime, since it is a subclass of NSObject, and it
+// is visible by the Objective-C runtime as "AutomaticallySurfaced"
+class AutomaticallySurfaced : NSObject {}
+
+// This class is surfaced to the Objective-C runtime with
+// the name 'MyName'
+[Register ("MyName")]
+class InternalName : NSObject {}
+]]></code>
+      </example>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
+// This UIView is surfaced to the iOS designer.
+[Register]
+public class MyView : UIView {
+    public MyView (IntPtr handle) : base (handle) {}
+    public MyView (CGRect rect) : base (rect) {}
+}
+]]></code>
+      </example>
+    </remarks>
+  </Docs>
+</Documentation>

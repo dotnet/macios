@@ -10,7 +10,6 @@ parameters:
 
   - name: use1ES
     type: boolean
-    default: false
 
   - name: repositoryAlias
     type: string
@@ -23,18 +22,6 @@ parameters:
   - name: uploadPrefix
     type: string
     default: '$(MaciosUploadPrefix)'
-
-  - name: testConfigurations
-    type: object
-    default: []
-
-  - name: supportedPlatforms
-    type: object
-    default: []
-
-  - name: testsLabels
-    type: string
-    default: ''
 
   - name: statusContext
     type: string
@@ -85,22 +72,18 @@ steps:
       $config = Import-BuildConfiguration -ConfigFile $configPath
       $testMatrix = $config.TEST_MATRIX
       Write-Host "##vso[task.setvariable variable=TEST_MATRIX;isOutput=true]$testMatrix"
+
+      $simulatorTestMatrix = $config.SIMULATOR_TEST_MATRIX
+      Write-Host "##vso[task.setvariable variable=SIMULATOR_TEST_MATRIX;isOutput=true]$simulatorTestMatrix"
     name: test_matrix
     displayName: 'Create tests strategy matrix'
 
   # upload config to be consumed later
   - ${{ if eq(parameters.uploadArtifacts, true) }}:
-      - ${{ if eq(parameters.use1ES, true) }}:
-          - task: 1ES.PublishPipelineArtifact@1
-            displayName: 'Publish Artifact: configuration.json'
-            inputs:
-              path: '$(Build.ArtifactStagingDirectory)/configuration.json'
-              artifact: '${{ parameters.uploadPrefix }}build-configuration'
-            continueOnError: true
-      - ${{ else }}:
-          - task: PublishPipelineArtifact@1
-            displayName: 'Publish Artifact: configuration.json'
-            inputs:
-              targetPath: '$(Build.ArtifactStagingDirectory)/configuration.json'
-              artifactName: '${{ parameters.uploadPrefix }}build-configuration'
-            continueOnError: true
+      - template: ../common/publish-pipeline-artifact.yml
+        parameters:
+          use1ES: ${{ parameters.use1ES }}
+          displayName: 'Publish Artifact: configuration.json'
+          path: '$(Build.ArtifactStagingDirectory)/configuration.json'
+          artifact: '${{ parameters.uploadPrefix }}build-configuration'
+          continueOnError: true

@@ -1,0 +1,123 @@
+<Documentation>
+  <Docs DocId="M:CoreAnimation.CAPropertyAnimation.FromKeyPath(System.String)">
+        <param name="path">
+          <para>A key path represening the property to animate.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <summary>Creates a property animation from the specified keypath.</summary>
+        <returns>The new animation.</returns>
+        <remarks>
+          <para>The animation created will animate the property specified by the keypath.</para>
+          <list type="table">
+            <listheader>
+              <term>Property</term>
+              <description>Action</description>
+            </listheader>
+            <item>
+              <term>anchorPoint</term>
+              <description>Animates for 0.25 seconds or the duration of the current transaction using a CABasicAnimation.</description>
+            </item>
+            <item>
+              <term>backgroundColor</term>
+              <description>Animates for 0.25 seconds or the duration of the current transaction using a CABasicAnimation.   Subproperties are animated with basic animations.</description>
+            </item>
+            <item>
+              <term>backgroundFilters</term>
+              <description>Animates using a CATransition for 0.25 seconds or the duration of the transaction.   The default animation type is CATransition.Fade and the range is from 0.0 to 1.0. The filter subproperties are animated with a CABasicAnimation.</description>
+            </item>
+            <item>
+              <term>borderColor</term>
+              <description>Animates for 0.25 seconds or the duration of the current transaction using a CABasicAnimation.</description>
+            </item>
+            <item>
+              <term>borderWidth</term>
+              <description>Animates for 0.25 seconds or the duration of the current transaction using a CABasicAnimation.</description>
+            </item>
+            <item>
+              <term>bounds</term>
+              <description>Animates for 0.25 seconds or the duration of the current transaction using a CABasicAnimation.</description>
+            </item>
+            <item>
+              <term>compositingFilter</term>
+              <description>Animates using a CATransition for 0.25 seconds or the duration of the transaction.   The default animation type is CATransition.Fade and the range is from 0.0 to 1.0. Subproperties are animated with basic animations.</description>
+            </item>
+            <item>
+              <term>contents</term>
+              <description>Animates for 0.25 seconds or the duration of the current transaction using a CABasicAnimation.</description>
+            </item>
+            <item>
+              <term>contentsRect</term>
+              <description>Animates for 0.25 seconds or the duration of the current transaction using a CABasicAnimation.</description>
+            </item>
+            <item>
+              <term>cornerRadius</term>
+              <description>Animates for 0.25 seconds or the duration of the current transaction using a CABasicAnimation.</description>
+            </item>
+            <item>
+              <term>doubleSided</term>
+              <description>No default implied animation is set.</description>
+            </item>
+            <item>
+              <term>filters</term>
+              <description>Animates for 0.25 seconds or the duration of the current transaction using a CABasicAnimation. Sub-properties of the filters are animated using the default implied CABasicAnimation described in Table 10.</description>
+            </item>
+            <item>
+              <term>frame</term>
+              <description>The frame property itself is not animatable. You can achieve the same results by modifying the bounds and position properties instead.</description>
+            </item>
+            <item>
+              <term>hidden</term>
+              <description>Animates for 0.25 seconds or the duration of the current transaction using a CABasicAnimation.</description>
+            </item>
+            <item>
+              <term>mask</term>
+              <description>Animates for 0.25 seconds or the duration of the current transaction using a CABasicAnimation. This property is available only on Mac OS X.</description>
+            </item>
+            <item>
+              <term>masksToBounds</term>
+              <description>Animates for 0.25 seconds or the duration of the current transaction using a CABasicAnimation.</description>
+            </item>
+            <item>
+              <term>opacity</term>
+              <description>Animates for 0.25 seconds or the duration of the current transaction using a CABasicAnimation.</description>
+            </item>
+            <item>
+              <term>position</term>
+              <description>Animates for 0.25 seconds or the duration of the current transaction using a CABasicAnimation.</description>
+            </item>
+            <item>
+              <term>shadowColor</term>
+              <description>Animates for 0.25 seconds or the duration of the current transaction using a CABasicAnimation. This property is available only on Mac OS X.</description>
+            </item>
+            <item>
+              <term>shadowOffset</term>
+              <description>Uses the default implied CABasicAnimation described in Table 10. This property is available only on Mac OS X.</description>
+            </item>
+            <item>
+              <term>shadowOpacity</term>
+              <description>Animates for 0.25 seconds or the duration of the current transaction using a CABasicAnimation. This property is available only on Mac OS X.</description>
+            </item>
+            <item>
+              <term>shadowRadius</term>
+              <description>Animates for 0.25 seconds or the duration of the current transaction using a CABasicAnimation. This property is available only on Mac OS X.</description>
+            </item>
+            <item>
+              <term>sublayers</term>
+              <description>Animates using a CATransition for 0.25 seconds or the duration of the transaction.   The default animation type is CATransition.Fade and the range is from 0.0 to 1.0..</description>
+            </item>
+            <item>
+              <term>sublayerTransform</term>
+              <description>Animates for 0.25 seconds or the duration of the current transaction using a CABasicAnimation.</description>
+            </item>
+            <item>
+              <term>transform</term>
+              <description>Animates for 0.25 seconds or the duration of the current transaction using a CABasicAnimation.</description>
+            </item>
+            <item>
+              <term>zPosition</term>
+              <description>Animates for 0.25 seconds or the duration of the current transaction using a CABasicAnimation.</description>
+            </item>
+          </list>
+        </remarks>
+      </Docs>
+</Documentation>

@@ -1,0 +1,18 @@
+<Documentation>
+  <Docs DocId="T:AddressBook.ABPersonUrlLabel">
+    <summary>
+      URL property labels.
+    </summary>
+    <remarks>
+      <para>
+        Labels are used with
+        <see cref="M:AddressBook.ABAddressBook.LocalizedLabel(Foundation.NSString)" />,
+        <see cref="P:AddressBook.ABMultiValueEntry`1.Label" />,
+        <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:AddressBook.ABMultiValue`1.Add(`0,Foundation.NSString)&amp;scope=Xamarin" title="M:AddressBook.ABMultiValue`1.Add(`0,Foundation.NSString)">M:AddressBook.ABMultiValue`1.Add(`0,Foundation.NSString)</a></format>, and
+        <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:AddressBook.ABMultiValue`1.Insert(System.Int32,`0,Foundation.NSString)&amp;scope=Xamarin" title="M:AddressBook.ABMultiValue`1.Insert(System.Int32,`0,Foundation.NSString)">M:AddressBook.ABMultiValue`1.Insert(System.Int32,`0,Foundation.NSString)</a></format>.
+      </para>
+    </remarks>
+    <altmember cref="M:AddressBook.ABPerson.GetUrls" />
+    <altmember cref="M:AddressBook.ABPerson.SetUrls(AddressBook.ABMultiValue`1)" />
+  </Docs>
+</Documentation>

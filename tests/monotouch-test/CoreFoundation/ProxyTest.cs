@@ -41,7 +41,7 @@ namespace MonoTouchFixtures.CoreFoundation {
 			}
 		}
 
-#if !__WATCHOS__ && !MONOMAC
+#if !MONOMAC
 		HttpListener listener;
 		int port;
 		Thread listener_thread;

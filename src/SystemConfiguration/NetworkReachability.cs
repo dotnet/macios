@@ -23,6 +23,8 @@ using System.Net.Sockets;
 namespace SystemConfiguration {
 
 	// SCNetworkReachabilityFlags -> uint32_t -> SCNetworkReachability.h
+	/// <summary>The reachability status.</summary>
+	///     <remarks>To be added.</remarks>
 	[Flags]
 	public enum NetworkReachabilityFlags {
 		/// <summary>The host is reachable using a transient connection (PPP for example).</summary>
@@ -56,6 +58,7 @@ namespace SystemConfiguration {
 	}
 
 	// http://developer.apple.com/library/ios/#documentation/SystemConfiguration/Reference/SCNetworkReachabilityRef/Reference/reference.html
+	/// <include file="../../docs/api/SystemConfiguration/NetworkReachability.xml" path="/Documentation/Docs[@DocId='T:SystemConfiguration.NetworkReachability']/*" />
 	public class NetworkReachability : NativeObject {
 		// netinet/in.h
 		[StructLayout (LayoutKind.Sequential)]
@@ -345,6 +348,9 @@ namespace SystemConfiguration {
 			}
 		}
 
+		/// <param name="ip">The IP address.   Only IPV4 is supported.</param>
+		///         <summary>Creates a network reachability class based on an IP address.</summary>
+		///         <remarks>In addition to probing general hosts on the Internet, you can detect the ad-hoc WiFi network using the IP address 169.254.0.0 and the general network availability with 0.0.0.0. </remarks>
 		public NetworkReachability (IPAddress ip)
 			: base (Create (ip), true)
 		{
@@ -359,6 +365,9 @@ namespace SystemConfiguration {
 			return CheckFailure (SCNetworkReachabilityCreateWithName (IntPtr.Zero, addressStr));
 		}
 
+		/// <param name="address">A host name.</param>
+		///         <summary>Creates a network reachability object from a hostname.</summary>
+		///         <remarks>The hostname is resolved using the current DNS settings.</remarks>
 		public NetworkReachability (string address)
 			: base (Create (address), true)
 		{
@@ -394,6 +403,12 @@ namespace SystemConfiguration {
 			return CheckFailure (handle);
 		}
 
+		/// <param name="localAddress">Local address to monitor, this can be null if you are not interested in the local changes.</param>
+		///         <param name="remoteAddress">Remote address to monitor, this can be null if you are not interested in the remote changes.</param>
+		///         <summary>Creates a network reachability object from a local IP address and a remote one.</summary>
+		///         <remarks>
+		///           <para />
+		///         </remarks>
 		public NetworkReachability (IPAddress localAddress, IPAddress remoteAddress)
 			: base (Create (localAddress, remoteAddress), true)
 		{
@@ -418,12 +433,24 @@ namespace SystemConfiguration {
 		unsafe static extern int SCNetworkReachabilityGetFlags (/* SCNetworkReachabilityRef __nonnull */ IntPtr target,
 			/* SCNetworkReachabilityFlags* __nonnull */ NetworkReachabilityFlags* flags);
 
+		/// <param name="flags">Returned value of the current reachability for the specified host.</param>
+		///         <summary>Method used to get the current reachability flags for this host.</summary>
+		///         <returns>Detailed status flag.</returns>
+		///         <remarks>
+		///           <para />
+		///         </remarks>
 		public bool TryGetFlags (out NetworkReachabilityFlags flags)
 		{
 			return GetFlags (out flags) == StatusCode.OK;
 		}
 
 #if NET
+		/// <param name="flags">Returned value of the current reachability for the specified host.</param>
+		///         <summary>Method used to get the current reachability flags for this host.</summary>
+		///         <returns>Returned value of the current reachability for the specified host.</returns>
+		///         <remarks>
+		///           <para />
+		///         </remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -477,6 +504,9 @@ namespace SystemConfiguration {
 #endif
 			/* __nullable */ SCNetworkReachabilityContext* context);
 
+		/// <param name="flags">The current reachability flags for the NetworkReachability object.</param>
+		///     <summary>Signature for the SetCallback method on NetworkReachability.</summary>
+		///     <remarks>Methods with this signature are invoked in response to changes in the <see cref="T:SystemConfiguration.NetworkReachability" /> state.</remarks>
 		public delegate void Notification (NetworkReachabilityFlags flags);
 
 		Notification? notification;
@@ -500,6 +530,10 @@ namespace SystemConfiguration {
 		}
 
 #if NET
+		/// <param name="callback">The method to invoke on a network reachability change.</param>
+		///         <summary>Configures the method to be invoked when network reachability changes.</summary>
+		///         <returns>True if the operation succeeded, false otherwise.</returns>
+		///         <remarks>The notification is invoked on either the runloop configured in the call to <see cref="M:SystemConfiguration.NetworkReachability.Schedule(CoreFoundation.CFRunLoop,System.String)" />, or dispatched on the queue specified with <see cref="M:SystemConfiguration.NetworkReachability.SetDispatchQueue(CoreFoundation.DispatchQueue)" /></remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -583,6 +617,11 @@ namespace SystemConfiguration {
 			/* CFStringRef __nonnull */ IntPtr runLoopMode);
 
 #if NET
+		/// <param name="runLoop">The run loop where the reachability callback is invoked.</param>
+		///         <param name="mode">The run loop mode.</param>
+		///         <summary>Schedules the delivery of the events (what is set with SetCallback) on the given run loop.</summary>
+		///         <returns>True if the operation succeeded, false otherwise.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -607,12 +646,17 @@ namespace SystemConfiguration {
 
 			var modeHandle = CFString.CreateNative (mode);
 			try {
-				return SCNetworkReachabilityScheduleWithRunLoop (Handle, runLoop.Handle, modeHandle) != 0;
+				bool result = SCNetworkReachabilityScheduleWithRunLoop (Handle, runLoop.Handle, modeHandle) != 0;
+				GC.KeepAlive (runLoop);
+				return result;
 			} finally {
 				CFString.ReleaseNative (modeHandle);
 			}
 		}
 
+		/// <summary>Schedules the delivery of the events (what is set with SetCallback) on the current loop.</summary>
+		///         <returns>True if the operation succeeded, false otherwise.</returns>
+		///         <remarks>This schedules using the <see cref="P:CoreFoundation.CFRunLoop.Current" /> and the <see cref="P:CoreFoundation.CFRunLoop.ModeDefault" />.</remarks>
 		public bool Schedule ()
 		{
 			return Schedule (CFRunLoop.Current, CFRunLoop.ModeDefault);
@@ -637,6 +681,11 @@ namespace SystemConfiguration {
 		extern static int SCNetworkReachabilityUnscheduleFromRunLoop (/* SCNetworkReachabilityRef */ IntPtr target, /* CFRunLoopRef */ IntPtr runloop, /* CFStringRef */ IntPtr runLoopMode);
 
 #if NET
+		/// <param name="runLoop">The run loop where the object was previously scheduled.</param>
+		///         <param name="mode">The mode used.</param>
+		///         <summary>Removes the NetworkRechability from the given run loop.</summary>
+		///         <returns>True on success.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -661,12 +710,17 @@ namespace SystemConfiguration {
 
 			var modeHandle = CFString.CreateNative (mode);
 			try {
-				return SCNetworkReachabilityUnscheduleFromRunLoop (Handle, runLoop.Handle, modeHandle) != 0;
+				bool result = SCNetworkReachabilityUnscheduleFromRunLoop (Handle, runLoop.Handle, modeHandle) != 0;
+				GC.KeepAlive (runLoop);
+				return result;
 			} finally {
 				CFString.ReleaseNative (modeHandle);
 			}
 		}
 
+		/// <summary>Removes the NetworkRechability from the given run loop.</summary>
+		///         <returns>True if the operation succeeded, false otherwise.</returns>
+		///         <remarks>This unschedules the notifications from the <see cref="P:CoreFoundation.CFRunLoop.Current" /> and the <see cref="P:CoreFoundation.CFRunLoop.ModeDefault" />.</remarks>
 		public bool Unschedule ()
 		{
 			return Unschedule (CFRunLoop.Current, CFRunLoop.ModeDefault);
@@ -693,6 +747,10 @@ namespace SystemConfiguration {
 			/* dispatch_queue_t __nullable */ IntPtr queue);
 
 #if NET
+		/// <param name="queue">The queue on which the notification will be posted.   Pass <see langword="null" /> to disable notifications on the specified queue.</param>
+		///         <summary>Specifies the <see cref="T:CoreFoundation.DispatchQueue" /> to be used for callbacks.</summary>
+		///         <returns>True on success, false on failure.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -709,7 +767,9 @@ namespace SystemConfiguration {
 #endif
 		public bool SetDispatchQueue (DispatchQueue queue)
 		{
-			return SCNetworkReachabilitySetDispatchQueue (Handle, queue.GetHandle ()) != 0;
+			bool result = SCNetworkReachabilitySetDispatchQueue (Handle, queue.GetHandle ()) != 0;
+			GC.KeepAlive (queue);
+			return result;
 		}
 	}
 }

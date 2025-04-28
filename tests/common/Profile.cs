@@ -7,10 +7,7 @@ namespace Xamarin.Tests {
 		iOS,
 		tvOS,
 		watchOS,
-		macOSClassic,
 		macOSMobile,
-		macOSFull,
-		macOSSystem,
 		MacCatalyst,
 	}
 
@@ -22,12 +19,7 @@ namespace Xamarin.Tests {
 				return ApplePlatform.iOS;
 			case Profile.tvOS:
 				return ApplePlatform.TVOS;
-			case Profile.watchOS:
-				return ApplePlatform.WatchOS;
-			case Profile.macOSClassic:
-			case Profile.macOSFull:
 			case Profile.macOSMobile:
-			case Profile.macOSSystem:
 				return ApplePlatform.MacOSX;
 			case Profile.MacCatalyst:
 				return ApplePlatform.MacCatalyst;
@@ -50,8 +42,6 @@ namespace Xamarin.Tests {
 				return Profile.None;
 			case ApplePlatform.TVOS:
 				return Profile.tvOS;
-			case ApplePlatform.WatchOS:
-				return Profile.watchOS;
 			default:
 				throw new NotImplementedException (platform.ToString ());
 			}

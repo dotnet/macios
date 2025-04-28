@@ -79,6 +79,8 @@ namespace CoreVideo {
 			handle = IntPtr.Zero;
 			unsafe {
 				status = CVMetalBufferCacheCreate (IntPtr.Zero, attributes.GetHandle (), device.GetNonNullHandle (nameof (device)), (IntPtr*) Unsafe.AsPointer<IntPtr> (ref handle));
+				GC.KeepAlive (attributes);
+				GC.KeepAlive (device);
 			}
 			return status == CVReturn.Success;
 		}
@@ -115,6 +117,7 @@ namespace CoreVideo {
 			CVReturn res;
 			unsafe {
 				res = CVMetalBufferCacheCreateBufferFromImage (IntPtr.Zero, GetCheckedHandle (), imageBuffer.GetNonNullHandle (nameof (imageBuffer)), &handle);
+				GC.KeepAlive (imageBuffer);
 			}
 			if (res != CVReturn.Success)
 				throw new Exception ($"Could not create CVMetalBuffer, CVMetalBufferCacheCreateBufferFromImage returned: {res}");

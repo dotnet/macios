@@ -32,6 +32,9 @@ namespace AppKit {
 	public partial class NSSound {
 
 		// note: if needed override the protected Get|Set methods
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string Name {
 			get { return GetName (); }
 			// ignore return value (bool)

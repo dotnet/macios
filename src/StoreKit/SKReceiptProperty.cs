@@ -20,18 +20,28 @@ using UIKit;
 using System;
 
 namespace StoreKit {
+	/// <summary>Defines test properties for the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=C:StoreKit.SKReceiptRefreshRequest(Foundation.NSDictionary)&amp;scope=Xamarin" title="C:StoreKit.SKReceiptRefreshRequest(Foundation.NSDictionary)">C:StoreKit.SKReceiptRefreshRequest(Foundation.NSDictionary)</a></format> constructor.</summary>
+	///     <remarks>To be added.</remarks>
 	public partial class SKReceiptProperties : DictionaryContainer {
 #if !COREBUILD
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public SKReceiptProperties ()
 			: base (new NSMutableDictionary ())
 		{
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public SKReceiptProperties (NSDictionary dictionary)
 			: base (dictionary)
 		{
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsExpired {
 			get {
 				return GetInt32Value (_SKReceiptProperty.IsExpired) != 0;
@@ -41,6 +51,9 @@ namespace StoreKit {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsRevoked {
 			get {
 				return GetInt32Value (_SKReceiptProperty.IsRevoked) != 0;
@@ -50,6 +63,9 @@ namespace StoreKit {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsVolumePurchase {
 			get {
 				return GetInt32Value (_SKReceiptProperty.IsVolumePurchase) != 0;

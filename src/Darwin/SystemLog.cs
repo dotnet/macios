@@ -41,6 +41,8 @@ using NativeHandle = System.IntPtr;
 
 namespace Darwin {
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public class SystemLog : DisposableObject {
 		static SystemLog? _default;
 
@@ -55,6 +57,8 @@ namespace Darwin {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///     <remarks>To be added.</remarks>
 		[Flags]
 		public enum Option {
 			/// <summary>To be added.</summary>
@@ -65,6 +69,9 @@ namespace Darwin {
 			NoRemote,
 		}
 
+		/// <param name="disposing">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected override void Dispose (bool disposing)
 		{
 			if (Handle != IntPtr.Zero && Owns)
@@ -80,6 +87,10 @@ namespace Darwin {
 
 		static IntPtr asl_open (string ident, string facility, Option options)
 		{
+			if (ident is null)
+				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (ident));
+			if (facility is null)
+				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (facility));
 			using var identStr = new TransientString (ident);
 			using var facilityStr = new TransientString (facility);
 			return asl_open (identStr, facilityStr, options);
@@ -96,14 +107,13 @@ namespace Darwin {
 		{
 		}
 
+		/// <param name="ident">To be added.</param>
+		///         <param name="facility">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public SystemLog (string ident, string facility, Option options = 0)
-			: base (
-					asl_open (
-						Runtime.ThrowOnNull (ident, nameof (ident)),
-						Runtime.ThrowOnNull (facility, nameof (facility)),
-						options),
-					true
-				)
+			: base (asl_open (ident, facility, options), true)
 		{
 		}
 
@@ -112,19 +122,22 @@ namespace Darwin {
 
 		static IntPtr asl_open_from_file (int /* int */ fd, string ident, string facility)
 		{
+			if (ident is null)
+				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (ident));
+			if (facility is null)
+				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (facility));
 			using var identStr = new TransientString (ident);
 			using var facilityStr = new TransientString (facility);
 			return asl_open_from_file (fd, identStr, facilityStr);
 		}
 
+		/// <param name="fileDescriptor">To be added.</param>
+		///         <param name="ident">To be added.</param>
+		///         <param name="facility">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public SystemLog (int fileDescriptor, string ident, string facility)
-			: base (
-					asl_open_from_file (
-						fileDescriptor,
-						Runtime.ThrowOnNull (ident, nameof (ident)),
-						Runtime.ThrowOnNull (facility, nameof (facility))),
-					true
-				)
+			: base (asl_open_from_file (fileDescriptor, ident, facility), true)
 		{
 		}
 
@@ -134,11 +147,17 @@ namespace Darwin {
 		[DllImport (Constants.SystemLibrary)]
 		extern static IntPtr asl_remove_log_file (IntPtr handle, int /* int */ fd);
 
+		/// <param name="descriptor">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void AddLogFile (int descriptor)
 		{
 			asl_add_log_file (Handle, descriptor);
 		}
 
+		/// <param name="descriptor">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void RemoveLogFile (int descriptor)
 		{
 			asl_remove_log_file (Handle, descriptor);
@@ -153,14 +172,26 @@ namespace Darwin {
 			return asl_log (handle, msgHandle, textStr);
 		}
 
+		/// <param name="msg">To be added.</param>
+		///         <param name="text">To be added.</param>
+		///         <param name="args">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public int Log (Message msg, string text, params object [] args)
 		{
 			var txt = text is null ? string.Empty : String.Format (text, args);
 			if (txt.IndexOf ('%') != -1)
 				txt = txt.Replace ("%", "%%");
-			return asl_log (Handle, msg.GetHandle (), txt);
+			int result = asl_log (Handle, msg.GetHandle (), txt);
+			GC.KeepAlive (msg);
+			return result;
 		}
 
+		/// <param name="text">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public int Log (string text)
 		{
 			if (text is null)
@@ -172,17 +203,27 @@ namespace Darwin {
 		[DllImport (Constants.SystemLibrary)]
 		extern static int asl_send (IntPtr handle, IntPtr msgHandle);
 
+		/// <param name="msg">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public int Log (Message msg)
 		{
 			if (msg is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (msg));
 
-			return asl_send (Handle, msg.Handle);
+			int result = asl_send (Handle, msg.Handle);
+			GC.KeepAlive (msg);
+			return result;
 		}
 
 		[DllImport (Constants.SystemLibrary)]
 		extern static int asl_set_filter (IntPtr handle, int /* int */ f);
 
+		/// <param name="level">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public int SetFilter (int level)
 		{
 			return asl_set_filter (Handle, level);
@@ -197,11 +238,16 @@ namespace Darwin {
 		[DllImport (Constants.SystemLibrary)]
 		extern static void aslresponse_free (IntPtr handle);
 
+		/// <param name="msg">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public IEnumerable<Message> Search (Message msg)
 		{
 			if (msg is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (msg));
 			var search = asl_search (Handle, msg.Handle);
+			GC.KeepAlive (msg);
 			IntPtr mh;
 
 			while ((mh = aslresponse_next (search)) != IntPtr.Zero)
@@ -211,7 +257,11 @@ namespace Darwin {
 		}
 	}
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public class Message : DisposableObject {
+		/// <summary>To be added.</summary>
+		///     <remarks>To be added.</remarks>
 		public enum Kind {
 			/// <summary>To be added.</summary>
 			Message,
@@ -219,6 +269,8 @@ namespace Darwin {
 			Query,
 		}
 
+		/// <summary>To be added.</summary>
+		///     <remarks>To be added.</remarks>
 		[Flags]
 		public enum Op {
 			/// <summary>To be added.</summary>
@@ -255,6 +307,9 @@ namespace Darwin {
 		{
 		}
 
+		/// <param name="kind">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public Message (Kind kind)
 			: base (asl_new (kind), true)
 		{
@@ -263,6 +318,9 @@ namespace Darwin {
 		[DllImport (Constants.SystemLibrary)]
 		extern static void asl_free (IntPtr handle);
 
+		/// <param name="disposing">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected override void Dispose (bool disposing)
 		{
 			if (Handle != IntPtr.Zero && Owns)
@@ -298,6 +356,9 @@ namespace Darwin {
 		[DllImport (Constants.SystemLibrary)]
 		extern static int asl_unset (IntPtr handle, IntPtr key);
 
+		/// <param name="key">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void Remove (string key)
 		{
 			if (key is null)
@@ -399,6 +460,12 @@ namespace Darwin {
 		[DllImport (Constants.SystemLibrary)]
 		extern static int asl_set_query (IntPtr handle, IntPtr key, IntPtr value, int /* uint32_t */ op);
 
+		/// <param name="key">To be added.</param>
+		///         <param name="op">To be added.</param>
+		///         <param name="value">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool SetQuery (string key, Op op, string value)
 		{
 			using var keyStr = new TransientString (key);

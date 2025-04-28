@@ -1,0 +1,34 @@
+<Documentation>
+  <Docs DocId="T:CoreFoundation.DispatchSource.MemoryPressure">
+    <summary>Sources of this type monitor the system memory pressure condition for state changes.  </summary>
+    <remarks>
+      <para>Elevated memory pressure is a system-wide condition that applications registered for this source should react to by changing their future memory use behavior, e.g. by reducing cache sizes of newly initiated operations until memory pressure returns back to normal.</para>
+      <para>
+      </para>
+      <para>However, applications should not traverse and discard existing caches for past operations when the system memory pressure enters an elevated state, as that is likely to trigger VM operations that will further aggravate system memory pressure.</para>
+      <example>
+        <code lang="c#"><![CDATA[
+var dispatchSource = new DispatchSource.MemoryPressure (
+    MemoryPressureFlags.Critical | MemoryPressureFlags.Warn | MemoryPressureFlags.Normal, 
+    DispatchQueue.MainQueue);
+
+dispatchSource.SetRegistrationHandler (() => {
+    Console.WriteLine ("Memory monitor registered");
+});
+
+dispatchSource.SetEventHandler (() => {
+    var pressureLevel = dispatchSource.PressureFlags;
+    Console.WriteLine ("Memory worning of level: {0}", pressureLevel);
+    dispatchSource.Cancel ();
+});
+
+dispatchSource.SetCancelHandler (() => {
+    Console.WriteLine ("Memory monitor cancelled");
+});
+
+dispatchSource.Resume ();
+]]></code>
+      </example>
+    </remarks>
+  </Docs>
+</Documentation>

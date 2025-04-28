@@ -7,8 +7,15 @@ using System.Runtime.InteropServices;
 
 namespace ObjCRuntime {
 
+	/// <summary>This attribute provides information about binding code.</summary>
+	///     <remarks>
+	///     </remarks>
 	[AttributeUsage (AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Constructor | AttributeTargets.Field | AttributeTargets.Class, AllowMultiple = false)]
 	public class BindingImplAttribute : Attribute {
+		/// <param name="options">The binding implementation options.</param>
+		///         <summary>Initializes a new BindingImpl attribute.</summary>
+		///         <remarks>
+		///         </remarks>
 		public BindingImplAttribute (BindingImplOptions options)
 		{
 			Options = options;
@@ -21,6 +28,9 @@ namespace ObjCRuntime {
 		public BindingImplOptions Options { get; set; }
 	}
 
+	/// <summary>This enum is used by the <see cref="T:ObjCRuntime.BindingImplAttribute" /> type to provide information about binding code.</summary>
+	///     <remarks>
+	///     </remarks>
 	[Flags]
 	public enum BindingImplOptions {
 		/// <summary>If the method contains generated code.</summary>

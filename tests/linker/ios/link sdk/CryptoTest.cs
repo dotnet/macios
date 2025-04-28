@@ -46,9 +46,6 @@ namespace LinkSdk {
 		[Test]
 		public void TrustUsingNewCallback ()
 		{
-#if __WATCHOS__
-			Assert.Ignore ("WatchOS doesn't support BSD sockets, which our network stack currently requires.");
-#endif
 			// Three similar tests exists in dontlink, linkall and linksdk to test 3 different cases
 			// untrusted, custom ICertificatePolicy and ServerCertificateValidationCallback without
 			// having caching issues (in S.Net or the SSL handshake cache)
@@ -83,9 +80,6 @@ namespace LinkSdk {
 		[Test]
 		public void SSL_IP_5706 ()
 		{
-#if __WATCHOS__
-			Assert.Ignore ("WatchOS doesn't support BSD sockets, which our network stack currently requires.");
-#endif
 			WebClient wc = new WebClient ();
 
 			// IP are (generally) not allowed
@@ -106,9 +100,6 @@ namespace LinkSdk {
 		[Test]
 		public void TLS1_ServerNameExtension ()
 		{
-#if __WATCHOS__
-			Assert.Ignore ("WatchOS doesn't support BSD sockets, which our network stack currently requires.");
-#endif
 			// without support for the "server_name" TLS extension (RFC3546) we receive the "general"
 			// certificate of a server, which might not be the right one if a single server instance
 			// is used for many hosts (without a common name)

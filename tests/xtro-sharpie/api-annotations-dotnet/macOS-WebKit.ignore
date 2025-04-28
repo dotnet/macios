@@ -1,7 +1,5 @@
 ## only a subset of the old, pre WKWebKit, is bound for macOS
 
-# TODO WKWebView should conform to NSTextFinderClient is marked as macos(WK_MAC_TBA) as of 11.4 beta3
-
 # xcode 15
 
 # older/legacy API

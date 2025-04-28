@@ -1,0 +1,61 @@
+<Documentation>
+  <Docs DocId="T:Foundation.NSObjectFlag">
+    <summary>Sentinel class used by the MonoTouch framework.</summary>
+    <remarks>
+      <para>
+	The sole purpose for the NSObjectFlag class is to be used
+	as a sentinel in the NSObject class hierarchy to ensure that the
+	actual object initialization only happens in NSObject.
+      </para>
+      <para>
+	When you chain your constructors using NSObjectFlag.Empty the
+	only thing that will take place is the allocation of the
+	object instance, no calls to any of the init: methods in base
+	classes will be performed.  If your code depends on this for
+	initialization, you are responsible for calling the proper
+	init method directly.   For example:
+
+      </para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
+// 
+// The NSObjectFlag merely allocates the object and registers the
+// C# class with the Objective-C runtime if necessary, but no actual
+// initXxx method is invoked, that is done later in the constructor
+//
+// This is taken from Xamarin's source code:
+//
+[Export ("initWithFrame:")]
+public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
+{
+	// Invoke the init method now.
+	var initWithFrame = new Selector ("initWithFrame:").Handle;
+	if (IsDirectBinding) {
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
+	} else {
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
+	}
+}
+]]></code>
+      </example>
+      <para>
+	Alternatively, if you need a base class to initialize itself,
+	you should call one of the other constructors that take some
+	parameters.
+
+      </para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
+class MyViw : UIView {
+	[Export ("initWithFrame:")]
+	public MyView (RectangleF frame) : base (frame)
+	{
+		// this initialized MyView by calling the UIView constructor
+		// that initializes the object from a RectangleF frame.
+	}
+}
+]]></code>
+      </example>
+    </remarks>
+  </Docs>
+</Documentation>

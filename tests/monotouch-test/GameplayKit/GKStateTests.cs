@@ -8,8 +8,6 @@
 // Copyright 2015 Xamarin Inc. All rights reserved.
 //
 
-#if !__WATCHOS__
-
 using System;
 
 using Foundation;
@@ -76,5 +74,3 @@ namespace MonoTouchFixtures.GameplayKit {
 
 	class InvalidState : GKState { }
 }
-
-#endif // __WATCHOS__

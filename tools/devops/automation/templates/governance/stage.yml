@@ -22,7 +22,6 @@ parameters:
 
 - name: use1ES
   type: boolean
-  default: true
 
 stages:
 - stage: governance_checks

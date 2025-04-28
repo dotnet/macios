@@ -40,6 +40,9 @@ using CFNetwork;
 
 namespace CoreFoundation {
 	// Utility enum for string constants in ObjC
+	/// <summary>An enum of <see cref="T:CoreFoundation.CFProxy" /> proxy types.</summary>
+	///     <remarks>
+	///     </remarks>
 	public enum CFProxyType {
 		/// <summary>No proxy should be used.</summary>
 		None,
@@ -57,6 +60,9 @@ namespace CoreFoundation {
 		SOCKS,
 	}
 
+	/// <summary>Provides information about a proxy.</summary>
+	///     <remarks>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -228,35 +234,39 @@ namespace CoreFoundation {
 
 		static CFProxyType CFProxyTypeToEnum (NSString type)
 		{
+			var typeHandle = type.Handle;
+
 			if (CFProxyTypeAutoConfigurationJavaScript is not null) {
-				if (type.Handle == CFProxyTypeAutoConfigurationJavaScript.Handle)
+				if (typeHandle == CFProxyTypeAutoConfigurationJavaScript.Handle)
 					return CFProxyType.AutoConfigurationJavaScript;
 			}
 
 			if (CFProxyTypeAutoConfigurationURL is not null) {
-				if (type.Handle == CFProxyTypeAutoConfigurationURL.Handle)
+				if (typeHandle == CFProxyTypeAutoConfigurationURL.Handle)
 					return CFProxyType.AutoConfigurationUrl;
 			}
 
 			if (CFProxyTypeFTP is not null) {
-				if (type.Handle == CFProxyTypeFTP.Handle)
+				if (typeHandle == CFProxyTypeFTP.Handle)
 					return CFProxyType.FTP;
 			}
 
 			if (CFProxyTypeHTTP is not null) {
-				if (type.Handle == CFProxyTypeHTTP.Handle)
+				if (typeHandle == CFProxyTypeHTTP.Handle)
 					return CFProxyType.HTTP;
 			}
 
 			if (CFProxyTypeHTTPS is not null) {
-				if (type.Handle == CFProxyTypeHTTPS.Handle)
+				if (typeHandle == CFProxyTypeHTTPS.Handle)
 					return CFProxyType.HTTPS;
 			}
 
 			if (CFProxyTypeSOCKS is not null) {
-				if (type.Handle == CFProxyTypeSOCKS.Handle)
+				if (typeHandle == CFProxyTypeSOCKS.Handle)
 					return CFProxyType.SOCKS;
 			}
+
+			GC.KeepAlive (type);
 
 			return CFProxyType.None;
 		}
@@ -371,6 +381,8 @@ namespace CoreFoundation {
 		}
 	}
 
+	/// <summary>Configuration settings used by <see cref="M:CoreFoundation.CFNetwork.GetProxiesForURL(Foundation.NSUrl,CoreFoundation.CFProxySettings)" />.</summary>
+	///     <remarks>Returned by <see cref="M:CoreFoundation.CFNetwork.GetSystemProxySettings" />.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -559,10 +571,17 @@ namespace CoreFoundation {
 			IntPtr native;
 			unsafe {
 				native = CFNetworkCopyProxiesForAutoConfigurationScript (proxyAutoConfigurationScript.Handle, targetURL.Handle, &err);
+				GC.KeepAlive (proxyAutoConfigurationScript);
+				GC.KeepAlive (targetURL);
 			}
 			return native == IntPtr.Zero ? null : new NSArray (native);
 		}
 
+		/// <param name="proxyAutoConfigurationScript">JavaScript source to be executed to obtain a list of proxies to use.</param>
+		///         <param name="targetURL">The target URL to connect to.</param>
+		///         <summary>Executes the provided javascript source to determine a list of proxies to use for connecting to the target URL.</summary>
+		///         <returns>Returns an array of <see cref="T:CoreFoundation.CFProxy" /> objects suitable to use for connecting to <paramref name="targetURL" />.</returns>
+		///         <remarks>See also: <see cref="M:CoreFoundation.CFNetwork.GetProxiesForURL(Foundation.NSUrl,CoreFoundation.CFProxySettings)" /></remarks>
 		public static CFProxy []? GetProxiesForAutoConfigurationScript (NSString proxyAutoConfigurationScript, NSUrl targetURL)
 		{
 			if (proxyAutoConfigurationScript is null)
@@ -576,6 +595,7 @@ namespace CoreFoundation {
 					return null;
 
 				NSDictionary [] dictionaries = NSArray.ArrayFromHandle<NSDictionary> (array.Handle);
+				GC.KeepAlive (array);
 				if (dictionaries is null)
 					return null;
 
@@ -587,6 +607,7 @@ namespace CoreFoundation {
 			}
 		}
 
+		/// <include file="../../docs/api/CoreFoundation/CFNetwork.xml" path="/Documentation/Docs[@DocId='M:CoreFoundation.CFNetwork.GetProxiesForAutoConfigurationScript(Foundation.NSString,System.Uri)']/*" />
 		public static CFProxy []? GetProxiesForAutoConfigurationScript (NSString proxyAutoConfigurationScript, Uri targetUri)
 		{
 			// proxyAutoConfigurationScript checked later
@@ -609,9 +630,16 @@ namespace CoreFoundation {
 		static NSArray? CopyProxiesForURL (NSUrl url, NSDictionary proxySettings)
 		{
 			IntPtr native = CFNetworkCopyProxiesForURL (url.Handle, proxySettings.Handle);
+			GC.KeepAlive (url);
+			GC.KeepAlive (proxySettings);
 			return native == IntPtr.Zero ? null : new NSArray (native);
 		}
 
+		/// <param name="url">The target URL to connect to.</param>
+		///         <param name="proxySettings">The proxy settings as returned by <see cref="M:CoreFoundation.CFNetwork.GetSystemProxySettings" />.</param>
+		///         <summary>Gets an array of <see cref="T:CoreFoundation.CFProxy" /> objects suitable to use for connecting to <paramref name="url" />.</summary>
+		///         <returns>Returns an array of <see cref="T:CoreFoundation.CFProxy" /> objects suitable to use for connecting to <paramref name="url" />.</returns>
+		///         <remarks>See also: <see cref="M:CoreFoundation.CFNetwork.GetProxiesForUri(System.Uri,CoreFoundation.CFProxySettings)" /></remarks>
 		public static CFProxy []? GetProxiesForURL (NSUrl url, CFProxySettings? proxySettings)
 		{
 			if (url is null)
@@ -628,6 +656,7 @@ namespace CoreFoundation {
 					return null;
 
 				NSDictionary [] dictionaries = NSArray.ArrayFromHandle<NSDictionary> (array.Handle);
+				GC.KeepAlive (array);
 				if (dictionaries is null)
 					return null;
 
@@ -639,6 +668,11 @@ namespace CoreFoundation {
 			}
 		}
 
+		/// <param name="uri">The target Uri to connect to.</param>
+		///         <param name="proxySettings">The proxy settings as returned by <see cref="M:CoreFoundation.CFNetwork.GetSystemProxySettings" />.</param>
+		///         <summary>Gets an array of <see cref="T:CoreFoundation.CFProxy" /> objects suitable to use for connecting to <paramref name="uri" />.</summary>
+		///         <returns>Returns an array of <see cref="T:CoreFoundation.CFProxy" /> objects suitable to use for connecting to <paramref name="uri" />.</returns>
+		///         <remarks>This method serves as a convenience wrapper for <see cref="M:CoreFoundation.CFNetwork.GetProxiesForURL(Foundation.NSUrl,CoreFoundation.CFProxySettings)" />.</remarks>
 		public static CFProxy []? GetProxiesForUri (Uri uri, CFProxySettings? proxySettings)
 		{
 			if (uri is null)
@@ -654,6 +688,10 @@ namespace CoreFoundation {
 		[DllImport (Constants.CFNetworkLibrary)]
 		extern static /* CFDictionaryRef __nullable */ IntPtr CFNetworkCopySystemProxySettings ();
 
+		/// <summary>Gets the system's proxy configuration settings.</summary>
+		///         <returns>A <see cref="T:CoreFoundation.CFProxySettings" /> with the system's proxy settings.</returns>
+		///         <remarks>These settings are used by <see cref="M:CoreFoundation.CFNetwork.GetProxiesForURL(Foundation.NSUrl,CoreFoundation.CFProxySettings)" /> and 
+		/// 	<format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Foundation%20Get%20Proxies%20For%20Uri&amp;scope=Xamarin" title="M:CoreFoundation.GetProxiesForUri*">M:CoreFoundation.GetProxiesForUri*</a></format>.</remarks>
 		public static CFProxySettings? GetSystemProxySettings ()
 		{
 			IntPtr native = CFNetworkCopySystemProxySettings ();
@@ -857,7 +895,10 @@ namespace CoreFoundation {
 				unsafe {
 					factory = delegate (delegate* unmanaged<IntPtr, IntPtr, IntPtr, void> cb, ref CFStreamClientContext context)
 					{
-						return CFNetworkExecuteProxyAutoConfigurationScript (pacScript.Handle, url.Handle, cb, (CFStreamClientContext*) Unsafe.AsPointer<CFStreamClientContext> (ref context));
+						var result = CFNetworkExecuteProxyAutoConfigurationScript (pacScript.Handle, url.Handle, cb, (CFStreamClientContext*) Unsafe.AsPointer<CFStreamClientContext> (ref context));
+						GC.KeepAlive (pacScript);
+						GC.KeepAlive (url);
+						return result;
 					};
 				}
 				return ExecutePacCFRunLoopSourceBlocking (factory, out outError);
@@ -878,7 +919,10 @@ namespace CoreFoundation {
 				unsafe {
 					factory = delegate (delegate* unmanaged<IntPtr, IntPtr, IntPtr, void> cb, ref CFStreamClientContext context)
 					{
-						return CFNetworkExecuteProxyAutoConfigurationScript (pacScript.Handle, url.Handle, cb, (CFStreamClientContext*) Unsafe.AsPointer<CFStreamClientContext> (ref context));
+						var result = CFNetworkExecuteProxyAutoConfigurationScript (pacScript.Handle, url.Handle, cb, (CFStreamClientContext*) Unsafe.AsPointer<CFStreamClientContext> (ref context));
+						GC.KeepAlive (pacScript);
+						GC.KeepAlive (url);
+						return result;
 					};
 				}
 				// use the helper task with a factory for this method
@@ -908,7 +952,10 @@ namespace CoreFoundation {
 				unsafe {
 					factory = delegate (delegate* unmanaged<IntPtr, IntPtr, IntPtr, void> cb, ref CFStreamClientContext context)
 					{
-						return CFNetworkExecuteProxyAutoConfigurationURL (pacUrl.Handle, url.Handle, cb, (CFStreamClientContext*) Unsafe.AsPointer<CFStreamClientContext> (ref context));
+						var result = CFNetworkExecuteProxyAutoConfigurationURL (pacUrl.Handle, url.Handle, cb, (CFStreamClientContext*) Unsafe.AsPointer<CFStreamClientContext> (ref context));
+						GC.KeepAlive (pacUrl);
+						GC.KeepAlive (url);
+						return result;
 					};
 				}
 				return ExecutePacCFRunLoopSourceBlocking (factory, out outError);
@@ -930,7 +977,10 @@ namespace CoreFoundation {
 				unsafe {
 					factory = delegate (delegate* unmanaged<IntPtr, IntPtr, IntPtr, void> cb, ref CFStreamClientContext context)
 					{
-						return CFNetworkExecuteProxyAutoConfigurationURL (pacUrl.Handle, url.Handle, cb, (CFStreamClientContext*) Unsafe.AsPointer<CFStreamClientContext> (ref context));
+						var result = CFNetworkExecuteProxyAutoConfigurationURL (pacUrl.Handle, url.Handle, cb, (CFStreamClientContext*) Unsafe.AsPointer<CFStreamClientContext> (ref context));
+						GC.KeepAlive (pacUrl);
+						GC.KeepAlive (url);
+						return result;
 					};
 				}
 				// use the helper task with a factory for this method
@@ -1084,6 +1134,7 @@ namespace CoreFoundation {
 			}
 		}
 
+		/// <include file="../../docs/api/CoreFoundation/CFNetwork.xml" path="/Documentation/Docs[@DocId='M:CoreFoundation.CFNetwork.GetDefaultProxy']/*" />
 		public static IWebProxy GetDefaultProxy ()
 		{
 			return new CFWebProxy ();

@@ -13,6 +13,9 @@ namespace UIKit {
 	public partial class UIPickerView : UIView, IUITableViewDataSource {
 		private UIPickerViewModel model;
 
+		/// <summary>The UIPickerViewModel that this UIPickerView is representing.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public UIPickerViewModel Model {
 			get {
 				return model;

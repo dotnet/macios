@@ -79,9 +79,21 @@ namespace IntentsUI {
 #if !NET && !__MACCATALYST__ // Apple made this member optional in iOS 11
 		[Abstract]
 #endif
+		/// <param name="interaction">To be added.</param>
+		/// <param name="context">To be added.</param>
+		/// <param name="completion">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("configureWithInteraction:context:completion:")]
 		void Configure (INInteraction interaction, INUIHostedViewContext context, Action<CGSize> completion);
 
+		/// <param name="parameters">To be added.</param>
+		/// <param name="interaction">To be added.</param>
+		/// <param name="interactiveBehavior">To be added.</param>
+		/// <param name="context">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("configureViewForParameters:ofInteraction:interactiveBehavior:context:completion:")]
 		void ConfigureView (NSSet<INParameter> parameters, INInteraction interaction, INUIInteractiveBehavior interactiveBehavior, INUIHostedViewContext context, INUIHostedViewControllingConfigureViewHandler completionHandler);
@@ -94,12 +106,21 @@ namespace IntentsUI {
 	[BaseType (typeof (NSExtensionContext))]
 	interface NSExtensionContext_INUIHostedViewControlling {
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("hostedViewMinimumAllowedSize")]
 		CGSize GetHostedViewMinimumAllowedSize ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("hostedViewMaximumAllowedSize")]
 		CGSize GetHostedViewMaximumAllowedSize ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("interfaceParametersDescription")]
 		string GetInterfaceParametersDescription ();
@@ -159,10 +180,18 @@ namespace IntentsUI {
 	[BaseType (typeof (NSObject))]
 	interface INUIAddVoiceShortcutViewControllerDelegate {
 
+		/// <param name="controller">To be added.</param>
+		/// <param name="voiceShortcut">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("addVoiceShortcutViewController:didFinishWithVoiceShortcut:error:")]
 		void DidFinish (INUIAddVoiceShortcutViewController controller, [NullAllowed] INVoiceShortcut voiceShortcut, [NullAllowed] NSError error);
 
+		/// <param name="controller">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("addVoiceShortcutViewControllerDidCancel:")]
 		void DidCancel (INUIAddVoiceShortcutViewController controller);
@@ -207,14 +236,26 @@ namespace IntentsUI {
 	[BaseType (typeof (NSObject))]
 	interface INUIEditVoiceShortcutViewControllerDelegate {
 
+		/// <param name="controller">To be added.</param>
+		/// <param name="voiceShortcut">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("editVoiceShortcutViewController:didUpdateVoiceShortcut:error:")]
 		void DidUpdate (INUIEditVoiceShortcutViewController controller, [NullAllowed] INVoiceShortcut voiceShortcut, [NullAllowed] NSError error);
 
+		/// <param name="controller">To be added.</param>
+		/// <param name="deletedVoiceShortcutIdentifier">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("editVoiceShortcutViewController:didDeleteVoiceShortcutWithIdentifier:")]
 		void DidDelete (INUIEditVoiceShortcutViewController controller, NSUuid deletedVoiceShortcutIdentifier);
 
+		/// <param name="controller">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("editVoiceShortcutViewControllerDidCancel:")]
 		void DidCancel (INUIEditVoiceShortcutViewController controller);
@@ -274,10 +315,18 @@ namespace IntentsUI {
 	[BaseType (typeof (NSObject))]
 	interface INUIAddVoiceShortcutButtonDelegate {
 
+		/// <param name="addVoiceShortcutViewController">To be added.</param>
+		/// <param name="addVoiceShortcutButton">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("presentAddVoiceShortcutViewController:forAddVoiceShortcutButton:")]
 		void PresentAddVoiceShortcut (INUIAddVoiceShortcutViewController addVoiceShortcutViewController, INUIAddVoiceShortcutButton addVoiceShortcutButton);
 
+		/// <param name="editVoiceShortcutViewController">To be added.</param>
+		/// <param name="addVoiceShortcutButton">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("presentEditVoiceShortcutViewController:forAddVoiceShortcutButton:")]
 		void PresentEditVoiceShortcut (INUIEditVoiceShortcutViewController editVoiceShortcutViewController, INUIAddVoiceShortcutButton addVoiceShortcutButton);

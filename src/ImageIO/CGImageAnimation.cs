@@ -77,7 +77,10 @@ namespace ImageIO {
 				using var block = new BlockLiteral ();
 				block.SetupBlockUnsafe (SDCGImageSourceAnimationBlock.Handler, handler);
 #endif
-				return CGAnimateImageAtURLWithBlock (url.Handle, options.GetHandle (), &block);
+				CGImageAnimationStatus status = CGAnimateImageAtURLWithBlock (url.Handle, options.GetHandle (), &block);
+				GC.KeepAlive (url);
+				GC.KeepAlive (options);
+				return status;
 			}
 		}
 
@@ -106,7 +109,10 @@ namespace ImageIO {
 				using var block = new BlockLiteral ();
 				block.SetupBlockUnsafe (SDCGImageSourceAnimationBlock.Handler, handler);
 #endif
-				return CGAnimateImageDataWithBlock (data.Handle, options.GetHandle (), &block);
+				CGImageAnimationStatus status = CGAnimateImageDataWithBlock (data.Handle, options.GetHandle (), &block);
+				GC.KeepAlive (data);
+				GC.KeepAlive (options);
+				return status;
 			}
 		}
 

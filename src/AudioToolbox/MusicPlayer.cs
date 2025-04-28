@@ -18,13 +18,11 @@ using System.Runtime.Versioning;
 using ObjCRuntime;
 using Foundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace AudioToolbox {
 
 	// untyped enum (used as an OSStatus in the API) -> MusicPlayer.h
+	/// <summary>An enumeration whose values describe the status of a <see cref="T:AudioToolbox.MusicPlayer" />.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum MusicPlayerStatus {
 		/// <summary>To be added.</summary>
 		Success = 0,
@@ -53,6 +51,8 @@ namespace AudioToolbox {
 	}
 
 	// typedef UInt32 -> MusicPlayer.h
+	/// <summary>An enumeration whose values describe various music event types.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum MusicEventType : uint {
 		/// <summary>To be added.</summary>
 		Null,
@@ -77,6 +77,8 @@ namespace AudioToolbox {
 	}
 
 	// typedef UInt32 -> MusicPlayer.h
+	/// <summary>An enumeration that specifies the <c>loadFlags</c> values in the <see cref="M:AudioToolbox.MusicSequence.LoadData(Foundation.NSData,AudioToolbox.MusicSequenceFileTypeID,AudioToolbox.MusicSequenceLoadFlags)" /> and <see cref="M:AudioToolbox.MusicSequence.LoadFile(Foundation.NSUrl,AudioToolbox.MusicSequenceFileTypeID,AudioToolbox.MusicSequenceLoadFlags)" /> methods.</summary>
+	///     <remarks>To be added.</remarks>
 	[Flags]
 	public enum MusicSequenceLoadFlags {
 		/// <summary>Indicates that the input tracks will be preserved in the output.</summary>
@@ -86,6 +88,8 @@ namespace AudioToolbox {
 	}
 
 	// typedef UInt32 -> MusicPlayer.h
+	/// <summary>An enumeration that specifies the type of a music sequence file.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum MusicSequenceFileTypeID : uint {
 		/// <summary>Indicates that the type is not specified.</summary>
 		Any = 0,
@@ -96,6 +100,8 @@ namespace AudioToolbox {
 	}
 
 	// typedef UInt32 -> MusicPlayer.h
+	/// <summary>Can be used to specify that an existing file should be erased when creating a new file. Used with the <see cref="M:AudioToolbox.MusicSequence.CreateFile(Foundation.NSUrl,AudioToolbox.MusicSequenceFileTypeID,AudioToolbox.MusicSequenceFileFlags,System.UInt16)" /> method.</summary>
+	///     <remarks>To be added.</remarks>
 	[Flags]
 	public enum MusicSequenceFileFlags {
 		/// <summary>Indicates that the existing file should not be erased.</summary>
@@ -105,12 +111,12 @@ namespace AudioToolbox {
 	}
 
 
-#if NET
+	/// <summary>An object that plays a <see cref="T:AudioToolbox.MusicSequence" />.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	// MusicPlayer.h
 	public class MusicPlayer : DisposableObject {
 		[DllImport (Constants.AudioToolboxLibrary)]
@@ -125,6 +131,7 @@ namespace AudioToolbox {
 		{
 		}
 
+		/// <include file="../../docs/api/AudioToolbox/MusicPlayer.xml" path="/Documentation/Docs[@DocId='M:AudioToolbox.MusicPlayer.Dispose(System.Boolean)']/*" />
 		protected override void Dispose (bool disposing)
 		{
 			currentSequence = null;
@@ -142,11 +149,17 @@ namespace AudioToolbox {
 			throw new Exception ("Unable to create MusicPlayer: " + result);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public MusicPlayer ()
 			: base (Create (), true)
 		{
 		}
 
+		/// <param name="OSstatus">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		static public MusicPlayer? Create (out MusicPlayerStatus OSstatus)
 		{
 			IntPtr handle;
@@ -200,6 +213,9 @@ namespace AudioToolbox {
 		[DllImport (Constants.AudioToolboxLibrary)]
 		extern static /* OSStatus */ MusicPlayerStatus MusicPlayerPreroll (/* MusicPlayer */ IntPtr inPlayer);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public MusicPlayerStatus Preroll ()
 		{
 			return MusicPlayerPreroll (Handle);
@@ -208,6 +224,9 @@ namespace AudioToolbox {
 		[DllImport (Constants.AudioToolboxLibrary)]
 		extern static /* OSStatus */ MusicPlayerStatus MusicPlayerStart (/* MusicPlayer */ IntPtr inPlayer);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public MusicPlayerStatus Start ()
 		{
 			return MusicPlayerStart (Handle);
@@ -216,6 +235,9 @@ namespace AudioToolbox {
 		[DllImport (Constants.AudioToolboxLibrary)]
 		extern static /* OSStatus */ MusicPlayerStatus MusicPlayerStop (/* MusicPlayer */ IntPtr inPlayer);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public MusicPlayerStatus Stop ()
 		{
 			return MusicPlayerStop (Handle);
@@ -262,6 +284,11 @@ namespace AudioToolbox {
 		[DllImport (Constants.AudioToolboxLibrary)]
 		unsafe extern static /* OSStatus */ MusicPlayerStatus MusicPlayerGetHostTimeForBeats (/* MusicPlayer */ IntPtr inPlayer, /* MusicTimeStamp */ double inBeats, /* UInt64* */ long* outHostTime);
 
+		/// <param name="beats">To be added.</param>
+		///         <param name="hostTime">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public MusicPlayerStatus GetHostTimeForBeats (double beats, out long hostTime)
 		{
 			hostTime = 0;
@@ -273,6 +300,11 @@ namespace AudioToolbox {
 		[DllImport (Constants.AudioToolboxLibrary)]
 		unsafe extern static /* OSStatus */ MusicPlayerStatus MusicPlayerGetBeatsForHostTime (/* MusicPlayer */ IntPtr inPlayer, /* UInt64 */ long inHostTime, /* MusicTimeStamp* */ double* outBeats);
 
+		/// <param name="hostTime">To be added.</param>
+		///         <param name="beats">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public MusicPlayerStatus GetBeatsForHostTime (long hostTime, out double beats)
 		{
 			beats = 0;
@@ -304,6 +336,7 @@ namespace AudioToolbox {
 			set {
 				currentSequence = value;
 				MusicPlayerSetSequence (Handle, value.GetHandle ());
+				GC.KeepAlive (value);
 			}
 		}
 #endif

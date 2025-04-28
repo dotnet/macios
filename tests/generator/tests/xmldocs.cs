@@ -1,5 +1,6 @@
 using System;
 using Foundation;
+using ObjCRuntime;
 #if IOS
 using UIKit;
 #endif
@@ -29,6 +30,45 @@ namespace XmlDocumentation {
 		int Property { get; set; }
 
 		// can't apply xml docs to a getter/setter, only the property itself
+
+		/// <summary>T.TEventArgs</summary>
+		[Field ("TEventArgs", "__Internal")]
+		[Notification (typeof (TEventArgs))]
+		NSString TEventArgs { get; }
+
+		/// <summary>
+		/// Summary for T1.AsyncMethod
+		/// </summary>
+		[Async (ResultTypeName = "AsyncMethodResultTypeName")]
+		[Export ("asyncMethod")]
+		void AsyncMethod (Action<int, long, NSError> completionHandler);
+
+		/// <summary>Summary for T1.DoSomething</summary>
+		[Async (XmlDocs = """
+						<summary>Summary for async version of T1.DoSomething</summary>
+						""",
+				XmlDocsWithOutParameter = """
+						<summary>Summary for async version of T1.DoSomething - with out parameter (shouldn't show up in xml docs)</summary>
+						""")]
+		[Export ("doSomething:")]
+		void DoSomething (Action completionHandler);
+
+		/// <summary>Summary for T1.DoSomethingElse</summary>
+		[Async (XmlDocs = """
+						<summary>Summary for async version of T1.DoSomethingElse</summary>
+						""",
+				XmlDocsWithOutParameter = """
+						<summary>Summary for async version of T1.DoSomethingElse - with out parameter (should show up in xml docs)</summary>
+						""")]
+		[Export ("doSomething:")]
+		bool DoSomethingElse (Action completionHandler);
+	}
+
+	/// <summary>TEventArgs</summary>
+	interface TEventArgs {
+		/// <summary>TEventArgs.SomeValue</summary>
+		[Export ("TEventArgsSomeValueKey")]
+		nint SomeValue { get; }
 	}
 
 #if IOS
@@ -196,4 +236,55 @@ namespace XmlDocumentation {
 		[Export ("Option1")]
 		string Option1 { get; set; }
 	}
+
+	/// <summary>CategoryA</summary>
+	[Category, BaseType (typeof (T1))]
+	interface CategoryA {
+		/// <summary>CategoryA.StaticMethod</summary>
+		/// <param name="p0">p0</param>
+		[Static]
+		[Export ("staticMethod:")]
+		void StaticMethod (int p0);
+
+		/// <summary>CategoryA.InstanceMethod</summary>
+		/// <param name="p0">p0</param>
+		[Export ("instanceMethod:")]
+		void InstanceMethod (int p0);
+
+		/// <summary>CategoryA.StaticProperty</summary>
+		[Static]
+		[Export ("staticProperty")]
+		int StaticProperty { get; set; }
+	}
+
+	/// <summary>TClass</summary>
+	[BaseType (typeof (NSObject), Delegates = new string [] { "WeakDelegate" }, Events = new Type [] { typeof (TClassDelegate) })]
+	interface TClass {
+		/// <summary>TClass.WeakDelegate</summary>
+		[Export ("delegate", ArgumentSemantic.Assign), NullAllowed]
+		NSObject WeakDelegate { get; set; }
+
+		[Wrap ("WeakDelegate")]
+		[NullAllowed]
+		ITClassDelegate Delegate { get; set; }
+	}
+
+	/// <summary>TClassDelegate</summary>
+	[Model, Protocol]
+	[BaseType (typeof (NSObject))]
+	interface TClassDelegate {
+		/// <summary>TClassDelegate.DidChangeUtteringSpeed</summary>
+		[Export ("speechSynthesizer:didChangeUtteringSpeedTo:")]
+		[EventArgs ("TUtterance")]
+		void DidChangeUtteringSpeed (TClass obj, double utteringSpeed);
+
+		/// <summary>TClassDelegate.DidChangeMutteringVolume</summary>
+		[Export ("speechSynthesizer:didChangeMutteringVolumeTo:")]
+		[EventArgs ("TMutterance", XmlDocs = """
+			<summary>TClassDelegate.DidChangeMutteringVolume - EventArgs.</summary>
+			""")]
+		void DidChangeMutteringVolume (TClass obj, double mutteringVolume);
+	}
+
+	interface ITClassDelegate { }
 }

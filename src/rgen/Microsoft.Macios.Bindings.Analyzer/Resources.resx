@@ -187,4 +187,17 @@
     <data name="RBI0013Title" xml:space="preserve">
         <value>Enum values must be tagged with Field&lt;EnumValue&gt;</value>
     </data>
+
+    <!-- RBI0014 -->
+
+    <data name="RBI0014Description" xml:space="preserve">
+        <value>Native object accessed by handle must be kept alive, either implicitly by access or through GC.KeepAlive.</value>
+    </data>
+    <data name="RBI0014MessageFormat" xml:space="preserve">
+        <value>Variable '{0}' has its Handle property accessed but is not kept alive later in the method</value>
+        <comment>'{0}' is the name of the variable.</comment>
+    </data>
+    <data name="RBI0014Title" xml:space="preserve">
+        <value>INativeObject not kept alive after Handle access</value>
+    </data>
 </root>

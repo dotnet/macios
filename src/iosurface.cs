@@ -100,26 +100,89 @@ namespace IOSurface {
 
 	[StrongDictionary ("IOSurfacePropertyKey")]
 	partial interface IOSurfaceOptions {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		nint AllocSize { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		nint Width { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		nint Height { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		nint BytesPerRow { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		nint BytesPerElement { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		nint ElementWidth { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		nint ElementHeight { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		nint Offset { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		NSDictionary [] PlaneInfo { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		nint PlaneWidth { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		nint PlaneHeight { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		nint PlaneBytesPerRow { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		nint PlaneOffset { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		nint PlaneSize { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		nint PlaneBase { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		nint PlaneBytesPerElement { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		nint PlaneElementWidth { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		nint PlaneElementHeight { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		IOSurfaceMemoryMap CacheMode { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		uint PixelFormat { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		bool PixelSizeCastingAllowed { get; set; }
 		[iOS (16, 0), TV (16, 0), Mac (13, 0), MacCatalyst (16, 0)]
 		string Name { get; set; }
@@ -131,6 +194,9 @@ namespace IOSurface {
 		[Internal, Export ("initWithProperties:")]
 		NativeHandle Constructor (NSDictionary properties);
 
+		/// <param name="properties">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (properties.GetDictionary ()!)")]
 		NativeHandle Constructor (IOSurfaceOptions properties);
 
@@ -177,24 +243,52 @@ namespace IOSurface {
 		[Export ("planeCount")]
 		nuint PlaneCount { get; }
 
+		/// <param name="planeIndex">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("widthOfPlaneAtIndex:")]
 		nint GetWidth (nuint planeIndex);
 
+		/// <param name="planeIndex">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("heightOfPlaneAtIndex:")]
 		nint GetHeight (nuint planeIndex);
 
+		/// <param name="planeIndex">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("bytesPerRowOfPlaneAtIndex:")]
 		nint GetBytesPerRow (nuint planeIndex);
 
+		/// <param name="planeIndex">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("bytesPerElementOfPlaneAtIndex:")]
 		nint GetBytesPerElement (nuint planeIndex);
 
+		/// <param name="planeIndex">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("elementWidthOfPlaneAtIndex:")]
 		nint GetElementWidth (nuint planeIndex);
 
+		/// <param name="planeIndex">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("elementHeightOfPlaneAtIndex:")]
 		nint GetElementHeight (nuint planeIndex);
 
+		/// <param name="planeIndex">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("baseAddressOfPlaneAtIndex:")]
 		IntPtr GetBaseAddress (nuint planeIndex);
 
@@ -219,6 +313,9 @@ namespace IOSurface {
 		[Export ("removeAllAttachments")]
 		void RemoveAllAttachments ();
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("inUse")]
 		bool InUse { [Bind ("isInUse")] get; }
 

@@ -25,6 +25,8 @@ using NativeHandle = System.IntPtr;
 namespace VideoToolbox {
 
 #if NET
+	/// <summary>Base class of <see cref="T:VideoToolbox.VTCompressionSession" /> and <see cref="T:VideoToolbox.VTDecompressionSession" />.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -61,22 +63,40 @@ namespace VideoToolbox {
 		[DllImport (Constants.VideoToolboxLibrary)]
 		unsafe extern static VTStatus VTSessionCopySupportedPropertyDictionary (/* VTSessionRef */ IntPtr session, /* CFDictionaryRef* */ IntPtr* supportedPropertyDictionaryOut);
 
+		/// <param name="options">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public VTStatus SetProperties (VTPropertyOptions options)
 		{
 			if (options is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (options));
 
-			return VTSessionSetProperties (Handle, options.Dictionary.Handle);
+			var optionsDictionary = options.Dictionary;
+			VTStatus status = VTSessionSetProperties (Handle, optionsDictionary.Handle);
+			GC.KeepAlive (optionsDictionary);
+			return status;
 		}
 
+		/// <param name="propertyKey">To be added.</param>
+		///         <param name="value">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public VTStatus SetProperty (NSString propertyKey, NSObject? value)
 		{
 			if (propertyKey is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (propertyKey));
 
-			return VTSessionSetProperty (Handle, propertyKey.Handle, value.GetHandle ());
+			VTStatus status = VTSessionSetProperty (Handle, propertyKey.Handle, value.GetHandle ());
+			GC.KeepAlive (propertyKey);
+			GC.KeepAlive (value);
+			return status;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public VTPropertyOptions? GetProperties ()
 		{
 			VTStatus result;
@@ -93,6 +113,10 @@ namespace VideoToolbox {
 			return new VTPropertyOptions (dict);
 		}
 
+		/// <param name="propertyKey">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public NSObject? GetProperty (NSString propertyKey)
 		{
 			if (propertyKey is null)
@@ -102,12 +126,16 @@ namespace VideoToolbox {
 			IntPtr ret;
 			unsafe {
 				result = VTSessionCopyProperty (Handle, propertyKey.Handle, IntPtr.Zero, &ret);
+				GC.KeepAlive (propertyKey);
 			}
 			if (result != VTStatus.Ok || ret == IntPtr.Zero)
 				return null;
 			return Runtime.GetNSObject<NSObject> (ret, true);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public NSDictionary? GetSerializableProperties ()
 		{
 			VTStatus result;
@@ -121,6 +149,9 @@ namespace VideoToolbox {
 			return Runtime.GetNSObject<NSDictionary> (ret, true);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		public NSDictionary? GetSupportedProperties ()
 		{

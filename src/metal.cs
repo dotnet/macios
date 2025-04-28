@@ -24,10 +24,6 @@ using CoreFoundation;
 using Foundation;
 using ObjCRuntime;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 #if TVOS
 using MTLAccelerationStructureSizes = Foundation.NSObject;
 #endif
@@ -151,21 +147,37 @@ namespace Metal {
 	[MacCatalyst (13, 1)]
 	[Protocol] // From Apple Docs: Your app does not define classes that implement this protocol. Model is not needed
 	partial interface MTLCommandEncoder {
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("device")]
 		IMTLDevice Device { get; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("label")]
 		string Label { get; set; }
 
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("endEncoding")]
 		void EndEncoding ();
 
+		/// <param name="signpost">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("insertDebugSignpost:")]
 		void InsertDebugSignpost (string signpost);
 
+		/// <param name="debugGroup">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("pushDebugGroup:")]
 		void PushDebugGroup (string debugGroup);
 
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("popDebugGroup")]
 		void PopDebugGroup ();
 	}
@@ -176,50 +188,55 @@ namespace Metal {
 	[MacCatalyst (13, 1)]
 	[Protocol] // From Apple Docs: Your app does not define classes that implement this protocol. Model is not needed
 	partial interface MTLBuffer : MTLResource {
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("length")]
 		nuint Length { get; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("contents")]
 		IntPtr Contents { get; }
 
+		/// <param name="range">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoiOS, NoTV, MacCatalyst (15, 0)]
 		[Abstract, Export ("didModifyRange:")]
 		void DidModify (NSRange range);
 
+		/// <param name="descriptor">To be added.</param>
+		/// <param name="offset">To be added.</param>
+		/// <param name="bytesPerRow">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[return: NullAllowed]
-#if NET || !MONOMAC
 		[Abstract]
-#endif
 		[Export ("newTextureWithDescriptor:offset:bytesPerRow:")]
 		[return: Release]
 		IMTLTexture CreateTexture (MTLTextureDescriptor descriptor, nuint offset, nuint bytesPerRow);
 
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("addDebugMarker:range:")]
 		void AddDebugMarker (string marker, NSRange range);
 
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("removeAllDebugMarkers")]
 		void RemoveAllDebugMarkers ();
 
-#if NET
 		[Abstract]
-#endif
 		[NoiOS, NoTV]
 		[NoMacCatalyst]
 		[NullAllowed, Export ("remoteStorageBuffer")]
 		IMTLBuffer RemoteStorageBuffer { get; }
 
-#if NET
 		[Abstract]
-#endif
 		[NoiOS, NoTV]
 		[NoMacCatalyst]
 		[Export ("newRemoteBufferViewForDevice:")]
@@ -228,9 +245,7 @@ namespace Metal {
 		IMTLBuffer CreateRemoteBuffer (IMTLDevice device);
 
 		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Export ("gpuAddress")]
 		ulong GpuAddress { get; }
 	}
@@ -268,136 +283,176 @@ namespace Metal {
 	[Protocol] // From Apple Docs: Your app does not define classes that implement this protocol. Model is not needed
 	partial interface MTLCommandBuffer {
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("device")]
 		IMTLDevice Device { get; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("commandQueue")]
 		IMTLCommandQueue CommandQueue { get; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("retainedReferences")]
 		bool RetainedReferences { get; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("label")]
 		string Label { get; set; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("status")]
 		MTLCommandBufferStatus Status { get; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("error")]
 		NSError Error { get; }
 
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("enqueue")]
 		void Enqueue ();
 
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("commit")]
 		void Commit ();
 
+		/// <param name="block">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("addScheduledHandler:")]
 		void AddScheduledHandler (Action<IMTLCommandBuffer> block);
 
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("waitUntilScheduled")]
 		void WaitUntilScheduled ();
 
+		/// <param name="block">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("addCompletedHandler:")]
 		void AddCompletedHandler (Action<IMTLCommandBuffer> block);
 
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("waitUntilCompleted")]
 		void WaitUntilCompleted ();
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("blitCommandEncoder")]
 		IMTLBlitCommandEncoder BlitCommandEncoder { get; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("computeCommandEncoder")]
 		IMTLComputeCommandEncoder ComputeCommandEncoder { get; }
 
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("computeCommandEncoderWithDispatchType:")]
 		[return: NullAllowed]
 		IMTLComputeCommandEncoder ComputeCommandEncoderDispatch (MTLDispatchType dispatchType);
 
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("encodeWaitForEvent:value:")]
 		void EncodeWait (IMTLEvent @event, ulong value);
 
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("encodeSignalEvent:value:")]
 		void EncodeSignal (IMTLEvent @event, ulong value);
 
 		[Field ("MTLCommandBufferErrorDomain")]
 		NSString ErrorDomain { get; }
 
+		/// <param name="renderPassDescriptor">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("parallelRenderCommandEncoderWithDescriptor:")]
 		[return: NullAllowed]
 		IMTLParallelRenderCommandEncoder CreateParallelRenderCommandEncoder (MTLRenderPassDescriptor renderPassDescriptor);
 
+		/// <param name="drawable">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("presentDrawable:")]
 		void PresentDrawable (IMTLDrawable drawable);
 
+		/// <param name="drawable">To be added.</param>
+		/// <param name="presentationTime">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("presentDrawable:atTime:")]
 		void PresentDrawable (IMTLDrawable drawable, double presentationTime);
 
-#if NET
-		[Abstract] // @required but we can't add abstract members in C# and keep binary compatibility
-#endif
+		/// <summary>Presents the specified <paramref name="drawable" /> after the previous drawable has been displayed for <paramref name="duration" /> seconds.</summary>
+		/// <param name="drawable">The drawable to present immediately after the command buffer is scheduled to run.</param>
+		/// <param name="duration">The minimum display time of the previous drawable.</param>
+		[Abstract]
 		[Introduced (PlatformName.MacCatalyst, 13, 4)]
 		[Export ("presentDrawable:afterMinimumDuration:")]
 		void PresentDrawableAfter (IMTLDrawable drawable, double duration);
 
+		/// <param name="renderPassDescriptor">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("renderCommandEncoderWithDescriptor:")]
 		IMTLRenderCommandEncoder CreateRenderCommandEncoder (MTLRenderPassDescriptor renderPassDescriptor);
 
-#if NET
-		[Abstract] // @required but we can't add abstract members in C# and keep binary compatibility
-#endif
+		/// <summary>Returns the time, in seconds, when the GPU started scheduling the command buffer.</summary>
+		[Abstract]
 		[MacCatalyst (13, 1)]
 		[Export ("kernelStartTime")]
 		double /* CFTimeInterval */ KernelStartTime { get; }
 
-#if NET
-		[Abstract] // @required but we can't add abstract members in C# and keep binary compatibility
-#endif
+		/// <summary>Returns the time, in seconds, when the GPU finished scheduling the command buffer.</summary>
+		[Abstract]
 		[MacCatalyst (13, 1)]
 		[Export ("kernelEndTime")]
 		double /* CFTimeInterval */ KernelEndTime { get; }
 
-#if NET
-		[Abstract] // @required but we can't add abstract members in C# and keep binary compatibility
-#endif
+		/// <summary>Returns the time, in seconds, when the GPU started running the command buffer.</summary>
+		[Abstract]
 		[MacCatalyst (13, 1)]
 		[Export ("GPUStartTime")]
 		double /* CFTimeInterval */ GpuStartTime { get; }
 
-#if NET
-		[Abstract] // @required but we can't add abstract members in C# and keep binary compatibility
-#endif
+		/// <summary>Returns the time, in seconds, when the GPU stopped running the command buffer.</summary>
+		[Abstract]
 		[MacCatalyst (13, 1)]
 		[Export ("GPUEndTime")]
 		double /* CFTimeInterval */ GpuEndTime { get; }
 
 		[MacCatalyst (13, 1)]
-#if NET
-		[Abstract] // @required but we can't add abstract members in C# and keep binary compatibility
-#endif
+		[Abstract]
 		[Export ("pushDebugGroup:")]
 		void PushDebugGroup (string @string);
 
 		[MacCatalyst (13, 1)]
-#if NET
-		[Abstract] // @required but we can't add abstract members in C# and keep binary compatibility
-#endif
+		[Abstract]
 		[Export ("popDebugGroup")]
 		void PopDebugGroup ();
 
@@ -408,33 +463,25 @@ namespace Metal {
 
 		[iOS (14, 0), TV (14, 0)]
 		[MacCatalyst (14, 0)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("errorOptions")]
 		MTLCommandBufferErrorOption ErrorOptions { get; }
 
 		[iOS (14, 0), TV (14, 0)]
 		[MacCatalyst (14, 0)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("logs")]
 		IMTLLogContainer Logs { get; }
 
 		[iOS (14, 0), TV (14, 0)]
 		[MacCatalyst (14, 0)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("computeCommandEncoderWithDescriptor:")]
 		IMTLComputeCommandEncoder CreateComputeCommandEncoder (MTLComputePassDescriptor computePassDescriptor);
 
 		[iOS (14, 0), TV (14, 0)]
 		[MacCatalyst (14, 0)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("blitCommandEncoderWithDescriptor:")]
 		IMTLBlitCommandEncoder CreateBlitCommandEncoder (MTLBlitPassDescriptor blitPassDescriptor);
 
@@ -449,9 +496,7 @@ namespace Metal {
 		IMTLAccelerationStructureCommandEncoder CreateAccelerationStructureCommandEncoder ();
 
 		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Export ("accelerationStructureCommandEncoderWithDescriptor:")]
 		IMTLAccelerationStructureCommandEncoder CreateAccelerationStructureCommandEncoder (MTLAccelerationStructurePassDescriptor descriptor);
 
@@ -473,22 +518,36 @@ namespace Metal {
 	[Protocol] // From Apple Docs: Your app does not define classes that implement this protocol. Model is not needed
 	partial interface MTLCommandQueue {
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("label")]
 		string Label { get; set; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("device")]
 		IMTLDevice Device { get; }
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("commandBuffer")]
 		[Autorelease]
 		[return: NullAllowed]
 		IMTLCommandBuffer CommandBuffer ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("commandBufferWithUnretainedReferences")]
 		[Autorelease]
 		[return: NullAllowed]
 		IMTLCommandBuffer CommandBufferWithUnretainedReferences ();
 
+		/// <summary>Developers should not use this deprecated method. Developers should use 'MTLCaptureScope' instead.</summary>
+		/// <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'MTLCaptureScope' instead.")]
 		[Deprecated (PlatformName.TvOS, 11, 0, message: "Use 'MTLCaptureScope' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'MTLCaptureScope' instead.")]
@@ -498,9 +557,7 @@ namespace Metal {
 
 		[iOS (14, 0), TV (14, 0)]
 		[MacCatalyst (14, 0)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("commandBufferWithDescriptor:")]
 		[return: NullAllowed]
 		IMTLCommandBuffer CreateCommandBuffer (MTLCommandBufferDescriptor descriptor);
@@ -534,63 +591,104 @@ namespace Metal {
 	partial interface MTLComputeCommandEncoder : MTLCommandEncoder {
 
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("dispatchType")]
 		MTLDispatchType DispatchType { get; }
 
+		/// <param name="state">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("setComputePipelineState:")]
 		void SetComputePipelineState (IMTLComputePipelineState state);
 
+		/// <param name="buffer">To be added.</param>
+		/// <param name="offset">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("setBuffer:offset:atIndex:")]
 		void SetBuffer (IMTLBuffer buffer, nuint offset, nuint index);
 
+		/// <param name="texture">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("setTexture:atIndex:")]
 		void SetTexture (IMTLTexture texture, nuint index);
 
+		/// <param name="sampler">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("setSamplerState:atIndex:")]
 		void SetSamplerState (IMTLSamplerState sampler, nuint index);
 
+		/// <param name="sampler">To be added.</param>
+		/// <param name="lodMinClamp">To be added.</param>
+		/// <param name="lodMaxClamp">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("setSamplerState:lodMinClamp:lodMaxClamp:atIndex:")]
 		void SetSamplerState (IMTLSamplerState sampler, float /* float, not CGFloat */ lodMinClamp, float /* float, not CGFloat */ lodMaxClamp, nuint index);
 
+		/// <param name="length">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("setThreadgroupMemoryLength:atIndex:")]
 		void SetThreadgroupMemoryLength (nuint length, nuint index);
 
+		/// <param name="threadgroupsPerGrid">To be added.</param>
+		/// <param name="threadsPerThreadgroup">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("dispatchThreadgroups:threadsPerThreadgroup:")]
 		void DispatchThreadgroups (MTLSize threadgroupsPerGrid, MTLSize threadsPerThreadgroup);
 
-#if NET
 		[Abstract]
-#endif
 		[MacCatalyst (13, 1)]
 		[Export ("dispatchThreadgroupsWithIndirectBuffer:indirectBufferOffset:threadsPerThreadgroup:")]
 		void DispatchThreadgroups (IMTLBuffer indirectBuffer, nuint indirectBufferOffset, MTLSize threadsPerThreadgroup);
 
-#if NET
+		/// <summary>Encodes <paramref name="buffers" /> to the argument buffer.</summary>
+		/// <param name="buffers">An array of buffers in an argument buffer.</param>
+		/// <param name="offsets">The byte offsets of <paramref name="buffers" /> in the containing buffer.</param>
+		/// <param name="range">Indices into the target buffer of the buffers in <paramref name="buffers" />. Either Metal index IDs or the index members of <see cref="T:Metal.MTLArgumentDescriptor" />s.</param>
 		[Abstract]
 		[Export ("setBuffers:offsets:withRange:")]
 		void SetBuffers (IntPtr buffers, IntPtr offsets, NSRange range);
-#else
-		[Abstract]
-		[Export ("setBuffers:offsets:withRange:")]
-		void SetBuffers (IMTLBuffer [] buffers, IntPtr offsets, NSRange range);
-#endif
 
-
+		/// <param name="samplers">To be added.</param>
+		/// <param name="floatArrayPtrLodMinClamps">To be added.</param>
+		/// <param name="floatArrayPtrLodMaxClamps">To be added.</param>
+		/// <param name="range">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("setSamplerStates:lodMinClamps:lodMaxClamps:withRange:")]
 		void SetSamplerStates (IMTLSamplerState [] samplers, IntPtr floatArrayPtrLodMinClamps, IntPtr floatArrayPtrLodMaxClamps, NSRange range);
 
+		/// <param name="samplers">To be added.</param>
+		/// <param name="range">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("setSamplerStates:withRange:")]
 		void SetSamplerStates (IMTLSamplerState [] samplers, NSRange range);
 
+		/// <param name="textures">To be added.</param>
+		/// <param name="range">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("setTextures:withRange:")]
 		void SetTextures (IMTLTexture [] textures, NSRange range);
 
+		/// <param name="offset">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("setBufferOffset:atIndex:")]
@@ -602,119 +700,87 @@ namespace Metal {
 		void SetBytes (IntPtr bytes, nuint length, nuint index);
 
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("setStageInRegion:")]
 		void SetStage (MTLRegion region);
 
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("setStageInRegionWithIndirectBuffer:indirectBufferOffset:")]
 		void SetStageInRegion (IMTLBuffer indirectBuffer, nuint indirectBufferOffset);
 
+		/// <summary>Captures all GPU work up to the current fence.</summary>
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("updateFence:")]
 		void Update (IMTLFence fence);
 
+		/// <summary>Prevents additional GPU work by the encoder until the <paramref name="fence" /> is reached.</summary>
+		/// <param name="fence">The fence to wait for.</param>
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("waitForFence:")]
 		void Wait (IMTLFence fence);
 
 		[TV (14, 5)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("dispatchThreads:threadsPerThreadgroup:")]
 		void DispatchThreads (MTLSize threadsPerGrid, MTLSize threadsPerThreadgroup);
 
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("useResource:usage:")]
 		void UseResource (IMTLResource resource, MTLResourceUsage usage);
 
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("useResources:count:usage:")]
 		void UseResources (IMTLResource [] resources, nuint count, MTLResourceUsage usage);
 
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("useHeap:")]
 		void UseHeap (IMTLHeap heap);
 
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("useHeaps:count:")]
 		void UseHeaps (IMTLHeap [] heaps, nuint count);
 
 		[Introduced (PlatformName.MacCatalyst, 14, 0)]
 		[TV (14, 5)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("setImageblockWidth:height:")]
 		void SetImageblock (nuint width, nuint height);
 
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("memoryBarrierWithScope:")]
 		void MemoryBarrier (MTLBarrierScope scope);
 
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("memoryBarrierWithResources:count:")]
 		void MemoryBarrier (IMTLResource [] resources, nuint count);
 
 		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("executeCommandsInBuffer:withRange:")]
 		void ExecuteCommands (IMTLIndirectCommandBuffer indirectCommandBuffer, NSRange executionRange);
 
 		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("executeCommandsInBuffer:indirectBuffer:indirectBufferOffset:")]
 		void ExecuteCommands (IMTLIndirectCommandBuffer indirectCommandbuffer, IMTLBuffer indirectRangeBuffer, nuint indirectBufferOffset);
 
-#if NET
 		[Abstract]
-#endif
 		[iOS (14, 0), TV (14, 0)]
 		[MacCatalyst (14, 0)]
 		[Export ("sampleCountersInBuffer:atSampleIndex:withBarrier:")]
-#if NET
 		void SampleCounters (IMTLCounterSampleBuffer sampleBuffer, nuint sampleIndex, bool barrier);
-#else
-		[Obsolete ("Use the overload that takes an IMTLCounterSampleBuffer instead.")]
-		void SampleCounters (MTLCounterSampleBuffer sampleBuffer, nuint sampleIndex, bool barrier);
-#endif
 
 		[Abstract (GenerateExtensionMethod = true)]
 		[iOS (14, 0), TV (16, 0), MacCatalyst (14, 0)]
@@ -742,30 +808,22 @@ namespace Metal {
 		void SetAccelerationStructure ([NullAllowed] IMTLAccelerationStructure accelerationStructure, nuint bufferIndex);
 
 		[Mac (14, 0), iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Export ("setBuffer:offset:attributeStride:atIndex:")]
 		void SetBuffer (IMTLBuffer buffer, nuint offset, nuint stride, nuint index);
 
 		[Mac (14, 0), iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Export ("setBuffers:offsets:attributeStrides:withRange:")]
 		void SetBuffers (IntPtr /* IMTLBuffer[] */ buffers, IntPtr /* nuint[] */ offsets, IntPtr /* nuint[] */ strides, NSRange range);
 
 		[Mac (14, 0), iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Export ("setBufferOffset:attributeStride:atIndex:")]
 		void SetBufferOffset (nuint offset, nuint stride, nuint index);
 
 		[Mac (14, 0), iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Export ("setBytes:length:attributeStride:atIndex:")]
 		void SetBytes (IntPtr bytes, nuint length, nuint stride, nuint index);
 
@@ -783,11 +841,7 @@ namespace Metal {
 		[Deprecated (PlatformName.TvOS, 16, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 16, 0)]
 		[Export ("arguments")]
-#if NET
 		MTLArgument [] Arguments { get; }
-#else
-		NSObject [] Arguments { get; }
-#endif
 
 		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Export ("bindings")]
@@ -799,42 +853,44 @@ namespace Metal {
 	[MacCatalyst (13, 1)]
 	[Protocol] // From Apple Docs: Your app does not define classes that implement this protocol. Model is not needed
 	partial interface MTLComputePipelineState {
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("device")]
 		IMTLDevice Device { get; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("maxTotalThreadsPerThreadgroup")]
 		nuint MaxTotalThreadsPerThreadgroup { get; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("threadExecutionWidth")]
 		nuint ThreadExecutionWidth { get; }
 
+		/// <summary>Returns the descriptive label for the compute pipeline state.</summary>
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[NullAllowed, Export ("label")]
 		string Label { get; }
 
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("staticThreadgroupMemoryLength")]
 		nuint StaticThreadgroupMemoryLength { get; }
 
 		[TV (14, 5)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("imageblockMemoryLengthForDimensions:")]
 		nuint GetImageblockMemoryLength (MTLSize imageblockDimensions);
 
 		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (14, 0)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("supportIndirectCommandBuffers")]
 		bool SupportIndirectCommandBuffers { get; }
 
@@ -862,9 +918,7 @@ namespace Metal {
 		IMTLIntersectionFunctionTable CreateIntersectionFunctionTable (MTLIntersectionFunctionTableDescriptor descriptor);
 
 		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Export ("gpuResourceID")]
 		MTLResourceId GpuResourceId { get; }
 
@@ -880,113 +934,149 @@ namespace Metal {
 	[Protocol] // From Apple Docs: Your app does not define classes that implement this protocol. Model is not needed
 	partial interface MTLBlitCommandEncoder : MTLCommandEncoder {
 
+		/// <param name="resource">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoiOS, NoTV, MacCatalyst (15, 0)]
 		[Abstract, Export ("synchronizeResource:")]
 		void Synchronize (IMTLResource resource);
 
+		/// <param name="texture">To be added.</param>
+		/// <param name="slice">To be added.</param>
+		/// <param name="level">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoiOS, NoTV, MacCatalyst (15, 0)]
 		[Abstract, Export ("synchronizeTexture:slice:level:")]
 		void Synchronize (IMTLTexture texture, nuint slice, nuint level);
 
+		/// <param name="sourceTexture">To be added.</param>
+		/// <param name="sourceSlice">To be added.</param>
+		/// <param name="sourceLevel">To be added.</param>
+		/// <param name="sourceOrigin">To be added.</param>
+		/// <param name="sourceSize">To be added.</param>
+		/// <param name="destinationTexture">To be added.</param>
+		/// <param name="destinationSlice">To be added.</param>
+		/// <param name="destinationLevel">To be added.</param>
+		/// <param name="destinationOrigin">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("copyFromTexture:sourceSlice:sourceLevel:sourceOrigin:sourceSize:toTexture:destinationSlice:destinationLevel:destinationOrigin:")]
 		void CopyFromTexture (IMTLTexture sourceTexture, nuint sourceSlice, nuint sourceLevel, MTLOrigin sourceOrigin, MTLSize sourceSize, IMTLTexture destinationTexture, nuint destinationSlice, nuint destinationLevel, MTLOrigin destinationOrigin);
 
+		/// <param name="sourceBuffer">To be added.</param>
+		/// <param name="sourceOffset">To be added.</param>
+		/// <param name="sourceBytesPerRow">To be added.</param>
+		/// <param name="sourceBytesPerImage">To be added.</param>
+		/// <param name="sourceSize">To be added.</param>
+		/// <param name="destinationTexture">To be added.</param>
+		/// <param name="destinationSlice">To be added.</param>
+		/// <param name="destinationLevel">To be added.</param>
+		/// <param name="destinationOrigin">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("copyFromBuffer:sourceOffset:sourceBytesPerRow:sourceBytesPerImage:sourceSize:toTexture:destinationSlice:destinationLevel:destinationOrigin:")]
 		void CopyFromBuffer (IMTLBuffer sourceBuffer, nuint sourceOffset, nuint sourceBytesPerRow, nuint sourceBytesPerImage, MTLSize sourceSize, IMTLTexture destinationTexture, nuint destinationSlice, nuint destinationLevel, MTLOrigin destinationOrigin);
 
 		[MacCatalyst (13, 1)]
-#if NET
-		// Apple added a new required member in iOS 9, but that breaks our binary compat, so we can't do that in our existing code.
 		[Abstract]
-#endif
 		[Export ("copyFromBuffer:sourceOffset:sourceBytesPerRow:sourceBytesPerImage:sourceSize:toTexture:destinationSlice:destinationLevel:destinationOrigin:options:")]
 		void CopyFromBuffer (IMTLBuffer sourceBuffer, nuint sourceOffset, nuint sourceBytesPerRow, nuint sourceBytesPerImage, MTLSize sourceSize, IMTLTexture destinationTexture, nuint destinationSlice, nuint destinationLevel, MTLOrigin destinationOrigin, MTLBlitOption options);
 
+		/// <param name="sourceTexture">To be added.</param>
+		/// <param name="sourceSlice">To be added.</param>
+		/// <param name="sourceLevel">To be added.</param>
+		/// <param name="sourceOrigin">To be added.</param>
+		/// <param name="sourceSize">To be added.</param>
+		/// <param name="destinationBuffer">To be added.</param>
+		/// <param name="destinationOffset">To be added.</param>
+		/// <param name="destinatinBytesPerRow">To be added.</param>
+		/// <param name="destinationBytesPerImage">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("copyFromTexture:sourceSlice:sourceLevel:sourceOrigin:sourceSize:toBuffer:destinationOffset:destinationBytesPerRow:destinationBytesPerImage:")]
 		void CopyFromTexture (IMTLTexture sourceTexture, nuint sourceSlice, nuint sourceLevel, MTLOrigin sourceOrigin, MTLSize sourceSize, IMTLBuffer destinationBuffer, nuint destinationOffset, nuint destinatinBytesPerRow, nuint destinationBytesPerImage);
 
 		[MacCatalyst (13, 1)]
-#if NET
-		// Apple added a new required member in iOS 9, but that breaks our binary compat, so we can't do that in our existing code.
 		[Abstract]
-#endif
 		[Export ("copyFromTexture:sourceSlice:sourceLevel:sourceOrigin:sourceSize:toBuffer:destinationOffset:destinationBytesPerRow:destinationBytesPerImage:options:")]
 		void CopyFromTexture (IMTLTexture sourceTexture, nuint sourceSlice, nuint sourceLevel, MTLOrigin sourceOrigin, MTLSize sourceSize, IMTLBuffer destinationBuffer, nuint destinationOffset, nuint destinatinBytesPerRow, nuint destinationBytesPerImage, MTLBlitOption options);
 
+		/// <param name="texture">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("generateMipmapsForTexture:")]
 		void GenerateMipmapsForTexture (IMTLTexture texture);
 
+		/// <param name="buffer">To be added.</param>
+		/// <param name="range">To be added.</param>
+		/// <param name="value">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("fillBuffer:range:value:")]
 		void FillBuffer (IMTLBuffer buffer, NSRange range, byte value);
 
+		/// <param name="sourceBuffer">To be added.</param>
+		/// <param name="sourceOffset">To be added.</param>
+		/// <param name="destinationBuffer">To be added.</param>
+		/// <param name="destinationOffset">To be added.</param>
+		/// <param name="size">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("copyFromBuffer:sourceOffset:toBuffer:destinationOffset:size:")]
 		void CopyFromBuffer (IMTLBuffer sourceBuffer, nuint sourceOffset, IMTLBuffer destinationBuffer, nuint destinationOffset, nuint size);
 
+		/// <summary>Captures GPU work that was enqueued by the encoder for the specified <paramref name="fence" />.</summary>
+		/// <param name="fence">The fence to update.</param>
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("updateFence:")]
 		void Update (IMTLFence fence);
 
+		/// <summary>Prevents additional GPU work by the encoder until the <paramref name="fence" /> is reached.</summary>
+		/// <param name="fence">The fence to wait to be updated.</param>
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("waitForFence:")]
 		void Wait (IMTLFence fence);
 
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("optimizeContentsForGPUAccess:")]
 		void OptimizeContentsForGpuAccess (IMTLTexture texture);
 
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("optimizeContentsForGPUAccess:slice:level:")]
 		void OptimizeContentsForGpuAccess (IMTLTexture texture, nuint slice, nuint level);
 
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("optimizeContentsForCPUAccess:")]
 		void OptimizeContentsForCpuAccess (IMTLTexture texture);
 
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("optimizeContentsForCPUAccess:slice:level:")]
 		void OptimizeContentsForCpuAccess (IMTLTexture texture, nuint slice, nuint level);
 
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("resetCommandsInBuffer:withRange:")]
 		void ResetCommands (IMTLIndirectCommandBuffer buffer, NSRange range);
 
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("copyIndirectCommandBuffer:sourceRange:destination:destinationIndex:")]
 		void Copy (IMTLIndirectCommandBuffer source, NSRange sourceRange, IMTLIndirectCommandBuffer destination, nuint destinationIndex);
 
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("optimizeIndirectCommandBuffer:withRange:")]
 		void Optimize (IMTLIndirectCommandBuffer indirectCommandBuffer, NSRange range);
 
 		// @optional in macOS and Mac Catalyst
-#if NET && !__MACOS__ && !__MACCATALYST__
+#if !__MACOS__ && !__MACCATALYST__
 		[Abstract (GenerateExtensionMethod = true)]
 #endif
 		[TV (16, 0), iOS (13, 0), MacCatalyst (15, 0)]
@@ -994,7 +1084,7 @@ namespace Metal {
 		void GetTextureAccessCounters (IMTLTexture texture, MTLRegion region, nuint mipLevel, nuint slice, bool resetCounters, IMTLBuffer countersBuffer, nuint countersBufferOffset);
 
 		// @optional in macOS and Mac Catalyst
-#if NET && !__MACOS__ && !__MACCATALYST__
+#if !__MACOS__ && !__MACCATALYST__
 		[Abstract (GenerateExtensionMethod = true)]
 #endif
 		[TV (16, 0), iOS (13, 0), MacCatalyst (15, 0)]
@@ -1003,43 +1093,27 @@ namespace Metal {
 
 		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("copyFromTexture:sourceSlice:sourceLevel:toTexture:destinationSlice:destinationLevel:sliceCount:levelCount:")]
 		void Copy (IMTLTexture sourceTexture, nuint sourceSlice, nuint sourceLevel, IMTLTexture destinationTexture, nuint destinationSlice, nuint destinationLevel, nuint sliceCount, nuint levelCount);
 
 		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("copyFromTexture:toTexture:")]
 		void Copy (IMTLTexture sourceTexture, IMTLTexture destinationTexture);
 
-#if NET
 		[Abstract]
-#endif
 		[iOS (14, 0), TV (14, 0)]
 		[MacCatalyst (14, 0)]
 		[Export ("sampleCountersInBuffer:atSampleIndex:withBarrier:")]
-#if NET
 		void SampleCounters (IMTLCounterSampleBuffer sampleBuffer, nuint sampleIndex, bool barrier);
-#else
-		void SampleCounters (MTLCounterSampleBuffer sampleBuffer, nuint sampleIndex, bool barrier);
-#endif
 
-#if NET
 		[Abstract]
-#endif
 		[iOS (14, 0), TV (14, 0)]
 		[MacCatalyst (14, 0)]
 		[Export ("resolveCounters:inRange:destinationBuffer:destinationOffset:")]
-#if NET
 		void ResolveCounters (IMTLCounterSampleBuffer sampleBuffer, NSRange range, IMTLBuffer destinationBuffer, nuint destinationOffset);
-#else
-		void ResolveCounters (MTLCounterSampleBuffer sampleBuffer, NSRange range, IMTLBuffer destinationBuffer, nuint destinationOffset);
-#endif
 	}
 
 	interface IMTLFence { }
@@ -1047,10 +1121,16 @@ namespace Metal {
 	[MacCatalyst (13, 1)]
 	[Protocol] // From Apple Docs: Your app does not define classes that implement this protocol. Model is not needed
 	interface MTLFence {
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("device")]
 		IMTLDevice Device { get; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[NullAllowed, Export ("label")]
 		string Label { get; set; }
@@ -1063,28 +1143,26 @@ namespace Metal {
 	[Protocol] // From Apple Docs: Your app does not define classes that implement this protocol. Model is not needed
 	partial interface MTLDevice {
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("name")]
 		string Name { get; }
 
-#if NET
-		[Abstract] // new required member, but that breaks our binary compat, so we can't do that in our existing code.
-#endif
+		/// <summary>Returns the number of threads per threadgroup on the device.</summary>
+		[Abstract]
 		[MacCatalyst (13, 1)]
 		[Export ("maxThreadsPerThreadgroup")]
 		MTLSize MaxThreadsPerThreadgroup { get; }
 
-#if NET
-		[Abstract] // new required member, but that breaks our binary compat, so we can't do that in our existing code.
-#endif
+		[Abstract]
 		[MacCatalyst (15, 0)]
 		[NoiOS]
 		[NoTV]
 		[Export ("lowPower")]
 		bool LowPower { [Bind ("isLowPower")] get; }
 
-#if NET
-		[Abstract] // new required member, but that breaks our binary compat, so we can't do that in our existing code.
-#endif
+		[Abstract]
 		[MacCatalyst (15, 0)]
 		[NoiOS]
 		[NoTV]
@@ -1092,54 +1170,58 @@ namespace Metal {
 		bool Headless { [Bind ("isHeadless")] get; }
 
 		[iOS (17, 0), TV (17, 0), MacCatalyst (15, 0)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("recommendedMaxWorkingSetSize")]
 		ulong RecommendedMaxWorkingSetSize { get; }
 
-#if NET
-		[Abstract] // new required member, but that breaks our binary compat, so we can't do that in our existing code.
-#endif
+		[Abstract]
 		[MacCatalyst (15, 0)]
 		[NoiOS]
 		[NoTV]
 		[Export ("depth24Stencil8PixelFormatSupported")]
 		bool Depth24Stencil8PixelFormatSupported { [Bind ("isDepth24Stencil8PixelFormatSupported")] get; }
 
+		/// <summary>Gets the size and alignment of a texture with specified description, when allocated from a heap.</summary>
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("heapTextureSizeAndAlignWithDescriptor:")]
 		MTLSizeAndAlign GetHeapTextureSizeAndAlign (MTLTextureDescriptor desc);
 
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("heapBufferSizeAndAlignWithLength:options:")]
 		MTLSizeAndAlign GetHeapBufferSizeAndAlignWithLength (nuint length, MTLResourceOptions options);
 
+		/// <summary>Creates and returns a new heap.</summary>
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("newHeapWithDescriptor:")]
 		[return: NullAllowed]
 		[return: Release]
 		IMTLHeap CreateHeap (MTLHeapDescriptor descriptor);
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("newCommandQueue")]
 		[return: NullAllowed]
 		[return: Release]
 		IMTLCommandQueue CreateCommandQueue ();
 
+		/// <param name="maxCommandBufferCount">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("newCommandQueueWithMaxCommandBufferCount:")]
 		[return: NullAllowed]
 		[return: Release]
 		IMTLCommandQueue CreateCommandQueue (nuint maxCommandBufferCount);
 
+		/// <param name="length">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("newBufferWithLength:options:")]
 		[return: NullAllowed]
 		[return: Release]
@@ -1150,24 +1232,36 @@ namespace Metal {
 		[return: Release]
 		IMTLBuffer CreateBuffer (IntPtr pointer, nuint length, MTLResourceOptions options);
 
+		/// <summary>Creates and returns a new buffer that is wrapped around the specified data, and runs an optional <paramref name="deallocator" /> when the memory is deallocated.</summary>
+		/// <param name="pointer">The data to wrap.</param>
+		/// <param name="length">The length of the data to wrap.</param>
+		/// <param name="options">Options for creating the buffer.</param>
+		/// <param name="deallocator">The deallocator to use when deleting the buffer.</param>
 		[Abstract, Export ("newBufferWithBytesNoCopy:length:options:deallocator:")]
 		[return: NullAllowed]
 		[return: Release]
 		IMTLBuffer CreateBufferNoCopy (IntPtr pointer, nuint length, MTLResourceOptions options, MTLDeallocator deallocator);
 
+		/// <param name="descriptor">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("newDepthStencilStateWithDescriptor:")]
 		[return: NullAllowed]
 		[return: Release]
 		IMTLDepthStencilState CreateDepthStencilState (MTLDepthStencilDescriptor descriptor);
 
+		/// <param name="descriptor">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("newTextureWithDescriptor:")]
 		[return: NullAllowed]
 		[return: Release]
 		IMTLTexture CreateTexture (MTLTextureDescriptor descriptor);
 
-#if NET
+		/// <summary>Creates a Metal texture with the specified values.</summary>
 		[Abstract]
-#endif
 		[MacCatalyst (13, 1)]
 		[return: NullAllowed]
 		[return: Release]
@@ -1176,9 +1270,7 @@ namespace Metal {
 
 		[iOS (13, 0), TV (13, 0)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("newSharedTextureWithDescriptor:")]
 		[return: NullAllowed]
 		[return: Release]
@@ -1186,273 +1278,295 @@ namespace Metal {
 
 		[iOS (13, 0), TV (13, 0)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("newSharedTextureWithHandle:")]
 		[return: NullAllowed]
 		[return: Release]
 		IMTLTexture CreateSharedTexture (MTLSharedTextureHandle sharedHandle);
 
+		/// <param name="descriptor">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("newSamplerStateWithDescriptor:")]
 		[return: NullAllowed]
 		[return: Release]
 		IMTLSamplerState CreateSamplerState (MTLSamplerDescriptor descriptor);
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("newDefaultLibrary")]
 		[return: Release]
 		IMTLLibrary CreateDefaultLibrary ();
 
+		/// <param name="filepath">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("newLibraryWithFile:error:")]
 		[return: Release]
 		IMTLLibrary CreateLibrary (string filepath, out NSError error);
 
-#if !NET
-		[Abstract, Export ("newLibraryWithData:error:")]
-		[return: Release]
-		[Obsolete ("Use the overload that take a 'DispatchData' instead.")]
-		IMTLLibrary CreateLibrary (NSObject data, out NSError error);
-#endif
-
-#if NET
 		[Abstract]
 		[Export ("newLibraryWithData:error:")]
 		[return: Release]
 		IMTLLibrary CreateLibrary (DispatchData data, out NSError error);
-#endif
 
+		/// <param name="source">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("newLibraryWithSource:options:error:")]
 		[return: Release]
 		IMTLLibrary CreateLibrary (string source, MTLCompileOptions options, out NSError error);
 
+		/// <param name="source">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("newLibraryWithSource:options:completionHandler:")]
 		[Async]
 		void CreateLibrary (string source, MTLCompileOptions options, Action<IMTLLibrary, NSError> completionHandler);
 
-#if NET
+		/// <summary>Creates and returns a new library from the functions in the specified bundle.</summary>
 		[Abstract]
-#endif
 		[MacCatalyst (13, 1)]
 		[Export ("newDefaultLibraryWithBundle:error:")]
 		[return: Release]
 		[return: NullAllowed]
-#if NET
 		IMTLLibrary CreateDefaultLibrary (NSBundle bundle, out NSError error);
-#else
-		[Obsolete ("Use 'CreateDefaultLibrary' instead.")]
-		IMTLLibrary CreateLibrary (NSBundle bundle, out NSError error);
-#endif
 
+		/// <param name="descriptor">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("newRenderPipelineStateWithDescriptor:error:")]
 		[return: Release]
 		IMTLRenderPipelineState CreateRenderPipelineState (MTLRenderPipelineDescriptor descriptor, out NSError error);
 
+		/// <param name="descriptor">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("newRenderPipelineStateWithDescriptor:completionHandler:")]
 		void CreateRenderPipelineState (MTLRenderPipelineDescriptor descriptor, Action<IMTLRenderPipelineState, NSError> completionHandler);
 
+		/// <param name="descriptor">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="reflection">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("newRenderPipelineStateWithDescriptor:options:reflection:error:")]
 		[return: Release]
 		IMTLRenderPipelineState CreateRenderPipelineState (MTLRenderPipelineDescriptor descriptor, MTLPipelineOption options, out MTLRenderPipelineReflection reflection, out NSError error);
 
+		/// <param name="descriptor">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("newRenderPipelineStateWithDescriptor:options:completionHandler:")]
 		void CreateRenderPipelineState (MTLRenderPipelineDescriptor descriptor, MTLPipelineOption options, Action<IMTLRenderPipelineState, MTLRenderPipelineReflection, NSError> completionHandler);
 
+		/// <param name="computeFunction">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="reflection">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("newComputePipelineStateWithFunction:options:reflection:error:")]
 		[return: Release]
 		IMTLComputePipelineState CreateComputePipelineState (IMTLFunction computeFunction, MTLPipelineOption options, out MTLComputePipelineReflection reflection, out NSError error);
 
+		/// <param name="computeFunction">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("newComputePipelineStateWithFunction:completionHandler:")]
 		void CreateComputePipelineState (IMTLFunction computeFunction, Action<IMTLComputePipelineState, NSError> completionHandler);
 
+		/// <param name="computeFunction">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("newComputePipelineStateWithFunction:error:")]
 		[return: Release]
 		IMTLComputePipelineState CreateComputePipelineState (IMTLFunction computeFunction, out NSError error);
 
+		/// <param name="computeFunction">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("newComputePipelineStateWithFunction:options:completionHandler:")]
 		void CreateComputePipelineState (IMTLFunction computeFunction, MTLPipelineOption options, Action<IMTLComputePipelineState, MTLComputePipelineReflection, NSError> completionHandler);
 
+		/// <summary>Creates a new pipeline state from the specified compute pipeline descriptor, options, and completion handler, and stores reflection information in the <paramref name="reflection" /><see langword="out" /> parameter.</summary>
 		[MacCatalyst (13, 1)]
-#if NET
-		// Apple added a new required member in iOS 9, but that breaks our binary compat, so we can't do that in our existing code.
 		[Abstract]
-#endif
 		[Export ("newComputePipelineStateWithDescriptor:options:reflection:error:")]
 		[return: Release]
 		IMTLComputePipelineState CreateComputePipelineState (MTLComputePipelineDescriptor descriptor, MTLPipelineOption options, out MTLComputePipelineReflection reflection, out NSError error);
 
+		/// <summary>Creates a new pipeline state from the specified compute pipeline descriptor, options, and completion handler.</summary>
 		[MacCatalyst (13, 1)]
-#if NET
-		// Apple added a new required member in iOS 9, but that breaks our binary compat, so we can't do that in our existing code.
 		[Abstract]
-#endif
 		[Export ("newComputePipelineStateWithDescriptor:options:completionHandler:")]
 		void CreateComputePipelineState (MTLComputePipelineDescriptor descriptor, MTLPipelineOption options, MTLNewComputePipelineStateWithReflectionCompletionHandler completionHandler);
 
+		/// <summary>Creates and returns a new fence for tracking and managing dependencies between command encoders.</summary>
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("newFence")]
 		[return: Release]
 		IMTLFence CreateFence ();
 
+		/// <param name="featureSet">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("supportsFeatureSet:")]
 		bool SupportsFeatureSet (MTLFeatureSet featureSet);
 
+		/// <summary>Returns a Boolean value that tells whether the device supports the specified texture count.</summary>
 		[MacCatalyst (13, 1)]
-#if NET
-		// Apple added a new required member in iOS 9, but that breaks our binary compat, so we can't do that in our existing code.
 		[Abstract]
-#endif
 		[Export ("supportsTextureSampleCount:")]
 		bool SupportsTextureSampleCount (nuint sampleCount);
 
 		[NoiOS, NoTV, MacCatalyst (15, 0)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("removable")]
 		bool Removable { [Bind ("isRemovable")] get; }
 
+		/// <summary>Gets the texture read-write support tier.</summary>
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("readWriteTextureSupport")]
 		MTLReadWriteTextureTier ReadWriteTextureSupport { get; }
 
+		/// <summary>Returns the argument buffer support tier.</summary>
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("argumentBuffersSupport")]
 		MTLArgumentBuffersTier ArgumentBuffersSupport { get; }
 
+		/// <summary>Returns a Boolean value that tells whether raster order groups are supported.</summary>
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("rasterOrderGroupsSupported")]
 		bool RasterOrderGroupsSupported { [Bind ("areRasterOrderGroupsSupported")] get; }
 
+		/// <summary>Creates and returns a new library from the functions at the specified URL.</summary>
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("newLibraryWithURL:error:")]
 		[return: NullAllowed]
 		[return: Release]
 		IMTLLibrary CreateLibrary (NSUrl url, [NullAllowed] out NSError error);
 
+		/// <summary>Gets the minimum alignment required for a linear texture in the given pixel format.</summary>
+		/// <param name="format">The pixel format. Depth, stencil, and compressed formats are not supported.</param>
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("minimumLinearTextureAlignmentForPixelFormat:")]
 		nuint GetMinimumLinearTextureAlignment (MTLPixelFormat format);
 
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("minimumTextureBufferAlignmentForPixelFormat:")]
 		nuint GetMinimumTextureBufferAlignment (MTLPixelFormat format);
 
+		/// <summary>Gets the largest available length of memory for threadgroups.</summary>
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("maxThreadgroupMemoryLength")]
 		nuint MaxThreadgroupMemoryLength { get; }
 
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("maxArgumentBufferSamplerCount")]
 		nuint MaxArgumentBufferSamplerCount { get; }
 
+		/// <summary>Returns a Boolean value that tells whether programmable sample positions are supported.</summary>
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("programmableSamplePositionsSupported")]
 		bool ProgrammableSamplePositionsSupported { [Bind ("areProgrammableSamplePositionsSupported")] get; }
 
+		/// <summary>Provides the default sample positions for the specified sample <paramref name="count" />.</summary>
+		/// <param name="positions">Array that will be filled with the default sample postions.</param>
+		/// <param name="count">The number of positions, which determines the set of default positions.</param>
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("getDefaultSamplePositions:count:")]
 		void GetDefaultSamplePositions (IntPtr positions, nuint count);
 
+		/// <summary>Creates an encoder for the specified array of arguments.</summary>
+		/// <param name="arguments">An array of arguments within a buffer.</param>
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("newArgumentEncoderWithArguments:")]
 		[return: NullAllowed]
 		[return: Release]
 		IMTLArgumentEncoder CreateArgumentEncoder (MTLArgumentDescriptor [] arguments);
 
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("newIndirectCommandBufferWithDescriptor:maxCommandCount:options:")]
 		[return: NullAllowed]
 		[return: Release]
 		IMTLIndirectCommandBuffer CreateIndirectCommandBuffer (MTLIndirectCommandBufferDescriptor descriptor, nuint maxCount, MTLResourceOptions options);
 
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[return: NullAllowed]
 		[return: Release]
 		[Export ("newEvent")]
 		IMTLEvent CreateEvent ();
 
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[return: NullAllowed]
 		[return: Release]
 		[Export ("newSharedEvent")]
 		IMTLSharedEvent CreateSharedEvent ();
 
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("newSharedEventWithHandle:")]
 		[return: NullAllowed]
 		[return: Release]
 		IMTLSharedEvent CreateSharedEvent (MTLSharedEventHandle sharedEventHandle);
 
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("maxBufferLength")]
 		nuint MaxBufferLength { get; }
 
+		/// <summary>Gets the registry ID.</summary>
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("registryID")]
 		ulong RegistryId { get; }
 
+		/// <summary>Gets the size, in bytes, of all the resources that the device has allocated.</summary>
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("currentAllocatedSize")]
 		nuint CurrentAllocatedSize { get; }
 
@@ -1475,9 +1589,7 @@ namespace Metal {
 
 		[Introduced (PlatformName.MacCatalyst, 14, 0)]
 		[TV (14, 5)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("newRenderPipelineStateWithTileDescriptor:options:reflection:error:")]
 		[return: NullAllowed]
 		[return: Release]
@@ -1485,22 +1597,16 @@ namespace Metal {
 
 		[Introduced (PlatformName.MacCatalyst, 14, 0)]
 		[TV (14, 5)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("newRenderPipelineStateWithTileDescriptor:options:completionHandler:")]
 		void CreateRenderPipelineState (MTLTileRenderPipelineDescriptor descriptor, MTLPipelineOption options, MTLNewRenderPipelineStateWithReflectionCompletionHandler completionHandler);
 
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[MacCatalyst (13, 4), TV (16, 0), iOS (13, 0)]
 		[Export ("supportsVertexAmplificationCount:")]
 		bool SupportsVertexAmplification (nuint count);
 
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[MacCatalyst (13, 4), TV (16, 0), iOS (13, 0)]
 		[Export ("supportsRasterizationRateMapWithLayerCount:")]
 		bool SupportsRasterizationRateMap (nuint layerCount);
@@ -1515,9 +1621,7 @@ namespace Metal {
 		[Export ("sparseTileSizeInBytes")]
 		nuint SparseTileSizeInBytes { get; }
 
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[MacCatalyst (13, 4), TV (16, 0), iOS (13, 0)]
 		[Export ("newRasterizationRateMapWithDescriptor:")]
 		[return: NullAllowed]
@@ -1536,113 +1640,77 @@ namespace Metal {
 
 		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("hasUnifiedMemory")]
 		bool HasUnifiedMemory { get; }
 
 		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("supportsFamily:")]
 		bool SupportsFamily (MTLGpuFamily gpuFamily);
 
-#if NET
 		[Abstract]
-#endif
 		[iOS (14, 0), NoTV, MacCatalyst (14, 0)]
 		[Export ("barycentricCoordsSupported")]
 		bool BarycentricCoordsSupported { [Bind ("areBarycentricCoordsSupported")] get; }
 
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[iOS (14, 0), TV (16, 0), MacCatalyst (14, 0)]
 		[Export ("supportsShaderBarycentricCoordinates")]
 		bool SupportsShaderBarycentricCoordinates { get; }
 
-#if NET
 		[Abstract]
-#endif
 		[NoiOS, NoTV]
 		[NoMacCatalyst]
 		[Export ("peerIndex")]
 		uint PeerIndex { get; }
 
-#if NET
 		[Abstract]
-#endif
 		[NoiOS, NoTV]
 		[NoMacCatalyst]
 		[Export ("peerCount")]
 		uint PeerCount { get; }
 
-#if NET
 		[Abstract]
-#endif
 		[iOS (14, 0), TV (14, 0)]
 		[MacCatalyst (14, 0)]
 		[NullAllowed, Export ("counterSets")]
-#if NET
 		IMTLCounterSet [] CounterSets { get; }
-#else
-		[Obsolete ("Use 'GetIMTLCounterSets' instead.")]
-		MTLCounterSet [] CounterSets { get; }
-#endif
 
-#if NET
 		[Abstract]
-#endif
 		[iOS (14, 0), TV (14, 0)]
 		[MacCatalyst (14, 0)]
 		[Export ("newCounterSampleBufferWithDescriptor:error:")]
 		[return: NullAllowed]
 		[return: Release]
-#if NET
 		IMTLCounterSampleBuffer CreateCounterSampleBuffer (MTLCounterSampleBufferDescriptor descriptor, [NullAllowed] out NSError error);
-#else
-		[Obsolete ("Use 'CreateIMTLCounterSampleBuffer' instead.")]
-		MTLCounterSampleBuffer CreateCounterSampleBuffer (MTLCounterSampleBufferDescriptor descriptor, [NullAllowed] out NSError error);
-#endif
 
-#if NET
 		[Abstract]
-#endif
 		[iOS (14, 0), TV (14, 0)]
 		[MacCatalyst (14, 0)]
 		[Export ("sampleTimestamps:gpuTimestamp:")]
 		void GetSampleTimestamps (nuint cpuTimestamp, nuint gpuTimestamp);
 
-#if NET
 		[Abstract]
-#endif
 		[NoiOS, NoTV]
 		[NoMacCatalyst]
 		[Export ("peerGroupID")]
 		ulong PeerGroupId { get; }
 
-#if NET
 		[Abstract]
-#endif
 		[NoiOS, NoTV]
 		[NoMacCatalyst]
 		[Export ("maxTransferRate")]
 		ulong MaxTransferRate { get; }
 
-#if NET
 		[Abstract]
-#endif
 		[NoiOS, NoTV]
 		[NoMacCatalyst]
 		[Export ("location")]
 		MTLDeviceLocation Location { get; }
 
-#if NET
 		[Abstract]
-#endif
 		[NoiOS, NoTV]
 		[NoMacCatalyst]
 		[Export ("locationNumber")]
@@ -1659,41 +1727,31 @@ namespace Metal {
 		bool Supports32BitMsaa { get; }
 
 		[iOS (16, 4), TV (16, 4), MacCatalyst (16, 4)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("supportsBCTextureCompression")]
 		bool SupportsBCTextureCompression { get; }
 
 		[iOS (14, 0), TV (14, 0)]
 		[MacCatalyst (14, 0)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("supportsPullModelInterpolation")]
 		bool SupportsPullModelInterpolation { get; }
 
 		[iOS (14, 0), TV (14, 0)]
 		[MacCatalyst (14, 0)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("supportsCounterSampling:")]
 		bool SupportsCounterSampling (MTLCounterSamplingPoint samplingPoint);
 
 		[iOS (14, 0), TV (14, 0)]
 		[MacCatalyst (14, 0)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("supportsDynamicLibraries")]
 		bool SupportsDynamicLibraries { get; }
 
 		[iOS (14, 0), TV (14, 0)]
 		[MacCatalyst (14, 0)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("newDynamicLibrary:error:")]
 		[return: NullAllowed]
 		[return: Release]
@@ -1701,9 +1759,7 @@ namespace Metal {
 
 		[iOS (14, 0), TV (14, 0)]
 		[MacCatalyst (14, 0)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("newDynamicLibraryWithURL:error:")]
 		[return: NullAllowed]
 		[return: Release]
@@ -1711,9 +1767,7 @@ namespace Metal {
 
 		[iOS (14, 0), TV (14, 0)]
 		[MacCatalyst (14, 0)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("newBinaryArchiveWithDescriptor:error:")]
 		[return: NullAllowed]
 		[return: Release]
@@ -1755,9 +1809,7 @@ namespace Metal {
 		[Export ("supportsQueryTextureLOD")]
 		bool SupportsQueryTextureLod { get; }
 
-#if NET
 		[Abstract]
-#endif
 		[iOS (15, 0), MacCatalyst (15, 0), TV (15, 0)]
 		[Export ("supportsRenderDynamicLibraries")]
 		bool SupportsRenderDynamicLibraries { get; }
@@ -1777,93 +1829,69 @@ namespace Metal {
 		[Export ("supportsFunctionPointersFromRender")]
 		bool SupportsFunctionPointersFromRender { get; }
 
-#if NET
 		[Abstract]
-#endif
 		[iOS (15, 0), MacCatalyst (15, 0), TV (15, 0)]
 		[Export ("newLibraryWithStitchedDescriptor:error:")]
 		[return: NullAllowed]
 		[return: Release]
 		IMTLLibrary CreateLibrary (MTLStitchedLibraryDescriptor descriptor, [NullAllowed] out NSError error);
 
-#if NET
 		[Abstract]
-#endif
 		[Async]
 		[iOS (15, 0), MacCatalyst (15, 0), TV (15, 0)]
 		[Export ("newLibraryWithStitchedDescriptor:completionHandler:")]
 		void CreateLibrary (MTLStitchedLibraryDescriptor descriptor, Action<IMTLLibrary, NSError> completionHandler);
 
 		[Mac (14, 0), iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Export ("architecture")]
 		MTLArchitecture Architecture { get; }
 
 		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Export ("heapAccelerationStructureSizeAndAlignWithDescriptor:")]
 		MTLSizeAndAlign GetHeapAccelerationStructureSizeAndAlign (MTLAccelerationStructureDescriptor descriptor);
 
 		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Export ("heapAccelerationStructureSizeAndAlignWithSize:")]
 		MTLSizeAndAlign GetHeapAccelerationStructureSizeAndAlign (nuint size);
 
 		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Export ("newArgumentEncoderWithBufferBinding:")]
 		[return: Release]
 		IMTLArgumentEncoder CreateArgumentEncoder (IMTLBufferBinding bufferBinding);
 
 		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Export ("newRenderPipelineStateWithMeshDescriptor:options:reflection:error:")]
 		[return: NullAllowed]
 		[return: Release]
 		IMTLRenderPipelineState CreateRenderPipelineState (MTLMeshRenderPipelineDescriptor descriptor, MTLPipelineOption options, [NullAllowed] out MTLRenderPipelineReflection reflection, [NullAllowed] out NSError error);
 
 		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Export ("newRenderPipelineStateWithMeshDescriptor:options:completionHandler:")]
 		void CreateRenderPipelineState (MTLMeshRenderPipelineDescriptor descriptor, MTLPipelineOption options, MTLNewRenderPipelineStateWithReflectionCompletionHandler completionHandler);
 
 		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Export ("sparseTileSizeInBytesForSparsePageSize:")]
 		nuint GetSparseTileSizeInBytes (MTLSparsePageSize sparsePageSize);
 
 		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Export ("sparseTileSizeWithTextureType:pixelFormat:sampleCount:sparsePageSize:")]
 		MTLSize GetSparseTileSize (MTLTextureType textureType, MTLPixelFormat pixelFormat, nuint sampleCount, MTLSparsePageSize sparsePageSize);
 
 		[NoiOS, Mac (13, 3), NoTV, NoMacCatalyst]
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Export ("maximumConcurrentCompilationTaskCount")]
 		nuint MaximumConcurrentCompilationTaskCount { get; }
 
 		[NoiOS, Mac (13, 3), NoTV, NoMacCatalyst]
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Export ("shouldMaximizeConcurrentCompilation")]
 		bool ShouldMaximizeConcurrentCompilation { get; set; }
 
@@ -1881,9 +1909,7 @@ namespace Metal {
 		[return: Release]
 		IMTLCommandQueue CreateCommandQueue (MTLCommandQueueDescriptor descriptor);
 
-#if NET
 		[Abstract]
-#endif
 		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[return: NullAllowed]
 		[Export ("newResidencySetWithDescriptor:error:")]
@@ -1909,46 +1935,45 @@ namespace Metal {
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	partial interface MTLDrawable {
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("present")]
 		void Present ();
 
+		/// <param name="presentationTime">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("presentAtTime:")]
 		void Present (double presentationTime);
 
-#if NET
-		[Abstract] // @required but we can't add abstract members in C# and keep binary compatibility
-#endif
+		/// <summary>Causes the drawable to be presented at least <paramref name="duration" /> seconds after the previous drawable has been presented.</summary>
+		/// <param name="duration">The minimum time after which to display the drawable.</param>
+		[Abstract]
 		[Introduced (PlatformName.MacCatalyst, 13, 4)]
 		[Export ("presentAfterMinimumDuration:")]
 		void PresentAfter (double duration);
 
-#if NET
-		[Abstract] // @required but we can't add abstract members in C# and keep binary compatibility
-#endif
+		/// <summary>Causes the provided <paramref name="block" /> to be run after the drawable is displayed.</summary>
+		/// <param name="block">The code that will be called after the drawable is displayed.</param>
+		[Abstract]
 		[Introduced (PlatformName.MacCatalyst, 13, 4)]
 		[Export ("addPresentedHandler:")]
 		void AddPresentedHandler (Action<IMTLDrawable> block);
 
-#if NET
-		[Abstract] // @required but we can't add abstract members in C# and keep binary compatibility
-#endif
+		/// <summary>Returns the time, in seconds, when the host displayed this drawable.</summary>
+		[Abstract]
 		[Introduced (PlatformName.MacCatalyst, 13, 4)]
 		[Export ("presentedTime")]
 		double /* CFTimeInterval */ PresentedTime { get; }
 
-#if NET
-		[Abstract] // @required but we can't add abstract members in C# and keep binary compatibility
-#endif
+		/// <summary>Returns the positive integer that identifies the drawable.</summary>
+		[Abstract]
 		[Introduced (PlatformName.MacCatalyst, 13, 4)]
 		[Export ("drawableID")]
-#if NET
 		nuint DrawableId { get; }
-#else
-		nuint DrawableID { get; }
-#endif
 	}
 
-	interface IMTLTexture { }
+	interface IMTLTexture : INativeObject { }
 
 	// Apple added several new *required* members in iOS 9,
 	// but that breaks our binary compat, so we can't do that in our existing code.
@@ -1956,6 +1981,9 @@ namespace Metal {
 	[MacCatalyst (13, 1)]
 	[Protocol] // From Apple Docs: Your app does not define classes that implement this protocol. Model is not needed
 	partial interface MTLTexture : MTLResource {
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.iOS, 10, 0)]
 		[Deprecated (PlatformName.MacOSX, 10, 12)]
@@ -1964,68 +1992,83 @@ namespace Metal {
 		[Abstract, Export ("rootResource")]
 		IMTLResource RootResource { get; }
 
-#if NET
+		/// <summary>Returns the parent texture.</summary>
 		[Abstract]
-#endif
 		[MacCatalyst (13, 1)]
 		[NullAllowed] // by default this property is null
 		[Export ("parentTexture")]
 		IMTLTexture ParentTexture { get; }
 
-#if NET
+		/// <summary>Returns the base level of the parent texture from which the target texture was created.</summary>
 		[Abstract]
-#endif
 		[MacCatalyst (13, 1)]
 		[Export ("parentRelativeLevel")]
 		nuint ParentRelativeLevel { get; }
 
-#if NET
+		/// <summary>Returns the base slice of the parent texture from which the target texture was created.</summary>
 		[Abstract]
-#endif
 		[MacCatalyst (13, 1)]
 		[Export ("parentRelativeSlice")]
 		nuint ParentRelativeSlice { get; }
 
-#if NET
+		/// <summary>Returns the buffer for the target texture.</summary>
 		[Abstract]
-#endif
 		[MacCatalyst (13, 1)]
 		[NullAllowed] // by default this property is null
 		[Export ("buffer")]
 		IMTLBuffer Buffer { get; }
 
-#if NET
+		/// <summary>Gets the offset into the parent texture where the the target texture data begins.</summary>
 		[Abstract]
-#endif
 		[MacCatalyst (13, 1)]
 		[Export ("bufferOffset")]
 		nuint BufferOffset { get; }
 
-#if NET
+		/// <summary>Gets the bytes per row in the buffer for the target texture.</summary>
 		[Abstract]
-#endif
 		[MacCatalyst (13, 1)]
 		[Export ("bufferBytesPerRow")]
 		nuint BufferBytesPerRow { get; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("textureType")]
 		MTLTextureType TextureType { get; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("pixelFormat")]
 		MTLPixelFormat PixelFormat { get; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("width")]
 		nuint Width { get; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("height")]
 		nuint Height { get; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("depth")]
 		nuint Depth { get; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("mipmapLevelCount")]
 		nuint MipmapLevelCount { get; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 13, 0)]
 		[Deprecated (PlatformName.iOS, 16, 0)]
 		[Deprecated (PlatformName.TvOS, 16, 0)]
@@ -2033,40 +2076,44 @@ namespace Metal {
 		[Abstract, Export ("sampleCount")]
 		nuint SampleCount { get; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("arrayLength")]
 		nuint ArrayLength { get; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("framebufferOnly")]
 		bool FramebufferOnly { [Bind ("isFramebufferOnly")] get; }
 
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("allowGPUOptimizedContents")]
 		bool AllowGpuOptimizedContents { get; }
 
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Mac (12, 5), iOS (15, 0), MacCatalyst (15, 0), TV (16, 0)]
 		[Export ("compressionType")]
 		MTLTextureCompressionType CompressionType { get; }
 
+		/// <param name="pixelFormat">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("newTextureViewWithPixelFormat:")]
 		[return: NullAllowed]
 		[return: Release]
 		IMTLTexture CreateTextureView (MTLPixelFormat pixelFormat);
 
-#if NET
+		/// <summary>Gets a description of how the texture can be used. (For example, as a write target for compute shaders.)</summary>
 		[Abstract]
-#endif
 		[Export ("usage")]
 		MTLTextureUsage Usage { get; }
 
-#if NET
+		/// <summary>Creates and returns a Metal texture that shares the same memory as the source object, but that is interpreted with the new pixel format.</summary>
 		[Abstract]
-#endif
 		[Export ("newTextureViewWithPixelFormat:textureType:levels:slices:")]
 		[return: NullAllowed]
 		[return: Release]
@@ -2088,40 +2135,34 @@ namespace Metal {
 		[Export ("replaceRegion:mipmapLevel:withBytes:bytesPerRow:")]
 		void ReplaceRegion (MTLRegion region, nuint level, IntPtr pixelBytes, nuint bytesPerRow);
 
+		/// <summary>Gets the IOSurface that was used to create this texture, if one was used.</summary>
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[NullAllowed, Export ("iosurface")]
 		IOSurface.IOSurface IOSurface { get; }
 
+		/// <summary>Returns the IOSurface plane used by the surface that is returned from <see cref="IOSurface" />.</summary>
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("iosurfacePlane")]
 		nuint IOSurfacePlane { get; }
 
 		[iOS (13, 0), TV (13, 0)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("shareable")]
 		bool Shareable { [Bind ("isShareable")] get; }
 
 		[iOS (13, 0), TV (13, 0)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[return: NullAllowed]
 		[return: Release]
 		[Export ("newSharedTextureHandle")]
 		MTLSharedTextureHandle CreateSharedTextureHandle ();
 
 		// @optional in macOS and Mac Catalyst
-#if NET && !__MACOS__ && !__MACCATALYST__
+#if !__MACOS__ && !__MACCATALYST__
 		[Abstract (GenerateExtensionMethod = true)]
 #endif
 		[TV (16, 0), iOS (13, 0), MacCatalyst (15, 0)]
@@ -2129,7 +2170,7 @@ namespace Metal {
 		nuint FirstMipmapInTail { get; }
 
 		// @optional in macOS and Mac Catalyst
-#if NET && !__MACOS__ && !__MACCATALYST__
+#if !__MACOS__ && !__MACCATALYST__
 		[Abstract (GenerateExtensionMethod = true)]
 #endif
 		[TV (16, 0), iOS (13, 0), MacCatalyst (15, 0)]
@@ -2137,24 +2178,20 @@ namespace Metal {
 		nuint TailSizeInBytes { get; }
 
 		// @optional in macOS and Mac Catalyst
-#if NET && !__MACOS__ && !__MACCATALYST__
+#if !__MACOS__ && !__MACCATALYST__
 		[Abstract (GenerateExtensionMethod = true)]
 #endif
 		[TV (16, 0), iOS (13, 0), MacCatalyst (15, 0)]
 		[Export ("isSparse")]
 		bool IsSparse { get; }
 
-#if NET
 		[Abstract]
-#endif
 		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("swizzle")]
 		MTLTextureSwizzleChannels Swizzle { get; }
 
-#if NET
 		[Abstract]
-#endif
 		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("newTextureViewWithPixelFormat:textureType:levels:slices:swizzle:")]
@@ -2162,17 +2199,13 @@ namespace Metal {
 		[return: Release]
 		IMTLTexture Create (MTLPixelFormat pixelFormat, MTLTextureType textureType, NSRange levelRange, NSRange sliceRange, MTLTextureSwizzleChannels swizzle);
 
-#if NET
 		[Abstract]
-#endif
 		[NoiOS, NoTV]
 		[NoMacCatalyst]
 		[NullAllowed, Export ("remoteStorageTexture")]
 		IMTLTexture RemoteStorageTexture { get; }
 
-#if NET
 		[Abstract]
-#endif
 		[NoiOS, NoTV]
 		[NoMacCatalyst]
 		[Export ("newRemoteTextureViewForDevice:")]
@@ -2181,9 +2214,7 @@ namespace Metal {
 		IMTLTexture CreateRemoteTexture (IMTLDevice device);
 
 		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Export ("gpuResourceID")]
 		MTLResourceId GpuResourceId { get; }
 	}
@@ -2223,12 +2254,32 @@ namespace Metal {
 		[Export ("resourceOptions", ArgumentSemantic.Assign)]
 		MTLResourceOptions ResourceOptions { get; set; }
 
+		/// <param name="pixelFormat">To be added.</param>
+		/// <param name="width">To be added.</param>
+		/// <param name="height">To be added.</param>
+		/// <param name="mipmapped">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("texture2DDescriptorWithPixelFormat:width:height:mipmapped:")]
 		MTLTextureDescriptor CreateTexture2DDescriptor (MTLPixelFormat pixelFormat, nuint width, nuint height, bool mipmapped);
 
+		/// <param name="pixelFormat">To be added.</param>
+		/// <param name="size">To be added.</param>
+		/// <param name="mipmapped">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("textureCubeDescriptorWithPixelFormat:size:mipmapped:")]
 		MTLTextureDescriptor CreateTextureCubeDescriptor (MTLPixelFormat pixelFormat, nuint size, bool mipmapped);
 
+		/// <param name="pixelFormat">To be added.</param>
+		/// <param name="width">To be added.</param>
+		/// <param name="resourceOptions">To be added.</param>
+		/// <param name="usage">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static, Export ("textureBufferDescriptorWithPixelFormat:width:resourceOptions:usage:")]
 		MTLTextureDescriptor CreateTextureBufferDescriptor (MTLPixelFormat pixelFormat, nuint width, MTLResourceOptions resourceOptions, MTLTextureUsage usage);
@@ -2329,16 +2380,20 @@ namespace Metal {
 	[Protocol] // From Apple Docs: Your app does not define classes that implement this protocol. Model is not needed
 	partial interface MTLSamplerState {
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("label")]
 		string Label { get; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("device")]
 		IMTLDevice Device { get; }
 
 		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Export ("gpuResourceID")]
 		MTLResourceId GpuResourceId { get; }
 	}
@@ -2373,12 +2428,21 @@ namespace Metal {
 		[Export ("sampleCount")]
 		nuint SampleCount { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("alphaToCoverageEnabled")]
 		bool AlphaToCoverageEnabled { [Bind ("isAlphaToCoverageEnabled")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("alphaToOneEnabled")]
 		bool AlphaToOneEnabled { [Bind ("isAlphaToOneEnabled")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("rasterizationEnabled")]
 		bool RasterizationEnabled { [Bind ("isRasterizationEnabled")] get; set; }
 
@@ -2407,6 +2471,9 @@ namespace Metal {
 		[Export ("maxTessellationFactor")]
 		nuint MaxTessellationFactor { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("tessellationFactorScaleEnabled")]
 		bool IsTessellationFactorScaleEnabled { [Bind ("isTessellationFactorScaleEnabled")] get; set; }
@@ -2511,48 +2578,44 @@ namespace Metal {
 	[Protocol] // From Apple Docs: Your app does not define classes that implement this protocol. Model is not needed
 	partial interface MTLRenderPipelineState {
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("label")]
 		string Label { get; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("device")]
 		IMTLDevice Device { get; }
 
 		[TV (14, 5)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("maxTotalThreadsPerThreadgroup")]
 		nuint MaxTotalThreadsPerThreadgroup { get; }
 
 		[TV (14, 5)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("threadgroupSizeMatchesTileSize")]
 		bool ThreadgroupSizeMatchesTileSize { get; }
 
 		[TV (14, 5)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("imageblockSampleLength")]
 		nuint ImageblockSampleLength { get; }
 
 		[TV (14, 5)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("imageblockMemoryLengthForDimensions:")]
 		nuint GetImageblockMemoryLength (MTLSize imageblockDimensions);
 
 		[MacCatalyst (14, 0)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("supportIndirectCommandBuffers")]
 		bool SupportIndirectCommandBuffers { get; }
 
@@ -2599,23 +2662,17 @@ namespace Metal {
 		MTLResourceId GpuResourceId { get; }
 
 		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Export ("maxTotalThreadsPerMeshThreadgroup")]
 		nuint MaxTotalThreadsPerMeshThreadgroup { get; }
 
 		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Export ("maxTotalThreadsPerObjectThreadgroup")]
 		nuint MaxTotalThreadsPerObjectThreadgroup { get; }
 
 		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Export ("objectThreadExecutionWidth")]
 		nuint ObjectThreadExecutionWidth { get; }
 
@@ -2771,16 +2828,25 @@ namespace Metal {
 		[Export ("attributeType")]
 		MTLDataType AttributeType { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("active")]
 		bool Active { [Bind ("isActive")] get; }
 
 		[Export ("name")]
 		string Name { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("patchData")]
 		bool PatchData { [Bind ("isPatchData")] get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("patchControlPointData")]
 		bool PatchControlPointData { [Bind ("isPatchControlPointData")] get; }
@@ -2830,64 +2896,67 @@ namespace Metal {
 	partial interface MTLFunction {
 
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[NullAllowed, Export ("label")]
 		string Label { get; set; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("device")]
 		IMTLDevice Device { get; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("functionType")]
 		MTLFunctionType FunctionType { get; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("vertexAttributes")]
 		MTLVertexAttribute [] VertexAttributes { get; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("name")]
 		string Name { get; }
 
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("patchType")]
 		MTLPatchType PatchType { get; }
 
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("patchControlPointCount")]
 		nint PatchControlPointCount { get; }
 
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[NullAllowed, Export ("stageInputAttributes")]
 		MTLAttribute [] StageInputAttributes { get; }
 
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("functionConstantsDictionary")]
 		NSDictionary<NSString, MTLFunctionConstant> FunctionConstants { get; }
 
+		/// <summary>Creates a new argument encoder for the specified buffer index.</summary>
+		/// <param name="bufferIndex">Index into a graphics function or compute function of the argument buffer.</param>
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("newArgumentEncoderWithBufferIndex:")]
 		[return: Release]
 		IMTLArgumentEncoder CreateArgumentEncoder (nuint bufferIndex);
 
+		/// <summary>Creates a new argument encoder for the specified buffer index and reflection argument.</summary>
+		/// <param name="bufferIndex">Index into a graphics function or compute function of the argument buffer.</param>
+		/// <param name="reflection">The resulting reflection data.</param>
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("newArgumentEncoderWithBufferIndex:reflection:")]
 		[return: Release]
 		IMTLArgumentEncoder CreateArgumentEncoder (nuint bufferIndex, [NullAllowed] out MTLArgument reflection);
@@ -2905,32 +2974,41 @@ namespace Metal {
 	[Protocol] // From Apple Docs: Your app does not define classes that implement this protocol. Model is not needed
 	partial interface MTLLibrary {
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("label")]
 		string Label { get; set; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("device")]
 		IMTLDevice Device { get; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("functionNames")]
 		string [] FunctionNames { get; }
 
+		/// <param name="functionName">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("newFunctionWithName:")]
 		[return: Release]
 		IMTLFunction CreateFunction (string functionName);
 
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("newFunctionWithName:constantValues:error:")]
 		[return: NullAllowed]
 		[return: Release]
 		IMTLFunction CreateFunction (string name, MTLFunctionConstantValues constantValues, out NSError error);
 
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("newFunctionWithName:constantValues:completionHandler:")]
 		[Async]
 		void CreateFunction (string name, MTLFunctionConstantValues constantValues, Action<IMTLFunction, NSError> completionHandler);
@@ -2940,17 +3018,13 @@ namespace Metal {
 
 		[iOS (14, 0), TV (14, 0)]
 		[MacCatalyst (14, 0)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("newFunctionWithDescriptor:completionHandler:")]
 		void CreateFunction (MTLFunctionDescriptor descriptor, Action<IMTLFunction, NSError> completionHandler);
 
 		[iOS (14, 0), TV (14, 0)]
 		[MacCatalyst (14, 0)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("newFunctionWithDescriptor:error:")]
 		[return: NullAllowed]
 		[return: Release]
@@ -2971,17 +3045,13 @@ namespace Metal {
 
 		[iOS (14, 0), TV (14, 0)]
 		[MacCatalyst (14, 0)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("type")]
 		MTLLibraryType Type { get; }
 
 		[iOS (14, 0), TV (14, 0)]
 		[MacCatalyst (14, 0)]
-#if NET
 		[Abstract]
-#endif
 		[NullAllowed, Export ("installName")]
 		string InstallName { get; }
 	}
@@ -2995,11 +3065,7 @@ namespace Metal {
 
 		[NullAllowed] // by default this property is null
 		[Export ("preprocessorMacros", ArgumentSemantic.Copy)]
-#if NET
 		NSDictionary<NSString, NSObject> PreprocessorMacros { get; set; }
-#else
-		NSDictionary PreprocessorMacros { get; set; }
-#endif
 
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'MathMode' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'MathMode' instead.")]
@@ -3101,7 +3167,6 @@ namespace Metal {
 		[Export ("dataType")]
 		MTLDataType DataType { get; }
 
-#if NET
 		[Export ("structType")]
 		[NullAllowed]
 		MTLStructType StructType { get; }
@@ -3109,15 +3174,6 @@ namespace Metal {
 		[Export ("arrayType")]
 		[NullAllowed]
 		MTLArrayType ArrayType { get; }
-#else
-		[Export ("structType")]
-		[return: NullAllowed]
-		MTLStructType StructType ();
-
-		[Export ("arrayType")]
-		[return: NullAllowed]
-		MTLArrayType ArrayType ();
-#endif
 
 		[MacCatalyst (13, 1)]
 		[Export ("argumentIndex")]
@@ -3152,10 +3208,16 @@ namespace Metal {
 	[MacCatalyst (13, 1)]
 	[Protocol] // From Apple Docs: Your app does not define classes that implement this protocol. Model is not needed
 	partial interface MTLDepthStencilState {
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("label")]
 		string Label { get; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("device")]
 		IMTLDevice Device { get; }
@@ -3171,6 +3233,9 @@ namespace Metal {
 		[Export ("depthCompareFunction")]
 		MTLCompareFunction DepthCompareFunction { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("depthWriteEnabled")]
 		bool DepthWriteEnabled { [Bind ("isDepthWriteEnabled")] get; set; }
 
@@ -3197,6 +3262,9 @@ namespace Metal {
 	[MacCatalyst (13, 1)]
 	[Protocol] // From Apple Docs: Your app does not define classes that implement this protocol. Model is not needed
 	interface MTLParallelRenderCommandEncoder : MTLCommandEncoder {
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("renderCommandEncoder")]
 		[Autorelease]
@@ -3204,44 +3272,39 @@ namespace Metal {
 		IMTLRenderCommandEncoder CreateRenderCommandEncoder ();
 
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("setColorStoreAction:atIndex:")]
 		void SetColorStoreAction (MTLStoreAction storeAction, nuint colorAttachmentIndex);
 
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("setDepthStoreAction:")]
 		void SetDepthStoreAction (MTLStoreAction storeAction);
 
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("setStencilStoreAction:")]
 		void SetStencilStoreAction (MTLStoreAction storeAction);
 
+		/// <summary>Sets the store action options on the color attachment at the specified index.</summary>
+		/// <param name="storeActionOptions">The action to set.</param>
+		/// <param name="colorAttachmentIndex">The index of the color attachment.</param>
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("setColorStoreActionOptions:atIndex:")]
 		void SetColorStoreActionOptions (MTLStoreActionOptions storeActionOptions, nuint colorAttachmentIndex);
 
+		// <summary>Sets the store action options on the depth attachment.</summary>
+		// <param name="storeActionOptions">The action options to set.</param>
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("setDepthStoreActionOptions:")]
 		void SetDepthStoreActionOptions (MTLStoreActionOptions storeActionOptions);
 
+		/// <summary>Sets the store action options on the stencil attachment.</summary>
+		/// <param name="storeActionOptions">The action options to set.</param>
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("setStencilStoreActionOptions:")]
 		void SetStencilStoreActionOptions (MTLStoreActionOptions storeActionOptions);
 	}
@@ -3253,50 +3316,99 @@ namespace Metal {
 	[Protocol] // From Apple Docs: Your app does not define classes that implement this protocol. Model is not needed
 	partial interface MTLRenderCommandEncoder : MTLCommandEncoder {
 
+		/// <param name="pipelineState">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("setRenderPipelineState:")]
 		void SetRenderPipelineState (IMTLRenderPipelineState pipelineState);
 
+		/// <param name="buffer">To be added.</param>
+		/// <param name="offset">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("setVertexBuffer:offset:atIndex:")]
 		void SetVertexBuffer (IMTLBuffer buffer, nuint offset, nuint index);
 
+		/// <param name="texture">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("setVertexTexture:atIndex:")]
 		void SetVertexTexture (IMTLTexture texture, nuint index);
 
+		/// <param name="sampler">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("setVertexSamplerState:atIndex:")]
 		void SetVertexSamplerState (IMTLSamplerState sampler, nuint index);
 
+		/// <param name="sampler">To be added.</param>
+		/// <param name="lodMinClamp">To be added.</param>
+		/// <param name="lodMaxClamp">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("setVertexSamplerState:lodMinClamp:lodMaxClamp:atIndex:")]
 		void SetVertexSamplerState (IMTLSamplerState sampler, float /* float, not CGFloat */ lodMinClamp, float /* float, not CGFloat */ lodMaxClamp, nuint index);
 
+		/// <param name="viewport">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("setViewport:")]
 		void SetViewport (MTLViewport viewport);
 
+		/// <param name="frontFacingWinding">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("setFrontFacingWinding:")]
 		void SetFrontFacingWinding (MTLWinding frontFacingWinding);
 
+		/// <param name="cullMode">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("setCullMode:")]
 		void SetCullMode (MTLCullMode cullMode);
 
+		/// <summary>Sets a value that controls how clipped values are handled.</summary>
 		[MacCatalyst (13, 1)]
-#if NET
-		// Apple added a new required member in iOS 9, but that breaks our binary compat, so we can't do that in our existing code.
 		[Abstract]
-#endif
 		[Export ("setDepthClipMode:")]
 		void SetDepthClipMode (MTLDepthClipMode depthClipMode);
 
+		/// <param name="depthBias">To be added.</param>
+		/// <param name="slopeScale">To be added.</param>
+		/// <param name="clamp">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("setDepthBias:slopeScale:clamp:")]
 		void SetDepthBias (float /* float, not CGFloat */ depthBias, float /* float, not CGFloat */ slopeScale, float /* float, not CGFloat */ clamp);
 
+		/// <param name="rect">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("setScissorRect:")]
 		void SetScissorRect (MTLScissorRect rect);
 
+		/// <param name="fillMode">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("setTriangleFillMode:")]
 		void SetTriangleFillMode (MTLTriangleFillMode fillMode);
 
+		/// <param name="buffer">To be added.</param>
+		/// <param name="offset">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("setFragmentBuffer:offset:atIndex:")]
 		void SetFragmentBuffer (IMTLBuffer buffer, nuint offset, nuint index);
 
+		/// <param name="offset">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Abstract, Export ("setFragmentBufferOffset:atIndex:")]
 		void SetFragmentBufferOffset (nuint offset, nuint index);
@@ -3305,115 +3417,184 @@ namespace Metal {
 		[Abstract, Export ("setFragmentBytes:length:atIndex:")]
 		void SetFragmentBytes (IntPtr bytes, nuint length, nuint index);
 
+		/// <param name="texture">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("setFragmentTexture:atIndex:")]
 		void SetFragmentTexture (IMTLTexture texture, nuint index);
 
+		/// <param name="sampler">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("setFragmentSamplerState:atIndex:")]
 		void SetFragmentSamplerState (IMTLSamplerState sampler, nuint index);
 
+		/// <param name="sampler">To be added.</param>
+		/// <param name="lodMinClamp">To be added.</param>
+		/// <param name="lodMaxClamp">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("setFragmentSamplerState:lodMinClamp:lodMaxClamp:atIndex:")]
 		void SetFragmentSamplerState (IMTLSamplerState sampler, float /* float, not CGFloat */ lodMinClamp, float /* float, not CGFloat */ lodMaxClamp, nuint index);
 
+		/// <param name="red">To be added.</param>
+		/// <param name="green">To be added.</param>
+		/// <param name="blue">To be added.</param>
+		/// <param name="alpha">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("setBlendColorRed:green:blue:alpha:")]
 		void SetBlendColor (float /* float, not CGFloat */ red, float /* float, not CGFloat */ green, float /* float, not CGFloat */ blue, float /* float, not CGFloat */ alpha);
 
+		/// <param name="depthStencilState">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("setDepthStencilState:")]
 		void SetDepthStencilState (IMTLDepthStencilState depthStencilState);
 
+		/// <param name="referenceValue">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("setStencilReferenceValue:")]
 		void SetStencilReferenceValue (uint /* uint32_t */ referenceValue);
 
+		/// <summary>Sets the front and back reference stencil values.</summary>
 		[MacCatalyst (13, 1)]
-#if NET
-		// Apple added a new required member in iOS 9, but that breaks our binary compat, so we can't do that in our existing code.
 		[Abstract]
-#endif
 		[Export ("setStencilFrontReferenceValue:backReferenceValue:")]
 		void SetStencilFrontReferenceValue (uint frontReferenceValue, uint backReferenceValue);
 
+		/// <param name="mode">To be added.</param>
+		/// <param name="offset">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("setVisibilityResultMode:offset:")]
 		void SetVisibilityResultMode (MTLVisibilityResultMode mode, nuint offset);
 
+		/// <summary>Sets a value that controls how color results are handled after a rendering pass.</summary>
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("setColorStoreAction:atIndex:")]
 		void SetColorStoreAction (MTLStoreAction storeAction, nuint colorAttachmentIndex);
 
+		/// <summary>Sets a value that controls how depth results are handled after a rendering pass.</summary>
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("setDepthStoreAction:")]
 		void SetDepthStoreAction (MTLStoreAction storeAction);
 
+		/// <summary>Sets a value that controls how stencil results are handled after a rendering pass.</summary>
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("setStencilStoreAction:")]
 		void SetStencilStoreAction (MTLStoreAction storeAction);
 
+		/// <param name="primitiveType">To be added.</param>
+		/// <param name="vertexStart">To be added.</param>
+		/// <param name="vertexCount">To be added.</param>
+		/// <param name="instanceCount">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("drawPrimitives:vertexStart:vertexCount:instanceCount:")]
 		void DrawPrimitives (MTLPrimitiveType primitiveType, nuint vertexStart, nuint vertexCount, nuint instanceCount);
 
+		/// <param name="primitiveType">To be added.</param>
+		/// <param name="vertexStart">To be added.</param>
+		/// <param name="vertexCount">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("drawPrimitives:vertexStart:vertexCount:")]
 		void DrawPrimitives (MTLPrimitiveType primitiveType, nuint vertexStart, nuint vertexCount);
 
+		/// <param name="primitiveType">To be added.</param>
+		/// <param name="indexCount">To be added.</param>
+		/// <param name="indexType">To be added.</param>
+		/// <param name="indexBuffer">To be added.</param>
+		/// <param name="indexBufferOffset">To be added.</param>
+		/// <param name="instanceCount">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("drawIndexedPrimitives:indexCount:indexType:indexBuffer:indexBufferOffset:instanceCount:")]
 		void DrawIndexedPrimitives (MTLPrimitiveType primitiveType, nuint indexCount, MTLIndexType indexType, IMTLBuffer indexBuffer, nuint indexBufferOffset, nuint instanceCount);
 
+		/// <param name="primitiveType">To be added.</param>
+		/// <param name="indexCount">To be added.</param>
+		/// <param name="indexType">To be added.</param>
+		/// <param name="indexBuffer">To be added.</param>
+		/// <param name="indexBufferOffset">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("drawIndexedPrimitives:indexCount:indexType:indexBuffer:indexBufferOffset:")]
 		void DrawIndexedPrimitives (MTLPrimitiveType primitiveType, nuint indexCount, MTLIndexType indexType, IMTLBuffer indexBuffer, nuint indexBufferOffset);
 
-#if NET
-		// Apple added a new required member in iOS 9, but that breaks our binary compat, so we can't do that in our existing code.
+		/// <summary>Draws a range of primitives.</summary>
 		[Abstract]
-#endif
 		[MacCatalyst (13, 1)]
 		[Export ("drawPrimitives:vertexStart:vertexCount:instanceCount:baseInstance:")]
 		void DrawPrimitives (MTLPrimitiveType primitiveType, nuint vertexStart, nuint vertexCount, nuint instanceCount, nuint baseInstance);
 
-#if NET
-		// Apple added a new required member in iOS 9, but that breaks our binary compat, so we can't do that in our existing code.
 		[Abstract]
-#endif
 		[MacCatalyst (13, 1)]
 		[Export ("drawIndexedPrimitives:indexCount:indexType:indexBuffer:indexBufferOffset:instanceCount:baseVertex:baseInstance:")]
 		void DrawIndexedPrimitives (MTLPrimitiveType primitiveType, nuint indexCount, MTLIndexType indexType, IMTLBuffer indexBuffer, nuint indexBufferOffset, nuint instanceCount, nint baseVertex, nuint baseInstance);
 
-#if NET
-		// Apple added a new required member in iOS 9, but that breaks our binary compat, so we can't do that in our existing code.
+		/// <summary>Draws a range of primitives.</summary>
 		[Abstract]
-#endif
 		[MacCatalyst (13, 1)]
 		[Export ("drawPrimitives:indirectBuffer:indirectBufferOffset:")]
 		void DrawPrimitives (MTLPrimitiveType primitiveType, IMTLBuffer indirectBuffer, nuint indirectBufferOffset);
 
-#if NET
-		// Apple added a new required member in iOS 9, but that breaks our binary compat, so we can't do that in our existing code.
 		[Abstract]
-#endif
 		[MacCatalyst (13, 1)]
 		[Export ("drawIndexedPrimitives:indexType:indexBuffer:indexBufferOffset:indirectBuffer:indirectBufferOffset:")]
 		void DrawIndexedPrimitives (MTLPrimitiveType primitiveType, MTLIndexType indexType, IMTLBuffer indexBuffer, nuint indexBufferOffset, IMTLBuffer indirectBuffer, nuint indirectBufferOffset);
 
+		/// <param name="buffers">To be added.</param>
+		/// <param name="IntPtrOffsets">To be added.</param>
+		/// <param name="range">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("setFragmentBuffers:offsets:withRange:")]
 		void SetFragmentBuffers (IMTLBuffer buffers, IntPtr IntPtrOffsets, NSRange range);
 
+		/// <param name="samplers">To be added.</param>
+		/// <param name="floatArrayPtrLodMinClamps">To be added.</param>
+		/// <param name="floatArrayPtrLodMaxClamps">To be added.</param>
+		/// <param name="range">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("setFragmentSamplerStates:lodMinClamps:lodMaxClamps:withRange:")]
 		void SetFragmentSamplerStates (IMTLSamplerState [] samplers, IntPtr floatArrayPtrLodMinClamps, IntPtr floatArrayPtrLodMaxClamps, NSRange range);
 
+		/// <param name="samplers">To be added.</param>
+		/// <param name="range">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("setFragmentSamplerStates:withRange:")]
 		void SetFragmentSamplerStates (IMTLSamplerState [] samplers, NSRange range);
 
+		/// <param name="textures">To be added.</param>
+		/// <param name="range">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("setFragmentTextures:withRange:")]
 		void SetFragmentTextures (IMTLTexture [] textures, NSRange range);
 
+		/// <param name="buffers">To be added.</param>
+		/// <param name="uintArrayPtrOffsets">To be added.</param>
+		/// <param name="range">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("setVertexBuffers:offsets:withRange:")]
 		void SetVertexBuffers (IMTLBuffer [] buffers, IntPtr uintArrayPtrOffsets, NSRange range);
 
+		/// <param name="offset">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Abstract, Export ("setVertexBufferOffset:atIndex:")]
 		void SetVertexBufferOffset (nuint offset, nuint index);
@@ -3422,12 +3603,26 @@ namespace Metal {
 		[Abstract, Export ("setVertexBytes:length:atIndex:")]
 		void SetVertexBytes (IntPtr bytes, nuint length, nuint index);
 
+		/// <param name="samplers">To be added.</param>
+		/// <param name="floatArrayPtrLodMinClamps">To be added.</param>
+		/// <param name="floatArrayPtrLodMaxClamps">To be added.</param>
+		/// <param name="range">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("setVertexSamplerStates:lodMinClamps:lodMaxClamps:withRange:")]
 		void SetVertexSamplerStates (IMTLSamplerState [] samplers, IntPtr floatArrayPtrLodMinClamps, IntPtr floatArrayPtrLodMaxClamps, NSRange range);
 
+		/// <param name="samplers">To be added.</param>
+		/// <param name="range">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("setVertexSamplerStates:withRange:")]
 		void SetVertexSamplerStates (IMTLSamplerState [] samplers, NSRange range);
 
+		/// <param name="textures">To be added.</param>
+		/// <param name="range">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("setVertexTextures:withRange:")]
 		void SetVertexTextures (IMTLTexture [] textures, NSRange range);
@@ -3435,326 +3630,272 @@ namespace Metal {
 		[NoiOS, NoTV]
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'MemoryBarrier (MTLBarrierScope, MTLRenderStages, MTLRenderStages)' instead.")]
 		[NoMacCatalyst]
-#if NET
 		[Abstract]
-#endif
 		[Export ("textureBarrier")]
 		void TextureBarrier ();
 
+		/// <summary>Captures all GPU work up to the current fence.</summary>
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("updateFence:afterStages:")]
 		void Update (IMTLFence fence, MTLRenderStages stages);
 
+		/// <summary>Prevents additional GPU work by the encoder until the <paramref name="fence" /> is reached.</summary>
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("waitForFence:beforeStages:")]
 		void Wait (IMTLFence fence, MTLRenderStages stages);
 
+		/// <summary>Sets the offset and stride value for a tessellation buffer.</summary>
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("setTessellationFactorBuffer:offset:instanceStride:")]
 		void SetTessellationFactorBuffer ([NullAllowed] IMTLBuffer buffer, nuint offset, nuint instanceStride);
 
+		/// <summary>Sets the offset and stride value for a tessellation buffer.</summary>
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("setTessellationFactorScale:")]
 		void SetTessellationFactorScale (float scale);
 
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("drawPatches:patchStart:patchCount:patchIndexBuffer:patchIndexBufferOffset:instanceCount:baseInstance:")]
 		void DrawPatches (nuint numberOfPatchControlPoints, nuint patchStart, nuint patchCount, [NullAllowed] IMTLBuffer patchIndexBuffer, nuint patchIndexBufferOffset, nuint instanceCount, nuint baseInstance);
 
 		[TV (14, 5)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("drawPatches:patchIndexBuffer:patchIndexBufferOffset:indirectBuffer:indirectBufferOffset:")]
 		void DrawPatches (nuint numberOfPatchControlPoints, [NullAllowed] IMTLBuffer patchIndexBuffer, nuint patchIndexBufferOffset, IMTLBuffer indirectBuffer, nuint indirectBufferOffset);
 
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("drawIndexedPatches:patchStart:patchCount:patchIndexBuffer:patchIndexBufferOffset:controlPointIndexBuffer:controlPointIndexBufferOffset:instanceCount:baseInstance:")]
 		void DrawIndexedPatches (nuint numberOfPatchControlPoints, nuint patchStart, nuint patchCount, [NullAllowed] IMTLBuffer patchIndexBuffer, nuint patchIndexBufferOffset, IMTLBuffer controlPointIndexBuffer, nuint controlPointIndexBufferOffset, nuint instanceCount, nuint baseInstance);
 
 		[TV (14, 5)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("drawIndexedPatches:patchIndexBuffer:patchIndexBufferOffset:controlPointIndexBuffer:controlPointIndexBufferOffset:indirectBuffer:indirectBufferOffset:")]
 		void DrawIndexedPatches (nuint numberOfPatchControlPoints, [NullAllowed] IMTLBuffer patchIndexBuffer, nuint patchIndexBufferOffset, IMTLBuffer controlPointIndexBuffer, nuint controlPointIndexBufferOffset, IMTLBuffer indirectBuffer, nuint indirectBufferOffset);
 
 		[TV (14, 5)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("setViewports:count:")]
 		void SetViewports (IntPtr viewports, nuint count);
 
 		[TV (14, 5)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("setScissorRects:count:")]
 		void SetScissorRects (IntPtr scissorRects, nuint count);
 
+		/// <summary>Sets the store action options on the color attachment at the specified index.</summary>
+		/// <param name="storeActionOptions">The action options to set.</param>
+		/// <param name="colorAttachmentIndex">The index of the color attachment.</param>
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("setColorStoreActionOptions:atIndex:")]
 		void SetColorStoreActionOptions (MTLStoreActionOptions storeActionOptions, nuint colorAttachmentIndex);
 
+		/// <summary>Sets the store action options on the depth attachment.</summary>
+		/// <param name="storeActionOptions">The action options to set.</param>
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("setDepthStoreActionOptions:")]
 		void SetDepthStoreActionOptions (MTLStoreActionOptions storeActionOptions);
 
+		/// <summary>Sets the store action options on the stencil attachment.</summary>
+		/// <param name="storeActionOptions">The action options to set.</param>
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("setStencilStoreActionOptions:")]
 		void SetStencilStoreActionOptions (MTLStoreActionOptions storeActionOptions);
 
+		/// <summary>Marks the specified resource as usable by a render pass.</summary>
+		/// <param name="resource">The resource to use.</param>
+		/// <param name="usage">Whether to read, write, or sample the resource.</param>
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("useResource:usage:")]
 		void UseResource (IMTLResource resource, MTLResourceUsage usage);
 
+		/// <summary>Marks the specified resources as usable by a render pass.</summary>
+		/// <param name="resources">The resources to use.</param>
+		/// <param name="count">The number of resources.</param>
+		/// <param name="usage">Whether to read, write, or sample the resource.</param>
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("useResources:count:usage:")]
 		void UseResources (IMTLResource [] resources, nuint count, MTLResourceUsage usage);
 
+		/// <summary>Marks the specified heap as usable by a render pass.</summary>
+		/// <param name="heap">The heap from which to read resources that are wrapped in an argument buffer.</param>
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("useHeap:")]
 		void UseHeap (IMTLHeap heap);
 
+		/// <summary>Marks the specified heaps as usable by a render pass.</summary>
+		/// <param name="heaps">The heaps from which to read resources that are wrapped in an argument buffer.</param>
+		/// <param name="count">The number of heaps.</param>
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("useHeaps:count:")]
 		void UseHeaps (IMTLHeap [] heaps, nuint count);
 
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("executeCommandsInBuffer:withRange:")]
 		void ExecuteCommands (IMTLIndirectCommandBuffer indirectCommandBuffer, NSRange executionRange);
 
 		[iOS (13, 0), TV (13, 0)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("executeCommandsInBuffer:indirectBuffer:indirectBufferOffset:")]
 		void ExecuteCommands (IMTLIndirectCommandBuffer indirectCommandbuffer, IMTLBuffer indirectRangeBuffer, nuint indirectBufferOffset);
 
-#if NET
+		/// <param name="scope">To be added.</param>
+		/// <param name="after">To be added.</param>
+		/// <param name="before">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[iOS (16, 0), TV (16, 0), MacCatalyst (15, 0)]
 		[Export ("memoryBarrierWithScope:afterStages:beforeStages:")]
 		void MemoryBarrier (MTLBarrierScope scope, MTLRenderStages after, MTLRenderStages before);
 
-#if NET
+		/// <param name="resources">To be added.</param>
+		/// <param name="count">To be added.</param>
+		/// <param name="after">To be added.</param>
+		/// <param name="before">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[iOS (16, 0), TV (16, 0), MacCatalyst (15, 0)]
 		[Export ("memoryBarrierWithResources:count:afterStages:beforeStages:")]
 		void MemoryBarrier (IMTLResource [] resources, nuint count, MTLRenderStages after, MTLRenderStages before);
 
 		[TV (14, 5)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("tileWidth")]
 		nuint TileWidth { get; }
 
 		[TV (14, 5)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("tileHeight")]
 		nuint TileHeight { get; }
 
 		[TV (14, 5)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("setTileBytes:length:atIndex:")]
 		void SetTileBytes (IntPtr /* void* */ bytes, nuint length, nuint index);
 
 		[TV (14, 5)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("setTileBuffer:offset:atIndex:")]
 		void SetTileBuffer ([NullAllowed] IMTLBuffer buffer, nuint offset, nuint index);
 
 		[TV (14, 5)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("setTileBufferOffset:atIndex:")]
 		void SetTileBufferOffset (nuint offset, nuint index);
 
 		[TV (14, 5)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("setTileBuffers:offsets:withRange:")]
 		void SetTileBuffers (IMTLBuffer [] buffers, IntPtr offsets, NSRange range);
 
 		[TV (14, 5)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("setTileTexture:atIndex:")]
 		void SetTileTexture ([NullAllowed] IMTLTexture texture, nuint index);
 
 		[TV (14, 5)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("setTileTextures:withRange:")]
 		void SetTileTextures (IMTLTexture [] textures, NSRange range);
 
 		[TV (14, 5)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("setTileSamplerState:atIndex:")]
 		void SetTileSamplerState ([NullAllowed] IMTLSamplerState sampler, nuint index);
 
 		[TV (14, 5)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("setTileSamplerStates:withRange:")]
 		void SetTileSamplerStates (IMTLSamplerState [] samplers, NSRange range);
 
 		[TV (14, 5)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("setTileSamplerState:lodMinClamp:lodMaxClamp:atIndex:")]
 		void SetTileSamplerState ([NullAllowed] IMTLSamplerState sampler, float lodMinClamp, float lodMaxClamp, nuint index);
 
 		[TV (14, 5)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("setTileSamplerStates:lodMinClamps:lodMaxClamps:withRange:")]
 		void SetTileSamplerStates (IMTLSamplerState [] samplers, IntPtr /* float[] */ lodMinClamps, IntPtr /* float[] */ lodMaxClamps, NSRange range);
 
 		[TV (14, 5)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("dispatchThreadsPerTile:")]
 		void DispatchThreadsPerTile (MTLSize threadsPerTile);
 
 		[TV (14, 5)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("setThreadgroupMemoryLength:offset:atIndex:")]
 		void SetThreadgroupMemoryLength (nuint length, nuint offset, nuint index);
 
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[MacCatalyst (13, 4), TV (16, 0), iOS (13, 0)]
 		[Export ("setVertexAmplificationCount:viewMappings:")]
 		void SetVertexAmplificationCount (nuint count, MTLVertexAmplificationViewMapping viewMappings);
 
-#if NET
 		[Abstract]
-#endif
 		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("useResource:usage:stages:")]
 		void UseResource (IMTLResource resource, MTLResourceUsage usage, MTLRenderStages stages);
 
-#if NET
 		[Abstract]
-#endif
 		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("useResources:count:usage:stages:")]
 		void UseResources (IMTLResource [] resources, nuint count, MTLResourceUsage usage, MTLRenderStages stages);
 
-#if NET
 		[Abstract]
-#endif
 		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("useHeap:stages:")]
 		void UseHeap (IMTLHeap heap, MTLRenderStages stages);
 
-#if NET
 		[Abstract]
-#endif
 		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("useHeaps:count:stages:")]
 		void UseHeaps (IMTLHeap [] heaps, nuint count, MTLRenderStages stages);
 
-#if NET
 		[Abstract]
-#endif
 		[iOS (14, 0), TV (14, 0)]
 		[MacCatalyst (14, 0)]
 		[Export ("sampleCountersInBuffer:atSampleIndex:withBarrier:")]
-#if NET
 		void SampleCounters (IMTLCounterSampleBuffer sampleBuffer, nuint sampleIndex, bool barrier);
-#else
-		void SampleCounters (MTLCounterSampleBuffer sampleBuffer, nuint sampleIndex, bool barrier);
-#endif
 
 		[iOS (15, 0), TV (16, 0), MacCatalyst (15, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
@@ -3832,198 +3973,142 @@ namespace Metal {
 		void SetTileVisibleFunctionTables (IMTLVisibleFunctionTable [] functionTables, NSRange range);
 
 		[Mac (14, 0), iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Export ("setVertexBuffer:offset:attributeStride:atIndex:")]
 		void SetVertexBuffer ([NullAllowed] IMTLBuffer buffer, nuint offset, nuint stride, nuint index);
 
 		[Mac (14, 0), iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Export ("setVertexBuffers:offsets:attributeStrides:withRange:")]
 		void SetVertexBuffers (IntPtr buffers, IntPtr offsets, IntPtr strides, NSRange range);
 
 		[Mac (14, 0), iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Export ("setVertexBufferOffset:attributeStride:atIndex:")]
 		void SetVertexBufferOffset (nuint offset, nuint stride, nuint index);
 
 		[Mac (14, 0), iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Export ("setVertexBytes:length:attributeStride:atIndex:")]
 		void SetVertexBytes (IntPtr bytes, nuint length, nuint stride, nuint index);
 
 		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Export ("drawMeshThreadgroups:threadsPerObjectThreadgroup:threadsPerMeshThreadgroup:")]
 		void DrawMeshThreadgroups (MTLSize threadgroupsPerGrid, MTLSize threadsPerObjectThreadgroup, MTLSize threadsPerMeshThreadgroup);
 
 		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Export ("drawMeshThreadgroupsWithIndirectBuffer:indirectBufferOffset:threadsPerObjectThreadgroup:threadsPerMeshThreadgroup:")]
 		void DrawMeshThreadgroups (IMTLBuffer indirectBuffer, nuint indirectBufferOffset, MTLSize threadsPerObjectThreadgroup, MTLSize threadsPerMeshThreadgroup);
 
 		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Export ("drawMeshThreads:threadsPerObjectThreadgroup:threadsPerMeshThreadgroup:")]
 		void DrawMeshThreads (MTLSize threadsPerGrid, MTLSize threadsPerObjectThreadgroup, MTLSize threadsPerMeshThreadgroup);
 
 		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Export ("setMeshBufferOffset:atIndex:")]
 		void SetMeshBufferOffset (nuint offset, nuint index);
 
 		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Export ("setMeshBuffers:offsets:withRange:")]
 		void SetMeshBuffers (IntPtr buffers, IntPtr offsets, NSRange range);
 
 		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Export ("setMeshTexture:atIndex:")]
 		void SetMeshTexture ([NullAllowed] IMTLTexture texture, nuint index);
 
 		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Export ("setMeshTextures:withRange:")]
 		void SetMeshTextures (IntPtr textures, NSRange range);
 
 		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Export ("setMeshSamplerState:atIndex:")]
 		void SetMeshSamplerState ([NullAllowed] IMTLSamplerState sampler, nuint index);
 
 		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Export ("setMeshSamplerStates:withRange:")]
 		void SetMeshSamplerStates (IntPtr samplers, NSRange range);
 
 		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Export ("setMeshSamplerState:lodMinClamp:lodMaxClamp:atIndex:")]
 		void SetMeshSamplerState ([NullAllowed] IMTLSamplerState sampler, float lodMinClamp, float lodMaxClamp, nuint index);
 
 		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Export ("setMeshSamplerStates:lodMinClamps:lodMaxClamps:withRange:")]
 		void SetMeshSamplerStates (IntPtr samplers, IntPtr lodMinClamps, IntPtr lodMaxClamps, NSRange range);
 
 		[Mac (14, 0), iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Export ("setObjectBuffer:offset:atIndex:")]
 		void SetObjectBuffer (IMTLBuffer buffer, nuint offset, nuint index);
 
 		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Export ("setObjectBufferOffset:atIndex:")]
 		void SetObjectBufferOffset (nuint offset, nuint index);
 
 		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Export ("setObjectBuffers:offsets:withRange:")]
 		void SetObjectBuffers (IntPtr buffers, IntPtr offsets, NSRange range);
 
 		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Export ("setObjectBytes:length:atIndex:")]
 		void SetObjectBytes (IntPtr bytes, nuint length, nuint index);
 
 		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Export ("setMeshBuffer:offset:atIndex:")]
 		void SetMeshBuffer ([NullAllowed] IMTLBuffer buffer, nuint offset, nuint index);
 
 		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Export ("setMeshBytes:length:atIndex:")]
 		void SetMeshBytes (IntPtr bytes, nuint length, nuint index);
 
 		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Export ("setObjectSamplerState:atIndex:")]
 		void SetObjectSamplerState ([NullAllowed] IMTLSamplerState sampler, nuint index);
 
 		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Export ("setObjectSamplerState:lodMinClamp:lodMaxClamp:atIndex:")]
 		void SetObjectSamplerState ([NullAllowed] IMTLSamplerState sampler, float lodMinClamp, float lodMaxClamp, nuint index);
 
 		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Export ("setObjectSamplerStates:lodMinClamps:lodMaxClamps:withRange:")]
 		void SetObjectSamplerStates (IntPtr samplers, IntPtr lodMinClamps, IntPtr lodMaxClamps, NSRange range);
 
 		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Export ("setObjectSamplerStates:withRange:")]
 		void SetObjectSamplerStates (IntPtr samplers, NSRange range);
 
 		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Export ("setObjectTexture:atIndex:")]
 		void SetObjectTexture ([NullAllowed] IMTLTexture texture, nuint index);
 
 		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Export ("setObjectTextures:withRange:")]
 		void SetObjectTextures (IntPtr textures, NSRange range);
 
 		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Export ("setObjectThreadgroupMemoryLength:atIndex:")]
 		void SetObjectThreadgroupMemoryLength (nuint length, nuint index);
 	}
@@ -4038,6 +4123,9 @@ namespace Metal {
 		[Export ("pixelFormat", ArgumentSemantic.Assign)]
 		MTLPixelFormat PixelFormat { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("blendingEnabled")]
 		bool BlendingEnabled { [Bind ("isBlendingEnabled")] get; set; }
 
@@ -4075,11 +4163,7 @@ namespace Metal {
 		[Deprecated (PlatformName.MacCatalyst, 16, 0)]
 		[Export ("vertexArguments")]
 		[NullAllowed]
-#if NET
 		MTLArgument [] VertexArguments { get; }
-#else
-		NSObject [] VertexArguments { get; }
-#endif
 
 		[Deprecated (PlatformName.MacOSX, 13, 0)]
 		[Deprecated (PlatformName.iOS, 16, 0)]
@@ -4087,11 +4171,7 @@ namespace Metal {
 		[Deprecated (PlatformName.MacCatalyst, 16, 0)]
 		[Export ("fragmentArguments")]
 		[NullAllowed]
-#if NET
 		MTLArgument [] FragmentArguments { get; }
-#else
-		NSObject [] FragmentArguments { get; }
-#endif
 
 		[Deprecated (PlatformName.MacOSX, 13, 0)]
 		[Deprecated (PlatformName.iOS, 16, 0)]
@@ -4348,86 +4428,112 @@ namespace Metal {
 	[MacCatalyst (13, 1)]
 	[Protocol] // From Apple Docs: Your app does not define classes that implement this protocol. Model is not needed
 	interface MTLHeap : MTLAllocation {
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[NullAllowed, Export ("label")]
 		string Label { get; set; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("device")]
 		IMTLDevice Device { get; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("storageMode")]
 		MTLStorageMode StorageMode { get; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("cpuCacheMode")]
 		MTLCpuCacheMode CpuCacheMode { get; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("size")]
 		nuint Size { get; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("usedSize")]
 		nuint UsedSize { get; }
 
+		/// <param name="alignment">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("maxAvailableSizeWithAlignment:")]
 		nuint GetMaxAvailableSize (nuint alignment);
 
+		/// <param name="length">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("newBufferWithLength:options:")]
 		[return: NullAllowed]
 		[return: Release]
 		IMTLBuffer CreateBuffer (nuint length, MTLResourceOptions options);
 
+		/// <param name="desc">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("newTextureWithDescriptor:")]
 		[return: NullAllowed]
 		[return: Release]
 		IMTLTexture CreateTexture (MTLTextureDescriptor desc);
 
+		/// <param name="state">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("setPurgeableState:")]
 		MTLPurgeableState SetPurgeableState (MTLPurgeableState state);
 
+		/// <summary>Returns the current allcoated size of the heap.</summary>
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("currentAllocatedSize")]
 		nuint CurrentAllocatedSize { get; }
 
 		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("hazardTrackingMode")]
 		MTLHazardTrackingMode HazardTrackingMode { get; }
 
 		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("resourceOptions")]
 		MTLResourceOptions ResourceOptions { get; }
 
 		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("type")]
 		MTLHeapType Type { get; }
 
 		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("newBufferWithLength:options:offset:")]
 		[return: NullAllowed]
 		[return: Release]
@@ -4435,41 +4541,31 @@ namespace Metal {
 
 		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("newTextureWithDescriptor:offset:")]
 		[return: NullAllowed]
 		[return: Release]
 		IMTLTexture CreateTexture (MTLTextureDescriptor descriptor, nuint offset);
 
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Export ("newAccelerationStructureWithSize:")]
 		[return: NullAllowed, Release]
 		IMTLAccelerationStructure CreateAccelerationStructure (nuint size);
 
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Export ("newAccelerationStructureWithDescriptor:")]
 		[return: NullAllowed, Release]
 		IMTLAccelerationStructure CreateAccelerationStructure (MTLAccelerationStructureDescriptor descriptor);
 
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Export ("newAccelerationStructureWithSize:offset:")]
 		[return: NullAllowed, Release]
 		IMTLAccelerationStructure CreateAccelerationStructure (nuint size, nuint offset);
 
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Export ("newAccelerationStructureWithDescriptor:offset:")]
 		[return: NullAllowed, Release]
@@ -4487,79 +4583,79 @@ namespace Metal {
 	[Protocol] // From Apple Docs: Your app does not define classes that implement this protocol. Model is not needed
 	partial interface MTLResource : MTLAllocation {
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("label")]
 		string Label { get; set; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("device")]
 		IMTLDevice Device { get; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("cpuCacheMode")]
 		MTLCpuCacheMode CpuCacheMode { get; }
 
-#if NET
-		[Abstract] // new required member, but that breaks our binary compat, so we can't do that in our existing code.
-#endif
+		/// <summary>Returns a description of the location and permissions of the resource.</summary>
+		[Abstract]
 		[MacCatalyst (13, 1)]
 		[Export ("storageMode")]
 		MTLStorageMode StorageMode { get; }
 
+		/// <param name="state">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("setPurgeableState:")]
 		MTLPurgeableState SetPurgeableState (MTLPurgeableState state);
 
+		/// <summary>Returns the heap that sub-allocated the resource.</summary>
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[NullAllowed, Export ("heap")]
 		IMTLHeap Heap { get; }
 
+		/// <summary>Makes the resource aliasable.</summary>
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("makeAliasable")]
 		void MakeAliasable ();
 
+		/// <summary>Returns a Boolean value that tells whether future sub-allocations can alias the resource's memory.</summary>
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("isAliasable")]
 		bool IsAliasable { get; }
 
 		[TV (17, 4), Mac (14, 4), iOS (17, 4), MacCatalyst (17, 4)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("setOwnerWithIdentity:")]
 		int SetOwnerWithIdentity (uint taskIdToken);
 
+		/// <summary>Returns the allocated size of the resource.</summary>
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("allocatedSize")]
 		new nuint AllocatedSize { get; }
 
-#if NET
 		[Abstract]
-#endif
 		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("resourceOptions")]
 		MTLResourceOptions ResourceOptions { get; }
 
-#if NET
 		[Abstract]
-#endif
 		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("heapOffset")]
 		nuint HeapOffset { get; }
 
-#if NET
 		[Abstract]
-#endif
 		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("hazardTrackingMode")]
@@ -4718,29 +4814,38 @@ namespace Metal {
 
 	/// <summary>Custom capture scope boundary for debugging from Xcode.</summary>
 	[MacCatalyst (13, 1)]
-#if NET
 	[Protocol, Model]
-#else
-	[Protocol, Model (AutoGeneratedName = true)]
-#endif
 	[BaseType (typeof (NSObject))]
 	interface MTLCaptureScope {
+		/// <summary>Begins capturing.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("beginScope")]
 		void BeginScope ();
 
+		/// <summary>Ends capturing.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("endScope")]
 		void EndScope ();
 
+		/// <summary>Gets or sets a descriptive label for the scope.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[NullAllowed, Export ("label")]
 		string Label { get; set; }
 
+		/// <summary>Gets the on which the scope was created.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("device")]
 		IMTLDevice Device { get; }
 
+		/// <summary>Gets the command queue that created the scope.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[NullAllowed, Export ("commandQueue")]
 		IMTLCommandQueue CommandQueue { get; }
@@ -4859,97 +4964,131 @@ namespace Metal {
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface MTLArgumentEncoder {
+		/// <summary>Gets the device for the encoder.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("device")]
 		IMTLDevice Device { get; }
 
+		/// <summary>Gets or sets a descriptive label for the encoder.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[NullAllowed, Export ("label")]
 		string Label { get; set; }
 
+		/// <summary>Gets the number of bytes that are required to store the encoded resources in the buffer.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("encodedLength")]
 		nuint EncodedLength { get; }
 
+		/// <summary>Gets the byte alignment for the encoded data.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("alignment")]
 		nuint Alignment { get; }
 
+		/// <param name="argumentBuffer">The destination buffer.</param>
+		/// <param name="offset">The offset of the buffer, in bytes.</param>
+		/// <summary>Sets the target buffer to which arguments will be encoded.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("setArgumentBuffer:offset:")]
 		void SetArgumentBuffer ([NullAllowed] IMTLBuffer argumentBuffer, nuint offset);
 
+		/// <param name="argumentBuffer">The destination buffer.</param>
+		/// <param name="startOffset">The offset of the buffer, in bytes.</param>
+		/// <param name="arrayElement">The index, into the targeted buffer, of the argument.</param>
+		/// <summary>Sets the target buffer to which arguments will be encoded.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("setArgumentBuffer:startOffset:arrayElement:")]
 		void SetArgumentBuffer ([NullAllowed] IMTLBuffer argumentBuffer, nuint startOffset, nuint arrayElement);
 
+		/// <param name="buffer">A buffer in an argument buffer.</param>
+		/// <param name="offset">The byte offset of <paramref name="buffer" />.</param>
+		/// <param name="index">The index of the nested buffer. Either a Metal index ID or the index member of a <see cref="T:Metal.MTLArgumentDescriptor" />.</param>
+		/// <summary>Encodes <paramref name="buffer" /> to the argument buffer.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("setBuffer:offset:atIndex:")]
 		void SetBuffer ([NullAllowed] IMTLBuffer buffer, nuint offset, nuint index);
 
-#if NET
 		[Abstract]
 		[Export ("setBuffers:offsets:withRange:")]
 		void SetBuffers (IntPtr buffers, IntPtr offsets, NSRange range);
-#else
-		[Abstract]
-		[Export ("setBuffers:offsets:withRange:")]
-		void SetBuffers (IMTLBuffer [] buffers, IntPtr offsets, NSRange range);
-#endif
 
+		/// <param name="texture">A texture within an argument buffer.</param>
+		/// <param name="index">The index of the texture. Either a Metal index ID or the index member of a <see cref="T:Metal.MTLArgumentDescriptor" />.</param>
+		/// <summary>Encodes the provided <paramref name="texture" /> into the argument buffer.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("setTexture:atIndex:")]
 		void SetTexture ([NullAllowed] IMTLTexture texture, nuint index);
 
+		/// <param name="textures">An array of textures from which to select the textures to encode.</param>
+		/// <param name="range">Indices into <paramref name="textures" />. Either Metal index IDs or the index members of <see cref="T:Metal.MTLArgumentDescriptor" />s.</param>
+		/// <summary>Encodes the provided <paramref name="textures" /> into the argument buffer.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("setTextures:withRange:")]
 		void SetTextures (IMTLTexture [] textures, NSRange range);
 
+		/// <param name="sampler">A sampler within an argument buffer.</param>
+		/// <param name="index">The sampler index. Either a Metal index ID or the index member of a <see cref="T:Metal.MTLArgumentDescriptor" />.</param>
+		/// <summary>Encodes <paramref name="sampler" /> into the argument buffer.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("setSamplerState:atIndex:")]
 		void SetSamplerState ([NullAllowed] IMTLSamplerState sampler, nuint index);
 
+		/// <param name="samplers">An array of samplers from which to select the samplers to encode.</param>
+		/// <param name="range">Indices into <paramref name="samplers" />. Either Metal index IDs or the index members of <see cref="T:Metal.MTLArgumentDescriptor" />s.</param>
+		/// <summary>Encodes the provided <paramref name="samplers" /> into the argument buffer.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("setSamplerStates:withRange:")]
 		void SetSamplerStates (IMTLSamplerState [] samplers, NSRange range);
 
+		/// <param name="index">The index for the constant. Either a Metal index ID or the index member of a <see cref="T:Metal.MTLArgumentDescriptor" />.</param>
+		/// <summary>Returns a pointer to the constant at the specified <paramref name="index" /> into the buffer.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("constantDataAtIndex:")]
 		IntPtr GetConstantData (nuint index);
 
 		[iOS (13, 0), TV (13, 0)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("setRenderPipelineState:atIndex:")]
 		void SetRenderPipelineState ([NullAllowed] IMTLRenderPipelineState pipeline, nuint index);
 
 		[iOS (13, 0), TV (13, 0)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("setRenderPipelineStates:withRange:")]
 		void SetRenderPipelineStates (IMTLRenderPipelineState [] pipelines, NSRange range);
 
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("setIndirectCommandBuffer:atIndex:")]
 		void SetIndirectCommandBuffer ([NullAllowed] IMTLIndirectCommandBuffer indirectCommandBuffer, nuint index);
 
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("setIndirectCommandBuffers:withRange:")]
 		void SetIndirectCommandBuffers (IMTLIndirectCommandBuffer [] buffers, NSRange range);
 
-#if MONOMAC || NET
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
-#endif
 		[Export ("newArgumentEncoderForBufferAtIndex:")]
 		[return: NullAllowed]
 		[return: Release]
@@ -4957,17 +5096,13 @@ namespace Metal {
 
 		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("setComputePipelineState:atIndex:")]
 		void SetComputePipelineState ([NullAllowed] IMTLComputePipelineState pipeline, nuint index);
 
 		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("setComputePipelineStates:withRange:")]
 		void SetComputePipelineStates (IMTLComputePipelineState [] pipelines, NSRange range);
 
@@ -5042,9 +5177,7 @@ namespace Metal {
 		[Export ("addRenderPipelineFunctionsWithDescriptor:error:")]
 		bool AddRenderPipelineFunctions (MTLRenderPipelineDescriptor descriptor, [NullAllowed] out NSError error);
 
-#if !TVOS || NET
 		[Abstract]
-#endif
 		[TV (14, 5)]
 		[MacCatalyst (14, 0)]
 		[Export ("addTileRenderPipelineFunctionsWithDescriptor:error:")]
@@ -5054,23 +5187,17 @@ namespace Metal {
 		[Export ("serializeToURL:error:")]
 		bool Serialize (NSUrl url, [NullAllowed] out NSError error);
 
-#if NET
 		[Abstract]
-#endif
 		[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
 		[Export ("addFunctionWithDescriptor:library:error:")]
 		bool AddFunctionWithDescriptor (MTLFunctionDescriptor descriptor, IMTLLibrary library, [NullAllowed] out NSError error);
 
-#if NET
 		[Abstract]
-#endif
 		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Export ("addMeshRenderPipelineFunctionsWithDescriptor:error:")]
 		bool AddMeshRenderPipelineFunctions (MTLMeshRenderPipelineDescriptor descriptor, out NSError error);
 
-#if NET
 		[Abstract]
-#endif
 		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Export ("addLibraryWithDescriptor:error:")]
 		bool AddLibrary (MTLStitchedLibraryDescriptor descriptor, out NSError error);
@@ -5138,10 +5265,16 @@ namespace Metal {
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface MTLEvent {
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[NullAllowed, Export ("device")]
 		IMTLDevice Device { get; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[NullAllowed, Export ("label")]
 		string Label { get; set; }
@@ -5166,23 +5299,32 @@ namespace Metal {
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface MTLSharedEvent : MTLEvent {
+		/// <param name="listener">To be added.</param>
+		/// <param name="atValue">To be added.</param>
+		/// <param name="block">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("notifyListener:atValue:block:")]
 		void NotifyListener (MTLSharedEventListener listener, ulong atValue, MTLSharedEventNotificationBlock block);
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("newSharedEventHandle")]
 		[return: Release]
 		MTLSharedEventHandle CreateSharedEventHandle ();
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("signaledValue")]
 		ulong SignaledValue { get; set; }
 
 		[Mac (14, 4), iOS (17, 4), TV (17, 4), MacCatalyst (17, 4)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("waitUntilSignaledValue:timeoutMS:")]
 		bool WaitUntilSignaledValue (ulong value, ulong milliseconds);
 	}
@@ -5200,106 +5342,139 @@ namespace Metal {
 	[Protocol]
 	interface MTLIndirectRenderCommand {
 
-#if MONOMAC && !NET
+		/// <param name="pipelineState">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
-#endif
-#if NET
-		[Abstract]
-#endif
 		[iOS (13, 0), TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("setRenderPipelineState:")]
 		void SetRenderPipelineState (IMTLRenderPipelineState pipelineState);
 
+		/// <param name="buffer">To be added.</param>
+		/// <param name="offset">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("setVertexBuffer:offset:atIndex:")]
 		void SetVertexBuffer (IMTLBuffer buffer, nuint offset, nuint index);
 
+		/// <param name="buffer">To be added.</param>
+		/// <param name="offset">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("setFragmentBuffer:offset:atIndex:")]
 		void SetFragmentBuffer (IMTLBuffer buffer, nuint offset, nuint index);
 
-#if !TVOS || NET
+		/// <param name="numberOfPatchControlPoints">To be added.</param>
+		/// <param name="patchStart">To be added.</param>
+		/// <param name="patchCount">To be added.</param>
+		/// <param name="patchIndexBuffer">To be added.</param>
+		/// <param name="patchIndexBufferOffset">To be added.</param>
+		/// <param name="instanceCount">To be added.</param>
+		/// <param name="baseInstance">To be added.</param>
+		/// <param name="buffer">To be added.</param>
+		/// <param name="offset">To be added.</param>
+		/// <param name="instanceStride">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
-#endif
 		[TV (14, 5)]
 		[MacCatalyst (13, 1)]
 		[Export ("drawPatches:patchStart:patchCount:patchIndexBuffer:patchIndexBufferOffset:instanceCount:baseInstance:tessellationFactorBuffer:tessellationFactorBufferOffset:tessellationFactorBufferInstanceStride:")]
 		void DrawPatches (nuint numberOfPatchControlPoints, nuint patchStart, nuint patchCount, [NullAllowed] IMTLBuffer patchIndexBuffer, nuint patchIndexBufferOffset, nuint instanceCount, nuint baseInstance, IMTLBuffer buffer, nuint offset, nuint instanceStride);
 
-#if !TVOS || NET
+		/// <param name="numberOfPatchControlPoints">To be added.</param>
+		/// <param name="patchStart">To be added.</param>
+		/// <param name="patchCount">To be added.</param>
+		/// <param name="patchIndexBuffer">To be added.</param>
+		/// <param name="patchIndexBufferOffset">To be added.</param>
+		/// <param name="controlPointIndexBuffer">To be added.</param>
+		/// <param name="controlPointIndexBufferOffset">To be added.</param>
+		/// <param name="instanceCount">To be added.</param>
+		/// <param name="baseInstance">To be added.</param>
+		/// <param name="buffer">To be added.</param>
+		/// <param name="offset">To be added.</param>
+		/// <param name="instanceStride">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
-#endif
 		[TV (14, 5)]
 		[MacCatalyst (13, 1)]
 		[Export ("drawIndexedPatches:patchStart:patchCount:patchIndexBuffer:patchIndexBufferOffset:controlPointIndexBuffer:controlPointIndexBufferOffset:instanceCount:baseInstance:tessellationFactorBuffer:tessellationFactorBufferOffset:tessellationFactorBufferInstanceStride:")]
 		void DrawIndexedPatches (nuint numberOfPatchControlPoints, nuint patchStart, nuint patchCount, [NullAllowed] IMTLBuffer patchIndexBuffer, nuint patchIndexBufferOffset, IMTLBuffer controlPointIndexBuffer, nuint controlPointIndexBufferOffset, nuint instanceCount, nuint baseInstance, IMTLBuffer buffer, nuint offset, nuint instanceStride);
 
+		/// <param name="primitiveType">To be added.</param>
+		/// <param name="vertexStart">To be added.</param>
+		/// <param name="vertexCount">To be added.</param>
+		/// <param name="instanceCount">To be added.</param>
+		/// <param name="baseInstance">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("drawPrimitives:vertexStart:vertexCount:instanceCount:baseInstance:")]
 		void DrawPrimitives (MTLPrimitiveType primitiveType, nuint vertexStart, nuint vertexCount, nuint instanceCount, nuint baseInstance);
 
+		/// <param name="primitiveType">To be added.</param>
+		/// <param name="indexCount">To be added.</param>
+		/// <param name="indexType">To be added.</param>
+		/// <param name="indexBuffer">To be added.</param>
+		/// <param name="indexBufferOffset">To be added.</param>
+		/// <param name="instanceCount">To be added.</param>
+		/// <param name="baseVertex">To be added.</param>
+		/// <param name="baseInstance">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("drawIndexedPrimitives:indexCount:indexType:indexBuffer:indexBufferOffset:instanceCount:baseVertex:baseInstance:")]
 		void DrawIndexedPrimitives (MTLPrimitiveType primitiveType, nuint indexCount, MTLIndexType indexType, IMTLBuffer indexBuffer, nuint indexBufferOffset, nuint instanceCount, nint baseVertex, nuint baseInstance);
 
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("reset")]
 		void Reset ();
 
 		[Mac (14, 0), iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Export ("setVertexBuffer:offset:attributeStride:atIndex:")]
 		void SetVertexBuffer (IMTLBuffer buffer, nuint offset, nuint stride, nuint index);
 
 		[Mac (14, 0), iOS (17, 0), TV (18, 0), MacCatalyst (17, 0)]
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Export ("setObjectThreadgroupMemoryLength:atIndex:")]
 		void SetObjectThreadgroupMemoryLength (nuint length, nuint index);
 
 		[Mac (14, 0), iOS (17, 0), TV (18, 0), MacCatalyst (17, 0)]
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Export ("setObjectBuffer:offset:atIndex:")]
 		void SetObjectBuffer (IMTLBuffer buffer, nuint offset, nuint index);
 
 		[Mac (14, 0), iOS (17, 0), TV (18, 0), MacCatalyst (17, 0)]
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Export ("setMeshBuffer:offset:atIndex:")]
 		void SetMeshBuffer (IMTLBuffer buffer, nuint offset, nuint index);
 
 		[Mac (14, 0), iOS (17, 0), TV (18, 0), MacCatalyst (17, 0)]
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Export ("drawMeshThreadgroups:threadsPerObjectThreadgroup:threadsPerMeshThreadgroup:")]
 		void DrawMeshThreadgroups (MTLSize threadgroupsPerGrid, MTLSize threadsPerObjectThreadgroup, MTLSize threadsPerMeshThreadgroup);
 
 		[Mac (14, 0), iOS (17, 0), TV (18, 0), MacCatalyst (17, 0)]
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Export ("drawMeshThreads:threadsPerObjectThreadgroup:threadsPerMeshThreadgroup:")]
 		void DrawMeshThreads (MTLSize threadsPerGrid, MTLSize threadsPerObjectThreadgroup, MTLSize threadsPerMeshThreadgroup);
 
 		[Mac (14, 0), iOS (17, 0), TV (18, 0), MacCatalyst (17, 0)]
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Export ("setBarrier")]
 		void SetBarrier ();
 
 		[Mac (14, 0), iOS (17, 0), TV (18, 0), MacCatalyst (17, 0)]
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Export ("clearBarrier")]
 		void ClearBarrier ();
 	}
@@ -5360,30 +5535,36 @@ namespace Metal {
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface MTLIndirectCommandBuffer : MTLResource {
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("size")]
 		nuint Size { get; }
 
+		/// <param name="range">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("resetWithRange:")]
 		void Reset (NSRange range);
 
+		/// <param name="commandIndex">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("indirectRenderCommandAtIndex:")]
 		IMTLIndirectRenderCommand GetCommand (nuint commandIndex);
 
-#if NET
 		[Abstract]
-#endif
 		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("indirectComputeCommandAtIndex:")]
 		IMTLIndirectComputeCommand GetIndirectComputeCommand (nuint commandIndex);
 
 		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Export ("gpuResourceID")]
 		MTLResourceId GpuResourceID { get; }
 	}
@@ -5589,7 +5770,7 @@ namespace Metal {
 
 		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		// @optional in macOS and Mac Catalyst
-#if NET && !__MACOS__ && !__MACCATALYST__
+#if !__MACOS__ && !__MACCATALYST__
 		[Abstract (GenerateExtensionMethod = true)]
 #endif
 		[Export ("moveTextureMappingsFromTexture:sourceSlice:sourceLevel:sourceOrigin:sourceSize:toTexture:destinationSlice:destinationLevel:destinationOrigin:")]
@@ -5654,16 +5835,12 @@ namespace Metal {
 
 		[iOS (14, 0), TV (14, 0)]
 		[MacCatalyst (14, 0)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("setImageblockWidth:height:")]
 		void SetImageblock (nuint width, nuint height);
 
 		[Mac (14, 0), iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Export ("setKernelBuffer:offset:attributeStride:atIndex:")]
 		void SetKernelBuffer (IMTLBuffer buffer, nuint offset, nuint stride, nuint index);
 	}
@@ -5673,9 +5850,6 @@ namespace Metal {
 	[iOS (14, 0), TV (14, 0)]
 	[MacCatalyst (14, 0)]
 	[Protocol]
-#if !NET
-	[BaseType (typeof (NSObject))]
-#endif
 	interface MTLCounter {
 		[Abstract]
 		[Export ("name")]
@@ -5687,9 +5861,6 @@ namespace Metal {
 	[iOS (14, 0), TV (14, 0)]
 	[MacCatalyst (14, 0)]
 	[Protocol]
-#if !NET
-	[BaseType (typeof (NSObject))]
-#endif
 	interface MTLCounterSet {
 		[Abstract]
 		[Export ("name")]
@@ -5705,9 +5876,6 @@ namespace Metal {
 	[iOS (14, 0), TV (14, 0)]
 	[MacCatalyst (14, 0)]
 	[Protocol]
-#if !NET
-	[BaseType (typeof (NSObject))]
-#endif
 	interface MTLCounterSampleBuffer {
 		[Abstract]
 		[Export ("device")]
@@ -6307,23 +6475,15 @@ namespace Metal {
 
 		[Abstract]
 		[Export ("sampleCountersInBuffer:atSampleIndex:withBarrier:")]
-#if NET
 		void SampleCountersInBuffer (IMTLCounterSampleBuffer sampleBuffer, nuint sampleIndex, bool barrier);
-#else
-		void SampleCountersInBuffer (MTLCounterSampleBuffer sampleBuffer, nuint sampleIndex, bool barrier);
-#endif
 
-#if NET
 		[Abstract]
-#endif
 		[iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("writeCompactedAccelerationStructureSize:toBuffer:offset:sizeDataType:")]
 		void WriteCompactedAccelerationStructureSize (IMTLAccelerationStructure accelerationStructure, IMTLBuffer buffer, nuint offset, MTLDataType sizeDataType);
 
 		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Export ("refitAccelerationStructure:descriptor:destination:scratchBuffer:scratchBufferOffset:options:")]
 		void RefitAccelerationStructure (IMTLAccelerationStructure sourceAccelerationStructure, MTLAccelerationStructureDescriptor descriptor, [NullAllowed] IMTLAccelerationStructure destinationAccelerationStructure, [NullAllowed] IMTLBuffer scratchBuffer, nuint scratchBufferOffset, MTLAccelerationStructureRefitOptions options);
 
@@ -6344,9 +6504,7 @@ namespace Metal {
 		void SetFunctions (IMTLFunctionHandle [] functions, NSRange range);
 
 		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Export ("gpuResourceID")]
 		MTLResourceId GpuResourceId { get; }
 	}
@@ -6389,22 +6547,16 @@ namespace Metal {
 		[Export ("setVisibleFunctionTables:withBufferRange:")]
 		void SetVisibleFunctionTables (IMTLVisibleFunctionTable [] functionTables, NSRange bufferRange);
 
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Export ("setOpaqueCurveIntersectionFunctionWithSignature:atIndex:")]
 		void SetOpaqueCurveIntersectionFunction (MTLIntersectionFunctionSignature signature, nuint index);
 
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Export ("setOpaqueCurveIntersectionFunctionWithSignature:withRange:")]
 		void SetOpaqueCurveIntersectionFunction (MTLIntersectionFunctionSignature signature, NSRange range);
 
 		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
-#if NET
 		[Abstract (GenerateExtensionMethod = true)]
-#endif
 		[Export ("gpuResourceID")]
 		MTLResourceId GpuResourceId { get; }
 	}

@@ -23,6 +23,9 @@ namespace Foundation {
 	internal delegate bool NSOrderedCollectionDifferenceEquivalenceTestProxy (IntPtr blockLiteral, /* NSObject */ IntPtr first, /* NSObject */ IntPtr second);
 #endif
 #if NET
+	/// <typeparam name="TKey">To be added.</typeparam>
+	///     <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -32,10 +35,19 @@ namespace Foundation {
 	public sealed partial class NSArray<TKey> : NSArray, IEnumerable<TKey>
 		where TKey : class, INativeObject {
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSArray ()
 		{
 		}
 
+		/// <param name="coder">The unarchiver object.</param>
+		///         <summary>A constructor that initializes the object from the data stored in the unarchiver object.</summary>
+		///         <remarks>
+		///           <para>This constructor is provided to allow the class to be initialized from an unarchiver (for example, during NIB deserialization).   This is part of the <see cref="T:Foundation.NSCoding" />  protocol.</para>
+		///           <para>If developers want to create a subclass of this object and continue to support deserialization from an archive, they should implement a constructor with an identical signature: taking a single parameter of type <see cref="T:Foundation.NSCoder" /> and decorate it with the [Export("initWithCoder:"] attribute declaration.</para>
+		///           <para>The state of this object can also be serialized by using the companion method, EncodeTo.</para>
+		///         </remarks>
 		public NSArray (NSCoder coder) : base (coder)
 		{
 		}
@@ -44,6 +56,10 @@ namespace Foundation {
 		{
 		}
 
+		/// <param name="items">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		static public NSArray<TKey> FromNSObjects (params TKey [] items)
 		{
 			if (items is null)
@@ -52,6 +68,11 @@ namespace Foundation {
 			return FromNSObjects (items.Length, items);
 		}
 
+		/// <param name="count">To be added.</param>
+		///         <param name="items">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		static public NSArray<TKey> FromNSObjects (int count, params TKey [] items)
 		{
 			if (items is null)
@@ -63,12 +84,16 @@ namespace Foundation {
 			IntPtr buf = Marshal.AllocHGlobal ((IntPtr) (count * IntPtr.Size));
 			for (nint i = 0; i < count; i++) {
 				var item = items [i];
+				// The analyzer cannot deal with arrays, we manually keep alive the whole array below
+#pragma warning disable RBI0014
 				IntPtr h = item is null ? NSNull.Null.Handle : item.Handle;
 				Marshal.WriteIntPtr (buf, (int) (i * IntPtr.Size), h);
+#pragma warning restore RBI0014
 			}
 			IntPtr ret = NSArray.FromObjects (buf, count);
 			var arr = Runtime.GetNSObject<NSArray<TKey>> (ret)!;
 			Marshal.FreeHGlobal (buf);
+			GC.KeepAlive (items);
 			return arr;
 		}
 
@@ -82,6 +107,9 @@ namespace Foundation {
 		#endregion
 
 		#region IEnumerable implementation
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		IEnumerator IEnumerable.GetEnumerator ()
 		{
 			return new NSFastEnumerator<TKey> (this);

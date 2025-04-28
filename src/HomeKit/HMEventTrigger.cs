@@ -9,6 +9,11 @@ namespace HomeKit {
 	partial class HMEventTrigger {
 
 #if NET
+		/// <param name="significantEvent">To be added.</param>
+		///         <param name="offset">To be added.</param>
+		///         <summary>Creates a predicate that causes a trigger to evaluate <paramref name="offset" /> before the specified significant event.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -27,6 +32,11 @@ namespace HomeKit {
 		}
 
 #if NET
+		/// <param name="significantEvent">To be added.</param>
+		///         <param name="offset">To be added.</param>
+		///         <summary>Factory method to create an <see cref="T:Foundation.NSPredicate" /> that evaluates to <see langword="true" /> if the <paramref name="significantEvent" /> occurred.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]

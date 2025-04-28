@@ -36,11 +36,19 @@ using Foundation;
 
 namespace Security {
 
+	/// <summary>Encapsulates the import and export of identities and certificates.</summary>
+	///     <remarks>To be added.</remarks>
 	public partial class SecImportExport {
 
 		[DllImport (Constants.SecurityLibrary)]
 		unsafe extern static SecStatusCode SecPKCS12Import (IntPtr pkcs12_data, IntPtr options, IntPtr* items);
 
+		/// <param name="buffer">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <param name="array">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		static public SecStatusCode ImportPkcs12 (byte [] buffer, NSDictionary options, out NSDictionary [] array)
 		{
 			using (NSData data = NSData.FromArray (buffer)) {
@@ -48,6 +56,12 @@ namespace Security {
 			}
 		}
 
+		/// <param name="data">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <param name="array">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		static public SecStatusCode ImportPkcs12 (NSData data, NSDictionary options, out NSDictionary [] array)
 		{
 			if (options is null)
@@ -57,6 +71,8 @@ namespace Security {
 			SecStatusCode code;
 			unsafe {
 				code = SecPKCS12Import (data.Handle, options.Handle, &handle);
+				GC.KeepAlive (data);
+				GC.KeepAlive (options);
 			}
 			array = NSArray.ArrayFromHandle<NSDictionary> (handle);
 			NSObject.DangerousRelease (handle);

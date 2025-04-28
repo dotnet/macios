@@ -21,83 +21,147 @@ namespace ModelIO {
 	/// <summary>Enumerates vertex data descriptions.</summary>
 	[Native]
 	public enum MDLVertexFormat : ulong {
+		/// <summary>Indicates an invalid format.</summary>
 		Invalid = 0,
 
+		/// <summary>Indicates a packed vector format.</summary>
 		PackedBits = 0x1000,
+		/// <summary>Indicates unsigned two's complement 8-bit values.</summary>
 		UCharBits = 0x10000,
+		/// <summary>Indicate 8-bit signed integer values.</summary>
 		CharBits = 0x20000,
+		/// <summary>Indicates normalized unsigned two's complement 8-bit values.</summary>
 		UCharNormalizedBits = 0x30000,
+		/// <summary>Indicates a normalized 8-bit value.</summary>
 		CharNormalizedBits = 0x40000,
+		/// <summary>Indicates 16-bit unsigned two's complement value.</summary>
 		UShortBits = 0x50000,
+		/// <summary>Indicates 16-bit signed two's complement values.</summary>
 		ShortBits = 0x60000,
+		/// <summary>Indicates 16-bit normalized unsigned two's complement value.</summary>
 		UShortNormalizedBits = 0x70000,
+		/// <summary>Indicates 16-bit signed two's complement values.</summary>
 		ShortNormalizedBits = 0x80000,
+		/// <summary>Indicates 32-bit unsigned integer values.</summary>
 		UIntBits = 0x90000,
+		/// <summary>Indicates 32-bit two's complement values.</summary>
 		IntBits = 0xA0000,
+		/// <summary>Indicates half-precision floating point values.</summary>
 		HalfBits = 0xB0000,
+		/// <summary>Indicates single-precision floating point values.</summary>
 		FloatBits = 0xC0000,
 
+		/// <summary>Indicates one unsigned two's complement 8-bit value.</summary>
 		UChar = UCharBits | 1,
+		/// <summary>Indicates two unsigned two's complement 8-bit values.</summary>
 		UChar2 = UCharBits | 2,
+		/// <summary>Indicates three unsigned two's complement 8-bit values.</summary>
 		UChar3 = UCharBits | 3,
+		/// <summary>Indicates four unsigned two's complement 8-bit values.</summary>
 		UChar4 = UCharBits | 4,
 
+		/// <summary>Indicates a signed two's complement 8-bit value.</summary>
 		Char = CharBits | 1,
+		/// <summary>Indicates two signed two's complement 8-bit values.</summary>
 		Char2 = CharBits | 2,
+		/// <summary>Indicates three signed two's complement 8-bit values.</summary>
 		Char3 = CharBits | 3,
+		/// <summary>Indicates four signed two's complement 8-bit values.</summary>
 		Char4 = CharBits | 4,
 
+		/// <summary>Indicates one normalized unsigned two's complement 8-bit values.</summary>
 		UCharNormalized = UCharNormalizedBits | 1,
+		/// <summary>Indicates two normalized unsigned two's complement 8-bit values.</summary>
 		UChar2Normalized = UCharNormalizedBits | 2,
+		/// <summary>Indicates three normalized unsigned two's complement 8-bit values.</summary>
 		UChar3Normalized = UCharNormalizedBits | 3,
+		/// <summary>Indicates four normalized unsigned two's complement 8-bit values.</summary>
 		UChar4Normalized = UCharNormalizedBits | 4,
 
+		/// <summary>Indicates a normalized 8-bit value.</summary>
 		CharNormalized = CharNormalizedBits | 1,
+		/// <summary>Indicates two normalized 8-bit values.</summary>
 		Char2Normalized = CharNormalizedBits | 2,
+		/// <summary>Indicates three normalized 8-bit values.</summary>
 		Char3Normalized = CharNormalizedBits | 3,
+		/// <summary>Indicates four normalized 8-bit values.</summary>
 		Char4Normalized = CharNormalizedBits | 4,
 
+		/// <summary>Indicates one 16-bit signed two's complement values.</summary>
 		UShort = UShortBits | 1,
+		/// <summary>Indicates two 16-bit unsigned two's complement values.</summary>
 		UShort2 = UShortBits | 2,
+		/// <summary>Indicates three 16-bit unsigned two's complement values.</summary>
 		UShort3 = UShortBits | 3,
+		/// <summary>Indicates four 16-bit unsigned two's complement values.</summary>
 		UShort4 = UShortBits | 4,
 
+		/// <summary>Indicates one 16-bit signed two's complement value.</summary>
 		Short = ShortBits | 1,
+		/// <summary>Indicates two 16-bit signed two's complement values.</summary>
 		Short2 = ShortBits | 2,
+		/// <summary>Indicates three 16-bit signed two's complement values.</summary>
 		Short3 = ShortBits | 3,
+		/// <summary>Indicates four 16-bit signed two's complement values.</summary>
 		Short4 = ShortBits | 4,
 
+		/// <summary>Indicates one 16-bit normalized unsigned two's complement value.</summary>
 		UShortNormalized = UShortNormalizedBits | 1,
+		/// <summary>Indicates two 16-bit normalized unsigned two's complement values.</summary>
 		UShort2Normalized = UShortNormalizedBits | 2,
+		/// <summary>Indicates three 16-bit normalized unsigned two's complement values.</summary>
 		UShort3Normalized = UShortNormalizedBits | 3,
+		/// <summary>Indicates four 16-bit normalized unsigned two's complement values.</summary>
 		UShort4Normalized = UShortNormalizedBits | 4,
 
+		/// <summary>Indicates one normalized 16-bit signed two's complement value.</summary>
 		ShortNormalized = ShortNormalizedBits | 1,
+		/// <summary>Indicates two normalized 16-bit signed two's complement values.</summary>
 		Short2Normalized = ShortNormalizedBits | 2,
+		/// <summary>Indicates three normalized 16-bit signed two's complement values.</summary>
 		Short3Normalized = ShortNormalizedBits | 3,
+		/// <summary>Indicates four normalized 16-bit signed two's complement values.</summary>
 		Short4Normalized = ShortNormalizedBits | 4,
 
+		/// <summary>Indicates one 32-bit unsigned integer value.</summary>
 		UInt = UIntBits | 1,
+		/// <summary>Indicates two 32-bit unsigned integer values.</summary>
 		UInt2 = UIntBits | 2,
+		/// <summary>Indicates three 32-bit unsigned integer values.</summary>
 		UInt3 = UIntBits | 3,
+		/// <summary>Indicates four 32-bit unsigned integer values.</summary>
 		UInt4 = UIntBits | 4,
 
+		/// <summary>Indicates one 32-bit two's complement value.</summary>
 		Int = IntBits | 1,
+		/// <summary>Indicates two 32-bit two's complement values.</summary>
 		Int2 = IntBits | 2,
+		/// <summary>Indicates three 32-bit two's complement values.</summary>
 		Int3 = IntBits | 3,
+		/// <summary>Indicates four 32-bit two's complement values.</summary>
 		Int4 = IntBits | 4,
 
+		/// <summary>Indicates one half-precision floating point value.</summary>
 		Half = HalfBits | 1,
+		/// <summary>Indicates two half-precision floating point values.</summary>
 		Half2 = HalfBits | 2,
+		/// <summary>Indicates three half-precision floating point values.</summary>
 		Half3 = HalfBits | 3,
+		/// <summary>Indicates four half-precision floating point values.</summary>
 		Half4 = HalfBits | 4,
 
+		/// <summary>Indicates one single-precision floating point value.</summary>
 		Float = FloatBits | 1,
+		/// <summary>Indicates two single-precision floating point values.</summary>
 		Float2 = FloatBits | 2,
+		/// <summary>Indicates three single-precision floating point values.</summary>
 		Float3 = FloatBits | 3,
+		/// <summary>Indicates four single-precision floating point values.</summary>
 		Float4 = FloatBits | 4,
 
+		/// <summary>Indicates a packed 32-bit value with four signed two's complement integers arranged 10/10/10/2.</summary>
 		Int1010102Normalized = IntBits | PackedBits | 4,
+		/// <summary>Indicates a packed 32-bit value with four unsigned two's complement integers arranged 10/10/10/2.</summary>
 		UInt1010102Normalized = UIntBits | PackedBits | 4,
 	}
 
@@ -258,12 +322,19 @@ namespace ModelIO {
 	/// <summary>Enumerates values that specify data types and sizes for texel channels.</summary>
 	[Native]
 	public enum MDLTextureChannelEncoding : long {
+		/// <summary>Indicates that each channel is an unsigned 8-bit integer.</summary>
 		UInt8 = 1,
+		/// <summary>Indicates that each channel is an unsigned 16-bit integer.</summary>
 		UInt16 = 2,
+		/// <summary>Indicates that each channel is an unsigned 24-bit integer.</summary>
 		UInt24 = 3,
+		/// <summary>Indicates that each channel is an unsigned 32-bit integer.</summary>
 		UInt32 = 4,
+		/// <summary>Indicates that each channel is a 16-bit floating-point number.</summary>
 		Float16 = 258,
+		/// <summary>To be added.</summary>
 		Float16SR = 770,
+		/// <summary>Indicates that each channel is a 32-bit floating-point number.</summary>
 		Float32 = 260,
 	}
 

@@ -49,13 +49,6 @@ namespace Xamarin.Tests {
 		}
 #endif // !XAMMAC_TESTS
 
-		public static void AssertDeviceAvailable ()
-		{
-			if (include_device)
-				return;
-			Assert.Ignore ("This build does not include device support.");
-		}
-
 		public static void AssertDotNetAvailable ()
 		{
 		}

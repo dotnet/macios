@@ -21,6 +21,8 @@ using NativeHandle = System.IntPtr;
 #endif
 
 namespace CoreData {
+	/// <summary>Contains Core Data error information.</summary>
+	/// <remarks>To be added.</remarks>
 	[StrongDictionary ("UserInfoKeys")]
 	interface UserInfo {
 		/// <summary>Gets or sets an array that contains the multiple erros that occurred, if multiple errors occurred.</summary>
@@ -53,6 +55,8 @@ namespace CoreData {
 		NSPersistentStore [] AffectedStoresForError { get; set; }
 	}
 
+	/// <summary>Contains keys for error information that Core Data stores in a dictionary.</summary>
+	/// <remarks>To be added.</remarks>
 	[Static]
 	interface UserInfoKeys {
 		/// <summary>To be added.</summary>
@@ -142,6 +146,10 @@ namespace CoreData {
 		InitialImportCompleted,
 	}
 
+	/// <summary>Enumerates reasons that a managed object may need to reinitialize certain values when it awakes.</summary>
+	/// <remarks>
+	///       <para>The values in this enumeration are returned by the <see cref="M:CoreData.NSManagedObject.AwakeFromSnapshotEvents(CoreData.NSSnapshotEventType)" /> method.</para>
+	///     </remarks>
 	[Native]
 	public enum NSSnapshotEventType : ulong {
 		/// <summary>Indicates that an insertion was undone.</summary>
@@ -158,23 +166,51 @@ namespace CoreData {
 		MergePolicy = 1 << 6,
 	}
 
+	/// <summary>A base class for 'atomic stores,' which can be used to store custom file formats in Core Data.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/NSAtomicStore_class/index.html">Apple documentation for <c>NSAtomicStore</c></related>
 	[BaseType (typeof (NSPersistentStore))]
 	// Objective-C exception thrown.  Name: NSInternalInconsistencyException Reason: NSMappedObjectStore must be initialized with initWithPersistentStoreCoordinator:configurationName:URL:options
 	[DisableDefaultCtor]
 	interface NSAtomicStore {
 
+		/// <param name="coordinator">To be added.</param>
+		/// <param name="configurationName">To be added.</param>
+		/// <param name="url">To be added.</param>
+		/// <param name="options">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithPersistentStoreCoordinator:configurationName:URL:options:")]
 		NativeHandle Constructor ([NullAllowed] NSPersistentStoreCoordinator coordinator, [NullAllowed] string configurationName, NSUrl url, [NullAllowed] NSDictionary options);
 
+		/// <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("load:")]
 		bool Load (out NSError error);
 
+		/// <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("save:")]
 		bool Save (out NSError error);
 
+		/// <param name="managedObject">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("newCacheNodeForManagedObject:")]
 		NSAtomicStoreCacheNode NewCacheNodeForManagedObject (NSManagedObject managedObject);
 
+		/// <param name="node">To be added.</param>
+		///         <param name="managedObject">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("updateCacheNode:fromManagedObject:")]
 		void UpdateCacheNode (NSAtomicStoreCacheNode node, NSManagedObject managedObject);
 
@@ -188,6 +224,9 @@ namespace CoreData {
 		NSSet CacheNodes { get; }
 #endif
 
+		/// <param name="cacheNodes">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("addCacheNodes:")]
 
 #if XAMCORE_5_0
@@ -196,6 +235,9 @@ namespace CoreData {
 		void AddCacheNodes (NSSet cacheNodes);
 #endif
 
+		/// <param name="cacheNodes">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("willRemoveCacheNodes:")]
 #if XAMCORE_5_0
 		void WillRemoveCacheNodes (NSSet<NSAtomicStoreCacheNode> cacheNodes);
@@ -203,16 +245,33 @@ namespace CoreData {
 		void WillRemoveCacheNodes (NSSet cacheNodes);
 #endif
 
+		/// <param name="objectID">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("cacheNodeForObjectID:")]
 		[return: NullAllowed]
 		NSAtomicStoreCacheNode CacheNodeForObjectID (NSManagedObjectID objectID);
 
+		/// <param name="entity">To be added.</param>
+		///         <param name="data">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("objectIDForEntity:referenceObject:")]
 		NSManagedObjectID ObjectIDForEntity (NSEntityDescription entity, NSObject data);
 
+		/// <param name="managedObject">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("newReferenceObjectForManagedObject:")]
 		NSAtomicStore NewReferenceObjectForManagedObject (NSManagedObject managedObject);
 
+		/// <param name="objectID">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("referenceObjectForObjectID:")]
 		NSAtomicStore ReferenceObjectForObjectID (NSManagedObjectID objectID);
 	}
@@ -220,6 +279,10 @@ namespace CoreData {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface NSFetchIndexElementDescription : NSCoding, NSCopying {
+		/// <param name="property">To be added.</param>
+		/// <param name="collationType">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithProperty:collationType:")]
 		NativeHandle Constructor (NSPropertyDescription property, NSFetchIndexElementType collationType);
 
@@ -266,6 +329,13 @@ namespace CoreData {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface NSFetchIndexDescription : NSCoding, NSCopying {
+		/// <param name="name">To be added.</param>
+		/// <param name="elements">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithName:elements:")]
 		NativeHandle Constructor (string name, [NullAllowed] NSFetchIndexElementDescription [] elements);
 
@@ -300,11 +370,17 @@ namespace CoreData {
 		NSPredicate PartialIndexPredicate { get; set; }
 	}
 
+	/// <summary>Represents a single record in a Core Data atomic store.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/NSAtomicStoreCacheNode_class/index.html">Apple documentation for <c>NSAtomicStoreCacheNode</c></related>
 	[BaseType (typeof (NSObject))]
 	// Objective-C exception thrown.  Name: NSInvalidArgumentException Reason: NSAtomicStoreCacheNodes must be initialized using initWithObjectID:(NSManagedObjectID *)
 	[DisableDefaultCtor]
 	interface NSAtomicStoreCacheNode {
 
+		/// <param name="moid">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithObjectID:")]
 		NativeHandle Constructor (NSManagedObjectID moid);
 
@@ -327,14 +403,28 @@ namespace CoreData {
 		NSDictionary PropertyCache { get; set; }
 #endif
 
+		/// <param name="key">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("valueForKey:")]
 		[return: NullAllowed]
 		NSAtomicStoreCacheNode ValueForKey (string key);
 
+		/// <param name="value">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="key">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setValue:forKey:")]
 		void SetValue ([NullAllowed] NSObject value, string key);
 
 	}
+	/// <summary>Describes an attribute of an <see cref="T:CoreData.NSEntityDescription" /> object.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/CoreDataFramework/Classes/NSAttributeDescription_Class/index.html">Apple documentation for <c>NSAttributeDescription</c></related>
 	[BaseType (typeof (NSPropertyDescription))]
 	interface NSAttributeDescription {
 
@@ -398,6 +488,11 @@ namespace CoreData {
 	[BaseType (typeof (NSObject))]
 	interface NSEntityDescription : NSCoding, NSCopying {
 
+		/// <param name="entityName">To be added.</param>
+		///         <param name="context">To be added.</param>
+		///         <summary>Retrieves the entity with <paramref name="entityName" /> that resides in the specified managed object <paramref name="context" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static, Export ("entityForName:inManagedObjectContext:")]
 		[return: NullAllowed]
 		NSEntityDescription EntityForName (string entityName, NSManagedObjectContext context);
@@ -517,9 +612,17 @@ namespace CoreData {
 		NSDictionary RelationshipsByName { get; }
 #endif
 
+		/// <param name="entity">To be added.</param>
+		///         <summary>Gets a dictionary of the relationships that the receiver has with <paramref name="entity" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("relationshipsWithDestinationEntity:")]
 		NSRelationshipDescription [] RelationshipsWithDestinationEntity (NSEntityDescription entity);
 
+		/// <param name="entity">To be added.</param>
+		///         <summary>Returns a Boolean value that tells whether the receiver is a subtype of <paramref name="entity" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("isKindOfEntity:")]
 		bool IsKindOfEntity (NSEntityDescription entity);
 
@@ -578,6 +681,9 @@ namespace CoreData {
 		NSExpression CoreSpotlightDisplayNameExpression { get; set; }
 	}
 
+	/// <summary>Specifies the mapping between an in-memory object and its persistent representation.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/NSEntityMapping_class/index.html">Apple documentation for <c>NSEntityMapping</c></related>
 	[BaseType (typeof (NSObject))]
 	interface NSEntityMapping {
 
@@ -679,31 +785,81 @@ namespace CoreData {
 		string EntityMigrationPolicyClassName { get; set; }
 	}
 
+	/// <summary>Customizes the migration process during entity mapping.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/NSEntityMigrationPolicy_class/index.html">Apple documentation for <c>NSEntityMigrationPolicy</c></related>
 	[BaseType (typeof (NSObject))]
 	interface NSEntityMigrationPolicy {
 
+		/// <param name="mapping">To be added.</param>
+		///         <param name="manager">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("beginEntityMapping:manager:error:")]
 		bool BeginEntityMapping (NSEntityMapping mapping, NSMigrationManager manager, out NSError error);
 
+		/// <param name="sInstance">To be added.</param>
+		///         <param name="mapping">To be added.</param>
+		///         <param name="manager">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("createDestinationInstancesForSourceInstance:entityMapping:manager:error:")]
 		bool CreateDestinationInstancesForSourceInstance (NSManagedObject sInstance, NSEntityMapping mapping, NSMigrationManager manager, out NSError error);
 
+		/// <param name="mapping">To be added.</param>
+		///         <param name="manager">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("endInstanceCreationForEntityMapping:manager:error:")]
 		bool EndInstanceCreationForEntityMapping (NSEntityMapping mapping, NSMigrationManager manager, out NSError error);
 
+		/// <param name="dInstance">To be added.</param>
+		///         <param name="mapping">To be added.</param>
+		///         <param name="manager">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("createRelationshipsForDestinationInstance:entityMapping:manager:error:")]
 		bool CreateRelationshipsForDestinationInstance (NSManagedObject dInstance, NSEntityMapping mapping, NSMigrationManager manager, out NSError error);
 
+		/// <param name="mapping">To be added.</param>
+		///         <param name="manager">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("endRelationshipCreationForEntityMapping:manager:error:")]
 		bool EndRelationshipCreationForEntityMapping (NSEntityMapping mapping, NSMigrationManager manager, out NSError error);
 
+		/// <param name="mapping">To be added.</param>
+		///         <param name="manager">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("performCustomValidationForEntityMapping:manager:error:")]
 		bool PerformCustomValidationForEntityMapping (NSEntityMapping mapping, NSMigrationManager manager, out NSError error);
 
+		/// <param name="mapping">To be added.</param>
+		///         <param name="manager">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("endEntityMapping:manager:error:")]
 		bool EndEntityMapping (NSEntityMapping mapping, NSMigrationManager manager, out NSError error);
 	}
 
+	/// <summary>Descriptor for a fetch result column that does not appear in the source, such as a sum or a minimum of a column in the source.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/CoreData/NSExpressionDescription">Apple documentation for <c>NSExpressionDescription</c></related>
 	[BaseType (typeof (NSPropertyDescription))]
 	interface NSExpressionDescription {
 
@@ -723,6 +879,9 @@ namespace CoreData {
 		NSAttributeType ResultType { get; set; }
 	}
 
+	/// <summary>Holds "fetched properties," that allow the developer to specify related objects via a weak unidirectional relationship in a fetch request.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/CoreDataFramework/Classes/NSFetchedPropertyDescription_Class/index.html">Apple documentation for <c>NSFetchedPropertyDescription</c></related>
 	[BaseType (typeof (NSPropertyDescription))]
 	interface NSFetchedPropertyDescription {
 
@@ -737,6 +896,9 @@ namespace CoreData {
 		NSFetchRequest FetchRequest { get; set; }
 	}
 
+	/// <summary>Represents an expression that fetches results in a managed object context.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/CoreData/NSFetchRequestExpression">Apple documentation for <c>NSFetchRequestExpression</c></related>
 	[DisableDefaultCtor]
 	[BaseType (typeof (NSExpression))]
 	interface NSFetchRequestExpression {
@@ -746,6 +908,12 @@ namespace CoreData {
 		[Export ("initWithExpressionType:")]
 		NativeHandle Constructor (NSExpressionType type);
 
+		/// <param name="fetch">The expression from which to create a new fetch request expresssion.</param>
+		///         <param name="context">The context in which to create the fetch request expression.</param>
+		///         <param name="countOnly">Whether to create a fetch request expression that counts the matches, rather than returning them.</param>
+		///         <summary>Creates a new <see cref="T:CoreData.NSFetchRequestExpression" /> from the specified expression and context.</summary>
+		///         <returns>A new <see cref="T:CoreData.NSFetchRequestExpression" /> that was created from the specified expression and context.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static, Export ("expressionForFetch:context:countOnly:")]
 		NSFetchRequestExpression FromFetch (NSExpression fetch, NSExpression context, bool countOnly);
 
@@ -775,10 +943,16 @@ namespace CoreData {
 	[Protocol]
 	interface NSFetchRequestResult { }
 
+	/// <summary>Holds search criteria used to retrieve data from a persistent store.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/CoreDataFramework/Classes/NSFetchRequest_Class/index.html">Apple documentation for <c>NSFetchRequest</c></related>
 	[DisableDefaultCtor] // designated
 	[BaseType (typeof (NSPersistentStoreRequest))]
 	interface NSFetchRequest : NSCoding {
 
+		/// <summary>Default constructor that initializes a new instance of this class with no parameters.</summary>
+		/// <remarks>
+		///         </remarks>
 		[DesignatedInitializer]
 		[Export ("init")]
 		NativeHandle Constructor ();
@@ -891,11 +1065,18 @@ namespace CoreData {
 		[NullAllowed]
 		NSPropertyDescription [] PropertiesToFetch { get; set; }
 
+		/// <param name="entityName">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("fetchRequestWithEntityName:")]
 		// note: Xcode 6.3 changed the return value type from `NSFetchRequest*` to `instancetype`
 		NSFetchRequest FromEntityName (string entityName);
 
+		/// <param name="entityName">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithEntityName:")]
 		NativeHandle Constructor (string entityName);
 
@@ -940,56 +1121,136 @@ namespace CoreData {
 		[NullAllowed]
 		NSPropertyDescription [] PropertiesToGroupBy { get; set; }
 
+		/// <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("execute:")]
 		[return: NullAllowed]
 		INSFetchRequestResult [] Execute (out NSError error);
 	}
 
+	/// <summary>Controller object for Core Data fetch requests; generally used to provide data for a <see cref="T:UIKit.UITableView" />.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CoreData/Reference/NSFetchedResultsController_Class/index.html">Apple documentation for <c>NSFetchedResultsController</c></related>
 	[NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject), Delegates = new string [] { "WeakDelegate" })]
 	interface NSFetchedResultsController {
 
+		/// <param name="fetchRequest">To be added.</param>
+		/// <param name="context">To be added.</param>
+		/// <param name="sectionNameKeyPath">
+		///           <para>the key path to the section name</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="name">
+		///           <para>The cache name.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Creates a new <see cref="T:CoreData.NSFetchedResultsController" /> from the specified values.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithFetchRequest:managedObjectContext:sectionNameKeyPath:cacheName:")]
 		NativeHandle Constructor (NSFetchRequest fetchRequest, NSManagedObjectContext context, [NullAllowed] string sectionNameKeyPath, [NullAllowed] string name);
 
+		/// <summary>An instance of the CoreData.INSFetchedResultsControllerDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the CoreData.INSFetchedResultsControllerDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		INSFetchedResultsControllerDelegate Delegate { get; set; }
 
+		/// <summary>An object that can respond to the delegate protocol for this type</summary>
+		///         <value>The instance that will respond to events and data requests.</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>   Methods must be decorated with the [Export ("selectorName")] attribute to respond to each method from the protocol.   Alternatively use the Delegate method which is strongly typed and does not require the [Export] attributes on methods.</para>
+		///         </remarks>
 		[Export ("delegate", ArgumentSemantic.Assign)]
 		[NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>Gets the filename where section information is cached.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("cacheName")]
 		string CacheName { get; }
 
+		/// <summary>Gets an array that contains the fetched objects.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("fetchedObjects")]
 		[NullAllowed]
 		NSObject [] FetchedObjects { get; }
 
+		/// <summary>Gets the request for the fetch for which this object contains the results.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Export ("fetchRequest")]
 		NSFetchRequest FetchRequest { get; }
 
+		/// <summary>Returns the <see cref="T:CoreData.NSManagedObjectContext" /> that is used for fetching.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("managedObjectContext")]
 		NSManagedObjectContext ManagedObjectContext { get; }
 
+		/// <summary>Returns the key path to the section name on fetched objects.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("sectionNameKeyPath")]
 		string SectionNameKeyPath { get; }
 
+		/// <summary>Gets the sections of the fetch results.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("sections")]
 		INSFetchedResultsSectionInfo [] Sections { get; }
 
+		/// <param name="error">To be added.</param>
+		///         <summary>Performs the receiver's fetch request and stores any errors that occur in the specified <see langword="out" /> parameter.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("performFetch:")]
 		bool PerformFetch (out NSError error);
 
+		/// <param name="obj">To be added.</param>
+		///         <summary>Creates a new <see cref="T:CoreData.NSFetchedResultsController" /> from the specified object.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("indexPathForObject:")]
 		[return: NullAllowed]
 		NSIndexPath FromObject (NSObject obj);
 
+		/// <param name="path">To be added.</param>
+		///         <summary>Returns the obect that is located at the specified index <paramref name="path" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("objectAtIndexPath:")]
 		NSObject ObjectAt (NSIndexPath path);
 
+		/// <param name="title">To be added.</param>
+		/// <param name="atIndex">To be added.</param>
+		/// <summary>Returns the section number for the specified <paramref name="title" /> and index.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("sectionForSectionIndexTitle:atIndex:")]
 		// name like UITableViewSource's similar (and linked) selector
 		nint SectionFor (string title, nint atIndex);
@@ -1004,14 +1265,27 @@ namespace CoreData {
 		[Export ("sectionIndexTitles")]
 		string [] GetSectionIndexTitles ();
 #else
+		/// <param name="sectionName">To be added.</param>
+		/// <summary>Returns the section index titles for the specified section name.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("sectionIndexTitleForSectionName:")]
 		[return: NullAllowed]
 		string GetSectionIndexTitle (string sectionName);
 
+		/// <summary>Returns an array that contains the section index titles.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("sectionIndexTitles")]
 		string [] SectionIndexTitles { get; }
 #endif
 
+		/// <param name="name">
+		///           <para>Name of the cache to delete.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Deletes the cache that resides that ahs the specified name.</summary>
+		///         <remarks>Developers should note that passing <see langword="null" /> to this method deletes all caches.</remarks>
 		[Static]
 		[Export ("deleteCacheWithName:")]
 		void DeleteCache ([NullAllowed] string name);
@@ -1019,47 +1293,102 @@ namespace CoreData {
 
 	interface INSFetchedResultsControllerDelegate { }
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:CoreData.NSFetchedResultsControllerDelegate" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:CoreData.NSFetchedResultsControllerDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:CoreData.NSFetchedResultsControllerDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:CoreData.NSFetchedResultsControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model]
 	[Protocol]
 	interface NSFetchedResultsControllerDelegate {
+		/// <param name="controller">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("controllerWillChangeContent:")]
 		void WillChangeContent (NSFetchedResultsController controller);
 
+		/// <param name="controller">To be added.</param>
+		///         <param name="anObject">To be added.</param>
+		///         <param name="indexPath">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="type">To be added.</param>
+		///         <param name="newIndexPath">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("controller:didChangeObject:atIndexPath:forChangeType:newIndexPath:")]
 		void DidChangeObject (NSFetchedResultsController controller, NSObject anObject, [NullAllowed] NSIndexPath indexPath, NSFetchedResultsChangeType type, [NullAllowed] NSIndexPath newIndexPath);
 
+		/// <param name="controller">To be added.</param>
+		/// <param name="sectionInfo">To be added.</param>
+		/// <param name="sectionIndex">To be added.</param>
+		/// <param name="type">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("controller:didChangeSection:atIndex:forChangeType:")]
 		void DidChangeSection (NSFetchedResultsController controller, INSFetchedResultsSectionInfo sectionInfo, nuint sectionIndex, NSFetchedResultsChangeType type);
 
+		/// <param name="controller">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("controllerDidChangeContent:")]
 		void DidChangeContent (NSFetchedResultsController controller);
 
+		/// <param name="controller">To be added.</param>
+		///         <param name="sectionName">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("controller:sectionIndexTitleForSectionName:")]
 		[return: NullAllowed]
 		string SectionFor (NSFetchedResultsController controller, string sectionName);
 	}
 
+	/// <include file="../docs/api/CoreData/INSFetchedResultsSectionInfo.xml" path="/Documentation/Docs[@DocId='T:CoreData.INSFetchedResultsSectionInfo']/*" />
 	[NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model]
 	[Protocol]
 	interface NSFetchedResultsSectionInfo {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("numberOfObjects")]
 		[Abstract]
 		nint Count { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("objects")]
 		[Abstract]
 		NSObject [] Objects { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("name")]
 		[Abstract]
 		string Name { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("indexTitle")]
 		[Abstract]
 		string IndexTitle { get; }
@@ -1073,29 +1402,71 @@ namespace CoreData {
 	// Making a class abstract has problems: https://github.com/xamarin/xamarin-macios/issues/4969, so we're not doing this yet
 	// [Abstract] // Abstract superclass.
 #endif
+	/// <summary>Supports the use of persistent stores that are loaded and saved incrementally, allowing for larger and shared datasets.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CoreData/Reference/NSIncrementalStore_Class/index.html">Apple documentation for <c>NSIncrementalStore</c></related>
 	[BaseType (typeof (NSPersistentStore))]
 	interface NSIncrementalStore {
 #if NET
+		/// <param name="root">To be added.</param>
+		/// <param name="name">To be added.</param>
+		/// <param name="url">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>Creates a new <see cref="T:CoreData.NSIncrementalStore" /> with the specified values.</summary>
+		/// <remarks>To be added.</remarks>
 		[Protected]
 #endif
 		[Export ("initWithPersistentStoreCoordinator:configurationName:URL:options:")]
 		NativeHandle Constructor (NSPersistentStoreCoordinator root, string name, NSUrl url, NSDictionary options);
 
+		/// <param name="error">To be added.</param>
+		///         <summary>Loads the store metadata and reports any errors in <paramref name="error" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("loadMetadata:")]
 		bool LoadMetadata (out NSError error);
 
+		/// <param name="request">To be added.</param>
+		///         <param name="context">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="error">To be added.</param>
+		///         <summary>Runs the specified <paramref name="request" /> in the specified <paramref name="context" />, and reports any errors in <paramref name="error" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("executeRequest:withContext:error:")]
 		[return: NullAllowed]
 		NSObject ExecuteRequest (NSPersistentStoreRequest request, [NullAllowed] NSManagedObjectContext context, out NSError error);
 
+		/// <param name="forObjectId">To be added.</param>
+		///         <param name="context">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>Returns a <see cref="T:CoreData.NSIncrementalStoreNode" /> for the persisten external values of the identified object and reports any errors in <paramref name="error" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("newValuesForObjectWithID:withContext:error:")]
 		[return: NullAllowed]
 		NSIncrementalStoreNode NewValues (NSManagedObjectID forObjectId, NSManagedObjectContext context, out NSError error);
 
+		/// <param name="forRelationship">To be added.</param>
+		///         <param name="forObjectI">To be added.</param>
+		///         <param name="context">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="error">To be added.</param>
+		///         <summary>Returns a new relationship for the specified relationship data.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("newValueForRelationship:forObjectWithID:withContext:error:")]
 		[return: NullAllowed]
 		NSObject NewValue (NSRelationshipDescription forRelationship, NSManagedObjectID forObjectI, [NullAllowed] NSManagedObjectContext context, out NSError error);
 
+		/// <param name="storeUrl">To be added.</param>
+		/// <summary>Returns the identifier for the store at <paramref name="storeUrl" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static]
 		[Export ("identifierForNewStoreAtURL:")]
 #if NET
@@ -1104,26 +1475,54 @@ namespace CoreData {
 		NSObject IdentifierForNewStoreAtURL (NSUrl storeUrl);
 #endif
 
+		/// <param name="array">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>Returns an array of permanent identfiers for the provides newly-inserted objects and reports any errors in <paramref name="error" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("obtainPermanentIDsForObjects:error:")]
 		[return: NullAllowed]
 		NSObject [] ObtainPermanentIds (NSObject [] array, out NSError error);
 
+		/// <param name="objectIds">To be added.</param>
+		///         <summary>Method that is called when the <paramref name="objectIds" /> are registered for use.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("managedObjectContextDidRegisterObjectsWithIDs:")]
 		void ManagedObjectContextDidRegisterObjectsWithIds (NSObject [] objectIds);
 
+		/// <param name="objectIds">To be added.</param>
+		///         <summary>Method that is called when the <paramref name="objectIds" /> are unregistered for use.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("managedObjectContextDidUnregisterObjectsWithIDs:")]
 		void ManagedObjectContextDidUnregisterObjectsWithIds (NSObject [] objectIds);
 
+		/// <param name="forEntity">To be added.</param>
+		///         <param name="referenceObject">To be added.</param>
+		///         <summary>Developers should not override this method. Returns a new ID for the entity and description.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("newObjectIDForEntity:referenceObject:")]
 		NSManagedObjectID NewObjectIdFor (NSEntityDescription forEntity, NSObject referenceObject);
 
+		/// <param name="objectId">To be added.</param>
+		///         <summary>Developers should not override this method. Returns a reference object for <paramref name="objectId" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("referenceObjectForObjectID:")]
 		NSObject ReferenceObjectForObject (NSManagedObjectID objectId);
 
 	}
 
+	/// <summary>A concrete class that represents basic nodes in a <see cref="T:CoreData.NSIncrementalStore" />.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CoreData/Reference/NSIncrementalStoreNode_Class/index.html">Apple documentation for <c>NSIncrementalStoreNode</c></related>
 	[BaseType (typeof (NSObject))]
 	interface NSIncrementalStoreNode {
+		/// <param name="objectId">To be added.</param>
+		/// <param name="values">To be added.</param>
+		/// <param name="version">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithObjectID:withValues:version:")]
 #if XAMCORE_5_0
 		NativeHandle Constructor (NSManagedObjectID objectId, NSDictionary<NSString, NSObject> values, ulong version);
@@ -1131,6 +1530,10 @@ namespace CoreData {
 		NativeHandle Constructor (NSManagedObjectID objectId, NSDictionary values, ulong version);
 #endif
 
+		/// <param name="values">To be added.</param>
+		///         <param name="version">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("updateWithValues:version:")]
 #if XAMCORE_5_0
 		void Update (NSDictionary<NSString, NSObject> values, ulong version);
@@ -1150,29 +1553,52 @@ namespace CoreData {
 		[Export ("version")]
 		long Version { get; }
 
+		/// <param name="prop">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("valueForPropertyDescription:")]
 		[return: NullAllowed]
 		NSObject ValueForPropertyDescription (NSPropertyDescription prop);
 	}
 
+	/// <summary>A class that can be managed by a managed object context. Should have a correspondence to domain model classes, even if they are not direct subtypes.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/CoreDataFramework/Classes/NSManagedObject_Class/index.html">Apple documentation for <c>NSManagedObject</c></related>
 	[BaseType (typeof (NSObject))]
 	// 'init' issues a warning: CoreData: error: Failed to call designated initializer on NSManagedObject class 'NSManagedObject' 
 	// then crash while disposing the instance
 	[DisableDefaultCtor]
 	interface NSManagedObject : NSFetchRequestResult {
+		/// <param name="entity">To be added.</param>
+		/// <param name="context">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Creates a new <see cref="T:CoreData.NSManagedObject" /> from an entity description and inserts the object into the specified managed object context.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithEntity:insertIntoManagedObjectContext:")]
 		NativeHandle Constructor (NSEntityDescription entity, [NullAllowed] NSManagedObjectContext context);
 
+		/// <param name="moc">To be added.</param>
+		/// <summary>Creates a new <see cref="T:CoreData.NSManagedObject" /> in the specified managed object context.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("initWithContext:")]
 		NativeHandle Constructor (NSManagedObjectContext moc);
 
+		/// <summary>Gets the entity description for the receiver.</summary>
+		///         <returns>The entity description for the receiver.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("entity")]
 		NSEntityDescription GetEntityDescription ();
 
+		/// <summary>Creates and returns a fetch request.</summary>
+		///         <returns>A fetch request.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("fetchRequest")]
@@ -1235,24 +1661,56 @@ namespace CoreData {
 		[Export ("faultingState")]
 		nuint FaultingState { get; }
 
+		/// <param name="key">To be added.</param>
+		///         <summary>Gets a Boolean value that tells whether the receiver has a fault.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("hasFaultForRelationshipNamed:")]
 		bool HasFaultForRelationshipNamed (string key);
 
+		/// <param name="key">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Method that is called before the value for the property that is identified by <paramref name="key" /> is accessed.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("willAccessValueForKey:")]
 		void WillAccessValueForKey ([NullAllowed] string key);
 
+		/// <param name="key">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Method that is called when the value for the property that is identified by <paramref name="key" /> is accessed.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("didAccessValueForKey:")]
 		void DidAccessValueForKey ([NullAllowed] string key);
 
+		/// <param name="key">To be added.</param>
+		///         <summary>Method that is called before the value for the property that is identified by <paramref name="key" /> is changed.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("willChangeValueForKey:")]
 		void WillChangeValueForKey (string key);
 
+		/// <param name="key">To be added.</param>
+		///         <summary>Method that is called when the value for the property that is identified by <paramref name="key" /> is changed.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("didChangeValueForKey:")]
 		void DidChangeValueForKey (string key);
 
+		/// <param name="inKey">To be added.</param>
+		///         <param name="inMutationKind">To be added.</param>
+		///         <param name="inObjects">To be added.</param>
+		///         <summary>Method that is called before the value for the many-to-many property that is identified by <paramref name="inKey" /> is changed.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("willChangeValueForKey:withSetMutation:usingObjects:")]
 		void WillChangeValueForKey (string inKey, NSKeyValueSetMutationKind inMutationKind, NSSet inObjects);
 
+		/// <param name="inKey">To be added.</param>
+		///         <param name="inMutationKind">To be added.</param>
+		///         <param name="inObjects">To be added.</param>
+		///         <summary>Method that is called when the value for the many-to-many property that is identified by <paramref name="inKey" /> is changed.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("didChangeValueForKey:withSetMutation:usingObjects:")]
 		void DidChangeValueForKey (string inKey, NSKeyValueSetMutationKind inMutationKind, NSSet inObjects);
 
@@ -1264,27 +1722,48 @@ namespace CoreData {
 		[Export ("observationInfo")]
 		IntPtr ObservationInfo { get; set; }
 
+		/// <summary>Method that is called after the receiver is fetched.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("awakeFromFetch")]
 		void AwakeFromFetch ();
 
+		/// <summary>Method that is called after the managed object is inserted into a managed object context.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("awakeFromInsert")]
 		void AwakeFromInsert ();
 
+		/// <param name="flags">To be added.</param>
+		///         <summary>Method that is called to awaken the receiver when a property state change occurs.</summary>
+		///         <remarks>
+		///           <para>See the <see cref="T:CoreData.NSSnapshotEventType" /> enumeration for a list of the values that can be returned by this method.</para>
+		///         </remarks>
 		[Export ("awakeFromSnapshotEvents:")]
 		void AwakeFromSnapshotEvents (NSSnapshotEventType flags);
 
+		/// <summary>Method that is called before the receiver is saved.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("willSave")]
 		void WillSave ();
 
+		/// <summary>Method that is called after the managed context operation saves values.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("didSave")]
 		void DidSave ();
 
+		/// <summary>Method that is called before the receiver is turned into a fault.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("willTurnIntoFault")]
 		void WillTurnIntoFault ();
 
+		/// <summary>Method that is called when the receiver becomes a fault.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("didTurnIntoFault")]
 		void DidTurnIntoFault ();
 
+		/// <param name="key">To be added.</param>
+		/// <summary>Returns the value for the property that is identified by the specified <paramref name="key" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("valueForKey:")]
 		[return: NullAllowed]
 #if NET
@@ -1293,6 +1772,10 @@ namespace CoreData {
 		IntPtr ValueForKey (string key);
 #endif
 
+		/// <param name="value">To be added.</param>
+		/// <param name="key">To be added.</param>
+		/// <summary>Sets the receiver's value for the property that is specified by the provided <paramref name="key" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("setValue:forKey:")]
 #if NET
 		void SetValue ([NullAllowed] NSObject value, string key);
@@ -1300,6 +1783,10 @@ namespace CoreData {
 		void SetValue (IntPtr value, string key);
 #endif
 
+		/// <param name="key">To be added.</param>
+		/// <summary>Returns the receiver's internal primitive value for the property that is specified by the provided <paramref name="key" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("primitiveValueForKey:")]
 		[return: NullAllowed]
 #if NET
@@ -1308,6 +1795,10 @@ namespace CoreData {
 		IntPtr PrimitiveValueForKey (string key);
 #endif
 
+		/// <param name="value">To be added.</param>
+		/// <param name="key">To be added.</param>
+		/// <summary>Sets the receiver's internal primitive value for the property that is specified by the provided <paramref name="key" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("setPrimitiveValue:forKey:")]
 #if NET
 		void SetPrimitiveValue ([NullAllowed] NSObject value, string key);
@@ -1315,6 +1806,13 @@ namespace CoreData {
 		void SetPrimitiveValue (IntPtr value, string key);
 #endif
 
+		/// <param name="keys">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Returns a dictionary that contains property values for the specified <paramref name="keys" /> from before the last fetch or save.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("committedValuesForKeys:")]
 #if XAMCORE_5_0
 		NSDictionary<NSString, NSObject> GetCommittedValues ([NullAllowed] string[] keys);
@@ -1334,15 +1832,33 @@ namespace CoreData {
 		NSDictionary ChangedValues { get; }
 #endif
 
+		/// <param name="value">To be added.</param>
+		///         <param name="key">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>Returns <see langword="true" /> if the specified <paramref name="value" /> is valid for the property that is identified by the specified <paramref name="key" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("validateValue:forKey:error:")]
 		bool ValidateValue (ref NSObject value, string key, out NSError error);
 
+		/// <param name="error">To be added.</param>
+		///         <summary>Returns <see langword="true" /> if the receiver is valid for deletion.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("validateForDelete:")]
 		bool ValidateForDelete (out NSError error);
 
+		/// <param name="error">To be added.</param>
+		///         <summary>Returns <see langword="true" /> if the receiver is valid for insertion.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("validateForInsert:")]
 		bool ValidateForInsert (out NSError error);
 
+		/// <param name="error">To be added.</param>
+		///         <summary>Returns <see langword="true" /> if the receiver is valid for updating.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("validateForUpdate:")]
 		bool ValidateForUpdate (out NSError error);
 
@@ -1358,6 +1874,8 @@ namespace CoreData {
 		[Export ("changedValuesForCurrentEvent")]
 		NSDictionary ChangedValuesForCurrentEvent { get; }
 
+		/// <summary>Method that is called prior to the object being deleted.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("prepareForDeletion")]
 		void PrepareForDeletion ();
 
@@ -1370,11 +1888,18 @@ namespace CoreData {
 		[Export ("hasPersistentChangedValues")]
 		bool HasPersistentChangedValues { get; }
 
+		/// <param name="relationshipName">To be added.</param>
+		///         <summary>Gets the identifiers for all of the objects that are involved in the specified relationship.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("objectIDsForRelationshipNamed:")]
 		NSManagedObjectID [] GetObjectIDs (string relationshipName);
 	}
 
+	/// <summary>Controls whether and how a managed object context pins itself to database transactions.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/CoreData/NSQueryGenerationToken">Apple documentation for <c>NSQueryGenerationToken</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface NSQueryGenerationToken : NSSecureCoding, NSCopying {
@@ -1385,6 +1910,9 @@ namespace CoreData {
 		NSQueryGenerationToken CurrentToken { get; }
 	}
 
+	/// <summary>A collection of related managed objects that create aninternally-consistent view of one or more persistent stores.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/CoreDataFramework/Classes/NSManagedObjectContext_Class/index.html">Apple documentation for <c>NSManagedObjectContext</c></related>
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSManagedObjectContext : NSCoding
@@ -1395,6 +1923,9 @@ namespace CoreData {
 	, NSEditor, NSEditorRegistration
 #endif
 	{
+		/// <summary>Default constructor that initializes a new instance of this class with no parameters.</summary>
+		/// <remarks>
+		///         </remarks>
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'NSManagedObjectContext (NSManagedObjectContextConcurrencyType)' instead.")]
 		[Deprecated (PlatformName.TvOS, 9, 0, message: "Use 'NSManagedObjectContext (NSManagedObjectContextConcurrencyType)' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 11, message: "Use 'NSManagedObjectContext (NSManagedObjectContextConcurrencyType)' instead.")]
@@ -1428,32 +1959,72 @@ namespace CoreData {
 		[Export ("hasChanges")]
 		bool HasChanges { get; }
 
+		/// <param name="objectID">To be added.</param>
+		///         <summary>Returns the object that is identified by <paramref name="objectID" />, if it represents a registered object.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("objectRegisteredForID:")]
 		[return: NullAllowed]
 		NSManagedObject ObjectRegisteredForID (NSManagedObjectID objectID);
 
+		/// <param name="objectID">To be added.</param>
+		///         <summary>Returns the object that is identified by <paramref name="objectID" /></summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("objectWithID:")]
 		NSManagedObject ObjectWithID (NSManagedObjectID objectID);
 
+		/// <param name="request">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>Runs the specified <paramref name="request" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("executeFetchRequest:error:")]
 		[return: NullAllowed]
 		NSObject [] ExecuteFetchRequest (NSFetchRequest request, out NSError error);
 
+		/// <param name="request">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>Returns the number of objects that <paramref name="request" /> would return if it were run.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("countForFetchRequest:error:")]
 		nuint CountForFetchRequest (NSFetchRequest request, out NSError error);
 
+		/// <param name="object1">To be added.</param>
+		///         <summary>Inserts <paramref name="object1" /> into the context.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("insertObject:")]
 		void InsertObject (NSManagedObject object1);
 
+		/// <param name="object1">To be added.</param>
+		///         <summary>Queues <paramref name="object1" /> for deletion.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("deleteObject:")]
 		void DeleteObject (NSManagedObject object1);
 
+		/// <param name="object1">To be added.</param>
+		///         <param name="flag">To be added.</param>
+		///         <summary>Refreshes <paramref name="object1" /> with the most current values from its store.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("refreshObject:mergeChanges:")]
 		void RefreshObject (NSManagedObject object1, bool flag);
 
+		/// <param name="object1">To be added.</param>
+		///         <summary>Marks <paramref name="object1" /> for conflict detection.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("detectConflictsForObject:")]
 		void DetectConflictsForObject (NSManagedObject object1);
 
+		/// <param name="keyPath">To be added.</param>
+		/// <param name="object1">To be added.</param>
+		/// <param name="change">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="context">To be added.</param>
+		/// <summary>Observes the object that is identified by the provided object and keypath for changes.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("observeValueForKeyPath:ofObject:change:context:")]
 #if XAMCORE_5_0
 		void ObserveValue ([NullAllowed] string keyPath, [NullAllowed] NSObject object1, [NullAllowed] NSDictionary<NSString, NSObject> change, IntPtr context);
@@ -1463,9 +2034,15 @@ namespace CoreData {
 		void ObserveValueForKeyPath ([NullAllowed] string keyPath, IntPtr object1, [NullAllowed] NSDictionary change, IntPtr context);
 #endif
 
+		/// <summary>Tells the receiver to process all changes on the object graph.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("processPendingChanges")]
 		void ProcessPendingChanges ();
 
+		/// <param name="object1">To be added.</param>
+		/// <param name="store">To be added.</param>
+		/// <summary>Assigns <paramref name="object1" /> to <paramref name="store" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("assignObject:toPersistentStore:")]
 #if NET
 		void AssignObject (NSObject object1, NSPersistentStore store);
@@ -1513,22 +2090,36 @@ namespace CoreData {
 		NSSet RegisteredObjects { get; }
 #endif
 
+		/// <summary>Instructs the receiver to undo its uncommitted changes.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("undo")]
 		void Undo ();
 
+		/// <summary>Reverses the most recent unreversed undo.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("redo")]
 		void Redo ();
 
+		/// <summary>Resets the receiver.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("reset")]
 		void Reset ();
 
+		/// <summary>Rolls the state of all objects in the object graph back to the most recent committed values.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("rollback")]
 		void Rollback ();
 
+		/// <param name="error">To be added.</param>
+		///         <summary>Saves uncommitted changes and reports any error that it encounters.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("save:")]
 		bool Save (out NSError error);
 
 #pragma warning disable 0109 // warning CS0109: The member 'NSManagedObjectContext.Lock()' does not hide an accessible member. The new keyword is not required.
+		/// <summary>Developers should not use this deprecated method. Developers should use a queue style context and 'PerformAndWait' instead.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 8, 0, message: "Use a queue style context and 'PerformAndWait' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 10, message: "Use a queue style context and 'PerformAndWait' instead.")]
@@ -1539,6 +2130,8 @@ namespace CoreData {
 #pragma warning restore
 
 #pragma warning disable 0109 // warning CS0109: The member 'NSManagedObjectContext.Unlock()' does not hide an accessible member. The new keyword is not required.
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 8, 0, message: "Use a queue style context and 'PerformAndWait' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 10, message: "Use a queue style context and 'PerformAndWait' instead.")]
@@ -1583,19 +2176,36 @@ namespace CoreData {
 		[Export ("mergePolicy", ArgumentSemantic.Retain)]
 		IntPtr MergePolicy { get; set; }
 
+		/// <param name="objects">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>Converts the objec identifiers to permanent identifiers for the provided <paramref name="objects" />. Returns <see langword="true" /> if all of the identifiers were converted.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("obtainPermanentIDsForObjects:error:")]
 		bool ObtainPermanentIDsForObjects (NSManagedObject [] objects, out NSError error);
 
+		/// <param name="notification">To be added.</param>
+		///         <summary>Method that is called to merge the changes that are specified by <paramref name="notification" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("mergeChangesFromContextDidSaveNotification:")]
 		void MergeChangesFromContextDidSaveNotification (NSNotification notification);
 
+		/// <param name="ct">To be added.</param>
+		/// <summary>Creates a new <see cref="T:CoreData.NSManagedObjectContext" /> of the specified type.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithConcurrencyType:")]
 		NativeHandle Constructor (NSManagedObjectContextConcurrencyType ct);
 
+		/// <param name="action">To be added.</param>
+		///         <summary>Asynchronously performs the specified <paramref name="action" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("performBlock:")]
 		void Perform (/* non null */ Action action);
 
+		/// <param name="action">To be added.</param>
+		///         <summary>Synchronously performs the specified <paramref name="action" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("performBlockAndWait:")]
 		void PerformAndWait (/* non null */ Action action);
 
@@ -1648,11 +2258,22 @@ namespace CoreData {
 		[Export ("name")]
 		string Name { get; set; }
 
+		/// <param name="request">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>Runs the specified <paramref name="request" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("executeRequest:error:")]
 		[return: NullAllowed]
 		NSPersistentStoreResult ExecuteRequest (NSPersistentStoreRequest request, out NSError error);
 
+		/// <param name="objectID">The object ID of object to fetch.</param>
+		///         <param name="error">On error, this will contain the error information.</param>
+		///         <summary>Fetches an object with a specified id.</summary>
+		///         <returns>The object with the associated ID, or null if the
+		/// 	object does not exist, or can not be retrieved.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("existingObjectWithID:error:")]
 		[return: NullAllowed]
 		NSManagedObject GetExistingObject (NSManagedObjectID objectID, out NSError error);
@@ -1664,10 +2285,23 @@ namespace CoreData {
 		[Export ("shouldDeleteInaccessibleFaults")]
 		bool ShouldDeleteInaccessibleFaults { get; set; }
 
+		/// <param name="fault">To be added.</param>
+		///         <param name="oid">To be added.</param>
+		///         <param name="property">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Returns a Boolean value that controls whether inaccessible faults wil be handled.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("shouldHandleInaccessibleFault:forObjectID:triggeredByProperty:")]
 		bool ShouldHandleInaccessibleFault (NSManagedObject fault, NSManagedObjectID oid, [NullAllowed] NSPropertyDescription property);
 
+		/// <param name="changeNotificationData">To be added.</param>
+		///         <param name="contexts">To be added.</param>
+		///         <summary>Merges remote changes.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("mergeChangesFromRemoteContextSave:intoContexts:")]
@@ -1683,6 +2317,14 @@ namespace CoreData {
 		[NullAllowed, Export ("queryGenerationToken", ArgumentSemantic.Strong)]
 		NSQueryGenerationToken QueryGenerationToken { get; }
 
+		/// <param name="generation">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="error">To be added.</param>
+		///         <summary>Sets the query generation from the specified query generation token.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("setQueryGenerationFromToken:error:")]
 		bool SetQueryGenerationFromToken ([NullAllowed] NSQueryGenerationToken generation, out NSError error);
@@ -1694,6 +2336,8 @@ namespace CoreData {
 		[Export ("automaticallyMergesChangesFromParent")]
 		bool AutomaticallyMergesChangesFromParent { get; set; }
 
+		/// <summary>Refreshes all objects in the store.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("refreshAllObjects")]
 		void RefreshAllObjects ();
@@ -1779,6 +2423,9 @@ namespace CoreData {
 		bool InvalidatedAllObjects { get; }
 	}
 
+	/// <summary>A universal identifier of a Core Data managed object. Works across object contexts and applications.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/CoreDataFramework/Classes/NSManagedObjectID_Class/index.html">Apple documentation for <c>NSManagedObjectID</c></related>
 	[BaseType (typeof (NSObject))]
 	// Objective-C exception thrown.  Name: NSInvalidArgumentException Reason: *** -URIRepresentation cannot be sent to an abstract object of class NSManagedObjectID: Create a concrete instance!
 	[DisableDefaultCtor]
@@ -1813,14 +2460,27 @@ namespace CoreData {
 
 	}
 
+	/// <summary>A schema describing a graph of entities used by the application.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/CoreDataFramework/Classes/NSManagedObjectModel_Class/index.html">Apple documentation for <c>NSManagedObjectModel</c></related>
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // designated
 	interface NSManagedObjectModel : NSCoding, NSCopying {
 
+		/// <summary>Default constructor that initializes a new instance of this class with no parameters.</summary>
+		/// <remarks>
+		///         </remarks>
 		[DesignatedInitializer]
 		[Export ("init")]
 		NativeHandle Constructor ();
 
+		/// <param name="bundles">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("mergedModelFromBundles:")]
 		[return: NullAllowed]
 #if NET
@@ -1829,10 +2489,20 @@ namespace CoreData {
 		NSManagedObjectModel MergedModelFromBundles ([NullAllowed] NSBundle [] bundles);
 #endif
 
+		/// <param name="models">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static, Export ("modelByMergingModels:")]
 		[return: NullAllowed]
 		NSManagedObjectModel ModelByMergingModels ([NullAllowed] NSManagedObjectModel [] models);
 
+		/// <param name="url">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithContentsOfURL:")]
 		NativeHandle Constructor (NSUrl url);
 
@@ -1858,13 +2528,31 @@ namespace CoreData {
 		[Export ("configurations", ArgumentSemantic.Strong)]
 		string [] Configurations { get; }
 
+		/// <param name="configuration">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("entitiesForConfiguration:")]
 		[return: NullAllowed]
 		string [] EntitiesForConfiguration ([NullAllowed] string configuration);
 
+		/// <param name="entities">To be added.</param>
+		///         <param name="configuration">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setEntities:forConfiguration:")]
 		void SetEntities (NSEntityDescription [] entities, string configuration);
 
+		/// <param name="fetchRequestTemplate">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="name">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setFetchRequestTemplate:forName:")]
 		void SetFetchRequestTemplate ([NullAllowed] NSFetchRequest fetchRequestTemplate, string name);
 
@@ -1900,6 +2588,14 @@ namespace CoreData {
 		NSDictionary LocalizationDictionary { get; set; }
 #endif
 
+		/// <param name="bundles">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="metadata">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("mergedModelFromBundles:forStoreMetadata:")]
 		[return: NullAllowed]
 #if XAMCORE_5_0
@@ -1936,6 +2632,14 @@ namespace CoreData {
 		[Export ("versionIdentifiers", ArgumentSemantic.Copy)]
 		NSSet VersionIdentifiers { get; set; }
 
+		/// <param name="configuration">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="metadata">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("isConfiguration:compatibleWithStoreMetadata:")]
 #if XAMCORE_5_0
 		bool IsConfigurationCompatibleWithStoreMetadata ([NullAllowed] string configuration, NSDictionary<NSString, NSObject> metadata);
@@ -1966,6 +2670,9 @@ namespace CoreData {
 		string VersionChecksum { get; }
 	}
 
+	/// <summary>Holds mappings between a source and destination managed object model.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/NSMappingModel_class/index.html">Apple documentation for <c>NSMappingModel</c></related>
 	[BaseType (typeof (NSObject))]
 	interface NSMappingModel {
 
@@ -1977,10 +2684,19 @@ namespace CoreData {
 		NSMappingModel MappingModelFromBundles ([NullAllowed] NSBundle [] bundles, [NullAllowed] NSManagedObjectModel sourceModel, [NullAllowed] NSManagedObjectModel destinationModel);
 #endif
 
+		/// <param name="source">To be added.</param>
+		///         <param name="destination">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static, Export ("inferredMappingModelForSourceModel:destinationModel:error:")]
 		[return: NullAllowed]
 		NSMappingModel GetInferredMappingModel (NSManagedObjectModel source, NSManagedObjectModel destination, out NSError error);
 
+		/// <param name="url">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithContentsOfURL:")]
 		NativeHandle Constructor ([NullAllowed] NSUrl url);
 
@@ -2003,6 +2719,9 @@ namespace CoreData {
 
 	}
 
+	/// <summary>Models conflicts that can occur when saving changes.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CoreData/Reference/NSMergeConflict_Class/index.html">Apple documentation for <c>NSMergeConflict</c></related>
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSMergeConflict {
@@ -2057,6 +2776,19 @@ namespace CoreData {
 		[Export ("oldVersionNumber")]
 		nuint OldVersionNumber { get; }
 
+		/// <param name="sourceObject">To be added.</param>
+		/// <param name="newVersion">To be added.</param>
+		/// <param name="oldVersion">To be added.</param>
+		/// <param name="cachedSnapshot">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="persistedSnapshot">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithSource:newVersion:oldVersion:cachedSnapshot:persistedSnapshot:")]
 #if XAMCORE_5_0
@@ -2068,6 +2800,9 @@ namespace CoreData {
 #endif
 	}
 
+	/// <summary>Strategy for resolving conflicts between in-memory objects and those in persistent stores.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CoreData/Reference/NSMergePolicy_Class/index.html">Apple documentation for <c>NSMergePolicy</c></related>
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSMergePolicy {
@@ -2077,10 +2812,18 @@ namespace CoreData {
 		[Export ("mergeType")]
 		NSMergePolicyType MergeType { get; }
 
+		/// <param name="ty">To be added.</param>
+		/// <summary>Creates a new <see cref="T:CoreData.NSMergePolicy" /> from the specified merege policy type.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithMergeType:")]
 		NativeHandle Constructor (NSMergePolicyType ty);
 
+		/// <param name="list">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>Attempts to resolve the specified conflicts, and reports any errors.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("resolveConflicts:error:")]
 #if NET
 		bool ResolveConflicts (NSMergeConflict [] list, out NSError error);
@@ -2088,10 +2831,26 @@ namespace CoreData {
 		bool ResolveConflictserror (NSMergeConflict [] list, out NSError error);
 #endif
 
+		/// <param name="list">To be added.</param>
+		///         <param name="error">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Attempts to resolve the specified locking constraint conflicts, and reports any errors.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("resolveOptimisticLockingVersionConflicts:error:")]
 		bool ResolveOptimisticLockingVersionConflicts (NSMergeConflict [] list, out NSError error);
 
+		/// <param name="list">To be added.</param>
+		///         <param name="error">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Attempts to resolve the specified constraint conflicts, and reports any errors.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("resolveConstraintConflicts:error:")]
 		bool ResolveConstraintConflicts (NSConstraintConflict [] list, out NSError error);
@@ -2132,15 +2891,44 @@ namespace CoreData {
 		NSMergePolicy MergeByPropertyStoreTrumpPolicy { get; }
 	}
 
+	/// <summary>Allows migration from one persistent store to another.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/NSMigrationManager_class/index.html">Apple documentation for <c>NSMigrationManager</c></related>
 	[BaseType (typeof (NSObject))]
 	interface NSMigrationManager {
 
+		/// <param name="sourceModel">To be added.</param>
+		/// <param name="destinationModel">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithSourceModel:destinationModel:")]
 		NativeHandle Constructor (NSManagedObjectModel sourceModel, NSManagedObjectModel destinationModel);
 
+		/// <param name="sourceUrl">To be added.</param>
+		///         <param name="sStoreType">To be added.</param>
+		///         <param name="sOptions">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="mappings">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="dUrl">To be added.</param>
+		///         <param name="dStoreType">To be added.</param>
+		///         <param name="dOptions">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("migrateStoreFromURL:type:options:withMappingModel:toDestinationURL:destinationType:destinationOptions:error:")]
 		bool MigrateStoreFromUrl (NSUrl sourceUrl, string sStoreType, [NullAllowed] NSDictionary sOptions, [NullAllowed] NSMappingModel mappings, NSUrl dUrl, string dStoreType, [NullAllowed] NSDictionary dOptions, out NSError error);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("reset")]
 		void Reset ();
 
@@ -2174,20 +2962,49 @@ namespace CoreData {
 		[Export ("destinationContext", ArgumentSemantic.Strong)]
 		NSManagedObjectContext DestinationContext { get; }
 
+		/// <param name="mEntity">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("sourceEntityForEntityMapping:")]
 		[return: NullAllowed]
 		NSEntityDescription SourceEntityForEntityMapping (NSEntityMapping mEntity);
 
+		/// <param name="mEntity">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("destinationEntityForEntityMapping:")]
 		[return: NullAllowed]
 		NSEntityDescription DestinationEntityForEntityMapping (NSEntityMapping mEntity);
 
+		/// <param name="sourceInstance">To be added.</param>
+		///         <param name="destinationInstance">To be added.</param>
+		///         <param name="entityMapping">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("associateSourceInstance:withDestinationInstance:forEntityMapping:")]
 		void AssociateSourceInstance (NSManagedObject sourceInstance, NSManagedObject destinationInstance, NSEntityMapping entityMapping);
 
+		/// <param name="mappingName">To be added.</param>
+		///         <param name="sourceInstances">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("destinationInstancesForEntityMappingNamed:sourceInstances:")]
 		NSManagedObject [] DestinationInstancesForEntityMappingNamed (string mappingName, [NullAllowed] NSManagedObject [] sourceInstances);
 
+		/// <param name="mappingName">To be added.</param>
+		///         <param name="destinationInstances">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("sourceInstancesForEntityMappingNamed:destinationInstances:")]
 		NSManagedObject [] SourceInstancesForEntityMappingNamed (string mappingName, [NullAllowed] NSManagedObject [] destinationInstances);
 
@@ -2213,6 +3030,9 @@ namespace CoreData {
 		[Export ("userInfo", ArgumentSemantic.Retain)]
 		NSDictionary UserInfo { get; set; }
 
+		/// <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("cancelMigrationWithError:")]
 		void CancelMigrationWithError (NSError error);
 
@@ -2303,26 +3123,62 @@ namespace CoreData {
 	[BaseType (typeof (NSPersistentStoreRequest))]
 	[DisableDefaultCtor]
 	interface NSPersistentHistoryChangeRequest {
+		/// <param name="date">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("fetchHistoryAfterDate:")]
 		NSPersistentHistoryChangeRequest FetchHistoryAfter (NSDate date);
 
+		/// <param name="token">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("fetchHistoryAfterToken:")]
 		NSPersistentHistoryChangeRequest FetchHistoryAfter ([NullAllowed] NSPersistentHistoryToken token);
 
+		/// <param name="transaction">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("fetchHistoryAfterTransaction:")]
 		NSPersistentHistoryChangeRequest FetchHistoryAfter ([NullAllowed] NSPersistentHistoryTransaction transaction);
 
+		/// <param name="date">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("deleteHistoryBeforeDate:")]
 		NSPersistentHistoryChangeRequest DeleteHistoryBefore (NSDate date);
 
+		/// <param name="token">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("deleteHistoryBeforeToken:")]
 		NSPersistentHistoryChangeRequest DeleteHistoryBefore ([NullAllowed] NSPersistentHistoryToken token);
 
+		/// <param name="transaction">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("deleteHistoryBeforeTransaction:")]
 		NSPersistentHistoryChangeRequest DeleteHistoryBefore ([NullAllowed] NSPersistentHistoryTransaction transaction);
@@ -2498,19 +3354,36 @@ namespace CoreData {
 		[NullAllowed, Export ("indexName")]
 		string IndexName { get; }
 
+		/// <param name="description">To be added.</param>
+		/// <param name="model">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 15, 0, message: "Use the constructor that takes a NSPersistentStoreCoordinator instead.")]
 		[Deprecated (PlatformName.MacOSX, 12, 0, message: "Use the constructor that takes a NSPersistentStoreCoordinator instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 15, 0, message: "Use the constructor that takes a NSPersistentStoreCoordinator instead.")]
 		[Export ("initForStoreWithDescription:model:")]
 		NativeHandle Constructor (NSPersistentStoreDescription description, NSManagedObjectModel model);
 
+		/// <param name="object">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("attributeSetForObject:")]
 		[return: NullAllowed]
 		CSSearchableItemAttributeSet GetAttributeSet (NSManagedObject @object);
 
+		/// <param name="searchableIndex">To be added.</param>
+		///         <param name="acknowledgementHandler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("searchableIndex:reindexAllSearchableItemsWithAcknowledgementHandler:")]
 		void ReindexAllSearchableItems (CSSearchableIndex searchableIndex, Action acknowledgementHandler);
 
+		/// <param name="searchableIndex">To be added.</param>
+		///         <param name="identifiers">To be added.</param>
+		///         <param name="acknowledgementHandler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("searchableIndex:reindexSearchableItemsWithIdentifiers:acknowledgementHandler:")]
 		void ReindexSearchableItems (CSSearchableIndex searchableIndex, string [] identifiers, Action acknowledgementHandler);
 
@@ -2537,6 +3410,9 @@ namespace CoreData {
 	// type is NSPersistentStore, which means we must be able to create managed wrappers
 	// for such native classes using the managed NSPersistentStore. This means we can't
 	// make our managed version [Abstract].
+	/// <summary>Abstract base class for Core Data persistent stores.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/NSPersistentStore_Class/index.html">Apple documentation for <c>NSPersistentStore</c></related>
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSPersistentStore {
@@ -2548,6 +3424,11 @@ namespace CoreData {
 		[Export ("migrationManagerClass")]
 		Class MigrationManagerClass { get; }
 
+		/// <param name="url">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>Gets the metadata for the store at the provided URL.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static, Export ("metadataForPersistentStoreWithURL:error:")]
 		[return: NullAllowed]
 #if XAMCORE_5_0
@@ -2556,6 +3437,15 @@ namespace CoreData {
 		NSDictionary MetadataForPersistentStoreWithUrl (NSUrl url, out NSError error);
 #endif
 
+		/// <param name="metadata">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="url">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>Sets the metadata for the store at the provided URL.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static, Export ("setMetadata:forPersistentStoreWithURL:error:")]
 #if XAMCORE_5_0
 		bool SetMetadata ([NullAllowed] NSDictionary<NSString, NSObject> metadata, NSUrl url, out NSError error);
@@ -2564,12 +3454,31 @@ namespace CoreData {
 #endif
 
 #if NET
+		/// <param name="root">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="name">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="url">To be added.</param>
+		/// <param name="options">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Protected]
 #endif
 		[DesignatedInitializer]
 		[Export ("initWithPersistentStoreCoordinator:configurationName:URL:options:")]
 		NativeHandle Constructor ([NullAllowed] NSPersistentStoreCoordinator root, [NullAllowed] string name, NSUrl url, [NullAllowed] NSDictionary options);
 
+		/// <param name="error">The error that was encountered, or <see langword="null" /> if no error was encountered.</param>
+		///         <summary>Causes the store to load its metadata.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("loadMetadata:")]
 		bool LoadMetadata (out NSError error);
 
@@ -2637,9 +3546,18 @@ namespace CoreData {
 		NSDictionary Metadata { get; set; }
 #endif
 
+		/// <param name="coordinator">To be added.</param>
+		///         <summary>Method that is called when this store is added to the store coordinator.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("didAddToPersistentStoreCoordinator:")]
 		void DidAddToPersistentStoreCoordinator (NSPersistentStoreCoordinator coordinator);
 
+		/// <param name="coordinator">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Method that is called when the store is about to be removed from the coordinator.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("willRemoveFromPersistentStoreCoordinator:")]
 		void WillRemoveFromPersistentStoreCoordinator ([NullAllowed] NSPersistentStoreCoordinator coordinator);
 
@@ -2682,10 +3600,17 @@ namespace CoreData {
 		NSPersistentHistoryToken PersistentHistoryTracking { get; }
 	}
 
+	/// <summary>Descriptor for a persistent store inside a persistent container.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/CoreData/NSPersistentStoreDescription">Apple documentation for <c>NSPersistentStoreDescription</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSPersistentStoreDescription : NSCopying {
+		/// <param name="Url">The store URL for which to get a description.</param>
+		///         <summary>Returns the description for the store at the specified URL.</summary>
+		///         <returns>The description for the store at the specified URL.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("persistentStoreDescriptionWithURL:")]
 		NSPersistentStoreDescription GetPersistentStoreDescription (NSUrl Url);
@@ -2726,6 +3651,16 @@ namespace CoreData {
 		[Export ("options", ArgumentSemantic.Copy)]
 		NSDictionary<NSString, NSObject> Options { get; }
 
+		/// <param name="option">
+		///           <para>The value of the option to set.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="key">The key for the value to set.</param>
+		///         <summary>Sets the option for the specified <paramref name="key" />.</summary>
+		///         <remarks>
+		///           <para>
+		///             <see cref="T:CoreData.NSPersistentStoreCoordinator" /> contains static properties that represent the option keys that are valid for this dictionary.</para>
+		///         </remarks>
 		[Export ("setOption:forKey:")]
 		void SetOption ([NullAllowed] NSObject option, string key);
 
@@ -2748,6 +3683,13 @@ namespace CoreData {
 		[Export ("sqlitePragmas", ArgumentSemantic.Copy)]
 		NSDictionary<NSString, NSObject> SqlitePragmas { get; }
 
+		/// <param name="value">
+		///           <para>The value to set.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="name">To be added.</param>
+		///         <summary>Sets the value for the specified option <paramref name="name" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setValue:forPragmaNamed:")]
 		void SetValue ([NullAllowed] NSObject value, string name);
 
@@ -2772,6 +3714,9 @@ namespace CoreData {
 		[Export ("shouldInferMappingModelAutomatically")]
 		bool ShouldInferMappingModelAutomatically { get; set; }
 
+		/// <param name="url">The url for the persistent store.</param>
+		/// <summary>Creates a persistent store description with the specified store URL.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithURL:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSUrl url);
@@ -2783,14 +3728,26 @@ namespace CoreData {
 		NSPersistentCloudKitContainerOptions CloudKitContainerOptions { get; set; }
 	}
 
+	/// <summary>Creates and manages a Core Data stack.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/CoreData/NSPersistentContainer">Apple documentation for <c>NSPersistentContainer</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSPersistentContainer {
+		/// <param name="name">The name of the persistent container to create.</param>
+		///         <summary>Creates a persistent container with the specified name.</summary>
+		///         <returns>A persistent container with the specified name.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("persistentContainerWithName:")]
 		NSPersistentContainer GetPersistentContainer (string name);
 
+		/// <param name="name">The name of the persistent container to create.</param>
+		///         <param name="model">The object model for the persistent container to create.</param>
+		///         <summary>Creates a persistent container with the specified name and object model.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("persistentContainerWithName:managedObjectModel:")]
 		NSPersistentContainer GetPersistentContainer (string name, NSManagedObjectModel model);
@@ -2832,15 +3789,34 @@ namespace CoreData {
 		[Export ("persistentStoreDescriptions", ArgumentSemantic.Copy)]
 		NSPersistentStoreDescription [] PersistentStoreDescriptions { get; set; }
 
+		/// <param name="name">The name for the Core Data stack manager.</param>
+		/// <summary>Creates a new Core Data stack manager with the specified name.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithName:")]
 		NativeHandle Constructor (string name);
 
+		/// <param name="name">The name for the Core Data stack manager.</param>
+		/// <param name="model">The managed object model to use.</param>
+		/// <summary>Creates a new Core Data stack manager with the specified name and managed object model.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithName:managedObjectModel:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (string name, NSManagedObjectModel model);
 
+		/// <param name="block">A completion handler that takes a <see cref="T:CoreData.NSPersistentStoreDescription" /> and an error in which to store any errors that were encountered while attempting to load the stores.</param>
+		///         <summary>Loads the persistent stores in the container and runs a completion handler when finished.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("loadPersistentStoresWithCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Loads the persistent stores in the container and runs a completion handler when finished.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous LoadPersistentStores operation.  The value of the TResult parameter is of type System.Action&lt;CoreData.NSPersistentStoreDescription,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The LoadPersistentStoresAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void LoadPersistentStores (Action<NSPersistentStoreDescription, NSError> block);
 
 		/// <summary>Creates and returns a private managed object context.</summary>
@@ -2849,6 +3825,9 @@ namespace CoreData {
 		[Export ("newBackgroundContext")]
 		NSManagedObjectContext NewBackgroundContext { get; }
 
+		/// <param name="block">The code to perform.</param>
+		///         <summary>Performs background task that is represented by <paramref name="block" /> on the managed object context that was passed to it.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("performBackgroundTask:")]
 		void Perform (Action<NSManagedObjectContext> block);
 	}
@@ -2871,9 +3850,19 @@ namespace CoreData {
 		NSDictionary RegisteredStoreTypes { get; }
 #endif
 
+		/// <param name="storeClass">To be added.</param>
+		///         <param name="storeType">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Static, Export ("registerStoreClass:forStoreType:")]
 		void RegisterStoreClass ([NullAllowed] Class storeClass, NSString storeType);
 
+		/// <param name="storeType">To be added.</param>
+		///         <param name="url">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use the method that takes an out NSError parameter.")]
 		[Deprecated (PlatformName.TvOS, 9, 0, message: "Use the method that takes an out NSError parameter.")]
 		[Deprecated (PlatformName.MacOSX, 10, 11, message: "Use the method that takes an out NSError parameter.")]
@@ -2882,11 +3871,28 @@ namespace CoreData {
 		[return: NullAllowed]
 		NSDictionary MetadataForPersistentStoreOfType ([NullAllowed] NSString storeType, NSUrl url, out NSError error);
 
+		/// <param name="storeType">To be added.</param>
+		///         <param name="url">To be added.</param>
+		///         <param name="options">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="error">To be added.</param>
+		///         <summary>Gets the metadata for the store at a URL.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static, Export ("metadataForPersistentStoreOfType:URL:options:error:")]
 		[return: NullAllowed]
 		NSDictionary<NSString, NSObject> GetMetadata (string storeType, NSUrl url, [NullAllowed] NSDictionary options, out NSError error);
 
+		/// <param name="metadata">To be added.</param>
+		///         <param name="storeType">To be added.</param>
+		///         <param name="url">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>Sets the metadata for a persistent store at a URL.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use the method that takes an 'out NSError' parameter.")]
 		[Deprecated (PlatformName.TvOS, 9, 0, message: "Use the method that takes an 'out NSError' parameter.")]
 		[Deprecated (PlatformName.MacOSX, 10, 11, message: "Use the method that takes an 'out NSError' parameter.")]
@@ -2894,10 +3900,31 @@ namespace CoreData {
 		[Static, Export ("setMetadata:forPersistentStoreOfType:URL:error:")]
 		bool SetMetadata ([NullAllowed] NSDictionary metadata, [NullAllowed] NSString storeType, NSUrl url, out NSError error);
 
+		/// <param name="metadata">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="storeType">To be added.</param>
+		///         <param name="url">To be added.</param>
+		///         <param name="options">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="error">To be added.</param>
+		///         <summary>Sets the metadata for a persistent store at a URL..</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static, Export ("setMetadata:forPersistentStoreOfType:URL:options:error:")]
 		bool SetMetadata ([NullAllowed] NSDictionary<NSString, NSObject> metadata, string storeType, NSUrl url, [NullAllowed] NSDictionary options, out NSError error);
 
+		/// <param name="metadata">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="store">To be added.</param>
+		///         <summary>Sets the metadata for a persistent store.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setMetadata:forPersistentStore:")]
 #if XAMCORE_5_0
 		void SetMetadata ([NullAllowed] NSDictionary<NSString, NSObject> metadata, NSPersistentStore store);
@@ -2930,13 +3957,26 @@ namespace CoreData {
 		[Export ("persistentStores", ArgumentSemantic.Strong)]
 		NSPersistentStore [] PersistentStores { get; }
 
+		/// <param name="url">To be added.</param>
+		///         <summary>Returns the persistent store at <paramref name="url" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("persistentStoreForURL:")]
 		[return: NullAllowed]
 		NSPersistentStore PersistentStoreForUrl (NSUrl url);
 
+		/// <param name="store">To be added.</param>
+		///         <summary>Returns the URL for the specified <paramref name="store" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("URLForPersistentStore:")]
 		NSUrl UrlForPersistentStore (NSPersistentStore store);
 
+		/// <param name="url">To be added.</param>
+		///         <param name="store">To be added.</param>
+		///         <summary>Sets the URL for the specfied <paramref name="store" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("setURL:forPersistentStore:")]
 		bool SetUrl (NSUrl url, NSPersistentStore store);
 
@@ -2948,23 +3988,49 @@ namespace CoreData {
 		NSPersistentStore AddPersistentStoreWithType (NSString storeType, [NullAllowed] string configuration, [NullAllowed] NSUrl storeUrl, [NullAllowed] NSDictionary options, out NSError error);
 #endif
 
+		/// <param name="storeDescription">To be added.</param>
+		///         <param name="block">To be added.</param>
+		///         <summary>Adds the described persistent store and runs a handler when it is complete.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("addPersistentStoreWithDescription:completionHandler:")]
 		[Async]
 		void AddPersistentStore (NSPersistentStoreDescription storeDescription, Action<NSPersistentStoreDescription, NSError> block);
 
+		/// <param name="store">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>Removes the specified <paramref name="store" /> and reports any errors that are encountered.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("removePersistentStore:error:")]
 		bool RemovePersistentStore (NSPersistentStore store, out NSError error);
 
+		/// <param name="store">To be added.</param>
+		///         <param name="url">To be added.</param>
+		///         <param name="options">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="storeType">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>Migrates <paramref name="store" /> to <paramref name="url" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("migratePersistentStore:toURL:options:withType:error:")]
 		[return: NullAllowed]
 		NSPersistentStore MigratePersistentStore (NSPersistentStore store, NSUrl url, [NullAllowed] NSDictionary options, NSString storeType, out NSError error);
 
+		/// <param name="url">To be added.</param>
+		///         <summary>Returns a managed object id for the specified <paramref name="url" /> if a store that matches the URL can be found.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("managedObjectIDForURIRepresentation:")]
 		[return: NullAllowed]
 		NSManagedObjectID ManagedObjectIDForURIRepresentation (NSUrl url);
 
 #pragma warning disable 0109 // warning CS0109: The member 'NSManagedObjectContext.Lock()' does not hide an accessible member. The new keyword is not required.
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 8, 0, message: "Use 'PerformAndWait' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 10, message: "Use 'PerformAndWait' instead.")]
@@ -2975,6 +4041,8 @@ namespace CoreData {
 #pragma warning restore
 
 #pragma warning disable 0109 // warning CS0109: The member 'NSManagedObjectContext.Unlock()' does not hide an accessible member. The new keyword is not required.
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 8, 0, message: "Use 'PerformAndWait' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 10, message: "Use 'PerformAndWait' instead.")]
@@ -2995,6 +4063,11 @@ namespace CoreData {
 		[Export ("tryLock")]
 		bool TryLock { get; }
 
+		/// <param name="url">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]
@@ -3218,6 +4291,10 @@ namespace CoreData {
 		NSString PersistentStoreUbiquitousContentUrlLKey { get; }
 #endif
 
+		/// <summary>Represents the value associated with the constant NSPersistentStoreFileProtectionKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Field ("NSPersistentStoreFileProtectionKey")]
@@ -3234,6 +4311,12 @@ namespace CoreData {
 		[Field ("NSPersistentStoreUbiquitousPeerTokenOption")]
 		NSString PersistentStoreUbiquitousPeerTokenOption { get; }
 
+		/// <param name="storeUrl">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[Static]
 		[Deprecated (PlatformName.iOS, 10, 0, message: "Please see the release notes and Core Data documentation.")]
@@ -3312,18 +4395,55 @@ namespace CoreData {
 		[NullAllowed, Export ("name")]
 		string Name { get; set; }
 
+		/// <param name="code">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("performBlock:")]
 		void Perform (Action code);
 
+		/// <param name="code">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("performBlockAndWait:")]
 		void PerformAndWait (Action code);
 
+		/// <param name="url">To be added.</param>
+		///         <param name="storeType">To be added.</param>
+		///         <param name="options">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="error">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Destroys the persistent store that is located at the specified <paramref name="url" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("destroyPersistentStoreAtURL:withType:options:error:")]
 		bool DestroyPersistentStore (NSUrl url, string storeType, [NullAllowed] NSDictionary options, out NSError error);
 
+		/// <param name="destinationUrl">To be added.</param>
+		///         <param name="destinationOptions">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="sourceUrl">To be added.</param>
+		///         <param name="sourceOptions">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="storeType">To be added.</param>
+		///         <param name="error">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Replaces the persistent store at <paramref name="destinationUrl" /> with the one at <paramref name="sourceUrl" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("replacePersistentStoreAtURL:destinationOptions:withPersistentStoreFromURL:sourceOptions:storeType:error:")]
 		bool ReplacePersistentStore (NSUrl destinationUrl, [NullAllowed] NSDictionary destinationOptions, NSUrl sourceUrl, [NullAllowed] NSDictionary sourceOptions, string storeType, out NSError error);
@@ -3360,6 +4480,9 @@ namespace CoreData {
 		NSPersistentStoreUbiquitousTransitionType EventType { get; }
 	}
 
+	/// <summary>Criteria used to retrieve data from or save data in a persistent store.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CoreData/Reference/NSPersistentStoreRequest_Class/index.html">Apple documentation for <c>NSPersistentStoreRequest</c></related>
 	[BaseType (typeof (NSObject))]
 	interface NSPersistentStoreRequest : NSCopying {
 		/// <summary>To be added.</summary>
@@ -3380,6 +4503,9 @@ namespace CoreData {
 		NSPersistentStore [] AffectedStores { get; set; }
 	}
 
+	/// <summary>Class that represents the result of an asynchronous fetch request.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/CoreData/NSAsynchronousFetchResult">Apple documentation for <c>NSAsynchronousFetchResult</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSPersistentStoreAsynchronousResult))]
 	interface NSAsynchronousFetchResult {
@@ -3401,12 +4527,18 @@ namespace CoreData {
 #endif
 	}
 
+	/// <summary>Class that represents the result of request that was made of a persistent data store.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/CoreData/NSPersistentStoreResult">Apple documentation for <c>NSPersistentStoreResult</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface NSPersistentStoreResult {
 
 	}
 
+	/// <summary>Class that represents the result of an batch update request.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/CoreData/NSBatchUpdateResult">Apple documentation for <c>NSBatchUpdateResult</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSPersistentStoreResult))]
 	interface NSBatchUpdateResult {
@@ -3424,6 +4556,9 @@ namespace CoreData {
 		NSBatchUpdateRequestResultType ResultType { get; }
 	}
 
+	/// <summary>Class that represents the results of an aysnchronous request that was made of a persistent data store.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/CoreData/NSPersistentStoreAsynchronousResult">Apple documentation for <c>NSPersistentStoreAsynchronousResult</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSPersistentStoreResult))]
 	interface NSPersistentStoreAsynchronousResult {
@@ -3447,13 +4582,25 @@ namespace CoreData {
 		[NullAllowed]
 		NSProgress Progress { get; }
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("cancel")]
 		void Cancel ();
 	}
 
+	/// <summary>Class that represents an asynchronous fetch request.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/CoreData/NSAsynchronousFetchRequest">Apple documentation for <c>NSAsynchronousFetchRequest</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSPersistentStoreRequest))]
 	interface NSAsynchronousFetchRequest {
+		/// <param name="request">To be added.</param>
+		/// <param name="completion">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithFetchRequest:completionBlock:")]
 		NativeHandle Constructor (NSFetchRequest request, [NullAllowed] Action<NSAsynchronousFetchResult> completion);
 
@@ -3470,6 +4617,9 @@ namespace CoreData {
 		nint EstimatedResultCount { get; set; }
 	}
 
+	/// <summary>Defines properties of an entity in a managed objectmodel. The equivalent of an instance property.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/CoreDataFramework/Classes/NSPropertyDescription_Class/index.html">Apple documentation for <c>NSPropertyDescription</c></related>
 	[BaseType (typeof (NSObject))]
 	interface NSPropertyDescription : NSCoding, NSCopying {
 
@@ -3514,6 +4664,16 @@ namespace CoreData {
 		[Export ("validationWarnings")]
 		string [] ValidationWarnings { get; }
 
+		/// <param name="validationPredicates">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="validationWarnings">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setValidationPredicates:withValidationWarnings:")]
 		void SetValidationPredicates ([NullAllowed] NSPredicate [] validationPredicates, [NullAllowed] string [] validationWarnings);
 
@@ -3577,6 +4737,9 @@ namespace CoreData {
 		bool StoredInExternalRecord { [Bind ("isStoredInExternalRecord")] get; set; }
 	}
 
+	/// <summary>Maps a property between source and destination entities.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/NSPropertyMapping_class/index.html">Apple documentation for <c>NSPropertyMapping</c></related>
 	[BaseType (typeof (NSObject))]
 	interface NSPropertyMapping {
 
@@ -3611,6 +4774,9 @@ namespace CoreData {
 		NSDictionary UserInfo { get; set; }
 	}
 
+	/// <summary>Describes the relationships of a <see cref="T:CoreData.NSEntityDescription" /> object.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/CoreDataFramework/Classes/NSRelationshipDescription_Class/index.html">Apple documentation for <c>NSRelationshipDescription</c></related>
 	[BaseType (typeof (NSPropertyDescription))]
 	interface NSRelationshipDescription {
 
@@ -3672,8 +4838,29 @@ namespace CoreData {
 		bool Ordered { [Bind ("isOrdered")] get; set; }
 	}
 
+	/// <summary>A collection of changes to be made by an object store.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CoreData/Reference/NSSaveChangesRequest_Class/index.html">Apple documentation for <c>NSSaveChangesRequest</c></related>
 	[BaseType (typeof (NSPersistentStoreRequest))]
 	interface NSSaveChangesRequest {
+		/// <param name="insertedObjects">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="updatedObjects">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="deletedObjects">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="lockedObjects">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithInsertedObjects:updatedObjects:deletedObjects:lockedObjects:")]
 #if XAMCORE_5_0
 		NativeHandle Constructor ([NullAllowed] NSSet<NSManagedObject> insertedObjects, [NullAllowed] NSSet<NSManagedObject> updatedObjects, [NullAllowed] NSSet<NSManagedObject> deletedObjects, [NullAllowed] NSSet<NSManagedObject> lockedObjects);
@@ -3734,13 +4921,22 @@ namespace CoreData {
 #endif
 	}
 
+	/// <summary>Class that represents a request for a batch update.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/CoreData/NSBatchUpdateRequest">Apple documentation for <c>NSBatchUpdateRequest</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSPersistentStoreRequest))]
 	interface NSBatchUpdateRequest {
+		/// <param name="entityName">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithEntityName:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (string entityName);
 
+		/// <param name="entity">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithEntity:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSEntityDescription entity);
@@ -3789,18 +4985,31 @@ namespace CoreData {
 		[Export ("propertiesToUpdate", ArgumentSemantic.Copy)]
 		NSDictionary PropertiesToUpdate { get; set; }
 
+		/// <param name="entityName">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static, Export ("batchUpdateRequestWithEntityName:")]
 		NSBatchUpdateRequest BatchUpdateRequestWithEntityName (string entityName);
 	}
 
+	/// <summary>A <see cref="T:CoreData.NSPersistentStoreRequest" /> that performs a batch delete.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/CoreData/NSBatchDeleteRequest">Apple documentation for <c>NSBatchDeleteRequest</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSPersistentStoreRequest))]
 	[DisableDefaultCtor]
 	interface NSBatchDeleteRequest {
+		/// <param name="fetch">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithFetchRequest:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSFetchRequest fetch);
 
+		/// <param name="objects">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithObjectIDs:")]
 		NativeHandle Constructor (NSManagedObjectID [] objects);
 
@@ -3817,6 +5026,9 @@ namespace CoreData {
 		NSFetchRequest FetchRequest { get; }
 	}
 
+	/// <summary>The results of a <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Data%20NSBatch%20Delete%20Query&amp;scope=Xamarin" title="T:CoreData.NSBatchDeleteQuery">T:CoreData.NSBatchDeleteQuery</a></format>.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/CoreData/NSBatchDeleteResult">Apple documentation for <c>NSBatchDeleteResult</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSPersistentStoreResult))]
 	interface NSBatchDeleteResult {
@@ -3836,9 +5048,25 @@ namespace CoreData {
 		NSBatchDeleteRequestResultType ResultType { get; }
 	}
 
+	/// <summary>To be added.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/CoreData/NSConstraintConflict">Apple documentation for <c>NSConstraintConflict</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface NSConstraintConflict {
+		/// <param name="contraint">To be added.</param>
+		/// <param name="databaseObject">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="databaseSnapshot">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="conflictingObjects">To be added.</param>
+		/// <param name="conflictingSnapshots">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithConstraint:databaseObject:databaseSnapshot:conflictingObjects:conflictingSnapshots:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (string [] contraint, [NullAllowed] NSManagedObject databaseObject, [NullAllowed] NSDictionary databaseSnapshot, NSManagedObject [] conflictingObjects, NSObject [] conflictingSnapshots);

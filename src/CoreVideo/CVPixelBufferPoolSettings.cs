@@ -35,17 +35,25 @@ using ObjCRuntime;
 
 namespace CoreVideo {
 
+	/// <summary>Manages pixel buffer settings.</summary>
+	///     <remarks>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public class CVPixelBufferPoolSettings : DictionaryContainer {
 #if !COREBUILD
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CVPixelBufferPoolSettings ()
 			: base (new NSMutableDictionary ())
 		{
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CVPixelBufferPoolSettings (NSDictionary dictionary)
 			: base (dictionary)
 		{
@@ -84,11 +92,16 @@ namespace CoreVideo {
 	[SupportedOSPlatform ("tvos")]
 	public partial class CVPixelBufferPoolAllocationSettings : DictionaryContainer {
 #if !COREBUILD
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CVPixelBufferPoolAllocationSettings ()
 			: base (new NSMutableDictionary ())
 		{
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CVPixelBufferPoolAllocationSettings (NSDictionary dictionary)
 			: base (dictionary)
 		{

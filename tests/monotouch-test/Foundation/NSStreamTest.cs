@@ -34,7 +34,6 @@ namespace MonoTouchFixtures.Foundation {
 
 		}
 
-#if !__WATCHOS__
 		TcpListener FindPort (out int port)
 		{
 			// This does not work well on watchOS:
@@ -128,6 +127,5 @@ namespace MonoTouchFixtures.Foundation {
 			}
 			client.Close ();
 		}
-#endif // !__WATCHOS__
 	}
 }

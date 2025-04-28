@@ -16,6 +16,8 @@ using ObjCRuntime;
 namespace OpenGLES {
 
 #if NET
+	/// <summary>EAGLDrawable properties.</summary>
+	///     <remarks>This class contains the keys for a few properties that can be get and set in EAGLDrawables.</remarks>
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("ios")]
 	[ObsoletedOSPlatform ("tvos12.0", "Use 'Metal' instead.")]
@@ -25,7 +27,11 @@ namespace OpenGLES {
 	[Deprecated (PlatformName.TvOS, 12, 0, message: "Use 'Metal' instead.")]
 #endif
 	public static class EAGLDrawableProperty {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static readonly NSString ColorFormat;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static readonly NSString RetainedBacking;
 
 		static EAGLDrawableProperty ()
@@ -39,6 +45,8 @@ namespace OpenGLES {
 	}
 
 #if NET
+	/// <summary>The formats available for the <see cref="P:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.LayerColorFormat" />.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("ios")]
 	[ObsoletedOSPlatform ("tvos12.0", "Use 'Metal' instead.")]
@@ -48,7 +56,11 @@ namespace OpenGLES {
 	[Deprecated (PlatformName.TvOS, 12, 0, message: "Use 'Metal' instead.")]
 #endif
 	public static class EAGLColorFormat {
+		/// <summary>16-bit RGB color format.</summary>
+		///         <remarks>This format uses 5 bits for the red components, 6 bits for the green component and 5 bits for the blue component.   Correspondsto the OpenGL ES GL_RGB565 format.</remarks>
 		public static readonly NSString RGB565;
+		/// <summary>32-bit RGBA format.</summary>
+		///         <remarks>This is a 32 bit format that uses 8 bits for red, green, blue and alpha channels.   Corresponds to the OpenGL ES GL_RGBA8888 value.</remarks>
 		public static readonly NSString RGBA8;
 
 		static EAGLColorFormat ()

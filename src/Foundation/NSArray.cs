@@ -49,26 +49,53 @@ namespace Foundation {
 		// this is so it makes it simpler for the generator to support
 		// [NullAllowed] on array parameters.
 		//
+		/// <param name="items">Strongly typed array of NSObjects.</param>
+		///         <summary>Creates an NSArray from a C# array of NSObjects.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		static public NSArray FromNSObjects (params NSObject [] items)
 		{
 			return FromNativeObjects (items);
 		}
 
+		/// <param name="count">Number of items to copy from the items array.</param>
+		///         <param name="items">Strongly typed array of NSObjects.</param>
+		///         <summary>Creates an NSArray from a C# array of NSObjects.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		static public NSArray FromNSObjects (int count, params NSObject [] items)
 		{
 			return FromNativeObjects (items, count);
 		}
 
+		/// <param name="items">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSArray FromNSObjects (params INativeObject [] items)
 		{
 			return FromNativeObjects (items);
 		}
 
+		/// <param name="count">To be added.</param>
+		///         <param name="items">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSArray FromNSObjects (int count, params INativeObject [] items)
 		{
 			return FromNativeObjects (items, count);
 		}
 
+		/// <typeparam name="T">To be added.</typeparam>
+		///         <param name="items">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSArray FromNSObjects<T> (params T [] items) where T : class, INativeObject
 		{
 			return FromNativeObjects (items);
@@ -110,11 +137,23 @@ namespace Foundation {
 			}
 			return FromNSObjects (ret);
 		}
+		/// <typeparam name="T">To be added.</typeparam>
+		///         <param name="count">To be added.</param>
+		///         <param name="items">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSArray FromNSObjects<T> (int count, params T [] items) where T : class, INativeObject
 		{
 			return FromNativeObjects (items, count);
 		}
 
+		/// <typeparam name="T">To be added.</typeparam>
+		///         <param name="nsobjectificator">To be added.</param>
+		///         <param name="items">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSArray FromNSObjects<T> (Func<T, NSObject> nsobjectificator, params T [] items)
 		{
 			if (nsobjectificator is null)
@@ -130,11 +169,22 @@ namespace Foundation {
 			return FromNativeObjects (arr);
 		}
 
+		/// <param name="items">Array of C# objects.</param>
+		///         <summary>Creates an NSArray from a C# array of NSObjects.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>The values will be boxed into
+		/// 	NSObjects using <see cref="M:Foundation.NSObject.FromObject(System.Object)" />.</remarks>
 		public static NSArray FromObjects (params object [] items)
 		{
 			return From<object> (items);
 		}
 
+		/// <param name="count">To be added.</param>
+		/// <param name="items">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		public static NSArray FromObjects (nint count, params object [] items)
 		{
 			return From<object> (items, count);
@@ -179,11 +229,15 @@ namespace Foundation {
 			IntPtr buf = Marshal.AllocHGlobal ((IntPtr) (count * IntPtr.Size));
 			for (nint i = 0; i < count; i++) {
 				var item = items [i];
+				// The analyzer cannot deal with arrays, we manually keep alive the whole array below
+#pragma warning disable RBI0014
 				IntPtr h = item is null ? NSNull.Null.Handle : item.Handle;
 				Marshal.WriteIntPtr (buf, (int) (i * IntPtr.Size), h);
+#pragma warning restore RBI0014
 			}
 			NSArray arr = Runtime.GetNSObject<NSArray> (NSArray.FromObjects (buf, count));
 			Marshal.FreeHGlobal (buf);
+			GC.KeepAlive (items);
 			return arr;
 		}
 
@@ -201,6 +255,11 @@ namespace Foundation {
 			return arr;
 		}
 
+		/// <param name="items">Array of C# strings.</param>
+		///         <summary>Creates an NSArray from a C# array of strings.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>To be added.</remarks>
 		static public NSArray FromStrings (params string [] items) => FromStrings ((IReadOnlyList<string>) items);
 
 		static public NSArray FromStrings (IReadOnlyList<string> items)
@@ -271,6 +330,12 @@ namespace Foundation {
 			return Messaging.NativeHandle_objc_msgSend_UIntPtr (handle, Selector.GetHandle ("objectAtIndex:"), (UIntPtr) i);
 		}
 
+		/// <param name="handle">Pointer (handle) to the unmanaged object.</param>
+		/// <summary>Creates a string array from an NSArray handle.</summary>
+		/// <returns>
+		///         </returns>
+		/// <remarks>
+		///         </remarks>
 		[Obsolete ("Use of 'CFArray.StringArrayFromHandle' offers better performance.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		static public string [] StringArrayFromHandle (NativeHandle handle)
@@ -286,6 +351,20 @@ namespace Foundation {
 			return ret;
 		}
 
+		/// <typeparam name="T">Parameter type, determines the kind of array returned.</typeparam>
+		/// <param name="handle">Pointer (handle) to the unmanaged object.</param>
+		/// <summary>Returns a strongly-typed C# array of the parametrized type from a handle to an NSArray.</summary>
+		/// <returns>An C# array with the values.</returns>
+		/// <remarks>
+		///           <para>Use this method to get a set of NSObject arrays from a handle to an NSArray</para>
+		///           <example>
+		///             <code lang="c#"><![CDATA[
+		/// IntPtr someHandle = ...;
+		/// 
+		/// NSString [] values = NSArray.ArrayFromHandle<NSString> (someHandle);
+		/// ]]></code>
+		///           </example>
+		///         </remarks>
 		static public T [] ArrayFromHandle<T> (NativeHandle handle) where T : class, INativeObject
 		{
 			if (handle == NativeHandle.Zero)
@@ -329,6 +408,21 @@ namespace Foundation {
 			return ret;
 		}
 
+		/// <typeparam name="T">Parameter type, determines the kind of
+		/// 	array returned, limited to NSObject and subclasses of it.</typeparam>
+		///         <param name="weakArray">Handle to an weakly typed NSArray.</param>
+		///         <summary>Returns a strongly-typed C# array of the parametrized type from a weakly typed NSArray.</summary>
+		///         <returns>An C# array with the values.</returns>
+		///         <remarks>
+		///           <para>Use this method to get a set of NSObject arrays from an NSArray.</para>
+		///           <example>
+		///             <code lang="c#"><![CDATA[
+		/// NSArray someArray = ...;
+		///
+		/// NSString [] values = NSArray.FromArray<CGImage> (someArray);
+		/// ]]></code>
+		///           </example>
+		///         </remarks>
 		static public T [] FromArray<T> (NSArray weakArray) where T : NSObject
 		{
 			if (weakArray is null || weakArray.Handle == NativeHandle.Zero)
@@ -345,6 +439,22 @@ namespace Foundation {
 			}
 		}
 
+		/// <typeparam name="T">Parameter type, determines the kind of
+		/// 	array returned, can be either an NSObject, or other
+		/// 	CoreGraphics data types.</typeparam>
+		///         <param name="weakArray">Handle to an weakly typed NSArray.</param>
+		///         <summary>Returns a strongly-typed C# array of the parametrized type from a weakly typed NSArray.</summary>
+		///         <returns>An C# array with the values.</returns>
+		///         <remarks>
+		///           <para>Use this method to get a set of NSObject arrays from an NSArray.</para>
+		///           <example>
+		///             <code lang="c#"><![CDATA[
+		/// NSArray someArray = ...;
+		///
+		/// CGImage [] myImages = NSArray.FromArray<CGImage> (someArray);
+		/// ]]></code>
+		///           </example>
+		///         </remarks>
 		static public T [] FromArrayNative<T> (NSArray weakArray) where T : class, INativeObject
 		{
 			if (weakArray is null || weakArray.Handle == NativeHandle.Zero)
@@ -362,6 +472,19 @@ namespace Foundation {
 		}
 
 		// Used when we need to provide our constructor
+		/// <typeparam name="T">Parameter type, determines the kind of array returned.</typeparam>
+		/// <param name="handle">Pointer (handle) to the unmanaged object.</param>
+		/// <param name="createObject">To be added.</param>
+		/// <summary>Returns a strongly-typed C# array of the parametrized type from a handle to an NSArray.</summary>
+		/// <returns>An C# array with the values.</returns>
+		/// <remarks>
+		///           <para>Use this method to get a set of NSObject arrays from a handle to an NSArray.   Instead of wrapping the results in NSObjects, the code invokes your method to create the return value.</para>
+		///           <example>
+		///             <code lang="c#"><![CDATA[
+		/// int [] args = NSArray.ArrayFromHandle<int> (someHandle, (x) => (int) x);
+		/// ]]></code>
+		///           </example>
+		///         </remarks>
 		static public T [] ArrayFromHandleFunc<T> (NativeHandle handle, Func<NativeHandle, T> createObject)
 		{
 			if (handle == NativeHandle.Zero)
@@ -388,6 +511,24 @@ namespace Foundation {
 			return rv;
 		}
 
+		/// <typeparam name="T">Parameter type, determines the kind of array returned.</typeparam>
+		/// <param name="handle">Pointer (handle) to the unmanaged object.</param>
+		/// <param name="creator">Method that can create objects of type T from a given IntPtr.</param>
+		/// <summary>Returns a strongly-typed C# array of the parametrized type from a handle to an NSArray.</summary>
+		/// <returns>An C# array with the values.</returns>
+		/// <remarks>
+		///           <para>Use this method to get a set of NSObject arrays from a handle to an NSArray.   Instead of wrapping the results in NSObjects, the code invokes your method to create the return value.</para>
+		///           <example>
+		///             <code lang="c#"><![CDATA[
+		/// int myCreator (IntPtr v)
+		/// {
+		/// 	return (int) v;
+		/// }
+		/// 
+		/// int [] args = NSArray.ArrayFromHandle<int> (someHandle, myCreator);
+		/// ]]></code>
+		///           </example>
+		///         </remarks>
 		static public T [] ArrayFromHandle<T> (NativeHandle handle, Converter<NativeHandle, T> creator)
 		{
 			if (handle == NativeHandle.Zero)
@@ -438,6 +579,11 @@ namespace Foundation {
 		}
 
 		// can return an INativeObject or an NSObject
+		/// <typeparam name="T">To be added.</typeparam>
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		public T GetItem<T> (nuint index) where T : class, INativeObject
 		{
 			if (index >= GetCount (Handle))
@@ -446,6 +592,10 @@ namespace Foundation {
 			return UnsafeGetItem<T> (Handle, index);
 		}
 
+		/// <param name="weakArray">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSObject [] [] FromArrayOfArray (NSArray weakArray)
 		{
 			if (weakArray is null || weakArray.Handle == IntPtr.Zero)
@@ -462,6 +612,10 @@ namespace Foundation {
 			}
 		}
 
+		/// <param name="items">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSArray From (NSObject [] [] items)
 		{
 			if (items is null)

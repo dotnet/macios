@@ -18,6 +18,9 @@ using Foundation;
 
 namespace ImageIO {
 
+	/// <summary>Image Loader.</summary>
+	///     <remarks>
+	///     </remarks>
 	public partial class CGImageSource {
 
 		// CGImageSource.h
@@ -36,6 +39,7 @@ namespace ImageIO {
 		public CGImageMetadata? CopyMetadata (nint index, NSDictionary? options)
 		{
 			var result = CGImageSourceCopyMetadataAtIndex (Handle, index, options.GetHandle ());
+			GC.KeepAlive (options);
 			return (result == IntPtr.Zero) ? null : new CGImageMetadata (result, true);
 		}
 

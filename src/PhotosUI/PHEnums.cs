@@ -46,18 +46,25 @@ namespace PhotosUI {
 	[NoTV]
 	[NoMacCatalyst]
 	public enum PHProjectCategory {
+		/// <summary>To be added.</summary>
 		[Field ("PHProjectCategoryBook")]
 		Book,
+		/// <summary>To be added.</summary>
 		[Field ("PHProjectCategoryCalendar")]
 		Calendar,
+		/// <summary>To be added.</summary>
 		[Field ("PHProjectCategoryCard")]
 		Card,
+		/// <summary>To be added.</summary>
 		[Field ("PHProjectCategoryPrints")]
 		Prints,
+		/// <summary>To be added.</summary>
 		[Field ("PHProjectCategorySlideshow")]
 		Slideshow,
+		/// <summary>To be added.</summary>
 		[Field ("PHProjectCategoryWallDecor")]
 		WallDecor,
+		/// <summary>To be added.</summary>
 		[Field ("PHProjectCategoryOther")]
 		Other,
 		[NoMacCatalyst]

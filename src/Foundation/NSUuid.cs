@@ -13,6 +13,9 @@ using ObjCRuntime;
 namespace Foundation {
 	partial class NSUuid {
 
+		/// <param name="bytes">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSUuid (byte [] bytes) : base (NSObjectFlag.Empty)
 		{
 			if (bytes is null)
@@ -33,6 +36,9 @@ namespace Foundation {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public byte [] GetBytes ()
 		{
 			byte [] ret = new byte [16];

@@ -2,8 +2,6 @@
 // Unit tests for GKGameCenterViewControllerTest
 //
 
-#if !__WATCHOS__
-
 using System;
 using Foundation;
 using ObjCRuntime;
@@ -46,5 +44,3 @@ namespace MonoTouchFixtures.GameKit {
 		}
 	}
 }
-
-#endif // !__WATCHOS__

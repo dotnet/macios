@@ -1,4 +1,4 @@
-#if !__WATCHOS__ && !BINDINGS_TEST
+#if !BINDINGS_TEST
 #define CAN_SHOW_ASYNC_UI
 #endif
 

@@ -8,8 +8,6 @@
 // Copyright 2018 Microsoft Corporation.
 //
 
-#if !__WATCHOS__
-
 using System;
 using NUnit.Framework;
 
@@ -225,4 +223,3 @@ namespace MonoTouchFixtures.Vision {
 		}
 	}
 }
-#endif

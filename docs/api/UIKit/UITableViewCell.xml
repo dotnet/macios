@@ -79,4 +79,22 @@
     <related type="article" href="https://docs.xamarin.com/guides/ios/user_interface/tables">Working with Tables and Cells</related>
     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UITableViewCell_Class/index.html">Apple documentation for <c>UITableViewCell</c></related>
   </Docs>
+  <Docs DocId="M:UIKit.UITableViewCell.#ctor(UIKit.UITableViewCellStyle,System.String)">
+        <param name="style">The style to use for this cell.</param>
+        <param name="reuseIdentifier">A string used to identify the cell object if it should be reused for mutiple rows in a table view. Pass <see langword="null" /> if the object should not be reused. The same reuse identifier string should be used for all cells that use the same class and layout.</param>
+        <summary>Create a table cell with the given style and reuse identifier.</summary>
+        <remarks>
+          <para>The reuse identifier is associated with all cells (rows) in a table view that have the same layout (irrespective of their content) and can therefore be used interchangeably. The <see cref="M:UIKit.UITableViewSource.GetCell(UIKit.UITableView,Foundation.NSIndexPath)" /> implementation calls <see cref="M:UIKit.UITableView.DequeueReusableCell(Foundation.NSString)" /> with a specific reuse identifier string to obtain a cached cell object with a particular layout to use as the basis for the row being constructed for viewing.</para>
+          <para>To produce a layout different to those built-in to <see cref="T:UIKit.UITableViewCell" />, create a custom cell. To set the row height of each cell differently, implement <see cref="M:UIKit.UITableViewSource.GetHeightForRow(UIKit.UITableView,Foundation.NSIndexPath)" />.</para>
+        </remarks>
+      </Docs>
+  <Docs DocId="P:UIKit.UITableViewCell.Highlighted">
+        <summary>Whether the cell is highlighted.</summary>
+        <value>Default value is <see langword="false" />.</value>
+        <remarks>
+          <para>Highlighting affects the appearance of labels, the image and background. When Highlighted is <see langword="true" />, the labels in the cell are drawn in their highlighted text color (which is white by default).</para>
+          <para>When this property is set to <see langword="true" />, the transition to the new appearance is not animated. Use the <see cref="M:UIKit.UITableViewCell.SetHighlighted(System.Boolean,System.Boolean)" /> method for animated highlight-state transitions.</para>
+          <para>For highlighting to work properly, set the <see cref="P:UIKit.UILabel.HighlightedTextColor" /> for the two labels (<see cref="P:UIKit.UITableViewCell.TextLabel" /> and <see cref="P:UIKit.UITableViewCell.DetailTextLabel" />), and set the <see cref="P:UIKit.UIImageView.HighlightedImage" /> property on the cell's <see cref="P:UIKit.UITableViewCell.ImageView" />. </para>
+        </remarks>
+      </Docs>
 </Documentation>

@@ -1,14 +1,14 @@
 <Documentation>
   <Docs DocId="F:AudioUnit.AudioComponentDescription.ComponentSubType">
-        <summary>Audio Unit component subtype, depending on the <see cref="F:AudioUnit.AudioComponentDescription.ComponentSubType" /> value you should use one of the values from <see cref="T:AudioUnit.AudioTypeOutput" />, <see cref="T:AudioUnit.AudioTypeMusicDevice" />, <see cref="T:AudioUnit.AudioTypeConverter" />, <see cref="T:AudioUnit.AudioTypeEffect" />, <see cref="T:AudioUnit.AudioTypeMixer" />, <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:AudioUnit.AudioTypePanner,&amp;scope=Xamarin" title="T:AudioUnit.AudioTypePanner,">T:AudioUnit.AudioTypePanner,</a></format> <see cref="T:AudioUnit.AudioTypeGenerator" /></summary>
-        <remarks>
-          <para>Audio Unit component subtype, depending on the <see cref="F:AudioUnit.AudioComponentDescription.ComponentType" /> you should use one of the values from <see cref="T:AudioUnit.AudioTypeOutput" />, <see cref="T:AudioUnit.AudioTypeMusicDevice" />, <see cref="T:AudioUnit.AudioTypeConverter" />, <see cref="T:AudioUnit.AudioTypeEffect" />, <see cref="T:AudioUnit.AudioTypeMixer" />, <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:AudioUnit.AudioTypePanner,&amp;scope=Xamarin" title="T:AudioUnit.AudioTypePanner,">T:AudioUnit.AudioTypePanner,</a></format> <see cref="T:AudioUnit.AudioTypeGenerator" />.</para>
-          <para />
-          <para>Since this is an integer, and the values on those enumerations are strongly typed, you typically need to cast.   The following example shows this:</para>
-          <para />
-          <para />
-          <example>
-            <code lang="csharp lang-csharp"><![CDATA[var processingGraph = new AUGraph ();
+    <summary>Audio Unit component subtype, depending on the <see cref="F:AudioUnit.AudioComponentDescription.ComponentSubType" /> value you should use one of the values from <see cref="T:AudioUnit.AudioTypeOutput" />, <see cref="T:AudioUnit.AudioTypeMusicDevice" />, <see cref="T:AudioUnit.AudioTypeConverter" />, <see cref="T:AudioUnit.AudioTypeEffect" />, <see cref="T:AudioUnit.AudioTypeMixer" />, <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:AudioUnit.AudioTypePanner,&amp;scope=Xamarin" title="T:AudioUnit.AudioTypePanner,">T:AudioUnit.AudioTypePanner,</a></format> <see cref="T:AudioUnit.AudioTypeGenerator" /></summary>
+    <remarks>
+      <para>Audio Unit component subtype, depending on the <see cref="F:AudioUnit.AudioComponentDescription.ComponentType" /> you should use one of the values from <see cref="T:AudioUnit.AudioTypeOutput" />, <see cref="T:AudioUnit.AudioTypeMusicDevice" />, <see cref="T:AudioUnit.AudioTypeConverter" />, <see cref="T:AudioUnit.AudioTypeEffect" />, <see cref="T:AudioUnit.AudioTypeMixer" />, <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:AudioUnit.AudioTypePanner,&amp;scope=Xamarin" title="T:AudioUnit.AudioTypePanner,">T:AudioUnit.AudioTypePanner,</a></format> <see cref="T:AudioUnit.AudioTypeGenerator" />.</para>
+      <para />
+      <para>Since this is an integer, and the values on those enumerations are strongly typed, you typically need to cast.   The following example shows this:</para>
+      <para />
+      <para />
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[var processingGraph = new AUGraph ();
 
 int samplerNode, ioNode;
 
@@ -27,18 +27,18 @@ var remoteOutput = new AudioComponentDescription () {
 ioNode = processingGraph.AddNode (remoteOutput);
 
 processingGraph.Open ();]]></code>
-          </example>.</remarks>
-      </Docs>
+      </example>.</remarks>
+  </Docs>
   <Docs DocId="F:AudioUnit.AudioComponentDescription.ComponentSubType">
-        <summary>Audio Unit component subtype, depending on the <see cref="F:AudioUnit.AudioComponentDescription.ComponentSubType" /> value you should use one of the values from <see cref="T:AudioUnit.AudioTypeOutput" />, <see cref="T:AudioUnit.AudioTypeMusicDevice" />, <see cref="T:AudioUnit.AudioTypeConverter" />, <see cref="T:AudioUnit.AudioTypeEffect" />, <see cref="T:AudioUnit.AudioTypeMixer" />, <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:AudioUnit.AudioTypePanner,&amp;scope=Xamarin" title="T:AudioUnit.AudioTypePanner,">T:AudioUnit.AudioTypePanner,</a></format> <see cref="T:AudioUnit.AudioTypeGenerator" /></summary>
-        <remarks>
-          <para>Audio Unit component subtype, depending on the <see cref="F:AudioUnit.AudioComponentDescription.ComponentType" /> you should use one of the values from <see cref="T:AudioUnit.AudioTypeOutput" />, <see cref="T:AudioUnit.AudioTypeMusicDevice" />, <see cref="T:AudioUnit.AudioTypeConverter" />, <see cref="T:AudioUnit.AudioTypeEffect" />, <see cref="T:AudioUnit.AudioTypeMixer" />, <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:AudioUnit.AudioTypePanner,&amp;scope=Xamarin" title="T:AudioUnit.AudioTypePanner,">T:AudioUnit.AudioTypePanner,</a></format> <see cref="T:AudioUnit.AudioTypeGenerator" />.</para>
-          <para />
-          <para>Since this is an integer, and the values on those enumerations are strongly typed, you typically need to cast.   The following example shows this:</para>
-          <para />
-          <para />
-          <example>
-            <code lang="csharp lang-csharp"><![CDATA[var processingGraph = new AUGraph ();
+    <summary>Audio Unit component subtype, depending on the <see cref="F:AudioUnit.AudioComponentDescription.ComponentSubType" /> value you should use one of the values from <see cref="T:AudioUnit.AudioTypeOutput" />, <see cref="T:AudioUnit.AudioTypeMusicDevice" />, <see cref="T:AudioUnit.AudioTypeConverter" />, <see cref="T:AudioUnit.AudioTypeEffect" />, <see cref="T:AudioUnit.AudioTypeMixer" />, <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:AudioUnit.AudioTypePanner,&amp;scope=Xamarin" title="T:AudioUnit.AudioTypePanner,">T:AudioUnit.AudioTypePanner,</a></format> <see cref="T:AudioUnit.AudioTypeGenerator" /></summary>
+    <remarks>
+      <para>Audio Unit component subtype, depending on the <see cref="F:AudioUnit.AudioComponentDescription.ComponentType" /> you should use one of the values from <see cref="T:AudioUnit.AudioTypeOutput" />, <see cref="T:AudioUnit.AudioTypeMusicDevice" />, <see cref="T:AudioUnit.AudioTypeConverter" />, <see cref="T:AudioUnit.AudioTypeEffect" />, <see cref="T:AudioUnit.AudioTypeMixer" />, <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:AudioUnit.AudioTypePanner,&amp;scope=Xamarin" title="T:AudioUnit.AudioTypePanner,">T:AudioUnit.AudioTypePanner,</a></format> <see cref="T:AudioUnit.AudioTypeGenerator" />.</para>
+      <para />
+      <para>Since this is an integer, and the values on those enumerations are strongly typed, you typically need to cast.   The following example shows this:</para>
+      <para />
+      <para />
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[var processingGraph = new AUGraph ();
 
 int samplerNode, ioNode;
 
@@ -57,6 +57,47 @@ var remoteOutput = new AudioComponentDescription () {
 ioNode = processingGraph.AddNode (remoteOutput);
 
 processingGraph.Open ();]]></code>
-          </example>.</remarks>
-      </Docs>
+      </example>.</remarks>
+  </Docs>
+  <Docs DocId="T:AudioUnit.AudioComponentDescription">
+    <summary>Identifiers for a <see cref="T:AudioUnit.AudioComponent" />.</summary>
+    <remarks>
+      <para>You can either create <see cref="T:AudioUnit.AudioComponentDescription" /> using the empty constructor and setting all of the fields for the audio component, or you can use one of the convenience factory method that provide strongly typed ways of instantiating the structure.</para>
+      <para>
+      </para>
+      <para>The following example shows how to use the various Create methods:</para>
+      <para>
+      </para>
+      <para>
+      </para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[auGraph = new AUGraph ();
+auGraph.Open ();
+int effectNode = auGraph.AddNode (AudioComponentDescription.CreateConverter (AudioTypeConverter.NewTimePitch));
+effectUnit = auGraph.GetNodeInfo (effectNode);
+
+int convertToEffectNode = auGraph.AddNode (AudioComponentDescription.CreateConverter (AudioTypeConverter.AU));
+convertToEffectUnit = auGraph.GetNodeInfo (convertToEffectNode);
+
+int convertFromEffectNode = auGraph.AddNode (AudioComponentDescription.CreateConverter (AudioTypeConverter.AU));
+convertFromEffectUnit = auGraph.GetNodeInfo (convertFromEffectNode);
+
+int genericOutputNode = auGraph.AddNode (AudioComponentDescription.CreateOutput (AudioTypeOutput.Generic));
+genericOutputUnit = auGraph.GetNodeInfo (genericOutputNode);
+
+// set the format conversions throughout the graph
+AudioStreamBasicDescription effectFormat = effectUnit.GetAudioFormat (AudioUnitScopeType.Output);
+var tapFormat = aqTap.ProcessingFormat;
+
+convertToEffectUnit.SetAudioFormat (tapFormat, AudioUnitScopeType.Input);
+convertToEffectUnit.SetAudioFormat (effectFormat, AudioUnitScopeType.Output);
+
+convertFromEffectUnit.SetAudioFormat (effectFormat, AudioUnitScopeType.Input);
+convertFromEffectUnit.SetAudioFormat (tapFormat, AudioUnitScopeType.Output);
+
+genericOutputUnit.SetAudioFormat (tapFormat, AudioUnitScopeType.Input);
+genericOutputUnit.SetAudioFormat (tapFormat, AudioUnitScopeType.Output);]]></code>
+      </example>
+    </remarks>
+  </Docs>
 </Documentation>

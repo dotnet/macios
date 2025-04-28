@@ -27,9 +27,6 @@ namespace Xamarin.MacDev.Tasks {
 			string platform;
 
 			switch (framework) {
-			case ApplePlatform.WatchOS:
-				platform = "WatchOS";
-				break;
 			case ApplePlatform.TVOS:
 				platform = "AppleTVOS";
 				break;

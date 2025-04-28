@@ -193,7 +193,9 @@ namespace CoreMedia {
 		/// <returns>True if this tag collection contains all the tags in <paramref name="tagCollection" />, false otherwise.</returns>
 		public bool ContainsTagCollection (CMTagCollection tagCollection)
 		{
-			return CMTagCollectionContainsTagsOfCollection (GetCheckedHandle (), tagCollection.GetNonNullHandle (nameof (tagCollection))) != 0;
+			bool result = CMTagCollectionContainsTagsOfCollection (GetCheckedHandle (), tagCollection.GetNonNullHandle (nameof (tagCollection))) != 0;
+			GC.KeepAlive (tagCollection);
+			return result;
 		}
 
 		[DllImport (Constants.CoreMediaLibrary)]
@@ -516,6 +518,8 @@ namespace CoreMedia {
 			IntPtr handle;
 			unsafe {
 				status = CMTagCollectionCreateIntersection (collection1.GetHandle (), collection2.GetHandle (), &handle);
+				GC.KeepAlive (collection1);
+				GC.KeepAlive (collection2);
 			}
 			return Create (handle, true);
 		}
@@ -545,6 +549,8 @@ namespace CoreMedia {
 			IntPtr handle;
 			unsafe {
 				status = CMTagCollectionCreateUnion (collection1.GetHandle (), collection2.GetHandle (), &handle);
+				GC.KeepAlive (collection1);
+				GC.KeepAlive (collection2);
 			}
 			return Create (handle, true);
 		}
@@ -574,6 +580,8 @@ namespace CoreMedia {
 			IntPtr handle;
 			unsafe {
 				status = CMTagCollectionCreateDifference (collection1.GetHandle (), collection2.GetHandle (), &handle);
+				GC.KeepAlive (collection1);
+				GC.KeepAlive (collection2);
 			}
 			return Create (handle, true);
 		}
@@ -603,6 +611,8 @@ namespace CoreMedia {
 			IntPtr handle;
 			unsafe {
 				status = CMTagCollectionCreateExclusiveOr (collection1.GetHandle (), collection2.GetHandle (), &handle);
+				GC.KeepAlive (collection1);
+				GC.KeepAlive (collection2);
 			}
 			return Create (handle, true);
 		}
@@ -678,7 +688,9 @@ namespace CoreMedia {
 		/// <returns>An error code in case of failure, 0 in case of success.</returns>
 		public CMTagCollectionError Add (CMTagCollection collection)
 		{
-			return CMTagCollectionAddTagsFromCollection (GetCheckedHandle (), collection.GetNonNullHandle (nameof (collection)));
+			var result = CMTagCollectionAddTagsFromCollection (GetCheckedHandle (), collection.GetNonNullHandle (nameof (collection)));
+			GC.KeepAlive (collection);
+			return result;
 		}
 
 		[DllImport (Constants.CoreMediaLibrary)]
@@ -731,6 +743,7 @@ namespace CoreMedia {
 			IntPtr handle;
 			unsafe {
 				status = CMTagCollectionCreateFromDictionary (dictionary.GetNonNullHandle (nameof (dictionary)), IntPtr.Zero, &handle);
+				GC.KeepAlive (dictionary);
 			}
 			return Create (handle, true);
 		}
@@ -765,6 +778,7 @@ namespace CoreMedia {
 			IntPtr handle;
 			unsafe {
 				status = CMTagCollectionCreateFromData (data.GetNonNullHandle (nameof (data)), IntPtr.Zero, &handle);
+				GC.KeepAlive (data);
 			}
 			return Create (handle, true);
 		}

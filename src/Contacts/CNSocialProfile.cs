@@ -14,6 +14,8 @@ using Foundation;
 
 namespace Contacts {
 	// Strong typed Keys to enum
+	/// <summary>Enumerates properties of social services that are always fetched.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum CNSocialProfileOption {
 		/// <summary>Associated with the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Contacts%20CNSocial%20Service%20Url%20String&amp;scope=Xamarin" title="P:Contacts.CNSocialService.UrlString">P:Contacts.CNSocialService.UrlString</a></format> property.</summary>
 		UrlString,
@@ -26,6 +28,8 @@ namespace Contacts {
 	}
 
 	// Strong typed Keys to enum
+	/// <summary>Enumerates known social services.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum CNSocialProfileServiceOption {
 		/// <summary>Facebook.</summary>
 		Facebook,
@@ -49,6 +53,10 @@ namespace Contacts {
 
 	public partial class CNSocialProfile {
 
+		/// <param name="option">To be added.</param>
+		///         <summary>Returns the localized string representing the <paramref name="option" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static string LocalizeProperty (CNSocialProfileOption option)
 		{
 			switch (option) {
@@ -65,6 +73,10 @@ namespace Contacts {
 			}
 		}
 
+		/// <param name="serviceOption">To be added.</param>
+		///         <summary>Returns the localized string representing the <paramref name="serviceOption" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static string LocalizeService (CNSocialProfileServiceOption serviceOption)
 		{
 			var srvc = ServiceOptionsToNSString (serviceOption);

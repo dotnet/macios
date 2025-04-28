@@ -38,7 +38,6 @@ namespace Xamarin.Tests {
 		public static bool include_mac;
 		public static bool include_tvos;
 		public static bool include_maccatalyst;
-		public static bool include_device;
 		public static bool EnableXamarin;
 		public static bool XcodeIsStable;
 		public static string DOTNET_DIR;
@@ -284,7 +283,6 @@ namespace Xamarin.Tests {
 			include_mac = !string.IsNullOrEmpty (GetVariable ("INCLUDE_MAC", ""));
 			include_tvos = !string.IsNullOrEmpty (GetVariable ("INCLUDE_TVOS", ""));
 			include_maccatalyst = !string.IsNullOrEmpty (GetVariable ("INCLUDE_MACCATALYST", ""));
-			include_device = !string.IsNullOrEmpty (GetVariable ("INCLUDE_DEVICE", ""));
 			DotNetBclDir = GetVariable ("DOTNET_BCL_DIR", null);
 			DotNetCscCommand = GetVariable ("DOTNET_CSC_COMMAND", null)?.Trim ('\'');
 			DotNetExecutable = GetVariable ("DOTNET", null);
@@ -684,9 +682,6 @@ namespace Xamarin.Tests {
 				break;
 			case ApplePlatform.MacOSX:
 				dir = "macos";
-				break;
-			case ApplePlatform.WatchOS:
-				dir = simulator.Value ? "watchsimulator" : "watchos";
 				break;
 			case ApplePlatform.TVOS:
 				dir = simulator.Value ? "tvsimulator" : "tvos";

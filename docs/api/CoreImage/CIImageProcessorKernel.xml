@@ -1,0 +1,13 @@
+<Documentation>
+  <Docs DocId="M:CoreImage.CIImageProcessorKernel.GetRegionOfInterest(System.Int32,Foundation.NSDictionary{Foundation.NSString,Foundation.NSObject},CoreGraphics.CGRect)">
+    <param name="input">An index into the array of <see cref="T:CoreImage.ICIImageProcessorInput" /> objects passed to <see cref="M:CoreImage.CIImageProcessorKernel.Apply(CoreGraphics.CGRect,CoreImage.CIImage[],Foundation.NSDictionary{Foundation.NSString,Foundation.NSObject},Foundation.NSError@)" /> or <see cref="M:CoreImage.CIImageProcessorKernel.Process(CoreImage.ICIImageProcessorInput[],Foundation.NSDictionary{Foundation.NSString,Foundation.NSObject},CoreImage.ICIImageProcessorOutput,Foundation.NSError@)" />.</param>
+    <param name="arguments">
+      <para>The arguments passed to the processing function.</para>
+      <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+    </param>
+    <param name="outputRect">To be added.</param>
+    <summary>Developers can override this method to return the region of interest for a specific <see cref="T:CoreImage.ICIImageProcessorInput" />.</summary>
+    <returns>To be added.</returns>
+    <remarks>To be added.</remarks>
+  </Docs>
+</Documentation>

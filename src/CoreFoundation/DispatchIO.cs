@@ -42,8 +42,14 @@ using Foundation;
 
 namespace CoreFoundation {
 
+	/// <param name="data">To be added.</param>
+	///     <param name="error">To be added.</param>
+	///     <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public delegate void DispatchIOHandler (DispatchData? data, int error);
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -82,12 +88,19 @@ namespace CoreFoundation {
 				delegate* unmanaged<IntPtr, IntPtr, int, void> trampoline = &Trampoline_DispatchReadWriteHandler;
 				using var block = new BlockLiteral (trampoline, handler, typeof (DispatchIO), nameof (Trampoline_DispatchReadWriteHandler));
 				dispatch_read (fd, size, dispatchQueue.Handle, &block);
+				GC.KeepAlive (dispatchQueue);
 			}
 		}
 
 		[DllImport (Constants.libcLibrary)]
 		unsafe extern static void dispatch_write (int fd, IntPtr dispatchData, IntPtr dispatchQueue, BlockLiteral* handler);
 
+		/// <param name="fd">To be added.</param>
+		///         <param name="dispatchData">To be added.</param>
+		///         <param name="dispatchQueue">To be added.</param>
+		///         <param name="handler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public static void Write (int fd, DispatchData dispatchData, DispatchQueue dispatchQueue, DispatchIOHandler handler)
 		{
@@ -102,6 +115,8 @@ namespace CoreFoundation {
 				delegate* unmanaged<IntPtr, IntPtr, int, void> trampoline = &Trampoline_DispatchReadWriteHandler;
 				using var block = new BlockLiteral (trampoline, handler, typeof (DispatchIO), nameof (Trampoline_DispatchReadWriteHandler));
 				dispatch_write (fd, dispatchData.Handle, dispatchQueue.Handle, &block);
+				GC.KeepAlive (dispatchData);
+				GC.KeepAlive (dispatchQueue);
 			}
 		}
 	}

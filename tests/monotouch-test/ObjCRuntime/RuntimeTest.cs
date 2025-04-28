@@ -1,8 +1,6 @@
 using System;
 using System.Diagnostics;
-#if !__WATCHOS__
 using System.Drawing;
-#endif
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -10,9 +8,7 @@ using System.Threading.Tasks;
 using CoreGraphics;
 using Foundation;
 using ObjCRuntime;
-#if !__WATCHOS__
 using SpriteKit;
-#endif
 #if !MONOMAC
 using UIKit;
 #endif
@@ -103,7 +99,6 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			}
 		}
 
-#if !__WATCHOS__
 		[Test]
 		public void GetNSObject_Different_Class ()
 		{
@@ -121,7 +116,6 @@ namespace MonoTouchFixtures.ObjCRuntime {
 				Assert.That (body, Is.TypeOf<SKPhysicsBody> (), "SKPhysicsBody");
 			}
 		}
-#endif // !__WATCHOS__
 
 		[Test]
 		public void GetNSObject_Posing_Class ()
@@ -297,11 +291,6 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		[Test]
 		public void FinalizationRaceCondition ()
 		{
-#if __WATCHOS__
-			if (Runtime.Arch == Arch.DEVICE)
-				Assert.Ignore ("This test uses too much memory for the watch.");
-#endif
-
 			NSDictionary dict = null;
 
 			var thread = new Thread (() => {
@@ -551,11 +540,6 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		[TestCase (typeof (ResurrectedObjectsDisposedTestClass))]
 		public void ResurrectedObjectsDisposedTest (Type type)
 		{
-#if __WATCHOS__
-			if (Runtime.Arch == Arch.DEVICE)
-				Assert.Ignore ("This test uses too much memory for the watch.");
-#endif
-
 			var invokerClassHandle = Class.GetHandle (typeof (ResurrectedObjectsDisposedTestClass));
 
 			// Create a number of native objects with no managed wrappers.

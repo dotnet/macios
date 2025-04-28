@@ -63,9 +63,7 @@ NSString * xamarin_custom_bundle_name = @"MonoBundle";
 bool xamarin_is_mkbundle = false;
 char *xamarin_entry_assembly_path = NULL;
 #endif
-#if defined (__i386__)
-const char *xamarin_arch_name = "i386";
-#elif defined (__x86_64__)
+#if defined (__x86_64__)
 const char *xamarin_arch_name = "x86_64";
 #else
 const char *xamarin_arch_name = NULL;
@@ -110,11 +108,9 @@ struct Trampolines {
 	void* retain_tramp;
 	void* static_tramp;
 	void* ctor_tramp;
-	void* x86_double_abi_stret_tramp;
 	void* static_fpret_single_tramp;
 	void* static_fpret_double_tramp;
 	void* static_stret_tramp;
-	void* x86_double_abi_static_stret_tramp;
 	void* long_tramp;
 	void* static_long_tramp;
 #if MONOMAC
@@ -171,19 +167,9 @@ static struct Trampolines trampolines = {
 	(void *) &xamarin_retain_trampoline,
 	(void *) &xamarin_static_trampoline,
 	(void *) &xamarin_ctor_trampoline,
-#if defined (__i386__)
-	(void *) &xamarin_x86_double_abi_stret_trampoline,
-#else
-	NULL,
-#endif
 	(void *) &xamarin_static_fpret_single_trampoline,
 	(void *) &xamarin_static_fpret_double_trampoline,
 	(void *) &xamarin_static_stret_trampoline,
-#if defined (__i386__)
-	(void *) &xamarin_static_x86_double_abi_stret_trampoline,
-#else
-	NULL,
-#endif
 	(void *) &xamarin_longret_trampoline,
 	(void *) &xamarin_static_longret_trampoline,
 #if MONOMAC
@@ -1179,14 +1165,12 @@ xamarin_initialize ()
 #endif
 
 #if defined (CORECLR_RUNTIME)
-#if !defined(__arm__) // the dynamic trampolines haven't been implemented in 32-bit ARM assembly.
 	options.xamarin_objc_msgsend = (void *) xamarin_dyn_objc_msgSend;
 	options.xamarin_objc_msgsend_super = (void *) xamarin_dyn_objc_msgSendSuper;
 #if !defined(__aarch64__)
 	options.xamarin_objc_msgsend_stret = (void *) xamarin_dyn_objc_msgSend_stret;
 	options.xamarin_objc_msgsend_super_stret = (void *) xamarin_dyn_objc_msgSendSuper_stret;
 #endif // !defined(__aarch64__)
-#endif // !defined(__arm__)
 	options.unhandled_exception_handler = (void *) &xamarin_coreclr_unhandled_exception_handler;
 	options.reference_tracking_begin_end_callback = (void *) &xamarin_coreclr_reference_tracking_begin_end_callback;
 	options.reference_tracking_is_referenced_callback = (void *) &xamarin_coreclr_reference_tracking_is_referenced_callback;
@@ -2475,7 +2459,7 @@ xamarin_pinvoke_override (const char *libraryName, const char *entrypointName)
 	if (!strcmp (libraryName, "__Internal")) {
 		symbol = dlsym (RTLD_DEFAULT, entrypointName);
 #if !defined (CORECLR_RUNTIME) // we're intercepting objc_msgSend calls using the managed System.Runtime.InteropServices.ObjectiveC.Bridge.SetMessageSendCallback instead.
-#if defined (__i386__) || defined (__x86_64__) || defined (__arm64__)
+#if defined (__x86_64__) || defined (__arm64__)
 	} else if (!strcmp (libraryName, "/usr/lib/libobjc.dylib")) {
 		if (xamarin_marshal_objectivec_exception_mode != MarshalObjectiveCExceptionModeDisable) {
 			if (!strcmp (entrypointName, "objc_msgSend")) {
@@ -2494,7 +2478,7 @@ xamarin_pinvoke_override (const char *libraryName, const char *entrypointName)
 		} else {
 			return NULL;
 		}
-#endif // defined (__i386__) || defined (__x86_64__) || defined (__arm64__)
+#endif // defined (__x86_64__) || defined (__arm64__)
 #endif // !defined (CORECLR_RUNTIME)
 	} else if (xamarin_is_native_library (libraryName)) {
 		switch (xamarin_libmono_native_link_mode) {
@@ -2718,7 +2702,7 @@ xamarin_locate_assembly_resource (const char *assembly_name, const char *culture
 		return true;
 	}
 
-#if !MONOMAC && (defined(__i386__) || defined (__x86_64__))
+#if !MONOMAC && defined (__x86_64__)
 	// In the simulator we also check in a 'simulator' subdirectory. This is
 	// so that we can create a framework that works for both simulator and
 	// device, without affecting device builds in any way (device-specific

@@ -2,8 +2,6 @@
 // Unit tests for CVMetalBufferCache
 //
 
-#if !__WATCHOS__
-
 using System;
 
 using CoreVideo;
@@ -144,4 +142,3 @@ namespace MonoTouchFixtures.CoreVideo {
 		}
 	}
 }
-#endif

@@ -1,0 +1,33 @@
+<Documentation>
+  <Docs DocId="T:UIKit.UITextAttributes">
+    <summary>Type used to describe the text attributes to set on some user interface elements.</summary>
+    <remarks>
+      <para>
+	Typically developers create an instance of this class and
+	fill out the various properties to configure the desired text
+	attributes.
+      </para>
+      <para>
+	For example, the following code can be used to change the style of the UINavigationBar:
+      </para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
+var attrs = new UITextAttributes () {
+	Font = UIFont.FromName ("Chalkduster", 20),
+	TextColor = UIColor.Red,
+	TextShadowColor = UIColor.Black,
+	TextShadowOffset = new UIOffset (6, 6)
+};
+myNavController.NavigationBar.SetTitleTextAttributes (attrs);
+	]]></code>
+      </example>
+      <para> You can use code-completion inside the constructor for
+	UITextAttributes without having to remember the properties
+	that you want to set.  The above sample renders like this: <img href="~/UIKit/_images/UITextAttributes.png" /></para>
+      <para> As of iOS5, you can set the text attributes on the
+	following items: <see cref="T:UIKit.UIBarItem" />,
+	<see cref="T:UIKit.UINavigationBar" />, <see cref="T:UIKit.UISearchBar" /> and <see cref="T:UIKit.UISegmentedControl" />.
+      </para>
+    </remarks>
+  </Docs>
+</Documentation>

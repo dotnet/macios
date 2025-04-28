@@ -7,8 +7,6 @@
 // Copyright 2016 Microsoft
 //
 
-#if !__WATCHOS__
-
 using System;
 using Foundation;
 using ModelIO;
@@ -49,5 +47,3 @@ namespace MonoTouchFixtures.ModelIO {
 		}
 	}
 }
-
-#endif // !__WATCHOS__

@@ -6,6 +6,8 @@ using ObjCRuntime;
 namespace MapKit {
 
 #if NET
+	/// <summary>Enumerates annotation display priorities.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("macos")]

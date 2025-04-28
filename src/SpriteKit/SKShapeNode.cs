@@ -17,6 +17,10 @@ namespace SpriteKit {
 	public partial class SKShapeNode : SKNode {
 
 #if NET
+		/// <param name="points">To be added.</param>
+		///         <summary>Creates a new shape node from the specified <paramref name="points" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -31,6 +35,12 @@ namespace SpriteKit {
 		}
 
 #if NET
+		/// <param name="points">To be added.</param>
+		///         <param name="offset">To be added.</param>
+		///         <param name="length">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -47,6 +57,10 @@ namespace SpriteKit {
 		}
 
 #if NET
+		/// <param name="points">To be added.</param>
+		///         <summary>Creates a new shape node from the specified spline <paramref name="points" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -61,6 +75,12 @@ namespace SpriteKit {
 		}
 
 #if NET
+		/// <param name="points">To be added.</param>
+		///         <param name="offset">To be added.</param>
+		///         <param name="length">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]

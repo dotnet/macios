@@ -125,9 +125,13 @@ namespace SpriteKit {
 	/// <summary>An enumeration of directions for use with <see cref="T:SpriteKit.SKTransition" />s.</summary>
 	[Native]
 	public enum SKTransitionDirection : long {
+		/// <summary>The transition moves from bottom to top.</summary>
 		Up = 0,
+		/// <summary>The transition moves from top to bottom.</summary>
 		Down = 1,
+		/// <summary>The transition moves from left to right.</summary>
 		Right = 2,
+		/// <summary>The transition moves from right to left.</summary>
 		Left = 3,
 	}
 
@@ -197,7 +201,9 @@ namespace SpriteKit {
 		Angle0 = 0,
 		/// <summary>To be added.</summary>
 		Angle90,
+		/// <summary>To be added.</summary>
 		Angle180,
+		/// <summary>To be added.</summary>
 		Angle270,
 	}
 
@@ -205,9 +211,13 @@ namespace SpriteKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SKTileSetType : ulong {
+		/// <summary>To be added.</summary>
 		Grid,
+		/// <summary>To be added.</summary>
 		Isometric,
+		/// <summary>To be added.</summary>
 		HexagonalFlat,
+		/// <summary>To be added.</summary>
 		HexagonalPointy,
 	}
 
@@ -292,8 +302,11 @@ namespace SpriteKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SKNodeFocusBehavior : long {
+		/// <summary>The <see cref="T:SpriteKit.SKNode" /> is not focusable.</summary>
 		None = 0,
+		/// <summary>The <see cref="T:SpriteKit.SKNode" /> is not focusable. It prevents nodes it obscures from being focused.</summary>
 		Occluding,
+		/// <summary>The <see cref="T:SpriteKit.SKNode" /> is focusable. It prevents nodes it obscures from being focused.</summary>
 		Focusable,
 	}
 }

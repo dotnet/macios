@@ -7,8 +7,6 @@
 // Copyright 2013 Xamarin Inc. All rights reserved.
 //
 
-#if !__WATCHOS__
-
 using Foundation;
 #if MONOMAC
 using AppKit;
@@ -50,5 +48,3 @@ namespace MonoTouchFixtures.AVFoundation {
 		}
 	}
 }
-
-#endif // !__WATCHOS__

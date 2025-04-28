@@ -57,11 +57,6 @@
       </example>
       <para>The <see cref="T:UIKit.UICollectionViewSource" /> combines the <see cref="T:UIKit.UICollectionViewDataSource" /> API and the <see cref="T:UIKit.UICollectionViewDelegate" /> API in a single convenience class. Rather than creating two classes to assign to the <see cref="P:UIKit.UICollectionView.DataSource" /> and <see cref="P:UIKit.UICollectionView.Delegate" /> properties, a single <see cref="T:UIKit.UICollectionViewSource" /> can be created and assigned to the <see cref="P:UIKit.UICollectionView.Source" /> property.</para>
     </remarks>
-    
-    
-    
-    
-    
     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UICollectionViewDataSource_protocol/index.html">Apple documentation for <c>UICollectionViewDataSource</c></related>
   </Docs>
 </Documentation>

@@ -34,20 +34,25 @@ using ObjCRuntime;
 #nullable enable
 
 namespace CoreBluetooth {
-
-#if NET
+	/// <summary>Peripheral connection options.</summary>
+	///     <remarks>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class PeripheralConnectionOptions : DictionaryContainer {
 #if !COREBUILD
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public PeripheralConnectionOptions ()
 			: base (new NSMutableDictionary ())
 		{
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public PeripheralConnectionOptions (NSDictionary dictionary)
 			: base (dictionary)
 		{

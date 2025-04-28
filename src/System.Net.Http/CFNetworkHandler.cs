@@ -47,6 +47,8 @@ using CF = CoreFoundation;
 #nullable disable
 
 namespace System.Net.Http {
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public class CFNetworkHandler : HttpMessageHandler {
 		class StreamBucket {
 			public TaskCompletionSource<HttpResponseMessage> Response;
@@ -92,6 +94,8 @@ namespace System.Net.Http {
 
 		Dictionary<IntPtr, StreamBucket> streamBuckets;
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CFNetworkHandler ()
 		{
 			allowAutoRedirect = true;
@@ -147,6 +151,9 @@ namespace System.Net.Http {
 
 		// TODO: Add more properties
 
+		/// <param name="disposing">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected override void Dispose (bool disposing)
 		{
 			// TODO: CloseStream remaining stream buckets if there are any
@@ -202,7 +209,12 @@ namespace System.Net.Http {
 #if !NET
 		internal
 #endif
-		protected override async Task<HttpResponseMessage> SendAsync (HttpRequestMessage request, CancellationToken cancellationToken)
+				/// <param name="request">To be added.</param>
+				///         <param name="cancellationToken">To be added.</param>
+				///         <summary>To be added.</summary>
+				///         <returns>To be added.</returns>
+				///         <remarks>To be added.</remarks>
+				protected override async Task<HttpResponseMessage> SendAsync (HttpRequestMessage request, CancellationToken cancellationToken)
 		{
 			return await SendAsync (request, cancellationToken, true).ConfigureAwait (false);
 		}
@@ -318,10 +330,12 @@ namespace System.Net.Http {
 		void CloseStream (CFHTTPStream stream)
 		{
 			lock (streamBuckets) {
-				if (streamBuckets.TryGetValue (stream.Handle, out var bucket)) {
+				var streamHandle = stream.Handle;
+				if (streamBuckets.TryGetValue (streamHandle, out var bucket)) {
 					bucket.Close ();
-					streamBuckets.Remove (stream.Handle);
+					streamBuckets.Remove (streamHandle);
 				}
+				GC.KeepAlive (stream);
 			}
 			stream.Close ();
 		}

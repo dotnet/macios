@@ -16,6 +16,9 @@ using Foundation;
 namespace AppKit {
 
 	public partial class NSLevelIndicator {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public new NSLevelIndicatorCell Cell {
 			get { return (NSLevelIndicatorCell) base.Cell; }
 			set { base.Cell = value; }

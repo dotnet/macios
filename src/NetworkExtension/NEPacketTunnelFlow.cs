@@ -10,6 +10,8 @@ namespace NetworkExtension {
 
 	// avoid generator default `Arg1` and `Arg2` since Action<> was used
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -18,6 +20,10 @@ namespace NetworkExtension {
 	public class NEPacketTunnelFlowReadResult {
 
 #if !COREBUILD
+		/// <param name="packets">To be added.</param>
+		///         <param name="protocols">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NEPacketTunnelFlowReadResult (NSData [] packets, NSNumber [] protocols)
 		{
 			Packets = packets;

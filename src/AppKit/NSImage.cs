@@ -34,6 +34,9 @@ using CoreGraphics;
 namespace AppKit {
 
 	public partial class NSImage {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CGImage CGImage {
 			get {
 				var rect = CGRect.Empty;
@@ -41,6 +44,10 @@ namespace AppKit {
 			}
 		}
 
+		/// <param name="stream">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSImage? FromStream (System.IO.Stream stream)
 		{
 			using (var data = NSData.FromStream (stream)) {
@@ -48,30 +55,45 @@ namespace AppKit {
 			}
 		}
 
+		/// <summary>Create a new <see cref="NSImage" /> instance.</summary>
+		/// <param name="fileName">The path of the file to load for the new <see cref="NSImage" /> instance.</param>
+		/// <param name="lazy">Whether the file should be loaded right away or lazily.</param>
 		public NSImage (string fileName, bool lazy)
+			: base (NSObjectFlag.Empty)
 		{
 			if (lazy)
-				Handle = InitByReferencingFile (fileName);
+				InitializeHandle (_InitByReferencingFile (fileName));
 			else
-				Handle = InitWithContentsOfFile (fileName);
+				InitializeHandle (_InitWithContentsOfFile (fileName));
 		}
 
+		/// <summary>Create a new <see cref="NSImage" /> instance.</summary>
+		/// <param name="data">The image data for the new <see cref="NSImage" /> instance.</param>
+		/// <param name="ignoresOrientation">Whether the orientation in the image data is ignored or not.</param>
 		public NSImage (NSData data, bool ignoresOrientation)
+			: base (NSObjectFlag.Empty)
 		{
 			if (ignoresOrientation) {
-				Handle = InitWithDataIgnoringOrientation (data);
+				InitializeHandle (_InitWithDataIgnoringOrientation (data));
 			} else {
-				Handle = InitWithData (data);
+				InitializeHandle (_InitWithData (data));
 			}
 		}
 
 		// note: if needed override the protected Get|Set methods
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? Name {
 			get { return GetName (); }
 			// ignore return value (bool)
 			set { SetName (value); }
 		}
 
+		/// <param name="name">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSImage? ImageNamed (NSImageName name)
 		{
 			return ImageNamed (name.GetConstant ());
@@ -80,6 +102,9 @@ namespace AppKit {
 
 	public partial class NSImageRep {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CGImage CGImage {
 			get {
 				var rect = CGRect.Empty;

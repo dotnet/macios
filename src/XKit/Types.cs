@@ -37,6 +37,8 @@ namespace UIKit {
 #endif
 
 #if NET
+	/// <summary>Edge insets that account for text direction.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -46,12 +48,22 @@ namespace UIKit {
 	public struct NSDirectionalEdgeInsets {
 
 		// API match for NSDirectionalEdgeInsetsZero field/constant
+		/// <summary>Gets an NSDirectionalEdgeInsets that has zero top, leading, bottom, and trailing insets.</summary>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSDirectionalEdgeInsetsZero")] // fake (but helps testing and could also help documentation)
 		public static readonly NSDirectionalEdgeInsets Zero;
 
+		/// <summary>The top inset.</summary>
+		///         <remarks>To be added.</remarks>
 		public nfloat Top;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public nfloat Leading;
+		/// <summary>The bottom edge inset.</summary>
+		///         <remarks>To be added.</remarks>
 		public nfloat Bottom;
+		/// <summary>The trailing inset.</summary>
+		///         <remarks>To be added.</remarks>
 		public nfloat Trailing;
 
 #if !COREBUILD
@@ -64,6 +76,10 @@ namespace UIKit {
 		}
 
 		// note: NSDirectionalEdgeInsetsEqualToDirectionalEdgeInsets (UIGeometry.h) is a macro
+		/// <param name="other">The other edge inset object to compare.</param>
+		///         <summary>Returns true if <paramref name="other" /> has the same values as this NSDirectionalEdgeInset.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool Equals (NSDirectionalEdgeInsets other)
 		{
 			if (Leading != other.Leading)
@@ -75,6 +91,10 @@ namespace UIKit {
 			return (Bottom == other.Bottom);
 		}
 
+		/// <param name="obj">The other object to compare.</param>
+		///         <summary>Returns true if <paramref name="obj" /> is an NSDirectionalEdgeInset and has the same values as this object.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override bool Equals (object? obj)
 		{
 			if (obj is NSDirectionalEdgeInsets insets)
@@ -92,6 +112,9 @@ namespace UIKit {
 			return !insets1.Equals (insets2);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override int GetHashCode ()
 		{
 			return HashCode.Combine (Top, Leading, Trailing, Bottom);
@@ -101,6 +124,10 @@ namespace UIKit {
 		[DllImport (Constants.UIKitLibrary)]
 		extern static NSDirectionalEdgeInsets NSDirectionalEdgeInsetsFromString (IntPtr /* NSString */ s);
 
+		/// <param name="s">The string that describes the new insets.</param>
+		///         <summary>Creates a new NSDirectionalEdgeInset object from a curly-braced, comma-separated list of the top, leading, bottom, and trailing inset values.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		static public NSDirectionalEdgeInsets FromString (string s)
 		{
 			// note: null is allowed
@@ -116,6 +143,9 @@ namespace UIKit {
 		extern static IntPtr /* NSString */ NSStringFromDirectionalEdgeInsets (NSDirectionalEdgeInsets insets);
 
 		// note: ensure we can roundtrip ToString into FromString
+		/// <summary>Converts this object to a string that contains a curly-braced, comma-separated list of the top, leading, bottom, and trailing inset values.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override string ToString ()
 		{
 			using (var ns = new NSString (NSStringFromDirectionalEdgeInsets (this)))

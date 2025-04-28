@@ -20,6 +20,8 @@ using Foundation;
 using System.Runtime.Versioning;
 
 namespace CoreFoundation {
+	/// <summary>A collection of utility methods for setting Core Foundation preferences.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -50,6 +52,10 @@ namespace CoreFoundation {
 			AnyUser = Dlfcn.GetStringConstant (handle, "kCFPreferencesAnyUser");*/
 		}
 
+		/// <param name="key">To be added.</param>
+		///         <summary>Gets the preference value that is identified by <paramref name="key" />, for the current application.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static object? GetAppValue (string key)
 		{
 			if (CurrentApplication is null)
@@ -57,6 +63,11 @@ namespace CoreFoundation {
 			return GetAppValue (key, CurrentApplication);
 		}
 
+		/// <param name="key">To be added.</param>
+		///         <param name="applicationId">To be added.</param>
+		///         <summary>Gets the preference value that is identified by <paramref name="key" />, for the specified application.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static object? GetAppValue (string key, string applicationId)
 		{
 			if (applicationId is null) {
@@ -68,6 +79,11 @@ namespace CoreFoundation {
 			}
 		}
 
+		/// <param name="key">To be added.</param>
+		///         <param name="applicationId">To be added.</param>
+		///         <summary>Gets the preference value that is identified by <paramref name="key" />, for the specified application.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static object? GetAppValue (string key, NSString applicationId)
 		{
 			if (key is null) {
@@ -80,6 +96,8 @@ namespace CoreFoundation {
 
 			using (var cfKey = new CFString (key)) {
 				valuePtr = CFPreferencesCopyAppValue (cfKey.Handle, applicationId.Handle);
+				GC.KeepAlive (cfKey);
+				GC.KeepAlive (applicationId);
 			}
 
 			if (valuePtr == IntPtr.Zero) {
@@ -94,6 +112,10 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		static extern void CFPreferencesSetAppValue (IntPtr key, IntPtr value, IntPtr applicationId);
 
+		/// <param name="key">To be added.</param>
+		///         <param name="value">To be added.</param>
+		///         <summary>Sets a key-value preference pair for the current application.</summary>
+		///         <remarks>To be added.</remarks>
 		public static void SetAppValue (string key, object value)
 		{
 			if (CurrentApplication is null)
@@ -101,6 +123,11 @@ namespace CoreFoundation {
 			SetAppValue (key, value, CurrentApplication);
 		}
 
+		/// <param name="key">To be added.</param>
+		///         <param name="value">To be added.</param>
+		///         <param name="applicationId">To be added.</param>
+		///         <summary>Sets a key-value preference pair for the specified application.</summary>
+		///         <remarks>To be added.</remarks>
 		public static void SetAppValue (string key, object? value, string applicationId)
 		{
 			if (applicationId is null) {
@@ -112,6 +139,11 @@ namespace CoreFoundation {
 			}
 		}
 
+		/// <param name="key">To be added.</param>
+		///         <param name="value">To be added.</param>
+		///         <param name="applicationId">To be added.</param>
+		///         <summary>Sets a key-value preference pair for the specified application.</summary>
+		///         <remarks>To be added.</remarks>
 		public static void SetAppValue (string key, object? value, NSString applicationId)
 		{
 			if (key is null) {
@@ -123,10 +155,13 @@ namespace CoreFoundation {
 			using (var cfKey = new CFString (key)) {
 				if (value is null) {
 					CFPreferencesSetAppValue (cfKey.Handle, IntPtr.Zero, applicationId.Handle);
+					GC.KeepAlive (cfKey);
+					GC.KeepAlive (applicationId);
 					return;
 				} else if (value is string) {
 					using (var valueStr = new CFString ((string) value)) {
 						CFPreferencesSetAppValue (cfKey.Handle, valueStr.Handle, applicationId.Handle);
+						GC.KeepAlive (applicationId);
 					}
 
 					return;
@@ -136,6 +171,8 @@ namespace CoreFoundation {
 					value is NSDictionary || value is CFDictionary ||
 					value is NSNumber || value is CFBoolean) {
 					CFPreferencesSetAppValue (cfKey.Handle, ((INativeObject) value).Handle, applicationId.Handle);
+					GC.KeepAlive (value);
+					GC.KeepAlive (applicationId);
 					return;
 				}
 
@@ -143,6 +180,7 @@ namespace CoreFoundation {
 				if (nsnumber is not null) {
 					using (nsnumber) {
 						CFPreferencesSetAppValue (cfKey.Handle, nsnumber.Handle, applicationId.Handle);
+						GC.KeepAlive (applicationId);
 					}
 					return;
 				}
@@ -151,6 +189,9 @@ namespace CoreFoundation {
 			}
 		}
 
+		/// <param name="key">To be added.</param>
+		///         <summary>Removes the preference value that is identified by <paramref name="key" />, for the current application.</summary>
+		///         <remarks>To be added.</remarks>
 		public static void RemoveAppValue (string key)
 		{
 			if (CurrentApplication is null)
@@ -158,11 +199,19 @@ namespace CoreFoundation {
 			SetAppValue (key, null, CurrentApplication);
 		}
 
+		/// <param name="key">To be added.</param>
+		///         <param name="applicationId">To be added.</param>
+		///         <summary>Removes the preference value that is identified by <paramref name="key" />, for the specified application.</summary>
+		///         <remarks>To be added.</remarks>
 		public static void RemoveAppValue (string key, string applicationId)
 		{
 			SetAppValue (key, null, applicationId);
 		}
 
+		/// <param name="key">To be added.</param>
+		///         <param name="applicationId">To be added.</param>
+		///         <summary>Removes the preference value that is identified by <paramref name="key" />, for the specified application.</summary>
+		///         <remarks>To be added.</remarks>
 		public static void RemoveAppValue (string key, NSString applicationId)
 		{
 			SetAppValue (key, null, applicationId);
@@ -172,6 +221,10 @@ namespace CoreFoundation {
 		static extern byte CFPreferencesGetAppBooleanValue (IntPtr key, IntPtr applicationId,
 			/*out bool*/ IntPtr keyExistsAndHasValidFormat);
 
+		/// <param name="key">To be added.</param>
+		///         <summary>Gets the preference Boolean value that is identified by <paramref name="key" />, for the current application.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static bool GetAppBooleanValue (string key)
 		{
 			if (CurrentApplication is null)
@@ -179,6 +232,11 @@ namespace CoreFoundation {
 			return GetAppBooleanValue (key, CurrentApplication);
 		}
 
+		/// <param name="key">To be added.</param>
+		///         <param name="applicationId">To be added.</param>
+		///         <summary>Gets the preference Boolean value that is identified by <paramref name="key" />, for the specified application.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static bool GetAppBooleanValue (string key, string applicationId)
 		{
 			if (applicationId is null) {
@@ -190,6 +248,11 @@ namespace CoreFoundation {
 			}
 		}
 
+		/// <param name="key">To be added.</param>
+		///         <param name="applicationId">To be added.</param>
+		///         <summary>Gets the preference Boolean value that is identified by <paramref name="key" />, for the specified application.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static bool GetAppBooleanValue (string key, NSString applicationId)
 		{
 			if (key is null) {
@@ -199,7 +262,9 @@ namespace CoreFoundation {
 			}
 
 			using (var cfKey = new CFString (key)) {
-				return CFPreferencesGetAppBooleanValue (cfKey.Handle, applicationId.Handle, IntPtr.Zero) != 0;
+				bool result = CFPreferencesGetAppBooleanValue (cfKey.Handle, applicationId.Handle, IntPtr.Zero) != 0;
+				GC.KeepAlive (applicationId);
+				return result;
 			}
 		}
 
@@ -207,6 +272,10 @@ namespace CoreFoundation {
 		static extern nint CFPreferencesGetAppIntegerValue (IntPtr key, IntPtr applicationId,
 			/*out bool*/ IntPtr keyExistsAndHasValidFormat);
 
+		/// <param name="key">To be added.</param>
+		///         <summary>Gets the preference integer value that is identified by <paramref name="key" />, for the current application.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static nint GetAppIntegerValue (string key)
 		{
 			if (CurrentApplication is null)
@@ -214,6 +283,11 @@ namespace CoreFoundation {
 			return GetAppIntegerValue (key, CurrentApplication);
 		}
 
+		/// <param name="key">To be added.</param>
+		///         <param name="applicationId">To be added.</param>
+		///         <summary>Gets the preference integer value that is identified by <paramref name="key" />, for the specified application.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static nint GetAppIntegerValue (string key, string applicationId)
 		{
 			if (applicationId is null) {
@@ -225,6 +299,11 @@ namespace CoreFoundation {
 			}
 		}
 
+		/// <param name="key">To be added.</param>
+		///         <param name="applicationId">To be added.</param>
+		///         <summary>Gets the preference integer value that is identified by <paramref name="key" />, for the specified application.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static nint GetAppIntegerValue (string key, NSString applicationId)
 		{
 			if (key is null) {
@@ -234,13 +313,18 @@ namespace CoreFoundation {
 			}
 
 			using (var cfKey = new CFString (key)) {
-				return CFPreferencesGetAppIntegerValue (cfKey.Handle, applicationId.Handle, IntPtr.Zero);
+				nint result = CFPreferencesGetAppIntegerValue (cfKey.Handle, applicationId.Handle, IntPtr.Zero);
+				GC.KeepAlive (applicationId);
+				return result;
 			}
 		}
 
 		[DllImport (Constants.CoreFoundationLibrary)]
 		static extern void CFPreferencesAddSuitePreferencesToApp (IntPtr applicationId, IntPtr suiteId);
 
+		/// <param name="suiteId">To be added.</param>
+		///         <summary>Adds the specified suite preferences to the searchable list of suite preferences for the current application.</summary>
+		///         <remarks>To be added.</remarks>
 		public static void AddSuitePreferencesToApp (string suiteId)
 		{
 			if (CurrentApplication is null)
@@ -248,6 +332,10 @@ namespace CoreFoundation {
 			AddSuitePreferencesToApp (CurrentApplication, suiteId);
 		}
 
+		/// <param name="applicationId">To be added.</param>
+		///         <param name="suiteId">To be added.</param>
+		///         <summary>Adds the specified suite preferences to the searchable list of suite preferences for the specified <paramref name="applicationId" />.</summary>
+		///         <remarks>To be added.</remarks>
 		public static void AddSuitePreferencesToApp (string applicationId, string suiteId)
 		{
 			if (applicationId is null) {
@@ -259,6 +347,10 @@ namespace CoreFoundation {
 			}
 		}
 
+		/// <param name="applicationId">To be added.</param>
+		///         <param name="suiteId">To be added.</param>
+		///         <summary>Adds the specified suite preferences to the searchable list of suite preferences for the specified <paramref name="applicationId" />.</summary>
+		///         <remarks>To be added.</remarks>
 		public static void AddSuitePreferencesToApp (NSString applicationId, string suiteId)
 		{
 			if (applicationId is null) {
@@ -269,12 +361,17 @@ namespace CoreFoundation {
 
 			using (var cfSuiteId = new CFString (suiteId)) {
 				CFPreferencesAddSuitePreferencesToApp (applicationId.Handle, cfSuiteId.Handle);
+				GC.KeepAlive (applicationId);
+				GC.KeepAlive (cfSuiteId);
 			}
 		}
 
 		[DllImport (Constants.CoreFoundationLibrary)]
 		static extern void CFPreferencesRemoveSuitePreferencesFromApp (IntPtr applicationId, IntPtr suiteId);
 
+		/// <param name="suiteId">To be added.</param>
+		///         <summary>Removes the specified suite preferences from the searchable list of suite preferences for the current application.</summary>
+		///         <remarks>To be added.</remarks>
 		public static void RemoveSuitePreferencesFromApp (string suiteId)
 		{
 			if (CurrentApplication is null)
@@ -282,6 +379,10 @@ namespace CoreFoundation {
 			RemoveSuitePreferencesFromApp (CurrentApplication, suiteId);
 		}
 
+		/// <param name="applicationId">To be added.</param>
+		///         <param name="suiteId">To be added.</param>
+		///         <summary>Removes the specified suite preferences from the searchable list of suite preferences for the specified <paramref name="applicationId" />.</summary>
+		///         <remarks>To be added.</remarks>
 		public static void RemoveSuitePreferencesFromApp (string applicationId, string suiteId)
 		{
 			if (applicationId is null) {
@@ -293,6 +394,10 @@ namespace CoreFoundation {
 			}
 		}
 
+		/// <param name="applicationId">To be added.</param>
+		///         <param name="suiteId">To be added.</param>
+		///         <summary>Removes the specified suite preferences from the searchable list of suite preferences for the specified <paramref name="applicationId" />.</summary>
+		///         <remarks>To be added.</remarks>
 		public static void RemoveSuitePreferencesFromApp (NSString applicationId, string suiteId)
 		{
 			if (applicationId is null) {
@@ -303,12 +408,17 @@ namespace CoreFoundation {
 
 			using (var cfSuiteId = new CFString (suiteId)) {
 				CFPreferencesRemoveSuitePreferencesFromApp (applicationId.Handle, cfSuiteId.Handle);
+				GC.KeepAlive (applicationId);
+				GC.KeepAlive (cfSuiteId);
 			}
 		}
 
 		[DllImport (Constants.CoreFoundationLibrary)]
 		static extern byte CFPreferencesAppSynchronize (IntPtr applicationId);
 
+		/// <summary>For the current application, writes all newly set preferences to permanent storage and then loads all existing preferences.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static bool AppSynchronize ()
 		{
 			if (CurrentApplication is null)
@@ -316,6 +426,10 @@ namespace CoreFoundation {
 			return AppSynchronize (CurrentApplication);
 		}
 
+		/// <param name="applicationId">To be added.</param>
+		///         <summary>For the application that is identified by <paramref name="applicationId" />, writes all newly set preferences to permanent storage and then loads all existing preferences.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static bool AppSynchronize (string applicationId)
 		{
 			if (applicationId is null) {
@@ -327,18 +441,28 @@ namespace CoreFoundation {
 			}
 		}
 
+		/// <param name="applicationId">To be added.</param>
+		///         <summary>For the application that is identified by <paramref name="applicationId" />, writes all newly set preferences to permanent storage and then loads all existing preferences.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static bool AppSynchronize (NSString applicationId)
 		{
 			if (applicationId is null) {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (applicationId));
 			}
 
-			return CFPreferencesAppSynchronize (applicationId.Handle) != 0;
+			bool result = CFPreferencesAppSynchronize (applicationId.Handle) != 0;
+			GC.KeepAlive (applicationId);
+			return result;
 		}
 
 		[DllImport (Constants.CoreFoundationLibrary)]
 		static extern byte CFPreferencesAppValueIsForced (IntPtr key, IntPtr applicationId);
 
+		/// <param name="key">To be added.</param>
+		///         <summary>Returns <see langword="true" /> if the user cannot change the preference that is identified by <paramref name="key" />, for the current application. Otherwise false.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static bool AppValueIsForced (string key)
 		{
 			if (CurrentApplication is null)
@@ -346,6 +470,11 @@ namespace CoreFoundation {
 			return AppValueIsForced (key, CurrentApplication);
 		}
 
+		/// <param name="key">To be added.</param>
+		///         <param name="applicationId">To be added.</param>
+		///         <summary>Returns <see langword="true" /> if the user cannot change the preference that is identified by <paramref name="key" />, for the application that is identified by <paramref name="applicationId" />. Otherwise false.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static bool AppValueIsForced (string key, string applicationId)
 		{
 			if (applicationId is null) {
@@ -357,6 +486,11 @@ namespace CoreFoundation {
 			}
 		}
 
+		/// <param name="key">To be added.</param>
+		///         <param name="applicationId">To be added.</param>
+		///         <summary>Returns <see langword="true" /> if the user cannot change the preference that is identified by <paramref name="key" />, for the application that is identified by <paramref name="applicationId" />. Otherwise false.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static bool AppValueIsForced (string key, NSString applicationId)
 		{
 			if (key is null) {
@@ -366,7 +500,9 @@ namespace CoreFoundation {
 			}
 
 			using (var cfKey = new CFString (key)) {
-				return CFPreferencesAppValueIsForced (cfKey.Handle, applicationId.Handle) != 0;
+				bool result = CFPreferencesAppValueIsForced (cfKey.Handle, applicationId.Handle) != 0;
+				GC.KeepAlive (applicationId);
+				return result;
 			}
 		}
 	}

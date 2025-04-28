@@ -49,6 +49,9 @@ using NativeHandle = System.IntPtr;
 
 namespace MapKit {
 
+	/// <summary>Provides annotation information to the map view.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MapKit/Reference/MKAnnotation_Protocol/index.html">Apple documentation for <c>MKAnnotation</c></related>
 	[BaseType (typeof (NSObject))]
 	[Model]
 	[Protocol]
@@ -82,6 +85,7 @@ namespace MapKit {
 
 	interface IMKAnnotation { }
 
+	/// <include file="../docs/api/MapKit/MKOverlay.xml" path="/Documentation/Docs[@DocId='T:MapKit.MKOverlay']/*" />
 	[BaseType (typeof (MKAnnotation))]
 	[Model]
 	[Protocol]
@@ -859,6 +863,12 @@ namespace MapKit {
 
 	interface IMKMapViewDelegate { }
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:MapKit.MKMapViewDelegate" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:MapKit.MKMapViewDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:MapKit.MKMapViewDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:MapKit.MKMapViewDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[BaseType (typeof (NSObject))]
 	[Model]
 	[Protocol]
@@ -1742,6 +1752,11 @@ namespace MapKit {
 		NativeHandle Constructor ([NullAllowed] MKMapView mapView);
 	}
 
+	/// <param name="response">To be added.</param>
+	/// <param name="error">To be added.</param>
+	/// <summary>A delegate that is used to handle the results of a map-based search.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <altmember cref="T:MapKit.MKLocalSearch" />
 	delegate void MKLocalSearchCompletionHandler (MKLocalSearchResponse response, NSError error);
 
 	[MacCatalyst (13, 1)]
@@ -1912,8 +1927,17 @@ namespace MapKit {
 		void CalculateETA (MKETAHandler completionHandler);
 	}
 
+	/// <param name="response">Returned if the routing request was successful</param>
+	/// <param name="error">If not <see langword="null" />, an error occurred with the request.</param>
+	/// <summary>The completion handler for calls to <see cref="M:MapKit.MKDirections.CalculateDirections(MapKit.MKDirectionsHandler)" />.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <altmember cref="T:MapKit.MKDirectionsRequest" />
 	delegate void MKDirectionsHandler (MKDirectionsResponse response, NSError error);
 
+	/// <param name="response">Returned if the request was successful.</param>
+	/// <param name="error">If not <see langword="null" />, an error occurred with the request.</param>
+	/// <summary>The completion handler for calls to <see cref="M:MapKit.MKDirections.CalculateETA(MapKit.MKETAHandler)" />.</summary>
+	/// <remarks>To be added.</remarks>
 	delegate void MKETAHandler (MKETAResponse response, NSError error);
 
 	[BaseType (typeof (NSObject))]
@@ -2229,6 +2253,10 @@ namespace MapKit {
 		bool Loading { [Bind ("isLoading")] get; }
 	}
 
+	/// <param name="snapshot">The newly-created <see cref="T:MapKit.MKMapSnapshot" /></param>
+	/// <param name="error">If not <see langword="null" />, an error occurred with the request.</param>
+	/// <summary>The completion handler for <see cref="M:MapKit.MKMapSnapshotter.StartAsync(CoreFoundation.DispatchQueue)" />.</summary>
+	/// <remarks>To be added.</remarks>
 	delegate void MKMapSnapshotCompletionHandler (MKMapSnapshot snapshot, NSError error);
 
 	[BaseType (typeof (MKOverlayRenderer))]
@@ -2481,6 +2509,10 @@ namespace MapKit {
 		CLLocationCoordinate2D Coordinate { get; }
 	}
 
+	/// <param name="tileData">To be added.</param>
+	/// <param name="error">To be added.</param>
+	/// <summary>The completion handler for <see cref="M:MapKit.MKTileOverlay.LoadTileAtPath(MapKit.MKTileOverlayPath,MapKit.MKTileOverlayLoadTileCompletionHandler)" />.</summary>
+	/// <remarks>To be added.</remarks>
 	delegate void MKTileOverlayLoadTileCompletionHandler (NSData tileData, NSError error);
 
 	[BaseType (typeof (MKOverlayRenderer))]
@@ -2562,6 +2594,12 @@ namespace MapKit {
 
 	interface IMKLocalSearchCompleterDelegate { }
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:MapKit.MKLocalSearchCompleterDelegate" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:MapKit.MKLocalSearchCompleterDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:MapKit.MKLocalSearchCompleterDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:MapKit.MKLocalSearchCompleterDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	[Model]
@@ -2602,6 +2640,8 @@ namespace MapKit {
 		NSValue [] SubtitleHighlightRanges { get; }
 	}
 
+	/// <summary>Extension class for getting and setting map items on a <see cref="T:Foundation.NSUserActivity" /> object.</summary>
+	/// <remarks>To be added.</remarks>
 	[Category]
 	[BaseType (typeof (NSUserActivity))]
 	interface NSUserActivity_MKMapItem {

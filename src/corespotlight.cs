@@ -529,6 +529,8 @@ namespace CoreSpotlight {
 		bool MultiValued { [Bind ("isMultiValued")] get; }
 	}
 
+	/// <summary>Represents keys that identify commonly used mailboxes.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[EditorBrowsable (EditorBrowsableState.Advanced)]
 	[Static]

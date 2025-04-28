@@ -10,14 +10,14 @@
     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UITableViewDataSource_Protocol/index.html">Apple documentation for <c>UITableViewDataSource</c></related>
   </Docs>
   <Docs DocId="M:UIKit.UITableViewDataSource.SectionFor(UIKit.UITableView,System.String,System.IntPtr)">
-        <param name="tableView">Table view containing the section.</param>
-        <param name="title">The title that's displayed in the table view's index.</param>
-        <param name="atIndex">The index of the title in the array returned from the <see cref="M:UIKit.UITableViewSource.SectionIndexTitles(UIKit.UITableView)" />.</param>
-        <summary>Returns the index of the section with the given <paramref name="tableView" /> and <paramref name="atIndex" />.</summary>
-        <returns>The index of the section in the table view.</returns>
-        <remarks>
-          <para>This method is only required for table views that have an index: they must have the <see cref="F:UIKit.UITableViewStyle.Plain" /> style and implement the <see cref="M:UIKit.UITableViewSource.SectionIndexTitles(UIKit.UITableView)" /> property.</para>
-          <para>The index for a table view may contain fewer items than the number of actual sections in the table. This method is passed the text and index of an item in the index, and should return the position of the corresponding section. </para>
-        </remarks>
-      </Docs>
+    <param name="tableView">Table view containing the section.</param>
+    <param name="title">The title that's displayed in the table view's index.</param>
+    <param name="atIndex">The index of the title in the array returned from the <see cref="M:UIKit.UITableViewSource.SectionIndexTitles(UIKit.UITableView)" />.</param>
+    <summary>Returns the index of the section with the given <paramref name="tableView" /> and <paramref name="atIndex" />.</summary>
+    <returns>The index of the section in the table view.</returns>
+    <remarks>
+      <para>This method is only required for table views that have an index: they must have the <see cref="F:UIKit.UITableViewStyle.Plain" /> style and implement the <see cref="M:UIKit.UITableViewSource.SectionIndexTitles(UIKit.UITableView)" /> property.</para>
+      <para>The index for a table view may contain fewer items than the number of actual sections in the table. This method is passed the text and index of an item in the index, and should return the position of the corresponding section. </para>
+    </remarks>
+  </Docs>
 </Documentation>

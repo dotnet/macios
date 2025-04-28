@@ -34,6 +34,10 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIActivityIndicatorView.h
+	/// <summary>The visual style for a <see cref="T:UIKit.UIActivityIndicatorView" />.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <altmember cref="T:UIKit.UIActivityIndicatorView" />
+	/// <altmember cref="T:UIKit.UIActivityIndicatorView+UIActivityIndicatorViewAppearance" />
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UIActivityIndicatorViewStyle : long {
@@ -83,6 +87,8 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIBarButtonItem.h
+	/// <summary>The visual style of a <see cref="T:UIKit.UIBarButtonItem" />.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UIBarButtonItemStyle : long {
@@ -101,6 +107,8 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIBarButtonItem.h
+	/// <summary>An enumeration of the predefined <see cref="T:UIKit.UIBarButtonItem" />s.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UIBarButtonSystemItem : long {
@@ -163,6 +171,8 @@ namespace UIKit {
 	}
 
 	// NSUInteger -> UIControl.h
+	/// <summary>An enumeration indicating various types of events.</summary>
+	/// <remarks>The list of events for UIControl objects.</remarks>
 	[Native ("UIControlEvents")]
 	[Flags]
 	[MacCatalyst (13, 1)]
@@ -216,6 +226,8 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIEvent.h
+	/// <summary>An enumeration of event types.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UIEventType : long {
@@ -240,6 +252,8 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIEvent.h
+	/// <summary>An enumeration of event subtypes.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UIEventSubtype : long {
@@ -271,6 +285,8 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIControl.h
+	/// <summary>An enumeration of vertical alignments available to text and images.</summary>
+	/// <remarks>An enumeration of valid vertical alignment values.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UIControlContentVerticalAlignment : long {
@@ -285,6 +301,8 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIControl.h
+	/// <summary>An enumeration of horizontal alignments available to text and images.</summary>
+	/// <remarks>An enumeration of valid horizontal alignment values.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UIControlContentHorizontalAlignment : long {
@@ -303,6 +321,8 @@ namespace UIKit {
 	}
 
 	// NSUInteger -> UIControl.h
+	/// <summary>An enumeration of possible states for a <see cref="T:UIKit.UIControl" />.</summary>
+	/// <remarks>Flags representing the state of a control.</remarks>
 	[Native]
 	[Flags]
 	[MacCatalyst (13, 1)]
@@ -325,6 +345,8 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIImage.h
+	/// <summary>An enumeration of values used to specify the orientation of a <see cref="T:UIKit.UIImage" />.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	public enum UIImageOrientation : long {
 		/// <summary>Default orientation. <img href="~/UIKit/_images/UIKit.UIImageOrientation_Up.png" alt="Image showing the specified image orientation." /></summary>
@@ -346,6 +368,8 @@ namespace UIKit {
 	}
 
 	// NSUInteger -> UIView.h
+	/// <summary>An enumeration indicating the resizing style for <see cref="T:UIKit.UIView" />s.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	[Flags]
 	[MacCatalyst (13, 1)]
@@ -373,6 +397,8 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIView.h
+	/// <summary>An enumeration of animation curve styles.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UIViewAnimationCurve : long {
@@ -387,6 +413,7 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIView.h
+	/// <include file="../../docs/api/UIKit/UIViewContentMode.xml" path="/Documentation/Docs[@DocId='T:UIKit.UIViewContentMode']/*" />
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UIViewContentMode : long {
@@ -484,6 +511,8 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIView.h
+	/// <summary>An enumeration of predefined animated transitions.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UIViewAnimationTransition : long {
@@ -500,6 +529,9 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIBarCommon.h
+	/// <summary>Enumerates layout bar metrics.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <!-- TODO:  How does this behave with an iPad app? -->
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UIBarMetrics : long {
@@ -526,6 +558,8 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIButton.h
+	/// <summary>An enumeration of predefined button types.</summary>
+	/// <remarks>The type of a <see cref="T:UIKit.UIButton" />.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UIButtonType : long {
@@ -554,6 +588,8 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIStringDrawing.h
+	/// <summary>An enumeration of values used to specify line break mode.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	// note: __TVOS_PROHIBITED -> because it uses NSLineBreakMode (but we need this because we don't expose the later)
 	public enum UILineBreakMode : long {
@@ -572,6 +608,8 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIStringDrawing.h
+	/// <summary>An enumeration that specifies text baseline alignment.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UIBaselineAdjustment : long {
@@ -785,6 +823,8 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIProgressView.h
+	/// <summary>The visual style for a <see cref="T:UIKit.UIProgressView" />.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UIProgressViewStyle : long {
@@ -797,6 +837,7 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIScrollView.h
+	/// <include file="../../docs/api/UIKit/UIScrollViewIndicatorStyle.xml" path="/Documentation/Docs[@DocId='T:UIKit.UIScrollViewIndicatorStyle']/*" />
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UIScrollViewIndicatorStyle : long {
@@ -809,6 +850,8 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UITextInputTraits.h
+	/// <summary>An enumeration of auto-capitalization styles.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UITextAutocapitalizationType : long {
@@ -823,6 +866,9 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UITextInputTraits.h
+	/// <summary>An enumeration of auto-correction types.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <!-- Bummed <del>typos</del> didn't render -->
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UITextAutocorrectionType : long {
@@ -835,6 +881,26 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UITextInputTraits.h
+	/// <summary>An enumeration of keyboard types.</summary>
+	/// <remarks>
+	///       <para>In order to change the keyboard appearance, the currently displaying keyboard must be dismissed. This is achieved by having the <see cref="T:UIKit.UIControl" /> associated with the keyboard resigning as first responder, changing the keyboard type, and then re-subscribed as the first subscriber, as shown in the following code:</para>
+	///       <example>
+	///         <code lang="csharp lang-csharp"><![CDATA[
+	/// void AddKeyboardTypeButton (UIKeyboardType kbType, RectangleF frame)
+	/// {
+	/// 	  var kbButton = UIButton.FromType (UIButtonType.RoundedRect);
+	/// 	  kbButton.Frame = frame;
+	/// 	  kbButton.SetTitle (kbType.ToString (), UIControlState.Normal);
+	/// 	  View.AddSubview (kbButton);
+	/// 	  kbButton.TouchUpInside += (sender, e) => {
+	/// 		    myTextField.ResignFirstResponder ();
+	/// 		    myTextField.KeyboardType = kbType;
+	/// 		    myTextField.BecomeFirstResponder ();
+	/// 	  };
+	/// }
+	///         ]]></code>
+	///       </example>
+	///     </remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UIKeyboardType : long {
@@ -886,6 +952,8 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UITabBarItem.h
+	/// <summary>An enumeration of predefined <see cref="T:UIKit.UITabBarSystemItem" />s.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UITabBarSystemItem : long {
@@ -916,6 +984,8 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UITableView.h
+	/// <summary>The visual style for a <see cref="T:UIKit.UITableView" />. A table view's style can only be set when it is instantiated.</summary>
+	/// <remarks>Some table view features are only available for a specific style, for example Plain tables can provide an index to help scroll through long lists but Grouped tables should not.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UITableViewStyle : long {
@@ -929,6 +999,8 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UITableView.h
+	/// <summary>An enumeration of predefined scroll positions.</summary>
+	/// <remarks>This is used by the <see cref="M:UIKit.UITableView.ScrollToRow(Foundation.NSIndexPath,UIKit.UITableViewScrollPosition,System.Boolean)" /> method</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UITableViewScrollPosition : long {
@@ -943,6 +1015,9 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UITableView.h
+	/// <summary>An enumeration of animations used when rows are inserted or deleted from a table view.</summary>
+	/// <remarks>
+	///     </remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UITableViewRowAnimation : long {
@@ -979,6 +1054,8 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UITouch.h
+	/// <summary>An enumeration of phases associated with a <see cref="T:UIKit.UITouch" />.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UITouchPhase : long {
@@ -1003,6 +1080,8 @@ namespace UIKit {
 		RegionExited,
 	}
 
+	/// <summary>Enumerates different kinds of <see cref="T:UIKit.UITouch" /> objects.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UITouchType : long {
@@ -1017,6 +1096,10 @@ namespace UIKit {
 		IndirectPointer,
 	}
 
+	/// <summary>A flagging enumeration of the properties of a <see cref="T:UIKit.UITouch" /> that may change.</summary>
+	/// <remarks>
+	///       <para>Different hardware devices have different capabilities that can vary over the duration of a touch. For instance, all current hardware allows the <see cref="F:UIKit.UITouchProperties.Location" /> property to vary, but only the Apple Pencil currently supports the <see cref="F:UIKit.UITouchProperties.Altitude" /> and <see cref="F:UIKit.UITouchProperties.Azimuth" /> values to change over the course of a touch.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	[Flags]
@@ -1042,6 +1125,8 @@ namespace UIKit {
 	//
 	// NSInteger -> UIStringDrawing.h
 #if __MACCATALYST__
+	/// <summary>An enumeration of text alignments.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native (ConvertToNative = "UITextAlignmentExtensions.ToNative", ConvertToManaged = "UITextAlignmentExtensions.ToManaged")]
 #else
 	[Native]
@@ -1061,6 +1146,9 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UITableViewCell.h
+	/// <summary>The visual style of a <see cref="T:UIKit.UITableViewCell" />.</summary>
+	/// <remarks>
+	///     </remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UITableViewCellStyle : long {
@@ -1094,6 +1182,8 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UITableViewCell.h
+	/// <summary>The visual appearance of a <see cref="T:UIKit.UITableViewCell" /> when it is selected.</summary>
+	/// <remarks>Used to set the <see cref="P:UIKit.UITableViewCell.SelectionStyle" /> of a cell.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UITableViewCellSelectionStyle : long {
@@ -1108,6 +1198,8 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UITableViewCell.h
+	/// <summary>An enumeration of editing styles for a <see cref="T:UIKit.UITableView" /> cell.</summary>
+	/// <remarks>The editing style of a cell is set on the <see cref="P:UIKit.UITableViewCell.EditingStyle" /> property.  The editing control is displayed on the left hand side of the cell when it is in editing mode.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UITableViewCellEditingStyle : long {
@@ -1120,6 +1212,8 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UITableViewCell.h
+	/// <summary>An enumeration of standard accessory controls that can be used by a <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:UIKIt.UITableViewCell&amp;scope=Xamarin" title="T:UIKIt.UITableViewCell">T:UIKIt.UITableViewCell</a></format>.</summary>
+	/// <remarks>Set the type of accessory to display in a <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:UIKIt.UITableViewCell&amp;scope=Xamarin" title="T:UIKIt.UITableViewCell">T:UIKIt.UITableViewCell</a></format> using the <see cref="P:UIKit.UITableViewCell.Accessory" /> property.</remarks>
 	[Native ("UITableViewCellAccessoryType")]
 	[MacCatalyst (13, 1)]
 	public enum UITableViewCellAccessory : long {
@@ -1140,6 +1234,8 @@ namespace UIKit {
 	}
 
 	// NSUInteger -> UITableViewCell.h
+	/// <summary>An enumeration of states for a <see cref="T:UIKit.UITableViewCell" />.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native ("UITableViewCellStateMask")]
 	[Flags]
 	[MacCatalyst (13, 1)]
@@ -1153,6 +1249,8 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UITextField.h
+	/// <summary>An enumeration of visual styles for text borders.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UITextBorderStyle : long {
@@ -1167,6 +1265,8 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UITextField.h
+	/// <summary>An enumeration indicating the behavior of the clear button on a <see cref="T:UIKit.UITextField" />.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UITextFieldViewMode : long {
@@ -1181,6 +1281,8 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIViewController.h
+	/// <summary> An enumeration of values used to specify the transition style of presented <see cref="T:UIKit.UIViewController" />s.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UIModalTransitionStyle : long {
@@ -1380,6 +1482,21 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIGestureRecognizer.h
+	/// <summary>An enumeration of states for a <see cref="T:UIKit.UIGestureRecognizer" />.</summary>
+	/// <remarks>
+	///       <para>
+	/// 	This describes the state of a <see cref="T:UIKit.UIGestureRecognizer" />.  All of
+	/// 	UIGestureRecognizers start in the Possible state.  Once one or
+	/// 	more touches has been received, the recognizers transition to
+	/// 	the Began state.  For one-shot patterns (like Tap), this will
+	/// 	either transition into the Recognized state or the Failed
+	/// 	state.  For continuous gestures (like panning, pinching,
+	/// 	rotating) the recognizer will transition to the Changed state
+	/// 	and emit multiple calls back to the action and finally
+	/// 	transition to either the Ended or Cancelled states.
+	/// 
+	///       </para>
+	///     </remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UIGestureRecognizerState : long {
@@ -1420,6 +1537,8 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UITextInputTraits.h
+	/// <summary>The keyboard appearance.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UIKeyboardAppearance : long {
@@ -1434,6 +1553,8 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UITextInputTraits.h
+	/// <summary>An enumeration of styles used for rendering the return key.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UIReturnKeyType : long {
@@ -1464,6 +1585,8 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIViewController.h
+	/// <summary>An enumeration of values used by <see cref="P:UIKit.UIViewController.ModalPresentationStyle" /></summary>
+	/// <remarks>iPhones and iTouches should always use <see cref="F:UIKit.UIModalPresentationStyle.FullScreen" />. iPads may use any value.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UIModalPresentationStyle : long {
@@ -1502,6 +1625,8 @@ namespace UIKit {
 	}
 
 	// NSUInteger -> UISwipeGestureRecognizer.h
+	/// <summary>An enumeration of values specifying the directin of a swipe gesture .</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	[Flags]
 	[MacCatalyst (13, 1)]
@@ -1517,6 +1642,8 @@ namespace UIKit {
 	}
 
 	// NSUInteger -> UIPopoverController.h
+	/// <summary>An enumeration indicating the direction of the arrow attached to a <see cref="T:UIKit.UIPopoverController" />.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	[Flags]
 	[MacCatalyst (13, 1)]
@@ -1554,6 +1681,8 @@ namespace UIKit {
 	}
 
 	// NSUInteger -> UIPopoverController.h
+	/// <summary>An enumeration of the corners of a rectangle.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	[Flags]
 	public enum UIRectCorner : ulong {
@@ -1570,6 +1699,8 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIApplication.h
+	/// <summary>An enumeration of values specifying the layout direction of the UI.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UIUserInterfaceLayoutDirection : long {
@@ -1580,6 +1711,9 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIDevice.h
+	/// <summary>An enumeration indicating on what kind of device the UI is running.</summary>
+	/// <remarks>
+	///     </remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UIUserInterfaceIdiom : long {
@@ -1601,6 +1735,7 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIApplication.h
+	/// <include file="../../docs/api/UIKit/UIApplicationState.xml" path="/Documentation/Docs[@DocId='T:UIKit.UIApplicationState']/*" />
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UIApplicationState : long {
@@ -1613,6 +1748,9 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIView.h
+	/// <summary>An enumeration indicating animation options.</summary>
+	/// <remarks>
+	///     </remarks>
 	[Native]
 	[Flags]
 	[MacCatalyst (13, 1)]
@@ -1735,6 +1873,8 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIAccessibility.h
+	/// <summary>An enumeration indicating the scrolling direction desired.</summary>
+	/// <remarks>Used as the argument to <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Foundation%20NSObject%20Accessibility%20Scroll&amp;scope=Xamarin" title="M:Foundation.NSObject.AccessibilityScroll*">M:Foundation.NSObject.AccessibilityScroll*</a></format> to generate a scrolling action.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UIAccessibilityScrollDirection : long {
@@ -1753,6 +1893,9 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIScreen.h
+	/// <summary>An enumeration of strategies for dealing with pixels lost at the edge of the screen.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <altmember cref="P:UIKit.UIScreen.OverscanCompensation" />
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UIScreenOverscanCompensation : long {
@@ -1768,6 +1911,8 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UISegmentedControl.h
+	/// <summary>An enumeration of locations in a <see cref="T:UIKit.UISegmentedControl" />.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UISegmentedControlSegment : long {
@@ -1784,6 +1929,8 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UISearchBar.h
+	/// <summary>An enumeration indicating icons available for the search bar.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UISearchBarIcon : long {
@@ -1804,6 +1951,8 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIPageViewController.h
+	/// <summary>An enumeration indicating the orientation of <see cref="T:UIKit.UIPageViewController" /> page turns.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UIPageViewControllerNavigationOrientation : long {
@@ -1814,6 +1963,8 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIPageViewController.h
+	/// <summary>An enumeration indicating the location of the spine around which the <see cref="T:UIKit.UIPageViewController" /> transitions occur.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UIPageViewControllerSpineLocation : long {
@@ -1828,6 +1979,8 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIPageViewController.h
+	/// <summary>An enumeration indicating the direction of <see cref="T:UIKit.UIPageViewController" /> page turns.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UIPageViewControllerNavigationDirection : long {
@@ -1838,6 +1991,8 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIPageViewController.h
+	/// <summary>An enumeration indicating the transition style of a <see cref="T:UIKit.UIPageViewController" />.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UIPageViewControllerTransitionStyle : long {
@@ -1848,6 +2003,8 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UITextInputTraits.h
+	/// <summary>An enumeration specifying whether spell-checking is on or off.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UITextSpellCheckingType : long {
@@ -1860,6 +2017,10 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UITextInput.h
+	/// <summary>An enumeation indicating the direction in which text is stored.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <altmember cref="T:UIKit.UITextField" />
+	/// <altmember cref="T:UIKit.UITextView" />
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UITextStorageDirection : long {
@@ -1870,6 +2031,8 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UITextInput.h
+	/// <summary>An enumeration indicating the direction of text layout.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UITextLayoutDirection : long {
@@ -1885,6 +2048,10 @@ namespace UIKit {
 
 	// Sum of UITextStorageDirection and UITextLayoutDirection 
 	// NSInteger -> UITextInput.h
+	/// <summary>An enumeration of values that specify text direction.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <altmember cref="T:UIKit.UITextStorageDirection" />
+	/// <altmember cref="T:UIKit.UITextLayoutDirection" />
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UITextDirection : long {
@@ -1915,6 +2082,10 @@ namespace UIKit {
 #endif
 
 	// NSInteger -> UITextInput.h
+	/// <summary>An enumeration of values that specify the granularity of a text range .</summary>
+	/// <remarks>To be added.</remarks>
+	/// <altmember cref="T:UIKit.UITextInputStringTokenizer" />
+	/// <altmember cref="T:UIKit.UITextInputTokenizer" />
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UITextGranularity : long {
@@ -1935,6 +2106,10 @@ namespace UIKit {
 	// float (and not even a CGFloat) -> NSLayoutConstraint.h
 	// the API were fixed (a long time ago to use `float`) and the enum
 	// values can still be used (and useful) since they will be casted
+	/// <summary>An enumeration of values used by flow layouts to prioritize constraints.</summary>
+	/// <remarks>
+	///       <para>Higher values are considered more important by the flow layout constraint engine. Application developers should not specify a layout priority greater than the value of <see cref="F:UIKit.UILayoutPriority.Required" /></para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	public enum UILayoutPriority {
 		/// <summary>Indicates a required constraint. The underlying value of this is 1000.</summary>
@@ -1957,6 +2132,9 @@ namespace UIKit {
 	}
 
 	// NSInteger -> NSLayoutConstraint.h
+	/// <summary>An enumeration of valid <see cref="P:UIKit.UICollectionViewUpdateItem.UpdateAction" /> properties.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <altmember cref="P:UIKit.UICollectionViewUpdateItem.UpdateAction" />
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UICollectionUpdateAction : long {
@@ -1973,6 +2151,11 @@ namespace UIKit {
 	}
 
 	// NSUInteger -> UICollectionView.h
+	/// <summary>An enumeration of values used to specify to where a <see cref="T:UIKit.UIView" /> should end up after a scroll into a <see cref="T:UIKit.UICollectionView" />.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <!--TODO : Confirm that it's UIView and not a specialized type -->
+	/// <altmember cref="T:UIKit.UICollectionView" />
+	/// <related type="article" href="https://docs.xamarin.com/ios/Guides/User_Interface/Introduction_to_Collection_Views">Introduction to Collection Views</related>
 	[Native]
 	[Flags]
 	[MacCatalyst (13, 1)]
@@ -1994,6 +2177,10 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UICollectionViewFlowLayout.h
+	/// <summary>An enumeration of values used by the <see cref="P:UIKit.UICollectionViewFlowLayout.ScrollDirection" /> property.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <altmember cref="P:UIKit.UICollectionViewFlowLayout.ScrollDirection" />
+	/// <related type="article" href="https://docs.xamarin.com/ios/Guides/User_Interface/Introduction_to_Collection_Views">Introduction to Collection Views</related>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UICollectionViewScrollDirection : long {
@@ -2004,6 +2191,8 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UICollectionViewFlowLayout.h
+	/// <summary>An enumeration of values used in flow layouts to specify which axis is being constrained.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UILayoutConstraintAxis : long {
@@ -2015,6 +2204,9 @@ namespace UIKit {
 
 	// NSInteger -> UIImage.h
 #if __MACCATALYST__
+	/// <summary>An enumeration of values that specify how a <see cref="T:UIKit.UIImage" /> ought to be resized.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <altmember cref="T:UIKit.UIImage" />
 	[Native (ConvertToNative = "UIImageResizingModeExtensions.ToNative", ConvertToManaged = "UIImageResizingModeExtensions.ToManaged")]
 #else
 	[Native]
@@ -2027,6 +2219,8 @@ namespace UIKit {
 	}
 
 	// NSUInteger -> UICollectionViewLayout.h
+	/// <summary>An enumeration of values used by <see cref="P:UIKit.UICollectionViewLayoutAttributes.RepresentedElementCategory" />.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UICollectionElementCategory : ulong {
@@ -2039,6 +2233,9 @@ namespace UIKit {
 	}
 
 	// that's a convenience enum that maps to UICollectionElementKindSection[Footer|Header] which are NSString
+	/// <summary>An enumeration of view types that are supported in flow layouts.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <altmember cref="T:UIKit.UICollectionViewFlowLayout" />
 	[MacCatalyst (13, 1)]
 	public enum UICollectionElementKindSection {
 		/// <summary>The <see cref="T:UIKit.UIView" /> should be treated as a header.</summary>
@@ -2051,6 +2248,8 @@ namespace UIKit {
 	// note: IMO not really worth changing to ulong for backwards compatibility concerns
 	// This is not an enum in ObjC but several fields exported (and we have them too)
 	// Unit tests (ViewTest.cs) already ensure we expose the same value as iOS returns
+	/// <summary>An enumeration whose values can be used as flags for <see cref="P:UIKit.UIView.AccessibilityTraits" />.</summary>
+	/// <remarks>To be added.</remarks>
 	[Flags]
 	public enum UIAccessibilityTrait : long {
 		/// <summary>The accessibility element has no traits.</summary>
@@ -2090,6 +2289,10 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIImage.h
+	/// <summary>An enumeration whose values specify rendering modes for a <see cref="T:UIKit.UIImage" />.</summary>
+	/// <remarks>
+	///       <para>A template image is used as a mask to create the final image. A template image inherits the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIImage%20Tint%20Color&amp;scope=Xamarin" title="P:UIKit.UIImage.TintColor">P:UIKit.UIImage.TintColor</a></format> of its parent. Application developers who do not want this behavior should use <see cref="F:UIKit.UIImageRenderingMode.AlwaysOriginal" />.</para>
+	///     </remarks>
 	[Native]
 	public enum UIImageRenderingMode : long {
 		/// <summary>The default rendering mode for the context.</summary>
@@ -2101,6 +2304,8 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIMotionEffect.h
+	/// <summary>An enumeration whose values specify the axis being monitored by a <see cref="T:UIKit.UIInterpolatingMotionEffect" />.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UIInterpolatingMotionEffectType : long {
@@ -2111,6 +2316,8 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UINavigationController.h
+	/// <summary>An enumeration whose values specify operations on <see cref="T:UIKit.UINavigationController" />.</summary>
+	/// <remarks>This enumeration is used in calls to <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UINavigation%20Controller%20Get%20Animation%20Controller&amp;scope=Xamarin" title="M:UIKit.UINavigationController.GetAnimationController*">M:UIKit.UINavigationController.GetAnimationController*</a></format>.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UINavigationControllerOperation : long {
@@ -2138,6 +2345,8 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIAttachmentBehavior.h
+	/// <summary>An enumeration whose values specify whether a <see cref="T:UIKit.UIAttachmentBehavior" /> is anchored to a fixed point or to an <see cref="T:UIKit.IUIDynamicItem" />.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UIAttachmentBehaviorType : long {
@@ -2148,6 +2357,8 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIBarCommon.h
+	/// <summary>An enumeration whose values specify locations for <see cref="T:UIKit.UISearchBar" />, <see cref="T:UIKit.UINavigationBar" />, or <see cref="T:UIKit.UIToolbar" />.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UIBarPosition : long {
@@ -2162,6 +2373,8 @@ namespace UIKit {
 	}
 
 	// NSUInteger -> UICollisionBehavior.h
+	/// <summary>An enumeration whose values specify whether a <see cref="T:UIKit.UICollisionBehavior" /> detects collisions to boundaries, items, or everything.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	[Flags]
 	[MacCatalyst (13, 1)]
@@ -2175,6 +2388,9 @@ namespace UIKit {
 	}
 
 	// uint32_t -> UIFontDescriptor.h
+	/// <summary>Describes some stylistic properties of a typeface (lower 16 bits), and font appearance (top 16 bits), used with UIFontDescriptor.</summary>
+	/// <remarks>
+	///     </remarks>
 	[Flags]
 	public enum UIFontDescriptorSymbolicTraits : uint {
 		/// <summary>Typeface: italic.</summary>
@@ -2224,6 +2440,8 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIResponder.h
+	/// <summary>An enumeration whose values flag the hardware modifier keys associated with a <see cref="T:UIKit.UIKeyCommand" />.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	[Flags]
 	[MacCatalyst (13, 1)]
@@ -2243,6 +2461,9 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIScrollView.h
+	/// <summary>An enumeration whose values specify the mode in which the keyboard is dismissed in a scrollview.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <altmember cref="P:UIKit.UIScrollView.KeyboardDismissMode" />
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UIScrollViewKeyboardDismissMode : long {
@@ -2289,6 +2510,9 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIPushBehavior.h
+	/// <summary>An enumeration whose values specify whether a <see cref="T:UIKit.UIPushBehavior" /> force is applied continuously or instantaneously.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <altmember cref="T:UIKit.UIPushBehavior" />
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UIPushBehaviorMode : long {
@@ -2299,6 +2523,9 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UITabBar.h
+	/// <summary>An enumeration whose values specify how a <see cref="T:UIKit.UITabBarItem" /> is positioned.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <altmember cref="P:UIKit.UITabBarItem.ItemPositioning" />
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UITabBarItemPositioning : long {
@@ -2311,6 +2538,8 @@ namespace UIKit {
 	}
 
 	// NSUInteger -> UIView.h
+	/// <summary>An enumeration whose values specify valid options for the <see cref="M:UIKit.UIView.AnimateKeyframes(System.Double,System.Double,UIKit.UIViewKeyframeAnimationOptions,System.Action,UIKit.UICompletionHandler)" /> method.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UIViewKeyframeAnimationOptions : ulong {
@@ -2342,6 +2571,8 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIView.h
+	/// <summary>An enumeration whose values specify adjustment modes for <see cref="P:UIKit.UIView.TintAdjustmentMode" />.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UIViewTintAdjustmentMode : long {
@@ -2354,6 +2585,8 @@ namespace UIKit {
 	}
 
 	// NSUInteger -> UIView.h
+	/// <summary>An enumeration specifying system animations, i.e., Delete.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UISystemAnimation : ulong {
@@ -2362,6 +2595,8 @@ namespace UIKit {
 	}
 
 	// NSUInteger -> UIGeometry.h
+	/// <summary>An enumeration whose values specify screen edges, for use with <see cref="P:UIKit.UIScreenEdgePanGestureRecognizer.Edges" /> and <see cref="P:UIKit.UIViewController.EdgesForExtendedLayout" />.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	[Flags]
 	public enum UIRectEdge : ulong {
@@ -2380,6 +2615,8 @@ namespace UIKit {
 	}
 
 	// Xamarin.iOS home-grown define
+	/// <summary>An enumeration whose values specify text effects (e.g., Letterpress). Used with <see cref="P:UIKit.UIStringAttributes.TextEffect" />.</summary>
+	/// <remarks>To be added.</remarks>
 	public enum NSTextEffect {
 		/// <summary>No style.</summary>
 		None,
@@ -2395,6 +2632,9 @@ namespace UIKit {
 	}
 
 	// NSUInteger -> UISearchBar.h
+	/// <summary>An enumeration whose values specify the prominence of the <see cref="T:UIKit.UISearchBar" />.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <altmember cref="P:UIKit.UISearchBar.SearchBarStyle" />
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UISearchBarStyle : ulong {
@@ -2407,6 +2647,8 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIInputView.h
+	/// <summary>An enumeration whose value specify the blurring and tinting effects applied to a <see cref="T:UIKit.UIInputView" />.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UIInputViewStyle : long {
@@ -2418,6 +2660,8 @@ namespace UIKit {
 		Keyboard,
 	}
 
+	/// <summary>Enumerates the various interface sizes.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UIUserInterfaceSizeClass : long {
@@ -2429,6 +2673,8 @@ namespace UIKit {
 		Regular = 2,
 	}
 
+	/// <summary>Enumeration of the styles showing the effect of a <see cref="T:UIKit.UIAlertAction" />.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UIAlertActionStyle : long {
@@ -2440,6 +2686,19 @@ namespace UIKit {
 		Destructive,
 	}
 
+	/// <summary>Enumerates whether a <see cref="T:UIKit.UIAlertController" /> is displaying an action sheet or an alert.</summary>
+	/// <remarks>
+	///       <para>This is how an action sheet is displayed:</para>
+	///       <para>
+	///         <img href="~/UIKit/_images/actioncontroller-action-sheet.png" alt="Screenshot of the action sheet." />
+	///       </para>
+	///       <para>
+	///       </para>
+	///       <para>This is how an alert is displayed:</para>
+	///       <para>
+	///         <img href="~/UIKit/_images/actioncontroller-alert.png" alt="Image of the alert dialog" />
+	///       </para>
+	///     </remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UIAlertControllerStyle : long {
@@ -2449,6 +2708,9 @@ namespace UIKit {
 		Alert,
 	}
 
+	/// <summary>Enumerates the types of blur effect supported by <see cref="T:UIKit.UIBlurEffect" />.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="article" href="https://blog.xamarin.com/adding-view-effects-in-ios-8/">Adding View Effects in iOS 8</related>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UIBlurEffectStyle : long {
@@ -2614,6 +2876,8 @@ namespace UIKit {
 		MoveToService,
 	}
 
+	/// <summary>Enumerates how elements should be navigated by the assistive technology.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIAccessibilityNavigationStyle : long {
@@ -2626,6 +2890,8 @@ namespace UIKit {
 		Combined = 2,
 	}
 
+	/// <summary>Enumerates valid display modes for an expanded <see cref="T:UIKit.UISplitViewController" />.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UISplitViewControllerDisplayMode : long {
@@ -2685,6 +2951,8 @@ namespace UIKit {
 	}
 
 	// Utility enum for UITransitionContext[To|From]ViewKey
+	/// <summary>Enumerates whether a <see cref="T:UIKit.UIViewController" /> for a transition is associated with the "from" <see cref="T:UIKit.UIView" /> or the "to" <see cref="T:UIKit.UIView" />. Used with <see cref="M:UIKit.UIViewControllerTransitionCoordinatorContext_Extensions.GetTransitionViewController(UIKit.IUIViewControllerTransitionCoordinatorContext,UIKit.UITransitionViewControllerKind)" />.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	public enum UITransitionViewControllerKind {
 		/// <summary>Specifies a transition to a specified view.</summary>
@@ -2694,6 +2962,8 @@ namespace UIKit {
 	}
 
 	// note [Native] since it maps to UIFontWeightConstants fields (CGFloat)
+	/// <summary>Enumerates font weights.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	public enum UIFontWeight {
 		/// <summary>A very light weight.</summary>
@@ -2724,6 +2994,8 @@ namespace UIKit {
 		Compressed,
 	}
 
+	/// <summary>How the views in a <see cref="T:UIKit.UIStackView" /> are distributed along the view's alignment axis.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIStackViewDistribution : long {
@@ -2739,6 +3011,7 @@ namespace UIKit {
 		EqualCentering,
 	}
 
+	/// <include file="../../docs/api/UIKit/UIStackViewAlignment.xml" path="/Documentation/Docs[@DocId='T:UIKit.UIStackViewAlignment']/*" />
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIStackViewAlignment : long {
@@ -2761,6 +3034,8 @@ namespace UIKit {
 		LastBaseline,
 	}
 
+	/// <summary>Flagging enumeration that can specify overriding of writing direction.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	[Flags]
@@ -2801,6 +3076,8 @@ namespace UIKit {
 		TextInput,
 	}
 
+	/// <summary>Describes a view's contents so that the app dev can control if it should be flipped between left-to-right and right-to-left layouts.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UISemanticContentAttribute : long {
@@ -2816,6 +3093,8 @@ namespace UIKit {
 		ForceRightToLeft,
 	}
 
+	/// <summary>Enumerates descriptions of collision boundary geometries for dynamic items.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIDynamicItemCollisionBoundsType : ulong {
@@ -2827,6 +3106,8 @@ namespace UIKit {
 		Path,
 	}
 
+	/// <summary>Enumerates the 3D Touch capabilities on a device.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UIForceTouchCapability : long {
@@ -2838,6 +3119,8 @@ namespace UIKit {
 		Available = 2,
 	}
 
+	/// <summary>Enumeration that defines the various styles of <see cref="T:UIKit.UIPreviewAction" /> objects.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UIPreviewActionStyle : long {
@@ -2849,6 +3132,14 @@ namespace UIKit {
 		Destructive,
 	}
 
+	/// <summary>Enumerates the phases of the button-press life-cycle.</summary>
+	/// <remarks>
+	///       <para>
+	///         <see cref="T:UIKit.UIPress" /> objects model not just digital presses but, for instance, trackpads, so a <see cref="T:UIKit.UIPress" /> may have both location and force data. Additionally, the system may cancel tracking of a button press at any time. This leads to the following state-machine:</para>
+	///       <para>
+	///         <img href="~/UIKit/_images/UIKit.UIPressPhase_States.png" alt="Statechart showing states and transitions occuring during a press" />
+	///       </para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIPressPhase : long {
@@ -2864,6 +3155,8 @@ namespace UIKit {
 		Cancelled,
 	}
 
+	/// <summary>Enumerates button types for <see cref="T:UIKit.UIPress" /> objects (see <see cref="P:UIKit.UIPress.Type" />).</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIPressType : long {
@@ -2895,6 +3188,8 @@ namespace UIKit {
 		TVRemoteFourColors = 33,
 	}
 
+	/// <summary>Enumeration whose values define how a <see cref="T:UIKit.UITableViewCell" /> displays when it is focused.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UITableViewCellFocusStyle : long {
@@ -2904,6 +3199,8 @@ namespace UIKit {
 		Custom,
 	}
 
+	/// <summary>Enumerates display gamuts.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIDisplayGamut : long {
@@ -2915,6 +3212,8 @@ namespace UIKit {
 		P3,
 	}
 
+	/// <summary>Enumerates layout directions.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UITraitEnvironmentLayoutDirection : long {
@@ -2926,6 +3225,8 @@ namespace UIKit {
 		RightToLeft = UIUserInterfaceLayoutDirection.RightToLeft,
 	}
 
+	/// <summary>Enumerates CarPlay and tvOS UI themes.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIUserInterfaceStyle : long {
@@ -2937,6 +3238,8 @@ namespace UIKit {
 		Dark,
 	}
 
+	/// <summary>Enumerates activities that a user might use with a URL or text attachment.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UITextItemInteraction : long {
@@ -2948,6 +3251,8 @@ namespace UIKit {
 		Preview,
 	}
 
+	/// <summary>Enumerates animation states.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIViewAnimatingState : long {
@@ -2959,6 +3264,8 @@ namespace UIKit {
 		Stopped,
 	}
 
+	/// <summary>Enumerates the endpoints and current position of an animation.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIViewAnimatingPosition : long {
@@ -2970,6 +3277,8 @@ namespace UIKit {
 		Current,
 	}
 
+	/// <summary>Enumerates the various types of timing curves.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UITimingCurveType : long {
@@ -2998,6 +3307,8 @@ namespace UIKit {
 		Both = Left | Right,
 	}
 
+	/// <summary>Enmumerates search directions.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIAccessibilityCustomRotorDirection : long {
@@ -3029,6 +3340,8 @@ namespace UIKit {
 		AllowReadWrite = 1 << 3,
 	}
 
+	/// <summary>Enumerates reasons that an editing session ends.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UITextFieldDidEndEditingReason : long {
@@ -3042,6 +3355,8 @@ namespace UIKit {
 		Cancelled,
 	}
 
+	/// <summary>Enumerates index display behavior during scrolling.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIScrollViewIndexDisplayMode : long {
@@ -3051,6 +3366,8 @@ namespace UIKit {
 		AlwaysHidden,
 	}
 
+	/// <summary>Enumerates safe area inset adjustment behaviors.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIScrollViewContentInsetAdjustmentBehavior : long {
@@ -3064,6 +3381,8 @@ namespace UIKit {
 		Always,
 	}
 
+	/// <summary>Enumerates the types that implement the <see cref="T:UIKit.IUIAccessibilityContainer" /> interface.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIAccessibilityContainerType : long {
@@ -3080,6 +3399,8 @@ namespace UIKit {
 		SemanticGroup,
 	}
 
+	/// <summary>Enumerates smart quote conversion behavior.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UITextSmartQuotesType : long {
@@ -3091,6 +3412,8 @@ namespace UIKit {
 		Yes,
 	}
 
+	/// <summary>Enumerates behaviors for converting hyphens to en or em dashes.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UITextSmartDashesType : long {
@@ -3102,6 +3425,8 @@ namespace UIKit {
 		Yes,
 	}
 
+	/// <summary>Enumerates behaviors for padding insertions and unpadding deletions.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UITextSmartInsertDeleteType : long {
@@ -3113,6 +3438,8 @@ namespace UIKit {
 		Yes,
 	}
 
+	/// <summary>Enumerates the types of content that may be represented by a <see cref="T:UIKit.UIAccessibilityCustomRotor" /> object.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIAccessibilityCustomSystemRotorType : long {
@@ -3296,6 +3623,8 @@ namespace UIKit {
 		Dragging,
 	}
 
+	/// <summary>Enumerates inset behaviors in a table view.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UITableViewSeparatorInsetReference : long {
@@ -3320,6 +3649,8 @@ namespace UIKit {
 		Automatic,
 	}
 
+	/// <summary>Enumerates primary view controller locations.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UISplitViewControllerPrimaryEdge : long {
@@ -3404,6 +3735,8 @@ namespace UIKit {
 		Delegate,
 	}
 
+	/// <summary>Enumerates whether and when large titles are displayed.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UINavigationItemLargeTitleDisplayMode : long {
@@ -4380,6 +4713,10 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIGuidedAccessRestrictions.h
+	/// <summary>An enumeration whose values specify whether a Guided Access restriction is in an allow or deny state.</summary>
+	/// <remarks>
+	///     </remarks>
+	/// <altmember cref="M:UIKit.UIGuidedAccessRestriction.GetState" />
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UIGuidedAccessRestrictionState : long {

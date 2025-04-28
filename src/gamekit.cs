@@ -35,20 +35,59 @@ namespace GameKit {
 
 	/// <summary>A delegate used with <see cref="M:GameKit.GKLocalPlayer.LoadFriends(GameKit.GKFriendsHandler)" /> and <see cref="M:GameKit.GKMatchmaker.FindPlayers(GameKit.GKMatchRequest,GameKit.GKFriendsHandler)" /> that defines behavior after the request completes.</summary>
 	delegate void GKFriendsHandler (string [] friends, NSError error);
+	/// <param name="players">To be added.</param>
+	/// <param name="error">To be added.</param>
+	/// <summary>A delegate used with <see cref="M:GameKit.GKPlayer.LoadPlayersForIdentifiers(System.String[],GameKit.GKPlayersHandler)" /> to specify behavior to happen after the players are loaded.</summary>
+	/// <remarks>To be added.</remarks>
 	delegate void GKPlayersHandler (GKPlayer [] players, NSError error);
+	/// <param name="leaderboards">To be added.</param>
+	/// <param name="error">To be added.</param>
+	/// <summary>Completion handler for the <see cref="M:GameKit.GKLeaderboardSet.LoadLeaderboards(GameKit.GKLeaderboardsHandler)" /> method.</summary>
+	/// <remarks>To be added.</remarks>
 	delegate void GKLeaderboardsHandler (GKLeaderboard [] leaderboards, NSError error);
+	/// <param name="scoreArray">To be added.</param>
+	/// <param name="error">To be added.</param>
+	/// <summary>A delegate used with <see cref="M:GameKit.GKLeaderboard.LoadScores(GameKit.GKScoresLoadedHandler)" /> that specifies behavior after the scores are loaded.</summary>
+	/// <remarks>To be added.</remarks>
 	delegate void GKScoresLoadedHandler (GKScore [] scoreArray, NSError error);
+	/// <param name="match">To be added.</param>
+	/// <param name="error">To be added.</param>
+	/// <summary>A delegate used with <see cref="M:GameKit.GKMatchmaker.FindMatch(GameKit.GKMatchRequest,GameKit.GKNotificationMatch)" /> that specifies behavior after a match has been made.</summary>
+	/// <remarks>To be added.</remarks>
 	delegate void GKNotificationMatch (GKMatch match, NSError error);
 	/// <summary>A delegate that is used to define behavior after a response to a <see cref="T:GameKit.GKInvite" />.</summary>
 	delegate void GKInviteHandler (GKInvite invite, string [] playerIDs);
+	/// <param name="activity">To be added.</param>
+	/// <param name="error">To be added.</param>
+	/// <summary>A delegate used with <see cref="M:GameKit.GKMatchmaker.QueryActivity(GameKit.GKQueryHandler)" /> and <see cref="M:GameKit.GKMatchmaker.QueryPlayerGroupActivity(System.nint,GameKit.GKQueryHandler)" /> to specify behavior after the query is completed.</summary>
+	/// <remarks>To be added.</remarks>
 	delegate void GKQueryHandler (nint activity, NSError error);
+	/// <param name="achivements">To be added.</param>
+	/// <param name="error">To be added.</param>
+	/// <summary>A delegate passed to <see cref="M:GameKit.GKAchievement.LoadAchievements(GameKit.GKCompletionHandler)" /> that specifies behavior after the downloading of achievements from Game Center is completed.</summary>
+	/// <remarks>To be added.</remarks>
 	delegate void GKCompletionHandler (GKAchievement [] achivements, NSError error);
+	/// <param name="descriptions">To be added.</param>
+	/// <param name="error">To be added.</param>
+	/// <summary>A delegate that is called by <see cref="M:GameKit.GKAchievementDescription.LoadAchievementDescriptions(GameKit.GKAchievementDescriptionHandler)" />.</summary>
+	/// <remarks>To be added.</remarks>
 	delegate void GKAchievementDescriptionHandler (GKAchievementDescription [] descriptions, NSError error);
 	/// <summary>A delegate that is called by <see cref="M:GameKit.GKLeaderboard.LoadCategories(GameKit.GKCategoryHandler)" />.</summary>
 	delegate void GKCategoryHandler (string [] categories, string [] titles, NSError error);
 	/// <summary>A delegate used with <see cref="P:GameKit.GKVoiceChat.PlayerStateUpdateHandler" /> that specifies behavior when the player's <see cref="T:GameKit.GKVoiceChatPlayerState" /> changes.</summary>
 	delegate void GKPlayerStateUpdateHandler (string playerId, GKVoiceChatPlayerState state);
+	/// <param name="publicKeyUrl">To be added.</param>
+	/// <param name="signature">To be added.</param>
+	/// <param name="salt">To be added.</param>
+	/// <param name="timestamp">To be added.</param>
+	/// <param name="error">To be added.</param>
+	/// <summary>Completion handler for the <see cref="M:GameKit.GKLocalPlayer.GenerateIdentityVerificationSignature(GameKit.GKIdentityVerificationSignatureHandler)" /> method.</summary>
+	/// <remarks>To be added.</remarks>
 	delegate void GKIdentityVerificationSignatureHandler (NSUrl publicKeyUrl, NSData signature, NSData salt, ulong timestamp, NSError error);
+	/// <param name="leaderboardSets">To be added.</param>
+	/// <param name="error">To be added.</param>
+	/// <summary>Completion handler for the <see cref="M:GameKit.GKLeaderboardSet.LoadLeaderboardSets(GameKit.GKLeaderboardSetsHandler)" /> method.</summary>
+	/// <remarks>To be added.</remarks>
 	delegate void GKLeaderboardSetsHandler (GKLeaderboardSet [] leaderboardSets, NSError error);
 	delegate void GKEntriesForPlayerScopeHandler (GKLeaderboardEntry localPlayerEntry, GKLeaderboardEntry [] entries, nint totalPlayerCount, NSError error);
 	delegate void GKEntriesForPlayersHandler (GKLeaderboardEntry localPlayerEntry, GKLeaderboardEntry [] entries, NSError error);
@@ -59,8 +98,21 @@ namespace GameKit {
 	delegate void GKChallengeComposeHandler (NSViewController composeController, bool issuedChallenge, string [] sentPlayerIDs);
 	delegate void GKChallengeComposeHandler2 (NSViewController composeController, bool issuedChallenge, GKPlayer [] sentPlayers);
 #else
+	/// <param name="image">To be added.</param>
+	/// <param name="error">To be added.</param>
+	/// <summary>A delegate passed to <see cref="T:GameKit.GKAchievementDescription" /> that defines behavior after the image has been loaded.</summary>
+	/// <remarks>To be added.</remarks>
 	delegate void GKImageLoadedHandler (UIImage image, NSError error);
+	/// <param name="photo">To be added.</param>
+	/// <param name="error">To be added.</param>
+	/// <summary>A delegate used with <see cref="M:GameKit.GKPlayer.LoadPhoto(GameKit.GKPhotoSize,GameKit.GKPlayerPhotoLoaded)" /> to specify behavior after the photo is loaded.</summary>
+	/// <remarks>To be added.</remarks>
 	delegate void GKPlayerPhotoLoaded (UIImage photo, NSError error);
+	/// <param name="composeController">To be added.</param>
+	/// <param name="issuedChallenge">To be added.</param>
+	/// <param name="sentPlayerIDs">To be added.</param>
+	/// <summary>Completion handler for for the <see cref="M:GameKit.GKScore.ChallengeComposeControllerAsync(System.String,GameKit.GKPlayer[],UIKit.UIViewController@)" /> method.</summary>
+	/// <remarks>To be added.</remarks>
 	delegate void GKChallengeComposeHandler (UIViewController composeController, bool issuedChallenge, string [] sentPlayerIDs);
 	delegate void GKChallengeComposeHandler2 (UIViewController composeController, bool issuedChallenge, [NullAllowed] GKPlayer [] sentPlayers);
 #endif
@@ -1414,6 +1466,12 @@ namespace GameKit {
 
 	interface IGKMatchDelegate { }
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:GameKit.GKMatchDelegate" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:GameKit.GKMatchDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:GameKit.GKMatchDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:GameKit.GKMatchDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model]
@@ -1974,6 +2032,12 @@ namespace GameKit {
 
 	interface IGKMatchmakerViewControllerDelegate { }
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:GameKit.GKMatchmakerViewControllerDelegate" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:GameKit.GKMatchmakerViewControllerDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:GameKit.GKMatchmakerViewControllerDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:GameKit.GKMatchmakerViewControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model]
@@ -2691,10 +2755,22 @@ namespace GameKit {
 		GKTurnBasedEventHandler SharedTurnBasedEventHandler { get; }
 	}
 
+	/// <param name="match">To be added.</param>
+	/// <param name="error">To be added.</param>
+	/// <summary>A delegate that specifies the completion handler for <see cref="M:GameKit.GKTurnBasedMatch.FindMatch(GameKit.GKMatchRequest,GameKit.GKTurnBasedMatchRequest)" />.</summary>
+	/// <remarks>To be added.</remarks>
 	delegate void GKTurnBasedMatchRequest (GKTurnBasedMatch match, NSError error);
 
+	/// <param name="matches">To be added.</param>
+	/// <param name="error">To be added.</param>
+	/// <summary>A delegate used with <see cref="M:GameKit.GKTurnBasedMatch.LoadMatches(GameKit.GKTurnBasedMatchesRequest)" /> to specify behavior after the matches have been loaded.</summary>
+	/// <remarks>To be added.</remarks>
 	delegate void GKTurnBasedMatchesRequest (GKTurnBasedMatch [] matches, NSError error);
 
+	/// <param name="matchData">To be added.</param>
+	/// <param name="error">To be added.</param>
+	/// <summary>A delegate that is used with <see cref="M:GameKit.GKTurnBasedMatch.LoadMatchData(GameKit.GKTurnBasedMatchData)" /> to specify behavior after the data is loaded.</summary>
+	/// <remarks>To be added.</remarks>
 	delegate void GKTurnBasedMatchData (NSData matchData, NSError error);
 
 	[MacCatalyst (13, 1)]
@@ -3052,6 +3128,7 @@ namespace GameKit {
 
 	interface IGKTurnBasedMatchmakerViewControllerDelegate { }
 
+	/// <include file="../docs/api/GameKit/IGKTurnBasedMatchmakerViewControllerDelegate.xml" path="/Documentation/Docs[@DocId='T:GameKit.IGKTurnBasedMatchmakerViewControllerDelegate']/*" />
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model]
@@ -3293,6 +3370,7 @@ namespace GameKit {
 
 	interface IGKGameCenterControllerDelegate { }
 
+	/// <include file="../docs/api/GameKit/IGKGameCenterControllerDelegate.xml" path="/Documentation/Docs[@DocId='T:GameKit.IGKGameCenterControllerDelegate']/*" />
 	[MacCatalyst (13, 1)]
 	[Model]
 	[BaseType (typeof (NSObject))]
@@ -3544,6 +3622,7 @@ namespace GameKit {
 
 	interface IGKLocalPlayerListener { }
 
+	/// <include file="../docs/api/GameKit/IGKLocalPlayerListener.xml" path="/Documentation/Docs[@DocId='T:GameKit.IGKLocalPlayerListener']/*" />
 	[MacCatalyst (13, 1)]
 	[Model, Protocol, BaseType (typeof (NSObject))]
 	interface GKLocalPlayerListener : GKTurnBasedEventListener
@@ -3553,6 +3632,12 @@ namespace GameKit {
 		, GKChallengeListener, GKInviteEventListener {
 	}
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:GameKit.GKChallengeListener" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:GameKit.GKChallengeListener" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:GameKit.GKChallengeListener" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:GameKit.GKChallengeListener_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Model, Protocol, BaseType (typeof (NSObject))]
 	interface GKChallengeListener {
@@ -3587,6 +3672,12 @@ namespace GameKit {
 		void IssuedChallengeWasCompleted (GKPlayer player, GKChallenge challenge, GKPlayer friendPlayer);
 	}
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:GameKit.GKInviteEventListener" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:GameKit.GKInviteEventListener" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:GameKit.GKInviteEventListener" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:GameKit.GKInviteEventListener_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol, Model, BaseType (typeof (NSObject))]
 	interface GKInviteEventListener {
@@ -3619,6 +3710,9 @@ namespace GameKit {
 		void DidRequestMatch (GKPlayer player, GKPlayer [] recipientPlayers);
 	}
 
+	/// <summary>Listens for events in turn-based games.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GameKit/Reference/GKTurnBasedEventListener_Ref/index.html">Apple documentation for <c>GKTurnBasedEventListener</c></related>
 	[MacCatalyst (13, 1)]
 	[Model, Protocol, BaseType (typeof (NSObject))]
 	interface GKTurnBasedEventListener {

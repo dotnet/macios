@@ -70,6 +70,8 @@ using NativeHandle = System.IntPtr;
 
 namespace UIKit {
 
+	/// <summary>A flagging enumeration for specifying the direction in which focus is moving.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	[Flags]
@@ -94,6 +96,8 @@ namespace UIKit {
 		Last = 1uL << 9,
 	}
 
+	/// <summary>An enumeration whose values reflect the status of a background refresh. Available from <see cref="P:UIKit.UIApplication.BackgroundRefreshStatus" />.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native] // NSInteger -> UIApplication.h
 	[MacCatalyst (13, 1)]
 	public enum UIBackgroundRefreshStatus : long {
@@ -105,6 +109,8 @@ namespace UIKit {
 		Available,
 	}
 
+	/// <summary>An enumeration whose values specify the results of a <see cref="M:UIKit.UIApplicationDelegate.DidReceiveRemoteNotification(UIKit.UIApplication,Foundation.NSDictionary,System.Action{UIKit.UIBackgroundFetchResult})" /> completion handler.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native] // NSUInteger -> UIApplication.h
 	public enum UIBackgroundFetchResult : ulong {
@@ -420,10 +426,27 @@ namespace UIKit {
 		OnSearchActivation,
 	}
 
+	/// <param name="finished">
+	///       <see langword="true" /> if the calculation concluded successfully.</param>
+	/// <summary>A strongly-typed delegate called at completion of certain lengthy calculations.</summary>
+	/// <remarks>
+	///       <para>
+	///         This strongly-typed delegate is called at the end of certain lengthy calculations. It's <paramref name="finished" /> parameter will be <see langword="true" /> if the calculation finished without interruption.
+	///       </para>
+	///     </remarks>
+	/// <altmember cref="M:UIKit.UICollectionView.PerformBatchUpdates" />
+	/// <altmember cref="M:UIKIt.UIPageViewController.SetViewControllers" />
+	/// <altmember cref="M:UIKit.UIView.AnimateNotify" />
+	/// <altmember cref="M:UIKit.UIView.TransitionNotify" />
+	/// <altmember cref="M:UIKit.UIViewController.Transition" />
 	delegate void UICompletionHandler (bool finished);
 	/// <param name="success">Typically, <see langword="true" /> if the associated method completed successfully.</param>
 	///     <summary>A delegate used at the completion of operations.</summary>
 	delegate void UIOperationHandler (bool success);
+	/// <param name="completed">To be added.</param>
+	/// <param name="finished">To be added.</param>
+	/// <summary>A delegate used as the completion handler for <see cref="M:UIKit.UICollectionView.StartInteractiveTransition(UIKit.UICollectionViewLayout,UIKit.UICollectionViewLayoutInteractiveTransitionCompletion)" />.</summary>
+	/// <remarks>To be added.</remarks>
 	delegate void UICollectionViewLayoutInteractiveTransitionCompletion (bool completed, bool finished);
 	/// <param name="available">
 	///       <see langword="true" /> if the printer is available for printing.</param>
@@ -441,6 +464,11 @@ namespace UIKit {
 	delegate void UIActivityViewControllerCompletion (NSString activityType, bool completed, NSExtensionItem [] returnedItems, NSError error);
 
 	// In the hopes that the parameter is self document: this array  can contain either UIDocuments or UIResponders
+	/// <param name="uidocumentOrResponderObjects">To be added.</param>
+	/// <summary>Delegate of <see cref="M:UIKit.UIApplicationDelegate.ContinueUserActivity(UIKit.UIApplication,Foundation.NSUserActivity,UIKit.UIApplicationRestorationHandler)" /> method. Can manipulate objects created or retrieved by the activity.</summary>
+	/// <remarks>
+	///       <para>Must be called from the main thread.</para>
+	///     </remarks>
 	delegate void UIApplicationRestorationHandler (NSObject [] uidocumentOrResponderObjects);
 
 	/// <summary>Abstract base class for classes that generate feedback hints, such as haptics.</summary>
@@ -715,6 +743,8 @@ namespace UIKit {
 		IUIActivityItemSource ActivityItemSource { get; }
 	}
 
+	/// <summary>Defines an extension method for <see cref="T:Foundation.NSAttributedString" />.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Category]
 	[BaseType (typeof (NSAttributedString))]
@@ -728,6 +758,9 @@ namespace UIKit {
 		bool ContainsAttachments (NSRange range);
 	}
 
+	/// <summary>Provides an extension method for <see cref="T:Foundation.NSMutableAttributedString" /> that cleans up inconsistencies that develop after several edits.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <altmember cref="T:Foundation.NSMutableAttributedString" />
 	[Category, BaseType (typeof (NSMutableAttributedString))]
 	interface NSMutableAttributedStringKitAdditions {
 		/// <param name="range">To be added.</param>
@@ -739,6 +772,8 @@ namespace UIKit {
 		void FixAttributesInRange (NSRange range);
 	}
 
+	/// <summary>Defined the <see cref="M:UIKit.NSIdentifier.Identifier(UIKit.NSLayoutConstraint)" /> extension property on <see cref="T:UIKit.NSLayoutConstraint" /> objects.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Category, BaseType (typeof (NSLayoutConstraint))]
 	interface NSIdentifier {
@@ -756,6 +791,8 @@ namespace UIKit {
 		void SetIdentifier ([NullAllowed] string id);
 	}
 
+	/// <summary>A set of <see cref="T:Foundation.NSCoder" /> extension methods that add encoding of geometry-based data for use in UIKit.</summary>
+	/// <remarks>To be added.</remarks>
 	[Category]
 	[BaseType (typeof (NSCoder))]
 	interface NSCoder_UIGeometryKeyedCoding {
@@ -1478,6 +1515,8 @@ namespace UIKit {
 		bool WasSuccessful { get; }
 	}
 
+	/// <summary>Base interface for the UIAccessibilityContainer protocol.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol (IsInformal = true)]
 	interface UIAccessibilityContainer {
@@ -1523,6 +1562,8 @@ namespace UIKit {
 
 	interface IUIAccessibilityContainerDataTableCell { }
 
+	/// <summary>Contains the row spand and column span of a cell.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface UIAccessibilityContainerDataTableCell {
@@ -1541,6 +1582,12 @@ namespace UIKit {
 		NSRange GetAccessibilityColumnRange ();
 	}
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:UIKit.UIAccessibilityContainerDataTable" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:UIKit.UIAccessibilityContainerDataTable" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:UIKit.UIAccessibilityContainerDataTable" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:UIKit.UIAccessibilityContainerDataTable_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
@@ -1698,6 +1745,8 @@ namespace UIKit {
 		UIAccessibilityCustomSystemRotorType SystemRotorType { get; }
 	}
 
+	/// <summary>Extension method for <see cref="T:Foundation.NSObject" /> that provides access to the <see cref="T:UIKit.UIAccessibilityCustomRotor" /> array.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Category]
 	[BaseType (typeof (NSObject))]
@@ -1862,6 +1911,8 @@ namespace UIKit {
 		NSAttributedString AttributedName { get; }
 	}
 
+	/// <summary>Defines methods for images that can scale in reaction to accessibility requirements.</summary>
+	/// <remarks>To be added.</remarks>
 	[NoMac]
 	[MacCatalyst (13, 1)]
 	[Protocol]
@@ -2276,6 +2327,8 @@ namespace UIKit {
 	// You're supposed to implement this protocol in your UIView subclasses, not provide
 	// a implementation for only this protocol, which is why there is no model to subclass.
 	//
+	/// <summary>Interface that, together with the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIInput%20View%20Audio%20Feedback_%20Extensions&amp;scope=Xamarin" title="T:UIKit.UIInputViewAudioFeedback_Extensions">T:UIKit.UIInputViewAudioFeedback_Extensions</a></format> class, comprise the UIInputViewAudioFeedback protocol.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface UIInputViewAudioFeedback {
@@ -2699,6 +2752,12 @@ namespace UIKit {
 	// When a new class adopts UIAppearance, merely list it as one of the
 	// base interfaces, this will generate the stubs for it.
 	//
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:UIKit.UIAppearance" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:UIKit.UIAppearance" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:UIKit.UIAppearance" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIAppearance_%20Extensions&amp;scope=Xamarin" title="T:UIKit.UIAppearance_Extensions">T:UIKit.UIAppearance_Extensions</a></format> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model]
@@ -2770,6 +2829,8 @@ namespace UIKit {
 		nfloat GetCustomSpacing (UIView arrangedSubview);
 	}
 
+	/// <summary>Holds a key for restoring storyboards.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface UIStateRestoration {
@@ -2779,6 +2840,12 @@ namespace UIKit {
 
 	}
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:UIKit.UIStateRestoring" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:UIKit.UIStateRestoring" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:UIKit.UIStateRestoring" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:UIKit.UIStateRestoring_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model]
@@ -2813,6 +2880,12 @@ namespace UIKit {
 
 	interface IUIStateRestoring { }
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:UIKit.UIObjectRestoration" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:UIKit.UIObjectRestoration" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:UIKit.UIObjectRestoration" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIObject%20Restoration_%20Extensions&amp;scope=Xamarin" title="T:UIKit.UIObjectRestoration_Extensions">T:UIKit.UIObjectRestoration_Extensions</a></format> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[BaseType (typeof (NSObject))]
 	[Model]
 	[Protocol]
@@ -2827,6 +2900,8 @@ namespace UIKit {
 
 	interface IUIViewAnimating { }
 
+	/// <summary>Interface defining methods for custom animator objects.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface UIViewAnimating {
@@ -2893,6 +2968,8 @@ namespace UIKit {
 	}
 
 	interface IUIViewImplicitlyAnimating { }
+	/// <summary>Interface that defines methods for animations that can be modified while they are running.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface UIViewImplicitlyAnimating : UIViewAnimating {
@@ -2986,6 +3063,7 @@ namespace UIKit {
 
 	interface IUIViewControllerPreviewing { }
 
+	/// <include file="../docs/api/UIKit/IUIViewControllerPreviewing.xml" path="/Documentation/Docs[@DocId='T:UIKit.IUIViewControllerPreviewing']/*" />
 	[Protocol]
 	[MacCatalyst (13, 1)]
 	interface UIViewControllerPreviewing {
@@ -3038,6 +3116,9 @@ namespace UIKit {
 
 	interface IUIViewControllerPreviewingDelegate { }
 
+	/// <summary>Delegate object whose methods are called in reaction to "3D Touch" on supported hardware</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIViewControllerPreviewingDelegate_Protocol/index.html">Apple documentation for <c>UIViewControllerPreviewingDelegate</c></related>
 	[Protocol]
 	[Model]
 	[MacCatalyst (13, 1)]
@@ -3067,6 +3148,8 @@ namespace UIKit {
 		void CommitViewController (IUIViewControllerPreviewing previewingContext, UIViewController viewControllerToCommit);
 	}
 
+	/// <summary>Interface that, together with the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIView%20Controller%20Restoration_%20Extensions&amp;scope=Xamarin" title="T:UIKit.UIViewControllerRestoration_Extensions">T:UIKit.UIViewControllerRestoration_Extensions</a></format> class, comprise the UIViewControllerRestoration protocol.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface UIViewControllerRestoration {
@@ -3139,6 +3222,8 @@ namespace UIKit {
 		bool LocationLaunch { get; }
 	}
 
+	/// <summary>A <see cref="T:Foundation.DictionaryContainer" /> that holds options for use with calls to <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIApplication%20Open%20URL&amp;scope=Xamarin" title="M:UIApplication.OpenURL*">M:UIApplication.OpenURL*</a></format>.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[StrongDictionary ("UIApplicationOpenUrlOptionKeys")]
 	interface UIApplicationOpenUrlOptions {
@@ -4190,6 +4275,8 @@ namespace UIKit {
 		nfloat FrictionTorque { get; set; }
 	}
 
+	/// <summary>Allows elements to adjust to dynamic traits.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface UIContentSizeCategoryAdjusting {
@@ -4211,6 +4298,7 @@ namespace UIKit {
 		NSString WeakNewValue { get; }
 	}
 
+	/// <include file="../docs/api/UIKit/UIContentSizeCategory.xml" path="/Documentation/Docs[@DocId='T:UIKit.UIContentSizeCategory']/*" />
 	[Static]
 	[MacCatalyst (13, 1)]
 	public enum UIContentSizeCategory {
@@ -4550,6 +4638,9 @@ namespace UIKit {
 
 	interface IUICoordinateSpace { }
 
+	/// <summary>A frame of reference on the screen.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UICoordinateSpace_protocol/index.html">Apple documentation for <c>UICoordinateSpace</c></related>
 	[Protocol]
 	[Model]
 	[BaseType (typeof (NSObject))]
@@ -4603,6 +4694,12 @@ namespace UIKit {
 
 	interface IUIApplicationDelegate { }
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:UIKit.UIApplicationDelegate" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:UIKit.UIApplicationDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:UIKit.UIApplicationDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:UIKit.UIApplicationDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[BaseType (typeof (NSObject))]
 	[Model]
 	[NoMac]
@@ -5122,6 +5219,8 @@ namespace UIKit {
 		bool ShouldAutomaticallyLocalizeKeyCommands (UIApplication application);
 	}
 
+	/// <summary>Class that identifies keyboard types to disallow.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface UIExtensionPointIdentifier {
@@ -5983,6 +6082,8 @@ namespace UIKit {
 
 	interface IUICollectionViewDataSourcePrefetching { }
 
+	/// <summary>Interface defining methods for collection view data source's that may prefetch data.</summary>
+	/// <remarks>To be added.</remarks>
 	[Protocol]
 	[MacCatalyst (13, 1)]
 	interface UICollectionViewDataSourcePrefetching {
@@ -6006,6 +6107,12 @@ namespace UIKit {
 	//
 	// Combined version of UICollectionViewDataSource, UICollectionViewDelegate
 	//
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:UIKit.UICollectionViewSource" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:UIKit.UICollectionViewSource" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:UIKit.UICollectionViewSource" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:UIKit.UICollectionViewSource_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Model]
 	[BaseType (typeof (NSObject))]
@@ -6016,6 +6123,7 @@ namespace UIKit {
 
 	interface IUICollectionViewDataSource { }
 
+	/// <include file="../docs/api/UIKit/UICollectionViewDataSource.xml" path="/Documentation/Docs[@DocId='T:UIKit.UICollectionViewDataSource']/*" />
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model]
@@ -6096,6 +6204,12 @@ namespace UIKit {
 
 	interface IUICollectionViewDelegate { }
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:UIKit.UICollectionViewDelegate" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:UIKit.UICollectionViewDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:UIKit.UICollectionViewDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:UIKit.UICollectionViewDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Model]
 	[Protocol]
@@ -6521,6 +6635,12 @@ namespace UIKit {
 		bool InstallsStandardGestureForInteractiveMovement { get; set; }
 	}
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:UIKit.UICollectionViewDelegateFlowLayout" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:UIKit.UICollectionViewDelegateFlowLayout" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:UIKit.UICollectionViewDelegateFlowLayout" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:UIKit.UICollectionViewDelegateFlowLayout_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (UICollectionViewDelegate))]
 	[Model]
@@ -6951,6 +7071,9 @@ namespace UIKit {
 		UICollectionUpdateAction UpdateAction { get; }
 	}
 
+	/// <summary>Constants relating to <see cref="T:UIKit.UICollectionElementKindSection" />.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <altmember cref="T:UIKit.UICollectionElementKindSection" />
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface UICollectionElementKindSectionKey {
@@ -7962,6 +8085,12 @@ namespace UIKit {
 
 	interface IUICollisionBehaviorDelegate { }
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:UIKit.UICollisionBehaviorDelegate" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:UIKit.UICollisionBehaviorDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:UIKit.UICollisionBehaviorDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:UIKit.UICollisionBehaviorDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Protocol]
@@ -8219,6 +8348,7 @@ namespace UIKit {
 
 	interface IUIDynamicAnimatorDelegate { }
 
+	/// <include file="../docs/api/UIKit/IUIDynamicAnimatorDelegate.xml" path="/Documentation/Docs[@DocId='T:UIKit.IUIDynamicAnimatorDelegate']/*" />
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Protocol]
@@ -8377,6 +8507,12 @@ namespace UIKit {
 		bool Anchored { [Bind ("isAnchored")] get; set; }
 	}
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:UIKit.UIDynamicItem" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:UIKit.UIDynamicItem" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:UIKit.UIDynamicItem" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:UIKit.UIDynamicItem_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Protocol]
@@ -8723,6 +8859,8 @@ namespace UIKit {
 
 	}
 
+	/// <summary>Enumerates font styles for parts of a document.</summary>
+	/// <remarks>To be added.</remarks>
 	public enum UIFontTextStyle {
 		/// <summary>Indicated headline text.</summary>
 		[Field ("UIFontTextStyleHeadline")]
@@ -9194,6 +9332,12 @@ namespace UIKit {
 
 	interface IUIGestureRecognizerDelegate { }
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:UIKit.UIGestureRecognizerDelegate" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:UIKit.UIGestureRecognizerDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:UIKit.UIGestureRecognizerDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:UIKit.UIGestureRecognizerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
@@ -9534,6 +9678,8 @@ namespace UIKit {
 	// Even more confusing it that respondToSelecttor return NO on them
 	// even if it works in _real_ life (compare unit and introspection tests)
 #endif
+	/// <summary>An interface implemented by <see cref="T:UIKit.UITextField" /> and <see cref="T:UIKit.UITextView" /> with common input traits.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface UITextInputTraits {
@@ -9999,6 +10145,8 @@ namespace UIKit {
 
 	interface IUIKeyInput { }
 
+	/// <summary>Interface that, together with the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIKey%20Input_%20Extensions&amp;scope=Xamarin" title="T:UIKit.UIKeyInput_Extensions">T:UIKit.UIKeyInput_Extensions</a></format> class, comprise the UIKeyInput protocol.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface UIKeyInput : UITextInputTraits {
@@ -10046,6 +10194,8 @@ namespace UIKit {
 
 	interface IUITextInput : INativeObject { }
 
+	/// <summary>IUITextInput works with the inputting of text and allows the manipulaton of features including autocorrection and many other text input features related to document presentation.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface UITextInput : UIKeyInput {
@@ -10508,6 +10658,12 @@ namespace UIKit {
 
 	interface IUITextInputTokenizer { }
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:UIKit.UITextInputTokenizer" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:UIKit.UITextInputTokenizer" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:UIKit.UITextInputTokenizer" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIText%20Input%20Tokenizer_%20Extensions&amp;scope=Xamarin" title="T:UIKit.UITextInputTokenizer_Extensions">T:UIKit.UITextInputTokenizer_Extensions</a></format> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model]
@@ -10562,6 +10718,10 @@ namespace UIKit {
 		NativeHandle Constructor (IUITextInput textInput);
 	}
 
+	/// <summary>A delegate representing input events in a <see cref="T:UIKit.UITextField" /> or <see cref="T:UIKit.UITextView" />.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/SimpleTextInput/">SimpleTextInput</related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UITextInputDelegate_Protocol/index.html">Apple documentation for <c>UITextInputDelegate</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model]
@@ -11909,6 +12069,10 @@ namespace UIKit {
 
 	// that's one of the few enums based on CGFloat - we expose the [n]float directly in the API
 	// but we need a way to give access to the constants to developers
+	/// <summary>The layer group to which a <see cref="T:UIKit.UIWindow" /> belongs. Returned by <see cref="P:UIKit.UIWindow.WindowLevel" />.</summary>
+	/// <remarks>
+	///       <para>The z-order of windows is determined first by their window level (Alert and Status Bar windows appear above normal windows) and within the level by their order.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface UIWindowLevel {
@@ -12198,6 +12362,12 @@ namespace UIKit {
 		bool SymbolAnimationEnabled { [Bind ("isSymbolAnimationEnabled")] get; set; }
 	}
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:UIKit.UIBarPositioning" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:UIKit.UIBarPositioning" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:UIKit.UIBarPositioning" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIBar%20Positioning_%20Extensions&amp;scope=Xamarin" title="T:UIKit.UIBarPositioning_Extensions">T:UIKit.UIBarPositioning_Extensions</a></format> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model]
@@ -12213,6 +12383,12 @@ namespace UIKit {
 
 	interface IUIBarPositioning { }
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:UIKit.UIBarPositioningDelegate" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:UIKit.UIBarPositioningDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:UIKit.UIBarPositioningDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:UIKit.UIBarPositioningDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model]
@@ -14051,6 +14227,12 @@ namespace UIKit {
 
 	interface IUINavigationBarDelegate { }
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:UIKit.UINavigationBarDelegate" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:UIKit.UINavigationBarDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:UIKit.UINavigationBarDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:UIKit.UINavigationBarDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (UIBarPositioningDelegate))]
 	[Model]
@@ -14433,6 +14615,12 @@ namespace UIKit {
 
 	interface IUINavigationControllerDelegate { }
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:UIKit.UINavigationControllerDelegate" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:UIKit.UINavigationControllerDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:UIKit.UINavigationControllerDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:UIKit.UINavigationControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model]
@@ -14718,6 +14906,12 @@ namespace UIKit {
 
 	interface IUIPageViewControllerDelegate { }
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:UIKit.UIPageViewControllerDelegate" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:UIKit.UIPageViewControllerDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:UIKit.UIPageViewControllerDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:UIKit.UIPageViewControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model]
@@ -14796,6 +14990,12 @@ namespace UIKit {
 
 	interface IUIPageViewControllerDataSource { }
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:UIKit.UIPageViewControllerDataSource" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:UIKit.UIPageViewControllerDataSource" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:UIKit.UIPageViewControllerDataSource" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:UIKit.UIPageViewControllerDataSource_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model]
@@ -15473,6 +15673,12 @@ namespace UIKit {
 	interface UIPickerViewModel : UIPickerViewDataSource, UIPickerViewDelegate {
 	}
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:UIKit.UIContentContainer" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:UIKit.UIContentContainer" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:UIKit.UIContentContainer" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIContent%20Container_%20Extensions&amp;scope=Xamarin" title="T:UIKit.UIContentContainer_Extensions">T:UIKit.UIContentContainer_Extensions</a></format> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model]
@@ -15525,6 +15731,12 @@ namespace UIKit {
 		void WillTransitionToTraitCollection (UITraitCollection traitCollection, [NullAllowed] IUIViewControllerTransitionCoordinator coordinator);
 	}
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:UIKit.UIAppearanceContainer" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:UIKit.UIAppearanceContainer" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:UIKit.UIAppearanceContainer" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIAppearance%20Container_%20Extensions&amp;scope=Xamarin" title="T:UIKit.UIAppearanceContainer_Extensions">T:UIKit.UIAppearanceContainer_Extensions</a></format> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[Protocol, Model]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
@@ -15642,6 +15854,12 @@ namespace UIKit {
 
 	interface IUIPreviewActionItem { }
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:UIKit.IUIPreviewActionItem" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:UIKit.IUIPreviewActionItem" />.</para>
+	///       <para>If you create objects that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:UIKit.IUIPreviewActionItem" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIPreview%20Action%20Item_%20Extensions&amp;scope=Xamarin" title="T:UIKit.UIPreviewActionItem_Extensions">T:UIKit.UIPreviewActionItem_Extensions</a></format> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface UIPreviewActionItem {
@@ -16551,6 +16769,12 @@ namespace UIKit {
 
 	interface IUIScrollViewDelegate { }
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:UIKit.UIScrollViewDelegate" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:UIKit.UIScrollViewDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:UIKit.UIScrollViewDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:UIKit.UIScrollViewDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
@@ -16741,6 +16965,12 @@ namespace UIKit {
 		void DidChangeAdjustedContentInset (UIScrollView scrollView);
 	}
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:UIKit.UIScrollViewAccessibilityDelegate" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:UIKit.UIScrollViewAccessibilityDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:UIKit.UIScrollViewAccessibilityDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:UIKit.UIScrollViewAccessibilityDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol, Model]
 	[BaseType (typeof (UIScrollViewDelegate))]
@@ -17027,6 +17257,12 @@ namespace UIKit {
 
 	interface IUISearchBarDelegate { }
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:UIKit.UISearchBarDelegate" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:UIKit.UISearchBarDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:UIKit.UISearchBarDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:UIKit.UISearchBarDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (UIBarPositioningDelegate))]
 	[Model]
@@ -17287,6 +17523,12 @@ namespace UIKit {
 
 	interface IUISearchControllerDelegate { }
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:UIKit.UISearchControllerDelegate" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:UIKit.UISearchControllerDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:UIKit.UISearchControllerDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:UIKit.UISearchControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
@@ -17534,6 +17776,9 @@ namespace UIKit {
 
 	interface IUISearchResultsUpdating { }
 
+	/// <summary>Protocol for updating the search results based on the contents of the search bar.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UISearchResultsUpdating_ClassRef/index.html">Apple documentation for <c>UISearchResultsUpdating</c></related>
 	[MacCatalyst (13, 1)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
@@ -17963,6 +18208,8 @@ namespace UIKit {
 		UIBehavioralStyle PreferredBehavioralStyle { get; set; }
 	}
 
+	/// <summary>Represents the key to be used in the <see cref="T:Foundation.NSMutableDictionary" /> that define the attributes of a <see cref="T:Foundation.NSAttributedString" />.</summary>
+	/// <remarks>To be added.</remarks>
 	[Static]
 	interface UIStringAttributeKey {
 		/// <summary>Represents the value associated with the constant NSFontAttributeName</summary>
@@ -18482,6 +18729,12 @@ namespace UIKit {
 
 	interface IUITabBarDelegate { }
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:UIKit.UITabBarDelegate" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:UIKit.UITabBarDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:UIKit.UITabBarDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:UIKit.UITabBarDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model]
@@ -18550,6 +18803,12 @@ namespace UIKit {
 
 	interface IUITabBarControllerDelegate { }
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:UIKit.UITabBarControllerDelegate" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:UIKit.UITabBarControllerDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:UIKit.UITabBarControllerDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:UIKit.UITabBarControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model]
@@ -19320,6 +19579,8 @@ namespace UIKit {
 	}
 
 	interface IUITableViewDataSourcePrefetching { }
+	/// <summary>Interface for table view data sources that can prefetch their data.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface UITableViewDataSourcePrefetching {
@@ -19342,6 +19603,7 @@ namespace UIKit {
 	//
 	// This mixed both the UITableViewDataSource and UITableViewDelegate in a single class
 	//
+	/// <include file="../docs/api/UIKit/UITableViewSource.xml" path="/Documentation/Docs[@DocId='T:UIKit.UITableViewSource']/*" />
 	[MacCatalyst (13, 1)]
 	[Model]
 	[BaseType (typeof (UIScrollViewDelegate))]
@@ -19918,6 +20180,12 @@ namespace UIKit {
 
 	interface IUITableViewDataSource { }
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:UIKit.UITableViewDataSource" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:UIKit.UITableViewDataSource" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:UIKit.UITableViewDataSource" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:UIKit.UITableViewDataSource_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 #if NET
@@ -20020,6 +20288,7 @@ namespace UIKit {
 
 	interface IUITableViewDelegate { }
 
+	/// <include file="../docs/api/UIKit/UITableViewDelegate.xml" path="/Documentation/Docs[@DocId='T:UIKit.UITableViewDelegate']/*" />
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (UIScrollViewDelegate))]
 	[Model]
@@ -20759,6 +21028,12 @@ namespace UIKit {
 
 	interface IUITextFieldDelegate { }
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:UIKit.UITextFieldDelegate" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:UIKit.UITextFieldDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:UIKit.UITextFieldDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:UIKit.UITextFieldDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model]
@@ -21083,6 +21358,11 @@ namespace UIKit {
 
 	interface IUITextViewDelegate { }
 
+	/// <summary>A class used to receive notifications from a UITextView control.</summary>
+	/// <remarks>
+	/// 
+	/// A strongly typed implementation of a class that can be used to respond to events raised by the <see cref="T:UIKit.UITextView" />.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UITextViewDelegate_Protocol/index.html">Apple documentation for <c>UITextViewDelegate</c></related>
 	[BaseType (typeof (UIScrollViewDelegate))]
 	[NoMac]
 	[MacCatalyst (13, 1)]
@@ -21425,6 +21705,8 @@ namespace UIKit {
 
 	interface IUITimingCurveProvider { }
 
+	/// <summary>Interface defining the required methods for the <see cref="T:UIKit.IUITimingCurveProvider" /> protocol.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface UITimingCurveProvider : NSCoding, NSCopying {
@@ -22620,6 +22902,8 @@ namespace UIKit {
 		void Animate (double duration, nfloat bounce, nfloat velocity, double delay, UIViewAnimationOptions options, Action animations, [NullAllowed] Action<bool> completion);
 	}
 
+	/// <summary>Class that implements a text field in a view.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Category, BaseType (typeof (UIView))]
 	interface UIView_UITextField {
@@ -23559,6 +23843,16 @@ namespace UIKit {
 		UIViewControllerTransition PreferredTransition { get; set; }
 	}
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:UIKit.UIViewControllerContextTransitioning" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:UIKit.UIViewControllerContextTransitioning" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:UIKit.UIViewControllerContextTransitioning" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:UIKit.UIViewControllerContextTransitioning_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
+	/// <summary>Extension methods to the <see cref="T:UIKit.IUIViewControllerContextTransitioning" /> interface to support all the methods from the <see cref="T:UIKit.UIViewControllerContextTransitioning" /> protocol.</summary>
+	/// <remarks>
+	///       <para>The extension methods for <see cref="T:UIKit.IUIViewControllerContextTransitioning" /> allow developers to treat instances of the interface as having all the optional methods of the original <see cref="T:UIKit.UIViewControllerContextTransitioning" /> protocol.   Since the interface only contains the required members, these extension methods allow developers to call the optional members of the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol, Model, BaseType (typeof (NSObject))]
 	partial interface UIViewControllerContextTransitioning {
@@ -23676,6 +23970,12 @@ namespace UIKit {
 	}
 
 	interface IUITraitEnvironment { }
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:UIKit.UITraitEnvironment" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:UIKit.UITraitEnvironment" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:UIKit.UITraitEnvironment" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UITrait%20Environment_%20Extensions&amp;scope=Xamarin" title="T:UIKit.UITraitEnvironment_Extensions">T:UIKit.UITraitEnvironment_Extensions</a></format> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[BaseType (typeof (NSObject))]
 	[Model]
 	[Protocol]
@@ -24024,6 +24324,8 @@ namespace UIKit {
 		UIListEnvironment ListEnvironment { get; }
 	}
 
+	/// <summary>Provides the constants for <see cref="M:UIKit.UIViewControllerContextTransitioning.GetViewControllerForKey(Foundation.NSString)" />.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Static]
 	partial interface UITransitionContext {
@@ -24058,6 +24360,12 @@ namespace UIKit {
 		NSString ToViewKey { get; }
 	}
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:UIKit.UIViewControllerAnimatedTransitioning" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:UIKit.UIViewControllerAnimatedTransitioning" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:UIKit.UIViewControllerAnimatedTransitioning" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:UIKit.UIViewControllerAnimatedTransitioning_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Model, BaseType (typeof (NSObject))]
 	[Protocol]
@@ -24093,6 +24401,12 @@ namespace UIKit {
 	}
 	interface IUIViewControllerAnimatedTransitioning { }
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:UIKit.UIViewControllerInteractiveTransitioning" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:UIKit.UIViewControllerInteractiveTransitioning" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:UIKit.UIViewControllerInteractiveTransitioning" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:UIKit.UIViewControllerInteractiveTransitioning_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Model, BaseType (typeof (NSObject))]
 	[Protocol]
@@ -24122,6 +24436,12 @@ namespace UIKit {
 
 	interface IUIViewControllerTransitioningDelegate { }
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:UIKit.UIViewControllerTransitioningDelegate" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:UIKit.UIViewControllerTransitioningDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:UIKit.UIViewControllerTransitioningDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:UIKit.UIViewControllerTransitioningDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Model, BaseType (typeof (NSObject))]
 	[Protocol]
@@ -24216,6 +24536,8 @@ namespace UIKit {
 	// This protocol is only for consumption (there is no API to set a transition coordinator context,
 	// you'll be provided an existing one), so we do not provide a model to subclass.
 	//
+	/// <summary>Interface that defines the context for coordination of a transition.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	partial interface UIViewControllerTransitionCoordinatorContext {
@@ -24332,6 +24654,10 @@ namespace UIKit {
 	// This protocol is only for consumption (there is no API to set a transition coordinator,
 	// only get an existing one), so we do not provide a model to subclass.
 	//
+	/// <summary>Interface that, together with the <see cref="T:UIKit.UIViewControllerTransitionCoordinator_Extensions" /> class, comprise the UIViewControllerTransitionCoordinator protocol.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <summary>Extension class that, together with the <see cref="T:UIKit.IUIViewControllerTransitionCoordinator" /> interface, comprise the UIViewControllerTransitionCoordinator protocol.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	partial interface UIViewControllerTransitionCoordinator : UIViewControllerTransitionCoordinatorContext {
@@ -24375,6 +24701,9 @@ namespace UIKit {
 	}
 	interface IUIViewControllerTransitionCoordinator { }
 
+	/// <summary>Provides the <c>GetTransitionCoordinator</c> extension method for <see cref="T:UIKit.UIViewController" />s.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <altmember cref="T:UIKit.UIViewController" />
 	[MacCatalyst (13, 1)]
 	[Category, BaseType (typeof (UIViewController))]
 	partial interface TransitionCoordinator_UIViewController {
@@ -24619,6 +24948,8 @@ namespace UIKit {
 		string AvailableLangauges { get; }
 	}
 
+	/// <summary>Known values for <see cref="P:UIKit.UITextField.TextContentType" /> that are hints to the system of the kind of <see cref="T:UIKit.UITextField" /> data.</summary>
+	/// <remarks>To be added.</remarks>
 	[Static]
 	[MacCatalyst (13, 1)]
 	interface UITextContentType {
@@ -25038,6 +25369,12 @@ namespace UIKit {
 
 	interface IUISplitViewControllerDelegate { }
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:UIKit.UISplitViewControllerDelegate" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:UIKit.UISplitViewControllerDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:UIKit.UISplitViewControllerDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:UIKit.UISplitViewControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model]
@@ -25285,6 +25622,8 @@ namespace UIKit {
 		void InteractivePresentationGestureDidEnd (UISplitViewController svc);
 	}
 
+	/// <summary>Defines extension methods on <see cref="T:UIKit.UIViewController" /> relating to collapsing/expanding secondary view controllers.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Category]
 	[BaseType (typeof (UIViewController))]
@@ -25503,6 +25842,8 @@ namespace UIKit {
 		NSObject Sender { get; }
 	}
 
+	/// <summary>Interface that, together with the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIPopover%20Background%20View%20Methods_%20Extensions&amp;scope=Xamarin" title="T:UIKit.UIPopoverBackgroundViewMethods_Extensions">T:UIKit.UIPopoverBackgroundViewMethods_Extensions</a></format> class, comprise the UIPopoverBackgroundViewMethods protocol.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface UIPopoverBackgroundViewMethods {
@@ -25620,6 +25961,12 @@ namespace UIKit {
 
 	interface IUIPopoverControllerDelegate { }
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:UIKit.UIPopoverControllerDelegate" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:UIKit.UIPopoverControllerDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:UIKit.UIPopoverControllerDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:UIKit.UIPopoverControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[BaseType (typeof (NSObject))]
 	[Model]
 	[Protocol]
@@ -25736,6 +26083,12 @@ namespace UIKit {
 
 	interface IUIAdaptivePresentationControllerDelegate { }
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:UIKit.UIAdaptivePresentationControllerDelegate" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:UIKit.UIAdaptivePresentationControllerDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:UIKit.UIAdaptivePresentationControllerDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:UIKit.UIAdaptivePresentationControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
@@ -26990,6 +27343,9 @@ namespace UIKit {
 		CGSize StringSize (UIFont font, nfloat minFontSize, ref nfloat actualFontSize, nfloat forWidth, UILineBreakMode lineBreakMode);
 	}
 
+	/// <summary>Extension methods for <see cref="T:Foundation.NSString" /> to support easy screen drawing.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <altmember cref="T:Foundation.NSString" />
 	[Category, BaseType (typeof (NSString))]
 	interface NSStringDrawing {
 		/// <param name="attributes">To be added.</param>
@@ -27110,6 +27466,8 @@ namespace UIKit {
 		bool NeedsInputModeSwitchKey { get; }
 	}
 
+	/// <summary>Interface for adding drag-and-drop and spring-loaded operations.</summary>
+	/// <remarks>To be added.</remarks>
 	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol]
@@ -27136,6 +27494,16 @@ namespace UIKit {
 		void DidMoveToView ([NullAllowed] UIView view);
 	}
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:UIKit.UITextDocumentProxy" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:UIKit.UITextDocumentProxy" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:UIKit.UITextDocumentProxy" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:UIKit.UITextDocumentProxy_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
+	/// <summary>Extension methods to the <see cref="T:UIKit.IUITextDocumentProxy" /> interface to support all the methods from the <see cref="T:UIKit.UITextDocumentProxy" /> protocol.</summary>
+	/// <remarks>
+	///       <para>The extension methods for <see cref="T:UIKit.IUITextDocumentProxy" /> allow developers to treat instances of the interface as having all the optional methods of the original <see cref="T:UIKit.UITextDocumentProxy" /> protocol.   Since the interface only contains the required members, these extension methods allow developers to call the optional members of the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
@@ -27257,6 +27625,9 @@ namespace UIKit {
 		NSLayoutYAxisAnchor CenterYAnchor { get; }
 	}
 
+	/// <summary>Provides the <see cref="P:UIKit.UILayoutSupport.Length" /> property, which specifies the distance, in points, from the nearest screen edge to the guide.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UILayoutSupport_Protocol/index.html">Apple documentation for <c>UILayoutSupport</c></related>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	[Model]
@@ -27302,6 +27673,8 @@ namespace UIKit {
 	// This protocol is supposed to be an aggregate to existing classes,
 	// at the moment there is no API that require a specific UIAccessibilityIdentification
 	// implementation, so we don't provide a Model class (for now at least).
+	/// <summary>Interface defining the support for an accessibility identifier.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface UIAccessibilityIdentification {
@@ -27743,6 +28116,8 @@ namespace UIKit {
 
 	// note: used (internally, not exposed) by UITableView and UICollectionView for state restoration
 	// user objects must adopt the protocol
+	/// <summary>Interface that, together with the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIData%20Source%20Model%20Association_%20Extensions&amp;scope=Xamarin" title="T:UIKit.UIDataSourceModelAssociation_Extensions">T:UIKit.UIDataSourceModelAssociation_Extensions</a></format> class, comprise the UIDataSourceModelAssociation protocol.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface UIDataSourceModelAssociation {
@@ -27766,6 +28141,8 @@ namespace UIKit {
 		NSIndexPath GetIndexPath (string identifier, UIView view);
 	}
 
+	/// <summary>Interface that, together with the <see cref="T:UIKit.UIAccessibilityReadingContent_Extensions" /> class, comprise the UIAccessibilityReadingContent protocol.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface UIAccessibilityReadingContent {
@@ -27819,6 +28196,8 @@ namespace UIKit {
 		NSAttributedString GetAccessibilityAttributedPageContent ();
 	}
 
+	/// <summary>Interface that, together with the <see cref="T:UIKit.UIGuidedAccessRestrictionDelegate_Extensions" /> class, comprise the UIGuidedAccessRestrictionDelegate protocol.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface UIGuidedAccessRestrictionDelegate {
@@ -27893,6 +28272,8 @@ namespace UIKit {
 
 	interface IUIFocusAnimationContext { }
 
+	/// <summary>Interface for getting information about a focus animation.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface UIFocusAnimationContext {
@@ -27982,6 +28363,8 @@ namespace UIKit {
 
 	interface IUIFocusItem { }
 
+	/// <summary>Interface that defines the <see cref="P:UIKit.IUIFocusItem.CanBecomeFocused" /> method.</summary>
+	/// <remarks>To be added.</remarks>
 	[NoMac]
 	[MacCatalyst (13, 1)]
 	[Protocol]
@@ -28116,6 +28499,8 @@ namespace UIKit {
 
 	interface IUIFocusDebuggerOutput { }
 
+	/// <summary>For internal use by the <c>lldb</c> debugger.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface UIFocusDebuggerOutput { }
@@ -28317,6 +28702,8 @@ namespace UIKit {
 
 	interface IUIFocusEnvironment { }
 
+	/// <summary>Interface defining the focus environment.</summary>
+	/// <remarks>To be added.</remarks>
 	[NoMac]
 	[MacCatalyst (13, 1)]
 	[Protocol]
@@ -29971,6 +30358,8 @@ namespace UIKit {
 		IUIDropSession DropSession { get; }
 	}
 
+	/// <summary>Interface for managing data source objects.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface UIDataSourceTranslating {
@@ -30602,6 +30991,8 @@ namespace UIKit {
 	}
 
 	interface IUIFocusItemContainer { }
+	/// <summary>Manages spatial information for focus items in a focus environment.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[NoMac]
 	[Protocol]
@@ -30622,6 +31013,8 @@ namespace UIKit {
 		IUIFocusItem [] GetFocusItems (CGRect rect);
 	}
 
+	/// <summary>Abstraction for the viewable and and total size of scrollable content.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface UIFocusItemScrollableContainer : UIFocusItemContainer {

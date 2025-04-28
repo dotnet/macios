@@ -18,6 +18,9 @@ using NativeHandle = System.IntPtr;
 
 namespace ExternalAccessory {
 
+	/// <summary>Provides information about a connected external accessory.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ExternalAccessory/Reference/EAAccessory_class/index.html">Apple documentation for <c>EAAccessory</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject), Delegates = new string [] { "WeakDelegate" }, Events = new Type [] { typeof (EAAccessoryDelegate) })]
 	// Objective-C exception thrown.  Name: EAAccessoryInitException Reason: -init not supported. EAAccessoryManager is responsible for creating all objects.
@@ -113,6 +116,12 @@ namespace ExternalAccessory {
 
 	interface IEAAccessoryDelegate { }
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:ExternalAccessory.EAAccessoryDelegate" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:ExternalAccessory.EAAccessoryDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:ExternalAccessory.EAAccessoryDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:ExternalAccessory.EAAccessoryDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model]
@@ -143,6 +152,9 @@ namespace ExternalAccessory {
 		EAAccessory Selected { get; }
 	}
 
+	/// <summary>Used to enumerate the external accessories connected.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ExternalAccessory/Reference/EAAccessoryManager_class/index.html">Apple documentation for <c>EAAccessoryManager</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	// Objective-C exception thrown.  Name: EAAccessoryManagerInitException Reason: -init is not supported. Use +sharedAccessoryManager.
@@ -207,6 +219,9 @@ namespace ExternalAccessory {
 		void ShowBluetoothAccessoryPicker ([NullAllowed] NSPredicate predicate, [NullAllowed] Action<NSError> completion);
 	}
 
+	/// <summary>The EASession is used to communicate with the external hardware accessory.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ExternalAccessory/Reference/EASession_class/index.html">Apple documentation for <c>EASession</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	// Objective-C exception thrown.  Name: EASessionInitException Reason: -init not supported. use -initWithAccessory:forProtocol.
@@ -248,6 +263,9 @@ namespace ExternalAccessory {
 		NSOutputStream OutputStream { get; }
 	}
 
+	/// <summary>An MFI Wireless Accessory Configuration accessory that is currently unconfigured.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ExternalAccessory/Reference/EAWiFiUnconfiguredAccessory_Class/index.html">Apple documentation for <c>EAWiFiUnconfiguredAccessory</c></related>
 	[NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]

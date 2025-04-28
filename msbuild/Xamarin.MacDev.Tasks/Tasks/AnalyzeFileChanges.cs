@@ -53,10 +53,9 @@ namespace Xamarin.MacDev.Tasks {
 
 				foreach (string file in files) {
 					//If there is a new assembly in the remote side not present in the report file, we register it for copying back
-					if (!reportFileList.TryGetValue(Path.GetFileName(file), out (long length, Guid mvid) localInfo))
-					{
-						changedFiles.Add(new TaskItem(file));
-						TryAddPdbFile(file, changedFiles);
+					if (!reportFileList.TryGetValue (Path.GetFileName (file), out (long length, Guid mvid) localInfo)) {
+						changedFiles.Add (new TaskItem (file));
+						TryAddPdbFile (file, changedFiles);
 
 						continue;
 					}
@@ -70,7 +69,7 @@ namespace Xamarin.MacDev.Tasks {
 
 						continue;
 					}
-					
+
 					using Stream stream = fileInfo.OpenRead ();
 					using var peReader = new PEReader (stream);
 					MetadataReader metadataReader = peReader.GetMetadataReader ();

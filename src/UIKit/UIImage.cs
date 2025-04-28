@@ -93,15 +93,19 @@ namespace UIKit {
 				return Runtime.GetNSObject<NSData> (UIImageJPEGRepresentation (Handle, compressionQuality));
 		}
 
+		/// <summary>Scales the image up or down.</summary>
 		/// <param name="newSize">The desired size for the scaled image.</param>
 		/// <param name="scaleFactor">Scale factor to apply to the scaled image. If the value specified is zero, the device's scale factor is used.</param>
-		/// <summary>Scales the image up or down.</summary>
 		/// <returns>The scaled image.</returns>
 		/// <remarks>
-		///           <para>
-		///           </para>
-		///           <para tool="threads">This can be used from a background thread.</para>
-		///         </remarks>
+		///   <para tool="threads">This can be used from a background thread.</para>
+		/// </remarks>
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[UnsupportedOSPlatform ("ios17.0")]
+		[UnsupportedOSPlatform ("tvos17.0")]
+		[UnsupportedOSPlatform ("maccatalyst17.0")]
 		public UIImage Scale (CGSize newSize, nfloat scaleFactor)
 		{
 			UIGraphics.BeginImageContextWithOptions (newSize, false, scaleFactor);
@@ -114,14 +118,18 @@ namespace UIKit {
 			return scaledImage;
 		}
 
+		/// <summary>Scales the image up or down.</summary>
 		/// <param name="newSize">The desired size for the scaled image.</param>
-		///         <summary>Scales the image up or down.</summary>
-		///         <returns>The scaled image.</returns>
-		///         <remarks>
-		///           <para>
-		///           </para>
-		///           <para tool="threads">This can be used from a background thread.</para>
-		///         </remarks>
+		/// <returns>The scaled image.</returns>
+		/// <remarks>
+		///   <para tool="threads">This can be used from a background thread.</para>
+		/// </remarks>
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[UnsupportedOSPlatform ("ios17.0")]
+		[UnsupportedOSPlatform ("tvos17.0")]
+		[UnsupportedOSPlatform ("maccatalyst17.0")]
 		public UIImage Scale (CGSize newSize)
 		{
 			UIGraphics.BeginImageContext (newSize);
@@ -163,23 +171,16 @@ namespace UIKit {
 				}
 			}
 		}
-#if NET
+
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
-#else
-		[TV (17, 0), iOS (17, 0)]
-#endif
 		[DllImport (Constants.UIKitLibrary)]
 		static extern /* NSData */ IntPtr UIImageHEICRepresentation (/* UIImage */ IntPtr image);
 
-#if NET
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
-#else
-		[TV (17, 0), iOS (17, 0)]
-#endif
 		public NSData? HeicRepresentation
 			=> Runtime.GetNSObject<NSData> (UIImageHEICRepresentation (Handle));
 

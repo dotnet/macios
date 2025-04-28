@@ -69,11 +69,7 @@ namespace UIKit {
 		{
 			global::UIKit.UIApplication.EnsureUIThread ();
 			var trait__handle__ = trait!.GetNonNullHandle (nameof (trait));
-#if NET
 			var ret = global::ObjCRuntime.Messaging.bool_objc_msgSend_NativeHandle (this.Handle, Selector.GetHandle ("containsTrait:"), trait__handle__);
-#else
-			var ret = global::ObjCRuntime.Messaging.bool_objc_msgSend_IntPtr (this.Handle, Selector.GetHandle ("containsTrait:"), trait__handle__);
-#endif
 			GC.KeepAlive (trait);
 			return ret != 0;
 		}
@@ -87,11 +83,7 @@ namespace UIKit {
 		{
 			global::UIKit.UIApplication.EnsureUIThread ();
 			var trait__handle__ = trait!.GetNonNullHandle (nameof (trait));
-#if NET
 			global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, Selector.GetHandle ("removeTrait:"), trait__handle__);
-#else
-			global::ObjCRuntime.Messaging.void_objc_msgSend_IntPtr (this.Handle, Selector.GetHandle ("removeTrait:"), trait__handle__);
-#endif
 			GC.KeepAlive (trait);
 		}
 #endif // !XAMCORE_5_0

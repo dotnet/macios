@@ -2069,18 +2069,6 @@ namespace UIKit {
 		Down,
 	}
 
-#if !NET
-	// NSInteger -> UITextInput.h
-	// Use Foundation.NSWritingDirection in .NET.
-	// see: https://github.com/dotnet/macios/issues/6573
-	[Native]
-	public enum UITextWritingDirection : long {
-		Natural = -1,
-		LeftToRight,
-		RightToLeft,
-	}
-#endif
-
 	// NSInteger -> UITextInput.h
 	/// <summary>An enumeration of values that specify the granularity of a text range .</summary>
 	/// <remarks>To be added.</remarks>
@@ -3318,12 +3306,8 @@ namespace UIKit {
 		Next,
 	}
 
-#if NET
 	/// <summary>Flagging enumeration for the permission options for Cloud sharing.</summary>
 	[NoTV]
-#else
-	// Xcode 8.2 beta 1 added __TVOS_PROHIBITED but we need to keep it for binary compatibility
-#endif
 	[MacCatalyst (13, 1)]
 	[Native]
 	[Flags]

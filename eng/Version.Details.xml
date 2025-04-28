@@ -1,25 +1,25 @@
 <Dependencies>
   <ProductDependencies>
-    <Dependency Name="Microsoft.NET.Sdk" Version="10.0.100-preview.5.25225.102">
+    <Dependency Name="Microsoft.NET.Sdk" Version="10.0.100-preview.5.25227.101">
       <Uri>https://github.com/dotnet/dotnet</Uri>
-      <Sha>919f64d9fd105eda6d412b926d9c20951383150f</Sha>
+      <Sha>c71a5e287b51dabb97b7e0be5c4ba9b11f840402</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.NET.ILLink" Version="10.0.0-preview.5.25225.102">
+    <Dependency Name="Microsoft.NET.ILLink" Version="10.0.0-preview.5.25227.101">
       <Uri>https://github.com/dotnet/dotnet</Uri>
-      <Sha>919f64d9fd105eda6d412b926d9c20951383150f</Sha>
+      <Sha>c71a5e287b51dabb97b7e0be5c4ba9b11f840402</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.NET.ILLink.Tasks" Version="10.0.0-preview.5.25225.102">
+    <Dependency Name="Microsoft.NET.ILLink.Tasks" Version="10.0.0-preview.5.25227.101">
       <Uri>https://github.com/dotnet/dotnet</Uri>
-      <Sha>919f64d9fd105eda6d412b926d9c20951383150f</Sha>
+      <Sha>c71a5e287b51dabb97b7e0be5c4ba9b11f840402</Sha>
     </Dependency>
     <!-- Set TRACKING_DOTNET_RUNTIME_SEPARATELY to something in Make.config if changing the version outside of dependency flow -->
-    <Dependency Name="Microsoft.NETCore.App.Ref" Version="10.0.0-preview.5.25225.102">
+    <Dependency Name="Microsoft.NETCore.App.Ref" Version="10.0.0-preview.5.25227.101">
       <Uri>https://github.com/dotnet/dotnet</Uri>
-      <Sha>919f64d9fd105eda6d412b926d9c20951383150f</Sha>
+      <Sha>c71a5e287b51dabb97b7e0be5c4ba9b11f840402</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.DotNet.Cecil" Version="0.11.5-alpha.25225.102">
+    <Dependency Name="Microsoft.DotNet.Cecil" Version="0.11.5-alpha.25227.101">
       <Uri>https://github.com/dotnet/dotnet</Uri>
-      <Sha>919f64d9fd105eda6d412b926d9c20951383150f</Sha>
+      <Sha>c71a5e287b51dabb97b7e0be5c4ba9b11f840402</Sha>
     </Dependency>
     <!-- This is a subscription of the .NET 9 latest stable versions of our packages -->
     <Dependency Name="Microsoft.MacCatalyst.Sdk.net9.0_18.4" Version="18.4.9289">
@@ -55,19 +55,19 @@
       <Uri>https://github.com/xamarin/xamarin-macios</Uri>
       <Sha>797d30720e5e629d23eb146935da94cb1b61047e</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.NET.Runtime.MonoTargets.Sdk" Version="10.0.0-preview.5.25225.102">
+    <Dependency Name="Microsoft.NET.Runtime.MonoTargets.Sdk" Version="10.0.0-preview.5.25227.101">
       <Uri>https://github.com/dotnet/dotnet</Uri>
-      <Sha>919f64d9fd105eda6d412b926d9c20951383150f</Sha>
+      <Sha>c71a5e287b51dabb97b7e0be5c4ba9b11f840402</Sha>
     </Dependency>
   </ProductDependencies>
   <ToolsetDependencies>
-    <Dependency Name="Microsoft.DotNet.Build.Tasks.Feed" Version="10.0.0-beta.25225.102">
+    <Dependency Name="Microsoft.DotNet.Build.Tasks.Feed" Version="10.0.0-beta.25227.101">
       <Uri>https://github.com/dotnet/dotnet</Uri>
-      <Sha>919f64d9fd105eda6d412b926d9c20951383150f</Sha>
+      <Sha>c71a5e287b51dabb97b7e0be5c4ba9b11f840402</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.DotNet.SharedFramework.Sdk" Version="10.0.0-beta.25225.102">
+    <Dependency Name="Microsoft.DotNet.SharedFramework.Sdk" Version="10.0.0-beta.25227.101">
       <Uri>https://github.com/dotnet/dotnet</Uri>
-      <Sha>919f64d9fd105eda6d412b926d9c20951383150f</Sha>
+      <Sha>c71a5e287b51dabb97b7e0be5c4ba9b11f840402</Sha>
     </Dependency>
     <Dependency Name="Microsoft.TemplateEngine.Tasks" Version="7.0.100-alpha.1.21601.1">
       <Uri>https://github.com/dotnet/templating</Uri>
@@ -77,9 +77,9 @@
       <Uri>https://github.com/dotnet/xharness</Uri>
       <Sha>8c6d5afd99c713777165f4378462085a5679c223</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.DotNet.Arcade.Sdk" Version="10.0.0-beta.25225.102">
+    <Dependency Name="Microsoft.DotNet.Arcade.Sdk" Version="10.0.0-beta.25227.101">
       <Uri>https://github.com/dotnet/dotnet</Uri>
-      <Sha>919f64d9fd105eda6d412b926d9c20951383150f</Sha>
+      <Sha>c71a5e287b51dabb97b7e0be5c4ba9b11f840402</Sha>
       <SourceBuild RepoName="arcade" ManagedOnly="true" />
     </Dependency>
   </ToolsetDependencies>

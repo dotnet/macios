@@ -31,24 +31,38 @@ using Foundation;
 using ObjCRuntime;
 
 namespace CoreServices {
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[Flags]
 	public enum LSRoles/*Mask*/ : uint /* always 32-bit uint */
 	{
+		/// <summary>To be added.</summary>
 		None = 1,
+		/// <summary>To be added.</summary>
 		Viewer = 2,
+		/// <summary>To be added.</summary>
 		Editor = 4,
+		/// <summary>To be added.</summary>
 		Shell = 8,
+		/// <summary>To be added.</summary>
 		All = 0xffffffff,
 	}
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[Flags]
 	public enum LSAcceptanceFlags : uint /* always 32-bit uint */
 	{
+		/// <summary>To be added.</summary>
 		Default = 1,
+		/// <summary>To be added.</summary>
 		AllowLoginUI = 2,
 	}
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum LSResult {
+		/// <summary>To be added.</summary>
 		Success = 0,
 #if NET
 		[SupportedOSPlatform ("macos13.0")]
@@ -56,35 +70,63 @@ namespace CoreServices {
 		[Mac (13,0)]
 #endif
 		MalformedLocErr = -10400,
+		/// <summary>To be added.</summary>
 		AppInTrash = -10660,
+		/// <summary>To be added.</summary>
 		ExecutableIncorrectFormat = -10661,
+		/// <summary>To be added.</summary>
 		AttributeNotFound = -10662,
+		/// <summary>To be added.</summary>
 		AttributeNotSettable = -10663,
+		/// <summary>To be added.</summary>
 		IncompatibleApplicationVersion = -10664,
+		/// <summary>To be added.</summary>
 		NoRosettaEnvironment = -10665,
+		/// <summary>To be added.</summary>
 		Unknown = -10810,
+		/// <summary>To be added.</summary>
 		NotAnApplication = -10811,
+		/// <summary>To be added.</summary>
 		NotInitialized = -10812,
+		/// <summary>To be added.</summary>
 		DataUnavailable = -10813,
+		/// <summary>To be added.</summary>
 		ApplicationNotFound = -10814,
+		/// <summary>To be added.</summary>
 		UnknownType = -10815,
+		/// <summary>To be added.</summary>
 		DataTooOld = -10816,
+		/// <summary>To be added.</summary>
 		Data = -10817,
+		/// <summary>To be added.</summary>
 		LaunchInProgress = -10818,
+		/// <summary>To be added.</summary>
 		NotRegistered = -10819,
+		/// <summary>To be added.</summary>
 		AppDoesNotClaimType = -10820,
+		/// <summary>To be added.</summary>
 		AppDoesNotSupportSchemeWarning = -10821,
+		/// <summary>To be added.</summary>
 		ServerCommunication = -10822,
+		/// <summary>To be added.</summary>
 		CannotSetInfo = -10823,
+		/// <summary>To be added.</summary>
 		NoRegistrationInfo = -10824,
+		/// <summary>To be added.</summary>
 		IncompatibleSystemVersion = -10825,
+		/// <summary>To be added.</summary>
 		NoLaunchPermission = -10826,
+		/// <summary>To be added.</summary>
 		NoExecutable = -10827,
+		/// <summary>To be added.</summary>
 		NoClassicEnvironment = -10828,
+		/// <summary>To be added.</summary>
 		MultipleSessionsNotSupported = -10829,
 	}
 
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 #endif
 	public static class LaunchServices {
@@ -100,6 +142,11 @@ namespace CoreServices {
 		static extern IntPtr LSCopyDefaultApplicationURLForURL (IntPtr inUrl, LSRoles inRole, /*out*/ IntPtr outError);
 
 #if NET
+		/// <param name="url">To be added.</param>
+		///         <param name="roles">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos14.0")]
 #else
@@ -110,9 +157,11 @@ namespace CoreServices {
 			if (url is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
 
-			return Runtime.GetNSObject<NSUrl> (
+			var result = Runtime.GetNSObject<NSUrl> (
 				LSCopyDefaultApplicationURLForURL (url.Handle, roles, IntPtr.Zero)
 			);
+			GC.KeepAlive (url);
+			return result;
 		}
 
 #if NET
@@ -125,6 +174,11 @@ namespace CoreServices {
 		static extern IntPtr LSCopyDefaultApplicationURLForContentType (IntPtr inContentType, LSRoles inRole, /*out*/ IntPtr outError);
 
 #if NET
+		/// <param name="contentType">To be added.</param>
+		///         <param name="roles">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos14.0")]
 #else
@@ -135,9 +189,15 @@ namespace CoreServices {
 			if (contentType is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (contentType));
 
-			return Runtime.GetNSObject<NSUrl> (
-				LSCopyDefaultApplicationURLForContentType (new NSString (contentType).Handle, roles, IntPtr.Zero)
-			);
+			var contentTypeHandle = CFString.CreateNative (contentType);
+			try {
+				return Runtime.GetNSObject<NSUrl> (
+					LSCopyDefaultApplicationURLForContentType (contentTypeHandle, roles, IntPtr.Zero)
+				);
+			}
+			finally {
+				CFString.ReleaseNative (contentTypeHandle);
+			}
 		}
 
 #if NET
@@ -150,6 +210,11 @@ namespace CoreServices {
 		static extern IntPtr LSCopyApplicationURLsForURL (IntPtr inUrl, LSRoles inRole);
 
 #if NET
+		/// <param name="url">To be added.</param>
+		///         <param name="roles">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos14.0")]
 #else
@@ -160,9 +225,11 @@ namespace CoreServices {
 			if (url is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
 
-			return NSArray.ArrayFromHandle<NSUrl> (
+			var result = NSArray.ArrayFromHandle<NSUrl> (
 				LSCopyApplicationURLsForURL (url.Handle, roles)
 			);
+			GC.KeepAlive (url);
+			return result;
 		}
 
 		[DllImport (Constants.CoreServicesLibrary)]
@@ -171,6 +238,14 @@ namespace CoreServices {
 
 		// NOTE: intentionally inverting the status results (return bool, with an out
 		// LSResult vs return LSResult with an out bool) to make the API nicer to use
+		/// <param name="itemUrl">To be added.</param>
+		///         <param name="targetUrl">To be added.</param>
+		///         <param name="roles">To be added.</param>
+		///         <param name="acceptanceFlags">To be added.</param>
+		///         <param name="result">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static bool CanUrlAcceptUrl (NSUrl itemUrl, NSUrl targetUrl,
 			LSRoles roles, LSAcceptanceFlags acceptanceFlags, out LSResult result)
 		{
@@ -182,10 +257,19 @@ namespace CoreServices {
 			byte acceptsItem;
 			unsafe {
 				result = LSCanURLAcceptURL (itemUrl.Handle, targetUrl.Handle, roles, acceptanceFlags, &acceptsItem);
+				GC.KeepAlive (itemUrl);
+				GC.KeepAlive (targetUrl);
 			}
 			return acceptsItem != 0;
 		}
 
+		/// <param name="itemUrl">To be added.</param>
+		///         <param name="targetUrl">To be added.</param>
+		///         <param name="roles">To be added.</param>
+		///         <param name="acceptanceFlags">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static bool CanUrlAcceptUrl (NSUrl itemUrl, NSUrl targetUrl,
 			LSRoles roles = LSRoles.All, LSAcceptanceFlags acceptanceFlags = LSAcceptanceFlags.Default)
 		{
@@ -203,6 +287,10 @@ namespace CoreServices {
 		static extern IntPtr LSCopyApplicationURLsForBundleIdentifier (IntPtr inBundleIdentifier, /*out*/ IntPtr outError);
 
 #if NET
+		/// <param name="bundleIdentifier">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos14.0")]
 #else
@@ -213,9 +301,15 @@ namespace CoreServices {
 			if (bundleIdentifier is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (bundleIdentifier));
 
-			return NSArray.ArrayFromHandle<NSUrl> (
-				LSCopyApplicationURLsForBundleIdentifier (new NSString (bundleIdentifier).Handle, IntPtr.Zero)
-			);
+			var bundleIdentifierHandle = CFString.CreateNative (bundleIdentifier);
+			try {
+				return NSArray.ArrayFromHandle<NSUrl> (
+					LSCopyApplicationURLsForBundleIdentifier (bundleIdentifierHandle, IntPtr.Zero)
+				);
+			}
+			finally {
+				CFString.ReleaseNative (bundleIdentifierHandle);
+			}
 		}
 
 		#endregion
@@ -225,14 +319,25 @@ namespace CoreServices {
 		[DllImport (Constants.CoreServicesLibrary)]
 		unsafe static extern LSResult LSOpenCFURLRef (IntPtr inUrl, void** outLaunchedUrl);
 
+		/// <param name="url">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public unsafe static LSResult Open (NSUrl url)
 		{
 			if (url is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
 
-			return LSOpenCFURLRef (url.Handle, (void**) 0);
+			LSResult result = LSOpenCFURLRef (url.Handle, (void**) 0);
+			GC.KeepAlive (url);
+			return result;
 		}
 
+		/// <param name="url">To be added.</param>
+		///         <param name="launchedUrl">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public unsafe static LSResult Open (NSUrl url, out NSUrl? launchedUrl)
 		{
 			if (url is null)
@@ -240,6 +345,7 @@ namespace CoreServices {
 
 			void* launchedUrlHandle;
 			var result = LSOpenCFURLRef (url.Handle, &launchedUrlHandle);
+			GC.KeepAlive (url);
 			launchedUrl = Runtime.GetNSObject<NSUrl> (new IntPtr (launchedUrlHandle));
 			return result;
 		}
@@ -251,12 +357,19 @@ namespace CoreServices {
 		[DllImport (Constants.CoreServicesLibrary)]
 		static extern LSResult LSRegisterURL (IntPtr inUrl, byte inUpdate);
 
+		/// <param name="url">To be added.</param>
+		///         <param name="update">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static LSResult Register (NSUrl url, bool update)
 		{
 			if (url is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
 
-			return LSRegisterURL (url.Handle, (byte) (update ? 1 : 0));
+			LSResult result = LSRegisterURL (url.Handle, (byte) (update ? 1 : 0));
+			GC.KeepAlive (url);
+			return result;
 		}
 
 		#endregion
@@ -273,6 +386,11 @@ namespace CoreServices {
 		static extern IntPtr LSCopyAllRoleHandlersForContentType (IntPtr inContentType, LSRoles inRole);
 
 #if NET
+		/// <param name="contentType">To be added.</param>
+		///         <param name="roles">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos14.0")]
 #else
@@ -283,9 +401,15 @@ namespace CoreServices {
 			if (contentType is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (contentType));
 
-			return CFArray.StringArrayFromHandle (
-				LSCopyAllRoleHandlersForContentType (new NSString (contentType).Handle, roles)
-			);
+			var contentTypeHandle = CFString.CreateNative (contentType);
+			try {
+				return CFArray.StringArrayFromHandle (
+					LSCopyAllRoleHandlersForContentType (contentTypeHandle, roles)
+				);
+			}
+			finally {
+				CFString.ReleaseNative (contentTypeHandle);
+			}
 		}
 
 #if NET
@@ -298,6 +422,11 @@ namespace CoreServices {
 		static extern IntPtr LSCopyDefaultRoleHandlerForContentType (IntPtr inContentType, LSRoles inRole);
 
 #if NET
+		/// <param name="contentType">To be added.</param>
+		///         <param name="roles">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos14.0")]
 #else
@@ -308,9 +437,15 @@ namespace CoreServices {
 			if (contentType is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (contentType));
 
-			return (string) Runtime.GetNSObject<NSString> (
-				LSCopyDefaultRoleHandlerForContentType (new NSString (contentType).Handle, roles)
-			);
+			var contentTypeHandle = CFString.CreateNative (contentType);
+			try {
+				return (string) Runtime.GetNSObject<NSString> (
+					LSCopyDefaultRoleHandlerForContentType (contentTypeHandle, roles)
+				);
+			}
+			finally {
+				CFString.ReleaseNative (contentTypeHandle);
+			}
 		}
 
 #if NET
@@ -324,6 +459,12 @@ namespace CoreServices {
 			LSRoles inRole, IntPtr inHandlerBundleID);
 
 #if NET
+		/// <param name="contentType">To be added.</param>
+		///         <param name="handlerBundleId">To be added.</param>
+		///         <param name="roles">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos14.0")]
 #else
@@ -338,11 +479,19 @@ namespace CoreServices {
 			if (handlerBundleId is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (handlerBundleId));
 
-			return LSSetDefaultRoleHandlerForContentType (
-				new NSString (contentType).Handle,
-				roles,
-				new NSString (handlerBundleId).Handle
-			);
+			var contentTypeHandle = CFString.CreateNative (contentType);
+			var handlerBundleIdHandle = CFString.CreateNative (handlerBundleId);
+			try {
+				return LSSetDefaultRoleHandlerForContentType (
+					contentTypeHandle,
+					roles,
+					handlerBundleIdHandle
+				);
+			}
+			finally {
+				CFString.ReleaseNative (contentTypeHandle);
+				CFString.ReleaseNative (handlerBundleIdHandle);
+			}
 		}
 
 #if NET
@@ -355,6 +504,10 @@ namespace CoreServices {
 		static extern IntPtr LSCopyAllHandlersForURLScheme (IntPtr inUrlScheme);
 
 #if NET
+		/// <param name="urlScheme">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos10.15", "Use 'GetApplicationUrlsForUrl' instead.")]
 #else
@@ -365,9 +518,15 @@ namespace CoreServices {
 			if (urlScheme is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (urlScheme));
 
-			return CFArray.StringArrayFromHandle (
-				LSCopyAllHandlersForURLScheme (new NSString (urlScheme).Handle)
-			);
+			var urlSchemeHandle = CFString.CreateNative (urlScheme);
+			try {
+				return CFArray.StringArrayFromHandle (
+					LSCopyAllHandlersForURLScheme (urlSchemeHandle)
+				);
+			}
+			finally {
+				CFString.ReleaseNative (urlSchemeHandle);
+			}
 		}
 
 #if NET
@@ -380,6 +539,10 @@ namespace CoreServices {
 		static extern IntPtr LSCopyDefaultHandlerForURLScheme (IntPtr inUrlScheme);
 
 #if NET
+		/// <param name="urlScheme">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos10.15", "Use 'GetDefaultApplicationUrlForUrl' instead.")]
 #else
@@ -390,9 +553,15 @@ namespace CoreServices {
 			if (urlScheme is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (urlScheme));
 
-			return (string) Runtime.GetNSObject<NSString> (
-				LSCopyDefaultHandlerForURLScheme (new NSString (urlScheme).Handle)
-			);
+			var urlSchemeHandle = CFString.CreateNative (urlScheme);
+			try {
+				return (string) Runtime.GetNSObject<NSString> (
+					LSCopyDefaultHandlerForURLScheme (urlSchemeHandle)
+				);
+			}
+			finally {
+				CFString.ReleaseNative (urlSchemeHandle);
+			}
 		}
 
 #if NET
@@ -405,6 +574,11 @@ namespace CoreServices {
 		static extern LSResult LSSetDefaultHandlerForURLScheme (IntPtr inUrlScheme, IntPtr inHandlerBundleId);
 
 #if NET
+		/// <param name="urlScheme">To be added.</param>
+		///         <param name="handlerBundleId">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos14.0")]
 #else
@@ -417,10 +591,18 @@ namespace CoreServices {
 			if (handlerBundleId is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (handlerBundleId));
 
-			return LSSetDefaultHandlerForURLScheme (
-				new NSString (urlScheme).Handle,
-				new NSString (handlerBundleId).Handle
-			);
+			var urlSchemeHandle = CFString.CreateNative (urlScheme);
+			var handlerBundleIdHandle = CFString.CreateNative (handlerBundleId);
+			try {
+				return LSSetDefaultHandlerForURLScheme (
+					urlSchemeHandle,
+					handlerBundleIdHandle
+				);
+			}
+			finally {
+				CFString.ReleaseNative (urlSchemeHandle);
+				CFString.ReleaseNative (handlerBundleIdHandle);
+			}
 		}
 
 		#endregion

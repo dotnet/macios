@@ -12,24 +12,43 @@ namespace Foundation {
 
 	// The kyes are not found in any of the public headers from apple. That is the reason
 	// to use this technique.
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public static class NSScriptCommandArgumentDescriptionKeys {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public static NSString AppleEventCodeKey {
 			get { return NSScriptCommonKeys.AppleEventCodeKey; }
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public static NSString TypeKey {
 			get { return NSScriptCommonKeys.TypeKey; }
 		}
 
 		private static NSString optional = new NSString ("Optional");
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public static NSString OptionalKey {
 			get { return optional; }
 		}
 	}
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public partial class NSScriptCommandArgumentDescription {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string Name { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsOptional {
 			get {
 				return Optional is not null && Optional == "Yes";
@@ -39,6 +58,12 @@ namespace Foundation {
 			}
 		}
 
+		/// <param name="name">To be added.</param>
+		///         <param name="eventCode">To be added.</param>
+		///         <param name="type">To be added.</param>
+		///         <param name="isOptional">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSScriptCommandArgumentDescription (string name, string eventCode, string type, bool isOptional = false)
 		{
 			if (String.IsNullOrEmpty (name))

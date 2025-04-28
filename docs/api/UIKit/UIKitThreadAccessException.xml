@@ -1,0 +1,29 @@
+<Documentation>
+  <Docs DocId="T:UIKit.UIKitThreadAccessException">
+    <summary>Exception thrown when a UIKit API is invoked from a background thread.</summary>
+    <remarks>
+      <para>
+	The exception is thrown if some background code has called
+	into a UIKit API that is not thread safe.  In general, most
+	UIKit APIs are not thread safe and should not be invoked from
+	a background thread.  If you must invoke a UIKit method from a
+	background thread, you should consider queueing a task using
+	the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:Foundation.NSObject.BeginInvokeOnMainThread(Foundation.NSAction)&amp;scope=Xamarin" title="M:Foundation.NSObject.BeginInvokeOnMainThread(Foundation.NSAction)">M:Foundation.NSObject.BeginInvokeOnMainThread(Foundation.NSAction)</a></format>
+	method.
+
+      </para>
+      <para>
+	It is possible to disable the runtime check by setting the
+	<see cref="F:UIKit.UIApplication.CheckForIllegalCrossThreadCalls" />
+	field to false.
+
+      </para>
+      <para>
+	This exception is thrown by MonoTouch.dll in debug builds, or
+	in release builds that have been compiled with the
+	--force-thread-check flag.
+
+      </para>
+    </remarks>
+  </Docs>
+</Documentation>

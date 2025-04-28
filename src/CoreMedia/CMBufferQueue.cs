@@ -20,13 +20,35 @@ using ObjCRuntime;
 
 namespace CoreMedia {
 
+	/// <param name="buffer">Buffer to probe.</param>
+	///     <summary>Returns the CMTime object for the specified buffer.</summary>
+	///     <returns>
+	///     </returns>
+	///     <remarks>The actual value to return will depend on which callback you have provided.</remarks>
 	public delegate CMTime CMBufferGetTime (INativeObject buffer);
+	/// <param name="buffer">Buffer to probe.</param>
+	///     <summary>Delegate signature to determine if the specified buffer that is about to be dequeued is ready.</summary>
+	///     <returns>
+	///     </returns>
+	///     <remarks>
+	///     </remarks>
 	public delegate bool CMBufferGetBool (INativeObject buffer);
+	/// <param name="first">The first object to compare.</param>
+	///     <param name="second">The second object to compare.</param>
+	///     <summary>Delegate signature to compare two CoreFoundation objects, used to sort objects in a CMBufferQueue.</summary>
+	///     <returns>Zero for the same object, -1 for first being sma</returns>
+	///     <remarks>The objects passed are the same ones that have been added to the CMBufferQueue object, it wont surface arbitrary objects.</remarks>
 	public delegate int CMBufferCompare (INativeObject first, INativeObject second);
 
 	// [SupportedOSPlatform ("ios")] -  SupportedOSPlatform is not valid on this declaration type "delegate" 
+	/// <param name="buffer">To be added.</param>
+	///     <summary>Delegate for getting media buffer sizes.</summary>
+	///     <returns>To be added.</returns>
+	///     <remarks>To be added.</remarks>
 	public delegate nint CMBufferGetSize (INativeObject buffer);
 
+	/// <summary>CoreMedia Buffer Queue.</summary>
+	///     <remarks>The CoreMedia queue exposes a thread-safe API to queue and dequeue buffers.   When you construct the CMBufferQueue, you can specific custom functions to sort the buffers by time, or you can use the convenience function CreateUnsorted to create a queue that behaves like a FIFO.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -69,6 +91,7 @@ namespace CoreMedia {
 			internal IntPtr XgetSize;
 		}
 
+		/// <include file="../../docs/api/CoreMedia/CMBufferQueue.xml" path="/Documentation/Docs[@DocId='M:CoreMedia.CMBufferQueue.Dispose(System.Boolean)']/*" />
 		protected override void Dispose (bool disposing)
 		{
 			queueObjects.Clear ();
@@ -95,6 +118,16 @@ namespace CoreMedia {
 		}
 
 		// for compatibility with 7.0 and earlier
+		/// <param name="count">Number of items in the queue.</param>
+		///         <param name="getDecodeTimeStamp">To be added.</param>
+		///         <param name="getPresentationTimeStamp">To be added.</param>
+		///         <param name="getDuration">To be added.</param>
+		///         <param name="isDataReady">To be added.</param>
+		///         <param name="compare">To be added.</param>
+		///         <param name="dataBecameReadyNotification">To be added.</param>
+		///         <summary>Creates a custom CMBufferQueue that sorts and returns the objects in the queue based on the various callbacks you provide.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static CMBufferQueue? FromCallbacks (int count, CMBufferGetTime? getDecodeTimeStamp, CMBufferGetTime? getPresentationTimeStamp, CMBufferGetTime? getDuration,
 			CMBufferGetBool? isDataReady, CMBufferCompare? compare, NSString dataBecameReadyNotification)
 		{
@@ -102,6 +135,17 @@ namespace CoreMedia {
 				compare, dataBecameReadyNotification, null);
 		}
 
+		/// <param name="count">To be added.</param>
+		///         <param name="getDecodeTimeStamp">To be added.</param>
+		///         <param name="getPresentationTimeStamp">To be added.</param>
+		///         <param name="getDuration">To be added.</param>
+		///         <param name="isDataReady">To be added.</param>
+		///         <param name="compare">To be added.</param>
+		///         <param name="dataBecameReadyNotification">To be added.</param>
+		///         <param name="getTotalSize">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static CMBufferQueue? FromCallbacks (int count, CMBufferGetTime? getDecodeTimeStamp, CMBufferGetTime? getPresentationTimeStamp, CMBufferGetTime? getDuration,
 			CMBufferGetBool? isDataReady, CMBufferCompare? compare, NSString dataBecameReadyNotification, CMBufferGetSize? getTotalSize)
 		{
@@ -119,6 +163,7 @@ namespace CoreMedia {
 					cfStringPtr_dataBecameReadyNotification = dataBecameReadyNotification is null ? IntPtr.Zero : dataBecameReadyNotification.Handle,
 					XgetSize = getTotalSize is not null ? &GetTotalSize : null,
 				};
+				GC.KeepAlive (dataBecameReadyNotification);
 			}
 
 			bq.getDecodeTimeStamp = getDecodeTimeStamp;
@@ -145,6 +190,10 @@ namespace CoreMedia {
 		[DllImport (Constants.CoreMediaLibrary)]
 		unsafe extern static /* CMBufferCallbacks */ CMBufferCallbacks* CMBufferQueueGetCallbacksForUnsortedSampleBuffers ();
 
+		/// <param name="count">Number of items in the queue.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static CMBufferQueue? CreateUnsorted (int count)
 		{
 			// note: different version of iOS can return a different (size) structure, e.g. iOS 7.1,
@@ -169,6 +218,9 @@ namespace CoreMedia {
 		//
 		// It really should be ICFType, and we should pepper various classes with ICFType
 		//
+		/// <param name="cftypeBuffer">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void Enqueue (INativeObject cftypeBuffer)
 		{
 			if (cftypeBuffer is null)
@@ -184,6 +236,9 @@ namespace CoreMedia {
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static /* CMBufferRef */ IntPtr CMBufferQueueDequeueAndRetain (/* CMBufferQueueRef */ IntPtr queue);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public INativeObject? Dequeue ()
 		{
 			//
@@ -207,6 +262,9 @@ namespace CoreMedia {
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static /* CMBufferRef */ IntPtr CMBufferQueueDequeueIfDataReadyAndRetain (/* CMBufferQueueRef */ IntPtr queue);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public INativeObject? DequeueIfDataReady ()
 		{
 			//
@@ -241,6 +299,9 @@ namespace CoreMedia {
 
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static OSStatus CMBufferQueueMarkEndOfData (/* CMBufferQueueRef */ IntPtr queue);
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public int MarkEndOfData ()
 		{
 			return CMBufferQueueMarkEndOfData (Handle);
@@ -270,6 +331,9 @@ namespace CoreMedia {
 
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static OSStatus CMBufferQueueReset (/* CMBufferQueueRef */ IntPtr queue);
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public OSStatus Reset ()
 		{
 			return CMBufferQueueReset (Handle);
@@ -304,6 +368,9 @@ namespace CoreMedia {
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static /* size_t */ nint CMBufferQueueGetTotalSize (/* CMBufferQueueRef */ IntPtr queue);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -375,6 +442,8 @@ namespace CoreMedia {
 		}
 #endif // !COREBUILD
 
+		/// <summary>Enumerates trigger conditions for a buffer queue trigger.</summary>
+		///     <remarks>To be added.</remarks>
 		public enum TriggerCondition {
 			/// <summary>The trigger is raised when the elapsed time becomes less than the specified value.</summary>
 			WhenDurationBecomesLessThan = 1,

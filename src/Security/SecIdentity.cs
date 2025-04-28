@@ -17,11 +17,16 @@ using Foundation;
 
 namespace Security {
 
+	/// <summary>Encapsulate a security identity. A security identity comprises a certificate and its private key.</summary>
+	///     <remarks>To be added.</remarks>
 	public partial class SecIdentity {
 
 		[DllImport (Constants.SecurityLibrary)]
 		unsafe extern static SecStatusCode /* OSStatus */ SecIdentityCopyPrivateKey (IntPtr /* SecIdentityRef */ identity, IntPtr* /* SecKeyRef* */ privatekey);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public SecKey PrivateKey {
 			get {
 				IntPtr p;

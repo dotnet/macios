@@ -5,7 +5,8 @@
 using Microsoft.Macios.Transformer.Attributes;
 using Microsoft.Macios.Transformer.Generator;
 
-namespace Microsoft.Macios.Transformer;
+// Use the same namemspace as the generator, that way we can share the code but use different attribute names
+namespace Microsoft.Macios.Generator;
 
 static class AttributesNames {
 
@@ -114,6 +115,9 @@ static class AttributesNames {
 	
 	[BindingFlag (AttributeTargets.Enum)]
 	public const string FlagsAttribute = "System.FlagsAttribute";
+	
+	[BindingAttribute(typeof(ForcedTypeData), AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Parameter)]
+	public const string ForcedTypeAttribute = "ForcedTypeAttribute";
 
 	/// <summary>
 	/// Sometimes it makes sense not to expose an event or delegate property from a Model class into the host class so

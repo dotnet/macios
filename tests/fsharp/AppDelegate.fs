@@ -1,6 +1,5 @@
 namespace fsharp
 
-#if !__WATCHOS__
 open System
 open System.Reflection
 
@@ -27,4 +26,3 @@ type AppDelegate () =
         window.MakeKeyAndVisible ()
 
         true
-#endif // !__WATCHOS__

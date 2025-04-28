@@ -33,24 +33,6 @@ public static class PlatformNameExtensionsBgen {
 		throw new BindingException (1047, currentPlatform);
 	}
 
-	public static int GetXamcoreVersion (this PlatformName currentPlatform)
-	{
-#if NET
-		return 4;
-#else
-		switch (currentPlatform) {
-		case PlatformName.MacOSX:
-		case PlatformName.iOS:
-			return 2;
-		case PlatformName.TvOS:
-		case PlatformName.WatchOS:
-			return 3;
-		default:
-			return 4;
-		}
-#endif
-	}
-
 	public static ApplePlatform AsApplePlatform (this PlatformName platform)
 	{
 		switch (platform) {
@@ -62,8 +44,6 @@ public static class PlatformNameExtensionsBgen {
 			return ApplePlatform.MacCatalyst;
 		case PlatformName.MacOSX:
 			return ApplePlatform.MacOSX;
-		case PlatformName.WatchOS:
-			return ApplePlatform.WatchOS;
 		case PlatformName.None:
 			return ApplePlatform.None;
 		default:

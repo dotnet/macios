@@ -32,21 +32,46 @@ using System;
 
 namespace Foundation {
 	public partial class NSPropertyListSerialization {
+		/// <param name="plist">To be added.</param>
+		///         <param name="format">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSData DataWithPropertyList (NSObject plist, NSPropertyListFormat format, out NSError error)
 		{
 			return DataWithPropertyList (plist, format, NSPropertyListWriteOptions.Immutable, out error);
 		}
 
+		/// <param name="plist">To be added.</param>
+		///         <param name="stream">To be added.</param>
+		///         <param name="format">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static nint WritePropertyList (NSObject plist, NSOutputStream stream, NSPropertyListFormat format, out NSError error)
 		{
 			return WritePropertyList (plist, stream, format, NSPropertyListWriteOptions.Immutable, out error);
 		}
 
+		/// <param name="data">To be added.</param>
+		///         <param name="format">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSObject PropertyListWithData (NSData data, ref NSPropertyListFormat format, out NSError error)
 		{
 			return PropertyListWithData (data, NSPropertyListReadOptions.Immutable, ref format, out error);
 		}
 
+		/// <param name="stream">To be added.</param>
+		///         <param name="format">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSObject PropertyListWithStream (NSInputStream stream, ref NSPropertyListFormat format, out NSError error)
 		{
 			return PropertyListWithStream (stream, NSPropertyListReadOptions.Immutable, ref format, out error);

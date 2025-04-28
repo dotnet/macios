@@ -64,6 +64,31 @@ readonly partial struct Binding {
 	}
 
 	/// <summary>
+	/// Return all the types that require to create a trampoline to be generated.
+	/// </summary>
+	public IEnumerable<TypeInfo> Trampolines {
+		get {
+			// retrieve all the type info of properties that are delegates
+			foreach (var property in Properties) {
+				if (property.ReturnType.IsDelegate) {
+					// even when the property is just a getter we need to generate a trampoline
+					yield return property.ReturnType;
+				}
+			}
+
+			// same with methods, but in this case we need to check the return type and all the method parameters
+			foreach (var method in Methods) {
+				if (method.ReturnType.IsDelegate)
+					yield return method.ReturnType;
+				foreach (var parameter in method.Parameters) {
+					if (parameter.Type.IsDelegate)
+						yield return parameter.Type;
+				}
+			}
+		}
+	}
+
+	/// <summary>
 	/// Decide if an enum value should be ignored as a change.
 	/// </summary>
 	/// <param name="enumMemberDeclarationSyntax">The enum declaration under test.</param>

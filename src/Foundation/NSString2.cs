@@ -38,6 +38,11 @@ namespace Foundation {
 		static IntPtr selDataUsingEncodingAllowHandle = Selector.GetHandle (selDataUsingEncodingAllow);
 #endif
 
+		/// <param name="enc">To be added.</param>
+		///         <param name="allowLossyConversion">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public NSData Encode (NSStringEncoding enc, bool allowLossyConversion = false)
 		{
 #if NET
@@ -51,6 +56,11 @@ namespace Foundation {
 #endif
 		}
 
+		/// <param name="data">The byte buffer.</param>
+		///         <param name="encoding">Use this encoding to intepret the byte buffer.</param>
+		///         <summary>Creates an NSString from an NSData source.</summary>
+		///         <returns>An NSString created by parsing the byte buffer using the specified encoding.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSString? FromData (NSData data, NSStringEncoding encoding)
 		{
 			if (data is null)

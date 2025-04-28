@@ -16,6 +16,9 @@ using CoreGraphics;
 
 namespace UIKit {
 	public partial class UISearchDisplayController {
+		/// <summary>The UITableViewSource holding the search results.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public UITableViewSource SearchResultsSource {
 			get {
 				var d = SearchResultsWeakDelegate as UITableViewSource;

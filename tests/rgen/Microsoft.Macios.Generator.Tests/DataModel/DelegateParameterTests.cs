@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Microsoft.Macios.Generator.DataModel;
 using Xunit;
+using static Microsoft.Macios.Generator.Tests.TestDataFactory;
 
 namespace Microsoft.Macios.Generator.Tests.DataModel;
 
@@ -16,30 +17,22 @@ public class DelegateParameterTests {
 			yield return [
 				new DelegateParameter (
 					position: 0,
-					type: "string",
-					name: "arg1",
-					isBlittable: false
+					type: ReturnTypeForString (),
+					name: "arg1"
 				) {
 					IsOptional = false,
 					IsParams = false,
 					IsThis = false,
-					IsNullable = false,
-					IsSmartEnum = false,
-					IsArray = false,
 					ReferenceKind = ReferenceKind.None,
 				},
 				new DelegateParameter (
 					position: 1,
-					type: "string",
-					name: "arg1",
-					isBlittable: false
+					type: ReturnTypeForString (),
+					name: "arg1"
 				) {
 					IsOptional = false,
 					IsParams = false,
 					IsThis = false,
-					IsNullable = false,
-					IsSmartEnum = false,
-					IsArray = false,
 					ReferenceKind = ReferenceKind.None,
 				},
 			];
@@ -48,30 +41,22 @@ public class DelegateParameterTests {
 			yield return [
 				new DelegateParameter (
 					position: 0,
-					type: "string",
-					name: "arg1",
-					isBlittable: false
+					type: ReturnTypeForString (),
+					name: "arg1"
 				) {
 					IsOptional = false,
 					IsParams = false,
 					IsThis = false,
-					IsNullable = false,
-					IsSmartEnum = false,
-					IsArray = false,
 					ReferenceKind = ReferenceKind.None,
 				},
 				new DelegateParameter (
 					position: 0,
-					type: "int",
-					name: "arg1",
-					isBlittable: false
+					type: ReturnTypeForInt (),
+					name: "arg1"
 				) {
 					IsOptional = false,
 					IsParams = false,
 					IsThis = false,
-					IsNullable = false,
-					IsSmartEnum = false,
-					IsArray = false,
 					ReferenceKind = ReferenceKind.None,
 				},
 			];
@@ -80,30 +65,22 @@ public class DelegateParameterTests {
 			yield return [
 				new DelegateParameter (
 					position: 0,
-					type: "string",
-					name: "arg1",
-					isBlittable: false
+					type: ReturnTypeForString (),
+					name: "arg1"
 				) {
 					IsOptional = false,
 					IsParams = false,
 					IsThis = false,
-					IsNullable = false,
-					IsSmartEnum = false,
-					IsArray = false,
 					ReferenceKind = ReferenceKind.None,
 				},
 				new DelegateParameter (
 					position: 0,
-					type: "string",
-					name: "arg2",
-					isBlittable: false
+					type: ReturnTypeForString (),
+					name: "arg2"
 				) {
 					IsOptional = false,
 					IsParams = false,
 					IsThis = false,
-					IsNullable = false,
-					IsSmartEnum = false,
-					IsArray = false,
 					ReferenceKind = ReferenceKind.None,
 				},
 			];
@@ -112,30 +89,22 @@ public class DelegateParameterTests {
 			yield return [
 				new DelegateParameter (
 					position: 0,
-					type: "string",
-					name: "arg1",
-					isBlittable: true
+					type: ReturnTypeForStruct ("MyStruct", isBlittable: true),
+					name: "arg1"
 				) {
 					IsOptional = false,
 					IsParams = false,
 					IsThis = false,
-					IsNullable = false,
-					IsSmartEnum = false,
-					IsArray = false,
 					ReferenceKind = ReferenceKind.None,
 				},
 				new DelegateParameter (
 					position: 0,
-					type: "string",
-					name: "arg1",
-					isBlittable: false
+					type: ReturnTypeForStruct ("MyStruct", isBlittable: false),
+					name: "arg1"
 				) {
 					IsOptional = false,
 					IsParams = false,
 					IsThis = false,
-					IsNullable = false,
-					IsSmartEnum = false,
-					IsArray = false,
 					ReferenceKind = ReferenceKind.None,
 				},
 			];
@@ -144,30 +113,22 @@ public class DelegateParameterTests {
 			yield return [
 				new DelegateParameter (
 					position: 0,
-					type: "string",
-					name: "arg1",
-					isBlittable: false
+					type: ReturnTypeForString (),
+					name: "arg1"
 				) {
 					IsOptional = true,
 					IsParams = false,
 					IsThis = false,
-					IsNullable = false,
-					IsSmartEnum = false,
-					IsArray = false,
 					ReferenceKind = ReferenceKind.None,
 				},
 				new DelegateParameter (
 					position: 0,
-					type: "string",
-					name: "arg1",
-					isBlittable: false
+					type: ReturnTypeForString (),
+					name: "arg1"
 				) {
 					IsOptional = false,
 					IsParams = false,
 					IsThis = false,
-					IsNullable = false,
-					IsSmartEnum = false,
-					IsArray = false,
 					ReferenceKind = ReferenceKind.None,
 				},
 			];
@@ -176,30 +137,22 @@ public class DelegateParameterTests {
 			yield return [
 				new DelegateParameter (
 					position: 0,
-					type: "string",
-					name: "arg1",
-					isBlittable: false
+					type: ReturnTypeForString (),
+					name: "arg1"
 				) {
 					IsOptional = false,
 					IsParams = true,
 					IsThis = false,
-					IsNullable = false,
-					IsSmartEnum = false,
-					IsArray = false,
 					ReferenceKind = ReferenceKind.None,
 				},
 				new DelegateParameter (
 					position: 0,
-					type: "string",
-					name: "arg1",
-					isBlittable: false
+					type: ReturnTypeForString (),
+					name: "arg1"
 				) {
 					IsOptional = false,
 					IsParams = false,
 					IsThis = false,
-					IsNullable = false,
-					IsSmartEnum = false,
-					IsArray = false,
 					ReferenceKind = ReferenceKind.None,
 				},
 			];
@@ -208,30 +161,22 @@ public class DelegateParameterTests {
 			yield return [
 				new DelegateParameter (
 					position: 0,
-					type: "string",
-					name: "arg1",
-					isBlittable: false
+					type: ReturnTypeForString (),
+					name: "arg1"
 				) {
 					IsOptional = false,
 					IsParams = false,
 					IsThis = true,
-					IsNullable = false,
-					IsSmartEnum = false,
-					IsArray = false,
 					ReferenceKind = ReferenceKind.None,
 				},
 				new DelegateParameter (
 					position: 0,
-					type: "string",
-					name: "arg1",
-					isBlittable: false
+					type: ReturnTypeForString (),
+					name: "arg1"
 				) {
 					IsOptional = false,
 					IsParams = false,
 					IsThis = false,
-					IsNullable = false,
-					IsSmartEnum = false,
-					IsArray = false,
 					ReferenceKind = ReferenceKind.None,
 				},
 			];
@@ -240,94 +185,22 @@ public class DelegateParameterTests {
 			yield return [
 				new DelegateParameter (
 					position: 0,
-					type: "string",
-					name: "arg1",
-					isBlittable: false
+					type: ReturnTypeForString (isNullable: true),
+					name: "arg1"
 				) {
 					IsOptional = false,
 					IsParams = false,
 					IsThis = false,
-					IsNullable = true,
-					IsSmartEnum = false,
-					IsArray = false,
 					ReferenceKind = ReferenceKind.None,
 				},
 				new DelegateParameter (
 					position: 0,
-					type: "string",
-					name: "arg1",
-					isBlittable: false
+					type: ReturnTypeForString (),
+					name: "arg1"
 				) {
 					IsOptional = false,
 					IsParams = false,
 					IsThis = false,
-					IsNullable = false,
-					IsSmartEnum = false,
-					IsArray = false,
-					ReferenceKind = ReferenceKind.None,
-				},
-			];
-
-			// diff is smart enum
-			yield return [
-				new DelegateParameter (
-					position: 0,
-					type: "string",
-					name: "arg1",
-					isBlittable: false
-				) {
-					IsOptional = false,
-					IsParams = false,
-					IsThis = false,
-					IsNullable = false,
-					IsSmartEnum = true,
-					IsArray = false,
-					ReferenceKind = ReferenceKind.None,
-				},
-				new DelegateParameter (
-					position: 0,
-					type: "string",
-					name: "arg1",
-					isBlittable: false
-				) {
-					IsOptional = false,
-					IsParams = false,
-					IsThis = false,
-					IsNullable = false,
-					IsSmartEnum = false,
-					IsArray = false,
-					ReferenceKind = ReferenceKind.None,
-				},
-			];
-
-			// diff is array
-			yield return [
-				new DelegateParameter (
-					position: 0,
-					type: "string",
-					name: "arg1",
-					isBlittable: false
-				) {
-					IsOptional = false,
-					IsParams = false,
-					IsThis = false,
-					IsNullable = false,
-					IsSmartEnum = false,
-					IsArray = true,
-					ReferenceKind = ReferenceKind.None,
-				},
-				new DelegateParameter (
-					position: 0,
-					type: "string",
-					name: "arg1",
-					isBlittable: false
-				) {
-					IsOptional = false,
-					IsParams = false,
-					IsThis = false,
-					IsNullable = false,
-					IsSmartEnum = false,
-					IsArray = false,
 					ReferenceKind = ReferenceKind.None,
 				},
 			];
@@ -336,30 +209,22 @@ public class DelegateParameterTests {
 			yield return [
 				new DelegateParameter (
 					position: 0,
-					type: "string",
-					name: "arg1",
-					isBlittable: false
+					type: ReturnTypeForString (),
+					name: "arg1"
 				) {
 					IsOptional = false,
 					IsParams = false,
 					IsThis = false,
-					IsNullable = false,
-					IsSmartEnum = false,
-					IsArray = false,
 					ReferenceKind = ReferenceKind.In,
 				},
 				new DelegateParameter (
 					position: 0,
-					type: "string",
-					name: "arg1",
-					isBlittable: false
+					type: ReturnTypeForString (),
+					name: "arg1"
 				) {
 					IsOptional = false,
 					IsParams = false,
 					IsThis = false,
-					IsNullable = false,
-					IsSmartEnum = false,
-					IsArray = false,
 					ReferenceKind = ReferenceKind.None,
 				},
 			];

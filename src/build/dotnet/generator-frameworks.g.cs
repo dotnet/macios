@@ -121,6 +121,7 @@ partial class Frameworks {
 		"SceneKit",
 		"ScreenTime",
 		"Security",
+		"SecurityUI",
 		"SensitiveContentAnalysis",
 		"SensorKit",
 		"SharedWithYou",
@@ -266,6 +267,7 @@ partial class Frameworks {
 		"ScriptingBridge",
 		"SearchKit",
 		"Security",
+		"SecurityUI",
 		"SensitiveContentAnalysis",
 		"ServiceManagement",
 		"SharedWithYou",
@@ -299,6 +301,7 @@ partial class Frameworks {
 		"AuthenticationServices",
 		"AVFoundation",
 		"AVKit",
+		"BackgroundAssets",
 		"BackgroundTasks",
 		"BrowserEngineKit",
 		"CFNetwork",
@@ -359,6 +362,7 @@ partial class Frameworks {
 		"ReplayKit",
 		"SceneKit",
 		"Security",
+		"SecurityUI",
 		"SharedWithYou",
 		"SharedWithYouCore",
 		"ShazamKit",
@@ -486,6 +490,7 @@ partial class Frameworks {
 		"ScreenCaptureKit",
 		"ScreenTime",
 		"Security",
+		"SecurityUI",
 		"SensitiveContentAnalysis",
 		"SensorKit",
 		"ServiceManagement",
@@ -650,6 +655,7 @@ partial class Frameworks {
 	bool? _ScriptingBridge;
 	bool? _SearchKit;
 	bool? _Security;
+	bool? _SecurityUI;
 	bool? _SensitiveContentAnalysis;
 	bool? _SensorKit;
 	bool? _ServiceManagement;
@@ -819,6 +825,7 @@ partial class Frameworks {
 	public bool HaveScriptingBridge { get { if (!_ScriptingBridge.HasValue) _ScriptingBridge = GetValue ("ScriptingBridge"); return _ScriptingBridge.Value; } }
 	public bool HaveSearchKit { get { if (!_SearchKit.HasValue) _SearchKit = GetValue ("SearchKit"); return _SearchKit.Value; } }
 	public bool HaveSecurity { get { if (!_Security.HasValue) _Security = GetValue ("Security"); return _Security.Value; } }
+	public bool HaveSecurityUI { get { if (!_SecurityUI.HasValue) _SecurityUI = GetValue ("SecurityUI"); return _SecurityUI.Value; } }
 	public bool HaveSensitiveContentAnalysis { get { if (!_SensitiveContentAnalysis.HasValue) _SensitiveContentAnalysis = GetValue ("SensitiveContentAnalysis"); return _SensitiveContentAnalysis.Value; } }
 	public bool HaveSensorKit { get { if (!_SensorKit.HasValue) _SensorKit = GetValue ("SensorKit"); return _SensorKit.Value; } }
 	public bool HaveServiceManagement { get { if (!_ServiceManagement.HasValue) _ServiceManagement = GetValue ("ServiceManagement"); return _ServiceManagement.Value; } }

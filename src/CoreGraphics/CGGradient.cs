@@ -36,26 +36,34 @@ using ObjCRuntime;
 using CoreFoundation;
 using Foundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreGraphics {
 
 	// uint32_t -> CGGradient.h
+	/// <summary>Drawing location for gradients.</summary>
+	///     <remarks>To be added.</remarks>
 	[Flags]
 	public enum CGGradientDrawingOptions : uint {
+		/// <summary>To be added.</summary>
 		None = 0,
+		/// <summary>The fill will draw before the start location.</summary>
 		DrawsBeforeStartLocation = (1 << 0),
+		/// <summary>The fill will extend beyond the end location.</summary>
 		DrawsAfterEndLocation = (1 << 1),
 	}
 
-#if NET
+	/// <summary>Gradient definitions.</summary>
+	///     <remarks>
+	///       <para>A <see cref="T:CoreGraphics.CGGradient" /> defines a smooth transition between colors. </para>
+	///       <para>To use a <see cref="T:CoreGraphics.CGGradient" />, application developers will typically have to create a custom <see cref="T:UIKit.UIView" /> and override its <see cref="M:UIKit.UIView.Draw(CoreGraphics.CGRect)" /> method. Application developers should consider a <see cref="T:CoreAnimation.CAGradientLayer" /> as a possible easier-to-use alternative.</para>
+	///     </remarks>
+	///     <altmember cref="M:CoreGraphics.CGContext.DrawLinearGradient" />
+	///     <altmember cref="M:CoreGraphics.CGContext.DrawRadialGradient" />
+	///     <altmember cref="T:CoreAnimation.CAGradientLayer" />
+	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/QuartzSample/">QuartzSample</related>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CGGradient : NativeObject {
 #if !COREBUILD
 		[Preserve (Conditional = true)]
@@ -96,7 +104,9 @@ namespace CoreGraphics {
 
 			unsafe {
 				fixed (nfloat* componentsPtr = components, locationsPtr = locations) {
-					return CGGradientCreateWithColorComponents (colorspace.GetCheckedHandle (), componentsPtr, locationsPtr, components.Length / (colorspace.Components + 1));
+					IntPtr result = CGGradientCreateWithColorComponents (colorspace.GetCheckedHandle (), componentsPtr, locationsPtr, components.Length / (colorspace.Components + 1));
+					GC.KeepAlive (colorspace);
+					return result;
 				}
 			}
 		}
@@ -117,7 +127,9 @@ namespace CoreGraphics {
 
 			unsafe {
 				fixed (nfloat* componentsPtr = components) {
-					return CGGradientCreateWithColorComponents (colorspace.GetCheckedHandle (), componentsPtr, null, components.Length / (colorspace.Components + 1));
+					IntPtr result = CGGradientCreateWithColorComponents (colorspace.GetCheckedHandle (), componentsPtr, null, components.Length / (colorspace.Components + 1));
+					GC.KeepAlive (colorspace);
+					return result;
 				}
 			}
 		}
@@ -142,7 +154,9 @@ namespace CoreGraphics {
 			using (var array = CFArray.FromNativeObjects (colors)) {
 				unsafe {
 					fixed (nfloat* locationsPtr = locations) {
-						return CGGradientCreateWithColors (colorspace.GetHandle (), array.Handle, locationsPtr);
+						IntPtr result = CGGradientCreateWithColors (colorspace.GetHandle (), array.Handle, locationsPtr);
+						GC.KeepAlive (colorspace);
+						return result;
 					}
 				}
 			}
@@ -160,11 +174,17 @@ namespace CoreGraphics {
 
 			using (var array = CFArray.FromNativeObjects (colors)) {
 				unsafe {
-					return CGGradientCreateWithColors (colorspace.GetHandle (), array.Handle, null);
+					IntPtr result = CGGradientCreateWithColors (colorspace.GetHandle (), array.Handle, null);
+					GC.KeepAlive (colorspace);
+					return result;
 				}
 			}
 		}
 
+		/// <param name="colorspace">To be added.</param>
+		///         <param name="colors">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CGGradient (CGColorSpace? colorspace, CGColor [] colors)
 			: base (Create (colorspace, colors), true)
 		{

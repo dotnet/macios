@@ -14,12 +14,13 @@ using CoreVideo;
 
 namespace AVFoundation {
 	public partial class AVPlayerLayer {
-#if NET
+		/// <summary>Gets or sets the attributes of the client visual buffer.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public CVPixelBufferAttributes? PixelBufferAttributes {
 			get {
 				if (WeakPixelBufferAttributes is not null) {

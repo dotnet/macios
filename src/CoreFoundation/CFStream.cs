@@ -46,6 +46,9 @@ using CFIndex = System.IntPtr;
 namespace CoreFoundation {
 
 	// CFOptionFlags
+	/// <summary>Constants for stream-related events.</summary>
+	///     <remarks>
+	///     </remarks>
 	[Flags]
 	[Native] // System/Library/Frameworks/Foundation.framework/Headers/NSStream.h
 	public enum CFStreamEventType : ulong {
@@ -64,6 +67,9 @@ namespace CoreFoundation {
 	}
 
 	// NSStream.h
+	/// <summary>A structure used to support custom stream-related events.</summary>
+	///     <remarks>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -82,6 +88,8 @@ namespace CoreFoundation {
 		IntPtr release;
 		IntPtr copyDescription;
 
+		/// <summary>Call this method to retain the Info pointer.</summary>
+		///         <remarks>Every call to Retain must have a corresponding call to Release, otherwise memory might be leaked.</remarks>
 		public void Retain ()
 		{
 			if (retain == IntPtr.Zero || Info == IntPtr.Zero)
@@ -90,6 +98,9 @@ namespace CoreFoundation {
 			CFReadStreamRef_InvokeRetain (retain, Info);
 		}
 
+		/// <summary>Call this method to release the Info pointer.</summary>
+		///         <remarks>
+		///         </remarks>
 		public void Release ()
 		{
 			if (release == IntPtr.Zero || Info == IntPtr.Zero)
@@ -98,6 +109,10 @@ namespace CoreFoundation {
 			CFReadStreamRef_InvokeRelease (release, Info);
 		}
 
+		/// <summary>Gets a description of this structure and its data.</summary>
+		///         <returns>A description of this structure and its data.</returns>
+		///         <remarks>
+		///         </remarks>
 		public override string? ToString ()
 		{
 			if (copyDescription != IntPtr.Zero) {
@@ -152,6 +167,8 @@ namespace CoreFoundation {
 	}
 
 	// CFIndex
+	/// <summary>An enumeration whose values specify valid statuses for a <see cref="T:CoreFoundation.CFStream" />.</summary>
+	///     <remarks>To be added.</remarks>
 	[Native] // System/Library/Frameworks/CoreFoundation.framework/Headers/CFStream.h
 	public enum CFStreamStatus : long {
 		/// <summary>To be added.</summary>
@@ -172,6 +189,7 @@ namespace CoreFoundation {
 		Error,
 	}
 
+	/// <include file="../../docs/api/CoreFoundation/CFStream.xml" path="/Documentation/Docs[@DocId='T:CoreFoundation.CFStream']/*" />
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -197,6 +215,15 @@ namespace CoreFoundation {
 		internal unsafe extern static void CFStreamCreatePairWithSocket (/* CFAllocatorRef */ IntPtr allocator, CFSocketNativeHandle sock,
 			/* CFReadStreamRef* */ IntPtr* readStream, /* CFWriteStreamRef* */ IntPtr* writeStream);
 
+		/// <param name="socket">Existing socket.</param>
+		///         <param name="readStream">On return, contains a stream that can
+		/// 	be used to read from that end point.</param>
+		///         <param name="writeStream">On return, contains a stream that
+		/// 	can be used to write to the end point.</param>
+		///         <summary>Creates a reading and a writing CFStream on top of an
+		/// 	existing socket.</summary>
+		///         <remarks>
+		///         </remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -232,6 +259,7 @@ namespace CoreFoundation {
 			/* CFSocketSignature* */ CFSocketSignature* sig,
 			/* CFReadStreamRef* */ IntPtr* readStream, /* CFWriteStreamRef* */ IntPtr* writeStream);
 
+		/// <include file="../../docs/api/CoreFoundation/CFStream.xml" path="/Documentation/Docs[@DocId='M:CoreFoundation.CFStream.CreatePairWithPeerSocketSignature(System.Net.Sockets.AddressFamily,System.Net.Sockets.SocketType,System.Net.Sockets.ProtocolType,System.Net.IPEndPoint,CoreFoundation.CFReadStream@,CoreFoundation.CFWriteStream@)']/*" />
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -272,6 +300,15 @@ namespace CoreFoundation {
 			/* CFReadStreamRef __nullable * __nullable */ IntPtr* readStream,
 			/* CFWriteStreamRef __nullable * __nullable */ IntPtr* writeStream);
 
+		/// <param name="endpoint">Endpoint to connect to.</param>
+		///         <param name="readStream">On return, contains a stream that can
+		/// 	be used to read from that end point.</param>
+		///         <param name="writeStream">On return, contains a stream that
+		/// 	can be used to write to the end point.</param>
+		///         <summary>Creates a reading and a writing CFStreams that are connected over
+		/// 	TCP/IP to the specified endpoint.</summary>
+		///         <remarks>
+		///         </remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -308,6 +345,16 @@ namespace CoreFoundation {
 			/* CFStringRef */ IntPtr host, /* UInt32 */ int port,
 			/* CFReadStreamRef* */ IntPtr* readStream, /* CFWriteStreamRef* */ IntPtr* writeStream);
 
+		/// <param name="host">Hostname to connect to.</param>
+		///         <param name="port">TCP port to connect to .</param>
+		///         <param name="readStream">On return, contains a stream that can
+		/// 	be used to read from that end point.</param>
+		///         <param name="writeStream">On return, contains a stream that
+		/// 	can be used to write to the end point.</param>
+		///         <summary>Creates a reading and a writing CFStreams that are connected over
+		/// 	TCP/IP to the specified host and port.</summary>
+		///         <remarks>
+		///         </remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -357,6 +404,7 @@ namespace CoreFoundation {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (request));
 
 			var handle = CFReadStreamCreateForHTTPRequest (IntPtr.Zero, request.Handle);
+			GC.KeepAlive (request);
 			return new CFHTTPStream (handle, true);
 		}
 
@@ -390,9 +438,19 @@ namespace CoreFoundation {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (body));
 
 			var handle = CFReadStreamCreateForStreamedHTTPRequest (IntPtr.Zero, request.Handle, body.Handle);
+			GC.KeepAlive (request);
+			GC.KeepAlive (body);
 			return new CFHTTPStream (handle, true);
 		}
 
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("tvos")]
+		[ObsoletedOSPlatform ("macos10.11", "Use 'NSUrlSession' instead.")]
+		[ObsoletedOSPlatform ("ios9.0", "Use 'NSUrlSession' instead.")]
+		[ObsoletedOSPlatform ("maccatalyst13.0", "Use 'NSUrlSession' instead.")]
+		[ObsoletedOSPlatform ("tvos9.0", "Use 'NSUrlSession' instead.")]
 		public static CFHTTPStream CreateForStreamedHTTPRequest (CFHTTPMessage request, NSInputStream body)
 		{
 			if (request is null)
@@ -401,6 +459,8 @@ namespace CoreFoundation {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (body));
 
 			var handle = CFReadStreamCreateForStreamedHTTPRequest (IntPtr.Zero, request.Handle, body.Handle);
+			GC.KeepAlive (request);
+			GC.KeepAlive (body);
 			return new CFHTTPStream (handle, true);
 		}
 
@@ -423,8 +483,13 @@ namespace CoreFoundation {
 
 		#region Stream API
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public abstract CFException? GetError ();
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected void CheckError ()
 		{
 			var exc = GetError ();
@@ -432,6 +497,8 @@ namespace CoreFoundation {
 				throw exc;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void Open ()
 		{
 			if (open || closed)
@@ -444,8 +511,13 @@ namespace CoreFoundation {
 			open = true;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		protected abstract bool DoOpen ();
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void Close ()
 		{
 			if (!open)
@@ -467,14 +539,22 @@ namespace CoreFoundation {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected abstract void DoClose ();
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CFStreamStatus GetStatus ()
 		{
 			GetCheckedHandle ();
 			return DoGetStatus ();
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		protected abstract CFStreamStatus DoGetStatus ();
 
 		internal IntPtr GetProperty (NSString name)
@@ -483,8 +563,17 @@ namespace CoreFoundation {
 			return DoGetProperty (name);
 		}
 
+		/// <param name="name">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		protected abstract IntPtr DoGetProperty (NSString name);
 
+		/// <param name="name">To be added.</param>
+		///         <param name="value">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		protected abstract bool DoSetProperty (NSString name, INativeObject? value);
 
 		internal void SetProperty (NSString name, INativeObject? value)
@@ -501,21 +590,32 @@ namespace CoreFoundation {
 
 		#region Events
 
+		/// <summary>An <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Event%20Args&amp;scope=Xamarin" title="T:System.EventArgs">T:System.EventArgs</a></format> used by several events in <see cref="T:CoreFoundation.CFString" />.</summary>
+		///     <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		public class StreamEventArgs : EventArgs {
+			/// <summary>To be added.</summary>
+			///         <value>To be added.</value>
+			///         <remarks>To be added.</remarks>
 			public CFStreamEventType EventType {
 				get;
 				private set;
 			}
 
+			/// <param name="type">To be added.</param>
+			///         <summary>To be added.</summary>
+			///         <remarks>To be added.</remarks>
 			public StreamEventArgs (CFStreamEventType type)
 			{
 				this.EventType = type;
 			}
 
+			/// <summary>To be added.</summary>
+			///         <returns>To be added.</returns>
+			///         <remarks>To be added.</remarks>
 			public override string ToString ()
 			{
 				return string.Format ("[StreamEventArgs: EventType={0}]", EventType);
@@ -528,6 +628,9 @@ namespace CoreFoundation {
 		public event EventHandler<StreamEventArgs>? ErrorEvent;
 		public event EventHandler<StreamEventArgs>? ClosedEvent;
 
+		/// <param name="args">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected virtual void OnOpenCompleted (StreamEventArgs args)
 		{
 			var e = OpenCompletedEvent;
@@ -535,6 +638,9 @@ namespace CoreFoundation {
 				e (this, args);
 		}
 
+		/// <param name="args">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected virtual void OnHasBytesAvailableEvent (StreamEventArgs args)
 		{
 			var e = HasBytesAvailableEvent;
@@ -542,6 +648,9 @@ namespace CoreFoundation {
 				e (this, args);
 		}
 
+		/// <param name="args">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected virtual void OnCanAcceptBytesEvent (StreamEventArgs args)
 		{
 			var e = CanAcceptBytesEvent;
@@ -549,6 +658,9 @@ namespace CoreFoundation {
 				e (this, args);
 		}
 
+		/// <param name="args">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected virtual void OnErrorEvent (StreamEventArgs args)
 		{
 			var e = ErrorEvent;
@@ -556,6 +668,9 @@ namespace CoreFoundation {
 				e (this, args);
 		}
 
+		/// <param name="args">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected virtual void OnClosedEvent (StreamEventArgs args)
 		{
 			var e = ClosedEvent;
@@ -565,10 +680,23 @@ namespace CoreFoundation {
 
 		#endregion
 
+		/// <param name="loop">To be added.</param>
+		///         <param name="mode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected abstract void ScheduleWithRunLoop (CFRunLoop loop, NSString? mode);
 
+		/// <param name="loop">To be added.</param>
+		///         <param name="mode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected abstract void UnscheduleFromRunLoop (CFRunLoop loop, NSString? mode);
 
+		/// <param name="s">To be added.</param>
+		///     <param name="type">To be added.</param>
+		///     <param name="info">To be added.</param>
+		///     <summary>A delegate used as a callback in various <see cref="T:CoreFoundation.CFStream" /> methods.</summary>
+		///     <remarks>To be added.</remarks>
 		protected delegate void CFStreamCallback (IntPtr s, nint type, IntPtr info);
 
 		[UnmanagedCallersOnly]
@@ -578,6 +706,9 @@ namespace CoreFoundation {
 			stream?.OnCallback ((CFStreamEventType) (long) type);
 		}
 
+		/// <param name="type">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected virtual void OnCallback (CFStreamEventType type)
 		{
 			var args = new StreamEventArgs (type);
@@ -600,6 +731,10 @@ namespace CoreFoundation {
 			}
 		}
 
+		/// <param name="runLoop">To be added.</param>
+		///         <param name="runLoopMode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void EnableEvents (CFRunLoop runLoop, NSString runLoopMode)
 		{
 			if (open || closed || (loop is not null))
@@ -658,6 +793,7 @@ namespace CoreFoundation {
 		{
 		}
 
+		/// <include file="../../docs/api/CoreFoundation/CFStream.xml" path="/Documentation/Docs[@DocId='M:CoreFoundation.CFStream.Dispose(System.Boolean)']/*" />
 		protected override void Dispose (bool disposing)
 		{
 			if (disposing) {
@@ -696,6 +832,9 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static /* dispatch_queue_t */ IntPtr CFWriteStreamCopyDispatchQueue (/* CFWriteStreamRef */ IntPtr stream);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -706,9 +845,13 @@ namespace CoreFoundation {
 			}
 			set {
 				CFReadStreamSetDispatchQueue (Handle, value.GetHandle ());
+				GC.KeepAlive (value);
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -719,6 +862,7 @@ namespace CoreFoundation {
 			}
 			set {
 				CFWriteStreamSetDispatchQueue (Handle, value.GetHandle ());
+				GC.KeepAlive (value);
 			}
 		}
 	}

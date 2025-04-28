@@ -9,7 +9,6 @@ parameters:
 
 - name: use1ES
   type: boolean
-  default: false
 
 - name: repositoryAlias
   type: string
@@ -25,15 +24,107 @@ parameters:
 
 - name: testConfigurations
   type: object
-  default: []
+  default: [
+    {
+      label: windows,
+      splitByPlatforms: false,
+      testPrefix: 'windows_integration',
+      testStage: 'windows_integration'
+    },
+    {
+      label: cecil,
+      splitByPlatforms: false,
+      testPrefix: 'simulator_tests',
+    },
+    {
+      label: dotnettests,
+      splitByPlatforms: true,
+      needsMultiplePlatforms: true,
+      testPrefix: 'simulator_tests',
+    },
+    {
+      label: fsharp,
+      splitByPlatforms: false,
+      testPrefix: 'simulator_tests',
+    },
+    {
+      label: framework,
+      splitByPlatforms: false,
+      testPrefix: 'simulator_tests',
+    },
+    {
+      label: generator,
+      splitByPlatforms: false,
+      testPrefix: 'simulator_tests',
+    },
+    {
+      label: interdependent-binding-projects,
+      splitByPlatforms: false,
+      testPrefix: 'simulator_tests',
+    },
+    {
+      label: introspection,
+      splitByPlatforms: false,
+      testPrefix: 'simulator_tests',
+    },
+    {
+      label: linker,
+      splitByPlatforms: false,
+      testPrefix: 'simulator_tests',
+    },
+    {
+      label: monotouch,
+      splitByPlatforms: true,
+      needsMultiplePlatforms: false,
+      testPrefix: 'simulator_tests',
+    },
+    {
+      label: msbuild,
+      splitByPlatforms: false,
+      testPrefix: 'simulator_tests',
+    },
+    {
+      label: xcframework,
+      splitByPlatforms: false,
+      testPrefix: 'simulator_tests',
+    },
+    {
+      label: xtro,
+      splitByPlatforms: false,
+      testPrefix: 'simulator_tests',
+    },
+  ]
 
+# Note that this is _all_ the platforms we support (not just the enabled ones).
 - name: supportedPlatforms
   type: object
-  default: []
+  default: [
+    {
+      platform: iOS,
+      isDotNetPlatform: true,
+    },
+    {
+      platform: macOS,
+      isDotNetPlatform: true,
+    },
+    {
+      platform: tvOS,
+      isDotNetPlatform: true,
+    },
+    {
+      platform: MacCatalyst,
+      isDotNetPlatform: true,
+    },
+    {
+      # when running platform-specific test runs, we also need a special test run that executes tests that only runs when multiple platforms are enabled
+      platform: Multiple,
+      isDotNetPlatform: true,
+    }
+  ]
 
 - name: testsLabels
   type: string
-  default: ''
+  default: '--label=skip-all-tests,run-ios-tests,run-ios-simulator-tests,run-tvos-tests,run-mac-tests,run-maccatalyst-tests,run-system-permission-tests'
 
 - name: statusContext
   type: string
@@ -99,6 +190,29 @@ steps:
 - pwsh: |
     Import-Module $Env:SYSTEM_DEFAULTWORKINGDIRECTORY/$Env:BUILD_REPOSITORY_TITLE/tools/devops/automation/scripts/MaciosCI.psd1
     gci env: | sort | format-table -autosize -wrap
+    $jsonPath = Join-Path -Path "$(Build.ArtifactStagingDirectory)" -ChildPath "configuration.json"
+    $testMatrix = Get-TestConfiguration `
+      -TestConfigurations "$Env:TEST_CONFIGURATIONS" `
+      -SupportedPlatforms "$Env:SUPPORTED_PLATFORMS" `
+      -EnabledPlatforms "$Env:CONFIGURE_PLATFORMS_DOTNET_PLATFORMS" `
+      -TestsLabels "${{ parameters.testsLabels }}" `
+      -StatusContext "${{ parameters.statusContext }}" `
+      -StageFilter "simulator_tests" `
+    # compress the json to remove any newlines, because we can't set the variable below if the json has any newlines
+    Write-Host "$testMatrix"
+    $testMatrix = $testMatrix | ConvertFrom-Json | ConvertTo-Json -Compress
+    # update the config file so that we do not recalculate the matrix in other pipelines
+    Edit-BuildConfiguration -ConfigKey SIMULATOR_TEST_MATRIX -ConfigValue $testMatrix -ConfigFile $Env:CONFIG_PATH
+    #CONFIG_PATH
+  name: simulator_test_matrix
+  displayName: 'Create sim tests strategy matrix'
+  env:
+    TEST_CONFIGURATIONS: ${{ convertToJson(parameters.testConfigurations) }}
+    SUPPORTED_PLATFORMS: ${{ convertToJson(parameters.supportedPlatforms) }}
+
+- pwsh: |
+    Import-Module $Env:SYSTEM_DEFAULTWORKINGDIRECTORY/$Env:BUILD_REPOSITORY_TITLE/tools/devops/automation/scripts/MaciosCI.psd1
+    gci env: | sort | format-table -autosize -wrap
     $apiScanMatrix = Get-APIScanConfiguration -EnabledPlatforms "$Env:CONFIGURE_PLATFORMS_DOTNET_PLATFORMS"
     # compress the json to remove any newlines, because we can't set the variable below if the json has any newlines
     Write-Host "apiScanMatrix=$apiScanMatrix"
@@ -112,17 +226,10 @@ steps:
 
 # upload config to be consumed later
 - ${{ if eq(parameters.uploadArtifacts, true) }}:
-  - ${{ if eq(parameters.use1ES, true) }}:
-    - task: 1ES.PublishPipelineArtifact@1
+  - template: ../common/publish-pipeline-artifact.yml
+    parameters:
+      use1ES: ${{ parameters.use1ES }}
       displayName: 'Publish Artifact: configuration.json'
-      inputs:
-        path: '$(Build.ArtifactStagingDirectory)/configuration.json'
-        artifact: '${{ parameters.uploadPrefix }}build-configuration'
-      continueOnError: true
-  - ${{ else }}:
-    - task: PublishPipelineArtifact@1
-      displayName: 'Publish Artifact: configuration.json'
-      inputs:
-        targetPath: '$(Build.ArtifactStagingDirectory)/configuration.json'
-        artifactName: '${{ parameters.uploadPrefix }}build-configuration'
+      path: '$(Build.ArtifactStagingDirectory)/configuration.json'
+      artifact: '${{ parameters.uploadPrefix }}build-configuration'
       continueOnError: true

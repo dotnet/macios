@@ -13,10 +13,10 @@ readonly record struct PropertyInvocations {
 	/// <summary>
 	/// Invocations for the getter.
 	/// </summary>
-	public (StatementSyntax Send, StatementSyntax SendSuper) Getter { get; init; }
+	public (ExpressionSyntax Send, ExpressionSyntax SendSuper) Getter { get; init; }
 
 	/// <summary>
 	/// Invocations for the setter.
 	/// </summary>
-	public (StatementSyntax Send, StatementSyntax SendSuper) Setter { get; init; }
+	public (ExpressionSyntax Send, ExpressionSyntax SendSuper) Setter { get; init; }
 }

@@ -38,6 +38,8 @@ namespace CoreVideo {
 	// for which ObjC API uses `int` instead of the enum
 
 	// untyped enum, some are 4CC -> CVPixelBuffer.h
+	/// <summary>An enumeration of known pixel formats.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum CVPixelFormatType : uint {
 		// FIXME: These all start with integers; what should we do here?
 		/// <summary>To be added.</summary>

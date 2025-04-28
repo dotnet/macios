@@ -1,0 +1,25 @@
+<Documentation>
+  <Docs DocId="M:AVFoundation.AVCapturePhotoCaptureDelegate_Extensions.DidFinishProcessingPhoto(AVFoundation.IAVCapturePhotoCaptureDelegate,AVFoundation.AVCapturePhotoOutput,CoreMedia.CMSampleBuffer,CoreMedia.CMSampleBuffer,AVFoundation.AVCaptureResolvedPhotoSettings,AVFoundation.AVCaptureBracketedStillImageSettings,Foundation.NSError)">
+        
+        <param name="captureOutput">To be added.</param>
+        <param name="photoSampleBuffer">
+          <para>To be added.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <param name="previewPhotoSampleBuffer">
+          <para>To be added.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <param name="resolvedSettings">To be added.</param>
+        <param name="bracketSettings">
+          <para>To be added.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <param name="error">
+          <para>To be added.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <summary>Developers should not use this deprecated method. Developers should use the 'DidFinishProcessingPhoto' overload accepting a 'AVCapturePhoto' instead.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+</Documentation>

@@ -1,0 +1,48 @@
+<Documentation>
+  <Docs DocId="T:AudioToolbox.AudioStreamBasicDescription">
+    <summary>Audio packet stream description.</summary>
+    <remarks>
+      <para>
+	The audio stack processes audio as a stream of audio packets.
+	This data structure is used to describe the contents of these
+	audio packets and contains information like the sample rate
+	used for the audio samples, the format of the individual audio
+	packets, the number of channels in the packets and the bits
+	per channel, and so on.
+      </para>
+      <para>
+	This structure is filled in with the information when reading
+	or decoding data.  When you generate data, you should populate
+	the structure with the proper values.
+
+      </para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
+
+// 
+// Standard pattern
+//
+int channels = 1;
+
+sampleRate = AudioSession.CurrentHardwareSampleRate;
+var format = new AudioStreamBasicDescription () {
+        SampleRate = sampleRate,
+        Format = AudioFormatType.LinearPCM,
+        FormatFlags = AudioFormatFlags.LinearPCMIsSignedInteger | AudioFormatFlags.LinearPCMIsPacked,
+        BitsPerChannel = 16,
+        ChannelsPerFrame = channels
+        BytesPerFrame = 2 * (interleaved ? channels : 1),
+        BytesPerPacket = 2,
+        FramesPerPacket = 1,
+};
+
+//
+// Convenience Function for LinearPCM configurations
+//
+var format2 = AudioStreamBasicDescription.CreateLinearPCM (sampleRate, channelsperFrame, bitsPerChannel, bigEndian);
+
+]]></code>
+      </example>
+    </remarks>
+  </Docs>
+</Documentation>

@@ -36,6 +36,9 @@ namespace Foundation {
 
 	public partial class NSIndexSet : IEnumerable, IEnumerable<nuint> {
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		IEnumerator IEnumerable.GetEnumerator ()
 		{
 			if (this.Count == 0)
@@ -60,6 +63,9 @@ namespace Foundation {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public nuint [] ToArray ()
 		{
 			nuint [] indexes = new nuint [Count];
@@ -75,6 +81,28 @@ namespace Foundation {
 			return indexes;
 		}
 
+		internal T [] ToInt64EnumArray<T> () where T: System.Enum
+		{
+			var array = ToArray ();
+			var rv = new T [array.Length];
+			for (var i = 0; i < array.Length; i++)
+				rv [i] = (T) (object) (long) array [i];
+			return rv;
+		}
+
+		internal HashSet<T> ToInt64EnumHashSet<T> () where T: System.Enum
+		{
+			var array = ToArray ();
+			var rv = new HashSet<T> ();
+			for (var i = 0; i < array.Length; i++)
+				rv.Add ((T) (object) (long) array [i]);
+			return rv;
+		}
+
+		/// <param name="items">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		public static NSIndexSet FromArray (nuint [] items)
 		{
 			if (items is null)
@@ -86,6 +114,10 @@ namespace Foundation {
 			return indexSet;
 		}
 
+		/// <param name="items">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSIndexSet FromArray (uint [] items)
 		{
 			if (items is null)
@@ -97,6 +129,10 @@ namespace Foundation {
 			return indexSet;
 		}
 
+		/// <param name="items">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSIndexSet FromArray (int [] items)
 		{
 			if (items is null)
@@ -111,6 +147,9 @@ namespace Foundation {
 			return indexSet;
 		}
 
+		/// <param name="value">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSIndexSet (uint value) : this ((nuint) value)
 		{
 		}
@@ -122,6 +161,9 @@ namespace Foundation {
 			// init done by the base ctor
 		}
 
+		/// <param name="value">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSIndexSet (int value) : this ((nuint) (uint) value)
 		{
 			if (value < 0)

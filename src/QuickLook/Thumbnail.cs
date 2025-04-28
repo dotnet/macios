@@ -39,6 +39,8 @@ using CoreFoundation;
 using CoreGraphics;
 
 namespace QuickLook {
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public static partial class QLThumbnailImage {
 
 		// QuickLook.framework/Versions/A/Headers/QLThumbnailImage.h
@@ -56,6 +58,13 @@ namespace QuickLook {
 		extern static /* CGImageRef */ IntPtr QLThumbnailImageCreate (/* CFAllocatorRef */ IntPtr allocator, /* CFUrlRef */ IntPtr url, CGSize maxThumbnailSize, /* CFDictionaryRef */ IntPtr options);
 
 #if NET
+		/// <param name="url">To be added.</param>
+		///         <param name="maxThumbnailSize">To be added.</param>
+		///         <param name="scaleFactor">To be added.</param>
+		///         <param name="iconMode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("tvos")]
@@ -78,6 +87,7 @@ namespace QuickLook {
 			}
 
 			var handle = QLThumbnailImageCreate (IntPtr.Zero, url.Handle, maxThumbnailSize, dictionary.GetHandle ());
+			GC.KeepAlive (url);
 			GC.KeepAlive (dictionary);
 			if (handle != IntPtr.Zero)
 				return new CGImage (handle, true);

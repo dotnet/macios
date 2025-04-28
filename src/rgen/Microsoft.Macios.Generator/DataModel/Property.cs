@@ -4,6 +4,7 @@ using System;
 using System.Collections.Immutable;
 using System.Runtime.InteropServices;
 using Microsoft.CodeAnalysis;
+using Microsoft.Macios.Generator.Attributes;
 using Microsoft.Macios.Generator.Availability;
 
 namespace Microsoft.Macios.Generator.DataModel;
@@ -103,6 +104,8 @@ readonly partial struct Property : IEquatable<Property> {
 		if (ExportPropertyData != other.ExportPropertyData)
 			return false;
 		if (BindAs != other.BindAs)
+			return false;
+		if (ForcedType != other.ForcedType)
 			return false;
 
 		var attrsComparer = new AttributesEqualityComparer ();

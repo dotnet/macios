@@ -88,6 +88,10 @@ namespace Messages {
 	[MacCatalyst (14, 0)]
 	[Protocol]
 	interface MSMessagesAppTranscriptPresentation {
+		/// <param name="size">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("contentSizeThatFits:")]
 		CGSize GetContentSizeThatFits (CGSize size);
@@ -100,6 +104,16 @@ namespace Messages {
 	[BaseType (typeof (UIViewController))]
 	interface MSMessagesAppViewController : MSMessagesAppTranscriptPresentation {
 		// inlined ctor
+		/// <param name="nibName">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="bundle">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithNibName:bundle:")]
 		NativeHandle Constructor ([NullAllowed] string nibName, [NullAllowed] NSBundle bundle);
 
@@ -169,39 +183,84 @@ namespace Messages {
 		MSMessage SelectedMessage { get; }
 
 		[Export ("insertMessage:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="message">To be added.</param>
+			<summary>Asynchronously adds the <paramref name="message" /> to the conversation.</summary>
+			<returns>A task that represents the asynchronous InsertMessage operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void InsertMessage (MSMessage message, [NullAllowed] Action<NSError> completionHandler);
 
 		[Export ("insertSticker:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="sticker">To be added.</param>
+			<summary>Asynchronously adds the <paramref name="sticker" /> to the conversation.</summary>
+			<returns>A task that represents the asynchronous InsertSticker operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void InsertSticker (MSSticker sticker, [NullAllowed] Action<NSError> completionHandler);
 
 		[Export ("insertText:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="text">To be added.</param>
+			<summary>Asynchronously adds the <paramref name="text" /> to the conversation.</summary>
+			<returns>A task that represents the asynchronous InsertText operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void InsertText (string text, [NullAllowed] Action<NSError> completionHandler);
 
 		[Export ("insertAttachment:withAlternateFilename:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="url">Must be a file URL.</param>
+			<param name="filename">To be added.</param>
+			<summary>Asynchronously inserts the media in the file <paramref name="url" />, describing it in the message as <paramref name="filename" />.</summary>
+			<returns>A task that represents the asynchronous InsertAttachment operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void InsertAttachment (NSUrl url, [NullAllowed] string filename, [NullAllowed] Action<NSError> completionHandler);
 
 		[MacCatalyst (14, 0)]
 		[Export ("sendMessage:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="message">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>A task that represents the asynchronous SendMessage operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void SendMessage (MSMessage message, [NullAllowed] Action<NSError> completionHandler);
 
 		[MacCatalyst (14, 0)]
 		[Export ("sendSticker:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="sticker">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>A task that represents the asynchronous SendSticker operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void SendSticker (MSSticker sticker, [NullAllowed] Action<NSError> completionHandler);
 
 		[MacCatalyst (14, 0)]
 		[Export ("sendText:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="text">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>A task that represents the asynchronous SendText operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void SendText (string text, [NullAllowed] Action<NSError> completionHandler);
 
 		[MacCatalyst (14, 0)]
 		[Export ("sendAttachment:withAlternateFilename:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="url">To be added.</param>
+			<param name="filename">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>A task that represents the asynchronous SendAttachment operation</returns>
+			<remarks>
+			          <para copied="true">The SendAttachmentAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void SendAttachment (NSUrl url, [NullAllowed] string filename, [NullAllowed] Action<NSError> completionHandler);
 	}
 
@@ -364,10 +423,19 @@ namespace Messages {
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface MSStickerBrowserViewDataSource {
+		/// <param name="stickerBrowserView">To be added.</param>
+		/// <summary>The number of <see cref="T:Messages.MSSticker" /> objects held by this data source.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("numberOfStickersInStickerBrowserView:")]
 		nint GetNumberOfStickers (MSStickerBrowserView stickerBrowserView);
 
+		/// <param name="stickerBrowserView">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("stickerBrowserView:stickerAtIndex:")]
 		MSSticker GetSticker (MSStickerBrowserView stickerBrowserView, nint index);

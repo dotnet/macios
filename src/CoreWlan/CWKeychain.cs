@@ -38,6 +38,7 @@ namespace CoreWlan {
 			IntPtr outPtr = IntPtr.Zero;
 			unsafe {
 				status = CWKeychainCopyWiFiEAPIdentity ((nint) (long) domain, ssid.GetHandle (), &outPtr);
+				GC.KeepAlive (ssid);
 			}
 			if (status == 0) {
 				identity = new SecIdentity (outPtr, true);
@@ -67,6 +68,7 @@ namespace CoreWlan {
 		public static bool TryDeleteWiFiEAPUsernameAndPassword (CWKeychainDomain domain, NSData ssid, out OSStatus status)
 		{
 			status = CWKeychainDeleteWiFiEAPUsernameAndPassword ((nint) (long) domain, ssid.GetHandle ());
+			GC.KeepAlive (ssid);
 			return status == 0;
 		}
 
@@ -91,6 +93,7 @@ namespace CoreWlan {
 		public static bool TryDeleteWiFiPassword (CWKeychainDomain domain, NSData ssid, out OSStatus status)
 		{
 			status = CWKeychainDeleteWiFiPassword ((nint) (long) domain, ssid.GetHandle ());
+			GC.KeepAlive (ssid);
 			return status == 0;
 		}
 
@@ -120,6 +123,7 @@ namespace CoreWlan {
 			NSStringRef passwordPtr = IntPtr.Zero;
 			unsafe {
 				status = CWKeychainFindWiFiEAPUsernameAndPassword ((nint) (long) domain, ssid.GetHandle (), &usernamePtr, &passwordPtr);
+				GC.KeepAlive (ssid);
 			}
 			if (usernamePtr != IntPtr.Zero) {
 				username = Runtime.GetNSObject<NSString> (usernamePtr, false);
@@ -173,6 +177,7 @@ namespace CoreWlan {
 			NSStringRef passwordPtr = IntPtr.Zero;
 			unsafe {
 				status = CWKeychainFindWiFiPassword ((nint) (long) domain, ssid.GetHandle (), &passwordPtr);
+				GC.KeepAlive (ssid);
 			}
 			if (passwordPtr != IntPtr.Zero) {
 				password = Runtime.GetNSObject<NSString> (passwordPtr, false);
@@ -219,6 +224,8 @@ namespace CoreWlan {
 		public static bool TrySetWiFiEAPIdentity (CWKeychainDomain domain, NSData ssid, SecIdentity? identity, out OSStatus status)
 		{
 			status = CWKeychainSetWiFiEAPIdentity ((nint) (long) domain, ssid.GetHandle (), identity.GetHandle ()!);
+			GC.KeepAlive (ssid);
+			GC.KeepAlive (identity);
 			return status == 0;
 		}
 
@@ -243,6 +250,9 @@ namespace CoreWlan {
 		public static bool TrySetWiFiEAPUsernameAndPassword (CWKeychainDomain domain, NSData ssid, NSString? username, NSString? password, out OSStatus status)
 		{
 			status = CWKeychainSetWiFiEAPUsernameAndPassword ((nint) (long) domain, ssid.GetHandle (), username.GetHandle ()!, password.GetHandle ()!);
+			GC.KeepAlive (ssid);
+			GC.KeepAlive (username);
+			GC.KeepAlive (password);
 			return status == 0;
 		}
 
@@ -262,6 +272,7 @@ namespace CoreWlan {
 			var usernamePtr = CFString.CreateNative (username);
 			var pwdPtr = CFString.CreateNative (password);
 			status = CWKeychainSetWiFiEAPUsernameAndPassword ((nint) (long) domain, ssid.GetHandle (), usernamePtr, pwdPtr);
+			GC.KeepAlive (ssid);
 			CFString.ReleaseNative (usernamePtr);
 			CFString.ReleaseNative (pwdPtr);
 			return status == 0;
@@ -288,6 +299,8 @@ namespace CoreWlan {
 		public static bool TrySetWiFiPassword (CWKeychainDomain domain, NSData ssid, NSString password, out OSStatus status)
 		{
 			status = CWKeychainSetWiFiPassword ((nint) (long) domain, ssid.GetHandle (), password.GetHandle ());
+			GC.KeepAlive (ssid);
+			GC.KeepAlive (password);
 			return status == 0;
 		}
 
@@ -306,6 +319,7 @@ namespace CoreWlan {
 		{
 			var pwdPtr = CFString.CreateNative (password);
 			status = CWKeychainSetWiFiPassword ((nint) (long) domain, ssid.GetHandle (), pwdPtr);
+			GC.KeepAlive (ssid);
 			CFString.ReleaseNative (pwdPtr);
 			return status == 0;
 		}
@@ -324,6 +338,7 @@ namespace CoreWlan {
 		public static bool TryGetEAPIdentityList (NSArray? list, out OSStatus status)
 		{
 			status = CWKeychainCopyEAPIdentityList (list.GetHandle ()!);
+			GC.KeepAlive (list);
 			return status == 0;
 		}
 

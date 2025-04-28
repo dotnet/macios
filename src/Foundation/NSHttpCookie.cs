@@ -30,16 +30,31 @@ namespace Foundation {
 	public partial class NSHttpCookie {
 		// same order as System.Net.Cookie
 		// http://msdn.microsoft.com/en-us/library/a18ka3h2.aspx
+		/// <param name="name">Cookie's name. Cannot be null.</param>
+		///         <param name="value">Cookie's value. Cannot be null.</param>
+		///         <summary>Create a new cookie with the supplied name and value.</summary>
+		///         <remarks>A default Path and Domain will be used to ensure a valid instance is created.</remarks>
 		public NSHttpCookie (string name, string value) : this (name, value, null, null)
 		{
 			CreateCookie (name, value, null, null, null, null, null, null, null, null, null, null);
 		}
 
+		/// <param name="name">Cookie's name. Cannot be null.</param>
+		///         <param name="value">Cookie's value. Cannot be null.</param>
+		///         <param name="path">Path where the cookie will be applied on the domain. Using "/" will send the cookie to every URL on the domain.</param>
+		///         <summary>Create a new cookie with the supplied name, value and path.</summary>
+		///         <remarks>A default Domain will be used to ensure a valid instance is created</remarks>
 		public NSHttpCookie (string name, string value, string path) : this (name, value, path, null)
 		{
 			CreateCookie (name, value, path, null, null, null, null, null, null, null, null, null);
 		}
 
+		/// <param name="name">Cookie's name. Cannot be null.</param>
+		///         <param name="value">Cookie's value. Cannot be null.</param>
+		///         <param name="path">Path where the cookie will be applied on the domain. Using "/" will send the cookie to every URL on the domain.</param>
+		///         <param name="domain">Domain (e.g. xamarin.com) related to the cookie</param>
+		///         <summary>Create a new cookie with the supplied name, value, path and domain.</summary>
+		///         <remarks>An ArgumentNullException will be thrown if either `name` or `value` are null.</remarks>
 		public NSHttpCookie (string name, string value, string path, string domain)
 		{
 			CreateCookie (name, value, path, domain, null, null, null, null, null, null, null, null);
@@ -47,6 +62,9 @@ namespace Foundation {
 
 		// FIXME: should we expose more complex/long ctor or point people to use a Cookie ?
 
+		/// <param name="cookie">An existing Cookie from the .NET framework</param>
+		///         <summary>Create a new cookie from the supplied System.Net.Cookie instance properties</summary>
+		///         <remarks>This constructor will throw an ArgumentNullException if `cookie` is null</remarks>
 		public NSHttpCookie (Cookie cookie)
 		{
 			if (cookie is null)

@@ -106,9 +106,6 @@ namespace Xamarin.Utils {
 			case "maccatalyst":
 				platform = ApplePlatform.MacCatalyst;
 				break;
-			case "watchos":
-				platform = ApplePlatform.WatchOS;
-				break;
 			default:
 				platform = null;
 				return false;

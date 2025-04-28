@@ -106,4 +106,35 @@ label.Font = UIFont.FromDescriptor (removedSnowmanDescriptor, 0);
     <related type="recipe" href="https://developer.xamarin.com/ios/Recipes/Standard_Controls/Fonts/Enumerate_Fonts">Enumerate Fonts</related>
     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIFont_Class/index.html">Apple documentation for <c>UIFont</c></related>
   </Docs>
+  <Docs DocId="M:UIKit.UIFont.GetPreferredFontForTextStyle(Foundation.NSString)">
+        <param name="uiFontTextStyle">Name of one of the built-in system text styles.</param>
+        <summary>Weakly-typed version of an API used to retrieve the user's desired font size.</summary>
+        <returns>UIFont</returns>
+        <remarks>
+          <para>	  You can instead use the 
+            <see cref="P:UIKit.UIFont.PreferredBody" />,
+            <see cref="P:UIKit.UIFont.PreferredCaption1" />,
+            <see cref="P:UIKit.UIFont.PreferredCaption2" />,
+            <see cref="P:UIKit.UIFont.PreferredHeadline" />,
+            <see cref="P:UIKit.UIFont.PreferredSubheadline" /> properties to get this information.
+          </para>
+          <para>Using these methods to obtain an initial font during view intiailization is not sufficient to implement dynamic type. After the application user has set the "Text Size Property" in Settings, the application will receive a notification via <see cref="M:UIKit.UIApplication.Notifications.ObserveContentSizeCategoryChanged*" />. It is the application developer's responsibility, at that point, to invalidate the layout in all view elements that should be resized. The simplest way to do that is to have a method that re-sets the font in all components that support Dynamic Type:</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+ UIApplication.Notifications.ObserveContentSizeCategoryChanged((s,e) => {
+	SetDynamicTypeFonts();
+});
+
+//Call this when initializing, and also in response to ObserveContentSizeCategoryChanged notifications
+private void SetDynamicTypeFonts()
+{
+	headlineLabel.Font = UIFont.PreferredFontForTextStyle(UIFontTextStyle.Headline);
+	bodyText.Font = UIFont.PreferredFontForTextStyle(UIFontTextStyle.Body);
+  //...etc...
+}
+          ]]></code>
+          </example>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
 </Documentation>

@@ -256,9 +256,7 @@ namespace Xamarin.Tests {
 				case Profile.iOS:
 				case Profile.tvOS:
 				case Profile.watchOS:
-				case Profile.macOSFull:
 				case Profile.macOSMobile:
-				case Profile.macOSSystem:
 					sb.Add ("--target-framework");
 					sb.Add (Configuration.GetTargetFramework (Profile));
 					if (!NoPlatformAssemblyReference)

@@ -15,19 +15,13 @@ using Foundation;
 using ObjCRuntime;
 using CoreFoundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreGraphics {
-
-
-#if NET
+	/// <summary>Class that gets PDF resources as an object or stream.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	// CGPDFContentStream.h
 	public class CGPDFContentStream : NativeObject {
 
@@ -44,22 +38,19 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static void CGPDFContentStreamRelease (/* CGPDFContentStreamRef */ IntPtr cs);
 
-#if !NET
-		public CGPDFContentStream (NativeHandle handle)
-			: base (handle, false)
-		{
-		}
-#endif
-
 		[Preserve (Conditional = true)]
 		internal CGPDFContentStream (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{
 		}
 
+		/// <param name="page">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CGPDFContentStream (CGPDFPage page)
-			: base (CGPDFContentStreamCreateWithPage (Runtime.ThrowOnNull (page, nameof (page)).Handle), true)
+			: base (CGPDFContentStreamCreateWithPage (page.GetNonNullHandle (nameof (page))), true)
 		{
+			GC.KeepAlive (page);
 		}
 
 		static IntPtr Create (CGPDFStream stream, NSDictionary? streamResources = null, CGPDFContentStream? parent = null)
@@ -67,9 +58,18 @@ namespace CoreGraphics {
 			if (stream is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (stream));
 
-			return CGPDFContentStreamCreateWithStream (stream.Handle, streamResources.GetHandle (), parent.GetHandle ());
+			IntPtr result = CGPDFContentStreamCreateWithStream (stream.Handle, streamResources.GetHandle (), parent.GetHandle ());
+			GC.KeepAlive (stream);
+			GC.KeepAlive (streamResources);
+			GC.KeepAlive (parent);
+			return result;
 		}
 
+		/// <param name="stream">To be added.</param>
+		///         <param name="streamResources">To be added.</param>
+		///         <param name="parent">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CGPDFContentStream (CGPDFStream stream, NSDictionary? streamResources = null, CGPDFContentStream? parent = null)
 			: base (Create (stream, streamResources, parent), true)
 		{
@@ -88,6 +88,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* CFArrayRef */ IntPtr CGPDFContentStreamGetStreams (/* CGPDFContentStreamRef */ IntPtr cs);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CGPDFStream? []? GetStreams ()
 		{
 			var rv = CGPDFContentStreamGetStreams (Handle);
@@ -97,6 +100,11 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* CGPDFObjectRef */ IntPtr CGPDFContentStreamGetResource (/* CGPDFContentStreamRef */ IntPtr cs, /* const char* */ IntPtr category, /* const char* */ IntPtr name);
 
+		/// <param name="category">To be added.</param>
+		///         <param name="name">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CGPDFObject? GetResource (string category, string name)
 		{
 			if (category is null)

@@ -22,6 +22,8 @@ using MidiEndpointRef = System.Int32;
 using MidiUniqueID = System.Int32;
 
 namespace CoreMidi {
+	/// <summary>MIDI transform types.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum MidiTransformType : ushort {
 		/// <summary>To be added.</summary>
 		None = 0,
@@ -41,6 +43,8 @@ namespace CoreMidi {
 		MapValue = 12,
 	}
 
+	/// <summary>MIDI Control Transformation Type.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum MidiTransformControlType : byte {
 		/// <summary>To be added.</summary>
 		SevenBit = 0,
@@ -56,11 +60,11 @@ namespace CoreMidi {
 		FourteenBitNRpn = 5,
 	}
 
-#if NET
+	/// <summary>Object that defines how a MIDI event is transformed.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
-#endif
 	[NativeName ("MIDITransform")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct MidiTransform {
@@ -71,6 +75,10 @@ namespace CoreMidi {
 		///         <remarks>This is ignored when <see cref="F:CoreMidi.MidiTransform.Transform" /> is set to <see cref="F:CoreMidi.MidiTransformType.None" /> or <see cref="F:CoreMidi.MidiTransformType.FilterOut" />.</remarks>
 		public short Param;
 
+		/// <param name="transform">Transformation type to be applied.</param>
+		///         <param name="param">Extra information needed by the transformation.</param>
+		///         <summary>Creates a new <see cref="T:CoreMidi.MidiTransform" />.</summary>
+		///         <remarks>To be added.</remarks>
 		public MidiTransform (MidiTransformType transform, short param)
 		{
 			Transform = transform;
@@ -78,11 +86,11 @@ namespace CoreMidi {
 		}
 	}
 
-#if NET
+	/// <summary>MIDI Value map.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
-#endif
 	[NativeName ("MIDIValueMap")]
 	[StructLayout (LayoutKind.Sequential)]
 	public unsafe struct MidiValueMap {
@@ -104,11 +112,11 @@ namespace CoreMidi {
 		}
 	}
 
-#if NET
+	/// <summary>Represents a transformation of a MIDI control.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
-#endif
 	[NativeName ("MIDIControlTransform")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct MidiControlTransform {
@@ -128,6 +136,13 @@ namespace CoreMidi {
 		///         <remarks>This is ignored when <see cref="F:CoreMidi.MidiControlTransform.Transform" /> is set to <see cref="F:CoreMidi.MidiTransformType.None" /> or <see cref="F:CoreMidi.MidiTransformType.FilterOut" />.</remarks>
 		public short Param;
 
+		/// <param name="controlType">MIDI conrol type.</param>
+		///         <param name="remappedControlType">Resulting control type.</param>
+		///         <param name="controlNumber">Number of the control to be transformed.</param>
+		///         <param name="transform">Transformation type to be applied.</param>
+		///         <param name="param">Additional information for the transformation.</param>
+		///         <summary>Creates a new <see cref="T:CoreMidi.MidiControlTransform" />.</summary>
+		///         <remarks>To be added.</remarks>
 		public MidiControlTransform (MidiTransformControlType controlType,
 									 MidiTransformControlType remappedControlType,
 									 ushort controlNumber, MidiTransformType transform,
@@ -141,11 +156,11 @@ namespace CoreMidi {
 		}
 	}
 
-#if NET
+	/// <summary>Source or Destination of a <see cref="T:CoreMidi.MidiThruConnection" />.</summary>
+	///     <remarks>When <see cref="F:CoreMidi.MidiThruConnectionEndpoint.EndpointRef" /> is zero it is because the endpoint does not exist so <see cref="F:CoreMidi.MidiThruConnectionEndpoint.UniqueID" /> will be greater than 0.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
-#endif
 	[NativeName ("MIDIThruConnectionEndpoint")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct MidiThruConnectionEndpoint {
@@ -156,6 +171,10 @@ namespace CoreMidi {
 		///         <remarks>To be added.</remarks>
 		public MidiUniqueID UniqueID;
 
+		/// <param name="endpointRef">Endpoint ref.</param>
+		///         <param name="uniqueID">Endpoint unique id.</param>
+		///         <summary>Creates a new <see cref="T:CoreMidi.MidiThruConnectionEndpoint" />.</summary>
+		///         <remarks>Set <see cref="F:CoreMidi.MidiThruConnectionEndpoint.UniqueID" /> to 0 if the endpoint already exists.</remarks>
 		public MidiThruConnectionEndpoint (MidiEndpointRef endpointRef, MidiUniqueID uniqueID)
 		{
 			EndpointRef = endpointRef;
@@ -343,11 +362,11 @@ namespace CoreMidi {
 	}
 
 #if !COREBUILD
-#if NET
+	/// <summary>MIDI transformations and routings.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
-#endif
 	public class MidiThruConnectionParams {
 		MidiThruConnectionParamsStruct connectionParams;
 
@@ -357,6 +376,8 @@ namespace CoreMidi {
 		[DllImport (Constants.CoreMidiLibrary)]
 		unsafe extern static void MIDIThruConnectionParamsInitialize (MidiThruConnectionParamsStruct* inConnectionParams);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public MidiThruConnectionParams ()
 		{
 			// Always create a valid init point

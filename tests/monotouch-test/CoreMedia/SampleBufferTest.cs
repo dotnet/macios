@@ -74,25 +74,6 @@ namespace MonoTouchFixtures.CoreMedia {
 			}
 		}
 
-#if !NET && !__WATCHOS__
-		[Test]
-		public void CreateReadyWithImageBuffer_ArrayValidations ()
-		{
-			TestRuntime.AssertSystemVersion (ApplePlatform.iOS, 8, 0, throwIfOtherPlatform: false);
-			TestRuntime.AssertSystemVersion (ApplePlatform.MacOSX, 10, 10, throwIfOtherPlatform: false);
-
-			CMFormatDescriptionError fde;
-			using (var pixelBuffer = new CVPixelBuffer (20, 10, CVPixelFormatType.CV24RGB))
-			using (var desc = CMVideoFormatDescription.CreateForImageBuffer (pixelBuffer, out fde)) {
-				CMSampleBufferError sbe;
-				Assert.Throws<ArgumentNullException> (() => CMSampleBuffer.CreateReadyWithImageBuffer (pixelBuffer, desc, null, out sbe), "null");
-
-				var stia = new CMSampleTimingInfo [0];
-				Assert.Throws<ArgumentException> (() => CMSampleBuffer.CreateReadyWithImageBuffer (pixelBuffer, desc, stia, out sbe), "empty");
-			}
-		}
-#endif
-
 		[Test]
 		public void CreateReadyWithImageBuffer ()
 		{

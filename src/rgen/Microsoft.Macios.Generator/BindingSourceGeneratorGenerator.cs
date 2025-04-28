@@ -14,6 +14,7 @@ using Microsoft.Macios.Generator.DataModel;
 using Microsoft.Macios.Generator.Emitters;
 using Microsoft.Macios.Generator.Extensions;
 using Microsoft.Macios.Generator.IO;
+using TypeInfo = Microsoft.Macios.Generator.DataModel.TypeInfo;
 
 namespace Microsoft.Macios.Generator;
 
@@ -55,11 +56,17 @@ public class BindingSourceGeneratorGenerator : IIncrementalGenerator {
 		var libraryProvider = provider
 			.Select ((tuple, _) => (tuple.RootBindingContext, tuple.Bindings.LibraryPaths));
 
+		var trampolineProvider = provider
+			.Select ((tuple, _) => (tuple.RootBindingContext, tuple.Bindings.Trampolines));
+
 		context.RegisterSourceOutput (context.CompilationProvider.Combine (bindings.Collect ()),
 			((ctx, t) => GenerateCode (ctx, t.Right)));
 
 		context.RegisterSourceOutput (context.CompilationProvider.Combine (libraryProvider.Collect ()),
 			((ctx, t) => GenerateLibraryCode (ctx, t.Right)));
+
+		context.RegisterSourceOutput (context.CompilationProvider.Combine (trampolineProvider.Collect ()),
+			((ctx, t) => GenerateTrampolineCode (ctx, t.Right)));
 	}
 
 	/// <summary>
@@ -166,6 +173,43 @@ public class BindingSourceGeneratorGenerator : IIncrementalGenerator {
 		var emitter = new LibraryEmitter (rootBindingContext, sb);
 
 		if (emitter.TryEmit (distinctLibraryPaths, out var diagnostics)) {
+			// only add a file when we do generate code
+			var code = sb.ToCode ();
+			context.AddSource ($"{Path.Combine (emitter.SymbolNamespace, emitter.SymbolName)}.g.cs",
+				SourceText.From (code, Encoding.UTF8));
+		} else {
+			// add to the diagnostics and continue to the next possible candidate
+			context.ReportDiagnostics (diagnostics);
+		}
+	}
+
+	static void GenerateTrampolineCode (SourceProductionContext context,
+		ImmutableArray<(RootContext RootBindingContext, IEnumerable<TypeInfo>
+			Trampolines)> trampolineChanges)
+	{
+		// we don't have any trampolines to generate, so we can return
+		if (trampolineChanges.Length == 0)
+			return;
+
+		// retrieve the root context form the first items since they are all the same
+		var rootBindingContext = trampolineChanges [0].RootBindingContext;
+		var sb = new TabbedStringBuilder (new ());
+		sb.WriteHeader ();
+
+		// trampolines are generated per type, the first thing we are going to do is to create a set
+		// so that we don't have duplicates, the hash code of the TypeInfo class is good for this to work
+		// this is a nested loop because each binding type might have several trampolines
+		var trampolines = new HashSet<TypeInfo> ();
+		foreach (var (_, trampolinesInfos) in trampolineChanges) {
+			foreach (var info in trampolinesInfos) {
+				trampolines.Add (info);
+			}
+		}
+
+		// no need to collect the using statements, this file is completely generated
+		var emitter = new TrampolineEmitter (rootBindingContext, sb);
+
+		if (emitter.TryEmit (trampolines, out var diagnostics)) {
 			// only add a file when we do generate code
 			var code = sb.ToCode ();
 			context.AddSource ($"{Path.Combine (emitter.SymbolNamespace, emitter.SymbolName)}.g.cs",

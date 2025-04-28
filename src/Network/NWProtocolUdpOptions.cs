@@ -15,18 +15,11 @@ using Foundation;
 using CoreFoundation;
 using Security;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace Network {
-
-#if NET
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-#endif
 	public class NWProtocolUdpOptions : NWProtocolOptions {
 		[Preserve (Conditional = true)]
 		internal NWProtocolUdpOptions (NativeHandle handle, bool owns) : base (handle, owns) { }

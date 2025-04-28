@@ -59,4 +59,36 @@
     </remarks>
     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MultipeerConnectivity/Reference/MCSessionClassRef/index.html">Apple documentation for <c>MCSession</c></related>
   </Docs>
+  <Docs DocId="M:MultipeerConnectivity.MCSession.ConnectPeer(MultipeerConnectivity.MCPeerID,Foundation.NSData)">
+    <param name="peerID">The remote peer's identifier.</param>
+    <param name="data">To be added.</param>
+    <summary>Initiates a connection to a peer identified by <paramref name="peerID" />.</summary>
+    <remarks>
+      <para>Application developers may use a non-Multipeer Connectivity discovery technique, such as Bonjour / <see cref="T:Foundation.NSNetService" />, and manually manage peer connection. However, the <paramref name="peerID" /> used here and in <see cref="M:MultipeerConnectivity.MCSession.NearbyConnectionDataForPeer(MultipeerConnectivity.MCPeerID,MultipeerConnectivity.MCSessionNearbyConnectionDataForPeerCompletionHandler)" /> must originate from a <see cref="T:Foundation.NSKeyedArchiver" /> serializing an <see cref="T:MultipeerConnectivity.MCPeerID" /> on the remote peer. (This raises the question: if discovery and enough message-passing code to transmit the <paramref name="peerID" /> is done by Bonjour, what's the advantage of using MPC for further communication? One answer might be the evolution of a legacy system, another answer might lie in the simpler message- and resource-passing of MPC.)</para>
+    </remarks>
+  </Docs>
+  <Docs DocId="M:MultipeerConnectivity.MCSession.NearbyConnectionDataForPeer(MultipeerConnectivity.MCPeerID,MultipeerConnectivity.MCSessionNearbyConnectionDataForPeerCompletionHandler)">
+        <param name="peerID">Created from data serialized on a remote peer.</param>
+        <param name="completionHandler">The completion handler called after processing is complete.</param>
+        <summary>Creates the necessary data for a  manually-managed peer connection.</summary>
+        <remarks>
+          <para>Application developers may use a non-Multipeer Connectivity discovery technique, such as Bonjour / <see cref="T:Foundation.NSNetService" />, and manually manage peer connection. However, the <paramref name="peerID" /> used here and in <see cref="M:MultipeerConnectivity.MCSession.ConnectPeer(MultipeerConnectivity.MCPeerID,Foundation.NSData)" /> must originate from a <see cref="T:Foundation.NSKeyedArchiver" /> serializing an <see cref="T:MultipeerConnectivity.MCPeerID" /> on the remote peer. (This raises the question: if discovery and enough message-passing code to transmit the <paramref name="peerID" /> is done by Bonjour, what's the advantage of using MPC for further communication? One answer might be the evolution of a legacy system, another answer might lie in the simpler message- and resource-passing of MPC.)</para>
+          <para>Once the application developer has the <paramref name="peerID" />, the rest of the code to connect a peer would be:</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+//User code: Perhaps using Bonjour or other discovery and messaging service
+var peerID = DeserializedPeerID();
+//Request connection data, with completionHandler lambda as continuation
+session.NearbyConnectionDataForPeer(peerID, (connectionData, error) => { 
+    if(error != null){
+        //Note: peerID is serialized version, connectionData is passed in to continuation
+        session.ConnectPeer(peerID, connectionData);
+    }else{
+         throw new Exception(error);
+    }
+});              
+              ]]></code>
+          </example>
+        </remarks>
+      </Docs>
 </Documentation>

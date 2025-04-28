@@ -17,18 +17,30 @@ namespace SystemConfiguration {
 	[Static]
 	interface CaptiveNetwork {
 
+		/// <summary>Represents the value associated with the constant kCNNetworkInfoKeyBSSID</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>This API is only available on devices. An EntryPointNotFoundException will be thrown on the simulator</remarks>
 		[NoTV]
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Field ("kCNNetworkInfoKeyBSSID")]
 		NSString NetworkInfoKeyBSSID { get; }
 
+		/// <summary>Represents the value associated with the constant kCNNetworkInfoKeySSID</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>This API is only available on devices. An EntryPointNotFoundException will be thrown on the simulator</remarks>
 		[NoTV]
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Field ("kCNNetworkInfoKeySSID")]
 		NSString NetworkInfoKeySSID { get; }
 
+		/// <summary>Represents the value associated with the constant kCNNetworkInfoKeySSIDData</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>This API is only available on devices. An EntryPointNotFoundException will be thrown on the simulator</remarks>
 		[NoTV]
 		[NoMac]
 		[MacCatalyst (13, 1)]

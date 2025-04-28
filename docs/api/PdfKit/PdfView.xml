@@ -354,12 +354,12 @@ void Setup ()
     </remarks>
   </Docs>
   <Docs DocId="P:PdfKit.PdfView.DocumentChangedNotification">
-        <summary>Notification constant for DocumentChanged</summary>
-        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
-        <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfView.Notifications.ObserveDocumentChanged*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <example>
-            <code lang="csharp lang-csharp"><![CDATA[
+    <summary>Notification constant for DocumentChanged</summary>
+    <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+    <remarks>
+      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfView.Notifications.ObserveDocumentChanged*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
 NSNotificationCenter.DefaultCenter.AddObserver (
         PdfView.DocumentChangedNotification, (notification) => {Console.WriteLine ("Received the notification PdfView", notification); }
@@ -376,16 +376,16 @@ void Setup ()
     NSNotificationCenter.DefaultCenter.AddObserver (PdfView.DocumentChangedNotification, Callback);
 }
 ]]></code>
-          </example>
-        </remarks>
-      </Docs>
+      </example>
+    </remarks>
+  </Docs>
   <Docs DocId="P:PdfKit.PdfView.PrintPermissionNotification">
-        <summary>Notification constant for PrintPermission</summary>
-        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
-        <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfView.Notifications.ObservePrintPermission*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <example>
-            <code lang="csharp lang-csharp"><![CDATA[
+    <summary>Notification constant for PrintPermission</summary>
+    <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+    <remarks>
+      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfView.Notifications.ObservePrintPermission*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
 NSNotificationCenter.DefaultCenter.AddObserver (
         PdfView.PrintPermissionNotification, (notification) => {Console.WriteLine ("Received the notification PdfView", notification); }
@@ -402,16 +402,16 @@ void Setup ()
     NSNotificationCenter.DefaultCenter.AddObserver (PdfView.PrintPermissionNotification, Callback);
 }
 ]]></code>
-          </example>
-        </remarks>
-      </Docs>
+      </example>
+    </remarks>
+  </Docs>
   <Docs DocId="P:PdfKit.PdfView.SelectionChangedNotification">
-        <summary>Notification constant for SelectionChanged</summary>
-        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
-        <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfView.Notifications.ObserveSelectionChanged*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <example>
-            <code lang="csharp lang-csharp"><![CDATA[
+    <summary>Notification constant for SelectionChanged</summary>
+    <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+    <remarks>
+      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfView.Notifications.ObserveSelectionChanged*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
 NSNotificationCenter.DefaultCenter.AddObserver (
         PdfView.SelectionChangedNotification, (notification) => {Console.WriteLine ("Received the notification PdfView", notification); }
@@ -428,16 +428,16 @@ void Setup ()
     NSNotificationCenter.DefaultCenter.AddObserver (PdfView.SelectionChangedNotification, Callback);
 }
 ]]></code>
-          </example>
-        </remarks>
-      </Docs>
+      </example>
+    </remarks>
+  </Docs>
   <Docs DocId="P:PdfKit.PdfView.DisplayModeChangedNotification">
-        <summary>Notification constant for DisplayModeChanged</summary>
-        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
-        <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfView.Notifications.ObserveDisplayModeChanged*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <example>
-            <code lang="csharp lang-csharp"><![CDATA[
+    <summary>Notification constant for DisplayModeChanged</summary>
+    <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+    <remarks>
+      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfView.Notifications.ObserveDisplayModeChanged*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
 NSNotificationCenter.DefaultCenter.AddObserver (
         PdfView.DisplayModeChangedNotification, (notification) => {Console.WriteLine ("Received the notification PdfView", notification); }
@@ -454,16 +454,16 @@ void Setup ()
     NSNotificationCenter.DefaultCenter.AddObserver (PdfView.DisplayModeChangedNotification, Callback);
 }
 ]]></code>
-          </example>
-        </remarks>
-      </Docs>
+      </example>
+    </remarks>
+  </Docs>
   <Docs DocId="P:PdfKit.PdfView.VisiblePagesChangedNotification">
-        <summary>Notification constant for VisiblePagesChanged</summary>
-        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
-        <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfView.Notifications.ObserveVisiblePagesChanged*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <example>
-            <code lang="csharp lang-csharp"><![CDATA[
+    <summary>Notification constant for VisiblePagesChanged</summary>
+    <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+    <remarks>
+      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfView.Notifications.ObserveVisiblePagesChanged*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
 NSNotificationCenter.DefaultCenter.AddObserver (
         PdfView.VisiblePagesChangedNotification, (notification) => {Console.WriteLine ("Received the notification PdfView", notification); }
@@ -480,16 +480,16 @@ void Setup ()
     NSNotificationCenter.DefaultCenter.AddObserver (PdfView.VisiblePagesChangedNotification, Callback);
 }
 ]]></code>
-          </example>
-        </remarks>
-      </Docs>
+      </example>
+    </remarks>
+  </Docs>
   <Docs DocId="P:PdfKit.PdfView.ChangedHistoryNotification">
-        <summary>Notification constant for ChangedHistory</summary>
-        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
-        <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfView.Notifications.ObserveChangedHistory*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <example>
-            <code lang="csharp lang-csharp"><![CDATA[
+    <summary>Notification constant for ChangedHistory</summary>
+    <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+    <remarks>
+      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfView.Notifications.ObserveChangedHistory*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
 NSNotificationCenter.DefaultCenter.AddObserver (
         PdfView.ChangedHistoryNotification, (notification) => {Console.WriteLine ("Received the notification PdfView", notification); }
@@ -506,16 +506,16 @@ void Setup ()
     NSNotificationCenter.DefaultCenter.AddObserver (PdfView.ChangedHistoryNotification, Callback);
 }
 ]]></code>
-          </example>
-        </remarks>
-      </Docs>
+      </example>
+    </remarks>
+  </Docs>
   <Docs DocId="P:PdfKit.PdfView.PageChangedNotification">
-        <summary>Notification constant for PageChanged</summary>
-        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
-        <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfView.Notifications.ObservePageChanged*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <example>
-            <code lang="csharp lang-csharp"><![CDATA[
+    <summary>Notification constant for PageChanged</summary>
+    <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+    <remarks>
+      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfView.Notifications.ObservePageChanged*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
 NSNotificationCenter.DefaultCenter.AddObserver (
         PdfView.PageChangedNotification, (notification) => {Console.WriteLine ("Received the notification PdfView", notification); }
@@ -532,16 +532,16 @@ void Setup ()
     NSNotificationCenter.DefaultCenter.AddObserver (PdfView.PageChangedNotification, Callback);
 }
 ]]></code>
-          </example>
-        </remarks>
-      </Docs>
+      </example>
+    </remarks>
+  </Docs>
   <Docs DocId="P:PdfKit.PdfView.ScaleChangedNotification">
-        <summary>Notification constant for ScaleChanged</summary>
-        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
-        <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfView.Notifications.ObserveScaleChanged*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <example>
-            <code lang="csharp lang-csharp"><![CDATA[
+    <summary>Notification constant for ScaleChanged</summary>
+    <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+    <remarks>
+      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfView.Notifications.ObserveScaleChanged*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
 NSNotificationCenter.DefaultCenter.AddObserver (
         PdfView.ScaleChangedNotification, (notification) => {Console.WriteLine ("Received the notification PdfView", notification); }
@@ -558,18 +558,18 @@ void Setup ()
     NSNotificationCenter.DefaultCenter.AddObserver (PdfView.ScaleChangedNotification, Callback);
 }
 ]]></code>
-          </example>
-        </remarks>
-      </Docs>
+      </example>
+    </remarks>
+  </Docs>
   <Docs DocId="P:PdfKit.PdfView.AnnotationHitNotification">
-        <summary>Notification constant for AnnotationHit</summary>
-        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
-        <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="T:PdfKit.PdfView.Notifications" />.<see cref="M:PdfKit.PdfView.Notifications.ObserveAnnotationHit*" /> method which offers strongly typed access to the parameters of the notification.</para>
-          <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
-          <example>
-            <code lang="csharp lang-csharp"><![CDATA[
+    <summary>Notification constant for AnnotationHit</summary>
+    <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+    <remarks>
+      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="T:PdfKit.PdfView.Notifications" />.<see cref="M:PdfKit.PdfView.Notifications.ObserveAnnotationHit*" /> method which offers strongly typed access to the parameters of the notification.</para>
+      <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
 //
 // Lambda style
 //
@@ -606,10 +606,10 @@ void Teardown ()
 {
     notification.Dispose ();
 }]]></code>
-          </example>
-          <para>The following example shows how to use the notification with the DefaultCenter API:</para>
-          <example>
-            <code lang="csharp lang-csharp"><![CDATA[
+      </example>
+      <para>The following example shows how to use the notification with the DefaultCenter API:</para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
 NSNotificationCenter.DefaultCenter.AddObserver (
         PdfView.AnnotationHitNotification, (notification) => {Console.WriteLine ("Received the notification PdfView", notification); }
@@ -626,16 +626,16 @@ void Setup ()
     NSNotificationCenter.DefaultCenter.AddObserver (PdfView.AnnotationHitNotification, Callback);
 }
 ]]></code>
-          </example>
-        </remarks>
-      </Docs>
+      </example>
+    </remarks>
+  </Docs>
   <Docs DocId="P:PdfKit.PdfView.CopyPermissionNotification">
-        <summary>Notification constant for CopyPermission</summary>
-        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
-        <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfView.Notifications.ObserveCopyPermission*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <example>
-            <code lang="csharp lang-csharp"><![CDATA[
+    <summary>Notification constant for CopyPermission</summary>
+    <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+    <remarks>
+      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfView.Notifications.ObserveCopyPermission*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
 NSNotificationCenter.DefaultCenter.AddObserver (
         PdfView.CopyPermissionNotification, (notification) => {Console.WriteLine ("Received the notification PdfView", notification); }
@@ -652,16 +652,16 @@ void Setup ()
     NSNotificationCenter.DefaultCenter.AddObserver (PdfView.CopyPermissionNotification, Callback);
 }
 ]]></code>
-          </example>
-        </remarks>
-      </Docs>
+      </example>
+    </remarks>
+  </Docs>
   <Docs DocId="P:PdfKit.PdfView.AnnotationWillHitNotification">
-        <summary>Notification constant for AnnotationWillHit</summary>
-        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
-        <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfView.Notifications.ObserveAnnotationWillHit*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <example>
-            <code lang="csharp lang-csharp"><![CDATA[
+    <summary>Notification constant for AnnotationWillHit</summary>
+    <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+    <remarks>
+      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfView.Notifications.ObserveAnnotationWillHit*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
 NSNotificationCenter.DefaultCenter.AddObserver (
         PdfView.AnnotationWillHitNotification, (notification) => {Console.WriteLine ("Received the notification PdfView", notification); }
@@ -678,16 +678,16 @@ void Setup ()
     NSNotificationCenter.DefaultCenter.AddObserver (PdfView.AnnotationWillHitNotification, Callback);
 }
 ]]></code>
-          </example>
-        </remarks>
-      </Docs>
+      </example>
+    </remarks>
+  </Docs>
   <Docs DocId="P:PdfKit.PdfView.DisplayBoxChangedNotification">
-        <summary>Notification constant for DisplayBoxChanged</summary>
-        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
-        <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfView.Notifications.ObserveDisplayBoxChanged*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <example>
-            <code lang="csharp lang-csharp"><![CDATA[
+    <summary>Notification constant for DisplayBoxChanged</summary>
+    <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+    <remarks>
+      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfView.Notifications.ObserveDisplayBoxChanged*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
 NSNotificationCenter.DefaultCenter.AddObserver (
         PdfView.DisplayBoxChangedNotification, (notification) => {Console.WriteLine ("Received the notification PdfView", notification); }
@@ -702,6 +702,714 @@ void Callback (NSNotification notification)
 void Setup ()
 {
     NSNotificationCenter.DefaultCenter.AddObserver (PdfView.DisplayBoxChangedNotification, Callback);
+}
+]]></code>
+      </example>
+    </remarks>
+  </Docs>
+  <Docs DocId="P:PdfKit.PdfView.VisiblePagesChangedNotification">
+    <summary>Notification constant for VisiblePagesChanged</summary>
+    <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+    <remarks>
+      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfView.Notifications.ObserveVisiblePagesChanged*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        PdfView.VisiblePagesChangedNotification, (notification) => {Console.WriteLine ("Received the notification PdfView", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification PdfView", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (PdfView.VisiblePagesChangedNotification, Callback);
+}
+]]></code>
+      </example>
+    </remarks>
+  </Docs>
+  <Docs DocId="P:PdfKit.PdfView.DisplayBoxChangedNotification">
+    <summary>Notification constant for DisplayBoxChanged</summary>
+    <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+    <remarks>
+      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfView.Notifications.ObserveDisplayBoxChanged*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        PdfView.DisplayBoxChangedNotification, (notification) => {Console.WriteLine ("Received the notification PdfView", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification PdfView", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (PdfView.DisplayBoxChangedNotification, Callback);
+}
+]]></code>
+      </example>
+    </remarks>
+  </Docs>
+  <Docs DocId="P:PdfKit.PdfView.DisplayModeChangedNotification">
+    <summary>Notification constant for DisplayModeChanged</summary>
+    <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+    <remarks>
+      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfView.Notifications.ObserveDisplayModeChanged*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        PdfView.DisplayModeChangedNotification, (notification) => {Console.WriteLine ("Received the notification PdfView", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification PdfView", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (PdfView.DisplayModeChangedNotification, Callback);
+}
+]]></code>
+      </example>
+    </remarks>
+  </Docs>
+  <Docs DocId="P:PdfKit.PdfView.SelectionChangedNotification">
+    <summary>Notification constant for SelectionChanged</summary>
+    <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+    <remarks>
+      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfView.Notifications.ObserveSelectionChanged*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        PdfView.SelectionChangedNotification, (notification) => {Console.WriteLine ("Received the notification PdfView", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification PdfView", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (PdfView.SelectionChangedNotification, Callback);
+}
+]]></code>
+      </example>
+    </remarks>
+  </Docs>
+  <Docs DocId="P:PdfKit.PdfView.AnnotationWillHitNotification">
+    <summary>Notification constant for AnnotationWillHit</summary>
+    <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+    <remarks>
+      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfView.Notifications.ObserveAnnotationWillHit*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        PdfView.AnnotationWillHitNotification, (notification) => {Console.WriteLine ("Received the notification PdfView", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification PdfView", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (PdfView.AnnotationWillHitNotification, Callback);
+}
+]]></code>
+      </example>
+    </remarks>
+  </Docs>
+  <Docs DocId="P:PdfKit.PdfView.PrintPermissionNotification">
+    <summary>Notification constant for PrintPermission</summary>
+    <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+    <remarks>
+      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfView.Notifications.ObservePrintPermission*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        PdfView.PrintPermissionNotification, (notification) => {Console.WriteLine ("Received the notification PdfView", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification PdfView", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (PdfView.PrintPermissionNotification, Callback);
+}
+]]></code>
+      </example>
+    </remarks>
+  </Docs>
+  <Docs DocId="P:PdfKit.PdfView.CopyPermissionNotification">
+    <summary>Notification constant for CopyPermission</summary>
+    <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+    <remarks>
+      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfView.Notifications.ObserveCopyPermission*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        PdfView.CopyPermissionNotification, (notification) => {Console.WriteLine ("Received the notification PdfView", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification PdfView", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (PdfView.CopyPermissionNotification, Callback);
+}
+]]></code>
+      </example>
+    </remarks>
+  </Docs>
+  <Docs DocId="P:PdfKit.PdfView.AnnotationHitNotification">
+    <summary>Notification constant for AnnotationHit</summary>
+    <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+    <remarks>
+      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="T:PdfKit.PdfView.Notifications" />.<see cref="M:PdfKit.PdfView.Notifications.ObserveAnnotationHit*" /> method which offers strongly typed access to the parameters of the notification.</para>
+      <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
+//
+// Lambda style
+//
+
+// listening
+notification = PdfView.Notifications.ObserveAnnotationHit ((sender, args) => {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+
+    Console.WriteLine ("AnnotationHit", args.AnnotationHit);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+// Method style
+//
+NSObject notification;
+void Callback (object sender, PdfKit.PdfViewAnnotationHitEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+
+    Console.WriteLine ("AnnotationHit", args.AnnotationHit);
+}
+
+void Setup ()
+{
+    notification = PdfView.Notifications.ObserveAnnotationHit (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}]]></code>
+      </example>
+      <para>The following example shows how to use the notification with the DefaultCenter API:</para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        PdfView.AnnotationHitNotification, (notification) => {Console.WriteLine ("Received the notification PdfView", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification PdfView", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (PdfView.AnnotationHitNotification, Callback);
+}
+]]></code>
+      </example>
+    </remarks>
+  </Docs>
+  <Docs DocId="P:PdfKit.PdfView.ScaleChangedNotification">
+    <summary>Notification constant for ScaleChanged</summary>
+    <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+    <remarks>
+      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfView.Notifications.ObserveScaleChanged*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        PdfView.ScaleChangedNotification, (notification) => {Console.WriteLine ("Received the notification PdfView", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification PdfView", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (PdfView.ScaleChangedNotification, Callback);
+}
+]]></code>
+      </example>
+    </remarks>
+  </Docs>
+  <Docs DocId="P:PdfKit.PdfView.PageChangedNotification">
+    <summary>Notification constant for PageChanged</summary>
+    <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+    <remarks>
+      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfView.Notifications.ObservePageChanged*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        PdfView.PageChangedNotification, (notification) => {Console.WriteLine ("Received the notification PdfView", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification PdfView", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (PdfView.PageChangedNotification, Callback);
+}
+]]></code>
+      </example>
+    </remarks>
+  </Docs>
+  <Docs DocId="P:PdfKit.PdfView.DocumentChangedNotification">
+    <summary>Notification constant for DocumentChanged</summary>
+    <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+    <remarks>
+      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfView.Notifications.ObserveDocumentChanged*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        PdfView.DocumentChangedNotification, (notification) => {Console.WriteLine ("Received the notification PdfView", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification PdfView", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (PdfView.DocumentChangedNotification, Callback);
+}
+]]></code>
+      </example>
+    </remarks>
+  </Docs>
+  <Docs DocId="P:PdfKit.PdfView.ChangedHistoryNotification">
+    <summary>Notification constant for ChangedHistory</summary>
+    <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+    <remarks>
+      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfView.Notifications.ObserveChangedHistory*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        PdfView.ChangedHistoryNotification, (notification) => {Console.WriteLine ("Received the notification PdfView", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification PdfView", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (PdfView.ChangedHistoryNotification, Callback);
+}
+]]></code>
+      </example>
+    </remarks>
+  </Docs>
+  <Docs DocId="P:PdfKit.PdfView.AnnotationWillHitNotification">
+    <summary>Notification constant for AnnotationWillHit</summary>
+    <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+    <remarks>
+      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfView.Notifications.ObserveAnnotationWillHit*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        PdfView.AnnotationWillHitNotification, (notification) => {Console.WriteLine ("Received the notification PdfView", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification PdfView", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (PdfView.AnnotationWillHitNotification, Callback);
+}
+]]></code>
+      </example>
+    </remarks>
+  </Docs>
+  <Docs DocId="P:PdfKit.PdfView.DisplayBoxChangedNotification">
+    <summary>Notification constant for DisplayBoxChanged</summary>
+    <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+    <remarks>
+      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfView.Notifications.ObserveDisplayBoxChanged*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        PdfView.DisplayBoxChangedNotification, (notification) => {Console.WriteLine ("Received the notification PdfView", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification PdfView", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (PdfView.DisplayBoxChangedNotification, Callback);
+}
+]]></code>
+      </example>
+    </remarks>
+  </Docs>
+  <Docs DocId="P:PdfKit.PdfView.AnnotationHitNotification">
+    <summary>Notification constant for AnnotationHit</summary>
+    <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+    <remarks>
+      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="T:PdfKit.PdfView.Notifications" />.<see cref="M:PdfKit.PdfView.Notifications.ObserveAnnotationHit*" /> method which offers strongly typed access to the parameters of the notification.</para>
+      <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
+//
+// Lambda style
+//
+
+// listening
+notification = PdfView.Notifications.ObserveAnnotationHit ((sender, args) => {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+
+    Console.WriteLine ("AnnotationHit", args.AnnotationHit);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+// Method style
+//
+NSObject notification;
+void Callback (object sender, PdfKit.PdfViewAnnotationHitEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+
+    Console.WriteLine ("AnnotationHit", args.AnnotationHit);
+}
+
+void Setup ()
+{
+    notification = PdfView.Notifications.ObserveAnnotationHit (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}]]></code>
+      </example>
+      <para>The following example shows how to use the notification with the DefaultCenter API:</para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        PdfView.AnnotationHitNotification, (notification) => {Console.WriteLine ("Received the notification PdfView", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification PdfView", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (PdfView.AnnotationHitNotification, Callback);
+}
+]]></code>
+      </example>
+    </remarks>
+  </Docs>
+  <Docs DocId="P:PdfKit.PdfView.ChangedHistoryNotification">
+    <summary>Notification constant for ChangedHistory</summary>
+    <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+    <remarks>
+      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfView.Notifications.ObserveChangedHistory*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        PdfView.ChangedHistoryNotification, (notification) => {Console.WriteLine ("Received the notification PdfView", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification PdfView", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (PdfView.ChangedHistoryNotification, Callback);
+}
+]]></code>
+      </example>
+    </remarks>
+  </Docs>
+  <Docs DocId="P:PdfKit.PdfView.CopyPermissionNotification">
+    <summary>Notification constant for CopyPermission</summary>
+    <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+    <remarks>
+      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfView.Notifications.ObserveCopyPermission*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        PdfView.CopyPermissionNotification, (notification) => {Console.WriteLine ("Received the notification PdfView", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification PdfView", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (PdfView.CopyPermissionNotification, Callback);
+}
+]]></code>
+      </example>
+    </remarks>
+  </Docs>
+  <Docs DocId="P:PdfKit.PdfView.VisiblePagesChangedNotification">
+        <summary>Notification constant for VisiblePagesChanged</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfView.Notifications.ObserveVisiblePagesChanged*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        PdfView.VisiblePagesChangedNotification, (notification) => {Console.WriteLine ("Received the notification PdfView", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification PdfView", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (PdfView.VisiblePagesChangedNotification, Callback);
+}
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+  <Docs DocId="P:PdfKit.PdfView.DisplayModeChangedNotification">
+        <summary>Notification constant for DisplayModeChanged</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfView.Notifications.ObserveDisplayModeChanged*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        PdfView.DisplayModeChangedNotification, (notification) => {Console.WriteLine ("Received the notification PdfView", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification PdfView", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (PdfView.DisplayModeChangedNotification, Callback);
+}
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+  <Docs DocId="P:PdfKit.PdfView.SelectionChangedNotification">
+        <summary>Notification constant for SelectionChanged</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfView.Notifications.ObserveSelectionChanged*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        PdfView.SelectionChangedNotification, (notification) => {Console.WriteLine ("Received the notification PdfView", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification PdfView", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (PdfView.SelectionChangedNotification, Callback);
+}
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+  <Docs DocId="P:PdfKit.PdfView.PrintPermissionNotification">
+        <summary>Notification constant for PrintPermission</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfView.Notifications.ObservePrintPermission*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        PdfView.PrintPermissionNotification, (notification) => {Console.WriteLine ("Received the notification PdfView", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification PdfView", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (PdfView.PrintPermissionNotification, Callback);
+}
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+  <Docs DocId="P:PdfKit.PdfView.ScaleChangedNotification">
+        <summary>Notification constant for ScaleChanged</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfView.Notifications.ObserveScaleChanged*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        PdfView.ScaleChangedNotification, (notification) => {Console.WriteLine ("Received the notification PdfView", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification PdfView", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (PdfView.ScaleChangedNotification, Callback);
+}
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+  <Docs DocId="P:PdfKit.PdfView.PageChangedNotification">
+        <summary>Notification constant for PageChanged</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfView.Notifications.ObservePageChanged*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        PdfView.PageChangedNotification, (notification) => {Console.WriteLine ("Received the notification PdfView", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification PdfView", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (PdfView.PageChangedNotification, Callback);
+}
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+  <Docs DocId="P:PdfKit.PdfView.DocumentChangedNotification">
+        <summary>Notification constant for DocumentChanged</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfView.Notifications.ObserveDocumentChanged*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        PdfView.DocumentChangedNotification, (notification) => {Console.WriteLine ("Received the notification PdfView", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification PdfView", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (PdfView.DocumentChangedNotification, Callback);
 }
 ]]></code>
           </example>

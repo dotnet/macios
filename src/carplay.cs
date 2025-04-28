@@ -40,7 +40,9 @@ namespace CarPlay {
 	[NoTV, NoMac]
 	[Native]
 	enum CPBarButtonType : ulong {
+		/// <summary>The button displays text.</summary>
 		Text,
+		/// <summary>The button displays an image.</summary>
 		Image,
 	}
 
@@ -48,10 +50,15 @@ namespace CarPlay {
 	[Flags, NoTV, NoMac]
 	[Native]
 	enum CPPanDirection : long {
+		/// <summary>No pan.</summary>
 		None = 0,
+		/// <summary>Towards the left side of the map.</summary>
 		Left = 1L << 0,
+		/// <summary>Towards the right side of the map.</summary>
 		Right = 1L << 1,
+		/// <summary>Towards the top of the map.</summary>
 		Up = 1L << 2,
+		/// <summary>Towards the bottom of the map.</summary>
 		Down = 1L << 3,
 	}
 
@@ -59,8 +66,11 @@ namespace CarPlay {
 	[NoTV, NoMac]
 	[Native]
 	enum CPNavigationAlertDismissalContext : ulong {
+		/// <summary>The alert had expired.</summary>
 		Timeout = 0,
+		/// <summary>The user dismissed the alert.</summary>
 		UserDismissed,
+		/// <summary>The system was responsible for dismissing the alert.</summary>
 		SystemDismissed,
 	}
 
@@ -68,10 +78,15 @@ namespace CarPlay {
 	[NoTV, NoMac]
 	[Native]
 	enum CPTripPauseReason : ulong {
+		/// <summary>The car has arrived at the trip destinatioj.</summary>
 		Arrived = 1,
+		/// <summary>The data for the trip is still loading.</summary>
 		Loading = 2,
+		/// <summary>The system is trying to locate the car.</summary>
 		Locating = 3,
+		/// <summary>The system is currently rerouting the trip.</summary>
 		Rerouting = 4,
+		/// <summary>The car is not on the trip route.</summary>
 		ProceedToRoute = 5,
 	}
 
@@ -80,7 +95,9 @@ namespace CarPlay {
 	[Flags]
 	[Native]
 	enum CPLimitableUserInterface : ulong {
+		/// <summary>The keyboard may be limited.</summary>
 		Keyboard = 1uL << 0,
+		/// <summary>The length of lists may be limited.</summary>
 		Lists = 1uL << 1,
 	}
 
@@ -96,26 +113,37 @@ namespace CarPlay {
 	[Flags]
 	[Native]
 	enum CPManeuverDisplayStyle : long {
+		/// <summary>To be added.</summary>
 		Default,
+		/// <summary>To be added.</summary>
 		LeadingSymbol,
+		/// <summary>To be added.</summary>
 		TrailingSymbol,
+		/// <summary>To be added.</summary>
 		SymbolOnly,
+		/// <summary>To be added.</summary>
 		InstructionOnly,
 	}
 
 	[NoTV, NoMac]
 	[Native]
 	enum CPTimeRemainingColor : ulong {
+		/// <summary>To be added.</summary>
 		Default = 0,
+		/// <summary>To be added.</summary>
 		Green,
+		/// <summary>To be added.</summary>
 		Orange,
+		/// <summary>To be added.</summary>
 		Red,
 	}
 
 	[NoTV, NoMac]
 	[Native]
 	enum CPTripEstimateStyle : ulong {
+		/// <summary>To be added.</summary>
 		Light = 0,
+		/// <summary>To be added.</summary>
 		Dark,
 	}
 
@@ -333,6 +361,9 @@ namespace CarPlay {
 		[Export ("initWithType:handler:")]
 		NativeHandle Constructor (CPBarButtonType type, [NullAllowed] Action<CPBarButton> handler);
 
+		/// <summary>Gets or sets whether the button is enabled.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("enabled")]
 		bool Enabled { [Bind ("isEnabled")] get; set; }
 
@@ -363,14 +394,22 @@ namespace CarPlay {
 	/// <summary>Interface defining necessary methods for the <see cref="T:CarPlay.ICPBarButtonProviding" /> protocol.</summary>
 	interface ICPBarButtonProviding { }
 
+	/// <summary>Interface defining necessary methods for the <see cref="T:CarPlay.ICPBarButtonProviding" /> protocol.</summary>
+	/// <remarks>To be added.</remarks>
 	[NoTV, NoMac]
 	[Protocol]
 	interface CPBarButtonProviding {
 
+		/// <summary>Developers must override this with the array of <see cref="T:CarPlay.CPBarButton" /> objects on the leading part of the navigation bar.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("leadingNavigationBarButtons", ArgumentSemantic.Strong)]
 		CPBarButton [] LeadingNavigationBarButtons { get; set; }
 
+		/// <summary>Developers must override this with the array of <see cref="T:CarPlay.CPBarButton" /> objects on the trailing part of the navigation bar..</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("trailingNavigationBarButtons", ArgumentSemantic.Strong)]
 		CPBarButton [] TrailingNavigationBarButtons { get; set; }
@@ -392,6 +431,9 @@ namespace CarPlay {
 		[DesignatedInitializer]
 		NativeHandle Constructor (string [] titleVariants, UIImage image, [NullAllowed] Action<CPGridButton> handler);
 
+		/// <summary>Gets or sets whether the button is enabled.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("enabled")]
 		bool Enabled { [Bind ("isEnabled")] get; set; }
 
@@ -437,6 +479,13 @@ namespace CarPlay {
 	[DisableDefaultCtor]
 	interface CPInterfaceController {
 
+		/// <summary>An instance of the CarPlay.ICPInterfaceControllerDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the CarPlay.ICPInterfaceControllerDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		[NullAllowed]
 		ICPInterfaceControllerDelegate Delegate { get; set; }
@@ -549,15 +598,35 @@ namespace CarPlay {
 	[BaseType (typeof (NSObject))]
 	interface CPInterfaceControllerDelegate {
 
+		/// <param name="aTemplate">The template that will appear.</param>
+		/// <param name="animated">
+		///           <see langword="true" /> if the transition is automated. Otherwise, <see langword="false" />.</param>
+		/// <summary>Method that is called when a template is about to appear.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("templateWillAppear:animated:")]
 		void TemplateWillAppear (CPTemplate aTemplate, bool animated);
 
+		/// <param name="aTemplate">The template that appeared.</param>
+		/// <param name="animated">
+		///           <see langword="true" /> if the transition is automated. Otherwise, <see langword="false" />.</param>
+		/// <summary>Method that is called when a template appears.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("templateDidAppear:animated:")]
 		void TemplateDidAppear (CPTemplate aTemplate, bool animated);
 
+		/// <param name="aTemplate">The template that will disappear.</param>
+		/// <param name="animated">
+		///           <see langword="true" /> if the transition is automated. Otherwise, <see langword="false" />.</param>
+		/// <summary>Method that is called when a template is about to disappear.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("templateWillDisappear:animated:")]
 		void TemplateWillDisappear (CPTemplate aTemplate, bool animated);
 
+		/// <param name="aTemplate">The template that disappeared.</param>
+		/// <param name="animated">
+		///           <see langword="true" /> if the transition is automated. Otherwise, <see langword="false" />.</param>
+		/// <summary>Method that is called when a template disappears.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("templateDidDisappear:animated:")]
 		void TemplateDidDisappear (CPTemplate aTemplate, bool animated);
 	}
@@ -578,17 +647,35 @@ namespace CarPlay {
 	[BaseType (typeof (NSObject))]
 	interface CPApplicationDelegate : UIApplicationDelegate {
 
+		/// <param name="application">To be added.</param>
+		/// <param name="interfaceController">To be added.</param>
+		/// <param name="window">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("application:didConnectCarInterfaceController:toWindow:")]
 		void DidConnectCarInterfaceController (UIApplication application, CPInterfaceController interfaceController, CPWindow window);
 
+		/// <param name="application">To be added.</param>
+		/// <param name="interfaceController">To be added.</param>
+		/// <param name="window">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("application:didDisconnectCarInterfaceController:fromWindow:")]
 		void DidDisconnectCarInterfaceController (UIApplication application, CPInterfaceController interfaceController, CPWindow window);
 
+		/// <param name="application">The application in which a navigation alert was selected.</param>
+		/// <param name="navigationAlert">The selected navigation alert.</param>
+		/// <summary>Method that is called when the user selects a navigation alert.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("application:didSelectNavigationAlert:")]
 		void DidSelectNavigationAlert (UIApplication application, CPNavigationAlert navigationAlert);
 
+		/// <param name="application">The application in which a maneuver was selected.</param>
+		/// <param name="maneuver">The selected maneuver.</param>
+		/// <summary>Method that is called when the user selects a maneuver.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("application:didSelectManeuver:")]
 		void DidSelectManeuver (UIApplication application, CPManeuver maneuver);
 	}
@@ -677,12 +764,20 @@ namespace CarPlay {
 	interface CPListSection : NSSecureCoding {
 
 #if !XAMCORE_5_0
+		/// <param name="items">To be added.</param>
+		/// <param name="header">To be added.</param>
+		/// <param name="sectionIndexTitle">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("base (true ? throw new InvalidOperationException (Constants.BrokenBinding) : NSObjectFlag.Empty)")]
 		[Obsolete ("Use '.ctor (ICPListTemplateItem [], string, string)' constructor instead. Warning: this will throw InvalidOperationException at runtime.")]
 		NativeHandle Constructor (CPListItem [] items, [NullAllowed] string header, [NullAllowed] string sectionIndexTitle);
 #endif
 
 #if !XAMCORE_5_0
+		/// <param name="items">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("base (true ? throw new InvalidOperationException (Constants.BrokenBinding) : NSObjectFlag.Empty)")]
 		[Obsolete ("Use '.ctor (ICPListTemplateItem [], string, string)' constructor instead. Warning: this will throw InvalidOperationException at runtime.")]
 		NativeHandle Constructor (CPListItem [] items);
@@ -705,6 +800,9 @@ namespace CarPlay {
 		string SectionIndexTitle { get; }
 
 #if !XAMCORE_5_0
+		/// <summary>The contents of the section.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("true ? throw new InvalidOperationException (Constants.BrokenBinding) : new NSArray ()", IsVirtual = true)]
 		[Obsolete ("Use 'Items2 : ICPListTemplateItem []' instead.")]
 		CPListItem [] Items { get; }
@@ -759,6 +857,13 @@ namespace CarPlay {
 		[Export ("initWithTitle:sections:assistantCellConfiguration:")]
 		NativeHandle Constructor ([NullAllowed] string title, CPListSection [] sections, [NullAllowed] CPAssistantCellConfiguration assistantCellConfiguration);
 
+		/// <summary>An instance of the CarPlay.ICPListTemplateDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the CarPlay.ICPListTemplateDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Deprecated (PlatformName.iOS, 14, 0, message: "Use 'CPListItem.Handler' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 14, 0, message: "Use 'CPListItem.Handler' instead.")]
 		[Wrap ("WeakDelegate")]
@@ -814,6 +919,11 @@ namespace CarPlay {
 		[iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("assistantCellConfiguration", ArgumentSemantic.Strong)]
 		CPAssistantCellConfiguration AssistantCellConfiguration { get; set; }
+
+		[NullAllowed]
+		[iOS (18, 4), MacCatalyst (18, 4)]
+		[Export ("showsSpinnerWhileEmpty", ArgumentSemantic.Assign)]
+		bool ShowsSpinnerWhileEmpty { get; set; }
 	}
 
 	/// <summary>Delegate object for <see cref="T:CarPlay.CPListTemplate" /> objects.</summary>
@@ -831,6 +941,11 @@ namespace CarPlay {
 	[BaseType (typeof (NSObject))]
 	interface CPListTemplateDelegate {
 
+		/// <param name="listTemplate">To be added.</param>
+		/// <param name="item">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>Developers must override this method to react to the selection of a list item.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("listTemplate:didSelectListItem:completionHandler:")]
 		void DidSelectListItem (CPListTemplate listTemplate, CPListItem item, Action completionHandler);
@@ -947,9 +1062,15 @@ namespace CarPlay {
 		[DesignatedInitializer]
 		NativeHandle Constructor ([NullAllowed] Action<CPMapButton> handler);
 
+		/// <summary>Gets or sets whether the button is enabled.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("enabled")]
 		bool Enabled { [Bind ("isEnabled")] get; set; }
 
+		/// <summary>Gets or sets whether the button is visible.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("hidden")]
 		bool Hidden { [Bind ("isHidden")] get; set; }
 
@@ -1000,6 +1121,9 @@ namespace CarPlay {
 		[Export ("hidesButtonsWithNavigationBar")]
 		bool HidesButtonsWithNavigationBar { get; set; }
 
+		/// <summary>Gets or sets the delegate object for the map.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakMapDelegate")]
 		[NullAllowed]
 		ICPMapTemplateDelegate MapDelegate { get; set; }
@@ -1013,6 +1137,9 @@ namespace CarPlay {
 		[Export ("dismissPanningInterfaceAnimated:")]
 		void DismissPanningInterface (bool animated);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("panningInterfaceVisible")]
 		bool PanningInterfaceVisible { [Bind ("isPanningInterfaceVisible")] get; }
 
@@ -1022,7 +1149,12 @@ namespace CarPlay {
 		[Export ("presentNavigationAlert:animated:")]
 		void PresentNavigationAlert (CPNavigationAlert navigationAlert, bool animated);
 
-		[Async]
+		[Async (XmlDocs = """
+			<param name="animated">To be added.</param>
+			<summary>Asynchronously dismisses the animation.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("dismissNavigationAlertAnimated:completion:")]
 		void DismissNavigationAlert (bool animated, Action<bool> completion);
 
@@ -1048,63 +1180,151 @@ namespace CarPlay {
 		[Export ("mapTemplateShouldProvideNavigationMetadata:")]
 		bool ShouldProvideNavigationMetadata (CPMapTemplate mapTemplate);
 
+		/// <param name="mapTemplate">The template for the map to query.</param>
+		/// <param name="maneuver">The maneuver about which to query.</param>
+		/// <summary>Method that is called to determine whether a navigation maneuver notification should be shown when the app is running in the background.</summary>
+		/// <returns>
+		///           <see langword="true" /> if the notification should be shown. Otherwise, <see langword="false" />.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("mapTemplate:shouldShowNotificationForManeuver:")]
 		bool ShouldShowNotificationForManeuver (CPMapTemplate mapTemplate, CPManeuver maneuver);
 
+		/// <param name="mapTemplate">The template for the map to query.</param>
+		/// <param name="maneuver">To be added.</param>
+		/// <param name="travelEstimates">The travel estimates about which to query.</param>
+		/// <summary>Method that is called to determine whether the specified travel estimate updates should be shown when the app is running in the background.</summary>
+		/// <returns>
+		///           <see langword="true" /> if the specified travel estimate updates should be shown. Otherwise, <see langword="false" />.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("mapTemplate:shouldUpdateNotificationForManeuver:withTravelEstimates:")]
 		bool ShouldUpdateNotificationForManeuver (CPMapTemplate mapTemplate, CPManeuver maneuver, CPTravelEstimates travelEstimates);
 
+		/// <param name="mapTemplate">The template for the map to query.</param>
+		/// <param name="navigationAlert">The navigation alert about which to query.</param>
+		/// <summary>Method that is called to determine whether a navigation alert should be shown when the app is running in the background.</summary>
+		/// <returns>
+		///           <see langword="true" /> if the navigation alert should be shown. Otherwise, <see langword="false" />.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("mapTemplate:shouldShowNotificationForNavigationAlert:")]
 		bool ShouldShowNotificationForNavigationAlert (CPMapTemplate mapTemplate, CPNavigationAlert navigationAlert);
 
+		/// <param name="mapTemplate">The template for the map for which a panning interface was shown.</param>
+		/// <summary>Method that is called when a panning interface is shown.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("mapTemplateDidShowPanningInterface:")]
 		void DidShowPanningInterface (CPMapTemplate mapTemplate);
 
+		/// <param name="mapTemplate">The template for the map on which a panning interface will be dismissed.</param>
+		/// <summary>Method that is called just before a panning interface is dismissed.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("mapTemplateWillDismissPanningInterface:")]
 		void WillDismissPanningInterface (CPMapTemplate mapTemplate);
 
+		/// <param name="mapTemplate">The template for the map whose panning interface was dismissed.</param>
+		/// <summary>Method that is called when a panning interface is dismissed.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("mapTemplateDidDismissPanningInterface:")]
 		void DidDismissPanningInterface (CPMapTemplate mapTemplate);
 
+		/// <param name="mapTemplate">The template for the map for which a pan was started.</param>
+		/// <param name="direction">The direction of the pan.</param>
+		/// <summary>Method that is called when a pan begins.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("mapTemplate:panBeganWithDirection:")]
 		void PanBegan (CPMapTemplate mapTemplate, CPPanDirection direction);
 
+		/// <param name="mapTemplate">The template for the map for which a pan was ended.</param>
+		/// <param name="direction">The direction of the pan.</param>
+		/// <summary>Method that is called when a pan ends.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("mapTemplate:panEndedWithDirection:")]
 		void PanEnded (CPMapTemplate mapTemplate, CPPanDirection direction);
 
+		/// <param name="mapTemplate">The template for the map to pan.</param>
+		/// <param name="direction">The direction to pan.</param>
+		/// <summary>Pans the map.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("mapTemplate:panWithDirection:")]
 		void Pan (CPMapTemplate mapTemplate, CPPanDirection direction);
 
+		/// <param name="mapTemplate">The template for the map that is panning.</param>
+		/// <summary>Method that is called when a pan gesture starts.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("mapTemplateDidBeginPanGesture:")]
 		void DidBeginPanGesture (CPMapTemplate mapTemplate);
 
+		/// <param name="mapTemplate">The template for the map whose pan gesture was updated.</param>
+		/// <param name="translation">To be added.</param>
+		/// <param name="velocity">The pan velocity.</param>
+		/// <summary>Method that is called when a pan gesture is updated.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("mapTemplate:didUpdatePanGestureWithTranslation:velocity:")]
 		void DidUpdatePanGesture (CPMapTemplate mapTemplate, CGPoint translation, CGPoint velocity);
 
+		/// <param name="mapTemplate">The template for the map whose pan gesture ended.</param>
+		/// <param name="velocity">To be added.</param>
+		/// <summary>Method that is called when a panning interface ends.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("mapTemplate:didEndPanGestureWithVelocity:")]
 		void DidEndPanGesture (CPMapTemplate mapTemplate, CGPoint velocity);
 
+		/// <param name="mapTemplate">The template for the map for which a navigation alert will be shown.</param>
+		/// <param name="navigationAlert">The navigation alert that will be shown.</param>
+		/// <summary>Method that is called just before a navigation alert is shown.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("mapTemplate:willShowNavigationAlert:")]
 		void WillShowNavigationAlert (CPMapTemplate mapTemplate, CPNavigationAlert navigationAlert);
 
+		/// <param name="mapTemplate">The template for the map for which a navigation alert was shown.</param>
+		/// <param name="navigationAlert">The alert that was shown.</param>
+		/// <summary>Method that is called when a navigation alert is shown.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("mapTemplate:didShowNavigationAlert:")]
 		void DidShowNavigationAlert (CPMapTemplate mapTemplate, CPNavigationAlert navigationAlert);
 
+		/// <param name="mapTemplate">The template for the map for which a navigation alert will be dismissed.</param>
+		/// <param name="navigationAlert">The alert that will be dismissed.</param>
+		/// <param name="dismissalContext">The reason the alert will be dismissed.</param>
+		/// <summary>Method that is called just before a navigation alert is dismissed.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("mapTemplate:willDismissNavigationAlert:dismissalContext:")]
 		void WillDismissNavigationAlert (CPMapTemplate mapTemplate, CPNavigationAlert navigationAlert, CPNavigationAlertDismissalContext dismissalContext);
 
+		/// <param name="mapTemplate">The template for the map whose navigation alert was canceled.</param>
+		/// <param name="navigationAlert">The alert that was canceled.</param>
+		/// <param name="dismissalContext">The reason the alert was dismissed.</param>
+		/// <summary>Method that is called when a navigation alert is canceled.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("mapTemplate:didDismissNavigationAlert:dismissalContext:")]
 		void DidDismissNavigationAlert (CPMapTemplate mapTemplate, CPNavigationAlert navigationAlert, CPNavigationAlertDismissalContext dismissalContext);
 
+		/// <param name="mapTemplate">To be added</param>
+		/// <param name="trip">To be added.</param>
+		/// <param name="routeChoice">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("mapTemplate:selectedPreviewForTrip:usingRouteChoice:")]
 		void SelectedPreview (CPMapTemplate mapTemplate, CPTrip trip, CPRouteChoice routeChoice);
 
+		/// <param name="mapTemplate">The template for the map on which a trip was started.</param>
+		/// <param name="trip">The trip that started.</param>
+		/// <param name="routeChoice">The route choice for the trip that started.</param>
+		/// <summary>Method that is called when a trip starts.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("mapTemplate:startedTrip:usingRouteChoice:")]
 		void StartedTrip (CPMapTemplate mapTemplate, CPTrip trip, CPRouteChoice routeChoice);
 
+		/// <param name="mapTemplate">The template for the map whose navigation was canceled.</param>
+		/// <summary>Method that is called when navigation is canceled.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("mapTemplateDidCancelNavigation:")]
 		void DidCancelNavigation (CPMapTemplate mapTemplate);
 
+		/// <param name="mapTemplate">The template for the map that .</param>
+		/// <param name="maneuver">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("mapTemplate:displayStyleForManeuver:")]
 		CPManeuverDisplayStyle GetDisplayStyle (CPMapTemplate mapTemplate, CPManeuver maneuver);
 	}
@@ -1210,6 +1430,13 @@ namespace CarPlay {
 	[BaseType (typeof (CPTemplate))]
 	interface CPSearchTemplate {
 
+		/// <summary>An instance of the CarPlay.ICPSearchTemplateDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the CarPlay.ICPSearchTemplateDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		[NullAllowed]
 		ICPSearchTemplateDelegate Delegate { get; set; }
@@ -1232,14 +1459,27 @@ namespace CarPlay {
 	[BaseType (typeof (NSObject))]
 	interface CPSearchTemplateDelegate {
 
+		/// <param name="searchTemplate">To be added.</param>
+		/// <param name="searchText">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>Developers must override this method to respond to a change in the search text.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("searchTemplate:updatedSearchText:completionHandler:")]
 		void UpdatedSearchText (CPSearchTemplate searchTemplate, string searchText, CPSearchTemplateDelegateUpdateHandler completionHandler);
 
+		/// <param name="searchTemplate">To be added.</param>
+		/// <param name="item">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>Developers must overrride this method to respond to a search selection.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("searchTemplate:selectedResult:completionHandler:")]
 		void SelectedResult (CPSearchTemplate searchTemplate, CPListItem item, Action completionHandler);
 
+		/// <param name="searchTemplate">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("searchTemplateSearchButtonPressed:")]
 		void SearchButtonPressed (CPSearchTemplate searchTemplate);
 	}
@@ -1261,6 +1501,13 @@ namespace CarPlay {
 		[Export ("contentStyle")]
 		CPContentStyle ContentStyle { get; }
 
+		/// <summary>An instance of the CarPlay.ICPSessionConfigurationDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the CarPlay.ICPSessionConfigurationDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		[NullAllowed]
 		ICPSessionConfigurationDelegate Delegate { get; set; }
@@ -1285,6 +1532,10 @@ namespace CarPlay {
 #if !NET
 		[Abstract]
 #endif
+		/// <param name="sessionConfiguration">To be added.</param>
+		/// <param name="limitedUserInterfaces">To be added.</param>
+		/// <summary>Called when the system changes keyboards or modifies list limits.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("sessionConfiguration:limitedUserInterfacesChanged:")]
 		void LimitedUserInterfacesChanged (CPSessionConfiguration sessionConfiguration, CPLimitableUserInterface limitedUserInterfaces);
 
@@ -1494,6 +1745,9 @@ namespace CarPlay {
 	[BaseType (typeof (UIWindow))]
 	interface CPWindow {
 
+		/// <param name="frame">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect frame);
 
@@ -2132,6 +2386,10 @@ namespace CarPlay {
 
 		[Export ("updateNowPlayingButtons:")]
 		void UpdateNowPlayingButtons (CPNowPlayingButton [] nowPlayingButtons);
+
+		[iOS (18, 4), MacCatalyst (18, 4)]
+		[Export ("nowPlayingMode", ArgumentSemantic.Strong), NullAllowed]
+		CPNowPlayingMode NowPlayingMode { get; set; }
 	}
 
 	[NoTV, NoMac, iOS (14, 0)]
@@ -2448,4 +2706,113 @@ namespace CarPlay {
 		CPTravelEstimates ManeuverTravelEstimates { get; }
 	}
 
+	[NoTV, NoMac, iOS (18, 4), MacCatalyst (18, 4)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface CPNowPlayingMode : NSSecureCoding {
+		[Static]
+		[Export ("defaultNowPlayingMode")]
+		CPNowPlayingMode DefaultNowPlayingMode { get; }
+	}
+
+	[NoTV, NoMac, iOS (18, 4), MacCatalyst (18, 4)]
+	[BaseType (typeof (CPNowPlayingMode))]
+	interface CPNowPlayingModeSports : NSSecureCoding {
+		[Export ("initWithLeftTeam:rightTeam:eventStatus:backgroundArtwork:")]
+		NativeHandle Constructor (CPNowPlayingSportsTeam leftTeam, CPNowPlayingSportsTeam rightTeam, [NullAllowed] CPNowPlayingSportsEventStatus eventStatus, [NullAllowed] UIImage backgroundArtwork);
+
+		[Export ("leftTeam", ArgumentSemantic.Strong)]
+		CPNowPlayingSportsTeam LeftTeam { get; }
+
+		[Export ("rightTeam", ArgumentSemantic.Strong)]
+		CPNowPlayingSportsTeam RightTeam { get; }
+
+		[NullAllowed, Export ("eventStatus", ArgumentSemantic.Strong)]
+		CPNowPlayingSportsEventStatus EventStatus { get; }
+
+		[NullAllowed, Export ("backgroundArtwork", ArgumentSemantic.Copy)]
+		UIImage BackgroundArtwork { get; }
+	}
+
+	[NoTV, NoMac, iOS (18, 4), MacCatalyst (18, 4)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface CPNowPlayingSportsTeam : NSSecureCoding {
+		[Export ("initWithName:logo:teamStandings:eventScore:possessionIndicator:favorite:")]
+		NativeHandle Constructor (string name, CPNowPlayingSportsTeamLogo logo, [NullAllowed] string teamStandings, string eventScore, [NullAllowed] UIImage possessionIndicator, bool favorite);
+
+		[Export ("name")]
+		string Name { get; }
+
+		[Export ("logo", ArgumentSemantic.Copy)]
+		CPNowPlayingSportsTeamLogo Logo { get; }
+
+		[NullAllowed, Export ("teamStandings")]
+		string TeamStandings { get; }
+
+		[Export ("eventScore")]
+		string EventScore { get; }
+
+		[NullAllowed, Export ("possessionIndicator", ArgumentSemantic.Copy)]
+		UIImage PossessionIndicator { get; }
+
+		[Export ("favorite")]
+		bool Favorite { [Bind ("isFavorite")] get; }
+	}
+
+	[NoTV, NoMac, iOS (18, 4), MacCatalyst (18, 4)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface CPNowPlayingSportsEventStatus : NSSecureCoding {
+		[Export ("initWithEventStatusText:eventStatusImage:eventClock:")]
+		NativeHandle Constructor ([NullAllowed] string [] eventStatusText, [NullAllowed] UIImage eventStatusImage, [NullAllowed] CPNowPlayingSportsClock eventClock);
+
+		[NullAllowed, Export ("eventStatusText", ArgumentSemantic.Copy)]
+		string [] EventStatusText { get; }
+
+		[NullAllowed, Export ("eventClock", ArgumentSemantic.Copy)]
+		CPNowPlayingSportsClock EventClock { get; }
+
+		[NullAllowed, Export ("eventStatusImage", ArgumentSemantic.Copy)]
+		UIImage EventStatusImage { get; }
+	}
+
+	[NoTV, NoMac, iOS (18, 4), MacCatalyst (18, 4)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface CPNowPlayingSportsClock : INSSecureCoding {
+		[Internal]
+		[Export ("initWithElapsedTime:paused:")]
+		NativeHandle _InitWithElapsedTime (double elapsedTime, bool paused);
+
+		[Internal]
+		[Export ("initWithTimeRemaining:paused:")]
+		NativeHandle _InitWithRemainingTime (double timeRemaining, bool paused);
+
+		[Export ("timeValue")]
+		double TimeValue { get; }
+
+		[Export ("paused")]
+		bool Paused { [Bind ("isPaused")] get; }
+
+		[Export ("countsUp")]
+		bool CountsUp { get; }
+	}
+
+	[NoTV, NoMac, iOS (18, 4), MacCatalyst (18, 4)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface CPNowPlayingSportsTeamLogo : INSSecureCoding {
+		[Export ("initWithTeamLogo:")]
+		NativeHandle Constructor (UIImage teamLogo);
+
+		[Export ("initWithTeamInitials:")]
+		NativeHandle Constructor (string teamInitials);
+
+		[NullAllowed, Export ("logo", ArgumentSemantic.Copy)]
+		UIImage Logo { get; }
+
+		[NullAllowed, Export ("initials")]
+		string Initials { get; }
+	}
 }

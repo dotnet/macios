@@ -15,6 +15,9 @@ using NativeHandle = System.IntPtr;
 #endif
 
 namespace CloudKit {
+	/// <summary>A <see cref="T:CloudKit.CKOperation" /> that modifies the badge of the app's icon, either on the current device or all the user's devices.</summary>
+	///     <remarks>To be added.</remarks>
+	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CloudKit/Reference/CKModifyBadgeOperation_class/index.html">Apple documentation for <c>CKModifyBadgeOperation</c></related>
 	[Register ("CKModifyBadgeOperation", SkipRegistration = true)]
 #if NET
 	[UnsupportedOSPlatform ("ios", "Modifying badge counts is no longer supported.")]
@@ -33,11 +36,14 @@ namespace CloudKit {
 		///         <remarks>Each Xamarin.iOS class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
 		public override NativeHandle ClassHandle { get => throw new PlatformNotSupportedException (Constants.TypeRemovedAllPlatforms); }
 
+		/// <summary>Default constructor, initializes a new instance of this class.</summary>
+		///         <remarks>To be added.</remarks>
 		public CKModifyBadgeOperation () : base (NSObjectFlag.Empty)
 		{
 			throw new PlatformNotSupportedException (Constants.TypeRemovedAllPlatforms);
 		}
 
+		/// <include file="../../docs/api/CloudKit/CKModifyBadgeOperation.xml" path="/Documentation/Docs[@DocId='M:CloudKit.CKModifyBadgeOperation.#ctor(Foundation.NSObjectFlag)']/*" />
 		protected CKModifyBadgeOperation (NSObjectFlag t) : base (t)
 		{
 			throw new PlatformNotSupportedException (Constants.TypeRemovedAllPlatforms);

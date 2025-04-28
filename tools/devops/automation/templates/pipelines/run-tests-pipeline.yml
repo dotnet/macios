@@ -21,11 +21,6 @@ parameters:
     type: boolean
     default: true
 
-  - name: runDeviceTests
-    displayName: Run Device Tests 
-    type: boolean
-    default: false
-
   - name: runOldMacOSTests
     displayName: Run Tests on older macOS versions 
     type: boolean
@@ -35,40 +30,6 @@ parameters:
     displayName: Run Windows integration tests
     type: boolean
     default: true
-
-  - name: testConfigurations
-    displayName: Test configurations to run
-    type: object
-    default: []
-
-  - name: deviceTestsConfigurations
-    displayName: Device test configurations to run
-    type: object
-    default: [
-      {
-        testPrefix: 'iOS64',
-        stageName: 'ios64b_device',
-        displayName: 'iOS64 Device Tests',
-        testPool: 'VSEng-Xamarin-Mac-Devices',
-        testsLabels: '--label=run-ios-tests,run-non-monotouch-tests,run-monotouch-tests,run-mscorlib-tests',
-        statusContext: 'VSTS: device tests iOS',
-        makeTarget: 'vsts-device-tests',
-        extraBotDemands: [
-          'ios',
-        ]
-      },
-      {
-        testPrefix: 'tvos',
-        stageName: 'tvos_device',
-        displayName: 'tvOS Device Tests',
-        testPool: 'VSEng-Xamarin-Mac-Devices',
-        testsLabels: '--label=run-tvos-tests,run-non-monotouch-tests,run-monotouch-tests,run-mscorlib-tests',
-        statusContext: 'VSTS: device tests tvOS',
-        makeTarget: 'vsts-device-tests',
-        extraBotDemands: [
-          'tvos',
-        ]
-      }]
 
 resources:
   repositories:
@@ -99,9 +60,4 @@ stages:
       isPR: ${{ parameters.isPR }}
       provisionatorChannel: ${{ parameters.provisionatorChannel }}
       runTests: ${{ parameters.runTests }}
-      runDeviceTests: ${{ parameters.runDeviceTests }}
       runWindowsIntegration: ${{ parameters.runWindowsIntegration }}
-      ${{ if ne(length(parameters.testConfigurations), 0)}}:
-        testConfigurations: ${{ parameters.testConfigurations }}
-      deviceTestsConfigurations: ${{ parameters.deviceTestsConfigurations }}
-

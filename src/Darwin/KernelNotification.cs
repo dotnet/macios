@@ -41,6 +41,8 @@ using NativeHandle = System.IntPtr;
 #endif
 
 namespace Darwin {
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[StructLayout (LayoutKind.Sequential)]
 	public struct KernelEvent {
 		/// <summary>To be added.</summary>
@@ -67,6 +69,8 @@ namespace Darwin {
 		public IntPtr /* void */ UserData;
 	}
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[Flags]
 	public enum EventFlags : ushort {
 		/// <summary>To be added.</summary>
@@ -100,6 +104,8 @@ namespace Darwin {
 		Error = 0x4000,
 	}
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum EventFilter : short {
 		/// <summary>To be added.</summary>
 		Read = -1,
@@ -125,6 +131,8 @@ namespace Darwin {
 		VM = -11,
 	}
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[Flags]
 	public enum FilterFlags : uint {
 		/// <summary>To be added.</summary>
@@ -221,6 +229,8 @@ namespace Darwin {
 		TimerAbsolute = 0x00000008,
 	}
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public class KernelQueue : IDisposable, INativeObject {
 		int handle;
 
@@ -232,11 +242,15 @@ namespace Darwin {
 		[DllImport (Constants.SystemLibrary)]
 		extern static int /* int */ kqueue ();
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public KernelQueue ()
 		{
 			handle = kqueue ();
 		}
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void Dispose ()
 		{
 			Dispose (true);
@@ -248,6 +262,9 @@ namespace Darwin {
 			Dispose (false);
 		}
 
+		/// <param name="disposing">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected virtual void Dispose (bool disposing)
 		{
 			if (handle != -1) {
@@ -259,6 +276,12 @@ namespace Darwin {
 		[DllImport (Constants.SystemLibrary)]
 		unsafe extern static int /* int */ kevent (int kq, KernelEvent* changeList, int /* int */ nChanges, KernelEvent* eventList, int /* int */ nEvents, TimeSpec* timeout);
 
+		/// <param name="changeList">To be added.</param>
+		///         <param name="eventList">To be added.</param>
+		///         <param name="timeout">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public int KEvent (KernelEvent [] changeList, KernelEvent [] eventList, TimeSpan? timeout = null)
 		{
 			if (changeList is null)
@@ -276,6 +299,14 @@ namespace Darwin {
 			return KEvent (changeList, changeList.Length, eventList, eventList.Length, ToTimespec (timeout));
 		}
 
+		/// <param name="changeList">To be added.</param>
+		///         <param name="nChanges">To be added.</param>
+		///         <param name="eventList">To be added.</param>
+		///         <param name="nEvents">To be added.</param>
+		///         <param name="timeout">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public unsafe int KEvent (KernelEvent [] changeList, int nChanges, KernelEvent [] eventList, int nEvents, TimeSpec? timeout = null)
 		{
 			if (changeList is null)
@@ -368,6 +399,11 @@ namespace Darwin {
 #nullable enable
 
 #if NET
+		/// <param name="changeList">To be added.</param>
+		///         <param name="eventList">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public int KEvent (KernelEvent [] changeList, KernelEvent [] eventList)
 #else
 		[Obsolete ("Use any of the overloads that return an int to get how many events were returned from kevent.")]

@@ -24,9 +24,7 @@ using MonoTouch;
 using CoreGraphics;
 using Foundation;
 using ObjCRuntime;
-#if !__WATCHOS__
 using StoreKit;
-#endif
 #if __MACOS__ || __IOS__
 using PdfKit;
 #endif
@@ -86,13 +84,6 @@ namespace LinkAll {
 		public const string AssemblyName = "Microsoft.tvOS";
 #else
 		public const string AssemblyName = "Xamarin.TVOS";
-#endif
-#elif __WATCHOS__
-		public const string NamespacePrefix = "";
-#if NET
-		public const string AssemblyName = "Microsoft.watchOS";
-#else
-		public const string AssemblyName = "Xamarin.WatchOS";
 #endif
 #elif __MACOS__
 		public const string NamespacePrefix = "";
@@ -236,9 +227,6 @@ namespace LinkAll {
 		[Test]
 		public void TrustUsingOldPolicy ()
 		{
-#if __WATCHOS__
-			Assert.Ignore ("WatchOS doesn't support BSD sockets, which our network stack currently requires.");
-#endif
 			// Three similar tests exists in dontlink, linkall and linksdk to test 3 different cases
 			// untrusted, custom ICertificatePolicy and ServerCertificateValidationCallback without
 			// having caching issues (in S.Net or the SSL handshake cache)
@@ -263,11 +251,9 @@ namespace LinkAll {
 		[Test]
 		public void DetectPlatform ()
 		{
-#if !__WATCHOS__
 			// for (future) nunit[lite] platform detection - if this test fails then platform detection won't work
 			var typename = NamespacePrefix + "UIKit.UIApplicationDelegate, " + AssemblyName;
 			Assert.NotNull (Helper.GetType (typename), typename);
-#endif
 #if NET
 			Assert.Null (Helper.GetType ("Mono.Runtime"), "Mono.Runtime");
 #else
@@ -379,20 +365,16 @@ namespace LinkAll {
 		[Test]
 		public void SystemDataSqlClient ()
 		{
-#if __WATCHOS__
-			Assert.Throws<PlatformNotSupportedException> (() => new System.Data.SqlClient.SqlConnection ());
-#else
 			// notes:
 			// * this test is mean to fail when building the application using a Community or Indie licenses
 			// * linksdk.app references System.Data (assembly) but not types in SqlClient namespace
 			using (var sc = new System.Data.SqlClient.SqlConnection ()) {
 				Assert.NotNull (sc);
 			}
-#endif
 		}
 #endif
 
-#if !__TVOS__ && !__WATCHOS__ && !__MACOS__
+#if !__TVOS__ && !__MACOS__
 		[Test]
 		public void Pasteboard_ImagesTest ()
 		{
@@ -510,7 +492,7 @@ namespace LinkAll {
 			}
 		}
 
-#if !__WATCHOS__ && !__MACCATALYST__
+#if !__MACCATALYST__
 #if !NET // OpenTK-1.0.dll isn't supported in .NET yet
 		[Test]
 		public void OpenTk10_Preserved ()
@@ -531,7 +513,7 @@ namespace LinkAll {
 			Assert.NotNull (core, "ES20/Core");
 		}
 #endif // !NET
-#endif // !__WATCHOS__ && !__MACCATALYST__
+#endif // !__MACCATALYST__
 
 		[Test]
 		public void NestedNSObject ()
@@ -590,7 +572,6 @@ namespace LinkAll {
 			Assert.Null (result, result);
 		}
 
-#if !__WATCHOS__
 		[Test]
 		public void Events ()
 		{
@@ -614,7 +595,6 @@ namespace LinkAll {
 				Assert.NotNull (fi, "receivedResponse/SKRequest");
 			}
 		}
-#endif // !__WATCHOS__
 
 		[Test]
 		public void Aot_27116 ()
@@ -628,7 +608,7 @@ namespace LinkAll {
 		[Test]
 		public void AppleTls ()
 		{
-			// make test work for classic (monotouch) and unified (iOS, tvOS and watchOS)
+			// make test work for classic (monotouch) and unified (iOS, tvOS)
 			var fqn = typeof (NSObject).AssemblyQualifiedName.Replace ("Foundation.NSObject", "Security.Tls.AppleTlsProvider");
 			Assert.Null (Helper.GetType (fqn), "Should NOT be included (no SslStream or Socket support)");
 		}
@@ -739,7 +719,6 @@ namespace LinkAll {
 	[Introduced (PlatformName.MacOSX, 1, 0, PlatformArchitecture.Arch64)]
 	[Introduced (PlatformName.iOS, 1, 0)]
 	[Introduced (PlatformName.TvOS, 1, 0)]
-	[Introduced (PlatformName.WatchOS, 1, 0)]
 #endif
 	[Preserve]
 	public class ClassFromThePast : NSObject {

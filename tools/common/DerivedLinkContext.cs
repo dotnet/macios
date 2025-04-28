@@ -15,8 +15,10 @@ using LinkContext = Xamarin.Bundler.DotNetLinkContext;
 
 namespace Xamarin.Tuner {
 	public class DerivedLinkContext : LinkContext {
+#if !MMP && !MTOUCH
 		internal StaticRegistrar StaticRegistrar => Target.StaticRegistrar;
 		internal Target Target;
+#endif
 		Symbols required_symbols;
 
 		// Any errors or warnings during the link process that won't prevent linking from continuing can be stored here.
@@ -51,11 +53,13 @@ namespace Xamarin.Tuner {
 		}
 #endif
 
+#if !MMP && !MTOUCH
 		public Application App {
 			get {
 				return Target.App;
 			}
 		}
+#endif // !MMP && !MTOUCH
 
 		AssemblyDefinition corlib;
 		public AssemblyDefinition Corlib {
@@ -103,32 +107,35 @@ namespace Xamarin.Tuner {
 			get; set;
 		}
 
-#if !NET || LEGACY_TOOLS
-		public DerivedLinkContext (Pipeline pipeline, AssemblyResolver resolver)
-			: base (pipeline, resolver)
-		{
-			UserAction = AssemblyAction.Link;
-		}
-#endif
-
 		public Dictionary<IMetadataTokenProvider, object> GetAllCustomAttributes (string storage_name)
 		{
+#if LEGACY_TOOLS
+			throw new NotImplementedException ();
+#else
 			return Annotations?.GetCustomAnnotations (storage_name);
+#endif
 		}
 
 		public List<ICustomAttribute> GetCustomAttributes (ICustomAttributeProvider provider, string storage_name)
 		{
+#if LEGACY_TOOLS
+			throw new NotImplementedException ();
+#else
 			var annotations = Annotations?.GetCustomAnnotations (storage_name);
 			object storage = null;
 			if (annotations?.TryGetValue (provider, out storage) != true)
 				return null;
 			return (List<ICustomAttribute>) storage;
+#endif
 		}
 
 		// Stores custom attributes in the link context, so that the attribute can be retrieved and
 		// inspected even if it's linked away.
 		public void StoreCustomAttribute (ICustomAttributeProvider provider, CustomAttribute attribute, string storage_name)
 		{
+#if LEGACY_TOOLS
+			throw new NotImplementedException ();
+#else
 			var dict = Annotations.GetCustomAnnotations (storage_name);
 			List<ICustomAttribute> attribs;
 			object attribObjects;
@@ -145,6 +152,7 @@ namespace Xamarin.Tuner {
 			// be nulled out from the constructor by the linker if the attribute type itself is linked away.
 			var dummy = attribute.HasConstructorArguments;
 			attribs.Add (new AttributeStorage { Attribute = attribute, AttributeType = attribute.Constructor.DeclaringType });
+#endif
 		}
 
 		public List<ICustomAttribute> GetCustomAttributes (ICustomAttributeProvider provider, string @namespace, string name)
@@ -161,19 +169,27 @@ namespace Xamarin.Tuner {
 
 		public void StoreProtocolMethods (TypeDefinition type)
 		{
+#if LEGACY_TOOLS
+			throw new NotImplementedException ();
+#else
 			var attribs = Annotations.GetCustomAnnotations ("ProtocolMethods");
 			object value;
 			if (!attribs.TryGetValue (type, out value))
 				attribs [type] = type.Methods.ToArray (); // Make a copy of the collection, since the linker may remove methods from it.
+#endif
 		}
 
 		public IList<MethodDefinition> GetProtocolMethods (TypeDefinition type)
 		{
+#if LEGACY_TOOLS
+			throw new NotImplementedException ();
+#else
 			var attribs = Annotations.GetCustomAnnotations ("ProtocolMethods");
 			object value;
 			if (attribs.TryGetValue (type, out value))
 				return (MethodDefinition []) value;
 			return null;
+#endif // !LEGACY_TOOLS
 		}
 
 		public void AddLinkedAwayType (TypeDefinition td)
@@ -220,6 +236,7 @@ namespace Xamarin.Tuner {
 			return null;
 		}
 
+#if !LEGACY_TOOLS
 		class AttributeStorage : ICustomAttribute {
 			public CustomAttribute Attribute;
 			public TypeReference AttributeType { get; set; }
@@ -232,6 +249,7 @@ namespace Xamarin.Tuner {
 			public Collection<CustomAttributeNamedArgument> Properties => Attribute.Properties;
 			public Collection<CustomAttributeArgument> ConstructorArguments => Attribute.ConstructorArguments;
 		}
+#endif
 
 		class LinkedAwayTypeReference : TypeReference {
 			// When a type is linked away, its Module and Scope properties

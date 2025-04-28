@@ -26,9 +26,15 @@ namespace MetalKit {
 	[Static]
 	interface MTKModel {
 
+		/// <summary>Gets the error domain where mesh initialization errors are reported.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MTKModelErrorDomain")]
 		NSString ErrorDomain { get; }
 
+		/// <summary>Gets the key that is used to retrieve error information from the <see cref="P:Foundation.NSError.UserInfo" /> property of a MetalKit initialization error.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MTKModelErrorKey")]
 		NSString ErrorKey { get; }
 	}
@@ -47,6 +53,13 @@ namespace MetalKit {
 		[DesignatedInitializer]
 		NativeHandle Constructor (CGRect frameRect, [NullAllowed] IMTLDevice device);
 
+		/// <summary>An instance of the MetalKit.IMTKViewDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the MetalKit.IMTKViewDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		[NullAllowed]
 		IMTKViewDelegate Delegate { get; set; }
@@ -108,6 +121,9 @@ namespace MetalKit {
 		[Export ("drawableSize", ArgumentSemantic.Assign)]
 		CGSize DrawableSize { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the draw loop is paused.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("paused")]
 		bool Paused { [Bind ("isPaused")] get; set; }
 
@@ -164,10 +180,17 @@ namespace MetalKit {
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface MTKViewDelegate {
+		/// <param name="view">To be added.</param>
+		/// <param name="size">To be added.</param>
+		/// <summary>Method to redraw the view when its layout is changed.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("mtkView:drawableSizeWillChange:")]
 		void DrawableSizeWillChange (MTKView view, CGSize size);
 
+		/// <param name="view">To be added.</param>
+		/// <summary>Method to draw the contents of the view.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("drawInMTKView:")]
 		void Draw (MTKView view);
@@ -178,9 +201,15 @@ namespace MetalKit {
 	[Static]
 	interface MTKTextureLoaderError {
 
+		/// <summary>Gets the error domain where texture initialization errors are reported.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MTKTextureLoaderErrorDomain")]
 		NSString Domain { get; }
 
+		/// <summary>Gets the key that is used to retrieve error information from the <see cref="P:Foundation.NSError.UserInfo" /> property of a texture initialization error.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MTKTextureLoaderErrorKey")]
 		NSString Key { get; }
 	}
@@ -225,16 +254,20 @@ namespace MetalKit {
 
 	[MacCatalyst (13, 1)]
 	enum MTKTextureLoaderCubeLayout {
+		/// <summary>To be added.</summary>
 		[Field ("MTKTextureLoaderCubeLayoutVertical")]
 		Vertical,
 	}
 
 	[MacCatalyst (13, 1)]
 	enum MTKTextureLoaderOrigin {
+		/// <summary>To be added.</summary>
 		[Field ("MTKTextureLoaderOriginTopLeft")]
 		TopLeft,
+		/// <summary>To be added.</summary>
 		[Field ("MTKTextureLoaderOriginBottomLeft")]
 		BottomLeft,
+		/// <summary>To be added.</summary>
 		[Field ("MTKTextureLoaderOriginFlippedVertically")]
 		FlippedVertically,
 	}
@@ -242,11 +275,20 @@ namespace MetalKit {
 	/// <summary>Contains a dictionary of texture loading options and exposes them as discoverably named properties.</summary>
 	[StrongDictionary ("MTKTextureLoaderKeys")]
 	interface MTKTextureLoaderOptions {
+		/// <summary>Gets a Boolean value that tells whether to allocate mipmap memory when loading the texture.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		bool AllocateMipmaps { get; set; }
 
+		/// <summary>Gets a value that tells whether mipmaps will be created for the new texture.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		bool GenerateMipmaps { get; set; }
 
+		/// <summary>Gets a Boolean value that tells whether the texture should be loaded from the sRGB color space.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		bool Srgb { get; set; }
 
 		[iOS (17, 0), Mac (14, 0), TV (17, 0), MacCatalyst (17, 0)]
@@ -276,46 +318,111 @@ namespace MetalKit {
 		[Export ("newTextureWithContentsOfURL:options:completionHandler:"), Internal]
 		void FromUrl (NSUrl url, [NullAllowed] NSDictionary options, MTKTextureLoaderCallback completionHandler);
 
+		/// <param name="url">The location of the image data to load.</param>
+		///         <param name="options">Options for loading the texture data.</param>
+		///         <param name="completionHandler">A handler to run after the texture is loaded.</param>
+		///         <summary>Creates a new Metal texture from the resource at the specified <paramref name="url" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("FromUrl (url, options.GetDictionary (), completionHandler)")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="url">The location of the image data to load.</param>
+			<param name="options">Options for loading the texture data.</param>
+			<summary>Creates a new Metal texture from the resource at the specified <paramref name="url" />, returning a task that provides the resulting texture.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void FromUrl (NSUrl url, [NullAllowed] MTKTextureLoaderOptions options, MTKTextureLoaderCallback completionHandler);
 
 		[Export ("newTextureWithData:options:completionHandler:"), Internal]
 		void FromData (NSData data, [NullAllowed] NSDictionary options, MTKTextureLoaderCallback completionHandler);
 
+		/// <param name="data">The texture data.</param>
+		///         <param name="options">Options for loading the texture data.</param>
+		///         <param name="completionHandler">A handler to run after the texture is loaded.</param>
+		///         <summary>Creates and returns a Metal texture from the specified image data and options, and runs a completion handler when it completes.</summary>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("FromData (data, options.GetDictionary (), completionHandler)")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="data">The texture data.</param>
+			<param name="options">Options for loading the texture data.</param>
+			<summary>Creates a Metal texture from the specified image data and options, returning a task that provides the resulting image.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void FromData (NSData data, [NullAllowed] MTKTextureLoaderOptions options, MTKTextureLoaderCallback completionHandler);
 
 		[Export ("newTextureWithCGImage:options:completionHandler:"), Internal]
 		void FromCGImage (CGImage cgImage, [NullAllowed] NSDictionary options, MTKTextureLoaderCallback completionHandler);
 
+		/// <param name="cgImage">A Core Graphics image.</param>
+		///         <param name="options">Options for loading the texture data.</param>
+		///         <param name="completionHandler">A handler to run after the texture is loaded.</param>
+		///         <summary>Creates and returns a Metal texture from the specified Core Graphics image and options, and runs a completion handler when it completes.</summary>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("FromCGImage (cgImage, options.GetDictionary (), completionHandler)")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="cgImage">A Core Graphics image.</param>
+			<param name="options">Options for loading the texture data.</param>
+			<summary>Asynchronously creates a Metal texture from the specified Core Graphics image and options, and returns a task that provides the resulting image.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void FromCGImage (CGImage cgImage, [NullAllowed] MTKTextureLoaderOptions options, MTKTextureLoaderCallback completionHandler);
 
 		[Export ("newTextureWithContentsOfURL:options:error:"), Internal]
 		[return: NullAllowed]
 		IMTLTexture FromUrl (NSUrl url, [NullAllowed] NSDictionary options, out NSError error);
 
+		/// <param name="url">The location of the image data to load.</param>
+		///         <param name="options">Options for loading the texture data.</param>
+		///         <param name="error">Contains the error, if one occurred.</param>
+		///         <summary>Creates a new Metal texture from the resource at the specified <paramref name="url" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("FromUrl (url, options.GetDictionary (), out error)")]
 		[return: NullAllowed]
 		IMTLTexture FromUrl (NSUrl url, [NullAllowed] MTKTextureLoaderOptions options, out NSError error);
 
 		[MacCatalyst (13, 1)]
 		[Export ("newTexturesWithContentsOfURLs:options:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="urls">The locations of the image data to load.</param>
+			<param name="options">Options for loading the texture data.
+			          This parameter can be .</param>
+			<summary>Creates an array of new Metal textures from the resources at the specified <paramref name="urls" />.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous FromUrls operation.   The value of the TResult parameter is a <see cref="MetalKit.MTKTextureLoaderArrayCallback" />.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void FromUrls (NSUrl [] urls, [NullAllowed] NSDictionary options, MTKTextureLoaderArrayCallback completionHandler);
 
+		/// <param name="urls">The locations of the image data to load.</param>
+		///         <param name="options">Options for loading the texture data.</param>
+		///         <param name="completionHandler">A handler to run after the texture is loaded.</param>
+		///         <summary>Creates an array of new Metal textures from the resources at the specified <paramref name="urls" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("FromUrls (urls, options.GetDictionary (), completionHandler)")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="urls">The locations of the image data to load.</param>
+			<param name="options">Options for loading the texture data.</param>
+			<summary>Creates an array of new Metal textures from the resource sat the specified <paramref name="urls" />, returning a task that provides the resulting texture array.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void FromUrls (NSUrl [] urls, [NullAllowed] MTKTextureLoaderOptions options, MTKTextureLoaderArrayCallback completionHandler);
 
 		[MacCatalyst (13, 1)]
 		[Export ("newTexturesWithContentsOfURLs:options:error:")]
 		IMTLTexture [] FromUrls (NSUrl [] urls, [NullAllowed] NSDictionary options, out NSError error);
 
+		/// <param name="urls">The locations of the image data to load.</param>
+		///         <param name="options">Options for loading the texture data.</param>
+		///         <param name="error">Contains the error, if one occurred.</param>
+		///         <summary>Creates an array of new Metal textures from the resources at the specified <paramref name="urls" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("FromUrls (urls, options.GetDictionary (), out error)")]
 		IMTLTexture [] FromUrls (NSUrl [] urls, [NullAllowed] MTKTextureLoaderOptions options, out NSError error);
@@ -324,6 +431,12 @@ namespace MetalKit {
 		[return: NullAllowed]
 		IMTLTexture FromData (NSData data, [NullAllowed] NSDictionary options, out NSError error);
 
+		/// <param name="data">The texture data.</param>
+		///         <param name="options">Options for loading the texture data.</param>
+		///         <param name="error">Contains the error, if one occurred.</param>
+		///         <summary>Creates and returns a Metal texture from the specified image data and options.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("FromData (data, options.GetDictionary (), out error)")]
 		[return: NullAllowed]
 		IMTLTexture FromData (NSData data, [NullAllowed] MTKTextureLoaderOptions options, out NSError error);
@@ -332,48 +445,157 @@ namespace MetalKit {
 		[return: NullAllowed]
 		IMTLTexture FromCGImage (CGImage cgImage, [NullAllowed] NSDictionary options, out NSError error);
 
+		/// <param name="cgImage">A Core Graphics image.</param>
+		///         <param name="options">Options for loading the texture data.</param>
+		///         <param name="error">Contains the error, if one occurred.</param>
+		///         <summary>Creates and returns a Metal texture from the specified Core Graphics image and options.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("FromCGImage (cgImage, options.GetDictionary (), out error)")]
 		[return: NullAllowed]
 		IMTLTexture FromCGImage (CGImage cgImage, [NullAllowed] MTKTextureLoaderOptions options, out NSError error);
 
+		/// <param name="name">To be added.</param>
+		/// <param name="scaleFactor">To be added.</param>
+		/// <param name="bundle">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="options">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("newTextureWithName:scaleFactor:bundle:options:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="name">To be added.</param>
+			<param name="scaleFactor">To be added.</param>
+			<param name="bundle">To be added.</param>
+			<param name="options">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous FromName operation.   The value of the TResult parameter is a System.nfloat.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void FromName (string name, nfloat scaleFactor, [NullAllowed] NSBundle bundle, [NullAllowed] NSDictionary options, MTKTextureLoaderCallback completionHandler);
 
+		/// <param name="name">To be added.</param>
+		/// <param name="scaleFactor">To be added.</param>
+		/// <param name="bundle">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("FromName (name, scaleFactor, bundle, options.GetDictionary (), completionHandler)")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="name">The asset catalog name of the image.</param>
+			<param name="scaleFactor">The scale factor to use.</param>
+			<param name="bundle">The bundle that contains the image data.</param>
+			<param name="options">Options for loading the texture data.</param>
+			<summary>Creates a new Metal texture with the specified name and options, returning a task that provides the resulting image.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void FromName (string name, nfloat scaleFactor, [NullAllowed] NSBundle bundle, [NullAllowed] MTKTextureLoaderOptions options, MTKTextureLoaderCallback completionHandler);
 
 		[NoiOS]
 		[NoTV]
 		[NoMacCatalyst]
 		[Export ("newTextureWithName:scaleFactor:displayGamut:bundle:options:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="name">To be added.</param>
+			<param name="scaleFactor">To be added.</param>
+			<param name="displayGamut">To be added.</param>
+			<param name="bundle">To be added.</param>
+			<param name="options">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void FromName (string name, nfloat scaleFactor, NSDisplayGamut displayGamut, [NullAllowed] NSBundle bundle, [NullAllowed] NSDictionary options, MTKTextureLoaderCallback completionHandler);
 
 		[NoiOS]
 		[NoTV]
 		[NoMacCatalyst]
 		[Wrap ("FromName (name, scaleFactor, displayGamut, bundle, options.GetDictionary (), completionHandler)")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="name">To be added.</param>
+			<param name="scaleFactor">To be added.</param>
+			<param name="displayGamut">To be added.</param>
+			<param name="bundle">To be added.</param>
+			<param name="options">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void FromName (string name, nfloat scaleFactor, NSDisplayGamut displayGamut, [NullAllowed] NSBundle bundle, [NullAllowed] MTKTextureLoaderOptions options, MTKTextureLoaderCallback completionHandler);
 
+		/// <param name="names">To be added.</param>
+		/// <param name="scaleFactor">To be added.</param>
+		/// <param name="bundle">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="options">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("newTexturesWithNames:scaleFactor:bundle:options:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="names">To be added.</param>
+			<param name="scaleFactor">To be added.</param>
+			<param name="bundle">To be added.</param>
+			<param name="options">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous FromNames operation.   The value of the TResult parameter is a System.nfloat.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void FromNames (string [] names, nfloat scaleFactor, [NullAllowed] NSBundle bundle, [NullAllowed] NSDictionary options, MTKTextureLoaderArrayCallback completionHandler);
 
+		/// <param name="names">To be added.</param>
+		/// <param name="scaleFactor">To be added.</param>
+		/// <param name="bundle">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("FromNames (names, scaleFactor, bundle, options.GetDictionary (), completionHandler)")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="names">An array of asset catalog names for images to load.</param>
+			<param name="scaleFactor">The scale factor to use.</param>
+			<param name="bundle">The bundle that contains the image data.</param>
+			<param name="options">Options for loading the texture data.</param>
+			<summary>Creates an array of new Metal texture with the specified  and options, returning a task that provides the resulting array.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void FromNames (string [] names, nfloat scaleFactor, [NullAllowed] NSBundle bundle, [NullAllowed] MTKTextureLoaderOptions options, MTKTextureLoaderArrayCallback completionHandler);
 
 		[NoiOS]
 		[NoTV]
 		[NoMacCatalyst]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="names">To be added.</param>
+			<param name="scaleFactor">To be added.</param>
+			<param name="displayGamut">To be added.</param>
+			<param name="bundle">To be added.</param>
+			<param name="options">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("newTexturesWithNames:scaleFactor:displayGamut:bundle:options:completionHandler:")]
 		void FromNames (string [] names, nfloat scaleFactor, NSDisplayGamut displayGamut, [NullAllowed] NSBundle bundle, [NullAllowed] NSDictionary options, MTKTextureLoaderArrayCallback completionHandler);
 
@@ -381,17 +603,49 @@ namespace MetalKit {
 		[NoTV]
 		[NoMacCatalyst]
 		[Wrap ("FromNames (names, scaleFactor, displayGamut, bundle, options.GetDictionary (), completionHandler)")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="names">To be added.</param>
+			<param name="scaleFactor">To be added.</param>
+			<param name="displayGamut">To be added.</param>
+			<param name="bundle">To be added.</param>
+			<param name="options">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void FromNames (string [] names, nfloat scaleFactor, NSDisplayGamut displayGamut, [NullAllowed] NSBundle bundle, [NullAllowed] MTKTextureLoaderOptions options, MTKTextureLoaderArrayCallback completionHandler);
 
 		[MacCatalyst (13, 1)]
 		[Export ("newTextureWithMDLTexture:options:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="texture">The texture to load.</param>
+			<param name="options">Options for loading the texture data.
+			          This parameter can be .</param>
+			<summary>Creates a new Metal texture from the specified <paramref name="texture" />.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous FromTexture operation.   The value of the TResult parameter is a <see cref="MetalKit.MTKTextureLoaderCallback" />.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The FromTextureAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void FromTexture (MDLTexture texture, [NullAllowed] NSDictionary options, MTKTextureLoaderCallback completionHandler);
 
+		/// <param name="texture">The texture to load.</param>
+		///         <param name="options">Options for loading the texture data.</param>
+		///         <param name="completionHandler">A handler to run after the texture is loaded.</param>
+		///         <summary>Creates a new Metal texture from the specified <paramref name="texture" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("FromTexture (texture, options.GetDictionary (), completionHandler)")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="texture">The texture to load.</param>
+			<param name="options">Options for loading the texture data.</param>
+			<summary>Creates a new Metal texture from the specified <paramref name="options" />, returning a task that provides the resulting texture.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void FromTexture (MDLTexture texture, [NullAllowed] MTKTextureLoaderOptions options, MTKTextureLoaderCallback completionHandler);
 
 		[MacCatalyst (13, 1)]
@@ -399,16 +653,44 @@ namespace MetalKit {
 		[return: NullAllowed]
 		IMTLTexture FromTexture (MDLTexture texture, [NullAllowed] NSDictionary options, out NSError error);
 
+		/// <param name="texture">The texture to load.</param>
+		///         <param name="options">Options for loading the texture data.</param>
+		///         <param name="error">Contains the error, if one occurred.</param>
+		///         <summary>Creates a new Metal texture from the specified <paramref name="texture" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("FromTexture (texture, options.GetDictionary (), out error)")]
 		[return: NullAllowed]
 		IMTLTexture FromTexture (MDLTexture texture, [NullAllowed] MTKTextureLoaderOptions options, out NSError error);
 
+		/// <param name="name">To be added.</param>
+		/// <param name="scaleFactor">To be added.</param>
+		/// <param name="bundle">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="options">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="error">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("newTextureWithName:scaleFactor:bundle:options:error:")]
 		[return: NullAllowed]
 		IMTLTexture FromName (string name, nfloat scaleFactor, [NullAllowed] NSBundle bundle, [NullAllowed] NSDictionary options, out NSError error);
 
+		/// <param name="name">To be added.</param>
+		/// <param name="scaleFactor">To be added.</param>
+		/// <param name="bundle">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("FromName (name, scaleFactor, bundle, options.GetDictionary (), out error)")]
 		[return: NullAllowed]

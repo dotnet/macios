@@ -35,8 +35,13 @@ using ObjCRuntime;
 
 namespace StoreKit {
 
+	/// <summary>A subclass of <see cref="T:Foundation.DictionaryContainer" /> that, when passed to <see cref="M:StoreKit.SKStoreProductViewController.LoadProduct(StoreKit.StoreProductParameters,System.Action{System.Boolean,Foundation.NSError})" />, specifies the product to be displayed.</summary>
+	///     <remarks>To be added.</remarks>
 	public partial class StoreProductParameters : DictionaryContainer {
 #if !COREBUILD
+		/// <param name="iTunesItemIdentifier">To be added.</param>
+		///         <summary>Creates a new <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:StoreKit.StoreProductParameters.StoreProductParameters&amp;scope=Xamarin" title="T:StoreKit.StoreProductParameters.StoreProductParameters">T:StoreKit.StoreProductParameters.StoreProductParameters</a></format> for the specified ITunes identifier.</summary>
+		///         <remarks>To be added.</remarks>
 		public StoreProductParameters (int iTunesItemIdentifier)
 			: this ()
 		{
@@ -44,6 +49,9 @@ namespace StoreKit {
 		}
 
 		// TODO: What is real iTunes Store item identifier length
+		/// <summary>Gets or sets the identifier for the ITunes item being advertised.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public int? ITunesItemIdentifier {
 			set {
 				SetNumberValue (SKStoreProductParameterKey.ITunesItemIdentifier, value);
@@ -53,6 +61,9 @@ namespace StoreKit {
 			}
 		}
 
+		/// <summary>Gets or sets a key for the affiliate token.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? AffiliateToken {
 			get {
 				return GetStringValue (SKStoreProductParameterKey.AffiliateToken);
@@ -62,6 +73,9 @@ namespace StoreKit {
 			}
 		}
 
+		/// <summary>Gets or sets a key for the campaign token.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? CampaignToken {
 			get {
 				return GetStringValue (SKStoreProductParameterKey.CampaignToken);

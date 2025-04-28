@@ -38,6 +38,9 @@ namespace AppKit {
 	public partial class NSOpenGLPixelFormat {
 		static IntPtr selInitWithAttributes = Selector.GetHandle ("initWithAttributes:");
 
+		/// <param name="attribs">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSOpenGLPixelFormat (NSOpenGLPixelFormatAttribute [] attribs) : base (NSObjectFlag.Empty)
 		{
 			if (attribs is null)
@@ -58,6 +61,9 @@ namespace AppKit {
 			}
 		}
 
+		/// <param name="attribs">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSOpenGLPixelFormat (uint [] attribs) : base (NSObjectFlag.Empty)
 		{
 			if (attribs is null)
@@ -150,6 +156,9 @@ namespace AppKit {
 			return list.ToArray ();
 		}
 
+		/// <param name="attribs">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSOpenGLPixelFormat (params object [] attribs) : this (ConvertToAttributes (attribs))
 		{
 			if (attribs is null)

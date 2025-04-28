@@ -18,6 +18,9 @@ namespace Foundation {
 #endif
 
 #if MONOMAC
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public virtual Task<CloudKitRegistrationPreparationHandler> RegisterCloudKitShareAsync ()
 		{
 			var tcs = new TaskCompletionSource<CloudKitRegistrationPreparationHandler> ();
@@ -30,6 +33,11 @@ namespace Foundation {
 #endif
 
 #if NET
+		/// <typeparam name="T">To be added.</typeparam>
+		///         <param name="completionHandler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
@@ -39,13 +47,19 @@ namespace Foundation {
 		{
 			return LoadObject (new Class (typeof (T)), (rv, err) => {
 				var obj = rv as T;
-				if (obj is null && rv is not null)
+				if (obj is null && rv is not null) {
 					obj = Runtime.ConstructNSObject<T> (rv.Handle);
+					GC.KeepAlive (rv);
+				}
 				completionHandler (obj, err);
 			});
 		}
 
 #if NET
+		/// <typeparam name="T">To be added.</typeparam>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
@@ -63,6 +77,11 @@ namespace Foundation {
 		}
 
 #if NET
+		/// <typeparam name="T">To be added.</typeparam>
+		///         <param name="result">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]

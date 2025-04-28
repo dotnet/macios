@@ -67,8 +67,8 @@ security create-keychain -p "$(cat "$KEYCHAIN_PWD_FILE")" "$KEYCHAIN.keychain"
 echo "${BLUE}Unlocking keychain${CLEAR}"
 security unlock-keychain -p "$(cat "$KEYCHAIN_PWD_FILE")" "$KEYCHAIN_FILE"
 
-echo "${BLUE}Increasing keychain unlock timeout for '${WHITE}$KEYCHAIN_FILE${BLUE} to 6 hours${CLEAR}"
-security set-keychain-settings -lut 21600 "$KEYCHAIN_FILE"
+echo "${BLUE}Disable keychain autolock for '${WHITE}$KEYCHAIN_FILE${BLUE}${CLEAR}"
+security set-keychain-settings "$KEYCHAIN_FILE"
 
 echo "${BLUE}Adding certificate(s) to keychain:${CLEAR}"
 for cert in provisioning-profiles/certificates-and-profiles/*.cer; do
@@ -126,7 +126,8 @@ fi
 # Include our keychain in the keychain search list and make it the default keychain
 if ! security list-keychains | grep -q "$KEYCHAIN.keychain"; then
 	echo "Adding $KEYCHAIN.keychain to the keychain search list"
-	security list-keychains -s "$(security list-keychains | sed -e s/\"//g)" "$KEYCHAIN.keychain"
+	# shellcheck disable=SC2046
+	security list-keychains -s $(security list-keychains | sed -e s/\"//g) "$KEYCHAIN.keychain"
 else
 	echo "$KEYCHAIN.keychain already included in the keychain search list"
 fi

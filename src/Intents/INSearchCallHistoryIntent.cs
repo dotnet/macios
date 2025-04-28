@@ -18,6 +18,9 @@ using ObjCRuntime;
 namespace Intents {
 	public partial class INSearchCallHistoryIntent {
 
+		/// <summary>Gets a Boolean value that indicates whether to search for unseen calls.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool? Unseen {
 			get { return WeakUnseen?.BoolValue; }
 		}

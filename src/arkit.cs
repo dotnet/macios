@@ -46,8 +46,11 @@ namespace ARKit {
 	[NoTV, NoMac]
 	[Native]
 	public enum ARTrackingState : long {
+		/// <summary>World-tracking is not available.</summary>
 		NotAvailable,
+		/// <summary>World-tracking is at a reduced quality.</summary>
 		Limited,
+		/// <summary>World-tracking is at normal quality.</summary>
 		Normal,
 	}
 
@@ -55,10 +58,15 @@ namespace ARKit {
 	[NoTV, NoMac]
 	[Native]
 	public enum ARTrackingStateReason : long {
+		/// <summary>Either tracking is <see cref="F:ARKit.ARTrackingState.Normal" /> or the reason for poor tracking cannot be determined.</summary>
 		None,
+		/// <summary>ARKit is still starting up.</summary>
 		Initializing,
+		/// <summary>The camera is moving too quickly.</summary>
 		ExcessiveMotion,
+		/// <summary>Processing is not revealing sufficient high-contrast points in the field of view.</summary>
 		InsufficientFeatures,
+		/// <summary>The AR session was interrupted and is reorienting.</summary>
 		Relocalizing,
 	}
 
@@ -139,8 +147,11 @@ namespace ARKit {
 	[Flags]
 	[Native]
 	public enum ARSessionRunOptions : ulong {
+		/// <summary>To be added.</summary>
 		None = 0,
+		/// <summary>The <see cref="T:ARKit.ARSession" /> should reset its world-tracking.</summary>
 		ResetTracking = 1 << 0,
+		/// <summary>The <see cref="T:ARKit.ARSession" /> should remove any existing <see cref="T:ARKit.ARAnchor" /> objects.</summary>
 		RemoveExistingAnchors = 1 << 1,
 		StopTrackedRaycasts = 1 << 2,
 		[iOS (13, 4)]
@@ -151,8 +162,11 @@ namespace ARKit {
 	[NoTV, NoMac]
 	[Native]
 	public enum ARWorldAlignment : long {
+		/// <summary>The world coordinate system's Y-axis is perpendicular to gravity, with an origin at the original position of the device.</summary>
 		Gravity,
+		/// <summary>The world coordinate system's Y-axis is perpendicular to gravity, X- and Z- are oriented to a compass heading, and it's origin is the original position of the device.</summary>
 		GravityAndHeading,
+		/// <summary>The world coordinate system is locked to the orientation of the camera.</summary>
 		Camera,
 	}
 
@@ -185,9 +199,13 @@ namespace ARKit {
 	[NoTV, NoMac]
 	[Native]
 	public enum ARWorldMappingStatus : long {
+		/// <summary>No real-world map is available.</summary>
 		NotAvailable,
+		/// <summary>Not enough data has been gathered to accurately fix the device in space.</summary>
 		Limited,
+		/// <summary>Some areas have been mapped, but further mapping is still required.</summary>
 		Extending,
+		/// <summary>There is enough data to accurately track the device in the real world.</summary>
 		Mapped,
 	}
 
@@ -448,6 +466,13 @@ namespace ARKit {
 		[Export ("unprojectPoint:ontoPlaneWithTransform:orientation:viewportSize:")]
 		Vector3 Unproject (CGPoint point, Matrix4 planeTransform, UIInterfaceOrientation orientation, CGSize viewportSize);
 
+		/// <param name="orientation">The camera orientation.</param>
+		/// <param name="viewportSize">The viewport size, in points.</param>
+		/// <param name="zNear">The distance to the near Z-clipping plane.</param>
+		/// <param name="zFar">The distance to the far Z-clipping plane..</param>
+		/// <summary>The projection matrix used to render 3D content so that it will match the real-world imagery.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("projectionMatrixForOrientation:viewportSize:zNear:zFar:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		Matrix4 GetProjectionMatrix (UIInterfaceOrientation orientation, CGSize viewportSize, nfloat zNear, nfloat zFar);
@@ -721,9 +746,19 @@ namespace ARKit {
 		[Export ("validateWithCompletionHandler:")]
 		void Validate (Action<NSError> completionHandler);
 
+		/// <param name="image">To be added.</param>
+		/// <param name="orientation">To be added.</param>
+		/// <param name="physicalWidth">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithCGImage:orientation:physicalWidth:")]
 		NativeHandle Constructor (CGImage image, CGImagePropertyOrientation orientation, nfloat physicalWidth);
 
+		/// <param name="pixelBuffer">To be added.</param>
+		/// <param name="orientation">To be added.</param>
+		/// <param name="physicalWidth">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithPixelBuffer:orientation:physicalWidth:")]
 		NativeHandle Constructor (CVPixelBuffer pixelBuffer, CGImagePropertyOrientation orientation, nfloat physicalWidth);
 
@@ -826,19 +861,44 @@ namespace ARKit {
 	[BaseType (typeof (NSObject))]
 	interface ARSCNViewDelegate : SCNSceneRendererDelegate, ARSessionObserver {
 
+		/// <param name="renderer">The renderer for the scene.</param>
+		/// <param name="anchor">The anchor for the node to get.</param>
+		/// <summary>Retrieves the <see cref="T:SceneKit.SCNNode" /> corresponding to the specified <paramref name="anchor" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("renderer:nodeForAnchor:")]
 		[return: NullAllowed]
 		SCNNode GetNode (ISCNSceneRenderer renderer, ARAnchor anchor);
 
+		/// <param name="renderer">The renderer for the event.</param>
+		/// <param name="node">The node that was added.</param>
+		/// <param name="anchor">The anchor for the node that was added.</param>
+		/// <summary>Developers may override this method to react to the adding of a <see cref="T:SceneKit.SCNNode" /> that corresponds to a new <see cref="T:ARKit.ARAnchor" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("renderer:didAddNode:forAnchor:")]
 		void DidAddNode (ISCNSceneRenderer renderer, SCNNode node, ARAnchor anchor);
 
+		/// <param name="renderer">The renderer for the scene.</param>
+		/// <param name="node">The node that will be updated.</param>
+		/// <param name="anchor">The anchor for the node that will be updated.</param>
+		/// <summary>This method is called shortly before the properties of <paramref name="node" /> are updated to reflect the state of <paramref name="anchor" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("renderer:willUpdateNode:forAnchor:")]
 		void WillUpdateNode (ISCNSceneRenderer renderer, SCNNode node, ARAnchor anchor);
 
+		/// <param name="renderer">The renderer for the scene.</param>
+		/// <param name="node">The node that was updated.</param>
+		/// <param name="anchor">The anchor for the node that was updated.</param>
+		/// <summary>This method is called shortly after <paramref name="node" /> has been updated to reflect the current state of <paramref name="anchor" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("renderer:didUpdateNode:forAnchor:")]
 		void DidUpdateNode (ISCNSceneRenderer renderer, SCNNode node, ARAnchor anchor);
 
+		/// <param name="renderer">The renderer for the scene.</param>
+		/// <param name="node">The node that was removed.</param>
+		/// <param name="anchor">The anchor for the node that was removed.</param>
+		/// <summary>Developers may override this method to react to the removal of <paramref name="node" />, which was removed after <paramref name="anchor" /> was removed.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("renderer:didRemoveNode:forAnchor:")]
 		void DidRemoveNode (ISCNSceneRenderer renderer, SCNNode node, ARAnchor anchor);
 	}
@@ -882,19 +942,44 @@ namespace ARKit {
 	[BaseType (typeof (NSObject))]
 	interface ARSKViewDelegate : SKViewDelegate, ARSessionObserver {
 
+		/// <param name="view">The view that is rendering the scene.</param>
+		/// <param name="anchor">The anchor for the node to get.</param>
+		/// <summary>Retrieves the <see cref="T:SpriteKit.SKNode" /> corresponding to the specified <paramref name="anchor" />. If no corresponding node exists, returns <see langword="null" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("view:nodeForAnchor:")]
 		[return: NullAllowed]
 		SKNode GetNode (ARSKView view, ARAnchor anchor);
 
+		/// <param name="view">The view that is rendering the scene.</param>
+		/// <param name="node">The node that was added.</param>
+		/// <param name="anchor">The anchor for the node that was added.</param>
+		/// <summary>Developers may override this method to react to the adding of a <see cref="T:SpriteKit.SKNode" /> that corresponds to a new <see cref="T:ARKit.ARAnchor" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("view:didAddNode:forAnchor:")]
 		void DidAddNode (ARSKView view, SKNode node, ARAnchor anchor);
 
+		/// <param name="view">The view that is rendering the scene.</param>
+		/// <param name="node">The node that will be updated.</param>
+		/// <param name="anchor">The anchor for the node that will be updated.</param>
+		/// <summary>This method is called shortly before the properties of <paramref name="node" /> are updated to reflect the state of <paramref name="anchor" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("view:willUpdateNode:forAnchor:")]
 		void WillUpdateNode (ARSKView view, SKNode node, ARAnchor anchor);
 
+		/// <param name="view">The view that is rendering the scene.</param>
+		/// <param name="node">The node that was updated.</param>
+		/// <param name="anchor">The anchor for the node that was updated.</param>
+		/// <summary>This method is called shortly after <paramref name="node" /> has been updated to reflect the current state of <paramref name="anchor" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("view:didUpdateNode:forAnchor:")]
 		void DidUpdateNode (ARSKView view, SKNode node, ARAnchor anchor);
 
+		/// <param name="view">The view that is rendering the scene.</param>
+		/// <param name="node">The node that was removed.</param>
+		/// <param name="anchor">The anchor for the node that was removed.</param>
+		/// <summary>Developers may override this method to react to the removal of <paramref name="node" />, which was removed after <paramref name="anchor" /> was removed.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("view:didRemoveNode:forAnchor:")]
 		void DidRemoveNode (ARSKView view, SKNode node, ARAnchor anchor);
 	}
@@ -941,11 +1026,22 @@ namespace ARKit {
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		void SetWorldOrigin (Matrix4 relativeTransform);
 
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Asynchronously returns a task that contains the current world map.</summary>
+			<returns>A task that contains the current world map.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("getCurrentWorldMapWithCompletionHandler:")]
 		void GetCurrentWorldMap (Action<ARWorldMap, NSError> completionHandler);
 
-		[Async]
+		[Async (XmlDocs = """
+			<param name="transform">The transform to the position and orientation of the region from which to create a reference object.</param>
+			<param name="center">The center of the region.</param>
+			<param name="extent">The exent of the region, in the <paramref name="transform" /> coordinate space.</param>
+			<summary>Asynchronously creates a reference object from a region in space and returns a task that contains the resulting object.</summary>
+			<returns>A task that receives the created object, if present.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		[Export ("createReferenceObjectWithTransform:center:extent:completionHandler:")]
 		void CreateReferenceObject (Matrix4 transform, Vector3 center, Vector3 extent, Action<ARReferenceObject, NSError> completionHandler);
@@ -976,25 +1072,49 @@ namespace ARKit {
 		void CaptureHighResolutionFrame (Action<ARFrame, NSError> handler);
 	}
 
+	/// <summary>Interface defining methods that respond to events in an <see cref="T:ARKit.ARSession" />.</summary>
+	/// <remarks>To be added.</remarks>
 	[NoTV, NoMac]
 	[Protocol]
 	interface ARSessionObserver {
 
+		/// <param name="session">The session that is supplying the information for the event.</param>
+		/// <param name="error">The error that occurred.</param>
+		/// <summary>Called when the <paramref name="session" /> stops running due to an error.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("session:didFailWithError:")]
 		void DidFail (ARSession session, NSError error);
 
+		/// <param name="session">The session that is supplying the information for the event.</param>
+		/// <param name="camera">The camera whose tracking state changed.</param>
+		/// <summary>Called when the <see cref="P:ARKit.ARCamera.TrackingState" /> changes, indicating a change in tracking quality.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("session:cameraDidChangeTrackingState:")]
 		void CameraDidChangeTrackingState (ARSession session, ARCamera camera);
 
+		/// <param name="session">The session that is supplying the information for the event.</param>
+		/// <summary>Developers may override this method to stop frame processing and device tracking when an interruption occurs.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("sessionWasInterrupted:")]
 		void WasInterrupted (ARSession session);
 
+		/// <param name="session">The session that is supplying the information for the event.</param>
+		/// <summary>Developers may override this method to begin frame processing and device tracking after an interruption.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("sessionInterruptionEnded:")]
 		void InterruptionEnded (ARSession session);
 
+		/// <param name="session">The session in question.</param>
+		/// <summary>Returns a Boolean value that tells whether the session should attempt to reorient after an interruption.</summary>
+		/// <returns>A Boolean value that tells whether the session should attempt to reorient after an interruption.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("sessionShouldAttemptRelocalization:")]
 		bool ShouldAttemptRelocalization (ARSession session);
 
+		/// <param name="session">The session that is supplying the information for the event.</param>
+		/// <param name="audioSampleBuffer">The audio buffer that was played.</param>
+		/// <summary>Developers may implement this method that is called shortly after an audio buffer has been played.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("session:didOutputAudioSampleBuffer:")]
 		void DidOutputAudioSampleBuffer (ARSession session, CMSampleBuffer audioSampleBuffer);
 
@@ -1021,15 +1141,28 @@ namespace ARKit {
 	[BaseType (typeof (NSObject))]
 	interface ARSessionDelegate : ARSessionObserver {
 
+		/// <include file="../docs/api/ARKit/ARSessionDelegate_Extensions.xml" path="/Documentation/Docs[@DocId='M:ARKit.ARSessionDelegate_Extensions.DidUpdateFrame(ARKit.IARSessionDelegate,ARKit.ARSession,ARKit.ARFrame)']/*" />
 		[Export ("session:didUpdateFrame:")]
 		void DidUpdateFrame (ARSession session, ARFrame frame);
 
+		/// <param name="session">The session that is supplying the information for the event.</param>
+		/// <param name="anchors">The anchors that were added.</param>
+		/// <summary>Called when <paramref name="anchors" /> are added to the <paramref name="session" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("session:didAddAnchors:")]
 		void DidAddAnchors (ARSession session, ARAnchor [] anchors);
 
+		/// <param name="session">The session that is supplying the information for the event.</param>
+		/// <param name="anchors">The anchors that were updated.</param>
+		/// <summary>Indicates that <paramref name="anchors" /> have been updated due to tracking.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("session:didUpdateAnchors:")]
 		void DidUpdateAnchors (ARSession session, ARAnchor [] anchors);
 
+		/// <param name="session">The session that is supplying the information for the event.</param>
+		/// <param name="anchors">The anchors that were removed.</param>
+		/// <summary>Called when <paramref name="anchors" /> have been removed from the <paramref name="session" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("session:didRemoveAnchors:")]
 		void DidRemoveAnchors (ARSession session, ARAnchor [] anchors);
 	}
@@ -1109,6 +1242,9 @@ namespace ARKit {
 		[Export ("supportedVideoFormats")]
 		ARVideoFormat [] GetSupportedVideoFormats ();
 
+		/// <summary>Gets or sets a value that controls whether autofocus is enabled on the device camera.</summary>
+		///         <value>A value that controls whether autofocus is enabled on the device camera.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("autoFocusEnabled")]
 		bool AutoFocusEnabled { [Bind ("isAutoFocusEnabled")] get; set; }
 
@@ -1219,6 +1355,10 @@ namespace ARKit {
 	[NoTV, NoMac]
 	[Protocol]
 	interface ARTrackable {
+		/// <summary>Whether the ARKit-calculated transform matches the real-world position and rotation.</summary>
+		/// <value>
+		///           <see langword="true" /> if the transform accurately represents the real-world position and rotation of the detected object.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("isTracked")]
 		bool IsTracked { get; }
@@ -1743,6 +1883,11 @@ namespace ARKit {
 		[Export ("initWithBlendShapes:")]
 		NativeHandle Constructor (NSDictionary blendShapes);
 
+		/// <param name="blendShapes">To be added.</param>
+		/// <summary>Constructor that instantiates facial geometry with the expression specified in s<paramref name="blendShapes" />. Requires hardware support for face-tracking.</summary>
+		/// <remarks>
+		///           <para>This constructor will throw an <see cref="F:ObjCRuntime.Class.ThrowOnInitFailure" /> exception if run on a device that does not support face-tracking.</para>
+		///         </remarks>
 		[Wrap ("this (blendShapes.GetDictionary ()!)")]
 		NativeHandle Constructor (ARBlendShapeLocationOptions blendShapes);
 

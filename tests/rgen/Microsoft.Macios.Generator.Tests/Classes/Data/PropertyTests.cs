@@ -3,6 +3,7 @@
 
 using System;
 using System.Runtime.Versioning;
+using AVFoundation;
 using CoreGraphics;
 using Foundation;
 using ObjCBindings;
@@ -161,4 +162,27 @@ public partial class PropertyTests {
 	[Export<Property> ("canDraw")]
 	public virtual partial bool CanDraw { get; set; }
 
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("maccatalyst13.1")]
+	[BindFrom (typeof (NSString))]
+	[Export<Property> ("canDraw")]
+	public virtual partial AVCaptureReactionType ReactionType { get; set; }
+
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("maccatalyst13.1")]
+	[BindFrom (typeof (NSValue))]
+	[Export<Property> ("Center")]
+	public virtual partial CGPoint Center { get; set; }
+
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("maccatalyst13.1")]
+	[BindFrom (typeof (NSValue))]
+	[Export<Property> ("Center")]
+	public virtual partial CGPoint [] Location { get; set; }
 }

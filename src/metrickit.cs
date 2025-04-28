@@ -13,10 +13,6 @@ using CoreFoundation;
 using Foundation;
 using ObjCRuntime;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace MetricKit {
 
 	interface NSUnitDuration : NSUnit { }
@@ -483,9 +479,6 @@ namespace MetricKit {
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface MXMetricManagerSubscriber {
-#if !NET
-		[Abstract]
-#endif
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("didReceiveMetricPayloads:")]

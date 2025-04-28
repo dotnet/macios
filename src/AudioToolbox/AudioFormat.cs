@@ -42,12 +42,13 @@ using AudioFileID = System.IntPtr;
 namespace AudioToolbox {
 
 	// AudioFormatListItem
-#if NET
+	/// <summary>Tuple structure that encapsulates both an AudioChannelLayoutTag and an AudioStreamBasicDescription.</summary>
+	///     <remarks>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AudioFormat {
 		/// <summary>The AudioStreamBasicDescription.</summary>
@@ -59,6 +60,10 @@ namespace AudioToolbox {
 		///         </remarks>
 		public AudioChannelLayoutTag AudioChannelLayoutTag;
 
+		/// <param name="formatList">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public unsafe static AudioFormat? GetFirstPlayableFormat (AudioFormat [] formatList)
 		{
 			if (formatList is null)
@@ -76,12 +81,17 @@ namespace AudioToolbox {
 			}
 		}
 
+		/// <summary>Returns a human-readable reprensetation of the tuple.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override string ToString ()
 		{
 			return AudioChannelLayoutTag + ":" + AudioStreamBasicDescription.ToString ();
 		}
 	}
 
+	/// <summary>An enumeration whose values specify various errors relating to audio formats.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum AudioFormatError : int // Implictly cast to OSType
 	{
 		/// <summary>To be added.</summary>
@@ -103,12 +113,12 @@ namespace AudioToolbox {
 		// '!dat'
 	}
 
-#if NET
+	/// <summary>A struct that holds minimum and maximum float values, indicating a range.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AudioValueRange {
 		/// <summary>To be added.</summary>
@@ -119,6 +129,8 @@ namespace AudioToolbox {
 		public double Maximum;
 	}
 
+	/// <summary>An enumeration whose values specify whether balance/fade manipulation should always have a gain of less than 1.0.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum AudioBalanceFadeType : uint // UInt32 in AudioBalanceFades
 	{
 		/// <summary>Overall gain is not allowed to exceed 1.0.</summary>
@@ -127,12 +139,12 @@ namespace AudioToolbox {
 		EqualPower = 1,
 	}
 
-#if NET
+	/// <summary>Holds left/right balance and front/back fade values.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class AudioBalanceFade {
 #if !COREBUILD
 		[StructLayout (LayoutKind.Sequential)]
@@ -143,6 +155,9 @@ namespace AudioToolbox {
 			public IntPtr ChannelLayoutWeak;
 		}
 
+		/// <param name="channelLayout">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public AudioBalanceFade (AudioChannelLayout channelLayout)
 		{
 			if (channelLayout is null)
@@ -168,6 +183,9 @@ namespace AudioToolbox {
 		///         <remarks>To be added.</remarks>
 		public AudioChannelLayout ChannelLayout { get; private set; }
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public unsafe float []? GetBalanceFade ()
 		{
 			var type_size = sizeof (Layout);
@@ -210,6 +228,8 @@ namespace AudioToolbox {
 #endif // !COREBUILD
 	}
 
+	/// <summary>An enumeration whose values specify the panning mode (sound-field vs. vector-based).</summary>
+	///     <remarks>To be added.</remarks>
 	public enum PanningMode : uint // UInt32 in AudioPanningInfo
 	{
 		/// <summary>To be added.</summary>
@@ -218,12 +238,12 @@ namespace AudioToolbox {
 		VectorBasedPanning = 4,
 	}
 
-#if NET
+	/// <summary>Information on audio panning.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class AudioPanningInfo {
 #if !COREBUILD
 		[StructLayout (LayoutKind.Sequential)]
@@ -237,6 +257,9 @@ namespace AudioToolbox {
 			public IntPtr OutputChannelMapWeak;
 		}
 
+		/// <param name="outputChannelMap">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public AudioPanningInfo (AudioChannelLayout outputChannelMap)
 		{
 			if (outputChannelMap is null)
@@ -266,6 +289,9 @@ namespace AudioToolbox {
 		///         <remarks>To be added.</remarks>
 		public AudioChannelLayout OutputChannelMap { get; private set; }
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public unsafe float []? GetPanningMatrix ()
 		{
 			var type_size = sizeof (Layout);
@@ -311,12 +337,10 @@ namespace AudioToolbox {
 #endif // !COREBUILD
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	static partial class AudioFormatPropertyNative {
 		[DllImport (Constants.AudioToolboxLibrary)]
 		public unsafe extern static AudioFormatError AudioFormatGetPropertyInfo (AudioFormatProperty propertyID, int inSpecifierSize, AudioFormatType* inSpecifier,
@@ -449,16 +473,12 @@ namespace AudioToolbox {
 		ID3TagToDictionary = 0x69643364,    // 'id3d' // TODO:
 
 #if !MONOMAC
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
 		[ObsoletedOSPlatform ("ios8.0")]
 		[ObsoletedOSPlatform ("maccatalyst13.1")]
 		[ObsoletedOSPlatform ("tvos9.0")]
-#else
-		[Deprecated (PlatformName.iOS, 8, 0)]
-#endif
 		HardwareCodecCapabilities = 0x68776363, // 'hwcc'
 #endif
 	}

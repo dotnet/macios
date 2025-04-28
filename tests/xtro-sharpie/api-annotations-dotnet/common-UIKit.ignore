@@ -184,3 +184,7 @@
 # no bound due to issues with foundation https://github.com/xamarin/xamarin-macios/issues/15577
 !missing-selector! NSDiffableDataSourceSectionTransaction::difference not bound
 !missing-selector! NSDiffableDataSourceTransaction::difference not bound
+
+# empirical evidence shows the UIView parameter can be null for UITableViewDelegate::WillDisplay[Header|Footer]View: https://github.com/dotnet/macios/issues/9814
+!extra-null-allowed! 'System.Void UIKit.UITableViewDelegate::WillDisplayFooterView(UIKit.UITableView,UIKit.UIView,System.IntPtr)' has a extraneous [NullAllowed] on parameter #1
+!extra-null-allowed! 'System.Void UIKit.UITableViewDelegate::WillDisplayHeaderView(UIKit.UITableView,UIKit.UIView,System.IntPtr)' has a extraneous [NullAllowed] on parameter #1

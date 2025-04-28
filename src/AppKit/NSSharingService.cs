@@ -7,6 +7,10 @@ using ObjCRuntime;
 
 namespace AppKit {
 	public partial class NSSharingService {
+		/// <param name="service">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSSharingService? GetSharingService (NSSharingServiceName service)
 		{
 			var constant = service.GetConstant ();

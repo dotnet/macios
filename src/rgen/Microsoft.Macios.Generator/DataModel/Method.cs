@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using Microsoft.CodeAnalysis;
+using Microsoft.Macios.Generator.Attributes;
 using Microsoft.Macios.Generator.Availability;
 
 namespace Microsoft.Macios.Generator.DataModel;
@@ -62,6 +63,8 @@ readonly partial struct Method : IEquatable<Method> {
 		if (ExportMethodData != other.ExportMethodData)
 			return false;
 		if (BindAs != other.BindAs)
+			return false;
+		if (ForcedType != other.ForcedType)
 			return false;
 
 		var attrsComparer = new AttributesEqualityComparer ();
@@ -123,6 +126,7 @@ readonly partial struct Method : IEquatable<Method> {
 		sb.Append ($"SymbolAvailability: {SymbolAvailability}, ");
 		sb.Append ($"ExportMethodData: {ExportMethodData}, ");
 		sb.Append ($"BindAs: {BindAs?.ToString () ?? "null"}, ");
+		sb.Append ($"ForcedType: {ForcedType?.ToString () ?? "null"}, ");
 		sb.Append ("Attributes: [");
 		sb.AppendJoin (", ", Attributes);
 		sb.Append ("], Modifiers: [");

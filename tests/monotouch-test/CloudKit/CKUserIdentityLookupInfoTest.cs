@@ -14,7 +14,6 @@ namespace MonoTouchFixtures.CloudKit {
 			TestRuntime.AssertXcodeVersion (8, 0);
 		}
 
-#if !__WATCHOS__
 		[Test]
 		public void TestFromEmail ()
 		{
@@ -39,7 +38,6 @@ namespace MonoTouchFixtures.CloudKit {
 			Assert.NotNull (info);
 			Assert.AreNotEqual (info.Handle, IntPtr.Zero);
 		}
-#endif
 
 		[Test]
 		public void TestGetLookupInfosWithEmails ()

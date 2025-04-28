@@ -37,13 +37,23 @@ using CoreGraphics;
 
 namespace AppKit {
 	public partial class NSGraphicsContext {
+		/// <param name="context">To be added.</param>
+		///         <param name="initialFlippedState">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSGraphicsContext FromGraphicsPort (CGContext context, bool initialFlippedState)
 		{
 			if (context is null)
 				throw new ArgumentNullException (nameof (context));
-			return FromGraphicsPort (context.Handle, initialFlippedState);
+			NSGraphicsContext result = FromGraphicsPort (context.Handle, initialFlippedState);
+			GC.KeepAlive (context);
+			return result;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public virtual CGContext GraphicsPort {
 			get { return new CGContext (GraphicsPortHandle, false); }
 		}

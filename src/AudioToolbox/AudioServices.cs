@@ -36,6 +36,8 @@ using ObjCRuntime;
 
 namespace AudioToolbox {
 
+	/// <summary>An enumeration of values that can be returned by the <see cref="M:AudioToolbox.SystemSound.AddSystemSoundCompletion(System.Action,CoreFoundation.CFRunLoop)" /> method.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum AudioServicesError { // Implictly cast to OSType
 		/// <summary>To be added.</summary>
 		None = 0,

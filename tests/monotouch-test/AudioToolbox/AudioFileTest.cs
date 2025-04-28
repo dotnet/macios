@@ -1,7 +1,5 @@
 // Copyright 2011 Xamarin Inc. All rights reserved
 
-#if !__WATCHOS__
-
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -129,5 +127,3 @@ namespace MonoTouchFixtures.AudioToolbox {
 		}
 	}
 }
-
-#endif // !__WATCHOS__

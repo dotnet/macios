@@ -34,20 +34,25 @@ using ObjCRuntime;
 #nullable enable
 
 namespace AVFoundation {
-
-#if NET
+	/// <summary>Represents options used to construct <see cref="T:AVFoundation.AVUrlAsset" /> object</summary>
+	///     <remarks>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class AVUrlAssetOptions : DictionaryContainer {
 #if !COREBUILD
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public AVUrlAssetOptions ()
 			: base (new NSMutableDictionary ())
 		{
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public AVUrlAssetOptions (NSDictionary dictionary)
 			: base (dictionary)
 		{

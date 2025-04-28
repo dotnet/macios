@@ -36,16 +36,17 @@ using CoreFoundation;
 using ObjCRuntime;
 using Foundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreGraphics {
 
 	// untyped enum -> CGPattern.h
+	/// <summary>Pattern styling style.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum CGPatternTiling {
+		/// <summary>No distortion.</summary>
 		NoDistortion,
+		/// <summary>To be added.</summary>
 		ConstantSpacingMinimalDistortion,
+		/// <summary>To be added.</summary>
 		ConstantSpacing,
 	}
 
@@ -56,32 +57,22 @@ namespace CoreGraphics {
 	[StructLayout (LayoutKind.Sequential)]
 	struct CGPatternCallbacks {
 		internal /* unsigned int */ uint version;
-#if NET
 		internal unsafe delegate* unmanaged<IntPtr, IntPtr, void> draw;
 		internal unsafe delegate* unmanaged<IntPtr, void> release;
-#else
-		internal IntPtr draw;
-		internal IntPtr release;
-#endif
 	}
 
 
-#if NET
+	/// <summary>A pattern to draw in a CGContext.</summary>
+	///     <remarks>To be added.</remarks>
+	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/Drawing/">Example_Drawing</related>
+	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/QuartzSample/">QuartzSample</related>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	// CGPattern.h
 	public class CGPattern : NativeObject {
 #if !COREBUILD
-#if !NET
-		public CGPattern (NativeHandle handle)
-			: base (handle, false)
-		{
-		}
-#endif
-
 		[Preserve (Conditional = true)]
 		internal CGPattern (NativeHandle handle, bool owns)
 			: base (handle, owns)
@@ -92,6 +83,9 @@ namespace CoreGraphics {
 		protected internal override void Release () => CGPatternRelease (Handle);
 
 		// This is what we expose on the API
+		/// <param name="ctx">The CGContext on which the pattern is being drawn.</param>
+		///     <summary>Callback signature used to draw patterns on the screen.</summary>
+		///     <remarks>This is the delegate that is passed to the CGPattern method.</remarks>
 		public delegate void DrawPattern (CGContext ctx);
 
 		[DllImport (Constants.CoreGraphicsLibrary)]
@@ -99,7 +93,6 @@ namespace CoreGraphics {
 			/* CGFloat */ nfloat xStep, /* CGFloat */ nfloat yStep, CGPatternTiling tiling, byte isColored,
 			/* const CGPatternCallbacks* */ CGPatternCallbacks* callbacks);
 
-#if NET
 		static CGPatternCallbacks callbacks;
 
 		static CGPattern ()
@@ -112,15 +105,6 @@ namespace CoreGraphics {
 				};
 			}
 		}
-#else
-		static DrawPatternCallback drawCallbackDelegate = DrawCallback;
-		static ReleaseInfoCallback releaseCallbackDelegate = ReleaseCallback;
-		static CGPatternCallbacks callbacks = new CGPatternCallbacks () {
-			version = 0,
-			draw = Marshal.GetFunctionPointerForDelegate (drawCallbackDelegate),
-			release = Marshal.GetFunctionPointerForDelegate (releaseCallbackDelegate),
-		};
-#endif
 		GCHandle gch;
 
 		public CGPattern (CGRect bounds, CGAffineTransform matrix, nfloat xStep, nfloat yStep, CGPatternTiling tiling, bool isColored, DrawPattern drawPattern)
@@ -135,13 +119,7 @@ namespace CoreGraphics {
 			}
 		}
 
-#if NET
 		[UnmanagedCallersOnly]
-#else
-#if !MONOMAC
-		[MonoPInvokeCallback (typeof (DrawPatternCallback))]
-#endif
-#endif
 		static void DrawCallback (IntPtr voidptr, IntPtr cgcontextptr)
 		{
 			GCHandle gch = GCHandle.FromIntPtr (voidptr);
@@ -151,13 +129,7 @@ namespace CoreGraphics {
 			}
 		}
 
-#if NET
 		[UnmanagedCallersOnly]
-#else
-#if !MONOMAC
-		[MonoPInvokeCallback (typeof (ReleaseInfoCallback))]
-#endif
-#endif
 		static void ReleaseCallback (IntPtr voidptr)
 		{
 			GCHandle gch = GCHandle.FromIntPtr (voidptr);

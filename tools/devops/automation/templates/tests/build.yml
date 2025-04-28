@@ -12,7 +12,6 @@ parameters:
 
 - name: testsLabels
   type: string
-  default: '--label=run-ios-tests,run-non-monotouch-tests,run-monotouch-tests,run-mscorlib-tests' # default context, since we started dealing with iOS devices.
 
 - name: label
   type: string
@@ -44,10 +43,6 @@ parameters:
 
 - name: xqaCertPass
   type: string
-
-- name: makeTarget
-  type: string
-  default: 'vsts-device-tests' # target to be used to run the tests
 
 - name: isPR
   type: boolean
@@ -266,9 +261,9 @@ steps:
     testsLabels: ${{ parameters.testsLabels }}
     vsdropsPrefix: ${{ parameters.vsdropsPrefix }}
     testPrefix: ${{ parameters.testPrefix }}
-    makeTarget: ${{ parameters.makeTarget }}
 
 # clean the bot after we use it
 - template: ../common/teardown.yml
   parameters:
     keyringPass: ${{ parameters.keyringPass }}
+    use1ES: false

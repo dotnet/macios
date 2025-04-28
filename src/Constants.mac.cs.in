@@ -28,17 +28,12 @@ namespace Xamarin.Bundler {
 namespace ObjCRuntime {
 #endif
 	public static partial class Constants {
+		/// <summary>The version of this Microsoft SDK for macOS.</summary>
 		public const string Version = "@VERSION@";
-		internal const string Revision = "@REVISION@";
-		public const string SdkVersion = "@MACOS_SDK_VERSION@";
-		internal const string MinMonoVersion = "@MIN_XM_MONO_VERSION@";
 
-		public const string AccelerateImageLibrary = "/System/Library/Frameworks/Accelerate.framework/Frameworks/vImage.framework/vImage";
-		public const string ApplicationServicesCoreGraphicsLibrary = "/System/Library/Frameworks/ApplicationServices.framework/Frameworks/CoreGraphics.framework/CoreGraphics";
-		public const string QuartzLibrary = "/System/Library/Frameworks/QuartzCore.framework/QuartzCore";
-		public const string libcompressionLibrary = "/usr/lib/libcompression.dylib";
-#if !XAMCORE_5_0
-		public const string InputMethodKitLibrary = "/System/Library/Frameworks/InputMethodKit.framework/InputMethodKit";
-#endif
+		internal const string Revision = "@REVISION@";
+
+		/// <summary>The macOS version this library is built to support.</summary>
+		public const string SdkVersion = "@MACOS_SDK_VERSION@";
 	}
 }

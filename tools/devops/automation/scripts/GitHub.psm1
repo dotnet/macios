@@ -884,6 +884,12 @@ function Get-GitHubPRsForHash {
 
     Write-Host "Getting related PR ids for commit $Hash"
 
+    $prs = [System.Collections.ArrayList]@()
+    if ($Env:IS_PR -eq "false") {
+        Write-Host "This isn't a PR, IS_PR=false"
+        return $prs
+    }
+
     if ($Org -and $Repo) {
         $url = "https://api.github.com/repos/$($Org)/$($Repo)/commits/$Hash/pulls"
     } else {
@@ -902,7 +908,6 @@ function Get-GitHubPRsForHash {
     Write-Host "Request result: $request"
 
     # loop over the result and remove all the extra noise we are not interested in
-    $prs = [System.Collections.ArrayList]@()
     foreach ($prInfo in $request) {
         $state = $prInfo.state
         if ($state -ne "open") {

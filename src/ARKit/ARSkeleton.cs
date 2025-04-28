@@ -31,7 +31,9 @@ namespace ARKit {
 		{
 			if (recognizedPointKey is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (recognizedPointKey));
-			return Runtime.GetNSObject<NSString> (ARSkeletonJointNameForRecognizedPointKey (recognizedPointKey.Handle));
+			NSString? result = Runtime.GetNSObject<NSString> (ARSkeletonJointNameForRecognizedPointKey (recognizedPointKey.Handle));
+			GC.KeepAlive (recognizedPointKey);
+			return result;
 		}
 	}
 }

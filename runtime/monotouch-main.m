@@ -185,7 +185,7 @@ inline void debug_launch_time_print (const char *msg)
  * in release builds.
  */
 
-#if defined (__arm__) || defined(__aarch64__)
+#if defined(__aarch64__)
 #if !defined (CORECLR_RUNTIME)
 extern void mono_gc_init_finalizer_thread (void);
 #endif
@@ -201,7 +201,7 @@ extern void mono_gc_init_finalizer_thread (void);
 - (id) init
 {
 	if (self = [super init]) {
-#if defined (__arm__) || defined(__aarch64__)
+#if defined(__aarch64__)
 		[self start];
 #endif
 #if !TARGET_OS_OSX
@@ -214,7 +214,7 @@ extern void mono_gc_init_finalizer_thread (void);
 
 - (void) start
 {
-#if defined (__arm__) || defined(__aarch64__)
+#if defined(__aarch64__)
 #if !defined (CORECLR_RUNTIME)
 	mono_gc_init_finalizer_thread ();
 #endif
@@ -237,11 +237,15 @@ extern void mono_gc_init_finalizer_thread (void);
 int
 xamarin_main (int argc, char *argv[], enum XamarinLaunchMode launch_mode)
 {
+#ifdef DEBUG
+	monotouch_start_launch_timer ();
+#endif
+
 	// + 1 for the initial "monotouch" +1 for the final NULL = +2.
 	// This is not an exact number (it will most likely be lower, since there
 	// are other arguments besides --app-arg), but it's a guaranteed and bound
 	// upper limit.
-	const char *managed_argv [argc + 2];
+	const char **managed_argv = (const char **) alloca (sizeof (char *) * (unsigned long) (argc + 2));
 	int managed_argc = 0;
 
 	xamarin_launch_mode = launch_mode;

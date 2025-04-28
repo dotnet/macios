@@ -1,0 +1,24 @@
+<Documentation>
+  <Docs DocId="M:CoreBluetooth.CBCentralManager.ConnectPeripheral(CoreBluetooth.CBPeripheral,CoreBluetooth.PeripheralConnectionOptions)">
+        <param name="peripheral">Peripheral to connect to.</param>
+        <param name="options">Options to configure the peripheral connection.</param>
+        <summary>Connects to the specified peripheral.</summary>
+        <remarks>
+          <para>
+	    This raises the <see cref="E:CoreBluetooth.CBCentralManager.ConnectedPeripheral" />
+	    event if the connection is successful, or raises the <see cref="E:CoreBluetooth.CBCentralManager.FailedToConnectPeripheral" />
+	    on failure (not on timeout).
+	  </para>
+          <para>
+	    Alternatively, if you set the Delegate method, the <see cref="M:CoreBluetooth.CBCentralManagerDelegate.ConnectedPeripheral(CoreBluetooth.CBCentralManager,CoreBluetooth.CBPeripheral)" />
+	    method is called if the connection is successful, or calls the <see cref="M:CoreBluetooth.CBCentralManagerDelegate.FailedToConnectPeripheral(CoreBluetooth.CBCentralManager,CoreBluetooth.CBPeripheral,Foundation.NSError)" />
+	    on failure (not on timeout).
+	  </para>
+          <para>
+	    If the peripheral is not available, this method will keep
+	    waiting for it to become available.  To cancel a
+	    connection attempt, you must call <see cref="M:CoreBluetooth.CBCentralManager.CancelPeripheralConnection(CoreBluetooth.CBPeripheral)" />.
+	  </para>
+        </remarks>
+      </Docs>
+</Documentation>

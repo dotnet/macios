@@ -11,12 +11,7 @@ namespace Microsoft.Macios.Generator.DataModel;
 /// <summary>
 /// Readonly structure that describes a delegate callback passed as a parameter.
 /// </summary>
-readonly struct DelegateInfo : IEquatable<DelegateInfo> {
-
-	/// <summary>
-	/// Type name that owns the method.
-	/// </summary>
-	public string Type { get; }
+sealed record DelegateInfo {
 
 	/// <summary>
 	/// Method name.
@@ -26,16 +21,15 @@ readonly struct DelegateInfo : IEquatable<DelegateInfo> {
 	/// <summary>
 	/// Method return type.
 	/// </summary>
-	public string ReturnType { get; }
+	public TypeInfo ReturnType { get; }
 
 	/// <summary>
 	/// Parameters list.
 	/// </summary>
 	public ImmutableArray<DelegateParameter> Parameters { get; } = [];
 
-	public DelegateInfo (string type, string name, string returnType, ImmutableArray<DelegateParameter> parameters)
+	public DelegateInfo (string name, TypeInfo returnType, ImmutableArray<DelegateParameter> parameters)
 	{
-		Type = type;
 		Name = name;
 		ReturnType = returnType;
 		Parameters = parameters;
@@ -52,17 +46,16 @@ readonly struct DelegateInfo : IEquatable<DelegateInfo> {
 		}
 
 		change = new (
-			type: method.ContainingSymbol.ToDisplayString ().Trim (), // we want the full name
 			name: method.Name,
-			returnType: method.ReturnType.ToDisplayString ().Trim (),
+			returnType: new (method.ReturnType),
 			parameters: parametersBucket.ToImmutableArray ());
 		return true;
 	}
 
 	/// <inheritdoc/>
-	public bool Equals (DelegateInfo other)
+	public bool Equals (DelegateInfo? other)
 	{
-		if (Type != other.Type)
+		if (other is null)
 			return false;
 		if (Name != other.Name)
 			return false;
@@ -74,16 +67,9 @@ readonly struct DelegateInfo : IEquatable<DelegateInfo> {
 	}
 
 	/// <inheritdoc/>
-	public override bool Equals (object? obj)
-	{
-		return obj is DelegateInfo other && Equals (other);
-	}
-
-	/// <inheritdoc/>
 	public override int GetHashCode ()
 	{
 		var hashCode = new HashCode ();
-		hashCode.Add (Type);
 		hashCode.Add (Name);
 		hashCode.Add (ReturnType);
 
@@ -94,21 +80,10 @@ readonly struct DelegateInfo : IEquatable<DelegateInfo> {
 		return hashCode.ToHashCode ();
 	}
 
-	public static bool operator == (DelegateInfo left, DelegateInfo right)
-	{
-		return left.Equals (right);
-	}
-
-	public static bool operator != (DelegateInfo left, DelegateInfo right)
-	{
-		return !left.Equals (right);
-	}
-
 	/// <inheritdoc/>
 	public override string ToString ()
 	{
-		var sb = new StringBuilder ($"{{ Type: {Type}, ");
-		sb.Append ($"Name: {Name}, ");
+		var sb = new StringBuilder ($"Name: {Name}, ");
 		sb.Append ($"ReturnType: {ReturnType}, ");
 		sb.Append ("Parameters: [");
 		sb.AppendJoin (", ", Parameters);

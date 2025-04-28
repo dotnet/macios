@@ -32,6 +32,9 @@ namespace AppKit {
 	public partial class NSBrowser {
 
 		// note: if needed override the protected Get|Set methods
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string Path {
 			get { return GetPath (); }
 			// ignore return value (bool)

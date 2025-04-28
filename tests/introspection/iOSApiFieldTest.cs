@@ -172,6 +172,10 @@ namespace Introspection {
 			// Xcode 12.2 Beta 1 does not ship this but it is available in Xcode 12.0...
 			case "HKMetadataKeyBarometricPressure":
 				return true;
+			case "kCMSampleAttachmentKey_HDR10PlusPerFrameData":
+				if (TestRuntime.IsSimulator)
+					return !TestRuntime.CheckXcodeVersion (14, 1); // not available in the iOS 16.0 simulator, but it is in the iOS 16.1 simulator
+				goto default;
 			default:
 				return false;
 			}

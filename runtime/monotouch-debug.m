@@ -16,8 +16,11 @@
 
 #include <TargetConditionals.h>
 
-#if !TARGET_OS_OSX
+#include "frameworks.h"
+#if HAVE_UIKIT
 #include <UIKit/UIKit.h>
+#else
+#include <AppKit/AppKit.h>
 #endif
 
 #include <zlib.h>
@@ -195,8 +198,55 @@ get_preference (NSArray *preferences, NSUserDefaults *defaults, NSString *lookup
 	return defaults ? [defaults stringForKey:lookupKey] : nil;
 }
 
+static uint64_t xamarin_launch_timestamp = 0;
+void monotouch_start_launch_timer ()
+{
+	const char *action = getenv ("XAMARIN_TRACK_LAUNCH_DURATION");
+	if (!action || !*action) {
+		// do nothing (null or empty string)
+	} else if (strcmp (action, "disable") == 0) {
+		// do nothing
+	} else if (strcmp (action, "enable") == 0) {
+		xamarin_launch_timestamp = clock_gettime_nsec_np (CLOCK_UPTIME_RAW);
+		PRINT (PRODUCT ": Started launch timer");
+	} else {
+		PRINT (PRODUCT ": Unknown value for XAMARIN_TRACK_LAUNCH_DURATION: %s", action);
+	}
+}
+
+static void
+xamarin_track_finished_launching ()
+{
+	if (xamarin_launch_timestamp == 0)
+		return;
+
+#if HAVE_UIKIT
+	NSNotificationName didFinishLaunchingNotification = UIApplicationDidFinishLaunchingNotification;
+#else
+	NSNotificationName didFinishLaunchingNotification = NSApplicationDidFinishLaunchingNotification;
+#endif
+	NSNotificationCenter *center = NSNotificationCenter.defaultCenter;
+	id token = nil;
+	token = [center addObserverForName: didFinishLaunchingNotification
+			object: nil
+			queue: nil
+			usingBlock: ^(NSNotification *note) {
+				const uint64_t nsPerSecond = 1000000000ULL;
+				const uint64_t nsPerMillisecond = 1000000ULL;
+
+				uint64_t endTime = clock_gettime_nsec_np (CLOCK_UPTIME_RAW);
+				uint64_t nsDuration = endTime - xamarin_launch_timestamp;
+				uint64_t seconds = nsDuration / nsPerSecond;
+				uint64_t milliseconds = (nsDuration - seconds * nsPerSecond) / nsPerMillisecond;
+				PRINT (PRODUCT ": Did finish launching in %llu.%3llu s", seconds, milliseconds);
+				[center removeObserver: token];
+			}];
+}
+
 void monotouch_configure_debugging ()
 {
+	xamarin_track_finished_launching ();
+
 	// This method is invoked on a separate thread
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	NSString *bundle_path = [NSString stringWithUTF8String:xamarin_get_bundle_path ()];
@@ -278,7 +328,7 @@ void monotouch_configure_debugging ()
 		unsetenv ("__XAMARIN_DEBUG_CONNECT_TIMEOUT__");
 	}
 
-#if MONOTOUCH && (defined(__i386__) || defined (__x86_64__))
+#if MONOTOUCH && defined (__x86_64__)
 	// Try to read shared memory as well
 	key_t shmkey;
 	if (xamarin_launch_mode == XamarinLaunchModeApp) {
@@ -361,7 +411,7 @@ void monotouch_configure_debugging ()
 						}
 					}
 				} else if (!strncmp ("USB Debugging: ", line, 15) && (connection_mode == NULL || !strcmp (connection_mode, "default"))) {
-#if defined(__arm__) || defined(__aarch64__)
+#if defined(__aarch64__)
 					debugging_mode = !strncmp ("USB Debugging: 1", line, 16) ? DebuggingModeUsb : DebuggingModeWifi;
 #endif
 				} else if (!strncmp ("Port: ", line, 6) && monodevelop_port == -1) {
@@ -942,7 +992,7 @@ monotouch_process_connection (int fd)
 			if (!strcmp (prof, "no")) {
 				/* disabled */
 			} else if (!strncmp (prof, "log:", 4)) {
-#if defined(__i386__) || defined (__x86_64__)
+#if defined (__x86_64__)
 				profiler_description = strdup (prof);
 #else
 				use_fd = true;

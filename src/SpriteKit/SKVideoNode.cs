@@ -31,6 +31,10 @@ namespace SpriteKit {
 		// and made available videoNodeWithFileNamed: so we invoke
 		// the right one at runtime depending on which OS version we are running
 		// https://bugzilla.xamarin.com/show_bug.cgi?id=37727
+		/// <param name="videoFile">To be added.</param>
+		///         <summary>Create a video node from the named video file.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static SKVideoNode FromFile (string videoFile)
 		{
 			if (CheckSystemVersion ())
@@ -43,6 +47,10 @@ namespace SpriteKit {
 		// and made available videoNodeWithURL: so we invoke
 		// the right one at runtime depending on which OS version we are running
 		// https://bugzilla.xamarin.com/show_bug.cgi?id=37727
+		/// <param name="videoUrl">To be added.</param>
+		///         <summary>Creates a video node from the file at the specified URL.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static SKVideoNode FromUrl (NSUrl videoUrl)
 		{
 			if (CheckSystemVersion ())
@@ -55,6 +63,9 @@ namespace SpriteKit {
 		// and made available initWithFileNamed: so we invoke
 		// the right one at runtime depending on which OS version we are running
 		// https://bugzilla.xamarin.com/show_bug.cgi?id=37727
+		/// <param name="videoFile">To be added.</param>
+		///         <summary>Creates a new <see cref="T:SpriteKit.SKVideoNode" /> that plays video loaded from the file named <paramref name="videoFile" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		public SKVideoNode (string videoFile)
 		{
@@ -68,6 +79,9 @@ namespace SpriteKit {
 		// and made available initWithURL: so we invoke
 		// the right one at runtime depending on which OS version we are running
 		// https://bugzilla.xamarin.com/show_bug.cgi?id=37727
+		/// <param name="url">To be added.</param>
+		///         <summary>Creates a new <see cref="T:SpriteKit.SKVideoNode" /> to play the content located at <paramref name="url" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		public SKVideoNode (NSUrl url)
 		{

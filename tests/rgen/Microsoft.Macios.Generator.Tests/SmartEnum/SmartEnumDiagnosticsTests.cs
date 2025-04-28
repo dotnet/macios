@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 using System.Collections;
 using System.Collections.Generic;
+using Microsoft.Macios.Generator.Tests.Classes;
 using Xamarin.Tests;
 using Xunit;
 using Xamarin.Utils;
@@ -45,13 +46,15 @@ public class SmartEnumDiagnosticsTests : BaseGeneratorTestClass {
 					null : ReadFileAsString (testData.LibraryText);
 				if (Configuration.IsEnabled (testData.Platform))
 					yield return [
-						testData.Platform,
-						testData.ClassName,
-						testData.BindingFile,
-						ReadFileAsString (testData.BindingFile),
-						testData.OutputFile,
-						ReadFileAsString (testData.OutputFile),
-						libraryText!,
+						new GenerationTestData (
+							Platform: testData.Platform,
+							ClassName: testData.ClassName,
+							InputFileName: testData.BindingFile,
+							InputText: ReadFileAsString (testData.BindingFile),
+							OutputFileName: testData.OutputFile,
+							ExpectedOutputText: ReadFileAsString (testData.OutputFile),
+							ExpectedLibraryText: libraryText
+						)
 					];
 			}
 		}
@@ -61,7 +64,7 @@ public class SmartEnumDiagnosticsTests : BaseGeneratorTestClass {
 
 	[Theory]
 	[ClassData (typeof (TestDataGenerator))]
-	public void ExtensionGenerationTests (ApplePlatform platform, string className, string inputFileName, string inputText, string outputFileName, string expectedOutputText, string? expectedLibraryText)
-		=> CompareGeneratedCode (platform, className, inputFileName, inputText, outputFileName, expectedOutputText, expectedLibraryText);
+	public void ExtensionGenerationTests (GenerationTestData testData)
+		=> CompareGeneratedCode (testData);
 
 }

@@ -39,6 +39,8 @@ using ObjCRuntime;
 
 namespace Foundation {
 #if NET
+	/// <summary>Represents an immutable value that can range from mantissa*10^exponent where mantissa is a decimal integer of up to 38 digits length, and the exponent is an integer that can range from -128 through 127.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -83,6 +85,11 @@ namespace Foundation {
 #if !COREBUILD
 		[DllImport (Constants.FoundationLibrary)]
 		unsafe static extern nint NSDecimalCompare (NSDecimal* left, NSDecimal* right);
+		/// <param name="left">To be added.</param>
+		///         <param name="right">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public unsafe static NSComparisonResult Compare (ref NSDecimal left, ref NSDecimal right)
 		{
 			return (NSComparisonResult) (long) NSDecimalCompare (
@@ -104,6 +111,11 @@ namespace Foundation {
 
 		[DllImport (Constants.FoundationLibrary)]
 		unsafe static extern nuint NSDecimalNormalize (NSDecimal* number1, NSDecimal* number2);
+		/// <param name="number1">To be added.</param>
+		///         <param name="number2">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public unsafe static NSCalculationError Normalize (ref NSDecimal number1, ref NSDecimal number2)
 		{
 			return (NSCalculationError) (ulong) NSDecimalNormalize (
@@ -113,6 +125,13 @@ namespace Foundation {
 
 		[DllImport (Constants.FoundationLibrary)]
 		static unsafe extern nuint NSDecimalAdd (NSDecimal* result, NSDecimal* left, NSDecimal* right, nuint mode);
+		/// <param name="result">To be added.</param>
+		///         <param name="left">To be added.</param>
+		///         <param name="right">To be added.</param>
+		///         <param name="mode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public unsafe static NSCalculationError Add (out NSDecimal result, ref NSDecimal left, ref NSDecimal right, NSRoundingMode mode)
 		{
 			result = default (NSDecimal);
@@ -125,6 +144,13 @@ namespace Foundation {
 
 		[DllImport (Constants.FoundationLibrary)]
 		unsafe static extern nuint NSDecimalSubtract (NSDecimal* result, NSDecimal* left, NSDecimal* right, nuint mode);
+		/// <param name="result">To be added.</param>
+		///         <param name="left">To be added.</param>
+		///         <param name="right">To be added.</param>
+		///         <param name="mode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public unsafe static NSCalculationError Subtract (out NSDecimal result, ref NSDecimal left, ref NSDecimal right, NSRoundingMode mode)
 		{
 			result = default (NSDecimal);
@@ -137,6 +163,13 @@ namespace Foundation {
 
 		[DllImport (Constants.FoundationLibrary)]
 		static unsafe extern nuint NSDecimalMultiply (NSDecimal* result, NSDecimal* left, NSDecimal* right, nuint mode);
+		/// <param name="result">To be added.</param>
+		///         <param name="left">To be added.</param>
+		///         <param name="right">To be added.</param>
+		///         <param name="mode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public unsafe static NSCalculationError Multiply (out NSDecimal result, ref NSDecimal left, ref NSDecimal right, NSRoundingMode mode)
 		{
 			result = default (NSDecimal);
@@ -149,6 +182,13 @@ namespace Foundation {
 
 		[DllImport (Constants.FoundationLibrary)]
 		unsafe static extern nuint NSDecimalDivide (NSDecimal* result, NSDecimal* left, NSDecimal* right, nuint mode);
+		/// <param name="result">To be added.</param>
+		///         <param name="left">To be added.</param>
+		///         <param name="right">To be added.</param>
+		///         <param name="mode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public unsafe static NSCalculationError Divide (out NSDecimal result, ref NSDecimal left, ref NSDecimal right, NSRoundingMode mode)
 		{
 			result = default (NSDecimal);
@@ -173,6 +213,13 @@ namespace Foundation {
 
 		[DllImport (Constants.FoundationLibrary)]
 		unsafe static extern nuint NSDecimalMultiplyByPowerOf10 (NSDecimal* result, NSDecimal* number, short power10, nuint mode);
+		/// <param name="result">To be added.</param>
+		///         <param name="number">To be added.</param>
+		///         <param name="power10">To be added.</param>
+		///         <param name="mode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public unsafe static NSCalculationError MultiplyByPowerOf10 (out NSDecimal result, ref NSDecimal number, short power10, NSRoundingMode mode)
 		{
 			result = default (NSDecimal);
@@ -186,6 +233,9 @@ namespace Foundation {
 		[DllImport (Constants.FoundationLibrary)]
 		unsafe static extern IntPtr NSDecimalString (NSDecimal* value, /* _Nullable */ IntPtr locale);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override string ToString ()
 		{
 			unsafe {
@@ -285,16 +335,27 @@ namespace Foundation {
 			return Decimal.Parse (number.ToString (), CultureInfo.InvariantCulture);
 		}
 
+		/// <param name="other">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool Equals (NSDecimal other)
 		{
 			return this == other;
 		}
 
+		/// <param name="obj">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override bool Equals (object obj)
 		{
 			return obj is NSDecimal other && this == other;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override int GetHashCode ()
 		{
 			// this is heavy weight :( but it's the only way to follow .NET rule where:

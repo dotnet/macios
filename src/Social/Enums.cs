@@ -16,9 +16,13 @@ namespace Social {
 	/// <summary>The HTTP verb associated with a social service request.</summary>
 	[Native]
 	public enum SLRequestMethod : long {
+		/// <summary>To be added.</summary>
 		Get,
+		/// <summary>To be added.</summary>
 		Post,
+		/// <summary>To be added.</summary>
 		Delete,
+		/// <summary>To be added.</summary>
 		Put,
 	}
 
@@ -30,7 +34,9 @@ namespace Social {
 #endif
 	[Native]
 	public enum SLComposeViewControllerResult : long {
+		/// <summary>To be added.</summary>
 		Cancelled,
+		/// <summary>To be added.</summary>
 		Done,
 	}
 }

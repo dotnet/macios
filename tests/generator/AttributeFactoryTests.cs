@@ -139,15 +139,11 @@ namespace GeneratorTests {
 			Assert.AreEqual (targetPlatform, clone.Platform, "platform");
 			Assert.AreEqual (attributeToClone.Message, clone.Message, "message");
 			Assert.AreEqual (attributeToClone.GetType (), clone.GetType (), "type");
-#if NET
 			if (clone.AvailabilityKind == AvailabilityKind.Introduced) {
 				Assert.Null (clone.Version, "Version");
 			} else {
 				Assert.AreEqual (Xamarin.SdkVersions.GetMinVersion (targetPlatform.AsApplePlatform ()), clone.Version, "Version");
 			}
-#else
-			Assert.AreEqual (Xamarin.SdkVersions.GetMinVersion (targetPlatform.AsApplePlatform ()), clone.Version, "Version");
-#endif
 		}
 
 		class CloneCasesBuildVersionClass : IEnumerable {

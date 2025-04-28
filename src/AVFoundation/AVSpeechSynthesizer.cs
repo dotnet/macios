@@ -10,14 +10,13 @@ using ObjCRuntime;
 
 namespace AVFoundation {
 
+	/// <include file="../../docs/api/AVFoundation/AVSpeechSynthesizer.xml" path="/Documentation/Docs[@DocId='T:AVFoundation.AVSpeechSynthesizer']/*" />
 	public partial class AVSpeechSynthesizer {
 #if !XAMCORE_5_0
-#if NET
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
-#endif
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		[Obsolete ("Do not use this API, it doesn't work correctly. Use the non-Async version (WriteUtterance) instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]

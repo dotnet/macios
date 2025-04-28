@@ -17,7 +17,6 @@ using ObjCRuntime;
 namespace SharedWithYouCore {
 
 #if NET
-	[UnsupportedOSPlatform ("watchos")]
 	[UnsupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos13.0")]
 	[SupportedOSPlatform ("ios16.0")]
@@ -35,7 +34,6 @@ namespace SharedWithYouCore {
 			InitializeHandle (_InitWithLocalIdentifier (localIdentifier), "initWithLocalIdentifier:");
 
 #if NET
-		[UnsupportedOSPlatform ("watchos")]
 		[UnsupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos13.0")]
 		[SupportedOSPlatform ("ios16.1")]

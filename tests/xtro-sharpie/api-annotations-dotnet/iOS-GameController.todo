@@ -43,3 +43,5 @@
 !missing-protocol-member! GCDirectionPadElement::xyAxes not found
 !missing-selector! +NSValue::valueWithGCPoint2: not bound
 !missing-selector! NSValue::GCPoint2Value not bound
+!missing-null-allowed! 'GameController.GCController GameController.GCExtendedGamepad::get_Controller()' is missing an [NullAllowed] on return type
+!missing-null-allowed! 'GameController.GCController GameController.GCMicroGamepad::get_Controller()' is missing an [NullAllowed] on return type

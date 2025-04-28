@@ -15,6 +15,9 @@ using Foundation;
 using ObjCRuntime;
 
 namespace AddressBookUI {
+	/// <summary>Provides data for the <see cref="E:AddressBookUI.ABUnknownPersonViewController.PersonCreated" /> event.</summary>
+	///     <remarks>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -23,11 +26,18 @@ namespace AddressBookUI {
 	[UnsupportedOSPlatform ("tvos")]
 	public class ABUnknownPersonCreatedEventArgs : EventArgs {
 
+		/// <param name="person">To be added.</param>
+		///         <summary>Initializes a new instance of the ABUnknownPersonCreatedEventArgs class.</summary>
+		///         <remarks>
+		///         </remarks>
 		public ABUnknownPersonCreatedEventArgs (ABPerson? person)
 		{
 			Person = person;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public ABPerson? Person { get; private set; }
 	}
 
@@ -67,6 +77,9 @@ namespace AddressBookUI {
 	partial class ABUnknownPersonViewController {
 
 		ABPerson? displayedPerson;
+		/// <summary>Gets or sets the <see cref="T:AddressBook.ABPerson" /> whose data is being displayed.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public ABPerson? DisplayedPerson {
 			get {
 				MarkDirty ();
@@ -79,6 +92,9 @@ namespace AddressBookUI {
 		}
 
 		ABAddressBook? addressBook;
+		/// <summary>Gets or sets the <see cref="T:AddressBook.ABAddressBook" /> to which the controller will save data.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public ABAddressBook? AddressBook {
 			get {
 				MarkDirty ();
@@ -100,6 +116,9 @@ namespace AddressBookUI {
 			return d;
 		}
 
+		/// <param name="e">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected internal virtual void OnPerformDefaultAction (ABPersonViewPerformDefaultActionEventArgs e)
 		{
 			var h = EnsureEventDelegate ().performDefaultAction;
@@ -107,6 +126,9 @@ namespace AddressBookUI {
 				h (this, e);
 		}
 
+		/// <param name="e">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected internal virtual void OnPersonCreated (ABUnknownPersonCreatedEventArgs e)
 		{
 			var h = EnsureEventDelegate ().personCreated;
@@ -114,11 +136,15 @@ namespace AddressBookUI {
 				h (this, e);
 		}
 
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		public event EventHandler<ABPersonViewPerformDefaultActionEventArgs> PerformDefaultAction {
 			add { EnsureEventDelegate ().performDefaultAction += value; }
 			remove { EnsureEventDelegate ().performDefaultAction -= value; }
 		}
 
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		public event EventHandler<ABUnknownPersonCreatedEventArgs> PersonCreated {
 			add { EnsureEventDelegate ().personCreated += value; }
 			remove { EnsureEventDelegate ().personCreated -= value; }

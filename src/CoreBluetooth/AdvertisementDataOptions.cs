@@ -39,19 +39,25 @@ namespace CoreBluetooth {
 	// It's intentionally not called AdvertisementDataOptions because different options
 	// are valid in different contexts
 	//
-#if NET
+	/// <summary>Manages access to options used by <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Bluetooth%20Start%20Advertising&amp;scope=Xamarin" title="M:CoreBluetooth.StartAdvertising*">M:CoreBluetooth.StartAdvertising*</a></format> method.</summary>
+	///     <remarks>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class StartAdvertisingOptions : DictionaryContainer {
 #if !COREBUILD
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public StartAdvertisingOptions ()
 			: base (new NSMutableDictionary ())
 		{
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public StartAdvertisingOptions (NSDictionary dictionary)
 			: base (dictionary)
 		{

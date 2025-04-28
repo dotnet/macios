@@ -22,6 +22,10 @@ using System.Runtime.InteropServices;
 namespace GameplayKit {
 	public partial class GKPolygonObstacle {
 
+		/// <param name="points">To be added.</param>
+		/// <summary>Factory method to create a <see cref="T:GameplayKit.GKPolygonObstacle" /> defined by the <paramref name="points" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		public static GKPolygonObstacle FromPoints (Vector2 [] points)
 		{
 			if (points is null)
@@ -67,6 +71,9 @@ namespace GameplayKit {
 			return ctor_pointer = buffer;
 		}
 
+		/// <param name="points">To be added.</param>
+		/// <summary>Creates a <see cref="T:GameplayKit.GKPolygonObstacle" /> with a shape defined by the specified <paramref name="points" />.</summary>
+		/// <remarks>To be added.</remarks>
 		public unsafe GKPolygonObstacle (Vector2 [] points)
 			: this (GetPointer (points), (nuint) points.Length)
 		{

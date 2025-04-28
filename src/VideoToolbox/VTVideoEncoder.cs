@@ -18,6 +18,8 @@ using CoreMedia;
 namespace VideoToolbox {
 
 #if NET
+	/// <summary>Class to fetch available encoders</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -30,6 +32,9 @@ namespace VideoToolbox {
 			/* CFDictionaryRef */ IntPtr options,   // documented to accept NULL (no other thing)
 			/* CFArrayRef* */ IntPtr* listOfVideoEncodersOut);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		static public VTVideoEncoder []? GetEncoderList ()
 		{
 			IntPtr array;
@@ -244,6 +249,13 @@ namespace VideoToolbox {
 		);
 
 #if NET
+		/// <param name="width">To be added.</param>
+		///         <param name="height">To be added.</param>
+		///         <param name="codecType">To be added.</param>
+		///         <param name="encoderSpecification">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
@@ -256,6 +268,7 @@ namespace VideoToolbox {
 			VTStatus result;
 			unsafe {
 				result = VTCopySupportedPropertyDictionaryForEncoder (width, height, codecType, encoderSpecification.GetHandle (), &encoderIdPtr, &supportedPropertiesPtr);
+				GC.KeepAlive (encoderSpecification);
 			}
 
 			if (result != VTStatus.Ok) {
@@ -277,6 +290,8 @@ namespace VideoToolbox {
 	}
 
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("tvos")]

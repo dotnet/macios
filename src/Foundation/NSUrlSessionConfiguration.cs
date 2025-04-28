@@ -24,6 +24,9 @@ namespace Foundation {
 
 		public SessionConfigurationType SessionType { get; private set; } = SessionConfigurationType.Default;
 
+		/// <summary>A copy of the default session configuration.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public static NSUrlSessionConfiguration DefaultSessionConfiguration {
 			get {
 				var config = NSUrlSessionConfiguration._DefaultSessionConfiguration;
@@ -32,6 +35,9 @@ namespace Foundation {
 			}
 		}
 
+		/// <summary>A session configuration that uses no persistent storage for caches, cookies, or credentials.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public static NSUrlSessionConfiguration EphemeralSessionConfiguration {
 			get {
 				var config = NSUrlSessionConfiguration._EphemeralSessionConfiguration;
@@ -41,6 +47,10 @@ namespace Foundation {
 		}
 
 #if NET
+		/// <param name="identifier">To be added.</param>
+		///         <summary>Developers should not use this deprecated method. Developers should use 'CreateBackgroundSessionConfiguration' instead.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -58,6 +68,10 @@ namespace Foundation {
 			return config;
 		}
 
+		/// <param name="identifier">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSUrlSessionConfiguration CreateBackgroundSessionConfiguration (string identifier)
 		{
 			var config = NSUrlSessionConfiguration._CreateBackgroundSessionConfiguration (identifier);

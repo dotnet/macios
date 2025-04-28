@@ -7,8 +7,6 @@
 // Copyright 2016 Xamarin Inc. All rights reserved.
 //
 
-#if !__WATCHOS__
-
 using System;
 using System.Drawing;
 using CoreGraphics;
@@ -88,5 +86,3 @@ namespace MonoTouchFixtures.SpriteKit {
 		}
 	}
 }
-
-#endif // !__WATCHOS__

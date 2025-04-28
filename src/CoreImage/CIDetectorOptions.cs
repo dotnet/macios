@@ -14,6 +14,8 @@ using ObjCRuntime;
 
 namespace CoreImage {
 
+	/// <summary>Options for use with face detection. Used with <see cref="M:CoreImage.CIDetector.CreateFaceDetector(CoreImage.CIContext,System.Nullable{CoreImage.FaceDetectorAccuracy},System.Nullable{System.Single},System.Nullable{System.Boolean})" />.</summary>
+	///     <remarks>To be added.</remarks>
 	public partial class CIDetectorOptions {
 
 		/// <summary>Gets or sets a value that indicates whether to use high or low detection accuracy.</summary>
@@ -25,7 +27,6 @@ namespace CoreImage {
 		///         <remarks>To be added.</remarks>
 		public float? MinFeatureSize { get; set; }
 
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -33,7 +34,6 @@ namespace CoreImage {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public int? MaxFeatureCount { get; set; }
 
 		/// <summary>Gets or sets whether faces are tracked between frames.</summary>

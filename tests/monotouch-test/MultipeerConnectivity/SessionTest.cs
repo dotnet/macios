@@ -7,7 +7,7 @@
 // Copyright 2013 Xamarin Inc.
 //
 
-#if !__TVOS__ && !__WATCHOS__
+#if !__TVOS__
 
 using System;
 using Foundation;
@@ -96,10 +96,9 @@ namespace MonoTouchFixtures.MultipeerConnectivity {
 
 				using (var s = new MCSession (peer, id, certs, MCEncryptionPreference.Required)) {
 					Assert.AreSame (s.MyPeerID, peer, "MyPeerID");
-					// it's a self-signed certificate that's used for the identity
-					// so it's not added twice to the collection being returned
-					Assert.That (s.SecurityIdentity.Count, Is.EqualTo ((nuint) 1), "SecurityIdentity");
-					Assert.That (s.SecurityIdentity.GetItem<SecIdentity> (0).Handle, Is.EqualTo (certs [0].Handle), "SecurityIdentity");
+					Assert.That (s.SecurityIdentity.Count, Is.EqualTo ((nuint) 2), "SecurityIdentity");
+					Assert.That (s.SecurityIdentity.GetItem<SecIdentity> (0).Handle, Is.EqualTo (id.Handle), "SecurityIdentity#0");
+					Assert.That (s.SecurityIdentity.GetItem<SecIdentity> (1).Handle, Is.EqualTo (certs [0].Handle), "SecurityIdentity#1");
 					Assert.That (s.EncryptionPreference, Is.EqualTo (MCEncryptionPreference.Required), "EncryptionPreference");
 					Assert.That (s.ConnectedPeers, Is.Empty, "ConnectedPeers");
 				}
@@ -108,4 +107,4 @@ namespace MonoTouchFixtures.MultipeerConnectivity {
 	}
 }
 
-#endif // !__TVOS__ && !__WATCHOS__
+#endif // !__TVOS__

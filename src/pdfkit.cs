@@ -741,6 +741,9 @@ namespace PdfKit {
 	[BaseType (typeof (PdfAction), Name = "PDFActionGoTo")]
 	interface PdfActionGoTo {
 
+		/// <param name="destination">To be added.</param>
+		/// <summary>Creates a new go-to PDF action with the specified <paramref name="destination" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithDestination:")]
 		NativeHandle Constructor (PdfDestination destination);
@@ -758,6 +761,9 @@ namespace PdfKit {
 	[BaseType (typeof (PdfAction), Name = "PDFActionNamed")]
 	interface PdfActionNamed {
 
+		/// <param name="name">To be added.</param>
+		/// <summary>Creates a new named PDF action with the specified <paramref name="name" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithName:")]
 		NativeHandle Constructor (PdfActionNamedName name);
@@ -775,6 +781,11 @@ namespace PdfKit {
 	[BaseType (typeof (PdfAction), Name = "PDFActionRemoteGoTo")]
 	interface PdfActionRemoteGoTo {
 
+		/// <param name="pageIndex">To be added.</param>
+		/// <param name="point">To be added.</param>
+		/// <param name="fileUrl">To be added.</param>
+		/// <summary>Creates a new remote go-to PDF action for going to the specified <paramref name="point" /> on the page at <paramref name="pageIndex" /> in the document at the specified <paramref name="fileUrl" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithPageIndex:atPoint:fileURL:")]
 		NativeHandle Constructor (nint pageIndex, CGPoint point, NSUrl fileUrl);
@@ -805,6 +816,8 @@ namespace PdfKit {
 	[BaseType (typeof (PdfAction), Name = "PDFActionResetForm")]
 	interface PdfActionResetForm {
 		// - (instancetype)init NS_DESIGNATED_INITIALIZER;
+		/// <summary>Creates a new form reset action with default values.</summary>
+		/// <remarks />
 		[Export ("init")]
 		[DesignatedInitializer]
 		NativeHandle Constructor ();
@@ -832,6 +845,9 @@ namespace PdfKit {
 	[BaseType (typeof (PdfAction), Name = "PDFActionURL")]
 	interface PdfActionUrl {
 
+		/// <param name="url">To be added.</param>
+		/// <summary>Creates a new URL PDF action with the specified URL.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithURL:")]
 		NativeHandle Constructor (NSUrl url);
@@ -849,15 +865,31 @@ namespace PdfKit {
 	[BaseType (typeof (NSObject), Name = "PDFAnnotation")]
 	interface PdfAnnotation : NSCoding, NSCopying {
 
+		/// <param name="bounds">To be added.</param>
+		/// <param name="annotationType">To be added.</param>
+		/// <param name="properties">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("initWithBounds:forType:withProperties:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (CGRect bounds, NSString annotationType, [NullAllowed] NSDictionary properties);
 
+		/// <param name="bounds">To be added.</param>
+		/// <param name="annotationType">To be added.</param>
+		/// <param name="properties">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("this (bounds, annotationType.GetConstant ()!, properties)")]
 		NativeHandle Constructor (CGRect bounds, PdfAnnotationKey annotationType, [NullAllowed] NSDictionary properties);
 
+		/// <param name="bounds">To be added.</param>
+		/// <summary>Developers should not use this deprecated constructor. Developers should use '.ctor (CGRect, PDFAnnotationKey, NSDictionary)' instead.</summary>
+		/// <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use '.ctor (CGRect, PDFAnnotationKey, NSDictionary)' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 12, message: "Use '.ctor (CGRect, PDFAnnotationKey, NSDictionary)' instead.")]
 		[NoMacCatalyst]
@@ -978,6 +1010,8 @@ namespace PdfKit {
 		[Export ("hasAppearanceStream")]
 		bool HasAppearanceStream { get; }
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[Deprecated (PlatformName.MacOSX, 10, 12)]
 		[NoMacCatalyst]
@@ -985,6 +1019,9 @@ namespace PdfKit {
 		[Export ("removeAllAppearanceStreams")]
 		void RemoveAllAppearanceStreams ();
 
+		/// <param name="box">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[Deprecated (PlatformName.MacOSX, 10, 12)]
 		[NoMacCatalyst]
@@ -1009,6 +1046,10 @@ namespace PdfKit {
 		[Export ("highlighted")]
 		bool Highlighted { [Bind ("isHighlighted")] get; set; }
 
+		/// <param name="box">To be added.</param>
+		///         <param name="context">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("drawWithBox:inContext:")]
 		void Draw (PdfDisplayBox box, CGContext context);
@@ -1024,20 +1065,40 @@ namespace PdfKit {
 		[return: NullAllowed]
 		IntPtr _GetValue (NSString key);
 
+		/// <param name="boolean">To be added.</param>
+		///         <param name="key">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Protected]
 		[MacCatalyst (13, 1)]
 		[Export ("setBoolean:forAnnotationKey:")]
 		bool SetValue (bool boolean, NSString key);
 
+		/// <param name="boolean">To be added.</param>
+		///         <param name="key">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("SetValue (boolean, key.GetConstant ()!)")]
 		bool SetValue (bool boolean, PdfAnnotationKey key);
 
+		/// <param name="rect">To be added.</param>
+		///         <param name="key">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Protected]
 		[MacCatalyst (13, 1)]
 		[Export ("setRect:forAnnotationKey:")]
 		bool SetValue (CGRect rect, NSString key);
 
+		/// <param name="rect">To be added.</param>
+		///         <param name="key">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("SetValue (rect, key.GetConstant ()!)")]
 		bool SetValue (CGRect rect, PdfAnnotationKey key);
@@ -1049,11 +1110,17 @@ namespace PdfKit {
 		[Export ("annotationKeyValues", ArgumentSemantic.Copy)]
 		NSDictionary AnnotationKeyValues { get; }
 
+		/// <param name="key">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Protected]
 		[MacCatalyst (13, 1)]
 		[Export ("removeValueForAnnotationKey:")]
 		void RemoveValue (NSString key);
 
+		/// <param name="key">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("RemoveValue (key.GetConstant ()!)")]
 		void RemoveValue (PdfAnnotationKey key);
@@ -1125,11 +1192,19 @@ namespace PdfKit {
 		[Export ("endLineStyle", ArgumentSemantic.Assign)]
 		PdfLineStyle EndLineStyle { get; set; }
 
+		/// <param name="fromName">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("lineStyleFromName:")]
 		PdfLineStyle GetLineStyle (string fromName);
 
+		/// <param name="style">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("nameForLineStyle:")]
@@ -1295,10 +1370,16 @@ namespace PdfKit {
 		[NullAllowed, Export ("paths")]
 		NSBezierPath [] Paths { get; }
 
+		/// <param name="path">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("addBezierPath:")]
 		void AddBezierPath (NSBezierPath path);
 
+		/// <param name="path">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("removeBezierPath:")]
 		void RemoveBezierPath (NSBezierPath path);
@@ -1605,6 +1686,9 @@ namespace PdfKit {
 		[Export ("URL")]
 		NSUrl Url { get; set; }
 
+		/// <param name="highlighted">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setHighlighted:")]
 		void SetHighlighted (bool highlighted);
 	}
@@ -1780,6 +1864,9 @@ namespace PdfKit {
 		[Export ("borderKeyValues", ArgumentSemantic.Copy)]
 		NSDictionary WeakBorderKeyValues { get; }
 
+		/// <param name="rect">The rectangle in which to draw.</param>
+		///         <summary>Draws the border just within the specified rectangle.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("drawInRect:")]
 		void Draw (CGRect rect);
 	}
@@ -1797,6 +1884,10 @@ namespace PdfKit {
 		[Field ("kPDFDestinationUnspecifiedValue")]
 		nfloat UnspecifiedValue { get; }
 
+		/// <param name="page">To be added.</param>
+		/// <param name="point">To be added.</param>
+		/// <summary>Creates a new PDF destination object for the specified point on the specified page.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithPage:atPoint:")]
 		NativeHandle Constructor (PdfPage page, CGPoint point);
@@ -1821,6 +1912,10 @@ namespace PdfKit {
 		nfloat Zoom { get; set; }
 
 		//Should Compare be more more .Net ified ?
+		/// <param name="destination">The destination against which to compare.</param>
+		///         <summary>Compares this PDF destination object with the provided <paramref name="destination" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("compare:")]
 		NSComparisonResult Compare (PdfDestination destination);
 	}
@@ -1892,14 +1987,22 @@ namespace PdfKit {
 		NSString PageIndexKey { get; }
 
 		// - (instancetype)init NS_DESIGNATED_INITIALIZER;
+		/// <summary>Creates a new PDF document object with default values.</summary>
+		/// <remarks />
 		[Export ("init")]
 		[DesignatedInitializer]
 		NativeHandle Constructor ();
 
+		/// <param name="url">To be added.</param>
+		/// <summary>Creates a new PDF document object from the data at the specified URL.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithURL:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSUrl url);
 
+		/// <param name="data">To be added.</param>
+		/// <summary>Creates a new PDF document object with the specified data.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithData:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSData data);
@@ -1930,9 +2033,15 @@ namespace PdfKit {
 		[Export ("accessPermissions")]
 		PdfAccessPermissions AccessPermissions { get; }
 
+		/// <summary>Returns a dictionary of the document's attributes.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("new PdfDocumentAttributes (DocumentAttributes)")]
 		PdfDocumentAttributes GetDocumentAttributes ();
 
+		/// <param name="attributes">The attributes to set.</param>
+		///         <summary>Assigns the document attributes.</summary>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("DocumentAttributes = attributes?.GetDictionary ()")]
 		void SetDocumentAttributes ([NullAllowed] PdfDocumentAttributes attributes);
 
@@ -1970,6 +2079,10 @@ namespace PdfKit {
 		[Export ("isLocked")]
 		bool IsLocked { get; }
 
+		/// <param name="password">The password to use to unlock the document.</param>
+		///         <summary>Attempts to unlock the document with the specified <paramref name="password" />, returning <see langword="true" /> on success.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("unlockWithPassword:")]
 		bool Unlock (string password);
 
@@ -2053,30 +2166,65 @@ namespace PdfKit {
 		[Wrap ("WeakDelegate")]
 		IPdfDocumentDelegate Delegate { get; set; }
 
+		/// <summary>Returns an NSData object that contains the PDF data.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("dataRepresentation")]
 		[return: NullAllowed]
 		NSData GetDataRepresentation ();
 
+		/// <param name="options">Options to specify how the data are returned.</param>
+		///         <summary>Returns an NSData object that contains the PDF data.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("dataRepresentationWithOptions:")]
 		[return: NullAllowed]
 		NSData GetDataRepresentation (NSDictionary options);
 
+		/// <param name="path">The path to which to write.</param>
+		///         <summary>Writes the document to the specified path.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("writeToFile:")]
 		bool Write (string path);
 
+		/// <param name="path">The path to which to write.</param>
+		///         <param name="options">The write options.</param>
+		///         <summary>Writes the document to the specified path with the specified options.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("writeToFile:withOptions:")]
 		bool Write (string path, [NullAllowed] NSDictionary options);
 
+		/// <param name="path">The path to which to write.</param>
+		///         <param name="options">The write options.</param>
+		///         <summary>Writes the document to the specified path with the specified options.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("Write (path, options.GetDictionary ()!)")]
 		bool Write (string path, PdfDocumentWriteOptions options);
 
+		/// <param name="url">The URL to which to write.</param>
+		///         <summary>Writes the document to the specified URL.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("writeToURL:")]
 		bool Write (NSUrl url);
 
+		/// <param name="url">The URL to which to write.</param>
+		///         <param name="options">The write options.</param>
+		///         <summary>Writes the document to the specified URL with the specified options.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("writeToURL:withOptions:")]
 		bool Write (NSUrl url, [NullAllowed] NSDictionary options);
 
+		/// <param name="url">The URL to which to write.</param>
+		///         <param name="options">The write options.</param>
+		///         <summary>Writes the document to the specified URL with the specified options.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("Write (url, options.GetDictionary ()!)")]
 		bool Write (NSUrl url, PdfDocumentWriteOptions options);
@@ -2091,6 +2239,10 @@ namespace PdfKit {
 		[Export ("outlineRoot")]
 		PdfOutline OutlineRoot { get; set; }
 
+		/// <param name="selection">The selection for which to return the containing outline item.</param>
+		///         <summary>Returns the outline item that represents the section where a selection resides.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("outlineItemForSelection:")]
 		[return: NullAllowed]
 		PdfOutline OutlineItem (PdfSelection selection);
@@ -2101,19 +2253,38 @@ namespace PdfKit {
 		[Export ("pageCount")]
 		nint PageCount { get; }
 
+		/// <param name="index">The index of the page to get.</param>
+		/// <summary>Returns the page at the specified zero-based index.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("pageAtIndex:")]
 		[return: NullAllowed]
 		PdfPage GetPage (nint index);
 
+		/// <param name="page">The page for which to return its index.</param>
+		///         <summary>Returns the zero-based index for the specified page.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("indexForPage:")]
 		nint GetPageIndex (PdfPage page);
 
+		/// <param name="page">The page to insert.</param>
+		/// <param name="index">The index at which to insert the page.</param>
+		/// <summary>Inserts the provided <paramref name="page" /> at the specified <paramref name="index" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("insertPage:atIndex:")]
 		void InsertPage (PdfPage page, nint index);
 
+		/// <param name="index">The index of the page to remove.</param>
+		/// <summary>Removes the page at the specified <paramref name="index" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("removePageAtIndex:")]
 		void RemovePage (nint index);
 
+		/// <param name="indexA">The index of the first page to exchange.</param>
+		/// <param name="indexB">The index of the second page to exchange.</param>
+		/// <summary>Swaps the page at <paramref name="indexA" /> with the one at <paramref name="indexB" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("exchangePageAtIndex:withPageAtIndex:")]
 		void ExchangePages (nint indexA, nint indexB);
 
@@ -2129,6 +2300,11 @@ namespace PdfKit {
 		[Wrap ("Class.Lookup (PageClass)")]
 		Type PageType { get; }
 
+		/// <param name="text">The text to find.</param>
+		///         <param name="compareOptions">Comparison options to control text matching.</param>
+		///         <summary>Searches for the specified text with the specified comparison options.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("findString:withOptions:")]
 #if MONOMAC && !NET
 		[Obsolete ("Use 'Find (string, NSStringCompareOptions)' instead.")]
@@ -2138,6 +2314,10 @@ namespace PdfKit {
 #endif
 		PdfSelection [] Find (string text, NSStringCompareOptions compareOptions);
 
+		/// <param name="text">The text to find.</param>
+		///         <param name="compareOptions">Comparison options to control text matching.</param>
+		///         <summary>Asynchronously searches for the specified text with the specified comparison options.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("beginFindString:withOptions:")]
 #if MONOMAC && !NET
 		[Obsolete ("Use 'FindAsync (string, NSStringCompareOptions)' instead.")]
@@ -2149,6 +2329,10 @@ namespace PdfKit {
 		[return: NullAllowed]
 		void FindAsync (string text, NSStringCompareOptions compareOptions);
 
+		/// <param name="text">The text to find.</param>
+		///         <param name="compareOptions">Comparison options to control text matching.</param>
+		///         <summary>Asynchronously searches for the specified text with the specified comparison options.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("beginFindStrings:withOptions:")]
 #if MONOMAC && !NET
 		[Obsolete ("Use 'FindAsync (string [], NSStringCompareOptions)' instead.")]
@@ -2160,6 +2344,12 @@ namespace PdfKit {
 		[return: NullAllowed]
 		void FindAsync (string [] text, NSStringCompareOptions compareOptions);
 
+		/// <param name="text">The text to find.</param>
+		///         <param name="selection">The selection to search.</param>
+		///         <param name="compareOptions">Comparison options to control text matching.</param>
+		///         <summary>Searches for the specified text in a selection with the specified comparison options.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("findString:fromSelection:withOptions:")]
 #if MONOMAC && !NET
 		[Obsolete ("Use 'Find (string, PdfSelection, NSStringCompareOptions)' instead.")]
@@ -2177,21 +2367,46 @@ namespace PdfKit {
 		[Export ("isFinding")]
 		bool IsFinding { get; }
 
+		/// <summary>Cancels an in-progress find operation.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("cancelFindString")]
 		void CancelFind ();
 
+		/// <summary>Returns a selection that contains the entire document.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("selectionForEntireDocument")]
 		[return: NullAllowed]
 		PdfSelection SelectEntireDocument ();
 
+		/// <param name="startPage">The page at the start of the selection.</param>
+		///         <param name="startPoint">The point on the page at the start of the selection.</param>
+		///         <param name="endPage">The page at the end of the selection.</param>
+		///         <param name="endPoint">The point on the page at the end of the selection.</param>
+		///         <summary>Returns a selection for the region that is described by the specified parameters.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("selectionFromPage:atPoint:toPage:atPoint:")]
 		[return: NullAllowed]
 		PdfSelection GetSelection (PdfPage startPage, CGPoint startPoint, PdfPage endPage, CGPoint endPoint);
 
+		/// <param name="startPage">The page at the start of the selection.</param>
+		/// <param name="startCharIndex">The character index on the start page for the start of the selection.</param>
+		/// <param name="endPage">The page at the end of the selection.</param>
+		/// <param name="endCharIndex">The character index on the end page for the end of the selection.</param>
+		/// <summary>Returns a selection for the region that is described by the specified parameters.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("selectionFromPage:atCharacterIndex:toPage:atCharacterIndex:")]
 		[return: NullAllowed]
 		PdfSelection GetSelection (PdfPage startPage, nint startCharIndex, PdfPage endPage, nint endCharIndex);
 
+		/// <param name="printInfo">To be added.</param>
+		///         <param name="scaleMode">To be added.</param>
+		///         <param name="doRotate">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]
@@ -2227,18 +2442,48 @@ namespace PdfKit {
 	[Model]
 	interface PdfDocumentDelegate {
 
-		[Export ("documentDidUnlock:"), EventArgs ("NSNotification")]
+		/// <param name="notification">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
+		[Export ("documentDidUnlock:"), EventArgs ("NSNotification", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidUnlock (NSNotification notification);
 
-		[Export ("documentDidBeginDocumentFind:"), EventArgs ("NSNotification")]
+		/// <param name="notification">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
+		[Export ("documentDidBeginDocumentFind:"), EventArgs ("NSNotification", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidBeginDocumentFind (NSNotification notification);
 
-		[Export ("didMatchString:"), EventArgs ("PdfSelection")]
+		/// <param name="sender">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
+		[Export ("didMatchString:"), EventArgs ("PdfSelection", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidMatchString (PdfSelection sender);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("classForPage"), IgnoredInDelegate]
 		Class GetClassForPage ();
 
+		/// <param name="annotationType">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Delegate invoked by the object to get a value.</summary>
+			<value>To be added.</value>
+			<remarks>Developers assign a function, delegate or anonymous method to this property to return a value to the object.   If developers assign a value to this property, it this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[MacCatalyst (13, 1)]
 		[DelegateName ("ClassForAnnotationTypeDelegate"), DefaultValue (null)]
 		[Export ("classForAnnotationType:")]
@@ -2255,16 +2500,40 @@ namespace PdfKit {
 		Class ClassForAnnotationClass (Class sender);
 #endif
 
-		[Export ("documentDidEndDocumentFind:"), EventArgs ("NSNotification")]
+		/// <param name="notification">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
+		[Export ("documentDidEndDocumentFind:"), EventArgs ("NSNotification", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void FindFinished (NSNotification notification);
 
-		[Export ("documentDidBeginPageFind:"), EventArgs ("NSNotification")]
+		/// <param name="notification">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
+		[Export ("documentDidBeginPageFind:"), EventArgs ("NSNotification", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void PageFindStarted (NSNotification notification);
 
-		[Export ("documentDidEndPageFind:"), EventArgs ("NSNotification")]
+		/// <param name="notification">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
+		[Export ("documentDidEndPageFind:"), EventArgs ("NSNotification", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void PageFindFinished (NSNotification notification);
 
-		[Export ("documentDidFindMatch:"), EventArgs ("NSNotification")]
+		/// <param name="notification">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
+		[Export ("documentDidFindMatch:"), EventArgs ("NSNotification", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void MatchFound (NSNotification notification);
 	}
 
@@ -2276,6 +2545,8 @@ namespace PdfKit {
 	interface PdfOutline {
 
 		// - (instancetype)init NS_DESIGNATED_INITIALIZER;
+		/// <summary>Creates a new PDF outline object with default values.</summary>
+		/// <remarks />
 		[Export ("init")]
 		[DesignatedInitializer]
 		NativeHandle Constructor ();
@@ -2308,13 +2579,23 @@ namespace PdfKit {
 		[Export ("index")]
 		nint Index { get; }
 
+		/// <param name="index">To be added.</param>
+		/// <summary>Returns the child outline object at the specified <paramref name="index" /> in the children of this outline node.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Export ("childAtIndex:")]
 		PdfOutline Child (nint index);
 
+		/// <param name="child">The outline to insert.</param>
+		/// <param name="index">The index at which to insert the child outline.</param>
+		/// <summary>Inserts the specified node in the list of children at the specified index.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("insertChild:atIndex:")]
 		void InsertChild (PdfOutline child, nint index);
 
+		/// <summary>Removes this outline node from its parent.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("removeFromParent")]
 		void RemoveFromParent ();
 
@@ -2359,10 +2640,15 @@ namespace PdfKit {
 	interface PdfPage : NSCopying {
 
 		// - (instancetype)init NS_DESIGNATED_INITIALIZER;
+		/// <summary>Creates a new PDF page object with default values.</summary>
+		/// <remarks />
 		[Export ("init")]
 		[DesignatedInitializer]
 		NativeHandle Constructor ();
 
+		/// <param name="image">To be added.</param>
+		/// <summary>Creates a new PDF page object from the specified <paramref name="image" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithImage:")]
 		NativeHandle Constructor (NSImage image);
 
@@ -2403,9 +2689,17 @@ namespace PdfKit {
 		[Export ("label"), NullAllowed]
 		string Label { get; }
 
+		/// <param name="box">The box for which to get the bounding rectangle.</param>
+		///         <summary>Returns a rectangle that describes the bounds for the specified display box.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("boundsForBox:")]
 		CGRect GetBoundsForBox (PdfDisplayBox box);
 
+		/// <param name="bounds">The bounds to set.</param>
+		///         <param name="box">The box for which to set the bounds.</param>
+		///         <summary>Sets the bounds for the specified box, creating a box if none exists.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setBounds:forBox:")]
 		void SetBoundsForBox (CGRect bounds, PdfDisplayBox box);
 
@@ -2430,20 +2724,37 @@ namespace PdfKit {
 		[Export ("displaysAnnotations")]
 		bool DisplaysAnnotations { get; set; }
 
+		/// <param name="annotation">The annotation to add.</param>
+		///         <summary>Adds the specified annotation to the PDF page.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("addAnnotation:")]
 		void AddAnnotation (PdfAnnotation annotation);
 
+		/// <param name="annotation">The annotation to remove.</param>
+		///         <summary>Removes the specified annotation.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("removeAnnotation:")]
 		void RemoveAnnotation (PdfAnnotation annotation);
 
+		/// <param name="point">The point for which to attempt to get an annotation.</param>
+		///         <summary>Returns the annotation for the specified point on the page, or <see langword="null" /> if the point is not annotated.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("annotationAtPoint:")]
 		[return: NullAllowed]
 		PdfAnnotation GetAnnotation (CGPoint point);
 
+		/// <param name="box">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("transformForBox:")]
 		CGAffineTransform GetTransform (PdfDisplayBox box);
 
+		/// <param name="box">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[Deprecated (PlatformName.MacOSX, 10, 12)]
 		[NoMacCatalyst]
@@ -2451,18 +2762,34 @@ namespace PdfKit {
 		[Export ("drawWithBox:")]
 		void Draw (PdfDisplayBox box);
 
+		/// <param name="box">To be added.</param>
+		///         <param name="context">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("drawWithBox:toContext:")]
 		void Draw (PdfDisplayBox box, CGContext context);
 
+		/// <param name="context">To be added.</param>
+		///         <param name="box">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("transformContext:forBox:")]
 		void TransformContext (CGContext context, PdfDisplayBox box);
 
+		/// <param name="size">To be added.</param>
+		///         <param name="box">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>The return type is <see cref="T:UIKit.UIImage" /> on iOS and <see cref="T:AppKit.NSImage" /> on MacOS.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("thumbnailOfSize:forBox:")]
 		NSImage GetThumbnail (CGSize size, PdfDisplayBox box);
 
+		/// <param name="box">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[Deprecated (PlatformName.MacOSX, 10, 12)]
 		[NoMacCatalyst]
@@ -2490,28 +2817,57 @@ namespace PdfKit {
 		[NullAllowed]
 		NSAttributedString AttributedString { get; }
 
+		/// <param name="index">The index of the character for which to get its bounding box.</param>
+		/// <summary>Returns a rectangle that describes the bounds for the character at the specified index.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("characterBoundsAtIndex:")]
 		CGRect GetCharacterBounds (nint index);
 
+		/// <param name="point">The point over a character for which to get its bounding box.</param>
+		///         <summary>Returns the index of the character at the specified point.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("characterIndexAtPoint:")]
 		nint GetCharacterIndex (CGPoint point);
 
+		/// <param name="rect">The rectangle, in user coordinates, for which to get the selection.</param>
+		///         <summary>Returns the text in the specified rectangle.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("selectionForRect:")]
 		[return: NullAllowed]
 		PdfSelection GetSelection (CGRect rect);
 
+		/// <param name="point">A point on the word to select.</param>
+		///         <summary>Returns the word that is under the specified point.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("selectionForWordAtPoint:")]
 		[return: NullAllowed]
 		PdfSelection SelectWord (CGPoint point);
 
+		/// <param name="point">A point on the line to select.</param>
+		///         <summary>Returns the line of text that is under the specified point.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("selectionForLineAtPoint:")]
 		[return: NullAllowed]
 		PdfSelection SelectLine (CGPoint point);
 
+		/// <param name="startPoint">The first point of the selection rectangle.</param>
+		///         <param name="endPoint">The final point of the selection rectangle.</param>
+		///         <summary>Returns the text in the rectangle that is specified by the user-coordinate-space start and end points.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("selectionFromPoint:toPoint:")]
 		[return: NullAllowed]
 		PdfSelection GetSelection (CGPoint startPoint, CGPoint endPoint);
 
+		/// <param name="range">The text range to select.</param>
+		///         <summary>Returns a selection for the specified range.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("selectionForRange:")]
 		[return: NullAllowed]
 		PdfSelection GetSelection (NSRange range);
@@ -2533,6 +2889,9 @@ namespace PdfKit {
 	[DisableDefaultCtor] // An uncaught exception was raised: init: not a valid initializer for PDFSelection
 	interface PdfSelection : NSCopying {
 
+		/// <param name="document">To be added.</param>
+		/// <summary>Creates a new, empty, PDF selection object.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithDocument:")]
 		NativeHandle Constructor (PdfDocument document);
@@ -2570,37 +2929,76 @@ namespace PdfKit {
 		[Export ("attributedString"), NullAllowed]
 		NSAttributedString AttributedString { get; }
 
+		/// <param name="page">To be added.</param>
+		///         <summary>Returns the selection bounds for the portion of the selection that is on the specified <paramref name="page" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("boundsForPage:")]
 		CGRect GetBoundsForPage (PdfPage page);
 
+		/// <param name="page">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("numberOfTextRangesOnPage:")]
 		nuint GetNumberOfTextRanges (PdfPage page);
 
+		/// <param name="index">To be added.</param>
+		/// <param name="page">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("rangeAtIndex:onPage:")]
 		NSRange GetRange (nuint index, PdfPage page);
 
+		/// <summary>Returns an array that contains the selected lines.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("selectionsByLine")]
 		PdfSelection [] SelectionsByLine ();
 
+		/// <param name="selection">To be added.</param>
+		///         <summary>Adds the provided <paramref name="selection" /> to this selection.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("addSelection:")]
 		void AddSelection (PdfSelection selection);
 
+		/// <param name="selections">To be added.</param>
+		///         <summary>Adds the provided <paramref name="selections" /> to this selection.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("addSelections:")]
 		void AddSelections (PdfSelection [] selections);
 
+		/// <param name="succeed">To be added.</param>
+		/// <summary>Extends the end of the selection to the position that is indicated by <paramref name="succeed" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("extendSelectionAtEnd:")]
 		void ExtendSelectionAtEnd (nint succeed);
 
+		/// <param name="precede">To be added.</param>
+		/// <summary>Extends the beginning of the selection to the position that is indicated by <paramref name="precede" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("extendSelectionAtStart:")]
 		void ExtendSelectionAtStart (nint precede);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("extendSelectionForLineBoundaries")]
 		void ExtendSelectionForLineBoundaries ();
 
+		/// <param name="page">To be added.</param>
+		///         <param name="active">To be added.</param>
+		///         <summary>Draws the default highlight rectangle in the current highlight color.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("drawForPage:active:")]
 		void Draw (PdfPage page, bool active);
 
+		/// <param name="page">To be added.</param>
+		///         <param name="box">To be added.</param>
+		///         <param name="active">To be added.</param>
+		///         <summary>Draws the specified highlight rectangle (<paramref name="box" />) in the current highlight color.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("drawForPage:withBox:active:")]
 		void Draw (PdfPage page, PdfDisplayBox box, bool active);
 	}
@@ -2611,6 +3009,12 @@ namespace PdfKit {
 	[BaseType (typeof (NSView), Name = "PDFThumbnailView")]
 	interface PdfThumbnailView : NSCoding {
 
+		/// <param name="frame">Frame used by the view, expressed in iOS points.</param>
+		/// <summary>Initializes the PdfThumbnailView with the specified frame.</summary>
+		/// <remarks>
+		///           <para>This constructor is used to programmatically create a new instance of PdfThumbnailView with the specified dimension in the frame.   The object will only be displayed once it has been added to a view hierarchy by calling AddSubview in a containing view.</para>
+		///           <para>This constructor is not invoked when deserializing objects from storyboards or XIB filesinstead the constructor that takes an NSCoder parameter is invoked.</para>
+		///         </remarks>
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect frame);
 
@@ -2635,11 +3039,17 @@ namespace PdfKit {
 		[Export ("thumbnailSize")]
 		CGSize ThumbnailSize { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("layoutMode")]
 		PdfThumbnailLayoutMode LayoutMode { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("contentInset")]
@@ -2715,93 +3125,184 @@ namespace PdfKit {
 	NSMenuDelegate, NSAnimationDelegate
 #endif
 	{
+		/// <param name="frame">Frame used by the view, expressed in iOS points.</param>
+		/// <summary>Initializes the PdfView with the specified frame.</summary>
+		/// <remarks>
+		///           <para>This constructor is used to programmatically create a new instance of PdfView with the specified dimension in the frame.   The object will only be displayed once it has been added to a view hierarchy by calling AddSubview in a containing view.</para>
+		///           <para>This constructor is not invoked when deserializing objects from storyboards or XIB filesinstead the constructor that takes an NSCoder parameter is invoked.</para>
+		///         </remarks>
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect frame);
 
+		/// <summary>Gets or sets the document to display.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Export ("document"), NullAllowed]
 		PdfDocument Document { get; set; }
 
+		/// <summary>Gets a Boolean value that tells whether the view can navigate to the first page.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("canGoToFirstPage")]
 		bool CanGoToFirstPage { get; }
 
 		//Verify
+		/// <param name="sender">The object that requested the operation.</param>
+		///         <summary>Goes to the first page of the PDF.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("goToFirstPage:")]
 		void GoToFirstPage ([NullAllowed] NSObject sender);
 
+		/// <summary>Gets a Boolean value that tells whether the view can navigate to the last page.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("canGoToLastPage")]
 		bool CanGoToLastPage { get; }
 
+		/// <param name="sender">The object that requested the operation..</param>
+		///         <summary>Goes to the last page of the PDF.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("goToLastPage:")]
 		void GoToLastPage ([NullAllowed] NSObject sender);
 
+		/// <summary>Gets a Boolean value that tells whether the view can navigate to the next page.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("canGoToNextPage")]
 		bool CanGoToNextPage { get; }
 
+		/// <param name="sender">The object that requested the operation.</param>
+		///         <summary>Goes to the next page in the PDF.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("goToNextPage:")]
 		void GoToNextPage ([NullAllowed] NSObject sender);
 
+		/// <summary>Gets a Boolean value that tells whether the view can navigate to the previous page.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("canGoToPreviousPage")]
 		bool CanGoToPreviousPage { get; }
 
+		/// <param name="sender">The object that requested the operation.</param>
+		///         <summary>Goes to the previous page in the PDF.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("goToPreviousPage:")]
 		void GoToPreviousPage ([NullAllowed] NSObject sender);
 
+		/// <summary>Gets a Boolean value that tells whether the view can navigate back one page.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("canGoBack")]
 		bool CanGoBack { get; }
 
+		/// <param name="sender">The object that requested the operation.</param>
+		///         <summary>Goes back one page in the history.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("goBack:")]
 		void GoBack ([NullAllowed] NSObject sender);
 
+		/// <summary>Gets a Boolean value that tells whether the view can navigate forward one page.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("canGoForward")]
 		bool CanGoForward { get; }
 
+		/// <param name="sender">The object that requested the operation.</param>
+		///         <summary>Goes forward one page in the history.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("goForward:")]
 		void GoForward ([NullAllowed] NSObject sender);
 
+		/// <summary>Gets the currently displayed page.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("currentPage")]
 		[NullAllowed]
 		PdfPage CurrentPage { get; }
 
+		/// <param name="page">The page to which to go.</param>
+		///         <summary>Goes to the specified page.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("goToPage:")]
 		void GoToPage (PdfPage page);
 
+		/// <summary>Gets the currently displayed location.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("currentDestination")]
 		[NullAllowed]
 		PdfDestination CurrentDestination { get; }
 
+		/// <param name="destination">The destination to which to go.</param>
+		///         <summary>Goes to the specified <paramref name="destination" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("goToDestination:")]
 		void GoToDestination (PdfDestination destination);
 
+		/// <param name="selection">The selection to which to go.</param>
+		///         <summary>Goes to the specified selection.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("goToSelection:")]
 		void GoToSelection (PdfSelection selection);
 
+		/// <param name="rect">The rectangle to which to go.</param>
+		///         <param name="page">The page that contains the rectangle.</param>
+		///         <summary>Goes to the specified rectangle on the specified page.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("goToRect:onPage:")]
 		void GoToRectangle (CGRect rect, PdfPage page);
 
+		/// <summary>Gets or sets the display mode.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("displayMode")]
 		PdfDisplayMode DisplayMode { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("displayDirection")]
 		PdfDisplayDirection DisplayDirection { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether page breaks will be displayed.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("displaysPageBreaks")]
 		bool DisplaysPageBreaks { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("pageBreakMargins")]
 		NSEdgeInsets PageBreakMargins { get; set; }
 
+		/// <summary>Gets or sets the display box style.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("displayBox")]
 		PdfDisplayBox DisplayBox { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the first page is displayed as a book cover for two-up or two-up continuous display.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("displaysAsBook")]
 		bool DisplaysAsBook { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("displaysRTL")]
 		bool DisplaysRtl { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[Deprecated (PlatformName.MacOSX, 10, 12)]
 		[NoMacCatalyst]
@@ -2809,6 +3310,9 @@ namespace PdfKit {
 		[Export ("shouldAntiAlias")]
 		bool ShouldAntiAlias { get; set; }
 
+		/// <summary>Developers should not use this deprecated property. </summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[Deprecated (PlatformName.MacOSX, 10, 12)]
 		[NoMacCatalyst]
@@ -2816,6 +3320,9 @@ namespace PdfKit {
 		[Export ("greekingThreshold")]
 		nfloat GreekingThreshold { get; set; }
 
+		/// <param name="sender">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[Deprecated (PlatformName.MacOSX, 10, 12)]
 		[NoMacCatalyst]
@@ -2823,98 +3330,196 @@ namespace PdfKit {
 		[Export ("takeBackgroundColorFrom:")]
 		void TakeBackgroundColor (NSObject sender);
 
+		/// <summary>Gets or sets the background color for the view.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("backgroundColor")]
 		NSColor BackgroundColor { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("interpolationQuality", ArgumentSemantic.Assign)]
 		PdfInterpolationQuality InterpolationQuality { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("pageShadowsEnabled")]
 		bool PageShadowsEnabled { get; [Bind ("enablePageShadows:")] set; }
 
+		/// <param name="enable">To be added.</param>
+		///         <param name="viewOptions">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("usePageViewController:withViewOptions:")]
 		void UsePageViewController (bool enable, [NullAllowed] NSDictionary viewOptions);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("isUsingPageViewController")]
 		bool IsUsingPageViewController { get; }
 
+		/// <summary>An object that can respond to the delegate protocol for this type</summary>
+		///         <value>The instance that will respond to events and data requests.</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>   Methods must be decorated with the [Export ("selectorName")] attribute to respond to each method from the protocol.   Alternatively use the Delegate method which is strongly typed and does not require the [Export] attributes on methods.</para>
+		///         </remarks>
 		[Export ("delegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the PdfKit.IPdfViewDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the PdfKit.IPdfViewDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		IPdfViewDelegate Delegate { get; set; }
 
+		/// <summary>Gets or sets the view scale factor.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("scaleFactor")]
 		nfloat ScaleFactor { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("minScaleFactor")]
 		nfloat MinScaleFactor { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("maxScaleFactor")]
 		nfloat MaxScaleFactor { get; set; }
 
+		/// <param name="sender">The object that requested the operation.</param>
+		///         <summary>Zooms in one level.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("zoomIn:")]
 		void ZoomIn ([NullAllowed] NSObject sender);
 
+		/// <summary>Gets a Boolean value that tells whether the view can zoom in.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("canZoomIn")]
 		bool CanZoomIn { get; }
 
+		/// <param name="sender">The object that requested the operation.</param>
+		///         <summary>Zooms out one level.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("zoomOut:")]
 		void ZoomOut ([NullAllowed] NSObject sender);
 
+		/// <summary>Gets a Boolean value that tells whether the view can zoom out.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("canZoomOut")]
 		bool CanZoomOut { get; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the pages of the PDF autoscale to fit the view.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("autoScales")]
 		bool AutoScales { get; set; }
 
+		/// <summary>Gets the scale factor that would fit the current PDF page(s) in the view.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("scaleFactorForSizeToFit")]
 		nfloat ScaleFactorForSizeToFit { get; }
 
+		/// <param name="mouseEvent">The mouse event for which to obtain the area of interest.</param>
+		///         <summary>Returns the area of interest for the current cursor position.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("areaOfInterestForMouse:")]
 		PdfAreaOfInterest GetAreaOfInterest (NSEvent mouseEvent);
 
+		/// <param name="point">The point for which to obtain the area of interest</param>
+		///         <summary>Returns the area of interest for the specified point.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("areaOfInterestForPoint:")]
 		PdfAreaOfInterest GetAreaOfInterest (CGPoint point);
 
+		/// <param name="area">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]
 		[Export ("setCursorForAreaOfInterest:")]
 		void SetCursor (PdfAreaOfInterest area);
 
+		/// <param name="action">The action to perform</param>
+		///         <summary>Performs the action.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("performAction:")]
 		void PerformAction (PdfAction action);
 
+		/// <summary>Gets or sets the current selection.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("currentSelection")]
 		[NullAllowed]
 		PdfSelection CurrentSelection { get; set; }
 
+		/// <param name="selection">The selection to make current.</param>
+		///         <param name="animate">Whether to animate the selection operation.</param>
+		///         <summary>Sets the current selection with an optional animation.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setCurrentSelection:animate:")]
 		void SetCurrentSelection ([NullAllowed] PdfSelection selection, bool animate);
 
+		/// <summary>Clears all selections in the PDF.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("clearSelection")]
 		void ClearSelection ();
 
+		/// <param name="sender">
+		///           <para>The object that requested the operation.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Selects all the text.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("selectAll:")]
 		void SelectAll ([NullAllowed] NSObject sender);
 
+		/// <param name="sender">The object that requested the operation.</param>
+		///         <summary>Scrolls the current selection into view.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("scrollSelectionToVisible:")]
 		void ScrollSelectionToVisible ([NullAllowed] NSObject sender);
 
+		/// <summary>Gets or sets the currently highlighted selections.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("highlightedSelections")]
 		[NullAllowed]
 		PdfSelection [] HighlightedSelections { get; set; }
 
+		/// <param name="sender">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[Deprecated (PlatformName.MacOSX, 10, 12)]
 		[NoMacCatalyst]
@@ -2922,6 +3527,9 @@ namespace PdfKit {
 		[Export ("takePasswordFrom:")]
 		void TakePasswordFrom (NSObject sender);
 
+		/// <param name="page">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[Deprecated (PlatformName.MacOSX, 10, 12)]
 		[NoMacCatalyst]
@@ -2929,14 +3537,25 @@ namespace PdfKit {
 		[Export ("drawPage:")]
 		void DrawPage (PdfPage page);
 
+		/// <param name="page">To be added.</param>
+		///         <param name="context">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("drawPage:toContext:")]
 		void DrawPage (PdfPage page, CGContext context);
 
+		/// <param name="page">To be added.</param>
+		///         <param name="context">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("drawPagePost:toContext:")]
 		void DrawPagePost (PdfPage page, CGContext context);
 
+		/// <param name="page">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[Deprecated (PlatformName.MacOSX, 10, 12)]
 		[NoMacCatalyst]
@@ -2944,15 +3563,30 @@ namespace PdfKit {
 		[Export ("drawPagePost:")]
 		void DrawPagePost (PdfPage page);
 
+		/// <param name="sender">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("copy:")]
 		void Copy ([NullAllowed] NSObject sender);
 
+		/// <param name="printInfo">To be added.</param>
+		///         <param name="doRotate">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]
 		[Export ("printWithInfo:autoRotate:")]
 		void Print (NSPrintInfo printInfo, bool doRotate);
 
+		/// <param name="printInfo">To be added.</param>
+		///         <param name="doRotate">To be added.</param>
+		///         <param name="scaleMode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]
@@ -2961,35 +3595,75 @@ namespace PdfKit {
 		void Print (NSPrintInfo printInfo, bool doRotate, PdfPrintScalingMode scaleMode);
 #pragma warning restore
 
+		/// <param name="point">The point for which to return a page.</param>
+		///         <param name="nearest">Whether to return the nearest page if the point is not on a page.</param>
+		///         <summary>Returns the page for the point, or the nearest page if <paramref name="nearest" /> is <see langword="true" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("pageForPoint:nearest:")]
 		[return: NullAllowed]
 		PdfPage GetPage (CGPoint point, bool nearest);
 
+		/// <param name="point">The point to convert.</param>
+		///         <param name="page">The page that contains the point.</param>
+		///         <summary>Converts the provided <paramref name="point" /> from view space to page space.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("convertPoint:toPage:")]
 		CGPoint ConvertPointToPage (CGPoint point, PdfPage page);
 
+		/// <param name="rect">The rectangle to convert.</param>
+		///         <param name="page">The page that contains the rectangle.</param>
+		///         <summary>Converts the provided rectangle from view space to page space.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("convertRect:toPage:")]
 		CGRect ConvertRectangleToPage (CGRect rect, PdfPage page);
 
+		/// <param name="point">The point to convert.</param>
+		///         <param name="page">The page that contains the point.</param>
+		///         <summary>Converts the provided <paramref name="point" /> from page space to view space.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("convertPoint:fromPage:")]
 		CGPoint ConvertPointFromPage (CGPoint point, PdfPage page);
 
+		/// <param name="rect">The rectangle to convert.</param>
+		///         <param name="page">The page that contains the rectangle.</param>
+		///         <summary>Converts the provided rectangle from page space to view space.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("convertRect:fromPage:")]
 		CGRect ConvertRectangleFromPage (CGRect rect, PdfPage page);
 
+		/// <summary>Gets the innermost view.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("documentView")]
 		[NullAllowed]
 		NSView DocumentView { get; }
 
+		/// <summary>Lays out the document view.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("layoutDocumentView")]
 		void LayoutDocumentView ();
 
+		/// <param name="page">The page for which the annotations changed.</param>
+		///         <summary>Method that is called when an annotation on the specified <paramref name="page" /> changes.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("annotationsChangedOnPage:")]
 		void AnnotationsChanged (PdfPage page);
 
+		/// <param name="page">The page for which to get the row size.</param>
+		///         <summary>Returns the display size of a row on the specified <pararamref name="page" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("rowSizeForPage:")]
 		CGSize RowSize (PdfPage page);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[Deprecated (PlatformName.MacOSX, 10, 13)]
 		[NoMacCatalyst]
@@ -2997,9 +3671,15 @@ namespace PdfKit {
 		[Export ("allowsDragging")]
 		bool AllowsDragging { get; set; }
 
+		/// <summary>Returns the currently visible pages.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("visiblePages")]
 		PdfPage [] VisiblePages { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 15, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0)]
 		[Deprecated (PlatformName.iOS, 18, 0)]
@@ -3007,54 +3687,69 @@ namespace PdfKit {
 		[Export ("enableDataDetectors")]
 		bool EnableDataDetectors { get; set; }
 
+		/// <include file="../docs/api/PdfKit/PdfView.xml" path="/Documentation/Docs[@DocId='P:PdfKit.PdfView.ChangedHistoryNotification']/*" />
 		[Field ("PDFViewChangedHistoryNotification", "+PDFKit")]
 		[Notification]
 		NSString ChangedHistoryNotification { get; }
 
+		/// <include file="../docs/api/PdfKit/PdfView.xml" path="/Documentation/Docs[@DocId='P:PdfKit.PdfView.DocumentChangedNotification']/*" />
 		[Field ("PDFViewDocumentChangedNotification", "+PDFKit")]
 		[Notification]
 		NSString DocumentChangedNotification { get; }
 
+		/// <include file="../docs/api/PdfKit/PdfView.xml" path="/Documentation/Docs[@DocId='P:PdfKit.PdfView.PageChangedNotification']/*" />
 		[Field ("PDFViewPageChangedNotification", "+PDFKit")]
 		[Notification]
 		NSString PageChangedNotification { get; }
 
+		/// <include file="../docs/api/PdfKit/PdfView.xml" path="/Documentation/Docs[@DocId='P:PdfKit.PdfView.ScaleChangedNotification']/*" />
 		[Field ("PDFViewScaleChangedNotification", "+PDFKit")]
 		[Notification]
 		NSString ScaleChangedNotification { get; }
 
+		/// <include file="../docs/api/PdfKit/PdfView.xml" path="/Documentation/Docs[@DocId='P:PdfKit.PdfView.AnnotationHitNotification']/*" />
 		[Field ("PDFViewAnnotationHitNotification", "+PDFKit")]
 		[Notification (typeof (PdfViewAnnotationHitEventArgs))]
 		NSString AnnotationHitNotification { get; }
 
+		/// <include file="../docs/api/PdfKit/PdfView.xml" path="/Documentation/Docs[@DocId='P:PdfKit.PdfView.CopyPermissionNotification']/*" />
 		[Field ("PDFViewCopyPermissionNotification", "+PDFKit")]
 		[Notification]
 		NSString CopyPermissionNotification { get; }
 
+		/// <include file="../docs/api/PdfKit/PdfView.xml" path="/Documentation/Docs[@DocId='P:PdfKit.PdfView.PrintPermissionNotification']/*" />
 		[Field ("PDFViewPrintPermissionNotification", "+PDFKit")]
 		[Notification]
 		NSString PrintPermissionNotification { get; }
 
+		/// <include file="../docs/api/PdfKit/PdfView.xml" path="/Documentation/Docs[@DocId='P:PdfKit.PdfView.AnnotationWillHitNotification']/*" />
 		[Field ("PDFViewAnnotationWillHitNotification", "+PDFKit")]
 		[Notification]
 		NSString AnnotationWillHitNotification { get; }
 
+		/// <include file="../docs/api/PdfKit/PdfView.xml" path="/Documentation/Docs[@DocId='P:PdfKit.PdfView.SelectionChangedNotification']/*" />
 		[Field ("PDFViewSelectionChangedNotification", "+PDFKit")]
 		[Notification]
 		NSString SelectionChangedNotification { get; }
 
+		/// <include file="../docs/api/PdfKit/PdfView.xml" path="/Documentation/Docs[@DocId='P:PdfKit.PdfView.DisplayModeChangedNotification']/*" />
 		[Field ("PDFViewDisplayModeChangedNotification", "+PDFKit")]
 		[Notification]
 		NSString DisplayModeChangedNotification { get; }
 
+		/// <include file="../docs/api/PdfKit/PdfView.xml" path="/Documentation/Docs[@DocId='P:PdfKit.PdfView.DisplayBoxChangedNotification']/*" />
 		[Field ("PDFViewDisplayBoxChangedNotification", "+PDFKit")]
 		[Notification]
 		NSString DisplayBoxChangedNotification { get; }
 
+		/// <include file="../docs/api/PdfKit/PdfView.xml" path="/Documentation/Docs[@DocId='P:PdfKit.PdfView.VisiblePagesChangedNotification']/*" />
 		[Field ("PDFViewVisiblePagesChangedNotification", "+PDFKit")]
 		[Notification]
 		NSString VisiblePagesChangedNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]
@@ -3112,37 +3807,88 @@ namespace PdfKit {
 	[Model]
 	interface PdfViewDelegate {
 		//from docs: 'By default, the scale factor is restricted to a range between 0.1 and 10.0 inclusive.'
+		/// <param name="sender">To be added.</param>
+		/// <param name="scale">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>To be added.</summary>
+			<value>To be added.</value>
+			<remarks>To be added.</remarks>
+			""")]
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]
 		[Export ("PDFViewWillChangeScaleFactor:toScale:"), DelegateName ("PdfViewScale"), DefaultValueFromArgument ("scale")]
 		nfloat WillChangeScaleFactor (PdfView sender, nfloat scale);
 
-		[Export ("PDFViewWillClickOnLink:withURL:"), EventArgs ("PdfViewUrl")]
+		/// <param name="sender">To be added.</param>
+		///         <param name="url">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
+		[Export ("PDFViewWillClickOnLink:withURL:"), EventArgs ("PdfViewUrl", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void WillClickOnLink (PdfView sender, NSUrl url);
 
 		// from the docs: 'By default, this method uses the string, if any, associated with the
 		// 'Title' key in the view's PDFDocument attribute dictionary. If there is no such string,
 		// this method uses the last path component if the document is URL-based.
+		/// <param name="sender">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>To be added.</summary>
+			<value>To be added.</value>
+			<remarks>To be added.</remarks>
+			""")]
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]
 		[Export ("PDFViewPrintJobTitle:"), DelegateName ("PdfViewTitle"), DefaultValue ("String.Empty")]
 		string TitleOfPrintJob (PdfView sender);
 
-		[Export ("PDFViewPerformFind:"), EventArgs ("PdfView")]
+		/// <param name="sender">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
+		[Export ("PDFViewPerformFind:"), EventArgs ("PdfView", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void PerformFind (PdfView sender);
 
-		[Export ("PDFViewPerformGoToPage:"), EventArgs ("PdfView")]
+		/// <param name="sender">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
+		[Export ("PDFViewPerformGoToPage:"), EventArgs ("PdfView", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void PerformGoToPage (PdfView sender);
 
+		/// <param name="sender">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]
-		[Export ("PDFViewPerformPrint:"), EventArgs ("PdfView")]
+		[Export ("PDFViewPerformPrint:"), EventArgs ("PdfView", XmlDocs = """
+			<summary>To be added.</summary>
+			<remarks>To be added.</remarks>
+			""")]
 		void PerformPrint (PdfView sender);
 
-		[Export ("PDFViewOpenPDF:forRemoteGoToAction:"), EventArgs ("PdfViewAction")]
+		/// <param name="sender">To be added.</param>
+		///         <param name="action">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
+		[Export ("PDFViewOpenPDF:forRemoteGoToAction:"), EventArgs ("PdfViewAction", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void OpenPdf (PdfView sender, PdfActionRemoteGoTo action);
 
 		[iOS (13, 0)]

@@ -20,13 +20,20 @@ using Foundation;
 
 namespace CoreServices {
 	// FSEvents.h: typedef UInt32                          FSEventStreamCreateFlags;
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[Flags]
 	public enum FSEventStreamCreateFlags : uint {
+		/// <summary>To be added.</summary>
 		None = 0x00000000,
 		/*UseCFTypes = 0x00000001,*/
+		/// <summary>To be added.</summary>
 		NoDefer = 0x00000002,
+		/// <summary>To be added.</summary>
 		WatchRoot = 0x00000004,
+		/// <summary>To be added.</summary>
 		IgnoreSelf = 0x00000008,
+		/// <summary>To be added.</summary>
 		FileEvents = 0x00000010,
 #if NET
 		[SupportedOSPlatform ("macos")]
@@ -43,30 +50,55 @@ namespace CoreServices {
 	}
 
 	// FSEvents.h: typedef UInt32                          FSEventStreamEventFlags;
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[Flags]
 	public enum FSEventStreamEventFlags : uint {
+		/// <summary>To be added.</summary>
 		None = 0x00000000,
+		/// <summary>To be added.</summary>
 		MustScanSubDirs = 0x00000001,
+		/// <summary>To be added.</summary>
 		UserDropped = 0x00000002,
+		/// <summary>To be added.</summary>
 		KernelDropped = 0x00000004,
+		/// <summary>To be added.</summary>
 		EventIdsWrapped = 0x00000008,
+		/// <summary>To be added.</summary>
 		HistoryDone = 0x00000010,
+		/// <summary>To be added.</summary>
 		RootChanged = 0x00000020,
+		/// <summary>To be added.</summary>
 		Mount = 0x00000040,
+		/// <summary>To be added.</summary>
 		Unmount = 0x00000080,
+		/// <summary>To be added.</summary>
 		ItemCreated = 0x00000100,
+		/// <summary>To be added.</summary>
 		ItemRemoved = 0x00000200,
+		/// <summary>To be added.</summary>
 		ItemInodeMetaMod = 0x00000400,
+		/// <summary>To be added.</summary>
 		ItemRenamed = 0x00000800,
+		/// <summary>To be added.</summary>
 		ItemModified = 0x00001000,
+		/// <summary>To be added.</summary>
 		ItemFinderInfoMod = 0x00002000,
+		/// <summary>To be added.</summary>
 		ItemChangeOwner = 0x00004000,
+		/// <summary>To be added.</summary>
 		ItemXattrMod = 0x00008000,
+		/// <summary>To be added.</summary>
 		ItemIsFile = 0x00010000,
+		/// <summary>To be added.</summary>
 		ItemIsDir = 0x00020000,
+		/// <summary>To be added.</summary>
 		ItemIsSymlink = 0x00040000,
+		/// <summary>To be added.</summary>
 		OwnEvent = 0x00080000,
+		/// <summary>To be added.</summary>
 		ItemIsHardlink = 0x00100000,
+		/// <summary>To be added.</summary>
 		ItemIsLastHardlink = 0x00200000,
 #if NET
 		[SupportedOSPlatform ("macos")]
@@ -75,24 +107,44 @@ namespace CoreServices {
 	}
 
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 #endif
 	public struct FSEvent {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public ulong Id { get; internal set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? Path { get; internal set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public FSEventStreamEventFlags Flags { get; internal set; }
 		public ulong FileId { get; internal set; }
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override string ToString ()
 		{
 			return String.Format ("[FSEvent: Id={0}, Path={1}, Flags={2}, FileId={3}]", Id, Path, Flags, FileId);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public const ulong SinceNowId = UInt64.MaxValue;
 
 		[DllImport (Constants.CoreServicesLibrary)]
 		static extern IntPtr FSEventsCopyUUIDForDevice (ulong device);
 
+		/// <param name="device">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static Guid GetUuidForDevice (ulong device)
 		{
 			if (device <= 0) {
@@ -110,6 +162,9 @@ namespace CoreServices {
 		[DllImport (Constants.CoreServicesLibrary)]
 		static extern ulong FSEventsGetCurrentEventId ();
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public static ulong CurrentEventId {
 			get { return FSEventsGetCurrentEventId (); }
 		}
@@ -118,6 +173,11 @@ namespace CoreServices {
 		static extern ulong FSEventsGetLastEventIdForDeviceBeforeTime (
 			ulong device, double timeInSecondsSinceEpoch);
 
+		/// <param name="device">To be added.</param>
+		///         <param name="timeInSecondsSinceEpoch">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static ulong GetLastEventIdForDeviceBeforeTime (ulong device, double timeInSecondsSinceEpoch)
 		{
 			return FSEventsGetLastEventIdForDeviceBeforeTime (device, timeInSecondsSinceEpoch);
@@ -126,6 +186,11 @@ namespace CoreServices {
 		[DllImport (Constants.CoreServicesLibrary)]
 		static extern byte FSEventsPurgeEventsForDeviceUpToEventId (ulong device, ulong eventId);
 
+		/// <param name="device">To be added.</param>
+		///         <param name="eventId">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static bool PurgeEventsForDeviceUpToEventId (ulong device, ulong eventId)
 		{
 			return FSEventsPurgeEventsForDeviceUpToEventId (device, eventId) != 0;
@@ -144,12 +209,21 @@ namespace CoreServices {
 		IntPtr CopyDescription; /* CFAllocatorCopyDescriptionCallBack __nullable */
 	}
 
+	/// <param name="sender">To be added.</param>
+	///     <param name="args">To be added.</param>
+	///     <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public delegate void FSEventStreamEventsHandler (object sender, FSEventStreamEventsArgs args);
 
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 #endif
 	public sealed class FSEventStreamEventsArgs : EventArgs {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public FSEvent [] Events { get; private set; }
 
 		internal FSEventStreamEventsArgs (FSEvent [] events)
@@ -237,6 +311,8 @@ namespace CoreServices {
 	}
 
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 #endif
 	public class FSEventStream : NativeObject {
@@ -327,6 +403,7 @@ namespace CoreServices {
 						&context,
 						options.DeviceToWatch.Value,
 						pathsToWatch.Handle, sinceWhenId, latency, flags);
+					GC.KeepAlive (pathsToWatch);
 				} else {
 					handle = FSEventStreamCreate (
 						allocator,
@@ -337,12 +414,20 @@ namespace CoreServices {
 #endif
 						&context,
 						pathsToWatch.Handle, sinceWhenId, latency, flags);
+					GC.KeepAlive (pathsToWatch);
 				}
 			}
 
 			InitializeHandle (handle);
 		}
 
+		/// <param name="allocator">To be added.</param>
+		///         <param name="pathsToWatch">To be added.</param>
+		///         <param name="sinceWhenId">To be added.</param>
+		///         <param name="latency">To be added.</param>
+		///         <param name="flags">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public FSEventStream (CFAllocator? allocator, NSArray pathsToWatch,
 			ulong sinceWhenId, TimeSpan latency, FSEventStreamCreateFlags flags)
 			: this (new () {
@@ -355,6 +440,11 @@ namespace CoreServices {
 		{
 		}
 
+		/// <param name="pathsToWatch">To be added.</param>
+		///         <param name="latency">To be added.</param>
+		///         <param name="flags">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public FSEventStream (string [] pathsToWatch, TimeSpan latency, FSEventStreamCreateFlags flags)
 			: this (new () {
 				PathsToWatch = pathsToWatch ?? throw new ArgumentNullException (nameof (pathsToWatch)),
@@ -438,6 +528,9 @@ namespace CoreServices {
 
 		public event FSEventStreamEventsHandler? Events;
 
+		/// <param name="events">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected virtual void OnEvents (FSEvent [] events)
 		{
 			var handler = Events;
@@ -449,6 +542,9 @@ namespace CoreServices {
 		[DllImport (Constants.CoreServicesLibrary)]
 		static extern IntPtr FSEventStreamCopyDescription (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? Description {
 			get {
 				if (Handle == IntPtr.Zero) {
@@ -459,6 +555,9 @@ namespace CoreServices {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override string? ToString ()
 		{
 			return Description;
@@ -467,6 +566,8 @@ namespace CoreServices {
 		[DllImport (Constants.CoreServicesLibrary)]
 		static extern void FSEventStreamShow (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void Show ()
 		{
 			FSEventStreamShow (GetCheckedHandle ());
@@ -475,6 +576,9 @@ namespace CoreServices {
 		[DllImport (Constants.CoreServicesLibrary)]
 		static extern byte FSEventStreamStart (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool Start ()
 		{
 			return FSEventStreamStart (GetCheckedHandle ()) != 0;
@@ -483,6 +587,8 @@ namespace CoreServices {
 		[DllImport (Constants.CoreServicesLibrary)]
 		static extern void FSEventStreamStop (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void Stop ()
 		{
 			FSEventStreamStop (GetCheckedHandle ());
@@ -493,6 +599,10 @@ namespace CoreServices {
 			IntPtr runLoop, IntPtr runLoopMode);
 
 #if NET
+		/// <param name="runLoop">To be added.</param>
+		///         <param name="runLoopMode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos13.0", "Use 'SetDispatchQueue' instead.")]
 #else
@@ -501,18 +611,30 @@ namespace CoreServices {
 		public void ScheduleWithRunLoop (CFRunLoop runLoop, NSString runLoopMode)
 		{
 			FSEventStreamScheduleWithRunLoop (GetCheckedHandle (), runLoop.Handle, runLoopMode.Handle);
+			GC.KeepAlive (runLoop);
+			GC.KeepAlive (runLoopMode);
 		}
 
+		/// <param name="runLoop">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void ScheduleWithRunLoop (CFRunLoop runLoop)
 		{
 			ScheduleWithRunLoop (runLoop, CFRunLoop.ModeDefault);
 		}
 
+		/// <param name="runLoop">To be added.</param>
+		///         <param name="runLoopMode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void ScheduleWithRunLoop (NSRunLoop runLoop, NSString runLoopMode)
 		{
 			ScheduleWithRunLoop (runLoop.GetCFRunLoop (), runLoopMode);
 		}
 
+		/// <param name="runLoop">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void ScheduleWithRunLoop (NSRunLoop runLoop)
 		{
 			ScheduleWithRunLoop (runLoop.GetCFRunLoop (), CFRunLoop.ModeDefault);
@@ -531,6 +653,8 @@ namespace CoreServices {
 		public void UnscheduleFromRunLoop (CFRunLoop runLoop, NSString runLoopMode)
 		{
 			FSEventStreamScheduleWithRunLoop (GetCheckedHandle (), runLoop.Handle, runLoopMode.Handle);
+			GC.KeepAlive (runLoop);
+			GC.KeepAlive (runLoopMode);
 		}
 
 		public void UnscheduleFromRunLoop (CFRunLoop runLoop)
@@ -552,7 +676,10 @@ namespace CoreServices {
 		static extern void FSEventStreamSetDispatchQueue (IntPtr handle, IntPtr dispatchQueue);
 
 		public void SetDispatchQueue (DispatchQueue? dispatchQueue)
-			=> FSEventStreamSetDispatchQueue (GetCheckedHandle (), dispatchQueue.GetHandle ());
+		{
+			FSEventStreamSetDispatchQueue (GetCheckedHandle (), dispatchQueue.GetHandle ());
+			GC.KeepAlive (dispatchQueue);
+		}
 
 		[DllImport (Constants.CoreServicesLibrary)]
 		static extern ulong FSEventStreamGetDeviceBeingWatched (IntPtr handle);
@@ -562,6 +689,9 @@ namespace CoreServices {
 		[DllImport (Constants.CoreServicesLibrary)]
 		static extern IntPtr FSEventStreamCopyPathsBeingWatched (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? []? PathsBeingWatched {
 			get {
 				var cfarray = FSEventStreamCopyPathsBeingWatched (GetCheckedHandle ());
@@ -574,6 +704,9 @@ namespace CoreServices {
 		[DllImport (Constants.CoreServicesLibrary)]
 		static extern uint FSEventStreamFlushAsync (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public uint FlushAsync ()
 		{
 			return FSEventStreamFlushAsync (GetCheckedHandle ());
@@ -582,6 +715,8 @@ namespace CoreServices {
 		[DllImport (Constants.CoreServicesLibrary)]
 		static extern void FSEventStreamFlushSync (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void FlushSync ()
 		{
 			FSEventStreamFlushSync (GetCheckedHandle ());
@@ -590,6 +725,8 @@ namespace CoreServices {
 		[DllImport (Constants.CoreServicesLibrary)]
 		static extern void FSEventStreamInvalidate (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void Invalidate ()
 		{
 			FSEventStreamInvalidate (GetCheckedHandle ());
@@ -598,6 +735,9 @@ namespace CoreServices {
 		[DllImport (Constants.CoreServicesLibrary)]
 		static extern ulong FSEventStreamGetLatestEventId (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public ulong LatestEventId {
 			get {
 				return FSEventStreamGetLatestEventId (GetCheckedHandle ());

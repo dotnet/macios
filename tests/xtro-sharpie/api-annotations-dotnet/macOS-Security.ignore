@@ -1,4 +1,5 @@
 ## Not declared in header for macOS unlike iOS but in Security.framework anyway (via nm)
+## These P/Invokes have been removed in XAMCORE_5_0
 !unknown-pinvoke! SecKeyDecrypt bound
 !unknown-pinvoke! SecKeyEncrypt bound
 !unknown-pinvoke! SecKeyRawSign bound

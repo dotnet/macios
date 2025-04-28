@@ -25,11 +25,8 @@ using Registrar;
 using Xamarin.Bundler;
 #endif
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace ObjCRuntime {
+	/// <include file="../../docs/api/ObjCRuntime/Class.xml" path="/Documentation/Docs[@DocId='T:ObjCRuntime.Class']/*" />
 	public partial class Class : INativeObject
 #if !COREBUILD
 	, IEquatable<Class>
@@ -84,6 +81,11 @@ namespace ObjCRuntime {
 			}
 		}
 
+		/// <param name="name">The name of the Objective-C class.</param>
+		///         <summary>Creates a class from a name.</summary>
+		///         <remarks>
+		///           <para>Xamarin.iOS will look up the class in the Objective-C runtime and return the instance or throw an ArgumentException if the class could not be found.</para>
+		///         </remarks>
 		public Class (string name)
 		{
 			this.handle = objc_getClass (name);
@@ -92,6 +94,11 @@ namespace ObjCRuntime {
 				ObjCRuntime.ThrowHelper.ThrowArgumentException (nameof (name), $"Unknown class {name}");
 		}
 
+		/// <param name="type">A managed type.</param>
+		///         <summary>Creates a class from the specified Type.</summary>
+		///         <remarks>
+		///           <para>This will trigger the class registration with the Xamarin.iOS runtime.</para>
+		///         </remarks>
 		public Class (Type type)
 		{
 			this.handle = GetHandle (type);
@@ -103,11 +110,7 @@ namespace ObjCRuntime {
 		}
 
 		[Preserve (Conditional = true)]
-#if NET
 		internal Class (NativeHandle handle, bool owns)
-#else
-		public Class (NativeHandle handle, bool owns)
-#endif
 		{
 			// Class(es) can't be freed, so we ignore the 'owns' parameter.
 			this.handle = handle;
@@ -141,6 +144,11 @@ namespace ObjCRuntime {
 			}
 		}
 
+		/// <param name="name">The name of the class to lookup.</param>
+		///         <summary>Returns the unmanaged handle to the Objective-C Class.</summary>
+		///         <returns>The unmanaged handle for the specified Objective-C class.</returns>
+		///         <remarks>
+		///         </remarks>
 		public static NativeHandle GetHandle (string name)
 		{
 			return objc_getClass (name);
@@ -169,11 +177,31 @@ namespace ObjCRuntime {
 		// class (it will be faster than GetHandle, but it will
 		// not compile unless the class in question actually exists
 		// as an ObjectiveC class in the binary).
+		/// <param name="name">Type for an NSObject-derived class</param>
+		///         <summary>Gets the Objective-C handle to the given type.</summary>
+		///         <returns>The Objective-C handle to the object.</returns>
+		///         <remarks>
+		///           <para>
+		///       This method looks up the Objective-C handle for the specified type. This method is special-cased by the AOT compiler to become an inlined, static reference to the type. This is significantly faster that calling <see cref="M:ObjCRuntime.Selector.GetHandle(System.String)" />, but it also means that the class must exist in the executable (or in a framework the executable is linked with).
+		///     </para>
+		///         </remarks>
 		public static NativeHandle GetHandleIntrinsic (string name)
 		{
 			return objc_getClass (name);
 		}
 
+		/// <param name="type">Type for an NSObject-derived class</param>
+		///         <summary>Gets the Objective-C handle of the given type.</summary>
+		///         <returns>The Objective-C handle to the object.</returns>
+		///         <remarks>
+		///           <para>
+		/// 	    This method looks up the Objective-C handle for the specified type, or registers the specified type with the Objective-C runtime if it was not previously registered.
+		/// 	  </para>
+		///           <para>
+		/// 	    The class must be derived from NSObject.   If the class is flagged with the [Register] attribute, the name specified in this Register attribute is the name that will be used for looking up or register the class.
+		///
+		/// 	  </para>
+		///         </remarks>
 		public static NativeHandle GetHandle (Type type)
 		{
 			return GetClassHandle (type, true, out _);
@@ -226,6 +254,11 @@ namespace ObjCRuntime {
 			return Messaging.IntPtr_objc_msgSend (obj, Selector.GetHandle (Selector.Class));
 		}
 
+		/// <param name="class">The Objective-C class.</param>
+		///         <summary>This method looks up the managed type for a given Objective-C class.</summary>
+		///         <returns>The managed type for the specified Objective-C class.</returns>
+		///         <remarks>
+		///         </remarks>
 		public static Type? Lookup (Class? @class)
 		{
 			if (@class is null)
@@ -300,7 +333,6 @@ namespace ObjCRuntime {
 			int type_token;
 
 			if (Runtime.IsManagedStaticRegistrar) {
-#if NET
 				mod_token = unchecked((int) Runtime.INVALID_TOKEN_REF);
 				type_token = unchecked((int) RegistrarHelper.LookupRegisteredTypeId (type));
 
@@ -310,9 +342,6 @@ namespace ObjCRuntime {
 
 				if (type_token == -1)
 					return IntPtr.Zero;
-#else
-				throw ErrorHelper.CreateError (99, Xamarin.Bundler.Errors.MX0099 /* Internal error */, "The managed static registrar is only available for .NET");
-#endif // NET
 			} else {
 				mod_token = type.Module.MetadataToken;
 				type_token = type.MetadataToken & ~0x02000000 /* TokenType.TypeDef */;
@@ -534,9 +563,6 @@ namespace ObjCRuntime {
 
 		static MemberInfo? ResolveToken (Assembly assembly, Module? module, uint token)
 		{
-#if !NET
-			return ResolveTokenNonManagedStatic (assembly, module, token);
-#else
 			if (!Runtime.IsManagedStaticRegistrar)
 				return ResolveTokenNonManagedStatic (assembly, module, token);
 
@@ -554,25 +580,20 @@ namespace ObjCRuntime {
 			default:
 				throw ErrorHelper.CreateError (8021, $"Unknown implicit token type: 0x{token_type:X}.");
 			}
-#endif // !NET
 		}
 
-#if NET
 		// This method should never be called when using the managed static registrar, so assert that never happens by throwing an exception in that case.
 		// This method doesn't necessarily work with NativeAOT, but this is covered by the exception, because the managed static registrar is required for NativeAOT.
 		//
 		// IL2026: Using member 'System.Reflection.Module.ResolveMethod(Int32)' which has 'RequiresUnreferencedCodeAttribute' can break functionality when trimming application code. Trimming changes metadata tokens.
 		// IL2026: Using member 'System.Reflection.Module.ResolveType(Int32)' which has 'RequiresUnreferencedCodeAttribute' can break functionality when trimming application code. Trimming changes metadata tokens.
 		[UnconditionalSuppressMessage ("", "IL2026", Justification = "The APIs this method tries to access are marked by other means, so this is linker-safe.")]
-#endif
 		static MemberInfo? ResolveTokenNonManagedStatic (Assembly assembly, Module? module, uint token)
 		{
-#if NET
 			// This method should never be called when using the managed static registrar, so assert that never happens by throwing an exception in that case.
 			// This also takes care of NativeAOT, because the managed static registrar is required when using NativeAOT.
 			if (Runtime.IsManagedStaticRegistrar)
 				throw new System.Diagnostics.UnreachableException ();
-#endif
 
 			// Finally resolve the token.
 			var token_type = token & 0xFF000000;
@@ -706,15 +727,11 @@ namespace ObjCRuntime {
 			// First check if there's a full token reference to this type
 			uint token;
 			if (Runtime.IsManagedStaticRegistrar) {
-#if NET
 				var id = RegistrarHelper.LookupRegisteredTypeId (type);
 				token = GetFullTokenReference (asm_name, unchecked((int) Runtime.INVALID_TOKEN_REF), 0x2000000 /* TokenType.TypeDef */ | unchecked((int) id));
 #if LOG_TYPELOAD
 				Runtime.NSLog ($"GetTokenReference ({type}, {throw_exception}) id: {id} token: 0x{token.ToString ("x")}");
 #endif
-#else
-				throw ErrorHelper.CreateError (99, Xamarin.Bundler.Errors.MX0099 /* Internal error */, "The managed static registrar is only available for .NET");
-#endif // NET
 			} else {
 				token = GetFullTokenReference (asm_name, type.Module.MetadataToken, type.MetadataToken);
 			}

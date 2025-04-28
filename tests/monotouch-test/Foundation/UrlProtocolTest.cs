@@ -66,7 +66,6 @@ namespace MonoTouchFixtures.Foundation {
 		}
 #endif
 
-#if !__WATCHOS__
 		[Test]
 		public void RegistrarTest ()
 		{
@@ -194,6 +193,5 @@ namespace MonoTouchFixtures.Foundation {
 				}
 			}
 		}
-#endif // !__WATCHOS__
 	}
 }

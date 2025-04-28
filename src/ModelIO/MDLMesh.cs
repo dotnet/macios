@@ -29,6 +29,8 @@ namespace ModelIO {
 
 	partial class MDLMesh {
 
+		/// <summary>To be added.</summary>
+		///     <remarks>To be added.</remarks>
 		public enum MDLMeshVectorType {
 			/// <summary>To be added.</summary>
 			Dimensions,
@@ -91,6 +93,13 @@ namespace ModelIO {
 			return CreateBox (dimensions, segments, geometryType, inwardNormals, allocator, MDLMeshVectorType.Dimensions);
 		}
 
+		/// <summary>Creates a right rectangular box from the <paramref name="vector" />, with the specified number of segments and geometry kind.</summary>
+		/// <param name="vector">To be added.</param>
+		/// <param name="segments">The number of divisions to create in each dimension.</param>
+		/// <param name="geometryType">Whether to create triangles, quadrilaterals, or lines.</param>
+		/// <param name="inwardNormals">Whether to generate inward-pointing normals.</param>
+		/// <param name="allocator">The allocator to use instead of the default, internal allocator.</param>
+		/// <param name="type">The mesh vector type.</param>
 #if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
@@ -132,6 +141,19 @@ namespace ModelIO {
 		}
 
 #if NET
+		/// <param name="extent">The extent of the cylinder.</param>
+		/// <param name="segments">The number of divisions to create in each dimension.</param>
+		/// <param name="inwardNormals">Whether to generate inward-pointing normals.</param>
+		/// <param name="topCap">Whether to put a top cap on the cylinder.</param>
+		/// <param name="bottomCap">Whether to put a bottom cap on the cylinder.</param>
+		/// <param name="geometryType">Whether to create triangles, quadrilaterals, or lines.</param>
+		/// <param name="allocator">
+		///           <para>The allocator to use instead of the default, internal allocator.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Creates a cylinder from the specified parameters.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
@@ -165,6 +187,16 @@ namespace ModelIO {
 		}
 
 #if NET
+		/// <param name="extent">The extent of the plane.</param>
+		/// <param name="segments">The number of divisions to create in each dimension.</param>
+		/// <param name="geometryType">Whether to create triangles, quadrilaterals, or lines.</param>
+		/// <param name="allocator">
+		///           <para>The allocator to use instead of the default, internal allocator.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Creates a planar region centered at the origin, aligned with the X-Z plane, with the specified dimensions.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
@@ -176,6 +208,16 @@ namespace ModelIO {
 		}
 
 #if NET
+		/// <param name="extent">The extents of the icosahedron.</param>
+		/// <param name="inwardNormals">Whether to generate inward-pointing normals.</param>
+		/// <param name="geometryType">Whether to create triangles, quadrilaterals, or lines.</param>
+		/// <param name="allocator">
+		///           <para>The allocator to use instead of the default, internal allocator.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Creates a regular icosahedron from the specified parameters.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
@@ -186,6 +228,16 @@ namespace ModelIO {
 			return new MDLMesh (extent, inwardNormals, geometryType, allocator);
 		}
 
+		/// <param name="mesh">To be added.</param>
+		///         <param name="submeshIndex">To be added.</param>
+		///         <param name="subdivisionLevels">To be added.</param>
+		///         <param name="allocator">
+		///           <para>The allocator to use instead of the default, internal allocator.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static MDLMesh CreateSubdividedMesh (MDLMesh mesh, int submeshIndex, uint subdivisionLevels, IMDLMeshBufferAllocator allocator)
 		{
 			return new MDLMesh (mesh, submeshIndex, subdivisionLevels, allocator);

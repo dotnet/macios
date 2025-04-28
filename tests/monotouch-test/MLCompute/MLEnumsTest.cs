@@ -1,5 +1,3 @@
-#if !__WATCHOS__
-
 using System;
 
 using Foundation;
@@ -37,5 +35,3 @@ namespace MonoTouchFixtures.MLCompute {
 		}
 	}
 }
-
-#endif // !__WATCHOS__

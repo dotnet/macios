@@ -3,6 +3,7 @@
 
 using System.Collections;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.Macios.Generator;
 using Microsoft.Macios.Transformer.Attributes;
 using Xamarin.Tests;
 using Xamarin.Utils;

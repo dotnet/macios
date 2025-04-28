@@ -43,3 +43,5 @@
 !missing-type! GCControllerInputState not bound
 !missing-type! GCControllerLiveInput not bound
 !missing-type! GCPhysicalInputElementCollection not bound
+!missing-null-allowed! 'GameController.GCController GameController.GCExtendedGamepad::get_Controller()' is missing an [NullAllowed] on return type
+!missing-null-allowed! 'GameController.GCController GameController.GCMicroGamepad::get_Controller()' is missing an [NullAllowed] on return type

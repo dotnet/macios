@@ -32,8 +32,6 @@ namespace Xamarin.Bundler {
 					return "Microsoft.iOS";
 				case ApplePlatform.TVOS:
 					return "Microsoft.tvOS";
-				case ApplePlatform.WatchOS:
-					return "Microsoft.watchOS";
 				case ApplePlatform.MacOSX:
 					return "Microsoft.macOS";
 				case ApplePlatform.MacCatalyst:

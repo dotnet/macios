@@ -1,4 +1,4 @@
-#if !__WATCHOS__ && !__TVOS__ && !MONOMAC
+#if !__TVOS__ && !MONOMAC
 
 using System;
 using Foundation;

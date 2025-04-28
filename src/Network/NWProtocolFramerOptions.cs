@@ -18,26 +18,13 @@ using CoreFoundation;
 using Security;
 using IntPtr = System.IntPtr;
 
-#if !NET
-using OS_nw_protocol_options = System.IntPtr;
-using NativeHandle = System.IntPtr;
-#else
 using OS_nw_protocol_options = ObjCRuntime.NativeHandle;
-#endif
 
 namespace Network {
-
-#if NET
 	[SupportedOSPlatform ("tvos16.0")]
 	[SupportedOSPlatform ("macos13.0")]
 	[SupportedOSPlatform ("ios16.0")]
 	[SupportedOSPlatform ("maccatalyst16.0")]
-#else
-	[TV (16, 0)]
-	[Mac (13, 0)]
-	[iOS (16, 0)]
-	[MacCatalyst (16, 0)]
-#endif
 	public class NSProtocolFramerOptions : NWProtocolOptions {
 
 		[Preserve (Conditional = true)]
@@ -53,7 +40,10 @@ namespace Network {
 		}
 
 		public void SetValue<T> (string key, T? value) where T : NSObject
-			=> nw_framer_options_set_object_value (GetCheckedHandle (), key, value.GetHandle ());
+		{
+			nw_framer_options_set_object_value (GetCheckedHandle (), key, value.GetHandle ());
+			GC.KeepAlive (value);
+		}
 
 		[DllImport (Constants.NetworkLibrary)]
 		static extern NativeHandle nw_framer_options_copy_object_value (OS_nw_protocol_options options, IntPtr key);

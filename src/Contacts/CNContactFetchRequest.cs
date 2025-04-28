@@ -13,11 +13,17 @@ using ObjCRuntime;
 namespace Contacts {
 	public partial class CNContactFetchRequest {
 
+		/// <param name="keysToFetch">To be added.</param>
+		///         <summary>Creates and returns a new <see cref="T:Contacts.CNContactFetchRequest" /> that retrieves data with the specified <paramref name="keysToFetch" />.</summary>
+		///         <remarks>To be added.</remarks>
 		public CNContactFetchRequest (params ICNKeyDescriptor [] keysToFetch)
 			: this (NSArray.FromNativeObjects (keysToFetch))
 		{
 		}
 
+		/// <param name="keysToFetch">To be added.</param>
+		///         <summary>Creates a new <see cref="T:Contacts.CNContactFetchRequest" /> that retrieves data with the specified <paramref name="keysToFetch" />.</summary>
+		///         <remarks>To be added.</remarks>
 		public CNContactFetchRequest (params NSString [] keysToFetch)
 			: this (NSArray.FromNSObjects (keysToFetch))
 		{
@@ -27,6 +33,9 @@ namespace Contacts {
 		// but a ctor using this (ICNKeyDescriptor) would not accept NSString
 		// so if you want to mix both NSString and (NSObjectProtocol, NSSecureCoding, NSCopying) you need to use
 		// this constructor, which will manually verify the requirements (at runtime, not a compile time)
+		/// <param name="keysToFetch">To be added.</param>
+		///         <summary>Creates a new <see cref="T:Contacts.CNContactFetchRequest" /> that retrieves data with the specified <paramref name="keysToFetch" />.</summary>
+		///         <remarks>To be added.</remarks>
 		public CNContactFetchRequest (params INativeObject [] keysToFetch)
 			: this (Validate (keysToFetch))
 		{

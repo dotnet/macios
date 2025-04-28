@@ -8,6 +8,12 @@ using ModelIO;
 namespace GLKit {
 
 	public partial class GLKMesh {
+		/// <param name="asset">To be added.</param>
+		///         <param name="sourceMeshes">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static GLKMesh []? FromAsset (MDLAsset asset, out MDLMesh [] sourceMeshes, out NSError error)
 		{
 			NSArray aret;

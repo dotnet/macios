@@ -18,8 +18,16 @@ using Foundation;
 
 namespace UIKit {
 
+	/// <summary>Contains methods for working with drag-and-drop sessions, including a default implementation of <see cref="M:UIKit.IUIDropSession.LoadObjects(ObjCRuntime.Class,System.Action{Foundation.INSItemProviderReading[]})" />.</summary>
+	///     <remarks>To be added.</remarks>
 	public static class UIDragDropSessionExtensions {
 
+		/// <typeparam name="T">To be added.</typeparam>
+		///         <param name="session">To be added.</param>
+		///         <param name="completion">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSProgress LoadObjects<T> (this IUIDropSession session, Action<T []> completion) where T : NSObject, INSItemProviderReading
 		{
 			return session.LoadObjects (new Class (typeof (T)), (v) => {
@@ -36,6 +44,11 @@ namespace UIKit {
 			});
 		}
 
+		/// <param name="session">The session to query.</param>
+		///         <param name="type">The type of object to query about.</param>
+		///         <summary>Returns <see langword="true" /> if the specified <paramref name="session" /> can instantiate items of the specified <paramref name="type" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static bool CanLoadObjects (this IUIDragDropSession session, Type type)
 		{
 			return session.CanLoadObjects (new Class (type));

@@ -87,7 +87,6 @@ namespace Xamarin.MacDev.Tasks {
 				switch (Platform) {
 				case ApplePlatform.iOS:
 				case ApplePlatform.TVOS:
-				case ApplePlatform.WatchOS:
 					return "application-identifier";
 				case ApplePlatform.MacOSX:
 				case ApplePlatform.MacCatalyst:
@@ -113,7 +112,6 @@ namespace Xamarin.MacDev.Tasks {
 				switch (Platform) {
 				case ApplePlatform.iOS:
 				case ApplePlatform.TVOS:
-				case ApplePlatform.WatchOS:
 					return iOSAllowedProvisioningKeys;
 				case ApplePlatform.MacOSX:
 				case ApplePlatform.MacCatalyst:
@@ -129,7 +127,6 @@ namespace Xamarin.MacDev.Tasks {
 				switch (Platform) {
 				case ApplePlatform.iOS:
 				case ApplePlatform.TVOS:
-				case ApplePlatform.WatchOS:
 					return AppBundleDir;
 				case ApplePlatform.MacOSX:
 				case ApplePlatform.MacCatalyst:
@@ -467,9 +464,7 @@ namespace Xamarin.MacDev.Tasks {
 				platform = MobileProvisionPlatform.tvOS;
 				break;
 			case "iPhoneSimulator":
-			case "WatchSimulator":
 			case "iPhoneOS":
-			case "WatchOS":
 				platform = MobileProvisionPlatform.iOS;
 				break;
 			case "MacOSX":

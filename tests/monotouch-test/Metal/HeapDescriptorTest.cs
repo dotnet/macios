@@ -1,5 +1,3 @@
-#if !__WATCHOS__
-
 using System;
 
 using Foundation;
@@ -140,5 +138,3 @@ namespace MonoTouchFixtures.Metal {
 		}
 	}
 }
-
-#endif // !__WATCHOS__

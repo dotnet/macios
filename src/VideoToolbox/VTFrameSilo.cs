@@ -25,6 +25,8 @@ using NativeHandle = System.IntPtr;
 namespace VideoToolbox {
 
 #if NET
+	/// <summary>Sample buffers storage object, used in conjuction of a multi pass compression session</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("tvos")]
@@ -52,6 +54,11 @@ namespace VideoToolbox {
 			/* CFDictionaryRef */ IntPtr options, /* Reserved, always null */
 			/* VTFrameSiloRef */ IntPtr* siloOut);
 
+		/// <param name="fileUrl">To be added.</param>
+		///         <param name="timeRange">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static VTFrameSilo? Create (NSUrl? fileUrl = null, CMTimeRange? timeRange = null)
 		{
 			VTStatus status;
@@ -63,6 +70,7 @@ namespace VideoToolbox {
 				timeRange ?? CMTimeRange.InvalidRange,
 				IntPtr.Zero,
 				&ret);
+				GC.KeepAlive (fileUrl);
 			}
 
 			if (status != VTStatus.Ok)
@@ -76,12 +84,18 @@ namespace VideoToolbox {
 			/* VTFrameSiloRef */ IntPtr silo,
 			/* CMSampleBufferRef */ IntPtr sampleBuffer);
 
+		/// <param name="sampleBuffer">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public VTStatus AddSampleBuffer (CMSampleBuffer sampleBuffer)
 		{
 			if (sampleBuffer is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (sampleBuffer));
 
-			return VTFrameSiloAddSampleBuffer (Handle, sampleBuffer.Handle);
+			VTStatus status = VTFrameSiloAddSampleBuffer (Handle, sampleBuffer.Handle);
+			GC.KeepAlive (sampleBuffer);
+			return status;
 		}
 
 		[DllImport (Constants.VideoToolboxLibrary)]
@@ -90,6 +104,10 @@ namespace VideoToolbox {
 			/* CMItemCount */ nint timeRangeCount,
 			/* const CMTimeRange * */ IntPtr timeRangeArray);
 
+		/// <param name="ranges">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public unsafe VTStatus SetTimeRangesForNextPass (CMTimeRange [] ranges)
 		{
 			if (ranges is null)
@@ -108,6 +126,10 @@ namespace VideoToolbox {
 			/* VTFrameSiloRef */ IntPtr silo,
 			/* Float32* */ float* progressOut);
 
+		/// <param name="progress">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public VTStatus GetProgressOfCurrentPass (out float progress)
 		{
 			progress = default;
@@ -150,6 +172,11 @@ namespace VideoToolbox {
 			/* */ EachSampleBufferCallback callback);
 #endif
 
+		/// <param name="callback">To be added.</param>
+		///         <param name="range">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public unsafe VTStatus ForEach (Func<CMSampleBuffer, VTStatus> callback, CMTimeRange? range = null)
 		{
 			var callbackHandle = GCHandle.Alloc (callback);

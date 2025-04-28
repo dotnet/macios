@@ -1,4 +1,4 @@
-#if !__WATCHOS__ && !__TVOS__
+#if !__TVOS__
 
 using System;
 using Foundation;

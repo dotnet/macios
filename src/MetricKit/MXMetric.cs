@@ -14,7 +14,7 @@ namespace MetricKit {
 
 		public virtual NSDictionary DictionaryRepresentation {
 			get {
-				if (SystemVersion.CheckiOS (14, 0))
+				if (SystemVersion.IsAtLeastXcode12)
 					return _DictionaryRepresentation14;
 				else
 					return _DictionaryRepresentation13;

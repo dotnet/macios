@@ -14,48 +14,17 @@ using OS_nw_protocol_metadata = System.IntPtr;
 using OS_nw_protocol_definition = System.IntPtr;
 using OS_nw_protocol_options = System.IntPtr;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 #nullable enable
 
 namespace Network {
-
-#if NET
-	// [SupportedOSPlatform ("tvos14.0")]  -  Not valid on Delegates
-	// [SupportedOSPlatform ("macos")]
-	// [SupportedOSPlatform ("ios14.0")]
-	// [SupportedOSPlatform ("maccatalyst")]
-#else
-	[TV (14, 0)]
-	[iOS (14, 0)]
-	[MacCatalyst (14, 0)]
-#endif
 	public delegate void NWConnectionGroupReceiveDelegate (DispatchData content, NWContentContext context, bool isCompleted);
 
-#if NET
-	// [SupportedOSPlatform ("tvos14.0")]  -  Not valid on Delegates
-	// [SupportedOSPlatform ("macos")]
-	// [SupportedOSPlatform ("ios14.0")]
-	// [SupportedOSPlatform ("maccatalyst")]
-#else
-	[TV (14, 0)]
-	[iOS (14, 0)]
-	[MacCatalyst (14, 0)]
-#endif
 	public delegate void NWConnectionGroupStateChangedDelegate (NWConnectionGroupState state, NWError? error);
 
-#if NET
 	[SupportedOSPlatform ("tvos14.0")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios14.0")]
 	[SupportedOSPlatform ("maccatalyst")]
-#else
-	[TV (14, 0)]
-	[iOS (14, 0)]
-	[MacCatalyst (14, 0)]
-#endif
 	public class NWConnectionGroup : NativeObject {
 		[Preserve (Conditional = true)]
 		protected internal NWConnectionGroup (NativeHandle handle, bool owns) : base (handle, owns) { }
@@ -71,6 +40,8 @@ namespace Network {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (parameters));
 
 			InitializeHandle (nw_connection_group_create (groupDescriptor.GetCheckedHandle (), parameters.GetCheckedHandle ()));
+			GC.KeepAlive (groupDescriptor);
+			GC.KeepAlive (parameters);
 		}
 
 		[DllImport (Constants.NetworkLibrary)]
@@ -116,6 +87,7 @@ namespace Network {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (queue));
 
 			nw_connection_group_set_queue (GetCheckedHandle (), queue.GetCheckedHandle ());
+			GC.KeepAlive (queue);
 		}
 
 		// can return null
@@ -127,6 +99,7 @@ namespace Network {
 			if (context is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (context));
 			var ptr = nw_connection_group_copy_local_endpoint_for_message (GetCheckedHandle (), context.GetCheckedHandle ());
+			GC.KeepAlive (context);
 			return ptr == IntPtr.Zero ? null : new NWEndpoint (ptr, owns: true);
 		}
 
@@ -139,6 +112,7 @@ namespace Network {
 			if (context is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (context));
 			var ptr = nw_connection_group_copy_path_for_message (GetCheckedHandle (), context.GetCheckedHandle ());
+			GC.KeepAlive (context);
 			return ptr == IntPtr.Zero ? null : new NWPath (ptr, owns: true);
 		}
 
@@ -151,6 +125,7 @@ namespace Network {
 			if (context is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (context));
 			var ptr = nw_connection_group_copy_remote_endpoint_for_message (GetCheckedHandle (), context.GetCheckedHandle ());
+			GC.KeepAlive (context);
 			return ptr == IntPtr.Zero ? null : new NWEndpoint (ptr, owns: true);
 		}
 
@@ -163,6 +138,7 @@ namespace Network {
 			if (context is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (context));
 			var ptr = nw_connection_group_extract_connection_for_message (GetCheckedHandle (), context.GetCheckedHandle ());
+			GC.KeepAlive (context);
 			return ptr == IntPtr.Zero ? null : new NWConnection (ptr, owns: true);
 		}
 
@@ -177,19 +153,15 @@ namespace Network {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (outboundMessage));
 
 			nw_connection_group_reply (GetCheckedHandle (), inboundMessage.GetCheckedHandle (), outboundMessage.GetCheckedHandle (), content.GetHandle ());
+			GC.KeepAlive (inboundMessage);
+			GC.KeepAlive (outboundMessage);
+			GC.KeepAlive (content);
 		}
 
 		[DllImport (Constants.NetworkLibrary)]
 		unsafe static extern void nw_connection_group_send_message (OS_nw_connection_group group, /* [NullAllowed] DispatchData */ IntPtr content, /* [NullAllowed] */ OS_nw_endpoint endpoint, OS_nw_content_context context, BlockLiteral* handler);
 
-#if !NET
-		delegate void nw_connection_group_send_completion_t (IntPtr block, IntPtr error);
-		static nw_connection_group_send_completion_t static_SendCompletion = TrampolineSendCompletion;
-
-		[MonoPInvokeCallback (typeof (nw_connection_group_send_completion_t))]
-#else
 		[UnmanagedCallersOnly]
-#endif
 		static void TrampolineSendCompletion (IntPtr block, IntPtr error)
 		{
 			var del = BlockLiteral.GetTarget<Action<NWError?>> (block);
@@ -209,35 +181,29 @@ namespace Network {
 						endpoint.GetHandle (),
 						context.GetCheckedHandle (),
 						null);
+					GC.KeepAlive (content);
+					GC.KeepAlive (endpoint);
+					GC.KeepAlive (context);
 					return;
 				}
 
-#if NET
 				delegate* unmanaged<IntPtr, IntPtr, void> trampoline = &TrampolineSendCompletion;
 				using var block = new BlockLiteral (trampoline, handler, typeof (NWConnectionGroup), nameof (TrampolineSendCompletion));
-#else
-				using var block = new BlockLiteral ();
-				block.SetupBlockUnsafe (static_SendCompletion, handler);
-#endif
 				nw_connection_group_send_message (GetCheckedHandle (),
 					content.GetHandle (),
 					endpoint.GetHandle (),
 					context.GetCheckedHandle (),
 					&block);
+				GC.KeepAlive (content);
+				GC.KeepAlive (endpoint);
+				GC.KeepAlive (context);
 			}
 		}
 
 		[DllImport (Constants.NetworkLibrary)]
 		unsafe static extern void nw_connection_group_set_receive_handler (OS_nw_connection_group group, uint maximum_message_size, byte reject_oversized_messages, BlockLiteral* handler);
 
-#if !NET
-		delegate void nw_connection_group_receive_handler_t (IntPtr block, IntPtr content, IntPtr context, byte isCompleted);
-		static nw_connection_group_receive_handler_t static_ReceiveHandler = TrampolineReceiveHandler;
-
-		[MonoPInvokeCallback (typeof (nw_connection_group_receive_handler_t))]
-#else
 		[UnmanagedCallersOnly]
-#endif
 		static void TrampolineReceiveHandler (IntPtr block, IntPtr content, IntPtr context, byte isCompleted)
 		{
 			var del = BlockLiteral.GetTarget<NWConnectionGroupReceiveDelegate> (block);
@@ -257,13 +223,8 @@ namespace Network {
 					return;
 				}
 
-#if NET
 				delegate* unmanaged<IntPtr, IntPtr, IntPtr, byte, void> trampoline = &TrampolineReceiveHandler;
 				using var block = new BlockLiteral (trampoline, handler, typeof (NWConnectionGroup), nameof (TrampolineReceiveHandler));
-#else
-				using var block = new BlockLiteral ();
-				block.SetupBlockUnsafe (static_ReceiveHandler, handler);
-#endif
 				nw_connection_group_set_receive_handler (GetCheckedHandle (), maximumMessageSize, rejectOversizedMessages.AsByte (), &block);
 			}
 		}
@@ -271,14 +232,7 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		unsafe static extern void nw_connection_group_set_state_changed_handler (OS_nw_connection_group group, BlockLiteral* handler);
 
-#if !NET
-		delegate void nw_connection_group_state_changed_handler_t (IntPtr block, NWConnectionGroupState state, IntPtr error);
-		static nw_connection_group_state_changed_handler_t static_StateChangedHandler = TrampolineStateChangedHandler;
-
-		[MonoPInvokeCallback (typeof (nw_connection_group_state_changed_handler_t))]
-#else
 		[UnmanagedCallersOnly]
-#endif
 		static void TrampolineStateChangedHandler (IntPtr block, NWConnectionGroupState state, IntPtr error)
 		{
 			var del = BlockLiteral.GetTarget<NWConnectionGroupStateChangedDelegate> (block);
@@ -297,71 +251,43 @@ namespace Network {
 					return;
 				}
 
-#if NET
 				delegate* unmanaged<IntPtr, NWConnectionGroupState, IntPtr, void> trampoline = &TrampolineStateChangedHandler;
 				using var block = new BlockLiteral (trampoline, handler, typeof (NWConnectionGroup), nameof (TrampolineStateChangedHandler));
-#else
-				using var block = new BlockLiteral ();
-				block.SetupBlockUnsafe (static_StateChangedHandler, handler);
-#endif
 				nw_connection_group_set_state_changed_handler (GetCheckedHandle (), &block);
 			}
 		}
 
-#if NET
 		[SupportedOSPlatform ("tvos15.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (15, 0)]
-		[iOS (15, 0)]
-		[MacCatalyst (15, 0)]
-#endif
 		[DllImport (Constants.NetworkLibrary)]
 		static extern OS_nw_protocol_metadata nw_connection_group_copy_protocol_metadata (OS_nw_connection_group group, OS_nw_protocol_definition definition);
 
-#if NET
 		[SupportedOSPlatform ("tvos15.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (15, 0)]
-		[iOS (15, 0)]
-		[MacCatalyst (15, 0)]
-#endif
 		public NWProtocolMetadata? GetProtocolMetadata (NWContentContext context)
 		{
 			if (context is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (context));
 			var ptr = nw_connection_group_copy_protocol_metadata (GetCheckedHandle (), context.Handle);
+			GC.KeepAlive (context);
 			return ptr == IntPtr.Zero ? null : new NWProtocolMetadata (ptr, true);
 		}
 
-#if NET
 		[SupportedOSPlatform ("tvos15.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (15, 0)]
-		[iOS (15, 0)]
-		[MacCatalyst (15, 0)]
-#endif
 		[DllImport (Constants.NetworkLibrary)]
 		static extern OS_nw_protocol_metadata nw_connection_group_copy_protocol_metadata_for_message (OS_nw_connection_group group, OS_nw_content_context context, OS_nw_protocol_definition definition);
 
-#if NET
 		[SupportedOSPlatform ("tvos15.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (15, 0)]
-		[iOS (15, 0)]
-		[MacCatalyst (15, 0)]
-#endif
 		public NWProtocolMetadata? GetProtocolMetadata (NWContentContext context, NWProtocolDefinition definition)
 		{
 			if (context is null)
@@ -369,89 +295,58 @@ namespace Network {
 			if (definition is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (context));
 			var ptr = nw_connection_group_copy_protocol_metadata_for_message (GetCheckedHandle (), context.Handle, definition.Handle);
+			GC.KeepAlive (context);
+			GC.KeepAlive (definition);
 			return ptr == IntPtr.Zero ? null : new NWProtocolMetadata (ptr, true);
 		}
 
-#if NET
 		[SupportedOSPlatform ("tvos15.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (15, 0)]
-		[iOS (15, 0)]
-		[MacCatalyst (15, 0)]
-#endif
 		[DllImport (Constants.NetworkLibrary)]
 		static extern OS_nw_connection nw_connection_group_extract_connection (OS_nw_connection_group group, OS_nw_endpoint endpoint, OS_nw_protocol_options protocolOptions);
 
-#if NET
 		[SupportedOSPlatform ("tvos15.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (15, 0)]
-		[iOS (15, 0)]
-		[MacCatalyst (15, 0)]
-#endif
 		public NWConnection? ExtractConnection (NWEndpoint endpoint, NWProtocolOptions protocolOptions)
 		{
 			var ptr = nw_connection_group_extract_connection (GetCheckedHandle (), endpoint.GetCheckedHandle (), protocolOptions.GetCheckedHandle ());
+			GC.KeepAlive (endpoint);
+			GC.KeepAlive (protocolOptions);
 			return ptr == IntPtr.Zero ? null : new NWConnection (ptr, true);
 		}
 
-#if NET
 		[SupportedOSPlatform ("tvos15.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (15, 0)]
-		[iOS (15, 0)]
-		[MacCatalyst (15, 0)]
-#endif
 		[DllImport (Constants.NetworkLibrary)]
 		static extern byte nw_connection_group_reinsert_extracted_connection (OS_nw_connection_group group, OS_nw_connection connection);
 
-#if NET
 		[SupportedOSPlatform ("tvos15.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (15, 0)]
-		[iOS (15, 0)]
-		[MacCatalyst (15, 0)]
-#endif
 		public bool TryReinsertExtractedConnection (NWConnection connection)
 		{
 			if (connection is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (connection));
-			return nw_connection_group_reinsert_extracted_connection (GetCheckedHandle (), connection.Handle) != 0;
+			bool result = nw_connection_group_reinsert_extracted_connection (GetCheckedHandle (), connection.Handle) != 0;
+			GC.KeepAlive (connection);
+			return result;
 		}
 
-#if NET
 		[SupportedOSPlatform ("tvos15.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (15, 0)]
-		[iOS (15, 0)]
-		[MacCatalyst (15, 0)]
-#endif
 		[DllImport (Constants.NetworkLibrary)]
 		unsafe static extern void nw_connection_group_set_new_connection_handler (OS_nw_connection_group group, BlockLiteral* connectionHandler);
 
-#if !NET
-		delegate void nw_connection_group_new_connection_handler_t (IntPtr block, IntPtr connection);
-		static nw_connection_group_new_connection_handler_t static_SetNewConnectionHandler = TrampolineSetNewConnectionHandler;
-
-		[MonoPInvokeCallback (typeof (nw_connection_group_new_connection_handler_t))]
-#else
 		[UnmanagedCallersOnly]
-#endif
 		static void TrampolineSetNewConnectionHandler (IntPtr block, IntPtr connection)
 		{
 			var del = BlockLiteral.GetTarget<Action<NWConnection>> (block);
@@ -462,16 +357,10 @@ namespace Network {
 			}
 		}
 
-#if NET
 		[SupportedOSPlatform ("tvos15.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (15, 0)]
-		[iOS (15, 0)]
-		[MacCatalyst (15, 0)]
-#endif
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void SetNewConnectionHandler (Action<NWConnection> handler)
 		{
@@ -479,13 +368,8 @@ namespace Network {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (handler));
 
 			unsafe {
-#if NET
 				delegate* unmanaged<IntPtr, IntPtr, void> trampoline = &TrampolineSetNewConnectionHandler;
 				using var block = new BlockLiteral (trampoline, handler, typeof (NWConnectionGroup), nameof (TrampolineSetNewConnectionHandler));
-#else
-				using var block = new BlockLiteral ();
-				block.SetupBlockUnsafe (static_SetNewConnectionHandler, handler);
-#endif
 				nw_connection_group_set_new_connection_handler (GetCheckedHandle (), &block);
 			}
 		}

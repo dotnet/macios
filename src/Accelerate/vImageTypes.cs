@@ -51,6 +51,13 @@ using vImagePixelCount = System.nint;
 namespace Accelerate {
 	// vImage_Buffer - vImage_Types.h
 #if NET
+	/// <summary>Structure used to represent image data.</summary>
+	///     <remarks>
+	///       <para>This structure is used to describe a block of image data.   The image data is stored in the Data property with the Width and Height properties describing how many pixels the image has on each dimension.   </para>
+	///       <para>
+	///       </para>
+	///       <para>The BytesPerRow property describes how many bytes are used on each row of pixels.   This is often referred to as the stride of the image.   It does not necessarily have to match the width in pixels, it can often be set to a different value to ensure that each image row starts in an aligned memory address (this is typically done to improve performance as CPUs are able to perform aligned fetches from memory faster than unaligned ones).</para>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -58,6 +65,9 @@ namespace Accelerate {
 #endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct vImageBuffer {
+		/// <summary>Points to the image data.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public IntPtr Data { get; set; }
 
 		// There is no way a row in the image will have more than 2^32 pixels
@@ -68,16 +78,25 @@ namespace Accelerate {
 		vImagePixelCount WidthIntPtr;
 		nint RowBytesCountIntPtr; // size_t = nint
 
+		/// <summary>Bytes per row in the image.   This is the stride of the row.   </summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public int BytesPerRow {
 			get { return (int) RowBytesCountIntPtr; }
 			set { RowBytesCountIntPtr = value; }
 		}
 
+		/// <summary>The width of the image in pixels.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public int Width {
 			get { return (int) WidthIntPtr; }
 			set { WidthIntPtr = (vImagePixelCount) value; }
 		}
 
+		/// <summary>The height of the image in pixels.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public int Height {
 			get { return (int) HeightIntPtr; }
 			set { HeightIntPtr = (vImagePixelCount) value; }
@@ -86,6 +105,8 @@ namespace Accelerate {
 
 	// vImage_AffineTransform - vImage_Types.h
 #if NET
+	/// <summary>Struct that represents an affine transformation as a vector of six single-precision values.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -94,11 +115,23 @@ namespace Accelerate {
 	[StructLayout (LayoutKind.Sequential)]
 	public struct vImageAffineTransformFloat {
 		// all defined as 'float'
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float a;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float b;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float c;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float d;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float tx;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float ty;
 
 		// TODO: constructor from CGAffineTransform, vImageAffineTransformDouble
@@ -106,6 +139,8 @@ namespace Accelerate {
 
 	// vImage_AffineTransform_Double - vImage_Types.h
 #if NET
+	/// <summary>Struct that represents an affine transformation as a vector of six double-precision values.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -113,83 +148,151 @@ namespace Accelerate {
 #endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct vImageAffineTransformDouble {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public double a;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public double b;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public double c;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public double d;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public double tx;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public double ty;
 
 		// TODO: constructor from CGAffineTransform, vImageAffineTransformFloat
 	}
 
 	// vImage_Error (ssize_t) - vImageTypes.h
+	/// <summary>Error codes returned by the various vImage manipulation APIs.</summary>
+	///     <remarks>To be added.</remarks>
 	[Native]
 	public enum vImageError : long {
+		/// <summary>To be added.</summary>
 		NoError = 0,
+		/// <summary>To be added.</summary>
 		RoiLargerThanInputBuffer = -21766,
+		/// <summary>To be added.</summary>
 		InvalidKernelSize = -21767,
+		/// <summary>To be added.</summary>
 		InvalidEdgeStyle = -21768,
+		/// <summary>To be added.</summary>
 		InvalidOffsetX = -21769,
+		/// <summary>To be added.</summary>
 		InvalidOffsetY = -21770,
+		/// <summary>To be added.</summary>
 		MemoryAllocationError = -21771,
+		/// <summary>To be added.</summary>
 		NullPointerArgument = -21772,
+		/// <summary>To be added.</summary>
 		InvalidParameter = -21773,
+		/// <summary>To be added.</summary>
 		BufferSizeMismatch = -21774,
+		/// <summary>To be added.</summary>
 		UnknownFlagsBit = -21775,
+		/// <summary>To be added.</summary>
 		InternalError = -21776,
+		/// <summary>To be added.</summary>
 		InvalidRowBytes = -21777,
+		/// <summary>To be added.</summary>
 		InvalidImageFormat = -21778,
+		/// <summary>To be added.</summary>
 		ColorSyncIsAbsent = -21779,
+		/// <summary>To be added.</summary>
 		OutOfPlaceOperationRequired = -21780,
 	}
 
 	// anonymous enum - Transform.h
+	/// <summary>Enumerates algorithms for gamma correction.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum vImageGamma {
+		/// <summary>To be added.</summary>
 		kUseGammaValue = 0,
+		/// <summary>To be added.</summary>
 		kUseGammaValueHalfPrecision = 1,
+		/// <summary>To be added.</summary>
 		k5over9_HalfPrecision = 2,
+		/// <summary>To be added.</summary>
 		k9over5_HalfPrecision = 3,
+		/// <summary>To be added.</summary>
 		k5over11_HalfPrecision = 4,
+		/// <summary>To be added.</summary>
 		k11ove_5_HalfPrecision = 5,
+		/// <summary>To be added.</summary>
 		ksRGB_ForwardHalfPrecision = 6,
+		/// <summary>To be added.</summary>
 		ksRGB_ReverseHalfPrecision = 7,
+		/// <summary>To be added.</summary>
 		k11over9_HalfPrecision = 8,
+		/// <summary>To be added.</summary>
 		k9over11_HalfPrecision = 9,
+		/// <summary>To be added.</summary>
 		kBT709_ForwardHalfPrecision = 10,
+		/// <summary>To be added.</summary>
 		kBT709_ReverseHalfPrecision = 11,
 	};
 
 	// vImageMDTableUsageHint (untyped) - Transform.h
+	/// <summary>Enumerates hints for using a multi-dimensional table.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum vImageMDTableUsageHint : int {
+		/// <summary>To be added.</summary>
 		k16Q12 = 1,
+		/// <summary>To be added.</summary>
 		kFloat = 2,
 	}
 
 	// vImage_InterpolationMethod (untyped) - Transform.h
+	/// <summary>Enumerates algorithms for image interpolation.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum vImageInterpolationMethod : int {
+		/// <summary>To be added.</summary>
 		None = 0,
+		/// <summary>To be added.</summary>
 		Full = 1,
+		/// <summary>To be added.</summary>
 		Half = 2,
 	}
 
+	/// <summary>Enumerates options for processing images.</summary>
+	///     <remarks>To be added.</remarks>
 	[Flags]
 	// vImage_Flags (uint32_t) - vImage_Types.h
 	public enum vImageFlags : uint {
+		/// <summary>To be added.</summary>
 		NoFlags = 0,
+		/// <summary>To be added.</summary>
 		LeaveAlphaUnchanged = 1,
+		/// <summary>To be added.</summary>
 		CopyInPlace = 2,
+		/// <summary>To be added.</summary>
 		BackgroundColorFill = 4,
+		/// <summary>To be added.</summary>
 		EdgeExtend = 8,
+		/// <summary>To be added.</summary>
 		DoNotTile = 16,
+		/// <summary>To be added.</summary>
 		HighQualityResampling = 32,
+		/// <summary>To be added.</summary>
 		TruncateKernel = 64,
+		/// <summary>To be added.</summary>
 		GetTempBufferSize = 128,
+		/// <summary>To be added.</summary>
 		PrintDiagnosticsToConsole = 256,
+		/// <summary>To be added.</summary>
 		NoAllocate = 512,
 	}
 
 #if NET
+	/// <summary>Represents a pixel using 32-bit floating points values for its alpha, red, green and blue components.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -197,14 +300,30 @@ namespace Accelerate {
 #endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct PixelFFFF {
+		/// <summary>Alpha channel component.</summary>
+		///         <remarks>
+		///         </remarks>
 		public float A;
+		/// <summary>Red channel component.</summary>
+		///         <remarks>
+		///         </remarks>
 		public float R;
+		/// <summary>Green channel component.</summary>
+		///         <remarks>
+		///         </remarks>
 		public float G;
+		/// <summary>Blue channel component.</summary>
+		///         <remarks>
+		///         </remarks>
 		public float B;
+		/// <summary>Pixel with all the values set to zero.</summary>
+		///         <remarks>To be added.</remarks>
 		public readonly static PixelFFFF Zero;
 	}
 
 #if NET
+	/// <summary>Represents a pixel using 8-bit integers for its red, green, blue and alpha components.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -212,14 +331,34 @@ namespace Accelerate {
 #endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct Pixel8888 {
+		/// <summary>Alpha channel component.</summary>
+		///         <remarks>
+		///         </remarks>
 		public byte A;
+		/// <summary>Red channel component.</summary>
+		///         <remarks>
+		///         </remarks>
 		public byte R;
+		/// <summary>Green channel component.</summary>
+		///         <remarks>
+		///         </remarks>
 		public byte G;
+		/// <summary>Blue channel component.</summary>
+		///         <remarks>
+		///         </remarks>
 		public byte B;
+		/// <summary>Pixerl with all the values set to zero.</summary>
+		///         <remarks>
+		///         </remarks>
 		public readonly static Pixel8888 Zero;
 	}
 
 #if NET
+	/// <summary>Represents a pixel using 16-bit unsigned integers for its alpha, red, green and blue components.</summary>
+	///     <remarks>
+	///       <para>
+	///       </para>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -227,14 +366,29 @@ namespace Accelerate {
 #endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct PixelARGB16U {
+		/// <summary>Alpha Component.</summary>
+		///         <remarks>To be added.</remarks>
 		public Pixel16U A;
+		/// <summary>Red Component.</summary>
+		///         <remarks>To be added.</remarks>
 		public Pixel16U R;
+		/// <summary>Green Component.</summary>
+		///         <remarks>To be added.</remarks>
 		public Pixel16U G;
+		/// <summary>Blue Component.</summary>
+		///         <remarks>To be added.</remarks>
 		public Pixel16U B;
+		/// <summary>Pixel with all the values set to zero.</summary>
+		///         <remarks>To be added.</remarks>
 		public readonly static PixelARGB16U Zero;
 	}
 
 #if NET
+	/// <summary>Represents a pixel using 16-bit signed integers for its alpha, red, green and blue components.</summary>
+	///     <remarks>
+	///       <para>
+	///       </para>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -242,14 +396,31 @@ namespace Accelerate {
 #endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct PixelARGB16S {
+		/// <summary>Alpha Component.</summary>
+		///         <remarks>To be added.</remarks>
 		public Pixel16S A;
+		/// <summary>Red Component.</summary>
+		///         <remarks>To be added.</remarks>
 		public Pixel16S R;
+		/// <summary>Green Component.</summary>
+		///         <remarks>To be added.</remarks>
 		public Pixel16S G;
+		/// <summary>Blue Component.</summary>
+		///         <remarks>To be added.</remarks>
 		public Pixel16S B;
+		/// <summary>Pixel with all the values set to zero.</summary>
+		///         <remarks>To be added.</remarks>
 		public readonly static PixelARGB16S Zero;
 	}
 
 #if NET
+	/// <summary>Accelerated image operations.</summary>
+	///     <remarks>
+	///       <para>
+	/// 	The vImage class provides a collection of methods that operate on images represented by the <see cref="T:Accelerate.vImageBuffer" /> structure.</para>
+	///       <para>
+	///       </para>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -557,6 +728,16 @@ namespace Accelerate {
 									int []? post_bias,     //Must be an array of 4 int32_t's. NULL is okay.
 									vImageFlags flags);
 
+		/// <param name="src">Source image data..</param>
+		///         <param name="dest">Target image data.</param>
+		///         <param name="matrix">To be added.</param>
+		///         <param name="divisor">To be added.</param>
+		///         <param name="pre_bias">To be added.</param>
+		///         <param name="post_bias">To be added.</param>
+		///         <param name="flags">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static vImageError MatrixMultiplyARGB8888 (ref vImageBuffer src,
 								   ref vImageBuffer dest,
 								   short [] matrix, // matrix is [4*4],

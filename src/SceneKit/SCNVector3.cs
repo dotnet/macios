@@ -31,22 +31,12 @@ using System.Runtime.InteropServices;
 using System.Xml.Serialization;
 using System.Runtime.Versioning;
 
-#if NET
 using Vector2 = global::System.Numerics.Vector2;
 using Vector3 = global::System.Numerics.Vector3;
 using MathHelper = global::CoreGraphics.MathHelper;
-#else
-using Vector2 = global::OpenTK.Vector2;
-using Vector3 = global::OpenTK.Vector3;
-using MathHelper = global::OpenTK.MathHelper;
-#endif
 
 #if MONOMAC
-#if NET
 using pfloat = System.Runtime.InteropServices.NFloat;
-#else
-using pfloat = System.nfloat;
-#endif
 #else
 using pfloat = System.Single;
 #endif
@@ -60,12 +50,10 @@ namespace SceneKit {
 	/// <remarks>
 	/// The Vector3 structure is suitable for interoperation with unmanaged code requiring three consecutive floats.
 	/// </remarks>
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[Serializable]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct SCNVector3 : IEquatable<SCNVector3> {
@@ -732,45 +720,26 @@ namespace SceneKit {
 
 		#region Transform
 
-#if NET
 		/// <summary>Transform a direction vector by the given Matrix
 		/// Assumes the matrix has a right-most column of (0,0,0,1), that is the translation part is ignored.
 		/// </summary>
 		/// <param name="vec">The column vector to transform</param>
 		/// <param name="mat">The desired transformation</param>
 		/// <returns>The transformed vector</returns>
-#else
-		/// <summary>Transform a direction vector by the given Matrix
-		/// Assumes the matrix has a bottom row of (0,0,0,1), that is the translation part is ignored.
-		/// </summary>
-		/// <param name="vec">The row vector to transform</param>
-		/// <param name="mat">The desired transformation</param>
-		/// <returns>The transformed vector</returns>
-#endif
 		public static SCNVector3 TransformVector (SCNVector3 vec, SCNMatrix4 mat)
 		{
 			TransformVector (ref vec, ref mat, out var v);
 			return v;
 		}
 
-#if NET
 		/// <summary>Transform a direction vector by the given matrix.
 		/// Assumes the matrix has a right-most column of (0,0,0,1), that is the translation part is ignored.
 		/// </summary>
 		/// <param name="vec">The column vector to transform</param>
 		/// <param name="mat">The desired transformation</param>
 		/// <param name="result">The transformed vector</param>
-#else
-		/// <summary>Transform a direction vector by the given matrix.
-		/// Assumes the matrix has a bottom row of (0,0,0,1), that is the translation part is ignored.
-		/// </summary>
-		/// <param name="vec">The row vector to transform</param>
-		/// <param name="mat">The desired transformation</param>
-		/// <param name="result">The transformed vector</param>
-#endif
 		public static void TransformVector (ref SCNVector3 vec, ref SCNMatrix4 mat, out SCNVector3 result)
 		{
-#if NET
 			result.X = vec.X * mat.Row0.X +
 					   vec.Y * mat.Row0.Y +
 					   vec.Z * mat.Row0.Z;
@@ -782,22 +751,8 @@ namespace SceneKit {
 			result.Z = vec.X * mat.Row2.X +
 					   vec.Y * mat.Row2.Y +
 					   vec.Z * mat.Row2.Z;
-#else
-			result.X = vec.X * mat.Row0.X +
-					   vec.Y * mat.Row1.X +
-					   vec.Z * mat.Row2.X;
-
-			result.Y = vec.X * mat.Row0.Y +
-					   vec.Y * mat.Row1.Y +
-					   vec.Z * mat.Row2.Y;
-
-			result.Z = vec.X * mat.Row0.Z +
-					   vec.Y * mat.Row1.Z +
-					   vec.Z * mat.Row2.Z;
-#endif
 		}
 
-#if NET
 		/// <summary>Transform a Normal by the given Matrix</summary>
 		/// <remarks>
 		/// This calculates the inverse of the given matrix, use TransformNormalInverse if you
@@ -806,23 +761,12 @@ namespace SceneKit {
 		/// <param name="norm">The column-based normal to transform</param>
 		/// <param name="mat">The desired transformation</param>
 		/// <returns>The transformed normal</returns>
-#else
-		/// <summary>Transform a Normal by the given Matrix</summary>
-		/// <remarks>
-		/// This calculates the inverse of the given matrix, use TransformNormalInverse if you
-		/// already have the inverse to avoid this extra calculation
-		/// </remarks>
-		/// <param name="norm">The row-based normal to transform</param>
-		/// <param name="mat">The desired transformation</param>
-		/// <returns>The transformed normal</returns>
-#endif
 		public static SCNVector3 TransformNormal (SCNVector3 norm, SCNMatrix4 mat)
 		{
 			mat.Invert ();
 			return TransformNormalInverse (norm, mat);
 		}
 
-#if NET
 		/// <summary>Transform a Normal by the given Matrix</summary>
 		/// <remarks>
 		/// This calculates the inverse of the given matrix, use TransformNormalInverse if you
@@ -831,23 +775,12 @@ namespace SceneKit {
 		/// <param name="norm">The column-based normal to transform</param>
 		/// <param name="mat">The desired transformation</param>
 		/// <param name="result">The transformed normal</param>
-#else
-		/// <summary>Transform a Normal by the given Matrix</summary>
-		/// <remarks>
-		/// This calculates the inverse of the given matrix, use TransformNormalInverse if you
-		/// already have the inverse to avoid this extra calculation
-		/// </remarks>
-		/// <param name="norm">The row-based normal to transform</param>
-		/// <param name="mat">The desired transformation</param>
-		/// <param name="result">The transformed normal</param>
-#endif
 		public static void TransformNormal (ref SCNVector3 norm, ref SCNMatrix4 mat, out SCNVector3 result)
 		{
 			SCNMatrix4 Inverse = SCNMatrix4.Invert (mat);
 			SCNVector3.TransformNormalInverse (ref norm, ref Inverse, out result);
 		}
 
-#if NET
 		/// <summary>Transform a Normal by the (transpose of the) given Matrix</summary>
 		/// <remarks>
 		/// This version doesn't calculate the inverse matrix.
@@ -856,23 +789,12 @@ namespace SceneKit {
 		/// <param name="norm">The column-based normal to transform</param>
 		/// <param name="invMat">The inverse of the desired transformation</param>
 		/// <returns>The transformed normal</returns>
-#else
-		/// <summary>Transform a Normal by the (transpose of the) given Matrix</summary>
-		/// <remarks>
-		/// This version doesn't calculate the inverse matrix.
-		/// Use this version if you already have the inverse of the desired transform to hand
-		/// </remarks>
-		/// <param name="norm">The row-based normal to transform</param>
-		/// <param name="invMat">The inverse of the desired transformation</param>
-		/// <returns>The transformed normal</returns>
-#endif
 		public static SCNVector3 TransformNormalInverse (SCNVector3 norm, SCNMatrix4 invMat)
 		{
 			TransformNormalInverse (ref norm, ref invMat, out var n);
 			return n;
 		}
 
-#if NET
 		/// <summary>Transform a Normal by the (transpose of the) given Matrix</summary>
 		/// <remarks>
 		/// This version doesn't calculate the inverse matrix.
@@ -881,19 +803,8 @@ namespace SceneKit {
 		/// <param name="norm">The column-based normal to transform</param>
 		/// <param name="invMat">The inverse of the desired transformation</param>
 		/// <param name="result">The transformed normal</param>
-#else
-		/// <summary>Transform a Normal by the (transpose of the) given Matrix</summary>
-		/// <remarks>
-		/// This version doesn't calculate the inverse matrix.
-		/// Use this version if you already have the inverse of the desired transform to hand
-		/// </remarks>
-		/// <param name="norm">The row-based normal to transform</param>
-		/// <param name="invMat">The inverse of the desired transformation</param>
-		/// <param name="result">The transformed normal</param>
-#endif
 		public static void TransformNormalInverse (ref SCNVector3 norm, ref SCNMatrix4 invMat, out SCNVector3 result)
 		{
-#if NET
 			result.X = norm.X * invMat.Column0.X +
 					   norm.Y * invMat.Column0.Y +
 					   norm.Z * invMat.Column0.Z;
@@ -905,52 +816,24 @@ namespace SceneKit {
 			result.Z = norm.X * invMat.Column2.X +
 					   norm.Y * invMat.Column2.Y +
 					   norm.Z * invMat.Column2.Z;
-#else
-			result.X = norm.X * invMat.Row0.X +
-					   norm.Y * invMat.Row0.Y +
-					   norm.Z * invMat.Row0.Z;
-
-			result.Y = norm.X * invMat.Row1.X +
-					   norm.Y * invMat.Row1.Y +
-					   norm.Z * invMat.Row1.Z;
-
-			result.Z = norm.X * invMat.Row2.X +
-					   norm.Y * invMat.Row2.Y +
-					   norm.Z * invMat.Row2.Z;
-#endif
 		}
 
-#if NET
 		/// <summary>Transform a Position by the given Matrix</summary>
 		/// <param name="pos">The column-based position to transform</param>
 		/// <param name="mat">The desired transformation</param>
 		/// <returns>The transformed position</returns>
-#else
-		/// <summary>Transform a Position by the given Matrix</summary>
-		/// <param name="pos">The row-based position to transform</param>
-		/// <param name="mat">The desired transformation</param>
-		/// <returns>The transformed position</returns>
-#endif
 		public static SCNVector3 TransformPosition (SCNVector3 pos, SCNMatrix4 mat)
 		{
 			TransformPosition (ref pos, ref mat, out var p);
 			return p;
 		}
 
-#if NET
 		/// <summary>Transform a Position by the given Matrix</summary>
 		/// <param name="pos">The column-based position to transform</param>
 		/// <param name="mat">The desired transformation</param>
 		/// <param name="result">The transformed position</param>
-#else
-		/// <summary>Transform a Position by the given Matrix</summary>
-		/// <param name="pos">The row-based position to transform</param>
-		/// <param name="mat">The desired transformation</param>
-		/// <param name="result">The transformed position</param>
-#endif
 		public static void TransformPosition (ref SCNVector3 pos, ref SCNMatrix4 mat, out SCNVector3 result)
 		{
-#if NET
 			result.X = mat.Row0.X * pos.X +
 					   mat.Row0.Y * pos.Y +
 					   mat.Row0.Z * pos.Z +
@@ -965,52 +848,22 @@ namespace SceneKit {
 					   mat.Row2.Y * pos.Y +
 					   mat.Row2.Z * pos.Z +
 					   mat.Row2.W;
-#else
-			result.X = pos.X * mat.Row0.X +
-					   pos.Y * mat.Row1.X +
-					   pos.Z * mat.Row2.X +
-					   mat.Row3.X;
-
-			result.Y = pos.X * mat.Row0.Y +
-					   pos.Y * mat.Row1.Y +
-					   pos.Z * mat.Row2.Y +
-					   mat.Row3.Y;
-
-			result.Z = pos.X * mat.Row0.Z +
-					   pos.Y * mat.Row1.Z +
-					   pos.Z * mat.Row2.Z +
-					   mat.Row3.Z;
-#endif
 		}
 
-#if NET
 		/// <summary>Transform a Vector by the given Matrix</summary>
 		/// <param name="vec">The column vector to transform</param>
 		/// <param name="mat">The desired transformation</param>
 		/// <returns>The transformed vector</returns>
-#else
-		/// <summary>Transform a Vector by the given Matrix</summary>
-		/// <param name="vec">The row vector to transform</param>
-		/// <param name="mat">The desired transformation</param>
-		/// <returns>The transformed vector</returns>
-#endif
 		public static SCNVector4 Transform (SCNVector3 vec, SCNMatrix4 mat)
 		{
 			SCNVector4 v4 = new SCNVector4 (vec.X, vec.Y, vec.Z, 1.0f);
 			return SCNVector4.Transform (v4, mat);
 		}
 
-#if NET
 		/// <summary>Transform a Vector by the given Matrix</summary>
 		/// <param name="vec">The column vector to transform</param>
 		/// <param name="mat">The desired transformation</param>
 		/// <param name="result">The transformed vector</param>
-#else
-		/// <summary>Transform a Vector by the given Matrix</summary>
-		/// <param name="vec">The row vector to transform</param>
-		/// <param name="mat">The desired transformation</param>
-		/// <param name="result">The transformed vector</param>
-#endif
 		public static void Transform (ref SCNVector3 vec, ref SCNMatrix4 mat, out SCNVector4 result)
 		{
 			SCNVector4 v4 = new SCNVector4 (vec.X, vec.Y, vec.Z, 1.0f);

@@ -189,13 +189,21 @@ namespace EventKit {
 	[MacCatalyst (13, 1)]
 	[Native] // NSInteger (size change from previously untyped enum)
 	public enum EKWeekday : long {
+		/// <summary>To be added.</summary>
 		NotSet = 0,
+		/// <summary>To be added.</summary>
 		Sunday = 1,
+		/// <summary>To be added.</summary>
 		Monday,
+		/// <summary>To be added.</summary>
 		Tuesday,
+		/// <summary>To be added.</summary>
 		Wednesday,
+		/// <summary>To be added.</summary>
 		Thursday,
+		/// <summary>To be added.</summary>
 		Friday,
+		/// <summary>To be added.</summary>
 		Saturday,
 	}
 

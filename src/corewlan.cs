@@ -55,6 +55,10 @@ namespace CoreWlan {
 		[Export ("channelBand")]
 		CWChannelBand ChannelBand { get; }
 
+		/// <param name="channel">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("isEqualToChannel:")]
 		bool IsEqualToChannel (CWChannel channel);
 	}
@@ -164,9 +168,16 @@ namespace CoreWlan {
 		[Export ("initWithConfiguration:")]
 		NativeHandle Constructor (CWConfiguration configuration);
 
+		/// <param name="configuration">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("isEqualToConfiguration:")]
 		bool IsEqualToConfiguration (CWConfiguration configuration);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("configuration")]
 		CWConfiguration Create ();
@@ -502,12 +513,27 @@ namespace CoreWlan {
 		[Export ("initWithInterfaceName:")]
 		NativeHandle Constructor ([NullAllowed] string name);
 
+		/// <param name="power">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("setPower:error:")]
 		bool SetPower (bool power, out NSError error);
 
+		/// <param name="channel">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("setWLANChannel:error:")]
 		bool SetWlanChannel (CWChannel channel, out NSError error);
 
+		/// <param name="key">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("setPairwiseMasterKey:error:")]
 		bool SetPairwiseMasterKey ([NullAllowed] NSData key, out NSError error);
 
@@ -524,9 +550,23 @@ namespace CoreWlan {
 		[Internal]
 		NSSet _ScanForNetworksWithName ([NullAllowed] string networkName, out NSError error);
 
+		/// <param name="network">To be added.</param>
+		///         <param name="password">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("associateToNetwork:password:error:")]
 		bool AssociateToNetwork (CWNetwork network, [NullAllowed] string password, out NSError error);
 
+		/// <param name="network">To be added.</param>
+		///         <param name="identity">To be added.</param>
+		///         <param name="username">To be added.</param>
+		///         <param name="password">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("associateToEnterpriseNetwork:identity:username:password:error:")]
 		bool AssociateToEnterpriseNetwork (CWNetwork network, [NullAllowed] SecIdentity identity, [NullAllowed] string username, [NullAllowed] string password, out NSError error);
 
@@ -534,9 +574,17 @@ namespace CoreWlan {
 		[Export ("startIBSSModeWithSSID:security:channel:password:error:")]
 		bool StartIbssModeWithSsid (NSData ssidData, CWIbssModeSecurity security, nuint channel, [NullAllowed] string password, out NSError error);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("disassociate")]
 		void Disassociate ();
 
+		/// <param name="configuration">To be added.</param>
+		///         <param name="authorization">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("commitConfiguration:authorization:error:")]
 		bool CommitConfiguration (CWConfiguration configuration, [NullAllowed] NSObject authorization, out NSError error);
 
@@ -686,12 +734,24 @@ namespace CoreWlan {
 		[Export ("ibss")]
 		bool Ibss { get; }
 
+		/// <param name="network">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("isEqualToNetwork:")]
 		bool IsEqualToNetwork (CWNetwork network);
 
+		/// <param name="security">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("supportsSecurity:")]
 		bool SupportsSecurity (CWSecurity security);
 
+		/// <param name="phyMode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("supportsPHYMode:")]
 		bool SupportsPhyMode (CWPhyMode phyMode);
 	}
@@ -719,17 +779,31 @@ namespace CoreWlan {
 		[Export ("security", ArgumentSemantic.Assign)]
 		CWSecurity Security { get; }
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("networkProfile")]
 		NSObject NetworkProfile ();
 
+		/// <param name="networkProfile">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithNetworkProfile:")]
 		NativeHandle Constructor (CWNetworkProfile networkProfile);
 
+		/// <param name="networkProfile">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("networkProfileWithNetworkProfile:")]
 		NSObject NetworkProfileWithNetworkProfile (CWNetworkProfile networkProfile);
 
+		/// <param name="networkProfile">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("isEqualToNetworkProfile:")]
 		bool IsEqualToNetworkProfile (CWNetworkProfile networkProfile);
 	}
@@ -762,6 +836,10 @@ namespace CoreWlan {
 		[NullAllowed]
 		CWInterface MainInterface { get; }
 
+		/// <param name="name">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Export ("interfaceWithName:")]
 		CWInterface FromName ([NullAllowed] string name);
@@ -788,12 +866,26 @@ namespace CoreWlan {
 		[Static]
 		CWWiFiClient SharedWiFiClient { get; }
 
+		/// <param name="type">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("startMonitoringEventWithType:error:")]
 		bool StartMonitoringEvent (CWEventType type, out NSError error);
 
+		/// <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("stopMonitoringAllEventsAndReturnError:")]
 		bool StopMonitoringAllEvents (out NSError error);
 
+		/// <param name="type">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("stopMonitoringEventWithType:error:")]
 		bool StopMonitoringEvent (CWEventType type, out NSError error);
 	}
@@ -804,33 +896,63 @@ namespace CoreWlan {
 	[Model]
 	[Protocol]
 	interface CWEventDelegate {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("clientConnectionInterrupted")]
 		void ClientConnectionInterrupted ();
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("clientConnectionInvalidated")]
 		void ClientConnectionInvalidated ();
 
+		/// <param name="interfaceName">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("powerStateDidChangeForWiFiInterfaceWithName:")]
 		void PowerStateDidChangeForWiFi (string interfaceName);
 
+		/// <param name="interfaceName">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("ssidDidChangeForWiFiInterfaceWithName:")]
 		void SsidDidChangeForWiFi (string interfaceName);
 
+		/// <param name="interfaceName">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("bssidDidChangeForWiFiInterfaceWithName:")]
 		void BssidDidChangeForWiFi (string interfaceName);
 
+		/// <param name="interfaceName">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("countryCodeDidChangeForWiFiInterfaceWithName:")]
 		void CountryCodeDidChangeForWiFi (string interfaceName);
 
+		/// <param name="interfaceName">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("linkDidChangeForWiFiInterfaceWithName:")]
 		void LinkDidChangeForWiFi (string interfaceName);
 
+		/// <param name="interfaceName">To be added.</param>
+		///         <param name="rssi">To be added.</param>
+		///         <param name="transmitRate">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("linkQualityDidChangeForWiFiInterfaceWithName:rssi:transmitRate:")]
 		void LinkQualityDidChangeForWiFi (string interfaceName, int rssi, double transmitRate);
 
+		/// <param name="interfaceName">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("modeDidChangeForWiFiInterfaceWithName:")]
 		void ModeDidChangeForWiFi (string interfaceName);
 
+		/// <param name="interfaceName">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("scanCacheUpdatedForWiFiInterfaceWithName:")]
 		void ScanCacheUpdatedForWiFi (string interfaceName);
 	}

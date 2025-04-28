@@ -31,6 +31,8 @@ using ObjCRuntime;
 namespace Foundation {
 
 #if NET
+	/// <summary>Defines the operating system version. Particularly for use with the <see cref="M:Foundation.NSProcessInfo.IsOperatingSystemAtLeastVersion(Foundation.NSOperatingSystemVersion)" /> method.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -72,6 +74,9 @@ namespace Foundation {
 		public int CompareTo (Object? obj)
 			=> (obj is NSOperatingSystemVersion other) ? CompareTo (other) : 1;
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override string ToString ()
 			=> $"{Major}.{Minor}.{PatchVersion}";
 

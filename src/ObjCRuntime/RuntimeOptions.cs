@@ -19,7 +19,7 @@ namespace Xamarin.Bundler {
 namespace ObjCRuntime {
 #endif
 	class RuntimeOptions {
-#if NET && !LEGACY_TOOLS
+#if !LEGACY_TOOLS
 		const string SocketsHandlerValue = "SocketsHttpHandler";
 #else
 		const string HttpClientHandlerValue = "HttpClientHandler";
@@ -45,27 +45,21 @@ namespace ObjCRuntime {
 			switch (value) {
 			// default
 			case null:
-#if NET && !LEGACY_TOOLS
+#if !LEGACY_TOOLS
 				return NSUrlSessionHandlerValue;
 #else
-				return (app.Platform == Utils.ApplePlatform.WatchOS) ? NSUrlSessionHandlerValue : HttpClientHandlerValue;
+				return HttpClientHandlerValue;
 #endif
 			case CFNetworkHandlerValue:
-#if NET && !LEGACY_TOOLS
+#if !LEGACY_TOOLS
 			case SocketsHandlerValue:
 #else
 			case HttpClientHandlerValue:
 #endif
-				if (app.Platform == Utils.ApplePlatform.WatchOS) {
-					ErrorHelper.Warning (2015, Errors.MT2015, value);
-					return NSUrlSessionHandlerValue;
-				}
 				return value;
 			case NSUrlSessionHandlerValue:
 				return value;
 			default:
-				if (app.Platform == Utils.ApplePlatform.WatchOS) // This is value we don't know about at all, show as error instead of warning.
-					throw ErrorHelper.CreateError (2015, Errors.MT2015, value);
 				throw ErrorHelper.CreateError (2010, Errors.MT2010, value);
 			}
 		}
@@ -97,10 +91,8 @@ namespace ObjCRuntime {
 
 			if (options is not null) {
 				handler = options.http_message_handler;
-			} else if (app.Platform == Utils.ApplePlatform.WatchOS) {
-				handler = NSUrlSessionHandlerValue;
 			} else {
-#if NET && !LEGACY_TOOLS
+#if !LEGACY_TOOLS
 				handler = NSUrlSessionHandlerValue;
 #else
 				handler = HttpClientHandlerValue;
@@ -119,27 +111,17 @@ namespace ObjCRuntime {
 				type = platformModule!.GetType ("Foundation", "NSUrlSessionHandler");
 				break;
 #else
-#if NET && !LEGACY_TOOLS
+#if !LEGACY_TOOLS
 			case SocketsHandlerValue:
 				type = httpModule.GetType ("System.Net.Http", "SocketsHttpHandler");
 				break;
 #else
 			case HttpClientHandlerValue:
-				if (app.Platform == Utils.ApplePlatform.WatchOS) {
-					ErrorHelper.Warning (2015, Errors.MT2015, handler);
-					type = platformModule!.GetType ("System.Net.Http", "NSUrlSessionHandler");
-				} else {
-					type = httpModule.GetType ("System.Net.Http", "HttpClientHandler");
-				}
+				type = httpModule.GetType ("System.Net.Http", "HttpClientHandler");
 				break;
 #endif
 			case CFNetworkHandlerValue:
-				if (app.Platform == Utils.ApplePlatform.WatchOS) {
-					ErrorHelper.Warning (2015, Errors.MT2015, handler);
-					type = platformModule!.GetType ("System.Net.Http", "NSUrlSessionHandler");
-				} else {
-					type = platformModule!.GetType ("System.Net.Http", "CFNetworkHandler");
-				}
+				type = platformModule!.GetType ("System.Net.Http", "CFNetworkHandler");
 				break;
 			case NSUrlSessionHandlerValue:
 				type = platformModule!.GetType ("System.Net.Http", "NSUrlSessionHandler");
@@ -166,7 +148,7 @@ namespace ObjCRuntime {
 			if (!File.Exists (plist_path))
 				return null;
 
-			using (var plist = NSDictionary.FromFile (plist_path)) {
+			using (var plist = NSMutableDictionary.FromFile (plist_path)) {
 				var options = new RuntimeOptions ();
 				options.http_message_handler = (NSString) plist ["HttpMessageHandler"];
 				return options;
@@ -180,7 +162,7 @@ namespace ObjCRuntime {
 			var options = RuntimeOptions.Read ();
 			// all types will be present as this is executed only when the linker is not enabled
 			var handler_name = options?.http_message_handler;
-#if NET && !LEGACY_TOOLS
+#if !LEGACY_TOOLS
 			// Note: no need to handle SocketsHandlerValue here because System.Net.Http handles
 			// creating a SocketsHttpHandler when configured to do so.
 			switch (handler_name) {

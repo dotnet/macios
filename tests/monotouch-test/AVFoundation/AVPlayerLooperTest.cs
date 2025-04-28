@@ -1,4 +1,3 @@
-#if !__WATCHOS__
 using System.IO;
 using Foundation;
 using AVFoundation;
@@ -24,4 +23,3 @@ namespace monotouchtest.AVFoundation {
 #endif
 	}
 }
-#endif

@@ -155,7 +155,6 @@ namespace MonoTouchFixtures.CoreMedia {
 			Assert.AreEqual (first.Start, second.Start, "CompareCMTimeRange - start - " + description);
 		}
 
-#if !__WATCHOS__
 		[Test]
 		public void CMTimeStrongDictionary ()
 		{
@@ -174,6 +173,5 @@ namespace MonoTouchFixtures.CoreMedia {
 				set { SetCMTimeValue (TimeKey, value); }
 			}
 		}
-#endif // !__WATCHOS__
 	}
 }

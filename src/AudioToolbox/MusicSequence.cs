@@ -27,24 +27,27 @@ using AudioUnit;
 
 using MidiEndpointRef = System.Int32;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace AudioToolbox {
 
 #if !COREBUILD
+	/// <param name="track">To be added.</param>
+	///     <param name="inEventTime">To be added.</param>
+	///     <param name="inEventData">To be added.</param>
+	///     <param name="inStartSliceBeat">To be added.</param>
+	///     <param name="inEndSliceBeat">To be added.</param>
+	///     <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public delegate void MusicSequenceUserCallback (MusicTrack track, double inEventTime, MusicEventUserData inEventData, double inStartSliceBeat, double inEndSliceBeat);
 
 	delegate void MusicSequenceUserCallbackProxy (/* void * */ IntPtr inClientData, /* MusicSequence* */ IntPtr inSequence, /* MusicTrack* */ IntPtr inTrack, /* MusicTimeStamp */ double inEventTime, /* MusicEventUserData* */ IntPtr inEventData, /* MusicTimeStamp */ double inStartSliceBeat, /* MusicTimeStamp */ double inEndSliceBeat);
 #endif
 
-#if NET
+	/// <summary>A music sequence.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	// MusicPlayer.h
 	public class MusicSequence : DisposableObject {
 #if !COREBUILD
@@ -55,10 +58,6 @@ namespace AudioToolbox {
 		}
 
 		static Dictionary<IntPtr, MusicSequenceUserCallback> userCallbackHandles = new Dictionary<IntPtr, MusicSequenceUserCallback> (Runtime.IntPtrEqualityComparer);
-
-#if !NET
-		static MusicSequenceUserCallbackProxy userCallbackProxy = new MusicSequenceUserCallbackProxy (UserCallbackProxy);
-#endif
 
 		[DllImport (Constants.AudioToolboxLibrary)]
 		unsafe extern static /* OSStatus */ MusicPlayerStatus NewMusicSequence (/* MusicSequence* */ IntPtr* outSequence);
@@ -75,6 +74,8 @@ namespace AudioToolbox {
 			return handle;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public MusicSequence ()
 			: base (Create (), true)
 		{
@@ -82,6 +83,7 @@ namespace AudioToolbox {
 				sequenceMap [Handle] = new WeakReference (this);
 		}
 
+		/// <include file="../../docs/api/AudioToolbox/MusicSequence.xml" path="/Documentation/Docs[@DocId='M:AudioToolbox.MusicSequence.Dispose(System.Boolean)']/*" />
 		protected override void Dispose (bool disposing)
 		{
 			if (Handle != IntPtr.Zero && Owns) {
@@ -90,13 +92,9 @@ namespace AudioToolbox {
 					userCallbackHandles.Remove (Handle);
 
 				// Remove native user callback
-#if NET
 				unsafe {
 					MusicSequenceSetUserCallback (Handle, null, IntPtr.Zero);
 				}
-#else
-				MusicSequenceSetUserCallback (Handle, null, IntPtr.Zero);
-#endif
 
 				DisposeMusicSequence (Handle);
 				lock (sequenceMap) {
@@ -139,6 +137,15 @@ namespace AudioToolbox {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("tvos")]
+		[ObsoletedOSPlatform ("tvos14.0", "Use 'AVAudioEngine' instead.")]
+		[ObsoletedOSPlatform ("macos11.0", "Use 'AVAudioEngine' instead.")]
+		[ObsoletedOSPlatform ("ios14.0", "Use 'AVAudioEngine' instead.")]
+		[ObsoletedOSPlatform ("maccatalyst14.0", "Use 'AVAudioEngine' instead.")]
+		// This API isn't obsoleted, but AUGraph is, so copy the obsolete attributes from AUGraph
 		public AUGraph? AUGraph {
 			get {
 				IntPtr h;
@@ -154,6 +161,7 @@ namespace AudioToolbox {
 					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
 
 				MusicSequenceSetAUGraph (Handle, value.Handle);
+				GC.KeepAlive (value);
 			}
 		}
 
@@ -179,6 +187,11 @@ namespace AudioToolbox {
 			}
 		}
 
+		/// <param name="resolution">To be added.</param>
+		///         <param name="fps">To be added.</param>
+		///         <param name="ticks">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void GetSmpteResolution (short resolution, out sbyte fps, out byte ticks)
 		{
 			// MusicSequenceGetSMPTEResolution is CF_INLINE -> can't be pinvoke'd (it's not part of the library)
@@ -186,6 +199,11 @@ namespace AudioToolbox {
 			ticks = (byte) (resolution & 0x007F);
 		}
 
+		/// <param name="fps">To be added.</param>
+		///         <param name="ticks">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public short SetSmpteResolution (sbyte fps, byte ticks)
 		{
 			// MusicSequenceSetSMPTEResolution is CF_INLINE -> can't be pinvoke'd (it's not part of the library)
@@ -197,6 +215,9 @@ namespace AudioToolbox {
 		[DllImport (Constants.AudioToolboxLibrary)]
 		extern static /* CFDictionaryRef */ IntPtr MusicSequenceGetInfoDictionary (/* MusicSequence */ IntPtr inSequence);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public NSDictionary? GetInfoDictionary ()
 		{
 			return Runtime.GetNSObject<NSDictionary> (MusicSequenceGetInfoDictionary (Handle));
@@ -205,6 +226,9 @@ namespace AudioToolbox {
 		[DllImport (Constants.AudioToolboxLibrary)]
 		unsafe extern static /* OSStatus */ MusicPlayerStatus MusicSequenceNewTrack (/* MusicSequence */ IntPtr inSequence, /* MusicTrack* */ IntPtr* outTrack);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public MusicTrack? CreateTrack ()
 		{
 			IntPtr trackHandle;
@@ -237,6 +261,10 @@ namespace AudioToolbox {
 		[DllImport (Constants.AudioToolboxLibrary)]
 		unsafe extern static /* OSStatus */ MusicPlayerStatus MusicSequenceGetIndTrack (/* MusicSequence */ IntPtr inSequence, /* Uint32 */ int inTrackIndex, /* MusicTrack* */ IntPtr* outTrack);
 
+		/// <param name="trackIndex">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public MusicTrack? GetTrack (int trackIndex)
 		{
 			IntPtr outTrack;
@@ -251,6 +279,11 @@ namespace AudioToolbox {
 		[DllImport (Constants.AudioToolboxLibrary)]
 		unsafe extern static /* OSStatus */ MusicPlayerStatus MusicSequenceGetTrackIndex (/* MusicSequence */ IntPtr inSequence, /* MusicTrack */ IntPtr inTrack, /* UInt32* */ int* outTrackIndex);
 
+		/// <param name="track">To be added.</param>
+		///         <param name="index">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public MusicPlayerStatus GetTrackIndex (MusicTrack track, out int index)
 		{
 			if (track is null)
@@ -258,13 +291,18 @@ namespace AudioToolbox {
 
 			index = 0;
 			unsafe {
-				return MusicSequenceGetTrackIndex (Handle, track.Handle, (int*) Unsafe.AsPointer<int> (ref index));
+				MusicPlayerStatus status = MusicSequenceGetTrackIndex (Handle, track.Handle, (int*) Unsafe.AsPointer<int> (ref index));
+				GC.KeepAlive (track);
+				return status;
 			}
 		}
 
 		[DllImport (Constants.AudioToolboxLibrary)]
 		unsafe extern static /* OSStatus */ MusicPlayerStatus MusicSequenceGetTempoTrack (/* MusicSequence */ IntPtr sequence, /* MusicTrack */ IntPtr* outTrack);
 
+		/// <summary>Gets the track that controls tempo changes in a music sequence.</summary>
+		///         <returns>The track that controls tempo changes in a music sequence.</returns>
+		///         <remarks>To be added.</remarks>
 		public MusicTrack? GetTempoTrack ()
 		{
 			IntPtr outTrack;
@@ -280,17 +318,27 @@ namespace AudioToolbox {
 		[DllImport (Constants.AudioToolboxLibrary)]
 		extern static /* OSStatus */ MusicPlayerStatus MusicSequenceSetMIDIEndpoint (/* MusicSequence */ IntPtr inSequence, MidiEndpointRef inEndpoint);
 
+		/// <param name="endpoint">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public MusicPlayerStatus SetMidiEndpoint (MidiEndpoint endpoint)
 		{
 			if (endpoint is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (endpoint));
-			return MusicSequenceSetMIDIEndpoint (Handle, endpoint.handle);
+			MusicPlayerStatus status = MusicSequenceSetMIDIEndpoint (Handle, endpoint.handle);
+			GC.KeepAlive (endpoint);
+			return status;
 		}
 #endif // IOS
 
 		[DllImport (Constants.AudioToolboxLibrary)]
 		unsafe extern static /* OSStatus */ MusicPlayerStatus MusicSequenceGetSecondsForBeats (/* MusicSequence */ IntPtr inSequence, /* MusicTimeStamp */ double inBeats, /* Float64* */ double* outSeconds);
 
+		/// <param name="beats">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public double GetSecondsForBeats (double beats)
 		{
 			double sec;
@@ -304,6 +352,10 @@ namespace AudioToolbox {
 		[DllImport (Constants.AudioToolboxLibrary)]
 		unsafe extern static /* OSStatus */ MusicPlayerStatus MusicSequenceGetBeatsForSeconds (/* MusicSequence */ IntPtr inSequence, /* Float64 */ double inSeconds, /* MusicTimeStamp* */ double* outBeats);
 
+		/// <param name="seconds">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public double GetBeatsForSeconds (double seconds)
 		{
 			double beats;
@@ -314,35 +366,23 @@ namespace AudioToolbox {
 			return 0;
 		}
 
-#if NET
 		[DllImport (Constants.AudioToolboxLibrary)]
 		extern static unsafe /* OSStatus */ MusicPlayerStatus MusicSequenceSetUserCallback (/* MusicSequence */ IntPtr inSequence, delegate* unmanaged<IntPtr, IntPtr, IntPtr, double, IntPtr, double, double, void> inCallback, /* void * */ IntPtr inClientData);
-#else
-		[DllImport (Constants.AudioToolboxLibrary)]
-		extern static /* OSStatus */ MusicPlayerStatus MusicSequenceSetUserCallback (/* MusicSequence */ IntPtr inSequence, MusicSequenceUserCallbackProxy? inCallback, /* void * */ IntPtr inClientData);
-#endif
 
+		/// <param name="callback">The callback to call whenever a user event is encountered on the music track.</param>
+		///         <summary>Runs a callback whenever a user event is encountered on the music track.</summary>
+		///         <remarks>To be added.</remarks>
 		public void SetUserCallback (MusicSequenceUserCallback callback)
 		{
 			lock (userCallbackHandles)
 				userCallbackHandles [Handle] = callback;
 
-#if NET
 			unsafe {
 				MusicSequenceSetUserCallback (Handle, &UserCallbackProxy, IntPtr.Zero);
 			}
-#else
-			MusicSequenceSetUserCallback (Handle, userCallbackProxy, IntPtr.Zero);
-#endif
 		}
 
-#if NET
 		[UnmanagedCallersOnly]
-#else
-#if !MONOMAC
-		[MonoPInvokeCallback (typeof (MusicSequenceUserCallbackProxy))]
-#endif
-#endif
 		static void UserCallbackProxy (IntPtr inClientData, IntPtr inSequence, IntPtr inTrack, double inEventTime, IntPtr inEventData, double inStartSliceBeat, double inEndSliceBeat)
 		{
 			MusicSequenceUserCallback? userCallback;
@@ -361,6 +401,12 @@ namespace AudioToolbox {
 		[DllImport (Constants.AudioToolboxLibrary)]
 		unsafe extern static /* OSStatus */ MusicPlayerStatus MusicSequenceBeatsToBarBeatTime (/* MusicSequence */ IntPtr inSequence, /* MusicTimeStamp */ double inBeats, /* UInt32 */ int inSubbeatDivisor, CABarBeatTime* outBarBeatTime);
 
+		/// <param name="beats">To be added.</param>
+		///         <param name="subbeatDivisor">To be added.</param>
+		///         <param name="barBeatTime">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public MusicPlayerStatus BeatsToBarBeatTime (double beats, int subbeatDivisor, out CABarBeatTime barBeatTime)
 		{
 			barBeatTime = default (CABarBeatTime);
@@ -371,6 +417,11 @@ namespace AudioToolbox {
 
 		[DllImport (Constants.AudioToolboxLibrary)]
 		unsafe extern static /* OSStatus */ MusicPlayerStatus MusicSequenceBarBeatTimeToBeats (/* MusicSequence */ IntPtr inSequence, CABarBeatTime inBarBeatTime, /* MusicTimeStamp*/ double* outBeats);
+		/// <param name="barBeatTime">To be added.</param>
+		///         <param name="beats">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public MusicPlayerStatus BarBeatTimeToBeats (CABarBeatTime barBeatTime, out double beats)
 		{
 			beats = 0;
@@ -382,6 +433,9 @@ namespace AudioToolbox {
 		[DllImport (Constants.AudioToolboxLibrary)]
 		extern static /* OSStatus */ MusicPlayerStatus MusicSequenceReverse (/* MusicSequence */ IntPtr inSequence);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public MusicPlayerStatus Reverse ()
 		{
 			return MusicSequenceReverse (Handle);
@@ -390,23 +444,39 @@ namespace AudioToolbox {
 		[DllImport (Constants.AudioToolboxLibrary)]
 		extern static /* OSStatus */ MusicPlayerStatus MusicSequenceFileLoad (/* MusicSequence */ IntPtr inSequence, /* CFURLRef */ IntPtr inFileRef, MusicSequenceFileTypeID inFileTypeHint, MusicSequenceLoadFlags inFlags);
 
+		/// <param name="url">To be added.</param>
+		///         <param name="fileTypeId">To be added.</param>
+		///         <param name="loadFlags">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public MusicPlayerStatus LoadFile (NSUrl url, MusicSequenceFileTypeID fileTypeId, MusicSequenceLoadFlags loadFlags = 0)
 		{
 			if (url is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
 
-			return MusicSequenceFileLoad (Handle, url.Handle, fileTypeId, loadFlags);
+			MusicPlayerStatus status = MusicSequenceFileLoad (Handle, url.Handle, fileTypeId, loadFlags);
+			GC.KeepAlive (url);
+			return status;
 		}
 
 		[DllImport (Constants.AudioToolboxLibrary)]
 		extern static /* OSStatus */ MusicPlayerStatus MusicSequenceFileLoadData (/* MusicSequence */ IntPtr inSequence, /* CFDataRef */ IntPtr inData, MusicSequenceFileTypeID inFileTypeHint, MusicSequenceLoadFlags inFlags);
 
+		/// <param name="data">To be added.</param>
+		///         <param name="fileTypeId">To be added.</param>
+		///         <param name="loadFlags">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public MusicPlayerStatus LoadData (NSData data, MusicSequenceFileTypeID fileTypeId, MusicSequenceLoadFlags loadFlags = 0)
 		{
 			if (data is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (data));
 
-			return MusicSequenceFileLoadData (Handle, data.Handle, fileTypeId, loadFlags);
+			MusicPlayerStatus status = MusicSequenceFileLoadData (Handle, data.Handle, fileTypeId, loadFlags);
+			GC.KeepAlive (data);
+			return status;
 		}
 
 
@@ -414,18 +484,33 @@ namespace AudioToolbox {
 		extern static /* OSStatus */ MusicPlayerStatus MusicSequenceFileCreate (/* MusicSequence */ IntPtr inSequence, /* CFURLRef */ IntPtr inFileRef, MusicSequenceFileTypeID inFileType, MusicSequenceFileFlags inFlags, /* SInt16 */ ushort resolution);
 
 		// note: resolution should be short instead of ushort
+		/// <param name="url">To be added.</param>
+		///         <param name="fileType">To be added.</param>
+		///         <param name="flags">To be added.</param>
+		///         <param name="resolution">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public MusicPlayerStatus CreateFile (NSUrl url, MusicSequenceFileTypeID fileType, MusicSequenceFileFlags flags = 0, ushort resolution = 0)
 		{
 			if (url is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
 
-			return MusicSequenceFileCreate (Handle, url.Handle, fileType, flags, resolution);
+			MusicPlayerStatus status = MusicSequenceFileCreate (Handle, url.Handle, fileType, flags, resolution);
+			GC.KeepAlive (url);
+			return status;
 		}
 
 		[DllImport (Constants.AudioToolboxLibrary)]
 		unsafe extern static /* OSStatus */ MusicPlayerStatus MusicSequenceFileCreateData (/* MusicSequence */ IntPtr inSequence, MusicSequenceFileTypeID inFileType, MusicSequenceFileFlags inFlags, /* SInt16 */ ushort resolution, /* CFDataRef* */ IntPtr* outData);
 
 		// note: resolution should be short instead of ushort
+		/// <param name="fileType">To be added.</param>
+		///         <param name="flags">To be added.</param>
+		///         <param name="resolution">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public NSData? CreateData (MusicSequenceFileTypeID fileType, MusicSequenceFileFlags flags = 0, ushort resolution = 0)
 		{
 			IntPtr theData;
@@ -439,6 +524,8 @@ namespace AudioToolbox {
 	}
 
 	// typedef UInt32 -> MusicPlayer.h
+	/// <summary>An enumeration whose values specify the <see cref="P:AudioToolbox.MusicSequence.SequenceType" /> property of a <see cref="T:AudioToolbox.MusicSequence" />.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum MusicSequenceType : uint {
 		/// <summary>A normal MIDI music sequence. The tempo track defines beats-per-second.</summary>
 		Beats = 0x62656174,     // 'beat'

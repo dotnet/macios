@@ -15,19 +15,19 @@ using Foundation;
 using ObjCRuntime;
 
 namespace CoreGraphics {
-
-
-#if NET
+	/// <summary>Structure defining a 2D point.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[Serializable]
 	public struct CGPoint : IEquatable<CGPoint> {
 		nfloat x;
 		nfloat y;
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static readonly CGPoint Empty;
 
 #if !COREBUILD
@@ -74,26 +74,45 @@ namespace CoreGraphics {
 		}
 #endif
 
+		/// <param name="point">To be added.</param>
+		///         <param name="size">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static CGPoint Add (CGPoint point, CGSize size)
 		{
 			return point + size;
 		}
 
+		/// <param name="point">To be added.</param>
+		///         <param name="size">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static CGPoint Subtract (CGPoint point, CGSize size)
 		{
 			return point - size;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nfloat X {
 			get { return x; }
 			set { x = value; }
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nfloat Y {
 			get { return y; }
 			set { y = value; }
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsEmpty {
 			get { return x == 0.0 && y == 0.0; }
 		}
@@ -106,24 +125,40 @@ namespace CoreGraphics {
 		}
 
 #if !COREBUILD
+		/// <param name="x">To be added.</param>
+		///         <param name="y">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CGPoint (double x, double y)
 		{
 			this.x = (nfloat) x;
 			this.y = (nfloat) y;
 		}
 
+		/// <param name="x">To be added.</param>
+		///         <param name="y">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CGPoint (float x, float y)
 		{
 			this.x = x;
 			this.y = y;
 		}
 
+		/// <param name="point">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CGPoint (CGPoint point)
 		{
 			this.x = point.x;
 			this.y = point.y;
 		}
 
+		/// <param name="dictionaryRepresentation">To be added.</param>
+		///         <param name="point">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static bool TryParse (NSDictionary? dictionaryRepresentation, out CGPoint point)
 		{
 			if (dictionaryRepresentation is null) {
@@ -132,36 +167,45 @@ namespace CoreGraphics {
 			}
 			unsafe {
 				point = default;
-				return NativeDrawingMethods.CGPointMakeWithDictionaryRepresentation (dictionaryRepresentation.Handle, (CGPoint*) Unsafe.AsPointer<CGPoint> (ref point)) != 0;
+				bool result = NativeDrawingMethods.CGPointMakeWithDictionaryRepresentation (dictionaryRepresentation.Handle, (CGPoint*) Unsafe.AsPointer<CGPoint> (ref point)) != 0;
+				GC.KeepAlive (dictionaryRepresentation);
+				return result;
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public NSDictionary ToDictionary ()
 		{
 			return new NSDictionary (NativeDrawingMethods.CGPointCreateDictionaryRepresentation (this));
 		}
 #endif // !COREBUILD
 
+		/// <param name="obj">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override bool Equals (object? obj)
 		{
 			return (obj is CGPoint t) && Equals (t);
 		}
 
+		/// <param name="point">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool Equals (CGPoint point)
 		{
 			return point.x == x && point.y == y;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override int GetHashCode ()
 		{
-#if NET
 			return HashCode.Combine (x, y);
-#else
-			var hash = 23;
-			hash = hash * 31 + x.GetHashCode ();
-			hash = hash * 31 + y.GetHashCode ();
-			return hash;
-#endif
 		}
 
 #if !COREBUILD
@@ -171,19 +215,14 @@ namespace CoreGraphics {
 			y = Y;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override string? ToString ()
 		{
-#if NET
 			return CFString.FromHandle (NSStringFromCGPoint (this));
-#else
-			return String.Format ("{{X={0}, Y={1}}}",
-				x.ToString (CultureInfo.CurrentCulture),
-				y.ToString (CultureInfo.CurrentCulture)
-			);
-#endif
 		}
 
-#if NET
 #if MONOMAC
 		// <quote>When building for 64 bit systems, or building 32 bit like 64 bit, NSPoint is typedef’d to CGPoint.</quote>
 		// https://developer.apple.com/documentation/foundation/nspoint?language=objc
@@ -193,7 +232,6 @@ namespace CoreGraphics {
 		[DllImport (Constants.UIKitLibrary)]
 		extern static /* NSString* */ IntPtr NSStringFromCGPoint (CGPoint point);
 #endif // MONOMAC
-#endif // !NET
 #endif // !COREBUILD
 	}
 }

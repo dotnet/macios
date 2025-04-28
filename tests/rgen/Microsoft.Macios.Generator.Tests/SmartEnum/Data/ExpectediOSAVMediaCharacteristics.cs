@@ -400,6 +400,18 @@ static partial class AVMediaCharacteristicsExtensions
 	}
 
 	/// <summary>
+	/// Retrieves the <see cref="AVMediaCharacteristicsExtensions" /> value represented by the backing field value in <paramref name="handle" />.
+	/// </summary>
+	/// <param name="handle">The native handle with the name of the constant to retrieve.</param>
+	public static AVMediaCharacteristics? GetNullableValue (NativeHandle handle)
+	{
+		using var str = Runtime.GetNSObject<NSString> (handle);
+		if (str is null)
+			return null;
+		return GetValue (str);
+	}
+
+	/// <summary>
 	/// Converts an array of <see cref="AVMediaCharacteristicsExtensions" /> enum values into an array of their corresponding constants.
 	/// </summary>
 	/// <param name="values">The array of enum values to convert.</param>

@@ -28,10 +28,17 @@ namespace NotificationCenter {
 	[Deprecated (PlatformName.MacOSX, 11, 0)]
 	interface NCWidgetController {
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("widgetController")]
 		NCWidgetController GetWidgetController ();
 
+		/// <param name="flag">To be added.</param>
+		///         <param name="bundleID">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setHasContent:forWidgetWithBundleIdentifier:")]
 		void SetHasContent (bool flag, string bundleID);
 	}
@@ -45,13 +52,23 @@ namespace NotificationCenter {
 	[BaseType (typeof (NSObject))]
 	interface NCWidgetProviding {
 
+		/// <param name="completionHandler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("widgetPerformUpdateWithCompletionHandler:")]
 		void WidgetPerformUpdate (Action<NCUpdateResult> completionHandler);
 
+		/// <param name="defaultMarginInsets">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("widgetMarginInsetsForProposedMarginInsets:"), DelegateName ("NCWidgetProvidingMarginInsets"), DefaultValueFromArgument ("defaultMarginInsets")]
 		[Deprecated (PlatformName.iOS, 10, 0)]
 		UIEdgeInsets GetWidgetMarginInsets (UIEdgeInsets defaultMarginInsets);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[Export ("widgetAllowsEditing")]
 		bool WidgetAllowsEditing {
@@ -62,14 +79,22 @@ namespace NotificationCenter {
 #endif
 		}
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[Export ("widgetDidBeginEditing")]
 		void WidgetDidBeginEditing ();
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[Export ("widgetDidEndEditing")]
 		void WidgetDidEndEditing ();
 
+		/// <param name="activeDisplayMode">To be added.</param>
+		///         <param name="maxSize">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[Export ("widgetActiveDisplayModeDidChange:withMaximumSize:")]
 		void WidgetActiveDisplayModeDidChange (NCWidgetDisplayMode activeDisplayMode, CGSize maxSize);
@@ -99,15 +124,28 @@ namespace NotificationCenter {
 	[Category]
 	[BaseType (typeof (NSExtensionContext))]
 	interface NSExtensionContext_NCWidgetAdditions {
+		/// <summary>Returns the largest available display mode for the widget.</summary>
+		/// <returns>The largest available display mode for the widget.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("widgetLargestAvailableDisplayMode")]
 		NCWidgetDisplayMode GetWidgetLargestAvailableDisplayMode ();
 
+		/// <param name="mode">The display mode to set.</param>
+		/// <summary>Sets the largest available display mode for the widget.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("setWidgetLargestAvailableDisplayMode:")]
 		void SetWidgetLargestAvailableDisplayMode (NCWidgetDisplayMode mode);
 
+		/// <summary>Returns the current display mode for the widget.</summary>
+		/// <returns>The current display mode for the widget.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("widgetActiveDisplayMode")]
 		NCWidgetDisplayMode GetWidgetActiveDisplayMode ();
 
+		/// <param name="displayMode">The display mode to query.</param>
+		/// <summary>Returns the maximum size of the widget for the specified display mode.</summary>
+		/// <returns>The maximum size of the widget for the specified display mode.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("widgetMaximumSizeForDisplayMode:")]
 		CGSize GetWidgetMaximumSize (NCWidgetDisplayMode displayMode);
 	}
@@ -138,30 +176,61 @@ namespace NotificationCenter {
 	[Deprecated (PlatformName.MacOSX, 11, 0)]
 	[BaseType (typeof (NSViewController), Delegates = new string [] { "Delegate" }, Events = new Type [] { typeof (NCWidgetListViewDelegate) })]
 	interface NCWidgetListViewController {
+		/// <param name="nibNameOrNull">To be added.</param>
+		/// <param name="nibBundleOrNull">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithNibName:bundle:")]
 		NativeHandle Constructor ([NullAllowed] string nibNameOrNull, [NullAllowed] NSBundle nibBundleOrNull);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("delegate", ArgumentSemantic.Weak)]
 		INCWidgetListViewDelegate Delegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("contents", ArgumentSemantic.Copy)]
 		NSViewController [] Contents { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("minimumVisibleRowCount", ArgumentSemantic.Assign)]
 		nuint MinimumVisibleRowCount { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("hasDividerLines")]
 		bool HasDividerLines { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("editing")]
 		bool Editing { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("showsAddButtonWhenEditing")]
 		bool ShowsAddButtonWhenEditing { get; set; }
 
+		/// <param name="row">To be added.</param>
+		/// <param name="makeIfNecesary">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("viewControllerAtRow:makeIfNecessary:")]
 		NSViewController GetViewController (nuint row, bool makeIfNecesary);
 
+		/// <param name="viewController">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("rowForViewController:")]
 		nuint GetRow (NSViewController viewController);
 	}
@@ -174,23 +243,75 @@ namespace NotificationCenter {
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface NCWidgetListViewDelegate {
+		/// <param name="list">To be added.</param>
+		/// <param name="row">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>To be added.</summary>
+			<value>To be added.</value>
+			<remarks>To be added.</remarks>
+			""")]
 		[Abstract]
 		[Export ("widgetList:viewControllerForRow:"), DelegateName ("NCWidgetListViewGetController"), DefaultValue (null)]
 		NSViewController GetViewControllerForRow (NCWidgetListViewController list, nuint row);
 
+		/// <param name="list">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>To be added.</summary>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("widgetListPerformAddAction:"), DelegateName ("NCWidgetListViewController")]
 		void PerformAddAction (NCWidgetListViewController list);
 
+		/// <param name="list">To be added.</param>
+		/// <param name="row">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>To be added.</summary>
+			<value>To be added.</value>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("widgetList:shouldReorderRow:"), DelegateName ("NCWidgetListViewControllerShouldReorderRow"), DefaultValue (false)]
 		bool ShouldReorderRow (NCWidgetListViewController list, nuint row);
 
-		[Export ("widgetList:didReorderRow:toRow:"), EventArgs ("NCWidgetListViewControllerDidReorder"), DefaultValue (false)]
+		/// <param name="list">To be added.</param>
+		/// <param name="row">To be added.</param>
+		/// <param name="newIndex">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
+		[Export ("widgetList:didReorderRow:toRow:"), EventArgs ("NCWidgetListViewControllerDidReorder", XmlDocs = """
+			<summary>To be added.</summary>
+			<remarks>To be added.</remarks>
+			"""), DefaultValue (false)]
 		void DidReorderRow (NCWidgetListViewController list, nuint row, nuint newIndex);
 
+		/// <param name="list">To be added.</param>
+		/// <param name="row">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>To be added.</summary>
+			<value>To be added.</value>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("widgetList:shouldRemoveRow:"), DelegateName ("NCWidgetListViewControllerShouldRemoveRow"), DefaultValue (false)]
 		bool ShouldRemoveRow (NCWidgetListViewController list, nuint row);
 
-		[Export ("widgetList:didRemoveRow:"), EventArgs ("NCWidgetListViewControllerDidRemoveRow"), DefaultValue (false)]
+		/// <param name="list">To be added.</param>
+		/// <param name="row">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
+		[Export ("widgetList:didRemoveRow:"), EventArgs ("NCWidgetListViewControllerDidRemoveRow", XmlDocs = """
+			<summary>To be added.</summary>
+			<remarks>To be added.</remarks>
+			"""), DefaultValue (false)]
 		void DidRemoveRow (NCWidgetListViewController list, nuint row);
 	}
 
@@ -198,24 +319,43 @@ namespace NotificationCenter {
 	[Deprecated (PlatformName.MacOSX, 11, 0)]
 	[BaseType (typeof (NSViewController), Delegates = new string [] { "Delegate" }, Events = new Type [] { typeof (NCWidgetSearchViewDelegate) })]
 	interface NCWidgetSearchViewController {
+		/// <param name="nibNameOrNull">To be added.</param>
+		/// <param name="nibBundleOrNull">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithNibName:bundle:")]
 		NativeHandle Constructor ([NullAllowed] string nibNameOrNull, [NullAllowed] NSBundle nibBundleOrNull);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("delegate", ArgumentSemantic.Weak)]
 		INCWidgetSearchViewDelegate Delegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("searchResults", ArgumentSemantic.Copy)]
 		NSObject [] SearchResults { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("searchDescription")]
 		string SearchDescription { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("searchResultsPlaceholderString")]
 		string SearchResultsPlaceholderString { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("searchResultKeyPath")]
 		string SearchResultKeyPath { get; set; }
@@ -234,17 +374,38 @@ namespace NotificationCenter {
 		[Export ("widgetSearch:searchForTerm:maxResults:"), EventArgs ("NSWidgetSearchForTerm"), DefaultValue (false)]
 		void SearchForTearm (NCWidgetSearchViewController controller, string searchTerm, nuint max);
 #else
+		/// <param name="controller">To be added.</param>
+		/// <param name="searchTerm">To be added.</param>
+		/// <param name="max">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
-		[Export ("widgetSearch:searchForTerm:maxResults:"), EventArgs ("NSWidgetSearchForTerm"), DefaultValue (false)]
+		[Export ("widgetSearch:searchForTerm:maxResults:"), EventArgs ("NSWidgetSearchForTerm", XmlDocs = """
+			<summary>To be added.</summary>
+			<remarks>To be added.</remarks>
+			"""), DefaultValue (false)]
 		void SearchForTerm (NCWidgetSearchViewController controller, string searchTerm, nuint max);
 #endif
 
+		/// <param name="controller">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Abstract]
-		[Export ("widgetSearchTermCleared:"), EventArgs ("NSWidgetSearchViewController"), DefaultValue (false)]
+		[Export ("widgetSearchTermCleared:"), EventArgs ("NSWidgetSearchViewController", XmlDocs = """
+			<summary>To be added.</summary>
+			<remarks>To be added.</remarks>
+			"""), DefaultValue (false)]
 		void TermCleared (NCWidgetSearchViewController controller);
 
+		/// <param name="controller">To be added.</param>
+		///         <param name="obj">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Abstract]
-		[Export ("widgetSearch:resultSelected:"), EventArgs ("NSWidgetSearchResultSelected"), DefaultValue (false)]
+		[Export ("widgetSearch:resultSelected:"), EventArgs ("NSWidgetSearchResultSelected", XmlDocs = """
+			<summary>To be added.</summary>
+			<remarks>To be added.</remarks>
+			"""), DefaultValue (false)]
 		void ResultSelected (NCWidgetSearchViewController controller, NSObject obj);
 	}
 }

@@ -24,8 +24,11 @@ namespace IdentityLookup {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum ILMessageFilterAction : long {
+		/// <summary>Indicates that there is not enough information to choose an action.</summary>
 		None = 0,
+		/// <summary>Indicates that the message will be allowed.</summary>
 		Allow = 1,
+		/// <summary>Indicates that the message will be filtered.</summary>
 		Junk = 2,
 #if !NET
 		[Obsolete ("Use 'Junk' instead.")]
@@ -45,10 +48,15 @@ namespace IdentityLookup {
 	[ErrorDomain ("ILMessageFilterErrorDomain")]
 	[Native]
 	public enum ILMessageFilterError : long {
+		/// <summary>To be added.</summary>
 		System = 1,
+		/// <summary>To be added.</summary>
 		InvalidNetworkUrl = 2,
+		/// <summary>To be added.</summary>
 		NetworkUrlUnauthorized = 3,
+		/// <summary>To be added.</summary>
 		NetworkRequestFailed = 4,
+		/// <summary>To be added.</summary>
 		RedundantNetworkDeferral = 5,
 	}
 
@@ -58,9 +66,13 @@ namespace IdentityLookup {
 	[MacCatalyst (13, 1)]
 	[Native]
 	enum ILClassificationAction : long {
+		/// <summary>Indicates that no action should be taken.</summary>
 		None = 0,
+		/// <summary>Indicates that the user reported that the message is not junk.</summary>
 		ReportNotJunk = 1,
+		/// <summary>Indicates that the user reported that the message is junk.</summary>
 		ReportJunk = 2,
+		/// <summary>Indicates that the user reported that the message is junk, and that they want to block the sender.</summary>
 		ReportJunkAndBlockSender = 3,
 	}
 
@@ -100,7 +112,16 @@ namespace IdentityLookup {
 	interface ILMessageFilterExtensionContext {
 
 		[Export ("deferQueryRequestToNetworkWithCompletion:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Defers the query request to the network service for the extension and runs a handler when the operation is complete.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous DeferQueryRequestToNetwork operation.  The value of the TResult parameter is of type System.Action&lt;IdentityLookup.ILNetworkResponse,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The DeferQueryRequestToNetworkAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void DeferQueryRequestToNetwork (Action<ILNetworkResponse, NSError> completion);
 	}
 
@@ -113,6 +134,11 @@ namespace IdentityLookup {
 	[Protocol]
 	interface ILMessageFilterQueryHandling {
 
+		/// <param name="queryRequest">The query for the message.</param>
+		/// <param name="context">The app extension context for deferring requests.</param>
+		/// <param name="completion">A handler that is run after the operation completes.</param>
+		/// <summary>Evaluates the specified request in the provided context, and runs a handler when the operation is complete.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleQueryRequest:context:completion:")]
 		void HandleQueryRequest (ILMessageFilterQueryRequest queryRequest, ILMessageFilterExtensionContext context, Action<ILMessageFilterQueryResponse> completion);

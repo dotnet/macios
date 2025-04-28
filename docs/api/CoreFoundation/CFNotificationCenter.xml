@@ -1,0 +1,24 @@
+<Documentation>
+  <Docs DocId="M:CoreFoundation.CFNotificationCenter.AddObserver(System.String,ObjCRuntime.INativeObject,System.Action{System.String,Foundation.NSDictionary},CoreFoundation.CFNotificationSuspensionBehavior)">
+        <param name="name">Name of the notification to observer, or <see langword="null" /> if you want the notificationHandler to be invoked for all notifications posted.   <see langword="null" /> is not allowed for the Darwin notification center.</param>
+        <param name="objectToObserve">For non-Darwin notification centers, the object to observe.   If <see langword="null" /> is passed, then the notificationHandler is invoked for all objects that have a notification named name posted.</param>
+        <param name="notificationHandler">Handler to invoke when a notification is posted.</param>
+        <param name="suspensionBehavior">Determines how a notification is processed when the application is in the background.</param>
+        <summary>Adds an observer to the notification center.</summary>
+        <returns>Token representing the notification, use this token if you want to later remove this observer.</returns>
+        <remarks>
+          <para>
+	    Registers a method to be invoked when a notification is posted to a specific object.
+	  </para>
+          <para>
+	    The handler is invoked on the same thread that posted the
+	    message, or from the loop that pumped the notification.
+	    If your code needs to run in a specific thread, you should
+	    take care of that in your handler.
+	  </para>
+          <para>
+	    Use the returned value as a token to <see cref="M:CoreFoundation.CFNotificationCenter.RemoveObserver(CoreFoundation.CFNotificationObserverToken)" /> if you want to stop getting notifications.
+	  </para>
+        </remarks>
+      </Docs>
+</Documentation>

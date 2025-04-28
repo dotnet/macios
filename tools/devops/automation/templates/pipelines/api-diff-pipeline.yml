@@ -22,11 +22,6 @@ parameters:
   type: boolean
   default: false
 
-- name: testConfigurations
-  displayName: Test configurations to run
-  type: object
-  default: []
-
 resources:
   repositories:
   - repository: self

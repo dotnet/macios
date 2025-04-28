@@ -10,6 +10,7 @@
 using System;
 
 namespace ObjCRuntime {
+	/// <include file="../../docs/api/ObjCRuntime/TransientAttribute.xml" path="/Documentation/Docs[@DocId='T:ObjCRuntime.TransientAttribute']/*" />
 	[AttributeUsage (AttributeTargets.Parameter, AllowMultiple = false)]
 	public sealed class TransientAttribute : Attribute {
 	}

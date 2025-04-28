@@ -1,0 +1,30 @@
+<Documentation>
+  <Docs DocId="T:AudioUnit.RenderDelegate">
+    <param name="actionFlags">Context for the operation of this call.</param>
+    <param name="timeStamp">Timestamp for this render operation.</param>
+    <param name="busNumber">Bus number.</param>
+    <param name="numberFrames">Number of frames.</param>
+    <param name="data">AudioBuffers that will hold the data.</param>
+    <summary>Signature used by AudioUnit callbacks that provide audio samples to an AudioUnit.</summary>
+    <returns>An OSX/iOS Status code.</returns>
+    <remarks>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
+void SetupRender ()
+{
+    var convertNode = auGraph.AddNode (AudioComponentDescription.CreateConverter (AudioTypeConverter.AU));
+    var convertUnit = auGraph.GetNodeInfo (convertToEffectNode);
+
+    convertUnit.SetRenderCallback (ConvertInputRenderCallback, AudioUnitScopeType.Global) 
+}
+
+AudioUnitStatus ConvertInputRenderCallback (AudioUnitRenderActionFlags actionFlags, AudioTimeStamp timeStamp, uint busNumber, uint numberFrames, AudioBuffers data)
+{
+    data.SetData (0, preRenderData);
+    return AudioUnitStatus.NoError;
+}
+]]></code>
+      </example>
+    </remarks>
+  </Docs>
+</Documentation>

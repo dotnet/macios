@@ -45,16 +45,28 @@ namespace Foundation {
 		}
 
 #if !NO_SYSTEM_DRAWING
+		/// <param name="rect">To be added.</param>
+		///         <summary>Creates an NSValue that wraps a RectangleF object.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSValue FromRectangleF (RectangleF rect)
 		{
 			return FromCGRect (rect);
 		}
 
+		/// <param name="size">To be added.</param>
+		///         <summary>Creates an NSValue that wraps a SizeF object.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSValue FromSizeF (SizeF size)
 		{
 			return FromCGSize (size);
 		}
 
+		/// <param name="point">To be added.</param>
+		///         <summary>Creates an NSValue that wraps a PointF object.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSValue FromPointF (PointF point)
 		{
 			return FromCGPoint (point);

@@ -29,13 +29,23 @@ using System.Runtime.Versioning;
 #nullable enable
 
 namespace AppKit {
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct NSEdgeInsets {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public nfloat Top;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public nfloat Left;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public nfloat Bottom;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public nfloat Right;
 
 		public NSEdgeInsets (nfloat top, nfloat left, nfloat bottom, nfloat right)

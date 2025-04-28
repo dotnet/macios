@@ -7,8 +7,6 @@
 // Copyright 2013 Xamarin Inc. All rights reserved.
 //
 
-#if !__WATCHOS__
-
 using System;
 using System.Drawing;
 using CoreGraphics;
@@ -44,7 +42,6 @@ namespace MonoTouchFixtures.SpriteKit {
 			TestRuntime.AssertSystemVersion (ApplePlatform.iOS, 7, 0, throwIfOtherPlatform: false);
 			TestRuntime.AssertSystemVersion (ApplePlatform.TVOS, 9, 0, throwIfOtherPlatform: false);
 			TestRuntime.AssertSystemVersion (ApplePlatform.MacOSX, 10, 9, throwIfOtherPlatform: false);
-			TestRuntime.AssertSystemVersion (ApplePlatform.WatchOS, 3, 0, throwIfOtherPlatform: false);
 		}
 
 		[Test]
@@ -115,5 +112,3 @@ namespace MonoTouchFixtures.SpriteKit {
 		}
 	}
 }
-
-#endif // !__WATCHOS__

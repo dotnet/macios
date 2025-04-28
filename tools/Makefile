@@ -22,6 +22,6 @@ ifdef INCLUDE_MTOUCH
 SUBDIRS += mtouch
 endif
 
-SUBDIRS+=mlaunch siminstaller
+SUBDIRS+=mlaunch
 
 SUBDIRS += dotnet-linker

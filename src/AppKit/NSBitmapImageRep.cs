@@ -47,11 +47,18 @@ namespace AppKit {
 			}
 		}
 
+		/// <param name="storageType">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public NSData RepresentationUsingTypeProperties (NSBitmapImageFileType storageType)
 		{
 			return RepresentationUsingTypeProperties (storageType, null);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSBitmapImageRep IncrementalLoader ()
 		{
 			return new NSBitmapImageRep (NSObjectFlag.Empty, NSObjectFlag.Empty);

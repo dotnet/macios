@@ -28,7 +28,6 @@ namespace VideoToolbox {
 	[SupportedOSPlatform ("macos13.0")]
 	[SupportedOSPlatform ("ios16.0")]
 	[SupportedOSPlatform ("maccatalyst16.0")]
-	[SupportedOSPlatform ("watchos9.0")]
 	[SupportedOSPlatform ("tvos16.0")]
 #else
 	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
@@ -75,6 +74,7 @@ namespace VideoToolbox {
 			IntPtr ret;
 			unsafe {
 				result = VTPixelRotationSessionCreate (allocator.GetHandle (), &ret);
+				GC.KeepAlive (allocator);
 			}
 
 			if (result == VTStatus.Ok && ret != IntPtr.Zero)
@@ -97,7 +97,10 @@ namespace VideoToolbox {
 			if (destinationBuffer is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (destinationBuffer));
 
-			return VTPixelRotationSessionRotateImage (GetCheckedHandle (), sourceBuffer.Handle, destinationBuffer.Handle);
+			VTStatus status = VTPixelRotationSessionRotateImage (GetCheckedHandle (), sourceBuffer.Handle, destinationBuffer.Handle);
+			GC.KeepAlive (sourceBuffer);
+			GC.KeepAlive (destinationBuffer);
+			return status;
 		}
 
 		public VTStatus SetRotationProperties (VTPixelRotationProperties options)

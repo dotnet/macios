@@ -1184,7 +1184,7 @@ namespace GameplayKit {
 
 		[Internal]
 		[Export ("initWithPoints:count:radius:cyclical:")]
-		IntPtr InitWithPoints (IntPtr points, nuint count, float radius, bool cyclical);
+		IntPtr _InitWithPoints (IntPtr points, nuint count, float radius, bool cyclical);
 
 		[MacCatalyst (13, 1)]
 		[Static, Internal]
@@ -1194,7 +1194,7 @@ namespace GameplayKit {
 		[MacCatalyst (13, 1)]
 		[Internal]
 		[Export ("initWithFloat3Points:count:radius:cyclical:")]
-		IntPtr InitWithFloat3Points (IntPtr points, nuint count, float radius, bool cyclical);
+		IntPtr _InitWithFloat3Points (IntPtr points, nuint count, float radius, bool cyclical);
 
 		[Static]
 		[Export ("pathWithGraphNodes:radius:")]

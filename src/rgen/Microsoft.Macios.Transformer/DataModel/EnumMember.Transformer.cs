@@ -14,6 +14,12 @@ readonly partial struct EnumMember {
 	/// </summary>
 	public FieldInfo? FieldInfo { get; init; }
 
+
+	/// <summary>
+	/// Return the native selector that references the enum value.
+	/// </summary>
+	public string? Selector => FieldInfo?.FieldData?.SymbolName;
+
 	public EnumMember (string name,
 		string libraryName,
 		string? libraryPath,

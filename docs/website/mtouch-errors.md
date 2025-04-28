@@ -3555,11 +3555,7 @@ This indicates something is wrong in the build process. Please file a new issue 
 
 This indicates an API wasn't bound correctly. If this is an API exposed by Xamarin, please file a new issue on [GitHub](https://github.com/xamarin/xamarin-macios/issues/new). If it's a third-party binding, please contact the vendor.
 
-<a name="MT8010"></a>
-
-### MT8010: Native type size mismatch between Xamarin.[iOS|Mac].dll and the executing architecture. Xamarin.[iOS|Mac].dll was built for *-bit, while the current process is *-bit.
-
-This indicates something is wrong in the build process. Please file a new issue on [GitHub](https://github.com/xamarin/xamarin-macios/issues/new).
+<!-- MT8010 is not reported anymore -->
 
 <a name="MT8011"></a>
 

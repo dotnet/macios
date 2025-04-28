@@ -37,27 +37,28 @@ using Foundation;
 using CoreFoundation;
 using CoreGraphics;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreText {
 
 	#region Typesetter Values
 
-#if NET
+	/// <summary>Options applicable to a <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:CoreText:CTTypesetter&amp;scope=Xamarin" title="T:CoreText:CTTypesetter">T:CoreText:CTTypesetter</a></format> object.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTTypesetterOptions {
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTTypesetterOptions ()
 			: this (new NSMutableDictionary ())
 		{
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTTypesetterOptions (NSDictionary dictionary)
 		{
 			if (dictionary is null)
@@ -70,7 +71,6 @@ namespace CoreText {
 		///         <remarks>To be added.</remarks>
 		public NSDictionary Dictionary { get; private set; }
 
-#if NET
 		/// <summary>Developers should not use this deprecated property. </summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -79,9 +79,9 @@ namespace CoreText {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		[ObsoletedOSPlatform ("ios6.0")]
-#else
-		[Deprecated (PlatformName.iOS, 6, 0)]
-#endif
+		[ObsoletedOSPlatform ("tvos")]
+		[ObsoletedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("maccatalyst")]
 		public bool DisableBidiProcessing {
 			get {
 				return CFDictionary.GetBooleanValue (Dictionary.Handle,
@@ -103,7 +103,6 @@ namespace CoreText {
 			set { Adapter.SetValue (Dictionary, CTTypesetterOptionKey.ForceEmbeddingLevel, value); }
 		}
 
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -111,7 +110,6 @@ namespace CoreText {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public bool AllowUnboundedLayout {
 			get => CFDictionary.GetBooleanValue (Dictionary.Handle, CTTypesetterOptionKey.AllowUnboundedLayout.Handle);
 			set {
@@ -131,12 +129,12 @@ namespace CoreText {
 	}
 	#endregion
 
-#if NET
+	/// <summary>A class that performs line layout.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTTypesetter : NativeObject {
 		[Preserve (Conditional = true)]
 		internal CTTypesetter (NativeHandle handle, bool owns)
@@ -147,22 +145,36 @@ namespace CoreText {
 		#region Typesetter Creation
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern IntPtr CTTypesetterCreateWithAttributedString (IntPtr @string);
+		/// <param name="value">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTTypesetter (NSAttributedString value)
-			: base (CTTypesetterCreateWithAttributedString (Runtime.ThrowOnNull (value, nameof (value)).Handle), true, true)
+			: base (CTTypesetterCreateWithAttributedString (value.GetNonNullHandle (nameof (value))), true, true)
 		{
+			GC.KeepAlive (value);
 		}
 
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern IntPtr CTTypesetterCreateWithAttributedStringAndOptions (IntPtr @string, IntPtr options);
+		/// <param name="value">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTTypesetter (NSAttributedString value, CTTypesetterOptions? options)
-			: base (CTTypesetterCreateWithAttributedStringAndOptions (Runtime.ThrowOnNull (value, nameof (value)).Handle, options.GetHandle ()), true, true)
+			: base (CTTypesetterCreateWithAttributedStringAndOptions (value.GetNonNullHandle (nameof (value)), options.GetHandle ()), true, true)
 		{
+			GC.KeepAlive (value);
 		}
 		#endregion
 
 		#region Typeset Line Creation
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern IntPtr CTTypesetterCreateLineWithOffset (IntPtr typesetter, NSRange stringRange, double offset);
+		/// <param name="stringRange">To be added.</param>
+		///         <param name="offset">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CTLine? GetLine (NSRange stringRange, double offset)
 		{
 			var h = CTTypesetterCreateLineWithOffset (Handle, stringRange, offset);
@@ -175,6 +187,10 @@ namespace CoreText {
 
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern IntPtr CTTypesetterCreateLine (IntPtr typesetter, NSRange stringRange);
+		/// <param name="stringRange">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CTLine? GetLine (NSRange stringRange)
 		{
 			var h = CTTypesetterCreateLine (Handle, stringRange);
@@ -189,6 +205,12 @@ namespace CoreText {
 		#region Typeset Line Breaking
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern nint CTTypesetterSuggestLineBreakWithOffset (IntPtr typesetter, nint startIndex, double width, double offset);
+		/// <param name="startIndex">To be added.</param>
+		///         <param name="width">To be added.</param>
+		///         <param name="offset">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public nint SuggestLineBreak (int startIndex, double width, double offset)
 		{
 			return CTTypesetterSuggestLineBreakWithOffset (Handle, startIndex, width, offset);
@@ -196,6 +218,11 @@ namespace CoreText {
 
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern nint CTTypesetterSuggestLineBreak (IntPtr typesetter, nint startIndex, double width);
+		/// <param name="startIndex">To be added.</param>
+		///         <param name="width">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public nint SuggestLineBreak (int startIndex, double width)
 		{
 			return CTTypesetterSuggestLineBreak (Handle, startIndex, width);
@@ -203,6 +230,12 @@ namespace CoreText {
 
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern nint CTTypesetterSuggestClusterBreakWithOffset (IntPtr typesetter, nint startIndex, double width, double offset);
+		/// <param name="startIndex">To be added.</param>
+		///         <param name="width">To be added.</param>
+		///         <param name="offset">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public nint SuggestClusterBreak (int startIndex, double width, double offset)
 		{
 			return CTTypesetterSuggestClusterBreakWithOffset (Handle, startIndex, width, offset);
@@ -210,6 +243,11 @@ namespace CoreText {
 
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern nint CTTypesetterSuggestClusterBreak (IntPtr typesetter, nint startIndex, double width);
+		/// <param name="startIndex">To be added.</param>
+		///         <param name="width">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public nint SuggestClusterBreak (int startIndex, double width)
 		{
 			return CTTypesetterSuggestClusterBreak (Handle, startIndex, width);

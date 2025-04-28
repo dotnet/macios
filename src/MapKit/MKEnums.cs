@@ -20,6 +20,10 @@ using ObjCRuntime;
 namespace MapKit {
 
 	// NSUInteger -> MKDirectionsTypes.h
+	/// <summary>An enumeration whose values specify the routing type for directions requests.</summary>
+	/// <remarks>
+	///       <para>The <see cref="T:MapKit.MKDirectionsTransportType" /> used as the <see cref="P:MapKit.MKDirectionsRequest.TransportType" /> property of a <see cref="T:MapKit.MKDirectionsRequest" /> must match the values specified in the application's <c>info.plist</c> (see <see cref="T:MapKit.MKDirections" />).</para>
+	///     </remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum MKDirectionsTransportType : ulong {
@@ -34,6 +38,8 @@ namespace MapKit {
 	}
 
 	// NSUInteger -> MKTypes.h
+	/// <summary>The type of map.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MKMapType : ulong {
@@ -53,6 +59,8 @@ namespace MapKit {
 	}
 
 	// NSUInteger -> MKDistanceFormatter.h
+	/// <summary>An enumeration whose values specify the units used with <see cref="T:MapKit.MKDistanceFormatter" />.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum MKDistanceFormatterUnits : ulong {
@@ -67,6 +75,8 @@ namespace MapKit {
 	}
 
 	// NSUInteger -> MKDistanceFormatter.h
+	/// <summary>An enumeration whose values specify the length of a <see cref="T:MapKit.MKDistanceFormatter" /> string.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum MKDistanceFormatterUnitStyle : ulong {
@@ -79,6 +89,8 @@ namespace MapKit {
 	}
 
 	// NSInteger -> MKMapView.h
+	/// <summary>An enumeration whose value specify whether the overlay should render above roads, but beneath labels, etc..</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MKOverlayLevel : long {
@@ -89,6 +101,8 @@ namespace MapKit {
 	}
 
 	// NSUInteger -> MKTypes.h
+	/// <summary>An enumeration whose values represent various errors that can occur with <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Map%20Kit%20MKDirections%20Calculate%20Route&amp;scope=Xamarin" title="T:MapKit.MKDirections.CalculateRoute">T:MapKit.MKDirections.CalculateRoute</a></format> and <see cref="M:MapKit.MKDirections.CalculateETA(MapKit.MKETAHandler)" />.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	[ErrorDomain ("MKErrorDomain")]
@@ -142,6 +156,8 @@ namespace MapKit {
 	}
 
 	// NSUInteger -> MKTypes.h
+	/// <summary>An enumeration of valid tracking modes.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MKUserTrackingMode : ulong {
@@ -158,6 +174,8 @@ namespace MapKit {
 #endif
 	}
 
+	/// <summary>Enumerates values that control whether search queries, in addition to place results, are included in completion lists.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'MKLocalSearchCompleterResultType' instead.")]
 	[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use 'MKLocalSearchCompleterResultType' instead.")]
@@ -171,6 +189,8 @@ namespace MapKit {
 		Only,
 	}
 
+	/// <summary>Enumerates collision detection modes.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MKAnnotationViewCollisionMode : long {
@@ -194,6 +214,8 @@ namespace MapKit {
 		Trailing,
 	}
 
+	/// <summary>Enumerates visibility behavior for marker titles.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MKFeatureVisibility : long {

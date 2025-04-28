@@ -35,6 +35,7 @@ namespace MediaAccessibility {
 			IntPtr e;
 			unsafe {
 				result = MAImageCaptioningCopyCaption (url.Handle, &e);
+				GC.KeepAlive (url);
 			}
 			error = e == IntPtr.Zero ? null : new NSError (e);
 			return CFString.FromHandle (result, releaseHandle: true);
@@ -54,6 +55,7 @@ namespace MediaAccessibility {
 				IntPtr e;
 				unsafe {
 					result = MAImageCaptioningSetCaption (url.Handle, s, &e) != 0;
+					GC.KeepAlive (url);
 				}
 				error = e == IntPtr.Zero ? null : new NSError (e);
 				return result;

@@ -36,6 +36,10 @@ using CoreLocation;
 
 namespace MapKit {
 	public partial class MKGeodesicPolyline {
+		/// <param name="points">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static unsafe MKGeodesicPolyline FromPoints (MKMapPoint [] points)
 		{
 			if (points is null)
@@ -48,6 +52,10 @@ namespace MapKit {
 			}
 		}
 
+		/// <param name="coords">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static unsafe MKGeodesicPolyline FromCoordinates (CLLocationCoordinate2D [] coords)
 		{
 			if (coords is null)

@@ -33,6 +33,8 @@ using XColor = UIKit.UIColor;
 #endif
 
 namespace Foundation {
+	/// <summary>A <see cref="T:Foundation.DictionaryContainer" /> that provides document attributes for <see cref="T:Foundation.NSAttributedString" />s.</summary>
+	///     <remarks>To be added.</remarks>
 	public partial class NSAttributedStringDocumentAttributes : DictionaryContainer {
 #if !COREBUILD
 		/// <summary>To be added.</summary>
@@ -142,6 +144,9 @@ namespace Foundation {
 
 #if __MACOS__
 #if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[UnsupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
@@ -159,6 +164,9 @@ namespace Foundation {
 
 #if __MACOS__
 #if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[UnsupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
@@ -176,6 +184,9 @@ namespace Foundation {
 
 #if __MACOS__
 #if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[UnsupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
@@ -193,6 +204,9 @@ namespace Foundation {
 
 #if __MACOS__
 #if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[UnsupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
@@ -210,6 +224,9 @@ namespace Foundation {
 
 #if __MACOS__
 #if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[UnsupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("maccatalyst")]

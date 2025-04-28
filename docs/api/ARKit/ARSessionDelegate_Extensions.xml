@@ -1,0 +1,12 @@
+<Documentation>
+  <Docs DocId="M:ARKit.ARSessionDelegate_Extensions.DidUpdateFrame(ARKit.IARSessionDelegate,ARKit.ARSession,ARKit.ARFrame)">
+        
+        <param name="session">The session that is supplying the information for the event.</param>
+        <param name="frame">The frame that was updated.</param>
+        <summary>Indicates that <paramref name="frame" /> has been updated due to tracking.</summary>
+        <remarks>
+          <para>Developers who override this method must be sure to call <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20IDisposable%20Dispose&amp;scope=Xamarin" title="M:System.IDisposable.Dispose*">M:System.IDisposable.Dispose*</a></format> on the <paramref name="frame" /> when they have finished processing. Internally, ARKit only generates a new <see cref="T:ARKit.ARFrame" /> object when there are no more references to an existing frame.
+          If <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20IDisposable%20Dispose&amp;scope=Xamarin" title="M:System.IDisposable.Dispose*">M:System.IDisposable.Dispose*</a></format> is not called, ARKit will not produce until the GC collects the <paramref name="frame" />. This typically appears as a frozen, non-responsive, or "severely stuttering" video feed.</para>
+        </remarks>
+      </Docs>
+</Documentation>

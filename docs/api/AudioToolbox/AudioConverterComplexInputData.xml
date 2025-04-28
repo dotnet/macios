@@ -1,0 +1,21 @@
+<Documentation>
+  <Docs DocId="T:AudioToolbox.AudioConverterComplexInputData">
+    <param name="numberDataPackets">On input, the minimum number of
+    buffers required to fulfill the audio processing request;   On
+    output, the number of packets provided, you can return zero to
+    indicate that no more audio data is available.</param>
+    <param name="data">Audio buffers where you should deposit the data.</param>
+    <param name="dataPacketDescription">If this parameter is not null,
+    your callback should fill out the array with packet descriptions,
+    one for each packet provided to the AudioBuffer's data .</param>
+    <summary>Delegate associated with the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Audio%20Toolbox%20Audio%20Converter%20Audio%20Converter%20Complex%20Input%20Data&amp;scope=Xamarin" title="E:AudioToolbox.AudioConverter.AudioConverterComplexInputData">E:AudioToolbox.AudioConverter.AudioConverterComplexInputData</a></format> event.</summary>
+    <returns>Status code indicating the result of this operation.</returns>
+    <remarks>
+      <para>
+	Methods of this signature are invoked in response to the
+	<see cref="M:AudioToolbox.AudioConverter.FillComplexBuffer(System.Int32@,AudioToolbox.AudioBuffers,AudioToolbox.AudioStreamPacketDescription[],AudioToolbox.AudioConverterComplexInputData)" />
+	method requesting audio buffers to be provided.
+      </para>
+    </remarks>
+  </Docs>
+</Documentation>

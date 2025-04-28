@@ -8,7 +8,7 @@
 // Copyright 2015 Xamarin Inc. All rights reserved.
 //
 
-#if !__WATCHOS__ && !__TVOS__ && !MONOMAC
+#if !__TVOS__ && !MONOMAC
 
 using System;
 using ObjCRuntime;
@@ -75,5 +75,4 @@ namespace monotouchtest {
 		//		}
 	}
 }
-
-#endif // !__WATCHOS__
+#endif // !__TVOS__ && !MONOMAC

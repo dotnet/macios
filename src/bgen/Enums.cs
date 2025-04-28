@@ -321,6 +321,23 @@ public partial class Generator {
 				print ("return GetValue (str);");
 				indent--;
 				print ("}");
+
+				if (BindingTouch.SupportsXmlDocumentation) {
+					print ($"/// <summary>Retrieves the <see cref=\"global::{type.FullName}\" /> value represented by the backing field value in <paramref name=\"handle\" />.</summary>");
+					print ($"/// <param name=\"handle\">The native handle with the name of the constant to retrieve.</param>");
+				}
+
+				print ("public static {0}? GetNullableValue ({1} handle)", type.Name, NativeHandleType);
+				print ("{");
+				indent++;
+				print ("using var str = Runtime.GetNSObject<{0}> (handle);", backingFieldTypeName);
+				print ("if (str is null)");
+				indent++;
+				print ("return null;");
+				indent--;
+				print ("return GetValue (str);");
+				indent--;
+				print ("}");
 			}
 
 			if (BindingTouch.SupportsXmlDocumentation) {

@@ -19,6 +19,8 @@ using ObjCRuntime;
 namespace CoreMedia {
 
 	// CMSampleBuffer.h
+	/// <summary>Timing information for a <see cref="T:CoreMedia.CMSampleBuffer" />.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -37,6 +39,8 @@ namespace CoreMedia {
 	}
 
 	// CMTimeRange.h
+	/// <summary>A duration of time.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -103,6 +107,8 @@ namespace CoreMedia {
 	}
 
 	// CMTimeRange.h
+	/// <summary>Specifies a mapping between a source <see cref="T:CoreMedia.CMTimeRange" /> and a target <see cref="T:CoreMedia.CMTimeRange" />.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -117,6 +123,11 @@ namespace CoreMedia {
 		public CMTimeRange Target;
 
 #if !COREBUILD
+		/// <param name="source">To be added.</param>
+		///         <param name="target">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -126,6 +137,10 @@ namespace CoreMedia {
 			return CMTimeMappingMake (source, target);
 		}
 
+		/// <param name="target">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -135,15 +150,24 @@ namespace CoreMedia {
 			return CMTimeMappingMakeEmpty (target);
 		}
 
+		/// <param name="dict">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
 		public static CMTimeMapping CreateFromDictionary (NSDictionary dict)
 		{
-			return CMTimeMappingMakeFromDictionary (dict.Handle);
+			CMTimeMapping result = CMTimeMappingMakeFromDictionary (dict.Handle);
+			GC.KeepAlive (dict);
+			return result;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -203,6 +227,8 @@ namespace CoreMedia {
 #endif // !COREBUILD
 	}
 
+	/// <summary>A value to be used as a denominator in a <see cref="T:CoreMedia.CMTime" /> calculation.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -219,6 +245,9 @@ namespace CoreMedia {
 		///         <remarks>To be added.</remarks>
 		public int Value;
 
+		/// <param name="value">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CMTimeScale (int value)
 		{
 			if (value < 0 || value > 0x7fffffff)
@@ -229,6 +258,8 @@ namespace CoreMedia {
 	}
 
 	// CMVideoDimensions => int32_t width + int32_t height
+	/// <summary>Struct that contains the width and height of video media.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -241,6 +272,10 @@ namespace CoreMedia {
 		///         <remarks>To be added.</remarks>
 		public int Height;
 
+		/// <param name="width">To be added.</param>
+		///         <param name="height">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CMVideoDimensions (int width, int height)
 		{
 			Width = width;

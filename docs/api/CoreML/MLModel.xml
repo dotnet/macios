@@ -1,0 +1,72 @@
+<Documentation>
+  <Docs DocId="M:CoreML.MLModel.CompileModel(Foundation.NSUrl,Foundation.NSError@)">
+        <param name="modelUrl">A URL to a model to compile.</param>
+        <param name="error">On failure, the error that occurred.</param>
+        <summary>Compiles the model at <paramref name="modelUrl" />.</summary>
+        <returns>To be added.</returns>
+        <remarks>
+          <para>This is an expensive function. Execution time varies depending on the model size, but developers should run this method on a background thread and take steps to avoid the need to run this method repeatedly.</para>
+          <para>The following example shows how a developer can download a model, compile it, and move the compiled model into the app's permanent storage:</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+NSUrl CompileModel(string modelName)
+{
+	var downloadedFile = modelName + ".mlmodel";
+	var fileUrl = NSUrl.FromFilename(downloadedFile);
+	NSError err = null;
+	var compiledUrl = MLModel.CompileModel(fileUrl, out err);
+	if (err != null)
+	{
+		throw new Exception(err.ToString());
+	}
+	return compiledUrl;
+}
+
+NSUrl StoreModel(NSUrl sourceUrl)
+{
+	var fileManager = NSFileManager.DefaultManager;
+	NSError err = null;
+	var appSupportDirectory = fileManager.GetUrl(NSSearchPathDirectory.ApplicationSupportDirectory, NSSearchPathDomain.User, sourceUrl, true, out err);
+	if (err != null)
+	{
+		throw new Exception(err.ToString());
+	}
+
+	// Create a permanent URL in appSupportDirectory
+	var destinationUrl = appSupportDirectory.Append(sourceUrl.LastPathComponent, true);
+	NSUrl resultingUrl = null;
+
+	var destPath = destinationUrl.AbsoluteString;
+	// If the compiled model directory exists, replace it
+	if (System.IO.Directory.Exists(destinationUrl.Path))
+	{
+		fileManager.Replace(destinationUrl, sourceUrl, null, NSFileManagerItemReplacementOptions.None, out resultingUrl, out err);
+	}
+	else
+	{
+		fileManager.Copy(sourceUrl, destinationUrl, out err);
+	}
+	if (err != null)
+	{
+		throw new Exception(err.ToString());
+	}
+	return resultingUrl;
+}
+
+private async Task<NSUrl> DownloadAndStoryCoreMLModelAsync()
+{
+  var modelName = "SomeModel";
+	var sourceUrl ="https://Contoso.org/SomeModel.mlmodel";
+	using (var wc = new WebClient())
+	{
+		await wc.DownloadFileTaskAsync(sourceUrl, modelName +".mlmodel");
+		var compiledModelPath = CompileModel(modelName);
+		var finalPath = StoreModel(compiledModelPath);
+    return finalPath;
+	}
+}
+    ]]></code>
+          </example>
+        </remarks>
+      </Docs>
+</Documentation>

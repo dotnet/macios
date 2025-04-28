@@ -1,0 +1,37 @@
+<Documentation>
+  <Docs DocId="T:ObjCRuntime.BindAsAttribute">
+    <summary>The BindAsAttribute allows binding native NSNumber, NSValue and NSString (for enums) types into more accurate managed types.</summary>
+    <remarks>
+      <para>This attribute is typically used in binding projects, to indicate a special mapping between Objective-C and managed types:</para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
+// NSValue <-> CGRect (for the 'rect' parameter)
+// NSNumber <-> bool? (for the return value)
+[return: BindAs (typeof (bool?))]
+[Export ("shouldDrawAt:")]
+NSNumber ShouldDraw ([BindAs (typeof (CGRect))] NSValue rect);
+
+// NSString <-> CAScroll
+[BindAs (typeof (CAScroll []))]
+[Export ("supportedScrollModes")]
+NSString [] SupportedScrollModes { get; set; }
+          ]]></code>
+      </example>
+      <para>In this example, the <c>rect</c> parameter will be bound as a managed <see cref="T:CoreGraphics.CGRect" />, and the return value will be bound as <c>bool?</c>.</para>
+      <list type="table">
+        <listheader>
+          <term>Supported combinations:</term>
+        </listheader>
+        <item>
+          <term>Between NSNumber and bool, byte, sbyte, short, ushort, int, uint, long, ulong, nint, nuint, float, double, nfloat, any of the previous as a nullable type, or as an array</term>
+        </item>
+        <item>
+          <term>Between NSValue and NSRange, CGAffineTransform, CGPoint, CGRect, CGSize, CGVector, NSDirectionalEdgeInsets, CATransform3d, CLLocationCoordinate2d, CMTime, CMTimeMapping, CMTimeRange, MKCoordinateSpan, SCNMatrix4, SCNVector3, SCNVector4, UIEdgeInsets, UIOffset, any of the previous as a nullable type, or as an array.</term>
+        </item>
+        <item>
+          <term>Between NSString-backed enums and the corresponding managed enum.</term>
+        </item>
+      </list>
+    </remarks>
+  </Docs>
+</Documentation>

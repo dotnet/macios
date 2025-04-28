@@ -32,19 +32,33 @@ using UIKit;
 using CoreVideo;
 #endif
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 #nullable enable
 
 namespace CoreImage {
-#if NET
+	/// <summary>When passed to <see cref="M:CoreImage.CIImage.GetAutoAdjustmentFilters(CoreImage.CIAutoAdjustmentFilterOptions)" />, limits the results.</summary>
+	///     <remarks>
+	///       <para>The sample below shows a typical use.</para>
+	///       <example>
+	///         <code lang="csharp lang-csharp"><![CDATA[
+	/// void PrepareFixes (CIImage img)
+	/// {
+	///     var opt = new CIAutoAdjustmentFilterOptions () {
+	///     	RedEye = true,
+	///     	AutoAdjustCrop = true
+	///     };
+	///     CIImage img = null;
+	///     foreach (var filter in img.GetAutoAdjustmentFilters (opt)) {
+	///     	filter.Image = img;
+	///     	img = filter.OutputImage;
+	///     }
+	/// }
+	/// ]]></code>
+	///       </example>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CIAutoAdjustmentFilterOptions {
 
 		// The default value is true.
@@ -75,23 +89,20 @@ namespace CoreImage {
 		///         <remarks>Some adjustments depend on image orientation to work, providing this hint helps the auto correction software pick the best results.</remarks>
 		public CIImageOrientation? ImageOrientation;
 
-#if NET
 		/// <summary>Whether or not to automatically crop the image.</summary>
 		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public bool? AutoAdjustCrop;
-#if NET
+
 		/// <summary>Gets or sets the automatic adjustment level.</summary>
 		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public bool? AutoAdjustLevel;
 
 		internal NSDictionary? ToDictionary ()
@@ -162,32 +173,97 @@ namespace CoreImage {
 			return ret;
 		}
 
+		/// <param name="image">CoreGraphics image.</param>
+		///         <param name="colorSpace">Colorspace to use.</param>
+		///         <summary>Creates a <see cref="T:CoreImage.CIImage" /> in <paramref name="colorSpace" /> from a <see cref="T:CoreGraphics.CGImage" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static CIImage FromCGImage (CGImage image, CGColorSpace colorSpace)
 		{
 			if (colorSpace is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (colorSpace));
 
+			CIImage result;
 			using (var arr = NSArray.FromIntPtrs (new [] { colorSpace.Handle })) {
 				using (var keys = NSArray.FromIntPtrs (new [] { CIImageInitializationOptionsKeys.ColorSpaceKey.Handle })) {
 					using (var dict = NSDictionary.FromObjectsAndKeysInternal (arr, keys)) {
-						return FromCGImage (image, dict);
+						result = FromCGImage (image, dict);
 					}
 				}
 			}
+			GC.KeepAlive (colorSpace);
+			return result;
 		}
 
 		// Apple removed this API in iOS9 SDK
+		/// <summary>Gets the filters that are required to perform some common image correction steps to an image.</summary>
+		///         <returns>Returns an array of configured filters to apply to the image to automatically adjust it.</returns>
+		///         <remarks>
+		///           <para>
+		/// 	    In general, you should try to use the <see cref="M:CoreImage.CIImage.GetAutoAdjustmentFilters(CoreImage.CIAutoAdjustmentFilterOptions)" />
+		/// 	    as that method allows you to customize which kind of filters you want to get.
+		///
+		/// 	  </para>
+		///           <para>
+		/// 	    This method is used to get a list of pre-configured
+		/// 	    filters to remedy various common problems found in photos.   
+		///
+		/// 	  </para>
+		///           <example>
+		///             <code lang="csharp lang-csharp"><![CDATA[
+		/// void PrepareFixes (CIImage img)
+		/// {
+		///     foreach (var filter in img.GetAutoAdjustmentFilters ()) {
+		///     	filter.Image = img;
+		///     	img = filter.OutputImage;
+		///     }
+		/// }
+		/// ]]></code>
+		///           </example>
+		///         </remarks>
 		public CIFilter [] GetAutoAdjustmentFilters ()
 		{
 			return GetAutoAdjustmentFilters (null);
 		}
 
+		/// <param name="options">Options to initialize the image with.</param>
+		///         <summary>Gets the filters requires to perform some common image correction steps to an image.</summary>
+		///         <returns>Returns an array of configured filters to apply to the image to automatically adjust it.</returns>
+		///         <remarks>
+		///           <para>
+		/// 	    This method is used to get a list of pre-configured
+		/// 	    filters to remedy various common problems found in photos.   
+		///
+		/// 	  </para>
+		///           <example>
+		///             <code lang="csharp lang-csharp"><![CDATA[
+		/// void PrepareFixes (CIImage img)
+		/// {
+		///     var opt = new CIAutoAdjustmentFilterOptions () {
+		///     	RedEye = true,
+		///     	AutoAdjustCrop = true
+		///     };
+		///     CIImage img = null;
+		///     foreach (var filter in img.GetAutoAdjustmentFilters (opt)) {
+		///     	filter.Image = img;
+		///     	img = filter.OutputImage;
+		///     }
+		/// }
+		/// 	    ]]></code>
+		///           </example>
+		///         </remarks>
 		public CIFilter [] GetAutoAdjustmentFilters (CIAutoAdjustmentFilterOptions? options)
 		{
 			var dict = options?.ToDictionary ();
 			return WrapFilters (_GetAutoAdjustmentFilters (dict));
 		}
 
+		/// <param name="image">CoreGraphics image</param>
+		/// <summary>Implicit constructor that wraps a CGImage as a CIImage.</summary>
+		/// <returns>
+		///         </returns>
+		/// <remarks>
+		///         </remarks>
 		public static implicit operator CIImage (CGImage image)
 		{
 			return FromCGImage (image);
@@ -223,16 +299,41 @@ namespace CoreImage {
 			}
 		}
 
+		/// <param name="bitmapData">To be added.</param>
+		/// <param name="bytesPerRow">To be added.</param>
+		/// <param name="size">To be added.</param>
+		/// <param name="pixelFormat">To be added.</param>
+		/// <param name="colorSpace">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		public static CIImage FromData (NSData bitmapData, nint bytesPerRow, CGSize size, CIFormat pixelFormat, CGColorSpace colorSpace)
 		{
 			return FromData (bitmapData, bytesPerRow, size, CIImage.CIFormatToInt (pixelFormat), colorSpace);
 		}
 
+		/// <param name="provider">To be added.</param>
+		/// <param name="width">To be added.</param>
+		/// <param name="height">To be added.</param>
+		/// <param name="pixelFormat">To be added.</param>
+		/// <param name="colorSpace">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		public static CIImage FromProvider (ICIImageProvider provider, nuint width, nuint height, CIFormat pixelFormat, CGColorSpace colorSpace, CIImageProviderOptions options)
 		{
 			return FromProvider (provider, width, height, CIImage.CIFormatToInt (pixelFormat), colorSpace, options?.Dictionary);
 		}
 
+		/// <param name="provider">To be added.</param>
+		/// <param name="width">To be added.</param>
+		/// <param name="height">To be added.</param>
+		/// <param name="pixelFormat">To be added.</param>
+		/// <param name="colorSpace">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		public CIImage (ICIImageProvider provider, nuint width, nuint height, CIFormat pixelFormat, CGColorSpace colorSpace, CIImageProviderOptions options)
 			: this (provider, width, height, CIImage.CIFormatToInt (pixelFormat), colorSpace, options?.Dictionary)
 		{

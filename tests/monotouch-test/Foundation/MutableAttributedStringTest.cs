@@ -45,7 +45,7 @@ namespace MonoTouchFixtures.Foundation {
 			}
 		}
 
-#if !__WATCHOS__ && !MONOMAC // No foregroundColor parameter for mac
+#if !MONOMAC // No foregroundColor parameter for mac
 		[Test]
 		public void IndirectNullDictionary ()
 		{
@@ -54,6 +54,6 @@ namespace MonoTouchFixtures.Foundation {
 				Assert.That (s.Handle, Is.Not.EqualTo (IntPtr.Zero));
 			}
 		}
-#endif // !__WATCHOS__
+#endif // !MONOMAC
 	}
 }

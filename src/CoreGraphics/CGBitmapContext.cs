@@ -35,18 +35,14 @@ using System.Runtime.Versioning;
 using ObjCRuntime;
 using Foundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreGraphics {
-
-#if NET
+	/// <summary>CGContext backed by an in-memory bitmap.</summary>
+	///     <remarks>To be added.</remarks>
+	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/Drawing/">Example_Drawing</related>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CGBitmapContext : CGContext {
 #if !COREBUILD
 		// If allocated, this points to the byte array buffer that is passed.
@@ -67,11 +63,13 @@ namespace CoreGraphics {
 		public CGBitmapContext (IntPtr data, nint width, nint height, nint bitsPerComponent, nint bytesPerRow, CGColorSpace? colorSpace, CGImageAlphaInfo bitmapInfo)
 			: base (CGBitmapContextCreate (data, width, height, bitsPerComponent, bytesPerRow, colorSpace.GetHandle (), (uint) bitmapInfo), true)
 		{
+			GC.KeepAlive (colorSpace);
 		}
 
 		public CGBitmapContext (IntPtr data, nint width, nint height, nint bitsPerComponent, nint bytesPerRow, CGColorSpace? colorSpace, CGBitmapFlags bitmapInfo)
 			: base (CGBitmapContextCreate (data, width, height, bitsPerComponent, bytesPerRow, colorSpace.GetHandle (), (uint) bitmapInfo), true)
 		{
+			GC.KeepAlive (colorSpace);
 		}
 
 		[DllImport (Constants.CoreGraphicsLibrary)]
@@ -83,7 +81,9 @@ namespace CoreGraphics {
 			buffer = default (GCHandle);
 			if (data is not null)
 				buffer = GCHandle.Alloc (data, GCHandleType.Pinned); // This requires a pinned GCHandle, because unsafe code is scoped to the current block, and the address of the byte array will be used after this function returns.
-			return CGBitmapContextCreate (data, width, height, bitsPerComponent, bytesPerRow, colorSpace.GetHandle (), (uint) bitmapInfo);
+			IntPtr result = CGBitmapContextCreate (data, width, height, bitsPerComponent, bytesPerRow, colorSpace.GetHandle (), (uint) bitmapInfo);
+			GC.KeepAlive (colorSpace);
+			return result;
 		}
 
 		public CGBitmapContext (byte []? data, nint width, nint height, nint bitsPerComponent, nint bytesPerRow, CGColorSpace? colorSpace, CGImageAlphaInfo bitmapInfo)
@@ -97,7 +97,9 @@ namespace CoreGraphics {
 			buffer = default (GCHandle);
 			if (data is not null)
 				buffer = GCHandle.Alloc (data, GCHandleType.Pinned); // This requires a pinned GCHandle, because unsafe code is scoped to the current block, and the address of the byte array will be used after this function returns.
-			return CGBitmapContextCreate (data, width, height, bitsPerComponent, bytesPerRow, colorSpace.GetHandle (), (uint) bitmapInfo);
+			IntPtr result = CGBitmapContextCreate (data, width, height, bitsPerComponent, bytesPerRow, colorSpace.GetHandle (), (uint) bitmapInfo);
+			GC.KeepAlive (colorSpace);
+			return result;
 		}
 
 		public CGBitmapContext (byte []? data, nint width, nint height, nint bitsPerComponent, nint bytesPerRow, CGColorSpace? colorSpace, CGBitmapFlags bitmapInfo)
@@ -106,6 +108,7 @@ namespace CoreGraphics {
 			this.buffer = buffer;
 		}
 
+		/// <include file="../../docs/api/CoreGraphics/CGBitmapContext.xml" path="/Documentation/Docs[@DocId='M:CoreGraphics.CGBitmapContext.Dispose(System.Boolean)']/*" />
 		protected override void Dispose (bool disposing)
 		{
 			if (buffer.IsAllocated)
@@ -213,6 +216,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* CGImageRef */ IntPtr CGBitmapContextCreateImage (/* CGContextRef */ IntPtr context);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CGImage? ToImage ()
 		{
 			var h = CGBitmapContextCreateImage (Handle);

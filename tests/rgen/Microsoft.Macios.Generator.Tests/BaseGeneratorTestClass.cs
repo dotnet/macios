@@ -81,12 +81,12 @@ public class BaseGeneratorTestClass {
 	}
 
 	readonly static Lock uiNamespaceLock = new ();
-	protected void CompareGeneratedCode (ApplePlatform platform, string className, string inputFileName, string inputText, string outputFileName, string expectedOutputText, string? expectedLibraryText)
+	protected void CompareGeneratedCode (GenerationTestData testData)
 	{
 		lock (uiNamespaceLock) {
 			var driver = CSharpGeneratorDriver.Create (new BindingSourceGeneratorGenerator ());
 			// We need to create a compilation with the required source code.
-			var (compilation, _) = CreateCompilation (platform, sources: inputText);
+			var (compilation, _) = CreateCompilation (testData.Platform, sources: testData.InputText);
 			// for the refresh of the namespaces, this is needed to make sure that the generator does not get confused
 			// when several compilations are running
 			compilation.GetUINamespaces (force: true);
@@ -95,17 +95,23 @@ public class BaseGeneratorTestClass {
 			var runResult = RunGenerators (driver, compilation);
 
 			// All generated files can be found in 'RunResults.GeneratedTrees'.
-			var generatedFileSyntax = runResult.GeneratedTrees.Where (t => t.FilePath.EndsWith ($"{className}.g.cs")).ToArray ();
+			var generatedFileSyntax = runResult.GeneratedTrees.Where (t => t.FilePath.EndsWith ($"{testData.ClassName}.g.cs")).ToArray ();
 			Assert.Single (generatedFileSyntax);
 
 			// Complex generators should be tested using text comparison.
-			Assert.Equal (expectedOutputText, generatedFileSyntax [0].GetText ().ToString (),
+			Assert.Equal (testData.ExpectedOutputText, generatedFileSyntax [0].GetText ().ToString (),
 				ignoreLineEndingDifferences: true);
 
-			if (expectedLibraryText is not null) {
+			if (testData.ExpectedLibraryText is not null) {
 				// validate that Library.g.cs was created by the LibraryEmitter and matches the expectation
 				var generatedLibSyntax = runResult.GeneratedTrees.Single (t => t.FilePath.EndsWith ("Libraries.g.cs"));
-				Assert.Equal (expectedLibraryText, generatedLibSyntax.GetText ().ToString ());
+				Assert.Equal (testData.ExpectedLibraryText, generatedLibSyntax.GetText ().ToString ());
+			}
+
+			if (testData.ExpectedTrampolineText is not null) {
+				// validate that Library.g.cs was created by the LibraryEmitter and matches the expectation
+				var generatedLibSyntax = runResult.GeneratedTrees.Single (t => t.FilePath.EndsWith ("Trampolines.g.cs"));
+				Assert.Equal (testData.ExpectedTrampolineText, generatedLibSyntax.GetText ().ToString ());
 			}
 		}
 

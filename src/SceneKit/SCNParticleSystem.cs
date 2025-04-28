@@ -17,12 +17,12 @@ using System.Runtime.Versioning;
 #nullable enable
 
 namespace SceneKit {
-#if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class SCNPropertyControllers {
 		NSMutableDictionary? mutDict;
 		internal NSDictionary dict;
@@ -34,6 +34,8 @@ namespace SceneKit {
 				mutDict = (NSMutableDictionary) dict;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public SCNPropertyControllers ()
 		{
 			mutDict = new NSMutableDictionary ();

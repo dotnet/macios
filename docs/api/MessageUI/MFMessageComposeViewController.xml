@@ -1,0 +1,138 @@
+<Documentation>
+  <Docs DocId="P:MessageUI.MFMessageComposeViewController.TextMessageAvailabilityDidChangeNotification">
+        <summary>Notification constant for TextMessageAvailabilityDidChange</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="T:MessageUI.MFMessageComposeViewController.Notifications" />.<see cref="M:MessageUI.MFMessageComposeViewController.Notifications.ObserveTextMessageAvailabilityDidChange*" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+//
+// Lambda style
+//
+
+// listening
+notification = MFMessageComposeViewController.Notifications.ObserveTextMessageAvailabilityDidChange ((sender, args) => {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+
+    Console.WriteLine ("TextMessageAvailability", args.TextMessageAvailability);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+// Method style
+//
+NSObject notification;
+void Callback (object sender, MessageUI.MFMessageAvailabilityChangedEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+
+    Console.WriteLine ("TextMessageAvailability", args.TextMessageAvailability);
+}
+
+void Setup ()
+{
+    notification = MFMessageComposeViewController.Notifications.ObserveTextMessageAvailabilityDidChange (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}]]></code>
+          </example>
+          <para>The following example shows how to use the notification with the DefaultCenter API:</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        MFMessageComposeViewController.TextMessageAvailabilityDidChangeNotification, (notification) => {Console.WriteLine ("Received the notification MFMessageComposeViewController", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification MFMessageComposeViewController", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (MFMessageComposeViewController.TextMessageAvailabilityDidChangeNotification, Callback);
+}
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+  <Docs DocId="P:MessageUI.MFMessageComposeViewController.TextMessageAvailabilityDidChangeNotification">
+        <summary>Notification constant for TextMessageAvailabilityDidChange</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="T:MessageUI.MFMessageComposeViewController.Notifications" />.<see cref="M:MessageUI.MFMessageComposeViewController.Notifications.ObserveTextMessageAvailabilityDidChange*" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+//
+// Lambda style
+//
+
+// listening
+notification = MFMessageComposeViewController.Notifications.ObserveTextMessageAvailabilityDidChange ((sender, args) => {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+
+    Console.WriteLine ("TextMessageAvailability", args.TextMessageAvailability);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+// Method style
+//
+NSObject notification;
+void Callback (object sender, MessageUI.MFMessageAvailabilityChangedEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+
+    Console.WriteLine ("TextMessageAvailability", args.TextMessageAvailability);
+}
+
+void Setup ()
+{
+    notification = MFMessageComposeViewController.Notifications.ObserveTextMessageAvailabilityDidChange (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}]]></code>
+          </example>
+          <para>The following example shows how to use the notification with the DefaultCenter API:</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        MFMessageComposeViewController.TextMessageAvailabilityDidChangeNotification, (notification) => {Console.WriteLine ("Received the notification MFMessageComposeViewController", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification MFMessageComposeViewController", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (MFMessageComposeViewController.TextMessageAvailabilityDidChangeNotification, Callback);
+}
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+</Documentation>

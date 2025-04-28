@@ -1,4 +1,3 @@
-#if !__WATCHOS__
 using System;
 using System.Threading;
 
@@ -105,4 +104,3 @@ namespace monotouchtest.Network {
 #endif
 	}
 }
-#endif

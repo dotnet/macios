@@ -48,13 +48,7 @@ namespace CoreVideo {
 	/// <summary>An enumeration that flags whether a <see cref="T:CoreVideo.CVPixelBuffer" /> is read-only or not.</summary>
 	[Flags]
 	[MacCatalyst (13, 1)]
-#if NET
 	public enum CVPixelBufferLock : ulong {
-#else
-	// before iOS10 beta 2 this was an untyped enum -> CVPixelBuffer.h
-	// note: used as a CVOptionFlags uint64_t (CVBase.h) in the API
-	public enum CVPixelBufferLock : uint {
-#endif
 		/// <summary>To be added.</summary>
 		None = 0x00000000,
 		/// <summary>To be added.</summary>

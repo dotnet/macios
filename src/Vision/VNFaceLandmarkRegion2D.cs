@@ -35,6 +35,10 @@ namespace Vision {
 			}
 		}
 
+		/// <param name="imageSize">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public virtual CGPoint []? GetPointsInImage (CGSize imageSize)
 		{
 			// return the address of the array of pointCount points

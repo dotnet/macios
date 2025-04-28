@@ -35,22 +35,26 @@ using AudioToolbox;
 #nullable enable
 
 namespace AVFoundation {
-
-
-#if NET
+	/// <summary>Manages audio settings for players and recorders.</summary>
+	///     <remarks>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	// Should be called AVAudioSetting but AVAudioSetting has been already used by keys class
 	public class AudioSettings : DictionaryContainer {
 #if !COREBUILD
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public AudioSettings ()
 			: base (new NSMutableDictionary ())
 		{
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public AudioSettings (NSDictionary dictionary)
 			: base (dictionary)
 		{
@@ -216,7 +220,6 @@ namespace AVFoundation {
 			}
 		}
 
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -224,7 +227,6 @@ namespace AVFoundation {
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public AVAudioBitRateStrategy? BitRateStrategy {
 			set {
 				NSString? v = null;
@@ -262,7 +264,6 @@ namespace AVFoundation {
 			}
 		}
 
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -270,7 +271,6 @@ namespace AVFoundation {
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public AVSampleRateConverterAlgorithm? SampleRateConverterAlgorithm {
 			get {
 				var k = GetNSStringValue (AVAudioSettings.AVSampleRateConverterAlgorithmKey);
@@ -298,7 +298,6 @@ namespace AVFoundation {
 			}
 		}
 
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -306,7 +305,6 @@ namespace AVFoundation {
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public AVAudioQuality? EncoderAudioQualityForVBR {
 			get {
 				return (AVAudioQuality?) (long?) GetNIntValue (AVAudioSettings.AVEncoderAudioQualityForVBRKey);

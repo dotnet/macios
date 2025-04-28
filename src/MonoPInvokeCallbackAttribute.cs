@@ -23,8 +23,28 @@
 using System;
 
 namespace ObjCRuntime {
+	/// <include file="../docs/api/ObjCRuntime/MonoPInvokeCallbackAttribute.xml" path="/Documentation/Docs[@DocId='T:ObjCRuntime.MonoPInvokeCallbackAttribute']/*" />
 	[AttributeUsage (AttributeTargets.Method)]
 	public sealed class MonoPInvokeCallbackAttribute : Attribute {
+		/// <param name="t">The type of the delegate that will be calling us back.</param>
+		///         <summary>Constructor for the MonoPInvokeCallbackAttribute.</summary>
+		///         <remarks>
+		///           <para>
+		/// 	  You must specify the type of the delegate that this code
+		/// 	  will be called as.  The following example shows the scenario
+		/// 	  in which this is used:
+		///
+		/// 	 </para>
+		///           <code lang="csharp lang-csharp"><![CDATA[using System;
+		/// 	delegate void DrawPatternCallback (IntPtr voidptr, IntPtr cgcontextref);
+		///
+		/// 	º [MonoPInvokeCallback (typeof (DrawPatternCallback))]
+		/// 	static void DrawCallback (IntPtr voidptr, IntPtr cgcontextptr)
+		/// 	{
+		/// 		// This method is called from the C library
+		/// 	}
+		/// ]]></code>
+		///         </remarks>
 		public MonoPInvokeCallbackAttribute (Type t)
 		{
 			DelegateType = t;

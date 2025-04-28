@@ -15,6 +15,9 @@ using NativeHandle = System.IntPtr;
 #endif
 
 namespace CloudKit {
+	/// <summary>Marks push notifications as read. Typically used by apps that use push notifications to track record changes.</summary>
+	///     <remarks>To be added.</remarks>
+	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CloudKit/Reference/CKMarkNotificationsReadOperation_class/index.html">Apple documentation for <c>CKMarkNotificationsReadOperation</c></related>
 	[Register ("CKMarkNotificationsReadOperation", SkipRegistration = true)]
 #if NET
 	[UnsupportedOSPlatform ("ios", "Use 'CKDatabaseSubscription', 'CKFetchDatabaseChangesOperation' and 'CKFetchRecordZoneChangesOperation' instead.")]
@@ -29,6 +32,7 @@ namespace CloudKit {
 		///         <remarks>Each Xamarin.iOS class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
 		public override NativeHandle ClassHandle { get => throw new PlatformNotSupportedException (Constants.TypeRemovedAllPlatforms); }
 
+		/// <include file="../../docs/api/CloudKit/CKMarkNotificationsReadOperation.xml" path="/Documentation/Docs[@DocId='M:CloudKit.CKMarkNotificationsReadOperation.#ctor(Foundation.NSObjectFlag)']/*" />
 		protected CKMarkNotificationsReadOperation (NSObjectFlag t) : base (t)
 		{
 			throw new PlatformNotSupportedException (Constants.TypeRemovedAllPlatforms);
@@ -39,6 +43,9 @@ namespace CloudKit {
 			throw new PlatformNotSupportedException (Constants.TypeRemovedAllPlatforms);
 		}
 
+		/// <param name="notificationIds">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CKMarkNotificationsReadOperation (CKNotificationID [] notificationIds)
 			: base (NSObjectFlag.Empty)
 		{
@@ -73,6 +80,10 @@ namespace CloudKit {
 		}
 	} /* class CKMarkNotificationsReadOperation */
 
+	/// <param name="notificationIDsMarkedRead">To be added.</param>
+	///     <param name="operationError">To be added.</param>
+	///     <summary>Delegate for the <see cref="P:CloudKit.CKMarkNotificationsReadOperation.Completed" /> property.</summary>
+	///     <remarks>To be added.</remarks>
 	[EditorBrowsable (EditorBrowsableState.Never)]
 	public delegate void CKMarkNotificationsReadHandler (CKNotificationID [] notificationIDsMarkedRead, NSError operationError);
 }

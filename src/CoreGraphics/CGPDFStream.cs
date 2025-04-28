@@ -36,26 +36,26 @@ using Foundation;
 using ObjCRuntime;
 using CoreFoundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreGraphics {
 
 	// untyped enum -> CGPDFStream.h
+	/// <summary>Enumerates values that indicate the data format of a PDF.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum CGPDFDataFormat {
+		/// <summary>To be added.</summary>
 		Raw,
+		/// <summary>To be added.</summary>
 		JPEGEncoded,
+		/// <summary>To be added.</summary>
 		JPEG2000,
 	};
 
-
-#if NET
+	/// <summary>A PDF Stream.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	// CGPDFStream.h
 	public class CGPDFStream : CGPDFObject {
 		// The lifetime management of CGPDFObject (and CGPDFArray, CGPDFDictionary and CGPDFStream) are tied to
@@ -70,6 +70,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* CGPDFDictionaryRef */ IntPtr CGPDFStreamGetDictionary (/* CGPDFStreamRef */ IntPtr stream);
 
+		/// <summary>The dictionary associated with the PDF stream.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CGPDFDictionary Dictionary {
 			get {
 				return new CGPDFDictionary (CGPDFStreamGetDictionary (Handle));
@@ -79,6 +82,10 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		unsafe extern static /* CFDataRef */ IntPtr CGPDFStreamCopyData (/* CGPDFStreamRef */ IntPtr stream, /* CGPDFDataFormat* */ CGPDFDataFormat* format);
 
+		/// <param name="format">To be added.</param>
+		///         <summary>The data associated with the PDF stream, and also returns the file format of the data.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public NSData? GetData (out CGPDFDataFormat format)
 		{
 			format = default;

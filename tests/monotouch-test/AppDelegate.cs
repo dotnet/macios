@@ -1,4 +1,4 @@
-#if !__WATCHOS__ && !MONOMAC
+#if !MONOMAC
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -49,4 +49,4 @@ public partial class AppDelegate : UIApplicationDelegate {
 }
 
 
-#endif // !__WATCHOS__
+#endif // !MONOMAC

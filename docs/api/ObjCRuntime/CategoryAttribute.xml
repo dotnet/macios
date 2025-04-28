@@ -1,0 +1,68 @@
+<Documentation>
+  <Docs DocId="T:ObjCRuntime.CategoryAttribute">
+    <summary>Attribute used to flag a class as a category that extends the API of another type.</summary>
+    <remarks>
+      <para>
+	This attribute is applied to static user code classes and will
+	surface all of the exported methods and properties (those that
+	have the <see cref="T:Foundation.ExportAttribute" />)
+	to the provided system type.
+      </para>
+      <para>
+      </para>
+      <para>
+	This allows new methods to be introduced or implemented for
+	all types in the class.  For example, this can be used to
+	provide a global implementation of some method across all of
+	your types surfaced to Objective-C.
+      </para>
+      <para>
+	All managed extension methods must be static, but it's
+	possible to create Objective-C instance methods using the
+	standard syntax for extension methods in C#:
+      </para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
+// Make "shouldAutoRotate" return true for all UIViewControllers in the application
+
+[Category (typeof (UIViewController))]
+static class MyViewControllerMethods {
+    [Export ("shouldAutorotate")]
+    static bool ShouldAutoRotate (this UIViewController self)
+    { 
+        return true; 
+    }
+
+    [Export ("supportedInterfaceOrientations")]
+    static UIInterfaceOrientationMask SupportedRotations (this UIViewController self) 
+    {
+        return UIInterfaceOrientationMask.All;
+    }
+}
+	]]></code>
+      </example>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
+// This example will add a native toUpper instance method to the NSString class, 
+// which can be invoked from Objective-C.
+
+[Category (typeof (NSString))]
+public static class MyStringCategory  
+{
+    [Export ("toUpper")]
+    static string ToUpper (this NSString self)
+    {
+        return self.ToString ().ToUpper ();
+    }
+}
+	]]></code>
+      </example>
+      <para>
+        If the managed class is not referenced by other managed code (and only called from Objective-C),
+        the managed linker will remove it. This can be avoided either by adding a
+        <see cref="T:Foundation.PreserveAttribute" /> attribute to the class, or by creating a custom linker definition file.
+      </para>
+    </remarks>
+    <related type="article" href="https://docs.microsoft.com/xamarin/cross-platform/deploy-test/linker">Custom Linker Configuration</related>
+  </Docs>
+</Documentation>

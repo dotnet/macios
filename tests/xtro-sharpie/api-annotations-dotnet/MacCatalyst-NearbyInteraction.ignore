@@ -1,0 +1,2 @@
+# This selector requires ARKit, which doesn't work on Mac Catalyst
+!missing-selector! NISession::setARSession: not bound

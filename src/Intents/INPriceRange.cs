@@ -14,13 +14,22 @@ using Foundation;
 #nullable enable
 
 namespace Intents {
+	/// <summary>Enumerates the minimum and maximum values of a price range.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum INPriceRangeOption {
+		/// <summary>The greatest price.</summary>
 		Maximum,
+		/// <summary>The lowest price.</summary>
 		Minimum,
 	}
 
 	public partial class INPriceRange {
 
+		/// <param name="option">To be added.</param>
+		///         <param name="price">To be added.</param>
+		///         <param name="currencyCode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public INPriceRange (INPriceRangeOption option, NSDecimalNumber price, string currencyCode)
 			: base (NSObjectFlag.Empty)
 		{

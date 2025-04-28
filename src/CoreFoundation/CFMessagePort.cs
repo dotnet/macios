@@ -23,6 +23,8 @@ namespace CoreFoundation {
 
 	// untyped enum from CFMessagePort.h
 	// used as a return value of type SInt32 (always 4 bytes)
+	/// <summary>This enumeration contains status codes for <see cref="M:CoreFoundation.CFMessagePort.SendRequest(System.Int32,Foundation.NSData,System.Double,System.Double,Foundation.NSString,Foundation.NSData@)" />.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum CFMessagePortSendRequestStatus {
 		/// <summary>The message was sent, and any expected reply was received.</summary>
 		Success = 0,
@@ -47,6 +49,9 @@ namespace CoreFoundation {
 		public Func<NSString>? CopyDescription { get; set; }
 	}
 
+	/// <summary>A communication channel between multiple threads on the local device.</summary>
+	///     <remarks>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -64,6 +69,11 @@ namespace CoreFoundation {
 			public delegate* unmanaged<IntPtr, IntPtr> copyDescription;
 		}
 
+		/// <param name="type">To be added.</param>
+		///     <param name="data">To be added.</param>
+		///     <summary>To be added.</summary>
+		///     <returns>To be added.</returns>
+		///     <remarks>To be added.</remarks>
 		public delegate NSData CFMessagePortCallBack (int type, NSData data);
 
 		static Dictionary<IntPtr, CFMessagePortCallBack> outputHandles = new Dictionary<IntPtr, CFMessagePortCallBack> (Runtime.IntPtrEqualityComparer);
@@ -157,6 +167,7 @@ namespace CoreFoundation {
 		{
 		}
 
+		/// <include file="../../docs/api/CoreFoundation/CFMessagePort.xml" path="/Documentation/Docs[@DocId='M:CoreFoundation.CFMessagePort.Dispose(System.Boolean)']/*" />
 		protected override void Dispose (bool disposing)
 		{
 			if (Handle != IntPtr.Zero) {
@@ -219,6 +230,12 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		static extern IntPtr CFMessagePortGetInvalidationCallBack (/* CFMessagePortRef */ IntPtr ms);
 
+		/// <param name="name">To be added.</param>
+		///         <param name="callback">To be added.</param>
+		///         <param name="allocator">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static CFMessagePort? CreateLocalPort (string? name, CFMessagePortCallBack callback, CFAllocator? allocator = null)
 		{
 			if (callback is null)
@@ -256,6 +273,7 @@ namespace CoreFoundation {
 				IntPtr portHandle;
 				unsafe {
 					portHandle = CFMessagePortCreateLocal (allocator.GetHandle (), n, &MessagePortCallback, &contextProxy, &shouldFreeInfo);
+					GC.KeepAlive (allocator);
 				}
 
 				// TODO handle should free info
@@ -331,7 +349,9 @@ namespace CoreFoundation {
 			if (context?.CopyDescription is not null)
 				result = context.CopyDescription ();
 
+#pragma warning disable RBI0014
 			return result.GetHandle ();
+#pragma warning restore RBI0014
 		}
 
 		[UnmanagedCallersOnly]
@@ -349,7 +369,9 @@ namespace CoreFoundation {
 				var result = callback.Invoke (msgid, managedData);
 				// System will release returned CFData
 				result?.DangerousRetain ();
+#pragma warning disable RBI0014
 				return result.GetHandle ();
+#pragma warning restore RBI0014
 			}
 		}
 
@@ -365,6 +387,11 @@ namespace CoreFoundation {
 				callback.Invoke ();
 		}
 
+		/// <param name="allocator">To be added.</param>
+		///         <param name="name">To be added.</param>
+		///         <summary>Deprecated.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static CFMessagePort? CreateRemotePort (CFAllocator? allocator, string name)
 		{
 			if (name is null)
@@ -373,23 +400,37 @@ namespace CoreFoundation {
 			var n = CFString.CreateNative (name);
 			try {
 				var portHandle = CFMessagePortCreateRemote (allocator.GetHandle (), n);
+				GC.KeepAlive (allocator);
 				return portHandle == IntPtr.Zero ? null : new CFMessagePort (portHandle, true);
 			} finally {
 				CFString.ReleaseNative (n);
 			}
 		}
 
+		/// <summary>Invalidating a message port prevents the port from ever sending or receiving any more messages. </summary>
+		///         <remarks>The message port is not deallocated after invalidation, however <see cref="P:CoreFoundation.CFMessagePort.IsValid" /> property is set to be true.</remarks>
 		public void Invalidate ()
 		{
 			CFMessagePortInvalidate (GetCheckedHandle ());
 		}
 
+		/// <param name="msgid">To be added.</param>
+		///         <param name="data">To be added.</param>
+		///         <param name="sendTimeout">To be added.</param>
+		///         <param name="rcvTimeout">To be added.</param>
+		///         <param name="replyMode">To be added.</param>
+		///         <param name="returnData">To be added.</param>
+		///         <summary>Sends a message to the port.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CFMessagePortSendRequestStatus SendRequest (int msgid, NSData? data, double sendTimeout, double rcvTimeout, NSString? replyMode, out NSData? returnData)
 		{
 			CFMessagePortSendRequestStatus result;
 			IntPtr returnDataHandle;
 			unsafe {
 				result = CFMessagePortSendRequest (GetCheckedHandle (), msgid, data.GetHandle (), sendTimeout, rcvTimeout, replyMode.GetHandle (), &returnDataHandle);
+				GC.KeepAlive (data);
+				GC.KeepAlive (replyMode);
 			}
 
 			returnData = Runtime.GetINativeObject<NSData> (returnDataHandle, false);
@@ -397,6 +438,9 @@ namespace CoreFoundation {
 			return result;
 		}
 
+		/// <summary>Creates a CFRunLoopSource object for a CFMessagePort object.</summary>
+		///         <returns>The new CFRunLoopSource object for listening port</returns>
+		///         <remarks>Method returns loop which is not added to any run loop. Use <see cref="M:CoreFoundation.CFRunLoop.AddSource(CoreFoundation.CFRunLoopSource,Foundation.NSString)" /> to activate the loop.</remarks>
 		public CFRunLoopSource CreateRunLoopSource ()
 		{
 			// note: order is currently ignored by CFMessagePort object run loop sources. Pass 0 for this value.
@@ -404,9 +448,13 @@ namespace CoreFoundation {
 			return new CFRunLoopSource (runLoopHandle, false);
 		}
 
+		/// <param name="queue">To be added.</param>
+		///         <summary>Schedules message port’s callbacks on the specified dispatch queue.</summary>
+		///         <remarks>To be added.</remarks>
 		public void SetDispatchQueue (DispatchQueue? queue)
 		{
 			CFMessagePortSetDispatchQueue (GetCheckedHandle (), queue.GetHandle ());
+			GC.KeepAlive (queue);
 		}
 	}
 }

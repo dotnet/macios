@@ -1,34 +1,29 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Marille;
 using Microsoft.CodeAnalysis;
+using Microsoft.Macios.Generator.DataModel;
 using Serilog;
 
 namespace Microsoft.Macios.Transformer.Workers;
 
-public class StrongDictionaryTransformer (string destinationDirectory) : ITransformer<(string Path, string SymbolName)> {
+class StrongDictionaryTransformer (string destinationDirectory) : ITransformer<(string Path, Binding Binding)> {
 
 	readonly static ILogger logger = Log.ForContext<StrongDictionaryTransformer> ();
 	public bool UseBackgroundThread { get => true; }
-	public Task ConsumeAsync ((string Path, string SymbolName) message, CancellationToken token = new ())
+	public Task ConsumeAsync ((string Path, Binding Binding) message, CancellationToken token = new ())
 	{
 		logger.Information ("Transforming {SymbolName} for path {Path} to {DestinationDirectory}",
-			message.SymbolName, message.Path, destinationDirectory);
+			message.Binding.FullyQualifiedSymbol, message.Path, destinationDirectory);
 		return Task.Delay (10);
 	}
 
-	public Task ConsumeAsync ((string Path, string SymbolName) message, Exception exception,
+	public Task ConsumeAsync ((string Path, Binding Binding) message, Exception exception,
 		CancellationToken token = new CancellationToken ())
 	{
 		logger.Error (exception, "Error transforming {SymbolName} for path {Path} to {DestinationDirectory}:",
-			message.SymbolName, message.Path, destinationDirectory);
+			message.Binding.FullyQualifiedSymbol, message.Path, destinationDirectory);
 		return Task.CompletedTask;
-	}
-
-	public (string Path, string SymbolName) CreateMessage (SyntaxTree treeNode, ISymbol symbol)
-	{
-		return (treeNode.FilePath, symbol.Name);
 	}
 
 	public void Dispose () { }

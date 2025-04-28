@@ -8,8 +8,6 @@
 // Copyright 2022 Microsoft Corporation.
 //
 
-#if !__WATCHOS__
-
 #nullable enable
 
 using System;
@@ -64,5 +62,3 @@ namespace MonoTouchFixtures.VideoToolbox {
 		}
 	}
 }
-
-#endif // !__WATCHOS__

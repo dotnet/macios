@@ -29,11 +29,15 @@ namespace CoreFoundation {
 	// base class to be reused for other patterns that use other retain/release
 	// systems.
 	//
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public abstract class NativeObject : DisposableObject {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected NativeObject ()
 		{
 		}
@@ -50,6 +54,9 @@ namespace CoreFoundation {
 				Retain ();
 		}
 
+		/// <param name="disposing">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected override void Dispose (bool disposing)
 		{
 			if (Handle != NativeHandle.Zero)
@@ -59,10 +66,14 @@ namespace CoreFoundation {
 
 		// <quote>If cf is NULL, this will cause a runtime error and your application will crash.</quote>
 		// https://developer.apple.com/documentation/corefoundation/1521269-cfretain?language=occ
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected internal virtual void Retain () => CFObject.CFRetain (GetCheckedHandle ());
 
 		// <quote>If cf is NULL, this will cause a runtime error and your application will crash.</quote>
 		// https://developer.apple.com/documentation/corefoundation/1521153-cfrelease
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected internal virtual void Release () => CFObject.CFRelease (GetCheckedHandle ());
 	}
 }

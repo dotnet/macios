@@ -59,7 +59,10 @@ namespace CoreFoundation {
 
 		public static CFDictionary FromObjectAndKey (INativeObject obj, INativeObject key)
 		{
-			return new CFDictionary (CFDictionaryCreate (IntPtr.Zero, new IntPtr [] { key.Handle }, new IntPtr [] { obj.Handle }, 1, KeyCallbacks, ValueCallbacks), true);
+			CFDictionary result = new CFDictionary (CFDictionaryCreate (IntPtr.Zero, new IntPtr [] { key.Handle }, new IntPtr [] { obj.Handle }, 1, KeyCallbacks, ValueCallbacks), true);
+			GC.KeepAlive (key);
+			GC.KeepAlive (obj);
+			return result;
 		}
 
 		public static CFDictionary FromObjectsAndKeys (INativeObject [] objects, INativeObject [] keys)

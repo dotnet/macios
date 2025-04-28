@@ -181,7 +181,6 @@ namespace MonoTouchFixtures.Security {
 		}
 #endif
 
-#if !__WATCHOS__
 		// This test uses sockets (TcpClient), which doesn't work on watchOS.
 		[Test]
 		public void Tls12 ()
@@ -232,6 +231,5 @@ namespace MonoTouchFixtures.Security {
 				Assert.That (s, Does.StartWith ("HTTP/1.0 302 Found").Or.StartWith ("HTTP/1.0 200 OK").Or.StartWith ("HTTP/1.0 502 Bad Gateway"), "response");
 			}
 		}
-#endif // !__WATCHOS__
 	}
 }

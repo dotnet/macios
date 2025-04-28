@@ -23,6 +23,9 @@ namespace ARKit {
 	public partial class ARFaceGeometry {
 
 		// Going for GetXXX methods so we can keep the same name as the matching obsoleted property 'Vertices'.
+		/// <summary>The array of X,Y,Z coordinates defining the facial geometry.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public unsafe Vector3 [] GetVertices ()
 		{
 			var count = (int) VertexCount;
@@ -34,6 +37,9 @@ namespace ARKit {
 		}
 
 		// Going for GetXXX methods so we can keep the same name as the matching obsoleted property 'TextureCoordinates'.
+		/// <summary>The UV texture coordinates for the corresponding vertex in the <see cref="M:ARKit.ARFaceGeometry.GetVertices" /> array.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public unsafe Vector2 [] GetTextureCoordinates ()
 		{
 			var count = (int) TextureCoordinateCount;
@@ -45,6 +51,11 @@ namespace ARKit {
 		}
 
 		// Going for GetXXX methods so we can keep the same name as the matching obsoleted property 'TriangleIndices'.
+		/// <summary>An array of indices into the <see cref="M:ARKit.ARFaceGeometry.GetVertices" /> and <see cref="M:ARKit.ARFaceGeometry.GetTextureCoordinates" /> arrays.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>
+		///           <para>Every three subsequent values define the indices of a single triangle. </para>
+		///         </remarks>
 		public unsafe short [] GetTriangleIndices ()
 		{
 			// There are always 3x more 'TriangleIndices' than 'TriangleCount' since 'TriangleIndices' represents Triangles (set of three indices).

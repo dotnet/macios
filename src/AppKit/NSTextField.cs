@@ -13,6 +13,9 @@ using Foundation;
 namespace AppKit {
 
 	public partial class NSTextField {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public new NSTextFieldCell Cell {
 			get { return (NSTextFieldCell) base.Cell; }
 			set { base.Cell = value; }

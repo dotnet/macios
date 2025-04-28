@@ -39,7 +39,6 @@ namespace Xamarin.MacDev.Tasks {
 				switch (Platform) {
 				case ApplePlatform.iOS:
 				case ApplePlatform.TVOS:
-				case ApplePlatform.WatchOS:
 					return IPhoneCertificate.DevelopmentPrefixes;
 				case ApplePlatform.MacOSX:
 				case ApplePlatform.MacCatalyst:
@@ -55,7 +54,6 @@ namespace Xamarin.MacDev.Tasks {
 				switch (Platform) {
 				case ApplePlatform.iOS:
 				case ApplePlatform.TVOS:
-				case ApplePlatform.WatchOS:
 					return Array.Empty<string> ();
 				case ApplePlatform.MacOSX:
 				case ApplePlatform.MacCatalyst:
@@ -71,7 +69,6 @@ namespace Xamarin.MacDev.Tasks {
 				switch (Platform) {
 				case ApplePlatform.iOS:
 				case ApplePlatform.TVOS:
-				case ApplePlatform.WatchOS:
 					return IPhoneCertificate.DistributionPrefixes;
 				case ApplePlatform.MacOSX:
 				case ApplePlatform.MacCatalyst:
@@ -87,7 +84,6 @@ namespace Xamarin.MacDev.Tasks {
 				switch (Platform) {
 				case ApplePlatform.iOS:
 				case ApplePlatform.TVOS:
-				case ApplePlatform.WatchOS:
 					return "application-identifier";
 				case ApplePlatform.MacOSX:
 				case ApplePlatform.MacCatalyst:
@@ -153,7 +149,7 @@ namespace Xamarin.MacDev.Tasks {
 		public bool RequireProvisioningProfile {
 			get {
 				// RequireProvisioningProfile:
-				// * iOS, tvOS, watchOS: required if building for device or if a custom (.NET: non-empty) entitlement file is used
+				// * iOS, tvOS: required if building for device or if a custom (.NET: non-empty) entitlement file is used
 				// * macOS, Mac Catalyst: requirerd if a provisioning profile is specified
 				// * Default logic is overridable by setting the "CodesignRequireProvisioningProfile=true|false" property
 
@@ -162,7 +158,6 @@ namespace Xamarin.MacDev.Tasks {
 						switch (Platform) {
 						case ApplePlatform.iOS:
 						case ApplePlatform.TVOS:
-						case ApplePlatform.WatchOS:
 							requireProvisioningProfile = !SdkIsSimulator || HasEntitlements;
 							break;
 						case ApplePlatform.MacCatalyst:
@@ -566,9 +561,7 @@ namespace Xamarin.MacDev.Tasks {
 				platform = MobileProvisionPlatform.tvOS;
 				break;
 			case "iPhoneSimulator":
-			case "WatchSimulator":
 			case "iPhoneOS":
-			case "WatchOS":
 				platform = MobileProvisionPlatform.iOS;
 				break;
 			case "MacOSX":
@@ -615,7 +608,7 @@ namespace Xamarin.MacDev.Tasks {
 					return !Log.HasLoggedErrors;
 				}
 			} else {
-				// Framework is either iOS, tvOS or watchOS
+				// Framework is either iOS or tvOS
 				if (SdkIsSimulator) {
 					if (AppleSdkSettings.XcodeVersion.Major >= 8 && RequireProvisioningProfile) {
 						// Note: Starting with Xcode 8.0, we need to codesign iOS Simulator builds that enable Entitlements

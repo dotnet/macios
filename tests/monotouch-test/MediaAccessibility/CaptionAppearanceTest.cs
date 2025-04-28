@@ -7,8 +7,6 @@
 // Copyright 2013 Xamarin Inc.
 //
 
-#if !__WATCHOS__
-
 using System;
 using Foundation;
 using MediaAccessibility;
@@ -63,5 +61,3 @@ namespace MonoTouchFixtures.MediaAccessibility {
 #endif // NET
 	}
 }
-
-#endif // !__WATCHOS__

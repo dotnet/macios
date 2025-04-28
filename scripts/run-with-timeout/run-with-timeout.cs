@@ -74,7 +74,7 @@ for (var attempt = 0; attempt < maxLaunchAttempts; attempt++) {
 return exitCode;
 
 static class NativeMethods {
-	[DllImport ("__Internal", SetLastError = true)]
+	[DllImport ("/usr/lib/libc.dylib", SetLastError = true)]
 	static extern int kill (int pid, int signal);
 
 	public static void Abort (this Process process)

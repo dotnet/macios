@@ -30,6 +30,8 @@
 using System;
 
 namespace Foundation {
+	/// <summary>An attribute that can be used to give programming advice to a user of a function or class.</summary>
+	///     <remarks>This attribute is intended to give developers some guidance as to what to do.   The contents of the attribute are displayed by the IDE when the user is using a feature like code analysis to give hints as to how to improve the code.</remarks>
 	[AttributeUsage (AttributeTargets.Class | AttributeTargets.Struct |
 		AttributeTargets.Enum | AttributeTargets.Constructor |
 		AttributeTargets.Method | AttributeTargets.Property |
@@ -37,6 +39,9 @@ namespace Foundation {
 		AttributeTargets.Interface | AttributeTargets.Delegate,
 		Inherited = false, AllowMultiple = true)]
 	public class AdviceAttribute : Attribute {
+		/// <param name="message">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public AdviceAttribute (string message)
 		{
 			Message = message;

@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -30,8 +29,6 @@ class LibraryEmitter (
 		   LibrarySymbol.GetMembers ().OfType<INamedTypeSymbol> ()
 			   .Any (v => v.Name == className);
 	}
-
-	public IEnumerable<string> UsingStatements { get; } = [];
 
 	public bool TryEmit (ImmutableArray<(string LibraryName, string? LibraryPath)> libraries,
 		[NotNullWhen (false)] out ImmutableArray<Diagnostic>? diagnostics)

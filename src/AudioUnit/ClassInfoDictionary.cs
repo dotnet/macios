@@ -37,6 +37,8 @@ using System.Runtime.Versioning;
 
 namespace AudioUnit {
 #if NET
+	/// <summary>Holds key-value pairs on class information. Used with <see cref="M:AudioUnit.AudioUnit.SetClassInfo(AudioUnit.ClassInfoDictionary,AudioUnit.AudioUnitScopeType,System.UInt32)" /> and <see cref="M:AudioUnit.AudioUnit.GetClassInfo(AudioUnit.AudioUnitScopeType,System.UInt32)" />.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -54,11 +56,16 @@ namespace AudioUnit {
 		const string ElementNameKey = "element-name";
 		const string ExternalFileRefs = "file-references";
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public ClassInfoDictionary ()
 			: base (new NSMutableDictionary ())
 		{
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public ClassInfoDictionary (NSDictionary? dictionary)
 			: base (dictionary)
 		{

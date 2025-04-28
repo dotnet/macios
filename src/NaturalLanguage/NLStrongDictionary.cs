@@ -7,14 +7,10 @@ using CoreFoundation;
 using Foundation;
 
 namespace NaturalLanguage {
-
-
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	// nicer replacement for `NSDictionary<NSString, NSArray<NSString>>`
 	public class NLStrongDictionary : DictionaryContainer {
 
@@ -33,6 +29,7 @@ namespace NaturalLanguage {
 					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (key));
 
 				var value = CFDictionary.GetValue (Dictionary.Handle, key.Handle);
+				GC.KeepAlive (key);
 				return CFArray.StringArrayFromHandle (value);
 			}
 

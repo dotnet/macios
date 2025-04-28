@@ -7,7 +7,6 @@ namespace Xamarin.Tests {
 	public class PostBuildTest : TestBaseClass {
 		[Test]
 		[TestCase (ApplePlatform.iOS, "ios-arm64")]
-		[TestCase (ApplePlatform.iOS, "ios-arm64;ios-arm")]
 		[TestCase (ApplePlatform.TVOS, "tvos-arm64")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64;maccatalyst-x64")]
@@ -51,7 +50,6 @@ namespace Xamarin.Tests {
 
 		[Test]
 		[TestCase (ApplePlatform.iOS, "ios-arm64")]
-		[TestCase (ApplePlatform.iOS, "ios-arm64;ios-arm")]
 		[TestCase (ApplePlatform.TVOS, "tvos-arm64")]
 		public void BuildIpaTest (ApplePlatform platform, string runtimeIdentifiers)
 		{
@@ -146,7 +144,6 @@ namespace Xamarin.Tests {
 		}
 
 		[TestCase (ApplePlatform.iOS, "ios-arm64")]
-		[TestCase (ApplePlatform.iOS, "ios-arm64;ios-arm")]
 		[TestCase (ApplePlatform.TVOS, "tvos-arm64")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64;maccatalyst-x64")]
@@ -190,7 +187,6 @@ namespace Xamarin.Tests {
 
 
 		[TestCase (ApplePlatform.iOS, "iossimulator-x64")]
-		[TestCase (ApplePlatform.iOS, "iossimulator-x86")]
 		[TestCase (ApplePlatform.iOS, "iossimulator-x64;iossimulator-x64")]
 		[TestCase (ApplePlatform.TVOS, "tvossimulator-x64")]
 		public void PublishFailureTest (ApplePlatform platform, string runtimeIdentifiers)

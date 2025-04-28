@@ -75,6 +75,11 @@ namespace SystemConfiguration {
 			/* CFStringRef __nonnull */ IntPtr interfaceName);
 
 #if NET
+		/// <param name="interfaceName">To be added.</param>
+		///         <param name="currentNetworkInfo">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[ObsoletedOSPlatform ("ios14.0")]
@@ -104,6 +109,10 @@ namespace SystemConfiguration {
 		extern static IntPtr /* CFArrayRef __nullable */ CNCopySupportedInterfaces ();
 
 #if NET
+		/// <param name="supportedInterfaces">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -150,6 +159,10 @@ namespace SystemConfiguration {
 		extern static byte CNMarkPortalOnline (IntPtr /* CFStringRef __nonnull */ interfaceName);
 
 #if NET
+		/// <param name="iface">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>This API is only available on devices. An EntryPointNotFoundException will be thrown on the simulator</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -161,11 +174,17 @@ namespace SystemConfiguration {
 		static public bool MarkPortalOnline (string iface)
 		{
 			using (var nss = new NSString (iface)) {
-				return CNMarkPortalOnline (nss.Handle) != 0;
+				bool result = CNMarkPortalOnline (nss.Handle) != 0;
+				GC.KeepAlive (nss);
+				return result;
 			}
 		}
 
 #if NET
+		/// <param name="iface">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>This API is only available on devices. An EntryPointNotFoundException will be thrown on the simulator</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -177,7 +196,9 @@ namespace SystemConfiguration {
 		static public bool MarkPortalOffline (string iface)
 		{
 			using (var nss = new NSString (iface)) {
-				return CNMarkPortalOffline (nss.Handle) != 0;
+				bool result = CNMarkPortalOffline (nss.Handle) != 0;
+				GC.KeepAlive (nss);
+				return result;
 			}
 		}
 
@@ -194,6 +215,10 @@ namespace SystemConfiguration {
 		extern static byte CNSetSupportedSSIDs (IntPtr /* CFArrayRef __nonnull */ ssidArray);
 
 #if NET
+		/// <param name="ssids">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>This API is only available on devices. An EntryPointNotFoundException will be thrown on the simulator</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -205,7 +230,9 @@ namespace SystemConfiguration {
 		static public bool SetSupportedSSIDs (string [] ssids)
 		{
 			using (var arr = NSArray.FromStrings (ssids)) {
-				return CNSetSupportedSSIDs (arr.Handle) != 0;
+				bool result = CNSetSupportedSSIDs (arr.Handle) != 0;
+				GC.KeepAlive (arr);
+				return result;
 			}
 		}
 #endif // __TVOS__

@@ -52,7 +52,6 @@ namespace SceneKit {
 			return nsa;
 		}
 
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -60,17 +59,22 @@ namespace SceneKit {
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public SCNMatrix4 []? BoneInverseBindTransforms {
 			get { return FromNSArray (_BoneInverseBindTransforms); }
 		}
 
-#if NET
+		/// <param name="baseGeometry">To be added.</param>
+		///         <param name="bones">To be added.</param>
+		///         <param name="boneInverseBindTransforms">To be added.</param>
+		///         <param name="boneWeights">To be added.</param>
+		///         <param name="boneIndices">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public static SCNSkinner Create (SCNGeometry baseGeometry,
 			SCNNode [] bones, SCNMatrix4 [] boneInverseBindTransforms,
 			SCNGeometrySource boneWeights, SCNGeometrySource boneIndices)

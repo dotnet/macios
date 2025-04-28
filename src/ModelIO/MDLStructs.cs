@@ -30,6 +30,8 @@ namespace ModelIO {
 
 #if !COREBUILD
 #if NET
+	/// <summary>Extension methods for <see cref="T:ModelIO.MDLVertexFormat" />.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -47,6 +49,10 @@ namespace ModelIO {
 		static extern /* MTLVertexFormat */ nuint MTKMetalVertexFormatFromModelIO (/* MTLVertexFormat */ nuint vertexFormat);
 
 #if NET
+		/// <param name="vertexFormat">To be added.</param>
+		///         <summary>Converts the current vertex format into the specified <paramref name="vertexFormat" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -61,6 +67,8 @@ namespace ModelIO {
 #endif
 
 #if NET
+	/// <summary>A bounding box whose axes are aligned with its coordinate system.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -98,6 +106,7 @@ namespace ModelIO {
 #endif
 
 #if NET
+	/// <summary>Provides the extent of voxel data.</summary>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

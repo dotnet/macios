@@ -18,6 +18,9 @@ using NativeHandle = System.IntPtr;
 
 namespace ExternalAccessory {
 
+	/// <summary>Provides information about a connected external accessory.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ExternalAccessory/Reference/EAAccessory_class/index.html">Apple documentation for <c>EAAccessory</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject), Delegates = new string [] { "WeakDelegate" }, Events = new Type [] { typeof (EAAccessoryDelegate) })]
 	// Objective-C exception thrown.  Name: EAAccessoryInitException Reason: -init not supported. EAAccessoryManager is responsible for creating all objects.
@@ -113,12 +116,24 @@ namespace ExternalAccessory {
 
 	interface IEAAccessoryDelegate { }
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:ExternalAccessory.EAAccessoryDelegate" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:ExternalAccessory.EAAccessoryDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:ExternalAccessory.EAAccessoryDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:ExternalAccessory.EAAccessoryDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model]
 	[Protocol]
 	interface EAAccessoryDelegate {
-		[Export ("accessoryDidDisconnect:"), EventArgs ("EAAccessory")]
+		/// <param name="accessory">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
+		[Export ("accessoryDidDisconnect:"), EventArgs ("EAAccessory", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void Disconnected (EAAccessory accessory);
 	}
 
@@ -137,6 +152,9 @@ namespace ExternalAccessory {
 		EAAccessory Selected { get; }
 	}
 
+	/// <summary>Used to enumerate the external accessories connected.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ExternalAccessory/Reference/EAAccessoryManager_class/index.html">Apple documentation for <c>EAAccessoryManager</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	// Objective-C exception thrown.  Name: EAAccessoryManagerInitException Reason: -init is not supported. Use +sharedAccessoryManager.
@@ -149,9 +167,13 @@ namespace ExternalAccessory {
 		[Export ("sharedAccessoryManager")]
 		EAAccessoryManager SharedAccessoryManager { get; }
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("registerForLocalNotifications")]
 		void RegisterForLocalNotifications ();
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("unregisterForLocalNotifications")]
 		void UnregisterForLocalNotifications ();
 
@@ -172,18 +194,43 @@ namespace ExternalAccessory {
 		NSString DidDisconnectNotification { get; }
 
 		// [Introduced (PlatformName.MacCatalyst, 14, 0)]
+		/// <param name="predicate">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="completion">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoMacCatalyst] // selector does not respond
 		[NoMac]
 		[Export ("showBluetoothAccessoryPickerWithNameFilter:completion:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="predicate">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>A task that represents the asynchronous ShowBluetoothAccessoryPicker operation</returns>
+			<remarks>
+			          <para copied="true">The ShowBluetoothAccessoryPickerAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void ShowBluetoothAccessoryPicker ([NullAllowed] NSPredicate predicate, [NullAllowed] Action<NSError> completion);
 	}
 
+	/// <summary>The EASession is used to communicate with the external hardware accessory.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ExternalAccessory/Reference/EASession_class/index.html">Apple documentation for <c>EASession</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	// Objective-C exception thrown.  Name: EASessionInitException Reason: -init not supported. use -initWithAccessory:forProtocol.
 	[DisableDefaultCtor]
 	interface EASession {
+		/// <param name="accessory">To be added.</param>
+		/// <param name="protocol">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithAccessory:forProtocol:")]
 		NativeHandle Constructor (EAAccessory accessory, string protocol);
 
@@ -216,6 +263,9 @@ namespace ExternalAccessory {
 		NSOutputStream OutputStream { get; }
 	}
 
+	/// <summary>An MFI Wireless Accessory Configuration accessory that is currently unconfigured.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ExternalAccessory/Reference/EAWiFiUnconfiguredAccessory_Class/index.html">Apple documentation for <c>EAWiFiUnconfiguredAccessory</c></related>
 	[NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
@@ -281,38 +331,77 @@ namespace ExternalAccessory {
 #endif
 	interface EAWiFiUnconfiguredAccessoryBrowser {
 
+		/// <param name="accessoryBrowserDelegate">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="queue">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (14, 0)] // the headers lie, not usable until at least Mac Catalyst 14.0
 		[NoTV]
 		[Export ("initWithDelegate:queue:")]
 		[DesignatedInitializer] // according to header comment (but not in attributes)
 		NativeHandle Constructor ([NullAllowed] IEAWiFiUnconfiguredAccessoryBrowserDelegate accessoryBrowserDelegate, [NullAllowed] DispatchQueue queue);
 
+		/// <summary>An object that can respond to the delegate protocol for this type</summary>
+		///         <value>The instance that will respond to events and data requests.</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>   Methods must be decorated with the [Export ("selectorName")] attribute to respond to each method from the protocol.   Alternatively use the Delegate method which is strongly typed and does not require the [Export] attributes on methods.</para>
+		///         </remarks>
 		[NoTV] // no member is available
 		[MacCatalyst (13, 1)]
 		[Export ("delegate", ArgumentSemantic.Weak)]
 		[NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the ExternalAccessory.IEAWiFiUnconfiguredAccessoryBrowserDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the ExternalAccessory.IEAWiFiUnconfiguredAccessoryBrowserDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[NoTV] // no member is available
 		[MacCatalyst (13, 1)]
 		[Wrap ("WeakDelegate")]
 		[NullAllowed]
 		IEAWiFiUnconfiguredAccessoryBrowserDelegate Delegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("unconfiguredAccessories", ArgumentSemantic.Copy)]
 		NSSet UnconfiguredAccessories { get; }
 
+		/// <param name="predicate">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (14, 0)] // the headers lie, not usable until at least Mac Catalyst 14.0
 		[NoTV]
 		[Export ("startSearchingForUnconfiguredAccessoriesMatchingPredicate:")]
 		void StartSearchingForUnconfiguredAccessories ([NullAllowed] NSPredicate predicate);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (14, 0)] // the headers lie, not usable until at least Mac Catalyst 14.0
 		[NoTV]
 		[Export ("stopSearchingForUnconfiguredAccessories")]
 		void StopSearchingForUnconfiguredAccessories ();
 
 #if !MONOMAC
+		/// <param name="accessory">To be added.</param>
+		///         <param name="viewController">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (14, 0)] // the headers lie, not usable until at least Mac Catalyst 14.0
 		[NoTV]
 		[Export ("configureAccessory:withConfigurationUIOnViewController:")]
@@ -330,20 +419,49 @@ namespace ExternalAccessory {
 	[BaseType (typeof (NSObject))]
 	interface EAWiFiUnconfiguredAccessoryBrowserDelegate {
 
+		/// <param name="browser">To be added.</param>
+		///         <param name="state">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Abstract]
-		[Export ("accessoryBrowser:didUpdateState:"), EventArgs ("EAWiFiUnconfiguredAccessory")]
+		[Export ("accessoryBrowser:didUpdateState:"), EventArgs ("EAWiFiUnconfiguredAccessory", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidUpdateState (EAWiFiUnconfiguredAccessoryBrowser browser, EAWiFiUnconfiguredAccessoryBrowserState state);
 
+		/// <param name="browser">To be added.</param>
+		///         <param name="accessories">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Abstract]
-		[Export ("accessoryBrowser:didFindUnconfiguredAccessories:"), EventArgs ("EAWiFiUnconfiguredAccessoryBrowser")]
+		[Export ("accessoryBrowser:didFindUnconfiguredAccessories:"), EventArgs ("EAWiFiUnconfiguredAccessoryBrowser", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidFindUnconfiguredAccessories (EAWiFiUnconfiguredAccessoryBrowser browser, NSSet accessories);
 
+		/// <param name="browser">To be added.</param>
+		///         <param name="accessories">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Abstract]
-		[Export ("accessoryBrowser:didRemoveUnconfiguredAccessories:"), EventArgs ("EAWiFiUnconfiguredAccessoryBrowser")]
+		[Export ("accessoryBrowser:didRemoveUnconfiguredAccessories:"), EventArgs ("EAWiFiUnconfiguredAccessoryBrowser", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidRemoveUnconfiguredAccessories (EAWiFiUnconfiguredAccessoryBrowser browser, NSSet accessories);
 
+		/// <param name="browser">To be added.</param>
+		///         <param name="accessory">To be added.</param>
+		///         <param name="status">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Abstract]
-		[Export ("accessoryBrowser:didFinishConfiguringAccessory:withStatus:"), EventArgs ("EAWiFiUnconfiguredAccessoryDidFinish")]
+		[Export ("accessoryBrowser:didFinishConfiguringAccessory:withStatus:"), EventArgs ("EAWiFiUnconfiguredAccessoryDidFinish", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidFinishConfiguringAccessory (EAWiFiUnconfiguredAccessoryBrowser browser, EAWiFiUnconfiguredAccessory accessory, EAWiFiUnconfiguredAccessoryConfigurationStatus status);
 	}
 }

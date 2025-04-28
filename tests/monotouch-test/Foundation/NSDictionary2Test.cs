@@ -576,5 +576,26 @@ namespace MonoTouchFixtures.Foundation {
 			Assert.Throws<InvalidCastException> (() => GC.KeepAlive (dictK.Keys), "K Keys");
 			Assert.Throws<InvalidCastException> (() => dictK.KeysForObject (kv), "K KeysForObject");
 		}
+
+		[Test]
+		public void ToDictionaryTest ()
+		{
+			var value1 = NSDate.FromTimeIntervalSince1970 (31415);
+			var value2 = NSDate.FromTimeIntervalSince1970 (51413);
+			var key1 = new NSString ("key1");
+			var key2 = new NSString ("key2");
+
+			using var dictobj = new NSDictionary<NSString, NSDate> (
+				new NSString [] { key1, key2 },
+				new NSDate [] { value1, value2 }
+			);
+
+			var dict = dictobj.ToDictionary ((k, v) => (k.ToString (), v.SecondsSince1970));
+			Assert.That (dict.Count, Is.EqualTo (2), "Count");
+			Assert.That (dict.ContainsKey ("key1"), Is.True, "key1");
+			Assert.That (dict ["key1"], Is.EqualTo (31415), "value1");
+			Assert.That (dict.ContainsKey ("key2"), Is.True, "key2");
+			Assert.That (dict ["key2"], Is.EqualTo (51413), "value2");
+		}
 	}
 }

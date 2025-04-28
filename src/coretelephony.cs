@@ -29,9 +29,18 @@ namespace CoreTelephony {
 	[NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	interface CTCellularData {
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("cellularDataRestrictionDidUpdateNotifier", ArgumentSemantic.Copy)]
 		Action<CTCellularDataRestrictedState> RestrictionDidUpdateNotifier { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("restrictedState")]
 		CTCellularDataRestrictedState RestrictedState { get; }
 	}
@@ -308,6 +317,9 @@ namespace CoreTelephony {
 	[NoMacCatalyst]
 	[Protocol]
 	interface CTSubscriberDelegate {
+		/// <param name="subscriber">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("subscriberTokenRefreshed:")]
 		void SubscriberTokenRefreshed (CTSubscriber subscriber);
@@ -319,16 +331,28 @@ namespace CoreTelephony {
 	[NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	partial interface CTSubscriber {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("carrierToken")]
 		[NullAllowed]
 		NSData CarrierToken { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("identifier")]
 		string Identifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("delegate", ArgumentSemantic.Weak)]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakDelegate")]
 		[NullAllowed]
 		ICTSubscriberDelegate Delegate { get; set; }
@@ -348,12 +372,18 @@ namespace CoreTelephony {
 	[NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	partial interface CTSubscriberInfo {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 12, 1, message: "Use 'Subscribers' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'Subscribers' instead.")]
 		[Static]
 		[Export ("subscriber")]
 		CTSubscriber Subscriber { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("subscribers")]
 		CTSubscriber [] Subscribers { get; }
@@ -362,21 +392,39 @@ namespace CoreTelephony {
 	[NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	interface CTCellularPlanProvisioningRequest : NSSecureCoding {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("address")]
 		string Address { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("matchingID")]
 		string MatchingId { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("OID")]
 		string Oid { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("confirmationCode")]
 		string ConfirmationCode { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("ICCID")]
 		string Iccid { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("EID")]
 		string Eid { get; set; }
 	}
@@ -384,10 +432,22 @@ namespace CoreTelephony {
 	[NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	interface CTCellularPlanProvisioning {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("supportsCellularPlan")]
 		bool SupportsCellularPlan { get; }
 
-		[Async]
+		/// <param name="request">To be added.</param>
+		///         <param name="completionHandler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
+		[Async (XmlDocs = """
+			<param name="request">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("addPlanWith:completionHandler:")]
 		void AddPlan (CTCellularPlanProvisioningRequest request, Action<CTCellularPlanProvisioningAddPlanResult> completionHandler);
 

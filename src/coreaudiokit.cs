@@ -53,6 +53,16 @@ namespace CoreAudioKit {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (AUViewControllerBase))]
 	interface AUViewController {
+		/// <param name="nibName">
+		///           <para>The name of the nib file.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="bundle">
+		///           <para>The name of the bundle.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Creates a new audio unit view controller from the nib file in <paramref name="bundle" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithNibName:bundle:")]
 		[PostGet ("NibBundle")]
 		NativeHandle Constructor ([NullAllowed] string nibName, [NullAllowed] NSBundle bundle);
@@ -61,6 +71,11 @@ namespace CoreAudioKit {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface AUAudioUnitViewConfiguration : NSSecureCoding {
+		/// <param name="width">To be added.</param>
+		/// <param name="height">To be added.</param>
+		/// <param name="hostHasController">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithWidth:height:hostHasController:")]
 		NativeHandle Constructor (nfloat width, nfloat height, bool hostHasController);
 
@@ -78,9 +93,16 @@ namespace CoreAudioKit {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (AUAudioUnit))]
 	interface AUAudioUnitViewControllerExtensions {
+		/// <param name="availableViewConfigurations">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("supportedViewConfigurations:")]
 		NSIndexSet GetSupportedViewConfigurations (AUAudioUnitViewConfiguration [] availableViewConfigurations);
 
+		/// <param name="viewConfiguration">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("selectViewConfiguration:")]
 		void SelectViewConfiguration (AUAudioUnitViewConfiguration viewConfiguration);
 	}
@@ -90,6 +112,9 @@ namespace CoreAudioKit {
 	[Protocol]
 	interface AUCustomViewPersistentData {
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[NullAllowed, Export ("customViewPersistentData", ArgumentSemantic.Assign)]
 		NSDictionary<NSString, NSObject> CustomViewPersistentData { get; set; }
@@ -133,6 +158,9 @@ namespace CoreAudioKit {
 	[BaseType (typeof (NSWindowController), Name = "CABTLEMIDIWindowController")]
 	interface CABtleMidiWindowController {
 
+		/// <param name="window">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithWindow:")]
 		NativeHandle Constructor ([NullAllowed] NSWindow window);
 	}
@@ -142,6 +170,10 @@ namespace CoreAudioKit {
 	[BaseType (typeof (NSViewController))]
 	interface CAInterDeviceAudioViewController {
 
+		/// <param name="nibNameOrNull">To be added.</param>
+		/// <param name="nibBundleOrNull">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithNibName:bundle:")]
 		NativeHandle Constructor ([NullAllowed] string nibNameOrNull, [NullAllowed] NSBundle nibBundleOrNull);
 	}
@@ -152,6 +184,9 @@ namespace CoreAudioKit {
 	[BaseType (typeof (NSWindowController))]
 	interface CANetworkBrowserWindowController {
 
+		/// <param name="window">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithWindow:")]
 		NativeHandle Constructor ([NullAllowed] NSWindow window);
 
@@ -169,10 +204,23 @@ namespace CoreAudioKit {
 	// in iOS 8.3 (Xcode 6.3 SDK) the base type was changed from UIViewController to UITableViewController
 	[BaseType (typeof (UITableViewController), Name = "CABTMIDICentralViewController")]
 	interface CABTMidiCentralViewController {
+		/// <param name="nibName">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="bundle">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Creates and returns a new <see cref="T:CoreAudioKit.CABTMidiCentralViewController" /> from the specified <paramref name="nibName" /> in the specified <paramref name="bundle" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithNibName:bundle:")]
 		[PostGet ("NibBundle")]
 		NativeHandle Constructor ([NullAllowed] string nibName, [NullAllowed] NSBundle bundle);
 
+		/// <param name="withStyle">To be added.</param>
+		/// <summary>Creates a new <see cref="T:CoreAudioKit.CABTMidiCentralViewController" /> with the specified style.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("initWithStyle:")]
 		NativeHandle Constructor (UITableViewStyle withStyle);
@@ -185,6 +233,16 @@ namespace CoreAudioKit {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (UIViewController), Name = "CABTMIDILocalPeripheralViewController")]
 	interface CABTMidiLocalPeripheralViewController {
+		/// <param name="nibName">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="bundle">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Creates and returns a new <see cref="T:CoreAudioKit.CABTMidiLocalPeripheralViewController" /> from the specified <paramref name="nibName" /> in the specified <paramref name="bundle" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithNibName:bundle:")]
 		[PostGet ("NibBundle")]
 		NativeHandle Constructor ([NullAllowed] string nibName, [NullAllowed] NSBundle bundle);
@@ -199,6 +257,12 @@ namespace CoreAudioKit {
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'AudioUnit' instead.")]
 	[BaseType (typeof (UIView))]
 	interface CAInterAppAudioSwitcherView {
+		/// <param name="bounds">Frame used by the view, expressed in iOS points.</param>
+		/// <summary>Initializes the CAInterAppAudioSwitcherView with the specified frame.</summary>
+		/// <remarks>
+		///           <para>This constructor is used to programmatically create a new instance of CAInterAppAudioSwitcherView with the specified dimension in the frame.   The object will only be displayed once it has been added to a view hierarchy by calling AddSubview in a containing view.</para>
+		///           <para>This constructor is not invoked when deserializing objects from storyboards or XIB filesinstead the constructor that takes an NSCoder parameter is invoked.</para>
+		///         </remarks>
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect bounds);
 
@@ -224,6 +288,12 @@ namespace CoreAudioKit {
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'AudioUnit' instead.")]
 	[BaseType (typeof (UIView))]
 	interface CAInterAppAudioTransportView {
+		/// <param name="bounds">Frame used by the view, expressed in iOS points.</param>
+		/// <summary>Initializes the CAInterAppAudioTransportView with the specified frame.</summary>
+		/// <remarks>
+		///           <para>This constructor is used to programmatically create a new instance of CAInterAppAudioTransportView with the specified dimension in the frame.   The object will only be displayed once it has been added to a view hierarchy by calling AddSubview in a containing view.</para>
+		///           <para>This constructor is not invoked when deserializing objects from storyboards or XIB filesinstead the constructor that takes an NSCoder parameter is invoked.</para>
+		///         </remarks>
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect bounds);
 

@@ -16,12 +16,12 @@ using Foundation;
 using Metal;
 
 namespace MetalPerformanceShaders {
-#if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
-#endif
 	public static partial class MPSStateBatch {
 
 		[DllImport (Constants.MetalPerformanceShadersLibrary)]
@@ -33,13 +33,19 @@ namespace MetalPerformanceShaders {
 			if (stateBatch is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (stateBatch));
 
-			return MPSStateBatchIncrementReadCount (stateBatch.Handle, amount);
+			nuint count = MPSStateBatchIncrementReadCount (stateBatch.Handle, amount);
+			GC.KeepAlive (stateBatch);
+			return count;
 		}
 
 		[DllImport (Constants.MetalPerformanceShadersLibrary)]
 		static extern void MPSStateBatchSynchronize (IntPtr batch, IntPtr /* id<MTLCommandBuffer> */ cmdBuf);
 
 		// Using 'NSArray<MPSState>' instead of `MPSState[]` because array 'Handle' matters.
+		/// <param name="stateBatch">To be added.</param>
+		///         <param name="commandBuffer">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static void Synchronize (NSArray<MPSState> stateBatch, IMTLCommandBuffer commandBuffer)
 		{
 			if (stateBatch is null)
@@ -48,30 +54,34 @@ namespace MetalPerformanceShaders {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (commandBuffer));
 
 			MPSStateBatchSynchronize (stateBatch.Handle, commandBuffer.Handle);
+			GC.KeepAlive (stateBatch);
+			GC.KeepAlive (commandBuffer);
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		[DllImport (Constants.MetalPerformanceShadersLibrary)]
 		static extern nuint MPSStateBatchResourceSize (IntPtr batch);
 
 		// Using 'NSArray<MPSState>' instead of `MPSState[]` because array 'Handle' matters.
-#if NET
+		/// <param name="stateBatch">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public static nuint GetResourceSize (NSArray<MPSState> stateBatch)
 		{
 			if (stateBatch is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (stateBatch));
 
-			return MPSStateBatchResourceSize (stateBatch.Handle);
+			nuint size = MPSStateBatchResourceSize (stateBatch.Handle);
+			GC.KeepAlive (stateBatch);
+			return size;
 		}
 	}
 }

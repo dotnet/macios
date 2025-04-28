@@ -174,6 +174,10 @@ while ! test -z $1; do
 			IGNORE_SIMULATORS=1
 			shift
 			;;
+		--ignore-old-simulators)
+			IGNORE_OLD_SIMULATORS=1
+			shift
+			;;
 		--enforce-simulators)
 			unset IGNORE_SIMULATORS
 			unset OPTIONAL_SIMULATORS
@@ -901,14 +905,12 @@ function check_old_simulators ()
 
 	local EXTRA_SIMULATORS
 	local XCODE
+	local XCODE_DEVELOPER_ROOT
 
-	EXTRA_SIMULATORS=$(grep ^EXTRA_SIMULATORS= Make.config | sed 's/.*=//')
-	XCODE=$(dirname "$(dirname "$(grep ^XCODE_DEVELOPER_ROOT= Make.config | sed 's/.*=//')")")
+	XCODE_DEVELOPER_ROOT=$(grep XCODE$1_DEVELOPER_ROOT= Make.config | sed 's/.*=//')
 
-	if ! make -C tools/siminstaller >/dev/null; then
-		warn "Can't check if simulators are available, because siminstaller failed to build."
-		return
-	fi
+	IFS=' ' read -r -a EXTRA_SIMULATORS <<< "$(grep ^EXTRA_SIMULATORS= Make.config | sed 's/.*=//')"
+	XCODE=$(dirname "$(dirname "$XCODE_DEVELOPER_ROOT")")
 
 	if ! test -d "$XCODE"; then
 		# can't test unless Xcode is present
@@ -916,38 +918,39 @@ function check_old_simulators ()
 		return
 	fi
 
-	IFS=', ' read -r -a SIMS <<< "$EXTRA_SIMULATORS"
-	arraylength=${#SIMS[@]}
-	INSTALL_SIMULATORS=
-	for (( i=1; i<arraylength+1; i++ ));	do
-		INSTALL_SIMULATORS="$INSTALL_SIMULATORS --install=${SIMS[$i-1]}"
-	done
+	SD_TMP_DIR=$(mktemp -d /tmp/system-dependencies.XXXXXX)
+	trap 'rm -rf -- "$SD_TMP_DIR"' EXIT
+	TMP_FILE=$SD_TMP_DIR/simulator-runtimes.json
+	xcrun simctl list runtimes --json --json-output "$TMP_FILE"
 
-	if ! FAILED_SIMULATORS=$(make -C tools/siminstaller only-check INSTALL_SIMULATORS="$INSTALL_SIMULATORS" 2>/dev/null); then
-		local action=warn
-		if test -z $OPTIONAL_OLD_SIMULATORS; then
-			action=fail
-		fi
-		if [[ "$FAILED_SIMULATORS" =~ "Unknown simulators:" ]]; then
-			$action "${FAILED_SIMULATORS}"
-			$action "    If you just updated the Xcode version, it's possible Apple stopped shipping these simulators with the new version of Xcode."
-			$action "    If that's the case, you can list the available simulators with ${COLOR_MAGENTA}make -C tools/siminstaller print-simulators --xcode $XCODE${COLOR_RESET},"
-			$action "    and then update the ${COLOR_MAGENTA}MIN_<OS>_SIMULATOR_VERSION${COLOR_RESET} and ${COLOR_MAGENTA}EXTRA_SIMULATORS${COLOR_RESET} variables in Make.config to the earliest available simulators."
-			$action "    Another possibility is that Apple is not shipping any simulators (yet?) for the new version of Xcode (if the previous list shows no simulators)."
-		else
-			if ! test -z $PROVISION_OLD_SIMULATORS; then
-				if ! make -C tools/siminstaller install-simulators INSTALL_SIMULATORS="$INSTALL_SIMULATORS"; then
-					$action "Failed to install extra simulators."
-				else
-					ok "Extra simulators installed successfully: '${FAILED_SIMULATORS//$'\n'/', '}'"
-				fi
-			else
-				$action "The simulators '${FAILED_SIMULATORS//$'\n'/', '}' are not installed or need to be upgraded."
-			fi
-		fi
-	else
-		ok "Found all extra simulators: ${EXTRA_SIMULATORS// /, }"
+	local action=warn
+	if test -z $OPTIONAL_OLD_SIMULATORS; then
+		action=fail
 	fi
+
+	local os
+	local versionName
+	local version
+
+	for spec in "${EXTRA_SIMULATORS[@]}"; do
+		os=${spec/:*/}
+		versionName=${spec/*:/}
+		version=$(grep "^${versionName}=" Make.config | sed 's/.*=//')
+
+		OS_TMP_FILE=$SD_TMP_DIR/$os-$version.json
+		jq ".runtimes[] | select(.platform == \"$os\" and .version == \"$version\" and .isAvailable == true and .isInternal == false) | [ { \"version\":.version, \"name\":.name, \"identifier\":.identifier } ]" < "$TMP_FILE" > "$OS_TMP_FILE"
+		#echo $OS_TMP_FILE
+		LENGTH=$(jq length < "$OS_TMP_FILE")
+		if [[ "$LENGTH" != "" && "$LENGTH" -gt 0 ]]; then
+			ok "Found the $os $version simulator."
+		elif test -z "$PROVISION_OLD_SIMULATORS"; then
+			$action "The $os $version simulator is not installed. Execute ${COLOR_MAGENTA}xcodebuild -downloadPlatform $os -buildVersion $version${COLOR_RESET} to install."
+		else
+			warn "The $os $version simulator is not installed. Now executing ${COLOR_BLUE}"$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild" -downloadPlatform $os -buildVersion $version${COLOR_RESET} to install..."
+			"$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild" -downloadPlatform "$os" -buildVersion "$version"
+			warn "Successfully executed ${COLOR_BLUE}"$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild" -downloadPlatform $os -buildVersion $version${COLOR_RESET}."
+		fi
+	done
 }
 
 echo "Checking system..."

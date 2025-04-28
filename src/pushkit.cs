@@ -43,6 +43,13 @@ namespace PushKit {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface PKPushRegistry {
+		/// <summary>An instance of the PushKit.IPKPushRegistryDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the PushKit.IPKPushRegistryDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		IPKPushRegistryDelegate Delegate { get; set; }
 
@@ -68,11 +75,18 @@ namespace PushKit {
 	[Static]
 	interface PKPushType {
 
+		/// <summary>Represents the value associated with the constant PKPushTypeVoIP</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Introduced (PlatformName.MacCatalyst, 14, 0)]
 		[NoMac]
 		[Field ("PKPushTypeVoIP")]
 		NSString Voip { get; }
 
+		/// <summary>Gets the WatchKit complication push type, <c>PKPushTypeComplication</c>.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use directly from watchOS instead.")]
 		[NoMac]
 		[NoMacCatalyst]
@@ -80,6 +94,9 @@ namespace PushKit {
 		[Field ("PKPushTypeComplication")]
 		NSString Complication { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("PKPushTypeFileProvider")]
 		NSString FileProvider { get; }
@@ -101,10 +118,20 @@ namespace PushKit {
 	[Protocol]
 	[BaseType (typeof (NSObject))]
 	interface PKPushRegistryDelegate {
+		/// <param name="registry">To be added.</param>
+		/// <param name="credentials">To be added.</param>
+		/// <param name="type">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("pushRegistry:didUpdatePushCredentials:forType:"), EventArgs ("PKPushRegistryUpdated"), EventName ("CredentialsUpdated")]
 		void DidUpdatePushCredentials (PKPushRegistry registry, PKPushCredentials credentials, string type);
 
+		/// <param name="registry">To be added.</param>
+		/// <param name="payload">To be added.</param>
+		/// <param name="type">To be added.</param>
+		/// <summary>Developers should not use this deprecated method. Developers should use the 'DidReceiveIncomingPushWithPayload' overload accepting an 'Action' argument instead.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoMac]
 #if !NET
 		[Abstract] // now optional in iOS 11
@@ -115,10 +142,20 @@ namespace PushKit {
 		[Export ("pushRegistry:didReceiveIncomingPushWithPayload:forType:"), EventArgs ("PKPushRegistryRecieved"), EventName ("IncomingPushReceived")]
 		void DidReceiveIncomingPush (PKPushRegistry registry, PKPushPayload payload, string type);
 
+		/// <param name="registry">To be added.</param>
+		/// <param name="payload">To be added.</param>
+		/// <param name="type">To be added.</param>
+		/// <param name="completion">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("pushRegistry:didReceiveIncomingPushWithPayload:forType:withCompletionHandler:")]
 		void DidReceiveIncomingPush (PKPushRegistry registry, PKPushPayload payload, string type, Action completion);
 
+		/// <param name="registry">To be added.</param>
+		/// <param name="type">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("pushRegistry:didInvalidatePushTokenForType:"), EventArgs ("PKPushRegistryRecieved"), EventName ("PushTokenInvalidated")]
 		void DidInvalidatePushToken (PKPushRegistry registry, string type);
 	}

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 using NUnit.Framework;
 
@@ -211,6 +212,36 @@ namespace MonoTouchFixtures.Foundation {
 			}
 			Assert.AreNotEqual (IntPtr.Zero, one.Handle, "Handle must be != IntPtr.Zero");
 			Assert.AreNotEqual (IntPtr.Zero, two.Handle, "Handle must be != IntPtr.Zero");
+		}
+
+		[Test]
+		public void CreateTest ()
+		{
+			var input = new string [] { "1", "2", "3" };
+			using var s = NSSet<NSString>.Create (input, (str) => (NSString) str);
+			Assert.That (s.Count, Is.EqualTo ((nuint) 3), "Count");
+			Assert.That (s.ToArray ().Select (v => v.ToString ()).OrderBy (v => v), Is.EqualTo (input), "Input");
+		}
+
+		[Test]
+		public void ToHashSetTest ()
+		{
+			using var s = new NSSet<NSString> ((NSString) "1", (NSString) "2", (NSString) "3");
+			{
+				var hashSet = s.ToHashSet ((v) => v);
+				var sorted = hashSet.OrderBy (v => v.ToString ()).ToArray ();
+				Assert.That (sorted [0].ToString (), Is.EqualTo ("1"), "1 A");
+				Assert.That (sorted [1].ToString (), Is.EqualTo ("2"), "2 A");
+				Assert.That (sorted [2].ToString (), Is.EqualTo ("3"), "3 A");
+			}
+
+			{
+				var hashSet = s.ToHashSet ((v) => v.ToString ());
+				var sorted = hashSet.OrderBy (v => v).ToArray ();
+				Assert.That (sorted [0], Is.EqualTo ("1"), "1 B");
+				Assert.That (sorted [1], Is.EqualTo ("2"), "2 B");
+				Assert.That (sorted [2], Is.EqualTo ("3"), "3 B");
+			}
 		}
 	}
 }

@@ -409,6 +409,7 @@ namespace Accessibility {
 
 	[iOS (18, 2), NoTV, NoMacCatalyst, NoMac]
 	[Native]
+	[ErrorDomain ("AXFeatureOverrideSessionErrorDomain")]
 	public enum AXFeatureOverrideSessionError : long {
 		Undefined = 0,
 		AppNotEntitled,

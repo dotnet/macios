@@ -1,0 +1,32 @@
+<Documentation>
+  <Docs DocId="T:ObjCRuntime.MonoNativeFunctionWrapperAttribute">
+    <summary>Attribute to apply to delegates to flag them as targets that can be used with <see cref="M:System.Runtime.InteropServices.Marshal.GetDelegateForFunctionPointer(System.IntPtr,System.Type)" />.</summary>
+    <remarks>
+      <para>
+	Since Xamarin.iOS runs in fully statically compiled mode, it is
+	necessary to flag delegate methods that might be passed to the
+	<see cref="M:System.Runtime.InteropServices.Marshal.GetDelegateForFunctionPointer(System.IntPtr,System.Type)" />
+	with this attribute.  This instructs the AOT compiler to
+	generate the necessary code to allow a pointer to a native
+	function to produce a callable managed delegate for the method.
+
+      </para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
+[MonoNativeFunctionWrapper]
+delegate void SomeDelegate (int a, int b);
+
+// 
+// the ptrToFunc points to an unmanaged C function with the signature (int a, int b)
+void Callback (IntPtr ptrToFunc)
+{
+	var del = (SomeDelegate) Marshal.GetDelegateForFunctionPointer (ptrToFunc, typeof (SomeDelegate));
+
+	// invoke it
+	del (1, 2);
+}
+	]]></code>
+      </example>
+    </remarks>
+  </Docs>
+</Documentation>

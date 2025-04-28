@@ -91,6 +91,10 @@ namespace CoreMedia {
 		public static CMTag ProjectionTypeEquirectangular { get => CMTagConstants.ProjectionTypeEquirectangular; }
 
 		/// <inheritdoc cref="CMTagConstants.ProjectionTypeHalfEquirectangular" />
+		[SupportedOSPlatform ("ios18.0")]
+		[SupportedOSPlatform ("tvos18.0")]
+		[SupportedOSPlatform ("maccatalyst18.0")]
+		[SupportedOSPlatform ("macos15.0")]
 		public static CMTag ProjectionTypeHalfEquirectangular { get => CMTagConstants.ProjectionTypeHalfEquirectangular; }
 
 		/// <inheritdoc cref="CMTagConstants.ProjectionTypeFisheye" />
@@ -311,7 +315,9 @@ namespace CoreMedia {
 		/// <remarks>Create the <see cref="NSDictionary" /> instance using <see cref="ToDictionary" />.</remarks>
 		public static CMTag? Create (NSDictionary dictionary)
 		{
-			return CMTagMakeFromDictionary (dictionary.GetNonNullHandle (nameof (dictionary)));
+			CMTag? result = CMTagMakeFromDictionary (dictionary.GetNonNullHandle (nameof (dictionary)));
+			GC.KeepAlive (dictionary);
+			return result;
 		}
 #endif // COREBUILD
 	}

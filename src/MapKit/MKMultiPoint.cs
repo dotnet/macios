@@ -24,6 +24,11 @@ namespace MapKit {
 			}
 		}
 
+		/// <param name="first">To be added.</param>
+		///         <param name="count">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public unsafe CLLocationCoordinate2D [] GetCoordinates (int first, int count)
 		{
 			var range = new NSRange (first, count);

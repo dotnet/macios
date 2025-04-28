@@ -35,6 +35,13 @@ using Foundation;
 namespace MapKit {
 	public partial class MKLocalSearch {
 
+		/// <param name="token">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		public virtual Task<MKLocalSearchResponse> StartAsync (CancellationToken token)
 		{
 			var tcs = new TaskCompletionSource<MKLocalSearchResponse> ();

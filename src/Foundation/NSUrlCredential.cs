@@ -14,23 +14,49 @@ using Security;
 namespace Foundation {
 
 	public partial class NSUrlCredential {
+		/// <param name="identity">Identity to use for the credential.</param>
+		///         <param name="certificates">Certificates.</param>
+		///         <param name="persistence">Specifies how long the credential should be kept.</param>
+		///         <summary>Creates an NSUrlCredential from an identity (digital certificate + private key) and a list of certificates. </summary>
+		///         <remarks>
+		///         </remarks>
 		public NSUrlCredential (SecIdentity identity, SecCertificate [] certificates, NSUrlCredentialPersistence persistence)
-			: this (identity.Handle, NSArray.FromNativeObjects (certificates).Handle, persistence)
-		{
-		}
-
-		public static NSUrlCredential FromIdentityCertificatesPersistance (SecIdentity identity, SecCertificate [] certificates, NSUrlCredentialPersistence persistence)
+			: base (NSObjectFlag.Empty)
 		{
 			if (identity is null)
 				throw new ArgumentNullException ("identity");
 
+			using (var certs = NSArray.FromNativeObjects (certificates)) {
+				InitializeHandle (_InitWithIdentity (identity.Handle, certs.Handle, persistence));
+				GC.KeepAlive (identity);
+			}
+		}
+
+		/// <param name="identity">Identity to use for the credential.</param>
+		///         <param name="certificates">Certificates for the credential.</param>
+		///         <param name="persistence">Specifies how long the credential should be kept.</param>
+		///         <summary>Creates an NSUrlCredential from an identity (digital certificate + private key) and a list of certificates. </summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
+		public static NSUrlCredential FromIdentityCertificatesPersistance (SecIdentity identity, SecCertificate [] certificates, NSUrlCredentialPersistence persistence)
+		{
+			if (identity is null)
+				throw new ArgumentNullException ("identity");
 			if (certificates is null)
 				throw new ArgumentNullException ("certificates");
 
-			using (var certs = NSArray.FromNativeObjects (certificates))
-				return FromIdentityCertificatesPersistanceInternal (identity.Handle, certs.Handle, persistence);
+			using (var certs = NSArray.FromNativeObjects (certificates)) {
+				NSUrlCredential result = FromIdentityCertificatesPersistanceInternal (identity.Handle, certs.Handle, persistence);
+				GC.KeepAlive (identity);
+				return result;
+			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public SecIdentity SecIdentity {
 			get {
 				IntPtr handle = Identity;
@@ -38,12 +64,18 @@ namespace Foundation {
 			}
 		}
 
+		/// <param name="trust">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSUrlCredential FromTrust (SecTrust trust)
 		{
 			if (trust is null)
 				throw new ArgumentNullException ("trust");
 
-			return FromTrust (trust.Handle);
+			NSUrlCredential result = FromTrust (trust.Handle);
+			GC.KeepAlive (trust);
+			return result;
 		}
 	}
 }

@@ -42,14 +42,23 @@ namespace Foundation {
 	public partial class NSOrderedSet : IEnumerable<NSObject> {
 		internal const string selSetWithArray = "orderedSetWithArray:";
 
+		/// <param name="objs">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSOrderedSet (params NSObject [] objs) : this (NSArray.FromNSObjects (objs))
 		{
 		}
 
+		/// <param name="objs">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSOrderedSet (params object [] objs) : this (NSArray.FromObjects (objs))
 		{
 		}
 
+		/// <param name="strings">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSOrderedSet (params string [] strings) : this (NSArray.FromStrings (strings))
 		{
 		}
@@ -60,16 +69,27 @@ namespace Foundation {
 			}
 		}
 
+		/// <typeparam name="T">To be added.</typeparam>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public T [] ToArray<T> () where T : class, INativeObject
 		{
 			IntPtr nsarr = _ToArray ();
 			return NSArray.ArrayFromHandle<T> (nsarr);
 		}
 
+		/// <typeparam name="T">To be added.</typeparam>
+		///         <param name="values">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSOrderedSet MakeNSOrderedSet<T> (T [] values) where T : NSObject
 		{
 			NSArray a = NSArray.FromNSObjects (values);
-			return (NSOrderedSet) Runtime.GetNSObject (ObjCRuntime.Messaging.IntPtr_objc_msgSend_IntPtr (class_ptr, Selector.GetHandle (selSetWithArray), a.Handle));
+			var result = (NSOrderedSet) Runtime.GetNSObject (ObjCRuntime.Messaging.IntPtr_objc_msgSend_IntPtr (class_ptr, Selector.GetHandle (selSetWithArray), a.Handle));
+			GC.KeepAlive (a);
+			return result;
 		}
 
 		/// <summary>Returns an enumerator that iterates through the set.</summary>
@@ -83,6 +103,9 @@ namespace Foundation {
 				yield return obj as NSObject;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		IEnumerator IEnumerable.GetEnumerator ()
 		{
 			var enumerator = _GetEnumerator ();
@@ -158,6 +181,10 @@ namespace Foundation {
 			return !first.IsEqualToOrderedSet (second);
 		}
 
+		/// <param name="other">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override bool Equals (object other)
 		{
 			NSOrderedSet o = other as NSOrderedSet;
@@ -166,11 +193,18 @@ namespace Foundation {
 			return IsEqualToOrderedSet (o);
 		}
 
+		/// <summary>Generates a hash code for the current instance.</summary>
+		///         <returns>A int containing the hash code for this instance.</returns>
+		///         <remarks>The algorithm used to generate the hash code is unspecified.</remarks>
 		public override int GetHashCode ()
 		{
 			return (int) GetNativeHash ();
 		}
 
+		/// <param name="obj">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool Contains (object obj)
 		{
 			return Contains (NSObject.FromObject (obj));
@@ -178,14 +212,23 @@ namespace Foundation {
 	}
 
 	public partial class NSMutableOrderedSet {
+		/// <param name="objs">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSMutableOrderedSet (params NSObject [] objs) : this (NSArray.FromNSObjects (objs))
 		{
 		}
 
+		/// <param name="objs">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSMutableOrderedSet (params object [] objs) : this (NSArray.FromObjects (objs))
 		{
 		}
 
+		/// <param name="strings">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSMutableOrderedSet (params string [] strings) : this (NSArray.FromStrings (strings))
 		{
 		}

@@ -51,8 +51,8 @@
     <Content Include="$(_packagePath)**" Pack="true" PackagePath="/" />
   </ItemGroup>
 
-  <!-- Always include symbols in runtime packs, otherwise set %(FilesToPackage.IsSymbolFile) to true to only include in symbols.nupkg files -->
-  <ItemGroup Condition=" '$(PlatformPackageType)' == 'RuntimePack' ">
+  <!-- Always include symbols files, otherwise set %(FilesToPackage.IsSymbolFile) to true to only include in symbols.nupkg files -->
+  <ItemGroup Condition=" '$(PlatformPackageType)' == 'RuntimePack' or '$(PlatformPackageType)' == 'ToolPack' ">
     <Content Include="$(_packagePath)**/*.pdb" Pack="true" PackagePath="/" />
   </ItemGroup>
 
@@ -83,7 +83,6 @@
     <ItemGroup Condition=" '$(PlatformPackageType)' == 'TargetingPack' or '$(PlatformPackageType)' == 'RuntimePack' " >
       <_FxAssembliesToPackage Include="$(_packagePath)$(_PackTargetPath)/*.dll" />
       <FilesToPackage Include="@(_FxAssembliesToPackage)" TargetPath="$(_PackTargetPath)" />
-      <FilesToPackage Include="@(_FxAssembliesToPackage->'%(RelativeDir)%(Filename).pdb')" TargetPath="$(_PackTargetPath)" IsSymbolFile="true" Condition=" '$(PlatformPackageType)' != 'RuntimePack' " />
       <_RuntimeHeadersToPackage Include="$(_packagePath)$(_PackNativePath)/**/*.h" Condition=" '$(PlatformPackageType)' == 'RuntimePack' " />
       <FilesToPackage Include="@(_RuntimeHeadersToPackage)" TargetPath="$(_PackNativePath)/%(RecursiveDir)" />
       <NativeRuntimeAsset Include="$(_packagePath)$(_PackNativePath)/*.a" />
@@ -92,13 +91,8 @@
       <FrameworkListFileClass Include="@(NativeRuntimeAsset->'%(Filename)%(Extension)')" Profile="$(_PlatformName)" />
     </ItemGroup>
     <ItemGroup Condition=" '$(PlatformPackageType)' == 'ToolPack' " >
-      <_ToolsFilesToPackage Include="$(_packagePath)**" Exclude="$(_packagePath)**/*.pdb" />
-      <_ToolsSymbolsToPackage Include="$(_packagePath)**/*.pdb" />
+      <_ToolsFilesToPackage Include="$(_packagePath)**" />
       <FilesToPackage Include="@(_ToolsFilesToPackage)" TargetPath="%(RecursiveDir)" />
-      <!-- Use a relative path one directory up to circumvent the use of a root 'runtimes' folder for symbols files declared in
-        https://github.com/dotnet/arcade/blob/2b1931c05dd6ceb89120131a8b39eaa81735179a/src/Microsoft.DotNet.SharedFramework.Sdk/targets/sharedfx.targets#L569
-      -->
-      <FilesToPackage Include="@(_ToolsSymbolsToPackage)" TargetPath="..\%(RecursiveDir)" IsSymbolFile="true" />
     </ItemGroup>
     <ItemGroup>
       <FilesToPackage Include="$(MSBuildThisFileDirectory)Icon.png" TargetPath="\" />

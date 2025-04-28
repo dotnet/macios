@@ -452,7 +452,7 @@
 		<ItemGroup>
 			<_MonoComponent Include="hot_reload" Condition="'$(MtouchInterpreter)' != ''" />
 			<_MonoComponent Include="debugger" Condition="'$(_BundlerDebug)' == 'true'" />
-			<_MonoComponent Include="diagnostics_tracing" Condition="'$(_BundlerDebug)' == 'true'" />
+			<_MonoComponent Include="diagnostics_tracing" Condition="'$(EnableProfiler)' == 'true'" />
 			<_MonoComponent Include="marshal-ilgen" Condition="'$(_AppleExcludeMarshalIlgenComponent)' != 'true'" />
 		</ItemGroup>
 	</Target>

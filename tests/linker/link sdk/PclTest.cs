@@ -29,31 +29,36 @@ namespace LinkSdk {
 
 			Assert.False (this is ICommand, "ICommand");
 
-			HttpWebRequest hwr = WebRequest.CreateHttp (uri);
 			try {
-				Assert.True (hwr.SupportsCookieContainer, "SupportsCookieContainer");
-			} catch (NotImplementedException) {
-				// feature is not available, but the symbol itself is needed
-			}
+				HttpWebRequest hwr = WebRequest.CreateHttp (uri);
+				try {
+					Assert.True (hwr.SupportsCookieContainer, "SupportsCookieContainer");
+				} catch (NotImplementedException) {
+					// feature is not available, but the symbol itself is needed
+				}
 
-			WebResponse wr = hwr.GetResponse ();
-			try {
-				Assert.True (wr.SupportsHeaders, "SupportsHeaders");
-			} catch (NotImplementedException) {
-				// feature is not available, but the symbol itself is needed
-			}
-			wr.Dispose ();
+				WebResponse wr = hwr.GetResponse ();
+				try {
+					Assert.True (wr.SupportsHeaders, "SupportsHeaders");
+				} catch (NotImplementedException) {
+					// feature is not available, but the symbol itself is needed
+				}
+				wr.Dispose ();
 
-			try {
-				Assert.NotNull (WebRequest.CreateHttp (url));
-			} catch (NotImplementedException) {
-				// feature is not available, but the symbol itself is needed
-			}
+				try {
+					Assert.NotNull (WebRequest.CreateHttp (url));
+				} catch (NotImplementedException) {
+					// feature is not available, but the symbol itself is needed
+				}
 
-			try {
-				Assert.NotNull (WebRequest.CreateHttp (uri));
-			} catch (NotImplementedException) {
-				// feature is not available, but the symbol itself is needed
+				try {
+					Assert.NotNull (WebRequest.CreateHttp (uri));
+				} catch (NotImplementedException) {
+					// feature is not available, but the symbol itself is needed
+				}
+			} catch (Exception e) {
+				TestRuntime.IgnoreInCIIfBadNetwork (e);
+				throw;
 			}
 		}
 

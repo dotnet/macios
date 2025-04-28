@@ -451,6 +451,12 @@ namespace StoreKit {
 
 	interface ISKPaymentTransactionObserver { }
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:StoreKit.SKPaymentTransactionObserver" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:StoreKit.SKPaymentTransactionObserver" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:StoreKit.SKPaymentTransactionObserver" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:StoreKit.SKPaymentTransactionObserver_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model]
@@ -598,6 +604,12 @@ namespace StoreKit {
 
 	interface ISKRequestDelegate { }
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:StoreKit.SKRequestDelegate" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:StoreKit.SKRequestDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:StoreKit.SKRequestDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:StoreKit.SKRequestDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[Deprecated (PlatformName.iOS, 18, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.MacCatalyst, 18, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.MacOSX, 15, 0 /* Apple's replacement requires Swift */ )]
@@ -716,6 +728,12 @@ namespace StoreKit {
 
 	interface ISKProductsRequestDelegate { }
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:StoreKit.SKProductsRequestDelegate" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:StoreKit.SKProductsRequestDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:StoreKit.SKProductsRequestDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:StoreKit.SKProductsRequestDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[Deprecated (PlatformName.iOS, 18, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.MacCatalyst, 18, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.MacOSX, 15, 0 /* Apple's replacement requires Swift */ )]
@@ -888,6 +906,8 @@ namespace StoreKit {
 		string AdNetworkVersion { get; set; }
 	}
 
+	/// <summary>Encapsulates the iTunes identifier for the item that the store should display when the application is displaying a <see cref="T:StoreKit.SKStoreProductViewController" />.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface SKStoreProductParameterKey {
@@ -1142,6 +1162,8 @@ namespace StoreKit {
 		Subscribe,
 	}
 
+	/// <summary>Enumerates cloud service setup message identifiers.</summary>
+	/// <remarks>To be added.</remarks>
 	[Deprecated (PlatformName.iOS, 18, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.MacCatalyst, 18, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.TvOS, 18, 0 /* Apple's replacement requires Swift */ )]

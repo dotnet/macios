@@ -877,13 +877,24 @@ public class BackingFieldTypeAttribute : Attribute {
 public class NoMethodAttribute : Attribute {
 }
 
+/// <summary>This enum is used to specify the type of availability information in an <see cref="AvailabilityBaseAttribute" />.</summary>
 public enum AvailabilityKind {
+	/// <summary>The <see cref="AvailabilityBaseAttribute" /> specifies when an API was introduced.</summary>
 	Introduced,
+	/// <summary>The <see cref="AvailabilityBaseAttribute" /> specifies when an API was deprecated.</summary>
 	Deprecated,
+	/// <summary>The <see cref="AvailabilityBaseAttribute" /> specifies when an API was obsoleted.</summary>
 	Obsoleted,
+	/// <summary>The <see cref="AvailabilityBaseAttribute" /> specifies when an API became unavailable.</summary>
 	Unavailable,
 }
 
+/// <summary>Describes the availability of a member or type.</summary>
+/// <remarks>
+///   <para>This attribute is used to annotate when a type or member of a type was introduced, deprecated, obsolete or is unavailable. This is done on a per-platform basis (one attribute per platform, which can be either iOS, tvOS, watchOS or macOS).</para>
+///   <para>The information is only accurate for active versions of the operating systems, the information is removed as soon as operating systems are deprecated or no longer supported by Apple.</para>
+///   <para>It is the managed equivalent of Clang's availability __attribute__, which is the underlying mechanism that Apple uses to perform these annotations.</para>
+/// </remarks>
 [AttributeUsage (
 	AttributeTargets.Assembly |
 	AttributeTargets.Class |
@@ -899,9 +910,26 @@ public enum AvailabilityKind {
 	AllowMultiple = true
 )]
 public abstract class AvailabilityBaseAttribute : Attribute {
+	/// <summary>The type of availability information this attribute contains.</summary>
+	/// <value>The type of availability information this attribute contains.</value>
+	/// <remarks>
+	///     <para>The type of availability information specifies whether the version in the attribute applies to when the API was introduced, deprecated, obsoleted or became unavailable.</para>
+	/// </remarks>
 	public AvailabilityKind AvailabilityKind { get; private set; }
+
+	/// <summary>The platform this availability attribute applies to.</summary>
+	/// <value>The platform this availability attribute applies to.</value>
 	public PlatformName Platform { get; private set; }
+
+	/// <summary>The version when the API was introduced, deprecated, obsoleted or became unavailable.</summary>
+	/// <value>The version when the API was introduced, deprecated, obsoleted or became unavailable.</value>
 	public Version Version { get; private set; }
+
+	/// <summary>Additional information related to the availability information.</summary>
+	/// <value>Additional information related to the availability information.</value>
+	/// <remarks>
+	///     <para>This is typically used to recommend other API when something is deprecated or obsoleted.</para>
+	/// </remarks>
 	public string Message { get; private set; }
 
 	internal AvailabilityBaseAttribute ()
@@ -1001,6 +1029,8 @@ public abstract class AvailabilityBaseAttribute : Attribute {
 			builder.Append (Version.ToString (Version.Build >= 0 ? 3 : 2));
 	}
 
+	/// <summary>Returns a human readable version of the availability attribute.</summary>
+	/// <returns>A human readable version of the availability attribute.</returns>
 	public override string ToString ()
 	{
 		var builder = new StringBuilder ();
@@ -1022,71 +1052,128 @@ public abstract class AvailabilityBaseAttribute : Attribute {
 	}
 }
 
+/// <summary>Attribute indicating when an API was first introduced on a specific platform.</summary>
 public class IntroducedAttribute : AvailabilityBaseAttribute {
+	/// <summary>Initializes a new availability attribute specifying that the API exists on the specified platform.</summary>
+	/// <param name="platform">The platform this availability attribute applies to.</param>
+	/// <param name="message">Additional information related to the availability information.</param>
 	public IntroducedAttribute (PlatformName platform, string message = null)
 		: base (AvailabilityKind.Introduced, platform, null, message)
 	{
 	}
 
+	/// <summary>Initializes a new availability attribute specifying when the API was introduced on the specified platform.</summary>
+	/// <param name="platform">The platform this availability attribute applies to.</param>
+	/// <param name="majorVersion">The major version.</param>
+	/// <param name="minorVersion">The minor version.</param>
+	/// <param name="message">Additional information related to the availability information.</param>
 	public IntroducedAttribute (PlatformName platform, int majorVersion, int minorVersion, string message = null)
 		: base (AvailabilityKind.Introduced, platform, new Version (majorVersion, minorVersion), message)
 	{
 	}
 
+	/// <summary>Initializes a new availability attribute specifying when the API was introduced on the specified platform.</summary>
+	/// <param name="platform">The platform this availability attribute applies to.</param>
+	/// <param name="majorVersion">The major version.</param>
+	/// <param name="minorVersion">The minor version.</param>
+	/// <param name="subminorVersion">The subminor version.</param>
+	/// <param name="message">Additional information related to the availability information.</param>
 	public IntroducedAttribute (PlatformName platform, int majorVersion, int minorVersion, int subminorVersion, string message = null)
 		: base (AvailabilityKind.Introduced, platform, new Version (majorVersion, minorVersion, subminorVersion), message)
 	{
 	}
 }
 
+/// <summary>Attribute indicating when an API was deprecated on a specific platform.</summary>
 public sealed class DeprecatedAttribute : AvailabilityBaseAttribute {
+	/// <summary>Initializes a new availability attribute specifying that an API is deprecated on the specified platform.</summary>
+	/// <param name="platform">The platform this availability attribute applies to.</param>
+	/// <param name="message">Additional information related to the availability information.</param>
 	public DeprecatedAttribute (PlatformName platform, string message = null)
 		: base (AvailabilityKind.Deprecated, platform, null, message)
 	{
 	}
 
+	/// <summary>Initializes a new availability attribute specifying when the API was deprecated on the specified platform.</summary>
+	/// <param name="platform">The platform this availability attribute applies to.</param>
+	/// <param name="majorVersion">The major version.</param>
+	/// <param name="minorVersion">The minor version.</param>
+	/// <param name="message">Additional information related to the availability information.</param>
 	public DeprecatedAttribute (PlatformName platform, int majorVersion, int minorVersion, string message = null)
 		: base (AvailabilityKind.Deprecated, platform, new Version (majorVersion, minorVersion), message)
 	{
 	}
 
+	/// <summary>Initializes a new availability attribute specifying when the API was deprecated on the specified platform.</summary>
+	/// <param name="platform">The platform this availability attribute applies to.</param>
+	/// <param name="majorVersion">The major version.</param>
+	/// <param name="minorVersion">The minor version.</param>
+	/// <param name="subminorVersion">The subminor version.</param>
+	/// <param name="message">Additional information related to the availability information.</param>
 	public DeprecatedAttribute (PlatformName platform, int majorVersion, int minorVersion, int subminorVersion, string message = null)
 		: base (AvailabilityKind.Deprecated, platform, new Version (majorVersion, minorVersion, subminorVersion), message)
 	{
 	}
 }
 
+/// <summary>Attribute indicating when an API was obsoleted on a specific platform.</summary>
 public sealed class ObsoletedAttribute : AvailabilityBaseAttribute {
+	/// <summary>Initializes a new availability attribute specifying that an API is obsolete on the specified platform.</summary>
+	/// <param name="platform">The platform this availability attribute applies to.</param>
+	/// <param name="message">Additional information related to the availability information.</param>
 	public ObsoletedAttribute (PlatformName platform, string message = null)
 		: base (AvailabilityKind.Obsoleted, platform, null, message)
 	{
 	}
 
+	/// <summary>Initializes a new availability attribute specifying when the API was obsoleted on the specified platform.</summary>
+	/// <param name="platform">The platform this availability attribute applies to.</param>
+	/// <param name="majorVersion">The major version.</param>
+	/// <param name="minorVersion">The minor version.</param>
+	/// <param name="message">Additional information related to the availability information.</param>
 	public ObsoletedAttribute (PlatformName platform, int majorVersion, int minorVersion, string message = null)
 		: base (AvailabilityKind.Obsoleted, platform, new Version (majorVersion, minorVersion), message)
 	{
 	}
 
+	/// <summary>Initializes a new availability attribute specifying when the API was obsoleted on the specified platform.</summary>
+	/// <param name="platform">The platform this availability attribute applies to.</param>
+	/// <param name="majorVersion">The major version.</param>
+	/// <param name="minorVersion">The minor version.</param>
+	/// <param name="subminorVersion">The subminor version.</param>
+	/// <param name="message">Additional information related to the availability information.</param>
 	public ObsoletedAttribute (PlatformName platform, int majorVersion, int minorVersion, int subminorVersion, string message = null)
 		: base (AvailabilityKind.Obsoleted, platform, new Version (majorVersion, minorVersion, subminorVersion), message)
 	{
 	}
 }
 
+/// <summary>Attribute indicating when an API was removed from a specific platform.</summary>
 public class UnavailableAttribute : AvailabilityBaseAttribute {
+	/// <summary>Initializes a new availability attribute specifying that an API no longer exists on the specified platform.</summary>
+	/// <param name="platform">The platform this availability attribute applies to.</param>
+	/// <param name="message">Additional information related to the availability information.</param>
 	public UnavailableAttribute (PlatformName platform, string message = null)
 		: base (AvailabilityKind.Unavailable, platform, null, message)
 	{
 	}
 }
 
+/// <summary>Attribute indicating when an API was first introduced in tvOS.</summary>
 [AttributeUsage (AttributeTargets.All, AllowMultiple = false)]
 public sealed class TVAttribute : IntroducedAttribute {
+	/// <summary>Initializes a new availability attribute for tvOS with the specified architecture, major and minor versions.</summary>
+	/// <param name="major">The major version number.</param>
+	/// <param name="minor">The minor version number.</param>
 	public TVAttribute (byte major, byte minor)
 		: base (PlatformName.TvOS, (int) major, (int) minor)
 	{
 	}
 
+	/// <summary>Initializes a new availability attribute for tvOS with the specified architecture, major, minor and subminor versions.</summary>
+	/// <param name="major">The major version number.</param>
+	/// <param name="minor">The minor version number.</param>
+	/// <param name="subminor">The subminor version number.</param>
 	public TVAttribute (byte major, byte minor, byte subminor)
 		: base (PlatformName.TvOS, (int) major, (int) minor, subminor)
 	{
@@ -1130,8 +1217,10 @@ public sealed class NoMacAttribute : UnavailableAttribute {
 	}
 }
 
+/// <summary>Attribute indicating that an API is not available on iOS.</summary>
 [AttributeUsage (AttributeTargets.All, AllowMultiple = false)]
 public sealed class NoiOSAttribute : UnavailableAttribute {
+	/// <summary>Initializes a new availability attribute specifying that the API is not available on iOS.</summary>
 	public NoiOSAttribute ()
 		: base (PlatformName.iOS)
 	{
@@ -1149,16 +1238,20 @@ public sealed class NoWatchAttribute : UnavailableAttribute {
 }
 #endif // XAMCORE_5_0
 
+/// <summary>Attribute indicating that an API is not available on tvOS.</summary>
 [AttributeUsage (AttributeTargets.All, AllowMultiple = false)]
 public sealed class NoTVAttribute : UnavailableAttribute {
+	/// <summary>Initializes a new availability attribute specifying that the API is not available on tvOS.</summary>
 	public NoTVAttribute ()
 		: base (PlatformName.TvOS)
 	{
 	}
 }
 
+/// <summary>Attribute indicating that an API is not available on macOS.</summary>
 [AttributeUsage (AttributeTargets.All, AllowMultiple = false)]
 public sealed class NoMacCatalystAttribute : UnavailableAttribute {
+	/// <summary>Initializes a new availability attribute specifying that the API is not available on macOS.</summary>
 	public NoMacCatalystAttribute ()
 		: base (PlatformName.MacCatalyst)
 	{

@@ -4255,6 +4255,8 @@ namespace UIKit {
 		NSString ColumnTerminatorsAttributeName { get; }
 	}
 
+	/// <summary>Interface that, together with the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20NSText%20Layout%20Orientation%20Provider_%20Extensions&amp;scope=Xamarin" title="T:UIKit.NSTextLayoutOrientationProvider_Extensions">T:UIKit.NSTextLayoutOrientationProvider_Extensions</a></format> class, comprise the NSTextLayoutOrientationProvider protocol.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	// no [Model] since it's not exposed in any API

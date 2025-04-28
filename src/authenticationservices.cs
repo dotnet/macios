@@ -87,6 +87,8 @@ namespace AuthenticationServices {
 		Url,
 	}
 
+	/// <summary>Enumerates errors associated with a <see cref="T:AuthenticationServices.ASWebAuthenticationSession" />.</summary>
+	/// <remarks>To be added.</remarks>
 	[TV (16, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -518,6 +520,8 @@ namespace AuthenticationServices {
 		void PerformPasskeyRegistrationWithoutUserInteractionIfPossible (ASPasskeyCredentialRequest registrationRequest);
 	}
 
+	/// <summary>Associates a username and a password.</summary>
+	/// <remarks>To be added.</remarks>
 	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
@@ -552,8 +556,14 @@ namespace AuthenticationServices {
 		string Password { get; }
 	}
 
+	/// <param name="callbackUrl">To be added.</param>
+	/// <param name="error">To be added.</param>
+	/// <summary>Delegate method used in <see cref="T:AuthenticationServices.ASWebAuthenticationSession" /> interactions.</summary>
+	/// <remarks>To be added.</remarks>
 	delegate void ASWebAuthenticationSessionCompletionHandler ([NullAllowed] NSUrl callbackUrl, [NullAllowed] NSError error);
 
+	/// <summary>Manages a one-time Safari login experience for the developer's app.</summary>
+	/// <remarks>To be added.</remarks>
 	[TV (16, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]

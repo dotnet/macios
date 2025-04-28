@@ -734,6 +734,12 @@ namespace SceneKit {
 	///     </remarks>
 	interface ISCNCameraControllerDelegate { }
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:SceneKit.SCNCameraControllerDelegate" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:SceneKit.SCNCameraControllerDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:SceneKit.SCNCameraControllerDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:SceneKit.SCNCameraControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	[Model] // Figured I would keep the model for convenience, as all the methods here are optional
@@ -6722,6 +6728,12 @@ namespace SceneKit {
 	///     </remarks>
 	interface ISCNAvoidOccluderConstraintDelegate { }
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:SceneKit.SCNAvoidOccluderConstraintDelegate" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:SceneKit.SCNAvoidOccluderConstraintDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:SceneKit.SCNAvoidOccluderConstraintDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:SceneKit.SCNAvoidOccluderConstraintDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]

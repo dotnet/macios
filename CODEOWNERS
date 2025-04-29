@@ -198,7 +198,6 @@
 /tools/linker
 /tools/mmp
 /tools/mtouch @rolfbjarne
-/tools/nnyeah @stephen-hawley
 
 configure @rolfbjarne
 Make.* @rolfbjarne

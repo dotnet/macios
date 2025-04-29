@@ -1500,7 +1500,8 @@ namespace ObjCRuntime {
 			//   error: * Assertion at /Users/runner/work/1/s/src/mono/mono/mini/mini-generic-sharing.c:2283, condition `m_class_get_vtable (info->klass)' not met
 			//
 			// When the same call is made from a separate function, it works fine.
-			static T? ConstructINativeObjectViaFactoryMethod (NativeHandle nativeHandle, bool owns) {
+			static T? ConstructINativeObjectViaFactoryMethod (NativeHandle nativeHandle, bool owns)
+			{
 				var rv = T._Xamarin_ConstructINativeObject (nativeHandle, owns);
 				if (rv is T t)
 					return t;

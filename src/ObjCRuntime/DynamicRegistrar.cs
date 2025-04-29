@@ -163,12 +163,6 @@ namespace Registrar {
 			}
 		}
 
-		protected override bool Is64Bits {
-			get {
-				return IntPtr.Size == 8;
-			}
-		}
-
 		protected override bool IsARM64 {
 			get {
 				return Runtime.IsARM64CallingConvention;
@@ -1116,12 +1110,6 @@ namespace Registrar {
 				break;
 			case Trampoline.Stret:
 				tramp = Method.StretTrampoline;
-				break;
-			case Trampoline.X86_DoubleABI_StaticStretTrampoline:
-				tramp = Method.X86_DoubleABI_StaticStretTrampoline;
-				break;
-			case Trampoline.X86_DoubleABI_StretTrampoline:
-				tramp = Method.X86_DoubleABI_StretTrampoline;
 				break;
 #if MONOMAC
 			case Trampoline.CopyWithZone1:

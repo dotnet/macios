@@ -13,6 +13,12 @@ using TextAttributes = UIKit.UIStringAttributes;
 
 namespace UIKit {
 	public partial class UISearchBar {
+		/// <param name="attributes">To be added.</param>
+		/// <param name="state">To be added.</param>
+		/// <summary>The title and attributes of the scope bar button for the specified UIControlState.</summary>
+		/// <remarks>
+		///           <para id="tool-remark">This member participates in the <see cref="T:UIKit.UIAppearance" /> styling system.  See the <see cref="P:UIKit.UISearchBar.Appearance" /> property and the <see cref="M:UIKit.UISearchBar.AppearanceWhenContainedIn(System.Type[])" /> method.</para>
+		///         </remarks>
 		public void SetScopeBarButtonTitle (TextAttributes attributes, UIControlState state)
 		{
 			if (attributes is null)
@@ -36,6 +42,10 @@ namespace UIKit {
 		}
 
 		public partial class UISearchBarAppearance {
+			/// <param name="attributes">To be added.</param>
+			/// <param name="state">To be added.</param>
+			/// <summary>Sets the attributes of the scope bar button for the specified UIControlState.</summary>
+			/// <remarks>To be added.</remarks>
 			public void SetScopeBarButtonTitle (TextAttributes attributes, UIControlState state)
 			{
 				if (attributes is null)

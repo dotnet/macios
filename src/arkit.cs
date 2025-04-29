@@ -1034,7 +1034,14 @@ namespace ARKit {
 		[Export ("getCurrentWorldMapWithCompletionHandler:")]
 		void GetCurrentWorldMap (Action<ARWorldMap, NSError> completionHandler);
 
-		[Async]
+		[Async (XmlDocs = """
+			<param name="transform">The transform to the position and orientation of the region from which to create a reference object.</param>
+			<param name="center">The center of the region.</param>
+			<param name="extent">The exent of the region, in the <paramref name="transform" /> coordinate space.</param>
+			<summary>Asynchronously creates a reference object from a region in space and returns a task that contains the resulting object.</summary>
+			<returns>A task that receives the created object, if present.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		[Export ("createReferenceObjectWithTransform:center:extent:completionHandler:")]
 		void CreateReferenceObject (Matrix4 transform, Vector3 center, Vector3 extent, Action<ARReferenceObject, NSError> completionHandler);
@@ -1065,6 +1072,8 @@ namespace ARKit {
 		void CaptureHighResolutionFrame (Action<ARFrame, NSError> handler);
 	}
 
+	/// <summary>Interface defining methods that respond to events in an <see cref="T:ARKit.ARSession" />.</summary>
+	/// <remarks>To be added.</remarks>
 	[NoTV, NoMac]
 	[Protocol]
 	interface ARSessionObserver {

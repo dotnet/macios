@@ -45,9 +45,14 @@ using NSEvent = System.Object;
 namespace SpriteKit {
 	/// <summary>The delegate that acts as the enumeration handler for <see cref="M:SpriteKit.SKNode.EnumerateChildNodes(System.String,SpriteKit.SKNodeChildEnumeratorHandler)" />.</summary>
 	delegate void SKNodeChildEnumeratorHandler (SKNode node, out bool stop);
+#if !XAMCORE_5_0
 	/// <summary>A method that maps <paramref name="time" />, a value between 0 and 1, to a return value between 0 snd 1.</summary>
 	///     <remarks>Application developers should assign this delegate to a method that returns 0 for a <paramref name="time" /> value of 0, and 1 for a <paramref name="time" /> value of 1.</remarks>
 	delegate float SKActionTimingFunction2 (float /* float, not CGFloat */ time);
+#endif
+	/// <summary>A method that maps <paramref name="time" />, a value between 0 and 1, to a return value between 0 snd 1.</summary>
+	/// <remarks>Application developers should assign this delegate to a method that returns 0 for a <paramref name="time" /> value of 0, and 1 for a <paramref name="time" /> value of 1.</remarks>
+	delegate float SKActionTimingFunction (float /* float, not CGFloat */ time);
 
 	/// <summary>Renders a Scene Kit image as a textured 2D image. Used to incorporate Scene Kit content into a Sprite Kit app.</summary>
 	///     
@@ -2009,51 +2014,17 @@ namespace SpriteKit {
 		[Export ("initWithName:float:")]
 		NativeHandle Constructor (string name, float /* float, not CGFloat */ value);
 
-		[Internal]
-		[Deprecated (PlatformName.iOS, 10, 0)]
-		[Deprecated (PlatformName.TvOS, 10, 0)]
-		[Deprecated (PlatformName.MacOSX, 10, 12)]
-		[MacCatalyst (13, 1)]
-		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
-		[Export ("initWithName:floatVector2:")]
-		IntPtr InitWithNameFloatVector2 (string name, Vector2 value);
-
-		[MacCatalyst (13, 1)]
 		[Export ("initWithName:vectorFloat2:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
-		[MarshalNativeExceptions]
-		[Internal]
-		IntPtr InitWithNameVectorFloat2 (string name, Vector2 value);
+		NativeHandle Constructor (string name, Vector2 value);
 
-		[Internal]
-		[Deprecated (PlatformName.iOS, 10, 0)]
-		[Deprecated (PlatformName.TvOS, 10, 0)]
-		[Deprecated (PlatformName.MacOSX, 10, 12)]
-		[MacCatalyst (13, 1)]
-		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
-		[Export ("initWithName:floatVector3:")]
-		IntPtr InitWithNameFloatVector3 (string name, Vector3 value);
-
-		[MacCatalyst (13, 1)]
 		[Export ("initWithName:vectorFloat3:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
-		[Internal]
-		IntPtr InitWithNameVectorFloat3 (string name, Vector3 value);
+		NativeHandle Constructor (string name, Vector3 value);
 
-		[Internal]
-		[Deprecated (PlatformName.iOS, 10, 0)]
-		[Deprecated (PlatformName.TvOS, 10, 0)]
-		[Deprecated (PlatformName.MacOSX, 10, 12)]
-		[MacCatalyst (13, 1)]
-		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
-		[Export ("initWithName:floatVector4:")]
-		IntPtr InitWithNameFloatVector4 (string name, Vector4 value);
-
-		[MacCatalyst (13, 1)]
 		[Export ("initWithName:vectorFloat4:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
-		[Internal]
-		IntPtr InitWithNameVectorFloat4 (string name, Vector4 value);
+		NativeHandle Constructor (string name, Vector4 value);
 
 		[MacCatalyst (13, 1)]
 		[Export ("initWithName:matrixFloat2x2:")]
@@ -2083,57 +2054,27 @@ namespace SpriteKit {
 		[Export ("floatValue")]
 		float FloatValue { get; set; } /* float, not CGFloat */
 
-		[Internal]
-		[Deprecated (PlatformName.iOS, 10, 0)]
-		[Deprecated (PlatformName.TvOS, 10, 0)]
-		[Deprecated (PlatformName.MacOSX, 10, 12)]
-		[MacCatalyst (13, 1)]
-		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
-		[Export ("floatVector2Value")]
-		Vector2 _FloatVector2Value { get; set; }
-
 		[MacCatalyst (13, 1)]
 		[Export ("vectorFloat2Value", ArgumentSemantic.Assign)]
-		[Internal]
-		Vector2 _VectorFloat2Value {
+		Vector2 FloatVector2Value {
 			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 			get;
 			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 			set;
 		}
-
-		[Internal]
-		[Deprecated (PlatformName.iOS, 10, 0)]
-		[Deprecated (PlatformName.TvOS, 10, 0)]
-		[Deprecated (PlatformName.MacOSX, 10, 12)]
-		[MacCatalyst (13, 1)]
-		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
-		[Export ("floatVector3Value")]
-		Vector3 _FloatVector3Value { get; set; }
 
 		[MacCatalyst (13, 1)]
 		[Export ("vectorFloat3Value", ArgumentSemantic.Assign)]
-		[Internal]
-		Vector3 _VectorFloat3Value {
+		Vector3 FloatVector3Value {
 			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 			get;
 			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 			set;
 		}
 
-		[Internal]
-		[Deprecated (PlatformName.iOS, 10, 0)]
-		[Deprecated (PlatformName.TvOS, 10, 0)]
-		[Deprecated (PlatformName.MacOSX, 10, 12)]
-		[MacCatalyst (13, 1)]
-		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
-		[Export ("floatVector4Value")]
-		Vector4 _FloatVector4Value { get; set; }
-
 		[MacCatalyst (13, 1)]
 		[Export ("vectorFloat4Value", ArgumentSemantic.Assign)]
-		[Internal]
-		Vector4 _VectorFloat4Value {
+		Vector4 FloatVector4Value {
 			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 			get;
 			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
@@ -2575,9 +2516,23 @@ namespace SpriteKit {
 		[Static, Export ("strengthBy:duration:")]
 		SKAction StrengthBy (float /* float, not CGFloat */ strength, double sec);
 
+		/// <summary>Sets the function that transforms the times at which actions occur.</summary>
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("timingFunction", ArgumentSemantic.Assign)]
+#if XAMCORE_5_0
+		SKActionTimingFunction TimingFunction { get; set; }
+#else
+		[Obsolete ("Use 'TimingFunction' instead.")]
 		SKActionTimingFunction2 TimingFunction2 { get; set; }
+#endif
+
+#if !XAMCORE_5_0
+		/// <summary>Sets the function that transforms the times at which actions occur.</summary>
+		[MacCatalyst (13, 1)]
+		[NullAllowed, Export ("timingFunction", ArgumentSemantic.Assign)]
+		[Sealed]
+		SKActionTimingFunction TimingFunction { get; set; }
+#endif
 
 		[MacCatalyst (13, 1)]
 		[Static, Export ("falloffBy:duration:")]

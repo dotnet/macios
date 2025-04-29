@@ -159,6 +159,8 @@ namespace OpenGLES {
 		bool TexImage (IOSurface.IOSurface ioSurface, nuint target, nuint internalFormat, uint width, uint height, nuint format, nuint type, uint plane);
 	}
 
+	/// <summary>Interface that, together with the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Open%20GLESEAGLDrawable_%20Extensions&amp;scope=Xamarin" title="T:OpenGLES.EAGLDrawable_Extensions">T:OpenGLES.EAGLDrawable_Extensions</a></format> class, comprise the EAGLDrawable protocol.</summary>
+	/// <remarks>To be added.</remarks>
 	[NoMac]
 	[NoMacCatalyst]
 	[Deprecated (PlatformName.iOS, 12, 0, message: "Use 'Metal' instead.")]

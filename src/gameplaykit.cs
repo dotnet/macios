@@ -1035,6 +1035,9 @@ namespace GameplayKit {
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		GKGridGraphNode FromGridPosition (Vector2i gridPosition);
 
+		/// <param name="gridPosition">To be added.</param>
+		/// <summary>Creates a <see cref="T:GameplayKit.GKGridGraphNode" /> at the specified <paramref name="gridPosition" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithGridPosition:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		NativeHandle Constructor (Vector2i gridPosition);

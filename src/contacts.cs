@@ -26,6 +26,12 @@ namespace Contacts {
 	///     </remarks>
 	interface ICNKeyDescriptor { }
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:Contacts.ICNKeyDescriptor" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:Contacts.ICNKeyDescriptor" />.</para>
+	///       <para>If you create objects that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:Contacts.ICNKeyDescriptor" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Contacts%20CNKey%20Descriptor_%20Extensions&amp;scope=Xamarin" title="T:Contacts.CNKeyDescriptor_Extensions">T:Contacts.CNKeyDescriptor_Extensions</a></format> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	// Headers say "This protocol is reserved for Contacts framework usage.", so don't create a model

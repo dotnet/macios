@@ -210,7 +210,14 @@ namespace CoreSpotlight {
 		///         <summary>Removes all items and runs <paramref name="completionHandler" /> when finished.</summary>
 		///         <remarks>To be added.</remarks>
 		[Export ("deleteAllSearchableItemsWithCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Asynchronously removes all items.</summary>
+			<returns>A task that represents the asynchronous DeleteAll operation</returns>
+			<remarks>
+			          <para copied="true">The DeleteAllAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void DeleteAll ([NullAllowed] Action<NSError> completionHandler);
 
 		// from interface CSExternalProvider (CSSearchableIndex)
@@ -522,6 +529,8 @@ namespace CoreSpotlight {
 		bool MultiValued { [Bind ("isMultiValued")] get; }
 	}
 
+	/// <summary>Represents keys that identify commonly used mailboxes.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[EditorBrowsable (EditorBrowsableState.Advanced)]
 	[Static]

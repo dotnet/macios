@@ -39,21 +39,41 @@ namespace CoreML {
 		{
 		}
 
+		/// <param name="dataPointer">To be added.</param>
+		/// <param name="shape">To be added.</param>
+		/// <param name="dataType">To be added.</param>
+		/// <param name="strides">To be added.</param>
+		/// <param name="deallocator">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>Creates a new MLMultiArray with the specified details.</summary>
+		/// <remarks>To be added.</remarks>
 		public MLMultiArray (IntPtr dataPointer, nint [] shape, MLMultiArrayDataType dataType, nint [] strides, Action<IntPtr> deallocator, out NSError error)
 			: this (dataPointer, ConvertArray (shape), dataType, ConvertArray (strides), deallocator, out error)
 		{
 		}
 
+		/// <param name="idx">A numeric identifier for the object to get or set.</param>
+		/// <summary>Retrieves the element at <paramref name="idx" />, as if the array were single-dimensional.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		public NSNumber this [nint idx] {
 			get { return GetObject (idx); }
 			set { SetObject (value, idx); }
 		}
 
+		/// <param name="indices">A multidimensional coordinate for the object to get or set.</param>
+		/// <summary>Gets or sets the element at <paramref name="indices" />.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		public NSNumber this [params nint [] indices] {
 			get { return GetObject (indices); }
 			set { SetObject (value, indices); }
 		}
 
+		/// <param name="key">A numeric identifier for the object to get or set.</param>
+		/// <summary>Accesses the point in the multi-dimensional array identified by <paramref name="key" />.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		public NSNumber this [NSNumber [] key] {
 			get { return GetObject (key); }
 			set { SetObject (value, key); }

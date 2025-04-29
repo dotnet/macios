@@ -179,6 +179,8 @@ namespace CloudKit {
 		void Remove (CKShareParticipant participant);
 	}
 
+	/// <summary>Constants used by various CloudKit classes.</summary>
+	/// <remarks>To be added.</remarks>
 	[Static]
 	[MacCatalyst (13, 1)]
 	partial interface CKShareKeys {
@@ -499,6 +501,10 @@ namespace CloudKit {
 		void AcceptShareMetadata (CKShareMetadata metadata, Action<CKShare, NSError> completionHandler);
 	}
 
+	/// <param name="subscriptionId">To be added.</param>
+	/// <param name="error">To be added.</param>
+	/// <summary>Completion handler for the <see cref="M:CloudKit.CKDatabase.DeleteSubscription(System.String,CloudKit.CKDatabaseDeleteSubscriptionHandler)" /> method.</summary>
+	/// <remarks>To be added.</remarks>
 	delegate void CKDatabaseDeleteSubscriptionHandler (string subscriptionId, NSError error);
 
 	[MacCatalyst (13, 1)]
@@ -701,6 +707,8 @@ namespace CloudKit {
 #endif // !NET
 
 	// CKError.h Fields
+	/// <summary>Holds error constants used by CloudKit.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface CKErrorFields {
@@ -751,6 +759,11 @@ namespace CloudKit {
 
 	}
 
+	/// <param name="serverChangeToken">To be added.</param>
+	/// <param name="clientChangeTokenData">To be added.</param>
+	/// <param name="operationError">To be added.</param>
+	/// <summary>Delegate for the <see cref="P:CloudKit.CKFetchRecordChangesOperation.AllChangesReported" /> property.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	delegate void CKFetchRecordChangesHandler (CKServerChangeToken serverChangeToken, NSData clientChangeTokenData, NSError operationError);
 
@@ -915,6 +928,10 @@ namespace CloudKit {
 		string [] DesiredKeys { get; set; }
 	}
 
+	/// <param name="recordsByRecordId">To be added.</param>
+	/// <param name="error">To be added.</param>
+	/// <summary>Delegate for the <see cref="P:CloudKit.CKFetchRecordsOperation.Completed" /> property.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	delegate void CKFetchRecordsCompletedHandler (NSDictionary recordsByRecordId, NSError error);
 
@@ -960,6 +977,10 @@ namespace CloudKit {
 		CKFetchRecordsOperation FetchCurrentUserRecordOperation ();
 	}
 
+	/// <param name="recordZonesByZoneId">To be added.</param>
+	/// <param name="operationError">To be added.</param>
+	/// <summary>Delegate for the <see cref="P:CloudKit.CKFetchRecordZonesOperation.Completed" /> property.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	delegate void CKRecordZoneCompleteHandler (NSDictionary recordZonesByZoneId, NSError operationError);
 
@@ -995,6 +1016,10 @@ namespace CloudKit {
 		CKRecordZonePerRecordZoneCompletionHandler PerRecordZoneCompletionHandler { get; set; }
 	}
 
+	/// <param name="subscriptionsBySubscriptionId">To be added.</param>
+	/// <param name="operationError">To be added.</param>
+	/// <summary>Delegate for the <see cref="P:CloudKit.CKFetchSubscriptionsOperation.Completed" /> property.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	delegate void CKFetchSubscriptionsCompleteHandler (NSDictionary subscriptionsBySubscriptionId, NSError operationError);
 
@@ -1048,6 +1073,11 @@ namespace CloudKit {
 		CLLocation RelativeLocation { get; }
 	}
 
+	/// <param name="savedRecords">To be added.</param>
+	/// <param name="deletedRecordIds">To be added.</param>
+	/// <param name="operationError">To be added.</param>
+	/// <summary>Delegate for the <see cref="P:CloudKit.CKModifyRecordsOperation.Completed" /> property.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	delegate void CKModifyRecordsOperationHandler (CKRecord [] savedRecords, CKRecordID [] deletedRecordIds, NSError operationError);
 
@@ -1120,6 +1150,11 @@ namespace CloudKit {
 
 	}
 
+	/// <param name="savedRecordZones">To be added.</param>
+	/// <param name="deletedRecordZoneIds">To be added.</param>
+	/// <param name="operationError">To be added.</param>
+	/// <summary>Delegate for the <see cref="P:CloudKit.CKModifyRecordZonesOperation.Completed" /> property.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	delegate void CKModifyRecordZonesHandler (CKRecordZone [] savedRecordZones, CKRecordZoneID [] deletedRecordZoneIds, NSError operationError);
 
@@ -1163,6 +1198,11 @@ namespace CloudKit {
 		CKModifyRecordZonesPerRecordZoneDeleteHandler PerRecordZoneDeleteHandler { get; set; }
 	}
 
+	/// <param name="savedSubscriptions">To be added.</param>
+	/// <param name="deletedSubscriptionIds">To be added.</param>
+	/// <param name="operationError">To be added.</param>
+	/// <summary>Delegate for the <see cref="P:CloudKit.CKModifySubscriptionsOperation.Completed" /> property.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	delegate void CKModifySubscriptionsHandler (CKSubscription [] savedSubscriptions, string [] deletedSubscriptionIds, NSError operationError);
 
@@ -1596,6 +1636,12 @@ namespace CloudKit {
 		CKQueryOperationRecordMatchedHandler RecordMatchedHandler { get; set; }
 	}
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:CloudKit.CKRecordValue" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:CloudKit.CKRecordValue" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:CloudKit.CKRecordValue" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Cloud%20Kit%20CKRecord%20Value_%20Extensions&amp;scope=Xamarin" title="T:CloudKit.CKRecordValue_Extensions">T:CloudKit.CKRecordValue_Extensions</a></format> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model]

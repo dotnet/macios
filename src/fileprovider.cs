@@ -564,6 +564,8 @@ namespace FileProvider {
 	/// <summary>An item provided by an <see cref="T:FileProvider.INSFileProviderItem" />. (A type alias for <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=File%20Provider%20NSFile%20Provider%20Item%20Protocol&amp;scope=Xamarin" title="T:FileProvider.NSFileProviderItemProtocol">T:FileProvider.NSFileProviderItemProtocol</a></format>.)</summary>
 	interface INSFileProviderItem { }
 
+	/// <summary>An item provided by an <see cref="T:FileProvider.INSFileProviderItem" />. (A type alias for <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=File%20Provider%20NSFile%20Provider%20Item%20Protocol&amp;scope=Xamarin" title="T:FileProvider.NSFileProviderItemProtocol">T:FileProvider.NSFileProviderItemProtocol</a></format>.)</summary>
+	/// <remarks>To be added.</remarks>
 	[NoMacCatalyst]
 	[Protocol]
 	interface NSFileProviderItem {
@@ -881,7 +883,13 @@ namespace FileProvider {
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
 		[Static]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>To be added.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous GetDomains operation.  The value of the TResult parameter is of type System.Action&lt;FileProvider.NSFileProviderDomain[],Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("getDomainsWithCompletionHandler:")]
 		void GetDomains (Action<NSFileProviderDomain [], NSError> completionHandler);
 
@@ -889,7 +897,14 @@ namespace FileProvider {
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
 		[Static]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>To be added.</summary>
+			<returns>A task that represents the asynchronous RemoveAllDomains operation</returns>
+			<remarks>
+			          <para copied="true">The RemoveAllDomainsAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("removeAllDomainsWithCompletionHandler:")]
 		void RemoveAllDomains (Action<NSError> completionHandler);
 

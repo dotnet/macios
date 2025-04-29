@@ -24,6 +24,7 @@ using NativeHandle = System.IntPtr;
 #endif
 
 namespace PhotosUI {
+	/// <include file="../docs/api/PhotosUI/IPHContentEditingController.xml" path="/Documentation/Docs[@DocId='T:PhotosUI.IPHContentEditingController']/*" />
 	[NoTV]
 	[MacCatalyst (14, 0)]
 	[Protocol]

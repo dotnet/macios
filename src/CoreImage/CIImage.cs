@@ -258,6 +258,12 @@ namespace CoreImage {
 			return WrapFilters (_GetAutoAdjustmentFilters (dict));
 		}
 
+		/// <param name="image">CoreGraphics image</param>
+		/// <summary>Implicit constructor that wraps a CGImage as a CIImage.</summary>
+		/// <returns>
+		///         </returns>
+		/// <remarks>
+		///         </remarks>
 		public static implicit operator CIImage (CGImage image)
 		{
 			return FromCGImage (image);

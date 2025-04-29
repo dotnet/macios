@@ -127,6 +127,7 @@ namespace Foundation {
 	}
 
 	public partial class NSStream {
+		/// <include file="../../docs/api/Foundation.NSStream/Item(Foundation.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSStream.Item(Foundation.NSString)']/*" />
 		public NSObject this [NSString key] {
 			get {
 				return GetProperty (key);

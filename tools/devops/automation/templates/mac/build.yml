@@ -160,7 +160,7 @@ steps:
 
 - task: UseDotNet@2
   inputs:
-    version: 9.x
+    version: $(DotNetSdkVersion).x
 
 - template: ../common/install-qa-provisioning-profiles.yml
   parameters:

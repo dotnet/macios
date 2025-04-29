@@ -127,6 +127,7 @@ namespace Foundation {
 	}
 
 	public partial class NSStream {
+		/// <include file="../../docs/api/Foundation.NSStream/Item(Foundation.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSStream.Item(Foundation.NSString)']/*" />
 		public NSObject this [NSString key] {
 			get {
 				return GetProperty (key);
@@ -387,6 +388,11 @@ namespace Foundation {
 			}
 		}
 
+		/// <param name="readStream">To be added.</param>
+		/// <param name="writeStream">To be added.</param>
+		/// <param name="bufferSize">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		public static void CreateBoundPair (out NSInputStream readStream, out NSOutputStream writeStream, nint bufferSize)
 		{
 			IntPtr read, write;

@@ -1340,9 +1340,6 @@ namespace Introspection {
 			// MPSGraphExecutable
 			case "initWithMPSGraphPackageAtURL:compilationDescriptor:":
 			case "initWithCoreMLPackageAtURL:compilationDescriptor:":
-			// NSUserDefaults
-			case "initWithSuiteName:":
-			case "initWithUser:":
 			// GKScore
 			case "initWithCategory:":
 			case "initWithLeaderboardIdentifier:":
@@ -1357,11 +1354,6 @@ namespace Introspection {
 			case "initWithUUID:identifier:":
 			case "initWithUUID:major:identifier:":
 			case "initWithUUID:major:minor:identifier:":
-			// NEHotspotConfiguration
-			case "initWithSSID:":
-			case "initWithSSID:passphrase:isWEP:":
-			case "initWithSSIDPrefix:":
-			case "initWithSSIDPrefix:passphrase:isWEP:":
 				var mi = m as MethodInfo;
 				return mi is not null && !mi.IsPublic && (mi.ReturnType.Name == "IntPtr" || mi.ReturnType.Name == "NativeHandle");
 			// NSAppleEventDescriptor
@@ -1371,9 +1363,6 @@ namespace Introspection {
 			case "initWithLocalIdentifier:":
 			case "initWithCollaborationIdentifier:":
 				return true;
-			// CloudKit
-			case "initWithExcludedZoneIDs:":
-			case "initWithZoneIDs:":
 			// DDDevicePickerViewController
 			case "initWithBrowseDescriptor:parameters:":
 				return true;

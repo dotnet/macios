@@ -113,7 +113,6 @@
         </list>
       </para>
     </remarks>
-    
     <related type="article" href="https://docs.xamarin.com/ios/Guides/User_Interface/Introduction_to_Collection_Views">Introduction to Collection Views</related>
     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UICollectionViewDelegate_protocol/index.html">Apple documentation for <c>UICollectionViewDelegate</c></related>
   </Docs>

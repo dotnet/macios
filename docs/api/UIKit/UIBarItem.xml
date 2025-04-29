@@ -1,0 +1,522 @@
+<Documentation>
+  <Docs DocId="P:UIKit.UIBarItem.AnnouncementDidFinishNotification">
+        <summary>Notification constant for AnnouncementDidFinish</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+              // Lambda style
+              NSNotificationCenter.DefaultCenter.AddObserver (
+              UIBarItem.AnnouncementDidFinishNotification, (notification) => {Console.WriteLine ("Received the notification UIBarItem", notification); }
+              
+              
+              // Method style
+              void Callback (NSNotification notification)
+              {
+              Console.WriteLine ("Received a notification UIBarItem", notification);
+              }
+              
+              void Setup ()
+              {
+              NSNotificationCenter.DefaultCenter.AddObserver (UIBarItem.AnnouncementDidFinishNotification, Callback);
+              }
+            ]]></code>
+          </example>
+        </remarks>
+      </Docs>
+  <Docs DocId="P:UIKit.UIBarItem.VoiceOverStatusDidChangeNotification">
+        <summary>Notification constant for VoiceOverStatusDidChange</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:UIKit.UIBarItem.Notifications.ObserveVoiceOverStatusDidChange(Foundation.NSObject,System.EventHandler{Foundation.NSNotificationEventArgs})" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        UIBarItem.VoiceOverStatusDidChangeNotification, (notification) => {Console.WriteLine ("Received the notification UIBarItem", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification UIBarItem", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (UIBarItem.VoiceOverStatusDidChangeNotification, Callback);
+}
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+  <Docs DocId="P:UIKit.UIBarItem.MonoAudioStatusDidChangeNotification">
+        <summary>Notification constant for MonoAudioStatusDidChange</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+              // Lambda style
+              NSNotificationCenter.DefaultCenter.AddObserver (
+              UIBarItem.MonoAudioStatusDidChangeNotification, (notification) => {Console.WriteLine ("Received the notification UIBarItem", notification); }
+              
+              
+              // Method style
+              void Callback (NSNotification notification)
+              {
+              Console.WriteLine ("Received a notification UIBarItem", notification);
+              }
+              
+              void Setup ()
+              {
+              NSNotificationCenter.DefaultCenter.AddObserver (UIBarItem.MonoAudioStatusDidChangeNotification, Callback);
+              }
+            ]]></code>
+          </example>
+        </remarks>
+      </Docs>
+  <Docs DocId="P:UIKit.UIBarItem.ClosedCaptioningStatusDidChangeNotification">
+        <summary>Notification constant for ClosedCaptioningStatusDidChange</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+              // Lambda style
+              NSNotificationCenter.DefaultCenter.AddObserver (
+              UIBarItem.ClosedCaptioningStatusDidChangeNotification, (notification) => {Console.WriteLine ("Received the notification UIBarItem", notification); }
+              
+              
+              // Method style
+              void Callback (NSNotification notification)
+              {
+              Console.WriteLine ("Received a notification UIBarItem", notification);
+              }
+              
+              void Setup ()
+              {
+              NSNotificationCenter.DefaultCenter.AddObserver (UIBarItem.ClosedCaptioningStatusDidChangeNotification, Callback);
+              }
+            ]]></code>
+          </example>
+        </remarks>
+      </Docs>
+  <Docs DocId="P:UIKit.UIBarItem.InvertColorsStatusDidChangeNotification">
+        <summary>Notification constant for InvertColorsStatusDidChange</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+              // Lambda style
+              NSNotificationCenter.DefaultCenter.AddObserver (
+              UIBarItem.InvertColorsStatusDidChangeNotification, (notification) => {Console.WriteLine ("Received the notification UIBarItem", notification); }
+              
+              
+              // Method style
+              void Callback (NSNotification notification)
+              {
+              Console.WriteLine ("Received a notification UIBarItem", notification);
+              }
+              
+              void Setup ()
+              {
+              NSNotificationCenter.DefaultCenter.AddObserver (UIBarItem.InvertColorsStatusDidChangeNotification, Callback);
+              }
+            ]]></code>
+          </example>
+        </remarks>
+      </Docs>
+  <Docs DocId="P:UIKit.UIBarItem.GuidedAccessStatusDidChangeNotification">
+        <summary>Notification constant for GuidedAccessStatusDidChange</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+              // Lambda style
+              NSNotificationCenter.DefaultCenter.AddObserver (
+              UIBarItem.GuidedAccessStatusDidChangeNotification, (notification) => {Console.WriteLine ("Received the notification UIBarItem", notification); }
+              
+              
+              // Method style
+              void Callback (NSNotification notification)
+              {
+              Console.WriteLine ("Received a notification UIBarItem", notification);
+              }
+              
+              void Setup ()
+              {
+              NSNotificationCenter.DefaultCenter.AddObserver (UIBarItem.GuidedAccessStatusDidChangeNotification, Callback);
+              }
+            ]]></code>
+          </example>
+        </remarks>
+      </Docs>
+  <Docs DocId="P:UIKit.UIBarItem.BoldTextStatusDidChangeNotification">
+        <summary>Notification constant for BoldTextStatusDidChange</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+              // Lambda style
+              NSNotificationCenter.DefaultCenter.AddObserver (
+              UIBarItem.BoldTextStatusDidChangeNotification, (notification) => {Console.WriteLine ("Received the notification UIBarItem", notification); }
+              
+              
+              // Method style
+              void Callback (NSNotification notification)
+              {
+              Console.WriteLine ("Received a notification UIBarItem", notification);
+              }
+              
+              void Setup ()
+              {
+              NSNotificationCenter.DefaultCenter.AddObserver (UIBarItem.BoldTextStatusDidChangeNotification, Callback);
+              }
+            ]]></code>
+          </example>
+        </remarks>
+      </Docs>
+  <Docs DocId="P:UIKit.UIBarItem.DarkerSystemColorsStatusDidChangeNotification">
+        <summary>Notification constant for DarkerSystemColorsStatusDidChange</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+              // Lambda style
+              NSNotificationCenter.DefaultCenter.AddObserver (
+              UIBarItem.DarkerSystemColorsStatusDidChangeNotification, (notification) => {Console.WriteLine ("Received the notification UIBarItem", notification); }
+              
+              
+              // Method style
+              void Callback (NSNotification notification)
+              {
+              Console.WriteLine ("Received a notification UIBarItem", notification);
+              }
+              
+              void Setup ()
+              {
+              NSNotificationCenter.DefaultCenter.AddObserver (UIBarItem.DarkerSystemColorsStatusDidChangeNotification, Callback);
+              }
+            ]]></code>
+          </example>
+        </remarks>
+      </Docs>
+  <Docs DocId="P:UIKit.UIBarItem.GrayscaleStatusDidChangeNotification">
+        <summary>Notification constant for GrayscaleStatusDidChange</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+              // Lambda style
+              NSNotificationCenter.DefaultCenter.AddObserver (
+              UIBarItem.GrayscaleStatusDidChangeNotification, (notification) => {Console.WriteLine ("Received the notification UIBarItem", notification); }
+              
+              
+              // Method style
+              void Callback (NSNotification notification)
+              {
+              Console.WriteLine ("Received a notification UIBarItem", notification);
+              }
+              
+              void Setup ()
+              {
+              NSNotificationCenter.DefaultCenter.AddObserver (UIBarItem.GrayscaleStatusDidChangeNotification, Callback);
+              }
+            ]]></code>
+          </example>
+        </remarks>
+      </Docs>
+  <Docs DocId="P:UIKit.UIBarItem.ReduceMotionStatusDidChangeNotification">
+        <summary>Notification constant for ReduceMotionStatusDidChange</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+              // Lambda style
+              NSNotificationCenter.DefaultCenter.AddObserver (
+              UIBarItem.ReduceMotionStatusDidChangeNotification, (notification) => {Console.WriteLine ("Received the notification UIBarItem", notification); }
+              
+              
+              // Method style
+              void Callback (NSNotification notification)
+              {
+              Console.WriteLine ("Received a notification UIBarItem", notification);
+              }
+              
+              void Setup ()
+              {
+              NSNotificationCenter.DefaultCenter.AddObserver (UIBarItem.ReduceMotionStatusDidChangeNotification, Callback);
+              }
+            ]]></code>
+          </example>
+        </remarks>
+      </Docs>
+  <Docs DocId="P:UIKit.UIBarItem.ReduceTransparencyStatusDidChangeNotification">
+        <summary>Notification constant for ReduceTransparencyStatusDidChange</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+              // Lambda style
+              NSNotificationCenter.DefaultCenter.AddObserver (
+              UIBarItem.ReduceTransparencyStatusDidChangeNotification, (notification) => {Console.WriteLine ("Received the notification UIBarItem", notification); }
+              
+              
+              // Method style
+              void Callback (NSNotification notification)
+              {
+              Console.WriteLine ("Received a notification UIBarItem", notification);
+              }
+              
+              void Setup ()
+              {
+              NSNotificationCenter.DefaultCenter.AddObserver (UIBarItem.ReduceTransparencyStatusDidChangeNotification, Callback);
+              }
+            ]]></code>
+          </example>
+        </remarks>
+      </Docs>
+  <Docs DocId="P:UIKit.UIBarItem.SwitchControlStatusDidChangeNotification">
+        <summary>Notification constant for SwitchControlStatusDidChange</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+              // Lambda style
+              NSNotificationCenter.DefaultCenter.AddObserver (
+              UIBarItem.SwitchControlStatusDidChangeNotification, (notification) => {Console.WriteLine ("Received the notification UIBarItem", notification); }
+              
+              
+              // Method style
+              void Callback (NSNotification notification)
+              {
+              Console.WriteLine ("Received a notification UIBarItem", notification);
+              }
+              
+              void Setup ()
+              {
+              NSNotificationCenter.DefaultCenter.AddObserver (UIBarItem.SwitchControlStatusDidChangeNotification, Callback);
+              }
+            ]]></code>
+          </example>
+        </remarks>
+      </Docs>
+  <Docs DocId="P:UIKit.UIBarItem.NotificationSwitchControlIdentifier">
+        <summary>Notification constant for NotificationSwitchContr</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+              // Lambda style
+              NSNotificationCenter.DefaultCenter.AddObserver (
+              UIBarItem.NotificationSwitchControlIdentifier, (notification) => {Console.WriteLine ("Received the notification UIBarItem", notification); }
+              
+              
+              // Method style
+              void Callback (NSNotification notification)
+              {
+              Console.WriteLine ("Received a notification UIBarItem", notification);
+              }
+              
+              void Setup ()
+              {
+              NSNotificationCenter.DefaultCenter.AddObserver (UIBarItem.NotificationSwitchControlIdentifier, Callback);
+              }
+            ]]></code>
+          </example>
+        </remarks>
+      </Docs>
+  <Docs DocId="P:UIKit.UIBarItem.SpeakScreenStatusDidChangeNotification">
+        <summary>Notification constant for SpeakScreenStatusDidChange</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+              // Lambda style
+              NSNotificationCenter.DefaultCenter.AddObserver (
+              UIBarItem.SpeakScreenStatusDidChangeNotification, (notification) => {Console.WriteLine ("Received the notification UIBarItem", notification); }
+              
+              
+              // Method style
+              void Callback (NSNotification notification)
+              {
+              Console.WriteLine ("Received a notification UIBarItem", notification);
+              }
+              
+              void Setup ()
+              {
+              NSNotificationCenter.DefaultCenter.AddObserver (UIBarItem.SpeakScreenStatusDidChangeNotification, Callback);
+              }
+            ]]></code>
+          </example>
+        </remarks>
+      </Docs>
+  <Docs DocId="P:UIKit.UIBarItem.SpeakSelectionStatusDidChangeNotification">
+        <summary>Notification constant for SpeakSelectionStatusDidChange</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+              // Lambda style
+              NSNotificationCenter.DefaultCenter.AddObserver (
+              UIBarItem.SpeakSelectionStatusDidChangeNotification, (notification) => {Console.WriteLine ("Received the notification UIBarItem", notification); }
+              
+              
+              // Method style
+              void Callback (NSNotification notification)
+              {
+              Console.WriteLine ("Received a notification UIBarItem", notification);
+              }
+              
+              void Setup ()
+              {
+              NSNotificationCenter.DefaultCenter.AddObserver (UIBarItem.SpeakSelectionStatusDidChangeNotification, Callback);
+              }
+            ]]></code>
+          </example>
+        </remarks>
+      </Docs>
+  <Docs DocId="P:UIKit.UIBarItem.ShakeToUndoDidChangeNotification">
+        <summary>Notification constant for ShakeToUndoDidChange</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        UIBarItem.ShakeToUndoDidChangeNotification, (notification) => {Console.WriteLine ("Received the notification UIBarItem", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification UIBarItem", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (UIBarItem.ShakeToUndoDidChangeNotification, Callback);
+}
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+  <Docs DocId="P:UIKit.UIBarItem.ElementFocusedNotification">
+        <summary>Notification constant for ElementFocused</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        UIBarItem.ElementFocusedNotification, (notification) => {Console.WriteLine ("Received the notification UIBarItem", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification UIBarItem", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (UIBarItem.ElementFocusedNotification, Callback);
+}
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+  <Docs DocId="P:UIKit.UIBarItem.NotificationVoiceOverIdentifier">
+        <summary>Notification constant for NotificationVoiceOv</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        UIBarItem.NotificationVoiceOverIdentifier, (notification) => {Console.WriteLine ("Received the notification UIBarItem", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification UIBarItem", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (UIBarItem.NotificationVoiceOverIdentifier, Callback);
+}
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+  <Docs DocId="P:UIKit.UIBarItem.AssistiveTouchStatusDidChangeNotification">
+        <summary>Notification constant for AssistiveTouchStatusDidChange</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        UIBarItem.AssistiveTouchStatusDidChangeNotification, (notification) => {Console.WriteLine ("Received the notification UIBarItem", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification UIBarItem", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (UIBarItem.AssistiveTouchStatusDidChangeNotification, Callback);
+}
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+  <Docs DocId="P:UIKit.UIBarItem.HearingDevicePairedEarDidChangeNotification">
+        <summary>Notification constant for HearingDevicePairedEarDidChange</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        UIBarItem.HearingDevicePairedEarDidChangeNotification, (notification) => {Console.WriteLine ("Received the notification UIBarItem", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification UIBarItem", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (UIBarItem.HearingDevicePairedEarDidChangeNotification, Callback);
+}
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+</Documentation>

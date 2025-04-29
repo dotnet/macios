@@ -10,50 +10,58 @@ namespace NetworkExtension {
 
 	public partial class NEHotspotConfiguration {
 
-		/// <param name="ssid">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Create a new <see cref="NEHotspotConfiguration" /> with the specified SSID.</summary>
+		/// <param name="ssid">The SSID the new <see cref="NEHotspotConfiguration" /> applies to.</param>
 		public NEHotspotConfiguration (string ssid)
+			: base (NSObjectFlag.Empty)
 		{
-			InitializeHandle (initWithSsid (ssid));
+			InitializeHandle (_InitWithSsid (ssid), "initWithSSID:");
 		}
 
-		/// <param name="ssid">To be added.</param>
-		///         <param name="passphrase">To be added.</param>
-		///         <param name="isWep">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Create a new <see cref="NEHotspotConfiguration" /> with the specified SSID.</summary>
+		/// <param name="ssid">The SSID the new <see cref="NEHotspotConfiguration" /> applies to.</param>
+		/// <param name="passphrase">The passphrase for the network specified by <paramref name="ssid" />.</param>
+		/// <param name="isWep">Whether the network is a WEP network (otherwise a WPA or WPA2 network).</param>
 		public NEHotspotConfiguration (string ssid, string passphrase, bool isWep)
+			: base (NSObjectFlag.Empty)
 		{
-			InitializeHandle (initWithSsid (ssid, passphrase, isWep));
+			InitializeHandle (_InitWithSsidAndPassprase (ssid, passphrase, isWep), "initWithSSID:passphrase:isWEP:");
 		}
 
-#if NET
+		/// <summary>Create a new <see cref="NEHotspotConfiguration" /> with the specified SSID.</summary>
+		/// <param name="ssid">The SSID the new <see cref="NEHotspotConfiguration" /> applies to.</param>
+		/// <param name="ssidIsPrefix">Whether <paramref name="ssid" /> specifies the prefix of an SSID, or a complete SSID.</param>
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("tvos")]
-#else
-		[iOS (13, 0)]
-#endif
 		public NEHotspotConfiguration (string ssid, bool ssidIsPrefix)
+			: base (NSObjectFlag.Empty)
 		{
-			var h = ssidIsPrefix ? initWithSsidPrefix (ssid) : initWithSsid (ssid);
-			InitializeHandle (h);
+			if (ssidIsPrefix) {
+				InitializeHandle (_InitWithSsidPrefix (ssid), "initWithSSIDPrefix:");
+			} else {
+				InitializeHandle (_InitWithSsid (ssid), "initWithSSID:");
+			}
 		}
 
-#if NET
+		/// <summary>Create a new <see cref="NEHotspotConfiguration" /> with the specified SSID.</summary>
+		/// <param name="ssid">The SSID the new <see cref="NEHotspotConfiguration" /> applies to.</param>
+		/// <param name="passphrase">The passphrase for the network specified by <paramref name="ssid" />.</param>
+		/// <param name="isWep">Whether the network is a WEP network (otherwise a WPA or WPA2 network).</param>
+		/// <param name="ssidIsPrefix">Whether <paramref name="ssid" /> specifies the prefix of an SSID, or a complete SSID.</param>
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("tvos")]
-#else
-		[iOS (13, 0)]
-#endif
 		public NEHotspotConfiguration (string ssid, string passphrase, bool isWep, bool ssidIsPrefix)
+			: base (NSObjectFlag.Empty)
 		{
-			var h = ssidIsPrefix ? initWithSsidPrefix (ssid, passphrase, isWep) : initWithSsid (ssid, passphrase, isWep);
-			InitializeHandle (h);
+			if (ssidIsPrefix) {
+				InitializeHandle (_InitWithSsidPrefixAndPassphrase (ssid, passphrase, isWep), "initWithSSIDPrefix:passphrase:isWEP:");
+			} else {
+				InitializeHandle (_InitWithSsidAndPassprase (ssid, passphrase, isWep), "initWithSSID:passphrase:isWEP:");
+			}
 		}
 	}
 }

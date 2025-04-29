@@ -10,6 +10,8 @@ using Foundation;
 
 namespace ReplayKit {
 
+	/// <summary>Enumerates errors that can be encountered while recording.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native ("RPRecordingErrorCode")]
 	[ErrorDomain ("RPRecordingErrorDomain")]

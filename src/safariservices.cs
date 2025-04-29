@@ -78,7 +78,12 @@ namespace SafariServices {
 		///         </param>
 		///         <summary>Relaods the specified content blocker and runs a completion handler when the operation completes.</summary>
 		///         <remarks>To be added.</remarks>
-		[Async]
+		[Async (XmlDocs = """
+			<param name="identifier">To be added.</param>
+			<summary>Relaods the specified content blocker and runs a completion handler when the operation completes.</summary>
+			<returns>A task that represents the asynchronous ReloadContentBlocker operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Static, Export ("reloadContentBlockerWithIdentifier:completionHandler:")]
 		void ReloadContentBlocker (string identifier, [NullAllowed] Action<NSError> completionHandler);
 
@@ -88,7 +93,17 @@ namespace SafariServices {
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 4)]
 		[Static]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="identifier">To be added.</param>
+			<summary>Asynchronously gets the state of the specified content blocker.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous GetStateOfContentBlocker operation.  The value of the TResult parameter is of type System.Action&lt;SafariServices.SFContentBlockerState,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The GetStateOfContentBlockerAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("getStateOfContentBlockerWithIdentifier:completionHandler:")]
 		void GetStateOfContentBlocker (string identifier, Action<SFContentBlockerState, NSError> completionHandler);
 	}
@@ -416,7 +431,12 @@ namespace SafariServices {
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
 		[Static]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="url">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("openWindowWithURL:completionHandler:")]
 		void OpenWindow (NSUrl url, [NullAllowed] Action<SFSafariWindow> completionHandler);
 
@@ -442,7 +462,14 @@ namespace SafariServices {
 		///         <remarks>To be added.</remarks>
 		[Advice ("Unavailable to extensions.")]
 		[Static]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="messageName">To be added.</param>
+			<param name="identifier">To be added.</param>
+			<param name="userInfo">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("dispatchMessageWithName:toExtensionWithIdentifier:userInfo:completionHandler:")]
 		void DispatchMessage (string messageName, string identifier, [NullAllowed] NSDictionary<NSString, NSObject> userInfo, [NullAllowed] Action<NSError> completionHandler);
 
@@ -494,35 +521,75 @@ namespace SafariServices {
 	[NoMacCatalyst]
 	[Protocol]
 	interface SFSafariExtensionHandling {
+		/// <param name="messageName">To be added.</param>
+		/// <param name="page">To be added.</param>
+		/// <param name="userInfo">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("messageReceivedWithName:fromPage:userInfo:")]
 		void MessageReceived (string messageName, SFSafariPage page, [NullAllowed] NSDictionary userInfo);
 
+		/// <param name="window">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("toolbarItemClickedInWindow:")]
 		void ToolbarItemClicked (SFSafariWindow window);
 
+		/// <param name="window">To be added.</param>
+		/// <param name="validationHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Async (ResultTypeName = "SFValidationResult")]
 		[Export ("validateToolbarItemInWindow:validationHandler:")]
 		void ValidateToolbarItem (SFSafariWindow window, Action<bool, NSString> validationHandler);
 
+		/// <param name="command">To be added.</param>
+		/// <param name="page">To be added.</param>
+		/// <param name="userInfo">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("contextMenuItemSelectedWithCommand:inPage:userInfo:")]
 		void ContextMenuItemSelected (string command, SFSafariPage page, [NullAllowed] NSDictionary userInfo);
 
+		/// <param name="window">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("popoverWillShowInWindow:")]
 		void PopoverWillShow (SFSafariWindow window);
 
+		/// <param name="window">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("popoverDidCloseInWindow:")]
 		void PopoverDidClose (SFSafariWindow window);
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Export ("popoverViewController")]
 		SFSafariExtensionViewController PopoverViewController { get; }
 
+		/// <param name="command">To be added.</param>
+		/// <param name="page">To be added.</param>
+		/// <param name="userInfo">To be added.</param>
+		/// <param name="validationHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Async (ResultTypeName = "SFExtensionValidationResult")]
 		[Export ("validateContextMenuItemWithCommand:inPage:userInfo:validationHandler:")]
 		void ValidateContextMenuItem (string command, SFSafariPage page, [NullAllowed] NSDictionary<NSString, NSObject> userInfo, SFExtensionValidationHandler validationHandler);
 
+		/// <param name="messageName">To be added.</param>
+		/// <param name="userInfo">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("messageReceivedFromContainingAppWithName:userInfo:")]
 		void MessageReceivedFromContainingApp (string messageName, [NullAllowed] NSDictionary<NSString, NSObject> userInfo);
 
+		/// <param name="url">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("additionalRequestHeadersForURL:completionHandler:")]
 		void AdditionalRequestHeaders (NSUrl url, Action<NSDictionary<NSString, NSString>> completionHandler);
 
@@ -680,7 +747,13 @@ namespace SafariServices {
 		///         <param name="completionHandler">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[Async]
+		[Async (XmlDocs = """
+			<param name="url">To be added.</param>
+			<param name="activateTab">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("openTabWithURL:makeActiveIfPossible:completionHandler:")]
 		void OpenTab (NSUrl url, bool activateTab, [NullAllowed] Action<SFSafariTab> completionHandler);
 
@@ -700,6 +773,10 @@ namespace SafariServices {
 	[NoMacCatalyst]
 	[BaseType (typeof (NSViewController))]
 	interface SFSafariExtensionViewController {
+		/// <param name="nibNameOrNull">To be added.</param>
+		/// <param name="nibBundleOrNull">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithNibName:bundle:")]
 		NativeHandle Constructor ([NullAllowed] string nibNameOrNull, [NullAllowed] NSBundle nibBundleOrNull);
 

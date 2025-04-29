@@ -38,14 +38,10 @@ x_get_matrix_float2x2 (id self, const char *sel,
 		float* r1c0, float* r1c1)
 {
 	matrix_float2x2 rv;
-#if __i386__
-	IMP msgSend = (IMP) objc_msgSend_stret;
-#elif __x86_64__
+#if __x86_64__
 	IMP msgSend = (IMP) objc_msgSend;
 #elif __arm64__
 	IMP msgSend = (IMP) objc_msgSend;
-#elif __arm__
-	IMP msgSend = (IMP) objc_msgSend_stret;
 #else
 #error unknown architecture
 #endif
@@ -64,14 +60,10 @@ x_get_matrix_float3x3 (id self, const char *sel,
 		float* r2c0, float* r2c1, float* r2c2)
 {
 	matrix_float3x3 rv;
-#if __i386__
-	IMP msgSend = (IMP) objc_msgSend_stret;
-#elif __x86_64__
+#if __x86_64__
 	IMP msgSend = (IMP) objc_msgSend_stret;
 #elif __arm64__
 	IMP msgSend = (IMP) objc_msgSend;
-#elif __arm__
-	IMP msgSend = (IMP) objc_msgSend_stret;
 #else
 #error unknown architecture
 #endif
@@ -98,14 +90,10 @@ x_get_matrix_float4x4 (id self, const char *sel,
 		float* r3c0, float* r3c1, float* r3c2, float* r3c3)
 {
 	matrix_float4x4 rv;
-#if __i386__
-	IMP msgSend = (IMP) objc_msgSend_stret;
-#elif __x86_64__
+#if __x86_64__
 	IMP msgSend = (IMP) objc_msgSend_stret;
 #elif __arm64__
 	IMP msgSend = (IMP) objc_msgSend;
-#elif __arm__
-	IMP msgSend = (IMP) objc_msgSend_stret;
 #else
 #error unknown architecture
 #endif
@@ -139,14 +127,10 @@ x_get_matrix_float4x3 (id self, const char *sel,
 		float* r2c0, float* r2c1, float* r2c2, float* r2c3)
 {
 	matrix_float4x3 rv;
-#if __i386__
-	IMP msgSend = (IMP) objc_msgSend_stret;
-#elif __x86_64__
+#if __x86_64__
 	IMP msgSend = (IMP) objc_msgSend_stret;
 #elif __arm64__
 	IMP msgSend = (IMP) objc_msgSend;
-#elif __arm__
-	IMP msgSend = (IMP) objc_msgSend_stret;
 #else
 #error unknown architecture
 #endif

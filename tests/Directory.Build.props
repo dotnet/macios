@@ -1,4 +1,7 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<Import Project="$(MSBuildThisFileDirectory)../Directory.Build.props" />
 	<Import Project="$(MSBuildThisFileDirectory)../eng/Versions.props" />
+	<PropertyGroup>
+		<RootTestsDirectory>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)'))</RootTestsDirectory>
+	</PropertyGroup>
 </Project>

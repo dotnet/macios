@@ -284,6 +284,8 @@ namespace QuickLook {
 	[Model]
 	[Protocol]
 	interface QLPreviewItem {
+		/// <summary>Gets the URL for the preview item.</summary>
+		/// <value>The URL for the preview item.</value>
 		[Abstract]
 		[NullAllowed]
 		[Export ("previewItemURL")]
@@ -293,9 +295,8 @@ namespace QuickLook {
 		NSUrl ItemUrl { get; }
 #endif
 
-		/// <summary>To be added.</summary>
-		/// <value>To be added.</value>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Gets the title for the preview item.</summary>
+		/// <value>The title for the preview item.</value>
 		[Export ("previewItemTitle")]
 		[NullAllowed]
 #if !NET

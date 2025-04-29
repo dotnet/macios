@@ -18,7 +18,7 @@ namespace LocalAuthentication {
 		None,
 		/// <summary>Indicates that Touch ID is supported.</summary>
 		TouchId,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that Face ID is supported.</summary>
 		[MacCatalyst (13, 1)]
 		FaceId,
 #if !NET

@@ -38,13 +38,547 @@
     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIImage_Class/index.html">Apple documentation for <c>UIImage</c></related>
   </Docs>
   <Docs DocId="M:UIKit.UIImage.SaveToPhotosAlbum(UIKit.UIImage.SaveStatus)">
-        <param name="status">If not-null, a method to invoke when the file has been saved to the Camera Album.</param>
-        <summary>Saves the specified image into the Photos Album.</summary>
+    <param name="status">If not-null, a method to invoke when the file has been saved to the Camera Album.</param>
+    <summary>Saves the specified image into the Photos Album.</summary>
+    <remarks>
+      <para>On systems without a camera, the Camera Album is the Saved Photos album instead.   This can not be changed.</para>
+      <para>If a non-null value was specified for <paramref name="status" /> then the method is invoked on completion with both the image reference and an if there was an error, a non-null instance of NSError.</para>
+      <para>This method requires the developer to request, and the user to grant, access to the Photos album. (See <format type="text/html"><a href="https://developer.xamarin.com/guides/ios/platform_features/introduction-to-ios10/security-privacy-enhancements/#Accessing_Private_User_Data">Accessing Private User Data</a></format>.)</para>
+      <para>This method should only be invoked on the main thread (see <see cref="M:Foundation.NSObject.InvokeOnMainThread(ObjCRuntime.Selector,Foundation.NSObject)" />).</para>
+    </remarks>
+  </Docs>
+  <Docs DocId="P:UIKit.UIImage.AnnouncementDidFinishNotification">
+        <summary>Notification constant for AnnouncementDidFinish</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para>On systems without a camera, the Camera Album is the Saved Photos album instead.   This can not be changed.</para>
-          <para>If a non-null value was specified for <paramref name="status" /> then the method is invoked on completion with both the image reference and an if there was an error, a non-null instance of NSError.</para>
-          <para>This method requires the developer to request, and the user to grant, access to the Photos album. (See <format type="text/html"><a href="https://developer.xamarin.com/guides/ios/platform_features/introduction-to-ios10/security-privacy-enhancements/#Accessing_Private_User_Data">Accessing Private User Data</a></format>.)</para>
-          <para>This method should only be invoked on the main thread (see <see cref="M:Foundation.NSObject.InvokeOnMainThread(ObjCRuntime.Selector,Foundation.NSObject)" />).</para>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        UIImage.AnnouncementDidFinishNotification, (notification) => {Console.WriteLine ("Received the notification UIImage", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification UIImage", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (UIImage.AnnouncementDidFinishNotification, Callback);
+}
+]]></code>
+          </example>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+  <Docs DocId="P:UIKit.UIImage.VoiceOverStatusDidChangeNotification">
+        <summary>Notification constant for VoiceOverStatusDidChange</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:UIKit.UIImage.Notifications.ObserveVoiceOverStatusDidChange*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        UIImage.VoiceOverStatusDidChangeNotification, (notification) => {Console.WriteLine ("Received the notification UIImage", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification UIImage", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (UIImage.VoiceOverStatusDidChangeNotification, Callback);
+}
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+  <Docs DocId="P:UIKit.UIImage.MonoAudioStatusDidChangeNotification">
+        <summary>Notification constant for MonoAudioStatusDidChange</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        UIImage.MonoAudioStatusDidChangeNotification, (notification) => {Console.WriteLine ("Received the notification UIImage", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification UIImage", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (UIImage.MonoAudioStatusDidChangeNotification, Callback);
+}
+]]></code>
+          </example>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+  <Docs DocId="P:UIKit.UIImage.ClosedCaptioningStatusDidChangeNotification">
+        <summary>Notification constant for ClosedCaptioningStatusDidChange</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        UIImage.ClosedCaptioningStatusDidChangeNotification, (notification) => {Console.WriteLine ("Received the notification UIImage", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification UIImage", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (UIImage.ClosedCaptioningStatusDidChangeNotification, Callback);
+}
+]]></code>
+          </example>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+  <Docs DocId="P:UIKit.UIImage.InvertColorsStatusDidChangeNotification">
+        <summary>Notification constant for InvertColorsStatusDidChange</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        UIImage.InvertColorsStatusDidChangeNotification, (notification) => {Console.WriteLine ("Received the notification UIImage", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification UIImage", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (UIImage.InvertColorsStatusDidChangeNotification, Callback);
+}
+]]></code>
+          </example>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+  <Docs DocId="P:UIKit.UIImage.GuidedAccessStatusDidChangeNotification">
+        <summary>Notification constant for GuidedAccessStatusDidChange</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        UIImage.GuidedAccessStatusDidChangeNotification, (notification) => {Console.WriteLine ("Received the notification UIImage", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification UIImage", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (UIImage.GuidedAccessStatusDidChangeNotification, Callback);
+}
+]]></code>
+          </example>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+  <Docs DocId="P:UIKit.UIImage.BoldTextStatusDidChangeNotification">
+        <summary>Notification constant for BoldTextStatusDidChange</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        UIImage.BoldTextStatusDidChangeNotification, (notification) => {Console.WriteLine ("Received the notification UIImage", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification UIImage", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (UIImage.BoldTextStatusDidChangeNotification, Callback);
+}
+]]></code>
+          </example>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+  <Docs DocId="P:UIKit.UIImage.DarkerSystemColorsStatusDidChangeNotification">
+        <summary>Notification constant for DarkerSystemColorsStatusDidChange</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        UIImage.DarkerSystemColorsStatusDidChangeNotification, (notification) => {Console.WriteLine ("Received the notification UIImage", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification UIImage", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (UIImage.DarkerSystemColorsStatusDidChangeNotification, Callback);
+}
+]]></code>
+          </example>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+  <Docs DocId="P:UIKit.UIImage.GrayscaleStatusDidChangeNotification">
+        <summary>Notification constant for GrayscaleStatusDidChange</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        UIImage.GrayscaleStatusDidChangeNotification, (notification) => {Console.WriteLine ("Received the notification UIImage", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification UIImage", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (UIImage.GrayscaleStatusDidChangeNotification, Callback);
+}
+]]></code>
+          </example>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+  <Docs DocId="P:UIKit.UIImage.ReduceMotionStatusDidChangeNotification">
+        <summary>Notification constant for ReduceMotionStatusDidChange</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        UIImage.ReduceMotionStatusDidChangeNotification, (notification) => {Console.WriteLine ("Received the notification UIImage", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification UIImage", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (UIImage.ReduceMotionStatusDidChangeNotification, Callback);
+}
+]]></code>
+          </example>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+  <Docs DocId="P:UIKit.UIImage.ReduceTransparencyStatusDidChangeNotification">
+        <summary>Notification constant for ReduceTransparencyStatusDidChange</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        UIImage.ReduceTransparencyStatusDidChangeNotification, (notification) => {Console.WriteLine ("Received the notification UIImage", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification UIImage", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (UIImage.ReduceTransparencyStatusDidChangeNotification, Callback);
+}
+]]></code>
+          </example>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+  <Docs DocId="P:UIKit.UIImage.SwitchControlStatusDidChangeNotification">
+        <summary>Notification constant for SwitchControlStatusDidChange</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        UIImage.SwitchControlStatusDidChangeNotification, (notification) => {Console.WriteLine ("Received the notification UIImage", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification UIImage", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (UIImage.SwitchControlStatusDidChangeNotification, Callback);
+}
+]]></code>
+          </example>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+  <Docs DocId="P:UIKit.UIImage.NotificationSwitchControlIdentifier">
+        <summary>Notification constant for NotificationSwitchContr</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        UIImage.NotificationSwitchControlIdentifier, (notification) => {Console.WriteLine ("Received the notification UIImage", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification UIImage", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (UIImage.NotificationSwitchControlIdentifier, Callback);
+}
+]]></code>
+          </example>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+  <Docs DocId="P:UIKit.UIImage.SpeakScreenStatusDidChangeNotification">
+        <summary>Notification constant for SpeakScreenStatusDidChange</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        UIImage.SpeakScreenStatusDidChangeNotification, (notification) => {Console.WriteLine ("Received the notification UIImage", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification UIImage", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (UIImage.SpeakScreenStatusDidChangeNotification, Callback);
+}
+]]></code>
+          </example>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+  <Docs DocId="P:UIKit.UIImage.SpeakSelectionStatusDidChangeNotification">
+        <summary>Notification constant for SpeakSelectionStatusDidChange</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        UIImage.SpeakSelectionStatusDidChangeNotification, (notification) => {Console.WriteLine ("Received the notification UIImage", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification UIImage", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (UIImage.SpeakSelectionStatusDidChangeNotification, Callback);
+}
+]]></code>
+          </example>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+  <Docs DocId="P:UIKit.UIImage.ShakeToUndoDidChangeNotification">
+        <summary>Notification constant for ShakeToUndoDidChange</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        UIImage.ShakeToUndoDidChangeNotification, (notification) => {Console.WriteLine ("Received the notification UIImage", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification UIImage", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (UIImage.ShakeToUndoDidChangeNotification, Callback);
+}
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+  <Docs DocId="P:UIKit.UIImage.ElementFocusedNotification">
+        <summary>Notification constant for ElementFocused</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        UIImage.ElementFocusedNotification, (notification) => {Console.WriteLine ("Received the notification UIImage", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification UIImage", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (UIImage.ElementFocusedNotification, Callback);
+}
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+  <Docs DocId="P:UIKit.UIImage.NotificationVoiceOverIdentifier">
+        <summary>Notification constant for NotificationVoiceOv</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        UIImage.NotificationVoiceOverIdentifier, (notification) => {Console.WriteLine ("Received the notification UIImage", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification UIImage", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (UIImage.NotificationVoiceOverIdentifier, Callback);
+}
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+  <Docs DocId="P:UIKit.UIImage.AssistiveTouchStatusDidChangeNotification">
+        <summary>Notification constant for AssistiveTouchStatusDidChange</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        UIImage.AssistiveTouchStatusDidChangeNotification, (notification) => {Console.WriteLine ("Received the notification UIImage", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification UIImage", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (UIImage.AssistiveTouchStatusDidChangeNotification, Callback);
+}
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+  <Docs DocId="P:UIKit.UIImage.HearingDevicePairedEarDidChangeNotification">
+        <summary>Notification constant for HearingDevicePairedEarDidChange</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        UIImage.HearingDevicePairedEarDidChangeNotification, (notification) => {Console.WriteLine ("Received the notification UIImage", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification UIImage", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (UIImage.HearingDevicePairedEarDidChangeNotification, Callback);
+}
+]]></code>
+          </example>
         </remarks>
       </Docs>
 </Documentation>

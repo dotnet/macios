@@ -574,10 +574,10 @@ namespace CoreVideo {
 		extern static CVReturn CVPixelBufferLockBaseAddress (
 			/* CVPixelBufferRef __nonnull */ IntPtr pixelBuffer, CVPixelBufferLock lockFlags);
 
-		/// <param name="lockFlags">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Locks the storage for the pixel buffer.</summary>
+		/// <param name="lockFlags">The flags for the lock.</param>
+		/// <returns>Status code for the operation</returns>
+		/// <remarks>You must call this method to access the pixel buffer from the CPU. Calls to this method must be balanced with calls to <see cref="Unlock" />. If the lockFlags contains <see cref="CVPixelBufferLock.ReadOnly" />, you must also pass this value to <see cref="Unlock" />.</remarks>
 		public CVReturn Lock (CVPixelBufferLock lockFlags)
 		{
 			return CVPixelBufferLockBaseAddress (Handle, lockFlags);

@@ -59,10 +59,6 @@
   #define RUNTIMEIDENTIFIER_ARCHITECTURE "arm64"
 #elif defined (__x86_64__)
   #define RUNTIMEIDENTIFIER_ARCHITECTURE "x64"
-#elif defined (__i386__)
-  #define RUNTIMEIDENTIFIER_ARCHITECTURE "x86"
-#elif defined (__arm__)
-  #define RUNTIMEIDENTIFIER_ARCHITECTURE "arm"
 #else
     #error Unknown architecture
 #endif

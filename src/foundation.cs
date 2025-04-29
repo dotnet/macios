@@ -133,23 +133,69 @@ using NativeHandle = System.IntPtr;
 #endif
 
 namespace Foundation {
+	/// <param name="reacquirer">To be added.</param>
+	/// <summary>Completion handler for relinquishing a file to a reader.</summary>
+	/// <remarks>To be added.</remarks>
 	delegate void NSFilePresenterReacquirer ([BlockCallback] Action reacquirer);
 }
 
 namespace Foundation {
+	/// <param name="obj1">To be added.</param>
+	/// <param name="obj2">To be added.</param>
+	/// <summary>A delegate that defines the comparison function to be used with functins such as <see cref="M:Foundation.NSArray.Sort(Foundation.NSComparator)" />.</summary>
+	/// <returns>To be added.</returns>
+	/// <remarks>To be added.</remarks>
 	delegate NSComparisonResult NSComparator (NSObject obj1, NSObject obj2);
+	/// <param name="attrs">To be added.</param>
+	/// <param name="range">To be added.</param>
+	/// <param name="stop">To be added.</param>
+	/// <summary>A delegate that specifies the callback for the <see cref="M:Foundation.NSAttributedString.EnumerateAttributes(Foundation.NSRange,Foundation.NSAttributedStringEnumeration,Foundation.NSAttributedRangeCallback)" /> method.</summary>
+	/// <remarks>To be added.</remarks>
 	delegate void NSAttributedRangeCallback (NSDictionary attrs, NSRange range, ref bool stop);
+	/// <param name="value">To be added.</param>
+	/// <param name="range">To be added.</param>
+	/// <param name="stop">To be added.</param>
+	/// <summary>A delegate that specifies the callback for the <see cref="M:Foundation.NSAttributedString.EnumerateAttribute(Foundation.NSString,Foundation.NSRange,Foundation.NSAttributedStringEnumeration,Foundation.NSAttributedStringCallback)" /> method.</summary>
+	/// <remarks>To be added.</remarks>
 	delegate void NSAttributedStringCallback (NSObject value, NSRange range, ref bool stop);
 
+	/// <param name="url">To be added.</param>
+	/// <param name="error">To be added.</param>
+	/// <summary>A delegate that specifies the error handler for use in <see cref="M:Foundation.NSFileManager.GetEnumerator(Foundation.NSUrl,Foundation.NSString[],Foundation.NSDirectoryEnumerationOptions,Foundation.NSEnumerateErrorHandler)" />.</summary>
+	/// <returns>To be added.</returns>
+	/// <remarks>To be added.</remarks>
 	delegate bool NSEnumerateErrorHandler (NSUrl url, NSError error);
+	/// <param name="result">To be added.</param>
+	/// <param name="idx">To be added.</param>
+	/// <param name="stop">To be added.</param>
+	/// <summary>The delegate used as the callback in calls to <see cref="M:Foundation.NSMetadataQuery.EnumerateResultsUsingBlock(Foundation.NSMetadataQueryEnumerationCallback)" /> and <see cref="M:Foundation.NSMetadataQuery.EnumerateResultsWithOptions(Foundation.NSEnumerationOptions,Foundation.NSMetadataQueryEnumerationCallback)" />.</summary>
+	/// <remarks>To be added.</remarks>
 	delegate void NSMetadataQueryEnumerationCallback (NSObject result, nuint idx, ref bool stop);
 #if NET
+	/// <param name="itemBeingLoaded">To be added.</param>
+	/// <param name="error">To be added.</param>
+	/// <summary>The completion handler used with <see cref="T:Foundation.NSItemProviderLoadHandler" /> delegates.</summary>
+	/// <remarks>To be added.</remarks>
 	delegate void NSItemProviderCompletionHandler (INSSecureCoding itemBeingLoaded, NSError error);
 #else
 	delegate void NSItemProviderCompletionHandler (NSObject itemBeingLoaded, NSError error);
 #endif
+	/// <param name="completionHandler">To be added.</param>
+	/// <param name="expectedValueClass">To be added.</param>
+	/// <param name="options">To be added.</param>
+	/// <summary>Defines the load handler for use with the <see cref="M:Foundation.NSItemProvider.RegisterItemForTypeIdentifier(System.String,Foundation.NSItemProviderLoadHandler)" /> and <see cref="M:Foundation.NSItemProvider.SetPreviewImageHandler(Foundation.NSItemProviderLoadHandler)" /> methods.</summary>
+	/// <remarks>To be added.</remarks>
 	delegate void NSItemProviderLoadHandler ([BlockCallback] NSItemProviderCompletionHandler completionHandler, Class expectedValueClass, NSDictionary options);
+	/// <param name="date">To be added.</param>
+	/// <param name="exactMatch">To be added.</param>
+	/// <param name="stop">To be added.</param>
+	/// <summary>Completion handler for the <see cref="M:Foundation.NSCalendar.EnumerateDatesStartingAfterDate(Foundation.NSDate,Foundation.NSDateComponents,Foundation.NSCalendarOptions,Foundation.EnumerateDatesCallback)" /> method.</summary>
+	/// <remarks>To be added.</remarks>
 	delegate void EnumerateDatesCallback (NSDate date, bool exactMatch, ref bool stop);
+	/// <param name="idx">To be added.</param>
+	/// <param name="stop">To be added.</param>
+	/// <summary>Defines the enumerator callback in calls to <see cref="M:Foundation.NSIndexSet.EnumerateIndexes(Foundation.NSRange,Foundation.NSEnumerationOptions,Foundation.EnumerateIndexSetCallback)" />.</summary>
+	/// <remarks>To be added.</remarks>
 	delegate void EnumerateIndexSetCallback (nuint idx, ref bool stop);
 	delegate void CloudKitRegistrationPreparationAction ([BlockCallback] CloudKitRegistrationPreparationHandler handler);
 	delegate void CloudKitRegistrationPreparationHandler (CKShare share, CKContainer container, NSError error);
@@ -1278,6 +1324,12 @@ namespace Foundation {
 
 	interface INSCacheDelegate { }
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:Foundation.NSCacheDelegate" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:Foundation.NSCacheDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:Foundation.NSCacheDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:Foundation.NSCacheDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[BaseType (typeof (NSObject))]
 	[Model]
 	[Protocol]
@@ -2250,6 +2302,11 @@ namespace Foundation {
 
 	}
 
+	/// <param name="bytes">To be added.</param>
+	/// <param name="range">To be added.</param>
+	/// <param name="stop">To be added.</param>
+	/// <summary>The delegate used to enumerate in calls to <see cref="M:Foundation.NSData.EnumerateByteRange(Foundation.NSDataByteRangeEnumerator)" />.</summary>
+	/// <remarks>To be added.</remarks>
 	delegate void NSDataByteRangeEnumerator (IntPtr bytes, NSRange range, ref bool stop);
 
 	[BaseType (typeof (NSObject))]
@@ -3081,6 +3138,8 @@ namespace Foundation {
 		NSString DataAvailableNotification { get; }
 	}
 
+	/// <summary>Represents the components of a person name.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface NSPersonNameComponent {
@@ -3252,6 +3311,12 @@ namespace Foundation {
 	}
 
 #if !XAMCORE_5_0
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:Foundation.NSCoding" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:Foundation.NSCoding" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:Foundation.NSCoding" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Foundation%20NSCoding_%20Extensions&amp;scope=Xamarin" title="T:Foundation.NSCoding_Extensions">T:Foundation.NSCoding_Extensions</a></format> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[BaseType (typeof (NSObject))]
 	[Model]
 #endif
@@ -3281,12 +3346,20 @@ namespace Foundation {
 
 	interface INSCoding { }
 
+	/// <summary>The secure coding category.</summary>
+	/// <remarks>To be added.</remarks>
 	[Protocol]
 	interface NSSecureCoding : NSCoding {
 		// note: +supportsSecureCoding being static it is not a good "generated" binding candidate
 	}
 
 #if !XAMCORE_5_0
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:Foundation.NSCopying" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:Foundation.NSCopying" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:Foundation.NSCopying" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Foundation%20NSCopying_%20Extensions&amp;scope=Xamarin" title="T:Foundation.NSCopying_Extensions">T:Foundation.NSCopying_Extensions</a></format> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[BaseType (typeof (NSObject))]
 	[Model]
 #endif
@@ -3305,6 +3378,12 @@ namespace Foundation {
 	}
 
 #if !XAMCORE_5_0
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:Foundation.NSMutableCopying" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:Foundation.NSMutableCopying" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:Foundation.NSMutableCopying" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Foundation%20NSMutable%20Copying_%20Extensions&amp;scope=Xamarin" title="T:Foundation.NSMutableCopying_Extensions">T:Foundation.NSMutableCopying_Extensions</a></format> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[BaseType (typeof (NSObject))]
 	[Model]
 #endif
@@ -3324,6 +3403,9 @@ namespace Foundation {
 
 	interface INSKeyedArchiverDelegate { }
 
+	/// <summary>Methods that can be invoked by the NSKeyedArchiver during serialization.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/NSKeyedArchiverDelegate_Protocol/index.html">Apple documentation for <c>NSKeyedArchiverDelegate</c></related>
 	[BaseType (typeof (NSObject))]
 	[Model]
 	[Protocol]
@@ -3385,6 +3467,12 @@ namespace Foundation {
 
 	interface INSKeyedUnarchiverDelegate { }
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:Foundation.NSKeyedUnarchiverDelegate" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:Foundation.NSKeyedUnarchiverDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:Foundation.NSKeyedUnarchiverDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:Foundation.NSKeyedUnarchiverDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[BaseType (typeof (NSObject))]
 	[Model]
 	[Protocol]
@@ -5188,6 +5276,9 @@ namespace Foundation {
 
 	interface INSMetadataQueryDelegate { }
 
+	/// <summary>Defines optional methods relating to the lifecycle of <see cref="T:Foundation.NSMetadataQuery" />s.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/NSMetadataQueryDelegate_Protocol/index.html">Apple documentation for <c>NSMetadataQueryDelegate</c></related>
 	[BaseType (typeof (NSObject))]
 	[Model]
 	[Protocol]
@@ -6133,6 +6224,11 @@ namespace Foundation {
 #endif
 	}
 
+	/// <param name="error">To be added.</param>
+	/// <param name="userInfoKey">To be added.</param>
+	/// <summary>Delegate returned by <see cref="M:Foundation.NSError.GetUserInfoValueProvider(System.String)" />.</summary>
+	/// <returns>To be added.</returns>
+	/// <remarks>To be added.</remarks>
 	delegate NSObject NSErrorUserInfoValueProvider (NSError error, NSString userInfoKey);
 
 	[BaseType (typeof (NSObject))]
@@ -6442,6 +6538,12 @@ namespace Foundation {
 		bool ForPersonHeightUse { [Bind ("isForPersonHeightUse")] get; set; }
 	}
 
+	/// <param name="tag">To be added.</param>
+	/// <param name="tokenRange">To be added.</param>
+	/// <param name="sentenceRange">To be added.</param>
+	/// <param name="stop">To be added.</param>
+	/// <summary>A delegate that enumerates values for <see cref="M:Foundation.NSLinguisticTagger.EnumerateTagsInRange(Foundation.NSRange,Foundation.NSString,Foundation.NSLinguisticTaggerOptions,Foundation.NSLingusticEnumerator)" />.</summary>
+	/// <remarks>To be added.</remarks>
 	delegate void NSLingusticEnumerator (NSString tag, NSRange tokenRange, NSRange sentenceRange, ref bool stop);
 
 	[Deprecated (PlatformName.MacOSX, 11, 0, message: "Use 'NaturalLanguage.*' API instead.")]
@@ -6869,6 +6971,11 @@ namespace Foundation {
 		string RegionCode { get; }
 	}
 
+	/// <param name="result">To be added.</param>
+	/// <param name="flags">To be added.</param>
+	/// <param name="stop">To be added.</param>
+	/// <summary>Delegate applied to results in <see cref="M:Foundation.NSRegularExpression.EnumerateMatches(Foundation.NSString,Foundation.NSMatchingOptions,Foundation.NSRange,Foundation.NSMatchEnumerator)" />.</summary>
+	/// <remarks>To be added.</remarks>
 	delegate void NSMatchEnumerator (NSTextCheckingResult result, NSMatchingFlags flags, ref bool stop);
 
 	// This API surfaces NSString instead of strings, because we already have the .NET version that uses
@@ -7176,6 +7283,8 @@ namespace Foundation {
 		void AllowEvaluation ();
 	}
 
+	/// <summary>Defines an extension method for <see cref="T:Foundation.NSOrderedSet" /> objects, allowing sorting by <see cref="T:Foundation.NSSortDescriptor" /> objects.</summary>
+	/// <remarks>To be added.</remarks>
 	[Category, BaseType (typeof (NSOrderedSet))]
 	partial interface NSKeyValueSorting_NSOrderedSet {
 		/// <param name="sortDescriptors">To be added.</param>
@@ -7187,6 +7296,8 @@ namespace Foundation {
 	}
 
 #pragma warning disable 618
+	/// <summary>Defines a static method for sorting <see cref="T:Foundation.NSMutableArray" /> objects using <see cref="T:Foundation.NSSortDescriptor" /> objects.</summary>
+	/// <remarks>To be added.</remarks>
 	[Category, BaseType (typeof (NSMutableArray))]
 #pragma warning restore 618
 	partial interface NSSortDescriptorSorting_NSMutableArray {
@@ -7197,6 +7308,8 @@ namespace Foundation {
 		void SortUsingDescriptors (NSSortDescriptor [] sortDescriptors);
 	}
 
+	/// <summary>Defines an extension method for <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:NSMutableOrderedSet&amp;scope=Xamarin" title="T:NSMutableOrderedSet">T:NSMutableOrderedSet</a></format> objects, allowing them to be sorted using <see cref="T:Foundation.NSSortDescriptor" /> objects.</summary>
+	/// <remarks>To be added.</remarks>
 	[Category, BaseType (typeof (NSMutableOrderedSet))]
 	partial interface NSKeyValueSorting_NSMutableOrderedSet {
 		/// <param name="sortDescriptors">To be added.</param>
@@ -7695,6 +7808,8 @@ namespace Foundation {
 #endif
 	}
 
+	/// <summary>Defines types of <see cref="T:Foundation.NSUserActivity" /> available from the system (currently only browsing the Web).</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Static]
 	partial interface NSUserActivityType {
@@ -7708,6 +7823,9 @@ namespace Foundation {
 
 	interface INSUserActivityDelegate { }
 
+	/// <summary>Delegate object for <see cref="T:Foundation.NSUserActivity" /> objects, exposing events relating to an activity begun on one device and continued on another.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AppKit/Reference/NSUserActivityDelegate_Protocol/index.html">Apple documentation for <c>NSUserActivityDelegate</c></related>
 	[MacCatalyst (13, 1)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
@@ -9270,6 +9388,10 @@ namespace Foundation {
 	//
 	// Just a category so we can document the three methods together
 	//
+	/// <summary>Defines static methods for dealing with promised items.</summary>
+	/// <remarks>
+	///       <para>Promised items are resources whose presence in the local file system is not guaranteed until an <see cref="T:Foundation.NSFileCoordinator" /> performs a coordinated read on the URL, resulting in the contents being either downloaded or generated.</para>
+	///     </remarks>
 	[Category, BaseType (typeof (NSUrl))]
 	partial interface NSUrl_PromisedItems {
 		/// <param name="error">To be added.</param>
@@ -9316,6 +9438,8 @@ namespace Foundation {
 		string Value { get; }
 	}
 
+	/// <summary>Defines static methods defining character sets for various subcomponents of a <see cref="T:Foundation.NSUrl" />.</summary>
+	/// <remarks>To be added.</remarks>
 	[Category, BaseType (typeof (NSCharacterSet))]
 	partial interface NSUrlUtilities_NSCharacterSet {
 		/// <summary>The <see cref="T:Foundation.NSCharacterSet" /> for characters allowed in a URL user component.</summary>
@@ -9604,6 +9728,12 @@ namespace Foundation {
 		NSUrlConnection Sender { get; }
 	}
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:Foundation.NSURLAuthenticationChallengeSender" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:Foundation.NSURLAuthenticationChallengeSender" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:Foundation.NSURLAuthenticationChallengeSender" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:Foundation.NSURLAuthenticationChallengeSender_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[Protocol (Name = "NSURLAuthenticationChallengeSender")]
 #if NET
 	interface NSUrlAuthenticationChallengeSender {
@@ -9632,6 +9762,11 @@ namespace Foundation {
 	}
 
 
+	/// <param name="response">To be added.</param>
+	/// <param name="data">To be added.</param>
+	/// <param name="error">To be added.</param>
+	/// <summary>The delegate used as the completion handler for <see cref="M:Foundation.NSUrlConnection.SendAsynchronousRequest(Foundation.NSUrlRequest,Foundation.NSOperationQueue,Foundation.NSUrlConnectionDataResponse)" />.</summary>
+	/// <remarks>To be added.</remarks>
 	delegate void NSUrlConnectionDataResponse (NSUrlResponse response, NSData data, NSError error);
 
 	[BaseType (typeof (NSObject), Name = "NSURLConnection")]
@@ -9742,6 +9877,12 @@ namespace Foundation {
 
 	interface INSUrlConnectionDelegate { }
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:Foundation.NSUrlConnectionDelegate" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:Foundation.NSUrlConnectionDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:Foundation.NSUrlConnectionDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:Foundation.NSUrlConnectionDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[BaseType (typeof (NSObject), Name = "NSURLConnectionDelegate")]
 	[Model]
 	[Protocol]
@@ -9802,6 +9943,12 @@ namespace Foundation {
 		void WillSendRequestForAuthenticationChallenge (NSUrlConnection connection, NSUrlAuthenticationChallenge challenge);
 	}
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:Foundation.NSUrlConnectionDataDelegate" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:Foundation.NSUrlConnectionDataDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:Foundation.NSUrlConnectionDataDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:Foundation.NSUrlConnectionDataDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[BaseType (typeof (NSUrlConnectionDelegate), Name = "NSURLConnectionDataDelegate")]
 	[Protocol, Model]
 	interface NSUrlConnectionDataDelegate {
@@ -9861,6 +10008,12 @@ namespace Foundation {
 		void FinishedLoading (NSUrlConnection connection);
 	}
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:Foundation.NSUrlConnectionDownloadDelegate" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:Foundation.NSUrlConnectionDownloadDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:Foundation.NSUrlConnectionDownloadDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:Foundation.NSUrlConnectionDownloadDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[BaseType (typeof (NSUrlConnectionDelegate), Name = "NSURLConnectionDownloadDelegate")]
 	[Model]
 	[Protocol]
@@ -10026,11 +10179,27 @@ namespace Foundation {
 
 	}
 
+	/// <param name="dataTasks">To be added.</param>
+	/// <param name="uploadTasks">To be added.</param>
+	/// <param name="downloadTasks">To be added.</param>
+	/// <summary>The delegate that serves as the completion handler for <see cref="M:Foundation.NSUrlSession.GetTasks(Foundation.NSUrlSessionPendingTasks)" />.</summary>
+	/// <remarks>To be added.</remarks>
 	delegate void NSUrlSessionPendingTasks (NSUrlSessionTask [] dataTasks, NSUrlSessionTask [] uploadTasks, NSUrlSessionTask [] downloadTasks);
 	delegate void NSUrlSessionAllPendingTasks (NSUrlSessionTask [] tasks);
+	/// <param name="data">Data that was received.</param>
+	/// <param name="response">The object representing the response.</param>
+	/// <param name="error">Error code, if any.</param>
+	/// <summary>Signature for callbacks invoked by NSUrlSession for various background operations.</summary>
+	/// <remarks>
+	///     </remarks>
 	delegate void NSUrlSessionResponse (NSData data, NSUrlResponse response, NSError error);
 	delegate void NSUrlSessionDownloadResponse (NSUrl data, NSUrlResponse response, NSError error);
 
+	/// <param name="location">To be added.</param>
+	/// <param name="response">To be added.</param>
+	/// <param name="error">To be added.</param>
+	/// <summary>Completion handler for calls to <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Foundation%20NSUrl%20Session%20Create%20Download%20Task&amp;scope=Xamarin" title="M:Foundation.NSUrlSession.CreateDownloadTask*">M:Foundation.NSUrlSession.CreateDownloadTask*</a></format> and <see cref="M:Foundation.NSUrlSession.CreateDownloadTaskFromResumeData(Foundation.NSData,Foundation.NSUrlDownloadSessionResponse)" />.</summary>
+	/// <remarks>To be added.</remarks>
 	delegate void NSUrlDownloadSessionResponse (NSUrl location, NSUrlResponse response, NSError error);
 
 	interface INSUrlSessionDelegate { }
@@ -10389,6 +10558,9 @@ namespace Foundation {
 		NSUrlSessionUploadTask CreateUploadTask (NSData resumeData, Action<NSData, NSUrlResponse, NSError> completionHandler);
 	}
 
+	/// <summary>Delegate object for <see cref="T:Foundation.NSUrlSession" /> objects that have <see cref="T:Foundation.NSUrlSessionStreamTask" /> objects.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/Foundation/NSURLSessionStreamDelegate">Apple documentation for <c>NSURLSessionStreamDelegate</c></related>
 	[MacCatalyst (13, 1)]
 	[Protocol, Model]
 	[BaseType (typeof (NSUrlSessionTaskDelegate), Name = "NSURLSessionStreamDelegate")]
@@ -10578,6 +10750,8 @@ namespace Foundation {
 		INSUrlSessionTaskDelegate Delegate { get; set; }
 	}
 
+	/// <summary>Defines constants for use with <see cref="P:Foundation.NSUrlSessionTask.Priority" />.</summary>
+	/// <remarks>To be added.</remarks>
 	[Static]
 	[MacCatalyst (13, 1)]
 	interface NSUrlSessionTaskPriority {
@@ -10860,6 +11034,12 @@ namespace Foundation {
 		bool UsesClassicLoadingMode { get; set; }
 	}
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:Foundation.NSUrlSessionDelegate" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:Foundation.NSUrlSessionDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:Foundation.NSUrlSessionDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:Foundation.NSUrlSessionDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Model, BaseType (typeof (NSObject), Name = "NSURLSessionDelegate")]
 	[Protocol]
@@ -10889,6 +11069,12 @@ namespace Foundation {
 
 	public interface INSUrlSessionTaskDelegate { }
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:Foundation.NSUrlSessionTaskDelegate" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:Foundation.NSUrlSessionTaskDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:Foundation.NSUrlSessionTaskDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:Foundation.NSUrlSessionTaskDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Model]
 	[BaseType (typeof (NSUrlSessionDelegate), Name = "NSURLSessionTaskDelegate")]
@@ -10981,6 +11167,12 @@ namespace Foundation {
 		void NeedNewBodyStream (NSUrlSession session, NSUrlSessionTask task, long offset, Action<NSInputStream> completionHandler);
 	}
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:Foundation.NSUrlSessionDataDelegate" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:Foundation.NSUrlSessionDataDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:Foundation.NSUrlSessionDataDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:Foundation.NSUrlSessionDataDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Model]
 	[BaseType (typeof (NSUrlSessionTaskDelegate), Name = "NSURLSessionDataDelegate")]
@@ -11030,6 +11222,12 @@ namespace Foundation {
 		void DidBecomeStreamTask (NSUrlSession session, NSUrlSessionDataTask dataTask, NSUrlSessionStreamTask streamTask);
 	}
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:Foundation.NSUrlSessionDownloadDelegate" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:Foundation.NSUrlSessionDownloadDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:Foundation.NSUrlSessionDownloadDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:Foundation.NSUrlSessionDownloadDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Model]
 	[BaseType (typeof (NSUrlSessionTaskDelegate), Name = "NSURLSessionDownloadDelegate")]
@@ -12027,6 +12225,12 @@ namespace Foundation {
 
 	interface INSStreamDelegate { }
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:Foundation.NSStreamDelegate" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:Foundation.NSStreamDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:Foundation.NSStreamDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:Foundation.NSStreamDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[BaseType (typeof (NSObject))]
 	[Model]
 	[Protocol]
@@ -12350,6 +12554,8 @@ namespace Foundation {
 		new string [] WritableTypeIdentifiers { get; }
 	}
 
+	/// <summary>A <see cref="T:Foundation.DictionaryContainer" /> containing hints for detecting the encoding of an <see cref="T:Foundation.NSString" />.</summary>
+	/// <remarks>To be added.</remarks>
 	[StrongDictionary ("NSString")]
 	interface EncodingDetectionOptions {
 		/// <summary>To be added.</summary>
@@ -12435,6 +12641,8 @@ namespace Foundation {
 		void ReplaceCharactersInRange (NSRange range, NSString aString);
 	}
 
+	/// <summary>Defines static methods for URL encoding and escaping.</summary>
+	/// <remarks>To be added.</remarks>
 	[Category, BaseType (typeof (NSString))]
 	partial interface NSUrlUtilities_NSString {
 		/// <param name="allowedCharacters">To be added.</param>
@@ -12466,6 +12674,7 @@ namespace Foundation {
 	}
 
 	// This comes from UIKit.framework/Headers/NSStringDrawing.h
+	/// <include file="../docs/api/Foundation/NSStringDrawingContext.xml" path="/Documentation/Docs[@DocId='T:Foundation.NSStringDrawingContext']/*" />
 	[NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
@@ -12556,6 +12765,13 @@ namespace Foundation {
 
 	}
 
+	/// <param name="tag">To be added.</param>
+	/// <param name="tokenRange">To be added.</param>
+	/// <param name="sentenceRange">To be added.</param>
+	/// <param name="stop">To be added.</param>
+	/// <summary>An enumerator to pass to methods in the <see cref="T:Foundation.NSLinguisticAnalysis" /> class.</summary>
+	/// <returns>To be added.</returns>
+	/// <remarks>To be added.</remarks>
 	delegate bool NSEnumerateLinguisticTagsEnumerator (NSString tag, NSRange tokenRange, NSRange sentenceRange, ref bool stop);
 
 	[Category]
@@ -12990,6 +13206,8 @@ namespace Foundation {
 		NSObject GetDefaultPlaceholder ([NullAllowed] NSBindingSelectionMarker marker, Class objectClass, string binding);
 	}
 
+	/// <summary>Base-level object protocol required to be considered a first class Objective-C object.</summary>
+	/// <remarks>To be added.</remarks>
 	[Protocol (Name = "NSObject")] // exists both as a type and a protocol in ObjC, Swift uses NSObjectProtocol
 	interface NSObjectProtocol {
 
@@ -13209,6 +13427,7 @@ namespace Foundation {
 		[Export ("completionBlock", ArgumentSemantic.Copy)]
 		Action CompletionBlock { get; set; }
 
+		/// <summary>Blocks the current thread until this operation finishes.</summary>
 		[Export ("waitUntilFinished")]
 		void WaitUntilFinished ();
 
@@ -14092,6 +14311,11 @@ namespace Foundation {
 		[Export ("pathForResource:ofType:inDirectory:forLocalization:")]
 		string PathForResource (string name, [NullAllowed] string ofType, string subpath, string localizationName);
 
+		/// <summary>Get a localized version of the string for the specified key in the specified table.</summary>
+		/// <param name="key">The key to lookup</param>
+		/// <param name="value">The value to return if the key is null, or the key was not found on the localization table.</param>
+		/// <param name="table">The table to search, if the value is null, this uses the Localizable.strings table.</param>
+		/// <summary>A localized version of the string for the specified key in the specified table.</summary>
 		[Export ("localizedStringForKey:value:table:")]
 		NSString GetLocalizedString ([NullAllowed] NSString key, [NullAllowed] NSString value, [NullAllowed] NSString table);
 
@@ -14472,6 +14696,10 @@ namespace Foundation {
 		nint Item { get; }
 	}
 
+	/// <param name="range">To be added.</param>
+	/// <param name="stop">To be added.</param>
+	/// <summary>A delegate used to specify the iterator used by <see cref="M:Foundation.NSIndexSet.EnumerateRanges(Foundation.NSRange,Foundation.NSEnumerationOptions,Foundation.NSRangeIterator)" />.</summary>
+	/// <remarks>To be added.</remarks>
 	delegate void NSRangeIterator (NSRange range, ref bool stop);
 
 	[BaseType (typeof (NSObject))]
@@ -14943,6 +15171,8 @@ namespace Foundation {
 
 	interface INSItemProviderWriting { }
 
+	/// <summary>Interface used by <see cref="T:Foundation.NSItemProvider" /> for retrieving data from an object.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface NSItemProviderWriting {
@@ -14994,11 +15224,18 @@ namespace Foundation {
 		///           <para>The <paramref name="typeIdentifier" /> must be in the set of values returned by <see cref="M:Foundation.NSItemProviderWriting_Extensions.GetWritableTypeIdentifiersForItemProvider(Foundation.INSItemProviderWriting)" />.</para>
 		///         </remarks>
 		[Abstract]
-		[Async, Export ("loadDataWithTypeIdentifier:forItemProviderCompletionHandler:")]
+		[Async (XmlDocs = """
+			<param name="typeIdentifier">A Universal Type Identifier (UTI) indicating the type of data to load.</param>
+			<summary>Asynchronously loads data for the identified type from an item provider, returning a task that contains the data.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			"""), Export ("loadDataWithTypeIdentifier:forItemProviderCompletionHandler:")]
 		[return: NullAllowed]
 		NSProgress LoadData (string typeIdentifier, Action<NSData, NSError> completionHandler);
 	}
 
+	/// <summary>Defines the strings associated with the constants <c>NSExtensionJavaScriptFinalizeArgumentKey</c> and <c>NSExtensionJavaScriptPreprocessingResultsKey</c>.</summary>
+	/// <remarks>To be added.</remarks>
 	[Static]
 	[MacCatalyst (13, 1)]
 	partial interface NSJavaScriptExtension {
@@ -15259,6 +15496,12 @@ namespace Foundation {
 
 	interface INSNetServiceDelegate { }
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:Foundation.NSNetServiceDelegate" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:Foundation.NSNetServiceDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:Foundation.NSNetServiceDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:Foundation.NSNetServiceDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Model, BaseType (typeof (NSObject))]
 	[Protocol]
@@ -15426,6 +15669,12 @@ namespace Foundation {
 
 	interface INSNetServiceBrowserDelegate { }
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:Foundation.NSNetServiceBrowserDelegate" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:Foundation.NSNetServiceBrowserDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:Foundation.NSNetServiceBrowserDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:Foundation.NSNetServiceBrowserDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Model, BaseType (typeof (NSObject))]
 	[Protocol]
@@ -16351,9 +16600,16 @@ namespace Foundation {
 		[Export ("numberFromString:")]
 		NSNumber NumberFromString (string text);
 
+#if !XAMCORE_5_0
+		[Obsolete ("Use 'GetLocalizedString' instead.")]
 		[Static]
 		[Export ("localizedStringFromNumber:numberStyle:")]
 		string LocalizedStringFromNumbernumberStyle (NSNumber num, NSNumberFormatterStyle nstyle);
+#endif
+
+		[Static]
+		[Export ("localizedStringFromNumber:numberStyle:")]
+		string GetLocalizedString (NSNumber number, NSNumberFormatterStyle numberStyle);
 
 		//Detected properties
 		[Export ("numberStyle")]
@@ -16840,6 +17096,12 @@ namespace Foundation {
 
 	interface INSPortDelegate { }
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:Foundation.NSPortDelegate" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:Foundation.NSPortDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:Foundation.NSPortDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:Foundation.NSPortDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[Model, BaseType (typeof (NSObject))]
 	[Protocol]
 	interface NSPortDelegate {
@@ -16947,6 +17209,12 @@ namespace Foundation {
 
 	interface INSMachPortDelegate { }
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:Foundation.NSMachPortDelegate" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:Foundation.NSMachPortDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:Foundation.NSMachPortDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:Foundation.NSMachPortDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[Model, BaseType (typeof (NSPortDelegate))]
 	[Protocol]
 	interface NSMachPortDelegate {
@@ -17460,6 +17728,16 @@ namespace Foundation {
 
 	interface INSProgressReporting { }
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:Foundation.INSProgressReporting" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:Foundation.INSProgressReporting" />.</para>
+	///       <para>If you create objects that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:Foundation.INSProgressReporting" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:Foundation.NSProgressReporting_Extensions" /> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
+	///     </remarks>
+	/// <summary>Extension methods to the <see cref="T:Foundation.INSProgressReporting" /> interface to support all the methods from the <see cref="T:Foundation.INSProgressReporting" /> protocol.</summary>
+	/// <remarks>
+	///       <para>The extension methods for <see cref="T:Foundation.INSProgressReporting" /> allow developers to treat instances of the interface as having all the optional methods of the original <see cref="T:Foundation.INSProgressReporting" /> protocol.   Since the interface only contains the required members, these extension methods allow developers to call the optional members of the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface NSProgressReporting {
@@ -17474,6 +17752,8 @@ namespace Foundation {
 	interface NSPurgeableData : NSSecureCoding, NSMutableCopying, NSDiscardableContent {
 	}
 
+	/// <summary>Interface for a class that can save memory by discarding some of its subcomponents when they are not in use.</summary>
+	/// <remarks>To be added.</remarks>
 	[Protocol]
 	interface NSDiscardableContent {
 		/// <summary>Requests access to the content, and returns <see langword="true" /> if the contents are available and were successfully accessed. (Otherwise, returns <see langword="false" />.)</summary>
@@ -17505,6 +17785,10 @@ namespace Foundation {
 		bool IsContentDiscarded { get; }
 	}
 
+	/// <param name="newReadingUrl">To be added.</param>
+	/// <param name="newWritingUrl">To be added.</param>
+	/// <summary>A delegate that used with a number of coordinated read-and-write functions in <see cref="T:Foundation.NSFileCoordinator" />.</summary>
+	/// <remarks>To be added.</remarks>
 	delegate void NSFileCoordinatorWorkerRW (NSUrl newReadingUrl, NSUrl newWritingUrl);
 
 	interface INSFilePresenter { }
@@ -18075,6 +18359,12 @@ namespace Foundation {
 
 	interface INSFileManagerDelegate { }
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:Foundation.NSFileManagerDelegate" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:Foundation.NSFileManagerDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:Foundation.NSFileManagerDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:Foundation.NSFileManagerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[BaseType (typeof (NSObject))]
 	[Model]
 	[Protocol]
@@ -18276,10 +18566,24 @@ namespace Foundation {
 		NSUrl GetHomeDirectory (string userName);
 	}
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:Foundation.NSFilePresenter" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:Foundation.NSFilePresenter" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:Foundation.NSFilePresenter" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:Foundation.NSFilePresenter_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[BaseType (typeof (NSObject))]
 	[Model]
 	[Protocol]
 	partial interface NSFilePresenter {
+		/// <summary>Gets URL of presented item.</summary>
+		/// <value>
+		///         </value>
+		/// <remarks>
+		///           <para>
+		///           </para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Abstract]
 		[Export ("presentedItemURL", ArgumentSemantic.Retain)]
 		[NullAllowed]
@@ -18289,6 +18593,9 @@ namespace Foundation {
 		NSUrl PresentedItemURL { get; }
 #endif
 
+		/// <summary>Gets the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:Monotouch.Foundation.NSOperationQueue&amp;scope=Xamarin" title="T:Monotouch.Foundation.NSOperationQueue">T:Monotouch.Foundation.NSOperationQueue</a></format> on which presenter-related methods are executed.</summary>
+		/// <value>The <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:Monotouch.Foundation.NSOperationQueue&amp;scope=Xamarin" title="T:Monotouch.Foundation.NSOperationQueue">T:Monotouch.Foundation.NSOperationQueue</a></format> on which methods are executed.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("presentedItemOperationQueue", ArgumentSemantic.Retain)]
 #if NET
@@ -18654,6 +18961,11 @@ namespace Foundation {
 		bool IsEnumeratingDirectoryPostOrder { get; }
 	}
 
+	/// <param name="evaluatedObject">To be added.</param>
+	/// <param name="bindings">To be added.</param>
+	/// <summary>A delegate that represents the expression to use with <see cref="M:Foundation.NSPredicate.FromExpression(Foundation.NSPredicateEvaluator)" />.</summary>
+	/// <returns>To be added.</returns>
+	/// <remarks>To be added.</remarks>
 	delegate bool NSPredicateEvaluator (NSObject evaluatedObject, NSDictionary bindings);
 
 	[BaseType (typeof (NSObject))]
@@ -18696,6 +19008,8 @@ namespace Foundation {
 		void AllowEvaluation ();
 	}
 
+	/// <summary>Defines an extension method for <see cref="T:Foundation.NSOrderedSet" /> objects allowing them to be filtered via an <see cref="T:Foundation.NSPredicate" />.</summary>
+	/// <remarks>To be added.</remarks>
 	[Category, BaseType (typeof (NSOrderedSet))]
 	partial interface NSPredicateSupport_NSOrderedSet {
 		/// <param name="p">To be added.</param>
@@ -18706,6 +19020,8 @@ namespace Foundation {
 		NSOrderedSet FilterUsingPredicate (NSPredicate p);
 	}
 
+	/// <summary>Defines an extension method for <see cref="T:Foundation.NSMutableOrderedSet" /> objects allowing them to be filtered using a <see cref="T:Foundation.NSPredicate" />.</summary>
+	/// <remarks>To be added.</remarks>
 	[Category, BaseType (typeof (NSMutableOrderedSet))]
 	partial interface NSPredicateSupport_NSMutableOrderedSet {
 		/// <param name="p">To be added.</param>
@@ -18715,6 +19031,8 @@ namespace Foundation {
 		void FilterUsingPredicate (NSPredicate p);
 	}
 
+	/// <summary>Extension method for <see cref="T:Foundation.NSArray" /> objects, allowing them to be filtered with a <see cref="T:Foundation.NSPredicate" />.</summary>
+	/// <remarks>To be added.</remarks>
 	[Category, BaseType (typeof (NSArray))]
 	partial interface NSPredicateSupport_NSArray {
 		/// <param name="array">To be added.</param>
@@ -18726,6 +19044,9 @@ namespace Foundation {
 	}
 
 #pragma warning disable 618
+	/// <summary>Helper metohds for applying predicates to mutable arrays.</summary>
+	/// <remarks>
+	///     </remarks>
 	[Category, BaseType (typeof (NSMutableArray))]
 #pragma warning restore 618
 	partial interface NSPredicateSupport_NSMutableArray {
@@ -18739,6 +19060,8 @@ namespace Foundation {
 		void FilterUsingPredicate (NSPredicate predicate);
 	}
 
+	/// <summary>Helper methods for applying predicates to sets.</summary>
+	/// <remarks>To be added.</remarks>
 	[Category, BaseType (typeof (NSSet))]
 	partial interface NSPredicateSupport_NSSet {
 		/// <param name="predicate">The predicate used to filter the
@@ -18752,6 +19075,8 @@ namespace Foundation {
 		NSSet FilterUsingPredicate (NSPredicate predicate);
 	}
 
+	/// <summary>Extension method for <see cref="T:Foundation.NSMutableSet" /> objects, allowing them to be filtered with a <see cref="T:Foundation.NSPredicate" />.</summary>
+	/// <remarks>To be added.</remarks>
 	[Category, BaseType (typeof (NSMutableSet))]
 	partial interface NSPredicateSupport_NSMutableSet {
 		/// <param name="predicate">To be added.</param>
@@ -18892,6 +19217,8 @@ namespace Foundation {
 
 	// Users are not supposed to implement the NSUrlProtocolClient protocol, they're 
 	// only supposed to consume it. This is why there's no model for this protocol.
+	/// <summary>The URL protocol client category.</summary>
+	/// <remarks>To be added.</remarks>
 	[Protocol (Name = "NSURLProtocolClient")]
 	interface NSUrlProtocolClient {
 		/// <param name="protocol">To be added.</param>
@@ -19065,6 +19392,7 @@ namespace Foundation {
 
 	interface INSExtensionRequestHandling { }
 
+	/// <include file="../docs/api/Foundation/INSExtensionRequestHandling.xml" path="/Documentation/Docs[@DocId='T:Foundation.INSExtensionRequestHandling']/*" />
 	[MacCatalyst (13, 1)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
@@ -19080,6 +19408,8 @@ namespace Foundation {
 		void BeginRequestWithExtensionContext (NSExtensionContext context);
 	}
 
+	/// <summary>Interface that, together with the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Foundation%20NSLocking_%20Extensions&amp;scope=Xamarin" title="T:Foundation.NSLocking_Extensions">T:Foundation.NSLocking_Extensions</a></format> class, comprise the NSLocking protocol.</summary>
+	/// <remarks>To be added.</remarks>
 	[Protocol]
 	interface NSLocking {
 
@@ -19265,6 +19595,8 @@ namespace Foundation {
 
 	}
 
+	/// <summary>Contains the components of a recognized travel data.</summary>
+	/// <remarks>To be added.</remarks>
 	[StrongDictionary ("NSTextChecking")]
 	interface NSTextCheckingTransitComponents {
 		/// <summary>To be added.</summary>
@@ -19278,6 +19610,8 @@ namespace Foundation {
 		string Flight { get; }
 	}
 
+	/// <summary>Contains the components of a recognized address.</summary>
+	/// <remarks>To be added.</remarks>
 	[StrongDictionary ("NSTextChecking")]
 	interface NSTextCheckingAddressComponents {
 		/// <summary>To be added.</summary>
@@ -19327,6 +19661,8 @@ namespace Foundation {
 		string Phone { get; }
 	}
 
+	/// <summary>Contains keys that identify text checking results.</summary>
+	/// <remarks>To be added.</remarks>
 	[Static]
 	interface NSTextChecking {
 		/// <summary>To be added.</summary>

@@ -21,6 +21,8 @@ using NativeHandle = System.IntPtr;
 #endif
 
 namespace CoreData {
+	/// <summary>Contains Core Data error information.</summary>
+	/// <remarks>To be added.</remarks>
 	[StrongDictionary ("UserInfoKeys")]
 	interface UserInfo {
 		/// <summary>Gets or sets an array that contains the multiple erros that occurred, if multiple errors occurred.</summary>
@@ -53,6 +55,8 @@ namespace CoreData {
 		NSPersistentStore [] AffectedStoresForError { get; set; }
 	}
 
+	/// <summary>Contains keys for error information that Core Data stores in a dictionary.</summary>
+	/// <remarks>To be added.</remarks>
 	[Static]
 	interface UserInfoKeys {
 		/// <summary>To be added.</summary>
@@ -142,6 +146,10 @@ namespace CoreData {
 		InitialImportCompleted,
 	}
 
+	/// <summary>Enumerates reasons that a managed object may need to reinitialize certain values when it awakes.</summary>
+	/// <remarks>
+	///       <para>The values in this enumeration are returned by the <see cref="M:CoreData.NSManagedObject.AwakeFromSnapshotEvents(CoreData.NSSnapshotEventType)" /> method.</para>
+	///     </remarks>
 	[Native]
 	public enum NSSnapshotEventType : ulong {
 		/// <summary>Indicates that an insertion was undone.</summary>
@@ -158,6 +166,9 @@ namespace CoreData {
 		MergePolicy = 1 << 6,
 	}
 
+	/// <summary>A base class for 'atomic stores,' which can be used to store custom file formats in Core Data.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/NSAtomicStore_class/index.html">Apple documentation for <c>NSAtomicStore</c></related>
 	[BaseType (typeof (NSPersistentStore))]
 	// Objective-C exception thrown.  Name: NSInternalInconsistencyException Reason: NSMappedObjectStore must be initialized with initWithPersistentStoreCoordinator:configurationName:URL:options
 	[DisableDefaultCtor]
@@ -359,6 +370,9 @@ namespace CoreData {
 		NSPredicate PartialIndexPredicate { get; set; }
 	}
 
+	/// <summary>Represents a single record in a Core Data atomic store.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/NSAtomicStoreCacheNode_class/index.html">Apple documentation for <c>NSAtomicStoreCacheNode</c></related>
 	[BaseType (typeof (NSObject))]
 	// Objective-C exception thrown.  Name: NSInvalidArgumentException Reason: NSAtomicStoreCacheNodes must be initialized using initWithObjectID:(NSManagedObjectID *)
 	[DisableDefaultCtor]
@@ -408,6 +422,9 @@ namespace CoreData {
 		void SetValue ([NullAllowed] NSObject value, string key);
 
 	}
+	/// <summary>Describes an attribute of an <see cref="T:CoreData.NSEntityDescription" /> object.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/CoreDataFramework/Classes/NSAttributeDescription_Class/index.html">Apple documentation for <c>NSAttributeDescription</c></related>
 	[BaseType (typeof (NSPropertyDescription))]
 	interface NSAttributeDescription {
 
@@ -664,6 +681,9 @@ namespace CoreData {
 		NSExpression CoreSpotlightDisplayNameExpression { get; set; }
 	}
 
+	/// <summary>Specifies the mapping between an in-memory object and its persistent representation.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/NSEntityMapping_class/index.html">Apple documentation for <c>NSEntityMapping</c></related>
 	[BaseType (typeof (NSObject))]
 	interface NSEntityMapping {
 
@@ -765,6 +785,9 @@ namespace CoreData {
 		string EntityMigrationPolicyClassName { get; set; }
 	}
 
+	/// <summary>Customizes the migration process during entity mapping.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/NSEntityMigrationPolicy_class/index.html">Apple documentation for <c>NSEntityMigrationPolicy</c></related>
 	[BaseType (typeof (NSObject))]
 	interface NSEntityMigrationPolicy {
 
@@ -834,6 +857,9 @@ namespace CoreData {
 		bool EndEntityMapping (NSEntityMapping mapping, NSMigrationManager manager, out NSError error);
 	}
 
+	/// <summary>Descriptor for a fetch result column that does not appear in the source, such as a sum or a minimum of a column in the source.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/CoreData/NSExpressionDescription">Apple documentation for <c>NSExpressionDescription</c></related>
 	[BaseType (typeof (NSPropertyDescription))]
 	interface NSExpressionDescription {
 
@@ -853,6 +879,9 @@ namespace CoreData {
 		NSAttributeType ResultType { get; set; }
 	}
 
+	/// <summary>Holds "fetched properties," that allow the developer to specify related objects via a weak unidirectional relationship in a fetch request.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/CoreDataFramework/Classes/NSFetchedPropertyDescription_Class/index.html">Apple documentation for <c>NSFetchedPropertyDescription</c></related>
 	[BaseType (typeof (NSPropertyDescription))]
 	interface NSFetchedPropertyDescription {
 
@@ -867,6 +896,9 @@ namespace CoreData {
 		NSFetchRequest FetchRequest { get; set; }
 	}
 
+	/// <summary>Represents an expression that fetches results in a managed object context.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/CoreData/NSFetchRequestExpression">Apple documentation for <c>NSFetchRequestExpression</c></related>
 	[DisableDefaultCtor]
 	[BaseType (typeof (NSExpression))]
 	interface NSFetchRequestExpression {
@@ -911,6 +943,9 @@ namespace CoreData {
 	[Protocol]
 	interface NSFetchRequestResult { }
 
+	/// <summary>Holds search criteria used to retrieve data from a persistent store.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/CoreDataFramework/Classes/NSFetchRequest_Class/index.html">Apple documentation for <c>NSFetchRequest</c></related>
 	[DisableDefaultCtor] // designated
 	[BaseType (typeof (NSPersistentStoreRequest))]
 	interface NSFetchRequest : NSCoding {
@@ -1096,6 +1131,9 @@ namespace CoreData {
 		INSFetchRequestResult [] Execute (out NSError error);
 	}
 
+	/// <summary>Controller object for Core Data fetch requests; generally used to provide data for a <see cref="T:UIKit.UITableView" />.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CoreData/Reference/NSFetchedResultsController_Class/index.html">Apple documentation for <c>NSFetchedResultsController</c></related>
 	[NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject), Delegates = new string [] { "WeakDelegate" })]
@@ -1227,10 +1265,17 @@ namespace CoreData {
 		[Export ("sectionIndexTitles")]
 		string [] GetSectionIndexTitles ();
 #else
+		/// <param name="sectionName">To be added.</param>
+		/// <summary>Returns the section index titles for the specified section name.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("sectionIndexTitleForSectionName:")]
 		[return: NullAllowed]
 		string GetSectionIndexTitle (string sectionName);
 
+		/// <summary>Returns an array that contains the section index titles.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("sectionIndexTitles")]
 		string [] SectionIndexTitles { get; }
 #endif
@@ -1248,6 +1293,12 @@ namespace CoreData {
 
 	interface INSFetchedResultsControllerDelegate { }
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:CoreData.NSFetchedResultsControllerDelegate" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:CoreData.NSFetchedResultsControllerDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:CoreData.NSFetchedResultsControllerDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:CoreData.NSFetchedResultsControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
@@ -1301,6 +1352,7 @@ namespace CoreData {
 		string SectionFor (NSFetchedResultsController controller, string sectionName);
 	}
 
+	/// <include file="../docs/api/CoreData/INSFetchedResultsSectionInfo.xml" path="/Documentation/Docs[@DocId='T:CoreData.INSFetchedResultsSectionInfo']/*" />
 	[NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
@@ -1350,6 +1402,9 @@ namespace CoreData {
 	// Making a class abstract has problems: https://github.com/xamarin/xamarin-macios/issues/4969, so we're not doing this yet
 	// [Abstract] // Abstract superclass.
 #endif
+	/// <summary>Supports the use of persistent stores that are loaded and saved incrementally, allowing for larger and shared datasets.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CoreData/Reference/NSIncrementalStore_Class/index.html">Apple documentation for <c>NSIncrementalStore</c></related>
 	[BaseType (typeof (NSPersistentStore))]
 	interface NSIncrementalStore {
 #if NET
@@ -1408,6 +1463,10 @@ namespace CoreData {
 		[return: NullAllowed]
 		NSObject NewValue (NSRelationshipDescription forRelationship, NSManagedObjectID forObjectI, [NullAllowed] NSManagedObjectContext context, out NSError error);
 
+		/// <param name="storeUrl">To be added.</param>
+		/// <summary>Returns the identifier for the store at <paramref name="storeUrl" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static]
 		[Export ("identifierForNewStoreAtURL:")]
 #if NET
@@ -1454,6 +1513,9 @@ namespace CoreData {
 
 	}
 
+	/// <summary>A concrete class that represents basic nodes in a <see cref="T:CoreData.NSIncrementalStore" />.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CoreData/Reference/NSIncrementalStoreNode_Class/index.html">Apple documentation for <c>NSIncrementalStoreNode</c></related>
 	[BaseType (typeof (NSObject))]
 	interface NSIncrementalStoreNode {
 		/// <param name="objectId">To be added.</param>
@@ -1500,6 +1562,9 @@ namespace CoreData {
 		NSObject ValueForPropertyDescription (NSPropertyDescription prop);
 	}
 
+	/// <summary>A class that can be managed by a managed object context. Should have a correspondence to domain model classes, even if they are not direct subtypes.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/CoreDataFramework/Classes/NSManagedObject_Class/index.html">Apple documentation for <c>NSManagedObject</c></related>
 	[BaseType (typeof (NSObject))]
 	// 'init' issues a warning: CoreData: error: Failed to call designated initializer on NSManagedObject class 'NSManagedObject' 
 	// then crash while disposing the instance
@@ -1695,6 +1760,10 @@ namespace CoreData {
 		[Export ("didTurnIntoFault")]
 		void DidTurnIntoFault ();
 
+		/// <param name="key">To be added.</param>
+		/// <summary>Returns the value for the property that is identified by the specified <paramref name="key" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("valueForKey:")]
 		[return: NullAllowed]
 #if NET
@@ -1703,6 +1772,10 @@ namespace CoreData {
 		IntPtr ValueForKey (string key);
 #endif
 
+		/// <param name="value">To be added.</param>
+		/// <param name="key">To be added.</param>
+		/// <summary>Sets the receiver's value for the property that is specified by the provided <paramref name="key" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("setValue:forKey:")]
 #if NET
 		void SetValue ([NullAllowed] NSObject value, string key);
@@ -1710,6 +1783,10 @@ namespace CoreData {
 		void SetValue (IntPtr value, string key);
 #endif
 
+		/// <param name="key">To be added.</param>
+		/// <summary>Returns the receiver's internal primitive value for the property that is specified by the provided <paramref name="key" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("primitiveValueForKey:")]
 		[return: NullAllowed]
 #if NET
@@ -1718,6 +1795,10 @@ namespace CoreData {
 		IntPtr PrimitiveValueForKey (string key);
 #endif
 
+		/// <param name="value">To be added.</param>
+		/// <param name="key">To be added.</param>
+		/// <summary>Sets the receiver's internal primitive value for the property that is specified by the provided <paramref name="key" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("setPrimitiveValue:forKey:")]
 #if NET
 		void SetPrimitiveValue ([NullAllowed] NSObject value, string key);
@@ -1725,6 +1806,13 @@ namespace CoreData {
 		void SetPrimitiveValue (IntPtr value, string key);
 #endif
 
+		/// <param name="keys">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Returns a dictionary that contains property values for the specified <paramref name="keys" /> from before the last fetch or save.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("committedValuesForKeys:")]
 #if XAMCORE_5_0
 		NSDictionary<NSString, NSObject> GetCommittedValues ([NullAllowed] string[] keys);
@@ -1809,6 +1897,9 @@ namespace CoreData {
 		NSManagedObjectID [] GetObjectIDs (string relationshipName);
 	}
 
+	/// <summary>Controls whether and how a managed object context pins itself to database transactions.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/CoreData/NSQueryGenerationToken">Apple documentation for <c>NSQueryGenerationToken</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface NSQueryGenerationToken : NSSecureCoding, NSCopying {
@@ -1819,6 +1910,9 @@ namespace CoreData {
 		NSQueryGenerationToken CurrentToken { get; }
 	}
 
+	/// <summary>A collection of related managed objects that create aninternally-consistent view of one or more persistent stores.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/CoreDataFramework/Classes/NSManagedObjectContext_Class/index.html">Apple documentation for <c>NSManagedObjectContext</c></related>
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSManagedObjectContext : NSCoding
@@ -1922,6 +2016,15 @@ namespace CoreData {
 		[Export ("detectConflictsForObject:")]
 		void DetectConflictsForObject (NSManagedObject object1);
 
+		/// <param name="keyPath">To be added.</param>
+		/// <param name="object1">To be added.</param>
+		/// <param name="change">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="context">To be added.</param>
+		/// <summary>Observes the object that is identified by the provided object and keypath for changes.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("observeValueForKeyPath:ofObject:change:context:")]
 #if XAMCORE_5_0
 		void ObserveValue ([NullAllowed] string keyPath, [NullAllowed] NSObject object1, [NullAllowed] NSDictionary<NSString, NSObject> change, IntPtr context);
@@ -1936,6 +2039,10 @@ namespace CoreData {
 		[Export ("processPendingChanges")]
 		void ProcessPendingChanges ();
 
+		/// <param name="object1">To be added.</param>
+		/// <param name="store">To be added.</param>
+		/// <summary>Assigns <paramref name="object1" /> to <paramref name="store" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("assignObject:toPersistentStore:")]
 #if NET
 		void AssignObject (NSObject object1, NSPersistentStore store);
@@ -2316,6 +2423,9 @@ namespace CoreData {
 		bool InvalidatedAllObjects { get; }
 	}
 
+	/// <summary>A universal identifier of a Core Data managed object. Works across object contexts and applications.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/CoreDataFramework/Classes/NSManagedObjectID_Class/index.html">Apple documentation for <c>NSManagedObjectID</c></related>
 	[BaseType (typeof (NSObject))]
 	// Objective-C exception thrown.  Name: NSInvalidArgumentException Reason: *** -URIRepresentation cannot be sent to an abstract object of class NSManagedObjectID: Create a concrete instance!
 	[DisableDefaultCtor]
@@ -2350,6 +2460,9 @@ namespace CoreData {
 
 	}
 
+	/// <summary>A schema describing a graph of entities used by the application.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/CoreDataFramework/Classes/NSManagedObjectModel_Class/index.html">Apple documentation for <c>NSManagedObjectModel</c></related>
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // designated
 	interface NSManagedObjectModel : NSCoding, NSCopying {
@@ -2361,6 +2474,13 @@ namespace CoreData {
 		[Export ("init")]
 		NativeHandle Constructor ();
 
+		/// <param name="bundles">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("mergedModelFromBundles:")]
 		[return: NullAllowed]
 #if NET
@@ -2468,6 +2588,14 @@ namespace CoreData {
 		NSDictionary LocalizationDictionary { get; set; }
 #endif
 
+		/// <param name="bundles">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="metadata">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("mergedModelFromBundles:forStoreMetadata:")]
 		[return: NullAllowed]
 #if XAMCORE_5_0
@@ -2504,6 +2632,14 @@ namespace CoreData {
 		[Export ("versionIdentifiers", ArgumentSemantic.Copy)]
 		NSSet VersionIdentifiers { get; set; }
 
+		/// <param name="configuration">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="metadata">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("isConfiguration:compatibleWithStoreMetadata:")]
 #if XAMCORE_5_0
 		bool IsConfigurationCompatibleWithStoreMetadata ([NullAllowed] string configuration, NSDictionary<NSString, NSObject> metadata);
@@ -2534,6 +2670,9 @@ namespace CoreData {
 		string VersionChecksum { get; }
 	}
 
+	/// <summary>Holds mappings between a source and destination managed object model.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/NSMappingModel_class/index.html">Apple documentation for <c>NSMappingModel</c></related>
 	[BaseType (typeof (NSObject))]
 	interface NSMappingModel {
 
@@ -2580,6 +2719,9 @@ namespace CoreData {
 
 	}
 
+	/// <summary>Models conflicts that can occur when saving changes.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CoreData/Reference/NSMergeConflict_Class/index.html">Apple documentation for <c>NSMergeConflict</c></related>
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSMergeConflict {
@@ -2658,6 +2800,9 @@ namespace CoreData {
 #endif
 	}
 
+	/// <summary>Strategy for resolving conflicts between in-memory objects and those in persistent stores.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CoreData/Reference/NSMergePolicy_Class/index.html">Apple documentation for <c>NSMergePolicy</c></related>
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSMergePolicy {
@@ -2674,6 +2819,11 @@ namespace CoreData {
 		[Export ("initWithMergeType:")]
 		NativeHandle Constructor (NSMergePolicyType ty);
 
+		/// <param name="list">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>Attempts to resolve the specified conflicts, and reports any errors.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("resolveConflicts:error:")]
 #if NET
 		bool ResolveConflicts (NSMergeConflict [] list, out NSError error);
@@ -2741,6 +2891,9 @@ namespace CoreData {
 		NSMergePolicy MergeByPropertyStoreTrumpPolicy { get; }
 	}
 
+	/// <summary>Allows migration from one persistent store to another.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/NSMigrationManager_class/index.html">Apple documentation for <c>NSMigrationManager</c></related>
 	[BaseType (typeof (NSObject))]
 	interface NSMigrationManager {
 
@@ -3257,6 +3410,9 @@ namespace CoreData {
 	// type is NSPersistentStore, which means we must be able to create managed wrappers
 	// for such native classes using the managed NSPersistentStore. This means we can't
 	// make our managed version [Abstract].
+	/// <summary>Abstract base class for Core Data persistent stores.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/NSPersistentStore_Class/index.html">Apple documentation for <c>NSPersistentStore</c></related>
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSPersistentStore {
@@ -3444,6 +3600,9 @@ namespace CoreData {
 		NSPersistentHistoryToken PersistentHistoryTracking { get; }
 	}
 
+	/// <summary>Descriptor for a persistent store inside a persistent container.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/CoreData/NSPersistentStoreDescription">Apple documentation for <c>NSPersistentStoreDescription</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -3569,6 +3728,9 @@ namespace CoreData {
 		NSPersistentCloudKitContainerOptions CloudKitContainerOptions { get; set; }
 	}
 
+	/// <summary>Creates and manages a Core Data stack.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/CoreData/NSPersistentContainer">Apple documentation for <c>NSPersistentContainer</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -3645,7 +3807,16 @@ namespace CoreData {
 		///         <summary>Loads the persistent stores in the container and runs a completion handler when finished.</summary>
 		///         <remarks>To be added.</remarks>
 		[Export ("loadPersistentStoresWithCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Loads the persistent stores in the container and runs a completion handler when finished.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous LoadPersistentStores operation.  The value of the TResult parameter is of type System.Action&lt;CoreData.NSPersistentStoreDescription,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The LoadPersistentStoresAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void LoadPersistentStores (Action<NSPersistentStoreDescription, NSError> block);
 
 		/// <summary>Creates and returns a private managed object context.</summary>
@@ -4309,6 +4480,9 @@ namespace CoreData {
 		NSPersistentStoreUbiquitousTransitionType EventType { get; }
 	}
 
+	/// <summary>Criteria used to retrieve data from or save data in a persistent store.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CoreData/Reference/NSPersistentStoreRequest_Class/index.html">Apple documentation for <c>NSPersistentStoreRequest</c></related>
 	[BaseType (typeof (NSObject))]
 	interface NSPersistentStoreRequest : NSCopying {
 		/// <summary>To be added.</summary>
@@ -4329,6 +4503,9 @@ namespace CoreData {
 		NSPersistentStore [] AffectedStores { get; set; }
 	}
 
+	/// <summary>Class that represents the result of an asynchronous fetch request.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/CoreData/NSAsynchronousFetchResult">Apple documentation for <c>NSAsynchronousFetchResult</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSPersistentStoreAsynchronousResult))]
 	interface NSAsynchronousFetchResult {
@@ -4350,12 +4527,18 @@ namespace CoreData {
 #endif
 	}
 
+	/// <summary>Class that represents the result of request that was made of a persistent data store.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/CoreData/NSPersistentStoreResult">Apple documentation for <c>NSPersistentStoreResult</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface NSPersistentStoreResult {
 
 	}
 
+	/// <summary>Class that represents the result of an batch update request.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/CoreData/NSBatchUpdateResult">Apple documentation for <c>NSBatchUpdateResult</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSPersistentStoreResult))]
 	interface NSBatchUpdateResult {
@@ -4373,6 +4556,9 @@ namespace CoreData {
 		NSBatchUpdateRequestResultType ResultType { get; }
 	}
 
+	/// <summary>Class that represents the results of an aysnchronous request that was made of a persistent data store.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/CoreData/NSPersistentStoreAsynchronousResult">Apple documentation for <c>NSPersistentStoreAsynchronousResult</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSPersistentStoreResult))]
 	interface NSPersistentStoreAsynchronousResult {
@@ -4402,6 +4588,9 @@ namespace CoreData {
 		void Cancel ();
 	}
 
+	/// <summary>Class that represents an asynchronous fetch request.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/CoreData/NSAsynchronousFetchRequest">Apple documentation for <c>NSAsynchronousFetchRequest</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSPersistentStoreRequest))]
 	interface NSAsynchronousFetchRequest {
@@ -4428,6 +4617,9 @@ namespace CoreData {
 		nint EstimatedResultCount { get; set; }
 	}
 
+	/// <summary>Defines properties of an entity in a managed objectmodel. The equivalent of an instance property.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/CoreDataFramework/Classes/NSPropertyDescription_Class/index.html">Apple documentation for <c>NSPropertyDescription</c></related>
 	[BaseType (typeof (NSObject))]
 	interface NSPropertyDescription : NSCoding, NSCopying {
 
@@ -4545,6 +4737,9 @@ namespace CoreData {
 		bool StoredInExternalRecord { [Bind ("isStoredInExternalRecord")] get; set; }
 	}
 
+	/// <summary>Maps a property between source and destination entities.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/NSPropertyMapping_class/index.html">Apple documentation for <c>NSPropertyMapping</c></related>
 	[BaseType (typeof (NSObject))]
 	interface NSPropertyMapping {
 
@@ -4579,6 +4774,9 @@ namespace CoreData {
 		NSDictionary UserInfo { get; set; }
 	}
 
+	/// <summary>Describes the relationships of a <see cref="T:CoreData.NSEntityDescription" /> object.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/CoreDataFramework/Classes/NSRelationshipDescription_Class/index.html">Apple documentation for <c>NSRelationshipDescription</c></related>
 	[BaseType (typeof (NSPropertyDescription))]
 	interface NSRelationshipDescription {
 
@@ -4640,6 +4838,9 @@ namespace CoreData {
 		bool Ordered { [Bind ("isOrdered")] get; set; }
 	}
 
+	/// <summary>A collection of changes to be made by an object store.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CoreData/Reference/NSSaveChangesRequest_Class/index.html">Apple documentation for <c>NSSaveChangesRequest</c></related>
 	[BaseType (typeof (NSPersistentStoreRequest))]
 	interface NSSaveChangesRequest {
 		/// <param name="insertedObjects">
@@ -4720,6 +4921,9 @@ namespace CoreData {
 #endif
 	}
 
+	/// <summary>Class that represents a request for a batch update.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/CoreData/NSBatchUpdateRequest">Apple documentation for <c>NSBatchUpdateRequest</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSPersistentStoreRequest))]
 	interface NSBatchUpdateRequest {
@@ -4789,6 +4993,9 @@ namespace CoreData {
 		NSBatchUpdateRequest BatchUpdateRequestWithEntityName (string entityName);
 	}
 
+	/// <summary>A <see cref="T:CoreData.NSPersistentStoreRequest" /> that performs a batch delete.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/CoreData/NSBatchDeleteRequest">Apple documentation for <c>NSBatchDeleteRequest</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSPersistentStoreRequest))]
 	[DisableDefaultCtor]
@@ -4819,6 +5026,9 @@ namespace CoreData {
 		NSFetchRequest FetchRequest { get; }
 	}
 
+	/// <summary>The results of a <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Data%20NSBatch%20Delete%20Query&amp;scope=Xamarin" title="T:CoreData.NSBatchDeleteQuery">T:CoreData.NSBatchDeleteQuery</a></format>.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/CoreData/NSBatchDeleteResult">Apple documentation for <c>NSBatchDeleteResult</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSPersistentStoreResult))]
 	interface NSBatchDeleteResult {
@@ -4838,6 +5048,9 @@ namespace CoreData {
 		NSBatchDeleteRequestResultType ResultType { get; }
 	}
 
+	/// <summary>To be added.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/CoreData/NSConstraintConflict">Apple documentation for <c>NSConstraintConflict</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface NSConstraintConflict {

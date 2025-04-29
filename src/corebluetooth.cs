@@ -1002,7 +1002,15 @@ namespace CoreBluetooth {
 			""")]
 		void DiscoveredIncludedService (CBPeripheral peripheral, CBService service, [NullAllowed] NSError error);
 
-		[Export ("peripheral:didDiscoverCharacteristicsForService:error:"), EventArgs ("CBService")]
+		/// <param name="peripheral">To be added.</param>
+		/// <param name="service">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
+		[Export ("peripheral:didDiscoverCharacteristicsForService:error:"), EventArgs ("CBService", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 #if NET
 		void DiscoveredCharacteristics (CBPeripheral peripheral, CBService service, [NullAllowed] NSError error);
 #else

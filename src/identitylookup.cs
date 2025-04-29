@@ -28,6 +28,7 @@ namespace IdentityLookup {
 		None = 0,
 		/// <summary>Indicates that the message will be allowed.</summary>
 		Allow = 1,
+		/// <summary>Indicates that the message will be filtered.</summary>
 		Junk = 2,
 #if !NET
 		[Obsolete ("Use 'Junk' instead.")]

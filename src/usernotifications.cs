@@ -24,6 +24,8 @@ using UIKit;
 
 namespace UserNotifications {
 
+	/// <summary>Enumerates attached file errors that can occur when making a notification request.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[ErrorDomain ("UNErrorDomain")]
 	[Native]
@@ -91,6 +93,8 @@ namespace UserNotifications {
 		AllowAnnouncement = (1 << 4),
 	}
 
+	/// <summary>Enumerates ways in which the user can respond to a request for permission to post notifications.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UNAuthorizationStatus : long {
@@ -109,6 +113,8 @@ namespace UserNotifications {
 		Ephemeral,
 	}
 
+	/// <summary>Enumerates notification states.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UNNotificationSetting : long {
@@ -133,6 +139,8 @@ namespace UserNotifications {
 		Alert,
 	}
 
+	/// <summary>Enumerates user interaction authorization requests.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	[Flags]
@@ -168,6 +176,8 @@ namespace UserNotifications {
 		TimeSensitive = (1 << 8),
 	}
 
+	/// <summary>Enumerates flags that control the presentation of notifications in foreground apps.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	[Flags]
@@ -237,6 +247,9 @@ namespace UserNotifications {
 #endif // !XAMCORE_5_0
 	}
 
+	/// <summary>System-created notification that contains the original request, the notification content, the trigger that caused delivery, and the date of the delivery.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/UserNotifications/UNNotification">Apple documentation for <c>UNNotification</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // as per docs (not user created)
@@ -533,6 +546,9 @@ namespace UserNotifications {
 
 	}
 
+	/// <summary>System-generated object that contains the parts of a notification, including text, sound, badge and launch images, attachments, and so on.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/UserNotifications/UNNotificationContent">Apple documentation for <c>UNNotificationContent</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // as per docs
@@ -659,6 +675,9 @@ namespace UserNotifications {
 		string FilterCriteria { get; }
 	}
 
+	/// <summary>Developer-created object that specifies the parts of a notification, including text, sound, badge and launch images, attachments, and so on, for a notification request.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/UserNotifications/UNMutableNotificationContent">Apple documentation for <c>UNMutableNotificationContent</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (UNNotificationContent))]
 	interface UNMutableNotificationContent {
@@ -777,6 +796,9 @@ namespace UserNotifications {
 		string FilterCriteria { get; set; }
 	}
 
+	/// <summary>Contains the content and trigger for a notification that the developer requests from <see cref="T:UserNotifications.UNUserNotificationCenter" />..</summary>
+	/// <remarks>This class is not related to <see cref="T:UserNotifications.UNNotificationResponse" />, which details a user response to a notification.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/UserNotifications/UNNotificationRequest">Apple documentation for <c>UNNotificationRequest</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -914,6 +936,9 @@ namespace UserNotifications {
 		void TimeWillExpire ();
 	}
 
+	/// <summary>System-supplied object that contains current notification and device settings for an application.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/UserNotifications/UNNotificationSettings">Apple documentation for <c>UNNotificationSettings</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // as per docs
@@ -1087,6 +1112,9 @@ namespace UserNotifications {
 		UNNotificationSound GetCriticalSound (string name, float volume);
 	}
 
+	/// <summary>Triggers a notification when a condition is met.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/UserNotifications/UNNotificationTrigger">Apple documentation for <c>UNNotificationTrigger</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Abstract] // as per docs
@@ -1100,6 +1128,9 @@ namespace UserNotifications {
 		bool Repeats { get; }
 	}
 
+	/// <summary>Trigger that is created by the system to activate push notification triggers.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/UserNotifications/UNPushNotificationTrigger">Apple documentation for <c>UNPushNotificationTrigger</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (UNNotificationTrigger))]
 	[DisableDefaultCtor] // as per docs (system created)
@@ -1107,6 +1138,9 @@ namespace UserNotifications {
 
 	}
 
+	/// <summary>Triggers a notification after a time interval.</summary>
+	/// <remarks>Application developers can set <see cref="P:CoreLocation.CLRegion.NotifyOnEntry" /> and <see cref="P:CoreLocation.CLRegion.NotifyOnExit" /> to control when the trigger is activated.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/UserNotifications/UNTimeIntervalNotificationTrigger">Apple documentation for <c>UNTimeIntervalNotificationTrigger</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (UNNotificationTrigger))]
 	[DisableDefaultCtor] // as per doc, use supplied method (CreateTrigger)
@@ -1137,6 +1171,9 @@ namespace UserNotifications {
 		NSDate NextTriggerDate { get; }
 	}
 
+	/// <summary>Triggers the delivery of a notification at a specified day or time, either once or repeatedly.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/UserNotifications/UNCalendarNotificationTrigger">Apple documentation for <c>UNCalendarNotificationTrigger</c></related>
 	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor] // as per doc, use supplied method (CreateTrigger)
 	[BaseType (typeof (UNNotificationTrigger))]
@@ -1195,6 +1232,12 @@ namespace UserNotifications {
 
 	interface IUNUserNotificationCenterDelegate { }
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:UserNotifications.UNUserNotificationCenterDelegate" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:UserNotifications.UNUserNotificationCenterDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:UserNotifications.UNUserNotificationCenterDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="T:UserNotifications.UNUserNotificationCenterDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
@@ -1227,6 +1270,9 @@ namespace UserNotifications {
 		void OpenSettings (UNUserNotificationCenter center, [NullAllowed] UNNotification notification);
 	}
 
+	/// <summary>System-provided class that lets the developer schedule and manage notifications.</summary>
+	/// <remarks>Developers use <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=User%20Notifications%20UNUser%20Notification%20Center%20Current%20Notification%20Center&amp;scope=Xamarin" title="M:UserNotifications.UNUserNotificationCenter.CurrentNotificationCenter*">M:UserNotifications.UNUserNotificationCenter.CurrentNotificationCenter*</a></format> to obtain the singleton that coordinates and schedules notifications.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/UserNotifications/UNUserNotificationCenter">Apple documentation for <c>UNUserNotificationCenter</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -1278,7 +1324,11 @@ namespace UserNotifications {
 		/// <param name="completionHandler">An action that takes an array of the currently registered notification categories and returns <see langword="void" />.</param>
 		///         <summary>Returns the currently registered notification categories for the app, processing them before they are returned.</summary>
 		///         <remarks>To be added.</remarks>
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Returns the currently registered notification categories for the app, processing them before they are returned.</summary>
+			<returns>A task that returns the set of the currently registered notification categories for the app.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Unavailable (PlatformName.TvOS)]
 		[Export ("getNotificationCategoriesWithCompletionHandler:")]
 		void GetNotificationCategories (Action<NSSet<UNNotificationCategory>> completionHandler);
@@ -1286,7 +1336,11 @@ namespace UserNotifications {
 		/// <param name="completionHandler">An action that takes a notification settings object and returns <see langword="void" />.</param>
 		///         <summary>Returns the notification settings object for the app, processing it before it is returned.</summary>
 		///         <remarks>To be added.</remarks>
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Returns the notification settings object for the app, processing it before it is returned.</summary>
+			<returns>A task that returns the notification settings for the app.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("getNotificationSettingsWithCompletionHandler:")]
 		void GetNotificationSettings (Action<UNNotificationSettings> completionHandler);
 
@@ -1306,7 +1360,11 @@ namespace UserNotifications {
 		/// <param name="completionHandler">An action that takes an array of the pending notification requests and returns <see langword="void" />.</param>
 		///         <summary>Returns an array that contains the pending notification requests, processing them before returning them.</summary>
 		///         <remarks>To be added.</remarks>
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Returns an array that contains the pending notification requests, processing them before returning them.</summary>
+			<returns>A task that returns the array that contains the pending notification requests.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("getPendingNotificationRequestsWithCompletionHandler:")]
 		void GetPendingNotificationRequests (Action<UNNotificationRequest []> completionHandler);
 
@@ -1324,7 +1382,14 @@ namespace UserNotifications {
 		/// <param name="completionHandler">An action that takes an array of the delivered notifications and returns <see langword="void" />.</param>
 		///         <summary>Returns the delivered notifications that are still in the notification center, processing them before they are returned.</summary>
 		///         <remarks>To be added.</remarks>
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Returns the delivered notifications that are still in the notification center, processing them before they are returned.</summary>
+			<returns>The delivered notifications that are still in the notification center.</returns>
+			<remarks>
+			          <para copied="true">The GetDeliveredNotificationsAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Unavailable (PlatformName.TvOS)]
 		[Export ("getDeliveredNotificationsWithCompletionHandler:")]
 		void GetDeliveredNotifications (Action<UNNotification []> completionHandler);

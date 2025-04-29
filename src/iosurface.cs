@@ -194,6 +194,9 @@ namespace IOSurface {
 		[Internal, Export ("initWithProperties:")]
 		NativeHandle Constructor (NSDictionary properties);
 
+		/// <param name="properties">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (properties.GetDictionary ()!)")]
 		NativeHandle Constructor (IOSurfaceOptions properties);
 
@@ -240,24 +243,52 @@ namespace IOSurface {
 		[Export ("planeCount")]
 		nuint PlaneCount { get; }
 
+		/// <param name="planeIndex">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("widthOfPlaneAtIndex:")]
 		nint GetWidth (nuint planeIndex);
 
+		/// <param name="planeIndex">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("heightOfPlaneAtIndex:")]
 		nint GetHeight (nuint planeIndex);
 
+		/// <param name="planeIndex">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("bytesPerRowOfPlaneAtIndex:")]
 		nint GetBytesPerRow (nuint planeIndex);
 
+		/// <param name="planeIndex">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("bytesPerElementOfPlaneAtIndex:")]
 		nint GetBytesPerElement (nuint planeIndex);
 
+		/// <param name="planeIndex">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("elementWidthOfPlaneAtIndex:")]
 		nint GetElementWidth (nuint planeIndex);
 
+		/// <param name="planeIndex">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("elementHeightOfPlaneAtIndex:")]
 		nint GetElementHeight (nuint planeIndex);
 
+		/// <param name="planeIndex">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("baseAddressOfPlaneAtIndex:")]
 		IntPtr GetBaseAddress (nuint planeIndex);
 

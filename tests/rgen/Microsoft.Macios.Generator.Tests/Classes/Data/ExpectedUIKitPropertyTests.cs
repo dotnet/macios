@@ -21,7 +21,7 @@ public partial class UIKitPropertyTests
 {
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selCountX = "count";
-	static readonly NativeHandle selCountXHandle = Selector.GetHandle ("count");
+	static readonly NativeHandle selCountXHandle = global::ObjCRuntime.Selector.GetHandle ("count");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	static readonly NativeHandle class_ptr = Class.GetHandle ("UIKitPropertyTests");
@@ -123,11 +123,14 @@ public partial class UIKitPropertyTests
 		{
 			UIKit.UIApplication.EnsureUIThread ();
 
+			UIntPtr ret;
 			if (IsDirectBinding) {
-				return global::ObjCRuntime.Messaging.UIntPtr_objc_msgSend (this.Handle, Selector.GetHandle ("count"));
+				ret = global::ObjCRuntime.Messaging.UIntPtr_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("count"));
 			} else {
-				return global::ObjCRuntime.Messaging.UIntPtr_objc_msgSendSuper (this.Handle, Selector.GetHandle ("count"));
+				ret = global::ObjCRuntime.Messaging.UIntPtr_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("count"));
 			}
+			GC.KeepAlive (this);
+			return ret;
 		}
 	}
 	// TODO: add binding code here

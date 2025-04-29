@@ -366,6 +366,11 @@ namespace FileProvider {
 	[BaseType (typeof (NSObject))]
 	interface NSFileProviderDomain {
 
+		/// <param name="identifier">To be added.</param>
+		/// <param name="displayName">To be added.</param>
+		/// <param name="pathRelativeToDocumentStorage">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoMac]
 		[Export ("initWithIdentifier:displayName:pathRelativeToDocumentStorage:")]
 		NativeHandle Constructor (string identifier, string displayName, string pathRelativeToDocumentStorage);
@@ -454,14 +459,23 @@ namespace FileProvider {
 	[Protocol]
 	interface NSFileProviderEnumerationObserver {
 
+		/// <param name="updatedItems">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("didEnumerateItems:")]
 		void DidEnumerateItems (INSFileProviderItem [] updatedItems);
 
+		/// <param name="upToPage">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("finishEnumeratingUpToPage:")]
 		void FinishEnumerating ([NullAllowed] NSData upToPage);
 
+		/// <param name="error">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("finishEnumeratingWithError:")]
 		void FinishEnumerating (NSError error);
@@ -478,18 +492,31 @@ namespace FileProvider {
 	[Protocol]
 	interface NSFileProviderChangeObserver {
 
+		/// <param name="updatedItems">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("didUpdateItems:")]
 		void DidUpdateItems (INSFileProviderItem [] updatedItems);
 
+		/// <param name="deletedItemIdentifiers">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("didDeleteItemsWithIdentifiers:")]
 		void DidDeleteItems (string [] deletedItemIdentifiers);
 
+		/// <param name="anchor">To be added.</param>
+		/// <param name="moreComing">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("finishEnumeratingChangesUpToSyncAnchor:moreComing:")]
 		void FinishEnumeratingChanges (NSData anchor, bool moreComing);
 
+		/// <param name="error">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("finishEnumeratingWithError:")]
 		void FinishEnumerating (NSError error);
@@ -506,17 +533,30 @@ namespace FileProvider {
 	[Protocol]
 	interface NSFileProviderEnumerator {
 
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("invalidate")]
 		void Invalidate ();
 
+		/// <param name="observer">To be added.</param>
+		/// <param name="startPage">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("enumerateItemsForObserver:startingAtPage:")]
 		void EnumerateItems (INSFileProviderEnumerationObserver observer, NSData startPage);
 
+		/// <param name="observer">To be added.</param>
+		/// <param name="syncAnchor">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("enumerateChangesForObserver:fromSyncAnchor:")]
 		void EnumerateChanges (INSFileProviderChangeObserver observer, NSData syncAnchor);
 
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("currentSyncAnchorWithCompletionHandler:")]
 		void CurrentSyncAnchor (Action<NSData> completionHandler);
 	}
@@ -528,14 +568,23 @@ namespace FileProvider {
 	[Protocol]
 	interface NSFileProviderItem {
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("itemIdentifier")]
 		string Identifier { get; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("parentItemIdentifier")]
 		string ParentIdentifier { get; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("filename")]
 		string Filename { get; }
@@ -544,6 +593,9 @@ namespace FileProvider {
 		// became optional when deprecated
 		[Abstract]
 #endif
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 14, 0, message: "Use 'GetContentType' instead.")]
 		[Deprecated (PlatformName.MacOSX, 11, 0, message: "Use 'GetContentType' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 14, 0, message: "Use 'GetContentType' instead.")]
@@ -554,39 +606,66 @@ namespace FileProvider {
 		[Export ("contentType", ArgumentSemantic.Copy)]
 		UTType GetContentType ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("capabilities")]
 		NSFileProviderItemCapabilities GetCapabilities ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Export ("documentSize", ArgumentSemantic.Copy)]
 		NSNumber GetDocumentSize ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Export ("childItemCount", ArgumentSemantic.Copy)]
 		NSNumber GetChildItemCount ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Export ("creationDate", ArgumentSemantic.Copy)]
 		NSDate GetCreationDate ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Export ("contentModificationDate", ArgumentSemantic.Copy)]
 		NSDate GetContentModificationDate ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Export ("lastUsedDate", ArgumentSemantic.Copy)]
 		NSDate GetLastUsedDate ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Export ("tagData", ArgumentSemantic.Copy)]
 		NSData GetTagData ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[NoMac]
 		[return: NullAllowed]
 		[Export ("favoriteRank", ArgumentSemantic.Copy)]
 		NSNumber GetFavoriteRank ();
 
 #if NET // Not available in mac
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[NoMac]
 #elif MONOMAC
 		[Obsolete ("'IsTrashed' is not available in macOS and will be removed in the future.")]
@@ -594,48 +673,87 @@ namespace FileProvider {
 		[Export ("isTrashed")]
 		bool IsTrashed ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("isUploaded")]
 		bool IsUploaded ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("isUploading")]
 		bool IsUploading ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Export ("uploadingError", ArgumentSemantic.Copy)]
 		NSError GetUploadingError ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("isDownloaded")]
 		bool IsDownloaded ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("isDownloading")]
 		bool IsDownloading ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Export ("downloadingError", ArgumentSemantic.Copy)]
 		NSError GetDownloadingError ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("isMostRecentVersionDownloaded")]
 		bool IsMostRecentVersionDownloaded ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("isShared")]
 		bool IsShared ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("isSharedByCurrentUser")]
 		bool IsSharedByCurrentUser ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Export ("ownerNameComponents")]
 		NSPersonNameComponents GetOwnerNameComponents ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Export ("mostRecentEditorNameComponents")]
 		NSPersonNameComponents GetMostRecentEditorNameComponents ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[NoMac]
 		[return: NullAllowed]
 		[Export ("versionIdentifier")]
 		NSData GetVersionIdentifier ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Export ("userInfo")]
 		NSDictionary GetUserInfo ();
@@ -736,7 +854,12 @@ namespace FileProvider {
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
 		[Static]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="domain">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>A task that represents the asynchronous AddDomain operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("addDomain:completionHandler:")]
 		void AddDomain (NSFileProviderDomain domain, Action<NSError> completionHandler);
 
@@ -745,7 +868,12 @@ namespace FileProvider {
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
 		[Static]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="domain">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>A task that represents the asynchronous RemoveDomain operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("removeDomain:completionHandler:")]
 		void RemoveDomain (NSFileProviderDomain domain, Action<NSError> completionHandler);
 
@@ -955,10 +1083,17 @@ namespace FileProvider {
 	[Protocol]
 	interface NSFileProviderServiceSource {
 
+		/// <summary>Gets the unique service name.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("serviceName")]
 		string ServiceName { get; }
 
+		/// <param name="error">On failure, contains the error that occurred.</param>
+		/// <summary>Creates and returns an endpoint for communicating with the file provider extension.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("makeListenerEndpointAndReturnError:")]
 		[return: NullAllowed]

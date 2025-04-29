@@ -15,28 +15,22 @@ using ObjCRuntime;
 using Foundation;
 
 namespace Security {
-#if NET
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public static class SecStatusCodeExtensions {
-
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
-#endif
 		[DllImport (Constants.SecurityLibrary)]
 		extern static /* CFStringRef */ IntPtr SecCopyErrorMessageString (
 			/* OSStatus */ SecStatusCode status,
 			/* void * */ IntPtr reserved); /* always null */
 
-#if NET
 		/// <param name="status">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
@@ -45,7 +39,6 @@ namespace Security {
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
-#endif
 		public static string GetStatusDescription (this SecStatusCode status)
 		{
 			var ret = SecCopyErrorMessageString (status, IntPtr.Zero);

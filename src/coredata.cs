@@ -163,6 +163,15 @@ namespace CoreData {
 	[DisableDefaultCtor]
 	interface NSAtomicStore {
 
+		/// <param name="coordinator">To be added.</param>
+		/// <param name="configurationName">To be added.</param>
+		/// <param name="url">To be added.</param>
+		/// <param name="options">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithPersistentStoreCoordinator:configurationName:URL:options:")]
 		NativeHandle Constructor ([NullAllowed] NSPersistentStoreCoordinator coordinator, [NullAllowed] string configurationName, NSUrl url, [NullAllowed] NSDictionary options);
 
@@ -259,6 +268,10 @@ namespace CoreData {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface NSFetchIndexElementDescription : NSCoding, NSCopying {
+		/// <param name="property">To be added.</param>
+		/// <param name="collationType">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithProperty:collationType:")]
 		NativeHandle Constructor (NSPropertyDescription property, NSFetchIndexElementType collationType);
 
@@ -305,6 +318,13 @@ namespace CoreData {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface NSFetchIndexDescription : NSCoding, NSCopying {
+		/// <param name="name">To be added.</param>
+		/// <param name="elements">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithName:elements:")]
 		NativeHandle Constructor (string name, [NullAllowed] NSFetchIndexElementDescription [] elements);
 
@@ -344,6 +364,9 @@ namespace CoreData {
 	[DisableDefaultCtor]
 	interface NSAtomicStoreCacheNode {
 
+		/// <param name="moid">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithObjectID:")]
 		NativeHandle Constructor (NSManagedObjectID moid);
 
@@ -892,6 +915,9 @@ namespace CoreData {
 	[BaseType (typeof (NSPersistentStoreRequest))]
 	interface NSFetchRequest : NSCoding {
 
+		/// <summary>Default constructor that initializes a new instance of this class with no parameters.</summary>
+		/// <remarks>
+		///         </remarks>
 		[DesignatedInitializer]
 		[Export ("init")]
 		NativeHandle Constructor ();
@@ -1013,6 +1039,9 @@ namespace CoreData {
 		// note: Xcode 6.3 changed the return value type from `NSFetchRequest*` to `instancetype`
 		NSFetchRequest FromEntityName (string entityName);
 
+		/// <param name="entityName">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithEntityName:")]
 		NativeHandle Constructor (string entityName);
 
@@ -1072,6 +1101,18 @@ namespace CoreData {
 	[BaseType (typeof (NSObject), Delegates = new string [] { "WeakDelegate" })]
 	interface NSFetchedResultsController {
 
+		/// <param name="fetchRequest">To be added.</param>
+		/// <param name="context">To be added.</param>
+		/// <param name="sectionNameKeyPath">
+		///           <para>the key path to the section name</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="name">
+		///           <para>The cache name.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Creates a new <see cref="T:CoreData.NSFetchedResultsController" /> from the specified values.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithFetchRequest:managedObjectContext:sectionNameKeyPath:cacheName:")]
 		NativeHandle Constructor (NSFetchRequest fetchRequest, NSManagedObjectContext context, [NullAllowed] string sectionNameKeyPath, [NullAllowed] string name);
 
@@ -1167,6 +1208,11 @@ namespace CoreData {
 		[Export ("objectAtIndexPath:")]
 		NSObject ObjectAt (NSIndexPath path);
 
+		/// <param name="title">To be added.</param>
+		/// <param name="atIndex">To be added.</param>
+		/// <summary>Returns the section number for the specified <paramref name="title" /> and index.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("sectionForSectionIndexTitle:atIndex:")]
 		// name like UITableViewSource's similar (and linked) selector
 		nint SectionFor (string title, nint atIndex);
@@ -1230,6 +1276,12 @@ namespace CoreData {
 		[Export ("controller:didChangeObject:atIndexPath:forChangeType:newIndexPath:")]
 		void DidChangeObject (NSFetchedResultsController controller, NSObject anObject, [NullAllowed] NSIndexPath indexPath, NSFetchedResultsChangeType type, [NullAllowed] NSIndexPath newIndexPath);
 
+		/// <param name="controller">To be added.</param>
+		/// <param name="sectionInfo">To be added.</param>
+		/// <param name="sectionIndex">To be added.</param>
+		/// <param name="type">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("controller:didChangeSection:atIndex:forChangeType:")]
 		void DidChangeSection (NSFetchedResultsController controller, INSFetchedResultsSectionInfo sectionInfo, nuint sectionIndex, NSFetchedResultsChangeType type);
 
@@ -1301,6 +1353,12 @@ namespace CoreData {
 	[BaseType (typeof (NSPersistentStore))]
 	interface NSIncrementalStore {
 #if NET
+		/// <param name="root">To be added.</param>
+		/// <param name="name">To be added.</param>
+		/// <param name="url">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>Creates a new <see cref="T:CoreData.NSIncrementalStore" /> with the specified values.</summary>
+		/// <remarks>To be added.</remarks>
 		[Protected]
 #endif
 		[Export ("initWithPersistentStoreCoordinator:configurationName:URL:options:")]
@@ -1398,6 +1456,11 @@ namespace CoreData {
 
 	[BaseType (typeof (NSObject))]
 	interface NSIncrementalStoreNode {
+		/// <param name="objectId">To be added.</param>
+		/// <param name="values">To be added.</param>
+		/// <param name="version">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithObjectID:withValues:version:")]
 #if XAMCORE_5_0
 		NativeHandle Constructor (NSManagedObjectID objectId, NSDictionary<NSString, NSObject> values, ulong version);
@@ -1442,10 +1505,20 @@ namespace CoreData {
 	// then crash while disposing the instance
 	[DisableDefaultCtor]
 	interface NSManagedObject : NSFetchRequestResult {
+		/// <param name="entity">To be added.</param>
+		/// <param name="context">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Creates a new <see cref="T:CoreData.NSManagedObject" /> from an entity description and inserts the object into the specified managed object context.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithEntity:insertIntoManagedObjectContext:")]
 		NativeHandle Constructor (NSEntityDescription entity, [NullAllowed] NSManagedObjectContext context);
 
+		/// <param name="moc">To be added.</param>
+		/// <summary>Creates a new <see cref="T:CoreData.NSManagedObject" /> in the specified managed object context.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("initWithContext:")]
 		NativeHandle Constructor (NSManagedObjectContext moc);
@@ -1756,6 +1829,9 @@ namespace CoreData {
 	, NSEditor, NSEditorRegistration
 #endif
 	{
+		/// <summary>Default constructor that initializes a new instance of this class with no parameters.</summary>
+		/// <remarks>
+		///         </remarks>
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'NSManagedObjectContext (NSManagedObjectContextConcurrencyType)' instead.")]
 		[Deprecated (PlatformName.TvOS, 9, 0, message: "Use 'NSManagedObjectContext (NSManagedObjectContextConcurrencyType)' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 11, message: "Use 'NSManagedObjectContext (NSManagedObjectContextConcurrencyType)' instead.")]
@@ -2007,6 +2083,9 @@ namespace CoreData {
 		[Export ("mergeChangesFromContextDidSaveNotification:")]
 		void MergeChangesFromContextDidSaveNotification (NSNotification notification);
 
+		/// <param name="ct">To be added.</param>
+		/// <summary>Creates a new <see cref="T:CoreData.NSManagedObjectContext" /> of the specified type.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithConcurrencyType:")]
 		NativeHandle Constructor (NSManagedObjectContextConcurrencyType ct);
@@ -2275,6 +2354,9 @@ namespace CoreData {
 	[DisableDefaultCtor] // designated
 	interface NSManagedObjectModel : NSCoding, NSCopying {
 
+		/// <summary>Default constructor that initializes a new instance of this class with no parameters.</summary>
+		/// <remarks>
+		///         </remarks>
 		[DesignatedInitializer]
 		[Export ("init")]
 		NativeHandle Constructor ();
@@ -2298,6 +2380,9 @@ namespace CoreData {
 		[return: NullAllowed]
 		NSManagedObjectModel ModelByMergingModels ([NullAllowed] NSManagedObjectModel [] models);
 
+		/// <param name="url">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithContentsOfURL:")]
 		NativeHandle Constructor (NSUrl url);
 
@@ -2470,6 +2555,9 @@ namespace CoreData {
 		[return: NullAllowed]
 		NSMappingModel GetInferredMappingModel (NSManagedObjectModel source, NSManagedObjectModel destination, out NSError error);
 
+		/// <param name="url">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithContentsOfURL:")]
 		NativeHandle Constructor ([NullAllowed] NSUrl url);
 
@@ -2546,6 +2634,19 @@ namespace CoreData {
 		[Export ("oldVersionNumber")]
 		nuint OldVersionNumber { get; }
 
+		/// <param name="sourceObject">To be added.</param>
+		/// <param name="newVersion">To be added.</param>
+		/// <param name="oldVersion">To be added.</param>
+		/// <param name="cachedSnapshot">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="persistedSnapshot">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithSource:newVersion:oldVersion:cachedSnapshot:persistedSnapshot:")]
 #if XAMCORE_5_0
@@ -2566,6 +2667,9 @@ namespace CoreData {
 		[Export ("mergeType")]
 		NSMergePolicyType MergeType { get; }
 
+		/// <param name="ty">To be added.</param>
+		/// <summary>Creates a new <see cref="T:CoreData.NSMergePolicy" /> from the specified merege policy type.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithMergeType:")]
 		NativeHandle Constructor (NSMergePolicyType ty);
@@ -2640,6 +2744,10 @@ namespace CoreData {
 	[BaseType (typeof (NSObject))]
 	interface NSMigrationManager {
 
+		/// <param name="sourceModel">To be added.</param>
+		/// <param name="destinationModel">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithSourceModel:destinationModel:")]
 		NativeHandle Constructor (NSManagedObjectModel sourceModel, NSManagedObjectModel destinationModel);
 
@@ -3093,6 +3201,10 @@ namespace CoreData {
 		[NullAllowed, Export ("indexName")]
 		string IndexName { get; }
 
+		/// <param name="description">To be added.</param>
+		/// <param name="model">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 15, 0, message: "Use the constructor that takes a NSPersistentStoreCoordinator instead.")]
 		[Deprecated (PlatformName.MacOSX, 12, 0, message: "Use the constructor that takes a NSPersistentStoreCoordinator instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 15, 0, message: "Use the constructor that takes a NSPersistentStoreCoordinator instead.")]
@@ -3186,6 +3298,21 @@ namespace CoreData {
 #endif
 
 #if NET
+		/// <param name="root">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="name">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="url">To be added.</param>
+		/// <param name="options">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Protected]
 #endif
 		[DesignatedInitializer]
@@ -3428,6 +3555,9 @@ namespace CoreData {
 		[Export ("shouldInferMappingModelAutomatically")]
 		bool ShouldInferMappingModelAutomatically { get; set; }
 
+		/// <param name="url">The url for the persistent store.</param>
+		/// <summary>Creates a persistent store description with the specified store URL.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithURL:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSUrl url);
@@ -3497,9 +3627,16 @@ namespace CoreData {
 		[Export ("persistentStoreDescriptions", ArgumentSemantic.Copy)]
 		NSPersistentStoreDescription [] PersistentStoreDescriptions { get; set; }
 
+		/// <param name="name">The name for the Core Data stack manager.</param>
+		/// <summary>Creates a new Core Data stack manager with the specified name.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithName:")]
 		NativeHandle Constructor (string name);
 
+		/// <param name="name">The name for the Core Data stack manager.</param>
+		/// <param name="model">The managed object model to use.</param>
+		/// <summary>Creates a new Core Data stack manager with the specified name and managed object model.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithName:managedObjectModel:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (string name, NSManagedObjectModel model);
@@ -4268,6 +4405,13 @@ namespace CoreData {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSPersistentStoreRequest))]
 	interface NSAsynchronousFetchRequest {
+		/// <param name="request">To be added.</param>
+		/// <param name="completion">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithFetchRequest:completionBlock:")]
 		NativeHandle Constructor (NSFetchRequest request, [NullAllowed] Action<NSAsynchronousFetchResult> completion);
 
@@ -4498,6 +4642,24 @@ namespace CoreData {
 
 	[BaseType (typeof (NSPersistentStoreRequest))]
 	interface NSSaveChangesRequest {
+		/// <param name="insertedObjects">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="updatedObjects">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="deletedObjects">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="lockedObjects">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithInsertedObjects:updatedObjects:deletedObjects:lockedObjects:")]
 #if XAMCORE_5_0
 		NativeHandle Constructor ([NullAllowed] NSSet<NSManagedObject> insertedObjects, [NullAllowed] NSSet<NSManagedObject> updatedObjects, [NullAllowed] NSSet<NSManagedObject> deletedObjects, [NullAllowed] NSSet<NSManagedObject> lockedObjects);
@@ -4561,10 +4723,16 @@ namespace CoreData {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSPersistentStoreRequest))]
 	interface NSBatchUpdateRequest {
+		/// <param name="entityName">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithEntityName:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (string entityName);
 
+		/// <param name="entity">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithEntity:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSEntityDescription entity);
@@ -4625,10 +4793,16 @@ namespace CoreData {
 	[BaseType (typeof (NSPersistentStoreRequest))]
 	[DisableDefaultCtor]
 	interface NSBatchDeleteRequest {
+		/// <param name="fetch">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithFetchRequest:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSFetchRequest fetch);
 
+		/// <param name="objects">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithObjectIDs:")]
 		NativeHandle Constructor (NSManagedObjectID [] objects);
 
@@ -4667,6 +4841,19 @@ namespace CoreData {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface NSConstraintConflict {
+		/// <param name="contraint">To be added.</param>
+		/// <param name="databaseObject">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="databaseSnapshot">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="conflictingObjects">To be added.</param>
+		/// <param name="conflictingSnapshots">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithConstraint:databaseObject:databaseSnapshot:conflictingObjects:conflictingSnapshots:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (string [] contraint, [NullAllowed] NSManagedObject databaseObject, [NullAllowed] NSDictionary databaseSnapshot, NSManagedObject [] conflictingObjects, NSObject [] conflictingSnapshots);

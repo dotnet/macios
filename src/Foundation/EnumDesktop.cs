@@ -34,7 +34,6 @@ namespace Foundation {
 		RTF,
 		RTFD,
 		HTML,
-		DocFormat,
 	}
 
 	// NSTask.h:typedef NS_ENUM(NSInteger, NSTaskTerminationReason)

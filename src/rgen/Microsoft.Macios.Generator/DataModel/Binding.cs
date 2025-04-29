@@ -108,6 +108,7 @@ readonly partial struct Binding {
 		}
 	}
 
+	readonly Dictionary<string, int> enumIndex = new ();
 	readonly ImmutableArray<EnumMember> enumMembers = [];
 
 	/// <summary>
@@ -115,9 +116,24 @@ readonly partial struct Binding {
 	/// </summary>
 	public ImmutableArray<EnumMember> EnumMembers {
 		get => enumMembers;
-		init => enumMembers = value;
+		init {
+			enumMembers = value;
+			// populate the enum index for fast lookup using the symbol name
+			for (var index = 0; index < enumMembers.Length; index++) {
+				var member = enumMembers [index];
+				if (member.Selector is null)
+					continue;
+				enumIndex [member.Selector] = index;
+			}
+		}
 	}
 
+	/// <summary>
+	/// Returns all the selectors for the enum members.
+	/// </summary>
+	public ImmutableArray<string> EnumMemberSelectors => [.. enumIndex.Keys];
+
+	readonly Dictionary<string, int> propertyIndex = new ();
 	readonly ImmutableArray<Property> properties = [];
 
 	/// <summary>
@@ -125,9 +141,25 @@ readonly partial struct Binding {
 	/// </summary>
 	public ImmutableArray<Property> Properties {
 		get => properties;
-		init => properties = value;
+		init {
+			properties = value;
+			// populate the property index for fast lookup using the symbol name
+			for (var index = 0; index < properties.Length; index++) {
+				var property = properties [index];
+				// there are two type of properties, those that are fields and those that are properties
+				if (property.Selector is null)
+					continue;
+				propertyIndex [property.Selector!] = index;
+			}
+		}
 	}
 
+	/// <summary>
+	/// Return sall the selectors for the properties.
+	/// </summary>
+	public ImmutableArray<string> PropertySelectors => [.. propertyIndex.Keys];
+
+	readonly Dictionary<string, int> constructorIndex = new ();
 	readonly ImmutableArray<Constructor> constructors = [];
 
 	/// <summary>
@@ -135,9 +167,24 @@ readonly partial struct Binding {
 	/// </summary>
 	public ImmutableArray<Constructor> Constructors {
 		get => constructors;
-		init => constructors = value;
+		init {
+			constructors = value;
+			// populate the constructor index for fast lookup using the symbol name
+			for (var index = 0; index < constructors.Length; index++) {
+				var constructor = constructors [index];
+				if (constructor.Selector is null)
+					continue;
+				constructorIndex [constructor.Selector] = index;
+			}
+		}
 	}
 
+	/// <summary>
+	/// Returns all the selectors for the constructors.
+	/// </summary>
+	public ImmutableArray<string> ConstructorSelectors => [.. constructorIndex.Keys];
+
+	readonly Dictionary<string, int> eventsIndex = new ();
 	readonly ImmutableArray<Event> events = [];
 
 	/// <summary>
@@ -145,9 +192,22 @@ readonly partial struct Binding {
 	/// </summary>
 	public ImmutableArray<Event> Events {
 		get => events;
-		init => events = value;
+		init {
+			events = value;
+			// populate the event index for fast lookup using the symbol name
+			for (var index = 0; index < events.Length; index++) {
+				var eventItem = events [index];
+				eventsIndex [eventItem.Name] = index;
+			}
+		}
 	}
 
+	/// <summary>
+	/// Returns all the selectors for the events.
+	/// </summary>
+	public ImmutableArray<string> EventSelectors => [.. eventsIndex.Keys];
+
+	readonly Dictionary<string, int> methodIndex = new ();
 	readonly ImmutableArray<Method> methods = [];
 
 	/// <summary>
@@ -155,8 +215,22 @@ readonly partial struct Binding {
 	/// </summary>
 	public ImmutableArray<Method> Methods {
 		get => methods;
-		init => methods = value;
+		init {
+			methods = value;
+			// populate the method index for fast lookup using the symbol name
+			for (var index = 0; index < methods.Length; index++) {
+				var method = methods [index];
+				if (method.Selector is null)
+					continue;
+				methodIndex [method.Selector] = index;
+			}
+		}
 	}
+
+	/// <summary>
+	/// Returns all the selectors for the methods.
+	/// </summary>
+	public ImmutableArray<string> MethodSelectors => [.. methodIndex.Keys];
 
 	delegate bool SkipDelegate<in T> (T declarationSyntax, SemanticModel semanticModel);
 
@@ -181,4 +255,61 @@ readonly partial struct Binding {
 
 		members = bucket.ToImmutable ();
 	}
+
+	static bool TryGetFromIndex<T> (string selector, ImmutableArray<T> collection, Dictionary<string, int> index, [NotNullWhen (true)] out T? value)
+		where T : struct
+	{
+		if (index.TryGetValue (selector, out var indexValue)) {
+			value = collection [indexValue];
+			return true;
+		}
+
+		value = null;
+		return false;
+	}
+
+	/// <summary>
+	/// Get the enum member that matches the field name.
+	/// </summary>
+	/// <param name="fieldName">The native field name.</param>
+	/// <param name="enumMember">The enum member that matches the field name.</param>
+	/// <returns>True if the enum member was found. False otherwise.</returns>
+	public bool TryGetEnumValue (string fieldName, out EnumMember? enumMember)
+		=> TryGetFromIndex (fieldName, enumMembers, enumIndex, out enumMember);
+
+	/// <summary>
+	/// Get the property that matches the selector.
+	/// </summary>
+	/// <param name="selector">The selector used for the property. It can also be a field name.</param>
+	/// <param name="property">The property that matches the given selector/field name.</param>
+	/// <returns>True if the property was found. False otherwise.</returns>
+	public bool TryGetProperty (string selector, out Property? property)
+		=> TryGetFromIndex (selector, properties, propertyIndex, out property);
+
+	/// <summary>
+	/// Get the constructor that matches the selector.
+	/// </summary>
+	/// <param name="selector">The selector used for the constructor.</param>
+	/// <param name="constructor">The constructor that matches the given selector.</param>
+	/// <returns>True if the constructor was found. False otherwise.</returns>
+	public bool TryGetConstructor (string selector, out Constructor? constructor)
+		=> TryGetFromIndex (selector, constructors, constructorIndex, out constructor);
+
+	/// <summary>
+	/// Get the event that matches the selector.
+	/// </summary>
+	/// <param name="selector">The selector used for the event.</param>
+	/// <param name="event">The event that matches the given selector.</param>
+	/// <returns>True if the event was found. False otherwise.</returns>
+	public bool TryGetEvent (string selector, out Event? @event)
+		=> TryGetFromIndex (selector, events, eventsIndex, out @event);
+
+	/// <summary>
+	/// Get The method that matches the selector.
+	/// </summary>
+	/// <param name="selector">The selector used for the method.</param>
+	/// <param name="method">The method that matches the given selector.</param>
+	/// <returns>True if the method was found. False otherwise.</returns>
+	public bool TryGetMethod (string selector, out Method? method)
+		=> TryGetFromIndex (selector, methods, methodIndex, out method);
 }

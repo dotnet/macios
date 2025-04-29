@@ -12,7 +12,22 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 namespace Microsoft.Macios.Generator.Emitters;
 
 static partial class BindingSyntaxFactory {
-	public const string Runtime = "Runtime";
+	public static readonly TypeSyntax Runtime = GetIdentifierName (
+		@namespace: ["ObjCRuntime"],
+		@class: "Runtime",
+ 		isGlobal: true);
+	public static readonly TypeSyntax NSArray = GetIdentifierName (
+		@namespace: ["Foundation"],
+		@class: "NSArray",
+		isGlobal: true);
+	public static readonly TypeSyntax CFArray = GetIdentifierName (
+		@namespace: ["CoreFoundation"],
+		@class: "CFArray",
+	isGlobal: true);
+	public static readonly TypeSyntax CFString = GetIdentifierName (
+		@namespace: ["CoreFoundation"],
+		@class: "CFString",
+		isGlobal: true);
 	public const string ClassPtr = "class_ptr";
 
 	/// <summary>
@@ -52,11 +67,26 @@ static partial class BindingSyntaxFactory {
 	/// <param name="args">The arguments to bass to the ArrayFromHandle method.</param>
 	/// <param name="suppressNullableWarning">If we should suppress the nullable warning.</param>
 	/// <returns>The expression that calls ArrayFromHandle method.</returns>
+	public static ExpressionSyntax GetCFArrayFromHandle (string nsObjectType, ImmutableArray<ArgumentSyntax> args,
+		bool suppressNullableWarning = false)
+	{
+		var argsList = ArgumentList (SeparatedList<ArgumentSyntax> (args.ToSyntaxNodeOrTokenArray ()));
+		return StaticInvocationGenericExpression (CFArray, "ArrayFromHandle",
+			nsObjectType, argsList, suppressNullableWarning);
+	}
+
+	/// <summary>
+	/// Generates a call to the method NSArray.ArrayFromHandle&lt;T&gt; to create a collection of NSObjects.
+	/// </summary>
+	/// <param name="nsObjectType">The type of the object to use as T</param>
+	/// <param name="args">The arguments to pass to the ArrayFromHandle method.</param>
+	/// <param name="suppressNullableWarning">If we should suppress the nullable warning.</param>
+	/// <returns>The expression that calls ArrayFromHandle method.</returns>
 	public static ExpressionSyntax GetNSArrayFromHandle (string nsObjectType, ImmutableArray<ArgumentSyntax> args,
 		bool suppressNullableWarning = false)
 	{
 		var argsList = ArgumentList (SeparatedList<ArgumentSyntax> (args.ToSyntaxNodeOrTokenArray ()));
-		return StaticInvocationGenericExpression ("CFArray", "ArrayFromHandle",
+		return StaticInvocationGenericExpression (NSArray, "ArrayFromHandle",
 			nsObjectType, argsList, suppressNullableWarning);
 	}
 
@@ -77,7 +107,7 @@ static partial class BindingSyntaxFactory {
 		return InvocationExpression (
 				MemberAccessExpression (
 					SyntaxKind.SimpleMemberAccessExpression,
-					IdentifierName ("Selector"),
+					Selector,
 					IdentifierName ("GetHandle").WithTrailingTrivia (Space)))
 			.WithArgumentList (args);
 	}
@@ -165,7 +195,7 @@ static partial class BindingSyntaxFactory {
 		return InvocationExpression (
 				MemberAccessExpression (
 					SyntaxKind.SimpleMemberAccessExpression,
-					IdentifierName ("CFArray"),
+					CFArray,
 					IdentifierName ("StringArrayFromHandle").WithTrailingTrivia (Space)))
 			.WithArgumentList (argumentList);
 	}
@@ -185,7 +215,7 @@ static partial class BindingSyntaxFactory {
 		return InvocationExpression (
 				MemberAccessExpression (
 					SyntaxKind.SimpleMemberAccessExpression,
-					IdentifierName ("CFString"),
+					CFString,
 					IdentifierName ("FromHandle").WithTrailingTrivia (Space)))
 			.WithArgumentList (argumentList);
 	}
@@ -202,7 +232,7 @@ static partial class BindingSyntaxFactory {
 		return InvocationExpression (
 				MemberAccessExpression (
 					SyntaxKind.SimpleMemberAccessExpression,
-					IdentifierName ("CFString"),
+					CFString,
 					IdentifierName ("CreateNative").WithTrailingTrivia (Space))
 			).WithArgumentList (argumentList);
 	}
@@ -276,7 +306,7 @@ static partial class BindingSyntaxFactory {
 			return null;
 		return MemberAccessExpression (
 			SyntaxKind.SimpleMemberAccessExpression,
-			IdentifierName ("NSValue"),
+			GetIdentifierName ("NSValue"),
 			IdentifierName (memberName));
 	}
 
@@ -342,7 +372,7 @@ static partial class BindingSyntaxFactory {
 			return null;
 		return MemberAccessExpression (
 			SyntaxKind.SimpleMemberAccessExpression,
-			IdentifierName ("NSNumber"),
+			GetIdentifierName ("NSNumber"),
 			IdentifierName (memberName));
 	}
 
@@ -389,7 +419,7 @@ static partial class BindingSyntaxFactory {
 		return InvocationExpression (
 				MemberAccessExpression (
 					SyntaxKind.SimpleMemberAccessExpression,
-					IdentifierName ("NSArray"),
+					NSArray,
 					GenericName ("ArrayFromHandleFunc")
 						.WithTypeArgumentList (genericsList)
 						.WithTrailingTrivia (Space)))
@@ -408,7 +438,7 @@ static partial class BindingSyntaxFactory {
 
 		return InvocationExpression (MemberAccessExpression (
 			SyntaxKind.SimpleMemberAccessExpression,
-			IdentifierName ("NSArray"),
+			NSArray,
 			IdentifierName ("FromNSObjects").WithTrailingTrivia (Space)))
 			.WithArgumentList (argumentList);
 	}
@@ -525,4 +555,21 @@ static partial class BindingSyntaxFactory {
 			nullExpression.WithLeadingTrivia (Space).WithTrailingTrivia (Space),
 			expressionSyntax.WithLeadingTrivia (Space));
 	}
+
+	/// <summary>
+	/// Generate a call to Runtime.RetainAndAutoreleaseNSObject (args) statement.
+	/// </summary>
+	/// <param name="arguments">The arguments to use to call Runtime.RetainAndAutoreleaseNSObject.</param>
+	/// <returns>The C# expression for the call.</returns>
+	internal static ExpressionSyntax RetainAndAutoreleaseNSObject (ImmutableArray<ArgumentSyntax> arguments)
+		=> StaticInvocationExpression (Runtime, "RetainAndAutoreleaseNSObject", arguments);
+
+	/// <summary>
+	/// Generate a call to Runtime.RetainAndAutoreleaseNativeObject (args) statement.
+	/// </summary>
+	/// <param name="arguments">The arguments to use to call Runtime.RetainAndAutoreleaseNSObject.</param>
+	/// <returns>The C# expression for the call.</returns>
+	internal static ExpressionSyntax RetainAndAutoreleaseNativeObject (ImmutableArray<ArgumentSyntax> arguments)
+		=> StaticInvocationExpression (Runtime, "RetainAndAutoreleaseNativeObject", arguments);
+
 }

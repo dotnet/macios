@@ -189,6 +189,10 @@ static partial class TypeSymbolExtensions {
 	/// <returns>If the type represented by the symtol needs a stret call variant.</returns>
 	public static bool NeedsStret (this ITypeSymbol returnType, Compilation compilation)
 	{
+		// pointers do not need stret
+		if (returnType is IPointerTypeSymbol)
+			return false;
+
 		if (X86NeedStret (returnType))
 			return true;
 

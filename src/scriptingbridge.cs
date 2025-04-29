@@ -40,9 +40,15 @@ namespace ScriptingBridge {
 	[BaseType (typeof (NSObject))]
 	interface SBObject : NSCoding {
 
+		/// <param name="properties">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithProperties:")]
 		NativeHandle Constructor (NSDictionary properties);
 
+		/// <param name="data">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithData:")]
 		NativeHandle Constructor (NSObject data);
 
@@ -64,6 +70,9 @@ namespace ScriptingBridge {
 	[BaseType (typeof (NSMutableArray))]
 	[DisableDefaultCtor] // *** -[SBElementArray init]: should never be used.
 	interface SBElementArray {
+		/// <param name="capacity">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithCapacity:")]
 		NativeHandle Constructor (nuint capacity);
 
@@ -137,12 +146,21 @@ namespace ScriptingBridge {
 	[BaseType (typeof (SBObject), Delegates = new string [] { "WeakDelegate" }, Events = new Type [] { typeof (SBApplicationDelegate) })]
 	[DisableDefaultCtor] // An uncaught exception was raised: *** -[SBApplication init]: should never be used.
 	interface SBApplication : NSCoding {
+		/// <param name="url">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithURL:")]
 		NativeHandle Constructor (NSUrl url);
 
+		/// <param name="pid">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithProcessIdentifier:")]
 		NativeHandle Constructor (int /* pid_t = int */ pid);
 
+		/// <param name="ident">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithBundleIdentifier:")]
 		NativeHandle Constructor (string ident);
 

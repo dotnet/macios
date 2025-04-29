@@ -3978,9 +3978,8 @@ public partial class Generator : IMemberGatherer {
 			}
 		}
 
-		WriteDocumentation (pi);
-
 		if (wrap is not null) {
+			WriteDocumentation (pi);
 			print_generated_code ();
 			PrintPropertyAttributes (pi, minfo);
 			PrintAttributes (pi, preserve: true, advice: true);
@@ -4057,6 +4056,7 @@ public partial class Generator : IMemberGatherer {
 			}
 		}
 
+		WriteDocumentation (pi);
 		print_generated_code (optimizable: IsOptimizable (pi));
 		PrintPropertyAttributes (pi, minfo);
 
@@ -4316,6 +4316,14 @@ public partial class Generator : IMemberGatherer {
 			}
 		}
 
+		var asyncAttribute = AttributeManager.GetCustomAttribute<AsyncAttribute> (mi);
+		var xmlDocs = asyncKind == AsyncMethodKind.Plain ? asyncAttribute.XmlDocs : asyncAttribute.XmlDocsWithOutParameter;
+		if (!string.IsNullOrEmpty (xmlDocs)) {
+			var docLines = xmlDocs.Split ('\n');
+			foreach (var line in docLines)
+				print ($"/// {line}");
+		}
+
 		PrintMethodAttributes (minfo);
 
 		PrintAsyncHeader (minfo, asyncKind);
@@ -4334,7 +4342,7 @@ public partial class Generator : IMemberGatherer {
 		print ("var tcs = new TaskCompletionSource<{0}> ();", ttype);
 		bool ignoreResult = !is_void &&
 			asyncKind == AsyncMethodKind.Plain &&
-			AttributeManager.GetCustomAttribute<AsyncAttribute> (mi).PostNonResultSnippet is null;
+			asyncAttribute.PostNonResultSnippet is null;
 		print ("{6}{5}{4}{0}{7}({1}{2}({3}) => {{",
 			mi.Name,
 			GetInvokeParamList (minfo.AsyncInitialParams, false),
@@ -6709,6 +6717,14 @@ public partial class Generator : IMemberGatherer {
 						} else
 							prev_miname = miname;
 
+						var eventArgs = AttributeManager.GetCustomAttribute<EventArgsAttribute> (mi);
+						var xmlDocs = eventArgs?.XmlDocs;
+						if (!string.IsNullOrEmpty (xmlDocs)) {
+							var docLines = xmlDocs.Split ('\n');
+							foreach (var line in docLines)
+								print ($"/// {line}");
+						}
+
 						if (mi.ReturnType == TypeCache.System_Void) {
 							PrintObsoleteAttributes (mi);
 
@@ -7083,7 +7099,15 @@ public partial class Generator : IMemberGatherer {
 
 				var pars = eventArgTypes [eaclass];
 
+				if (BindingTouch.SupportsXmlDocumentation) {
+					print ("/// <summary>Provides data for an event based on an Objective-C protocol method.</summary>");
+				}
 				print ("public partial class {0} : EventArgs {{", eaclass); indent++;
+				if (BindingTouch.SupportsXmlDocumentation) {
+					print ($"/// <summary>Create a new instance of the <see cref=\"{eaclass}\" /> with the specified event data.</summary>");
+					foreach (var p in pars.Skip (1))
+						print ($"/// <param name=\"{p.Name.GetSafeParamName ()}\">The value for the <see cref=\"{GetPublicParameterName (p)}\" /> property.</param>");
+				}
 				print ("public {0} ({1})", eaclass, RenderParameterDecl (pars.Skip (1), true));
 				print ("{");
 				indent++;
@@ -7116,12 +7140,18 @@ public partial class Generator : IMemberGatherer {
 					continue;
 				async_result_types_emitted.Add (async_type.Item1);
 
+				if (BindingTouch.SupportsXmlDocumentation) {
+					print ($"/// <summary>This class holds the return values for an asynchronous operation.</summary>");
+				}
 				print ("public partial class {0} {{", async_type.Item1); indent++;
 
 				StringBuilder ctor = new StringBuilder ();
 
 				bool comma = false;
 				foreach (var pi in async_type.Item2) {
+					if (BindingTouch.SupportsXmlDocumentation) {
+						print ($"/// <summary>The result value from the asynchronous operation.</summary>");
+					}
 					var safe_name = pi.Name.GetSafeParamName ();
 					print ("public {0} {1} {{ get; set; }}",
 						TypeManager.FormatType (type, pi.ParameterType),
@@ -7135,6 +7165,13 @@ public partial class Generator : IMemberGatherer {
 
 				print ("\npartial void Initialize ();");
 
+				if (BindingTouch.SupportsXmlDocumentation) {
+					print ($"/// <summary>Creates a new instance of this class.</summary>");
+					foreach (var pi in async_type.Item2) {
+						var safe_name = pi.Name.GetSafeParamName ();
+						print ($"/// <param name=\"{safe_name}\">Result value from an asynchronous operation.</param>");
+					}
+				}
 				print ("\npublic {0} ({1}) {{", async_type.Item1, ctor); indent++;
 				foreach (var pi in async_type.Item2) {
 					var safe_name = pi.Name.GetSafeParamName ();

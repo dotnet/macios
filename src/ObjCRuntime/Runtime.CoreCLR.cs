@@ -17,7 +17,7 @@
 // Uncomment VERBOSE_LOG to enable verbose logging
 // #define VERBOSE_LOG
 
-#if NET && !COREBUILD
+#if !COREBUILD
 
 #nullable enable
 
@@ -135,6 +135,7 @@ namespace ObjCRuntime {
 			log_coreclr (string.Format (message, args));
 		}
 
+		[SupportedOSPlatform ("macos")]
 		static unsafe void InitializeCoreCLRBridge (InitializationOptions* options)
 		{
 			if (options->xamarin_objc_msgsend != IntPtr.Zero)
@@ -176,11 +177,9 @@ namespace ObjCRuntime {
 			return path is not null;
 		}
 
-#if NET
 		// Note that this method does not work with NativeAOT, so throw an exception in that case.
 		// IL2026: Using member 'System.Runtime.Loader.AssemblyLoadContext.LoadFromAssemblyPath(String)' which has 'RequiresUnreferencedCodeAttribute' can break functionality when trimming application code. Types and members the loaded assembly depends on might be removed.
 		[UnconditionalSuppressMessage ("", "IL2026", Justification = "The APIs this method tries to access are marked by other means, so this is linker-safe.")]
-#endif
 		static Assembly? ResolvingEventHandler (AssemblyLoadContext sender, AssemblyName assemblyName)
 		{
 			// Note that this method does not work with NativeAOT, so throw an exception in that case.
@@ -210,6 +209,7 @@ namespace ObjCRuntime {
 			public NSObject.Flags Flags;
 		}
 
+		[SupportedOSPlatform ("macos")]
 		internal static GCHandle CreateTrackingGCHandle (NSObject obj, IntPtr handle)
 		{
 			var gchandle = ObjectiveCMarshal.CreateReferenceTrackingHandle (obj, out var info);
@@ -304,6 +304,7 @@ namespace ObjCRuntime {
 			throw new InvalidOperationException ($"Could not find any assemblies named {name}");
 		}
 
+		[SupportedOSPlatform ("macos")]
 		static unsafe void SetPendingException (MonoObject* exception_obj)
 		{
 			var exc = (Exception?) GetMonoObjectTarget (exception_obj);
@@ -1110,4 +1111,4 @@ namespace ObjCRuntime {
 	}
 }
 
-#endif // NET && !COREBUILD
+#endif // !COREBUILD

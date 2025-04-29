@@ -85,6 +85,9 @@
         <Compile Include="../Microsoft.Macios.Generator/DataModel/DelegateParameter.cs" >
             <Link>DataModel/DelegateParameter.cs</Link>
         </Compile>
+        <Compile Include="../Microsoft.Macios.Generator/DataModel/DelegateParameter.Generator.cs" >
+            <Link>DataModel/DelegateParameter.Generator.cs</Link>
+        </Compile>
         <Compile Include="../Microsoft.Macios.Generator/DataModel/Parameter.cs" >
             <Link>DataModel/Parameter.cs</Link>
         </Compile>

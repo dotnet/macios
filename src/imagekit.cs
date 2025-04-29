@@ -91,6 +91,9 @@ namespace ImageKit {
 
 	[BaseType (typeof (NSView), Delegates = new string [] { "WeakDelegate" }, Events = new Type [] { typeof (IKCameraDeviceViewDelegate) })]
 	interface IKCameraDeviceView {
+		/// <param name="frameRect">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect frameRect);
 
@@ -270,7 +273,10 @@ namespace ImageKit {
 		/// <param name="cameraDeviceView">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[Export ("cameraDeviceViewSelectionDidChange:"), EventArgs ("IKCameraDeviceView")]
+		[Export ("cameraDeviceViewSelectionDidChange:"), EventArgs ("IKCameraDeviceView", XmlDocs = """
+			<summary>To be added.</summary>
+			<remarks>To be added.</remarks>
+			""")]
 		void SelectionDidChange (IKCameraDeviceView cameraDeviceView);
 
 		[Export ("cameraDeviceView:didDownloadFile:location:fileData:error:"), EventArgs ("IKCameraDeviceViewICCameraFileNSUrlNSDataNSError")]
@@ -280,12 +286,18 @@ namespace ImageKit {
 		///         <param name="error">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[Export ("cameraDeviceView:didEncounterError:"), EventArgs ("IKCameraDeviceViewNSError")]
+		[Export ("cameraDeviceView:didEncounterError:"), EventArgs ("IKCameraDeviceViewNSError", XmlDocs = """
+			<summary>To be added.</summary>
+			<remarks>To be added.</remarks>
+			""")]
 		void DidEncounterError (IKCameraDeviceView cameraDeviceView, NSError error);
 	}
 
 	[BaseType (typeof (NSView), Delegates = new string [] { "WeakDelegate" }, Events = new Type [] { typeof (IKDeviceBrowserViewDelegate) })]
 	interface IKDeviceBrowserView {
+		/// <param name="frameRect">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect frameRect);
 
@@ -349,7 +361,10 @@ namespace ImageKit {
 		///         <param name="error">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[Export ("deviceBrowserView:didEncounterError:"), EventArgs ("IKDeviceBrowserViewNSError")]
+		[Export ("deviceBrowserView:didEncounterError:"), EventArgs ("IKDeviceBrowserViewNSError", XmlDocs = """
+			<summary>To be added.</summary>
+			<remarks>To be added.</remarks>
+			""")]
 		void DidEncounterError (IKDeviceBrowserView deviceBrowserView, NSError error);
 	}
 
@@ -465,6 +480,9 @@ namespace ImageKit {
 
 	[BaseType (typeof (NSView))]
 	interface IKFilterBrowserView {
+		/// <param name="frameRect">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect frameRect);
 
@@ -540,9 +558,16 @@ namespace ImageKit {
 
 	[BaseType (typeof (NSView))]
 	interface IKFilterUIView {
+		/// <param name="frameRect">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect frameRect);
 
+		/// <param name="frame">To be added.</param>
+		/// <param name="filter">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithFrame:filter:")]
 		NativeHandle Constructor (CGRect frame, CIFilter filter);
 
@@ -685,6 +710,9 @@ namespace ImageKit {
 	[BaseType (typeof (NSView), Delegates = new string [] { "WeakDelegate" }, Events = new Type [] { typeof (IKImageBrowserDelegate) })]
 	interface IKImageBrowserView : NSDraggingSource {
 		//@category IKImageBrowserView (IKMainMethods)
+		/// <param name="frame">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect frame);
 
@@ -750,6 +778,10 @@ namespace ImageKit {
 		[Export ("newCellForRepresentedItem:")]
 		IKImageBrowserCell NewCell (IIKImageBrowserItem representedItem);
 
+		/// <param name="itemIndex">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("cellForItemAtIndex:")]
 		IKImageBrowserCell GetCellAt (nint itemIndex);
 
@@ -766,6 +798,9 @@ namespace ImageKit {
 		[Export ("contentResizingMask")]
 		NSViewResizingMask ContentResizingMask { get; set; }
 
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("scrollIndexToVisible:")]
 		void ScrollIndexToVisible (nint index);
 
@@ -788,6 +823,10 @@ namespace ImageKit {
 		[Export ("indexOfItemAtPoint:")]
 		nint GetIndexOfItem (CGPoint point);
 
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("itemFrameAtIndex:")]
 		CGRect GetItemFrame (nint index);
 
@@ -811,9 +850,17 @@ namespace ImageKit {
 		[Export ("columnIndexesInRect:")]
 		NSIndexSet GetColumnIndexes (CGRect rect);
 
+		/// <param name="columnIndex">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("rectOfColumn:")]
 		CGRect GetRectOfColumn (nint columnIndex);
 
+		/// <param name="rowIndex">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("rectOfRow:")]
 		CGRect GetRectOfRow (nint rowIndex);
 
@@ -873,12 +920,22 @@ namespace ImageKit {
 		[Export ("animates")]
 		bool Animates { get; set; }
 
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("expandGroupAtIndex:")]
 		void ExpandGroup (nint index);
 
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("collapseGroupAtIndex:")]
 		void CollapseGroup (nint index);
 
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("isGroupExpandedAtIndex:")]
 		bool IsGroupExpanded (nint index);
 
@@ -907,6 +964,10 @@ namespace ImageKit {
 		[Export ("allowsDroppingOnItems")]
 		bool AllowsDroppingOnItems { get; set; }
 
+		/// <param name="index">To be added.</param>
+		/// <param name="operation">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("setDropIndex:dropOperation:")]
 		void SetDropIndex (nint index, IKImageBrowserDropOperation operation);
 
@@ -962,6 +1023,11 @@ namespace ImageKit {
 		[Export ("numberOfItemsInImageBrowser:")]
 		nint ItemCount (IKImageBrowserView aBrowser);
 
+		/// <param name="aBrowser">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("imageBrowser:itemAtIndex:")]
 		IIKImageBrowserItem GetItem (IKImageBrowserView aBrowser, nint index);
@@ -973,6 +1039,12 @@ namespace ImageKit {
 		[Export ("imageBrowser:removeItemsAtIndexes:")]
 		void RemoveItems (IKImageBrowserView aBrowser, NSIndexSet indexes);
 
+		/// <param name="aBrowser">To be added.</param>
+		/// <param name="indexes">To be added.</param>
+		/// <param name="destinationIndex">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("imageBrowser:moveItemsAtIndexes:toIndex:")]
 		bool MoveItems (IKImageBrowserView aBrowser, NSIndexSet indexes, nint destinationIndex);
 
@@ -992,6 +1064,11 @@ namespace ImageKit {
 		[Export ("numberOfGroupsInImageBrowser:")]
 		nint GroupCount (IKImageBrowserView aBrowser);
 
+		/// <param name="aBrowser">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("imageBrowser:groupAtIndex:")]
 		NSDictionary GetGroup (IKImageBrowserView aBrowser, nint index);
 
@@ -1185,20 +1262,41 @@ namespace ImageKit {
 		/// <param name="browser">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[Export ("imageBrowserSelectionDidChange:"), EventArgs ("IKImageBrowserView")]
+		[Export ("imageBrowserSelectionDidChange:"), EventArgs ("IKImageBrowserView", XmlDocs = """
+			<summary>To be added.</summary>
+			<remarks>To be added.</remarks>
+			""")]
 		void SelectionDidChange (IKImageBrowserView browser);
 
-		[Export ("imageBrowser:cellWasDoubleClickedAtIndex:"), EventArgs ("IKImageBrowserViewIndex")]
+		/// <param name="browser">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
+		[Export ("imageBrowser:cellWasDoubleClickedAtIndex:"), EventArgs ("IKImageBrowserViewIndex", XmlDocs = """
+			<summary>To be added.</summary>
+			<remarks>To be added.</remarks>
+			""")]
 		void CellWasDoubleClicked (IKImageBrowserView browser, nint index);
 
-		[Export ("imageBrowser:cellWasRightClickedAtIndex:withEvent:"), EventArgs ("IKImageBrowserViewIndexEvent")]
+		/// <param name="browser">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <param name="nsevent">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
+		[Export ("imageBrowser:cellWasRightClickedAtIndex:withEvent:"), EventArgs ("IKImageBrowserViewIndexEvent", XmlDocs = """
+			<summary>To be added.</summary>
+			<remarks>To be added.</remarks>
+			""")]
 		void CellWasRightClicked (IKImageBrowserView browser, nint index, NSEvent nsevent);
 
 		/// <param name="browser">To be added.</param>
 		///         <param name="nsevent">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[Export ("imageBrowser:backgroundWasRightClickedWithEvent:"), EventArgs ("IKImageBrowserViewEvent")]
+		[Export ("imageBrowser:backgroundWasRightClickedWithEvent:"), EventArgs ("IKImageBrowserViewEvent", XmlDocs = """
+			<summary>To be added.</summary>
+			<remarks>To be added.</remarks>
+			""")]
 		void BackgroundWasRightClicked (IKImageBrowserView browser, NSEvent nsevent);
 	}
 
@@ -1291,6 +1389,9 @@ namespace ImageKit {
 
 	[BaseType (typeof (NSView))]
 	interface IKImageView {
+		/// <param name="frameRect">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect frameRect);
 
@@ -1405,6 +1506,10 @@ namespace ImageKit {
 		[Export ("imageProperties")]
 		NSDictionary ImageProperties { get; }
 
+		/// <param name="rotationAngle">To be added.</param>
+		/// <param name="centerPoint">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("setRotationAngle:centerPoint:")]
 		void SetRotation (nfloat rotationAngle, CGPoint centerPoint);
 
@@ -1420,6 +1525,10 @@ namespace ImageKit {
 		[Export ("rotateImageRight:")]
 		void RotateImageRight (NSObject sender);
 
+		/// <param name="zoomFactor">To be added.</param>
+		/// <param name="centerPoint">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("setImageZoomFactor:centerPoint:")]
 		void SetImageZoomFactor (nfloat zoomFactor, CGPoint centerPoint);
 
@@ -1698,6 +1807,10 @@ namespace ImageKit {
 		[Wrap ("WeakDelegate")]
 		IIKSaveOptionsDelegate Delegate { get; set; }
 
+		/// <param name="imageProperties">To be added.</param>
+		/// <param name="imageUTType">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithImageProperties:imageUTType:")]
 		NativeHandle Constructor (NSDictionary imageProperties, string imageUTType);
 
@@ -1728,12 +1841,20 @@ namespace ImageKit {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>To be added.</summary>
+			<value>To be added.</value>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("saveOptions:shouldShowUTType:"), DelegateName ("SaveOptionsShouldShowUTType"), DefaultValue (false)]
 		bool ShouldShowType (IKSaveOptions saveOptions, string imageUTType);
 	}
 
 	[BaseType (typeof (NSView), Delegates = new string [] { "WeakDelegate" }, Events = new Type [] { typeof (IKScannerDeviceViewDelegate) })]
 	interface IKScannerDeviceView {
+		/// <param name="frameRect">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect frameRect);
 
@@ -1831,14 +1952,20 @@ namespace ImageKit {
 		///         <param name="error">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[Export ("scannerDeviceView:didScanToURL:fileData:error:"), EventArgs ("IKScannerDeviceViewScan")]
+		[Export ("scannerDeviceView:didScanToURL:fileData:error:"), EventArgs ("IKScannerDeviceViewScan", XmlDocs = """
+			<summary>To be added.</summary>
+			<remarks>To be added.</remarks>
+			""")]
 		void DidScan (IKScannerDeviceView scannerDeviceView, NSUrl url, NSData data, NSError error);
 
 		/// <param name="scannerDeviceView">To be added.</param>
 		///         <param name="error">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[Export ("scannerDeviceView:didEncounterError:"), EventArgs ("IKScannerDeviceViewError")]
+		[Export ("scannerDeviceView:didEncounterError:"), EventArgs ("IKScannerDeviceViewError", XmlDocs = """
+			<summary>To be added.</summary>
+			<remarks>To be added.</remarks>
+			""")]
 		void DidEncounterError (IKScannerDeviceView scannerDeviceView, NSError error);
 
 		/// <param name="scannerDeviceView">To be added.</param>
@@ -1846,7 +1973,10 @@ namespace ImageKit {
 		///         <param name="error">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[Export ("scannerDeviceView:didScanToURL:error:"), EventArgs ("IKScannerDeviceViewScanUrl")]
+		[Export ("scannerDeviceView:didScanToURL:error:"), EventArgs ("IKScannerDeviceViewScanUrl", XmlDocs = """
+			<summary>To be added.</summary>
+			<remarks>To be added.</remarks>
+			""")]
 		void DidScanToUrl (IKScannerDeviceView scannerDeviceView, NSUrl url, NSError error);
 
 		[Export ("scannerDeviceView:didScanToBandData:scanInfo:error:"), EventArgs ("IKScannerDeviceViewScanBandData")]
@@ -1893,6 +2023,9 @@ namespace ImageKit {
 		[Export ("reloadData")]
 		void ReloadData ();
 
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("reloadSlideshowItemAtIndex:")]
 		void ReloadSlideshowItem (nint index);
 
@@ -2022,13 +2155,26 @@ namespace ImageKit {
 		[Export ("numberOfSlideshowItems")]
 		nint ItemCount { get; }
 
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("slideshowItemAtIndex:")]
 		NSObject GetItemAt (nint index);
 
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("nameOfSlideshowItemAtIndex:")]
 		string GetNameOfItemAt (nint index);
 
+		/// <param name="index">To be added.</param>
+		/// <param name="applicationBundleIdentifier">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("canExportSlideshowItemAtIndex:toApplication:")]
 		bool CanExportItemToApplication (nint index, string applicationBundleIdentifier);
 
@@ -2042,6 +2188,9 @@ namespace ImageKit {
 		[Export ("slideshowDidStop")]
 		void DidStop ();
 
+		/// <param name="newIndex">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("slideshowDidChangeCurrentIndex:")]
 		void DidChange (nint newIndex);
 	}

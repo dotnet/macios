@@ -504,4 +504,20 @@ static partial class TypeSymbolExtensions {
 		// either we are a NSObject or we are a subclass of it
 		return IsWrapped (symbol, isNSObject);
 	}
+
+	/// <summary>
+	/// Returns if the symbol is an INativeObject or inherits from an INativeObject.
+	/// </summary>
+	/// <param name="symbol">The symbol to check if it is an INativeObject.</param>
+	/// <returns>True if the symbol implement INativeObject or inherits from one, false otherwise.</returns>
+	public static bool IsINativeObject (this ITypeSymbol symbol)
+	{
+		symbol.GetInheritance (
+			isNSObject: out bool _,
+			isNativeObject: out bool isNativeObject,
+			isDictionaryContainer: out bool _,
+			parents: out ImmutableArray<string> _,
+			interfaces: out ImmutableArray<string> _);
+		return isNativeObject;
+	}
 }

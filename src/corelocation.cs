@@ -213,9 +213,20 @@ namespace CoreLocation {
 		[Export ("timestamp", ArgumentSemantic.Copy)]
 		NSDate Timestamp { get; }
 
+		/// <param name="latitude">The latitude, in decimal degrees, with the Northern hemisphere positive.</param>
+		/// <param name="longitude">The longitude, in decimal degrees, with the Eastern hemisphere positive.</param>
+		/// <summary>Constructor that produces a location specified by <paramref name="latitude" /> and <paramref name="longitude" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithLatitude:longitude:")]
 		NativeHandle Constructor (double latitude, double longitude);
 
+		/// <param name="coordinate">To be added.</param>
+		/// <param name="altitude">To be added.</param>
+		/// <param name="hAccuracy">To be added.</param>
+		/// <param name="vAccuracy">To be added.</param>
+		/// <param name="timestamp">To be added.</param>
+		/// <summary>Constructor that allows the app developer to specify the accuracy and time.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithCoordinate:altitude:horizontalAccuracy:verticalAccuracy:timestamp:")]
 		NativeHandle Constructor (CLLocationCoordinate2D coordinate, double altitude, double hAccuracy, double vAccuracy, NSDate timestamp);
 
@@ -226,6 +237,15 @@ namespace CoreLocation {
 		[Export ("distanceFromLocation:")]
 		double DistanceFrom (CLLocation location);
 
+		/// <param name="coordinate">To be added.</param>
+		/// <param name="altitude">To be added.</param>
+		/// <param name="hAccuracy">To be added.</param>
+		/// <param name="vAccuracy">To be added.</param>
+		/// <param name="course">To be added.</param>
+		/// <param name="speed">To be added.</param>
+		/// <param name="timestamp">To be added.</param>
+		/// <summary>Constructor that allows the app developer to specify speed.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithCoordinate:altitude:horizontalAccuracy:verticalAccuracy:course:speed:timestamp:")]
 		NativeHandle Constructor (CLLocationCoordinate2D coordinate, double altitude, double hAccuracy, double vAccuracy, double course, double speed, NSDate timestamp);
 
@@ -1053,6 +1073,11 @@ namespace CoreLocation {
 		[Export ("identifier")]
 		string Identifier { get; }
 
+		/// <param name="center">The center of the circle</param>
+		/// <param name="radius">The radius of the circle in meters</param>
+		/// <param name="identifier">A unique identifier assigned by your application.</param>
+		/// <summary>Developers should not use this deprecated constructor. Developers should use 'CLCircularRegion' instead.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 7, 0, message: "Use 'CLCircularRegion' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 10, message: "Use 'CLCircularRegion' instead.")]
@@ -1226,6 +1251,11 @@ namespace CoreLocation {
 #endif
 	partial interface CLCircularRegion {
 
+		/// <param name="center">The center of the region.</param>
+		/// <param name="radius">The radius of the region, in meters.</param>
+		/// <param name="identifier">The name of the region.</param>
+		/// <summary>Constructor that produces a circular region called <paramref name="identifier" /> with a particular <paramref name="center" /> of <paramref name="radius" /> (in meters).</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithCenter:radius:identifier:")]
 		NativeHandle Constructor (CLLocationCoordinate2D center, double radius, string identifier);
 
@@ -1268,45 +1298,56 @@ namespace CoreLocation {
 	[DisableDefaultCtor] // nil-Handle on iOS8 if 'init' is used
 	partial interface CLBeaconRegion {
 
-		[NoMac]
+		/// <param name="proximityUuid">The unique ID of the iBeacons of interest.</param>
+		/// <param name="identifier">The name of the region to be created.</param>
+		/// <summary>Constructor that produces a region identified by <paramref name="identifier" /> that reports iBeacons associated with the <paramref name="proximityUuid" />.</summary>
+		[Internal]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use the 'Create' method or the constructor using 'CLBeaconIdentityConstraint' instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use the 'Create' method or the constructor using 'CLBeaconIdentityConstraint' instead.")]
 		[Export ("initWithProximityUUID:identifier:")]
-		NativeHandle Constructor (NSUuid proximityUuid, string identifier);
+		NativeHandle _InitWithProximityUuid (NSUuid proximityUuid, string identifier);
 
-		[NoMac]
 		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Internal] // signature conflict with deprecated API
 		[Export ("initWithUUID:identifier:")]
-		IntPtr _Constructor (NSUuid uuid, string identifier);
+		IntPtr _InitWithUuid (NSUuid uuid, string identifier);
 
-		[NoMac]
+		/// <param name="proximityUuid">The unique ID of the iBeacons of interest.</param>
+		/// <param name="major">Can be used by the app developer for any purpose.</param>
+		/// <param name="identifier">The name of the region to be created.</param>
+		/// <summary>Constructor that produces a region identified by <paramref name="identifier" /> that reports iBeacons associated with the <paramref name="proximityUuid" /> and that assigns the <see cref="P:CoreLocation.CLBeaconRegion.Major" /> property.</summary>
+		[Internal]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use the 'Create' method or the constructor using 'CLBeaconIdentityConstraint' instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use the 'Create' method or the constructor using 'CLBeaconIdentityConstraint' instead.")]
 		[Export ("initWithProximityUUID:major:identifier:")]
-		NativeHandle Constructor (NSUuid proximityUuid, ushort major, string identifier);
+		NativeHandle _InitWithProximityUuid (NSUuid proximityUuid, ushort major, string identifier);
 
 		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Internal] // signature conflict with deprecated API
 		[Export ("initWithUUID:major:identifier:")]
-		IntPtr _Constructor (NSUuid uuid, ushort major, string identifier);
+		IntPtr _InitWithUuid (NSUuid uuid, ushort major, string identifier);
 
-		[NoMac]
+		/// <param name="proximityUuid">The unique ID of the iBeacons of interest.</param>
+		/// <param name="major">Can be used by the app developer for any purpose.</param>
+		/// <param name="minor">Can be used by the app developer for any purpose.</param>
+		/// <param name="identifier">The name of the region to be created.</param>
+		/// <summary>Constructor that produces a region identified by <paramref name="identifier" /> that reports iBeacons associated with the <paramref name="proximityUuid" /> and that assigns the <see cref="P:CoreLocation.CLBeaconRegion.Major" /> and <see cref="P:CoreLocation.CLBeaconRegion.Minor" /> properties.</summary>
+		[Internal]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use the 'Create' method or the constructor using 'CLBeaconIdentityConstraint' instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use the 'Create' method or the constructor using 'CLBeaconIdentityConstraint' instead.")]
 		[Export ("initWithProximityUUID:major:minor:identifier:")]
-		NativeHandle Constructor (NSUuid proximityUuid, ushort major, ushort minor, string identifier);
+		NativeHandle _InitWithProximityUuid (NSUuid proximityUuid, ushort major, ushort minor, string identifier);
 
 		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Internal] // signature conflict with deprecated API
 		[Export ("initWithUUID:major:minor:identifier:")]
-		IntPtr _Constructor (NSUuid uuid, ushort major, ushort minor, string identifier);
+		IntPtr _InitWithUuid (NSUuid uuid, ushort major, ushort minor, string identifier);
 
 		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
@@ -1451,7 +1492,14 @@ namespace CoreLocation {
 		///         <remarks>
 		///         </remarks>
 		[Export ("reverseGeocodeLocation:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="location">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous ReverseGeocodeLocation operation.   The value of the TResult parameter is a <see cref="CoreLocation.CLGeocodeCompletionHandler" />.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void ReverseGeocodeLocation (CLLocation location, CLGeocodeCompletionHandler completionHandler);
 
 		/// <param name="location">To be added.</param>
@@ -1464,7 +1512,13 @@ namespace CoreLocation {
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("reverseGeocodeLocation:preferredLocale:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="location">To be added.</param>
+			<param name="locale">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void ReverseGeocodeLocation (CLLocation location, [NullAllowed] NSLocale locale, CLGeocodeCompletionHandler completionHandler);
 
 		/// <param name="addressDictionary">Addressbook dictionary to submit</param>
@@ -1477,7 +1531,14 @@ namespace CoreLocation {
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'GeocodeAddress (string, CLRegion, NSLocale, CLGeocodeCompletionHandler)' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'GeocodeAddress (string, CLRegion, NSLocale, CLGeocodeCompletionHandler)' instead.")]
 		[Export ("geocodeAddressDictionary:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="addressDictionary">Addressbook dictionary to submit</param>
+			<summary>Developers should not use this deprecated method. Developers should use 'GeocodeAddress (string, CLRegion, NSLocale, CLGeocodeCompletionHandler)' instead.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous GeocodeAddress operation.   The value of the TResult parameter is a <see cref="CoreLocation.CLGeocodeCompletionHandler" />.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void GeocodeAddress (NSDictionary addressDictionary, CLGeocodeCompletionHandler completionHandler);
 
 		/// <param name="addressString">Adress that you want to submit.</param>
@@ -1486,7 +1547,28 @@ namespace CoreLocation {
 		///         <remarks>
 		///         </remarks>
 		[Export ("geocodeAddressString:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="addressString">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous GeocodeAddress operation.   The value of the TResult parameter is a <see cref="CoreLocation.CLGeocodeCompletionHandler" />.</para>
+			        </returns>
+			<remarks>
+			          <example>
+			            <code lang="csharp lang-csharp"><![CDATA[
+			  var addressString = "2 Park Plaza, Boston, MA, USA 02116";
+			  var geocoder = new CLGeocoder();
+			  var taskCoding = geocoder.GeocodeAddressAsync(addressString);
+			  taskCoding.ContinueWith((addresses) => {
+			  	foreach(var address in addresses.Result)
+			  	{
+			  		Console.WriteLine(address);
+			  	}
+			  });              
+			                ]]></code>
+			          </example>
+			        </remarks>
+			""")]
 		void GeocodeAddress (string addressString, CLGeocodeCompletionHandler completionHandler);
 
 		/// <param name="addressString">Adress that you want to submit.</param>
@@ -1495,7 +1577,13 @@ namespace CoreLocation {
 		///         <summary>Request a latitude/longitude location from a human readable address and region.</summary>
 		///         <remarks>To be added.</remarks>
 		[Export ("geocodeAddressString:inRegion:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="addressString">To be added.</param>
+			<param name="region">To be added.</param>
+			<summary>Request a latitude/longitude location from a human readable address and region.</summary>
+			<returns>A Task that represents the asynchronous geocoding operation.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void GeocodeAddress (string addressString, [NullAllowed] CLRegion region, CLGeocodeCompletionHandler completionHandler);
 
 		/// <param name="addressString">To be added.</param>
@@ -1511,7 +1599,14 @@ namespace CoreLocation {
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="addressString">To be added.</param>
+			<param name="region">To be added.</param>
+			<param name="locale">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("geocodeAddressString:inRegion:preferredLocale:completionHandler:")]
 		void GeocodeAddress (string addressString, [NullAllowed] CLRegion region, [NullAllowed] NSLocale locale, CLGeocodeCompletionHandler completionHandler);
 
@@ -1527,7 +1622,17 @@ namespace CoreLocation {
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("geocodePostalAddress:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="postalAddress">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous GeocodePostalAddress operation.   The value of the TResult parameter is a CoreLocation.CLGeocodeCompletionHandler.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The GeocodePostalAddressAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void GeocodePostalAddress (CNPostalAddress postalAddress, CLGeocodeCompletionHandler completionHandler);
 
 		/// <param name="postalAddress">To be added.</param>
@@ -1541,7 +1646,13 @@ namespace CoreLocation {
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("geocodePostalAddress:preferredLocale:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="postalAddress">To be added.</param>
+			<param name="locale">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void GeocodePostalAddress (CNPostalAddress postalAddress, [NullAllowed] NSLocale locale, CLGeocodeCompletionHandler completionHandler);
 	}
 

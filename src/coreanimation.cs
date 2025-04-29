@@ -179,10 +179,25 @@ namespace CoreAnimation {
 		[Export ("scale")]
 		nfloat Scale { get; }
 
+		/// <param name="attribute">To be added.</param>
+		/// <param name="relativeToSource">To be added.</param>
+		/// <param name="srcAttr">To be added.</param>
+		/// <param name="scale">To be added.</param>
+		/// <param name="offset">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static]
 		[Export ("constraintWithAttribute:relativeTo:attribute:scale:offset:")]
 		CAConstraint Create (CAConstraintAttribute attribute, string relativeToSource, CAConstraintAttribute srcAttr, nfloat scale, nfloat offset);
 
+		/// <param name="attribute">To be added.</param>
+		/// <param name="relativeToSource">To be added.</param>
+		/// <param name="srcAttr">To be added.</param>
+		/// <param name="offset">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static]
 		[Export ("constraintWithAttribute:relativeTo:attribute:offset:")]
 		CAConstraint Create (CAConstraintAttribute attribute, string relativeToSource, CAConstraintAttribute srcAttr, nfloat offset);
@@ -197,6 +212,13 @@ namespace CoreAnimation {
 		[Export ("constraintWithAttribute:relativeTo:attribute:")]
 		CAConstraint Create (CAConstraintAttribute attribute, string relativeToSource, CAConstraintAttribute srcAttribute);
 
+		/// <param name="attribute">To be added.</param>
+		/// <param name="relativeToSource">To be added.</param>
+		/// <param name="srcAttr">To be added.</param>
+		/// <param name="scale">To be added.</param>
+		/// <param name="offset">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithAttribute:relativeTo:attribute:scale:offset:")]
 		NativeHandle Constructor (CAConstraintAttribute attribute, string relativeToSource, CAConstraintAttribute srcAttr, nfloat scale, nfloat offset);
 	}
@@ -1298,10 +1320,16 @@ namespace CoreAnimation {
 	[Protocol]
 	[MacCatalyst (13, 1)]
 	interface CAMetalDrawable : MTLDrawable {
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("texture")]
 		IMTLTexture Texture { get; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("layer")]
 		CAMetalLayer Layer { get; }
@@ -2113,6 +2141,9 @@ namespace CoreAnimation {
 	[Deprecated (PlatformName.iOS, 12, 0, message: "Use 'CAMetalLayer' instead.")]
 	[BaseType (typeof (CALayer))]
 	interface CAEAGLLayer : EAGLDrawable {
+		/// <summary>Creates and returns a new <see cref="T:CoreAnimation.CALayer" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("layer"), New, Static]
 		CALayer Create ();
 
@@ -2412,6 +2443,10 @@ namespace CoreAnimation {
 		///         </param>
 		///         <summary>The animation has started.</summary>
 		///         <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[Export ("animationDidStart:")]
 		void AnimationStarted (CAAnimation anim);
 
@@ -2422,7 +2457,10 @@ namespace CoreAnimation {
 		///         <param name="finished">To be added.</param>
 		///         <summary>The animation has stopped.  Use the bool value to determine if this is a temporary pause, or the end of the animation.</summary>
 		///         <remarks>To be added.</remarks>
-		[Export ("animationDidStop:finished:"), EventArgs ("CAAnimationState")]
+		[Export ("animationDidStop:finished:"), EventArgs ("CAAnimationState", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void AnimationStopped (CAAnimation anim, bool finished);
 
 	}
@@ -3062,6 +3100,12 @@ namespace CoreAnimation {
 		[Export ("functionWithControlPoints::::")]
 		CAMediaTimingFunction FromControlPoints (float c1x, float c1y, float c2x, float c2y); /* all float, not CGFloat */
 
+		/// <param name="c1x">To be added.</param>
+		/// <param name="c1y">To be added.</param>
+		/// <param name="c2x">To be added.</param>
+		/// <param name="c2y">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithControlPoints::::")]
 		NativeHandle Constructor (float c1x, float c1y, float c2x, float c2y); /* all float, not CGFloat */
 

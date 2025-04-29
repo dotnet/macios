@@ -75,11 +75,20 @@ namespace Foundation {
 			Debug.WriteLine ("Warning: you created an NSError without specifying a domain");
 		}
 
+		/// <param name="domain">To be added.</param>
+		/// <param name="code">To be added.</param>
+		/// <summary>Creates an NSError instance from a given domain and code.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		public static NSError FromDomain (NSString domain, nint code)
 		{
 			return FromDomain (domain, code, null);
 		}
 
+		/// <param name="domain">Error domain</param>
+		/// <param name="code">Error code.</param>
+		/// <summary>A constructor that initializes the object with a specified domain and an error code.</summary>
+		/// <remarks>To be added.</remarks>
 		public NSError (NSString domain, nint code) : this (domain, code, null)
 		{
 		}

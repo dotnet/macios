@@ -1,2 +1,0 @@
-!missing-selector! NISession::setARSession: not bound
-!incorrect-protocol-member! NIDeviceCapability::supportsExtendedDistanceMeasurement is REQUIRED and should be abstract

@@ -361,9 +361,16 @@ namespace GameController {
 		[Export ("snapshotData", ArgumentSemantic.Copy)]
 		NSData SnapshotData { get; set; }
 
+		/// <param name="data">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithSnapshotData:")]
 		NativeHandle Constructor (NSData data);
 
+		/// <param name="controller">To be added.</param>
+		/// <param name="data">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithController:snapshotData:")]
 		NativeHandle Constructor (GCController controller, NSData data);
 	}
@@ -524,9 +531,16 @@ namespace GameController {
 		[Export ("snapshotData", ArgumentSemantic.Copy)]
 		NSData SnapshotData { get; set; }
 
+		/// <param name="data">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithSnapshotData:")]
 		NativeHandle Constructor (NSData data);
 
+		/// <param name="controller">To be added.</param>
+		/// <param name="data">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithController:snapshotData:")]
 		NativeHandle Constructor (GCController controller, NSData data);
 
@@ -967,9 +981,16 @@ namespace GameController {
 		[Export ("snapshotData", ArgumentSemantic.Copy)]
 		NSData SnapshotData { get; set; }
 
+		/// <param name="data">The data with which to initialize the snapshot.</param>
+		/// <summary>Creates a new snapshot by using the data from another snapshot.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithSnapshotData:")]
 		NativeHandle Constructor (NSData data);
 
+		/// <param name="controller">The controller from which to get snapshots.</param>
+		/// <param name="data">The data with which to initialize the snapshot.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithController:snapshotData:")]
 		NativeHandle Constructor (GCController controller, NSData data);
 
@@ -993,6 +1014,16 @@ namespace GameController {
 	interface GCEventViewController {
 
 		// inlined ctor
+		/// <param name="nibName">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="bundle">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithNibName:bundle:")]
 		[PostGet ("NibBundle")]
 		NativeHandle Constructor ([NullAllowed] string nibName, [NullAllowed] NSBundle bundle);

@@ -2882,6 +2882,7 @@ namespace Xamarin.Tests {
 			"/System/Library/Frameworks/ModelIO.framework/Versions/A/ModelIO",
 			"/System/Library/Frameworks/MultipeerConnectivity.framework/Versions/A/MultipeerConnectivity",
 			"/System/Library/Frameworks/NaturalLanguage.framework/Versions/A/NaturalLanguage",
+			"/System/Library/Frameworks/NearbyInteraction.framework/Versions/A/NearbyInteraction",
 			"/System/Library/Frameworks/Network.framework/Versions/A/Network",
 			"/System/Library/Frameworks/NetworkExtension.framework/Versions/A/NetworkExtension",
 			"/System/Library/Frameworks/NotificationCenter.framework/Versions/A/NotificationCenter",

@@ -323,9 +323,15 @@ namespace QuartzComposer {
 		[Export ("compositionLayerWithComposition:")]
 		QCCompositionLayer Create (QCComposition composition);
 
+		/// <param name="path">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithFile:")]
 		NativeHandle Constructor (string path);
 
+		/// <param name="composition">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithComposition:")]
 		NativeHandle Constructor (QCComposition composition);
 

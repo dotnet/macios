@@ -21,27 +21,16 @@ using nw_service_class_t = System.IntPtr;
 using nw_protocol_stack_t = System.IntPtr;
 using nw_protocol_options_t = System.IntPtr;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace Network {
-
-#if NET
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-#endif
 	public class NWProtocolStack : NativeObject {
 		[Preserve (Conditional = true)]
-#if NET
 		internal NWProtocolStack (NativeHandle handle, bool owns) : base (handle, owns) { }
-#else
-		public NWProtocolStack (NativeHandle handle, bool owns) : base (handle, owns) { }
-#endif
 
 		[DllImport (Constants.NetworkLibrary)]
 		static extern void nw_protocol_stack_prepend_application_protocol (nw_protocol_stack_t stack, nw_protocol_options_t options);
@@ -67,14 +56,7 @@ namespace Network {
 			nw_protocol_stack_clear_application_protocols (GetCheckedHandle ());
 		}
 
-#if !NET
-		delegate void nw_protocol_stack_iterate_protocols_block_t (IntPtr block, IntPtr options);
-		static nw_protocol_stack_iterate_protocols_block_t static_iterateHandler = TrampolineIterateHandler;
-
-		[MonoPInvokeCallback (typeof (nw_protocol_stack_iterate_protocols_block_t))]
-#else
 		[UnmanagedCallersOnly]
-#endif
 		static void TrampolineIterateHandler (IntPtr block, IntPtr options)
 		{
 			var del = BlockLiteral.GetTarget<Action<NWProtocolOptions>> (block);
@@ -89,10 +71,14 @@ namespace Network {
 						castedOptions = new NWProtocolUdpOptions (options, owns: false);
 					} else if (definition.Equals (NWProtocolDefinition.CreateTlsDefinition ())) {
 						castedOptions = new NWProtocolTlsOptions (options, owns: false);
+#pragma warning disable CA1416 // This call site is reachable on: 'ios' 12.2 and later, 'maccatalyst' 12.2 and later, 'macOS/OSX' 12.0 and later, 'tvos' 12.2 and later. 'NWProtocolIPOptions' is only supported on: 'ios' 13.0 and later, 'maccatalyst' 13.0 and later, 'tvos' 13.0 and later.
 					} else if (definition.Equals (NWProtocolDefinition.CreateIPDefinition ())) {
 						castedOptions = new NWProtocolIPOptions (options, owns: false);
+#pragma warning restore CA1416
+#pragma warning disable CA1416 // This call site is reachable on: 'ios' 12.2 and later, 'maccatalyst' 12.2 and later, 'macOS/OSX' 12.0 and later, 'tvos' 12.2 and later. 'NWWebSocketOptions' is only supported on: 'ios' 13.0 and later, 'maccatalyst' 13.0 and later, 'tvos' 13.0 and later.
 					} else if (definition.Equals (NWProtocolDefinition.CreateWebSocketDefinition ())) {
 						castedOptions = new NWWebSocketOptions (options, owns: false);
+#pragma warning restore CA1416
 					}
 
 					del (castedOptions ?? tempOptions);
@@ -111,13 +97,8 @@ namespace Network {
 		public void IterateProtocols (Action<NWProtocolOptions> callback)
 		{
 			unsafe {
-#if NET
 				delegate* unmanaged<IntPtr, IntPtr, void> trampoline = &TrampolineIterateHandler;
 				using var block = new BlockLiteral (trampoline, callback, typeof (NWProtocolStack), nameof (TrampolineIterateHandler));
-#else
-				using var block = new BlockLiteral ();
-				block.SetupBlockUnsafe (static_iterateHandler, callback);
-#endif
 				nw_protocol_stack_iterate_application_protocols (GetCheckedHandle (), &block);
 			}
 		}
@@ -163,14 +144,14 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		extern static IntPtr nw_protocol_stack_copy_internet_protocol (nw_protocol_stack_t stack);
 
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		public NWProtocolIPOptions? InternetProtocol {
-#else
-		public NWProtocolOptions? InternetProtocol {
-#endif
 			get {
 				var pHandle = nw_protocol_stack_copy_internet_protocol (GetCheckedHandle ());
 				return (pHandle == IntPtr.Zero) ? null : new NWProtocolIPOptions (pHandle, owns: true);

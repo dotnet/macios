@@ -28,10 +28,6 @@ using Registrar;
 using AppKit;
 #endif
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 // Disable until we get around to enable + fix any issues.
 #nullable disable
 #pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
@@ -180,10 +176,8 @@ namespace ObjCRuntime {
 			/* unused				= 0x04,*/
 			/* unused				= 0x08,*/
 			IsSimulator = 0x10,
-#if NET
 			IsCoreCLR = 0x20,
 			IsNativeAOT = 0x40,
-#endif
 		}
 
 #if MONOMAC
@@ -210,7 +204,6 @@ namespace ObjCRuntime {
 #endif
 			IntPtr AssemblyLocations;
 
-#if NET
 			public IntPtr xamarin_objc_msgsend;
 			public IntPtr xamarin_objc_msgsend_super;
 			public IntPtr xamarin_objc_msgsend_stret;
@@ -219,7 +212,7 @@ namespace ObjCRuntime {
 			public IntPtr reference_tracking_begin_end_callback;
 			public IntPtr reference_tracking_is_referenced_callback;
 			public IntPtr reference_tracking_tracked_object_entered_finalization;
-#endif
+
 			public bool IsSimulator {
 				get {
 					return (Flags & InitializationFlags.IsSimulator) == InitializationFlags.IsSimulator;
@@ -229,7 +222,6 @@ namespace ObjCRuntime {
 
 		internal static unsafe InitializationOptions* options;
 
-#if NET
 		public static class ClassHandles {
 			static NativeHandle unused;
 			internal static unsafe void InitializeClassHandles (IntPtr* map)
@@ -256,9 +248,7 @@ namespace ObjCRuntime {
 				*handle = (NativeHandle) nativeHandle;
 			}
 		}
-#endif
 
-#if NET
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		internal unsafe static bool IsCoreCLR {
 			get {
@@ -274,7 +264,6 @@ namespace ObjCRuntime {
 				return (options->Flags.HasFlag (InitializationFlags.IsNativeAOT));
 			}
 		}
-#endif
 
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		internal unsafe static bool IsManagedStaticRegistrar {
@@ -313,7 +302,6 @@ namespace ObjCRuntime {
 		}
 #endif
 
-#if NET
 		[Preserve] // called from native - nativeaot-bridge.m and coreclr-bridge.m.
 		[UnmanagedCallersOnly (EntryPoint = "xamarin_objcruntime_runtime_nativeaotinitialize")]
 		unsafe static void SafeInitialize (InitializationOptions* options, IntPtr* exception_gchandle)
@@ -325,7 +313,6 @@ namespace ObjCRuntime {
 				*exception_gchandle = AllocGCHandle (e);
 			}
 		}
-#endif
 
 		[Preserve] // called from native - runtime.m.
 		[BindingImpl (BindingImplOptions.Optimizable)] // To inline the Runtime.DynamicRegistrationSupported code if possible.
@@ -337,40 +324,6 @@ namespace ObjCRuntime {
 			if (options->Size != Marshal.SizeOf<InitializationOptions> ()) {
 				var msg = $"Version mismatch between the native {ProductName} runtime and {AssemblyName}. Please reinstall {ProductName}.";
 				NSLog (msg);
-#if MONOMAC && !NET
-				try {
-					// Print out where Xamarin.Mac.dll and the native runtime was loaded from.
-					NSLog ($"{AssemblyName} was loaded from {typeof (NSObject).Assembly.Location}");
-
-					var sym2 = Dlfcn.dlsym (Dlfcn.RTLD.Default, "xamarin_initialize");
-					Dlfcn.Dl_info info2;
-					if (Dlfcn.dladdr (sym2, out info2) == 0) {
-						NSLog ($"The native runtime was loaded from {Marshal.PtrToStringAuto (info2.dli_fname)}");
-					} else if (Dlfcn.dlsym (Dlfcn.RTLD.MainOnly, "xamarin_initialize") != IntPtr.Zero) {
-						var buf = new byte [128];
-						int length = buf.Length;
-						if (_NSGetExecutablePath (buf, ref length) == -1) {
-							Array.Resize (ref buf, length);
-							length = buf.Length;
-							if (_NSGetExecutablePath (buf, ref length) != 0) {
-								NSLog ("Could not find out where the native runtime was loaded from.");
-								buf = null;
-							}
-						}
-						if (buf is not null) {
-							var str_length = 0;
-							for (int i = 0; i < buf.Length && buf [i] != 0; i++)
-								str_length++;
-							NSLog ($"The native runtime was loaded from {Encoding.UTF8.GetString (buf, 0, str_length)}");
-						}
-					} else {
-						NSLog ("Could not find out where the native runtime was loaded from.");
-					}
-				} catch {
-					// Just ignore any exceptions, the above code is just a debug help, and if it fails,
-					// any exception show to the user will likely confuse more than help
-				}
-#endif
 				throw ErrorHelper.CreateError (8001, msg);
 			}
 
@@ -380,19 +333,15 @@ namespace ObjCRuntime {
 				throw ErrorHelper.CreateError (8010, msg);
 			}
 
-#if NET
 			if (System.Runtime.GCSettings.IsServerGC) {
 				var msg = $".NET for {PlatformName} does not support server garbage collection.";
 				NSLog (msg);
 				throw ErrorHelper.CreateError (8057, msg);
 			}
-#endif
 
-#if NET
 			if (options->RegistrationMap is not null && options->RegistrationMap->classHandles is not null) {
 				ClassHandles.InitializeClassHandles (options->RegistrationMap->classHandles);
 			}
-#endif
 
 			IntPtrEqualityComparer = new IntPtrEqualityComparer ();
 			TypeEqualityComparer = new TypeEqualityComparer ();
@@ -415,53 +364,21 @@ namespace ObjCRuntime {
 			}
 			RegisterDelegates (options);
 			Class.Initialize (options);
-#if !NET
-			// This is not needed for .NET 5:
-			// * https://github.com/xamarin/xamarin-macios/issues/7924#issuecomment-588331822
-			// * https://github.com/xamarin/xamarin-macios/issues/7924#issuecomment-589356481
-			Mono.SystemDependencyProvider.Initialize ();
-#endif
 			InitializePlatform (options);
 
-#if !XAMMAC_SYSTEM_MONO && !NET
-			UseAutoreleasePoolInThreadPool = true;
-#endif
 			IsARM64CallingConvention = GetIsARM64CallingConvention (); // Can only be done after Runtime.Arch is set (i.e. InitializePlatform has been called).
 
 			objc_exception_mode = options->MarshalObjectiveCExceptionMode;
 			managed_exception_mode = options->MarshalManagedExceptionMode;
 
-#if NET
 			if (IsCoreCLR)
 				InitializeCoreCLRBridge (options);
-#endif
 
 			initialized = true;
 #if PROFILE
 			Console.WriteLine ("Runtime.Initialize completed in {0} ms", watch.ElapsedMilliseconds);
 #endif
 		}
-
-#if !XAMMAC_SYSTEM_MONO
-#if !NET
-		static bool has_autoreleasepool_in_thread_pool;
-		public static bool UseAutoreleasePoolInThreadPool {
-			get {
-				return has_autoreleasepool_in_thread_pool;
-			}
-			set {
-				System.Threading._ThreadPoolWaitCallback.SetDispatcher (value ? new Func<Func<bool>, bool> (ThreadPoolDispatcher) : null);
-				has_autoreleasepool_in_thread_pool = value;
-			}
-		}
-
-		static bool ThreadPoolDispatcher (Func<bool> callback)
-		{
-			using (var pool = new NSAutoreleasePool ())
-				return callback ();
-		}
-#endif // !NET
-#endif
 
 #if MONOMAC
 		public static event AssemblyRegistrationHandler? AssemblyRegistration;
@@ -565,11 +482,7 @@ namespace ObjCRuntime {
 
 		static void ThrowNSException (IntPtr ns_exception)
 		{
-#if MONOMAC || NET
 			throw new ObjCException (new NSException (ns_exception));
-#else
-			throw new MonoTouchException (new NSException (ns_exception));
-#endif
 		}
 
 		static void RethrowManagedException (IntPtr exception_gchandle)
@@ -581,11 +494,7 @@ namespace ObjCRuntime {
 		static IntPtr CreateNSException (IntPtr ns_exception)
 		{
 			Exception ex;
-#if MONOMAC || NET
 			ex = new ObjCException (Runtime.GetNSObject<NSException> (ns_exception)!);
-#else
-			ex = new MonoTouchException (Runtime.GetNSObject<NSException> (ns_exception)!);
-#endif
 			return AllocGCHandle (ex);
 		}
 
@@ -603,11 +512,7 @@ namespace ObjCRuntime {
 		static IntPtr UnwrapNSException (IntPtr exc_handle)
 		{
 			var obj = GCHandle.FromIntPtr (exc_handle).Target;
-#if MONOMAC || NET
 			var exc = obj as ObjCException;
-#else
-			var exc = obj as MonoTouchException;
-#endif
 			var nsexc = exc?.NSException;
 			if (nsexc is not null) {
 				return nsexc.DangerousRetain ().DangerousAutorelease ().Handle;
@@ -618,10 +523,8 @@ namespace ObjCRuntime {
 
 		static IntPtr GetBlockWrapperCreator (IntPtr method, int parameter)
 		{
-#if NET
 			if (IsNativeAOT)
 				throw Runtime.CreateNativeAOTNotSupportedException ();
-#endif
 
 			return AllocGCHandle (GetBlockWrapperCreator ((MethodInfo) GetGCHandleTarget (method)!, parameter));
 		}
@@ -674,10 +577,8 @@ namespace ObjCRuntime {
 			return Marshal.StringToHGlobalAuto (str.ToString ());
 		}
 
-#if NET
 		// IL2026: Using member 'System.Reflection.Assembly.LoadFile(String)' which has 'RequiresUnreferencedCodeAttribute' can break functionality when trimming application code. Types and members the loaded assembly depends on might be removed.
 		[UnconditionalSuppressMessage ("", "IL2026", Justification = "We only want the entry assembly, and then we only want the entry point, which survives trimming.")]
-#endif
 		static unsafe Assembly? GetEntryAssembly ()
 		{
 			var asm = Assembly.GetEntryAssembly ();
@@ -692,11 +593,9 @@ namespace ObjCRuntime {
 		// For XM it will also register all assemblies loaded in the current appdomain.
 		internal static void RegisterAssemblies ()
 		{
-#if NET
 			if (IsNativeAOT) {
 				return;
 			}
-#endif
 
 #if PROFILE
 			var watch = new Stopwatch ();
@@ -746,10 +645,8 @@ namespace ObjCRuntime {
 				RegisterAssembly (a);
 		}
 
-#if NET
 		// IL2075: Using member 'System.Reflection.Assembly.GetReferencedAssemblies()' which has 'RequiresUnreferencedCodeAttribute' can break functionality when trimming application code. Assembly references might be removed.
 		[UnconditionalSuppressMessage ("", "IL2026", Justification = "We only want assemblies that survived trimming, so this is effectively trimmer-safe.")]
-#endif
 		static void CollectReferencedAssemblies (List<Assembly> assemblies, Assembly assembly)
 		{
 			assemblies.Add (assembly);
@@ -766,10 +663,6 @@ namespace ObjCRuntime {
 					// that's more important for XI because device builds don't go thru this step
 					// and we can end up with simulator-only failures - bug #29211
 					NSLog ($"Could not find `{fefe.FileName}` referenced by assembly `{assembly.FullName}`.");
-#if MONOMAC && !NET
-					if (!NSApplication.IgnoreMissingAssembliesDuringRegistration)
-						throw;
-#endif
 				}
 			}
 		}
@@ -866,12 +759,10 @@ namespace ObjCRuntime {
 			Registrar.GetMethodDescription (Class.Lookup (cls), sel, is_static != 0, desc);
 		}
 
-#if NET
 		internal static bool HasNSObject (NativeHandle ptr)
 		{
 			return TryGetNSObject (ptr, evenInFinalizerQueue: false) is not null;
 		}
-#endif
 
 		internal static sbyte HasNSObject (IntPtr ptr)
 		{
@@ -1020,10 +911,8 @@ namespace ObjCRuntime {
 		}
 		#endregion
 
-#if NET
 		// IL2075: this' argument does not satisfy 'DynamicallyAccessedMemberTypes.PublicMethods' in call to 'System.Type.GetMethod(String)'. The return value of method 'ObjCRuntime.BlockProxyAttribute.Type.get' does not have matching annotations. The source value must declare at least the same requirements as those declared on the target location it is assigned to.
 		[UnconditionalSuppressMessage ("", "IL2075", Justification = "The APIs this method tries to access are marked by other means, so this is linker-safe.")]
-#endif
 		static MethodInfo? GetBlockProxyAttributeMethod (MethodInfo method, int parameter)
 		{
 			var attrs = method.GetParameters () [parameter].GetCustomAttributes (typeof (BlockProxyAttribute), true);
@@ -1085,7 +974,6 @@ namespace ObjCRuntime {
 		// a the block in the given method at the given parameter into a strongly typed
 		// delegate
 		//
-#if NET
 		// Note that the code in this method doesn't work with NativeAOT, so assert that never happens by throwing an exception in that case
 		// IL2075: 'this' argument does not satisfy 'DynamicallyAccessedMemberTypes.Interfaces' in call to 'System.Type.GetInterfaces()'. The return value of method 'System.Reflection.MemberInfo.DeclaringType.get' does not have matching annotations. The source value must declare at least the same requirements as those declared on the target location it is assigned to."),
 		// IL2075: 'this' argument does not satisfy 'DynamicallyAccessedMemberTypes.PublicMethods' in call to 'System.Type.GetMethod(String, BindingFlags, Binder, Type[], ParameterModifier[])'. The return value of method 'System.Reflection.Assembly.GetType(String, Boolean)' does not have matching annotations. The source value must declare at least the same requirements as those declared on the target location it is assigned to."),
@@ -1096,15 +984,12 @@ namespace ObjCRuntime {
 		[UnconditionalSuppressMessage ("", "IL2065", Justification = "The APIs this method tries to access are marked by other means, so this is linker-safe.")]
 		// IL2072: ObjCRuntime.Runtime.GetBlockWrapperCreator(MethodInfo, Int32): 'interfaceType' argument does not satisfy 'DynamicallyAccessedMemberTypes.PublicMethods', 'DynamicallyAccessedMemberTypes.NonPublicMethods' in call to 'System.Type.GetInterfaceMap(Type)'. The return value of method 'System.Type.GetInterfaces()' does not have matching annotations. The source value must declare at least the same requirements as those declared on the target location it is assigned to.
 		[UnconditionalSuppressMessage ("", "IL2072", Justification = "The APIs this method tries to access are marked by other means, so this is linker-safe.")]
-#endif
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		static MethodInfo? GetBlockWrapperCreator (MethodInfo method, int parameter)
 		{
-#if NET
 			// Note that the code in this method doesn't work with NativeAOT, so assert that never happens by throwing an exception in that case
 			if (IsNativeAOT)
 				throw Runtime.CreateNativeAOTNotSupportedException ();
-#endif
 
 			// A mirror of this method is also implemented in StaticRegistrar:FindBlockProxyCreatorMethod
 			// If this method is changed, that method will probably have to be updated too (tests!!!)
@@ -1195,11 +1080,7 @@ namespace ObjCRuntime {
 			return del;
 		}
 
-#if NET
 		internal static T GetDelegateForBlock<T> (IntPtr methodPtr) where T : System.MulticastDelegate
-#else
-		internal static T GetDelegateForBlock<T> (IntPtr methodPtr) where T : class
-#endif
 		{
 			// We do not care if there is a race condition and we initialize two caches
 			// since the worst that can happen is that we end up with an extra
@@ -1210,21 +1091,13 @@ namespace ObjCRuntime {
 					block_to_delegate_cache = new Dictionary<IntPtrTypeValueTuple, Delegate> ();
 
 				if (block_to_delegate_cache.TryGetValue (pair, out var cachedValue))
-#if NET
 					return (T) cachedValue;
-#else
-					return (T) (object) cachedValue;
-#endif
 			}
 
 			var val = Marshal.GetDelegateForFunctionPointer<T> (methodPtr);
 
 			lock (lock_obj) {
-#if NET
 				block_to_delegate_cache [pair] = val;
-#else
-				block_to_delegate_cache [pair] = (Delegate) (object) val;
-#endif
 			}
 			return val;
 		}
@@ -1310,16 +1183,12 @@ namespace ObjCRuntime {
 
 		internal static void RegisterNSObject (NSObject obj, IntPtr ptr)
 		{
-#if NET
 			GCHandle handle;
 			if (Runtime.IsCoreCLR) {
 				handle = CreateTrackingGCHandle (obj, ptr);
 			} else {
 				handle = GCHandle.Alloc (obj, GCHandleType.WeakTrackResurrection);
 			}
-#else
-			var handle = GCHandle.Alloc (obj, GCHandleType.WeakTrackResurrection);
-#endif
 
 			lock (lock_obj) {
 				if (object_map.Remove (ptr, out var existing))
@@ -1331,19 +1200,15 @@ namespace ObjCRuntime {
 			}
 		}
 
-#if NET
 		// Note that the code in this method doesn't necessarily work with NativeAOT, so assert that never happens by throwing an exception in that case
 		//
 		// IL2075: 'this' argument does not satisfy 'DynamicallyAccessedMemberTypes.PublicProperties' in call to 'System.Type.GetProperties()'. The return value of method 'System.Reflection.MemberInfo.DeclaringType.get' does not have matching annotations. The source value must declare at least the same requirements as those declared on the target location it is assigned to.
 		[UnconditionalSuppressMessage ("", "IL2075", Justification = "The APIs this method tries to access are marked by other means, so this is linker-safe.")]
-#endif
 		internal static PropertyInfo? FindPropertyInfo (MethodInfo accessor)
 		{
-#if NET
 			// Note that the code in this method doesn't necessarily work with NativeAOT, so assert that never happens by throwing an exception in that case
 			if (IsNativeAOT)
 				throw Runtime.CreateNativeAOTNotSupportedException ();
-#endif
 
 			if (!accessor.IsSpecialName)
 				return null;
@@ -1399,18 +1264,10 @@ namespace ObjCRuntime {
 
 			switch (resolution) {
 			case MissingCtorResolution.ThrowConstructor1NotFound:
-#if NET
 				msg.Append ("one NativeHandle argument");
-#else
-				msg.Append ("one IntPtr argument");
-#endif
 				break;
 			case MissingCtorResolution.ThrowConstructor2NotFound:
-#if NET
 				msg.Append ("two (NativeHandle, bool) arguments");
-#else
-				msg.Append ("two (IntPtr, bool) arguments");
-#endif
 				break;
 			}
 
@@ -1423,7 +1280,6 @@ namespace ObjCRuntime {
 			throw ErrorHelper.CreateError (8027, msg.ToString ());
 		}
 
-#if NET
 		static void CannotCreateManagedInstanceOfGenericType (IntPtr ptr, IntPtr klass, Type type, MissingCtorResolution resolution, IntPtr sel, RuntimeMethodHandle method_handle)
 		{
 			if (resolution == MissingCtorResolution.Ignore)
@@ -1441,7 +1297,6 @@ namespace ObjCRuntime {
 
 			throw ErrorHelper.CreateError (8056, msg.ToString ());
 		}
-#endif
 
 		static void AppendAdditionalInformation (StringBuilder msg, IntPtr sel, RuntimeMethodHandle method_handle)
 		{
@@ -1499,15 +1354,11 @@ namespace ObjCRuntime {
 		}
 
 		// The 'selector' and 'method' arguments are only used in error messages.
-#if NET
 		static T? ConstructNSObject<T> (IntPtr ptr, Type type, MissingCtorResolution missingCtorResolution, IntPtr sel, RuntimeMethodHandle method_handle) where T : NSObject, INSObjectFactory
-#else
-		static T? ConstructNSObject<T> (IntPtr ptr, Type type, MissingCtorResolution missingCtorResolution, IntPtr sel, RuntimeMethodHandle method_handle) where T : class, INativeObject
-#endif
 		{
 			if (type is null)
 				throw new ArgumentNullException (nameof (type));
-#if NET
+
 			if (Runtime.IsManagedStaticRegistrar) {
 				T? instance = default;
 				var nativeHandle = new NativeHandle (ptr);
@@ -1546,7 +1397,6 @@ namespace ObjCRuntime {
 
 				return instance;
 			}
-#endif
 
 			var ctor = GetIntPtrConstructor (type);
 
@@ -1556,15 +1406,11 @@ namespace ObjCRuntime {
 			}
 
 			var ctorArguments = new object [1];
-#if NET
 			if (ctor.GetParameters () [0].ParameterType == typeof (IntPtr)) {
 				ctorArguments [0] = ptr;
 			} else {
 				ctorArguments [0] = new NativeHandle (ptr);
 			}
-#else
-			ctorArguments [0] = ptr;
-#endif
 
 			var obj = ctor.Invoke (ctorArguments);
 			if (obj is T rv)
@@ -1572,7 +1418,6 @@ namespace ObjCRuntime {
 
 			throw new InvalidCastException ($"Unable to cast object of type '{obj.GetType ().FullName}' to type '{typeof (T).FullName}'.");
 
-#if NET
 			// It isn't possible to call T._Xamarin_ConstructNSObject (...) directly from the parent function. For some
 			// types, the app crashes with a SIGSEGV:
 			//
@@ -1581,7 +1426,6 @@ namespace ObjCRuntime {
 			// When the same call is made from a separate function, it works fine.
 			static T? ConstructNSObjectViaFactoryMethod (NativeHandle handle)
 				=> T._Xamarin_ConstructNSObject (handle) as T;
-#endif
 		}
 
 		// The generic argument T is only used to cast the return value.
@@ -1593,7 +1437,6 @@ namespace ObjCRuntime {
 			if (type.IsByRef)
 				type = type.GetElementType ()!;
 
-#if NET
 			if (Runtime.IsManagedStaticRegistrar) {
 				var nativeHandle = new NativeHandle (ptr);
 				T? instance = null;
@@ -1641,7 +1484,6 @@ namespace ObjCRuntime {
 
 				return instance;
 			}
-#endif
 
 			var ctor = GetIntPtr_BoolConstructor (type);
 
@@ -1651,20 +1493,15 @@ namespace ObjCRuntime {
 			}
 
 			var ctorArguments = new object [2];
-#if NET
 			if (ctor.GetParameters () [0].ParameterType == typeof (IntPtr)) {
 				ctorArguments [0] = ptr;
 			} else {
 				ctorArguments [0] = new NativeHandle (ptr);
 			}
-#else
-			ctorArguments [0] = ptr;
-#endif
 			ctorArguments [1] = owns;
 
 			return (T?) ctor.Invoke (ctorArguments);
 
-#if NET
 			// It isn't possible to call T._Xamarin_ConstructINativeObject (...) directly from the parent function. For some
 			// types, the app crashes with a SIGSEGV:
 			//
@@ -1673,7 +1510,6 @@ namespace ObjCRuntime {
 			// When the same call is made from a separate function, it works fine.
 			static T? ConstructINativeObjectViaFactoryMethod (NativeHandle nativeHandle, bool owns)
 				=> T._Xamarin_ConstructINativeObject (nativeHandle, owns) as T;
-#endif
 		}
 
 		static IntPtr CreateNSObject (IntPtr type_gchandle, IntPtr handle, NSObject.Flags flags)
@@ -1681,19 +1517,15 @@ namespace ObjCRuntime {
 			return NSObject.CreateNSObject (type_gchandle, handle, flags);
 		}
 
-#if NET
 		// Note that the code in this method doesn't necessarily work with NativeAOT, so assert that never happens by throwing an exception in that case
 		//
 		// IL2070: 'this' argument does not satisfy 'DynamicallyAccessedMemberTypes.PublicConstructors', 'DynamicallyAccessedMemberTypes.NonPublicConstructors' in call to 'System.Type.GetConstructors(BindingFlags)'. The parameter 'type' of method 'ObjCRuntime.Runtime.GetIntPtrConstructor(Type)' does not have matching annotations. The source value must declare at least the same requirements as those declared on the target location it is assigned to.
 		[UnconditionalSuppressMessage ("", "IL2070", Justification = "The APIs this method tries to access are marked by other means, so this is linker-safe.")]
-#endif
 		static ConstructorInfo? GetIntPtrConstructor (Type type)
 		{
-#if NET
 			// Note that the code in this method doesn't necessarily work with NativeAOT, so assert that never happens by throwing an exception in that case
 			if (IsNativeAOT)
 				throw CreateNativeAOTNotSupportedException ();
-#endif
 
 			lock (intptr_ctor_cache) {
 				if (intptr_ctor_cache.TryGetValue (type, out var rv))
@@ -1705,16 +1537,12 @@ namespace ObjCRuntime {
 				var param = ctors [i].GetParameters ();
 				if (param.Length != 1)
 					continue;
-#if NET
 				if (param [0].ParameterType == typeof (IntPtr)) {
 					backupConstructor = ctors [i];
 					continue;
 				}
 
 				if (param [0].ParameterType != typeof (NativeHandle))
-#else
-				if (param [0].ParameterType != typeof (IntPtr))
-#endif
 					continue;
 
 				lock (intptr_ctor_cache)
@@ -1722,7 +1550,6 @@ namespace ObjCRuntime {
 				return ctors [i];
 			}
 
-#if NET
 			if (backupConstructor is not null) {
 				const string p1 = "an ObjCRuntime.NativeHandle parameter";
 				const string p2 = "an System.IntPtr parameter";
@@ -1733,24 +1560,19 @@ namespace ObjCRuntime {
 					intptr_ctor_cache [type] = backupConstructor;
 				return backupConstructor;
 			}
-#endif
 
 			return null;
 		}
 
-#if NET
 		// Note that the code in this method doesn't necessarily work with NativeAOT, so assert that never happens by throwing an exception in that case
 		//
 		// IL2070: 'this' argument does not satisfy 'DynamicallyAccessedMemberTypes.PublicConstructors', 'DynamicallyAccessedMemberTypes.NonPublicConstructors' in call to 'System.Type.GetConstructors(BindingFlags)'. The parameter 'type' of method 'ObjCRuntime.Runtime.GetIntPtr_BoolConstructor(Type)' does not have matching annotations. The source value must declare at least the same requirements as those declared on the target location it is assigned to.
 		[UnconditionalSuppressMessage ("", "IL2070", Justification = "The APIs this method tries to access are marked by other means, so this is linker-safe.")]
-#endif
 		static ConstructorInfo? GetIntPtr_BoolConstructor (Type type)
 		{
-#if NET
 			// Note that the code in this method doesn't necessarily work with NativeAOT, so assert that never happens by throwing an exception in that case
 			if (IsNativeAOT)
 				throw CreateNativeAOTNotSupportedException ();
-#endif
 
 			lock (intptr_bool_ctor_cache) {
 				if (intptr_bool_ctor_cache.TryGetValue (type, out var rv))
@@ -1765,16 +1587,13 @@ namespace ObjCRuntime {
 
 				if (param [1].ParameterType != typeof (bool))
 					continue;
-#if NET
+
 				if (param [0].ParameterType == typeof (IntPtr)) {
 					backupConstructor = ctors [i];
 					continue;
 				}
 
 				if (param [0].ParameterType != typeof (NativeHandle))
-#else
-				if (param [0].ParameterType != typeof (IntPtr))
-#endif
 					continue;
 
 				lock (intptr_bool_ctor_cache)
@@ -1782,7 +1601,6 @@ namespace ObjCRuntime {
 				return ctors [i];
 			}
 
-#if NET
 			if (backupConstructor is not null) {
 				const string p1 = "two (ObjCRuntime.NativeHandle, bool) arguments";
 				const string p2 = "two (System.IntPtr, bool) parameters";
@@ -1793,7 +1611,6 @@ namespace ObjCRuntime {
 					intptr_bool_ctor_cache [type] = backupConstructor;
 				return backupConstructor;
 			}
-#endif
 
 			return null;
 		}
@@ -1843,7 +1660,6 @@ namespace ObjCRuntime {
 			return null;
 		}
 
-#if NET
 		public static NSObject? GetNSObject (NativeHandle ptr)
 		{
 			return GetNSObject ((IntPtr) ptr, MissingCtorResolution.ThrowConstructor1NotFound);
@@ -1860,7 +1676,6 @@ namespace ObjCRuntime {
 		{
 			return GetNSObject ((IntPtr) ptr, owns, MissingCtorResolution.ThrowConstructor1NotFound);
 		}
-#endif
 
 		/// <param name="ptr">A pointer to an unmanaged NSObject or any class that derives from the Objective-C NSObject class.</param>
 		///         <summary>Wraps an unmanaged IntPtr into a fully typed NSObject, or returns an existing wrapper object if one already exists.</summary>
@@ -2073,11 +1888,9 @@ namespace ObjCRuntime {
 			}
 
 			var interface_check_type = implementation;
-#if NET
 			// https://github.com/dotnet/runtime/issues/39068
 			if (interface_check_type.IsByRef)
 				interface_check_type = interface_check_type.GetElementType ();
-#endif
 
 			if (interface_check_type!.IsInterface)
 				implementation = FindProtocolWrapperType (implementation);
@@ -2116,11 +1929,9 @@ namespace ObjCRuntime {
 
 			if (o is not null) {
 				var interface_check_type = target_type;
-#if NET
 				// https://github.com/dotnet/runtime/issues/39068
 				if (interface_check_type.IsByRef)
 					interface_check_type = interface_check_type.GetElementType ()!;
-#endif
 				// found an existing object, but with an incompatible type.
 				if (!interface_check_type.IsInterface) {
 					// if the target type is another class, there's nothing we can do.
@@ -2203,7 +2014,6 @@ namespace ObjCRuntime {
 					// native objects and NSObject instances.
 					throw ErrorHelper.CreateError (8004, $"Cannot create an instance of {implementation.FullName} for the native object 0x{ptr:x} (of type '{Class.class_getName (Class.GetClassForObject (ptr))}'), because another instance already exists for this native object (of type {o.GetType ().FullName}).");
 				}
-#if NET
 				if (!Runtime.IsManagedStaticRegistrar) {
 					// For other registrars other than managed-static the generic parameter of ConstructNSObject is used
 					// only to cast the return value so we can safely pass NSObject here to satisfy the constraints of the
@@ -2213,12 +2023,6 @@ namespace ObjCRuntime {
 						TryReleaseINativeObject (rv);
 					return rv;
 				}
-#else
-				var rv = ConstructNSObject<T> (ptr, implementation, MissingCtorResolution.ThrowConstructor1NotFound, sel, method_handle);
-				if (owns)
-					TryReleaseINativeObject (rv);
-				return rv;
-#endif
 			}
 
 			return ConstructINativeObject<T> (ptr, owns, implementation, MissingCtorResolution.ThrowConstructor2NotFound, sel, method_handle);
@@ -2246,23 +2050,19 @@ namespace ObjCRuntime {
 		{
 			if (type is null)
 				return null;
-#if NET
+
 			// https://github.com/dotnet/runtime/issues/39068
 			if (type.IsByRef)
 				type = type.GetElementType ()!;
-#endif
+
 			if (!type.IsInterface)
 				return null;
 
 			// Check if the static registrar knows about this protocol
 			if (IsManagedStaticRegistrar) {
-#if NET
 				var rv = RegistrarHelper.FindProtocolWrapperType (type);
 				if (rv is not null)
 					return rv;
-#else
-				throw ErrorHelper.CreateError (99, Xamarin.Bundler.Errors.MX0099 /* Internal error */, "The managed static registrar is only available for .NET");
-#endif
 			} else {
 				unsafe {
 					var map = options->RegistrationMap;
@@ -2335,27 +2135,16 @@ namespace ObjCRuntime {
 			return result;
 		}
 
-#if NET
 		internal static bool TryGetIsUserType (IntPtr self, out bool isUserType, [NotNullWhen (false)] out string? error_message)
-#else
-		internal static bool TryGetIsUserType (IntPtr self, out bool isUserType, out string? error_message)
-#endif
 		{
 			isUserType = false;
 			if (!Class.TryGetClass (self, out var cls, out error_message))
 				return false;
 
 			lock (usertype_cache) {
-#if NET
 				ref var result = ref CollectionsMarshal.GetValueRefOrAddDefault (usertype_cache, cls, out var exists);
 				if (!exists)
 					result = SlowIsUserType (cls);
-#else
-				if (!usertype_cache.TryGetValue (cls, out var result)) {
-					result = SlowIsUserType (cls);
-					usertype_cache.Add (cls, result);
-				}
-#endif
 				isUserType = result;
 				return true;
 			}
@@ -2618,19 +2407,15 @@ namespace ObjCRuntime {
 			}
 		}
 
-#if NET
 		// Note that the code in this method doesn't necessarily work with NativeAOT, so assert that never happens by throwing an exception in that case
 		//
 		// IL2070: 'this' argument does not satisfy 'DynamicallyAccessedMemberTypes.PublicMethods', 'DynamicallyAccessedMemberTypes.NonPublicMethods' in call to 'System.Type.GetMethods(BindingFlags)'. The parameter 'closed_type' of method 'ObjCRuntime.Runtime.FindClosedMethod(Type, MethodBase)' does not have matching annotations. The source value must declare at least the same requirements as those declared on the target location it is assigned to.
 		[UnconditionalSuppressMessage ("", "IL2070", Justification = "The APIs this method tries to access are marked by other means, so this is linker-safe.")]
-#endif
 		internal static MethodInfo FindClosedMethod (Type closed_type, MethodBase open_method)
 		{
-#if NET
 			// Note that the code in this method doesn't necessarily work with NativeAOT, so assert that never happens by throwing an exception in that case
 			if (IsNativeAOT)
 				throw Runtime.CreateNativeAOTNotSupportedException ();
-#endif
 
 			// FIXME: I think it should be handled before getting here (but it's safer here for now)
 			if (!open_method.ContainsGenericParameters)
@@ -2688,14 +2473,12 @@ namespace ObjCRuntime {
 			return parameters [parameter].ParameterType.GetElementType ()!; // FIX NAMING
 		}
 
-#if NET
 		// This method might be called by the generated code from the managed static registrar.
 		static void TraceCaller (string message)
 		{
 			var caller = new System.Diagnostics.StackFrame (1);
 			NSLog ($"{caller?.GetMethod ()?.ToString ()}: {message}");
 		}
-#endif
 
 		static void GCCollect ()
 		{
@@ -2708,19 +2491,8 @@ namespace ObjCRuntime {
 		///           <para>Developers should not call this method, it's called by generated binding code.</para>
 		///         </remarks>
 		[EditorBrowsable (EditorBrowsableState.Never)]
-#if MONOMAC && !NET
-		public static void ReleaseBlockOnMainThread (IntPtr block)
-		{
-			if (release_block_on_main_thread is null)
-				release_block_on_main_thread = LookupInternalFunction<intptr_func> ("xamarin_release_block_on_main_thread");
-			release_block_on_main_thread (block);
-		}
-		delegate void intptr_func (IntPtr block);
-		static intptr_func? release_block_on_main_thread;
-#else
 		[DllImport ("__Internal", EntryPoint = "xamarin_release_block_on_main_thread")]
 		public static extern void ReleaseBlockOnMainThread (IntPtr block);
-#endif
 
 		// This method will release the specified block, but not while the delegate is still alive.
 		[EditorBrowsable (EditorBrowsableState.Never)]
@@ -2859,7 +2631,6 @@ namespace ObjCRuntime {
 			return (nuint) value;
 		}
 
-#if NET || !MONOMAC // legacy Xamarin.Mac has a different implementation in Runtime.mac.cs
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -2871,7 +2642,6 @@ namespace ObjCRuntime {
 
 		[DllImport ("__Internal")]
 		static extern IntPtr xamarin_get_original_working_directory_path ();
-#endif // NET || !__MACOS__
 
 		static sbyte InvokeConformsToProtocol (IntPtr handle, IntPtr protocol)
 		{
@@ -2884,11 +2654,7 @@ namespace ObjCRuntime {
 
 		static IntPtr LookupUnmanagedFunction (IntPtr assembly, IntPtr symbol, int id)
 		{
-#if NET
 			return RegistrarHelper.LookupUnmanagedFunction (assembly, Marshal.PtrToStringAuto (symbol), id);
-#else
-			return IntPtr.Zero;
-#endif
 		}
 	}
 

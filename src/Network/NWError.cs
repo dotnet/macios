@@ -16,26 +16,16 @@ using ObjCRuntime;
 using Foundation;
 using CoreFoundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace Network {
-#if NET
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-#endif
 	public class NWError : NativeObject {
 		[Preserve (Conditional = true)]
-#if NET
 		internal NWError (NativeHandle handle, bool owns) : base (handle, owns)
-#else
-		public NWError (NativeHandle handle, bool owns) : base (handle, owns)
-#endif
 		{
 		}
 

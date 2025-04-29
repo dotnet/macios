@@ -26,10 +26,6 @@ using Foundation;
 using CoreML;
 using ObjCRuntime;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace NaturalLanguage {
 
 	/// <summary>Determines the most likely language in which a text is written.</summary>
@@ -38,6 +34,8 @@ namespace NaturalLanguage {
 	[BaseType (typeof (NSObject))]
 	interface NLLanguageRecognizer {
 
+		/// <summary>Creates a new <see cref="T:NaturalLanguage.NLLanguageRecognizer" /> with default values.</summary>
+		/// <remarks />
 		[DesignatedInitializer]
 		[Export ("init")]
 		NativeHandle Constructor ();
@@ -70,6 +68,10 @@ namespace NaturalLanguage {
 		NLLanguage DominantLanguage { get; }
 
 		// left in case the user does not want to get a c# dict
+		/// <param name="maxHypotheses">The maximum number of hypotheses to return.</param>
+		/// <summary>Returns a dictionary of probabilities, keyed by language, that describes the most likely languages in which the text that was analyzed with <see cref="M:NaturalLanguage.NLLanguageRecognizer.Process(System.String)" /> was written.</summary>
+		/// <returns>A dictionary of probabilities, keyed by language, that describes the most likely languages in which the text that was analyzed with <see cref="M:NaturalLanguage.NLLanguageRecognizer.Process(System.String)" /> was written.</returns>
+		/// <remarks>To be added.</remarks>
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		[Export ("languageHypothesesWithMaximum:")]
 		NSDictionary<NSString, NSNumber> GetNativeLanguageHypotheses (nuint maxHypotheses);
@@ -212,6 +214,9 @@ namespace NaturalLanguage {
 	[DisableDefaultCtor]
 	[BaseType (typeof (NSObject))]
 	interface NLTokenizer {
+		/// <param name="unit">The unit into which the tokenizer will separate text.</param>
+		/// <summary>Creates a new tokenizer that breaks text up into the specified semantic <paramref name="unit" />s.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithUnit:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NLTokenUnit unit);
@@ -238,6 +243,10 @@ namespace NaturalLanguage {
 		[Wrap ("_SetLanguage (language.GetConstant ()!)")]
 		void SetLanguage (NLLanguage language);
 
+		/// <param name="characterIndex">The index of a character that is covered by a token.</param>
+		/// <summary>Gets the range of the token that covers the specified character index.</summary>
+		/// <returns>The range of the token that covers the specified character index.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("tokenRangeAtIndex:")]
 		NSRange GetTokenRange (nuint characterIndex);
 
@@ -273,11 +282,17 @@ namespace NaturalLanguage {
 	[DisableDefaultCtor]
 	[BaseType (typeof (NSObject))]
 	interface NLTagger {
+		/// <param name="tagSchemes">The taggging schemes that detail the classifications to return.</param>
+		/// <summary>Initializes a tagger that classifies tokens according the the identified tagging schemes.</summary>
+		/// <remarks>To be added.</remarks>
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		[Export ("initWithTagSchemes:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor ([Params] NSString [] tagSchemes);
 
+		/// <param name="tagSchemes">The taggging schemes that detail the classifications to return.</param>
+		/// <summary>Initializes a tagger that classifies tokens according the the provided tagging schemes.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (Array.ConvertAll (tagSchemes, e => e.GetConstant ()!))")]
 		NativeHandle Constructor ([Params] NLTagScheme [] tagSchemes);
 
@@ -316,6 +331,11 @@ namespace NaturalLanguage {
 		[Wrap ("Array.ConvertAll (GetAvailableTagSchemes (unit, language.GetConstant()!), e => NLTagSchemeExtensions.GetValue (e))")]
 		NLTagScheme [] GetAvailableTagSchemes (NLTokenUnit unit, NLLanguage language);
 
+		/// <param name="characterIndex">A character index for the desired range.</param>
+		/// <param name="unit">The unit, which covers the <paramref name="characterIndex" />, whose range to get.</param>
+		/// <summary>Returns the lexical range of the <paramref name="unit" /> that contains the spcified <paramref name="characterIndex" />.</summary>
+		/// <returns>The lexical range of the <paramref name="unit" /> that contains the spcified <paramref name="characterIndex" />.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("tokenRangeAtIndex:unit:")]
 		NSRange GetTokenRange (nuint characterIndex, NSString unit);
 
@@ -350,11 +370,25 @@ namespace NaturalLanguage {
 		[Wrap ("EnumerateTags (range, unit, scheme.GetConstant ()!, options, handler)")]
 		void EnumerateTags (NSRange range, NLTokenUnit unit, NLTagScheme scheme, NLTaggerOptions options, NLTaggerEnumerateTagsContinuationHandler handler);
 
+		/// <param name="characterIndex">To be added.</param>
+		/// <param name="unit">To be added.</param>
+		/// <param name="scheme">To be added.</param>
+		/// <param name="tokenRange">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		[Export ("tagAtIndex:unit:scheme:tokenRange:")]
 		[return: NullAllowed]
 		NSString GetTag (nuint characterIndex, NLTokenUnit unit, NSString scheme, out NSRange tokenRange);
 
+		/// <param name="characterIndex">To be added.</param>
+		/// <param name="unit">To be added.</param>
+		/// <param name="scheme">To be added.</param>
+		/// <param name="tokenRange">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Wrap ("GetTag (characterIndex, unit, scheme.GetConstant ()!, out tokenRange)")]
 		NSString GetTag (nuint characterIndex, NLTokenUnit unit, NLTagScheme scheme, out NSRange tokenRange);

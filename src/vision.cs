@@ -1639,6 +1639,9 @@ namespace Vision {
 	[Protocol]
 	interface VNFaceObservationAccepting {
 
+		/// <summary>Gets or sets the <see cref="T:Vision.VNFaceObservation" /> objects in the request.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[NullAllowed, Export ("inputFaceObservations", ArgumentSemantic.Copy)]
 		VNFaceObservation [] InputFaceObservations { get; set; }
@@ -1655,120 +1658,220 @@ namespace Vision {
 		[Export ("initWithTargetedCVPixelBuffer:options:")]
 		NativeHandle Constructor (CVPixelBuffer pixelBuffer, NSDictionary optionsDict);
 
+		/// <param name="pixelBuffer">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (pixelBuffer, options.GetDictionary ()!)")]
 		NativeHandle Constructor (CVPixelBuffer pixelBuffer, VNImageOptions options);
 
 		[Export ("initWithTargetedCVPixelBuffer:options:completionHandler:")]
 		NativeHandle Constructor (CVPixelBuffer pixelBuffer, NSDictionary optionsDict, [NullAllowed] VNRequestCompletionHandler completionHandler);
 
+		/// <param name="pixelBuffer">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (pixelBuffer, options.GetDictionary ()!, completionHandler)")]
 		NativeHandle Constructor (CVPixelBuffer pixelBuffer, VNImageOptions options, VNRequestCompletionHandler completionHandler);
 
 		[Export ("initWithTargetedCVPixelBuffer:orientation:options:")]
 		NativeHandle Constructor (CVPixelBuffer pixelBuffer, CGImagePropertyOrientation orientation, NSDictionary optionsDict);
 
+		/// <param name="pixelBuffer">To be added.</param>
+		/// <param name="orientation">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (pixelBuffer, orientation, options.GetDictionary ()!)")]
 		NativeHandle Constructor (CVPixelBuffer pixelBuffer, CGImagePropertyOrientation orientation, VNImageOptions options);
 
 		[Export ("initWithTargetedCVPixelBuffer:orientation:options:completionHandler:")]
 		NativeHandle Constructor (CVPixelBuffer pixelBuffer, CGImagePropertyOrientation orientation, NSDictionary optionsDict, [NullAllowed] VNRequestCompletionHandler completionHandler);
 
+		/// <param name="pixelBuffer">To be added.</param>
+		/// <param name="orientation">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (pixelBuffer, orientation, options.GetDictionary ()!, completionHandler)")]
 		NativeHandle Constructor (CVPixelBuffer pixelBuffer, CGImagePropertyOrientation orientation, VNImageOptions options, VNRequestCompletionHandler completionHandler);
 
 		[Export ("initWithTargetedCGImage:options:")]
 		NativeHandle Constructor (CGImage cgImage, NSDictionary optionsDict);
 
+		/// <param name="cgImage">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (cgImage, options.GetDictionary ()!)")]
 		NativeHandle Constructor (CGImage cgImage, VNImageOptions options);
 
 		[Export ("initWithTargetedCGImage:options:completionHandler:")]
 		NativeHandle Constructor (CGImage cgImage, NSDictionary optionsDict, [NullAllowed] VNRequestCompletionHandler completionHandler);
 
+		/// <param name="cgImage">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (cgImage, options.GetDictionary ()!, completionHandler)")]
 		NativeHandle Constructor (CGImage cgImage, VNImageOptions options, VNRequestCompletionHandler completionHandler);
 
 		[Export ("initWithTargetedCGImage:orientation:options:")]
 		NativeHandle Constructor (CGImage cgImage, CGImagePropertyOrientation orientation, NSDictionary optionsDict);
 
+		/// <param name="cgImage">To be added.</param>
+		/// <param name="orientation">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (cgImage, orientation, options.GetDictionary ()!)")]
 		NativeHandle Constructor (CGImage cgImage, CGImagePropertyOrientation orientation, VNImageOptions options);
 
 		[Export ("initWithTargetedCGImage:orientation:options:completionHandler:")]
 		NativeHandle Constructor (CGImage cgImage, CGImagePropertyOrientation orientation, NSDictionary optionsDict, [NullAllowed] VNRequestCompletionHandler completionHandler);
 
+		/// <param name="cgImage">To be added.</param>
+		/// <param name="orientation">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (cgImage, orientation, options.GetDictionary ()!, completionHandler)")]
 		NativeHandle Constructor (CGImage cgImage, CGImagePropertyOrientation orientation, VNImageOptions options, VNRequestCompletionHandler completionHandler);
 
 		[Export ("initWithTargetedCIImage:options:")]
 		NativeHandle Constructor (CIImage ciImage, NSDictionary optionsDict);
 
+		/// <param name="ciImage">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (ciImage, options.GetDictionary ()!)")]
 		NativeHandle Constructor (CIImage ciImage, VNImageOptions options);
 
 		[Export ("initWithTargetedCIImage:options:completionHandler:")]
 		NativeHandle Constructor (CIImage ciImage, NSDictionary optionsDict, [NullAllowed] VNRequestCompletionHandler completionHandler);
 
+		/// <param name="ciImage">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (ciImage, options.GetDictionary ()!, completionHandler)")]
 		NativeHandle Constructor (CIImage ciImage, VNImageOptions options, VNRequestCompletionHandler completionHandler);
 
 		[Export ("initWithTargetedCIImage:orientation:options:")]
 		NativeHandle Constructor (CIImage ciImage, CGImagePropertyOrientation orientation, NSDictionary optionsDict);
 
+		/// <param name="ciImage">To be added.</param>
+		/// <param name="orientation">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (ciImage, orientation, options.GetDictionary ()!)")]
 		NativeHandle Constructor (CIImage ciImage, CGImagePropertyOrientation orientation, VNImageOptions options);
 
 		[Export ("initWithTargetedCIImage:orientation:options:completionHandler:")]
 		NativeHandle Constructor (CIImage ciImage, CGImagePropertyOrientation orientation, NSDictionary optionsDict, [NullAllowed] VNRequestCompletionHandler completionHandler);
 
+		/// <param name="ciImage">To be added.</param>
+		/// <param name="orientation">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (ciImage, orientation, options.GetDictionary ()!, completionHandler)")]
 		NativeHandle Constructor (CIImage ciImage, CGImagePropertyOrientation orientation, VNImageOptions options, VNRequestCompletionHandler completionHandler);
 
 		[Export ("initWithTargetedImageURL:options:")]
 		NativeHandle Constructor (NSUrl imageUrl, NSDictionary optionsDict);
 
+		/// <param name="imageUrl">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (imageUrl, options.GetDictionary ()!)")]
 		NativeHandle Constructor (NSUrl imageUrl, VNImageOptions options);
 
 		[Export ("initWithTargetedImageURL:options:completionHandler:")]
 		NativeHandle Constructor (NSUrl imageUrl, NSDictionary optionsDict, [NullAllowed] VNRequestCompletionHandler completionHandler);
 
+		/// <param name="imageUrl">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (imageUrl, options.GetDictionary ()!, completionHandler)")]
 		NativeHandle Constructor (NSUrl imageUrl, VNImageOptions options, VNRequestCompletionHandler completionHandler);
 
 		[Export ("initWithTargetedImageURL:orientation:options:")]
 		NativeHandle Constructor (NSUrl imageUrl, CGImagePropertyOrientation orientation, NSDictionary optionsDict);
 
+		/// <param name="imageUrl">To be added.</param>
+		/// <param name="orientation">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (imageUrl, orientation, options.GetDictionary ()!)")]
 		NativeHandle Constructor (NSUrl imageUrl, CGImagePropertyOrientation orientation, VNImageOptions options);
 
 		[Export ("initWithTargetedImageURL:orientation:options:completionHandler:")]
 		NativeHandle Constructor (NSUrl imageUrl, CGImagePropertyOrientation orientation, NSDictionary optionsDict, [NullAllowed] VNRequestCompletionHandler completionHandler);
 
+		/// <param name="imageUrl">To be added.</param>
+		/// <param name="orientation">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (imageUrl, orientation, options.GetDictionary ()!, completionHandler)")]
 		NativeHandle Constructor (NSUrl imageUrl, CGImagePropertyOrientation orientation, VNImageOptions options, VNRequestCompletionHandler completionHandler);
 
 		[Export ("initWithTargetedImageData:options:")]
 		NativeHandle Constructor (NSData imageData, NSDictionary optionsDict);
 
+		/// <param name="imageData">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (imageData, options.GetDictionary ()!)")]
 		NativeHandle Constructor (NSData imageData, VNImageOptions options);
 
 		[Export ("initWithTargetedImageData:options:completionHandler:")]
 		NativeHandle Constructor (NSData imageData, NSDictionary optionsDict, [NullAllowed] VNRequestCompletionHandler completionHandler);
 
+		/// <param name="imageData">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (imageData, options.GetDictionary ()!, completionHandler)")]
 		NativeHandle Constructor (NSData imageData, VNImageOptions options, VNRequestCompletionHandler completionHandler);
 
 		[Export ("initWithTargetedImageData:orientation:options:")]
 		NativeHandle Constructor (NSData imageData, CGImagePropertyOrientation orientation, NSDictionary optionsDict);
 
+		/// <param name="imageData">To be added.</param>
+		/// <param name="orientation">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (imageData, orientation, options.GetDictionary ()!)")]
 		NativeHandle Constructor (NSData imageData, CGImagePropertyOrientation orientation, VNImageOptions options);
 
 		[Export ("initWithTargetedImageData:orientation:options:completionHandler:")]
 		NativeHandle Constructor (NSData imageData, CGImagePropertyOrientation orientation, NSDictionary optionsDict, [NullAllowed] VNRequestCompletionHandler completionHandler);
 
+		/// <param name="imageData">To be added.</param>
+		/// <param name="orientation">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (imageData, orientation, options.GetDictionary ()!, completionHandler)")]
 		NativeHandle Constructor (NSData imageData, CGImagePropertyOrientation orientation, VNImageOptions options, VNRequestCompletionHandler completionHandler);
 	}
@@ -1787,120 +1890,220 @@ namespace Vision {
 		[Export ("initWithTargetedCVPixelBuffer:options:")]
 		NativeHandle Constructor (CVPixelBuffer pixelBuffer, NSDictionary optionsDict);
 
+		/// <param name="pixelBuffer">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (pixelBuffer, options.GetDictionary ()!)")]
 		NativeHandle Constructor (CVPixelBuffer pixelBuffer, VNImageOptions options);
 
 		[Export ("initWithTargetedCVPixelBuffer:options:completionHandler:")]
 		NativeHandle Constructor (CVPixelBuffer pixelBuffer, NSDictionary optionsDict, [NullAllowed] VNRequestCompletionHandler completionHandler);
 
+		/// <param name="pixelBuffer">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (pixelBuffer, options.GetDictionary ()!, completionHandler)")]
 		NativeHandle Constructor (CVPixelBuffer pixelBuffer, VNImageOptions options, VNRequestCompletionHandler completionHandler);
 
 		[Export ("initWithTargetedCVPixelBuffer:orientation:options:")]
 		NativeHandle Constructor (CVPixelBuffer pixelBuffer, CGImagePropertyOrientation orientation, NSDictionary optionsDict);
 
+		/// <param name="pixelBuffer">To be added.</param>
+		/// <param name="orientation">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (pixelBuffer, orientation, options.GetDictionary ()!)")]
 		NativeHandle Constructor (CVPixelBuffer pixelBuffer, CGImagePropertyOrientation orientation, VNImageOptions options);
 
 		[Export ("initWithTargetedCVPixelBuffer:orientation:options:completionHandler:")]
 		NativeHandle Constructor (CVPixelBuffer pixelBuffer, CGImagePropertyOrientation orientation, NSDictionary optionsDict, [NullAllowed] VNRequestCompletionHandler completionHandler);
 
+		/// <param name="pixelBuffer">To be added.</param>
+		/// <param name="orientation">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (pixelBuffer, orientation, options.GetDictionary ()!, completionHandler)")]
 		NativeHandle Constructor (CVPixelBuffer pixelBuffer, CGImagePropertyOrientation orientation, VNImageOptions options, VNRequestCompletionHandler completionHandler);
 
 		[Export ("initWithTargetedCGImage:options:")]
 		NativeHandle Constructor (CGImage cgImage, NSDictionary optionsDict);
 
+		/// <param name="cgImage">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (cgImage, options.GetDictionary ()!)")]
 		NativeHandle Constructor (CGImage cgImage, VNImageOptions options);
 
 		[Export ("initWithTargetedCGImage:options:completionHandler:")]
 		NativeHandle Constructor (CGImage cgImage, NSDictionary optionsDict, [NullAllowed] VNRequestCompletionHandler completionHandler);
 
+		/// <param name="cgImage">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (cgImage, options.GetDictionary ()!, completionHandler)")]
 		NativeHandle Constructor (CGImage cgImage, VNImageOptions options, VNRequestCompletionHandler completionHandler);
 
 		[Export ("initWithTargetedCGImage:orientation:options:")]
 		NativeHandle Constructor (CGImage cgImage, CGImagePropertyOrientation orientation, NSDictionary optionsDict);
 
+		/// <param name="cgImage">To be added.</param>
+		/// <param name="orientation">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (cgImage, orientation, options.GetDictionary ()!)")]
 		NativeHandle Constructor (CGImage cgImage, CGImagePropertyOrientation orientation, VNImageOptions options);
 
 		[Export ("initWithTargetedCGImage:orientation:options:completionHandler:")]
 		NativeHandle Constructor (CGImage cgImage, CGImagePropertyOrientation orientation, NSDictionary optionsDict, [NullAllowed] VNRequestCompletionHandler completionHandler);
 
+		/// <param name="cgImage">To be added.</param>
+		/// <param name="orientation">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (cgImage, orientation, options.GetDictionary ()!, completionHandler)")]
 		NativeHandle Constructor (CGImage cgImage, CGImagePropertyOrientation orientation, VNImageOptions options, VNRequestCompletionHandler completionHandler);
 
 		[Export ("initWithTargetedCIImage:options:")]
 		NativeHandle Constructor (CIImage ciImage, NSDictionary optionsDict);
 
+		/// <param name="ciImage">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (ciImage, options.GetDictionary ()!)")]
 		NativeHandle Constructor (CIImage ciImage, VNImageOptions options);
 
 		[Export ("initWithTargetedCIImage:options:completionHandler:")]
 		NativeHandle Constructor (CIImage ciImage, NSDictionary optionsDict, [NullAllowed] VNRequestCompletionHandler completionHandler);
 
+		/// <param name="ciImage">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (ciImage, options.GetDictionary ()!, completionHandler)")]
 		NativeHandle Constructor (CIImage ciImage, VNImageOptions options, VNRequestCompletionHandler completionHandler);
 
 		[Export ("initWithTargetedCIImage:orientation:options:")]
 		NativeHandle Constructor (CIImage ciImage, CGImagePropertyOrientation orientation, NSDictionary optionsDict);
 
+		/// <param name="ciImage">To be added.</param>
+		/// <param name="orientation">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (ciImage, orientation, options.GetDictionary ()!)")]
 		NativeHandle Constructor (CIImage ciImage, CGImagePropertyOrientation orientation, VNImageOptions options);
 
 		[Export ("initWithTargetedCIImage:orientation:options:completionHandler:")]
 		NativeHandle Constructor (CIImage ciImage, CGImagePropertyOrientation orientation, NSDictionary optionsDict, [NullAllowed] VNRequestCompletionHandler completionHandler);
 
+		/// <param name="ciImage">To be added.</param>
+		/// <param name="orientation">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (ciImage, orientation, options.GetDictionary ()!, completionHandler)")]
 		NativeHandle Constructor (CIImage ciImage, CGImagePropertyOrientation orientation, VNImageOptions options, VNRequestCompletionHandler completionHandler);
 
 		[Export ("initWithTargetedImageURL:options:")]
 		NativeHandle Constructor (NSUrl imageUrl, NSDictionary optionsDict);
 
+		/// <param name="imageUrl">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (imageUrl, options.GetDictionary ()!)")]
 		NativeHandle Constructor (NSUrl imageUrl, VNImageOptions options);
 
 		[Export ("initWithTargetedImageURL:options:completionHandler:")]
 		NativeHandle Constructor (NSUrl imageUrl, NSDictionary optionsDict, [NullAllowed] VNRequestCompletionHandler completionHandler);
 
+		/// <param name="imageUrl">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (imageUrl, options.GetDictionary ()!, completionHandler)")]
 		NativeHandle Constructor (NSUrl imageUrl, VNImageOptions options, VNRequestCompletionHandler completionHandler);
 
 		[Export ("initWithTargetedImageURL:orientation:options:")]
 		NativeHandle Constructor (NSUrl imageUrl, CGImagePropertyOrientation orientation, NSDictionary optionsDict);
 
+		/// <param name="imageUrl">To be added.</param>
+		/// <param name="orientation">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (imageUrl, orientation, options.GetDictionary ()!)")]
 		NativeHandle Constructor (NSUrl imageUrl, CGImagePropertyOrientation orientation, VNImageOptions options);
 
 		[Export ("initWithTargetedImageURL:orientation:options:completionHandler:")]
 		NativeHandle Constructor (NSUrl imageUrl, CGImagePropertyOrientation orientation, NSDictionary optionsDict, [NullAllowed] VNRequestCompletionHandler completionHandler);
 
+		/// <param name="imageUrl">To be added.</param>
+		/// <param name="orientation">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (imageUrl, orientation, options.GetDictionary ()!, completionHandler)")]
 		NativeHandle Constructor (NSUrl imageUrl, CGImagePropertyOrientation orientation, VNImageOptions options, VNRequestCompletionHandler completionHandler);
 
 		[Export ("initWithTargetedImageData:options:")]
 		NativeHandle Constructor (NSData imageData, NSDictionary optionsDict);
 
+		/// <param name="imageData">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (imageData, options.GetDictionary ()!)")]
 		NativeHandle Constructor (NSData imageData, VNImageOptions options);
 
 		[Export ("initWithTargetedImageData:options:completionHandler:")]
 		NativeHandle Constructor (NSData imageData, NSDictionary optionsDict, [NullAllowed] VNRequestCompletionHandler completionHandler);
 
+		/// <param name="imageData">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (imageData, options.GetDictionary ()!, completionHandler)")]
 		NativeHandle Constructor (NSData imageData, VNImageOptions options, VNRequestCompletionHandler completionHandler);
 
 		[Export ("initWithTargetedImageData:orientation:options:")]
 		NativeHandle Constructor (NSData imageData, CGImagePropertyOrientation orientation, NSDictionary optionsDict);
 
+		/// <param name="imageData">To be added.</param>
+		/// <param name="orientation">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (imageData, orientation, options.GetDictionary ()!)")]
 		NativeHandle Constructor (NSData imageData, CGImagePropertyOrientation orientation, VNImageOptions options);
 
 		[Export ("initWithTargetedImageData:orientation:options:completionHandler:")]
 		NativeHandle Constructor (NSData imageData, CGImagePropertyOrientation orientation, NSDictionary optionsDict, [NullAllowed] VNRequestCompletionHandler completionHandler);
 
+		/// <param name="imageData">To be added.</param>
+		/// <param name="orientation">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (imageData, orientation, options.GetDictionary ()!, completionHandler)")]
 		NativeHandle Constructor (NSData imageData, CGImagePropertyOrientation orientation, VNImageOptions options, VNRequestCompletionHandler completionHandler);
 
@@ -1943,120 +2146,220 @@ namespace Vision {
 		[Export ("initWithTargetedCVPixelBuffer:options:")]
 		NativeHandle Constructor (CVPixelBuffer pixelBuffer, NSDictionary optionsDict);
 
+		/// <param name="pixelBuffer">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (pixelBuffer, options.GetDictionary ()!)")]
 		NativeHandle Constructor (CVPixelBuffer pixelBuffer, VNImageOptions options);
 
 		[Export ("initWithTargetedCVPixelBuffer:options:completionHandler:")]
 		NativeHandle Constructor (CVPixelBuffer pixelBuffer, NSDictionary optionsDict, [NullAllowed] VNRequestCompletionHandler completionHandler);
 
+		/// <param name="pixelBuffer">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (pixelBuffer, options.GetDictionary ()!, completionHandler)")]
 		NativeHandle Constructor (CVPixelBuffer pixelBuffer, VNImageOptions options, VNRequestCompletionHandler completionHandler);
 
 		[Export ("initWithTargetedCVPixelBuffer:orientation:options:")]
 		NativeHandle Constructor (CVPixelBuffer pixelBuffer, CGImagePropertyOrientation orientation, NSDictionary optionsDict);
 
+		/// <param name="pixelBuffer">To be added.</param>
+		/// <param name="orientation">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (pixelBuffer, orientation, options.GetDictionary ()!)")]
 		NativeHandle Constructor (CVPixelBuffer pixelBuffer, CGImagePropertyOrientation orientation, VNImageOptions options);
 
 		[Export ("initWithTargetedCVPixelBuffer:orientation:options:completionHandler:")]
 		NativeHandle Constructor (CVPixelBuffer pixelBuffer, CGImagePropertyOrientation orientation, NSDictionary optionsDict, [NullAllowed] VNRequestCompletionHandler completionHandler);
 
+		/// <param name="pixelBuffer">To be added.</param>
+		/// <param name="orientation">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (pixelBuffer, orientation, options.GetDictionary ()!, completionHandler)")]
 		NativeHandle Constructor (CVPixelBuffer pixelBuffer, CGImagePropertyOrientation orientation, VNImageOptions options, VNRequestCompletionHandler completionHandler);
 
 		[Export ("initWithTargetedCGImage:options:")]
 		NativeHandle Constructor (CGImage cgImage, NSDictionary optionsDict);
 
+		/// <param name="cgImage">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (cgImage, options.GetDictionary ()!)")]
 		NativeHandle Constructor (CGImage cgImage, VNImageOptions options);
 
 		[Export ("initWithTargetedCGImage:options:completionHandler:")]
 		NativeHandle Constructor (CGImage cgImage, NSDictionary optionsDict, [NullAllowed] VNRequestCompletionHandler completionHandler);
 
+		/// <param name="cgImage">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (cgImage, options.GetDictionary ()!, completionHandler)")]
 		NativeHandle Constructor (CGImage cgImage, VNImageOptions options, VNRequestCompletionHandler completionHandler);
 
 		[Export ("initWithTargetedCGImage:orientation:options:")]
 		NativeHandle Constructor (CGImage cgImage, CGImagePropertyOrientation orientation, NSDictionary optionsDict);
 
+		/// <param name="cgImage">To be added.</param>
+		/// <param name="orientation">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (cgImage, orientation, options.GetDictionary ()!)")]
 		NativeHandle Constructor (CGImage cgImage, CGImagePropertyOrientation orientation, VNImageOptions options);
 
 		[Export ("initWithTargetedCGImage:orientation:options:completionHandler:")]
 		NativeHandle Constructor (CGImage cgImage, CGImagePropertyOrientation orientation, NSDictionary optionsDict, [NullAllowed] VNRequestCompletionHandler completionHandler);
 
+		/// <param name="cgImage">To be added.</param>
+		/// <param name="orientation">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (cgImage, orientation, options.GetDictionary ()!, completionHandler)")]
 		NativeHandle Constructor (CGImage cgImage, CGImagePropertyOrientation orientation, VNImageOptions options, VNRequestCompletionHandler completionHandler);
 
 		[Export ("initWithTargetedCIImage:options:")]
 		NativeHandle Constructor (CIImage ciImage, NSDictionary optionsDict);
 
+		/// <param name="ciImage">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (ciImage, options.GetDictionary ()!)")]
 		NativeHandle Constructor (CIImage ciImage, VNImageOptions options);
 
 		[Export ("initWithTargetedCIImage:options:completionHandler:")]
 		NativeHandle Constructor (CIImage ciImage, NSDictionary optionsDict, [NullAllowed] VNRequestCompletionHandler completionHandler);
 
+		/// <param name="ciImage">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (ciImage, options.GetDictionary ()!, completionHandler)")]
 		NativeHandle Constructor (CIImage ciImage, VNImageOptions options, VNRequestCompletionHandler completionHandler);
 
 		[Export ("initWithTargetedCIImage:orientation:options:")]
 		NativeHandle Constructor (CIImage ciImage, CGImagePropertyOrientation orientation, NSDictionary optionsDict);
 
+		/// <param name="ciImage">To be added.</param>
+		/// <param name="orientation">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (ciImage, orientation, options.GetDictionary ()!)")]
 		NativeHandle Constructor (CIImage ciImage, CGImagePropertyOrientation orientation, VNImageOptions options);
 
 		[Export ("initWithTargetedCIImage:orientation:options:completionHandler:")]
 		NativeHandle Constructor (CIImage ciImage, CGImagePropertyOrientation orientation, NSDictionary optionsDict, [NullAllowed] VNRequestCompletionHandler completionHandler);
 
+		/// <param name="ciImage">To be added.</param>
+		/// <param name="orientation">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (ciImage, orientation, options.GetDictionary ()!, completionHandler)")]
 		NativeHandle Constructor (CIImage ciImage, CGImagePropertyOrientation orientation, VNImageOptions options, VNRequestCompletionHandler completionHandler);
 
 		[Export ("initWithTargetedImageURL:options:")]
 		NativeHandle Constructor (NSUrl imageUrl, NSDictionary optionsDict);
 
+		/// <param name="imageUrl">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (imageUrl, options.GetDictionary ()!)")]
 		NativeHandle Constructor (NSUrl imageUrl, VNImageOptions options);
 
 		[Export ("initWithTargetedImageURL:options:completionHandler:")]
 		NativeHandle Constructor (NSUrl imageUrl, NSDictionary optionsDict, [NullAllowed] VNRequestCompletionHandler completionHandler);
 
+		/// <param name="imageUrl">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (imageUrl, options.GetDictionary ()!, completionHandler)")]
 		NativeHandle Constructor (NSUrl imageUrl, VNImageOptions options, VNRequestCompletionHandler completionHandler);
 
 		[Export ("initWithTargetedImageURL:orientation:options:")]
 		NativeHandle Constructor (NSUrl imageUrl, CGImagePropertyOrientation orientation, NSDictionary optionsDict);
 
+		/// <param name="imageUrl">To be added.</param>
+		/// <param name="orientation">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (imageUrl, orientation, options.GetDictionary ()!)")]
 		NativeHandle Constructor (NSUrl imageUrl, CGImagePropertyOrientation orientation, VNImageOptions options);
 
 		[Export ("initWithTargetedImageURL:orientation:options:completionHandler:")]
 		NativeHandle Constructor (NSUrl imageUrl, CGImagePropertyOrientation orientation, NSDictionary optionsDict, [NullAllowed] VNRequestCompletionHandler completionHandler);
 
+		/// <param name="imageUrl">To be added.</param>
+		/// <param name="orientation">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (imageUrl, orientation, options.GetDictionary ()!, completionHandler)")]
 		NativeHandle Constructor (NSUrl imageUrl, CGImagePropertyOrientation orientation, VNImageOptions options, VNRequestCompletionHandler completionHandler);
 
 		[Export ("initWithTargetedImageData:options:")]
 		NativeHandle Constructor (NSData imageData, NSDictionary optionsDict);
 
+		/// <param name="imageData">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (imageData, options.GetDictionary ()!)")]
 		NativeHandle Constructor (NSData imageData, VNImageOptions options);
 
 		[Export ("initWithTargetedImageData:options:completionHandler:")]
 		NativeHandle Constructor (NSData imageData, NSDictionary optionsDict, [NullAllowed] VNRequestCompletionHandler completionHandler);
 
+		/// <param name="imageData">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (imageData, options.GetDictionary ()!, completionHandler)")]
 		NativeHandle Constructor (NSData imageData, VNImageOptions options, VNRequestCompletionHandler completionHandler);
 
 		[Export ("initWithTargetedImageData:orientation:options:")]
 		NativeHandle Constructor (NSData imageData, CGImagePropertyOrientation orientation, NSDictionary optionsDict);
 
+		/// <param name="imageData">To be added.</param>
+		/// <param name="orientation">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (imageData, orientation, options.GetDictionary ()!)")]
 		NativeHandle Constructor (NSData imageData, CGImagePropertyOrientation orientation, VNImageOptions options);
 
 		[Export ("initWithTargetedImageData:orientation:options:completionHandler:")]
 		NativeHandle Constructor (NSData imageData, CGImagePropertyOrientation orientation, NSDictionary optionsDict, [NullAllowed] VNRequestCompletionHandler completionHandler);
 
+		/// <param name="imageData">To be added.</param>
+		/// <param name="orientation">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (imageData, orientation, options.GetDictionary ()!, completionHandler)")]
 		NativeHandle Constructor (NSData imageData, CGImagePropertyOrientation orientation, VNImageOptions options, VNRequestCompletionHandler completionHandler);
 
@@ -2607,60 +2910,105 @@ namespace Vision {
 		[Export ("initWithCVPixelBuffer:options:")]
 		NativeHandle Constructor (CVPixelBuffer pixelBuffer, NSDictionary options);
 
+		/// <param name="pixelBuffer">To be added.</param>
+		/// <param name="imageOptions">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (pixelBuffer, imageOptions.GetDictionary ()!)")]
 		NativeHandle Constructor (CVPixelBuffer pixelBuffer, VNImageOptions imageOptions);
 
 		[Export ("initWithCVPixelBuffer:orientation:options:")]
 		NativeHandle Constructor (CVPixelBuffer pixelBuffer, CGImagePropertyOrientation orientation, NSDictionary options);
 
+		/// <param name="pixelBuffer">To be added.</param>
+		/// <param name="orientation">To be added.</param>
+		/// <param name="imageOptions">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (pixelBuffer, orientation, imageOptions.GetDictionary ()!)")]
 		NativeHandle Constructor (CVPixelBuffer pixelBuffer, CGImagePropertyOrientation orientation, VNImageOptions imageOptions);
 
 		[Export ("initWithCGImage:options:")]
 		NativeHandle Constructor (CGImage image, NSDictionary options);
 
+		/// <param name="image">To be added.</param>
+		/// <param name="imageOptions">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (image, imageOptions.GetDictionary ()!)")]
 		NativeHandle Constructor (CGImage image, VNImageOptions imageOptions);
 
 		[Export ("initWithCGImage:orientation:options:")]
 		NativeHandle Constructor (CGImage image, CGImagePropertyOrientation orientation, NSDictionary options);
 
+		/// <param name="image">To be added.</param>
+		/// <param name="orientation">To be added.</param>
+		/// <param name="imageOptions">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (image, orientation, imageOptions.GetDictionary ()!)")]
 		NativeHandle Constructor (CGImage image, CGImagePropertyOrientation orientation, VNImageOptions imageOptions);
 
 		[Export ("initWithCIImage:options:")]
 		NativeHandle Constructor (CIImage image, NSDictionary options);
 
+		/// <param name="image">To be added.</param>
+		/// <param name="imageOptions">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (image, imageOptions.GetDictionary ()!)")]
 		NativeHandle Constructor (CIImage image, VNImageOptions imageOptions);
 
 		[Export ("initWithCIImage:orientation:options:")]
 		NativeHandle Constructor (CIImage image, CGImagePropertyOrientation orientation, NSDictionary options);
 
+		/// <param name="image">To be added.</param>
+		/// <param name="orientation">To be added.</param>
+		/// <param name="imageOptions">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (image, orientation, imageOptions.GetDictionary ()!)")]
 		NativeHandle Constructor (CIImage image, CGImagePropertyOrientation orientation, VNImageOptions imageOptions);
 
 		[Export ("initWithURL:options:")]
 		NativeHandle Constructor (NSUrl imageUrl, NSDictionary options);
 
+		/// <param name="imageUrl">To be added.</param>
+		/// <param name="imageOptions">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (imageUrl, imageOptions.GetDictionary ()!)")]
 		NativeHandle Constructor (NSUrl imageUrl, VNImageOptions imageOptions);
 
 		[Export ("initWithURL:orientation:options:")]
 		NativeHandle Constructor (NSUrl imageUrl, CGImagePropertyOrientation orientation, NSDictionary options);
 
+		/// <param name="imageUrl">To be added.</param>
+		/// <param name="orientation">To be added.</param>
+		/// <param name="imageOptions">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (imageUrl, orientation, imageOptions.GetDictionary ()!)")]
 		NativeHandle Constructor (NSUrl imageUrl, CGImagePropertyOrientation orientation, VNImageOptions imageOptions);
 
 		[Export ("initWithData:options:")]
 		NativeHandle Constructor (NSData imageData, NSDictionary options);
 
+		/// <param name="imageData">To be added.</param>
+		/// <param name="imageOptions">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (imageData, imageOptions.GetDictionary ()!)")]
 		NativeHandle Constructor (NSData imageData, VNImageOptions imageOptions);
 
 		[Export ("initWithData:orientation:options:")]
 		NativeHandle Constructor (NSData imageData, CGImagePropertyOrientation orientation, NSDictionary options);
 
+		/// <param name="imageData">To be added.</param>
+		/// <param name="orientation">To be added.</param>
+		/// <param name="imageOptions">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (imageData, orientation, imageOptions.GetDictionary ()!)")]
 		NativeHandle Constructor (NSData imageData, CGImagePropertyOrientation orientation, VNImageOptions imageOptions);
 
@@ -2761,120 +3109,220 @@ namespace Vision {
 		[Export ("initWithTargetedCVPixelBuffer:options:")]
 		NativeHandle Constructor (CVPixelBuffer pixelBuffer, NSDictionary optionsDict);
 
+		/// <param name="pixelBuffer">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (pixelBuffer, options.GetDictionary ()!)")]
 		NativeHandle Constructor (CVPixelBuffer pixelBuffer, VNImageOptions options);
 
 		[Export ("initWithTargetedCVPixelBuffer:options:completionHandler:")]
 		NativeHandle Constructor (CVPixelBuffer pixelBuffer, NSDictionary optionsDict, [NullAllowed] VNRequestCompletionHandler completionHandler);
 
+		/// <param name="pixelBuffer">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (pixelBuffer, options.GetDictionary ()!, completionHandler)")]
 		NativeHandle Constructor (CVPixelBuffer pixelBuffer, VNImageOptions options, VNRequestCompletionHandler completionHandler);
 
 		[Export ("initWithTargetedCVPixelBuffer:orientation:options:")]
 		NativeHandle Constructor (CVPixelBuffer pixelBuffer, CGImagePropertyOrientation orientation, NSDictionary optionsDict);
 
+		/// <param name="pixelBuffer">To be added.</param>
+		/// <param name="orientation">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (pixelBuffer, orientation, options.GetDictionary ()!)")]
 		NativeHandle Constructor (CVPixelBuffer pixelBuffer, CGImagePropertyOrientation orientation, VNImageOptions options);
 
 		[Export ("initWithTargetedCVPixelBuffer:orientation:options:completionHandler:")]
 		NativeHandle Constructor (CVPixelBuffer pixelBuffer, CGImagePropertyOrientation orientation, NSDictionary optionsDict, [NullAllowed] VNRequestCompletionHandler completionHandler);
 
+		/// <param name="pixelBuffer">To be added.</param>
+		/// <param name="orientation">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (pixelBuffer, orientation, options.GetDictionary ()!, completionHandler)")]
 		NativeHandle Constructor (CVPixelBuffer pixelBuffer, CGImagePropertyOrientation orientation, VNImageOptions options, VNRequestCompletionHandler completionHandler);
 
 		[Export ("initWithTargetedCGImage:options:")]
 		NativeHandle Constructor (CGImage cgImage, NSDictionary optionsDict);
 
+		/// <param name="cgImage">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (cgImage, options.GetDictionary ()!)")]
 		NativeHandle Constructor (CGImage cgImage, VNImageOptions options);
 
 		[Export ("initWithTargetedCGImage:options:completionHandler:")]
 		NativeHandle Constructor (CGImage cgImage, NSDictionary optionsDict, [NullAllowed] VNRequestCompletionHandler completionHandler);
 
+		/// <param name="cgImage">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (cgImage, options.GetDictionary ()!, completionHandler)")]
 		NativeHandle Constructor (CGImage cgImage, VNImageOptions options, VNRequestCompletionHandler completionHandler);
 
 		[Export ("initWithTargetedCGImage:orientation:options:")]
 		NativeHandle Constructor (CGImage cgImage, CGImagePropertyOrientation orientation, NSDictionary optionsDict);
 
+		/// <param name="cgImage">To be added.</param>
+		/// <param name="orientation">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (cgImage, orientation, options.GetDictionary ()!)")]
 		NativeHandle Constructor (CGImage cgImage, CGImagePropertyOrientation orientation, VNImageOptions options);
 
 		[Export ("initWithTargetedCGImage:orientation:options:completionHandler:")]
 		NativeHandle Constructor (CGImage cgImage, CGImagePropertyOrientation orientation, NSDictionary optionsDict, [NullAllowed] VNRequestCompletionHandler completionHandler);
 
+		/// <param name="cgImage">To be added.</param>
+		/// <param name="orientation">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (cgImage, orientation, options.GetDictionary ()!, completionHandler)")]
 		NativeHandle Constructor (CGImage cgImage, CGImagePropertyOrientation orientation, VNImageOptions options, VNRequestCompletionHandler completionHandler);
 
 		[Export ("initWithTargetedCIImage:options:")]
 		NativeHandle Constructor (CIImage ciImage, NSDictionary optionsDict);
 
+		/// <param name="ciImage">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (ciImage, options.GetDictionary ()!)")]
 		NativeHandle Constructor (CIImage ciImage, VNImageOptions options);
 
 		[Export ("initWithTargetedCIImage:options:completionHandler:")]
 		NativeHandle Constructor (CIImage ciImage, NSDictionary optionsDict, [NullAllowed] VNRequestCompletionHandler completionHandler);
 
+		/// <param name="ciImage">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (ciImage, options.GetDictionary ()!, completionHandler)")]
 		NativeHandle Constructor (CIImage ciImage, VNImageOptions options, VNRequestCompletionHandler completionHandler);
 
 		[Export ("initWithTargetedCIImage:orientation:options:")]
 		NativeHandle Constructor (CIImage ciImage, CGImagePropertyOrientation orientation, NSDictionary optionsDict);
 
+		/// <param name="ciImage">To be added.</param>
+		/// <param name="orientation">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (ciImage, orientation, options.GetDictionary ()!)")]
 		NativeHandle Constructor (CIImage ciImage, CGImagePropertyOrientation orientation, VNImageOptions options);
 
 		[Export ("initWithTargetedCIImage:orientation:options:completionHandler:")]
 		NativeHandle Constructor (CIImage ciImage, CGImagePropertyOrientation orientation, NSDictionary optionsDict, [NullAllowed] VNRequestCompletionHandler completionHandler);
 
+		/// <param name="ciImage">To be added.</param>
+		/// <param name="orientation">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (ciImage, orientation, options.GetDictionary ()!, completionHandler)")]
 		NativeHandle Constructor (CIImage ciImage, CGImagePropertyOrientation orientation, VNImageOptions options, VNRequestCompletionHandler completionHandler);
 
 		[Export ("initWithTargetedImageURL:options:")]
 		NativeHandle Constructor (NSUrl imageUrl, NSDictionary optionsDict);
 
+		/// <param name="imageUrl">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (imageUrl, options.GetDictionary ()!)")]
 		NativeHandle Constructor (NSUrl imageUrl, VNImageOptions options);
 
 		[Export ("initWithTargetedImageURL:options:completionHandler:")]
 		NativeHandle Constructor (NSUrl imageUrl, NSDictionary optionsDict, [NullAllowed] VNRequestCompletionHandler completionHandler);
 
+		/// <param name="imageUrl">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (imageUrl, options.GetDictionary ()!, completionHandler)")]
 		NativeHandle Constructor (NSUrl imageUrl, VNImageOptions options, VNRequestCompletionHandler completionHandler);
 
 		[Export ("initWithTargetedImageURL:orientation:options:")]
 		NativeHandle Constructor (NSUrl imageUrl, CGImagePropertyOrientation orientation, NSDictionary optionsDict);
 
+		/// <param name="imageUrl">To be added.</param>
+		/// <param name="orientation">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (imageUrl, orientation, options.GetDictionary ()!)")]
 		NativeHandle Constructor (NSUrl imageUrl, CGImagePropertyOrientation orientation, VNImageOptions options);
 
 		[Export ("initWithTargetedImageURL:orientation:options:completionHandler:")]
 		NativeHandle Constructor (NSUrl imageUrl, CGImagePropertyOrientation orientation, NSDictionary optionsDict, [NullAllowed] VNRequestCompletionHandler completionHandler);
 
+		/// <param name="imageUrl">To be added.</param>
+		/// <param name="orientation">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (imageUrl, orientation, options.GetDictionary ()!, completionHandler)")]
 		NativeHandle Constructor (NSUrl imageUrl, CGImagePropertyOrientation orientation, VNImageOptions options, VNRequestCompletionHandler completionHandler);
 
 		[Export ("initWithTargetedImageData:options:")]
 		NativeHandle Constructor (NSData imageData, NSDictionary optionsDict);
 
+		/// <param name="imageData">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (imageData, options.GetDictionary ()!)")]
 		NativeHandle Constructor (NSData imageData, VNImageOptions options);
 
 		[Export ("initWithTargetedImageData:options:completionHandler:")]
 		NativeHandle Constructor (NSData imageData, NSDictionary optionsDict, [NullAllowed] VNRequestCompletionHandler completionHandler);
 
+		/// <param name="imageData">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (imageData, options.GetDictionary ()!, completionHandler)")]
 		NativeHandle Constructor (NSData imageData, VNImageOptions options, VNRequestCompletionHandler completionHandler);
 
 		[Export ("initWithTargetedImageData:orientation:options:")]
 		NativeHandle Constructor (NSData imageData, CGImagePropertyOrientation orientation, NSDictionary optionsDict);
 
+		/// <param name="imageData">To be added.</param>
+		/// <param name="orientation">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (imageData, orientation, options.GetDictionary ()!)")]
 		NativeHandle Constructor (NSData imageData, CGImagePropertyOrientation orientation, VNImageOptions options);
 
 		[Export ("initWithTargetedImageData:orientation:options:completionHandler:")]
 		NativeHandle Constructor (NSData imageData, CGImagePropertyOrientation orientation, NSDictionary optionsDict, [NullAllowed] VNRequestCompletionHandler completionHandler);
 
+		/// <param name="imageData">To be added.</param>
+		/// <param name="orientation">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (imageData, orientation, options.GetDictionary ()!, completionHandler)")]
 		NativeHandle Constructor (NSData imageData, CGImagePropertyOrientation orientation, VNImageOptions options, VNRequestCompletionHandler completionHandler);
 
@@ -3048,6 +3496,9 @@ namespace Vision {
 	[Protocol]
 	interface VNRequestRevisionProviding {
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("requestRevision")]
 		VNRequestRevision RequestRevision { get; }

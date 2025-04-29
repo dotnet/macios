@@ -107,9 +107,6 @@ namespace ModelIO {
 
 #if NET
 	/// <summary>Provides the extent of voxel data.</summary>
-	///     <remarks>To be added.</remarks>
-	/// <summary>To be added.</summary>
-	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

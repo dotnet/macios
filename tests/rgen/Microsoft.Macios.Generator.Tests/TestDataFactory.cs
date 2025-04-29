@@ -612,7 +612,7 @@ static class TestDataFactory {
 				]
 				: [
 					"ObjCRuntime.INativeObject",
-					$"System.IEquatable<{nsObjectName ?? "Foundation.NSObject"}>",
+					$"System.IEquatable<Foundation.NSObject>",
 					"System.IDisposable",
 					"Foundation.INSObjectFactory",
 					"Foundation.INSObjectProtocol"

@@ -241,6 +241,7 @@ namespace MetalPerformanceShaders {
 	/// <summary>Flagging enumeration for options available to binary convolution kernels.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
+	[Flags]
 	public enum MPSCnnBinaryConvolutionFlags : ulong {
 		/// <summary>To be added.</summary>
 		None = 0,

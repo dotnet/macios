@@ -69,7 +69,7 @@ namespace Cecil.Tests {
 			} finally {
 				Console.WriteLine ($"There's a total of {totalWarnings} warnings.");
 			}
-			Assert.AreEqual (638, totalWarnings, "Total warnings"); // this is just to see how the warning count changes as issues are fixed.
+			Assert.AreEqual (387, totalWarnings, "Total warnings"); // this is just to see how the warning count changes as issues are fixed.
 		}
 
 		public record ObsoletedFailure : IComparable {
@@ -193,7 +193,6 @@ namespace Cecil.Tests {
 			"Foundation.NSString Foundation.NSUrl::UbiquitousItemIsDownloadingKey()",
 			"Foundation.NSUrl.get_UbiquitousItemIsDownloadingKey()",
 			"Foundation.NSUrlSessionConfiguration.BackgroundSessionConfiguration(System.String)",
-			"Foundation.NSUserDefaults..ctor(System.String)",
 			"GameController.GCGamepadSnapShotDataV100",
 			"GameController.GCMicroGamepadSnapshot.TryGetSnapshotData(Foundation.NSData, out GameController.GCMicroGamepadSnapshotData&)",
 			"GameController.GCMicroGamepadSnapshot.TryGetSnapshotData(Foundation.NSData, out GameController.GCMicroGamepadSnapShotDataV100&)",
@@ -229,31 +228,6 @@ namespace Cecil.Tests {
 			"MobileCoreServices.UTType.IsDynamic(System.String)",
 			"PassKit.PKShareablePassMetadata..ctor(System.String, System.String, CoreGraphics.CGImage, System.String, System.String, System.String, System.String, System.String, System.Boolean)",
 			"PassKit.PKShareablePassMetadata..ctor(System.String, System.String, System.String, CoreGraphics.CGImage, System.String, System.String)",
-			"Security.Authorization.ExecuteWithPrivileges(System.String, Security.AuthorizationFlags, System.String[])",
-			"Security.SecAccessible Security.SecAccessible::Always",
-			"Security.SecAccessible Security.SecAccessible::AlwaysThisDeviceOnly",
-			"Security.SecCertificate.GetSerialNumber()",
-			"Security.SecKey.Decrypt(Security.SecPadding, System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr&)",
-			"Security.SecKey.Encrypt(Security.SecPadding, System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr&)",
-			"Security.SecKey.RawSign(Security.SecPadding, System.IntPtr, System.Int32, out System.Byte[]&)",
-			"Security.SecKey.RawVerify(Security.SecPadding, System.IntPtr, System.Int32, System.IntPtr, System.Int32)",
-			"Security.SecProtocolOptions.AddTlsCipherSuiteGroup(Security.SslCipherSuiteGroup)",
-			"Security.SecSharedCredential.RequestSharedWebCredential(System.String, System.String, System.Action`2<Security.SecSharedCredentialInfo[],Foundation.NSError>)",
-			"Security.SecTrust.Evaluate()",
-			"Security.SecTrust.Evaluate(CoreFoundation.DispatchQueue, Security.SecTrustCallback)",
-			"Security.SecTrust.GetPublicKey()",
-			"Security.SslContext.GetAlpnProtocols()",
-			"Security.SslContext.GetAlpnProtocols(out System.Int32&)",
-			"Security.SslContext.GetRequestedPeerName()",
-			"Security.SslContext.ReHandshake()",
-			"Security.SslContext.SetAlpnProtocols(System.String[])",
-			"Security.SslContext.SetEncryptionCertificate(Security.SecIdentity, System.Collections.Generic.IEnumerable`1<Security.SecCertificate>)",
-			"Security.SslContext.SetError(Security.SecStatusCode)",
-			"Security.SslContext.SetOcspResponse(Foundation.NSData)",
-			"Security.SslContext.SetSessionConfig(Foundation.NSString)",
-			"Security.SslContext.SetSessionConfig(Security.SslSessionConfig)",
-			"Security.SslContext.SetSessionTickets(System.Boolean)",
-			"Security.SslProtocol Security.SecProtocolMetadata::NegotiatedProtocolVersion()",
 			"Speech.SFVoiceAnalytics Speech.SFTranscriptionSegment::VoiceAnalytics()",
 			"System.Boolean AVFoundation.AVCaptureConnection::SupportsVideoMaxFrameDuration()",
 			"System.Boolean AVFoundation.AVCaptureConnection::SupportsVideoMinFrameDuration()",
@@ -262,7 +236,6 @@ namespace Cecil.Tests {
 			"System.Boolean AVFoundation.AVCaptureResolvedPhotoSettings::DualCameraFusionEnabled()",
 			"System.Boolean CoreGraphics.CGColorSpace::IsHdr()",
 			"System.Boolean NetworkExtension.NEFilterProviderConfiguration::FilterBrowsers()",
-			"System.Boolean Security.SecRecord::UseNoAuthenticationUI()",
 			"System.Double Speech.SFTranscription::AveragePauseDuration()",
 			"System.Double Speech.SFTranscription::SpeakingRate()",
 			"System.String PassKit.PKAddShareablePassConfiguration::ProvisioningPolicyIdentifier()",

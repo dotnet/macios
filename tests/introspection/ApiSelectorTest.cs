@@ -1340,18 +1340,6 @@ namespace Introspection {
 			// MPSGraphExecutable
 			case "initWithMPSGraphPackageAtURL:compilationDescriptor:":
 			case "initWithCoreMLPackageAtURL:compilationDescriptor:":
-			// NSAttributedString
-			case "initWithHTML:documentAttributes:":
-			case "initWithRTF:documentAttributes:":
-			case "initWithRTFD:documentAttributes:":
-			case "initWithURL:options:documentAttributes:error:":
-			case "initWithFileURL:options:documentAttributes:error:":
-			// NSUrlProtectionSpace
-			case "initWithHost:port:protocol:realm:authenticationMethod:":
-			case "initWithProxyHost:port:type:realm:authenticationMethod:":
-			// NSUserDefaults
-			case "initWithSuiteName:":
-			case "initWithUser:":
 			// GKScore
 			case "initWithCategory:":
 			case "initWithLeaderboardIdentifier:":
@@ -1360,8 +1348,6 @@ namespace Introspection {
 			case "initWithProfileNumber:profileLabel:defaultProfile:":
 			case "initWithProfileNumber:profileName:":
 			case "initWithProfileNumber:profileLabel:":
-			// MPSCnnBinaryConvolutionNode and MPSCnnBinaryFullyConnectedNode
-			case "initWithSource:weights:outputBiasTerms:outputScaleTerms:inputBiasTerms:inputScaleTerms:type:flags:":
 			// UISegmentedControl
 			case "initWithItems:":
 			// CLBeaconRegion
@@ -1373,9 +1359,6 @@ namespace Introspection {
 			case "initWithSSID:passphrase:isWEP:":
 			case "initWithSSIDPrefix:":
 			case "initWithSSIDPrefix:passphrase:isWEP:":
-			// MapKit
-			case "initExcludingCategories:":
-			case "initIncludingCategories:":
 				var mi = m as MethodInfo;
 				return mi is not null && !mi.IsPublic && (mi.ReturnType.Name == "IntPtr" || mi.ReturnType.Name == "NativeHandle");
 			// NSAppleEventDescriptor
@@ -1385,9 +1368,6 @@ namespace Introspection {
 			case "initWithLocalIdentifier:":
 			case "initWithCollaborationIdentifier:":
 				return true;
-			// CloudKit
-			case "initWithExcludedZoneIDs:":
-			case "initWithZoneIDs:":
 			// DDDevicePickerViewController
 			case "initWithBrowseDescriptor:parameters:":
 				return true;

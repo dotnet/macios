@@ -1851,7 +1851,17 @@ namespace Contacts {
 		[Export ("authorizationStatusForEntityType:")]
 		CNAuthorizationStatus GetAuthorizationStatus (CNEntityType entityType);
 
-		[Async]
+		[Async (XmlDocs = """
+			<param name="entityType">To be added.</param>
+			<summary>Requests access to the user's contacts.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous RequestAccess operation.   The value of the TResult parameter is a Contacts.CNContactStoreRequestAccessHandler.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The RequestAccessAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("requestAccessForEntityType:completionHandler:")]
 		void RequestAccess (CNEntityType entityType, CNContactStoreRequestAccessHandler completionHandler);
 

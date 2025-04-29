@@ -74,9 +74,6 @@ Copyright (C) 2011-2013 Xamarin. All rights reserved.
 		<MakeDir Condition="'$(MtouchTargetsEnabled)' And '$(IsMacEnabled)' == 'true'" SessionId="$(BuildSessionId)" Directories="$(DeviceSpecificOutputPath)AppBundle" />
 		<!--Zip AppBundle-->
 		<Zip SessionId="$(BuildSessionId)" Condition="'$(MtouchTargetsEnabled)' And '$(IsMacEnabled)' == 'true'" ZipPath="$(ZipPath)" Recursive="true" Sources="$(DeviceSpecificOutputPath)$(_AppBundleName)$(AppBundleExtension)" OutputFile="$(DeviceSpecificOutputPath)AppBundle\$(_AppBundleName).zip" WorkingDirectory="$(DeviceSpecificOutputPath)AppBundle" />
-		<!--Copy Zip from Mac-->
-		<Message Text="$(DeviceSpecificOutputPath)AppBundle\$(_AppBundleName).zip" />
-		<CopyFileFromBuildServer Condition="'$(MtouchTargetsEnabled)' And '$(IsMacEnabled)' == 'true'" SessionId="$(BuildSessionId)" File="$(DeviceSpecificOutputPath)AppBundle\$(_AppBundleName).zip" />
 		<!--Unzip App Bundle on Windows-->
 		<Unzip Condition="Exists('$(DeviceSpecificOutputPath)AppBundle\$(_AppBundleName).zip')" ZipFilePath="$(DeviceSpecificOutputPath)AppBundle\$(_AppBundleName).zip" ExtractionPath="$(DeviceSpecificOutputPath)AppBundle\$(_AppBundleName)$(AppBundleExtension)" />
 		<!-- Delete Zip file -->

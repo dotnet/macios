@@ -145,9 +145,9 @@ stages:
         displayName: Create credscan dummy ignore file
 
       - task: UseDotNet@2
-        displayName: Install .NET 9.x
+        displayName: Install .NET $(DotNetPreviewSdkVersion)
         inputs:
-          version: 9.x
+          version: $(DotNetPreviewSdkVersion).x
           includePreviewVersions: true
 
       - task: DownloadPipelineArtifact@2

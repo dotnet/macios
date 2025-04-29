@@ -6,10 +6,10 @@ parameters:
 
 steps:
 - task: UseDotNet@2
-  displayName: "Source Index: Use .NET 8 SDK"
+  displayName: Use .NET $(DotNetSdkVersion) SDK
   inputs:
     packageType: sdk
-    version: 8.0.x
+    version: $(DotNetSdkVersion).x
     installationPath: $(Agent.TempDirectory)/dotnet
     workingDirectory: $(Agent.TempDirectory)
 

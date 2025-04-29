@@ -12,11 +12,12 @@ steps:
   - ${{ if eq(parameters.enableMicrobuild, 'true') }}:
     - ${{ if eq(parameters.enableMicrobuildForMacAndLinux, 'true') }}:
       # Needed to download the MicroBuild plugin nupkgs on Mac and Linux when nuget.exe is unavailable
+      # Workaround for ESRP CLI on Linux - https://github.com/dotnet/source-build/issues/4964
       - task: UseDotNet@2
-        displayName: Install .NET 8.0 SDK for MicroBuild Plugin
+        displayName: Install .NET $(DotNetSdkVersion) SDK for MicroBuild Plugin
         inputs:
           packageType: sdk
-          version: 8.0.x
+          version: $(DotNetSdkVersion).x
           installationPath: ${{ parameters.microBuildOutputFolder }}/.dotnet
           workingDirectory: ${{ parameters.microBuildOutputFolder }}
         condition: and(succeeded(), ne(variables['Agent.Os'], 'Windows_NT'))
@@ -49,17 +50,7 @@ steps:
           )
         ))
 
-    # Workaround for ESRP CLI on Linux - https://github.com/dotnet/source-build/issues/4964
     - ${{ if eq(parameters.enableMicrobuildForMacAndLinux, 'true') }}:
-      - task: UseDotNet@2
-        displayName: Install .NET 9.0 SDK for ESRP CLI Workaround
-        inputs:
-          packageType: sdk
-          version: 9.0.x
-          installationPath: ${{ parameters.microBuildOutputFolder }}/.dotnet
-          workingDirectory: ${{ parameters.microBuildOutputFolder }}
-        condition: and(succeeded(), eq(variables['Agent.OS'], 'Linux'))
-
       - task: PowerShell@2
         displayName: Workaround for ESRP CLI on Linux
         inputs:

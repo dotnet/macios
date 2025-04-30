@@ -129,9 +129,9 @@
     <Error Condition="Exists($(AssetManifestPath))" Text="The manifest file '$(AssetManifestPath)' already exists." />
 
     <ItemGroup>
-      <ItemsToPush Include="$(NupkgPath)\*.nupkg" />
+      <ItemsToPush Include="$(NupkgPath)\*.nupkg" Kind="Package" />
       <WorkloadArtifacts Include="$(NupkgPath)\*.zip" />
-      <ItemsToPush Include="@(WorkloadArtifacts)" PublishFlatContainer="true" RelativeBlobPath="macios/$(_PackageVersion)/%(Filename)%(Extension)" />
+      <ItemsToPush Include="@(WorkloadArtifacts)" PublishFlatContainer="true" RelativeBlobPath="macios/$(_PackageVersion)/%(Filename)%(Extension)" Kind="Blob" />
     </ItemGroup>
 
     <Error Condition="'@(ItemsToPush)' == ''" Text="No packages to push." />

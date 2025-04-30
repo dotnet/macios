@@ -14299,8 +14299,6 @@ M:NetworkExtension.NEFilterPacketProvider.DelayCurrentPacket(NetworkExtension.NE
 M:NetworkExtension.NEFilterProvider.HandleReport(NetworkExtension.NEFilterReport)
 M:NetworkExtension.NEFilterRule.#ctor(NetworkExtension.NENetworkRule,NetworkExtension.NEFilterAction)
 M:NetworkExtension.NEFilterSettings.#ctor(NetworkExtension.NEFilterRule[],NetworkExtension.NEFilterAction)
-M:NetworkExtension.NEHotspotConfiguration.#ctor(System.String,System.Boolean)
-M:NetworkExtension.NEHotspotConfiguration.#ctor(System.String,System.String,System.Boolean,System.Boolean)
 M:NetworkExtension.NEHotspotConfigurationManager.JoinAccessoryHotspot(AccessorySetupKit.ASAccessory,System.String,NetworkExtension.NEHotspotConfigurationManagerJoinHotspotCallback)
 M:NetworkExtension.NEHotspotConfigurationManager.JoinAccessoryHotspotAsync(AccessorySetupKit.ASAccessory,System.String)
 M:NetworkExtension.NEHotspotConfigurationManager.JoinAccessoryHotspotWithoutSecurit(AccessorySetupKit.ASAccessory,NetworkExtension.NEHotspotConfigurationManagerJoinHotspotCallback)

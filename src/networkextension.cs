@@ -4410,11 +4410,11 @@ namespace NetworkExtension {
 
 		[Internal]
 		[Export ("initWithSSID:")]
-		IntPtr initWithSsid (string ssid);
+		IntPtr _InitWithSsid (string ssid);
 
 		[Internal]
 		[Export ("initWithSSID:passphrase:isWEP:")]
-		IntPtr initWithSsid (string ssid, string passphrase, bool isWep);
+		IntPtr _InitWithSsidAndPassprase (string ssid, string passphrase, bool isWep);
 
 		/// <param name="ssid">To be added.</param>
 		/// <param name="eapSettings">To be added.</param>
@@ -4434,13 +4434,13 @@ namespace NetworkExtension {
 		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("initWithSSIDPrefix:")]
-		IntPtr initWithSsidPrefix (string ssidPrefix);
+		IntPtr _InitWithSsidPrefix (string ssidPrefix);
 
 		[Internal]
 		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("initWithSSIDPrefix:passphrase:isWEP:")]
-		IntPtr initWithSsidPrefix (string ssidPrefix, string passphrase, bool isWep);
+		IntPtr _InitWithSsidPrefixAndPassphrase (string ssidPrefix, string passphrase, bool isWep);
 
 		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]

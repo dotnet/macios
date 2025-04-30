@@ -2,6 +2,8 @@
 
 using System.IO;
 using System.IO.Compression;
+using System.Reflection.Metadata;
+using System.Reflection.PortableExecutable;
 
 #nullable enable
 
@@ -332,11 +334,16 @@ namespace Xamarin.Tests {
 
 			// Copy the app bundle to Windows so that we can inspect the results.
 			properties ["CopyAppBundleToWindows"] = "true";
+			// Check for updated files on the remote output and update them locally so the app is ready for debug
+			properties ["KeepLocalOutputUpToDate"] = "true";
+			// Don't clean the zip file with the updated files from the remote side so they can be asserted
+			properties ["CleanChangedOutputFilesZipFile"] = "false";
 
 			var result = DotNet.AssertBuild (project_path, properties, timeout: TimeSpan.FromMinutes (15));
 			AssertThatLinkerExecuted (result);
 
 			var objDir = GetObjDir (project_path, platform, runtimeIdentifiers, configuration);
+
 			var zippedAppBundlePath = Path.Combine (objDir, "AppBundle.zip");
 			Assert.That (zippedAppBundlePath, Does.Exist, "AppBundle.zip");
 
@@ -358,6 +365,63 @@ namespace Xamarin.Tests {
 			Assert.AreEqual ("MySimpleApp", infoPlist.GetString ("CFBundleDisplayName").Value, "CFBundleDisplayName");
 			Assert.AreEqual ("3.14", infoPlist.GetString ("CFBundleVersion").Value, "CFBundleVersion");
 			Assert.AreEqual ("3.14", infoPlist.GetString ("CFBundleShortVersionString").Value, "CFBundleShortVersionString");
+
+			//Validate that the output assemblies report file with the list of local assemblies, lengths and MVIDs has been created
+			var outputAssembliesReportFileName = "OutputAssembliesReport.txt";
+			var outputAssembliesReportFile = Path.Combine (objDir, outputAssembliesReportFileName);
+			Assert.That (outputAssembliesReportFile, Does.Exist, outputAssembliesReportFileName);
+
+			//Validate that the file with the updated assemblies to replace locally has been created
+			var zippedChangedOutputFilesFileName = "ChangedOutputFiles.zip";
+			var zippedChangedOutputFiles = Path.Combine (objDir, zippedChangedOutputFilesFileName);
+			Assert.That (zippedChangedOutputFiles, Does.Exist, zippedChangedOutputFilesFileName);
+
+			//Create a directory in the obj to extract the updated assemblies
+			var changedOutputFilesDirectory = Path.Combine (objDir, "ChangedOutputFiles");
+			Directory.CreateDirectory (changedOutputFilesDirectory);
+
+			//Extract the updated assemblies from the zip file
+			using var changedOutputFilesZip = ZipFile.OpenRead (zippedChangedOutputFiles);
+			ZipHelpers.DumpZipFile (changedOutputFilesZip, zippedChangedOutputFiles);
+			changedOutputFilesZip.ExtractToDirectory (changedOutputFilesDirectory, overwriteFiles: true);
+
+			//Reads the output assemblies report file
+			var outputAssembliesReportFileList = GetOutputAssembliesReportFileList (outputAssembliesReportFile);
+			var changedOutputAssemblies = Directory.GetFiles (changedOutputFilesDirectory, "*.dll", SearchOption.TopDirectoryOnly);
+
+			foreach (var file in changedOutputAssemblies) {
+				var fileName = Path.GetFileName (file);
+				var fileInReport = outputAssembliesReportFileList.TryGetValue (fileName, out (long length, Guid mvid) localInfo);
+
+				if (fileInReport) {
+					var fileInfo = new FileInfo (file);
+					using Stream stream = fileInfo.OpenRead ();
+					using var peReader = new PEReader (stream);
+					MetadataReader metadataReader = peReader.GetMetadataReader ();
+					Guid mvid = metadataReader.GetGuid (metadataReader.GetModuleDefinition ().Mvid);
+					var fileWasUpdated = fileInfo.Length != localInfo.length || mvid != localInfo.mvid;
+
+					Assert.IsTrue (fileWasUpdated, $"The file '{fileName}' is identical to the one present in the output assemblies report file '{outputAssembliesReportFile}'");
+				}
+			}
+		}
+
+		IDictionary<string, (long length, Guid mvid)> GetOutputAssembliesReportFileList (string reportFile)
+		{
+			var reportFileList = new Dictionary<string, (long length, Guid mvid)> ();
+
+			//Expected format of the report file lines (defined in the CalculateAssembliesReport task): Foo.dll/23189/768C814C-05C3-4563-9B53-35FEF571968E
+			foreach (var line in File.ReadLines (reportFile)) {
+				string [] lineParts = line.Split (["/"], StringSplitOptions.RemoveEmptyEntries);
+
+				// Skip lines that don't match the expected format
+				if (lineParts.Length == 3 && long.TryParse (lineParts [1], out long fileLength) && Guid.TryParse (lineParts [2], out Guid mvid)) {
+					// Adds file name, length and MVID to the dictionary
+					reportFileList.Add (lineParts [0], (fileLength, mvid));
+				}
+			}
+
+			return reportFileList;
 		}
 
 		[Test]

@@ -1309,9 +1309,6 @@ namespace Introspection {
 
 		void CheckInit (Type t, MethodBase m, string name)
 		{
-			if (SkipInit (name, m))
-				return;
-
 			bool init = IsInitLike (name);
 			if (m is ConstructorInfo) {
 				if (!init)
@@ -1332,62 +1329,6 @@ namespace Introspection {
 			if (!selector.StartsWith ("init", StringComparison.OrdinalIgnoreCase))
 				return false;
 			return selector.Length < 5 || Char.IsUpper (selector [4]);
-		}
-
-		protected virtual bool SkipInit (string selector, MethodBase m)
-		{
-			switch (selector) {
-			// MPSGraphExecutable
-			case "initWithMPSGraphPackageAtURL:compilationDescriptor:":
-			case "initWithCoreMLPackageAtURL:compilationDescriptor:":
-			// GKScore
-			case "initWithCategory:":
-			case "initWithLeaderboardIdentifier:":
-			// INSetProfileInCarIntent and INSaveProfileInCarIntent
-			case "initWithProfileNumber:profileName:defaultProfile:":
-			case "initWithProfileNumber:profileLabel:defaultProfile:":
-			case "initWithProfileNumber:profileName:":
-			case "initWithProfileNumber:profileLabel:":
-			// UISegmentedControl
-			case "initWithItems:":
-			// CLBeaconRegion
-			case "initWithUUID:identifier:":
-			case "initWithUUID:major:identifier:":
-			case "initWithUUID:major:minor:identifier:":
-			// NEHotspotConfiguration
-			case "initWithSSID:":
-			case "initWithSSID:passphrase:isWEP:":
-			case "initWithSSIDPrefix:":
-			case "initWithSSIDPrefix:passphrase:isWEP:":
-				var mi = m as MethodInfo;
-				return mi is not null && !mi.IsPublic && (mi.ReturnType.Name == "IntPtr" || mi.ReturnType.Name == "NativeHandle");
-			// NSAppleEventDescriptor
-			case "initListDescriptor":
-			case "initRecordDescriptor":
-			// SharedWithYouCore
-			case "initWithLocalIdentifier:":
-			case "initWithCollaborationIdentifier:":
-				return true;
-			// DDDevicePickerViewController
-			case "initWithBrowseDescriptor:parameters:":
-				return true;
-			// MKAddressFilter
-			case "initExcludingOptions:":
-			case "initIncludingOptions:":
-				return true;
-			// GKGameCenterViewController
-			case "initWithAchievementID:":
-			case "initWithLeaderboardSetID:":
-				return true;
-			case "initWithBytes:length:":
-				switch (m.DeclaringType.Name) {
-				case "FSFileName":
-					return true;
-				}
-				return false;
-			default:
-				return false;
-			}
 		}
 
 		protected virtual void Dispose (NSObject obj, Type type)

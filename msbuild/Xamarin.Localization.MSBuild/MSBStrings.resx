@@ -1723,4 +1723,34 @@
         <value>Can't process the native reference '{0}' on this platform because it is or contains a symlink.</value>
     </data>
 
+    <data name="E7149" xml:space="preserve">
+        <value>Unable to calculate the assemblies report from '{0}'. Directory not found.</value>
+        <comment>{0}: path from where to calculate assemblies report</comment>
+    </data>
+    
+    <data name="W7145" xml:space="preserve">
+        <value>Unable to retrieve information from '{0}'. The file may not be a valid PE file.</value>
+        <comment>{0}: path of the file that failed the VMID calculation</comment>
+    </data>
+
+    <data name="E7150" xml:space="preserve">
+        <value>Unable to calculate assemblies report from '{0}'. An unexpected error occurred.</value>
+        <comment>{0}: path from where to calculate assemblies report</comment>
+    </data>
+
+    <data name="E7146" xml:space="preserve">
+        <value>Unable to analyze file changes in '{0}'. Directory not found.</value>
+        <comment>{0}: path to use for file changes calculation</comment>
+    </data>
+
+    <data name="E7147" xml:space="preserve">
+        <value>Unable to analyze file changes in '{0}'. The report file '{1}' does not exist.</value>
+        <comment>{0}: path to use for file changes calculation
+    {1}: path of the assemblies report file</comment>
+    </data>
+    
+    <data name="E7148" xml:space="preserve">
+        <value>Unable to analyze file changes in '{0}'. An unexpected error occurred.</value>
+        <comment>{0}: path to use for file changes calculation</comment>
+    </data>
 </root>

@@ -570,17 +570,17 @@ namespace Registrar {
 				return true;
 
 			if (type.IsGenericParameter) {
-				if (typeof (NSObject).IsAssignableFrom (type)) {
+				if (typeof (INativeObject).IsAssignableFrom (type)) {
 					// First look for a more specific constraint
 					var constraints = type.GetGenericParameterConstraints ();
 					foreach (var constraint in constraints) {
-						if (constraint.IsSubclassOf (typeof (NSObject))) {
+						if (constraint.IsSubclassOf (typeof (INativeObject))) {
 							constrained_type = constraint;
 							return true;
 						}
 					}
 					// Fallback to NSObject.
-					constrained_type = typeof (NSObject);
+					constrained_type = typeof (INativeObject);
 					return true;
 				}
 				return false;

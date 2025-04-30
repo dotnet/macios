@@ -1677,7 +1677,6 @@ SPRITEKIT_SOURCES = \
 	SpriteKit/SKKeyframeSequence.cs \
 	SpriteKit/SKNode.cs \
 	SpriteKit/SKShapeNode.cs \
-	SpriteKit/SKUniform.cs \
 	SpriteKit/SKVideoNode.cs \
 	SpriteKit/SKWarpGeometryGrid.cs \
 
@@ -1694,7 +1693,6 @@ STOREKIT_CORE_SOURCES = \
 
 STOREKIT_SOURCES = \
 	StoreKit/NativeMethods.cs \
-	StoreKit/SKAdNetworkCompat.cs \
 	StoreKit/SKCloudServiceSetupOptions.cs \
 	StoreKit/SKPayment.cs \
 	StoreKit/SwiftAPI.cs \

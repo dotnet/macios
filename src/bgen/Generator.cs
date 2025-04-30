@@ -5725,21 +5725,34 @@ public partial class Generator : IMemberGatherer {
 					class_name += TypeManager.FormatType (type, gargs [i]);
 
 					where_list += "\n\t\twhere " + gargs [i].Name + " : ";
+
+					var constraintList = new List<string> ();
+
+					var genericAttributes = gargs [i].GenericParameterAttributes;
+					if (genericAttributes.HasFlag (GenericParameterAttributes.ReferenceTypeConstraint)) {
+						constraintList.Add ("class");
+						genericAttributes &= ~GenericParameterAttributes.ReferenceTypeConstraint;
+					}
+					if (genericAttributes.HasFlag (GenericParameterAttributes.DefaultConstructorConstraint)) {
+						constraintList.Add ("new()");
+						genericAttributes &= ~GenericParameterAttributes.DefaultConstructorConstraint;
+					}
+					if (genericAttributes != GenericParameterAttributes.None) {
+						exceptions.Add (ErrorHelper.CreateError (99, $"Unexpected generic constraint attributes: {genericAttributes}"));
+					}
+
 					var constraints = gargs [i].GetGenericParameterConstraints ();
 					if (constraints.Length > 0) {
-						var comma = string.Empty;
-						if (IsProtocol (constraints [0])) {
-							where_list += "NSObject";
-							comma = ", ";
-						}
+						if (IsProtocol (constraints [0]))
+							constraintList.Add ("NSObject");
 
-						for (int c = 0; c < constraints.Length; c++) {
-							where_list += comma + TypeManager.FormatType (type, constraints [c]);
-							comma = ", ";
-						}
+						for (int c = 0; c < constraints.Length; c++)
+							constraintList.Add (TypeManager.FormatType (type, constraints [c]));
 					} else {
-						where_list += "NSObject";
+						constraintList.Add ("NSObject");
 					}
+
+					where_list += string.Join (", ", constraintList);
 				}
 				class_name += ">";
 				if (where_list.Length > 0)

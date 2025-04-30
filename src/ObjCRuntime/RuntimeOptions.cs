@@ -93,11 +93,11 @@ namespace ObjCRuntime {
 				handler = options.http_message_handler;
 			} else {
 #if !LEGACY_TOOLS
-				if (Runtime.UseNSUrlSessionHandler)  
+				if (Runtime.UseNSUrlSessionHandler)
 					handler = NSUrlSessionHandlerValue;
 
 				if (UseCFNetworkHandler)
-        			handler = CFNetworkHandlerValue;
+					handler = CFNetworkHandlerValue;
 #endif
 				handler = HttpClientHandlerValue;
 			}
@@ -139,22 +139,21 @@ namespace ObjCRuntime {
 		}
 #else
 
-		internal static RuntimeOptions? Read()
+		internal static RuntimeOptions? Read ()
 		{
 			// for iOS NSBundle.ResourcePath returns the path to the root of the app bundle
 			// for macOS apps NSBundle.ResourcePath returns foo.app/Contents/Resources
 			// for macOS frameworks NSBundle.ResourcePath returns foo.app/Versions/Current/Resources
-			Class bundle_finder = new Class(typeof(NSObject.NSObject_Disposer));
-			var resource_dir = NSBundle.FromClass(bundle_finder).ResourcePath;
-			var plist_path = GetFileName(resource_dir);
+			Class bundle_finder = new Class (typeof (NSObject.NSObject_Disposer));
+			var resource_dir = NSBundle.FromClass (bundle_finder).ResourcePath;
+			var plist_path = GetFileName (resource_dir);
 
-			if (!File.Exists(plist_path))
+			if (!File.Exists (plist_path))
 				return null;
 
-			using (var plist = NSMutableDictionary.FromFile(plist_path))
-			{
-				var options = new RuntimeOptions();
-				options.http_message_handler = (NSString)plist["HttpMessageHandler"];
+			using (var plist = NSMutableDictionary.FromFile (plist_path)) {
+				var options = new RuntimeOptions ();
+				options.http_message_handler = (NSString) plist ["HttpMessageHandler"];
 				return options;
 			}
 		}
@@ -165,12 +164,12 @@ namespace ObjCRuntime {
 		{
 #if !LEGACY_TOOLS
 			if (Runtime.UseNSUrlSessionHandler)
-				return new NSUrlSessionHandler();
+				return new NSUrlSessionHandler ();
 
 			if (UseCFNetworkHandler)
-				handler = CFNetworkHandler();
+				handler = CFNetworkHandler ();
 
-			handler = HttpClientHandler();
+			handler = HttpClientHandler ();
 #else
 			var options = RuntimeOptions.Read ();
 			// all types will be present as this is executed only when the linker is not enabled

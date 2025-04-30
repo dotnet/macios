@@ -19,11 +19,7 @@ namespace Xamarin.Bundler {
 namespace ObjCRuntime {
 #endif
 	class RuntimeOptions {
-#if !LEGACY_TOOLS
 		const string SocketsHandlerValue = "SocketsHttpHandler";
-#else
-		const string HttpClientHandlerValue = "HttpClientHandler";
-#endif
 		const string CFNetworkHandlerValue = "CFNetworkHandler";
 		const string NSUrlSessionHandlerValue = "NSUrlSessionHandler";
 
@@ -45,17 +41,9 @@ namespace ObjCRuntime {
 			switch (value) {
 			// default
 			case null:
-#if !LEGACY_TOOLS
 				return NSUrlSessionHandlerValue;
-#else
-				return HttpClientHandlerValue;
-#endif
 			case CFNetworkHandlerValue:
-#if !LEGACY_TOOLS
 			case SocketsHandlerValue:
-#else
-			case HttpClientHandlerValue:
-#endif
 				return value;
 			case NSUrlSessionHandlerValue:
 				return value;
@@ -92,39 +80,28 @@ namespace ObjCRuntime {
 			if (options is not null) {
 				handler = options.http_message_handler;
 			} else {
-#if !LEGACY_TOOLS
-				if (Runtime.UseNSUrlSessionHandler)
+				if (Runtime.UseNSUrlSessionHandler)  
 					handler = NSUrlSessionHandlerValue;
 
 				if (UseCFNetworkHandler)
 					handler = CFNetworkHandlerValue;
-#endif
 				handler = HttpClientHandlerValue;
 			}
 			TypeDefinition type;
 			switch (handler) {
+			case CFNetworkHandlerValue:
+				type = platformModule!.GetType ("System.Net.Http", "CFNetworkHandler");
+				break;
 #if MONOMAC
 			case HttpClientHandlerValue:
 				type = httpModule.GetType ("System.Net.Http", "HttpClientHandler");
-				break;
-			case CFNetworkHandlerValue:
-				type = platformModule!.GetType ("System.Net.Http", "CFNetworkHandler");
 				break;
 			case NSUrlSessionHandlerValue:
 				type = platformModule!.GetType ("Foundation", "NSUrlSessionHandler");
 				break;
 #else
-#if !LEGACY_TOOLS
 			case SocketsHandlerValue:
 				type = httpModule.GetType ("System.Net.Http", "SocketsHttpHandler");
-				break;
-#else
-			case HttpClientHandlerValue:
-				type = httpModule.GetType ("System.Net.Http", "HttpClientHandler");
-				break;
-#endif
-			case CFNetworkHandlerValue:
-				type = platformModule!.GetType ("System.Net.Http", "CFNetworkHandler");
 				break;
 			case NSUrlSessionHandlerValue:
 				type = platformModule!.GetType ("System.Net.Http", "NSUrlSessionHandler");
@@ -162,29 +139,13 @@ namespace ObjCRuntime {
 		// System.Net.Http.dll!System.Net.Http.HttpClient.cctor
 		internal static HttpMessageHandler GetHttpMessageHandler ()
 		{
-#if !LEGACY_TOOLS
 			if (Runtime.UseNSUrlSessionHandler)
 				return new NSUrlSessionHandler ();
 
 			if (UseCFNetworkHandler)
 				handler = CFNetworkHandler ();
 
-			handler = HttpClientHandler ();
-#else
-			var options = RuntimeOptions.Read ();
-			// all types will be present as this is executed only when the linker is not enabled
-			var handler_name = options?.http_message_handler;
-			switch (handler_name) {
-			case CFNetworkHandlerValue:
-				return new CFNetworkHandler ();
-			case NSUrlSessionHandlerValue:
-				return new NSUrlSessionHandler ();
-			default:
-				if (handler_name is not null && handler_name != HttpClientHandlerValue)
-					Runtime.NSLog ($"{handler_name} is not a valid HttpMessageHandler, defaulting to System.Net.Http.HttpClientHandler");
-				return new HttpClientHandler ();
-			}
-#endif
+			handler = HttpClientHandler();
 		}
 #endif
 

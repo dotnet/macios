@@ -68,4 +68,4 @@ variables:
   value: 9.0
 
 - name: DotNetPreviewSdkVersion
-  value: 10.0
+  value: 9.0

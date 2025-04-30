@@ -80,7 +80,7 @@ namespace ObjCRuntime {
 			if (options is not null) {
 				handler = options.http_message_handler;
 			} else {
-				if (Runtime.UseNSUrlSessionHandler)  
+				if (Runtime.UseNSUrlSessionHandler)
 					handler = NSUrlSessionHandlerValue;
 
 				if (UseCFNetworkHandler)
@@ -145,7 +145,7 @@ namespace ObjCRuntime {
 			if (UseCFNetworkHandler)
 				handler = CFNetworkHandler ();
 
-			handler = HttpClientHandler();
+			handler = HttpClientHandler ();
 		}
 #endif
 

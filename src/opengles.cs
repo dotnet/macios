@@ -15,10 +15,6 @@ using CoreLocation;
 using UIKit;
 using System;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace OpenGLES {
 
 	/// <summary>Manages resources that can be used by more than one EAGLContext (textures, buffers, framebuffers, renderbuffers, shaders and programs).</summary>

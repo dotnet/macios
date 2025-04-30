@@ -1432,9 +1432,6 @@ OPENGL_CORE_SOURCES = \
 	OpenGL/OpenTK/Math/Vector3d.cs \
 	OpenGL/OpenTK/Math/Vector4.cs \
 	OpenGL/OpenTK/Math/Vector4d.cs \
-	OpenGLES/OpenTK/Math/Vector2i.cs \
-	OpenGLES/OpenTK/Math/Vector3i.cs \
-	OpenGLES/OpenTK/Math/Vector4i.cs \
 
 OPENGL_SOURCES = \
 	OpenGL/FrameEventArgs.cs \

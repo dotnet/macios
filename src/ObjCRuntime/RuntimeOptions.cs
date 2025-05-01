@@ -15,48 +15,18 @@ namespace ObjCRuntime
 		const string CFNetworkHandlerValue = "CFNetworkHandler";
 		const string NSUrlSessionHandlerValue = "NSUrlSessionHandler";
 
-		string? http_message_handler;
-
-		internal static RuntimeOptions? Read ()
-		{
-			// for iOS NSBundle.ResourcePath returns the path to the root of the app bundle
-			// for macOS apps NSBundle.ResourcePath returns foo.app/Contents/Resources
-			// for macOS frameworks NSBundle.ResourcePath returns foo.app/Versions/Current/Resources
-			Class bundle_finder = new Class (typeof (NSObject.NSObject_Disposer));
-			var resource_dir = NSBundle.FromClass (bundle_finder).ResourcePath;
-			var plist_path = GetFileName (resource_dir);
-
-			if (!File.Exists (plist_path))
-				return null;
-
-			using (var plist = NSMutableDictionary.FromFile (plist_path)) {
-				var options = new RuntimeOptions ();
-				options.http_message_handler = (NSString) plist ["HttpMessageHandler"];
-				return options;
-			}
-		}
-
 		// This is invoked by
 		// System.Net.Http.dll!System.Net.Http.HttpClient.cctor
-		internal static HttpMessageHandler GetHttpMessageHandler ()
+		// https://github.com/dotnet/runtime/blob/6be6c5de821e389c986b0926fb7334017decee54/src/libraries/System.Net.Http/src/System/Net/Http/HttpClientHandler.AnyMobile.InvokeNativeHandler.cs#L146-L152
+		internal static HttpMessageHandler GetHttpMessageHandler()
 		{
 			if (Runtime.UseNSUrlSessionHandler)
-				return new NSUrlSessionHandler ();
+				return new NSUrlSessionHandler();
 
 			if (Runtime.UseCFNetworkHandler)
-				return new CFNetworkHandler ();
+				return new CFNetworkHandler();
 
-			return new HttpClientHandler ();
-		}
-
-		// Use either Create() or Read().
-		RuntimeOptions ()
-		{
-		}
-
-		static string GetFileName (string resource_dir)
-		{
-			return Path.Combine (resource_dir, "runtime-options.plist");
+			return new HttpClientHandler();
 		}
 	}
 }

@@ -143,9 +143,9 @@ namespace ObjCRuntime {
 				return new NSUrlSessionHandler ();
 
 			if (Runtime.UseCFNetworkHandler)
-				return new CFNetworkHandler();
+				return new CFNetworkHandler ();
 
-			return new HttpClientHandler();
+			return new HttpClientHandler ();
 		}
 #endif
 

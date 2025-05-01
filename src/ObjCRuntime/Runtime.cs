@@ -287,11 +287,11 @@ namespace ObjCRuntime {
 
 
 		// The linker may change the constant this property returns
-		[BindingImpl(BindingImplOptions.Optimizable)]
+		[BindingImpl (BindingImplOptions.Optimizable)]
 		internal static bool UseCFNetworkHandler => false;
 
 		// The linker may change the constant this property returns
-		[BindingImpl(BindingImplOptions.Optimizable)]
+		[BindingImpl (BindingImplOptions.Optimizable)]
 		internal static bool UseNSUrlSessionHandler => true;
 
 		internal static bool Initialized {

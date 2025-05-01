@@ -10221,7 +10221,7 @@ namespace UIKit {
 		[Abstract]
 		[NullAllowed] // by default this property is null
 					  // This is declared as ArgumentSemantic.Copy, but UITextRange doesn't conform to NSCopying.
-					  // Also declaring it as ArgumentSemantic.Copy makes UIKIt crash: https://github.com/xamarin/xamarin-macios/issues/15677
+					  // Also declaring it as ArgumentSemantic.Copy makes UIKIt crash: https://github.com/dotnet/macios/issues/15677
 		[Export ("selectedTextRange")]
 		UITextRange SelectedTextRange { get; set; }
 
@@ -21256,7 +21256,7 @@ namespace UIKit {
 		NSDictionary TypingAttributes {
 #if !XAMCORE_5_0
 			// this avoids a crash (see unit tests) and behave like UITextField does (return null)
-			// however, it's un-intuitive and causes other problems (https://github.com/xamarin/xamarin-macios/issues/12709), so remove it the next time we can make a breaking change.
+			// however, it's un-intuitive and causes other problems (https://github.com/dotnet/macios/issues/12709), so remove it the next time we can make a breaking change.
 			[PreSnippet ("if (SelectedRange.Length == 0) return null;", Optimizable = true)]
 #endif
 			get;
@@ -33849,7 +33849,7 @@ namespace UIKit {
 		[Export ("finalSnapshot")]
 		NSDiffableDataSourceSectionSnapshot<ItemIdentifierType> FinalSnapshot { get; }
 
-#if false // https://github.com/xamarin/xamarin-macios/issues/15577
+#if false // https://github.com/dotnet/macios/issues/15577
 		[Export ("difference")]
 		NSOrderedCollectionDifference Difference { get; }
 #endif
@@ -33868,7 +33868,7 @@ namespace UIKit {
 		[Export ("finalSnapshot")]
 		NSDiffableDataSourceSnapshot<SectionIdentifierType, ItemIdentifierType> FinalSnapshot { get; }
 
-#if false // https://github.com/xamarin/xamarin-macios/issues/15577
+#if false // https://github.com/dotnet/macios/issues/15577
 		[Export ("difference")]
 		NSOrderedCollectionDifference Difference { get; }
 #endif

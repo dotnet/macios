@@ -5783,7 +5783,7 @@ namespace AVFoundation {
 		void DidOutputSampleBuffer (AVCaptureOutput captureOutput, CMSampleBuffer sampleBuffer, AVCaptureConnection connection);
 	}
 
-	// Making a class abstract has problems: https://github.com/xamarin/xamarin-macios/issues/4969, so we're not doing this yet
+	// Making a class abstract has problems: https://github.com/dotnet/macios/issues/4969, so we're not doing this yet
 	// [Abstract] // Abstract superclass.
 	/// <summary>Base class for media samples that were captured with <see cref="T:AVFoundation.AVCaptureDataOutputSynchronizer" />.</summary>
 	[Introduced (PlatformName.MacCatalyst, 14, 0)]
@@ -15292,7 +15292,7 @@ namespace AVFoundation {
 	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[TV (17, 0)]
 	[BaseType (typeof (NSObject))]
-	// Making a class abstract has problems (see https://github.com/xamarin/xamarin-macios/issues/4969), so not doing this (yet).
+	// Making a class abstract has problems (see https://github.com/dotnet/macios/issues/4969), so not doing this (yet).
 	// [Abstract] // as per docs
 	// Objective-C exception thrown.  Name: NSGenericException Reason: Cannot instantiate AVCaptureOutput because it is an abstract superclass.
 	[DisableDefaultCtor]
@@ -21017,7 +21017,7 @@ namespace AVFoundation {
 		[Export ("stopRequestingMediaData")]
 		void StopRequestingMediaData ();
 
-		// TODO: Remove (alongside others) when https://github.com/xamarin/xamarin-macios/issues/3213 is fixed and conformance to 'AVQueuedSampleBufferRendering' is restored.
+		// TODO: Remove (alongside others) when https://github.com/dotnet/macios/issues/3213 is fixed and conformance to 'AVQueuedSampleBufferRendering' is restored.
 		[Deprecated (PlatformName.MacOSX, 15, 0)]
 		[Deprecated (PlatformName.iOS, 18, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0)]
@@ -22972,7 +22972,7 @@ namespace AVFoundation {
 	[MacCatalyst (14, 5)]
 	[BaseType (typeof (NSObject))]
 	interface AVContentKeySpecifier {
-		// TODO https://github.com/xamarin/xamarin-macios/issues/10904
+		// TODO https://github.com/dotnet/macios/issues/10904
 		[Static]
 		[Export ("contentKeySpecifierForKeySystem:identifier:options:")]
 		AVContentKeySpecifier GetContentKeySpecifier (AVContentKeySystem keySystem, NSObject contentKeyIdentifier, NSDictionary<NSString, NSObject> options);

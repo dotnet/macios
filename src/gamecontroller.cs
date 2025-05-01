@@ -2657,7 +2657,7 @@ namespace GameController {
 		float MaximumDegreesOfRotation { get; }
 	}
 
-	// There are issues with the Generic Types listed here: https://github.com/xamarin/xamarin-macios/issues/15725
+	// There are issues with the Generic Types listed here: https://github.com/dotnet/macios/issues/15725
 	// [iOS (16,0), Mac (13,0), TV (16,0), MacCatalyst (16,0)]
 	// [BaseType (typeof (NSObject))]
 	// [DisableDefaultCtor]
@@ -2697,27 +2697,27 @@ namespace GameController {
 		[Export ("lastEventLatency")]
 		double LastEventLatency { get; }
 
-		// Issue with GCPhysicalInputElementCollection found here: https://github.com/xamarin/xamarin-macios/issues/15725
+		// Issue with GCPhysicalInputElementCollection found here: https://github.com/dotnet/macios/issues/15725
 		// [Abstract]
 		// [Export ("elements")]
 		// GCPhysicalInputElementCollection<IGCPhysicalInputElementName, IGCPhysicalInputElement> Elements { get; }
 
-		// Issue with GCPhysicalInputElementCollection found here: https://github.com/xamarin/xamarin-macios/issues/15725
+		// Issue with GCPhysicalInputElementCollection found here: https://github.com/dotnet/macios/issues/15725
 		// [Abstract]
 		// [Export ("buttons")]
 		// GCPhysicalInputElementCollection<IGCButtonElementName, IGCButtonElement> Buttons { get; }
 
-		// Issue with GCPhysicalInputElementCollection found here: https://github.com/xamarin/xamarin-macios/issues/15725
+		// Issue with GCPhysicalInputElementCollection found here: https://github.com/dotnet/macios/issues/15725
 		// [Abstract]
 		// [Export ("axes")]
 		// GCPhysicalInputElementCollection<IGCAxisElementName, IGCAxisElement> Axes { get; }
 
-		// Issue with GCPhysicalInputElementCollection found here: https://github.com/xamarin/xamarin-macios/issues/15725
+		// Issue with GCPhysicalInputElementCollection found here: https://github.com/dotnet/macios/issues/15725
 		// [Abstract]
 		// [Export ("switches")]
 		// GCPhysicalInputElementCollection<IGCSwitchElementName, IGCSwitchElement> Switches { get; }
 
-		// Issue with GCPhysicalInputElementCollection found here: https://github.com/xamarin/xamarin-macios/issues/15725
+		// Issue with GCPhysicalInputElementCollection found here: https://github.com/dotnet/macios/issues/15725
 		// [Abstract]
 		// [Export ("dpads")]
 		// GCPhysicalInputElementCollection<IGCDirectionPadElementName, IGCDirectionPadElement> Dpads { get; }

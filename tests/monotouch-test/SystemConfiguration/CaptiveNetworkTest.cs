@@ -77,9 +77,9 @@ namespace MonoTouchFixtures.SystemConfiguration {
 			Assert.AreEqual (StatusCode.OK, status, "Status");
 			// It's quite complex to figure out whether we should get a dictionary back or not.
 			// References:
-			// * https://github.com/xamarin/xamarin-macios/commit/24331f35dd67d19f3ed9aca7b8b21827ce0823c0
-			// * https://github.com/xamarin/xamarin-macios/issues/11504
-			// * https://github.com/xamarin/xamarin-macios/issues/12278
+			// * https://github.com/dotnet/macios/commit/24331f35dd67d19f3ed9aca7b8b21827ce0823c0
+			// * https://github.com/dotnet/macios/issues/11504
+			// * https://github.com/dotnet/macios/issues/12278
 			// * https://developer.apple.com/documentation/systemconfiguration/1614126-cncopycurrentnetworkinfo
 			// So don't assert anything about the dictionary.
 #endif

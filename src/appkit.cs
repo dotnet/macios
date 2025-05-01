@@ -26095,7 +26095,7 @@ namespace AppKit {
 		bool IsZoomed {
 			get;
 #if !XAMCORE_5_0
-			// https://github.com/xamarin/xamarin-macios/issues/14359
+			// https://github.com/dotnet/macios/issues/14359
 			[Obsolete ("Setting 'IsZoomed' will probably behave unexpectedly, since it comes from the NSScripting protocol (and not like the getter, which is defined on the NSWindow type). If this is the expected behavior, call 'SetIsZoomed(bool)' instead.")]
 			set;
 #endif
@@ -26104,7 +26104,7 @@ namespace AppKit {
 		// The setIsZoomed: selector is defined on the NSScripting protocol, and
 		// is not directly related to the isZoomed getter defined on the NSWindow
 		// type, so use a separate method to express this distinction in managed code.
-		// Ref: https://github.com/xamarin/xamarin-macios/issues/14359
+		// Ref: https://github.com/dotnet/macios/issues/14359
 #if !XAMCORE_5_0
 		[Sealed]
 #endif
@@ -26118,7 +26118,7 @@ namespace AppKit {
 		bool IsMiniaturized {
 			get;
 #if !XAMCORE_5_0
-			// https://github.com/xamarin/xamarin-macios/issues/14359
+			// https://github.com/dotnet/macios/issues/14359
 			[Obsolete ("Setting 'IsMiniaturized' will probably behave unexpectedly, since it comes from the NSScripting protocol (and not like the getter, which is defined on the NSWindow type). If this is the expected behavior, call 'SetIsMiniaturized(bool)' instead.")]
 			set;
 #endif
@@ -26127,7 +26127,7 @@ namespace AppKit {
 		// The setIsMiniaturized: selector is defined on the NSScripting protocol, and
 		// is not directly related to the isMiniaturized getter defined on the NSWindow
 		// type, so use a separate method to express this distinction in managed code.
-		// Ref: https://github.com/xamarin/xamarin-macios/issues/14359
+		// Ref: https://github.com/dotnet/macios/issues/14359
 #if !XAMCORE_5_0
 		[Sealed]
 #endif
@@ -26210,7 +26210,7 @@ namespace AppKit {
 		bool IsVisible {
 			get;
 #if !XAMCORE_5_0
-			// https://github.com/xamarin/xamarin-macios/issues/14359
+			// https://github.com/dotnet/macios/issues/14359
 			[Obsolete ("Setting 'IsVisible' will probably behave unexpectedly, since it comes from the NSScripting protocol (and not like the getter, which is defined on the NSWindow type). Typically the correct way to change the visibility of an NSWindow is to use the 'OrderOut' or 'OrderFront' methods. However, if this is the expected behavior, call 'SetIsVisible(bool)' instead. ")]
 			set;
 #endif
@@ -29533,7 +29533,7 @@ namespace AppKit {
 
 #if !NET
 	// This category is implemented directly on the NSResponder class instead.
-	// Ref: https://github.com/xamarin/xamarin-macios/issues/4837
+	// Ref: https://github.com/dotnet/macios/issues/4837
 	[NoMacCatalyst]
 	[Category, BaseType (typeof (NSResponder))]
 	partial interface NSControlEditingSupport {
@@ -29556,7 +29556,7 @@ namespace AppKit {
 		void QuickLook (NSEvent withEvent);
 
 		// Inlined the NSControlEditingSupport category. Needs to be here to make the API easier to be used.
-		// Ref: https://github.com/xamarin/xamarin-macios/issues/4837
+		// Ref: https://github.com/dotnet/macios/issues/4837
 		[Export ("validateProposedFirstResponder:forEvent:")]
 		bool ValidateProposedFirstResponder (NSResponder responder, [NullAllowed] NSEvent forEvent);
 

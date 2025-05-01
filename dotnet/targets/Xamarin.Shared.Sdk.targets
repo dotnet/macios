@@ -654,7 +654,7 @@
 			<!-- If a release build and the app is not extensible (no interpreter or JIT/code-loading for macOS) then the sealer optimization can be used -->
 			<_ExtraTrimmerArgs Condition="'$(_BundlerDebug)' != 'true' And '$(MtouchInterpreter)' == '' And '$(_RunAotCompiler)' == 'true' And '$(_PlatformName)' != 'macOS'">$(_ExtraTrimmerArgs) --enable-opt sealer</_ExtraTrimmerArgs>
 
-			<!-- Enable serialization discovery. Ref: https://github.com/xamarin/xamarin-macios/issues/15676 -->
+			<!-- Enable serialization discovery. Ref: https://github.com/dotnet/macios/issues/15676 -->
 			<_ExtraTrimmerArgs>$(_ExtraTrimmerArgs) --enable-serialization-discovery</_ExtraTrimmerArgs>
 
 			<!-- If we're using NativeAOT, tell ILLink to not remove dependency attributes (DynamicDependencyAttribute), because NativeAOT's trimmer also needs to see them. -->
@@ -1105,14 +1105,14 @@
 			<_IsDedupEnabled Condition="'$(_IsDedupEnabled)' == '' And '$(_RunAotCompiler)' == 'true' And '$(IsMacEnabled)' == 'true' And '$(TargetArchitectures)' == 'ARM64' And '$(MtouchInterpreter)' != 'all'">true</_IsDedupEnabled>
 			<_DedupAssembly Condition="'$(_IsDedupEnabled)' == 'true'">$(IntermediateOutputPath)aot-instances.dll</_DedupAssembly>
 
-			<!-- default to 'static' for Mac Catalyst to work around https://github.com/xamarin/xamarin-macios/issues/14686 -->
+			<!-- default to 'static' for Mac Catalyst to work around https://github.com/dotnet/macios/issues/14686 -->
 			<_LibMonoLinkMode Condition="'$(_LibMonoLinkMode)' == '' And '$(_PlatformName)' == 'MacCatalyst'">static</_LibMonoLinkMode>
 			<_LibMonoLinkMode Condition="'$(_LibMonoLinkMode)' == '' And ('$(ComputedPlatform)' != 'iPhone' Or '$(_PlatformName)' == 'macOS')">dylib</_LibMonoLinkMode>
 			<_LibMonoLinkMode Condition="'$(_LibMonoLinkMode)' == ''">static</_LibMonoLinkMode>
 			<_LibMonoExtension Condition="'$(_LibMonoLinkMode)' == 'dylib'">dylib</_LibMonoExtension>
 			<_LibMonoExtension Condition="'$(_LibMonoLinkMode)' == 'static'">a</_LibMonoExtension>
 
-			<!-- default to 'static' for Mac Catalyst to work around https://github.com/xamarin/xamarin-macios/issues/14686 -->
+			<!-- default to 'static' for Mac Catalyst to work around https://github.com/dotnet/macios/issues/14686 -->
 			<_LibXamarinLinkMode Condition="'$(_LibXamarinLinkMode)' == '' And '$(_PlatformName)' == 'MacCatalyst'">static</_LibXamarinLinkMode>
 			<_LibXamarinLinkMode Condition="'$(_LibXamarinLinkMode)' == '' And '$(ComputedPlatform)' != 'iPhone' And '$(_PlatformName)' != 'macOS'">dylib</_LibXamarinLinkMode>
 			<_LibXamarinLinkMode Condition="'$(_LibXamarinLinkMode)' == ''">static</_LibXamarinLinkMode>
@@ -1215,7 +1215,7 @@
 		</ItemGroup>
 	</Target>
 
-	<!-- https://github.com/xamarin/xamarin-macios/issues/19037 -->
+	<!-- https://github.com/dotnet/macios/issues/19037 -->
 	<!-- The trimmer will set the RootMode for the current assembly to 'EntryPoint', but that doesn't work for app extension projects, because those are library projects that don't have entry points.
 		 So here we set RootMode=Library for these cases. -->
 	<Target Name="_FixRootAssemblyForAppExtensions" AfterTargets="PrepareForILLink" Condition="'$(IsAppExtension)' == 'true'">
@@ -1531,7 +1531,7 @@
 
 			<!-- Most apps do not use BrowserEngineKit, and linking with it when an app is not supposed to will prevent it from getting approved in the App Store.
 			     However, we'll automatically detect that we need to link with BrowserEngineKit if an app isn't trimmed, so let's just remove BrowserEngineKit
-			     here, with an escape hatch if an app really needs it (which would be rather rare). Ref: https://github.com/xamarin/xamarin-macios/issues/21324 -->
+			     here, with an escape hatch if an app really needs it (which would be rather rare). Ref: https://github.com/dotnet/macios/issues/21324 -->
 			<_NativeExecutableFrameworks Remove="BrowserEngineKit" Condition="'$(LinkWithBrowserEngineKit)' != 'true'" />
 
 			<!-- Mono requires zlib, iconv, icucore, and the "Compression framework" -->
@@ -1553,7 +1553,7 @@
 		</ItemGroup>
 	</Target>
 
-	<!-- Any .dylibs we link with might have an incorrect identity (see https://github.com/xamarin/xamarin-macios/issues/13999),
+	<!-- Any .dylibs we link with might have an incorrect identity (see https://github.com/dotnet/macios/issues/13999),
 	     so we have to fix the identity so that the correct value is embedded into the main executable (and we have to do it
 	     before linking the main executable).
 
@@ -1800,7 +1800,7 @@
 				Update="@(ResolvedFileToPublish)"
 				RelativePath="$(_AssemblyPublishDir)\%(ResolvedFileToPublish.DestinationSubDirectory)\%(ResolvedFileToPublish.TargetPath)"
 				Condition="'$(AppConfig)' != '' And '%(ResolvedFileToPublish.OriginalItemSpec)' == '$(AppConfig)' And '%(ResolvedFileToPublish.Link)' == 'app.config' And '%(ResolvedFileToPublish.TargetPath)' != ''" />
-			<!-- .dylib and .so are never needed (nor allowed) for fully AOT'ed applications FIXME https://github.com/xamarin/xamarin-macios/issues/11145 -->
+			<!-- .dylib and .so are never needed (nor allowed) for fully AOT'ed applications FIXME https://github.com/dotnet/macios/issues/11145 -->
 			<ResolvedFileToPublish
 				Update="@(ResolvedFileToPublish)"
 				RelativePath="$(_DylibPublishDir)\%(Filename)%(Extension)"
@@ -1862,7 +1862,7 @@
 			/>
 
 			<!-- Put the 'createdump' executable in the expected location in the app bundle when using CoreCLR -->
-			<!-- Ref: https://github.com/xamarin/xamarin-macios/issues/11432 -->
+			<!-- Ref: https://github.com/dotnet/macios/issues/11432 -->
 			<_CreateDumpExecutable
 				Include="@(ResolvedFileToPublish)"
 				Condition=" '$(_XamarinRuntime)' == 'CoreCLR' And
@@ -2006,7 +2006,7 @@
 		>
 		<ItemGroup Condition="'$(_RequireCodeSigning)' == 'true' And '$(BundleCreateDump)' == 'true'">
 			<!-- The 'createdump' executable must be signed. -->
-			<!-- Ref: https://github.com/xamarin/xamarin-macios/issues/13417 -->
+			<!-- Ref: https://github.com/dotnet/macios/issues/13417 -->
 			<_CreateDumpExecutableToSign Include="@(_CreateDumpExecutable -> '$(_DylibPublishDir)%(RelativePath)')" KeepMetadata="false">
 				<CodesignAllocate>$(_CodesignAllocate)</CodesignAllocate>
 				<CodesignDisableTimestamp Condition="'$(_BundlerDebug)' == 'true'">true</CodesignDisableTimestamp>
@@ -2186,7 +2186,7 @@
 
 	<Target Name="ComputeMlaunchInstallArguments" DependsOnTargets="_DetectSdkLocations;_GenerateBundleName;_DetectAppManifest;_ComputeMlaunchInstallArguments" />
 	<Target Name="_ComputeMlaunchInstallArguments" Condition="'$(_SdkIsSimulator)' == 'false'">
-		<!-- Launching from the command line on windows hasn't been implemented: https://github.com/xamarin/xamarin-macios/issues/16609 -->
+		<!-- Launching from the command line on windows hasn't been implemented: https://github.com/dotnet/macios/issues/16609 -->
 		<Error Condition="$([MSBuild]::IsOSPlatform('windows'))" Text="It's currently not supported to launch an app from the command line on Windows." />
 		<Error Condition="!Exists('$(_AppBundleManifestPath)')" Text="The app must be built before the arguments to launch the app using mlaunch can be computed." />
 
@@ -2219,7 +2219,7 @@
 	</Target>
 
 	<Target Name="ComputeMlaunchRunArguments" DependsOnTargets="_DetectSdkLocations;_GenerateBundleName;_DetectAppManifest" Condition="'$(_PlatformName)' != 'macOS' And '$(_PlatformName)' != 'MacCatalyst'">
-		<!-- Launching from the command line on windows hasn't been implemented: https://github.com/xamarin/xamarin-macios/issues/16609 -->
+		<!-- Launching from the command line on windows hasn't been implemented: https://github.com/dotnet/macios/issues/16609 -->
 		<Error Condition="$([MSBuild]::IsOSPlatform('windows'))" Text="It's currently not supported to launch an app from the command line on Windows." />
 		<Error Condition="!Exists('$(_AppBundleManifestPath)')" Text="The app must be built before the arguments to launch the app using mlaunch can be computed." />
 
@@ -2345,7 +2345,7 @@ global using nfloat = global::System.Runtime.InteropServices.NFloat%3B
 	    any global using that may have been added by the .NET sdk pack. The
 	    .NET 6 sdk pack will one day condition the inclusion on the current
 	    target framework version, and at that point we can remove this
-	    workaround (https://github.com/xamarin/xamarin-macios/pull/15385).
+	    workaround (https://github.com/dotnet/macios/pull/15385).
 	-->
 	<Target Name="RemoveGlobalnfloatUsingItemGroup" BeforeTargets="PrepareForBuild">
 		<ItemGroup>
@@ -2373,7 +2373,7 @@ global using nfloat = global::System.Runtime.InteropServices.NFloat%3B
 			project (and not the binding project), won't see any binding
 			resource packages from the binding project.
 
-			This is not good (https://github.com/xamarin/xamarin-macios/issues/13910).
+			This is not good (https://github.com/dotnet/macios/issues/13910).
 
 			This is a target that runs after the ReferenceCopyLocalPaths item
 			group has been populated by the ResolveAssemblyReferences target,

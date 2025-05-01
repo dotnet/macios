@@ -21,7 +21,7 @@ namespace Xamarin.MacDev.Tasks {
 			Configuration.IgnoreIfIgnoredPlatform (ApplePlatform.MacOSX);
 			Configuration.AssertDotNetAvailable ();
 
-			// https://github.com/xamarin/xamarin-macios/issues/12051
+			// https://github.com/dotnet/macios/issues/12051
 			var csproj = $@"<?xml version=""1.0"" encoding=""utf-8""?>
 <Project Sdk=""Microsoft.NET.Sdk"">
 	<PropertyGroup>

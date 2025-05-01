@@ -1,3 +1,3 @@
-# Test case for https://github.com/xamarin/xamarin-macios/issues/12440
+# Test case for https://github.com/dotnet/macios/issues/12440
 
 include ../shared.mk

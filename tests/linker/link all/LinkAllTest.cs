@@ -508,10 +508,10 @@ namespace LinkAll {
 		}
 
 		[Test]
-		[Ignore ("BUG https://github.com/xamarin/xamarin-macios/issues/11280")]
+		[Ignore ("BUG https://github.com/dotnet/macios/issues/11280")]
 		public void LinkedAwayGenericTypeAsOptionalMemberInProtocol ()
 		{
-			// https://github.com/xamarin/xamarin-macios/issues/3523
+			// https://github.com/dotnet/macios/issues/3523
 			// This test will fail at build time if it regresses (usually these types of build tests go into monotouch-test, but monotouch-test uses NSSet<T> elsewhere, which this test requires to be linked away).
 			Assert.IsNull (typeof (NSObject).Assembly.GetType (NamespacePrefix + "Foundation.NSSet`1"), "NSSet<T> must be linked away, otherwise this test is useless");
 		}

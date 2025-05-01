@@ -81,7 +81,7 @@ namespace Xamarin.Tests {
 
 		void TrimmerWarnings (ApplePlatform platform, string runtimeIdentifiers, string registrar, params ExpectedBuildMessage [] expectedWarnings)
 		{
-			// https://github.com/xamarin/xamarin-macios/issues/10405
+			// https://github.com/dotnet/macios/issues/10405
 			var project = "MySimpleApp";
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);

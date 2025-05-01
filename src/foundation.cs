@@ -289,7 +289,7 @@ namespace Foundation {
 		[return: NullAllowed]
 		NSArray FromUrl (NSUrl url, out NSError error);
 
-#if false // https://github.com/xamarin/xamarin-macios/issues/15577
+#if false // https://github.com/dotnet/macios/issues/15577
 		[TV (13,0), iOS (13,0)]
 		[Internal]
 		[Export ("differenceFromArray:withOptions:")]
@@ -5455,7 +5455,7 @@ namespace Foundation {
 		[Static, Export ("arrayWithContentsOfURL:")]
 		NSMutableArray FromUrl (NSUrl url);
 
-#if false // https://github.com/xamarin/xamarin-macios/issues/15577
+#if false // https://github.com/dotnet/macios/issues/15577
 		[TV (13,0), iOS (13,0)]
 		[Export ("applyDifference:")]
 		void ApplyDifference (NSOrderedCollectionDifference difference);
@@ -7746,7 +7746,7 @@ namespace Foundation {
 			// This _simply_ ensure that the Intents namespace (via the enum) will be present which,
 			// in turns, means that the Intents.framework is loaded into memory and this makes the
 			// selectors (getter and setter) work at runtime. Other selectors do not need it.
-			// reference: https://github.com/xamarin/xamarin-macios/issues/4894
+			// reference: https://github.com/dotnet/macios/issues/4894
 			[PreSnippet ("GC.KeepAlive (Intents.INCallCapabilityOptions.AudioCall); // no-op to ensure Intents.framework is loaded into memory", Optimizable = true)]
 			get;
 			[PreSnippet ("GC.KeepAlive (Intents.INCallCapabilityOptions.AudioCall); // no-op to ensure Intents.framework is loaded into memory", Optimizable = true)]
@@ -13637,7 +13637,7 @@ namespace Foundation {
 		[Export ("reversedOrderedSet")]
 		NSOrderedSet GetReverseOrderedSet ();
 
-#if false // https://github.com/xamarin/xamarin-macios/issues/15577
+#if false // https://github.com/dotnet/macios/issues/15577
 		[TV (13,0), iOS (13,0)]
 		[Wrap ("Runtime.GetNSObject <NSOrderedCollectionDifference> (_GetDifference (other, options))")]
 		[return: NullAllowed]
@@ -13840,7 +13840,7 @@ namespace Foundation {
 		[Export ("sortRange:options:usingComparator:")]
 		void SortRange (NSRange range, NSSortOptions sortOptions, NSComparator comparator);
 
-#if false // https://github.com/xamarin/xamarin-macios/issues/15577
+#if false // https://github.com/dotnet/macios/issues/15577
 		[Internal]
 		[TV (13,0), iOS (13,0)]
 		[Export ("applyDifference:")]
@@ -23263,7 +23263,7 @@ namespace Foundation {
 		string ReflexiveForm { get; set; }
 	}
 
-#if false // https://github.com/xamarin/xamarin-macios/issues/15577
+#if false // https://github.com/dotnet/macios/issues/15577
 	interface NSOrderedCollectionChange <TKey> : NSOrderedCollectionChange {}
 	
 	[TV (13,0), iOS (13,0)]

@@ -13,7 +13,7 @@
 		<Compile Include="../*.cs" />
 	</ItemGroup>
 
-	<!-- Ref: https://github.com/xamarin/xamarin-macios/issues/15594 -->
+	<!-- Ref: https://github.com/dotnet/macios/issues/15594 -->
 	<PropertyGroup>
 		<CreateAppBundleDependsOn>$(CreateAppBundleDependsOn);CopyCustomFiles;</CreateAppBundleDependsOn>
 	</PropertyGroup>

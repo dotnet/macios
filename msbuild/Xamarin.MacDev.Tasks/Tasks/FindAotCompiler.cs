@@ -4,16 +4,15 @@ using System.Linq;
 using Microsoft.Build.Framework;
 using Xamarin.Localization.MSBuild;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Xamarin.MacDev.Tasks {
 	public class FindAotCompiler : XamarinBuildTask {
 		[Required]
-		public ITaskItem [] MonoAotCrossCompiler { get; set; }
+		public ITaskItem [] MonoAotCrossCompiler { get; set; } = [];
 
 		[Output]
-		public string AotCompiler { get; set; }
+		public string AotCompiler { get; set; } = "";
 
 		protected override bool ExecuteLocally ()
 		{

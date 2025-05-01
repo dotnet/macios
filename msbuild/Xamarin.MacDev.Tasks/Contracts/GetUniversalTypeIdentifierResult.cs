@@ -1,8 +1,7 @@
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Xamarin.Messaging.Build.Contracts {
 	public class GetUniversalTypeIdentifierResult {
-		public string UniversalTypeIdentifier { get; set; }
+		public string? UniversalTypeIdentifier { get; set; }
 	}
 }

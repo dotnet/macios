@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 using Microsoft.Build.Framework;
@@ -11,50 +12,54 @@ using Xamarin.Localization.MSBuild;
 using Xamarin.Messaging.Build.Client;
 using Xamarin.Utils;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Xamarin.MacDev.Tasks {
 	public class Archive : XamarinTask, ICancelableTask {
 		protected readonly DateTime Now = DateTime.Now;
 
+		ITaskItem? appBundleDir;
+
 		#region Inputs
 
 		[Required]
-		public ITaskItem AppBundleDir { get; set; }
+		public ITaskItem AppBundleDir {
+			get => appBundleDir!;
+			set => appBundleDir = value;
+		}
 
-		public ITaskItem [] AppExtensionReferences { get; set; }
+		public ITaskItem [] AppExtensionReferences { get; set; } = [];
 
 		// default is `MonoBundle` but that can be changed with `_CustomBundleName`
-		public string CustomBundleName { get; set; }
+		public string CustomBundleName { get; set; } = "";
 
-		public string InsightsApiKey { get; set; }
+		public string InsightsApiKey { get; set; } = "";
 
-		public ITaskItem [] ITunesSourceFiles { get; set; }
-
-		[Required]
-		public string OutputPath { get; set; }
+		public ITaskItem [] ITunesSourceFiles { get; set; } = [];
 
 		[Required]
-		public string ProjectName { get; set; }
+		public string OutputPath { get; set; } = "";
 
-		public string ProjectGuid { get; set; }
+		[Required]
+		public string ProjectName { get; set; } = "";
 
-		public string ProjectTypeGuids { get; set; }
+		public string ProjectGuid { get; set; } = "";
 
-		public string RuntimeIdentifiers { get; set; }
+		public string ProjectTypeGuids { get; set; } = "";
 
-		public string SolutionPath { get; set; }
+		public string RuntimeIdentifiers { get; set; } = "";
 
-		public string SigningKey { get; set; }
+		public string SolutionPath { get; set; } = "";
 
-		public ITaskItem [] WatchAppReferences { get; set; }
+		public string SigningKey { get; set; } = "";
+
+		public ITaskItem [] WatchAppReferences { get; set; } = [];
 		#endregion
 
 		#region Outputs
 
 		[Output]
-		public string ArchiveDir { get; set; }
+		public string ArchiveDir { get; set; } = "";
 
 		#endregion
 
@@ -290,10 +295,9 @@ namespace Xamarin.MacDev.Tasks {
 
 		void ArchiveAppExtension (ITaskItem appex, string archiveDir)
 		{
-			var plist = PDictionary.FromFile (Path.Combine (appex.ItemSpec, "Info.plist"));
-			string watchAppBundleDir;
+			var plist = PDictionary.FromFile (Path.Combine (appex.ItemSpec, "Info.plist")!)!;
 
-			if (IsWatchAppExtension (appex, plist, out watchAppBundleDir)) {
+			if (IsWatchAppExtension (appex, plist, out var watchAppBundleDir)) {
 				var wk = Path.Combine (watchAppBundleDir, "_WatchKitStub", "WK");
 				var supportDir = Path.Combine (archiveDir, "WatchKitSupport");
 
@@ -355,27 +359,24 @@ namespace Xamarin.MacDev.Tasks {
 			return rv.ExitCode;
 		}
 
-		static bool IsWatchAppExtension (ITaskItem appex, PDictionary plist, out string watchAppBundleDir)
+		static bool IsWatchAppExtension (ITaskItem appex, PDictionary plist, [NotNullWhen (true)] out string? watchAppBundleDir)
 		{
-			PString expectedBundleIdentifier, bundleIdentifier, extensionPoint;
-			PDictionary extension, attributes;
-
 			watchAppBundleDir = null;
 
-			if (!plist.TryGetValue ("NSExtension", out extension))
+			if (!plist.TryGetValue<PDictionary> ("NSExtension", out var extension))
 				return false;
 
-			if (!extension.TryGetValue ("NSExtensionPointIdentifier", out extensionPoint))
+			if (!extension.TryGetValue<PString> ("NSExtensionPointIdentifier", out var extensionPoint))
 				return false;
 
 			if (extensionPoint.Value != "com.apple.watchkit")
 				return false;
 
 			// Okay, we've found the WatchKit App Extension...
-			if (!extension.TryGetValue ("NSExtensionAttributes", out attributes))
+			if (!extension.TryGetValue<PDictionary> ("NSExtensionAttributes", out var attributes))
 				return false;
 
-			if (!attributes.TryGetValue ("WKAppBundleIdentifier", out expectedBundleIdentifier))
+			if (!attributes.TryGetValue<PString> ("WKAppBundleIdentifier", out var expectedBundleIdentifier))
 				return false;
 
 			var pwd = PathUtils.ResolveSymbolicLinks (Environment.CurrentDirectory);
@@ -385,9 +386,9 @@ namespace Xamarin.MacDev.Tasks {
 				if (!File.Exists (Path.Combine (bundle, "Info.plist")))
 					continue;
 
-				plist = PDictionary.FromFile (Path.Combine (bundle, "Info.plist"));
+				plist = PDictionary.FromFile (Path.Combine (bundle, "Info.plist"))!;
 
-				if (!plist.TryGetValue ("CFBundleIdentifier", out bundleIdentifier))
+				if (!plist.TryGetValue<PString> ("CFBundleIdentifier", out var bundleIdentifier))
 					continue;
 
 				if (bundleIdentifier.Value != expectedBundleIdentifier.Value)

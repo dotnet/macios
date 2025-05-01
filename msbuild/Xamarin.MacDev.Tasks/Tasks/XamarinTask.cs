@@ -167,7 +167,7 @@ namespace Xamarin.MacDev.Tasks {
 			log.LogError (format, arguments);
 		}
 
-		protected void FileCopierReportErrorCallback (int code, string format, params object [] arguments)
+		protected void FileCopierReportErrorCallback (int code, string format, params object? [] arguments)
 		{
 			FileCopierReportErrorCallback (Log, code, format, arguments);
 		}
@@ -192,7 +192,7 @@ namespace Xamarin.MacDev.Tasks {
 			log.LogMessage (importance, format, arguments);
 		}
 
-		protected void FileCopierLogCallback (int min_verbosity, string format, params object [] arguments)
+		protected void FileCopierLogCallback (int min_verbosity, string format, params object? [] arguments)
 		{
 			FileCopierLogCallback (Log, min_verbosity, format, arguments);
 		}

@@ -1131,8 +1131,7 @@ namespace CoreImage {
 		[Export ("viewForUIConfiguration:excludedKeys:")]
 		IKFilterUIView GetFilterUIView (NSDictionary configurationOptions, [NullAllowed] NSArray excludedKeys);
 
-		// added in 10.10 but it was already accessible in a different way before (manual bindings)
-		[NoMac]
+		/// <summary>Gets the image that results from applying the filter.</summary>
 		[MacCatalyst (13, 1)]
 		[Export ("outputImage")]
 		[NullAllowed]

@@ -19,7 +19,6 @@ using ObjCRuntime;
 
 namespace SpriteKit {
 	public partial class SKNode : IEnumerable, IEnumerable<SKNode> {
-#if NET
 		/// <typeparam name="T">To be added.</typeparam>
 		///         <param name="file">
 		///
@@ -33,7 +32,6 @@ namespace SpriteKit {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public static T? FromFile<T> (string file) where T : SKNode
 		{
 			var fileHandle = CFString.CreateNative (file);
@@ -81,7 +79,6 @@ namespace SpriteKit {
 			return GetEnumerator ();
 		}
 
-#if NET
 		/// <param name="filename">To be added.</param>
 		///         <param name="types">To be added.</param>
 		///         <param name="error">To be added.</param>
@@ -92,7 +89,6 @@ namespace SpriteKit {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public static SKNode? Create (string filename, Type [] types, out NSError error)
 		{
 			// Let's fail early.
@@ -112,7 +108,6 @@ namespace SpriteKit {
 			}
 		}
 
-#if NET
 		/// <param name="filename">To be added.</param>
 		///         <param name="classes">To be added.</param>
 		///         <param name="error">To be added.</param>
@@ -123,7 +118,6 @@ namespace SpriteKit {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public static SKNode? Create (string filename, NSSet<Class> classes, out NSError error)
 		{
 			// `filename` will be checked by `Create` later

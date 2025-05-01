@@ -37,24 +37,6 @@ namespace SceneKit {
 			return Create (shapes, t);
 		}
 
-#if !NET
-		[Obsolete ("Use the 'Create' method that takes a 'SCNMatrix4 []'.")]
-		public static SCNPhysicsShape Create (SCNPhysicsShape [] shapes, SCNVector3 [] transforms)
-		{
-			if (shapes is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentException (nameof (shapes));
-
-			if (transforms is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentException (nameof (transforms));
-
-			var t = new NSValue [transforms.Length];
-			for (var i = 0; i < t.Length; i++)
-				t [i] = NSValue.FromVector (transforms [i]);
-
-			return Create (shapes, t);
-		}
-#endif
-
 		/// <param name="geometry">To be added.</param>
 		///         <param name="shapeType">To be added.</param>
 		///         <param name="keepAsCompound">To be added.</param>
@@ -126,14 +108,12 @@ namespace SceneKit {
 		}
 	}
 
-#if NET
 	/// <summary>Valid keys for the <c>options</c> dictionary used with <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Scene%20Kit%20SCNPhysics%20Shape%20Create&amp;scope=Xamarin" title="M:SceneKit.SCNPhysicsShape.Create*">M:SceneKit.SCNPhysicsShape.Create*</a></format>.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class SCNPhysicsShapeOptions {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>

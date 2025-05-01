@@ -36,27 +36,12 @@ using CoreFoundation;
 using ObjCRuntime;
 using Foundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace OpenGL {
-#if NET
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	[ObsoletedOSPlatform ("macos10.14", "Use 'Metal' Framework instead.")]
-#else
-	[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'Metal' Framework instead.")]
-#endif
 	public class CGLPixelFormat : NativeObject {
-#if !NET
-		public CGLPixelFormat (NativeHandle handle)
-			: base (handle, false, verify: true)
-		{
-		}
-#endif
-
 		protected internal override void Retain ()
 		{
 			CGLRetainPixelFormat (GetCheckedHandle ());

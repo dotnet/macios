@@ -140,9 +140,9 @@ namespace ObjCRuntime {
 			if (type == typeof (string)) return "@"; // We handle NSString as MonoString automagicaly
 			if (type == typeof (Selector)) return ":";
 			if (type == typeof (Class)) return "#";
-			if (type == typeof (nfloat)) return IntPtr.Size == 8 ? "d" : "f";
-			if (type == typeof (nint)) return IntPtr.Size == 8 ? "q" : "i";
-			if (type == typeof (nuint)) return IntPtr.Size == 8 ? "Q" : "I";
+			if (type == typeof (nfloat)) return "d";
+			if (type == typeof (nint)) return "q";
+			if (type == typeof (nuint)) return "Q";
 			if (typeof (INativeObject).IsAssignableFrom (type)) return "@";
 			if (type.IsValueType && !type.IsEnum) {
 				// TODO: We should cache the results of this in a temporary hash that we destroy when we're done initializing/registrations

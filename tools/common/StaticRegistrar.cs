@@ -747,7 +747,7 @@ namespace Registrar {
 			ErrorHelper.Show (ErrorHelper.CreateWarning (code, message, args));
 		}
 
-		public static int GetValueTypeSize (TypeDefinition type, bool is_64_bits)
+		public static int GetValueTypeSize (TypeDefinition type)
 		{
 			switch (type.FullName) {
 			case "System.Char": return 2;
@@ -764,15 +764,15 @@ namespace Registrar {
 			case "System.UInt64": return 8;
 			case "System.IntPtr":
 			case "System.nuint":
-			case "System.nint": return is_64_bits ? 8 : 4;
+			case "System.nint": return 8;
 			default:
 				if (type.FullName == NFloatTypeName)
-					return is_64_bits ? 8 : 4;
+					return 8;
 				int size = 0;
 				foreach (FieldDefinition field in type.Fields) {
 					if (field.IsStatic)
 						continue;
-					int s = GetValueTypeSize (field.FieldType.Resolve (), is_64_bits);
+					int s = GetValueTypeSize (field.FieldType.Resolve ());
 					if (s == -1)
 						return -1;
 					size += s;
@@ -783,7 +783,7 @@ namespace Registrar {
 
 		protected override int GetValueTypeSize (TypeReference type)
 		{
-			return GetValueTypeSize (type.Resolve (), Is64Bits);
+			return GetValueTypeSize (type.Resolve ());
 		}
 
 		public override bool HasReleaseAttribute (MethodDefinition method)
@@ -804,16 +804,6 @@ namespace Registrar {
 		protected override bool IsSimulatorOrDesktop {
 			get {
 				return App.Platform == ApplePlatform.MacOSX || App.IsSimulatorBuild;
-			}
-		}
-
-		protected override bool Is64Bits {
-			get {
-				if (IsSingleAssembly)
-					return App.Is64Build;
-
-				// Target can be null when mmp is run for multiple assemblies
-				return Target is not null ? Target.Is64Build : App.Is64Build;
 			}
 		}
 
@@ -1197,7 +1187,7 @@ namespace Registrar {
 				if (!gp.HasConstraints)
 					return false;
 				foreach (var c in gp.Constraints) {
-					if (IsNSObject (c.ConstraintType)) {
+					if (IsINativeObject (c.ConstraintType)) {
 						constrained_type = c.ConstraintType;
 						return true;
 					}
@@ -2422,7 +2412,7 @@ namespace Registrar {
 			case "System.UIntPtr":
 				name.Append ('p');
 				body.AppendLine ("void *v{0};", size);
-				size += Is64Bits ? 8 : 4;
+				size += 8;
 				break;
 			default:
 				bool found = false;
@@ -2511,31 +2501,32 @@ namespace Registrar {
 				var sb = new StringBuilder ();
 				var elementType = git.GetElementType ();
 
-				sb.Append (ToObjCParameterType (elementType, descriptiveMethodName, exceptions, inMethod));
-
-				if (sb [sb.Length - 1] != '*') {
-					// I'm not sure if this is possible to hit (I couldn't come up with a test case), but better safe than sorry.
-					AddException (ref exceptions, CreateException (4166, inMethod.Resolve () as MethodDefinition, "Cannot register the method '{0}' because the signature contains a type ({1}) that isn't a reference type.", descriptiveMethodName, GetTypeFullName (elementType)));
-					return "id";
-				}
-
-				sb.Length--; // remove the trailing * of the element type
-
-				sb.Append ('<');
-				for (int i = 0; i < git.GenericArguments.Count; i++) {
-					if (i > 0)
-						sb.Append (", ");
-					var argumentType = git.GenericArguments [i];
-					if (!IsINativeObject (argumentType)) {
-						// I believe the generic constraints we have should make this error impossible to hit, but better safe than sorry.
-						AddException (ref exceptions, CreateException (4167, inMethod.Resolve () as MethodDefinition, "Cannot register the method '{0}' because the signature contains a generic type ({1}) with a generic argument type that doesn't implement INativeObject ({2}).", descriptiveMethodName, GetTypeFullName (type), GetTypeFullName (argumentType)));
+				var objcElementType = ToObjCParameterType (elementType, descriptiveMethodName, exceptions, inMethod);
+				var isId = objcElementType == "id";
+				sb.Append (objcElementType);
+				if (!isId) {
+					if (sb [sb.Length - 1] != '*') {
+						// I'm not sure if this is possible to hit (I couldn't come up with a test case), but better safe than sorry.
+						AddException (ref exceptions, CreateException (4166, inMethod?.Resolve () as MethodDefinition, "Cannot register the method '{0}' because the signature contains a type ({1}) that isn't a reference type: {2}", descriptiveMethodName, GetTypeFullName (elementType), sb.ToString ()));
 						return "id";
 					}
-					sb.Append (ToObjCParameterType (argumentType, descriptiveMethodName, exceptions, inMethod));
-				}
-				sb.Append ('>');
+					sb.Length--; // remove the trailing * of the element type
 
-				sb.Append ('*'); // put back the * from the element type
+					sb.Append ('<');
+					for (int i = 0; i < git.GenericArguments.Count; i++) {
+						if (i > 0)
+							sb.Append (", ");
+						var argumentType = git.GenericArguments [i];
+						if (!IsINativeObject (argumentType)) {
+							// I believe the generic constraints we have should make this error impossible to hit, but better safe than sorry.
+							AddException (ref exceptions, CreateException (4167, inMethod?.Resolve () as MethodDefinition, "Cannot register the method '{0}' because the signature contains a generic type ({1}) with a generic argument type that doesn't implement INativeObject ({2}).", descriptiveMethodName, GetTypeFullName (type), GetTypeFullName (argumentType)));
+							return "id";
+						}
+						sb.Append (ToObjCParameterType (argumentType, descriptiveMethodName, exceptions, inMethod));
+					}
+					sb.Append ('>');
+					sb.Append ('*'); // put back the * from the element type
+				}
 
 				return sb.ToString ();
 			}
@@ -3525,8 +3516,6 @@ namespace Registrar {
 			case Trampoline.StaticLong:
 			case Trampoline.StaticDouble:
 			case Trampoline.StaticSingle:
-			case Trampoline.X86_DoubleABI_StaticStretTrampoline:
-			case Trampoline.X86_DoubleABI_StretTrampoline:
 			case Trampoline.StaticStret:
 			case Trampoline.Stret:
 			case Trampoline.CopyWithZone2:

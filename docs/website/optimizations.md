@@ -318,7 +318,7 @@ runtime.
 
 Benchmarks show that this speeds up calling a block by a factor of 10 to 15.
 
-It will transform the following [code](https://github.com/xamarin/xamarin-macios/blob/018f7153441d9d7e0f58e2046f39eeb46f1ff480/src/UIKit/UIAccessibility.cs#L198-L211):
+It will transform the following [code](https://github.com/dotnet/macios/blob/018f7153441d9d7e0f58e2046f39eeb46f1ff480/src/UIKit/UIAccessibility.cs#L198-L211):
 
 ```csharp
 public static void RequestGuidedAccessSession (bool enable, Action<bool> completionHandler)
@@ -776,4 +776,4 @@ The default behavior can be overridden by passing
 `--optimize=[+|-]force-rejected-types-removal` to `mtouch`.
 
 The exact list of types might change over time and is best read directly from
-the [source code](https://github.com/xamarin/xamarin-macios/blob/main/tools/linker/RemoveRejectedTypesStep.cs).
+the [source code](https://github.com/dotnet/macios/blob/main/tools/linker/RemoveRejectedTypesStep.cs).

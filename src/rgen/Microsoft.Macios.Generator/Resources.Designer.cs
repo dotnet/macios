@@ -67,7 +67,7 @@ namespace Microsoft.Macios.Generator {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to An unexpected error ocurred while processing &apos;{0}&apos;. Please fill a bug report at https://github.com/xamarin/xamarin-macios/issues/new..
+        ///   Looks up a localized string similar to An unexpected error ocurred while processing &apos;{0}&apos;. Please fill a bug report at https://github.com/dotnet/macios/issues/new..
         /// </summary>
         internal static string RBI0000MessageFormat {
             get {

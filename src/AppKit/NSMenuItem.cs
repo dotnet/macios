@@ -86,6 +86,8 @@ namespace AppKit {
 		{
 		}
 
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		public event EventHandler Activated {
 			add {
 				target = ActionDispatcher.SetupAction (Target, value);

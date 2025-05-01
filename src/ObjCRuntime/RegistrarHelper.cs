@@ -9,8 +9,6 @@
 
 // #define TRACE
 
-#if NET
-
 #nullable enable
 
 using System;
@@ -230,18 +228,18 @@ namespace ObjCRuntime {
 		}
 
 		internal static T? ConstructNSObject<T> (Type type, NativeHandle nativeHandle)
-			where T : class, INativeObject
+			where T : INativeObject
 		{
 			if (!TryGetMapEntry (type.Assembly.GetName ().Name!, out var entry))
-				return null;
+				return default (T);
 			return (T?) entry.Registrar.ConstructNSObject (type.TypeHandle, nativeHandle);
 		}
 
 		internal static T? ConstructINativeObject<T> (Type type, NativeHandle nativeHandle, bool owns)
-			where T : class, INativeObject
+			where T : INativeObject
 		{
 			if (!TryGetMapEntry (type.Assembly.GetName ().Name!, out var entry))
-				return null;
+				return default (T);
 			return (T?) entry.Registrar.ConstructINativeObject (type.TypeHandle, nativeHandle, owns);
 		}
 
@@ -438,5 +436,3 @@ namespace ObjCRuntime {
 		}
 	}
 }
-
-#endif // NET

@@ -43,6 +43,16 @@ namespace AppKit {
 			IntPtr /* NSImage* */ startCap, IntPtr /* NSImage* */ centerFill, IntPtr /* NSImage* */ endCap,
 			byte vertial, nint op, nfloat alphaFraction, byte flipped);
 
+		/// <param name="frame">To be added.</param>
+		/// <param name="startCap">To be added.</param>
+		/// <param name="centerFill">To be added.</param>
+		/// <param name="endCap">To be added.</param>
+		/// <param name="vertical">To be added.</param>
+		/// <param name="op">To be added.</param>
+		/// <param name="alphaFraction">To be added.</param>
+		/// <param name="flipped">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		public void DrawThreePartImage (CGRect frame,
 			NSImage startCap, NSImage centerFill, NSImage endCap,
 			bool vertical, NSCompositingOperation op, nfloat alphaFraction, bool flipped)
@@ -67,6 +77,21 @@ namespace AppKit {
 			IntPtr /* NSImage* */ bottomLeftCorner, IntPtr /* NSImage* */ bottomEdgeFill, IntPtr /* NSImage* */ bottomRightCnint,
 			nint op, nfloat alphaFraction, byte flipped);
 
+		/// <param name="frame">To be added.</param>
+		/// <param name="topLeftCorner">To be added.</param>
+		/// <param name="topEdgeFill">To be added.</param>
+		/// <param name="topRightCorner">To be added.</param>
+		/// <param name="leftEdgeFill">To be added.</param>
+		/// <param name="centerFill">To be added.</param>
+		/// <param name="rightEdgeFill">To be added.</param>
+		/// <param name="bottomLeftCorner">To be added.</param>
+		/// <param name="bottomEdgeFill">To be added.</param>
+		/// <param name="bottomRightCorner">To be added.</param>
+		/// <param name="op">To be added.</param>
+		/// <param name="alphaFraction">To be added.</param>
+		/// <param name="flipped">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		public void DrawNinePartImage (CGRect frame,
 			NSImage topLeftCorner, NSImage topEdgeFill, NSImage topRightCorner,
 			NSImage leftEdgeFill, NSImage centerFill, NSImage rightEdgeFill,

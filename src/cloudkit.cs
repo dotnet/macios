@@ -179,6 +179,8 @@ namespace CloudKit {
 		void Remove (CKShareParticipant participant);
 	}
 
+	/// <summary>Constants used by various CloudKit classes.</summary>
+	/// <remarks>To be added.</remarks>
 	[Static]
 	[MacCatalyst (13, 1)]
 	partial interface CKShareKeys {
@@ -284,7 +286,13 @@ namespace CloudKit {
 		CKDatabase GetDatabase (CKDatabaseScope databaseScope);
 
 		[Export ("accountStatusWithCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Retrieves the current user's <see cref="T:CloudKit.CKAccountStatus" />.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous GetAccountStatus operation.  The value of the TResult parameter is of type System.Action&lt;CloudKit.CKAccountStatus,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void GetAccountStatus (Action<CKAccountStatus, NSError> completionHandler);
 
 		[Deprecated (PlatformName.MacOSX, 14, 0)]
@@ -292,7 +300,14 @@ namespace CloudKit {
 		[Deprecated (PlatformName.TvOS, 17, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 17, 0)]
 		[Export ("statusForApplicationPermission:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="applicationPermission">To be added.</param>
+			<summary>Requests the current <see cref="T:CloudKit.CKApplicationPermissionStatus" /> for the specified <see cref="T:CloudKit.CKApplicationPermissions" />.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous StatusForApplicationPermission operation.  The value of the TResult parameter is of type System.Action&lt;CloudKit.CKApplicationPermissionStatus,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void StatusForApplicationPermission (CKApplicationPermissions applicationPermission, Action<CKApplicationPermissionStatus, NSError> completionHandler);
 
 		[Deprecated (PlatformName.MacOSX, 14, 0)]
@@ -300,11 +315,24 @@ namespace CloudKit {
 		[Deprecated (PlatformName.TvOS, 17, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 17, 0)]
 		[Export ("requestApplicationPermission:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="applicationPermission">To be added.</param>
+			<summary>Triggers the system UX for asking the user's permission for the requested <paramref name="applicationPermission" />.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous RequestApplicationPermission operation.  The value of the TResult parameter is of type System.Action&lt;CloudKit.CKApplicationPermissionStatus,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void RequestApplicationPermission (CKApplicationPermissions applicationPermission, Action<CKApplicationPermissionStatus, NSError> completionHandler);
 
 		[Export ("fetchUserRecordIDWithCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Retrieves the <see cref="T:CloudKit.CKRecordID" /> of the current user.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous FetchUserRecordId operation.  The value of the TResult parameter is of type System.Action&lt;CloudKit.CKRecordID,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void FetchUserRecordId (Action<CKRecordID, NSError> completionHandler);
 
 		[Deprecated (PlatformName.MacOSX, 14, 0)]
@@ -313,7 +341,15 @@ namespace CloudKit {
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("discoverAllIdentitiesWithCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Fetches all user records in the <see cref="T:CloudKit.CKContainer" /> that correspond to an entry in the user's address book.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous DiscoverAllIdentities operation.  The value of the TResult parameter is of type System.Action&lt;CloudKit.CKUserIdentity[],Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para>The "identity discovery" methods in <see cref="T:CloudKit.CKContainer" /> allow the developer to implement "friends who also use" functionality in their apps. These methods can be used to find user records in the CloudKit container that correspond to entries in the user's address book. No information about the user, beyond the fact that they use the app and agreed to share that status, is available from the <see cref="T:CloudKit.CKContainer" />.</para>
+			        </remarks>
+			""")]
 		void DiscoverAllIdentities (Action<CKUserIdentity [], NSError> completionHandler);
 
 		[Deprecated (PlatformName.MacOSX, 14, 0)]
@@ -322,7 +358,16 @@ namespace CloudKit {
 		[Deprecated (PlatformName.MacCatalyst, 17, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("discoverUserIdentityWithEmailAddress:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="email">To be added.</param>
+			<summary>Retrieves the <see cref="T:CloudKit.CKUserIdentity" /> data for the record with specified <paramref name="email" />.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous DiscoverUserIdentityWithEmailAddress operation.  The value of the TResult parameter is of type System.Action&lt;CloudKit.CKUserIdentity,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para>The "identity discovery" methods in <see cref="T:CloudKit.CKContainer" /> allow the developer to implement "friends who also use" functionality in their apps. These methods can be used to find user records in the CloudKit container that correspond to entries in the user's address book. No information about the user, beyond the fact that they use the app and agreed to share that status, is available from the <see cref="T:CloudKit.CKContainer" />.</para>
+			        </remarks>
+			""")]
 		void DiscoverUserIdentityWithEmailAddress (string email, Action<CKUserIdentity, NSError> completionHandler);
 
 		[Deprecated (PlatformName.MacOSX, 14, 0)]
@@ -331,7 +376,16 @@ namespace CloudKit {
 		[Deprecated (PlatformName.MacCatalyst, 17, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("discoverUserIdentityWithPhoneNumber:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="phoneNumber">To be added.</param>
+			<summary>Retrieves the <see cref="T:CloudKit.CKUserIdentity" /> data for the record with specified <paramref name="phoneNumber" />.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous DiscoverUserIdentityWithPhoneNumber operation.  The value of the TResult parameter is of type System.Action&lt;CloudKit.CKUserIdentity,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para>The "identity discovery" methods in <see cref="T:CloudKit.CKContainer" /> allow the developer to implement "friends who also use" functionality in their apps. These methods can be used to find user records in the CloudKit container that correspond to entries in the user's address book. No information about the user, beyond the fact that they use the app and agreed to share that status, is available from the <see cref="T:CloudKit.CKContainer" />.</para>
+			        </remarks>
+			""")]
 		void DiscoverUserIdentityWithPhoneNumber (string phoneNumber, Action<CKUserIdentity, NSError> completionHandler);
 
 		[Deprecated (PlatformName.MacOSX, 14, 0)]
@@ -340,7 +394,16 @@ namespace CloudKit {
 		[Deprecated (PlatformName.MacCatalyst, 17, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("discoverUserIdentityWithUserRecordID:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="userRecordID">To be added.</param>
+			<summary>Retrieves the <see cref="T:CloudKit.CKUserIdentity" /> data for the record with specified <paramref name="userRecordID" />.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous DiscoverUserIdentity operation.  The value of the TResult parameter is of type System.Action&lt;CloudKit.CKUserIdentity,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para>The "identity discovery" methods in <see cref="T:CloudKit.CKContainer" /> allow the developer to implement "friends who also use" functionality in their apps. These methods can be used to find user records in the CloudKit container that correspond to entries in the user's address book. No information about the user, beyond the fact that they use the app and agreed to share that status, is available from the <see cref="T:CloudKit.CKContainer" />.</para>
+			        </remarks>
+			""")]
 		void DiscoverUserIdentity (CKRecordID userRecordID, Action<CKUserIdentity, NSError> completionHandler);
 
 		/// <include file="../docs/api/CloudKit/CKContainer.xml" path="/Documentation/Docs[@DocId='P:CloudKit.CKContainer.AccountChangedNotification']/*" />
@@ -352,41 +415,96 @@ namespace CloudKit {
 		[NoTV] // does not answer on devices
 		[MacCatalyst (13, 1)]
 		[Export ("fetchAllLongLivedOperationIDsWithCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Returns an array that contains the identifiers for all the currently active long-lived operations.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous FetchAllLongLivedOperationIDs operation.  The value of the TResult parameter is of type System.Action&lt;Foundation.NSDictionary&lt;Foundation.NSString,Foundation.NSOperation&gt;,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void FetchAllLongLivedOperationIDs (Action<NSDictionary<NSString, NSOperation>, NSError> completionHandler);
 
 		[NoTV] // does not answer on devices
 		[MacCatalyst (13, 1)]
 		[Export ("fetchLongLivedOperationWithID:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="operationID">The ID of the long-lived operation to fetch.</param>
+			<summary>Fetches the long-lived operation that is identified by <paramref name="operationID" />.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous FetchLongLivedOperation operation.  The value of the TResult parameter is of type System.Action&lt;Foundation.NSDictionary&lt;Foundation.NSString,Foundation.NSOperation&gt;,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void FetchLongLivedOperation (string [] operationID, Action<NSDictionary<NSString, NSOperation>, NSError> completionHandler);
 
 		[MacCatalyst (13, 1)]
 		[Export ("fetchShareParticipantWithEmailAddress:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="emailAddress">To be added.</param>
+			<summary>Retrieves the <see cref="T:CloudKit.CKShareParticipant" /> information for the user who accepted a shared record..</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous FetchShareParticipantWithEmailAddress operation.  The value of the TResult parameter is of type System.Action&lt;CloudKit.CKShareParticipant,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void FetchShareParticipantWithEmailAddress (string emailAddress, Action<CKShareParticipant, NSError> completionHandler);
 
 		[MacCatalyst (13, 1)]
 		[Export ("fetchShareParticipantWithPhoneNumber:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="phoneNumber">To be added.</param>
+			<summary>Retrieves the <see cref="T:CloudKit.CKShareParticipant" /> information for the user who accepted a shared record.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous FetchShareParticipantWithPhoneNumber operation.  The value of the TResult parameter is of type System.Action&lt;CloudKit.CKShareParticipant,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void FetchShareParticipantWithPhoneNumber (string phoneNumber, Action<CKShareParticipant, NSError> completionHandler);
 
 		[MacCatalyst (13, 1)]
 		[Export ("fetchShareParticipantWithUserRecordID:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="userRecordID">To be added.</param>
+			<summary>Retrieves the <see cref="T:CloudKit.CKShareParticipant" /> information for the user who accepted a shared record.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous FetchShareParticipant operation.  The value of the TResult parameter is of type System.Action&lt;CloudKit.CKShareParticipant,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void FetchShareParticipant (CKRecordID userRecordID, Action<CKShareParticipant, NSError> completionHandler);
 
 		[MacCatalyst (13, 1)]
 		[Export ("fetchShareMetadataWithURL:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="url">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous FetchShareMetadata operation.  The value of the TResult parameter is of type System.Action&lt;CloudKit.CKShareMetadata,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void FetchShareMetadata (NSUrl url, Action<CKShareMetadata, NSError> completionHandler);
 
 		[MacCatalyst (13, 1)]
 		[Export ("acceptShareMetadata:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="metadata">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous AcceptShareMetadata operation.  The value of the TResult parameter is of type System.Action&lt;CloudKit.CKShare,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The AcceptShareMetadataAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void AcceptShareMetadata (CKShareMetadata metadata, Action<CKShare, NSError> completionHandler);
 	}
 
+	/// <param name="subscriptionId">To be added.</param>
+	/// <param name="error">To be added.</param>
+	/// <summary>Completion handler for the <see cref="M:CloudKit.CKDatabase.DeleteSubscription(System.String,CloudKit.CKDatabaseDeleteSubscriptionHandler)" /> method.</summary>
+	/// <remarks>To be added.</remarks>
 	delegate void CKDatabaseDeleteSubscriptionHandler (string subscriptionId, NSError error);
 
 	[MacCatalyst (13, 1)]
@@ -401,55 +519,141 @@ namespace CloudKit {
 		CKDatabaseScope DatabaseScope { get; }
 
 		[Export ("fetchRecordWithID:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="recordId">To be added.</param>
+			<summary>Fetches the <see cref="T:CloudKit.CKRecord" /> with the specified <paramref name="recordId" />.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous FetchRecord operation.  The value of the TResult parameter is of type System.Action&lt;CloudKit.CKRecord,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void FetchRecord (CKRecordID recordId, Action<CKRecord, NSError> completionHandler);
 
 		[Export ("saveRecord:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="record">To be added.</param>
+			<summary>Saves the specified <see cref="T:CloudKit.CKRecord" />.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous SaveRecord operation.  The value of the TResult parameter is of type System.Action&lt;CloudKit.CKRecord,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void SaveRecord (CKRecord record, Action<CKRecord, NSError> completionHandler);
 
 		[Export ("deleteRecordWithID:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="recordId">To be added.</param>
+			<summary>Deletes the record with the <paramref name="recordId" />.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous DeleteRecord operation.  The value of the TResult parameter is of type System.Action&lt;CloudKit.CKRecordID,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void DeleteRecord (CKRecordID recordId, Action<CKRecordID, NSError> completionHandler);
 
 		[Export ("performQuery:inZoneWithID:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="query">To be added.</param>
+			<param name="zoneId">To be added.</param>
+			<summary>Executes the <paramref name="query" /> on the zone identified by <paramref name="zoneId" />.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous PerformQuery operation.  The value of the TResult parameter is of type System.Action&lt;CloudKit.CKRecord[],Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void PerformQuery (CKQuery query, [NullAllowed] CKRecordZoneID zoneId, Action<CKRecord [], NSError> completionHandler);
 
 		[Export ("fetchAllRecordZonesWithCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Retrieves all record zones, with low priority.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous FetchAllRecordZones operation.  The value of the TResult parameter is of type System.Action&lt;CloudKit.CKRecordZone[],Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void FetchAllRecordZones (Action<CKRecordZone [], NSError> completionHandler);
 
 		[Export ("fetchRecordZoneWithID:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="zoneId">To be added.</param>
+			<summary>Fetches the <see cref="T:CloudKit.CKRecordZone" /> with the specified <paramref name="zoneId" />.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous FetchRecordZone operation.  The value of the TResult parameter is of type System.Action&lt;CloudKit.CKRecordZone,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void FetchRecordZone (CKRecordZoneID zoneId, Action<CKRecordZone, NSError> completionHandler);
 
 		[Export ("saveRecordZone:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="zone">To be added.</param>
+			<summary>Saves the specified <paramref name="zone" /> to the current database.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous SaveRecordZone operation.  The value of the TResult parameter is of type System.Action&lt;CloudKit.CKRecordZone,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void SaveRecordZone (CKRecordZone zone, Action<CKRecordZone, NSError> completionHandler);
 
 		[Export ("deleteRecordZoneWithID:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="zoneId">To be added.</param>
+			<summary>Deletes the zone at the specified <paramref name="zoneId" />.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous DeleteRecordZone operation.  The value of the TResult parameter is of type System.Action&lt;CloudKit.CKRecordZoneID,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void DeleteRecordZone (CKRecordZoneID zoneId, Action<CKRecordZoneID, NSError> completionHandler);
 
 		[Export ("fetchSubscriptionWithID:completionHandler:")]
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="subscriptionId">To be added.</param>
+			<summary>Fetches the <see cref="T:CloudKit.CKSubscription" /> with the specified <paramref name="subscriptionId" />.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous FetchSubscription operation.  The value of the TResult parameter is of type System.Action&lt;CloudKit.CKSubscription,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void FetchSubscription (string subscriptionId, Action<CKSubscription, NSError> completionHandler);
 
 		[MacCatalyst (13, 1)]
 		[Export ("fetchAllSubscriptionsWithCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Retrieves all the <see cref="T:CloudKit.CKSubscription" /> objects from the database.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous FetchAllSubscriptions operation.  The value of the TResult parameter is of type System.Action&lt;CloudKit.CKSubscription[],Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void FetchAllSubscriptions (Action<CKSubscription [], NSError> completionHandler);
 
 		[MacCatalyst (13, 1)]
 		[Export ("saveSubscription:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="subscription">To be added.</param>
+			<summary>Saves the specified <paramref name="subscription" /> to the current database.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous SaveSubscription operation.  The value of the TResult parameter is of type System.Action&lt;CloudKit.CKSubscription,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void SaveSubscription (CKSubscription subscription, Action<CKSubscription, NSError> completionHandler);
 
 		[Export ("deleteSubscriptionWithID:completionHandler:")]
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="subscriptionID">To be added.</param>
+			<summary>Deletes the <see cref="T:CloudKit.CKSubscription" /> with the specified <paramref name="subscriptionID" />.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous DeleteSubscription operation.   The value of the TResult parameter is a CloudKit.CKDatabaseDeleteSubscriptionHandler.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The DeleteSubscriptionAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void DeleteSubscription (string subscriptionID, CKDatabaseDeleteSubscriptionHandler completionHandler);
 	}
 
@@ -503,6 +707,8 @@ namespace CloudKit {
 #endif // !NET
 
 	// CKError.h Fields
+	/// <summary>Holds error constants used by CloudKit.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface CKErrorFields {
@@ -553,6 +759,11 @@ namespace CloudKit {
 
 	}
 
+	/// <param name="serverChangeToken">To be added.</param>
+	/// <param name="clientChangeTokenData">To be added.</param>
+	/// <param name="operationError">To be added.</param>
+	/// <summary>Delegate for the <see cref="P:CloudKit.CKFetchRecordChangesOperation.AllChangesReported" /> property.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	delegate void CKFetchRecordChangesHandler (CKServerChangeToken serverChangeToken, NSData clientChangeTokenData, NSError operationError);
 
@@ -717,6 +928,10 @@ namespace CloudKit {
 		string [] DesiredKeys { get; set; }
 	}
 
+	/// <param name="recordsByRecordId">To be added.</param>
+	/// <param name="error">To be added.</param>
+	/// <summary>Delegate for the <see cref="P:CloudKit.CKFetchRecordsOperation.Completed" /> property.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	delegate void CKFetchRecordsCompletedHandler (NSDictionary recordsByRecordId, NSError error);
 
@@ -762,6 +977,10 @@ namespace CloudKit {
 		CKFetchRecordsOperation FetchCurrentUserRecordOperation ();
 	}
 
+	/// <param name="recordZonesByZoneId">To be added.</param>
+	/// <param name="operationError">To be added.</param>
+	/// <summary>Delegate for the <see cref="P:CloudKit.CKFetchRecordZonesOperation.Completed" /> property.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	delegate void CKRecordZoneCompleteHandler (NSDictionary recordZonesByZoneId, NSError operationError);
 
@@ -797,6 +1016,10 @@ namespace CloudKit {
 		CKRecordZonePerRecordZoneCompletionHandler PerRecordZoneCompletionHandler { get; set; }
 	}
 
+	/// <param name="subscriptionsBySubscriptionId">To be added.</param>
+	/// <param name="operationError">To be added.</param>
+	/// <summary>Delegate for the <see cref="P:CloudKit.CKFetchSubscriptionsOperation.Completed" /> property.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	delegate void CKFetchSubscriptionsCompleteHandler (NSDictionary subscriptionsBySubscriptionId, NSError operationError);
 
@@ -850,6 +1073,11 @@ namespace CloudKit {
 		CLLocation RelativeLocation { get; }
 	}
 
+	/// <param name="savedRecords">To be added.</param>
+	/// <param name="deletedRecordIds">To be added.</param>
+	/// <param name="operationError">To be added.</param>
+	/// <summary>Delegate for the <see cref="P:CloudKit.CKModifyRecordsOperation.Completed" /> property.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	delegate void CKModifyRecordsOperationHandler (CKRecord [] savedRecords, CKRecordID [] deletedRecordIds, NSError operationError);
 
@@ -922,6 +1150,11 @@ namespace CloudKit {
 
 	}
 
+	/// <param name="savedRecordZones">To be added.</param>
+	/// <param name="deletedRecordZoneIds">To be added.</param>
+	/// <param name="operationError">To be added.</param>
+	/// <summary>Delegate for the <see cref="P:CloudKit.CKModifyRecordZonesOperation.Completed" /> property.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	delegate void CKModifyRecordZonesHandler (CKRecordZone [] savedRecordZones, CKRecordZoneID [] deletedRecordZoneIds, NSError operationError);
 
@@ -965,6 +1198,11 @@ namespace CloudKit {
 		CKModifyRecordZonesPerRecordZoneDeleteHandler PerRecordZoneDeleteHandler { get; set; }
 	}
 
+	/// <param name="savedSubscriptions">To be added.</param>
+	/// <param name="deletedSubscriptionIds">To be added.</param>
+	/// <param name="operationError">To be added.</param>
+	/// <summary>Delegate for the <see cref="P:CloudKit.CKModifySubscriptionsOperation.Completed" /> property.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	delegate void CKModifySubscriptionsHandler (CKSubscription [] savedSubscriptions, string [] deletedSubscriptionIds, NSError operationError);
 
@@ -1398,6 +1636,12 @@ namespace CloudKit {
 		CKQueryOperationRecordMatchedHandler RecordMatchedHandler { get; set; }
 	}
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:CloudKit.CKRecordValue" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:CloudKit.CKRecordValue" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:CloudKit.CKRecordValue" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Cloud%20Kit%20CKRecord%20Value_%20Extensions&amp;scope=Xamarin" title="T:CloudKit.CKRecordValue_Extensions">T:CloudKit.CKRecordValue_Extensions</a></format> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model]

@@ -4310,10 +4310,10 @@
               <test-case name="DoubleDispose" executed="True" result="Success" success="True" time="0.001" asserts="0" />
               <test-case name="NoStrongCycles" executed="False" result="Ignored">
                 <properties>
-                  <property name="_SKIPREASON" value="Issue: https://github.com/xamarin/maccore/issues/1345 &amp;&amp; WIP PR: https://github.com/xamarin/xamarin-macios/pull/5462" />
+                  <property name="_SKIPREASON" value="Issue: https://github.com/xamarin/maccore/issues/1345 &amp;&amp; WIP PR: https://github.com/dotnet/macios/pull/5462" />
                 </properties>
                 <reason>
-                  <message><![CDATA[Issue: https://github.com/xamarin/maccore/issues/1345 && WIP PR: https://github.com/xamarin/xamarin-macios/pull/5462]]></message>
+                  <message><![CDATA[Issue: https://github.com/xamarin/maccore/issues/1345 && WIP PR: https://github.com/dotnet/macios/pull/5462]]></message>
                 </reason>
               </test-case>
               <test-case name="Null" executed="True" result="Success" success="True" time="0.001" asserts="0" />
@@ -8422,7 +8422,7 @@ FontTest : 5 ms
 
 GestureRecognizerTest
     [PASS] GestureRecognizerTest.DoubleDispose
-    [IGNORED] GestureRecognizerTest.NoStrongCycles : Issue: https://github.com/xamarin/maccore/issues/1345 && WIP PR: https://github.com/xamarin/xamarin-macios/pull/5462
+    [IGNORED] GestureRecognizerTest.NoStrongCycles : Issue: https://github.com/xamarin/maccore/issues/1345 && WIP PR: https://github.com/dotnet/macios/pull/5462
     [PASS] GestureRecognizerTest.Null
 GestureRecognizerTest : 2 ms
 

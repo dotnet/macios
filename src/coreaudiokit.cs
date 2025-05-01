@@ -71,6 +71,11 @@ namespace CoreAudioKit {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface AUAudioUnitViewConfiguration : NSSecureCoding {
+		/// <param name="width">To be added.</param>
+		/// <param name="height">To be added.</param>
+		/// <param name="hostHasController">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithWidth:height:hostHasController:")]
 		NativeHandle Constructor (nfloat width, nfloat height, bool hostHasController);
 
@@ -88,9 +93,16 @@ namespace CoreAudioKit {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (AUAudioUnit))]
 	interface AUAudioUnitViewControllerExtensions {
+		/// <param name="availableViewConfigurations">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("supportedViewConfigurations:")]
 		NSIndexSet GetSupportedViewConfigurations (AUAudioUnitViewConfiguration [] availableViewConfigurations);
 
+		/// <param name="viewConfiguration">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("selectViewConfiguration:")]
 		void SelectViewConfiguration (AUAudioUnitViewConfiguration viewConfiguration);
 	}
@@ -100,6 +112,9 @@ namespace CoreAudioKit {
 	[Protocol]
 	interface AUCustomViewPersistentData {
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[NullAllowed, Export ("customViewPersistentData", ArgumentSemantic.Assign)]
 		NSDictionary<NSString, NSObject> CustomViewPersistentData { get; set; }
@@ -143,6 +158,9 @@ namespace CoreAudioKit {
 	[BaseType (typeof (NSWindowController), Name = "CABTLEMIDIWindowController")]
 	interface CABtleMidiWindowController {
 
+		/// <param name="window">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithWindow:")]
 		NativeHandle Constructor ([NullAllowed] NSWindow window);
 	}
@@ -152,6 +170,10 @@ namespace CoreAudioKit {
 	[BaseType (typeof (NSViewController))]
 	interface CAInterDeviceAudioViewController {
 
+		/// <param name="nibNameOrNull">To be added.</param>
+		/// <param name="nibBundleOrNull">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithNibName:bundle:")]
 		NativeHandle Constructor ([NullAllowed] string nibNameOrNull, [NullAllowed] NSBundle nibBundleOrNull);
 	}
@@ -162,6 +184,9 @@ namespace CoreAudioKit {
 	[BaseType (typeof (NSWindowController))]
 	interface CANetworkBrowserWindowController {
 
+		/// <param name="window">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithWindow:")]
 		NativeHandle Constructor ([NullAllowed] NSWindow window);
 
@@ -232,6 +257,12 @@ namespace CoreAudioKit {
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'AudioUnit' instead.")]
 	[BaseType (typeof (UIView))]
 	interface CAInterAppAudioSwitcherView {
+		/// <param name="bounds">Frame used by the view, expressed in iOS points.</param>
+		/// <summary>Initializes the CAInterAppAudioSwitcherView with the specified frame.</summary>
+		/// <remarks>
+		///           <para>This constructor is used to programmatically create a new instance of CAInterAppAudioSwitcherView with the specified dimension in the frame.   The object will only be displayed once it has been added to a view hierarchy by calling AddSubview in a containing view.</para>
+		///           <para>This constructor is not invoked when deserializing objects from storyboards or XIB filesinstead the constructor that takes an NSCoder parameter is invoked.</para>
+		///         </remarks>
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect bounds);
 
@@ -257,6 +288,12 @@ namespace CoreAudioKit {
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'AudioUnit' instead.")]
 	[BaseType (typeof (UIView))]
 	interface CAInterAppAudioTransportView {
+		/// <param name="bounds">Frame used by the view, expressed in iOS points.</param>
+		/// <summary>Initializes the CAInterAppAudioTransportView with the specified frame.</summary>
+		/// <remarks>
+		///           <para>This constructor is used to programmatically create a new instance of CAInterAppAudioTransportView with the specified dimension in the frame.   The object will only be displayed once it has been added to a view hierarchy by calling AddSubview in a containing view.</para>
+		///           <para>This constructor is not invoked when deserializing objects from storyboards or XIB filesinstead the constructor that takes an NSCoder parameter is invoked.</para>
+		///         </remarks>
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect bounds);
 

@@ -513,4 +513,63 @@ namespace Bindings.Test {
 		[Export ("SayHello2")]
 		string SayHello2 ();
 	}
+
+	[Protocol]
+	interface VeryGenericElementProtocol {
+		[Export ("when", ArgumentSemantic.Retain)]
+		NSDate When { get; }
+	}
+
+	interface IVeryGenericElementProtocol : INativeObject { }
+
+	[Protocol]
+	interface VeryGenericElementProtocol1 : VeryGenericElementProtocol {
+		[Export ("number")]
+		nint Number { get; }
+	}
+
+	interface IVeryGenericElementProtocol1 : IVeryGenericElementProtocol { }
+
+	[Protocol]
+	interface VeryGenericElementProtocol2 : VeryGenericElementProtocol {
+		[Export ("animal", ArgumentSemantic.Retain)]
+		string Animal { get; }
+	}
+
+	interface IVeryGenericElementProtocol2 : IVeryGenericElementProtocol { }
+
+	[BaseType (typeof (NSObject))]
+	interface VeryGenericCollection<Key, Element>
+		where Key : NSString
+		where Element : IVeryGenericElementProtocol {
+		[Export ("count")]
+		nuint Count { get; }
+
+		[Export ("getElement:"), NullAllowed]
+		Element GetElement (Key key);
+
+		[Export ("elementEnumerator"), NullAllowed]
+		NSEnumerator<Element> GetEnumerator ();
+
+		[Export ("add:")]
+		void Add (Element element);
+	}
+
+	[Protocol]
+	interface VeryGenericConsumerProtocol {
+		[Export ("first", ArgumentSemantic.Retain)]
+		VeryGenericCollection<NSString, IVeryGenericElementProtocol1> First { get; }
+
+		[Export ("second", ArgumentSemantic.Retain)]
+		VeryGenericCollection<NSString, IVeryGenericElementProtocol2> Second { get; }
+	}
+
+	interface IVeryGenericConsumerProtocol { }
+
+	[BaseType (typeof (NSObject))]
+	interface VeryGenericFactory {
+		[Export ("getConsumer")]
+		[Static]
+		IVeryGenericConsumerProtocol GetConsumer ();
+	}
 }

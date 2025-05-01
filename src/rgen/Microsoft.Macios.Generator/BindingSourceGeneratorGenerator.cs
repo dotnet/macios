@@ -139,7 +139,7 @@ public class BindingSourceGeneratorGenerator : IIncrementalGenerator {
 				// user we do not support what they are trying to do
 				context.ReportDiagnostic (Diagnostic.Create (
 					Diagnostics
-						.RBI0000, // An unexpected error ocurred while processing '{0}'. Please fill a bug report at https://github.com/xamarin/xamarin-macios/issues/new.
+						.RBI0000, // An unexpected error ocurred while processing '{0}'. Please fill a bug report at https://github.com/dotnet/macios/issues/new.
 					null,
 					binding.FullyQualifiedSymbol));
 			}

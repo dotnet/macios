@@ -1,7 +1,7 @@
 parameters:
   runAsPublic: false
-  sourceIndexUploadPackageVersion: 2.0.0-20240522.1
-  sourceIndexProcessBinlogPackageVersion: 1.0.1-20240522.1
+  sourceIndexUploadPackageVersion: 2.0.0-20250425.2
+  sourceIndexProcessBinlogPackageVersion: 1.0.1-20250425.2
   sourceIndexPackageSource: https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-tools/nuget/v3/index.json
   sourceIndexBuildCommand: powershell -NoLogo -NoProfile -ExecutionPolicy Bypass -Command "eng/common/build.ps1 -restore -build -binarylog -ci"
   preSteps: []
@@ -49,10 +49,10 @@ jobs:
     - ${{ preStep }}
 
   - task: UseDotNet@2
-    displayName: Use .NET 8 SDK
+    displayName: Use .NET $(DotNetSdkVersion) SDK
     inputs:
       packageType: sdk
-      version: 8.0.x
+      version: $(DotNetSdkVersion).x
       installationPath: $(Agent.TempDirectory)/dotnet
       workingDirectory: $(Agent.TempDirectory)
 

@@ -49,6 +49,8 @@ using Midi2DeviceRevisionLevel = System.Object;
 namespace CoreMidi {
 
 
+	/// <summary>An enumeration whose values specify which hosts are eligible to connect to a MIDI network session.</summary>
+	/// <remarks>To be added.</remarks>
 	[TV (15, 0)]
 	[MacCatalyst (13, 1)]
 	// NSUInteger -> MIDINetworkSession.h
@@ -387,6 +389,12 @@ namespace CoreMidi {
 		[Export ("hostWithName:netServiceName:netServiceDomain:")]
 		MidiNetworkHost Create (string hostName, string netServiceName, string netServiceDomain);
 
+		/// <param name="hostName">To be added.</param>
+		/// <param name="address">To be added.</param>
+		/// <param name="port">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static]
 		[Export ("hostWithName:address:port:")]
 		MidiNetworkHost Create (string hostName, string address, nint port);

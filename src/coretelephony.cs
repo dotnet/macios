@@ -317,6 +317,9 @@ namespace CoreTelephony {
 	[NoMacCatalyst]
 	[Protocol]
 	interface CTSubscriberDelegate {
+		/// <param name="subscriber">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("subscriberTokenRefreshed:")]
 		void SubscriberTokenRefreshed (CTSubscriber subscriber);
@@ -439,7 +442,12 @@ namespace CoreTelephony {
 		///         <param name="completionHandler">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[Async]
+		[Async (XmlDocs = """
+			<param name="request">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("addPlanWith:completionHandler:")]
 		void AddPlan (CTCellularPlanProvisioningRequest request, Action<CTCellularPlanProvisioningAddPlanResult> completionHandler);
 

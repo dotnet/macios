@@ -18,20 +18,9 @@ namespace Security {
 		unsafe extern static void SecAddSharedWebCredential (IntPtr /* CFStringRef */ fqdn, IntPtr /* CFStringRef */ account, IntPtr /* CFStringRef */ password,
 			BlockLiteral* /* void (^completionHandler)( CFErrorRef error) ) */ completionHandler);
 
-#if !NET
-		[UnmanagedFunctionPointerAttribute (CallingConvention.Cdecl)]
-		internal delegate void DActionArity1V12 (IntPtr block, IntPtr obj);
-#endif
-
 		// This class bridges native block invocations that call into C#
 		static internal class ActionTrampoline {
-#if !NET
-			static internal readonly DActionArity1V12 Handler = Invoke;
-			
-			[MonoPInvokeCallback (typeof (DActionArity1V12))]
-#else
 			[UnmanagedCallersOnly]
-#endif
 			internal static unsafe void Invoke (IntPtr block, IntPtr obj)
 			{
 				var descriptor = (BlockLiteral*) block;
@@ -62,13 +51,8 @@ namespace Security {
 				using var nsAccount = new NSString (account);
 				using var nsPassword = (NSString?) password;
 
-#if NET
 				delegate* unmanaged<IntPtr, IntPtr, void> trampoline = &ActionTrampoline.Invoke;
 				using var block = new BlockLiteral (trampoline, handler, typeof (ActionTrampoline), nameof (ActionTrampoline.Invoke));
-#else
-				using var block = new BlockLiteral ();
-				block.SetupBlockUnsafe (ActionTrampoline.Handler, handler);
-#endif
 				SecAddSharedWebCredential (nsDomain.Handle, nsAccount.Handle, nsPassword.GetHandle (), &block);
 				GC.KeepAlive (nsDomain);
 				GC.KeepAlive (nsAccount);
@@ -76,38 +60,23 @@ namespace Security {
 			}
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-		[ObsoletedOSPlatform ("macos11.0")]
+		[ObsoletedOSPlatform ("maccatalyst")]
+		[ObsoletedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("ios14.0")]
 		[UnsupportedOSPlatform ("tvos")]
-#else
-		[Deprecated (PlatformName.iOS, 14,0)]
-		[Deprecated (PlatformName.MacOSX, 11,0)]
-#endif
 		[DllImport (Constants.SecurityLibrary)]
 		unsafe extern static void SecRequestSharedWebCredential (IntPtr /* CFStringRef */ fqdn, IntPtr /* CFStringRef */ account,
 			BlockLiteral* /* void (^completionHandler)( CFArrayRef credentials, CFErrorRef error) */ completionHandler);
-
-#if !NET
-		[UnmanagedFunctionPointerAttribute (CallingConvention.Cdecl)]
-		internal delegate void ArrayErrorAction (IntPtr block, IntPtr array, IntPtr err);
-#endif
 
 		//
 		// This class bridges native block invocations that call into C# because we cannot use the decorator, we have to create
 		// it for our use here.
 		//
 		static internal class ArrayErrorActionTrampoline {
-#if !NET
-			static internal readonly ArrayErrorAction Handler = Invoke;
-
-			[MonoPInvokeCallback (typeof (ArrayErrorAction))]
-#else
 			[UnmanagedCallersOnly]
-#endif
 			internal static unsafe void Invoke (IntPtr block, IntPtr array, IntPtr err)
 			{
 				var descriptor = (BlockLiteral*) block;
@@ -117,15 +86,6 @@ namespace Security {
 			}
 		}
 
-#if !NET
-		[Obsolete ("Use the overload accepting a 'SecSharedCredentialInfo' argument.")]
-		public static void RequestSharedWebCredential (string domainName, string account, Action<string[], NSError> handler)
-		{
-			throw new InvalidOperationException ("Use correct delegate type");
-		}
-#endif
-
-#if NET
 		/// <param name="domainName">To be added.</param>
 		///         <param name="account">To be added.</param>
 		///         <param name="handler">To be added.</param>
@@ -134,13 +94,10 @@ namespace Security {
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-		[ObsoletedOSPlatform ("macos11.0", "Use 'ASAuthorizationPasswordRequest' instead.")]
+		[ObsoletedOSPlatform ("maccatalyst", "Use 'ASAuthorizationPasswordRequest' instead.")]
+		[ObsoletedOSPlatform ("macos", "Use 'ASAuthorizationPasswordRequest' instead.")]
 		[ObsoletedOSPlatform ("ios14.0", "Use 'ASAuthorizationPasswordRequest' instead.")]
 		[UnsupportedOSPlatform ("tvos")]
-#else
-		[Deprecated (PlatformName.iOS, 14,0, message: "Use 'ASAuthorizationPasswordRequest' instead.")]
-		[Deprecated (PlatformName.MacOSX, 11,0, message: "Use 'ASAuthorizationPasswordRequest' instead.")]
-#endif
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public static void RequestSharedWebCredential (string domainName, string account, Action<SecSharedCredentialInfo [], NSError> handler)
 		{
@@ -157,13 +114,8 @@ namespace Security {
 			using var nsAccount = (NSString?) account;
 
 			unsafe {
-#if NET
 				delegate* unmanaged<IntPtr, IntPtr, IntPtr, void> trampoline = &ArrayErrorActionTrampoline.Invoke;
 				using var block = new BlockLiteral (trampoline, handler, typeof (ArrayErrorActionTrampoline), nameof (ArrayErrorActionTrampoline.Invoke));
-#else
-				using var block = new BlockLiteral ();
-				block.SetupBlockUnsafe (ArrayErrorActionTrampoline.Handler, onComplete);
-#endif
 				SecRequestSharedWebCredential (nsDomain.GetHandle (), nsAccount.GetHandle (), &block);
 				GC.KeepAlive (nsDomain);
 				GC.KeepAlive (nsAccount);

@@ -11,7 +11,7 @@ namespace Cecil.Tests {
 	[TestFixture]
 	public class OpenTKTest {
 		[TestCaseSource (typeof (Helper), nameof (Helper.NetPlatformAssemblyDefinitions))]
-		// https://github.com/xamarin/xamarin-macios/issues/9724
+		// https://github.com/dotnet/macios/issues/9724
 		public void BeGone (AssemblyInfo info)
 		{
 			var assembly = info.Assembly;

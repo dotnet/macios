@@ -79,12 +79,29 @@ namespace UIKit {
 				return Runtime.GetNSObject<NSData> (UIImageJPEGRepresentation (Handle, 1.0f));
 		}
 
+		/// <param name="compressionQuality">The compression quality to use, 0.0 is the maximum compression (worse quality), and 1.0 minimum compression (best quality)</param>
+		/// <summary>Encodes the image into a <see cref="T:Foundation.NSData" /> byte blob using the JPEG encoding.</summary>
+		/// <returns>The encoded image in an NSData wrapper or null if there was an error.</returns>
+		/// <remarks>
+		///           <para>
+		///           </para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		public NSData? AsJPEG (nfloat compressionQuality)
 		{
 			using (var pool = new NSAutoreleasePool ())
 				return Runtime.GetNSObject<NSData> (UIImageJPEGRepresentation (Handle, compressionQuality));
 		}
 
+		/// <param name="newSize">The desired size for the scaled image.</param>
+		/// <param name="scaleFactor">Scale factor to apply to the scaled image. If the value specified is zero, the device's scale factor is used.</param>
+		/// <summary>Scales the image up or down.</summary>
+		/// <returns>The scaled image.</returns>
+		/// <remarks>
+		///           <para>
+		///           </para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		public UIImage Scale (CGSize newSize, nfloat scaleFactor)
 		{
 			UIGraphics.BeginImageContextWithOptions (newSize, false, scaleFactor);

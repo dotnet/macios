@@ -16,7 +16,7 @@
 //
 // Copyright 2015 Xamarin Inc. All rights reserved.
 
-#if !NET || LEGACY_TOOLS
+#if LEGACY_TOOLS
 using System;
 using System.Text;
 
@@ -306,4 +306,4 @@ namespace ObjCRuntime {
 	}
 }
 
-#endif // !NET
+#endif // LEGACY_TOOLS

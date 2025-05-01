@@ -16,7 +16,7 @@ namespace MetalPerformanceShaders {
 		None = 0,
 		/// <summary>Skip Metal's validation layer.</summary>
 		SkipApiValidation = 1 << 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Allow the use of reduced-precision types in calculations.</summary>
 		AllowReducedPrecision = 1 << 1,
 		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]

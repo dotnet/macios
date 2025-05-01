@@ -103,10 +103,8 @@ namespace Registrar {
 
 #if MMP || MTOUCH || BUNDLER
 		static string NFloatTypeName { get => Driver.IsDotNet ? "System.Runtime.InteropServices.NFloat" : "System.nfloat"; }
-#elif NET
-		const string NFloatTypeName = "System.Runtime.InteropServices.NFloat";
 #else
-		const string NFloatTypeName = "System.nfloat";
+		const string NFloatTypeName = "System.Runtime.InteropServices.NFloat";
 #endif
 
 		Dictionary<TAssembly, object> assemblies = new Dictionary<TAssembly, object> (); // Use Dictionary instead of HashSet to avoid pulling in System.Core.dll.
@@ -676,7 +674,7 @@ namespace Registrar {
 
 				var bindas_count = Marshal.ReadInt32 (desc + IntPtr.Size + 4);
 				if (bindas_count < 1 + Parameters.Length)
-					throw ErrorHelper.CreateError (8018, $"Internal consistency error: BindAs array is not big enough (expected at least {1 + parameters.Length} elements, got {bindas_count} elements) for {method_base.DeclaringType.FullName + "." + method_base.Name}. Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new.");
+					throw ErrorHelper.CreateError (8018, $"Internal consistency error: BindAs array is not big enough (expected at least {1 + parameters.Length} elements, got {bindas_count} elements) for {method_base.DeclaringType.FullName + "." + method_base.Name}. Please file a bug report at https://github.com/dotnet/macios/issues/new.");
 
 				Marshal.WriteIntPtr (desc, Runtime.AllocGCHandle (method_base));
 				Marshal.WriteInt32 (desc + IntPtr.Size, (int) semantic);
@@ -918,11 +916,7 @@ namespace Registrar {
 						throw Registrar.CreateException (4104, Method, "The registrar cannot marshal the return value of type `{0}` in the method `{1}.{2}`.", Registrar.GetTypeFullName (NativeReturnType), Registrar.GetTypeFullName (DeclaringType.Type), Registrar.GetDescriptiveMethodName (Method));
 
 					if (is_stret) {
-						if (Registrar.IsSimulatorOrDesktop && !Registrar.Is64Bits) {
-							trampoline = is_static_trampoline ? Trampoline.X86_DoubleABI_StaticStretTrampoline : Trampoline.X86_DoubleABI_StretTrampoline;
-						} else {
-							trampoline = is_static_trampoline ? Trampoline.StaticStret : Trampoline.Stret;
-						}
+						trampoline = is_static_trampoline ? Trampoline.StaticStret : Trampoline.Stret;
 					} else {
 						switch (Signature [0]) {
 						case 'Q':
@@ -1153,7 +1147,6 @@ namespace Registrar {
 		protected abstract TType GetFieldType (TField field);
 		protected abstract int GetValueTypeSize (TType type);
 		protected abstract bool IsSimulatorOrDesktop { get; }
-		protected abstract bool Is64Bits { get; }
 		protected abstract bool IsARM64 { get; }
 		protected abstract Exception CreateExceptionImpl (int code, bool error, Exception innerException, TMethod method, string message, params object [] args);
 		protected abstract Exception CreateExceptionImpl (int code, bool error, Exception innerException, TType type, string message, params object [] args);
@@ -1359,29 +1352,13 @@ namespace Registrar {
 			}
 		}
 #elif MONOMAC
-#if NET
 		internal const string AssemblyName = "Microsoft.macOS";
-#else
-		internal const string AssemblyName = "Xamarin.Mac";
-#endif
 #elif TVOS
-#if NET
 		internal const string AssemblyName = "Microsoft.tvOS";
-#else
-		internal const string AssemblyName = "Xamarin.TVOS";
-#endif
 #elif __MACCATALYST__
-#if NET
 		internal const string AssemblyName = "Microsoft.MacCatalyst";
-#else
-		internal const string AssemblyName = "Xamarin.MacCatalyst";
-#endif
 #elif IOS
-#if NET
 		internal const string AssemblyName = "Microsoft.iOS";
-#else
-		internal const string AssemblyName = "Xamarin.iOS";
-#endif
 #else
 #error Unknown platform
 #endif
@@ -2274,8 +2251,8 @@ namespace Registrar {
 							DeclaringType = objcType,
 							Name = ca.Name ?? GetPropertyName (property),
 #if !MTOUCH && !MMP && !BUNDLER
-							Size = Is64Bits ? 8 : 4,
-							Alignment = (byte) (Is64Bits ? 3 : 2),
+							Size = 8,
+							Alignment = (byte) 3,
 #endif
 							FieldType = "@",
 							IsProperty = true,
@@ -2699,7 +2676,7 @@ namespace Registrar {
 				switch (App.Platform) {
 				case ApplePlatform.iOS:
 				case ApplePlatform.TVOS:
-					return Is64Bits ? "B" : "c";
+					return "B";
 				case ApplePlatform.MacOSX:
 				case ApplePlatform.MacCatalyst:
 					return IsARM64 ? "B" : "c";
@@ -2710,22 +2687,22 @@ namespace Registrar {
 #if MONOMAC || __MACCATALYST__
 				return IsARM64 ? "B" : "c";
 #else
-				return Is64Bits ? "B" : "c";
+				return "B";
 #endif
 #endif
 			case "System.Void": return "v";
 			case "System.String":
 				return forProperty ? "@\"NSString\"" : "@";
 			case "System.nint":
-				return Is64Bits ? "q" : "i";
+				return "q";
 			case "System.nuint":
-				return Is64Bits ? "Q" : "I";
+				return "Q";
 			case "System.DateTime":
 				throw CreateException (4102, member, Errors.MT4102, "System.DateTime", "Foundation.NSDate", member.FullName);
 			}
 
 			if (typeFullName == NFloatTypeName)
-				return Is64Bits ? "d" : "f";
+				return "d";
 
 			if (Is (type, ObjCRuntime, "Selector"))
 				return ":";
@@ -2747,18 +2724,7 @@ namespace Registrar {
 				return "^v";
 
 			if (IsEnum (type, out isNativeEnum)) {
-				if (isNativeEnum && !Is64Bits) {
-					switch (GetEnumUnderlyingType (type).FullName) {
-					case "System.Int64":
-						return "i";
-					case "System.UInt64":
-						return "I";
-					default:
-						throw CreateException (4145, Errors.MT4145, GetTypeFullName (type));
-					}
-				} else {
-					return ToSignature (GetEnumUnderlyingType (type), member, ref success);
-				}
+				return ToSignature (GetEnumUnderlyingType (type), member, ref success);
 			}
 
 			if (IsValueType (type))
@@ -2873,8 +2839,6 @@ namespace Registrar {
 		Constructor,
 		Long,
 		StaticLong,
-		X86_DoubleABI_StaticStretTrampoline,
-		X86_DoubleABI_StretTrampoline,
 		CopyWithZone1,
 		CopyWithZone2,
 		GetGCHandle,

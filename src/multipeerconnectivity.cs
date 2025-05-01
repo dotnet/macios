@@ -107,7 +107,23 @@ namespace MultipeerConnectivity {
 		///         <remarks>
 		///           <para>Note that the return value only indicates successful enqueueing of the resource for transmission, not a confirmation of delivery. Delivery success or failure is passed in to the <paramref name="completionHandler" />.</para>
 		///         </remarks>
-		[Async]
+		[Async (XmlDocs = """
+			<param name="resourceUrl">The URL to the resource.</param>
+			<param name="resourceName">The name of the resource.</param>
+			<param name="peerID">The ID of the receiving peer.</param>
+			<summary>Enqueues for delivery to <paramref name="peerID" /> the resource at <paramref name="resourceUrl" />.</summary>
+			<returns>A task that represents the asynchronous SendResource operation</returns>
+			<remarks>To be added.</remarks>
+			""",
+			XmlDocsWithOutParameter = """
+			<param name="resourceUrl">The URL to the resource.</param>
+			<param name="resourceName">The name of the resource.</param>
+			<param name="peerID">The ID of the receiving peer.</param>
+			<param name="result">A progress result.</param>
+			<summary>Asynchronously enqueues for delivery to <paramref name="resourceName" /> the resource at <paramref name="resourceUrl" />, returning a task that represents the operation.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[return: NullAllowed]
 		[Export ("sendResourceAtURL:withName:toPeer:withCompletionHandler:")]
 		NSProgress SendResource (NSUrl resourceUrl, string resourceName, MCPeerID peerID, [NullAllowed] Action<NSError> completionHandler);
@@ -180,7 +196,33 @@ namespace MultipeerConnectivity {
 		#region Custom Discovery Category
 
 		/// <include file="../docs/api/MultipeerConnectivity/MCSession.xml" path="/Documentation/Docs[@DocId='M:MultipeerConnectivity.MCSession.NearbyConnectionDataForPeer(MultipeerConnectivity.MCPeerID,MultipeerConnectivity.MCSessionNearbyConnectionDataForPeerCompletionHandler)']/*" />
-		[Async]
+		[Async (XmlDocs = """
+			<param name="peerID">Created from data serialized on a remote peer.</param>
+			<summary>Creates the necessary data for a  manually-managed peer connection.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous NearbyConnectionDataForPeer operation.   The value of the TResult parameter is a <see cref="MultipeerConnectivity.MCSessionNearbyConnectionDataForPeerCompletionHandler" />.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The NearbyConnectionDataForPeerAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">Application developers may use a non-Multipeer Connectivity discovery technique, such as Bonjour / <see cref="T:Foundation.NSNetService" />, and manually manage peer connection. However, the <paramref name="peerID" /> used here and in <see cref="M:MultipeerConnectivity.MCSession.ConnectPeer(MultipeerConnectivity.MCPeerID,Foundation.NSData)" /> must originate from a <see cref="T:Foundation.NSKeyedArchiver" /> serializing an <see cref="T:MultipeerConnectivity.MCPeerID" /> on the remote peer. (This raises the question: if discovery and enough message-passing code to transmit the <paramref name="peerID" /> is done by Bonjour, what's the advantage of using MPC for further communication? One answer might be the evolution of a legacy system, another answer might lie in the simpler message- and resource-passing of MPC.)</para>
+			          <para copied="true">Once the application developer has the <paramref name="peerID" />, the rest of the code to connect a peer would be:</para>
+			          <example copied="true">
+			            <code lang="csharp lang-csharp"><![CDATA[
+			//User code: Perhaps using Bonjour or other discovery and messaging service
+			var peerID = DeserializedPeerID();
+			//Request connection data, with completionHandler lambda as continuation
+			session.NearbyConnectionDataForPeer(peerID, (connectionData, error) => { 
+			    if(error is not null){
+			        //Note: peerID is serialized version, connectionData is passed in to continuation
+			        session.ConnectPeer(peerID, connectionData);
+			    }else{
+			         throw new Exception(error);
+			    }
+			});              
+			              ]]></code>
+			          </example>
+			        </remarks>
+			""")]
 		[Export ("nearbyConnectionDataForPeer:withCompletionHandler:")]
 		void NearbyConnectionDataForPeer (MCPeerID peerID, MCSessionNearbyConnectionDataForPeerCompletionHandler completionHandler);
 

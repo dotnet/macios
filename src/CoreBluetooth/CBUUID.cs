@@ -76,6 +76,12 @@ namespace CoreBluetooth {
 		}
 
 		// note: having IEquatable<CBUUID> should be enough IMO
+		/// <param name="a">First CBUUID to compare.</param>
+		/// <param name="b">Second CBUUID to compare.</param>
+		/// <summary>Determines if two CBUUID are equal.</summary>
+		/// <returns>
+		///         </returns>
+		/// <remarks>True if they are equal (either because they are the same object, or because they represent the same UUID value).</remarks>
 		public static bool operator == (CBUUID a, CBUUID b)
 		{
 			if (ReferenceEquals (a, null)) {

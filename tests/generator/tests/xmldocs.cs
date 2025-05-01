@@ -35,6 +35,33 @@ namespace XmlDocumentation {
 		[Field ("TEventArgs", "__Internal")]
 		[Notification (typeof (TEventArgs))]
 		NSString TEventArgs { get; }
+
+		/// <summary>
+		/// Summary for T1.AsyncMethod
+		/// </summary>
+		[Async (ResultTypeName = "AsyncMethodResultTypeName")]
+		[Export ("asyncMethod")]
+		void AsyncMethod (Action<int, long, NSError> completionHandler);
+
+		/// <summary>Summary for T1.DoSomething</summary>
+		[Async (XmlDocs = """
+						<summary>Summary for async version of T1.DoSomething</summary>
+						""",
+				XmlDocsWithOutParameter = """
+						<summary>Summary for async version of T1.DoSomething - with out parameter (shouldn't show up in xml docs)</summary>
+						""")]
+		[Export ("doSomething:")]
+		void DoSomething (Action completionHandler);
+
+		/// <summary>Summary for T1.DoSomethingElse</summary>
+		[Async (XmlDocs = """
+						<summary>Summary for async version of T1.DoSomethingElse</summary>
+						""",
+				XmlDocsWithOutParameter = """
+						<summary>Summary for async version of T1.DoSomethingElse - with out parameter (should show up in xml docs)</summary>
+						""")]
+		[Export ("doSomething:")]
+		bool DoSomethingElse (Action completionHandler);
 	}
 
 	/// <summary>TEventArgs</summary>
@@ -250,7 +277,26 @@ namespace XmlDocumentation {
 		[Export ("speechSynthesizer:didChangeUtteringSpeedTo:")]
 		[EventArgs ("TUtterance")]
 		void DidChangeUtteringSpeed (TClass obj, double utteringSpeed);
+
+		/// <summary>TClassDelegate.DidChangeMutteringVolume</summary>
+		[Export ("speechSynthesizer:didChangeMutteringVolumeTo:")]
+		[EventArgs ("TMutterance", XmlDocs = """
+			<summary>TClassDelegate.DidChangeMutteringVolume - EventArgs.</summary>
+			""")]
+		void DidChangeMutteringVolume (TClass obj, double mutteringVolume);
 	}
 
 	interface ITClassDelegate { }
+
+	class TOuter {
+		[Static]
+		interface TInner {
+			/// <summary>TOuter.TInner.Field</summary>
+			[Field ("TOuterInnerField", "__Internal")]
+			NSString TOuterInnerField { get; }
+			// no xml comment, should get a default value
+			[Field ("TOuterInnerField2", "__Internal")]
+			NSString TOuterInnerField2 { get; }
+		}
+	}
 }

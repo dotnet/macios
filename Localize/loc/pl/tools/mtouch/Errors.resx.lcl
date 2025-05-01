@@ -318,9 +318,9 @@
       </Item>
       <Item ItemId=";MM5103" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Failed to compile. Error code - {0}. Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new]D;]A;		]]></Val>
+          <Val><![CDATA[Failed to compile. Error code - {0}. Please file a bug report at https://github.com/dotnet/macios/issues/new]D;]A;		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Kompilacja nie powiodła się. Kod błędu — {0}. Zgłoś raport o usterce na stronie https://github.com/xamarin/xamarin-macios/issues/new]D;]A;		]]></Val>
+            <Val><![CDATA[Kompilacja nie powiodła się. Kod błędu — {0}. Zgłoś raport o usterce na stronie https://github.com/dotnet/macios/issues/new]D;]A;		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -399,9 +399,9 @@
       </Item>
       <Item ItemId=";MT0000" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Unexpected error - Please fill a bug report at https://github.com/xamarin/xamarin-macios/issues/new]D;]A;		]]></Val>
+          <Val><![CDATA[Unexpected error - Please fill a bug report at https://github.com/dotnet/macios/issues/new]D;]A;		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Nieoczekiwany błąd. Wypełnij raport o usterce na stronie https://github.com/xamarin/xamarin-macios/issues/new]D;]A;		]]></Val>
+            <Val><![CDATA[Nieoczekiwany błąd. Wypełnij raport o usterce na stronie https://github.com/dotnet/macios/issues/new]D;]A;		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -1029,9 +1029,9 @@
       </Item>
       <Item ItemId=";MT0100" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Invalid assembly build target: '{0}'. Please file a bug report with a test case (https://github.com/xamarin/xamarin-macios/issues/new).]D;]A;		]]></Val>
+          <Val><![CDATA[Invalid assembly build target: '{0}'. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new).]D;]A;		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Nieprawidłowa platforma docelowa kompilacji zestawu: „{0}”. Zgłoś raport o usterce z przypadkiem testowym (https://github.com/xamarin/xamarin-macios/issues/new).]D;]A;		]]></Val>
+            <Val><![CDATA[Nieprawidłowa platforma docelowa kompilacji zestawu: „{0}”. Zgłoś raport o usterce z przypadkiem testowym (https://github.com/dotnet/macios/issues/new).]D;]A;		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -1479,54 +1479,54 @@
       </Item>
       <Item ItemId=";MT0157" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Internal error: can't convert from '{0}' to '{1}' in {2}. Please file a bug report with a test case (https://github.com/xamarin/xamarin-macios/issues/new).]D;]A;		]]></Val>
+          <Val><![CDATA[Internal error: can't convert from '{0}' to '{1}' in {2}. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new).]D;]A;		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Błąd wewnętrzny: nie można przekonwertować „{0}” na „{1}” w elemencie {2}. Zgłoś raport o usterce z przypadkiem testowym (https://github.com/xamarin/xamarin-macios/issues/new).]D;]A;		]]></Val>
+            <Val><![CDATA[Błąd wewnętrzny: nie można przekonwertować „{0}” na „{1}” w elemencie {2}. Zgłoś raport o usterce z przypadkiem testowym (https://github.com/dotnet/macios/issues/new).]D;]A;		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";MT0158" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Internal error: the smart enum {0} doesn't seem to be a smart enum after all. Please file a bug report with a test case (https://github.com/xamarin/xamarin-macios/issues/new).]D;]A;		]]></Val>
+          <Val><![CDATA[Internal error: the smart enum {0} doesn't seem to be a smart enum after all. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new).]D;]A;		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Błąd wewnętrzny: inteligentny element enum {0} po wszystkim nie wydaje się być inteligentnym elementem enum. Zgłoś raport o usterce z przypadkiem testowym (https://github.com/xamarin/xamarin-macios/issues/new).]D;]A;		]]></Val>
+            <Val><![CDATA[Błąd wewnętrzny: inteligentny element enum {0} po wszystkim nie wydaje się być inteligentnym elementem enum. Zgłoś raport o usterce z przypadkiem testowym (https://github.com/dotnet/macios/issues/new).]D;]A;		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";MT0159" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Internal error: unsupported tokentype ({0}) for {1}. Please file a bug report with a test case (https://github.com/xamarin/xamarin-macios/issues/new).]D;]A;		]]></Val>
+          <Val><![CDATA[Internal error: unsupported tokentype ({0}) for {1}. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new).]D;]A;		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Błąd wewnętrzny: nieobsługiwana wartość właściwości tokentype ({0}) dla elementu {1}. Zgłoś raport o usterce z przypadkiem testowym (https://github.com/xamarin/xamarin-macios/issues/new).]D;]A;		]]></Val>
+            <Val><![CDATA[Błąd wewnętrzny: nieobsługiwana wartość właściwości tokentype ({0}) dla elementu {1}. Zgłoś raport o usterce z przypadkiem testowym (https://github.com/dotnet/macios/issues/new).]D;]A;		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";MT0160" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Internal error: the static registrar should not execute unless the linker also executed (or was disabled). A potential workaround is to pass '-f' as an additional {0} argument to force a full build. Please file a bug report with a test case (https://github.com/xamarin/xamarin-macios/issues/new).]D;]A;		]]></Val>
+          <Val><![CDATA[Internal error: the static registrar should not execute unless the linker also executed (or was disabled). A potential workaround is to pass '-f' as an additional {0} argument to force a full build. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new).]D;]A;		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Błąd wewnętrzny: rejestrator statyczny nie powinien być wykonywany, jeśli konsolidator nie zostanie wykonany (lub został wyłączony). Potencjalnym obejściem jest przekazanie argumentu „-f” jako dodatkowego argumentu {0} w celu wymuszenia pełnej kompilacji. Zgłoś raport o usterce z przypadkiem testowym (https://github.com/xamarin/xamarin-macios/issues/new).]D;]A;		]]></Val>
+            <Val><![CDATA[Błąd wewnętrzny: rejestrator statyczny nie powinien być wykonywany, jeśli konsolidator nie zostanie wykonany (lub został wyłączony). Potencjalnym obejściem jest przekazanie argumentu „-f” jako dodatkowego argumentu {0} w celu wymuszenia pełnej kompilacji. Zgłoś raport o usterce z przypadkiem testowym (https://github.com/dotnet/macios/issues/new).]D;]A;		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";MT0161" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Internal error: symbol without a name (type: {0}). Please file a bug report with a test case (https://github.com/xamarin/xamarin-macios/issues/new).]D;]A;		]]></Val>
+          <Val><![CDATA[Internal error: symbol without a name (type: {0}). Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new).]D;]A;		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Błąd wewnętrzny: symbol bez nazwy (typ: {0}). Zgłoś raport o usterce z przypadkiem testowym (https://github.com/xamarin/xamarin-macios/issues/new).]D;]A;		]]></Val>
+            <Val><![CDATA[Błąd wewnętrzny: symbol bez nazwy (typ: {0}). Zgłoś raport o usterce z przypadkiem testowym (https://github.com/dotnet/macios/issues/new).]D;]A;		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";MT0168" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Internal error: 'can't convert frameworks to frameworks: {0}'. Please file a bug report with a test case (https://github.com/xamarin/xamarin-macios/issues/new).]D;]A;		]]></Val>
+          <Val><![CDATA[Internal error: 'can't convert frameworks to frameworks: {0}'. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new).]D;]A;		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Błąd wewnętrzny: „nie można przekonwertować struktur na struktury: {0}”. Zgłoś raport o usterce z przypadkiem testowym (https://github.com/xamarin/xamarin-macios/issues/new).]D;]A;		]]></Val>
+            <Val><![CDATA[Błąd wewnętrzny: „nie można przekonwertować struktur na struktury: {0}”. Zgłoś raport o usterce z przypadkiem testowym (https://github.com/dotnet/macios/issues/new).]D;]A;		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -1578,9 +1578,9 @@
       </Item>
       <Item ItemId=";MT1013" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Dependency tracking error: no files to compare. Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new with a test case.]D;]A;		]]></Val>
+          <Val><![CDATA[Dependency tracking error: no files to compare. Please file a bug report at https://github.com/dotnet/macios/issues/new with a test case.]D;]A;		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Błąd śledzenia zależności: brak plików do porównania. Zarejestruj raport o usterce na stronie https://github.com/xamarin/xamarin-macios/issues/new z przypadkiem testowym.]D;]A;		]]></Val>
+            <Val><![CDATA[Błąd śledzenia zależności: brak plików do porównania. Zarejestruj raport o usterce na stronie https://github.com/dotnet/macios/issues/new z przypadkiem testowym.]D;]A;		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -1947,9 +1947,9 @@
       </Item>
       <Item ItemId=";MT4002" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Failed to compile the generated code for P/Invoke methods. Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new]D;]A;		]]></Val>
+          <Val><![CDATA[Failed to compile the generated code for P/Invoke methods. Please file a bug report at https://github.com/dotnet/macios/issues/new]D;]A;		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Nie można skompilować wygenerowanego kodu dla metod P/Invoke. Zgłoś raport o usterce na stronie https://github.com/xamarin/xamarin-macios/issues/new]D;]A;		]]></Val>
+            <Val><![CDATA[Nie można skompilować wygenerowanego kodu dla metod P/Invoke. Zgłoś raport o usterce na stronie https://github.com/dotnet/macios/issues/new]D;]A;		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -2019,9 +2019,9 @@
       </Item>
       <Item ItemId=";MT4109" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Failed to compile the generated registrar code. Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new]D;]A;		]]></Val>
+          <Val><![CDATA[Failed to compile the generated registrar code. Please file a bug report at https://github.com/dotnet/macios/issues/new]D;]A;		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Nie można skompilować wygenerowanego kodu rejestratora. Zgłoś raport o usterce na stronie https://github.com/xamarin/xamarin-macios/issues/new]D;]A;		]]></Val>
+            <Val><![CDATA[Nie można skompilować wygenerowanego kodu rejestratora. Zgłoś raport o usterce na stronie https://github.com/dotnet/macios/issues/new]D;]A;		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -2055,9 +2055,9 @@
       </Item>
       <Item ItemId=";MT4114" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Unexpected error in the registrar for the method '{0}.{1}' - Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new]D;]A;		]]></Val>
+          <Val><![CDATA[Unexpected error in the registrar for the method '{0}.{1}' - Please file a bug report at https://github.com/dotnet/macios/issues/new]D;]A;		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Nieoczekiwany błąd w rejestratorze dla metody „{0}.{1}” — zgłoś raport o usterce na stronie https://github.com/xamarin/xamarin-macios/issues/new]D;]A;		]]></Val>
+            <Val><![CDATA[Nieoczekiwany błąd w rejestratorze dla metody „{0}.{1}” — zgłoś raport o usterce na stronie https://github.com/dotnet/macios/issues/new]D;]A;		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -2100,9 +2100,9 @@
       </Item>
       <Item ItemId=";MT4120" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The registrar found an unknown field type '{0}' in field '{1}.{2}'. Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new]D;]A;		]]></Val>
+          <Val><![CDATA[The registrar found an unknown field type '{0}' in field '{1}.{2}'. Please file a bug report at https://github.com/dotnet/macios/issues/new]D;]A;		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Rejestrator znalazł nieznany typ pola „{0}” w polu „{1}.{2}”. Zgłoś raport o usterce na stronie https://github.com/xamarin/xamarin-macios/issues/new]D;]A;		]]></Val>
+            <Val><![CDATA[Rejestrator znalazł nieznany typ pola „{0}” w polu „{1}.{2}”. Zgłoś raport o usterce na stronie https://github.com/dotnet/macios/issues/new]D;]A;		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -2127,72 +2127,72 @@
       </Item>
       <Item ItemId=";MT4124" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Invalid {0} found on '{1}'. Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new]D;]A;		]]></Val>
+          <Val><![CDATA[Invalid {0} found on '{1}'. Please file a bug report at https://github.com/dotnet/macios/issues/new]D;]A;		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[W elemencie „{1}” znaleziono nieprawidłowy element {0}. Zgłoś raport o usterce na stronie https://github.com/xamarin/xamarin-macios/issues/new]D;]A;		]]></Val>
+            <Val><![CDATA[W elemencie „{1}” znaleziono nieprawidłowy element {0}. Zgłoś raport o usterce na stronie https://github.com/dotnet/macios/issues/new]D;]A;		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";MT4124_A" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Invalid RegisterAttribute property {1} found on '{0}'. Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new]D;]A;		]]></Val>
+          <Val><![CDATA[Invalid RegisterAttribute property {1} found on '{0}'. Please file a bug report at https://github.com/dotnet/macios/issues/new]D;]A;		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Odnaleziono nieprawidłową właściwość RegisterAttribute {1} w elemencie „{0}”. Zarejestruj raport o usterce w witrynie https://github.com/xamarin/xamarin-macios/issues/new]D;]A;		]]></Val>
+            <Val><![CDATA[Odnaleziono nieprawidłową właściwość RegisterAttribute {1} w elemencie „{0}”. Zarejestruj raport o usterce w witrynie https://github.com/dotnet/macios/issues/new]D;]A;		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";MT4124_B" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Invalid AdoptsAttribute found on '{0}': expected 1 constructor arguments, got {1}. Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new]D;]A;		]]></Val>
+          <Val><![CDATA[Invalid AdoptsAttribute found on '{0}': expected 1 constructor arguments, got {1}. Please file a bug report at https://github.com/dotnet/macios/issues/new]D;]A;		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Odnaleziono nieprawidłowy atrybut AdoptsAttribute w elemencie „{0}”: oczekiwano 1 argumentu konstruktora, otrzymano {1}. Zarejestruj raport o usterce w witrynie https://github.com/xamarin/xamarin-macios/issues/new]D;]A;		]]></Val>
+            <Val><![CDATA[Odnaleziono nieprawidłowy atrybut AdoptsAttribute w elemencie „{0}”: oczekiwano 1 argumentu konstruktora, otrzymano {1}. Zarejestruj raport o usterce w witrynie https://github.com/dotnet/macios/issues/new]D;]A;		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";MT4124_C" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Invalid BindAsAttribute found on '{0}.{1}': unknown field {2}. Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new]D;]A;		]]></Val>
+          <Val><![CDATA[Invalid BindAsAttribute found on '{0}.{1}': unknown field {2}. Please file a bug report at https://github.com/dotnet/macios/issues/new]D;]A;		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Odnaleziono nieprawidłowy atrybut BindAsAttribute w elemencie „{0}.{1}”: nieznane pole {2}. Zarejestruj raport o usterce w witrynie https://github.com/xamarin/xamarin-macios/issues/new]D;]A;		]]></Val>
+            <Val><![CDATA[Odnaleziono nieprawidłowy atrybut BindAsAttribute w elemencie „{0}.{1}”: nieznane pole {2}. Zarejestruj raport o usterce w witrynie https://github.com/dotnet/macios/issues/new]D;]A;		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";MT4124_D" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Invalid {0} found on '{1}.{2}'. Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new]D;]A;		]]></Val>
+          <Val><![CDATA[Invalid {0} found on '{1}.{2}'. Please file a bug report at https://github.com/dotnet/macios/issues/new]D;]A;		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Znaleziono nieprawidłowy element {0} w metodzie „{1}.{2}”. Zarejestruj raport o usterce w witrynie https://github.com/xamarin/xamarin-macios/issues/new]D;]A;		]]></Val>
+            <Val><![CDATA[Znaleziono nieprawidłowy element {0} w metodzie „{1}.{2}”. Zarejestruj raport o usterce w witrynie https://github.com/dotnet/macios/issues/new]D;]A;		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";MT4124_E" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Invalid BindAsAttribute found on '{0}': should have 1 constructor arguments, found {1}. Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new]D;]A;		]]></Val>
+          <Val><![CDATA[Invalid BindAsAttribute found on '{0}': should have 1 constructor arguments, found {1}. Please file a bug report at https://github.com/dotnet/macios/issues/new]D;]A;		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Odnaleziono nieprawidłowy atrybut BindAsAttribute w elemencie „{0}”: powinien istnieć 1 argument konstruktora, odnaleziono {1}. Zarejestruj raport o usterce w witrynie https://github.com/xamarin/xamarin-macios/issues/new]D;]A;		]]></Val>
+            <Val><![CDATA[Odnaleziono nieprawidłowy atrybut BindAsAttribute w elemencie „{0}”: powinien istnieć 1 argument konstruktora, odnaleziono {1}. Zarejestruj raport o usterce w witrynie https://github.com/dotnet/macios/issues/new]D;]A;		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";MT4124_H" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Invalid BindAsAttribute found on '{0}': could not find the underlying enum type of {1}. Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new]D;]A;		]]></Val>
+          <Val><![CDATA[Invalid BindAsAttribute found on '{0}': could not find the underlying enum type of {1}. Please file a bug report at https://github.com/dotnet/macios/issues/new]D;]A;		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Odnaleziono nieprawidłowy atrybut BindAsAttribute w elemencie „{0}”: nie można odnaleźć podstawowego typu wyliczeniowego {1}. Zarejestruj raport o usterce w witrynie https://github.com/xamarin/xamarin-macios/issues/new]D;]A;		]]></Val>
+            <Val><![CDATA[Odnaleziono nieprawidłowy atrybut BindAsAttribute w elemencie „{0}”: nie można odnaleźć podstawowego typu wyliczeniowego {1}. Zarejestruj raport o usterce w witrynie https://github.com/dotnet/macios/issues/new]D;]A;		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";MT4124_I" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Invalid {0} found on '{1}'. Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new]]></Val>
+          <Val><![CDATA[Invalid {0} found on '{1}'. Please file a bug report at https://github.com/dotnet/macios/issues/new]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[W elemencie „{1}” znaleziono nieprawidłowy element {0}. Zgłoś raport o usterce na stronie https://github.com/xamarin/xamarin-macios/issues/new]]></Val>
+            <Val><![CDATA[W elemencie „{1}” znaleziono nieprawidłowy element {0}. Zgłoś raport o usterce na stronie https://github.com/dotnet/macios/issues/new]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -2361,9 +2361,9 @@
       </Item>
       <Item ItemId=";MT4147" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Invalid {0} found on '{1}'. Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new]D;]A;		]]></Val>
+          <Val><![CDATA[Invalid {0} found on '{1}'. Please file a bug report at https://github.com/dotnet/macios/issues/new]D;]A;		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[W elemencie „{1}” znaleziono nieprawidłowy element {0}. Zgłoś raport o usterce na stronie https://github.com/xamarin/xamarin-macios/issues/new]D;]A;		]]></Val>
+            <Val><![CDATA[W elemencie „{1}” znaleziono nieprawidłowy element {0}. Zgłoś raport o usterce na stronie https://github.com/dotnet/macios/issues/new]D;]A;		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -2532,27 +2532,27 @@
       </Item>
       <Item ItemId=";MT4163" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Internal error in the registrar ({0} ctor with {1} arguments). Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new]D;]A;		]]></Val>
+          <Val><![CDATA[Internal error in the registrar ({0} ctor with {1} arguments). Please file a bug report at https://github.com/dotnet/macios/issues/new]D;]A;		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Wewnętrzny błąd rejestratora (element {0} z następującą liczbą argumentów: {1}). Zarejestruj raport o usterce w witrynie https://github.com/xamarin/xamarin-macios/issues/new.]D;]A;		]]></Val>
+            <Val><![CDATA[Wewnętrzny błąd rejestratora (element {0} z następującą liczbą argumentów: {1}). Zarejestruj raport o usterce w witrynie https://github.com/dotnet/macios/issues/new.]D;]A;		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";MT4163_A" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Internal error in the registrar (Unknown availability kind: {0}). Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new]D;]A;		]]></Val>
+          <Val><![CDATA[Internal error in the registrar (Unknown availability kind: {0}). Please file a bug report at https://github.com/dotnet/macios/issues/new]D;]A;		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Wewnętrzny błąd spójności rejestratora (nieznany rodzaj dostępności: {0}). Zarejestruj raport o usterce w witrynie https://github.com/xamarin/xamarin-macios/issues/new.]D;]A;		]]></Val>
+            <Val><![CDATA[Wewnętrzny błąd spójności rejestratora (nieznany rodzaj dostępności: {0}). Zarejestruj raport o usterce w witrynie https://github.com/dotnet/macios/issues/new.]D;]A;		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";MT4163_B" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Internal error in the registrar (BindAs parameters can't be ref/out: {0}). Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new]D;]A;		]]></Val>
+          <Val><![CDATA[Internal error in the registrar (BindAs parameters can't be ref/out: {0}). Please file a bug report at https://github.com/dotnet/macios/issues/new]D;]A;		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Błąd wewnętrzny rejestratora (parametry BindAs nie mogą być parametrami ref/out: {0}). Zgłoś raport o usterce na stronie https://github.com/xamarin/xamarin-macios/issues/new]D;]A;		]]></Val>
+            <Val><![CDATA[Błąd wewnętrzny rejestratora (parametry BindAs nie mogą być parametrami ref/out: {0}). Zgłoś raport o usterce na stronie https://github.com/dotnet/macios/issues/new]D;]A;		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -2733,9 +2733,9 @@
       </Item>
       <Item ItemId=";MT4184" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Internal error in the registrar (BindAs parameters can't be ref/out: {0}). Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new]D;]A;		]]></Val>
+          <Val><![CDATA[Internal error in the registrar (BindAs parameters can't be ref/out: {0}). Please file a bug report at https://github.com/dotnet/macios/issues/new]D;]A;		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Błąd wewnętrzny rejestratora (parametry BindAs nie mogą być parametrami ref/out: {0}). Zgłoś raport o usterce na stronie https://github.com/xamarin/xamarin-macios/issues/new]D;]A;		]]></Val>
+            <Val><![CDATA[Błąd wewnętrzny rejestratora (parametry BindAs nie mogą być parametrami ref/out: {0}). Zgłoś raport o usterce na stronie https://github.com/dotnet/macios/issues/new]D;]A;		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -2778,18 +2778,18 @@
       </Item>
       <Item ItemId=";MT5103_A" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Failed to compile the file(s) '{0}'. Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new]D;]A;		]]></Val>
+          <Val><![CDATA[Failed to compile the file(s) '{0}'. Please file a bug report at https://github.com/dotnet/macios/issues/new]D;]A;		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Nie można skompilować plików „{0}”. Zgłoś usterkę w witrynie https://github.com/xamarin/xamarin-macios/issues/new]D;]A;		]]></Val>
+            <Val><![CDATA[Nie można skompilować plików „{0}”. Zgłoś usterkę w witrynie https://github.com/dotnet/macios/issues/new]D;]A;		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";MT5106" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Could not compile the file(s) '{0}'. Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new]D;]A;		]]></Val>
+          <Val><![CDATA[Could not compile the file(s) '{0}'. Please file a bug report at https://github.com/dotnet/macios/issues/new]D;]A;		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Nie można skompilować plików: {0}. Zarejestruj raport o usterce w witrynie https://github.com/xamarin/xamarin-macios/issues/new]D;]A;		]]></Val>
+            <Val><![CDATA[Nie można skompilować plików: {0}. Zarejestruj raport o usterce w witrynie https://github.com/dotnet/macios/issues/new]D;]A;		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -2913,9 +2913,9 @@
       </Item>
       <Item ItemId=";MT5216" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Native linking failed for '{0}'. Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new]D;]A;		]]></Val>
+          <Val><![CDATA[Native linking failed for '{0}'. Please file a bug report at https://github.com/dotnet/macios/issues/new]D;]A;		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Nie można połączyć natywnie dla elementu „{0}”. Zarejestruj raport o usterce w witrynie https://github.com/xamarin/xamarin-macios/issues/new]D;]A;		]]></Val>
+            <Val><![CDATA[Nie można połączyć natywnie dla elementu „{0}”. Zarejestruj raport o usterce w witrynie https://github.com/dotnet/macios/issues/new]D;]A;		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -2994,9 +2994,9 @@
       </Item>
       <Item ItemId=";MT8018" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Internal consistency error. Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new.]D;]A;		]]></Val>
+          <Val><![CDATA[Internal consistency error. Please file a bug report at https://github.com/dotnet/macios/issues/new.]D;]A;		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Wewnętrzny błąd spójności. Zarejestruj raport o usterce w witrynie https://github.com/xamarin/xamarin-macios/issues/new.]D;]A;		]]></Val>
+            <Val><![CDATA[Wewnętrzny błąd spójności. Zarejestruj raport o usterce w witrynie https://github.com/dotnet/macios/issues/new.]D;]A;		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -3138,9 +3138,9 @@
       </Item>
       <Item ItemId=";MX0071" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Unknown platform: {0}. This usually indicates a bug in {1}; please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new with a test case.]D;]A;		]]></Val>
+          <Val><![CDATA[Unknown platform: {0}. This usually indicates a bug in {1}; please file a bug report at https://github.com/dotnet/macios/issues/new with a test case.]D;]A;		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Nieznana platforma: {0}. Wskazuje to zazwyczaj na usterkę w elemencie {1}. Zarejestruj raport o usterce z przypadkiem testowym w witrynie https://github.com/xamarin/xamarin-macios/issues/new.]D;]A;		]]></Val>
+            <Val><![CDATA[Nieznana platforma: {0}. Wskazuje to zazwyczaj na usterkę w elemencie {1}. Zarejestruj raport o usterce z przypadkiem testowym w witrynie https://github.com/dotnet/macios/issues/new.]D;]A;		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -3183,9 +3183,9 @@
       </Item>
       <Item ItemId=";MX0099" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Internal error: {0}. Please file an issue at https://github.com/xamarin/xamarin-macios/issues/new.]D;]A;		]]></Val>
+          <Val><![CDATA[Internal error: {0}. Please file an issue at https://github.com/dotnet/macios/issues/new.]D;]A;		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Błąd wewnętrzny: {0}. Zarejestruj raport o usterce w witrynie https://github.com/xamarin/xamarin-macios/issues/new.]D;]A;		]]></Val>
+            <Val><![CDATA[Błąd wewnętrzny: {0}. Zarejestruj raport o usterce w witrynie https://github.com/dotnet/macios/issues/new.]D;]A;		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -3264,9 +3264,9 @@
       </Item>
       <Item ItemId=";MX0177" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Unknown platform: {0}. This usually indicates a bug; please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new with a test case.]]></Val>
+          <Val><![CDATA[Unknown platform: {0}. This usually indicates a bug; please file a bug report at https://github.com/dotnet/macios/issues/new with a test case.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Nieznana platforma: {0}. Wskazuje to zazwyczaj na usterkę. Zarejestruj raport o usterce z przypadkiem testowym pod adresem https://github.com/xamarin/xamarin-macios/issues/new.]]></Val>
+            <Val><![CDATA[Nieznana platforma: {0}. Wskazuje to zazwyczaj na usterkę. Zarejestruj raport o usterce z przypadkiem testowym pod adresem https://github.com/dotnet/macios/issues/new.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -3603,9 +3603,9 @@
       </Item>
       <Item ItemId=";MX5222" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The native linker failed to execute: {0}. Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new]D;]A; 		]]></Val>
+          <Val><![CDATA[The native linker failed to execute: {0}. Please file a bug report at https://github.com/dotnet/macios/issues/new]D;]A; 		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Nie można wykonać natywnego konsolidatora: {0}. Zarejestruj raport o usterce pod adresem https://github.com/xamarin/xamarin-macios/issues/new]D;]A; 		]]></Val>
+            <Val><![CDATA[Nie można wykonać natywnego konsolidatora: {0}. Zarejestruj raport o usterce pod adresem https://github.com/dotnet/macios/issues/new]D;]A; 		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -3912,9 +3912,9 @@
       </Item>
       <Item ItemId=";default" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The error message for code {0} could not be found. Please report this missing message on GitHub at https://github.com/xamarin/xamarin-macios/issues/new]]></Val>
+          <Val><![CDATA[The error message for code {0} could not be found. Please report this missing message on GitHub at https://github.com/dotnet/macios/issues/new]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Nie można odnaleźć komunikatu o błędzie dla kodu {0}. Zgłoś brak tego komunikatu w witrynie GitHub pod adresem https://github.com/xamarin/xamarin-macios/issues/new]]></Val>
+            <Val><![CDATA[Nie można odnaleźć komunikatu o błędzie dla kodu {0}. Zgłoś brak tego komunikatu w witrynie GitHub pod adresem https://github.com/dotnet/macios/issues/new]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

@@ -32,10 +32,9 @@ namespace CoreBluetooth {
 			ConnectPeripheral (peripheral, options?.Dictionary);
 		}
 
-		/// <param name="peripheralUuids">To be added.</param>
-		///         <param name="options">To be added.</param>
-		///         <summary>Scans for peripherals that are advertising any of the specified <paramref name="peripheralUuids" /> with the specified  <paramref name="options" />.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Scans for peripherals that are advertising any of the specified <paramref name="peripheralUuids" /> with the specified <paramref name="options" />.</summary>
+		/// <param name="peripheralUuids">An array of advertised UUIDs to scan for.</param>
+		/// <param name="options">Any custom options for the scan.</param>
 		public void ScanForPeripherals (CBUUID []? peripheralUuids, NSDictionary? options)
 		{
 			if (peripheralUuids is null)
@@ -44,35 +43,31 @@ namespace CoreBluetooth {
 				ScanForPeripherals (NSArray.FromObjects (peripheralUuids), options);
 		}
 
-		/// <param name="peripheralUuids">To be added.</param>
-		///         <param name="options">To be added.</param>
-		///         <summary>Scans for peripherals that are advertising any of the specified <paramref name="peripheralUuids" /> with the specified  <paramref name="options" />.</summary>
-		///         <remarks>To be added.</remarks>
-		public void ScanForPeripherals (CBUUID [] peripheralUuids, PeripheralScanningOptions? options = null)
+		/// <summary>Scans for peripherals that are advertising any of the specified <paramref name="peripheralUuids" /> with the specified <paramref name="options" />.</summary>
+		/// <param name="peripheralUuids">An array of advertised UUIDs to scan for.</param>
+		/// <param name="options">Any custom options for the scan.</param>
+		public void ScanForPeripherals (CBUUID []? peripheralUuids, PeripheralScanningOptions? options = null)
 		{
 			ScanForPeripherals (peripheralUuids, options?.Dictionary);
 		}
 
-		/// <param name="peripheralUuids">To be added.</param>
-		///         <summary>Scans for peripherals that are advertising any of the specified <paramref name="peripheralUuids" />.</summary>
-		///         <remarks>To be added.</remarks>
-		public void ScanForPeripherals (CBUUID [] peripheralUuids)
+		/// <summary>Scans for peripherals that are advertising any of the specified <paramref name="peripheralUuids" />.</summary>
+		/// <param name="peripheralUuids">An array of advertised UUIDs to scan for.</param>
+		public void ScanForPeripherals (CBUUID []? peripheralUuids)
 		{
 			ScanForPeripherals (peripheralUuids, null as NSDictionary);
 		}
 
-		/// <param name="serviceUuid">To be added.</param>
-		///         <param name="options">To be added.</param>
-		///         <summary>Scans for peripherals that are advertising the specified <paramref name="serviceUuid" /> with the specified  <paramref name="options" />.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Scans for peripherals that are advertising the specified <paramref name="serviceUuid" /> with the specified <paramref name="options" />.</summary>
+		/// <param name="serviceUuid">The advertised UUID to scan for.</param>
+		/// <param name="options">Any custom options for the scan.</param>
 		public void ScanForPeripherals (CBUUID serviceUuid, NSDictionary? options)
 		{
 			ScanForPeripherals (new [] { serviceUuid }, options);
 		}
 
-		/// <param name="serviceUuid">To be added.</param>
-		///         <summary>Scans for peripherals that are advertising the specified <paramref name="serviceUuid" />.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Scans for peripherals that are advertising the specified <paramref name="serviceUuid" />.</summary>
+		/// <param name="serviceUuid">The advertised UUID to scan for.</param>
 		public void ScanForPeripherals (CBUUID serviceUuid)
 		{
 			ScanForPeripherals (new [] { serviceUuid }, null as NSDictionary);

@@ -80,15 +80,15 @@ namespace Xharness.Jenkins {
 				case "monotouch-test":
 					ignore = true;
 					yield return new TestData { Variation = "Debug (dynamic registrar)", Registrar = "dynamic", Debug = true, Profiling = false, Ignored = ignore };
-					yield return new TestData { Variation = "Release (all optimizations)", AppBundleExtraOptions = "--optimize:all", Registrar = "static", Debug = false, Profiling = false, Defines = "OPTIMIZEALL", Ignored = ignore };
-					yield return new TestData { Variation = "Debug (all optimizations)", AppBundleExtraOptions = "--optimize:all", Registrar = "static", Debug = true, Profiling = false, Defines = "OPTIMIZEALL", Ignored = ignore };
-					yield return new TestData { Variation = "Debug: SGenConc", AppBundleExtraOptions = "", Debug = true, Profiling = false, EnableSGenConc = true, Ignored = ignore };
+					yield return new TestData { Variation = "Release (all optimizations)", TestVariation = "static-registrar-all-optimizations", Debug = false, Ignored = ignore };
+					yield return new TestData { Variation = "Debug (all optimizations)", TestVariation = "static-registrar-all-optimizations", Debug = true, Ignored = ignore };
+					yield return new TestData { Variation = "Debug: SGenConc", Debug = true, Profiling = false, EnableSGenConc = true, Ignored = ignore };
 					if (supports_interpreter) {
-						yield return new TestData { Variation = "Debug (interpreter)", TestVariation = "interpreter", Debug = true, Profiling = false, Ignored = ignore, Defines = "" };
+						yield return new TestData { Variation = "Debug (interpreter)", TestVariation = "interpreter", Debug = true, Profiling = false, Ignored = ignore };
 					}
 					yield return new TestData { Variation = "Release (LLVM)", Debug = false, UseLlvm = true, Ignored = ignore };
 					yield return new TestData { Variation = "Debug (managed static registrar)", Registrar = "managed-static", Debug = true, Profiling = false, Ignored = ignore };
-					yield return new TestData { Variation = "Release (managed static registrar, all optimizations)", AppBundleExtraOptions = "--optimize:all", Registrar = "managed-static", Debug = false, Profiling = false, LinkMode = "Full", Defines = "OPTIMIZEALL", Ignored = ignore };
+					yield return new TestData { Variation = "Release (managed static registrar, all optimizations)", TestVariation = "managed-static-registrar-all-optimizations-linkall", Debug = false, Ignored = ignore };
 					yield return new TestData { Variation = "Release (NativeAOT)", Debug = false, PublishAot = true, Ignored = ignore, LinkMode = "Full" };
 					break;
 				}
@@ -99,15 +99,15 @@ namespace Xharness.Jenkins {
 					// The default is to run monotouch-test with the dynamic registrar (in the simulator), so that's already covered
 					yield return new TestData { Variation = "Debug (LinkSdk)", Debug = true, Profiling = false, LinkMode = "SdkOnly", Ignored = ignore };
 					yield return new TestData { Variation = "Debug (static registrar)", Registrar = "static", Debug = true, Profiling = false, Ignored = ignore };
-					yield return new TestData { Variation = "Release (all optimizations)", AppBundleExtraOptions = "--optimize:all", Registrar = "static", Debug = false, Profiling = false, LinkMode = "Full", Defines = "OPTIMIZEALL", Ignored = ignore };
-					yield return new TestData { Variation = "Debug (all optimizations)", AppBundleExtraOptions = "--optimize:all,-remove-uithread-checks", Registrar = "static", Debug = true, Profiling = false, LinkMode = "Full", Defines = "OPTIMIZEALL", Ignored = ignore ?? !jenkins.TestSelection.IsEnabled (TestLabel.All) };
+					yield return new TestData { Variation = "Release (all optimizations)", TestVariation = "static-registrar-all-optimizations-linkall", Debug = false, Ignored = ignore };
+					yield return new TestData { Variation = "Debug (all optimizations)", TestVariation = "static-registrar-optimizations-except-uithread-checks-linkall", Debug = true, Ignored = ignore ?? !jenkins.TestSelection.IsEnabled (TestLabel.All) };
 
 					if (mac_supports_arm64) {
 						yield return new TestData { Variation = "Debug (ARM64)", Debug = true, Profiling = false, Ignored = !mac_supports_arm64 ? true : ignore, RuntimeIdentifier = arm64_sim_runtime_identifier, };
 						yield return new TestData { Variation = "Release (NativeAOT, ARM64)", Debug = false, PublishAot = true, Ignored = ignore, RuntimeIdentifier = arm64_sim_runtime_identifier, LinkMode = "Full" };
 					}
 					yield return new TestData { Variation = "Debug (managed static registrar)", Registrar = "managed-static", Debug = true, Profiling = false, Ignored = ignore };
-					yield return new TestData { Variation = "Release (managed static registrar, all optimizations)", AppBundleExtraOptions = "--optimize:all", Registrar = "managed-static", Debug = false, Profiling = false, LinkMode = "Full", Defines = "OPTIMIZEALL", Ignored = ignore };
+					yield return new TestData { Variation = "Release (managed static registrar, all optimizations)", TestVariation = "managed-static-registrar-all-optimizations-linkall", Debug = false, Ignored = ignore };
 					yield return new TestData { Variation = "Release (NativeAOT, x64)", Debug = false, PublishAot = true, Ignored = ignore, RuntimeIdentifier = x64_sim_runtime_identifier, LinkMode = "Full" };
 					if (supports_interpreter) {
 						yield return new TestData { Variation = "Debug (interpreter)", TestVariation = "interpreter", Debug = true, Profiling = false, Ignored = ignore };
@@ -140,12 +140,12 @@ namespace Xharness.Jenkins {
 					yield return new TestData { Variation = "Debug (static registrar)", Registrar = "static", Debug = true, Ignored = ignore, };
 					yield return new TestData { Variation = "Debug (static registrar, ARM64)", Registrar = "static", Debug = true, Profiling = false, Ignored = !mac_supports_arm64 ? true : ignore, RuntimeIdentifier = arm64_runtime_identifier, };
 					yield return new TestData { Variation = "Release (managed static registrar)", Registrar = "managed-static", Debug = false, Ignored = ignore };
-					yield return new TestData { Variation = "Release (managed static registrar, all optimizations)", AppBundleExtraOptions = "--optimize:all", Registrar = "managed-static", Debug = false, Profiling = false, LinkMode = "Full", Defines = "OPTIMIZEALL", Ignored = ignore };
+					yield return new TestData { Variation = "Release (managed static registrar, all optimizations)", TestVariation = "managed-static-registrar-all-optimizations-linkall", Debug = false, Ignored = ignore };
 					yield return new TestData { Variation = "Release (NativeAOT)", Debug = false, PublishAot = true, Ignored = ignore, LinkMode = "Full" };
 					yield return new TestData { Variation = "Release (NativeAOT, ARM64)", Debug = false, PublishAot = true, Ignored = !mac_supports_arm64 ? true : ignore, RuntimeIdentifier = arm64_runtime_identifier, LinkMode = "Full" };
 					yield return new TestData { Variation = "Release (NativeAOT, x64)", Debug = false, PublishAot = true, Ignored = ignore, RuntimeIdentifier = x64_runtime_identifier, LinkMode = "Full" };
 					yield return new TestData { Variation = "Release (static registrar)", Registrar = "static", Debug = false, Ignored = ignore };
-					yield return new TestData { Variation = "Release (static registrar, all optimizations)", AppBundleExtraOptions = "--optimize:all", Registrar = "static", Debug = false, Profiling = false, LinkMode = "Full", Defines = "OPTIMIZEALL", Ignored = ignore };
+					yield return new TestData { Variation = "Release (static registrar, all optimizations)", TestVariation = "static-registrar-all-optimizations-linkall", Debug = false, Ignored = ignore };
 					if (test.Platform == TestPlatform.MacCatalyst) {
 						yield return new TestData { Variation = "Release (ARM64, LLVM)", Debug = false, UseLlvm = true, Ignored = !mac_supports_arm64 ? true : ignore, RuntimeIdentifier = arm64_runtime_identifier };
 					}
@@ -172,12 +172,10 @@ namespace Xharness.Jenkins {
 			foreach (var task in tests.ToArray ()) {
 				foreach (var test_data in GetTestData (task)) {
 					var variation = test_data.Variation;
-					var bundler_arguments = test_data.AppBundleExtraOptions;
 					var configuration = test_data.Debug ? task.ProjectConfiguration : task.ProjectConfiguration.Replace ("Debug", "Release");
 					var debug = test_data.Debug;
 					var profiling = test_data.Profiling;
 					var link_mode = test_data.LinkMode;
-					var defines = test_data.Defines;
 					var ignored = test_data.Ignored;
 					var known_failure = test_data.KnownFailure;
 					var candidates = test_data.Candidates;
@@ -199,21 +197,9 @@ namespace Xharness.Jenkins {
 						var isMac = task.Platform.IsMac ();
 						var canSymlink = task.Platform.CanSymlink ();
 
-						if (!string.IsNullOrEmpty (bundler_arguments)) {
-							clone.Xml.AppendAppBundleExtraOptions (bundler_arguments);
-						}
 						if (!string.IsNullOrEmpty (link_mode)) {
 							clone.Xml.SetProperty ("LinkMode", link_mode);
 							clone.Xml.SetProperty ("MtouchLink", link_mode);
-						}
-						if (!string.IsNullOrEmpty (defines)) {
-							clone.Xml.AddAdditionalDefines (defines);
-							if (clone.ProjectReferences is not null) {
-								foreach (var pr in clone.ProjectReferences) {
-									pr.Xml.AddAdditionalDefines (defines);
-									pr.Xml.Save (pr.Path);
-								}
-							}
 						}
 						clone.Xml.SetProperty (isMac ? "Profiling" : "MTouchProfiling", profiling ? "True" : "False");
 						if (test_data.EnableSGenConc)

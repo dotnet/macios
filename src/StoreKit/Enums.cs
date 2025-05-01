@@ -54,10 +54,6 @@ namespace StoreKit {
 		// iOS 10.3
 		/// <summary>To be added.</summary>
 		CloudServiceRevoked,
-#if !NET
-		[Obsolete ("Use 'SKError.CloudServiceRevoked' instead.")]
-		Revoked = CloudServiceRevoked,
-#endif
 		// iOS 12.2
 		/// <summary>To be added.</summary>
 		PrivacyAcknowledgementRequired,

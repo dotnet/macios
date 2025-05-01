@@ -795,6 +795,12 @@
             Summary for TG1.TGProperty
             </summary>
         </member>
+        <member name="P:XmlDocumentation.TOuter.TInner.TOuterInnerField">
+            <summary>TOuter.TInner.Field</summary>
+        </member>
+        <member name="P:XmlDocumentation.TOuter.TInner.TOuterInnerField2">
+            <summary>Represents the value associated with the constant 'TOuterInnerField2'.</summary>
+        </member>
         <member name="T:XmlDocumentation.OptionsA">
             <summary>Summary for OptionsA.</summary>
         </member>

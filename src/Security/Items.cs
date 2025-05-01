@@ -776,7 +776,8 @@ namespace Security {
 					SecKeychainItemFreeContent (IntPtr.Zero, passwordPtr);
 			}
 		}
-#else
+#endif
+
 		/// <include file="../../docs/api/Security/SecKeyChain.xml" path="/Documentation/Docs[@DocId='M:Security.SecKeyChain.QueryAsConcreteType(Security.SecRecord,Security.SecStatusCode@)']/*" />
 		public static object? QueryAsConcreteType (SecRecord query, out SecStatusCode result)
 		{
@@ -805,7 +806,6 @@ namespace Security {
 				return null;
 			}
 		}
-#endif
 
 		/// <param name="identity">To be added.</param>
 		///         <summary>To be added.</summary>

@@ -397,10 +397,6 @@ namespace System.Net.Http {
 
 		void AddCookie (string value, Uri uri, string header)
 		{
-			// CookieCollection.CookieCutter is internal to mscorlib:
-			// https://github.com/microsoft/referencesource/blob/a7bd3242bd7732dec4aebb21fbc0f6de61c2545e/System/net/System/Net/cookiecontainer.cs#L632
-			// https://github.com/xamarin/xamarin-macios/issues/8072
-			// so use the public CookieContainer.SetCookies instead.
 			try {
 				cookies.SetCookies (uri, value);
 			} catch {

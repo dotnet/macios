@@ -5421,9 +5421,9 @@ public partial class Generator : IMemberGatherer {
 		print ($"[Experimental (\"{e.DiagnosticId}\")]");
 	}
 
-	void WriteDocumentation (MemberInfo info, Func<XmlNode, XmlNode>? transformNode = null)
+	bool WriteDocumentation (MemberInfo info, Func<XmlNode, XmlNode>? transformNode = null)
 	{
-		DocumentationManager.WriteDocumentation (sw, indent, info, transformNode);
+		return DocumentationManager.WriteDocumentation (sw, indent, info, transformNode);
 	}
 
 	public bool TryComputeLibraryName (string attributeLibraryName, Type type, out string library_name, out string library_path)
@@ -6154,7 +6154,9 @@ public partial class Generator : IMemberGatherer {
 						print ("static {0}? _{1};", fieldTypeName, field_pi.Name);
 					}
 
-					WriteDocumentation (field_pi);
+					if (!WriteDocumentation (field_pi) && BindingTouch.SupportsXmlDocumentation) {
+						print ($"/// <summary>Represents the value associated with the constant '{fieldAttr.SymbolName}'.</summary>");
+					}
 					PrintAttributes (field_pi, preserve: true, advice: true);
 					PrintObsoleteAttributes (field_pi);
 					print ("[Field (\"{0}\",  \"{1}\")]", fieldAttr.SymbolName, library_path ?? library_name);

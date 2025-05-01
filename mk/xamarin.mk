@@ -1,5 +1,5 @@
 ifdef ENABLE_XAMARIN
-NEEDED_ADR_VERSION := 3152ecab9dc1d58130f345f40088c60cf58a3908
+NEEDED_ADR_VERSION := 7dcc6c31ee21b7714eded155038da7ad5a9cc0c4
 NEEDED_ADR_BRANCH := main
 
 ADR_DIRECTORY := macios-adr
@@ -78,7 +78,7 @@ reset-versions-impl:: reset-$(1)
 check-versions:: check-$(1)
 print-versions:: print-$(1)
 
-DEPENDENCY_DIRECTORIES += $($(2)_PATH)
+DEPENDENCY_DIRECTORIES += $$(abspath $($(2)_PATH))
 
 endef
 

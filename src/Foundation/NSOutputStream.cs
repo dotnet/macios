@@ -20,11 +20,22 @@ namespace Foundation {
 		}
 
 		// This is done manually because the generator can't handle byte[] as a native pointer (it will try to use NSArray instead).
+		/// <param name="buffer">To be added.</param>
+		/// <param name="len">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		public nint Write (byte [] buffer, nuint len)
 		{
 			return objc_msgSend (Handle, Selector.GetHandle (selWriteMaxLength), buffer, len);
 		}
 
+		/// <param name="buffer">To be added.</param>
+		/// <param name="offset">To be added.</param>
+		/// <param name="len">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		public unsafe nint Write (byte [] buffer, int offset, nuint len)
 		{
 			if (offset + (long) len > buffer.Length)

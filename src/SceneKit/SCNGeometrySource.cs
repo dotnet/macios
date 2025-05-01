@@ -86,11 +86,31 @@ namespace SceneKit {
 			}
 		}
 
+		/// <param name="data">To be added.</param>
+		/// <param name="semantic">To be added.</param>
+		/// <param name="vectorCount">To be added.</param>
+		/// <param name="floatComponents">To be added.</param>
+		/// <param name="componentsPerVector">To be added.</param>
+		/// <param name="bytesPerComponent">To be added.</param>
+		/// <param name="offset">To be added.</param>
+		/// <param name="stride">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		public static SCNGeometrySource FromData (NSData data, SCNGeometrySourceSemantics semantic, nint vectorCount, bool floatComponents, nint componentsPerVector, nint bytesPerComponent, nint offset, nint stride)
 		{
 			return FromData (data, SemanticToToken (semantic), vectorCount, floatComponents, componentsPerVector, bytesPerComponent, offset, stride);
 		}
 
+		/// <param name="mtlBuffer">To be added.</param>
+		/// <param name="vertexFormat">To be added.</param>
+		/// <param name="semantic">To be added.</param>
+		/// <param name="vertexCount">To be added.</param>
+		/// <param name="offset">To be added.</param>
+		/// <param name="stride">To be added.</param>
+		/// <summary>Factory method to create a new <see cref="T:SceneKit.SCNGeometrySource" /> from a data buffer.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		public static SCNGeometrySource FromMetalBuffer (IMTLBuffer mtlBuffer, MTLVertexFormat vertexFormat, SCNGeometrySourceSemantics semantic, nint vertexCount, nint offset, nint stride)
 		{
 			return FromMetalBuffer (mtlBuffer, vertexFormat, SemanticToToken (semantic), vertexCount, offset, stride);

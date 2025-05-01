@@ -95,6 +95,9 @@ namespace Foundation {
 		{
 		}
 
+		/// <param name="capacity">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		public NSMutableSet (nint capacity)
 			: base (capacity)
 		{

@@ -16,6 +16,8 @@ namespace AppKit {
 		NSObject? target;
 		Selector? action;
 
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		public event EventHandler Activated {
 			add {
 				target = ActionDispatcher.SetupAction (Target, value);

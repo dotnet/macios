@@ -517,7 +517,7 @@ namespace Introspection {
 						break;
 					case "CILanczosScaleTransform":
 						switch (key) {
-						// ref: https://github.com/xamarin/xamarin-macios/issues/7209
+						// ref: https://github.com/dotnet/macios/issues/7209
 						case "outputImageNewScaleX:scaleY:":
 						case "outputImageOldScaleX:scaleY:":
 							continue;

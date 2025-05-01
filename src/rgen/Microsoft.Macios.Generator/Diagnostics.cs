@@ -6,7 +6,7 @@ namespace Microsoft.Macios.Generator;
 
 public static class Diagnostics {
 	/// <summary>
-	/// An unexpected error occurred while processing '{0}'. Please fill a bug report at https://github.com/xamarin/xamarin-macios/issues/new.
+	/// An unexpected error occurred while processing '{0}'. Please fill a bug report at https://github.com/dotnet/macios/issues/new.
 	/// </summary>
 	internal static readonly DiagnosticDescriptor RBI0000 = new (
 		"RBI0000",

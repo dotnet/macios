@@ -2292,7 +2292,7 @@ public partial class Generator : IMemberGatherer {
 	bool FilterMinimumVersion (AvailabilityBaseAttribute aa)
 	{
 		// dotnet can never filter minimum versions, as they are semantically important in some cases
-		// See for details: https://github.com/xamarin/xamarin-macios/issues/10170
+		// See for details: https://github.com/dotnet/macios/issues/10170
 		return true;
 	}
 
@@ -3034,62 +3034,18 @@ public partial class Generator : IMemberGatherer {
 		bool x64_stret = Stret.X86_64NeedStret (returnType, this);
 		bool aligned = AttributeManager.HasAttribute<AlignAttribute> (mi);
 
-		if (CurrentPlatform == PlatformName.MacOSX || CurrentPlatform == PlatformName.MacCatalyst) {
-			if (x64_stret) {
-				print ("if (global::ObjCRuntime.Runtime.IsARM64CallingConvention) {");
-				indent++;
-				GenerateInvoke (false, supercall, mi, minfo, selector, args, category_type, false);
-				indent--;
-				print ("} else {");
-				indent++;
-				GenerateInvoke (x64_stret, supercall, mi, minfo, selector, args, category_type, aligned && x64_stret);
-				indent--;
-				print ("}");
-			} else {
-				GenerateInvoke (false, supercall, mi, minfo, selector, args, category_type, false);
-			}
-			return;
-		}
-
-		bool arm_stret = Stret.ArmNeedStret (returnType, this);
-		bool x86_stret = Stret.X86NeedStret (returnType, this);
-		bool is_stret_multi = arm_stret || x86_stret || x64_stret;
-		bool need_multi_path = is_stret_multi;
-
-		if (need_multi_path) {
-			if (is_stret_multi) {
-				// First check for arm64
-				print ("if (global::ObjCRuntime.Runtime.IsARM64CallingConvention) {");
-				indent++;
-				GenerateInvoke (false, supercall, mi, minfo, selector, args, category_type, false);
-				indent--;
-				// If we're not arm64, but we're 64-bit, then we're x86_64
-				print ("} else if (IntPtr.Size == 8) {");
-				indent++;
-				GenerateInvoke (x64_stret, supercall, mi, minfo, selector, args, category_type, aligned && x64_stret);
-				indent--;
-				// if we're not 64-bit, but we're on device, then we're 32-bit arm
-				print ("} else if (Runtime.Arch == Arch.DEVICE) {");
-				indent++;
-				GenerateInvoke (arm_stret, supercall, mi, minfo, selector, args, category_type, aligned && arm_stret);
-				indent--;
-				// if we're none of the above, we're x86
-				print ("} else {");
-				indent++;
-				GenerateInvoke (x86_stret, supercall, mi, minfo, selector, args, category_type, aligned && x86_stret);
-				indent--;
-				print ("}");
-			} else {
-				print ("if (IntPtr.Size == 8) {");
-				indent++;
-				GenerateInvoke (x64_stret, supercall, mi, minfo, selector, args, category_type, aligned && x64_stret);
-				indent--;
-				print ("} else {");
-				indent++;
-				GenerateInvoke (x86_stret, supercall, mi, minfo, selector, args, category_type, aligned && x86_stret);
-				indent--;
-				print ("}");
-			}
+		if (x64_stret) {
+			// First check for arm64
+			print ("if (global::ObjCRuntime.Runtime.IsARM64CallingConvention) {");
+			indent++;
+			GenerateInvoke (false, supercall, mi, minfo, selector, args, category_type, false);
+			indent--;
+			// If we're not arm64, then we're x86_64
+			print ("} else {");
+			indent++;
+			GenerateInvoke (x64_stret, supercall, mi, minfo, selector, args, category_type, aligned && x64_stret);
+			indent--;
+			print ("}");
 		} else {
 			GenerateInvoke (false, supercall, mi, minfo, selector, args, category_type, false);
 		}
@@ -3978,9 +3934,8 @@ public partial class Generator : IMemberGatherer {
 			}
 		}
 
-		WriteDocumentation (pi);
-
 		if (wrap is not null) {
+			WriteDocumentation (pi);
 			print_generated_code ();
 			PrintPropertyAttributes (pi, minfo);
 			PrintAttributes (pi, preserve: true, advice: true);
@@ -4057,6 +4012,7 @@ public partial class Generator : IMemberGatherer {
 			}
 		}
 
+		WriteDocumentation (pi);
 		print_generated_code (optimizable: IsOptimizable (pi));
 		PrintPropertyAttributes (pi, minfo);
 
@@ -4316,6 +4272,14 @@ public partial class Generator : IMemberGatherer {
 			}
 		}
 
+		var asyncAttribute = AttributeManager.GetCustomAttribute<AsyncAttribute> (mi);
+		var xmlDocs = asyncKind == AsyncMethodKind.Plain ? asyncAttribute.XmlDocs : asyncAttribute.XmlDocsWithOutParameter;
+		if (!string.IsNullOrEmpty (xmlDocs)) {
+			var docLines = xmlDocs.Split ('\n');
+			foreach (var line in docLines)
+				print ($"/// {line}");
+		}
+
 		PrintMethodAttributes (minfo);
 
 		PrintAsyncHeader (minfo, asyncKind);
@@ -4334,7 +4298,7 @@ public partial class Generator : IMemberGatherer {
 		print ("var tcs = new TaskCompletionSource<{0}> ();", ttype);
 		bool ignoreResult = !is_void &&
 			asyncKind == AsyncMethodKind.Plain &&
-			AttributeManager.GetCustomAttribute<AsyncAttribute> (mi).PostNonResultSnippet is null;
+			asyncAttribute.PostNonResultSnippet is null;
 		print ("{6}{5}{4}{0}{7}({1}{2}({3}) => {{",
 			mi.Name,
 			GetInvokeParamList (minfo.AsyncInitialParams, false),
@@ -4405,7 +4369,7 @@ public partial class Generator : IMemberGatherer {
 		// when we inline methods (e.g. from a protocol) 
 		if (minfo.type != minfo.Method.DeclaringType) {
 			// we must look if the type has an [Availability] attribute
-			// but we must not duplicate existing attributes for a platform, see https://github.com/xamarin/xamarin-macios/issues/7194
+			// but we must not duplicate existing attributes for a platform, see https://github.com/dotnet/macios/issues/7194
 			PrintPlatformAttributesNoDuplicates (minfo.type, minfo.Method);
 		} else {
 			PrintPlatformAttributes (minfo.Method);
@@ -5457,9 +5421,9 @@ public partial class Generator : IMemberGatherer {
 		print ($"[Experimental (\"{e.DiagnosticId}\")]");
 	}
 
-	void WriteDocumentation (MemberInfo info, Func<XmlNode, XmlNode>? transformNode = null)
+	bool WriteDocumentation (MemberInfo info, Func<XmlNode, XmlNode>? transformNode = null)
 	{
-		DocumentationManager.WriteDocumentation (sw, indent, info, transformNode);
+		return DocumentationManager.WriteDocumentation (sw, indent, info, transformNode);
 	}
 
 	public bool TryComputeLibraryName (string attributeLibraryName, Type type, out string library_name, out string library_path)
@@ -5761,21 +5725,34 @@ public partial class Generator : IMemberGatherer {
 					class_name += TypeManager.FormatType (type, gargs [i]);
 
 					where_list += "\n\t\twhere " + gargs [i].Name + " : ";
+
+					var constraintList = new List<string> ();
+
+					var genericAttributes = gargs [i].GenericParameterAttributes;
+					if (genericAttributes.HasFlag (GenericParameterAttributes.ReferenceTypeConstraint)) {
+						constraintList.Add ("class");
+						genericAttributes &= ~GenericParameterAttributes.ReferenceTypeConstraint;
+					}
+					if (genericAttributes.HasFlag (GenericParameterAttributes.DefaultConstructorConstraint)) {
+						constraintList.Add ("new()");
+						genericAttributes &= ~GenericParameterAttributes.DefaultConstructorConstraint;
+					}
+					if (genericAttributes != GenericParameterAttributes.None) {
+						exceptions.Add (ErrorHelper.CreateError (99, $"Unexpected generic constraint attributes: {genericAttributes}"));
+					}
+
 					var constraints = gargs [i].GetGenericParameterConstraints ();
 					if (constraints.Length > 0) {
-						var comma = string.Empty;
-						if (IsProtocol (constraints [0])) {
-							where_list += "NSObject";
-							comma = ", ";
-						}
+						if (IsProtocol (constraints [0]))
+							constraintList.Add ("NSObject");
 
-						for (int c = 0; c < constraints.Length; c++) {
-							where_list += comma + TypeManager.FormatType (type, constraints [c]);
-							comma = ", ";
-						}
+						for (int c = 0; c < constraints.Length; c++)
+							constraintList.Add (TypeManager.FormatType (type, constraints [c]));
 					} else {
-						where_list += "NSObject";
+						constraintList.Add ("NSObject");
 					}
+
+					where_list += string.Join (", ", constraintList);
 				}
 				class_name += ">";
 				if (where_list.Length > 0)
@@ -6177,7 +6154,9 @@ public partial class Generator : IMemberGatherer {
 						print ("static {0}? _{1};", fieldTypeName, field_pi.Name);
 					}
 
-					WriteDocumentation (field_pi);
+					if (!WriteDocumentation (field_pi) && BindingTouch.SupportsXmlDocumentation) {
+						print ($"/// <summary>Represents the value associated with the constant '{fieldAttr.SymbolName}'.</summary>");
+					}
 					PrintAttributes (field_pi, preserve: true, advice: true);
 					PrintObsoleteAttributes (field_pi);
 					print ("[Field (\"{0}\",  \"{1}\")]", fieldAttr.SymbolName, library_path ?? library_name);
@@ -6709,6 +6688,14 @@ public partial class Generator : IMemberGatherer {
 						} else
 							prev_miname = miname;
 
+						var eventArgs = AttributeManager.GetCustomAttribute<EventArgsAttribute> (mi);
+						var xmlDocs = eventArgs?.XmlDocs;
+						if (!string.IsNullOrEmpty (xmlDocs)) {
+							var docLines = xmlDocs.Split ('\n');
+							foreach (var line in docLines)
+								print ($"/// {line}");
+						}
+
 						if (mi.ReturnType == TypeCache.System_Void) {
 							PrintObsoleteAttributes (mi);
 
@@ -7124,12 +7111,18 @@ public partial class Generator : IMemberGatherer {
 					continue;
 				async_result_types_emitted.Add (async_type.Item1);
 
+				if (BindingTouch.SupportsXmlDocumentation) {
+					print ($"/// <summary>This class holds the return values for an asynchronous operation.</summary>");
+				}
 				print ("public partial class {0} {{", async_type.Item1); indent++;
 
 				StringBuilder ctor = new StringBuilder ();
 
 				bool comma = false;
 				foreach (var pi in async_type.Item2) {
+					if (BindingTouch.SupportsXmlDocumentation) {
+						print ($"/// <summary>The result value from the asynchronous operation.</summary>");
+					}
 					var safe_name = pi.Name.GetSafeParamName ();
 					print ("public {0} {1} {{ get; set; }}",
 						TypeManager.FormatType (type, pi.ParameterType),
@@ -7143,6 +7136,13 @@ public partial class Generator : IMemberGatherer {
 
 				print ("\npartial void Initialize ();");
 
+				if (BindingTouch.SupportsXmlDocumentation) {
+					print ($"/// <summary>Creates a new instance of this class.</summary>");
+					foreach (var pi in async_type.Item2) {
+						var safe_name = pi.Name.GetSafeParamName ();
+						print ($"/// <param name=\"{safe_name}\">Result value from an asynchronous operation.</param>");
+					}
+				}
 				print ("\npublic {0} ({1}) {{", async_type.Item1, ctor); indent++;
 				foreach (var pi in async_type.Item2) {
 					var safe_name = pi.Name.GetSafeParamName ();

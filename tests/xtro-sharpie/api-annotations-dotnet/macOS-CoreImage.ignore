@@ -6,5 +6,4 @@
 !missing-selector! +CIVector::vectorWithCGRect: not bound
 !missing-selector! CIFilter::apply: not bound
 !missing-selector! CIFilter::isEnabled not bound
-!missing-selector! CIFilter::outputImage not bound
 !missing-selector! CIFilter::setEnabled: not bound

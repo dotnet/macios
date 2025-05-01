@@ -15,8 +15,6 @@ using ObjCRuntime;
 
 namespace SpriteKit {
 	public partial class SKShapeNode : SKNode {
-
-#if NET
 		/// <param name="points">To be added.</param>
 		///         <summary>Creates a new shape node from the specified <paramref name="points" />.</summary>
 		///         <returns>To be added.</returns>
@@ -25,7 +23,6 @@ namespace SpriteKit {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public static SKShapeNode FromPoints (CGPoint [] points)
 		{
 			if (points is null)
@@ -34,7 +31,6 @@ namespace SpriteKit {
 			return FromPoints (ref points [0], (nuint) points.Length);
 		}
 
-#if NET
 		/// <param name="points">To be added.</param>
 		///         <param name="offset">To be added.</param>
 		///         <param name="length">To be added.</param>
@@ -45,7 +41,6 @@ namespace SpriteKit {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public static SKShapeNode FromPoints (CGPoint [] points, int offset, int length)
 		{
 			if (points is null)
@@ -56,7 +51,6 @@ namespace SpriteKit {
 			return FromPoints (ref points [offset], (nuint) length);
 		}
 
-#if NET
 		/// <param name="points">To be added.</param>
 		///         <summary>Creates a new shape node from the specified spline <paramref name="points" />.</summary>
 		///         <returns>To be added.</returns>
@@ -65,7 +59,6 @@ namespace SpriteKit {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public static SKShapeNode FromSplinePoints (CGPoint [] points)
 		{
 			if (points is null)
@@ -74,7 +67,6 @@ namespace SpriteKit {
 			return FromSplinePoints (ref points [0], (nuint) points.Length);
 		}
 
-#if NET
 		/// <param name="points">To be added.</param>
 		///         <param name="offset">To be added.</param>
 		///         <param name="length">To be added.</param>
@@ -85,7 +77,6 @@ namespace SpriteKit {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public static SKShapeNode FromSplinePoints (CGPoint [] points, int offset, int length)
 		{
 			if (points is null)

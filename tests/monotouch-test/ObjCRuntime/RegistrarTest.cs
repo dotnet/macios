@@ -5690,7 +5690,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 
 	public delegate void ACompletionHandler (string strArg, NSError error);
 
-	// https://github.com/xamarin/xamarin-macios/issues/7733
+	// https://github.com/dotnet/macios/issues/7733
 	[Preserve]
 	public class GHIssue7733 : NSObject {
 		[Export ("doSomeWork:completion:")]
@@ -5712,7 +5712,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 #endif
 
 	// These classes implement Metal* protocols, so that the generated registrar code includes the corresponding Metal* headers.
-	// https://github.com/xamarin/xamarin-macios/issues/4422
+	// https://github.com/dotnet/macios/issues/4422
 	class MetalKitTypesInTheSimulator : NSObject, MetalKit.IMTKViewDelegate {
 		public void Draw (MetalKit.MTKView view)
 		{

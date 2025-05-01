@@ -12,6 +12,9 @@ Copyright (C) 2011-2013 Xamarin. All rights reserved.
 ***********************************************************************************************
 -->
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<UsingTask TaskName="Xamarin.MacDev.Tasks.CalculateAssembliesReport" AssemblyFile="$(CoreiOSSdkDirectory)$(_TaskAssemblyFileName)" />
+	<UsingTask TaskName="Xamarin.MacDev.Tasks.AnalyzeFileChanges" AssemblyFile="$(CoreiOSSdkDirectory)$(_TaskAssemblyFileName)" />
+	
 	<Import Project="$(MSBuildThisFileDirectory)Xamarin.Messaging.Build.targets" Condition="Exists('$(MSBuildThisFileDirectory)Xamarin.Messaging.Build.targets') And '$(MessagingBuildTargetsImported)' != 'true'" />
 	<Import Project="$(MSBuildThisFileDirectory)Xamarin.Messaging.Apple.targets" Condition="Exists('$(MSBuildThisFileDirectory)Xamarin.Messaging.Apple.targets') And '$(MessagingAppleTargetsImported)' != 'true'" />
 
@@ -19,6 +22,12 @@ Copyright (C) 2011-2013 Xamarin. All rights reserved.
 		<!-- Allows to delete the entire build directory for the app in the Mac, which means that all the SessionId based generated directories will be deleted. -->
         <!-- Specially useful for CI builds where the user wants to clean previous builds -->
 		<RemoveAppDir Condition="'$(RemoveAppDir)' == ''">false</RemoveAppDir>
+		<!-- By default we don't want to add overhead in remote builds by keeping remote and local outputs in sync -->
+		<!-- This is only needed for builds that are intended to be debugged, so VS should set this property to true when debugging -->
+		<KeepLocalOutputUpToDate Condition="'$(KeepLocalOutputUpToDate)' == ''">false</KeepLocalOutputUpToDate>
+		<!-- By default the zip file that contains the modified files to update locally is meant to be cleaned -->
+		<CleanChangedOutputFilesZipFile Condition="'$(CleanChangedOutputFilesZipFile)' == ''">true</CleanChangedOutputFilesZipFile>
+		<LocalOutputReportFileName>OutputAssembliesReport.txt</LocalOutputReportFileName>
 	</PropertyGroup>
 
 	<!-- AfterClean belongs to Microsoft.Common.CurrentVersion.targets and it's the last target of the $(CleanDependsOn) -->
@@ -27,5 +36,38 @@ Copyright (C) 2011-2013 Xamarin. All rights reserved.
 		<RemoveDir SessionId="$(BuildSessionId)" Condition="'$(MtouchTargetsEnabled)' == 'true'" Directories="$(OutputPath);$(IntermediateOutputPath)" RemoveAppDir="$(RemoveAppDir)" ContinueOnError="true" />
 	</Target>
 
+	<!-- Target meant to run locally (Windows), as part of a remote build, to obtain information of the OutputPath for .dll files, generating a resulting report file with it -->
+	<!-- We don't want the remote build to fail in case this target fails, so we treat errors as warnings -->
+	<Target Name="GenerateLocalOutputReport" Condition="'$(OutputType)' == 'Exe' And '$(KeepLocalOutputUpToDate)' == 'true' And '$(IsRemoteBuild)' == 'true' And '$(IsMacEnabled)' == 'true'" BeforeTargets="BeforeDisconnect" Inputs="$(OutputPath)" Outputs="$(IntermediateOutputPath)$(LocalOutputReportFileName)">
+		<!-- This task will run locally since we don't pass the SessionId -->
+		<CalculateAssembliesReport WorkingDirectory="$(OutputPath)" TargetReportFile="$(IntermediateOutputPath)$(LocalOutputReportFileName)" ContinueOnError="WarnAndContinue"/>
+	</Target>
+
+	<!-- Target meant to run part locally (Windows) and part remotely (Mac), as part of a remote build, to analyze which files from the remote OutputPath have changed, compared to the local OutputPath, and to copy those files back to the OutputPath in Windows -->
+	<!-- We don't want the remote build to fail in case this target fails, so we treat errros as warnings -->
+	<Target Name="CopyChangedOutputFilesFromMac" Condition="'$(OutputType)' == 'Exe' And '$(KeepLocalOutputUpToDate)' == 'true' And '$(IsRemoteBuild)' == 'true' And '$(IsMacEnabled)' == 'true'" AfterTargets="GenerateLocalOutputReport">
+		<PropertyGroup>
+			<!-- The remote output path needs to be the resulting .app path, which will contains all the final files -->
+			<AppBundleDir>$(DeviceSpecificOutputPath)$(_AppBundleName)$(AppBundleExtension)\</AppBundleDir>
+			<ChangedOutputFilesZipFile>$(IntermediateOutputPath)ChangedOutputFiles.zip</ChangedOutputFilesZipFile>
+		</PropertyGroup>
+
+		<!-- Task that will run remotely and analyze the files that are different between local and remote output paths -->
+		<!-- The ReportFile will be copied to the Mac because it's an ITaskItem input -->
+		<AnalyzeFileChanges SessionId="$(BuildSessionId)" WorkingDirectory="$(AppBundleDir)" ReportFile="$(IntermediateOutputPath)$(LocalOutputReportFileName)" ContinueOnError="WarnAndContinue">
+			<Output TaskParameter="ChangedFiles" ItemName="FilesToCopyBack"/>
+		</AnalyzeFileChanges>
+
+		<!-- Task that will run remotely and zip the changed files (FilesToCopyBack), resulting of the AnalyzeFileChanges run -->
+		<!-- Because the task runs remotely, it will copy the zipped file back to Windows, to the same relative location that the OutputFile is on the remote side -->
+		<Zip Condition="'@(FilesToCopyBack)' != ''" SessionId="$(BuildSessionId)" WorkingDirectory="$(AppBundleDir)" Sources="@(FilesToCopyBack)" OutputFile="$(ChangedOutputFilesZipFile)" ContinueOnError="WarnAndContinue"/>
+
+		<!-- Task that will run locally and unzip the changed files copied from the Mac to the local output path -->
+		<Unzip Condition="Exists('$(ChangedOutputFilesZipFile)')" ZipFilePath="$(ChangedOutputFilesZipFile)" ExtractionPath="$(OutputPath)" ContinueOnError="WarnAndContinue"/>
+
+		<!-- Task that will run remotely and delete the zip file in both Mac and Windows -->
+		<Delete SessionId="$(BuildSessionId)" Condition="'$(CleanChangedOutputFilesZipFile)' == 'true' And Exists('$(ChangedOutputFilesZipFile)')" Files="$(ChangedOutputFilesZipFile)" ContinueOnError="WarnAndContinue"/>
+	</Target>
+	
 	<Import Project="$(MSBuildThisFileDirectory)Xamarin.iOS.HotRestart.targets" Condition="Exists('$(MSBuildThisFileDirectory)Xamarin.iOS.HotRestart.targets')" /> 
 </Project>

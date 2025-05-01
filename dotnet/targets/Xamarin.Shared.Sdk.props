@@ -60,7 +60,7 @@
 		<_RuntimeIdentifierIsRequired Condition="'$(OutputType)' == 'Exe' Or '$(IsAppExtension)' == 'true'">true</_RuntimeIdentifierIsRequired>
 
 		<!-- The logic to compute the default value for GenerateSatelliteAssembliesForCore is wrong when building inside Visual Studio (Windows), so make sure it defaults to the correct value -->
-		<!-- Ref: https://github.com/xamarin/xamarin-macios/issues/16193 -->
+		<!-- Ref: https://github.com/dotnet/macios/issues/16193 -->
 		<!-- Ref: https://github.com/dotnet/sdk/issues/28419 -->
 		<GenerateSatelliteAssembliesForCore Condition="'$(GenerateSatelliteAssembliesForCore)' == ''">true</GenerateSatelliteAssembliesForCore>
 
@@ -87,7 +87,7 @@
 		<!-- AutoreleasePoolSupport needs to be set earlier than other switches, so that illink doesn't override it - https://github.com/dotnet/runtime/pull/86753 - so it's set here, instead of in Xamarin.Shared.Sdk.targets -->
 		<AutoreleasePoolSupport Condition="'$(AutoreleasePoolSupport)' == ''">true</AutoreleasePoolSupport>
 
-		<!-- Enable the reflection-based json serializer by default. Ref: https://github.com/xamarin/xamarin-macios/issues/18057 -->
+		<!-- Enable the reflection-based json serializer by default. Ref: https://github.com/dotnet/macios/issues/18057 -->
 		<JsonSerializerIsReflectionEnabledByDefault Condition="'$(JsonSerializerIsReflectionEnabledByDefault)' == ''">true</JsonSerializerIsReflectionEnabledByDefault>
 
 		<!-- Tell .NET to skip sanity checks that trigger too eagerly for builds with multiple RuntimeIdentifiers -->

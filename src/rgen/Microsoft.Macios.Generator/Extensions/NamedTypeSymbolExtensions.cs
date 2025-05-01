@@ -20,7 +20,7 @@ static class NamedTypeSymbolExtensions {
 
 		// we can only return fields for enums
 		if (enumSymbol.TypeKind != TypeKind.Enum) {
-			diagnostics = [Diagnostic.Create (Diagnostics.RBI0000, // An unexpected error ocurred while processing '{0}'. Please fill a bug report at https://github.com/xamarin/xamarin-macios/issues/new.
+			diagnostics = [Diagnostic.Create (Diagnostics.RBI0000, // An unexpected error ocurred while processing '{0}'. Please fill a bug report at https://github.com/dotnet/macios/issues/new.
 				enumSymbol.Locations [0], enumSymbol.ToDisplayString ().Trim ())];
 			return false;
 		}
@@ -41,7 +41,7 @@ static class NamedTypeSymbolExtensions {
 			if (attributes.TryGetValue (AttributesNames.EnumFieldAttribute, out var fieldAttrDataList)) {
 				if (fieldAttrDataList.Count != 1) {
 					// FieldAttribute restrictions does not allow it to appear more than once
-					diagnostics = [Diagnostic.Create (Diagnostics.RBI0000, // An unexpected error ocurred while processing '{0}'. Please fill a bug report at https://github.com/xamarin/xamarin-macios/issues/new.
+					diagnostics = [Diagnostic.Create (Diagnostics.RBI0000, // An unexpected error ocurred while processing '{0}'. Please fill a bug report at https://github.com/dotnet/macios/issues/new.
 						enumSymbol.Locations [0], fieldSymbol.ToDisplayString ().Trim ())];
 					return false;
 				}
@@ -54,7 +54,7 @@ static class NamedTypeSymbolExtensions {
 				if (FieldData<EnumValue>.TryParse (fieldAttrData, out var fieldData)) {
 					fieldBucket.Add ((Symbol: fieldSymbol, FieldData: fieldData.Value));
 				} else {
-					diagnostics = [Diagnostic.Create (Diagnostics.RBI0000, // An unexpected error ocurred while processing '{0}'. Please fill a bug report at https://github.com/xamarin/xamarin-macios/issues/new.
+					diagnostics = [Diagnostic.Create (Diagnostics.RBI0000, // An unexpected error ocurred while processing '{0}'. Please fill a bug report at https://github.com/dotnet/macios/issues/new.
 						enumSymbol.Locations [0], fieldSymbol.ToDisplayString ().Trim ())];
 					return false;
 				}

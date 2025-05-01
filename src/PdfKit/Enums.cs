@@ -36,6 +36,8 @@ using ObjCRuntime;
 
 namespace PdfKit {
 
+	/// <summary>Enumerates named PDF action names.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	[TV (18, 2)]
 	public enum PdfActionNamedName : long {
@@ -65,6 +67,8 @@ namespace PdfKit {
 		ZoomOut = 11,
 	}
 
+	/// <summary>Enumerates annotation widget controls.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	[TV (18, 2)]
 	public enum PdfWidgetControlType : long {
@@ -78,6 +82,8 @@ namespace PdfKit {
 		CheckBox = 2,
 	}
 
+	/// <summary>Enumerates line ending styles</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	[TV (18, 2)]
 	public enum PdfLineStyle : long {
@@ -95,6 +101,8 @@ namespace PdfKit {
 		ClosedArrow = 5,
 	}
 
+	/// <summary>Indicates annotation markup types.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	[TV (18, 2)]
 	public enum PdfMarkupType : long {
@@ -107,6 +115,8 @@ namespace PdfKit {
 		Redact = 3,
 	}
 
+	/// <summary>Enumerates annotation icon types.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	[TV (18, 2)]
 	public enum PdfTextAnnotationIconType : long {
@@ -126,6 +136,8 @@ namespace PdfKit {
 		Insert = 6,
 	}
 
+	/// <summary>Enumerates annotation border styles.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	[TV (18, 2)]
 	public enum PdfBorderStyle : long {
@@ -166,6 +178,8 @@ namespace PdfKit {
 		Owner = 2,
 	}
 
+	/// <summary>Enumerates Adobe-specified PDF display box boundaries.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	[TV (18, 2)]
 	public enum PdfDisplayBox : long {
@@ -181,6 +195,8 @@ namespace PdfKit {
 		Art = 4,
 	}
 
+	/// <summary>Enumerated PDF display modes.</summary>
+	/// <remarks>To be added.</remarks>
 	[Native]
 	[TV (18, 2)]
 	public enum PdfDisplayMode : long {
@@ -194,6 +210,8 @@ namespace PdfKit {
 		TwoUpContinuous = 3,
 	}
 
+	/// <summary>Orable flags that describe areas of interest for a touch position.</summary>
+	/// <remarks>To be added.</remarks>
 	[Flags]
 	[Native]
 	[TV (18, 2)]

@@ -124,6 +124,11 @@ namespace UIKit {
 			}
 		}
 
+		/// <summary>This event is raised when the animations will start.</summary>
+		/// <remarks>
+		///           <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
+		///           <para>Notice that these events are only fired as long as the application does not install its own animation delegate by calling <see cref="M:UIKit.UIView.SetAnimationDelegate(Foundation.NSObject)" />.</para>
+		///         </remarks>
 		public static event Action AnimationWillStart {
 			add {
 				_UIViewStaticCallback.Prepare ().WillStart += value;
@@ -133,6 +138,11 @@ namespace UIKit {
 			}
 		}
 
+		/// <summary>This event is raised when the animations will end.</summary>
+		/// <remarks>
+		///           <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
+		///           <para>Notice that these events are only fired as long as the application does not install its own animation delegate by calling <see cref="M:UIKit.UIView.SetAnimationDelegate(Foundation.NSObject)" />.</para>
+		///         </remarks>
 		public static event Action AnimationWillEnd {
 			add {
 				_UIViewStaticCallback.Prepare ().WillEnd += value;

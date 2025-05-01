@@ -159,6 +159,8 @@ namespace MediaPlayer {
 	}
 
 	// NSUInteger -> MPMediaItem.h
+	/// <summary>An enumeration whose values specify various types of media.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	[Flags]
@@ -275,6 +277,8 @@ namespace MediaPlayer {
 	}
 
 	// untyped enum -> MPMoviePlayerController.h
+	/// <summary>Application developers should not use this deprecated class, but instead use <see cref="T:MediaPlayer.MPMovieControlStyle" />.</summary>
+	/// <remarks>To be added.</remarks>
 	[NoMac]
 	[MacCatalyst (13, 1)]
 	public enum MPMovieControlMode {
@@ -287,6 +291,8 @@ namespace MediaPlayer {
 	}
 
 	// NSInteger -> /MPMusicPlayerController.h
+	/// <summary>An enumeration of states in which the <see cref="T:MediaPlayer.MPMusicPlayerController" /> may be. Used with the <see cref="P:MediaPlayer.MPMusicPlayerController.PlaybackState" /> property.</summary>
+	/// <remarks>To be added.</remarks>
 	[NoMac]
 	[TV (14, 0)]
 	[MacCatalyst (13, 1)]
@@ -307,6 +313,8 @@ namespace MediaPlayer {
 	}
 
 	// NSInteger -> /MPMusicPlayerController.h
+	/// <summary>An enumeration of music repeat modes. Used with the <see cref="P:MediaPlayer.MPMusicPlayerController.RepeatMode" /> property.</summary>
+	/// <remarks>To be added.</remarks>
 	[NoMac]
 	[TV (14, 0)]
 	[MacCatalyst (13, 1)]
@@ -323,6 +331,8 @@ namespace MediaPlayer {
 	}
 
 	// NSInteger -> /MPMusicPlayerController.h
+	/// <summary>An enumeration of shuffle modes for use with the <see cref="P:MediaPlayer.MPMusicPlayerController.ShuffleMode" /> property.</summary>
+	/// <remarks>To be added.</remarks>
 	[NoMac]
 	[TV (14, 0)]
 	[MacCatalyst (13, 1)]
@@ -338,6 +348,12 @@ namespace MediaPlayer {
 		Albums,
 	}
 
+	/// <param name="property">The property kind.</param>
+	/// <param name="value">The value associated with the property</param>
+	/// <param name="stop">Reference value, can be used to stop the enumeration.</param>
+	/// <summary>The delegate to be used as the <c>enumerator</c> argument to <see cref="M:MediaPlayer.MPMediaItemCollection.EnumerateValues(Foundation.NSSet,MediaPlayer.MPMediaItemEnumerator)" />.</summary>
+	/// <remarks>
+	///     </remarks>
 	public delegate void MPMediaItemEnumerator (string property, NSObject value, ref bool stop);
 
 	[MacCatalyst (13, 1)]
@@ -374,6 +390,8 @@ namespace MediaPlayer {
 	}
 
 	// NSInteger -> MPRemoteCommand.h
+	/// <summary>Enumerates values that indicate whether a command succeeded, failed, or cannot play the kind of media requested.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MPRemoteCommandHandlerStatus : long {
@@ -392,6 +410,8 @@ namespace MediaPlayer {
 	}
 
 	// NSUInteger -> MPRemoteCommandEvent.h
+	/// <summary>Enumerates values that indicate whether the command began or ended a seek operation.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MPSeekCommandEventType : ulong {
@@ -410,6 +430,8 @@ namespace MediaPlayer {
 		Legible,
 	}
 
+	/// <summary>Enumerates error codes in the Media Player domain.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	[ErrorDomain ("MPErrorDomain")]

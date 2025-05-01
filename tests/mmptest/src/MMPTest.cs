@@ -715,7 +715,7 @@ namespace Xamarin.MMP.Tests {
 		[Test]
 		public void HardenedRuntimeCodesignOption ()
 		{
-			// https://github.com/xamarin/xamarin-macios/issues/5653
+			// https://github.com/dotnet/macios/issues/5653
 			if (TI.InJenkins)
 				Assert.Ignore ("Requires macOS entitlements on bots.");
 
@@ -756,7 +756,7 @@ namespace Xamarin.MMP.Tests {
 		[TestCase (true)]
 		public void ArchiveTask (bool full)
 		{
-			// https://github.com/xamarin/xamarin-macios/issues/5653
+			// https://github.com/dotnet/macios/issues/5653
 			if (TI.InJenkins)
 				Assert.Ignore ("Requires macOS entitlements on bots.");
 

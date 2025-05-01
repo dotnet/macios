@@ -62,7 +62,13 @@ namespace FinderSync {
 		///         <param name="completion">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[Async, Export ("setLastUsedDate:forItemWithURL:completion:")]
+		[Async (XmlDocs = """
+			<param name="lastUsedDate">To be added.</param>
+			<param name="itemUrl">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			"""), Export ("setLastUsedDate:forItemWithURL:completion:")]
 		void SetLastUsedDate (NSDate lastUsedDate, NSUrl itemUrl, Action<NSError> completion);
 
 		/// <param name="itemUrl">To be added.</param>
@@ -78,7 +84,13 @@ namespace FinderSync {
 		///         <param name="completion">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[Async]
+		[Async (XmlDocs = """
+			<param name="tagData">To be added.</param>
+			<param name="itemUrl">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("setTagData:forItemWithURL:completion:")]
 		void SetTagData ([NullAllowed] NSData tagData, NSUrl itemUrl, Action<NSError> completion);
 
@@ -98,28 +110,54 @@ namespace FinderSync {
 
 	[Protocol (Name = "FIFinderSync")]
 	interface FIFinderSyncProtocol {
+		/// <param name="menuKind">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("menuForMenuKind:")]
 		[return: NullAllowed]
 		NSMenu GetMenu (FIMenuKind menuKind);
 
+		/// <param name="url">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("beginObservingDirectoryAtURL:")]
 		void BeginObservingDirectory (NSUrl url);
 
+		/// <param name="url">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("endObservingDirectoryAtURL:")]
 		void EndObservingDirectory (NSUrl url);
 
+		/// <param name="url">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("requestBadgeIdentifierForURL:")]
 		void RequestBadgeIdentifier (NSUrl url);
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Export ("toolbarItemName")]
 		string ToolbarItemName { get; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Export ("toolbarItemImage", ArgumentSemantic.Copy)]
 		NSImage ToolbarItemImage { get; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Export ("toolbarItemToolTip")]
 		string ToolbarItemToolTip { get; }
 
+		/// <param name="itemUrl">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("supportedServiceNamesForItemWithURL:")]
 		string [] SupportedServiceNames (NSUrl itemUrl);
 
@@ -128,6 +166,11 @@ namespace FinderSync {
 		[return: NullAllowed]
 		NSXpcListenerEndpoint MakeListenerEndpoint (string serviceName, [NullAllowed] out NSError error);
 #endif
+		/// <param name="attributes">To be added.</param>
+		/// <param name="itemUrl">To be added.</param>
+		/// <param name="completion">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Async, Export ("valuesForAttributes:forItemWithURL:completion:")]
 		void GetValues (string [] attributes, NSUrl itemUrl, GetValuesCompletionHandler completion);
 	}

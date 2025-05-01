@@ -39,7 +39,7 @@ namespace MonoTouchFixtures.CoreText {
 
 			Assert.IsTrue (sortIsCalled, "GetMatchingFontDescriptors delegate is called");
 
-			// Native crash (can't assert on it) if https://github.com/xamarin/xamarin-macios/pull/3871 fix not present.
+			// Native crash (can't assert on it) if https://github.com/dotnet/macios/pull/3871 fix not present.
 			descList.First ().GetAttributes ();
 		}
 

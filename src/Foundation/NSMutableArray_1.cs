@@ -66,6 +66,9 @@ namespace Foundation {
 		{
 		}
 
+		/// <param name="capacity">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		public NSMutableArray (nuint capacity)
 			: base (capacity)
 		{
@@ -125,6 +128,10 @@ namespace Foundation {
 			GC.KeepAlive (obj);
 		}
 
+		/// <param name="obj">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		public void Insert (TValue obj, nint index)
 		{
 			if (obj is null)
@@ -136,6 +143,10 @@ namespace Foundation {
 			GC.KeepAlive (obj);
 		}
 
+		/// <param name="index">To be added.</param>
+		/// <param name="withObject">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		public void ReplaceObject (nint index, TValue withObject)
 		{
 			if (withObject is null)
@@ -241,7 +252,7 @@ namespace Foundation {
 		}
 		#endregion
 
-#if false // https://github.com/xamarin/xamarin-macios/issues/15577
+#if false // https://github.com/dotnet/macios/issues/15577
 #if !NET
 		[TV (13,0), iOS (13,0)]
 #else

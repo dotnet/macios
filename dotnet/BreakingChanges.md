@@ -1,6 +1,6 @@
 # Breaking changes in .NET
 
-Reference: https://github.com/xamarin/xamarin-macios/issues/13087
+Reference: https://github.com/dotnet/macios/issues/13087
 
 ## The SDK assemblies have been renamed.
 
@@ -38,7 +38,7 @@ favor of the C# 9 `nint` and `nuint` types (these map to `System.IntPtr` and
 
     Fix: one of the overloads would have to be either renamed or removed.
 
-Reference: https://github.com/xamarin/xamarin-macios/issues/10508
+Reference: https://github.com/dotnet/macios/issues/10508
 
 ## Removed `System.nfloat`
 

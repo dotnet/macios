@@ -14,6 +14,8 @@ using CoreFoundation;
 
 namespace Security {
 
+	/// <summary>Contains values that represent security policies.</summary>
+	/// <remarks>To be added.</remarks>
 	[Static]
 	interface SecPolicyIdentifier {
 		// they are CFString -> https://github.com/Apple-FOSS-Mirror/libsecurity_keychain/blob/master/lib/SecPolicy.cpp
@@ -148,6 +150,8 @@ namespace Security {
 		NSString AppleIPSecClient { get; }
 	}
 
+	/// <summary>Contains keys that index security policy data..</summary>
+	/// <remarks>To be added.</remarks>
 	[Static]
 	interface SecPolicyPropertyKey {
 		/// <summary>Represents the value associated with the constant kSecPolicyOid</summary>
@@ -200,6 +204,8 @@ namespace Security {
 	}
 
 
+	/// <summary>Contains keys that index certificate data by type.</summary>
+	/// <remarks>To be added.</remarks>
 	[Static]
 	interface SecTrustPropertyKey {
 		/// <summary>Represents the value associated with the constant kSecPropertyTypeTitle</summary>
@@ -217,6 +223,8 @@ namespace Security {
 		NSString Error { get; }
 	}
 
+	/// <summary>Contains keys that index trust data.</summary>
+	/// <remarks>To be added.</remarks>
 	[Static]
 	[MacCatalyst (13, 1)]
 	interface SecTrustResultKey {
@@ -291,6 +299,8 @@ namespace Security {
 		NSString QwacValidation { get; }
 	}
 
+	/// <summary>Keys used to control query results.</summary>
+	/// <remarks>You can use either an NSNumber or one of the values defined in this class when manually querying.</remarks>
 	[Static]
 	interface SecMatchLimit {
 		/// <summary>Return a single match.</summary>
@@ -306,6 +316,8 @@ namespace Security {
 		IntPtr MatchLimitAll { get; }
 	}
 
+	/// <summary>An enumeration whose values specify the <see cref="P:Security.SecRecord.KeyType" /> property.</summary>
+	/// <remarks>To be added.</remarks>
 	enum SecKeyType {
 		/// <summary>To be added.</summary>
 		Invalid = -1,
@@ -325,6 +337,8 @@ namespace Security {
 		ECSecPrimeRandom = 2,
 	}
 
+	/// <summary>The kind of cryptographic key</summary>
+	/// <remarks>To be added.</remarks>
 	enum SecKeyClass {
 		/// <summary>To be added.</summary>
 		Invalid = -1,
@@ -499,6 +513,8 @@ namespace Security {
 		IntPtr WhenPasscodeSetThisDeviceOnly { get; }
 	}
 
+	/// <summary>Contains attributes for creating and using public-private key pairs.</summary>
+	/// <remarks>To be added.</remarks>
 	[StrongDictionary ("SecAttributeKeys")]
 	interface SecPublicPrivateKeyAttrs {
 		/// <summary>Gets or sets the label for the key pair.</summary>

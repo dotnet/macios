@@ -7,7 +7,7 @@ using NUnit.Framework;
 using Foundation;
 
 namespace MonoTouchFixtures.Foundation {
-#if false // https://github.com/xamarin/xamarin-macios/issues/15577
+#if false // https://github.com/dotnet/macios/issues/15577
 	[TestFixture]
 	[Preserve (AllMembers = true)]
 	public class NSOrderedCollectionDifferenceTest {
@@ -25,7 +25,7 @@ namespace MonoTouchFixtures.Foundation {
 			Assert.DoesNotThrow (() => {
 				var r = diff.Removals;
 			});
-			// https://github.com/xamarin/xamarin-macios/issues/15577 - Did not rewrite tests that were disabled
+			// https://github.com/dotnet/macios/issues/15577 - Did not rewrite tests that were disabled
 			// Any reason for not asserting on the returned value?
 			// Assert.AreEqual (1, diff.Insertions.Length, "insertions");
 			// (or whatever it's supposed to return)

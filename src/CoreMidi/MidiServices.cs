@@ -180,6 +180,11 @@ namespace CoreMidi {
 		[DllImport (Constants.CoreMidiLibrary)]
 		extern static MidiDeviceRef MIDIGetDevice (nint /* ItemCount = unsigned long */ item);
 
+		/// <param name="deviceIndex">The device index.</param>
+		/// <summary>Returns an object representing the specified MIDI device.</summary>
+		/// <returns>An instance of MidiDevice, or null on error.</returns>
+		/// <remarks>
+		///         </remarks>
 		public static MidiDevice? GetDevice (nint deviceIndex)
 		{
 			var h = MIDIGetDevice (deviceIndex);
@@ -188,6 +193,11 @@ namespace CoreMidi {
 			return new MidiDevice (h);
 		}
 
+		/// <param name="deviceIndex">The external MIDI device index.</param>
+		/// <summary>Returns an object representing the specified external MIDI device.</summary>
+		/// <returns>An instance of MidiDevice, or null on error.</returns>
+		/// <remarks>
+		///         </remarks>
 		public static MidiDevice? GetExternalDevice (nint deviceIndex)
 		{
 			var h = MIDIGetExternalDevice (deviceIndex);

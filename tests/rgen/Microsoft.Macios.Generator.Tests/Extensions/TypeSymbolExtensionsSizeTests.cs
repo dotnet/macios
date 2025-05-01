@@ -246,17 +246,11 @@ public class TestClass {
 		Assert.NotNull (declaration);
 		var symbol = semanticModel.GetDeclaredSymbol (declaration);
 		Assert.NotNull (symbol);
-		// 32bit
-		var expectedResult = Stret.IsBuiltInType (type, false, out var expectedTypeSize);
-		var result = symbol.Type.TryGetBuiltInTypeSize (false, out var returnTypeSize);
+
+		var expectedResult = Stret.IsBuiltInType (type, out var expectedTypeSize);
+		var result = symbol.Type.TryGetBuiltInTypeSize (out var returnTypeSize);
 		Assert.Equal (expectedResult, result);
 		Assert.Equal (expectedTypeSize, returnTypeSize);
-
-		// 64bit
-		var expectedResult64 = Stret.IsBuiltInType (type, false, out var expectedTypeSize64);
-		var result64 = symbol.Type.TryGetBuiltInTypeSize (false, out var returnTypeSize64);
-		Assert.Equal (expectedResult64, result64);
-		Assert.Equal (expectedTypeSize64, returnTypeSize64);
 	}
 
 	class TestDataGetValueTypeSizeTests : IEnumerable<object []> {
@@ -340,18 +334,7 @@ public struct AVSampleCursorSyncInfo {
 				Stret.GetValueTypeSize (
 					type: typeof (AVSampleCursorSyncInfo),
 					fieldTypes: new (),
-					is_64_bits: false,
-					generator: new object ()),
-				false];
-
-			yield return [
-				avSampleCursorSyncInfo,
-				Stret.GetValueTypeSize (
-					type: typeof (AVSampleCursorSyncInfo),
-					fieldTypes: new (),
-					is_64_bits: true,
-					generator: new object ()),
-				true];
+					generator: new object ())];
 
 			const string avSampleCursorDependencyInfo = @"
 using System;
@@ -386,18 +369,7 @@ public struct AVSampleCursorDependencyInfo {
 				Stret.GetValueTypeSize (
 					type: typeof (AVSampleCursorDependencyInfo),
 					fieldTypes: new (),
-					is_64_bits: false,
-					generator: new object ()),
-				false];
-
-			yield return [
-				avSampleCursorDependencyInfo,
-				Stret.GetValueTypeSize (
-					type: typeof (AVSampleCursorDependencyInfo),
-					fieldTypes: new (),
-					is_64_bits: true,
-					generator: new object ()),
-				true];
+					generator: new object ())];
 
 			const string avsampleCursorStorageRange = @"
 using System;
@@ -417,18 +389,7 @@ public struct AVSampleCursorStorageRange {
 				Stret.GetValueTypeSize (
 					type: typeof (AVSampleCursorStorageRange),
 					fieldTypes: new (),
-					is_64_bits: false,
-					generator: new object ()),
-				false];
-
-			yield return [
-				avsampleCursorStorageRange,
-				Stret.GetValueTypeSize (
-					type: typeof (AVSampleCursorStorageRange),
-					fieldTypes: new (),
-					is_64_bits: true,
-					generator: new object ()),
-				true];
+					generator: new object ())];
 
 			const string avsampleCursorChunkInfo = @"
 using System;
@@ -457,18 +418,7 @@ public struct AVSampleCursorChunkInfo {
 				Stret.GetValueTypeSize (
 					type: typeof (AVSampleCursorChunkInfo),
 					fieldTypes: new (),
-					is_64_bits: false,
-					generator: new object ()),
-				false];
-
-			yield return [
-				avsampleCursorChunkInfo,
-				Stret.GetValueTypeSize (
-					type: typeof (AVSampleCursorChunkInfo),
-					fieldTypes: new (),
-					is_64_bits: true,
-					generator: new object ()),
-				true];
+					generator: new object ())];
 		}
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
@@ -476,7 +426,7 @@ public struct AVSampleCursorChunkInfo {
 
 	[Theory]
 	[AllSupportedPlatformsClassData<TestDataGetValueTypeSizeTests>]
-	public void GetValueTypeSizeTests (ApplePlatform platform, string inputText, int expectedSize, bool is64Bits)
+	public void GetValueTypeSizeTests (ApplePlatform platform, string inputText, int expectedSize)
 	{
 		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
 		Assert.Single (syntaxTrees);
@@ -487,7 +437,7 @@ public struct AVSampleCursorChunkInfo {
 		Assert.NotNull (declaration);
 		var symbol = semanticModel.GetDeclaredSymbol (declaration);
 		Assert.NotNull (symbol);
-		var x = symbol.GetValueTypeSize (new (), false);
-		Assert.Equal (expectedSize, symbol.GetValueTypeSize (new (), is64Bits));
+		var x = symbol.GetValueTypeSize (new ());
+		Assert.Equal (expectedSize, symbol.GetValueTypeSize (new ()));
 	}
 }

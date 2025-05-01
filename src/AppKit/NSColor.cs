@@ -10,6 +10,12 @@ using System.Runtime.InteropServices;
 namespace AppKit {
 	public partial class NSColor {
 
+		/// <param name="red">To be added.</param>
+		/// <param name="green">To be added.</param>
+		/// <param name="blue">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		public static NSColor FromRgb (nfloat red, nfloat green, nfloat blue)
 		{
 			return FromRgba (red, green, blue, 1.0f);
@@ -61,6 +67,12 @@ namespace AppKit {
 			return FromRgba ((byte) red, (byte) green, (byte) blue, (byte) alpha);
 		}
 
+		/// <param name="hue">To be added.</param>
+		/// <param name="saturation">To be added.</param>
+		/// <param name="brightness">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		public static NSColor FromHsb (nfloat hue, nfloat saturation, nfloat brightness)
 		{
 			return FromHsba (hue, saturation, brightness, 1.0f);
@@ -112,6 +124,12 @@ namespace AppKit {
 			return FromHsb ((byte) hue, (byte) saturation, (byte) brightness);
 		}
 
+		/// <param name="red">To be added.</param>
+		/// <param name="green">To be added.</param>
+		/// <param name="blue">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		public static NSColor FromDeviceRgb (nfloat red, nfloat green, nfloat blue)
 		{
 			return FromDeviceRgba (red, green, blue, 1.0f);
@@ -163,6 +181,12 @@ namespace AppKit {
 			return FromDeviceRgba ((byte) red, (byte) green, (byte) blue, (byte) alpha);
 		}
 
+		/// <param name="hue">To be added.</param>
+		/// <param name="saturation">To be added.</param>
+		/// <param name="brightness">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		public static NSColor FromDeviceHsb (nfloat hue, nfloat saturation, nfloat brightness)
 		{
 			return FromDeviceHsba (hue, saturation, brightness, 1.0f);
@@ -214,6 +238,13 @@ namespace AppKit {
 			return FromDeviceHsb ((byte) hue, (byte) saturation, (byte) brightness);
 		}
 
+		/// <param name="cyan">To be added.</param>
+		/// <param name="magenta">To be added.</param>
+		/// <param name="yellow">To be added.</param>
+		/// <param name="black">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		public static NSColor FromDeviceCymk (nfloat cyan, nfloat magenta, nfloat yellow, nfloat black)
 		{
 			return FromDeviceCymka (cyan, magenta, yellow, black, 1.0f);
@@ -269,6 +300,12 @@ namespace AppKit {
 			return FromDeviceCymk ((byte) cyan, (byte) magenta, (byte) yellow, (byte) black);
 		}
 
+		/// <param name="red">To be added.</param>
+		/// <param name="green">To be added.</param>
+		/// <param name="blue">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		public static NSColor FromCalibratedRgb (nfloat red, nfloat green, nfloat blue)
 		{
 			return FromCalibratedRgba (red, green, blue, 1.0f);
@@ -320,6 +357,12 @@ namespace AppKit {
 			return FromCalibratedRgba ((byte) red, (byte) green, (byte) blue, (byte) alpha);
 		}
 
+		/// <param name="hue">To be added.</param>
+		/// <param name="saturation">To be added.</param>
+		/// <param name="brightness">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		public static NSColor FromCalibratedHsb (nfloat hue, nfloat saturation, nfloat brightness)
 		{
 			return FromCalibratedHsba (hue, saturation, brightness, 1.0f);
@@ -371,6 +414,11 @@ namespace AppKit {
 			return FromCalibratedHsb ((byte) hue, (byte) saturation, (byte) brightness);
 		}
 
+		/// <param name="space">To be added.</param>
+		/// <param name="components">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		public static NSColor FromColorSpace (NSColorSpace space, nfloat []? components)
 		{
 			if (components is null)
@@ -383,6 +431,9 @@ namespace AppKit {
 			}
 		}
 
+		/// <param name="components">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		public void GetComponents (out nfloat [] components)
 		{
 			components = new nfloat [(int) ComponentCount];

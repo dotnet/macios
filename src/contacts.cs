@@ -26,6 +26,12 @@ namespace Contacts {
 	///     </remarks>
 	interface ICNKeyDescriptor { }
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:Contacts.ICNKeyDescriptor" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:Contacts.ICNKeyDescriptor" />.</para>
+	///       <para>If you create objects that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:Contacts.ICNKeyDescriptor" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Contacts%20CNKey%20Descriptor_%20Extensions&amp;scope=Xamarin" title="T:Contacts.CNKeyDescriptor_Extensions">T:Contacts.CNKeyDescriptor_Extensions</a></format> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	// Headers say "This protocol is reserved for Contacts framework usage.", so don't create a model
@@ -1851,7 +1857,17 @@ namespace Contacts {
 		[Export ("authorizationStatusForEntityType:")]
 		CNAuthorizationStatus GetAuthorizationStatus (CNEntityType entityType);
 
-		[Async]
+		[Async (XmlDocs = """
+			<param name="entityType">To be added.</param>
+			<summary>Requests access to the user's contacts.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous RequestAccess operation.   The value of the TResult parameter is a Contacts.CNContactStoreRequestAccessHandler.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The RequestAccessAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("requestAccessForEntityType:completionHandler:")]
 		void RequestAccess (CNEntityType entityType, CNContactStoreRequestAccessHandler completionHandler);
 

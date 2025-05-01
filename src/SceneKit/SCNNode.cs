@@ -69,6 +69,18 @@ namespace SceneKit {
 			}
 		}
 
+		/// <param name="key">To be added.</param>
+		/// <param name="duration">To be added.</param>
+		/// <summary>Removes the animation that is identified by the provided <paramref name="key" />, fading it out over <paramref name="duration" /> seconds.</summary>
+		/// <remarks>To be added.</remarks>
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("tvos")]
+		[ObsoletedOSPlatform ("tvos", "Use 'RemoveAnimationUsingBlendOutDuration' instead.")]
+		[ObsoletedOSPlatform ("ios", "Use 'RemoveAnimationUsingBlendOutDuration' instead.")]
+		[ObsoletedOSPlatform ("macos", "Use 'RemoveAnimationUsingBlendOutDuration' instead.")]
+		[ObsoletedOSPlatform ("maccatalyst", "Use 'RemoveAnimationUsingBlendOutDuration' instead.")]
 		public void RemoveAnimation (string key, nfloat duration)
 		{
 			if (string.IsNullOrEmpty (key))
@@ -90,10 +102,16 @@ namespace SceneKit {
 				((ISCNAnimatable) this).RemoveAnimation (s);
 		}
 
-		/// <param name="key">To be added.</param>
-		///         <summary>Returns the animation that is identified by the supplied <paramref name="key" />.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Returns the animation that is identified by the supplied <paramref name="key" />.</summary>
+		/// <param name="key">The key of the animation to get.</param>
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("tvos")]
+		[ObsoletedOSPlatform ("tvos", "Use 'GetAnimationPlayer' instead.")]
+		[ObsoletedOSPlatform ("ios", "Use 'GetAnimationPlayer' instead.")]
+		[ObsoletedOSPlatform ("macos", "Use 'GetAnimationPlayer' instead.")]
+		[ObsoletedOSPlatform ("maccatalyst", "Use 'GetAnimationPlayer' instead.")]
 		public CAAnimation? GetAnimation (string key)
 		{
 			if (string.IsNullOrEmpty (key))
@@ -103,9 +121,16 @@ namespace SceneKit {
 				return ((ISCNAnimatable) this).GetAnimation (s);
 		}
 
-		/// <param name="key">To be added.</param>
-		///         <summary>Pauses the animation that is identified by the provided <paramref name="key" />.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Pauses the animation that is identified by the provided <paramref name="key" />.</summary>
+		/// <param name="key">The key of the animation to pause.</param>
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("tvos")]
+		[ObsoletedOSPlatform ("tvos", "Use 'SCNAnimationPlayer.Paused' instead.")]
+		[ObsoletedOSPlatform ("ios", "Use 'SCNAnimationPlayer.Paused' instead.")]
+		[ObsoletedOSPlatform ("macos", "Use 'SCNAnimationPlayer.Paused' instead.")]
+		[ObsoletedOSPlatform ("maccatalyst", "Use 'SCNAnimationPlayer.Paused' instead.")]
 		public void PauseAnimation (string key)
 		{
 			if (string.IsNullOrEmpty (key))
@@ -115,9 +140,16 @@ namespace SceneKit {
 				((ISCNAnimatable) this).PauseAnimation (s);
 		}
 
-		/// <param name="key">To be added.</param>
-		///         <summary>Resumes the animation that is identified by the provided <paramref name="key" />.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Resumes the animation that is identified by the provided <paramref name="key" />.</summary>
+		/// <param name="key">The key of the animation to resume.</param>
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("tvos")]
+		[ObsoletedOSPlatform ("tvos", "Use 'SCNAnimationPlayer.Paused' instead.")]
+		[ObsoletedOSPlatform ("ios", "Use 'SCNAnimationPlayer.Paused' instead.")]
+		[ObsoletedOSPlatform ("macos", "Use 'SCNAnimationPlayer.Paused' instead.")]
+		[ObsoletedOSPlatform ("maccatalyst", "Use 'SCNAnimationPlayer.Paused' instead.")]
 		public void ResumeAnimation (string key)
 		{
 			if (string.IsNullOrEmpty (key))
@@ -127,10 +159,16 @@ namespace SceneKit {
 				((ISCNAnimatable) this).ResumeAnimation (s);
 		}
 
-		/// <param name="key">To be added.</param>
-		///         <summary>Returns a Boolean value that tells whether the animation that is identified by the specified <paramref name="key" /> is paused.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Returns a Boolean value that tells whether the animation that is identified by the specified <paramref name="key" /> is paused.</summary>
+		/// <param name="key">The key of the animation to check.</param>
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("tvos")]
+		[ObsoletedOSPlatform ("tvos", "Use 'SCNAnimationPlayer.Paused' instead.")]
+		[ObsoletedOSPlatform ("ios", "Use 'SCNAnimationPlayer.Paused' instead.")]
+		[ObsoletedOSPlatform ("macos", "Use 'SCNAnimationPlayer.Paused' instead.")]
+		[ObsoletedOSPlatform ("maccatalyst", "Use 'SCNAnimationPlayer.Paused' instead.")]
 		public bool IsAnimationPaused (string key)
 		{
 			if (string.IsNullOrEmpty (key))
@@ -143,21 +181,5 @@ namespace SceneKit {
 
 			return isPaused;
 		}
-
-#if !NET
-		// SCNNodePredicate is defined as:
-		// 	delegate bool SCNNodePredicate (SCNNode node, out bool stop);
-		// but the actual objective-c definition of the block is
-		// 	void (^)(SCNNode *child, BOOL *stop)
-		//
-		[Obsolete ("Use the overload that takes a 'SCNNodeHandler' instead.")]
-		public virtual void EnumerateChildNodes (SCNNodePredicate predicate)
-		{
-			SCNNodeHandler predHandler = (SCNNode node, out bool stop) => {
-				predicate (node, out stop);
-			};
-			EnumerateChildNodes (predHandler);
-		}
-#endif
 	}
 }

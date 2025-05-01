@@ -1639,6 +1639,9 @@ namespace Vision {
 	[Protocol]
 	interface VNFaceObservationAccepting {
 
+		/// <summary>Gets or sets the <see cref="T:Vision.VNFaceObservation" /> objects in the request.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[NullAllowed, Export ("inputFaceObservations", ArgumentSemantic.Copy)]
 		VNFaceObservation [] InputFaceObservations { get; set; }
@@ -3493,6 +3496,9 @@ namespace Vision {
 	[Protocol]
 	interface VNRequestRevisionProviding {
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("requestRevision")]
 		VNRequestRevision RequestRevision { get; }

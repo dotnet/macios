@@ -87,6 +87,10 @@ namespace AppKit {
 			});
 		}
 
+		/// <param name="window">To be added.</param>
+		/// <param name="onEnded">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		public void BeginSheetForResponse (NSWindow window, Action<nint> onEnded)
 		{
 			BeginSheet (window, new NSAlertDidEndDispatcher (onEnded), NSAlertDidEndDispatcher.Selector, IntPtr.Zero);

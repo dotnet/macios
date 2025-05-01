@@ -38,7 +38,7 @@ namespace Network {
 
 		// nw_framer_protocol can be condisered to be a nw_framer which is a protocol and is mapped to NWFramer, for a
 		// detailed explanation of the reasoning behind the naming please read the following discussion:
-		// https://github.com/xamarin/xamarin-macios/pull/7256#discussion_r337066971
+		// https://github.com/dotnet/macios/pull/7256#discussion_r337066971
 		public static NWFramerMessage Create (NWProtocolDefinition protocolDefinition)
 		{
 			if (protocolDefinition is null)

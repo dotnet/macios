@@ -132,6 +132,15 @@ namespace CoreVideo {
 			return FromDevice (metalDevice, textureAttributes, out creationErr);
 		}
 
+		/// <param name="imageBuffer">To be added.</param>
+		/// <param name="format">To be added.</param>
+		/// <param name="width">To be added.</param>
+		/// <param name="height">To be added.</param>
+		/// <param name="planeIndex">To be added.</param>
+		/// <param name="errorCode">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		public CVMetalTexture? TextureFromImage (CVImageBuffer imageBuffer, MTLPixelFormat format, nint width, nint height, nint planeIndex, out CVReturn errorCode)
 		{
 			if (imageBuffer is null)

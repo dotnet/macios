@@ -161,7 +161,7 @@ namespace Xamarin.Tests {
 			if (rv.ExitCode != 0) {
 				var msg = new StringBuilder ();
 				msg.AppendLine ($"'{exe}' failed with exit code {rv.ExitCode}");
-				msg.AppendLine ($"Full command: {Executable} {StringUtils.FormatArguments (args)}");
+				msg.AppendLine ($"Full command: {exe} {StringUtils.FormatArguments (args)}");
 				msg.AppendLine (output.ToString ());
 				Console.WriteLine (msg);
 				Assert.Fail (msg.ToString ());

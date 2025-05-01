@@ -57,7 +57,7 @@ class MainClass {
 			Assert.That (errors, Has.Some.Matches<BuildLogEvent> (v => v?.Message?.Contains (magic) == true), "Expected error");
 		}
 
-		// https://github.com/xamarin/xamarin-macios/issues/13503
+		// https://github.com/dotnet/macios/issues/13503
 		[TestCase (ApplePlatform.MacOSX, null)]
 		public void NativeReferenceStaticLibraryForceLoad (ApplePlatform platform, bool? simulator)
 		{

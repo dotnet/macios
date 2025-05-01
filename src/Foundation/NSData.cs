@@ -256,6 +256,12 @@ namespace Foundation {
 				return ns.Encode (encoding);
 		}
 
+		/// <param name="s">String to convert.</param>
+		/// <summary>Implicit conversion from string to an NSData encoded as UTF8.</summary>
+		/// <returns>
+		///         </returns>
+		/// <remarks>
+		///         </remarks>
 		public static implicit operator NSData (string s)
 		{
 			return FromString (s, NSStringEncoding.UTF8);
@@ -351,6 +357,11 @@ namespace Foundation {
 			}
 		}
 
+		/// <param name="idx">Index into the NSData.</param>
+		/// <summary>Retrieves the byte at the specified position in the NSData object.</summary>
+		/// <value>The value at that position, or an exception if you try to access data beyond its boundaries.</value>
+		/// <remarks>
+		///         </remarks>
 		public virtual byte this [nint idx] {
 			get {
 				if (idx < 0 || (ulong) idx > Length)

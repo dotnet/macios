@@ -58,7 +58,7 @@ namespace bgen {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The error message for code {0} could not be found. Please report this missing message on GitHub at https://github.com/xamarin/xamarin-macios/issues/new.
+        ///   Looks up a localized string similar to The error message for code {0} could not be found. Please report this missing message on GitHub at https://github.com/dotnet/macios/issues/new.
         /// </summary>
         internal static string _default {
             get {
@@ -67,7 +67,7 @@ namespace bgen {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unexpected error - Please fill a bug report at https://github.com/xamarin/xamarin-macios/issues/new.
+        ///   Looks up a localized string similar to Unexpected error - Please fill a bug report at https://github.com/dotnet/macios/issues/new.
         /// </summary>
         internal static string BI0000 {
             get {
@@ -168,7 +168,7 @@ namespace bgen {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Internal error: don&apos;t know how to create ref/out (input) code for {0} in {1}. Please file a bug report with a test case (https://github.com/xamarin/xamarin-macios/issues/new)..
+        ///   Looks up a localized string similar to Internal error: don&apos;t know how to create ref/out (input) code for {0} in {1}. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new)..
         /// </summary>
         internal static string BI0088 {
             get {
@@ -186,7 +186,7 @@ namespace bgen {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Internal error {0}. Please file a bug report with a test case (https://github.com/xamarin/xamarin-macios/issues/new)..
+        ///   Looks up a localized string similar to Internal error {0}. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new)..
         /// </summary>
         internal static string BI0099 {
             get {
@@ -449,7 +449,7 @@ namespace bgen {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Internal sanity check failed, please file a bug report (https://github.com/xamarin/xamarin-macios/issues/new) with a test case..
+        ///   Looks up a localized string similar to Internal sanity check failed, please file a bug report (https://github.com/dotnet/macios/issues/new) with a test case..
         /// </summary>
         internal static string BI1028 {
             get {
@@ -611,7 +611,7 @@ namespace bgen {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unsupported platform: {0}. Please file a bug report (https://github.com/xamarin/xamarin-macios/issues/new) with a test case..
+        ///   Looks up a localized string similar to Unsupported platform: {0}. Please file a bug report (https://github.com/dotnet/macios/issues/new) with a test case..
         /// </summary>
         internal static string BI1047 {
             get {
@@ -647,7 +647,7 @@ namespace bgen {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Internal error: Don&apos;t know how to get attributes for {0}. Please file a bug report (https://github.com/xamarin/xamarin-macios/issues/new) with a test case..
+        ///   Looks up a localized string similar to Internal error: Don&apos;t know how to get attributes for {0}. Please file a bug report (https://github.com/dotnet/macios/issues/new) with a test case..
         /// </summary>
         internal static string BI1051 {
             get {
@@ -656,7 +656,7 @@ namespace bgen {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Internal error: Could not find the type {0} in the assembly {1}. Please file a bug report (https://github.com/xamarin/xamarin-macios/issues/new) with a test case..
+        ///   Looks up a localized string similar to Internal error: Could not find the type {0} in the assembly {1}. Please file a bug report (https://github.com/dotnet/macios/issues/new) with a test case..
         /// </summary>
         internal static string BI1052 {
             get {
@@ -674,7 +674,7 @@ namespace bgen {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Internal error: can&apos;t convert type &apos;{0}&apos; (unknown assembly). Please file a bug report (https://github.com/xamarin/xamarin-macios/issues/new) with a test case..
+        ///   Looks up a localized string similar to Internal error: can&apos;t convert type &apos;{0}&apos; (unknown assembly). Please file a bug report (https://github.com/dotnet/macios/issues/new) with a test case..
         /// </summary>
         internal static string BI1054 {
             get {
@@ -683,7 +683,7 @@ namespace bgen {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Internal error: failed to convert type &apos;{0}&apos;. Please file a bug report (https://github.com/xamarin/xamarin-macios/issues/new) with a test case..
+        ///   Looks up a localized string similar to Internal error: failed to convert type &apos;{0}&apos;. Please file a bug report (https://github.com/dotnet/macios/issues/new) with a test case..
         /// </summary>
         internal static string BI1055 {
             get {
@@ -692,7 +692,7 @@ namespace bgen {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Internal error: failed to instantiate mock attribute &apos;{0}&apos; (could not convert type constructor argument #{1}). Please file a bug report (https://github.com/xamarin/xamarin-macios/issues/new) with a test case..
+        ///   Looks up a localized string similar to Internal error: failed to instantiate mock attribute &apos;{0}&apos; (could not convert type constructor argument #{1}). Please file a bug report (https://github.com/dotnet/macios/issues/new) with a test case..
         /// </summary>
         internal static string BI1056 {
             get {
@@ -701,7 +701,7 @@ namespace bgen {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Internal error: failed to instantiate mock attribute &apos;{0}&apos; (could not convert constructor type #{1} ({2})). Please file a bug report (https://github.com/xamarin/xamarin-macios/issues/new) with a test case..
+        ///   Looks up a localized string similar to Internal error: failed to instantiate mock attribute &apos;{0}&apos; (could not convert constructor type #{1} ({2})). Please file a bug report (https://github.com/dotnet/macios/issues/new) with a test case..
         /// </summary>
         internal static string BI1057 {
             get {
@@ -710,7 +710,7 @@ namespace bgen {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Internal error: could not find a constructor for the mock attribute &apos;{0}&apos;. Please file a bug report (https://github.com/xamarin/xamarin-macios/issues/new) with a test case..
+        ///   Looks up a localized string similar to Internal error: could not find a constructor for the mock attribute &apos;{0}&apos;. Please file a bug report (https://github.com/dotnet/macios/issues/new) with a test case..
         /// </summary>
         internal static string BI1058 {
             get {
@@ -845,7 +845,7 @@ namespace bgen {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Internal error: failed to instantiate mock attribute &apos;{0}&apos; (unknown type for the named argument #{1} ({2}). Please file a bug report (https://github.com/xamarin/xamarin-macios/issues/new) with a test case..
+        ///   Looks up a localized string similar to Internal error: failed to instantiate mock attribute &apos;{0}&apos; (unknown type for the named argument #{1} ({2}). Please file a bug report (https://github.com/dotnet/macios/issues/new) with a test case..
         /// </summary>
         internal static string BI1073 {
             get {
@@ -1142,7 +1142,7 @@ namespace bgen {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Internal error: found the same type ({0}) in multiple assemblies ({1} and {2}). Please file a bug report (https://github.com/xamarin/xamarin-macios/issues/new) with a test case..
+        ///   Looks up a localized string similar to Internal error: found the same type ({0}) in multiple assemblies ({1} and {2}). Please file a bug report (https://github.com/dotnet/macios/issues/new) with a test case..
         /// </summary>
         internal static string BI1119 {
             get {

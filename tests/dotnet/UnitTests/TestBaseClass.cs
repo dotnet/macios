@@ -585,6 +585,7 @@ namespace Xamarin.Tests {
 			get {
 				if (!is_pull_request.HasValue) {
 					var pr = string.Equals (Environment.GetEnvironmentVariable ("BUILD_REASON"), "PullRequest", StringComparison.Ordinal);
+					pr |= string.Equals (Environment.GetEnvironmentVariable ("IS_PR"), "true", StringComparison.OrdinalIgnoreCase);
 					is_pull_request = pr;
 				}
 				return is_pull_request.Value;

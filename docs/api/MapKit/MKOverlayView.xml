@@ -1,0 +1,12 @@
+<Documentation>
+  <Docs DocId="M:MapKit.MKOverlayView.CanDrawMapRect(MapKit.MKMapRect,System.Runtime.InteropServices.NFloat)">
+        <param name="mapRect">A <see cref="T:MapKit.MKMapRect" /> representing the area to potentially be drawn.</param>
+        <param name="zoomScale">The current scale factor.</param>
+        <summary>Returns <see langword="true" /> if the <see cref="T:MapKit.MKOverlayView" /> has the data it needs to draw properly.</summary>
+        <returns>The default value is <see langword="true" />.</returns>
+        <remarks>
+          <para>Application developers can override this method so that it returns <see langword="false" /> until the <see cref="T:MapKit.MKOverlayView" /> has all the data it needs in order to render properly. For instance, a weather overlay might return <see langword="false" /> until it has downloaded meteorological data.</para>
+          <para>If application developers return <see langword="false" /> from this method, they must subsequently call <see cref="M:MapKit.MKOverlayView.SetNeedsDisplay(MapKit.MKMapRect,System.nfloat)" /> when they have received the data and performed the calculations needed to make this function return <see langword="true" />.</para>
+        </remarks>
+      </Docs>
+</Documentation>

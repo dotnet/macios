@@ -160,7 +160,15 @@ namespace AudioUnit {
 		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("instantiateWithComponentDescription:options:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="componentDescription">To be added.</param>
+			<param name="options">To be added.</param>
+			<summary>Asynchronously creates a <see cref="T:AudioUnit.AUAudioUnit" />.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous FromComponentDescription operation.  The value of the TResult parameter is of type System.Action&lt;AudioUnit.AUAudioUnit,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void FromComponentDescription (AudioComponentDescription componentDescription, AudioComponentInstantiationOptions options, Action<AUAudioUnit, NSError> completionHandler);
 
 		/// <summary>Gets the component from the description with which the audio unit was created.</summary>
@@ -275,7 +283,7 @@ namespace AudioUnit {
 		[Export ("scheduleParameterBlock")]
 		AUScheduleParameterBlock ScheduleParameterBlock { get; }
 
-		// TODO: https://github.com/xamarin/xamarin-macios/issues/12489
+		// TODO: https://github.com/dotnet/macios/issues/12489
 		// [TV (15,0), iOS (15,0), MacCatalyst (15,0)]
 		// [NullAllowed]
 		// [Export ("scheduleMIDIEventListBlock")]
@@ -297,18 +305,18 @@ namespace AudioUnit {
 		[Export ("MIDIOutputNames", ArgumentSemantic.Copy)]
 		string [] MidiOutputNames { get; }
 
-		// TODO: https://github.com/xamarin/xamarin-macios/issues/12489
+		// TODO: https://github.com/dotnet/macios/issues/12489
 		// [TV (15,0), iOS (15,0), MacCatalyst (15,0)]
 		// [NullAllowed]
 		// [Export ("MIDIOutputEventListBlock", ArgumentSemantic.Copy)]
 		// AUMidiEventListBlock MidiOutputEventListBlock { get; set; }
 
-		// TODO: https://github.com/xamarin/xamarin-macios/issues/12489
+		// TODO: https://github.com/dotnet/macios/issues/12489
 		// [TV (15,0), iOS (15,0), MacCatalyst (15,0)]
 		// [Export ("AudioUnitMIDIProtocol")]
 		// MIDIProtocolID AudioUnitMidiProtocol { get; }
 
-		// TODO: https://github.com/xamarin/xamarin-macios/issues/12489
+		// TODO: https://github.com/dotnet/macios/issues/12489
 		// [TV (15,0), iOS (15,0), MacCatalyst (15,0)]
 		// [Export ("hostMIDIProtocol", ArgumentSemantic.Assign)]
 		// MIDIProtocolID HostMIDIProtocol { get; set; }
@@ -339,6 +347,9 @@ namespace AudioUnit {
 		[NullAllowed, Export ("transportStateBlock", ArgumentSemantic.Copy)]
 		AUHostTransportStateBlock TransportStateBlock { get; set; }
 
+		/// <param name="token">To be added.</param>
+		/// <summary>Removes the observer block that is identified by <paramref name="token" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("removeRenderObserver:")]
 		void RemoveRenderObserver (nint token);
 
@@ -363,6 +374,10 @@ namespace AudioUnit {
 			set;
 		}
 
+		/// <param name="count">To be added.</param>
+		/// <summary>Returns the <paramref name="count" /> most important parameters.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("parametersForOverviewWithCount:")]
 		NSNumber [] GetParametersForOverview (nint count);
 
@@ -499,7 +514,15 @@ namespace AudioUnit {
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("requestViewControllerWithCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Asynchronously requests the view controller for the audio unit.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous RequestViewController operation.  The result is of type System.Threading.Tasks.Task&lt;AppKit.NSViewController&gt; on MacOS and System.Threading.Tasks.Task&lt;AppKit.UIViewController&gt; on iOS.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The RequestViewControllerAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			        </remarks>
+			""")]
 		void RequestViewController (Action<AUViewControllerBase> completionHandler);
 
 		// AUAudioUnitImplementation
@@ -618,65 +641,123 @@ namespace AudioUnit {
 	[BaseType (typeof (AUAudioUnit))]
 	interface AUAudioUnit_AUAudioInputOutputUnit {
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[NoTV, NoiOS]
 		[NoMacCatalyst]
 		[Export ("deviceID")]
 		uint GetDeviceId ();
 
+		/// <param name="deviceID">To be added.</param>
+		/// <param name="outError">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[NoTV, NoiOS]
 		[NoMacCatalyst]
 		[Export ("setDeviceID:error:")]
 		bool SetDeviceId (uint deviceID, out NSError outError);
 
+		/// <summary>Returns a Boolean value that tells whether the audio unit can perform input operations.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("canPerformInput")]
 		bool GetCanPerformInput ();
 
+		/// <summary>Returns a Boolean value that tells whether the audio unit can perform output operations.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("canPerformOutput")]
 		bool CanPerformOutput ();
 
+		/// <summary>Returns a Boolean value that tells whether input is currently enabled on the audio unit.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("isInputEnabled")]
 		bool IsInputEnabled ();
 
+		/// <param name="enabled">To be added.</param>
+		/// <summary>Sets a Boolean value that controls whether input is enabled on the audio unit.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("setInputEnabled:")]
 		bool SetInputEnabled (bool enabled);
 
+		/// <summary>Returns a Boolean value that tells whether input is currently enabled on the audio unit.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("isOutputEnabled")]
 		bool IsOutputEnabled ();
 
+		/// <param name="enabled">To be added.</param>
+		/// <summary>Sets a Boolean value that controls whether output is enabled on the audio unit..</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("setOutputEnabled:")]
 		bool SetOutputEnabled (bool enabled);
 
+		/// <summary>Gets the input handler for this IO unit</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Export ("inputHandler", ArgumentSemantic.Copy)]
 		AUInputHandler GetInputHandler ();
 
+		/// <param name="handler">The handler to set.</param>
+		/// <summary>Sets the input handler to the specified value.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("setInputHandler:")]
 		void SetInputHandler ([NullAllowed] AUInputHandler handler);
 
+		/// <param name="outError">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Starts the audio unit's hardware.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("startHardwareAndReturnError:")]
 		bool StartHardware ([NullAllowed] out NSError outError);
 
+		/// <summary>Stops the audio unit's hardware.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("stopHardware")]
 		void StopHardware ();
 
+		/// <summary>Gets the output provider for this IO unit.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Export ("outputProvider", ArgumentSemantic.Copy)]
 		AURenderPullInputBlock GetOutputProvider ();
 
+		/// <param name="provider">The provider to set.</param>
+		/// <summary>Sets the output provider to the specified value.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("setOutputProvider:")]
 		void SetOutputProvider ([NullAllowed] AURenderPullInputBlock provider);
 
 		// the following are properties but we cannot have properties in Categories.
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[NoiOS, NoTV]
 		[NoMacCatalyst]
 		[Export ("deviceInputLatency")]
 		double GetDeviceInputLatency ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[NoiOS, NoTV]
 		[NoMacCatalyst]
 		[Export ("deviceOutputLatency")]
 		double GetDeviceOutputLatency ();
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("running")]
 		bool IsRunning ();
@@ -817,6 +898,10 @@ namespace AudioUnit {
 		nuint Count { get; }
 
 		// -(AUAudioUnitBus * __nonnull)objectAtIndexedSubscript:(NSUInteger)index;
+		/// <param name="index">The zero-based index into the bus array of the desired bus.</param>
+		/// <summary>Returns the bus at the spcified location in the array.</summary>
+		/// <returns>The bus at the spcified location in the array.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("objectAtIndexedSubscript:")]
 		AUAudioUnitBus GetObject (nuint index);
 
@@ -826,6 +911,14 @@ namespace AudioUnit {
 		[Export ("countChangeable")]
 		bool CountChangeable { [Bind ("isCountChangeable")] get; }
 
+		/// <param name="count">To be added.</param>
+		/// <param name="outError">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("setBusCount:error:")]
 		bool SetBusCount (nuint count, [NullAllowed] out NSError outError);
 
@@ -1050,6 +1143,10 @@ namespace AudioUnit {
 		[Export ("displayName")]
 		string DisplayName { get; }
 
+		/// <param name="maximumLength">The maximum length of the returned localized display name or display name fragment.</param>
+		/// <summary>Returns the possibly truncated localized display name for the node.</summary>
+		/// <returns>The possibly truncated localized display name for the node.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("displayNameWithLength:")]
 		string GetDisplayName (nint maximumLength);
 
@@ -1232,6 +1329,11 @@ namespace AudioUnit {
 	///     </remarks>
 	[Protocol]
 	interface AUAudioUnitFactory : NSExtensionRequestHandling {
+		/// <param name="desc">A description for the audio unit.</param>
+		/// <param name="error">An <see langword="out" /> parameter into which any errors that are encountered are written.</param>
+		/// <summary>Creates and returns an audio unit.</summary>
+		/// <returns>An audio unit.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("createAudioUnitWithComponentDescription:error:")]
 		[return: NullAllowed]

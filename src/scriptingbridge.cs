@@ -70,6 +70,9 @@ namespace ScriptingBridge {
 	[BaseType (typeof (NSMutableArray))]
 	[DisableDefaultCtor] // *** -[SBElementArray init]: should never be used.
 	interface SBElementArray {
+		/// <param name="capacity">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithCapacity:")]
 		NativeHandle Constructor (nuint capacity);
 

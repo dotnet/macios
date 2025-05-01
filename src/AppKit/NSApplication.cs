@@ -92,7 +92,7 @@ namespace AppKit {
 
 			// custom initialization might have happened before native NSApplication code was full ready to be queried
 			// as such it's possible that `class_ptr` might be empty and that will make things fails later
-			// reference: https://github.com/xamarin/xamarin-macios/issues/7932
+			// reference: https://github.com/dotnet/macios/issues/7932
 			if (class_ptr == IntPtr.Zero)
 				ResetHandle ();
 

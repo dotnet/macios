@@ -9,10 +9,6 @@ using System.Runtime.InteropServices;
 using Foundation;
 using CoreFoundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace ObjCRuntime {
 
 	/// <summary>Base class used by the bindinge generator to generate Protocol Wrapper Types.</summary>
@@ -22,12 +18,7 @@ namespace ObjCRuntime {
 	///       <para>The class provides a constructor that take a native handle, and a flag indicating whether the underlying object has already been retained by managed code or not as well as implementing the IDisposable interface which will invoke the Objective-C release method on the target when the object is no longer referenced by managed code.</para>
 	///     </remarks>
 	public abstract class BaseWrapper : NativeObject {
-
-#if NET
 		protected BaseWrapper (NativeHandle handle, bool owns)
-#else
-		public BaseWrapper (NativeHandle handle, bool owns)
-#endif
 			: base (handle, owns)
 		{
 		}

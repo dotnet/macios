@@ -1,0 +1,9 @@
+<Documentation>
+  <Docs DocId="P:GameplayKit.IGKGameModelUpdate.Value">
+        <summary>Equivalent to the value produced by <see cref="M:GameplayKit.GKGameModel_Extensions.GetScore(GameplayKit.IGKGameModel,GameplayKit.IGKGameModelPlayer)" />.</summary>
+        <value>To be added.</value>
+        <remarks>
+          <para>This property is determined by the <see cref="M:GameplayKit.GKGameModel_Extensions.GetScore(GameplayKit.IGKGameModel,GameplayKit.IGKGameModelPlayer)" /> when <c>this</c><see cref="T:GameplayKit.IGKGameModelUpdate" /> is applied to the game state of the <see cref="T:GameplayKit.IGKGameModel" />. Ultimately, the <see cref="M:GameplayKit.GKMinMaxStrategist.GetBestMove(GameplayKit.IGKGameModelPlayer)" /> method returns the <see cref="T:GameplayKit.IGKGameModelUpdate" /> with the highest <see cref="P:GameplayKit.IGKGameModelUpdate.Value" />. If multiple <see cref="T:GameplayKit.IGKGameModelUpdate" /> have the same <see cref="P:GameplayKit.IGKGameModelUpdate.Value" /> and <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Gameplay%20Kit%20GKMin%20Max%20Strategist%20Random&amp;scope=Xamarin" title="P:GameplayKit.GKMinMaxStrategist.Random">P:GameplayKit.GKMinMaxStrategist.Random</a></format> is not <see langword="null" />, the returned <see cref="T:GameplayKit.IGKGameModelUpdate" /> is chosen randomly among those with the highest <see cref="P:GameplayKit.IGKGameModelUpdate.Value" />.</para>
+        </remarks>
+      </Docs>
+</Documentation>

@@ -36,7 +36,7 @@ namespace Cecil.Tests {
 			var failingMethods = ListOfFailingMethods (failures);
 
 			Assert.IsTrue (failures.Count () == 0,
-				$"There are {failures.Count ()} pinvoke methods that contain generics. This will not work in .NET 7 and above (see https://github.com/xamarin/xamarin-macios/issues/11771 ):{failingMethods}");
+				$"There are {failures.Count ()} pinvoke methods that contain generics. This will not work in .NET 7 and above (see https://github.com/dotnet/macios/issues/11771 ):{failingMethods}");
 		}
 
 		string ListOfFailingMethods (IEnumerable<MethodDefinition> methods)

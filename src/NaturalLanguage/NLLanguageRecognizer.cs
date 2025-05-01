@@ -46,6 +46,10 @@ namespace NaturalLanguage {
 			}
 		}
 
+		/// <param name="maxHypotheses">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		public Dictionary<NLLanguage, double> GetLanguageHypotheses (nuint maxHypotheses)
 		{
 			using (var hypo = GetNativeLanguageHypotheses (maxHypotheses)) {

@@ -144,6 +144,10 @@ namespace CoreImage {
 			return _FilterNamesInCategories (categories);
 		}
 
+		/// <param name="key">To be added.</param>
+		/// <summary>Gets the value that is identified by <paramref name="key" />.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		public NSObject? this [NSString key] {
 			get {
 				NSObject? result = ValueForKey (key.GetHandle ());
@@ -300,15 +304,6 @@ namespace CoreImage {
 			var v = Get<CIVector> (key);
 			return v is not null ? new CGRect (v.X, v.Y, v.Z, v.W) : default (CGRect);
 		}
-
-#if MONOMAC
-		/// <summary>Gets the image that results from applying the filter to <see cref="P:CoreImage.CIFilter.Image" />.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		public virtual CIImage? OutputImage {
-			get { return ValueForKey (CIFilterOutputKey.Image) as CIImage; }
-		}
-#endif
 
 		// Calls the selName selector for cases where we do not have an instance created
 		static internal string? GetFilterName (IntPtr filterHandle)

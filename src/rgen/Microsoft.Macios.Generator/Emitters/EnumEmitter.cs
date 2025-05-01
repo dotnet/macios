@@ -175,7 +175,7 @@ return GetValue (str);
 		if (bindingContext.Changes.BindingType != BindingType.SmartEnum) {
 			diagnostics = [Diagnostic.Create (
 					Diagnostics
-						.RBI0000, // An unexpected error occurred while processing '{0}'. Please fill a bug report at https://github.com/xamarin/xamarin-macios/issues/new.
+						.RBI0000, // An unexpected error occurred while processing '{0}'. Please fill a bug report at https://github.com/dotnet/macios/issues/new.
 					null,
 					bindingContext.Changes.FullyQualifiedSymbol)];
 			return false;
@@ -218,7 +218,7 @@ return GetValue (str);
 		if (bindingContext.Changes.BindingType != BindingType.SmartEnum) {
 			diagnostics = [Diagnostic.Create (
 					Diagnostics
-						.RBI0000, // An unexpected error occurred while processing '{0}'. Please fill a bug report at https://github.com/xamarin/xamarin-macios/issues/new.
+						.RBI0000, // An unexpected error occurred while processing '{0}'. Please fill a bug report at https://github.com/dotnet/macios/issues/new.
 					null,
 					bindingContext.Changes.FullyQualifiedSymbol)];
 			return false;
@@ -228,7 +228,7 @@ return GetValue (str);
 		if (bindingTypeData.ErrorDomain is null) {
 			diagnostics = [Diagnostic.Create (
 					Diagnostics
-						.RBI0000, // An unexpected error occurred while processing '{0}'. Please fill a bug report at https://github.com/xamarin/xamarin-macios/issues/new.
+						.RBI0000, // An unexpected error occurred while processing '{0}'. Please fill a bug report at https://github.com/dotnet/macios/issues/new.
 					null,
 					bindingContext.Changes.FullyQualifiedSymbol)];
 			return false;
@@ -242,7 +242,7 @@ return GetValue (str);
 			// could not calculate the library name, this is a user error
 			diagnostics = [Diagnostic.Create (
 					Diagnostics
-						.RBI0000, // An unexpected error occurred while processing '{0}'. Please fill a bug report at https://github.com/xamarin/xamarin-macios/issues/new.
+						.RBI0000, // An unexpected error occurred while processing '{0}'. Please fill a bug report at https://github.com/dotnet/macios/issues/new.
 					null,
 					bindingContext.Changes.FullyQualifiedSymbol)];
 			return false;

@@ -56,7 +56,6 @@ namespace MonoTouchFixtures.Security {
 			}
 		}
 
-#if !MONOMAC // No QueryAsConcreteType on Mac
 		[Test]
 #if __MACCATALYST__
 		[Ignore ("This test requires an app signed with the keychain-access-groups entitlement, and for Mac Catalyst that requires a custom provisioning profile.")]
@@ -92,7 +91,6 @@ namespace MonoTouchFixtures.Security {
 				Assert.Null (match, "match-3");
 			}
 		}
-#endif
 
 		[DllImport ("/System/Library/Frameworks/Security.framework/Security")]
 		internal extern static SecStatusCode SecItemAdd (IntPtr cfDictRef, IntPtr result);

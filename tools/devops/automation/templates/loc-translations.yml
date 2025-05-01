@@ -93,7 +93,7 @@ steps:
       $token = az account get-access-token --query accessToken --resource 499b84ac-1321-427f-aa17-267ca6975798 -o tsv
       Write-Host "##vso[task.setvariable variable=AzDO.OneLocBuildToken;issecret=true]${token}"
 
-- task: OneLocBuild@2
+- task: OneLocBuild@3
   continueOnError: true
   env:
     SYSTEM_ACCESSTOKEN: $(System.AccessToken)

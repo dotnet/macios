@@ -142,10 +142,10 @@ namespace ObjCRuntime {
 			if (Runtime.UseNSUrlSessionHandler)
 				return new NSUrlSessionHandler ();
 
-			if (UseCFNetworkHandler)
-				handler = CFNetworkHandler ();
+			if (Runtime.UseCFNetworkHandler)
+				return new CFNetworkHandler();
 
-			handler = HttpClientHandler ();
+			return new HttpClientHandler();
 		}
 #endif
 

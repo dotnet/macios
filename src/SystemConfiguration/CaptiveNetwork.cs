@@ -43,6 +43,9 @@ namespace SystemConfiguration {
 		[ObsoletedOSPlatform ("maccatalyst14.0")]
 		static public StatusCode TryCopyCurrentNetworkInfo (string interfaceName, out NSDictionary? currentNetworkInfo)
 		{
+			if (string.IsNullOrEmpty (interfaceName))
+				ThrowHelper.ThrowArgumentNullException (nameof (interfaceName));
+
 			using var nss = new TransientCFString (interfaceName);
 			var ni = CNCopyCurrentNetworkInfo (nss);
 			if (ni == IntPtr.Zero) {
@@ -112,6 +115,9 @@ namespace SystemConfiguration {
 		// Not deprecated on macOS
 		static public bool MarkPortalOnline (string iface)
 		{
+			if (string.IsNullOrEmpty (iface))
+				ThrowHelper.ThrowArgumentNullException (nameof (iface));
+
 			using var nss = new TransientCFString (iface);
 			return CNMarkPortalOnline (nss) != 0;
 		}
@@ -128,6 +134,9 @@ namespace SystemConfiguration {
 		// Not deprecated on macOS
 		static public bool MarkPortalOffline (string iface)
 		{
+			if (string.IsNullOrEmpty (iface))
+				ThrowHelper.ThrowArgumentNullException (nameof (iface));
+
 			using var nss = new TransientCFString (iface);
 			return CNMarkPortalOffline (nss) != 0;
 		}

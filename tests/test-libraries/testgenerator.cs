@@ -164,7 +164,7 @@ static class C {
 			byte byteValue;
 			unchecked {
 				byteValue = (byte) ((i + 1) * multiplier);
-			};
+			}
 			return byteValue.ToString (CultureInfo.InvariantCulture);
 		case 's':
 		case 'i':

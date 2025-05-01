@@ -1,0 +1,24 @@
+<Documentation>
+  <Docs DocId="M:Intents.INGetAvailableRestaurantReservationBookingsIntent.#ctor(Intents.INRestaurant,System.UIntPtr,Foundation.NSDateComponents,Foundation.NSNumber,Foundation.NSDate,Foundation.NSDate)">
+        <param name="restaurant">To be added.</param>
+        <param name="partySize">To be added.</param>
+        <param name="preferredBookingDateComponents">
+          <para>To be added.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <param name="maximumNumberOfResults">
+          <para>To be added.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <param name="earliestBookingDateForResults">
+          <para>To be added.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <param name="latestBookingDateForResults">
+          <para>To be added.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <summary>Creates an intent for getting available bookings, with the specified details.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+</Documentation>

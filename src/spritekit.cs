@@ -45,9 +45,14 @@ using NSEvent = System.Object;
 namespace SpriteKit {
 	/// <summary>The delegate that acts as the enumeration handler for <see cref="M:SpriteKit.SKNode.EnumerateChildNodes(System.String,SpriteKit.SKNodeChildEnumeratorHandler)" />.</summary>
 	delegate void SKNodeChildEnumeratorHandler (SKNode node, out bool stop);
+#if !XAMCORE_5_0
 	/// <summary>A method that maps <paramref name="time" />, a value between 0 and 1, to a return value between 0 snd 1.</summary>
 	///     <remarks>Application developers should assign this delegate to a method that returns 0 for a <paramref name="time" /> value of 0, and 1 for a <paramref name="time" /> value of 1.</remarks>
 	delegate float SKActionTimingFunction2 (float /* float, not CGFloat */ time);
+#endif
+	/// <summary>A method that maps <paramref name="time" />, a value between 0 and 1, to a return value between 0 snd 1.</summary>
+	/// <remarks>Application developers should assign this delegate to a method that returns 0 for a <paramref name="time" /> value of 0, and 1 for a <paramref name="time" /> value of 1.</remarks>
+	delegate float SKActionTimingFunction (float /* float, not CGFloat */ time);
 
 	/// <summary>Renders a Scene Kit image as a textured 2D image. Used to incorporate Scene Kit content into a Sprite Kit app.</summary>
 	///     
@@ -222,6 +227,9 @@ namespace SpriteKit {
 		[Export ("userData", ArgumentSemantic.Retain)]
 		NSMutableDictionary UserData { get; set; }
 
+		/// <param name="scale">To be added.</param>
+		/// <summary>Sets the X- and Y-scales to <paramref name="scale" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("setScale:")]
 		void SetScale (nfloat scale);
 
@@ -229,6 +237,10 @@ namespace SpriteKit {
 		[PostGet ("Children")]
 		void AddChild (SKNode node);
 
+		/// <param name="node">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>Inserts <paramref name="node" /> at the position that is specified by <paramref name="index" /> into the list of this node's children.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("insertChild:atIndex:")]
 		[PostGet ("Children")]
 		void InsertChild (SKNode node, nint index);
@@ -254,7 +266,15 @@ namespace SpriteKit {
 		[Export ("runAction:")]
 		void RunAction (SKAction action);
 
-		[Async]
+		[Async (XmlDocs = """
+			<param name="action">The action to add and run.</param>
+			<summary>Asynchronously adds an action to the node that will be processed in the next animation loop.</summary>
+			<returns>A task that represents the asynchronous RunAction operation</returns>
+			<remarks>
+			          <para copied="true">The RunActionAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("runAction:completion:")]
 		void RunAction (SKAction action, Action completionHandler);
 
@@ -384,6 +404,10 @@ namespace SpriteKit {
 	[Category, BaseType (typeof (NSEvent))]
 	partial interface SKNodeEvent_NSEvent {
 
+		/// <param name="node">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("locationInNode:")]
 		CGPoint LocationInNode (SKNode node);
 	}
@@ -394,9 +418,17 @@ namespace SpriteKit {
 	[Category, BaseType (typeof (UITouch))]
 	partial interface SKNodeTouches_UITouch {
 
+		/// <param name="node">To be added.</param>
+		/// <summary>The current position of <c>this</c> in the coordinate system of <paramref name="node" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("locationInNode:")]
 		CGPoint LocationInNode (SKNode node);
 
+		/// <param name="node">To be added.</param>
+		/// <summary>The previous location of <c>this</c> in the coordinate system of <paramref name="node" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("previousLocationInNode:")]
 		CGPoint PreviousLocationInNode (SKNode node);
 	}
@@ -524,9 +556,19 @@ namespace SpriteKit {
 		[Static, Export ("velocityFieldWithTexture:")]
 		SKFieldNode CreateVelocityField (SKTexture velocityTexture);
 
+		/// <param name="smoothness">To be added.</param>
+		/// <param name="speed">To be added.</param>
+		/// <summary>Creates a node that applies randomized accelerations to physics bodies.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("noiseFieldWithSmoothness:animationSpeed:")]
 		SKFieldNode CreateNoiseField (nfloat smoothness, nfloat speed);
 
+		/// <param name="smoothness">To be added.</param>
+		/// <param name="speed">To be added.</param>
+		/// <summary>Creates a node that applies randomized forces to neighboring physics bodies, with an average force that is proportional to the physics body's speed.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("turbulenceFieldWithSmoothness:animationSpeed:")]
 		SKFieldNode CreateTurbulenceField (nfloat smoothness, nfloat speed);
 
@@ -657,18 +699,34 @@ namespace SpriteKit {
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface SKSceneDelegate {
+		/// <param name="currentTime">To be added.</param>
+		/// <param name="scene">To be added.</param>
+		/// <summary>Method that is called once per frame, if <paramref name="scene" /> is presented and not paused, before any animation takes place.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("update:forScene:")]
 		void Update (double currentTime, SKScene scene);
 
+		/// <param name="scene">To be added.</param>
+		/// <summary>Method that is called after all scene actions are evaluated for <paramref name="scene" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("didEvaluateActionsForScene:")]
 		void DidEvaluateActions (SKScene scene);
 
+		/// <param name="scene">To be added.</param>
+		/// <summary>Method that is called after physics simulation for <paramref name="scene" /> is complete.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("didSimulatePhysicsForScene:")]
 		void DidSimulatePhysics (SKScene scene);
 
+		/// <param name="scene">To be added.</param>
+		/// <summary>Method that is called after constraints are applied to <paramref name="scene" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("didApplyConstraintsForScene:")]
 		void DidApplyConstraints (SKScene scene);
 
+		/// <param name="scene">To be added.</param>
+		/// <summary>Method that is called after the <paramref name="scene" /> is updated.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("didFinishUpdateForScene:")]
 		void DidFinishUpdate (SKScene scene);
 	}
@@ -847,36 +905,71 @@ namespace SpriteKit {
 		[Internal]
 		NativeHandle Constructor ([NullAllowed] NSObject [] values, [NullAllowed] NSArray times);
 
+		/// <param name="numItems">To be added.</param>
+		/// <summary>Creates a new <see cref="T:SpriteKit.SKKeyframeSequence" /> with the capacity to hold <paramref name="numItems" /> keyframe values.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithCapacity:")]
 		NativeHandle Constructor (nuint numItems);
 
 		[Export ("count")]
 		nuint Count { get; }
 
+		/// <param name="value">To be added.</param>
+		/// <param name="time">To be added.</param>
+		/// <summary>Adds a keyframe to the end of the list of keyframes, with the specified time..</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("addKeyframeValue:time:")]
 		void AddKeyframeValue (NSObject value, nfloat time);
 
 		[Export ("removeLastKeyframe")]
 		void RemoveLastKeyframe ();
 
+		/// <param name="index">To be added.</param>
+		/// <summary>Removes the keyframe, and corresponding time, at the specified index.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("removeKeyframeAtIndex:")]
 		void RemoveKeyframe (nuint index);
 
+		/// <param name="value">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>Sets the value for the keyframe at <paramref name="index" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("setKeyframeValue:forIndex:")]
 		void SetKeyframeValue (NSObject value, nuint index);
 
+		/// <param name="time">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>Sets the time for the keyframe at <paramref name="index" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("setKeyframeTime:forIndex:")]
 		void SetKeyframeTime (nfloat time, nuint index);
 
+		/// <param name="value">To be added.</param>
+		/// <param name="time">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>Sets the time and value for the keyframe at the specified index.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("setKeyframeValue:time:forIndex:")]
 		void SetKeyframeValue (NSObject value, nfloat time, nuint index);
 
+		/// <param name="index">To be added.</param>
+		/// <summary>Gets the keyframe value for the specified index.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("getKeyframeValueForIndex:")]
 		NSObject GetKeyframeValue (nuint index);
 
+		/// <param name="index">To be added.</param>
+		/// <summary>Gets the time for the keyframe at the specified index.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("getKeyframeTimeForIndex:")]
 		nfloat GetKeyframeTime (nuint index);
 
+		/// <param name="time">To be added.</param>
+		/// <summary>Samples a value at the specified time.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("sampleAtTime:")]
 		[return: NullAllowed]
 		NSObject SampleAtTime (nfloat time);
@@ -1154,14 +1247,28 @@ namespace SpriteKit {
 		[Static, Export ("shapeNodeWithRectOfSize:")]
 		SKShapeNode FromRect (CGSize size);
 
+		/// <param name="rect">To be added.</param>
+		/// <param name="cornerRadius">To be added.</param>
+		/// <summary>Creates a shape node from the specified rectangle and the specified corner radius.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static, Export ("shapeNodeWithRect:cornerRadius:")]
 		SKShapeNode FromRect (CGRect rect, nfloat cornerRadius);
 
+		/// <param name="size">To be added.</param>
+		/// <param name="cornerRadius">To be added.</param>
+		/// <summary>Creates a shape node with the specified corner radius by treating the specified size as a rectangle.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static, Export ("shapeNodeWithRectOfSize:cornerRadius:")]
 		SKShapeNode FromRect (CGSize size, nfloat cornerRadius);
 
+		/// <param name="radius">To be added.</param>
+		/// <summary>Creates a new circular shape node from a radius.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static, Export ("shapeNodeWithCircleOfRadius:")]
 		SKShapeNode FromCircle (nfloat radius);
@@ -1175,12 +1282,22 @@ namespace SpriteKit {
 		SKShapeNode FromEllipse (CGSize size);
 
 		// Hide this ugly api fixes https://bugzilla.xamarin.com/show_bug.cgi?id=39706
+		/// <param name="points">To be added.</param>
+		/// <param name="numPoints">To be added.</param>
+		/// <summary>Creates a shape node from the specified list of points.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Internal]
 		[MacCatalyst (13, 1)]
 		[Static, Export ("shapeNodeWithPoints:count:")]
 		SKShapeNode FromPoints (ref CGPoint points, nuint numPoints);
 
 		// Hide this ugly api fixes https://bugzilla.xamarin.com/show_bug.cgi?id=39706
+		/// <param name="points">To be added.</param>
+		/// <param name="numPoints">To be added.</param>
+		/// <summary>Creates a shape node that represents a quadratic spline curve through the specified points.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Internal]
 		[MacCatalyst (13, 1)]
 		[Static, Export ("shapeNodeWithSplinePoints:count:")]
@@ -1222,6 +1339,10 @@ namespace SpriteKit {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface SKReachConstraints : NSSecureCoding {
+		/// <param name="lowerAngleLimit">To be added.</param>
+		/// <param name="upperAngleLimit">To be added.</param>
+		/// <summary>Creates a new <see cref="T:SpriteKit.SKReachConstraints" /> object with the specified limits.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithLowerAngleLimit:upperAngleLimit:")]
 		NativeHandle Constructor (nfloat lowerAngleLimit, nfloat upperAngleLimit);
@@ -1609,6 +1730,11 @@ namespace SpriteKit {
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface SKViewDelegate {
+		/// <param name="view">To be added.</param>
+		/// <param name="time">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("view:shouldRenderAtTime:")]
 		bool ShouldRender (SKView view, double time);
 	}
@@ -1718,12 +1844,24 @@ namespace SpriteKit {
 
 		[Static]
 		[Export ("preloadTextures:withCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="textures">To be added.</param>
+			<summary>Asynchronously loads the textures into memory.</summary>
+			<returns>A task that represents the asynchronous PreloadTextures operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		// note: unlike SKTextureAtlas completion can't be null (or it crash)
 		void PreloadTextures (SKTexture [] textures, Action completion);
 
 		[Export ("preloadWithCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Asynchronously loads the texture into memory.</summary>
+			<returns>A task that represents the asynchronous Preload operation</returns>
+			<remarks>
+			          <para copied="true">The PreloadAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		// note: unlike SKTextureAtlas completion can't be null (or it crash)
 		void Preload (Action completion);
 
@@ -1731,14 +1869,30 @@ namespace SpriteKit {
 		[Export ("textureByGeneratingNormalMap")]
 		SKTexture CreateTextureByGeneratingNormalMap ();
 
+		/// <param name="smoothness">To be added.</param>
+		/// <param name="contrast">To be added.</param>
+		/// <summary>Creates a new texture from the texture, smoothing the texture values before processing and magnifying the contrast of the resulting normal map.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("textureByGeneratingNormalMapWithSmoothness:contrast:")]
 		SKTexture CreateTextureByGeneratingNormalMap (nfloat smoothness, nfloat contrast);
 
+		/// <param name="smoothness">To be added.</param>
+		/// <param name="size">To be added.</param>
+		/// <summary>Creates a texture that consists of randomized directional noise data, with the RGB values comprising a direction vector, and the alpha channel representing a magnitude.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static, Export ("textureVectorNoiseWithSmoothness:size:")]
 		SKTexture FromTextureVectorNoise (nfloat smoothness, CGSize size);
 
+		/// <param name="smoothness">To be added.</param>
+		/// <param name="size">To be added.</param>
+		/// <param name="grayscale">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static, Export ("textureNoiseWithSmoothness:size:grayscale:")]
 		SKTexture FromTextureNoise (nfloat smoothness, CGSize size, bool grayscale);
@@ -1806,18 +1960,37 @@ namespace SpriteKit {
 
 		[Static]
 		[Export ("preloadTextureAtlases:withCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="textures">To be added.</param>
+			<summary>Asynchronously preloads the specified list of texture atlases.</summary>
+			<returns>A task that represents the asynchronous PreloadTextures operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		// Unfortunate name, should have been PreloadTextureAtlases
 		void PreloadTextures (SKTextureAtlas [] textures, Action completion);
 
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("preloadTextureAtlasesNamed:withCompletionHandler:")]
-		[Async (ResultTypeName = "SKTextureAtlasLoadResult")]
+		[Async (ResultTypeName = "SKTextureAtlasLoadResult", XmlDocs = """
+			<param name="atlasNames">To be added.</param>
+			<summary>Loads the named atlases and calls a completion handler after they are loaded.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous PreloadTextureAtlases operation.   The value of the TResult parameter is of type <c>Action&lt;SpriteKit.SKTextureAtlasLoadResult&gt;</c>.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void PreloadTextureAtlases (string [] atlasNames, SKTextureAtlasLoadCallback completionHandler);
 
 		[Export ("preloadWithCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Asynchronously preloads the texture atlas.</summary>
+			<returns>A task that represents the asynchronous Preload operation</returns>
+			<remarks>
+			          <para copied="true">The PreloadAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void Preload (Action completion);
 
 		[MacCatalyst (13, 1)]
@@ -1841,51 +2014,17 @@ namespace SpriteKit {
 		[Export ("initWithName:float:")]
 		NativeHandle Constructor (string name, float /* float, not CGFloat */ value);
 
-		[Internal]
-		[Deprecated (PlatformName.iOS, 10, 0)]
-		[Deprecated (PlatformName.TvOS, 10, 0)]
-		[Deprecated (PlatformName.MacOSX, 10, 12)]
-		[MacCatalyst (13, 1)]
-		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
-		[Export ("initWithName:floatVector2:")]
-		IntPtr InitWithNameFloatVector2 (string name, Vector2 value);
-
-		[MacCatalyst (13, 1)]
 		[Export ("initWithName:vectorFloat2:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
-		[MarshalNativeExceptions]
-		[Internal]
-		IntPtr InitWithNameVectorFloat2 (string name, Vector2 value);
+		NativeHandle Constructor (string name, Vector2 value);
 
-		[Internal]
-		[Deprecated (PlatformName.iOS, 10, 0)]
-		[Deprecated (PlatformName.TvOS, 10, 0)]
-		[Deprecated (PlatformName.MacOSX, 10, 12)]
-		[MacCatalyst (13, 1)]
-		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
-		[Export ("initWithName:floatVector3:")]
-		IntPtr InitWithNameFloatVector3 (string name, Vector3 value);
-
-		[MacCatalyst (13, 1)]
 		[Export ("initWithName:vectorFloat3:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
-		[Internal]
-		IntPtr InitWithNameVectorFloat3 (string name, Vector3 value);
+		NativeHandle Constructor (string name, Vector3 value);
 
-		[Internal]
-		[Deprecated (PlatformName.iOS, 10, 0)]
-		[Deprecated (PlatformName.TvOS, 10, 0)]
-		[Deprecated (PlatformName.MacOSX, 10, 12)]
-		[MacCatalyst (13, 1)]
-		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
-		[Export ("initWithName:floatVector4:")]
-		IntPtr InitWithNameFloatVector4 (string name, Vector4 value);
-
-		[MacCatalyst (13, 1)]
 		[Export ("initWithName:vectorFloat4:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
-		[Internal]
-		IntPtr InitWithNameVectorFloat4 (string name, Vector4 value);
+		NativeHandle Constructor (string name, Vector4 value);
 
 		[MacCatalyst (13, 1)]
 		[Export ("initWithName:matrixFloat2x2:")]
@@ -1915,57 +2054,27 @@ namespace SpriteKit {
 		[Export ("floatValue")]
 		float FloatValue { get; set; } /* float, not CGFloat */
 
-		[Internal]
-		[Deprecated (PlatformName.iOS, 10, 0)]
-		[Deprecated (PlatformName.TvOS, 10, 0)]
-		[Deprecated (PlatformName.MacOSX, 10, 12)]
-		[MacCatalyst (13, 1)]
-		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
-		[Export ("floatVector2Value")]
-		Vector2 _FloatVector2Value { get; set; }
-
 		[MacCatalyst (13, 1)]
 		[Export ("vectorFloat2Value", ArgumentSemantic.Assign)]
-		[Internal]
-		Vector2 _VectorFloat2Value {
+		Vector2 FloatVector2Value {
 			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 			get;
 			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 			set;
 		}
-
-		[Internal]
-		[Deprecated (PlatformName.iOS, 10, 0)]
-		[Deprecated (PlatformName.TvOS, 10, 0)]
-		[Deprecated (PlatformName.MacOSX, 10, 12)]
-		[MacCatalyst (13, 1)]
-		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
-		[Export ("floatVector3Value")]
-		Vector3 _FloatVector3Value { get; set; }
 
 		[MacCatalyst (13, 1)]
 		[Export ("vectorFloat3Value", ArgumentSemantic.Assign)]
-		[Internal]
-		Vector3 _VectorFloat3Value {
+		Vector3 FloatVector3Value {
 			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 			get;
 			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 			set;
 		}
 
-		[Internal]
-		[Deprecated (PlatformName.iOS, 10, 0)]
-		[Deprecated (PlatformName.TvOS, 10, 0)]
-		[Deprecated (PlatformName.MacOSX, 10, 12)]
-		[MacCatalyst (13, 1)]
-		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
-		[Export ("floatVector4Value")]
-		Vector4 _FloatVector4Value { get; set; }
-
 		[MacCatalyst (13, 1)]
 		[Export ("vectorFloat4Value", ArgumentSemantic.Assign)]
-		[Internal]
-		Vector4 _VectorFloat4Value {
+		Vector4 FloatVector4Value {
 			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 			get;
 			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
@@ -2068,6 +2177,12 @@ namespace SpriteKit {
 		SKAction ReversedAction { get; }
 
 		// These are in a category
+		/// <param name="deltaX">To be added.</param>
+		/// <param name="deltaY">To be added.</param>
+		/// <param name="sec">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("moveByX:y:duration:")]
 		SKAction MoveBy (nfloat deltaX, nfloat deltaY, double sec);
 
@@ -2077,48 +2192,128 @@ namespace SpriteKit {
 		[Static, Export ("moveTo:duration:")]
 		SKAction MoveTo (CGPoint location, double sec);
 
+		/// <param name="x">To be added.</param>
+		/// <param name="sec">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("moveToX:duration:")]
 		SKAction MoveToX (nfloat x, double sec);
 
+		/// <param name="y">To be added.</param>
+		/// <param name="sec">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("moveToY:duration:")]
 		SKAction MoveToY (nfloat y, double sec);
 
+		/// <param name="radians">To be added.</param>
+		/// <param name="sec">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("rotateByAngle:duration:")]
 		SKAction RotateByAngle (nfloat radians, double sec);
 
+		/// <param name="radians">To be added.</param>
+		/// <param name="sec">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("rotateToAngle:duration:")]
 		SKAction RotateToAngle (nfloat radians, double sec);
 
+		/// <param name="radians">To be added.</param>
+		/// <param name="sec">To be added.</param>
+		/// <param name="shortedUnitArc">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("rotateToAngle:duration:shortestUnitArc:")]
 		SKAction RotateToAngle (nfloat radians, double sec, bool shortedUnitArc);
 
+		/// <param name="width">To be added.</param>
+		/// <param name="height">To be added.</param>
+		/// <param name="duration">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("resizeByWidth:height:duration:")]
 		SKAction ResizeByWidth (nfloat width, nfloat height, double duration);
 
+		/// <param name="width">To be added.</param>
+		/// <param name="height">To be added.</param>
+		/// <param name="duration">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("resizeToWidth:height:duration:")]
 		SKAction ResizeTo (nfloat width, nfloat height, double duration);
 
+		/// <param name="width">To be added.</param>
+		/// <param name="duration">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("resizeToWidth:duration:")]
 		SKAction ResizeToWidth (nfloat width, double duration);
 
+		/// <param name="height">To be added.</param>
+		/// <param name="duration">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("resizeToHeight:duration:")]
 		SKAction ResizeToHeight (nfloat height, double duration);
 
+		/// <param name="scale">To be added.</param>
+		/// <param name="sec">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("scaleBy:duration:")]
 		SKAction ScaleBy (nfloat scale, double sec);
 
+		/// <param name="xScale">To be added.</param>
+		/// <param name="yScale">To be added.</param>
+		/// <param name="sec">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("scaleXBy:y:duration:")]
 		SKAction ScaleBy (nfloat xScale, nfloat yScale, double sec);
 
+		/// <param name="scale">To be added.</param>
+		/// <param name="sec">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("scaleTo:duration:")]
 		SKAction ScaleTo (nfloat scale, double sec);
 
+		/// <param name="xScale">To be added.</param>
+		/// <param name="yScale">To be added.</param>
+		/// <param name="sec">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("scaleXTo:y:duration:")]
 		SKAction ScaleTo (nfloat xScale, nfloat yScale, double sec);
 
+		/// <param name="scale">To be added.</param>
+		/// <param name="sec">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("scaleXTo:duration:")]
 		SKAction ScaleXTo (nfloat scale, double sec);
 
+		/// <param name="scale">To be added.</param>
+		/// <param name="sec">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("scaleYTo:duration:")]
 		SKAction ScaleYTo (nfloat scale, double sec);
 
@@ -2133,6 +2328,11 @@ namespace SpriteKit {
 		[Static, Export ("group:")]
 		SKAction Group ([Params] SKAction [] actions);
 
+		/// <param name="action">To be added.</param>
+		/// <param name="count">To be added.</param>
+		/// <summary>Creates an action that repeats <paramref name="action" /> a specified number of times on the node on which it is run.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("repeatAction:count:")]
 		SKAction RepeatAction (SKAction action, nuint count);
 
@@ -2145,9 +2345,19 @@ namespace SpriteKit {
 		[Static, Export ("fadeOutWithDuration:")]
 		SKAction FadeOutWithDuration (double sec);
 
+		/// <param name="factor">To be added.</param>
+		/// <param name="sec">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("fadeAlphaBy:duration:")]
 		SKAction FadeAlphaBy (nfloat factor, double sec);
 
+		/// <param name="alpha">To be added.</param>
+		/// <param name="sec">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("fadeAlphaTo:duration:")]
 		SKAction FadeAlphaTo (nfloat alpha, double sec);
 
@@ -2168,9 +2378,20 @@ namespace SpriteKit {
 		[Static, Export ("playSoundFileNamed:waitForCompletion:")]
 		SKAction PlaySoundFileNamed (string soundFile, bool wait);
 
+		/// <param name="color">To be added.</param>
+		/// <param name="colorBlendFactor">To be added.</param>
+		/// <param name="sec">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("colorizeWithColor:colorBlendFactor:duration:")]
 		SKAction ColorizeWithColor (UIColor color, nfloat colorBlendFactor, double sec);
 
+		/// <param name="colorBlendFactor">To be added.</param>
+		/// <param name="sec">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("colorizeWithColorBlendFactor:duration:")]
 		SKAction ColorizeWithColorBlendFactor (nfloat colorBlendFactor, double sec);
 
@@ -2184,10 +2405,22 @@ namespace SpriteKit {
 		SKAction FollowPath (CGPath path, bool offset, bool orient, double sec);
 #endif
 
+		/// <param name="path">To be added.</param>
+		/// <param name="speed">To be added.</param>
+		/// <summary>Creates an action that moves the <see cref="T:SpriteKit.SKNode" /> on which it is run over the <paramref name="path" />, at the specified <paramref name="speed" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static, Export ("followPath:speed:")]
 		SKAction FollowPath (CGPath path, nfloat speed);
 
+		/// <param name="path">To be added.</param>
+		/// <param name="offset">To be added.</param>
+		/// <param name="orient">To be added.</param>
+		/// <param name="speed">To be added.</param>
+		/// <summary>Creates an action that moves the <see cref="T:SpriteKit.SKNode" /> on which it is run over the <paramref name="path" />, with the specified offset, orientation, and speed.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static, Export ("followPath:asOffset:orientToPath:speed:")]
 #if XAMCORE_5_0
@@ -2196,9 +2429,19 @@ namespace SpriteKit {
 		SKAction FollowPath (CGPath path, bool offset, bool orient, nfloat speed);
 #endif
 
+		/// <param name="speed">To be added.</param>
+		/// <param name="sec">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("speedBy:duration:")]
 		SKAction SpeedBy (nfloat speed, double sec);
 
+		/// <param name="speed">To be added.</param>
+		/// <param name="sec">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("speedTo:duration:")]
 		SKAction SpeedTo (nfloat speed, double sec);
 
@@ -2241,6 +2484,12 @@ namespace SpriteKit {
 		[Static, Export ("reachTo:rootNode:duration:")]
 		SKAction ReachTo (CGPoint position, SKNode rootNode, double secs);
 
+		/// <param name="position">To be added.</param>
+		/// <param name="rootNode">To be added.</param>
+		/// <param name="velocity">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static, Export ("reachTo:rootNode:velocity:")]
 		SKAction ReachTo (CGPoint position, SKNode rootNode, nfloat velocity);
@@ -2249,6 +2498,12 @@ namespace SpriteKit {
 		[Static, Export ("reachToNode:rootNode:duration:")]
 		SKAction ReachToNode (SKNode node, SKNode rootNode, double sec);
 
+		/// <param name="node">To be added.</param>
+		/// <param name="rootNode">To be added.</param>
+		/// <param name="velocity">To be added.</param>
+		/// <summary>Creates an action that moves the node to which it is applied by rotating it, along with all nodes between it and <paramref name="rootNode" />, so that it is closer to <paramref name="node" />, in a way that moves the node at the speed that is specified by <paramref name="velocity" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static, Export ("reachToNode:rootNode:velocity:")]
 		SKAction ReachToNode (SKNode node, SKNode rootNode, nfloat velocity);
@@ -2261,9 +2516,23 @@ namespace SpriteKit {
 		[Static, Export ("strengthBy:duration:")]
 		SKAction StrengthBy (float /* float, not CGFloat */ strength, double sec);
 
+		/// <summary>Sets the function that transforms the times at which actions occur.</summary>
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("timingFunction", ArgumentSemantic.Assign)]
+#if XAMCORE_5_0
+		SKActionTimingFunction TimingFunction { get; set; }
+#else
+		[Obsolete ("Use 'TimingFunction' instead.")]
 		SKActionTimingFunction2 TimingFunction2 { get; set; }
+#endif
+
+#if !XAMCORE_5_0
+		/// <summary>Sets the function that transforms the times at which actions occur.</summary>
+		[MacCatalyst (13, 1)]
+		[NullAllowed, Export ("timingFunction", ArgumentSemantic.Assign)]
+		[Sealed]
+		SKActionTimingFunction TimingFunction { get; set; }
+#endif
 
 		[MacCatalyst (13, 1)]
 		[Static, Export ("falloffBy:duration:")]
@@ -2384,6 +2653,11 @@ namespace SpriteKit {
 		[Export ("applyForce:atPoint:duration:")]
 		SKAction CreateApplyForce (CGVector force, CGPoint point, double duration);
 
+		/// <param name="torque">To be added.</param>
+		/// <param name="duration">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("applyTorque:duration:")]
@@ -2399,6 +2673,11 @@ namespace SpriteKit {
 		[Export ("applyImpulse:atPoint:duration:")]
 		SKAction CreateApplyImpulse (CGVector impulse, CGPoint point, double duration);
 
+		/// <param name="impulse">To be added.</param>
+		/// <param name="duration">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("applyAngularImpulse:duration:")]
@@ -2477,9 +2756,18 @@ namespace SpriteKit {
 		[Static, Export ("bodyWithBodies:")]
 		SKPhysicsBody FromBodies (SKPhysicsBody [] bodies);
 
+		/// <param name="radius">To be added.</param>
+		/// <summary>Creates a new circular physics body with the specified radius.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("bodyWithCircleOfRadius:")]
 		SKPhysicsBody CreateCircularBody (nfloat radius);
 
+		/// <param name="radius">To be added.</param>
+		/// <param name="center">To be added.</param>
+		/// <summary>Creates a new circular physics body with the specified radius and center.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static, Export ("bodyWithCircleOfRadius:center:")]
 		SKPhysicsBody CreateCircularBody (nfloat radius, CGPoint center);
@@ -2576,6 +2864,9 @@ namespace SpriteKit {
 		[Export ("applyForce:atPoint:")]
 		void ApplyForce (CGVector force, CGPoint point);
 
+		/// <param name="torque">To be added.</param>
+		/// <summary>Applies a torque, in Newton-meters, to the physics body for one time step.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("applyTorque:")]
 		void ApplyTorque (nfloat torque);
 
@@ -2585,6 +2876,9 @@ namespace SpriteKit {
 		[Export ("applyImpulse:atPoint:")]
 		void ApplyImpulse (CGVector impulse, CGPoint point);
 
+		/// <param name="impulse">To be added.</param>
+		/// <summary>Applies the specified angular impulse, in Newton-seconds, to the physics body.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("applyAngularImpulse:")]
 		void ApplyAngularImpulse (nfloat impulse);
 
@@ -2657,9 +2951,23 @@ namespace SpriteKit {
 	[Protocol]
 	partial interface SKPhysicsContactDelegate {
 
+		/// <param name="contact">To be added.</param>
+		/// <summary>Method that is called when contact is started.</summary>
+		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakContactDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[Export ("didBeginContact:")]
 		void DidBeginContact (SKPhysicsContact contact);
 
+		/// <param name="contact">To be added.</param>
+		/// <summary>Method that is called after contact ends.</summary>
+		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakContactDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[Export ("didEndContact:")]
 		void DidEndContact (SKPhysicsContact contact);
 	}
@@ -2857,6 +3165,10 @@ namespace SpriteKit {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface SKRange : NSSecureCoding, NSCopying {
+		/// <param name="lowerLimit">To be added.</param>
+		/// <param name="upperLimier">To be added.</param>
+		/// <summary>Creates a new <see cref="T:SpriteKit.SKRange" /> with the specified limits.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithLowerLimit:upperLimit:")]
 		NativeHandle Constructor (nfloat lowerLimit, nfloat upperLimier);
@@ -2867,18 +3179,40 @@ namespace SpriteKit {
 		[Export ("upperLimit")]
 		nfloat UpperLimit { get; set; }
 
+		/// <param name="lower">To be added.</param>
+		/// <param name="upper">To be added.</param>
+		/// <summary>Creates a range that represents values between the specified lower and upper limits.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("rangeWithLowerLimit:upperLimit:")]
 		SKRange Create (nfloat lower, nfloat upper);
 
+		/// <param name="lower">To be added.</param>
+		/// <summary>Creates a semi-infinite range with the specified lower bound, inclusive.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("rangeWithLowerLimit:")]
 		SKRange CreateWithLowerLimit (nfloat lower);
 
+		/// <param name="upper">To be added.</param>
+		/// <summary>Creates a semi-infinite range with the specified upper bound, inclusive.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("rangeWithUpperLimit:")]
 		SKRange CreateWithUpperLimit (nfloat upper);
 
+		/// <param name="value">To be added.</param>
+		/// <summary>Creates a zero-width range at the specified value.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("rangeWithConstantValue:")]
 		SKRange CreateConstant (nfloat value);
 
+		/// <param name="value">To be added.</param>
+		/// <param name="variance">To be added.</param>
+		/// <summary>Creates an inclusive range from the specified value an variance.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("rangeWithValue:variance:")]
 		SKRange CreateWithVariance (nfloat value, nfloat variance);
 
@@ -3058,10 +3392,23 @@ namespace SpriteKit {
 		[Export ("tileDefinitionWithTexture:normalTexture:size:")]
 		SKTileDefinition Create (SKTexture texture, SKTexture normalTexture, CGSize size);
 
+		/// <param name="textures">To be added.</param>
+		/// <param name="size">To be added.</param>
+		/// <param name="timePerFrame">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static]
 		[Export ("tileDefinitionWithTextures:size:timePerFrame:")]
 		SKTileDefinition Create (SKTexture [] textures, CGSize size, nfloat timePerFrame);
 
+		/// <param name="textures">To be added.</param>
+		/// <param name="normalTextures">To be added.</param>
+		/// <param name="size">To be added.</param>
+		/// <param name="timePerFrame">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static]
 		[Export ("tileDefinitionWithTextures:normalTextures:size:timePerFrame:")]
 		SKTileDefinition Create (SKTexture [] textures, SKTexture [] normalTextures, CGSize size, nfloat timePerFrame);
@@ -3075,9 +3422,20 @@ namespace SpriteKit {
 		[Export ("initWithTexture:normalTexture:size:")]
 		NativeHandle Constructor (SKTexture texture, SKTexture normalTexture, CGSize size);
 
+		/// <param name="textures">To be added.</param>
+		/// <param name="size">To be added.</param>
+		/// <param name="timePerFrame">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithTextures:size:timePerFrame:")]
 		NativeHandle Constructor (SKTexture [] textures, CGSize size, nfloat timePerFrame);
 
+		/// <param name="textures">To be added.</param>
+		/// <param name="normalTextures">To be added.</param>
+		/// <param name="size">To be added.</param>
+		/// <param name="timePerFrame">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithTextures:normalTextures:size:timePerFrame:")]
 		NativeHandle Constructor (SKTexture [] textures, SKTexture [] normalTextures, CGSize size, nfloat timePerFrame);
 
@@ -3116,24 +3474,67 @@ namespace SpriteKit {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (SKNode))]
 	interface SKTileMapNode : NSCopying, NSSecureCoding {
+		/// <param name="tileSet">To be added.</param>
+		/// <param name="columns">To be added.</param>
+		/// <param name="rows">To be added.</param>
+		/// <param name="tileSize">To be added.</param>
+		/// <summary>Factory method to create an <see cref="T:SpriteKit.SKTileMapNode" /> with the specified properties.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static]
 		[Export ("tileMapNodeWithTileSet:columns:rows:tileSize:")]
 		SKTileMapNode Create (SKTileSet tileSet, nuint columns, nuint rows, CGSize tileSize);
 
+		/// <param name="tileSet">To be added.</param>
+		/// <param name="columns">To be added.</param>
+		/// <param name="rows">To be added.</param>
+		/// <param name="tileSize">To be added.</param>
+		/// <param name="tileGroup">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static]
 		[Export ("tileMapNodeWithTileSet:columns:rows:tileSize:fillWithTileGroup:")]
 		SKTileMapNode Create (SKTileSet tileSet, nuint columns, nuint rows, CGSize tileSize, SKTileGroup tileGroup);
 
+		/// <param name="tileSet">To be added.</param>
+		/// <param name="columns">To be added.</param>
+		/// <param name="rows">To be added.</param>
+		/// <param name="tileSize">To be added.</param>
+		/// <param name="tileGroupLayout">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static]
 		[Export ("tileMapNodeWithTileSet:columns:rows:tileSize:tileGroupLayout:")]
 		SKTileMapNode Create (SKTileSet tileSet, nuint columns, nuint rows, CGSize tileSize, SKTileGroup [] tileGroupLayout);
 
+		/// <param name="tileSet">To be added.</param>
+		/// <param name="columns">To be added.</param>
+		/// <param name="rows">To be added.</param>
+		/// <param name="tileSize">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithTileSet:columns:rows:tileSize:")]
 		NativeHandle Constructor (SKTileSet tileSet, nuint columns, nuint rows, CGSize tileSize);
 
+		/// <param name="tileSet">To be added.</param>
+		/// <param name="columns">To be added.</param>
+		/// <param name="rows">To be added.</param>
+		/// <param name="tileSize">To be added.</param>
+		/// <param name="tileGroup">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithTileSet:columns:rows:tileSize:fillWithTileGroup:")]
 		NativeHandle Constructor (SKTileSet tileSet, nuint columns, nuint rows, CGSize tileSize, SKTileGroup tileGroup);
 
+		/// <param name="tileSet">To be added.</param>
+		/// <param name="columns">To be added.</param>
+		/// <param name="rows">To be added.</param>
+		/// <param name="tileSize">To be added.</param>
+		/// <param name="tileGroupLayout">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithTileSet:columns:rows:tileSize:tileGroupLayout:")]
 		NativeHandle Constructor (SKTileSet tileSet, nuint columns, nuint rows, CGSize tileSize, SKTileGroup [] tileGroupLayout);
 
@@ -3176,17 +3577,41 @@ namespace SpriteKit {
 		[Export ("fillWithTileGroup:")]
 		void Fill ([NullAllowed] SKTileGroup tileGroup);
 
+		/// <param name="column">To be added.</param>
+		/// <param name="row">To be added.</param>
+		/// <summary>Gets the <see cref="T:SpriteKit.SKTileDefinition" /> for the tile at the specified position.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("tileDefinitionAtColumn:row:")]
 		[return: NullAllowed]
 		SKTileDefinition GetTileDefinition (nuint column, nuint row);
 
+		/// <param name="column">To be added.</param>
+		/// <param name="row">To be added.</param>
+		/// <summary>Gets the <see cref="T:SpriteKit.SKTileGroup" /> for the tile at the specified position.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("tileGroupAtColumn:row:")]
 		[return: NullAllowed]
 		SKTileGroup GetTileGroup (nuint column, nuint row);
 
+		/// <param name="tileGroup">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="column">To be added.</param>
+		/// <param name="row">To be added.</param>
+		/// <summary>Sets the <see cref="T:SpriteKit.SKTileGroup" /> at the specified location.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("setTileGroup:forColumn:row:")]
 		void SetTileGroup ([NullAllowed] SKTileGroup tileGroup, nuint column, nuint row);
 
+		/// <param name="tileGroup">To be added.</param>
+		/// <param name="tileDefinition">To be added.</param>
+		/// <param name="column">To be added.</param>
+		/// <param name="row">To be added.</param>
+		/// <summary>Sets the <paramref name="tileGroup" /> and <paramref name="tileDefinition" /> at the specified location.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("setTileGroup:andTileDefinition:forColumn:row:")]
 		void SetTileGroup (SKTileGroup tileGroup, SKTileDefinition tileDefinition, nuint column, nuint row);
 
@@ -3196,10 +3621,24 @@ namespace SpriteKit {
 		[Export ("tileRowIndexFromPosition:")]
 		nuint GetTileRowIndex (CGPoint position);
 
+		/// <param name="column">To be added.</param>
+		/// <param name="row">To be added.</param>
+		/// <summary>Retrieves the <see cref="T:CoreGraphics.CGPoint" /> at the center of the specified position.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("centerOfTileAtColumn:row:")]
 		CGPoint GetCenterOfTile (nuint column, nuint row);
 
 		// Static Category from GameplayKit
+		/// <param name="tileSet">To be added.</param>
+		/// <param name="columns">To be added.</param>
+		/// <param name="rows">To be added.</param>
+		/// <param name="tileSize">To be added.</param>
+		/// <param name="noiseMap">To be added.</param>
+		/// <param name="thresholds">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("tileMapNodesWithTileSet:columns:rows:tileSize:fromNoiseMap:tileTypeNoiseMapThresholds:")]
@@ -3327,10 +3766,16 @@ namespace SpriteKit {
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface SKWarpable {
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[NullAllowed, Export ("warpGeometry", ArgumentSemantic.Assign)]
 		SKWarpGeometry WarpGeometry { get; set; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("subdivisionLevels")]
 		nint SubdivisionLevels { get; set; }
@@ -3347,6 +3792,11 @@ namespace SpriteKit {
 		[Export ("grid")]
 		SKWarpGeometryGrid GetGrid ();
 
+		/// <param name="cols">To be added.</param>
+		/// <param name="rows">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static]
 		[Export ("gridWithColumns:rows:")]
 		SKWarpGeometryGrid Create (nint cols, nint rows);
@@ -3370,10 +3820,18 @@ namespace SpriteKit {
 		[Export ("vertexCount")]
 		nint VertexCount { get; }
 
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("sourcePositionAtIndex:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		Vector2 GetSourcePosition (nint index);
 
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("destPositionAtIndex:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		Vector2 GetDestPosition (nint index);

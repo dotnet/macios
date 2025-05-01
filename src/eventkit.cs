@@ -458,6 +458,10 @@ namespace EventKit {
 		[Export ("recurrenceEndWithEndDate:")]
 		EKRecurrenceEnd FromEndDate (NSDate endDate);
 
+		/// <param name="occurrenceCount">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static]
 		[Export ("recurrenceEndWithOccurrenceCount:")]
 		EKRecurrenceEnd FromOccurrenceCount (nint occurrenceCount);
@@ -558,12 +562,21 @@ namespace EventKit {
 		NSObject [] SetPositions { get; }
 #endif
 
+		/// <param name="type">To be added.</param>
+		/// <param name="interval">To be added.</param>
+		/// <param name="end">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initRecurrenceWithFrequency:interval:end:")]
 		NativeHandle Constructor (EKRecurrenceFrequency type, nint interval, [NullAllowed] EKRecurrenceEnd end);
 
+		/// <include file="../docs/api/EventKit/EKRecurrenceRule.xml" path="/Documentation/Docs[@DocId='M:EventKit.EKRecurrenceRule.#ctor(EventKit.EKRecurrenceFrequency,System.IntPtr,EventKit.EKRecurrenceDayOfWeek[],Foundation.NSNumber[],Foundation.NSNumber[],Foundation.NSNumber[],Foundation.NSNumber[],Foundation.NSNumber[],EventKit.EKRecurrenceEnd)']/*" />
 		[Export ("initRecurrenceWithFrequency:interval:daysOfTheWeek:daysOfTheMonth:monthsOfTheYear:weeksOfTheYear:daysOfTheYear:setPositions:end:")]
 		NativeHandle Constructor (EKRecurrenceFrequency type, nint interval, [NullAllowed] EKRecurrenceDayOfWeek [] days, [NullAllowed] NSNumber [] monthDays, [NullAllowed] NSNumber [] months,
-					[NullAllowed] NSNumber [] weeksOfTheYear, [NullAllowed] NSNumber [] daysOfTheYear, [NullAllowed] NSNumber [] setPositions, [NullAllowed] EKRecurrenceEnd end);
+						[NullAllowed] NSNumber [] weeksOfTheYear, [NullAllowed] NSNumber [] daysOfTheYear, [NullAllowed] NSNumber [] setPositions, [NullAllowed] EKRecurrenceEnd end);
 
 	}
 
@@ -666,7 +679,21 @@ namespace EventKit {
 		EKCalendar DefaultCalendarForNewReminders { get; }
 
 		[Export ("fetchRemindersMatchingPredicate:completion:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="predicate">A predicate for the reminders you want to fetch.</param>
+			<summary>Fetches the reminders that match the specified predicate.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous FetchReminders operation.  The value of the TResult parameter is of type System.Action&lt;EventKit.EKReminder[]&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""",
+			XmlDocsWithOutParameter = """
+			<param name="predicate">To be added.</param>
+			<param name="result">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		IntPtr FetchReminders (NSPredicate predicate, Action<EKReminder []> completion);
 
 		[Export ("cancelFetchRequest:")]
@@ -705,7 +732,16 @@ namespace EventKit {
 		[Deprecated (PlatformName.MacOSX, 14, 0, message: "Use RequestFullAccessToEvents, RequestWriteOnlyAccessToEvents, or RequestFullAccessToReminders.")]
 		[Deprecated (PlatformName.MacCatalyst, 17, 0, message: "Use RequestFullAccessToEvents, RequestWriteOnlyAccessToEvents, or RequestFullAccessToReminders.")]
 		[Export ("requestAccessToEntityType:completion:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="entityType">The  for which access is being requested.</param>
+			<summary>Shows, if necessary, the standard permissions dialog for the specified <paramref name="entityType" />.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous RequestAccess operation.  The value of the TResult parameter is of type System.Action&lt;System.Boolean,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The RequestAccessAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			        </remarks>
+			""")]
 		void RequestAccess (EKEntityType entityType, Action<bool, NSError> completionHandler);
 
 		[Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]

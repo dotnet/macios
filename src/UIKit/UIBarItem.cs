@@ -16,6 +16,10 @@ using TextAttributes = UIKit.UIStringAttributes;
 namespace UIKit {
 	public partial class UIBarItem {
 
+		/// <param name="attributes">Specified title text attributes.</param>
+		/// <param name="state">Specified <see cref="T:UIKit.UIControlState" />.</param>
+		/// <summary>Specifies the text attributes of the title of the UIBarItem.</summary>
+		/// <remarks>To be added.</remarks>
 		public void SetTitleTextAttributes (TextAttributes attributes, UIControlState state)
 		{
 			var dict = attributes?.Dictionary;
@@ -34,6 +38,10 @@ namespace UIKit {
 		}
 
 		public partial class UIBarItemAppearance {
+			/// <param name="attributes">To be added.</param>
+			/// <param name="state">To be added.</param>
+			/// <summary>Sets the attributes applied to the title text of the UIBarItem.</summary>
+			/// <remarks>To be added.</remarks>
 			public virtual void SetTitleTextAttributes (TextAttributes attributes, UIControlState state)
 			{
 				if (attributes is null)

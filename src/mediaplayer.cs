@@ -35,6 +35,9 @@ using NSImage = UIKit.UIImage;
 #endif
 
 namespace MediaPlayer {
+	/// <summary>Abstract base class for <see cref="T:MediaPlayer.MPMediaItem" /> and <see cref="T:MediaPlayer.MPMediaItemCollection" /> classes.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPMediaEntity_ClassReference/index.html">Apple documentation for <c>MPMediaEntity</c></related>
 	[BaseType (typeof (NSObject))]
 #if !MONOMAC
 	[TV (14, 0)]
@@ -620,7 +623,13 @@ namespace MediaPlayer {
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>To be added.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous RequestAuthorization operation.  The value of the TResult parameter is of type System.Action&lt;MediaPlayer.MPMediaLibraryAuthorizationStatus&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("requestAuthorization:")]
 		void RequestAuthorization (Action<MPMediaLibraryAuthorizationStatus> handler);
 
@@ -633,7 +642,14 @@ namespace MediaPlayer {
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("addItemWithProductID:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="productID">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous AddItem operation.  The value of the TResult parameter is of type System.Action&lt;MediaPlayer.MPMediaEntity[],Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 #if IOS
 		void AddItem (string productID, [NullAllowed] Action<MPMediaEntity [], NSError> completionHandler);
 #else
@@ -649,7 +665,18 @@ namespace MediaPlayer {
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="uuid">To be added.</param>
+			<param name="creationMetadata">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous GetPlaylist operation.  The value of the TResult parameter is of type System.Action&lt;MediaPlayer.MPMediaPlaylist,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The GetPlaylistAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("getPlaylistWithUUID:creationMetadata:completionHandler:")]
 		void GetPlaylist (NSUuid uuid, [NullAllowed] MPMediaPlaylistCreationMetadata creationMetadata, Action<MPMediaPlaylist, NSError> completionHandler);
 	}
@@ -747,13 +774,19 @@ namespace MediaPlayer {
 		///         <param name="mediaItemCollection">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[Export ("mediaPicker:didPickMediaItems:"), EventArgs ("ItemsPicked"), EventName ("ItemsPicked")]
+		[Export ("mediaPicker:didPickMediaItems:"), EventArgs ("ItemsPicked", XmlDocs = """
+			<summary>Event that is raised when items are picked.</summary>
+			<remarks>To be added.</remarks>
+			"""), EventName ("ItemsPicked")]
 		void MediaItemsPicked (MPMediaPickerController sender, MPMediaItemCollection mediaItemCollection);
 
 		/// <param name="sender">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[Export ("mediaPickerDidCancel:"), EventArgs ("MPMediaPickerController"), EventName ("DidCancel")]
+		[Export ("mediaPickerDidCancel:"), EventArgs ("MPMediaPickerController", XmlDocs = """
+			<summary>Method that is called after the user dismisses the picker by canceling it.</summary>
+			<remarks>To be added.</remarks>
+			"""), EventName ("DidCancel")]
 		void MediaPickerDidCancel (MPMediaPickerController sender);
 	}
 
@@ -842,7 +875,12 @@ namespace MediaPlayer {
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="productID">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>A task that represents the asynchronous AddItem operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("addItemWithProductID:completionHandler:")]
 		void AddItem (string productID, [NullAllowed] Action<NSError> completionHandler);
 
@@ -854,7 +892,15 @@ namespace MediaPlayer {
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="mediaItems">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>A task that represents the asynchronous AddMediaItems operation</returns>
+			<remarks>
+			          <para copied="true">The AddMediaItemsAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("addMediaItems:completionHandler:")]
 		void AddMediaItems (MPMediaItem [] mediaItems, [NullAllowed] Action<NSError> completionHandler);
 
@@ -864,6 +910,8 @@ namespace MediaPlayer {
 		string CloudGlobalId { get; }
 	}
 
+	/// <summary>Properties of a <see cref="T:MediaPlayer.MPMediaPlaylist" />, such as name, attributes, and seed items.</summary>
+	/// <remarks>To be added.</remarks>
 	[Mac (10, 16)]
 	[MacCatalyst (13, 1)]
 	[Static]
@@ -1395,47 +1443,72 @@ namespace MediaPlayer {
 		MPTimedMetadata [] TimedMetadata { get; }
 	}
 
+	/// <summary>Interface that, together with the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Media%20Player%20MPMedia%20Playback_%20Extensions&amp;scope=Xamarin" title="T:MediaPlayer.MPMediaPlayback_Extensions">T:MediaPlayer.MPMediaPlayback_Extensions</a></format> class, comprise the MPMediaPlayback protocol.</summary>
+	/// <remarks>To be added.</remarks>
 	[NoMac]
 	[TV (16, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface MPMediaPlayback {
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("play")]
 		void Play ();
 
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("stop")]
 		void Stop ();
 
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("pause")]
 		void Pause ();
 
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("prepareToPlay")]
 		void PrepareToPlay ();
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("isPreparedToPlay")]
 		bool IsPreparedToPlay { get; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("currentPlaybackTime")]
 		double CurrentPlaybackTime { get; set; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("currentPlaybackRate")]
 		float CurrentPlaybackRate { get; set; } // float, not CGFloat
 
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("beginSeekingForward")]
 		void BeginSeekingForward ();
 
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("beginSeekingBackward")]
 		void BeginSeekingBackward ();
 
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("endSeeking")]
 		void EndSeeking ();
@@ -1967,6 +2040,9 @@ namespace MediaPlayer {
 		[Export ("keyspace")]
 		string Keyspace { get; }
 
+		/// <summary>The timed metadata.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Export ("value")]
 		NSObject Value { get; }
 
@@ -2008,6 +2084,11 @@ namespace MediaPlayer {
 		MPMoviePlayerController MoviePlayer { get; }
 	}
 
+	/// <summary>A class that plays media items from the device's <see cref="T:MediaPlayer.MPMediaLibrary" />.</summary>
+	/// <remarks>
+	///       <para>This class may only be used from the application's main thread.</para>
+	///     </remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPMusicPlayerController_ClassReference/index.html">Apple documentation for <c>MPMusicPlayerController</c></related>
 	[NoMac]
 	[TV (14, 0)]
 	[MacCatalyst (13, 1)]
@@ -2147,7 +2228,14 @@ namespace MediaPlayer {
 		///         <summary>Puts the first item in the queue into the buffer and runs a handler after the item has been buffered.</summary>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Puts the first item in the queue into the buffer and runs a handler after the item has been buffered.</summary>
+			<returns>A task that represents the asynchronous PrepareToPlay operation</returns>
+			<remarks>
+			          <para copied="true">The PrepareToPlayAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("prepareToPlayWithCompletionHandler:")]
 		void PrepareToPlay (Action<NSError> completionHandler);
 
@@ -2194,6 +2282,9 @@ namespace MediaPlayer {
 		NSString VolumeDidChangeNotification { get; }
 	}
 
+	/// <summary>A <see cref="T:UIKit.UIView" /> that presents a slider control used to set the system output volume..</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPVolumeView_Class/index.html">Apple documentation for <c>MPVolumeView</c></related>
 	[NoMac]
 	[TV (14, 0)]
 	[MacCatalyst (13, 1)]
@@ -2543,6 +2634,9 @@ namespace MediaPlayer {
 		NSString PropertyExcludeFromSuggestions { get; }
 	}
 
+	/// <summary>User-meaningful information about an <see cref="T:MediaPlayer.MPMediaItem" />.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPContentItem_Ref/index.html">Apple documentation for <c>MPContentItem</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // crash if used
@@ -2661,7 +2755,17 @@ namespace MediaPlayer {
 		[Deprecated (PlatformName.iOS, 14, 0, message: "Use 'CarPlay' API instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 14, 0, message: "Use 'CarPlay' API instead.")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="identifier">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous GetContentItem operation.  The value of the TResult parameter is of type System.Action&lt;MediaPlayer.MPContentItem,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The GetContentItemAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("contentItemForIdentifier:completionHandler:")]
 		void GetContentItem (string identifier, Action<MPContentItem, NSError> completionHandler);
 	}
@@ -2871,6 +2975,9 @@ namespace MediaPlayer {
 		bool EndpointAvailable { get; }
 	}
 
+	/// <summary>Class that app developers can use to add and remove actions (commands) on targets (players).</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPRemoteCommand_Ref/index.html">Apple documentation for <c>MPRemoteCommand</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // NSGenericException Reason: MPRemoteCommands cannot be initialized externally.
@@ -2913,6 +3020,9 @@ namespace MediaPlayer {
 		void RemoveTarget ([NullAllowed] NSObject target, [NullAllowed] Selector action);
 	}
 
+	/// <summary>A <see cref="T:MediaPlayer.MPRemoteCommand" /> that alters the playback rate.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPChangePlaybackRateCommand_Ref/index.html">Apple documentation for <c>MPChangePlaybackRateCommand</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPRemoteCommand))]
 	[DisableDefaultCtor] // NSGenericException Reason: MPChangePlaybackRateCommands cannot be initialized externally.
@@ -2925,6 +3035,9 @@ namespace MediaPlayer {
 		NSNumber [] SupportedPlaybackRates { get; set; }
 	}
 
+	/// <summary>Holds the current <see cref="T:MediaPlayer.MPShuffleType" />.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/MediaPlayer/MPChangeShuffleModeCommand">Apple documentation for <c>MPChangeShuffleModeCommand</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPRemoteCommand))]
 	[DisableDefaultCtor] // NSGenericException Reason: MPChangeShuffleModeCommand cannot be initialized externally.
@@ -2936,6 +3049,9 @@ namespace MediaPlayer {
 		MPShuffleType CurrentShuffleType { get; set; }
 	}
 
+	/// <summary>Holds the current <see cref="T:MediaPlayer.MPRepeatType" />.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/MediaPlayer/MPChangeRepeatModeCommand">Apple documentation for <c>MPChangeRepeatModeCommand</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPRemoteCommand))]
 	[DisableDefaultCtor] // NSGenericException Reason: MPChangeRepeatModeCommand cannot be initialized externally.
@@ -2947,6 +3063,9 @@ namespace MediaPlayer {
 		MPRepeatType CurrentRepeatType { get; set; }
 	}
 
+	/// <summary>Additional information for feedback commands defined in <see cref="T:MediaPlayer.MPRemoteCommandCenter" />.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPFeedbackCommand/index.html">Apple documentation for <c>MPFeedbackCommand</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPRemoteCommand))]
 	[DisableDefaultCtor] // NSGenericException Reason: MPFeedbackCommands cannot be initialized externally.
@@ -2972,6 +3091,9 @@ namespace MediaPlayer {
 		string LocalizedShortTitle { get; set; }
 	}
 
+	/// <summary>Additional information for rating commands defined in <see cref="T:MediaPlayer.MPRemoteCommandCenter" />.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPRatingCommand_Ref/index.html">Apple documentation for <c>MPRatingCommand</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPRemoteCommand))]
 	[DisableDefaultCtor] // NSGenericException Reason: MPRatingCommands cannot be initialized externally.
@@ -3000,6 +3122,9 @@ namespace MediaPlayer {
 		NSArray _PreferredIntervals { get; set; }
 	}
 
+	/// <summary>Class that handles events from external media players.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPRemoteCommandCenter_Ref/index.html">Apple documentation for <c>MPRemoteCommandCenter</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -3138,6 +3263,9 @@ namespace MediaPlayer {
 		MPChangePlaybackPositionCommand ChangePlaybackPositionCommand { get; }
 	}
 
+	/// <summary>Class that provides information about a player command.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPRemoteCommandEvent_Ref/index.html">Apple documentation for <c>MPRemoteCommandEvent</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // NSGenericException Reason: MPRemoteCommandEvents cannot be initialized externally.
@@ -3156,6 +3284,9 @@ namespace MediaPlayer {
 		double /* NSTimeInterval */ Timestamp { get; }
 	}
 
+	/// <summary>Provides the playback rate for a media item.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPChangePlaybackRateCommandEvent_Ref/index.html">Apple documentation for <c>MPChangePlaybackRateCommandEvent</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPRemoteCommandEvent))]
 	[DisableDefaultCtor] // NSGenericException Reason: MPChangePlaybackRateCommandEvents cannot be initialized externally.
@@ -3168,6 +3299,9 @@ namespace MediaPlayer {
 		float PlaybackRate { get; } // float, not CGFloat
 	}
 
+	/// <summary>Additional information for the rating properties defined in <see cref="T:MediaPlayer.MPRemoteCommandCenter" />.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPRatingCommandEvent_Ref/index.html">Apple documentation for <c>MPRatingCommandEvent</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPRemoteCommandEvent))]
 	[DisableDefaultCtor] // NSGenericException Reason: MPRatingCommandEvents cannot be initialized externally.
@@ -3180,6 +3314,9 @@ namespace MediaPlayer {
 		float Rating { get; } // float, not CGFloat
 	}
 
+	/// <summary>Additional information for the seek properties defined in <see cref="T:MediaPlayer.MPRemoteCommandCenter" />.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPSeekCommandEvent_Ref/index.html">Apple documentation for <c>MPSeekCommandEvent</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPRemoteCommandEvent))]
 	[DisableDefaultCtor] // Name: NSGenericException Reason: MPSeekCommandEvents cannot be initialized externally.
@@ -3192,6 +3329,9 @@ namespace MediaPlayer {
 		MPSeekCommandEventType Type { get; }
 	}
 
+	/// <summary>The time interval rate of an external media player.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPSkipIntervalCommandEvent_Ref/index.html">Apple documentation for <c>MPSkipIntervalCommandEvent</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPRemoteCommandEvent))]
 	[DisableDefaultCtor] // NSGenericException Reason: MPSkipIntervalCommandEvents cannot be initialized externally.
@@ -3204,6 +3344,9 @@ namespace MediaPlayer {
 		double /* NSTimeInterval */ Interval { get; }
 	}
 
+	/// <summary>Additional information for the feedback properties defined in <see cref="T:MediaPlayer.MPRemoteCommandCenter" />.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPFeedbackCommandEvent_Ref/index.html">Apple documentation for <c>MPFeedbackCommandEvent</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPRemoteCommandEvent))]
 	[DisableDefaultCtor]
@@ -3216,6 +3359,9 @@ namespace MediaPlayer {
 		bool Negative { [Bind ("isNegative")] get; }
 	}
 
+	/// <summary>To be added.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/MediaPlayer/MPChangeLanguageOptionCommandEvent">Apple documentation for <c>MPChangeLanguageOptionCommandEvent</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPRemoteCommandEvent))]
 	[DisableDefaultCtor] // NSGenericException Reason: MPChangeLanguageOptionCommandEvents cannot be initialized externally.
@@ -3234,6 +3380,9 @@ namespace MediaPlayer {
 		MPChangeLanguageOptionSetting Setting { get; }
 	}
 
+	/// <summary>Associates a <see cref="T:MediaPlayer.MPShuffleType" /> and a boolean specifying whether the shuffle mode should be preserved.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/MediaPlayer/MPChangeShuffleModeCommandEvent">Apple documentation for <c>MPChangeShuffleModeCommandEvent</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPRemoteCommandEvent))]
 	[DisableDefaultCtor] // NSGenericException Reason: MPChangeShuffleModeCommandEvent cannot be initialized externally.
@@ -3252,6 +3401,9 @@ namespace MediaPlayer {
 		bool PreservesShuffleMode { get; }
 	}
 
+	/// <summary>Associates a <see cref="T:MediaPlayer.MPRepeatType" /> and a boolean specifying whether the repeat mode should be preserved.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/MediaPlayer/MPChangeRepeatModeCommandEvent">Apple documentation for <c>MPChangeRepeatModeCommandEvent</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPRemoteCommandEvent))]
 	[DisableDefaultCtor] // NSGenericException Reason: MPChangeRepeatModeCommandEvent cannot be initialized externally.
@@ -3270,6 +3422,9 @@ namespace MediaPlayer {
 		bool PreservesRepeatMode { get; }
 	}
 
+	/// <summary>To be added.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/MediaPlayer/MPNowPlayingInfoLanguageOption">Apple documentation for <c>MPNowPlayingInfoLanguageOption</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // pre-emptive
@@ -3348,6 +3503,9 @@ namespace MediaPlayer {
 		bool IsAutomaticAudibleLanguageOption { get; }
 	}
 
+	/// <summary>To be added.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/MediaPlayer/MPNowPlayingInfoLanguageOptionGroup">Apple documentation for <c>MPNowPlayingInfoLanguageOptionGroup</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // pre-emptive
@@ -3450,12 +3608,18 @@ namespace MediaPlayer {
 		NSString VoiceOverTranslation { get; }
 	}
 
+	/// <summary>To be added.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/MediaPlayer/MPChangePlaybackPositionCommand">Apple documentation for <c>MPChangePlaybackPositionCommand</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPRemoteCommand))]
 	[DisableDefaultCtor] // Objective-C exception thrown.  Name: NSGenericException Reason: MPChangePlaybackPositionCommands cannot be initialized externally.
 	interface MPChangePlaybackPositionCommand {
 	}
 
+	/// <summary>To be added.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/MediaPlayer/MPChangePlaybackPositionCommandEvent">Apple documentation for <c>MPChangePlaybackPositionCommandEvent</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPRemoteCommandEvent))]
 	[DisableDefaultCtor] // Objective-C exception thrown.  Name: NSGenericException Reason: MPChangePlaybackPositionCommandEvents cannot be initialized externally.
@@ -3504,6 +3668,8 @@ namespace MediaPlayer {
 		string DescriptionText { get; set; }
 	}
 
+	/// <summary>Base class for descriptors for store and audio item queues.</summary>
+	/// <remarks>To be added.</remarks>
 	[NoMac]
 	[TV (14, 0)]
 	[MacCatalyst (13, 1)]
@@ -3574,6 +3740,8 @@ namespace MediaPlayer {
 		void SetEndTime (double endTime, MPMediaItem mediaItem);
 	}
 
+	/// <summary>Implements modification of media items in a player queue, selecting them by their store identifier.s</summary>
+	/// <remarks>To be added.</remarks>
 	[NoMac]
 	[TV (14, 0)]
 	[MacCatalyst (13, 1)]
@@ -3618,6 +3786,8 @@ namespace MediaPlayer {
 		void SetEndTime (double endTime, string storeID);
 	}
 
+	/// <summary>An immutable queue of media items for playing..</summary>
+	/// <remarks>To be added.</remarks>
 	[NoMac]
 	[TV (14, 0)]
 	[MacCatalyst (13, 1)]
@@ -3636,6 +3806,8 @@ namespace MediaPlayer {
 		NSString DidChangeNotification { get; }
 	}
 
+	/// <summary>A mutable queue of media items for playing.</summary>
+	/// <remarks>To be added.</remarks>
 	[NoMac]
 	[TV (14, 0)]
 	[MacCatalyst (13, 1)]
@@ -3655,6 +3827,8 @@ namespace MediaPlayer {
 		void RemoveItem (MPMediaItem item);
 	}
 
+	/// <summary>An application controller for changing the currently playing queue.</summary>
+	/// <remarks>To be added.</remarks>
 	[NoMac]
 	[TV (14, 0)]
 	[MacCatalyst (13, 1)]
@@ -3664,11 +3838,23 @@ namespace MediaPlayer {
 		///         <param name="completionHandler">A handler to run when the operation completes.</param>
 		///         <summary>Performs the requested queue transformation and runs a handler when the operation is complete.</summary>
 		///         <remarks>To be added.</remarks>
-		[Async]
+		[Async (XmlDocs = """
+			<param name="queueTransaction">The action to perform while the queue is created.</param>
+			<summary>Performs the requested queue transformation and runs a handler when the operation is complete.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous Perform operation.  The value of the TResult parameter is of type System.Action&lt;MediaPlayer.MPMusicPlayerControllerQueue,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The PerformAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("performQueueTransaction:completionHandler:")]
 		void Perform (Action<MPMusicPlayerControllerMutableQueue> queueTransaction, Action<MPMusicPlayerControllerQueue, NSError> completionHandler);
 	}
 
+	/// <summary>Contains a dictionary of Music Kit parameters for items to play.</summary>
+	/// <remarks>To be added.</remarks>
 	[NoMac]
 	[TV (14, 0)]
 	[MacCatalyst (13, 1)]
@@ -3688,6 +3874,8 @@ namespace MediaPlayer {
 		NSDictionary Dictionary { get; }
 	}
 
+	/// <summary>Class for manipulating start times and play order based on the play parameter results of MusicKit APIs.</summary>
+	/// <remarks>To be added.</remarks>
 	[NoMac]
 	[TV (14, 0)]
 	[MacCatalyst (13, 1)]
@@ -3738,6 +3926,9 @@ namespace MediaPlayer {
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface MPSystemMusicPlayerController {
+		/// <param name="queueDescriptor">The queue descriptor for the media items to play.</param>
+		/// <summary>Opens the Music app and plays the specified items.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("openToPlayQueueDescriptor:")]
@@ -3749,10 +3940,16 @@ namespace MediaPlayer {
 	[NoMac]
 	[MacCatalyst (13, 1)]
 	interface NSUserActivity_MediaPlayerAdditions {
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Export ("externalMediaContentIdentifier")]
 		NSString GetExternalMediaContentIdentifier ();
 
+		/// <param name="identifier">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("setExternalMediaContentIdentifier:")]
 		void SetExternalMediaContentIdentifier ([NullAllowed] NSString identifier);
 	}
@@ -3761,6 +3958,9 @@ namespace MediaPlayer {
 	[Category]
 	[BaseType (typeof (AVMediaSelectionOption))]
 	interface AVMediaSelectionOption_MPNowPlayingInfoLanguageOptionAdditions {
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("makeNowPlayingInfoLanguageOption")]
 		[return: NullAllowed]
 		MPNowPlayingInfoLanguageOption CreateNowPlayingInfoLanguageOption ();
@@ -3770,6 +3970,9 @@ namespace MediaPlayer {
 	[Category]
 	[BaseType (typeof (AVMediaSelectionGroup))]
 	interface AVMediaSelectionGroup_MPNowPlayingInfoLanguageOptionAdditions {
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("makeNowPlayingInfoLanguageOptionGroup")]
 		MPNowPlayingInfoLanguageOptionGroup CreateNowPlayingInfoLanguageOptionGroup ();
 	}

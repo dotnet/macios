@@ -405,6 +405,26 @@
             Summary for T2.#ctor(String)
             </summary>
         </member>
+        <member name="M:XmlDocumentation.T1.AsyncMethod(System.Action{System.Int32,System.Int64,Foundation.NSError})">
+            <summary>
+            Summary for T1.AsyncMethod
+            </summary>
+        </member>
+        <member name="M:XmlDocumentation.T1.DoSomething(System.Action)">
+            <summary>Summary for T1.DoSomething</summary>
+        </member>
+        <member name="M:XmlDocumentation.T1.DoSomethingAsync">
+            <summary>Summary for async version of T1.DoSomething</summary>
+        </member>
+        <member name="M:XmlDocumentation.T1.DoSomethingElse(System.Action)">
+            <summary>Summary for T1.DoSomethingElse</summary>
+        </member>
+        <member name="M:XmlDocumentation.T1.DoSomethingElseAsync">
+            <summary>Summary for async version of T1.DoSomethingElse</summary>
+        </member>
+        <member name="M:XmlDocumentation.T1.DoSomethingElseAsync(System.Boolean@)">
+            <summary>Summary for async version of T1.DoSomethingElse - with out parameter (should show up in xml docs)</summary>
+        </member>
         <member name="M:XmlDocumentation.T1.Method">
             <summary>
             Summary for T1.Method
@@ -489,6 +509,20 @@
               </example>
             </remarks>
         </member>
+        <member name="T:XmlDocumentation.AsyncMethodResultTypeName">
+            <summary>This class holds the return values for an asynchronous operation.</summary>
+        </member>
+        <member name="P:XmlDocumentation.AsyncMethodResultTypeName.Arg1">
+            <summary>The result value from the asynchronous operation.</summary>
+        </member>
+        <member name="P:XmlDocumentation.AsyncMethodResultTypeName.Arg2">
+            <summary>The result value from the asynchronous operation.</summary>
+        </member>
+        <member name="M:XmlDocumentation.AsyncMethodResultTypeName.#ctor(System.Int32,System.Int64)">
+            <summary>Creates a new instance of this class.</summary>
+            <param name="arg1">Result value from an asynchronous operation.</param>
+            <param name="arg2">Result value from an asynchronous operation.</param>
+        </member>
         <member name="T:XmlDocumentation.TClass">
             <summary>TClass</summary>
         </member>
@@ -561,8 +595,18 @@
                 </para>
             </remarks>
         </member>
-        <member name="F:XmlDocumentation.TClass.__mt_WeakDelegate_var">
+        <member name="P:XmlDocumentation.TClass.WeakDelegate">
             <summary>TClass.WeakDelegate</summary>
+        </member>
+        <member name="E:XmlDocumentation.TClass.DidChangeMutteringVolume">
+            <summary>TClassDelegate.DidChangeMutteringVolume - EventArgs.</summary>
+        </member>
+        <member name="T:XmlDocumentation.TMutteranceEventArgs">
+            <summary>Provides data for an event based on an Objective-C protocol method.</summary>
+        </member>
+        <member name="M:XmlDocumentation.TMutteranceEventArgs.#ctor(System.Double)">
+            <summary>Create a new instance of the <see cref="T:XmlDocumentation.TMutteranceEventArgs" /> with the specified event data.</summary>
+            <param name="mutteringVolume">The value for the <see cref="P:XmlDocumentation.TMutteranceEventArgs.MutteringVolume" /> property.</param>
         </member>
         <member name="T:XmlDocumentation.TUtteranceEventArgs">
             <summary>Provides data for an event based on an Objective-C protocol method.</summary>
@@ -580,6 +624,12 @@
         <member name="M:XmlDocumentation.ITClassDelegate._DidChangeUtteringSpeed(XmlDocumentation.ITClassDelegate,XmlDocumentation.TClass,System.Double)">
             <summary>TClassDelegate.DidChangeUtteringSpeed</summary>
         </member>
+        <member name="M:XmlDocumentation.ITClassDelegate.DidChangeMutteringVolume(XmlDocumentation.TClass,System.Double)">
+            <summary>TClassDelegate.DidChangeMutteringVolume</summary>
+        </member>
+        <member name="M:XmlDocumentation.ITClassDelegate._DidChangeMutteringVolume(XmlDocumentation.ITClassDelegate,XmlDocumentation.TClass,System.Double)">
+            <summary>TClassDelegate.DidChangeMutteringVolume</summary>
+        </member>
         <member name="T:XmlDocumentation.TClassDelegate_Extensions">
             <summary>Extension methods to the <see cref="T:XmlDocumentation.ITClassDelegate" /> interface to support all the methods from the TClassDelegate protocol.</summary>
             <remarks>
@@ -588,6 +638,9 @@
         </member>
         <member name="M:XmlDocumentation.TClassDelegate_Extensions.DidChangeUtteringSpeed(XmlDocumentation.ITClassDelegate,XmlDocumentation.TClass,System.Double)">
             <summary>TClassDelegate.DidChangeUtteringSpeed</summary>
+        </member>
+        <member name="M:XmlDocumentation.TClassDelegate_Extensions.DidChangeMutteringVolume(XmlDocumentation.ITClassDelegate,XmlDocumentation.TClass,System.Double)">
+            <summary>TClassDelegate.DidChangeMutteringVolume</summary>
         </member>
         <member name="T:XmlDocumentation.TClassDelegate">
             <summary>TClassDelegate</summary>
@@ -651,6 +704,9 @@
                     Developers should not invoke this method directly, instead they should call <see cref="M:ObjCRuntime.Runtime.GetNSObject(System.IntPtr)" /> as it will prevent two instances of a managed object pointing to the same native object.
                 </para>
             </remarks>
+        </member>
+        <member name="M:XmlDocumentation.TClassDelegate.DidChangeMutteringVolume(XmlDocumentation.TClass,System.Double)">
+            <summary>TClassDelegate.DidChangeMutteringVolume</summary>
         </member>
         <member name="M:XmlDocumentation.TClassDelegate.DidChangeUtteringSpeed(XmlDocumentation.TClass,System.Double)">
             <summary>TClassDelegate.DidChangeUtteringSpeed</summary>
@@ -738,6 +794,12 @@
             <summary>
             Summary for TG1.TGProperty
             </summary>
+        </member>
+        <member name="P:XmlDocumentation.TOuter.TInner.TOuterInnerField">
+            <summary>TOuter.TInner.Field</summary>
+        </member>
+        <member name="P:XmlDocumentation.TOuter.TInner.TOuterInnerField2">
+            <summary>Represents the value associated with the constant 'TOuterInnerField2'.</summary>
         </member>
         <member name="T:XmlDocumentation.OptionsA">
             <summary>Summary for OptionsA.</summary>

@@ -53,6 +53,10 @@ namespace Cecil.Tests {
 
 			var documentedButNotPresent = xmlMembers.Except (dllMembers).ToList ();
 			Assert.Multiple (() => {
+				if (documentedButNotPresent.Any ()) {
+					foreach (var dll in dllMembers)
+						Console.WriteLine (dll.DocId);
+				}
 				foreach (var doc in documentedButNotPresent)
 					Assert.Fail ($"{doc.DocId}: Documented API not found in the platform assembly. This probably indicates that the code to compute the doc name for a given member is incorrect.");
 			});
@@ -185,9 +189,14 @@ namespace Cecil.Tests {
 		// There's already an implementation in Roslyn, but that's a rather heavy dependency,
 		// so we're implementing this in our own code instead.
 
+		static string EscapeName (string name)
+		{
+			return name.Replace ('.', '#').Replace ('<', '{').Replace ('>', '}');
+		}
+
 		static string GetDocId (MethodDefinition md)
 		{
-			var methodName = md.Name.Replace ('.', '#');
+			var methodName = EscapeName (md.Name);
 			var name = GetDocId (md.DeclaringType) + "." + methodName;
 			if (md.HasGenericParameters)
 				name += $"``{md.GenericParameters.Count}";
@@ -206,7 +215,7 @@ namespace Cecil.Tests {
 
 		static string GetDocId (PropertyDefinition pd)
 		{
-			var propertyName = pd.Name.Replace ('.', '#');
+			var propertyName = EscapeName (pd.Name);
 			var name = GetDocId (pd.DeclaringType) + "." + propertyName;
 			if (pd.HasParameters) {
 				name += "(" + string.Join (",", pd.Parameters.Select (p => GetDocId (p.ParameterType))) + ")";
@@ -219,11 +228,13 @@ namespace Cecil.Tests {
 			string name = "";
 			if (tr.IsNested) {
 				var decl = tr.DeclaringType;
-				while (decl.IsNested) {
+				while (true) {
 					name = decl.Name + "." + name;
+					if (!decl.IsNested)
+						break;
 					decl = decl.DeclaringType;
 				}
-				name = decl.Namespace + "." + decl.Name + "." + name;
+				name = decl.Namespace + "." + name;
 			} else {
 				name = tr.Namespace + ".";
 			}

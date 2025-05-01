@@ -21,7 +21,7 @@ macos_DEFINES=-DMONOMAC
 # Clang will by default emit objc_msgSend stubs in Xcode 14, which ld from earlier Xcodes doesn't understand.
 # We disable this by passing -fno-objc-msgsend-selector-stubs to clang.
 # We can probably remove this flag once we require developers to use Xcode 14.
-# Ref: https://github.com/xamarin/xamarin-macios/issues/16223
+# Ref: https://github.com/dotnet/macios/issues/16223
 OBJC_CFLAGS=-ObjC++ -std=c++14 -fno-exceptions -fno-objc-msgsend-selector-stubs -fobjc-abi-version=2 -fobjc-legacy-dispatch
 CFLAGS= -Wall -fms-extensions -Werror -Wconversion -Wdeprecated -Wuninitialized -fstack-protector-strong -Wformat -Wformat-security -Werror=format-security -g -I.
 SWIFTFLAGS=-g -emit-library

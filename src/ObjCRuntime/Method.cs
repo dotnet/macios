@@ -71,18 +71,6 @@ namespace ObjCRuntime {
 			}
 		}
 
-		internal unsafe static IntPtr X86_DoubleABI_StretTrampoline {
-			get {
-				return Runtime.options->Trampolines->x86_double_abi_stret_tramp;
-			}
-		}
-
-		internal unsafe static IntPtr X86_DoubleABI_StaticStretTrampoline {
-			get {
-				return Runtime.options->Trampolines->x86_double_abi_static_stret_tramp;
-			}
-		}
-
 		internal unsafe static IntPtr LongTrampoline {
 			get {
 				return Runtime.options->Trampolines->long_tramp;

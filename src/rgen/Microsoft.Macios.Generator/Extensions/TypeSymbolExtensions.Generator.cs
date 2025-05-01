@@ -116,21 +116,6 @@ static partial class TypeSymbolExtensions {
 	public static ForcedTypeData? GetForceTypeData (this ISymbol symbol)
 		=> GetAttribute<ForcedTypeData> (symbol, AttributesNames.ForcedTypeAttribute, ForcedTypeData.TryParse);
 
-	public static bool X86NeedStret (ITypeSymbol returnType)
-	{
-		if (!returnType.IsValueType || returnType.SpecialType == SpecialType.System_Enum ||
-			returnType.TryGetBuiltInTypeSize ())
-			return false;
-
-		var fieldTypes = new List<ITypeSymbol> ();
-		var size = GetValueTypeSize (returnType, fieldTypes, false);
-
-		if (size > 8)
-			return true;
-
-		return fieldTypes.Count == 3;
-	}
-
 	public static bool X86_64NeedStret (ITypeSymbol returnType)
 	{
 		if (!returnType.IsValueType || returnType.SpecialType == SpecialType.System_Enum ||
@@ -138,47 +123,7 @@ static partial class TypeSymbolExtensions {
 			return false;
 
 		var fieldTypes = new List<ITypeSymbol> ();
-		return GetValueTypeSize (returnType, fieldTypes, true) > 16;
-	}
-
-	public static bool ArmNeedStret (ITypeSymbol returnType, Compilation compilation)
-	{
-		var currentPlatform = compilation.GetCurrentPlatform ();
-		bool has32bitArm = currentPlatform != PlatformName.TvOS && currentPlatform != PlatformName.MacOSX;
-		if (!has32bitArm)
-			return false;
-
-		ITypeSymbol t = returnType;
-
-		if (!t.IsValueType || t.SpecialType == SpecialType.System_Enum || t.TryGetBuiltInTypeSize ())
-			return false;
-
-		var fieldTypes = new List<ITypeSymbol> ();
-		var size = t.GetValueTypeSize (fieldTypes, false);
-
-		bool isiOS = currentPlatform == PlatformName.iOS;
-
-		if (isiOS && size <= 4 && fieldTypes.Count == 1) {
-			
-#pragma warning disable format
-			return fieldTypes [0] switch {
-				{ Name: "nint" } => false,
-				{ Name: "nuint" } => false,
-				{ SpecialType: SpecialType.System_Char } => false,
-				{ SpecialType: SpecialType.System_Byte } => false,
-				{ SpecialType: SpecialType.System_SByte } => false,
-				{ SpecialType: SpecialType.System_UInt16 } => false,
-				{ SpecialType: SpecialType.System_Int16 } => false,
-				{ SpecialType: SpecialType.System_UInt32 } => false,
-				{ SpecialType: SpecialType.System_Int32 } => false,
-				{ SpecialType: SpecialType.System_IntPtr } => false,
-				{ SpecialType: SpecialType.System_UIntPtr } => false,
-				_ => true
-			};
-#pragma warning restore format
-		}
-
-		return true;
+		return GetValueTypeSize (returnType, fieldTypes) > 16;
 	}
 
 	/// <summary>
@@ -193,13 +138,7 @@ static partial class TypeSymbolExtensions {
 		if (returnType is IPointerTypeSymbol)
 			return false;
 
-		if (X86NeedStret (returnType))
-			return true;
-
-		if (X86_64NeedStret (returnType))
-			return true;
-
-		return ArmNeedStret (returnType, compilation);
+		return X86_64NeedStret (returnType);
 	}
 
 }

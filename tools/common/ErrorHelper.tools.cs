@@ -324,7 +324,7 @@ namespace Xamarin.Bundler {
 				if (Verbosity > 2 && !string.IsNullOrEmpty (e.StackTrace))
 					Console.Error.WriteLine (e.StackTrace);
 			} else if (IsExpectedException is null || !IsExpectedException (e)) {
-				Console.Error.WriteLine ("error " + Prefix + "0000: Unexpected error - Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new");
+				Console.Error.WriteLine ("error " + Prefix + "0000: Unexpected error - Please file a bug report at https://github.com/dotnet/macios/issues/new");
 				Console.Error.WriteLine (e.ToString ());
 			} else {
 				Console.Error.WriteLine (e.ToString ());

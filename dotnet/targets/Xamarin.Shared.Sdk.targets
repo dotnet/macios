@@ -684,6 +684,10 @@
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.IsNativeAOT" Value="$(_IsNativeAOTFeature)" Trim="true" />
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Class.ValidateObjectPointers" Value="$(_ValidateObjectPointers)" Trim="true" />
 
+			<!-- Configure System.Net.Http Native Handlers -->
+			<RuntimeHostConfigurationOption Include="System.Net.Http.NativeHandler.UseNSUrlSessionHandler" Value="$(_IsNSUrlSessionHandlerFeature)" Trim="true" />
+			<RuntimeHostConfigurationOption Include="System.Net.Http.NativeHandler.UseCFNetworkHandler" Value="$(_IsCFNetworkHandlerFeature)" Trim="true" />
+
 			<!-- Mark all assemblies to be copied if we're not linking any assemblies -->
 			<ResolvedFileToPublish
 				Update="@(ResolvedFileToPublish)"

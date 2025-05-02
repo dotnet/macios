@@ -24,6 +24,8 @@ using UIKit;
 
 namespace UserNotifications {
 
+	/// <summary>Enumerates attached file errors that can occur when making a notification request.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[ErrorDomain ("UNErrorDomain")]
 	[Native]
@@ -91,6 +93,8 @@ namespace UserNotifications {
 		AllowAnnouncement = (1 << 4),
 	}
 
+	/// <summary>Enumerates ways in which the user can respond to a request for permission to post notifications.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UNAuthorizationStatus : long {
@@ -109,6 +113,8 @@ namespace UserNotifications {
 		Ephemeral,
 	}
 
+	/// <summary>Enumerates notification states.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UNNotificationSetting : long {
@@ -133,6 +139,8 @@ namespace UserNotifications {
 		Alert,
 	}
 
+	/// <summary>Enumerates user interaction authorization requests.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	[Flags]
@@ -168,6 +176,8 @@ namespace UserNotifications {
 		TimeSensitive = (1 << 8),
 	}
 
+	/// <summary>Enumerates flags that control the presentation of notifications in foreground apps.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	[Flags]
@@ -237,6 +247,9 @@ namespace UserNotifications {
 #endif // !XAMCORE_5_0
 	}
 
+	/// <summary>System-created notification that contains the original request, the notification content, the trigger that caused delivery, and the date of the delivery.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/UserNotifications/UNNotification">Apple documentation for <c>UNNotification</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // as per docs (not user created)
@@ -533,13 +546,16 @@ namespace UserNotifications {
 
 	}
 
+	/// <summary>System-generated object that contains the parts of a notification, including text, sound, badge and launch images, attachments, and so on.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/UserNotifications/UNNotificationContent">Apple documentation for <c>UNNotificationContent</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // as per docs
 	interface UNNotificationContent : NSCopying, NSMutableCopying, NSSecureCoding {
 
-		/// <summary>Gets an array of <see cref="T:UserNotifications.UNNotificationAttachment" /> objects that contains the attachments for the notification.</summary>
-		///         <value>An array of <see cref="T:UserNotifications.UNNotificationAttachment" /> objects that contains the attachments for the notification.</value>
+		/// <summary>Gets an array of <see cref="UserNotifications.UNNotificationAttachment" /> objects that contains the attachments for the notification.</summary>
+		///         <value>An array of <see cref="UserNotifications.UNNotificationAttachment" /> objects that contains the attachments for the notification.</value>
 		///         <remarks>To be added.</remarks>
 		[Unavailable (PlatformName.TvOS)]
 		[Export ("attachments", ArgumentSemantic.Copy)]
@@ -659,12 +675,15 @@ namespace UserNotifications {
 		string FilterCriteria { get; }
 	}
 
+	/// <summary>Developer-created object that specifies the parts of a notification, including text, sound, badge and launch images, attachments, and so on, for a notification request.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/UserNotifications/UNMutableNotificationContent">Apple documentation for <c>UNMutableNotificationContent</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (UNNotificationContent))]
 	interface UNMutableNotificationContent {
 
-		/// <summary>Gets or sets an array of <see cref="T:UserNotifications.UNNotificationAttachment" /> objects that contains the attachments for the notification.</summary>
-		///         <value>An array of <see cref="T:UserNotifications.UNNotificationAttachment" /> objects that contains the attachments for the notification.</value>
+		/// <summary>Gets or sets an array of <see cref="UserNotifications.UNNotificationAttachment" /> objects that contains the attachments for the notification.</summary>
+		///         <value>An array of <see cref="UserNotifications.UNNotificationAttachment" /> objects that contains the attachments for the notification.</value>
 		///         <remarks>To be added.</remarks>
 		[Unavailable (PlatformName.TvOS)]
 		[Export ("attachments", ArgumentSemantic.Copy)]
@@ -777,6 +796,9 @@ namespace UserNotifications {
 		string FilterCriteria { get; set; }
 	}
 
+	/// <summary>Contains the content and trigger for a notification that the developer requests from <see cref="UserNotifications.UNUserNotificationCenter" />..</summary>
+	/// <remarks>This class is not related to <see cref="UserNotifications.UNNotificationResponse" />, which details a user response to a notification.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/UserNotifications/UNNotificationRequest">Apple documentation for <c>UNNotificationRequest</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -831,7 +853,7 @@ namespace UserNotifications {
 	}
 
 	/// <summary>A system-created object that contains information about how a user responded to a notification.</summary>
-	///     <remarks>This class is not related to <see cref="T:UserNotifications.UNNotificationRequest" />, which represents the data needed to request a notification from the system.</remarks>
+	///     <remarks>This class is not related to <see cref="UserNotifications.UNNotificationRequest" />, which represents the data needed to request a notification from the system.</remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/UserNotifications/UNNotificationResponse">Apple documentation for <c>UNNotificationResponse</c></related>
 	[Unavailable (PlatformName.TvOS)]
 	[MacCatalyst (13, 1)]
@@ -875,7 +897,7 @@ namespace UserNotifications {
 		UIScene TargetScene { get; }
 	}
 
-	/// <summary>System-created object that contains a user response to a <see cref="T:UserNotifications.UNTextInputNotificationAction" />.</summary>
+	/// <summary>System-created object that contains a user response to a <see cref="UserNotifications.UNTextInputNotificationAction" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/UserNotifications/UNTextInputNotificationResponse">Apple documentation for <c>UNTextInputNotificationResponse</c></related>
 	[Unavailable (PlatformName.TvOS)]
@@ -914,6 +936,9 @@ namespace UserNotifications {
 		void TimeWillExpire ();
 	}
 
+	/// <summary>System-supplied object that contains current notification and device settings for an application.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/UserNotifications/UNNotificationSettings">Apple documentation for <c>UNNotificationSettings</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // as per docs
@@ -1087,6 +1112,9 @@ namespace UserNotifications {
 		UNNotificationSound GetCriticalSound (string name, float volume);
 	}
 
+	/// <summary>Triggers a notification when a condition is met.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/UserNotifications/UNNotificationTrigger">Apple documentation for <c>UNNotificationTrigger</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Abstract] // as per docs
@@ -1100,6 +1128,9 @@ namespace UserNotifications {
 		bool Repeats { get; }
 	}
 
+	/// <summary>Trigger that is created by the system to activate push notification triggers.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/UserNotifications/UNPushNotificationTrigger">Apple documentation for <c>UNPushNotificationTrigger</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (UNNotificationTrigger))]
 	[DisableDefaultCtor] // as per docs (system created)
@@ -1107,6 +1138,9 @@ namespace UserNotifications {
 
 	}
 
+	/// <summary>Triggers a notification after a time interval.</summary>
+	/// <remarks>Application developers can set <see cref="CoreLocation.CLRegion.NotifyOnEntry" /> and <see cref="CoreLocation.CLRegion.NotifyOnExit" /> to control when the trigger is activated.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/UserNotifications/UNTimeIntervalNotificationTrigger">Apple documentation for <c>UNTimeIntervalNotificationTrigger</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (UNNotificationTrigger))]
 	[DisableDefaultCtor] // as per doc, use supplied method (CreateTrigger)
@@ -1114,7 +1148,7 @@ namespace UserNotifications {
 
 		/// <summary>Gets the time interval after which the trigger is activated.</summary>
 		///         <value>Te time interval after which the trigger is activated.</value>
-		///         <remarks>Application developers can set <see cref="P:CoreLocation.CLRegion.NotifyOnEntry" /> and <see cref="P:CoreLocation.CLRegion.NotifyOnExit" /> to control when the trigger is activated.</remarks>
+		///         <remarks>Application developers can set <see cref="CoreLocation.CLRegion.NotifyOnEntry" /> and <see cref="CoreLocation.CLRegion.NotifyOnExit" /> to control when the trigger is activated.</remarks>
 		[Export ("timeInterval")]
 		double TimeInterval { get; }
 
@@ -1132,11 +1166,14 @@ namespace UserNotifications {
 		///           <para>The date and time that the trigger will activate next.</para>
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
 		///         </value>
-		///         <remarks>Application developers can set <see cref="P:CoreLocation.CLRegion.NotifyOnEntry" /> and <see cref="P:CoreLocation.CLRegion.NotifyOnExit" /> to control when the trigger is activated.</remarks>
+		///         <remarks>Application developers can set <see cref="CoreLocation.CLRegion.NotifyOnEntry" /> and <see cref="CoreLocation.CLRegion.NotifyOnExit" /> to control when the trigger is activated.</remarks>
 		[NullAllowed, Export ("nextTriggerDate")]
 		NSDate NextTriggerDate { get; }
 	}
 
+	/// <summary>Triggers the delivery of a notification at a specified day or time, either once or repeatedly.</summary>
+	/// <remarks>To be added.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/UserNotifications/UNCalendarNotificationTrigger">Apple documentation for <c>UNCalendarNotificationTrigger</c></related>
 	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor] // as per doc, use supplied method (CreateTrigger)
 	[BaseType (typeof (UNNotificationTrigger))]
@@ -1168,7 +1205,7 @@ namespace UserNotifications {
 	}
 
 	/// <summary>Triggers the delivery of a notification when the device enters or leaves a geographic area.</summary>
-	///     <remarks>Application developers can set <see cref="P:CoreLocation.CLRegion.NotifyOnEntry" /> and <see cref="P:CoreLocation.CLRegion.NotifyOnExit" /> to control when the trigger is activated.</remarks>
+	///     <remarks>Application developers can set <see cref="CoreLocation.CLRegion.NotifyOnEntry" /> and <see cref="CoreLocation.CLRegion.NotifyOnExit" /> to control when the trigger is activated.</remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/UserNotifications/UNLocationNotificationTrigger">Apple documentation for <c>UNLocationNotificationTrigger</c></related>
 	[NoMac]
 	[NoMacCatalyst]
@@ -1178,7 +1215,7 @@ namespace UserNotifications {
 	interface UNLocationNotificationTrigger {
 
 		/// <summary>Gets the region whose boundary activates the trigger.</summary>
-		///         <value>Application developers can set <see cref="P:CoreLocation.CLRegion.NotifyOnEntry" /> and <see cref="P:CoreLocation.CLRegion.NotifyOnExit" /> to control when the trigger is activated.</value>
+		///         <value>Application developers can set <see cref="CoreLocation.CLRegion.NotifyOnEntry" /> and <see cref="CoreLocation.CLRegion.NotifyOnExit" /> to control when the trigger is activated.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("region", ArgumentSemantic.Copy)]
 		CLRegion Region { get; }
@@ -1195,6 +1232,12 @@ namespace UserNotifications {
 
 	interface IUNUserNotificationCenterDelegate { }
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UserNotifications.UNUserNotificationCenterDelegate" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UserNotifications.UNUserNotificationCenterDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UserNotifications.UNUserNotificationCenterDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="UserNotifications.UNUserNotificationCenterDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
@@ -1227,6 +1270,9 @@ namespace UserNotifications {
 		void OpenSettings (UNUserNotificationCenter center, [NullAllowed] UNNotification notification);
 	}
 
+	/// <summary>System-provided class that lets the developer schedule and manage notifications.</summary>
+	/// <remarks>Developers use <see cref="UserNotifications.UNUserNotificationCenter.CurrentNotificationCenter" /> to obtain the singleton that coordinates and schedules notifications.</remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/UserNotifications/UNUserNotificationCenter">Apple documentation for <c>UNUserNotificationCenter</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -1259,7 +1305,12 @@ namespace UserNotifications {
 		///         <param name="completionHandler">A task that takes a <see langword="bool" /> success value and an error to process.</param>
 		///         <summary>Requests notification authorization with the specified options, and processes the result of the request.</summary>
 		///         <remarks>To be added.</remarks>
-		[Async]
+		[Async (XmlDocs = """
+			<param name="options">The options for the authorization request.</param>
+			<summary>Requests notification authorization with the specified options, and processes the result of the request.</summary>
+			<returns>A task that takes an authorization options object and returns a tuple that contains a boolean that indicates the result of the request and an error.</returns>
+			<remarks>The error in the returned tuple may be <see langword="null" />.</remarks>
+			""")]
 		[Export ("requestAuthorizationWithOptions:completionHandler:")]
 		void RequestAuthorization (UNAuthorizationOptions options, Action<bool, NSError> completionHandler);
 
@@ -1273,7 +1324,11 @@ namespace UserNotifications {
 		/// <param name="completionHandler">An action that takes an array of the currently registered notification categories and returns <see langword="void" />.</param>
 		///         <summary>Returns the currently registered notification categories for the app, processing them before they are returned.</summary>
 		///         <remarks>To be added.</remarks>
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Returns the currently registered notification categories for the app, processing them before they are returned.</summary>
+			<returns>A task that returns the set of the currently registered notification categories for the app.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Unavailable (PlatformName.TvOS)]
 		[Export ("getNotificationCategoriesWithCompletionHandler:")]
 		void GetNotificationCategories (Action<NSSet<UNNotificationCategory>> completionHandler);
@@ -1281,7 +1336,11 @@ namespace UserNotifications {
 		/// <param name="completionHandler">An action that takes a notification settings object and returns <see langword="void" />.</param>
 		///         <summary>Returns the notification settings object for the app, processing it before it is returned.</summary>
 		///         <remarks>To be added.</remarks>
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Returns the notification settings object for the app, processing it before it is returned.</summary>
+			<returns>A task that returns the notification settings for the app.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("getNotificationSettingsWithCompletionHandler:")]
 		void GetNotificationSettings (Action<UNNotificationSettings> completionHandler);
 
@@ -1289,14 +1348,23 @@ namespace UserNotifications {
 		///         <param name="completionHandler">An action that returns <see langword="void" /> and takes an out parameter for storing any errors that occur while trying to add the request.<para tool="nullallowed">This parameter can be <see langword="null" />.</para></param>
 		///         <summary>Adds the local notification that is specified by <paramref name="request" />, with the specified <paramref name="completionHandler" />.</summary>
 		///         <remarks>To be added.</remarks>
-		[Async]
+		[Async (XmlDocs = """
+			<param name="request">The data and settings for the notification.</param>
+			<summary>Asynchronously adds the local notification that is specified by <paramref name="request" />.</summary>
+			<returns>A task that represents the asynchronous AddNotificationRequest operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("addNotificationRequest:withCompletionHandler:")]
 		void AddNotificationRequest (UNNotificationRequest request, [NullAllowed] Action<NSError> completionHandler);
 
 		/// <param name="completionHandler">An action that takes an array of the pending notification requests and returns <see langword="void" />.</param>
 		///         <summary>Returns an array that contains the pending notification requests, processing them before returning them.</summary>
 		///         <remarks>To be added.</remarks>
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Returns an array that contains the pending notification requests, processing them before returning them.</summary>
+			<returns>A task that returns the array that contains the pending notification requests.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("getPendingNotificationRequestsWithCompletionHandler:")]
 		void GetPendingNotificationRequests (Action<UNNotificationRequest []> completionHandler);
 
@@ -1314,7 +1382,14 @@ namespace UserNotifications {
 		/// <param name="completionHandler">An action that takes an array of the delivered notifications and returns <see langword="void" />.</param>
 		///         <summary>Returns the delivered notifications that are still in the notification center, processing them before they are returned.</summary>
 		///         <remarks>To be added.</remarks>
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Returns the delivered notifications that are still in the notification center, processing them before they are returned.</summary>
+			<returns>The delivered notifications that are still in the notification center.</returns>
+			<remarks>
+			          <para copied="true">The GetDeliveredNotificationsAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Unavailable (PlatformName.TvOS)]
 		[Export ("getDeliveredNotificationsWithCompletionHandler:")]
 		void GetDeliveredNotifications (Action<UNNotification []> completionHandler);

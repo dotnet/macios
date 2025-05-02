@@ -65,7 +65,7 @@ namespace Foundation {
 		///         <summary>Creates an NSDictionary from a list of keys and values.</summary>
 		///         <remarks>
 		///           <para>
-		/// 	    Each C# object is boxed as an NSObject by calling <see cref="M:Foundation.NSObject.FromObject(System.Object)" />.
+		/// 	    Each C# object is boxed as an NSObject by calling <see cref="Foundation.NSObject.FromObject(System.Object)" />.
 		/// 	  </para>
 		///           <para>
 		/// 	    The list of keys and values are used to create the dictionary.   The number of parameters passed to this function must be even.
@@ -160,7 +160,7 @@ namespace Foundation {
 		///         <remarks>
 		///           <para>
 		/// 	    The keys and values will first be boxed into
-		/// 	    NSObjects using <see cref="M:Foundation.NSObject.FromObject(System.Object)" />.
+		/// 	    NSObjects using <see cref="Foundation.NSObject.FromObject(System.Object)" />.
 		/// 	  </para>
 		///         </remarks>
 		public static NSDictionary FromObjectsAndKeys (object [] objects, object [] keys)
@@ -177,6 +177,14 @@ namespace Foundation {
 				return FromObjectsAndKeysInternal (no, nk);
 		}
 
+		/// <param name="objects">Array of values for the dictionary.</param>
+		/// <param name="keys">Array of keys for the dictionary.</param>
+		/// <param name="count">Number of items to use in the creation, the number must be less than or equal to the number of elements on the arrays.</param>
+		/// <summary>Creates a dictionary from a set of values and keys.</summary>
+		/// <returns>
+		///         </returns>
+		/// <remarks>
+		///         </remarks>
 		public static NSDictionary FromObjectsAndKeys (NSObject [] objects, NSObject [] keys, nint count)
 		{
 			if (objects is null)
@@ -193,6 +201,18 @@ namespace Foundation {
 				return FromObjectsAndKeysInternal (no, nk);
 		}
 
+		/// <param name="objects">Array of values for the dictionary.</param>
+		/// <param name="keys">Array of keys for the dictionary.</param>
+		/// <param name="count">Number of items to use in the creation, the number must be less than or equal to the number of elements on the arrays.</param>
+		/// <summary>Creates a dictionary from a set of values and keys.</summary>
+		/// <returns>
+		///         </returns>
+		/// <remarks>
+		///           <para>
+		/// 	    The keys and values will first be boxed into
+		/// 	    NSObjects using <see cref="Foundation.NSObject.FromObject(System.Object)" />.
+		/// 	  </para>
+		///         </remarks>
 		public static NSDictionary FromObjectsAndKeys (object [] objects, object [] keys, nint count)
 		{
 			if (objects is null)
@@ -458,6 +478,12 @@ namespace Foundation {
 			return value is not null;
 		}
 
+		/// <param name="key">Key to lookup</param>
+		/// <summary>Returns the value associated from a key in the dictionary, or null if the key is not found.</summary>
+		/// <value>
+		///         </value>
+		/// <remarks>
+		///         </remarks>
 		public virtual NSObject this [NSObject key] {
 			get {
 				return ObjectForKey (key);
@@ -467,6 +493,12 @@ namespace Foundation {
 			}
 		}
 
+		/// <param name="key">Key to lookup</param>
+		/// <summary>Returns the value associated from a key in the dictionary, or null if the key is not found.</summary>
+		/// <value>
+		///         </value>
+		/// <remarks>
+		///         </remarks>
 		public virtual NSObject this [NSString key] {
 			get {
 				return ObjectForKey (key);
@@ -476,6 +508,11 @@ namespace Foundation {
 			}
 		}
 
+		/// <param name="key">Key to lookup</param>
+		/// <summary>Returns the value associated from a key in the dictionary, or null if the key is not found.</summary>
+		/// <value>
+		///         </value>
+		/// <remarks>The string will be marshalled as an NSString before performing the lookup.</remarks>
 		public virtual NSObject this [string key] {
 			get {
 				if (key is null)
@@ -525,7 +562,7 @@ namespace Foundation {
 		///         <remarks>
 		/// 	  In some cases, where you might be iterating over a loop, or
 		/// 	  you have not surfaced a bound type, but you have the handle to
-		/// 	  the key, you can use the <see cref="M:Foundation.NSDictionary.LowlevelObjectForKey(System.IntPtr)" />
+		/// 	  the key, you can use the <see cref="Foundation.NSDictionary.LowlevelObjectForKey(System.IntPtr)" />
 		/// 	  which takes a handle for the key and returns a handle for the returned object. 
 		/// 	</remarks>
 		public IntPtr LowlevelObjectForKey (IntPtr key)

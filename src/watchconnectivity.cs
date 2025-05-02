@@ -14,9 +14,9 @@ using Foundation;
 
 namespace WatchConnectivity {
 
-	/// <summary>The reply handler for use with <see cref="M:WatchConnectivity.WCSessionDelegate_Extensions.DidReceiveMessageData(WatchConnectivity.IWCSessionDelegate,WatchConnectivity.WCSession,Foundation.NSData,WatchConnectivity.WCSessionReplyDataHandler)" />.</summary>
+	/// <summary>The reply handler for use with <see cref="WatchConnectivity.WCSessionDelegate_Extensions.DidReceiveMessageData(WatchConnectivity.IWCSessionDelegate,WatchConnectivity.WCSession,Foundation.NSData,WatchConnectivity.WCSessionReplyDataHandler)" />.</summary>
 	delegate void WCSessionReplyHandler (NSDictionary<NSString, NSObject> replyMessage);
-	/// <summary>The reply handler for use with <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Watch%20Connectivity%20WCSession%20Delegate%20Did%20Receive%20Message%20Data&amp;scope=Xamarin" title="M:WatchConnectivity.WCSessionDelegate.DidReceiveMessageData*">M:WatchConnectivity.WCSessionDelegate.DidReceiveMessageData*</a></format>.</summary>
+	/// <summary>The reply handler for use with <see cref="WatchConnectivity.WCSessionDelegate.DidReceiveMessageData" />.</summary>
 	delegate void WCSessionReplyDataHandler (NSData replyMessage);
 
 	/// <summary>Mediates the transfer of information between a WatchKit extension app and the container app on the device.</summary>
@@ -26,14 +26,14 @@ namespace WatchConnectivity {
 	[DisableDefaultCtor]
 	interface WCSession {
 
-		/// <summary>Whether the current device supports <see cref="T:WatchConnectivity.WCSession" /> objects.</summary>
+		/// <summary>Whether the current device supports <see cref="WatchConnectivity.WCSession" /> objects.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("isSupported")]
 		bool IsSupported { get; }
 
-		/// <summary>Produces the shared view of the app's <see cref="T:WatchConnectivity.WCSession" /> on the current device.</summary>
+		/// <summary>Produces the shared view of the app's <see cref="WatchConnectivity.WCSession" /> on the current device.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Static]
@@ -52,7 +52,7 @@ namespace WatchConnectivity {
 		IWCSessionDelegate Delegate { get; set; }
 
 		/// <summary>
-		///           <see cref="T:WatchConnectivity.WCSession" /> objects must be activated on both devices prior to data transfer.</summary>
+		///           <see cref="WatchConnectivity.WCSession" /> objects must be activated on both devices prior to data transfer.</summary>
 		///         <remarks>To be added.</remarks>
 		[Export ("activateSession")]
 		void ActivateSession ();
@@ -206,11 +206,11 @@ namespace WatchConnectivity {
 		bool CompanionAppInstalled { [Bind ("isCompanionAppInstalled")] get; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:WatchConnectivity.WCSessionDelegate" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="WatchConnectivity.WCSessionDelegate" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:WatchConnectivity.WCSessionDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:WatchConnectivity.WCSessionDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:WatchConnectivity.WCSessionDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="WatchConnectivity.WCSessionDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="WatchConnectivity.WCSessionDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="WatchConnectivity.WCSessionDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	interface IWCSessionDelegate { }
 

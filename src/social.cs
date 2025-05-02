@@ -35,7 +35,7 @@ using NativeHandle = System.IntPtr;
 
 namespace Social {
 	/// <summary>NSString constants with the various service types supported by the Social framework</summary>
-	///     <remarks>These constants are used typically when interacting with low-level Objective-C APIs.   In general, you can just use the higher level APIs that use strongly typed enumerations of type <see cref="T:Social.SLServiceKind" />.</remarks>
+	///     <remarks>These constants are used typically when interacting with low-level Objective-C APIs.   In general, you can just use the higher level APIs that use strongly typed enumerations of type <see cref="Social.SLServiceKind" />.</remarks>
 	[Static]
 	interface SLServiceType {
 		/// <summary>Developers should not use this deprecated property. Developers should use Facebook SDK instead.</summary>
@@ -179,11 +179,20 @@ namespace Social {
 
 		// async 
 		[Export ("performRequestWithHandler:")]
-		[Async (ResultTypeName = "SLRequestResult")]
+		[Async (ResultTypeName = "SLRequestResult", XmlDocs = """
+			<summary>Asynchronously makes the request.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous PerformRequest operation.  The value of the TResult parameter is of type System.Action&lt;Foundation.NSData,Foundation.NSHttpUrlResponse,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The PerformRequestAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void PerformRequest (Action<NSData, NSHttpUrlResponse, NSError> handler);
 	}
 
-	/// <summary>A <see cref="T:UIKit.UIViewController" /> that manages the user experience for the composition of a post for a social service.</summary>
+	/// <summary>A <see cref="UIKit.UIViewController" /> that manages the user experience for the composition of a post for a social service.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/NetworkingInternet/Reference/SLComposeViewController_Class/index.html">Apple documentation for <c>SLComposeViewController</c></related>
 	[NoMac]

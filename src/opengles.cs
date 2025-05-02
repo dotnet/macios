@@ -15,10 +15,6 @@ using CoreLocation;
 using UIKit;
 using System;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace OpenGLES {
 
 	/// <summary>Manages resources that can be used by more than one EAGLContext (textures, buffers, framebuffers, renderbuffers, shaders and programs).</summary>
@@ -110,9 +106,21 @@ namespace OpenGLES {
 		// These are from @interface EAGLContext (EAGLContextDrawableAdditions)
 		//
 
+		/// <param name="target">To be added.</param>
+		/// <param name="drawable">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("renderbufferStorage:fromDrawable:")]
 		bool RenderBufferStorage (nuint target, [NullAllowed] CoreAnimation.CAEAGLLayer drawable);
 
+		/// <param name="target">To be added.</param>
+		/// <summary>Displays the contents of a render buffer.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("presentRenderbuffer:")]
 		bool PresentRenderBuffer (nuint target);
 
@@ -132,10 +140,23 @@ namespace OpenGLES {
 
 		// IOSurface (EAGLContext)
 
+		/// <param name="ioSurface">To be added.</param>
+		/// <param name="target">To be added.</param>
+		/// <param name="internalFormat">To be added.</param>
+		/// <param name="width">To be added.</param>
+		/// <param name="height">To be added.</param>
+		/// <param name="format">To be added.</param>
+		/// <param name="type">To be added.</param>
+		/// <param name="plane">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("texImageIOSurface:target:internalFormat:width:height:format:type:plane:")]
 		bool TexImage (IOSurface.IOSurface ioSurface, nuint target, nuint internalFormat, uint width, uint height, nuint format, nuint type, uint plane);
 	}
 
+	/// <summary>Interface that, together with the <see cref="OpenGLES.EAGLDrawable_Extensions" /> class, comprise the EAGLDrawable protocol.</summary>
+	/// <remarks>To be added.</remarks>
 	[NoMac]
 	[NoMacCatalyst]
 	[Deprecated (PlatformName.iOS, 12, 0, message: "Use 'Metal' instead.")]
@@ -143,6 +164,9 @@ namespace OpenGLES {
 	[Protocol]
 	// no [Model] because "The EAGLDrawable protocol is not intended to be implemented by objects outside of the iOS."
 	interface EAGLDrawable {
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[NullAllowed] // by default this property is null
 		[Export ("drawableProperties", ArgumentSemantic.Copy)]

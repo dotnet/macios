@@ -46,7 +46,7 @@ TEST_SUITES+=(build-monotouch-test)
 
 make -f packaged-macos-tests.mk "${TEST_SUITES[@]}" $MAKE_FLAGS
 
-for app in linker/*/*/dotnet/*/bin/*/*/*/*.app */dotnet/*/bin/*/*/*/*.app; do
+for app in linker/*/dotnet/*/bin/*/*/*/*.app */dotnet/*/bin/*/*/*/*.app; do
 	mkdir -p "$DIR/tests/$app"
 	$CP -R "$app" "$DIR/tests/$app/.."
 done

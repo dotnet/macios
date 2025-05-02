@@ -58,7 +58,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The error message for code {0} could not be found. Please report this missing message on GitHub at https://github.com/xamarin/xamarin-macios/issues/new.
+        ///   Looks up a localized string similar to The error message for code {0} could not be found. Please report this missing message on GitHub at https://github.com/dotnet/macios/issues/new.
         /// </summary>
         public static string _default {
             get {
@@ -407,7 +407,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Failed to compile. Error code - {0}. Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new
+        ///   Looks up a localized string similar to Failed to compile. Error code - {0}. Please file a bug report at https://github.com/dotnet/macios/issues/new
         ///		.
         /// </summary>
         public static string MM5103 {
@@ -497,7 +497,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unexpected error - Please fill a bug report at https://github.com/xamarin/xamarin-macios/issues/new
+        ///   Looks up a localized string similar to Unexpected error - Please fill a bug report at https://github.com/dotnet/macios/issues/new
         ///		.
         /// </summary>
         public static string MT0000 {
@@ -1087,7 +1087,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid assembly build target: &apos;{0}&apos;. Please file a bug report with a test case (https://github.com/xamarin/xamarin-macios/issues/new).
+        ///   Looks up a localized string similar to Invalid assembly build target: &apos;{0}&apos;. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new).
         ///		.
         /// </summary>
         public static string MT0100 {
@@ -1547,7 +1547,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Internal error: can&apos;t convert from &apos;{0}&apos; to &apos;{1}&apos; in {2}. Please file a bug report with a test case (https://github.com/xamarin/xamarin-macios/issues/new).
+        ///   Looks up a localized string similar to Internal error: can&apos;t convert from &apos;{0}&apos; to &apos;{1}&apos; in {2}. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new).
         ///		.
         /// </summary>
         public static string MT0157 {
@@ -1557,7 +1557,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Internal error: the smart enum {0} doesn&apos;t seem to be a smart enum after all. Please file a bug report with a test case (https://github.com/xamarin/xamarin-macios/issues/new).
+        ///   Looks up a localized string similar to Internal error: the smart enum {0} doesn&apos;t seem to be a smart enum after all. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new).
         ///		.
         /// </summary>
         public static string MT0158 {
@@ -1567,7 +1567,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Internal error: unsupported tokentype ({0}) for {1}. Please file a bug report with a test case (https://github.com/xamarin/xamarin-macios/issues/new).
+        ///   Looks up a localized string similar to Internal error: unsupported tokentype ({0}) for {1}. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new).
         ///		.
         /// </summary>
         public static string MT0159 {
@@ -1577,7 +1577,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Internal error: the static registrar should not execute unless the linker also executed (or was disabled). A potential workaround is to pass &apos;-f&apos; as an additional {0} argument to force a full build. Please file a bug report with a test case (https://github.com/xamarin/xamarin-macios/issues/new).
+        ///   Looks up a localized string similar to Internal error: the static registrar should not execute unless the linker also executed (or was disabled). A potential workaround is to pass &apos;-f&apos; as an additional {0} argument to force a full build. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new).
         ///		.
         /// </summary>
         public static string MT0160 {
@@ -1587,7 +1587,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Internal error: symbol without a name (type: {0}). Please file a bug report with a test case (https://github.com/xamarin/xamarin-macios/issues/new).
+        ///   Looks up a localized string similar to Internal error: symbol without a name (type: {0}). Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new).
         ///		.
         /// </summary>
         public static string MT0161 {
@@ -1597,7 +1597,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Internal error: &apos;can&apos;t convert frameworks to frameworks: {0}&apos;. Please file a bug report with a test case (https://github.com/xamarin/xamarin-macios/issues/new).
+        ///   Looks up a localized string similar to Internal error: &apos;can&apos;t convert frameworks to frameworks: {0}&apos;. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new).
         ///		.
         /// </summary>
         public static string MT0168 {
@@ -1657,7 +1657,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Dependency tracking error: no files to compare. Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new with a test case.
+        ///   Looks up a localized string similar to Dependency tracking error: no files to compare. Please file a bug report at https://github.com/dotnet/macios/issues/new with a test case.
         ///		.
         /// </summary>
         public static string MT1013 {
@@ -2056,7 +2056,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Failed to compile the generated code for P/Invoke methods. Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new
+        ///   Looks up a localized string similar to Failed to compile the generated code for P/Invoke methods. Please file a bug report at https://github.com/dotnet/macios/issues/new
         ///		.
         /// </summary>
         public static string MT4002 {
@@ -2136,7 +2136,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Failed to compile the generated registrar code. Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new
+        ///   Looks up a localized string similar to Failed to compile the generated registrar code. Please file a bug report at https://github.com/dotnet/macios/issues/new
         ///		.
         /// </summary>
         public static string MT4109 {
@@ -2176,7 +2176,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unexpected error in the registrar for the method &apos;{0}.{1}&apos; - Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new
+        ///   Looks up a localized string similar to Unexpected error in the registrar for the method &apos;{0}.{1}&apos; - Please file a bug report at https://github.com/dotnet/macios/issues/new
         ///		.
         /// </summary>
         public static string MT4114 {
@@ -2226,7 +2226,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The registrar found an unknown field type &apos;{0}&apos; in field &apos;{1}.{2}&apos;. Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new
+        ///   Looks up a localized string similar to The registrar found an unknown field type &apos;{0}&apos; in field &apos;{1}.{2}&apos;. Please file a bug report at https://github.com/dotnet/macios/issues/new
         ///		.
         /// </summary>
         public static string MT4120 {
@@ -2256,7 +2256,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid {0} found on &apos;{1}&apos;. Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new
+        ///   Looks up a localized string similar to Invalid {0} found on &apos;{1}&apos;. Please file a bug report at https://github.com/dotnet/macios/issues/new
         ///		.
         /// </summary>
         public static string MT4124 {
@@ -2266,7 +2266,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid RegisterAttribute property {1} found on &apos;{0}&apos;. Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new
+        ///   Looks up a localized string similar to Invalid RegisterAttribute property {1} found on &apos;{0}&apos;. Please file a bug report at https://github.com/dotnet/macios/issues/new
         ///		.
         /// </summary>
         public static string MT4124_A {
@@ -2276,7 +2276,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid AdoptsAttribute found on &apos;{0}&apos;: expected 1 constructor arguments, got {1}. Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new
+        ///   Looks up a localized string similar to Invalid AdoptsAttribute found on &apos;{0}&apos;: expected 1 constructor arguments, got {1}. Please file a bug report at https://github.com/dotnet/macios/issues/new
         ///		.
         /// </summary>
         public static string MT4124_B {
@@ -2286,7 +2286,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid BindAsAttribute found on &apos;{0}.{1}&apos;: unknown field {2}. Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new
+        ///   Looks up a localized string similar to Invalid BindAsAttribute found on &apos;{0}.{1}&apos;: unknown field {2}. Please file a bug report at https://github.com/dotnet/macios/issues/new
         ///		.
         /// </summary>
         public static string MT4124_C {
@@ -2296,7 +2296,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid {0} found on &apos;{1}.{2}&apos;. Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new
+        ///   Looks up a localized string similar to Invalid {0} found on &apos;{1}.{2}&apos;. Please file a bug report at https://github.com/dotnet/macios/issues/new
         ///		.
         /// </summary>
         public static string MT4124_D {
@@ -2306,7 +2306,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid BindAsAttribute found on &apos;{0}&apos;: should have 1 constructor arguments, found {1}. Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new
+        ///   Looks up a localized string similar to Invalid BindAsAttribute found on &apos;{0}&apos;: should have 1 constructor arguments, found {1}. Please file a bug report at https://github.com/dotnet/macios/issues/new
         ///		.
         /// </summary>
         public static string MT4124_E {
@@ -2316,7 +2316,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid BindAsAttribute found on &apos;{0}&apos;: could not find the underlying enum type of {1}. Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new
+        ///   Looks up a localized string similar to Invalid BindAsAttribute found on &apos;{0}&apos;: could not find the underlying enum type of {1}. Please file a bug report at https://github.com/dotnet/macios/issues/new
         ///		.
         /// </summary>
         public static string MT4124_H {
@@ -2326,7 +2326,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid {0} found on &apos;{1}&apos;. Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new.
+        ///   Looks up a localized string similar to Invalid {0} found on &apos;{1}&apos;. Please file a bug report at https://github.com/dotnet/macios/issues/new.
         /// </summary>
         public static string MT4124_I {
             get {
@@ -2515,7 +2515,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid {0} found on &apos;{1}&apos;. Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new
+        ///   Looks up a localized string similar to Invalid {0} found on &apos;{1}&apos;. Please file a bug report at https://github.com/dotnet/macios/issues/new
         ///		.
         /// </summary>
         public static string MT4147 {
@@ -2705,7 +2705,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Internal error in the registrar ({0} ctor with {1} arguments). Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new
+        ///   Looks up a localized string similar to Internal error in the registrar ({0} ctor with {1} arguments). Please file a bug report at https://github.com/dotnet/macios/issues/new
         ///		.
         /// </summary>
         public static string MT4163 {
@@ -2715,7 +2715,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Internal error in the registrar (Unknown availability kind: {0}). Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new
+        ///   Looks up a localized string similar to Internal error in the registrar (Unknown availability kind: {0}). Please file a bug report at https://github.com/dotnet/macios/issues/new
         ///		.
         /// </summary>
         public static string MT4163_A {
@@ -2725,7 +2725,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Internal error in the registrar (BindAs parameters can&apos;t be ref/out: {0}). Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new
+        ///   Looks up a localized string similar to Internal error in the registrar (BindAs parameters can&apos;t be ref/out: {0}). Please file a bug report at https://github.com/dotnet/macios/issues/new
         ///		.
         /// </summary>
         public static string MT4163_B {
@@ -2925,7 +2925,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Internal error in the registrar (BindAs parameters can&apos;t be ref/out: {0}). Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new
+        ///   Looks up a localized string similar to Internal error in the registrar (BindAs parameters can&apos;t be ref/out: {0}). Please file a bug report at https://github.com/dotnet/macios/issues/new
         ///		.
         /// </summary>
         public static string MT4184 {
@@ -2983,7 +2983,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Failed to compile the file(s) &apos;{0}&apos;. Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new
+        ///   Looks up a localized string similar to Failed to compile the file(s) &apos;{0}&apos;. Please file a bug report at https://github.com/dotnet/macios/issues/new
         ///		.
         /// </summary>
         public static string MT5103_A {
@@ -2993,7 +2993,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not compile the file(s) &apos;{0}&apos;. Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new
+        ///   Looks up a localized string similar to Could not compile the file(s) &apos;{0}&apos;. Please file a bug report at https://github.com/dotnet/macios/issues/new
         ///		.
         /// </summary>
         public static string MT5106 {
@@ -3133,7 +3133,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Native linking failed for &apos;{0}&apos;. Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new
+        ///   Looks up a localized string similar to Native linking failed for &apos;{0}&apos;. Please file a bug report at https://github.com/dotnet/macios/issues/new
         ///		.
         /// </summary>
         public static string MT5216 {
@@ -3223,7 +3223,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Internal consistency error. Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new.
+        ///   Looks up a localized string similar to Internal consistency error. Please file a bug report at https://github.com/dotnet/macios/issues/new.
         ///		.
         /// </summary>
         public static string MT8018 {
@@ -3410,7 +3410,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unknown platform: {0}. This usually indicates a bug in {1}; please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new with a test case.
+        ///   Looks up a localized string similar to Unknown platform: {0}. This usually indicates a bug in {1}; please file a bug report at https://github.com/dotnet/macios/issues/new with a test case.
         ///		.
         /// </summary>
         public static string MX0071 {
@@ -3460,7 +3460,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Internal error: {0}. Please file an issue at https://github.com/xamarin/xamarin-macios/issues/new.
+        ///   Looks up a localized string similar to Internal error: {0}. Please file an issue at https://github.com/dotnet/macios/issues/new.
         ///		.
         /// </summary>
         public static string MX0099 {
@@ -3550,7 +3550,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unknown platform: {0}. This usually indicates a bug; please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new with a test case..
+        ///   Looks up a localized string similar to Unknown platform: {0}. This usually indicates a bug; please file a bug report at https://github.com/dotnet/macios/issues/new with a test case..
         /// </summary>
         public static string MX0177 {
             get {
@@ -3917,7 +3917,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The native linker failed to execute: {0}. Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new
+        ///   Looks up a localized string similar to The native linker failed to execute: {0}. Please file a bug report at https://github.com/dotnet/macios/issues/new
         /// 		.
         /// </summary>
         public static string MX5222 {

@@ -175,15 +175,15 @@ namespace AVKit {
 		AVPictureInPictureControllerContentSource ContentSource { get; set; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:AVKit.AVPictureInPictureControllerDelegate" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="AVKit.AVPictureInPictureControllerDelegate" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:AVKit.AVPictureInPictureControllerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:AVKit.AVPictureInPictureControllerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:AVKit.AVPictureInPictureControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="AVKit.AVPictureInPictureControllerDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="AVKit.AVPictureInPictureControllerDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="AVKit.AVPictureInPictureControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	interface IAVPictureInPictureControllerDelegate { }
 
-	/// <summary>Delegate object providing methods for the application's <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIView%20Controller%20Delegate&amp;scope=Xamarin" title="T:UIKit.UIViewControllerDelegate">T:UIKit.UIViewControllerDelegate</a></format> at the start and stop of picture-in-picture video playback.</summary>
+	/// <summary>Delegate object providing methods for the application's <see cref="UIKit.UIViewControllerDelegate" /> at the start and stop of picture-in-picture video playback.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AVKit/Reference/AVPictureInPictureControllerDelegate_Protocol/index.html">Apple documentation for <c>AVPictureInPictureControllerDelegate</c></related>
 	[TV (14, 0)]
@@ -191,21 +191,41 @@ namespace AVKit {
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface AVPictureInPictureControllerDelegate {
+		/// <param name="pictureInPictureController">To be added.</param>
+		/// <summary>Picture In Picture playback is about to start.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("pictureInPictureControllerWillStartPictureInPicture:")]
 		void WillStartPictureInPicture (AVPictureInPictureController pictureInPictureController);
 
+		/// <param name="pictureInPictureController">To be added.</param>
+		/// <summary>Picture In Picture playback has started.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("pictureInPictureControllerDidStartPictureInPicture:")]
 		void DidStartPictureInPicture (AVPictureInPictureController pictureInPictureController);
 
+		/// <param name="pictureInPictureController">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>Picture In Picture playback failed to start.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("pictureInPictureController:failedToStartPictureInPictureWithError:")]
 		void FailedToStartPictureInPicture (AVPictureInPictureController pictureInPictureController, NSError error);
 
+		/// <param name="pictureInPictureController">To be added.</param>
+		/// <summary>Picture In Picture playback is about to stop.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("pictureInPictureControllerWillStopPictureInPicture:")]
 		void WillStopPictureInPicture (AVPictureInPictureController pictureInPictureController);
 
+		/// <param name="pictureInPictureController">To be added.</param>
+		/// <summary>Picture In Picture playback has stopped.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("pictureInPictureControllerDidStopPictureInPicture:")]
 		void DidStopPictureInPicture (AVPictureInPictureController pictureInPictureController);
 
+		/// <param name="pictureInPictureController">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>Picture In Picture playback is about to stop. Called to give the app the opportunity to provide a playback user interface by passing <see langword="true" /> to <paramref name="completionHandler" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("pictureInPictureController:restoreUserInterfaceForPictureInPictureStopWithCompletionHandler:")]
 		void RestoreUserInterfaceForPictureInPicture (AVPictureInPictureController pictureInPictureController, Action<bool> completionHandler);
 	}
@@ -223,7 +243,7 @@ namespace AVKit {
 		///           <para>To be added.</para>
 		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
 		///         </param>
-		/// <summary>Creates a new <see cref="T:AVKit.AVPlayerViewController" /> for the specified NIB name and bundle.</summary>
+		/// <summary>Creates a new <see cref="AVKit.AVPlayerViewController" /> for the specified NIB name and bundle.</summary>
 		/// <remarks>To be added.</remarks>
 		[Export ("initWithNibName:bundle:")]
 		[PostGet ("NibBundle")]
@@ -425,11 +445,11 @@ namespace AVKit {
 		UIAction ToggleLookupAction { get; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:AVKit.AVPlayerViewControllerDelegate" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="AVKit.AVPlayerViewControllerDelegate" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:AVKit.AVPlayerViewControllerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:AVKit.AVPlayerViewControllerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:AVKit.AVPlayerViewControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="AVKit.AVPlayerViewControllerDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="AVKit.AVPlayerViewControllerDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="AVKit.AVPlayerViewControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	interface IAVPlayerViewControllerDelegate { }
 
@@ -441,36 +461,60 @@ namespace AVKit {
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface AVPlayerViewControllerDelegate {
+		/// <param name="playerViewController">To be added.</param>
+		/// <summary>Picture In Picture playback is about to start.</summary>
+		/// <remarks>To be added.</remarks>
 		[TV (14, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("playerViewControllerWillStartPictureInPicture:")]
 		void WillStartPictureInPicture (AVPlayerViewController playerViewController);
 
+		/// <param name="playerViewController">To be added.</param>
+		/// <summary>Picture In Picture playback has started.</summary>
+		/// <remarks>To be added.</remarks>
 		[TV (14, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("playerViewControllerDidStartPictureInPicture:")]
 		void DidStartPictureInPicture (AVPlayerViewController playerViewController);
 
+		/// <param name="playerViewController">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>Picture In Picture playback failed to start.</summary>
+		/// <remarks>To be added.</remarks>
 		[TV (14, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("playerViewController:failedToStartPictureInPictureWithError:")]
 		void FailedToStartPictureInPicture (AVPlayerViewController playerViewController, NSError error);
 
+		/// <param name="playerViewController">To be added.</param>
+		/// <summary>Picture In Picture playback is about to stop.</summary>
+		/// <remarks>To be added.</remarks>
 		[TV (14, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("playerViewControllerWillStopPictureInPicture:")]
 		void WillStopPictureInPicture (AVPlayerViewController playerViewController);
 
+		/// <param name="playerViewController">To be added.</param>
+		/// <summary>Picture In Picture playback has stopped.</summary>
+		/// <remarks>To be added.</remarks>
 		[TV (14, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("playerViewControllerDidStopPictureInPicture:")]
 		void DidStopPictureInPicture (AVPlayerViewController playerViewController);
 
+		/// <param name="playerViewController">To be added.</param>
+		/// <summary>App developers should return <see langword="true" /> to indicate that the player viewer should dismiss when Picture In Picture playback starts, or <see langword="false" /> to prevent this.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[TV (14, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("playerViewControllerShouldAutomaticallyDismissAtPictureInPictureStart:")]
 		bool ShouldAutomaticallyDismissAtPictureInPictureStart (AVPlayerViewController playerViewController);
 
+		/// <param name="playerViewController">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>Picture In Picture playback is about to stop. Called to give the app the opportunity to provide a playback user interface by passing <see langword="true" /> to <paramref name="completionHandler" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[TV (14, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("playerViewController:restoreUserInterfaceForPictureInPictureStopWithCompletionHandler:")]
@@ -621,6 +665,9 @@ namespace AVKit {
 	[NoMacCatalyst]
 	[BaseType (typeof (NSView))]
 	interface AVPlayerView {
+		/// <param name="frameRect">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect frameRect);
 
@@ -666,6 +713,10 @@ namespace AVKit {
 		[Export ("canBeginTrimming")]
 		bool CanBeginTrimming { get; }
 
+		/// <param name="chapterNumber">To be added.</param>
+		/// <param name="chapterTitle">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("flashChapterNumber:chapterTitle:")]
 		void FlashChapter (nuint chapterNumber, [NullAllowed] string chapterTitle);
 
@@ -774,6 +825,9 @@ namespace AVKit {
 	[NoMacCatalyst]
 	[BaseType (typeof (NSView))]
 	interface AVCaptureView {
+		/// <param name="frameRect">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect frameRect);
 
@@ -804,6 +858,10 @@ namespace AVKit {
 	[NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	interface AVCaptureViewDelegate {
+		/// <param name="captureView">To be added.</param>
+		/// <param name="fileOutput">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("captureView:startRecordingToFileOutput:")]
 		void StartRecording (AVCaptureView captureView, AVCaptureFileOutput fileOutput);
@@ -983,22 +1041,34 @@ namespace AVKit {
 		Custom,
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:AVKit.AVRoutePickerViewDelegate" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="AVKit.AVRoutePickerViewDelegate" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:AVKit.AVRoutePickerViewDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:AVKit.AVRoutePickerViewDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:AVKit.AVRoutePickerViewDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="AVKit.AVRoutePickerViewDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="AVKit.AVRoutePickerViewDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="AVKit.AVRoutePickerViewDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	interface IAVRoutePickerViewDelegate { }
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="AVKit.AVRoutePickerViewDelegate" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="AVKit.AVRoutePickerViewDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="AVKit.AVRoutePickerViewDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="AVKit.AVRoutePickerViewDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface AVRoutePickerViewDelegate {
 
+		/// <param name="routePickerView">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("routePickerViewWillBeginPresentingRoutes:")]
 		void WillBeginPresentingRoutes (AVRoutePickerView routePickerView);
 
+		/// <param name="routePickerView">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("routePickerViewDidEndPresentingRoutes:")]
 		void DidEndPresentingRoutes (AVRoutePickerView routePickerView);
 	}

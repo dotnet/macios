@@ -4,20 +4,20 @@
     <remarks>
       <para>
         UIFont object are not instantiated directly, but instead are created from static methods on this class.  Starting with iOS 7.0 you can use the 
-        <see cref="P:UIKit.UIFont.PreferredBody" />,
-        <see cref="P:UIKit.UIFont.PreferredCaption1" />,
-        <see cref="P:UIKit.UIFont.PreferredCaption2" />,
-        <see cref="P:UIKit.UIFont.PreferredHeadline" />,
-        <see cref="P:UIKit.UIFont.PreferredSubheadline" /> properties to get the preferred system fonts for the corresponding use case.
+        <see cref="UIKit.UIFont.PreferredBody" />,
+        <see cref="UIKit.UIFont.PreferredCaption1" />,
+        <see cref="UIKit.UIFont.PreferredCaption2" />,
+        <see cref="UIKit.UIFont.PreferredHeadline" />,
+        <see cref="UIKit.UIFont.PreferredSubheadline" /> properties to get the preferred system fonts for the corresponding use case.
         
         
       </para>
       <para>
-        Use the static <see cref="M:UIKit.UIFont.FromName(System.String,System.nfloat)" /> method to create new fonts of a particular font.   
+        Use the static <see cref="UIKit.UIFont.FromName(System.String,nfloat)" /> method to create new fonts of a particular font.   
       </para>
       <para>
-        You can use the <see cref="P:UIKit.UIFont.FamilyNames" /> property to get a
-        list of all family names available and then the <see cref="M:UIKit.UIFont.FontNamesForFamilyName(System.String)" />
+        You can use the <see cref="UIKit.UIFont.FamilyNames" /> property to get a
+        list of all family names available and then the <see cref="UIKit.UIFont.FontNamesForFamilyName(System.String)" />
         method to get a list of the fonts available in a particular font family.
       </para>
       <format type="text/html">
@@ -25,11 +25,11 @@
       </format>
       <para>
         To get a normal, italic of bold fonts representing the system
-        font, use the static methods <see cref="M:UIKit.UIFont.SystemFontOfSize(System.nfloat,UIKit.UIFontWeight)" />, <see cref="M:UIKit.UIFont.ItalicSystemFontOfSize(System.nfloat)" /> and
-        <see cref="M:UIKit.UIFont.BoldSystemFontOfSize(System.nfloat)" />.
+        font, use the static methods <see cref="UIKit.UIFont.SystemFontOfSize(nfloat,UIKit.UIFontWeight)" />, <see cref="UIKit.UIFont.ItalicSystemFontOfSize(nfloat)" /> and
+        <see cref="UIKit.UIFont.BoldSystemFontOfSize(nfloat)" />.
       </para>
       <para>
-        You can query some common font parameters by using the <see cref="P:UIKit.UIFont.ButtonFontSize" />, <see cref="P:UIKit.UIFont.LabelFontSize" />, <see cref="P:UIKit.UIFont.SmallSystemFontSize" /> and <see cref="P:UIKit.UIFont.SystemFontSize" />.
+        You can query some common font parameters by using the <see cref="UIKit.UIFont.ButtonFontSize" />, <see cref="UIKit.UIFont.LabelFontSize" />, <see cref="UIKit.UIFont.SmallSystemFontSize" /> and <see cref="UIKit.UIFont.SystemFontSize" />.
         
       </para>
       <format type="text/html">
@@ -37,9 +37,9 @@
       </format>
       <para> Starting with iOS7, you can retrieve a new font based on
 	an existing font instance by using font descriptors.  To do
-	this, you fetch the immutable <see cref="P:UIKit.UIFont.FontDescriptor" /> property from
+	this, you fetch the immutable <see cref="UIKit.UIFont.FontDescriptor" /> property from
 	your font and use it to create a new font descriptor with your
-	desired changes, which then you use to can pass to the <see cref="M:UIKit.UIFont.FromDescriptor(UIKit.UIFontDescriptor,System.nfloat)" /> method to
+	desired changes, which then you use to can pass to the <see cref="UIKit.UIFont.FromDescriptor(UIKit.UIFontDescriptor,nfloat)" /> method to
 	create the altered font.  
       </para>
       <para> The following example shows how to alter the existing
@@ -77,7 +77,7 @@ UIFont CustomizeFont (UIFont font)
       </para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
-var label = new UILabel (new RectangleF (0, 300, 200, 100)) {
+var label = new UILabel (new CGRect (0, 300, 200, 100)) {
 	Text = "Hello \u2603 there!",
 	TextColor = UIColor.White,
 	Font = MyFonts.Menlo
@@ -112,13 +112,13 @@ label.Font = UIFont.FromDescriptor (removedSnowmanDescriptor, 0);
         <returns>UIFont</returns>
         <remarks>
           <para>	  You can instead use the 
-            <see cref="P:UIKit.UIFont.PreferredBody" />,
-            <see cref="P:UIKit.UIFont.PreferredCaption1" />,
-            <see cref="P:UIKit.UIFont.PreferredCaption2" />,
-            <see cref="P:UIKit.UIFont.PreferredHeadline" />,
-            <see cref="P:UIKit.UIFont.PreferredSubheadline" /> properties to get this information.
+            <see cref="UIKit.UIFont.PreferredBody" />,
+            <see cref="UIKit.UIFont.PreferredCaption1" />,
+            <see cref="UIKit.UIFont.PreferredCaption2" />,
+            <see cref="UIKit.UIFont.PreferredHeadline" />,
+            <see cref="UIKit.UIFont.PreferredSubheadline" /> properties to get this information.
           </para>
-          <para>Using these methods to obtain an initial font during view intiailization is not sufficient to implement dynamic type. After the application user has set the "Text Size Property" in Settings, the application will receive a notification via <see cref="M:UIKit.UIApplication.Notifications.ObserveContentSizeCategoryChanged*" />. It is the application developer's responsibility, at that point, to invalidate the layout in all view elements that should be resized. The simplest way to do that is to have a method that re-sets the font in all components that support Dynamic Type:</para>
+          <para>Using these methods to obtain an initial font during view intiailization is not sufficient to implement dynamic type. After the application user has set the "Text Size Property" in Settings, the application will receive a notification via <see cref="UIKit.UIApplication.Notifications.ObserveContentSizeCategoryChanged(EventHandler{UIContentSizeCategoryChangedEventArgs})" />. It is the application developer's responsibility, at that point, to invalidate the layout in all view elements that should be resized. The simplest way to do that is to have a method that re-sets the font in all components that support Dynamic Type:</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
  UIApplication.Notifications.ObserveContentSizeCategoryChanged((s,e) => {

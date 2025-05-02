@@ -37,7 +37,7 @@ using ObjCRuntime;
 
 namespace Foundation {
 
-#if false // https://github.com/xamarin/xamarin-macios/issues/15577
+#if false // https://github.com/dotnet/macios/issues/15577
 	public delegate bool NSOrderedCollectionDifferenceEquivalenceTest (NSObject first, NSObject second);
 #endif
 
@@ -174,12 +174,17 @@ namespace Foundation {
 		///         <returns>
 		///         </returns>
 		///         <remarks>The values will be boxed into
-		/// 	NSObjects using <see cref="M:Foundation.NSObject.FromObject(System.Object)" />.</remarks>
+		/// 	NSObjects using <see cref="Foundation.NSObject.FromObject(System.Object)" />.</remarks>
 		public static NSArray FromObjects (params object [] items)
 		{
 			return From<object> (items);
 		}
 
+		/// <param name="count">To be added.</param>
+		/// <param name="items">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		public static NSArray FromObjects (nint count, params object [] items)
 		{
 			return From<object> (items, count);
@@ -325,6 +330,12 @@ namespace Foundation {
 			return Messaging.NativeHandle_objc_msgSend_UIntPtr (handle, Selector.GetHandle ("objectAtIndex:"), (UIntPtr) i);
 		}
 
+		/// <param name="handle">Pointer (handle) to the unmanaged object.</param>
+		/// <summary>Creates a string array from an NSArray handle.</summary>
+		/// <returns>
+		///         </returns>
+		/// <remarks>
+		///         </remarks>
 		[Obsolete ("Use of 'CFArray.StringArrayFromHandle' offers better performance.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		static public string [] StringArrayFromHandle (NativeHandle handle)
@@ -340,6 +351,20 @@ namespace Foundation {
 			return ret;
 		}
 
+		/// <typeparam name="T">Parameter type, determines the kind of array returned.</typeparam>
+		/// <param name="handle">Pointer (handle) to the unmanaged object.</param>
+		/// <summary>Returns a strongly-typed C# array of the parametrized type from a handle to an NSArray.</summary>
+		/// <returns>An C# array with the values.</returns>
+		/// <remarks>
+		///           <para>Use this method to get a set of NSObject arrays from a handle to an NSArray</para>
+		///           <example>
+		///             <code lang="c#"><![CDATA[
+		/// IntPtr someHandle = ...;
+		/// 
+		/// NSString [] values = NSArray.ArrayFromHandle<NSString> (someHandle);
+		/// ]]></code>
+		///           </example>
+		///         </remarks>
 		static public T [] ArrayFromHandle<T> (NativeHandle handle) where T : class, INativeObject
 		{
 			if (handle == NativeHandle.Zero)
@@ -447,6 +472,19 @@ namespace Foundation {
 		}
 
 		// Used when we need to provide our constructor
+		/// <typeparam name="T">Parameter type, determines the kind of array returned.</typeparam>
+		/// <param name="handle">Pointer (handle) to the unmanaged object.</param>
+		/// <param name="createObject">To be added.</param>
+		/// <summary>Returns a strongly-typed C# array of the parametrized type from a handle to an NSArray.</summary>
+		/// <returns>An C# array with the values.</returns>
+		/// <remarks>
+		///           <para>Use this method to get a set of NSObject arrays from a handle to an NSArray.   Instead of wrapping the results in NSObjects, the code invokes your method to create the return value.</para>
+		///           <example>
+		///             <code lang="c#"><![CDATA[
+		/// int [] args = NSArray.ArrayFromHandle<int> (someHandle, (x) => (int) x);
+		/// ]]></code>
+		///           </example>
+		///         </remarks>
 		static public T [] ArrayFromHandleFunc<T> (NativeHandle handle, Func<NativeHandle, T> createObject)
 		{
 			if (handle == NativeHandle.Zero)
@@ -473,6 +511,24 @@ namespace Foundation {
 			return rv;
 		}
 
+		/// <typeparam name="T">Parameter type, determines the kind of array returned.</typeparam>
+		/// <param name="handle">Pointer (handle) to the unmanaged object.</param>
+		/// <param name="creator">Method that can create objects of type T from a given IntPtr.</param>
+		/// <summary>Returns a strongly-typed C# array of the parametrized type from a handle to an NSArray.</summary>
+		/// <returns>An C# array with the values.</returns>
+		/// <remarks>
+		///           <para>Use this method to get a set of NSObject arrays from a handle to an NSArray.   Instead of wrapping the results in NSObjects, the code invokes your method to create the return value.</para>
+		///           <example>
+		///             <code lang="c#"><![CDATA[
+		/// int myCreator (IntPtr v)
+		/// {
+		/// 	return (int) v;
+		/// }
+		/// 
+		/// int [] args = NSArray.ArrayFromHandle<int> (someHandle, myCreator);
+		/// ]]></code>
+		///           </example>
+		///         </remarks>
 		static public T [] ArrayFromHandle<T> (NativeHandle handle, Converter<NativeHandle, T> creator)
 		{
 			if (handle == NativeHandle.Zero)
@@ -523,6 +579,11 @@ namespace Foundation {
 		}
 
 		// can return an INativeObject or an NSObject
+		/// <typeparam name="T">To be added.</typeparam>
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		public T GetItem<T> (nuint index) where T : class, INativeObject
 		{
 			if (index >= GetCount (Handle))
@@ -595,7 +656,7 @@ namespace Foundation {
 			return new NSFastEnumerator<NSObject> (this);
 		}
 
-#if false // https://github.com/xamarin/xamarin-macios/issues/15577
+#if false // https://github.com/dotnet/macios/issues/15577
 
 		static readonly NSOrderedCollectionDifferenceEquivalenceTestProxy static_DiffEquality = DiffEqualityHandler;
 

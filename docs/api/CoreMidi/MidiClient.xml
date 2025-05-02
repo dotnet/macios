@@ -22,7 +22,7 @@
 	You typically will create an instance of MidiClient with a
 	name that identifies this particular client, connect to the
 	various events that are exposed to this class and create both
-	input and output midi ports using the <see cref="M:CoreMidi.MidiClient.CreateInputPort(System.String)" /><see cref="M:CoreMidi.MidiClient.CreateOutputPort(System.String)" />
+	input and output midi ports using the <see cref="CoreMidi.MidiClient.CreateInputPort(System.String)" /><see cref="CoreMidi.MidiClient.CreateOutputPort(System.String)" />
 	methods.
 
       </para>
@@ -59,13 +59,13 @@ inputPort.MessageReceived += delegate(object sender, MidiPacketsEventArgs e) {
       </example>
       <para>
 	The following events will be raised on your MidiClient instance: 
-	<see cref="E:CoreMidi.MidiClient.IOError" />, 
-	<see cref="E:CoreMidi.MidiClient.ObjectAdded" />,
-	<see cref="E:CoreMidi.MidiClient.ObjectRemoved" />, 
-	<see cref="E:CoreMidi.MidiClient.PropertyChanged" />, 
-	<see cref="E:CoreMidi.MidiClient.SerialPortOwnerChanged" />,
-	<see cref="E:CoreMidi.MidiClient.SetupChanged" /> and 
-	<see cref="E:CoreMidi.MidiClient.ThruConnectionsChanged" /></para>
+	<see cref="CoreMidi.MidiClient.IOError" />, 
+	<see cref="CoreMidi.MidiClient.ObjectAdded" />,
+	<see cref="CoreMidi.MidiClient.ObjectRemoved" />, 
+	<see cref="CoreMidi.MidiClient.PropertyChanged" />, 
+	<see cref="CoreMidi.MidiClient.SerialPortOwnerChanged" />,
+	<see cref="CoreMidi.MidiClient.SetupChanged" /> and 
+	<see cref="CoreMidi.MidiClient.ThruConnectionsChanged" /></para>
     </remarks>
     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/CoreMidiSample/">CoreMidiSample</related>
   </Docs>

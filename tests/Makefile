@@ -196,11 +196,11 @@ build-all:
 	$(MAKE) build -C dotnet/UnitTests
 	$(MAKE) build -C rgen
 	$(MAKE) build -C xtro-sharpie
-	$(MAKE) build-all -C "linker/ios/dont link/dotnet"
-	$(MAKE) build-all -C "linker/ios/link all/dotnet"
-	$(MAKE) build-all -C "linker/ios/link sdk/dotnet"
-	$(MAKE) build-all -C "linker/ios/trimmode copy/dotnet"
-	$(MAKE) build-all -C "linker/ios/trimmode link/dotnet"
+	$(MAKE) build-all -C "linker/dont link/dotnet"
+	$(MAKE) build-all -C "linker/link all/dotnet"
+	$(MAKE) build-all -C "linker/link sdk/dotnet"
+	$(MAKE) build-all -C "linker/trimmode copy/dotnet"
+	$(MAKE) build-all -C "linker/trimmode link/dotnet"
 	$(MAKE) build-all -C fsharp/dotnet
 	$(MAKE) build-all -C interdependent-binding-projects/dotnet
 	$(MAKE) build-all -C introspection/dotnet

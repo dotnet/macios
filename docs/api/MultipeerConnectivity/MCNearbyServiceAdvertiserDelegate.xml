@@ -9,7 +9,7 @@
         <param name="invitationHandler">Continuation that the app developer must call.</param>
         <summary>Indicates an invitation has been received to join a session.</summary>
         <remarks>
-          <para>When overriding this method, application developers must invoke the <paramref name="invitationHandler" />, passing in an appropriate <see cref="T:MultipeerConnectivity.MCSession" /> and a boolean indicating whether the invitation should be accepted or not.</para>
+          <para>When overriding this method, application developers must invoke the <paramref name="invitationHandler" />, passing in an appropriate <see cref="MultipeerConnectivity.MCSession" /> and a boolean indicating whether the invitation should be accepted or not.</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
 public override void DidReceiveInvitationFromPeer(MCNearbyServiceAdvertiser advertiser, MCPeerID peerID, NSData context, MCNearbyServiceAdvertiserInvitationHandler invitationHandler)

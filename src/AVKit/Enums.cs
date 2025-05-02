@@ -25,6 +25,8 @@ namespace AVKit {
 
 	// The version of the AVError.h header file in the tvOS SDK is much newer than in the iOS SDKs,
 	// (copyright 2016 vs 2019), so this is reflecting the tvOS SDK.
+	/// <summary>Enumeration of error states that can occur while using AVKit.</summary>
+	/// <remarks>To be added.</remarks>
 	[TV (13, 0)]
 #if NET
 	[NoMac]

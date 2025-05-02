@@ -1,7 +1,7 @@
 <Documentation>
   <Docs DocId="P:MultipeerConnectivity.MCNearbyServiceAdvertiser.DiscoveryInfo">
         <summary>A small dictionary of data available to aide peer discovery and negotiation.</summary>
-        <value>This will contain the data passed in to the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=C:MultipeerConnectivity.MCNearbyServiceAdvertiser(MultipeerConnectivity.MCPeerID,Foundation.NSDictionary,string)&amp;scope=Xamarin" title="C:MultipeerConnectivity.MCNearbyServiceAdvertiser(MultipeerConnectivity.MCPeerID,Foundation.NSDictionary,string)">C:MultipeerConnectivity.MCNearbyServiceAdvertiser(MultipeerConnectivity.MCPeerID,Foundation.NSDictionary,string)</a></format> constructor.</value>
+        <value>This will contain the data passed in to the <see cref="MultipeerConnectivity.MCNearbyServiceAdvertiser(MultipeerConnectivity.MCPeerID,Foundation.NSDictionary,string)" /> constructor.</value>
         <remarks>
           <para>The total size of keys and data in this dictionary should be less than ~400 bytes so that it can fit into a single Bluetooth data packet.</para>
           <para>The dictionary should map <see langword="string" />s to <see langword="string" />s. Each key-value pair must be no more than 255 bytes with the equals sign inserted between them (i.e., <c>System.Text.ASCIIEncoding.Unicode.GetByteCount(String.Format("{0}={1}",key,value)) &lt;= 255 </c>). Keys may not contain equals signs.</para>
@@ -10,7 +10,7 @@
       </Docs>
   <Docs DocId="P:MultipeerConnectivity.MCNearbyServiceAdvertiser.DiscoveryInfo">
         <summary>A small dictionary of data available to aide peer discovery and negotiation.</summary>
-        <value>This will contain the data passed in to the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=C:MultipeerConnectivity.MCNearbyServiceAdvertiser(MultipeerConnectivity.MCPeerID,Foundation.NSDictionary,string)&amp;scope=Xamarin" title="C:MultipeerConnectivity.MCNearbyServiceAdvertiser(MultipeerConnectivity.MCPeerID,Foundation.NSDictionary,string)">C:MultipeerConnectivity.MCNearbyServiceAdvertiser(MultipeerConnectivity.MCPeerID,Foundation.NSDictionary,string)</a></format> constructor.</value>
+        <value>This will contain the data passed in to the <see cref="MultipeerConnectivity.MCNearbyServiceAdvertiser(MultipeerConnectivity.MCPeerID,Foundation.NSDictionary,string)" /> constructor.</value>
         <remarks>
           <para>The total size of keys and data in this dictionary should be less than ~400 bytes so that it can fit into a single Bluetooth data packet.</para>
           <para>The dictionary should map <see langword="string" />s to <see langword="string" />s. Each key-value pair must be no more than 255 bytes with the equals sign inserted between them (i.e., <c>System.Text.ASCIIEncoding.Unicode.GetByteCount(String.Format("{0}={1}",key,value)) &lt;= 255 </c>). Keys may not contain equals signs.</para>
@@ -19,7 +19,7 @@
       </Docs>
   <Docs DocId="P:MultipeerConnectivity.MCNearbyServiceAdvertiser.DiscoveryInfo">
         <summary>A small dictionary of data available to aide peer discovery and negotiation.</summary>
-        <value>This will contain the data passed in to the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=C:MultipeerConnectivity.MCNearbyServiceAdvertiser(MultipeerConnectivity.MCPeerID,Foundation.NSDictionary,string)&amp;scope=Xamarin" title="C:MultipeerConnectivity.MCNearbyServiceAdvertiser(MultipeerConnectivity.MCPeerID,Foundation.NSDictionary,string)">C:MultipeerConnectivity.MCNearbyServiceAdvertiser(MultipeerConnectivity.MCPeerID,Foundation.NSDictionary,string)</a></format> constructor.</value>
+        <value>This will contain the data passed in to the <see cref="MultipeerConnectivity.MCNearbyServiceAdvertiser(MultipeerConnectivity.MCPeerID,Foundation.NSDictionary,string)" /> constructor.</value>
         <remarks>
           <para>The total size of keys and data in this dictionary should be less than ~400 bytes so that it can fit into a single Bluetooth data packet.</para>
           <para>The dictionary should map <see langword="string" />s to <see langword="string" />s. Each key-value pair must be no more than 255 bytes with the equals sign inserted between them (i.e., <c>System.Text.ASCIIEncoding.Unicode.GetByteCount(String.Format("{0}={1}",key,value)) &lt;= 255 </c>). Keys may not contain equals signs.</para>

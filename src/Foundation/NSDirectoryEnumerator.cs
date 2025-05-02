@@ -33,12 +33,16 @@ namespace Foundation {
 			throw new InvalidOperationException ();
 		}
 
+		/// <summary>Gets the current element.</summary>
+		/// <value>The current element.</value>
 		string IEnumerator<string>.Current {
 			get {
 				return current.ToString ();
 			}
 		}
 
+		/// <summary>Gets the current element.</summary>
+		/// <value>The current element.</value>
 		NSString IEnumerator<NSString>.Current {
 			get {
 				return current as NSString;

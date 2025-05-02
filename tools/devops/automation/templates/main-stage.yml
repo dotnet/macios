@@ -115,8 +115,8 @@ stages:
             startsWith(variables['Build.SourceBranch'], 'refs/heads/release-test/'),
             eq(variables['Build.SourceBranch'], 'refs/heads/net7.0'),
             eq(variables['Build.SourceBranch'], 'refs/heads/net8.0'),
-            eq(variables['Build.SourceBranch'], 'refs/heads/net9.0'),
-            eq(variables['Build.SourceBranch'], 'refs/heads/net10.0'),
+            eq(variables['Build.SourceBranch'], 'refs/heads/net$(DotNetSdkVersion)'),
+            eq(variables['Build.SourceBranch'], 'refs/heads/net$(DotNetPreviewSdkVersion)'),
             eq(variables['Build.SourceBranch'], 'refs/heads/xcode16'),
             eq(parameters.forceInsertion, true)
           )

@@ -41,8 +41,8 @@ namespace Foundation {
 		/// <param name="coder">The unarchiver object.</param>
 		///         <summary>A constructor that initializes the object from the data stored in the unarchiver object.</summary>
 		///         <remarks>
-		///           <para>This constructor is provided to allow the class to be initialized from an unarchiver (for example, during NIB deserialization).   This is part of the <see cref="T:Foundation.NSCoding" />  protocol.</para>
-		///           <para>If developers want to create a subclass of this object and continue to support deserialization from an archive, they should implement a constructor with an identical signature: taking a single parameter of type <see cref="T:Foundation.NSCoder" /> and decorate it with the [Export("initWithCoder:"] attribute declaration.</para>
+		///           <para>This constructor is provided to allow the class to be initialized from an unarchiver (for example, during NIB deserialization).   This is part of the <see cref="Foundation.NSCoding" />  protocol.</para>
+		///           <para>If developers want to create a subclass of this object and continue to support deserialization from an archive, they should implement a constructor with an identical signature: taking a single parameter of type <see cref="Foundation.NSCoder" /> and decorate it with the [Export("initWithCoder:"] attribute declaration.</para>
 		///           <para>The state of this object can also be serialized by using the companion method, EncodeTo.</para>
 		///         </remarks>
 		public NSMutableOrderedSet (NSCoder coder) : base (coder)
@@ -53,6 +53,9 @@ namespace Foundation {
 		{
 		}
 
+		/// <param name="capacity">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		public NSMutableOrderedSet (nint capacity) : base (capacity)
 		{
 		}
@@ -116,6 +119,10 @@ namespace Foundation {
 			return Runtime.GetINativeObject<NSSet<TKey>> (ret, false);
 		}
 
+		/// <param name="obj">To be added.</param>
+		/// <param name="atIndex">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		public void Insert (TKey obj, nint atIndex)
 		{
 			if (obj is null)
@@ -125,6 +132,10 @@ namespace Foundation {
 			GC.KeepAlive (obj);
 		}
 
+		/// <param name="objectAtIndex">To be added.</param>
+		/// <param name="newObject">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		public void Replace (nint objectAtIndex, TKey newObject)
 		{
 			if (newObject is null)
@@ -293,7 +304,7 @@ namespace Foundation {
 			return copy;
 		}
 
-#if false // https://github.com/xamarin/xamarin-macios/issues/15577
+#if false // https://github.com/dotnet/macios/issues/15577
 #if !NET
 		[TV (13,0), iOS (13,0)]
 #else

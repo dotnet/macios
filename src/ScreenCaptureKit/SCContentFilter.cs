@@ -47,7 +47,7 @@ namespace ScreenCaptureKit {
 			default:
 				ObjCRuntime.ThrowHelper.ThrowArgumentOutOfRangeException (nameof (option), $"Unknown option {option}");
 				break;
-			};
+			}
 		}
 
 		/// <summary>Create a new <see cref="SCContentFilter" /> to capture the contents of the specified display, including or excluding specific apps.</summary>
@@ -67,7 +67,7 @@ namespace ScreenCaptureKit {
 			default:
 				ObjCRuntime.ThrowHelper.ThrowArgumentOutOfRangeException (nameof (option), $"Unknown option {option}");
 				break;
-			};
+			}
 		}
 	}
 }

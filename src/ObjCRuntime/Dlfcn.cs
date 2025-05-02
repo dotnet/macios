@@ -96,19 +96,6 @@ namespace ObjCRuntime {
 			First = 0x100,
 		}
 
-#if MONOMAC && !NET
-		[DllImport (Constants.libcLibrary)]
-		internal static extern int dladdr (IntPtr addr, out Dl_info info);
-
-		internal struct Dl_info
-		{
-			internal IntPtr dli_fname; /* Pathname of shared object */
-			internal IntPtr dli_fbase; /* Base address of shared object */
-			internal IntPtr dli_sname; /* Name of nearest symbol */
-			internal IntPtr dli_saddr; /* Address of nearest symbol */
-		}
-#endif
-
 		/// <param name="handle">Handle previously returned by dlopen</param>
 		///         <summary>Closes and unloads the native shared library referenced by the handle.</summary>
 		///         <returns>A Unix error code, or zero on success.</returns>
@@ -183,7 +170,7 @@ namespace ObjCRuntime {
 		///         <summary>Returns the address of the specified symbol in the
 		/// 	current process.</summary>
 		///         <returns>
-		/// 	  Returns <see langword="null" /> if the symbol was not found.   The error condition can be probed using the <see cref="M:ObjCRuntime.Dlfcn.dlerror" />.
+		/// 	  Returns <see langword="null" /> if the symbol was not found.   The error condition can be probed using the <see cref="ObjCRuntime.Dlfcn.dlerror" />.
 		///         </returns>
 		///         <remarks>
 		///           <para>
@@ -212,7 +199,7 @@ namespace ObjCRuntime {
 			return Marshal.PtrToStringAnsi (dlerror_ ());
 		}
 
-		/// <param name="handle">Handle to the dynamic library previously opened with <see cref="M:ObjCRuntime.Dlfcn.dlopen(System.String,System.Int32)" />.</param>
+		/// <param name="handle">Handle to the dynamic library previously opened with <see cref="ObjCRuntime.Dlfcn.dlopen(System.String,System.Int32)" />.</param>
 		///         <param name="symbol">Name of the public symbol in the dynamic library to look up.</param>
 		///         <summary>Gets the NSString value exposed with the given symbol from the dynamic library.</summary>
 		///         <returns>The value from the library, or null on error.</returns>
@@ -230,7 +217,7 @@ namespace ObjCRuntime {
 			return Runtime.GetNSObject<NSString> (actual);
 		}
 
-		/// <param name="handle">Handle to the dynamic library previously opened with <see cref="M:ObjCRuntime.Dlfcn.dlopen(System.String,System.Int32)" />.</param>
+		/// <param name="handle">Handle to the dynamic library previously opened with <see cref="ObjCRuntime.Dlfcn.dlopen(System.String,System.Int32)" />.</param>
 		///         <param name="symbol">Name of the public symbol in the dynamic library to look up.</param>
 		///         <summary>Gets the pointer in memory to the specified symbol.</summary>
 		///         <returns>The value from the library, or IntPtr.Zero on failure.</returns>
@@ -256,7 +243,7 @@ namespace ObjCRuntime {
 			}
 		}
 
-		/// <param name="handle">Handle to the dynamic library previously opened with <see cref="M:ObjCRuntime.Dlfcn.dlopen(System.String,System.Int32)" />.</param>
+		/// <param name="handle">Handle to the dynamic library previously opened with <see cref="ObjCRuntime.Dlfcn.dlopen(System.String,System.Int32)" />.</param>
 		///         <param name="symbol">Name of the public symbol in the dynamic library to look up.</param>
 		///         <summary>Gets an NSNumber value exposed with the given symbol from the dynamic library.</summary>
 		///         <returns>The value from the library, or null on error.</returns>
@@ -382,7 +369,7 @@ namespace ObjCRuntime {
 			}
 		}
 
-		/// <param name="handle">Handle to the dynamic library previously opened with <see cref="M:ObjCRuntime.Dlfcn.dlopen(System.String,System.Int32)" />.</param>
+		/// <param name="handle">Handle to the dynamic library previously opened with <see cref="ObjCRuntime.Dlfcn.dlopen(System.String,System.Int32)" />.</param>
 		///         <param name="symbol">Name of the public symbol in the dynamic library to look up.</param>
 		///         <summary>Gets the int value exposed with the given symbol from the dynamic library.</summary>
 		///         <returns>The value from the library, or zero on failure.</returns>
@@ -397,7 +384,7 @@ namespace ObjCRuntime {
 			return Marshal.ReadInt32 (indirect);
 		}
 
-		/// <param name="handle">Handle to the dynamic library previously opened with <see cref="M:ObjCRuntime.Dlfcn.dlopen(System.String,System.Int32)" />.</param>
+		/// <param name="handle">Handle to the dynamic library previously opened with <see cref="ObjCRuntime.Dlfcn.dlopen(System.String,System.Int32)" />.</param>
 		///         <param name="symbol">Name of the public symbol in the dynamic library to look up.</param>
 		///         <param name="value">The value to set.</param>
 		///         <summary>Sets the specified symbol in the library handle to the specified int value.</summary>
@@ -411,7 +398,7 @@ namespace ObjCRuntime {
 			Marshal.WriteInt32 (indirect, value);
 		}
 
-		/// <param name="handle">Handle to the dynamic library previously opened with <see cref="M:ObjCRuntime.Dlfcn.dlopen(System.String,System.Int32)" />.</param>
+		/// <param name="handle">Handle to the dynamic library previously opened with <see cref="ObjCRuntime.Dlfcn.dlopen(System.String,System.Int32)" />.</param>
 		///         <param name="symbol">Name of the public symbol in the dynamic library to look up.</param>
 		///         <summary>Gets the uint value exposed with the given symbol from the dynamic library.</summary>
 		///         <returns>The value from the library, or zero on failure.</returns>
@@ -426,7 +413,7 @@ namespace ObjCRuntime {
 			return (uint) Marshal.ReadInt32 (indirect);
 		}
 
-		/// <param name="handle">Handle to the dynamic library previously opened with <see cref="M:ObjCRuntime.Dlfcn.dlopen(System.String,System.Int32)" />.</param>
+		/// <param name="handle">Handle to the dynamic library previously opened with <see cref="ObjCRuntime.Dlfcn.dlopen(System.String,System.Int32)" />.</param>
 		///         <param name="symbol">Name of the public symbol in the dynamic library to look up.</param>
 		///         <param name="value">The value to set.</param>
 		///         <summary>Sets the specified symbol in the library handle to the specified uint value.</summary>
@@ -440,7 +427,7 @@ namespace ObjCRuntime {
 			Marshal.WriteInt32 (indirect, (int) value);
 		}
 
-		/// <param name="handle">Handle to the dynamic library previously opened with <see cref="M:ObjCRuntime.Dlfcn.dlopen(System.String,System.Int32)" />.</param>
+		/// <param name="handle">Handle to the dynamic library previously opened with <see cref="ObjCRuntime.Dlfcn.dlopen(System.String,System.Int32)" />.</param>
 		///         <param name="symbol">Name of the public symbol in the dynamic library to look up.</param>
 		///         <summary>Gets the long value exposed with the given symbol from the dynamic library.</summary>
 		///         <returns>The value from the library, or zero on failure.</returns>
@@ -455,7 +442,7 @@ namespace ObjCRuntime {
 			return Marshal.ReadInt64 (indirect);
 		}
 
-		/// <param name="handle">Handle to the dynamic library previously opened with <see cref="M:ObjCRuntime.Dlfcn.dlopen(System.String,System.Int32)" />.</param>
+		/// <param name="handle">Handle to the dynamic library previously opened with <see cref="ObjCRuntime.Dlfcn.dlopen(System.String,System.Int32)" />.</param>
 		///         <param name="symbol">Name of the public symbol in the dynamic library to look up.</param>
 		///         <param name="value">The value to set.</param>
 		///         <summary>Sets the specified symbol in the library handle to the specified long value.</summary>
@@ -469,7 +456,7 @@ namespace ObjCRuntime {
 			Marshal.WriteInt64 (indirect, value);
 		}
 
-		/// <param name="handle">Handle to the dynamic library previously opened with <see cref="M:ObjCRuntime.Dlfcn.dlopen(System.String,System.Int32)" />.</param>
+		/// <param name="handle">Handle to the dynamic library previously opened with <see cref="ObjCRuntime.Dlfcn.dlopen(System.String,System.Int32)" />.</param>
 		///         <param name="symbol">Name of the public symbol in the dynamic library to look up.</param>
 		///         <summary>Gets the ulong value exposed with the given symbol from the dynamic library.</summary>
 		///         <returns>The value from the library, or zero on failure.</returns>
@@ -485,19 +472,7 @@ namespace ObjCRuntime {
 			return (ulong) Marshal.ReadInt64 (indirect);
 		}
 
-#if !NET
-		[Obsolete ("Use 'SetInt64' for long values instead.")]
-		public static void SetUInt64 (IntPtr handle, string symbol, long value)
-		{
-			var indirect = dlsym (handle, symbol);
-			if (indirect == IntPtr.Zero)
-				return;
-
-			Marshal.WriteInt64 (indirect, (long) value);
-		}
-#endif
-
-		/// <param name="handle">Handle to the dynamic library previously opened with <see cref="M:ObjCRuntime.Dlfcn.dlopen(System.String,System.Int32)" />.</param>
+		/// <param name="handle">Handle to the dynamic library previously opened with <see cref="ObjCRuntime.Dlfcn.dlopen(System.String,System.Int32)" />.</param>
 		///         <param name="symbol">Name of the public symbol in the dynamic library to look up.</param>
 		///         <param name="value">The value to set.</param>
 		///         <summary>Sets the specified symbol in the library handle to the specified ulong value.</summary>
@@ -512,7 +487,7 @@ namespace ObjCRuntime {
 			Marshal.WriteInt64 (indirect, (long) value);
 		}
 
-		/// <param name="handle">Handle to the dynamic library previously opened with <see cref="M:ObjCRuntime.Dlfcn.dlopen(System.String,System.Int32)" />.</param>
+		/// <param name="handle">Handle to the dynamic library previously opened with <see cref="ObjCRuntime.Dlfcn.dlopen(System.String,System.Int32)" />.</param>
 		///         <param name="symbol">Name of the public symbol in the dynamic library to look up.</param>
 		///         <param name="value">The string to set, can be null.</param>
 		///         <summary>Sets the specified symbol in the library handle to the specified string value.</summary>
@@ -527,7 +502,7 @@ namespace ObjCRuntime {
 			Marshal.WriteIntPtr (indirect, CFString.CreateNative (value));
 		}
 
-		/// <param name="handle">Handle to the dynamic library previously opened with <see cref="M:ObjCRuntime.Dlfcn.dlopen(System.String,System.Int32)" />.</param>
+		/// <param name="handle">Handle to the dynamic library previously opened with <see cref="ObjCRuntime.Dlfcn.dlopen(System.String,System.Int32)" />.</param>
 		///         <param name="symbol">Name of the public symbol in the dynamic library to look up.</param>
 		///         <param name="value">The string to set, can be null.</param>
 		///         <summary>Sets the specified symbol in the library handle to the specified string value.</summary>
@@ -539,7 +514,7 @@ namespace ObjCRuntime {
 			SetObject (handle, symbol, value);
 		}
 
-		/// <param name="handle">Handle to the dynamic library previously opened with <see cref="M:ObjCRuntime.Dlfcn.dlopen(System.String,System.Int32)" />.</param>
+		/// <param name="handle">Handle to the dynamic library previously opened with <see cref="ObjCRuntime.Dlfcn.dlopen(System.String,System.Int32)" />.</param>
 		///         <param name="symbol">Name of the public symbol in the dynamic library to look up.</param>
 		///         <param name="array">The array to set, can be null.</param>
 		///         <summary>Sets the specified symbol in the library handle to the specified array value.</summary>
@@ -567,7 +542,7 @@ namespace ObjCRuntime {
 			Marshal.WriteIntPtr (indirect, objectHandle);
 		}
 
-		/// <param name="handle">Handle to the dynamic library previously opened with <see cref="M:ObjCRuntime.Dlfcn.dlopen(System.String,System.Int32)" />.</param>
+		/// <param name="handle">Handle to the dynamic library previously opened with <see cref="ObjCRuntime.Dlfcn.dlopen(System.String,System.Int32)" />.</param>
 		///         <param name="symbol">Name of the public symbol in the dynamic library to look up.</param>
 		///         <summary>Gets the nint value exposed with the given symbol from the dynamic library.</summary>
 		///         <returns>The value from the library, or zero on failure.</returns>
@@ -584,7 +559,7 @@ namespace ObjCRuntime {
 			SetIntPtr (handle, symbol, (IntPtr) value);
 		}
 
-		/// <param name="handle">Handle to the dynamic library previously opened with <see cref="M:ObjCRuntime.Dlfcn.dlopen(System.String,System.Int32)" />.</param>
+		/// <param name="handle">Handle to the dynamic library previously opened with <see cref="ObjCRuntime.Dlfcn.dlopen(System.String,System.Int32)" />.</param>
 		///         <param name="symbol">Name of the public symbol in the dynamic library to look up.</param>
 		///         <summary>Gets the nuint value exposed with the given symbol from the dynamic library.</summary>
 		///         <returns>The value from the library, or zero on failure.</returns>
@@ -601,7 +576,7 @@ namespace ObjCRuntime {
 			SetUIntPtr (handle, symbol, (UIntPtr) (ulong) value);
 		}
 
-		/// <param name="handle">Handle to the dynamic library previously opened with <see cref="M:ObjCRuntime.Dlfcn.dlopen(System.String,System.Int32)" />.</param>
+		/// <param name="handle">Handle to the dynamic library previously opened with <see cref="ObjCRuntime.Dlfcn.dlopen(System.String,System.Int32)" />.</param>
 		///         <param name="symbol">Name of the public symbol in the dynamic library to look up.</param>
 		///         <summary>Gets the nfloat value exposed with the given symbol from the dynamic library.</summary>
 		///         <returns>The value from the library, or zero on failure.</returns>
@@ -634,7 +609,7 @@ namespace ObjCRuntime {
 			}
 		}
 
-		/// <param name="handle">Handle to the dynamic library previously opened with <see cref="M:ObjCRuntime.Dlfcn.dlopen(System.String,System.Int32)" />.</param>
+		/// <param name="handle">Handle to the dynamic library previously opened with <see cref="ObjCRuntime.Dlfcn.dlopen(System.String,System.Int32)" />.</param>
 		///         <param name="symbol">Name of the public symbol in the dynamic library to look up.</param>
 		///         <summary>Gets the IntPtr value exposed with the given symbol from the dynamic library.</summary>
 		///         <returns>The value from the library, or IntPtr.Zero on failure.</returns>
@@ -665,7 +640,7 @@ namespace ObjCRuntime {
 			Marshal.WriteIntPtr (indirect, (IntPtr) (ulong) value);
 		}
 
-		/// <param name="handle">Handle to the dynamic library previously opened with <see cref="M:ObjCRuntime.Dlfcn.dlopen(System.String,System.Int32)" />.</param>
+		/// <param name="handle">Handle to the dynamic library previously opened with <see cref="ObjCRuntime.Dlfcn.dlopen(System.String,System.Int32)" />.</param>
 		///         <param name="symbol">Name of the public symbol in the dynamic library to look up.</param>
 		///         <param name="value">The value to set.</param>
 		///         <summary>Sets the specified symbol in the library handle to the specified IntPtr value.</summary>
@@ -679,9 +654,9 @@ namespace ObjCRuntime {
 			Marshal.WriteIntPtr (indirect, value);
 		}
 
-		/// <param name="handle">Handle to the dynamic library previously opened with <see cref="M:ObjCRuntime.Dlfcn.dlopen(System.String,System.Int32)" />.</param>
+		/// <param name="handle">Handle to the dynamic library previously opened with <see cref="ObjCRuntime.Dlfcn.dlopen(System.String,System.Int32)" />.</param>
 		///         <param name="symbol">Name of the public symbol in the dynamic library to look up.</param>
-		///         <summary>Gets the <see cref="T:CoreGraphics.CGRect" /> value exposed with the given symbol from the dynamic library.</summary>
+		///         <summary>Gets the <see cref="CoreGraphics.CGRect" /> value exposed with the given symbol from the dynamic library.</summary>
 		///         <returns>The value from the library, or an empty CGRect on failure.</returns>
 		///         <remarks>
 		///           <para>If this routine fails to find the symbol, this will return an empty CGRect.</para>
@@ -697,9 +672,9 @@ namespace ObjCRuntime {
 			}
 		}
 
-		/// <param name="handle">Handle to the dynamic library previously opened with <see cref="M:ObjCRuntime.Dlfcn.dlopen(System.String,System.Int32)" />.</param>
+		/// <param name="handle">Handle to the dynamic library previously opened with <see cref="ObjCRuntime.Dlfcn.dlopen(System.String,System.Int32)" />.</param>
 		///         <param name="symbol">Name of the public symbol in the dynamic library to look up.</param>
-		///         <summary>Gets the <see cref="T:CoreGraphics.CGSize" /> value exposed with the given symbol from the dynamic library.</summary>
+		///         <summary>Gets the <see cref="CoreGraphics.CGSize" /> value exposed with the given symbol from the dynamic library.</summary>
 		///         <returns>The value from the library, or an empty CGSize on failure.</returns>
 		///         <remarks>
 		///           <para>If this routine fails to find the symbol, this will return an empty CGSize.</para>
@@ -715,10 +690,10 @@ namespace ObjCRuntime {
 			}
 		}
 
-		/// <param name="handle">Handle to the dynamic library previously opened with <see cref="M:ObjCRuntime.Dlfcn.dlopen(System.String,System.Int32)" />.</param>
+		/// <param name="handle">Handle to the dynamic library previously opened with <see cref="ObjCRuntime.Dlfcn.dlopen(System.String,System.Int32)" />.</param>
 		///         <param name="symbol">Name of the public symbol in the dynamic library to look up.</param>
 		///         <param name="value">The value to set.</param>
-		///         <summary>Gets the <see cref="T:CoreGraphics.CGSize" /> value exposed with the given symbol from the dynamic library.</summary>
+		///         <summary>Gets the <see cref="CoreGraphics.CGSize" /> value exposed with the given symbol from the dynamic library.</summary>
 		///         <remarks>
 		///         </remarks>
 		public static void SetCGSize (IntPtr handle, string symbol, CGSize value)
@@ -733,7 +708,7 @@ namespace ObjCRuntime {
 			}
 		}
 
-		/// <param name="handle">Handle to the dynamic library previously opened with <see cref="M:ObjCRuntime.Dlfcn.dlopen(System.String,System.Int32)" />.</param>
+		/// <param name="handle">Handle to the dynamic library previously opened with <see cref="ObjCRuntime.Dlfcn.dlopen(System.String,System.Int32)" />.</param>
 		///         <param name="symbol">Name of the public symbol in the dynamic library to look up.</param>
 		///         <summary>Gets the double value exposed with the given symbol from the dynamic library.</summary>
 		///         <returns>The value from the library, or zero on failure.</returns>
@@ -752,7 +727,7 @@ namespace ObjCRuntime {
 			}
 		}
 
-		/// <param name="handle">Handle to the dynamic library previously opened with <see cref="M:ObjCRuntime.Dlfcn.dlopen(System.String,System.Int32)" />.</param>
+		/// <param name="handle">Handle to the dynamic library previously opened with <see cref="ObjCRuntime.Dlfcn.dlopen(System.String,System.Int32)" />.</param>
 		///         <param name="symbol">Name of the public symbol in the dynamic library to look up.</param>
 		///         <param name="value">The value to set.</param>
 		///         <summary>Sets the specified symbol in the library handle to the specified double value.</summary>
@@ -768,7 +743,7 @@ namespace ObjCRuntime {
 			}
 		}
 
-		/// <param name="handle">Handle to the dynamic library previously opened with <see cref="M:ObjCRuntime.Dlfcn.dlopen(System.String,System.Int32)" />.</param>
+		/// <param name="handle">Handle to the dynamic library previously opened with <see cref="ObjCRuntime.Dlfcn.dlopen(System.String,System.Int32)" />.</param>
 		///         <param name="symbol">Name of the public symbol in the dynamic library to look up.</param>
 		///         <summary>Gets the float value exposed with the given symbol from the dynamic library.</summary>
 		///         <returns>The value from the library, or zero on failure.</returns>
@@ -787,7 +762,7 @@ namespace ObjCRuntime {
 			}
 		}
 
-		/// <param name="handle">Handle to the dynamic library previously opened with <see cref="M:ObjCRuntime.Dlfcn.dlopen(System.String,System.Int32)" />.</param>
+		/// <param name="handle">Handle to the dynamic library previously opened with <see cref="ObjCRuntime.Dlfcn.dlopen(System.String,System.Int32)" />.</param>
 		///         <param name="symbol">Name of the public symbol in the dynamic library to look up.</param>
 		///         <param name="value">The value to set.</param>
 		///         <summary>Sets the specified symbol in the library handle to the specified float value.</summary>

@@ -82,7 +82,7 @@ namespace CloudKit {
 
 	/// <param name="notificationIDsMarkedRead">To be added.</param>
 	///     <param name="operationError">To be added.</param>
-	///     <summary>Delegate for the <see cref="P:CloudKit.CKMarkNotificationsReadOperation.Completed" /> property.</summary>
+	///     <summary>Delegate for the <see cref="CloudKit.CKMarkNotificationsReadOperation.Completed" /> property.</summary>
 	///     <remarks>To be added.</remarks>
 	[EditorBrowsable (EditorBrowsableState.Never)]
 	public delegate void CKMarkNotificationsReadHandler (CKNotificationID [] notificationIDsMarkedRead, NSError operationError);

@@ -314,7 +314,7 @@ public static NSObject {name} (NSObject objectToObserve, EventHandler<{eventType
 		if (bindingContext.Changes.BindingType != BindingType.Class) {
 			diagnostics = [Diagnostic.Create (
 					Diagnostics
-						.RBI0000, // An unexpected error occurred while processing '{0}'. Please fill a bug report at https://github.com/xamarin/xamarin-macios/issues/new.
+						.RBI0000, // An unexpected error occurred while processing '{0}'. Please fill a bug report at https://github.com/dotnet/macios/issues/new.
 					null,
 					bindingContext.Changes.FullyQualifiedSymbol)];
 			return false;

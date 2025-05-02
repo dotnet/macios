@@ -40,7 +40,7 @@ using CoreGraphics;
 using CFIndex = System.IntPtr;
 
 namespace CoreText {
-	/// <summary>Options that can be used for creating <see cref="T:CoreText.CTFontCollection" /> objects.</summary>
+	/// <summary>Options that can be used for creating <see cref="CoreText.CTFontCollection" /> objects.</summary>
 	///     <remarks>
 	///     </remarks>
 	[SupportedOSPlatform ("ios")]

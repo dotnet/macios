@@ -89,6 +89,7 @@ reset-versions: reset-versions-impl
 
 README := $(abspath $(TOP)/mk/xamarin.mk)
 bump-current-maccore: P=MACCORE
+bump-current-adr: P=ADR
 bump-current-%:
 	@sed  -i '' -e "s,NEEDED_$(P)_VERSION.*,NEEDED_$(P)_VERSION := $(shell cd $($(P)_PATH) && git log -1 --pretty=format:%H),g" $(README)
 	@sed  -i '' -e "s,NEEDED_$(P)_BRANCH.*,NEEDED_$(P)_BRANCH := $(shell cd $($(P)_PATH) && git rev-parse --abbrev-ref HEAD),g" $(README)

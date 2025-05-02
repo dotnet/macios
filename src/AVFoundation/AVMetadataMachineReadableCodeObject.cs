@@ -36,7 +36,7 @@ using System.Runtime.CompilerServices;
 
 namespace AVFoundation {
 	public partial class AVMetadataMachineReadableCodeObject {
-		/// <summary>If not <see langword="null" />, an array of <see cref="T:CoreGraphics.CGPoint" /> objects of the detected corners.</summary>
+		/// <summary>If not <see langword="null" />, an array of <see cref="CoreGraphics.CGPoint" /> objects of the detected corners.</summary>
 		///         <value>
 		///           <para>(More documentation for this node is coming)</para>
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>

@@ -1216,17 +1216,5 @@ namespace Introspection {
 			}
 			return base.CheckStaticResponse (value, actualType, declaredType, method, ref name);
 		}
-
-		protected override bool SkipInit (string selector, MethodBase m)
-		{
-			switch (selector) {
-			// Cinematic.CNDecision
-			case "initWithTime:detectionGroupID:strong:":
-			case "initWithTime:detectionID:strong:":
-				return true;
-			default:
-				return base.SkipInit (selector, m);
-			}
-		}
 	}
 }

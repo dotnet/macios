@@ -14,7 +14,7 @@ using Xamarin.Utils;
 #nullable enable
 
 namespace Xamarin.MacDev.Tasks {
-	public class Zip : XamarinTask, ICancelableTask {
+	public class Zip : XamarinTask, ICancelableTask, ITaskCallback {
 		#region Inputs
 
 		[Output]
@@ -68,9 +68,11 @@ namespace Xamarin.MacDev.Tasks {
 			}
 		}
 
+		//We don't want the inputs to be copied to the Mac since when zipping remotely, we are expecting the files to be already present in the Mac
 		public bool ShouldCopyToBuildServer (ITaskItem item) => false;
 
-		public bool ShouldCreateOutputFile (ITaskItem item) => true;
+		//We don't want empty output files to be created in Windows since we are already copying the real output file as part of the task execution
+		public bool ShouldCreateOutputFile (ITaskItem item) => false;
 
 		public IEnumerable<ITaskItem> GetAdditionalItemsToBeCopied () => Enumerable.Empty<ITaskItem> ();
 	}

@@ -1,6 +1,6 @@
 <Documentation>
   <Docs DocId="T:CoreImage.CIMaskToAlpha">
-    <summary>A <see cref="T:CoreImage.CIFilter" /> that converts a grayscale image to an alpha mask.</summary>
+    <summary>A <see cref="CoreImage.CIFilter" /> that converts a grayscale image to an alpha mask.</summary>
     <remarks>
       <para>Black translates to 100% alpha (completely transparent) and white to 0%.</para>
       <para>The following example shows this filter in use</para>

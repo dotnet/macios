@@ -18,7 +18,7 @@ using ObjCRuntime;
 
 namespace UIKit {
 
-	/// <summary>Provides data for the <see cref="E:UIKit.UITextField.EndedWithReason" /> event.</summary>
+	/// <summary>Provides data for the <see cref="UIKit.UITextField.EndedWithReason" /> event.</summary>
 	///     <remarks>
 	///     </remarks>
 	public partial class UITextFieldEditingEndedEventArgs : EventArgs {
@@ -183,16 +183,22 @@ namespace UIKit {
 		}
 #pragma warning restore 672
 
+		/// <summary>Raised when editing has ended.</summary>
+		/// <remarks>To be added.</remarks>
 		public event EventHandler Ended {
 			add { EnsureUITextFieldDelegate ().editingEnded += value; }
 			remove { EnsureUITextFieldDelegate ().editingEnded -= value; }
 		}
 
+		/// <summary>Event that is raised when editing ends.</summary>
+		/// <remarks>To be added.</remarks>
 		public event EventHandler<UITextFieldEditingEndedEventArgs> EndedWithReason {
 			add { EnsureUITextFieldDelegate ().editingEnded1 += value; }
 			remove { EnsureUITextFieldDelegate ().editingEnded1 -= value; }
 		}
 
+		/// <summary>Raised when editing has started.</summary>
+		/// <remarks>To be added.</remarks>
 		public event EventHandler Started {
 			add { EnsureUITextFieldDelegate ().editingStarted += value; }
 			remove { EnsureUITextFieldDelegate ().editingStarted -= value; }

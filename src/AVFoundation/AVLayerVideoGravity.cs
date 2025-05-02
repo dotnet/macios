@@ -35,7 +35,7 @@ using ObjCRuntime;
 
 namespace AVFoundation {
 	// Convenience enum for native strings - AVAnimation.h
-	/// <summary>An enumeration whose values specify how a video should resize itself to display within a layer's <see cref="P:CoreAnimation.CALayer.Bounds" />.</summary>
+	/// <summary>An enumeration whose values specify how a video should resize itself to display within a layer's <see cref="CoreAnimation.CALayer.Bounds" />.</summary>
 	///     <remarks>To be added.</remarks>
 	public enum AVLayerVideoGravity {
 		/// <summary>To be added.</summary>
@@ -92,7 +92,7 @@ namespace AVFoundation {
 #if !TVOS
 	partial class AVCaptureVideoPreviewLayer {
 		// Should be VideoGravity only but previous binding was wrong
-		/// <summary>Gets or sets how the video is displayed within the layer's <see cref="P:CoreAnimation.CALayer.Bounds" />.</summary>
+		/// <summary>Gets or sets how the video is displayed within the layer's <see cref="CoreAnimation.CALayer.Bounds" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public AVLayerVideoGravity VideoGravity {

@@ -137,7 +137,7 @@ namespace CoreMidi {
 		/// <summary>Returns the number of sources in the system.</summary>
 		///         <value>
 		///         </value>
-		///         <remarks>Use the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:CoreMidi.MidiEndpoint.GetSource(int)&amp;scope=Xamarin" title="T:CoreMidi.MidiEndpoint.GetSource(int)">T:CoreMidi.MidiEndpoint.GetSource(int)</a></format> to fetch a specific source (represented by a MidiEndpoint).</remarks>
+		///         <remarks>Use the <see cref="CoreMidi.MidiEndpoint.GetSource(nint)" /> to fetch a specific source (represented by a MidiEndpoint).</remarks>
 		public static nint SourceCount {
 			get {
 				return MIDIGetNumberOfSources ();
@@ -158,7 +158,7 @@ namespace CoreMidi {
 		/// <summary>The number of external devices connected to this system.</summary>
 		///         <value>
 		///         </value>
-		///         <remarks>You can retrieve a specific MIDI device by using the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:CoreMidi.Midi.GetExternalDevice(int)&amp;scope=Xamarin" title="T:CoreMidi.Midi.GetExternalDevice(int)">T:CoreMidi.Midi.GetExternalDevice(int)</a></format>.</remarks>
+		///         <remarks>You can retrieve a specific MIDI device by using the <see cref="CoreMidi.Midi.GetExternalDevice(nint)" />.</remarks>
 		public static nint ExternalDeviceCount {
 			get {
 				return MIDIGetNumberOfExternalDevices ();
@@ -168,7 +168,7 @@ namespace CoreMidi {
 		/// <summary>The number of MIDI devices in the system (do not confused with external connected devices).</summary>
 		///         <value>
 		///         </value>
-		///         <remarks>You can retrieve a specific MIDI device by using the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:CoreMidi.Midi.GetDevice(int)&amp;scope=Xamarin" title="T:CoreMidi.Midi.GetDevice(int)">T:CoreMidi.Midi.GetDevice(int)</a></format>.</remarks>
+		///         <remarks>You can retrieve a specific MIDI device by using the <see cref="CoreMidi.Midi.GetDevice(nint)" />.</remarks>
 		public static nint DeviceCount {
 			get {
 				return MIDIGetNumberOfDevices ();
@@ -180,6 +180,11 @@ namespace CoreMidi {
 		[DllImport (Constants.CoreMidiLibrary)]
 		extern static MidiDeviceRef MIDIGetDevice (nint /* ItemCount = unsigned long */ item);
 
+		/// <param name="deviceIndex">The device index.</param>
+		/// <summary>Returns an object representing the specified MIDI device.</summary>
+		/// <returns>An instance of MidiDevice, or null on error.</returns>
+		/// <remarks>
+		///         </remarks>
 		public static MidiDevice? GetDevice (nint deviceIndex)
 		{
 			var h = MIDIGetDevice (deviceIndex);
@@ -188,6 +193,11 @@ namespace CoreMidi {
 			return new MidiDevice (h);
 		}
 
+		/// <param name="deviceIndex">The external MIDI device index.</param>
+		/// <summary>Returns an object representing the specified external MIDI device.</summary>
+		/// <returns>An instance of MidiDevice, or null on error.</returns>
+		/// <remarks>
+		///         </remarks>
 		public static MidiDevice? GetExternalDevice (nint deviceIndex)
 		{
 			var h = MIDIGetExternalDevice (deviceIndex);
@@ -198,7 +208,7 @@ namespace CoreMidi {
 #endif // !COREBUILD
 	}
 
-	/// <summary>Base class for the <see cref="T:CoreMidi.MidiClient" />, <see cref="T:CoreMidi.MidiPort" />, <see cref="T:CoreMidi.MidiEntity" />, <see cref="T:CoreMidi.MidiDevice" /> and <see cref="T:CoreMidi.MidiEndpoint" /> classes.</summary>
+	/// <summary>Base class for the <see cref="CoreMidi.MidiClient" />, <see cref="CoreMidi.MidiPort" />, <see cref="CoreMidi.MidiEntity" />, <see cref="CoreMidi.MidiDevice" /> and <see cref="CoreMidi.MidiEndpoint" /> classes.</summary>
 	///     <remarks>
 	///
 	///       Provides the shared properties for the various Midi classes.
@@ -1011,7 +1021,7 @@ namespace CoreMidi {
 	///     <remarks>
 	///
 	///       The input and output port objects are created by calling the
-	///       <see cref="M:CoreMidi.MidiClient.CreateInputPort(System.String)" /> or <see cref="M:CoreMidi.MidiClient.CreateOutputPort(System.String)" /> methods.
+	///       <see cref="CoreMidi.MidiClient.CreateInputPort(System.String)" /> or <see cref="CoreMidi.MidiClient.CreateOutputPort(System.String)" /> methods.
 	///
 	///     </remarks>
 	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/CoreMidiSample/">CoreMidiSample</related>
@@ -1198,7 +1208,7 @@ namespace CoreMidi {
 #endif // !COREBUILD
 	}
 
-	/// <summary>A <see cref="T:CoreMidi.MidiObject" /> that represents a sub-component of a <see cref="T:CoreMidi.MidiDevice" />.</summary>
+	/// <summary>A <see cref="CoreMidi.MidiObject" /> that represents a sub-component of a <see cref="CoreMidi.MidiDevice" />.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -1784,7 +1794,7 @@ namespace CoreMidi {
 	/// 	generators, or a generator and a keyboard.
 	///       </para>
 	///       <para>
-	/// 	To obtain a MidiDevice, use the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:CoreMidi.Midi.GetDevice(int)&amp;scope=Xamarin" title="T:CoreMidi.Midi.GetDevice(int)">T:CoreMidi.Midi.GetDevice(int)</a></format> or the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:CoreMidi.Midi.GetExternalDevice(int)&amp;scope=Xamarin" title="T:CoreMidi.Midi.GetExternalDevice(int)">T:CoreMidi.Midi.GetExternalDevice(int)</a></format> methods.
+	/// 	To obtain a MidiDevice, use the <see cref="CoreMidi.Midi.GetDevice(nint)" /> or the <see cref="CoreMidi.Midi.GetExternalDevice(nint)" /> methods.
 	///
 	///       </para>
 	///     </remarks>
@@ -2541,7 +2551,7 @@ namespace CoreMidi {
 	}
 
 	/// <summary>Endpoints represent an individual source or destination on the MIDI stream.</summary>
-	///     <remarks>Physical endpoints are owned by <see cref="T:CoreMidi.MidiEntity" /> objects, virtual endpoints do not have an owning entity.</remarks>
+	///     <remarks>Physical endpoints are owned by <see cref="CoreMidi.MidiEntity" /> objects, virtual endpoints do not have an owning entity.</remarks>
 	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/CoreMidiSample/">CoreMidiSample</related>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -2998,7 +3008,7 @@ namespace CoreMidi {
 	//
 	// The notification EventArgs
 	//
-	/// <summary>Provides data for the <see cref="E:CoreMidi.MidiClient.ObjectRemoved" /> and <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Midi%20Object%20Added%20Or%20Removed%20Event%20Args%20Object%20Removed&amp;scope=Xamarin" title="E:CoreMidi.ObjectAddedOrRemovedEventArgs.ObjectRemoved">E:CoreMidi.ObjectAddedOrRemovedEventArgs.ObjectRemoved</a></format> events.</summary>
+	/// <summary>Provides data for the <see cref="CoreMidi.MidiClient.ObjectAdded" /> and <see cref="CoreMidi.MidiClient.ObjectRemoved" /> events.</summary>
 	///     <remarks>
 	///     </remarks>
 	[SupportedOSPlatform ("ios")]
@@ -3031,7 +3041,7 @@ namespace CoreMidi {
 		public MidiObject? Child { get; private set; }
 	}
 
-	/// <summary>Provides data for the <see cref="E:CoreMidi.MidiClient.PropertyChanged" /> event.</summary>
+	/// <summary>Provides data for the <see cref="CoreMidi.MidiClient.PropertyChanged" /> event.</summary>
 	///     <remarks>
 	///     </remarks>
 	[SupportedOSPlatform ("ios")]
@@ -3062,7 +3072,7 @@ namespace CoreMidi {
 		public string? PropertyName { get; private set; }
 	}
 
-	/// <summary>Provides data for the <see cref="E:CoreMidi.MidiClient.IOError" /> event.</summary>
+	/// <summary>Provides data for the <see cref="CoreMidi.MidiClient.IOError" /> event.</summary>
 	///     <remarks>
 	///     </remarks>
 	[SupportedOSPlatform ("ios")]
@@ -3093,7 +3103,7 @@ namespace CoreMidi {
 		public int ErrorCode { get; set; }
 	}
 
-	/// <summary>Provides data for the <see cref="E:CoreMidi.MidiPort.MessageReceived" /> and <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Midi%20Midi%20Packets%20Event%20Args%20Message%20Received&amp;scope=Xamarin" title="E:CoreMidi.MidiPacketsEventArgs.MessageReceived">E:CoreMidi.MidiPacketsEventArgs.MessageReceived</a></format> events.</summary>
+	/// <summary>Provides data for the <see cref="CoreMidi.MidiPort.MessageReceived" /> and <see cref="CoreMidi.MidiEndpoint.MessageReceived" /> events.</summary>
 	///     <remarks>
 	///     </remarks>
 	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/CoreMidiSample/">CoreMidiSample</related>

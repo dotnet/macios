@@ -33,20 +33,15 @@ namespace UIKit {
 		}
 
 		/// <summary>Captures a screenshot of the entire screen.</summary>
-		///         <returns>A screenshot as a <see cref="T:UIKit.UIImage" />.</returns>
-		///         <remarks>
-		///           <para>
-		/// 	    This API will only capture UIKit and Quartz drawing,
-		/// 	    because it uses the screen's CALayer's RenderInContext
-		/// 	    method to perform the screenshot.  It will not capture
-		/// 	    OpenGL ES or video content.
-		/// 	  </para>
-		///           <para>
-		/// 	    If you want to capture an OpenGL ES or video content use
-		/// 	    the <see cref="M:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.Capture" />
-		/// 	    method.
-		/// 	  </para>
-		///         </remarks>
+		/// <returns>A screenshot as a <see cref="UIKit.UIImage" />.</returns>
+		/// <remarks>
+		///   <para>
+		///   This API will only capture UIKit and Quartz drawing,
+		///   because it uses the screen's CALayer's RenderInContext
+		///   method to perform the screenshot. It will not capture
+		///   OpenGL ES or video content.
+		///   </para>
+		/// </remarks>
 		public UIImage Capture ()
 		{
 			if (SystemVersion.CheckiOS (7, 0)) {

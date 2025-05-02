@@ -87,6 +87,8 @@ namespace AuthenticationServices {
 		Url,
 	}
 
+	/// <summary>Enumerates errors associated with a <see cref="AuthenticationServices.ASWebAuthenticationSession" />.</summary>
+	/// <remarks>To be added.</remarks>
 	[TV (16, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -198,11 +200,11 @@ namespace AuthenticationServices {
 		PasswordFallback = 1uL << 3,
 	}
 
-	/// <summary>Delegate used in callbacks by <see cref="T:AuthenticationServices.ASCredentialIdentityStore" />.</summary>
+	/// <summary>Delegate used in callbacks by <see cref="AuthenticationServices.ASCredentialIdentityStore" />.</summary>
 	delegate void ASCredentialIdentityStoreCompletionHandler (bool success, NSError error);
 	delegate void ASCredentialIdentityStoreGetCredentialIdentitiesHandler (IASCredentialIdentity [] credentialIdentities);
 
-	/// <summary>A class whose shared instance (see <see cref="P:AuthenticationServices.ASCredentialIdentityStore.SharedStore" />) holds credentials across providers.</summary>
+	/// <summary>A class whose shared instance (see <see cref="AuthenticationServices.ASCredentialIdentityStore.SharedStore" />) holds credentials across providers.</summary>
 	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[NoTV]
 	[BaseType (typeof (NSObject))]
@@ -218,7 +220,11 @@ namespace AuthenticationServices {
 		/// <param name="completion">To be added.</param>
 		///         <summary>Retrieves the state of store, which is passed as an argument to the <paramref name="completion" /> handler.</summary>
 		///         <remarks>To be added.</remarks>
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Asynchronously gets the state of the identity store.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("getCredentialIdentityStoreStateWithCompletion:")]
 		void GetCredentialIdentityStoreState (Action<ASCredentialIdentityStoreState> completion);
 
@@ -231,7 +237,12 @@ namespace AuthenticationServices {
 		///         <param name="completion">To be added.</param>
 		///         <summary>Saves (or replaces, if the store does not support incremental updates) the <paramref name="credentialIdentities" /> to the store.</summary>
 		///         <remarks>To be added.</remarks>
-		[Async]
+		[Async (XmlDocs = """
+			<param name="credentialIdentities">To be added.</param>
+			<summary>Asynchronously saves (or replaces, if the store does not support incremental updates) the <paramref name="credentialIdentities" /> to the store.</summary>
+			<returns>The first value will be <see langword="true" /> on success. The second value will be non-null on error.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Deprecated (PlatformName.MacOSX, 14, 0, message: "Use 'SaveCredentialIdentityEntries  (ASCredentialIdentity [])' instead.")]
 		[Deprecated (PlatformName.iOS, 17, 0, message: "Use 'SaveCredentialIdentityEntries  (ASCredentialIdentity [])' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 17, 0, message: "Use 'SaveCredentialIdentityEntries  (ASCredentialIdentity [])' instead.")]
@@ -245,14 +256,23 @@ namespace AuthenticationServices {
 		[Deprecated (PlatformName.MacCatalyst, 17, 0, message: "Use 'RemoveCredentialIdentityEntries (ASPasswordCredentialIdentity [])' instead.")]
 		[Deprecated (PlatformName.iOS, 17, 0, message: "Use 'RemoveCredentialIdentityEntries (ASPasswordCredentialIdentity [])' instead.")]
 		[Deprecated (PlatformName.MacOSX, 14, 0, message: "Use 'RemoveCredentialIdentityEntries (ASPasswordCredentialIdentity [])' instead.")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="credentialIdentities">To be added.</param>
+			<summary>Asynchronously removes the specified <paramref name="credentialIdentities" /> from the store. The returned tuple will have a first value of <see langword="true" /> if all identities were removed without error.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("removeCredentialIdentities:completion:")]
 		void RemoveCredentialIdentities (ASPasswordCredentialIdentity [] credentialIdentities, [NullAllowed] ASCredentialIdentityStoreCompletionHandler completion);
 
 		/// <param name="completion">To be added.</param>
 		///         <summary>Removes all credential identities from the store. The <paramref name="completion" /> handler is called after the process completes.</summary>
 		///         <remarks>To be added.</remarks>
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Asynchronously removes all credential identities from the store. The returned tuple will have a first value of <see langword="true" /> if all identities were removed without error.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("removeAllCredentialIdentitiesWithCompletion:")]
 		void RemoveAllCredentialIdentities ([NullAllowed] Action<bool, NSError> completion);
 
@@ -263,7 +283,12 @@ namespace AuthenticationServices {
 		[Deprecated (PlatformName.MacCatalyst, 17, 0, message: "Use 'ReplaceCredentialIdentityEntries (ASPasswordCredentialIdentity [])' instead.")]
 		[Deprecated (PlatformName.iOS, 17, 0, message: "Use 'ReplaceCredentialIdentityEntries (ASPasswordCredentialIdentity [])' instead.")]
 		[Deprecated (PlatformName.MacOSX, 14, 0, message: "Use 'ReplaceCredentialIdentityEntries (ASPasswordCredentialIdentity [])' instead.")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="newCredentialIdentities">To be added.</param>
+			<summary>Asynchronously replaces the existing identities with the specified <paramref name="newCredentialIdentities" /> from the store. The returned tuple will have a first value of <see langword="true" /> if all identities were removed without error.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("replaceCredentialIdentitiesWithIdentities:completion:")]
 		void ReplaceCredentialIdentities (ASPasswordCredentialIdentity [] newCredentialIdentities, [NullAllowed] ASCredentialIdentityStoreCompletionHandler completion);
 
@@ -302,7 +327,7 @@ namespace AuthenticationServices {
 		bool SupportsIncrementalUpdates { get; }
 	}
 
-	/// <summary>Delegate object for completion handlers in methods within <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Authentication%20Services%20ASCredential%20Provider%20Extension&amp;scope=Xamarin" title="T:AuthenticationServices.ASCredentialProviderExtension">T:AuthenticationServices.ASCredentialProviderExtension</a></format>.</summary>
+	/// <summary>Delegate object for completion handlers in methods within <see cref="AuthenticationServices.ASCredentialProviderExtension" />.</summary>
 	delegate void ASCredentialProviderExtensionRequestCompletionHandler (bool expired);
 
 	/// <summary>An <see cref="NSExtensionContext" /> subclass that provides context for a credential provider.</summary>
@@ -318,12 +343,12 @@ namespace AuthenticationServices {
 		[Export ("completeRequestWithSelectedCredential:completionHandler:")]
 		void CompleteRequest (ASPasswordCredential credential, [NullAllowed] ASCredentialProviderExtensionRequestCompletionHandler completionHandler);
 
-		/// <summary>Called to complete the request and dismiss the associated <see cref="T:UIKit.UIViewController" />.</summary>
+		/// <summary>Called to complete the request and dismiss the associated <see cref="UIKit.UIViewController" />.</summary>
 		///         <remarks>To be added.</remarks>
 		[Export ("completeExtensionConfigurationRequest")]
 		void CompleteExtensionConfigurationRequest ();
 
-		/// <param name="error">The error must be of type <see cref="T:AuthenticationServices.ASExtensionErrorCode" />.</param>
+		/// <param name="error">The error must be of type <see cref="AuthenticationServices.ASExtensionErrorCode" />.</param>
 		///         <summary>Cancels the request.</summary>
 		///         <remarks>To be added.</remarks>
 		[Export ("cancelRequestWithError:")]
@@ -358,7 +383,7 @@ namespace AuthenticationServices {
 	interface ASCredentialServiceIdentifier : NSCopying, NSSecureCoding {
 		/// <param name="identifier">To be added.</param>
 		/// <param name="type">To be added.</param>
-		/// <summary>Constructs a new <see cref="T:AuthenticationServices.ASCredentialServiceIdentifier" /> with the specified <paramref name="identifier" /> and of the specified <paramref name="type" />.</summary>
+		/// <summary>Constructs a new <see cref="AuthenticationServices.ASCredentialServiceIdentifier" /> with the specified <paramref name="identifier" /> and of the specified <paramref name="type" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Export ("initWithIdentifier:type:")]
 		NativeHandle Constructor (string identifier, ASCredentialServiceIdentifierType type);
@@ -369,14 +394,14 @@ namespace AuthenticationServices {
 		[Export ("identifier")]
 		string Identifier { get; }
 
-		/// <summary>Gets the <see cref="T:AuthenticationServices.ASCredentialServiceIdentifierType" />.</summary>
+		/// <summary>Gets the <see cref="AuthenticationServices.ASCredentialServiceIdentifierType" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("type")]
 		ASCredentialServiceIdentifierType Type { get; }
 	}
 
-	/// <summary>Associates a <see cref="P:AuthenticationServices.ASPasswordCredentialIdentity.User" /> string with a record in the developer's credential database.</summary>
+	/// <summary>Associates a <see cref="AuthenticationServices.ASPasswordCredentialIdentity.User" /> string with a record in the developer's credential database.</summary>
 	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[NoTV]
 	[BaseType (typeof (NSObject))]
@@ -394,14 +419,14 @@ namespace AuthenticationServices {
 		/// <param name="serviceIdentifier">To be added.</param>
 		///         <param name="user">To be added.</param>
 		///         <param name="recordIdentifier">To be added.</param>
-		///         <summary>Static factory method to create a new <see cref="T:AuthenticationServices.ASPasswordCredentialIdentity" />.</summary>
+		///         <summary>Static factory method to create a new <see cref="AuthenticationServices.ASPasswordCredentialIdentity" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("identityWithServiceIdentifier:user:recordIdentifier:")]
 		ASPasswordCredentialIdentity Create (ASCredentialServiceIdentifier serviceIdentifier, string user, [NullAllowed] string recordIdentifier);
 
-		/// <summary>Gets the <see cref="T:AuthenticationServices.ASCredentialServiceIdentifier" /> that provides a hint as to when the credential should be displayed.</summary>
+		/// <summary>Gets the <see cref="AuthenticationServices.ASCredentialServiceIdentifier" /> that provides a hint as to when the credential should be displayed.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("serviceIdentifier", ArgumentSemantic.Strong)]
@@ -426,12 +451,12 @@ namespace AuthenticationServices {
 		new nint Rank { get; set; }
 	}
 
-	/// <summary>System-provided standard <see cref="T:UIKit.UIViewController" /> for presenting a credential provider extension.</summary>
+	/// <summary>System-provided standard <see cref="UIKit.UIViewController" /> for presenting a credential provider extension.</summary>
 	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[NoTV]
 	[BaseType (typeof (UIViewController))]
 	interface ASCredentialProviderViewController {
-		/// <summary>The <see cref="T:AuthenticationServices.ASCredentialProviderExtensionContext" /> of the provider.</summary>
+		/// <summary>The <see cref="AuthenticationServices.ASCredentialProviderExtensionContext" /> of the provider.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("extensionContext", ArgumentSemantic.Strong)]
@@ -495,6 +520,8 @@ namespace AuthenticationServices {
 		void PerformPasskeyRegistrationWithoutUserInteractionIfPossible (ASPasskeyCredentialRequest registrationRequest);
 	}
 
+	/// <summary>Associates a username and a password.</summary>
+	/// <remarks>To be added.</remarks>
 	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
@@ -509,7 +536,7 @@ namespace AuthenticationServices {
 
 		/// <param name="user">To be added.</param>
 		///         <param name="password">To be added.</param>
-		///         <summary>Static factory methods to create a new <see cref="T:AuthenticationServices.ASPasswordCredential" />.</summary>
+		///         <summary>Static factory methods to create a new <see cref="AuthenticationServices.ASPasswordCredential" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[Static]
@@ -529,8 +556,14 @@ namespace AuthenticationServices {
 		string Password { get; }
 	}
 
+	/// <param name="callbackUrl">To be added.</param>
+	/// <param name="error">To be added.</param>
+	/// <summary>Delegate method used in <see cref="AuthenticationServices.ASWebAuthenticationSession" /> interactions.</summary>
+	/// <remarks>To be added.</remarks>
 	delegate void ASWebAuthenticationSessionCompletionHandler ([NullAllowed] NSUrl callbackUrl, [NullAllowed] NSError error);
 
+	/// <summary>Manages a one-time Safari login experience for the developer's app.</summary>
+	/// <remarks>To be added.</remarks>
 	[TV (16, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
@@ -559,7 +592,7 @@ namespace AuthenticationServices {
 		[Export ("start")]
 		bool Start ();
 
-		/// <summary>Developers can call this method to cancel the authentication session and dismiss the associated <see cref="T:UIKit.UIViewController" />.</summary>
+		/// <summary>Developers can call this method to cancel the authentication session and dismiss the associated <see cref="UIKit.UIViewController" />.</summary>
 		///         <remarks>
 		///           <para>After the initial call to this method, subsequent calls have no effect.</para>
 		///         </remarks>

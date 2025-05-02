@@ -17,7 +17,7 @@ using CoreFoundation;
 
 namespace GameKit {
 #if !MONOMAC && !TVOS
-	/// <summary>Provides data for the <see cref="E:GameKit.GKSession.ReceiveData" /> event.</summary>
+	/// <summary>Provides data for the <see cref="GameKit.GKSession.ReceiveData" /> event.</summary>
 	///     <remarks>
 	///     </remarks>
 	public class GKDataReceivedEventArgs : EventArgs {
@@ -71,6 +71,8 @@ namespace GameKit {
 		//
 		// This delegate is used by the 
 		ReceiverObject? receiver;
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		public event EventHandler<GKDataReceivedEventArgs>? ReceiveData {
 			add {
 				if (receiver is null) {
@@ -111,6 +113,8 @@ namespace GameKit {
 			return (Mono_GKSessionDelegate) del;
 		}
 
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		public event EventHandler<GKPeerChangedStateEventArgs> PeerChanged {
 			add {
 				EnsureDelegate ().cbPeerChanged += value;
@@ -121,6 +125,8 @@ namespace GameKit {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		public event EventHandler<GKPeerConnectionEventArgs> ConnectionRequest {
 			add {
 				EnsureDelegate ().cbConnectionRequest += value;
@@ -131,6 +137,8 @@ namespace GameKit {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		public event EventHandler<GKPeerConnectionEventArgs> ConnectionFailed {
 			add {
 				EnsureDelegate ().cbConnectionFailed += value;
@@ -140,6 +148,8 @@ namespace GameKit {
 				EnsureDelegate ().cbConnectionFailed -= value;
 			}
 		}
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		public event EventHandler<GKPeerConnectionEventArgs> Failed {
 			add {
 				EnsureDelegate ().cbFailedWithError += value;
@@ -193,7 +203,7 @@ namespace GameKit {
 	}
 #endif // !TVOS
 
-	/// <summary>Provides data for the <see cref="E:GameKit.GKSession.PeerChanged" /> event.</summary>
+	/// <summary>Provides data for the <see cref="GameKit.GKSession.PeerChanged" /> event.</summary>
 	///     <remarks>
 	///     </remarks>
 	public class GKPeerChangedStateEventArgs : EventArgs {
@@ -224,7 +234,7 @@ namespace GameKit {
 		public GKPeerConnectionState State { get; private set; }
 	}
 
-	/// <summary>Provides data for the <see cref="E:GameKit.GKSession.Failed" />, <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Game%20Kit%20GKPeer%20Connection%20Event%20Args%20Connection%20Request&amp;scope=Xamarin" title="E:GameKit.GKPeerConnectionEventArgs.ConnectionRequest">E:GameKit.GKPeerConnectionEventArgs.ConnectionRequest</a></format> and <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Game%20Kit%20GKPeer%20Connection%20Event%20Args%20Failed&amp;scope=Xamarin" title="E:GameKit.GKPeerConnectionEventArgs.Failed">E:GameKit.GKPeerConnectionEventArgs.Failed</a></format> events.</summary>
+	/// <summary>Provides data for the <see cref="GameKit.GKSession.Failed" />, <see cref="GameKit.GKSession.ConnectionRequest" /> and <see cref="GameKit.GKSession.ConnectionFailed" /> events.</summary>
 	///     <remarks>
 	///     </remarks>
 	public class GKPeerConnectionEventArgs : EventArgs {

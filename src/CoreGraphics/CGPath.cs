@@ -136,7 +136,7 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* CGMutablePathRef */ IntPtr CGPathCreateMutable ();
 
-		/// <summary>Creates an empty <see cref="T:CoreGraphics.CGPath" />.</summary>
+		/// <summary>Creates an empty <see cref="CoreGraphics.CGPath" />.</summary>
 		///         <remarks>To be added.</remarks>
 		public CGPath ()
 			: base (CGPathCreateMutable (), true)
@@ -148,7 +148,7 @@ namespace CoreGraphics {
 
 		/// <param name="reference">To be added.</param>
 		///         <param name="transform">To be added.</param>
-		///         <summary>Creates an new <see cref="T:CoreGraphics.CGPath" /> from the provided <paramref name="reference" /> path by applying the provided <paramref name="transform" /></summary>
+		///         <summary>Creates an new <see cref="CoreGraphics.CGPath" /> from the provided <paramref name="reference" /> path by applying the provided <paramref name="transform" /></summary>
 		///         <remarks>To be added.</remarks>
 		public unsafe CGPath (CGPath reference, CGAffineTransform transform)
 			: base (CGPathCreateMutableCopyByTransformingPath (reference.GetNonNullHandle (nameof (reference)), &transform), true)
@@ -160,7 +160,7 @@ namespace CoreGraphics {
 		extern static /* CGMutablePathRef */ IntPtr CGPathCreateMutableCopy (/* CGPathRef */ IntPtr path);
 
 		/// <param name="basePath">To be added.</param>
-		///         <summary>Creates an new <see cref="T:CoreGraphics.CGPath" /> from the provided <paramref name="basePath" />.</summary>
+		///         <summary>Creates an new <see cref="CoreGraphics.CGPath" /> from the provided <paramref name="basePath" />.</summary>
 		///         <remarks>To be added.</remarks>
 		public CGPath (CGPath basePath)
 			: base (CGPathCreateMutableCopy (basePath.GetNonNullHandle (nameof (basePath))), true)

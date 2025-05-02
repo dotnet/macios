@@ -16,7 +16,7 @@ using ObjCRuntime;
 
 namespace MediaPlayer {
 	// NSInteger -> MPMoviePlayerController.h
-	/// <summary>An enumeration of possible states in which the <see cref="T:MediaPlayer.MPMoviePlayerController" /> may be. Used with the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Media%20Player%20MPMovie%20Cotnroller%20Playback%20State&amp;scope=Xamarin" title="P:MediaPlayer.MPMovieCotnroller.PlaybackState">P:MediaPlayer.MPMovieCotnroller.PlaybackState</a></format> property.</summary>
+	/// <summary>An enumeration of possible states in which the <see cref="MediaPlayer.MPMoviePlayerController" /> may be. Used with the <see cref="MediaPlayer.MPMovieCotnroller.PlaybackState" /> property.</summary>
 	[NoMac]
 	[NoTV]
 	[Deprecated (PlatformName.iOS, 9, 0)]
@@ -39,7 +39,7 @@ namespace MediaPlayer {
 	}
 
 	// NSInteger -> MPMoviePlayerController.h
-	/// <summary>An enumeration whose values reflect a movie's load state. Used in the <see cref="P:MediaPlayer.MPMoviePlayerController.LoadState" /> property.</summary>
+	/// <summary>An enumeration whose values reflect a movie's load state. Used in the <see cref="MediaPlayer.MPMoviePlayerController.LoadState" /> property.</summary>
 	[NoMac]
 	[NoTV]
 	[Deprecated (PlatformName.iOS, 9, 0)]
@@ -58,7 +58,7 @@ namespace MediaPlayer {
 	}
 
 	// NSInteger -> MPMoviePlayerController.h
-	/// <summary>An enumeration that specifies whether a movie should repeat or not. Used with the <see cref="P:MediaPlayer.MPMoviePlayerController.RepeatMode" /> property.</summary>
+	/// <summary>An enumeration that specifies whether a movie should repeat or not. Used with the <see cref="MediaPlayer.MPMoviePlayerController.RepeatMode" /> property.</summary>
 	[NoMac]
 	[NoTV]
 	[Deprecated (PlatformName.iOS, 9, 0)]
@@ -73,7 +73,7 @@ namespace MediaPlayer {
 	}
 
 	// NSInteger -> MPMoviePlayerController.h
-	/// <summary>An enumeration whose values specify various modes for the <see cref="P:MediaPlayer.MPMoviePlayerController.ControlStyle" /> property.</summary>
+	/// <summary>An enumeration whose values specify various modes for the <see cref="MediaPlayer.MPMoviePlayerController.ControlStyle" /> property.</summary>
 	[NoMac]
 	[NoTV]
 	[Deprecated (PlatformName.iOS, 9, 0)]
@@ -109,7 +109,7 @@ namespace MediaPlayer {
 	}
 
 	// NSInteger -> MPMoviePlayerController.h
-	/// <summary>An enumeration that specifies the movie's media types. Used with the <see cref="P:MediaPlayer.MPMoviePlayerController.MovieMediaTypes" /> property.</summary>
+	/// <summary>An enumeration that specifies the movie's media types. Used with the <see cref="MediaPlayer.MPMoviePlayerController.MovieMediaTypes" /> property.</summary>
 	[NoMac]
 	[NoTV]
 	[Deprecated (PlatformName.iOS, 9, 0)]
@@ -127,7 +127,7 @@ namespace MediaPlayer {
 	}
 
 	// NSInteger -> MPMoviePlayerController.h
-	/// <summary>An enumeration that specifies whether a movie's data is provided by a file or streaming. Used with the <see cref="P:MediaPlayer.MPMoviePlayerController.SourceType" /> property.</summary>
+	/// <summary>An enumeration that specifies whether a movie's data is provided by a file or streaming. Used with the <see cref="MediaPlayer.MPMoviePlayerController.SourceType" /> property.</summary>
 	[NoMac]
 	[NoTV]
 	[Deprecated (PlatformName.iOS, 9, 0)]
@@ -159,6 +159,8 @@ namespace MediaPlayer {
 	}
 
 	// NSUInteger -> MPMediaItem.h
+	/// <summary>An enumeration whose values specify various types of media.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	[Flags]
@@ -243,7 +245,7 @@ namespace MediaPlayer {
 	}
 
 	// NSInteger -> MPMediaQuery.h
-	/// <summary>An enumeration whose values specifies a comparison-type to be used with a <see cref="T:MediaPlayer.MPMediaPredicate" />.</summary>
+	/// <summary>An enumeration whose values specifies a comparison-type to be used with a <see cref="MediaPlayer.MPMediaPredicate" />.</summary>
 	[NoMac]
 	[NoTV]
 	[MacCatalyst (13, 1)]
@@ -256,7 +258,7 @@ namespace MediaPlayer {
 	}
 
 	// NSInteger -> MPMoviePlayerController.h
-	/// <summary>An enumeration of video scaling modes. Used with the <see cref="P:MediaPlayer.MPMoviePlayerController.ScalingMode" /> property.</summary>
+	/// <summary>An enumeration of video scaling modes. Used with the <see cref="MediaPlayer.MPMoviePlayerController.ScalingMode" /> property.</summary>
 	[NoMac]
 	[NoTV]
 	[Deprecated (PlatformName.iOS, 9, 0)]
@@ -275,6 +277,8 @@ namespace MediaPlayer {
 	}
 
 	// untyped enum -> MPMoviePlayerController.h
+	/// <summary>Application developers should not use this deprecated class, but instead use <see cref="MediaPlayer.MPMovieControlStyle" />.</summary>
+	/// <remarks>To be added.</remarks>
 	[NoMac]
 	[MacCatalyst (13, 1)]
 	public enum MPMovieControlMode {
@@ -287,6 +291,8 @@ namespace MediaPlayer {
 	}
 
 	// NSInteger -> /MPMusicPlayerController.h
+	/// <summary>An enumeration of states in which the <see cref="MediaPlayer.MPMusicPlayerController" /> may be. Used with the <see cref="MediaPlayer.MPMusicPlayerController.PlaybackState" /> property.</summary>
+	/// <remarks>To be added.</remarks>
 	[NoMac]
 	[TV (14, 0)]
 	[MacCatalyst (13, 1)]
@@ -307,6 +313,8 @@ namespace MediaPlayer {
 	}
 
 	// NSInteger -> /MPMusicPlayerController.h
+	/// <summary>An enumeration of music repeat modes. Used with the <see cref="MediaPlayer.MPMusicPlayerController.RepeatMode" /> property.</summary>
+	/// <remarks>To be added.</remarks>
 	[NoMac]
 	[TV (14, 0)]
 	[MacCatalyst (13, 1)]
@@ -323,6 +331,8 @@ namespace MediaPlayer {
 	}
 
 	// NSInteger -> /MPMusicPlayerController.h
+	/// <summary>An enumeration of shuffle modes for use with the <see cref="MediaPlayer.MPMusicPlayerController.ShuffleMode" /> property.</summary>
+	/// <remarks>To be added.</remarks>
 	[NoMac]
 	[TV (14, 0)]
 	[MacCatalyst (13, 1)]
@@ -338,6 +348,12 @@ namespace MediaPlayer {
 		Albums,
 	}
 
+	/// <param name="property">The property kind.</param>
+	/// <param name="value">The value associated with the property</param>
+	/// <param name="stop">Reference value, can be used to stop the enumeration.</param>
+	/// <summary>The delegate to be used as the <c>enumerator</c> argument to <see cref="MediaPlayer.MPMediaItemCollection.EnumerateValues(Foundation.NSSet,MediaPlayer.MPMediaItemEnumerator)" />.</summary>
+	/// <remarks>
+	///     </remarks>
 	public delegate void MPMediaItemEnumerator (string property, NSObject value, ref bool stop);
 
 	[MacCatalyst (13, 1)]
@@ -374,6 +390,8 @@ namespace MediaPlayer {
 	}
 
 	// NSInteger -> MPRemoteCommand.h
+	/// <summary>Enumerates values that indicate whether a command succeeded, failed, or cannot play the kind of media requested.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MPRemoteCommandHandlerStatus : long {
@@ -392,6 +410,8 @@ namespace MediaPlayer {
 	}
 
 	// NSUInteger -> MPRemoteCommandEvent.h
+	/// <summary>Enumerates values that indicate whether the command began or ended a seek operation.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MPSeekCommandEventType : ulong {
@@ -410,6 +430,8 @@ namespace MediaPlayer {
 		Legible,
 	}
 
+	/// <summary>Enumerates error codes in the Media Player domain.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	[ErrorDomain ("MPErrorDomain")]

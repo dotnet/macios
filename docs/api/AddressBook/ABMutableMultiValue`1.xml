@@ -4,15 +4,15 @@
       The type of the value to store.
     </typeparam>
     <summary>
-      A <see cref="T:AddressBook.ABMultiValue`1" /> that supports editing.
+      A <see cref="AddressBook.ABMultiValue{T}" /> that supports editing.
     </summary>
     <remarks>
       <para>
         "Editing" includes adding and removing
-        <see cref="T:AddressBook.ABMultiValueEntry`1" /> entries
+        <see cref="AddressBook.ABMultiValueEntry{T}" /> entries
         and changing the
-        <see cref="P:AddressBook.ABMultiValueEntry`1.Value" /> and
-        <see cref="P:AddressBook.ABMultiValueEntry`1.Label" />
+        <see cref="AddressBook.ABMultiValueEntry{T}.Value" /> and
+        <see cref="AddressBook.ABMultiValueEntry{T}.Label" />
         properties on those entries.
       </para>
       <para>
@@ -22,24 +22,24 @@
         <item>
           <term>
             Creating properties:
-            <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=C:AddressBook.ABMutableDateMultiValue.ctor&amp;scope=Xamarin" title="C:AddressBook.ABMutableDateMultiValue.ctor">C:AddressBook.ABMutableDateMultiValue.ctor</a></format>,
-            <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=C:AddressBook.ABMutableDictionaryMultiValue.ctor&amp;scope=Xamarin" title="C:AddressBook.ABMutableDictionaryMultiValue.ctor">C:AddressBook.ABMutableDictionaryMultiValue.ctor</a></format>,
-            <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=C:AddressBook.ABMutableStringMultiValue.ctor&amp;scope=Xamarin" title="C:AddressBook.ABMutableStringMultiValue.ctor">C:AddressBook.ABMutableStringMultiValue.ctor</a></format>.
+            <see cref="AddressBook.ABMutableDateMultiValue.ABMutableDateMultiValue" />,
+            <see cref="AddressBook.ABMutableDictionaryMultiValue.ABMutableDictionaryMultiValue" />,
+            <see cref="AddressBook.ABMutableStringMultiValue.ABMutableStringMultiValue" />.
           </term>
         </item>
         <item>
           <term>
             Creating properties:
-            <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=C:AddressBook.ABMutableDateMultiValue.ctor&amp;scope=Xamarin" title="C:AddressBook.ABMutableDateMultiValue.ctor">C:AddressBook.ABMutableDateMultiValue.ctor</a></format>,
-            <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=C:AddressBook.ABMutableDictionaryMultiValue.ctor&amp;scope=Xamarin" title="C:AddressBook.ABMutableDictionaryMultiValue.ctor">C:AddressBook.ABMutableDictionaryMultiValue.ctor</a></format>,
-            <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=C:AddressBook.ABMutableStringMultiValue.ctor&amp;scope=Xamarin" title="C:AddressBook.ABMutableStringMultiValue.ctor">C:AddressBook.ABMutableStringMultiValue.ctor</a></format>.
+            <see cref="AddressBook.ABMutableDateMultiValue.ABMutableDateMultiValue" />,
+            <see cref="AddressBook.ABMutableDictionaryMultiValue.ABMutableDictionaryMultiValue" />,
+            <see cref="AddressBook.ABMutableStringMultiValue.ABMutableStringMultiValue" />.
           </term>
         </item>
       </list>
     </remarks>
-    <altmember cref="M:AddressBook.ABMultiValue`1.ToMutableMultiValue" />
-    <altmember cref="T:AddressBook.ABMutableDateMultiValue" />
-    <altmember cref="T:AddressBook.ABMutableDictionaryMultiValue" />
-    <altmember cref="T:AddressBook.ABMutableStringMultiValue" />
+    <altmember cref="AddressBook.ABMultiValue{T}.ToMutableMultiValue" />
+    <altmember cref="AddressBook.ABMutableDateMultiValue" />
+    <altmember cref="AddressBook.ABMutableDictionaryMultiValue" />
+    <altmember cref="AddressBook.ABMutableStringMultiValue" />
   </Docs>
 </Documentation>

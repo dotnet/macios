@@ -55,7 +55,7 @@ namespace AVFoundation {
 		Subcardioid,
 	}
 
-	/// <summary>Describes a data source of an <see cref="T:AVFoundation.AVAudioSession" /> object.</summary>
+	/// <summary>Describes a data source of an <see cref="AVFoundation.AVAudioSession" /> object.</summary>
 	///     <remarks>To be added.</remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVAudioSessionDataSourceDescription_class/index.html">Apple documentation for <c>AVAudioSessionDataSourceDescription</c></related>
 	public partial class AVAudioSessionDataSourceDescription {
@@ -108,7 +108,7 @@ namespace AVFoundation {
 		}
 
 		/// <summary>Indicates the location of the data source on the device.</summary>
-		///         <value>The value can be either LocationUpper or LocationLower from <see cref="T:AVFoundation.AVAudioSession" />.<para tool="nullallowed">This value can be <see langword="null" />.</para></value>
+		///         <value>The value can be either LocationUpper or LocationLower from <see cref="AVFoundation.AVAudioSession" />.<para tool="nullallowed">This value can be <see langword="null" />.</para></value>
 		///         <remarks>To be added.</remarks>
 		public AVAudioDataSourceLocation Location {
 			get {
@@ -117,7 +117,7 @@ namespace AVFoundation {
 		}
 
 		/// <summary>Indicates the orientation of the data source on the device.</summary>
-		///         <value>One of the constants in <see cref="T:AVFoundation.AVAudioSession" />’s Orientation properties (OrientationTop, OrientationBotton, OrientationFront, OrientationBack, OrientationLeft, OrientationRight).<para tool="nullallowed">This value can be <see langword="null" />.</para></value>
+		///         <value>One of the constants in <see cref="AVFoundation.AVAudioSession" />’s Orientation properties (OrientationTop, OrientationBotton, OrientationFront, OrientationBack, OrientationLeft, OrientationRight).<para tool="nullallowed">This value can be <see langword="null" />.</para></value>
 		///         <remarks>The data source can be pointing upwards, downwards, towards the user, away from the user, left or right.</remarks>
 		public AVAudioDataSourceOrientation Orientation {
 			get {
@@ -126,7 +126,7 @@ namespace AVFoundation {
 		}
 
 		/// <summary>The supported polar configurations by this audio data source.</summary>
-		///         <value>Array of strings containing the names of the supported microphone directions for the source, one of PolarPatternOmnidirectional, PolarPatternCardioid, PolarPatternSubcardioid from <see cref="T:AVFoundation.AVAudioSession" />.</value>
+		///         <value>Array of strings containing the names of the supported microphone directions for the source, one of PolarPatternOmnidirectional, PolarPatternCardioid, PolarPatternSubcardioid from <see cref="AVFoundation.AVAudioSession" />.</value>
 		///         <remarks>To be added.</remarks>
 		public AVAudioDataSourcePolarPattern []? SupportedPolarPatterns {
 			get {
@@ -143,7 +143,7 @@ namespace AVFoundation {
 		}
 
 		/// <summary>Indicates the currenly selected microphone direction.</summary>
-		///         <value>The current setting for the microphone direction, one of PolarPatternOmnidirectional, PolarPatternCardioid, PolarPatternSubcardioid from <see cref="T:AVFoundation.AVAudioSession" /></value>
+		///         <value>The current setting for the microphone direction, one of PolarPatternOmnidirectional, PolarPatternCardioid, PolarPatternSubcardioid from <see cref="AVFoundation.AVAudioSession" /></value>
 		///         <remarks>To be added.</remarks>
 		public AVAudioDataSourcePolarPattern SelectedPolarPattern {
 			get {
@@ -152,8 +152,8 @@ namespace AVFoundation {
 		}
 
 		/// <summary>The preferred microphone direction.</summary>
-		///         <value>The current setting for the microphone direction, one of PolarPatternOmnidirectional, PolarPatternCardioid, PolarPatternSubcardioid from <see cref="T:AVFoundation.AVAudioSession" /></value>
-		///         <remarks>To change this property, call the <see cref="M:AVFoundation.AVAudioSessionDataSourceDescription.SetPreferredPolarPattern(AVFoundation.AVAudioDataSourcePolarPattern,Foundation.NSError@)" />.</remarks>
+		///         <value>The current setting for the microphone direction, one of PolarPatternOmnidirectional, PolarPatternCardioid, PolarPatternSubcardioid from <see cref="AVFoundation.AVAudioSession" /></value>
+		///         <remarks>To change this property, call the <see cref="AVFoundation.AVAudioSessionDataSourceDescription.SetPreferredPolarPattern(AVFoundation.AVAudioDataSourcePolarPattern,out Foundation.NSError)" />.</remarks>
 		public AVAudioDataSourcePolarPattern PreferredPolarPattern {
 			get {
 				return ToPolarPattern (PreferredPolarPattern_);

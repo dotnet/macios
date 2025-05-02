@@ -52,7 +52,7 @@ namespace CoreGraphics {
 		MaxYEdge,
 	}
 
-	/// <summary>Extensions to the RectangleF class that are useful when using CoreGraphics.</summary>
+	/// <summary>Extensions to the <see cref="CGRect" /> class that are useful when using CoreGraphics.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]

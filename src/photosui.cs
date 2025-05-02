@@ -24,6 +24,7 @@ using NativeHandle = System.IntPtr;
 #endif
 
 namespace PhotosUI {
+	/// <include file="../docs/api/PhotosUI/IPHContentEditingController.xml" path="/Documentation/Docs[@DocId='T:PhotosUI.IPHContentEditingController']/*" />
 	[NoTV]
 	[MacCatalyst (14, 0)]
 	[Protocol]
@@ -35,28 +36,44 @@ namespace PhotosUI {
 #endif
 	interface PHContentEditingController {
 
+		/// <param name="adjustmentData">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("canHandleAdjustmentData:")]
 		bool CanHandleAdjustmentData (PHAdjustmentData adjustmentData);
 
+		/// <param name="contentEditingInput">To be added.</param>
+		/// <param name="placeholderImage">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("startContentEditingWithInput:placeholderImage:")]
 		void StartContentEditing (PHContentEditingInput contentEditingInput, UIImage placeholderImage);
 
+		/// <param name="completionHandler">To be added. This parameter can be <see langword="null" />.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("finishContentEditingWithCompletionHandler:")]
 		void FinishContentEditing (Action<PHContentEditingOutput> completionHandler);
 
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("cancelContentEditing")]
 		void CancelContentEditing ();
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("shouldShowCancelConfirmation")]
 		bool ShouldShowCancelConfirmation { get; }
 	}
 
-	/// <summary>A <see cref="T:UIKit.UIView" /> that displays a <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:Photo.PHLivePhoto&amp;scope=Xamarin" title="T:Photo.PHLivePhoto">T:Photo.PHLivePhoto</a></format>.</summary>
+	/// <summary>A <see cref="UIKit.UIView" /> that displays a <see cref="Photo.PHLivePhoto" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/PhotosUI/PHLivePhotoView">Apple documentation for <c>PHLivePhotoView</c></related>
 	[MacCatalyst (13, 1)]
@@ -146,15 +163,15 @@ namespace PhotosUI {
 		CGRect ContentsRect { get; set; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:PhotosUI.PHLivePhotoViewDelegate" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="PhotosUI.PHLivePhotoViewDelegate" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:PhotosUI.PHLivePhotoViewDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:PhotosUI.PHLivePhotoViewDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:PhotosUI.PHLivePhotoViewDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="PhotosUI.PHLivePhotoViewDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="PhotosUI.PHLivePhotoViewDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="PhotosUI.PHLivePhotoViewDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	interface IPHLivePhotoViewDelegate { }
 
-	/// <summary>Delegate object for <see cref="T:PhotosUI.PHLivePhotoView" /> objects that adds methods for responding to playback beginning and ending.</summary>
+	/// <summary>Delegate object for <see cref="PhotosUI.PHLivePhotoView" /> objects that adds methods for responding to playback beginning and ending.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/PhotosUI/PHLivePhotoViewDelegate">Apple documentation for <c>PHLivePhotoViewDelegate</c></related>
 	[MacCatalyst (13, 1)]
@@ -165,9 +182,17 @@ namespace PhotosUI {
 		[Export ("livePhotoView:canBeginPlaybackWithStyle:")]
 		bool CanBeginPlayback (PHLivePhotoView livePhotoView, PHLivePhotoViewPlaybackStyle playbackStyle);
 
+		/// <param name="livePhotoView">To be added.</param>
+		/// <param name="playbackStyle">To be added.</param>
+		/// <summary>Method that is called just before playback begins.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("livePhotoView:willBeginPlaybackWithStyle:")]
 		void WillBeginPlayback (PHLivePhotoView livePhotoView, PHLivePhotoViewPlaybackStyle playbackStyle);
 
+		/// <param name="livePhotoView">To be added.</param>
+		/// <param name="playbackStyle">To be added.</param>
+		/// <summary>Method that is called aftr playback ends.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("livePhotoView:didEndPlaybackWithStyle:")]
 		void DidEndPlayback (PHLivePhotoView livePhotoView, PHLivePhotoViewPlaybackStyle playbackStyle);
 
@@ -251,22 +276,42 @@ namespace PhotosUI {
 	[Protocol]
 	interface PHProjectExtensionController {
 
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 10, 14)]
 		[Export ("supportedProjectTypes", ArgumentSemantic.Copy)]
 		PHProjectTypeDescription [] GetSupportedProjectTypes ();
 
+		/// <param name="extensionContext">To be added.</param>
+		/// <param name="projectInfo">To be added.</param>
+		/// <param name="completion">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("beginProjectWithExtensionContext:projectInfo:completion:")]
 		void BeginProject (PHProjectExtensionContext extensionContext, PHProjectInfo projectInfo, Action<NSError> completion);
 
+		/// <param name="extensionContext">To be added.</param>
+		/// <param name="completion">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("resumeProjectWithExtensionContext:completion:")]
 		void ResumeProject (PHProjectExtensionContext extensionContext, Action<NSError> completion);
 
+		/// <param name="completion">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("finishProjectWithCompletionHandler:")]
 		void FinishProject (Action completion);
 
+		/// <param name="category">To be added.</param>
+		/// <param name="invalidator">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Protected]
 		[NoMacCatalyst]
 		[Export ("typeDescriptionDataSourceForCategory:invalidator:")]
@@ -498,20 +543,34 @@ namespace PhotosUI {
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface PHProjectTypeDescriptionDataSource {
+		/// <param name="projectType">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("subtypesForProjectType:")]
 		PHProjectTypeDescription [] GetSubtypes (NSString projectType);
 
+		/// <param name="projectType">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("typeDescriptionForProjectType:")]
 		[return: NullAllowed]
 		PHProjectTypeDescription GetTypeDescription (NSString projectType);
 
+		/// <param name="projectType">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("footerTextForSubtypesOfProjectType:")]
 		[return: NullAllowed]
 		NSAttributedString GetFooterTextForSubtypes (NSString projectType);
 
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("extensionWillDiscardDataSource")]
 		void WillDiscardDataSource ();
 	}
@@ -522,10 +581,16 @@ namespace PhotosUI {
 	[NoMacCatalyst]
 	[Protocol]
 	interface PHProjectTypeDescriptionInvalidator {
+		/// <param name="projectType">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("invalidateTypeDescriptionForProjectType:")]
 		void InvalidateTypeDescription (NSString projectType);
 
+		/// <param name="projectType">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("invalidateFooterTextForSubtypesOfProjectType:")]
 		void InvalidateFooterTextForSubtypes (NSString projectType);

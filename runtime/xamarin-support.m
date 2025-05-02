@@ -122,7 +122,7 @@ xamarin_timezone_get_local_name ()
 void
 xamarin_start_wwan (const char *uri)
 {
-#if defined(__i386__) || defined (__x86_64__)
+#if defined (__x86_64__)
 	return;
 #else
 	unsigned char buf[1];

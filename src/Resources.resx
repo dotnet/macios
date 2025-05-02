@@ -118,14 +118,14 @@
   </resheader>
 	
 	<data name="default" xml:space="preserve">
-		<value>The error message for code {0} could not be found. Please report this missing message on GitHub at https://github.com/xamarin/xamarin-macios/issues/new</value>
+		<value>The error message for code {0} could not be found. Please report this missing message on GitHub at https://github.com/dotnet/macios/issues/new</value>
 		<comment>
 			This is the default message when an error code can not be found.
 		</comment>
 	</data>
 	
 	<data name="BI0000" xml:space="preserve">
-		<value>Unexpected error - Please fill a bug report at https://github.com/xamarin/xamarin-macios/issues/new</value>
+		<value>Unexpected error - Please fill a bug report at https://github.com/dotnet/macios/issues/new</value>
 	</data>
 	
 
@@ -172,7 +172,7 @@
 	</data>
 
 	<data name="BI0088" xml:space="preserve">
-		<value>Internal error: don't know how to create ref/out (input) code for {0} in {1}. Please file a bug report with a test case (https://github.com/xamarin/xamarin-macios/issues/new).</value>
+		<value>Internal error: don't know how to create ref/out (input) code for {0} in {1}. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new).</value>
 	</data>
 	
 	<data name="BI0089" xml:space="preserve">
@@ -180,7 +180,7 @@
 	</data>
 	
 	<data name="BI0099" xml:space="preserve">
-		<value>Internal error {0}. Please file a bug report with a test case (https://github.com/xamarin/xamarin-macios/issues/new).</value>
+		<value>Internal error {0}. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new).</value>
 	</data>
 
 	<data name="BI1000" xml:space="preserve">
@@ -298,7 +298,7 @@
 	</data>
 
 	<data name="BI1028" xml:space="preserve">
-		<value>Internal sanity check failed, please file a bug report (https://github.com/xamarin/xamarin-macios/issues/new) with a test case.</value>
+		<value>Internal sanity check failed, please file a bug report (https://github.com/dotnet/macios/issues/new) with a test case.</value>
 	</data>
 
 	<data name="BI1029" xml:space="preserve">
@@ -377,7 +377,7 @@
 	</data>
 
 	<data name="BI1047" xml:space="preserve">
-		<value>Unsupported platform: {0}. Please file a bug report (https://github.com/xamarin/xamarin-macios/issues/new) with a test case.</value>
+		<value>Unsupported platform: {0}. Please file a bug report (https://github.com/dotnet/macios/issues/new) with a test case.</value>
 	</data>
 
 	<data name="BI1048" xml:space="preserve">
@@ -393,11 +393,11 @@
 	</data>
 
 	<data name="BI1051" xml:space="preserve">
-		<value>Internal error: Don't know how to get attributes for {0}. Please file a bug report (https://github.com/xamarin/xamarin-macios/issues/new) with a test case.</value>
+		<value>Internal error: Don't know how to get attributes for {0}. Please file a bug report (https://github.com/dotnet/macios/issues/new) with a test case.</value>
 	</data>
 
 	<data name="BI1052" xml:space="preserve">
-		<value>Internal error: Could not find the type {0} in the assembly {1}. Please file a bug report (https://github.com/xamarin/xamarin-macios/issues/new) with a test case.</value>
+		<value>Internal error: Could not find the type {0} in the assembly {1}. Please file a bug report (https://github.com/dotnet/macios/issues/new) with a test case.</value>
 	</data>
 
 	<data name="BI1053" xml:space="preserve">
@@ -405,23 +405,23 @@
 	</data>
 
 	<data name="BI1054" xml:space="preserve">
-		<value>Internal error: can't convert type '{0}' (unknown assembly). Please file a bug report (https://github.com/xamarin/xamarin-macios/issues/new) with a test case.</value>
+		<value>Internal error: can't convert type '{0}' (unknown assembly). Please file a bug report (https://github.com/dotnet/macios/issues/new) with a test case.</value>
 	</data>
 
 	<data name="BI1055" xml:space="preserve">
-		<value>Internal error: failed to convert type '{0}'. Please file a bug report (https://github.com/xamarin/xamarin-macios/issues/new) with a test case.</value>
+		<value>Internal error: failed to convert type '{0}'. Please file a bug report (https://github.com/dotnet/macios/issues/new) with a test case.</value>
 	</data>
 
 	<data name="BI1056" xml:space="preserve">
-		<value>Internal error: failed to instantiate mock attribute '{0}' (could not convert type constructor argument #{1}). Please file a bug report (https://github.com/xamarin/xamarin-macios/issues/new) with a test case.</value>
+		<value>Internal error: failed to instantiate mock attribute '{0}' (could not convert type constructor argument #{1}). Please file a bug report (https://github.com/dotnet/macios/issues/new) with a test case.</value>
 	</data>
 
 	<data name="BI1057" xml:space="preserve">
-		<value>Internal error: failed to instantiate mock attribute '{0}' (could not convert constructor type #{1} ({2})). Please file a bug report (https://github.com/xamarin/xamarin-macios/issues/new) with a test case.</value>
+		<value>Internal error: failed to instantiate mock attribute '{0}' (could not convert constructor type #{1} ({2})). Please file a bug report (https://github.com/dotnet/macios/issues/new) with a test case.</value>
 	</data>
 
 	<data name="BI1058" xml:space="preserve">
-		<value>Internal error: could not find a constructor for the mock attribute '{0}'. Please file a bug report (https://github.com/xamarin/xamarin-macios/issues/new) with a test case.</value>
+		<value>Internal error: could not find a constructor for the mock attribute '{0}'. Please file a bug report (https://github.com/dotnet/macios/issues/new) with a test case.</value>
 	</data>
 
 	<data name="BI1059" xml:space="preserve">
@@ -481,7 +481,7 @@
 	</data>
 	
 	<data name="BI1073" xml:space="preserve">
-		<value>Internal error: failed to instantiate mock attribute '{0}' (unknown type for the named argument #{1} ({2}). Please file a bug report (https://github.com/xamarin/xamarin-macios/issues/new) with a test case.</value>
+		<value>Internal error: failed to instantiate mock attribute '{0}' (unknown type for the named argument #{1} ({2}). Please file a bug report (https://github.com/dotnet/macios/issues/new) with a test case.</value>
 	</data>
 	
 	<data name="BI1074" xml:space="preserve">
@@ -618,7 +618,7 @@
 	</data>
 
 	<data name="BI1119" xml:space="preserve">
-		<value>Internal error: found the same type ({0}) in multiple assemblies ({1} and {2}). Please file a bug report (https://github.com/xamarin/xamarin-macios/issues/new) with a test case.</value>
+		<value>Internal error: found the same type ({0}) in multiple assemblies ({1} and {2}). Please file a bug report (https://github.com/dotnet/macios/issues/new) with a test case.</value>
 	</data>
 
 	<data name="BI1120" xml:space="preserve">

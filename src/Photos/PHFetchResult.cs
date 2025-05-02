@@ -8,11 +8,15 @@ using System.Collections.Generic;
 
 namespace Photos {
 	public partial class PHFetchResult : IEnumerable<NSObject> {
+		/// <param name="index">To be added.</param>
+		/// <summary>Returns the asset at <paramref name="index" />.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		public NSObject this [nint index] {
 			get { return _ObjectAtIndexedSubscript (index); }
 		}
 
-		/// <summary>A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Collections%20Generic%20IEnumerator&amp;scope=Xamarin" title="T:System.Collections.Generic.IEnumerator">T:System.Collections.Generic.IEnumerator</a></format> that can iterate over the assets in the <see cref="T:Photos.PHFetchResult" />.</summary>
+		/// <summary>A <see cref="System.Collections.Generic.IEnumerator{T}" /> that can iterate over the assets in the <see cref="Photos.PHFetchResult" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		public IEnumerator<NSObject> GetEnumerator ()
@@ -23,7 +27,7 @@ namespace Photos {
 				yield return this [i];
 		}
 
-		/// <summary>Returns an <see cref="System.Collections.IEnumerator" /> of the assets in the <see cref="T:Photos.PHFetchResult" />.</summary>
+		/// <summary>Returns an <see cref="System.Collections.IEnumerator" /> of the assets in the <see cref="Photos.PHFetchResult" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		IEnumerator IEnumerable.GetEnumerator ()

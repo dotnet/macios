@@ -18,7 +18,7 @@ using NativeHandle = System.IntPtr;
 
 namespace Twitter {
 
-	/// <summary>A delegate that is used as the <c>handler</c> in calls to <see cref="M:Twitter.TWRequest.PerformRequest(Twitter.TWRequestHandler)" />.</summary>
+	/// <summary>A delegate that is used as the <c>handler</c> in calls to <see cref="Twitter.TWRequest.PerformRequest(Twitter.TWRequestHandler)" />.</summary>
 	delegate void TWRequestHandler (NSData responseData, NSHttpUrlResponse urlResponse, NSError error);
 
 	/// <summary>A Twitter request.</summary>
@@ -85,11 +85,20 @@ namespace Twitter {
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
 		[Export ("performRequestWithHandler:")]
-		[Async (ResultTypeName = "TWRequestResult")]
+		[Async (ResultTypeName = "TWRequestResult", XmlDocs = """
+			<summary>To be added.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous PerformRequest operation.   The value of the TResult parameter is of type <c>Action&lt;Twitter.TWRequestResult&gt;</c>.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The PerformRequestAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void PerformRequest (TWRequestHandler handler);
 	}
 
-	/// <summary>A <see cref="T:UIKit.UIViewController" /> that manages the user experience of composing a tweet.</summary>
+	/// <summary>A <see cref="UIKit.UIViewController" /> that manages the user experience of composing a tweet.</summary>
 	///     
 	///     <related type="recipe" href="https://developer.xamarin.com/ios/Recipes/Shared_Resources/Twitter/Send_a_Tweet">Send a Tweet</related>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Twitter/Reference/TWTweetSheetViewControllerClassRef/index.html">Apple documentation for <c>TWTweetComposeViewController</c></related>

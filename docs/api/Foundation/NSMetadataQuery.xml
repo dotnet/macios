@@ -3,8 +3,8 @@
     <summary>Notification constant for DidStartGathering</summary>
     <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
     <remarks>
-      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:Foundation.NSMetadataQuery.Notifications" />.<see cref="M:Foundation.NSMetadataQuery.Notifications.ObserveDidStartGathering*" /> method which offers strongly typed access to the parameters of the notification.</para>
+      <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="Foundation.NSMetadataQuery.Notifications" />.<see cref="Foundation.NSMetadataQuery.Notifications.ObserveDidStartGathering" /> method which offers strongly typed access to the parameters of the notification.</para>
       <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
@@ -67,8 +67,8 @@ void Setup ()
     <summary>Notification constant for GatheringProgress</summary>
     <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
     <remarks>
-      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:Foundation.NSMetadataQuery.Notifications" />.<see cref="M:Foundation.NSMetadataQuery.Notifications.ObserveGatheringProgress*" /> method which offers strongly typed access to the parameters of the notification.</para>
+      <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="Foundation.NSMetadataQuery.Notifications" />.<see cref="Foundation.NSMetadataQuery.Notifications.ObserveGatheringProgress" /> method which offers strongly typed access to the parameters of the notification.</para>
       <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
@@ -131,8 +131,8 @@ void Setup ()
     <summary>Notification constant for DidFinishGathering</summary>
     <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
     <remarks>
-      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:Foundation.NSMetadataQuery.Notifications" />.<see cref="M:Foundation.NSMetadataQuery.Notifications.ObserveDidFinishGathering*" /> method which offers strongly typed access to the parameters of the notification.</para>
+      <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="Foundation.NSMetadataQuery.Notifications" />.<see cref="Foundation.NSMetadataQuery.Notifications.ObserveDidFinishGathering" /> method which offers strongly typed access to the parameters of the notification.</para>
       <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
@@ -195,8 +195,8 @@ void Setup ()
     <summary>Notification constant for DidUpdate</summary>
     <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
     <remarks>
-      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:Foundation.NSMetadataQuery.Notifications" />.<see cref="M:Foundation.NSMetadataQuery.Notifications.ObserveDidUpdate*" /> method which offers strongly typed access to the parameters of the notification.</para>
+      <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="Foundation.NSMetadataQuery.Notifications" />.<see cref="Foundation.NSMetadataQuery.Notifications.ObserveDidUpdate" /> method which offers strongly typed access to the parameters of the notification.</para>
       <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
@@ -259,8 +259,8 @@ void Setup ()
         <summary>Notification constant for DidStartGathering</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:Foundation.NSMetadataQuery.Notifications" />.<see cref="M:Foundation.NSMetadataQuery.Notifications.ObserveDidStartGathering*" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="Foundation.NSMetadataQuery.Notifications" />.<see cref="Foundation.NSMetadataQuery.Notifications.ObserveDidStartGathering" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
@@ -323,8 +323,8 @@ void Setup ()
         <summary>Notification constant for GatheringProgress</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:Foundation.NSMetadataQuery.Notifications" />.<see cref="M:Foundation.NSMetadataQuery.Notifications.ObserveGatheringProgress*" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="Foundation.NSMetadataQuery.Notifications" />.<see cref="Foundation.NSMetadataQuery.Notifications.ObserveGatheringProgress" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
@@ -387,8 +387,8 @@ void Setup ()
         <summary>Notification constant for DidFinishGathering</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:Foundation.NSMetadataQuery.Notifications" />.<see cref="M:Foundation.NSMetadataQuery.Notifications.ObserveDidFinishGathering*" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="Foundation.NSMetadataQuery.Notifications" />.<see cref="Foundation.NSMetadataQuery.Notifications.ObserveDidFinishGathering" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
@@ -451,8 +451,8 @@ void Setup ()
         <summary>Notification constant for DidUpdate</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:Foundation.NSMetadataQuery.Notifications" />.<see cref="M:Foundation.NSMetadataQuery.Notifications.ObserveDidUpdate*" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="Foundation.NSMetadataQuery.Notifications" />.<see cref="Foundation.NSMetadataQuery.Notifications.ObserveDidUpdate" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[

@@ -20,9 +20,9 @@ namespace Contacts {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CNContactType : long {
-		/// <summary>The <see cref="T:Contacts.CNContact" /> is a person.</summary>
+		/// <summary>The <see cref="Contacts.CNContact" /> is a person.</summary>
 		Person,
-		/// <summary>The <see cref="T:Contacts.CNContact" /> is an organization.</summary>
+		/// <summary>The <see cref="Contacts.CNContact" /> is an organization.</summary>
 		Organization,
 	}
 
@@ -35,9 +35,9 @@ namespace Contacts {
 		None,
 		/// <summary>Contacts should be sorted by the user's default preference.</summary>
 		UserDefault,
-		/// <summary>Contacts should be sorted by <see cref="P:Contacts.CNContact.GivenName" />..</summary>
+		/// <summary>Contacts should be sorted by <see cref="Contacts.CNContact.GivenName" />..</summary>
 		GivenName,
-		/// <summary>Contacts should be sorted by <see cref="P:Contacts.CNContact.FamilyName" />.</summary>
+		/// <summary>Contacts should be sorted by <see cref="Contacts.CNContact.FamilyName" />.</summary>
 		FamilyName,
 	}
 
@@ -66,7 +66,7 @@ namespace Contacts {
 	}
 
 	// NSInteger -> CNContactStore.h
-	/// <summary>An enumeration whose only value (<see cref="F:Contacts.CNEntityType.Contacts" />) is used by some methods in <see cref="T:Contacts.CNContactStore" />.</summary>
+	/// <summary>An enumeration whose only value (<see cref="Contacts.CNEntityType.Contacts" />) is used by some methods in <see cref="Contacts.CNContactStore" />.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CNEntityType : long {
@@ -75,7 +75,7 @@ namespace Contacts {
 	}
 
 	// NSInteger -> CNContactStore.h
-	/// <summary>Enumerates the application's current authorization to access the <see cref="T:Contacts.CNContactStore" />.</summary>
+	/// <summary>Enumerates the application's current authorization to access the <see cref="Contacts.CNContactStore" />.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CNAuthorizationStatus : long {
@@ -92,7 +92,7 @@ namespace Contacts {
 	}
 
 	// NSInteger -> CNContainer.h
-	/// <summary>Enumerates known <see cref="T:Contacts.CNContainer" /> types.</summary>
+	/// <summary>Enumerates known <see cref="Contacts.CNContainer" /> types.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CNContainerType : long {
@@ -123,7 +123,7 @@ namespace Contacts {
 		UnauthorizedKeys = 102,
 		FeatureDisabledByUser = 103,
 		FeatureNotAvailable = 104,
-		/// <summary>The <see cref="T:Contacts.CNContact" /> does not exist.</summary>
+		/// <summary>The <see cref="Contacts.CNContact" /> does not exist.</summary>
 		RecordDoesNotExist = 200,
 		/// <summary>The inserted record is a duplicate.</summary>
 		InsertedRecordAlreadyExists = 201,
@@ -131,7 +131,7 @@ namespace Contacts {
 		ContainmentCycle = 202,
 		/// <summary>Code containment scope error.</summary>
 		ContainmentScope = 203,
-		/// <summary>The <see cref="T:Contacts.CNContact" /> does not exist.</summary>
+		/// <summary>The <see cref="Contacts.CNContact" /> does not exist.</summary>
 		ParentRecordDoesNotExist = 204,
 		/// <summary>To be added.</summary>
 		RecordIdentifierInvalid = 205,
@@ -143,7 +143,7 @@ namespace Contacts {
 		ValidationTypeMismatch = 301,
 		/// <summary>The validation attempt was misconfigured.</summary>
 		ValidationConfigurationError = 302,
-		/// <summary>The <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Contacts%20CNPredicate&amp;scope=Xamarin" title="T:Contacts.CNPredicate">T:Contacts.CNPredicate</a></format> is invalid.</summary>
+		/// <summary>The <see cref="Contacts.CNPredicate" /> is invalid.</summary>
 		PredicateInvalid = 400,
 		/// <summary>A policy validation error.</summary>
 		PolicyViolation = 500,
@@ -170,7 +170,7 @@ namespace Contacts {
 		MailingAddress,
 	}
 
-	/// <summary>Flagging enumeration that specifies keys that can be checked with <see cref="M:Contacts.CNContact.IsKeyAvailable(Foundation.NSString)" /> and <see cref="M:Contacts.CNContact.AreKeysAvailable``1(``0[])" />.</summary>
+	/// <summary>Flagging enumeration that specifies keys that can be checked with <see cref="Contacts.CNContact.IsKeyAvailable(Foundation.NSString)" /> and <see cref="Contacts.CNContact.AreKeysAvailable{T}(T[])" />.</summary>
 	[MacCatalyst (13, 1)]
 	[Flags]
 	public enum CNContactOptions : long {

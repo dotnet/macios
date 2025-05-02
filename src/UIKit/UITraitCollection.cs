@@ -18,6 +18,7 @@ using Foundation;
 
 namespace UIKit {
 	public partial class UITraitCollection {
+		/// <summary>Static factory method to create a <see cref="UITraitCollection" /> with the specified <see cref="UIContentSizeCategory" />.</summary>
 		public static UITraitCollection Create (UIContentSizeCategory category)
 			=> FromPreferredContentSizeCategory (category.GetConstant ());
 

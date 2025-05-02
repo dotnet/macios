@@ -1,6 +1,6 @@
 <Documentation>
   <Docs DocId="T:CoreImage.CITwelvefoldReflectedTile">
-    <summary>A <see cref="T:CoreImage.CITileFilter" /> that applies 12-way reflected symmetry.</summary>
+    <summary>A <see cref="CoreImage.CITileFilter" /> that applies 12-way reflected symmetry.</summary>
     <remarks>
       <para>The following example shows this filter in use</para>
       <example>

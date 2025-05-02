@@ -41,11 +41,6 @@ namespace Xharness {
 			propertyGroup.InsertBefore (csproj.CreateComment ($" This property was created by xharness "), newNode);
 		}
 
-		public static void AppendAppBundleExtraOptions (this XmlDocument csproj, string value)
-		{
-			csproj.AppendToProperty ("AppBundleExtraOptions", value, " ");
-		}
-
 		static int IndexOf (this XmlNodeList @this, XmlNode node)
 		{
 			for (var i = 0; i < @this.Count; i++) {
@@ -254,7 +249,6 @@ namespace Xharness {
 			var nodes_with_variables = new string []
 			{
 				"MtouchExtraArgs",
-				"AppBundleExtraOptions",
 				"MonoBundlingExtraArgs",
 			};
 			Func<string, string>? convert = null;

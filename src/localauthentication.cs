@@ -18,7 +18,7 @@ namespace LocalAuthentication {
 		None,
 		/// <summary>Indicates that Touch ID is supported.</summary>
 		TouchId,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that Face ID is supported.</summary>
 		[MacCatalyst (13, 1)]
 		FaceId,
 #if !NET
@@ -30,7 +30,7 @@ namespace LocalAuthentication {
 		OpticId = 1L << 2,
 	}
 
-	/// <summary>Signature for a function to be invoked in response to a <see cref="M:LocalAuthentication.LAContext.EvaluatePolicy(LocalAuthentication.LAPolicy,System.String,LocalAuthentication.LAContextReplyHandler)" /> invocation.</summary>
+	/// <summary>Signature for a function to be invoked in response to a <see cref="LocalAuthentication.LAContext.EvaluatePolicy(LocalAuthentication.LAPolicy,System.String,LocalAuthentication.LAContextReplyHandler)" /> invocation.</summary>
 	///     <remarks>The method when invoked returns a boolean indicating if the policy evaluation was successful, and on failure a detailed description of the error in the error parameter.</remarks>
 	[MacCatalyst (13, 1)]
 	delegate void LAContextReplyHandler (bool success, NSError error);
@@ -72,7 +72,18 @@ namespace LocalAuthentication {
 		///         <param name="reply">To be added.</param>
 		///         <summary>Evaluates the specified access control <paramref name="policy" />.</summary>
 		///         <remarks>To be added.</remarks>
-		[Async]
+		[Async (XmlDocs = """
+			<param name="policy">To be added.</param>
+			<param name="localizedReason">To be added.</param>
+			<summary>Evaluates the specified access control <paramref name="policy" />.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous EvaluatePolicy operation.   The value of the TResult parameter is a LocalAuthentication.LAContextReplyHandler.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The EvaluatePolicyAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("evaluatePolicy:localizedReason:reply:")]
 		void EvaluatePolicy (LAPolicy policy, string localizedReason, LAContextReplyHandler reply);
 

@@ -2,8 +2,8 @@
   <Docs DocId="T:UIKit.UIDynamicBehavior">
     <summary>The base class for items that describe the physics-like behaviors of UIKit Dynamics, introduced in iOS 7.</summary>
     <remarks>
-      <para>A number of <see cref="T:UIKit.UIDynamicBehavior" />s are associated with a <see cref="T:UIKit.UIDynamicAnimator" />, which is responsible for the overall context. Any given <see cref="T:UIKit.UIDynamicBehavior" /> is associated with some amount of <see cref="T:UIKit.IUIDynamicItem" />s (such as <see cref="T:UIKit.UIView" />s and <see cref="T:UIKit.UICollectionViewLayoutAttributes" />); most subclasses of <see cref="T:UIKit.UIDynamicBehavior" /> expose these in an <c>Items</c> property or application developers can retrieve them with <see cref="M:UIKit.UIDynamicAnimator.GetDynamicItems(CoreGraphics.CGRect)" />.</para>
-      <para>There are a number of predefined subclasses of <see cref="T:UIKit.UIDynamicBehavior" />:</para>
+      <para>A number of <see cref="UIKit.UIDynamicBehavior" />s are associated with a <see cref="UIKit.UIDynamicAnimator" />, which is responsible for the overall context. Any given <see cref="UIKit.UIDynamicBehavior" /> is associated with some amount of <see cref="UIKit.IUIDynamicItem" />s (such as <see cref="UIKit.UIView" />s and <see cref="UIKit.UICollectionViewLayoutAttributes" />); most subclasses of <see cref="UIKit.UIDynamicBehavior" /> expose these in an <c>Items</c> property or application developers can retrieve them with <see cref="UIKit.UIDynamicAnimator.GetDynamicItems(CoreGraphics.CGRect)" />.</para>
+      <para>There are a number of predefined subclasses of <see cref="UIKit.UIDynamicBehavior" />:</para>
       <para>
         <list type="table">
           <listheader>
@@ -12,50 +12,50 @@
           </listheader>
           <item>
             <term>
-              <see cref="T:UIKit.UIAttachmentBehavior" />
+              <see cref="UIKit.UIAttachmentBehavior" />
             </term>
             <description>
-            Attachment: Specifies a dynamic connection between two <see cref="T:UIKit.IUIDynamicItem" />s or between a <see cref="T:UIKit.IUIDynamicItem" /> and a fixed point.
+            Attachment: Specifies a dynamic connection between two <see cref="UIKit.IUIDynamicItem" />s or between a <see cref="UIKit.IUIDynamicItem" /> and a fixed point.
           </description>
           </item>
           <item>
             <term>
-              <see cref="T:UIKit.UICollisionBehavior" />
+              <see cref="UIKit.UICollisionBehavior" />
             </term>
             <description>
-            Collision: Detects when the boundaries of a <see cref="T:UIKit.IUIDynamicItem" /> meet another boundary.
+            Collision: Detects when the boundaries of a <see cref="UIKit.IUIDynamicItem" /> meet another boundary.
           </description>
           </item>
           <item>
             <term>
-              <see cref="T:UIKit.UIGravityBehavior" />
+              <see cref="UIKit.UIGravityBehavior" />
             </term>
             <description>
-            Gravity: Accelerates the <see cref="T:UIKit.IUIDynamicItem" /> towards the bottom of the screen.
+            Gravity: Accelerates the <see cref="UIKit.IUIDynamicItem" /> towards the bottom of the screen.
           </description>
           </item>
           <item>
             <term>
-              <see cref="T:UIKit.UIDynamicItemBehavior" />
+              <see cref="UIKit.UIDynamicItemBehavior" />
             </term>
             <description>
-            Animation: Specifies an animation configuration to apply to one or more <see cref="T:UIKit.IUIDynamicItem" />s.
+            Animation: Specifies an animation configuration to apply to one or more <see cref="UIKit.IUIDynamicItem" />s.
           </description>
           </item>
           <item>
             <term>
-              <see cref="T:UIKit.UIPushBehavior" />
+              <see cref="UIKit.UIPushBehavior" />
             </term>
             <description>
-            Pushing: Applies a continuous or instantaneous force vector to a <see cref="T:UIKit.IUIDynamicItem" />.
+            Pushing: Applies a continuous or instantaneous force vector to a <see cref="UIKit.IUIDynamicItem" />.
           </description>
           </item>
           <item>
             <term>
-              <see cref="T:UIKit.UISnapBehavior" />
+              <see cref="UIKit.UISnapBehavior" />
             </term>
             <description>
-            Snapping: Specifies a magnetism-like attraction between a <see cref="T:UIKit.IUIDynamicItem" /> and a fixed point. Includes a rebounding effect.
+            Snapping: Specifies a magnetism-like attraction between a <see cref="UIKit.IUIDynamicItem" /> and a fixed point. Includes a rebounding effect.
           </description>
           </item>
         </list>

@@ -35452,7 +35452,7 @@ namespace AppKit {
 		[NullAllowed, Export ("delegate", ArgumentSemantic.Weak)]
 		NSObject WeakDelegate { get; set; }
 
-		// Defined in the NSSharingServicePickerToolbarItem (UIActivityItemsConfiguration) category in UIKIt
+		// Defined in the NSSharingServicePickerToolbarItem (UIActivityItemsConfiguration) category in UIKit
 		[NoMac]
 		[Export ("activityItemsConfiguration", ArgumentSemantic.Strong), NullAllowed]
 		IUIActivityItemsConfigurationReading ActivityItemsConfiguration { get; set; }

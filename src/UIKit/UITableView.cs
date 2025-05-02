@@ -16,10 +16,10 @@ using CoreGraphics;
 
 namespace UIKit {
 	public partial class UITableView {
-		/// <summary>A MonoTouch-specific feature that uses a <see cref="T:UIKit.UITableViewSource" /> subclass to act as both <see cref="P:UIKit.UITableView.Delegate" /> or <see cref="P:UIKit.UITableView.DataSource" />.</summary>
-		///         <value>A class that can behave as both <see cref="P:UIKit.UITableView.Delegate" /> and <see cref="P:UIKit.UITableView.DataSource" /> for the table view.</value>
+		/// <summary>A MonoTouch-specific feature that uses a <see cref="UIKit.UITableViewSource" /> subclass to act as both <see cref="UIKit.UITableView.Delegate" /> or <see cref="UIKit.UITableView.DataSource" />.</summary>
+		///         <value>A class that can behave as both <see cref="UIKit.UITableView.Delegate" /> and <see cref="UIKit.UITableView.DataSource" /> for the table view.</value>
 		///         <remarks>
-		///           <para>MonoTouch provides the <see cref="T:UIKit.UITableViewSource" /> class as an alternative to implementing both <see cref="T:UIKit.UITableViewDataSource" /> and <see cref="T:UIKit.UITableViewDelegate" />. If a subclass of <see cref="T:UIKit.UITableViewSource" /> is created and assigned to this property, the <see cref="P:UIKit.UITableView.DataSource" /> and <see cref="P:UIKit.UITableView.Delegate" /> properties should not be set.</para>
+		///           <para>MonoTouch provides the <see cref="UIKit.UITableViewSource" /> class as an alternative to implementing both <see cref="UIKit.UITableViewDataSource" /> and <see cref="UIKit.UITableViewDelegate" />. If a subclass of <see cref="UIKit.UITableViewSource" /> is created and assigned to this property, the <see cref="UIKit.UITableView.DataSource" /> and <see cref="UIKit.UITableView.Delegate" /> properties should not be set.</para>
 		///         </remarks>
 		public UITableViewSource Source {
 			get {
@@ -75,8 +75,8 @@ namespace UIKit {
 		// be consistent with other API taking a reuseIdentifier.
 		/// <param name="nib">A nib object created from a nib file. This value cannot be <see langword="null" />.</param>
 		///         <param name="reuseIdentifier">A string to use as an identifier for the cell. This value cannot be <see langword="null" />.</param>
-		///         <summary>Registers a nib object (containing a <see cref="T:UIKit.UITableViewCell" />) with the given identifer string.</summary>
-		///         <remarks>After a nib object has been registered with a table view, calling <see cref="M:UIKit.UITableView.DequeueReusableCell(Foundation.NSString)" /> with the correct identifer will cause the table view to instantiate the cell from the nib object if there is not already an instance in the reuse queue.</remarks>
+		///         <summary>Registers a nib object (containing a <see cref="UIKit.UITableViewCell" />) with the given identifer string.</summary>
+		///         <remarks>After a nib object has been registered with a table view, calling <see cref="UIKit.UITableView.DequeueReusableCell(Foundation.NSString)" /> with the correct identifer will cause the table view to instantiate the cell from the nib object if there is not already an instance in the reuse queue.</remarks>
 		public void RegisterNibForCellReuse (UINib nib, string reuseIdentifier)
 		{
 			using (var str = (NSString) reuseIdentifier)
@@ -109,9 +109,9 @@ namespace UIKit {
 		// be consistent with other API taking a reuseIdentifier.
 		/// <param name="nib">A nib object created from a nib file. This value cannot be <see langword="null" />.</param>
 		///         <param name="reuseIdentifier">To be added.</param>
-		///         <summary>Registers a nib object (containing a <see cref="T:UIKit.UITableViewHeaderFooterView" />) with the given identifier string.</summary>
+		///         <summary>Registers a nib object (containing a <see cref="UIKit.UITableViewHeaderFooterView" />) with the given identifier string.</summary>
 		///         <remarks>
-		///           <para>After a nib object has been registered with a table view, as section header and footer views come into view, the appropriate <see cref="T:UIKit.UITableViewHeaderFooterView" />s will be instantiated as necessary from the nib object if there is not already an instance in the reuse queue.</para>
+		///           <para>After a nib object has been registered with a table view, as section header and footer views come into view, the appropriate <see cref="UIKit.UITableViewHeaderFooterView" />s will be instantiated as necessary from the nib object if there is not already an instance in the reuse queue.</para>
 		///         </remarks>
 		public void RegisterNibForHeaderFooterViewReuse (UINib nib, string reuseIdentifier)
 		{

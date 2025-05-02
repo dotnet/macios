@@ -1,10 +1,10 @@
 <Documentation>
   <Docs DocId="M:CoreText.CTFontManager.Notifications.ObserveRegisteredFontsChanged(System.EventHandler{Foundation.NSNotificationEventArgs})">
     <param name="handler">Method to invoke when the notification is posted.</param>
-    <summary>Strongly typed notification for the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Text%20CTFont%20Manager%20Registered%20Fonts%20Changed%20Notification&amp;scope=Xamarin" title="P:CoreText.CTFontManager.RegisteredFontsChangedNotification">P:CoreText.CTFontManager.RegisteredFontsChangedNotification</a></format> constant.</summary>
-    <returns>Token object that can be used to stop receiving notifications by either disposing it or passing it to <see cref="M:Foundation.NSNotificationCenter.RemoveObservers(System.Collections.Generic.IEnumerable{Foundation.NSObject})" /></returns>
+    <summary>Strongly typed notification for the <see cref="CoreText.CTFontManager.RegisteredFontsChangedNotification" /> constant.</summary>
+    <returns>Token object that can be used to stop receiving notifications by either disposing it or passing it to <see cref="Foundation.NSNotificationCenter.RemoveObservers(System.Collections.Generic.IEnumerable{Foundation.NSObject})" /></returns>
     <remarks>
-      <para id="tool-remark">This method can be used to subscribe for <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Text%20CTFont%20Manager%20Registered%20Fonts%20Changed%20Notification&amp;scope=Xamarin" title="P:CoreText.CTFontManager.RegisteredFontsChangedNotification">P:CoreText.CTFontManager.RegisteredFontsChangedNotification</a></format> notifications.</para>
+      <para id="tool-remark">This method can be used to subscribe for <see cref="CoreText.CTFontManager.RegisteredFontsChangedNotification" /> notifications.</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
 // Listen to all notifications posted for any object

@@ -21,7 +21,13 @@ using NativeHandle = System.IntPtr;
 #nullable disable
 
 namespace UIKit {
+#if __TVOS__
+	/// <include file="../../docs/api/UIKit/UIAppearance.xml" path="/Documentation/Docs[@DocId='tvOS:T:UIKit.UIAppearance']/*" />
+#elif __MACCATALYST__
+	/// <include file="../../docs/api/UIKit/UIAppearance.xml" path="/Documentation/Docs[@DocId='MacCatalyst:T:UIKit.UIAppearance']/*" />
+#else
 	/// <include file="../../docs/api/UIKit/UIAppearance.xml" path="/Documentation/Docs[@DocId='T:UIKit.UIAppearance']/*" />
+#endif
 	public partial class UIAppearance {
 		/// <param name="other">To be added.</param>
 		///         <summary>Whether this is equivalent to <paramref name="other" />.</summary>

@@ -18,7 +18,7 @@ using ObjCRuntime;
 
 namespace UIKit {
 
-	/// <summary>Provides data for the <see cref="E:UIKit.UITextField.EndedWithReason" /> event.</summary>
+	/// <summary>Provides data for the <see cref="UIKit.UITextField.EndedWithReason" /> event.</summary>
 	///     <remarks>
 	///     </remarks>
 	public partial class UITextFieldEditingEndedEventArgs : EventArgs {

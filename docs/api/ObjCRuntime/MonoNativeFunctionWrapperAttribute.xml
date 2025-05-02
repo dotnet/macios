@@ -1,11 +1,11 @@
 <Documentation>
   <Docs DocId="T:ObjCRuntime.MonoNativeFunctionWrapperAttribute">
-    <summary>Attribute to apply to delegates to flag them as targets that can be used with <see cref="M:System.Runtime.InteropServices.Marshal.GetDelegateForFunctionPointer(System.IntPtr,System.Type)" />.</summary>
+    <summary>Attribute to apply to delegates to flag them as targets that can be used with <see cref="System.Runtime.InteropServices.Marshal.GetDelegateForFunctionPointer(System.IntPtr,System.Type)" />.</summary>
     <remarks>
       <para>
 	Since Xamarin.iOS runs in fully statically compiled mode, it is
 	necessary to flag delegate methods that might be passed to the
-	<see cref="M:System.Runtime.InteropServices.Marshal.GetDelegateForFunctionPointer(System.IntPtr,System.Type)" />
+	<see cref="System.Runtime.InteropServices.Marshal.GetDelegateForFunctionPointer(System.IntPtr,System.Type)" />
 	with this attribute.  This instructs the AOT compiler to
 	generate the necessary code to allow a pointer to a native
 	function to produce a callable managed delegate for the method.

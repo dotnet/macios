@@ -38,8 +38,8 @@ namespace CoreSpotlight {
 		MismatchedClientState = -1006,
 	}
 
-	/// <summary>Enumerates errors that can occur while running a Core Spotlight query with <see cref="M:CoreSpotlight.CSSearchQuery.Start" />.</summary>
-	///     <remarks>Developers can use the <see cref="M:CoreSpotlight.CSSearchQueryErrorCodeExtensions.GetDomain(CoreSpotlight.CSSearchQueryErrorCode)" /> extension method to get the error domain.</remarks>
+	/// <summary>Enumerates errors that can occur while running a Core Spotlight query with <see cref="CoreSpotlight.CSSearchQuery.Start" />.</summary>
+	///     <remarks>Developers can use the <see cref="CoreSpotlight.CSSearchQueryErrorCodeExtensions.GetDomain(CoreSpotlight.CSSearchQueryErrorCode)" /> extension method to get the error domain.</remarks>
 	[NoTV]
 	[MacCatalyst (13, 1)]
 	[ErrorDomain ("CSSearchQueryErrorDomain")]
@@ -55,7 +55,7 @@ namespace CoreSpotlight {
 		Cancelled = -2003,
 	}
 
-	/// <summary>Enumerates file protection options in calls to <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Spotlight%20CSSearchable%20Index%20From%20Name&amp;scope=Xamarin" title="M:CoreSpotlight.CSSearchableIndex.FromName*">M:CoreSpotlight.CSSearchableIndex.FromName*</a></format>.</summary>
+	/// <summary>Enumerates file protection options in calls to <see cref="CoreSpotlight.CSSearchableIndex.FromName" />.</summary>
 	[NoTV]
 	[NoMac]
 	[MacCatalyst (13, 1)]

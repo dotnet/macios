@@ -1,10 +1,10 @@
 <Documentation>
   <Docs DocId="M:ObjCRuntime.Dlfcn.dlsym(System.IntPtr,System.String)">
-    <param name="handle">Handle to the dynamic library previously opened with <see cref="M:ObjCRuntime.Dlfcn.dlopen(System.String,System.Int32)" />.</param>
+    <param name="handle">Handle to the dynamic library previously opened with <see cref="ObjCRuntime.Dlfcn.dlopen(System.String,System.Int32)" />.</param>
     <param name="symbol">Name of the public symbol in the dynamic library to look up.</param>
     <summary>Returns the address of the specified symbol in the dynamic library.</summary>
     <returns>
-	  Returns <see langword="null" /> if the symbol was not found.   The error condition can be probed using the <see cref="M:ObjCRuntime.Dlfcn.dlerror" />.
+	  Returns <see langword="null" /> if the symbol was not found.   The error condition can be probed using the <see cref="ObjCRuntime.Dlfcn.dlerror" />.
         </returns>
     <remarks>
       <para>
@@ -33,8 +33,8 @@
 	symbols from them as well as looking up constants defined in a
 	dynamic library.
       </para>
-      <para> You can use <see cref="M:ObjCRuntime.Dlfcn.dlopen(System.String,System.Int32)" /> to bring a library into memory and
-	<see cref="M:ObjCRuntime.Dlfcn.dlclose(System.IntPtr)" /> to close the library and <see cref="M:ObjCRuntime.Dlfcn.dlerror" /> to diagnose problems
+      <para> You can use <see cref="ObjCRuntime.Dlfcn.dlopen(System.String,System.Int32)" /> to bring a library into memory and
+	<see cref="ObjCRuntime.Dlfcn.dlclose(System.IntPtr)" /> to close the library and <see cref="ObjCRuntime.Dlfcn.dlerror" /> to diagnose problems
 	with calls to dlopen.
       </para>
       <para>

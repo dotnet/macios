@@ -35,7 +35,7 @@ using NSImage = UIKit.UIImage;
 #endif
 
 namespace MediaPlayer {
-	/// <summary>Abstract base class for <see cref="T:MediaPlayer.MPMediaItem" /> and <see cref="T:MediaPlayer.MPMediaItemCollection" /> classes.</summary>
+	/// <summary>Abstract base class for <see cref="MediaPlayer.MPMediaItem" /> and <see cref="MediaPlayer.MPMediaItemCollection" /> classes.</summary>
 	/// <remarks>To be added.</remarks>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPMediaEntity_ClassReference/index.html">Apple documentation for <c>MPMediaEntity</c></related>
 	[BaseType (typeof (NSObject))]
@@ -461,7 +461,7 @@ namespace MediaPlayer {
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		NSString DateAddedProperty { get; }
 
-		/// <summary>Backing store for the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Media%20Player%20Media%20Item%20Playback%20Store%20ID&amp;scope=Xamarin" title="P:MediaPlayer.MediaItem.PlaybackStoreID">P:MediaPlayer.MediaItem.PlaybackStoreID</a></format> property.</summary>
+		/// <summary>Backing store for the <see cref="MediaPlayer.MediaItem.PlaybackStoreID" /> property.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
@@ -495,7 +495,7 @@ namespace MediaPlayer {
 
 		/// <param name="size">To be added.</param>
 		///         <summary>To be added.</summary>
-		///         <returns>The return type is <see cref="T:UIKit.UIImage" /> on iOS and <see cref="T:AppKit.NSImage" /> on MacOS.</returns>
+		///         <returns>The return type is <see cref="UIKit.UIImage" /> on iOS and <see cref="AppKit.NSImage" /> on MacOS.</returns>
 		///         <remarks>To be added.</remarks>
 		[Export ("imageWithSize:")]
 		[return: NullAllowed]
@@ -519,7 +519,7 @@ namespace MediaPlayer {
 		CGRect ImageCropRectangle { get; }
 	}
 
-	/// <summary>A sorted set of <see cref="T:MediaPlayer.MPMediaItem" />s.</summary>
+	/// <summary>A sorted set of <see cref="MediaPlayer.MPMediaItem" />s.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPMediaItemCollection_ClassReference/index.html">Apple documentation for <c>MPMediaItemCollection</c></related>
 	[NoMac]
@@ -535,7 +535,7 @@ namespace MediaPlayer {
 #endif
 	interface MPMediaItemCollection : NSSecureCoding {
 		/// <param name="items">To be added.</param>
-		///         <summary>Creates a new <see cref="T:MediaPlayer.MPMediaItemCollection" /> by copying the provided <paramref name="items" />.</summary>
+		///         <summary>Creates a new <see cref="MediaPlayer.MPMediaItemCollection" /> by copying the provided <paramref name="items" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[Static]
@@ -543,7 +543,7 @@ namespace MediaPlayer {
 		MPMediaItemCollection FromItems (MPMediaItem [] items);
 
 		/// <param name="items">To be added.</param>
-		/// <summary>Creates a new <see cref="T:MediaPlayer.MPMediaItemCollection" /> from the provided <paramref name="items" />.</summary>
+		/// <summary>Creates a new <see cref="MediaPlayer.MPMediaItemCollection" /> from the provided <paramref name="items" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithItems:")]
@@ -575,7 +575,7 @@ namespace MediaPlayer {
 		MPMediaType MediaTypes { get; }
 	}
 
-	/// <summary>Represents the synced set of <see cref="T:MediaPlayer.MPMediaItem" />s on a device.</summary>
+	/// <summary>Represents the synced set of <see cref="MediaPlayer.MPMediaItem" />s on a device.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPMediaLibrary_ClassReference/index.html">Apple documentation for <c>MPMediaLibrary</c></related>
 	[NoMac]
@@ -681,7 +681,7 @@ namespace MediaPlayer {
 		void GetPlaylist (NSUuid uuid, [NullAllowed] MPMediaPlaylistCreationMetadata creationMetadata, Action<MPMediaPlaylist, NSError> completionHandler);
 	}
 
-	/// <summary>A <see cref="T:UIKit.UIViewController" /> that allows the application user to select a media item.</summary>
+	/// <summary>A <see cref="UIKit.UIViewController" /> that allows the application user to select a media item.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPMediaPickerController_ClassReference/index.html">Apple documentation for <c>MPMediaPickerController</c></related>
 	[NoTV]
@@ -690,7 +690,7 @@ namespace MediaPlayer {
 	[BaseType (typeof (UIViewController), Delegates = new string [] { "WeakDelegate" }, Events = new Type [] { typeof (MPMediaPickerControllerDelegate) })]
 	interface MPMediaPickerController {
 		/// <param name="mediaTypes">To be added.</param>
-		/// <summary>Creates a new <see cref="T:MediaPlayer.MPMediaPickerController" /> for media with the specified <paramref name="mediaTypes" />.</summary>
+		/// <summary>Creates a new <see cref="MediaPlayer.MPMediaPickerController" /> for media with the specified <paramref name="mediaTypes" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithMediaTypes:")]
@@ -752,15 +752,15 @@ namespace MediaPlayer {
 		bool ShowsItemsWithProtectedAssets { get; set; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:MediaPlayer.MPMediaPickerControllerDelegate" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="MediaPlayer.MPMediaPickerControllerDelegate" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:MediaPlayer.MPMediaPickerControllerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:MediaPlayer.MPMediaPickerControllerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:MediaPlayer.MPMediaPickerControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="MediaPlayer.MPMediaPickerControllerDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="MediaPlayer.MPMediaPickerControllerDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="MediaPlayer.MPMediaPickerControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	interface IMPMediaPickerControllerDelegate { }
 
-	/// <summary>A delegate object for the <see cref="T:MediaPlayer.MPMediaPickerController" /> class. Application developers can use this deelegate to respond to events relating to media-item selection.</summary>
+	/// <summary>A delegate object for the <see cref="MediaPlayer.MPMediaPickerController" /> class. Application developers can use this deelegate to respond to events relating to media-item selection.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPMediaPickerControllerDelegate_ProtocolReference/index.html">Apple documentation for <c>MPMediaPickerControllerDelegate</c></related>
 	[NoTV]
@@ -790,7 +790,7 @@ namespace MediaPlayer {
 		void MediaPickerDidCancel (MPMediaPickerController sender);
 	}
 
-	/// <summary>A playable collection of <see cref="T:MediaPlayer.MPMediaItem" />s.</summary>
+	/// <summary>A playable collection of <see cref="MediaPlayer.MPMediaItem" />s.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPMediaPlaylist_ClassReference/index.html">Apple documentation for <c>MPMediaPlaylist</c></related>
 	[NoMac]
@@ -801,7 +801,7 @@ namespace MediaPlayer {
 	[DisableDefaultCtor]
 	interface MPMediaPlaylist : NSSecureCoding {
 		/// <param name="items">To be added.</param>
-		/// <summary>Creates a new <see cref="T:MediaPlayer.MPMediaPlaylist" /> from the specified <paramref name="items" />.</summary>
+		/// <summary>Creates a new <see cref="MediaPlayer.MPMediaPlaylist" /> from the specified <paramref name="items" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Export ("initWithItems:")]
 		NativeHandle Constructor (MPMediaItem [] items);
@@ -910,7 +910,7 @@ namespace MediaPlayer {
 		string CloudGlobalId { get; }
 	}
 
-	/// <summary>Properties of a <see cref="T:MediaPlayer.MPMediaPlaylist" />, such as name, attributes, and seed items.</summary>
+	/// <summary>Properties of a <see cref="MediaPlayer.MPMediaPlaylist" />, such as name, attributes, and seed items.</summary>
 	/// <remarks>To be added.</remarks>
 	[Mac (10, 16)]
 	[MacCatalyst (13, 1)]
@@ -967,7 +967,7 @@ namespace MediaPlayer {
 		NSString CloudGlobalId { get; }
 	}
 
-	/// <summary>Allows the application developer to programmatically search an <see cref="T:MediaPlayer.MPMediaLibrary" /> by applying zero-or-more <see cref="T:MediaPlayer.MPMediaPredicate" />s and an optional <see cref="T:MediaPlayer.MPMediaGrouping" />.</summary>
+	/// <summary>Allows the application developer to programmatically search an <see cref="MediaPlayer.MPMediaLibrary" /> by applying zero-or-more <see cref="MediaPlayer.MPMediaPredicate" />s and an optional <see cref="MediaPlayer.MPMediaGrouping" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPMediaQuery_ClassReference/index.html">Apple documentation for <c>MPMediaQuery</c></related>
 	[NoMac]
@@ -1105,7 +1105,7 @@ namespace MediaPlayer {
 		MPMediaQuerySection [] ItemSections { get; }
 	}
 
-	/// <summary>A base class for types that specify filters for <see cref="T:MediaPlayer.MPMediaQuery" /> queries.</summary>
+	/// <summary>A base class for types that specify filters for <see cref="MediaPlayer.MPMediaQuery" /> queries.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPMediaPredicate_ClassReference/index.html">Apple documentation for <c>MPMediaPredicate</c></related>
 	[NoMac]
@@ -1115,7 +1115,7 @@ namespace MediaPlayer {
 	interface MPMediaPredicate : NSSecureCoding {
 	}
 
-	/// <summary>A type of <see cref="T:MediaPlayer.MPMediaPredicate" /> that evaluates <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Media%20Player%20MPMedia%20Item%20Property&amp;scope=Xamarin" title="T:MediaPlayer.MPMediaItemProperty">T:MediaPlayer.MPMediaItemProperty</a></format>s.</summary>
+	/// <summary>A type of <see cref="MediaPlayer.MPMediaPredicate" /> that evaluates <see cref="MediaPlayer.MPMediaItemProperty" />s.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPMediaPropertyPredicate_ClassReference/index.html">Apple documentation for <c>MPMediaPropertyPredicate</c></related>
 	[NoMac]
@@ -1443,7 +1443,7 @@ namespace MediaPlayer {
 		MPTimedMetadata [] TimedMetadata { get; }
 	}
 
-	/// <summary>Interface that, together with the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Media%20Player%20MPMedia%20Playback_%20Extensions&amp;scope=Xamarin" title="T:MediaPlayer.MPMediaPlayback_Extensions">T:MediaPlayer.MPMediaPlayback_Extensions</a></format> class, comprise the MPMediaPlayback protocol.</summary>
+	/// <summary>Interface that, together with the <see cref="MediaPlayer.MPMediaPlayback_Extensions" /> class, comprise the MPMediaPlayback protocol.</summary>
 	/// <remarks>To be added.</remarks>
 	[NoMac]
 	[TV (16, 0)]
@@ -2034,7 +2034,7 @@ namespace MediaPlayer {
 		[Export ("key")]
 		string Key { get; }
 
-		/// <summary>The namespace of the <see cref="T:MediaPlayer.MPTimedMetadata" />.</summary>
+		/// <summary>The namespace of the <see cref="MediaPlayer.MPTimedMetadata" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("keyspace")]
@@ -2059,7 +2059,7 @@ namespace MediaPlayer {
 		NSDictionary AllMetadata { get; }
 	}
 
-	/// <summary>A subclass of <see cref="T:UIKit.UIViewController" /> that can present and play a movie.</summary>
+	/// <summary>A subclass of <see cref="UIKit.UIViewController" /> that can present and play a movie.</summary>
 	///     
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPMoviePlayerViewController_class/index.html">Apple documentation for <c>MPMoviePlayerViewController</c></related>
@@ -2084,7 +2084,7 @@ namespace MediaPlayer {
 		MPMoviePlayerController MoviePlayer { get; }
 	}
 
-	/// <summary>A class that plays media items from the device's <see cref="T:MediaPlayer.MPMediaLibrary" />.</summary>
+	/// <summary>A class that plays media items from the device's <see cref="MediaPlayer.MPMediaLibrary" />.</summary>
 	/// <remarks>
 	///       <para>This class may only be used from the application's main thread.</para>
 	///     </remarks>
@@ -2282,7 +2282,7 @@ namespace MediaPlayer {
 		NSString VolumeDidChangeNotification { get; }
 	}
 
-	/// <summary>A <see cref="T:UIKit.UIView" /> that presents a slider control used to set the system output volume..</summary>
+	/// <summary>A <see cref="UIKit.UIView" /> that presents a slider control used to set the system output volume..</summary>
 	/// <remarks>To be added.</remarks>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPVolumeView_Class/index.html">Apple documentation for <c>MPVolumeView</c></related>
 	[NoMac]
@@ -2480,7 +2480,7 @@ namespace MediaPlayer {
 	// Objective-C exception thrown.  Name: NSInvalidArgumentException Reason: MPMediaQuerySection is a read-only object
 	[DisableDefaultCtor]
 	interface MPMediaQuerySection : NSSecureCoding, NSCopying {
-		/// <summary>The location and length, inside the originating <see cref="T:MediaPlayer.MPMediaQuery" />, of this section.</summary>
+		/// <summary>The location and length, inside the originating <see cref="MediaPlayer.MPMediaQuery" />, of this section.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("range", ArgumentSemantic.Assign)]
@@ -2634,7 +2634,7 @@ namespace MediaPlayer {
 		NSString PropertyExcludeFromSuggestions { get; }
 	}
 
-	/// <summary>User-meaningful information about an <see cref="T:MediaPlayer.MPMediaItem" />.</summary>
+	/// <summary>User-meaningful information about an <see cref="MediaPlayer.MPMediaItem" />.</summary>
 	/// <remarks>To be added.</remarks>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPContentItem_Ref/index.html">Apple documentation for <c>MPContentItem</c></related>
 	[MacCatalyst (13, 1)]
@@ -2770,20 +2770,20 @@ namespace MediaPlayer {
 		void GetContentItem (string identifier, Action<MPContentItem, NSError> completionHandler);
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:MediaPlayer.MPPlayableContentDataSource" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="MediaPlayer.MPPlayableContentDataSource" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:MediaPlayer.MPPlayableContentDataSource" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:MediaPlayer.MPPlayableContentDataSource" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:MediaPlayer.MPPlayableContentDataSource_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="MediaPlayer.MPPlayableContentDataSource" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="MediaPlayer.MPPlayableContentDataSource" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="MediaPlayer.MPPlayableContentDataSource_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	interface IMPPlayableContentDataSource {
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:MediaPlayer.MPPlayableContentDelegate" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="MediaPlayer.MPPlayableContentDelegate" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:MediaPlayer.MPPlayableContentDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:MediaPlayer.MPPlayableContentDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:MediaPlayer.MPPlayableContentDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="MediaPlayer.MPPlayableContentDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="MediaPlayer.MPPlayableContentDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="MediaPlayer.MPPlayableContentDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	interface IMPPlayableContentDelegate { }
 
@@ -3020,7 +3020,7 @@ namespace MediaPlayer {
 		void RemoveTarget ([NullAllowed] NSObject target, [NullAllowed] Selector action);
 	}
 
-	/// <summary>A <see cref="T:MediaPlayer.MPRemoteCommand" /> that alters the playback rate.</summary>
+	/// <summary>A <see cref="MediaPlayer.MPRemoteCommand" /> that alters the playback rate.</summary>
 	/// <remarks>To be added.</remarks>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPChangePlaybackRateCommand_Ref/index.html">Apple documentation for <c>MPChangePlaybackRateCommand</c></related>
 	[MacCatalyst (13, 1)]
@@ -3035,7 +3035,7 @@ namespace MediaPlayer {
 		NSNumber [] SupportedPlaybackRates { get; set; }
 	}
 
-	/// <summary>Holds the current <see cref="T:MediaPlayer.MPShuffleType" />.</summary>
+	/// <summary>Holds the current <see cref="MediaPlayer.MPShuffleType" />.</summary>
 	/// <remarks>To be added.</remarks>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/MediaPlayer/MPChangeShuffleModeCommand">Apple documentation for <c>MPChangeShuffleModeCommand</c></related>
 	[MacCatalyst (13, 1)]
@@ -3049,7 +3049,7 @@ namespace MediaPlayer {
 		MPShuffleType CurrentShuffleType { get; set; }
 	}
 
-	/// <summary>Holds the current <see cref="T:MediaPlayer.MPRepeatType" />.</summary>
+	/// <summary>Holds the current <see cref="MediaPlayer.MPRepeatType" />.</summary>
 	/// <remarks>To be added.</remarks>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/MediaPlayer/MPChangeRepeatModeCommand">Apple documentation for <c>MPChangeRepeatModeCommand</c></related>
 	[MacCatalyst (13, 1)]
@@ -3063,7 +3063,7 @@ namespace MediaPlayer {
 		MPRepeatType CurrentRepeatType { get; set; }
 	}
 
-	/// <summary>Additional information for feedback commands defined in <see cref="T:MediaPlayer.MPRemoteCommandCenter" />.</summary>
+	/// <summary>Additional information for feedback commands defined in <see cref="MediaPlayer.MPRemoteCommandCenter" />.</summary>
 	/// <remarks>To be added.</remarks>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPFeedbackCommand/index.html">Apple documentation for <c>MPFeedbackCommand</c></related>
 	[MacCatalyst (13, 1)]
@@ -3091,7 +3091,7 @@ namespace MediaPlayer {
 		string LocalizedShortTitle { get; set; }
 	}
 
-	/// <summary>Additional information for rating commands defined in <see cref="T:MediaPlayer.MPRemoteCommandCenter" />.</summary>
+	/// <summary>Additional information for rating commands defined in <see cref="MediaPlayer.MPRemoteCommandCenter" />.</summary>
 	/// <remarks>To be added.</remarks>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPRatingCommand_Ref/index.html">Apple documentation for <c>MPRatingCommand</c></related>
 	[MacCatalyst (13, 1)]
@@ -3299,7 +3299,7 @@ namespace MediaPlayer {
 		float PlaybackRate { get; } // float, not CGFloat
 	}
 
-	/// <summary>Additional information for the rating properties defined in <see cref="T:MediaPlayer.MPRemoteCommandCenter" />.</summary>
+	/// <summary>Additional information for the rating properties defined in <see cref="MediaPlayer.MPRemoteCommandCenter" />.</summary>
 	/// <remarks>To be added.</remarks>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPRatingCommandEvent_Ref/index.html">Apple documentation for <c>MPRatingCommandEvent</c></related>
 	[MacCatalyst (13, 1)]
@@ -3314,7 +3314,7 @@ namespace MediaPlayer {
 		float Rating { get; } // float, not CGFloat
 	}
 
-	/// <summary>Additional information for the seek properties defined in <see cref="T:MediaPlayer.MPRemoteCommandCenter" />.</summary>
+	/// <summary>Additional information for the seek properties defined in <see cref="MediaPlayer.MPRemoteCommandCenter" />.</summary>
 	/// <remarks>To be added.</remarks>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPSeekCommandEvent_Ref/index.html">Apple documentation for <c>MPSeekCommandEvent</c></related>
 	[MacCatalyst (13, 1)]
@@ -3344,7 +3344,7 @@ namespace MediaPlayer {
 		double /* NSTimeInterval */ Interval { get; }
 	}
 
-	/// <summary>Additional information for the feedback properties defined in <see cref="T:MediaPlayer.MPRemoteCommandCenter" />.</summary>
+	/// <summary>Additional information for the feedback properties defined in <see cref="MediaPlayer.MPRemoteCommandCenter" />.</summary>
 	/// <remarks>To be added.</remarks>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPFeedbackCommandEvent_Ref/index.html">Apple documentation for <c>MPFeedbackCommandEvent</c></related>
 	[MacCatalyst (13, 1)]
@@ -3380,7 +3380,7 @@ namespace MediaPlayer {
 		MPChangeLanguageOptionSetting Setting { get; }
 	}
 
-	/// <summary>Associates a <see cref="T:MediaPlayer.MPShuffleType" /> and a boolean specifying whether the shuffle mode should be preserved.</summary>
+	/// <summary>Associates a <see cref="MediaPlayer.MPShuffleType" /> and a boolean specifying whether the shuffle mode should be preserved.</summary>
 	/// <remarks>To be added.</remarks>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/MediaPlayer/MPChangeShuffleModeCommandEvent">Apple documentation for <c>MPChangeShuffleModeCommandEvent</c></related>
 	[MacCatalyst (13, 1)]
@@ -3401,7 +3401,7 @@ namespace MediaPlayer {
 		bool PreservesShuffleMode { get; }
 	}
 
-	/// <summary>Associates a <see cref="T:MediaPlayer.MPRepeatType" /> and a boolean specifying whether the repeat mode should be preserved.</summary>
+	/// <summary>Associates a <see cref="MediaPlayer.MPRepeatType" /> and a boolean specifying whether the repeat mode should be preserved.</summary>
 	/// <remarks>To be added.</remarks>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/MediaPlayer/MPChangeRepeatModeCommandEvent">Apple documentation for <c>MPChangeRepeatModeCommandEvent</c></related>
 	[MacCatalyst (13, 1)]

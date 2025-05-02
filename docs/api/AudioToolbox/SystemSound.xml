@@ -16,13 +16,13 @@
     <remarks>
       <para>
 	This API is intended to be used to play sound effects or to
-	make the device vibrate.  You use <see cref="M:AudioToolbox.SystemSound.PlaySystemSoundAsync" />
-	to play short sounds and <see cref="M:AudioToolbox.SystemSound.PlayAlertSoundAsync" />
+	make the device vibrate.  You use <see cref="AudioToolbox.SystemSound.PlaySystemSoundAsync" />
+	to play short sounds and <see cref="AudioToolbox.SystemSound.PlayAlertSoundAsync" />
 	to play either the sound or vibrate (depending on the device
 	settings).
       </para>
       <para>
-	Unlike the <see cref="T:AVFoundation.AVAudioPlayer" /> which works
+	Unlike the <see cref="AVFoundation.AVAudioPlayer" /> which works
 	with the audio session and is able to dim your audio, play in
 	the background and interact with the system based on a set of
 	rules, the SystemSound does not support this.  So you should
@@ -67,10 +67,10 @@
       <para>
 	To play a sound, you first create an instance of the
 	SystemSound object, either via the constructor, or one of the
-	<see cref="M:AudioToolbox.SystemSound.FromFile(System.String)" />
+	<see cref="AudioToolbox.SystemSound.FromFile(System.String)" />
 	methods.  Once this object has been created, you call one of
-	the playback methods <see cref="M:AudioToolbox.SystemSound.PlaySystemSoundAsync" />
-	to play short sounds and <see cref="M:AudioToolbox.SystemSound.PlayAlertSoundAsync" />.
+	the playback methods <see cref="AudioToolbox.SystemSound.PlaySystemSoundAsync" />
+	to play short sounds and <see cref="AudioToolbox.SystemSound.PlayAlertSoundAsync" />.
       </para>
     </remarks>
   </Docs>

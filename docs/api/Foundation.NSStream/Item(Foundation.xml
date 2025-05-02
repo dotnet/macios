@@ -16,7 +16,7 @@
               </listheader>
               <item>
                 <term>
-                  <see cref="P:Foundation.NSStream.SocketSecurityLevelKey" />
+                  <see cref="Foundation.NSStream.SocketSecurityLevelKey" />
                 </term>
                 <description>
                   <para>
@@ -26,23 +26,23 @@
                     <list type="bullet">
                       <item>
                         <term>
-                          <see cref="P:Foundation.NSStream.SocketSecurityLevelNone" />: No security level set for the stream.</term>
+                          <see cref="Foundation.NSStream.SocketSecurityLevelNone" />: No security level set for the stream.</term>
                       </item>
                       <item>
                         <term>
-                          <see cref="P:Foundation.NSStream.SocketSecurityLevelSslV2" />: Use SSLv2 on the stream.</term>
+                          <see cref="Foundation.NSStream.SocketSecurityLevelSslV2" />: Use SSLv2 on the stream.</term>
                       </item>
                       <item>
                         <term>
-                          <see cref="P:Foundation.NSStream.SocketSecurityLevelSslV3" />: Use SSLv3 on the stream.</term>
+                          <see cref="Foundation.NSStream.SocketSecurityLevelSslV3" />: Use SSLv3 on the stream.</term>
                       </item>
                       <item>
                         <term>
-                          <see cref="P:Foundation.NSStream.SocketSecurityLevelTlsV1" />: Use TLSv1 on the stream.</term>
+                          <see cref="Foundation.NSStream.SocketSecurityLevelTlsV1" />: Use TLSv1 on the stream.</term>
                       </item>
                       <item>
                         <term>
-                          <see cref="P:Foundation.NSStream.SocketSecurityLevelNegotiatedSsl" />: Use the highest possible security protocol that can be negotiated on the stream.</term>
+                          <see cref="Foundation.NSStream.SocketSecurityLevelNegotiatedSsl" />: Use the highest possible security protocol that can be negotiated on the stream.</term>
                       </item>
                     </list>
                   </para>
@@ -50,7 +50,7 @@
               </item>
               <item>
                 <term>
-                  <see cref="P:Foundation.NSStream.SocksProxyConfigurationKey" />
+                  <see cref="Foundation.NSStream.SocksProxyConfigurationKey" />
                 </term>
                 <description>
                   <para>Set to a dictionary of configuration information for a SOCKS proxy.</para>
@@ -59,25 +59,25 @@
                     <list type="bullet">
                       <item>
                         <term>
-                          <see cref="P:Foundation.NSStream.SocksProxyHostKey" />: NSString containing the SOCKS proxy host name.</term>
+                          <see cref="Foundation.NSStream.SocksProxyHostKey" />: NSString containing the SOCKS proxy host name.</term>
                       </item>
                       <item>
                         <term>
-                          <see cref="P:Foundation.NSStream.SocksProxyPortKey" />: NSNumber containing the SOCKS proxy host port.</term>
+                          <see cref="Foundation.NSStream.SocksProxyPortKey" />: NSNumber containing the SOCKS proxy host port.</term>
                       </item>
                       <item>
                         <term>
-                          <see cref="P:Foundation.NSStream.SocksProxyVersionKey" />: The SOCKS proxy server version, use <see cref="P:Foundation.NSStream.SocksProxyVersion4" />
-		      or <see cref="P:Foundation.NSStream.SocksProxyVersion5" />.
+                          <see cref="Foundation.NSStream.SocksProxyVersionKey" />: The SOCKS proxy server version, use <see cref="Foundation.NSStream.SocksProxyVersion4" />
+		      or <see cref="Foundation.NSStream.SocksProxyVersion5" />.
 		    </term>
                       </item>
                       <item>
                         <term>
-                          <see cref="P:Foundation.NSStream.SocksProxyUserKey" />: NSString containing the SOCKS proxy user name.</term>
+                          <see cref="Foundation.NSStream.SocksProxyUserKey" />: NSString containing the SOCKS proxy user name.</term>
                       </item>
                       <item>
                         <term>
-                          <see cref="P:Foundation.NSStream.SocksProxyPasswordKey" />: NSString containing the SOCKS proxy password.</term>
+                          <see cref="Foundation.NSStream.SocksProxyPasswordKey" />: NSString containing the SOCKS proxy password.</term>
                       </item>
                     </list>
                   </para>
@@ -85,19 +85,19 @@
               </item>
               <item>
                 <term>
-                  <see cref="P:Foundation.NSStream.DataWrittenToMemoryStreamKey" />
+                  <see cref="Foundation.NSStream.DataWrittenToMemoryStreamKey" />
                 </term>
                 <description>Value is the NSData that is collecting data on the stream (get only).</description>
               </item>
               <item>
                 <term>
-                  <see cref="P:Foundation.NSStream.FileCurrentOffsetKey" />
+                  <see cref="Foundation.NSStream.FileCurrentOffsetKey" />
                 </term>
                 <description>NSNumber containing the position on the stream.</description>
               </item>
               <item>
                 <term>
-                  <see cref="P:Foundation.NSStream.NetworkServiceType" />
+                  <see cref="Foundation.NSStream.NetworkServiceType" />
                 </term>
                 <description>
                   <para>Type of service that the stream is providing, one of:</para>
@@ -105,19 +105,19 @@
                     <list type="bullet">
                       <item>
                         <term>
-                          <see cref="P:Foundation.NSStream.NetworkServiceTypeBackground" />: Background data.</term>
+                          <see cref="Foundation.NSStream.NetworkServiceTypeBackground" />: Background data.</term>
                       </item>
                       <item>
                         <term>
-                          <see cref="P:Foundation.NSStream.NetworkServiceTypeVideo" />: Video data.</term>
+                          <see cref="Foundation.NSStream.NetworkServiceTypeVideo" />: Video data.</term>
                       </item>
                       <item>
                         <term>
-                          <see cref="P:Foundation.NSStream.NetworkServiceTypeVoice" />: Voice service.</term>
+                          <see cref="Foundation.NSStream.NetworkServiceTypeVoice" />: Voice service.</term>
                       </item>
                       <item>
                         <term>
-                          <see cref="P:Foundation.NSStream.NetworkServiceTypeVoIP" />: Voice Over IP.</term>
+                          <see cref="Foundation.NSStream.NetworkServiceTypeVoIP" />: Voice Over IP.</term>
                       </item>
                     </list>
                   </para>

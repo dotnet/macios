@@ -1,6 +1,6 @@
 <Documentation>
   <Docs DocId="T:Foundation.NSUrlSessionDownloadTask">
-    <summary>Developers should use <see cref="T:Foundation.NSUrlDownloadSessionResponse" /> rather than this deprecated type.</summary>
+    <summary>Developers should use <see cref="Foundation.NSUrlDownloadSessionResponse" /> rather than this deprecated type.</summary>
     <remarks>
       <para>The following example shows a basic asynchronous background download:</para>
       <example>

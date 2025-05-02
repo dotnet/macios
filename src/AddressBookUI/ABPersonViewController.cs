@@ -15,7 +15,7 @@ using Foundation;
 using ObjCRuntime;
 
 namespace AddressBookUI {
-	/// <summary>Provides data for the <see cref="E:AddressBookUI.ABUnknownPersonViewController.PerformDefaultAction" /> and <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Address%20Book%20UIABPerson%20View%20Perform%20Default%20Action%20Event%20Args%20Perform%20Default%20Action&amp;scope=Xamarin" title="E:AddressBookUI.ABPersonViewPerformDefaultActionEventArgs.PerformDefaultAction">E:AddressBookUI.ABPersonViewPerformDefaultActionEventArgs.PerformDefaultAction</a></format> events.</summary>
+	/// <summary>Provides data for the <see cref="AddressBookUI.ABUnknownPersonViewController.PerformDefaultAction" /> and <see cref="AddressBookUI.ABPersonViewController.PerformDefaultAction" /> events.</summary>
 	///     <remarks>
 	///     </remarks>
 	[SupportedOSPlatform ("ios")]
@@ -87,7 +87,7 @@ namespace AddressBookUI {
 	partial class ABPersonViewController {
 
 		ABPerson? displayedPerson;
-		/// <summary>Returns the <see cref="T:AddressBook.ABPerson" /> associated with the displayed data.</summary>
+		/// <summary>Returns the <see cref="AddressBook.ABPerson" /> associated with the displayed data.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public ABPerson? DisplayedPerson {
@@ -102,7 +102,7 @@ namespace AddressBookUI {
 		}
 
 		DisplayedPropertiesCollection? displayedProperties;
-		/// <summary>Gets the collection of properties that are displayed about the <see cref="P:AddressBookUI.ABPersonViewController.DisplayedPerson" />.</summary>
+		/// <summary>Gets the collection of properties that are displayed about the <see cref="AddressBookUI.ABPersonViewController.DisplayedPerson" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public DisplayedPropertiesCollection? DisplayedProperties {
@@ -118,7 +118,7 @@ namespace AddressBookUI {
 		}
 
 		ABAddressBook? addressBook;
-		/// <summary>Gets or sets the <see cref="T:AddressBook.ABAddressBook" /> that is the store for the data.</summary>
+		/// <summary>Gets or sets the <see cref="AddressBook.ABAddressBook" /> that is the store for the data.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public ABAddressBook? AddressBook {

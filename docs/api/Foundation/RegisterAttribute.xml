@@ -2,7 +2,7 @@
   <Docs DocId="T:Foundation.RegisterAttribute">
     <summary>Used to register a class to the Objective-C runtime.</summary>
     <remarks>
-      <para>While all classes derived from the <see cref="T:Foundation.NSObject" /> class are exposed to
+      <para>While all classes derived from the <see cref="Foundation.NSObject" /> class are exposed to
       the Objective-C world, in some cases you might want to expose
       the class using a different name to the runtime.</para>
       <para>

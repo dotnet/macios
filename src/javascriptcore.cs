@@ -17,7 +17,7 @@ using NativeHandle = System.IntPtr;
 
 namespace JavaScriptCore {
 
-	/// <summary>The delegate that can be used as the <see cref="P:JavaScriptCore.JSContext.ExceptionHandler" />.</summary>
+	/// <summary>The delegate that can be used as the <see cref="JavaScriptCore.JSContext.ExceptionHandler" />.</summary>
 	delegate void JSContextExceptionHandler (JSContext context, JSValue exception);
 
 	/// <include file="../docs/api/JavaScriptCore/JSContext.xml" path="/Documentation/Docs[@DocId='T:JavaScriptCore.JSContext']/*" />
@@ -418,7 +418,7 @@ namespace JavaScriptCore {
 	/// <summary>The JavaScript Virtual Machine, allowing explicit reference-management.</summary>
 	///     <remarks>
 	///       <para>This class can be used by application developers to add and remove references to .NET objects, thus preventing the JavaScript VM from garbage-collecting plugins.</para>
-	///       <para>The <see cref="T:JavaScriptCore.JSVirtualMachine" /> is the unit of locking granularity for multithreaded JavaScript.</para>
+	///       <para>The <see cref="JavaScriptCore.JSVirtualMachine" /> is the unit of locking granularity for multithreaded JavaScript.</para>
 	///     </remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/JavaScriptCore/JSVirtualMachine">Apple documentation for <c>JSVirtualMachine</c></related>
 	[MacCatalyst (13, 1)]

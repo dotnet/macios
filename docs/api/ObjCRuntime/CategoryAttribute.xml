@@ -5,7 +5,7 @@
       <para>
 	This attribute is applied to static user code classes and will
 	surface all of the exported methods and properties (those that
-	have the <see cref="T:Foundation.ExportAttribute" />)
+	have the <see cref="Foundation.ExportAttribute" />)
 	to the provided system type.
       </para>
       <para>
@@ -60,7 +60,7 @@ public static class MyStringCategory
       <para>
         If the managed class is not referenced by other managed code (and only called from Objective-C),
         the managed linker will remove it. This can be avoided either by adding a
-        <see cref="T:Foundation.PreserveAttribute" /> attribute to the class, or by creating a custom linker definition file.
+        <see cref="Foundation.PreserveAttribute" /> attribute to the class, or by creating a custom linker definition file.
       </para>
     </remarks>
     <related type="article" href="https://docs.microsoft.com/xamarin/cross-platform/deploy-test/linker">Custom Linker Configuration</related>

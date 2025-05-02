@@ -5,7 +5,6 @@ using System;
 using System.Reflection;
 
 namespace Foundation {
-	/// <include file="../../docs/api/Foundation/NSObject.xml" path="/Documentation/Docs[@DocId='T:Foundation.NSObject']/*" />
 	public partial class NSObject {
 #if !COREBUILD
 

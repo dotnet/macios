@@ -2,8 +2,8 @@
   <Docs DocId="T:UIKit.UIActivityType">
     <summary>Identifiers for iOS-provided activities.</summary>
     <remarks>
-      <para>These identifiers correspond to the <see cref="P:UIKit.UIActivity.Type" /> property of the iOS-provided <see cref="T:UIKit.UIActivity" />s. </para>
-      <para>They are typically used as values for the <see cref="P:UIKit.UIActivity.Type" /> or as parameters in the constructor for <see cref="C:UIKit.UIActivityViewController" />.</para>
+      <para>These identifiers correspond to the <see cref="UIKit.UIActivity.Type" /> property of the iOS-provided <see cref="UIKit.UIActivity" />s. </para>
+      <para>They are typically used as values for the <see cref="UIKit.UIActivity.Type" /> or as parameters in the constructor for <see cref="UIKit.UIActivityViewController" />.</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
 //

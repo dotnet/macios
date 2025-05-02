@@ -47,7 +47,7 @@ namespace CoreData {
 	}
 
 	// NUInteger -> NSAttributeDescription.h
-	/// <summary>An enumeration whose values define the valid types for <see cref="T:CoreData.NSAttributeType" /> objects.</summary>
+	/// <summary>An enumeration whose values define the valid types for <see cref="CoreData.NSAttributeType" /> objects.</summary>
 	[Native]
 	public enum NSAttributeType : ulong {
 		/// <summary>Indicates an undefined type.</summary>
@@ -134,7 +134,7 @@ namespace CoreData {
 	}
 
 	// NUInteger -> NSManagedObjectContext.h
-	/// <summary>Enumerates types of concurrenty patterns that can be used by a <see cref="T:CoreData.NSManagedObjectContext" />.</summary>
+	/// <summary>Enumerates types of concurrenty patterns that can be used by a <see cref="CoreData.NSManagedObjectContext" />.</summary>
 	[Native]
 	public enum NSManagedObjectContextConcurrencyType : ulong {
 		/// <summary>To be added.</summary>
@@ -186,7 +186,7 @@ namespace CoreData {
 		UpdatedObjectsCount = 2,
 	}
 
-	/// <summary>Enumerates the form of the result of a <see cref="T:CoreData.NSBatchDeleteRequest" />.</summary>
+	/// <summary>Enumerates the form of the result of a <see cref="CoreData.NSBatchDeleteRequest" />.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSBatchDeleteRequestResultType : ulong {

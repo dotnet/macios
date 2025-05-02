@@ -16,11 +16,11 @@ using ObjCRuntime;
 namespace Vision {
 	public partial class VNRequest {
 
-		/// <typeparam name="T">The subclass of <see cref="T:Vision.VNObservation" /> produced.</typeparam>
-		///         <summary>Gets the detected objects, as an array of the specified subclass of <see cref="T:Vision.VNObservation" />.</summary>
+		/// <typeparam name="T">The subclass of <see cref="Vision.VNObservation" /> produced.</typeparam>
+		///         <summary>Gets the detected objects, as an array of the specified subclass of <see cref="Vision.VNObservation" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>
-		///           <para>The following example shows how one might retrieve the results of a <see cref="T:Vision.VNDetectFaceRectanglesRequest" />:</para>
+		///           <para>The following example shows how one might retrieve the results of a <see cref="Vision.VNDetectFaceRectanglesRequest" />:</para>
 		///           <example>
 		///             <code lang="csharp lang-csharp"><![CDATA[
 		/// var rs = request.GetResults<VNFaceObservation>();

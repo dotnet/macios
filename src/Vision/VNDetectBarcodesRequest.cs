@@ -14,7 +14,7 @@ using System;
 namespace Vision {
 	public partial class VNDetectBarcodesRequest {
 
-		/// <summary>Gets or sets the array of <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:VNBarcodeSymbology&amp;scope=Xamarin" title="T:VNBarcodeSymbology">T:VNBarcodeSymbology</a></format> types the request should attempt to recognize.</summary>
+		/// <summary>Gets or sets the array of <see cref="VNBarcodeSymbology" /> types the request should attempt to recognize.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public VNBarcodeSymbology [] Symbologies {

@@ -37,7 +37,7 @@ using ObjCRuntime;
 using Foundation;
 
 namespace CoreGraphics {
-	/// <summary>A callback function to be used with various <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Graphics&amp;scope=Xamarin" title="N:CoreGraphics">N:CoreGraphics</a></format> functions.</summary>
+	/// <summary>A callback function to be used with various <see cref="CoreGraphics" /> functions.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -106,7 +106,7 @@ namespace CoreGraphics {
 
 		/// <param name="data">To be added.</param>
 		///     <param name="outData">To be added.</param>
-		///     <summary>A delegate used to specify the callback function of a <see cref="T:CoreGraphics.CGFunction" />.</summary>
+		///     <summary>A delegate used to specify the callback function of a <see cref="CoreGraphics.CGFunction" />.</summary>
 		///     <remarks>To be added.</remarks>
 		unsafe public delegate void CGFunctionEvaluate (nfloat* data, nfloat* outData);
 

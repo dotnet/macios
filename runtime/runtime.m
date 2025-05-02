@@ -301,7 +301,7 @@ xamarin_get_managed_object_for_ptr_fast (id self, GCHandle *exception_gchandle)
 		mobj = xamarin_gchandle_get_target (gchandle);
 #if DEBUG
 		if (self != xamarin_get_nsobject_handle (mobj)) {
-			xamarin_assertion_message ("Internal consistency error, please file a bug (https://github.com/xamarin/xamarin-macios/issues/new). Additional data: found managed object %p=%p (%s) in native object %p (%s).\n",
+			xamarin_assertion_message ("Internal consistency error, please file a bug (https://github.com/dotnet/macios/issues/new). Additional data: found managed object %p=%p (%s) in native object %p (%s).\n",
 				mobj, xamarin_get_nsobject_handle (mobj), xamarin_class_get_full_name (mono_object_get_class (mobj), exception_gchandle), self, object_getClassName (self));
 		}
 #endif
@@ -787,7 +787,7 @@ xamarin_open_assembly_or_assert (const char *name)
 	MonoImageOpenStatus status = MONO_IMAGE_OK;
 	MonoAssembly *assembly = mono_assembly_open (name, &status);
 	if (assembly == NULL)
-		xamarin_assertion_message ("Failed to open the assembly '%s' from the app: %i (errno: %i). This is usually fixed by cleaning and rebuilding your project; if that doesn't work, please file a bug report: https://github.com/xamarin/xamarin-macios/issues/new", name, (int) status, errno);
+		xamarin_assertion_message ("Failed to open the assembly '%s' from the app: %i (errno: %i). This is usually fixed by cleaning and rebuilding your project; if that doesn't work, please file a bug report: https://github.com/dotnet/macios/issues/new", name, (int) status, errno);
 	return assembly;
 }
 
@@ -815,12 +815,12 @@ xamarin_open_assembly (const char *name)
 		if (assembly)
 			return assembly;
 
-		xamarin_assertion_message ("Could not find the assembly '%s' in the app nor as an already loaded assembly. This is usually fixed by cleaning and rebuilding your project; if that doesn't work, please file a bug report: https://github.com/xamarin/xamarin-macios/issues/new", name);
+		xamarin_assertion_message ("Could not find the assembly '%s' in the app nor as an already loaded assembly. This is usually fixed by cleaning and rebuilding your project; if that doesn't work, please file a bug report: https://github.com/dotnet/macios/issues/new", name);
 	}
 #endif
 
 	if (!exists)
-		xamarin_assertion_message ("Could not find the assembly '%s' in the app. This is usually fixed by cleaning and rebuilding your project; if that doesn't work, please file a bug report: https://github.com/xamarin/xamarin-macios/issues/new", name);
+		xamarin_assertion_message ("Could not find the assembly '%s' in the app. This is usually fixed by cleaning and rebuilding your project; if that doesn't work, please file a bug report: https://github.com/dotnet/macios/issues/new", name);
 
 	return xamarin_open_assembly_or_assert (path);
 }
@@ -1309,7 +1309,7 @@ objc_skip_type (const char *type)
 		case _C_ID:
 			type++;
 			if (*type == '"') {
-				// https://github.com/xamarin/xamarin-macios/issues/18562
+				// https://github.com/dotnet/macios/issues/18562
 				// @"..." is an object with the class name inside the quotes.
 				// https://github.com/llvm/llvm-project/blob/24a082878f7baec3651de56d54e5aa2b75a21b5f/clang/lib/AST/ASTContext.cpp#L8505-L8516
 				type++;
@@ -1317,7 +1317,7 @@ objc_skip_type (const char *type)
 					type++;
 				type++;
 			} else if (*type == '?' && type [1] == '<') {
-				// https://github.com/xamarin/xamarin-macios/issues/18562
+				// https://github.com/dotnet/macios/issues/18562
 				// @?<...> is a block pointer
 				// https://github.com/llvm/llvm-project/blob/24a082878f7baec3651de56d54e5aa2b75a21b5f/clang/lib/AST/ASTContext.cpp#L8405-L8426
 				type += 2;
@@ -1806,7 +1806,7 @@ xamarin_release_managed_ref (id self, bool user_type)
 		//       the GC, and deadlocks because thread T already has the
 		//       framework peer lock.
 		//
-		//    This is https://github.com/xamarin/xamarin-macios/issues/3943
+		//    This is https://github.com/dotnet/macios/issues/3943
 		//
 		// See also comment in xamarin_marshal_return_value_impl
 		xamarin_framework_peer_waypoint_safe ();

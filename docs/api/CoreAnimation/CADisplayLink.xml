@@ -6,7 +6,7 @@
 	The display link object is a timer that can be used to
 	synchronize your drawing with the screen refresh rate.  Once
 	you create your CADisplayLink, you need to add it to a runloop
-	by using the <see cref="M:CoreAnimation.CADisplayLink.AddToRunLoop(Foundation.NSRunLoop,Foundation.NSString)" />
+	by using the <see cref="CoreAnimation.CADisplayLink.AddToRunLoop(Foundation.NSRunLoop,Foundation.NSString)" />
 	method.
 
       </para>
@@ -15,9 +15,9 @@
 	suffer from display glitches like screen tearing and micro-stuttering. 
       </para>
       <para>
-	You can pause the display link by setting the <see cref="P:CoreAnimation.CADisplayLink.Paused" />
+	You can pause the display link by setting the <see cref="CoreAnimation.CADisplayLink.Paused" />
 	property.  And you can remove your display link from any
-	registered run loops by calling the <see cref="M:CoreAnimation.CADisplayLink.Invalidate" />
+	registered run loops by calling the <see cref="CoreAnimation.CADisplayLink.Invalidate" />
 	method.
 
       </para>

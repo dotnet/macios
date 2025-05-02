@@ -78,7 +78,7 @@ namespace Xamarin {
 			case ApplePlatform.TVOS: return TVOSVersion;
 			case ApplePlatform.MacCatalyst: return MacCatalystVersion;
 			default:
-				throw ErrorHelper.CreateError (71, "Unknown platform: {0}. This usually indicates a bug in {1}; please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new with a test case.", app.Platform, app.ProductName);
+				throw ErrorHelper.CreateError (71, "Unknown platform: {0}. This usually indicates a bug in {1}; please file a bug report at https://github.com/dotnet/macios/issues/new with a test case.", app.Platform, app.ProductName);
 			}
 		}
 
@@ -89,7 +89,7 @@ namespace Xamarin {
 			case ApplePlatform.iOS: return iOSTargetVersion;
 			case ApplePlatform.TVOS: return TVOSTargetVersion;
 			default:
-				throw ErrorHelper.CreateError (71, "Unknown platform: {0}. This usually indicates a bug in {1}; please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new with a test case.", app.Platform, app.ProductName);
+				throw ErrorHelper.CreateError (71, "Unknown platform: {0}. This usually indicates a bug in {1}; please file a bug report at https://github.com/dotnet/macios/issues/new with a test case.", app.Platform, app.ProductName);
 			}
 		}
 
@@ -101,7 +101,7 @@ namespace Xamarin {
 			case ApplePlatform.TVOS: return MinTVOSVersion;
 			case ApplePlatform.MacCatalyst: return MinMacCatalystVersion;
 			default:
-				throw ErrorHelper.CreateError (71, "Unknown platform: {0}. This usually indicates a bug in {1}; please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new with a test case.", app.Platform, app.ProductName);
+				throw ErrorHelper.CreateError (71, "Unknown platform: {0}. This usually indicates a bug in {1}; please file a bug report at https://github.com/dotnet/macios/issues/new with a test case.", app.Platform, app.ProductName);
 			}
 		}
 #endif

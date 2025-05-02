@@ -70,7 +70,7 @@ namespace AudioToolbox {
 	}
 
 	// MusicPlayer.h
-	/// <summary>A struct describing a MIDI channel message. Used by the <see cref="M:AudioToolbox.MusicTrack.AddMidiChannelEvent(System.Double,AudioToolbox.MidiChannelMessage)" /> method.</summary>
+	/// <summary>A struct describing a MIDI channel message. Used by the <see cref="AudioToolbox.MusicTrack.AddMidiChannelEvent(System.Double,AudioToolbox.MidiChannelMessage)" /> method.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -110,7 +110,7 @@ namespace AudioToolbox {
 	// high level API, and we provide a ToUnmanaged that returns an allocated
 	// IntPtr buffer with the data
 	//
-	/// <summary>An abstract base class for <see cref="T:AudioToolbox.MidiMetaEvent" /> and <see cref="T:AudioToolbox.MidiRawData" />.</summary>
+	/// <summary>An abstract base class for <see cref="AudioToolbox.MidiMetaEvent" /> and <see cref="AudioToolbox.MidiRawData" />.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -185,7 +185,7 @@ namespace AudioToolbox {
 		}
 	}
 
-	/// <summary>A subclass of <see cref="T:AudioToolbox.MidiRawData" /> that describes a user-defined event.</summary>
+	/// <summary>A subclass of <see cref="AudioToolbox.MidiRawData" /> that describes a user-defined event.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -280,7 +280,7 @@ namespace AudioToolbox {
 	}
 #endif
 
-	/// <summary>A music track is a series of time-stamped music events and is a component of a <see cref="T:AudioToolbox.MusicSequence" />.</summary>
+	/// <summary>A music track is a series of time-stamped music events and is a component of a <see cref="AudioToolbox.MusicSequence" />.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]

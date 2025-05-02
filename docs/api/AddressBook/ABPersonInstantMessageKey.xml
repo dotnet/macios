@@ -1,13 +1,13 @@
 <Documentation>
   <Docs DocId="T:AddressBook.ABPersonInstantMessageKey">
     <summary>
-      <see cref="T:Foundation.NSDictionary" /> keys for use
-      with <see cref="T:AddressBook.ABPerson" /> instant message
+      <see cref="Foundation.NSDictionary" /> keys for use
+      with <see cref="AddressBook.ABPerson" /> instant message
       services.
     </summary>
     <remarks>
       <para>
-        A single <see cref="T:Foundation.NSDictionary" /> instance
+        A single <see cref="Foundation.NSDictionary" /> instance
         stores information regarding a single instant message service,
         with the dictionary keys and values holding information about different
         parts of the instant message service.
@@ -28,7 +28,7 @@ ABMutableDictionaryMultiValue instantMessages = new ABMutableDictionaryMultiValu
 ABPerson person = GetMeSomePerson();
 person.SetInstantMessages(addresses);]]></code>
     </remarks>
-    <altmember cref="M:AddressBook.ABPerson.GetInstantMessages" />
-    <altmember cref="M:AddressBook.ABPerson.SetInstantMessages(AddressBook.ABMultiValue{Foundation.NSDictionary})" />
+    <altmember cref="AddressBook.ABPerson.GetInstantMessages" />
+    <altmember cref="AddressBook.ABPerson.SetInstantMessages(AddressBook.ABMultiValue{Foundation.NSDictionary})" />
   </Docs>
 </Documentation>

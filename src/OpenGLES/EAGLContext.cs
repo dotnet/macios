@@ -28,7 +28,6 @@ namespace OpenGLES {
 			EAGLGetVersion ((nuint*) Unsafe.AsPointer<nuint> (ref major), (nuint*) Unsafe.AsPointer<nuint> (ref minor));
 		}
 
-#if NET
 		/// <param name="target">To be added.</param>
 		/// <param name="presentationTime">To be added.</param>
 		/// <summary>To be added.</summary>
@@ -39,13 +38,11 @@ namespace OpenGLES {
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[ObsoletedOSPlatform ("tvos12.0", "Use 'Metal' instead.")]
 		[ObsoletedOSPlatform ("ios12.0", "Use 'Metal' instead.")]
-#endif
 		public virtual bool PresentRenderBuffer (nuint target, double presentationTime)
 		{
 			return _PresentRenderbufferAtTime (target, presentationTime);
 		}
 
-#if NET
 		/// <param name="target">To be added.</param>
 		/// <param name="presentationTime">To be added.</param>
 		/// <param name="mode">To be added.</param>
@@ -57,7 +54,6 @@ namespace OpenGLES {
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[ObsoletedOSPlatform ("tvos12.0", "Use 'Metal' instead.")]
 		[ObsoletedOSPlatform ("ios12.0", "Use 'Metal' instead.")]
-#endif
 		public virtual bool PresentRenderBuffer (nuint target, double presentationTime, PresentationMode mode)
 		{
 			switch (mode) {

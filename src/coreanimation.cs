@@ -129,11 +129,11 @@ namespace CoreAnimation {
 		string FillMode { get; set; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:CoreAnimation.CAMediaTiming" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="CoreAnimation.CAMediaTiming" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:CoreAnimation.CAMediaTiming" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:CoreAnimation.CAMediaTiming" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Animation%20CAMedia%20Timing_%20Extensions&amp;scope=Xamarin" title="T:CoreAnimation.CAMediaTiming_Extensions">T:CoreAnimation.CAMediaTiming_Extensions</a></format> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="CoreAnimation.CAMediaTiming" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="CoreAnimation.CAMediaTiming" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="CoreAnimation.CAMediaTiming_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	interface ICAMediaTiming { }
 
@@ -245,7 +245,7 @@ namespace CoreAnimation {
 		CADisplayLink Create (NSObject target, Selector sel);
 
 		/// <param name="runloop">The runloop on which to run.</param>
-		///         <param name="mode">Modes in which the timer will be invoked, one of the various NSString constants in <see cref="T:Foundation.NSRunLoop" />.<para tool="nullallowed">This parameter can be <see langword="null" />.</para></param>
+		///         <param name="mode">Modes in which the timer will be invoked, one of the various NSString constants in <see cref="Foundation.NSRunLoop" />.<para tool="nullallowed">This parameter can be <see langword="null" />.</para></param>
 		///         <summary>Trigger timer events on the specified runloop for the specified modes (weakly typed parameters).</summary>
 		///         <remarks>
 		///           <para>You should use the strongly typed version if possible, as it prevents common errors.</para>
@@ -379,7 +379,7 @@ namespace CoreAnimation {
 	[BaseType (typeof (NSObject))]
 	[Dispose ("OnDispose ();", Optimizable = true)]
 	interface CALayer : CAMediaTiming, NSSecureCoding {
-		/// <summary>Factory method to create a new <see cref="T:CoreAnimation.CALayer" />.</summary>
+		/// <summary>Factory method to create a new <see cref="CoreAnimation.CALayer" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[Export ("layer")]
@@ -431,20 +431,20 @@ namespace CoreAnimation {
 		[Export ("zPosition")]
 		nfloat ZPosition { get; set; }
 
-		/// <summary>The anchor point for the <see cref="P:CoreAnimation.CALayer.Bounds" /> rectangle.</summary>
+		/// <summary>The anchor point for the <see cref="CoreAnimation.CALayer.Bounds" /> rectangle.</summary>
 		///         <value>The developer specifies the value for this property using the unit coordinate space. The default value for this property is (0.5, 0.5), representing the center of the bounds rectangle for this layer.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("anchorPoint")]
 		CGPoint AnchorPoint { get; set; }
 
-		/// <summary>The anchor point for the <see cref="P:CoreAnimation.CALayer.Bounds" />, defined along the Z axis.</summary>
+		/// <summary>The anchor point for the <see cref="CoreAnimation.CALayer.Bounds" />, defined along the Z axis.</summary>
 		///         <value>The default value is 0.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("anchorPointZ")]
 		nfloat AnchorPointZ { get; set; }
 
-		/// <summary>The layer's position in the coordinate space of its <see cref="P:CoreAnimation.CALayer.SuperLayer" />.</summary>
-		///         <value>The default is (0,0). This value is specified in points relative to the layer's <see cref="P:CoreAnimation.CALayer.AnchorPoint" />.</value>
+		/// <summary>The layer's position in the coordinate space of its <see cref="CoreAnimation.CALayer.SuperLayer" />.</summary>
+		///         <value>The default is (0,0). This value is specified in points relative to the layer's <see cref="CoreAnimation.CALayer.AnchorPoint" />.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("position")]
 		CGPoint Position { get; set; }
@@ -455,7 +455,7 @@ namespace CoreAnimation {
 		[Export ("transform")]
 		CATransform3D Transform { get; set; }
 
-		/// <summary>The affine version of the layer's <see cref="P:CoreAnimation.CALayer.Transform" />.</summary>
+		/// <summary>The affine version of the layer's <see cref="CoreAnimation.CALayer.Transform" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("affineTransform")]
@@ -498,7 +498,7 @@ namespace CoreAnimation {
 		[NullAllowed]
 		CALayer SuperLayer { get; }
 
-		/// <summary>Removes <c>this</c> from its <see cref="P:CoreAnimation.CALayer.SuperLayer" />.</summary>
+		/// <summary>Removes <c>this</c> from its <see cref="CoreAnimation.CALayer.SuperLayer" />.</summary>
 		///         <remarks>To be added.</remarks>
 		[Export ("removeFromSuperlayer")]
 		void RemoveFromSuperLayer ();
@@ -514,7 +514,7 @@ namespace CoreAnimation {
 		CALayer [] Sublayers { get; set; }
 
 		/// <param name="layer">The layer being added.</param>
-		///         <summary>Appends the <paramref name="layer" /> to this layer's <see cref="P:CoreAnimation.CALayer.Sublayers" />.</summary>
+		///         <summary>Appends the <paramref name="layer" /> to this layer's <see cref="CoreAnimation.CALayer.Sublayers" />.</summary>
 		///         <remarks>To be added.</remarks>
 		[Export ("addSublayer:")]
 		[PostGet ("Sublayers")]
@@ -522,7 +522,7 @@ namespace CoreAnimation {
 
 		/// <param name="layer">The layer being inserted.</param>
 		///         <param name="index">The index at which to insert the <paramref name="layer" />.</param>
-		///         <summary>Inserts the specified layer into the <see cref="P:CoreAnimation.CALayer.Sublayers" /> array at the specified index.</summary>
+		///         <summary>Inserts the specified layer into the <see cref="CoreAnimation.CALayer.Sublayers" /> array at the specified index.</summary>
 		///         <remarks>To be added.</remarks>
 		[Export ("insertSublayer:atIndex:")]
 		[PostGet ("Sublayers")]
@@ -530,7 +530,7 @@ namespace CoreAnimation {
 
 		/// <param name="layer">The layer being inserted.</param>
 		///         <param name="sibling">The existing sublayer, which will subsequently appear in front of <paramref name="layer" />.</param>
-		///         <summary>Inserts the specified layer into the <see cref="P:CoreAnimation.CALayer.Sublayers" /> array immediately prior to <paramref name="sibling" />.</summary>
+		///         <summary>Inserts the specified layer into the <see cref="CoreAnimation.CALayer.Sublayers" /> array immediately prior to <paramref name="sibling" />.</summary>
 		///         <remarks>To be added.</remarks>
 		[Export ("insertSublayer:below:")]
 		[PostGet ("Sublayers")]
@@ -538,7 +538,7 @@ namespace CoreAnimation {
 
 		/// <param name="layer">The layer being inserted.</param>
 		///         <param name="sibling">The existing sublayer, which will subsequently appear behind <paramref name="layer" />.</param>
-		///         <summary>Inserts the specified layer into the <see cref="P:CoreAnimation.CALayer.Sublayers" /> array immediately after <paramref name="sibling" />.</summary>
+		///         <summary>Inserts the specified layer into the <see cref="CoreAnimation.CALayer.Sublayers" /> array immediately after <paramref name="sibling" />.</summary>
 		///         <remarks>To be added.</remarks>
 		[Export ("insertSublayer:above:")]
 		[PostGet ("Sublayers")]
@@ -568,9 +568,9 @@ namespace CoreAnimation {
 		[NullAllowed]
 		CALayer Mask { get; set; }
 
-		/// <summary>Whether sublayers are clipped to the <see cref="P:CoreAnimation.CALayer.Bounds" /> of this layer.</summary>
+		/// <summary>Whether sublayers are clipped to the <see cref="CoreAnimation.CALayer.Bounds" /> of this layer.</summary>
 		///         <value>The default value is <see langword="false" />.</value>
-		///         <remarks>If <see langword="true" />, the clipping mask matches the bounds of <c>this</c><see cref="T:CoreAnimation.CALayer" />, including rounded corners.</remarks>
+		///         <remarks>If <see langword="true" />, the clipping mask matches the bounds of <c>this</c><see cref="CoreAnimation.CALayer" />, including rounded corners.</remarks>
 		[Export ("masksToBounds")]
 		bool MasksToBounds { get; set; }
 
@@ -640,9 +640,9 @@ namespace CoreAnimation {
 		[Export ("convertTime:toLayer:")]
 		double ConvertTimeToLayer (double timeInterval, [NullAllowed] CALayer layer);
 
-		/// <param name="p">A point, in the coordinate system of this layer's <see cref="P:CoreAnimation.CALayer.SuperLayer" />.</param>
+		/// <param name="p">A point, in the coordinate system of this layer's <see cref="CoreAnimation.CALayer.SuperLayer" />.</param>
 		///         <summary>The furthest descendant in this layer's hierarchy that contains the point <paramref name="p" />.</summary>
-		///         <returns>The layer (possible <c>this</c>) that contains the point <paramref name="p" /> or <see langword="null" /> if <paramref name="p" /> lies outside the <see cref="P:CoreAnimation.CALayer.Bounds" /> rectangle of <c>this</c>.</returns>
+		///         <returns>The layer (possible <c>this</c>) that contains the point <paramref name="p" /> or <see langword="null" /> if <paramref name="p" /> lies outside the <see cref="CoreAnimation.CALayer.Bounds" /> rectangle of <c>this</c>.</returns>
 		///         <remarks>To be added.</remarks>
 		[Export ("hitTest:")]
 		[return: NullAllowed]
@@ -655,7 +655,7 @@ namespace CoreAnimation {
 		[Export ("containsPoint:")]
 		bool Contains (CGPoint p);
 
-		/// <summary>The contents of this layer, as a <see cref="T:CoreGraphics.CGImage" />.</summary>
+		/// <summary>The contents of this layer, as a <see cref="CoreGraphics.CGImage" />.</summary>
 		///         <value>
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
 		///         </value>
@@ -762,7 +762,7 @@ namespace CoreAnimation {
 		/// 	    Developers override this method to provide custom
 		/// 	    rendering of the contents of their instance of the
 		/// 	    CALayer.  If this method is not overwritten, the CALayer
-		/// 	    will invoke the <see cref="M:CoreAnimation.CALayerDelegate.DrawLayer(CoreAnimation.CALayer,CoreGraphics.CGContext)" />
+		/// 	    will invoke the <see cref="CoreAnimation.CALayerDelegate.DrawLayer(CoreAnimation.CALayer,CoreGraphics.CGContext)" />
 		/// 	    method to render the contents.
 		/// 	  </para>
 		///           <para>
@@ -774,7 +774,7 @@ namespace CoreAnimation {
 		void DrawInContext (CGContext ctx);
 
 		/// <param name="ctx">The context in which the layer should be rendered.</param>
-		///         <summary>Renders the layer into the specified <see cref="T:CoreGraphics.CGContext" />.</summary>
+		///         <summary>Renders the layer into the specified <see cref="CoreGraphics.CGContext" />.</summary>
 		///         <remarks>To be added.</remarks>
 		[Export ("renderInContext:")]
 		void RenderInContext (CGContext ctx);
@@ -822,7 +822,7 @@ namespace CoreAnimation {
 
 		// Layout methods
 
-		/// <summary>The preferred size for this layer, in the coordinate of its <see cref="P:CoreAnimation.CALayer.SuperLayer" />.</summary>
+		/// <summary>The preferred size for this layer, in the coordinate of its <see cref="CoreAnimation.CALayer.SuperLayer" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[Export ("preferredFrameSize")]
@@ -859,7 +859,7 @@ namespace CoreAnimation {
 		NSObject DefaultActionForKey (string eventKey);
 
 		/// <param name="eventKey">Identifier of the action desired.</param>
-		///         <summary>Returns the <see cref="P:CoreAnimation.CALayer.Actions" /> value associated with the specified key.</summary>
+		///         <summary>Returns the <see cref="CoreAnimation.CALayer.Actions" /> value associated with the specified key.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[Export ("actionForKey:")]
@@ -867,7 +867,7 @@ namespace CoreAnimation {
 		NSObject ActionForKey (string eventKey);
 
 		/// <summary>
-		///           <see cref="T:Foundation.NSDictionary" /> containing the layer's actions.</summary>
+		///           <see cref="Foundation.NSDictionary" /> containing the layer's actions.</summary>
 		///         <value>
 		///           <para>The default value is <see langword="null" />.</para>
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
@@ -884,7 +884,7 @@ namespace CoreAnimation {
 		/// 	  </para>
 		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
 		///         </param>
-		///         <summary>Adds the <paramref name="animation" /> to the render tree for the layer and associates it in <see cref="P:CoreAnimation.CALayer.Actions" /> with the key <paramref name="key" />.</summary>
+		///         <summary>Adds the <paramref name="animation" /> to the render tree for the layer and associates it in <see cref="CoreAnimation.CALayer.Actions" /> with the key <paramref name="key" />.</summary>
 		///         <remarks>To be added.</remarks>
 		[Export ("addAnimation:forKey:")]
 		void AddAnimation (CAAnimation animation, [NullAllowed] string key);
@@ -911,7 +911,7 @@ namespace CoreAnimation {
 
 		/// <param name="key">The animation's identifier.</param>
 		///         <summary>Returns the animation associated with the <paramref name="key" />.</summary>
-		///         <returns>The <see cref="T:CoreAnimation.CAAnimation" /> associated with <paramref name="key" /> or <see langword="null" /> if there is no such animation.</returns>
+		///         <returns>The <see cref="CoreAnimation.CAAnimation" /> associated with <paramref name="key" /> or <see langword="null" /> if there is no such animation.</returns>
 		///         <remarks>To be added.</remarks>
 		[Export ("animationForKey:")]
 		[return: NullAllowed]
@@ -1335,7 +1335,7 @@ namespace CoreAnimation {
 		CAMetalLayer Layer { get; }
 	}
 
-	/// <summary>A <see cref="T:CoreAnimation.CALayer" /> that is rendered using Metal functions.</summary>
+	/// <summary>A <see cref="CoreAnimation.CALayer" /> that is rendered using Metal functions.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Animation/Reference/CAMetalLayer_Ref/index.html">Apple documentation for <c>CAMetalLayer</c></related>
 	[MacCatalyst (13, 1)]
@@ -1941,7 +1941,7 @@ namespace CoreAnimation {
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GraphicsImaging/Reference/CATextLayer_class/index.html">Apple documentation for <c>CATextLayer</c></related>
 	[BaseType (typeof (CALayer))]
 	interface CATextLayer {
-		/// <summary>Creates and returns a new <see cref="T:CoreAnimation.CALayer" />.</summary>
+		/// <summary>Creates and returns a new <see cref="CoreAnimation.CALayer" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[Export ("layer"), New, Static]
@@ -2054,11 +2054,11 @@ namespace CoreAnimation {
 		bool AllowsFontSubpixelQuantization { get; set; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:CoreAnimation.CALayerDelegate" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="CoreAnimation.CALayerDelegate" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:CoreAnimation.CALayerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:CoreAnimation.CALayerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:CoreAnimation.CALayerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="CoreAnimation.CALayerDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="CoreAnimation.CALayerDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="CoreAnimation.CALayerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	interface ICALayerDelegate { }
 
@@ -2141,7 +2141,7 @@ namespace CoreAnimation {
 	[Deprecated (PlatformName.iOS, 12, 0, message: "Use 'CAMetalLayer' instead.")]
 	[BaseType (typeof (CALayer))]
 	interface CAEAGLLayer : EAGLDrawable {
-		/// <summary>Creates and returns a new <see cref="T:CoreAnimation.CALayer" />.</summary>
+		/// <summary>Creates and returns a new <see cref="CoreAnimation.CALayer" />.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[Export ("layer"), New, Static]
@@ -2466,7 +2466,7 @@ namespace CoreAnimation {
 	}
 
 	/// <summary>An animation that can animate object properties.</summary>
-	///     <remarks>For a list of common properties to animate, see the documentation for <see cref="P:CoreAnimation.CAPropertyAnimation.KeyPath" /></remarks>
+	///     <remarks>For a list of common properties to animate, see the documentation for <see cref="CoreAnimation.CAPropertyAnimation.KeyPath" /></remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GraphicsImaging/Reference/CAPropertyAnimation_class/index.html">Apple documentation for <c>CAPropertyAnimation</c></related>
 	[BaseType (typeof (CAAnimation))]
 	interface CAPropertyAnimation {
@@ -2653,15 +2653,15 @@ namespace CoreAnimation {
 		///         </value>
 		///         <remarks>
 		///           <para>
-		/// 	    To pass number, create instances of <see cref="T:Foundation.NSNumber" /> with the value,
-		/// 	    to pass other values, use <see cref="T:Foundation.NSValue" />.
+		/// 	    To pass number, create instances of <see cref="Foundation.NSNumber" /> with the value,
+		/// 	    to pass other values, use <see cref="Foundation.NSValue" />.
 		///
 		/// 	  </para>
 		///           <para>
 		/// 	    If you need to pass CoreGraphics objects, or retrieve
 		/// 	    elements from the key frame that might contain CoreGraphics
-		/// 	    objects, you should use the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:CoreAnimation.CAKeyFrameAnimation.SetValues&amp;scope=Xamarin" title="M:CoreAnimation.CAKeyFrameAnimation.SetValues">M:CoreAnimation.CAKeyFrameAnimation.SetValues</a></format> and
-		/// 	    <see cref="M:CoreAnimation.CAKeyFrameAnimation.GetValuesAs``1" /> methods instead.
+		/// 	    objects, you should use the <see cref="CoreAnimation.CAKeyFrameAnimation.SetValues" /> and
+		/// 	    <see cref="CoreAnimation.CAKeyFrameAnimation.GetValuesAs{T}" /> methods instead.
 		///
 		/// 	  </para>
 		///         </remarks>
@@ -3308,7 +3308,7 @@ namespace CoreAnimation {
 		void Release (CGLContext glContext);
 	}
 
-	/// <summary>A source of particles emitted by a <see cref="T:CoreAnimation.CAEmitterLayer" /> instance.</summary>
+	/// <summary>A source of particles emitted by a <see cref="CoreAnimation.CAEmitterLayer" /> instance.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GraphicsImaging/Reference/CAEmitterCell_class/index.html">Apple documentation for <c>CAEmitterCell</c></related>
 	[BaseType (typeof (NSObject))]
@@ -3521,7 +3521,7 @@ namespace CoreAnimation {
 		[Export ("style", ArgumentSemantic.Copy)]
 		NSDictionary Style { get; set; }
 
-		/// <summary>Creates and returns a new <see cref="T:CoreAnimation.CAEmitterCell" />.</summary>
+		/// <summary>Creates and returns a new <see cref="CoreAnimation.CAEmitterCell" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[Static]
@@ -3582,7 +3582,7 @@ namespace CoreAnimation {
 		nfloat ContentsScale { get; set; }
 	}
 
-	/// <summary>A particle-system emitter. Particle types are defined by <see cref="T:CoreAnimation.CAEmitterCell" />.</summary>
+	/// <summary>A particle-system emitter. Particle types are defined by <see cref="CoreAnimation.CAEmitterCell" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GraphicsImaging/Reference/CAEmitterLayer_class/index.html">Apple documentation for <c>CAEmitterLayer</c></related>
 	[BaseType (typeof (CALayer))]

@@ -66,7 +66,7 @@ namespace Foundation {
 			Dictionary = dictionary ?? new NSMutableDictionary ();
 		}
 
-		/// <summary>Gets the wrapped <see cref="T:Foundation.NSDictionary" />.</summary>
+		/// <summary>Gets the wrapped <see cref="Foundation.NSDictionary" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public NSDictionary Dictionary { get; private set; }
@@ -112,8 +112,8 @@ namespace Foundation {
 			return ((NSNumber) value).Int32Value;
 		}
 
-		/// <param name="key">The identifier of the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20UInt%2032&amp;scope=Xamarin" title="T:System.UInt32">T:System.UInt32</a></format>.</param>
-		///         <summary>Returns the nullable <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20UInt%2032&amp;scope=Xamarin" title="T:System.UInt32">T:System.UInt32</a></format> associated with <paramref name="key" />.</summary>
+		/// <param name="key">The identifier of the <see cref="System.UInt32" />.</param>
+		///         <summary>Returns the nullable <see cref="System.UInt32" /> associated with <paramref name="key" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		protected uint? GetUInt32Value (NSString key)
@@ -187,8 +187,8 @@ namespace Foundation {
 			return ((NSNumber) value).UInt64Value;
 		}
 
-		/// <param name="key">The identifier of the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20UInt%2032&amp;scope=Xamarin" title="T:System.UInt32">T:System.UInt32</a></format>.</param>
-		///         <summary>Returns the nullable <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20UInt%2032&amp;scope=Xamarin" title="T:System.UInt32">T:System.UInt32</a></format> associated with <paramref name="key" />.</summary>
+		/// <param name="key">The identifier of the <see cref="System.UInt32" />.</param>
+		///         <summary>Returns the nullable <see cref="System.UInt32" /> associated with <paramref name="key" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		protected uint? GetUIntValue (NSString key)
@@ -252,7 +252,7 @@ namespace Foundation {
 			return CFBoolean.GetValue (value);
 		}
 
-		/// <typeparam name="T">The <see cref="T:ObjCRuntime.INativeObject" /> type associated with <paramref name="key" />.</typeparam>
+		/// <typeparam name="T">The <see cref="ObjCRuntime.INativeObject" /> type associated with <paramref name="key" />.</typeparam>
 		///         <param name="key">The identifier of the reference.</param>
 		///         <summary>Returns the native object associated with <paramref name="key" />.</summary>
 		///         <returns>To be added.</returns>
@@ -277,8 +277,8 @@ namespace Foundation {
 			return CFArray.StringArrayFromHandle (array)!;
 		}
 
-		/// <param name="key">The identifier of the <see cref="T:Foundation.NSDictionary" />.</param>
-		///         <summary>Returns the <see cref="T:Foundation.NSDictionary" /> associated with <paramref name="key" />.</summary>
+		/// <param name="key">The identifier of the <see cref="Foundation.NSDictionary" />.</param>
+		///         <summary>Returns the <see cref="Foundation.NSDictionary" /> associated with <paramref name="key" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		protected NSDictionary? GetNSDictionary (NSString key)
@@ -293,8 +293,8 @@ namespace Foundation {
 
 		/// <typeparam name="TKey">The type of keys in the stored dictionary.</typeparam>
 		///         <typeparam name="TValue">The type of values in the stored dictionary.</typeparam>
-		///         <param name="key">The identifier of the <see cref="T:Foundation.NSDictionary" />.</param>
-		///         <summary>Returns the <see cref="T:Foundation.NSDictionary" /> associated with <paramref name="key" />.</summary>
+		///         <param name="key">The identifier of the <see cref="Foundation.NSDictionary" />.</param>
+		///         <summary>Returns the <see cref="Foundation.NSDictionary" /> associated with <paramref name="key" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		protected NSDictionary<TKey, TValue>? GetNSDictionary<TKey, TValue> (NSString key)
@@ -309,9 +309,9 @@ namespace Foundation {
 			return value as NSDictionary<TKey, TValue>;
 		}
 
-		/// <typeparam name="T">The type of <see cref="T:Foundation.DictionaryContainer" /> associated with <paramref name="key" />.</typeparam>
-		///         <param name="key">The identifier of the <see cref="T:Foundation.DictionaryContainer" />.</param>
-		///         <summary>Returns the <see cref="T:Foundation.DictionaryContainer" /> associated with <paramref name="key" />.</summary>
+		/// <typeparam name="T">The type of <see cref="Foundation.DictionaryContainer" /> associated with <paramref name="key" />.</typeparam>
+		///         <param name="key">The identifier of the <see cref="Foundation.DictionaryContainer" />.</param>
+		///         <summary>Returns the <see cref="Foundation.DictionaryContainer" /> associated with <paramref name="key" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		protected T? GetStrongDictionary<[DynamicallyAccessedMembers (DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)] T> (NSString key)
@@ -334,8 +334,8 @@ namespace Foundation {
 			return createStrongDictionary (dict);
 		}
 
-		/// <param name="key">The identifier of the <see cref="T:Foundation.NSString" />.</param>
-		///         <summary>Returns the <see cref="T:Foundation.NSString" /> associated with <paramref name="key" />.</summary>
+		/// <param name="key">The identifier of the <see cref="Foundation.NSString" />.</param>
+		///         <summary>Returns the <see cref="Foundation.NSString" /> associated with <paramref name="key" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		protected NSString? GetNSStringValue (NSString key)
@@ -383,8 +383,8 @@ namespace Foundation {
 			}
 		}
 
-		/// <param name="key">The identifier of the <see cref="T:Foundation.NSString" />.</param>
-		///         <summary>Returns the nullable <see cref="T:Foundation.NSString" /> associated with <paramref name="key" />.</summary>
+		/// <param name="key">The identifier of the <see cref="Foundation.NSString" />.</param>
+		///         <summary>Returns the nullable <see cref="Foundation.NSString" /> associated with <paramref name="key" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		protected CGRect? GetCGRectValue (NSString key)
@@ -397,8 +397,8 @@ namespace Foundation {
 			return value;
 		}
 
-		/// <param name="key">The identifier of the <see cref="T:CoreGraphics.CGSize" />.</param>
-		///         <summary>Returns the nullable <see cref="T:CoreGraphics.CGSize" /> associated with <paramref name="key" />.</summary>
+		/// <param name="key">The identifier of the <see cref="CoreGraphics.CGSize" />.</param>
+		///         <summary>Returns the nullable <see cref="CoreGraphics.CGSize" /> associated with <paramref name="key" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		protected CGSize? GetCGSizeValue (NSString key)
@@ -411,8 +411,8 @@ namespace Foundation {
 			return value;
 		}
 
-		/// <param name="key">The identifier of the <see cref="T:CoreGraphics.CGPoint" />.</param>
-		///         <summary>Returns the nullable <see cref="T:CoreGraphics.CGPoint" /> associated with <paramref name="key" />.</summary>
+		/// <param name="key">The identifier of the <see cref="CoreGraphics.CGPoint" />.</param>
+		///         <summary>Returns the nullable <see cref="CoreGraphics.CGPoint" /> associated with <paramref name="key" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		protected CGPoint? GetCGPointValue (NSString key)
@@ -425,8 +425,8 @@ namespace Foundation {
 			return value;
 		}
 
-		/// <param name="key">The identifier of the <see cref="T:CoreMedia.CMTime" />.</param>
-		///         <summary>Returns the nullable <see cref="T:CoreMedia.CMTime" /> associated with <paramref name="key" />.</summary>
+		/// <param name="key">The identifier of the <see cref="CoreMedia.CMTime" />.</param>
+		///         <summary>Returns the nullable <see cref="CoreMedia.CMTime" /> associated with <paramref name="key" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		protected CMTime? GetCMTimeValue (NSString key)
@@ -469,8 +469,8 @@ namespace Foundation {
 		}
 
 		/// <param name="key">The identifier to be associated with the array.</param>
-		///         <param name="values">The <see cref="T:Foundation.NSNumber" /> array to be associated with <paramref name="key" />.</param>
-		///         <summary>Associates the <see cref="T:Foundation.NSNumber" /> array <paramref name="values" /> with <paramref name="key" />.</summary>
+		///         <param name="values">The <see cref="Foundation.NSNumber" /> array to be associated with <paramref name="key" />.</param>
+		///         <summary>Associates the <see cref="Foundation.NSNumber" /> array <paramref name="values" /> with <paramref name="key" />.</summary>
 		///         <remarks>To be added.</remarks>
 		protected void SetArrayValue (NSString key, NSNumber []? values)
 		{
@@ -494,8 +494,8 @@ namespace Foundation {
 		}
 
 		/// <param name="key">The identifier to be associated with the array.</param>
-		///         <param name="values">The <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> array to be associated with <paramref name="key" />.</param>
-		///         <summary>Associates the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> array <paramref name="values" /> with <paramref name="key" />.</summary>
+		///         <param name="values">The <see cref="System.String" /> array to be associated with <paramref name="key" />.</param>
+		///         <summary>Associates the <see cref="System.String" /> array <paramref name="values" /> with <paramref name="key" />.</summary>
 		///         <remarks>To be added.</remarks>
 		protected void SetArrayValue (NSString key, string []? values)
 		{
@@ -504,8 +504,8 @@ namespace Foundation {
 		}
 
 		/// <param name="key">The identifier to be associated with the array.</param>
-		///         <param name="values">The <see cref="T:ObjCRuntime.INativeObject" /> array to be associated with <paramref name="key" />.</param>
-		///         <summary>Associates the <see cref="T:ObjCRuntime.INativeObject" /> array <paramref name="values" /> with <paramref name="key" />.</summary>
+		///         <param name="values">The <see cref="ObjCRuntime.INativeObject" /> array to be associated with <paramref name="key" />.</param>
+		///         <summary>Associates the <see cref="ObjCRuntime.INativeObject" /> array <paramref name="values" /> with <paramref name="key" />.</summary>
 		///         <remarks>To be added.</remarks>
 		protected void SetArrayValue (NSString key, INativeObject []? values)
 		{
@@ -653,9 +653,9 @@ namespace Foundation {
 
 		#region Sets structs values
 
-		/// <param name="key">The identifier associated with the <see cref="T:CoreGraphics.CGRect" />.</param>
-		///         <param name="value">The <see cref="T:CoreGraphics.CGRect" /> to be associated with <paramref name="key" />.</param>
-		///         <summary>Stores the <see cref="T:CoreGraphics.CGRect" /><paramref name="value" /> and associates it with the <paramref name="key" />.</summary>
+		/// <param name="key">The identifier associated with the <see cref="CoreGraphics.CGRect" />.</param>
+		///         <param name="value">The <see cref="CoreGraphics.CGRect" /> to be associated with <paramref name="key" />.</param>
+		///         <summary>Stores the <see cref="CoreGraphics.CGRect" /><paramref name="value" /> and associates it with the <paramref name="key" />.</summary>
 		///         <remarks>To be added.</remarks>
 		protected void SetCGRectValue (NSString key, CGRect? value)
 		{
@@ -663,9 +663,9 @@ namespace Foundation {
 				Dictionary [key] = value!.Value.ToDictionary ();
 		}
 
-		/// <param name="key">The identifier associated with the <see cref="T:CoreGraphics.CGSize" />.</param>
-		///         <param name="value">The <see cref="T:CoreGraphics.CGSize" /> to be associated with <paramref name="key" />.</param>
-		///         <summary>Stores the <see cref="T:CoreGraphics.CGSize" /><paramref name="value" /> and associates it with the <paramref name="key" />.</summary>
+		/// <param name="key">The identifier associated with the <see cref="CoreGraphics.CGSize" />.</param>
+		///         <param name="value">The <see cref="CoreGraphics.CGSize" /> to be associated with <paramref name="key" />.</param>
+		///         <summary>Stores the <see cref="CoreGraphics.CGSize" /><paramref name="value" /> and associates it with the <paramref name="key" />.</summary>
 		///         <remarks>To be added.</remarks>
 		protected void SetCGSizeValue (NSString key, CGSize? value)
 		{
@@ -673,9 +673,9 @@ namespace Foundation {
 				Dictionary [key] = value!.Value.ToDictionary ();
 		}
 
-		/// <param name="key">The identifier associated with the <see cref="T:CoreGraphics.CGPoint" />.</param>
-		///         <param name="value">The <see cref="T:CoreGraphics.CGPoint" /> to be associated with <paramref name="key" />.</param>
-		///         <summary>Stores the <see cref="T:CoreGraphics.CGPoint" /><paramref name="value" /> and associates it with the <paramref name="key" />.</summary>
+		/// <param name="key">The identifier associated with the <see cref="CoreGraphics.CGPoint" />.</param>
+		///         <param name="value">The <see cref="CoreGraphics.CGPoint" /> to be associated with <paramref name="key" />.</param>
+		///         <summary>Stores the <see cref="CoreGraphics.CGPoint" /><paramref name="value" /> and associates it with the <paramref name="key" />.</summary>
 		///         <remarks>To be added.</remarks>
 		protected void SetCGPointValue (NSString key, CGPoint? value)
 		{
@@ -683,9 +683,9 @@ namespace Foundation {
 				Dictionary [key] = value!.Value.ToDictionary ();
 		}
 
-		/// <param name="key">The identifier associated with the <see cref="T:CoreMedia.CMTime" />.</param>
-		///         <param name="value">The <see cref="T:CoreMedia.CMTime" /> to be associated with <paramref name="key" />.</param>
-		///         <summary>Stores the <see cref="T:CoreMedia.CMTime" /><paramref name="value" /> and associates it with the <paramref name="key" />.</summary>
+		/// <param name="key">The identifier associated with the <see cref="CoreMedia.CMTime" />.</param>
+		///         <param name="value">The <see cref="CoreMedia.CMTime" /> to be associated with <paramref name="key" />.</param>
+		///         <summary>Stores the <see cref="CoreMedia.CMTime" /><paramref name="value" /> and associates it with the <paramref name="key" />.</summary>
 		///         <remarks>To be added.</remarks>
 		protected void SetCMTimeValue (NSString key, CMTime? value)
 		{

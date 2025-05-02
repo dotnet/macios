@@ -2666,7 +2666,7 @@ public class TestApp {
 		[TestCase (Target.Dev, MTouchLinker.Unspecified, MTouchRegistrar.Static, "arm64+llvm")]
 		// non-linked device build
 		[TestCase (Target.Dev, MTouchLinker.DontLink, MTouchRegistrar.Static, "arm64")] // armv7 Xamarin.iOS.dll don't link builds are not possible anymore because we go over the code size limit,
-		[TestCase (Target.Dev, MTouchLinker.DontLink, MTouchRegistrar.Dynamic, "arm64")] // since this is out of our control we are now forcing this test to arm64. Ref. https://github.com/xamarin/xamarin-macios/issues/5512
+		[TestCase (Target.Dev, MTouchLinker.DontLink, MTouchRegistrar.Dynamic, "arm64")] // since this is out of our control we are now forcing this test to arm64. Ref. https://github.com/dotnet/macios/issues/5512
 																						 // sdk device build
 		[TestCase (Target.Dev, MTouchLinker.LinkSdk, MTouchRegistrar.Static, "")]
 		[TestCase (Target.Dev, MTouchLinker.LinkSdk, MTouchRegistrar.Dynamic, "")]
@@ -4240,7 +4240,7 @@ class C {
 		}
 
 		[Test]
-		[Ignore ("We're not copying dSYMs for user frameworks to the app bundle anymore: https://github.com/xamarin/xamarin-macios/issues/14598")]
+		[Ignore ("We're not copying dSYMs for user frameworks to the app bundle anymore: https://github.com/dotnet/macios/issues/14598")]
 		public void BindingLibraryDSymCreated ()
 		{
 			// framework-test for macOS has binding library that should have dSYMs

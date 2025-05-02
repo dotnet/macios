@@ -417,7 +417,7 @@ namespace Accelerate {
 	/// <summary>Accelerated image operations.</summary>
 	///     <remarks>
 	///       <para>
-	/// 	The vImage class provides a collection of methods that operate on images represented by the <see cref="T:Accelerate.vImageBuffer" /> structure.</para>
+	/// 	The vImage class provides a collection of methods that operate on images represented by the <see cref="Accelerate.vImageBuffer" /> structure.</para>
 	///       <para>
 	///       </para>
 	///     </remarks>

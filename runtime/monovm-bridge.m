@@ -156,7 +156,7 @@ MonoClass *
 xamarin_get_inativeobject_class ()
 {
 	if (inativeobject_class == NULL)
-		xamarin_assertion_message ("Internal consistency error, please file a bug (https://github.com/xamarin/xamarin-macios/issues/new). Additional data: can't get the %s class because it's been linked away.\n", "INativeObject");
+		xamarin_assertion_message ("Internal consistency error, please file a bug (https://github.com/dotnet/macios/issues/new). Additional data: can't get the %s class because it's been linked away.\n", "INativeObject");
 	return inativeobject_class;
 }
 
@@ -164,7 +164,7 @@ MonoClass *
 xamarin_get_nativehandle_class ()
 {
 	if (nativehandle_class == NULL)
-		xamarin_assertion_message ("Internal consistency error, please file a bug (https://github.com/xamarin/xamarin-macios/issues/new). Additional data: can't get the %s class because it's been linked away.\n", "NativeHandle");
+		xamarin_assertion_message ("Internal consistency error, please file a bug (https://github.com/dotnet/macios/issues/new). Additional data: can't get the %s class because it's been linked away.\n", "NativeHandle");
 	return nativehandle_class;
 }
 
@@ -172,7 +172,7 @@ MonoClass *
 xamarin_get_nsobject_class ()
 {
 	if (nsobject_class == NULL)
-		xamarin_assertion_message ("Internal consistency error, please file a bug (https://github.com/xamarin/xamarin-macios/issues/new). Additional data: can't get the %s class because it's been linked away.\n", "NSObject");
+		xamarin_assertion_message ("Internal consistency error, please file a bug (https://github.com/dotnet/macios/issues/new). Additional data: can't get the %s class because it's been linked away.\n", "NSObject");
 	return nsobject_class;
 }
 
@@ -180,7 +180,7 @@ MonoType *
 xamarin_get_nsvalue_type ()
 {
 	if (nsvalue_class == NULL)
-		xamarin_assertion_message ("Internal consistency error, please file a bug (https://github.com/xamarin/xamarin-macios/issues/new). Additional data: can't get the %s class because it's been linked away.\n", "NSValue");
+		xamarin_assertion_message ("Internal consistency error, please file a bug (https://github.com/dotnet/macios/issues/new). Additional data: can't get the %s class because it's been linked away.\n", "NSValue");
 	return mono_class_get_type (nsvalue_class);
 }
 
@@ -188,7 +188,7 @@ MonoType *
 xamarin_get_nsnumber_type ()
 {
 	if (nsnumber_class == NULL)
-		xamarin_assertion_message ("Internal consistency error, please file a bug (https://github.com/xamarin/xamarin-macios/issues/new). Additional data: can't get the %s class because it's been linked away.\n", "NSNumber");
+		xamarin_assertion_message ("Internal consistency error, please file a bug (https://github.com/dotnet/macios/issues/new). Additional data: can't get the %s class because it's been linked away.\n", "NSNumber");
 	return mono_class_get_type (nsnumber_class);
 }
 
@@ -196,7 +196,7 @@ MonoClass *
 xamarin_get_nsstring_class ()
 {
 	if (nsstring_class == NULL)
-		xamarin_assertion_message ("Internal consistency error, please file a bug (https://github.com/xamarin/xamarin-macios/issues/new). Additional data: can't get the %s class because it's been linked away.\n", "NSString");
+		xamarin_assertion_message ("Internal consistency error, please file a bug (https://github.com/dotnet/macios/issues/new). Additional data: can't get the %s class because it's been linked away.\n", "NSString");
 	return nsstring_class;
 }
 
@@ -204,7 +204,7 @@ MonoClass *
 xamarin_get_runtime_class ()
 {
 	if (runtime_class == NULL)
-		xamarin_assertion_message ("Internal consistency error, please file a bug (https://github.com/xamarin/xamarin-macios/issues/new). Additional data: can't get the %s class because it's been linked away.\n", "Runtime");
+		xamarin_assertion_message ("Internal consistency error, please file a bug (https://github.com/dotnet/macios/issues/new). Additional data: can't get the %s class because it's been linked away.\n", "Runtime");
 	return runtime_class;
 }
 

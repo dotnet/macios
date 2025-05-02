@@ -12,10 +12,10 @@
       <para>
 	  In addition to providing various constructors and some
 	  common colors, the following colors represent system colors:
-	  <see cref="P:UIKit.UIColor.LightTextColor" />, <see cref="P:UIKit.UIColor.DarkTextColor" />, <see cref="P:UIKit.UIColor.GroupTableViewBackgroundColor" />,
-	  <see cref="P:UIKit.UIColor.ViewFlipsideBackgroundColor" />,
-	  <see cref="P:UIKit.UIColor.ScrollViewTexturedBackgroundColor" />
-	  and <see cref="P:UIKit.UIColor.UnderPageBackgroundColor" />.
+	  <see cref="UIKit.UIColor.LightTextColor" />, <see cref="UIKit.UIColor.DarkTextColor" />, <see cref="UIKit.UIColor.GroupTableViewBackgroundColor" />,
+	  <see cref="UIKit.UIColor.ViewFlipsideBackgroundColor" />,
+	  <see cref="UIKit.UIColor.ScrollViewTexturedBackgroundColor" />
+	  and <see cref="UIKit.UIColor.UnderPageBackgroundColor" />.
 	</para>
       <para tool="threads">The members of this class can be used from a background thread.</para>
     </remarks>

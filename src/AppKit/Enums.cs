@@ -2099,7 +2099,7 @@ namespace AppKit {
 
 #if !NET && MONOMAC
 	// Use Foundation.NSWritingDirection in .NET.
-	// see: https://github.com/xamarin/xamarin-macios/issues/6573
+	// see: https://github.com/dotnet/macios/issues/6573
 	[Flags]
 	[Native]
 	public enum NSWritingDirection : long {

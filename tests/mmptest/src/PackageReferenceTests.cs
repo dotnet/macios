@@ -31,7 +31,7 @@ namespace Xamarin.MMP.Tests {
 
 		[TestCase (true)]
 		[TestCase (false)]
-		// context https://github.com/xamarin/xamarin-macios/issues/7113
+		// context https://github.com/dotnet/macios/issues/7113
 		public void SatellitesFromNuget (bool full)
 		{
 			MMPTests.RunMMPTest (tmpDir => {

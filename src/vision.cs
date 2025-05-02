@@ -1116,9 +1116,9 @@ namespace Vision {
 		IMLFeatureProvider FeatureProvider { get; set; }
 	}
 
-	/// <param name="request">The <see cref="T:Vision.VNRequest" /> for which this is the delegate.</param>
+	/// <param name="request">The <see cref="Vision.VNRequest" /> for which this is the delegate.</param>
 	///     <param name="error">If not <see langword="null" />, an error that occurred during vision processing.</param>
-	///     <summary>A delegate that is called once for each feature detected in a <see cref="T:Vision.VNRequest" />.</summary>
+	///     <summary>A delegate that is called once for each feature detected in a <see cref="Vision.VNRequest" />.</summary>
 	///     <remarks>
 	///       <para>Developers will typically downcast the <paramref name="request" /> to the expected subtype and retrieve relevant data from the downcast value:</para>
 	///       <example>
@@ -1142,7 +1142,7 @@ namespace Vision {
 	[MacCatalyst (13, 1)]
 	delegate void VNRequestCompletionHandler (VNRequest request, NSError error);
 
-	/// <summary>A subclass of <see cref="T:Vision.VNImageBasedRequest" /> that uses a Core ML model for processing.</summary>
+	/// <summary>A subclass of <see cref="Vision.VNImageBasedRequest" /> that uses a Core ML model for processing.</summary>
 	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (VNImageBasedRequest))]
@@ -1197,7 +1197,7 @@ namespace Vision {
 		VNCoreMLRequestRevision CurrentRevision { get; }
 	}
 
-	/// <summary>A subclass of <see cref="T:Vision.VNImageBasedRequest" /> that detects barcodes.</summary>
+	/// <summary>A subclass of <see cref="Vision.VNImageBasedRequest" /> that detects barcodes.</summary>
 	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (VNImageBasedRequest))]
@@ -1216,7 +1216,7 @@ namespace Vision {
 		[Export ("supportedSymbologies", ArgumentSemantic.Copy)]
 		NSString [] WeakSupportedSymbologies { get; }
 
-		/// <summary>Gets the set of supported <see cref="T:Vision.VNBarcodeSymbology" /> formats.</summary>
+		/// <summary>Gets the set of supported <see cref="Vision.VNBarcodeSymbology" /> formats.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Static]
@@ -1277,7 +1277,7 @@ namespace Vision {
 		bool CoalesceCompositeSymbologies { get; set; }
 	}
 
-	/// <summary>A <see cref="T:Vision.VNImageBasedRequest" /> for recognizing face components.</summary>
+	/// <summary>A <see cref="Vision.VNImageBasedRequest" /> for recognizing face components.</summary>
 	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (VNImageBasedRequest))]
@@ -1334,7 +1334,7 @@ namespace Vision {
 		VNDetectFaceLandmarksRequestRevision CurrentRevision { get; }
 	}
 
-	/// <summary>A <see cref="T:Vision.VNImageBasedRequest" /> to retrieve the bounding boxes of any faces detected in the source.</summary>
+	/// <summary>A <see cref="Vision.VNImageBasedRequest" /> to retrieve the bounding boxes of any faces detected in the source.</summary>
 	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (VNImageBasedRequest))]
@@ -1380,7 +1380,7 @@ namespace Vision {
 		VNDetectFaceRectanglesRequestRevision CurrentRevision { get; }
 	}
 
-	/// <summary>A <see cref="T:Vision.VNImageBasedRequest" /> to retrieve the horizon in the source.</summary>
+	/// <summary>A <see cref="Vision.VNImageBasedRequest" /> to retrieve the horizon in the source.</summary>
 	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (VNImageBasedRequest))]
@@ -1426,7 +1426,7 @@ namespace Vision {
 		VNDetectHorizonRequestRevision CurrentRevision { get; }
 	}
 
-	/// <summary>A <see cref="T:Vision.VNImageBasedRequest" /> to retrieve rectangular regions detected in the source.</summary>
+	/// <summary>A <see cref="Vision.VNImageBasedRequest" /> to retrieve rectangular regions detected in the source.</summary>
 	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (VNImageBasedRequest))]
@@ -1490,7 +1490,7 @@ namespace Vision {
 		VNDetectRectanglesRequestRevision CurrentRevision { get; }
 	}
 
-	/// <summary>A <see cref="T:Vision.VNImageBasedRequest" /> to retrieve the bounding boxes of any text blocks detected in the source.</summary>
+	/// <summary>A <see cref="Vision.VNImageBasedRequest" /> to retrieve the bounding boxes of any text blocks detected in the source.</summary>
 	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (VNImageBasedRequest))]
@@ -1550,7 +1550,7 @@ namespace Vision {
 		nuint PointCount { get; }
 	}
 
-	/// <summary>A <see cref="T:Vision.VNFaceLandmarkRegion" /> that holds two-dimensional information about a recognized facial landmark.</summary>
+	/// <summary>A <see cref="Vision.VNFaceLandmarkRegion" /> that holds two-dimensional information about a recognized facial landmark.</summary>
 	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (VNFaceLandmarkRegion))]
@@ -1586,7 +1586,7 @@ namespace Vision {
 		float Confidence { get; }
 	}
 
-	/// <summary>A <see cref="T:Vision.VNFaceLandmarks" /> object that hold information about landmarks in 2D space.</summary>
+	/// <summary>A <see cref="Vision.VNFaceLandmarks" /> object that hold information about landmarks in 2D space.</summary>
 	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (VNFaceLandmarks))]
@@ -1634,12 +1634,12 @@ namespace Vision {
 
 	interface IVNFaceObservationAccepting { }
 
-	/// <summary>Interface for <see cref="T:Vision.VNImageBasedRequest" /> objects that may detect faces (e.g., <see cref="T:Vision.VNDetectFaceLandmarksRequest" />).</summary>
+	/// <summary>Interface for <see cref="Vision.VNImageBasedRequest" /> objects that may detect faces (e.g., <see cref="Vision.VNDetectFaceLandmarksRequest" />).</summary>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface VNFaceObservationAccepting {
 
-		/// <summary>Gets or sets the <see cref="T:Vision.VNFaceObservation" /> objects in the request.</summary>
+		/// <summary>Gets or sets the <see cref="Vision.VNFaceObservation" /> objects in the request.</summary>
 		/// <value>To be added.</value>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
@@ -1647,7 +1647,7 @@ namespace Vision {
 		VNFaceObservation [] InputFaceObservations { get; set; }
 	}
 
-	/// <summary>Abstract sub-class of <see cref="T:Vision.VNTargetedImageRequest" /> that attemps to align an image with a reference image.</summary>
+	/// <summary>Abstract sub-class of <see cref="Vision.VNTargetedImageRequest" /> that attemps to align an image with a reference image.</summary>
 	[MacCatalyst (13, 1)]
 	[Abstract]
 	[DisableDefaultCtor]
@@ -1876,7 +1876,7 @@ namespace Vision {
 		NativeHandle Constructor (NSData imageData, CGImagePropertyOrientation orientation, VNImageOptions options, VNRequestCompletionHandler completionHandler);
 	}
 
-	/// <summary>A <see cref="T:Vision.VNImageRegistrationRequest" /> that restricts the registration result to an affine transform.</summary>
+	/// <summary>A <see cref="Vision.VNImageRegistrationRequest" /> that restricts the registration result to an affine transform.</summary>
 	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (VNImageRegistrationRequest))]
@@ -2132,7 +2132,7 @@ namespace Vision {
 		VNTranslationalImageRegistrationRequestRevision CurrentRevision { get; }
 	}
 
-	/// <summary>A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:VNImageRegistrationRequest&amp;scope=Xamarin" title="T:VNImageRegistrationRequest">T:VNImageRegistrationRequest</a></format> that attempts to use homography to align source images.</summary>
+	/// <summary>A <see cref="VNImageRegistrationRequest" /> that attempts to use homography to align source images.</summary>
 	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (VNImageRegistrationRequest))]
@@ -2414,7 +2414,7 @@ namespace Vision {
 		CMTimeRange TimeRange { get; }
 	}
 
-	/// <summary>A <see cref="T:Vision.VNObservation" /> that includes the detection of a rectangular object.</summary>
+	/// <summary>A <see cref="Vision.VNObservation" /> that includes the detection of a rectangular object.</summary>
 	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (VNObservation))]
@@ -2437,7 +2437,7 @@ namespace Vision {
 		VNPixelBufferObservation GlobalSegmentationMask { get; }
 	}
 
-	/// <summary>A <see cref="T:Vision.VNDetectedObjectObservation" /> that includes a face.</summary>
+	/// <summary>A <see cref="Vision.VNDetectedObjectObservation" /> that includes a face.</summary>
 	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (VNDetectedObjectObservation))]
@@ -2510,7 +2510,7 @@ namespace Vision {
 		VNClassificationObservation [] Labels { get; }
 	}
 
-	/// <summary>Subclass of <see cref="T:Vision.VNObservation" /> for CoreML models that predict a single feature.</summary>
+	/// <summary>Subclass of <see cref="Vision.VNObservation" /> for CoreML models that predict a single feature.</summary>
 	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (VNObservation))]
@@ -2537,7 +2537,7 @@ namespace Vision {
 		bool HasMinimumPrecision (float minimumPrecision, float recall);
 	}
 
-	/// <summary>A <see cref="T:Vision.VNObservation" /> that contains a feature detected by a Core ML model.</summary>
+	/// <summary>A <see cref="Vision.VNObservation" /> that contains a feature detected by a Core ML model.</summary>
 	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (VNObservation))]
@@ -2552,7 +2552,7 @@ namespace Vision {
 		string FeatureName { get; }
 	}
 
-	/// <summary>A <see cref="T:Vision.VNObservation" /> that works on <see cref="T:CoreVideo.CVPixelBuffer" /> object(s).</summary>
+	/// <summary>A <see cref="Vision.VNObservation" /> that works on <see cref="CoreVideo.CVPixelBuffer" /> object(s).</summary>
 	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (VNObservation))]
@@ -2567,7 +2567,7 @@ namespace Vision {
 		string FeatureName { get; }
 	}
 
-	/// <summary>A <see cref="T:Vision.VNDetectedObjectObservation" /> of a rectangular region.</summary>
+	/// <summary>A <see cref="Vision.VNDetectedObjectObservation" /> of a rectangular region.</summary>
 	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (VNDetectedObjectObservation))]
@@ -2611,7 +2611,7 @@ namespace Vision {
 		VNRectangleObservation FromRectangleObservation (VNRectangleObservationRequestRevision requestRevision, CGPoint topLeft, CGPoint topRight, CGPoint bottomRight, CGPoint bottomLeft);
 	}
 
-	/// <summary>A <see cref="T:Vision.VNDetectedObjectObservation" /> of a text block.</summary>
+	/// <summary>A <see cref="Vision.VNDetectedObjectObservation" /> of a text block.</summary>
 	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (VNRectangleObservation))]
@@ -2631,7 +2631,7 @@ namespace Vision {
 		VNTextObservation FromBoundingBox (VNTextObservationRequestRevision requestRevision, CGRect boundingBox);
 	}
 
-	/// <summary>A <see cref="T:Vision.VNRectangleObservation" /> in which a barcode was recognized.</summary>
+	/// <summary>A <see cref="Vision.VNRectangleObservation" /> in which a barcode was recognized.</summary>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (VNRectangleObservation))]
 	interface VNBarcodeObservation {
@@ -2687,7 +2687,7 @@ namespace Vision {
 		NSData SupplementalPayloadData { get; }
 	}
 
-	/// <summary>A <see cref="T:Vision.VNObservation" /> that includes detection of a horizon line.</summary>
+	/// <summary>A <see cref="Vision.VNObservation" /> that includes detection of a horizon line.</summary>
 	///     <remarks>
 	///       <para>The following shows how a correction can be applied to an image (note that this correction is uncropped, so the resulting image will have a tilted border ):</para>
 	///       <example>
@@ -2728,7 +2728,7 @@ namespace Vision {
 		CGAffineTransform CreateTransform (nuint width, nuint height);
 	}
 
-	/// <summary>Abstract base class of <see cref="T:Vision.VNObservation" /> that hold information about aligning images.</summary>
+	/// <summary>Abstract base class of <see cref="Vision.VNObservation" /> that hold information about aligning images.</summary>
 	[MacCatalyst (13, 1)]
 	[Abstract]
 	[DisableDefaultCtor]
@@ -2736,7 +2736,7 @@ namespace Vision {
 	interface VNImageAlignmentObservation {
 	}
 
-	/// <summary>A <see cref="T:Vision.VNImageAlignmentObservation" /> in which the alignment is restricted to an affine transform.</summary>
+	/// <summary>A <see cref="Vision.VNImageAlignmentObservation" /> in which the alignment is restricted to an affine transform.</summary>
 	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (VNImageAlignmentObservation))]
@@ -2771,7 +2771,7 @@ namespace Vision {
 
 	/// <summary>Abstract base-class for vision-processing request.</summary>
 	///     <remarks>
-	///       <para>Currently, the only descendant of this class is <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:CoreVision.VNImageBasedRequest&amp;scope=Xamarin" title="T:CoreVision.VNImageBasedRequest">T:CoreVision.VNImageBasedRequest</a></format>.</para>
+	///       <para>Currently, the only descendant of this class is <see cref="VNImageBasedRequest" />.</para>
 	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Abstract]
@@ -2846,7 +2846,7 @@ namespace Vision {
 		void SetComputeDevice ([NullAllowed] IMLComputeDeviceProtocol computeDevice, string computeStage);
 	}
 
-	/// <summary>Abstract base-class for <see cref="T:Vision.VNRequest" />s that operate on images.</summary>
+	/// <summary>Abstract base-class for <see cref="Vision.VNRequest" />s that operate on images.</summary>
 	[MacCatalyst (13, 1)]
 	[Abstract]
 	[DisableDefaultCtor]
@@ -2875,7 +2875,7 @@ namespace Vision {
 		NSString CIContextKey { get; }
 	}
 
-	/// <summary>A <see cref="T:Foundation.DictionaryContainer" /> holding options to be used in Vision queries.</summary>
+	/// <summary>A <see cref="Foundation.DictionaryContainer" /> holding options to be used in Vision queries.</summary>
 	[MacCatalyst (13, 1)]
 	[StrongDictionary ("VNImageOptionKeys")]
 	interface VNImageOptions {
@@ -2885,7 +2885,7 @@ namespace Vision {
 		[Export ("PropertiesKey")] // Have the option to set your own dict
 		NSDictionary WeakProperties { get; set; }
 
-		/// <summary>Gets or sets the <see cref="T:CoreGraphics.CGImageProperties" /> used with the <see cref="T:Vision.VNImageRequestHandler" />.</summary>
+		/// <summary>Gets or sets the <see cref="CoreGraphics.CGImageProperties" /> used with the <see cref="Vision.VNImageRequestHandler" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[StrongDictionary] // Yep we need CoreGraphics to disambiguate
@@ -3046,7 +3046,7 @@ namespace Vision {
 
 	/// <summary>Coordinates the vision requests of a sequence of images (such as a video stream).</summary>
 	///     <remarks>
-	///       <para>The <see cref="T:Vision.VNSequenceRequestHandler" /> is the top-level object for multiple-image vision processing ( see <see cref="T:Vision.VNImageRequestHandler" /> for single). Developers instantiate a <see cref="T:Vision.VNSequenceRequestHandler" /> object with an image and image-processing options. Developers call <see cref="M:Vision.VNSequenceRequestHandler.Perform(Vision.VNRequest[],Foundation.NSUrl,ImageIO.CGImagePropertyOrientation,Foundation.NSError@)" /> with an array containing one or more <see cref="T:Vision.VNImageBasedRequest" /> objects (for instance, a <see cref="T:Vision.VNDetectFaceRectanglesRequest" />). The <see cref="T:Vision.VNRequestCompletionHandler" /> of the <see cref="T:Vision.VNImageBasedRequest" /> is called once for each detected object.  
+	///       <para>The <see cref="Vision.VNSequenceRequestHandler" /> is the top-level object for multiple-image vision processing ( see <see cref="Vision.VNImageRequestHandler" /> for single). Developers instantiate a <see cref="Vision.VNSequenceRequestHandler" /> object with an image and image-processing options. Developers call <see cref="Vision.VNSequenceRequestHandler.Perform(Vision.VNRequest[],Foundation.NSUrl,ImageIO.CGImagePropertyOrientation,out Foundation.NSError)" /> with an array containing one or more <see cref="Vision.VNImageBasedRequest" /> objects (for instance, a <see cref="Vision.VNDetectFaceRectanglesRequest" />). The <see cref="Vision.VNRequestCompletionHandler" /> of the <see cref="Vision.VNImageBasedRequest" /> is called once for each detected object.  
 	///         </para>
 	///     </remarks>
 	[MacCatalyst (13, 1)]
@@ -3099,7 +3099,7 @@ namespace Vision {
 		bool Perform (VNRequest [] requests, CMSampleBuffer sampleBuffer, CGImagePropertyOrientation orientation, [NullAllowed] out NSError error);
 	}
 
-	/// <summary>Abstract <see cref="T:Vision.VNImageBasedRequest" /> for requests that operate on two images.</summary>
+	/// <summary>Abstract <see cref="Vision.VNImageBasedRequest" /> for requests that operate on two images.</summary>
 	[MacCatalyst (13, 1)]
 	[Abstract]
 	[BaseType (typeof (VNImageBasedRequest))]
@@ -3367,7 +3367,7 @@ namespace Vision {
 		NativeHandle Constructor (CMSampleBuffer sampleBuffer, CGImagePropertyOrientation orientation, VNImageOptions options, VNRequestCompletionHandler completionHandler);
 	}
 
-	/// <summary>A <see cref="T:Vision.VNTrackingRequest" /> that tracks a previously recognized object across multiple frames.</summary>
+	/// <summary>A <see cref="Vision.VNTrackingRequest" /> that tracks a previously recognized object across multiple frames.</summary>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (VNTrackingRequest))]
 	[DisableDefaultCtor]
@@ -3415,7 +3415,7 @@ namespace Vision {
 		VNTrackObjectRequestRevision CurrentRevision { get; }
 	}
 
-	/// <summary>A <see cref="T:Vision.VNTrackingRequest" /> that tracks a rectangular region over multiple frames.</summary>
+	/// <summary>A <see cref="Vision.VNTrackingRequest" /> that tracks a rectangular region over multiple frames.</summary>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (VNTrackingRequest))]
 	[DisableDefaultCtor]
@@ -3464,7 +3464,7 @@ namespace Vision {
 		VNTrackRectangleRequestRevision CurrentRevision { get; }
 	}
 
-	/// <summary>Abstract <see cref="T:Vision.VNImageBasedRequest" /> that is the base class for requests that track an object between multiple images.</summary>
+	/// <summary>Abstract <see cref="Vision.VNImageBasedRequest" /> that is the base class for requests that track an object between multiple images.</summary>
 	[MacCatalyst (13, 1)]
 	[Abstract]
 	[BaseType (typeof (VNImageBasedRequest))]

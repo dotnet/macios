@@ -2,11 +2,11 @@
   <Docs DocId="T:MapKit.MKMapPoint">
     <summary>A location in a 2D map projection.</summary>
     <remarks>
-      <para>Map Kit uses a Mercator projection with the Prime Meridian as its central meridian. An <see cref="T:MapKit.MKMapPoint" /> represents a 2D point on that projection.</para>
+      <para>Map Kit uses a Mercator projection with the Prime Meridian as its central meridian. An <see cref="MapKit.MKMapPoint" /> represents a 2D point on that projection.</para>
       <para>Map projections are a complex topic. The essential challenge is that any projection of a sphere onto a 2D plane will involve some distortions. The Mercator projection is a standard cylindrical projection that distorts large objects, particulary towards the poles. The distortion depends on the zoom factor of the map, as well.</para>
       <para>
-        <see cref="T:MapKit.MKMapPoint" /> are the 2D coordinates of a Mercator projection in Map Kit. Application developers can use them, for instance, with the <see cref="T:MapKit.MKMapSize" /> and <see cref="T:MapKit.MKMapRect" /> types, but will generally use either <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:MapKit.CLLocationCoordinate2D&amp;scope=Xamarin" title="T:MapKit.CLLocationCoordinate2D">T:MapKit.CLLocationCoordinate2D</a></format> types, which encapsulate the concept of latitude and longitude.</para>
-      <para>To convert from <see cref="T:MapKit.MKMapPoint" />s to other types, use:</para>
+        <see cref="MapKit.MKMapPoint" /> are the 2D coordinates of a Mercator projection in Map Kit. Application developers can use them, for instance, with the <see cref="MapKit.MKMapSize" /> and <see cref="MapKit.MKMapRect" /> types, but will generally use either <see cref="CoreLocation.CLLocationCoordinate2D" /> types, which encapsulate the concept of latitude and longitude.</para>
+      <para>To convert from <see cref="MapKit.MKMapPoint" />s to other types, use:</para>
       <para>
         <list type="table">
           <listheader>
@@ -15,42 +15,34 @@
           </listheader>
           <item>
             <term>
-              <see cref="T:CoreLocation.CLLocationCoordinate2D" />
+              <see cref="CoreLocation.CLLocationCoordinate2D" />
             </term>
             <description>
-              <see cref="M:MapKit.MKMapPoint.ToCoordinate(MapKit.MKMapPoint)" />
+              <see cref="MapKit.MKMapPoint.ToCoordinate(MapKit.MKMapPoint)" />
             </description>
           </item>
           <item>
             <term>
-              <see cref="T:MapKit.MKCoordinateRegion" />
+              <see cref="MapKit.MKCoordinateRegion" />
             </term>
             <description>
-              <see cref="M:MapKit.MKCoordinateRegion.FromMapRect(MapKit.MKMapRect)" />
+              <see cref="MapKit.MKCoordinateRegion.FromMapRect(MapKit.MKMapRect)" />
             </description>
           </item>
           <item>
             <term>
-              <see cref="T:System.Drawing.PointF" />
+              <see cref="CGPoint" />
             </term>
             <description>
-              <see cref="M:MapKit.MKOverlayView.PointForMapPoint(MapKit.MKMapPoint)" />
+              <see cref="MapKit.MKOverlayRenderer.PointForMapPoint(MapKit.MKMapPoint)" />
             </description>
           </item>
           <item>
             <term>
-              <see cref="T:System.Drawing.PointF" />
+              <see cref="CGRect" />
             </term>
             <description>
-              <see cref="M:MapKit.MKOverlayView.PointForMapPoint(MapKit.MKMapPoint)" />
-            </description>
-          </item>
-          <item>
-            <term>
-              <see cref="T:System.Drawing.RectangleF" />
-            </term>
-            <description>
-              <see cref="M:MapKit.MKOverlayView.RectForMapRect(MapKit.MKMapRect)" />
+              <see cref="MapKit.MKOverlayRenderer.RectForMapRect(MapKit.MKMapRect)" />
             </description>
           </item>
         </list>

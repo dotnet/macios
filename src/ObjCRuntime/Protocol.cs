@@ -26,7 +26,7 @@ namespace ObjCRuntime {
 		/// 	    This method throws an ArgumentException if the protocol specified by <paramref name="name" /> does not exist. 
 		/// 	  </para>
 		///           <para>
-		/// 	    The <see cref="M:ObjCRuntime.Protocol.GetHandle(System.String)" /> method performs a similar role, except it only returns the low-level handle to the protocol. 
+		/// 	    The <see cref="ObjCRuntime.Protocol.GetHandle(System.String)" /> method performs a similar role, except it only returns the low-level handle to the protocol. 
 		/// 	  </para>
 		///         </remarks>
 		public Protocol (string name)

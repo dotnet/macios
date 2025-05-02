@@ -112,7 +112,7 @@ namespace CoreML {
 		///         <value>To be added.</value>
 		///         <remarks>
 		///           <para>
-		///             <see cref="T:CoreML.MLMultiArray" /> objects can be treated as one-dimensional arrays. The <see cref="P:CoreML.MLMultiArray.Strides" /> property retrieves the number of elements in a one-dimensional array that are necessary to "skip over" in order to advance by 1 in the desired dimension.</para>
+		///             <see cref="CoreML.MLMultiArray" /> objects can be treated as one-dimensional arrays. The <see cref="CoreML.MLMultiArray.Strides" /> property retrieves the number of elements in a one-dimensional array that are necessary to "skip over" in order to advance by 1 in the desired dimension.</para>
 		///           <example>
 		///             <code lang="csharp lang-csharp"><![CDATA[
 		/// NSError err;

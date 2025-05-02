@@ -30,7 +30,7 @@ namespace CoreImage {
 
 	// convenience enum for values used with kCGImagePropertyOrientation (key) as NSNumber
 	// values are part of the header file (CGImageProperties.h) as comments (not constants or fields)
-	/// <summary>An enumeration whose values specify the origin of the <see cref="T:CoreImage.CIImage" />.</summary>
+	/// <summary>An enumeration whose values specify the origin of the <see cref="CoreImage.CIImage" />.</summary>
 	///     <remarks>
 	///       <para>The enumeration values are equal to those of the EXIF and TIFF specifications.</para>
 	///     </remarks>

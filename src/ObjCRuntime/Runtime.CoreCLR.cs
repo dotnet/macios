@@ -495,7 +495,7 @@ namespace ObjCRuntime {
 				throw CreateNativeAOTNotSupportedException ();
 
 			var structType = obj.GetType ();
-			// Unwrap enums, Marshal.StructureToPtr complains they're not blittable (https://github.com/xamarin/xamarin-macios/issues/15744)
+			// Unwrap enums, Marshal.StructureToPtr complains they're not blittable (https://github.com/dotnet/macios/issues/15744)
 			if (structType.IsEnum) {
 				structType = Enum.GetUnderlyingType (structType);
 				obj = Convert.ChangeType (obj, structType);

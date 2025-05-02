@@ -37,7 +37,7 @@ using ObjCRuntime;
 
 namespace Foundation {
 
-#if false // https://github.com/xamarin/xamarin-macios/issues/15577
+#if false // https://github.com/dotnet/macios/issues/15577
 	public delegate bool NSOrderedCollectionDifferenceEquivalenceTest (NSObject first, NSObject second);
 #endif
 
@@ -174,7 +174,7 @@ namespace Foundation {
 		///         <returns>
 		///         </returns>
 		///         <remarks>The values will be boxed into
-		/// 	NSObjects using <see cref="M:Foundation.NSObject.FromObject(System.Object)" />.</remarks>
+		/// 	NSObjects using <see cref="Foundation.NSObject.FromObject(System.Object)" />.</remarks>
 		public static NSArray FromObjects (params object [] items)
 		{
 			return From<object> (items);
@@ -656,7 +656,7 @@ namespace Foundation {
 			return new NSFastEnumerator<NSObject> (this);
 		}
 
-#if false // https://github.com/xamarin/xamarin-macios/issues/15577
+#if false // https://github.com/dotnet/macios/issues/15577
 
 		static readonly NSOrderedCollectionDifferenceEquivalenceTestProxy static_DiffEquality = DiffEqualityHandler;
 

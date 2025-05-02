@@ -39,13 +39,13 @@ darc update-dependencies --channel ".NET 6"
 To configure automatic updates, use the [`darc add-subscription`][5] command
 to enroll a target repo/branch into updates from a particular channel:
 ```
-darc add-subscription --channel ".NET 6" --source-repo https://github.com/dotnet/installer --target-repo https://github.com/xamarin/xamarin-macios --target-branch main --update-frequency everyWeek --standard-automerge
+darc add-subscription --channel ".NET 6" --source-repo https://github.com/dotnet/installer --target-repo https://github.com/dotnet/macios --target-branch main --update-frequency everyWeek --standard-automerge
 ```
 
 To configure automatic updates for a release branch, use the following arguments:
 
 ```
-darc add-subscription --channel ".NET 6.0.1xx SDK Preview 5" --source-repo https://github.com/dotnet/installer --target-repo https://github.com/xamarin/xamarin-macios --target-branch release/6.0.1xx-preview5 --update-frequency everyDay
+darc add-subscription --channel ".NET 6.0.1xx SDK Preview 5" --source-repo https://github.com/dotnet/installer --target-repo https://github.com/dotnet/macios --target-branch release/6.0.1xx-preview5 --update-frequency everyDay
 ```
 
 Once a subscription is configured, pull requests will be created automatically
@@ -64,12 +64,12 @@ to a default darc/maestro channel if one is configured.  Default channels are
 manually managed at this time.  To configure a new default repo+branch <-> channel
 association, run the [`darc add-default-channel`][6] command:
 ```
-darc add-default-channel --channel ".NET 6" --branch "main" --repo https://github.com/xamarin/xamarin-macios
+darc add-default-channel --channel ".NET 6" --branch "main" --repo https://github.com/dotnet/macios
 ```
 
 When a new release branch is created, this command should look something like this:
 ```
-darc add-default-channel --channel ".NET 6.0.1xx SDK Preview 4" --branch "release/6.0.1xx-preview4" --repo https://github.com/xamarin/xamarin-macios
+darc add-default-channel --channel ".NET 6.0.1xx SDK Preview 4" --branch "release/6.0.1xx-preview4" --repo https://github.com/dotnet/macios
 ```
 
 

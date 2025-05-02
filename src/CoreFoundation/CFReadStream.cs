@@ -40,7 +40,7 @@ using ObjCRuntime;
 using CFIndex = System.IntPtr;
 
 namespace CoreFoundation {
-	/// <summary>A <see cref="T:CoreFoundation.CFStream" /> that reads streams of bytes.</summary>
+	/// <summary>A <see cref="CoreFoundation.CFStream" /> that reads streams of bytes.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]

@@ -32,14 +32,14 @@ namespace MetalKit {
 		[Field ("MTKModelErrorDomain")]
 		NSString ErrorDomain { get; }
 
-		/// <summary>Gets the key that is used to retrieve error information from the <see cref="P:Foundation.NSError.UserInfo" /> property of a MetalKit initialization error.</summary>
+		/// <summary>Gets the key that is used to retrieve error information from the <see cref="Foundation.NSError.UserInfo" /> property of a MetalKit initialization error.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("MTKModelErrorKey")]
 		NSString ErrorKey { get; }
 	}
 
-	/// <summary>A <see cref="T:UIKit.UIView" /> that is Metal-aware.</summary>
+	/// <summary>A <see cref="UIKit.UIView" /> that is Metal-aware.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MetalKit/Reference/MTKView_ClassReference/index.html">Apple documentation for <c>MTKView</c></related>
 	[MacCatalyst (13, 1)]
@@ -165,15 +165,15 @@ namespace MetalKit {
 		MTLStorageMode DepthStencilStorageMode { get; set; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:MetalKit.MTKViewDelegate" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="MetalKit.MTKViewDelegate" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:MetalKit.MTKViewDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:MetalKit.MTKViewDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:MetalKit.MTKViewDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="MetalKit.MTKViewDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="MetalKit.MTKViewDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="MetalKit.MTKViewDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	interface IMTKViewDelegate { }
 
-	/// <summary>Delegate object for <see cref="T:MetalKit.MTKView" /> objects. Provides methods called when the view is drawn and laid out.</summary>
+	/// <summary>Delegate object for <see cref="MetalKit.MTKView" /> objects. Provides methods called when the view is drawn and laid out.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MetalKit/Reference/MTKViewDelegate_ProtocolReference/index.html">Apple documentation for <c>MTKViewDelegate</c></related>
 	[MacCatalyst (13, 1)]
@@ -207,7 +207,7 @@ namespace MetalKit {
 		[Field ("MTKTextureLoaderErrorDomain")]
 		NSString Domain { get; }
 
-		/// <summary>Gets the key that is used to retrieve error information from the <see cref="P:Foundation.NSError.UserInfo" /> property of a texture initialization error.</summary>
+		/// <summary>Gets the key that is used to retrieve error information from the <see cref="Foundation.NSError.UserInfo" /> property of a texture initialization error.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("MTKTextureLoaderErrorKey")]
@@ -295,14 +295,14 @@ namespace MetalKit {
 		bool LoadAsArray { get; set; }
 	}
 
-	/// <summary>Completion handler for textures loaded with <see cref="T:MetalKit.MTKTextureLoader" />.</summary>
+	/// <summary>Completion handler for textures loaded with <see cref="MetalKit.MTKTextureLoader" />.</summary>
 	[MacCatalyst (13, 1)]
 	delegate void MTKTextureLoaderCallback ([NullAllowed] IMTLTexture texture, [NullAllowed] NSError error);
 
 	[MacCatalyst (13, 1)]
 	delegate void MTKTextureLoaderArrayCallback (IMTLTexture [] textures, [NullAllowed] NSError error);
 
-	/// <summary>Creates <see cref="T:Metal.IMTLTexture" /> objects from common image formats.</summary>
+	/// <summary>Creates <see cref="Metal.IMTLTexture" /> objects from common image formats.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MetalKit/Reference/MTKTextureLoader_ClassReference/index.html">Apple documentation for <c>MTKTextureLoader</c></related>
 	[MacCatalyst (13, 1)]
@@ -477,7 +477,7 @@ namespace MetalKit {
 			<param name="options">To be added.</param>
 			<summary>To be added.</summary>
 			<returns>
-			          <para>A task that represents the asynchronous FromName operation.   The value of the TResult parameter is a System.nfloat.</para>
+			          <para>A task that represents the asynchronous FromName operation.   The value of the TResult parameter is a <see cref="nfloat" />.</para>
 			        </returns>
 			<remarks>To be added.</remarks>
 			""")]
@@ -557,7 +557,7 @@ namespace MetalKit {
 			<param name="options">To be added.</param>
 			<summary>To be added.</summary>
 			<returns>
-			          <para>A task that represents the asynchronous FromNames operation.   The value of the TResult parameter is a System.nfloat.</para>
+			          <para>A task that represents the asynchronous FromNames operation.   The value of the TResult parameter is a <see cref="nfloat" />.</para>
 			        </returns>
 			<remarks>To be added.</remarks>
 			""")]
@@ -711,7 +711,7 @@ namespace MetalKit {
 		IMTLTexture FromName (string name, nfloat scaleFactor, NSDisplayGamut displayGamut, [NullAllowed] NSBundle bundle, [NullAllowed] MTKTextureLoaderOptions options, [NullAllowed] out NSError error);
 	}
 
-	/// <summary>An <see cref="T:ModelIO.IMDLMeshBufferAllocator" /> that allocates a <see cref="T:MetalKit.MTKMeshBuffer" /> suitable for use with <see cref="T:ModelIO.MDLAsset" /> objects.</summary>
+	/// <summary>An <see cref="ModelIO.IMDLMeshBufferAllocator" /> that allocates a <see cref="MetalKit.MTKMeshBuffer" /> suitable for use with <see cref="ModelIO.MDLAsset" /> objects.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MetalKit/Reference/MTKMeshBufferAllocator_ClassReference/index.html">Apple documentation for <c>MTKMeshBufferAllocator</c></related>
 	[MacCatalyst (13, 1)]
@@ -739,7 +739,7 @@ namespace MetalKit {
 		nuint Offset { get; }
 	}
 
-	/// <summary>A segment of mesh data that can be rendered in a single draw call. Submesh vertex data is held in the parent <see cref="T:MetalKit.MTKMesh" />.</summary>
+	/// <summary>A segment of mesh data that can be rendered in a single draw call. Submesh vertex data is held in the parent <see cref="MetalKit.MTKMesh" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MetalKit/Reference/MTKSubmesh_ClassReference/index.html">Apple documentation for <c>MTKSubmesh</c></related>
 	[MacCatalyst (13, 1)]

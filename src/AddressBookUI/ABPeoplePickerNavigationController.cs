@@ -16,7 +16,7 @@ using UIKit;
 using ObjCRuntime;
 
 namespace AddressBookUI {
-	/// <summary>Provides data for the <see cref="E:AddressBookUI.ABPeoplePickerNavigationController.SelectPerson" /> event.</summary>
+	/// <summary>Provides data for the <see cref="AddressBookUI.ABPeoplePickerNavigationController.SelectPerson" /> event.</summary>
 	///     <remarks>
 	///     </remarks>
 	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/MonoCatalog-MonoDevelop/">monocatalog</related>
@@ -48,7 +48,7 @@ namespace AddressBookUI {
 		public bool Continue { get; set; }
 	}
 
-	/// <summary>Provides data for the <see cref="E:AddressBookUI.ABPeoplePickerNavigationController.PerformAction" /> event.</summary>
+	/// <summary>Provides data for the <see cref="AddressBookUI.ABPeoplePickerNavigationController.PerformAction" /> event.</summary>
 	///     <remarks>
 	///     </remarks>
 	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/MonoCatalog-MonoDevelop/">monocatalog</related>
@@ -83,7 +83,7 @@ namespace AddressBookUI {
 		public int? Identifier { get; private set; }
 	}
 
-	/// <summary>Provides data for the <see cref="E:AddressBookUI.ABPeoplePickerNavigationController.SelectPerson2" /> event.</summary>
+	/// <summary>Provides data for the <see cref="AddressBookUI.ABPeoplePickerNavigationController.SelectPerson2" /> event.</summary>
 	///     <remarks>
 	///     </remarks>
 	[SupportedOSPlatform ("ios")]
@@ -109,7 +109,7 @@ namespace AddressBookUI {
 		public ABPerson Person { get; private set; }
 	}
 
-	/// <summary>Provides data for the <see cref="E:AddressBookUI.ABPeoplePickerNavigationController.PerformAction2" /> event.</summary>
+	/// <summary>Provides data for the <see cref="AddressBookUI.ABPeoplePickerNavigationController.PerformAction2" /> event.</summary>
 	///     <remarks>
 	///     </remarks>
 	[SupportedOSPlatform ("ios")]
@@ -224,7 +224,7 @@ namespace AddressBookUI {
 	partial class ABPeoplePickerNavigationController {
 
 		DisplayedPropertiesCollection? displayedProperties;
-		/// <summary>Gets the list of properties that the <see cref="T:AddressBookUI.ABPeoplePickerNavigationController" /> displays.</summary>
+		/// <summary>Gets the list of properties that the <see cref="AddressBookUI.ABPeoplePickerNavigationController" /> displays.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public DisplayedPropertiesCollection? DisplayedProperties {
@@ -240,7 +240,7 @@ namespace AddressBookUI {
 		}
 
 		ABAddressBook? addressBook;
-		/// <summary>Gets or sets the <see cref="T:AddressBook.ABAddressBook" /> that contains the list of contacts.</summary>
+		/// <summary>Gets or sets the <see cref="AddressBook.ABAddressBook" /> that contains the list of contacts.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public ABAddressBook? AddressBook {
@@ -316,9 +316,9 @@ namespace AddressBookUI {
 
 		/// <summary>Prior to iOS 8, this event handler was called when the user selected a contact.</summary>
 		/// <remarks>
-		///           <para>In iOS 8 and above, in addition to subscribing to this event, also subscribe to <see cref="E:AddressBookUI.ABPeoplePickerNavigationController.SelectPerson2" />.</para>
-		///           <para>Set <see cref="P:AddressBookUI.ABPeoplePickerSelectPersonEventArgs.Continue" /> to <see langword="true" /> to display the contact and dismiss the picker.</para>
-		///           <para>Set <see cref="P:AddressBookUI.ABPeoplePickerSelectPersonEventArgs.Continue" /> to <see langword="false" /> to do nothing.</para>
+		///           <para>In iOS 8 and above, in addition to subscribing to this event, also subscribe to <see cref="AddressBookUI.ABPeoplePickerNavigationController.SelectPerson2" />.</para>
+		///           <para>Set <see cref="AddressBookUI.ABPeoplePickerSelectPersonEventArgs.Continue" /> to <see langword="true" /> to display the contact and dismiss the picker.</para>
+		///           <para>Set <see cref="AddressBookUI.ABPeoplePickerSelectPersonEventArgs.Continue" /> to <see langword="false" /> to do nothing.</para>
 		///         </remarks>
 		public event EventHandler<ABPeoplePickerSelectPersonEventArgs> SelectPerson {
 			add {
@@ -342,7 +342,7 @@ namespace AddressBookUI {
 
 		/// <summary>Prior to iOS 8, this event handler was called when the user selected one of the person’s properties.</summary>
 		/// <remarks>
-		///           <para>In addition to subscribing to this event, also subscribe to <see cref="E:AddressBookUI.ABPeoplePickerNavigationController.PerformAction2" /> in iOS 8 and above.
+		///           <para>In addition to subscribing to this event, also subscribe to <see cref="AddressBookUI.ABPeoplePickerNavigationController.PerformAction2" /> in iOS 8 and above.
 		///           </para>
 		///         </remarks>
 		public event EventHandler<ABPeoplePickerPerformActionEventArgs> PerformAction {

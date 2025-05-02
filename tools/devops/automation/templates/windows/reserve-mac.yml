@@ -104,7 +104,7 @@ steps:
 
 - task: UseDotNet@2
   inputs:
-    version: 9.x
+    version: $(DotNetSdkVersion).x
 
 - bash: $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/system-dependencies.sh --ignore-mono --ignore-visual-studio --ignore-mono --ignore-sharpie --ignore-shellcheck --ignore-yamllint --provision-simulators
   displayName: 'Provision simulators'

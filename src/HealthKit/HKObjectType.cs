@@ -29,7 +29,7 @@ namespace HealthKit {
 
 	public partial class HKCategoryType {
 		/// <param name="kind">To be added.</param>
-		///         <summary>Creates and returns a <see cref="T:HealthKit.HKCategoryType" /> object of the specified <paramref name="kind" />.</summary>
+		///         <summary>Creates and returns a <see cref="HealthKit.HKCategoryType" /> object of the specified <paramref name="kind" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		public static HKCategoryType? Create (HKCategoryTypeIdentifier kind)
@@ -40,7 +40,7 @@ namespace HealthKit {
 
 	public partial class HKCharacteristicType {
 		/// <param name="kind">To be added.</param>
-		///         <summary>Creates and returns a <see cref="T:HealthKit.HKCharacteristicType" /> for the specified <paramref name="kind" />.</summary>
+		///         <summary>Creates and returns a <see cref="HealthKit.HKCharacteristicType" /> for the specified <paramref name="kind" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		public static HKCharacteristicType? Create (HKCharacteristicTypeIdentifier kind)
@@ -63,7 +63,7 @@ namespace HealthKit {
 
 	public partial class HKDocumentType {
 		/// <param name="kind">To be added.</param>
-		///         <summary>Creates a new <see cref="T:HealthKit.HKDocumentType" /> from the specified type identifier.</summary>
+		///         <summary>Creates a new <see cref="HealthKit.HKDocumentType" /> from the specified type identifier.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		public static HKDocumentType? Create (HKDocumentTypeIdentifier kind)

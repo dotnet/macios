@@ -7,7 +7,7 @@ namespace ObjCRuntime {
 	// once adopted everywhere then updating  strings will be much easier
 	partial class Constants {
 
-		internal const string PleaseFileBugReport = "Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new.";
+		internal const string PleaseFileBugReport = "Please file a bug report at https://github.com/dotnet/macios/issues/new.";
 
 		internal const string SetThrowOnInitFailureToFalse = "It is possible to ignore this condition by setting ObjCRuntime.Class.ThrowOnInitFailure to false";
 	}

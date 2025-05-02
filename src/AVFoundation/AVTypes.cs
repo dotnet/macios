@@ -386,7 +386,7 @@ namespace AVFoundation {
 	}
 #endif
 
-	/// <summary>Defines an extension method for <see cref="T:System.Drawing.RectangleF" /> that generates another rectangle with a specified aspect ratio.</summary>
+	/// <summary>Defines an extension method for <see cref="CGRect" /> that generates another rectangle with a specified aspect ratio.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]

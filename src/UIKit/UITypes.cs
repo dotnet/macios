@@ -223,7 +223,6 @@ namespace UIKit {
 #if IOS || __MACCATALYST__
 	[SupportedOSPlatform ("ios15.0")]
 	[SupportedOSPlatform ("maccatalyst")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct UIPointerAccessoryPosition {
 		public nfloat Offset;
@@ -261,6 +260,7 @@ namespace UIKit {
 		public static UIPointerAccessoryPosition TopLeft => Marshal.PtrToStructure<UIPointerAccessoryPosition> (Dlfcn.GetIndirect (Libraries.UIKit.Handle, "UIPointerAccessoryPositionTopLeft"))!;
 #endif
 	}
+#endif
 
 #if false
 	[Protocol]

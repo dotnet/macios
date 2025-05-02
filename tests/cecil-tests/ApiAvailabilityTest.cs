@@ -252,18 +252,6 @@ namespace Cecil.Tests {
 			"SystemConfiguration.CaptiveNetwork.TryGetSupportedInterfaces(out System.String[]&)",
 			"UIKit.UIGestureRecognizer UIKit.UIScrollView::DirectionalPressGestureRecognizer()",
 			"UIKit.UIGraphicsRendererFormat UIKit.UIGraphicsRendererFormat::DefaultFormat()",
-			"UIKit.UIStringDrawing.DrawString(System.String, CoreGraphics.CGPoint, System.Runtime.InteropServices.NFloat, UIKit.UIFont, System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat&, UIKit.UILineBreakMode, UIKit.UIBaselineAdjustment)",
-			"UIKit.UIStringDrawing.DrawString(System.String, CoreGraphics.CGPoint, System.Runtime.InteropServices.NFloat, UIKit.UIFont, System.Runtime.InteropServices.NFloat, UIKit.UILineBreakMode, UIKit.UIBaselineAdjustment)",
-			"UIKit.UIStringDrawing.DrawString(System.String, CoreGraphics.CGPoint, System.Runtime.InteropServices.NFloat, UIKit.UIFont, UIKit.UILineBreakMode)",
-			"UIKit.UIStringDrawing.DrawString(System.String, CoreGraphics.CGPoint, UIKit.UIFont)",
-			"UIKit.UIStringDrawing.DrawString(System.String, CoreGraphics.CGRect, UIKit.UIFont, UIKit.UILineBreakMode, UIKit.UITextAlignment)",
-			"UIKit.UIStringDrawing.DrawString(System.String, CoreGraphics.CGRect, UIKit.UIFont, UIKit.UILineBreakMode)",
-			"UIKit.UIStringDrawing.DrawString(System.String, CoreGraphics.CGRect, UIKit.UIFont)",
-			"UIKit.UIStringDrawing.StringSize(System.String, UIKit.UIFont, CoreGraphics.CGSize, UIKit.UILineBreakMode)",
-			"UIKit.UIStringDrawing.StringSize(System.String, UIKit.UIFont, CoreGraphics.CGSize)",
-			"UIKit.UIStringDrawing.StringSize(System.String, UIKit.UIFont, System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat&, System.Runtime.InteropServices.NFloat, UIKit.UILineBreakMode)",
-			"UIKit.UIStringDrawing.StringSize(System.String, UIKit.UIFont, System.Runtime.InteropServices.NFloat, UIKit.UILineBreakMode)",
-			"UIKit.UIStringDrawing.StringSize(System.String, UIKit.UIFont)",
 		};
 
 		HashSet<string> knownConsistencyIssues = new HashSet<string> { };

@@ -13,13 +13,13 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="default" xml:space="preserve">
-		<value>Не удалось найти сообщение об ошибке для кода {0}. Сообщите об отсутствующем сообщении в GitHub по следующему адресу: https://github.com/xamarin/xamarin-macios/issues/new</value>
+		<value>Не удалось найти сообщение об ошибке для кода {0}. Сообщите об отсутствующем сообщении в GitHub по следующему адресу: https://github.com/dotnet/macios/issues/new</value>
 		<comment>
 			This is the default message when an error code can not be found.
 		</comment>
 	</data>
   <data name="MT0000" xml:space="preserve">
-		<value>Непредвиденная ошибка. Отправьте отчет об ошибках по следующему адресу: https://github.com/xamarin/xamarin-macios/issues/new
+		<value>Непредвиденная ошибка. Отправьте отчет об ошибках по следующему адресу: https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT0001" xml:space="preserve">
@@ -299,7 +299,7 @@
 		</value>
 	</data>
   <data name="MX0071" xml:space="preserve">
-		<value>Неизвестная платформа: {0}. Обычно это указывает на ошибку в {1}; отправьте отчет об ошибках с тестовым случаем по следующему адресу: https://github.com/xamarin/xamarin-macios/issues/new.
+		<value>Неизвестная платформа: {0}. Обычно это указывает на ошибку в {1}; отправьте отчет об ошибках с тестовым случаем по следующему адресу: https://github.com/dotnet/macios/issues/new.
 		</value>
 	</data>
   <data name="MT0072" xml:space="preserve">
@@ -425,11 +425,11 @@
 	</data>
   <!-- MM0098 has been used in the past -->
   <data name="MX0099" xml:space="preserve">
-		<value>Внутренняя ошибка: {0}. Откройте вопрос по следующему адресу: https://github.com/xamarin/xamarin-macios/issues/new.
+		<value>Внутренняя ошибка: {0}. Откройте вопрос по следующему адресу: https://github.com/dotnet/macios/issues/new.
 		</value>
 	</data>
   <data name="MT0100" xml:space="preserve">
-		<value>Недопустимый целевой объект сборки: "{0}". Отправьте отчет об ошибках с тестовым случаем (https://github.com/xamarin/xamarin-macios/issues/new).
+		<value>Недопустимый целевой объект сборки: "{0}". Отправьте отчет об ошибках с тестовым случаем (https://github.com/dotnet/macios/issues/new).
 		</value>
 	</data>
   <data name="MT0101" xml:space="preserve">
@@ -679,27 +679,27 @@
 		</value>
 	</data>
   <data name="MT0157" xml:space="preserve">
-		<value>Внутренняя ошибка: не удается преобразовать из "{0}" в "{1}" в {2}. Отправьте отчет об ошибках с тестовым случаем (https://github.com/xamarin/xamarin-macios/issues/new).
+		<value>Внутренняя ошибка: не удается преобразовать из "{0}" в "{1}" в {2}. Отправьте отчет об ошибках с тестовым случаем (https://github.com/dotnet/macios/issues/new).
 		</value>
 	</data>
   <data name="MT0158" xml:space="preserve">
-		<value>Внутренняя ошибка: похоже, что интеллектуальное перечисление {0} таковым не является. Отправьте отчет об ошибках с тестовым случаем (https://github.com/xamarin/xamarin-macios/issues/new).
+		<value>Внутренняя ошибка: похоже, что интеллектуальное перечисление {0} таковым не является. Отправьте отчет об ошибках с тестовым случаем (https://github.com/dotnet/macios/issues/new).
 		</value>
 	</data>
   <data name="MT0159" xml:space="preserve">
-		<value>Внутренняя ошибка: неподдерживаемый tokentype ({0}) для {1}. Отправьте отчет об ошибках с тестовым случаем (https://github.com/xamarin/xamarin-macios/issues/new).
+		<value>Внутренняя ошибка: неподдерживаемый tokentype ({0}) для {1}. Отправьте отчет об ошибках с тестовым случаем (https://github.com/dotnet/macios/issues/new).
 		</value>
 	</data>
   <data name="MT0160" xml:space="preserve">
-		<value>Внутренняя ошибка: статический регистратор не должен выполняться, если только компоновщик также не выполняется (или не был отключен). Возможным решением проблемы является передача "-f" в качестве дополнительного аргумента {0} для принудительной полной сборки. Отправьте отчет об ошибках с тестовым случаем (https://github.com/xamarin/xamarin-macios/issues/new).
+		<value>Внутренняя ошибка: статический регистратор не должен выполняться, если только компоновщик также не выполняется (или не был отключен). Возможным решением проблемы является передача "-f" в качестве дополнительного аргумента {0} для принудительной полной сборки. Отправьте отчет об ошибках с тестовым случаем (https://github.com/dotnet/macios/issues/new).
 		</value>
 	</data>
   <data name="MT0161" xml:space="preserve">
-		<value>Внутренняя ошибка: символ без имени (тип: {0}). Отправьте отчет об ошибках с тестовым случаем (https://github.com/xamarin/xamarin-macios/issues/new).
+		<value>Внутренняя ошибка: символ без имени (тип: {0}). Отправьте отчет об ошибках с тестовым случаем (https://github.com/dotnet/macios/issues/new).
 		</value>
 	</data>
   <data name="MT0168" xml:space="preserve">
-		<value>Внутренняя ошибка: "не удается преобразовать платформы в платформы: {0}". Отправьте отчет об ошибках с тестовым случаем (https://github.com/xamarin/xamarin-macios/issues/new).
+		<value>Внутренняя ошибка: "не удается преобразовать платформы в платформы: {0}". Отправьте отчет об ошибках с тестовым случаем (https://github.com/dotnet/macios/issues/new).
 		</value>
 	</data>
   <data name="MT0174_a" xml:space="preserve">
@@ -723,7 +723,7 @@
         </value>
     </data>
   <data name="MX0177" xml:space="preserve">
-		<value>Неизвестная платформа: {0}. Обычно это указывает на ошибку; отправьте отчет об ошибках с тестовым случаем по следующему адресу: https://github.com/xamarin/xamarin-macios/issues/new</value>
+		<value>Неизвестная платформа: {0}. Обычно это указывает на ошибку; отправьте отчет об ошибках с тестовым случаем по следующему адресу: https://github.com/dotnet/macios/issues/new</value>
 	</data>
   <data name="MX0178" xml:space="preserve">
         <value>Файл отладочного символа для "{0}" недопустим и был пропущен.
@@ -762,7 +762,7 @@
 		</value>
 	</data>
   <data name="MT1013" xml:space="preserve">
-		<value>Ошибка отслеживания зависимостей: нет файлов для сравнения. Отправьте отчет об ошибках с тестовым случаем по следующему адресу: https://github.com/xamarin/xamarin-macios/issues/new.
+		<value>Ошибка отслеживания зависимостей: нет файлов для сравнения. Отправьте отчет об ошибках с тестовым случаем по следующему адресу: https://github.com/dotnet/macios/issues/new.
 		</value>
 	</data>
   <data name="MT1014" xml:space="preserve">
@@ -1157,7 +1157,7 @@
 		</value>
 	</data>
   <data name="MT4002" xml:space="preserve">
-		<value>Не удалось скомпилировать созданный код для методов P/Invoke. Отправьте отчет об ошибках по следующему адресу: https://github.com/xamarin/xamarin-macios/issues/new
+		<value>Не удалось скомпилировать созданный код для методов P/Invoke. Отправьте отчет об ошибках по следующему адресу: https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT4101" xml:space="preserve">
@@ -1189,7 +1189,7 @@
 		</value>
 	</data>
   <data name="MT4109" xml:space="preserve">
-		<value>Не удалось скомпилировать созданный код регистратора. Отправьте отчет об ошибках по следующему адресу: https://github.com/xamarin/xamarin-macios/issues/new
+		<value>Не удалось скомпилировать созданный код регистратора. Отправьте отчет об ошибках по следующему адресу: https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT4110" xml:space="preserve">
@@ -1205,7 +1205,7 @@
 		</value>
 	</data>
   <data name="MT4114" xml:space="preserve">
-		<value>Непредвиденная ошибка в регистраторе для метода "{0}.{1}". Отправьте отчет об ошибках по следующему адресу: https://github.com/xamarin/xamarin-macios/issues/new
+		<value>Непредвиденная ошибка в регистраторе для метода "{0}.{1}". Отправьте отчет об ошибках по следующему адресу: https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT4116" xml:space="preserve">
@@ -1225,7 +1225,7 @@
 		</value>
 	</data>
   <data name="MT4120" xml:space="preserve">
-		<value>Регистратор обнаружил неизвестный тип поля "{0}" в поле "{1}.{2}". Отправьте отчет об ошибках по следующему адресу: https://github.com/xamarin/xamarin-macios/issues/new
+		<value>Регистратор обнаружил неизвестный тип поля "{0}" в поле "{1}.{2}". Отправьте отчет об ошибках по следующему адресу: https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT4121" xml:space="preserve">
@@ -1237,35 +1237,35 @@
 		</value>
 	</data>
   <data name="MT4124" xml:space="preserve">
-		<value>В "{1}" обнаружен недопустимый {0}. Отправьте отчет об ошибках по следующему адресу: https://github.com/xamarin/xamarin-macios/issues/new
+		<value>В "{1}" обнаружен недопустимый {0}. Отправьте отчет об ошибках по следующему адресу: https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT4124_A" xml:space="preserve">
-		<value>В "{0}" обнаружено недопустимое свойство RegisterAttribute {1}. Отправьте отчет об ошибках по следующему адресу: https://github.com/xamarin/xamarin-macios/issues/new
+		<value>В "{0}" обнаружено недопустимое свойство RegisterAttribute {1}. Отправьте отчет об ошибках по следующему адресу: https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT4124_B" xml:space="preserve">
-		<value>В "{0}" обнаружен недопустимый AdoptsAttribute: ожидался 1 аргумент конструктора, получено {1}. Отправьте отчет об ошибках по следующему адресу: https://github.com/xamarin/xamarin-macios/issues/new
+		<value>В "{0}" обнаружен недопустимый AdoptsAttribute: ожидался 1 аргумент конструктора, получено {1}. Отправьте отчет об ошибках по следующему адресу: https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT4124_C" xml:space="preserve">
-		<value>Обнаружен недопустимый BindAsAttribute в "{0}.{1}": неизвестное поле {2}. Отправьте отчет об ошибках по следующему адресу: https://github.com/xamarin/xamarin-macios/issues/new
+		<value>Обнаружен недопустимый BindAsAttribute в "{0}.{1}": неизвестное поле {2}. Отправьте отчет об ошибках по следующему адресу: https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT4124_D" xml:space="preserve">
-		<value>В "{1}.{2}" обнаружен недопустимый {0}. Отправьте отчет об ошибках по следующему адресу: https://github.com/xamarin/xamarin-macios/issues/new
+		<value>В "{1}.{2}" обнаружен недопустимый {0}. Отправьте отчет об ошибках по следующему адресу: https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT4124_E" xml:space="preserve">
-		<value>В "{0}" обнаружен недопустимый BindAsAttribute: должен быть 1 аргумент конструктора, найдено {1}. Отправьте отчет об ошибках по следующему адресу: https://github.com/xamarin/xamarin-macios/issues/new
+		<value>В "{0}" обнаружен недопустимый BindAsAttribute: должен быть 1 аргумент конструктора, найдено {1}. Отправьте отчет об ошибках по следующему адресу: https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT4124_H" xml:space="preserve">
-		<value>Обнаружен недопустимый BindAsAttribute в "{0}": не удалось найти базовый тип перечисления {1}. Отправьте отчет об ошибках по следующему адресу: https://github.com/xamarin/xamarin-macios/issues/new
+		<value>Обнаружен недопустимый BindAsAttribute в "{0}": не удалось найти базовый тип перечисления {1}. Отправьте отчет об ошибках по следующему адресу: https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT4124_I" xml:space="preserve">
-		<value>Недействительный {0} найден на ''{1}''. Отправьте отчет об ошибке по адресу https://github.com/xamarin/xamarin-macios/issues/new.</value>
+		<value>Недействительный {0} найден на ''{1}''. Отправьте отчет об ошибке по адресу https://github.com/dotnet/macios/issues/new.</value>
 	</data>
   <data name="MT4125" xml:space="preserve">
 		<value>Регистратор обнаружил недопустимый тип "{0}" в сигнатуре для метода "{1}": такой интерфейс должен иметь атрибут Protocol, указывающий тип его оболочки.
@@ -1347,7 +1347,7 @@
 		</value>
 	</data>
   <data name="MT4147" xml:space="preserve">
-		<value>В "{1}" обнаружен недопустимый {0}. Отправьте отчет об ошибках по следующему адресу: https://github.com/xamarin/xamarin-macios/issues/new
+		<value>В "{1}" обнаружен недопустимый {0}. Отправьте отчет об ошибках по следующему адресу: https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT4148" xml:space="preserve">
@@ -1456,15 +1456,15 @@
 		</comment>
 	</data>
   <data name="MT4163" xml:space="preserve">
-		<value>Внутренняя ошибка в регистраторе (ctor {0} с аргументами: {1}). Отправьте отчет об ошибках по следующему адресу: https://github.com/xamarin/xamarin-macios/issues/new
+		<value>Внутренняя ошибка в регистраторе (ctor {0} с аргументами: {1}). Отправьте отчет об ошибках по следующему адресу: https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT4163_A" xml:space="preserve">
-		<value>Внутренняя ошибка в регистраторе (неизвестный тип доступности: {0}). Отправьте отчет об ошибках по следующему адресу: https://github.com/xamarin/xamarin-macios/issues/new
+		<value>Внутренняя ошибка в регистраторе (неизвестный тип доступности: {0}). Отправьте отчет об ошибках по следующему адресу: https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT4163_B" xml:space="preserve">
-		<value>Внутренняя ошибка в регистраторе (параметры BindAs не могут быть ref/out: {0}). Отправьте отчет об ошибках по следующему адресу: https://github.com/xamarin/xamarin-macios/issues/new
+		<value>Внутренняя ошибка в регистраторе (параметры BindAs не могут быть ref/out: {0}). Отправьте отчет об ошибках по следующему адресу: https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT4164" xml:space="preserve">
@@ -1544,7 +1544,7 @@
 		</value>
 	</data>
   <data name="MT4184" xml:space="preserve">
-		<value>Внутренняя ошибка в регистраторе (параметры BindAs не могут быть ref/out: {0}). Отправьте отчет об ошибках по следующему адресу: https://github.com/xamarin/xamarin-macios/issues/new
+		<value>Внутренняя ошибка в регистраторе (параметры BindAs не могут быть ref/out: {0}). Отправьте отчет об ошибках по следующему адресу: https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT4185" xml:space="preserve">
@@ -1572,15 +1572,15 @@
 		</value>
 	</data>
   <data name="MM5103" xml:space="preserve">
-		<value>Не удалось выполнить компиляцию. Код ошибки: {0}. Отправьте отчет об ошибках по следующему адресу: https://github.com/xamarin/xamarin-macios/issues/new
+		<value>Не удалось выполнить компиляцию. Код ошибки: {0}. Отправьте отчет об ошибках по следующему адресу: https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT5103_A" xml:space="preserve">
-		<value>Не удалось скомпилировать файлы "{0}". Отправьте отчет об ошибках по следующему адресу: https://github.com/xamarin/xamarin-macios/issues/new
+		<value>Не удалось скомпилировать файлы "{0}". Отправьте отчет об ошибках по следующему адресу: https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT5106" xml:space="preserve">
-		<value>Не удалось скомпилировать файлы "{0}". Отправьте отчет об ошибках по следующему адресу: https://github.com/xamarin/xamarin-macios/issues/new
+		<value>Не удалось скомпилировать файлы "{0}". Отправьте отчет об ошибках по следующему адресу: https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT5107" xml:space="preserve">
@@ -1652,7 +1652,7 @@
 		</value>
 	</data>
   <data name="MT5216" xml:space="preserve">
-		<value>Сбой собственной компоновки для "{0}". Отправьте отчет об ошибках по следующему адресу: https://github.com/xamarin/xamarin-macios/issues/new
+		<value>Сбой собственной компоновки для "{0}". Отправьте отчет об ошибках по следующему адресу: https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT5217" xml:space="preserve">
@@ -1676,7 +1676,7 @@
 		</value>
 	</data>
   <data name="MX5222" xml:space="preserve">
-		<value>Сбой выполнения собственного компоновщика: {0}. Отправьте отчет об ошибке, перейдя по ссылке https://github.com/xamarin/xamarin-macios/issues/new.
+		<value>Сбой выполнения собственного компоновщика: {0}. Отправьте отчет об ошибке, перейдя по ссылке https://github.com/dotnet/macios/issues/new.
  		</value>
 	</data>
   <data name="MX5223" xml:space="preserve">
@@ -1752,7 +1752,7 @@
 	</data>
   <!-- 8XXX are for errors that occur at runtime -->
   <data name="MT8018" xml:space="preserve">
-		<value>Внутренняя ошибка несогласованности. Отправьте отчет об ошибках по следующему адресу: https://github.com/xamarin/xamarin-macios/issues/new.
+		<value>Внутренняя ошибка несогласованности. Отправьте отчет об ошибках по следующему адресу: https://github.com/dotnet/macios/issues/new.
 		</value>
 	</data>
   <!-- 8000 -> 8036 are missing here (except 8018), so skip to 8037 -->

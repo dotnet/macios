@@ -121,7 +121,7 @@
 !missing-protocol-conformance! UIImage should conform to NSItemProviderReading (defined in 'NSItemProvider' category)
 !missing-protocol-conformance! UIImage should conform to NSItemProviderWriting (defined in 'NSItemProvider' category)
 
-## https://github.com/xamarin/xamarin-macios/issues/3213 should be fixed before conformance to 'UIStateRestoring' is restored.
+## https://github.com/dotnet/macios/issues/3213 should be fixed before conformance to 'UIStateRestoring' is restored.
 !missing-protocol-conformance! UIViewController should conform to UIStateRestoring (defined in 'UIStateRestoration' category)
 
 ## not supported as per introspection, rdar filled: 42851110

@@ -11,7 +11,7 @@ namespace MonoTouchFixtures.Network {
 
 	// The following class just has a subset of the methods in the class, the API allows to perform udp 
 	// communications between bonjour services, which is very fragile in the CI, a sample 
-	// should be added: https://github.com/xamarin/xamarin-macios/issues/9642
+	// should be added: https://github.com/dotnet/macios/issues/9642
 	[TestFixture]
 	[Preserve (AllMembers = true)]
 	public class NWConnectionGroupTest {

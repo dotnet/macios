@@ -19,9 +19,9 @@ E.g. parameters, environment, missing tools.
 
 <a name="MM0000"></a>
 
-#### MM0000: Unexpected error - Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new
+#### MM0000: Unexpected error - Please file a bug report at https://github.com/dotnet/macios/issues/new
 
-An unexpected error condition occurred. Please [file a bug report](https://github.com/xamarin/xamarin-macios/issues/new) with as much information as possible, including:
+An unexpected error condition occurred. Please [file a bug report](https://github.com/dotnet/macios/issues/new) with as much information as possible, including:
 
 * Full build logs, with maximum verbosity (e.g. `-v -v -v -v` in the **Additional mmp arguments**);
 * A minimal test case that reproduce the error; and
@@ -115,9 +115,9 @@ An error occurred while loading the assemblies from the root assembly references
 
 <a name="MM0071"></a>
 
-#### MM0071: Unknown platform: *. This usually indicates a bug in Xamarin.Mac; please [file a bug report](https://github.com/xamarin/xamarin-macios/issues/new) with a test case.
+#### MM0071: Unknown platform: *. This usually indicates a bug in Xamarin.Mac; please [file a bug report](https://github.com/dotnet/macios/issues/new) with a test case.
 
-This usually indicates a bug in Xamarin.Mac; please [file a bug report](https://github.com/xamarin/xamarin-macios/issues/new) with a test case.
+This usually indicates a bug in Xamarin.Mac; please [file a bug report](https://github.com/dotnet/macios/issues/new) with a test case.
 
 <a name="MM0073"></a>
 
@@ -168,7 +168,7 @@ A last-straw solution would be to use an older version of Xamarin.Mac, one that 
 
 <a name="MM0099"></a>
 
-#### MM0099: Internal error {0}. Please [file a bug report](https://github.com/xamarin/xamarin-macios/issues/new) with a test case.
+#### MM0099: Internal error {0}. Please [file a bug report](https://github.com/dotnet/macios/issues/new) with a test case.
 
 <a name="MM0114"></a>
 
@@ -438,7 +438,7 @@ Notes:
 
 An unexpected error occurred when processing an assembly.
 
-The assembly causing the issue is named in the error message. In order to fix this issue the assembly will need to be provided in a [bug report](https://github.com/xamarin/xamarin-macios/issues/new) along with a complete build log with verbosity enabled (i.e. `-v -v -v -v` in the **Additional mtouch arguments**).
+The assembly causing the issue is named in the error message. In order to fix this issue the assembly will need to be provided in a [bug report](https://github.com/dotnet/macios/issues/new) along with a complete build log with verbosity enabled (i.e. `-v -v -v -v` in the **Additional mtouch arguments**).
 
 <a name="MM2104"></a>
 
@@ -457,7 +457,7 @@ The linker reports this warning when it can't optimize a call to `BlockLiteral.S
 The message will point to the method that calls `BlockLiteral.SetupBlock[Unsafe]`, and
 it may also give clues as to why the call couldn't be optimized.
 
-Please file an [issue](https://github.com/xamarin/xamarin-macios/issues/new)
+Please file an [issue](https://github.com/dotnet/macios/issues/new)
 along with a complete build log so that we can investigate what went wrong and
 possibly enable more scenarios in the future.
 
@@ -563,7 +563,7 @@ There are currently two possible reasons for this warning:
    block (alternatively the warning can be ignored by adding `--nowarn:4173`
    as an additional mmp argument in the project's Mac Build options).
 2. The registrar can't find the `Invoke` method of the delegate. This
-   shouldn't happen, so please file an [issue](https://github.com/xamarin/xamarin-macios/issues/new)
+   shouldn't happen, so please file an [issue](https://github.com/dotnet/macios/issues/new)
    with a test project so that we can fix it.
 
 <a name="MM4174"></a>
@@ -580,7 +580,7 @@ that uses blocks. It's recommended to use a binding project to bind
 Objective-C code – in particular when it involves blocks – since it's quite
 complicated to get it right when doing it manually.
 
-If this is not the case, please file an [issue](https://github.com/xamarin/xamarin-macios/issues/new) with a test case.
+If this is not the case, please file an [issue](https://github.com/dotnet/macios/issues/new) with a test case.
 
 <a name="MM4175"/>
 
@@ -618,7 +618,7 @@ be present in those locations.
 If no attribute can be found, then an <a href="#MM4174">MM4174</a> warning
 will be shown.
 
-Reference: https://github.com/xamarin/xamarin-macios/issues/4072
+Reference: https://github.com/dotnet/macios/issues/4072
 
 <a name="MM4176"/>
 
@@ -634,7 +634,7 @@ that uses blocks. It's recommended to use a binding project to bind
 Objective-C code, in particular when it involves blocks, since it's quite
 complicated to get it right when doing it manually.
 
-If this is not the case, please file a [bug report](https://github.com/xamarin/xamarin-macios/issues/new) with a test case.
+If this is not the case, please file a [bug report](https://github.com/dotnet/macios/issues/new) with a test case.
 
 <!-- 4178: used by mtouch -->
 
@@ -651,7 +651,7 @@ Possible solutions:
 * Make the type not abstract.
 
 If this is an API exposed by Xamarin, please file a new issue on
-[GitHub](https://github.com/xamarin/xamarin-macios/issues/new), if it's a
+[GitHub](https://github.com/dotnet/macios/issues/new), if it's a
 third-party binding, please contact the vendor.
 
 ## MM5xxx: GCC and toolchain
@@ -666,7 +666,7 @@ third-party binding, please contact the vendor.
 
 <a name="MM5103"></a>
 
-#### MM5103: Failed to compile. Error code - {0}. Please [file a bug report](https://github.com/xamarin/xamarin-macios/issues/new) with a test case.
+#### MM5103: Failed to compile. Error code - {0}. Please [file a bug report](https://github.com/dotnet/macios/issues/new) with a test case.
 
 <!-- 5104 used by mtouch -->
 <!-- 5107 is used by mtouch-->
@@ -814,7 +814,7 @@ You can silence this warning by adding `--nowarn=5221` to the **Additional mmp a
 
 #### MM8025: Failed to compute the token reference for the type '{type.AssemblyQualifiedName}' because {reasons}
 
-This indicates a bug in Xamarin.Mac. Please [file a bug report](https://github.com/xamarin/xamarin-macios/issues/new) with a test case.
+This indicates a bug in Xamarin.Mac. Please [file a bug report](https://github.com/dotnet/macios/issues/new) with a test case.
 
 A potential workaround would be to disable the `register-protocols`
 optimization, by passing `--optimize:-register-protocols` as an additional mmp
@@ -824,7 +824,7 @@ argument in the project's Mac Build options.
 
 #### MM8026: * is not supported when the dynamic registrar has been linked away.
  
-This usually indicates a bug in Xamarin.Mac, because the dynamic registrar should not be linked away if it's needed. Please [file a bug report](https://github.com/xamarin/xamarin-macios/issues/new) with a test case.
+This usually indicates a bug in Xamarin.Mac, because the dynamic registrar should not be linked away if it's needed. Please [file a bug report](https://github.com/dotnet/macios/issues/new) with a test case.
  
 It's possible to force the linker to keep the dynamic registrar by adding
 `--optimize=-remove-dynamic-registrar` to the additional mmp arguments in
@@ -858,14 +858,14 @@ There are a few reasons this may happen:
   * Incorrect bindings for third-party libraries.
   * Reference-counting bugs in third-party libraries.
 
-* It could be a bug in Xamarin.Mac. If this is the case, please file a [bug report](https://github.com/xamarin/xamarin-macios/issues/new).
+* It could be a bug in Xamarin.Mac. If this is the case, please file a [bug report](https://github.com/dotnet/macios/issues/new).
 
 <a name="MM8028"></a>
 
 ### MM8028: The runtime function {function} has been linked away.
 
 This usually indicates a bug in Xamarin.Mac, because runtime functions should
-not be linked away if they're needed. Please [submit an issue](https://github.com/xamarin/xamarin-macios/wiki/Submitting-Bugs-&-Suggestions).
+not be linked away if they're needed. Please [submit an issue](https://github.com/dotnet/macios/wiki/Submitting-Bugs-&-Suggestions).
 
 <a name="MM8029"></a>
 
@@ -875,7 +875,7 @@ This usually indicates a bug in Objective-C binding code.
 
 If the managed binding is from a third-party vendor, please contact the vendor.
 
-If the managed binding is shipped with Xamarin.Mac, please [submit an issue](https://github.com/xamarin/xamarin-macios/wiki/Submitting-Bugs-&-Suggestions).
+If the managed binding is shipped with Xamarin.Mac, please [submit an issue](https://github.com/dotnet/macios/wiki/Submitting-Bugs-&-Suggestions).
 
 <a name="MM8030"></a>
 
@@ -885,7 +885,7 @@ This usually indicates a bug in Objective-C binding code.
 
 If the managed binding is from a third-party vendor, please contact the vendor.
 
-If the managed binding is shipped with Xamarin.Mac, please [submit an issue](https://github.com/xamarin/xamarin-macios/wiki/Submitting-Bugs-&-Suggestions).
+If the managed binding is shipped with Xamarin.Mac, please [submit an issue](https://github.com/dotnet/macios/wiki/Submitting-Bugs-&-Suggestions).
 
 <a name="MM8031"></a>
 
@@ -894,7 +894,7 @@ This usually indicates a bug in Objective-C binding code.
 
 If the managed binding is from a third-party vendor, please contact the vendor.
 
-If the managed binding is shipped with Xamarin.Mac, please [submit an issue](https://github.com/xamarin/xamarin-macios/wiki/Submitting-Bugs-&-Suggestions).
+If the managed binding is shipped with Xamarin.Mac, please [submit an issue](https://github.com/dotnet/macios/wiki/Submitting-Bugs-&-Suggestions).
 
 <a name="MM8032"></a>
 
@@ -904,7 +904,7 @@ This usually indicates a bug in Objective-C binding code.
 
 If the managed binding is from a third-party vendor, please contact the vendor.
 
-If the managed binding is shipped with Xamarin.Mac, please [submit an issue](https://github.com/xamarin/xamarin-macios/wiki/Submitting-Bugs-&-Suggestions).
+If the managed binding is shipped with Xamarin.Mac, please [submit an issue](https://github.com/dotnet/macios/wiki/Submitting-Bugs-&-Suggestions).
 
 <a name="MM8033"></a>
 
@@ -914,7 +914,7 @@ This usually indicates a bug in Objective-C binding code.
 
 If the managed binding is from a third-party vendor, please contact the vendor.
 
-If the managed binding is shipped with Xamarin.Mac, please [submit an issue](https://github.com/xamarin/xamarin-macios/wiki/Submitting-Bugs-&-Suggestions).
+If the managed binding is shipped with Xamarin.Mac, please [submit an issue](https://github.com/dotnet/macios/wiki/Submitting-Bugs-&-Suggestions).
 
 <a name="MM8034"></a>
 

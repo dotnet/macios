@@ -18,7 +18,7 @@ Copyright (C) 2013-2016 Xamarin Inc. All rights reserved.
 
 	<!-- These "stub" targets are declared to prevent other (Windows specific) external targets from firing.
 	     They are required as we share use of @(NativeReference) with ClickOnce, and if we don't stub then it can do the wrong thing.
-	     Example: https://github.com/xamarin/xamarin-macios/issues/3876
+	     Example: https://github.com/dotnet/macios/issues/3876
 	-->
 	<Target Name="GenerateManifests"
 	      Condition="'$(GenerateClickOnceManifests)'=='true' or '@(NativeReference)'!='' or '@(ResolvedIsolatedComModules)'!='' or '$(GenerateAppxManifest)' == 'true'"

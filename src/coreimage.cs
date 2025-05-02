@@ -1131,8 +1131,7 @@ namespace CoreImage {
 		[Export ("viewForUIConfiguration:excludedKeys:")]
 		IKFilterUIView GetFilterUIView (NSDictionary configurationOptions, [NullAllowed] NSArray excludedKeys);
 
-		// added in 10.10 but it was already accessible in a different way before (manual bindings)
-		[NoMac]
+		/// <summary>Gets the image that results from applying the filter.</summary>
 		[MacCatalyst (13, 1)]
 		[Export ("outputImage")]
 		[NullAllowed]
@@ -13065,7 +13064,7 @@ namespace CoreImage {
 
 	// LabToRGBFilter and RGBtoLabFilter are names for filter API but return the same type CIConvertLab
 	// Enabling these cause a large number of introspection errors
-	// https://github.com/xamarin/xamarin-macios/issues/15662
+	// https://github.com/dotnet/macios/issues/15662
 #if false
 	[CoreImageFilter]
 	[iOS (16,0), TV (16,0), Mac (13,0), MacCatalyst (16,0)]

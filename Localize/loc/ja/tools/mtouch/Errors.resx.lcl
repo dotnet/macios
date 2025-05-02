@@ -318,9 +318,9 @@
       </Item>
       <Item ItemId=";MM5103" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Failed to compile. Error code - {0}. Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new]D;]A;		]]></Val>
+          <Val><![CDATA[Failed to compile. Error code - {0}. Please file a bug report at https://github.com/dotnet/macios/issues/new]D;]A;		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[コンパイルに失敗しました。エラー コード - {0}。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください]D;]A;		]]></Val>
+            <Val><![CDATA[コンパイルに失敗しました。エラー コード - {0}。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください]D;]A;		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -399,9 +399,9 @@
       </Item>
       <Item ItemId=";MT0000" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Unexpected error - Please fill a bug report at https://github.com/xamarin/xamarin-macios/issues/new]D;]A;		]]></Val>
+          <Val><![CDATA[Unexpected error - Please fill a bug report at https://github.com/dotnet/macios/issues/new]D;]A;		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[予期しないエラーです。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください]D;]A;		]]></Val>
+            <Val><![CDATA[予期しないエラーです。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください]D;]A;		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -1029,9 +1029,9 @@
       </Item>
       <Item ItemId=";MT0100" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Invalid assembly build target: '{0}'. Please file a bug report with a test case (https://github.com/xamarin/xamarin-macios/issues/new).]D;]A;		]]></Val>
+          <Val><![CDATA[Invalid assembly build target: '{0}'. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new).]D;]A;		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[アセンブリ ビルド ターゲットが無効です: '{0}'。テスト ケースを添えてバグ報告をお寄せください (https://github.com/xamarin/xamarin-macios/issues/new)。]D;]A;		]]></Val>
+            <Val><![CDATA[アセンブリ ビルド ターゲットが無効です: '{0}'。テスト ケースを添えてバグ報告をお寄せください (https://github.com/dotnet/macios/issues/new)。]D;]A;		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -1479,54 +1479,54 @@
       </Item>
       <Item ItemId=";MT0157" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Internal error: can't convert from '{0}' to '{1}' in {2}. Please file a bug report with a test case (https://github.com/xamarin/xamarin-macios/issues/new).]D;]A;		]]></Val>
+          <Val><![CDATA[Internal error: can't convert from '{0}' to '{1}' in {2}. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new).]D;]A;		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[内部エラー: {2} で '{0}' から '{1}' に変換できません。テスト ケースを添えてバグ報告をお寄せください (https://github.com/xamarin/xamarin-macios/issues/new)。]D;]A;		]]></Val>
+            <Val><![CDATA[内部エラー: {2} で '{0}' から '{1}' に変換できません。テスト ケースを添えてバグ報告をお寄せください (https://github.com/dotnet/macios/issues/new)。]D;]A;		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";MT0158" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Internal error: the smart enum {0} doesn't seem to be a smart enum after all. Please file a bug report with a test case (https://github.com/xamarin/xamarin-macios/issues/new).]D;]A;		]]></Val>
+          <Val><![CDATA[Internal error: the smart enum {0} doesn't seem to be a smart enum after all. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new).]D;]A;		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[内部エラー: スマート列挙型 {0} が、スマートな列挙型ではないようです。テスト ケースを添えてバグ報告をお寄せください (https://github.com/xamarin/xamarin-macios/issues/new)。]D;]A;		]]></Val>
+            <Val><![CDATA[内部エラー: スマート列挙型 {0} が、スマートな列挙型ではないようです。テスト ケースを添えてバグ報告をお寄せください (https://github.com/dotnet/macios/issues/new)。]D;]A;		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";MT0159" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Internal error: unsupported tokentype ({0}) for {1}. Please file a bug report with a test case (https://github.com/xamarin/xamarin-macios/issues/new).]D;]A;		]]></Val>
+          <Val><![CDATA[Internal error: unsupported tokentype ({0}) for {1}. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new).]D;]A;		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[内部エラー: {1} に対してサポートされていない tokentype ({0}) です。テスト ケースを添えてバグ報告をお寄せください (https://github.com/xamarin/xamarin-macios/issues/new)。]D;]A;		]]></Val>
+            <Val><![CDATA[内部エラー: {1} に対してサポートされていない tokentype ({0}) です。テスト ケースを添えてバグ報告をお寄せください (https://github.com/dotnet/macios/issues/new)。]D;]A;		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";MT0160" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Internal error: the static registrar should not execute unless the linker also executed (or was disabled). A potential workaround is to pass '-f' as an additional {0} argument to force a full build. Please file a bug report with a test case (https://github.com/xamarin/xamarin-macios/issues/new).]D;]A;		]]></Val>
+          <Val><![CDATA[Internal error: the static registrar should not execute unless the linker also executed (or was disabled). A potential workaround is to pass '-f' as an additional {0} argument to force a full build. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new).]D;]A;		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[内部エラー: リンカーも実行されている場合 (または、無効にされた場合) 以外は、静的レジストラーを実行することはできません。回避策としては、追加の {0} 引数として '-f' を渡すことで完全ビルドを実行することが考えられます。テスト ケースを添えてバグ報告をお寄せください (https://github.com/xamarin/xamarin-macios/issues/new)。]D;]A;		]]></Val>
+            <Val><![CDATA[内部エラー: リンカーも実行されている場合 (または、無効にされた場合) 以外は、静的レジストラーを実行することはできません。回避策としては、追加の {0} 引数として '-f' を渡すことで完全ビルドを実行することが考えられます。テスト ケースを添えてバグ報告をお寄せください (https://github.com/dotnet/macios/issues/new)。]D;]A;		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";MT0161" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Internal error: symbol without a name (type: {0}). Please file a bug report with a test case (https://github.com/xamarin/xamarin-macios/issues/new).]D;]A;		]]></Val>
+          <Val><![CDATA[Internal error: symbol without a name (type: {0}). Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new).]D;]A;		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[内部エラー: 名前のないシンボルです (型: {0})。テスト ケースを添えてバグ報告をお寄せください (https://github.com/xamarin/xamarin-macios/issues/new)。]D;]A;		]]></Val>
+            <Val><![CDATA[内部エラー: 名前のないシンボルです (型: {0})。テスト ケースを添えてバグ報告をお寄せください (https://github.com/dotnet/macios/issues/new)。]D;]A;		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";MT0168" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Internal error: 'can't convert frameworks to frameworks: {0}'. Please file a bug report with a test case (https://github.com/xamarin/xamarin-macios/issues/new).]D;]A;		]]></Val>
+          <Val><![CDATA[Internal error: 'can't convert frameworks to frameworks: {0}'. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new).]D;]A;		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[内部エラー: 'フレームワークをフレームワークに変換することはできません: {0}'。テスト ケースを添えてバグ報告をお寄せください (https://github.com/xamarin/xamarin-macios/issues/new)。]D;]A;		]]></Val>
+            <Val><![CDATA[内部エラー: 'フレームワークをフレームワークに変換することはできません: {0}'。テスト ケースを添えてバグ報告をお寄せください (https://github.com/dotnet/macios/issues/new)。]D;]A;		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -1578,9 +1578,9 @@
       </Item>
       <Item ItemId=";MT1013" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Dependency tracking error: no files to compare. Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new with a test case.]D;]A;		]]></Val>
+          <Val><![CDATA[Dependency tracking error: no files to compare. Please file a bug report at https://github.com/dotnet/macios/issues/new with a test case.]D;]A;		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[依存関係の追跡エラー: 比較するファイルがありません。テスト ケースを添えて https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください。]D;]A;		]]></Val>
+            <Val><![CDATA[依存関係の追跡エラー: 比較するファイルがありません。テスト ケースを添えて https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください。]D;]A;		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -1947,9 +1947,9 @@
       </Item>
       <Item ItemId=";MT4002" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Failed to compile the generated code for P/Invoke methods. Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new]D;]A;		]]></Val>
+          <Val><![CDATA[Failed to compile the generated code for P/Invoke methods. Please file a bug report at https://github.com/dotnet/macios/issues/new]D;]A;		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[P/Invoke メソッドのために生成されたコードをコンパイルできませんでした。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください]D;]A;		]]></Val>
+            <Val><![CDATA[P/Invoke メソッドのために生成されたコードをコンパイルできませんでした。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください]D;]A;		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -2019,9 +2019,9 @@
       </Item>
       <Item ItemId=";MT4109" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Failed to compile the generated registrar code. Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new]D;]A;		]]></Val>
+          <Val><![CDATA[Failed to compile the generated registrar code. Please file a bug report at https://github.com/dotnet/macios/issues/new]D;]A;		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[生成されたレジストラー コードをコンパイルできませんでした。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください]D;]A;		]]></Val>
+            <Val><![CDATA[生成されたレジストラー コードをコンパイルできませんでした。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください]D;]A;		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -2055,9 +2055,9 @@
       </Item>
       <Item ItemId=";MT4114" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Unexpected error in the registrar for the method '{0}.{1}' - Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new]D;]A;		]]></Val>
+          <Val><![CDATA[Unexpected error in the registrar for the method '{0}.{1}' - Please file a bug report at https://github.com/dotnet/macios/issues/new]D;]A;		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[メソッド '{0}.{1}' についてレジストラーで予期しないエラーが発生しました。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください]D;]A;		]]></Val>
+            <Val><![CDATA[メソッド '{0}.{1}' についてレジストラーで予期しないエラーが発生しました。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください]D;]A;		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -2100,9 +2100,9 @@
       </Item>
       <Item ItemId=";MT4120" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The registrar found an unknown field type '{0}' in field '{1}.{2}'. Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new]D;]A;		]]></Val>
+          <Val><![CDATA[The registrar found an unknown field type '{0}' in field '{1}.{2}'. Please file a bug report at https://github.com/dotnet/macios/issues/new]D;]A;		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[レジストラーにより、フィールド '{1}.{2}' に不明なフィールド型 '{0}' が検出されました。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください]D;]A;		]]></Val>
+            <Val><![CDATA[レジストラーにより、フィールド '{1}.{2}' に不明なフィールド型 '{0}' が検出されました。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください]D;]A;		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -2127,72 +2127,72 @@
       </Item>
       <Item ItemId=";MT4124" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Invalid {0} found on '{1}'. Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new]D;]A;		]]></Val>
+          <Val><![CDATA[Invalid {0} found on '{1}'. Please file a bug report at https://github.com/dotnet/macios/issues/new]D;]A;		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA['{1}' に無効な {0} が見つかりました。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください]D;]A;		]]></Val>
+            <Val><![CDATA['{1}' に無効な {0} が見つかりました。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください]D;]A;		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";MT4124_A" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Invalid RegisterAttribute property {1} found on '{0}'. Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new]D;]A;		]]></Val>
+          <Val><![CDATA[Invalid RegisterAttribute property {1} found on '{0}'. Please file a bug report at https://github.com/dotnet/macios/issues/new]D;]A;		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA['{0}' に無効な RegisterAttribute プロパティ {1} が見つかりました。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください]D;]A;		]]></Val>
+            <Val><![CDATA['{0}' に無効な RegisterAttribute プロパティ {1} が見つかりました。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください]D;]A;		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";MT4124_B" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Invalid AdoptsAttribute found on '{0}': expected 1 constructor arguments, got {1}. Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new]D;]A;		]]></Val>
+          <Val><![CDATA[Invalid AdoptsAttribute found on '{0}': expected 1 constructor arguments, got {1}. Please file a bug report at https://github.com/dotnet/macios/issues/new]D;]A;		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA['{0}' に無効な AdoptsAttribute が見つかりました: 1 個のコンストラクター引数が必要ですが、{1} 個ありました。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください]D;]A;		]]></Val>
+            <Val><![CDATA['{0}' に無効な AdoptsAttribute が見つかりました: 1 個のコンストラクター引数が必要ですが、{1} 個ありました。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください]D;]A;		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";MT4124_C" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Invalid BindAsAttribute found on '{0}.{1}': unknown field {2}. Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new]D;]A;		]]></Val>
+          <Val><![CDATA[Invalid BindAsAttribute found on '{0}.{1}': unknown field {2}. Please file a bug report at https://github.com/dotnet/macios/issues/new]D;]A;		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA['{0}.{1}' に無効な BindAsAttribute が見つかりました: 不明なフィールド {2} があります。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください]D;]A;		]]></Val>
+            <Val><![CDATA['{0}.{1}' に無効な BindAsAttribute が見つかりました: 不明なフィールド {2} があります。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください]D;]A;		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";MT4124_D" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Invalid {0} found on '{1}.{2}'. Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new]D;]A;		]]></Val>
+          <Val><![CDATA[Invalid {0} found on '{1}.{2}'. Please file a bug report at https://github.com/dotnet/macios/issues/new]D;]A;		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA['{1}.{2}' に無効な {0} が見つかりました。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください]D;]A;		]]></Val>
+            <Val><![CDATA['{1}.{2}' に無効な {0} が見つかりました。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください]D;]A;		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";MT4124_E" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Invalid BindAsAttribute found on '{0}': should have 1 constructor arguments, found {1}. Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new]D;]A;		]]></Val>
+          <Val><![CDATA[Invalid BindAsAttribute found on '{0}': should have 1 constructor arguments, found {1}. Please file a bug report at https://github.com/dotnet/macios/issues/new]D;]A;		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA['{0}' に無効な BindAsAttribute が見つかりました: 1 個のコンストラクター引数が必要ですが、{1} 個見つかりました。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください]D;]A;		]]></Val>
+            <Val><![CDATA['{0}' に無効な BindAsAttribute が見つかりました: 1 個のコンストラクター引数が必要ですが、{1} 個見つかりました。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください]D;]A;		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";MT4124_H" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Invalid BindAsAttribute found on '{0}': could not find the underlying enum type of {1}. Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new]D;]A;		]]></Val>
+          <Val><![CDATA[Invalid BindAsAttribute found on '{0}': could not find the underlying enum type of {1}. Please file a bug report at https://github.com/dotnet/macios/issues/new]D;]A;		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA['{0}' に無効な BindAsAttribute が見つかりました: 基になる列挙型 {1} が見つかりませんでした。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください]D;]A;		]]></Val>
+            <Val><![CDATA['{0}' に無効な BindAsAttribute が見つかりました: 基になる列挙型 {1} が見つかりませんでした。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください]D;]A;		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";MT4124_I" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Invalid {0} found on '{1}'. Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new]]></Val>
+          <Val><![CDATA[Invalid {0} found on '{1}'. Please file a bug report at https://github.com/dotnet/macios/issues/new]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA['{1}' に無効な {0} が見つかりました。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください]]></Val>
+            <Val><![CDATA['{1}' に無効な {0} が見つかりました。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -2361,9 +2361,9 @@
       </Item>
       <Item ItemId=";MT4147" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Invalid {0} found on '{1}'. Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new]D;]A;		]]></Val>
+          <Val><![CDATA[Invalid {0} found on '{1}'. Please file a bug report at https://github.com/dotnet/macios/issues/new]D;]A;		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA['{1}' に無効な {0} が見つかりました。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください]D;]A;		]]></Val>
+            <Val><![CDATA['{1}' に無効な {0} が見つかりました。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください]D;]A;		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -2532,27 +2532,27 @@
       </Item>
       <Item ItemId=";MT4163" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Internal error in the registrar ({0} ctor with {1} arguments). Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new]D;]A;		]]></Val>
+          <Val><![CDATA[Internal error in the registrar ({0} ctor with {1} arguments). Please file a bug report at https://github.com/dotnet/macios/issues/new]D;]A;		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[レジストラーで内部エラーが発生しました ({1} 個の引数を持つ {0} コンストラクター)。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください]D;]A;		]]></Val>
+            <Val><![CDATA[レジストラーで内部エラーが発生しました ({1} 個の引数を持つ {0} コンストラクター)。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください]D;]A;		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";MT4163_A" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Internal error in the registrar (Unknown availability kind: {0}). Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new]D;]A;		]]></Val>
+          <Val><![CDATA[Internal error in the registrar (Unknown availability kind: {0}). Please file a bug report at https://github.com/dotnet/macios/issues/new]D;]A;		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[レジストラーで内部エラーが発生しました (不明な可用性の種類: {0})。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください]D;]A;		]]></Val>
+            <Val><![CDATA[レジストラーで内部エラーが発生しました (不明な可用性の種類: {0})。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください]D;]A;		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";MT4163_B" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Internal error in the registrar (BindAs parameters can't be ref/out: {0}). Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new]D;]A;		]]></Val>
+          <Val><![CDATA[Internal error in the registrar (BindAs parameters can't be ref/out: {0}). Please file a bug report at https://github.com/dotnet/macios/issues/new]D;]A;		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[レジストラーで内部エラーが発生しました (BindAs パラメーターを ref/out にすることはできません: {0})。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください]D;]A;		]]></Val>
+            <Val><![CDATA[レジストラーで内部エラーが発生しました (BindAs パラメーターを ref/out にすることはできません: {0})。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください]D;]A;		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -2733,9 +2733,9 @@
       </Item>
       <Item ItemId=";MT4184" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Internal error in the registrar (BindAs parameters can't be ref/out: {0}). Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new]D;]A;		]]></Val>
+          <Val><![CDATA[Internal error in the registrar (BindAs parameters can't be ref/out: {0}). Please file a bug report at https://github.com/dotnet/macios/issues/new]D;]A;		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[レジストラーで内部エラーが発生しました (BindAs パラメーターを ref/out にすることはできません: {0})。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください]D;]A;		]]></Val>
+            <Val><![CDATA[レジストラーで内部エラーが発生しました (BindAs パラメーターを ref/out にすることはできません: {0})。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください]D;]A;		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -2778,18 +2778,18 @@
       </Item>
       <Item ItemId=";MT5103_A" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Failed to compile the file(s) '{0}'. Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new]D;]A;		]]></Val>
+          <Val><![CDATA[Failed to compile the file(s) '{0}'. Please file a bug report at https://github.com/dotnet/macios/issues/new]D;]A;		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[ファイル '{0}' のコンパイルに失敗しました。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください]D;]A;		]]></Val>
+            <Val><![CDATA[ファイル '{0}' のコンパイルに失敗しました。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください]D;]A;		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";MT5106" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Could not compile the file(s) '{0}'. Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new]D;]A;		]]></Val>
+          <Val><![CDATA[Could not compile the file(s) '{0}'. Please file a bug report at https://github.com/dotnet/macios/issues/new]D;]A;		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[ファイル '{0}' をコンパイルできませんでした。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください]D;]A;		]]></Val>
+            <Val><![CDATA[ファイル '{0}' をコンパイルできませんでした。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください]D;]A;		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -2913,9 +2913,9 @@
       </Item>
       <Item ItemId=";MT5216" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Native linking failed for '{0}'. Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new]D;]A;		]]></Val>
+          <Val><![CDATA[Native linking failed for '{0}'. Please file a bug report at https://github.com/dotnet/macios/issues/new]D;]A;		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA['{0}' のネイティブ リンクに失敗しました。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください]D;]A;		]]></Val>
+            <Val><![CDATA['{0}' のネイティブ リンクに失敗しました。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください]D;]A;		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -2994,9 +2994,9 @@
       </Item>
       <Item ItemId=";MT8018" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Internal consistency error. Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new.]D;]A;		]]></Val>
+          <Val><![CDATA[Internal consistency error. Please file a bug report at https://github.com/dotnet/macios/issues/new.]D;]A;		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[内部整合性エラーです。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください。]D;]A;		]]></Val>
+            <Val><![CDATA[内部整合性エラーです。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください。]D;]A;		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -3138,9 +3138,9 @@
       </Item>
       <Item ItemId=";MX0071" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Unknown platform: {0}. This usually indicates a bug in {1}; please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new with a test case.]D;]A;		]]></Val>
+          <Val><![CDATA[Unknown platform: {0}. This usually indicates a bug in {1}; please file a bug report at https://github.com/dotnet/macios/issues/new with a test case.]D;]A;		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[不明なプラットフォーム: {0}。これは通常、{1} にバグがあることを示します。テスト ケースを添えて https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください。]D;]A;		]]></Val>
+            <Val><![CDATA[不明なプラットフォーム: {0}。これは通常、{1} にバグがあることを示します。テスト ケースを添えて https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください。]D;]A;		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -3183,9 +3183,9 @@
       </Item>
       <Item ItemId=";MX0099" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Internal error: {0}. Please file an issue at https://github.com/xamarin/xamarin-macios/issues/new.]D;]A;		]]></Val>
+          <Val><![CDATA[Internal error: {0}. Please file an issue at https://github.com/dotnet/macios/issues/new.]D;]A;		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[内部エラー: {0}。問題を https://github.com/xamarin/xamarin-macios/issues/new にお寄せください。]D;]A;		]]></Val>
+            <Val><![CDATA[内部エラー: {0}。問題を https://github.com/dotnet/macios/issues/new にお寄せください。]D;]A;		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -3264,9 +3264,9 @@
       </Item>
       <Item ItemId=";MX0177" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Unknown platform: {0}. This usually indicates a bug; please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new with a test case.]]></Val>
+          <Val><![CDATA[Unknown platform: {0}. This usually indicates a bug; please file a bug report at https://github.com/dotnet/macios/issues/new with a test case.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[不明なプラットフォーム: {0}。これは通常、バグがあることを示します。テスト ケースを添えて https://github.com/xamarin/xamarin-macios/issues/new にバグ報告を提出してください。		]]></Val>
+            <Val><![CDATA[不明なプラットフォーム: {0}。これは通常、バグがあることを示します。テスト ケースを添えて https://github.com/dotnet/macios/issues/new にバグ報告を提出してください。		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -3603,9 +3603,9 @@
       </Item>
       <Item ItemId=";MX5222" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The native linker failed to execute: {0}. Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new]D;]A; 		]]></Val>
+          <Val><![CDATA[The native linker failed to execute: {0}. Please file a bug report at https://github.com/dotnet/macios/issues/new]D;]A; 		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[ネイティブ リンカーが {0} を実行できませんでした。https://github.com/xamarin/xamarin-macios/issues/new でバグ報告を提出してください]D;]A;	]]></Val>
+            <Val><![CDATA[ネイティブ リンカーが {0} を実行できませんでした。https://github.com/dotnet/macios/issues/new でバグ報告を提出してください]D;]A;	]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -3912,9 +3912,9 @@
       </Item>
       <Item ItemId=";default" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The error message for code {0} could not be found. Please report this missing message on GitHub at https://github.com/xamarin/xamarin-macios/issues/new]]></Val>
+          <Val><![CDATA[The error message for code {0} could not be found. Please report this missing message on GitHub at https://github.com/dotnet/macios/issues/new]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[コード {0} のエラー メッセージが見つかりませんでした。見つからなかったメッセージを https://github.com/xamarin/xamarin-macios/issues/new の GitHub にお知らせください]]></Val>
+            <Val><![CDATA[コード {0} のエラー メッセージが見つかりませんでした。見つからなかったメッセージを https://github.com/dotnet/macios/issues/new の GitHub にお知らせください]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

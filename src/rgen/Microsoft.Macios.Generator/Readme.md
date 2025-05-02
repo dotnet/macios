@@ -1,6 +1,6 @@
 # Roslyn binding code generator
 
-This directory contains the code generator for binding code. The generator is the implementation of [RFC: Migrate bgen to use roslyn instead of the reflection API](https://github.com/xamarin/xamarin-macios/issues/21308)
+This directory contains the code generator for binding code. The generator is the implementation of [RFC: Migrate bgen to use roslyn instead of the reflection API](https://github.com/dotnet/macios/issues/21308)
 
 ## Content
 

@@ -13,13 +13,13 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="default" xml:space="preserve">
-		<value>{0} kodu için hata iletisi bulunamadı. Lütfen https://github.com/xamarin/xamarin-macios/issues/new adresindeki GitHub'da bu eksik iletiyi bildirin</value>
+		<value>{0} kodu için hata iletisi bulunamadı. Lütfen https://github.com/dotnet/macios/issues/new adresindeki GitHub'da bu eksik iletiyi bildirin</value>
 		<comment>
 			This is the default message when an error code can not be found.
 		</comment>
 	</data>
   <data name="MT0000" xml:space="preserve">
-		<value>Beklenmeyen hata. Lütfen https://github.com/xamarin/xamarin-macios/issues/new adresinde bir hata raporu oluşturun
+		<value>Beklenmeyen hata. Lütfen https://github.com/dotnet/macios/issues/new adresinde bir hata raporu oluşturun
 		</value>
 	</data>
   <data name="MT0001" xml:space="preserve">
@@ -299,7 +299,7 @@
 		</value>
 	</data>
   <data name="MX0071" xml:space="preserve">
-		<value>Bilinmeyen platform: {0}. Bu genellikle bir {1} hatasını gösterir; lütfen bir test çalışmasıyla birlikte https://github.com/xamarin/xamarin-macios/issues/new adresinde bir hata raporu oluşturun.
+		<value>Bilinmeyen platform: {0}. Bu genellikle bir {1} hatasını gösterir; lütfen bir test çalışmasıyla birlikte https://github.com/dotnet/macios/issues/new adresinde bir hata raporu oluşturun.
 		</value>
 	</data>
   <data name="MT0072" xml:space="preserve">
@@ -425,11 +425,11 @@
 	</data>
   <!-- MM0098 has been used in the past -->
   <data name="MX0099" xml:space="preserve">
-		<value>İç hata: {0}. Lütfen https://github.com/xamarin/xamarin-macios/issues/new adresinde bir sorun oluşturun.
+		<value>İç hata: {0}. Lütfen https://github.com/dotnet/macios/issues/new adresinde bir sorun oluşturun.
 		</value>
 	</data>
   <data name="MT0100" xml:space="preserve">
-		<value>Bütünleştirilmiş kod derleme hedefi geçersiz: '{0}'. Lütfen bir test çalışmasıyla birlikte bir hata raporu oluşturun (https://github.com/xamarin/xamarin-macios/issues/new).
+		<value>Bütünleştirilmiş kod derleme hedefi geçersiz: '{0}'. Lütfen bir test çalışmasıyla birlikte bir hata raporu oluşturun (https://github.com/dotnet/macios/issues/new).
 		</value>
 	</data>
   <data name="MT0101" xml:space="preserve">
@@ -679,27 +679,27 @@
 		</value>
 	</data>
   <data name="MT0157" xml:space="preserve">
-		<value>İç hata: {2} içinde '{0}' öğesi '{1}' öğesine dönüştürülemiyor. Lütfen bir test çalışması içeren bir hata raporu oluşturun (https://github.com/xamarin/xamarin-macios/issues/new).
+		<value>İç hata: {2} içinde '{0}' öğesi '{1}' öğesine dönüştürülemiyor. Lütfen bir test çalışması içeren bir hata raporu oluşturun (https://github.com/dotnet/macios/issues/new).
 		</value>
 	</data>
   <data name="MT0158" xml:space="preserve">
-		<value>İç hata: Akıllı sabit listesi {0}, akıllı sabit listesi gibi görünmüyor. Lütfen bir test çalışmasıyla birlikte bir hata raporu oluşturun (https://github.com/xamarin/xamarin-macios/issues/new).
+		<value>İç hata: Akıllı sabit listesi {0}, akıllı sabit listesi gibi görünmüyor. Lütfen bir test çalışmasıyla birlikte bir hata raporu oluşturun (https://github.com/dotnet/macios/issues/new).
 		</value>
 	</data>
   <data name="MT0159" xml:space="preserve">
-		<value>İç hata: {1} için tokentype ({0}) desteklenmiyor. Lütfen bir test çalışmasıyla birlikte bir hata raporu oluşturun (https://github.com/xamarin/xamarin-macios/issues/new).
+		<value>İç hata: {1} için tokentype ({0}) desteklenmiyor. Lütfen bir test çalışmasıyla birlikte bir hata raporu oluşturun (https://github.com/dotnet/macios/issues/new).
 		</value>
 	</data>
   <data name="MT0160" xml:space="preserve">
-		<value>İç hata: Bağlayıcı da yürütülmediyse (veya devre dışı bırakıldıysa) statik kaydedici yürütülmemelidir. Geçici bir çözüm olarak, tam derlemeyi zorlamak için ek bir {0} bağımsız değişkeni olarak '-f' geçirilebilir. Lütfen bir test çalışmasıyla birlikte bir hata raporu oluşturun (https://github.com/xamarin/xamarin-macios/issues/new).
+		<value>İç hata: Bağlayıcı da yürütülmediyse (veya devre dışı bırakıldıysa) statik kaydedici yürütülmemelidir. Geçici bir çözüm olarak, tam derlemeyi zorlamak için ek bir {0} bağımsız değişkeni olarak '-f' geçirilebilir. Lütfen bir test çalışmasıyla birlikte bir hata raporu oluşturun (https://github.com/dotnet/macios/issues/new).
 		</value>
 	</data>
   <data name="MT0161" xml:space="preserve">
-		<value>İç hata: Adı olmayan sembol (tür: {0}). Lütfen bir test çalışmasıyla birlikte bir hata raporu oluşturun (https://github.com/xamarin/xamarin-macios/issues/new).
+		<value>İç hata: Adı olmayan sembol (tür: {0}). Lütfen bir test çalışmasıyla birlikte bir hata raporu oluşturun (https://github.com/dotnet/macios/issues/new).
 		</value>
 	</data>
   <data name="MT0168" xml:space="preserve">
-		<value>İç hata: 'çerçeveler, çerçevelere dönüştürülemiyor: {0}'. Lütfen bir test çalışmasıyla birlikte bir hata raporu oluşturun (https://github.com/xamarin/xamarin-macios/issues/new).
+		<value>İç hata: 'çerçeveler, çerçevelere dönüştürülemiyor: {0}'. Lütfen bir test çalışmasıyla birlikte bir hata raporu oluşturun (https://github.com/dotnet/macios/issues/new).
 		</value>
 	</data>
   <data name="MT0174_a" xml:space="preserve">
@@ -723,7 +723,7 @@
         </value>
     </data>
   <data name="MX0177" xml:space="preserve">
-		<value>Bilinmeyen platform: {0}. Bu genellikle bir hatayı gösterir. Lütfen test çalışmasıyla birlikte https://github.com/xamarin/xamarin-macios/issues/new adresinde bir hata raporu oluşturun.</value>
+		<value>Bilinmeyen platform: {0}. Bu genellikle bir hatayı gösterir. Lütfen test çalışmasıyla birlikte https://github.com/dotnet/macios/issues/new adresinde bir hata raporu oluşturun.</value>
 	</data>
   <data name="MX0178" xml:space="preserve">
         <value>'{0}' için hata ayıklama sembolü dosyası geçerli olmadığından yoksayıldı.
@@ -762,7 +762,7 @@
 		</value>
 	</data>
   <data name="MT1013" xml:space="preserve">
-		<value>Bağımlılık izleme hatası: Karşılaştırılacak dosya yok. Lütfen bir test çalışmasıyla birlikte https://github.com/xamarin/xamarin-macios/issues/new adresinde bir hata raporu oluşturun.
+		<value>Bağımlılık izleme hatası: Karşılaştırılacak dosya yok. Lütfen bir test çalışmasıyla birlikte https://github.com/dotnet/macios/issues/new adresinde bir hata raporu oluşturun.
 		</value>
 	</data>
   <data name="MT1014" xml:space="preserve">
@@ -1157,7 +1157,7 @@
 		</value>
 	</data>
   <data name="MT4002" xml:space="preserve">
-		<value>P/Invoke metotları için oluşturulan kod derlenemedi. Lütfen https://github.com/xamarin/xamarin-macios/issues/new adresinde bir hata raporu oluşturun
+		<value>P/Invoke metotları için oluşturulan kod derlenemedi. Lütfen https://github.com/dotnet/macios/issues/new adresinde bir hata raporu oluşturun
 		</value>
 	</data>
   <data name="MT4101" xml:space="preserve">
@@ -1189,7 +1189,7 @@
 		</value>
 	</data>
   <data name="MT4109" xml:space="preserve">
-		<value>Oluşturulan kaydedici kodu derlenemedi. Lütfen https://github.com/xamarin/xamarin-macios/issues/new adresinde bir hata raporu oluşturun
+		<value>Oluşturulan kaydedici kodu derlenemedi. Lütfen https://github.com/dotnet/macios/issues/new adresinde bir hata raporu oluşturun
 		</value>
 	</data>
   <data name="MT4110" xml:space="preserve">
@@ -1205,7 +1205,7 @@
 		</value>
 	</data>
   <data name="MT4114" xml:space="preserve">
-		<value>'{0}.{1}' metodunun kaydedicisinde beklenmeyen bir hata oluştu. Lütfen https://github.com/xamarin/xamarin-macios/issues/new adresinde bir hata raporu oluşturun
+		<value>'{0}.{1}' metodunun kaydedicisinde beklenmeyen bir hata oluştu. Lütfen https://github.com/dotnet/macios/issues/new adresinde bir hata raporu oluşturun
 		</value>
 	</data>
   <data name="MT4116" xml:space="preserve">
@@ -1225,7 +1225,7 @@
 		</value>
 	</data>
   <data name="MT4120" xml:space="preserve">
-		<value>Kaydedici, '{1}.{2}' alanında bilinmeyen bir '{0}' alan türü buldu. Lütfen https://github.com/xamarin/xamarin-macios/issues/new adresinde bir hata raporu oluşturun
+		<value>Kaydedici, '{1}.{2}' alanında bilinmeyen bir '{0}' alan türü buldu. Lütfen https://github.com/dotnet/macios/issues/new adresinde bir hata raporu oluşturun
 		</value>
 	</data>
   <data name="MT4121" xml:space="preserve">
@@ -1237,35 +1237,35 @@
 		</value>
 	</data>
   <data name="MT4124" xml:space="preserve">
-		<value>'{1}' üzerinde geçersiz {0} bulundu. Lütfen https://github.com/xamarin/xamarin-macios/issues/new adresinde bir hata raporu oluşturun
+		<value>'{1}' üzerinde geçersiz {0} bulundu. Lütfen https://github.com/dotnet/macios/issues/new adresinde bir hata raporu oluşturun
 		</value>
 	</data>
   <data name="MT4124_A" xml:space="preserve">
-		<value>'{0}' üzerinde geçersiz RegisterAttribute özelliği ({1}) bulundu. Lütfen https://github.com/xamarin/xamarin-macios/issues/new adresinde bir hata raporu oluşturun
+		<value>'{0}' üzerinde geçersiz RegisterAttribute özelliği ({1}) bulundu. Lütfen https://github.com/dotnet/macios/issues/new adresinde bir hata raporu oluşturun
 		</value>
 	</data>
   <data name="MT4124_B" xml:space="preserve">
-		<value>'{0}' üzerinde geçersiz AdoptsAttribute bulundu: 1 oluşturucu bağımsız değişkeni bekleniyordu, {1} alındı. Lütfen https://github.com/xamarin/xamarin-macios/issues/new adresinde bir hata raporu oluşturun
+		<value>'{0}' üzerinde geçersiz AdoptsAttribute bulundu: 1 oluşturucu bağımsız değişkeni bekleniyordu, {1} alındı. Lütfen https://github.com/dotnet/macios/issues/new adresinde bir hata raporu oluşturun
 		</value>
 	</data>
   <data name="MT4124_C" xml:space="preserve">
-		<value>'{0}.{1}' üzerinde geçersiz BindAsAttribute bulundu: {2} alanı bilinmiyor. Lütfen https://github.com/xamarin/xamarin-macios/issues/new adresinde bir hata raporu oluşturun
+		<value>'{0}.{1}' üzerinde geçersiz BindAsAttribute bulundu: {2} alanı bilinmiyor. Lütfen https://github.com/dotnet/macios/issues/new adresinde bir hata raporu oluşturun
 		</value>
 	</data>
   <data name="MT4124_D" xml:space="preserve">
-		<value>'{1}.{2}' üzerinde geçersiz {0} bulundu. Lütfen https://github.com/xamarin/xamarin-macios/issues/new adresinde bir hata raporu oluşturun
+		<value>'{1}.{2}' üzerinde geçersiz {0} bulundu. Lütfen https://github.com/dotnet/macios/issues/new adresinde bir hata raporu oluşturun
 		</value>
 	</data>
   <data name="MT4124_E" xml:space="preserve">
-		<value>'{0}' üzerinde geçersiz BindAsAttribute bulundu: 1 oluşturucu bağımsız değişkeni olmalıdır, {1} bulundu. Lütfen https://github.com/xamarin/xamarin-macios/issues/new adresinde bir hata raporu oluşturun
+		<value>'{0}' üzerinde geçersiz BindAsAttribute bulundu: 1 oluşturucu bağımsız değişkeni olmalıdır, {1} bulundu. Lütfen https://github.com/dotnet/macios/issues/new adresinde bir hata raporu oluşturun
 		</value>
 	</data>
   <data name="MT4124_H" xml:space="preserve">
-		<value>'{0}' üzerinde geçersiz BindAsAttribute bulundu: Temel alınan {1} sabit listesi türü bulunamadı. Lütfen https://github.com/xamarin/xamarin-macios/issues/new adresinde bir hata raporu oluşturun
+		<value>'{0}' üzerinde geçersiz BindAsAttribute bulundu: Temel alınan {1} sabit listesi türü bulunamadı. Lütfen https://github.com/dotnet/macios/issues/new adresinde bir hata raporu oluşturun
 		</value>
 	</data>
   <data name="MT4124_I" xml:space="preserve">
-		<value>'{1}' üzerinde geçersiz {0} bulundu. Lütfen https://github.com/xamarin/xamarin-macios/issues/new adresinde bir hata raporu oluşturun</value>
+		<value>'{1}' üzerinde geçersiz {0} bulundu. Lütfen https://github.com/dotnet/macios/issues/new adresinde bir hata raporu oluşturun</value>
 	</data>
   <data name="MT4125" xml:space="preserve">
 		<value>Kaydedici, `{1}` metodunun imzasında geçersiz `{0}` türünü buldu: Arabirimin, sarmalayıcı türünü belirten bir Protocol özniteliği olmalıdır.
@@ -1347,7 +1347,7 @@
 		</value>
 	</data>
   <data name="MT4147" xml:space="preserve">
-		<value>'{1}' üzerinde geçersiz {0} bulundu. Lütfen https://github.com/xamarin/xamarin-macios/issues/new adresinde bir hata raporu oluşturun
+		<value>'{1}' üzerinde geçersiz {0} bulundu. Lütfen https://github.com/dotnet/macios/issues/new adresinde bir hata raporu oluşturun
 		</value>
 	</data>
   <data name="MT4148" xml:space="preserve">
@@ -1456,15 +1456,15 @@
 		</comment>
 	</data>
   <data name="MT4163" xml:space="preserve">
-		<value>Kaydedicide iç hata ({1} bağımsız değişkenle {0} ctor). Lütfen https://github.com/xamarin/xamarin-macios/issues/new adresinde bir hata raporu oluşturun
+		<value>Kaydedicide iç hata ({1} bağımsız değişkenle {0} ctor). Lütfen https://github.com/dotnet/macios/issues/new adresinde bir hata raporu oluşturun
 		</value>
 	</data>
   <data name="MT4163_A" xml:space="preserve">
-		<value>Kaydedicide iç hata (Bilinmeyen kullanılabilirlik türü: {0}). Lütfen https://github.com/xamarin/xamarin-macios/issues/new adresinde bir hata raporu oluşturun
+		<value>Kaydedicide iç hata (Bilinmeyen kullanılabilirlik türü: {0}). Lütfen https://github.com/dotnet/macios/issues/new adresinde bir hata raporu oluşturun
 		</value>
 	</data>
   <data name="MT4163_B" xml:space="preserve">
-		<value>Kaydedicide iç hata (BindAs parametreleri başvuru/çıkış olamaz: {0}). Lütfen https://github.com/xamarin/xamarin-macios/issues/new adresinde bir hata raporu oluşturun
+		<value>Kaydedicide iç hata (BindAs parametreleri başvuru/çıkış olamaz: {0}). Lütfen https://github.com/dotnet/macios/issues/new adresinde bir hata raporu oluşturun
 		</value>
 	</data>
   <data name="MT4164" xml:space="preserve">
@@ -1544,7 +1544,7 @@
 		</value>
 	</data>
   <data name="MT4184" xml:space="preserve">
-		<value>Kaydedicide iç hata (BindAs parametreleri başvuru/çıkış olamaz: {0}). Lütfen https://github.com/xamarin/xamarin-macios/issues/new adresinde bir hata raporu oluşturun
+		<value>Kaydedicide iç hata (BindAs parametreleri başvuru/çıkış olamaz: {0}). Lütfen https://github.com/dotnet/macios/issues/new adresinde bir hata raporu oluşturun
 		</value>
 	</data>
   <data name="MT4185" xml:space="preserve">
@@ -1572,15 +1572,15 @@
 		</value>
 	</data>
   <data name="MM5103" xml:space="preserve">
-		<value>Derlenemedi. Hata kodu - {0}. Lütfen https://github.com/xamarin/xamarin-macios/issues/new adresinde bir hata raporu oluşturun
+		<value>Derlenemedi. Hata kodu - {0}. Lütfen https://github.com/dotnet/macios/issues/new adresinde bir hata raporu oluşturun
 		</value>
 	</data>
   <data name="MT5103_A" xml:space="preserve">
-		<value>'{0}' dosyaları derlenemedi. Lütfen https://github.com/xamarin/xamarin-macios/issues/new adresinde bir hata raporu oluşturun
+		<value>'{0}' dosyaları derlenemedi. Lütfen https://github.com/dotnet/macios/issues/new adresinde bir hata raporu oluşturun
 		</value>
 	</data>
   <data name="MT5106" xml:space="preserve">
-		<value>'{0}' dosyaları derlenemedi. Lütfen https://github.com/xamarin/xamarin-macios/issues/new adresinde bir hata raporu oluşturun
+		<value>'{0}' dosyaları derlenemedi. Lütfen https://github.com/dotnet/macios/issues/new adresinde bir hata raporu oluşturun
 		</value>
 	</data>
   <data name="MT5107" xml:space="preserve">
@@ -1652,7 +1652,7 @@
 		</value>
 	</data>
   <data name="MT5216" xml:space="preserve">
-		<value>'{0}' için yerel bağlama başarısız oldu. Lütfen https://github.com/xamarin/xamarin-macios/issues/new adresinde bir hata raporu oluşturun
+		<value>'{0}' için yerel bağlama başarısız oldu. Lütfen https://github.com/dotnet/macios/issues/new adresinde bir hata raporu oluşturun
 		</value>
 	</data>
   <data name="MT5217" xml:space="preserve">
@@ -1676,7 +1676,7 @@
 		</value>
 	</data>
   <data name="MX5222" xml:space="preserve">
-		<value>Yerel bağlayıcı yürütülemedi: {0}. Lütfen https://github.com/xamarin/xamarin-macios/issues/new adresinden bir hata raporu oluşturun
+		<value>Yerel bağlayıcı yürütülemedi: {0}. Lütfen https://github.com/dotnet/macios/issues/new adresinden bir hata raporu oluşturun
  		</value>
 	</data>
   <data name="MX5223" xml:space="preserve">
@@ -1752,7 +1752,7 @@
 	</data>
   <!-- 8XXX are for errors that occur at runtime -->
   <data name="MT8018" xml:space="preserve">
-		<value>İç tutarlılık hatası. Lütfen https://github.com/xamarin/xamarin-macios/issues/new adresinde bir hata raporu oluşturun.
+		<value>İç tutarlılık hatası. Lütfen https://github.com/dotnet/macios/issues/new adresinde bir hata raporu oluşturun.
 		</value>
 	</data>
   <!-- 8000 -> 8036 are missing here (except 8018), so skip to 8037 -->

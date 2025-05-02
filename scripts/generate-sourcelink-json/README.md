@@ -12,7 +12,7 @@ Example output file:
 ```json
 {
   "documents": {
-    "/local/path/to/xamarin-macios/src*": "https://raw.githubusercontent.com/xamarin/xamarin-macios/c2c617bf000c4ff864cbba9d65421f915941136b/src*"
+    "/local/path/to/xamarin-macios/src*": "https://raw.githubusercontent.com/dotnet/macios/c2c617bf000c4ff864cbba9d65421f915941136b/src*"
   }
 }
 ```

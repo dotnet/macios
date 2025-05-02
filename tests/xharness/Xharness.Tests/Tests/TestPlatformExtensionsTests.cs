@@ -32,21 +32,6 @@ namespace Xharness.Tests.Tests {
 					}
 				}
 			}
-
-			public static IEnumerable CanSymlinkTestCases {
-				get {
-					foreach (var platform in new [] { TestPlatform.iOS }) {
-						yield return new TestCaseData (platform).Returns (true);
-					}
-
-					foreach (var platform in new [] {TestPlatform.None,
-
-													  TestPlatform.tvOS,
-													  TestPlatform.Mac }) {
-						yield return new TestCaseData (platform).Returns (false);
-					}
-				}
-			}
 		}
 
 		[Test, TestCaseSource (typeof (TestCasesData), "GetSimulatorTestCases")]
@@ -55,9 +40,6 @@ namespace Xharness.Tests.Tests {
 
 		[Test, TestCaseSource (typeof (TestCasesData), "IsMacTestCases")]
 		public bool IsMacTest (TestPlatform platform) => platform.IsMac ();
-
-		[Test, TestCaseSource (typeof (TestCasesData), "CanSymlinkTestCases")]
-		public bool CanSymlinkTest (TestPlatform platform) => platform.CanSymlink ();
 
 	}
 

@@ -27,7 +27,7 @@ Copyright (C) 2014-2016 Xamarin. All rights reserved.
 			In Xamarin.iOS.Common.targets, just before the _CompileToNative target, we modify the
 			mtouch references to ensure that we get the lib assemblies for nugets, and not the ref references:
 
-			https://github.com/xamarin/xamarin-macios/blob/9e31d07ecc08a64372dd562e843c3d8950d24985/msbuild/Xamarin.iOS.Tasks.Core/Xamarin.iOS.Common.targets#L784-L791
+			https://github.com/dotnet/macios/blob/9e31d07ecc08a64372dd562e843c3d8950d24985/msbuild/Xamarin.iOS.Tasks.Core/Xamarin.iOS.Common.targets#L784-L791
 
 			This logic removes nuget references, and then re-adds any copy-local dll references.
 

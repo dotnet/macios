@@ -13,13 +13,13 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="default" xml:space="preserve">
-		<value>コード {0} のエラー メッセージが見つかりませんでした。見つからなかったメッセージを https://github.com/xamarin/xamarin-macios/issues/new の GitHub にお知らせください</value>
+		<value>コード {0} のエラー メッセージが見つかりませんでした。見つからなかったメッセージを https://github.com/dotnet/macios/issues/new の GitHub にお知らせください</value>
 		<comment>
 			This is the default message when an error code can not be found.
 		</comment>
 	</data>
   <data name="MT0000" xml:space="preserve">
-		<value>予期しないエラーです。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください
+		<value>予期しないエラーです。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください
 		</value>
 	</data>
   <data name="MT0001" xml:space="preserve">
@@ -299,7 +299,7 @@
 		</value>
 	</data>
   <data name="MX0071" xml:space="preserve">
-		<value>不明なプラットフォーム: {0}。これは通常、{1} にバグがあることを示します。テスト ケースを添えて https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください。
+		<value>不明なプラットフォーム: {0}。これは通常、{1} にバグがあることを示します。テスト ケースを添えて https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください。
 		</value>
 	</data>
   <data name="MT0072" xml:space="preserve">
@@ -425,11 +425,11 @@
 	</data>
   <!-- MM0098 has been used in the past -->
   <data name="MX0099" xml:space="preserve">
-		<value>内部エラー: {0}。問題を https://github.com/xamarin/xamarin-macios/issues/new にお寄せください。
+		<value>内部エラー: {0}。問題を https://github.com/dotnet/macios/issues/new にお寄せください。
 		</value>
 	</data>
   <data name="MT0100" xml:space="preserve">
-		<value>アセンブリ ビルド ターゲットが無効です: '{0}'。テスト ケースを添えてバグ報告をお寄せください (https://github.com/xamarin/xamarin-macios/issues/new)。
+		<value>アセンブリ ビルド ターゲットが無効です: '{0}'。テスト ケースを添えてバグ報告をお寄せください (https://github.com/dotnet/macios/issues/new)。
 		</value>
 	</data>
   <data name="MT0101" xml:space="preserve">
@@ -679,27 +679,27 @@
 		</value>
 	</data>
   <data name="MT0157" xml:space="preserve">
-		<value>内部エラー: {2} で '{0}' から '{1}' に変換できません。テスト ケースを添えてバグ報告をお寄せください (https://github.com/xamarin/xamarin-macios/issues/new)。
+		<value>内部エラー: {2} で '{0}' から '{1}' に変換できません。テスト ケースを添えてバグ報告をお寄せください (https://github.com/dotnet/macios/issues/new)。
 		</value>
 	</data>
   <data name="MT0158" xml:space="preserve">
-		<value>内部エラー: スマート列挙型 {0} が、スマートな列挙型ではないようです。テスト ケースを添えてバグ報告をお寄せください (https://github.com/xamarin/xamarin-macios/issues/new)。
+		<value>内部エラー: スマート列挙型 {0} が、スマートな列挙型ではないようです。テスト ケースを添えてバグ報告をお寄せください (https://github.com/dotnet/macios/issues/new)。
 		</value>
 	</data>
   <data name="MT0159" xml:space="preserve">
-		<value>内部エラー: {1} に対してサポートされていない tokentype ({0}) です。テスト ケースを添えてバグ報告をお寄せください (https://github.com/xamarin/xamarin-macios/issues/new)。
+		<value>内部エラー: {1} に対してサポートされていない tokentype ({0}) です。テスト ケースを添えてバグ報告をお寄せください (https://github.com/dotnet/macios/issues/new)。
 		</value>
 	</data>
   <data name="MT0160" xml:space="preserve">
-		<value>内部エラー: リンカーも実行されている場合 (または、無効にされた場合) 以外は、静的レジストラーを実行することはできません。回避策としては、追加の {0} 引数として '-f' を渡すことで完全ビルドを実行することが考えられます。テスト ケースを添えてバグ報告をお寄せください (https://github.com/xamarin/xamarin-macios/issues/new)。
+		<value>内部エラー: リンカーも実行されている場合 (または、無効にされた場合) 以外は、静的レジストラーを実行することはできません。回避策としては、追加の {0} 引数として '-f' を渡すことで完全ビルドを実行することが考えられます。テスト ケースを添えてバグ報告をお寄せください (https://github.com/dotnet/macios/issues/new)。
 		</value>
 	</data>
   <data name="MT0161" xml:space="preserve">
-		<value>内部エラー: 名前のないシンボルです (型: {0})。テスト ケースを添えてバグ報告をお寄せください (https://github.com/xamarin/xamarin-macios/issues/new)。
+		<value>内部エラー: 名前のないシンボルです (型: {0})。テスト ケースを添えてバグ報告をお寄せください (https://github.com/dotnet/macios/issues/new)。
 		</value>
 	</data>
   <data name="MT0168" xml:space="preserve">
-		<value>内部エラー: 'フレームワークをフレームワークに変換することはできません: {0}'。テスト ケースを添えてバグ報告をお寄せください (https://github.com/xamarin/xamarin-macios/issues/new)。
+		<value>内部エラー: 'フレームワークをフレームワークに変換することはできません: {0}'。テスト ケースを添えてバグ報告をお寄せください (https://github.com/dotnet/macios/issues/new)。
 		</value>
 	</data>
   <data name="MT0174_a" xml:space="preserve">
@@ -723,7 +723,7 @@
         </value>
     </data>
   <data name="MX0177" xml:space="preserve">
-		<value>不明なプラットフォーム: {0}。これは通常、バグがあることを示します。テスト ケースを添えて https://github.com/xamarin/xamarin-macios/issues/new にバグ報告を提出してください。		</value>
+		<value>不明なプラットフォーム: {0}。これは通常、バグがあることを示します。テスト ケースを添えて https://github.com/dotnet/macios/issues/new にバグ報告を提出してください。		</value>
 	</data>
   <data name="MX0178" xml:space="preserve">
         <value>'{0}' のデバッグ シンボル ファイルは無効であるため、無視されました。
@@ -762,7 +762,7 @@
 		</value>
 	</data>
   <data name="MT1013" xml:space="preserve">
-		<value>依存関係の追跡エラー: 比較するファイルがありません。テスト ケースを添えて https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください。
+		<value>依存関係の追跡エラー: 比較するファイルがありません。テスト ケースを添えて https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください。
 		</value>
 	</data>
   <data name="MT1014" xml:space="preserve">
@@ -1158,7 +1158,7 @@
 		</value>
 	</data>
   <data name="MT4002" xml:space="preserve">
-		<value>P/Invoke メソッドのために生成されたコードをコンパイルできませんでした。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください
+		<value>P/Invoke メソッドのために生成されたコードをコンパイルできませんでした。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください
 		</value>
 	</data>
   <data name="MT4101" xml:space="preserve">
@@ -1190,7 +1190,7 @@
 		</value>
 	</data>
   <data name="MT4109" xml:space="preserve">
-		<value>生成されたレジストラー コードをコンパイルできませんでした。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください
+		<value>生成されたレジストラー コードをコンパイルできませんでした。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください
 		</value>
 	</data>
   <data name="MT4110" xml:space="preserve">
@@ -1206,7 +1206,7 @@
 		</value>
 	</data>
   <data name="MT4114" xml:space="preserve">
-		<value>メソッド '{0}.{1}' についてレジストラーで予期しないエラーが発生しました。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください
+		<value>メソッド '{0}.{1}' についてレジストラーで予期しないエラーが発生しました。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください
 		</value>
 	</data>
   <data name="MT4116" xml:space="preserve">
@@ -1226,7 +1226,7 @@
 		</value>
 	</data>
   <data name="MT4120" xml:space="preserve">
-		<value>レジストラーにより、フィールド '{1}.{2}' に不明なフィールド型 '{0}' が検出されました。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください
+		<value>レジストラーにより、フィールド '{1}.{2}' に不明なフィールド型 '{0}' が検出されました。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください
 		</value>
 	</data>
   <data name="MT4121" xml:space="preserve">
@@ -1238,35 +1238,35 @@
 		</value>
 	</data>
   <data name="MT4124" xml:space="preserve">
-		<value>'{1}' に無効な {0} が見つかりました。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください
+		<value>'{1}' に無効な {0} が見つかりました。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください
 		</value>
 	</data>
   <data name="MT4124_A" xml:space="preserve">
-		<value>'{0}' に無効な RegisterAttribute プロパティ {1} が見つかりました。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください
+		<value>'{0}' に無効な RegisterAttribute プロパティ {1} が見つかりました。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください
 		</value>
 	</data>
   <data name="MT4124_B" xml:space="preserve">
-		<value>'{0}' に無効な AdoptsAttribute が見つかりました: 1 個のコンストラクター引数が必要ですが、{1} 個ありました。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください
+		<value>'{0}' に無効な AdoptsAttribute が見つかりました: 1 個のコンストラクター引数が必要ですが、{1} 個ありました。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください
 		</value>
 	</data>
   <data name="MT4124_C" xml:space="preserve">
-		<value>'{0}.{1}' に無効な BindAsAttribute が見つかりました: 不明なフィールド {2} があります。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください
+		<value>'{0}.{1}' に無効な BindAsAttribute が見つかりました: 不明なフィールド {2} があります。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください
 		</value>
 	</data>
   <data name="MT4124_D" xml:space="preserve">
-		<value>'{1}.{2}' に無効な {0} が見つかりました。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください
+		<value>'{1}.{2}' に無効な {0} が見つかりました。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください
 		</value>
 	</data>
   <data name="MT4124_E" xml:space="preserve">
-		<value>'{0}' に無効な BindAsAttribute が見つかりました: 1 個のコンストラクター引数が必要ですが、{1} 個見つかりました。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください
+		<value>'{0}' に無効な BindAsAttribute が見つかりました: 1 個のコンストラクター引数が必要ですが、{1} 個見つかりました。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください
 		</value>
 	</data>
   <data name="MT4124_H" xml:space="preserve">
-		<value>'{0}' に無効な BindAsAttribute が見つかりました: 基になる列挙型 {1} が見つかりませんでした。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください
+		<value>'{0}' に無効な BindAsAttribute が見つかりました: 基になる列挙型 {1} が見つかりませんでした。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください
 		</value>
 	</data>
   <data name="MT4124_I" xml:space="preserve">
-		<value>'{1}' に無効な {0} が見つかりました。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください</value>
+		<value>'{1}' に無効な {0} が見つかりました。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください</value>
 	</data>
   <data name="MT4125" xml:space="preserve">
 		<value>レジストラーにより、メソッド '{1}' のシグネチャ内で無効な型 '{0}' が検出されました: インターフェイスには、それのラッパー型を指定するプロトコル属性が必要です。
@@ -1348,7 +1348,7 @@
 		</value>
 	</data>
   <data name="MT4147" xml:space="preserve">
-		<value>'{1}' に無効な {0} が見つかりました。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください
+		<value>'{1}' に無効な {0} が見つかりました。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください
 		</value>
 	</data>
   <data name="MT4148" xml:space="preserve">
@@ -1457,15 +1457,15 @@
 		</comment>
 	</data>
   <data name="MT4163" xml:space="preserve">
-		<value>レジストラーで内部エラーが発生しました ({1} 個の引数を持つ {0} コンストラクター)。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください
+		<value>レジストラーで内部エラーが発生しました ({1} 個の引数を持つ {0} コンストラクター)。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください
 		</value>
 	</data>
   <data name="MT4163_A" xml:space="preserve">
-		<value>レジストラーで内部エラーが発生しました (不明な可用性の種類: {0})。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください
+		<value>レジストラーで内部エラーが発生しました (不明な可用性の種類: {0})。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください
 		</value>
 	</data>
   <data name="MT4163_B" xml:space="preserve">
-		<value>レジストラーで内部エラーが発生しました (BindAs パラメーターを ref/out にすることはできません: {0})。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください
+		<value>レジストラーで内部エラーが発生しました (BindAs パラメーターを ref/out にすることはできません: {0})。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください
 		</value>
 	</data>
   <data name="MT4164" xml:space="preserve">
@@ -1545,7 +1545,7 @@
 		</value>
 	</data>
   <data name="MT4184" xml:space="preserve">
-		<value>レジストラーで内部エラーが発生しました (BindAs パラメーターを ref/out にすることはできません: {0})。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください
+		<value>レジストラーで内部エラーが発生しました (BindAs パラメーターを ref/out にすることはできません: {0})。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください
 		</value>
 	</data>
   <data name="MT4185" xml:space="preserve">
@@ -1573,15 +1573,15 @@
 		</value>
 	</data>
   <data name="MM5103" xml:space="preserve">
-		<value>コンパイルに失敗しました。エラー コード - {0}。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください
+		<value>コンパイルに失敗しました。エラー コード - {0}。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください
 		</value>
 	</data>
   <data name="MT5103_A" xml:space="preserve">
-		<value>ファイル '{0}' のコンパイルに失敗しました。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください
+		<value>ファイル '{0}' のコンパイルに失敗しました。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください
 		</value>
 	</data>
   <data name="MT5106" xml:space="preserve">
-		<value>ファイル '{0}' をコンパイルできませんでした。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください
+		<value>ファイル '{0}' をコンパイルできませんでした。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください
 		</value>
 	</data>
   <data name="MT5107" xml:space="preserve">
@@ -1653,7 +1653,7 @@
 		</value>
 	</data>
   <data name="MT5216" xml:space="preserve">
-		<value>'{0}' のネイティブ リンクに失敗しました。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください
+		<value>'{0}' のネイティブ リンクに失敗しました。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください
 		</value>
 	</data>
   <data name="MT5217" xml:space="preserve">
@@ -1677,7 +1677,7 @@
 		</value>
 	</data>
   <data name="MX5222" xml:space="preserve">
-		<value>ネイティブ リンカーが {0} を実行できませんでした。https://github.com/xamarin/xamarin-macios/issues/new でバグ報告を提出してください
+		<value>ネイティブ リンカーが {0} を実行できませんでした。https://github.com/dotnet/macios/issues/new でバグ報告を提出してください
 	</value>
 	</data>
   <data name="MX5223" xml:space="preserve">
@@ -1753,7 +1753,7 @@
 	</data>
   <!-- 8XXX are for errors that occur at runtime -->
   <data name="MT8018" xml:space="preserve">
-		<value>内部整合性エラーです。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください。
+		<value>内部整合性エラーです。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください。
 		</value>
 	</data>
   <!-- 8000 -> 8036 are missing here (except 8018), so skip to 8037 -->

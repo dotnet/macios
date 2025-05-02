@@ -283,7 +283,7 @@ namespace AudioUnit {
 		[Export ("scheduleParameterBlock")]
 		AUScheduleParameterBlock ScheduleParameterBlock { get; }
 
-		// TODO: https://github.com/xamarin/xamarin-macios/issues/12489
+		// TODO: https://github.com/dotnet/macios/issues/12489
 		// [TV (15,0), iOS (15,0), MacCatalyst (15,0)]
 		// [NullAllowed]
 		// [Export ("scheduleMIDIEventListBlock")]
@@ -305,18 +305,18 @@ namespace AudioUnit {
 		[Export ("MIDIOutputNames", ArgumentSemantic.Copy)]
 		string [] MidiOutputNames { get; }
 
-		// TODO: https://github.com/xamarin/xamarin-macios/issues/12489
+		// TODO: https://github.com/dotnet/macios/issues/12489
 		// [TV (15,0), iOS (15,0), MacCatalyst (15,0)]
 		// [NullAllowed]
 		// [Export ("MIDIOutputEventListBlock", ArgumentSemantic.Copy)]
 		// AUMidiEventListBlock MidiOutputEventListBlock { get; set; }
 
-		// TODO: https://github.com/xamarin/xamarin-macios/issues/12489
+		// TODO: https://github.com/dotnet/macios/issues/12489
 		// [TV (15,0), iOS (15,0), MacCatalyst (15,0)]
 		// [Export ("AudioUnitMIDIProtocol")]
 		// MIDIProtocolID AudioUnitMidiProtocol { get; }
 
-		// TODO: https://github.com/xamarin/xamarin-macios/issues/12489
+		// TODO: https://github.com/dotnet/macios/issues/12489
 		// [TV (15,0), iOS (15,0), MacCatalyst (15,0)]
 		// [Export ("hostMIDIProtocol", ArgumentSemantic.Assign)]
 		// MIDIProtocolID HostMIDIProtocol { get; set; }

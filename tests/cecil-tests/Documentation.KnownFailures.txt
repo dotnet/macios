@@ -2889,7 +2889,6 @@ F:GameController.GCPhysicalInputSourceDirection.Left
 F:GameController.GCPhysicalInputSourceDirection.NotApplicable
 F:GameController.GCPhysicalInputSourceDirection.Right
 F:GameController.GCPhysicalInputSourceDirection.Up
-F:GameController.GCPoint2.Zero
 F:GameController.GCQuaternion.W
 F:GameController.GCQuaternion.X
 F:GameController.GCQuaternion.Y
@@ -10978,15 +10977,6 @@ M:GameController.GCPhysicalInputProfile.GetMappedElementAlias(System.String)
 M:GameController.GCPhysicalInputProfile.GetMappedPhysicalInputNames(System.String)
 M:GameController.GCPhysicalInputProfile.GetObjectForKeyedSubscript(System.String)
 M:GameController.GCPhysicalInputProfile.SetState(GameController.GCPhysicalInputProfile)
-M:GameController.GCPoint2.#ctor(GameController.GCPoint2)
-M:GameController.GCPoint2.#ctor(System.Single,System.Single)
-M:GameController.GCPoint2.Deconstruct(System.Runtime.InteropServices.NFloat@,System.Runtime.InteropServices.NFloat@)
-M:GameController.GCPoint2.Equals(GameController.GCPoint2)
-M:GameController.GCPoint2.Equals(System.Object)
-M:GameController.GCPoint2.GetHashCode
-M:GameController.GCPoint2.op_Equality(GameController.GCPoint2,GameController.GCPoint2)
-M:GameController.GCPoint2.op_Inequality(GameController.GCPoint2,GameController.GCPoint2)
-M:GameController.GCPoint2.ToString
 M:GameController.GCRacingWheel.AcquireDevice(Foundation.NSError@)
 M:GameController.GCRacingWheel.RelinquishDevice
 M:GameController.GCRacingWheelInput.Dispose(System.Boolean)
@@ -20040,9 +20030,6 @@ P:GameController.GCPhysicalInputProfile.HasRemappedElements
 P:GameController.GCPhysicalInputProfile.LastEventTimestamp
 P:GameController.GCPhysicalInputProfile.Touchpads
 P:GameController.GCPhysicalInputProfile.ValueDidChangeHandler
-P:GameController.GCPoint2.IsEmpty
-P:GameController.GCPoint2.X
-P:GameController.GCPoint2.Y
 P:GameController.GCRacingWheel.Acquired
 P:GameController.GCRacingWheel.Capture
 P:GameController.GCRacingWheel.ConnectedRacingWheels
@@ -26310,7 +26297,6 @@ T:GameController.GCMouseMoved
 T:GameController.GCPhysicalInputElementCollection`2
 T:GameController.GCPhysicalInputProfile
 T:GameController.GCPhysicalInputSourceDirection
-T:GameController.GCPoint2
 T:GameController.GCProductCategory
 T:GameController.GCQuaternion
 T:GameController.GCRacingWheel

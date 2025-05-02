@@ -14,7 +14,7 @@
       <para>
 	    If the value is <see langword="true" /> then the queue can
 	    execute the code blocks concurrently.   In this mode, you
-	    can use the <see cref="M:CoreFoundation.DispatchQueue.DispatchBarrierAsync(System.Action)" />
+	    can use the <see cref="CoreFoundation.DispatchQueue.DispatchBarrierAsync(System.Action)" />
 	    method to submit a code block that will wait for all
 	    pending concurrent blocks to complete execution, then it
 	    will execute the code block to completion.   During the
@@ -66,14 +66,14 @@
       </example>
       <para>
 	Queues may be temporarily suspended and resumed with the
-	functions <see cref="M:CoreFoundation.DispatchQueue.Suspend" />
-	and <see cref="M:CoreFoundation.DispatchQueue.Resume" />
+	functions <see cref="CoreFoundation.DispatchQueue.Suspend" />
+	and <see cref="CoreFoundation.DispatchQueue.Resume" />
 	respectively. Suspension is checked prior to block execution
 	and is not preemptive.
 
       </para>
       <para>
-	Dispatch queue is <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Threading%20Synchronization%20Context&amp;scope=Xamarin" title="T:System.Threading.SynchronizationContext">T:System.Threading.SynchronizationContext</a></format> aware and unless there is
+	Dispatch queue is <see cref="System.Threading.SynchronizationContext" /> aware and unless there is
 	custom synchronization context set for the thread it will install its own synchronization context to
 	ensure any context dispatch ends up on same dispatch queue.
       </para>
@@ -82,7 +82,7 @@
       </format>
       <para>
 	The dispatch barrier API is a mechanism for submitting barrier blocks to a
-	dispatch queue, analogous to the <see cref="M:CoreFoundation.DispatchQueue.DispatchAsync(System.Action)" />/<see cref="M:CoreFoundation.DispatchQueue.DispatchSync(System.Action)" />
+	dispatch queue, analogous to the <see cref="CoreFoundation.DispatchQueue.DispatchAsync(System.Action)" />/<see cref="CoreFoundation.DispatchQueue.DispatchSync(System.Action)" />
 	methods.
 	It enables the implementation of efficient reader/writer schemes.
 	Barrier blocks only behave specially when submitted to
@@ -91,7 +91,7 @@
 	and any blocks submitted to the queue after a barrier block will not run
 	until the barrier block has completed.
 	When submitted to a a global queue or to a non-concurrent queue, barrier blocks behave identically to
-	blocks submitted with the <see cref="M:CoreFoundation.DispatchQueue.DispatchAsync(System.Action)" />/<see cref="M:CoreFoundation.DispatchQueue.DispatchSync(System.Action)" /> methods.
+	blocks submitted with the <see cref="CoreFoundation.DispatchQueue.DispatchAsync(System.Action)" />/<see cref="CoreFoundation.DispatchQueue.DispatchSync(System.Action)" /> methods.
       </para>
     </remarks>
     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/AVCaptureFrames/">avcaptureframes</related>

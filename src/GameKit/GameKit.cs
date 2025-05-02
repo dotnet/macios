@@ -82,7 +82,7 @@ namespace GameKit {
 	// untyped enum -> GKPublicConstants.h
 	/// <summary>An enumeration that allows data transmission to trade off speed for reliability.</summary>
 	/// <remarks>To be added.</remarks>
-	/// <altmember cref="T:GameKit.GKMatchSendDataMode" />
+	/// <altmember cref="GameKit.GKMatchSendDataMode" />
 	[Deprecated (PlatformName.iOS, 7, 0)]
 	[Deprecated (PlatformName.TvOS, 9, 0)]
 	[Deprecated (PlatformName.MacOSX, 10, 10)]
@@ -113,8 +113,8 @@ namespace GameKit {
 	// untyped enum -> GKPublicConstants.h
 	/// <summary>An enumeration whose values specify the state of a peer-to-peer connection.</summary>
 	/// <remarks>To be added.</remarks>
-	/// <altmember cref="M:GameKit.GKSession.PeersWithConnectionState" />
-	/// <altmember cref="M:GameKit.GKSessionDelegate.PeerChangedState" />
+	/// <altmember cref="GameKit.GKSession.PeersWithConnectionState" />
+	/// <altmember cref="GameKit.GKSessionDelegate.PeerChangedState" />
 	[Deprecated (PlatformName.iOS, 7, 0)]
 	[Deprecated (PlatformName.TvOS, 9, 0)]
 	[Deprecated (PlatformName.MacOSX, 10, 10)]
@@ -147,7 +147,7 @@ namespace GameKit {
 	}
 
 	// NSInteger -> GKLeaderboard.h
-	/// <summary>An enumeration whose values specify whether a <see cref="T:GameKit.GKLeaderboard" /> should display global results or only for friends.</summary>
+	/// <summary>An enumeration whose values specify whether a <see cref="GameKit.GKLeaderboard" /> should display global results or only for friends.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
 	public enum GKLeaderboardPlayerScope : long {
@@ -307,14 +307,14 @@ namespace GameKit {
 	[Native]
 	public enum GKMatchSendDataMode : long {
 		/// <summary>Slower, but rebroadcast until received. Reliable data is guaranteed to arrive in order of transmission.</summary>
-		///         <altmember cref="T:GameKit.GKSendDataMode" />
+		///         <altmember cref="GameKit.GKSendDataMode" />
 		Reliable,
 		/// <summary>Fast, but not guaranteed to arrive and may arrive out of order.</summary>
 		Unreliable,
 	}
 
 	// NSInteger -> GKMatch.h
-	/// <summary>An enumeration whose values specify the connection state of a <see cref="T:GameKit.GKPlayer" />.</summary>
+	/// <summary>An enumeration whose values specify the connection state of a <see cref="GameKit.GKPlayer" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
 	public enum GKPlayerConnectionState : long {
@@ -327,7 +327,7 @@ namespace GameKit {
 	}
 
 	// NSInteger -> GKVoiceChat.h
-	/// <summary>An enumeration whose values specify the state of a <see cref="T:GameKit.GKVoiceChat" /> channel. (See <see cref="T:GameKit.GKPlayerStateUpdateHandler" />.)</summary>
+	/// <summary>An enumeration whose values specify the state of a <see cref="GameKit.GKVoiceChat" /> channel. (See <see cref="GameKit.GKPlayerStateUpdateHandler" />.)</summary>
 	/// <remarks>To be added.</remarks>
 	[Deprecated (PlatformName.iOS, 18, 0, message: "No longer supported.")]
 	[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "No longer supported.")]
@@ -348,7 +348,7 @@ namespace GameKit {
 	}
 
 	// NSInteger -> GKPlayer.h
-	/// <summary>An enumeration whose values specify the size of a photo being loaded by <see cref="M:GameKit.GKPlayer.LoadPhoto(GameKit.GKPhotoSize,GameKit.GKPlayerPhotoLoaded)" />.</summary>
+	/// <summary>An enumeration whose values specify the size of a photo being loaded by <see cref="GameKit.GKPlayer.LoadPhoto(GameKit.GKPhotoSize,GameKit.GKPlayerPhotoLoaded)" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
 	public enum GKPhotoSize : long {
@@ -359,7 +359,7 @@ namespace GameKit {
 	}
 
 	// NSInteger -> GKTurnBasedMatch.h
-	/// <summary>An eumeration whose values specify the status of a turn-based match. (See <see cref="P:GameKit.GKTurnBasedMatch.Status" />.)</summary>
+	/// <summary>An eumeration whose values specify the status of a turn-based match. (See <see cref="GameKit.GKTurnBasedMatch.Status" />.)</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
 	public enum GKTurnBasedMatchStatus : long {
@@ -374,7 +374,7 @@ namespace GameKit {
 	}
 
 	// NSInteger -> GKTurnBasedMatch.h
-	/// <summary>An enumeration whose values specify the status of turn-based participants. (See <see cref="P:GameKit.GKTurnBasedParticipant.Status" />.)</summary>
+	/// <summary>An enumeration whose values specify the status of turn-based participants. (See <see cref="GameKit.GKTurnBasedParticipant.Status" />.)</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
 	public enum GKTurnBasedParticipantStatus : long {
@@ -422,7 +422,7 @@ namespace GameKit {
 	}
 
 	// NSInteger -> GKChallenge.h
-	/// <summary>An enumeration whose values specify the states of a <see cref="T:GameKit.GKChallenge" />.</summary>
+	/// <summary>An enumeration whose values specify the states of a <see cref="GameKit.GKChallenge" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -438,7 +438,7 @@ namespace GameKit {
 	}
 
 	// NSInteger -> GKGameCenterViewController.h
-	/// <summary>An enumeration whose values specify the current <see cref="P:GameKit.GKGameCenterViewController.ViewState" /> of a <see cref="T:GameKit.GKGameCenterViewController" />.</summary>
+	/// <summary>An enumeration whose values specify the current <see cref="GameKit.GKGameCenterViewController.ViewState" /> of a <see cref="GameKit.GKGameCenterViewController" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -466,7 +466,7 @@ namespace GameKit {
 	}
 
 	// NSInteger -> GKMatchmaker.h
-	/// <summary>An enumeration whose values specify the possible responses of a remote player to a <see cref="T:GameKit.GKInvite" />.</summary>
+	/// <summary>An enumeration whose values specify the possible responses of a remote player to a <see cref="GameKit.GKInvite" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
 	[Deprecated (PlatformName.iOS, 18, 4, message: "Use 'GKInviteRecipientResponse' instead.")]

@@ -117,7 +117,7 @@ namespace CoreBluetooth {
 		/// 	  </para>
 		///           <para>
 		/// 	    Once the characterstics have been discovered, they are
-		/// 	    available on the <see cref="P:CoreBluetooth.CBService.Characteristics" />
+		/// 	    available on the <see cref="CoreBluetooth.CBService.Characteristics" />
 		/// 	    property.
 		/// 	  </para>
 		///           <para>
@@ -144,7 +144,7 @@ namespace CoreBluetooth {
 		/// 	  </para>
 		///           <para>
 		/// 	    Once the characterstics have been discovered, they are
-		/// 	    available on the <see cref="P:CoreBluetooth.CBService.Characteristics" />
+		/// 	    available on the <see cref="CoreBluetooth.CBService.Characteristics" />
 		/// 	    property.
 		/// 	  </para>
 		///         </remarks>

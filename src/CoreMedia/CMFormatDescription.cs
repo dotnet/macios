@@ -182,7 +182,7 @@ namespace CoreMedia {
 		///         <remarks>
 		///           <para>The returned token is the CoreFoundation type identifier (CFType) that has been assigned to this class.</para>
 		///           <para>This can be used to determine type identity between different CoreFoundation objects.</para>
-		///           <para>You can retrieve the type of a CoreFoundation object by invoking the <see cref="M:CoreFoundation.CFType.GetTypeID(System.IntPtr)" /> on the native handle of the object</para>
+		///           <para>You can retrieve the type of a CoreFoundation object by invoking the <see cref="CoreFoundation.CFType.GetTypeID(System.IntPtr)" /> on the native handle of the object</para>
 		///           <example>
 		///             <code lang="csharp lang-csharp"><![CDATA[bool isCMFormatDescription = (CFType.GetTypeID (foo.Handle) == CMFormatDescription.GetTypeID ());]]></code>
 		///           </example>
@@ -200,13 +200,13 @@ namespace CoreMedia {
 		///         <param name="error">Errors, if any, are returned here.</param>
 		///         <summary>Creates a CMFormatDescription (or a subclass of it) based on a native handle and to have it wrapped in a specific type.</summary>
 		///         <returns>
-		///           <para>The return can be either a CMFormatDescription a <see cref="T:CoreMedia.CMAudioFormatDescription" /> or a <see cref="T:CoreMedia.CMVideoFormatDescription" /> depending on the mediaType parameter that you passed.</para>
+		///           <para>The return can be either a CMFormatDescription a <see cref="CoreMedia.CMAudioFormatDescription" /> or a <see cref="CoreMedia.CMVideoFormatDescription" /> depending on the mediaType parameter that you passed.</para>
 		///           <para>
 		///           </para>
 		///           <para />
 		///         </returns>
 		///         <remarks>
-		///           <para>In general, the <see cref="M:CoreMedia.CMFormatDescription.Create(System.IntPtr)" /> is a better option as it probes for the underlying type and creates the correct subclass of <see cref="T:CoreMedia.CMFormatDescription" /></para>
+		///           <para>In general, the <see cref="CoreMedia.CMFormatDescription.Create(System.IntPtr)" /> is a better option as it probes for the underlying type and creates the correct subclass of <see cref="CoreMedia.CMFormatDescription" /></para>
 		///           <para>
 		///           </para>
 		///         </remarks>
@@ -226,7 +226,7 @@ namespace CoreMedia {
 		///         <param name="owns">True if the handle is already owned by maanged code, false otherwise (and in this case, the code will manually call retain on the object).</param>
 		///         <summary>Creates a CMFormatDescription (or a subclass of it) based on a native handle.</summary>
 		///         <returns>
-		///           <para>The return can be either a CMFormatDescription a <see cref="T:CoreMedia.CMAudioFormatDescription" /> or a <see cref="T:CoreMedia.CMVideoFormatDescription" />, you can use the C# <see langword="is" /> expression to find out which subclass to cast the result to if you need access to the audio or video specific elements.</para>
+		///           <para>The return can be either a CMFormatDescription a <see cref="CoreMedia.CMAudioFormatDescription" /> or a <see cref="CoreMedia.CMVideoFormatDescription" />, you can use the C# <see langword="is" /> expression to find out which subclass to cast the result to if you need access to the audio or video specific elements.</para>
 		///           <para>
 		///           </para>
 		///         </returns>
@@ -238,7 +238,7 @@ namespace CoreMedia {
 
 		/// <param name="handle">The native handle to a CMFormatDescription or a subclass of it.</param>
 		///         <summary>Creates a CMFormatDescription (or a subclass of it) based on a native handle.</summary>
-		///         <returns>The return can be either a CMFormatDescription a <see cref="T:CoreMedia.CMAudioFormatDescription" /> or a <see cref="T:CoreMedia.CMVideoFormatDescription" />, you can use the C# <see langword="is" /> expression to find out which subclass to cast the result to if you need access to the audio or video specific elements.</returns>
+		///         <returns>The return can be either a CMFormatDescription a <see cref="CoreMedia.CMAudioFormatDescription" /> or a <see cref="CoreMedia.CMVideoFormatDescription" />, you can use the C# <see langword="is" /> expression to find out which subclass to cast the result to if you need access to the audio or video specific elements.</returns>
 		///         <remarks>This is the recommended way of surfacing an unmanaged format description, as this will create the proper wrapper with a strong type for the audio or video versions of it.</remarks>
 		public static CMFormatDescription? Create (IntPtr handle)
 		{
@@ -401,7 +401,7 @@ namespace CoreMedia {
 #endif
 	}
 
-	/// <summary>A <see cref="T:CoreMedia.CMFormatDescription" /> that describes an audio format.</summary>
+	/// <summary>A <see cref="CoreMedia.CMFormatDescription" /> that describes an audio format.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -417,7 +417,7 @@ namespace CoreMedia {
 		// TODO: Move more audio specific methods here
 	}
 
-	/// <summary>A <see cref="T:CoreMedia.CMFormatDescription" /> that describes video.</summary>
+	/// <summary>A <see cref="CoreMedia.CMFormatDescription" /> that describes video.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]

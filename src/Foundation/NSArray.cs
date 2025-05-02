@@ -174,7 +174,7 @@ namespace Foundation {
 		///         <returns>
 		///         </returns>
 		///         <remarks>The values will be boxed into
-		/// 	NSObjects using <see cref="M:Foundation.NSObject.FromObject(System.Object)" />.</remarks>
+		/// 	NSObjects using <see cref="Foundation.NSObject.FromObject(System.Object)" />.</remarks>
 		public static NSArray FromObjects (params object [] items)
 		{
 			return From<object> (items);

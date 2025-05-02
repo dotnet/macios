@@ -22,7 +22,7 @@ namespace SpriteKit {
 
 		/// <param name="values">To be added.</param>
 		///         <param name="times">To be added.</param>
-		///         <summary>Creates a new <see cref="T:SpriteKit.SKKeyframeSequence" /> with the specified <paramref name="values" /> and <paramref name="times" />.</summary>
+		///         <summary>Creates a new <see cref="SpriteKit.SKKeyframeSequence" /> with the specified <paramref name="values" /> and <paramref name="times" />.</summary>
 		///         <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		public SKKeyframeSequence (NSObject [] values, NSNumber [] times) :
@@ -32,7 +32,7 @@ namespace SpriteKit {
 
 		/// <param name="values">To be added.</param>
 		///         <param name="times">To be added.</param>
-		///         <summary>Creates a new <see cref="T:SpriteKit.SKKeyframeSequence" /> with the specified <paramref name="values" /> and <paramref name="times" />.</summary>
+		///         <summary>Creates a new <see cref="SpriteKit.SKKeyframeSequence" /> with the specified <paramref name="values" /> and <paramref name="times" />.</summary>
 		///         <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		public SKKeyframeSequence (NSObject [] values, float [] times) :
@@ -42,7 +42,7 @@ namespace SpriteKit {
 
 		/// <param name="values">To be added.</param>
 		///         <param name="times">To be added.</param>
-		///         <summary>Creates a new <see cref="T:SpriteKit.SKKeyframeSequence" /> with the specified <paramref name="values" /> and <paramref name="times" />.</summary>
+		///         <summary>Creates a new <see cref="SpriteKit.SKKeyframeSequence" /> with the specified <paramref name="values" /> and <paramref name="times" />.</summary>
 		///         <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		public SKKeyframeSequence (NSObject [] values, double [] times) :

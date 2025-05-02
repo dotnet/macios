@@ -24,7 +24,7 @@ public static partial class GKErrorExtensions
 	public static NSString? GetDomain (this GKError self)
 	{
 		if (_domain is null)
-			_domain = Dlfcn.GetStringConstant (Libraries.GameKit.Handle, "GKErrorDomain");
+			_domain = Dlfcn.GetStringConstant (global::ObjCRuntime.Libraries.GameKit.Handle, "GKErrorDomain");
 		return _domain;
 	}
 }

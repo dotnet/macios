@@ -900,4 +900,36 @@ public class BindingSyntaxFactoryRuntimeTests {
 		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
 	}
 
+	class TestDataAsRefTests : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
+		{
+			yield return [
+				"NSObject",
+				ImmutableArray.Create (
+					Argument (IdentifierName ("arg1"))
+				),
+				"global::System.Runtime.CompilerServices.Unsafe.AsRef<NSObject> (arg1)"
+			];
+
+			yield return [
+				"NSString",
+				ImmutableArray.Create (
+					Argument (IdentifierName ("arg1")),
+					Argument (IdentifierName ("arg2")),
+					Argument (IdentifierName ("arg3"))),
+				"global::System.Runtime.CompilerServices.Unsafe.AsRef<NSString> (arg1, arg2, arg3)"
+			];
+		}
+
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
+	}
+
+	[Theory]
+	[ClassData (typeof (TestDataAsRefTests))]
+	void AsRefTests (string objectType, ImmutableArray<ArgumentSyntax> arguments, string expectedDeclaration)
+	{
+		var declaration = AsRef (objectType, arguments);
+		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
+	}
+
 }

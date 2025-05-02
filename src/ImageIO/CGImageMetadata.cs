@@ -55,7 +55,7 @@ namespace ImageIO {
 
 	// CGImageMetadata.h
 #if NET
-	/// <summary>An immutable container for metadata. (See <see cref="T:ImageIO.CGMutableImageMetadata" />.)</summary>
+	/// <summary>An immutable container for metadata. (See <see cref="ImageIO.CGMutableImageMetadata" />.)</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -94,7 +94,7 @@ namespace ImageIO {
 		///         <remarks>
 		///           <para>The returned token is the CoreFoundation type identifier (CFType) that has been assigned to this class.</para>
 		///           <para>This can be used to determine type identity between different CoreFoundation objects.</para>
-		///           <para>You can retrieve the type of a CoreFoundation object by invoking the <see cref="M:CoreFoundation.CFType.GetTypeID(System.IntPtr)" /> on the native handle of the object</para>
+		///           <para>You can retrieve the type of a CoreFoundation object by invoking the <see cref="CoreFoundation.CFType.GetTypeID(System.IntPtr)" /> on the native handle of the object</para>
 		///           <example>
 		///             <code lang="csharp lang-csharp"><![CDATA[bool isCGImageMetadata = (CFType.GetTypeID (foo.Handle) == CGImageMetadata.GetTypeID ());]]></code>
 		///           </example>

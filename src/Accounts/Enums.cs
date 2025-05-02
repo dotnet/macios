@@ -60,7 +60,7 @@ namespace Accounts {
 	}
 
 	// NSInteger -> ACAccountStore.h
-	/// <summary>An enumeration whose values indicate the result of a credential renewal request (see <see cref="M:Accounts.ACAccountStore.RenewCredentials(Accounts.ACAccount,System.Action{Accounts.ACAccountCredentialRenewResult,Foundation.NSError})" />).</summary>
+	/// <summary>An enumeration whose values indicate the result of a credential renewal request (see <see cref="Accounts.ACAccountStore.RenewCredentials(Accounts.ACAccount,System.Action{Accounts.ACAccountCredentialRenewResult,Foundation.NSError})" />).</summary>
 	[Native]
 	public enum ACAccountCredentialRenewResult : long {
 		/// <summary>The renewal succeeded.</summary>

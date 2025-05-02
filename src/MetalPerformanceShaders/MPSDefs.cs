@@ -169,11 +169,11 @@ namespace MetalPerformanceShaders {
 
 	// MPSTypes.h
 	// FIXME: public delegate IMTLTexture MPSCopyAllocator (MPSKernel filter, IMTLCommandBuffer commandBuffer, IMTLTexture sourceTexture);
-	/// <param name="filter">The <see cref="T:MetalPerformanceShaders.MPSKernel" /> that is requesting the memory.</param>
+	/// <param name="filter">The <see cref="MetalPerformanceShaders.MPSKernel" /> that is requesting the memory.</param>
 	///     <param name="commandBuffer">A command buffer that gets the device on which to allocate space for the texture data, along with optional commands to initialize the texture with an encoder.</param>
 	///     <param name="sourceTexture">The source image.</param>
 	///     <summary>Commands to copy a source texture to a new location. Used for out-of-place filters.</summary>
-	///     <returns>Returns a <see cref="T:Metal.IMTLTexture" /> into which texture data can be written.</returns>
+	///     <returns>Returns a <see cref="Metal.IMTLTexture" /> into which texture data can be written.</returns>
 	///     <remarks>Application developers must not enque the <paramref name="commandBuffer" /> parameter, enqueue it, nor wait for scheduling events on it.</remarks>
 	public delegate NSObject MPSCopyAllocator (MPSKernel filter, NSObject commandBuffer, NSObject sourceTexture);
 	// https://trello.com/c/GqtNId1C/517-generator-our-block-delegates-needs-to-use-wrapper-for-protocols

@@ -36,7 +36,7 @@ using System.Runtime.CompilerServices;
 namespace AVFoundation {
 
 	public partial class AVMetadataObject {
-		/// <summary>The <see cref="T:AVFoundation.AVMetadataObjectType" /> of <c>this</c>.</summary>
+		/// <summary>The <see cref="AVFoundation.AVMetadataObjectType" /> of <c>this</c>.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public AVMetadataObjectType Type {

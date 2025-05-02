@@ -3,7 +3,7 @@
     <summary>Dictionary that provides mapping from keys to values.</summary>
     <remarks>
       <para>
-	This is an immutable dictionary, to create mutable ones, use the <see cref="T:Foundation.NSMutableDictionary" /> type.
+	This is an immutable dictionary, to create mutable ones, use the <see cref="Foundation.NSMutableDictionary" /> type.
       </para>
       <para>
       </para>
@@ -12,7 +12,7 @@
 	and one value, with optional values that will create the
 	dictionary by pairing each key with a value.  If you use .NET
 	objects, the keys and values will first be boxed into
-	NSObjects using <see cref="M:Foundation.NSObject.FromObject(System.Object)" />.
+	NSObjects using <see cref="Foundation.NSObject.FromObject(System.Object)" />.
 
       </para>
       <example>
@@ -58,7 +58,7 @@ var dict = NSDictionary.FromObjectsAndKeys (values, keys);
       <para>
 	In some cases, where you might be iterating over a loop, or
 	you have not surfaced a bound type, but you have the handle to
-	the key, you can use the <see cref="M:Foundation.NSDictionary.LowlevelObjectForKey(System.IntPtr)" />
+	the key, you can use the <see cref="Foundation.NSDictionary.LowlevelObjectForKey(System.IntPtr)" />
 	which takes a handle for the key and returns a handle for the returned object. 
 
       </para>

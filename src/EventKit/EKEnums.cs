@@ -46,7 +46,7 @@ namespace EventKit {
 
 	// untyped enum -> EKTypes.h
 	// iOS 9 promoted this to an NSInteger - which breaks compatibility
-	/// <summary>The role of an <see cref="T:EventKit.EKParticipant" /></summary>
+	/// <summary>The role of an <see cref="EventKit.EKParticipant" /></summary>
 	[Native]
 	public enum EKParticipantRole : long {
 		/// <summary>Uknonwn role.   The participant might want to consider his role in the group.</summary>
@@ -284,7 +284,7 @@ namespace EventKit {
 
 	// untyped enum -> EKTypes.h
 	// iOS 9 promoted this to an NSInteger - which breaks compatibility
-	/// <summary>An enumeration whose values indicate the type of a <see cref="T:EventKit.EKSource" /> object.</summary>
+	/// <summary>An enumeration whose values indicate the type of a <see cref="EventKit.EKSource" /> object.</summary>
 	[Native]
 	public enum EKSourceType : long {
 		/// <summary>To be added.</summary>
@@ -314,7 +314,7 @@ namespace EventKit {
 	}
 
 	// NSUInteger -> EKTypes.h
-	/// <summary>An enumeration whose values represent the allowed entity types for a <see cref="T:EventKit.EKCalendar" />.</summary>
+	/// <summary>An enumeration whose values represent the allowed entity types for a <see cref="EventKit.EKCalendar" />.</summary>
 	[Native]
 	[Flags]
 	public enum EKEntityMask : ulong {
@@ -350,7 +350,7 @@ namespace EventKit {
 	}
 #endif
 	// NSInteger -> EKEventStore.h
-	/// <summary>An enumeration whose values specify the restrictions on access to the <see cref="T:EventKit.EKEventStore" />. Retrieved by calling the <see cref="M:EventKit.EKEventStore.GetAuthorizationStatus(EventKit.EKEntityType)" /> method.</summary>
+	/// <summary>An enumeration whose values specify the restrictions on access to the <see cref="EventKit.EKEventStore" />. Retrieved by calling the <see cref="EventKit.EKEventStore.GetAuthorizationStatus(EventKit.EKEntityType)" /> method.</summary>
 	[Native]
 	public enum EKAuthorizationStatus : long {
 		/// <summary>The user has not interacted with the permissions dialog.</summary>

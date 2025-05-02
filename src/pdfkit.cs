@@ -832,7 +832,7 @@ namespace PdfKit {
 		[Export ("fields"), NullAllowed]
 		string [] Fields { get; set; }
 
-		/// <summary>Gets or sets a Boolean value that controls whether the fields that are in <see cref="P:PdfKit.PdfActionResetForm.Fields" /> will be cleared.</summary>
+		/// <summary>Gets or sets a Boolean value that controls whether the fields that are in <see cref="PdfKit.PdfActionResetForm.Fields" /> will be cleared.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("fieldsIncludedAreCleared")]
@@ -2422,15 +2422,15 @@ namespace PdfKit {
 		PdfSelection GetSelection (PdfPage startPage, CGPoint startPoint, PdfPage endPage, CGPoint endPoint, PdfSelectionGranularity granularity);
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:PdfKit.PdfDocumentDelegate" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="PdfKit.PdfDocumentDelegate" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:PdfKit.PdfDocumentDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:PdfKit.PdfDocumentDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:PdfKit.PdfDocumentDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="PdfKit.PdfDocumentDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="PdfKit.PdfDocumentDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="PdfKit.PdfDocumentDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	interface IPdfDocumentDelegate { }
 
-	/// <summary>Delegate object for the <see cref="T:PdfKit.PdfDocument" /> class, presenting methods relating to search process and results.</summary>
+	/// <summary>Delegate object for the <see cref="PdfKit.PdfDocument" /> class, presenting methods relating to search process and results.</summary>
 	[MacCatalyst (13, 1)]
 	[TV (18, 2)]
 	[BaseType (typeof (NSObject), Name = "PDFDocumentDelegate")]
@@ -2781,7 +2781,7 @@ namespace PdfKit {
 		/// <param name="size">To be added.</param>
 		///         <param name="box">To be added.</param>
 		///         <summary>To be added.</summary>
-		///         <returns>The return type is <see cref="T:UIKit.UIImage" /> on iOS and <see cref="T:AppKit.NSImage" /> on MacOS.</returns>
+		///         <returns>The return type is <see cref="UIKit.UIImage" /> on iOS and <see cref="AppKit.NSImage" /> on MacOS.</returns>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("thumbnailOfSize:forBox:")]
@@ -3785,17 +3785,17 @@ namespace PdfKit {
 		PdfAnnotation AnnotationHit { get; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:PdfKit.PdfViewDelegate" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="PdfKit.PdfViewDelegate" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:PdfKit.PdfViewDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:PdfKit.PdfViewDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:PdfKit.PdfViewDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="PdfKit.PdfViewDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="PdfKit.PdfViewDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="PdfKit.PdfViewDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	interface IPdfViewDelegate { }
 
 	//Verify delegate methods.  There are default actions (not just return null ) that should occur
 	//if the delegate does not implement the method.
-	/// <summary>Delegate object for <see cref="T:PdfKit.PdfView" /> objects, allowing the developer to respond to navigation, printing, and linking events.</summary>
+	/// <summary>Delegate object for <see cref="PdfKit.PdfView" /> objects, allowing the developer to respond to navigation, printing, and linking events.</summary>
 	[MacCatalyst (13, 1)]
 	[TV (18, 2)]
 	[BaseType (typeof (NSObject), Name = "PDFViewDelegate")]

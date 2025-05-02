@@ -23,7 +23,7 @@ using dispatch_queue_t = System.IntPtr;
 
 namespace CoreFoundation {
 
-	/// <summary>Memory pressure flags surfaced by the <see cref="T:CoreFoundation.DispatchSource.MemoryPressure" /> dispatch source.</summary>
+	/// <summary>Memory pressure flags surfaced by the <see cref="CoreFoundation.DispatchSource.MemoryPressure" /> dispatch source.</summary>
 	///     <remarks>Determins the reason for invoking a memory pressure handler, or to configure the memory pressure handler.</remarks>
 	[Flags]
 	public enum MemoryPressureFlags {
@@ -35,7 +35,7 @@ namespace CoreFoundation {
 		Critical = 4,
 	}
 
-	/// <summary>Enumerates process state transitions to monitor for <see cref="T:CoreFoundation.DispatchSource.ProcessMonitor" />.</summary>
+	/// <summary>Enumerates process state transitions to monitor for <see cref="CoreFoundation.DispatchSource.ProcessMonitor" />.</summary>
 	///     <remarks>To be added.</remarks>
 	[Flags]
 	public enum ProcessMonitorFlags : uint {
@@ -50,7 +50,7 @@ namespace CoreFoundation {
 	}
 
 	/// <summary>Type of Vnode monitoring operation to perform on a file.</summary>
-	///     <remarks>This enumeration is used with the <see cref="T:CoreFoundation.DispatchSource.VnodeMonitor" /> class.</remarks>
+	///     <remarks>This enumeration is used with the <see cref="CoreFoundation.DispatchSource.VnodeMonitor" /> class.</remarks>
 	[Flags]
 	public enum VnodeMonitorKind : uint {
 		/// <summary>The file was removed from the file system due to the unlink(2) system call.</summary>
@@ -259,10 +259,10 @@ namespace CoreFoundation {
 
 		/// <summary>Base class for dispatch sources that allow applications to trigger an event handler on the target queue.</summary>
 		///     <remarks>
-		///       <para>Applications can post data onto a <see cref="T:CoreFoundation.DispatchSource.Data" /> by calling the <see cref="M:CoreFoundation.DispatchSource.Data.MergeData(System.IntPtr)" /> method.   The data is surfaced is then available in to the handler in the <see cref="P:CoreFoundation.DispatchSource.Data.PendingData" /> property.   </para>
+		///       <para>Applications can post data onto a <see cref="CoreFoundation.DispatchSource.Data" /> by calling the <see cref="CoreFoundation.DispatchSource.Data.MergeData(System.IntPtr)" /> method.   The data is surfaced is then available in to the handler in the <see cref="CoreFoundation.DispatchSource.Data.PendingData" /> property.   </para>
 		///       <para>
 		///       </para>
-		///       <para>If multiple calls to MergeData are done, the result surfaced by PendingData will depend on whether you created a <see cref="T:CoreFoundation.DispatchSource.DataAdd" /> which will add the values together or a <see cref="T:CoreFoundation.DispatchSource.DataOr" /> which will or the values together.</para>
+		///       <para>If multiple calls to MergeData are done, the result surfaced by PendingData will depend on whether you created a <see cref="CoreFoundation.DispatchSource.DataAdd" /> which will add the values together or a <see cref="CoreFoundation.DispatchSource.DataOr" /> which will or the values together.</para>
 		///     </remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -275,7 +275,7 @@ namespace CoreFoundation {
 			/// <param name="value">Data to be posted to the event source.</param>
 			///         <summary>Posts the specific value and triggers the event handler on the target queue.</summary>
 			///         <remarks>
-			///           <para>Applications can post data onto a <see cref="T:CoreFoundation.DispatchSource.Data" /> by calling the <see cref="M:CoreFoundation.DispatchSource.Data.MergeData(System.IntPtr)" /> method.   The data is surfaced is then available in to the handler in the <see cref="P:CoreFoundation.DispatchSource.Data.PendingData" /> property.   </para>
+			///           <para>Applications can post data onto a <see cref="CoreFoundation.DispatchSource.Data" /> by calling the <see cref="CoreFoundation.DispatchSource.Data.MergeData(System.IntPtr)" /> method.   The data is surfaced is then available in to the handler in the <see cref="CoreFoundation.DispatchSource.Data.PendingData" /> property.   </para>
 			///           <para />
 			///         </remarks>
 			public void MergeData (IntPtr value)
@@ -286,7 +286,7 @@ namespace CoreFoundation {
 			/// <summary>Retrieves the data that has been posted for this event source.</summary>
 			///         <value>The result of the data posted to the data dispatch source.</value>
 			///         <remarks>
-			///           <para>If multiple calls to MergeData are done, the result surfaced by PendingData will depend on whether you created a <see cref="T:CoreFoundation.DispatchSource.DataAdd" /> which will add the values together or a <see cref="T:CoreFoundation.DispatchSource.DataOr" /> which will or the values together.</para>
+			///           <para>If multiple calls to MergeData are done, the result surfaced by PendingData will depend on whether you created a <see cref="CoreFoundation.DispatchSource.DataAdd" /> which will add the values together or a <see cref="CoreFoundation.DispatchSource.DataOr" /> which will or the values together.</para>
 			///           <para>
 			///           </para>
 			///         </remarks>
@@ -299,7 +299,7 @@ namespace CoreFoundation {
 
 		/// <summary>Dispatch sources that allow applications to trigger an event handler on the target queue.</summary>
 		///     <remarks>
-		///       <para>Applications can post data onto a <see cref="T:CoreFoundation.DispatchSource.DataAdd" /> by calling the <see cref="M:CoreFoundation.DispatchSource.Data.MergeData(System.IntPtr)" /> method.   The data is surfaced is then available in to the handler in the <see cref="P:CoreFoundation.DispatchSource.Data.PendingData" /> property which will contain the cumulative addition of all the values posted with MergeData.</para>
+		///       <para>Applications can post data onto a <see cref="CoreFoundation.DispatchSource.DataAdd" /> by calling the <see cref="CoreFoundation.DispatchSource.Data.MergeData(System.IntPtr)" /> method.   The data is surfaced is then available in to the handler in the <see cref="CoreFoundation.DispatchSource.Data.PendingData" /> property which will contain the cumulative addition of all the values posted with MergeData.</para>
 		///       <para>
 		///       </para>
 		///     </remarks>
@@ -340,7 +340,7 @@ namespace CoreFoundation {
 		}
 
 		/// <summary>Dispatch sources that allow applications to trigger an event handler on the target queue.</summary>
-		///     <remarks>Applications can post data onto a <see cref="T:CoreFoundation.DispatchSource.DataOr" /> by calling the <see cref="M:CoreFoundation.DispatchSource.Data.MergeData(System.IntPtr)" /> method.   The data is surfaced is then available in to the handler in the <see cref="P:CoreFoundation.DispatchSource.Data.PendingData" /> property which will contain the cumulative logical or of all the values posted with MergeData.</remarks>
+		///     <remarks>Applications can post data onto a <see cref="CoreFoundation.DispatchSource.DataOr" /> by calling the <see cref="CoreFoundation.DispatchSource.Data.MergeData(System.IntPtr)" /> method.   The data is surfaced is then available in to the handler in the <see cref="CoreFoundation.DispatchSource.Data.PendingData" /> property which will contain the cumulative logical or of all the values posted with MergeData.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -378,17 +378,17 @@ namespace CoreFoundation {
 
 		/// <summary>Base class for dispatch sources that allow applications to monitor a Mach port.</summary>
 		///     <remarks>
-		///       <para>This is a base class that exposes the <see cref="P:CoreFoundation.DispatchSource.Mach.MachPort" /> property.   Use one of the subclasses to monitor a state changes in mach ports.</para>
+		///       <para>This is a base class that exposes the <see cref="CoreFoundation.DispatchSource.Mach.MachPort" /> property.   Use one of the subclasses to monitor a state changes in mach ports.</para>
 		///       <list type="bullet">
 		///         <item>
 		///           <term>
-		///             <see cref="T:CoreFoundation.DispatchSource.MachReceive" />
+		///             <see cref="CoreFoundation.DispatchSource.MachReceive" />
 		///             <para />
 		///           </term>
 		///         </item>
 		///         <item>
 		///           <term>
-		///             <see cref="T:CoreFoundation.DispatchSource.MachSend" />
+		///             <see cref="CoreFoundation.DispatchSource.MachSend" />
 		///             <para />
 		///           </term>
 		///         </item>
@@ -438,7 +438,7 @@ namespace CoreFoundation {
 			///         <param name="sendDead">If set to true, this will also post a notification when the port’s corresponding receive right has been destroyed.</param>
 			///         <param name="queue">The target queue for this dispatch source object.   Pass null to use the default target queue (the default priority global concurrent queue).</param>
 			///         <summary>Creates a dispatch source that monitors the specified mach port for send right state changes.</summary>
-			///         <remarks>You can use the <see cref="P:CoreFoundation.DispatchSource.MachSend.SendRightsDestroyed" /> property to determine whether the handler was invoked due to the corresponding receive right being destroyed, or if it is a regular state change.</remarks>
+			///         <remarks>You can use the <see cref="CoreFoundation.DispatchSource.MachSend.SendRightsDestroyed" /> property to determine whether the handler was invoked due to the corresponding receive right being destroyed, or if it is a regular state change.</remarks>
 			public MachSend (int machPort, bool sendDead = false, DispatchQueue? queue = null)
 			{
 				if (type_mach_send == IntPtr.Zero)

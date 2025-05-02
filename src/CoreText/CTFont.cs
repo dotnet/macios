@@ -44,7 +44,7 @@ using CGGlyph = System.UInt16;
 
 namespace CoreText {
 
-	/// <summary>Options used when creating new instances of the <see cref="T:CoreText.CTFont" /> class.</summary>
+	/// <summary>Options used when creating new instances of the <see cref="CoreText.CTFont" /> class.</summary>
 	///     <remarks>
 	///     </remarks>
 	[Flags]
@@ -65,7 +65,7 @@ namespace CoreText {
 	}
 
 	// defined as uint32_t - /System/Library/Frameworks/CoreText.framework/Headers/CTFont.h
-	/// <summary>An enumeration whose values specify the intended use of a font. Used with <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=C:CoreText.CTFont(CoreTextCTFontUIType, System.Single, System.String)&amp;scope=Xamarin" title="C:CoreText.CTFont(CoreTextCTFontUIType, System.Single, System.String)">C:CoreText.CTFont(CoreTextCTFontUIType, System.Single, System.String)</a></format></summary>
+	/// <summary>An enumeration whose values specify the intended use of a font. Used with <see cref="CTFont.CTFont(CTFontUIFontType, nfloat, System.String)" /></summary>
 	///     <remarks>To be added.</remarks>
 	public enum CTFontUIFontType : uint {
 		/// <summary>To be added.</summary>
@@ -299,8 +299,8 @@ namespace CoreText {
 	// anonymous and typeless native enum - /System/Library/Frameworks/CoreText.framework/Headers/SFNTLayoutTypes.h
 	/// <summary>An enumeration whose values specify various types of font features.</summary>
 	///     <remarks>To be added.</remarks>
-	///     <altmember cref="P:CoreText.CTFontFeatures.FeatureGroup" />
-	///     <altmember cref="P:CoreText.CTFontFeatureSettings.FeatureGroup" />
+	///     <altmember cref="CoreText.CTFontFeatures.FeatureGroup" />
+	///     <altmember cref="CoreText.CTFontFeatureSettings.FeatureGroup" />
 	public enum FontFeatureGroup {
 		/// <summary>To be added.</summary>
 		AllTypographicFeatures = 0,
@@ -388,7 +388,7 @@ namespace CoreText {
 		CJKRomanSpacing = 103,
 	}
 
-	/// <summary>Encapsulates the features of a <see cref="T:CoreText.CTFont" />.</summary>
+	/// <summary>Encapsulates the features of a <see cref="CoreText.CTFont" />.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -638,14 +638,14 @@ namespace CoreText {
 		}
 	}
 
-	/// <summary>A <see cref="T:CoreText.CTFontFeatureSelectors" /> that represents all type features.</summary>
+	/// <summary>A <see cref="CoreText.CTFontFeatureSelectors" /> that represents all type features.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public class CTFontFeatureAllTypographicFeatures : CTFontFeatureSelectors {
-		/// <summary>An enumeration whose values can be used as arguments for <see cref="M:CoreText.CTFontDescriptor.WithFeature(CoreText.CTFontFeatureVerticalSubstitutionConnection.Selector)" />.</summary>
+		/// <summary>An enumeration whose values can be used as arguments for <see cref="CoreText.CTFontDescriptor.WithFeature(CoreText.CTFontFeatureVerticalSubstitutionConnection.Selector)" />.</summary>
 		///     <remarks>To be added.</remarks>
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -672,14 +672,14 @@ namespace CoreText {
 		}
 	}
 
-	/// <summary>A <see cref="T:CoreText.CTFontFeatureSelectors" /> that describe whether ligature features are on or off.</summary>
+	/// <summary>A <see cref="CoreText.CTFontFeatureSelectors" /> that describe whether ligature features are on or off.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public class CTFontFeatureLigatures : CTFontFeatureSelectors {
-		/// <summary>An enumeration whose values are returned by <see cref="P:CoreText.CTFontFeatureLigatures.Feature" />.</summary>
+		/// <summary>An enumeration whose values are returned by <see cref="CoreText.CTFontFeatureLigatures.Feature" />.</summary>
 		///     <remarks>To be added.</remarks>
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -746,7 +746,7 @@ namespace CoreText {
 		}
 	}
 
-	/// <summary>A <see cref="T:CoreText.CTFontFeatureSelectors" /> that describe features related to capitalization options such as initial capitalization.</summary>
+	/// <summary>A <see cref="CoreText.CTFontFeatureSelectors" /> that describe features related to capitalization options such as initial capitalization.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -757,7 +757,7 @@ namespace CoreText {
 	[ObsoletedOSPlatform ("tvos")]
 	[ObsoletedOSPlatform ("maccatalyst")]
 	public class CTFontFeatureLetterCase : CTFontFeatureSelectors {
-		/// <summary>An enumeration whose values are returned by <see cref="P:CoreText.CTFontFeatureLetterCase.Feature" />.</summary>
+		/// <summary>An enumeration whose values are returned by <see cref="CoreText.CTFontFeatureLetterCase.Feature" />.</summary>
 		///     <remarks>To be added.</remarks>
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -792,14 +792,14 @@ namespace CoreText {
 		}
 	}
 
-	/// <summary>A <see cref="T:CoreText.CTFontFeatureSelectors" /> that describe features related to the connection of cursive letters.</summary>
+	/// <summary>A <see cref="CoreText.CTFontFeatureSelectors" /> that describe features related to the connection of cursive letters.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public class CTFontFeatureCursiveConnection : CTFontFeatureSelectors {
-		/// <summary>An enumeration whose values are returned by <see cref="P:CoreText.CTFontFeatureCursiveConnection.Feature" />.</summary>
+		/// <summary>An enumeration whose values are returned by <see cref="CoreText.CTFontFeatureCursiveConnection.Feature" />.</summary>
 		///     <remarks>To be added.</remarks>
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -828,14 +828,14 @@ namespace CoreText {
 		}
 	}
 
-	/// <summary>A <see cref="T:CoreText.CTFontFeatureSelectors" /> that describe features related to vertical substitution.</summary>
+	/// <summary>A <see cref="CoreText.CTFontFeatureSelectors" /> that describe features related to vertical substitution.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public class CTFontFeatureVerticalSubstitutionConnection : CTFontFeatureSelectors {
-		/// <summary>An enumeration whose values are returned by <see cref="P:CoreText.CTFontFeatureVerticalSubstitutionConnection.Feature" />.</summary>
+		/// <summary>An enumeration whose values are returned by <see cref="CoreText.CTFontFeatureVerticalSubstitutionConnection.Feature" />.</summary>
 		///     <remarks>To be added.</remarks>
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -862,14 +862,14 @@ namespace CoreText {
 		}
 	}
 
-	/// <summary>A <see cref="T:CoreText.CTFontFeatureSelectors" /> that describe whether linguistic rearrangement is on or off.</summary>
+	/// <summary>A <see cref="CoreText.CTFontFeatureSelectors" /> that describe whether linguistic rearrangement is on or off.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public class CTFontFeatureLinguisticRearrangementConnection : CTFontFeatureSelectors {
-		/// <summary>An enumeration whose values are returned by <see cref="P:CoreText.CTFontFeatureLinguisticRearrangementConnection.Feature" />.</summary>
+		/// <summary>An enumeration whose values are returned by <see cref="CoreText.CTFontFeatureLinguisticRearrangementConnection.Feature" />.</summary>
 		///     <remarks>To be added.</remarks>
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -896,14 +896,14 @@ namespace CoreText {
 		}
 	}
 
-	/// <summary>A <see cref="T:CoreText.CTFontFeatureSelectors" /> that describe features related to spacing of numbers.</summary>
+	/// <summary>A <see cref="CoreText.CTFontFeatureSelectors" /> that describe features related to spacing of numbers.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public class CTFontFeatureNumberSpacing : CTFontFeatureSelectors {
-		/// <summary>An enumeration whose values are returned by <see cref="P:CoreText.CTFontFeatureNumberSpacing.Feature" />.</summary>
+		/// <summary>An enumeration whose values are returned by <see cref="CoreText.CTFontFeatureNumberSpacing.Feature" />.</summary>
 		///     <remarks>To be added.</remarks>
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -934,14 +934,14 @@ namespace CoreText {
 		}
 	}
 
-	/// <summary>A <see cref="T:CoreText.CTFontFeatureSelectors" /> that describe features related to smart swashes.</summary>
+	/// <summary>A <see cref="CoreText.CTFontFeatureSelectors" /> that describe features related to smart swashes.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public class CTFontFeatureSmartSwash : CTFontFeatureSelectors {
-		/// <summary>An enumeration whose values are returned by <see cref="P:CoreText.CTFontFeatureSmartSwash.Feature" />.</summary>
+		/// <summary>An enumeration whose values are returned by <see cref="CoreText.CTFontFeatureSmartSwash.Feature" />.</summary>
 		///     <remarks>To be added.</remarks>
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -984,14 +984,14 @@ namespace CoreText {
 		}
 	}
 
-	/// <summary>A <see cref="T:CoreText.CTFontFeatureSelectors" /> that describe features related to the visibility and composition of diacritical marks.</summary>
+	/// <summary>A <see cref="CoreText.CTFontFeatureSelectors" /> that describe features related to the visibility and composition of diacritical marks.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public class CTFontFeatureDiacritics : CTFontFeatureSelectors {
-		/// <summary>An enumeration whose values are returned by <see cref="P:CoreText.CTFontFeatureDiacritics.Feature" />.</summary>
+		/// <summary>An enumeration whose values are returned by <see cref="CoreText.CTFontFeatureDiacritics.Feature" />.</summary>
 		///     <remarks>To be added.</remarks>
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -1020,14 +1020,14 @@ namespace CoreText {
 		}
 	}
 
-	/// <summary>A <see cref="T:CoreText.CTFontFeatureSelectors" /> that describe features related to vertical positioning.</summary>
+	/// <summary>A <see cref="CoreText.CTFontFeatureSelectors" /> that describe features related to vertical positioning.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public class CTFontFeatureVerticalPosition : CTFontFeatureSelectors {
-		/// <summary>An enumeration whose values are returned by <see cref="P:CoreText.CTFontFeatureVerticalPosition.Feature" />.</summary>
+		/// <summary>An enumeration whose values are returned by <see cref="CoreText.CTFontFeatureVerticalPosition.Feature" />.</summary>
 		///     <remarks>To be added.</remarks>
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -1060,14 +1060,14 @@ namespace CoreText {
 		}
 	}
 
-	/// <summary>A <see cref="T:CoreText.CTFontFeatureSelectors" /> that describe features related to how fractions should be displayed.</summary>
+	/// <summary>A <see cref="CoreText.CTFontFeatureSelectors" /> that describe features related to how fractions should be displayed.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public class CTFontFeatureFractions : CTFontFeatureSelectors {
-		/// <summary>An enumeration whose values are returned by <see cref="P:CoreText.CTFontFeatureFractions.Feature" />.</summary>
+		/// <summary>An enumeration whose values are returned by <see cref="CoreText.CTFontFeatureFractions.Feature" />.</summary>
 		///     <remarks>To be added.</remarks>
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -1096,14 +1096,14 @@ namespace CoreText {
 		}
 	}
 
-	/// <summary>A <see cref="T:CoreText.CTFontFeatureSelectors" /> that allow or disallow characters to overlap.</summary>
+	/// <summary>A <see cref="CoreText.CTFontFeatureSelectors" /> that allow or disallow characters to overlap.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public class CTFontFeatureOverlappingCharacters : CTFontFeatureSelectors {
-		/// <summary>An enumeration whose values are returned by <see cref="P:CoreText.CTFontFeatureOverlappingCharacters.Feature" />.</summary>
+		/// <summary>An enumeration whose values are returned by <see cref="CoreText.CTFontFeatureOverlappingCharacters.Feature" />.</summary>
 		///     <remarks>To be added.</remarks>
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -1130,14 +1130,14 @@ namespace CoreText {
 		}
 	}
 
-	/// <summary>A <see cref="T:CoreText.CTFontFeatureSelectors" /> that describe features related to typographic extras such as interrobangs, conversion of dashes to em- or en-dashes, etc..</summary>
+	/// <summary>A <see cref="CoreText.CTFontFeatureSelectors" /> that describe features related to typographic extras such as interrobangs, conversion of dashes to em- or en-dashes, etc..</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public class CTFontFeatureTypographicExtras : CTFontFeatureSelectors {
-		/// <summary>An enumeration whose values are returned by <see cref="P:CoreText.CTFontFeatureTypographicExtras.Feature" />.</summary>
+		/// <summary>An enumeration whose values are returned by <see cref="CoreText.CTFontFeatureTypographicExtras.Feature" />.</summary>
 		///     <remarks>To be added.</remarks>
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -1184,14 +1184,14 @@ namespace CoreText {
 		}
 	}
 
-	/// <summary>A <see cref="T:CoreText.CTFontFeatureSelectors" /> that describe features related to mathematical formulae.</summary>
+	/// <summary>A <see cref="CoreText.CTFontFeatureSelectors" /> that describe features related to mathematical formulae.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public class CTFontFeatureMathematicalExtras : CTFontFeatureSelectors {
-		/// <summary>An enumeration whose values are returned by <see cref="P:CoreText.CTFontFeatureMathematicalExtras.Feature" />.</summary>
+		/// <summary>An enumeration whose values are returned by <see cref="CoreText.CTFontFeatureMathematicalExtras.Feature" />.</summary>
 		///     <remarks>To be added.</remarks>
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -1238,14 +1238,14 @@ namespace CoreText {
 		}
 	}
 
-	/// <summary>A <see cref="T:CoreText.CTFontFeatureSelectors" /> that describe features related to case-sensitive spacing or layout.</summary>
+	/// <summary>A <see cref="CoreText.CTFontFeatureSelectors" /> that describe features related to case-sensitive spacing or layout.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public class CTFontFeatureOrnamentSets : CTFontFeatureSelectors {
-		/// <summary>An enumeration whose values are returned by <see cref="P:CoreText.CTFontFeatureOrnamentSets.Feature" />.</summary>
+		/// <summary>An enumeration whose values are returned by <see cref="CoreText.CTFontFeatureOrnamentSets.Feature" />.</summary>
 		///     <remarks>To be added.</remarks>
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -1282,14 +1282,14 @@ namespace CoreText {
 		}
 	}
 
-	/// <summary>A <see cref="T:CoreText.CTFontFeatureSelectors" /> that describe a feature allowing character alternatives.</summary>
+	/// <summary>A <see cref="CoreText.CTFontFeatureSelectors" /> that describe a feature allowing character alternatives.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public class CTFontFeatureCharacterAlternatives : CTFontFeatureSelectors {
-		/// <summary>An enumeration whose values are returned by <see cref="P:CoreText.CTFontFeatureCharacterAlternatives.Feature" />.</summary>
+		/// <summary>An enumeration whose values are returned by <see cref="CoreText.CTFontFeatureCharacterAlternatives.Feature" />.</summary>
 		///     <remarks>To be added.</remarks>
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -1314,14 +1314,14 @@ namespace CoreText {
 		}
 	}
 
-	/// <summary>A <see cref="T:CoreText.CTFontFeatureSelectors" /> that describe features related to design-level complexity.</summary>
+	/// <summary>A <see cref="CoreText.CTFontFeatureSelectors" /> that describe features related to design-level complexity.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public class CTFontFeatureDesignComplexity : CTFontFeatureSelectors {
-		/// <summary>An enumeration whose values are returned by <see cref="P:CoreText.CTFontFeatureDesignComplexity.Feature" />.</summary>
+		/// <summary>An enumeration whose values are returned by <see cref="CoreText.CTFontFeatureDesignComplexity.Feature" />.</summary>
 		///     <remarks>To be added.</remarks>
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -1354,14 +1354,14 @@ namespace CoreText {
 		}
 	}
 
-	/// <summary>A <see cref="T:CoreText.CTFontFeatureSelectors" /> that describe features related to font features such as illuminated capitals and engraved text.</summary>
+	/// <summary>A <see cref="CoreText.CTFontFeatureSelectors" /> that describe features related to font features such as illuminated capitals and engraved text.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public class CTFontFeatureStyleOptions : CTFontFeatureSelectors {
-		/// <summary>An enumeration whose values are returned by <see cref="P:CoreText.CTFontFeatureStyleOptions.Feature" />.</summary>
+		/// <summary>An enumeration whose values are returned by <see cref="CoreText.CTFontFeatureStyleOptions.Feature" />.</summary>
 		///     <remarks>To be added.</remarks>
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -1396,14 +1396,14 @@ namespace CoreText {
 		}
 	}
 
-	/// <summary>A <see cref="T:CoreText.CTFontFeatureSelectors" /> that describe features related to character shapes such as Hojo Kanji forms, JIS 78 Forms, etc..</summary>
+	/// <summary>A <see cref="CoreText.CTFontFeatureSelectors" /> that describe features related to character shapes such as Hojo Kanji forms, JIS 78 Forms, etc..</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public class CTFontFeatureCharacterShape : CTFontFeatureSelectors {
-		/// <summary>An enumeration whose values are returned by <see cref="P:CoreText.CTFontFeatureCharacterShape.Feature" />.</summary>
+		/// <summary>An enumeration whose values are returned by <see cref="CoreText.CTFontFeatureCharacterShape.Feature" />.</summary>
 		///     <remarks>To be added.</remarks>
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -1456,14 +1456,14 @@ namespace CoreText {
 		}
 	}
 
-	/// <summary>A <see cref="T:CoreText.CTFontFeatureSelectors" /> that describe features related to the display of capital numbers.</summary>
+	/// <summary>A <see cref="CoreText.CTFontFeatureSelectors" /> that describe features related to the display of capital numbers.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public class CTFontFeatureNumberCase : CTFontFeatureSelectors {
-		/// <summary>An enumeration whose values are returned by <see cref="P:CoreText.CTFontFeatureNumberCase.Feature" />.</summary>
+		/// <summary>An enumeration whose values are returned by <see cref="CoreText.CTFontFeatureNumberCase.Feature" />.</summary>
 		///     <remarks>To be added.</remarks>
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -1490,14 +1490,14 @@ namespace CoreText {
 		}
 	}
 
-	/// <summary>A <see cref="T:CoreText.CTFontFeatureSelectors" /> that describe features related to text spacing.</summary>
+	/// <summary>A <see cref="CoreText.CTFontFeatureSelectors" /> that describe features related to text spacing.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public class CTFontFeatureTextSpacing : CTFontFeatureSelectors {
-		/// <summary>An enumeration whose values are returned by <see cref="P:CoreText.CTFontFeatureTextSpacing.Feature" />.</summary>
+		/// <summary>An enumeration whose values are returned by <see cref="CoreText.CTFontFeatureTextSpacing.Feature" />.</summary>
 		///     <remarks>To be added.</remarks>
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -1534,14 +1534,14 @@ namespace CoreText {
 		}
 	}
 
-	/// <summary>A <see cref="T:CoreText.CTFontFeatureSelectors" /> that describe features related to transliteration.</summary>
+	/// <summary>A <see cref="CoreText.CTFontFeatureSelectors" /> that describe features related to transliteration.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public class CTFontFeatureTransliteration : CTFontFeatureSelectors {
-		/// <summary>An enumeration whose values are returned by <see cref="P:CoreText.CTFontFeatureTransliteration.Feature" />.</summary>
+		/// <summary>An enumeration whose values are returned by <see cref="CoreText.CTFontFeatureTransliteration.Feature" />.</summary>
 		///     <remarks>To be added.</remarks>
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -1584,14 +1584,14 @@ namespace CoreText {
 		}
 	}
 
-	/// <summary>A <see cref="T:CoreText.CTFontFeatureSelectors" /> that describe feature annotations.</summary>
+	/// <summary>A <see cref="CoreText.CTFontFeatureSelectors" /> that describe feature annotations.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public class CTFontFeatureAnnotation : CTFontFeatureSelectors {
-		/// <summary>An enumeration whose values are returned by <see cref="P:CoreText.CTFontFeatureAnnotation.Feature" />.</summary>
+		/// <summary>An enumeration whose values are returned by <see cref="CoreText.CTFontFeatureAnnotation.Feature" />.</summary>
 		///     <remarks>To be added.</remarks>
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -1636,14 +1636,14 @@ namespace CoreText {
 		}
 	}
 
-	/// <summary>A <see cref="T:CoreText.CTFontFeatureSelectors" /> that describe features related to Kana spacing.</summary>
+	/// <summary>A <see cref="CoreText.CTFontFeatureSelectors" /> that describe features related to Kana spacing.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public class CTFontFeatureKanaSpacing : CTFontFeatureSelectors {
-		/// <summary>An enumeration whose values are returned by <see cref="P:CoreText.CTFontFeatureCaseSensitiveLayout.Feature" />.</summary>
+		/// <summary>An enumeration whose values are returned by <see cref="CoreText.CTFontFeatureCaseSensitiveLayout.Feature" />.</summary>
 		///     <remarks>To be added.</remarks>
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -1670,14 +1670,14 @@ namespace CoreText {
 		}
 	}
 
-	/// <summary>A <see cref="T:CoreText.CTFontFeatureSelectors" /> that describe features related to ideographic spacing.</summary>
+	/// <summary>A <see cref="CoreText.CTFontFeatureSelectors" /> that describe features related to ideographic spacing.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public class CTFontFeatureIdeographicSpacing : CTFontFeatureSelectors {
-		/// <summary>An enumeration whose values are returned by <see cref="P:CoreText.CTFontFeatureIdeographicSpacing.Feature" />.</summary>
+		/// <summary>An enumeration whose values are returned by <see cref="CoreText.CTFontFeatureIdeographicSpacing.Feature" />.</summary>
 		///     <remarks>To be added.</remarks>
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -1706,14 +1706,14 @@ namespace CoreText {
 		}
 	}
 
-	/// <summary>A <see cref="T:CoreText.CTFontFeatureSelectors" /> that describe features related to how Unicode is decomposed.</summary>
+	/// <summary>A <see cref="CoreText.CTFontFeatureSelectors" /> that describe features related to how Unicode is decomposed.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public class CTFontFeatureUnicodeDecomposition : CTFontFeatureSelectors {
-		/// <summary>An enumeration whose values are returned by <see cref="P:CoreText.CTFontFeatureUnicodeDecomposition.Feature" />.</summary>
+		/// <summary>An enumeration whose values are returned by <see cref="CoreText.CTFontFeatureUnicodeDecomposition.Feature" />.</summary>
 		///     <remarks>To be added.</remarks>
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -1748,14 +1748,14 @@ namespace CoreText {
 		}
 	}
 
-	/// <summary>A <see cref="T:CoreText.CTFontFeatureSelectors" /> that describe features related to applications of rubies to Kana.</summary>
+	/// <summary>A <see cref="CoreText.CTFontFeatureSelectors" /> that describe features related to applications of rubies to Kana.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public class CTFontFeatureRubyKana : CTFontFeatureSelectors {
-		/// <summary>An enumeration whose values are returned by <see cref="P:CoreText.CTFontFeatureRubyKana.Feature" />.</summary>
+		/// <summary>An enumeration whose values are returned by <see cref="CoreText.CTFontFeatureRubyKana.Feature" />.</summary>
 		///     <remarks>To be added.</remarks>
 		public enum Selector {
 			/// <summary>Developers should not use this deprecated field. </summary>
@@ -1798,14 +1798,14 @@ namespace CoreText {
 		}
 	}
 
-	/// <summary>A <see cref="T:CoreText.CTFontFeatureSelectors" /> that describe features related to Chines, Japanese, and Korean typography.</summary>
+	/// <summary>A <see cref="CoreText.CTFontFeatureSelectors" /> that describe features related to Chines, Japanese, and Korean typography.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public class CTFontFeatureCJKSymbolAlternatives : CTFontFeatureSelectors {
-		/// <summary>An enumeration whose values are returned by <see cref="P:CoreText.CTFontFeatureCJKSymbolAlternatives.Feature" />.</summary>
+		/// <summary>An enumeration whose values are returned by <see cref="CoreText.CTFontFeatureCJKSymbolAlternatives.Feature" />.</summary>
 		///     <remarks>To be added.</remarks>
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -1840,14 +1840,14 @@ namespace CoreText {
 		}
 	}
 
-	/// <summary>A <see cref="T:CoreText.CTFontFeatureSelectors" /> that describe features related to ideographic alternatives.</summary>
+	/// <summary>A <see cref="CoreText.CTFontFeatureSelectors" /> that describe features related to ideographic alternatives.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public class CTFontFeatureIdeographicAlternatives : CTFontFeatureSelectors {
-		/// <summary>An enumeration whose values are returned by <see cref="P:CoreText.CTFontFeatureIdeographicAlternatives.Feature" />.</summary>
+		/// <summary>An enumeration whose values are returned by <see cref="CoreText.CTFontFeatureIdeographicAlternatives.Feature" />.</summary>
 		///     <remarks>To be added.</remarks>
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -1882,14 +1882,14 @@ namespace CoreText {
 		}
 	}
 
-	/// <summary>A <see cref="T:CoreText.CTFontFeatureSelectors" /> that describe features related to Chines, Japanese, and Korean typography.</summary>
+	/// <summary>A <see cref="CoreText.CTFontFeatureSelectors" /> that describe features related to Chines, Japanese, and Korean typography.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public class CTFontFeatureCJKVerticalRomanPlacement : CTFontFeatureSelectors {
-		/// <summary>An enumeration whose values are returned by <see cref="P:CoreText.CTFontFeatureCJKVerticalRomanPlacement.Feature" />.</summary>
+		/// <summary>An enumeration whose values are returned by <see cref="CoreText.CTFontFeatureCJKVerticalRomanPlacement.Feature" />.</summary>
 		///     <remarks>To be added.</remarks>
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -1916,14 +1916,14 @@ namespace CoreText {
 		}
 	}
 
-	/// <summary>A <see cref="T:CoreText.CTFontFeatureSelectors" /> that describe features related to Chines, Japanese, and Korean italicized text.</summary>
+	/// <summary>A <see cref="CoreText.CTFontFeatureSelectors" /> that describe features related to Chines, Japanese, and Korean italicized text.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public class CTFontFeatureItalicCJKRoman : CTFontFeatureSelectors {
-		/// <summary>An enumeration whose values are returned by <see cref="P:CoreText.CTFontFeatureItalicCJKRoman.Feature" />.</summary>
+		/// <summary>An enumeration whose values are returned by <see cref="CoreText.CTFontFeatureItalicCJKRoman.Feature" />.</summary>
 		///     <remarks>To be added.</remarks>
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -1966,14 +1966,14 @@ namespace CoreText {
 		}
 	}
 
-	/// <summary>A <see cref="T:CoreText.CTFontFeatureSelectors" /> that describe features related to case-sensitive spacing or layout.</summary>
+	/// <summary>A <see cref="CoreText.CTFontFeatureSelectors" /> that describe features related to case-sensitive spacing or layout.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public class CTFontFeatureCaseSensitiveLayout : CTFontFeatureSelectors {
-		/// <summary>An enumeration whose values are returned by <see cref="P:CoreText.CTFontFeatureCaseSensitiveLayout.Feature" />.</summary>
+		/// <summary>An enumeration whose values are returned by <see cref="CoreText.CTFontFeatureCaseSensitiveLayout.Feature" />.</summary>
 		///     <remarks>To be added.</remarks>
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -2004,14 +2004,14 @@ namespace CoreText {
 		}
 	}
 
-	/// <summary>A <see cref="T:CoreText.CTFontFeatureSelectors" /> for alternate kana.</summary>
+	/// <summary>A <see cref="CoreText.CTFontFeatureSelectors" /> for alternate kana.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public class CTFontFeatureAlternateKana : CTFontFeatureSelectors {
-		/// <summary>An enumeration whose values are returned by <see cref="P:CoreText.CTFontFeatureAlternateKana.Feature" />.</summary>
+		/// <summary>An enumeration whose values are returned by <see cref="CoreText.CTFontFeatureAlternateKana.Feature" />.</summary>
 		///     <remarks>To be added.</remarks>
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -2042,14 +2042,14 @@ namespace CoreText {
 		}
 	}
 
-	/// <summary>A <see cref="T:CoreText.CTFontFeatureSelectors" /> that describe features related to alternative styles.</summary>
+	/// <summary>A <see cref="CoreText.CTFontFeatureSelectors" /> that describe features related to alternative styles.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public class CTFontFeatureStylisticAlternatives : CTFontFeatureSelectors {
-		/// <summary>An enumeration whose values are returned by <see cref="P:CoreText.CTFontFeatureCaseSensitiveLayout.Feature" />.</summary>
+		/// <summary>An enumeration whose values are returned by <see cref="CoreText.CTFontFeatureCaseSensitiveLayout.Feature" />.</summary>
 		///     <remarks>To be added.</remarks>
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -2154,14 +2154,14 @@ namespace CoreText {
 		}
 	}
 
-	/// <summary>A <see cref="T:CoreText.CTFontFeatureSelectors" /> that describe features related to swash alternatives.</summary>
+	/// <summary>A <see cref="CoreText.CTFontFeatureSelectors" /> that describe features related to swash alternatives.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public class CTFontFeatureContextualAlternates : CTFontFeatureSelectors {
-		/// <summary>An enumeration whose values are returned by <see cref="P:CoreText.CTFontFeatureContextualAlternates.Feature" />.</summary>
+		/// <summary>An enumeration whose values are returned by <see cref="CoreText.CTFontFeatureContextualAlternates.Feature" />.</summary>
 		///     <remarks>To be added.</remarks>
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -2196,14 +2196,14 @@ namespace CoreText {
 		}
 	}
 
-	/// <summary>A <see cref="T:CoreText.CTFontFeatureSelectors" /> that describe features related to how lower-case letters are rendered.</summary>
+	/// <summary>A <see cref="CoreText.CTFontFeatureSelectors" /> that describe features related to how lower-case letters are rendered.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public class CTFontFeatureLowerCase : CTFontFeatureSelectors {
-		/// <summary>An enumeration whose values are returned by <see cref="P:CoreText.CTFontFeatureLowerCase.Feature" />.</summary>
+		/// <summary>An enumeration whose values are returned by <see cref="CoreText.CTFontFeatureLowerCase.Feature" />.</summary>
 		///     <remarks>To be added.</remarks>
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -2232,14 +2232,14 @@ namespace CoreText {
 		}
 	}
 
-	/// <summary>A <see cref="T:CoreText.CTFontFeatureSelectors" /> that describe features related to how upper-case letters should be displayed.</summary>
+	/// <summary>A <see cref="CoreText.CTFontFeatureSelectors" /> that describe features related to how upper-case letters should be displayed.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public class CTFontFeatureUpperCase : CTFontFeatureSelectors {
-		/// <summary>An enumeration whose values are returned by <see cref="P:CoreText.CTFontFeatureUpperCase.Feature" />.</summary>
+		/// <summary>An enumeration whose values are returned by <see cref="CoreText.CTFontFeatureUpperCase.Feature" />.</summary>
 		///     <remarks>To be added.</remarks>
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -2268,14 +2268,14 @@ namespace CoreText {
 		}
 	}
 
-	/// <summary>A <see cref="T:CoreText.CTFontFeatureSelectors" /> that describe features related to Chines, Japanese, and Korean typography.</summary>
+	/// <summary>A <see cref="CoreText.CTFontFeatureSelectors" /> that describe features related to Chines, Japanese, and Korean typography.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public class CTFontFeatureCJKRomanSpacing : CTFontFeatureSelectors {
-		/// <summary>An enumeration whose values are returned by <see cref="P:CoreText.CTFontFeatureCJKRomanSpacing.Feature" />.</summary>
+		/// <summary>An enumeration whose values are returned by <see cref="CoreText.CTFontFeatureCJKRomanSpacing.Feature" />.</summary>
 		///     <remarks>To be added.</remarks>
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -2306,7 +2306,7 @@ namespace CoreText {
 		}
 	}
 
-	/// <summary>The feature settings of a <see cref="T:CoreText.CTFont" /> or <see cref="T:CoreText.CTFontDescriptorAttributes" />.</summary>
+	/// <summary>The feature settings of a <see cref="CoreText.CTFont" /> or <see cref="CoreText.CTFontDescriptorAttributes" />.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -2347,7 +2347,7 @@ namespace CoreText {
 
 	/// <summary>Encapsulates a font-variation-axis dictionary.</summary>
 	///     <remarks>To be added.</remarks>
-	///     <altmember cref="T:CoreText.CTFontVariationAxisKey" />
+	///     <altmember cref="CoreText.CTFontVariationAxisKey" />
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -2431,8 +2431,7 @@ namespace CoreText {
 
 	/// <summary>Encapsulates a font-variation dictionary.</summary>
 	///     <remarks>To be added.</remarks>
-	///     <altmember cref="M:CoreText.CTFont.GetVariation" />
-	///     <altmember cref="M:CoreText.CTFontDescriptorAttributes.GetVariation" />
+	///     <altmember cref="CoreText.CTFont.GetVariation" />
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -3671,7 +3670,7 @@ namespace CoreText {
 		///         <remarks>
 		///           <para>The returned token is the CoreFoundation type identifier (CFType) that has been assigned to this class.</para>
 		///           <para>This can be used to determine type identity between different CoreFoundation objects.</para>
-		///           <para>You can retrieve the type of a CoreFoundation object by invoking the <see cref="M:CoreFoundation.CFType.GetTypeID(System.IntPtr)" /> on the native handle of the object</para>
+		///           <para>You can retrieve the type of a CoreFoundation object by invoking the <see cref="CoreFoundation.CFType.GetTypeID(System.IntPtr)" /> on the native handle of the object</para>
 		///           <example>
 		///             <code lang="csharp lang-csharp"><![CDATA[bool isCTFont = (CFType.GetTypeID (foo.Handle) == CTFont.GetTypeID ());]]></code>
 		///           </example>

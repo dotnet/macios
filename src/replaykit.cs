@@ -60,11 +60,11 @@ namespace ReplayKit {
 		RPPreviewViewControllerMode Mode { get; set; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:ReplayKit.RPPreviewViewControllerDelegate" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="ReplayKit.RPPreviewViewControllerDelegate" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:ReplayKit.RPPreviewViewControllerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:ReplayKit.RPPreviewViewControllerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:ReplayKit.RPPreviewViewControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="ReplayKit.RPPreviewViewControllerDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="ReplayKit.RPPreviewViewControllerDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="ReplayKit.RPPreviewViewControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	interface IRPPreviewViewControllerDelegate { }
 
@@ -239,11 +239,11 @@ namespace ReplayKit {
 		void StopClipBuffering ([NullAllowed] Action<NSError> completionHandler);
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:ReplayKit.RPScreenRecorderDelegate" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="ReplayKit.RPScreenRecorderDelegate" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:ReplayKit.RPScreenRecorderDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:ReplayKit.RPScreenRecorderDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:ReplayKit.RPScreenRecorderDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="ReplayKit.RPScreenRecorderDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="ReplayKit.RPScreenRecorderDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="ReplayKit.RPScreenRecorderDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	interface IRPScreenRecorderDelegate { }
 
@@ -347,7 +347,7 @@ namespace ReplayKit {
 	/// <include file="../docs/api/ReplayKit/IRPBroadcastActivityViewControllerDelegate.xml" path="/Documentation/Docs[@DocId='T:ReplayKit.IRPBroadcastActivityViewControllerDelegate']/*" />
 	interface IRPBroadcastActivityViewControllerDelegate { }
 
-	/// <summary>Responds to changes in the UI that is presented by a <see cref="T:ReplayKit.RPBroadcastActivityViewController" />.</summary>
+	/// <summary>Responds to changes in the UI that is presented by a <see cref="ReplayKit.RPBroadcastActivityViewController" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/ReplayKit/RPBroadcastActivityViewControllerDelegate">Apple documentation for <c>RPBroadcastActivityViewControllerDelegate</c></related>
 	[NoMac]
@@ -430,11 +430,11 @@ namespace ReplayKit {
 		void FinishBroadcast (Action<NSError> handler);
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:ReplayKit.RPBroadcastControllerDelegate" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="ReplayKit.RPBroadcastControllerDelegate" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:ReplayKit.RPBroadcastControllerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:ReplayKit.RPBroadcastControllerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:ReplayKit.RPBroadcastControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="ReplayKit.RPBroadcastControllerDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="ReplayKit.RPBroadcastControllerDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="ReplayKit.RPBroadcastControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	interface IRPBroadcastControllerDelegate { }
 
@@ -489,7 +489,7 @@ namespace ReplayKit {
 	/// <param name="bundleID">The bundle ID of the newly loaded broadcasting service.</param>
 	///     <param name="displayName">The display name of the newly loaded broadcasting service.</param>
 	///     <param name="appIcon">The application icon of the newly loaded broadcasting service.</param>
-	///     <summary>Delegate that specifies the signature of the completion handler in calls to the <see cref="M:ReplayKit.NSExtensionContext_RPBroadcastExtension.LoadBroadcastingApplicationInfo(Foundation.NSExtensionContext,ReplayKit.LoadBroadcastingHandler)" /> method.</summary>
+	///     <summary>Delegate that specifies the signature of the completion handler in calls to the <see cref="ReplayKit.NSExtensionContext_RPBroadcastExtension.LoadBroadcastingApplicationInfo(Foundation.NSExtensionContext,ReplayKit.LoadBroadcastingHandler)" /> method.</summary>
 	delegate void LoadBroadcastingHandler (string bundleID, string displayName, UIImage appIcon);
 
 	[MacCatalyst (13, 1)]

@@ -2,9 +2,9 @@
   <Docs DocId="T:MultipeerConnectivity.MCSession">
     <summary>Represents a persistent connection between multiple devices.</summary>
     <remarks>
-      <para>Multipeer Connectivity has two phases: discovery and the session. The role of the discovery phase is to associate an <see cref="T:MultipeerConnectivity.MCSession" /> object on each device with an <see cref="T:MultipeerConnectivity.MCSession" /> object on the peer devices. In the session phase, the <see cref="T:MultipeerConnectivity.MCSession" /> object is the channel through which devices communicate and its lifecycle events are associated with connections, disconnections, transmissions, and receptions.</para>
-      <para>The <see cref="T:MultipeerConnectivity.MCSession" /> is instantiated by the application developer. During the discovery phase, there are two roles: advertisers that broadcast their willingness to connect to a certain protocol and browsers that discover these advertisers and invite them to sessions. </para>
-      <para> Advertising is managed by either the stock <see cref="T:MultipeerConnectivity.MCAdvertiserAssistant" /> or custom controller that uses a <see cref="T:MultipeerConnectivity.MCNearbyServiceAdvertiser" />. Similarly, browsing is managed by a  <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:MultipeerConnectivity.UIViewController&amp;scope=Xamarin" title="T:MultipeerConnectivity.UIViewController">T:MultipeerConnectivity.UIViewController</a></format>, either the stock <see cref="T:MultipeerConnectivity.MCBrowserViewController" /> or a custom controller that uses a <see cref="T:MultipeerConnectivity.MCNearbyServiceBrowser" /> object to programmatically discover peers. Once a peer is discovered, an invitation is sent with <see cref="M:MultipeerConnectivity.MCNearbyServiceBrowser.InvitePeer(MultipeerConnectivity.MCPeerID,MultipeerConnectivity.MCSession,Foundation.NSData,System.Double)" />). The application user interacts with a system dialog informing them of the invitation. If they accept, the <see cref="T:MultipeerConnectivity.MCSession" /> connects.</para>
+      <para>Multipeer Connectivity has two phases: discovery and the session. The role of the discovery phase is to associate an <see cref="MultipeerConnectivity.MCSession" /> object on each device with an <see cref="MultipeerConnectivity.MCSession" /> object on the peer devices. In the session phase, the <see cref="MultipeerConnectivity.MCSession" /> object is the channel through which devices communicate and its lifecycle events are associated with connections, disconnections, transmissions, and receptions.</para>
+      <para>The <see cref="MultipeerConnectivity.MCSession" /> is instantiated by the application developer. During the discovery phase, there are two roles: advertisers that broadcast their willingness to connect to a certain protocol and browsers that discover these advertisers and invite them to sessions. </para>
+      <para> Advertising is managed by either the stock <see cref="MultipeerConnectivity.MCAdvertiserAssistant" /> or custom controller that uses a <see cref="MultipeerConnectivity.MCNearbyServiceAdvertiser" />. Similarly, browsing is managed by a  <see cref="MultipeerConnectivity.UIViewController" />, either the stock <see cref="MultipeerConnectivity.MCBrowserViewController" /> or a custom controller that uses a <see cref="MultipeerConnectivity.MCNearbyServiceBrowser" /> object to programmatically discover peers. Once a peer is discovered, an invitation is sent with <see cref="MultipeerConnectivity.MCNearbyServiceBrowser.InvitePeer(MultipeerConnectivity.MCPeerID,MultipeerConnectivity.MCSession,Foundation.NSData,System.Double)" />). The application user interacts with a system dialog informing them of the invitation. If they accept, the <see cref="MultipeerConnectivity.MCSession" /> connects.</para>
       <para>The following image shows the sequence of functions with programmatic advertising and browsing:</para>
       <para>
         <img href="~/MultipeerConnectivity/_images/MultipeerConnectivity.ProgrammaticAdvertisingAndDiscovery.png" alt="Sequence diagram showing advertising and discovery" />
@@ -17,42 +17,42 @@
             <description>Discussion</description>
           </listheader>
           <item>
-            <term>Create a new <see cref="T:MultipeerConnectivity.MCNearbyServiceAdvertiserDelegate" /> and assign it to the <see cref="P:MultipeerConnectivity.MCNearbyServiceAdvertiser.Delegate" /> property.</term>
-            <description>Create a new <see cref="T:MultipeerConnectivity.MCNearbyServiceBrowserDelegate" /> and assign it to <see cref="P:MultipeerConnectivity.MCNearbyServiceBrowser.Delegate" /> property.</description>
-            <description>Discovery and connection is taken care of by the delegate objects for the <see cref="T:MultipeerConnectivity.MCNearbyServiceAdvertiser" /> and <see cref="T:MultipeerConnectivity.MCNearbyServiceBrowser" />.</description>
+            <term>Create a new <see cref="MultipeerConnectivity.MCNearbyServiceAdvertiserDelegate" /> and assign it to the <see cref="MultipeerConnectivity.MCNearbyServiceAdvertiser.Delegate" /> property.</term>
+            <description>Create a new <see cref="MultipeerConnectivity.MCNearbyServiceBrowserDelegate" /> and assign it to <see cref="MultipeerConnectivity.MCNearbyServiceBrowser.Delegate" /> property.</description>
+            <description>Discovery and connection is taken care of by the delegate objects for the <see cref="MultipeerConnectivity.MCNearbyServiceAdvertiser" /> and <see cref="MultipeerConnectivity.MCNearbyServiceBrowser" />.</description>
           </item>
           <item>
-            <term>The advertiser may instantiate a new <see cref="T:MultipeerConnectivity.MCSession" /> now or wait until it receives an invitation.</term>
-            <description>Instantiate a new <see cref="T:MultipeerConnectivity.MCSession" />.</description>
-            <description>The browser should maintain a reference to a single <see cref="T:MultipeerConnectivity.MCSession" /> object no matter how many peers ultimately connect.</description>
+            <term>The advertiser may instantiate a new <see cref="MultipeerConnectivity.MCSession" /> now or wait until it receives an invitation.</term>
+            <description>Instantiate a new <see cref="MultipeerConnectivity.MCSession" />.</description>
+            <description>The browser should maintain a reference to a single <see cref="MultipeerConnectivity.MCSession" /> object no matter how many peers ultimately connect.</description>
           </item>
           <item>
             <term>
-              <see cref="M:MultipeerConnectivity.MCNearbyServiceAdvertiser.StartAdvertisingPeer" />
+              <see cref="MultipeerConnectivity.MCNearbyServiceAdvertiser.StartAdvertisingPeer" />
             </term>
             <description>
-              <see cref="M:MultipeerConnectivity.MCNearbyServiceBrowser.StartBrowsingForPeers" />
+              <see cref="MultipeerConnectivity.MCNearbyServiceBrowser.StartBrowsingForPeers" />
             </description>
             <description>Advertiser and browser must use identical <c>serviceType</c> strings to identify their protocol / application. Peer IDs should be unique to each device.</description>
           </item>
           <item>
             <term>
             </term>
-            <description>The system will call <see cref="M:MultipeerConnectivity.MCNearbyServiceBrowserDelegate.FoundPeer(MultipeerConnectivity.MCNearbyServiceBrowser,MultipeerConnectivity.MCPeerID,Foundation.NSDictionary)" />, passing in a reference to the <see cref="T:MultipeerConnectivity.MCNearbyServiceBrowser" />. The application developer calls <see cref="M:MultipeerConnectivity.MCNearbyServiceBrowser.InvitePeer(MultipeerConnectivity.MCPeerID,MultipeerConnectivity.MCSession,Foundation.NSData,System.Double)" />, passing in a reference to the previously-created <see cref="T:MultipeerConnectivity.MCSession" />.</description>
-            <description>The callback is likely to occur on a background thread. If the application developer wishes to update the display, they must use <see cref="M:Foundation.NSObject.InvokeOnMainThread(ObjCRuntime.Selector,Foundation.NSObject)" />.</description>
+            <description>The system will call <see cref="MultipeerConnectivity.MCNearbyServiceBrowserDelegate.FoundPeer(MultipeerConnectivity.MCNearbyServiceBrowser,MultipeerConnectivity.MCPeerID,Foundation.NSDictionary)" />, passing in a reference to the <see cref="MultipeerConnectivity.MCNearbyServiceBrowser" />. The application developer calls <see cref="MultipeerConnectivity.MCNearbyServiceBrowser.InvitePeer(MultipeerConnectivity.MCPeerID,MultipeerConnectivity.MCSession,Foundation.NSData,System.Double)" />, passing in a reference to the previously-created <see cref="MultipeerConnectivity.MCSession" />.</description>
+            <description>The callback is likely to occur on a background thread. If the application developer wishes to update the display, they must use <see cref="Foundation.NSObject.InvokeOnMainThread(ObjCRuntime.Selector,Foundation.NSObject)" />.</description>
           </item>
           <item>
-            <term>The system will call <see cref="M:MultipeerConnectivity.MCNearbyServiceAdvertiserDelegate.DidReceiveInvitationFromPeer(MultipeerConnectivity.MCNearbyServiceAdvertiser,MultipeerConnectivity.MCPeerID,Foundation.NSData,MultipeerConnectivity.MCNearbyServiceAdvertiserInvitationHandler)" />. To connect the devices, the application developer must invoke the passed-in <c>invitationHandler</c> with it's <c>context</c> argument set to <see langword="true" /> and it's <c>session</c> argument set to an <see cref="T:MultipeerConnectivity.MCSession" />.</term>
+            <term>The system will call <see cref="MultipeerConnectivity.MCNearbyServiceAdvertiserDelegate.DidReceiveInvitationFromPeer(MultipeerConnectivity.MCNearbyServiceAdvertiser,MultipeerConnectivity.MCPeerID,Foundation.NSData,MultipeerConnectivity.MCNearbyServiceAdvertiserInvitationHandler)" />. To connect the devices, the application developer must invoke the passed-in <c>invitationHandler</c> with it's <c>context</c> argument set to <see langword="true" /> and it's <c>session</c> argument set to an <see cref="MultipeerConnectivity.MCSession" />.</term>
             <description>
             </description>
-            <description>The callback is likely to occur on a background thread. If the application developer wishes to update the display, they must use <see cref="M:Foundation.NSObject.InvokeOnMainThread(ObjCRuntime.Selector,Foundation.NSObject)" />. </description>
+            <description>The callback is likely to occur on a background thread. If the application developer wishes to update the display, they must use <see cref="Foundation.NSObject.InvokeOnMainThread(ObjCRuntime.Selector,Foundation.NSObject)" />. </description>
           </item>
           <item>
             <term>
             </term>
             <description>
             </description>
-            <description>Once the devices are connected, the <see cref="T:MultipeerConnectivity.MCSession" /> objects can be used to transmit messages and data between devices.</description>
+            <description>Once the devices are connected, the <see cref="MultipeerConnectivity.MCSession" /> objects can be used to transmit messages and data between devices.</description>
           </item>
         </list>
       </para>
@@ -64,7 +64,7 @@
     <param name="data">To be added.</param>
     <summary>Initiates a connection to a peer identified by <paramref name="peerID" />.</summary>
     <remarks>
-      <para>Application developers may use a non-Multipeer Connectivity discovery technique, such as Bonjour / <see cref="T:Foundation.NSNetService" />, and manually manage peer connection. However, the <paramref name="peerID" /> used here and in <see cref="M:MultipeerConnectivity.MCSession.NearbyConnectionDataForPeer(MultipeerConnectivity.MCPeerID,MultipeerConnectivity.MCSessionNearbyConnectionDataForPeerCompletionHandler)" /> must originate from a <see cref="T:Foundation.NSKeyedArchiver" /> serializing an <see cref="T:MultipeerConnectivity.MCPeerID" /> on the remote peer. (This raises the question: if discovery and enough message-passing code to transmit the <paramref name="peerID" /> is done by Bonjour, what's the advantage of using MPC for further communication? One answer might be the evolution of a legacy system, another answer might lie in the simpler message- and resource-passing of MPC.)</para>
+      <para>Application developers may use a non-Multipeer Connectivity discovery technique, such as Bonjour / <see cref="Foundation.NSNetService" />, and manually manage peer connection. However, the <paramref name="peerID" /> used here and in <see cref="MultipeerConnectivity.MCSession.NearbyConnectionDataForPeer(MultipeerConnectivity.MCPeerID,MultipeerConnectivity.MCSessionNearbyConnectionDataForPeerCompletionHandler)" /> must originate from a <see cref="Foundation.NSKeyedArchiver" /> serializing an <see cref="MultipeerConnectivity.MCPeerID" /> on the remote peer. (This raises the question: if discovery and enough message-passing code to transmit the <paramref name="peerID" /> is done by Bonjour, what's the advantage of using MPC for further communication? One answer might be the evolution of a legacy system, another answer might lie in the simpler message- and resource-passing of MPC.)</para>
     </remarks>
   </Docs>
   <Docs DocId="M:MultipeerConnectivity.MCSession.NearbyConnectionDataForPeer(MultipeerConnectivity.MCPeerID,MultipeerConnectivity.MCSessionNearbyConnectionDataForPeerCompletionHandler)">
@@ -72,7 +72,7 @@
         <param name="completionHandler">The completion handler called after processing is complete.</param>
         <summary>Creates the necessary data for a  manually-managed peer connection.</summary>
         <remarks>
-          <para>Application developers may use a non-Multipeer Connectivity discovery technique, such as Bonjour / <see cref="T:Foundation.NSNetService" />, and manually manage peer connection. However, the <paramref name="peerID" /> used here and in <see cref="M:MultipeerConnectivity.MCSession.ConnectPeer(MultipeerConnectivity.MCPeerID,Foundation.NSData)" /> must originate from a <see cref="T:Foundation.NSKeyedArchiver" /> serializing an <see cref="T:MultipeerConnectivity.MCPeerID" /> on the remote peer. (This raises the question: if discovery and enough message-passing code to transmit the <paramref name="peerID" /> is done by Bonjour, what's the advantage of using MPC for further communication? One answer might be the evolution of a legacy system, another answer might lie in the simpler message- and resource-passing of MPC.)</para>
+          <para>Application developers may use a non-Multipeer Connectivity discovery technique, such as Bonjour / <see cref="Foundation.NSNetService" />, and manually manage peer connection. However, the <paramref name="peerID" /> used here and in <see cref="MultipeerConnectivity.MCSession.ConnectPeer(MultipeerConnectivity.MCPeerID,Foundation.NSData)" /> must originate from a <see cref="Foundation.NSKeyedArchiver" /> serializing an <see cref="MultipeerConnectivity.MCPeerID" /> on the remote peer. (This raises the question: if discovery and enough message-passing code to transmit the <paramref name="peerID" /> is done by Bonjour, what's the advantage of using MPC for further communication? One answer might be the evolution of a legacy system, another answer might lie in the simpler message- and resource-passing of MPC.)</para>
           <para>Once the application developer has the <paramref name="peerID" />, the rest of the code to connect a peer would be:</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[

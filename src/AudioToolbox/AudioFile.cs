@@ -101,7 +101,7 @@ namespace AudioToolbox {
 		LatmInLoas = 0x6c6f6173, // loas
 	}
 
-	/// <summary>The error codes returned by <see cref="T:AudioToolbox.AudioFile" />.</summary>
+	/// <summary>The error codes returned by <see cref="AudioToolbox.AudioFile" />.</summary>
 	///     <remarks>
 	///     </remarks>
 	public enum AudioFileError {// Implictly cast to OSType in AudioFile.h
@@ -141,7 +141,7 @@ namespace AudioToolbox {
 		FilePosition = -40,
 	}
 
-	/// <summary>An enumeration whose values specify the <c>permissions</c> argument in the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Audio%20Toolbox%20Audio%20File%20Open&amp;scope=Xamarin" title="M:AudioToolbox.AudioFile.Open*">M:AudioToolbox.AudioFile.Open*</a></format> method.</summary>
+	/// <summary>An enumeration whose values specify the <c>permissions</c> argument when opening an <see cref="AudioToolbox.AudioFile" />.</summary>
 	///     <remarks>To be added.</remarks>
 	[Flags]
 	public enum AudioFilePermission {
@@ -153,7 +153,7 @@ namespace AudioToolbox {
 		ReadWrite = 0x03,
 	}
 
-	/// <summary>An enumeration whose values are valid flags for the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Audio%20Toolbox%20Audio%20File%20Create&amp;scope=Xamarin" title="M:AudioToolbox.AudioFile.Create*">M:AudioToolbox.AudioFile.Create*</a></format> method.</summary>
+	/// <summary>An enumeration whose values to select creation options for <see cref="AudioToolbox.AudioFile" />.</summary>
 	///     <remarks>To be added.</remarks>
 	[Flags]
 	public enum AudioFileFlags { // UInt32 in AudioFileCreateWithURL()
@@ -163,7 +163,7 @@ namespace AudioToolbox {
 		DontPageAlignAudioData = 2,
 	}
 
-	/// <summary>An enumeration whose values represent information about a <see cref="T:AudioToolbox.AudioFile" />. See the <see cref="M:AudioToolbox.AudioFileStream.GetProperty(AudioToolbox.AudioFileStreamProperty,System.Int32@,System.IntPtr)" /> and <see cref="M:AudioToolbox.AudioFile.SetProperty(AudioToolbox.AudioFileProperty,System.Int32,System.IntPtr)" /> methods.</summary>
+	/// <summary>An enumeration whose values represent information about a <see cref="AudioToolbox.AudioFile" />. See the <see cref="AudioToolbox.AudioFileStream.GetProperty(AudioToolbox.AudioFileStreamProperty,ref System.Int32,System.IntPtr)" /> and <see cref="AudioToolbox.AudioFile.SetProperty(AudioToolbox.AudioFileProperty,System.Int32,System.IntPtr)" /> methods.</summary>
 	///     <remarks>To be added.</remarks>
 	public enum AudioFileProperty { // typedef UInt32 AudioFilePropertyID
 		/// <summary>To be added.</summary>
@@ -419,7 +419,7 @@ namespace AudioToolbox {
 		}
 	}
 
-	/// <summary>An enumeration whose values specify the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Audio%20File%20Mark%20Type&amp;scope=Xamarin" title="P:AudioFileMark.Type">P:AudioFileMark.Type</a></format> property.</summary>
+	/// <summary>An enumeration whose values specify the <see cref="AudioFileMarker.Type" /> property.</summary>
 	///     <remarks>To be added.</remarks>
 	public enum AudioFileMarkerType : uint // UInt32 in AudioFileMarkerType - AudioFile.h
 	{
@@ -472,7 +472,7 @@ namespace AudioToolbox {
 		CAFKeySignature = 0x6b736967,   // 'ksig'
 	}
 
-	/// <summary>A collection of <see cref="T:AudioToolbox.AudioFileMarker" />s.</summary>
+	/// <summary>A collection of <see cref="AudioToolbox.AudioFileMarker" />s.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -672,7 +672,7 @@ namespace AudioToolbox {
 		}
 	}
 
-	/// <summary>A flagging enumeration whose values are used in the <see cref="P:AudioToolbox.AudioFileRegion.Flags" /> property.</summary>
+	/// <summary>A flagging enumeration whose values are used in the <see cref="AudioToolbox.AudioFileRegion.Flags" /> property.</summary>
 	///     <remarks>To be added.</remarks>
 	[Flags]
 	public enum AudioFileRegionFlags : uint // UInt32 in AudioFileRegion
@@ -685,7 +685,7 @@ namespace AudioToolbox {
 		PlayBackward = 4,
 	}
 
-	/// <summary>A list of <see cref="T:AudioToolbox.AudioFileRegion" />s.</summary>
+	/// <summary>A list of <see cref="AudioToolbox.AudioFileRegion" />s.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -2065,7 +2065,7 @@ namespace AudioToolbox {
 		///         <remarks>To be added.</remarks>
 		public AudioFileError StreamBasicDescriptionStatus { get; private set; }
 
-		/// <summary>Gets the <see cref="T:AudioToolbox.AudioStreamBasicDescription" />, if present, that describes the format of the audio data.</summary>
+		/// <summary>Gets the <see cref="AudioToolbox.AudioStreamBasicDescription" />, if present, that describes the format of the audio data.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public AudioStreamBasicDescription? DataFormat {
@@ -2237,7 +2237,7 @@ namespace AudioToolbox {
 			}
 		}
 
-		/// <summary>Gets the <see cref="T:AudioToolbox.AudioFileMarkerList" /> that contains the markers for the audio file.</summary>
+		/// <summary>Gets the <see cref="AudioToolbox.AudioFileMarkerList" /> that contains the markers for the audio file.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public AudioFileMarkerList? MarkerList {
@@ -2268,7 +2268,7 @@ namespace AudioToolbox {
 		///         <remarks>To be added.</remarks>
 		public AudioFileError PacketTableInfoStatus { get; private set; }
 
-		/// <summary>Gets or sets the <see cref="T:AudioToolbox.AudioFilePacketTableInfo" /> structure that describes the audio file packet table.</summary>
+		/// <summary>Gets or sets the <see cref="AudioToolbox.AudioFilePacketTableInfo" /> structure that describes the audio file packet table.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public unsafe AudioFilePacketTableInfo? PacketTableInfo {
@@ -2752,7 +2752,7 @@ namespace AudioToolbox {
 		///         <remarks>
 		/// 	  This constructor is provided as a convenience for
 		/// 	  developers that need to decouple the creation of the
-		/// 	  AudioSource from starting the read and write process.    Once you have created this object, you need to invoke the <see cref="M:AudioToolbox.AudioSource.Initialize(AudioToolbox.AudioFileType,AudioToolbox.AudioStreamBasicDescription)" /> method to complete the setup.
+		/// 	  AudioSource from starting the read and write process.    Once you have created this object, you need to invoke the <see cref="AudioToolbox.AudioSource.Initialize(AudioToolbox.AudioFileType,AudioToolbox.AudioStreamBasicDescription)" /> method to complete the setup.
 		/// 	</remarks>
 		public AudioSource ()
 		{

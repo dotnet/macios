@@ -50,7 +50,7 @@ namespace UIKit {
 		[DllImport (Constants.UIKitLibrary)]
 		extern static /* NSData */ IntPtr UIImagePNGRepresentation (/* UIImage */ IntPtr image);
 
-		/// <summary>Encodes the image into a <see cref="T:Foundation.NSData" /> byte blob using the PNG encoding.</summary>
+		/// <summary>Encodes the image into a <see cref="Foundation.NSData" /> byte blob using the PNG encoding.</summary>
 		///         <returns>The encoded image in an NSData wrapper or null if there was an error.</returns>
 		///         <remarks>
 		///           <para>
@@ -66,7 +66,7 @@ namespace UIKit {
 		[DllImport (Constants.UIKitLibrary)]
 		extern static /* NSData */ IntPtr UIImageJPEGRepresentation (/* UIImage */ IntPtr image, /* CGFloat */ nfloat compressionQuality);
 
-		/// <summary>Encodes the image with minimal compression (maximum quality) into a <see cref="T:Foundation.NSData" /> byte blob using the JPEG encoding.</summary>
+		/// <summary>Encodes the image with minimal compression (maximum quality) into a <see cref="Foundation.NSData" /> byte blob using the JPEG encoding.</summary>
 		///         <returns>The encoded image in an NSData wrapper or null if there was an error.</returns>
 		///         <remarks>
 		///           <para>
@@ -80,7 +80,7 @@ namespace UIKit {
 		}
 
 		/// <param name="compressionQuality">The compression quality to use, 0.0 is the maximum compression (worse quality), and 1.0 minimum compression (best quality)</param>
-		/// <summary>Encodes the image into a <see cref="T:Foundation.NSData" /> byte blob using the JPEG encoding.</summary>
+		/// <summary>Encodes the image into a <see cref="Foundation.NSData" /> byte blob using the JPEG encoding.</summary>
 		/// <returns>The encoded image in an NSData wrapper or null if there was an error.</returns>
 		/// <remarks>
 		///           <para>
@@ -140,7 +140,7 @@ namespace UIKit {
 		///         <summary>Loads an image from a resource embedded in the assembly.</summary>
 		///         <returns>The image loaded from the specified assembly.</returns>
 		///         <remarks>
-		///           <para>If the passed parameter for assembly is null, then the resource is looked up in the calling assembly using <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Reflection%20Assembly%20Get%20Calling%20Assembly&amp;scope=Xamarin" title="M:System.Reflection.Assembly.GetCallingAssembly*">M:System.Reflection.Assembly.GetCallingAssembly*</a></format>.</para>
+		///           <para>If the passed parameter for assembly is null, then the resource is looked up in the calling assembly using <see cref="System.Reflection.Assembly.GetCallingAssembly" />.</para>
 		///           <para tool="threads">This can be used from a background thread.</para>
 		///         </remarks>
 		[MethodImpl (MethodImplOptions.NoInlining)]

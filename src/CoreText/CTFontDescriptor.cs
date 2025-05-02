@@ -43,7 +43,7 @@ using Foundation;
 namespace CoreText {
 
 	// defined as uint32_t - /System/Library/Frameworks/CoreText.framework/Headers/CTFontDescriptor.h
-	/// <summary>An enumeration whose values specify the orientation of a <see cref="T:CoreText.CTFont" />.</summary>
+	/// <summary>An enumeration whose values specify the orientation of a <see cref="CoreText.CTFont" />.</summary>
 	///     <remarks>To be added.</remarks>
 	public enum CTFontOrientation : uint {
 		/// <summary>To be added.</summary>
@@ -74,7 +74,7 @@ namespace CoreText {
 	}
 
 	// defined as uint32_t - /System/Library/Frameworks/CoreText.framework/Headers/CTFontDescriptor.h
-	/// <summary>An enumeration whose values specify the priority of a <see cref="T:CoreText.CTFont" />.</summary>
+	/// <summary>An enumeration whose values specify the priority of a <see cref="CoreText.CTFont" />.</summary>
 	///     <remarks>To be added.</remarks>
 	public enum CTFontPriority : uint {
 		/// <summary>To be added.</summary>
@@ -92,7 +92,7 @@ namespace CoreText {
 	}
 
 	// defined as uint32_t - /System/Library/Frameworks/CoreText.framework/Headers/CTFontDescriptor.h
-	/// <summary>An enumeration whose values can be used as parameters for the <see cref="M:CoreText.CTFontDescriptor.MatchFontDescriptors(CoreText.CTFontDescriptor[],Foundation.NSSet,System.Func{CoreText.CTFontDescriptorMatchingState,System.IntPtr,System.Boolean})" /> method.</summary>
+	/// <summary>An enumeration whose values can be used as parameters for the <see cref="CoreText.CTFontDescriptor.MatchFontDescriptors(CoreText.CTFontDescriptor[],Foundation.NSSet,System.Func{CoreText.CTFontDescriptorMatchingState,System.IntPtr,System.Boolean})" /> method.</summary>
 	///     <remarks>To be added.</remarks>
 	public enum CTFontDescriptorMatchingState : uint {
 		/// <summary>To be added.</summary>
@@ -1108,10 +1108,10 @@ namespace CoreText {
 
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern IntPtr CTFontDescriptorCopyAttribute (IntPtr descriptor, IntPtr attribute);
-		/// <param name="attribute">An NSString representing a CTFontDescriptor attribute, one of the keys in <see cref="T:CoreText.CTFontDescriptorAttributeKey" />.</param>
+		/// <param name="attribute">An NSString representing a CTFontDescriptor attribute, one of the keys in <see cref="CoreText.CTFontDescriptorAttributeKey" />.</param>
 		///         <summary>Fetches a CTFontDescriptorAttribute from the descriptor.</summary>
 		///         <returns>The attribute as an NSObject.</returns>
-		///         <remarks>You can use <see cref="M:CoreText.CTFontDescriptor.GetAttributes" /> method to get all the attributes at once with a strongly typed set of properties.</remarks>
+		///         <remarks>You can use <see cref="CoreText.CTFontDescriptor.GetAttributes" /> method to get all the attributes at once with a strongly typed set of properties.</remarks>
 		public NSObject? GetAttribute (NSString attribute)
 		{
 			if (attribute is null)
@@ -1121,7 +1121,7 @@ namespace CoreText {
 			return result;
 		}
 
-		/// <param name="attribute">An NSString representing a CTFontDescriptor attribute, one of the keys in <see cref="T:CoreText.CTFontDescriptorAttributeKey" />.</param>
+		/// <param name="attribute">An NSString representing a CTFontDescriptor attribute, one of the keys in <see cref="CoreText.CTFontDescriptorAttributeKey" />.</param>
 		///         <summary>Returns an attribute that has been localized.</summary>
 		///         <returns>The attribute as an NSObject, or null if not available.</returns>
 		///         <remarks>
@@ -1137,7 +1137,7 @@ namespace CoreText {
 
 		[DllImport (Constants.CoreTextLibrary)]
 		unsafe static extern IntPtr CTFontDescriptorCopyLocalizedAttribute (IntPtr descriptor, IntPtr attribute, IntPtr* language);
-		/// <param name="attribute">An NSString representing a CTFontDescriptor attribute, one of the keys in <see cref="T:CoreText.CTFontDescriptorAttributeKey" />.</param>
+		/// <param name="attribute">An NSString representing a CTFontDescriptor attribute, one of the keys in <see cref="CoreText.CTFontDescriptorAttributeKey" />.</param>
 		///         <param name="language">On output, the language code that matched (if available).</param>
 		///         <summary>Returns an attribute that has been localized.</summary>
 		///         <returns>The attribute as an NSObject or null if not available.</returns>

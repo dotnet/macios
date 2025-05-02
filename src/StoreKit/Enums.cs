@@ -80,7 +80,7 @@ namespace StoreKit {
 
 	// typedef NSInteger SKDownloadState;
 	// StoreKit.framework/Headers/SKDownload.h
-	/// <summary>An enumeration whose values specify the state of an <see cref="T:StoreKit.SKDownload" /> object. Used with the <see cref="P:StoreKit.SKDownload.DownloadState" /> property.</summary>
+	/// <summary>An enumeration whose values specify the state of an <see cref="StoreKit.SKDownload" /> object. Used with the <see cref="StoreKit.SKDownload.DownloadState" /> property.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SKDownloadState : long {

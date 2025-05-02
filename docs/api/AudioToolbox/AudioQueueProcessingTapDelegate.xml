@@ -29,7 +29,7 @@
       <para>
 	On exit for non-Siphon cases, the flags should be updated with
 	StartOfStream and EndOfStream flags depending on the return
-	values from <see cref="T:AudioToolbox.AudioQueueProcessingTap" />'s
+	values from <see cref="AudioToolbox.AudioQueueProcessingTap" />'s
 	GetSourceAudio method.
 
       </para>

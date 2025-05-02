@@ -3,9 +3,9 @@
     <param name="handler">Handler to invoke when the dispatch source has been registered and is ready to receive events.</param>
     <summary>Provides a registration handler</summary>
     <remarks>
-      <para>When <see cref="M:CoreFoundation.DispatchSource.Resume" /> is called on a suspended or newly created source, there may be a brief delay before the source is ready to receive events from the underlying system handle. During this delay, the event handler will not be invoked, and events will be missed.</para>
+      <para>When <see cref="CoreFoundation.DispatchSource.Resume" /> is called on a suspended or newly created source, there may be a brief delay before the source is ready to receive events from the underlying system handle. During this delay, the event handler will not be invoked, and events will be missed.</para>
       <para />
-      <para>Once the dispatch source is registered with the underlying system and is ready to process all events its optional registration handler will be submitted to its target queue. This registration handler may be specified via <see cref="M:CoreFoundation.DispatchSource.SetRegistrationHandler(System.Action)" /></para>
+      <para>Once the dispatch source is registered with the underlying system and is ready to process all events its optional registration handler will be submitted to its target queue. This registration handler may be specified via <see cref="CoreFoundation.DispatchSource.SetRegistrationHandler(System.Action)" /></para>
       <para />
       <para>The event handler will not be called until the registration handler finishes. If the source is canceled (see below) before it is registered, its registration handler will not be called.</para>
       <para>
@@ -15,13 +15,13 @@
   <Docs DocId="M:CoreFoundation.DispatchSource.Cancel">
     <summary>Asynchronously cancels the dispatch source.</summary>
     <remarks>
-      <para>The <see cref="M:CoreFoundation.DispatchSource.Cancel" /> function asynchronously cancels the dispatch source, preventing any further invocation of its event handler block. Cancellation does not interrupt a currently executing handler block (non-preemptive). If a source is canceled before the first time it is resumed, its event handler will never be called.  (In this case, note that the source must be resumed before it can be released.)</para>
+      <para>The <see cref="CoreFoundation.DispatchSource.Cancel" /> function asynchronously cancels the dispatch source, preventing any further invocation of its event handler block. Cancellation does not interrupt a currently executing handler block (non-preemptive). If a source is canceled before the first time it is resumed, its event handler will never be called.  (In this case, note that the source must be resumed before it can be released.)</para>
       <para>
       </para>
-      <para>The <see cref="P:CoreFoundation.DispatchSource.IsCanceled" /> function may be used to determine whether the specified source has been canceled. </para>
+      <para>The <see cref="CoreFoundation.DispatchSource.IsCanceled" /> function may be used to determine whether the specified source has been canceled. </para>
       <para>
       </para>
-      <para>When a dispatch source is canceled its optional cancellation handler will be submitted to its target queue. The cancellation handler may be specified via <see cref="M:CoreFoundation.DispatchSource.SetCancelHandler(System.Action)" />. This cancellation handler is invoked only once, and only as a direct consequence of calling <see cref="M:CoreFoundation.DispatchSource.Cancel" />.</para>
+      <para>When a dispatch source is canceled its optional cancellation handler will be submitted to its target queue. The cancellation handler may be specified via <see cref="CoreFoundation.DispatchSource.SetCancelHandler(System.Action)" />. This cancellation handler is invoked only once, and only as a direct consequence of calling <see cref="CoreFoundation.DispatchSource.Cancel" />.</para>
       <para>
       </para>
       <para>Important: a cancellation handler is required for file descriptor and mach port based sources in order to safely close the descriptor or destroy the port. Closing the descriptor or port before the cancellation handler has run may result in a race condition: if a new descriptor is allocated with the same value as the recently closed descriptor while the source's event handler is still running, the event handler may read/write data to the wrong descriptor.</para>
@@ -48,57 +48,57 @@
       <list type="bullet">
         <item>
           <term>
-            <see cref="T:CoreFoundation.DispatchSource.DataAdd" />
+            <see cref="CoreFoundation.DispatchSource.DataAdd" />
           </term>
         </item>
         <item>
           <term>
-            <see cref="T:CoreFoundation.DispatchSource.DataOr" />
+            <see cref="CoreFoundation.DispatchSource.DataOr" />
           </term>
         </item>
         <item>
           <term>
-            <see cref="T:CoreFoundation.DispatchSource.MachReceive" />
+            <see cref="CoreFoundation.DispatchSource.MachReceive" />
           </term>
         </item>
         <item>
           <term>
-            <see cref="T:CoreFoundation.DispatchSource.MachSend" />
+            <see cref="CoreFoundation.DispatchSource.MachSend" />
           </term>
         </item>
         <item>
           <term>
-            <see cref="T:CoreFoundation.DispatchSource.MemoryPressure" />
+            <see cref="CoreFoundation.DispatchSource.MemoryPressure" />
           </term>
         </item>
         <item>
           <term>
-            <see cref="T:CoreFoundation.DispatchSource.ProcessMonitor" />
+            <see cref="CoreFoundation.DispatchSource.ProcessMonitor" />
           </term>
         </item>
         <item>
           <term>
-            <see cref="T:CoreFoundation.DispatchSource.ReadMonitor" />
+            <see cref="CoreFoundation.DispatchSource.ReadMonitor" />
           </term>
         </item>
         <item>
           <term>
-            <see cref="T:CoreFoundation.DispatchSource.SignalMonitor" />
+            <see cref="CoreFoundation.DispatchSource.SignalMonitor" />
           </term>
         </item>
         <item>
           <term>
-            <see cref="T:CoreFoundation.DispatchSource.Timer" />
+            <see cref="CoreFoundation.DispatchSource.Timer" />
           </term>
         </item>
         <item>
           <term>
-            <see cref="T:CoreFoundation.DispatchSource.VnodeMonitor" />
+            <see cref="CoreFoundation.DispatchSource.VnodeMonitor" />
           </term>
         </item>
         <item>
           <term>
-            <see cref="T:CoreFoundation.DispatchSource.WriteMonitor" />
+            <see cref="CoreFoundation.DispatchSource.WriteMonitor" />
           </term>
         </item>
       </list>
@@ -109,17 +109,17 @@
       <para>When a state change occurs, the dispatch source will submit its event handler block to its target queue.</para>
       <para>
       </para>
-      <para>Newly created sources are created in a suspended state. After the source has been configured by setting an event handler, cancellation handler, registration handler, context, etc., the source must be activated by a call to <see cref="M:CoreFoundation.DispatchSource.Resume" /> before any events will be delivered.</para>
+      <para>Newly created sources are created in a suspended state. After the source has been configured by setting an event handler, cancellation handler, registration handler, context, etc., the source must be activated by a call to <see cref="CoreFoundation.DispatchSource.Resume" /> before any events will be delivered.</para>
       <para>
       </para>
       <format type="text/html">
         <h2>Source Event Handlers</h2>
         <div>
-          <div>To receive events from the dispatch source, an event handler should be specified via <see cref="M:CoreFoundation.DispatchSource.SetEventHandler(System.Action)" />. The event handler is submitted to the source's target queue when the state of the underlying system handle changes, or when an event occurs. If a source is resumed with no event handler block set, events will be quietly ignored.  If the event handler is changed while the source is suspended, or from a block running on a serial queue that is the source's target queue, then the next event handler invocation will use the new block.</div>
+          <div>To receive events from the dispatch source, an event handler should be specified via <see cref="CoreFoundation.DispatchSource.SetEventHandler(System.Action)" />. The event handler is submitted to the source's target queue when the state of the underlying system handle changes, or when an event occurs. If a source is resumed with no event handler block set, events will be quietly ignored.  If the event handler is changed while the source is suspended, or from a block running on a serial queue that is the source's target queue, then the next event handler invocation will use the new block.</div>
           <div>
             <br />
           </div>
-          <div>Dispatch sources may be suspended or resumed independently of their target queues using <see cref="M:CoreFoundation.DispatchSource.Suspend" /> and <see cref="M:CoreFoundation.DispatchSource.Resume" /> on the dispatch source directly. The data describing events which occur while a source is suspended are coalesced and delivered once the source is resumed.</div>
+          <div>Dispatch sources may be suspended or resumed independently of their target queues using <see cref="CoreFoundation.DispatchSource.Suspend" /> and <see cref="CoreFoundation.DispatchSource.Resume" /> on the dispatch source directly. The data describing events which occur while a source is suspended are coalesced and delivered once the source is resumed.</div>
           <div>
             <br />
           </div>
@@ -127,17 +127,17 @@
           <div>
             <br />
           </div>
-          <div>To unset the event handler, call <see cref="M:CoreFoundation.DispatchSource.SetEventHandler(System.Action)" /> pass <see langword="null" /> as an argument. </div>
+          <div>To unset the event handler, call <see cref="CoreFoundation.DispatchSource.SetEventHandler(System.Action)" /> pass <see langword="null" /> as an argument. </div>
         </div>
       </format>
       <format type="text/html">
         <h2>Registration</h2>
         <div>
-          <div>When <see cref="M:CoreFoundation.DispatchSource.Resume" /> is called on a suspended or newly created source, there may be a brief delay before the source is ready to receive events from the underlying system handle. During this delay, the event handler will not be invoked, and events will be missed.</div>
+          <div>When <see cref="CoreFoundation.DispatchSource.Resume" /> is called on a suspended or newly created source, there may be a brief delay before the source is ready to receive events from the underlying system handle. During this delay, the event handler will not be invoked, and events will be missed.</div>
           <div>
             <br />
           </div>
-          <div>Once the dispatch source is registered with the underlying system and is ready to process all events its optional registration handler will be submitted to its target queue. This registration handler may be specified via <see cref="M:CoreFoundation.DispatchSource.SetRegistrationHandler(System.Action)" />.</div>
+          <div>Once the dispatch source is registered with the underlying system and is ready to process all events its optional registration handler will be submitted to its target queue. This registration handler may be specified via <see cref="CoreFoundation.DispatchSource.SetRegistrationHandler(System.Action)" />.</div>
           <div>
             <br />
           </div>
@@ -148,15 +148,15 @@
         <h2>Cancellation</h2>
         <div>
           <div>
-            <div>The <see cref="M:CoreFoundation.DispatchSource.Cancel" /> function asynchronously cancels the dispatch source, preventing any further invocation of its event handler block. Cancellation does not interrupt a currently executing handler block (non-preemptive). If a source is canceled before the first time it is resumed, its event handler will never be called. (In this case, note that the source must be resumed before it can be released.)</div>
+            <div>The <see cref="CoreFoundation.DispatchSource.Cancel" /> function asynchronously cancels the dispatch source, preventing any further invocation of its event handler block. Cancellation does not interrupt a currently executing handler block (non-preemptive). If a source is canceled before the first time it is resumed, its event handler will never be called. (In this case, note that the source must be resumed before it can be released.)</div>
             <div>
               <br />
             </div>
-            <div>The <see cref="P:CoreFoundation.DispatchSource.IsCanceled" /> function may be used to determine whether the specified source has been canceled.</div>
+            <div>The <see cref="CoreFoundation.DispatchSource.IsCanceled" /> function may be used to determine whether the specified source has been canceled.</div>
             <div>
               <br />
             </div>
-            <div>When a dispatch source is canceled its optional cancellation handler will be submitted to its target queue. The cancellation handler may be specified via <see cref="M:CoreFoundation.DispatchSource.SetCancelHandler(System.Action)" />. This cancellation handler is invoked only once, and only as a direct consequence of calling <see cref="M:CoreFoundation.DispatchSource.Cancel" />.</div>
+            <div>When a dispatch source is canceled its optional cancellation handler will be submitted to its target queue. The cancellation handler may be specified via <see cref="CoreFoundation.DispatchSource.SetCancelHandler(System.Action)" />. This cancellation handler is invoked only once, and only as a direct consequence of calling <see cref="CoreFoundation.DispatchSource.Cancel" />.</div>
             <div>
               <br />
             </div>

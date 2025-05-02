@@ -51,15 +51,26 @@ namespace CoreGraphics {
 		DrawsAfterEndLocation = (1 << 1),
 	}
 
+#if __MACOS__
 	/// <summary>Gradient definitions.</summary>
-	///     <remarks>
-	///       <para>A <see cref="T:CoreGraphics.CGGradient" /> defines a smooth transition between colors. </para>
-	///       <para>To use a <see cref="T:CoreGraphics.CGGradient" />, application developers will typically have to create a custom <see cref="T:UIKit.UIView" /> and override its <see cref="M:UIKit.UIView.Draw(CoreGraphics.CGRect)" /> method. Application developers should consider a <see cref="T:CoreAnimation.CAGradientLayer" /> as a possible easier-to-use alternative.</para>
-	///     </remarks>
-	///     <altmember cref="M:CoreGraphics.CGContext.DrawLinearGradient" />
-	///     <altmember cref="M:CoreGraphics.CGContext.DrawRadialGradient" />
-	///     <altmember cref="T:CoreAnimation.CAGradientLayer" />
-	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/QuartzSample/">QuartzSample</related>
+	/// <remarks>
+	///   <para>A <see cref="CoreGraphics.CGGradient" /> defines a smooth transition between colors. </para>
+	///   <para>To use a <see cref="CoreGraphics.CGGradient" />, application developers will typically have to create a custom <see cref="AppKit.NSView" /> and override its <see cref="AppKit.NSView.DrawRect(CoreGraphics.CGRect)" /> method. Application developers should consider a <see cref="CoreAnimation.CAGradientLayer" /> as a possible easier-to-use alternative.</para>
+	/// </remarks>
+	/// <altmember cref="CoreGraphics.CGContext.DrawLinearGradient" />
+	/// <altmember cref="CoreGraphics.CGContext.DrawRadialGradient" />
+	/// <altmember cref="CoreAnimation.CAGradientLayer" />
+#else
+	/// <summary>Gradient definitions.</summary>
+	/// <remarks>
+	///   <para>A <see cref="CoreGraphics.CGGradient" /> defines a smooth transition between colors. </para>
+	///   <para>To use a <see cref="CoreGraphics.CGGradient" />, application developers will typically have to create a custom <see cref="UIKit.UIView" /> and override its <see cref="UIKit.UIView.Draw(CoreGraphics.CGRect)" /> method. Application developers should consider a <see cref="CoreAnimation.CAGradientLayer" /> as a possible easier-to-use alternative.</para>
+	/// </remarks>
+	/// <altmember cref="CoreGraphics.CGContext.DrawLinearGradient" />
+	/// <altmember cref="CoreGraphics.CGContext.DrawRadialGradient" />
+	/// <altmember cref="CoreAnimation.CAGradientLayer" />
+	/// <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/QuartzSample/">QuartzSample</related>
+#endif
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

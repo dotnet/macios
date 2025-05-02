@@ -8,7 +8,7 @@ using Foundation;
 namespace HomeKit {
 
 #if NET
-	/// <summary>Common capabilities of an <see cref="T:HomeKit.HMCharacteristic" />, such as whether it's writable or supports events.</summary>
+	/// <summary>Common capabilities of an <see cref="HomeKit.HMCharacteristic" />, such as whether it's writable or supports events.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]

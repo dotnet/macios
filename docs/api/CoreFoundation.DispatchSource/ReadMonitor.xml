@@ -2,7 +2,7 @@
   <Docs DocId="T:CoreFoundation.DispatchSource.ReadMonitor">
     <summary>Sources of this type monitor file descriptors for pending data.</summary>
     <remarks>
-      <para>The data returned by <see cref="P:CoreFoundation.DispatchSource.ReadMonitor.BytesAvailable" /> is an estimated number of bytes available to be read from the descriptor. This estimate should be treated as a suggested minimum read buffer size.</para>
+      <para>The data returned by <see cref="CoreFoundation.DispatchSource.ReadMonitor.BytesAvailable" /> is an estimated number of bytes available to be read from the descriptor. This estimate should be treated as a suggested minimum read buffer size.</para>
       <para>
       </para>
       <para>There are no guarantees that a complete read of this size will be performed.</para>

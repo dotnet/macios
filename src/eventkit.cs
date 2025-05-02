@@ -210,7 +210,7 @@ namespace EventKit {
 		EKStructuredLocation FromMapItem (MKMapItem mapItem);
 	}
 
-	/// <summary>An alarm in the user's <see cref="T:EventKit.EKCalendar" />.</summary>
+	/// <summary>An alarm in the user's <see cref="EventKit.EKCalendar" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/EventKit/Reference/EKAlarmClassRef/index.html">Apple documentation for <c>EKAlarm</c></related>
 	[BaseType (typeof (EKObject))]
@@ -768,7 +768,7 @@ namespace EventKit {
 	delegate void EKEventStoreRequestAccessCompletionHandler (bool didRequestAccess, NSError error);
 	/// <param name="theEvent">The matching event.</param>
 	///     <param name="stop">If you set this ref value to true, the enumeration will stop.</param>
-	///     <summary>Delegate signature for the event enumeration method in <see cref="T:EventKit.EKEventStore" /></summary>
+	///     <summary>Delegate signature for the event enumeration method in <see cref="EventKit.EKEventStore" /></summary>
 	///     <remarks>The method will be invoked repeatedly, once for each event that matches the provided NSPredicate.</remarks>
 	delegate void EKEventSearchCallback (EKEvent theEvent, ref bool stop);
 

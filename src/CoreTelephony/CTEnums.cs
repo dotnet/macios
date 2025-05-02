@@ -17,7 +17,7 @@ namespace CoreTelephony {
 		Mach = 2,
 	}
 
-	/// <summary>Enumerates data restrictions for <see cref="P:CoreTelephony.CTCellularData.RestrictedState" />.</summary>
+	/// <summary>Enumerates data restrictions for <see cref="CoreTelephony.CTCellularData.RestrictedState" />.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum CTCellularDataRestrictedState : ulong {

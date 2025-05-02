@@ -5,9 +5,9 @@
       <para>
 	The UIPrintInteractionController provides access to the
 	printing framework on iOS.  To print on iOS, you configure the
-	<see cref="P:UIKit.UIPrintInteractionController.SharedPrintController" /> 
+	<see cref="UIKit.UIPrintInteractionController.SharedPrintController" /> 
 	singleton by specifying your print task, optionally hook up to
-	events and then you invoke the <see cref="M:UIKit.UIPrintInteractionController.Present(System.Boolean,UIKit.UIPrintInteractionCompletionHandler)" />
+	events and then you invoke the <see cref="UIKit.UIPrintInteractionController.Present(System.Boolean,UIKit.UIPrintInteractionCompletionHandler)" />
 	method to allow the user to select a printer and to print.
 
     </para>
@@ -18,7 +18,7 @@
         <item>
           <term>
             <para>Ready to print PDF file.  You can print it by
-	  assigning to the <see cref="P:UIKit.UIPrintInteractionController.PrintingItem" />
+	  assigning to the <see cref="UIKit.UIPrintInteractionController.PrintingItem" />
 	  property the NSUrl pointing to the file or the NSData that
 	  contains the PDF in memory.</para>
           </term>
@@ -26,7 +26,7 @@
         <item>
           <term>
             <para>Ready to print image.  You can print it by assigning
-	  to the <see cref="P:UIKit.UIPrintInteractionController.PrintingItem" />
+	  to the <see cref="UIKit.UIPrintInteractionController.PrintingItem" />
 	  property the UIImage or a photo ALAsset (the ALAsset with an
 	  AssetType of ALAssetType.Photo).
 	  </para>
@@ -35,7 +35,7 @@
         <item>
           <term>
             <para>Ready to print collection of images and PDF files.  You can print it by assigning
-	  the mix of elements to the  <see cref="P:UIKit.UIPrintInteractionController.PrintingItems" />
+	  the mix of elements to the  <see cref="UIKit.UIPrintInteractionController.PrintingItems" />
 	  property an array of objects containing NSUrl, UIImage, NSData or ALAsset values.   
 	  </para>
           </term>
@@ -44,13 +44,13 @@
           <term>
             <para> To layout information using using one of the built-in
 	    print formatters you would assign your print formatter to
-	    the <see cref="P:UIKit.UIPrintInteractionController.PrintFormatter" />
-	    property.  The built-in print formatters include the <see cref="T:UIKit.UISimpleTextPrintFormatter" />
+	    the <see cref="UIKit.UIPrintInteractionController.PrintFormatter" />
+	    property.  The built-in print formatters include the <see cref="UIKit.UISimpleTextPrintFormatter" />
 	    which can be used for simple rending text across multiple
 	    pages and has control for font, color, alignment and line
 	    breaking modes; For more advanced text printing you can
-	    use the <see cref="T:UIKit.UIMarkupTextPrintFormatter" />; For
-	    printing UIViews, you use the <see cref="T:UIKit.UIViewPrintFormatter" /> which has
+	    use the <see cref="UIKit.UIMarkupTextPrintFormatter" />; For
+	    printing UIViews, you use the <see cref="UIKit.UIViewPrintFormatter" /> which has
 	    a bulit-in ability to print the contents of a UIWebView,
 	    UITextView and MKMapView objects.
 	  </para>
@@ -60,8 +60,8 @@
           <term>
             <para> For more advanced uses, where you might want to
 	    control the actual rendering of the page, you must
-	    implement a subclass of <see cref="T:UIKit.UIPrintPageRenderer" /> and assign
-	    the instance of your renderer to the <see cref="P:UIKit.UIPrintInteractionController.PrintPageRenderer" />
+	    implement a subclass of <see cref="UIKit.UIPrintPageRenderer" /> and assign
+	    the instance of your renderer to the <see cref="UIKit.UIPrintInteractionController.PrintPageRenderer" />
 	    property.</para>
           </term>
         </item>

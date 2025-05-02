@@ -17,7 +17,7 @@ namespace Contacts {
 		///         <param name="identifier">To be added.</param>
 		///         <param name="keys">To be added.</param>
 		///         <param name="error">To be added.</param>
-		///         <summary>Retrieves the <see cref="T:Contacts.CNContact" /> with the specified <paramref name="identifier" />.</summary>
+		///         <summary>Retrieves the <see cref="Contacts.CNContact" /> with the specified <paramref name="identifier" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		public CNContact? GetUnifiedContact<T> (string identifier, T [] keys, out NSError? error)
@@ -31,7 +31,7 @@ namespace Contacts {
 		///         <param name="predicate">To be added.</param>
 		///         <param name="keys">To be added.</param>
 		///         <param name="error">To be added.</param>
-		///         <summary>Retrieves the unified <see cref="T:Contacts.CNContact" /> objects, populated with data for <paramref name="keys" />, for which the <paramref name="predicate" /> returns <see langword="true" />.</summary>
+		///         <summary>Retrieves the unified <see cref="Contacts.CNContact" /> objects, populated with data for <paramref name="keys" />, for which the <paramref name="predicate" /> returns <see langword="true" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		public CNContact []? GetUnifiedContacts<T> (NSPredicate predicate, T [] keys, out NSError? error)

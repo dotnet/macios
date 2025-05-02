@@ -22,7 +22,7 @@ namespace MapKit {
 	// NSUInteger -> MKDirectionsTypes.h
 	/// <summary>An enumeration whose values specify the routing type for directions requests.</summary>
 	/// <remarks>
-	///       <para>The <see cref="T:MapKit.MKDirectionsTransportType" /> used as the <see cref="P:MapKit.MKDirectionsRequest.TransportType" /> property of a <see cref="T:MapKit.MKDirectionsRequest" /> must match the values specified in the application's <c>info.plist</c> (see <see cref="T:MapKit.MKDirections" />).</para>
+	///       <para>The <see cref="MapKit.MKDirectionsTransportType" /> used as the <see cref="MapKit.MKDirectionsRequest.TransportType" /> property of a <see cref="MapKit.MKDirectionsRequest" /> must match the values specified in the application's <c>info.plist</c> (see <see cref="MapKit.MKDirections" />).</para>
 	///     </remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
@@ -59,7 +59,7 @@ namespace MapKit {
 	}
 
 	// NSUInteger -> MKDistanceFormatter.h
-	/// <summary>An enumeration whose values specify the units used with <see cref="T:MapKit.MKDistanceFormatter" />.</summary>
+	/// <summary>An enumeration whose values specify the units used with <see cref="MapKit.MKDistanceFormatter" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
@@ -75,7 +75,7 @@ namespace MapKit {
 	}
 
 	// NSUInteger -> MKDistanceFormatter.h
-	/// <summary>An enumeration whose values specify the length of a <see cref="T:MapKit.MKDistanceFormatter" /> string.</summary>
+	/// <summary>An enumeration whose values specify the length of a <see cref="MapKit.MKDistanceFormatter" /> string.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
@@ -101,7 +101,7 @@ namespace MapKit {
 	}
 
 	// NSUInteger -> MKTypes.h
-	/// <summary>An enumeration whose values represent various errors that can occur with <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Map%20Kit%20MKDirections%20Calculate%20Route&amp;scope=Xamarin" title="T:MapKit.MKDirections.CalculateRoute">T:MapKit.MKDirections.CalculateRoute</a></format> and <see cref="M:MapKit.MKDirections.CalculateETA(MapKit.MKETAHandler)" />.</summary>
+	/// <summary>An enumeration whose values represent various errors that can occur with <see cref="MapKit.MKDirections.CalculateRoute" /> and <see cref="MapKit.MKDirections.CalculateETA(MapKit.MKETAHandler)" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -121,7 +121,7 @@ namespace MapKit {
 	}
 
 	// NSUInteger -> MKTypes.h
-	/// <summary>An enumeration of valid states for a dragged <see cref="T:MapKit.MKAnnotationView" />.</summary>
+	/// <summary>An enumeration of valid states for a dragged <see cref="MapKit.MKAnnotationView" />.</summary>
 	[NoTV]
 	[MacCatalyst (13, 1)]
 	[Native]

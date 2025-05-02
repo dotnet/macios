@@ -195,7 +195,6 @@ namespace Xharness.Jenkins {
 						await clone.CreateCopyAsync (jenkins.MainLog, processManager, task, HarnessConfiguration.RootDirectory);
 
 						var isMac = task.Platform.IsMac ();
-						var canSymlink = task.Platform.CanSymlink ();
 
 						if (!string.IsNullOrEmpty (link_mode)) {
 							clone.Xml.SetProperty ("LinkMode", link_mode);

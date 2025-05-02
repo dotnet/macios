@@ -425,13 +425,13 @@ namespace CoreMidi {
 		/// <summary>Represents the value associated with the constant MIDINetworkBonjourServiceType</summary>
 		///         <value>
 		///         </value>
-		///         <remarks>You can pass this type to <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:Foundation.NSNetServiceBrowser.SearchForServices(System.String type, System.String domain)&amp;scope=Xamarin" title="M:Foundation.NSNetServiceBrowser.SearchForServices(System.String type, System.String domain)">M:Foundation.NSNetServiceBrowser.SearchForServices(System.String type, System.String domain)</a></format> to find MIDI devices available
+		///         <remarks>You can pass this type to <see cref="Foundation.NSNetServiceBrowser.SearchForServices(System.String,System.String)" /> to find MIDI devices available
 		///         over bonjour.</remarks>
 		[Field ("MIDINetworkBonjourServiceType")]
 		NSString NetworkBonjourServiceType { get; }
 	}
 
-	/// <summary>A connection to a MIDI network host, using a <see cref="T:CoreMidi.MidiNetworkSession" />.</summary>
+	/// <summary>A connection to a MIDI network host, using a <see cref="CoreMidi.MidiNetworkSession" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CoreMidi/Reference/MIDINetworkConnection_ClassReference/index.html">Apple documentation for <c>MIDINetworkConnection</c></related>
 	[NoTV]
@@ -453,7 +453,7 @@ namespace CoreMidi {
 		MidiNetworkConnection FromHost (MidiNetworkHost host);
 	}
 
-	/// <summary>A singleton class that maintains the <see cref="T:CoreMidi.MidiNetworkConnection" />s between various MIDI entities.</summary>
+	/// <summary>A singleton class that maintains the <see cref="CoreMidi.MidiNetworkConnection" />s between various MIDI entities.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CoreMidi/Reference/MIDINetworkSession_ClassReference/index.html">Apple documentation for <c>MIDINetworkSession</c></related>
 	[NoTV]

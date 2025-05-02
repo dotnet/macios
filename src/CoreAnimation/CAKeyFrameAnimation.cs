@@ -26,8 +26,8 @@ namespace CoreAnimation {
 		/// 	values specified in the array.</summary>
 		///         <remarks>
 		///           <para>
-		/// 	    To pass number, create instances of <see cref="T:Foundation.NSNumber" /> with the value,
-		/// 	    to pass other values, use <see cref="T:Foundation.NSValue" />, or pass the
+		/// 	    To pass number, create instances of <see cref="Foundation.NSNumber" /> with the value,
+		/// 	    to pass other values, use <see cref="Foundation.NSValue" />, or pass the
 		/// 	    CoreGraphics data types directly to it.
 		/// 	  </para>
 		///         </remarks>

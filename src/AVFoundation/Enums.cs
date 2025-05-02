@@ -68,7 +68,7 @@ namespace AVFoundation {
 		Cancelled,
 	}
 
-	/// <summary>An enumeration whose values specify the <see cref="T:AVFoundation.AVAssetReader" />'s status.</summary>
+	/// <summary>An enumeration whose values specify the <see cref="AVFoundation.AVAssetReader" />'s status.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -86,13 +86,13 @@ namespace AVFoundation {
 		Cancelled,
 	}
 
-	/// <summary>An enumeration whose values represent the status of an <see cref="T:AVFoundation.AVAssetWriter" /> object.</summary>
+	/// <summary>An enumeration whose values represent the status of an <see cref="AVFoundation.AVAssetWriter" /> object.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	// NSInteger - AVAssetWriter.h
 	public enum AVAssetWriterStatus : long {
-		/// <summary>The state of the <see cref="T:AVFoundation.AVAssetWriter" /> cannot be determined.</summary>
+		/// <summary>The state of the <see cref="AVFoundation.AVAssetWriter" /> cannot be determined.</summary>
 		Unknown = 0,
 		/// <summary>Assets are currently being written.</summary>
 		Writing,
@@ -166,7 +166,7 @@ namespace AVFoundation {
 		ContinuousAutoFocus,
 	}
 
-	/// <summary>An enumeration whose values specify the position of a <see cref="T:AVFoundation.AVCaptureDevice" />.</summary>
+	/// <summary>An enumeration whose values specify the position of a <see cref="AVFoundation.AVCaptureDevice" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[TV (17, 0)]
@@ -196,7 +196,7 @@ namespace AVFoundation {
 		AutoExpose,
 		/// <summary>Performs auto-expose and adjusts the setting continously. </summary>
 		ContinuousAutoExposure,
-		/// <summary>Exposure is limited by the <see cref="P:AVFoundation.AVCaptureDevice.ISO" /> and <see cref="P:AVFoundation.AVCaptureDevice.ExposureDuration" /> properties.</summary>
+		/// <summary>Exposure is limited by the <see cref="AVFoundation.AVCaptureDevice.ISO" /> and <see cref="AVFoundation.AVCaptureDevice.ExposureDuration" /> properties.</summary>
 		[MacCatalyst (14, 0)]
 		Custom,
 	}
@@ -394,7 +394,7 @@ namespace AVFoundation {
 		None,
 	}
 
-	/// <summary>An enumeration whose values specify the status of a <see cref="T:AVFoundation.AVPlayerItem" />.</summary>
+	/// <summary>An enumeration whose values specify the status of a <see cref="AVFoundation.AVPlayerItem" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -426,7 +426,7 @@ namespace AVFoundation {
 		Cancelled,
 	}
 
-	/// <summary>An enumeration whose values indicate the status of an <see cref="T:AVFoundation.AVPlayer" />.</summary>
+	/// <summary>An enumeration whose values indicate the status of an <see cref="AVFoundation.AVPlayer" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -434,13 +434,13 @@ namespace AVFoundation {
 	public enum AVPlayerStatus : long {
 		/// <summary>The status of the player is unknown, generally because media has not been loaded.</summary>
 		Unknown,
-		/// <summary>The player is ready to play the <see cref="T:AVFoundation.AVPlayerItem" />.</summary>
+		/// <summary>The player is ready to play the <see cref="AVFoundation.AVPlayerItem" />.</summary>
 		ReadyToPlay,
-		/// <summary>The player can no longer play the <see cref="T:AVFoundation.AVPlayerItem" />.</summary>
+		/// <summary>The player can no longer play the <see cref="AVFoundation.AVPlayerItem" />.</summary>
 		Failed,
 	}
 
-	/// <summary>An enumeration whose values define restrictions relating to a <see cref="T:AVFoundation.AVAsset" />.</summary>
+	/// <summary>An enumeration whose values define restrictions relating to a <see cref="AVFoundation.AVAsset" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Flags]
@@ -475,7 +475,7 @@ namespace AVFoundation {
 		Cancelled,
 	}
 
-	/// <summary>An enumeration whose values specify whether a <see cref="T:AVFoundation.AVCaptureDevice" /> is playing or not.</summary>
+	/// <summary>An enumeration whose values specify whether a <see cref="AVFoundation.AVCaptureDevice" /> is playing or not.</summary>
 	[NoiOS]
 	[Unavailable (PlatformName.MacCatalyst)]
 	[NoTV]
@@ -620,7 +620,7 @@ namespace AVFoundation {
 		Began,
 	}
 
-	/// <summary>An enumeration whose values specify various errors relating to <see cref="T:AVFoundation.AVAudioSession" />s.</summary>
+	/// <summary>An enumeration whose values specify various errors relating to <see cref="AVFoundation.AVAudioSession" />s.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -657,7 +657,7 @@ namespace AVFoundation {
 		SessionNotActive = 0x696e6163, // 'inac'
 	}
 
-	/// <summary>An enumeration whose values specify hints to autofocus. Used with <see cref="P:AVFoundation.AVCaptureDevice.AutoFocusRangeRestriction" />.</summary>
+	/// <summary>An enumeration whose values specify hints to autofocus. Used with <see cref="AVFoundation.AVCaptureDevice.AutoFocusRangeRestriction" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[TV (17, 0)]
@@ -673,7 +673,7 @@ namespace AVFoundation {
 	}
 
 	// Convenience enum for native strings (defined in AVAudioSettings.h)
-	/// <summary>An enumeration whose values specify the type of audio bit-rate. Used with <see cref="P:AVFoundation.AudioSettings.BitRateStrategy" /></summary>
+	/// <summary>An enumeration whose values specify the type of audio bit-rate. Used with <see cref="AVFoundation.AudioSettings.BitRateStrategy" /></summary>
 	/// <remarks>To be added.</remarks>
 	public enum AVAudioBitRateStrategy : int {
 		/// <summary>To be added.</summary>
@@ -687,7 +687,7 @@ namespace AVFoundation {
 	}
 
 	// Convenience enum for native strings (defined in AVAudioSettings.h)
-	/// <summary>An enumeration whose values specify valid rate-converstion algorithms. Used with <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=AVFoundation%20AVAudio%20Settings%20Sample%20Rate%20Converter%20Algorithm&amp;scope=Xamarin" title="P:AVFoundation.AVAudioSettings.SampleRateConverterAlgorithm">P:AVFoundation.AVAudioSettings.SampleRateConverterAlgorithm</a></format>.</summary>
+	/// <summary>An enumeration whose values specify valid rate-converstion algorithms. Used with <see cref="AVFoundation.AVAudioSettings.SampleRateConverterAlgorithm" />.</summary>
 	/// <remarks>To be added.</remarks>
 	public enum AVSampleRateConverterAlgorithm : int {
 		/// <summary>To be added.</summary>
@@ -696,7 +696,7 @@ namespace AVFoundation {
 		Mastering,
 	}
 
-	/// <summary>An enumeration whose values specify whether a <see cref="T:AVFoundation.AVCaptureDevice" /> has been authorized by the user for use. Used with <see cref="M:AVFoundation.AVCaptureDevice.GetAuthorizationStatus(Foundation.NSString)" />.</summary>
+	/// <summary>An enumeration whose values specify whether a <see cref="AVFoundation.AVCaptureDevice" /> has been authorized by the user for use. Used with <see cref="AVFoundation.AVCaptureDevice.GetAuthorizationStatus(Foundation.NSString)" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[TV (17, 0)]
@@ -713,7 +713,7 @@ namespace AVFoundation {
 		Authorized,
 	}
 
-	/// <summary>An enumeration whose values specify whether the <see cref="T:AVFoundation.AVSpeechSynthesizer" /> should pause or stop immediately or complete an entire word.</summary>
+	/// <summary>An enumeration whose values specify whether the <see cref="AVFoundation.AVSpeechSynthesizer" /> should pause or stop immediately or complete an entire word.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -725,7 +725,7 @@ namespace AVFoundation {
 		Word,
 	}
 
-	/// <summary>Enumerates formats for audio data (see <see cref="P:AVFoundation.AVAudioFormat.CommonFormat" />).</summary>
+	/// <summary>Enumerates formats for audio data (see <see cref="AVFoundation.AVAudioFormat.CommonFormat" />).</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -748,9 +748,9 @@ namespace AVFoundation {
 	public enum AVAudio3DMixingRenderingAlgorithm : long {
 		/// <summary>Pans the mixer bus into a stereo field.</summary>
 		EqualPowerPanning = 0,
-		/// <summary>An algorithm best used for headphones; lower quality but lower processor-intensity than <see cref="F:AVFoundation.AVAudio3DMixingRenderingAlgorithm.HRTF" />.</summary>
+		/// <summary>An algorithm best used for headphones; lower quality but lower processor-intensity than <see cref="AVFoundation.AVAudio3DMixingRenderingAlgorithm.HRTF" />.</summary>
 		SphericalHead = 1,
-		/// <summary>A processor-intensive Head-Related Transfer Function algorithm best used for emulating 3D space with headphones. (See also <see cref="F:AVFoundation.AVAudio3DMixingRenderingAlgorithm.SphericalHead" />)</summary>
+		/// <summary>A processor-intensive Head-Related Transfer Function algorithm best used for emulating 3D space with headphones. (See also <see cref="AVFoundation.AVAudio3DMixingRenderingAlgorithm.SphericalHead" />)</summary>
 		HRTF = 2,
 		/// <summary>Renders on all output channels, but weights towards an origin. Best used for ambient sounds. </summary>
 		SoundField = 3,
@@ -767,7 +767,7 @@ namespace AVFoundation {
 #if XAMCORE_5_0
 	[NoTV, NoMac]
 #endif
-	/// <summary>Enumerates valid permissions for <see cref="T:AVFoundation.AVAudioSession" />.</summary>
+	/// <summary>Enumerates valid permissions for <see cref="AVFoundation.AVAudioSession" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Deprecated (PlatformName.iOS, 17, 0, message: "Use 'AVAudioApplicationRecordPermission' instead.")]
 	[Deprecated (PlatformName.TvOS, 17, 0, message: "Use 'AVAudioApplicationRecordPermission' instead.")]
@@ -784,7 +784,7 @@ namespace AVFoundation {
 		Granted = 1735552628 /*'grnt'*/,
 	}
 
-	/// <summary>Enumerates the valid values for <see cref="P:AVFoundation.AVAudioSessionSecondaryAudioHintEventArgs.Hint" />.</summary>
+	/// <summary>Enumerates the valid values for <see cref="AVFoundation.AVAudioSessionSecondaryAudioHintEventArgs.Hint" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -795,7 +795,7 @@ namespace AVFoundation {
 		End = 0,
 	}
 
-	/// <summary>Flagging enumeration whose values are valid options in calls to <see cref="M:AVFoundation.AVAudioPlayerNode.ScheduleBufferAsync(AVFoundation.AVAudioPcmBuffer,AVFoundation.AVAudioTime,AVFoundation.AVAudioPlayerNodeBufferOptions,AVFoundation.AVAudioPlayerNodeCompletionCallbackType)" /></summary>
+	/// <summary>Flagging enumeration whose values are valid options in calls to <see cref="AVFoundation.AVAudioPlayerNode.ScheduleBufferAsync(AVFoundation.AVAudioPcmBuffer,AVFoundation.AVAudioTime,AVFoundation.AVAudioPlayerNodeBufferOptions,AVFoundation.AVAudioPlayerNodeCompletionCallbackType)" /></summary>
 	/// <remarks>To be added.</remarks>
 	[Flags]
 	[Native]
@@ -808,7 +808,7 @@ namespace AVFoundation {
 		InterruptsAtLoop = 0x04,
 	}
 
-	/// <summary>Filter types. Used with the <see cref="P:AVFoundation.AVAudioUnitEQFilterParameters.FilterType" /> property.</summary>
+	/// <summary>Filter types. Used with the <see cref="AVFoundation.AVAudioUnitEQFilterParameters.FilterType" /> property.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
 	public enum AVAudioUnitEQFilterType : long {
@@ -868,7 +868,7 @@ namespace AVFoundation {
 		LargeHall2 = 12,
 	}
 
-	/// <summary>Enumerates valid values that can be passed to <see cref="M:AVFoundation.AVAudioUnitDistortion.LoadFactoryPreset(AVFoundation.AVAudioUnitDistortionPreset)" />.</summary>
+	/// <summary>Enumerates valid values that can be passed to <see cref="AVFoundation.AVAudioUnitDistortion.LoadFactoryPreset(AVFoundation.AVAudioUnitDistortionPreset)" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
 	public enum AVAudioUnitDistortionPreset : long {
@@ -929,7 +929,7 @@ namespace AVFoundation {
 		Linear = 3,
 	}
 
-	/// <summary>Enumerates possible values of the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=AVFoundation%20AVSample%20Buffer%20Status&amp;scope=Xamarin" title="P:AVFoundation.AVSampleBuffer.Status">P:AVFoundation.AVSampleBuffer.Status</a></format> field.</summary>
+	/// <summary>Enumerates possible values of the <see cref="AVFoundation.AVSampleBuffer.Status" /> field.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -1012,7 +1012,7 @@ namespace AVFoundation {
 		Premium = 3,
 	}
 
-	/// <summary>Enumerates the priming strategy for <see cref="T:AVFoundation.AVAudioConverterPrimeInfo" />.</summary>
+	/// <summary>Enumerates the priming strategy for <see cref="AVFoundation.AVAudioConverterPrimeInfo" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -1149,7 +1149,7 @@ namespace AVFoundation {
 		Forever = -1,
 	}
 
-	/// <summary>Enumerates allowable time <see cref="P:AVFoundation.AVPlayer.TimeControlStatus" /> values.</summary>
+	/// <summary>Enumerates allowable time <see cref="AVFoundation.AVPlayer.TimeControlStatus" /> values.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -1172,7 +1172,7 @@ namespace AVFoundation {
 		Aggregated = 1,
 	}
 
-	/// <summary>Enumerates the states of an <see cref="T:AVFoundation.AVPlayerLooper" /> object.</summary>
+	/// <summary>Enumerates the states of an <see cref="AVFoundation.AVPlayerLooper" /> object.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -1181,7 +1181,7 @@ namespace AVFoundation {
 		Unknown,
 		/// <summary>The looper is ready to play.</summary>
 		Ready,
-		/// <summary>Looping failed (see <see cref="P:AVFoundation.AVPlayerLooper.Error" />).</summary>
+		/// <summary>Looping failed (see <see cref="AVFoundation.AVPlayerLooper.Error" />).</summary>
 		Failed,
 		/// <summary>Looping has been cancelled.</summary>
 		Cancelled,

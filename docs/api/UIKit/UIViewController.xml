@@ -3,21 +3,21 @@
     <summary>Base class for classes that manage the interaction between Model classes and View classes</summary>
     <remarks>
       <para>
-        The <see cref="T:UIKit.UIViewController" /> class is
+        The <see cref="UIKit.UIViewController" /> class is
         the base class of the View Controller hierarchy. View
-        Controllers manage <see cref="T:UIKit.UIView" />s
-        and other <see cref="T:UIKit.UIViewController" />s. An iOS application has a single window, but many screens,
-        each of which may contain several <see cref="T:UIKit.UIView" />s. Managing those screens is
+        Controllers manage <see cref="UIKit.UIView" />s
+        and other <see cref="UIKit.UIViewController" />s. An iOS application has a single window, but many screens,
+        each of which may contain several <see cref="UIKit.UIView" />s. Managing those screens is
         complex and requires responding to both user input and changes
         in the model (problem domain). This management and
-        coordination is the job of the <see cref="T:UIKit.UIViewController" />.
+        coordination is the job of the <see cref="UIKit.UIViewController" />.
       </para>
       <para>
-        A <see cref="T:UIKit.UIViewController" /> has 3 major responsibilities: 
+        A <see cref="UIKit.UIViewController" /> has 3 major responsibilities: 
       </para>
       <list type="bullet">
         <item>
-          <term>Layout out its component <see cref="T:UIKit.UIView" />s. This includes sizing, responding to orientation changes, etc.</term>
+          <term>Layout out its component <see cref="UIKit.UIView" />s. This includes sizing, responding to orientation changes, etc.</term>
         </item>
         <item>
           <term>Restructure the display in response to input events or the state of Model classes</term>
@@ -28,7 +28,7 @@
       </list>
       <para>
         iOS provides a number of standard view controllers such as
-        <see cref="T:UIKit.UINavigationController" />, <see cref="T:UIKit.UITabBarController" />, and <see cref="T:UIKit.UIPageViewController" />. In general,
+        <see cref="UIKit.UINavigationController" />, <see cref="UIKit.UITabBarController" />, and <see cref="UIKit.UIPageViewController" />. In general,
         the application developer should prefer to use standard view
         controllers to create the overall display structure. Using
         standard view controllers provides consistent, standard
@@ -40,9 +40,9 @@
       <para>
         Additionally, the application developer generally needs to
         implement one or more “Content View Controllers”. These are
-        often derived directly from <see cref="T:UIKit.UIViewController" /> or <see cref="T:UIKit.UITableViewController" />. Content
+        often derived directly from <see cref="UIKit.UIViewController" /> or <see cref="UIKit.UITableViewController" />. Content
         View Controllers are where the application developer writes
-        the custom code to satisfy the <see cref="T:UIKit.UIViewController" />s responsibilities
+        the custom code to satisfy the <see cref="UIKit.UIViewController" />s responsibilities
         described previously. In applications that take advantage of
         Xamarin Studio’s Code Behind facilities for Apple’s Interface
         Builder, much of this custom code will be automatically
@@ -61,7 +61,7 @@
         following example, taken from the “Hello World iPhone” sample,
         a Content View Controller of type
         <c>HelloWorld_iPhoneViewController</c> is instantiated and set
-        to be the <see cref="P:UIKit.UIWindow.RootViewController" /> for
+        to be the <see cref="UIKit.UIWindow.RootViewController" /> for
         the application’s window:
 
       </para>
@@ -82,11 +82,11 @@ public override bool FinishedLaunching (UIApplication app, NSDictionary options)
       </example>
       <para>
         By contrast, the following code taken from the "iOS Standard
-        Controls" sample demonstrates how a <see cref="T:UIKit.UITableViewController" /> uses an
+        Controls" sample demonstrates how a <see cref="UIKit.UITableViewController" /> uses an
         application-defined <c>NavItemGroup</c> to manage a series of
-        other <see cref="T:UIKit.UIViewController" />s. In
+        other <see cref="UIKit.UIViewController" />s. In
         this code, the second parameter to the <c>NavItem</c>
-        constructor is the specific <see cref="T:UIKit.UIViewController" /> subtype desired
+        constructor is the specific <see cref="UIKit.UIViewController" /> subtype desired
         when that item is selected in the table:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
@@ -113,8 +113,8 @@ base.TableView.Source = tableSource;
         provide data, the Controller depends on the Model class for
         information about what to display and depends on the View
         class to do the drawing. This diagram is idealized: there
-        would be several classes in the Model, several Views, <see cref="T:UIKit.UIView" /> can actually use <see cref="P:UIKit.UIResponder.NextResponder" /> to
-        determine their <see cref="T:UIKit.UIViewController" />, etc.
+        would be several classes in the Model, several Views, <see cref="UIKit.UIView" /> can actually use <see cref="UIKit.UIResponder.NextResponder" /> to
+        determine their <see cref="UIKit.UIViewController" />, etc.
 
       </para>
       <para>
@@ -125,11 +125,11 @@ base.TableView.Source = tableSource;
           <term>The Model class has no knowledge of the associated View and Controller classes. This allows the Model to evolve independently and greatly improves maintainability and portability</term>
         </item>
         <item>
-          <term>Event handlers are used between the areas of concern. This allows for strongly-typed <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Event%20Args&amp;scope=Xamarin" title="T:System.EventArgs">T:System.EventArgs</a></format> that only contain the data relating to that event. This improves maintainability by limiting the client object’s access to the event-provider’s scope.</term>
+          <term>Event handlers are used between the areas of concern. This allows for strongly-typed <see cref="System.EventArgs" /> that only contain the data relating to that event. This improves maintainability by limiting the client object’s access to the event-provider’s scope.</term>
         </item>
         <item>
           <term>
-The Controller reacts to events both from the View and from the Model. A <see cref="T:UIKit.UIViewController" /> might, for instance, handle a <see cref="E:UIKit.UIControl.TouchUpInside" /> input event by requesting the Model to convert between Celsius and Fahrenheit temperature units. Conversely it might respond to a Model “too hot” event by changing the display (making visible a warning icon or somesuch).  The View updates its display in reaction to new data provided by Model events. View classes should be as passive as possible. One of the most common mistakes in non-maintainable software is a View class that acts as a Controller or that "reaches into" the Model for data rather than accepting values passed in as event arguments. 
+The Controller reacts to events both from the View and from the Model. A <see cref="UIKit.UIViewController" /> might, for instance, handle a <see cref="UIKit.UIControl.TouchUpInside" /> input event by requesting the Model to convert between Celsius and Fahrenheit temperature units. Conversely it might respond to a Model “too hot” event by changing the display (making visible a warning icon or somesuch).  The View updates its display in reaction to new data provided by Model events. View classes should be as passive as possible. One of the most common mistakes in non-maintainable software is a View class that acts as a Controller or that "reaches into" the Model for data rather than accepting values passed in as event arguments. 
           </term>
         </item>
       </list>
@@ -137,15 +137,15 @@ The Controller reacts to events both from the View and from the Model. A <see cr
         <h2>UIViewController, Interface Builder, Storyboards, and Nib files</h2>
       </format>
       <para>
-        XCode, Apple’s IDE, contains Interface Builder (“IB”), a tool that allows user interfaces to be created interactively and saved as “Nib” files (these are saved in XML format with the  “.xib” extension). Xamarin Studio generates Code Behind classes for nib files and generally these will be subclasses of <see cref="T:UIKit.UIViewController" />. Starting with iOS 5, application developers can use “Storyboards” to visually specify navigation amongst individual <see cref="T:UIKit.UIViewController" />s.  For more on Storyboards, see <format type="text/html"><a href="https://docs.xamarin.com/ios/Guides/User_Interface/Introduction_to_Storyboards">Introduction to Storyboards</a></format>.
+        XCode, Apple’s IDE, contains Interface Builder (“IB”), a tool that allows user interfaces to be created interactively and saved as “Nib” files (these are saved in XML format with the  “.xib” extension). Xamarin Studio generates Code Behind classes for nib files and generally these will be subclasses of <see cref="UIKit.UIViewController" />. Starting with iOS 5, application developers can use “Storyboards” to visually specify navigation amongst individual <see cref="UIKit.UIViewController" />s.  For more on Storyboards, see <format type="text/html"><a href="https://docs.xamarin.com/ios/Guides/User_Interface/Introduction_to_Storyboards">Introduction to Storyboards</a></format>.
       </para>
       <format type="text/html">
         <h2>Universal applications</h2>
       </format>
       <para>
-        Xamarin Studio fully supports universal applications that use a single <see cref="T:UIKit.UIViewController" /> to control multiple <see cref="T:UIKit.UIView" />s customized for the iPad or the iPhone.  As long as the <see cref="T:UIKit.UIView" />s used by the two devices share the same elements, they can share the same Outlets and Actions, as described in the "<format type="text/html"><a href="https://docs.xamarin.com/index.php?title=ios/Guides/Getting_Started/Hello%2C_iPad___Universal_Apps">iPad + Universal (iPhone + iPad) Apps</a></format>" guide. 
+        Xamarin Studio fully supports universal applications that use a single <see cref="UIKit.UIViewController" /> to control multiple <see cref="UIKit.UIView" />s customized for the iPad or the iPhone.  As long as the <see cref="UIKit.UIView" />s used by the two devices share the same elements, they can share the same Outlets and Actions, as described in the "<format type="text/html"><a href="https://docs.xamarin.com/index.php?title=ios/Guides/Getting_Started/Hello%2C_iPad___Universal_Apps">iPad + Universal (iPhone + iPad) Apps</a></format>" guide. 
       </para>
-      <para>It is not necessary for the iPhone and iPad versions to use the same UI elements, however. The application developer may wish to take advantage of the increased screen real-estate and larger set of controls available on the iPad. In such cases, the application developer should create separate <see cref="T:UIKit.UIViewController" />s and load them appropriatel using code similar to the following, again taken from the “<format type="text/html"><a href="https://docs.xamarin.com/index.php?title=ios/Guides/Getting_Started/Hello%2C_iPad___Universal_Apps">iPad + Universal (iPhone + iPad) Apps</a></format>“ guide.  The choice of the <see cref="T:UIKit.UIViewController" /> to be loaded is determined at runtime based on a call to <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIDevice%20Current%20Device%20User%20Interface%20Idiom&amp;scope=Xamarin" title="P:UIKit.UIDevice.CurrentDevice.UserInterfaceIdiom">P:UIKit.UIDevice.CurrentDevice.UserInterfaceIdiom</a></format>.
+      <para>It is not necessary for the iPhone and iPad versions to use the same UI elements, however. The application developer may wish to take advantage of the increased screen real-estate and larger set of controls available on the iPad. In such cases, the application developer should create separate <see cref="UIKit.UIViewController" />s and load them appropriatel using code similar to the following, again taken from the “<format type="text/html"><a href="https://docs.xamarin.com/index.php?title=ios/Guides/Getting_Started/Hello%2C_iPad___Universal_Apps">iPad + Universal (iPhone + iPad) Apps</a></format>“ guide.  The choice of the <see cref="UIKit.UIViewController" /> to be loaded is determined at runtime based on a call to <see cref="UIKit.UIDevice.CurrentDevice.UserInterfaceIdiom" />.
       </para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
@@ -201,7 +201,7 @@ class MyUIViewController : UIViewController {
           </listheader>
           <item>
             <term>
-              <see cref="T:UIKit.UIActivityViewController" />
+              <see cref="UIKit.UIActivityViewController" />
             </term>
             <description>Choose from a set of possible activities</description>
             <description>
@@ -210,7 +210,7 @@ class MyUIViewController : UIViewController {
           </item>
           <item>
             <term>
-              <see cref="T:UIKit.UIPageViewController" />
+              <see cref="UIKit.UIPageViewController" />
             </term>
             <description>Presents content view controllers as a series of pages</description>
             <description>
@@ -219,7 +219,7 @@ class MyUIViewController : UIViewController {
           </item>
           <item>
             <term>
-              <see cref="T:UIKit.UINavigationController" />
+              <see cref="UIKit.UINavigationController" />
             </term>
             <description>Presents content view controllers one at a time, with a header and optional toolbar</description>
             <description>
@@ -228,25 +228,25 @@ class MyUIViewController : UIViewController {
           </item>
           <item>
             <term>
-              <see cref="T:UIKit.UIImagePickerController" />
+              <see cref="UIKit.UIImagePickerController" />
             </term>
-            <description>A standard <see cref="T:UIKit.UINavigationController" /> for selecting and taking photographs.</description>
+            <description>A standard <see cref="UIKit.UINavigationController" /> for selecting and taking photographs.</description>
             <description>
               <img href="~/UIKit/_images/UIKit.UIImagePickerController.Presentation.png" alt="Screenshot showing the UIImagePickerController" />
             </description>
           </item>
           <item>
             <term>
-              <see cref="T:UIKit.UIVideoEditorController" />
+              <see cref="UIKit.UIVideoEditorController" />
             </term>
-            <description>A standard <see cref="T:UIKit.UINavigationController" /> for reviewing and editing video and audio files.</description>
+            <description>A standard <see cref="UIKit.UINavigationController" /> for reviewing and editing video and audio files.</description>
             <description>
               <img href="~/UIKit/_images/UIKit.UIVideoEditorController.Presentation.png" alt="Screenshot showing the video editor." />
             </description>
           </item>
           <item>
             <term>
-              <see cref="T:UIKit.UITabBarController" />
+              <see cref="UIKit.UITabBarController" />
             </term>
             <description>Top-level controller that presents view controllers one at a time, selected by a toolbar along the bottom of the screen.</description>
             <description>
@@ -255,7 +255,7 @@ class MyUIViewController : UIViewController {
           </item>
           <item>
             <term>
-              <see cref="T:UIKit.UIReferenceLibraryViewController" />
+              <see cref="UIKit.UIReferenceLibraryViewController" />
             </term>
             <description>A standard view controller that presents a term and it's dictionary definition.</description>
             <description>
@@ -264,7 +264,7 @@ class MyUIViewController : UIViewController {
           </item>
           <item>
             <term>
-              <see cref="T:UIKit.UISplitViewController" />
+              <see cref="UIKit.UISplitViewController" />
             </term>
             <description>An iPad-only view controller that presents side-by-side view controllers.</description>
             <description>
@@ -273,7 +273,7 @@ class MyUIViewController : UIViewController {
           </item>
           <item>
             <term>
-              <see cref="T:UIKit.UICollectionViewController" />
+              <see cref="UIKit.UICollectionViewController" />
             </term>
             <description>Efficiently displays a large number of cells, arranged in a flexible manner.</description>
             <description>
@@ -282,7 +282,7 @@ class MyUIViewController : UIViewController {
           </item>
           <item>
             <term>
-              <see cref="T:UIKit.UITableViewController" />
+              <see cref="UIKit.UITableViewController" />
             </term>
             <description>Efficiently displays a large number of cells, arranged vertically.</description>
             <description>
@@ -312,7 +312,7 @@ class MyUIViewController : UIViewController {
 	include the available size in the canvas, UserInterfaceIdiom
 	(iPad or iPhone), the display scale, and both the vertical and
 	horizontal size classes.  The first one is the size of your
-	main view, while the rest are stored in the  <see cref="P:UIKit.UIViewController.TraitCollection" />.
+	main view, while the rest are stored in the  <see cref="UIKit.UIViewController.TraitCollection" />.
 
       </para>
       <para>
@@ -322,13 +322,13 @@ class MyUIViewController : UIViewController {
 	compact height and a regular width.
       </para>
       <para>
-	Applications can override <see cref="M:UIKit.UIViewController.TraitCollectionDidChange(UIKit.UITraitCollection)" />
+	Applications can override <see cref="UIKit.UIViewController.TraitCollectionDidChange(UIKit.UITraitCollection)" />
 	to react to changes to any of the user interface traits.  This
 	method will be invoked during rotations or changes to the user
 	interface that affect the size class of the application.
       </para>
       <para>
-	The <see cref="M:UIKit.UIViewController.ViewWillTransitionToSize(CoreGraphics.CGSize,UIKit.IUIViewControllerTransitionCoordinator)" />
+	The <see cref="UIKit.UIViewController.ViewWillTransitionToSize(CoreGraphics.CGSize,UIKit.IUIViewControllerTransitionCoordinator)" />
 	method is invoked when rotation takes place.
 
       </para>
@@ -336,7 +336,7 @@ class MyUIViewController : UIViewController {
         <h3>MVC, MVP, and MVVM</h3>
       </format>
       <para>
-        .NET developers will be familiar with Microsoft-promoted architectures that serve the same goal as MVC. Both Model-View-Presenter (MVP) and Model-View-ViewModel (MVVM) strive to maintain the separation between Model classes and display classes. Developers familiar with MVP will be used to Model data flowing through a coordinating Presenter object towards the View rather than MVC’s model in which Views directly subscribe to Model events. It is possible to do an MVP architecture in iOS by increasing the responsibilities of a <see cref="T:UIKit.UIViewController" />. The defining characteristic of MVVM is the use of databinding to ensure that View objects are reactive. iOS controls do not support databinding so MVVM is not possible. MVVM developers will be used to more of a "firewall" between View and Model objects than is available in MVC. MVVM developers should remind themselves to ensure their View objects are as reactive as possible and are not reaching in to the Model for data or taking over Controller responsibilities.
+        .NET developers will be familiar with Microsoft-promoted architectures that serve the same goal as MVC. Both Model-View-Presenter (MVP) and Model-View-ViewModel (MVVM) strive to maintain the separation between Model classes and display classes. Developers familiar with MVP will be used to Model data flowing through a coordinating Presenter object towards the View rather than MVC’s model in which Views directly subscribe to Model events. It is possible to do an MVP architecture in iOS by increasing the responsibilities of a <see cref="UIKit.UIViewController" />. The defining characteristic of MVVM is the use of databinding to ensure that View objects are reactive. iOS controls do not support databinding so MVVM is not possible. MVVM developers will be used to more of a "firewall" between View and Model objects than is available in MVC. MVVM developers should remind themselves to ensure their View objects are as reactive as possible and are not reaching in to the Model for data or taking over Controller responsibilities.
       </para>
       <format type="text/html">
         <h2>UIViewController and MonoTouch.Dialog</h2>
@@ -344,7 +344,7 @@ class MyUIViewController : UIViewController {
       <para>
         <format type="text/html">
           <a href="https://docs.xamarin.com/ios/Guides/User_Interface/MonoTouch.Dialog">MonoTouch.Dialog</a>
-        </format> (“MT.D”) allows complex UIs to be rapidly built using declarative statements. As opposed to applications built using Apple’s Interface Builder, most MT.D applications use the predefined <see cref="T:MonoTouch.Dialog.DialogViewController" /> and do not create their own subclass of <see cref="T:UIKit.UIViewController" />. For more information, refer to the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Mono%20Touch%20Dialog&amp;scope=Xamarin" title="N:MonoTouch.Dialog">N:MonoTouch.Dialog</a></format> namespace documentation and the article  <format type="text/html"><a href="https://docs.xamarin.com/ios/Guides/User_Interface/MonoTouch.Dialog">Introduction to MonoTouch.Dialog</a></format>.
+        </format> (“MT.D”) allows complex UIs to be rapidly built using declarative statements. As opposed to applications built using Apple’s Interface Builder, most MT.D applications use the predefined <see cref="MonoTouch.Dialog.DialogViewController" /> and do not create their own subclass of <see cref="UIKit.UIViewController" />. For more information, refer to the <see cref="MonoTouch.Dialog" /> namespace documentation and the article  <format type="text/html"><a href="https://docs.xamarin.com/ios/Guides/User_Interface/MonoTouch.Dialog">Introduction to MonoTouch.Dialog</a></format>.
       </para>
     </remarks>
     <related type="article" href="https://docs.xamarin.com/ios/Guides/User_Interface/MonoTouch.Dialog">Introduction to MonoTouch.Dialog</related>
@@ -354,46 +354,46 @@ class MyUIViewController : UIViewController {
   </Docs>
   <Docs DocId="P:UIKit.UIViewController.IsBeingPresented">
         <summary>
-          <see langword="true" /> if the current <see cref="T:UIKit.UIViewController" /> is in the process of being presented.</summary>
+          <see langword="true" /> if the current <see cref="UIKit.UIViewController" /> is in the process of being presented.</summary>
         <value>
-          <see langword="true" /> only if called during the execution of <see cref="M:UIKit.UIViewController.ViewWillAppear(System.Boolean)" /> or <see cref="M:UIKit.UIViewController.ViewDidAppear(System.Boolean)" />.</value>
+          <see langword="true" /> only if called during the execution of <see cref="UIKit.UIViewController.ViewWillAppear(System.Boolean)" /> or <see cref="UIKit.UIViewController.ViewDidAppear(System.Boolean)" />.</value>
         <remarks>
-          <para>The presentation process is bookended by the functions <see cref="M:UIKit.UIViewController.ViewWillAppear(System.Boolean)" /> and <see cref="M:UIKit.UIViewController.ViewDidAppear(System.Boolean)" />. While those are executing, this property will return <see langword="true" />, at all other times, it will return <see langword="false" />.</para>
+          <para>The presentation process is bookended by the functions <see cref="UIKit.UIViewController.ViewWillAppear(System.Boolean)" /> and <see cref="UIKit.UIViewController.ViewDidAppear(System.Boolean)" />. While those are executing, this property will return <see langword="true" />, at all other times, it will return <see langword="false" />.</para>
         </remarks>
-        <altmember cref="M:UIKit.UIViewController.ViewWillAppear" />
-        <altmember cref="M:UIKit.UIViewController.ViewDidAppear" />
-        <altmember cref="P:UIKit.UIViewController.IsMovingToParentViewController" />
+        <altmember cref="UIKit.UIViewController.ViewWillAppear" />
+        <altmember cref="UIKit.UIViewController.ViewDidAppear" />
+        <altmember cref="UIKit.UIViewController.IsMovingToParentViewController" />
       </Docs>
   <Docs DocId="P:UIKit.UIViewController.IsMovingToParentViewController">
         <summary>
-          <see langword="true" /> if the current <see cref="T:UIKit.UIViewController" /> is in the process of being added to a parent <see cref="T:UIKit.UIViewController" />.</summary>
+          <see langword="true" /> if the current <see cref="UIKit.UIViewController" /> is in the process of being added to a parent <see cref="UIKit.UIViewController" />.</summary>
         <value>
-          <see langword="true" /> only if called during the execution of <see cref="M:UIKit.UIViewController.ViewWillAppear(System.Boolean)" /> or <see cref="M:UIKit.UIViewController.ViewDidAppear(System.Boolean)" />.</value>
+          <see langword="true" /> only if called during the execution of <see cref="UIKit.UIViewController.ViewWillAppear(System.Boolean)" /> or <see cref="UIKit.UIViewController.ViewDidAppear(System.Boolean)" />.</value>
         <remarks>
-          <para>The process of adding a <see cref="T:UIKit.UIViewController" /> to a parent <see cref="T:UIKit.UIViewController" /> is bookended by the functions <see cref="M:UIKit.UIViewController.ViewWillAppear(System.Boolean)" /> and <see cref="M:UIKit.UIViewController.ViewDidAppear(System.Boolean)" />. While those are executing, this property will return <see langword="true" />, at all other times, it will return <see langword="false" />.</para>
+          <para>The process of adding a <see cref="UIKit.UIViewController" /> to a parent <see cref="UIKit.UIViewController" /> is bookended by the functions <see cref="UIKit.UIViewController.ViewWillAppear(System.Boolean)" /> and <see cref="UIKit.UIViewController.ViewDidAppear(System.Boolean)" />. While those are executing, this property will return <see langword="true" />, at all other times, it will return <see langword="false" />.</para>
         </remarks>
-        <altmember cref="M:UIKit.UIViewController.ViewDidAppear" />
-        <altmember cref="M:UIKit.UIViewController.ViewDidDisappear" />
-        <altmember cref="P:UIKit.UIViewController.IsBeingPresented" />
+        <altmember cref="UIKit.UIViewController.ViewDidAppear" />
+        <altmember cref="UIKit.UIViewController.ViewDidDisappear" />
+        <altmember cref="UIKit.UIViewController.IsBeingPresented" />
       </Docs>
   <Docs DocId="P:UIKit.UIViewController.IsMovingFromParentViewController">
         <summary>
-          <see langword="true" /> if the current <see cref="T:UIKit.UIViewController" /> is in the process of being removed from its parent <see cref="T:UIKit.UIViewController" />.</summary>
+          <see langword="true" /> if the current <see cref="UIKit.UIViewController" /> is in the process of being removed from its parent <see cref="UIKit.UIViewController" />.</summary>
         <value>
-          <see langword="true" /> only if called during the execution of <see cref="M:UIKit.UIViewController.ViewWillDisappear(System.Boolean)" /> or <see cref="M:UIKit.UIViewController.ViewDidDisappear(System.Boolean)" />.</value>
+          <see langword="true" /> only if called during the execution of <see cref="UIKit.UIViewController.ViewWillDisappear(System.Boolean)" /> or <see cref="UIKit.UIViewController.ViewDidDisappear(System.Boolean)" />.</value>
         <remarks>
-          <para>The process of removing a <see cref="T:UIKit.UIViewController" /> from its parent <see cref="T:UIKit.UIViewController" /> is bookended by the functions <see cref="M:UIKit.UIViewController.ViewWillDisappear(System.Boolean)" /> and <see cref="M:UIKit.UIViewController.ViewDidDisappear(System.Boolean)" />. While those are executing, this property will return <see langword="true" />, at all other times, it will return <see langword="false" />.</para>
+          <para>The process of removing a <see cref="UIKit.UIViewController" /> from its parent <see cref="UIKit.UIViewController" /> is bookended by the functions <see cref="UIKit.UIViewController.ViewWillDisappear(System.Boolean)" /> and <see cref="UIKit.UIViewController.ViewDidDisappear(System.Boolean)" />. While those are executing, this property will return <see langword="true" />, at all other times, it will return <see langword="false" />.</para>
         </remarks>
-        <altmember cref="M:UIKit.UIViewController.ViewWillDisappear" />
-        <altmember cref="M:UIKit.UIViewController.ViewDidDisappear" />
-        <altmember cref="M:UIKit.UIViewController.RemoveFromParentViewController" />
+        <altmember cref="UIKit.UIViewController.ViewWillDisappear" />
+        <altmember cref="UIKit.UIViewController.ViewDidDisappear" />
+        <altmember cref="UIKit.UIViewController.RemoveFromParentViewController" />
       </Docs>
   <Docs DocId="P:UIKit.UIViewController.ShowDetailTargetDidChangeNotification">
         <summary>Notification constant for ShowDetailTargetDidChange</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIKit.UIViewController.Notifications" />.<see cref="M:UIKit.UIViewController.Notifications.ObserveShowDetailTargetDidChange*" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="UIKit.UIViewController.Notifications" />.<see cref="UIKit.UIViewController.Notifications.ObserveShowDetailTargetDidChange" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[

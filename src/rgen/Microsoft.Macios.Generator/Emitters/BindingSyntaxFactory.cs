@@ -223,4 +223,21 @@ static partial class BindingSyntaxFactory {
 	/// <returns>The identifier name expression for a given class.</returns>
 	internal static TypeSyntax GetIdentifierName (string @class)
 		=> IdentifierName (@class);
+
+	/// <summary>
+	/// Create the needed expression to call the AsRef method from the Unsafe class.
+	/// </summary>
+	/// <param name="objectType">The target type for get the ref from.</param>
+	/// <param name="arguments">The arguments to pass to the AsRef method.</param>
+	/// <returns>The needed expression to call the AsRef method.</returns>
+	internal static ExpressionSyntax AsRef (string objectType, ImmutableArray<ArgumentSyntax> arguments)
+	{
+		var unsafeType = GetIdentifierName (
+			@namespace: ["System", "Runtime", "CompilerServices"],
+			@class: "Unsafe",
+			isGlobal: true);
+		var argsList = ArgumentList (SeparatedList<ArgumentSyntax> (arguments.ToSyntaxNodeOrTokenArray ()));
+		return StaticInvocationGenericExpression (unsafeType, "AsRef",
+			objectType, argsList);
+	}
 }

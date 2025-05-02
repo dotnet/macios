@@ -9,7 +9,7 @@
     <remarks>
       <para>
 	    The returned NSData is a binary blob, if you want to get a
-	    high-level representation, use <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Security%20Sec%20Key%20Chain%20Query%20As%20Record&amp;scope=Xamarin" title="M:Security.SecKeyChain.QueryAsRecord*">M:Security.SecKeyChain.QueryAsRecord*</a></format>
+	    high-level representation, use <see cref="SecKeyChain.QueryAsRecord(SecRecord, out SecStatusCode)" /> or <see cref="SecKeyChain.QueryAsRecord(SecRecord, int, out SecStatusCode)" />
 	    instead.
 	  </para>
       <para>
@@ -33,7 +33,7 @@
     <remarks>
       <para>
 	    The returned NSData is a binary blob, if you want to get a
-	    high-level representation, use <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Security%20Sec%20Key%20Chain%20Query%20As%20Record&amp;scope=Xamarin" title="M:Security.SecKeyChain.QueryAsRecord*">M:Security.SecKeyChain.QueryAsRecord*</a></format>
+	    high-level representation, use <see cref="SecKeyChain.QueryAsRecord(SecRecord, out SecStatusCode)" /> or <see cref="SecKeyChain.QueryAsRecord(SecRecord, int, out SecStatusCode)" />
 	    instead.
 	  </para>
       <para>
@@ -53,7 +53,7 @@
     <remarks>
       <para>
 	    The returned NSData is a binary blob, if you want to get a
-	    high-level representation, use <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Security%20Sec%20Key%20Chain%20Query%20As%20Record&amp;scope=Xamarin" title="M:Security.SecKeyChain.QueryAsRecord*">M:Security.SecKeyChain.QueryAsRecord*</a></format>
+	    high-level representation, use <see cref="SecKeyChain.QueryAsRecord(SecRecord, out SecStatusCode)" /> or <see cref="SecKeyChain.QueryAsRecord(SecRecord, int, out SecStatusCode)" />
 	    instead.
 	  </para>
       <para>
@@ -78,7 +78,7 @@
     <remarks>
       <para>
 	    The returned NSData is a binary blob, if you want to get a
-	    high-level representation, use <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Security%20Sec%20Key%20Chain%20Query%20As%20Record&amp;scope=Xamarin" title="M:Security.SecKeyChain.QueryAsRecord*">M:Security.SecKeyChain.QueryAsRecord*</a></format>
+	    high-level representation, use <see cref="SecKeyChain.QueryAsRecord(SecRecord, out SecStatusCode)" /> or <see cref="SecKeyChain.QueryAsRecord(SecRecord, int, out SecStatusCode)" />
 	    instead.
 	  </para>
       <para>
@@ -103,7 +103,7 @@
     <returns>Returns an array of strongly typed SecRecord objects.</returns>
     <remarks>
       <para>
-	    Unlike the <see cref="M:Security.SecKeyChain.QueryAsData(Security.SecRecord,System.Boolean,System.Int32,Security.SecStatusCode@)" />
+	    Unlike the <see cref="Security.SecKeyChain.QueryAsData(Security.SecRecord,System.Boolean,System.Int32,out Security.SecStatusCode)" />
 	    methods which return a binary blob inside an NSData, this
 	    returns a strongly typed SecRecord that you can easily
 	    inspect.
@@ -120,8 +120,8 @@
   <Docs DocId="M:Security.SecKeyChain.QueryAsConcreteType(Security.SecRecord,Security.SecStatusCode@)">
     <param name="query">The query used to lookup the value on the keychain.</param>
     <param name="result">Returns the status code from calling SecItemCopyMatching.</param>
-    <summary>Use this method to query the KeyChain and get back a <see cref="T:Security.SecCertificate" />, a <see cref="T:Security.SecKey" /> or a <see cref="T:Security.SecIdentity" />.</summary>
-    <returns>An object that can be one of <see cref="T:Security.SecCertificate" />, a <see cref="T:Security.SecKey" /> or a <see cref="T:Security.SecIdentity" /> or null if there is no value found. </returns>
+    <summary>Use this method to query the KeyChain and get back a <see cref="Security.SecCertificate" />, a <see cref="Security.SecKey" /> or a <see cref="Security.SecIdentity" />.</summary>
+    <returns>An object that can be one of <see cref="Security.SecCertificate" />, a <see cref="Security.SecKey" /> or a <see cref="Security.SecIdentity" /> or null if there is no value found. </returns>
     <remarks>
       <para>
 	    This method will throw an exception if the KeyChain
@@ -147,19 +147,19 @@
 	range of options.
       </para>
       <para>
-	Use <see cref="M:Security.SecKeyChain.QueryAsData(Security.SecRecord,System.Boolean,System.Int32,Security.SecStatusCode@)" />
+	Use <see cref="Security.SecKeyChain.QueryAsData(Security.SecRecord,System.Boolean,System.Int32,out Security.SecStatusCode)" />
 	to get values from the keychain as a binary blob.  Some of the
 	overloads can also return binary blobs that are suitable to be
 	stored on disk, or passed to another process.
       </para>
       <para>
-	Use <see cref="M:Security.SecKeyChain.QueryAsConcreteType(Security.SecRecord,Security.SecStatusCode@)" />
-	to get a <see cref="T:Security.SecCertificate" />, a
-	<see cref="T:Security.SecKey" /> or a <see cref="T:Security.SecIdentity" /> back from the
+	Use <see cref="Security.SecKeyChain.QueryAsConcreteType(Security.SecRecord,out Security.SecStatusCode)" />
+	to get a <see cref="Security.SecCertificate" />, a
+	<see cref="Security.SecKey" /> or a <see cref="Security.SecIdentity" /> back from the
 	keychain.
       </para>
       <para>
-	Use <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Security%20Sec%20Key%20Chain%20Query%20As%20Record&amp;scope=Xamarin" title="M:Security.SecKeyChain.QueryAsRecord*">M:Security.SecKeyChain.QueryAsRecord*</a></format> to get
+	Use use <see cref="SecKeyChain.QueryAsRecord(SecRecord, out SecStatusCode)" /> or <see cref="SecKeyChain.QueryAsRecord(SecRecord, int, out SecStatusCode)" /> to get
 	a strongly typed SecRecord with the results of your query.
       </para>
       <example>

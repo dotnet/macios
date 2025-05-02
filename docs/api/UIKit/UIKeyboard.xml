@@ -11,7 +11,7 @@
       </para>
       <para>
 	The preferred way of receiving UIKeyboard notification is to
-	use the <see cref="T:UIKit.UIKeyboard.Notifications" /> class,
+	use the <see cref="UIKit.UIKeyboard.Notifications" /> class,
 	which provides a strongly-typed set of APIs to track the
 	changes to the keyboard state and provides strongly-typed
 	accessors to the various parameters of the keyboard changes.
@@ -68,8 +68,8 @@ void Teardown ()
         <summary>Notification constant for WillShow</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIKit.UIKeyboard.Notifications" />.<see cref="M:UIKit.UIKeyboard.Notifications.ObserveWillShow*" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="UIKit.UIKeyboard.Notifications" />.<see cref="UIKit.UIKeyboard.Notifications.ObserveWillShow" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[ 
@@ -142,8 +142,8 @@ void Setup ()
         <summary>Notification constant for DidChangeFrame</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIKit.UIKeyboard.Notifications" />.<see cref="M:UIKit.UIKeyboard.Notifications.ObserveDidChangeFrame*" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="UIKit.UIKeyboard.Notifications" />.<see cref="UIKit.UIKeyboard.Notifications.ObserveDidChangeFrame" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
@@ -216,8 +216,8 @@ void Setup ()
         <summary>Notification constant for DidShow</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIKit.UIKeyboard.Notifications" />.<see cref="M:UIKit.UIKeyboard.Notifications.ObserveDidShow*" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="UIKit.UIKeyboard.Notifications" />.<see cref="UIKit.UIKeyboard.Notifications.ObserveDidShow" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
@@ -290,8 +290,8 @@ void Setup ()
         <summary>Notification constant for WillHide</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIKit.UIKeyboard.Notifications" />.<see cref="M:UIKit.UIKeyboard.Notifications.ObserveWillHide*" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="UIKit.UIKeyboard.Notifications" />.<see cref="UIKit.UIKeyboard.Notifications.ObserveWillHide" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
@@ -364,8 +364,8 @@ void Setup ()
         <summary>Notification constant for DidHide</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIKit.UIKeyboard.Notifications" />.<see cref="M:UIKit.UIKeyboard.Notifications.ObserveDidHide*" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="UIKit.UIKeyboard.Notifications" />.<see cref="UIKit.UIKeyboard.Notifications.ObserveDidHide" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
@@ -438,8 +438,8 @@ void Setup ()
         <summary>Notification constant for WillChangeFrame</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIKit.UIKeyboard.Notifications" />.<see cref="M:UIKit.UIKeyboard.Notifications.ObserveWillChangeFrame*" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="UIKit.UIKeyboard.Notifications" />.<see cref="UIKit.UIKeyboard.Notifications.ObserveWillChangeFrame" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[

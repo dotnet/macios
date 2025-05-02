@@ -27,7 +27,7 @@ namespace MultipeerConnectivity {
 	/// <summary>Identifies a device in a multipeer connectivity network.</summary>
 	///     <remarks>
 	///       <para>
-	///         <see cref="P:MultipeerConnectivity.MCPeerID.DisplayName" /> must be unique among peers.</para>
+	///         <see cref="MultipeerConnectivity.MCPeerID.DisplayName" /> must be unique among peers.</para>
 	///     </remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MultipeerConnectivity/Reference/MCPeerID_class/index.html">Apple documentation for <c>MCPeerID</c></related>
 	[MacCatalyst (13, 1)]
@@ -36,7 +36,7 @@ namespace MultipeerConnectivity {
 	partial interface MCPeerID : NSCopying, NSSecureCoding {
 
 		/// <param name="myDisplayName">The name for the peer.</param>
-		/// <summary>Constructor that assigns to the <see cref="P:MultipeerConnectivity.MCPeerID.DisplayName" /> property.</summary>
+		/// <summary>Constructor that assigns to the <see cref="MultipeerConnectivity.MCPeerID.DisplayName" /> property.</summary>
 		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithDisplayName:")]
@@ -49,7 +49,7 @@ namespace MultipeerConnectivity {
 		string DisplayName { get; }
 	}
 
-	/// <summary>A delegate that serves as the completion handler for <see cref="M:MultipeerConnectivity.MCSession.NearbyConnectionDataForPeer(MultipeerConnectivity.MCPeerID,MultipeerConnectivity.MCSessionNearbyConnectionDataForPeerCompletionHandler)" />.</summary>
+	/// <summary>A delegate that serves as the completion handler for <see cref="MultipeerConnectivity.MCSession.NearbyConnectionDataForPeer(MultipeerConnectivity.MCPeerID,MultipeerConnectivity.MCSessionNearbyConnectionDataForPeerCompletionHandler)" />.</summary>
 	delegate void MCSessionNearbyConnectionDataForPeerCompletionHandler (NSData connectionData, NSError error);
 
 	/// <include file="../docs/api/MultipeerConnectivity/MCSession.xml" path="/Documentation/Docs[@DocId='T:MultipeerConnectivity.MCSession']/*" />
@@ -173,7 +173,7 @@ namespace MultipeerConnectivity {
 		NSArray SecurityIdentity { get; }
 
 		/// <summary>What type, if any, encryption s preferred.</summary>
-		///         <value>The default value is <see cref="F:MultipeerConnectivity.MCEncryptionPreference.Optional" />.</value>
+		///         <value>The default value is <see cref="MultipeerConnectivity.MCEncryptionPreference.Optional" />.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("encryptionPreference")]
 		MCEncryptionPreference EncryptionPreference { get; }
@@ -181,7 +181,7 @@ namespace MultipeerConnectivity {
 		/// <summary>Represents the value associated with the constant kMCSessionMaximumNumberOfPeers</summary>
 		///         <value>The value is 8.</value>
 		///         <remarks>To be added.</remarks>
-		///         <altmember cref="P:MultipeerConnectivity.MCBrowserViewController.MaximumNumberOfPeers" />
+		///         <altmember cref="MultipeerConnectivity.MCBrowserViewController.MaximumNumberOfPeers" />
 		[Field ("kMCSessionMaximumNumberOfPeers")]
 		nint MaximumNumberOfPeers { get; }
 
@@ -189,7 +189,7 @@ namespace MultipeerConnectivity {
 		///         <value>The value is 2.
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		///         <altmember cref="P:MultipeerConnectivity.MCBrowserViewController.MinimumNumberOfPeers" />
+		///         <altmember cref="MultipeerConnectivity.MCBrowserViewController.MinimumNumberOfPeers" />
 		[Field ("kMCSessionMinimumNumberOfPeers")]
 		nint MinimumNumberOfPeers { get; }
 
@@ -204,7 +204,7 @@ namespace MultipeerConnectivity {
 			        </returns>
 			<remarks>
 			          <para copied="true">The NearbyConnectionDataForPeerAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
-			          <para copied="true">Application developers may use a non-Multipeer Connectivity discovery technique, such as Bonjour / <see cref="T:Foundation.NSNetService" />, and manually manage peer connection. However, the <paramref name="peerID" /> used here and in <see cref="M:MultipeerConnectivity.MCSession.ConnectPeer(MultipeerConnectivity.MCPeerID,Foundation.NSData)" /> must originate from a <see cref="T:Foundation.NSKeyedArchiver" /> serializing an <see cref="T:MultipeerConnectivity.MCPeerID" /> on the remote peer. (This raises the question: if discovery and enough message-passing code to transmit the <paramref name="peerID" /> is done by Bonjour, what's the advantage of using MPC for further communication? One answer might be the evolution of a legacy system, another answer might lie in the simpler message- and resource-passing of MPC.)</para>
+			          <para copied="true">Application developers may use a non-Multipeer Connectivity discovery technique, such as Bonjour / <see cref="Foundation.NSNetService" />, and manually manage peer connection. However, the <paramref name="peerID" /> used here and in <see cref="MultipeerConnectivity.MCSession.ConnectPeer(MultipeerConnectivity.MCPeerID,Foundation.NSData)" /> must originate from a <see cref="Foundation.NSKeyedArchiver" /> serializing an <see cref="MultipeerConnectivity.MCPeerID" /> on the remote peer. (This raises the question: if discovery and enough message-passing code to transmit the <paramref name="peerID" /> is done by Bonjour, what's the advantage of using MPC for further communication? One answer might be the evolution of a legacy system, another answer might lie in the simpler message- and resource-passing of MPC.)</para>
 			          <para copied="true">Once the application developer has the <paramref name="peerID" />, the rest of the code to connect a peer would be:</para>
 			          <example copied="true">
 			            <code lang="csharp lang-csharp"><![CDATA[
@@ -239,17 +239,17 @@ namespace MultipeerConnectivity {
 		#endregion
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:MultipeerConnectivity.MCSessionDelegate" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="MultipeerConnectivity.MCSessionDelegate" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:MultipeerConnectivity.MCSessionDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:MultipeerConnectivity.MCSessionDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:MultipeerConnectivity.MCSessionDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="MultipeerConnectivity.MCSessionDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="MultipeerConnectivity.MCSessionDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="MultipeerConnectivity.MCSessionDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	interface IMCSessionDelegate { }
 
-	/// <summary>A delegate object whose functions relate to events in the <see cref="T:MultipeerConnectivity.MCSession" /> life-cycle, such as connection status changes and data reception.</summary>
+	/// <summary>A delegate object whose functions relate to events in the <see cref="MultipeerConnectivity.MCSession" /> life-cycle, such as connection status changes and data reception.</summary>
 	///     <remarks>
-	///       <para>Callbacks to the <see cref="T:MultipeerConnectivity.MCSessionDelegate" /> object are likely to be made on background threads. Application developers who wish to update the display must use, for instance, <see cref="M:Foundation.NSObject.InvokeOnMainThread(ObjCRuntime.Selector,Foundation.NSObject)" />.</para>
+	///       <para>Callbacks to the <see cref="MultipeerConnectivity.MCSessionDelegate" /> object are likely to be made on background threads. Application developers who wish to update the display must use, for instance, <see cref="Foundation.NSObject.InvokeOnMainThread(ObjCRuntime.Selector,Foundation.NSObject)" />.</para>
 	///     </remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MultipeerConnectivity/Reference/MCSessionDelegateRef/index.html">Apple documentation for <c>MCSessionDelegate</c></related>
 	[MacCatalyst (13, 1)]
@@ -331,7 +331,7 @@ namespace MultipeerConnectivity {
 
 	/// <summary>Provides programmatic control for advertising the device for multipeer connectivity.</summary>
 	///     <remarks>
-	///       <para>Multipeer connectivity's discovery phase involves two roles: browsing and advertising. When an application makes itself available for connection, it is advertising. Advertising may be controlled by either a <see cref="T:MultipeerConnectivity.MCAdvertiserAssistant" /> or can be fully customized with a <see cref="T:MultipeerConnectivity.MCNearbyServiceAdvertiser" />. For a discussion of the discovery process, see the remarks for <see cref="T:MultipeerConnectivity.MCSession" />.</para>
+	///       <para>Multipeer connectivity's discovery phase involves two roles: browsing and advertising. When an application makes itself available for connection, it is advertising. Advertising may be controlled by either a <see cref="MultipeerConnectivity.MCAdvertiserAssistant" /> or can be fully customized with a <see cref="MultipeerConnectivity.MCNearbyServiceAdvertiser" />. For a discussion of the discovery process, see the remarks for <see cref="MultipeerConnectivity.MCSession" />.</para>
 	///     </remarks>
 	///     
 	///     
@@ -342,12 +342,12 @@ namespace MultipeerConnectivity {
 	partial interface MCNearbyServiceAdvertiser {
 
 		/// <param name="myPeerID">To be added.</param>
-		/// <param name="info">A small dictionary to aide discovery (see <see cref="P:MultipeerConnectivity.MCNearbyServiceAdvertiser.DiscoveryInfo" />).<para tool="nullallowed">This parameter can be <see langword="null" />.</para></param>
+		/// <param name="info">A small dictionary to aide discovery (see <see cref="MultipeerConnectivity.MCNearbyServiceAdvertiser.DiscoveryInfo" />).<para tool="nullallowed">This parameter can be <see langword="null" />.</para></param>
 		/// <param name="serviceType">A string between 1 and 15 characters long, identifying the protocol being used.</param>
 		/// <summary>Creates an object identified as <paramref name="myPeerID" /> for the specific <paramref name="serviceType" />.</summary>
 		/// <remarks>
 		///           <para>The <paramref name="serviceType" /> must be a string, between 1 and 15 characters long, identifying the network protocol being advertised. A common pattern is "{company_name}-{apptype}", e.g., <c>xamarin-txtchat</c>.</para>
-		///           <para>The <paramref name="info" /> dictionary has size and content limitations (see <see cref="P:MultipeerConnectivity.MCNearbyServiceAdvertiser.DiscoveryInfo" />). </para>
+		///           <para>The <paramref name="info" /> dictionary has size and content limitations (see <see cref="MultipeerConnectivity.MCNearbyServiceAdvertiser.DiscoveryInfo" />). </para>
 		///         </remarks>
 		[DesignatedInitializer]
 		[Export ("initWithPeer:discoveryInfo:serviceType:")]
@@ -384,7 +384,7 @@ namespace MultipeerConnectivity {
 		IMCNearbyServiceAdvertiserDelegate Delegate { get; set; }
 
 		/// <summary>The identity by which this device will be known on the peer network.</summary>
-		///         <value>This will contain the data passed in to the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=C:MultipeerConnectivity.MCNearbyServiceAdvertiser(MultipeerConnectivity.MCPeerID,Foundation.NSDictionary,string)&amp;scope=Xamarin" title="C:MultipeerConnectivity.MCNearbyServiceAdvertiser(MultipeerConnectivity.MCPeerID,Foundation.NSDictionary,string)">C:MultipeerConnectivity.MCNearbyServiceAdvertiser(MultipeerConnectivity.MCPeerID,Foundation.NSDictionary,string)</a></format> constructor.</value>
+		///         <value>This will contain the data passed in to the <see cref="MultipeerConnectivity.MCNearbyServiceAdvertiser(MultipeerConnectivity.MCPeerID,Foundation.NSDictionary,string)" /> constructor.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("myPeerID")]
 		MCPeerID MyPeerID { get; }
@@ -395,7 +395,7 @@ namespace MultipeerConnectivity {
 		NSDictionary DiscoveryInfo { get; }
 
 		/// <summary>The network protocol this peer supports.</summary>
-		///         <value>This will contain the data passed in to the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=C:MultipeerConnectivity.MCNearbyServiceAdvertiser(MultipeerConnectivity.MCPeerID,Foundation.NSDictionary,string)&amp;scope=Xamarin" title="C:MultipeerConnectivity.MCNearbyServiceAdvertiser(MultipeerConnectivity.MCPeerID,Foundation.NSDictionary,string)">C:MultipeerConnectivity.MCNearbyServiceAdvertiser(MultipeerConnectivity.MCPeerID,Foundation.NSDictionary,string)</a></format> constructor.</value>
+		///         <value>This will contain the data passed in to the <see cref="MultipeerConnectivity.MCNearbyServiceAdvertiser(MultipeerConnectivity.MCPeerID,Foundation.NSDictionary,string)" /> constructor.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("serviceType")]
 		string ServiceType { get; }
@@ -404,20 +404,20 @@ namespace MultipeerConnectivity {
 	/// <param name="accept">
 	///       <see langword="true" /> if the invitation should be accepted.</param>
 	///     <param name="session">The session to which the peer shouldbe connected.</param>
-	///     <summary>The delegate that serves as the invitation handler in calls to <see cref="M:MultipeerConnectivity.MCNearbyServiceAdvertiserDelegate.DidReceiveInvitationFromPeer(MultipeerConnectivity.MCNearbyServiceAdvertiser,MultipeerConnectivity.MCPeerID,Foundation.NSData,MultipeerConnectivity.MCNearbyServiceAdvertiserInvitationHandler)" />.</summary>
+	///     <summary>The delegate that serves as the invitation handler in calls to <see cref="MultipeerConnectivity.MCNearbyServiceAdvertiserDelegate.DidReceiveInvitationFromPeer(MultipeerConnectivity.MCNearbyServiceAdvertiser,MultipeerConnectivity.MCPeerID,Foundation.NSData,MultipeerConnectivity.MCNearbyServiceAdvertiserInvitationHandler)" />.</summary>
 	delegate void MCNearbyServiceAdvertiserInvitationHandler (bool accept, [NullAllowed] MCSession session);
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:MultipeerConnectivity.MCNearbyServiceAdvertiserDelegate" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="MultipeerConnectivity.MCNearbyServiceAdvertiserDelegate" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:MultipeerConnectivity.MCNearbyServiceAdvertiserDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:MultipeerConnectivity.MCNearbyServiceAdvertiserDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:MultipeerConnectivity.MCNearbyServiceAdvertiserDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="MultipeerConnectivity.MCNearbyServiceAdvertiserDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="MultipeerConnectivity.MCNearbyServiceAdvertiserDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="MultipeerConnectivity.MCNearbyServiceAdvertiserDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	interface IMCNearbyServiceAdvertiserDelegate { }
 
-	/// <summary>A delegate object that exposes events relating to advertising and invitations for multipeer connectivity for a <see cref="T:MultipeerConnectivity.MCNearbyServiceAdvertiser" /> object.</summary>
+	/// <summary>A delegate object that exposes events relating to advertising and invitations for multipeer connectivity for a <see cref="MultipeerConnectivity.MCNearbyServiceAdvertiser" /> object.</summary>
 	///     <remarks>
-	///       <para>For a discussion of the discovery process, see the remarks for <see cref="T:MultipeerConnectivity.MCSession" />.</para>
+	///       <para>For a discussion of the discovery process, see the remarks for <see cref="MultipeerConnectivity.MCSession" />.</para>
 	///     </remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MultipeerConnectivity/Reference/MCNearbyServiceAdvertiserDelegateProtocolRef/index.html">Apple documentation for <c>MCNearbyServiceAdvertiserDelegate</c></related>
 	[MacCatalyst (13, 1)]
@@ -441,7 +441,7 @@ namespace MultipeerConnectivity {
 
 	/// <summary>Allows programmatic browsing for devices advertising for multipeer connetivity.</summary>
 	///     <remarks>
-	///       <para>Multipeer connectivity's discovery phase involves two roles: browsing and advertising. When an application searches for peers with which to connect, it is browsing. Browsing may be controlled by either a <see cref="T:MultipeerConnectivity.MCBrowserViewController" /> or can be fully customized with a <see cref="T:MultipeerConnectivity.MCNearbyServiceBrowser" />. For a discussion of the discovery process, see the remarks for <see cref="T:MultipeerConnectivity.MCSession" />.</para>
+	///       <para>Multipeer connectivity's discovery phase involves two roles: browsing and advertising. When an application searches for peers with which to connect, it is browsing. Browsing may be controlled by either a <see cref="MultipeerConnectivity.MCBrowserViewController" /> or can be fully customized with a <see cref="MultipeerConnectivity.MCNearbyServiceBrowser" />. For a discussion of the discovery process, see the remarks for <see cref="MultipeerConnectivity.MCSession" />.</para>
 	///     </remarks>
 	///     
 	///     
@@ -461,7 +461,7 @@ namespace MultipeerConnectivity {
 		[Export ("initWithPeer:serviceType:")]
 		NativeHandle Constructor (MCPeerID myPeerID, string serviceType);
 
-		/// <summary>Starts browing for local peers advertising for the <see cref="P:MultipeerConnectivity.MCNearbyServiceBrowser.ServiceType" />.</summary>
+		/// <summary>Starts browing for local peers advertising for the <see cref="MultipeerConnectivity.MCNearbyServiceBrowser.ServiceType" />.</summary>
 		///         <remarks>To be added.</remarks>
 		[Export ("startBrowsingForPeers")]
 		void StartBrowsingForPeers ();
@@ -516,10 +516,10 @@ namespace MultipeerConnectivity {
 		string ServiceType { get; }
 	}
 
-	/// <summary>A delegate object that exposes peer-discovery events for a <see cref="T:MultipeerConnectivity.MCNearbyServiceBrowser" /> object.</summary>
+	/// <summary>A delegate object that exposes peer-discovery events for a <see cref="MultipeerConnectivity.MCNearbyServiceBrowser" /> object.</summary>
 	///     <remarks>
-	///       <para>For a discussion of peer discovery and connection, see <see cref="T:MultipeerConnectivity.MCSession" /> remarks.</para>
-	///       <para>Methods of <see cref="T:MultipeerConnectivity.MCNearbyServiceBrowserDelegate" /> are typically called by the system on a background thread. Application developers who wish to modify the user interface must use, for instance, <see cref="M:Foundation.NSObject.InvokeOnMainThread(ObjCRuntime.Selector,Foundation.NSObject)" />.</para>
+	///       <para>For a discussion of peer discovery and connection, see <see cref="MultipeerConnectivity.MCSession" /> remarks.</para>
+	///       <para>Methods of <see cref="MultipeerConnectivity.MCNearbyServiceBrowserDelegate" /> are typically called by the system on a background thread. Application developers who wish to modify the user interface must use, for instance, <see cref="Foundation.NSObject.InvokeOnMainThread(ObjCRuntime.Selector,Foundation.NSObject)" />.</para>
 	///     </remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MultipeerConnectivity/Reference/MCNearbyServiceBrowserDelegateRef/index.html">Apple documentation for <c>MCNearbyServiceBrowserDelegate</c></related>
 	[MacCatalyst (13, 1)]
@@ -556,11 +556,11 @@ namespace MultipeerConnectivity {
 		void DidNotStartBrowsingForPeers (MCNearbyServiceBrowser browser, NSError error);
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:MultipeerConnectivity.MCNearbyServiceBrowserDelegate" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="MultipeerConnectivity.MCNearbyServiceBrowserDelegate" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:MultipeerConnectivity.MCNearbyServiceBrowserDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:MultipeerConnectivity.MCNearbyServiceBrowserDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:MultipeerConnectivity.MCNearbyServiceBrowserDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="MultipeerConnectivity.MCNearbyServiceBrowserDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="MultipeerConnectivity.MCNearbyServiceBrowserDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="MultipeerConnectivity.MCNearbyServiceBrowserDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	interface IMCNearbyServiceBrowserDelegate { }
 
@@ -621,19 +621,19 @@ namespace MultipeerConnectivity {
 		IMCBrowserViewControllerDelegate Delegate { get; set; }
 
 		/// <summary>Allows the application developer to specify a minimum amount of peers.</summary>
-		///         <value>Must be greater than or equal to <see cref="P:MultipeerConnectivity.MCSession.MinimumNumberOfPeers" />.</value>
+		///         <value>Must be greater than or equal to <see cref="MultipeerConnectivity.MCSession.MinimumNumberOfPeers" />.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("minimumNumberOfPeers", ArgumentSemantic.Assign)]
 		nuint MinimumNumberOfPeers { get; set; }
 
 		/// <summary>Allows the application developer to limit the number of peers.</summary>
-		///         <value>Must be less than or equal to <see cref="P:MultipeerConnectivity.MCSession.MaximumNumberOfPeers" />.</value>
+		///         <value>Must be less than or equal to <see cref="MultipeerConnectivity.MCSession.MaximumNumberOfPeers" />.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("maximumNumberOfPeers", ArgumentSemantic.Assign)]
 		nuint MaximumNumberOfPeers { get; set; }
 
 #if !MONOMAC
-		/// <summary>The <see cref="T:MultipeerConnectivity.MCNearbyServiceBrowser" /> used for discovering peers.</summary>
+		/// <summary>The <see cref="MultipeerConnectivity.MCNearbyServiceBrowser" /> used for discovering peers.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[NullAllowed]
@@ -641,18 +641,18 @@ namespace MultipeerConnectivity {
 		[Export ("browser")]
 		MCNearbyServiceBrowser Browser { get; }
 
-		/// <summary>The <see cref="T:MultipeerConnectivity.MCSession" /> being managed.</summary>
+		/// <summary>The <see cref="MultipeerConnectivity.MCSession" /> being managed.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("session")]
 		MCSession Session { get; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:MultipeerConnectivity.MCBrowserViewControllerDelegate" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="MultipeerConnectivity.MCBrowserViewControllerDelegate" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:MultipeerConnectivity.MCBrowserViewControllerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:MultipeerConnectivity.MCBrowserViewControllerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:MultipeerConnectivity.MCBrowserViewControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="MultipeerConnectivity.MCBrowserViewControllerDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="MultipeerConnectivity.MCBrowserViewControllerDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="MultipeerConnectivity.MCBrowserViewControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	interface IMCBrowserViewControllerDelegate { }
 
@@ -673,7 +673,7 @@ namespace MultipeerConnectivity {
 		void WasCancelled (MCBrowserViewController browserViewController);
 
 		/// <param name="browserViewController">To be added.</param>
-		///         <summary>Indicates that the <see cref="T:MultipeerConnectivity.MCBrowserViewController" /> was dismissed with peers connected.
+		///         <summary>Indicates that the <see cref="MultipeerConnectivity.MCBrowserViewController" /> was dismissed with peers connected.
 		///         </summary>
 		///         <remarks>To be added.</remarks>
 		[Abstract]
@@ -698,7 +698,7 @@ namespace MultipeerConnectivity {
 
 	/// <summary>A convenience class that manages the process of advertising for multipeer connectivity and interacting with the application user.</summary>
 	///     <remarks>
-	///       <para>Multipeer connectivity's discovery phase involves two roles: browsing and advertising. When an application makes itself available for connection, it is advertising. Advertising may be controlled by either a <see cref="T:MultipeerConnectivity.MCAdvertiserAssistant" /> or can be fully customized with a <see cref="T:MultipeerConnectivity.MCNearbyServiceAdvertiser" />. For a discussion of the discovery process, see the remarks for <see cref="T:MultipeerConnectivity.MCSession" />.</para>
+	///       <para>Multipeer connectivity's discovery phase involves two roles: browsing and advertising. When an application makes itself available for connection, it is advertising. Advertising may be controlled by either a <see cref="MultipeerConnectivity.MCAdvertiserAssistant" /> or can be fully customized with a <see cref="MultipeerConnectivity.MCNearbyServiceAdvertiser" />. For a discussion of the discovery process, see the remarks for <see cref="MultipeerConnectivity.MCSession" />.</para>
 	///     </remarks>
 	///     
 	///     
@@ -709,12 +709,12 @@ namespace MultipeerConnectivity {
 	interface MCAdvertiserAssistant {
 
 		/// <param name="serviceType">A string between 1 and 15 characters long, identifying the protocol being used.</param>
-		/// <param name="info">A small dictionary to aide discovery (see <see cref="P:MultipeerConnectivity.MCAdvertiserAssistant.DiscoveryInfo" />).<para tool="nullallowed">This parameter can be <see langword="null" />.</para></param>
+		/// <param name="info">A small dictionary to aide discovery (see <see cref="MultipeerConnectivity.MCAdvertiserAssistant.DiscoveryInfo" />).<para tool="nullallowed">This parameter can be <see langword="null" />.</para></param>
 		/// <param name="session">To be added.</param>
 		/// <summary>Creates an object for the specific <paramref name="serviceType" /> and <paramref name="session" />.</summary>
 		/// <remarks>
 		///           <para>The <paramref name="serviceType" /> must be a string, between 1 and 15 characters long, identifying the network protocol being advertised. A common pattern is "{company_name}-{apptype}", e.g., <c>xamarin-txtchat</c>.</para>
-		///           <para>The <paramref name="info" /> dictionary has size and content limitations (see <see cref="P:MultipeerConnectivity.MCAdvertiserAssistant.DiscoveryInfo" />). </para>
+		///           <para>The <paramref name="info" /> dictionary has size and content limitations (see <see cref="MultipeerConnectivity.MCAdvertiserAssistant.DiscoveryInfo" />). </para>
 		///         </remarks>
 		[DesignatedInitializer]
 		[Export ("initWithServiceType:discoveryInfo:session:")]
@@ -725,14 +725,14 @@ namespace MultipeerConnectivity {
 		[Export ("discoveryInfo")]
 		NSDictionary DiscoveryInfo { get; }
 
-		/// <summary>The <see cref="T:MultipeerConnectivity.MCSession" /> into which peers will be placed.</summary>
-		///         <value>Passed in to the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=C:MultipeerConnectivity.MCAdvertiserAssistant(string,Foundation.NSDictionary, MultipeerConnectivity.MCSession)&amp;scope=Xamarin" title="C:MultipeerConnectivity.MCAdvertiserAssistant(string,Foundation.NSDictionary, MultipeerConnectivity.MCSession)">C:MultipeerConnectivity.MCAdvertiserAssistant(string,Foundation.NSDictionary, MultipeerConnectivity.MCSession)</a></format> constructor.</value>
+		/// <summary>The <see cref="MultipeerConnectivity.MCSession" /> into which peers will be placed.</summary>
+		///         <value>Passed in to the <see cref="MultipeerConnectivity.MCAdvertiserAssistant(string,Foundation.NSDictionary, MultipeerConnectivity.MCSession)" /> constructor.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("session")]
 		MCSession Session { get; }
 
 		/// <summary>A string, between 1 and 15 characters long, identifying the network protocol being advertised.</summary>
-		///         <value>Passed in to the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=C:MultipeerConnectivity.MCAdvertiserAssistant(string,Foundation.NSDictionary, MultipeerConnectivity.MCSession)&amp;scope=Xamarin" title="C:MultipeerConnectivity.MCAdvertiserAssistant(string,Foundation.NSDictionary, MultipeerConnectivity.MCSession)">C:MultipeerConnectivity.MCAdvertiserAssistant(string,Foundation.NSDictionary, MultipeerConnectivity.MCSession)</a></format> constructor.</value>
+		///         <value>Passed in to the <see cref="MultipeerConnectivity.MCAdvertiserAssistant(string,Foundation.NSDictionary, MultipeerConnectivity.MCSession)" /> constructor.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("serviceType")]
 		string ServiceType { get; }
@@ -768,15 +768,15 @@ namespace MultipeerConnectivity {
 		void Stop ();
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:MultipeerConnectivity.MCAdvertiserAssistantDelegate" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="MultipeerConnectivity.MCAdvertiserAssistantDelegate" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:MultipeerConnectivity.MCAdvertiserAssistantDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:MultipeerConnectivity.MCAdvertiserAssistantDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:MultipeerConnectivity.MCAdvertiserAssistantDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="MultipeerConnectivity.MCAdvertiserAssistantDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="MultipeerConnectivity.MCAdvertiserAssistantDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="MultipeerConnectivity.MCAdvertiserAssistantDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	interface IMCAdvertiserAssistantDelegate { }
 
-	/// <summary>A delegate object that provides events for the presentation or dismissal of an invitation by a <see cref="T:MultipeerConnectivity.MCAdvertiserAssistant" />.</summary>
+	/// <summary>A delegate object that provides events for the presentation or dismissal of an invitation by a <see cref="MultipeerConnectivity.MCAdvertiserAssistant" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MultipeerConnectivity/Reference/MCAdvertiserAssistantDelegate_class/index.html">Apple documentation for <c>MCAdvertiserAssistantDelegate</c></related>
 	[MacCatalyst (13, 1)]

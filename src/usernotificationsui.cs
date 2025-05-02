@@ -49,7 +49,7 @@ namespace UserNotificationsUI {
 
 	interface IUNNotificationContentExtension { }
 
-	/// <summary>Interface that contains the mandatory methods, if any, for the <see cref="T:UserNotifications.UNNotificationContent" /> protocol, which is required for displaying notification content from a view controller's view with custom UI.</summary>
+	/// <summary>Interface that contains the mandatory methods, if any, for the <see cref="UserNotifications.UNNotificationContent" /> protocol, which is required for displaying notification content from a view controller's view with custom UI.</summary>
 	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[Unavailable (PlatformName.TvOS)]
 	[Protocol]

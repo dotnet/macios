@@ -17,7 +17,7 @@
 	    take care of that in your handler.
 	  </para>
           <para>
-	    Use the returned value as a token to <see cref="M:CoreFoundation.CFNotificationCenter.RemoveObserver(CoreFoundation.CFNotificationObserverToken)" /> if you want to stop getting notifications.
+	    Use the returned value as a token to <see cref="CoreFoundation.CFNotificationCenter.RemoveObserver(CoreFoundation.CFNotificationObserverToken)" /> if you want to stop getting notifications.
 	  </para>
         </remarks>
       </Docs>

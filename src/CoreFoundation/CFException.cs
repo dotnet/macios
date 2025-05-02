@@ -36,7 +36,7 @@ using ObjCRuntime;
 using System.Runtime.Versioning;
 
 namespace CoreFoundation {
-	/// <summary>A class whose static fields define error domains for <see cref="P:CoreFoundation.CFException.Domain" />.</summary>
+	/// <summary>A class whose static fields define error domains for <see cref="CoreFoundation.CFException.Domain" />.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -167,7 +167,7 @@ namespace CoreFoundation {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		///         <altmember cref="T:CoreFoundation.CFErrorDomain" />
+		///         <altmember cref="CoreFoundation.CFErrorDomain" />
 		public NSString? Domain { get; private set; }
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>

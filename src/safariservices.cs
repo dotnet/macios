@@ -41,7 +41,7 @@ namespace SafariServices {
 
 	/// <summary>Represents the enabled state of a content blocker extension.</summary>
 	///     <remarks>
-	///       <para>This class has one read-only property, <see cref="P:SafariServices.SFContentBlockerState.Enabled" />, which tells whether or not the associated content blocker extension is enabled.</para>
+	///       <para>This class has one read-only property, <see cref="SafariServices.SFContentBlockerState.Enabled" />, which tells whether or not the associated content blocker extension is enabled.</para>
 	///     </remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/SafariServices/SFContentBlockerState">Apple documentation for <c>SFContentBlockerState</c></related>
 	[Introduced (PlatformName.MacCatalyst, 13, 4)]
@@ -271,11 +271,11 @@ namespace SafariServices {
 		SFSafariViewControllerPrewarmingToken PrewarmConnections (NSUrl [] urls);
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:SafariServices.SFSafariViewControllerDelegate" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="SafariServices.SFSafariViewControllerDelegate" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:SafariServices.SFSafariViewControllerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:SafariServices.SFSafariViewControllerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:SafariServices.SFSafariViewControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="SafariServices.SFSafariViewControllerDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="SafariServices.SFSafariViewControllerDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="SafariServices.SFSafariViewControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	interface ISFSafariViewControllerDelegate { }
 
@@ -371,7 +371,7 @@ namespace SafariServices {
 	/// <param name="callbackUrl">A custom URL scheme.</param>
 	///     <param name="error">The error object if an error occurred.</param>
 	///     
-	///     <summary>Delegate for handling the result of a user action in a <see cref="T:SafariServices.SFAuthenticationSession" />.</summary>
+	///     <summary>Delegate for handling the result of a user action in a <see cref="SafariServices.SFAuthenticationSession" />.</summary>
 	[NoMac]
 	[MacCatalyst (13, 1)]
 	delegate void SFAuthenticationCompletionHandler ([NullAllowed] NSUrl callbackUrl, [NullAllowed] NSError error);

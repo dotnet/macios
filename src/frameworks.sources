@@ -1418,43 +1418,6 @@ OPENGL_CORE_SOURCES = \
 	OpenGL/CGLContext.cs \
 	OpenGL/CGLEnums.cs \
 	OpenGL/CGLPixelFormat.cs \
-	OpenGL/OpenTK/Math/MathHelper.cs \
-	OpenGL/OpenTK/Math/Matrix2.cs \
-	OpenGL/OpenTK/Math/Matrix3.cs \
-	OpenGL/OpenTK/Math/Matrix3d.cs \
-	OpenGL/OpenTK/Math/Matrix4.cs \
-	OpenGL/OpenTK/Math/Matrix4d.cs \
-	OpenGL/OpenTK/Math/Quaternion.cs \
-	OpenGL/OpenTK/Math/Quaterniond.cs \
-	OpenGL/OpenTK/Math/Vector2.cs \
-	OpenGL/OpenTK/Math/Vector2d.cs \
-	OpenGL/OpenTK/Math/Vector3.cs \
-	OpenGL/OpenTK/Math/Vector3d.cs \
-	OpenGL/OpenTK/Math/Vector4.cs \
-	OpenGL/OpenTK/Math/Vector4d.cs \
-
-OPENGL_SOURCES = \
-	OpenGL/FrameEventArgs.cs \
-	OpenGL/IGameWindow.cs \
-	OpenGL/INativeWindow.cs \
-	OpenGL/MonoMacGameView.cs \
-	OpenGL/OpenTK/Audio/BlittableValueType.cs \
-	OpenGL/OpenTK/Audio/ContextHandle.cs \
-	OpenGL/OpenTK/Audio/OpenAL/AL/AL.cs \
-	OpenGL/OpenTK/Audio/OpenAL/AL/ALEnums.cs \
-	OpenGL/OpenTK/Audio/OpenAL/Alc/Alc.cs \
-	OpenGL/OpenTK/Audio/OpenAL/Alc/AlcEnums.cs \
-	OpenGL/OpenTK/Graphics/Color4.cs \
-	OpenGL/OpenTK/Graphics/OpenGL/GL.cs \
-	OpenGL/OpenTK/Graphics/OpenGL/GLCore.cs \
-	OpenGL/OpenTK/Graphics/OpenGL/GLEnums.cs \
-	OpenGL/OpenTK/Graphics/OpenGL/GLHelper.cs \
-	OpenGL/OpenTK/Math/Half.cs \
-	OpenGL/OpenTK/Math/Vector2h.cs \
-	OpenGL/OpenTK/Math/Vector3h.cs \
-	OpenGL/OpenTK/Math/Vector4h.cs \
-	OpenGL/WindowBorder.cs \
-	OpenGL/WindowState.cs \
 
 # OpenGLES
 

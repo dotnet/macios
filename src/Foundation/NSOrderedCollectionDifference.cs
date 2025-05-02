@@ -8,7 +8,7 @@ using System.Runtime.Versioning;
 using ObjCRuntime;
 
 namespace Foundation {
-#if false // https://github.com/xamarin/xamarin-macios/issues/15577
+#if false // https://github.com/dotnet/macios/issues/15577
 	public delegate NSOrderedCollectionDifference<NSObject>? NSOrderedCollectionDifferenceGetDifferenceHandler (NSOrderedCollectionChange<NSObject>? collectionChange);
 
 #if !NET

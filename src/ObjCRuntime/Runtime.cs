@@ -437,7 +437,7 @@ namespace ObjCRuntime {
 			var smart_type = value.GetType ();
 			MethodBase getConstantMethod, getValueMethod;
 			if (!Registrar.IsSmartEnum (smart_type, out getConstantMethod, out getValueMethod))
-				throw ErrorHelper.CreateError (8024, $"Could not find a valid extension type for the smart enum '{smart_type.FullName}'. Please file a bug at https://github.com/xamarin/xamarin-macios/issues/new.");
+				throw ErrorHelper.CreateError (8024, $"Could not find a valid extension type for the smart enum '{smart_type.FullName}'. Please file a bug at https://github.com/dotnet/macios/issues/new.");
 			var rv = (NSString?) ((MethodInfo) getConstantMethod).Invoke (null, new object [] { value });
 			if (rv is null)
 				return IntPtr.Zero;
@@ -456,7 +456,7 @@ namespace ObjCRuntime {
 			var str = GetNSObject<NSString> (value)!;
 			MethodBase getConstantMethod, getValueMethod;
 			if (!Registrar.IsSmartEnum (smart_type, out getConstantMethod, out getValueMethod))
-				throw ErrorHelper.CreateError (8024, $"Could not find a valid extension type for the smart enum '{smart_type.FullName}'. Please file a bug at https://github.com/xamarin/xamarin-macios/issues/new.");
+				throw ErrorHelper.CreateError (8024, $"Could not find a valid extension type for the smart enum '{smart_type.FullName}'. Please file a bug at https://github.com/dotnet/macios/issues/new.");
 			var rv = ((MethodInfo) getValueMethod).Invoke (null, new object [] { str });
 			return AllocGCHandle (rv);
 		}

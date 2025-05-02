@@ -1510,7 +1510,7 @@ namespace Foundation {
 	// There's an AppKit.NSWritingDirection, which is deprecated.
 	// There's also an UIKit.UITextWritingDirection, which is deprecated too.
 	// This is the enum we should be using.
-	// See https://github.com/xamarin/xamarin-macios/issues/6573
+	// See https://github.com/dotnet/macios/issues/6573
 	/// <summary>An enumeration of valid writing directions.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]

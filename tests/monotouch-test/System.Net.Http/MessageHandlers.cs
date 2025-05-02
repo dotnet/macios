@@ -590,7 +590,7 @@ namespace MonoTests.System.Net.Http {
 		}
 
 #if NET
-		[Ignore ("https://github.com/xamarin/xamarin-macios/issues/21912")]
+		[Ignore ("https://github.com/dotnet/macios/issues/21912")]
 		[TestCase ("https://self-signed.badssl.com/")]
 		[TestCase ("https://wrong.host.badssl.com/")]
 		public void AcceptSslCertificatesWithCustomValidationCallbackNSUrlSessionHandler (string url)
@@ -881,7 +881,7 @@ namespace MonoTests.System.Net.Http {
 		[TestCase (typeof (SocketsHttpHandler))]
 		public void UpdateRequestUriAfterRedirect (Type handlerType)
 		{
-			// https://github.com/xamarin/xamarin-macios/issues/20629
+			// https://github.com/dotnet/macios/issues/20629
 
 			var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
 				var client = new HttpClient (GetHandler (handlerType));
@@ -906,7 +906,7 @@ namespace MonoTests.System.Net.Http {
 		[TestCase (typeof (SocketsHttpHandler))]
 		public void RequestUriNotUpdatedIfNotRedirect (Type handlerType)
 		{
-			// https://github.com/xamarin/xamarin-macios/issues/20629
+			// https://github.com/dotnet/macios/issues/20629
 
 			var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
 				var client = new HttpClient (GetHandler (handlerType));

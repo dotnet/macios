@@ -18,7 +18,7 @@ using System.Runtime.Versioning;
 using ObjCRuntime;
 
 namespace Foundation {
-#if false // https://github.com/xamarin/xamarin-macios/issues/15577
+#if false // https://github.com/dotnet/macios/issues/15577
 	public delegate bool NSOrderedCollectionDifferenceEquivalenceTest<TValue> (TValue? first, TValue? second);
 	internal delegate bool NSOrderedCollectionDifferenceEquivalenceTestProxy (IntPtr blockLiteral, /* NSObject */ IntPtr first, /* NSObject */ IntPtr second);
 #endif
@@ -127,7 +127,7 @@ namespace Foundation {
 			return base.ToArray<TKey> ();
 		}
 
-#if false // https://github.com/xamarin/xamarin-macios/issues/15577
+#if false // https://github.com/dotnet/macios/issues/15577
 
 		[SupportedOSPlatform ("ios13.0"), SupportedOSPlatform ("tvos13.0"), SupportedOSPlatform ("macos")]
 		public NSOrderedCollectionDifference<TKey>? GetDifference (TKey[] other, NSOrderedCollectionDifferenceCalculationOptions options)

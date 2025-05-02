@@ -304,7 +304,7 @@ namespace Foundation {
 			return copy;
 		}
 
-#if false // https://github.com/xamarin/xamarin-macios/issues/15577
+#if false // https://github.com/dotnet/macios/issues/15577
 #if !NET
 		[TV (13,0), iOS (13,0)]
 #else

@@ -2072,7 +2072,7 @@ namespace UIKit {
 #if !NET
 	// NSInteger -> UITextInput.h
 	// Use Foundation.NSWritingDirection in .NET.
-	// see: https://github.com/xamarin/xamarin-macios/issues/6573
+	// see: https://github.com/dotnet/macios/issues/6573
 	[Native]
 	public enum UITextWritingDirection : long {
 		Natural = -1,

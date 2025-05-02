@@ -2042,7 +2042,7 @@ namespace VideoToolbox {
 		NSString IncludeStandardDefinitionDVEncoders { get; }
 
 		// VTVideoEncoder.cs should be updated when new constants are added here
-		// some are missing https://github.com/xamarin/xamarin-macios/issues/9904
+		// some are missing https://github.com/dotnet/macios/issues/9904
 	}
 
 	// VTMultiPassStorage.h

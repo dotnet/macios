@@ -5956,7 +5956,7 @@ namespace WebKit {
 		/// <param name="completionHandler">To be added.</param>
 		/// <summary>Shows a JavaScript text input box to the user.</summary>
 		/// <remarks>To be added.</remarks>
-		[Obsolete ("It's not possible to call the completion handler with a null value using this method. Please see https://github.com/xamarin/xamarin-macios/issues/15728 for a workaround.")]
+		[Obsolete ("It's not possible to call the completion handler with a null value using this method. Please see https://github.com/dotnet/macios/issues/15728 for a workaround.")]
 		[Export ("webView:runJavaScriptTextInputPanelWithPrompt:defaultText:initiatedByFrame:completionHandler:")]
 		void RunJavaScriptTextInputPanel (WKWebView webView, string prompt, [NullAllowed] string defaultText,
 			WKFrameInfo frame, Action<string> completionHandler);

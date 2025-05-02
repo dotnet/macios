@@ -181,7 +181,7 @@
 !missing-selector! UICollectionViewDiffableDataSourceSectionSnapshotHandlers::willCollapseItemHandler not bound
 !missing-selector! UICollectionViewDiffableDataSourceSectionSnapshotHandlers::willExpandItemHandler not bound
 
-# no bound due to issues with foundation https://github.com/xamarin/xamarin-macios/issues/15577
+# no bound due to issues with foundation https://github.com/dotnet/macios/issues/15577
 !missing-selector! NSDiffableDataSourceSectionTransaction::difference not bound
 !missing-selector! NSDiffableDataSourceTransaction::difference not bound
 

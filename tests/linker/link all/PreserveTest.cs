@@ -79,7 +79,7 @@ namespace LinkAll.Attributes {
 		[Test]
 		public void Runtime_RegisterEntryAssembly ()
 		{
-			TestRuntime.AssertSimulator ("https://github.com/xamarin/xamarin-macios/issues/10457");
+			TestRuntime.AssertSimulator ("https://github.com/dotnet/macios/issues/10457");
 
 			var klass = Type.GetType ("ObjCRuntime.Runtime, " + AssemblyName);
 			Assert.NotNull (klass, "Runtime");

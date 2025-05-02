@@ -31,4 +31,4 @@ so the following properties will be set with the same value:
 Ref: [Issue #10473][2]
 
 [1]: https://github.com/xamarin/xamarin-android/blob/40cedfa89c2660479fcb5e2482d2463fbcad1d04/Documentation/guides/OneDotNetSingleProject.md
-[2]: https://github.com/xamarin/xamarin-macios/issues/10473
+[2]: https://github.com/dotnet/macios/issues/10473

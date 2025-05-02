@@ -2618,7 +2618,7 @@ namespace SceneKit {
 		// We took the decision to comment the following helpers since they currently do not bring
 		// any benefits over the SCN* versions, actually the SIMD types could potentially be just
 		// a little slower than the SCN* versions due to manual native conversion. If you really
-		// need them please file a bug at https://github.com/xamarin/xamarin-macios/issues/new
+		// need them please file a bug at https://github.com/dotnet/macios/issues/new
 
 		// Please add the following code to runtime/bindings-generator.cs if you reenable the following SIMD methods.
 
@@ -3925,7 +3925,7 @@ namespace SceneKit {
 		[Abstract]
 		// It seems swift has this property listed as an optional[0] and an Apple sample[1] sets this to null
 		// [0]: https://developer.apple.com/documentation/scenekit/scnscenerenderer/1524051-overlayskscene
-		// [1]: https://github.com/xamarin/xamarin-macios/issues/3392
+		// [1]: https://github.com/dotnet/macios/issues/3392
 		[NullAllowed]
 		[MacCatalyst (13, 1)]
 		[Export ("overlaySKScene", ArgumentSemantic.Retain)]

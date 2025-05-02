@@ -102,7 +102,7 @@ CSC_WARNINGS_TO_FIX:=$(CSC_WARNINGS_TO_FIX),1591
 # warning CS8981: The type name 'nfloat' only contains lower-cased ascii characters. Such names may become reserved for the language.
 CSC_WARNINGS_TO_FIX:=$(CSC_WARNINGS_TO_FIX),CS8981
 
-# availability warnings, need to fix https://github.com/xamarin/xamarin-macios/pull/21185 to stop ignoring this.
+# availability warnings, need to fix https://github.com/dotnet/macios/pull/21185 to stop ignoring this.
 CSC_WARNINGS_TO_FIX:=$(CSC_WARNINGS_TO_FIX),CA1416,CA1422
 
 WARNINGS_TO_FIX = -nowarn:$(CSC_WARNINGS_TO_FIX)

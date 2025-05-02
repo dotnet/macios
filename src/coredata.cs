@@ -1399,7 +1399,7 @@ namespace CoreData {
 	// 	NSInvalidArgumentException *** -loadMetadata: cannot be sent to an abstract object of class NSIncrementalStore: Create a concrete instance!
 	//	Apple doc quote: "NSIncrementalStore is an abstract superclass..."
 #if NET
-	// Making a class abstract has problems: https://github.com/xamarin/xamarin-macios/issues/4969, so we're not doing this yet
+	// Making a class abstract has problems: https://github.com/dotnet/macios/issues/4969, so we're not doing this yet
 	// [Abstract] // Abstract superclass.
 #endif
 	/// <summary>Supports the use of persistent stores that are loaded and saved incrementally, allowing for larger and shared datasets.</summary>

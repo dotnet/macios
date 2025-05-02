@@ -13,13 +13,13 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="default" xml:space="preserve">
-		<value>Nie można odnaleźć komunikatu o błędzie dla kodu {0}. Zgłoś brak tego komunikatu w witrynie GitHub pod adresem https://github.com/xamarin/xamarin-macios/issues/new</value>
+		<value>Nie można odnaleźć komunikatu o błędzie dla kodu {0}. Zgłoś brak tego komunikatu w witrynie GitHub pod adresem https://github.com/dotnet/macios/issues/new</value>
 		<comment>
 			This is the default message when an error code can not be found.
 		</comment>
 	</data>
   <data name="MT0000" xml:space="preserve">
-		<value>Nieoczekiwany błąd. Wypełnij raport o usterce na stronie https://github.com/xamarin/xamarin-macios/issues/new
+		<value>Nieoczekiwany błąd. Wypełnij raport o usterce na stronie https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT0001" xml:space="preserve">
@@ -299,7 +299,7 @@
 		</value>
 	</data>
   <data name="MX0071" xml:space="preserve">
-		<value>Nieznana platforma: {0}. Wskazuje to zazwyczaj na usterkę w elemencie {1}. Zarejestruj raport o usterce z przypadkiem testowym w witrynie https://github.com/xamarin/xamarin-macios/issues/new.
+		<value>Nieznana platforma: {0}. Wskazuje to zazwyczaj na usterkę w elemencie {1}. Zarejestruj raport o usterce z przypadkiem testowym w witrynie https://github.com/dotnet/macios/issues/new.
 		</value>
 	</data>
   <data name="MT0072" xml:space="preserve">
@@ -425,11 +425,11 @@
 	</data>
   <!-- MM0098 has been used in the past -->
   <data name="MX0099" xml:space="preserve">
-		<value>Błąd wewnętrzny: {0}. Zarejestruj raport o usterce w witrynie https://github.com/xamarin/xamarin-macios/issues/new.
+		<value>Błąd wewnętrzny: {0}. Zarejestruj raport o usterce w witrynie https://github.com/dotnet/macios/issues/new.
 		</value>
 	</data>
   <data name="MT0100" xml:space="preserve">
-		<value>Nieprawidłowa platforma docelowa kompilacji zestawu: „{0}”. Zgłoś raport o usterce z przypadkiem testowym (https://github.com/xamarin/xamarin-macios/issues/new).
+		<value>Nieprawidłowa platforma docelowa kompilacji zestawu: „{0}”. Zgłoś raport o usterce z przypadkiem testowym (https://github.com/dotnet/macios/issues/new).
 		</value>
 	</data>
   <data name="MT0101" xml:space="preserve">
@@ -679,27 +679,27 @@
 		</value>
 	</data>
   <data name="MT0157" xml:space="preserve">
-		<value>Błąd wewnętrzny: nie można przekonwertować „{0}” na „{1}” w elemencie {2}. Zgłoś raport o usterce z przypadkiem testowym (https://github.com/xamarin/xamarin-macios/issues/new).
+		<value>Błąd wewnętrzny: nie można przekonwertować „{0}” na „{1}” w elemencie {2}. Zgłoś raport o usterce z przypadkiem testowym (https://github.com/dotnet/macios/issues/new).
 		</value>
 	</data>
   <data name="MT0158" xml:space="preserve">
-		<value>Błąd wewnętrzny: inteligentny element enum {0} po wszystkim nie wydaje się być inteligentnym elementem enum. Zgłoś raport o usterce z przypadkiem testowym (https://github.com/xamarin/xamarin-macios/issues/new).
+		<value>Błąd wewnętrzny: inteligentny element enum {0} po wszystkim nie wydaje się być inteligentnym elementem enum. Zgłoś raport o usterce z przypadkiem testowym (https://github.com/dotnet/macios/issues/new).
 		</value>
 	</data>
   <data name="MT0159" xml:space="preserve">
-		<value>Błąd wewnętrzny: nieobsługiwana wartość właściwości tokentype ({0}) dla elementu {1}. Zgłoś raport o usterce z przypadkiem testowym (https://github.com/xamarin/xamarin-macios/issues/new).
+		<value>Błąd wewnętrzny: nieobsługiwana wartość właściwości tokentype ({0}) dla elementu {1}. Zgłoś raport o usterce z przypadkiem testowym (https://github.com/dotnet/macios/issues/new).
 		</value>
 	</data>
   <data name="MT0160" xml:space="preserve">
-		<value>Błąd wewnętrzny: rejestrator statyczny nie powinien być wykonywany, jeśli konsolidator nie zostanie wykonany (lub został wyłączony). Potencjalnym obejściem jest przekazanie argumentu „-f” jako dodatkowego argumentu {0} w celu wymuszenia pełnej kompilacji. Zgłoś raport o usterce z przypadkiem testowym (https://github.com/xamarin/xamarin-macios/issues/new).
+		<value>Błąd wewnętrzny: rejestrator statyczny nie powinien być wykonywany, jeśli konsolidator nie zostanie wykonany (lub został wyłączony). Potencjalnym obejściem jest przekazanie argumentu „-f” jako dodatkowego argumentu {0} w celu wymuszenia pełnej kompilacji. Zgłoś raport o usterce z przypadkiem testowym (https://github.com/dotnet/macios/issues/new).
 		</value>
 	</data>
   <data name="MT0161" xml:space="preserve">
-		<value>Błąd wewnętrzny: symbol bez nazwy (typ: {0}). Zgłoś raport o usterce z przypadkiem testowym (https://github.com/xamarin/xamarin-macios/issues/new).
+		<value>Błąd wewnętrzny: symbol bez nazwy (typ: {0}). Zgłoś raport o usterce z przypadkiem testowym (https://github.com/dotnet/macios/issues/new).
 		</value>
 	</data>
   <data name="MT0168" xml:space="preserve">
-		<value>Błąd wewnętrzny: „nie można przekonwertować struktur na struktury: {0}”. Zgłoś raport o usterce z przypadkiem testowym (https://github.com/xamarin/xamarin-macios/issues/new).
+		<value>Błąd wewnętrzny: „nie można przekonwertować struktur na struktury: {0}”. Zgłoś raport o usterce z przypadkiem testowym (https://github.com/dotnet/macios/issues/new).
 		</value>
 	</data>
   <data name="MT0174_a" xml:space="preserve">
@@ -723,7 +723,7 @@
         </value>
     </data>
   <data name="MX0177" xml:space="preserve">
-		<value>Nieznana platforma: {0}. Wskazuje to zazwyczaj na usterkę. Zarejestruj raport o usterce z przypadkiem testowym pod adresem https://github.com/xamarin/xamarin-macios/issues/new.</value>
+		<value>Nieznana platforma: {0}. Wskazuje to zazwyczaj na usterkę. Zarejestruj raport o usterce z przypadkiem testowym pod adresem https://github.com/dotnet/macios/issues/new.</value>
 	</data>
   <data name="MX0178" xml:space="preserve">
         <value>Debugowanie pliku symboli w przypadku elementu "{0}" jest nieprawidłowe i został zignorowane.
@@ -762,7 +762,7 @@
 		</value>
 	</data>
   <data name="MT1013" xml:space="preserve">
-		<value>Błąd śledzenia zależności: brak plików do porównania. Zarejestruj raport o usterce na stronie https://github.com/xamarin/xamarin-macios/issues/new z przypadkiem testowym.
+		<value>Błąd śledzenia zależności: brak plików do porównania. Zarejestruj raport o usterce na stronie https://github.com/dotnet/macios/issues/new z przypadkiem testowym.
 		</value>
 	</data>
   <data name="MT1014" xml:space="preserve">
@@ -1157,7 +1157,7 @@
 		</value>
 	</data>
   <data name="MT4002" xml:space="preserve">
-		<value>Nie można skompilować wygenerowanego kodu dla metod P/Invoke. Zgłoś raport o usterce na stronie https://github.com/xamarin/xamarin-macios/issues/new
+		<value>Nie można skompilować wygenerowanego kodu dla metod P/Invoke. Zgłoś raport o usterce na stronie https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT4101" xml:space="preserve">
@@ -1189,7 +1189,7 @@
 		</value>
 	</data>
   <data name="MT4109" xml:space="preserve">
-		<value>Nie można skompilować wygenerowanego kodu rejestratora. Zgłoś raport o usterce na stronie https://github.com/xamarin/xamarin-macios/issues/new
+		<value>Nie można skompilować wygenerowanego kodu rejestratora. Zgłoś raport o usterce na stronie https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT4110" xml:space="preserve">
@@ -1205,7 +1205,7 @@
 		</value>
 	</data>
   <data name="MT4114" xml:space="preserve">
-		<value>Nieoczekiwany błąd w rejestratorze dla metody „{0}.{1}” — zgłoś raport o usterce na stronie https://github.com/xamarin/xamarin-macios/issues/new
+		<value>Nieoczekiwany błąd w rejestratorze dla metody „{0}.{1}” — zgłoś raport o usterce na stronie https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT4116" xml:space="preserve">
@@ -1225,7 +1225,7 @@
 		</value>
 	</data>
   <data name="MT4120" xml:space="preserve">
-		<value>Rejestrator znalazł nieznany typ pola „{0}” w polu „{1}.{2}”. Zgłoś raport o usterce na stronie https://github.com/xamarin/xamarin-macios/issues/new
+		<value>Rejestrator znalazł nieznany typ pola „{0}” w polu „{1}.{2}”. Zgłoś raport o usterce na stronie https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT4121" xml:space="preserve">
@@ -1237,35 +1237,35 @@
 		</value>
 	</data>
   <data name="MT4124" xml:space="preserve">
-		<value>W elemencie „{1}” znaleziono nieprawidłowy element {0}. Zgłoś raport o usterce na stronie https://github.com/xamarin/xamarin-macios/issues/new
+		<value>W elemencie „{1}” znaleziono nieprawidłowy element {0}. Zgłoś raport o usterce na stronie https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT4124_A" xml:space="preserve">
-		<value>Odnaleziono nieprawidłową właściwość RegisterAttribute {1} w elemencie „{0}”. Zarejestruj raport o usterce w witrynie https://github.com/xamarin/xamarin-macios/issues/new
+		<value>Odnaleziono nieprawidłową właściwość RegisterAttribute {1} w elemencie „{0}”. Zarejestruj raport o usterce w witrynie https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT4124_B" xml:space="preserve">
-		<value>Odnaleziono nieprawidłowy atrybut AdoptsAttribute w elemencie „{0}”: oczekiwano 1 argumentu konstruktora, otrzymano {1}. Zarejestruj raport o usterce w witrynie https://github.com/xamarin/xamarin-macios/issues/new
+		<value>Odnaleziono nieprawidłowy atrybut AdoptsAttribute w elemencie „{0}”: oczekiwano 1 argumentu konstruktora, otrzymano {1}. Zarejestruj raport o usterce w witrynie https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT4124_C" xml:space="preserve">
-		<value>Odnaleziono nieprawidłowy atrybut BindAsAttribute w elemencie „{0}.{1}”: nieznane pole {2}. Zarejestruj raport o usterce w witrynie https://github.com/xamarin/xamarin-macios/issues/new
+		<value>Odnaleziono nieprawidłowy atrybut BindAsAttribute w elemencie „{0}.{1}”: nieznane pole {2}. Zarejestruj raport o usterce w witrynie https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT4124_D" xml:space="preserve">
-		<value>Znaleziono nieprawidłowy element {0} w metodzie „{1}.{2}”. Zarejestruj raport o usterce w witrynie https://github.com/xamarin/xamarin-macios/issues/new
+		<value>Znaleziono nieprawidłowy element {0} w metodzie „{1}.{2}”. Zarejestruj raport o usterce w witrynie https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT4124_E" xml:space="preserve">
-		<value>Odnaleziono nieprawidłowy atrybut BindAsAttribute w elemencie „{0}”: powinien istnieć 1 argument konstruktora, odnaleziono {1}. Zarejestruj raport o usterce w witrynie https://github.com/xamarin/xamarin-macios/issues/new
+		<value>Odnaleziono nieprawidłowy atrybut BindAsAttribute w elemencie „{0}”: powinien istnieć 1 argument konstruktora, odnaleziono {1}. Zarejestruj raport o usterce w witrynie https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT4124_H" xml:space="preserve">
-		<value>Odnaleziono nieprawidłowy atrybut BindAsAttribute w elemencie „{0}”: nie można odnaleźć podstawowego typu wyliczeniowego {1}. Zarejestruj raport o usterce w witrynie https://github.com/xamarin/xamarin-macios/issues/new
+		<value>Odnaleziono nieprawidłowy atrybut BindAsAttribute w elemencie „{0}”: nie można odnaleźć podstawowego typu wyliczeniowego {1}. Zarejestruj raport o usterce w witrynie https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT4124_I" xml:space="preserve">
-		<value>W elemencie „{1}” znaleziono nieprawidłowy element {0}. Zgłoś raport o usterce na stronie https://github.com/xamarin/xamarin-macios/issues/new</value>
+		<value>W elemencie „{1}” znaleziono nieprawidłowy element {0}. Zgłoś raport o usterce na stronie https://github.com/dotnet/macios/issues/new</value>
 	</data>
   <data name="MT4125" xml:space="preserve">
 		<value>Rejestrator odnalazł nieprawidłowy typ „{0}” w sygnaturze dla metody „{1}”: interfejs musi mieć atrybut protokołu określający jego typ otoki.
@@ -1347,7 +1347,7 @@
 		</value>
 	</data>
   <data name="MT4147" xml:space="preserve">
-		<value>W elemencie „{1}” znaleziono nieprawidłowy element {0}. Zgłoś raport o usterce na stronie https://github.com/xamarin/xamarin-macios/issues/new
+		<value>W elemencie „{1}” znaleziono nieprawidłowy element {0}. Zgłoś raport o usterce na stronie https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT4148" xml:space="preserve">
@@ -1456,15 +1456,15 @@
 		</comment>
 	</data>
   <data name="MT4163" xml:space="preserve">
-		<value>Wewnętrzny błąd rejestratora (element {0} z następującą liczbą argumentów: {1}). Zarejestruj raport o usterce w witrynie https://github.com/xamarin/xamarin-macios/issues/new.
+		<value>Wewnętrzny błąd rejestratora (element {0} z następującą liczbą argumentów: {1}). Zarejestruj raport o usterce w witrynie https://github.com/dotnet/macios/issues/new.
 		</value>
 	</data>
   <data name="MT4163_A" xml:space="preserve">
-		<value>Wewnętrzny błąd spójności rejestratora (nieznany rodzaj dostępności: {0}). Zarejestruj raport o usterce w witrynie https://github.com/xamarin/xamarin-macios/issues/new.
+		<value>Wewnętrzny błąd spójności rejestratora (nieznany rodzaj dostępności: {0}). Zarejestruj raport o usterce w witrynie https://github.com/dotnet/macios/issues/new.
 		</value>
 	</data>
   <data name="MT4163_B" xml:space="preserve">
-		<value>Błąd wewnętrzny rejestratora (parametry BindAs nie mogą być parametrami ref/out: {0}). Zgłoś raport o usterce na stronie https://github.com/xamarin/xamarin-macios/issues/new
+		<value>Błąd wewnętrzny rejestratora (parametry BindAs nie mogą być parametrami ref/out: {0}). Zgłoś raport o usterce na stronie https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT4164" xml:space="preserve">
@@ -1544,7 +1544,7 @@
 		</value>
 	</data>
   <data name="MT4184" xml:space="preserve">
-		<value>Błąd wewnętrzny rejestratora (parametry BindAs nie mogą być parametrami ref/out: {0}). Zgłoś raport o usterce na stronie https://github.com/xamarin/xamarin-macios/issues/new
+		<value>Błąd wewnętrzny rejestratora (parametry BindAs nie mogą być parametrami ref/out: {0}). Zgłoś raport o usterce na stronie https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT4185" xml:space="preserve">
@@ -1572,15 +1572,15 @@
 		</value>
 	</data>
   <data name="MM5103" xml:space="preserve">
-		<value>Kompilacja nie powiodła się. Kod błędu — {0}. Zgłoś raport o usterce na stronie https://github.com/xamarin/xamarin-macios/issues/new
+		<value>Kompilacja nie powiodła się. Kod błędu — {0}. Zgłoś raport o usterce na stronie https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT5103_A" xml:space="preserve">
-		<value>Nie można skompilować plików „{0}”. Zgłoś usterkę w witrynie https://github.com/xamarin/xamarin-macios/issues/new
+		<value>Nie można skompilować plików „{0}”. Zgłoś usterkę w witrynie https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT5106" xml:space="preserve">
-		<value>Nie można skompilować plików: {0}. Zarejestruj raport o usterce w witrynie https://github.com/xamarin/xamarin-macios/issues/new
+		<value>Nie można skompilować plików: {0}. Zarejestruj raport o usterce w witrynie https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT5107" xml:space="preserve">
@@ -1652,7 +1652,7 @@
 		</value>
 	</data>
   <data name="MT5216" xml:space="preserve">
-		<value>Nie można połączyć natywnie dla elementu „{0}”. Zarejestruj raport o usterce w witrynie https://github.com/xamarin/xamarin-macios/issues/new
+		<value>Nie można połączyć natywnie dla elementu „{0}”. Zarejestruj raport o usterce w witrynie https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT5217" xml:space="preserve">
@@ -1676,7 +1676,7 @@
 		</value>
 	</data>
   <data name="MX5222" xml:space="preserve">
-		<value>Nie można wykonać natywnego konsolidatora: {0}. Zarejestruj raport o usterce pod adresem https://github.com/xamarin/xamarin-macios/issues/new
+		<value>Nie można wykonać natywnego konsolidatora: {0}. Zarejestruj raport o usterce pod adresem https://github.com/dotnet/macios/issues/new
  		</value>
 	</data>
   <data name="MX5223" xml:space="preserve">
@@ -1752,7 +1752,7 @@
 	</data>
   <!-- 8XXX are for errors that occur at runtime -->
   <data name="MT8018" xml:space="preserve">
-		<value>Wewnętrzny błąd spójności. Zarejestruj raport o usterce w witrynie https://github.com/xamarin/xamarin-macios/issues/new.
+		<value>Wewnętrzny błąd spójności. Zarejestruj raport o usterce w witrynie https://github.com/dotnet/macios/issues/new.
 		</value>
 	</data>
   <!-- 8000 -> 8036 are missing here (except 8018), so skip to 8037 -->

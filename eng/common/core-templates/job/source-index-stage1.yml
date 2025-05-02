@@ -36,22 +36,6 @@ jobs:
 
   - ${{ each preStep in parameters.preSteps }}:
     - ${{ preStep }}
-
-  - task: UseDotNet@2
-    displayName: Use .NET $(DotNetSdkVersion) SDK
-    inputs:
-      packageType: sdk
-      version: $(DotNetSdkVersion).x
-      installationPath: $(Agent.TempDirectory)/dotnet
-      workingDirectory: $(Agent.TempDirectory)
-
-  - script: |
-      $(Agent.TempDirectory)/dotnet/dotnet tool install BinLogToSln --version $(sourceIndexProcessBinlogPackageVersion) --add-source $(SourceIndexPackageSource) --tool-path $(Agent.TempDirectory)/.source-index/tools
-      $(Agent.TempDirectory)/dotnet/dotnet tool install UploadIndexStage1 --version $(sourceIndexUploadPackageVersion) --add-source $(SourceIndexPackageSource) --tool-path $(Agent.TempDirectory)/.source-index/tools
-    displayName: Download Tools
-    # Set working directory to temp directory so 'dotnet' doesn't try to use global.json and use the repo's sdk.
-    workingDirectory: $(Agent.TempDirectory)
-
   - script: ${{ parameters.sourceIndexBuildCommand }}
     displayName: Build Repository
 

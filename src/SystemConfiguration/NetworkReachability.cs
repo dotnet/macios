@@ -584,7 +584,7 @@ namespace SystemConfiguration {
 
 		/// <summary>Schedules the delivery of the events (what is set with SetCallback) on the current loop.</summary>
 		/// <returns>True if the operation succeeded, false otherwise.</returns>
-		/// <remarks>This schedules using the <see cref="P:CoreFoundation.CFRunLoop.Current" /> and the <see cref="P:CoreFoundation.CFRunLoop.ModeDefault" />.</remarks>
+		/// <remarks>This schedules using the <see cref="CoreFoundation.CFRunLoop.Current" /> and the <see cref="CoreFoundation.CFRunLoop.ModeDefault" />.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -637,7 +637,7 @@ namespace SystemConfiguration {
 
 		/// <summary>Removes the NetworkRechability from the current run loop.</summary>
 		/// <returns>True if the operation succeeded, false otherwise.</returns>
-		/// <remarks>This unschedules the notifications from the <see cref="P:CoreFoundation.CFRunLoop.Current" /> and the <see cref="P:CoreFoundation.CFRunLoop.ModeDefault" />.</remarks>
+		/// <remarks>This unschedules the notifications from the <see cref="CoreFoundation.CFRunLoop.Current" /> and the <see cref="CoreFoundation.CFRunLoop.ModeDefault" />.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -664,7 +664,7 @@ namespace SystemConfiguration {
 			/* SCNetworkReachabilityRef __nonnull */ IntPtr target,
 			/* dispatch_queue_t __nullable */ IntPtr queue);
 
-		/// <summary>Specifies the <see cref="T:CoreFoundation.DispatchQueue" /> to be used for callbacks.</summary>
+		/// <summary>Specifies the <see cref="CoreFoundation.DispatchQueue" /> to be used for callbacks.</summary>
 		/// <param name="queue">The queue on which the notification will be posted. Pass <see langword="null" /> to disable notifications on the specified queue.</param>
 		/// <returns>True on success, false on failure.</returns>
 		[SupportedOSPlatform ("ios")]

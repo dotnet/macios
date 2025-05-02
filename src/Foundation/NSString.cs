@@ -153,7 +153,7 @@ namespace Foundation {
 
 		/// <param name="handle">Handle to the Objective-C native NSString object.</param>
 		/// <summary>Releases a native Objective-C string.</summary>
-		/// <remarks>Use this method to release Objective-C NSString handles that were previously allocated with <see cref="M:Foundation.NSString.CreateNative(System.String)" />.</remarks>
+		/// <remarks>Use this method to release Objective-C NSString handles that were previously allocated with <see cref="Foundation.NSString.CreateNative(System.String)" />.</remarks>
 		public static void ReleaseNative (NativeHandle handle)
 		{
 			NSObject.DangerousRelease (handle);

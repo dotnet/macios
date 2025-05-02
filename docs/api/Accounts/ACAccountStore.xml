@@ -1,27 +1,27 @@
 <Documentation>
   <Docs DocId="T:Accounts.ACAccountStore">
-    <summary>Encapsulates the Accounts database, providing access to <see cref="T:Accounts.ACAccount" /> objects.</summary>
+    <summary>Encapsulates the Accounts database, providing access to <see cref="Accounts.ACAccount" /> objects.</summary>
     <remarks>
       <para>The Accounts database on iOS provides account information for social networks. The social networks stored in the database are:</para>
       <list type="bullet">
         <item>
           <term>
-            <see cref="P:Accounts.ACAccountType.Facebook" />
+            <see cref="Accounts.ACAccountType.Facebook" />
           </term>
         </item>
         <item>
           <term>
-            <see cref="P:Accounts.ACAccountType.SinaWeibo" />
+            <see cref="Accounts.ACAccountType.SinaWeibo" />
           </term>
         </item>
         <item>
           <term>
-            <see cref="P:Accounts.ACAccountType.Twitter" />
+            <see cref="Accounts.ACAccountType.Twitter" />
           </term>
         </item>
       </list>
       <para>
-        The following example shows the basic structure of code accessing the <see cref="T:Accounts.ACAccountStore" /> object, requesting access to a specific account, and retrieving credentials: 
+        The following example shows the basic structure of code accessing the <see cref="Accounts.ACAccountStore" /> object, requesting access to a specific account, and retrieving credentials: 
       </para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
@@ -39,8 +39,8 @@
         <summary>Notification constant for Change</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:Accounts.ACAccountStore.Notifications" />.<format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:ACAccountStore.Notifications.ObserveChange*&amp;scope=Xamarin" title="M:ACAccountStore.Notifications.ObserveChange*">M:ACAccountStore.Notifications.ObserveChange*</a></format> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="Accounts.ACAccountStore.Notifications" />.<see cref="ACAccountStore.Notifications.ObserveChange" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[

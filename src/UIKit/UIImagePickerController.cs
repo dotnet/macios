@@ -53,8 +53,8 @@ namespace UIKit {
 		}
 	}
 
-	/// <summary>Provides data for the <see cref="E:UIKit.UIImagePickerController.FinishedPickingMedia" /> event.</summary>
-	///     <remarks>These arguments are available if you use the <see cref="E:UIKit.UIImagePickerController.FinishedPickingMedia" /> event in <see cref="T:UIKit.UIImagePickerController" />.</remarks>
+	/// <summary>Provides data for the <see cref="UIKit.UIImagePickerController.FinishedPickingMedia" /> event.</summary>
+	///     <remarks>These arguments are available if you use the <see cref="UIKit.UIImagePickerController.FinishedPickingMedia" /> event in <see cref="UIKit.UIImagePickerController" />.</remarks>
 	public partial class UIImagePickerMediaPickedEventArgs {
 		/// <summary>Indicates the media type.</summary>
 		///         <value>To be added.</value>
@@ -104,7 +104,7 @@ namespace UIKit {
 			}
 		}
 
-		/// <summary>Gets the <see cref="T:Photos.PHLivePhoto" /> of the photo.</summary>
+		/// <summary>Gets the <see cref="Photos.PHLivePhoto" /> of the photo.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
@@ -148,7 +148,7 @@ namespace UIKit {
 			}
 		}
 
-		/// <summary>Gets the <see cref="T:Foundation.NSUrl" /> of the image file.</summary>
+		/// <summary>Gets the <see cref="Foundation.NSUrl" /> of the image file.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]

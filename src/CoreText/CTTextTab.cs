@@ -36,7 +36,7 @@ using Foundation;
 using CoreFoundation;
 
 namespace CoreText {
-	/// <summary>Options relating to a <see cref="T:CoreText.CTTextTab" />.</summary>
+	/// <summary>Options relating to a <see cref="CoreText.CTTextTab" />.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -84,7 +84,7 @@ namespace CoreText {
 		}
 	}
 
-	/// <summary>Represents a tab in a <see cref="T:CoreText.CTParagraphStyle" />.</summary>
+	/// <summary>Represents a tab in a <see cref="CoreText.CTParagraphStyle" />.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]

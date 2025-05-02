@@ -61,7 +61,7 @@ namespace UIKit {
 		///         <value>
 		///         </value>
 		///         <remarks>
-		///           <para>To implement dynamic type, application developers must act in reaction to <see cref="M:UIKit.UIApplication.Notifications.ObserveContentSizeCategoryChanged*" /> (see remarks and example at <see cref="M:UIKit.UIFont.GetPreferredFontForTextStyle(UIKit.UIFontTextStyle,UIKit.UITraitCollection)" />). </para>
+		///           <para>To implement dynamic type, application developers must act in reaction to <see cref="UIKit.UIApplication.Notifications.ObserveContentSizeCategoryChanged(EventHandler&lt;UIContentSizeCategoryChangedEventArgs&gt;)" /> (see remarks and example at <see cref="UIKit.UIFont.GetPreferredFontForTextStyle(UIKit.UIFontTextStyle,UIKit.UITraitCollection)" />). </para>
 		///           <para tool="threads">This can be used from a background thread.</para>
 		///         </remarks>
 		[SupportedOSPlatform ("ios")]
@@ -77,7 +77,7 @@ namespace UIKit {
 		///         <value>
 		///         </value>
 		///         <remarks>
-		///           <para>To implement dynamic type, application developers must act in reaction to <see cref="M:UIKit.UIApplication.Notifications.ObserveContentSizeCategoryChanged*" /> (see remarks and example at <see cref="M:UIKit.UIFont.GetPreferredFontForTextStyle(UIKit.UIFontTextStyle,UIKit.UITraitCollection)" />). </para>
+		///           <para>To implement dynamic type, application developers must act in reaction to <see cref="UIKit.UIApplication.Notifications.ObserveContentSizeCategoryChanged(EventHandler&lt;UIContentSizeCategoryChangedEventArgs&gt;)" /> (see remarks and example at <see cref="UIKit.UIFont.GetPreferredFontForTextStyle(UIKit.UIFontTextStyle,UIKit.UITraitCollection)" />). </para>
 		///           <para tool="threads">This can be used from a background thread.</para>
 		///         </remarks>
 		[SupportedOSPlatform ("ios")]
@@ -93,7 +93,7 @@ namespace UIKit {
 		///         <value>
 		///         </value>
 		///         <remarks>
-		///           <para>To implement dynamic type, application developers must act in reaction to <see cref="M:UIKit.UIApplication.Notifications.ObserveContentSizeCategoryChanged*" /> (see remarks and example at <see cref="M:UIKit.UIFont.GetPreferredFontForTextStyle(UIKit.UIFontTextStyle,UIKit.UITraitCollection)" />). </para>
+		///           <para>To implement dynamic type, application developers must act in reaction to <see cref="UIKit.UIApplication.Notifications.ObserveContentSizeCategoryChanged(EventHandler&lt;UIContentSizeCategoryChangedEventArgs&gt;)" /> (see remarks and example at <see cref="UIKit.UIFont.GetPreferredFontForTextStyle(UIKit.UIFontTextStyle,UIKit.UITraitCollection)" />). </para>
 		///           <para tool="threads">This can be used from a background thread.</para>
 		///         </remarks>
 		[SupportedOSPlatform ("ios")]
@@ -109,7 +109,7 @@ namespace UIKit {
 		///         <value>
 		///         </value>
 		///         <remarks>
-		///           <para>To implement dynamic type, application developers must act in reaction to <see cref="M:UIKit.UIApplication.Notifications.ObserveContentSizeCategoryChanged*" /> (see remarks and example at <see cref="M:UIKit.UIFont.GetPreferredFontForTextStyle(UIKit.UIFontTextStyle,UIKit.UITraitCollection)" />). </para>
+		///           <para>To implement dynamic type, application developers must act in reaction to <see cref="UIKit.UIApplication.Notifications.ObserveContentSizeCategoryChanged(EventHandler&lt;UIContentSizeCategoryChangedEventArgs&gt;)" /> (see remarks and example at <see cref="UIKit.UIFont.GetPreferredFontForTextStyle(UIKit.UIFontTextStyle,UIKit.UITraitCollection)" />). </para>
 		///           <para tool="threads">This can be used from a background thread.</para>
 		///         </remarks>
 		[SupportedOSPlatform ("ios")]
@@ -125,7 +125,7 @@ namespace UIKit {
 		///         <value>
 		///         </value>
 		///         <remarks>
-		///           <para>To implement dynamic type, application developers must act in reaction to <see cref="M:UIKit.UIApplication.Notifications.ObserveContentSizeCategoryChanged*" /> (see remarks and example at <see cref="M:UIKit.UIFont.GetPreferredFontForTextStyle(UIKit.UIFontTextStyle,UIKit.UITraitCollection)" />). </para>
+		///           <para>To implement dynamic type, application developers must act in reaction to <see cref="UIKit.UIApplication.Notifications.ObserveContentSizeCategoryChanged(EventHandler&lt;UIContentSizeCategoryChangedEventArgs&gt;)" /> (see remarks and example at <see cref="UIKit.UIFont.GetPreferredFontForTextStyle(UIKit.UIFontTextStyle,UIKit.UITraitCollection)" />). </para>
 		///           <para tool="threads">This can be used from a background thread.</para>
 		///         </remarks>
 		[SupportedOSPlatform ("ios")]
@@ -141,7 +141,7 @@ namespace UIKit {
 		///         <value>
 		///         </value>
 		///         <remarks>
-		///           <para>To implement dynamic type, application developers must act in reaction to <see cref="M:UIKit.UIApplication.Notifications.ObserveContentSizeCategoryChanged*" /> (see remarks and example at <see cref="M:UIKit.UIFont.GetPreferredFontForTextStyle(UIKit.UIFontTextStyle,UIKit.UITraitCollection)" />). </para>
+		///           <para>To implement dynamic type, application developers must act in reaction to <see cref="UIKit.UIApplication.Notifications.ObserveContentSizeCategoryChanged(EventHandler&lt;UIContentSizeCategoryChangedEventArgs&gt;)" /> (see remarks and example at <see cref="UIKit.UIFont.GetPreferredFontForTextStyle(UIKit.UIFontTextStyle,UIKit.UITraitCollection)" />). </para>
 		///           <para tool="threads">This can be used from a background thread.</para>
 		///         </remarks>
 		[SupportedOSPlatform ("ios")]
@@ -267,7 +267,7 @@ namespace UIKit {
 
 		/// <param name="fontSize">To be added.</param>
 		/// <param name="weight">To be added.</param>
-		/// <summary>Gets the monospaced <see cref="T:UIKit.UIFont" /> preferred by the system for displaying digits, of the specified <paramref name="fontSize" /> and <paramref name="weight" />.</summary>
+		/// <summary>Gets the monospaced <see cref="UIKit.UIFont" /> preferred by the system for displaying digits, of the specified <paramref name="fontSize" /> and <paramref name="weight" />.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>
 		///           <para>(More documentation for this node is coming)</para>
@@ -343,7 +343,7 @@ namespace UIKit {
 
 		/// <param name="uiFontTextStyle">The style for which to get the preferred font.</param>
 		///         <param name="traitCollection">The trait collection for which to get the preferred font.</param>
-		///         <summary>Gets the <see cref="T:UIKit.UIFont" /> that is preferred by the system for <paramref name="uiFontTextStyle" /> and <paramref name="traitCollection" />.</summary>
+		///         <summary>Gets the <see cref="UIKit.UIFont" /> that is preferred by the system for <paramref name="uiFontTextStyle" /> and <paramref name="traitCollection" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>
 		///           <para>(More documentation for this node is coming)</para>
@@ -475,7 +475,7 @@ namespace UIKit {
 
 		/// <param name="f1">To be added.</param>
 		/// <param name="f2">To be added.</param>
-		/// <summary>Compares two <see cref="T:UIKit.UIFont" /> objects for value equality.</summary>
+		/// <summary>Compares two <see cref="UIKit.UIFont" /> objects for value equality.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>
 		///           <para>(More documentation for this node is coming)</para>
@@ -492,7 +492,7 @@ namespace UIKit {
 
 		/// <param name="f1">To be added.</param>
 		/// <param name="f2">To be added.</param>
-		/// <summary>Compares two <see cref="T:UIKit.UIFont" /> objects for value inequality.</summary>
+		/// <summary>Compares two <see cref="UIKit.UIFont" /> objects for value inequality.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>
 		///           <para>(More documentation for this node is coming)</para>
@@ -504,7 +504,7 @@ namespace UIKit {
 		}
 
 		/// <param name="obj">To be added.</param>
-		///         <summary>Used to compare <see cref="T:UIKit.UIFont" /> objects.</summary>
+		///         <summary>Used to compare <see cref="UIKit.UIFont" /> objects.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>
 		///           <para>(More documentation for this node is coming)</para>

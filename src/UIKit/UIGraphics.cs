@@ -78,8 +78,8 @@ namespace UIKit {
 		///         <summary>Pushes a new image context and makes it the current graphics context.</summary>
 		///         <remarks>
 		///           <para>UIKit keeps a stack of image context, this method creates a new image context, makes it the default and places it at the top of the graphic context stacks.</para>
-		///           <para>To restore the previous graphics context, call the <see cref="M:UIKit.UIGraphics.EndImageContext" /> method.</para>
-		///           <para>You can get the current context by calling the <see cref="M:UIKit.UIGraphics.GetImageFromCurrentImageContext" /> method.</para>
+		///           <para>To restore the previous graphics context, call the <see cref="UIKit.UIGraphics.EndImageContext" /> method.</para>
+		///           <para>You can get the current context by calling the <see cref="UIKit.UIGraphics.GetImageFromCurrentImageContext" /> method.</para>
 		///           <para>Developers can call this method from any thread.</para>
 		///         </remarks>
 		[SupportedOSPlatform ("ios")]
@@ -123,8 +123,8 @@ namespace UIKit {
 		/// <summary>Pops the current image context.</summary>
 		///         <remarks>
 		///           <para>UIKit keeps a stack of image context, this method pops the current image context, and makes the new context at the top of the stack, the new default context.</para>
-		///           <para>If the current context was not created using the <see cref="M:UIKit.UIGraphics.BeginImageContextWithOptions(CoreGraphics.CGSize,System.Boolean,System.nfloat)" />
-		/// 	  or <see cref="M:UIKit.UIGraphics.BeginImageContext(CoreGraphics.CGSize)" />
+		///           <para>If the current context was not created using the <see cref="UIKit.UIGraphics.BeginImageContextWithOptions(CoreGraphics.CGSize,System.Boolean,nfloat)" />
+		/// 	  or <see cref="UIKit.UIGraphics.BeginImageContext(CoreGraphics.CGSize)" />
 		/// 	  this method does nothing.</para>
 		///         </remarks>
 		[SupportedOSPlatform ("ios")]
@@ -200,8 +200,8 @@ namespace UIKit {
 		///         <summary>Pushes a new PDF rendering context and make it the current graphics context.</summary>
 		///         <remarks>
 		///           <para>UIKit keeps a stack of image context, this method creates a new image context, makes it the default and places it at the top of the graphic context stacks.</para>
-		///           <para>To restore the previous graphics context, call the <see cref="M:UIKit.UIGraphics.EndImageContext" /> method.</para>
-		///           <para>You can get the current context by calling the <see cref="M:UIKit.UIGraphics.GetImageFromCurrentImageContext" /> method.</para>
+		///           <para>To restore the previous graphics context, call the <see cref="UIKit.UIGraphics.EndImageContext" /> method.</para>
+		///           <para>You can get the current context by calling the <see cref="UIKit.UIGraphics.GetImageFromCurrentImageContext" /> method.</para>
 		///           <para>This function can only be invoked from the UI thread.</para>
 		///         </remarks>
 		public static void BeginPDFContext (string file, CGRect bounds, NSDictionary documentInfo)
@@ -218,8 +218,8 @@ namespace UIKit {
 		///         <summary>Pushes a new PDF rendering context and make it the current graphics context.</summary>
 		///         <remarks>
 		///           <para>UIKit keeps a stack of image context, this method creates a new image context, makes it the default and places it at the top of the graphic context stacks.</para>
-		///           <para>To restore the previous graphics context, call the <see cref="M:UIKit.UIGraphics.EndImageContext" /> method.</para>
-		///           <para>You can get the current context by calling the <see cref="M:UIKit.UIGraphics.GetImageFromCurrentImageContext" /> method.</para>
+		///           <para>To restore the previous graphics context, call the <see cref="UIKit.UIGraphics.EndImageContext" /> method.</para>
+		///           <para>You can get the current context by calling the <see cref="UIKit.UIGraphics.GetImageFromCurrentImageContext" /> method.</para>
 		///           <para>This function can only be invoked from the UI thread.</para>
 		///         </remarks>
 		public static void BeginPDFContext (string file, CGRect bounds, CGPDFInfo documentInfo)
@@ -240,8 +240,8 @@ namespace UIKit {
 		///         <summary>Pushes a new PDF rendering context and make it the current graphics context.</summary>
 		///         <remarks>
 		///           <para>UIKit keeps a stack of image context, this method creates a new image context, makes it the default and places it at the top of the graphic context stacks.</para>
-		///           <para>To restore the previous graphics context, call the <see cref="M:UIKit.UIGraphics.EndImageContext" /> method.</para>
-		///           <para>You can get the current context by calling the <see cref="M:UIKit.UIGraphics.GetImageFromCurrentImageContext" /> method.</para>
+		///           <para>To restore the previous graphics context, call the <see cref="UIKit.UIGraphics.EndImageContext" /> method.</para>
+		///           <para>You can get the current context by calling the <see cref="UIKit.UIGraphics.GetImageFromCurrentImageContext" /> method.</para>
 		///           <para>This function can only be invoked from the UI thread.</para>
 		///         </remarks>
 		public static void BeginPDFContext (NSMutableData data, CGRect bounds, NSDictionary documentInfo)

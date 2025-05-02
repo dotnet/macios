@@ -14,7 +14,7 @@ namespace UIKit {
 		/// </summary>
 		/// <param name="traits">The traits to observe.</param>
 		/// <param name="handler">The callback to execute when any of the specified traits changes.</param>
-		/// <returns>A token that can be used to unregister the callback by calling <see cref="M:UnregisterForTraitChanges" />.</returns>
+		/// <returns>A token that can be used to unregister the callback by calling <see cref="UnregisterForTraitChanges" />.</returns>
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
@@ -28,7 +28,7 @@ namespace UIKit {
 		/// </summary>
 		/// <param name="traits">The traits to observe.</param>
 		/// <param name="handler">The callback to execute when any of the specified traits changes.</param>
-		/// <returns>A token that can be used to unregister the callback by calling <see cref="M:UnregisterForTraitChanges" />.</returns>
+		/// <returns>A token that can be used to unregister the callback by calling <see cref="UnregisterForTraitChanges" />.</returns>
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
@@ -43,7 +43,7 @@ namespace UIKit {
 		/// </summary>
 		/// <typeparam name="T">The trait to observe.</typeparam>
 		/// <param name="handler">The callback to execute when any of the specified traits changes.</param>
-		/// <returns>A token that can be used to unregister the callback by calling <see cref="M:UnregisterForTraitChanges" />.</returns>
+		/// <returns>A token that can be used to unregister the callback by calling <see cref="UnregisterForTraitChanges" />.</returns>
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
@@ -59,7 +59,7 @@ namespace UIKit {
 		/// <typeparam name="T1">A trait to observe</typeparam>
 		/// <typeparam name="T2">A trait to observe</typeparam>
 		/// <param name="handler">The callback to execute when any of the specified traits changes.</param>
-		/// <returns>A token that can be used to unregister the callback by calling <see cref="M:UnregisterForTraitChanges" />.</returns>
+		/// <returns>A token that can be used to unregister the callback by calling <see cref="UnregisterForTraitChanges" />.</returns>
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
@@ -77,7 +77,7 @@ namespace UIKit {
 		/// <typeparam name="T2">A trait to observe</typeparam>
 		/// <typeparam name="T3">A trait to observe</typeparam>
 		/// <param name="handler">The callback to execute when any of the specified traits changes.</param>
-		/// <returns>A token that can be used to unregister the callback by calling <see cref="M:UnregisterForTraitChanges" />.</returns>
+		/// <returns>A token that can be used to unregister the callback by calling <see cref="UnregisterForTraitChanges" />.</returns>
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
@@ -97,7 +97,7 @@ namespace UIKit {
 		/// <typeparam name="T3">A trait to observe</typeparam>
 		/// <typeparam name="T4">A trait to observe</typeparam>
 		/// <param name="handler">The callback to execute when any of the specified traits changes.</param>
-		/// <returns>A token that can be used to unregister the callback by calling <see cref="M:UnregisterForTraitChanges" />.</returns>
+		/// <returns>A token that can be used to unregister the callback by calling <see cref="UnregisterForTraitChanges" />.</returns>
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
@@ -116,7 +116,7 @@ namespace UIKit {
 		/// <param name="traits">The traits to observe.</param>
 		/// <param name="target">The object whose specified selector will be called.</param>
 		/// <param name="action">The selector to call on the specified object.</param>
-		/// <returns>A token that can be used to unregister the callback by calling <see cref="M:UnregisterForTraitChanges" />.</returns>
+		/// <returns>A token that can be used to unregister the callback by calling <see cref="UnregisterForTraitChanges" />.</returns>
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
@@ -130,7 +130,7 @@ namespace UIKit {
 		/// </summary>
 		/// <param name="traits">The traits to observe.</param>
 		/// <param name="action">The selector to call on the current object.</param>
-		/// <returns>A token that can be used to unregister the callback by calling <see cref="M:UnregisterForTraitChanges" />.</returns>
+		/// <returns>A token that can be used to unregister the callback by calling <see cref="UnregisterForTraitChanges" />.</returns>
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]

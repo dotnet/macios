@@ -3,7 +3,7 @@
     <summary>Coordinates an audio playback or capture session.</summary>
     <remarks>
       <para> Application developers should use the singleton object
-	retrieved by <see cref="M:AVFoundation.AVAudioSession.SharedInstance" />.
+	retrieved by <see cref="AVFoundation.AVAudioSession.SharedInstance" />.
       </para>
       <para> 
 	Because the audio hardware of an iOS device is shared
@@ -14,27 +14,27 @@
       </para>
       <para> 
 	The interaction of an app with other apps and system
-	services is determined by your audio category.   You can use the <see cref="M:AVFoundation.AVAudioSession.SetCategory(System.String,System.String,AVFoundation.AVAudioSessionRouteSharingPolicy,AVFoundation.AVAudioSessionCategoryOptions,Foundation.NSError@)" /> method to set this
+	services is determined by your audio category.   You can use the <see cref="AVFoundation.AVAudioSession.SetCategory(System.String,System.String,AVFoundation.AVAudioSessionRouteSharingPolicy,AVFoundation.AVAudioSessionCategoryOptions,out Foundation.NSError)" /> method to set this
       </para>
       <para>
-	You should also control the Mode (using <see cref="M:AVFoundation.AVAudioSession.SetMode(Foundation.NSString,Foundation.NSError@)" /> to
+	You should also control the Mode (using <see cref="AVFoundation.AVAudioSession.SetMode(Foundation.NSString,out Foundation.NSError)" /> to
 	describe how your application will use audio.
 
       </para>
       <para>
-	As is common in AV Foundation, many methods in <see cref="T:AVFoundation.AVAudioSession" /> are
+	As is common in AV Foundation, many methods in <see cref="AVFoundation.AVAudioSession" /> are
 	asynchronous and properties may take some time to reflect
 	their final status. Application developers should be familiar
 	with asynchronous programming techniques.
       </para>
       <para>
-	The <see cref="T:AVFoundation.AVAudioSession" />,
-	like the <see cref="T:AVFoundation.AVCaptureSession" /> and <see cref="T:AVFoundation.AVAssetExportSession" /> is a
-	coordinating object between some number of <see cref="P:AVFoundation.AVAudioSession.InputDataSources" />
-	and <see cref="P:AVFoundation.AVAudioSession.OutputDataSources" />.
+	The <see cref="AVFoundation.AVAudioSession" />,
+	like the <see cref="AVFoundation.AVCaptureSession" /> and <see cref="AVFoundation.AVAssetExportSession" /> is a
+	coordinating object between some number of <see cref="AVFoundation.AVAudioSession.InputDataSources" />
+	and <see cref="AVFoundation.AVAudioSession.OutputDataSources" />.
 	</para>
       <para>
-	  You can register to a few notifications that are posted by the audio system, by using the convenience methods in <see cref="T:AVFoundation.AVAudioSession.Notifications" />. 
+	  You can register to a few notifications that are posted by the audio system, by using the convenience methods in <see cref="AVFoundation.AVAudioSession.Notifications" />. 
 
 	</para>
       <example>
@@ -68,8 +68,8 @@ void Setup ()
     <summary>Notification constant for Interruption</summary>
     <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
     <remarks>
-      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-      <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="T:AVFoundation.AVAudioSession.Notifications" />.<see cref="M:AVFoundation.AVAudioSession.Notifications.ObserveInterruption*" /> method which offers strongly typed access to the parameters of the notification.</para>
+      <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="AVFoundation.AVAudioSession.Notifications" />.<see cref="AVFoundation.AVAudioSession.Notifications.ObserveInterruption" /> method which offers strongly typed access to the parameters of the notification.</para>
       <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
@@ -140,8 +140,8 @@ void Setup ()
     <summary>Notification constant for MediaServicesWereReset</summary>
     <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
     <remarks>
-      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:AVFoundation.AVAudioSession.Notifications" />.<see cref="M:AVFoundation.AVAudioSession.Notifications.ObserveMediaServicesWereReset*" /> method which offers strongly typed access to the parameters of the notification.</para>
+      <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="AVFoundation.AVAudioSession.Notifications" />.<see cref="AVFoundation.AVAudioSession.Notifications.ObserveMediaServicesWereReset" /> method which offers strongly typed access to the parameters of the notification.</para>
       <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
@@ -204,8 +204,8 @@ void Setup ()
     <summary>Notification constant for MediaServicesWereLost</summary>
     <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
     <remarks>
-      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:AVFoundation.AVAudioSession.Notifications" />.<see cref="M:AVFoundation.AVAudioSession.Notifications.ObserveMediaServicesWereLost*" /> method which offers strongly typed access to the parameters of the notification.</para>
+      <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="AVFoundation.AVAudioSession.Notifications" />.<see cref="AVFoundation.AVAudioSession.Notifications.ObserveMediaServicesWereLost" /> method which offers strongly typed access to the parameters of the notification.</para>
       <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
@@ -268,8 +268,8 @@ void Setup ()
     <summary>Notification constant for RouteChange</summary>
     <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
     <remarks>
-      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-      <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="T:AVFoundation.AVAudioSession.Notifications" />.<see cref="M:AVFoundation.AVAudioSession.Notifications.ObserveRouteChange*" /> method which offers strongly typed access to the parameters of the notification.</para>
+      <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="AVFoundation.AVAudioSession.Notifications" />.<see cref="AVFoundation.AVAudioSession.Notifications.ObserveRouteChange" /> method which offers strongly typed access to the parameters of the notification.</para>
       <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
@@ -338,8 +338,8 @@ void Setup ()
     <summary>Notification constant for SilenceSecondaryAudioHint</summary>
     <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
     <remarks>
-      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-      <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="T:AVFoundation.AVAudioSession.Notifications" />.<see cref="M:AVFoundation.AVAudioSession.Notifications.ObserveSilenceSecondaryAudioHint*" /> method which offers strongly typed access to the parameters of the notification.</para>
+      <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="AVFoundation.AVAudioSession.Notifications" />.<see cref="AVFoundation.AVAudioSession.Notifications.ObserveSilenceSecondaryAudioHint" /> method which offers strongly typed access to the parameters of the notification.</para>
       <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
@@ -406,65 +406,65 @@ void Setup ()
   </Docs>
   <Docs DocId="M:AVFoundation.AVAudioSession.SetCategory(Foundation.NSString,Foundation.NSError@)">
     <param name="theCategory">One of 
-	<see cref="P:AVFoundation.AVAudioSession.CategoryAmbient" />, 
-	<see cref="P:AVFoundation.AVAudioSession.CategorySoloAmbient" />, 
-	<see cref="P:AVFoundation.AVAudioSession.CategoryPlayback" />, 
-	<see cref="P:AVFoundation.AVAudioSession.CategoryRecord" />, 
-	<see cref="P:AVFoundation.AVAudioSession.CategoryPlayAndRecord" />, 
-	<see cref="P:AVFoundation.AVAudioSession.CategoryAudioProcessing" />, 
-	<see cref="P:AVFoundation.AVAudioSession.CategoryMultiRoute" />.
+	<see cref="AVFoundation.AVAudioSession.CategoryAmbient" />, 
+	<see cref="AVFoundation.AVAudioSession.CategorySoloAmbient" />, 
+	<see cref="AVFoundation.AVAudioSession.CategoryPlayback" />, 
+	<see cref="AVFoundation.AVAudioSession.CategoryRecord" />, 
+	<see cref="AVFoundation.AVAudioSession.CategoryPlayAndRecord" />, 
+	<see cref="AVFoundation.AVAudioSession.CategoryAudioProcessing" />, 
+	<see cref="AVFoundation.AVAudioSession.CategoryMultiRoute" />.
 	</param>
     <param name="outError">On failure, this contains the error details.</param>
-    <summary>Weakly typed; Requests a change to the <see cref="P:AVFoundation.AVAudioSession.Category" />.</summary>
+    <summary>Weakly typed; Requests a change to the <see cref="AVFoundation.AVAudioSession.Category" />.</summary>
     <returns>true on success, false on error.   If there is an error the outError parameter contains the new instance of NSError describing the problem.</returns>
     <remarks>
       <para>
 	    In general, you should set the category before activating
-	    your audio session with <see cref="M:AVFoundation.AVAudioSession.SetActive(System.Boolean,AVFoundation.AVAudioSessionSetActiveOptions,Foundation.NSError@)" />.
+	    your audio session with <see cref="AVFoundation.AVAudioSession.SetActive(System.Boolean,AVFoundation.AVAudioSessionSetActiveOptions,out Foundation.NSError)" />.
 	    If you change the category at runtime, the route will change. 
 	  </para>
     </remarks>
   </Docs>
   <Docs DocId="M:AVFoundation.AVAudioSession.SetCategory(Foundation.NSString)">
     <param name="theCategory">One of 
-	<see cref="P:AVFoundation.AVAudioSession.CategoryAmbient" />, 
-	<see cref="P:AVFoundation.AVAudioSession.CategorySoloAmbient" />, 
-	<see cref="P:AVFoundation.AVAudioSession.CategoryPlayback" />, 
-	<see cref="P:AVFoundation.AVAudioSession.CategoryRecord" />, 
-	<see cref="P:AVFoundation.AVAudioSession.CategoryPlayAndRecord" />, 
-	<see cref="P:AVFoundation.AVAudioSession.CategoryAudioProcessing" />, 
-	<see cref="P:AVFoundation.AVAudioSession.CategoryMultiRoute" />.
+	<see cref="AVFoundation.AVAudioSession.CategoryAmbient" />, 
+	<see cref="AVFoundation.AVAudioSession.CategorySoloAmbient" />, 
+	<see cref="AVFoundation.AVAudioSession.CategoryPlayback" />, 
+	<see cref="AVFoundation.AVAudioSession.CategoryRecord" />, 
+	<see cref="AVFoundation.AVAudioSession.CategoryPlayAndRecord" />, 
+	<see cref="AVFoundation.AVAudioSession.CategoryAudioProcessing" />, 
+	<see cref="AVFoundation.AVAudioSession.CategoryMultiRoute" />.
 	</param>
-    <summary>Weakly typed;  Requests a change to the <see cref="P:AVFoundation.AVAudioSession.Category" />.</summary>
+    <summary>Weakly typed;  Requests a change to the <see cref="AVFoundation.AVAudioSession.Category" />.</summary>
     <returns>
 	  null on success, or an instance of NSError in case of failure with the details about the error.
 	</returns>
     <remarks>
       <para>
 	    In general, you should set the category before activating
-	    your audio session with <see cref="M:AVFoundation.AVAudioSession.SetActive(System.Boolean,AVFoundation.AVAudioSessionSetActiveOptions,Foundation.NSError@)" />.
+	    your audio session with <see cref="AVFoundation.AVAudioSession.SetActive(System.Boolean,AVFoundation.AVAudioSessionSetActiveOptions,out Foundation.NSError)" />.
 	    If you change the category at runtime, the route will change. 
 	  </para>
     </remarks>
   </Docs>
   <Docs DocId="M:AVFoundation.AVAudioSession.SetCategory(System.String,AVFoundation.AVAudioSessionCategoryOptions,Foundation.NSError@)">
     <param name="category">One of 
-	<see cref="P:AVFoundation.AVAudioSession.CategoryAmbient" />, 
-	<see cref="P:AVFoundation.AVAudioSession.CategorySoloAmbient" />, 
-	<see cref="P:AVFoundation.AVAudioSession.CategoryPlayback" />, 
-	<see cref="P:AVFoundation.AVAudioSession.CategoryRecord" />, 
-	<see cref="P:AVFoundation.AVAudioSession.CategoryPlayAndRecord" />, 
-	<see cref="P:AVFoundation.AVAudioSession.CategoryAudioProcessing" />, 
-	<see cref="P:AVFoundation.AVAudioSession.CategoryMultiRoute" />.</param>
+	<see cref="AVFoundation.AVAudioSession.CategoryAmbient" />, 
+	<see cref="AVFoundation.AVAudioSession.CategorySoloAmbient" />, 
+	<see cref="AVFoundation.AVAudioSession.CategoryPlayback" />, 
+	<see cref="AVFoundation.AVAudioSession.CategoryRecord" />, 
+	<see cref="AVFoundation.AVAudioSession.CategoryPlayAndRecord" />, 
+	<see cref="AVFoundation.AVAudioSession.CategoryAudioProcessing" />, 
+	<see cref="AVFoundation.AVAudioSession.CategoryMultiRoute" />.</param>
     <param name="options">Options on how to handle audio.</param>
     <param name="outError">On failure, this contains the error details.</param>
-    <summary>Weakly typed;  Requests a change to the <see cref="P:AVFoundation.AVAudioSession.Category" />.</summary>
+    <summary>Weakly typed;  Requests a change to the <see cref="AVFoundation.AVAudioSession.Category" />.</summary>
     <returns>
       <see langword="true" /> if the request was successful, otherwise the outError parameter contains an instance of NSError describing the problem.</returns>
     <remarks>
       <para>
 	    In general, you should set the category before activating
-	    your audio session with <see cref="M:AVFoundation.AVAudioSession.SetActive(System.Boolean,AVFoundation.AVAudioSessionSetActiveOptions,Foundation.NSError@)" />.
+	    your audio session with <see cref="AVFoundation.AVAudioSession.SetActive(System.Boolean,AVFoundation.AVAudioSessionSetActiveOptions,out Foundation.NSError)" />.
 	    If you change the category at runtime, the route will change. 
 	  </para>
     </remarks>

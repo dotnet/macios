@@ -20,7 +20,7 @@ using UIKit;
 namespace UIKit {
 	public partial class UISegmentedControl {
 		/// <param name="args">Array of strings or UIImage objects to use in the control.</param>
-		///         <summary>Creates a UISegmentedControl by passing an array containing strings or <see cref="T:UIKit.UIImage" /> objects.</summary>
+		///         <summary>Creates a UISegmentedControl by passing an array containing strings or <see cref="UIKit.UIImage" /> objects.</summary>
 		///         <remarks>
 		///         </remarks>
 		public UISegmentedControl (params object [] args) : this (FromObjects (args))

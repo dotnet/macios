@@ -1,8 +1,8 @@
 <Documentation>
   <Docs DocId="T:SpriteKit.SKTileMapNode">
-    <summary>A <see cref="T:SpriteKit.SKNode" /> that encapsulates a tiled map and a <see cref="T:SpriteKit.SKTileSet" />.</summary>
+    <summary>A <see cref="SpriteKit.SKNode" /> that encapsulates a tiled map and a <see cref="SpriteKit.SKTileSet" />.</summary>
     <remarks>
-      <para>The <see cref="T:SpriteKit.SKTileMapNode" /> subclass of <see cref="T:SpriteKit.SKNode" /> allows developers to easily create and manipulate tile-based maps with a variety of geometries and perspectives. An <see cref="T:SpriteKit.SKTileMapNode" /> contains a <see cref="T:SpriteKit.SKTileSet" /> that defines the overall map. In addition, the <see cref="T:SpriteKit.SKTileSet" /> contains one or more <see cref="T:SpriteKit.SKTileGroup" /> objects, each of which represents one style of tile, which may have several representations.</para>
+      <para>The <see cref="SpriteKit.SKTileMapNode" /> subclass of <see cref="SpriteKit.SKNode" /> allows developers to easily create and manipulate tile-based maps with a variety of geometries and perspectives. An <see cref="SpriteKit.SKTileMapNode" /> contains a <see cref="SpriteKit.SKTileSet" /> that defines the overall map. In addition, the <see cref="SpriteKit.SKTileSet" /> contains one or more <see cref="SpriteKit.SKTileGroup" /> objects, each of which represents one style of tile, which may have several representations.</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
 //Load tile set
@@ -14,7 +14,7 @@ var tileNode = new SKTileMapNode (tileSet, 16, 16, tileSet.DefaultTileSize);
 var tg = tileSet.DefaultTileGroup;
 tileNode.Fill (tg);
     ]]></code>
-        <para>The relationship between a <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:Intents.SKTileMapNode&amp;scope=Xamarin" title="T:Intents.SKTileMapNode">T:Intents.SKTileMapNode</a></format> and it's tiles is shown in the following image:</para>
+        <para>The relationship between a <see cref="Intents.SKTileMapNode" /> and it's tiles is shown in the following image:</para>
         <para>
           <img href="~/SpriteKit/_images/SKTileMapNode.Hierarchy.png" alt="UML class diagram showing important classes relating to SKTileMapNode" />
         </para>

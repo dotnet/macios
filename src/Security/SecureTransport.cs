@@ -322,7 +322,7 @@ namespace Security {
 
 	// Security.framework/Headers/SecureTransport.h
 	// untyped enum
-	/// <summary>Enumerates values that indicate whether a server side or client side <see cref="T:Security.SslContext" /> should be created.</summary>
+	/// <summary>Enumerates values that indicate whether a server side or client side <see cref="Security.SslContext" /> should be created.</summary>
 	[Deprecated (PlatformName.MacOSX, 10, 15, message: Constants.UseNetworkInstead)]
 	[Deprecated (PlatformName.iOS, 13, 0, message: Constants.UseNetworkInstead)]
 	[Deprecated (PlatformName.TvOS, 13, 0, message: Constants.UseNetworkInstead)]

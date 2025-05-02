@@ -8,13 +8,13 @@
 	UIKit APIs are not thread safe and should not be invoked from
 	a background thread.  If you must invoke a UIKit method from a
 	background thread, you should consider queueing a task using
-	the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:Foundation.NSObject.BeginInvokeOnMainThread(Foundation.NSAction)&amp;scope=Xamarin" title="M:Foundation.NSObject.BeginInvokeOnMainThread(Foundation.NSAction)">M:Foundation.NSObject.BeginInvokeOnMainThread(Foundation.NSAction)</a></format>
+	the <see cref="Foundation.NSObject.BeginInvokeOnMainThread(Action)" />
 	method.
 
       </para>
       <para>
 	It is possible to disable the runtime check by setting the
-	<see cref="F:UIKit.UIApplication.CheckForIllegalCrossThreadCalls" />
+	<see cref="UIKit.UIApplication.CheckForIllegalCrossThreadCalls" />
 	field to false.
 
       </para>

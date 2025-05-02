@@ -12,7 +12,7 @@ namespace UIKit {
 		/// <param name="This">To be added.</param>
 		///         <param name="point">To be added.</param>
 		///         <param name="font">To be added.</param>
-		///         <summary>Developers should use <see cref="M:UIKit.NSStringDrawing.DrawString(Foundation.NSString,CoreGraphics.CGPoint,UIKit.UIStringAttributes)" /> rather than this deprecated method.</summary>
+		///         <summary>Developers should use <see cref="UIKit.NSStringDrawing.DrawString(Foundation.NSString,CoreGraphics.CGPoint,UIKit.UIStringAttributes)" /> rather than this deprecated method.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
@@ -31,7 +31,7 @@ namespace UIKit {
 		/// <param name="width">To be added.</param>
 		/// <param name="font">To be added.</param>
 		/// <param name="breakMode">To be added.</param>
-		/// <summary>Developers should use <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Foundation%20NSString%20Draw%20String(%20Core%20Graphics%20CGRect%20, %20UIKit%20UIString%20Attributes%20)&amp;scope=Xamarin" title="M:Foundation.NSString.DrawString(CoreGraphics.CGRect, UIKit.UIStringAttributes)">M:Foundation.NSString.DrawString(CoreGraphics.CGRect, UIKit.UIStringAttributes)</a></format> rather than this deprecated method.</summary>
+		/// <summary>Developers should use <see cref="UIKit.NSStringDrawing.DrawString(NSString, CoreGraphics.CGRect, UIKit.UIStringAttributes)" /> rather than this deprecated method.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
@@ -52,7 +52,7 @@ namespace UIKit {
 		/// <param name="fontSize">To be added.</param>
 		/// <param name="breakMode">To be added.</param>
 		/// <param name="adjustment">To be added.</param>
-		/// <summary>Developers should use <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Foundation%20NSString%20Draw%20String(%20Core%20Graphics%20CGRect%20, %20UIKit%20UIString%20Attributes%20)&amp;scope=Xamarin" title="M:Foundation.NSString.DrawString(CoreGraphics.CGRect, UIKit.UIStringAttributes)">M:Foundation.NSString.DrawString(CoreGraphics.CGRect, UIKit.UIStringAttributes)</a></format> rather than this deprecated method..</summary>
+		/// <summary>Developers should use <see cref="UIKit.NSStringDrawing.DrawString(NSString, CoreGraphics.CGRect, UIKit.UIStringAttributes)" /> rather than this deprecated method..</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
@@ -74,7 +74,7 @@ namespace UIKit {
 		/// <param name="actualFontSize">To be added.</param>
 		/// <param name="breakMode">To be added.</param>
 		/// <param name="adjustment">To be added.</param>
-		/// <summary>Developers should use <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Foundation%20NSString%20Draw%20String(%20Core%20Graphics%20CGRect%20, %20UIKit%20UIString%20Attributes%20)&amp;scope=Xamarin" title="M:Foundation.NSString.DrawString(CoreGraphics.CGRect, UIKit.UIStringAttributes)">M:Foundation.NSString.DrawString(CoreGraphics.CGRect, UIKit.UIStringAttributes)</a></format> rather than this deprecated method.</summary>
+		/// <summary>Developers should use <see cref="UIKit.NSStringDrawing.DrawString(NSString, CoreGraphics.CGRect, UIKit.UIStringAttributes)" /> rather than this deprecated method.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
@@ -91,7 +91,7 @@ namespace UIKit {
 		/// <param name="This">To be added.</param>
 		///         <param name="rect">To be added.</param>
 		///         <param name="font">To be added.</param>
-		///         <summary>Developers should use <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Foundation%20NSString%20Draw%20String(%20Core%20Graphics%20CGRect%20, %20UIKit%20UIString%20Attributes%20)&amp;scope=Xamarin" title="M:Foundation.NSString.DrawString(CoreGraphics.CGRect, UIKit.UIStringAttributes)">M:Foundation.NSString.DrawString(CoreGraphics.CGRect, UIKit.UIStringAttributes)</a></format> rather than this deprecated method.</summary>
+		///         <summary>Developers should use <see cref="UIKit.NSStringDrawing.DrawString(NSString, CoreGraphics.CGRect, UIKit.UIStringAttributes)" /> rather than this deprecated method.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
@@ -109,7 +109,7 @@ namespace UIKit {
 		///         <param name="rect">To be added.</param>
 		///         <param name="font">To be added.</param>
 		///         <param name="mode">To be added.</param>
-		///         <summary>Developers should use <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Foundation%20NSString%20Draw%20String(%20Core%20Graphics%20CGRect%20, %20UIKit%20UIString%20Attributes%20)&amp;scope=Xamarin" title="M:Foundation.NSString.DrawString(CoreGraphics.CGRect, UIKit.UIStringAttributes)">M:Foundation.NSString.DrawString(CoreGraphics.CGRect, UIKit.UIStringAttributes)</a></format> rather than this deprecated method.</summary>
+		///         <summary>Developers should use <see cref="UIKit.NSStringDrawing.DrawString(NSString, CoreGraphics.CGRect, UIKit.UIStringAttributes)" /> rather than this deprecated method.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
@@ -128,7 +128,7 @@ namespace UIKit {
 		///         <param name="font">To be added.</param>
 		///         <param name="mode">To be added.</param>
 		///         <param name="alignment">To be added.</param>
-		///         <summary>Developers should use <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Foundation%20NSString%20Draw%20String(%20Core%20Graphics%20CGRect%20, %20UIKit%20UIString%20Attributes%20)&amp;scope=Xamarin" title="M:Foundation.NSString.DrawString(CoreGraphics.CGRect, UIKit.UIStringAttributes)">M:Foundation.NSString.DrawString(CoreGraphics.CGRect, UIKit.UIStringAttributes)</a></format> rather than this deprecated method.</summary>
+		///         <summary>Developers should use <see cref="UIKit.NSStringDrawing.DrawString(NSString, CoreGraphics.CGRect, UIKit.UIStringAttributes)" /> rather than this deprecated method.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
@@ -144,7 +144,7 @@ namespace UIKit {
 
 		/// <param name="This">The instance on which this method operates.</param>
 		///         <param name="font">To be added.</param>
-		///         <summary>Developers should use <see cref="M:UIKit.NSStringDrawing.GetSizeUsingAttributes(Foundation.NSString,UIKit.UIStringAttributes)" /> rather than this deprecated method.</summary>
+		///         <summary>Developers should use <see cref="UIKit.NSStringDrawing.GetSizeUsingAttributes(Foundation.NSString,UIKit.UIStringAttributes)" /> rather than this deprecated method.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
@@ -162,7 +162,7 @@ namespace UIKit {
 		/// <param name="font">To be added.</param>
 		/// <param name="forWidth">To be added.</param>
 		/// <param name="breakMode">To be added.</param>
-		/// <summary>Gets the <see cref="T:CoreGraphics.CGSize" /> necessary to display this <see cref="T:Foundation.NSString" />.</summary>
+		/// <summary>Gets the <see cref="CoreGraphics.CGSize" /> necessary to display this <see cref="Foundation.NSString" />.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
@@ -197,7 +197,7 @@ namespace UIKit {
 		///         <param name="font">To be added.</param>
 		///         <param name="constrainedToSize">To be added.</param>
 		///         <param name="lineBreakMode">To be added.</param>
-		///         <summary>Gets the <see cref="T:CoreGraphics.CGSize" /> necessary to display this <see cref="T:Foundation.NSString" />.</summary>
+		///         <summary>Gets the <see cref="CoreGraphics.CGSize" /> necessary to display this <see cref="Foundation.NSString" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
@@ -217,7 +217,7 @@ namespace UIKit {
 		/// <param name="actualFontSize">To be added.</param>
 		/// <param name="forWidth">To be added.</param>
 		/// <param name="lineBreakMode">To be added.</param>
-		/// <summary>Gets the <see cref="T:CoreGraphics.CGSize" /> necessary to display this <see cref="T:Foundation.NSString" />.</summary>
+		/// <summary>Gets the <see cref="CoreGraphics.CGSize" /> necessary to display this <see cref="Foundation.NSString" />.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]

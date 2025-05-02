@@ -16,7 +16,7 @@ using CoreFoundation;
 
 namespace MessageUI {
 
-	/// <summary>Provides data for the <see cref="E:MessageUI.MFMailComposeViewController.Finished" /> event.</summary>
+	/// <summary>Provides data for the <see cref="MessageUI.MFMailComposeViewController.Finished" /> event.</summary>
 	///     <remarks />
 	public class MFComposeResultEventArgs : EventArgs {
 		/// <param name="controller">To be added.</param>
@@ -86,7 +86,7 @@ namespace MessageUI {
 	}
 
 
-	/// <summary>Provides data for the <see cref="E:MessageUI.MFMessageComposeViewController.Finished" /> event.</summary>
+	/// <summary>Provides data for the <see cref="MessageUI.MFMessageComposeViewController.Finished" /> event.</summary>
 	///     <remarks>
 	///     </remarks>
 	public class MFMessageComposeResultEventArgs : EventArgs {

@@ -230,7 +230,7 @@ namespace CoreMedia {
 		NSString PostDecodeProcessingMetadataKey { get; }
 	}
 
-	/// <summary>The keys for <see cref="T:CoreMedia.CMSampleBuffer" /> attachments.</summary>
+	/// <summary>The keys for <see cref="CoreMedia.CMSampleBuffer" /> attachments.</summary>
 	[MacCatalyst (13, 1)]
 	[StrongDictionary ("CMSampleAttachmentKey")]
 	interface CMSampleBufferAttachmentSettings {

@@ -1,10 +1,10 @@
 <Documentation>
   <Docs DocId="T:PhotosUI.IPHContentEditingController">
-    <summary>Interface representing the required methods (if any) of the protocol <see cref="T:PhotosUI.PHContentEditingController" />.</summary>
+    <summary>Interface representing the required methods (if any) of the protocol <see cref="PhotosUI.PHContentEditingController" />.</summary>
     <remarks>
-      <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:PhotosUI.PHContentEditingController" />.</para>
-      <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:PhotosUI.PHContentEditingController" /> protocol.</para>
-      <para>Optional methods (if any) are provided by the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Photos%20UIPHContent%20Editing%20Controller_%20Extensions&amp;scope=Xamarin" title="T:PhotosUI.PHContentEditingController_Extensions">T:PhotosUI.PHContentEditingController_Extensions</a></format> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+      <para>This interface contains the required methods (if any) from the protocol defined by <see cref="PhotosUI.PHContentEditingController" />.</para>
+      <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="PhotosUI.PHContentEditingController" /> protocol.</para>
+      <para>Optional methods (if any) are provided by the <see cref="PhotosUI.PHContentEditingController_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
     </remarks>
   </Docs>
 </Documentation>

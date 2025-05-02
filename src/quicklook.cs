@@ -47,7 +47,7 @@ using NativeHandle = System.IntPtr;
 
 namespace QuickLook {
 #if !MONOMAC
-	/// <summary>A <see cref="T:UIKit.UIViewController" /> that manages the user experience of previewing an item.</summary>
+	/// <summary>A <see cref="UIKit.UIViewController" /> that manages the user experience of previewing an item.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/NetworkingInternet/Reference/QLPreviewController_Class/index.html">Apple documentation for <c>QLPreviewController</c></related>
 	[NoMac]
@@ -114,7 +114,7 @@ namespace QuickLook {
 	/// <include file="../docs/api/QuickLook/IQLPreviewControllerDataSource.xml" path="/Documentation/Docs[@DocId='T:QuickLook.IQLPreviewControllerDataSource']/*" />
 	interface IQLPreviewControllerDataSource { }
 
-	/// <summary>A class that allows a <see cref="T:QuickLook.QLPreviewController" /> to preview multiple items.</summary>
+	/// <summary>A class that allows a <see cref="QuickLook.QLPreviewController" /> to preview multiple items.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/NetworkingInternet/Reference/QLPreviewControllerDataSource_Protocol/index.html">Apple documentation for <c>QLPreviewControllerDataSource</c></related>
 	[BaseType (typeof (NSObject))]
@@ -151,15 +151,15 @@ namespace QuickLook {
 		CreateCopy,
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:QuickLook.QLPreviewControllerDelegate" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="QuickLook.QLPreviewControllerDelegate" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:QuickLook.QLPreviewControllerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:QuickLook.QLPreviewControllerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:QuickLook.QLPreviewControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="QuickLook.QLPreviewControllerDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="QuickLook.QLPreviewControllerDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="QuickLook.QLPreviewControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	interface IQLPreviewControllerDelegate { }
 
-	/// <summary>A delegate object that gives the application developer fine-grained control over events in the life-cycle of a <see cref="T:QuickLook.QLPreviewController" /> object.</summary>
+	/// <summary>A delegate object that gives the application developer fine-grained control over events in the life-cycle of a <see cref="QuickLook.QLPreviewController" /> object.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/NetworkingInternet/Reference/QLPreviewControllerDelegate_Protocol/index.html">Apple documentation for <c>QLPreviewControllerDelegate</c></related>
 	[NoMac]
@@ -267,15 +267,15 @@ namespace QuickLook {
 #endif
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:QuickLook.QLPreviewItem" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="QuickLook.QLPreviewItem" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:QuickLook.QLPreviewItem" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:QuickLook.QLPreviewItem" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Quick%20Look%20QLPreview%20Item_%20Extensions&amp;scope=Xamarin" title="T:QuickLook.QLPreviewItem_Extensions">T:QuickLook.QLPreviewItem_Extensions</a></format> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="QuickLook.QLPreviewItem" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="QuickLook.QLPreviewItem" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="QuickLook.QLPreviewItem_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	interface IQLPreviewItem { }
 
-	/// <summary>An item that can be previewed with a <see cref="T:QuickLook.QLPreviewController" />.</summary>
+	/// <summary>An item that can be previewed with a <see cref="QuickLook.QLPreviewController" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/NetworkingInternet/Reference/QLPreviewItem_Protocol_iPhoneOS/index.html">Apple documentation for <c>QLPreviewItem</c></related>
 	[NoMac]

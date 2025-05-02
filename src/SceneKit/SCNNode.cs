@@ -20,7 +20,7 @@ using ObjCRuntime;
 namespace SceneKit {
 	public partial class SCNNode : IEnumerable, IEnumerable<SCNNode> {
 		/// <param name="node">To be added.</param>
-		///         <summary>Adds <paramref name="node" /> as a child of this <see cref="T:SceneKit.SCNNode" />.</summary>
+		///         <summary>Adds <paramref name="node" /> as a child of this <see cref="SceneKit.SCNNode" />.</summary>
 		///         <remarks>To be added.</remarks>
 		public void Add (SCNNode node)
 		{
@@ -28,7 +28,7 @@ namespace SceneKit {
 		}
 
 		/// <param name="nodes">To be added.</param>
-		///         <summary>Adds the specified <paramref name="nodes" /> as children of this <see cref="T:SceneKit.SCNNode" />.</summary>
+		///         <summary>Adds the specified <paramref name="nodes" /> as children of this <see cref="SceneKit.SCNNode" />.</summary>
 		///         <remarks>To be added.</remarks>
 		public void AddNodes (params SCNNode [] nodes)
 		{
@@ -57,7 +57,7 @@ namespace SceneKit {
 
 		/// <param name="animation">To be added.</param>
 		///         <param name="key">To be added.</param>
-		///         <summary>Adds the <paramref name="animation" /> to this <see cref="T:SceneKit.SCNNode" /> and associates it with the <paramref name="key" />.</summary>
+		///         <summary>Adds the <paramref name="animation" /> to this <see cref="SceneKit.SCNNode" /> and associates it with the <paramref name="key" />.</summary>
 		///         <remarks>To be added.</remarks>
 		public void AddAnimation (CAAnimation animation, string? key)
 		{

@@ -35,7 +35,7 @@ namespace SceneKit {
 		///         <summary>Factory method that creates a source for vertex normals.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>
-		///           <para>The <paramref name="normals" /> must correspond directly to their associated vertices (in another <see cref="T:SceneKit.SCNGeometrySource" />).</para>
+		///           <para>The <paramref name="normals" /> must correspond directly to their associated vertices (in another <see cref="SceneKit.SCNGeometrySource" />).</para>
 		///         </remarks>
 		public static unsafe SCNGeometrySource FromNormals (SCNVector3 [] normals)
 		{
@@ -50,7 +50,7 @@ namespace SceneKit {
 		///         <summary>Factory method that creates a source for texture coordinates.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>
-		///           <para>The <paramref name="texcoords" /> must correspond directly to their associated vertices (in another <see cref="T:SceneKit.SCNGeometrySource" />).</para>
+		///           <para>The <paramref name="texcoords" /> must correspond directly to their associated vertices (in another <see cref="SceneKit.SCNGeometrySource" />).</para>
 		///           <para>For non-tiling textures, texture coordinates are values between 0 and 1 that describe the mapping between a texture location and a geometry location. A value of [0,0] represents the origin of the texture while [1,1] represents the point at its furthest extent.</para>
 		///         </remarks>
 		public static unsafe SCNGeometrySource FromTextureCoordinates (CGPoint [] texcoords)
@@ -108,7 +108,7 @@ namespace SceneKit {
 		/// <param name="vertexCount">To be added.</param>
 		/// <param name="offset">To be added.</param>
 		/// <param name="stride">To be added.</param>
-		/// <summary>Factory method to create a new <see cref="T:SceneKit.SCNGeometrySource" /> from a data buffer.</summary>
+		/// <summary>Factory method to create a new <see cref="SceneKit.SCNGeometrySource" /> from a data buffer.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		public static SCNGeometrySource FromMetalBuffer (IMTLBuffer mtlBuffer, MTLVertexFormat vertexFormat, SCNGeometrySourceSemantics semantic, nint vertexCount, nint offset, nint stride)

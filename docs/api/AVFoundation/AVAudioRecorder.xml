@@ -3,7 +3,7 @@
     <summary>Audio recording class.</summary>
     <remarks>
       <para>
-	To create instances of this class use the factory method <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=AVFoundation%20AVRecorder%20To%20Url(%20Foundation%20NSUrl%20, %20AVFoundation%20AVAudio%20Recorder%20Settings%20,Foundation%20NSError%20)&amp;scope=Xamarin" title="M:AVFoundation.AVRecorder.ToUrl(Foundation.NSUrl, AVFoundation.AVAudioRecorderSettings,Foundation.NSError)">M:AVFoundation.AVRecorder.ToUrl(Foundation.NSUrl, AVFoundation.AVAudioRecorderSettings,Foundation.NSError)</a></format></para>
+	To create instances of this class use the factory method <see cref="AVFoundation.AVRecorder.ToUrl(Foundation.NSUrl, AVFoundation.AVAudioRecorderSettings,Foundation.NSError)" /></para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
 var settings = new AVAudioRecorderSettings () {

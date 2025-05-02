@@ -316,7 +316,7 @@ namespace Security {
 		IntPtr MatchLimitAll { get; }
 	}
 
-	/// <summary>An enumeration whose values specify the <see cref="P:Security.SecRecord.KeyType" /> property.</summary>
+	/// <summary>An enumeration whose values specify the <see cref="Security.SecRecord.KeyType" /> property.</summary>
 	/// <remarks>To be added.</remarks>
 	enum SecKeyType {
 		/// <summary>To be added.</summary>

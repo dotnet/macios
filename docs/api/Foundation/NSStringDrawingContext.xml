@@ -9,12 +9,12 @@
       </para>
       <para>
 	You can set the properties up front with
-	the <see cref="P:Foundation.NSStringDrawingContext.MinimumScaleFactor" />
-	and <see cref="P:Foundation.NSStringDrawingContext.MinimumTrackingAdjustment" />.   
+	the <see cref="Foundation.NSStringDrawingContext.MinimumScaleFactor" />
+	and <see cref="Foundation.NSStringDrawingContext.MinimumTrackingAdjustment" />.   
       </para>
       <para>
-	After drawing you can examine the actual values used by examining the <see cref="P:Foundation.NSStringDrawingContext.ActualScaleFactor" />
-	and <see cref="P:Foundation.NSStringDrawingContext.ActualTrackingAdjustment" /> properties. 
+	After drawing you can examine the actual values used by examining the <see cref="Foundation.NSStringDrawingContext.ActualScaleFactor" />
+	and <see cref="Foundation.NSStringDrawingContext.ActualTrackingAdjustment" /> properties. 
       </para>
     </remarks>
     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/NSStringDrawingContext_class/index.html">Apple documentation for <c>NSStringDrawingContext</c></related>

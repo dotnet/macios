@@ -34,8 +34,8 @@ namespace GameplayKit {
 			return GetState (GKState.GetClass (state, "state"));
 		}
 
-		/// <param name="stateType">Must be a subclass of <see cref="T:GameplayKit.GKState" /></param>
-		///         <summary>Whether a transition from <see cref="P:GameplayKit.GKStateMachine.CurrentState" /> to <paramref name="stateType" /> is valid.</summary>
+		/// <param name="stateType">Must be a subclass of <see cref="GameplayKit.GKState" /></param>
+		///         <summary>Whether a transition from <see cref="GameplayKit.GKStateMachine.CurrentState" /> to <paramref name="stateType" /> is valid.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		public bool CanEnterState (Type stateType)
@@ -53,7 +53,7 @@ namespace GameplayKit {
 		}
 
 		/// <param name="stateType">To be added.</param>
-		///         <summary>Attempts to transition from <see cref="P:GameplayKit.GKStateMachine.CurrentState" /> to <paramref name="stateType" />.</summary>
+		///         <summary>Attempts to transition from <see cref="GameplayKit.GKStateMachine.CurrentState" /> to <paramref name="stateType" />.</summary>
 		///         <returns>
 		///           <see langword="true" /> if the transition succeeded.</returns>
 		///         <remarks>To be added.</remarks>

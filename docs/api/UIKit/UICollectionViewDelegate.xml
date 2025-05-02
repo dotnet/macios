@@ -1,16 +1,16 @@
 <Documentation>
   <Docs DocId="T:UIKit.UICollectionViewDelegate">
-    <summary>Used to receive notices relating to a <see cref="T:UIKit.UICollectionView" />. </summary>
+    <summary>Used to receive notices relating to a <see cref="UIKit.UICollectionView" />. </summary>
     <remarks>
-      <para>Methods within <see cref="T:UIKit.UICollectionViewDelegate" /> are called in reaction to events occurring within an associated <see cref="T:UIKit.UICollectionView" />. To use this class, you must derive from it and override its method to respond to events.</para>
-      <para>Although <see cref="T:UIKit.UICollectionView" /> is a subtype of <see cref="T:UIKit.UIScrollView" />, <see cref="T:UIKit.UICollectionViewDelegate" /> is not a subtype of <see cref="T:UIKit.UIScrollViewDelegate" />. Nonetheless, many of the methods in <see cref="T:UIKit.UICollectionViewDelegate" /> mirror those of <see cref="T:UIKit.UIScrollViewDelegate" /> and application developers may find it useful to consult the documentation of that class for a more detailed discussion of methods relating to scrolling.</para>
-      <para>The <see cref="T:UIKit.UICollectionViewSource" /> class provides an alternative to this class, combining the <see cref="T:UIKit.UICollectionViewDelegate" /> API and the <see cref="T:UIKit.UICollectionViewDataSource" /> APIs. It is available via the <see cref="P:UIKit.UICollectionView.Source" /> property. </para>
+      <para>Methods within <see cref="UIKit.UICollectionViewDelegate" /> are called in reaction to events occurring within an associated <see cref="UIKit.UICollectionView" />. To use this class, you must derive from it and override its method to respond to events.</para>
+      <para>Although <see cref="UIKit.UICollectionView" /> is a subtype of <see cref="UIKit.UIScrollView" />, <see cref="UIKit.UICollectionViewDelegate" /> is not a subtype of <see cref="UIKit.UIScrollViewDelegate" />. Nonetheless, many of the methods in <see cref="UIKit.UICollectionViewDelegate" /> mirror those of <see cref="UIKit.UIScrollViewDelegate" /> and application developers may find it useful to consult the documentation of that class for a more detailed discussion of methods relating to scrolling.</para>
+      <para>The <see cref="UIKit.UICollectionViewSource" /> class provides an alternative to this class, combining the <see cref="UIKit.UICollectionViewDelegate" /> API and the <see cref="UIKit.UICollectionViewDataSource" /> APIs. It is available via the <see cref="UIKit.UICollectionView.Source" /> property. </para>
       <para>
         <format type="text/html">
           <h2>Selecting and Highlighting</h2>
         </format>
       </para>
-      <para>Selecting and highlighting in a <see cref="T:UIKit.UICollectionView" /> follows this sequence:</para>
+      <para>Selecting and highlighting in a <see cref="UIKit.UICollectionView" /> follows this sequence:</para>
       <list type="table">
         <listheader>
           <term>User Action</term>
@@ -31,7 +31,7 @@
           <term>Finger down in cell</term>
           <description>
             <para>
-              <see cref="M:UIKit.UICollectionViewDelegate.ShouldHighlightItem(UIKit.UICollectionView,Foundation.NSIndexPath)" /> is called. If it returns <see langword="false" />,
+              <see cref="UIKit.UICollectionViewDelegate.ShouldHighlightItem(UIKit.UICollectionView,Foundation.NSIndexPath)" /> is called. If it returns <see langword="false" />,
             processing stops.
 	    </para>
           </description>
@@ -41,7 +41,7 @@
         <item>
           <term />
           <description>
-            <see cref="M:UIKit.UICollectionViewDelegate.ItemHighlighted(UIKit.UICollectionView,Foundation.NSIndexPath)" /> is called.
+            <see cref="UIKit.UICollectionViewDelegate.ItemHighlighted(UIKit.UICollectionView,Foundation.NSIndexPath)" /> is called.
           </description>
           <description>
             <para>
@@ -52,7 +52,7 @@
         <item>
           <term>Finger up</term>
           <description>
-            <see cref="M:UIKit.UICollectionViewDelegate.ShouldSelectItem(UIKit.UICollectionView,Foundation.NSIndexPath)" /> is called. If it returns <see langword="false" />, processing stops.
+            <see cref="UIKit.UICollectionViewDelegate.ShouldSelectItem(UIKit.UICollectionView,Foundation.NSIndexPath)" /> is called. If it returns <see langword="false" />, processing stops.
           </description>
           <description>
           </description>
@@ -60,7 +60,7 @@
         <item>
           <term />
           <description>
-            <see cref="M:UIKit.UICollectionViewDelegate.ItemSelected(UIKit.UICollectionView,Foundation.NSIndexPath)" /> is called. <see cref="M:UIKit.UICollectionViewDelegate.ItemUnhighlighted(UIKit.UICollectionView,Foundation.NSIndexPath)" /> is called.
+            <see cref="UIKit.UICollectionViewDelegate.ItemSelected(UIKit.UICollectionView,Foundation.NSIndexPath)" /> is called. <see cref="UIKit.UICollectionViewDelegate.ItemUnhighlighted(UIKit.UICollectionView,Foundation.NSIndexPath)" /> is called.
             
           </description>
           <description>
@@ -73,7 +73,7 @@
       <para>
         <img href="~/UIKit/_images/UIKit.UICollectionView.HighlightAndSelect.png" alt="Sequence diagram showing user actions, UICollectionViewDelegate events, and UICollectionView Cell properties" />
       </para>
-      <para>Deselecting a <see cref="T:UIKit.UICollectionViewCell" /> follows a similar sequence:</para>
+      <para>Deselecting a <see cref="UIKit.UICollectionViewCell" /> follows a similar sequence:</para>
       <para>
         <list type="table">
           <listheader>
@@ -82,7 +82,7 @@
             <description>UICollectionViewCell Properties</description>
           </listheader>
           <item>
-            <term>Nothing touched while some <see cref="T:UIKit.UICollectionViewCell" /> is highlighted.</term>
+            <term>Nothing touched while some <see cref="UIKit.UICollectionViewCell" /> is highlighted.</term>
             <description>
             </description>
             <description>
@@ -94,7 +94,7 @@
           <item>
             <term>Finger taps cell (Deselect gesture)</term>
             <description>
-              <see cref="M:UIKit.UICollectionViewDelegate.ShouldDeselectItem(UIKit.UICollectionView,Foundation.NSIndexPath)" /> is called. If it returns <see langword="false" />, processing stops. 
+              <see cref="UIKit.UICollectionViewDelegate.ShouldDeselectItem(UIKit.UICollectionView,Foundation.NSIndexPath)" /> is called. If it returns <see langword="false" />, processing stops. 
           </description>
             <description>
             </description>
@@ -102,7 +102,7 @@
           <item>
             <term />
             <description>
-              <see cref="M:UIKit.UICollectionViewDelegate.ItemDeselected(UIKit.UICollectionView,Foundation.NSIndexPath)" /> is called.
+              <see cref="UIKit.UICollectionViewDelegate.ItemDeselected(UIKit.UICollectionView,Foundation.NSIndexPath)" /> is called.
           </description>
             <description>
               <para>

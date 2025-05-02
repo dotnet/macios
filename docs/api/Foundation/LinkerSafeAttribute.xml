@@ -11,7 +11,7 @@
 	The use case for this attribute are third-party libraries that
 	are safe to be linked because they have either safe to be
 	linked because they do not depend on members or methods to be
-	compiled in to work, or if they do, they used the <see cref="T:Foundation.PreserveAttribute" /> to preserve those classes. 
+	compiled in to work, or if they do, they used the <see cref="Foundation.PreserveAttribute" /> to preserve those classes. 
 
       </para>
       <para>

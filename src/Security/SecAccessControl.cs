@@ -32,7 +32,7 @@ namespace Security {
 		/// <summary>Requires the user to validate, either biometrically or via the device passcode.</summary>
 		UserPresence = 1 << 0,
 
-		/// <summary>Developers should use <see cref="F:Security.SecAccessControlCreateFlags.BiometryAny" /> instead.</summary>
+		/// <summary>Developers should use <see cref="Security.SecAccessControlCreateFlags.BiometryAny" /> instead.</summary>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -40,7 +40,7 @@ namespace Security {
 		[Advice ("'BiometryAny' is preferred over 'TouchIDAny' since Xcode 9.3. Touch ID and Face ID together are biometric authentication mechanisms.")]
 		TouchIDAny = BiometryAny,
 
-		/// <summary>Developers should use <see cref="F:Security.SecAccessControlCreateFlags.BiometryCurrentSet" /> instead.</summary>
+		/// <summary>Developers should use <see cref="Security.SecAccessControlCreateFlags.BiometryCurrentSet" /> instead.</summary>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]

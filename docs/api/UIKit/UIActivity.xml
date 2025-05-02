@@ -1,16 +1,16 @@
 <Documentation>
   <Docs DocId="T:UIKit.UIActivity">
-    <summary>Abstract base class of activities to which the <see cref="T:UIKit.UIActivityViewController" /> can send data.</summary>
+    <summary>Abstract base class of activities to which the <see cref="UIKit.UIActivityViewController" /> can send data.</summary>
     <remarks>
-      <para>The <see cref="T:UIKit.UIActivityViewController" /> can be used to send data to services such as social networks, email, SMS, etc. The operating system provides a number of these, such as <see cref="P:UIKit.UIActivityType.PostToFacebook" />, <see cref="P:UIKit.UIActivityType.Mail" />, and <see cref="P:UIKit.UIActivityType.Message" />. </para>
-      <para>You can create a new service by subclassing <see cref="T:UIKit.UIActivity" /> and, optionally, <see cref="T:UIKit.UIActivityItemProvider" />. This service will only be available to your own application; there is no way to make for non-Apple developers to make a <see cref="T:UIKit.UIActivity" /> that is available across apps.</para>
+      <para>The <see cref="UIKit.UIActivityViewController" /> can be used to send data to services such as social networks, email, SMS, etc. The operating system provides a number of these, such as <see cref="UIKit.UIActivityType.PostToFacebook" />, <see cref="UIKit.UIActivityType.Mail" />, and <see cref="UIKit.UIActivityType.Message" />. </para>
+      <para>You can create a new service by subclassing <see cref="UIKit.UIActivity" /> and, optionally, <see cref="UIKit.UIActivityItemProvider" />. This service will only be available to your own application; there is no way to make for non-Apple developers to make a <see cref="UIKit.UIActivity" /> that is available across apps.</para>
       <para>
 	When subclassing, you should override the 
-	<see cref="P:UIKit.UIActivity.Image" />, 
-	<see cref="P:UIKit.UIActivity.Title" />, 
-	<see cref="P:UIKit.UIActivity.Type" />, 
-	<see cref="M:UIKit.UIActivity.Prepare(Foundation.NSObject[])" /> and 
-	<see cref="M:UIKit.UIActivity.CanPerform(Foundation.NSObject[])" />.
+	<see cref="UIKit.UIActivity.Image" />, 
+	<see cref="UIKit.UIActivity.Title" />, 
+	<see cref="UIKit.UIActivity.Type" />, 
+	<see cref="UIKit.UIActivity.Prepare(Foundation.NSObject[])" /> and 
+	<see cref="UIKit.UIActivity.CanPerform(Foundation.NSObject[])" />.
       </para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[

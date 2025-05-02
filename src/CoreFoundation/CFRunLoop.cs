@@ -44,7 +44,7 @@ using CFIndex = System.IntPtr;
 namespace CoreFoundation {
 
 	// anonymous and typeless native enum - System/Library/Frameworks/CoreFoundation.framework/Headers/CFRunLoop.h
-	/// <summary>The reason for a <see cref="T:CoreFoundation.CFRunLoop" /> to stop running.</summary>
+	/// <summary>The reason for a <see cref="CoreFoundation.CFRunLoop" /> to stop running.</summary>
 	///     <remarks>
 	///       <para>
 	///       </para>
@@ -52,11 +52,11 @@ namespace CoreFoundation {
 	public enum CFRunLoopExitReason : int {
 		/// <summary>The run loop terminated.</summary>
 		Finished = 1,
-		/// <summary>The run loop was stopped by a call to the <see cref="M:CoreFoundation.CFRunLoop.Stop" /> method.</summary>
+		/// <summary>The run loop was stopped by a call to the <see cref="CoreFoundation.CFRunLoop.Stop" /> method.</summary>
 		Stopped = 2,
-		/// <summary>The number of seconds specified in the call to <see cref="M:CoreFoundation.CFRunLoop.RunInMode(Foundation.NSString,System.Double,System.Boolean)" /> elapsed.</summary>
+		/// <summary>The number of seconds specified in the call to <see cref="CoreFoundation.CFRunLoop.RunInMode(Foundation.NSString,System.Double,System.Boolean)" /> elapsed.</summary>
 		TimedOut = 3,
-		/// <summary>An event from a source was handled, and the developer specified that a single source should be processed on the call to <see cref="M:CoreFoundation.CFRunLoop.RunInMode(Foundation.NSString,System.Double,System.Boolean)" /></summary>
+		/// <summary>An event from a source was handled, and the developer specified that a single source should be processed on the call to <see cref="CoreFoundation.CFRunLoop.RunInMode(Foundation.NSString,System.Double,System.Boolean)" /></summary>
 		HandledSource = 4,
 	}
 
@@ -75,7 +75,7 @@ namespace CoreFoundation {
 		public delegate* unmanaged<IntPtr, void> Perform;
 	}
 
-	/// <summary>An input source that generates asynchronous events and is intended to be used with a <see cref="T:CoreFoundation.CFRunLoop" />.</summary>
+	/// <summary>An input source that generates asynchronous events and is intended to be used with a <see cref="CoreFoundation.CFRunLoop" />.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -134,7 +134,7 @@ namespace CoreFoundation {
 	}
 
 #if !COREBUILD
-	/// <summary>An abstract <see cref="T:CoreFoundation.CFRunLoop" /> that, when extended, gives the application developer fine-grained control over lifecycle events. </summary>
+	/// <summary>An abstract <see cref="CoreFoundation.CFRunLoop" /> that, when extended, gives the application developer fine-grained control over lifecycle events. </summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -269,12 +269,12 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static void CFRunLoopRun ();
 
-		/// <summary>Starts the <see cref="T:CoreFoundation.CFRunLoop" /> for the current thread.</summary>
+		/// <summary>Starts the <see cref="CoreFoundation.CFRunLoop" /> for the current thread.</summary>
 		///         <remarks>
 		///           <para>Run the runloop in the default mode.</para>
 		///           <para>
 		///           </para>
-		///           <para>The run loop can be stopped by calling <see cref="M:CoreFoundation.CFRunLoop.Stop" />. </para>
+		///           <para>The run loop can be stopped by calling <see cref="CoreFoundation.CFRunLoop.Stop" />. </para>
 		///           <para>
 		///           </para>
 		///           <para>The run loop can be determinated if all the sources and timers are removed from it.</para>
@@ -391,13 +391,9 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static void CFRunLoopAddSource (/* CFRunLoopRef */ IntPtr rl, /* CFRunLoopSourceRef */ IntPtr source, /* CFStringRef */ IntPtr mode);
 
-		/// <param name="source">
-		///
-		/// Source to be added.
-		///   	   </param>
-		///         <param name="mode">The mode to add the source to.  If you use <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Foundation%20CFRun%20Loop%20Common%20Modes&amp;scope=Xamarin" title="P:CoreFoundation.CFRunLoop.CommonModes">P:CoreFoundation.CFRunLoop.CommonModes</a></format> the source is added to all common modes.        </param>
-		///         <summary>Adds a new source to the run loop on the specified mode.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Adds a new source to the run loop on the specified mode.</summary>
+		/// <param name="source">Source to be added.</param>
+		/// <param name="mode">The mode to add the source to. If you use <see cref="NSRunLoopMode.Common" /> the source is added to all common modes.</param>
 		public void AddSource (CFRunLoopSource source, NSString mode)
 		{
 			if (source is null)
@@ -415,7 +411,7 @@ namespace CoreFoundation {
 
 		/// <param name="source">The source to probe.</param>
 		///         <param name="mode">The mode to probe into.</param>
-		///         <summary>Determines whether the run loop contains the specified <see cref="T:CoreFoundation.CFRunLoopSource" /> on a specific mode.</summary>
+		///         <summary>Determines whether the run loop contains the specified <see cref="CoreFoundation.CFRunLoopSource" /> on a specific mode.</summary>
 		///         <returns>
 		///           <see langword="true" /> if the runloop contains the specified source in the specified mode.</returns>
 		///         <remarks>
@@ -437,15 +433,9 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static void CFRunLoopRemoveSource (/* CFRunLoopRef */ IntPtr rl, /* CFRunLoopSourceRef */ IntPtr source, /* CFStringRef */ IntPtr mode);
 
-		/// <param name="source">Run loop source to remove</param>
-		///         <param name="mode">
-		/// The mode to remove it from.  If you use <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Foundation%20CFRun%20Loop%20Common%20Modes&amp;scope=Xamarin" title="P:CoreFoundation.CFRunLoop.CommonModes">P:CoreFoundation.CFRunLoop.CommonModes</a></format> the source is removed from all common modes.
-		///   	   </param>
-		///         <summary>Removes a source from the runloop.</summary>
-		///         <remarks>
-		///           <para>
-		///           </para>
-		///         </remarks>
+		/// <summary>Removes a source from the runloop.</summary>
+		/// <param name="source">Run loop source to remove.</param>
+		/// <param name="mode">The mode to remove it from. If you use <see cref="NSRunLoopMode.Common" /> the source is removed from all common modes.</param>
 		public void RemoveSource (CFRunLoopSource source, NSString mode)
 		{
 			if (source is null)

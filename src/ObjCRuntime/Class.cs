@@ -182,7 +182,7 @@ namespace ObjCRuntime {
 		///         <returns>The Objective-C handle to the object.</returns>
 		///         <remarks>
 		///           <para>
-		///       This method looks up the Objective-C handle for the specified type. This method is special-cased by the AOT compiler to become an inlined, static reference to the type. This is significantly faster that calling <see cref="M:ObjCRuntime.Selector.GetHandle(System.String)" />, but it also means that the class must exist in the executable (or in a framework the executable is linked with).
+		///       This method looks up the Objective-C handle for the specified type. This method is special-cased by the AOT compiler to become an inlined, static reference to the type. This is significantly faster that calling <see cref="ObjCRuntime.Selector.GetHandle(System.String)" />, but it also means that the class must exist in the executable (or in a framework the executable is linked with).
 		///     </para>
 		///         </remarks>
 		public static NativeHandle GetHandleIntrinsic (string name)

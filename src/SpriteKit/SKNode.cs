@@ -23,7 +23,7 @@ namespace SpriteKit {
 		///         <param name="file">
 		///
 		/// Filename containing the SpriteKit assets, without the extension.</param>
-		///         <summary>Creates a new <see cref="T:SpriteKit.SKNode" /> by loading the assets from a file included in the application. </summary>
+		///         <summary>Creates a new <see cref="SpriteKit.SKNode" /> by loading the assets from a file included in the application. </summary>
 		///         <returns>
 		///
 		/// The new instance of the node.   The parameter type <typeparamref name="T" /> is used to determine which kind of class you want to get out of the file.</returns>

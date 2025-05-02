@@ -16,7 +16,7 @@ namespace GameplayKit {
 	public partial class GKBehavior {
 
 		/// <param name="index">To be added.</param>
-		/// <summary>Retrieves the <see cref="T:GameplayKit.GKGoal" /> at the specified index. (see <see cref="P:GameplayKit.GKBehavior.GoalCount" />)</summary>
+		/// <summary>Retrieves the <see cref="GameplayKit.GKGoal" /> at the specified index. (see <see cref="GameplayKit.GKBehavior.GoalCount" />)</summary>
 		/// <value>To be added.</value>
 		/// <remarks>To be added.</remarks>
 		public GKGoal this [nuint index] {

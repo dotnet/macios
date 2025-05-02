@@ -56,7 +56,7 @@ namespace CoreImage {
 		Linear,
 	}
 
-	/// <summary>Options to conrol sampler operations for <see cref="T:CoreImage.CISampler" /> objects.</summary>
+	/// <summary>Options to conrol sampler operations for <see cref="CoreImage.CISampler" /> objects.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -110,7 +110,7 @@ namespace CoreImage {
 	public partial class CISampler {
 		/// <param name="sourceImage">To be added.</param>
 		///         <param name="options">To be added.</param>
-		///         <summary>Creates a new <see cref="T:CoreImage.CISampler" /> from the <paramref name="sourceImage" /> with <paramref name="options" />.</summary>
+		///         <summary>Creates a new <see cref="CoreImage.CISampler" /> from the <paramref name="sourceImage" /> with <paramref name="options" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		public CISampler FromImage (CIImage sourceImage, CISamplerOptions? options)

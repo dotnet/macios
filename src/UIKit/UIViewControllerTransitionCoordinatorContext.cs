@@ -10,7 +10,7 @@
 #nullable disable
 
 namespace UIKit {
-	/// <summary>Extension class that, together with the <see cref="T:UIKit.IUIViewControllerTransitionCoordinatorContext" /> interface, comprise the UIViewControllerTransitionCoordinatorContext protocol.</summary>
+	/// <summary>Extension class that, together with the <see cref="UIKit.IUIViewControllerTransitionCoordinatorContext" /> interface, comprise the UIViewControllerTransitionCoordinatorContext protocol.</summary>
 	///     <remarks>To be added.</remarks>
 	public static partial class UIViewControllerTransitionCoordinatorContext_Extensions {
 		/// <summary>Gets a view controller that controls a transition.</summary>

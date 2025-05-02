@@ -18,19 +18,19 @@ using NativeHandle = System.IntPtr;
 
 namespace Contacts {
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:Contacts.ICNKeyDescriptor" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Contacts.ICNKeyDescriptor" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:Contacts.ICNKeyDescriptor" />.</para>
-	///       <para>If you create objects that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:Contacts.ICNKeyDescriptor" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Contacts%20CNKey%20Descriptor_%20Extensions&amp;scope=Xamarin" title="T:Contacts.CNKeyDescriptor_Extensions">T:Contacts.CNKeyDescriptor_Extensions</a></format> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Contacts.ICNKeyDescriptor" />.</para>
+	///       <para>If you create objects that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Contacts.ICNKeyDescriptor" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="Contacts.CNKeyDescriptor_Extensions" /> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	interface ICNKeyDescriptor { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:Contacts.ICNKeyDescriptor" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Contacts.ICNKeyDescriptor" />.</summary>
 	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:Contacts.ICNKeyDescriptor" />.</para>
-	///       <para>If you create objects that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:Contacts.ICNKeyDescriptor" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Contacts%20CNKey%20Descriptor_%20Extensions&amp;scope=Xamarin" title="T:Contacts.CNKeyDescriptor_Extensions">T:Contacts.CNKeyDescriptor_Extensions</a></format> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Contacts.ICNKeyDescriptor" />.</para>
+	///       <para>If you create objects that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Contacts.ICNKeyDescriptor" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="Contacts.CNKeyDescriptor_Extensions" /> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
@@ -202,196 +202,196 @@ namespace Contacts {
 		NSPredicate GetPredicateForContactsInContainer (string containerIdentifier);
 	}
 
-	/// <summary>Provides string constants whose values are the names of the possibly-available keys for <see cref="T:Contacts.CNContact" /> objects.</summary>
+	/// <summary>Provides string constants whose values are the names of the possibly-available keys for <see cref="Contacts.CNContact" /> objects.</summary>
 	[MacCatalyst (13, 1)]
 	[Static]
 	[EditorBrowsable (EditorBrowsableState.Advanced)]
 	interface CNContactKey {
 
-		/// <summary>Key identifying the <see cref="P:Contacts.CNContact.Identifier" /> property.</summary>
+		/// <summary>Key identifying the <see cref="Contacts.CNContact.Identifier" /> property.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("CNContactIdentifierKey")]
 		NSString Identifier { get; }
 
-		/// <summary>Key identifying the <see cref="P:Contacts.CNContact.NamePrefix" /> property.</summary>
+		/// <summary>Key identifying the <see cref="Contacts.CNContact.NamePrefix" /> property.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("CNContactNamePrefixKey")]
 		NSString NamePrefix { get; }
 
-		/// <summary>Key identifying the <see cref="P:Contacts.CNContact.GivenName" /> property.</summary>
+		/// <summary>Key identifying the <see cref="Contacts.CNContact.GivenName" /> property.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("CNContactGivenNameKey")]
 		NSString GivenName { get; }
 
-		/// <summary>Key identifying the <see cref="P:Contacts.CNContact.MiddleName" /> property.</summary>
+		/// <summary>Key identifying the <see cref="Contacts.CNContact.MiddleName" /> property.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("CNContactMiddleNameKey")]
 		NSString MiddleName { get; }
 
-		/// <summary>Key identifying the <see cref="P:Contacts.CNContact.FamilyName" /> property.</summary>
+		/// <summary>Key identifying the <see cref="Contacts.CNContact.FamilyName" /> property.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("CNContactFamilyNameKey")]
 		NSString FamilyName { get; }
 
-		/// <summary>Key identifying the <see cref="P:Contacts.CNContact.PreviousFamilyName" /> property.</summary>
+		/// <summary>Key identifying the <see cref="Contacts.CNContact.PreviousFamilyName" /> property.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("CNContactPreviousFamilyNameKey")]
 		NSString PreviousFamilyName { get; }
 
-		/// <summary>Key identifying the <see cref="P:Contacts.CNContact.NameSuffix" /> property.</summary>
+		/// <summary>Key identifying the <see cref="Contacts.CNContact.NameSuffix" /> property.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("CNContactNameSuffixKey")]
 		NSString NameSuffix { get; }
 
-		/// <summary>Key identifying the <see cref="P:Contacts.CNContact.Nickname" /> property.</summary>
+		/// <summary>Key identifying the <see cref="Contacts.CNContact.Nickname" /> property.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("CNContactNicknameKey")]
 		NSString Nickname { get; }
 
-		/// <summary>Key identifying the <see cref="P:Contacts.CNContact.PhoneticGivenName" /> property.</summary>
+		/// <summary>Key identifying the <see cref="Contacts.CNContact.PhoneticGivenName" /> property.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("CNContactPhoneticGivenNameKey")]
 		NSString PhoneticGivenName { get; }
 
-		/// <summary>Key identifying the <see cref="P:Contacts.CNContact.PhoneticMiddleName" /> property.</summary>
+		/// <summary>Key identifying the <see cref="Contacts.CNContact.PhoneticMiddleName" /> property.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("CNContactPhoneticMiddleNameKey")]
 		NSString PhoneticMiddleName { get; }
 
-		/// <summary>Key identifying the <see cref="P:Contacts.CNContact.PhoneticFamilyName" /> property.</summary>
+		/// <summary>Key identifying the <see cref="Contacts.CNContact.PhoneticFamilyName" /> property.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("CNContactPhoneticFamilyNameKey")]
 		NSString PhoneticFamilyName { get; }
 
-		/// <summary>Key identifying the <see cref="P:Contacts.CNContact.PhoneticOrganizationName" /> property.</summary>
+		/// <summary>Key identifying the <see cref="Contacts.CNContact.PhoneticOrganizationName" /> property.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("CNContactPhoneticOrganizationNameKey")]
 		NSString PhoneticOrganizationName { get; }
 
-		/// <summary>Key identifying the <see cref="P:Contacts.CNContact.OrganizationName" /> property.</summary>
+		/// <summary>Key identifying the <see cref="Contacts.CNContact.OrganizationName" /> property.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("CNContactOrganizationNameKey")]
 		NSString OrganizationName { get; }
 
-		/// <summary>Key identifying the <see cref="P:Contacts.CNContact.DepartmentName" /> property.</summary>
+		/// <summary>Key identifying the <see cref="Contacts.CNContact.DepartmentName" /> property.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("CNContactDepartmentNameKey")]
 		NSString DepartmentName { get; }
 
-		/// <summary>Key identifying the <see cref="P:Contacts.CNContact.JobTitle" /> property.</summary>
+		/// <summary>Key identifying the <see cref="Contacts.CNContact.JobTitle" /> property.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("CNContactJobTitleKey")]
 		NSString JobTitle { get; }
 
-		/// <summary>Key identifying the <see cref="P:Contacts.CNContact.Birthday" /> property.</summary>
+		/// <summary>Key identifying the <see cref="Contacts.CNContact.Birthday" /> property.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("CNContactBirthdayKey")]
 		NSString Birthday { get; }
 
-		/// <summary>Key identifying the <see cref="P:Contacts.CNContact.NonGregorianBirthday" /> property.</summary>
+		/// <summary>Key identifying the <see cref="Contacts.CNContact.NonGregorianBirthday" /> property.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("CNContactNonGregorianBirthdayKey")]
 		NSString NonGregorianBirthday { get; }
 
-		/// <summary>Key identifying the <see cref="P:Contacts.CNContact.Note" /> property.</summary>
+		/// <summary>Key identifying the <see cref="Contacts.CNContact.Note" /> property.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("CNContactNoteKey")]
 		NSString Note { get; }
 
-		/// <summary>Key identifying the <see cref="P:Contacts.CNContact.ImageData" /> property.</summary>
+		/// <summary>Key identifying the <see cref="Contacts.CNContact.ImageData" /> property.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("CNContactImageDataKey")]
 		NSString ImageData { get; }
 
-		/// <summary>Key identifying the <see cref="P:Contacts.CNContact.ImageDataAvailable" /> property.</summary>
+		/// <summary>Key identifying the <see cref="Contacts.CNContact.ImageDataAvailable" /> property.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("CNContactImageDataAvailableKey")]
 		NSString ImageDataAvailable { get; }
 
-		/// <summary>Key identifying the <see cref="P:Contacts.CNContact.ThumbnailImageData" /> property.</summary>
+		/// <summary>Key identifying the <see cref="Contacts.CNContact.ThumbnailImageData" /> property.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("CNContactThumbnailImageDataKey")]
 		NSString ThumbnailImageData { get; }
 
-		/// <summary>Key identifying the <see cref="P:Contacts.CNContact.ContactType" /> property.</summary>
+		/// <summary>Key identifying the <see cref="Contacts.CNContact.ContactType" /> property.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("CNContactTypeKey")]
 		NSString Type { get; }
 
-		/// <summary>Key identifying the <see cref="P:Contacts.CNContact.PhoneNumbers" /> property.</summary>
+		/// <summary>Key identifying the <see cref="Contacts.CNContact.PhoneNumbers" /> property.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("CNContactPhoneNumbersKey")]
 		NSString PhoneNumbers { get; }
 
-		/// <summary>Key identifying the <see cref="P:Contacts.CNContact.EmailAddresses" /> property.</summary>
+		/// <summary>Key identifying the <see cref="Contacts.CNContact.EmailAddresses" /> property.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("CNContactEmailAddressesKey")]
 		NSString EmailAddresses { get; }
 
-		/// <summary>Key identifying the <see cref="P:Contacts.CNContact.PostalAddresses" /> property.</summary>
+		/// <summary>Key identifying the <see cref="Contacts.CNContact.PostalAddresses" /> property.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("CNContactPostalAddressesKey")]
 		NSString PostalAddresses { get; }
 
-		/// <summary>Key identifying the <see cref="P:Contacts.CNContact.Dates" /> property.</summary>
+		/// <summary>Key identifying the <see cref="Contacts.CNContact.Dates" /> property.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("CNContactDatesKey")]
 		NSString Dates { get; }
 
-		/// <summary>Key identifying the <see cref="P:Contacts.CNContact.UrlAddresses" /> property.</summary>
+		/// <summary>Key identifying the <see cref="Contacts.CNContact.UrlAddresses" /> property.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("CNContactUrlAddressesKey")]
 		NSString UrlAddresses { get; }
 
-		/// <summary>Key identifying the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Contacts%20CNContact%20Relations&amp;scope=Xamarin" title="P:Contacts.CNContact.Relations">P:Contacts.CNContact.Relations</a></format> property.</summary>
+		/// <summary>Key identifying the <see cref="Contacts.CNContact.Relations" /> property.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("CNContactRelationsKey")]
 		NSString Relations { get; }
 
-		/// <summary>Key identifying the <see cref="P:Contacts.CNContact.SocialProfiles" /> property.</summary>
+		/// <summary>Key identifying the <see cref="Contacts.CNContact.SocialProfiles" /> property.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("CNContactSocialProfilesKey")]
 		NSString SocialProfiles { get; }
 
-		/// <summary>Key identifying the <see cref="P:Contacts.CNContact.InstantMessageAddresses" /> property.</summary>
+		/// <summary>Key identifying the <see cref="Contacts.CNContact.InstantMessageAddresses" /> property.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("CNContactInstantMessageAddressesKey")]
 		NSString InstantMessageAddresses { get; }
 	}
 
-	/// <summary>Holds the parameters for a search request of the <see cref="T:Contacts.CNContactStore" />.</summary>
+	/// <summary>Holds the parameters for a search request of the <see cref="Contacts.CNContactStore" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Contacts/Reference/CNContactFetchRequest_Class/index.html">Apple documentation for <c>CNContactFetchRequest</c></related>
 	[MacCatalyst (13, 1)]
@@ -424,7 +424,7 @@ namespace Contacts {
 		CNContactSortOrder SortOrder { get; set; }
 	}
 
-	/// <summary>A custom formatter for <see cref="T:Contacts.CNContact" /> objects.</summary>
+	/// <summary>A custom formatter for <see cref="Contacts.CNContact" /> objects.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Contacts/Reference/CNContactFormatter_Class/index.html">Apple documentation for <c>CNContactFormatter</c></related>
 	[MacCatalyst (13, 1)]
@@ -464,7 +464,7 @@ namespace Contacts {
 		[Export ("attributedStringFromContact:defaultAttributes:")]
 		NSAttributedString GetAttributedString (CNContact contact, [NullAllowed] NSDictionary attributes);
 
-		/// <summary>A string constant whose value is returned in calls to <see cref="M:Contacts.CNContactFormatter.GetAttributedString(Contacts.CNContact,Foundation.NSDictionary)" /> and <see cref="M:Contacts.CNContactFormatter.GetAttributedStringFrom(Contacts.CNContact,Contacts.CNContactFormatterStyle,Foundation.NSDictionary)" />.</summary>
+		/// <summary>A string constant whose value is returned in calls to <see cref="Contacts.CNContactFormatter.GetAttributedString(Contacts.CNContact,Foundation.NSDictionary)" /> and <see cref="Contacts.CNContactFormatter.GetAttributedStringFrom(Contacts.CNContact,Contacts.CNContactFormatterStyle,Foundation.NSDictionary)" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("CNContactPropertyAttribute")]
@@ -509,7 +509,7 @@ namespace Contacts {
 		string Label { get; }
 	}
 
-	/// <summary>Defines a relationship between two <see cref="T:Contacts.CNContact" /> objects, as specified by a <see cref="T:Contacts.CNLabelContactRelationKey" />.</summary>
+	/// <summary>Defines a relationship between two <see cref="Contacts.CNContact" /> objects, as specified by a <see cref="Contacts.CNLabelContactRelationKey" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Contacts/Reference/CNContactRelation_Class/index.html">Apple documentation for <c>CNContactRelation</c></related>
 	[MacCatalyst (13, 1)]
@@ -581,7 +581,7 @@ namespace Contacts {
 		[Field ("CNLabelContactRelationSpouse")]
 		NSString Spouse { get; }
 
-		/// <summary>Partner. (see also <see cref="P:Contacts.CNLabelContactRelationKey.Spouse" />)</summary>
+		/// <summary>Partner. (see also <see cref="Contacts.CNLabelContactRelationKey.Spouse" />)</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("CNLabelContactRelationPartner")]
@@ -1630,7 +1630,7 @@ namespace Contacts {
 
 	}
 
-	/// <summary>Completion handler for calls to <see cref="M:Contacts.CNContactStore.RequestAccess(Contacts.CNEntityType,Contacts.CNContactStoreRequestAccessHandler)" /></summary>
+	/// <summary>Completion handler for calls to <see cref="Contacts.CNContactStore.RequestAccess(Contacts.CNEntityType,Contacts.CNContactStoreRequestAccessHandler)" /></summary>
 	delegate void CNContactStoreRequestAccessHandler (bool granted, NSError error);
 #if !NET
 	delegate void CNContactStoreEnumerateContactsHandler (CNContact contact, bool stop);
@@ -1939,7 +1939,7 @@ namespace Contacts {
 		NSString NotificationDidChange { get; }
 	}
 
-	/// <summary>Holds default values, such as <see cref="P:Contacts.CNContactsUserDefaults.CountryCode" />, for <see cref="T:Contacts.CNContact" /> objects.</summary>
+	/// <summary>Holds default values, such as <see cref="Contacts.CNContactsUserDefaults.CountryCode" />, for <see cref="Contacts.CNContact" /> objects.</summary>
 	///     <remarks>
 	///       <para>(More documentation for this node is coming)</para>
 	///       <para tool="threads">The members of this class can be used from a background thread.</para>
@@ -1961,7 +1961,7 @@ namespace Contacts {
 		string CountryCode { get; }
 	}
 
-	/// <summary>Provides vCard serialization for <see cref="T:Contacts.CNContact" /> objects.</summary>
+	/// <summary>Provides vCard serialization for <see cref="Contacts.CNContact" /> objects.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Contacts/Reference/CNContactVCardSerialization_Class/index.html">Apple documentation for <c>CNContactVCardSerialization</c></related>
 	[MacCatalyst (13, 1)]
@@ -2007,9 +2007,9 @@ namespace Contacts {
 	}
 #endif
 
-	/// <summary>An object such as an Exchange or CalDAV account that contains zero or more <see cref="T:Contacts.CNContact" /> objects.</summary>
+	/// <summary>An object such as an Exchange or CalDAV account that contains zero or more <see cref="Contacts.CNContact" /> objects.</summary>
 	///     <remarks>
-	///       <para> A <see cref="T:Contacts.CNContact" /> may be a member of only one <see cref="T:Contacts.CNContainer" />. This is in contrast to <see cref="T:Contacts.CNGroup" /> objects.</para>
+	///       <para> A <see cref="Contacts.CNContact" /> may be a member of only one <see cref="Contacts.CNContainer" />. This is in contrast to <see cref="Contacts.CNGroup" /> objects.</para>
 	///     </remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Contacts/Reference/CNContainer_Class/index.html">Apple documentation for <c>CNContainer</c></related>
 	[MacCatalyst (13, 1)]
@@ -2052,25 +2052,25 @@ namespace Contacts {
 		#endregion
 	}
 
-	/// <summary>Provides string constants whose values should be used as keys when referencing properties of <see cref="T:Contacts.CNContainer" /> objects.</summary>
+	/// <summary>Provides string constants whose values should be used as keys when referencing properties of <see cref="Contacts.CNContainer" /> objects.</summary>
 	[MacCatalyst (13, 1)]
 	[Static]
 	[EditorBrowsable (EditorBrowsableState.Advanced)]
 	interface CNContainerKey { // Can be used in KVO
 
-		/// <summary>The key for the <see cref="P:Contacts.CNContainer.Identifier" /> property.</summary>
+		/// <summary>The key for the <see cref="Contacts.CNContainer.Identifier" /> property.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("CNContainerIdentifierKey")]
 		NSString Identifier { get; }
 
-		/// <summary>The key for the <see cref="P:Contacts.CNContainer.Name" /> property.</summary>
+		/// <summary>The key for the <see cref="Contacts.CNContainer.Name" /> property.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("CNContainerNameKey")]
 		NSString Name { get; }
 
-		/// <summary>The key for the <see cref="P:Contacts.CNContainer.ContainerType" /> property.</summary>
+		/// <summary>The key for the <see cref="Contacts.CNContainer.ContainerType" /> property.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("CNContainerTypeKey")]
@@ -2133,7 +2133,7 @@ namespace Contacts {
 	}
 #endif
 
-	/// <summary>A group that contains <see cref="T:Contacts.CNContact" /> objects.</summary>
+	/// <summary>A group that contains <see cref="Contacts.CNContact" /> objects.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Contacts/Reference/CNGroup_Class/index.html">Apple documentation for <c>CNGroup</c></related>
 	[MacCatalyst (13, 1)]
@@ -2175,19 +2175,19 @@ namespace Contacts {
 		#endregion
 	}
 
-	/// <summary>Provides string constants whose values are the names of properties common to all <see cref="T:Contacts.CNGroup" /> objects.</summary>
+	/// <summary>Provides string constants whose values are the names of properties common to all <see cref="Contacts.CNGroup" /> objects.</summary>
 	[MacCatalyst (13, 1)]
 	[Static]
 	[EditorBrowsable (EditorBrowsableState.Advanced)]
 	interface CNGroupKey { // Can be used in KVO
 
-		/// <summary>Key for the <see cref="P:Contacts.CNGroup.Identifier" /> property.</summary>
+		/// <summary>Key for the <see cref="Contacts.CNGroup.Identifier" /> property.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("CNGroupIdentifierKey")]
 		NSString Identifier { get; }
 
-		/// <summary>Key for the <see cref="P:Contacts.CNGroup.Name" /> property.</summary>
+		/// <summary>Key for the <see cref="Contacts.CNGroup.Name" /> property.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("CNGroupNameKey")]
@@ -2225,13 +2225,13 @@ namespace Contacts {
 	[EditorBrowsable (EditorBrowsableState.Advanced)]
 	interface CNInstantMessageAddressKey { // Can be used in KVO
 
-		/// <summary>A key identifying the <see cref="P:Contacts.CNInstantMessageAddress.Username" /> property.</summary>
+		/// <summary>A key identifying the <see cref="Contacts.CNInstantMessageAddress.Username" /> property.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("CNInstantMessageAddressUsernameKey")]
 		NSString Username { get; }
 
-		/// <summary>A key identifying the <see cref="P:Contacts.CNInstantMessageAddress.Service" /> property.</summary>
+		/// <summary>A key identifying the <see cref="Contacts.CNInstantMessageAddress.Service" /> property.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("CNInstantMessageAddressServiceKey")]
@@ -2345,7 +2345,7 @@ namespace Contacts {
 		string LocalizeLabel (NSString labelKey);
 	}
 
-	/// <summary>Defines string constants whose values define the names of various <see cref="T:Contacts.CNLabeledValue`1" /> objects.</summary>
+	/// <summary>Defines string constants whose values define the names of various <see cref="Contacts.CNLabeledValue{ValueType}" /> objects.</summary>
 	[MacCatalyst (13, 1)]
 	[Static]
 	[EditorBrowsable (EditorBrowsableState.Advanced)]
@@ -2368,7 +2368,7 @@ namespace Contacts {
 		[Field ("CNLabelSchool")]
 		NSString School { get; }
 
-		/// <summary>A <see cref="T:Contacts.CNLabeledValue`1" /> with an unknown label.</summary>
+		/// <summary>A <see cref="Contacts.CNLabeledValue{ValueType}" /> with an unknown label.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("CNLabelOther")]
@@ -2393,7 +2393,7 @@ namespace Contacts {
 		NSString DateAnniversary { get; }
 	}
 
-	/// <summary>A <see cref="T:Contacts.CNContact" /> that can be modified after creation.</summary>
+	/// <summary>A <see cref="Contacts.CNContact" /> that can be modified after creation.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Contacts/Reference/CNMutableContact_Class/index.html">Apple documentation for <c>CNMutableContact</c></related>
 	[MacCatalyst (13, 1)]
@@ -2513,7 +2513,7 @@ namespace Contacts {
 		CNLabeledValue<NSDateComponents> [] Dates { get; set; }
 	}
 
-	/// <summary>A <see cref="T:Contacts.CNGroup" /> whose values can change after initialization.</summary>
+	/// <summary>A <see cref="Contacts.CNGroup" /> whose values can change after initialization.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Contacts/Reference/CNMutableGroup_Class/index.html">Apple documentation for <c>CNMutableGroup</c></related>
 	[MacCatalyst (13, 1)]
@@ -2525,7 +2525,7 @@ namespace Contacts {
 		string Name { get; set; }
 	}
 
-	/// <summary>A <see cref="T:Contacts.CNPostalAddress" /> whose values can be modified after initialization.</summary>
+	/// <summary>A <see cref="Contacts.CNPostalAddress" /> whose values can be modified after initialization.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Contacts/Reference/CNMutablePostalAddress_Class/index.html">Apple documentation for <c>CNMutablePostalAddress</c></related>
 	[MacCatalyst (13, 1)]
@@ -2592,7 +2592,7 @@ namespace Contacts {
 	[EditorBrowsable (EditorBrowsableState.Advanced)]
 	interface CNLabelPhoneNumberKey {
 
-		/// <summary>Not to be confused with a mere <see cref="P:Contacts.CNLabelPhoneNumberKey.Mobile" />.</summary>
+		/// <summary>Not to be confused with a mere <see cref="Contacts.CNLabelPhoneNumberKey.Mobile" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("CNLabelPhoneNumberiPhone")]
@@ -2603,13 +2603,13 @@ namespace Contacts {
 		[Field ("CNLabelPhoneNumberAppleWatch")]
 		NSString AppleWatch { get; }
 
-		/// <summary>A mobile phone number (see <see cref="P:Contacts.CNLabelPhoneNumberKey.iPhone" />).</summary>
+		/// <summary>A mobile phone number (see <see cref="Contacts.CNLabelPhoneNumberKey.iPhone" />).</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("CNLabelPhoneNumberMobile")]
 		NSString Mobile { get; }
 
-		/// <summary>The main phone number for a <see cref="T:Contacts.CNContact" />.</summary>
+		/// <summary>The main phone number for a <see cref="Contacts.CNContact" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("CNLabelPhoneNumberMain")]
@@ -2627,7 +2627,7 @@ namespace Contacts {
 		[Field ("CNLabelPhoneNumberWorkFax")]
 		NSString WorkFax { get; }
 
-		/// <summary>A fax number (see <see cref="P:Contacts.CNLabelPhoneNumberKey.HomeFax" /> and <see cref="P:Contacts.CNLabelPhoneNumberKey.WorkFax" />).</summary>
+		/// <summary>A fax number (see <see cref="Contacts.CNLabelPhoneNumberKey.HomeFax" /> and <see cref="Contacts.CNLabelPhoneNumberKey.WorkFax" />).</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("CNLabelPhoneNumberOtherFax")]
@@ -2717,34 +2717,34 @@ namespace Contacts {
 	}
 #endif
 
-	/// <summary>Enumeration of properties of a <see cref="T:Contacts.CNPostalAddress" />.</summary>
+	/// <summary>Enumeration of properties of a <see cref="Contacts.CNPostalAddress" />.</summary>
 	[MacCatalyst (13, 1)]
 	public enum CNPostalAddressKeyOption {
-		/// <summary>Corresponds to the <see cref="P:Contacts.CNPostalAddress.Street" /> property.</summary>
+		/// <summary>Corresponds to the <see cref="Contacts.CNPostalAddress.Street" /> property.</summary>
 		[Field ("CNPostalAddressStreetKey")]
 		Street,
-		/// <summary>Corresponds to the <see cref="P:Contacts.CNPostalAddress.City" /> property.</summary>
+		/// <summary>Corresponds to the <see cref="Contacts.CNPostalAddress.City" /> property.</summary>
 		[Field ("CNPostalAddressCityKey")]
 		City,
-		/// <summary>Corresponds to the <see cref="P:Contacts.CNPostalAddress.State" /> property.</summary>
+		/// <summary>Corresponds to the <see cref="Contacts.CNPostalAddress.State" /> property.</summary>
 		[Field ("CNPostalAddressStateKey")]
 		State,
-		/// <summary>Corresponds to the <see cref="P:Contacts.CNPostalAddress.PostalCode" /> property.</summary>
+		/// <summary>Corresponds to the <see cref="Contacts.CNPostalAddress.PostalCode" /> property.</summary>
 		[Field ("CNPostalAddressPostalCodeKey")]
 		PostalCode,
-		/// <summary>Corresponds to the <see cref="P:Contacts.CNPostalAddress.Country" /> property.</summary>
+		/// <summary>Corresponds to the <see cref="Contacts.CNPostalAddress.Country" /> property.</summary>
 		[Field ("CNPostalAddressCountryKey")]
 		Country,
-		/// <summary>Corresponds to the <see cref="P:Contacts.CNPostalAddress.IsoCountryCode" /> property.</summary>
+		/// <summary>Corresponds to the <see cref="Contacts.CNPostalAddress.IsoCountryCode" /> property.</summary>
 		[Field ("CNPostalAddressISOCountryCodeKey")]
 		IsoCountryCode,
 
-		/// <summary>Corresponds to the <see cref="P:Contacts.CNPostalAddress.SubLocality" /> property.</summary>
+		/// <summary>Corresponds to the <see cref="Contacts.CNPostalAddress.SubLocality" /> property.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("CNPostalAddressSubLocalityKey")]
 		SubLocality,
 
-		/// <summary>Corresponds to the <see cref="P:Contacts.CNPostalAddress.SubAdministrativeArea" /> property.</summary>
+		/// <summary>Corresponds to the <see cref="Contacts.CNPostalAddress.SubAdministrativeArea" /> property.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("CNPostalAddressSubAdministrativeAreaKey")]
 		SubAdministrativeArea,
@@ -2774,13 +2774,13 @@ namespace Contacts {
 		[Export ("style")]
 		CNPostalAddressFormatterStyle Style { get; set; }
 
-		/// <summary>Get the <see cref="T:Contacts.CNPostalAddress" /> property key.</summary>
+		/// <summary>Get the <see cref="Contacts.CNPostalAddress" /> property key.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("CNPostalAddressPropertyAttribute")]
 		NSString PropertyAttribute { get; }
 
-		/// <summary>Returns the localized <see cref="T:Contacts.CNPostalAddress" /> property key.</summary>
+		/// <summary>Returns the localized <see cref="Contacts.CNPostalAddress" /> property key.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("CNPostalAddressLocalizedPropertyNameAttribute")]
@@ -2883,25 +2883,25 @@ namespace Contacts {
 	[EditorBrowsable (EditorBrowsableState.Advanced)]
 	interface CNSocialProfileKey { // Can be used in KVO
 
-		/// <summary>The key associated with <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Contacts%20CNSocial%20Service%20Url%20String&amp;scope=Xamarin" title="P:Contacts.CNSocialService.UrlString">P:Contacts.CNSocialService.UrlString</a></format>.</summary>
+		/// <summary>The key associated with <see cref="Contacts.CNSocialService.UrlString" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("CNSocialProfileURLStringKey")]
 		NSString UrlString { get; }
 
-		/// <summary>The key associated with <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Contacts%20CNSocial%20Service%20Username&amp;scope=Xamarin" title="P:Contacts.CNSocialService.Username">P:Contacts.CNSocialService.Username</a></format>.</summary>
+		/// <summary>The key associated with <see cref="Contacts.CNSocialService.Username" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("CNSocialProfileUsernameKey")]
 		NSString Username { get; }
 
-		/// <summary>The key associated with <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Contacts%20CNSocial%20Service%20User%20Identifier&amp;scope=Xamarin" title="P:Contacts.CNSocialService.UserIdentifier">P:Contacts.CNSocialService.UserIdentifier</a></format>.</summary>
+		/// <summary>The key associated with <see cref="Contacts.CNSocialService.UserIdentifier" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("CNSocialProfileUserIdentifierKey")]
 		NSString UserIdentifier { get; }
 
-		/// <summary>The key associated with <see cref="P:Contacts.CNSocialProfile.Service" />.</summary>
+		/// <summary>The key associated with <see cref="Contacts.CNSocialProfile.Service" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("CNSocialProfileServiceKey")]

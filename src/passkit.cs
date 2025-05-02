@@ -129,7 +129,7 @@ namespace PassKit {
 
 		/// <param name="identifier">To be added.</param>
 		///         <param name="serialNumber">To be added.</param>
-		///         <summary>Returns the  <see cref="T:PassKit.PKPass" /> whose <see cref="P:PassKit.PKPass.PassTypeIdentifier" /> and <see cref="P:PassKit.PKPass.SerialNumber" /> match the arguments.</summary>
+		///         <summary>Returns the  <see cref="PassKit.PKPass" /> whose <see cref="PassKit.PKPass.PassTypeIdentifier" /> and <see cref="PassKit.PKPass.SerialNumber" /> match the arguments.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[Export ("passWithPassTypeIdentifier:serialNumber:")]
@@ -141,7 +141,7 @@ namespace PassKit {
 		NSSet<PKSecureElementPass> GetPasses (string readerIdentifier);
 
 		/// <param name="passType">To be added.</param>
-		///         <summary>The passes in the user's pass library whose <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Pass%20Kit%20PKPass%20Type%20Pass%20Type&amp;scope=Xamarin" title="P:PassKit.PKPassType.PassType">P:PassKit.PKPassType.PassType</a></format> matches <paramref name="passType" />.</summary>
+		///         <summary>The passes in the user's pass library whose <see cref="PassKit.PKPassType.PassType" /> matches <paramref name="passType" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
@@ -318,7 +318,7 @@ namespace PassKit {
 		[Export ("isSuppressingAutomaticPassPresentation")]
 		bool IsSuppressingAutomaticPassPresentation { get; }
 
-		/// <summary>The <see cref="T:PassKit.PKPaymentPass" /> objects stored on a remote device.</summary>
+		/// <summary>The <see cref="PassKit.PKPaymentPass" /> objects stored on a remote device.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[NoMac]
@@ -374,7 +374,7 @@ namespace PassKit {
 		void GetEncryptedServiceProviderData (PKSecureElementPass secureElementPass, Action<NSDictionary, NSError> completion);
 	}
 
-	/// <summary>A class whose static members represent keys to be used with the <see cref="M:PassKit.PKPass.GetLocalizedValue(Foundation.NSString)" /> method.</summary>
+	/// <summary>A class whose static members represent keys to be used with the <see cref="PassKit.PKPass.GetLocalizedValue(Foundation.NSString)" /> method.</summary>
 	[Static]
 	[MacCatalyst (13, 1)]
 	interface PKPassLibraryUserInfoKey {
@@ -424,7 +424,7 @@ namespace PassKit {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface PKPayment {
-		/// <summary>The <see cref="T:PassKit.PKPaymentToken" /> for the <see cref="T:PassKit.PKPayment" />.</summary>
+		/// <summary>The <see cref="PassKit.PKPaymentToken" /> for the <see cref="PassKit.PKPayment" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("token", ArgumentSemantic.Strong)]
@@ -440,7 +440,7 @@ namespace PassKit {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'BillingContact' instead.")]
 		ABRecord BillingAddress { get; }
 
-		/// <summary>The shipping address associated with the <see cref="T:PassKit.PKPayment" />.</summary>
+		/// <summary>The shipping address associated with the <see cref="PassKit.PKPayment" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[NoMac]
@@ -450,14 +450,14 @@ namespace PassKit {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'ShippingContact' instead.")]
 		ABRecord ShippingAddress { get; }
 
-		/// <summary>The selected <see cref="T:PassKit.PKShippingMethod" />.</summary>
+		/// <summary>The selected <see cref="PassKit.PKShippingMethod" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("shippingMethod", ArgumentSemantic.Strong)]
 		PKShippingMethod ShippingMethod { get; }
 
 
-		/// <summary>The shipping contact associated with the <see cref="T:PassKit.PKPayment" />.</summary>
+		/// <summary>The shipping contact associated with the <see cref="PassKit.PKPayment" />.</summary>
 		///         <value>
 		///           <para>(More documentation for this node is coming)</para>
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
@@ -483,15 +483,15 @@ namespace PassKit {
 	/// <summary>Delegate called when the user has selected a shipping method.</summary>
 	delegate void PKPaymentShippingMethodSelected (PKPaymentAuthorizationStatus status, PKPaymentSummaryItem [] summaryItems);
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:PassKit.PKPaymentAuthorizationViewControllerDelegate" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="PassKit.PKPaymentAuthorizationViewControllerDelegate" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:PassKit.PKPaymentAuthorizationViewControllerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:PassKit.PKPaymentAuthorizationViewControllerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:PassKit.PKPaymentAuthorizationViewControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="PassKit.PKPaymentAuthorizationViewControllerDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="PassKit.PKPaymentAuthorizationViewControllerDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="PassKit.PKPaymentAuthorizationViewControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	interface IPKPaymentAuthorizationViewControllerDelegate { }
 
-	/// <summary>Delegate object providing events relating to a payment authorization request made with a <see cref="T:PassKit.PKPaymentAuthorizationViewController" />.</summary>
+	/// <summary>Delegate object providing events relating to a payment authorization request made with a <see cref="PassKit.PKPaymentAuthorizationViewController" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/PassKit/Reference/PKPaymentAuthorizationViewControllerDelegate_Ref/index.html">Apple documentation for <c>PKPaymentAuthorizationViewControllerDelegate</c></related>
 	[MacCatalyst (13, 1)]
@@ -782,7 +782,7 @@ namespace PassKit {
 
 		/// <param name="label">To be added.</param>
 		///         <param name="amount">To be added.</param>
-		///         <summary>Factory method to create a new <see cref="T:PassKit.PKPaymentSummaryItem" />.</summary>
+		///         <summary>Factory method to create a new <see cref="PassKit.PKPaymentSummaryItem" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[Static, Export ("summaryItemWithLabel:amount:")]
@@ -865,7 +865,7 @@ namespace PassKit {
 		[Export ("countryCode")]
 		string CountryCode { get; set; }
 
-		/// <summary>The set of payment networks supported (Use values from <see cref="T:PassKit.PKPaymentNetwork" />).</summary>
+		/// <summary>The set of payment networks supported (Use values from <see cref="PassKit.PKPaymentNetwork" />).</summary>
 		///         <value>
 		///           <para>(More documentation for this node is coming)</para>
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
@@ -881,7 +881,7 @@ namespace PassKit {
 		[Export ("merchantCapabilities", ArgumentSemantic.UnsafeUnretained)]
 		PKMerchantCapability MerchantCapabilities { get; set; }
 
-		/// <summary>An array of <see cref="T:PassKit.PKPaymentSummaryItem" /> objects that summarize the amount of payment.</summary>
+		/// <summary>An array of <see cref="PassKit.PKPaymentSummaryItem" /> objects that summarize the amount of payment.</summary>
 		///         <value>
 		///           <para>(More documentation for this node is coming)</para>
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
@@ -1238,7 +1238,7 @@ namespace PassKit {
 		PKPaymentMethod PaymentMethod { get; }
 	}
 
-	/// <summary>A <see cref="T:UIKit.UIViewController" /> that manages the user experience of viewing a <see cref="T:PassKit.PKPass" /> and prompting the user to add it to the <see cref="T:PassKit.PKPassLibrary" />.</summary>
+	/// <summary>A <see cref="UIKit.UIViewController" /> that manages the user experience of viewing a <see cref="PassKit.PKPass" /> and prompting the user to add it to the <see cref="PassKit.PKPassLibrary" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/PassKit/Reference/PKAddPassesViewController_Ref/index.html">Apple documentation for <c>PKAddPassesViewController</c></related>
 	[NoMac] // under `TARGET_OS_IPHONE`
@@ -1263,13 +1263,13 @@ namespace PassKit {
 		NativeHandle Constructor ([NullAllowed] string nibName, [NullAllowed] NSBundle bundle);
 
 		/// <param name="pass">To be added.</param>
-		/// <summary>Creates a new <see cref="T:PassKit.PKAddPassesViewController" /> that displays the specified <paramref name="pass" />.</summary>
+		/// <summary>Creates a new <see cref="PassKit.PKAddPassesViewController" /> that displays the specified <paramref name="pass" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Export ("initWithPass:")]
 		NativeHandle Constructor (PKPass pass);
 
 		/// <param name="pass">To be added.</param>
-		/// <summary>Creates a new <see cref="T:PassKit.PKAddPassesViewController" /> for the specifies passes.</summary>
+		/// <summary>Creates a new <see cref="PassKit.PKAddPassesViewController" /> for the specifies passes.</summary>
 		/// <remarks>To be added.</remarks>
 		[Export ("initWithPasses:")]
 		NativeHandle Constructor (PKPass [] pass);
@@ -1307,15 +1307,15 @@ namespace PassKit {
 		IPKAddPassesViewControllerDelegate Delegate { get; set; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:PassKit.PKAddPassesViewControllerDelegate" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="PassKit.PKAddPassesViewControllerDelegate" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:PassKit.PKAddPassesViewControllerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:PassKit.PKAddPassesViewControllerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:PassKit.PKAddPassesViewControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="PassKit.PKAddPassesViewControllerDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="PassKit.PKAddPassesViewControllerDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="PassKit.PKAddPassesViewControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	interface IPKAddPassesViewControllerDelegate { }
 
-	/// <summary>A delegate object that gives the application developer fine-grained control over life-cycle events of a <see cref="T:PassKit.PKAddPassesViewController" /> object.</summary>
+	/// <summary>A delegate object that gives the application developer fine-grained control over life-cycle events of a <see cref="PassKit.PKAddPassesViewController" /> object.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/PassKit/Reference/PKAddPassesViewControllerDelegate_Ref/index.html">Apple documentation for <c>PKAddPassesViewControllerDelegate</c></related>
 	[NoMac] // under `TARGET_OS_IPHONE`
@@ -1386,7 +1386,7 @@ namespace PassKit {
 		NSData WrappedKey { get; set; }
 	}
 
-	/// <summary>Holds configuration data needed by a <see cref="T:PassKit.PKAddPaymentPassViewController" />.</summary>
+	/// <summary>Holds configuration data needed by a <see cref="PassKit.PKAddPaymentPassViewController" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/PassKit/Reference/PKAddPaymentPassRequestConfiguration_Class/index.html">Apple documentation for <c>PKAddPaymentPassRequestConfiguration</c></related>
 	[MacCatalyst (13, 1)]
@@ -1394,7 +1394,7 @@ namespace PassKit {
 	[DisableDefaultCtor]
 	interface PKAddPaymentPassRequestConfiguration : NSSecureCoding {
 		/// <param name="encryptionScheme">To be added.</param>
-		/// <summary>Creates a new <see cref="T:PassKit.PKAddPaymentPassRequestConfiguration" />. In iOS 9, the only valid <paramref name="encryptionScheme" /> is <see cref="P:PassKit.PKEncryptionScheme.Ecc_V2" />.</summary>
+		/// <summary>Creates a new <see cref="PassKit.PKAddPaymentPassRequestConfiguration" />. In iOS 9, the only valid <paramref name="encryptionScheme" /> is <see cref="PassKit.PKEncryptionScheme.Ecc_V2" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithEncryptionScheme:")]
@@ -1424,7 +1424,7 @@ namespace PassKit {
 		[NullAllowed, Export ("primaryAccountSuffix")]
 		string PrimaryAccountSuffix { get; set; }
 
-		/// <summary>Gets or sets the array of <see cref="T:PassKit.PKLabeledValue" /> objects that describe the card.</summary>
+		/// <summary>Gets or sets the array of <see cref="PassKit.PKLabeledValue" /> objects that describe the card.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
@@ -1478,7 +1478,7 @@ namespace PassKit {
 		NSSet<NSString> ProductIdentifiers { get; set; }
 	}
 
-	/// <summary>A standard <see cref="T:UIKit.UIViewController" /> for adding cards to Apple Pay.</summary>
+	/// <summary>A standard <see cref="UIKit.UIViewController" /> for adding cards to Apple Pay.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/PassKit/Reference/PKAddPaymentPassViewController_Class/index.html">Apple documentation for <c>PKAddPaymentPassViewController</c></related>
 	[NoMac] // under `#if TARGET_OS_IPHONE`
@@ -1532,15 +1532,15 @@ namespace PassKit {
 		NSObject WeakDelegate { get; set; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:PassKit.PKAddPaymentPassViewControllerDelegate" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="PassKit.PKAddPaymentPassViewControllerDelegate" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:PassKit.PKAddPaymentPassViewControllerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:PassKit.PKAddPaymentPassViewControllerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:PassKit.PKAddPaymentPassViewControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="PassKit.PKAddPaymentPassViewControllerDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="PassKit.PKAddPaymentPassViewControllerDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="PassKit.PKAddPaymentPassViewControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	interface IPKAddPaymentPassViewControllerDelegate { }
 
-	/// <summary>Delegate object for <see cref="T:PassKit.PKAddPaymentPassViewController" /> whose members are called when prompting for an add payment request and when an <see cref="T:PassKit.PKAddPaymentPassRequest" /> has failed.</summary>
+	/// <summary>Delegate object for <see cref="PassKit.PKAddPaymentPassViewController" /> whose members are called when prompting for an add payment request and when an <see cref="PassKit.PKAddPaymentPassRequest" /> has failed.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/PassKit/Reference/PKAddPaymentPassViewControllerDelegate_Protocol/index.html">Apple documentation for <c>PKAddPaymentPassViewControllerDelegate</c></related>
 	[NoMac] // under `#if TARGET_OS_IPHONE`
@@ -1583,9 +1583,9 @@ namespace PassKit {
 	interface PKPass : NSSecureCoding, NSCopying {
 		/// <param name="data">To be added.</param>
 		/// <param name="error">To be added.</param>
-		/// <summary>Creates a new <see cref="T:PassKit.PKPass" />, possibly returning an error.</summary>
+		/// <summary>Creates a new <see cref="PassKit.PKPass" />, possibly returning an error.</summary>
 		/// <remarks>
-		///           <para>If <paramref name="error" /> is not <see langword="null" />, it will indicate an error in creation and the resulting <see cref="T:PassKit.PKPass" /> should not be used.</para>
+		///           <para>If <paramref name="error" /> is not <see langword="null" />, it will indicate an error in creation and the resulting <see cref="PassKit.PKPass" /> should not be used.</para>
 		///         </remarks>
 		[Export ("initWithData:error:")]
 		NativeHandle Constructor (NSData data, out NSError error);
@@ -1622,7 +1622,7 @@ namespace PassKit {
 		[Export ("organizationName", ArgumentSemantic.Copy)]
 		string OrganizationName { get; }
 
-		/// <summary>Identifies the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Pass%20Kit%20PKPass%20PKPass%20Type&amp;scope=Xamarin" title="P:PassKit.PKPass.PKPassType">P:PassKit.PKPass.PKPassType</a></format>.</summary>
+		/// <summary>Identifies the <see cref="PassKit.PKPass.PKPassType" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("passTypeIdentifier", ArgumentSemantic.Copy)]
@@ -1660,7 +1660,7 @@ namespace PassKit {
 		[NullAllowed, Export ("webServiceURL", ArgumentSemantic.Copy)]
 		NSUrl WebServiceUrl { get; }
 
-		/// <param name="key">A value from <see cref="T:PassKit.PKPassLibraryUserInfoKey" />.</param>
+		/// <param name="key">A value from <see cref="PassKit.PKPassLibraryUserInfoKey" />.</param>
 		///         <summary>Returns the localized value for the provided <paramref name="key" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
@@ -1680,14 +1680,14 @@ namespace PassKit {
 		[NullAllowed, Export ("userInfo", ArgumentSemantic.Copy)]
 		NSDictionary UserInfo { get; }
 
-		/// <summary>The <see cref="T:PassKit.PKPassType" /> of the pass.</summary>
+		/// <summary>The <see cref="PassKit.PKPassType" /> of the pass.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("passType")]
 		PKPassType PassType { get; }
 
-		/// <summary>If not <see langword="null" />, the underlying <see cref="T:PassKit.PKPaymentPass" />.</summary>
+		/// <summary>If not <see langword="null" />, the underlying <see cref="PassKit.PKPaymentPass" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 13, 4, message: "Use 'SecureElementPass' instead.")]
@@ -1745,7 +1745,7 @@ namespace PassKit {
 		[NullAllowed, Export ("network")]
 		string Network { get; }
 
-		/// <summary>The <see cref="T:PassKit.PKPaymentMethodType" /> of the <see cref="T:PassKit.PKPaymentMethod" />.</summary>
+		/// <summary>The <see cref="PassKit.PKPaymentMethodType" /> of the <see cref="PassKit.PKPaymentMethod" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("type")]
@@ -1782,7 +1782,7 @@ namespace PassKit {
 	[BaseType (typeof (PKSecureElementPass))]
 	interface PKPaymentPass {
 
-		/// <summary>The <see cref="T:PassKit.PKPaymentPassActivationState" /> of the pass. (Read-only)</summary>
+		/// <summary>The <see cref="PassKit.PKPaymentPassActivationState" /> of the pass. (Read-only)</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 13, 4, message: "Use 'PKSecureElementPass.PassActivationState' instead.")]
@@ -1793,7 +1793,7 @@ namespace PassKit {
 		PKPaymentPassActivationState ActivationState { get; }
 	}
 
-	/// <summary>Base class for <see cref="T:PassKit.PKPass" />. Defines copy and encoding methods.</summary>
+	/// <summary>Base class for <see cref="PassKit.PKPass" />. Defines copy and encoding methods.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/PassKit/Reference/PKObject_Class/index.html">Apple documentation for <c>PKObject</c></related>
 	[MacCatalyst (13, 1)]
@@ -1802,7 +1802,7 @@ namespace PassKit {
 		//Empty class in header file
 	}
 
-	/// <summary>Standard values returned by <see cref="P:PassKit.PKPaymentToken.PaymentNetwork" />.</summary>
+	/// <summary>Standard values returned by <see cref="PassKit.PKPaymentToken.PaymentNetwork" />.</summary>
 	[Static]
 	[MacCatalyst (13, 1)]
 	interface PKPaymentNetwork {
@@ -2020,7 +2020,7 @@ namespace PassKit {
 		NSString Jaywan { get; }
 	}
 
-	/// <summary>A button used to activate an Apple Pay payment. Available styles and types are defined by <see cref="T:PassKit.PKPaymentButtonStyle" /> and <see cref="T:PassKit.PKPaymentButtonType" />.</summary>
+	/// <summary>A button used to activate an Apple Pay payment. Available styles and types are defined by <see cref="PassKit.PKPaymentButtonStyle" /> and <see cref="PassKit.PKPaymentButtonType" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/PassKit/Reference/PKPaymentButton_Class/index.html">Apple documentation for <c>PKPaymentButton</c></related>
 	[MacCatalyst (13, 1)]
@@ -2030,7 +2030,7 @@ namespace PassKit {
 
 		/// <param name="buttonType">To be added.</param>
 		///         <param name="buttonStyle">To be added.</param>
-		///         <summary>Factory method to create a new <see cref="T:PassKit.PKPaymentButton" /> with the specified <see cref="T:PassKit.PKPaymentButtonType" /> and <see cref="T:PassKit.PKPaymentButtonStyle" />.</summary>
+		///         <summary>Factory method to create a new <see cref="PassKit.PKPaymentButton" /> with the specified <see cref="PassKit.PKPaymentButtonType" /> and <see cref="PassKit.PKPaymentButtonStyle" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[Static]
@@ -2081,14 +2081,14 @@ namespace PassKit {
 		/// <summary>Gets the style of the button.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>
-		///           <para id="tool-remark">This member participates in the <see cref="T:UIKit.UIAppearance" /> styling system.  See the <see cref="P:PassKit.PKAddPassButton.Appearance" /> property and the <see cref="M:PassKit.PKAddPassButton.AppearanceWhenContainedIn(System.Type[])" /> method.</para>
+		///           <para id="tool-remark">This member participates in the <see cref="UIKit.UIAppearance" /> styling system.  See the <see cref="PassKit.PKAddPassButton.Appearance" /> property and the <see cref="PassKit.PKAddPassButton.AppearanceWhenContainedIn(System.Type[])" /> method.</para>
 		///         </remarks>
 		[Appearance]
 		[Export ("addPassButtonStyle", ArgumentSemantic.Assign)]
 		PKAddPassButtonStyle Style { get; set; }
 	}
 
-	/// <summary>Defines the constant string <see cref="P:PassKit.PKEncryptionScheme.Ecc_V2" />.</summary>
+	/// <summary>Defines the constant string <see cref="PassKit.PKEncryptionScheme.Ecc_V2" />.</summary>
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface PKEncryptionScheme {
@@ -2108,7 +2108,7 @@ namespace PassKit {
 
 	/// <summary>Presents a payment authorization user interface to the user and acts on the user's response.</summary>
 	///     <remarks>
-	///       <para>This class performs the same job as <see cref="T:PassKit.PKPaymentAuthorizationViewController" /> but does not rely on UIKit. Because of this, this view controller can be used in watchOS apps and in intents extensions.</para>
+	///       <para>This class performs the same job as <see cref="PassKit.PKPaymentAuthorizationViewController" /> but does not rely on UIKit. Because of this, this view controller can be used in watchOS apps and in intents extensions.</para>
 	///     </remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/PassKit/PKPaymentAuthorizationController">Apple documentation for <c>PKPaymentAuthorizationController</c></related>
 	[MacCatalyst (13, 1)]
@@ -2166,7 +2166,7 @@ namespace PassKit {
 		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
 		///         </param>
 		///         <summary>Presents the payment authorization UI and runs a handler after the sheet is displayed.</summary>
-		///         <remarks>The developer must use the <see cref="M:PassKit.PKPaymentAuthorizationController.Dismiss(System.Action)" /> method to dismiss the payment authorization UI.</remarks>
+		///         <remarks>The developer must use the <see cref="PassKit.PKPaymentAuthorizationController.Dismiss(System.Action)" /> method to dismiss the payment authorization UI.</remarks>
 		[Async (XmlDocs = """
 			<summary>Presents the payment authorization UI and runs a handler after the sheet is displayed.</summary>
 			<returns>
@@ -2182,15 +2182,15 @@ namespace PassKit {
 		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
 		///         </param>
 		///         <summary>Dismisses the payment authorization UI and runs the specified completion handler.</summary>
-		///         <remarks>Developers call this method to dismiss the payment authorization UI, typically when they receive a call to the <see cref="M:PassKit.PKPaymentAuthorizationControllerDelegate.DidFinish(PassKit.PKPaymentAuthorizationController)" /> method.</remarks>
+		///         <remarks>Developers call this method to dismiss the payment authorization UI, typically when they receive a call to the <see cref="PassKit.PKPaymentAuthorizationControllerDelegate.DidFinish(PassKit.PKPaymentAuthorizationController)" /> method.</remarks>
 		[Async (XmlDocs = """
 			<summary>Dismisses the payment authorization UI and runs the specified completion handler.</summary>
 			<returns>A task that represents the asynchronous Dismiss operation</returns>
 			<remarks>
 			          <para>The DismissAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
-			          <see cref="M:PassKit.PKPaymentAuthorizationControllerDelegate.DidFinish(PassKit.PKPaymentAuthorizationController)" />
+			          <see cref="PassKit.PKPaymentAuthorizationControllerDelegate.DidFinish(PassKit.PKPaymentAuthorizationController)" />
 			          <para copied="true">The DismissAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
-			          <see cref="M:PassKit.PKPaymentAuthorizationControllerDelegate.DidFinish(PassKit.PKPaymentAuthorizationController)" copied="true" />
+			          <see cref="PassKit.PKPaymentAuthorizationControllerDelegate.DidFinish(PassKit.PKPaymentAuthorizationController)" copied="true" />
 			        </remarks>
 			""")]
 		[Export ("dismissWithCompletion:")]
@@ -2216,15 +2216,15 @@ namespace PassKit {
 		NativeHandle Constructor (PKDisbursementRequest request);
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:PassKit.PKPaymentAuthorizationControllerDelegate" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="PassKit.PKPaymentAuthorizationControllerDelegate" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:PassKit.PKPaymentAuthorizationControllerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:PassKit.PKPaymentAuthorizationControllerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:PassKit.PKPaymentAuthorizationControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="PassKit.PKPaymentAuthorizationControllerDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="PassKit.PKPaymentAuthorizationControllerDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="PassKit.PKPaymentAuthorizationControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	interface IPKPaymentAuthorizationControllerDelegate { }
 
-	/// <summary>Delegate object that responds to user interactions on behalf of a <see cref="T:PassKit.PKPaymentAuthorizationController" />.</summary>
+	/// <summary>Delegate object that responds to user interactions on behalf of a <see cref="PassKit.PKPaymentAuthorizationController" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/PassKit/PKPaymentAuthorizationControllerDelegate">Apple documentation for <c>PKPaymentAuthorizationControllerDelegate</c></related>
 	[Mac (11, 0)]
@@ -2258,7 +2258,7 @@ namespace PassKit {
 		[Export ("paymentAuthorizationController:didAuthorizePayment:handler:")]
 		void DidAuthorizePayment (PKPaymentAuthorizationController controller, PKPayment payment, Action<PKPaymentAuthorizationResult> completion);
 
-		/// <param name="controller">The <see cref="T:PassKit.PKPaymentAuthorizationController" /> for which the payment authorization has finished.</param>
+		/// <param name="controller">The <see cref="PassKit.PKPaymentAuthorizationController" /> for which the payment authorization has finished.</param>
 		///         <summary>Method that is called when payment authorization has finished.</summary>
 		///         <remarks>To be added.</remarks>
 		[Abstract]
@@ -2361,7 +2361,7 @@ namespace PassKit {
 	interface PKLabeledValue {
 		/// <param name="label">To be added.</param>
 		/// <param name="value">To be added.</param>
-		/// <summary>Creates a new <see cref="T:PassKit.PKLabeledValue" /> with the specified label and value.</summary>
+		/// <summary>Creates a new <see cref="PassKit.PKLabeledValue" /> with the specified label and value.</summary>
 		/// <remarks>To be added.</remarks>
 		[Export ("initWithLabel:value:")]
 		[DesignatedInitializer]

@@ -12,7 +12,7 @@ using NativeHandle = System.IntPtr;
 
 namespace HomeKit {
 
-	/// <summary>Holds the constant <see cref="P:HomeKit.HMErrors.HMErrorDomain" />.</summary>
+	/// <summary>Holds the constant <see cref="HomeKit.HMErrors.HMErrorDomain" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (14, 0)]
 	[Static]
@@ -102,7 +102,7 @@ namespace HomeKit {
 
 	interface IHMHomeManagerDelegate { }
 
-	/// <summary>Delegate object for <see cref="T:HomeKit.HMHomeManager" /> objects, provides methods that can be overridden to react to <see cref="T:HomeKit.HMHome" />s being added, removed, or set as the primary home.</summary>
+	/// <summary>Delegate object for <see cref="HomeKit.HMHomeManager" /> objects, provides methods that can be overridden to react to <see cref="HomeKit.HMHome" />s being added, removed, or set as the primary home.</summary>
 	/// <remarks>To be added.</remarks>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/HomeKit/Reference/HMHomeManagerDelegate_Protocol/index.html">Apple documentation for <c>HMHomeManagerDelegate</c></related>
 	[MacCatalyst (14, 0)]
@@ -298,11 +298,11 @@ namespace HomeKit {
 
 	interface IHMAccessoryDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:HomeKit.HMAccessoryDelegate" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="HomeKit.HMAccessoryDelegate" />.</summary>
 	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:HomeKit.HMAccessoryDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:HomeKit.HMAccessoryDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:HomeKit.HMAccessoryDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="HomeKit.HMAccessoryDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="HomeKit.HMAccessoryDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="HomeKit.HMAccessoryDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	[MacCatalyst (14, 0)]
 	[Model, Protocol]
@@ -404,7 +404,7 @@ namespace HomeKit {
 		void DidUpdateFirmwareVersion (HMAccessory accessory, string firmwareVersion);
 	}
 
-	/// <summary>Browses and discovers <see cref="T:HomeKit.HMAccessory" /> objects.</summary>
+	/// <summary>Browses and discovers <see cref="HomeKit.HMAccessory" /> objects.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/HomeKit/Reference/HMAccessoryBrowser_Class/index.html">Apple documentation for <c>HMAccessoryBrowser</c></related>
 	[NoTV]
@@ -436,15 +436,15 @@ namespace HomeKit {
 		void StopSearchingForNewAccessories ();
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:HomeKit.HMAccessoryBrowserDelegate" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="HomeKit.HMAccessoryBrowserDelegate" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:HomeKit.HMAccessoryBrowserDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:HomeKit.HMAccessoryBrowserDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:HomeKit.HMAccessoryBrowserDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="HomeKit.HMAccessoryBrowserDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="HomeKit.HMAccessoryBrowserDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="HomeKit.HMAccessoryBrowserDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	interface IHMAccessoryBrowserDelegate { }
 
-	/// <summary>Delegate object for  <see cref="T:HomeKit.HMAccessoryBrowser" /> objects, provides methods called when accessories are discovered or removed.</summary>
+	/// <summary>Delegate object for  <see cref="HomeKit.HMAccessoryBrowser" /> objects, provides methods called when accessories are discovered or removed.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/HomeKit/Reference/HMAccessoryBrowserDelegate_Protocol/index.html">Apple documentation for <c>HMAccessoryBrowserDelegate</c></related>
 	[NoTV]
@@ -1180,11 +1180,11 @@ namespace HomeKit {
 
 	interface IHMHomeDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:HomeKit.HMHomeDelegate" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="HomeKit.HMHomeDelegate" />.</summary>
 	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:HomeKit.HMHomeDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:HomeKit.HMHomeDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:HomeKit.HMHomeDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="HomeKit.HMHomeDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="HomeKit.HMHomeDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="HomeKit.HMHomeDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	[MacCatalyst (14, 0)]
 	[Model, Protocol]
@@ -1605,7 +1605,7 @@ namespace HomeKit {
 		[Export ("updateAssociatedServiceType:completionHandler:")]
 		void UpdateAssociatedServiceType ([NullAllowed] string serviceType, Action<NSError> completion);
 
-		/// <summary>If <see langword="true" />, the <see cref="T:HomeKit.HMService" /> may interact with the end-user.</summary>
+		/// <summary>If <see langword="true" />, the <see cref="HomeKit.HMService" /> may interact with the end-user.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (14, 0)]
@@ -1620,7 +1620,7 @@ namespace HomeKit {
 		[Export ("uniqueIdentifier", ArgumentSemantic.Copy)]
 		NSUuid UniqueIdentifier { get; }
 
-		/// <summary>Whether this <see cref="T:HomeKit.HMService" /> is the primary service among a set of linked services.</summary>
+		/// <summary>Whether this <see cref="HomeKit.HMService" /> is the primary service among a set of linked services.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (14, 0)]
@@ -1950,7 +1950,7 @@ namespace HomeKit {
 		[Export ("categoryType")]
 		NSString WeakCategoryType { get; }
 
-		/// <summary>The <see cref="T:HomeKit.HMAccessoryCategoryType" /> describing what kind of accessory the <see cref="P:HomeKit.HMAccessoryCategory.LocalizedDescription" /> refers to.</summary>
+		/// <summary>The <see cref="HomeKit.HMAccessoryCategoryType" /> describing what kind of accessory the <see cref="HomeKit.HMAccessoryCategory.LocalizedDescription" /> refers to.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Wrap ("HMAccessoryCategoryTypeExtensions.GetValue (WeakCategoryType)")]
@@ -2122,7 +2122,7 @@ namespace HomeKit {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'UpdateEvents' instead.")]
 		[Async (XmlDocs = """
 			<param name="event">The event to remove.</param>
-			<summary>Asynchronously attempts to remove <paramref name="event" /> from <see cref="P:HomeKit.HMEventTrigger.Events" />.</summary>
+			<summary>Asynchronously attempts to remove <paramref name="event" /> from <see cref="HomeKit.HMEventTrigger.Events" />.</summary>
 			<returns>A task that represents the asynchronous RemoveEvent operation</returns>
 			<remarks>To be added.</remarks>
 			""")]
@@ -2155,7 +2155,7 @@ namespace HomeKit {
 		[MacCatalyst (13, 1)]
 		[Async (XmlDocs = """
 			<param name="predicate">The predicate to update. May be .</param>
-			<summary>Asynchronously attempts to modify the <see cref="P:HomeKit.HMEventTrigger.Predicate" />.</summary>
+			<summary>Asynchronously attempts to modify the <see cref="HomeKit.HMEventTrigger.Predicate" />.</summary>
 			<returns>A task that represents the asynchronous UpdatePredicate operation</returns>
 			<remarks>To be added.</remarks>
 			""")]
@@ -2193,7 +2193,7 @@ namespace HomeKit {
 	[DisableDefaultCtor]
 	interface HMHomeAccessControl {
 		/// <summary>
-		///           <see langword="true" /> if the associated <see cref="T:HomeKit.HMUser" /> has administrative rights.</summary>
+		///           <see langword="true" /> if the associated <see cref="HomeKit.HMUser" /> has administrative rights.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("administrator")]
@@ -2342,11 +2342,11 @@ namespace HomeKit {
 
 	interface IHMCameraStreamControlDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:HomeKit.HMCameraStreamControlDelegate" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="HomeKit.HMCameraStreamControlDelegate" />.</summary>
 	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:HomeKit.HMCameraStreamControlDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:HomeKit.HMCameraStreamControlDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:HomeKit.HMCameraStreamControlDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="HomeKit.HMCameraStreamControlDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="HomeKit.HMCameraStreamControlDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="HomeKit.HMCameraStreamControlDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	[MacCatalyst (14, 0)]
 	[Protocol, Model]
@@ -2392,7 +2392,7 @@ namespace HomeKit {
 		[MacCatalyst (13, 1)]
 		[Async (XmlDocs = """
 			<param name="audioStreamSetting">To be added.</param>
-			<summary>Asynchronously modifies the <see cref="P:HomeKit.HMCameraStream.AudioStreamSetting" />.</summary>
+			<summary>Asynchronously modifies the <see cref="HomeKit.HMCameraStream.AudioStreamSetting" />.</summary>
 			<returns>A task that represents the asynchronous UpdateAudioStreamSetting operation</returns>
 			<remarks>
 			          <para copied="true">The UpdateAudioStreamSettingAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
@@ -2426,11 +2426,11 @@ namespace HomeKit {
 
 	interface IHMCameraSnapshotControlDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:HomeKit.HMCameraSnapshotControlDelegate" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="HomeKit.HMCameraSnapshotControlDelegate" />.</summary>
 	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:HomeKit.HMCameraSnapshotControlDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:HomeKit.HMCameraSnapshotControlDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:HomeKit.HMCameraSnapshotControlDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="HomeKit.HMCameraSnapshotControlDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="HomeKit.HMCameraSnapshotControlDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="HomeKit.HMCameraSnapshotControlDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	[MacCatalyst (14, 0)]
 	[Protocol, Model]

@@ -13,7 +13,7 @@ using ObjCRuntime;
 namespace SpriteKit {
 
 	// NSInteger -> SKKeyframeSequence.h
-	/// <summary>An enumeration whose values specify the interpolation mode of a <see cref="T:SpriteKit.SKKeyframeSequence" />.</summary>
+	/// <summary>An enumeration whose values specify the interpolation mode of a <see cref="SpriteKit.SKKeyframeSequence" />.</summary>
 	[Native]
 	public enum SKInterpolationMode : long {
 		/// <summary>Interpolate values linearly.</summary>
@@ -25,7 +25,7 @@ namespace SpriteKit {
 	}
 
 	// NSInteger -> SKKeyframeSequence.h
-	/// <summary>An enumeration whose values specify whether the time value of a <see cref="T:SpriteKit.SKKeyframeSequence" /> should cycle.</summary>
+	/// <summary>An enumeration whose values specify whether the time value of a <see cref="SpriteKit.SKKeyframeSequence" /> should cycle.</summary>
 	[Native]
 	public enum SKRepeatMode : long {
 		/// <summary>After the last keyframe's time sequence is past, the last keyframe's value is returned.</summary>
@@ -35,7 +35,7 @@ namespace SpriteKit {
 	}
 
 	// NSInteger -> SKAction.h
-	/// <summary>An enumeration whose values specify the time-varying behavior of a <see cref="T:SpriteKit.SKAction" />. Used with <see cref="P:SpriteKit.SKAction.TimingMode" />.</summary>
+	/// <summary>An enumeration whose values specify the time-varying behavior of a <see cref="SpriteKit.SKAction" />. Used with <see cref="SpriteKit.SKAction.TimingMode" />.</summary>
 	[Native]
 	public enum SKActionTimingMode : long {
 		/// <summary>Render the animation with no easing.</summary>
@@ -50,7 +50,7 @@ namespace SpriteKit {
 
 	// NSInteger -> SKLabelNode.h
 	/// <summary>
-	///  An enumeration whose values specify vertical alignment of a <see cref="T:SpriteKit.SKLabelNode" />. Used with <see cref="P:SpriteKit.SKLabelNode.VerticalAlignmentMode" /></summary>
+	///  An enumeration whose values specify vertical alignment of a <see cref="SpriteKit.SKLabelNode" />. Used with <see cref="SpriteKit.SKLabelNode.VerticalAlignmentMode" /></summary>
 	[Native]
 	public enum SKLabelVerticalAlignmentMode : long {
 		/// <summary>Place the baseline at the node's origin.</summary>
@@ -64,7 +64,7 @@ namespace SpriteKit {
 	}
 
 	// NSInteger -> SKLabelNode.h
-	/// <summary>An enumeration whose values specify horizontal alignment of a <see cref="T:SpriteKit.SKLabelNode" />. Used with <see cref="P:SpriteKit.SKLabelNode.HorizontalAlignmentMode" /></summary>
+	/// <summary>An enumeration whose values specify horizontal alignment of a <see cref="SpriteKit.SKLabelNode" />. Used with <see cref="SpriteKit.SKLabelNode.HorizontalAlignmentMode" /></summary>
 	[Native]
 	public enum SKLabelHorizontalAlignmentMode : long {
 		/// <summary>Place the text in the horizontal center of the node.</summary>
@@ -76,7 +76,7 @@ namespace SpriteKit {
 	}
 
 	// NSInteger -> SKNode.h
-	/// <summary>An enumeration whose values specify options for blending of visual <see cref="T:SpriteKit.SKNode" />s or particles.</summary>
+	/// <summary>An enumeration whose values specify options for blending of visual <see cref="SpriteKit.SKNode" />s or particles.</summary>
 	[Native]
 	public enum SKBlendMode : long {
 		/// <summary>The alpha value of the source color is used to blend the colors.</summary>
@@ -98,7 +98,7 @@ namespace SpriteKit {
 	}
 
 	// NSInteger -> SKScene.h
-	/// <summary>An enumeration whose values specify the way in which a <see cref="T:SpriteKit.SKScene" /> scales to the view in which it is being displayed.</summary>
+	/// <summary>An enumeration whose values specify the way in which a <see cref="SpriteKit.SKScene" /> scales to the view in which it is being displayed.</summary>
 	[Native]
 	public enum SKSceneScaleMode : long {
 		/// <summary>Stretch the scene to fill the view.</summary>
@@ -112,7 +112,7 @@ namespace SpriteKit {
 	}
 
 	// NSInteger -> SKTexture.h
-	/// <summary>An enumeration whose values specify how a <see cref="T:SpriteKit.SKTexture" /> is rendered on a <see cref="T:SpriteKit.SKSpriteNode" /> of a different size.</summary>
+	/// <summary>An enumeration whose values specify how a <see cref="SpriteKit.SKTexture" /> is rendered on a <see cref="SpriteKit.SKSpriteNode" /> of a different size.</summary>
 	[Native]
 	public enum SKTextureFilteringMode : long {
 		/// <summary>The pixel is calculated using the nearest point in the texture. Faster, lower quality.</summary>
@@ -122,7 +122,7 @@ namespace SpriteKit {
 	}
 
 	// NSInteger -> SKTransition.h
-	/// <summary>An enumeration of directions for use with <see cref="T:SpriteKit.SKTransition" />s.</summary>
+	/// <summary>An enumeration of directions for use with <see cref="SpriteKit.SKTransition" />s.</summary>
 	[Native]
 	public enum SKTransitionDirection : long {
 		/// <summary>The transition moves from bottom to top.</summary>
@@ -135,30 +135,30 @@ namespace SpriteKit {
 		Left = 3,
 	}
 
-	/// <summary>Contains values that describe the data with which an <see cref="T:SpriteKit.SKUniform" /> was initialized.</summary>
+	/// <summary>Contains values that describe the data with which an <see cref="SpriteKit.SKUniform" /> was initialized.</summary>
 	[Native]
 	public enum SKUniformType : long {
-		/// <summary>The <see cref="T:SpriteKit.SKUniform" /> has not been initialized.</summary>
+		/// <summary>The <see cref="SpriteKit.SKUniform" /> has not been initialized.</summary>
 		None,
-		/// <summary>The <see cref="T:SpriteKit.SKUniform" /> was initialized with a float.</summary>
+		/// <summary>The <see cref="SpriteKit.SKUniform" /> was initialized with a float.</summary>
 		Float,
-		/// <summary>The <see cref="T:SpriteKit.SKUniform" /> was initialized with a vector that contains 2 floats.</summary>
+		/// <summary>The <see cref="SpriteKit.SKUniform" /> was initialized with a vector that contains 2 floats.</summary>
 		FloatVector2,
-		/// <summary>The <see cref="T:SpriteKit.SKUniform" /> was initialized with a vector that contains 3 floats.</summary>
+		/// <summary>The <see cref="SpriteKit.SKUniform" /> was initialized with a vector that contains 3 floats.</summary>
 		FloatVector3,
-		/// <summary>The <see cref="T:SpriteKit.SKUniform" /> was initialized with a vector that contains 4 floats.</summary>
+		/// <summary>The <see cref="SpriteKit.SKUniform" /> was initialized with a vector that contains 4 floats.</summary>
 		FloatVector4,
-		/// <summary>The <see cref="T:SpriteKit.SKUniform" /> was initialized with a 2x2 array of floats.</summary>
+		/// <summary>The <see cref="SpriteKit.SKUniform" /> was initialized with a 2x2 array of floats.</summary>
 		FloatMatrix2,
-		/// <summary>The <see cref="T:SpriteKit.SKUniform" /> was initialized with a 3x3 array of floats.</summary>
+		/// <summary>The <see cref="SpriteKit.SKUniform" /> was initialized with a 3x3 array of floats.</summary>
 		FloatMatrix3,
-		/// <summary>The <see cref="T:SpriteKit.SKUniform" /> was initialized with a 4x4 array of floats.</summary>
+		/// <summary>The <see cref="SpriteKit.SKUniform" /> was initialized with a 4x4 array of floats.</summary>
 		FloatMatrix4,
-		/// <summary>The <see cref="T:SpriteKit.SKUniform" /> contains texture data.</summary>
+		/// <summary>The <see cref="SpriteKit.SKUniform" /> contains texture data.</summary>
 		Texture,
 	}
 
-	/// <summary>Enumerates values used with <see cref="P:SpriteKit.SKEmitterNode.ParticleRenderOrder" />.</summary>
+	/// <summary>Enumerates values used with <see cref="SpriteKit.SKEmitterNode.ParticleRenderOrder" />.</summary>
 	[Native]
 	public enum SKParticleRenderOrder : ulong {
 		/// <summary>The oldest particles are rendered last.</summary>
@@ -169,7 +169,7 @@ namespace SpriteKit {
 		DontCare,
 	}
 
-	/// <summary>Enumeration of valid types for <see cref="T:SpriteKit.SKAttribute" /> values.</summary>
+	/// <summary>Enumeration of valid types for <see cref="SpriteKit.SKAttribute" /> values.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SKAttributeType : long {
@@ -193,7 +193,7 @@ namespace SpriteKit {
 		VectorHalfFloat4 = 8,
 	}
 
-	/// <summary>Enumerates how a <see cref="T:SpriteKit.SKTileDefinition" /> kind may be rotated.</summary>
+	/// <summary>Enumerates how a <see cref="SpriteKit.SKTileDefinition" /> kind may be rotated.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SKTileDefinitionRotation : ulong {
@@ -297,16 +297,16 @@ namespace SpriteKit {
 		UpperLeftCorner = Up | UpperRight | Right | Down | LowerLeft | Left | UpperLeft,
 	}
 
-	/// <summary>Enumerates the various ways a <see cref="T:SpriteKit.SKNode" /> may be focusable.</summary>
+	/// <summary>Enumerates the various ways a <see cref="SpriteKit.SKNode" /> may be focusable.</summary>
 	[NoMac]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SKNodeFocusBehavior : long {
-		/// <summary>The <see cref="T:SpriteKit.SKNode" /> is not focusable.</summary>
+		/// <summary>The <see cref="SpriteKit.SKNode" /> is not focusable.</summary>
 		None = 0,
-		/// <summary>The <see cref="T:SpriteKit.SKNode" /> is not focusable. It prevents nodes it obscures from being focused.</summary>
+		/// <summary>The <see cref="SpriteKit.SKNode" /> is not focusable. It prevents nodes it obscures from being focused.</summary>
 		Occluding,
-		/// <summary>The <see cref="T:SpriteKit.SKNode" /> is focusable. It prevents nodes it obscures from being focused.</summary>
+		/// <summary>The <see cref="SpriteKit.SKNode" /> is focusable. It prevents nodes it obscures from being focused.</summary>
 		Focusable,
 	}
 }

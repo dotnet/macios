@@ -16,7 +16,7 @@ using ObjCRuntime;
 
 namespace CFNetwork {
 	// all fields constants that this is using are deprecated in Xcode 7
-	/// <summary>A <see cref="T:CoreFoundation.CFReadStream" /> that reads HTTP stream data.</summary>
+	/// <summary>A <see cref="CoreFoundation.CFReadStream" /> that reads HTTP stream data.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]

@@ -43,7 +43,7 @@ using Foundation;
 using System.Runtime.Versioning;
 
 namespace AudioUnit {
-	/// <summary>An enumeration whose values indicate various errors relating to <see cref="T:AudioUnit.ExtAudioFile" />s.</summary>
+	/// <summary>An enumeration whose values indicate various errors relating to <see cref="ExtAudioFile" />s.</summary>
 	///     <remarks>To be added.</remarks>
 	public enum ExtAudioFileError // Implictly cast to OSType
 	{
@@ -92,7 +92,7 @@ namespace AudioUnit {
 	}
 
 #if NET
-	/// <summary>The ExtendedAudioFile provides high-level audio file access. It provides a single unified interface to reading and writing both encoded and unencoded files with access to <see cref="T:AudioToolbox.AudioFile" /> and <see cref="T:AudioToolbox.AudioConverter" /> API. 
+	/// <summary>The ExtendedAudioFile provides high-level audio file access. It provides a single unified interface to reading and writing both encoded and unencoded files with access to <see cref="AudioToolbox.AudioFile" /> and <see cref="AudioToolbox.AudioConverter" /> API. 
 	///     </summary>
 	///     <remarks>
 	///     </remarks>
@@ -161,10 +161,10 @@ namespace AudioUnit {
 			}
 		}
 
-		/// <summary>Returns underlying <see cref="T:AudioToolbox.AudioConverter" /> instance.</summary>
+		/// <summary>Returns underlying <see cref="AudioToolbox.AudioConverter" /> instance.</summary>
 		///         <value>
 		///         </value>
-		///         <remarks>AudioConverter changes are not propagated automatically. After changing any property <see cref="M:AudioUnit.ExtAudioFile.SynchronizeAudioConverter" /> method has to be called to synchronize the converter output format with the file data format.</remarks>
+		///         <remarks>AudioConverter changes are not propagated automatically. After changing any property <see cref="SynchronizeAudioConverter" /> method has to be called to synchronize the converter output format with the file data format.</remarks>
 		public AudioConverter? AudioConverter {
 			get {
 				uint size = sizeof (uint);

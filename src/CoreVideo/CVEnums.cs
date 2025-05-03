@@ -45,7 +45,7 @@ namespace CoreVideo {
 		ShouldPropagate = 1,
 	}
 
-	/// <summary>An enumeration that flags whether a <see cref="T:CoreVideo.CVPixelBuffer" /> is read-only or not.</summary>
+	/// <summary>An enumeration that flags whether a <see cref="CoreVideo.CVPixelBuffer" /> is read-only or not.</summary>
 	[Flags]
 	[MacCatalyst (13, 1)]
 	public enum CVPixelBufferLock : ulong {
@@ -110,7 +110,7 @@ namespace CoreVideo {
 		None = 0,
 	}
 
-	/// <summary>An enumeration that can flag whether a <see cref="T:CoreVideo.CVTime" /> is unknown.</summary>
+	/// <summary>An enumeration that can flag whether a <see cref="CoreVideo.CVTime" /> is unknown.</summary>
 	[Flags]
 	[MacCatalyst (13, 1)]
 	public enum CVTimeFlags : int {
@@ -118,7 +118,7 @@ namespace CoreVideo {
 		IsIndefinite = 1 << 0,
 	}
 
-	/// <summary>An enumeration whose values can flag validity of a timestamp or field in a <see cref="T:CoreVideo.CVTimeStamp" />.</summary>
+	/// <summary>An enumeration whose values can flag validity of a timestamp or field in a <see cref="CoreVideo.CVTimeStamp" />.</summary>
 	[Flags]
 	[MacCatalyst (13, 1)]
 	public enum CVTimeStampFlags : ulong {
@@ -174,7 +174,7 @@ namespace CoreVideo {
 	}
 
 	// CVOptionFlags (uint64_t) -> CVPixelBufferPool.h
-	/// <summary>Defines an option for <see cref="M:CoreVideo.CVPixelBufferPool.Flush(CoreVideo.CVPixelBufferPoolFlushFlags)" />.</summary>
+	/// <summary>Defines an option for <see cref="CoreVideo.CVPixelBufferPool.Flush(CoreVideo.CVPixelBufferPoolFlushFlags)" />.</summary>
 	[MacCatalyst (13, 1)]
 	public enum CVPixelBufferPoolFlushFlags : ulong {
 		/// <summary>To be added.</summary>

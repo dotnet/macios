@@ -19,7 +19,7 @@ using ObjCRuntime;
 namespace CoreMedia {
 
 	// CMSampleBuffer.h
-	/// <summary>Timing information for a <see cref="T:CoreMedia.CMSampleBuffer" />.</summary>
+	/// <summary>Timing information for a <see cref="CoreMedia.CMSampleBuffer" />.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -107,7 +107,7 @@ namespace CoreMedia {
 	}
 
 	// CMTimeRange.h
-	/// <summary>Specifies a mapping between a source <see cref="T:CoreMedia.CMTimeRange" /> and a target <see cref="T:CoreMedia.CMTimeRange" />.</summary>
+	/// <summary>Specifies a mapping between a source <see cref="CoreMedia.CMTimeRange" /> and a target <see cref="CoreMedia.CMTimeRange" />.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -227,7 +227,7 @@ namespace CoreMedia {
 #endif // !COREBUILD
 	}
 
-	/// <summary>A value to be used as a denominator in a <see cref="T:CoreMedia.CMTime" /> calculation.</summary>
+	/// <summary>A value to be used as a denominator in a <see cref="CoreMedia.CMTime" /> calculation.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]

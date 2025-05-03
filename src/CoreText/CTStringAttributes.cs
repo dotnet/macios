@@ -61,7 +61,7 @@ namespace CoreText {
 	}
 
 	// defined as int32_t - System/Library/Frameworks/CoreText.framework/Headers/CTStringAttributes.h
-	/// <summary>An enumeration whose values specify options for <see cref="T:CoreText.CTUnderlineStyle" />s.</summary>
+	/// <summary>An enumeration whose values specify options for <see cref="CoreText.CTUnderlineStyle" />s.</summary>
 	///     <remarks>To be added.</remarks>
 	public enum CTUnderlineStyleModifiers : int {
 		/// <summary>To be added.</summary>
@@ -76,9 +76,9 @@ namespace CoreText {
 		PatternDashDotDot = 0x0400,
 	}
 
-	/// <summary>An enumeration whose values specify the importance of ligatures in a <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Text%20CTString&amp;scope=Xamarin" title="T:CoreText.CTString">T:CoreText.CTString</a></format>.</summary>
+	/// <summary>An enumeration whose values specify the importance of ligatures in a <see cref="CoreText.CTStringAttributes" />.</summary>
 	///     <remarks>To be added.</remarks>
-	///     <altmember cref="T:CoreText.CTStringAttributes.LigatureFormation" />
+	///     <altmember cref="CoreText.CTStringAttributes.LigatureFormation" />
 	public enum CTLigatureFormation {
 		/// <summary>To be added.</summary>
 		Essential = 0,
@@ -100,9 +100,9 @@ namespace CoreText {
 	}
 	#endregion
 
-	/// <summary>Specifies the attributes of a <see cref="T:CoreText.CTRun" />.</summary>
+	/// <summary>Specifies the attributes of a <see cref="CoreText.CTRun" />.</summary>
 	///     <remarks>To be added.</remarks>
-	///     <altmember cref="M:CoreText.CTRun.GetAttributes" />
+	///     <altmember cref="CoreText.CTRun.GetAttributes" />
 	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/SimpleTextInput/">SimpleTextInput</related>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]

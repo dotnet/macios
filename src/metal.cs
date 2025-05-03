@@ -654,7 +654,7 @@ namespace Metal {
 		/// <summary>Encodes <paramref name="buffers" /> to the argument buffer.</summary>
 		/// <param name="buffers">An array of buffers in an argument buffer.</param>
 		/// <param name="offsets">The byte offsets of <paramref name="buffers" /> in the containing buffer.</param>
-		/// <param name="range">Indices into the target buffer of the buffers in <paramref name="buffers" />. Either Metal index IDs or the index members of <see cref="T:Metal.MTLArgumentDescriptor" />s.</param>
+		/// <param name="range">Indices into the target buffer of the buffers in <paramref name="buffers" />. Either Metal index IDs or the index members of <see cref="Metal.MTLArgumentDescriptor" />s.</param>
 		[Abstract]
 		[Export ("setBuffers:offsets:withRange:")]
 		void SetBuffers (IntPtr buffers, IntPtr offsets, NSRange range);
@@ -829,7 +829,7 @@ namespace Metal {
 
 	}
 
-	/// <summary>Encapsulates the details of the arguments of the compute function used to create an <see cref="T:Metal.IMTLComputePipelineState" /> object.</summary>
+	/// <summary>Encapsulates the details of the arguments of the compute function used to create an <see cref="Metal.IMTLComputePipelineState" /> object.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Metal/Reference/MTLComputePipelineReflection_Ref/index.html">Apple documentation for <c>MTLComputePipelineReflection</c></related>
 	[MacCatalyst (13, 1)]
@@ -1917,15 +1917,15 @@ namespace Metal {
 		IMTLResidencySet CreateResidencySet (MTLResidencySetDescriptor descriptor, out NSError error);
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:Metal.MTLDrawable" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="Metal.MTLDrawable" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:Metal.MTLDrawable" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:Metal.MTLDrawable" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:Metal.MTLDrawable_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="Metal.MTLDrawable" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="Metal.MTLDrawable" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="Metal.MTLDrawable_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
-	/// <summary>Extension methods to the <see cref="T:Metal.IMTLDrawable" /> interface to support all the methods from the <see cref="T:Metal.MTLDrawable" /> protocol.</summary>
+	/// <summary>Extension methods to the <see cref="Metal.IMTLDrawable" /> interface to support all the methods from the <see cref="Metal.MTLDrawable" /> protocol.</summary>
 	///     <remarks>
-	///       <para>The extension methods for <see cref="T:Metal.IMTLDrawable" /> allow developers to treat instances of the interface as having all the optional methods of the original <see cref="T:Metal.MTLDrawable" /> protocol.   Since the interface only contains the required members, these extension methods allow developers to call the optional members of the protocol.</para>
+	///       <para>The extension methods for <see cref="Metal.IMTLDrawable" /> allow developers to treat instances of the interface as having all the optional methods of the original <see cref="Metal.MTLDrawable" /> protocol.   Since the interface only contains the required members, these extension methods allow developers to call the optional members of the protocol.</para>
 	///     </remarks>
 	interface IMTLDrawable { }
 	/// <summary>Interface definition for objects that can receive rendering commands.</summary>
@@ -2220,7 +2220,7 @@ namespace Metal {
 	}
 
 
-	/// <summary>Configuration for <see cref="T:Metal.IMTLTexture" /> objects.</summary>
+	/// <summary>Configuration for <see cref="Metal.IMTLTexture" /> objects.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Metal/Reference/MTLTextureDescriptor_Ref/index.html">Apple documentation for <c>MTLTextureDescriptor</c></related>
 	[MacCatalyst (13, 1)]
@@ -2315,7 +2315,7 @@ namespace Metal {
 		MTLTextureSwizzleChannels Swizzle { get; set; }
 	}
 
-	/// <summary>Configures a sampler (see <see cref="T:Metal.IMTLSamplerState" />).</summary>
+	/// <summary>Configures a sampler (see <see cref="Metal.IMTLSamplerState" />).</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Metal/Reference/MTLSamplerDescriptor_Ref/index.html">Apple documentation for <c>MTLSamplerDescriptor</c></related>
 	[MacCatalyst (13, 1)]
@@ -2557,7 +2557,7 @@ namespace Metal {
 		MTLShaderValidation ShaderValidation { get; set; }
 	}
 
-	/// <summary>An array of <see cref="T:Metal.MTLRenderPipelineColorAttachmentDescriptor" /> objects.</summary>
+	/// <summary>An array of <see cref="Metal.MTLRenderPipelineColorAttachmentDescriptor" /> objects.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Metal/Reference/MTLRenderPipelineColorAttachmentDescriptorArray_Ref/index.html">Apple documentation for <c>MTLRenderPipelineColorAttachmentDescriptorArray</c></related>
 	[MacCatalyst (13, 1)]
@@ -2698,7 +2698,7 @@ namespace Metal {
 		nuint StepRate { get; set; }
 	}
 
-	/// <summary>Holds an array of <see cref="T:Metal.MTLVertexBufferLayoutDescriptor" /> objects.</summary>
+	/// <summary>Holds an array of <see cref="Metal.MTLVertexBufferLayoutDescriptor" /> objects.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Metal/Reference/MTLVertexBufferLayoutDescriptorArray_Ref/index.html">Apple documentation for <c>MTLVertexBufferLayoutDescriptorArray</c></related>
 	[MacCatalyst (13, 1)]
@@ -2783,7 +2783,7 @@ namespace Metal {
 		nuint BufferIndex { get; set; }
 	}
 
-	/// <summary>Holds an array of <see cref="T:Metal.MTLVertexAttributeDescriptor" /> objects.</summary>
+	/// <summary>Holds an array of <see cref="Metal.MTLVertexAttributeDescriptor" /> objects.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Metal/Reference/MTLVertexAttributeDescriptorArray_Ref/index.html">Apple documentation for <c>MTLVertexAttributeDescriptorArray</c></related>
 	[MacCatalyst (13, 1)]
@@ -3152,7 +3152,7 @@ namespace Metal {
 		uint WriteMask { get; set; } /* uint32_t */
 	}
 
-	/// <summary>Describes a single field within a <see cref="T:Metal.MTLStructType" /> struct.</summary>
+	/// <summary>Describes a single field within a <see cref="Metal.MTLStructType" /> struct.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Metal/Reference/MTLStructMember_Ref/index.html">Apple documentation for <c>MTLStructMember</c></related>
 	[MacCatalyst (13, 1)]
@@ -3255,9 +3255,9 @@ namespace Metal {
 	interface IMTLParallelRenderCommandEncoder { }
 
 	/// <summary>System protocol for breaking a single rendering pass into parallel command sets.</summary>
-	/// <summary>Extension methods to the <see cref="T:Metal.IMTLParallelRenderCommandEncoder" /> interface to support all the methods from the <see cref="T:Metal.IMTLParallelRenderCommandEncoder" /> protocol.</summary>
+	/// <summary>Extension methods to the <see cref="Metal.IMTLParallelRenderCommandEncoder" /> interface to support all the methods from the <see cref="Metal.IMTLParallelRenderCommandEncoder" /> protocol.</summary>
 	///     <remarks>
-	///       <para>The extension methods for <see cref="T:Metal.IMTLParallelRenderCommandEncoder" /> allow developers to treat instances of the interface as having all the optional methods of the original <see cref="T:Metal.IMTLParallelRenderCommandEncoder" /> protocol.   Since the interface only contains the required members, these extension methods allow developers to call the optional members of the protocol.</para>
+	///       <para>The extension methods for <see cref="Metal.IMTLParallelRenderCommandEncoder" /> allow developers to treat instances of the interface as having all the optional methods of the original <see cref="Metal.IMTLParallelRenderCommandEncoder" /> protocol.   Since the interface only contains the required members, these extension methods allow developers to call the optional members of the protocol.</para>
 	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol] // From Apple Docs: Your app does not define classes that implement this protocol. Model is not needed
@@ -4151,7 +4151,7 @@ namespace Metal {
 		MTLColorWriteMask WriteMask { get; set; }
 	}
 
-	/// <summary>The arguments (see <see cref="T:Metal.MTLArgument" />) of a vertex or fragment function within a <see cref="T:Metal.IMTLRenderPipelineState" />.</summary>
+	/// <summary>The arguments (see <see cref="Metal.MTLArgument" />) of a vertex or fragment function within a <see cref="Metal.IMTLRenderPipelineState" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Metal/Reference/MTLRenderPipelineReflection_Ref/index.html">Apple documentation for <c>MTLRenderPipelineReflection</c></related>
 	[MacCatalyst (13, 1)]
@@ -4247,7 +4247,7 @@ namespace Metal {
 		MTLStoreActionOptions StoreActionOptions { get; set; }
 	}
 
-	/// <summary>A <see cref="T:Metal.MTLRenderPassAttachmentDescriptor" /> that holds the clear color for the rendering pass.</summary>
+	/// <summary>A <see cref="Metal.MTLRenderPassAttachmentDescriptor" /> that holds the clear color for the rendering pass.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Metal/Reference/MTLRenderPassColorAttachmentDescriptor_Ref/index.html">Apple documentation for <c>MTLRenderPassColorAttachmentDescriptor</c></related>
 	[MacCatalyst (13, 1)]
@@ -4257,7 +4257,7 @@ namespace Metal {
 		MTLClearColor ClearColor { get; set; }
 	}
 
-	/// <summary>A <see cref="T:Metal.MTLRenderPassAttachmentDescriptor" /> that holds the clear depth for a rendering pass.</summary>
+	/// <summary>A <see cref="Metal.MTLRenderPassAttachmentDescriptor" /> that holds the clear depth for a rendering pass.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Metal/Reference/MTLRenderPassDepthAttachmentDescriptor_Ref/index.html">Apple documentation for <c>MTLRenderPassDepthAttachmentDescriptor</c></related>
 	[MacCatalyst (13, 1)]
@@ -4272,7 +4272,7 @@ namespace Metal {
 		MTLMultisampleDepthResolveFilter DepthResolveFilter { get; set; }
 	}
 
-	/// <summary>A <see cref="T:Metal.MTLRenderPassAttachmentDescriptor" /> that holds the clear stencil for a rendering pass.</summary>
+	/// <summary>A <see cref="Metal.MTLRenderPassAttachmentDescriptor" /> that holds the clear stencil for a rendering pass.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/help/MTLRenderPassStencilAttachmentDescriptor_Ref/index.html">Apple documentation for <c>MTLRenderPassStencilAttachmentDescriptor</c></related>
 	[MacCatalyst (13, 1)]
@@ -4288,7 +4288,7 @@ namespace Metal {
 		MTLMultisampleStencilResolveFilter StencilResolveFilter { get; set; }
 	}
 
-	/// <summary>Holds an array of <see cref="T:Metal.MTLRenderPassColorAttachmentDescriptor" /> objects.</summary>
+	/// <summary>Holds an array of <see cref="Metal.MTLRenderPassColorAttachmentDescriptor" /> objects.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Metal/Reference/MTLRenderPassColorAttachmentDescriptorArray_Ref/index.html">Apple documentation for <c>MTLRenderPassColorAttachmentDescriptorArray</c></related>
 	[MacCatalyst (13, 1)]
@@ -4575,9 +4575,9 @@ namespace Metal {
 	interface IMTLResource { }
 	interface IMTLHeap { }
 	/// <summary>System protocol for for allocated segments of GPU memory.</summary>
-	/// <summary>Extension methods to the <see cref="T:Metal.IMTLResource" /> interface to support all the methods from the <see cref="T:Metal.IMTLResource" /> protocol.</summary>
+	/// <summary>Extension methods to the <see cref="Metal.IMTLResource" /> interface to support all the methods from the <see cref="Metal.IMTLResource" /> protocol.</summary>
 	///     <remarks>
-	///       <para>The extension methods for <see cref="T:Metal.IMTLResource" /> allow developers to treat instances of the interface as having all the optional methods of the original <see cref="T:Metal.IMTLResource" /> protocol.   Since the interface only contains the required members, these extension methods allow developers to call the optional members of the protocol.</para>
+	///       <para>The extension methods for <see cref="Metal.IMTLResource" /> allow developers to treat instances of the interface as having all the optional methods of the original <see cref="Metal.IMTLResource" /> protocol.   Since the interface only contains the required members, these extension methods allow developers to call the optional members of the protocol.</para>
 	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol] // From Apple Docs: Your app does not define classes that implement this protocol. Model is not needed
@@ -4662,7 +4662,7 @@ namespace Metal {
 		MTLHazardTrackingMode HazardTrackingMode { get; }
 	}
 
-	/// <summary>Describes the compute state used during a compute operation pass. (See also <see cref="T:Metal.IMTLComputePipelineState" />.)</summary>
+	/// <summary>Describes the compute state used during a compute operation pass. (See also <see cref="Metal.IMTLComputePipelineState" />.)</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Metal/Reference/MTLComputePipelineDescriptor_ClassReference/index.html">Apple documentation for <c>MTLComputePipelineDescriptor</c></related>
 	[MacCatalyst (13, 1)]
@@ -5011,7 +5011,7 @@ namespace Metal {
 
 		/// <param name="buffer">A buffer in an argument buffer.</param>
 		/// <param name="offset">The byte offset of <paramref name="buffer" />.</param>
-		/// <param name="index">The index of the nested buffer. Either a Metal index ID or the index member of a <see cref="T:Metal.MTLArgumentDescriptor" />.</param>
+		/// <param name="index">The index of the nested buffer. Either a Metal index ID or the index member of a <see cref="Metal.MTLArgumentDescriptor" />.</param>
 		/// <summary>Encodes <paramref name="buffer" /> to the argument buffer.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
@@ -5023,7 +5023,7 @@ namespace Metal {
 		void SetBuffers (IntPtr buffers, IntPtr offsets, NSRange range);
 
 		/// <param name="texture">A texture within an argument buffer.</param>
-		/// <param name="index">The index of the texture. Either a Metal index ID or the index member of a <see cref="T:Metal.MTLArgumentDescriptor" />.</param>
+		/// <param name="index">The index of the texture. Either a Metal index ID or the index member of a <see cref="Metal.MTLArgumentDescriptor" />.</param>
 		/// <summary>Encodes the provided <paramref name="texture" /> into the argument buffer.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
@@ -5031,7 +5031,7 @@ namespace Metal {
 		void SetTexture ([NullAllowed] IMTLTexture texture, nuint index);
 
 		/// <param name="textures">An array of textures from which to select the textures to encode.</param>
-		/// <param name="range">Indices into <paramref name="textures" />. Either Metal index IDs or the index members of <see cref="T:Metal.MTLArgumentDescriptor" />s.</param>
+		/// <param name="range">Indices into <paramref name="textures" />. Either Metal index IDs or the index members of <see cref="Metal.MTLArgumentDescriptor" />s.</param>
 		/// <summary>Encodes the provided <paramref name="textures" /> into the argument buffer.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
@@ -5039,7 +5039,7 @@ namespace Metal {
 		void SetTextures (IMTLTexture [] textures, NSRange range);
 
 		/// <param name="sampler">A sampler within an argument buffer.</param>
-		/// <param name="index">The sampler index. Either a Metal index ID or the index member of a <see cref="T:Metal.MTLArgumentDescriptor" />.</param>
+		/// <param name="index">The sampler index. Either a Metal index ID or the index member of a <see cref="Metal.MTLArgumentDescriptor" />.</param>
 		/// <summary>Encodes <paramref name="sampler" /> into the argument buffer.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
@@ -5047,14 +5047,14 @@ namespace Metal {
 		void SetSamplerState ([NullAllowed] IMTLSamplerState sampler, nuint index);
 
 		/// <param name="samplers">An array of samplers from which to select the samplers to encode.</param>
-		/// <param name="range">Indices into <paramref name="samplers" />. Either Metal index IDs or the index members of <see cref="T:Metal.MTLArgumentDescriptor" />s.</param>
+		/// <param name="range">Indices into <paramref name="samplers" />. Either Metal index IDs or the index members of <see cref="Metal.MTLArgumentDescriptor" />s.</param>
 		/// <summary>Encodes the provided <paramref name="samplers" /> into the argument buffer.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("setSamplerStates:withRange:")]
 		void SetSamplerStates (IMTLSamplerState [] samplers, NSRange range);
 
-		/// <param name="index">The index for the constant. Either a Metal index ID or the index member of a <see cref="T:Metal.MTLArgumentDescriptor" />.</param>
+		/// <param name="index">The index for the constant. Either a Metal index ID or the index member of a <see cref="Metal.MTLArgumentDescriptor" />.</param>
 		/// <summary>Returns a pointer to the constant at the specified <paramref name="index" /> into the buffer.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>

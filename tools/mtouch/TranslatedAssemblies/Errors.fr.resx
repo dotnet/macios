@@ -13,13 +13,13 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="default" xml:space="preserve">
-		<value>Le message d'erreur pour le code {0} est introuvable. Signalez ce message manquant sur GitHub à l'adresse https://github.com/xamarin/xamarin-macios/issues/new</value>
+		<value>Le message d'erreur pour le code {0} est introuvable. Signalez ce message manquant sur GitHub à l'adresse https://github.com/dotnet/macios/issues/new</value>
 		<comment>
 			This is the default message when an error code can not be found.
 		</comment>
 	</data>
   <data name="MT0000" xml:space="preserve">
-		<value>Erreur inattendue - Entrez un rapport de bogue sur https://github.com/xamarin/xamarin-macios/issues/new
+		<value>Erreur inattendue - Entrez un rapport de bogue sur https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT0001" xml:space="preserve">
@@ -299,7 +299,7 @@
 		</value>
 	</data>
   <data name="MX0071" xml:space="preserve">
-		<value>Plateforme inconnue : {0}. Cela indique généralement un bogue dans {1}. Entrez un rapport de bogue sur https://github.com/xamarin/xamarin-macios/issues/new avec un cas de test.
+		<value>Plateforme inconnue : {0}. Cela indique généralement un bogue dans {1}. Entrez un rapport de bogue sur https://github.com/dotnet/macios/issues/new avec un cas de test.
 		</value>
 	</data>
   <data name="MT0072" xml:space="preserve">
@@ -425,11 +425,11 @@
 	</data>
   <!-- MM0098 has been used in the past -->
   <data name="MX0099" xml:space="preserve">
-		<value>Erreur interne : {0}. Signalez le problème sur https://github.com/xamarin/xamarin-macios/issues/new.
+		<value>Erreur interne : {0}. Signalez le problème sur https://github.com/dotnet/macios/issues/new.
 		</value>
 	</data>
   <data name="MT0100" xml:space="preserve">
-		<value>Cible de build d'assembly non valide : '{0}'. Entrez un rapport de bogue avec un cas de test (https://github.com/xamarin/xamarin-macios/issues/new).
+		<value>Cible de build d'assembly non valide : '{0}'. Entrez un rapport de bogue avec un cas de test (https://github.com/dotnet/macios/issues/new).
 		</value>
 	</data>
   <data name="MT0101" xml:space="preserve">
@@ -679,27 +679,27 @@
 		</value>
 	</data>
   <data name="MT0157" xml:space="preserve">
-		<value>Erreur interne : impossible de convertir '{0}' en '{1}' dans {2}. Entrez un rapport de bogue avec un cas de test (https://github.com/xamarin/xamarin-macios/issues/new).
+		<value>Erreur interne : impossible de convertir '{0}' en '{1}' dans {2}. Entrez un rapport de bogue avec un cas de test (https://github.com/dotnet/macios/issues/new).
 		</value>
 	</data>
   <data name="MT0158" xml:space="preserve">
-		<value>Erreur interne : l'enum intelligent {0} ne semble pas être un enum intelligent en fin de compte. Entrez un rapport de bogue avec un cas de test (https://github.com/xamarin/xamarin-macios/issues/new).
+		<value>Erreur interne : l'enum intelligent {0} ne semble pas être un enum intelligent en fin de compte. Entrez un rapport de bogue avec un cas de test (https://github.com/dotnet/macios/issues/new).
 		</value>
 	</data>
   <data name="MT0159" xml:space="preserve">
-		<value>Erreur interne : type de jeton ({0}) non pris en charge pour {1}. Entrez un rapport de bogue avec un cas de test (https://github.com/xamarin/xamarin-macios/issues/new).
+		<value>Erreur interne : type de jeton ({0}) non pris en charge pour {1}. Entrez un rapport de bogue avec un cas de test (https://github.com/dotnet/macios/issues/new).
 		</value>
 	</data>
   <data name="MT0160" xml:space="preserve">
-		<value>Erreur interne : le registrar statique ne doit pas s'exécuter, sauf si l'éditeur de liens s'exécute également (ou est désactivé). Une solution de contournement possible consiste à passer '-f' en tant qu'argument supplémentaire {0} pour forcer une build complète. Entrez un rapport de bogue avec un cas de test (https://github.com/xamarin/xamarin-macios/issues/new).
+		<value>Erreur interne : le registrar statique ne doit pas s'exécuter, sauf si l'éditeur de liens s'exécute également (ou est désactivé). Une solution de contournement possible consiste à passer '-f' en tant qu'argument supplémentaire {0} pour forcer une build complète. Entrez un rapport de bogue avec un cas de test (https://github.com/dotnet/macios/issues/new).
 		</value>
 	</data>
   <data name="MT0161" xml:space="preserve">
-		<value>Erreur interne : symbole sans nom (type : {0}). Entrez un rapport de bogue avec un cas de test (https://github.com/xamarin/xamarin-macios/issues/new).
+		<value>Erreur interne : symbole sans nom (type : {0}). Entrez un rapport de bogue avec un cas de test (https://github.com/dotnet/macios/issues/new).
 		</value>
 	</data>
   <data name="MT0168" xml:space="preserve">
-		<value>Erreur interne : 'impossible de convertir les frameworks en frameworks : {0}'. Entrez un rapport de bogue avec un cas de test (https://github.com/xamarin/xamarin-macios/issues/new).
+		<value>Erreur interne : 'impossible de convertir les frameworks en frameworks : {0}'. Entrez un rapport de bogue avec un cas de test (https://github.com/dotnet/macios/issues/new).
 		</value>
 	</data>
   <data name="MT0174_a" xml:space="preserve">
@@ -723,7 +723,7 @@
         </value>
     </data>
   <data name="MX0177" xml:space="preserve">
-		<value>Plateforme inconnue : {0}. Cela indique généralement un bogue. Entrez un rapport de bogue sur https://github.com/xamarin/xamarin-macios/issues/new avec un cas de test.		</value>
+		<value>Plateforme inconnue : {0}. Cela indique généralement un bogue. Entrez un rapport de bogue sur https://github.com/dotnet/macios/issues/new avec un cas de test.		</value>
 	</data>
   <data name="MX0178" xml:space="preserve">
         <value>Le fichier de symboles de débogage pour « {0} » n’est pas valide et a été ignoré.
@@ -762,7 +762,7 @@
 		</value>
 	</data>
   <data name="MT1013" xml:space="preserve">
-		<value>Erreur de suivi des dépendances : aucun fichier à comparer. Entrez un rapport de bogue sur https://github.com/xamarin/xamarin-macios/issues/new avec un cas de test.
+		<value>Erreur de suivi des dépendances : aucun fichier à comparer. Entrez un rapport de bogue sur https://github.com/dotnet/macios/issues/new avec un cas de test.
 		</value>
 	</data>
   <data name="MT1014" xml:space="preserve">
@@ -1157,7 +1157,7 @@
 		</value>
 	</data>
   <data name="MT4002" xml:space="preserve">
-		<value>Échec de la compilation du code généré pour les méthodes P/Invoke. Entrez un rapport de bogue sur https://github.com/xamarin/xamarin-macios/issues/new
+		<value>Échec de la compilation du code généré pour les méthodes P/Invoke. Entrez un rapport de bogue sur https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT4101" xml:space="preserve">
@@ -1189,7 +1189,7 @@
 		</value>
 	</data>
   <data name="MT4109" xml:space="preserve">
-		<value>Échec de compilation du code de registrar généré. Entrez un rapport de bogue sur https://github.com/xamarin/xamarin-macios/issues/new
+		<value>Échec de compilation du code de registrar généré. Entrez un rapport de bogue sur https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT4110" xml:space="preserve">
@@ -1205,7 +1205,7 @@
 		</value>
 	</data>
   <data name="MT4114" xml:space="preserve">
-		<value>Erreur inattendue dans le registrar pour la méthode '{0}.{1}' - Entrez un rapport de bogue sur https://github.com/xamarin/xamarin-macios/issues/new
+		<value>Erreur inattendue dans le registrar pour la méthode '{0}.{1}' - Entrez un rapport de bogue sur https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT4116" xml:space="preserve">
@@ -1225,7 +1225,7 @@
 		</value>
 	</data>
   <data name="MT4120" xml:space="preserve">
-		<value>Le registrar a trouvé un type de champ inconnu '{0}' dans le champ '{1}.{2}'. Entrez un rapport de bogue sur https://github.com/xamarin/xamarin-macios/issues/new
+		<value>Le registrar a trouvé un type de champ inconnu '{0}' dans le champ '{1}.{2}'. Entrez un rapport de bogue sur https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT4121" xml:space="preserve">
@@ -1237,35 +1237,35 @@
 		</value>
 	</data>
   <data name="MT4124" xml:space="preserve">
-		<value>{0} non valide trouvé sur '{1}'. Entrez un rapport de bogue sur https://github.com/xamarin/xamarin-macios/issues/new
+		<value>{0} non valide trouvé sur '{1}'. Entrez un rapport de bogue sur https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT4124_A" xml:space="preserve">
-		<value>Propriété RegisterAttribute {1} non valide trouvée sur '{0}'. Entrez un rapport de bogue sur https://github.com/xamarin/xamarin-macios/issues/new
+		<value>Propriété RegisterAttribute {1} non valide trouvée sur '{0}'. Entrez un rapport de bogue sur https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT4124_B" xml:space="preserve">
-		<value>AdoptsAttribute non valide trouvé sur '{0}' : 1 argument de constructeur attendu, {1} obtenu(s). Entrez un rapport de bogue sur https://github.com/xamarin/xamarin-macios/issues/new
+		<value>AdoptsAttribute non valide trouvé sur '{0}' : 1 argument de constructeur attendu, {1} obtenu(s). Entrez un rapport de bogue sur https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT4124_C" xml:space="preserve">
-		<value>BindAsAttribute non valide trouvé sur '{0}.{1}' : champ inconnu {2}. Entrez un rapport de bogue sur https://github.com/xamarin/xamarin-macios/issues/new
+		<value>BindAsAttribute non valide trouvé sur '{0}.{1}' : champ inconnu {2}. Entrez un rapport de bogue sur https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT4124_D" xml:space="preserve">
-		<value>{0} non valide trouvé sur '{1}.{2}'. Entrez un rapport de bogue sur https://github.com/xamarin/xamarin-macios/issues/new
+		<value>{0} non valide trouvé sur '{1}.{2}'. Entrez un rapport de bogue sur https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT4124_E" xml:space="preserve">
-		<value>BindAsAttribute non valide trouvé sur '{0}' : doit avoir 1 argument de constructeur, {1} trouvé(s). Entrez un rapport de bogue sur https://github.com/xamarin/xamarin-macios/issues/new
+		<value>BindAsAttribute non valide trouvé sur '{0}' : doit avoir 1 argument de constructeur, {1} trouvé(s). Entrez un rapport de bogue sur https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT4124_H" xml:space="preserve">
-		<value>BindAsAttribute non valide trouvé sur '{0}' : le type enum sous-jacent de {1} est introuvable. Entrez un rapport de bogue sur https://github.com/xamarin/xamarin-macios/issues/new
+		<value>BindAsAttribute non valide trouvé sur '{0}' : le type enum sous-jacent de {1} est introuvable. Entrez un rapport de bogue sur https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT4124_I" xml:space="preserve">
-		<value>{0} non valides trouvées sur '{1}'. Veuillez créer un rapport de bogues à https://github.com/xamarin/xamarin-macios/issues/new</value>
+		<value>{0} non valides trouvées sur '{1}'. Veuillez créer un rapport de bogues à https://github.com/dotnet/macios/issues/new</value>
 	</data>
   <data name="MT4125" xml:space="preserve">
 		<value>Le registrar a trouvé un type non valide '{0}' dans la signature de la méthode '{1}' : l'interface doit avoir un attribut Protocol spécifiant son type de wrapper.
@@ -1347,7 +1347,7 @@
 		</value>
 	</data>
   <data name="MT4147" xml:space="preserve">
-		<value>{0} non valide trouvé sur '{1}'. Entrez un rapport de bogue sur https://github.com/xamarin/xamarin-macios/issues/new
+		<value>{0} non valide trouvé sur '{1}'. Entrez un rapport de bogue sur https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT4148" xml:space="preserve">
@@ -1456,15 +1456,15 @@
 		</comment>
 	</data>
   <data name="MT4163" xml:space="preserve">
-		<value>Erreur interne dans le registrar ({0} ctor avec {1} arguments). Entrez un rapport de bogue sur https://github.com/xamarin/xamarin-macios/issues/new
+		<value>Erreur interne dans le registrar ({0} ctor avec {1} arguments). Entrez un rapport de bogue sur https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT4163_A" xml:space="preserve">
-		<value>Erreur interne dans le registrar (genre de disponibilité inconnu : {0}). Entrez un rapport de bogue sur https://github.com/xamarin/xamarin-macios/issues/new
+		<value>Erreur interne dans le registrar (genre de disponibilité inconnu : {0}). Entrez un rapport de bogue sur https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT4163_B" xml:space="preserve">
-		<value>Erreur interne dans le registrar (les paramètres BindAs ne peuvent pas être ref/out : {0}). Entrez un rapport de bogue sur https://github.com/xamarin/xamarin-macios/issues/new
+		<value>Erreur interne dans le registrar (les paramètres BindAs ne peuvent pas être ref/out : {0}). Entrez un rapport de bogue sur https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT4164" xml:space="preserve">
@@ -1544,7 +1544,7 @@
 		</value>
 	</data>
   <data name="MT4184" xml:space="preserve">
-		<value>Erreur interne dans le registrar (les paramètres BindAs ne peuvent pas être ref/out : {0}). Entrez un rapport de bogue sur https://github.com/xamarin/xamarin-macios/issues/new
+		<value>Erreur interne dans le registrar (les paramètres BindAs ne peuvent pas être ref/out : {0}). Entrez un rapport de bogue sur https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT4185" xml:space="preserve">
@@ -1572,15 +1572,15 @@
 		</value>
 	</data>
   <data name="MM5103" xml:space="preserve">
-		<value>Échec de la compilation. Code d'erreur - {0}. Entrez un rapport de bogue sur https://github.com/xamarin/xamarin-macios/issues/new
+		<value>Échec de la compilation. Code d'erreur - {0}. Entrez un rapport de bogue sur https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT5103_A" xml:space="preserve">
-		<value>Échec de la compilation du ou des fichiers '{0}'. Entrez un rapport de bogue sur https://github.com/xamarin/xamarin-macios/issues/new
+		<value>Échec de la compilation du ou des fichiers '{0}'. Entrez un rapport de bogue sur https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT5106" xml:space="preserve">
-		<value>Impossible de compiler le ou les fichiers '{0}'. Entrez un rapport de bogue sur https://github.com/xamarin/xamarin-macios/issues/new
+		<value>Impossible de compiler le ou les fichiers '{0}'. Entrez un rapport de bogue sur https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT5107" xml:space="preserve">
@@ -1652,7 +1652,7 @@
 		</value>
 	</data>
   <data name="MT5216" xml:space="preserve">
-		<value>Échec de la liaison native pour '{0}'. Entrez un rapport de bogue sur https://github.com/xamarin/xamarin-macios/issues/new
+		<value>Échec de la liaison native pour '{0}'. Entrez un rapport de bogue sur https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT5217" xml:space="preserve">
@@ -1676,7 +1676,7 @@
 		</value>
 	</data>
   <data name="MX5222" xml:space="preserve">
-		<value>L'éditeur de liens natif n'a pas pu exécuter : {0}. Entrez un rapport de bogue sur https://github.com/xamarin/xamarin-macios/issues/new
+		<value>L'éditeur de liens natif n'a pas pu exécuter : {0}. Entrez un rapport de bogue sur https://github.com/dotnet/macios/issues/new
  		</value>
 	</data>
   <data name="MX5223" xml:space="preserve">
@@ -1752,7 +1752,7 @@
 	</data>
   <!-- 8XXX are for errors that occur at runtime -->
   <data name="MT8018" xml:space="preserve">
-		<value>Erreur de cohérence interne. Entrez un rapport de bogue sur https://github.com/xamarin/xamarin-macios/issues/new.
+		<value>Erreur de cohérence interne. Entrez un rapport de bogue sur https://github.com/dotnet/macios/issues/new.
 		</value>
 	</data>
   <!-- 8000 -> 8036 are missing here (except 8018), so skip to 8037 -->

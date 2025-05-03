@@ -37,7 +37,7 @@ namespace ARKit {
 		}
 
 		// Using GetXXX methods so it's similar to the ARFaceGeometry methods.
-		/// <summary>The UV texture coordinates for the corresponding vertex in the <see cref="M:ARKit.ARPlaneGeometry.GetVertices" /> array.</summary>
+		/// <summary>The UV texture coordinates for the corresponding vertex in the <see cref="ARKit.ARPlaneGeometry.GetVertices" /> array.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		public unsafe Vector2 [] GetTextureCoordinates ()
@@ -51,7 +51,7 @@ namespace ARKit {
 		}
 
 		// Using GetXXX methods so it's similar to the ARFaceGeometry methods.
-		/// <summary>An array of indices into the <see cref="M:ARKit.ARPlaneGeometry.GetVertices" /> and <see cref="M:ARKit.ARPlaneGeometry.GetTextureCoordinates" /> arrays.</summary>
+		/// <summary>An array of indices into the <see cref="ARKit.ARPlaneGeometry.GetVertices" /> and <see cref="ARKit.ARPlaneGeometry.GetTextureCoordinates" /> arrays.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		public unsafe short [] GetTriangleIndices ()

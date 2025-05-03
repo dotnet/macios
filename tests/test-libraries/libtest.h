@@ -314,6 +314,38 @@ typedef void (^outerBlock) (innerBlock callback);
 
 @end
 
+// VeryGeneric stuff
+
+@protocol VeryGenericElementProtocol <NSObject>
+@property (retain, readonly) NSDate * when;
+@end
+
+@protocol VeryGenericElementProtocol1 <VeryGenericElementProtocol>
+@property (readonly) NSInteger number;
+@end
+
+@protocol VeryGenericElementProtocol2 <VeryGenericElementProtocol>
+@property (retain, readonly) NSString * animal;
+@end
+
+@interface VeryGenericCollection<Key: NSString*, __covariant Element: id<VeryGenericElementProtocol>> : NSObject <NSFastEnumeration>
+@property (retain) Element element;
+@property () NSUInteger count;
+- (Element _Nullable)getElement:(Key)alias;
+- (NSEnumerator<Element> *)elementEnumerator;
+- (void) add: (Element) value;
+@end
+
+@protocol VeryGenericConsumerProtocol <NSObject>
+@property (retain, readonly) VeryGenericCollection<NSString *, id<VeryGenericElementProtocol1>> *first;
+@property (retain, readonly) VeryGenericCollection<NSString *, id<VeryGenericElementProtocol2>> *second;
+@end
+
+@interface VeryGenericFactory : NSObject {
+}
+	+(id<VeryGenericConsumerProtocol>) getConsumer;
+@end
+
 #pragma clang diagnostic pop
 // NS_ASSUME_NONNULL_END
 

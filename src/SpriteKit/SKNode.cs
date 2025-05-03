@@ -19,12 +19,11 @@ using ObjCRuntime;
 
 namespace SpriteKit {
 	public partial class SKNode : IEnumerable, IEnumerable<SKNode> {
-#if NET
 		/// <typeparam name="T">To be added.</typeparam>
 		///         <param name="file">
 		///
 		/// Filename containing the SpriteKit assets, without the extension.</param>
-		///         <summary>Creates a new <see cref="T:SpriteKit.SKNode" /> by loading the assets from a file included in the application. </summary>
+		///         <summary>Creates a new <see cref="SpriteKit.SKNode" /> by loading the assets from a file included in the application. </summary>
 		///         <returns>
 		///
 		/// The new instance of the node.   The parameter type <typeparamref name="T" /> is used to determine which kind of class you want to get out of the file.</returns>
@@ -33,7 +32,6 @@ namespace SpriteKit {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public static T? FromFile<T> (string file) where T : SKNode
 		{
 			var fileHandle = CFString.CreateNative (file);
@@ -81,7 +79,6 @@ namespace SpriteKit {
 			return GetEnumerator ();
 		}
 
-#if NET
 		/// <param name="filename">To be added.</param>
 		///         <param name="types">To be added.</param>
 		///         <param name="error">To be added.</param>
@@ -92,7 +89,6 @@ namespace SpriteKit {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public static SKNode? Create (string filename, Type [] types, out NSError error)
 		{
 			// Let's fail early.
@@ -112,7 +108,6 @@ namespace SpriteKit {
 			}
 		}
 
-#if NET
 		/// <param name="filename">To be added.</param>
 		///         <param name="classes">To be added.</param>
 		///         <param name="error">To be added.</param>
@@ -123,7 +118,6 @@ namespace SpriteKit {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public static SKNode? Create (string filename, NSSet<Class> classes, out NSError error)
 		{
 			// `filename` will be checked by `Create` later

@@ -42,7 +42,7 @@ UIFont CustomizeFont (UIFont font)
       </para>
       <para>
 	Instances of these objects are created to be part of an array
-	of desired features when creating a <see cref="T:UIKit.UIFontAttributes" />.   For example:
+	of desired features when creating a <see cref="UIKit.UIFontAttributes" />.   For example:
 
       </para>
       <example>

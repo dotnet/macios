@@ -34,14 +34,14 @@ using CoreFoundation;
 using ObjCRuntime;
 
 namespace AddressBook {
-	/// <summary>Possible <see cref="T:AddressBook.ABAddressBook" /> errors.</summary>
+	/// <summary>Possible <see cref="AddressBook.ABAddressBook" /> errors.</summary>
 	///     <remarks>
-	///       When the <see cref="P:CoreFoundation.CFException.Domain" />
+	///       When the <see cref="CoreFoundation.CFException.Domain" />
 	///       property is set to
-	///       <see cref="F:AddressBook.ABAddressBook.ErrorDomain" />,
-	///       then <see cref="P:CoreFoundation.CFException.Code" />
+	///       <see cref="AddressBook.ABAddressBook.ErrorDomain" />,
+	///       then <see cref="CoreFoundation.CFException.Code" />
 	///       will be one of the
-	///       <see cref="T:AddressBook.ABAddressBookError" /> values.
+	///       <see cref="AddressBook.ABAddressBookError" /> values.
 	///     </remarks>
 	[Deprecated (PlatformName.iOS, 9, 0, message: "Use the 'Contacts' API instead.")]
 	[Introduced (PlatformName.MacCatalyst, 14, 0)]
@@ -59,7 +59,7 @@ namespace AddressBook {
 		OperationNotPermittedByUserError,
 	}
 
-	/// <summary>An enumeration whose values specify the possible results of the <see cref="M:AddressBook.ABAddressBook.GetAuthorizationStatus" /> method.</summary>
+	/// <summary>An enumeration whose values specify the possible results of the <see cref="AddressBook.ABAddressBook.GetAuthorizationStatus" /> method.</summary>
 	[Deprecated (PlatformName.iOS, 9, 0, message: "Use the 'Contacts' API instead.")]
 	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[Deprecated (PlatformName.MacCatalyst, 14, 0, message: "Use the 'Contacts' API instead.")]
@@ -91,7 +91,7 @@ namespace AddressBook {
 	///     <remarks>
 	///       <para>
 	///         The composite name controls the output of
-	///         <see cref="M:AddressBook.ABRecord.ToString" />.
+	///         <see cref="AddressBook.ABRecord.ToString" />.
 	///       </para>
 	///     </remarks>
 	[Deprecated (PlatformName.iOS, 9, 0, message: "Use the 'Contacts' API instead.")]
@@ -104,7 +104,7 @@ namespace AddressBook {
 	}
 
 	/// <summary>
-	///       The <see cref="T:AddressBook.ABPerson" />
+	///       The <see cref="AddressBook.ABPerson" />
 	///       properties.
 	///     </summary>
 	[Deprecated (PlatformName.iOS, 9, 0, message: "Use the 'Contacts' API instead.")]
@@ -112,111 +112,111 @@ namespace AddressBook {
 	public enum ABPersonProperty {
 		/// <summary>
 		///           The
-		///           <see cref="M:AddressBook.ABPerson.GetVCards(AddressBook.ABPerson[])" />
+		///           <see cref="AddressBook.ABPerson.GetVCards(AddressBook.ABPerson[])" />
 		///           multi-value property.
 		///         </summary>
 		Address,
 		/// <summary>
-		///           The <see cref="P:AddressBook.ABPerson.Birthday" /> property.
+		///           The <see cref="AddressBook.ABPerson.Birthday" /> property.
 		///         </summary>
 		Birthday,
 		/// <summary>
-		///           The <see cref="P:AddressBook.ABPerson.CreationDate" /> property.
+		///           The <see cref="AddressBook.ABPerson.CreationDate" /> property.
 		///         </summary>
 		CreationDate,
 		/// <summary>
 		///           The
-		///           <see cref="M:AddressBook.ABPerson.GetDates" />
+		///           <see cref="AddressBook.ABPerson.GetDates" />
 		///           multi-value property.
 		///         </summary>
 		Date,
 		/// <summary>
-		///           The <see cref="P:AddressBook.ABPerson.Department" /> property.
+		///           The <see cref="AddressBook.ABPerson.Department" /> property.
 		///         </summary>
 		Department,
 		/// <summary>
 		///           The
-		///           <see cref="M:AddressBook.ABPerson.GetEmails" />
+		///           <see cref="AddressBook.ABPerson.GetEmails" />
 		///           multi-value property.
 		///         </summary>
 		Email,
 		/// <summary>
-		///           The <see cref="P:AddressBook.ABPerson.FirstName" /> property.
+		///           The <see cref="AddressBook.ABPerson.FirstName" /> property.
 		///         </summary>
 		FirstName,
 		/// <summary>
-		///           The <see cref="P:AddressBook.ABPerson.FirstNamePhonetic" /> property.
+		///           The <see cref="AddressBook.ABPerson.FirstNamePhonetic" /> property.
 		///         </summary>
 		FirstNamePhonetic,
 		/// <summary>
 		///           The
-		///           <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Address%20Book%20ABPerson%20Get%20Instant%20Messages&amp;scope=Xamarin" title="M:AddressBook.ABPerson.GetInstantMessages*">M:AddressBook.ABPerson.GetInstantMessages*</a></format>
+		///           <see cref="AddressBook.ABPerson.GetInstantMessages" />
 		///           multi-value property.
 		///         </summary>
 		InstantMessage,
 		/// <summary>
-		///           The <see cref="P:AddressBook.ABPerson.JobTitle" /> property.
+		///           The <see cref="AddressBook.ABPerson.JobTitle" /> property.
 		///         </summary>
 		JobTitle,
 		/// <summary>
-		///           The <see cref="P:AddressBook.ABPerson.PersonKind" /> property.
+		///           The <see cref="AddressBook.ABPerson.PersonKind" /> property.
 		///         </summary>
 		Kind,
 		/// <summary>
-		///           The <see cref="P:AddressBook.ABPerson.LastName" /> property.
+		///           The <see cref="AddressBook.ABPerson.LastName" /> property.
 		///         </summary>
 		LastName,
 		/// <summary>
-		///           The <see cref="P:AddressBook.ABPerson.LastNamePhonetic" /> property.
+		///           The <see cref="AddressBook.ABPerson.LastNamePhonetic" /> property.
 		///         </summary>
 		LastNamePhonetic,
 		/// <summary>
-		///           The <see cref="P:AddressBook.ABPerson.MiddleName" /> property.
+		///           The <see cref="AddressBook.ABPerson.MiddleName" /> property.
 		///         </summary>
 		MiddleName,
 		/// <summary>
-		///           The <see cref="P:AddressBook.ABPerson.MiddleNamePhonetic" /> property.
+		///           The <see cref="AddressBook.ABPerson.MiddleNamePhonetic" /> property.
 		///         </summary>
 		MiddleNamePhonetic,
 		/// <summary>
-		///           The <see cref="P:AddressBook.ABPerson.ModificationDate" /> property.
+		///           The <see cref="AddressBook.ABPerson.ModificationDate" /> property.
 		///         </summary>
 		ModificationDate,
 		/// <summary>
-		///           The <see cref="P:AddressBook.ABPerson.Nickname" /> property.
+		///           The <see cref="AddressBook.ABPerson.Nickname" /> property.
 		///         </summary>
 		Nickname,
 		/// <summary>
-		///           The <see cref="P:AddressBook.ABPerson.Note" /> property.
+		///           The <see cref="AddressBook.ABPerson.Note" /> property.
 		///         </summary>
 		Note,
 		/// <summary>
-		///           The <see cref="P:AddressBook.ABPerson.Organization" /> property.
+		///           The <see cref="AddressBook.ABPerson.Organization" /> property.
 		///         </summary>
 		Organization,
 		/// <summary>
 		///           The
-		///           <see cref="M:AddressBook.ABPerson.GetPhones" />
+		///           <see cref="AddressBook.ABPerson.GetPhones" />
 		///           multi-value property.
 		///         </summary>
 		Phone,
 		/// <summary>
-		///           The <see cref="P:AddressBook.ABPerson.Prefix" /> property.
+		///           The <see cref="AddressBook.ABPerson.Prefix" /> property.
 		///         </summary>
 		Prefix,
 		/// <summary>
 		///           The
-		///           <see cref="P:AddressBookUI.ABPersonPredicateKey.RelatedNames" />
+		///           <see cref="AddressBookUI.ABPersonPredicateKey.RelatedNames" />
 		///           multi-value property.
 		///         </summary>
 		RelatedNames,
 		/// <summary>
-		///           The <see cref="P:AddressBook.ABPerson.Suffix" /> property.
+		///           The <see cref="AddressBook.ABPerson.Suffix" /> property.
 		///         </summary>
 		Suffix,
 		/// <summary>
 		///           The
-		///           <see cref="M:AddressBook.ABPerson.GetUrls" />
+		///           <see cref="AddressBook.ABPerson.GetUrls" />
 		///           multi-value property.
 		///         </summary>
 		Url,
@@ -224,7 +224,7 @@ namespace AddressBook {
 		SocialProfile,
 	}
 
-	/// <summary>An enumeration whose values specify whether the form of the image requested from the <see cref="M:AddressBook.ABPerson.GetImage(AddressBook.ABPersonImageFormat)" /> method.</summary>
+	/// <summary>An enumeration whose values specify whether the form of the image requested from the <see cref="AddressBook.ABPerson.GetImage(AddressBook.ABPersonImageFormat)" /> method.</summary>
 	[Deprecated (PlatformName.iOS, 9, 0, message: "Use the 'Contacts' API instead.")]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use the 'Contacts' API instead.")]
 #if NET
@@ -240,7 +240,7 @@ namespace AddressBook {
 	}
 
 	/// <summary>
-	///       Specifies whether a <see cref="T:AddressBook.ABPerson" />
+	///       Specifies whether a <see cref="AddressBook.ABPerson" />
 	///       represents a human being or an organization.
 	///     </summary>
 	[Deprecated (PlatformName.iOS, 9, 0, message: "Use the 'Contacts' API instead.")]
@@ -248,16 +248,16 @@ namespace AddressBook {
 	public enum ABPersonKind {
 		/// <summary>
 		///           It's unknown whether the
-		///           <see cref="T:AddressBook.ABPerson" /> is a person or
+		///           <see cref="AddressBook.ABPerson" /> is a person or
 		///           an organization.
 		///         </summary>
 		None,
 		/// <summary>
-		///           The <see cref="T:AddressBook.ABPerson" /> is an organization.
+		///           The <see cref="AddressBook.ABPerson" /> is an organization.
 		///         </summary>
 		Organization,
 		/// <summary>
-		///           The <see cref="T:AddressBook.ABPerson" /> is a person.
+		///           The <see cref="AddressBook.ABPerson" /> is a person.
 		///         </summary>
 		Person,
 	}
@@ -266,9 +266,9 @@ namespace AddressBook {
 	[Deprecated (PlatformName.iOS, 9, 0, message: "Use the 'Contacts' API instead.")]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use the 'Contacts' API instead.")]
 	public enum ABRecordType : uint /* uint32_t */ {
-		/// <summary>A <see cref="T:AddressBook.ABPerson" /> record.</summary>
+		/// <summary>A <see cref="AddressBook.ABPerson" /> record.</summary>
 		Person = 0,
-		/// <summary>A <see cref="T:AddressBook.ABGroup" /> record.</summary>
+		/// <summary>A <see cref="AddressBook.ABGroup" /> record.</summary>
 		Group = 1,
 		/// <summary>To be added.</summary>
 		Source = 2,
@@ -281,52 +281,52 @@ namespace AddressBook {
 		/// <summary>Invalid property type.</summary>
 		Invalid = 0,
 		/// <summary>
-		///           The property holds a <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> value.
+		///           The property holds a <see cref="System.String" /> value.
 		///         </summary>
 		String = 0x1,
 		/// <summary>
-		///           The property holds a <see cref="T:Foundation.NSNumber" /> value.
+		///           The property holds a <see cref="Foundation.NSNumber" /> value.
 		///         </summary>
 		Integer = 0x2,
 		/// <summary>
-		///           The property holds a <see cref="T:Foundation.NSNumber" /> value.
+		///           The property holds a <see cref="Foundation.NSNumber" /> value.
 		///         </summary>
 		Real = 0x3,
 		/// <summary>
-		///           The property holds a <see cref="T:Foundation.NSDate" /> value.
+		///           The property holds a <see cref="Foundation.NSDate" /> value.
 		///         </summary>
 		DateTime = 0x4,
 		/// <summary>
-		///           The property holds a <see cref="T:Foundation.NSDictionary" /> value.
+		///           The property holds a <see cref="Foundation.NSDictionary" /> value.
 		///         </summary>
 		Dictionary = 0x5,
 		/// <summary>
 		///           The property holds a
-		///           <see cref="T:AddressBook.ABMultiValue`1" />
+		///           <see cref="AddressBook.ABMultiValue{T}" />
 		///           value.
 		///         </summary>
 		MultiString = MultiMask | String,
 		/// <summary>
 		///           The property holds a
-		///           <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:AddressBook.ABMultiValue{Foundation.NSNumber}&amp;scope=Xamarin" title="T:AddressBook.ABMultiValue{Foundation.NSNumber}">T:AddressBook.ABMultiValue{Foundation.NSNumber}</a></format>
+		///           <see cref="AddressBook.ABMultiValue{T}" /> of <see cref="NSNumber" />
 		///           value.
 		///         </summary>
 		MultiInteger = MultiMask | Integer,
 		/// <summary>
 		///           The property holds a
-		///           <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:AddressBook.ABMultiValue{Foundation.NSNumber}&amp;scope=Xamarin" title="T:AddressBook.ABMultiValue{Foundation.NSNumber}">T:AddressBook.ABMultiValue{Foundation.NSNumber}</a></format>
+		///           <see cref="AddressBook.ABMultiValue{T}" /> of <see cref="NSNumber" />
 		///           value.
 		///         </summary>
 		MultiReal = MultiMask | Real,
 		/// <summary>
 		///           The property holds a
-		///           <see cref="T:AddressBook.ABMultiValue{Foundation.NSDate}" />
+		///           <see cref="AddressBook.ABMultiValue{T}" /> of <see cref="NSDate" />
 		///           value.
 		///         </summary>
 		MultiDateTime = MultiMask | DateTime,
 		/// <summary>
 		///           The property holds a
-		///           <see cref="T:AddressBook.ABMultiValue{Foundation.NSDictionary}" />
+		///           <see cref="AddressBook.ABMultiValue{T}" /> of <see cref="NSDictionary" />
 		///           value.
 		///         </summary>
 		MultiDictionary = MultiMask | Dictionary,
@@ -335,7 +335,7 @@ namespace AddressBook {
 	}
 
 	// note: not a true flag
-	/// <summary>An enumeration whose values specify various kinds of <see cref="T:AddressBook.ABSourceType" />.</summary>
+	/// <summary>An enumeration whose values specify various kinds of <see cref="AddressBook.ABSourceType" />.</summary>
 	[Deprecated (PlatformName.iOS, 9, 0, message: "Use the 'Contacts' API instead.")]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use the 'Contacts' API instead.")]
 	public enum ABSourceType : int /* typedef int */ {

@@ -36,7 +36,7 @@ namespace CoreMotion {
 		/// <param name="x">To be added.</param>
 		///         <param name="y">To be added.</param>
 		///         <param name="z">To be added.</param>
-		///         <summary>Creates a new <see cref="T:CoreMotion.CMAcceleration" /> object, along the specified axes, with values in Gs.</summary>
+		///         <summary>Creates a new <see cref="CoreMotion.CMAcceleration" /> object, along the specified axes, with values in Gs.</summary>
 		///         <remarks>To be added.</remarks>
 		public CMAcceleration (double x, double y, double z)
 		{
@@ -121,7 +121,7 @@ namespace CoreMotion {
 		///         <param name="y">To be added.</param>
 		///         <param name="z">To be added.</param>
 		///         <param name="w">To be added.</param>
-		///         <summary>Constructs a new <see cref="T:CoreMotion.CMQuaternion" /> with the specified components.</summary>
+		///         <summary>Constructs a new <see cref="CoreMotion.CMQuaternion" /> with the specified components.</summary>
 		///         <remarks>To be added.</remarks>
 		public CMQuaternion (double x, double y, double z, double w)
 		{
@@ -163,7 +163,7 @@ namespace CoreMotion {
 		/// <param name="x">To be added.</param>
 		///         <param name="y">To be added.</param>
 		///         <param name="z">To be added.</param>
-		///         <summary>Creates a new <see cref="T:CoreMotion.CMRotationRate" /> that rotates around the various axes at the specified rate, in radians per second.</summary>
+		///         <summary>Creates a new <see cref="CoreMotion.CMRotationRate" /> that rotates around the various axes at the specified rate, in radians per second.</summary>
 		///         <remarks>To be added.</remarks>
 		public CMRotationRate (double x, double y, double z)
 		{

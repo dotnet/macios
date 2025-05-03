@@ -13,13 +13,13 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="default" xml:space="preserve">
-		<value>找不到程式碼 {0} 的錯誤訊息。請前往 https://github.com/xamarin/xamarin-macios/issues/new，於 GitHub 回報這項遺失的訊息</value>
+		<value>找不到程式碼 {0} 的錯誤訊息。請前往 https://github.com/dotnet/macios/issues/new，於 GitHub 回報這項遺失的訊息</value>
 		<comment>
 			This is the default message when an error code can not be found.
 		</comment>
 	</data>
   <data name="MT0000" xml:space="preserve">
-		<value>未預期的錯誤 - 請前往 https://github.com/xamarin/xamarin-macios/issues/new 提交 Bug 報告
+		<value>未預期的錯誤 - 請前往 https://github.com/dotnet/macios/issues/new 提交 Bug 報告
 		</value>
 	</data>
   <data name="MT0001" xml:space="preserve">
@@ -299,7 +299,7 @@
 		</value>
 	</data>
   <data name="MX0071" xml:space="preserve">
-		<value>未知的平台: {0}。這通常表示 {1} 中有 Bug; 請前往 https://github.com/xamarin/xamarin-macios/issues/new，以測試案例提交 Bug 報告。
+		<value>未知的平台: {0}。這通常表示 {1} 中有 Bug; 請前往 https://github.com/dotnet/macios/issues/new，以測試案例提交 Bug 報告。
 		</value>
 	</data>
   <data name="MT0072" xml:space="preserve">
@@ -425,11 +425,11 @@
 	</data>
   <!-- MM0098 has been used in the past -->
   <data name="MX0099" xml:space="preserve">
-		<value>內部錯誤: {0}。請前往 https://github.com/xamarin/xamarin-macios/issues/new 提交問題。
+		<value>內部錯誤: {0}。請前往 https://github.com/dotnet/macios/issues/new 提交問題。
 		</value>
 	</data>
   <data name="MT0100" xml:space="preserve">
-		<value>組件組建目標無效: '{0}'。請以測試案例提交 Bug 報告 (https://github.com/xamarin/xamarin-macios/issues/new)。
+		<value>組件組建目標無效: '{0}'。請以測試案例提交 Bug 報告 (https://github.com/dotnet/macios/issues/new)。
 		</value>
 	</data>
   <data name="MT0101" xml:space="preserve">
@@ -679,27 +679,27 @@
 		</value>
 	</data>
   <data name="MT0157" xml:space="preserve">
-		<value>內部錯誤: 無法在 {2} 中將 '{0}' 轉換成 '{1}'。請以測試案例提交 Bug 報告 (https://github.com/xamarin/xamarin-macios/issues/new)。
+		<value>內部錯誤: 無法在 {2} 中將 '{0}' 轉換成 '{1}'。請以測試案例提交 Bug 報告 (https://github.com/dotnet/macios/issues/new)。
 		</value>
 	</data>
   <data name="MT0158" xml:space="preserve">
-		<value>內部錯誤: 智慧列舉 {0} 似乎仍不是智慧列舉。請以測試案例提交 Bug 報告 (https://github.com/xamarin/xamarin-macios/issues/new)。
+		<value>內部錯誤: 智慧列舉 {0} 似乎仍不是智慧列舉。請以測試案例提交 Bug 報告 (https://github.com/dotnet/macios/issues/new)。
 		</value>
 	</data>
   <data name="MT0159" xml:space="preserve">
-		<value>內部錯誤: 不支援 {1} 的權杖類型 ({0})。請以測試案例提交 Bug 報告 (https://github.com/xamarin/xamarin-macios/issues/new)。
+		<value>內部錯誤: 不支援 {1} 的權杖類型 ({0})。請以測試案例提交 Bug 報告 (https://github.com/dotnet/macios/issues/new)。
 		</value>
 	</data>
   <data name="MT0160" xml:space="preserve">
-		<value>內部錯誤: 除非連結器也已執行 (或已停用)，否則不應執行靜態登錄器。可能的因應方式是將 '-f ' 作為額外的 {0} 引數傳遞，以強制執行完整組建。請以測試案例提交 Bug 報告 (https://github.com/xamarin/xamarin-macios/issues/new)。
+		<value>內部錯誤: 除非連結器也已執行 (或已停用)，否則不應執行靜態登錄器。可能的因應方式是將 '-f ' 作為額外的 {0} 引數傳遞，以強制執行完整組建。請以測試案例提交 Bug 報告 (https://github.com/dotnet/macios/issues/new)。
 		</value>
 	</data>
   <data name="MT0161" xml:space="preserve">
-		<value>內部錯誤: 符號沒有名稱 (類型: {0})。請以測試案例提交 Bug 報告 (https://github.com/xamarin/xamarin-macios/issues/new)。
+		<value>內部錯誤: 符號沒有名稱 (類型: {0})。請以測試案例提交 Bug 報告 (https://github.com/dotnet/macios/issues/new)。
 		</value>
 	</data>
   <data name="MT0168" xml:space="preserve">
-		<value>內部錯誤:「無法將架構轉換為架構: {0}」。請以測試案例提交 Bug 報告 (https://github.com/xamarin/xamarin-macios/issues/new)。
+		<value>內部錯誤:「無法將架構轉換為架構: {0}」。請以測試案例提交 Bug 報告 (https://github.com/dotnet/macios/issues/new)。
 		</value>
 	</data>
   <data name="MT0174_a" xml:space="preserve">
@@ -723,7 +723,7 @@
         </value>
     </data>
   <data name="MX0177" xml:space="preserve">
-		<value>未知的平台: {0}。這通常表示有錯誤 (bug); 請前往 https://github.com/xamarin/xamarin-macios/issues/new 以測試案例回報錯誤 (bug)。</value>
+		<value>未知的平台: {0}。這通常表示有錯誤 (bug); 請前往 https://github.com/dotnet/macios/issues/new 以測試案例回報錯誤 (bug)。</value>
 	</data>
   <data name="MX0178" xml:space="preserve">
         <value>'{0}' 的偵錯符號檔案無效，已被忽略。
@@ -762,7 +762,7 @@
 		</value>
 	</data>
   <data name="MT1013" xml:space="preserve">
-		<value>相依性追蹤錯誤: 沒有要比較的檔案。請前往 https://github.com/xamarin/xamarin-macios/issues/new，以測試案例提交 Bug 報告。
+		<value>相依性追蹤錯誤: 沒有要比較的檔案。請前往 https://github.com/dotnet/macios/issues/new，以測試案例提交 Bug 報告。
 		</value>
 	</data>
   <data name="MT1014" xml:space="preserve">
@@ -1157,7 +1157,7 @@
 		</value>
 	</data>
   <data name="MT4002" xml:space="preserve">
-		<value>無法為 P/Invoke 方法編譯產生的程式碼。請前往 https://github.com/xamarin/xamarin-macios/issues/new 提交 Bug 報告
+		<value>無法為 P/Invoke 方法編譯產生的程式碼。請前往 https://github.com/dotnet/macios/issues/new 提交 Bug 報告
 		</value>
 	</data>
   <data name="MT4101" xml:space="preserve">
@@ -1189,7 +1189,7 @@
 		</value>
 	</data>
   <data name="MT4109" xml:space="preserve">
-		<value>無法編譯產生的登錄器程式碼。請前往 https://github.com/xamarin/xamarin-macios/issues/new 提交 Bug 報告
+		<value>無法編譯產生的登錄器程式碼。請前往 https://github.com/dotnet/macios/issues/new 提交 Bug 報告
 		</value>
 	</data>
   <data name="MT4110" xml:space="preserve">
@@ -1205,7 +1205,7 @@
 		</value>
 	</data>
   <data name="MT4114" xml:space="preserve">
-		<value>方法 '{0}.{1}' 的登錄器發生未預期的錯誤 - 請前往 https://github.com/xamarin/xamarin-macios/issues/new 提交 Bug 報告
+		<value>方法 '{0}.{1}' 的登錄器發生未預期的錯誤 - 請前往 https://github.com/dotnet/macios/issues/new 提交 Bug 報告
 		</value>
 	</data>
   <data name="MT4116" xml:space="preserve">
@@ -1225,7 +1225,7 @@
 		</value>
 	</data>
   <data name="MT4120" xml:space="preserve">
-		<value>登錄器在 '{1}.{2}' 欄位中找到未知的欄位類型 '{0}'。請前往 https://github.com/xamarin/xamarin-macios/issues/new 提交 Bug 報告
+		<value>登錄器在 '{1}.{2}' 欄位中找到未知的欄位類型 '{0}'。請前往 https://github.com/dotnet/macios/issues/new 提交 Bug 報告
 		</value>
 	</data>
   <data name="MT4121" xml:space="preserve">
@@ -1237,35 +1237,35 @@
 		</value>
 	</data>
   <data name="MT4124" xml:space="preserve">
-		<value>在 '{1}' 中找到無效的 {0}。請前往 https://github.com/xamarin/xamarin-macios/issues/new 提交 Bug 報告
+		<value>在 '{1}' 中找到無效的 {0}。請前往 https://github.com/dotnet/macios/issues/new 提交 Bug 報告
 		</value>
 	</data>
   <data name="MT4124_A" xml:space="preserve">
-		<value>在 '{0}' 中找到無效的 RegisterAttribute 屬性 {1}。請前往 https://github.com/xamarin/xamarin-macios/issues/new 提交 Bug 報告
+		<value>在 '{0}' 中找到無效的 RegisterAttribute 屬性 {1}。請前往 https://github.com/dotnet/macios/issues/new 提交 Bug 報告
 		</value>
 	</data>
   <data name="MT4124_B" xml:space="preserve">
-		<value>在 '{0}' 中找到無效的 AdoptsAttribute: 應為 1 建構函式引數，但取得 {1}。請前往 https://github.com/xamarin/xamarin-macios/issues/new 提交 Bug 報告
+		<value>在 '{0}' 中找到無效的 AdoptsAttribute: 應為 1 建構函式引數，但取得 {1}。請前往 https://github.com/dotnet/macios/issues/new 提交 Bug 報告
 		</value>
 	</data>
   <data name="MT4124_C" xml:space="preserve">
-		<value>在 '{0}.{1}' 中找到無效的 BindAsAttribute: {2} 為未知欄位。請前往 https://github.com/xamarin/xamarin-macios/issues/new 提交 Bug 報告
+		<value>在 '{0}.{1}' 中找到無效的 BindAsAttribute: {2} 為未知欄位。請前往 https://github.com/dotnet/macios/issues/new 提交 Bug 報告
 		</value>
 	</data>
   <data name="MT4124_D" xml:space="preserve">
-		<value>在 '{1}.{2}' 中找到無效的 {0}。請前往 https://github.com/xamarin/xamarin-macios/issues/new 提交 Bug 報告
+		<value>在 '{1}.{2}' 中找到無效的 {0}。請前往 https://github.com/dotnet/macios/issues/new 提交 Bug 報告
 		</value>
 	</data>
   <data name="MT4124_E" xml:space="preserve">
-		<value>在 '{0}' 中找到無效的 BindAsAttribute: 應具有 1 建構函式引數，但找到 {1}。請前往 https://github.com/xamarin/xamarin-macios/issues/new 提交 Bug 報告
+		<value>在 '{0}' 中找到無效的 BindAsAttribute: 應具有 1 建構函式引數，但找到 {1}。請前往 https://github.com/dotnet/macios/issues/new 提交 Bug 報告
 		</value>
 	</data>
   <data name="MT4124_H" xml:space="preserve">
-		<value>在 '{0}' 中找到無效的 BindAsAttribute: 找不到 {1} 的基礎列舉類型。請前往 https://github.com/xamarin/xamarin-macios/issues/new 提交 Bug 報告
+		<value>在 '{0}' 中找到無效的 BindAsAttribute: 找不到 {1} 的基礎列舉類型。請前往 https://github.com/dotnet/macios/issues/new 提交 Bug 報告
 		</value>
 	</data>
   <data name="MT4124_I" xml:space="preserve">
-		<value>在 '{0}' 中找到無效的 {1}。請前往 https://github.com/xamarin/xamarin-macios/issues/new 提交 Bug 報告</value>
+		<value>在 '{0}' 中找到無效的 {1}。請前往 https://github.com/dotnet/macios/issues/new 提交 Bug 報告</value>
 	</data>
   <data name="MT4125" xml:space="preserve">
 		<value>登錄器在方法 '{1}' 的簽章中找到無效的類型 '{0}': 該介面必須具有指定其包裝函式類型的 Protocol 屬性。
@@ -1347,7 +1347,7 @@
 		</value>
 	</data>
   <data name="MT4147" xml:space="preserve">
-		<value>在 '{1}' 中找到無效的 {0}。請前往 https://github.com/xamarin/xamarin-macios/issues/new 提交 Bug 報告
+		<value>在 '{1}' 中找到無效的 {0}。請前往 https://github.com/dotnet/macios/issues/new 提交 Bug 報告
 		</value>
 	</data>
   <data name="MT4148" xml:space="preserve">
@@ -1456,15 +1456,15 @@
 		</comment>
 	</data>
   <data name="MT4163" xml:space="preserve">
-		<value>登錄器發生內部錯誤 ({0} ctor 具有 {1} 引數)。請前往 https://github.com/xamarin/xamarin-macios/issues/new 提交 Bug 報告
+		<value>登錄器發生內部錯誤 ({0} ctor 具有 {1} 引數)。請前往 https://github.com/dotnet/macios/issues/new 提交 Bug 報告
 		</value>
 	</data>
   <data name="MT4163_A" xml:space="preserve">
-		<value>登錄器發生內部錯誤 (未知的可用性種類: {0})。請前往 https://github.com/xamarin/xamarin-macios/issues/new 提交 Bug 報告
+		<value>登錄器發生內部錯誤 (未知的可用性種類: {0})。請前往 https://github.com/dotnet/macios/issues/new 提交 Bug 報告
 		</value>
 	</data>
   <data name="MT4163_B" xml:space="preserve">
-		<value>登錄器發生內部錯誤 (BindAs 參數不可為 ref/out: {0})。請前往 https://github.com/xamarin/xamarin-macios/issues/new 提交 Bug 報告
+		<value>登錄器發生內部錯誤 (BindAs 參數不可為 ref/out: {0})。請前往 https://github.com/dotnet/macios/issues/new 提交 Bug 報告
 		</value>
 	</data>
   <data name="MT4164" xml:space="preserve">
@@ -1544,7 +1544,7 @@
 		</value>
 	</data>
   <data name="MT4184" xml:space="preserve">
-		<value>登錄器發生內部錯誤 (BindAs 參數不可為 ref/out: {0})。請前往 https://github.com/xamarin/xamarin-macios/issues/new 提交 Bug 報告
+		<value>登錄器發生內部錯誤 (BindAs 參數不可為 ref/out: {0})。請前往 https://github.com/dotnet/macios/issues/new 提交 Bug 報告
 		</value>
 	</data>
   <data name="MT4185" xml:space="preserve">
@@ -1572,15 +1572,15 @@
 		</value>
 	</data>
   <data name="MM5103" xml:space="preserve">
-		<value>無法編譯。錯誤碼 - {0}。請前往 https://github.com/xamarin/xamarin-macios/issues/new 提交 Bug 報告
+		<value>無法編譯。錯誤碼 - {0}。請前往 https://github.com/dotnet/macios/issues/new 提交 Bug 報告
 		</value>
 	</data>
   <data name="MT5103_A" xml:space="preserve">
-		<value>無法編譯檔案 '{0}'。請前往 https://github.com/xamarin/xamarin-macios/issues/new 提交 Bug 報告
+		<value>無法編譯檔案 '{0}'。請前往 https://github.com/dotnet/macios/issues/new 提交 Bug 報告
 		</value>
 	</data>
   <data name="MT5106" xml:space="preserve">
-		<value>無法編譯檔案 '{0}'。請前往 https://github.com/xamarin/xamarin-macios/issues/new 提交 Bug 報告
+		<value>無法編譯檔案 '{0}'。請前往 https://github.com/dotnet/macios/issues/new 提交 Bug 報告
 		</value>
 	</data>
   <data name="MT5107" xml:space="preserve">
@@ -1652,7 +1652,7 @@
 		</value>
 	</data>
   <data name="MT5216" xml:space="preserve">
-		<value>'{0}' 的原生連結失敗。請前往 https://github.com/xamarin/xamarin-macios/issues/new 提交 Bug 報告
+		<value>'{0}' 的原生連結失敗。請前往 https://github.com/dotnet/macios/issues/new 提交 Bug 報告
 		</value>
 	</data>
   <data name="MT5217" xml:space="preserve">
@@ -1676,7 +1676,7 @@
 		</value>
 	</data>
   <data name="MX5222" xml:space="preserve">
-		<value>無法執行原生連結器: {0}。請前往 https://github.com/xamarin/xamarin-macios/issues/new 回報錯誤 (bug)
+		<value>無法執行原生連結器: {0}。請前往 https://github.com/dotnet/macios/issues/new 回報錯誤 (bug)
 </value>
 	</data>
   <data name="MX5223" xml:space="preserve">
@@ -1752,7 +1752,7 @@
 	</data>
   <!-- 8XXX are for errors that occur at runtime -->
   <data name="MT8018" xml:space="preserve">
-		<value>內部一致性錯誤。請前往 https://github.com/xamarin/xamarin-macios/issues/new 提交 Bug 報告。
+		<value>內部一致性錯誤。請前往 https://github.com/dotnet/macios/issues/new 提交 Bug 報告。
 		</value>
 	</data>
   <!-- 8000 -> 8036 are missing here (except 8018), so skip to 8037 -->

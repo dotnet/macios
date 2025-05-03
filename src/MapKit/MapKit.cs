@@ -22,7 +22,7 @@ namespace MapKit {
 
 	// MKTileOverlay.h
 #if NET
-	/// <summary>Encapsulates the index values of a particular <see cref="T:MapKit.MKTileOverlay" />.</summary>
+	/// <summary>Encapsulates the index values of a particular <see cref="MapKit.MKTileOverlay" />.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -31,13 +31,13 @@ namespace MapKit {
 #endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct MKTileOverlayPath {
-		/// <summary>The index of the <see cref="T:MapKit.MKTileOverlay" /> along the X axis.</summary>
+		/// <summary>The index of the <see cref="MapKit.MKTileOverlay" /> along the X axis.</summary>
 		///         <remarks>To be added.</remarks>
 		public /* NSInteger */ nint X;
-		/// <summary>The index of the <see cref="T:MapKit.MKTileOverlay" /> along the Y axis.</summary>
+		/// <summary>The index of the <see cref="MapKit.MKTileOverlay" /> along the Y axis.</summary>
 		///         <remarks>To be added.</remarks>
 		public /* NSInteger */ nint Y;
-		/// <summary>The Zoom level for the <see cref="T:MapKit.MKTileOverlay" />.</summary>
+		/// <summary>The Zoom level for the <see cref="MapKit.MKTileOverlay" />.</summary>
 		///         <remarks>
 		///           <list type="table">
 		///             <listheader>
@@ -259,7 +259,7 @@ namespace MapKit {
 	/// <summary>The extent of a 2D map projection as measured in map points.</summary>
 	///     <remarks>
 	///     </remarks>
-	///     <altmember cref="T:MapKit.MKMapPoint" />
+	///     <altmember cref="MapKit.MKMapPoint" />
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -351,7 +351,7 @@ namespace MapKit {
 	[StructLayout (LayoutKind.Sequential)]
 	public struct MKMapRect {
 #if NET
-		/// <summary>A known-invalid <see cref="T:MapKit.MKMapRect" /> (see <see cref="P:MapKit.MKMapRect.IsNull" />).</summary>
+		/// <summary>A known-invalid <see cref="MapKit.MKMapRect" /> (see <see cref="MapKit.MKMapRect.IsNull" />).</summary>
 		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
@@ -360,18 +360,18 @@ namespace MapKit {
 #endif
 		public static readonly MKMapRect Null = new MKMapRect (double.PositiveInfinity, double.PositiveInfinity, 0, 0);
 
-		/// <summary>The starting location of the <see cref="T:MapKit.MKMapRect" />.</summary>
+		/// <summary>The starting location of the <see cref="MapKit.MKMapRect" />.</summary>
 		///         <remarks>
-		///           <para>Note that a <see cref="T:MapKit.MKMapRect" /> may have negative <see cref="P:MapKit.MKMapRect.Height" /> or <see cref="P:MapKit.MKMapRect.Width" />, so <see cref="F:MapKit.MKMapRect.Origin" /> is not necessarily located at [<see cref="P:MapKit.MKMapRect.MinX" />, <see cref="P:MapKit.MKMapRect.MinY" />].</para>
+		///           <para>Note that a <see cref="MapKit.MKMapRect" /> may have negative <see cref="MapKit.MKMapRect.Height" /> or <see cref="MapKit.MKMapRect.Width" />, so <see cref="MapKit.MKMapRect.Origin" /> is not necessarily located at [<see cref="MapKit.MKMapRect.MinX" />, <see cref="MapKit.MKMapRect.MinY" />].</para>
 		///         </remarks>
 		public MKMapPoint Origin;
-		/// <summary>The extent of the <see cref="T:MapKit.MKMapRect" />.</summary>
+		/// <summary>The extent of the <see cref="MapKit.MKMapRect" />.</summary>
 		///         <remarks>To be added.</remarks>
 		public MKMapSize Size;
 
 		/// <param name="origin">To be added.</param>
 		///         <param name="size">To be added.</param>
-		///         <summary>Creates a new <see cref="T:MapKit.MKMapPoint" /> struct with the specified <paramref name="origin" /> and <paramref name="size" />.</summary>
+		///         <summary>Creates a new <see cref="MapKit.MKMapPoint" /> struct with the specified <paramref name="origin" /> and <paramref name="size" />.</summary>
 		///         <remarks>To be added.</remarks>
 		public MKMapRect (MKMapPoint origin, MKMapSize size)
 		{
@@ -384,7 +384,7 @@ namespace MapKit {
 		///         <param name="y">To be added.</param>
 		///         <param name="width">To be added.</param>
 		///         <param name="height">To be added.</param>
-		///         <summary>Creates a new <see cref="T:MapKit.MKMapRect" /> originating at [<paramref name="x" />, <paramref name="y" />] and of the specified <paramref name="height" /> and <paramref name="width" />.</summary>
+		///         <summary>Creates a new <see cref="MapKit.MKMapRect" /> originating at [<paramref name="x" />, <paramref name="y" />] and of the specified <paramref name="height" /> and <paramref name="width" />.</summary>
 		///         <remarks>To be added.</remarks>
 		public MKMapRect (double x, double y, double width, double height)
 		{
@@ -395,7 +395,7 @@ namespace MapKit {
 		}
 
 		// MKMapRectGetMinX
-		/// <summary>The minimum X-axis value of the <see cref="T:MapKit.MKMapRect" />.</summary>
+		/// <summary>The minimum X-axis value of the <see cref="MapKit.MKMapRect" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public double MinX {
@@ -405,7 +405,7 @@ namespace MapKit {
 		}
 
 		// MKMapRectGetMinY
-		/// <summary>The minimum Y-axis value of the <see cref="T:MapKit.MKMapRect" />.</summary>
+		/// <summary>The minimum Y-axis value of the <see cref="MapKit.MKMapRect" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public double MinY {
@@ -415,7 +415,7 @@ namespace MapKit {
 		}
 
 		// MKMapRectGetMaxX
-		/// <summary>The maximum X-axis value of the <see cref="T:MapKit.MKMapRect" />.</summary>
+		/// <summary>The maximum X-axis value of the <see cref="MapKit.MKMapRect" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public double MaxX {
@@ -425,7 +425,7 @@ namespace MapKit {
 		}
 
 		// MKMapRectGetMaxY
-		/// <summary>The maximum Y-axis value of the <see cref="T:MapKit.MKMapRect" />.</summary>
+		/// <summary>The maximum Y-axis value of the <see cref="MapKit.MKMapRect" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public double MaxY {
@@ -435,7 +435,7 @@ namespace MapKit {
 		}
 
 		// MKMapRectGetMidX
-		/// <summary>The X-axis midpoint of the <see cref="T:MapKit.MKMapRect" />.</summary>
+		/// <summary>The X-axis midpoint of the <see cref="MapKit.MKMapRect" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public double MidX {
@@ -445,7 +445,7 @@ namespace MapKit {
 		}
 
 		// MKMapRectGetMidY
-		/// <summary>The Y-axis midpoint of the <see cref="T:MapKit.MKMapRect" />.</summary>
+		/// <summary>The Y-axis midpoint of the <see cref="MapKit.MKMapRect" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public double MidY {
@@ -455,7 +455,7 @@ namespace MapKit {
 		}
 
 		// MKMapRectGetWidth
-		/// <summary>The extent along the X-axis of the <see cref="T:MapKit.MKMapRect" />.</summary>
+		/// <summary>The extent along the X-axis of the <see cref="MapKit.MKMapRect" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public double Width {
@@ -465,7 +465,7 @@ namespace MapKit {
 		}
 
 		// MKMapRectGetHeight
-		/// <summary>The height of this <see cref="T:MapKit.MKMapRect" />, in degrees.</summary>
+		/// <summary>The height of this <see cref="MapKit.MKMapRect" />, in degrees.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public double Height {
@@ -475,7 +475,7 @@ namespace MapKit {
 		}
 
 		// MKMapRectIsNull
-		/// <summary>Whether the <see cref="T:MapKit.MKMapRect" /> is the known-invalid rectangle <see cref="F:MapKit.MKMapRect.Null" />.</summary>
+		/// <summary>Whether the <see cref="MapKit.MKMapRect" /> is the known-invalid rectangle <see cref="MapKit.MKMapRect.Null" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public bool IsNull {
@@ -485,7 +485,7 @@ namespace MapKit {
 		}
 
 		// MKMapRectIsEmpty
-		/// <summary>Whether the <see cref="T:MapKit.MKMapRect" /> has a positive area.</summary>
+		/// <summary>Whether the <see cref="MapKit.MKMapRect" /> has a positive area.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public bool IsEmpty {
@@ -495,7 +495,7 @@ namespace MapKit {
 		}
 
 #if NET
-		/// <summary>The <see cref="T:MapKit.MKMapRect" /> that represents the world in the 2D map projection.</summary>
+		/// <summary>The <see cref="MapKit.MKMapRect" /> that represents the world in the 2D map projection.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("tvos")]
@@ -530,7 +530,7 @@ namespace MapKit {
 		}
 
 		/// <param name="other">To be added.</param>
-		///         <summary>Whether this <see cref="T:MapKit.MKMapRect" /> has the same <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Map%20Kit%20Origin&amp;scope=Xamarin" title="P:MapKit.Origin">P:MapKit.Origin</a></format> and <see cref="F:MapKit.MKMapRect.Size" /> values as the <paramref name="other" />.</summary>
+		///         <summary>Whether this <see cref="MapKit.MKMapRect" /> has the same <see cref="MapKit.MKMapRect.Origin" /> and <see cref="MapKit.MKMapRect.Size" /> values as the <paramref name="other" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		public override bool Equals (object? other)
@@ -543,7 +543,7 @@ namespace MapKit {
 			return false;
 		}
 
-		/// <summary>Returns a hash of this <see cref="T:MapKit.MKMapRect" /> struct's value.</summary>
+		/// <summary>Returns a hash of this <see cref="MapKit.MKMapRect" /> struct's value.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		public override int GetHashCode ()
@@ -552,7 +552,7 @@ namespace MapKit {
 		}
 
 		// MKStringFromMapRect does not really exists, it's inlined in MKGeometry.h
-		/// <summary>A brief representation of the origin and size of the <see cref="T:MapKit.MKMapRect" />.</summary>
+		/// <summary>A brief representation of the origin and size of the <see cref="MapKit.MKMapRect" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		public override string ToString ()
@@ -564,7 +564,7 @@ namespace MapKit {
 		static extern byte MKMapRectContainsPoint (MKMapRect rect, MKMapPoint point);
 
 		/// <param name="point">To be added.</param>
-		///         <summary>Whether the <see cref="T:MapKit.MKMapRect" /> contains <paramref name="point" />.</summary>
+		///         <summary>Whether the <see cref="MapKit.MKMapRect" /> contains <paramref name="point" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		public bool Contains (MKMapPoint point)
@@ -576,7 +576,7 @@ namespace MapKit {
 		static extern byte MKMapRectContainsRect (MKMapRect rect1, MKMapRect rect2);
 
 		/// <param name="rect">To be added.</param>
-		///         <summary>Whether <paramref name="rect" /> is entirely within the bounds of this <see cref="T:MapKit.MKMapRect" />.</summary>
+		///         <summary>Whether <paramref name="rect" /> is entirely within the bounds of this <see cref="MapKit.MKMapRect" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		public bool Contains (MKMapRect rect)
@@ -618,7 +618,7 @@ namespace MapKit {
 
 		/// <param name="dx">To be added.</param>
 		///         <param name="dy">To be added.</param>
-		///         <summary>Returns a new <see cref="T:MapKit.MKMapRect" /> based on <c>this</c>, offset by <paramref name="dx" /> and <paramref name="dy" />.</summary>
+		///         <summary>Returns a new <see cref="MapKit.MKMapRect" /> based on <c>this</c>, offset by <paramref name="dx" /> and <paramref name="dy" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		public MKMapRect Inset (double dx, double dy)
@@ -631,7 +631,7 @@ namespace MapKit {
 
 		/// <param name="dx">To be added.</param>
 		///         <param name="dy">To be added.</param>
-		///         <summary>A new <see cref="T:MapKit.MKMapRect" /> whose origin is shifted by <paramref name="dx" /> and <paramref name="dy" />.</summary>
+		///         <summary>A new <see cref="MapKit.MKMapRect" /> whose origin is shifted by <paramref name="dx" /> and <paramref name="dy" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		public MKMapRect Offset (double dx, double dy)
@@ -646,7 +646,7 @@ namespace MapKit {
 		/// <param name="amount">To be added.</param>
 		///         <param name="edge">To be added.</param>
 		///         <param name="remainder">To be added.</param>
-		///         <summary>Splits this <see cref="T:MapKit.MKMapRect" /> into a two smaller rectangle (returned value and <paramref name="remainder" />).</summary>
+		///         <summary>Splits this <see cref="MapKit.MKMapRect" /> into a two smaller rectangle (returned value and <paramref name="remainder" />).</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>
 		///           <example>
@@ -676,7 +676,7 @@ namespace MapKit {
 		[DllImport (Constants.MapKitLibrary, EntryPoint = "MKMapRectSpans180thMeridian")]
 		static extern byte MKMapRectSpans180thMeridian (MKMapRect rect);
 
-		/// <summary>Whether the <see cref="T:MapKit.MKMapRect" /> crosses the ante-meridian.</summary>
+		/// <summary>Whether the <see cref="MapKit.MKMapRect" /> crosses the ante-meridian.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public bool Spans180thMeridian {
@@ -686,7 +686,7 @@ namespace MapKit {
 		[DllImport (Constants.MapKitLibrary, EntryPoint = "MKMapRectRemainder")]
 		static extern MKMapRect MKMapRectRemainder (MKMapRect rect);
 
-		/// <summary>A new <see cref="T:MapKit.MKMapRect" /> that has been normalized to remove areas outside the world map's boundaries.</summary>
+		/// <summary>A new <see cref="MapKit.MKMapRect" /> that has been normalized to remove areas outside the world map's boundaries.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		public MKMapRect Remainder ()

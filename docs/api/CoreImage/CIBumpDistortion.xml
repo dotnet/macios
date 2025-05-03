@@ -1,6 +1,6 @@
 <Documentation>
   <Docs DocId="T:CoreImage.CIBumpDistortion">
-    <summary>A <see cref="T:CoreImage.CIDistortionFilter" /> that creates a bump at the specified center point.</summary>
+    <summary>A <see cref="CoreImage.CIDistortionFilter" /> that creates a bump at the specified center point.</summary>
     <remarks>
       <para>The following example shows this filter in use</para>
       <example>

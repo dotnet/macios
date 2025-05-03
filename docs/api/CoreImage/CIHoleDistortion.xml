@@ -1,6 +1,6 @@
 <Documentation>
   <Docs DocId="T:CoreImage.CIHoleDistortion">
-    <summary>A <see cref="T:CoreImage.CIDistortionFilter" /> that distorts pixels around a circular area.</summary>
+    <summary>A <see cref="CoreImage.CIDistortionFilter" /> that distorts pixels around a circular area.</summary>
     <remarks>
       <para>The following example shows this filter in use</para>
       <example>

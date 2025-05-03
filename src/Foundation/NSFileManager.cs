@@ -73,7 +73,7 @@ namespace Foundation {
 #endif
 
 #if NET
-	/// <summary>Encapsulates file attributes for use with <see cref="T:Foundation.NSFileManager" />.</summary>
+	/// <summary>Encapsulates file attributes for use with <see cref="Foundation.NSFileManager" />.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]

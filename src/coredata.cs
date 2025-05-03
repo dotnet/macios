@@ -26,7 +26,7 @@ namespace CoreData {
 	[StrongDictionary ("UserInfoKeys")]
 	interface UserInfo {
 		/// <summary>Gets or sets an array that contains the multiple erros that occurred, if multiple errors occurred.</summary>
-		///         <value>An array of <see cref="T:Foundation.NSError" /> objects that contains the errors that occurred.</value>
+		///         <value>An array of <see cref="Foundation.NSError" /> objects that contains the errors that occurred.</value>
 		///         <remarks>To be added.</remarks>
 		NSError [] DetailedErrors { get; set; }
 		/// <summary>Gets or sets the object that failed validation.</summary>
@@ -38,7 +38,7 @@ namespace CoreData {
 		///         <remarks>To be added.</remarks>
 		NSString KeyForValidationError { get; set; }
 		/// <summary>Gets or sets the predicate that failed validation.</summary>
-		///         <value>The <see cref="T:Foundation.NSPredicate" /> object for the predicate that failed.</value>
+		///         <value>The <see cref="Foundation.NSPredicate" /> object for the predicate that failed.</value>
 		///         <remarks>To be added.</remarks>
 		NSPredicate PredicateForValidationError { get; set; }
 		/// <summary>Gets or sets the value that failed validation.</summary>
@@ -46,7 +46,7 @@ namespace CoreData {
 		///         <remarks>To be added.</remarks>
 		NSValue ValueForValidationError { get; set; }
 		/// <summary>Gets or sets the array of merge conflicts.</summary>
-		///         <value>An array of <see cref="T:CoreData.NSMergeConflict" /> objects.</value>
+		///         <value>An array of <see cref="CoreData.NSMergeConflict" /> objects.</value>
 		///         <remarks>To be added.</remarks>
 		NSMergeConflict [] PersistentStoreSaveConflicts { get; set; }
 		/// <summary>Gets or sets an array that contains the stores that were affected by the error.</summary>
@@ -60,9 +60,9 @@ namespace CoreData {
 	[Static]
 	interface UserInfoKeys {
 		/// <summary>To be added.</summary>
-		///         <value>A key that identifies an array of <see cref="T:Foundation.NSError" /> objects that contains the errors that occured.</value>
+		///         <value>A key that identifies an array of <see cref="Foundation.NSError" /> objects that contains the errors that occured.</value>
 		///         <remarks>
-		///           <para>This key corresponds to the <see cref="P:CoreData.UserInfo.DetailedErrors" /> property.</para>
+		///           <para>This key corresponds to the <see cref="CoreData.UserInfo.DetailedErrors" /> property.</para>
 		///         </remarks>
 		[Field ("NSDetailedErrorsKey")]
 		NSString DetailedErrorsKey { get; }
@@ -70,7 +70,7 @@ namespace CoreData {
 		/// <summary>Gets the key that identifies the object that failed validation.</summary>
 		///         <value>The key that identifies the object that failed validation.</value>
 		///         <remarks>
-		///           <para>This key corresponds to the <see cref="P:CoreData.UserInfo.ObjectForValidationError" /> property.</para>
+		///           <para>This key corresponds to the <see cref="CoreData.UserInfo.ObjectForValidationError" /> property.</para>
 		///         </remarks>
 		[Field ("NSValidationObjectErrorKey")]
 		NSString ObjectForValidationErrorKey { get; }
@@ -78,15 +78,15 @@ namespace CoreData {
 		/// <summary>Gets the key that identifies the key that, in turn, identifies the validation error that occurred.</summary>
 		///         <value>The key that identifies the key that, in turn, identifies the validation error that occurred.</value>
 		///         <remarks>
-		///           <para>This key corresponds to the <see cref="P:CoreData.UserInfo.KeyForValidationError" /> property.</para>
+		///           <para>This key corresponds to the <see cref="CoreData.UserInfo.KeyForValidationError" /> property.</para>
 		///         </remarks>
 		[Field ("NSValidationKeyErrorKey")]
 		NSString KeyForValidationErrorKey { get; }
 
 		/// <summary>Gets the key that identifies the predicate that failed validation..</summary>
-		///         <value>The key that identifies the <see cref="T:Foundation.NSPredicate" /> object for the predicate that failed..</value>
+		///         <value>The key that identifies the <see cref="Foundation.NSPredicate" /> object for the predicate that failed..</value>
 		///         <remarks>
-		///           <para>This key corresponds to the <see cref="P:CoreData.UserInfo.PredicateForValidationError" /> property.</para>
+		///           <para>This key corresponds to the <see cref="CoreData.UserInfo.PredicateForValidationError" /> property.</para>
 		///         </remarks>
 		[Field ("NSValidationPredicateErrorKey")]
 		NSString PredicateForValidationErrorKey { get; }
@@ -94,23 +94,23 @@ namespace CoreData {
 		/// <summary>Gets the key that identifies the value that failed validation.</summary>
 		///         <value>The key that identifies the value that failed validation.</value>
 		///         <remarks>
-		///           <para>This key corresponds to the <see cref="P:CoreData.UserInfo.ValueForValidationError" /> property.</para>
+		///           <para>This key corresponds to the <see cref="CoreData.UserInfo.ValueForValidationError" /> property.</para>
 		///         </remarks>
 		[Field ("NSValidationValueErrorKey")]
 		NSString ValueForValidationErrorKey { get; }
 
 		/// <summary>Gets the key that identifies the array of merge conflicts..</summary>
-		///         <value>A key that identifies an array of <see cref="T:CoreData.NSMergeConflict" /> objects.</value>
+		///         <value>A key that identifies an array of <see cref="CoreData.NSMergeConflict" /> objects.</value>
 		///         <remarks>
-		///           <para>This key corresponds to the <see cref="P:CoreData.UserInfoKeys.PersistentStoreSaveConflictsKey" /> property.</para>
+		///           <para>This key corresponds to the <see cref="CoreData.UserInfoKeys.PersistentStoreSaveConflictsKey" /> property.</para>
 		///         </remarks>
 		[Field ("NSPersistentStoreSaveConflictsErrorKey")]
 		NSString PersistentStoreSaveConflictsKey { get; }
 
 		/// <summary>Gets the key that identifies an array that contains the stores that were affected by the error.</summary>
-		///         <value>A key that identifies an array of <see cref="T:CoreData.NSPersistentStore" /> objects that were affected by the error.</value>
+		///         <value>A key that identifies an array of <see cref="CoreData.NSPersistentStore" /> objects that were affected by the error.</value>
 		///         <remarks>
-		///           <para>This key corresponds to the <see cref="P:CoreData.UserInfo.AffectedStoresForError" /> property.</para>
+		///           <para>This key corresponds to the <see cref="CoreData.UserInfo.AffectedStoresForError" /> property.</para>
 		///         </remarks>
 		[Field ("NSAffectedStoresErrorKey")]
 		NSString AffectedStoresForErrorKey { get; }
@@ -128,7 +128,7 @@ namespace CoreData {
 		NSString ModelVersionChecksumKey { get; }
 	}
 
-	/// <summary>Enumerates valid keys for the user information dictionary used in <see cref="P:CoreData.NSPersistentStoreCoordinator.StoresWillChangeNotification" /> and <see cref="P:CoreData.NSPersistentStoreCoordinator.StoresDidChangeNotification" />.</summary>
+	/// <summary>Enumerates valid keys for the user information dictionary used in <see cref="CoreData.NSPersistentStoreCoordinator.StoresWillChangeNotification" /> and <see cref="CoreData.NSPersistentStoreCoordinator.StoresDidChangeNotification" />.</summary>
 	[NoTV]
 	[Native] // NUInteger -> NSPersistentStoreCoordinator.h
 	[Deprecated (PlatformName.iOS, 10, 0, message: "Please see the release notes and Core Data documentation.")]
@@ -148,7 +148,7 @@ namespace CoreData {
 
 	/// <summary>Enumerates reasons that a managed object may need to reinitialize certain values when it awakes.</summary>
 	/// <remarks>
-	///       <para>The values in this enumeration are returned by the <see cref="M:CoreData.NSManagedObject.AwakeFromSnapshotEvents(CoreData.NSSnapshotEventType)" /> method.</para>
+	///       <para>The values in this enumeration are returned by the <see cref="CoreData.NSManagedObject.AwakeFromSnapshotEvents(CoreData.NSSnapshotEventType)" /> method.</para>
 	///     </remarks>
 	[Native]
 	public enum NSSnapshotEventType : ulong {
@@ -422,7 +422,7 @@ namespace CoreData {
 		void SetValue ([NullAllowed] NSObject value, string key);
 
 	}
-	/// <summary>Describes an attribute of an <see cref="T:CoreData.NSEntityDescription" /> object.</summary>
+	/// <summary>Describes an attribute of an <see cref="CoreData.NSEntityDescription" /> object.</summary>
 	/// <remarks>To be added.</remarks>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/CoreDataFramework/Classes/NSAttributeDescription_Class/index.html">Apple documentation for <c>NSAttributeDescription</c></related>
 	[BaseType (typeof (NSPropertyDescription))]
@@ -911,8 +911,8 @@ namespace CoreData {
 		/// <param name="fetch">The expression from which to create a new fetch request expresssion.</param>
 		///         <param name="context">The context in which to create the fetch request expression.</param>
 		///         <param name="countOnly">Whether to create a fetch request expression that counts the matches, rather than returning them.</param>
-		///         <summary>Creates a new <see cref="T:CoreData.NSFetchRequestExpression" /> from the specified expression and context.</summary>
-		///         <returns>A new <see cref="T:CoreData.NSFetchRequestExpression" /> that was created from the specified expression and context.</returns>
+		///         <summary>Creates a new <see cref="CoreData.NSFetchRequestExpression" /> from the specified expression and context.</summary>
+		///         <returns>A new <see cref="CoreData.NSFetchRequestExpression" /> that was created from the specified expression and context.</returns>
 		///         <remarks>To be added.</remarks>
 		[Static, Export ("expressionForFetch:context:countOnly:")]
 		NSFetchRequestExpression FromFetch (NSExpression fetch, NSExpression context, bool countOnly);
@@ -1131,7 +1131,7 @@ namespace CoreData {
 		INSFetchRequestResult [] Execute (out NSError error);
 	}
 
-	/// <summary>Controller object for Core Data fetch requests; generally used to provide data for a <see cref="T:UIKit.UITableView" />.</summary>
+	/// <summary>Controller object for Core Data fetch requests; generally used to provide data for a <see cref="UIKit.UITableView" />.</summary>
 	/// <remarks>To be added.</remarks>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CoreData/Reference/NSFetchedResultsController_Class/index.html">Apple documentation for <c>NSFetchedResultsController</c></related>
 	[NoMac]
@@ -1149,7 +1149,7 @@ namespace CoreData {
 		///           <para>The cache name.</para>
 		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
 		///         </param>
-		/// <summary>Creates a new <see cref="T:CoreData.NSFetchedResultsController" /> from the specified values.</summary>
+		/// <summary>Creates a new <see cref="CoreData.NSFetchedResultsController" /> from the specified values.</summary>
 		/// <remarks>To be added.</remarks>
 		[Export ("initWithFetchRequest:managedObjectContext:sectionNameKeyPath:cacheName:")]
 		NativeHandle Constructor (NSFetchRequest fetchRequest, NSManagedObjectContext context, [NullAllowed] string sectionNameKeyPath, [NullAllowed] string name);
@@ -1200,7 +1200,7 @@ namespace CoreData {
 		[Export ("fetchRequest")]
 		NSFetchRequest FetchRequest { get; }
 
-		/// <summary>Returns the <see cref="T:CoreData.NSManagedObjectContext" /> that is used for fetching.</summary>
+		/// <summary>Returns the <see cref="CoreData.NSManagedObjectContext" /> that is used for fetching.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("managedObjectContext")]
@@ -1232,7 +1232,7 @@ namespace CoreData {
 		bool PerformFetch (out NSError error);
 
 		/// <param name="obj">To be added.</param>
-		///         <summary>Creates a new <see cref="T:CoreData.NSFetchedResultsController" /> from the specified object.</summary>
+		///         <summary>Creates a new <see cref="CoreData.NSFetchedResultsController" /> from the specified object.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[Export ("indexPathForObject:")]
@@ -1293,11 +1293,11 @@ namespace CoreData {
 
 	interface INSFetchedResultsControllerDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:CoreData.NSFetchedResultsControllerDelegate" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="CoreData.NSFetchedResultsControllerDelegate" />.</summary>
 	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:CoreData.NSFetchedResultsControllerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:CoreData.NSFetchedResultsControllerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:CoreData.NSFetchedResultsControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="CoreData.NSFetchedResultsControllerDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="CoreData.NSFetchedResultsControllerDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="CoreData.NSFetchedResultsControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	[NoMac]
 	[MacCatalyst (13, 1)]
@@ -1399,7 +1399,7 @@ namespace CoreData {
 	// 	NSInvalidArgumentException *** -loadMetadata: cannot be sent to an abstract object of class NSIncrementalStore: Create a concrete instance!
 	//	Apple doc quote: "NSIncrementalStore is an abstract superclass..."
 #if NET
-	// Making a class abstract has problems: https://github.com/xamarin/xamarin-macios/issues/4969, so we're not doing this yet
+	// Making a class abstract has problems: https://github.com/dotnet/macios/issues/4969, so we're not doing this yet
 	// [Abstract] // Abstract superclass.
 #endif
 	/// <summary>Supports the use of persistent stores that are loaded and saved incrementally, allowing for larger and shared datasets.</summary>
@@ -1412,7 +1412,7 @@ namespace CoreData {
 		/// <param name="name">To be added.</param>
 		/// <param name="url">To be added.</param>
 		/// <param name="options">To be added.</param>
-		/// <summary>Creates a new <see cref="T:CoreData.NSIncrementalStore" /> with the specified values.</summary>
+		/// <summary>Creates a new <see cref="CoreData.NSIncrementalStore" /> with the specified values.</summary>
 		/// <remarks>To be added.</remarks>
 		[Protected]
 #endif
@@ -1442,7 +1442,7 @@ namespace CoreData {
 		/// <param name="forObjectId">To be added.</param>
 		///         <param name="context">To be added.</param>
 		///         <param name="error">To be added.</param>
-		///         <summary>Returns a <see cref="T:CoreData.NSIncrementalStoreNode" /> for the persisten external values of the identified object and reports any errors in <paramref name="error" />.</summary>
+		///         <summary>Returns a <see cref="CoreData.NSIncrementalStoreNode" /> for the persisten external values of the identified object and reports any errors in <paramref name="error" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[Export ("newValuesForObjectWithID:withContext:error:")]
@@ -1513,7 +1513,7 @@ namespace CoreData {
 
 	}
 
-	/// <summary>A concrete class that represents basic nodes in a <see cref="T:CoreData.NSIncrementalStore" />.</summary>
+	/// <summary>A concrete class that represents basic nodes in a <see cref="CoreData.NSIncrementalStore" />.</summary>
 	/// <remarks>To be added.</remarks>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CoreData/Reference/NSIncrementalStoreNode_Class/index.html">Apple documentation for <c>NSIncrementalStoreNode</c></related>
 	[BaseType (typeof (NSObject))]
@@ -1575,14 +1575,14 @@ namespace CoreData {
 		///           <para>To be added.</para>
 		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
 		///         </param>
-		/// <summary>Creates a new <see cref="T:CoreData.NSManagedObject" /> from an entity description and inserts the object into the specified managed object context.</summary>
+		/// <summary>Creates a new <see cref="CoreData.NSManagedObject" /> from an entity description and inserts the object into the specified managed object context.</summary>
 		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithEntity:insertIntoManagedObjectContext:")]
 		NativeHandle Constructor (NSEntityDescription entity, [NullAllowed] NSManagedObjectContext context);
 
 		/// <param name="moc">To be added.</param>
-		/// <summary>Creates a new <see cref="T:CoreData.NSManagedObject" /> in the specified managed object context.</summary>
+		/// <summary>Creates a new <see cref="CoreData.NSManagedObject" /> in the specified managed object context.</summary>
 		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("initWithContext:")]
@@ -1735,7 +1735,7 @@ namespace CoreData {
 		/// <param name="flags">To be added.</param>
 		///         <summary>Method that is called to awaken the receiver when a property state change occurs.</summary>
 		///         <remarks>
-		///           <para>See the <see cref="T:CoreData.NSSnapshotEventType" /> enumeration for a list of the values that can be returned by this method.</para>
+		///           <para>See the <see cref="CoreData.NSSnapshotEventType" /> enumeration for a list of the values that can be returned by this method.</para>
 		///         </remarks>
 		[Export ("awakeFromSnapshotEvents:")]
 		void AwakeFromSnapshotEvents (NSSnapshotEventType flags);
@@ -2191,7 +2191,7 @@ namespace CoreData {
 		void MergeChangesFromContextDidSaveNotification (NSNotification notification);
 
 		/// <param name="ct">To be added.</param>
-		/// <summary>Creates a new <see cref="T:CoreData.NSManagedObjectContext" /> of the specified type.</summary>
+		/// <summary>Creates a new <see cref="CoreData.NSManagedObjectContext" /> of the specified type.</summary>
 		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithConcurrencyType:")]
@@ -2813,7 +2813,7 @@ namespace CoreData {
 		NSMergePolicyType MergeType { get; }
 
 		/// <param name="ty">To be added.</param>
-		/// <summary>Creates a new <see cref="T:CoreData.NSMergePolicy" /> from the specified merege policy type.</summary>
+		/// <summary>Creates a new <see cref="CoreData.NSMergePolicy" /> from the specified merege policy type.</summary>
 		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithMergeType:")]
@@ -3619,7 +3619,7 @@ namespace CoreData {
 		///         <value>The store type.</value>
 		///         <remarks>
 		///           <para>
-		///             <see cref="T:CoreData.NSPersistentStoreCoordinator" /> contains static properties that represent valid store types.</para>
+		///             <see cref="CoreData.NSPersistentStoreCoordinator" /> contains static properties that represent valid store types.</para>
 		///         </remarks>
 		[Export ("type")]
 		string Type { get; set; }
@@ -3646,7 +3646,7 @@ namespace CoreData {
 		///         <value>The dictionary of options for the store.</value>
 		///         <remarks>
 		///           <para>
-		///             <see cref="T:CoreData.NSPersistentStoreCoordinator" /> contains static properties that represent the option keys that are valid for this dictionary.</para>
+		///             <see cref="CoreData.NSPersistentStoreCoordinator" /> contains static properties that represent the option keys that are valid for this dictionary.</para>
 		///         </remarks>
 		[Export ("options", ArgumentSemantic.Copy)]
 		NSDictionary<NSString, NSObject> Options { get; }
@@ -3659,7 +3659,7 @@ namespace CoreData {
 		///         <summary>Sets the option for the specified <paramref name="key" />.</summary>
 		///         <remarks>
 		///           <para>
-		///             <see cref="T:CoreData.NSPersistentStoreCoordinator" /> contains static properties that represent the option keys that are valid for this dictionary.</para>
+		///             <see cref="CoreData.NSPersistentStoreCoordinator" /> contains static properties that represent the option keys that are valid for this dictionary.</para>
 		///         </remarks>
 		[Export ("setOption:forKey:")]
 		void SetOption ([NullAllowed] NSObject option, string key);
@@ -3803,7 +3803,7 @@ namespace CoreData {
 		[DesignatedInitializer]
 		NativeHandle Constructor (string name, NSManagedObjectModel model);
 
-		/// <param name="block">A completion handler that takes a <see cref="T:CoreData.NSPersistentStoreDescription" /> and an error in which to store any errors that were encountered while attempting to load the stores.</param>
+		/// <param name="block">A completion handler that takes a <see cref="CoreData.NSPersistentStoreDescription" /> and an error in which to store any errors that were encountered while attempting to load the stores.</param>
 		///         <summary>Loads the persistent stores in the container and runs a completion handler when finished.</summary>
 		///         <remarks>To be added.</remarks>
 		[Export ("loadPersistentStoresWithCompletionHandler:")]
@@ -4774,7 +4774,7 @@ namespace CoreData {
 		NSDictionary UserInfo { get; set; }
 	}
 
-	/// <summary>Describes the relationships of a <see cref="T:CoreData.NSEntityDescription" /> object.</summary>
+	/// <summary>Describes the relationships of a <see cref="CoreData.NSEntityDescription" /> object.</summary>
 	/// <remarks>To be added.</remarks>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/CoreDataFramework/Classes/NSRelationshipDescription_Class/index.html">Apple documentation for <c>NSRelationshipDescription</c></related>
 	[BaseType (typeof (NSPropertyDescription))]
@@ -4993,7 +4993,7 @@ namespace CoreData {
 		NSBatchUpdateRequest BatchUpdateRequestWithEntityName (string entityName);
 	}
 
-	/// <summary>A <see cref="T:CoreData.NSPersistentStoreRequest" /> that performs a batch delete.</summary>
+	/// <summary>A <see cref="CoreData.NSPersistentStoreRequest" /> that performs a batch delete.</summary>
 	/// <remarks>To be added.</remarks>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/CoreData/NSBatchDeleteRequest">Apple documentation for <c>NSBatchDeleteRequest</c></related>
 	[MacCatalyst (13, 1)]
@@ -5026,7 +5026,7 @@ namespace CoreData {
 		NSFetchRequest FetchRequest { get; }
 	}
 
-	/// <summary>The results of a <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Data%20NSBatch%20Delete%20Query&amp;scope=Xamarin" title="T:CoreData.NSBatchDeleteQuery">T:CoreData.NSBatchDeleteQuery</a></format>.</summary>
+	/// <summary>The results of a <see cref="CoreData.NSBatchDeleteQuery" />.</summary>
 	/// <remarks>To be added.</remarks>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/CoreData/NSBatchDeleteResult">Apple documentation for <c>NSBatchDeleteResult</c></related>
 	[MacCatalyst (13, 1)]

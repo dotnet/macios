@@ -51,7 +51,7 @@ Files to be copied to the app bundle.
 
 See also:
 
-* https://github.com/xamarin/xamarin-macios/blob/main/dotnet/BundleContents.md
+* https://github.com/dotnet/macios/blob/main/dotnet/BundleContents.md
 
 ## CodesignBundle
 
@@ -123,7 +123,7 @@ would place the file in the following location:
 
 See also:
 
-* https://github.com/xamarin/xamarin-macios/blob/main/dotnet/BundleContents.md
+* https://github.com/dotnet/macios/blob/main/dotnet/BundleContents.md
 
 ## CoreMLModel
 

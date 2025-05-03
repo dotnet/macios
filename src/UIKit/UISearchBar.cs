@@ -17,7 +17,7 @@ namespace UIKit {
 		/// <param name="state">To be added.</param>
 		/// <summary>The title and attributes of the scope bar button for the specified UIControlState.</summary>
 		/// <remarks>
-		///           <para id="tool-remark">This member participates in the <see cref="T:UIKit.UIAppearance" /> styling system.  See the <see cref="P:UIKit.UISearchBar.Appearance" /> property and the <see cref="M:UIKit.UISearchBar.AppearanceWhenContainedIn(System.Type[])" /> method.</para>
+		///           <para id="tool-remark">This member participates in the <see cref="UIKit.UIAppearance" /> styling system.  See the <see cref="UIKit.UISearchBar.Appearance" /> property and the <see cref="UIKit.UISearchBar.AppearanceWhenContainedIn(System.Type[])" /> method.</para>
 		///         </remarks>
 		public void SetScopeBarButtonTitle (TextAttributes attributes, UIControlState state)
 		{
@@ -32,7 +32,7 @@ namespace UIKit {
 		///         <summary>The text attributes of the scope bar button's title for the specified UIControlState.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>
-		///           <para id="tool-remark">This member participates in the <see cref="T:UIKit.UIAppearance" /> styling system.  See the <see cref="P:UIKit.UISearchBar.Appearance" /> property and the <see cref="M:UIKit.UISearchBar.AppearanceWhenContainedIn(System.Type[])" /> method.</para>
+		///           <para id="tool-remark">This member participates in the <see cref="UIKit.UIAppearance" /> styling system.  See the <see cref="UIKit.UISearchBar.Appearance" /> property and the <see cref="UIKit.UISearchBar.AppearanceWhenContainedIn(System.Type[])" /> method.</para>
 		///         </remarks>
 		public TextAttributes GetScopeBarButtonTitleTextAttributes (UIControlState state)
 		{

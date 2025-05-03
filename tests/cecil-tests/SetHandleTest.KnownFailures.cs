@@ -6,9 +6,6 @@ namespace Cecil.Tests {
 	public partial class SetHandleTest {
 		static HashSet<string> knownFailuresNobodyCallsHandleSetter = new HashSet<string> {
 			"AddressBook.ABGroup::.ctor(AddressBook.ABRecord)",
-			"AppKit.NSBitmapImageRep::.ctor(Foundation.NSObjectFlag,Foundation.NSObjectFlag)",
-			"AppKit.NSOpenGLPixelFormat::.ctor(AppKit.NSOpenGLPixelFormatAttribute[])",
-			"AppKit.NSOpenGLPixelFormat::.ctor(System.Object[])",
 			"CoreFoundation.CFMutableString::.ctor(CoreFoundation.CFString,System.IntPtr)",
 			"CoreFoundation.CFMutableString::.ctor(System.String,System.IntPtr)",
 			"CoreFoundation.CFSocket::Initialize(CoreFoundation.CFRunLoop,CoreFoundation.CFSocket/CreateSocket)",

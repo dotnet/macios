@@ -1,6 +1,6 @@
 <Documentation>
   <Docs DocId="T:CoreImage.CIGloom">
-    <summary>A <see cref="T:CoreImage.CIFilter" /> that dulls the highlights of the source image.</summary>
+    <summary>A <see cref="CoreImage.CIFilter" /> that dulls the highlights of the source image.</summary>
     <remarks>
       <para>The following example shows this filter in use</para>
       <example>

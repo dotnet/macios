@@ -13,13 +13,13 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="default" xml:space="preserve">
-		<value>Non è stato possibile trovare il messaggio di errore per il codice {0}. Segnalare questo messaggio mancante in GitHub all'indirizzo https://github.com/xamarin/xamarin-macios/issues/new</value>
+		<value>Non è stato possibile trovare il messaggio di errore per il codice {0}. Segnalare questo messaggio mancante in GitHub all'indirizzo https://github.com/dotnet/macios/issues/new</value>
 		<comment>
 			This is the default message when an error code can not be found.
 		</comment>
 	</data>
   <data name="MT0000" xml:space="preserve">
-		<value>Errore imprevisto: caricare un report sui bug all'indirizzo https://github.com/xamarin/xamarin-macios/issues/new
+		<value>Errore imprevisto: caricare un report sui bug all'indirizzo https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT0001" xml:space="preserve">
@@ -299,7 +299,7 @@
 		</value>
 	</data>
   <data name="MX0071" xml:space="preserve">
-		<value>Piattaforma sconosciuta: {0}. Questo indica in genere un bug in {1}. Caricare un report sui bug con un test case all'indirizzo https://github.com/xamarin/xamarin-macios/issues/new.
+		<value>Piattaforma sconosciuta: {0}. Questo indica in genere un bug in {1}. Caricare un report sui bug con un test case all'indirizzo https://github.com/dotnet/macios/issues/new.
 		</value>
 	</data>
   <data name="MT0072" xml:space="preserve">
@@ -425,11 +425,11 @@
 	</data>
   <!-- MM0098 has been used in the past -->
   <data name="MX0099" xml:space="preserve">
-		<value>Errore interno: {0}. Segnalare un errore all'indirizzo https://github.com/xamarin/xamarin-macios/issues/new.
+		<value>Errore interno: {0}. Segnalare un errore all'indirizzo https://github.com/dotnet/macios/issues/new.
 		</value>
 	</data>
   <data name="MT0100" xml:space="preserve">
-		<value>Destinazione di compilazione dell'assembly non valida: '{0}'. Caricare un report sui bug con un test case (https://github.com/xamarin/xamarin-macios/issues/new).
+		<value>Destinazione di compilazione dell'assembly non valida: '{0}'. Caricare un report sui bug con un test case (https://github.com/dotnet/macios/issues/new).
 		</value>
 	</data>
   <data name="MT0101" xml:space="preserve">
@@ -679,27 +679,27 @@
 		</value>
 	</data>
   <data name="MT0157" xml:space="preserve">
-		<value>Errore interno: non è possibile eseguire la conversione da '{0}' a '{1}' in {2}. Caricare un report sui bug con un test case (https://github.com/xamarin/xamarin-macios/issues/new).
+		<value>Errore interno: non è possibile eseguire la conversione da '{0}' a '{1}' in {2}. Caricare un report sui bug con un test case (https://github.com/dotnet/macios/issues/new).
 		</value>
 	</data>
   <data name="MT0158" xml:space="preserve">
-		<value>Errore interno: l'enumerazione intelligente {0} non sembra esserlo affatto. Caricare un report sui bug con un test case (https://github.com/xamarin/xamarin-macios/issues/new).
+		<value>Errore interno: l'enumerazione intelligente {0} non sembra esserlo affatto. Caricare un report sui bug con un test case (https://github.com/dotnet/macios/issues/new).
 		</value>
 	</data>
   <data name="MT0159" xml:space="preserve">
-		<value>Errore interno: tipo di token non supportato ({0}) per {1}. Caricare un report sui bug con un test case (https://github.com/xamarin/xamarin-macios/issues/new).
+		<value>Errore interno: tipo di token non supportato ({0}) per {1}. Caricare un report sui bug con un test case (https://github.com/dotnet/macios/issues/new).
 		</value>
 	</data>
   <data name="MT0160" xml:space="preserve">
-		<value>Errore interno: il registrar statico non deve essere eseguito a meno che non sia stato eseguito (o disabilitato) anche il linker. Per ovviare all'errore, provare a passare '-f' come argomento aggiuntivo di {0} per forzare una compilazione completa. Caricare un report sui bug con un test case (https://github.com/xamarin/xamarin-macios/issues/new).
+		<value>Errore interno: il registrar statico non deve essere eseguito a meno che non sia stato eseguito (o disabilitato) anche il linker. Per ovviare all'errore, provare a passare '-f' come argomento aggiuntivo di {0} per forzare una compilazione completa. Caricare un report sui bug con un test case (https://github.com/dotnet/macios/issues/new).
 		</value>
 	</data>
   <data name="MT0161" xml:space="preserve">
-		<value>Errore interno: simbolo senza nome (tipo: {0}). Caricare un report sui bug con un test case (https://github.com/xamarin/xamarin-macios/issues/new).
+		<value>Errore interno: simbolo senza nome (tipo: {0}). Caricare un report sui bug con un test case (https://github.com/dotnet/macios/issues/new).
 		</value>
 	</data>
   <data name="MT0168" xml:space="preserve">
-		<value>Errore interno: 'non è possibile convertire framework in framework: {0}'. Caricare un report sui bug con un test case (https://github.com/xamarin/xamarin-macios/issues/new).
+		<value>Errore interno: 'non è possibile convertire framework in framework: {0}'. Caricare un report sui bug con un test case (https://github.com/dotnet/macios/issues/new).
 		</value>
 	</data>
   <data name="MT0174_a" xml:space="preserve">
@@ -723,7 +723,7 @@
         </value>
     </data>
   <data name="MX0177" xml:space="preserve">
-		<value>Piattaforma sconosciuta: {0}. Questo indica in genere un bug. Creare un report di bug con un test case all'indirizzo https://github.com/xamarin/xamarin-macios/issues/new.</value>
+		<value>Piattaforma sconosciuta: {0}. Questo indica in genere un bug. Creare un report di bug con un test case all'indirizzo https://github.com/dotnet/macios/issues/new.</value>
 	</data>
   <data name="MX0178" xml:space="preserve">
         <value>Il file del simbolo di debug per '{0}' non è valido pertanto è stato ignorato.
@@ -762,7 +762,7 @@
 		</value>
 	</data>
   <data name="MT1013" xml:space="preserve">
-		<value>Errore di rilevamento delle dipendenze: non ci sono file da confrontare. Caricare un report sui bug con un test case all'indirizzo https://github.com/xamarin/xamarin-macios/issues/new.
+		<value>Errore di rilevamento delle dipendenze: non ci sono file da confrontare. Caricare un report sui bug con un test case all'indirizzo https://github.com/dotnet/macios/issues/new.
 		</value>
 	</data>
   <data name="MT1014" xml:space="preserve">
@@ -1157,7 +1157,7 @@
 		</value>
 	</data>
   <data name="MT4002" xml:space="preserve">
-		<value>Non è stato possibile compilare il codice generato per i metodi P/Invoke. Caricare un report sui bug all'indirizzo https://github.com/xamarin/xamarin-macios/issues/new
+		<value>Non è stato possibile compilare il codice generato per i metodi P/Invoke. Caricare un report sui bug all'indirizzo https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT4101" xml:space="preserve">
@@ -1189,7 +1189,7 @@
 		</value>
 	</data>
   <data name="MT4109" xml:space="preserve">
-		<value>Non è stato possibile compilare il codice del registrar generato. Caricare un report sui bug all'indirizzo https://github.com/xamarin/xamarin-macios/issues/new
+		<value>Non è stato possibile compilare il codice del registrar generato. Caricare un report sui bug all'indirizzo https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT4110" xml:space="preserve">
@@ -1205,7 +1205,7 @@
 		</value>
 	</data>
   <data name="MT4114" xml:space="preserve">
-		<value>Errore imprevisto nel registrar per il metodo '{0}.{1}': caricare un report sui bug all'indirizzo https://github.com/xamarin/xamarin-macios/issues/new
+		<value>Errore imprevisto nel registrar per il metodo '{0}.{1}': caricare un report sui bug all'indirizzo https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT4116" xml:space="preserve">
@@ -1225,7 +1225,7 @@
 		</value>
 	</data>
   <data name="MT4120" xml:space="preserve">
-		<value>Il registrar ha trovato un tipo di campo sconosciuto '{0}' nel campo '{1}.{2}'. Caricare un report sui bug all'indirizzo https://github.com/xamarin/xamarin-macios/issues/new
+		<value>Il registrar ha trovato un tipo di campo sconosciuto '{0}' nel campo '{1}.{2}'. Caricare un report sui bug all'indirizzo https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT4121" xml:space="preserve">
@@ -1237,35 +1237,35 @@
 		</value>
 	</data>
   <data name="MT4124" xml:space="preserve">
-		<value>{0} non valido trovato in '{1}'. Caricare un report sui bug all'indirizzo https://github.com/xamarin/xamarin-macios/issues/new
+		<value>{0} non valido trovato in '{1}'. Caricare un report sui bug all'indirizzo https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT4124_A" xml:space="preserve">
-		<value>La proprietà {1} di RegisterAttribute trovata in '{0}' non è valida. Caricare un report sui bug all'indirizzo https://github.com/xamarin/xamarin-macios/issues/new
+		<value>La proprietà {1} di RegisterAttribute trovata in '{0}' non è valida. Caricare un report sui bug all'indirizzo https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT4124_B" xml:space="preserve">
-		<value>L'attributo AdoptsAttribute trovato in '{0}' non è valido: è previsto un argomento di costruttore, ma ne sono stati trovati {1}. Caricare un report sui bug all'indirizzo https://github.com/xamarin/xamarin-macios/issues/new
+		<value>L'attributo AdoptsAttribute trovato in '{0}' non è valido: è previsto un argomento di costruttore, ma ne sono stati trovati {1}. Caricare un report sui bug all'indirizzo https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT4124_C" xml:space="preserve">
-		<value>L'attributo BindAsAttribute trovato in '{0}.{1}' non è valido: il campo {2} è sconosciuto. Caricare un report sui bug all'indirizzo https://github.com/xamarin/xamarin-macios/issues/new
+		<value>L'attributo BindAsAttribute trovato in '{0}.{1}' non è valido: il campo {2} è sconosciuto. Caricare un report sui bug all'indirizzo https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT4124_D" xml:space="preserve">
-		<value>L'attributo {0} trovato in '{1}.{2}' non è valido. Caricare un report sui bug all'indirizzo https://github.com/xamarin/xamarin-macios/issues/new
+		<value>L'attributo {0} trovato in '{1}.{2}' non è valido. Caricare un report sui bug all'indirizzo https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT4124_E" xml:space="preserve">
-		<value>L'attributo BindAsAttribute trovato in '{0}' non è valido: è previsto un argomento di costruttore, ma ne sono stati trovati {1}. Caricare un report sui bug all'indirizzo https://github.com/xamarin/xamarin-macios/issues/new
+		<value>L'attributo BindAsAttribute trovato in '{0}' non è valido: è previsto un argomento di costruttore, ma ne sono stati trovati {1}. Caricare un report sui bug all'indirizzo https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT4124_H" xml:space="preserve">
-		<value>L'attributo BindAsAttribute trovato in '{0}' non è valido: non è stato possibile trovare un tipo enumerazione sottostante di {1}. Caricare un report sui bug all'indirizzo https://github.com/xamarin/xamarin-macios/issues/new
+		<value>L'attributo BindAsAttribute trovato in '{0}' non è valido: non è stato possibile trovare un tipo enumerazione sottostante di {1}. Caricare un report sui bug all'indirizzo https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT4124_I" xml:space="preserve">
-		<value>Trovato {0} non valido in '{1}'. Inviare un report di bug all'indirizzo https://github.com/xamarin/xamarin-macios/issues/new</value>
+		<value>Trovato {0} non valido in '{1}'. Inviare un report di bug all'indirizzo https://github.com/dotnet/macios/issues/new</value>
 	</data>
   <data name="MT4125" xml:space="preserve">
 		<value>Il registrar ha trovato un tipo non valido '{0}' nella firma per il metodo '{1}': L'interfaccia deve includere un attributo Protocol che ne specifica il tipo di wrapper.
@@ -1347,7 +1347,7 @@
 		</value>
 	</data>
   <data name="MT4147" xml:space="preserve">
-		<value>{0} non valido trovato in '{1}'. Caricare un report sui bug all'indirizzo https://github.com/xamarin/xamarin-macios/issues/new
+		<value>{0} non valido trovato in '{1}'. Caricare un report sui bug all'indirizzo https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT4148" xml:space="preserve">
@@ -1456,15 +1456,15 @@
 		</comment>
 	</data>
   <data name="MT4163" xml:space="preserve">
-		<value>Errore interno nel registrar (ctor {0} con {1} argomenti). Caricare un report sui bug all'indirizzo https://github.com/xamarin/xamarin-macios/issues/new
+		<value>Errore interno nel registrar (ctor {0} con {1} argomenti). Caricare un report sui bug all'indirizzo https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT4163_A" xml:space="preserve">
-		<value>Errore interno nel registrar. Tipo di disponibilità sconosciuto: {0}. Caricare un report sui bug all'indirizzo https://github.com/xamarin/xamarin-macios/issues/new
+		<value>Errore interno nel registrar. Tipo di disponibilità sconosciuto: {0}. Caricare un report sui bug all'indirizzo https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT4163_B" xml:space="preserve">
-		<value>Errore interno nel registrar. I parametri di BindAs non possono essere ref/out: {0}. Caricare un report sui bug all'indirizzo https://github.com/xamarin/xamarin-macios/issues/new
+		<value>Errore interno nel registrar. I parametri di BindAs non possono essere ref/out: {0}. Caricare un report sui bug all'indirizzo https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT4164" xml:space="preserve">
@@ -1545,7 +1545,7 @@
 		</value>
 	</data>
   <data name="MT4184" xml:space="preserve">
-		<value>Errore interno nel registrar. I parametri di BindAs non possono essere ref/out: {0}. Caricare un report sui bug all'indirizzo https://github.com/xamarin/xamarin-macios/issues/new
+		<value>Errore interno nel registrar. I parametri di BindAs non possono essere ref/out: {0}. Caricare un report sui bug all'indirizzo https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT4185" xml:space="preserve">
@@ -1573,15 +1573,15 @@
 		</value>
 	</data>
   <data name="MM5103" xml:space="preserve">
-		<value>Non è stato possibile eseguire la compilazione. Codice errore: {0}. Caricare un report sui bug all'indirizzo https://github.com/xamarin/xamarin-macios/issues/new
+		<value>Non è stato possibile eseguire la compilazione. Codice errore: {0}. Caricare un report sui bug all'indirizzo https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT5103_A" xml:space="preserve">
-		<value>Non è stato possibile compilare il file o i file '{0}'. Caricare un report sui bug all'indirizzo https://github.com/xamarin/xamarin-macios/issues/new
+		<value>Non è stato possibile compilare il file o i file '{0}'. Caricare un report sui bug all'indirizzo https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT5106" xml:space="preserve">
-		<value>Non è stato possibile compilare il file o i file '{0}'. Caricare un report sui bug all'indirizzo https://github.com/xamarin/xamarin-macios/issues/new
+		<value>Non è stato possibile compilare il file o i file '{0}'. Caricare un report sui bug all'indirizzo https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT5107" xml:space="preserve">
@@ -1653,7 +1653,7 @@
 		</value>
 	</data>
   <data name="MT5216" xml:space="preserve">
-		<value>Il collegamento nativo non è riuscito per '{0}'. Caricare un report sui bug all'indirizzo https://github.com/xamarin/xamarin-macios/issues/new
+		<value>Il collegamento nativo non è riuscito per '{0}'. Caricare un report sui bug all'indirizzo https://github.com/dotnet/macios/issues/new
 		</value>
 	</data>
   <data name="MT5217" xml:space="preserve">
@@ -1677,7 +1677,7 @@
 		</value>
 	</data>
   <data name="MX5222" xml:space="preserve">
-		<value>L'esecuzione del linker nativo non è riuscita: {0}. Creare un report di bug all'indirizzo https://github.com/xamarin/xamarin-macios/issues/new
+		<value>L'esecuzione del linker nativo non è riuscita: {0}. Creare un report di bug all'indirizzo https://github.com/dotnet/macios/issues/new
  		</value>
 	</data>
   <data name="MX5223" xml:space="preserve">
@@ -1753,7 +1753,7 @@
 	</data>
   <!-- 8XXX are for errors that occur at runtime -->
   <data name="MT8018" xml:space="preserve">
-		<value>Errore di coerenza interno. Caricare un report sui bug all'indirizzo https://github.com/xamarin/xamarin-macios/issues/new.
+		<value>Errore di coerenza interno. Caricare un report sui bug all'indirizzo https://github.com/dotnet/macios/issues/new.
 		</value>
 	</data>
   <!-- 8000 -> 8036 are missing here (except 8018), so skip to 8037 -->

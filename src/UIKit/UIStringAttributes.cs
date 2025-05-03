@@ -40,12 +40,12 @@ using CoreText;
 
 namespace UIKit {
 
-	/// <summary>Strongly helper to define UIKit attributes for use with <see cref="T:Foundation.NSAttributedString" />. </summary>
+	/// <summary>Strongly helper to define UIKit attributes for use with <see cref="Foundation.NSAttributedString" />. </summary>
 	///     <remarks>
 	///       <para>
 	/// 	You use this class to create attributes that can be used with
-	/// 	both <see cref="T:Foundation.NSAttributedString" />
-	/// 	and <see cref="T:Foundation.NSMutableAttributedString" />.
+	/// 	both <see cref="Foundation.NSAttributedString" />
+	/// 	and <see cref="Foundation.NSMutableAttributedString" />.
 	/// 	Since this class is strongly typed, you will get code
 	/// 	completion as well as avoid common mistakes when using
 	/// 	attributed strings with UIKit.

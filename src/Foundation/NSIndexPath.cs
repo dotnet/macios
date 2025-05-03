@@ -20,7 +20,7 @@ namespace Foundation {
 		/// <param name="indexes">
 		/// Array of indexes to make the index-path.
 		///   	   </param>
-		/// <summary>Creates an <see cref="T:Foundation.NSIndexPath" /> with the indexes specified in the provided array of native integers.</summary>
+		/// <summary>Creates an <see cref="Foundation.NSIndexPath" /> with the indexes specified in the provided array of native integers.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>
 		///           <para />
@@ -37,7 +37,7 @@ namespace Foundation {
 		/// <param name="indexes">
 		/// Array of indexes to make the index-path.
 		///   	   </param>
-		/// <summary>Creates an <see cref="T:Foundation.NSIndexPath" /> with the indexes specified in the provided array of native unsigned integers.</summary>
+		/// <summary>Creates an <see cref="Foundation.NSIndexPath" /> with the indexes specified in the provided array of native unsigned integers.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>
 		///           <para>
@@ -61,7 +61,7 @@ namespace Foundation {
 		///
 		///
 		///   	   </param>
-		///         <summary>Creates an <see cref="T:Foundation.NSIndexPath" /> with the indexes specified in the provided array of integers.</summary>
+		///         <summary>Creates an <see cref="Foundation.NSIndexPath" /> with the indexes specified in the provided array of integers.</summary>
 		///         <returns>
 		///         </returns>
 		///         <remarks>
@@ -84,7 +84,7 @@ namespace Foundation {
 		///
 		///
 		///   	   </param>
-		///         <summary>Creates an <see cref="T:Foundation.NSIndexPath" /> with the indexes specified in the provided array of unsigned integers.</summary>
+		///         <summary>Creates an <see cref="Foundation.NSIndexPath" /> with the indexes specified in the provided array of unsigned integers.</summary>
 		///         <returns>
 		///         </returns>
 		///         <remarks>
@@ -98,11 +98,7 @@ namespace Foundation {
 				return _FromIndex ((IntPtr) ptr, indexes.Length);
 		}
 
-		/// <summary>Copies the objects contained in the index-path to an array (not required for use with iOS <see cref="T:UIKit.UITableView" />).</summary>
-		///         <returns>
-		///         </returns>
-		///         <remarks>
-		///         </remarks>
+		/// <summary>Copies the objects contained in the index-path to an array.</summary>
 		public unsafe nuint [] GetIndexes ()
 		{
 			var ret = new nuint [Length];

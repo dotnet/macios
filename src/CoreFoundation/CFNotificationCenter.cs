@@ -46,7 +46,7 @@ namespace CoreFoundation {
 	//
 	// This is needed because the API itself is not great.
 	//
-	/// <summary>Token returned by a call to <see cref="M:CoreFoundation.CFNotificationCenter.AddObserver(System.String,ObjCRuntime.INativeObject,System.Action{System.String,Foundation.NSDictionary},CoreFoundation.CFNotificationSuspensionBehavior)" /> that can be used to unregister observers.</summary>
+	/// <summary>Token returned by a call to <see cref="CoreFoundation.CFNotificationCenter.AddObserver(System.String,ObjCRuntime.INativeObject,System.Action{System.String,Foundation.NSDictionary},CoreFoundation.CFNotificationSuspensionBehavior)" /> that can be used to unregister observers.</summary>
 	///     <remarks>
 	///       <para />
 	///     </remarks>
@@ -78,7 +78,7 @@ namespace CoreFoundation {
 	/// 	handlers have completed running.
 	///       </para>
 	///       <para>
-	/// 	While the <see cref="T:Foundation.NSNotificationCenter" /> also
+	/// 	While the <see cref="Foundation.NSNotificationCenter" /> also
 	/// 	provides a notification hub, they are separate from each
 	/// 	other.  The CFNotificationCenter provides three hubs: an
 	/// 	application local hub, the Darwin hub (for OS-global
@@ -268,7 +268,7 @@ namespace CoreFoundation {
 			CFString.ReleaseNative (strHandle);
 		}
 
-		/// <param name="token">Token returned by <see cref="M:CoreFoundation.CFNotificationCenter.AddObserver(System.String,ObjCRuntime.INativeObject,System.Action{System.String,Foundation.NSDictionary},CoreFoundation.CFNotificationSuspensionBehavior)" />.</param>
+		/// <param name="token">Token returned by <see cref="CoreFoundation.CFNotificationCenter.AddObserver(System.String,ObjCRuntime.INativeObject,System.Action{System.String,Foundation.NSDictionary},CoreFoundation.CFNotificationSuspensionBehavior)" />.</param>
 		///         <summary>Removes the specified observer.</summary>
 		///         <remarks>
 		///         </remarks>

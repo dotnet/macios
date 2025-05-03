@@ -2292,7 +2292,7 @@ public partial class Generator : IMemberGatherer {
 	bool FilterMinimumVersion (AvailabilityBaseAttribute aa)
 	{
 		// dotnet can never filter minimum versions, as they are semantically important in some cases
-		// See for details: https://github.com/xamarin/xamarin-macios/issues/10170
+		// See for details: https://github.com/dotnet/macios/issues/10170
 		return true;
 	}
 
@@ -4369,7 +4369,7 @@ public partial class Generator : IMemberGatherer {
 		// when we inline methods (e.g. from a protocol) 
 		if (minfo.type != minfo.Method.DeclaringType) {
 			// we must look if the type has an [Availability] attribute
-			// but we must not duplicate existing attributes for a platform, see https://github.com/xamarin/xamarin-macios/issues/7194
+			// but we must not duplicate existing attributes for a platform, see https://github.com/dotnet/macios/issues/7194
 			PrintPlatformAttributesNoDuplicates (minfo.type, minfo.Method);
 		} else {
 			PrintPlatformAttributes (minfo.Method);
@@ -5421,9 +5421,9 @@ public partial class Generator : IMemberGatherer {
 		print ($"[Experimental (\"{e.DiagnosticId}\")]");
 	}
 
-	void WriteDocumentation (MemberInfo info, Func<XmlNode, XmlNode>? transformNode = null)
+	bool WriteDocumentation (MemberInfo info, Func<XmlNode, XmlNode>? transformNode = null)
 	{
-		DocumentationManager.WriteDocumentation (sw, indent, info, transformNode);
+		return DocumentationManager.WriteDocumentation (sw, indent, info, transformNode);
 	}
 
 	public bool TryComputeLibraryName (string attributeLibraryName, Type type, out string library_name, out string library_path)
@@ -5725,21 +5725,34 @@ public partial class Generator : IMemberGatherer {
 					class_name += TypeManager.FormatType (type, gargs [i]);
 
 					where_list += "\n\t\twhere " + gargs [i].Name + " : ";
+
+					var constraintList = new List<string> ();
+
+					var genericAttributes = gargs [i].GenericParameterAttributes;
+					if (genericAttributes.HasFlag (GenericParameterAttributes.ReferenceTypeConstraint)) {
+						constraintList.Add ("class");
+						genericAttributes &= ~GenericParameterAttributes.ReferenceTypeConstraint;
+					}
+					if (genericAttributes.HasFlag (GenericParameterAttributes.DefaultConstructorConstraint)) {
+						constraintList.Add ("new()");
+						genericAttributes &= ~GenericParameterAttributes.DefaultConstructorConstraint;
+					}
+					if (genericAttributes != GenericParameterAttributes.None) {
+						exceptions.Add (ErrorHelper.CreateError (99, $"Unexpected generic constraint attributes: {genericAttributes}"));
+					}
+
 					var constraints = gargs [i].GetGenericParameterConstraints ();
 					if (constraints.Length > 0) {
-						var comma = string.Empty;
-						if (IsProtocol (constraints [0])) {
-							where_list += "NSObject";
-							comma = ", ";
-						}
+						if (IsProtocol (constraints [0]))
+							constraintList.Add ("NSObject");
 
-						for (int c = 0; c < constraints.Length; c++) {
-							where_list += comma + TypeManager.FormatType (type, constraints [c]);
-							comma = ", ";
-						}
+						for (int c = 0; c < constraints.Length; c++)
+							constraintList.Add (TypeManager.FormatType (type, constraints [c]));
 					} else {
-						where_list += "NSObject";
+						constraintList.Add ("NSObject");
 					}
+
+					where_list += string.Join (", ", constraintList);
 				}
 				class_name += ">";
 				if (where_list.Length > 0)
@@ -5939,7 +5952,7 @@ public partial class Generator : IMemberGatherer {
 							sw.WriteLine ("\t\t/// // This is taken from the iOS SDK's source code for the UIView class:");
 							sw.WriteLine ("\t\t/// //");
 							sw.WriteLine ("\t\t/// [Export (\"initWithFrame:\")]");
-							sw.WriteLine ("\t\t/// public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)");
+							sw.WriteLine ("\t\t/// public UIView (CGRect frame) : base (NSObjectFlag.Empty)");
 							sw.WriteLine ("\t\t/// {");
 							sw.WriteLine ("\t\t///     // Invoke the init method now.");
 							sw.WriteLine ("\t\t///     var initWithFrame = new Selector (\"initWithFrame:\").Handle;");
@@ -6141,7 +6154,9 @@ public partial class Generator : IMemberGatherer {
 						print ("static {0}? _{1};", fieldTypeName, field_pi.Name);
 					}
 
-					WriteDocumentation (field_pi);
+					if (!WriteDocumentation (field_pi) && BindingTouch.SupportsXmlDocumentation) {
+						print ($"/// <summary>Represents the value associated with the constant '{fieldAttr.SymbolName}'.</summary>");
+					}
 					PrintAttributes (field_pi, preserve: true, advice: true);
 					PrintObsoleteAttributes (field_pi);
 					print ("[Field (\"{0}\",  \"{1}\")]", fieldAttr.SymbolName, library_path ?? library_name);

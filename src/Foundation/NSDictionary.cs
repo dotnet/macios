@@ -65,7 +65,7 @@ namespace Foundation {
 		///         <summary>Creates an NSDictionary from a list of keys and values.</summary>
 		///         <remarks>
 		///           <para>
-		/// 	    Each C# object is boxed as an NSObject by calling <see cref="M:Foundation.NSObject.FromObject(System.Object)" />.
+		/// 	    Each C# object is boxed as an NSObject by calling <see cref="Foundation.NSObject.FromObject(System.Object)" />.
 		/// 	  </para>
 		///           <para>
 		/// 	    The list of keys and values are used to create the dictionary.   The number of parameters passed to this function must be even.
@@ -160,7 +160,7 @@ namespace Foundation {
 		///         <remarks>
 		///           <para>
 		/// 	    The keys and values will first be boxed into
-		/// 	    NSObjects using <see cref="M:Foundation.NSObject.FromObject(System.Object)" />.
+		/// 	    NSObjects using <see cref="Foundation.NSObject.FromObject(System.Object)" />.
 		/// 	  </para>
 		///         </remarks>
 		public static NSDictionary FromObjectsAndKeys (object [] objects, object [] keys)
@@ -210,7 +210,7 @@ namespace Foundation {
 		/// <remarks>
 		///           <para>
 		/// 	    The keys and values will first be boxed into
-		/// 	    NSObjects using <see cref="M:Foundation.NSObject.FromObject(System.Object)" />.
+		/// 	    NSObjects using <see cref="Foundation.NSObject.FromObject(System.Object)" />.
 		/// 	  </para>
 		///         </remarks>
 		public static NSDictionary FromObjectsAndKeys (object [] objects, object [] keys, nint count)
@@ -562,7 +562,7 @@ namespace Foundation {
 		///         <remarks>
 		/// 	  In some cases, where you might be iterating over a loop, or
 		/// 	  you have not surfaced a bound type, but you have the handle to
-		/// 	  the key, you can use the <see cref="M:Foundation.NSDictionary.LowlevelObjectForKey(System.IntPtr)" />
+		/// 	  the key, you can use the <see cref="Foundation.NSDictionary.LowlevelObjectForKey(System.IntPtr)" />
 		/// 	  which takes a handle for the key and returns a handle for the returned object. 
 		/// 	</remarks>
 		public IntPtr LowlevelObjectForKey (IntPtr key)

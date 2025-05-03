@@ -16,7 +16,7 @@ using ObjCRuntime;
 
 namespace AddressBookUI {
 
-	/// <summary>Provides data for the <see cref="E:AddressBookUI.ABNewPersonViewController.NewPersonComplete" /> event.</summary>
+	/// <summary>Provides data for the <see cref="AddressBookUI.ABNewPersonViewController.NewPersonComplete" /> event.</summary>
 	///     <remarks>
 	///     </remarks>
 	[SupportedOSPlatform ("ios")]
@@ -73,7 +73,7 @@ namespace AddressBookUI {
 	partial class ABNewPersonViewController {
 
 		ABPerson? displayedPerson;
-		/// <summary>Gets or sets the <see cref="T:AddressBook.ABPerson" /> whose data is used to prepopulate the <see cref="T:AddressBookUI.ABNewPersonViewController" />.</summary>
+		/// <summary>Gets or sets the <see cref="AddressBook.ABPerson" /> whose data is used to prepopulate the <see cref="AddressBookUI.ABNewPersonViewController" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public ABPerson? DisplayedPerson {
@@ -88,7 +88,7 @@ namespace AddressBookUI {
 		}
 
 		ABAddressBook? addressBook;
-		/// <summary>Gets or sets the <see cref="T:AddressBook.ABAddressBook" /> to which the contact will be added.</summary>
+		/// <summary>Gets or sets the <see cref="AddressBook.ABAddressBook" /> to which the contact will be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public ABAddressBook? AddressBook {
@@ -103,7 +103,7 @@ namespace AddressBookUI {
 		}
 
 		ABGroup? parentGroup;
-		/// <summary>Gets or sets the <see cref="T:AddressBook.ABGroup" /> to which the new contact should be saved.</summary>
+		/// <summary>Gets or sets the <see cref="AddressBook.ABGroup" /> to which the new contact should be saved.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public ABGroup? ParentGroup {

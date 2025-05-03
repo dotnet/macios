@@ -1,19 +1,19 @@
 <Documentation>
   <Docs DocId="M:AddressBook.ABPerson.System#IComparable#CompareTo(System.Object)">
     <param name="o">
-          The <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Object&amp;scope=Xamarin" title="T:System.Object">T:System.Object</a></format> to compare
+          The <see cref="System.Object" /> to compare
           to this instance.
         </param>
     <summary>
           Compares this instance with the specified
-          <see cref="T:AddressBook.ABPerson" /> and returns an
+          <see cref="AddressBook.ABPerson" /> and returns an
           integer that indicates whether this instance precedes, follows,
           or appears in the same position in the sort order as
           <paramref name="o" />.
         </summary>
     <returns>
       <para>
-            A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Int%2032&amp;scope=Xamarin" title="T:System.Int32">T:System.Int32</a></format> that indicates
+            A <see cref="System.Int32" /> that indicates
             whether this instance precedes, follows,
             or appears in the same position in the sort order as
             <paramref name="o" />.
@@ -49,19 +49,19 @@
   </Docs>
   <Docs DocId="M:AddressBook.ABPerson.CompareTo(AddressBook.ABPerson)">
     <param name="other">
-          The <see cref="T:AddressBook.ABPerson" /> to compare
+          The <see cref="AddressBook.ABPerson" /> to compare
           to this instance.
         </param>
     <summary>
           Compares this instance with the specified
-          <see cref="T:AddressBook.ABPerson" /> and returns an
+          <see cref="AddressBook.ABPerson" /> and returns an
           integer that indicates whether this instance precedes, follows,
           or appears in the same position in the sort order as
           <paramref name="other" />.
         </summary>
     <returns>
       <para>
-            A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Int%2032&amp;scope=Xamarin" title="T:System.Int32">T:System.Int32</a></format> that indicates
+            A <see cref="System.Int32" /> that indicates
             whether this instance precedes, follows,
             or appears in the same position in the sort order as
             <paramref name="other" />.
@@ -97,26 +97,26 @@
   </Docs>
   <Docs DocId="M:AddressBook.ABPerson.CompareTo(AddressBook.ABPerson,AddressBook.ABPersonSortBy)">
     <param name="other">
-          The <see cref="T:AddressBook.ABPerson" /> to compare
+          The <see cref="AddressBook.ABPerson" /> to compare
           to this instance.
         </param>
     <param name="ordering">
-          A <see cref="T:AddressBook.ABPersonSortBy" /> which
+          A <see cref="AddressBook.ABPersonSortBy" /> which
           is used to specify whether ordering should be done by
-          <see cref="F:AddressBook.ABPersonSortBy.FirstName" />
+          <see cref="AddressBook.ABPersonSortBy.FirstName" />
           or
-          <see cref="F:AddressBook.ABPersonSortBy.LastName" />.
+          <see cref="AddressBook.ABPersonSortBy.LastName" />.
         </param>
     <summary>
           Compares this instance with the specified
-          <see cref="T:AddressBook.ABPerson" /> and returns an
+          <see cref="AddressBook.ABPerson" /> and returns an
           integer that indicates whether this instance precedes, follows,
           or appears in the same position in the sort order as
           <paramref name="other" /> (as controlled by <paramref name="ordering" />).
         </summary>
     <returns>
       <para>
-            A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Int%2032&amp;scope=Xamarin" title="T:System.Int32">T:System.Int32</a></format> that indicates
+            A <see cref="System.Int32" /> that indicates
             whether this instance precedes, follows,
             or appears in the same position in the sort order as
             <paramref name="other" />.
@@ -162,68 +162,68 @@
         <item>
           <term>
             Creating Persons:
-            <see cref="C:AddressBook.ABPerson" />.
+            <see cref="AddressBook.ABPerson" />.
           </term>
         </item>
         <item>
           <term>
             Sorting Persons:
-            <see cref="M:AddressBook.ABPerson.CompareTo(AddressBook.ABPerson)" />,
-            <see cref="M:AddressBook.ABPerson.CompareTo(AddressBook.ABPerson,AddressBook.ABPersonSortBy)" />.
+            <see cref="AddressBook.ABPerson.CompareTo(AddressBook.ABPerson)" />,
+            <see cref="AddressBook.ABPerson.CompareTo(AddressBook.ABPerson,AddressBook.ABPersonSortBy)" />.
           </term>
         </item>
         <item>
           <term>
             Getting Person Property Information:
-            <see cref="M:AddressBook.ABPerson.GetVCards(AddressBook.ABPerson[])" />,
-            <see cref="M:AddressBook.ABPerson.GetDates" />,
-            <see cref="M:AddressBook.ABPerson.GetEmails" />,
-            <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Address%20Book%20ABPerson%20Get%20Instant%20Messages&amp;scope=Xamarin" title="M:AddressBook.ABPerson.GetInstantMessages*">M:AddressBook.ABPerson.GetInstantMessages*</a></format>,
-            <see cref="M:AddressBook.ABPerson.GetPhones" />,
-            <see cref="M:AddressBook.ABPerson.GetProperty(AddressBook.ABPersonProperty)" />,
-            <see cref="M:AddressBook.ABPerson.GetPropertyType(AddressBook.ABPersonProperty)" />,
-            <see cref="M:AddressBook.ABPerson.GetRelatedNames" />,
-            <see cref="M:AddressBook.ABPerson.GetUrls" />,
-            <see cref="M:AddressBook.ABPerson.LocalizedPropertyName(AddressBook.ABPersonProperty)" />,
-            <see cref="M:AddressBook.ABPerson.SetAddresses(AddressBook.ABMultiValue{AddressBook.PersonAddress})" />,
-            <see cref="M:AddressBook.ABPerson.SetDates(AddressBook.ABMultiValue{Foundation.NSDate})" />,
-            <see cref="M:AddressBook.ABPerson.SetEmails(AddressBook.ABMultiValue{System.String})" />,
-            <see cref="M:AddressBook.ABPerson.SetInstantMessages(AddressBook.ABMultiValue{AddressBook.InstantMessageService})" />,
-            <see cref="M:AddressBook.ABPerson.SetPhones(AddressBook.ABMultiValue{System.String})" />,
-            <see cref="M:AddressBook.ABPerson.SetRelatedNames(AddressBook.ABMultiValue{System.String})" />,
-            <see cref="M:AddressBook.ABPerson.SetUrls(AddressBook.ABMultiValue{System.String})" />,
-            <see cref="P:AddressBook.ABPerson.Birthday" />,
-            <see cref="P:AddressBook.ABPerson.CreationDate" />,
-            <see cref="P:AddressBook.ABPerson.Department" />,
-            <see cref="P:AddressBook.ABPerson.FirstName" />,
-            <see cref="P:AddressBook.ABPerson.FirstNamePhonetic" />,
-            <see cref="P:AddressBook.ABPerson.JobTitle" />,
-            <see cref="P:AddressBook.ABPerson.LastName" />,
-            <see cref="P:AddressBook.ABPerson.LastNamePhonetic" />,
-            <see cref="P:AddressBook.ABPerson.MiddleName" />,
-            <see cref="P:AddressBook.ABPerson.MiddleNamePhonetic" />,
-            <see cref="P:AddressBook.ABPerson.ModificationDate" />,
-            <see cref="P:AddressBook.ABPerson.Nickname" />,
-            <see cref="P:AddressBook.ABPerson.Note" />,
-            <see cref="P:AddressBook.ABPerson.Organization" />,
-            <see cref="P:AddressBook.ABPerson.PersonKind" />,
-            <see cref="P:AddressBook.ABPerson.Prefix" />,
-            <see cref="P:AddressBook.ABPerson.Suffix" />,
+            <see cref="AddressBook.ABPerson.GetVCards(AddressBook.ABPerson[])" />,
+            <see cref="AddressBook.ABPerson.GetDates" />,
+            <see cref="AddressBook.ABPerson.GetEmails" />,
+            <see cref="AddressBook.ABPerson.GetInstantMessages" />,
+            <see cref="AddressBook.ABPerson.GetPhones" />,
+            <see cref="AddressBook.ABPerson.GetProperty(AddressBook.ABPersonProperty)" />,
+            <see cref="AddressBook.ABPerson.GetPropertyType(AddressBook.ABPersonProperty)" />,
+            <see cref="AddressBook.ABPerson.GetRelatedNames" />,
+            <see cref="AddressBook.ABPerson.GetUrls" />,
+            <see cref="AddressBook.ABPerson.LocalizedPropertyName(AddressBook.ABPersonProperty)" />,
+            <see cref="AddressBook.ABPerson.SetAddresses(AddressBook.ABMultiValue{AddressBook.PersonAddress})" />,
+            <see cref="AddressBook.ABPerson.SetDates(AddressBook.ABMultiValue{Foundation.NSDate})" />,
+            <see cref="AddressBook.ABPerson.SetEmails(AddressBook.ABMultiValue{System.String})" />,
+            <see cref="AddressBook.ABPerson.SetInstantMessages(AddressBook.ABMultiValue{AddressBook.InstantMessageService})" />,
+            <see cref="AddressBook.ABPerson.SetPhones(AddressBook.ABMultiValue{System.String})" />,
+            <see cref="AddressBook.ABPerson.SetRelatedNames(AddressBook.ABMultiValue{System.String})" />,
+            <see cref="AddressBook.ABPerson.SetUrls(AddressBook.ABMultiValue{System.String})" />,
+            <see cref="AddressBook.ABPerson.Birthday" />,
+            <see cref="AddressBook.ABPerson.CreationDate" />,
+            <see cref="AddressBook.ABPerson.Department" />,
+            <see cref="AddressBook.ABPerson.FirstName" />,
+            <see cref="AddressBook.ABPerson.FirstNamePhonetic" />,
+            <see cref="AddressBook.ABPerson.JobTitle" />,
+            <see cref="AddressBook.ABPerson.LastName" />,
+            <see cref="AddressBook.ABPerson.LastNamePhonetic" />,
+            <see cref="AddressBook.ABPerson.MiddleName" />,
+            <see cref="AddressBook.ABPerson.MiddleNamePhonetic" />,
+            <see cref="AddressBook.ABPerson.ModificationDate" />,
+            <see cref="AddressBook.ABPerson.Nickname" />,
+            <see cref="AddressBook.ABPerson.Note" />,
+            <see cref="AddressBook.ABPerson.Organization" />,
+            <see cref="AddressBook.ABPerson.PersonKind" />,
+            <see cref="AddressBook.ABPerson.Prefix" />,
+            <see cref="AddressBook.ABPerson.Suffix" />,
           </term>
         </item>
         <item>
           <term>
             Managing Pictures:
-            <see cref="P:AddressBook.ABPerson.Image" />,
-            <see cref="P:AddressBook.ABPerson.HasImage" />,
-            <see cref="M:AddressBook.ABPerson.RemoveImage" />.
+            <see cref="AddressBook.ABPerson.Image" />,
+            <see cref="AddressBook.ABPerson.HasImage" />,
+            <see cref="AddressBook.ABPerson.RemoveImage" />.
           </term>
         </item>
         <item>
           <term>
             Getting Name Format And Sort Preferences:
-            <see cref="P:AddressBook.ABPerson.CompositeNameFormat" />,
-            <see cref="P:AddressBook.ABPerson.SortOrdering" />.
+            <see cref="AddressBook.ABPerson.CompositeNameFormat" />,
+            <see cref="AddressBook.ABPerson.SortOrdering" />.
           </term>
         </item>
       </list>

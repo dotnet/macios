@@ -40,7 +40,7 @@ using CoreGraphics;
 namespace CoreText {
 
 	// defined as uint32_t - System/Library/Frameworks/CoreText.framework/Headers/CTRun.h
-	/// <summary>An enumeration whose values describe the <see cref="P:CoreText.CTRun.Status" /> of a <see cref="T:CoreText.CTRun" />.</summary>
+	/// <summary>An enumeration whose values describe the <see cref="CoreText.CTRun.Status" /> of a <see cref="CoreText.CTRun" />.</summary>
 	///     <remarks>To be added.</remarks>
 	public enum CTRunStatus {
 		/// <summary>To be added.</summary>

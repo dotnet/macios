@@ -167,7 +167,7 @@ namespace CoreFoundation {
 	}
 
 	// CFIndex
-	/// <summary>An enumeration whose values specify valid statuses for a <see cref="T:CoreFoundation.CFStream" />.</summary>
+	/// <summary>An enumeration whose values specify valid statuses for a <see cref="CoreFoundation.CFStream" />.</summary>
 	///     <remarks>To be added.</remarks>
 	[Native] // System/Library/Frameworks/CoreFoundation.framework/Headers/CFStream.h
 	public enum CFStreamStatus : long {
@@ -590,7 +590,7 @@ namespace CoreFoundation {
 
 		#region Events
 
-		/// <summary>An <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Event%20Args&amp;scope=Xamarin" title="T:System.EventArgs">T:System.EventArgs</a></format> used by several events in <see cref="T:CoreFoundation.CFString" />.</summary>
+		/// <summary>An <see cref="System.EventArgs" /> used by several events in <see cref="CoreFoundation.CFString" />.</summary>
 		///     <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -695,7 +695,7 @@ namespace CoreFoundation {
 		/// <param name="s">To be added.</param>
 		///     <param name="type">To be added.</param>
 		///     <param name="info">To be added.</param>
-		///     <summary>A delegate used as a callback in various <see cref="T:CoreFoundation.CFStream" /> methods.</summary>
+		///     <summary>A delegate used as a callback in various <see cref="CoreFoundation.CFStream" /> methods.</summary>
 		///     <remarks>To be added.</remarks>
 		protected delegate void CFStreamCallback (IntPtr s, nint type, IntPtr info);
 

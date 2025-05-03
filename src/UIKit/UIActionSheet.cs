@@ -67,7 +67,7 @@ namespace UIKit {
 		: this (title, del, null, null, (string) null) { }
 
 		/// <param name="title">A title to be displayed in the title area of the action sheet.</param>
-		///         <summary>Initialize an <see cref="T:UIKit.UIActionSheet" /> with a title.</summary>
+		///         <summary>Initialize an <see cref="UIKit.UIActionSheet" /> with a title.</summary>
 		///         <remarks>Pass <see langword="null" /> to <paramref name="title" /> if there is no text to display in the title area.</remarks>
 		public UIActionSheet (string title)
 		: this (title, null, null, null, (string) null) { }

@@ -142,7 +142,7 @@ namespace CoreGraphics {
 
 		/// <param name="major">To be added.</param>
 		///         <param name="minor">To be added.</param>
-		///         <summary>Gets the version of <c>this</c> <see cref="T:CoreGraphics.CGPDFDocument" /> object, including the <paramref name="major" /> and <paramref name="minor" /> version numbers.</summary>
+		///         <summary>Gets the version of <c>this</c> <see cref="CoreGraphics.CGPDFDocument" /> object, including the <paramref name="major" /> and <paramref name="minor" /> version numbers.</summary>
 		///         <remarks>To be added.</remarks>
 		public void GetVersion (out int major, out int minor)
 		{
@@ -156,7 +156,7 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static byte CGPDFDocumentIsEncrypted (/* CGPDFDocumentRef */ IntPtr document);
 
-		/// <summary>Gets whether <c>this</c> <see cref="T:CoreGraphics.CGPDFDocument" /> object is encrypted.</summary>
+		/// <summary>Gets whether <c>this</c> <see cref="CoreGraphics.CGPDFDocument" /> object is encrypted.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public bool IsEncrypted {
@@ -181,7 +181,7 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static byte CGPDFDocumentIsUnlocked (/* CGPDFDocumentRef */ IntPtr document);
 
-		/// <summary>Gets whether the <c>this</c> <see cref="T:CoreGraphics.CGPDFDocument" /> object is not locked, either because the object is not encrypted or a password has been supplied.</summary>
+		/// <summary>Gets whether the <c>this</c> <see cref="CoreGraphics.CGPDFDocument" /> object is not locked, either because the object is not encrypted or a password has been supplied.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public bool IsUnlocked {
@@ -193,7 +193,7 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static byte CGPDFDocumentAllowsPrinting (/* CGPDFDocumentRef */ IntPtr document);
 
-		/// <summary>Gets whether <c>this</c> <see cref="T:CoreGraphics.CGPDFDocument" /> object allows printing.</summary>
+		/// <summary>Gets whether <c>this</c> <see cref="CoreGraphics.CGPDFDocument" /> object allows printing.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public bool AllowsPrinting {
@@ -205,7 +205,7 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static byte CGPDFDocumentAllowsCopying (/* CGPDFDocumentRef */ IntPtr document);
 
-		/// <summary>Gets whether <c>this</c> <see cref="T:CoreGraphics.CGPDFDocument" /> object allows copying.</summary>
+		/// <summary>Gets whether <c>this</c> <see cref="CoreGraphics.CGPDFDocument" /> object allows copying.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public bool AllowsCopying {
@@ -216,7 +216,7 @@ namespace CoreGraphics {
 
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* CGPDFDictionaryRef */ IntPtr CGPDFDocumentGetCatalog (/* CGPDFDocumentRef */ IntPtr document);
-		/// <summary>Gets the catalog for <c>this</c> <see cref="T:CoreGraphics.CGPDFDocument" /> object.</summary>
+		/// <summary>Gets the catalog for <c>this</c> <see cref="CoreGraphics.CGPDFDocument" /> object.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		public CGPDFDictionary GetCatalog ()
@@ -227,7 +227,7 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* CGPDFDictionaryRef */ IntPtr CGPDFDocumentGetInfo (/* CGPDFDocumentRef */ IntPtr document);
 
-		/// <summary>Gets information for <c>this</c> <see cref="T:CoreGraphics.CGPDFDocument" /> as a <see cref="T:CoreGraphics.CGPDFDictionary" /> dictionary.</summary>
+		/// <summary>Gets information for <c>this</c> <see cref="CoreGraphics.CGPDFDocument" /> as a <see cref="CoreGraphics.CGPDFDictionary" /> dictionary.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		public CGPDFDictionary GetInfo ()

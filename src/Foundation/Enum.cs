@@ -254,7 +254,7 @@ namespace Foundation {
 		MutableContainersAndLeaves = 2,
 	}
 
-	/// <summary>A flagging enumeration whose values specify options in calls to <see cref="M:Foundation.NSMachPort.FromMachPort(System.UInt32,Foundation.NSMachPortRights)" />.</summary>
+	/// <summary>A flagging enumeration whose values specify options in calls to <see cref="Foundation.NSMachPort.FromMachPort(System.UInt32,Foundation.NSMachPortRights)" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
 	[Flags]
@@ -317,7 +317,7 @@ namespace Foundation {
 		Full,
 	}
 
-	/// <summary>An enumeration that can specify whether the <see cref="T:Foundation.NSDateFormatter" /> should behave as it did prior to OS x v10.4</summary>
+	/// <summary>An enumeration that can specify whether the <see cref="Foundation.NSDateFormatter" /> should behave as it did prior to OS x v10.4</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
 	public enum NSDateFormatterBehavior : ulong {
@@ -331,7 +331,7 @@ namespace Foundation {
 		Mode_10_4 = 1040,
 	}
 
-	/// <summary>An enumeration whose values specify valid strategies for accepting <see cref="T:Foundation.NSHttpCookie" />s.</summary>
+	/// <summary>An enumeration whose values specify valid strategies for accepting <see cref="Foundation.NSHttpCookie" />s.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
 	public enum NSHttpCookieAcceptPolicy : ulong {
@@ -422,7 +422,7 @@ namespace Foundation {
 		MappedAlways = 1 << 3,
 	}
 
-	/// <summary>An enumeration of options to be used when writing <see cref="T:Foundation.NSData" /> objects.</summary>
+	/// <summary>An enumeration of options to be used when writing <see cref="Foundation.NSData" /> objects.</summary>
 	/// <remarks>To be added.</remarks>
 	[Flags]
 	[Native]
@@ -453,11 +453,11 @@ namespace Foundation {
 
 	/// <param name="obj">To be added.</param>
 	/// <param name="stop">To be added.</param>
-	/// <summary>A delegate that specifies the enumerator used by <see cref="M:Foundation.NSSet.Enumerate(Foundation.NSSetEnumerator)" />.</summary>
+	/// <summary>A delegate that specifies the enumerator used by <see cref="Foundation.NSSet.Enumerate(Foundation.NSSetEnumerator)" />.</summary>
 	/// <remarks>To be added.</remarks>
 	public delegate void NSSetEnumerator (NSObject obj, ref bool stop);
 
-	/// <summary>An enumeration of values that specify the priority of an operation, relative to others, in a <see cref="T:Foundation.NSOperationQueue" />.</summary>
+	/// <summary>An enumeration of values that specify the priority of an operation, relative to others, in a <see cref="Foundation.NSOperationQueue" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
 	public enum NSOperationQueuePriority : long {
@@ -473,7 +473,7 @@ namespace Foundation {
 		VeryHigh = 8,
 	}
 
-	/// <summary>An enumeration of ways in which <see cref="T:Foundation.NSNotification" />s can be coalesced.</summary>
+	/// <summary>An enumeration of ways in which <see cref="Foundation.NSNotification" />s can be coalesced.</summary>
 	/// <remarks>To be added.</remarks>
 	[Flags]
 	[Native]
@@ -510,7 +510,7 @@ namespace Foundation {
 		SearchAnchored = 2,
 	}
 
-	/// <summary>An enumeration of valid types for a <see cref="T:Foundation.NSExpression" />.</summary>
+	/// <summary>An enumeration of valid types for a <see cref="Foundation.NSExpression" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
 	public enum NSExpressionType : ulong {
@@ -730,7 +730,7 @@ namespace Foundation {
 	// note: Make sure names are identical/consistent with CFNetworkErrors.*
 	// they share the same values but there's more entries in CFNetworkErrors
 	// so anything new probably already exists over there
-	/// <summary>An enumeration of errors associated with creating or loading a <see cref="T:Foundation.NSUrl" />.</summary>
+	/// <summary>An enumeration of errors associated with creating or loading a <see cref="Foundation.NSUrl" />.</summary>
 	/// <remarks>To be added.</remarks>
 	public enum NSUrlError : int {
 		/// <summary>To be added.</summary>
@@ -840,7 +840,7 @@ namespace Foundation {
 		DownloadDecodingFailedToComplete = -3007,
 	}
 
-	/// <summary>An enumeration of values specifying options to be used with the <see cref="M:Foundation.NSObject.AddObserver(Foundation.NSObject,System.String,Foundation.NSKeyValueObservingOptions,System.IntPtr)" /> method.</summary>
+	/// <summary>An enumeration of values specifying options to be used with the <see cref="Foundation.NSObject.AddObserver(Foundation.NSObject,System.String,Foundation.NSKeyValueObservingOptions,System.IntPtr)" /> method.</summary>
 	/// <remarks>
 	///       <para>
 	///       </para>
@@ -861,7 +861,7 @@ namespace Foundation {
 		Prior = 8,
 	}
 
-	/// <summary>An enumeration indicating the type of change occurring in the <see cref="M:Foundation.NSObject.WillChangeValue(System.String)" /> and <see cref="M:Foundation.NSObject.DidChangeValue(System.String)" /> methods.</summary>
+	/// <summary>An enumeration indicating the type of change occurring in the <see cref="Foundation.NSObject.WillChangeValue(System.String)" /> and <see cref="Foundation.NSObject.DidChangeValue(System.String)" /> methods.</summary>
 	/// <remarks>
 	///       <para />
 	///     </remarks>
@@ -902,7 +902,7 @@ namespace Foundation {
 		Reverse = 2,
 	}
 
-	/// <summary>An enumeration of values that may be sent to <see cref="M:Foundation.NSStreamDelegate.HandleEvent(Foundation.NSStream,Foundation.NSStreamEvent)" />.</summary>
+	/// <summary>An enumeration of values that may be sent to <see cref="Foundation.NSStreamDelegate.HandleEvent(Foundation.NSStream,Foundation.NSStreamEvent)" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Flags]
 	[Native]
@@ -921,7 +921,7 @@ namespace Foundation {
 		EndEncountered = 1 << 4,
 	}
 
-	/// <summary>An enumeration whose values specify how a <see cref="T:Foundation.NSComparisonPredicate" /> should apply to an n-to-many relationship.</summary>
+	/// <summary>An enumeration whose values specify how a <see cref="Foundation.NSComparisonPredicate" /> should apply to an n-to-many relationship.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
 	public enum NSComparisonPredicateModifier : ulong {
@@ -933,7 +933,7 @@ namespace Foundation {
 		Any,
 	}
 
-	/// <summary>An enumeration of values that specify comparison types for use with <see cref="T:Foundation.NSComparisonPredicate" />.</summary>
+	/// <summary>An enumeration of values that specify comparison types for use with <see cref="Foundation.NSComparisonPredicate" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
 	public enum NSPredicateOperatorType : ulong {
@@ -967,7 +967,7 @@ namespace Foundation {
 		Between,
 	}
 
-	/// <summary>An enumeration whose values specify the type of string comparison to be used in a <see cref="T:Foundation.NSComparisonPredicate" />.</summary>
+	/// <summary>An enumeration whose values specify the type of string comparison to be used in a <see cref="Foundation.NSComparisonPredicate" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Flags]
 	[Native]
@@ -982,7 +982,7 @@ namespace Foundation {
 		Normalized = 1 << 2,
 	}
 
-	/// <summary>An enumeration whose values specify the Boolean logical operator to be applied to a <see cref="T:Foundation.NSCompoundPredicate" />.</summary>
+	/// <summary>An enumeration whose values specify the Boolean logical operator to be applied to a <see cref="Foundation.NSCompoundPredicate" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
 	public enum NSCompoundPredicateType : ulong {
@@ -1008,7 +1008,7 @@ namespace Foundation {
 		ProduceFileReferenceUrls = 1 << 2,
 	}
 
-	/// <summary>An enumeration of options for use with <see cref="T:Foundation.NSDirectoryEnumerator" />.</summary>
+	/// <summary>An enumeration of options for use with <see cref="Foundation.NSDirectoryEnumerator" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Flags]
 	[Native]
@@ -1028,7 +1028,7 @@ namespace Foundation {
 		ProducesRelativePathUrls = 1 << 4,
 	}
 
-	/// <summary>An enumeration of options for use with <see cref="M:Foundation.NSFileManager.Replace(Foundation.NSUrl,Foundation.NSUrl,System.String,Foundation.NSFileManagerItemReplacementOptions,Foundation.NSUrl@,Foundation.NSError@)" />.</summary>
+	/// <summary>An enumeration of options for use with <see cref="Foundation.NSFileManager.Replace(Foundation.NSUrl,Foundation.NSUrl,System.String,Foundation.NSFileManagerItemReplacementOptions,ref Foundation.NSUrl,out Foundation.NSError)" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Flags]
 	[Native]
@@ -1041,7 +1041,7 @@ namespace Foundation {
 		WithoutDeletingBackupItem = 1 << 1,
 	}
 
-	/// <summary>An enumeration of special directories for use with <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Foundation%20NSFile%20Manager%20Get%20URLs&amp;scope=Xamarin" title="M:Foundation.NSFileManager.GetURLs*">M:Foundation.NSFileManager.GetURLs*</a></format>.</summary>
+	/// <summary>An enumeration of special directories for use with <see cref="Foundation.NSFileManager.GetURLs" />.</summary>
 	/// <remarks>Some of these constants when used can return more than one value (for example AllApplicationsDirectory).</remarks>
 	[Native]
 	public enum NSSearchPathDirectory : ulong {
@@ -1106,8 +1106,8 @@ namespace Foundation {
 		TrashDirectory = 102,
 	}
 
-	/// <summary>An enumeration of values specifying search path domain constants for use with <see cref="T:Foundation.NSSearchPathDirectory" />.</summary>
-	/// <remarks>The domain is used to specify the kind of directory you want to get from the <see cref="M:Foundation.NSFileManager.GetUrls(Foundation.NSSearchPathDirectory,Foundation.NSSearchPathDomain)" /> method.</remarks>
+	/// <summary>An enumeration of values specifying search path domain constants for use with <see cref="Foundation.NSSearchPathDirectory" />.</summary>
+	/// <remarks>The domain is used to specify the kind of directory you want to get from the <see cref="Foundation.NSFileManager.GetUrls(Foundation.NSSearchPathDirectory,Foundation.NSSearchPathDomain)" /> method.</remarks>
 	[Flags]
 	[Native]
 	public enum NSSearchPathDomain : ulong {
@@ -1125,7 +1125,7 @@ namespace Foundation {
 		All = 0x0ffff,
 	}
 
-	/// <summary>An enumeration of values that specify rounding behaviors for <see cref="T:Foundation.NSDecimal" />s.</summary>
+	/// <summary>An enumeration of values that specify rounding behaviors for <see cref="Foundation.NSDecimal" />s.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
 	public enum NSRoundingMode : ulong {
@@ -1309,7 +1309,7 @@ namespace Foundation {
 		ContentIndependentMetadataOnly = 16,
 	}
 
-	/// <summary>An enumeration of options for use with <see cref="T:Foundation.NSLinguisticTagger" />.</summary>
+	/// <summary>An enumeration of options for use with <see cref="Foundation.NSLinguisticTagger" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Flags]
 	[Native]
@@ -1466,7 +1466,7 @@ namespace Foundation {
 		WithNameUpdating = 1 << 1,
 	}
 
-	/// <summary>An enumeration whose values specify the options to be used in the <see cref="M:Foundation.NSAttributedString.EnumerateAttribute(Foundation.NSString,Foundation.NSRange,Foundation.NSAttributedStringEnumeration,Foundation.NSAttributedStringCallback)" /> and <see cref="M:Foundation.NSAttributedString.EnumerateAttributes(Foundation.NSRange,Foundation.NSAttributedStringEnumeration,Foundation.NSAttributedRangeCallback)" /> methods.</summary>
+	/// <summary>An enumeration whose values specify the options to be used in the <see cref="Foundation.NSAttributedString.EnumerateAttribute(Foundation.NSString,Foundation.NSRange,Foundation.NSAttributedStringEnumeration,Foundation.NSAttributedStringCallback)" /> and <see cref="Foundation.NSAttributedString.EnumerateAttributes(Foundation.NSRange,Foundation.NSAttributedStringEnumeration,Foundation.NSAttributedRangeCallback)" /> methods.</summary>
 	/// <remarks>To be added.</remarks>
 	[Flags]
 	[Native ("NSAttributedStringEnumerationOptions")]
@@ -1510,7 +1510,7 @@ namespace Foundation {
 	// There's an AppKit.NSWritingDirection, which is deprecated.
 	// There's also an UIKit.UITextWritingDirection, which is deprecated too.
 	// This is the enum we should be using.
-	// See https://github.com/xamarin/xamarin-macios/issues/6573
+	// See https://github.com/dotnet/macios/issues/6573
 	/// <summary>An enumeration of valid writing directions.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
@@ -1523,7 +1523,7 @@ namespace Foundation {
 		RightToLeft = 1,
 	}
 
-	/// <summary>An enumeration whose values specify the units to be displayed by a <see cref="T:Foundation.NSByteCountFormatter" />.</summary>
+	/// <summary>An enumeration whose values specify the units to be displayed by a <see cref="Foundation.NSByteCountFormatter" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Flags]
 	[Native]
@@ -1606,7 +1606,7 @@ namespace Foundation {
 		WithoutImplicitStartAccessing = 1 << 15,
 	}
 
-	/// <summary>An enumeration that defines the valid ligature types of an <see cref="T:Foundation.NSAttributedString" />.</summary>
+	/// <summary>An enumeration that defines the valid ligature types of an <see cref="Foundation.NSAttributedString" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
 	public enum NSLigatureType : long {
@@ -1618,7 +1618,7 @@ namespace Foundation {
 		All,
 	}
 
-	/// <summary>A flagging enumeration whose values specify options in calls to <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=NSFoundation%20NSCalendar%20Components&amp;scope=Xamarin" title="M:NSFoundation.NSCalendar.Components*">M:NSFoundation.NSCalendar.Components*</a></format> and <see cref="M:Foundation.NSCalendar.DateByAddingComponents(Foundation.NSDateComponents,Foundation.NSDate,Foundation.NSDateComponentsWrappingBehavior)" />.</summary>
+	/// <summary>A flagging enumeration whose values specify options in calls to <see cref="NSFoundation.NSCalendar.Components" /> and <see cref="Foundation.NSCalendar.DateByAddingComponents(Foundation.NSDateComponents,Foundation.NSDate,Foundation.NSDateComponentsWrappingBehavior)" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Flags]
 	[Native]
@@ -1653,7 +1653,7 @@ namespace Foundation {
 		MatchLast = 1 << 13,
 	}
 
-	/// <summary>Network service types for <see cref="T:Foundation.NSUrlRequest" />.</summary>
+	/// <summary>Network service types for <see cref="Foundation.NSUrlRequest" />.</summary>
 	/// <remarks>
 	///     </remarks>
 	[Native]
@@ -1686,7 +1686,7 @@ namespace Foundation {
 		CallSignaling = 11,
 	}
 
-	/// <summary>A flagging enumeration that specifies sorting options in calls to <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=NSFoundation%20NSMutable%20Ordered%20Set%20Sort&amp;scope=Xamarin" title="M:NSFoundation.NSMutableOrderedSet.Sort*">M:NSFoundation.NSMutableOrderedSet.Sort*</a></format>.</summary>
+	/// <summary>A flagging enumeration that specifies sorting options in calls to <see cref="NSFoundation.NSMutableOrderedSet.Sort" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Flags]
 	[Native]
@@ -1697,7 +1697,7 @@ namespace Foundation {
 		Stable = 1 << 4,
 	}
 
-	/// <summary>A flagging enumeration that can be used with the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=C:Foundation.NSData(Foundation.NSData,Foundation.NSDataBase64DecodingOptions&amp;scope=Xamarin" title="C:Foundation.NSData(Foundation.NSData,Foundation.NSDataBase64DecodingOptions">C:Foundation.NSData(Foundation.NSData,Foundation.NSDataBase64DecodingOptions</a></format> constructor.</summary>
+	/// <summary>A flagging enumeration that can be used with the <see cref="Foundation.NSData(Foundation.NSData,Foundation.NSDataBase64DecodingOptions)" /> constructor.</summary>
 	/// <remarks>To be added.</remarks>
 	[Flags]
 	[Native]
@@ -1708,7 +1708,7 @@ namespace Foundation {
 		IgnoreUnknownCharacters = 1,
 	}
 
-	/// <summary>A flagging enumeration that can be used to specify options for <see cref="M:Foundation.NSData.GetBase64EncodedData(Foundation.NSDataBase64EncodingOptions)" /> and <see cref="M:Foundation.NSData.GetBase64EncodedString(Foundation.NSDataBase64EncodingOptions)" />.</summary>
+	/// <summary>A flagging enumeration that can be used to specify options for <see cref="Foundation.NSData.GetBase64EncodedData(Foundation.NSDataBase64EncodingOptions)" /> and <see cref="Foundation.NSData.GetBase64EncodedString(Foundation.NSDataBase64EncodingOptions)" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Flags]
 	[Native]
@@ -1727,7 +1727,7 @@ namespace Foundation {
 
 	/// <summary>An enumeration whose values specify the state of an authorization challenge.</summary>
 	/// <remarks>
-	///       <para>Instances of this type are passed as an argument to the completion handler callback in <see cref="M:Foundation.NSUrlSessionDelegate.DidReceiveChallenge(Foundation.NSUrlSession,Foundation.NSUrlAuthenticationChallenge,System.Action{Foundation.NSUrlSessionAuthChallengeDisposition,Foundation.NSUrlCredential})" /> and its overrides.</para>
+	///       <para>Instances of this type are passed as an argument to the completion handler callback in <see cref="Foundation.NSUrlSessionDelegate.DidReceiveChallenge(Foundation.NSUrlSession,Foundation.NSUrlAuthenticationChallenge,System.Action{Foundation.NSUrlSessionAuthChallengeDisposition,Foundation.NSUrlCredential})" /> and its overrides.</para>
 	///     </remarks>
 	[Native]
 	public enum NSUrlSessionAuthChallengeDisposition : long {
@@ -1741,7 +1741,7 @@ namespace Foundation {
 		RejectProtectionSpace = 3,
 	}
 
-	/// <summary>An enumeration whose values specify the state of a <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Foundation%20NSSession%20Task&amp;scope=Xamarin" title="T:Foundation.NSSessionTask">T:Foundation.NSSessionTask</a></format>.</summary>
+	/// <summary>An enumeration whose values specify the state of a <see cref="Foundation.NSSessionTask" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
 	public enum NSUrlSessionTaskState : long {
@@ -1756,7 +1756,7 @@ namespace Foundation {
 	}
 
 	/// <summary>An enumeration whose values specify the state of a response.</summary>
-	/// <remarks>An instance of this class is passed as an argument to the completion handler of the <see cref="M:Foundation.NSUrlSessionDataDelegate.DidReceiveResponse(Foundation.NSUrlSession,Foundation.NSUrlSessionDataTask,Foundation.NSUrlResponse,System.Action{Foundation.NSUrlSessionResponseDisposition})" /> method.</remarks>
+	/// <remarks>An instance of this class is passed as an argument to the completion handler of the <see cref="Foundation.NSUrlSessionDataDelegate.DidReceiveResponse(Foundation.NSUrlSession,Foundation.NSUrlSessionDataTask,Foundation.NSUrlResponse,System.Action{Foundation.NSUrlSessionResponseDisposition})" /> method.</remarks>
 	[Native]
 	public enum NSUrlSessionResponseDisposition : long {
 		/// <summary>To be added.</summary>
@@ -1781,7 +1781,7 @@ namespace Foundation {
 		InsufficientSystemResources,
 	}
 
-	/// <summary>A flagging enumeration whose values can be used with <see cref="M:Foundation.NSProcessInfo.BeginActivity(Foundation.NSActivityOptions,System.String)" />.</summary>
+	/// <summary>A flagging enumeration whose values can be used with <see cref="Foundation.NSProcessInfo.BeginActivity(Foundation.NSActivityOptions,System.String)" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Flags]
 	public enum NSActivityOptions : ulong {
@@ -1823,7 +1823,7 @@ namespace Foundation {
 		ShortGeneric,
 	}
 
-	/// <summary>Enumerates errors relating to <see cref="T:Foundation.NSItemProvider" /> methods.</summary>
+	/// <summary>Enumerates errors relating to <see cref="Foundation.NSItemProvider" /> methods.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -1840,7 +1840,7 @@ namespace Foundation {
 		UnavailableCoercion = -1200,
 	}
 
-	/// <summary>Enumerates <see cref="T:Foundation.NSDateComponentsFormatter" /> output styles.</summary>
+	/// <summary>Enumerates <see cref="Foundation.NSDateComponentsFormatter" /> output styles.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
@@ -1860,7 +1860,7 @@ namespace Foundation {
 		Brief,
 	}
 
-	/// <summary>Enumerates how zero values should be dealt with by a <see cref="T:Foundation.NSDateComponentsFormatter" />.</summary>
+	/// <summary>Enumerates how zero values should be dealt with by a <see cref="Foundation.NSDateComponentsFormatter" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Flags]
 	[Native]
@@ -1882,7 +1882,7 @@ namespace Foundation {
 		Pad = (1 << 16),
 	}
 
-	/// <summary>Enumerates the position of the data being formatted. Used with <see cref="T:Foundation.NSByteCountFormatter" /> and <see cref="T:Foundation.NSDateComponentsFormatter" />.</summary>
+	/// <summary>Enumerates the position of the data being formatted. Used with <see cref="Foundation.NSByteCountFormatter" /> and <see cref="Foundation.NSDateComponentsFormatter" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
@@ -1901,7 +1901,7 @@ namespace Foundation {
 		MiddleOfSentence = 5,
 	}
 
-	/// <summary>Enumerates the output styles of a <see cref="T:Foundation.NSDateIntervalFormatter" />.</summary>
+	/// <summary>Enumerates the output styles of a <see cref="Foundation.NSDateIntervalFormatter" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -1918,7 +1918,7 @@ namespace Foundation {
 		Full = 4,
 	}
 
-	/// <summary>The unit to be used by a <see cref="T:Foundation.NSEnergyFormatter" />.</summary>
+	/// <summary>The unit to be used by a <see cref="Foundation.NSEnergyFormatter" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -1933,7 +1933,7 @@ namespace Foundation {
 		Kilocalorie = (7 << 8) + 2,
 	}
 
-	/// <summary>Enumerates the style (desired length) of an <see cref="T:Foundation.NSLengthFormatter" />, <see cref="T:Foundation.NSEnergyFormatter" />, or <see cref="T:Foundation.NSMassFormatter" />.</summary>
+	/// <summary>Enumerates the style (desired length) of an <see cref="Foundation.NSLengthFormatter" />, <see cref="Foundation.NSEnergyFormatter" />, or <see cref="Foundation.NSMassFormatter" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -1963,7 +1963,7 @@ namespace Foundation {
 		Stone = (6 << 8) + 3,
 	}
 
-	/// <summary>Enumerates units of length (foot, meter, etc.) for use with <see cref="T:Foundation.NSLengthFormatter" />.</summary>
+	/// <summary>Enumerates units of length (foot, meter, etc.) for use with <see cref="Foundation.NSLengthFormatter" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -1986,7 +1986,7 @@ namespace Foundation {
 		Mile = (5 << 8) + 4,
 	}
 
-	/// <summary>Enumerates QoS values for use with <see cref="T:Foundation.NSOperation" /> objects and <see cref="T:Foundation.NSOperationQueue" /> objects.</summary>
+	/// <summary>Enumerates QoS values for use with <see cref="Foundation.NSOperation" /> objects and <see cref="Foundation.NSOperationQueue" /> objects.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -2073,7 +2073,7 @@ namespace Foundation {
 		AllTypes = 0xffffffffffffffff,
 	}
 
-	/// <summary>Defines options for use with <see cref="T:Foundation.NSRegularExpression" /> objects.</summary>
+	/// <summary>Defines options for use with <see cref="Foundation.NSRegularExpression" /> objects.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
 	[Flags]
@@ -2093,7 +2093,7 @@ namespace Foundation {
 		UseUnicodeWordBoundaries = 1 << 6,
 	}
 
-	/// <summary>Enumerates options for use with <see cref="T:Foundation.NSRegularExpression" /> regular expression objects.</summary>
+	/// <summary>Enumerates options for use with <see cref="Foundation.NSRegularExpression" /> regular expression objects.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
 	[Flags]
@@ -2110,7 +2110,7 @@ namespace Foundation {
 		WithoutAnchoringBounds = 1 << 4,
 	}
 
-	/// <summary>Enumerates flags for use with the <see cref="T:Foundation.NSMatchEnumerator" /> delegate.</summary>
+	/// <summary>Enumerates flags for use with the <see cref="Foundation.NSMatchEnumerator" /> delegate.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
 	[Flags]
@@ -2154,7 +2154,7 @@ namespace Foundation {
 		Abbreviated,
 	}
 
-	/// <summary>Enumerates the manner in which a <see cref="T:Foundation.NSCoder" /> fails. (See <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Foundation%20NSCoder%20Failure%20Policy&amp;scope=Xamarin" title="P:Foundation.NSCoder.FailurePolicy">P:Foundation.NSCoder.FailurePolicy</a></format>)</summary>
+	/// <summary>Enumerates the manner in which a <see cref="Foundation.NSCoder" /> fails. (See <see cref="Foundation.NSCoder.FailurePolicy" />)</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -2165,9 +2165,9 @@ namespace Foundation {
 		SetErrorAndReturn,
 	}
 
-	/// <summary>A flagging enumeration of formatting options for use with <see cref="T:Foundation.NSIso8601DateFormatter" />.</summary>
+	/// <summary>A flagging enumeration of formatting options for use with <see cref="Foundation.NSIso8601DateFormatter" />.</summary>
 	/// <remarks>
-	///       <para>It is often easier to code a format by removing flags from <see cref="F:Foundation.NSIso8601DateFormatOptions.InternetDateTime" /> such as:</para>
+	///       <para>It is often easier to code a format by removing flags from <see cref="Foundation.NSIso8601DateFormatOptions.InternetDateTime" /> such as:</para>
 	///       <example>
 	///         <code lang="csharp lang-csharp"><![CDATA[
 	/// fmt.FormatOptions = fmt.FormatOptions & ~NSIso8601DateFormatOptions.Day
@@ -2266,7 +2266,7 @@ namespace Foundation {
 		OpenInPlace = 1,
 	}
 
-	/// <summary>Enumerate the linguistic units recognized by the <see cref="T:Foundation.NSLinguisticTagger" /> class.</summary>
+	/// <summary>Enumerate the linguistic units recognized by the <see cref="Foundation.NSLinguisticTagger" /> class.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]

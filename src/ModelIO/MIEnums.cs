@@ -189,11 +189,11 @@ namespace ModelIO {
 		TriangleStrips,
 		/// <summary>Indicates that each 4-index stride in the buffer specifies a quadrilateral.</summary>
 		Quads,
-		/// <summary>Indicates that the geometry is not uniform, and is described by its <see cref="P:ModelIO.MDLSubmesh.Topology" /> property.</summary>
+		/// <summary>Indicates that the geometry is not uniform, and is described by its <see cref="ModelIO.MDLSubmesh.Topology" /> property.</summary>
 		VariableTopology,
 	}
 
-	/// <summary>Enumerates bit depths for <see cref="T:ModelIO.MDLSubmesh" /> index buffers.</summary>
+	/// <summary>Enumerates bit depths for <see cref="ModelIO.MDLSubmesh" /> index buffers.</summary>
 	[Native]
 	public enum MDLIndexBitDepth : ulong {
 		/// <summary>The index buffer has not been initialized.</summary>
@@ -206,7 +206,7 @@ namespace ModelIO {
 		UInt32 = 32,
 	}
 
-	/// <summary>Enumerates the semantics of an <see cref="T:ModelIO.MDLMaterialProperty" />.</summary>
+	/// <summary>Enumerates the semantics of an <see cref="ModelIO.MDLMaterialProperty" />.</summary>
 	[Native]
 	public enum MDLMaterialSemantic : ulong {
 		/// <summary>The property represents the base color of a surface.</summary>
@@ -338,7 +338,7 @@ namespace ModelIO {
 		Float32 = 260,
 	}
 
-	/// <summary>Enumerates the types of <see cref="T:ModelIO.MDLLight" />.</summary>
+	/// <summary>Enumerates the types of <see cref="ModelIO.MDLLight" />.</summary>
 	[Native]
 	public enum MDLLightType : ulong {
 		/// <summary>An unknown light type, or an uninitialized light.</summary>
@@ -359,7 +359,7 @@ namespace ModelIO {
 		RectangularArea,
 		/// <summary>A super-ellipse-shaped light that shines in all directions</summary>
 		SuperElliptical,
-		/// <summary>A light that is an instance of <see cref="T:ModelIO.MDLPhotometricLight" />.</summary>
+		/// <summary>A light that is an instance of <see cref="ModelIO.MDLPhotometricLight" />.</summary>
 		Photometric,
 		/// <summary>A light that is shone through a cube map.</summary>
 		Probe,

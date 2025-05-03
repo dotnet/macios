@@ -13,9 +13,9 @@
       </para>
       <para>
 	This is typically used by developers when implementing their
-	own <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:UIKIt.UIViewController&amp;scope=Xamarin" title="T:UIKIt.UIViewController">T:UIKIt.UIViewController</a></format> as well
+	own <see cref="UIKit.UIViewController" /> as well
 	by a handful of classes that are UITraitCollection aware, like
-	<format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:UIKIt.UIImage&amp;scope=Xamarin" title="T:UIKIt.UIImage">T:UIKIt.UIImage</a></format> and <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:UIKIt.UIImageAsset&amp;scope=Xamarin" title="T:UIKIt.UIImageAsset">T:UIKIt.UIImageAsset</a></format>.
+	<see cref="UIKit.UIImage" /> and <see cref="UIKit.UIImageAsset" />.
 
       </para>
     </remarks>

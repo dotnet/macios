@@ -15,7 +15,7 @@ using ObjCRuntime;
 #nullable enable
 
 namespace MediaPlayer {
-	/// <summary>Information relating to the <see cref="T:MediaPlayer.MPNowPlayingInfoCenter" />.</summary>
+	/// <summary>Information relating to the <see cref="MediaPlayer.MPNowPlayingInfoCenter" />.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]

@@ -66,14 +66,14 @@ namespace Accounts {
 		string OAuthToken { get; set; }
 	}
 
-	/// <summary>A delegate that specifies the completion handler in calls to the <see cref="M:Accounts.ACAccountStore.SaveAccount(Accounts.ACAccount,Accounts.ACAccountStoreSaveCompletionHandler)" /> method.</summary>
+	/// <summary>A delegate that specifies the completion handler in calls to the <see cref="Accounts.ACAccountStore.SaveAccount(Accounts.ACAccount,Accounts.ACAccountStoreSaveCompletionHandler)" /> method.</summary>
 	delegate void ACAccountStoreSaveCompletionHandler (bool success, NSError error);
 	/// <param name="success">
 	///       <see langword="true" /> if the account was removed. Otherwise, <see langword="false" />.</param>
 	///     <param name="error">The error that was encountered, or <see langword="null" /> if no error was encountered.</param>
 	///     <summary>A handler to be run when an attempt is made to remove an account from the store.</summary>
 	delegate void ACAccountStoreRemoveCompletionHandler (bool success, NSError error);
-	/// <summary>A delegate that specifies the handler executed at the completion of calls to <see cref="M:Accounts.ACAccountStore.RequestAccessAsync(Accounts.ACAccountType,Foundation.NSDictionary)" />s.</summary>
+	/// <summary>A delegate that specifies the handler executed at the completion of calls to <see cref="Accounts.ACAccountStore.RequestAccessAsync(Accounts.ACAccountType,Foundation.NSDictionary)" />s.</summary>
 	delegate void ACRequestCompletionHandler (bool granted, NSError error);
 
 	/// <include file="../docs/api/Accounts/ACAccountStore.xml" path="/Documentation/Docs[@DocId='T:Accounts.ACAccountStore']/*" />
@@ -97,7 +97,7 @@ namespace Accounts {
 		[Export ("saveAccount:withCompletionHandler:")]
 		[Async (XmlDocs = """
 			<param name="account">The account to be saved.</param>
-			<summary>Attempts to save an <see cref="T:Accounts.ACAccount" /> to the Accounts database.</summary>
+			<summary>Attempts to save an <see cref="Accounts.ACAccount" /> to the Accounts database.</summary>
 			<returns>
 			          <para>A task that represents the asynchronous SaveAccount operation.   The value of the TResult parameter is a Accounts.ACAccountStoreSaveCompletionHandler.</para>
 			        </returns>
@@ -157,7 +157,7 @@ namespace Accounts {
 		///         <param name="completion">The handler to be called when the method completes.</param>
 		///         <summary>Requests access to a type of social account.</summary>
 		///         <remarks>
-		///           <para>Application developers can retrieve the <paramref name="accountType" /> object with the <see cref="M:Accounts.ACAccountStore.FindAccountType(System.String)" /> method.
+		///           <para>Application developers can retrieve the <paramref name="accountType" /> object with the <see cref="Accounts.ACAccountStore.FindAccountType(System.String)" /> method.
 		///           </para>
 		///           <example>
 		///             <code lang="csharp lang-csharp"><![CDATA[
@@ -167,7 +167,7 @@ namespace Accounts {
 		/// ]]></code>
 		///           </example>
 		///         </remarks>
-		///         <altmember cref="T:Accounts.AccountStoreOptions" />
+		///         <altmember cref="Accounts.AccountStoreOptions" />
 		[Wrap ("RequestAccess (accountType, options.GetDictionary (), completion)")]
 		[Async (XmlDocs = """
 			<param name="accountType">To be added.</param>
@@ -193,9 +193,9 @@ namespace Accounts {
 		void RemoveAccount (ACAccount account, ACAccountStoreRemoveCompletionHandler completionHandler);
 	}
 
-	/// <summary>A class that contains information about <see cref="T:Accounts.ACAccount" />s of a particular type.</summary>
+	/// <summary>A class that contains information about <see cref="Accounts.ACAccount" />s of a particular type.</summary>
 	///     <remarks>
-	///       <para>Application developers do not instantiate <see cref="T:Accounts.ACAccountType" /> directly. Rather, they can retrieve an appropriate object with the <see cref="M:Accounts.ACAccountStore.FindAccountType(System.String)" /> method.
+	///       <para>Application developers do not instantiate <see cref="Accounts.ACAccountType" /> directly. Rather, they can retrieve an appropriate object with the <see cref="Accounts.ACAccountStore.FindAccountType(System.String)" /> method.
 	/// 	</para>
 	///       <example>
 	///         <code lang="csharp lang-csharp"><![CDATA[
@@ -270,7 +270,7 @@ namespace Accounts {
 		NSString LinkedIn { get; }
 	}
 
-	/// <summary>A class that encapsulates keys necessary for Facebook requests. Used with <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:Accounts.ACAccountStore.RequestAccess (Accounts.ACAccountType,Accounts.AccountStoreOptions,Accounts.ACRequestCompletionHandler)&amp;scope=Xamarin" title="M:Accounts.ACAccountStore.RequestAccess (Accounts.ACAccountType,Accounts.AccountStoreOptions,Accounts.ACRequestCompletionHandler)">M:Accounts.ACAccountStore.RequestAccess (Accounts.ACAccountType,Accounts.AccountStoreOptions,Accounts.ACRequestCompletionHandler)</a></format>.</summary>
+	/// <summary>A class that encapsulates keys necessary for Facebook requests. Used with <see cref="Accounts.ACAccountStore.RequestAccess (Accounts.ACAccountType,Accounts.AccountStoreOptions,Accounts.ACRequestCompletionHandler)" />.</summary>
 	[Deprecated (PlatformName.iOS, 11, 0, message: "Use Facebook SDK instead.")]
 	[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use Facebook SDK instead.")]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use Facebook SDK instead.")]
@@ -327,7 +327,7 @@ namespace Accounts {
 		NSString OnlyMe { get; }
 	}
 
-	/// <summary>Key to use when accessing Tencent Weibo accounts. Used with <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:Accounts.ACAccountStore.RequestAccess (Accounts.ACAccountType,Accounts.AccountStoreOptions,Accounts.ACRequestCompletionHandler)&amp;scope=Xamarin" title="M:Accounts.ACAccountStore.RequestAccess (Accounts.ACAccountType,Accounts.AccountStoreOptions,Accounts.ACRequestCompletionHandler)">M:Accounts.ACAccountStore.RequestAccess (Accounts.ACAccountType,Accounts.AccountStoreOptions,Accounts.ACRequestCompletionHandler)</a></format>.</summary>
+	/// <summary>Key to use when accessing Tencent Weibo accounts. Used with <see cref="Accounts.ACAccountStore.RequestAccess (Accounts.ACAccountType,Accounts.AccountStoreOptions,Accounts.ACRequestCompletionHandler)" />.</summary>
 	[Deprecated (PlatformName.iOS, 11, 0, message: "Use Tencent Weibo SDK instead.")]
 	[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use Tencent Weibo SDK instead.")]
 	[MacCatalyst (13, 1)]

@@ -3,30 +3,30 @@
     <summary>Encapsulates the main processing loop for a MonoTouch application.</summary>
     <remarks>
       <para> 
-	The <see cref="T:UIKit.UIApplication" />
+	The <see cref="UIKit.UIApplication" />
 	encapsulates the central administrative properties of an
 	application running on iOS. Application developers must not
-	instantiate new <see cref="T:UIKit.UIApplication" />s using constructors, but instead must use the static <see cref="P:UIKit.UIApplication.SharedApplication" />
-        singleton property. Application developers may subclass <see cref="T:UIKit.UIApplication" /> and use the <c>principalClassName</c> argument to the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:UIKit.UIApplication.Main(string[],string,string)&amp;scope=Xamarin" title="M:UIKit.UIApplication.Main(string[],string,string)">M:UIKit.UIApplication.Main(string[],string,string)</a></format> method to specify their subclass. In that situation, developers must create a public constructor for their subclass that the runtime will call appropriately. Subsequently, the <see cref="P:UIKit.UIApplication.SharedApplication" /> singleton will refer to the instance of their subclass.</para>
+	instantiate new <see cref="UIKit.UIApplication" />s using constructors, but instead must use the static <see cref="UIKit.UIApplication.SharedApplication" />
+        singleton property. Application developers may subclass <see cref="UIKit.UIApplication" /> and use the <c>principalClassName</c> argument to the <see cref="UIKit.UIApplication.Main(string[],string,string)" /> method to specify their subclass. In that situation, developers must create a public constructor for their subclass that the runtime will call appropriately. Subsequently, the <see cref="UIKit.UIApplication.SharedApplication" /> singleton will refer to the instance of their subclass.</para>
       <para> 
-	Unlike with most classes in the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit&amp;scope=Xamarin" title="N:UIKit">N:UIKit</a></format> namespace, events relating to the
-        <see cref="T:UIKit.UIApplication" /> cannot be
+	Unlike with most classes in the <see cref="UIKit" /> namespace, events relating to the
+        <see cref="UIKit.UIApplication" /> cannot be
         handled using C#-style events but rather only by the
-        Objective-C style <see cref="T:UIKit.UIApplicationDelegate" /> delegate
+        Objective-C style <see cref="UIKit.UIApplicationDelegate" /> delegate
         style.  </para>
       <para> 
-	The <see cref="T:UIKit.UIApplication" /> object
+	The <see cref="UIKit.UIApplication" /> object
         is responsible for maintaining the highest-level context of
-        the application, such as the <see cref="P:UIKit.UIApplication.ApplicationState" />,
-        the set of open windows (<see cref="P:UIKit.UIApplication.Windows" />), and
-        functions relating to notifications (see also <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:UIKit.UIAppearance+Notifications.xml&amp;scope=Xamarin" title="T:UIKit.UIAppearance+Notifications.xml">T:UIKit.UIAppearance+Notifications.xml</a></format>). Additionally, the <see cref="M:UIKit.UIApplication.#ctor" /> method may
+        the application, such as the <see cref="UIKit.UIApplication.ApplicationState" />,
+        the set of open windows (<see cref="UIKit.UIApplication.Windows" />), and
+        functions relating to notifications (see also <see cref="UIKit.UIAppearance.Notifications.xml" />). Additionally, the <see cref="UIKit.UIApplication.UIApplication" /> method may
         be used to launch another application.  </para>
       <para> 
-	The <see cref="T:UIKit.UIApplication" /> class
+	The <see cref="UIKit.UIApplication" /> class
         contains methods relating to background processing, such as
-        <see cref="M:UIKit.UIApplication.EnsureUIThread" />,
-        <see cref="M:UIKit.UIApplication.BeginBackgroundTask(System.String,System.Action)" />,
-        and <see cref="M:UIKit.UIApplication.EndBackgroundTask(System.nint)" />.
+        <see cref="UIKit.UIApplication.EnsureUIThread" />,
+        <see cref="UIKit.UIApplication.BeginBackgroundTask(System.String,System.Action)" />,
+        and <see cref="UIKit.UIApplication.EndBackgroundTask(System.IntPtr)" />.
         </para>
       <format type="text/html">
         <h2>Background Fetch</h2>
@@ -43,13 +43,13 @@
       <para>
 	To use this, applications need to have the "fetch" background
 	operation requested on their requested Entitlements as well as
-	calling the <see cref="M:UIKit.UIApplication.SetMinimumBackgroundFetchInterval(System.Double)" />
+	calling the <see cref="UIKit.UIApplication.SetMinimumBackgroundFetchInterval(System.Double)" />
 	method with the desired wake up interval at launch.   
 
       </para>
       <para>
 	When the operating system determines that the application
-	should be resumed to download data, the <see cref="M:UIKit.UIApplicationDelegate.PerformFetch(UIKit.UIApplication,System.Action{UIKit.UIBackgroundFetchResult})" />
+	should be resumed to download data, the <see cref="UIKit.UIApplicationDelegate.PerformFetch(UIKit.UIApplication,System.Action{UIKit.UIBackgroundFetchResult})" />
 	method will be invoked.  This method should perform any
 	downloads and then notify the operating system of the result
 	of the operation.
@@ -71,7 +71,7 @@
 	Starting with iOS 7, applications can request that they be
 	woken up when a remote notification is received.  When this
 	feature is enabled, the operating system will resume the
-	application and invoke the <see cref="M:UIKit.UIApplicationDelegate_Extensions.DidReceiveRemoteNotification(UIKit.IUIApplicationDelegate,UIKit.UIApplication,Foundation.NSDictionary,System.Action{UIKit.UIBackgroundFetchResult})" />
+	application and invoke the <see cref="UIKit.UIApplicationDelegate_Extensions.DidReceiveRemoteNotification(UIKit.IUIApplicationDelegate,UIKit.UIApplication,Foundation.NSDictionary,System.Action{UIKit.UIBackgroundFetchResult})" />
 	overload that takes a completion handler parameter and let it
 	run.
 
@@ -88,8 +88,8 @@
     <summary>Notification constant for UserDidTakeScreenshot</summary>
     <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
     <remarks>
-      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIKit.UIApplication.Notifications" />.<format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:UIKit.UIKit.UIApplication.Notifications.ObserveUserDidTakeScreenshot*&amp;scope=Xamarin" title="M:UIKit.UIKit.UIApplication.Notifications.ObserveUserDidTakeScreenshot*">M:UIKit.UIKit.UIApplication.Notifications.ObserveUserDidTakeScreenshot*</a></format> method which offers strongly typed access to the parameters of the notification.</para>
+      <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="UIKit.UIApplication.Notifications" />.<see cref="UIKit.UIKit.UIApplication.Notifications.ObserveUserDidTakeScreenshot" /> method which offers strongly typed access to the parameters of the notification.</para>
       <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
@@ -152,8 +152,8 @@ void Setup ()
     <summary>Notification constant for BackgroundRefreshStatusDidChange</summary>
     <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
     <remarks>
-      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIKit.UIApplication.Notifications" />.<format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:UIKit.UIKit.UIApplication.Notifications.ObserveBackgroundRefreshStatusDidChange*&amp;scope=Xamarin" title="M:UIKit.UIKit.UIApplication.Notifications.ObserveBackgroundRefreshStatusDidChange*">M:UIKit.UIKit.UIApplication.Notifications.ObserveBackgroundRefreshStatusDidChange*</a></format> method which offers strongly typed access to the parameters of the notification.</para>
+      <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="UIKit.UIApplication.Notifications" />.<see cref="UIKit.UIKit.UIApplication.Notifications.ObserveBackgroundRefreshStatusDidChange" /> method which offers strongly typed access to the parameters of the notification.</para>
       <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
@@ -216,8 +216,8 @@ void Setup ()
     <summary>Notification constant for ContentSizeCategoryChanged</summary>
     <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
     <remarks>
-      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-      <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="T:UIKit.UIApplication.Notifications" />.<see cref="M:UIKit.UIApplication.Notifications.ObserveContentSizeCategoryChanged*" /> method which offers strongly typed access to the parameters of the notification.</para>
+      <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="UIKit.UIApplication.Notifications" />.<see cref="UIKit.UIApplication.Notifications.ObserveContentSizeCategoryChanged" /> method which offers strongly typed access to the parameters of the notification.</para>
       <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
@@ -284,8 +284,8 @@ void Setup ()
     <summary>Notification constant for WillEnterForeground</summary>
     <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
     <remarks>
-      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIKit.UIApplication.Notifications" />.<format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:UIKit.UIKit.UIApplication.Notifications.ObserveWillEnterForeground*&amp;scope=Xamarin" title="M:UIKit.UIKit.UIApplication.Notifications.ObserveWillEnterForeground*">M:UIKit.UIKit.UIApplication.Notifications.ObserveWillEnterForeground*</a></format> method which offers strongly typed access to the parameters of the notification.</para>
+      <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="UIKit.UIApplication.Notifications" />.<see cref="UIKit.UIKit.UIApplication.Notifications.ObserveWillEnterForeground" /> method which offers strongly typed access to the parameters of the notification.</para>
       <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
@@ -348,8 +348,8 @@ void Setup ()
     <summary>Notification constant for DidEnterBackground</summary>
     <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
     <remarks>
-      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIKit.UIApplication.Notifications" />.<format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:UIKit.UIKit.UIApplication.Notifications.ObserveDidEnterBackground*&amp;scope=Xamarin" title="M:UIKit.UIKit.UIApplication.Notifications.ObserveDidEnterBackground*">M:UIKit.UIKit.UIApplication.Notifications.ObserveDidEnterBackground*</a></format> method which offers strongly typed access to the parameters of the notification.</para>
+      <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="UIKit.UIApplication.Notifications" />.<see cref="UIKit.UIKit.UIApplication.Notifications.ObserveDidEnterBackground" /> method which offers strongly typed access to the parameters of the notification.</para>
       <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
@@ -412,8 +412,8 @@ void Setup ()
     <summary>Indicates that the state of protected data has changed.</summary>
     <value>To be added.</value>
     <remarks>
-      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIKit.UIApplication.Notifications" />.<format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:UIKit.UIKit.UIApplication.Notifications.ObserveProtectedDataDidBecomeAvailable*&amp;scope=Xamarin" title="M:UIKit.UIKit.UIApplication.Notifications.ObserveProtectedDataDidBecomeAvailable*">M:UIKit.UIKit.UIApplication.Notifications.ObserveProtectedDataDidBecomeAvailable*</a></format> method which offers strongly typed access to the parameters of the notification.</para>
+      <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="UIKit.UIApplication.Notifications" />.<see cref="UIKit.UIKit.UIApplication.Notifications.ObserveProtectedDataDidBecomeAvailable" /> method which offers strongly typed access to the parameters of the notification.</para>
       <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
@@ -471,14 +471,14 @@ void Setup ()
 ]]></code>
       </example>
     </remarks>
-    <altmember cref="P:UIKit.UIApplication.ProtectedDataAvailable" />
+    <altmember cref="UIKit.UIApplication.ProtectedDataAvailable" />
   </Docs>
   <Docs DocId="P:UIKit.UIApplication.ProtectedDataWillBecomeUnavailable">
     <summary>Indicates that the state of protected data has changed.</summary>
     <value>To be added.</value>
     <remarks>
-      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIKit.UIApplication.Notifications" />.<format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:UIKit.UIKit.UIApplication.Notifications.ObserveProtectedDataWillBecomeUnavailable*&amp;scope=Xamarin" title="M:UIKit.UIKit.UIApplication.Notifications.ObserveProtectedDataWillBecomeUnavailable*">M:UIKit.UIKit.UIApplication.Notifications.ObserveProtectedDataWillBecomeUnavailable*</a></format> method which offers strongly typed access to the parameters of the notification.</para>
+      <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="UIKit.UIApplication.Notifications" />.<see cref="UIKit.UIKit.UIApplication.Notifications.ObserveProtectedDataWillBecomeUnavailable" /> method which offers strongly typed access to the parameters of the notification.</para>
       <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
@@ -536,14 +536,14 @@ void Setup ()
 ]]></code>
       </example>
     </remarks>
-    <altmember cref="P:UIKit.UIApplication.ProtectedDataAvailable" />
+    <altmember cref="UIKit.UIApplication.ProtectedDataAvailable" />
   </Docs>
   <Docs DocId="P:UIKit.UIApplication.SignificantTimeChangeNotification">
     <summary>Notification constant for SignificantTimeChange</summary>
     <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
     <remarks>
-      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIKit.UIApplication.Notifications" />.<format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:UIKit.UIKit.UIApplication.Notifications.ObserveSignificantTimeChange*&amp;scope=Xamarin" title="M:UIKit.UIKit.UIApplication.Notifications.ObserveSignificantTimeChange*">M:UIKit.UIKit.UIApplication.Notifications.ObserveSignificantTimeChange*</a></format> method which offers strongly typed access to the parameters of the notification.</para>
+      <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="UIKit.UIApplication.Notifications" />.<see cref="UIKit.UIKit.UIApplication.Notifications.ObserveSignificantTimeChange" /> method which offers strongly typed access to the parameters of the notification.</para>
       <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
@@ -606,8 +606,8 @@ void Setup ()
     <summary>Notification constant for WillTerminate</summary>
     <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
     <remarks>
-      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIKit.UIApplication.Notifications" />.<format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:UIKit.UIKit.UIApplication.Notifications.ObserveWillTerminate*&amp;scope=Xamarin" title="M:UIKit.UIKit.UIApplication.Notifications.ObserveWillTerminate*">M:UIKit.UIKit.UIApplication.Notifications.ObserveWillTerminate*</a></format> method which offers strongly typed access to the parameters of the notification.</para>
+      <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="UIKit.UIApplication.Notifications" />.<see cref="UIKit.UIKit.UIApplication.Notifications.ObserveWillTerminate" /> method which offers strongly typed access to the parameters of the notification.</para>
       <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
@@ -670,8 +670,8 @@ void Setup ()
     <summary>Notification constant for DidReceiveMemoryWarning</summary>
     <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
     <remarks>
-      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIKit.UIApplication.Notifications" />.<format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:UIKit.UIKit.UIApplication.Notifications.ObserveDidReceiveMemoryWarning*&amp;scope=Xamarin" title="M:UIKit.UIKit.UIApplication.Notifications.ObserveDidReceiveMemoryWarning*">M:UIKit.UIKit.UIApplication.Notifications.ObserveDidReceiveMemoryWarning*</a></format> method which offers strongly typed access to the parameters of the notification.</para>
+      <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="UIKit.UIApplication.Notifications" />.<see cref="UIKit.UIKit.UIApplication.Notifications.ObserveDidReceiveMemoryWarning" /> method which offers strongly typed access to the parameters of the notification.</para>
       <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
@@ -734,8 +734,8 @@ void Setup ()
     <summary>Notification constant for WillResignActive</summary>
     <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
     <remarks>
-      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIKit.UIApplication.Notifications" />.<format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:UIKit.UIKit.UIApplication.Notifications.ObserveWillResignActive*&amp;scope=Xamarin" title="M:UIKit.UIKit.UIApplication.Notifications.ObserveWillResignActive*">M:UIKit.UIKit.UIApplication.Notifications.ObserveWillResignActive*</a></format> method which offers strongly typed access to the parameters of the notification.</para>
+      <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="UIKit.UIApplication.Notifications" />.<see cref="UIKit.UIKit.UIApplication.Notifications.ObserveWillResignActive" /> method which offers strongly typed access to the parameters of the notification.</para>
       <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
@@ -798,8 +798,8 @@ void Setup ()
     <summary>Notification constant for DidBecomeActive</summary>
     <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
     <remarks>
-      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIKit.UIApplication.Notifications" />.<format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:UIKit.UIKit.UIApplication.Notifications.ObserveDidBecomeActive*&amp;scope=Xamarin" title="M:UIKit.UIKit.UIApplication.Notifications.ObserveDidBecomeActive*">M:UIKit.UIKit.UIApplication.Notifications.ObserveDidBecomeActive*</a></format> method which offers strongly typed access to the parameters of the notification.</para>
+      <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="UIKit.UIApplication.Notifications" />.<see cref="UIKit.UIKit.UIApplication.Notifications.ObserveDidBecomeActive" /> method which offers strongly typed access to the parameters of the notification.</para>
       <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
@@ -862,8 +862,8 @@ void Setup ()
     <summary>Notification constant for DidFinishLaunching</summary>
     <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
     <remarks>
-      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-      <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="T:UIKit.UIApplication.Notifications" />.<see cref="M:UIKit.UIApplication.Notifications.ObserveDidFinishLaunching*" /> method which offers strongly typed access to the parameters of the notification.</para>
+      <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="UIKit.UIApplication.Notifications" />.<see cref="UIKit.UIApplication.Notifications.ObserveDidFinishLaunching" /> method which offers strongly typed access to the parameters of the notification.</para>
       <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
@@ -936,8 +936,8 @@ void Setup ()
     <summary>Notification constant for DidFinishLaunching</summary>
     <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
     <remarks>
-      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-      <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="T:UIKit.UIApplication.Notifications" />.<see cref="M:UIKit.UIApplication.Notifications.ObserveDidFinishLaunching*" /> method which offers strongly typed access to the parameters of the notification.</para>
+      <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="UIKit.UIApplication.Notifications" />.<see cref="UIKit.UIApplication.Notifications.ObserveDidFinishLaunching" /> method which offers strongly typed access to the parameters of the notification.</para>
       <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
@@ -1010,8 +1010,8 @@ void Setup ()
     <summary>Notification constant for DidBecomeActive</summary>
     <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
     <remarks>
-      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIKit.UIApplication.Notifications" />.<format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:UIKit.UIKit.UIApplication.Notifications.ObserveDidBecomeActive*&amp;scope=Xamarin" title="M:UIKit.UIKit.UIApplication.Notifications.ObserveDidBecomeActive*">M:UIKit.UIKit.UIApplication.Notifications.ObserveDidBecomeActive*</a></format> method which offers strongly typed access to the parameters of the notification.</para>
+      <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="UIKit.UIApplication.Notifications" />.<see cref="UIKit.UIKit.UIApplication.Notifications.ObserveDidBecomeActive" /> method which offers strongly typed access to the parameters of the notification.</para>
       <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
@@ -1074,8 +1074,8 @@ void Setup ()
     <summary>Notification constant for WillTerminate</summary>
     <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
     <remarks>
-      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIKit.UIApplication.Notifications" />.<format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:UIKit.UIKit.UIApplication.Notifications.ObserveWillTerminate*&amp;scope=Xamarin" title="M:UIKit.UIKit.UIApplication.Notifications.ObserveWillTerminate*">M:UIKit.UIKit.UIApplication.Notifications.ObserveWillTerminate*</a></format> method which offers strongly typed access to the parameters of the notification.</para>
+      <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="UIKit.UIApplication.Notifications" />.<see cref="UIKit.UIKit.UIApplication.Notifications.ObserveWillTerminate" /> method which offers strongly typed access to the parameters of the notification.</para>
       <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
@@ -1138,8 +1138,8 @@ void Setup ()
     <summary>Notification constant for WillResignActive</summary>
     <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
     <remarks>
-      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIKit.UIApplication.Notifications" />.<format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:UIKit.UIKit.UIApplication.Notifications.ObserveWillResignActive*&amp;scope=Xamarin" title="M:UIKit.UIKit.UIApplication.Notifications.ObserveWillResignActive*">M:UIKit.UIKit.UIApplication.Notifications.ObserveWillResignActive*</a></format> method which offers strongly typed access to the parameters of the notification.</para>
+      <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="UIKit.UIApplication.Notifications" />.<see cref="UIKit.UIKit.UIApplication.Notifications.ObserveWillResignActive" /> method which offers strongly typed access to the parameters of the notification.</para>
       <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
@@ -1202,8 +1202,8 @@ void Setup ()
     <summary>Notification constant for DidChangeStatusBarOrientation</summary>
     <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
     <remarks>
-      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-      <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="T:UIKit.UIApplication.Notifications" />.<see cref="M:UIKit.UIApplication.Notifications.ObserveDidChangeStatusBarOrientation*" /> method which offers strongly typed access to the parameters of the notification.</para>
+      <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="UIKit.UIApplication.Notifications" />.<see cref="UIKit.UIApplication.Notifications.ObserveDidChangeStatusBarOrientation" /> method which offers strongly typed access to the parameters of the notification.</para>
       <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
@@ -1270,8 +1270,8 @@ void Setup ()
     <summary>Notification constant for SignificantTimeChange</summary>
     <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
     <remarks>
-      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIKit.UIApplication.Notifications" />.<format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:UIKit.UIKit.UIApplication.Notifications.ObserveSignificantTimeChange*&amp;scope=Xamarin" title="M:UIKit.UIKit.UIApplication.Notifications.ObserveSignificantTimeChange*">M:UIKit.UIKit.UIApplication.Notifications.ObserveSignificantTimeChange*</a></format> method which offers strongly typed access to the parameters of the notification.</para>
+      <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="UIKit.UIApplication.Notifications" />.<see cref="UIKit.UIKit.UIApplication.Notifications.ObserveSignificantTimeChange" /> method which offers strongly typed access to the parameters of the notification.</para>
       <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
@@ -1334,8 +1334,8 @@ void Setup ()
     <summary>Notification constant for WillChangeStatusBarOrientation</summary>
     <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
     <remarks>
-      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-      <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="T:UIKit.UIApplication.Notifications" />.<see cref="M:UIKit.UIApplication.Notifications.ObserveWillChangeStatusBarOrientation*" /> method which offers strongly typed access to the parameters of the notification.</para>
+      <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="UIKit.UIApplication.Notifications" />.<see cref="UIKit.UIApplication.Notifications.ObserveWillChangeStatusBarOrientation" /> method which offers strongly typed access to the parameters of the notification.</para>
       <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
@@ -1402,8 +1402,8 @@ void Setup ()
     <summary>Notification constant for WillEnterForeground</summary>
     <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
     <remarks>
-      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIKit.UIApplication.Notifications" />.<format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:UIKit.UIKit.UIApplication.Notifications.ObserveWillEnterForeground*&amp;scope=Xamarin" title="M:UIKit.UIKit.UIApplication.Notifications.ObserveWillEnterForeground*">M:UIKit.UIKit.UIApplication.Notifications.ObserveWillEnterForeground*</a></format> method which offers strongly typed access to the parameters of the notification.</para>
+      <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="UIKit.UIApplication.Notifications" />.<see cref="UIKit.UIKit.UIApplication.Notifications.ObserveWillEnterForeground" /> method which offers strongly typed access to the parameters of the notification.</para>
       <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
@@ -1466,8 +1466,8 @@ void Setup ()
     <summary>Notification constant for WillChangeStatusBarFrame</summary>
     <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
     <remarks>
-      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-      <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="T:UIKit.UIApplication.Notifications" />.<see cref="M:UIKit.UIApplication.Notifications.ObserveWillChangeStatusBarFrame*" /> method which offers strongly typed access to the parameters of the notification.</para>
+      <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="UIKit.UIApplication.Notifications" />.<see cref="UIKit.UIApplication.Notifications.ObserveWillChangeStatusBarFrame" /> method which offers strongly typed access to the parameters of the notification.</para>
       <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
@@ -1534,8 +1534,8 @@ void Setup ()
     <summary>Notification constant for DidReceiveMemoryWarning</summary>
     <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
     <remarks>
-      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIKit.UIApplication.Notifications" />.<format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:UIKit.UIKit.UIApplication.Notifications.ObserveDidReceiveMemoryWarning*&amp;scope=Xamarin" title="M:UIKit.UIKit.UIApplication.Notifications.ObserveDidReceiveMemoryWarning*">M:UIKit.UIKit.UIApplication.Notifications.ObserveDidReceiveMemoryWarning*</a></format> method which offers strongly typed access to the parameters of the notification.</para>
+      <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="UIKit.UIApplication.Notifications" />.<see cref="UIKit.UIKit.UIApplication.Notifications.ObserveDidReceiveMemoryWarning" /> method which offers strongly typed access to the parameters of the notification.</para>
       <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
@@ -1598,8 +1598,8 @@ void Setup ()
     <summary>Notification constant for DidChangeStatusBarFrame</summary>
     <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
     <remarks>
-      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-      <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="T:UIKit.UIApplication.Notifications" />.<see cref="M:UIKit.UIApplication.Notifications.ObserveDidChangeStatusBarFrame*" /> method which offers strongly typed access to the parameters of the notification.</para>
+      <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="UIKit.UIApplication.Notifications" />.<see cref="UIKit.UIApplication.Notifications.ObserveDidChangeStatusBarFrame" /> method which offers strongly typed access to the parameters of the notification.</para>
       <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
@@ -1668,16 +1668,16 @@ void Setup ()
         </value>
     <remarks>
       <para>
-          The value in the dictionary for this key, contains an array of strings that represent <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:Newsstand.NKAssetDownload&amp;scope=Xamarin" title="T:Newsstand.NKAssetDownload">T:Newsstand.NKAssetDownload</a></format> objects.</para>
-      <para>This key is used with the <see cref="T:Foundation.NSDictionary" /> passed to <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)&amp;scope=Xamarin" title="M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)">M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)</a></format></para>
+          The value in the dictionary for this key, contains an array of strings that represent <see cref="Newsstand.NKAssetDownload" /> objects.</para>
+      <para>This key is used with the <see cref="Foundation.NSDictionary" /> passed to <see cref="UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)" /></para>
     </remarks>
   </Docs>
   <Docs DocId="P:UIKit.UIApplication.ProtectedDataWillBecomeUnavailable">
     <summary>Indicates that the state of protected data has changed.</summary>
     <value>To be added.</value>
     <remarks>
-      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIKit.UIApplication.Notifications" />.<format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:UIKit.UIKit.UIApplication.Notifications.ObserveProtectedDataWillBecomeUnavailable*&amp;scope=Xamarin" title="M:UIKit.UIKit.UIApplication.Notifications.ObserveProtectedDataWillBecomeUnavailable*">M:UIKit.UIKit.UIApplication.Notifications.ObserveProtectedDataWillBecomeUnavailable*</a></format> method which offers strongly typed access to the parameters of the notification.</para>
+      <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="UIKit.UIApplication.Notifications" />.<see cref="UIKit.UIKit.UIApplication.Notifications.ObserveProtectedDataWillBecomeUnavailable" /> method which offers strongly typed access to the parameters of the notification.</para>
       <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
@@ -1735,14 +1735,14 @@ void Setup ()
 ]]></code>
       </example>
     </remarks>
-    <altmember cref="P:UIKit.UIApplication.ProtectedDataAvailable" />
+    <altmember cref="UIKit.UIApplication.ProtectedDataAvailable" />
   </Docs>
   <Docs DocId="P:UIKit.UIApplication.ProtectedDataDidBecomeAvailable">
     <summary>Indicates that the state of protected data has changed.</summary>
     <value>To be added.</value>
     <remarks>
-      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIKit.UIApplication.Notifications" />.<format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:UIKit.UIKit.UIApplication.Notifications.ObserveProtectedDataDidBecomeAvailable*&amp;scope=Xamarin" title="M:UIKit.UIKit.UIApplication.Notifications.ObserveProtectedDataDidBecomeAvailable*">M:UIKit.UIKit.UIApplication.Notifications.ObserveProtectedDataDidBecomeAvailable*</a></format> method which offers strongly typed access to the parameters of the notification.</para>
+      <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="UIKit.UIApplication.Notifications" />.<see cref="UIKit.UIKit.UIApplication.Notifications.ObserveProtectedDataDidBecomeAvailable" /> method which offers strongly typed access to the parameters of the notification.</para>
       <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
@@ -1800,14 +1800,14 @@ void Setup ()
 ]]></code>
       </example>
     </remarks>
-    <altmember cref="P:UIKit.UIApplication.ProtectedDataAvailable" />
+    <altmember cref="UIKit.UIApplication.ProtectedDataAvailable" />
   </Docs>
   <Docs DocId="P:UIKit.UIApplication.DidEnterBackgroundNotification">
     <summary>Notification constant for DidEnterBackground</summary>
     <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
     <remarks>
-      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIKit.UIApplication.Notifications" />.<format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:UIKit.UIKit.UIApplication.Notifications.ObserveDidEnterBackground*&amp;scope=Xamarin" title="M:UIKit.UIKit.UIApplication.Notifications.ObserveDidEnterBackground*">M:UIKit.UIKit.UIApplication.Notifications.ObserveDidEnterBackground*</a></format> method which offers strongly typed access to the parameters of the notification.</para>
+      <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="UIKit.UIApplication.Notifications" />.<see cref="UIKit.UIKit.UIApplication.Notifications.ObserveDidEnterBackground" /> method which offers strongly typed access to the parameters of the notification.</para>
       <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
@@ -1870,8 +1870,8 @@ void Setup ()
     <summary>Notification constant for ContentSizeCategoryChanged</summary>
     <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
     <remarks>
-      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-      <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="T:UIKit.UIApplication.Notifications" />.<see cref="M:UIKit.UIApplication.Notifications.ObserveContentSizeCategoryChanged*" /> method which offers strongly typed access to the parameters of the notification.</para>
+      <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="UIKit.UIApplication.Notifications" />.<see cref="UIKit.UIApplication.Notifications.ObserveContentSizeCategoryChanged" /> method which offers strongly typed access to the parameters of the notification.</para>
       <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
@@ -1938,8 +1938,8 @@ void Setup ()
     <summary>Notification constant for BackgroundRefreshStatusDidChange</summary>
     <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
     <remarks>
-      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIKit.UIApplication.Notifications" />.<format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:UIKit.UIKit.UIApplication.Notifications.ObserveBackgroundRefreshStatusDidChange*&amp;scope=Xamarin" title="M:UIKit.UIKit.UIApplication.Notifications.ObserveBackgroundRefreshStatusDidChange*">M:UIKit.UIKit.UIApplication.Notifications.ObserveBackgroundRefreshStatusDidChange*</a></format> method which offers strongly typed access to the parameters of the notification.</para>
+      <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="UIKit.UIApplication.Notifications" />.<see cref="UIKit.UIKit.UIApplication.Notifications.ObserveBackgroundRefreshStatusDidChange" /> method which offers strongly typed access to the parameters of the notification.</para>
       <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
@@ -2002,8 +2002,8 @@ void Setup ()
     <summary>Notification constant for UserDidTakeScreenshot</summary>
     <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
     <remarks>
-      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIKit.UIApplication.Notifications" />.<format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:UIKit.UIKit.UIApplication.Notifications.ObserveUserDidTakeScreenshot*&amp;scope=Xamarin" title="M:UIKit.UIKit.UIApplication.Notifications.ObserveUserDidTakeScreenshot*">M:UIKit.UIKit.UIApplication.Notifications.ObserveUserDidTakeScreenshot*</a></format> method which offers strongly typed access to the parameters of the notification.</para>
+      <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="UIKit.UIApplication.Notifications" />.<see cref="UIKit.UIKit.UIApplication.Notifications.ObserveUserDidTakeScreenshot" /> method which offers strongly typed access to the parameters of the notification.</para>
       <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
@@ -2068,7 +2068,7 @@ void Setup ()
         <param name="delegateClassName">The name of the UIApplicationDelegate class, if null, it uses the UIApplicationDelegate instance specified in the main NIB file for this program..</param>
         <summary>Launches the main application loop with the given command line parameters.</summary>
         <remarks>
-          <para>The <paramref name="principalClassName" /> is typically only specified if the application developer subclasses <see cref="T:UIKit.UIApplication" />, as shown in the following example:</para>
+          <para>The <paramref name="principalClassName" /> is typically only specified if the application developer subclasses <see cref="UIKit.UIApplication" />, as shown in the following example:</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
 public class Application
@@ -2100,7 +2100,7 @@ public  class AppDelegate : UIApplicationDelegate
         <param name="delegateClass">The type of the UIApplicationDelegate class, if null, it uses the UIApplicationDelegate instance specified in the main NIB file for this program..</param>
         <summary>Launches the main application loop with the given command line parameters.</summary>
         <remarks>
-          <para>The <paramref name="principalClass" /> is typically only specified if the application developer subclasses <see cref="T:UIKit.UIApplication" />, as shown in the following example:</para>
+          <para>The <paramref name="principalClass" /> is typically only specified if the application developer subclasses <see cref="UIKit.UIApplication" />, as shown in the following example:</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
 public class Application

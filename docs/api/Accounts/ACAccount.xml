@@ -2,8 +2,8 @@
   <Docs DocId="T:Accounts.ACAccount">
     <summary>Represents a user account stored in the Accounts database.</summary>
     <remarks>
-      <para>iOS stores account information for certain social-network accounts in a system-wide database. A <see cref="T:Accounts.ACAccount" /> represents a single account.</para>
-      <para>Accounts can either be retrieved based on account-type or via a known identifier (see <see cref="P:Accounts.ACAccount.Identifier" />): </para>
+      <para>iOS stores account information for certain social-network accounts in a system-wide database. A <see cref="Accounts.ACAccount" /> represents a single account.</para>
+      <para>Accounts can either be retrieved based on account-type or via a known identifier (see <see cref="Accounts.ACAccount.Identifier" />): </para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
           var store = new ACAccountStore();

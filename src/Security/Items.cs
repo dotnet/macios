@@ -67,7 +67,7 @@ namespace Security {
 	///       <para>There are a number of axis to consider for the accessible settings of an item.</para>
 	///       <para>Whether the information should be made accessible without entering a passcode, the device being unlocked or always available.</para>
 	///       <para>Another one is whether the information should be locked to this device, or whether the information can migrate to a new device via a backup restore.</para>
-	///       <para>This value is used by the <see cref="T:Security.SecAccessControl" /> constructor and surfaced as a property of the <see cref="T:Security.SecRecord" />.</para>
+	///       <para>This value is used by the <see cref="Security.SecAccessControl" /> constructor and surfaced as a property of the <see cref="Security.SecRecord" />.</para>
 	///     </remarks>
 	public enum SecAccessible {
 		/// <summary>Invalid value.</summary>
@@ -173,7 +173,7 @@ namespace Security {
 		Pop3s,
 	}
 
-	/// <summary>An enumeration whose values specify various types of authentication. Used with the <see cref="P:Security.SecRecord.AuthenticationType" /> property.</summary>
+	/// <summary>An enumeration whose values specify various types of authentication. Used with the <see cref="Security.SecRecord.AuthenticationType" /> property.</summary>
 	///     <remarks>
 	///       <para />
 	///     </remarks>
@@ -306,7 +306,7 @@ namespace Security {
 		///         <returns>Returns a stronglty typed SecRecord.</returns>
 		///         <remarks>
 		///           <para>
-		/// 	    Unlike the <see cref="M:Security.SecKeyChain.QueryAsData(Security.SecRecord,System.Boolean,System.Int32,Security.SecStatusCode@)" />
+		/// 	    Unlike the <see cref="Security.SecKeyChain.QueryAsData(Security.SecRecord,System.Boolean,System.Int32,out Security.SecStatusCode)" />
 		/// 	    methods which return a binary blob inside an NSData, this
 		/// 	    returns a strongly typed SecRecord that you can easily
 		/// 	    inspect.
@@ -776,7 +776,8 @@ namespace Security {
 					SecKeychainItemFreeContent (IntPtr.Zero, passwordPtr);
 			}
 		}
-#else
+#endif
+
 		/// <include file="../../docs/api/Security/SecKeyChain.xml" path="/Documentation/Docs[@DocId='M:Security.SecKeyChain.QueryAsConcreteType(Security.SecRecord,Security.SecStatusCode@)']/*" />
 		public static object? QueryAsConcreteType (SecRecord query, out SecStatusCode result)
 		{
@@ -805,7 +806,6 @@ namespace Security {
 				return null;
 			}
 		}
-#endif
 
 		/// <param name="identity">To be added.</param>
 		///         <summary>To be added.</summary>
@@ -888,7 +888,7 @@ namespace Security {
 	///       <para>
 	/// 	This represents a set of properties on a keychain record.   It
 	/// 	can be used to query the keychain by filling out a few of the
-	/// 	properties and calling one of the Query methods on the <see cref="T:Security.SecKeyChain" /> class and it is
+	/// 	properties and calling one of the Query methods on the <see cref="Security.SecKeyChain" /> class and it is
 	/// 	also used as a result from some of the same Query methods.
 	///       </para>
 	///       <para>
@@ -1998,10 +1998,10 @@ namespace Security {
 		}
 
 		/// <typeparam name="T">The desired strong type of the value to
-		/// 	get, one of <see cref="T:Security.SecCertificate" /><see cref="T:Security.SecIdentity" /> or <see cref="T:Security.SecKey" />.</typeparam>
+		/// 	get, one of <see cref="Security.SecCertificate" /><see cref="Security.SecIdentity" /> or <see cref="Security.SecKey" />.</typeparam>
 		///         <summary>Returns the associated Certificate, Identity, or Key stored in this record.</summary>
 		///         <returns>The return value, if present shoudl be one of the
-		/// 	allowed types <see cref="T:Security.SecCertificate" /><see cref="T:Security.SecIdentity" /> or <see cref="T:Security.SecKey" />.</returns>
+		/// 	allowed types <see cref="Security.SecCertificate" /><see cref="Security.SecIdentity" /> or <see cref="Security.SecKey" />.</returns>
 		///         <remarks>
 		///         </remarks>
 		public T? GetValueRef<T> () where T : class, INativeObject
@@ -2010,7 +2010,7 @@ namespace Security {
 		}
 
 		// This can be used to store SecKey, SecCertificate, SecIdentity and SecKeyChainItem (not bound yet, and not availble on iOS)
-		/// <param name="value">An object of type <see cref="T:Security.SecCertificate" /><see cref="T:Security.SecIdentity" /> or <see cref="T:Security.SecKey" />.</param>
+		/// <param name="value">An object of type <see cref="Security.SecCertificate" /><see cref="Security.SecIdentity" /> or <see cref="Security.SecKey" />.</param>
 		///         <summary>Use this to add a certificate, identity or key to the record.</summary>
 		///         <remarks>
 		///         </remarks>
@@ -2292,7 +2292,7 @@ namespace Security {
 		}
 	}
 
-	/// <summary>An exception based on a <see cref="T:Security.SecStatusCode" />.</summary>
+	/// <summary>An exception based on a <see cref="Security.SecStatusCode" />.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -2325,7 +2325,7 @@ namespace Security {
 		}
 	}
 
-	/// <summary>Contains parameters for use with <see cref="M:Security.SecKey.CreateRandomKey(Security.SecKeyType,System.Int32,Foundation.NSDictionary,Foundation.NSError@)" />.</summary>
+	/// <summary>Contains parameters for use with <see cref="Security.SecKey.CreateRandomKey(Security.SecKeyType,System.Int32,Foundation.NSDictionary,out Foundation.NSError)" />.</summary>
 	///     <remarks>To be added.</remarks>
 	public partial class SecKeyParameters : DictionaryContainer {
 		// For caching, as we can't reverse it easily.

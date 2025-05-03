@@ -12,7 +12,7 @@
 	Media Items have persistent identifiers that can be used as
 	unique identifiers across application launches and as long as
 	the media item has not been changed or synchronized again with
-	the host computer.  The <see cref="P:MediaPlayer.MPMediaItem.PersistentID" /> is
+	the host computer.  The <see cref="MediaPlayer.MPMediaItem.PersistentID" /> is
 	the persistent ID for the media item.  There are also
 	persistent identifiers for the album, the composer, podcast,
 	genre and artists.
@@ -20,7 +20,7 @@
       </para>
       <para>
 	For low-level access to the metadat, this class exposes the
-	low-level <see cref="M:MediaPlayer.MPMediaItemCollection.ValueForProperty(Foundation.NSString)" />
+	low-level <see cref="MPMediaEntity.ValueForProperty(NSString)" />
 	method and various static properties with the suffix
 	"Property" and the return type NSString.
       </para>

@@ -5,10 +5,10 @@
       <para>
 	The AVCaptureSession object coordinates the recording of video
 	or audio input and passing the recorded information to one or
-	more output objects.  As the iOS line has advanced, different devices have gained multiple capture devices (in particular, gained multiple cameras). Application developers can use <see cref="M:AVFoundation.AVCaptureDevice.DefaultDeviceWithMediaType(System.String)" /> or <see cref="M:AVFoundation.AVCaptureDevice.DevicesWithMediaType(System.String)" />, passing in the constants defined in <see cref="T:AVFoundation.AVMediaType" />.
+	more output objects.  As the iOS line has advanced, different devices have gained multiple capture devices (in particular, gained multiple cameras). Application developers can use <see cref="AVFoundation.AVCaptureDevice.DefaultDeviceWithMediaType(System.String)" /> or <see cref="AVFoundation.AVCaptureDevice.DevicesWithMediaType(System.String)" />, passing in the constants defined in <see cref="AVFoundation.AVMediaType" />.
       </para>
       <para>
-        Configuring capture consists of setting the <see cref="P:AVFoundation.AVCaptureSession.Inputs" /> and <see cref="P:AVFoundation.AVCaptureSession.Outputs" /> properties of the <see cref="T:AVFoundation.AVCaptureSession" />. Notice that multiple <see cref="T:AVFoundation.AVCaptureInput" />s and <see cref="T:AVFoundation.AVCaptureOutput" />s are possible. For instance, to capture both audio and video, one would use two capture inputs:</para>
+        Configuring capture consists of setting the <see cref="AVFoundation.AVCaptureSession.Inputs" /> and <see cref="AVFoundation.AVCaptureSession.Outputs" /> properties of the <see cref="AVFoundation.AVCaptureSession" />. Notice that multiple <see cref="AVFoundation.AVCaptureInput" />s and <see cref="AVFoundation.AVCaptureOutput" />s are possible. For instance, to capture both audio and video, one would use two capture inputs:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
 var session = new AVCaptureSession();
@@ -32,7 +32,7 @@ if(session.CanAddInput(micInput)){
           ]]></code>
       </example>
       <para>Note that permission to access the microphone (and in some regions, the camera) must be given by the user, requiring the developer to add the <c>NSMicrophoneUsageDescription</c> to the application's info.plist file.</para>
-      <para>Video can be captured directly to file with <see cref="T:AVFoundation.AVCaptureMovieFileOutput" />. However, this class has no display-able data and cannot be used simultaneously with <see cref="T:AVFoundation.AVCaptureVideoDataOutput" />. Instead, application developers can use it in combination with a <see cref="T:AVFoundation.AVCaptureVideoPreviewLayer" />, as shown in the following example:</para>
+      <para>Video can be captured directly to file with <see cref="AVFoundation.AVCaptureMovieFileOutput" />. However, this class has no display-able data and cannot be used simultaneously with <see cref="AVFoundation.AVCaptureVideoDataOutput" />. Instead, application developers can use it in combination with a <see cref="AVFoundation.AVCaptureVideoPreviewLayer" />, as shown in the following example:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
 var layer = new AVCaptureVideoPreviewLayer (session);
@@ -51,7 +51,7 @@ session.AddOutput (movieFileOutput);
 movieFileOutput.StartRecordingToOutputFile (fileUrl, recordingDelegate);
           ]]></code>
       </example>
-      <para>Application developers should note that the function <see cref="M:AVFoundation.AVCaptureFileOutput.StopRecording" /> is asynchronous; developers should wait until the <see cref="M:AVFoundation.AVCaptureFileOutputRecordingDelegate.FinishedRecording(AVFoundation.AVCaptureFileOutput,Foundation.NSUrl,Foundation.NSObject[],Foundation.NSError)" /> delegate method before manipulating the file (for instance, before saving it to the Photos album with <see cref="M:UIKit.UIVideo.SaveToPhotosAlbum(System.String,UIKit.UIVideo.SaveStatus)" /> or <see cref="M:AssetsLibrary.ALAssetsLibrary.WriteVideoToSavedPhotosAlbumAsync(Foundation.NSUrl)" />).</para>
+      <para>Application developers should note that the function <see cref="AVFoundation.AVCaptureFileOutput.StopRecording" /> is asynchronous; developers should wait until the <see cref="AVFoundation.AVCaptureFileOutputRecordingDelegate.FinishedRecording(AVFoundation.AVCaptureFileOutput,Foundation.NSUrl,Foundation.NSObject[],Foundation.NSError)" /> delegate method before manipulating the file (for instance, before saving it to the Photos album with <see cref="UIKit.UIVideo.SaveToPhotosAlbum(System.String,UIKit.UIVideo.SaveStatus)" /> or <see cref="AssetsLibrary.ALAssetsLibrary.WriteVideoToSavedPhotosAlbumAsync(Foundation.NSUrl)" />).</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
 public class MyRecordingDelegate : AVCaptureFileOutputRecordingDelegate
@@ -91,7 +91,7 @@ public class MyRecordingDelegate : AVCaptureFileOutputRecordingDelegate
       <para>
 	Once the input and output components of
 	the session are set, the actual processing is begun by calling the
-	<see cref="M:AVFoundation.AVCaptureSession.StartRunning" />
+	<see cref="AVFoundation.AVCaptureSession.StartRunning" />
 	method.
 
       </para>
@@ -186,8 +186,8 @@ public class OutputRecorder : AVCaptureVideoDataOutputSampleBufferDelegate {
     <summary>Notification constant for DidStopRunning</summary>
     <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
     <remarks>
-      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:AVFoundation.AVCaptureSession.Notifications" />.<see cref="M:AVFoundation.AVCaptureSession.Notifications.ObserveDidStopRunning*" /> method which offers strongly typed access to the parameters of the notification.</para>
+      <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="AVFoundation.AVCaptureSession.Notifications" />.<see cref="AVFoundation.AVCaptureSession.Notifications.ObserveDidStopRunning" /> method which offers strongly typed access to the parameters of the notification.</para>
       <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
@@ -250,8 +250,8 @@ void Setup ()
     <summary>Notification constant for InterruptionEnded</summary>
     <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
     <remarks>
-      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:AVFoundation.AVCaptureSession.Notifications" />.<see cref="M:AVFoundation.AVCaptureSession.Notifications.ObserveInterruptionEnded*" /> method which offers strongly typed access to the parameters of the notification.</para>
+      <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="AVFoundation.AVCaptureSession.Notifications" />.<see cref="AVFoundation.AVCaptureSession.Notifications.ObserveInterruptionEnded" /> method which offers strongly typed access to the parameters of the notification.</para>
       <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
@@ -314,8 +314,8 @@ void Setup ()
     <summary>Notification constant for DidStartRunning</summary>
     <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
     <remarks>
-      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:AVFoundation.AVCaptureSession.Notifications" />.<see cref="M:AVFoundation.AVCaptureSession.Notifications.ObserveDidStartRunning*" /> method which offers strongly typed access to the parameters of the notification.</para>
+      <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="AVFoundation.AVCaptureSession.Notifications" />.<see cref="AVFoundation.AVCaptureSession.Notifications.ObserveDidStartRunning" /> method which offers strongly typed access to the parameters of the notification.</para>
       <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
@@ -378,8 +378,8 @@ void Setup ()
         <summary>Notification constant for RuntimeError</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="T:AVFoundation.AVCaptureSession.Notifications" />.<see cref="M:AVFoundation.AVCaptureSession.Notifications.ObserveRuntimeError*" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="AVFoundation.AVCaptureSession.Notifications" />.<see cref="AVFoundation.AVCaptureSession.Notifications.ObserveRuntimeError" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
@@ -446,8 +446,8 @@ void Setup ()
         <summary>Notification constant for WasInterrupted</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:AVFoundation.AVCaptureSession.Notifications" />.<see cref="M:AVFoundation.AVCaptureSession.Notifications.ObserveWasInterrupted*" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="AVFoundation.AVCaptureSession.Notifications" />.<see cref="AVFoundation.AVCaptureSession.Notifications.ObserveWasInterrupted" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[

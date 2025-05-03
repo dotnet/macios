@@ -2,8 +2,8 @@
   <Docs DocId="T:UIKit.UIMenuController">
     <summary>The class used to implement Cut, Copy, Paste, Select, and Delete commands.</summary>
     <remarks>
-      <para>The <see cref="T:UIKit.UIMenuController" /> is a singleton object, accessed by <see cref="P:UIKit.UIMenuController.SharedMenuController" />. It manages the editng menu, which provides options for Cut, Copy, Paste, Select, Select All, and Delete commands. The menu is visually associated with a target rectangle specified by <see cref="M:UIKit.UIMenuController.SetTargetRect(CoreGraphics.CGRect,UIKit.UIView)" />. It is the application developer's responsibility to set this target rectangle appropriately before displaying the <see cref="T:UIKit.UIMenuController" />.  </para>
-      <para>The application can add or delete additional menu items using the <see cref="P:UIKit.UIMenuController.MenuItems" />. The following code, taken from the "Touches Gesture Recognizers" sample shows the code necessary to create a modified context menu:</para>
+      <para>The <see cref="UIKit.UIMenuController" /> is a singleton object, accessed by <see cref="UIKit.UIMenuController.SharedMenuController" />. It manages the editng menu, which provides options for Cut, Copy, Paste, Select, Select All, and Delete commands. The menu is visually associated with a target rectangle specified by <see cref="UIKit.UIMenuController.SetTargetRect(CoreGraphics.CGRect,UIKit.UIView)" />. It is the application developer's responsibility to set this target rectangle appropriately before displaying the <see cref="UIKit.UIMenuController" />.  </para>
+      <para>The application can add or delete additional menu items using the <see cref="UIKit.UIMenuController.MenuItems" />. The following code, taken from the "Touches Gesture Recognizers" sample shows the code necessary to create a modified context menu:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
 void Setup ()
@@ -13,7 +13,7 @@ void Setup ()
      var location = gestureRecognizer.LocationInView (gestureRecognizer.View);
      BecomeFirstResponder ();
      menuController.MenuItems = new [] { resetMenuItem };
-     menuController.SetTargetRect (new RectangleF (location.X, location.Y, 0, 0), gestureRecognizer.View);
+     menuController.SetTargetRect (new CGRect (location.X, location.Y, 0, 0), gestureRecognizer.View);
      menuController.MenuVisible = true;
      menuController.Animated = true;
      imageForReset = gestureRecognizer.View;
@@ -24,9 +24,9 @@ void Setup ()
 [Export("ResetImage")]
 void ResetImage (UIMenuController controller)
 {
-     var mid = new PointF ((imageForReset.Bounds.Left + imageForReset.Bounds.Right) / 2, (imageForReset.Bounds.Top + imageForReset.Bounds.Bottom) / 2);
+     var mid = new CGPoint ((imageForReset.Bounds.Left + imageForReset.Bounds.Right) / 2, (imageForReset.Bounds.Top + imageForReset.Bounds.Bottom) / 2);
      var locationInSuperview = imageForReset.ConvertPointToView (mid, imageForReset.Superview);
-     imageForReset.Layer.AnchorPoint = new PointF (0.5f, 0.5f);
+     imageForReset.Layer.AnchorPoint = new CGPoint (0.5f, 0.5f);
      imageForReset.Center =locationInSuperview;
      
      UIView.BeginAnimations (null, IntPtr.Zero);
@@ -42,8 +42,8 @@ void ResetImage (UIMenuController controller)
         <summary>Notification constant for WillShowMenu</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIKit.UIMenuController.Notifications" />.<see cref="M:UIKit.UIMenuController.Notifications.ObserveWillShowMenu*" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="UIKit.UIMenuController.Notifications" />.<see cref="UIKit.UIMenuController.Notifications.ObserveWillShowMenu" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
@@ -106,8 +106,8 @@ void Setup ()
         <summary>Notification constant for WillHideMenu</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIKit.UIMenuController.Notifications" />.<see cref="M:UIKit.UIMenuController.Notifications.ObserveWillHideMenu*" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="UIKit.UIMenuController.Notifications" />.<see cref="UIKit.UIMenuController.Notifications.ObserveWillHideMenu" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
@@ -170,8 +170,8 @@ void Setup ()
         <summary>Notification constant for DidShowMenu</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIKit.UIMenuController.Notifications" />.<see cref="M:UIKit.UIMenuController.Notifications.ObserveDidShowMenu*" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="UIKit.UIMenuController.Notifications" />.<see cref="UIKit.UIMenuController.Notifications.ObserveDidShowMenu" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
@@ -234,8 +234,8 @@ void Setup ()
         <summary>Notification constant for DidHideMenu</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIKit.UIMenuController.Notifications" />.<see cref="M:UIKit.UIMenuController.Notifications.ObserveDidHideMenu*" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="UIKit.UIMenuController.Notifications" />.<see cref="UIKit.UIMenuController.Notifications.ObserveDidHideMenu" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
@@ -298,7 +298,7 @@ void Setup ()
         <summary>Notification constant for MenuFrameDidChange</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style

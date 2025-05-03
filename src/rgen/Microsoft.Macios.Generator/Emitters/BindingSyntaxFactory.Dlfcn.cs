@@ -21,6 +21,10 @@ static partial class BindingSyntaxFactory {
 		@namespace: ["ObjCRuntime"],
 		@class: "Dlfcn",
 		isGlobal: true);
+	public readonly static TypeSyntax Libraries = GetIdentifierName (
+		@namespace: ["ObjCRuntime"],
+		@class: "Libraries",
+		isGlobal: true);
 
 	/// <summary>
 	/// Get the syntax needed to access a library handle.
@@ -34,7 +38,7 @@ static partial class BindingSyntaxFactory {
 				SyntaxKind.SimpleMemberAccessExpression,
 				MemberAccessExpression (
 					SyntaxKind.SimpleMemberAccessExpression,
-					IdentifierName ("Libraries"),
+					Libraries,
 					IdentifierName (libraryName)),
 				IdentifierName ("Handle")));
 	}

@@ -3,7 +3,7 @@
     <summary>Notification constant for DidEndPageWrite</summary>
     <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
     <remarks>
-      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfDocument.Notifications.ObserveDidEndPageWrite*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="PdfKit.PdfDocument.Notifications.ObserveDidEndPageWrite" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
@@ -29,7 +29,7 @@ void Setup ()
     <summary>Notification constant for DidBeginPageWrite</summary>
     <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
     <remarks>
-      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfDocument.Notifications.ObserveDidBeginPageWrite*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="PdfKit.PdfDocument.Notifications.ObserveDidBeginPageWrite" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
@@ -55,7 +55,7 @@ void Setup ()
     <summary>Notification constant for DidEndWrite</summary>
     <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
     <remarks>
-      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfDocument.Notifications.ObserveDidEndWrite*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="PdfKit.PdfDocument.Notifications.ObserveDidEndWrite" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
@@ -81,7 +81,7 @@ void Setup ()
     <summary>Notification constant for DidBeginWrite</summary>
     <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
     <remarks>
-      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfDocument.Notifications.ObserveDidBeginWrite*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="PdfKit.PdfDocument.Notifications.ObserveDidBeginWrite" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
@@ -107,7 +107,7 @@ void Setup ()
     <summary>Notification constant for DidFindMatch</summary>
     <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
     <remarks>
-      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfDocument.Notifications.ObserveDidFindMatch*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="PdfKit.PdfDocument.Notifications.ObserveDidFindMatch" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
@@ -133,7 +133,7 @@ void Setup ()
     <summary>Notification constant for DidEndPageFind</summary>
     <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
     <remarks>
-      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfDocument.Notifications.ObserveDidEndPageFind*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="PdfKit.PdfDocument.Notifications.ObserveDidEndPageFind" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
@@ -159,7 +159,7 @@ void Setup ()
     <summary>Notification constant for DidBeginPageFind</summary>
     <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
     <remarks>
-      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfDocument.Notifications.ObserveDidBeginPageFind*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="PdfKit.PdfDocument.Notifications.ObserveDidBeginPageFind" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
@@ -185,7 +185,7 @@ void Setup ()
     <summary>Notification constant for DidBeginFind</summary>
     <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
     <remarks>
-      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfDocument.Notifications.ObserveDidBeginFind*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="PdfKit.PdfDocument.Notifications.ObserveDidBeginFind" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
@@ -211,7 +211,7 @@ void Setup ()
     <summary>Notification constant for DidEndFind</summary>
     <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
     <remarks>
-      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfDocument.Notifications.ObserveDidEndFind*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="PdfKit.PdfDocument.Notifications.ObserveDidEndFind" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
@@ -237,7 +237,7 @@ void Setup ()
     <summary>Notification constant for DidUnlock</summary>
     <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
     <remarks>
-      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfDocument.Notifications.ObserveDidUnlock*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="PdfKit.PdfDocument.Notifications.ObserveDidUnlock" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
@@ -263,7 +263,7 @@ void Setup ()
         <summary>Notification constant for DidEndPageWrite</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfDocument.Notifications.ObserveDidEndPageWrite*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="PdfKit.PdfDocument.Notifications.ObserveDidEndPageWrite" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
@@ -289,7 +289,7 @@ void Setup ()
         <summary>Notification constant for DidBeginPageWrite</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfDocument.Notifications.ObserveDidBeginPageWrite*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="PdfKit.PdfDocument.Notifications.ObserveDidBeginPageWrite" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
@@ -315,7 +315,7 @@ void Setup ()
         <summary>Notification constant for DidEndWrite</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfDocument.Notifications.ObserveDidEndWrite*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="PdfKit.PdfDocument.Notifications.ObserveDidEndWrite" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
@@ -341,7 +341,7 @@ void Setup ()
         <summary>Notification constant for DidBeginWrite</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfDocument.Notifications.ObserveDidBeginWrite*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="PdfKit.PdfDocument.Notifications.ObserveDidBeginWrite" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
@@ -367,7 +367,7 @@ void Setup ()
         <summary>Notification constant for DidEndPageFind</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfDocument.Notifications.ObserveDidEndPageFind*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="PdfKit.PdfDocument.Notifications.ObserveDidEndPageFind" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
@@ -393,7 +393,7 @@ void Setup ()
         <summary>Notification constant for DidFindMatch</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfDocument.Notifications.ObserveDidFindMatch*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="PdfKit.PdfDocument.Notifications.ObserveDidFindMatch" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
@@ -419,7 +419,7 @@ void Setup ()
         <summary>Notification constant for DidBeginPageFind</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfDocument.Notifications.ObserveDidBeginPageFind*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="PdfKit.PdfDocument.Notifications.ObserveDidBeginPageFind" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
@@ -445,7 +445,7 @@ void Setup ()
         <summary>Notification constant for DidEndFind</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfDocument.Notifications.ObserveDidEndFind*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="PdfKit.PdfDocument.Notifications.ObserveDidEndFind" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
@@ -471,7 +471,7 @@ void Setup ()
         <summary>Notification constant for DidBeginFind</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfDocument.Notifications.ObserveDidBeginFind*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="PdfKit.PdfDocument.Notifications.ObserveDidBeginFind" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
@@ -497,7 +497,7 @@ void Setup ()
         <summary>Notification constant for DidUnlock</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfDocument.Notifications.ObserveDidUnlock*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="PdfKit.PdfDocument.Notifications.ObserveDidUnlock" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
@@ -523,7 +523,7 @@ void Setup ()
         <summary>Notification constant for DidBeginPageWrite</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfDocument.Notifications.ObserveDidBeginPageWrite*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="PdfKit.PdfDocument.Notifications.ObserveDidBeginPageWrite" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
@@ -549,7 +549,7 @@ void Setup ()
         <summary>Notification constant for DidEndPageWrite</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfDocument.Notifications.ObserveDidEndPageWrite*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="PdfKit.PdfDocument.Notifications.ObserveDidEndPageWrite" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
@@ -575,7 +575,7 @@ void Setup ()
         <summary>Notification constant for DidFindMatch</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfDocument.Notifications.ObserveDidFindMatch*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="PdfKit.PdfDocument.Notifications.ObserveDidFindMatch" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
@@ -601,7 +601,7 @@ void Setup ()
         <summary>Notification constant for DidEndPageFind</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfDocument.Notifications.ObserveDidEndPageFind*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="PdfKit.PdfDocument.Notifications.ObserveDidEndPageFind" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
@@ -627,7 +627,7 @@ void Setup ()
         <summary>Notification constant for DidEndWrite</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfDocument.Notifications.ObserveDidEndWrite*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="PdfKit.PdfDocument.Notifications.ObserveDidEndWrite" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
@@ -653,7 +653,7 @@ void Setup ()
         <summary>Notification constant for DidBeginPageFind</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfDocument.Notifications.ObserveDidBeginPageFind*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="PdfKit.PdfDocument.Notifications.ObserveDidBeginPageFind" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
@@ -679,7 +679,7 @@ void Setup ()
         <summary>Notification constant for DidBeginWrite</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfDocument.Notifications.ObserveDidBeginWrite*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="PdfKit.PdfDocument.Notifications.ObserveDidBeginWrite" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
@@ -705,7 +705,7 @@ void Setup ()
         <summary>Notification constant for DidEndFind</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfDocument.Notifications.ObserveDidEndFind*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="PdfKit.PdfDocument.Notifications.ObserveDidEndFind" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
@@ -731,7 +731,7 @@ void Setup ()
         <summary>Notification constant for DidBeginFind</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfDocument.Notifications.ObserveDidBeginFind*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="PdfKit.PdfDocument.Notifications.ObserveDidBeginFind" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
@@ -757,7 +757,7 @@ void Setup ()
         <summary>Notification constant for DidUnlock</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:PdfKit.PdfDocument.Notifications.ObserveDidUnlock*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="PdfKit.PdfDocument.Notifications.ObserveDidUnlock" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style

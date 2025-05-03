@@ -64,7 +64,7 @@ namespace SpriteKit {
 		// the right one at runtime depending on which OS version we are running
 		// https://bugzilla.xamarin.com/show_bug.cgi?id=37727
 		/// <param name="videoFile">To be added.</param>
-		///         <summary>Creates a new <see cref="T:SpriteKit.SKVideoNode" /> that plays video loaded from the file named <paramref name="videoFile" />.</summary>
+		///         <summary>Creates a new <see cref="SpriteKit.SKVideoNode" /> that plays video loaded from the file named <paramref name="videoFile" />.</summary>
 		///         <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		public SKVideoNode (string videoFile)
@@ -80,7 +80,7 @@ namespace SpriteKit {
 		// the right one at runtime depending on which OS version we are running
 		// https://bugzilla.xamarin.com/show_bug.cgi?id=37727
 		/// <param name="url">To be added.</param>
-		///         <summary>Creates a new <see cref="T:SpriteKit.SKVideoNode" /> to play the content located at <paramref name="url" />.</summary>
+		///         <summary>Creates a new <see cref="SpriteKit.SKVideoNode" /> to play the content located at <paramref name="url" />.</summary>
 		///         <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		public SKVideoNode (NSUrl url)

@@ -212,8 +212,6 @@
 !missing-null-allowed! 'AppKit.INSPasteboardWriting AppKit.NSTableViewDataSource::GetPasteboardWriterForRow(AppKit.NSTableView,System.IntPtr)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'AppKit.INSSharingServiceDelegate AppKit.NSSharingServicePickerDelegate::DelegateForSharingService(AppKit.NSSharingServicePicker,AppKit.NSSharingService)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'AppKit.NSAppearance AppKit.NSAppearance::GetAppearance(Foundation.NSString)' is missing an [NullAllowed] on return type
-!missing-null-allowed! 'AppKit.NSBitmapImageRep AppKit.NSBitmapImageRep::ConvertingToColorSpace(AppKit.NSColorSpace,AppKit.NSColorRenderingIntent)' is missing an [NullAllowed] on return type
-!missing-null-allowed! 'AppKit.NSBitmapImageRep AppKit.NSBitmapImageRep::RetaggedWithColorSpace(AppKit.NSColorSpace)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'AppKit.NSButton AppKit.NSAlert::get_SuppressionButton()' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'AppKit.NSButton AppKit.NSWindow::StandardWindowButton(AppKit.NSWindowButton)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'AppKit.NSButton AppKit.NSWindow::StandardWindowButton(AppKit.NSWindowButton,AppKit.NSWindowStyle)' is missing an [NullAllowed] on return type
@@ -228,7 +226,6 @@
 !missing-null-allowed! 'AppKit.NSCell AppKit.NSTableViewDelegate::GetDataCell(AppKit.NSTableView,AppKit.NSTableColumn,System.IntPtr)' is missing an [NullAllowed] on parameter #1
 !missing-null-allowed! 'AppKit.NSCell AppKit.NSTableViewDelegate::GetDataCell(AppKit.NSTableView,AppKit.NSTableColumn,System.IntPtr)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'AppKit.NSCell[] AppKit.NSBrowser::SelectedCells()' is missing an [NullAllowed] on return type
-!missing-null-allowed! 'AppKit.NSColor AppKit.NSBitmapImageRep::ColorAt(System.IntPtr,System.IntPtr)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'AppKit.NSColor AppKit.NSBrowserCell::HighlightColorInView(AppKit.NSView)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'AppKit.NSColor AppKit.NSColor::BlendedColor(System.Runtime.InteropServices.NFloat,AppKit.NSColor)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'AppKit.NSColor AppKit.NSColor::FromCatalogName(System.String,System.String)' is missing an [NullAllowed] on return type
@@ -295,7 +292,6 @@
 !missing-null-allowed! 'AppKit.NSImage AppKit.NSTableView::GetIndicatorImage(AppKit.NSTableColumn)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'AppKit.NSImage AppKit.NSWorkspace::IconForFiles(System.String[])' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'AppKit.NSImage Foundation.NSBundle::ImageForResource(System.String)' is missing an [NullAllowed] on return type
-!missing-null-allowed! 'AppKit.NSImageRep AppKit.NSBitmapImageRep::ImageRepFromData(Foundation.NSData)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'AppKit.NSImageRep AppKit.NSImage::BestRepresentation(CoreGraphics.CGRect,AppKit.NSGraphicsContext,Foundation.NSDictionary)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'AppKit.NSImageRep AppKit.NSImageRep::ImageRepFromFile(System.String)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'AppKit.NSImageRep AppKit.NSImageRep::ImageRepFromPasteboard(AppKit.NSPasteboard)' is missing an [NullAllowed] on return type
@@ -410,7 +406,6 @@
 !missing-null-allowed! 'AppKit.NSWindow[] AppKit.NSWindowDelegate::CustomWindowsToEnterFullScreen(AppKit.NSWindow)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'AppKit.NSWindow[] AppKit.NSWindowDelegate::CustomWindowsToExitFullScreen(AppKit.NSWindow)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'CoreGraphics.CGColorSpace AppKit.NSColorSpace::get_ColorSpace()' is missing an [NullAllowed] on return type
-!missing-null-allowed! 'CoreGraphics.CGImage AppKit.NSBitmapImageRep::get_CGImage()' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'CoreGraphics.CGImage AppKit.NSImage::AsCGImage(CoreGraphics.CGRect&,AppKit.NSGraphicsContext,Foundation.NSDictionary)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'CoreGraphics.CGImage AppKit.NSImageRep::AsCGImage(CoreGraphics.CGRect&,AppKit.NSGraphicsContext,Foundation.NSDictionary)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'CoreGraphics.CGPoint AppKit.NSPanGestureRecognizer::TranslationInView(AppKit.NSView)' is missing an [NullAllowed] on parameter #0
@@ -427,11 +422,6 @@
 !missing-null-allowed! 'Foundation.NSAttributedString AppKit.NSHelpManager::Context(Foundation.NSObject)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Foundation.NSAttributedString Foundation.NSBundle::GetContextHelp(System.String)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Foundation.NSBundle AppKit.NSViewController::get_NibBundle()' is missing an [NullAllowed] on return type
-!missing-null-allowed! 'Foundation.NSData AppKit.NSBitmapImageRep::get_TiffRepresentation()' is missing an [NullAllowed] on return type
-!missing-null-allowed! 'Foundation.NSData AppKit.NSBitmapImageRep::ImagesAsTiff(AppKit.NSImageRep[])' is missing an [NullAllowed] on return type
-!missing-null-allowed! 'Foundation.NSData AppKit.NSBitmapImageRep::ImagesAsTiff(AppKit.NSImageRep[],AppKit.NSTiffCompression,System.Single)' is missing an [NullAllowed] on return type
-!missing-null-allowed! 'Foundation.NSData AppKit.NSBitmapImageRep::RepresentationUsingTypeProperties(AppKit.NSBitmapImageFileType,Foundation.NSDictionary)' is missing an [NullAllowed] on return type
-!missing-null-allowed! 'Foundation.NSData AppKit.NSBitmapImageRep::TiffRepresentationUsingCompressionFactor(AppKit.NSTiffCompression,System.Single)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Foundation.NSData AppKit.NSColorSpace::get_ICCProfileData()' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Foundation.NSData AppKit.NSDocument::GetAsData(System.String,Foundation.NSError&)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Foundation.NSData AppKit.NSImage::AsTiff(AppKit.NSTiffCompression,System.Single)' is missing an [NullAllowed] on return type
@@ -576,7 +566,6 @@
 !missing-null-allowed! 'System.IntPtr AppKit.NSPopUpButtonCell::IndexOfItemWithTargetandAction(Foundation.NSObject,ObjCRuntime.Selector)' is missing an [NullAllowed] on parameter #1
 !missing-null-allowed! 'System.IntPtr AppKit.NSRuleEditorDelegate::NumberOfChildren(AppKit.NSRuleEditor,Foundation.NSObject,AppKit.NSRuleEditorRowType)' is missing an [NullAllowed] on parameter #1
 !missing-null-allowed! 'System.IntPtr AppKit.NSSpellChecker::CountWords(System.String,System.String)' is missing an [NullAllowed] on parameter #1
-!missing-null-allowed! 'System.String AppKit.NSBitmapImageRep::LocalizedNameForTiffCompressionType(AppKit.NSTiffCompression)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'System.String AppKit.NSBrowser::ColumnTitle(System.IntPtr)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'System.String AppKit.NSBrowserDelegate::ColumnTitle(AppKit.NSBrowser,System.IntPtr)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'System.String AppKit.NSColorList::get_Name()' is missing an [NullAllowed] on return type
@@ -1017,7 +1006,6 @@
 !missing-null-allowed! 'System.Void AppKit.NSWorkspace::RecycleUrls(Foundation.NSArray,AppKit.NSWorkspaceUrlHandler)' is missing an [NullAllowed] on parameter #1
 !missing-null-allowed! 'System.Void Foundation.NSFileWrapper::set_Icon(AppKit.NSImage)' is missing an [NullAllowed] on parameter #0
 
-!extra-null-allowed! 'Foundation.NSData AppKit.NSBitmapImageRep::RepresentationUsingTypeProperties(AppKit.NSBitmapImageFileType,Foundation.NSDictionary)' has a extraneous [NullAllowed] on parameter #1
 !extra-null-allowed! 'Foundation.NSData Foundation.NSAttributedString::GetDocFormat(Foundation.NSRange,Foundation.NSDictionary)' has a extraneous [NullAllowed] on parameter #1
 !extra-null-allowed! 'Foundation.NSData Foundation.NSAttributedString::GetRtf(Foundation.NSRange,Foundation.NSDictionary)' has a extraneous [NullAllowed] on parameter #1
 !extra-null-allowed! 'Foundation.NSData Foundation.NSAttributedString::GetRtfd(Foundation.NSRange,Foundation.NSDictionary)' has a extraneous [NullAllowed] on parameter #1
@@ -1052,9 +1040,6 @@
 !missing-null-allowed! 'System.String[] AppKit.NSSpellChecker::CompletionsForPartialWordRange(Foundation.NSRange,System.String,System.String,System.IntPtr)' is missing an [NullAllowed] on parameter #2
 !missing-null-allowed! 'System.String[] AppKit.NSSpellChecker::GuessesForWordRange(Foundation.NSRange,System.String,System.String,System.IntPtr)' is missing an [NullAllowed] on parameter #2
 !missing-null-allowed! 'System.Void AppKit.NSApplication::DiscardEvents(System.UIntPtr,AppKit.NSEvent)' is missing an [NullAllowed] on parameter #1
-!missing-null-allowed! 'System.Void AppKit.NSBitmapImageRep::Colorize(System.Runtime.InteropServices.NFloat,AppKit.NSColor,AppKit.NSColor,AppKit.NSColor)' is missing an [NullAllowed] on parameter #1
-!missing-null-allowed! 'System.Void AppKit.NSBitmapImageRep::Colorize(System.Runtime.InteropServices.NFloat,AppKit.NSColor,AppKit.NSColor,AppKit.NSColor)' is missing an [NullAllowed] on parameter #2
-!missing-null-allowed! 'System.Void AppKit.NSBitmapImageRep::Colorize(System.Runtime.InteropServices.NFloat,AppKit.NSColor,AppKit.NSColor,AppKit.NSColor)' is missing an [NullAllowed] on parameter #3
 !missing-null-allowed! 'System.Void AppKit.NSCell::EditWithFrame(CoreGraphics.CGRect,AppKit.NSView,AppKit.NSText,Foundation.NSObject,AppKit.NSEvent)' is missing an [NullAllowed] on parameter #4
 !missing-null-allowed! 'System.Void AppKit.NSDocumentController::ReviewUnsavedDocuments(System.String,System.Boolean,Foundation.NSObject,ObjCRuntime.Selector,System.IntPtr)' is missing an [NullAllowed] on parameter #2
 !missing-null-allowed! 'System.Void AppKit.NSDocumentController::ReviewUnsavedDocuments(System.String,System.Boolean,Foundation.NSObject,ObjCRuntime.Selector,System.IntPtr)' is missing an [NullAllowed] on parameter #3
@@ -1093,10 +1078,12 @@
 ## 42814697 NSViewLayerContentScaleDelegate defined in header but never used
 !missing-protocol! NSViewLayerContentScaleDelegate not bound
 
+## Bound manually because the signature conflicts with the default constructor
+!missing-selector! NSBitmapImageRep::initForIncrementalLoad not bound
+
 ## recent fox top xtro reported additional missing API (to be reviewed)
 !missing-selector! +NSBezierPath::bezierPath not bound
 !missing-selector! +NSPDFPanel::panel not bound
-!missing-selector! NSBitmapImageRep::initForIncrementalLoad not bound
 !missing-selector! NSColor::init not bound
 !missing-selector! NSObjectController::defaultFetchRequest not bound
 !missing-selector! NSPasteboard::readFileWrapper not bound

@@ -1,6 +1,6 @@
 <Documentation>
   <Docs DocId="T:SpriteKit.SKNode">
-    <summary>The building block out of which scene-graphs are made. The root of the tree is an <see cref="T:SpriteKit.SKScene" />.</summary>
+    <summary>The building block out of which scene-graphs are made. The root of the tree is an <see cref="SpriteKit.SKScene" />.</summary>
     <remarks>
       <para>
         <img href="~/SpriteKit/_images/SKNode.Hierarchy.png" alt="Class diagram of the SKNode hierarchy" />
@@ -13,45 +13,43 @@
           </listheader>
           <item>
             <term>
-              <see cref="T:SpriteKit.SKCropNode" />
+              <see cref="SpriteKit.SKCropNode" />
             </term>
             <description>Uses a mask to crop its children.</description>
           </item>
           <item>
             <term>
-              <see cref="T:SpriteKit.SKEffectNode" />
+              <see cref="SpriteKit.SKEffectNode" />
             </term>
-            <description>Applies a <see cref="T:CoreImage.CIFilter" /> to its children.</description>
+            <description>Applies a <see cref="CoreImage.CIFilter" /> to its children.</description>
           </item>
           <item>
             <term>
-              <see cref="T:SpriteKit.SKEmitterNode" />
+              <see cref="SpriteKit.SKEmitterNode" />
             </term>
             <description>Produces and displays particles.</description>
           </item>
           <item>
             <term>
-              <see cref="T:SpriteKit.SKLabelNode" />
+              <see cref="SpriteKit.SKLabelNode" />
             </term>
             <description>Displays text.</description>
           </item>
           <item>
             <term>
-              <format type="text/html">
-                <a href="https://docs.microsoft.com/en-us/search/index?search=Sprite%20Kit%20SKScene%20Node&amp;scope=Xamarin" title="T:SpriteKit.SKSceneNode">T:SpriteKit.SKSceneNode</a>
-              </format>
+              <see cref="SpriteKit.SKSceneNode" />
             </term>
             <description>Runs an animation loop, including display, actions, and physics.</description>
           </item>
           <item>
             <term>
-              <see cref="T:SpriteKit.SKShapeNode" />
+              <see cref="SpriteKit.SKShapeNode" />
             </term>
-            <description>Displays a <see cref="T:CoreGraphics.CGPath" />-based shape.</description>
+            <description>Displays a <see cref="CoreGraphics.CGPath" />-based shape.</description>
           </item>
           <item>
             <term>
-              <see cref="T:SpriteKit.SKSpriteNode" />
+              <see cref="SpriteKit.SKSpriteNode" />
             </term>
             <description>Displays a textured sprite.</description>
           </item>

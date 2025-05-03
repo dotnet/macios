@@ -62,7 +62,7 @@ namespace Foundation {
 		{
 		}
 
-		/// <typeparam name="T">Strongly typed version of the array that you want to get, must be a class that derives from <see cref="T:Foundation.NSObject" />.</typeparam>
+		/// <typeparam name="T">Strongly typed version of the array that you want to get, must be a class that derives from <see cref="Foundation.NSObject" />.</typeparam>
 		///         <summary>Returns the contents of the set as a strongly typed array.</summary>
 		///         <returns>An array of type T with the contents of the set.</returns>
 		///         <remarks>

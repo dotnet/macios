@@ -175,10 +175,10 @@ namespace NewsstandKit {
 		//
 		// Notifications
 		//
-		/// <summary>Notification posted by the <see cref="T:NewsstandKit.NKIssue" /> class.</summary>
+		/// <summary>Notification posted by the <see cref="NewsstandKit.NKIssue" /> class.</summary>
 		///     <remarks>
-		///       <para>This is a static class which contains various helper methods that allow developers to observe events posted in the iOS notification hub (<see cref="T:Foundation.NSNotificationCenter" />).</para>
-		///       <para>The methods defined in this class post events invoke the provided method or lambda with a <see cref="T:Foundation.NSNotificationEventArgs" /> parameter which contains strongly typed properties for the notification arguments.</para>
+		///       <para>This is a static class which contains various helper methods that allow developers to observe events posted in the iOS notification hub (<see cref="Foundation.NSNotificationCenter" />).</para>
+		///       <para>The methods defined in this class post events invoke the provided method or lambda with a <see cref="Foundation.NSNotificationEventArgs" /> parameter which contains strongly typed properties for the notification arguments.</para>
 		///     </remarks>
 		public static partial class Notifications {
 			/// <include file="../../docs/api/NewsstandKit.NKIssue/Notifications.xml" path="/Documentation/Docs[@DocId='M:NewsstandKit.NKIssue.Notifications.ObserveDownloadCompleted(System.EventHandler{Foundation.NSNotificationEventArgs})']/*" />
@@ -194,7 +194,7 @@ namespace NewsstandKit {
 		}
 	} /* class NKIssue */
 
-	/// <summary>An enumeration whose values specify the <see cref="P:NewsstandKit.NKIssue.Status" /> property of a <see cref="T:NewsstandKit.NKIssue" /> object.</summary>
+	/// <summary>An enumeration whose values specify the <see cref="NewsstandKit.NKIssue.Status" /> property of a <see cref="NewsstandKit.NKIssue" /> object.</summary>
 	///     <remarks>To be added.</remarks>
 	[EditorBrowsable (EditorBrowsableState.Never)]
 	[Obsolete ("The NewsstandKit framework has been removed from iOS.")]
@@ -207,7 +207,7 @@ namespace NewsstandKit {
 		Available = 2,
 	}
 
-	/// <summary>A collection of <see cref="T:NewsstandKit.NKIssue" />s.</summary>
+	/// <summary>A collection of <see cref="NewsstandKit.NKIssue" />s.</summary>
 	///     <remarks>To be added.</remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/StoreKit/Reference/NKLibrary_Class/index.html">Apple documentation for <c>NKLibrary</c></related>
 	[EditorBrowsable (EditorBrowsableState.Never)]

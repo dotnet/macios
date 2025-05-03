@@ -5,7 +5,7 @@ using System;
 
 namespace HealthKit {
 	// NSInteger -> HKDefines.h
-	/// <summary>Enumerates the frequences for background delivery of data (see <see cref="M:HealthKit.HKHealthStore.EnableBackgroundDelivery(HealthKit.HKObjectType,HealthKit.HKUpdateFrequency,System.Action{System.Boolean,Foundation.NSError})" />).</summary>
+	/// <summary>Enumerates the frequences for background delivery of data (see <see cref="HealthKit.HKHealthStore.EnableBackgroundDelivery(HealthKit.HKObjectType,HealthKit.HKUpdateFrequency,System.Action{System.Boolean,Foundation.NSError})" />).</summary>
 	[Mac (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -132,7 +132,7 @@ namespace HealthKit {
 	}
 
 	// NSInteger -> HKObjectType.h
-	/// <summary>Enumerates whether an <see cref="T:HealthKit.HKQuantityType" /> is a cumulative measure (for instance, "active energy burned") or a discrete value (such as "blood alcohol content").</summary>
+	/// <summary>Enumerates whether an <see cref="HealthKit.HKQuantityType" /> is a cumulative measure (for instance, "active energy burned") or a discrete value (such as "blood alcohol content").</summary>
 	[Mac (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -176,7 +176,7 @@ namespace HealthKit {
 	}
 
 	// NSUInteger -> HKQuery.h
-	/// <summary>Enumerates options available for use with the <see cref="M:HealthKit.HKQuery.GetPredicateForSamples(Foundation.NSDate,Foundation.NSDate,HealthKit.HKQueryOptions)" /> method.</summary>
+	/// <summary>Enumerates options available for use with the <see cref="HealthKit.HKQuery.GetPredicateForSamples(Foundation.NSDate,Foundation.NSDate,HealthKit.HKQueryOptions)" /> method.</summary>
 	[Mac (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -191,7 +191,7 @@ namespace HealthKit {
 	}
 
 	// NSUInteger -> HKStatistics.h
-	/// <summary>Enumerates options applicable to <see cref="T:HealthKit.HKStatisticsQuery" /> and <see cref="T:HealthKit.HKStatisticsCollectionQuery" /> objets.</summary>
+	/// <summary>Enumerates options applicable to <see cref="HealthKit.HKStatisticsQuery" /> and <see cref="HealthKit.HKStatisticsCollectionQuery" /> objets.</summary>
 	[Mac (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -218,7 +218,7 @@ namespace HealthKit {
 	}
 
 	// NSInteger -> HKUnit.h
-	/// <summary>Enumerates metric prefixes, e.g., Centi-, Deca-, Deci-. Used with factory methods of <see cref="T:HealthKit.HKUnit" />.</summary>
+	/// <summary>Enumerates metric prefixes, e.g., Centi-, Deca-, Deci-. Used with factory methods of <see cref="HealthKit.HKUnit" />.</summary>
 	[Mac (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]

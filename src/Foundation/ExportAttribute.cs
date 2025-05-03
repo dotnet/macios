@@ -41,7 +41,7 @@ namespace Foundation {
 	/// <summary>Exports a method or property to the Objective-C world.</summary>
 	///     <remarks>
 	///       <para>
-	/// This attribute is applied to properties and methods in classes that derive from <see cref="T:Foundation.NSObject" /> to export the value to the Objective-C world.    This can be used either to respond to messages or to override an Objective-C method.
+	/// This attribute is applied to properties and methods in classes that derive from <see cref="Foundation.NSObject" /> to export the value to the Objective-C world.    This can be used either to respond to messages or to override an Objective-C method.
 	/// </para>
 	///       <example>
 	///         <code lang="csharp lang-csharp"><![CDATA[

@@ -9,7 +9,7 @@ using Foundation;
 using ObjCRuntime;
 
 namespace CFNetwork {
-	/// <summary>A <see cref="T:CoreFoundation.CFReadStream" /> that reads HTTP stream data.</summary>
+	/// <summary>A <see cref="CoreFoundation.CFReadStream" /> that reads HTTP stream data.</summary>
 	[Partial]
 	interface CFHTTPStream {
 

@@ -437,7 +437,7 @@ namespace ObjCRuntime {
 			var smart_type = value.GetType ();
 			MethodBase getConstantMethod, getValueMethod;
 			if (!Registrar.IsSmartEnum (smart_type, out getConstantMethod, out getValueMethod))
-				throw ErrorHelper.CreateError (8024, $"Could not find a valid extension type for the smart enum '{smart_type.FullName}'. Please file a bug at https://github.com/xamarin/xamarin-macios/issues/new.");
+				throw ErrorHelper.CreateError (8024, $"Could not find a valid extension type for the smart enum '{smart_type.FullName}'. Please file a bug at https://github.com/dotnet/macios/issues/new.");
 			var rv = (NSString?) ((MethodInfo) getConstantMethod).Invoke (null, new object [] { value });
 			if (rv is null)
 				return IntPtr.Zero;
@@ -456,7 +456,7 @@ namespace ObjCRuntime {
 			var str = GetNSObject<NSString> (value)!;
 			MethodBase getConstantMethod, getValueMethod;
 			if (!Registrar.IsSmartEnum (smart_type, out getConstantMethod, out getValueMethod))
-				throw ErrorHelper.CreateError (8024, $"Could not find a valid extension type for the smart enum '{smart_type.FullName}'. Please file a bug at https://github.com/xamarin/xamarin-macios/issues/new.");
+				throw ErrorHelper.CreateError (8024, $"Could not find a valid extension type for the smart enum '{smart_type.FullName}'. Please file a bug at https://github.com/dotnet/macios/issues/new.");
 			var rv = ((MethodInfo) getValueMethod).Invoke (null, new object [] { str });
 			return AllocGCHandle (rv);
 		}
@@ -1421,7 +1421,7 @@ namespace ObjCRuntime {
 		}
 
 		// The generic argument T is only used to cast the return value.
-		static T? ConstructINativeObject<T> (IntPtr ptr, bool owns, Type type, MissingCtorResolution missingCtorResolution, IntPtr sel, RuntimeMethodHandle method_handle) where T : class, INativeObject
+		static T? ConstructINativeObject<T> (IntPtr ptr, bool owns, Type type, MissingCtorResolution missingCtorResolution, IntPtr sel, RuntimeMethodHandle method_handle) where T : INativeObject
 		{
 			if (type is null)
 				throw new ArgumentNullException (nameof (type));
@@ -1431,7 +1431,7 @@ namespace ObjCRuntime {
 
 			if (Runtime.IsManagedStaticRegistrar) {
 				var nativeHandle = new NativeHandle (ptr);
-				T? instance = null;
+				T? instance = default (T);
 
 				// We want to create an instance of `type` and if we have the chance to use the factory method
 				// on the generic type, we will prefer it to using the lookup table.
@@ -1446,7 +1446,7 @@ namespace ObjCRuntime {
 				// fall back to the lookup tables and we need to stop here.
 				if (type.IsGenericType && instance is null) {
 					CannotCreateManagedInstanceOfGenericType (ptr, IntPtr.Zero, type, missingCtorResolution, sel, method_handle);
-					return null;
+					return default (T);
 				}
 
 				// If we couldn't create an instance of T through the factory method, we'll use the lookup table
@@ -1481,7 +1481,7 @@ namespace ObjCRuntime {
 
 			if (ctor is null) {
 				MissingCtor (ptr, IntPtr.Zero, type, missingCtorResolution, sel, method_handle);
-				return null;
+				return default (T);
 			}
 
 			var ctorArguments = new object [2];
@@ -1501,7 +1501,12 @@ namespace ObjCRuntime {
 			//
 			// When the same call is made from a separate function, it works fine.
 			static T? ConstructINativeObjectViaFactoryMethod (NativeHandle nativeHandle, bool owns)
-				=> T._Xamarin_ConstructINativeObject (nativeHandle, owns) as T;
+			{
+				var rv = T._Xamarin_ConstructINativeObject (nativeHandle, owns);
+				if (rv is T t)
+					return t;
+				return default (T);
+			}
 		}
 
 		static IntPtr CreateNSObject (IntPtr type_gchandle, IntPtr handle, NSObject.Flags flags)
@@ -1956,29 +1961,28 @@ namespace ObjCRuntime {
 		///         <remarks>
 		///           <para>Returns an instance of the specified type even if the native object is not in the class hierarchy of type (there are no type checks).</para>
 		///         </remarks>
-		public static T? GetINativeObject<T> (IntPtr ptr, bool owns) where T : class, INativeObject
+		public static T? GetINativeObject<T> (IntPtr ptr, bool owns) where T : INativeObject
 		{
 			return GetINativeObject<T> (ptr, false, owns);
 		}
 
-		public static T? GetINativeObject<T> (IntPtr ptr, bool forced_type, bool owns) where T : class, INativeObject
+		public static T? GetINativeObject<T> (IntPtr ptr, bool forced_type, bool owns) where T : INativeObject
 		{
 			return GetINativeObject<T> (ptr, forced_type, null, owns);
 		}
 
-		internal static T? GetINativeObject<T> (IntPtr ptr, bool forced_type, Type? implementation, bool owns) where T : class, INativeObject
+		internal static T? GetINativeObject<T> (IntPtr ptr, bool forced_type, Type? implementation, bool owns) where T : INativeObject
 		{
 			return GetINativeObject<T> (ptr, forced_type, implementation, owns, IntPtr.Zero, default (RuntimeMethodHandle));
 		}
 
-		static T? GetINativeObject<T> (IntPtr ptr, bool forced_type, Type? implementation, bool owns, IntPtr sel, RuntimeMethodHandle method_handle) where T : class, INativeObject
+		static T? GetINativeObject<T> (IntPtr ptr, bool forced_type, Type? implementation, bool owns, IntPtr sel, RuntimeMethodHandle method_handle) where T : INativeObject
 		{
 			if (ptr == IntPtr.Zero)
-				return null;
+				return default (T);
 
 			var o = TryGetNSObject (ptr, evenInFinalizerQueue: false);
-			var t = o as T;
-			if (t is not null) {
+			if (o is T t) {
 				// found an existing object with the right type.
 				if (owns)
 					TryReleaseINativeObject (t);

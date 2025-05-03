@@ -66,7 +66,7 @@ namespace Foundation {
 		///           <para>
 		///           </para>
 		///         </param>
-		/// <summary>Indexer, returns the <see cref="T:Foundation.NSObject" /> associated with the given key.</summary>
+		/// <summary>Indexer, returns the <see cref="Foundation.NSObject" /> associated with the given key.</summary>
 		/// <value>The NSObject that was stored with the specific key, or <see langword="null" />if the stored value is not present.</value>
 		/// <remarks>
 		///           <para />

@@ -129,6 +129,7 @@ steps:
     TESTS_EXTRA_ARGUMENTS: ${{ parameters.testsLabels }}
     USE_TCP_TUNNEL: 'true'
     PARAMETERS_TESTPREFIX: '${{ parameters.testPrefix }}'
+    IS_PR: $(parameters.isPr)
   workingDirectory: $(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)
   displayName: 'Run tests'
   name: runTests # not to be confused with the displayName, this is used to later use the name of the step to access the output variables from an other job

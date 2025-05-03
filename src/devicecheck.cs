@@ -43,14 +43,14 @@ namespace DeviceCheck {
 		[Export ("currentDevice")]
 		DCDevice CurrentDevice { get; }
 
-		/// <summary>Gets a Boolean value that tells whether the <see cref="P:DeviceCheck.DCDevice.CurrentDevice" /> supports the DeviceCheck API.</summary>
+		/// <summary>Gets a Boolean value that tells whether the <see cref="DeviceCheck.DCDevice.CurrentDevice" /> supports the DeviceCheck API.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("supported")]
 		bool Supported { [Bind ("isSupported")] get; }
 
 		[Async (XmlDocs = """
-			<summary>Generates an identification token for <see cref="P:DeviceCheck.DCDevice.CurrentDevice" /> and runs a handlere after the operation is complete.</summary>
+			<summary>Generates an identification token for <see cref="DeviceCheck.DCDevice.CurrentDevice" /> and runs a handlere after the operation is complete.</summary>
 			<returns>
 			          <para>A task that represents the asynchronous GenerateToken operation.   The value of the TResult parameter is a DeviceCheck.DCDeviceGenerateTokenCompletionHandler.</para>
 			        </returns>

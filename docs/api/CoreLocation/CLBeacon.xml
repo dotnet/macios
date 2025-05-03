@@ -3,7 +3,7 @@
     <summary>Represents a local-area device that can be used for fine-grained location monitoring.</summary>
     <remarks>
       <para>Beacons are Bluetooth (often Bluetooth LE) devices that can be detected by apps. Currently, beacons are iOS devices, but Apple has stated that they intend to release a Bluetooth profile for beacons. (Current non-Apple iBeacon devices use formats apparently based on reverse-engineered signals.) </para>
-      <para>Beacons can be used to created <see cref="T:CoreLocation.CLRegion" />s that can be monitored for entry and exit, as shown in the following code:</para>
+      <para>Beacons can be used to created <see cref="CoreLocation.CLRegion" />s that can be monitored for entry and exit, as shown in the following code:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
 locationManager = new CLLocationManager();
@@ -18,7 +18,7 @@ locationManager.RegionEntered += (s,e) => {
 locationManager.StartMonitoring(beaconRegion);            
             ]]></code>
       </example>
-      <para>iBeacons also support "ranging" for determining physical proximity with a higher precision with the <see cref="P:CoreLocation.CLBeacon.Proximity" /> property. The following example shows the basic use of ranging:</para>
+      <para>iBeacons also support "ranging" for determining physical proximity with a higher precision with the <see cref="CoreLocation.CLBeacon.Proximity" /> property. The following example shows the basic use of ranging:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
 locationManager.StartRangingBeacons(beaconRegion);
@@ -55,7 +55,7 @@ locationManager.DidRangeBeacons.Add(fun rangeEvents ->
 locationManager.StartRangingBeacons(beaconRegion)       
         ]]></code>
       </example>
-      <para>Applications can broadcast themselves as beacons by passing the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Location%20CLBeacon%20Region%20Peripheral%20Data&amp;scope=Xamarin" title="P:CoreLocation.CLBeaconRegion.PeripheralData">P:CoreLocation.CLBeaconRegion.PeripheralData</a></format> property of a <see cref="T:CoreLocation.CLBeaconRegion" /> to <see cref="M:CoreBluetooth.CBPeripheralManager.StartAdvertising(Foundation.NSDictionary)" />.</para>
+      <para>Applications can broadcast themselves as beacons by passing the <see cref="CoreLocation.CLBeaconRegion.PeripheralData" /> property of a <see cref="CoreLocation.CLBeaconRegion" /> to <see cref="CoreBluetooth.CBPeripheralManager.StartAdvertising(Foundation.NSDictionary)" />.</para>
     </remarks>
     <related type="article" href="https://blog.xamarin.com/play-find-the-monkey-with-ios7-ibeacons">Play 'Find the Monkey' with iOS 7 iBeacons</related>
     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CoreLocation/Reference/CLBeacon_class/index.html">Apple documentation for <c>CLBeacon</c></related>

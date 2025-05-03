@@ -58,7 +58,7 @@ namespace CoreText {
 	}
 	#endregion
 
-	/// <summary>Provides the ability to override the Unicode-to-glyph mapping for a <see cref="T:CoreText.CTFont" />.</summary>
+	/// <summary>Provides the ability to override the Unicode-to-glyph mapping for a <see cref="CoreText.CTFont" />.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]

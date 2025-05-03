@@ -17,13 +17,13 @@ namespace Contacts {
 	/// <summary>Enumerates properties of social services that are always fetched.</summary>
 	///     <remarks>To be added.</remarks>
 	public enum CNSocialProfileOption {
-		/// <summary>Associated with the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Contacts%20CNSocial%20Service%20Url%20String&amp;scope=Xamarin" title="P:Contacts.CNSocialService.UrlString">P:Contacts.CNSocialService.UrlString</a></format> property.</summary>
+		/// <summary>Associated with the <see cref="Contacts.CNSocialProfileKey.UrlString" /> property.</summary>
 		UrlString,
-		/// <summary>Associated with the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Contacts%20CNSocial%20Service%20Username&amp;scope=Xamarin" title="P:Contacts.CNSocialService.Username">P:Contacts.CNSocialService.Username</a></format> property.</summary>
+		/// <summary>Associated with the <see cref="Contacts.CNSocialProfileKey.Username" /> property.</summary>
 		Username,
-		/// <summary>Associated with the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Contacts%20CNSocial%20Service%20User%20Identifier&amp;scope=Xamarin" title="P:Contacts.CNSocialService.UserIdentifier">P:Contacts.CNSocialService.UserIdentifier</a></format> property.</summary>
+		/// <summary>Associated with the <see cref="Contacts.CNSocialProfileKey.UserIdentifier" /> property.</summary>
 		UserIdentifier,
-		/// <summary>Associated with the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Contacts%20CNSocial%20Service%20Service&amp;scope=Xamarin" title="P:Contacts.CNSocialService.Service">P:Contacts.CNSocialService.Service</a></format> property.</summary>
+		/// <summary>Associated with the <see cref="Contacts.CNSocialProfileKey.Service" /> property.</summary>
 		Service,
 	}
 

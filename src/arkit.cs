@@ -42,7 +42,7 @@ using NativeHandle = System.IntPtr;
 
 namespace ARKit {
 
-	/// <summary>Enumerates the quality of real-world tracking in an augmented-reality <see cref="T:ARKit.ARSession" />.</summary>
+	/// <summary>Enumerates the quality of real-world tracking in an augmented-reality <see cref="ARKit.ARSession" />.</summary>
 	[NoTV, NoMac]
 	[Native]
 	public enum ARTrackingState : long {
@@ -54,11 +54,11 @@ namespace ARKit {
 		Normal,
 	}
 
-	/// <summary>Enumerates the causes of <see cref="F:ARKit.ARTrackingState.Limited" />.</summary>
+	/// <summary>Enumerates the causes of <see cref="ARKit.ARTrackingState.Limited" />.</summary>
 	[NoTV, NoMac]
 	[Native]
 	public enum ARTrackingStateReason : long {
-		/// <summary>Either tracking is <see cref="F:ARKit.ARTrackingState.Normal" /> or the reason for poor tracking cannot be determined.</summary>
+		/// <summary>Either tracking is <see cref="ARKit.ARTrackingState.Normal" /> or the reason for poor tracking cannot be determined.</summary>
 		None,
 		/// <summary>ARKit is still starting up.</summary>
 		Initializing,
@@ -70,12 +70,12 @@ namespace ARKit {
 		Relocalizing,
 	}
 
-	/// <summary>Enumerate causes for an <see cref="T:ARKit.ARSession" /> failure.</summary>
+	/// <summary>Enumerate causes for an <see cref="ARKit.ARSession" /> failure.</summary>
 	[NoTV, NoMac]
 	[ErrorDomain ("ARErrorDomain")]
 	[Native]
 	public enum ARErrorCode : long {
-		/// <summary>The requested <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=ARKit%20ARSession%20Configuration&amp;scope=Xamarin" title="T:ARKit.ARSessionConfiguration">T:ARKit.ARSessionConfiguration</a></format> is not compatible with the device.</summary>
+		/// <summary>The requested <see cref="ARKit.ARSessionConfiguration" /> is not compatible with the device.</summary>
 		UnsupportedConfiguration = 100,
 		/// <summary>A suitable capture device could not be found.</summary>
 		SensorUnavailable = 101,
@@ -113,12 +113,12 @@ namespace ARKit {
 		RequestFailed = 501,
 	}
 
-	/// <summary>Enumerates the kinds of objects detected by the <see cref="M:ARKit.ARFrame.HitTest(CoreGraphics.CGPoint,ARKit.ARHitTestResultType)" /> method.</summary>
+	/// <summary>Enumerates the kinds of objects detected by the <see cref="ARKit.ARFrame.HitTest(CoreGraphics.CGPoint,ARKit.ARHitTestResultType)" /> method.</summary>
 	[NoTV, NoMac]
 	[Flags]
 	[Native]
 	public enum ARHitTestResultType : ulong {
-		/// <summary>A point detected by image processing that appears to be on a continuous surface but does not have an <see cref="T:ARKit.ARAnchor" />.</summary>
+		/// <summary>A point detected by image processing that appears to be on a continuous surface but does not have an <see cref="ARKit.ARAnchor" />.</summary>
 		FeaturePoint = 1 << 0,
 		/// <summary>A real-world horizontal plane detected by image analysis.</summary>
 		EstimatedHorizontalPlane = 1 << 1,
@@ -132,7 +132,7 @@ namespace ARKit {
 		ExistingPlaneUsingGeometry = 1 << 5,
 	}
 
-	/// <summary>The orientation of an <see cref="T:ARKit.ARPlaneAnchor" /> (Currently restricted to horizontal).</summary>
+	/// <summary>The orientation of an <see cref="ARKit.ARPlaneAnchor" /> (Currently restricted to horizontal).</summary>
 	[NoTV, NoMac]
 	[Native]
 	public enum ARPlaneAnchorAlignment : long {
@@ -142,16 +142,16 @@ namespace ARKit {
 		Vertical,
 	}
 
-	/// <summary>Enumerates options in calls to <see cref="M:ARKit.ARSession.Run(ARKit.ARConfiguration,ARKit.ARSessionRunOptions)" />.</summary>
+	/// <summary>Enumerates options in calls to <see cref="ARKit.ARSession.Run(ARKit.ARConfiguration,ARKit.ARSessionRunOptions)" />.</summary>
 	[NoTV, NoMac]
 	[Flags]
 	[Native]
 	public enum ARSessionRunOptions : ulong {
 		/// <summary>To be added.</summary>
 		None = 0,
-		/// <summary>The <see cref="T:ARKit.ARSession" /> should reset its world-tracking.</summary>
+		/// <summary>The <see cref="ARKit.ARSession" /> should reset its world-tracking.</summary>
 		ResetTracking = 1 << 0,
-		/// <summary>The <see cref="T:ARKit.ARSession" /> should remove any existing <see cref="T:ARKit.ARAnchor" /> objects.</summary>
+		/// <summary>The <see cref="ARKit.ARSession" /> should remove any existing <see cref="ARKit.ARAnchor" /> objects.</summary>
 		RemoveExistingAnchors = 1 << 1,
 		StopTrackedRaycasts = 1 << 2,
 		[iOS (13, 4)]
@@ -183,15 +183,15 @@ namespace ARKit {
 		Vertical = 1 << 1,
 	}
 
-	/// <summary>Enumerates environmental texturing strategies used with <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=ARKit%20ARWorld%20Tracking%20Probe%20Anchor&amp;scope=Xamarin" title="T:ARKit.ARWorldTrackingProbeAnchor">T:ARKit.ARWorldTrackingProbeAnchor</a></format> objects.</summary>
+	/// <summary>Enumerates environmental texturing strategies used with <see cref="ARKit.ARWorldTrackingProbeAnchor" /> objects.</summary>
 	[NoTV, NoMac]
 	[Native]
 	public enum AREnvironmentTexturing : long {
 		/// <summary>Environmental texture-map generation is not in use.</summary>
 		None,
-		/// <summary>The developer creates and places <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=ARKit%20ARWorld%20Tracking%20Probe%20Anchor&amp;scope=Xamarin" title="T:ARKit.ARWorldTrackingProbeAnchor">T:ARKit.ARWorldTrackingProbeAnchor</a></format> objects.</summary>
+		/// <summary>The developer creates and places <see cref="ARKit.ARWorldTrackingProbeAnchor" /> objects.</summary>
 		Manual,
-		/// <summary>The system automatically creates and places <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=ARKit%20ARWorld%20Tracking%20Probe%20Anchor&amp;scope=Xamarin" title="T:ARKit.ARWorldTrackingProbeAnchor">T:ARKit.ARWorldTrackingProbeAnchor</a></format> objects. .</summary>
+		/// <summary>The system automatically creates and places <see cref="ARKit.ARWorldTrackingProbeAnchor" /> objects. .</summary>
 		Automatic,
 	}
 
@@ -484,7 +484,7 @@ namespace ARKit {
 
 	/// <summary>A frame in an augmented-reality session.</summary>
 	///     <remarks>
-	///       <para>Developers can retrieve the current <see cref="T:ARKit.ARFrame" /> from <see cref="P:ARKit.ARSession.CurrentFrame" /> or by implementing <see cref="M:ARKit.ARSessionDelegate_Extensions.DidUpdateFrame(ARKit.IARSessionDelegate,ARKit.ARSession,ARKit.ARFrame)" />. </para>
+	///       <para>Developers can retrieve the current <see cref="ARKit.ARFrame" /> from <see cref="ARKit.ARSession.CurrentFrame" /> or by implementing <see cref="ARKit.ARSessionDelegate_Extensions.DidUpdateFrame(ARKit.IARSessionDelegate,ARKit.ARSession,ARKit.ARFrame)" />. </para>
 	///     </remarks>
 	[NoTV, NoMac]
 	[BaseType (typeof (NSObject))]
@@ -567,7 +567,7 @@ namespace ARKit {
 		NSDictionary<NSString, NSObject> ExifData { get; }
 	}
 
-	/// <summary>A result generated by the <see cref="M:ARKit.ARFrame.HitTest(CoreGraphics.CGPoint,ARKit.ARHitTestResultType)" /> method.</summary>
+	/// <summary>A result generated by the <see cref="ARKit.ARFrame.HitTest(CoreGraphics.CGPoint,ARKit.ARHitTestResultType)" /> method.</summary>
 	[Deprecated (PlatformName.iOS, 14, 0, message: "Use Raycasting methods over HitTestResult ones.")]
 	[NoTV, NoMac]
 	[BaseType (typeof (NSObject))]
@@ -598,7 +598,7 @@ namespace ARKit {
 
 	/// <summary>An estimate of the real-world lighting environment.</summary>
 	///     <remarks>
-	///       <para>Developers who are doing their own rendering can use this information to inform their augmented-reality lighting decisions. <see cref="T:ARKit.ARSCNView" /> objects that display SceneKit objects automatically take this value into account for their own rendering.</para>
+	///       <para>Developers who are doing their own rendering can use this information to inform their augmented-reality lighting decisions. <see cref="ARKit.ARSCNView" /> objects that display SceneKit objects automatically take this value into account for their own rendering.</para>
 	///     </remarks>
 	[NoTV, NoMac]
 	[BaseType (typeof (NSObject))]
@@ -612,7 +612,7 @@ namespace ARKit {
 		nfloat AmbientColorTemperature { get; }
 	}
 
-	/// <summary>A subclass of <see cref="T:ARKit.ARAnchor" /> used to represent real-world flat surfaces.</summary>
+	/// <summary>A subclass of <see cref="ARKit.ARAnchor" /> used to represent real-world flat surfaces.</summary>
 	[NoTV, NoMac]
 	[BaseType (typeof (ARAnchor))]
 	[DisableDefaultCtor]
@@ -707,7 +707,7 @@ namespace ARKit {
 
 	/// <summary>A set of 3-dimensional points, indicating image-processing's belief in a fixed real-world point on a physical surface.</summary>
 	///     <remarks>
-	///       <para>Developers can visualize this data in a <see cref="T:ARKit.ARSCNView" /> by setting <see cref="P:ARKit.ARSCNDebugOptions.ShowFeaturePoints" /> to <see langword="true" />.</para>
+	///       <para>Developers can visualize this data in a <see cref="ARKit.ARSCNView" /> by setting <see cref="ARKit.ARSCNDebugOptions.ShowFeaturePoints" /> to <see langword="true" />.</para>
 	///     </remarks>
 	[NoTV, NoMac]
 	[BaseType (typeof (NSObject))]
@@ -799,7 +799,7 @@ namespace ARKit {
 		bool IsVideoHdrSupported { [Bind ("isVideoHDRSupported")] get; }
 	}
 
-	/// <summary>A subclass of <see cref="T:SceneKit.SCNView" /> that supports augmented-reality content.</summary>
+	/// <summary>A subclass of <see cref="SceneKit.SCNView" /> that supports augmented-reality content.</summary>
 	[NoTV, NoMac]
 	[BaseType (typeof (SCNView))]
 	interface ARSCNView : ARSessionProviding {
@@ -847,15 +847,15 @@ namespace ARKit {
 		ARRaycastQuery CreateRaycastQuery (CGPoint point, ARRaycastTarget target, ARRaycastTargetAlignment alignment);
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:ARKit.ARSCNViewDelegate" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="ARKit.ARSCNViewDelegate" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:ARKit.ARSCNViewDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:ARKit.ARSCNViewDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:ARKit.ARSCNViewDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="ARKit.ARSCNViewDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="ARKit.ARSCNViewDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="ARKit.ARSCNViewDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	interface IARSCNViewDelegate { }
 
-	/// <summary>Delegate object for <see cref="T:ARKit.ARSCNView" /> objects.</summary>
+	/// <summary>Delegate object for <see cref="ARKit.ARSCNView" /> objects.</summary>
 	[NoTV, NoMac]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
@@ -863,7 +863,7 @@ namespace ARKit {
 
 		/// <param name="renderer">The renderer for the scene.</param>
 		/// <param name="anchor">The anchor for the node to get.</param>
-		/// <summary>Retrieves the <see cref="T:SceneKit.SCNNode" /> corresponding to the specified <paramref name="anchor" />.</summary>
+		/// <summary>Retrieves the <see cref="SceneKit.SCNNode" /> corresponding to the specified <paramref name="anchor" />.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[Export ("renderer:nodeForAnchor:")]
@@ -873,7 +873,7 @@ namespace ARKit {
 		/// <param name="renderer">The renderer for the event.</param>
 		/// <param name="node">The node that was added.</param>
 		/// <param name="anchor">The anchor for the node that was added.</param>
-		/// <summary>Developers may override this method to react to the adding of a <see cref="T:SceneKit.SCNNode" /> that corresponds to a new <see cref="T:ARKit.ARAnchor" />.</summary>
+		/// <summary>Developers may override this method to react to the adding of a <see cref="SceneKit.SCNNode" /> that corresponds to a new <see cref="ARKit.ARAnchor" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Export ("renderer:didAddNode:forAnchor:")]
 		void DidAddNode (ISCNSceneRenderer renderer, SCNNode node, ARAnchor anchor);
@@ -903,7 +903,7 @@ namespace ARKit {
 		void DidRemoveNode (ISCNSceneRenderer renderer, SCNNode node, ARAnchor anchor);
 	}
 
-	/// <summary>A subclass of <see cref="T:SpriteKit.SKView" /> that places Sprite Kit objects in an augmented-reality session.</summary>
+	/// <summary>A subclass of <see cref="SpriteKit.SKView" /> that places Sprite Kit objects in an augmented-reality session.</summary>
 	[NoTV, NoMac]
 	[BaseType (typeof (SKView))]
 	interface ARSKView : ARSessionProviding {
@@ -928,15 +928,15 @@ namespace ARKit {
 		ARHitTestResult [] HitTest (CGPoint point, ARHitTestResultType types);
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:ARKit.ARSKViewDelegate" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="ARKit.ARSKViewDelegate" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:ARKit.ARSKViewDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:ARKit.ARSKViewDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:ARKit.ARSKViewDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="ARKit.ARSKViewDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="ARKit.ARSKViewDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="ARKit.ARSKViewDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	interface IARSKViewDelegate { }
 
-	/// <summary>Delegate object allowing the developer to respond to events relating to a <see cref="T:ARKit.ARSKView" />.</summary>
+	/// <summary>Delegate object allowing the developer to respond to events relating to a <see cref="ARKit.ARSKView" />.</summary>
 	[NoTV, NoMac]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
@@ -944,7 +944,7 @@ namespace ARKit {
 
 		/// <param name="view">The view that is rendering the scene.</param>
 		/// <param name="anchor">The anchor for the node to get.</param>
-		/// <summary>Retrieves the <see cref="T:SpriteKit.SKNode" /> corresponding to the specified <paramref name="anchor" />. If no corresponding node exists, returns <see langword="null" />.</summary>
+		/// <summary>Retrieves the <see cref="SpriteKit.SKNode" /> corresponding to the specified <paramref name="anchor" />. If no corresponding node exists, returns <see langword="null" />.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[Export ("view:nodeForAnchor:")]
@@ -954,7 +954,7 @@ namespace ARKit {
 		/// <param name="view">The view that is rendering the scene.</param>
 		/// <param name="node">The node that was added.</param>
 		/// <param name="anchor">The anchor for the node that was added.</param>
-		/// <summary>Developers may override this method to react to the adding of a <see cref="T:SpriteKit.SKNode" /> that corresponds to a new <see cref="T:ARKit.ARAnchor" />.</summary>
+		/// <summary>Developers may override this method to react to the adding of a <see cref="SpriteKit.SKNode" /> that corresponds to a new <see cref="ARKit.ARAnchor" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Export ("view:didAddNode:forAnchor:")]
 		void DidAddNode (ARSKView view, SKNode node, ARAnchor anchor);
@@ -1072,7 +1072,7 @@ namespace ARKit {
 		void CaptureHighResolutionFrame (Action<ARFrame, NSError> handler);
 	}
 
-	/// <summary>Interface defining methods that respond to events in an <see cref="T:ARKit.ARSession" />.</summary>
+	/// <summary>Interface defining methods that respond to events in an <see cref="ARKit.ARSession" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[NoTV, NoMac]
 	[Protocol]
@@ -1087,7 +1087,7 @@ namespace ARKit {
 
 		/// <param name="session">The session that is supplying the information for the event.</param>
 		/// <param name="camera">The camera whose tracking state changed.</param>
-		/// <summary>Called when the <see cref="P:ARKit.ARCamera.TrackingState" /> changes, indicating a change in tracking quality.</summary>
+		/// <summary>Called when the <see cref="ARKit.ARCamera.TrackingState" /> changes, indicating a change in tracking quality.</summary>
 		/// <remarks>To be added.</remarks>
 		[Export ("session:cameraDidChangeTrackingState:")]
 		void CameraDidChangeTrackingState (ARSession session, ARCamera camera);
@@ -1127,15 +1127,15 @@ namespace ARKit {
 		void DidChangeGeoTrackingStatus (ARSession session, ARGeoTrackingStatus geoTrackingStatus);
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:ARKit.ARSessionDelegate" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="ARKit.ARSessionDelegate" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:ARKit.ARSessionDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:ARKit.ARSessionDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:ARKit.ARSessionDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="ARKit.ARSessionDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="ARKit.ARSessionDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="ARKit.ARSessionDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	interface IARSessionDelegate { }
 
-	/// <summary>Delegate object for the <see cref="T:ARKit.ARSession" /> object, allowing the developer to respond to events relating to the augmented-reality session.</summary>
+	/// <summary>Delegate object for the <see cref="ARKit.ARSession" /> object, allowing the developer to respond to events relating to the augmented-reality session.</summary>
 	[NoTV, NoMac]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
@@ -1312,7 +1312,7 @@ namespace ARKit {
 		bool SupportsFrameSemantics (ARFrameSemantics frameSemantics);
 	}
 
-	/// <summary>An <see cref="T:ARKit.ARConfiguration" /> that only tracks the device orientation and uses the device's rear-facing cameras.</summary>
+	/// <summary>An <see cref="ARKit.ARConfiguration" /> that only tracks the device orientation and uses the device's rear-facing cameras.</summary>
 	[NoTV, NoMac]
 	[BaseType (typeof (ARConfiguration))]
 	interface AROrientationTrackingConfiguration {
@@ -1333,7 +1333,7 @@ namespace ARKit {
 		bool SupportsFrameSemantics (ARFrameSemantics frameSemantics);
 	}
 
-	/// <summary>Visualization options for use with the <see cref="P:SceneKit.SCNView.DebugOptions" /> property of <see cref="T:ARKit.ARSCNView" />.</summary>
+	/// <summary>Visualization options for use with the <see cref="SceneKit.SCNView.DebugOptions" /> property of <see cref="ARKit.ARSCNView" />.</summary>
 	[NoTV, NoMac]
 	[Static]
 	interface ARSCNDebugOptions {
@@ -1364,7 +1364,7 @@ namespace ARKit {
 		bool IsTracked { get; }
 	}
 
-	/// <summary>An <see cref="T:ARKit.ARConfiguration" />  for recognizing and tracking faces.</summary>
+	/// <summary>An <see cref="ARKit.ARConfiguration" />  for recognizing and tracking faces.</summary>
 	[NoTV, NoMac]
 	[BaseType (typeof (ARConfiguration))]
 	interface ARFaceTrackingConfiguration {
@@ -1396,7 +1396,7 @@ namespace ARKit {
 		bool SupportsFrameSemantics (ARFrameSemantics frameSemantics);
 	}
 
-	/// <summary>A <see cref="T:Foundation.DictionaryContainer" /> that defines the features available in <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=ARKit%20ARBlend%20Shape%20Location&amp;scope=Xamarin" title="T:ARKit.ARBlendShapeLocation">T:ARKit.ARBlendShapeLocation</a></format> .</summary>
+	/// <summary>A <see cref="Foundation.DictionaryContainer" /> that defines the features available in <see cref="ARKit.ARBlendShapeLocation" /> .</summary>
 	///     <remarks>
 	///       <para>All values are in the range [0..1], where 0.0 indicates the neutral state and 1.0 indicates maximum displacement.</para>
 	///     </remarks>
@@ -1827,7 +1827,7 @@ namespace ARKit {
 		NSString TongueOutKey { get; }
 	}
 
-	/// <summary>An <see cref="T:ARKit.ARAnchor" /> that locates a detected face in the AR session's world coordinates.</summary>
+	/// <summary>An <see cref="ARKit.ARAnchor" /> that locates a detected face in the AR session's world coordinates.</summary>
 	[NoTV, NoMac]
 	[BaseType (typeof (ARAnchor))]
 	[DisableDefaultCtor]
@@ -1886,7 +1886,7 @@ namespace ARKit {
 		/// <param name="blendShapes">To be added.</param>
 		/// <summary>Constructor that instantiates facial geometry with the expression specified in s<paramref name="blendShapes" />. Requires hardware support for face-tracking.</summary>
 		/// <remarks>
-		///           <para>This constructor will throw an <see cref="F:ObjCRuntime.Class.ThrowOnInitFailure" /> exception if run on a device that does not support face-tracking.</para>
+		///           <para>This constructor will throw an <see cref="ObjCRuntime.Class.ThrowOnInitFailure" /> exception if run on a device that does not support face-tracking.</para>
 		///         </remarks>
 		[Wrap ("this (blendShapes.GetDictionary ()!)")]
 		NativeHandle Constructor (ARBlendShapeLocationOptions blendShapes);
@@ -1948,7 +1948,7 @@ namespace ARKit {
 		void Update (ARFaceGeometry faceGeometry);
 	}
 
-	/// <summary>A <see cref="T:ARKit.ARAnchor" /> that tracks an image detected in the real world.</summary>
+	/// <summary>A <see cref="ARKit.ARAnchor" /> that tracks an image detected in the real world.</summary>
 	[NoTV, NoMac]
 	[BaseType (typeof (ARAnchor))]
 	[DisableDefaultCtor]
@@ -1984,9 +1984,9 @@ namespace ARKit {
 	}
 
 	/// <summary>
-	///       <see cref="T:ARKit.ARConfiguration" /> subclass that uses a recognized image as a basis for world-tracking.</summary>
+	///       <see cref="ARKit.ARConfiguration" /> subclass that uses a recognized image as a basis for world-tracking.</summary>
 	///     <remarks>
-	///       <para>Developers should use this subclass of <see cref="T:ARKit.ARConfiguration" /> in scenarios where a known image, viewable by the rear-facing camera, is a more reliable anchor than real-world features from a broader field of view. For instance, a poster or advetisement located in a moving train car. </para>
+	///       <para>Developers should use this subclass of <see cref="ARKit.ARConfiguration" /> in scenarios where a known image, viewable by the rear-facing camera, is a more reliable anchor than real-world features from a broader field of view. For instance, a poster or advetisement located in a moving train car. </para>
 	///     </remarks>
 	[NoTV, NoMac]
 	[BaseType (typeof (ARConfiguration))]
@@ -2013,9 +2013,9 @@ namespace ARKit {
 		bool SupportsFrameSemantics (ARFrameSemantics frameSemantics);
 	}
 
-	/// <summary>A resource-intensive <see cref="T:ARKit.ARConfiguration" /> used during development to create <see cref="T:ARKit.ARReferenceObject" /> data.</summary>
+	/// <summary>A resource-intensive <see cref="ARKit.ARConfiguration" /> used during development to create <see cref="ARKit.ARReferenceObject" /> data.</summary>
 	///     <remarks>
-	///       <para>This <see cref="T:ARKit.ARConfiguration" /> is intended to be used during development only. It is expensive in terms of computation, power, and memory. Developers can use the higher-fidelity data generated in sessions using this configuration to create <see cref="T:ARKit.ARReferenceObject" /> instances that can be used later.</para>
+	///       <para>This <see cref="ARKit.ARConfiguration" /> is intended to be used during development only. It is expensive in terms of computation, power, and memory. Developers can use the higher-fidelity data generated in sessions using this configuration to create <see cref="ARKit.ARReferenceObject" /> instances that can be used later.</para>
 	///     </remarks>
 	[NoTV, NoMac]
 	[BaseType (typeof (ARConfiguration))]
@@ -2126,7 +2126,7 @@ namespace ARKit {
 	}
 
 	/// <summary>
-	///       <see cref="T:ARKit.ARAnchor" /> subclass that tracks a recognized real-world 3D object.</summary>
+	///       <see cref="ARKit.ARAnchor" /> subclass that tracks a recognized real-world 3D object.</summary>
 	[NoTV, NoMac]
 	[BaseType (typeof (ARAnchor))]
 	[DisableDefaultCtor]
@@ -2141,7 +2141,7 @@ namespace ARKit {
 
 	/// <summary>A serializable and shareable combination of real-world spatial data points and mixed-reality anchors.</summary>
 	///     <remarks>
-	///       <para>Developers can use an <see cref="T:ARKit.ARWorldMap" /> to serialize a mixed-reality scene. The serialized data can be used at a later time to recreate a scene or shared with another user to create a shared experience.</para>
+	///       <para>Developers can use an <see cref="ARKit.ARWorldMap" /> to serialize a mixed-reality scene. The serialized data can be used at a later time to recreate a scene or shared with another user to create a shared experience.</para>
 	///     </remarks>
 	[NoTV, NoMac]
 	[BaseType (typeof (NSObject))]

@@ -108,8 +108,7 @@ namespace SceneKit {
 		}
 	}
 
-	/// <summary>Valid keys for the <c>options</c> dictionary used with <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Scene%20Kit%20SCNPhysics%20Shape%20Create&amp;scope=Xamarin" title="M:SceneKit.SCNPhysicsShape.Create*">M:SceneKit.SCNPhysicsShape.Create*</a></format>.</summary>
-	///     <remarks>To be added.</remarks>
+	/// <summary>Valid keys for the <c>options</c> creating new <see cref="SceneKit.SCNPhysicsShape" /> instances.</summary>
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]

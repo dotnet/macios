@@ -710,7 +710,7 @@ namespace Foundation {
 		/// 	    main loop for processing events.
 		/// 	  </para>
 		///           <para>
-		/// 	    Unlike <see cref="M:Foundation.NSObject.InvokeOnMainThread(ObjCRuntime.Selector,Foundation.NSObject)" />
+		/// 	    Unlike <see cref="Foundation.NSObject.InvokeOnMainThread(ObjCRuntime.Selector,Foundation.NSObject)" />
 		/// 	    this method merely queues the invocation and returns
 		/// 	    immediately to the caller.
 		/// 	  </para>
@@ -736,7 +736,7 @@ namespace Foundation {
 		/// 	    main loop for processing events.
 		/// 	  </para>
 		///           <para>
-		/// 	    Unlike <see cref="M:Foundation.NSObject.BeginInvokeOnMainThread(ObjCRuntime.Selector,Foundation.NSObject)" />
+		/// 	    Unlike <see cref="Foundation.NSObject.BeginInvokeOnMainThread(ObjCRuntime.Selector,Foundation.NSObject)" />
 		/// 	    this method waits for the main thread to execute the method, and does not return until the code pointed by action has completed.
 		/// 	  </para>
 		///         </remarks>
@@ -1175,8 +1175,7 @@ namespace Foundation {
 		}
 
 		/// <summary>The new value being set on the observed property.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>For this property to have a value, the options passed to <see cref="M:Foundation.NSObject.AddObserver(Foundation.NSObject,System.String,Foundation.NSKeyValueObservingOptions,System.IntPtr)" /> method should contain the value <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=E:Foundation.NSKeyValueObseringOptions.&amp;scope=Xamarin" title="E:Foundation.NSKeyValueObseringOptions.">E:Foundation.NSKeyValueObseringOptions.</a></format>New.</remarks>
+		/// <remarks>For this property to have a value, the options passed to <see cref="Foundation.NSObject.AddObserver(Foundation.NSObject,System.String,Foundation.NSKeyValueObservingOptions,System.IntPtr)" /> method should contain the value <see cref="Foundation.NSKeyValueObservingOptions" />New.</remarks>
 		public NSObject NewValue {
 			get {
 				return dict [NSObject.ChangeNewKey];
@@ -1184,12 +1183,8 @@ namespace Foundation {
 		}
 
 		/// <summary>The previous value on the observed property.</summary>
-		///         <value>
-		///
-		/// The old value.
-		///
-		///      </value>
-		///         <remarks>For this property to have a value, the options passed to <see cref="M:Foundation.NSObject.AddObserver(Foundation.NSObject,System.String,Foundation.NSKeyValueObservingOptions,System.IntPtr)" /> method should contain the value <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Foundation%20NSKey%20Value%20Obsering%20Options%20Old&amp;scope=Xamarin" title="E:Foundation.NSKeyValueObseringOptions.Old">E:Foundation.NSKeyValueObseringOptions.Old</a></format>.</remarks>
+		/// <value>The old value.</value>
+		/// <remarks>For this property to have a value, the options passed to <see cref="Foundation.NSObject.AddObserver(Foundation.NSObject,System.String,Foundation.NSKeyValueObservingOptions,System.IntPtr)" /> method should contain the value <see cref="Foundation.NSKeyValueObservingOptions.Old" />.</remarks>
 		public NSObject OldValue {
 			get {
 				return dict [NSObject.ChangeOldKey];
@@ -1206,13 +1201,7 @@ namespace Foundation {
 		}
 
 		/// <summary>If this flag is true, this indicates that the observed method is being called before the change takes place.</summary>
-		///         <value>
-		///           <para>
-		///           </para>
-		///           <para>
-		///           </para>
-		///         </value>
-		///         <remarks>For this property to have a value, the options passed to <see cref="M:Foundation.NSObject.AddObserver(Foundation.NSObject,System.String,Foundation.NSKeyValueObservingOptions,System.IntPtr)" /> method should contain the value <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Foundation%20NSKey%20Value%20Obsering%20Options%20Prior&amp;scope=Xamarin" title="E:Foundation.NSKeyValueObseringOptions.Prior">E:Foundation.NSKeyValueObseringOptions.Prior</a></format>.</remarks>
+		/// <remarks>For this property to have a value, the options passed to <see cref="Foundation.NSObject.AddObserver(Foundation.NSObject,System.String,Foundation.NSKeyValueObservingOptions,System.IntPtr)" /> method should contain the value <see cref="Foundation.NSKeyValueObservingOptions.Prior" />.</remarks>
 		public bool IsPrior {
 			get {
 				var n = dict [NSObject.ChangeNotificationIsPriorKey] as NSNumber;

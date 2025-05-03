@@ -1,6 +1,6 @@
 <Documentation>
   <Docs DocId="T:UIKit.UIInterpolatingMotionEffect">
-    <summary>A <see cref="T:UIKit.UIMotionEffect" /> that maps the device vertical and horizontal tilt into values on a keypath.</summary>
+    <summary>A <see cref="UIKit.UIMotionEffect" /> that maps the device vertical and horizontal tilt into values on a keypath.</summary>
     <remarks>
       <para>
 	Objects of the instance UIInterpolatingMotionEffect take the
@@ -28,10 +28,10 @@ class MotionSquareViewController : UIViewController {
 
 	public override void ViewDidLoad ()
 	{
-		var reference = new UIView (new RectangleF (110, 110, 90, 90)) {
+		var reference = new UIView (new CGRect (110, 110, 90, 90)) {
 			BackgroundColor =  UIColor.Blue
 		};
-		var tracking = new UIView (new RectangleF (100, 100, 100, 100)) {
+		var tracking = new UIView (new CGRect (100, 100, 100, 100)) {
 			BackgroundColor =  UIColor.FromRGBA (.5f, .5f, .5f, .5f)
 		};
 		View.AddSubviews (reference, tracking);

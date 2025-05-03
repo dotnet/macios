@@ -327,7 +327,7 @@ namespace Registrar {
 			} else {
 				var cinfo = method as ConstructorInfo;
 				if (parameter_index == -1) {
-					throw ErrorHelper.CreateError (99, $"Internal error: can't get the BindAs attribute for the return value of a constructor ({GetDescriptiveMethodName (method)}). Please file a bug report with a test case (https://github.com/xamarin/xamarin-macios/issues/new).");
+					throw ErrorHelper.CreateError (99, $"Internal error: can't get the BindAs attribute for the return value of a constructor ({GetDescriptiveMethodName (method)}). Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new).");
 				} else {
 					provider = cinfo.GetParameters () [parameter_index];
 				}
@@ -570,17 +570,17 @@ namespace Registrar {
 				return true;
 
 			if (type.IsGenericParameter) {
-				if (typeof (NSObject).IsAssignableFrom (type)) {
+				if (typeof (INativeObject).IsAssignableFrom (type)) {
 					// First look for a more specific constraint
 					var constraints = type.GetGenericParameterConstraints ();
 					foreach (var constraint in constraints) {
-						if (constraint.IsSubclassOf (typeof (NSObject))) {
+						if (constraint.IsSubclassOf (typeof (INativeObject))) {
 							constrained_type = constraint;
 							return true;
 						}
 					}
 					// Fallback to NSObject.
-					constrained_type = typeof (NSObject);
+					constrained_type = typeof (INativeObject);
 					return true;
 				}
 				return false;
@@ -1132,7 +1132,7 @@ namespace Registrar {
 				tramp = Method.SetFlagsTrampoline;
 				break;
 			default:
-				throw ErrorHelper.CreateError (4144, "Cannot register the method '{0}.{1}' since it does not have an associated trampoline. Please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new", method.DeclaringType.Type.FullName, method.Name);
+				throw ErrorHelper.CreateError (4144, "Cannot register the method '{0}.{1}' since it does not have an associated trampoline. Please file a bug report at https://github.com/dotnet/macios/issues/new", method.DeclaringType.Type.FullName, method.Name);
 			}
 
 			return Class.class_addMethod (reg_handle, Selector.GetHandle (method.Selector), tramp, method.Signature);

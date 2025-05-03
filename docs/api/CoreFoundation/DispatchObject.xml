@@ -9,7 +9,7 @@
       </para>
       <para>
 	The invocation of blocks on dispatch queues or dispatch sources may be suspended or resumed with the
-	methods <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Foundation%20Dispatch%20Object%20Suspend(%20)&amp;scope=Xamarin" title="M:CoreFoundation.DispatchObject.Suspend()">M:CoreFoundation.DispatchObject.Suspend()</a></format> and <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Foundation%20Dispatch%20Object%20Resume(%20)&amp;scope=Xamarin" title="M:CoreFoundation.DispatchObject.Resume()">M:CoreFoundation.DispatchObject.Resume()</a></format> respectively.  The dispatch framework always checks
+	methods <see cref="CoreFoundation.DispatchQueue.Suspend()" /> and <see cref="CoreFoundation.DispatchQueue.Resume()" /> respectively. The dispatch framework always checks
 	the suspension status before executing a block, but such changes never affect a block during execution
 	(non-preemptive).  Therefore the suspension of an object is asynchronous, unless it is performed from
 	the context of the target queue for the given object.  The result of suspending or resuming an object
@@ -20,8 +20,8 @@
 	Important: suspension applies to all aspects of the dispatch
 	object life cycle, including the finalizer function and
 	cancellation handler. Therefore it is important to balance
-	calls to <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Foundation%20Dispatch%20Object%20Suspend(%20)&amp;scope=Xamarin" title="M:CoreFoundation.DispatchObject.Suspend()">M:CoreFoundation.DispatchObject.Suspend()</a></format>
-	and <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Foundation%20Dispatch%20Object%20Resume(%20)&amp;scope=Xamarin" title="M:CoreFoundation.DispatchObject.Resume()">M:CoreFoundation.DispatchObject.Resume()</a></format>
+	calls to <see cref="CoreFoundation.DispatchQueue.Suspend()" />
+	and <see cref="CoreFoundation.DispatchQueue.Resume()" />
 	such that the dispatch object is fully resumed when the last
 	reference is released.  The result of releasing all references
 	to a dispatch object while in a suspended state is undefined.
@@ -29,7 +29,7 @@
       </para>
       <para>
 	Dispatch queues and sources support supplemental context pointers. The value of the context point may
-	be retrieved and updated with the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Foundation%20Dispatch%20Object%20Context&amp;scope=Xamarin" title="P:CoreFoundation.DispatchObject.Context">P:CoreFoundation.DispatchObject.Context</a></format> property.  
+	be retrieved and updated with the <see cref="CoreFoundation.DispatchQueue.Context" /> property.
 
       </para>
       <para>

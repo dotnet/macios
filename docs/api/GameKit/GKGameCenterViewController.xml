@@ -5,12 +5,12 @@
       <para>
 	Use this view controller to show leaderboards or achievements.
 	To use it, create an instance of it, then configure the kind
-	of information that you want to show by setting the <see cref="P:GameKit.GKGameCenterViewController.ViewState" /> property and present the controller. 
+	of information that you want to show by setting the <see cref="GameKit.GKGameCenterViewController.ViewState" /> property and present the controller. 
 	the controller.    
       </para>
       <para>
 	This method only works if the local player is authenticated.
-	See the <see cref="T:GameKit.GKLocalPlayer" /> class
+	See the <see cref="GameKit.GKLocalPlayer" /> class
 	documentation for details on how to authenticate your user.
       </para>
       <example>

@@ -27,7 +27,7 @@ namespace AVFoundation {
 		}
 
 		/// <param name="configuration">To be added.</param>
-		///         <summary>Creates a new <see cref="T:Foundation.NSUrlSession" /> from the specified <paramref name="configuration" />.</summary>
+		///         <summary>Creates a new <see cref="Foundation.NSUrlSession" /> from the specified <paramref name="configuration" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		public new static NSUrlSession FromConfiguration (NSUrlSessionConfiguration configuration)
@@ -38,7 +38,7 @@ namespace AVFoundation {
 		/// <param name="configuration">The session configuration to use.</param>
 		///         <param name="sessionDelegate">The session delegate to use.</param>
 		///         <param name="delegateQueue">The operation cue to use.</param>
-		///         <summary>Creates a new <see cref="T:Foundation.NSUrlSession" /> by using the specified configuration, delegate, and delegate cue.</summary>
+		///         <summary>Creates a new <see cref="Foundation.NSUrlSession" /> by using the specified configuration, delegate, and delegate cue.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		public new static NSUrlSession FromConfiguration (NSUrlSessionConfiguration configuration, INSUrlSessionDelegate sessionDelegate, NSOperationQueue delegateQueue)
@@ -49,7 +49,7 @@ namespace AVFoundation {
 		/// <param name="configuration">To be added.</param>
 		///         <param name="weakDelegate">To be added.</param>
 		///         <param name="delegateQueue">To be added.</param>
-		///         <summary>Creates a new <see cref="T:Foundation.NSUrlSession" /> from the specified <paramref name="configuration" />, weakly-referenced session delegate, and delegate queue.</summary>
+		///         <summary>Creates a new <see cref="Foundation.NSUrlSession" /> from the specified <paramref name="configuration" />, weakly-referenced session delegate, and delegate queue.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		public new static NSUrlSession FromWeakConfiguration (NSUrlSessionConfiguration configuration, NSObject weakDelegate, NSOperationQueue delegateQueue)
@@ -58,7 +58,7 @@ namespace AVFoundation {
 		}
 
 		/// <param name="request">To be added.</param>
-		///         <summary>Creates a new <see cref="T:Foundation.NSUrlSessionDataTask" /> with the specified request.</summary>
+		///         <summary>Creates a new <see cref="Foundation.NSUrlSessionDataTask" /> with the specified request.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		public override NSUrlSessionDataTask CreateDataTask (NSUrlRequest request)
@@ -67,7 +67,7 @@ namespace AVFoundation {
 		}
 
 		/// <param name="url">To be added.</param>
-		///         <summary>Creates a new <see cref="T:Foundation.NSUrlSessionDataTask" /> for the specified URL.</summary>
+		///         <summary>Creates a new <see cref="Foundation.NSUrlSessionDataTask" /> for the specified URL.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		public override NSUrlSessionDataTask CreateDataTask (NSUrl url)
@@ -77,7 +77,7 @@ namespace AVFoundation {
 
 		/// <param name="request">To be added.</param>
 		///         <param name="fileURL">To be added.</param>
-		///         <summary>Creates a new <see cref="T:Foundation.NSUrlSessionUploadTask" /> for the specified <paramref name="request" /> and <paramref name="fileURL" />.</summary>
+		///         <summary>Creates a new <see cref="Foundation.NSUrlSessionUploadTask" /> for the specified <paramref name="request" /> and <paramref name="fileURL" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		public override NSUrlSessionUploadTask CreateUploadTask (NSUrlRequest request, NSUrl fileURL)
@@ -87,7 +87,7 @@ namespace AVFoundation {
 
 		/// <param name="request">To be added.</param>
 		///         <param name="bodyData">To be added.</param>
-		///         <summary>Creates a new <see cref="T:Foundation.NSUrlSessionUploadTask" /> for the specified <paramref name="request" /> and <paramref name="bodyData" />.</summary>
+		///         <summary>Creates a new <see cref="Foundation.NSUrlSessionUploadTask" /> for the specified <paramref name="request" /> and <paramref name="bodyData" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		public override NSUrlSessionUploadTask CreateUploadTask (NSUrlRequest request, NSData bodyData)
@@ -96,7 +96,7 @@ namespace AVFoundation {
 		}
 
 		/// <param name="request">To be added.</param>
-		///         <summary>Creates a new <see cref="T:Foundation.NSUrlSessionUploadTask" /> for the specified request.</summary>
+		///         <summary>Creates a new <see cref="Foundation.NSUrlSessionUploadTask" /> for the specified request.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		public override NSUrlSessionUploadTask CreateUploadTask (NSUrlRequest request)
@@ -105,7 +105,7 @@ namespace AVFoundation {
 		}
 
 		/// <param name="request">To be added.</param>
-		///         <summary>Creates a new <see cref="T:Foundation.NSUrlSessionDownloadTask" /> for the specified request.</summary>
+		///         <summary>Creates a new <see cref="Foundation.NSUrlSessionDownloadTask" /> for the specified request.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		public override NSUrlSessionDownloadTask CreateDownloadTask (NSUrlRequest request)
@@ -114,7 +114,7 @@ namespace AVFoundation {
 		}
 
 		/// <param name="url">To be added.</param>
-		///         <summary>Creates a new <see cref="T:Foundation.NSUrlSessionDownloadTask" /> for the specified URL.</summary>
+		///         <summary>Creates a new <see cref="Foundation.NSUrlSessionDownloadTask" /> for the specified URL.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		public override NSUrlSessionDownloadTask CreateDownloadTask (NSUrl url)
@@ -123,7 +123,7 @@ namespace AVFoundation {
 		}
 
 		/// <param name="resumeData">To be added.</param>
-		///         <summary>reates a new <see cref="T:Foundation.NSUrlSessionDataTask" /> that resumes downloading <paramref name="resumeData" />.</summary>
+		///         <summary>reates a new <see cref="Foundation.NSUrlSessionDataTask" /> that resumes downloading <paramref name="resumeData" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		public override NSUrlSessionDownloadTask CreateDownloadTask (NSData resumeData)
@@ -133,7 +133,7 @@ namespace AVFoundation {
 
 		/// <param name="request">To be added.</param>
 		///         <param name="completionHandler">To be added.</param>
-		///         <summary>reates a new <see cref="T:Foundation.NSUrlSessionDataTask" /> for the specified request, and runs a completion handler when it is finished.</summary>
+		///         <summary>reates a new <see cref="Foundation.NSUrlSessionDataTask" /> for the specified request, and runs a completion handler when it is finished.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		public override NSUrlSessionDataTask CreateDataTask (NSUrlRequest request, NSUrlSessionResponse? completionHandler)
@@ -143,7 +143,7 @@ namespace AVFoundation {
 
 		/// <param name="url">To be added.</param>
 		///         <param name="completionHandler">To be added.</param>
-		///         <summary>Creates a new <see cref="T:Foundation.NSUrlSessionDataTask" /> for the specified URL, and runs a completion handler when it is finished.</summary>
+		///         <summary>Creates a new <see cref="Foundation.NSUrlSessionDataTask" /> for the specified URL, and runs a completion handler when it is finished.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		public override NSUrlSessionDataTask CreateDataTask (NSUrl url, NSUrlSessionResponse? completionHandler)
@@ -154,7 +154,7 @@ namespace AVFoundation {
 		/// <param name="request">To be added.</param>
 		///         <param name="fileURL">To be added.</param>
 		///         <param name="completionHandler">To be added.</param>
-		///         <summary>Creates a new <see cref="T:Foundation.NSUrlSessionUploadTask" /> for the specified <paramref name="request" /> and <paramref name="fileURL" />, and runs <paramref name="completionHandler" /> when it is finished.</summary>
+		///         <summary>Creates a new <see cref="Foundation.NSUrlSessionUploadTask" /> for the specified <paramref name="request" /> and <paramref name="fileURL" />, and runs <paramref name="completionHandler" /> when it is finished.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		public override NSUrlSessionUploadTask CreateUploadTask (NSUrlRequest request, NSUrl fileURL, NSUrlSessionResponse completionHandler)
@@ -165,7 +165,7 @@ namespace AVFoundation {
 		/// <param name="request">To be added.</param>
 		///         <param name="bodyData">To be added.</param>
 		///         <param name="completionHandler">To be added.</param>
-		///         <summary>Creates a new <see cref="T:Foundation.NSUrlSessionUploadTask" /> for the specified <paramref name="request" /> and <paramref name="bodyData" />, and runs <paramref name="completionHandler" /> when it is finished.</summary>
+		///         <summary>Creates a new <see cref="Foundation.NSUrlSessionUploadTask" /> for the specified <paramref name="request" /> and <paramref name="bodyData" />, and runs <paramref name="completionHandler" /> when it is finished.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		public override NSUrlSessionUploadTask CreateUploadTask (NSUrlRequest request, NSData bodyData, NSUrlSessionResponse completionHandler)
@@ -175,7 +175,7 @@ namespace AVFoundation {
 
 		/// <param name="request">To be added.</param>
 		///         <param name="completionHandler">To be added.</param>
-		///         <summary>Creates a new <see cref="T:Foundation.NSUrlSessionDownloadTask" /> for the specified request, and runs a completion handler when it is finished.</summary>
+		///         <summary>Creates a new <see cref="Foundation.NSUrlSessionDownloadTask" /> for the specified request, and runs a completion handler when it is finished.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		public override NSUrlSessionDownloadTask CreateDownloadTask (NSUrlRequest request, NSUrlDownloadSessionResponse? completionHandler)
@@ -185,7 +185,7 @@ namespace AVFoundation {
 
 		/// <param name="url">To be added.</param>
 		///         <param name="completionHandler">To be added.</param>
-		///         <summary>Creates a new <see cref="T:Foundation.NSUrlSessionDownloadTask" /> for the specified url, and runs a completion handler when it is finished.</summary>
+		///         <summary>Creates a new <see cref="Foundation.NSUrlSessionDownloadTask" /> for the specified url, and runs a completion handler when it is finished.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		public override NSUrlSessionDownloadTask CreateDownloadTask (NSUrl url, NSUrlDownloadSessionResponse? completionHandler)
@@ -195,7 +195,7 @@ namespace AVFoundation {
 
 		/// <param name="resumeData">To be added.</param>
 		///         <param name="completionHandler">To be added.</param>
-		///         <summary>Creates a new <see cref="T:Foundation.NSUrlSessionDownloadTask" /> that resumes downloading the <paramref name="resumeData" />, and runs a completion handler when it is finished.</summary>
+		///         <summary>Creates a new <see cref="Foundation.NSUrlSessionDownloadTask" /> that resumes downloading the <paramref name="resumeData" />, and runs a completion handler when it is finished.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		public override NSUrlSessionDownloadTask CreateDownloadTaskFromResumeData (NSData resumeData, NSUrlDownloadSessionResponse? completionHandler)

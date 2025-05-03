@@ -4,10 +4,10 @@
     <value>Array of level meters, one per audio channel.</value>
     <remarks>
       <para>
-	    To use this property, make sure that you set the <see cref="P:AudioToolbox.AudioQueue.EnableLevelMetering" /> property on the queue.
+	    To use this property, make sure that you set the <see cref="AudioToolbox.AudioQueue.EnableLevelMetering" /> property on the queue.
 	  </para>
       <para>
-	    Use the <see cref="P:AudioToolbox.AudioQueue.CurrentLevelMeterDB" /> if you want to get the values in decibels.
+	    Use the <see cref="AudioToolbox.AudioQueue.CurrentLevelMeterDB" /> if you want to get the values in decibels.
 	  </para>
       <example>
         <code lang="c#"><![CDATA[
@@ -36,10 +36,10 @@ class MyInputQueue : InputAudioQueue {
     <value>Array of level meters, one per audio channel.</value>
     <remarks>
       <para>
-	    To use this property, make sure that you set the <see cref="P:AudioToolbox.AudioQueue.EnableLevelMetering" /> property on the queue.
+	    To use this property, make sure that you set the <see cref="AudioToolbox.AudioQueue.EnableLevelMetering" /> property on the queue.
 	  </para>
       <para>
-	    Use the <see cref="P:AudioToolbox.AudioQueue.CurrentLevelMeter" /> if you want to get the values normalized to the range zero (minimum) to one (maximum).
+	    Use the <see cref="AudioToolbox.AudioQueue.CurrentLevelMeter" /> if you want to get the values normalized to the range zero (minimum) to one (maximum).
 	  </para>
       <example>
         <code lang="c#"><![CDATA[
@@ -118,12 +118,12 @@ class MyInputQueue : InputAudioQueue {
       <para>
 	    There are three types: pre-processing, post-processing and
 	    siphon.  The first two should provide the data requested
-	    during the callback, typically by calling the <see cref="T:AudioToolbox.AudioQueueProcessingTap" />'s
+	    during the callback, typically by calling the <see cref="AudioToolbox.AudioQueueProcessingTap" />'s
 	    GetSourceAudio method and optionally performing some
 	    transormation on the buffers and returning these buffers
 	    to the caller.  Siphoning taps receive buffers with the
 	    data and can inspect the data, but should not alter its
-	    contents.  See the <see cref="T:AudioToolbox.AudioQueueProcessingTapDelegate" />
+	    contents.  See the <see cref="AudioToolbox.AudioQueueProcessingTapDelegate" />
 	    documentation for more information.
 
 	  </para>
@@ -144,8 +144,8 @@ class MyInputQueue : InputAudioQueue {
 	appropriate.
 
       </para>
-      <para> AudioQueue is a base class for both the <see cref="T:AudioToolbox.InputAudioQueue" /> which is
-	used to record audio and the <see cref="T:AudioToolbox.OutputAudioQueue" /> which is
+      <para> AudioQueue is a base class for both the <see cref="AudioToolbox.InputAudioQueue" /> which is
+	used to record audio and the <see cref="AudioToolbox.OutputAudioQueue" /> which is
 	used to playback audio.  This class provides services to
 	start, prime, stop, pause the queues as well as volume
 	control, resource management and event notifications.
@@ -153,9 +153,9 @@ class MyInputQueue : InputAudioQueue {
       </para>
       <para>
 	When you use AudioQueues, you must allocate buffers for
-	playback or recording.  You use the <see cref="M:AudioToolbox.AudioQueue.AllocateBuffer(System.Int32,AudioToolbox.AudioQueueBuffer*@)" /> method or the
-	<see cref="M:AudioToolbox.AudioQueue.AllocateBufferWithPacketDescriptors(System.Int32,System.Int32,System.IntPtr@)" />
-	to allocate them and you use the <see cref="M:AudioToolbox.AudioQueue.FreeBuffer(System.IntPtr)" /> to release them.
+	playback or recording.  You use the <see cref="AudioToolbox.AudioQueue.AllocateBuffer(System.Int32,out AudioToolbox.AudioQueueBuffer*)" /> method or the
+	<see cref="AudioToolbox.AudioQueue.AllocateBufferWithPacketDescriptors(System.Int32,System.Int32,out System.IntPtr)" />
+	to allocate them and you use the <see cref="AudioToolbox.AudioQueue.FreeBuffer(System.IntPtr)" /> to release them.
 	You keep a collection of buffers around that the underlying
 	hardware can use to either playback audio, or record into.  As
 	the buffers are used, a notification callback is invoked.  In
@@ -176,10 +176,10 @@ class MyInputQueue : InputAudioQueue {
       <para> 
 	When processing an input or output queue, you might want to
 	listen to a few property changes raised by the queues during
-	their processing (See the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Audio%20Tool%20Box%20Audio%20Queue%20Property&amp;scope=Xamarin" title="E:AudioToolBox.AudioQueueProperty">E:AudioToolBox.AudioQueueProperty</a></format> for a
+	their processing (See the <see cref="AudioToolbox.AudioQueueProperty" /> for a
 	list of events that you can listen to).  To do this, use the
-	<see cref="M:AudioToolbox.AudioQueue.AddListener(AudioToolbox.AudioQueueProperty,AudioToolbox.AudioQueue.AudioQueuePropertyChanged)" />
-	method to add a listener and use the <see cref="M:AudioToolbox.AudioQueue.RemoveListener(AudioToolbox.AudioQueueProperty,AudioToolbox.AudioQueue.AudioQueuePropertyChanged)" />
+	<see cref="AudioToolbox.AudioQueue.AddListener(AudioToolbox.AudioQueueProperty,AudioToolbox.AudioQueue.AudioQueuePropertyChanged)" />
+	method to add a listener and use the <see cref="AudioToolbox.AudioQueue.RemoveListener(AudioToolbox.AudioQueueProperty,AudioToolbox.AudioQueue.AudioQueuePropertyChanged)" />
 	method to remove the listener.
 
       </para>

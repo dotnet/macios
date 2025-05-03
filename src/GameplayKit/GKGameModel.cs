@@ -4,7 +4,7 @@ using System;
 
 namespace GameplayKit {
 
-	/// <summary>Describes gameplay in a way that can be optimized with a <see cref="T:GameplayKit.GKMinMaxStrategist" />.</summary>
+	/// <summary>Describes gameplay in a way that can be optimized with a <see cref="GameplayKit.GKMinMaxStrategist" />.</summary>
 	///     <remarks>To be added.</remarks>
 	public partial class GKGameModel {
 

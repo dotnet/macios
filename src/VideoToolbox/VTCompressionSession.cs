@@ -106,7 +106,7 @@ namespace VideoToolbox {
 		///         <param name="codecType">Encoder to use to compress the frames.</param>
 		///         <param name="compressionOutputCallback">Method that will be invoked to process a compressed frame.  See the delegate type for more information on the received parameters.</param>
 		///         <param name="encoderSpecification">Parameters to choose the encoder, or null to let VideoToolbox choose it.</param>
-		///         <param name="sourceImageBufferAttributes">The Dictionary property extracted from a <see cref="T:CoreVideo.CVPixelBufferAttributes" /> type, or an NSDictionary with the desired CoreVideo Pixel Buffer Attributes values.</param>
+		///         <param name="sourceImageBufferAttributes">The Dictionary property extracted from a <see cref="CoreVideo.CVPixelBufferAttributes" /> type, or an NSDictionary with the desired CoreVideo Pixel Buffer Attributes values.</param>
 		///         <summary>Creates a compression session</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>The <paramref name="compressionOutputCallback" /> will be invoked for each frame in decode order, not necessarily the display order.</remarks>

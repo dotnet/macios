@@ -132,7 +132,7 @@ namespace AudioUnit {
 	///     <param name="busNumber">To be added.</param>
 	///     <param name="numberFrames">To be added.</param>
 	///     <param name="audioUnit">To be added.</param>
-	///     <summary>Callback used with <see cref="M:AudioUnit.AudioUnit.SetInputCallback(AudioUnit.InputDelegate,AudioUnit.AudioUnitScopeType,System.UInt32)" />.</summary>
+	///     <summary>Callback used with <see cref="AudioUnit.SetInputCallback(InputDelegate,AudioUnitScopeType,System.UInt32)" />.</summary>
 	///     <returns>To be added.</returns>
 	///     <remarks>To be added.</remarks>
 	public delegate AudioUnitStatus InputDelegate (AudioUnitRenderActionFlags actionFlags, AudioTimeStamp timeStamp, uint busNumber, uint numberFrames, AudioUnit audioUnit);
@@ -166,7 +166,7 @@ namespace AudioUnit {
 	}
 
 #if NET
-	/// <summary>Describes a sampler instrument. Used with <see cref="M:AudioUnit.AudioUnit.LoadInstrument(AudioUnit.SamplerInstrumentData,AudioUnit.AudioUnitScopeType,System.UInt32)" />.</summary>
+	/// <summary>Describes a sampler instrument. Used with <see cref="AudioUnit.LoadInstrument(SamplerInstrumentData,AudioUnitScopeType,System.UInt32)" />.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -1343,7 +1343,7 @@ namespace AudioUnit {
 		[DllImport (Constants.AudioUnitLibrary)]
 		static extern AudioUnitStatus MusicDeviceMIDIEvent (IntPtr /* MusicDeviceComponent = void* */ inUnit, uint /* UInt32 */ inStatus, uint /* UInt32 */ inData1, uint /* UInt32 */ inData2, uint /* UInt32 */ inOffsetSampleFrame);
 
-		// TODO: https://github.com/xamarin/xamarin-macios/issues/12489
+		// TODO: https://github.com/dotnet/macios/issues/12489
 		// [TV (15,0), iOS (15,0), MacCatalyst (15,0)]
 		// [DllImport (Constants.AudioUnitLibrary)]
 		// static extern MusicDeviceMIDIEvent[] MusicDeviceMIDIEventList (IntPtr /* MusicDeviceComponent = void* */ inUnit, uint /* UInt32 */ inOffsetSampleFrame, MIDIEventList eventList);

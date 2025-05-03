@@ -44,7 +44,7 @@ namespace CoreFoundation {
 
 	// The native constants are defined in usr/include/dispatch/queue.h, but since they're
 	// not in any enum, they're untyped.
-	/// <summary>An enumeration whose values define priorities available to <see cref="T:CoreFoundation.DispatchQueue" />s.</summary>
+	/// <summary>An enumeration whose values define priorities available to <see cref="CoreFoundation.DispatchQueue" />s.</summary>
 	///     <remarks>To be added.</remarks>
 	public enum DispatchQueuePriority : int {
 		/// <summary>To be added.</summary>
@@ -289,7 +289,7 @@ namespace CoreFoundation {
 		/// <summary>Developers should not use this deprecated property. </summary>
 		///         <value>The current dispatch queue if invoked from code that
 		///         was queued into a DispatchQueue, otherwise it returns the same
-		///         queue as <see cref="P:CoreFoundation.DispatchQueue.MainQueue" />.</value>
+		///         queue as <see cref="CoreFoundation.DispatchQueue.MainQueue" />.</value>
 		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -484,7 +484,7 @@ namespace CoreFoundation {
 		///         <summary>Submits a barrier block for asynchronous execution on a dispatch queue</summary>
 		///         <remarks>
 		///           <para>
-		/// 	    Submits a block to a dispatch queue like <see cref="M:CoreFoundation.DispatchQueue.DispatchAsync(System.Action)" />
+		/// 	    Submits a block to a dispatch queue like <see cref="CoreFoundation.DispatchQueue.DispatchAsync(System.Action)" />
 		/// 	    does and marks that block as a barrier.  
 		/// 	  </para>
 		///           <para>

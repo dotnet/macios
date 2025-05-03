@@ -139,7 +139,7 @@ namespace MonoTouchFixtures.UIKit {
 		[Test]
 		public void PrematureDisposal_SegmentedControl ()
 		{
-			// https://github.com/xamarin/xamarin-macios/issues/20409
+			// https://github.com/dotnet/macios/issues/20409
 			using var control = new UISegmentedControl ();
 			var attrs = new TextAttributes ();
 			control.SetTitleTextAttributes (attrs, UIControlState.Normal);
@@ -149,7 +149,7 @@ namespace MonoTouchFixtures.UIKit {
 		[Test]
 		public void PrematureDisposal_BarItem ()
 		{
-			// https://github.com/xamarin/xamarin-macios/issues/20409
+			// https://github.com/dotnet/macios/issues/20409
 			using var control = new UIBarButtonItem (); // UIBarItem is abstract, so use a derived class.
 			var attrs = new TextAttributes ();
 			control.SetTitleTextAttributes (attrs, UIControlState.Normal);
@@ -160,7 +160,7 @@ namespace MonoTouchFixtures.UIKit {
 		[Test]
 		public void PrematureDisposal_SearchBar ()
 		{
-			// https://github.com/xamarin/xamarin-macios/issues/20409
+			// https://github.com/dotnet/macios/issues/20409
 			using var control = new UISearchBar (new CGRect (0, 0, 42, 42));
 			var attrs = new TextAttributes ();
 			control.SetScopeBarButtonTitle (attrs, UIControlState.Normal);

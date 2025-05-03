@@ -1,8 +1,8 @@
 <Documentation>
   <Docs DocId="M:NewsstandKit.NKIssue.Notifications.ObserveDownloadCompleted(System.EventHandler{Foundation.NSNotificationEventArgs})">
         <param name="handler">Method to invoke when the notification is posted.</param>
-        <summary>Strongly typed notification for the <see cref="P:NewsstandKit.NKIssue.DownloadCompletedNotification" /> constant.</summary>
-        <returns>Token object that can be used to stop receiving notifications by either disposing it or passing it to <see cref="M:Foundation.NSNotificationCenter.RemoveObservers(System.Collections.Generic.IEnumerable{Foundation.NSObject})" /></returns>
+        <summary>Strongly typed notification for the <see cref="NewsstandKit.NKIssue.DownloadCompletedNotification" /> constant.</summary>
+        <returns>Token object that can be used to stop receiving notifications by either disposing it or passing it to <see cref="Foundation.NSNotificationCenter.RemoveObservers(System.Collections.Generic.IEnumerable{Foundation.NSObject})" /></returns>
         <remarks>
           <para>The following example shows how you can use this method in your code</para>
           <example>
@@ -45,10 +45,10 @@ void Teardown ()
   <Docs DocId="M:NewsstandKit.NKIssue.Notifications.ObserveDownloadCompleted(Foundation.NSObject,System.EventHandler{Foundation.NSNotificationEventArgs})">
         <param name="objectToObserve">The object to observe.</param>
         <param name="handler">Method to invoke when the notification is posted.</param>
-        <summary>Strongly typed notification for the <see cref="P:NewsstandKit.NKIssue.DownloadCompletedNotification" /> constant.</summary>
-        <returns>Token object that can be used to stop receiving notifications by either disposing it or passing it to <see cref="M:Foundation.NSNotificationCenter.RemoveObservers(System.Collections.Generic.IEnumerable{Foundation.NSObject})" /></returns>
+        <summary>Strongly typed notification for the <see cref="NewsstandKit.NKIssue.DownloadCompletedNotification" /> constant.</summary>
+        <returns>Token object that can be used to stop receiving notifications by either disposing it or passing it to <see cref="Foundation.NSNotificationCenter.RemoveObservers(System.Collections.Generic.IEnumerable{Foundation.NSObject})" /></returns>
         <remarks>
-          <para id="tool-remark">This method can be used to subscribe for <see cref="P:NewsstandKit.NKIssue.DownloadCompletedNotification" /> notifications.</para>
+          <para id="tool-remark">This method can be used to subscribe for <see cref="NewsstandKit.NKIssue.DownloadCompletedNotification" /> notifications.</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
 // Listen to all notifications posted for any object

@@ -36,7 +36,11 @@ using ObjCRuntime;
 using Foundation;
 
 namespace CoreGraphics {
-	/// <include file="../../docs/api/CoreGraphics/CGContext.xml" path="/Documentation/Docs[@DocId='T:CoreGraphics.CGContext']/*" />
+#if __MACOS__
+	/// <include file="../../docs/api/CoreGraphics/CGContext.xml" path="/Documentation/Docs[@DocId='T:CoreGraphics.CGContext' and contains(@Platforms,'macOS')]/*" />
+#else
+	/// <include file="../../docs/api/CoreGraphics/CGContext.xml" path="/Documentation/Docs[@DocId='T:CoreGraphics.CGContext' and not(@Platforms)]/*" />
+#endif
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -71,14 +75,14 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static void CGContextRestoreGState (/* CGContextRef */ IntPtr c);
 
-		/// <summary>Stores the state of the <see cref="T:CoreGraphics.CGContext" />. (See <see cref="M:CoreGraphics.CGContext.RestoreState" />.)</summary>
+		/// <summary>Stores the state of the <see cref="CoreGraphics.CGContext" />. (See <see cref="CoreGraphics.CGContext.RestoreState" />.)</summary>
 		///         <remarks>To be added.</remarks>
 		public void SaveState ()
 		{
 			CGContextSaveGState (Handle);
 		}
 
-		/// <summary>Sets the state of the <see cref="T:CoreGraphics.CGContext" /> to what it was when <see cref="M:CoreGraphics.CGContext.SaveState" /> was last called.</summary>
+		/// <summary>Sets the state of the <see cref="CoreGraphics.CGContext" /> to what it was when <see cref="CoreGraphics.CGContext.SaveState" /> was last called.</summary>
 		///         <remarks>To be added.</remarks>
 		public void RestoreState ()
 		{
@@ -116,10 +120,10 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static void CGContextConcatCTM (/* CGContextRef */ IntPtr c, CGAffineTransform transform);
 
-		/// <param name="transform">The <see cref="T:CoreGraphics.CGAffineTransform" /> to concatenate onto the current context transformation matrix.</param>
+		/// <param name="transform">The <see cref="CoreGraphics.CGAffineTransform" /> to concatenate onto the current context transformation matrix.</param>
 		///         <summary>Concatenates the specified <paramref name="transform" /> onto the current transformation matrix.</summary>
 		///         <remarks>
-		///           <para>The <paramref name="transform" /> is concatenated to the current context transformation matrix to create the new CTM. (The example in the discussion of <see cref="M:CoreGraphics.CGContext.GetCTM" /> illustrates <see cref="M:CoreGraphics.CGContext.ConcatCTM(CoreGraphics.CGAffineTransform)" />.)</para>
+		///           <para>The <paramref name="transform" /> is concatenated to the current context transformation matrix to create the new CTM. (The example in the discussion of <see cref="CoreGraphics.CGContext.GetCTM" /> illustrates <see cref="CoreGraphics.CGContext.ConcatCTM(CoreGraphics.CGAffineTransform)" />.)</para>
 		///         </remarks>
 		public void ConcatCTM (CGAffineTransform transform)
 		{
@@ -138,7 +142,7 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static void CGContextSetLineCap (/* CGContextRef */ IntPtr c, CGLineCap cap);
 
-		/// <param name="cap">The desired <see cref="T:CoreGraphics.CGLineCap" />.</param>
+		/// <param name="cap">The desired <see cref="CoreGraphics.CGLineCap" />.</param>
 		///         <summary>Sets the style for the ends of lines.</summary>
 		///         <remarks>To be added.</remarks>
 		public void SetLineCap (CGLineCap cap)
@@ -149,7 +153,7 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static void CGContextSetLineJoin (/* CGContextRef */  IntPtr c, CGLineJoin join);
 
-		/// <param name="join">The desired <see cref="T:CoreGraphics.CGLineJoin" />.</param>
+		/// <param name="join">The desired <see cref="CoreGraphics.CGLineJoin" />.</param>
 		///         <summary>Sets the way lines are joined.</summary>
 		///         <remarks>To be added.</remarks>
 		public void SetLineJoin (CGLineJoin join)
@@ -210,7 +214,7 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static void CGContextSetBlendMode (/* CGContextRef */ IntPtr c, CGBlendMode mode);
 
-		/// <param name="mode">The desired <see cref="T:CoreGraphics.CGBlendMode" />.</param>
+		/// <param name="mode">The desired <see cref="CoreGraphics.CGBlendMode" />.</param>
 		///         <summary>Specifies the compositing mode.</summary>
 		///         <remarks>To be added.</remarks>
 		public void SetBlendMode (CGBlendMode mode)
@@ -345,7 +349,7 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static void CGContextAddPath (/* CGContextRef */ IntPtr c, /* CGPathRef */ IntPtr path);
 
-		/// <param name="path">The <see cref="T:CoreGraphics.CGPath" /> to be added.</param>
+		/// <param name="path">The <see cref="CoreGraphics.CGPath" /> to be added.</param>
 		///         <summary>Adds the specified path to the current path.</summary>
 		///         <remarks>To be added.</remarks>
 		public void AddPath (CGPath path)
@@ -382,8 +386,8 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static CGPoint CGContextGetPathCurrentPoint (/* CGContextRef */ IntPtr context);
 
-		/// <summary>The current point in the <see cref="T:CoreGraphics.CGContext" />'s path.</summary>
-		///         <returns>The current point in the <see cref="T:CoreGraphics.CGContext" />'s path.</returns>
+		/// <summary>The current point in the <see cref="CoreGraphics.CGContext" />'s path.</summary>
+		///         <returns>The current point in the <see cref="CoreGraphics.CGContext" />'s path.</returns>
 		///         <remarks>To be added.</remarks>
 		public CGPoint GetPathCurrentPoint ()
 		{
@@ -417,8 +421,8 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static void CGContextDrawPath (/* CGContextRef */ IntPtr context, CGPathDrawingMode mode);
 
-		/// <param name="mode">The <see cref="T:CoreGraphics.CGPathDrawingMode" /> for the the path.</param>
-		///         <summary>Draws the <see cref="T:CoreGraphics.CGContext" />'s current path.</summary>
+		/// <param name="mode">The <see cref="CoreGraphics.CGPathDrawingMode" /> for the the path.</param>
+		///         <summary>Draws the <see cref="CoreGraphics.CGContext" />'s current path.</summary>
 		///         <remarks>To be added.</remarks>
 		public void DrawPath (CGPathDrawingMode mode)
 		{
@@ -430,7 +434,7 @@ namespace CoreGraphics {
 
 		/// <summary>Fills the current path, using Non-Zero Winding rule.</summary>
 		///         <remarks>
-		///           <para>For an explanation of the Even-Odd and Non-Zero Winding rule, see <see cref="T:CoreGraphics.CGPathDrawingMode" />.</para>
+		///           <para>For an explanation of the Even-Odd and Non-Zero Winding rule, see <see cref="CoreGraphics.CGPathDrawingMode" />.</para>
 		///         </remarks>
 		public void FillPath ()
 		{
@@ -442,7 +446,7 @@ namespace CoreGraphics {
 
 		/// <summary>Fills the current path, using the Even-Odd rule.</summary>
 		///         <remarks>
-		///           <para>For an explanation of the Even-Odd and Non-Zero Winding rule, see <see cref="T:CoreGraphics.CGPathDrawingMode" />.</para>
+		///           <para>For an explanation of the Even-Odd and Non-Zero Winding rule, see <see cref="CoreGraphics.CGPathDrawingMode" />.</para>
 		///         </remarks>
 		public void EOFillPath ()
 		{
@@ -462,7 +466,7 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static void CGContextFillRect (/* CGContextRef */ IntPtr c, CGRect rect);
 
-		/// <param name="rect">The <see cref="T:System.Drawing.RectangleF" /> to be filled.</param>
+		/// <param name="rect">The <see cref="CGRect" /> to be filled.</param>
 		///         <summary>Paints the specified <paramref name="rect" />.</summary>
 		///         <remarks>To be added.</remarks>
 		public void FillRect (CGRect rect)
@@ -518,7 +522,7 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static void CGContextFillEllipseInRect (/* CGContextRef */ IntPtr context, CGRect rect);
 
-		/// <param name="rect">The <see cref="T:System.Drawing.RectangleF" /> defining the ellipse's extent.</param>
+		/// <param name="rect">The <see cref="CGRect" /> defining the ellipse's extent.</param>
 		///         <summary>Paints the ellipse defined by <paramref name="rect" />. Afterwards, the current path is reset.</summary>
 		///         <remarks>To be added.</remarks>
 		public void FillEllipseInRect (CGRect rect)
@@ -529,7 +533,7 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static void CGContextStrokeEllipseInRect (/* CGContextRef */ IntPtr context, CGRect rect);
 
-		/// <param name="rect">The <see cref="T:System.Drawing.RectangleF" /> defining the ellipse's extent.</param>
+		/// <param name="rect">The <see cref="CGRect" /> defining the ellipse's extent.</param>
 		///         <summary>Strokes the ellipse defined by <paramref name="rect" />. Afterwards, the current path is reset.</summary>
 		///         <remarks>To be added.</remarks>
 		public void StrokeEllipseInRect (CGRect rect)
@@ -555,7 +559,7 @@ namespace CoreGraphics {
 
 		/// <summary>Sets the current path of the graphics context to be the clipping path.</summary>
 		///         <remarks>
-		///           <para>The current path is changed to become the current clipping path, with interiors determined by the "non-zero winding rule" (see <see cref="T:CoreGraphics.CGPathDrawingMode" />). Any open subpaths are closed, as if the developer had called <see cref="M:CoreGraphics.CGContext.ClosePath" />. The current path of the <see cref="T:CoreGraphics.CGContext" /> is then reset.</para>
+		///           <para>The current path is changed to become the current clipping path, with interiors determined by the "non-zero winding rule" (see <see cref="CoreGraphics.CGPathDrawingMode" />). Any open subpaths are closed, as if the developer had called <see cref="CoreGraphics.CGContext.ClosePath" />. The current path of the <see cref="CoreGraphics.CGContext" /> is then reset.</para>
 		///         </remarks>
 		public void Clip ()
 		{
@@ -567,7 +571,7 @@ namespace CoreGraphics {
 
 		/// <summary>Modifies the current clipping path, using the Even-Odd rule.</summary>
 		///         <remarks>
-		///           <para>For an explanation of the Even-Odd and Non-Zero Winding rule, see <see cref="T:CoreGraphics.CGPathDrawingMode" />.</para>
+		///           <para>For an explanation of the Even-Odd and Non-Zero Winding rule, see <see cref="CoreGraphics.CGPathDrawingMode" />.</para>
 		///         </remarks>
 		public void EOClip ()
 		{
@@ -645,8 +649,8 @@ namespace CoreGraphics {
 		extern static void CGContextSetFillColorWithColor (/* CGContextRef */ IntPtr c,
 			/* CGColorRef __nullable */ IntPtr color);
 
-		/// <param name="color">The desired <see cref="T:CoreGraphics.CGColor" />.</param>
-		///         <summary>Sets the fill color to the specified <see cref="T:CoreGraphics.CGColor" />.</summary>
+		/// <param name="color">The desired <see cref="CoreGraphics.CGColor" />.</param>
+		///         <summary>Sets the fill color to the specified <see cref="CoreGraphics.CGColor" />.</summary>
 		///         <remarks>To be added.</remarks>
 		public void SetFillColor (CGColor? color)
 		{
@@ -658,7 +662,7 @@ namespace CoreGraphics {
 		extern static void CGContextSetStrokeColorWithColor (/* CGContextRef */ IntPtr c,
 			/* CGColorRef __nullable */ IntPtr color);
 
-		/// <param name="color">The desired <see cref="T:CoreGraphics.CGColor" />.</param>
+		/// <param name="color">The desired <see cref="CoreGraphics.CGColor" />.</param>
 		///         <summary>Sets the stroke color.</summary>
 		///         <remarks>To be added.</remarks>
 		public void SetStrokeColor (CGColor? color)
@@ -671,10 +675,10 @@ namespace CoreGraphics {
 		extern static void CGContextSetFillColorSpace (/* CGContextRef */ IntPtr context,
 			/* CGColorSpaceRef __nullable */ IntPtr space);
 
-		/// <param name="space">The desired <see cref="T:CoreGraphics.CGColorSpace" />.</param>
-		///         <summary>Specifies the <see cref="T:CoreGraphics.CGColorSpace" /> to be used in the context.</summary>
+		/// <param name="space">The desired <see cref="CoreGraphics.CGColorSpace" />.</param>
+		///         <summary>Specifies the <see cref="CoreGraphics.CGColorSpace" /> to be used in the context.</summary>
 		///         <remarks>
-		///           <para>This method must be called prior to using <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:CoreGraphics.CGContext.SetFillColor(float[])&amp;scope=Xamarin" title="M:CoreGraphics.CGContext.SetFillColor(float[])">M:CoreGraphics.CGContext.SetFillColor(float[])</a></format>.</para>
+		///           <para>This method must be called prior to using <see cref="CoreGraphics.CGContext.SetFillColor(nfloat[])" />.</para>
 		///         </remarks>
 		public void SetFillColorSpace (CGColorSpace? space)
 		{
@@ -686,8 +690,8 @@ namespace CoreGraphics {
 		extern static void CGContextSetStrokeColorSpace (/* CGContextRef */ IntPtr context,
 			/* CGColorSpaceRef __nullable */ IntPtr space);
 
-		/// <param name="space">The desired <see cref="T:CoreGraphics.CGColorSpace" />.</param>
-		///         <summary>Sets the <see cref="T:CoreGraphics.CGColorSpace" /> to be used with <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:CoreGraphics.CGContext.SetStrokeColor(float[])&amp;scope=Xamarin" title="M:CoreGraphics.CGContext.SetStrokeColor(float[])">M:CoreGraphics.CGContext.SetStrokeColor(float[])</a></format>.</summary>
+		/// <param name="space">The desired <see cref="CoreGraphics.CGColorSpace" />.</param>
+		///         <summary>Sets the <see cref="CoreGraphics.CGColorSpace" /> to be used with <see cref="CoreGraphics.CGContext.SetStrokeColor(nfloat[])" />.</summary>
 		///         <remarks>To be added.</remarks>
 		public void SetStrokeColorSpace (CGColorSpace? space)
 		{
@@ -813,10 +817,10 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static void CGContextSetRenderingIntent (/* CGContextRef */ IntPtr context, CGColorRenderingIntent intent);
 
-		/// <param name="intent">The desired <see cref="T:CoreGraphics.CGColorRenderingIntent" />.</param>
+		/// <param name="intent">The desired <see cref="CoreGraphics.CGColorRenderingIntent" />.</param>
 		///         <summary>How colors outside the destination color space are handled.</summary>
 		///         <remarks>
-		///           <para>The default rendering intent is <see cref="F:CoreGraphics.CGColorRenderingIntent.RelativeColorimetric" /> for everyting but samples images, which are rendered with <see cref="F:CoreGraphics.CGColorRenderingIntent.Perceptual" />.</para>
+		///           <para>The default rendering intent is <see cref="CoreGraphics.CGColorRenderingIntent.RelativeColorimetric" /> for everyting but samples images, which are rendered with <see cref="CoreGraphics.CGColorRenderingIntent.Perceptual" />.</para>
 		///         </remarks>
 		public void SetRenderingIntent (CGColorRenderingIntent intent)
 		{
@@ -861,7 +865,7 @@ namespace CoreGraphics {
 		///         <value>To be added.</value>
 		///         <remarks>
 		///           <para>
-		///             <see cref="P:CoreGraphics.CGContext.InterpolationQuality" /> is only a hint. Not all contexts support all <see cref="T:CoreGraphics.CGInterpolationQuality" /> values.</para>
+		///             <see cref="CoreGraphics.CGContext.InterpolationQuality" /> is only a hint. Not all contexts support all <see cref="CoreGraphics.CGInterpolationQuality" /> values.</para>
 		///         </remarks>
 		public CGInterpolationQuality InterpolationQuality {
 			get {
@@ -923,7 +927,7 @@ namespace CoreGraphics {
 		extern static void CGContextDrawShading (/* CGContextRef */ IntPtr context,
 			/* CGShadingRef __nullable */ IntPtr shading);
 
-		/// <param name="shading">The <see cref="T:CoreGraphics.CGShading" /> to be drawn.</param>
+		/// <param name="shading">The <see cref="CoreGraphics.CGShading" /> to be drawn.</param>
 		///         <summary>Renders the specified <paramref name="shading" />.</summary>
 		///         <remarks>To be added.</remarks>
 		public void DrawShading (CGShading? shading)
@@ -964,7 +968,7 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static CGAffineTransform CGContextGetTextMatrix (/* CGContextRef */ IntPtr c);
 
-		/// <summary>Defines the transform between text space and user space. Independent of the <see cref="T:CoreGraphics.CGContext" />'s state.</summary>
+		/// <summary>Defines the transform between text space and user space. Independent of the <see cref="CoreGraphics.CGContext" />'s state.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public CGAffineTransform TextMatrix {
@@ -979,7 +983,7 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static void CGContextSetTextDrawingMode (/* CGContextRef */ IntPtr c, CGTextDrawingMode mode);
 
-		/// <param name="mode">The desired <see cref="T:CoreGraphics.CGTextDrawingMode" />.</param>
+		/// <param name="mode">The desired <see cref="CoreGraphics.CGTextDrawingMode" />.</param>
 		///         <summary>Specifies how glyphs should be rendered.</summary>
 		///         <remarks>To be added.</remarks>
 		public void SetTextDrawingMode (CGTextDrawingMode mode)
@@ -990,8 +994,8 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static void CGContextSetFont (/* CGContextRef */ IntPtr c, /* CGFontRef __nullable */ IntPtr font);
 
-		/// <param name="font">The <see cref="T:CoreGraphics.CGFont" /> used for the context.</param>
-		///         <summary>Sets the <see cref="T:CoreGraphics.CGFont" /> used to render text.</summary>
+		/// <param name="font">The <see cref="CoreGraphics.CGFont" /> used for the context.</param>
+		///         <summary>Sets the <see cref="CoreGraphics.CGFont" /> used to render text.</summary>
 		///         <remarks>To be added.</remarks>
 		public void SetFont (CGFont? font)
 		{
@@ -1059,7 +1063,7 @@ namespace CoreGraphics {
 
 		/// <param name="str">To be added.</param>
 		///         <param name="count">To be added.</param>
-		///         <summary>This method has been deprecated in favor of <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Text&amp;scope=Xamarin" title="N:CoreText">N:CoreText</a></format>.</summary>
+		///         <summary>This method has been deprecated in favor of <see cref="CoreText" />.</summary>
 		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -1078,7 +1082,7 @@ namespace CoreGraphics {
 		}
 
 		/// <param name="str">To be added.</param>
-		///         <summary>This method has been deprecated in favor of <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Text&amp;scope=Xamarin" title="N:CoreText">N:CoreText</a></format>.</summary>
+		///         <summary>This method has been deprecated in favor of <see cref="CoreText" />.</summary>
 		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -1103,7 +1107,7 @@ namespace CoreGraphics {
 
 		/// <param name="bytes">To be added.</param>
 		///         <param name="count">To be added.</param>
-		///         <summary>This method has been deprecated in favor of <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Text&amp;scope=Xamarin" title="N:CoreText">N:CoreText</a></format>.</summary>
+		///         <summary>This method has been deprecated in favor of <see cref="CoreText" />.</summary>
 		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -1121,7 +1125,7 @@ namespace CoreGraphics {
 		}
 
 		/// <param name="bytes">To be added.</param>
-		///         <summary>This method has been deprecated in favor of <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Text&amp;scope=Xamarin" title="N:CoreText">N:CoreText</a></format>.</summary>
+		///         <summary>This method has been deprecated in favor of <see cref="CoreText" />.</summary>
 		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -1222,7 +1226,7 @@ namespace CoreGraphics {
 			/* const CGGlyph * __nullable */ ushort []? glyphs, /* size_t */ nint count);
 
 		/// <param name="glyphs">To be added.</param>
-		///         <summary>This method has been deprecated in favor of <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Text&amp;scope=Xamarin" title="N:CoreText">N:CoreText</a></format>.</summary>
+		///         <summary>This method has been deprecated in favor of <see cref="CoreText" />.</summary>
 		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -1237,7 +1241,7 @@ namespace CoreGraphics {
 
 		/// <param name="glyphs">To be added.</param>
 		///         <param name="count">To be added.</param>
-		///         <summary>This method has been deprecated in favor of <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Text&amp;scope=Xamarin" title="N:CoreText">N:CoreText</a></format>.</summary>
+		///         <summary>This method has been deprecated in favor of <see cref="CoreText" />.</summary>
 		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -1374,7 +1378,7 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static void CGContextSynchronize (/* CGContextRef __nullable */ IntPtr c);
 
-		/// <summary>Marks a <see cref="T:CoreGraphics.CGContext" /> for update.</summary>
+		/// <summary>Marks a <see cref="CoreGraphics.CGContext" /> for update.</summary>
 		///         <remarks>
 		///           <para>Flushes all drawing operations since the last update. Does nothing for PDF and bitmap contexts. App devs do not typically need to call this method.</para>
 		///         </remarks>
@@ -1388,7 +1392,7 @@ namespace CoreGraphics {
 
 		/// <param name="shouldAntialias">
 		///           <see langword="true" /> if antialiasing should be used.</param>
-		///         <summary>Used in conjunction with <see cref="M:CoreGraphics.CGContext.SetAllowsAntialiasing(System.Boolean)" /> to enable or disable antialiasing.</summary>
+		///         <summary>Used in conjunction with <see cref="CoreGraphics.CGContext.SetAllowsAntialiasing(System.Boolean)" /> to enable or disable antialiasing.</summary>
 		///         <remarks>To be added.</remarks>
 		public void SetShouldAntialias (bool shouldAntialias)
 		{
@@ -1401,7 +1405,7 @@ namespace CoreGraphics {
 		///           <see langword="true" /> if antialiasing should be allowed.</param>
 		///         <summary>Whether the context allows antialiasing.</summary>
 		///         <remarks>
-		///           <para>This property works in conjunction with <see cref="M:CoreGraphics.CGContext.SetShouldAntialias(System.Boolean)" />. Only if both values are <see langword="true" /> will antialiasing occur.</para>
+		///           <para>This property works in conjunction with <see cref="CoreGraphics.CGContext.SetShouldAntialias(System.Boolean)" />. Only if both values are <see langword="true" /> will antialiasing occur.</para>
 		///         </remarks>
 		public void SetAllowsAntialiasing (bool allowsAntialiasing)
 		{
@@ -1413,7 +1417,7 @@ namespace CoreGraphics {
 
 		/// <param name="shouldSmoothFonts">
 		///           <see langword="true" /> if fonts should be smoothed.</param>
-		///         <summary>Used in conjunction with <see cref="M:CoreGraphics.CGContext.SetAllowsFontSmoothing(System.Boolean)" /> to enable or disable font smoothing.</summary>
+		///         <summary>Used in conjunction with <see cref="CoreGraphics.CGContext.SetAllowsFontSmoothing(System.Boolean)" /> to enable or disable font smoothing.</summary>
 		///         <remarks>To be added.</remarks>
 		public void SetShouldSmoothFonts (bool shouldSmoothFonts)
 		{
@@ -1423,7 +1427,7 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static CGAffineTransform CGContextGetUserSpaceToDeviceSpaceTransform (/* CGContextRef */ IntPtr context);
 
-		/// <summary>The <see cref="T:CoreGraphics.CGAffineTransform" /> that maps user-space coordinates into device-space coordinates.</summary>
+		/// <summary>The <see cref="CoreGraphics.CGAffineTransform" /> that maps user-space coordinates into device-space coordinates.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		public CGAffineTransform GetUserSpaceToDeviceSpaceTransform ()
@@ -1435,7 +1439,7 @@ namespace CoreGraphics {
 		extern static CGPoint CGContextConvertPointToDeviceSpace (/* CGContextRef */ IntPtr context, CGPoint point);
 
 		/// <param name="point">A point in user-space coordinates.</param>
-		///         <summary>Returns a new <see cref="T:System.Drawing.PointF" /> that converts the user-space <paramref name="point" /> into device space.</summary>
+		///         <summary>Returns a new <see cref="CGPoint" /> that converts the user-space <paramref name="point" /> into device space.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		public CGPoint PointToDeviceSpace (CGPoint point)
@@ -1553,7 +1557,7 @@ namespace CoreGraphics {
 		///           <see langword="true" /> if font smoothing should be allowed.</param>
 		///         <summary>Whether the context allows font smoothing.</summary>
 		///         <remarks>
-		///           <para>This property works in conjunction with <see cref="M:CoreGraphics.CGContext.SetShouldSmoothFonts(System.Boolean)" />. Only if both values are <see langword="true" /> will font smoothing occur.</para>
+		///           <para>This property works in conjunction with <see cref="CoreGraphics.CGContext.SetShouldSmoothFonts(System.Boolean)" />. Only if both values are <see langword="true" /> will font smoothing occur.</para>
 		///         </remarks>
 		public void SetAllowsFontSmoothing (bool allows)
 		{
@@ -1566,7 +1570,7 @@ namespace CoreGraphics {
 		/// <param name="allows">
 		///           <see langword="true" /> if glyphs need not be aligned to pixel boundaries.</param>
 		///         <summary>Whether the context allows for glyphs to be aligned other than to pixel boundaries.</summary>
-		///         <remarks>This property works in conjunction with <see cref="M:CoreGraphics.CGContext.SetShouldSubpixelPositionFonts(System.Boolean)" />. Only if both values are <see langword="true" /> will glyphs not be aligned to pixel boundaries.</remarks>
+		///         <remarks>This property works in conjunction with <see cref="CoreGraphics.CGContext.SetShouldSubpixelPositionFonts(System.Boolean)" />. Only if both values are <see langword="true" /> will glyphs not be aligned to pixel boundaries.</remarks>
 		public void SetAllowsSubpixelPositioning (bool allows)
 		{
 			CGContextSetAllowsFontSubpixelPositioning (Handle, allows.AsByte ());
@@ -1579,7 +1583,7 @@ namespace CoreGraphics {
 		///           <see langword="true" /> if subpixel quantization should be allowed</param>
 		///         <summary>Whether the context allows for glyphs to be drawn at subpixel locations.</summary>
 		///         <remarks>
-		///           <para>This property works in conjunction with <see cref="M:CoreGraphics.CGContext.ShouldSubpixelQuantizeFonts(System.Boolean)" />, <see cref="M:CoreGraphics.CGContext.SetAllowsSubpixelPositioning(System.Boolean)" />, and <see cref="M:CoreGraphics.CGContext.SetShouldSubpixelPositionFonts(System.Boolean)" />. Only if all these values are <see langword="true" /> will subpixel quantization be allowed.</para>
+		///           <para>This property works in conjunction with <see cref="CoreGraphics.CGContext.ShouldSubpixelQuantizeFonts(System.Boolean)" />, <see cref="CoreGraphics.CGContext.SetAllowsSubpixelPositioning(System.Boolean)" />, and <see cref="CoreGraphics.CGContext.SetShouldSubpixelPositionFonts(System.Boolean)" />. Only if all these values are <see langword="true" /> will subpixel quantization be allowed.</para>
 		///         </remarks>
 		public void SetAllowsFontSubpixelQuantization (bool allows)
 		{
@@ -1591,7 +1595,7 @@ namespace CoreGraphics {
 
 		/// <param name="shouldSubpixelPositionFonts">
 		///           <see langword="true" /> if glyphs need not be aligned to pixels.</param>
-		///         <summary>Used in conjunction with <see cref="M:CoreGraphics.CGContext.SetAllowsSubpixelPositioning(System.Boolean)" /> to enable or disable glyph alignment with pixels.</summary>
+		///         <summary>Used in conjunction with <see cref="CoreGraphics.CGContext.SetAllowsSubpixelPositioning(System.Boolean)" /> to enable or disable glyph alignment with pixels.</summary>
 		///         <remarks>To be added.</remarks>
 		public void SetShouldSubpixelPositionFonts (bool shouldSubpixelPositionFonts)
 		{
@@ -1603,9 +1607,9 @@ namespace CoreGraphics {
 
 		/// <param name="shouldSubpixelQuantizeFonts">
 		///           <see langword="true" /> if fonts should be drawn at subpixel positions.</param>
-		///         <summary>With <see cref="M:CoreGraphics.CGContext.SetAllowsFontSubpixelQuantization(System.Boolean)" />, determines whether fonts should be drawn at subpixel locations.</summary>
+		///         <summary>With <see cref="CoreGraphics.CGContext.SetAllowsFontSubpixelQuantization(System.Boolean)" />, determines whether fonts should be drawn at subpixel locations.</summary>
 		///         <remarks>
-		///           <para>Subpixel quantization requires <see cref="M:CoreGraphics.CGContext.SetAllowsFontSubpixelQuantization(System.Boolean)" />, <see cref="M:CoreGraphics.CGContext.SetShouldSubpixelPositionFonts(System.Boolean)" />, and <see cref="M:CoreGraphics.CGContext.SetAllowsSubpixelPositioning(System.Boolean)" /> all to be <see langword="true" />.</para>
+		///           <para>Subpixel quantization requires <see cref="CoreGraphics.CGContext.SetAllowsFontSubpixelQuantization(System.Boolean)" />, <see cref="CoreGraphics.CGContext.SetShouldSubpixelPositionFonts(System.Boolean)" />, and <see cref="CoreGraphics.CGContext.SetAllowsSubpixelPositioning(System.Boolean)" /> all to be <see langword="true" />.</para>
 		///         </remarks>
 		public void ShouldSubpixelQuantizeFonts (bool shouldSubpixelQuantizeFonts)
 		{
@@ -1616,9 +1620,9 @@ namespace CoreGraphics {
 		extern static void CGContextBeginTransparencyLayer (/* CGContextRef */ IntPtr context, /* CFDictionaryRef __nullable */ IntPtr auxiliaryInfo);
 
 		/// <param name="auxiliaryInfo">A dictionary of auxiliary information. May be <see langword="null" />.</param>
-		///         <summary>With <see cref="M:CoreGraphics.CGContext.EndTransparencyLayer" />, encloses operations on a fully transparent layer.</summary>
+		///         <summary>With <see cref="CoreGraphics.CGContext.EndTransparencyLayer" />, encloses operations on a fully transparent layer.</summary>
 		///         <remarks>To be added.</remarks>
-		///         <altmember cref="M:CoreGraphics.CGContext.BeginTransparencyLayer" />
+		///         <altmember cref="CoreGraphics.CGContext.BeginTransparencyLayer(CGRect,NSDictionary)" />
 		public void BeginTransparencyLayer (NSDictionary? auxiliaryInfo = null)
 		{
 			CGContextBeginTransparencyLayer (Handle, auxiliaryInfo.GetHandle ());
@@ -1648,7 +1652,11 @@ namespace CoreGraphics {
 			CGContextEndTransparencyLayer (Handle);
 		}
 
-		/// <include file="../../docs/api/CoreGraphics/CGContext.xml" path="/Documentation/Docs[@DocId='M:CoreGraphics.CGContext.AsBitmapContext']/*" />
+#if __MACOS__
+		/// <include file="../../docs/api/CoreGraphics/CGContext.xml" path="/Documentation/Docs[@DocId='M:CoreGraphics.CGContext.AsBitmapContext' and contains(@Platforms,'macOS')]/*" />
+#else
+		/// <include file="../../docs/api/CoreGraphics/CGContext.xml" path="/Documentation/Docs[@DocId='M:CoreGraphics.CGContext.AsBitmapContext' and not(@Platforms)]/*" />
+#endif
 		public CGBitmapContext AsBitmapContext ()
 		{
 			return new CGBitmapContext (Handle, false);

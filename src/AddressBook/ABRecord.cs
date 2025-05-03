@@ -46,8 +46,8 @@ namespace AddressBook {
 
 	/// <summary>
 	///       Base type for
-	///       <see cref="T:AddressBook.ABGroup" /> and
-	///       <see cref="T:AddressBook.ABPerson" />.
+	///       <see cref="AddressBook.ABGroup" /> and
+	///       <see cref="AddressBook.ABPerson" />.
 	///     </summary>
 	///     <remarks>
 	///       <para>
@@ -57,8 +57,8 @@ namespace AddressBook {
 	///         <item>
 	///           <term>
 	///             Getting record information:
-	///             <see cref="P:AddressBook.ABRecord.Id" />,
-	///             <see cref="P:AddressBook.ABRecord.Type" />.
+	///             <see cref="AddressBook.ABRecord.Id" />,
+	///             <see cref="AddressBook.ABRecord.Type" />.
 	///           </term>
 	///         </item>
 	///       </list>
@@ -76,7 +76,7 @@ namespace AddressBook {
 		///         </summary>
 		///         <remarks>
 		///           <para>
-		///             <see cref="P:AddressBook.ABRecord.Id" /> returns this
+		///             <see cref="AddressBook.ABRecord.Id" /> returns this
 		///             value when the record hasn't been saved to the database.
 		///           </para>
 		///         </remarks>
@@ -152,15 +152,15 @@ namespace AddressBook {
 		extern static int ABRecordGetRecordID (IntPtr record);
 		/// <summary>Gets the unique ID of the record.</summary>
 		///         <value>
-		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Int%2032&amp;scope=Xamarin" title="T:System.Int32">T:System.Int32</a></format> which is the unique ID of the record.
+		///           A <see cref="System.Int32" /> which is the unique ID of the record.
 		///         </value>
 		///         <remarks>
 		///           <para>
 		///             If the record hasn't been saved into the database, this is
-		///             <see cref="F:AddressBook.ABRecord.InvalidRecordId" />.
+		///             <see cref="AddressBook.ABRecord.InvalidRecordId" />.
 		///           </para>
 		///         </remarks>
-		///         <altmember cref="M:AddressBook.ABAddressBook.Save" />
+		///         <altmember cref="AddressBook.ABAddressBook.Save" />
 		public int Id {
 			get { return ABRecordGetRecordID (Handle); }
 		}
@@ -169,7 +169,7 @@ namespace AddressBook {
 		extern static ABRecordType ABRecordGetRecordType (IntPtr record);
 		/// <summary>Gets the type of the record.</summary>
 		///         <value>
-		///           A <see cref="T:AddressBook.ABRecordType" /> containing
+		///           A <see cref="AddressBook.ABRecordType" /> containing
 		///           the type of the record.
 		///         </value>
 		///         <remarks>
@@ -181,11 +181,11 @@ namespace AddressBook {
 		[DllImport (Constants.AddressBookLibrary)]
 		extern static IntPtr ABRecordCopyCompositeName (IntPtr record);
 		/// <summary>
-		///           Returns the composite name of the <see cref="T:AddressBook.ABRecord" />.
+		///           Returns the composite name of the <see cref="AddressBook.ABRecord" />.
 		///         </summary>
 		///         <returns>
-		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> containing
-		///           the composite name of the <see cref="T:AddressBook.ABRecord" />.
+		///           A <see cref="System.String" /> containing
+		///           the composite name of the <see cref="AddressBook.ABRecord" />.
 		///         </returns>
 		///         <remarks>
 		///         </remarks>

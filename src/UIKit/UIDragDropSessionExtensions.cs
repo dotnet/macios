@@ -18,7 +18,7 @@ using Foundation;
 
 namespace UIKit {
 
-	/// <summary>Contains methods for working with drag-and-drop sessions, including a default implementation of <see cref="M:UIKit.IUIDropSession.LoadObjects(ObjCRuntime.Class,System.Action{Foundation.INSItemProviderReading[]})" />.</summary>
+	/// <summary>Contains methods for working with drag-and-drop sessions, including a default implementation of <see cref="UIKit.IUIDropSession.LoadObjects(ObjCRuntime.Class,System.Action{Foundation.INSItemProviderReading[]})" />.</summary>
 	///     <remarks>To be added.</remarks>
 	public static class UIDragDropSessionExtensions {
 

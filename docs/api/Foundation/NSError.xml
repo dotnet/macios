@@ -2,7 +2,7 @@
   <Docs DocId="T:Foundation.NSError">
     <summary>Encapsulates an error.</summary>
     <remarks>
-      <para>NSError objects wrap both error domains, an error code and an optional error payload into one.   The error domain is used to classify the error (typically, there is an error domain per susbsystem).   There are several static properties in the NSError class that represent some common domains like the <see cref="P:Foundation.NSError.CocoaErrorDomain" /> or the <see cref="P:Foundation.NSError.CFNetworkErrorDomain" />.</para>
+      <para>NSError objects wrap both error domains, an error code and an optional error payload into one.   The error domain is used to classify the error (typically, there is an error domain per susbsystem).   There are several static properties in the NSError class that represent some common domains like the <see cref="Foundation.NSError.CocoaErrorDomain" /> or the <see cref="Foundation.NSError.CFNetworkErrorDomain" />.</para>
       <para>
       </para>
       <para>NSErrors can be serialized.</para>
@@ -16,7 +16,7 @@
       </example>
       <para>
       </para>
-      <para>When creating the error with a payload, you can provide a number of optional elements that provide the user with more information.   You should provide this information on the NSDictionary with the keys defined in this class like <see cref="P:Foundation.NSError.LocalizedFailureErrorKey" />, <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=P:Foundation.NSError.FilePathErrorKey,&amp;scope=Xamarin" title="P:Foundation.NSError.FilePathErrorKey,">P:Foundation.NSError.FilePathErrorKey,</a></format> <see cref="P:Foundation.NSError.HelpAnchorErrorKey" />, <see cref="P:Foundation.NSError.LocalizedDescriptionKey" />, <see cref="P:Foundation.NSError.LocalizedFailureReasonErrorKey" />, <see cref="P:Foundation.NSError.LocalizedRecoveryOptionsErrorKey" />, <see cref="P:Foundation.NSError.LocalizedRecoverySuggestionErrorKey" />, <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=P:Foundation.NSError.StringEncodingErrorKey,&amp;scope=Xamarin" title="P:Foundation.NSError.StringEncodingErrorKey,">P:Foundation.NSError.StringEncodingErrorKey,</a></format> <see cref="P:Foundation.NSError.UnderlyingErrorKey" /> and <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=P:Foundation.NSError.UrlErrorKey.&amp;scope=Xamarin" title="P:Foundation.NSError.UrlErrorKey.">P:Foundation.NSError.UrlErrorKey.</a></format></para>
+      <para>When creating the error with a payload, you can provide a number of optional elements that provide the user with more information.   You should provide this information on the NSDictionary with the keys defined in this class like <see cref="Foundation.NSError.LocalizedFailureErrorKey" />, <see cref="Foundation.NSError.FilePathErrorKey," /> <see cref="Foundation.NSError.HelpAnchorErrorKey" />, <see cref="Foundation.NSError.LocalizedDescriptionKey" />, <see cref="Foundation.NSError.LocalizedFailureReasonErrorKey" />, <see cref="Foundation.NSError.LocalizedRecoveryOptionsErrorKey" />, <see cref="Foundation.NSError.LocalizedRecoverySuggestionErrorKey" />, <see cref="Foundation.NSError.StringEncodingErrorKey," /> <see cref="Foundation.NSError.UnderlyingErrorKey" /> and <see cref="Foundation.NSError.UrlErrorKey." /></para>
       <para>
       </para>
       <para>For example:</para>

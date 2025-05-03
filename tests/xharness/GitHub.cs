@@ -29,7 +29,7 @@ namespace Xharness {
 
 	public class GitHub : IVersionControlSystem {
 
-		const string PullsApiUrl = "https://api.github.com/repos/xamarin/xamarin-macios/pulls";
+		const string PullsApiUrl = "https://api.github.com/repos/dotnet/macios/pulls";
 
 		readonly IHarness harness;
 		readonly IProcessManager processManager;

@@ -147,7 +147,7 @@ namespace VideoToolbox {
 	}
 
 	// Strongly Typed VTProfileLevelKey
-	/// <summary>Strongly typed set of options used by <see cref="P:VideoToolbox.VTCompressionProperties.ProfileLevel" />.</summary>
+	/// <summary>Strongly typed set of options used by <see cref="VideoToolbox.VTCompressionProperties.ProfileLevel" />.</summary>
 	public enum VTProfileLevel {
 		/// <summary>The protocol, profile, and level have not been set.</summary>
 		Unset,
@@ -256,7 +256,7 @@ namespace VideoToolbox {
 	}
 
 	// Strongly Typed VTH264EntropyModeKeys
-	/// <summary>Strongly typed set of options used by <see cref="P:VideoToolbox.VTCompressionProperties.H264EntropyMode" />.</summary>
+	/// <summary>Strongly typed set of options used by <see cref="VideoToolbox.VTCompressionProperties.H264EntropyMode" />.</summary>
 	public enum VTH264EntropyMode {
 		/// <summary>To be added.</summary>
 		Unset,
@@ -306,7 +306,7 @@ namespace VideoToolbox {
 	}
 
 	// Strongly Typed kVTCompressionPropertyKey_TransferFunction
-	/// <summary>Strongly typed set of options used by <see cref="P:VideoToolbox.VTCompressionProperties.TransferFunction" />.</summary>
+	/// <summary>Strongly typed set of options used by <see cref="VideoToolbox.VTCompressionProperties.TransferFunction" />.</summary>
 	public enum VTTransferFunction {
 		/// <summary>To be added.</summary>
 		Unset,
@@ -360,7 +360,7 @@ namespace VideoToolbox {
 	}
 
 	// Strongly Typed kVTDecompressionPropertyKey_OnlyTheseFrames
-	/// <summary>Strongly typed set of options used by <see cref="P:VideoToolbox.VTDecompressionProperties.OnlyTheseFrames" />.</summary>
+	/// <summary>Strongly typed set of options used by <see cref="VideoToolbox.VTDecompressionProperties.OnlyTheseFrames" />.</summary>
 	public enum VTOnlyTheseFrames {
 		/// <summary>To be added.</summary>
 		Unset,
@@ -388,7 +388,7 @@ namespace VideoToolbox {
 	}
 
 	// Strongly Typed kVTPropertyReadWriteStatusKey
-	/// <summary>Strongly typed set of options used by <see cref="P:VideoToolbox.VTPropertyOptions.ReadWriteStatus" />.</summary>
+	/// <summary>Strongly typed set of options used by <see cref="VideoToolbox.VTPropertyOptions.ReadWriteStatus" />.</summary>
 	public enum VTReadWriteStatus {
 		/// <summary>To be added.</summary>
 		Unset,

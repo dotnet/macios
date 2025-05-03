@@ -2,24 +2,24 @@
   <Docs DocId="T:SpriteKit.SKScene">
     <summary>A scene of content in Sprite Kit. The root of a tree of Sprite Kit nodes.</summary>
     <remarks>
-      <para>The <see cref="T:SpriteKit.SKScene" /> is the root of the scene-graph displayed by a <see cref="T:SpriteKit.SKView" />. </para>
-      <para>While being presented by a <see cref="T:SpriteKit.SKView" /> (see <see cref="M:SpriteKit.SKView.PresentScene(SpriteKit.SKScene,SpriteKit.SKTransition)" />), the <see cref="T:SpriteKit.SKScene" /> runs through an animation loop. Every pass through the loop involves:</para>
+      <para>The <see cref="SpriteKit.SKScene" /> is the root of the scene-graph displayed by a <see cref="SpriteKit.SKView" />. </para>
+      <para>While being presented by a <see cref="SpriteKit.SKView" /> (see <see cref="SpriteKit.SKView.PresentScene(SpriteKit.SKScene,SpriteKit.SKTransition)" />), the <see cref="SpriteKit.SKScene" /> runs through an animation loop. Every pass through the loop involves:</para>
       <para>
         <list type="bullet">
           <item>
-            <term>The <see cref="T:SpriteKit.SKScene" /> calls <see cref="M:SpriteKit.SKScene.Update(System.Double)" />.</term>
+            <term>The <see cref="SpriteKit.SKScene" /> calls <see cref="SpriteKit.SKScene.Update(System.Double)" />.</term>
           </item>
           <item>
-            <term>For each <see cref="T:SpriteKit.SKNode" /> in its <see cref="P:SpriteKit.SKNode.Children" />, executes the child node's <see cref="T:SpriteKit.SKAction" />s.</term>
+            <term>For each <see cref="SpriteKit.SKNode" /> in its <see cref="SpriteKit.SKNode.Children" />, executes the child node's <see cref="SpriteKit.SKAction" />s.</term>
           </item>
           <item>
-            <term>The <see cref="T:SpriteKit.SKScene" /> calls <see cref="M:SpriteKit.SKSceneDelegate_Extensions.DidEvaluateActions(SpriteKit.ISKSceneDelegate,SpriteKit.SKScene)" /></term>
+            <term>The <see cref="SpriteKit.SKScene" /> calls <see cref="SpriteKit.SKSceneDelegate_Extensions.DidEvaluateActions(SpriteKit.ISKSceneDelegate,SpriteKit.SKScene)" /></term>
           </item>
           <item>
-            <term>For each <see cref="T:SpriteKit.SKNode" /> in its <see cref="P:SpriteKit.SKNode.Children" />, executes the child node's physics</term>
+            <term>For each <see cref="SpriteKit.SKNode" /> in its <see cref="SpriteKit.SKNode.Children" />, executes the child node's physics</term>
           </item>
           <item>
-            <term>The <see cref="T:SpriteKit.SKScene" /> calls <see cref="M:SpriteKit.SKSceneDelegate_Extensions.DidSimulatePhysics(SpriteKit.ISKSceneDelegate,SpriteKit.SKScene)" /></term>
+            <term>The <see cref="SpriteKit.SKScene" /> calls <see cref="SpriteKit.SKSceneDelegate_Extensions.DidSimulatePhysics(SpriteKit.ISKSceneDelegate,SpriteKit.SKScene)" /></term>
           </item>
         </list>
       </para>

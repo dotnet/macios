@@ -1,10 +1,10 @@
 <Documentation>
   <Docs DocId="T:GameplayKit.GKRuleSystem">
-    <summary>Maintains a collection of <see cref="T:GameplayKit.GKRule" /> objects, activating them as appropriate.</summary>
+    <summary>Maintains a collection of <see cref="GameplayKit.GKRule" /> objects, activating them as appropriate.</summary>
     <remarks>
-      <para>The <see cref="T:GameplayKit.GKRuleSystem" /> class allows developers to build expert systems. Both classical and fuzzy-logic systems are supported.</para>
-      <para>At any time, a <see cref="T:GameplayKit.GKRule" /> is either in the <see cref="P:GameplayKit.GKRuleSystem.Agenda" /> collection of rules to be evaluated or the <see cref="P:GameplayKit.GKRuleSystem.Executed" /> collection. The <see cref="M:GameplayKit.GKRuleSystem.Reset" /> method moves all rules back to the <see cref="P:GameplayKit.GKRuleSystem.Agenda" /> collection. </para>
-      <para>The method <see cref="M:GameplayKit.GKRuleSystem.Evaluate" /> evaluates the predicates of every rule in the <see cref="P:GameplayKit.GKRuleSystem.Agenda" />, according to their <see cref="P:GameplayKit.GKRule.Salience" /> and, secondarily, the order in which they were added to the <see cref="T:GameplayKit.GKRuleSystem" />. Rules whose predicate evaluates to <see langword="true" /> have their action function executed and are placed in the <see cref="P:GameplayKit.GKRuleSystem.Executed" /> collection.</para>
+      <para>The <see cref="GameplayKit.GKRuleSystem" /> class allows developers to build expert systems. Both classical and fuzzy-logic systems are supported.</para>
+      <para>At any time, a <see cref="GameplayKit.GKRule" /> is either in the <see cref="GameplayKit.GKRuleSystem.Agenda" /> collection of rules to be evaluated or the <see cref="GameplayKit.GKRuleSystem.Executed" /> collection. The <see cref="GameplayKit.GKRuleSystem.Reset" /> method moves all rules back to the <see cref="GameplayKit.GKRuleSystem.Agenda" /> collection. </para>
+      <para>The method <see cref="GameplayKit.GKRuleSystem.Evaluate" /> evaluates the predicates of every rule in the <see cref="GameplayKit.GKRuleSystem.Agenda" />, according to their <see cref="GameplayKit.GKRule.Salience" /> and, secondarily, the order in which they were added to the <see cref="GameplayKit.GKRuleSystem" />. Rules whose predicate evaluates to <see langword="true" /> have their action function executed and are placed in the <see cref="GameplayKit.GKRuleSystem.Executed" /> collection.</para>
       <para>The following demonstrates the "FizzBuzz" challenge: If a number is evenly divisible by 3, output "fizz". If evenly divisible by 5, output "buzz". Otherwise, output the number itself. Note that this code properly sets the <c>output</c> to "buzzfizz" on an input of 15, since both the <c>fizzRule</c> and <c>buzzRule</c> evaluate to <see langword="true" />.</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[

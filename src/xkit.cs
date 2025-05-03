@@ -126,9 +126,9 @@ namespace UIKit {
 #endif
 
 #if NET || MONOMAC
-	/// <summary>A delegate used as the callback in <see cref="M:UIKit.NSLayoutManager.EnumerateLineFragments(Foundation.NSRange,UIKit.NSTextLayoutEnumerateLineFragments)" />.</summary>
+	/// <summary>A delegate used as the callback in <see cref="UIKit.NSLayoutManager.EnumerateLineFragments(Foundation.NSRange,UIKit.NSTextLayoutEnumerateLineFragments)" />.</summary>
 	delegate void NSTextLayoutEnumerateLineFragments (CGRect rect, CGRect usedRectangle, NSTextContainer textContainer, NSRange glyphRange, out bool stop);
-	/// <summary>A delegate used as the callback in <see cref="M:UIKit.NSLayoutManager.EnumerateEnclosingRects(Foundation.NSRange,Foundation.NSRange,UIKit.NSTextContainer,UIKit.NSTextLayoutEnumerateEnclosingRects)" />.</summary>
+	/// <summary>A delegate used as the callback in <see cref="UIKit.NSLayoutManager.EnumerateEnclosingRects(Foundation.NSRange,Foundation.NSRange,UIKit.NSTextContainer,UIKit.NSTextLayoutEnumerateEnclosingRects)" />.</summary>
 	delegate void NSTextLayoutEnumerateEnclosingRects (CGRect rect, out bool stop);
 #else
 	delegate void NSTextLayoutEnumerateLineFragments (CGRect rect, CGRect usedRectangle, NSTextContainer textContainer, NSRange glyphRange, ref bool stop);
@@ -199,7 +199,7 @@ namespace UIKit {
 
 	// NSInteger -> NSLayoutConstraint.h
 	/// <summary>An enumeration of attributes for use with constraint-based layouts.</summary>
-	///     <remarks>Values used to specify particular constraint attributes in constraint-based layouts. These values are primarily used by methods in the <see cref="T:UIKit.NSLayoutConstraint" /> class. </remarks>
+	///     <remarks>Values used to specify particular constraint attributes in constraint-based layouts. These values are primarily used by methods in the <see cref="UIKit.NSLayoutConstraint" /> class. </remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum NSLayoutAttribute : long {
@@ -213,9 +213,9 @@ namespace UIKit {
 		Top,
 		/// <summary>The bottom of the element.</summary>
 		Bottom,
-		/// <summary>In locales with right-to-left text, this value is equal to <see cref="F:UIKit.NSLayoutAttribute.Left" />. In locales such as Hebrew or Arabic, equal to <see cref="F:UIKit.NSLayoutAttribute.Right" />.</summary>
+		/// <summary>In locales with right-to-left text, this value is equal to <see cref="UIKit.NSLayoutAttribute.Left" />. In locales such as Hebrew or Arabic, equal to <see cref="UIKit.NSLayoutAttribute.Right" />.</summary>
 		Leading,
-		/// <summary>In locales with right-to-left text, this value is equal to <see cref="F:UIKit.NSLayoutAttribute.Right" />. In locales such as Hebrew or Arabic, equal to <see cref="F:UIKit.NSLayoutAttribute.Left" />.</summary>
+		/// <summary>In locales with right-to-left text, this value is equal to <see cref="UIKit.NSLayoutAttribute.Right" />. In locales such as Hebrew or Arabic, equal to <see cref="UIKit.NSLayoutAttribute.Left" />.</summary>
 		Trailing,
 		/// <summary>The size of the element along the X axis.</summary>
 		Width,
@@ -277,23 +277,23 @@ namespace UIKit {
 		/// <summary>To be added.</summary>
 		None = 0,
 
-		/// <summary>Aligns all elements using their <see cref="F:UIKit.NSLayoutAttribute.Left" /> properties.</summary>
+		/// <summary>Aligns all elements using their <see cref="UIKit.NSLayoutAttribute.Left" /> properties.</summary>
 		AlignAllLeft = (1 << (int) NSLayoutAttribute.Left),
-		/// <summary>Aligns all elements using their <see cref="F:UIKit.NSLayoutAttribute.Right" /> properties.</summary>
+		/// <summary>Aligns all elements using their <see cref="UIKit.NSLayoutAttribute.Right" /> properties.</summary>
 		AlignAllRight = (1 << (int) NSLayoutAttribute.Right),
-		/// <summary>Aligns all attributes using their <see cref="F:UIKit.NSLayoutAttribute.Top" />s.</summary>
+		/// <summary>Aligns all attributes using their <see cref="UIKit.NSLayoutAttribute.Top" />s.</summary>
 		AlignAllTop = (1 << (int) NSLayoutAttribute.Top),
-		/// <summary>Aligns all elements using their <see cref="F:UIKit.NSLayoutAttribute.Bottom" />s.</summary>
+		/// <summary>Aligns all elements using their <see cref="UIKit.NSLayoutAttribute.Bottom" />s.</summary>
 		AlignAllBottom = (1 << (int) NSLayoutAttribute.Bottom),
-		/// <summary>Aligns all elements using their <see cref="F:UIKit.NSLayoutAttribute.Leading" />s.</summary>
+		/// <summary>Aligns all elements using their <see cref="UIKit.NSLayoutAttribute.Leading" />s.</summary>
 		AlignAllLeading = (1 << (int) NSLayoutAttribute.Leading),
-		/// <summary>Aligns all attributes using their <see cref="F:UIKit.NSLayoutAttribute.Trailing" />s.</summary>
+		/// <summary>Aligns all attributes using their <see cref="UIKit.NSLayoutAttribute.Trailing" />s.</summary>
 		AlignAllTrailing = (1 << (int) NSLayoutAttribute.Trailing),
-		/// <summary>Aligns all elements using their <see cref="F:UIKit.NSLayoutAttribute.CenterX" />s.</summary>
+		/// <summary>Aligns all elements using their <see cref="UIKit.NSLayoutAttribute.CenterX" />s.</summary>
 		AlignAllCenterX = (1 << (int) NSLayoutAttribute.CenterX),
-		/// <summary>Aligns all elements using their <see cref="F:UIKit.NSLayoutAttribute.CenterY" />s.</summary>
+		/// <summary>Aligns all elements using their <see cref="UIKit.NSLayoutAttribute.CenterY" />s.</summary>
 		AlignAllCenterY = (1 << (int) NSLayoutAttribute.CenterY),
-		/// <summary>Aligns all elements using their <see cref="F:UIKit.NSLayoutAttribute.Baseline" />s.</summary>
+		/// <summary>Aligns all elements using their <see cref="UIKit.NSLayoutAttribute.Baseline" />s.</summary>
 		AlignAllBaseline = (1 << (int) NSLayoutAttribute.Baseline),
 		/// <summary>Align all elements by using their last baselines.</summary>
 		[MacCatalyst (13, 1)]
@@ -332,8 +332,8 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UITextInput.h
-	/// <summary>An enumeration that specifies the relation between two attributes in a <see cref="T:UIKit.NSLayoutConstraint" /></summary>
-	///     <remarks>Constraint-based layouts are based on relationships between the values of two <see cref="T:UIKit.NSLayoutAttribute" />s. Constraints can be made more flexible by allowing relationships other than strict equality, that is, <see cref="F:UIKit.NSLayoutRelation.GreaterThanOrEqual" /> or <see cref="F:UIKit.NSLayoutRelation.LessThanOrEqual" />. With relations other than <see cref="F:UIKit.NSLayoutRelation.Equal" /> the constraint solver will attempt to minimize the difference in attributes. If <see cref="F:UIKit.NSLayoutRelation.Equal" /> is specified and the constraint solver cannot solve the system of constraints, the constraint solver will throw an exception. </remarks>
+	/// <summary>An enumeration that specifies the relation between two attributes in a <see cref="UIKit.NSLayoutConstraint" /></summary>
+	///     <remarks>Constraint-based layouts are based on relationships between the values of two <see cref="UIKit.NSLayoutAttribute" />s. Constraints can be made more flexible by allowing relationships other than strict equality, that is, <see cref="UIKit.NSLayoutRelation.GreaterThanOrEqual" /> or <see cref="UIKit.NSLayoutRelation.LessThanOrEqual" />. With relations other than <see cref="UIKit.NSLayoutRelation.Equal" /> the constraint solver will attempt to minimize the difference in attributes. If <see cref="UIKit.NSLayoutRelation.Equal" /> is specified and the constraint solver cannot solve the system of constraints, the constraint solver will throw an exception. </remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum NSLayoutRelation : long {
@@ -382,7 +382,7 @@ namespace UIKit {
 	}
 
 	// NSInteger -> NSLayoutManager.h
-	/// <summary>An enumeration whose values specify the direction in which text is laid out. Used with <see cref="P:UIKit.NSTextContainer.LayoutOrientation" />.</summary>
+	/// <summary>An enumeration whose values specify the direction in which text is laid out. Used with <see cref="UIKit.NSTextContainer.LayoutOrientation" />.</summary>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum NSTextLayoutOrientation : long {
@@ -419,39 +419,39 @@ namespace UIKit {
 		NSAttributedString AttributedString { get; }
 #endif
 
-		/// <summary>An array of <see cref="T:UIKit.NSTextContainer" />s that model the geometric layout of a document.</summary>
+		/// <summary>An array of <see cref="UIKit.NSTextContainer" />s that model the geometric layout of a document.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>
-		///           <para>The <see cref="T:UIKit.NSLayoutManager" /> lays out the text in its <see cref="P:UIKit.NSLayoutManager.TextStorage" /> property in the <see cref="T:UIKit.NSTextContainer" />s of this property, starting with the <see cref="T:UIKit.NSTextContainer" /> at index 0. </para>
+		///           <para>The <see cref="UIKit.NSLayoutManager" /> lays out the text in its <see cref="UIKit.NSLayoutManager.TextStorage" /> property in the <see cref="UIKit.NSTextContainer" />s of this property, starting with the <see cref="UIKit.NSTextContainer" /> at index 0. </para>
 		///         </remarks>
 		[Export ("textContainers")]
 		NSTextContainer [] TextContainers { get; }
 
-		/// <param name="container">An <see cref="T:UIKit.NSTextContainer" /> to be appended to the <see cref="P:UIKit.NSLayoutManager.TextContainers" /> property.</param>
-		///         <summary>Appends a <see cref="T:UIKit.NSTextContainer" /> to the <see cref="P:UIKit.NSLayoutManager.TextContainers" /> property.</summary>
+		/// <param name="container">An <see cref="UIKit.NSTextContainer" /> to be appended to the <see cref="UIKit.NSLayoutManager.TextContainers" /> property.</param>
+		///         <summary>Appends a <see cref="UIKit.NSTextContainer" /> to the <see cref="UIKit.NSLayoutManager.TextContainers" /> property.</summary>
 		///         <remarks>To be added.</remarks>
-		///         <altmember cref="M:UIKit.NSLayoutManager.InsertTextContainer" />
+		///         <altmember cref="UIKit.NSLayoutManager.InsertTextContainer" />
 		[Export ("addTextContainer:")]
 		void AddTextContainer (NSTextContainer container);
 
 		/// <param name="container">To be added.</param>
 		/// <param name="index">To be added.</param>
-		/// <summary>Inserts the specified <see cref="T:UIKit.NSTextContainer" /> into <see cref="P:UIKit.NSLayoutManager.TextContainers" /> at the specified <paramref name="index" />.</summary>
+		/// <summary>Inserts the specified <see cref="UIKit.NSTextContainer" /> into <see cref="UIKit.NSLayoutManager.TextContainers" /> at the specified <paramref name="index" />.</summary>
 		/// <remarks>To be added.</remarks>
-		/// <altmember cref="M:UIKit.NSLayoutManager.AddTextContainer" />
+		/// <altmember cref="UIKit.NSLayoutManager.AddTextContainer" />
 		[Export ("insertTextContainer:atIndex:")]
 		void InsertTextContainer (NSTextContainer container, /* NSUInteger */ nint index);
 
 		/// <param name="index">To be added.</param>
-		/// <summary>Removes the specified <see cref="T:UIKit.NSTextContainer" /> from the <see cref="P:UIKit.NSLayoutManager.TextContainers" /> array. Invalidates layout as necessary.</summary>
+		/// <summary>Removes the specified <see cref="UIKit.NSTextContainer" /> from the <see cref="UIKit.NSLayoutManager.TextContainers" /> array. Invalidates layout as necessary.</summary>
 		/// <remarks>To be added.</remarks>
 		[Export ("removeTextContainerAtIndex:")]
 		void RemoveTextContainer (/* NSUInteger */ nint index);
 
 		/// <param name="container">To be added.</param>
-		///         <summary>Invalidates the layout information and glyphs for the specified <see cref="T:UIKit.NSTextContainer" /> and any following.</summary>
+		///         <summary>Invalidates the layout information and glyphs for the specified <see cref="UIKit.NSTextContainer" /> and any following.</summary>
 		///         <remarks>
-		///           <para>Application developers will typically not need to call this method unless they have subclassed <see cref="T:UIKit.NSTextContainer" /> (for example, creating a <see cref="T:UIKit.NSTextContainer" /> subclass that changes shape to accomodate placed graphics).</para>
+		///           <para>Application developers will typically not need to call this method unless they have subclassed <see cref="UIKit.NSTextContainer" /> (for example, creating a <see cref="UIKit.NSTextContainer" /> subclass that changes shape to accomodate placed graphics).</para>
 		///         </remarks>
 		[Export ("textContainerChangedGeometry:")]
 		void TextContainerChangedGeometry (NSTextContainer container);
@@ -472,10 +472,10 @@ namespace UIKit {
 		NSGlyphStorageOptions LayoutOptions { get; }
 #endif
 
-		/// <summary>Whether the <see cref="T:UIKit.NSLayoutManager" /> currently contains any areas of noncontiguous layout.</summary>
+		/// <summary>Whether the <see cref="UIKit.NSLayoutManager" /> currently contains any areas of noncontiguous layout.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>
-		///           <para>Even if <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20NSLayout%20Manager%20Allows%20Non%20Continguous%20Layout&amp;scope=Xamarin" title="P:UIKit.NSLayoutManager.AllowsNonContinguousLayout">P:UIKit.NSLayoutManager.AllowsNonContinguousLayout</a></format> is <see langword="true" />, this method may return <see langword="false" />, for instance, if layout is complete.</para>
+		///           <para>Even if <see cref="UIKit.NSLayoutManager.AllowsNonContinguousLayout" /> is <see langword="true" />, this method may return <see langword="false" />, for instance, if layout is complete.</para>
 		///         </remarks>
 		[Export ("hasNonContiguousLayout")]
 		bool HasNonContiguousLayout { get; }
@@ -574,9 +574,9 @@ namespace UIKit {
 #endif
 
 		/// <param name="characterRange">To be added.</param>
-		///         <summary>Forces the <see cref="T:UIKit.NSLayoutManager" /> to generate glyphs for the specified characters, if it has not already done so.</summary>
+		///         <summary>Forces the <see cref="UIKit.NSLayoutManager" /> to generate glyphs for the specified characters, if it has not already done so.</summary>
 		///         <remarks>
-		///           <para>The <see cref="T:UIKit.NSLayoutManager" /> may calculate glyphs for a range larger than the <paramref name="characterRange" />. If <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20NSLayout%20Manager%20Allows%20Non%20Continguous%20Layout&amp;scope=Xamarin" title="P:UIKit.NSLayoutManager.AllowsNonContinguousLayout">P:UIKit.NSLayoutManager.AllowsNonContinguousLayout</a></format> is <see langword="false" />, the range will always extend to the beginning of the text.</para>
+		///           <para>The <see cref="UIKit.NSLayoutManager" /> may calculate glyphs for a range larger than the <paramref name="characterRange" />. If <see cref="UIKit.NSLayoutManager.AllowsNonContinguousLayout" /> is <see langword="false" />, the range will always extend to the beginning of the text.</para>
 		///         </remarks>
 		[Export ("ensureGlyphsForCharacterRange:")]
 #if NET
@@ -586,17 +586,17 @@ namespace UIKit {
 #endif
 
 		/// <param name="glyphRange">To be added.</param>
-		///         <summary>Forces the <see cref="T:UIKit.NSLayoutManager" /> to generate glyphs for the specified glyph range, if it has not already done so.</summary>
+		///         <summary>Forces the <see cref="UIKit.NSLayoutManager" /> to generate glyphs for the specified glyph range, if it has not already done so.</summary>
 		///         <remarks>
-		///           <para>The <see cref="T:UIKit.NSLayoutManager" /> may calculate glyphs for a range larger than the <paramref name="glyphRange" />. If <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20NSLayout%20Manager%20Allows%20Non%20Continguous%20Layout&amp;scope=Xamarin" title="P:UIKit.NSLayoutManager.AllowsNonContinguousLayout">P:UIKit.NSLayoutManager.AllowsNonContinguousLayout</a></format> is <see langword="false" />, the range will always extend to the beginning of the text.</para>
+		///           <para>The <see cref="UIKit.NSLayoutManager" /> may calculate glyphs for a range larger than the <paramref name="glyphRange" />. If <see cref="UIKit.NSLayoutManager.AllowsNonContinguousLayout" /> is <see langword="false" />, the range will always extend to the beginning of the text.</para>
 		///         </remarks>
 		[Export ("ensureGlyphsForGlyphRange:")]
 		void EnsureGlyphsForGlyphRange (NSRange glyphRange);
 
 		/// <param name="characterRange">To be added.</param>
-		///         <summary>Forces the <see cref="T:UIKit.NSLayoutManager" /> to layout the specified characters, if it has not already done so.</summary>
+		///         <summary>Forces the <see cref="UIKit.NSLayoutManager" /> to layout the specified characters, if it has not already done so.</summary>
 		///         <remarks>
-		///           <para>The <see cref="T:UIKit.NSLayoutManager" /> may layout an area larger than the <paramref name="characterRange" />. If <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20NSLayout%20Manager%20Allows%20Non%20Continguous%20Layout&amp;scope=Xamarin" title="P:UIKit.NSLayoutManager.AllowsNonContinguousLayout">P:UIKit.NSLayoutManager.AllowsNonContinguousLayout</a></format> is <see langword="false" />, the range will always extend to the beginning of the text.</para>
+		///           <para>The <see cref="UIKit.NSLayoutManager" /> may layout an area larger than the <paramref name="characterRange" />. If <see cref="UIKit.NSLayoutManager.AllowsNonContinguousLayout" /> is <see langword="false" />, the range will always extend to the beginning of the text.</para>
 		///         </remarks>
 		[Export ("ensureLayoutForCharacterRange:")]
 #if NET
@@ -606,17 +606,17 @@ namespace UIKit {
 #endif
 
 		/// <param name="glyphRange">To be added.</param>
-		///         <summary>Forces the <see cref="T:UIKit.NSLayoutManager" /> to layout the specified glyphs, if it has not already done so.</summary>
+		///         <summary>Forces the <see cref="UIKit.NSLayoutManager" /> to layout the specified glyphs, if it has not already done so.</summary>
 		///         <remarks>
-		///           <para>The <see cref="T:UIKit.NSLayoutManager" /> may layout a larger range than the specified <paramref name="glyphRange" />. If <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20NSLayout%20Manager%20Allows%20Non%20Continguous%20Layout&amp;scope=Xamarin" title="P:UIKit.NSLayoutManager.AllowsNonContinguousLayout">P:UIKit.NSLayoutManager.AllowsNonContinguousLayout</a></format> is <see langword="false" />, the range will always extend to the beginning of the text.</para>
+		///           <para>The <see cref="UIKit.NSLayoutManager" /> may layout a larger range than the specified <paramref name="glyphRange" />. If <see cref="UIKit.NSLayoutManager.AllowsNonContinguousLayout" /> is <see langword="false" />, the range will always extend to the beginning of the text.</para>
 		///         </remarks>
 		[Export ("ensureLayoutForGlyphRange:")]
 		void EnsureLayoutForGlyphRange (NSRange glyphRange);
 
 		/// <param name="container">To be added.</param>
-		///         <summary>Forces the <see cref="T:UIKit.NSLayoutManager" /> to layout the specified <see cref="T:UIKit.NSTextContainer" />, if it has not already done so.</summary>
+		///         <summary>Forces the <see cref="UIKit.NSLayoutManager" /> to layout the specified <see cref="UIKit.NSTextContainer" />, if it has not already done so.</summary>
 		///         <remarks>
-		///           <para>The <see cref="T:UIKit.NSLayoutManager" /> may layout more than the specified <paramref name="container" />. If <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20NSLayout%20Manager%20Allows%20Non%20Continguous%20Layout&amp;scope=Xamarin" title="P:UIKit.NSLayoutManager.AllowsNonContinguousLayout">P:UIKit.NSLayoutManager.AllowsNonContinguousLayout</a></format> is <see langword="false" />, the range will always extend to the beginning of the text.</para>
+		///           <para>The <see cref="UIKit.NSLayoutManager" /> may layout more than the specified <paramref name="container" />. If <see cref="UIKit.NSLayoutManager.AllowsNonContinguousLayout" /> is <see langword="false" />, the range will always extend to the beginning of the text.</para>
 		///         </remarks>
 		[Export ("ensureLayoutForTextContainer:")]
 		void EnsureLayoutForTextContainer (NSTextContainer container);
@@ -684,10 +684,10 @@ namespace UIKit {
 		void InvalidateGlyphsOnLayoutInvalidation (NSRange glyphRange);
 #endif
 
-		/// <summary>The number of glyphs in the <see cref="T:UIKit.NSLayoutManager" />.</summary>
+		/// <summary>The number of glyphs in the <see cref="UIKit.NSLayoutManager" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>
-		///           <para>If <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20NSLayout%20Manager%20Allows%20Non%20Continuous%20Layout&amp;scope=Xamarin" title="P:UIKit.NSLayoutManager.AllowsNonContinuousLayout">P:UIKit.NSLayoutManager.AllowsNonContinuousLayout</a></format> is <see langword="false" />, this method will force glyph generation for all characters.</para>
+		///           <para>If <see cref="UIKit.NSLayoutManager.AllowsNonContinuousLayout" /> is <see langword="false" />, this method will force glyph generation for all characters.</para>
 		///         </remarks>
 		[Export ("numberOfGlyphs")]
 #if NET || !MONOMAC
@@ -699,7 +699,7 @@ namespace UIKit {
 
 		/// <param name="glyphIndex">To be added.</param>
 		/// <param name="isValidIndex">To be added.</param>
-		/// <summary>Developers should use <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20NSLayout%20Manager%20Get%20Glyph&amp;scope=Xamarin" title="M:UIKit.NSLayoutManager.GetGlyph*">M:UIKit.NSLayoutManager.GetGlyph*</a></format> rather than this deprecated method.</summary>
+		/// <summary>Developers should use <see cref="UIKit.NSLayoutManager.GetGlyph" /> rather than this deprecated method.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[Export ("glyphAtIndex:isValidIndex:")]
@@ -718,7 +718,7 @@ namespace UIKit {
 #endif // MONOMAC
 
 		/// <param name="glyphIndex">To be added.</param>
-		/// <summary>Developers should not use this deprecated method. Developers should use <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20NSLayout%20Manager%20Get%20Glyph&amp;scope=Xamarin" title="M:UIKit.NSLayoutManager.GetGlyph*">M:UIKit.NSLayoutManager.GetGlyph*</a></format> instead.</summary>
+		/// <summary>Developers should not use this deprecated method. Developers should use <see cref="UIKit.NSLayoutManager.GetGlyph" /> instead.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[Export ("glyphAtIndex:")]
@@ -753,7 +753,7 @@ namespace UIKit {
 		/// <summary>The index of the first character associated with the glyph at the specified index.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>
-		///           <para>If <see cref="P:UIKit.NSLayoutManager.AllowsNonContiguousLayout" /> is <see langword="false" />, calling this method will result in generating all glyphs up to and including <paramref name="glyphIndex" />.</para>
+		///           <para>If <see cref="UIKit.NSLayoutManager.AllowsNonContiguousLayout" /> is <see langword="false" />, calling this method will result in generating all glyphs up to and including <paramref name="glyphIndex" />.</para>
 		///         </remarks>
 		[Export ("characterIndexForGlyphAtIndex:")]
 #if NET
@@ -953,7 +953,7 @@ namespace UIKit {
 		/// <param name="glyphIndex">The index of the glyph for which the rect is requested.</param>
 		/// <param name="effectiveGlyphRange">If not <see langword="null" />, the range of all glyphs in the line fragment.</param>
 		/// <param name="withoutAdditionalLayout">If <see langword="true" />, glyph generation and layout are not performed.</param>
-		/// <summary>Gets the <see cref="T:UIKit.NSTextContainer" /> containing the glyph at <paramref name="glyphIndex" />, with the option of not triggering layout.</summary>
+		/// <summary>Gets the <see cref="UIKit.NSTextContainer" /> containing the glyph at <paramref name="glyphIndex" />, with the option of not triggering layout.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[Sealed]
@@ -963,7 +963,7 @@ namespace UIKit {
 		NSTextContainer GetTextContainer (nuint glyphIndex, /* nullable NSRangePointer */ out NSRange effectiveGlyphRange, bool withoutAdditionalLayout);
 
 		/// <param name="container">To be added.</param>
-		/// <summary>The bounding rectangle in the <see cref="T:UIKit.NSTextContainer" />'s coordinates of the laid out glyphs in the <see cref="T:UIKit.NSTextContainer" />.</summary>
+		/// <summary>The bounding rectangle in the <see cref="UIKit.NSTextContainer" />'s coordinates of the laid out glyphs in the <see cref="UIKit.NSTextContainer" />.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[Export ("usedRectForTextContainer:")]
@@ -1017,7 +1017,7 @@ namespace UIKit {
 		/// <param name="glyphIndex">The index of the glyph for which the rect is requested.</param>
 		/// <param name="effectiveGlyphRange">If not <see langword="null" />, the range of all glyphs in the line fragment.</param>
 		/// <param name="withoutAdditionalLayout">If <see langword="true" />, glyph generation and layout are not performed.</param>
-		/// <summary>Gets the line fragment <see cref="T:CoreGraphics.CGRect" /> containing the glyph at <paramref name="glyphIndex" />, with the option of not triggering layout.</summary>
+		/// <summary>Gets the line fragment <see cref="CoreGraphics.CGRect" /> containing the glyph at <paramref name="glyphIndex" />, with the option of not triggering layout.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
@@ -1071,7 +1071,7 @@ namespace UIKit {
 		/// <param name="glyphIndex">The index of the glyph for which the rect is requested.</param>
 		/// <param name="effectiveGlyphRange">If not <see langword="null" />, the range of all glyphs in the line fragment.</param>
 		/// <param name="withoutAdditionalLayout">If <see langword="true" />, glyph generation and layout are not performed.</param>
-		/// <summary>Gets the usage <see cref="T:CoreGraphics.CGRect" /> containing the glyph at <paramref name="glyphIndex" />, with the option of not triggering layout.</summary>
+		/// <summary>Gets the usage <see cref="CoreGraphics.CGRect" /> containing the glyph at <paramref name="glyphIndex" />, with the option of not triggering layout.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
@@ -1081,20 +1081,20 @@ namespace UIKit {
 		[Export ("lineFragmentUsedRectForGlyphAtIndex:effectiveRange:withoutAdditionalLayout:")]
 		CGRect GetLineFragmentUsedRect (nuint glyphIndex, out /* nullable NSRangePointer */ NSRange effectiveGlyphRange, bool withoutAdditionalLayout);
 
-		/// <summary>The <see cref="T:System.Drawing.RectangleF" /> needed for the insertion point.</summary>
+		/// <summary>The <see cref="CGRect" /> needed for the insertion point.</summary>
 		///         <value>Returns the rectangle defining the extra line fragment for the insertion point or {0,0,0,0} if there is no such retangle.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("extraLineFragmentRect")]
 		CGRect ExtraLineFragmentRect { get; }
 
 		/// <summary>The rectangle enclosing the insertion point.</summary>
-		///         <value>Twice the <see cref="P:UIKit.NSTextContainer.LineFragmentPadding" />, with the insertion point in the middle.</value>
+		///         <value>Twice the <see cref="UIKit.NSTextContainer.LineFragmentPadding" />, with the insertion point in the middle.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("extraLineFragmentUsedRect")]
 		CGRect ExtraLineFragmentUsedRect { get; }
 
-		/// <summary>The <see cref="T:UIKit.NSTextContainer" /> containing the <see cref="P:UIKit.NSLayoutManager.ExtraLineFragmentRect" />.</summary>
-		///         <value>Returns <see langword="null" /> if the <see cref="P:UIKit.NSLayoutManager.ExtraLineFragmentRect" /> does not exist (is {0,0,0,0}).</value>
+		/// <summary>The <see cref="UIKit.NSTextContainer" /> containing the <see cref="UIKit.NSLayoutManager.ExtraLineFragmentRect" />.</summary>
+		///         <value>Returns <see langword="null" /> if the <see cref="UIKit.NSLayoutManager.ExtraLineFragmentRect" /> does not exist (is {0,0,0,0}).</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("extraLineFragmentTextContainer")]
 		NSTextContainer ExtraLineFragmentTextContainer { get; }
@@ -1119,7 +1119,7 @@ namespace UIKit {
 		/// <returns>To be added.</returns>
 		/// <remarks>
 		///           <para>Glyphs such as tabs and newlines are not typically shown, but effect layout. Spaces are considered shown, as they "show" a characteristic displacement.</para>
-		///           <para>This method will cause layout up to the specified index. If <see cref="P:UIKit.NSLayoutManager.AllowsNonContiguousLayout" /> is <see langword="true" />, the layout will be confined to the containing line fragment.</para>
+		///           <para>This method will cause layout up to the specified index. If <see cref="UIKit.NSLayoutManager.AllowsNonContiguousLayout" /> is <see langword="true" />, the layout will be confined to the containing line fragment.</para>
 		///         </remarks>
 		[Export ("notShownAttributeForGlyphAtIndex:")]
 #if NET
@@ -1309,7 +1309,7 @@ namespace UIKit {
 #endif
 
 		/// <param name="container">To be added.</param>
-		///         <summary>The range of glyph indices contained in the specified <see cref="T:UIKit.NSTextContainer" />.</summary>
+		///         <summary>The range of glyph indices contained in the specified <see cref="UIKit.NSTextContainer" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[Export ("glyphRangeForTextContainer:")]
@@ -1341,7 +1341,7 @@ namespace UIKit {
 		/// <summary>The bounding rectangle, in container coordinates, for the glyphs in the specified range.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>
-		///           <para>The returned <see cref="T:System.Drawing.RectangleF" /> includes the area needed for all marks associated with the glyphs, including the area needed for glyphs that draw outside of their line fragment rectangle and for marks such as underlining.</para>
+		///           <para>The returned <see cref="CGRect" /> includes the area needed for all marks associated with the glyphs, including the area needed for glyphs that draw outside of their line fragment rectangle and for marks such as underlining.</para>
 		///         </remarks>
 		[Export ("boundingRectForGlyphRange:inTextContainer:")]
 #if NET
@@ -1391,10 +1391,10 @@ namespace UIKit {
 
 		/// <param name="point">To be added.</param>
 		/// <param name="container">To be added.</param>
-		/// <summary>Developers should call <see cref="M:UIKit.NSLayoutManager.GetGlyphIndex(CoreGraphics.CGPoint,UIKit.NSTextContainer,System.nfloat@)" /> rather than this primitive method.</summary>
+		/// <summary>Developers should call <see cref="UIKit.NSLayoutManager.GetGlyphIndex(CoreGraphics.CGPoint,UIKit.NSTextContainer,out System.Runtime.InteropServices.NFloat)" /> rather than this primitive method.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>
-		///           <para>This method is public for overriding purposes. Developers should call <see cref="M:UIKit.NSLayoutManager.GetGlyphIndex(CoreGraphics.CGPoint,UIKit.NSTextContainer,System.nfloat@)" />  rather than this primitive method.</para>
+		///           <para>This method is public for overriding purposes. Developers should call <see cref="UIKit.NSLayoutManager.GetGlyphIndex(CoreGraphics.CGPoint,UIKit.NSTextContainer,ref System.Runtime.InteropServices.NFloat)" />  rather than this primitive method.</para>
 		///         </remarks>
 		[Export ("glyphIndexForPoint:inTextContainer:")]
 #if NET
@@ -1405,7 +1405,7 @@ namespace UIKit {
 
 		/// <param name="point">To be added.</param>
 		/// <param name="container">To be added.</param>
-		/// <summary>Developers should call <see cref="M:UIKit.NSLayoutManager.GetGlyphIndex(CoreGraphics.CGPoint,UIKit.NSTextContainer)" /> rather than this primitive function.</summary>
+		/// <summary>Developers should call <see cref="UIKit.NSLayoutManager.GetGlyphIndex(CoreGraphics.CGPoint,UIKit.NSTextContainer)" /> rather than this primitive function.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>
 		///           <para>This method is <c>public</c> for overriding purposes but is not intended for developers to call.</para>
@@ -1744,7 +1744,7 @@ namespace UIKit {
 		[Export ("allowsNonContiguousLayout")]
 		bool AllowsNonContiguousLayout { get; set; }
 
-		/// <summary>Whether the <see cref="T:UIKit.NSLayoutManager" /> should use the leading provided in the font.</summary>
+		/// <summary>Whether the <see cref="UIKit.NSLayoutManager" /> should use the leading provided in the font.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("usesFontLeading")]
@@ -1756,7 +1756,7 @@ namespace UIKit {
 		/// <remarks>
 		///           <para>Background marks include text background color, highlighting, and table backgrounds and borders. Application developers can override this function in subclasses to fully customize background drawing.</para>
 		///           <para>
-		///             <paramref name="glyphsToShow" /> must specify glyphs within a single <see cref="T:UIKit.NSTextContainer" />.</para>
+		///             <paramref name="glyphsToShow" /> must specify glyphs within a single <see cref="UIKit.NSTextContainer" />.</para>
 		///         </remarks>
 		[Export ("drawBackgroundForGlyphRange:atPoint:")]
 #if NET
@@ -1771,7 +1771,7 @@ namespace UIKit {
 		///         <remarks>
 		///           <para>This method causes glyph generation and layout, if needed.</para>
 		///           <para>
-		///             <paramref name="glyphsToShow" /> must specify glyphs within a single <see cref="T:UIKit.NSTextContainer" />.</para>
+		///             <paramref name="glyphsToShow" /> must specify glyphs within a single <see cref="UIKit.NSTextContainer" />.</para>
 		///         </remarks>
 		[Export ("drawGlyphsForGlyphRange:atPoint:")]
 #if NET || !MONOMAC
@@ -1846,7 +1846,7 @@ namespace UIKit {
 		/// <param name="newCharacterRange">To be added.</param>
 		/// <param name="delta">To be added.</param>
 		/// <param name="invalidatedCharacterRange">To be added.</param>
-		/// <summary>Notifies the <see cref="T:UIKit.NSLayoutManager" /> of an edit action.</summary>
+		/// <summary>Notifies the <see cref="UIKit.NSLayoutManager" /> of an edit action.</summary>
 		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("processEditingForTextStorage:edited:range:changeInLength:invalidatedRange:")]
@@ -1940,10 +1940,10 @@ namespace UIKit {
 		/// <param name="baselineOffset">The distance from the baseline to draw the underline.</param>
 		/// <param name="lineRect">The line fragment rectangle containing <paramref name="glyphRange" />.</param>
 		/// <param name="lineGlyphRange">All glyphs within <paramref name="lineRect" />.</param>
-		/// <param name="containerOrigin">The origin of the <paramref name="lineRect" /> objects containing <see cref="T:UIKit.NSTextContainer" />.</param>
+		/// <param name="containerOrigin">The origin of the <paramref name="lineRect" /> objects containing <see cref="UIKit.NSTextContainer" />.</param>
 		/// <summary>Underlines the glyphs in <paramref name="glyphRange" />.</summary>
 		/// <remarks>
-		///           <para>Developers should generally use the simpler <see cref="M:UIKit.NSLayoutManager.Underline(Foundation.NSRange,Foundation.NSUnderlineStyle,CoreGraphics.CGRect,Foundation.NSRange,CoreGraphics.CGPoint)" /> method.</para>
+		///           <para>Developers should generally use the simpler <see cref="UIKit.NSLayoutManager.Underline(Foundation.NSRange,Foundation.NSUnderlineStyle,CoreGraphics.CGRect,Foundation.NSRange,CoreGraphics.CGPoint)" /> method.</para>
 		///         </remarks>
 		[Export ("drawUnderlineForGlyphRange:underlineType:baselineOffset:lineFragmentRect:lineFragmentGlyphRange:containerOrigin:")]
 		void DrawUnderline (NSRange glyphRange, NSUnderlineStyle underlineVal, nfloat baselineOffset, CGRect lineRect, NSRange lineGlyphRange, CGPoint containerOrigin);
@@ -2016,15 +2016,15 @@ namespace UIKit {
 		NSTextView GetTextViewForBeginningOfSelection ();
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:UIKit.NSLayoutManagerDelegate" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.NSLayoutManagerDelegate" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:UIKit.NSLayoutManagerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:UIKit.NSLayoutManagerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:UIKit.NSLayoutManagerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.NSLayoutManagerDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.NSLayoutManagerDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.NSLayoutManagerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	interface INSLayoutManagerDelegate { }
 
-	/// <summary>A delegate object that exposes events for <see cref="T:UIKit.NSLayoutManager" />s.</summary>
+	/// <summary>A delegate object that exposes events for <see cref="UIKit.NSLayoutManager" />s.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/NSLayoutManagerDelegate_Protocol_TextKit/index.html">Apple documentation for <c>NSLayoutManagerDelegate</c></related>
 	[BaseType (typeof (NSObject))]
@@ -2306,8 +2306,8 @@ namespace UIKit {
 		void ReloadSections (SectionIdentifierType [] sectionIdentifiers);
 	}
 
-	/// <summary>A class that specifies paragraph-relevant attributes of an <see cref="T:Foundation.NSAttributedString" />.</summary>
-	///     <remarks>An immutable set of attributes associated with the display of an <see cref="T:Foundation.NSAttributedString" />. Important: the application developer must use the subtype <see cref="T:UIKit.NSMutableParagraphStyle" /> if they modify the paragraph style after assignment to a <see cref="T:Foundation.NSAttributedString" />. Modifying an attribute of an assigned <see cref="T:UIKit.NSParagraphStyle" /> may result in a program crash.<para tool="threads">The members of this class can be used from a background thread.</para></remarks>
+	/// <summary>A class that specifies paragraph-relevant attributes of an <see cref="Foundation.NSAttributedString" />.</summary>
+	///     <remarks>An immutable set of attributes associated with the display of an <see cref="Foundation.NSAttributedString" />. Important: the application developer must use the subtype <see cref="UIKit.NSMutableParagraphStyle" /> if they modify the paragraph style after assignment to a <see cref="Foundation.NSAttributedString" />. Modifying an attribute of an assigned <see cref="UIKit.NSParagraphStyle" /> may result in a program crash.<para tool="threads">The members of this class can be used from a background thread.</para></remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/ApplicationKit/Classes/NSParagraphStyle_Class/index.html">Apple documentation for <c>NSParagraphStyle</c></related>
 	[ThreadSafe]
 	[BaseType (typeof (NSObject))]
@@ -2334,7 +2334,7 @@ namespace UIKit {
 		[Export ("alignment")]
 		TextAlignment Alignment { get; [NotImplemented] set; }
 
-		/// <summary>The indentation of the paragraph's lines, other than the first. (See <see cref="P:UIKit.NSParagraphStyle.FirstLineHeadIndent" />.)</summary>
+		/// <summary>The indentation of the paragraph's lines, other than the first. (See <see cref="UIKit.NSParagraphStyle.FirstLineHeadIndent" />.)</summary>
 		///         <value>To be added.</value>
 		///         <remarks>
 		///           <para>(More documentation for this node is coming)</para>
@@ -2508,7 +2508,7 @@ namespace UIKit {
 		NSLineBreakStrategy LineBreakStrategy { get; [NotImplemented] set; }
 	}
 
-	/// <summary>A class that extends <see cref="T:UIKit.NSParagraphStyle" /> to allow changing subattributes.</summary>
+	/// <summary>A class that extends <see cref="UIKit.NSParagraphStyle" /> to allow changing subattributes.</summary>
 	///     <remarks>
 	///       <para>
 	///       </para>
@@ -2533,7 +2533,7 @@ namespace UIKit {
 		[Override]
 		TextAlignment Alignment { get; set; }
 
-		/// <summary>The indentation of the paragraph's lines, other than the first. (See <see cref="P:UIKit.NSMutableParagraphStyle.FirstLineHeadIndent" />.)</summary>
+		/// <summary>The indentation of the paragraph's lines, other than the first. (See <see cref="UIKit.NSMutableParagraphStyle.FirstLineHeadIndent" />.)</summary>
 		///         <value>To be added.</value>
 		///         <remarks>
 		///           <para>(More documentation for this node is coming)</para>
@@ -2668,7 +2668,7 @@ namespace UIKit {
 		bool AllowsDefaultTighteningForTruncation { get; set; }
 
 		/// <param name="textTab">To be added.</param>
-		///         <summary>Adds the specified <see cref="T:UIKit.NSTextTab" /> to the pargraph style.</summary>
+		///         <summary>Adds the specified <see cref="UIKit.NSTextTab" /> to the pargraph style.</summary>
 		///         <remarks>
 		///           <para>(More documentation for this node is coming)</para>
 		///           <para tool="threads">This can be used from a background thread.</para>
@@ -3008,11 +3008,11 @@ namespace UIKit {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // Handle is nil
 	interface NSLayoutAnchor<AnchorType> : NSCopying, NSCoding {
-		/// <param name="anchor">The <see cref="T:UIKit.NSLayoutAnchor`1" /> whose constraint value should be copied.</param>
-		///         <summary>Creates a <see cref="T:UIKit.NSLayoutConstraint" /> whose value is equal to that of the constraint of the <paramref name="anchor" />.</summary>
-		///         <returns>A new <see cref="T:UIKit.NSLayoutConstraint" />.</returns>
+		/// <param name="anchor">The <see cref="UIKit.NSLayoutAnchor{AnchorType}" /> whose constraint value should be copied.</param>
+		///         <summary>Creates a <see cref="UIKit.NSLayoutConstraint" /> whose value is equal to that of the constraint of the <paramref name="anchor" />.</summary>
+		///         <returns>A new <see cref="UIKit.NSLayoutConstraint" />.</returns>
 		///         <remarks>
-		///           <para>As with other methods of this class, this method returns a new <see cref="T:UIKit.NSLayoutConstraint" /> but does not add and activate it to the current <see cref="T:UIKit.UIView" />.</para>
+		///           <para>As with other methods of this class, this method returns a new <see cref="UIKit.NSLayoutConstraint" /> but does not add and activate it to the current <see cref="UIKit.UIView" />.</para>
 		///         </remarks>
 		[Export ("constraintEqualToAnchor:")]
 #if MONOMAC && !NET
@@ -3021,11 +3021,11 @@ namespace UIKit {
 		NSLayoutConstraint ConstraintEqualTo (NSLayoutAnchor<AnchorType> anchor);
 #endif
 
-		/// <param name="anchor">The <see cref="T:UIKit.NSLayoutAnchor`1" /> whose constraint value should be used.</param>
-		///         <summary>Creates a <see cref="T:UIKit.NSLayoutConstraint" /> whose value is at least equal to that of the constraint of the <paramref name="anchor" />.</summary>
-		///         <returns>A new <see cref="T:UIKit.NSLayoutConstraint" />.</returns>
+		/// <param name="anchor">The <see cref="UIKit.NSLayoutAnchor{AnchorType}" /> whose constraint value should be used.</param>
+		///         <summary>Creates a <see cref="UIKit.NSLayoutConstraint" /> whose value is at least equal to that of the constraint of the <paramref name="anchor" />.</summary>
+		///         <returns>A new <see cref="UIKit.NSLayoutConstraint" />.</returns>
 		///         <remarks>
-		///           <para>As with other methods of this class, this method returns a new <see cref="T:UIKit.NSLayoutConstraint" /> but does not add and activate it to the current <see cref="T:UIKit.UIView" />.</para>
+		///           <para>As with other methods of this class, this method returns a new <see cref="UIKit.NSLayoutConstraint" /> but does not add and activate it to the current <see cref="UIKit.UIView" />.</para>
 		///         </remarks>
 		[Export ("constraintGreaterThanOrEqualToAnchor:")]
 #if MONOMAC && !NET
@@ -3034,11 +3034,11 @@ namespace UIKit {
 		NSLayoutConstraint ConstraintGreaterThanOrEqualTo (NSLayoutAnchor<AnchorType> anchor);
 #endif
 
-		/// <param name="anchor">The <see cref="T:UIKit.NSLayoutAnchor`1" /> whose constraint value should be used.</param>
-		///         <summary>Creates a <see cref="T:UIKit.NSLayoutConstraint" /> whose value is at most equal to that of the constraint of the <paramref name="anchor" />.</summary>
-		///         <returns>A new <see cref="T:UIKit.NSLayoutConstraint" />.</returns>
+		/// <param name="anchor">The <see cref="UIKit.NSLayoutAnchor{AnchorType}" /> whose constraint value should be used.</param>
+		///         <summary>Creates a <see cref="UIKit.NSLayoutConstraint" /> whose value is at most equal to that of the constraint of the <paramref name="anchor" />.</summary>
+		///         <returns>A new <see cref="UIKit.NSLayoutConstraint" />.</returns>
 		///         <remarks>
-		///           <para>As with other methods of this class, this method returns a new <see cref="T:UIKit.NSLayoutConstraint" /> but does not add and activate it to the current <see cref="T:UIKit.UIView" />.</para>
+		///           <para>As with other methods of this class, this method returns a new <see cref="UIKit.NSLayoutConstraint" /> but does not add and activate it to the current <see cref="UIKit.UIView" />.</para>
 		///         </remarks>
 		[Export ("constraintLessThanOrEqualToAnchor:")]
 #if MONOMAC && !NET
@@ -3047,13 +3047,13 @@ namespace UIKit {
 		NSLayoutConstraint ConstraintLessThanOrEqualTo (NSLayoutAnchor<AnchorType> anchor);
 #endif
 
-		/// <param name="anchor">The <see cref="T:UIKit.NSLayoutAnchor`1" /> whose constraint value should be used.</param>
+		/// <param name="anchor">The <see cref="UIKit.NSLayoutAnchor{AnchorType}" /> whose constraint value should be used.</param>
 		/// <param name="constant">The number of logical pixels to add to the value of <paramref name="anchor" />.</param>
-		/// <summary>Creates a <see cref="T:UIKit.NSLayoutConstraint" /> whose value is equal to that of the constraint of the <paramref name="anchor" /> plus <paramref name="constant" /> pixels.</summary>
+		/// <summary>Creates a <see cref="UIKit.NSLayoutConstraint" /> whose value is equal to that of the constraint of the <paramref name="anchor" /> plus <paramref name="constant" /> pixels.</summary>
 		/// <returns>
 		///         </returns>
 		/// <remarks>
-		///           <para>As with other methods of this class, this method returns a new <see cref="T:UIKit.NSLayoutConstraint" /> but does not add and activate it to the current <see cref="T:UIKit.UIView" />.</para>
+		///           <para>As with other methods of this class, this method returns a new <see cref="UIKit.NSLayoutConstraint" /> but does not add and activate it to the current <see cref="UIKit.UIView" />.</para>
 		///         </remarks>
 		[Export ("constraintEqualToAnchor:constant:")]
 #if MONOMAC && !NET
@@ -3062,12 +3062,12 @@ namespace UIKit {
 		NSLayoutConstraint ConstraintEqualTo (NSLayoutAnchor<AnchorType> anchor, nfloat constant);
 #endif
 
-		/// <param name="anchor">The <see cref="T:UIKit.NSLayoutAnchor`1" /> whose constraint value should be used.</param>
+		/// <param name="anchor">The <see cref="UIKit.NSLayoutAnchor{AnchorType}" /> whose constraint value should be used.</param>
 		/// <param name="constant">The number of logical pixels to add to the value of <paramref name="anchor" />.</param>
-		/// <summary>Creates a <see cref="T:UIKit.NSLayoutConstraint" /> whose value is at least equal to that of the constraint of the <paramref name="anchor" /> plus <paramref name="constant" /> pixels.</summary>
-		/// <returns>A new <see cref="T:UIKit.NSLayoutConstraint" />.</returns>
+		/// <summary>Creates a <see cref="UIKit.NSLayoutConstraint" /> whose value is at least equal to that of the constraint of the <paramref name="anchor" /> plus <paramref name="constant" /> pixels.</summary>
+		/// <returns>A new <see cref="UIKit.NSLayoutConstraint" />.</returns>
 		/// <remarks>
-		///           <para>As with other methods of this class, this method returns a new <see cref="T:UIKit.NSLayoutConstraint" /> but does not add and activate it to the current <see cref="T:UIKit.UIView" />.</para>
+		///           <para>As with other methods of this class, this method returns a new <see cref="UIKit.NSLayoutConstraint" /> but does not add and activate it to the current <see cref="UIKit.UIView" />.</para>
 		///         </remarks>
 		[Export ("constraintGreaterThanOrEqualToAnchor:constant:")]
 #if MONOMAC && !NET
@@ -3076,12 +3076,12 @@ namespace UIKit {
 		NSLayoutConstraint ConstraintGreaterThanOrEqualTo (NSLayoutAnchor<AnchorType> anchor, nfloat constant);
 #endif
 
-		/// <param name="anchor">The <see cref="T:UIKit.NSLayoutAnchor`1" /> whose constraint value should be used.</param>
+		/// <param name="anchor">The <see cref="UIKit.NSLayoutAnchor{AnchorType}" /> whose constraint value should be used.</param>
 		/// <param name="constant">The number of logical pixels to add to the value of <paramref name="anchor" />.</param>
-		/// <summary>Creates a <see cref="T:UIKit.NSLayoutConstraint" /> whose value is at most equal to that of the constraint of the <paramref name="anchor" /> plus <paramref name="constant" /> pixels.</summary>
-		/// <returns>A new <see cref="T:UIKit.NSLayoutConstraint" />.</returns>
+		/// <summary>Creates a <see cref="UIKit.NSLayoutConstraint" /> whose value is at most equal to that of the constraint of the <paramref name="anchor" /> plus <paramref name="constant" /> pixels.</summary>
+		/// <returns>A new <see cref="UIKit.NSLayoutConstraint" />.</returns>
 		/// <remarks>
-		///           <para>As with other methods of this class, this method returns a new <see cref="T:UIKit.NSLayoutConstraint" /> but does not add and activate it to the current <see cref="T:UIKit.UIView" />.</para>
+		///           <para>As with other methods of this class, this method returns a new <see cref="UIKit.NSLayoutConstraint" /> but does not add and activate it to the current <see cref="UIKit.UIView" />.</para>
 		///         </remarks>
 		[Export ("constraintLessThanOrEqualToAnchor:constant:")]
 #if MONOMAC && !NET
@@ -3115,7 +3115,7 @@ namespace UIKit {
 		NSLayoutConstraint [] ConstraintsAffectingLayout { get; }
 	}
 
-	/// <summary>An <see cref="T:UIKit.NSLayoutAnchor`1" /> whose methods create horizontal <see cref="T:UIKit.NSLayoutConstraint" /> objects.</summary>
+	/// <summary>An <see cref="UIKit.NSLayoutAnchor{AnchorType}" /> whose methods create horizontal <see cref="UIKit.NSLayoutConstraint" /> objects.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AppKit/Reference/NSLayoutXAxisAnchor/index.html">Apple documentation for <c>NSLayoutXAxisAnchor</c></related>
 	[MacCatalyst (13, 1)]
@@ -3162,7 +3162,7 @@ namespace UIKit {
 		NSLayoutConstraint ConstraintLessThanOrEqualToSystemSpacingAfterAnchor (NSLayoutXAxisAnchor anchor, nfloat multiplier);
 	}
 
-	/// <summary>An <see cref="T:UIKit.NSLayoutAnchor`1" /> whose methods create vertical <see cref="T:UIKit.NSLayoutConstraint" /> objects.</summary>
+	/// <summary>An <see cref="UIKit.NSLayoutAnchor{AnchorType}" /> whose methods create vertical <see cref="UIKit.NSLayoutConstraint" /> objects.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AppKit/Reference/NSLayoutYAxisAnchor/index.html">Apple documentation for <c>NSLayoutYAxisAnchor</c></related>
 	[MacCatalyst (13, 1)]
@@ -3209,19 +3209,19 @@ namespace UIKit {
 		NSLayoutConstraint ConstraintLessThanOrEqualToSystemSpacingBelowAnchor (NSLayoutYAxisAnchor anchor, nfloat multiplier);
 	}
 
-	/// <summary>An <see cref="T:UIKit.NSLayoutAnchor`1" /> whose methods create dimensional <see cref="T:UIKit.NSLayoutConstraint" /> objects.</summary>
+	/// <summary>An <see cref="UIKit.NSLayoutAnchor{AnchorType}" /> whose methods create dimensional <see cref="UIKit.NSLayoutConstraint" /> objects.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AppKit/Reference/NSLayoutDimension_ClassReference/index.html">Apple documentation for <c>NSLayoutDimension</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSLayoutAnchor<NSLayoutDimension>))]
 	[DisableDefaultCtor] // Handle is nil
 	interface NSLayoutDimension {
-		/// <param name="constant">An <see cref="T:System.nfloat" /> specifying the desired constant value.</param>
-		/// <summary>Creates a <see cref="T:UIKit.NSLayoutConstraint" /> whose value is equal to that of the constraint of the <paramref name="constant" /> in logical pixels.</summary>
+		/// <param name="constant">An <see cref="nfloat" /> specifying the desired constant value.</param>
+		/// <summary>Creates a <see cref="UIKit.NSLayoutConstraint" /> whose value is equal to that of the constraint of the <paramref name="constant" /> in logical pixels.</summary>
 		/// <returns>
 		///         </returns>
 		/// <remarks>
-		///           <para>As with other methods of this class, this method returns a new <see cref="T:UIKit.NSLayoutConstraint" /> but does not add and activate it to the current <see cref="T:UIKit.UIView" />.</para>
+		///           <para>As with other methods of this class, this method returns a new <see cref="UIKit.NSLayoutConstraint" /> but does not add and activate it to the current <see cref="UIKit.UIView" />.</para>
 		///         </remarks>
 		[Export ("constraintEqualToConstant:")]
 #if MONOMAC && !NET
@@ -3231,10 +3231,10 @@ namespace UIKit {
 #endif
 
 		/// <param name="constant">The number of logical pixels to add.</param>
-		/// <summary>Creates a <see cref="T:UIKit.NSLayoutConstraint" /> whose value is at least equal to that of the <paramref name="constant" />.</summary>
-		/// <returns>A new <see cref="T:UIKit.NSLayoutConstraint" />.</returns>
+		/// <summary>Creates a <see cref="UIKit.NSLayoutConstraint" /> whose value is at least equal to that of the <paramref name="constant" />.</summary>
+		/// <returns>A new <see cref="UIKit.NSLayoutConstraint" />.</returns>
 		/// <remarks>
-		///           <para>As with other methods of this class, this method returns a new <see cref="T:UIKit.NSLayoutConstraint" /> but does not add and activate it to the current <see cref="T:UIKit.UIView" />.</para>
+		///           <para>As with other methods of this class, this method returns a new <see cref="UIKit.NSLayoutConstraint" /> but does not add and activate it to the current <see cref="UIKit.UIView" />.</para>
 		///         </remarks>
 		[Export ("constraintGreaterThanOrEqualToConstant:")]
 #if MONOMAC && !NET
@@ -3244,10 +3244,10 @@ namespace UIKit {
 #endif
 
 		/// <param name="constant">The number of logical pixels to add.</param>
-		/// <summary>Creates a <see cref="T:UIKit.NSLayoutConstraint" /> whose value is at at most <paramref name="constant" />.</summary>
-		/// <returns>A new <see cref="T:UIKit.NSLayoutConstraint" />.</returns>
+		/// <summary>Creates a <see cref="UIKit.NSLayoutConstraint" /> whose value is at at most <paramref name="constant" />.</summary>
+		/// <returns>A new <see cref="UIKit.NSLayoutConstraint" />.</returns>
 		/// <remarks>
-		///           <para>As with other methods of this class, this method returns a new <see cref="T:UIKit.NSLayoutConstraint" /> but does not add and activate it to the current <see cref="T:UIKit.UIView" />.</para>
+		///           <para>As with other methods of this class, this method returns a new <see cref="UIKit.NSLayoutConstraint" /> but does not add and activate it to the current <see cref="UIKit.UIView" />.</para>
 		///         </remarks>
 		[Export ("constraintLessThanOrEqualToConstant:")]
 #if MONOMAC && !NET
@@ -3256,13 +3256,13 @@ namespace UIKit {
 		NSLayoutConstraint ConstraintLessThanOrEqualTo (nfloat constant);
 #endif
 
-		/// <param name="anchor">The <see cref="T:UIKit.NSLayoutAnchor`1" /> whose constraint value should be copied.</param>
+		/// <param name="anchor">The <see cref="UIKit.NSLayoutAnchor{AnchorType}" /> whose constraint value should be copied.</param>
 		/// <param name="multiplier">The value by which to multiply the <paramref name="anchor" />.</param>
-		/// <summary>Creates a <see cref="T:UIKit.NSLayoutConstraint" /> whose value is equal to that of the constraint of the <paramref name="anchor" /> multiplied by <paramref name="multiplier" />.</summary>
+		/// <summary>Creates a <see cref="UIKit.NSLayoutConstraint" /> whose value is equal to that of the constraint of the <paramref name="anchor" /> multiplied by <paramref name="multiplier" />.</summary>
 		/// <returns>
 		///         </returns>
 		/// <remarks>
-		///           <para>As with other methods of this class, this method returns a new <see cref="T:UIKit.NSLayoutConstraint" /> but does not add and activate it to the current <see cref="T:UIKit.UIView" />.</para>
+		///           <para>As with other methods of this class, this method returns a new <see cref="UIKit.NSLayoutConstraint" /> but does not add and activate it to the current <see cref="UIKit.UIView" />.</para>
 		///         </remarks>
 		[Export ("constraintEqualToAnchor:multiplier:")]
 #if MONOMAC && !NET
@@ -3271,12 +3271,12 @@ namespace UIKit {
 		NSLayoutConstraint ConstraintEqualTo (NSLayoutDimension anchor, nfloat multiplier);
 #endif
 
-		/// <param name="anchor">The <see cref="T:UIKit.NSLayoutAnchor`1" /> whose constraint value should be copied.</param>
+		/// <param name="anchor">The <see cref="UIKit.NSLayoutAnchor{AnchorType}" /> whose constraint value should be copied.</param>
 		/// <param name="multiplier">To be added.</param>
-		/// <summary>Creates a <see cref="T:UIKit.NSLayoutConstraint" /> whose value is at least equal to that of the constraint of the <paramref name="anchor" /> multiplied by <paramref name="multiplier" />.</summary>
-		/// <returns>A new <see cref="T:UIKit.NSLayoutConstraint" />.</returns>
+		/// <summary>Creates a <see cref="UIKit.NSLayoutConstraint" /> whose value is at least equal to that of the constraint of the <paramref name="anchor" /> multiplied by <paramref name="multiplier" />.</summary>
+		/// <returns>A new <see cref="UIKit.NSLayoutConstraint" />.</returns>
 		/// <remarks>
-		///           <para>As with other methods of this class, this method returns a new <see cref="T:UIKit.NSLayoutConstraint" /> but does not add and activate it to the current <see cref="T:UIKit.UIView" />.</para>
+		///           <para>As with other methods of this class, this method returns a new <see cref="UIKit.NSLayoutConstraint" /> but does not add and activate it to the current <see cref="UIKit.UIView" />.</para>
 		///         </remarks>
 		[Export ("constraintGreaterThanOrEqualToAnchor:multiplier:")]
 #if MONOMAC && !NET
@@ -3285,12 +3285,12 @@ namespace UIKit {
 		NSLayoutConstraint ConstraintGreaterThanOrEqualTo (NSLayoutDimension anchor, nfloat multiplier);
 #endif
 
-		/// <param name="anchor">The <see cref="T:UIKit.NSLayoutAnchor`1" /> whose constraint value should be copied.</param>
+		/// <param name="anchor">The <see cref="UIKit.NSLayoutAnchor{AnchorType}" /> whose constraint value should be copied.</param>
 		/// <param name="multiplier">To be added.</param>
-		/// <summary>Creates a <see cref="T:UIKit.NSLayoutConstraint" /> whose value is at most equal to that of the constraint of the <paramref name="anchor" /> times <paramref name="multiplier" />.</summary>
-		/// <returns>A new <see cref="T:UIKit.NSLayoutConstraint" />.</returns>
+		/// <summary>Creates a <see cref="UIKit.NSLayoutConstraint" /> whose value is at most equal to that of the constraint of the <paramref name="anchor" /> times <paramref name="multiplier" />.</summary>
+		/// <returns>A new <see cref="UIKit.NSLayoutConstraint" />.</returns>
 		/// <remarks>
-		///           <para>As with other methods of this class, this method returns a new <see cref="T:UIKit.NSLayoutConstraint" /> but does not add and activate it to the current <see cref="T:UIKit.UIView" />.</para>
+		///           <para>As with other methods of this class, this method returns a new <see cref="UIKit.NSLayoutConstraint" /> but does not add and activate it to the current <see cref="UIKit.UIView" />.</para>
 		///         </remarks>
 		[Export ("constraintLessThanOrEqualToAnchor:multiplier:")]
 #if MONOMAC && !NET
@@ -3299,14 +3299,14 @@ namespace UIKit {
 		NSLayoutConstraint ConstraintLessThanOrEqualTo (NSLayoutDimension anchor, nfloat multiplier);
 #endif
 
-		/// <param name="anchor">The <see cref="T:UIKit.NSLayoutAnchor`1" /> whose constraint value should be copied.</param>
+		/// <param name="anchor">The <see cref="UIKit.NSLayoutAnchor{AnchorType}" /> whose constraint value should be copied.</param>
 		/// <param name="multiplier">The value by which to multiply the <paramref name="anchor" />.</param>
 		/// <param name="constant">The number of logical pixels to add to the value of <paramref name="anchor" />.</param>
-		/// <summary>Creates a <see cref="T:UIKit.NSLayoutConstraint" /> whose value is equal to that of the constraint of the <paramref name="anchor" /> multiplied by <paramref name="multiplier" /> plus <paramref name="constant" /> pixels.</summary>
+		/// <summary>Creates a <see cref="UIKit.NSLayoutConstraint" /> whose value is equal to that of the constraint of the <paramref name="anchor" /> multiplied by <paramref name="multiplier" /> plus <paramref name="constant" /> pixels.</summary>
 		/// <returns>
 		///         </returns>
 		/// <remarks>
-		///           <para>As with other methods of this class, this method returns a new <see cref="T:UIKit.NSLayoutConstraint" /> but does not add and activate it to the current <see cref="T:UIKit.UIView" />.</para>
+		///           <para>As with other methods of this class, this method returns a new <see cref="UIKit.NSLayoutConstraint" /> but does not add and activate it to the current <see cref="UIKit.UIView" />.</para>
 		///         </remarks>
 		[Export ("constraintEqualToAnchor:multiplier:constant:")]
 #if MONOMAC && !NET
@@ -3315,13 +3315,13 @@ namespace UIKit {
 		NSLayoutConstraint ConstraintEqualTo (NSLayoutDimension anchor, nfloat multiplier, nfloat constant);
 #endif
 
-		/// <param name="anchor">The <see cref="T:UIKit.NSLayoutAnchor`1" /> whose constraint value should be copied.</param>
+		/// <param name="anchor">The <see cref="UIKit.NSLayoutAnchor{AnchorType}" /> whose constraint value should be copied.</param>
 		/// <param name="multiplier">To be added.</param>
 		/// <param name="constant">The number of logical pixels to add.</param>
-		/// <summary>Creates a <see cref="T:UIKit.NSLayoutConstraint" /> whose value is at least equal to that of the constraint of the <paramref name="anchor" /> multiplied by <paramref name="multiplier" /> and adding <paramref name="constant" /> logical pixels.</summary>
-		/// <returns>A new <see cref="T:UIKit.NSLayoutConstraint" />.</returns>
+		/// <summary>Creates a <see cref="UIKit.NSLayoutConstraint" /> whose value is at least equal to that of the constraint of the <paramref name="anchor" /> multiplied by <paramref name="multiplier" /> and adding <paramref name="constant" /> logical pixels.</summary>
+		/// <returns>A new <see cref="UIKit.NSLayoutConstraint" />.</returns>
 		/// <remarks>
-		///           <para>As with other methods of this class, this method returns a new <see cref="T:UIKit.NSLayoutConstraint" /> but does not add and activate it to the current <see cref="T:UIKit.UIView" />.</para>
+		///           <para>As with other methods of this class, this method returns a new <see cref="UIKit.NSLayoutConstraint" /> but does not add and activate it to the current <see cref="UIKit.UIView" />.</para>
 		///         </remarks>
 		[Export ("constraintGreaterThanOrEqualToAnchor:multiplier:constant:")]
 #if MONOMAC && !NET
@@ -3330,13 +3330,13 @@ namespace UIKit {
 		NSLayoutConstraint ConstraintGreaterThanOrEqualTo (NSLayoutDimension anchor, nfloat multiplier, nfloat constant);
 #endif
 
-		/// <param name="anchor">The <see cref="T:UIKit.NSLayoutAnchor`1" /> whose constraint value should be copied.</param>
+		/// <param name="anchor">The <see cref="UIKit.NSLayoutAnchor{AnchorType}" /> whose constraint value should be copied.</param>
 		/// <param name="multiplier">To be added.</param>
 		/// <param name="constant">The number of logical pixels to add.</param>
-		/// <summary>Creates a <see cref="T:UIKit.NSLayoutConstraint" /> whose value is at most equal to that of the constraint of the <paramref name="anchor" /> times the <paramref name="multiplier" /> plus <paramref name="constant" /> logical pixels.</summary>
-		/// <returns>A new <see cref="T:UIKit.NSLayoutConstraint" />.</returns>
+		/// <summary>Creates a <see cref="UIKit.NSLayoutConstraint" /> whose value is at most equal to that of the constraint of the <paramref name="anchor" /> times the <paramref name="multiplier" /> plus <paramref name="constant" /> logical pixels.</summary>
+		/// <returns>A new <see cref="UIKit.NSLayoutConstraint" />.</returns>
 		/// <remarks>
-		///           <para>As with other methods of this class, this method returns a new <see cref="T:UIKit.NSLayoutConstraint" /> but does not add and activate it to the current <see cref="T:UIKit.UIView" />.</para>
+		///           <para>As with other methods of this class, this method returns a new <see cref="UIKit.NSLayoutConstraint" /> but does not add and activate it to the current <see cref="UIKit.UIView" />.</para>
 		///         </remarks>
 		[Export ("constraintLessThanOrEqualToAnchor:multiplier:constant:")]
 #if MONOMAC && !NET
@@ -3458,7 +3458,7 @@ namespace UIKit {
 
 		/// <param name="constraints">Constraints to deactivate.</param>
 		///         <summary>Deactivates all of the constraints passed.</summary>
-		///         <remarks>This method has the same effect as setting the <see cref="P:UIKit.NSLayoutConstraint.Active" /> property to <see langword="false" />.</remarks>
+		///         <remarks>This method has the same effect as setting the <see cref="UIKit.NSLayoutConstraint.Active" /> property to <see langword="false" />.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static, Export ("deactivateConstraints:")]
 		void DeactivateConstraints (NSLayoutConstraint [] constraints);
@@ -3486,7 +3486,7 @@ namespace UIKit {
 		string Identifier { get; set; }
 	}
 
-	/// <summary>Defines the relationship between <see cref="T:UIKit.NSTextAttachment" />s and a <see cref="T:UIKit.NSLayoutManager" />.</summary>
+	/// <summary>Defines the relationship between <see cref="UIKit.NSTextAttachment" />s and a <see cref="UIKit.NSLayoutManager" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/NSTextAttachmentContainer_Protocol/index.html">Apple documentation for <c>NSTextAttachmentContainer</c></related>
 	[Introduced (PlatformName.iOS)]
@@ -3524,7 +3524,7 @@ namespace UIKit {
 		CGRect GetAttachmentBounds ([NullAllowed] NSTextContainer textContainer, CGRect proposedLineFragment, CGPoint glyphPosition, nuint characterIndex);
 	}
 
-	/// <summary>An attachment to a <see cref="T:Foundation.NSAttributedString" />.</summary>
+	/// <summary>An attachment to a <see cref="Foundation.NSAttributedString" />.</summary>
 	///     
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/NSTextAttachment_Class_TextKit/index.html">Apple documentation for <c>NSTextAttachment</c></related>
@@ -3549,7 +3549,7 @@ namespace UIKit {
 		///           <para>To be added.</para>
 		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
 		///         </param>
-		/// <summary>Creates a new <see cref="T:UIKit.NSTextAttachment" /> with the specified <paramref name="contentData" />.</summary>
+		/// <summary>Creates a new <see cref="UIKit.NSTextAttachment" /> with the specified <paramref name="contentData" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[DesignatedInitializer]
@@ -3788,15 +3788,15 @@ namespace UIKit {
 		INSTextStorageObserving TextStorageObserver { get; set; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:UIKit.NSTextStorageDelegate" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.NSTextStorageDelegate" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:UIKit.NSTextStorageDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:UIKit.NSTextStorageDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:UIKit.NSTextStorageDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.NSTextStorageDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.NSTextStorageDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.NSTextStorageDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	interface INSTextStorageDelegate { }
 
-	/// <summary>A delegate object that provides events relating to processing editing for <see cref="T:UIKit.NSTextStorage" />.</summary>
+	/// <summary>A delegate object that provides events relating to processing editing for <see cref="UIKit.NSTextStorage" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/NSTextStorageDelegate_Protocol_TextKit/index.html">Apple documentation for <c>NSTextStorageDelegate</c></related>
 	[MacCatalyst (13, 1)]
@@ -4156,7 +4156,7 @@ namespace UIKit {
 		[Export ("data", ArgumentSemantic.Copy)]
 		NSData Data { get; }
 
-		/// <summary>The UTI of the <see cref="P:UIKit.NSDataAsset.Data" />.</summary>
+		/// <summary>The UTI of the <see cref="UIKit.NSDataAsset.Data" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("typeIdentifier")] // Uniform Type Identifier
@@ -4165,7 +4165,7 @@ namespace UIKit {
 
 	/// <summary>The visual attributes associated with a drop shadow.</summary>
 	///     <remarks>
-	///       <para>The <see cref="T:UIKit.NSShadow" /> class encapsulates the visual attributes of a drop shadow.</para>
+	///       <para>The <see cref="UIKit.NSShadow" /> class encapsulates the visual attributes of a drop shadow.</para>
 	///     </remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/ApplicationKit/Classes/NSShadow_Class/index.html">Apple documentation for <c>NSShadow</c></related>
 	[MacCatalyst (13, 1)]
@@ -4255,7 +4255,7 @@ namespace UIKit {
 		NSString ColumnTerminatorsAttributeName { get; }
 	}
 
-	/// <summary>Interface that, together with the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20NSText%20Layout%20Orientation%20Provider_%20Extensions&amp;scope=Xamarin" title="T:UIKit.NSTextLayoutOrientationProvider_Extensions">T:UIKit.NSTextLayoutOrientationProvider_Extensions</a></format> class, comprise the NSTextLayoutOrientationProvider protocol.</summary>
+	/// <summary>Interface that, together with the <see cref="UIKit.NSTextLayoutOrientationProvider_Extensions" /> class, comprise the NSTextLayoutOrientationProvider protocol.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
@@ -4304,13 +4304,13 @@ namespace UIKit {
 		[Export ("size")]
 		CGSize Size { get; set; }
 
-		/// <summary>An array of <see cref="T:UIKit.UIBezierPath" />s from which text will be excluded.</summary>
+		/// <summary>An array of <see cref="UIKit.UIBezierPath" />s from which text will be excluded.</summary>
 		///         <value>
 		///           <para>(More documentation for this node is coming)</para>
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
 		///         </value>
 		///         <remarks>
-		///           <para>Exclusion paths are defined in the <see cref="T:UIKit.NSTextContainer" />'s coordinate system (see <see cref="M:UIKit.UIView.ConvertRectFromView(CoreGraphics.CGRect,UIKit.UIView)" />).</para>
+		///           <para>Exclusion paths are defined in the <see cref="UIKit.NSTextContainer" />'s coordinate system (see <see cref="UIKit.UIView.ConvertRectFromView(CoreGraphics.CGRect,UIKit.UIView)" />).</para>
 		///         </remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("exclusionPaths", ArgumentSemantic.Copy)]
@@ -4348,20 +4348,20 @@ namespace UIKit {
 		CGRect GetLineFragmentRect (CGRect proposedRect, nuint characterIndex, NSWritingDirection baseWritingDirection, out CGRect remainingRect);
 #endif
 
-		/// <summary>Whether the <see cref="T:UIKit.NSTextContainer" /> changes its <see cref="P:UIKit.NSTextContainer.Size" /> as its associated <see cref="T:UIKit.UITextView" /> is resized.</summary>
+		/// <summary>Whether the <see cref="UIKit.NSTextContainer" /> changes its <see cref="UIKit.NSTextContainer.Size" /> as its associated <see cref="UIKit.UITextView" /> is resized.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("widthTracksTextView")]
 		bool WidthTracksTextView { get; set; }
 
-		/// <summary>Whether the <see cref="T:UIKit.NSTextContainer" /> changes its <see cref="P:UIKit.NSTextContainer.Size" /> as its associated <see cref="T:UIKit.UITextView" /> is resized.</summary>
+		/// <summary>Whether the <see cref="UIKit.NSTextContainer" /> changes its <see cref="UIKit.NSTextContainer.Size" /> as its associated <see cref="UIKit.UITextView" /> is resized.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("heightTracksTextView")]
 		bool HeightTracksTextView { get; set; }
 
-		/// <param name="newLayoutManager">The new <see cref="T:UIKit.NSLayoutManager" />.</param>
-		///         <summary>Replaces the current <see cref="T:UIKit.NSLayoutManager" />.</summary>
+		/// <param name="newLayoutManager">The new <see cref="UIKit.NSLayoutManager" />.</param>
+		///         <summary>Replaces the current <see cref="UIKit.NSLayoutManager" />.</summary>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("replaceLayoutManager:")]
@@ -4399,7 +4399,7 @@ namespace UIKit {
 		NSTextLayoutManager TextLayoutManager { get; }
 	}
 
-	/// <summary>String drawing extension methods for <see cref="T:Foundation.NSString" />.</summary>
+	/// <summary>String drawing extension methods for <see cref="Foundation.NSString" />.</summary>
 	[ThreadSafe]
 	[Category, BaseType (typeof (NSString))]
 	interface NSExtendedStringDrawing {

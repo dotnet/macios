@@ -1,14 +1,20 @@
 using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-#if NET
+using System.Security.Cryptography;
 using System.Text.Json;
-#endif
+using System.Threading;
+using System.Threading.Tasks;
 
 using Foundation;
 using ObjCRuntime;
 
 using NUnit.Framework;
+
+using MonoTests.System.Net.Http;
 
 namespace LinkAnyTest {
 	// This test is included in both the LinkAll and LinkSdk projects for both iOS and macOS.
@@ -46,7 +52,6 @@ namespace LinkAnyTest {
 			Assert.IsNotNull (filePath, "CallerFilePath");
 		}
 
-#if NET
 		[Test]
 		public void AppContextGetData ()
 		{
@@ -54,7 +59,6 @@ namespace LinkAnyTest {
 			Assert.IsNotNull (AppContext.GetData ("APP_PATHS"), "APP_PATHS");
 			Assert.IsNotNull (AppContext.GetData ("PINVOKE_OVERRIDE"), "PINVOKE_OVERRIDE");
 		}
-#endif
 
 		[Test]
 		public void BackingFieldInGenericType ()
@@ -68,7 +72,6 @@ namespace LinkAnyTest {
 			GC.KeepAlive (view.HeightAnchor);
 		}
 
-#if NET
 		[Test]
 		public void JsonSerializer_Serialize ()
 		{
@@ -88,6 +91,66 @@ namespace LinkAnyTest {
 			var b = JsonSerializer.Deserialize<int []> ("[42,3,14,15]");
 			CollectionAssert.AreEqual (new int [] { 42, 3, 14, 15 }, b, "deserialized array");
 		}
-#endif
+
+		[Test]
+		public void AES ()
+		{
+			Assert.NotNull (Aes.Create (), "AES");
+		}
+
+		static bool waited;
+		static bool requestError;
+		static HttpStatusCode statusCode;
+
+		void TimedWait (Task task)
+		{
+			try {
+				var rv = task.Wait (TimeSpan.FromMinutes (1));
+				if (rv)
+					return;
+			} catch (AggregateException ae) {
+				throw ae.InnerExceptions [0];
+			}
+
+			TestRuntime.IgnoreInCI ("This test times out randomly in CI due to bad network.");
+			Assert.Fail ("Test timed out");
+		}
+
+		// http://blogs.msdn.com/b/csharpfaq/archive/2012/06/26/understanding-a-simple-async-program.aspx
+		// ref: https://bugzilla.xamarin.com/show_bug.cgi?id=7114
+		static async Task GetWebPageAsync ()
+		{
+			// do not use GetStringAsync, we are going to miss useful data, such as the result code
+			using (var client = new HttpClient ()) {
+				HttpResponseMessage response = await client.GetAsync (NetworkResources.MicrosoftUrl);
+				if (!response.IsSuccessStatusCode) {
+					requestError = true;
+					statusCode = response.StatusCode;
+				} else {
+					string content = await response.Content.ReadAsStringAsync ();
+					waited = true;
+					bool success = !String.IsNullOrEmpty (content);
+					Assert.IsTrue (success, $"received {content.Length} bytes");
+				}
+			}
+		}
+
+		[Test]
+		public void GetWebPageAsyncTest ()
+		{
+			var current_sc = SynchronizationContext.Current;
+			try {
+				// we do not want the async code to get back to the AppKit thread, hanging the process
+				SynchronizationContext.SetSynchronizationContext (null);
+				TimedWait (GetWebPageAsync ());
+				if (requestError) {
+					Assert.Inconclusive ($"Test cannot be trusted. Issues performing the request. Status code '{statusCode}'");
+				} else {
+					Assert.IsTrue (waited, "async/await worked");
+				}
+			} finally {
+				SynchronizationContext.SetSynchronizationContext (current_sc);
+			}
+		}
 	}
 }

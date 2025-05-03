@@ -34,28 +34,13 @@ using CoreFoundation;
 using ObjCRuntime;
 using Foundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace OpenGL {
-#if NET
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	[ObsoletedOSPlatform ("macos10.14", "Use 'Metal' Framework instead.")]
-#else
-	[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'Metal' Framework instead.")]
-#endif
 	public class CGLContext : NativeObject {
 #if !COREBUILD
-#if !NET
-		public CGLContext (NativeHandle handle)
-			: base (handle, false, verify: true)
-		{
-		}
-#endif
-
 		[Preserve (Conditional = true)]
 		internal CGLContext (NativeHandle handle, bool owns)
 			: base (handle, owns, true)

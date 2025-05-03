@@ -32,7 +32,7 @@ namespace Xamarin.Bundler {
 		public static bool IsUnifiedMobile { get { return TargetFramework == TargetFramework.Xamarin_Mac_2_0_Mobile; } }
 
 #if MMP
-		// We know that Xamarin.Mac apps won't compile unless the developer is using Xcode 12+: https://github.com/xamarin/xamarin-macios/issues/11937, so just set that as the min Xcode version.
+		// We know that Xamarin.Mac apps won't compile unless the developer is using Xcode 12+: https://github.com/dotnet/macios/issues/11937, so just set that as the min Xcode version.
 		static Version min_xcode_version = new Version (12, 0);
 #else
 		static Version min_xcode_version = new Version (6, 0);
@@ -917,7 +917,7 @@ namespace Xamarin.Bundler {
 		static bool XcrunFind (Application app, ApplePlatform platform, bool is_simulator, string tool, out string path)
 		{
 			var env = new Dictionary<string, string> ();
-			// Unset XCODE_DEVELOPER_DIR_PATH. See https://github.com/xamarin/xamarin-macios/issues/3931.
+			// Unset XCODE_DEVELOPER_DIR_PATH. See https://github.com/dotnet/macios/issues/3931.
 			env.Add ("XCODE_DEVELOPER_DIR_PATH", null);
 			// Set DEVELOPER_DIR if we have it
 			if (!string.IsNullOrEmpty (DeveloperDirectory))
@@ -939,7 +939,7 @@ namespace Xamarin.Bundler {
 					args.Add (is_simulator ? "appletvsimulator" : "appletvos");
 					break;
 				default:
-					throw ErrorHelper.CreateError (71, Errors.MX0071 /* Unknown platform: {0}. This usually indicates a bug in {1}; please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new with a test case. */, platform.ToString (), app.ProductName);
+					throw ErrorHelper.CreateError (71, Errors.MX0071 /* Unknown platform: {0}. This usually indicates a bug in {1}; please file a bug report at https://github.com/dotnet/macios/issues/new with a test case. */, platform.ToString (), app.ProductName);
 				}
 			}
 			args.Add ("-f");

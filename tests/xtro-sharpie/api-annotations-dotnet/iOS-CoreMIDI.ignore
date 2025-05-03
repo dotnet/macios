@@ -2,7 +2,7 @@
 !missing-pinvoke! MIDIEndpointGetRefCons is not bound
 !missing-pinvoke! MIDIEndpointSetRefCons is not bound
 
-# old apis that have been ignored, please refer to issue https://github.com/xamarin/xamarin-macios/issues/4452
+# old apis that have been ignored, please refer to issue https://github.com/dotnet/macios/issues/4452
 !missing-pinvoke! MIDIClientCreateWithBlock is not bound
 !missing-pinvoke! MIDIDeviceCreate is not bound
 !missing-pinvoke! MIDIDeviceDispose is not bound
@@ -18,7 +18,7 @@
 !missing-pinvoke! MIDISetupRemoveExternalDevice is not bound
 
 # same as the above, we should bind all of them, these have been added on Xcode 12 beta 2
-# https://github.com/xamarin/xamarin-macios/issues/4452#issuecomment-660220392
+# https://github.com/dotnet/macios/issues/4452#issuecomment-660220392
 !missing-pinvoke! MIDIDestinationCreateWithProtocol is not bound
 !missing-pinvoke! MIDIDeviceNewEntity is not bound
 !missing-pinvoke! MIDIInputPortCreateWithProtocol is not bound

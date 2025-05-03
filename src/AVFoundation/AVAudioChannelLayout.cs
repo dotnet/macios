@@ -22,7 +22,7 @@ using System.Runtime.InteropServices;
 #nullable enable
 
 namespace AVFoundation {
-	/// <summary>Corresponds to a <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:AudioToolbox.AudioChannelLayout &amp;scope=Xamarin" title="T:AudioToolbox.AudioChannelLayout ">T:AudioToolbox.AudioChannelLayout </a></format> channel layout.</summary>
+	/// <summary>Corresponds to a <see cref="AudioToolbox.AudioChannelLayout " /> channel layout.</summary>
 	///     <remarks>To be added.</remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVAudioChannelLayout_Class/index.html">Apple documentation for <c>AVAudioChannelLayout</c></related>
 	public partial class AVAudioChannelLayout {
@@ -43,7 +43,7 @@ namespace AVFoundation {
 			Marshal.FreeHGlobal (handleToLayout);
 		}
 
-		/// <summary>The underlying <see cref="T:AudioToolbox.AudioChannelLayout" />.</summary>
+		/// <summary>The underlying <see cref="AudioToolbox.AudioChannelLayout" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public AudioChannelLayout? Layout {

@@ -41,7 +41,7 @@ namespace CoreText {
 
 	#region Typesetter Values
 
-	/// <summary>Options applicable to a <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:CoreText:CTTypesetter&amp;scope=Xamarin" title="T:CoreText:CTTypesetter">T:CoreText:CTTypesetter</a></format> object.</summary>
+	/// <summary>Options applicable to a <see cref="CoreText.CTTypesetter" /> object.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]

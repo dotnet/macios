@@ -44,7 +44,7 @@ using ObjCRuntime;
 using Foundation;
 
 namespace AudioToolbox {
-	/// <summary>Audio format identifiers used by <see cref="T:AudioToolbox.AudioStreamBasicDescription" />.</summary>
+	/// <summary>Audio format identifiers used by <see cref="AudioToolbox.AudioStreamBasicDescription" />.</summary>
 	///     <remarks>
 	///     </remarks>
 	public enum AudioFormatType : uint { // UInt32 in AudioStreamBasicDescription -- CoreAudio.framework CoreAudioTypes.h
@@ -146,7 +146,7 @@ namespace AudioToolbox {
 		Apac = 0x61706163, // 'apac'
 	}
 
-	/// <summary>Flags describing the stream in the <see cref="T:AudioToolbox.AudioStreamBasicDescription" />.</summary>
+	/// <summary>Flags describing the stream in the <see cref="AudioToolbox.AudioStreamBasicDescription" />.</summary>
 	///     <remarks>
 	///       <para> The core set of flags describe properties of the audio
 	/// 	stream (integer vs float values, endianess, interleaved) while
@@ -186,7 +186,7 @@ namespace AudioToolbox {
 		LinearPCMIsPacked = (1 << 3),     // 0x8
 		/// <summary>Linear PCM audio format: if set, sample bits are on the high bits.</summary>
 		LinearPCMIsAlignedHigh = (1 << 4),     // 0x10
-		/// <summary>If this flag is set then there are separate <see cref="T:AudioToolbox.AudioBuffer" />s for each
+		/// <summary>If this flag is set then there are separate <see cref="AudioToolbox.AudioBuffer" />s for each
 		///         channel, otherwise the data for the left and right channels is
 		///         interleaved in the same buffer.</summary>
 		LinearPCMIsNonInterleaved = (1 << 5),     // 0x20
@@ -556,7 +556,7 @@ namespace AudioToolbox {
 		}
 	}
 
-	/// <summary>Flags for the <see cref="F:AudioToolbox.AudioChannelDescription.Flags" /> property.</summary>
+	/// <summary>Flags for the <see cref="AudioToolbox.AudioChannelDescription.Flags" /> property.</summary>
 	///     <remarks>To be added.</remarks>
 	[Flags]
 	public enum AudioChannelFlags : uint { // UInt32 in AudioPanningInfo -- AudioFormat.h
@@ -570,7 +570,7 @@ namespace AudioToolbox {
 		Meters = 1 << 2,
 	}
 
-	/// <summary>An enumeration whose values specify the <see cref="F:AudioToolbox.AudioChannelDescription.Label" /> property.</summary>
+	/// <summary>An enumeration whose values specify the <see cref="AudioToolbox.AudioChannelDescription.Label" /> property.</summary>
 	///     <remarks>To be added.</remarks>
 	public enum AudioChannelLabel : int { // UInt32 AudioChannelLabel
 		/// <summary>To be added.</summary>
@@ -796,7 +796,7 @@ namespace AudioToolbox {
 	}
 #endif
 
-	/// <summary>An enumeration whose values specify constants in the <see cref="P:AudioToolbox.AudioChannelLayout.Bitmap" /> property.</summary>
+	/// <summary>An enumeration whose values specify constants in the <see cref="AudioToolbox.AudioChannelLayout.Bitmap" /> property.</summary>
 	///     <remarks>To be added.</remarks>
 	[Flags]
 	[NativeName ("AudioChannelBitmap")]
@@ -1335,7 +1335,7 @@ namespace AudioToolbox {
 	}
 
 #if !COREBUILD
-	/// <summary>An extension class that provides a <see cref="M:AudioToolbox.AudioChannelLayoutTagExtensions.ToAudioChannel(AudioToolbox.AudioChannelLayoutTag)" /> extension method to the <see cref="T:AudioToolbox.AudioChannelLayoutTag" /> class.</summary>
+	/// <summary>An extension class that provides a <see cref="AudioToolbox.AudioChannelLayoutTagExtensions.ToAudioChannel(AudioToolbox.AudioChannelLayoutTag)" /> extension method to the <see cref="AudioToolbox.AudioChannelLayoutTag" /> class.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -1846,7 +1846,7 @@ namespace AudioToolbox {
 		}
 	}
 
-	/// <summary>An enumeration whose values specify the version of SMPTE time used by a <see cref="T:AudioToolbox.SmpteTime" />.</summary>
+	/// <summary>An enumeration whose values specify the version of SMPTE time used by a <see cref="AudioToolbox.SmpteTime" />.</summary>
 	///     <remarks>To be added.</remarks>
 	public enum SmpteTimeType : uint // UInt32 in AudioFileRegionList
 	{
@@ -1984,12 +1984,12 @@ namespace AudioToolbox {
 		///         <remarks>
 		///         </remarks>
 		public int NumberChannels;
-		/// <summary>The size of the buffer pointed to by <see cref="F:AudioToolbox.AudioBuffer.Data" />.</summary>
+		/// <summary>The size of the buffer pointed to by <see cref="AudioToolbox.AudioBuffer.Data" />.</summary>
 		///         <remarks>
 		///         </remarks>
 		public int DataByteSize;
 		/// <summary>Pointer to the raw audio data.</summary>
-		///         <remarks>The size of this buffer is described by the <see cref="F:AudioToolbox.AudioBuffer.DataByteSize" /> property.</remarks>
+		///         <remarks>The size of this buffer is described by the <see cref="AudioToolbox.AudioBuffer.DataByteSize" /> property.</remarks>
 		public IntPtr Data;
 
 		/// <summary>Debugging method that display information about the AudioBuffer.</summary>
@@ -2065,7 +2065,7 @@ namespace AudioToolbox {
 
 	// CoreAudioClock.h (inside AudioToolbox)
 	// It was a confusion between CA (CoreAudio) and CA (CoreAnimation)
-	/// <summary>Struct defining bar beat time, for use with <see cref="T:AudioToolbox.MusicSequence" /> methods such as <see cref="M:AudioToolbox.MusicSequence.BarBeatTimeToBeats(AudioToolbox.CABarBeatTime,System.Double@)" />.</summary>
+	/// <summary>Struct defining bar beat time, for use with <see cref="AudioToolbox.MusicSequence" /> methods such as <see cref="AudioToolbox.MusicSequence.BarBeatTimeToBeats(AudioToolbox.CABarBeatTime,out System.Double)" />.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]

@@ -160,7 +160,7 @@ steps:
 
 - task: UseDotNet@2
   inputs:
-    version: 9.x
+    version: $(DotNetSdkVersion).x
 
 - template: ../common/install-qa-provisioning-profiles.yml
   parameters:
@@ -189,6 +189,7 @@ steps:
     SYSTEM_ACCESSTOKEN: $(System.AccessToken)
     MONO_DEBUG: no-gdb-backtrace
     TEST_BOT: $(Agent.Name)
+    IS_PR: $(parameters.isPr)
 
 - bash: $(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/automation/scripts/bash/collect-and-upload-crash-reports.sh
   displayName: 'Collect and upload crash reports'

@@ -76,7 +76,7 @@ namespace Metal {
 	}
 
 #if !COREBUILD
-	/// <summary>Extension methods for <see cref="T:Metal.MTLVertexFormat" />.</summary>
+	/// <summary>Extension methods for <see cref="Metal.MTLVertexFormat" />.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]

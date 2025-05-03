@@ -219,7 +219,7 @@ namespace MonoTouch.Tuner {
 			// This means we must set the IsDirectBinding value to null for CIFilter
 			// and all its base classes to allow both code paths and determine at runtime.
 			// References:
-			// * https://github.com/xamarin/xamarin-macios/pull/3055
+			// * https://github.com/dotnet/macios/pull/3055
 			// * https://bugzilla.xamarin.com/show_bug.cgi?id=15465
 			if (IsCIFilter (type)) {
 				isdirectbinding_value [type] = null;

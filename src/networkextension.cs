@@ -49,7 +49,7 @@ namespace NetworkExtension {
 		CannotBeRemoved = 4,
 	}
 
-	/// <summary>Enumerates the actions to be taken when a <see cref="T:NetworkExtension.NEFilterVerdict" /> is that a report should be made.</summary>
+	/// <summary>Enumerates the actions to be taken when a <see cref="NetworkExtension.NEFilterVerdict" /> is that a report should be made.</summary>
 	[NoTV]
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -367,7 +367,7 @@ namespace NetworkExtension {
 		void OpenWithLocalFlowEndpoint ([NullAllowed] Network.NWEndpoint localEndpoint, NEAppProxyFlowOpenCallback completionHandler);
 	}
 
-	/// <summary>Provides sockets by creating <see cref="T:NetworkExtension.NEAppProxyFlow" /> objects.</summary>
+	/// <summary>Provides sockets by creating <see cref="NetworkExtension.NEAppProxyFlow" /> objects.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/NetworkExtension/Reference/NEAppProxyProviderClassRef/index.html">Apple documentation for <c>NEAppProxyProvider</c></related>
 	[NoTV]
@@ -717,7 +717,7 @@ namespace NetworkExtension {
 		NSString ConfigurationDidChangeNotification { get; }
 	}
 
-	/// <summary>Provides filter flow control information to a <see cref="T:NetworkExtension.NEFilterDataProvider" />.</summary>
+	/// <summary>Provides filter flow control information to a <see cref="NetworkExtension.NEFilterDataProvider" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/NetworkExtension/Reference/NEFilterControlProviderClassRef/index.html">Apple documentation for <c>NEFilterControlProvider</c></related>
 	[NoTV]
@@ -2859,7 +2859,7 @@ namespace NetworkExtension {
 		NSUrl ProbeUrl { get; set; }
 	}
 
-	/// <summary>An <see cref="T:NetworkExtension.NEOnDemandRule" /> whose <see cref="P:NetworkExtension.NEOnDemandRule.Action" /> is <see cref="F:NetworkExtension.NEOnDemandRuleAction.Connect" />.</summary>
+	/// <summary>An <see cref="NetworkExtension.NEOnDemandRule" /> whose <see cref="NetworkExtension.NEOnDemandRule.Action" /> is <see cref="NetworkExtension.NEOnDemandRuleAction.Connect" />.</summary>
 	/// <remarks>To be added.</remarks>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/NetworkExtension/Reference/NEOnDemandRuleConnectClassRef/index.html">Apple documentation for <c>NEOnDemandRuleConnect</c></related>
 	[MacCatalyst (13, 1)]
@@ -2867,7 +2867,7 @@ namespace NetworkExtension {
 	interface NEOnDemandRuleConnect {
 	}
 
-	/// <summary>An <see cref="T:NetworkExtension.NEOnDemandRule" /> whose <see cref="P:NetworkExtension.NEOnDemandRule.Action" /> is <see cref="F:NetworkExtension.NEOnDemandRuleAction.Disconnect" />.</summary>
+	/// <summary>An <see cref="NetworkExtension.NEOnDemandRule" /> whose <see cref="NetworkExtension.NEOnDemandRule.Action" /> is <see cref="NetworkExtension.NEOnDemandRuleAction.Disconnect" />.</summary>
 	/// <remarks>To be added.</remarks>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/NetworkExtension/Reference/NEOnDemandRuleDisconnectClassRef/index.html">Apple documentation for <c>NEOnDemandRuleDisconnect</c></related>
 	[MacCatalyst (13, 1)]
@@ -2875,7 +2875,7 @@ namespace NetworkExtension {
 	interface NEOnDemandRuleDisconnect {
 	}
 
-	/// <summary>An <see cref="T:NetworkExtension.NEOnDemandRule" /> whose <see cref="P:NetworkExtension.NEOnDemandRule.Action" /> is <see cref="F:NetworkExtension.NEOnDemandRuleAction.Ignore" />.</summary>
+	/// <summary>An <see cref="NetworkExtension.NEOnDemandRule" /> whose <see cref="NetworkExtension.NEOnDemandRule.Action" /> is <see cref="NetworkExtension.NEOnDemandRuleAction.Ignore" />.</summary>
 	/// <remarks>To be added.</remarks>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/NetworkExtension/Reference/NEOnDemandRuleIgnoreClassRef/index.html">Apple documentation for <c>NEOnDemandRuleIgnore</c></related>
 	[MacCatalyst (13, 1)]
@@ -2883,7 +2883,7 @@ namespace NetworkExtension {
 	interface NEOnDemandRuleIgnore {
 	}
 
-	/// <summary>An <see cref="T:NetworkExtension.NEOnDemandRule" /> whose <see cref="P:NetworkExtension.NEOnDemandRule.Action" /> is <see cref="F:NetworkExtension.NEOnDemandRuleAction.EvaluateConnection" />.</summary>
+	/// <summary>An <see cref="NetworkExtension.NEOnDemandRule" /> whose <see cref="NetworkExtension.NEOnDemandRule.Action" /> is <see cref="NetworkExtension.NEOnDemandRuleAction.EvaluateConnection" />.</summary>
 	/// <remarks>To be added.</remarks>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/NetworkExtension/Reference/NEOnDemandRuleEvaluateConnectionClassRef/index.html">Apple documentation for <c>NEOnDemandRuleEvaluateConnection</c></related>
 	[MacCatalyst (13, 1)]
@@ -2927,7 +2927,7 @@ namespace NetworkExtension {
 		[Export ("matchDomains")]
 		string [] MatchDomains { get; }
 
-		/// <summary>Gets an array of DNS server names to use for resolving the destination hostname when evaluating connectivity, if the rule is <see cref="F:NetworkExtension.NEEvaluateConnectionRuleAction.ConnectIfNeeded" /></summary>
+		/// <summary>Gets an array of DNS server names to use for resolving the destination hostname when evaluating connectivity, if the rule is <see cref="NetworkExtension.NEEvaluateConnectionRuleAction.ConnectIfNeeded" /></summary>
 		///         <value>
 		///           <para>(More documentation for this node is coming)</para>
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
@@ -2937,7 +2937,7 @@ namespace NetworkExtension {
 		[Export ("useDNSServers", ArgumentSemantic.Copy)]
 		string [] UseDnsServers { get; set; }
 
-		/// <summary>A URL for which to start a VPN if a non-success HTTP code is returned, if the rule is <see cref="F:NetworkExtension.NEEvaluateConnectionRuleAction.ConnectIfNeeded" />.</summary>
+		/// <summary>A URL for which to start a VPN if a non-success HTTP code is returned, if the rule is <see cref="NetworkExtension.NEEvaluateConnectionRuleAction.ConnectIfNeeded" />.</summary>
 		///         <value>
 		///           <para>(More documentation for this node is coming)</para>
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
@@ -3323,11 +3323,11 @@ namespace NetworkExtension {
 
 	interface INWTcpConnectionAuthenticationDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:NetworkExtension.NWTcpConnectionAuthenticationDelegate" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="NetworkExtension.NWTcpConnectionAuthenticationDelegate" />.</summary>
 	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:NetworkExtension.NWTcpConnectionAuthenticationDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:NetworkExtension.NWTcpConnectionAuthenticationDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:NetworkExtension.NWTcpConnectionAuthenticationDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="NetworkExtension.NWTcpConnectionAuthenticationDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="NetworkExtension.NWTcpConnectionAuthenticationDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="NetworkExtension.NWTcpConnectionAuthenticationDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Security.SecProtocolOptions' instead.")]
 	[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'Security.SecProtocolOptions' instead.")]
@@ -3781,7 +3781,7 @@ namespace NetworkExtension {
 		nuint BytesOutboundCount { get; }
 	}
 
-	/// <summary>Contains settings for a <see cref="T:NetworkExtension.NEPacketTunnelFlow" />.</summary>
+	/// <summary>Contains settings for a <see cref="NetworkExtension.NEPacketTunnelFlow" />.</summary>
 	/// <remarks>To be added.</remarks>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/NetworkExtension/Reference/NEPacketTunnelNetworkSettingsClassRef/index.html">Apple documentation for <c>NEPacketTunnelNetworkSettings</c></related>
 	[MacCatalyst (13, 1)]
@@ -3888,7 +3888,7 @@ namespace NetworkExtension {
 		bool WritePacketObjects (NEPacket [] packets);
 	}
 
-	/// <summary>Provides sockets by creating <see cref="T:NetworkExtension.NEPacketTunnelFlow" /> objects.</summary>
+	/// <summary>Provides sockets by creating <see cref="NetworkExtension.NEPacketTunnelFlow" /> objects.</summary>
 	/// <remarks>To be added.</remarks>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/NetworkExtension/Reference/NEPacketTunnelProviderClassRef/index.html">Apple documentation for <c>NEPacketTunnelProvider</c></related>
 	[MacCatalyst (13, 1)]
@@ -4246,7 +4246,7 @@ namespace NetworkExtension {
 		bool HandleNewUdpFlowWithInitialFlowEndPoint (NEAppProxyUdpFlow flow, Network.NWEndpoint remoteEndpoint);
 	}
 
-	/// <summary>Configuration settings for <see cref="T:NetworkExtension.NEDnsProxyProvider" /> objects.</summary>
+	/// <summary>Configuration settings for <see cref="NetworkExtension.NEDnsProxyProvider" /> objects.</summary>
 	[NoTV]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NEVpnProtocol), Name = "NEDNSProxyProviderProtocol")]
@@ -4455,7 +4455,7 @@ namespace NetworkExtension {
 
 	delegate void NEHotspotConfigurationManagerJoinHotspotCallback ([NullAllowed] NSError error);
 
-	/// <summary>Manages the application or removal of <see cref="T:NetworkExtension.NEHotspotConfiguration" />.</summary>
+	/// <summary>Manages the application or removal of <see cref="NetworkExtension.NEHotspotConfiguration" />.</summary>
 	[NoTV]
 	[NoMac]
 	[MacCatalyst (13, 1)]

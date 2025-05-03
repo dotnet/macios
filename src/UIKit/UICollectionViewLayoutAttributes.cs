@@ -92,7 +92,7 @@ namespace UIKit {
 		///         <param name="indexPath">An index path for the supplementary view.</param>
 		///         <summary>Creates a layout attributes object representing the supplementary view.</summary>
 		///         <returns>A layout attributes object that represents the supplementary view.</returns>
-		///         <remarks>Use this method to create a layout attributes object representing a supplementary view of a specific kind. If you've subclassed UICollectionViewLayoutAttributes and need to return an instance of the subclass, use <see cref="M:UIKit.UICollectionViewLayoutAttributes.CreateForSupplementaryView(Foundation.NSString,Foundation.NSIndexPath)" /> instead. This method is equivalent to calling CreateForSupplementaryView&lt;UICollectionViewLayoutAttributes&gt;.</remarks>
+		///         <remarks>Use this method to create a layout attributes object representing a supplementary view of a specific kind. If you've subclassed UICollectionViewLayoutAttributes and need to return an instance of the subclass, use <see cref="UIKit.UICollectionViewLayoutAttributes.CreateForSupplementaryView(Foundation.NSString,Foundation.NSIndexPath)" /> instead. This method is equivalent to calling CreateForSupplementaryView&lt;UICollectionViewLayoutAttributes&gt;.</remarks>
 		public static UICollectionViewLayoutAttributes CreateForSupplementaryView (UICollectionElementKindSection section, NSIndexPath indexPath)
 		{
 			return CreateForSupplementaryView (GetKindForSection (section), indexPath);

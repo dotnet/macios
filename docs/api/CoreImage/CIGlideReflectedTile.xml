@@ -1,6 +1,6 @@
 <Documentation>
   <Docs DocId="T:CoreImage.CIGlideReflectedTile">
-    <summary>A <see cref="T:CoreImage.CITileFilter" /> that translates and smears the source image.</summary>
+    <summary>A <see cref="CoreImage.CITileFilter" /> that translates and smears the source image.</summary>
     <remarks>
       <para>The following example shows this filter in use</para>
       <example>

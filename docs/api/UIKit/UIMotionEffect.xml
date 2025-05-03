@@ -5,13 +5,13 @@
       <para>
 	This is an abstract class for doing motion effects on your
 	application.  When subclassing, you must at least implement
-	the <see cref="M:UIKit.UIMotionEffect.ComputeKeyPathsAndRelativeValues(UIKit.UIOffset)" />
+	the <see cref="UIKit.UIMotionEffect.ComputeKeyPathsAndRelativeValues(UIKit.UIOffset)" />
 	method which returns a dictionary of changes that contain a
 	list of keypaths along with the new value that will be applied
 	to the view that this effect is attached to.
       </para>
       <para>
-	In general, you will want to use the <see cref="T:UIKit.UIInterpolatingMotionEffect" /> class
+	In general, you will want to use the <see cref="UIKit.UIInterpolatingMotionEffect" /> class
 	which provides a way of interpolating the device tilt values
 	to a linear value.
       </para>

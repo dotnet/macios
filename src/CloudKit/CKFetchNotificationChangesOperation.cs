@@ -15,7 +15,7 @@ using NativeHandle = System.IntPtr;
 #endif
 
 namespace CloudKit {
-	/// <summary>A <see cref="T:CloudKit.CKOperation" /> that ret../../summary_set.sh CKFetchNotificationChangesOperation A</summary>
+	/// <summary>A <see cref="CloudKit.CKOperation" /> that ret../../summary_set.sh CKFetchNotificationChangesOperation A</summary>
 	///     <remarks>To be added.</remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CloudKit/Reference/CKFetchNotificationChangesOperation_class/index.html">Apple documentation for <c>CKFetchNotificationChangesOperation</c></related>
 	[Register ("CKFetchNotificationChangesOperation", SkipRegistration = true)]
@@ -104,7 +104,7 @@ namespace CloudKit {
 			}
 		}
 
-		/// <summary>The <see cref="T:CloudKit.CKServerChangeToken" /> from a previous fetch operation.</summary>
+		/// <summary>The <see cref="CloudKit.CKServerChangeToken" /> from a previous fetch operation.</summary>
 		///         <value>
 		///           <para>(More documentation for this node is coming)</para>
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>

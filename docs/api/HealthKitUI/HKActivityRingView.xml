@@ -1,8 +1,8 @@
 <Documentation>
   <Docs DocId="T:HealthKitUI.HKActivityRingView">
-    <summary>A <see cref="T:UIKit.UIView" /> that shows the data in a <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Health%20Kit%20HKSummary&amp;scope=Xamarin" title="T:HealthKit.HKSummary">T:HealthKit.HKSummary</a></format>.</summary>
+    <summary>A <see cref="UIKit.UIView" /> that shows the data in a <see cref="HealthKit.HKSummary" />.</summary>
     <remarks>
-      <para>Developers can set the values within the <see cref="T:HealthKitUI.HKActivityRingView" /> using a <see cref="T:HealthKit.HKActivitySummary" /> object, as shown in the following example:</para>
+      <para>Developers can set the values within the <see cref="HealthKitUI.HKActivityRingView" /> using a <see cref="HealthKit.HKActivitySummary" /> object, as shown in the following example:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
 var view = new HKActivityRingView (new CGRect (10, 10, 200, 200));

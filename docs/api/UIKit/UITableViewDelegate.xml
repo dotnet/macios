@@ -1,8 +1,8 @@
 <Documentation>
   <Docs DocId="T:UIKit.UITableViewDelegate">
-    <summary>A class that receives notifications from a UITableView. MonoTouch developers should generally use <see cref="T:UIKit.UITableViewSource" /> instead of this class.</summary>
+    <summary>A class that receives notifications from a UITableView. MonoTouch developers should generally use <see cref="UIKit.UITableViewSource" /> instead of this class.</summary>
     <remarks>
-      <para>Implementing <see cref="T:UIKit.UITableView" /> often requires subclasses of both <see cref="T:UIKit.UITableViewDataSource" /> and <see cref="T:UIKit.UITableViewDelegate" /> to provide data and behavior for the table view. MonoTouch provides a single class - <see cref="T:UIKit.UITableViewSource" /> - so that only one class needs to be implemented.</para>
+      <para>Implementing <see cref="UIKit.UITableView" /> often requires subclasses of both <see cref="UIKit.UITableViewDataSource" /> and <see cref="UIKit.UITableViewDelegate" /> to provide data and behavior for the table view. MonoTouch provides a single class - <see cref="UIKit.UITableViewSource" /> - so that only one class needs to be implemented.</para>
       <para>The UITableViewDelegate class methods provide a table view with the ability to manage selection, configure section headers and footers, delete and reorder cells and control the editing menu.</para>
     </remarks>
     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/MonoCatalog-MonoDevelop/">monocatalog</related>

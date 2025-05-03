@@ -29,7 +29,7 @@ Console.WriteLine (string.Join (";", supportedApiVersions));
 
 using (TextWriter writer = new StreamWriter (outputPath)) {
 	writer.WriteLine ($"<!-- This file contains a generated list of the {platform} platform versions that are supported for this SDK -->");
-	writer.WriteLine ($"<!-- Generation script: https://github.com/xamarin/xamarin-macios/blob/main/scripts/generate-target-platforms/generate-target-platforms.cs -->");
+	writer.WriteLine ($"<!-- Generation script: https://github.com/dotnet/macios/blob/main/scripts/generate-target-platforms/generate-target-platforms.cs -->");
 	writer.WriteLine ("<Project>");
 	writer.WriteLine ("\t<ItemGroup>");
 

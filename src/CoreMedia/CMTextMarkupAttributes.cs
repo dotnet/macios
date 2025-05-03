@@ -38,7 +38,7 @@ using ObjCRuntime;
 namespace CoreMedia {
 
 	// Convenience structure
-	/// <summary>A color to be used with <see cref="P:CoreMedia.CMTextMarkupAttributes.BackgroundColor" /> and <see cref="P:CoreMedia.CMTextMarkupAttributes.ForegroundColor" />.</summary>
+	/// <summary>A color to be used with <see cref="CoreMedia.CMTextMarkupAttributes.BackgroundColor" /> and <see cref="CoreMedia.CMTextMarkupAttributes.ForegroundColor" />.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -87,7 +87,7 @@ namespace CoreMedia {
 		public float Alpha { get; private set; }
 	}
 
-	/// <summary>Manages the attributes used by <see cref="T:AVFoundation.AVTextStyleRule" />.</summary>
+	/// <summary>Manages the attributes used by <see cref="AVFoundation.AVTextStyleRule" />.</summary>
 	///     <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]

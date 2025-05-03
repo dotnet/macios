@@ -33,22 +33,24 @@ using System.IO;
 using System.Collections.Generic;
 using System.Net;
 
-#if NET
 using CFNetwork;
 using CoreFoundation;
 using CF = CoreFoundation;
-#else
-using CoreServices;
-using CoreFoundation;
-using CF = CoreFoundation;
-#endif
 
 // Disable until we get around to enable + fix any issues.
 #nullable disable
 
 namespace System.Net.Http {
 	/// <summary>To be added.</summary>
-	///     <remarks>To be added.</remarks>
+	/// <remarks>To be added.</remarks>
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("tvos")]
+	[ObsoletedOSPlatform ("macos", "Use 'NSUrlSessionHandler' instead.")]
+	[ObsoletedOSPlatform ("ios", "Use 'NSUrlSessionHandler' instead.")]
+	[ObsoletedOSPlatform ("maccatalyst", "Use 'NSUrlSessionHandler' instead.")]
+	[ObsoletedOSPlatform ("tvos", "Use 'NSUrlSessionHandler' instead.")]
 	public class CFNetworkHandler : HttpMessageHandler {
 		class StreamBucket {
 			public TaskCompletionSource<HttpResponseMessage> Response;
@@ -206,15 +208,12 @@ namespace System.Net.Http {
 			return req;
 		}
 
-#if !NET
-		internal
-#endif
-				/// <param name="request">To be added.</param>
-				///         <param name="cancellationToken">To be added.</param>
-				///         <summary>To be added.</summary>
-				///         <returns>To be added.</returns>
-				///         <remarks>To be added.</remarks>
-				protected override async Task<HttpResponseMessage> SendAsync (HttpRequestMessage request, CancellationToken cancellationToken)
+		/// <param name="request">To be added.</param>
+		///         <param name="cancellationToken">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
+		protected override async Task<HttpResponseMessage> SendAsync (HttpRequestMessage request, CancellationToken cancellationToken)
 		{
 			return await SendAsync (request, cancellationToken, true).ConfigureAwait (false);
 		}
@@ -398,25 +397,10 @@ namespace System.Net.Http {
 
 		void AddCookie (string value, Uri uri, string header)
 		{
-#if NET
-			// .NET: CookieCollection.CookieCutter is internal to mscorlib:
-			// https://github.com/microsoft/referencesource/blob/a7bd3242bd7732dec4aebb21fbc0f6de61c2545e/System/net/System/Net/cookiecontainer.cs#L632
-			// https://github.com/xamarin/xamarin-macios/issues/8072
-			// so use the public CookieContainer.SetCookies instead.
 			try {
 				cookies.SetCookies (uri, value);
 			} catch {
 			}
-#else
-			CookieCollection cookies1 = null;
-			try {
-				cookies1 = cookies.CookieCutter (uri, header, value, false);
-			} catch {
-			}
-
-			if (cookies1 is not null && cookies1.Count != 0)
-				cookies.Add (cookies1);
-#endif
 		}
 
 		static bool IsContentHeader (string header)

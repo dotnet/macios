@@ -95,7 +95,7 @@
 !missing-selector! NSObject::setAutomationElementsBlock: not bound
 !missing-selector! NSObject::setIsAccessibilityElementBlock: not bound
 
-## https://github.com/xamarin/xamarin-macios/issues/3213 should be fixed before conformance to 'UIStateRestoring' is restored.
+## https://github.com/dotnet/macios/issues/3213 should be fixed before conformance to 'UIStateRestoring' is restored.
 !missing-protocol-conformance! UIViewController should conform to UIStateRestoring (defined in 'UIStateRestoration' category)
 
 # Xcode 11

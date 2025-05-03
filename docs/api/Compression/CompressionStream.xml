@@ -6,16 +6,16 @@
     <summary>Reads a sequence of bytes from the current stream and advances the position within the stream by the number of bytes read.</summary>
     <returns>The total number of bytes read into the buffer. This can be less than the number of bytes requested if that many bytes are not currently available, or zero (0) if the end of the stream has been reached.</returns>
     <remarks>To be added.</remarks>
-    <exception cref="T:System.ArgumentNullException">
+    <exception cref="System.ArgumentNullException">
       <paramref name="array" /> is null.
         </exception>
-    <exception cref="T:System.ArgumentOutOfRangeException">
+    <exception cref="System.ArgumentOutOfRangeException">
       <paramref name="offset" /> or <paramref name="count" /> is negative.
         </exception>
-    <exception cref="T:System.ObjectDisposedException">
+    <exception cref="System.ObjectDisposedException">
           The current stream is disposed.
         </exception>
-    <exception cref="T:System.NotSupportedException">
+    <exception cref="System.NotSupportedException">
           The current stream does not support reading.
         </exception>
   </Docs>
@@ -28,19 +28,19 @@
     <summary>Begins an asynchronous read operation.</summary>
     <returns>An object that represents the asynchronous read operation, which could still be pending.</returns>
     <remarks>To be added.</remarks>
-    <exception cref="T:System.IO.IOException">
+    <exception cref="System.IO.IOException">
           The method tried to read asynchronously past the end of the stream, or a disk error occurred.
         </exception>
-    <exception cref="T:System.ArgumentException">
+    <exception cref="System.ArgumentException">
           One or more of the arguments is invalid.
         </exception>
-    <exception cref="T:System.ObjectDisposedException">
+    <exception cref="System.ObjectDisposedException">
           The underlying stream is closed.
         </exception>
-    <exception cref="T:System.NotSupportedException">
+    <exception cref="System.NotSupportedException">
           The current CompressionStream implementation does not support the read operation.
         </exception>
-    <exception cref="T:System.InvalidOperationException">
+    <exception cref="System.InvalidOperationException">
           This call cannot be completed.
         </exception>
   </Docs>
@@ -54,16 +54,16 @@
         The result value can be less than the number of bytes requested if the number of bytes currently available is less than the requested number, 
         or it can be 0 (zero) if the end of the stream has been reached.</returns>
     <remarks>To be added.</remarks>
-    <exception cref="T:System.ArgumentNullException">
+    <exception cref="System.ArgumentNullException">
       <paramref name="array" /> is null.
         </exception>
-    <exception cref="T:System.ArgumentOutOfRangeException">
+    <exception cref="System.ArgumentOutOfRangeException">
       <paramref name="offset" /> or <paramref name="count" /> is negative.
         </exception>
-    <exception cref="T:System.ObjectDisposedException">
+    <exception cref="System.ObjectDisposedException">
           Either the current stream or the destination stream is disposed.
         </exception>
-    <exception cref="T:System.NotSupportedException">
+    <exception cref="System.NotSupportedException">
           The current stream does not support reading.
         </exception>
   </Docs>
@@ -76,19 +76,19 @@
     <summary>Begins an asynchronous write operation.</summary>
     <returns>An object that represents the asynchronous write operation, which could still be pending.</returns>
     <remarks>To be added.</remarks>
-    <exception cref="T:System.IO.IOException">
+    <exception cref="System.IO.IOException">
           The method tried to write asynchronously past the end of the stream, or a disk error occurred.
         </exception>
-    <exception cref="T:System.ArgumentException">
+    <exception cref="System.ArgumentException">
           One or more of the arguments is invalid.
         </exception>
-    <exception cref="T:System.ObjectDisposedException">
+    <exception cref="System.ObjectDisposedException">
           The underlying stream is closed.
         </exception>
-    <exception cref="T:System.NotSupportedException">
+    <exception cref="System.NotSupportedException">
           The current CompressionStream implementation does not support the write operation.
         </exception>
-    <exception cref="T:System.InvalidOperationException">
+    <exception cref="System.InvalidOperationException">
           This call cannot be completed.
         </exception>
   </Docs>
@@ -99,16 +99,16 @@
     <summary>Asynchronously reads the bytes from the current stream and writes them to another stream.</summary>
     <returns>A task that represents the asynchronous copy operation.</returns>
     <remarks>To be added.</remarks>
-    <exception cref="T:System.ArgumentNullException">
+    <exception cref="System.ArgumentNullException">
          destination is null. 
         </exception>
-    <exception cref="T:System.ArgumentOutOfRangeException">
+    <exception cref="System.ArgumentOutOfRangeException">
           buffersize is negative or zero.
         </exception>
-    <exception cref="T:System.ObjectDisposedException">
+    <exception cref="System.ObjectDisposedException">
           Either the current stream or the destination stream is disposed.
         </exception>
-    <exception cref="T:System.NotSupportedException">
+    <exception cref="System.NotSupportedException">
           The current stream does not support reading, or the destination stream does not support writing.
         </exception>
   </Docs>

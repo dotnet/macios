@@ -1,8 +1,8 @@
 <Documentation>
   <Docs DocId="T:UIKit.UIToolbar">
-    <summary>A <see cref="T:UIKit.UIView" /> that displays a toolbar.</summary>
+    <summary>A <see cref="UIKit.UIView" /> that displays a toolbar.</summary>
     <remarks>
-      <para>To set  <see cref="T:UIKit.UIBarButtonItem" /> items in a <see cref="T:UIKit.UIToolbar" />, assign to the <see cref="P:UIKit.UIToolbar.Items" /> property of the <see cref="T:UIKit.UIToolbar" />. To space items, use <see cref="F:UIKit.UIBarButtonSystemItem.FlexibleSpace" /> as shown in the following example:</para>
+      <para>To set  <see cref="UIKit.UIBarButtonItem" /> items in a <see cref="UIKit.UIToolbar" />, assign to the <see cref="UIKit.UIToolbar.Items" /> property of the <see cref="UIKit.UIToolbar" />. To space items, use <see cref="UIKit.UIBarButtonSystemItem.FlexibleSpace" /> as shown in the following example:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
 var tb = new UIToolbar(toolbarFrame);

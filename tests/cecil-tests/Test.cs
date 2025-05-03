@@ -15,7 +15,7 @@ namespace Cecil.Tests {
 	public class Test {
 
 		[TestCaseSource (typeof (Helper), nameof (Helper.NetPlatformImplementationAssemblyDefinitions))]
-		// ref: https://github.com/xamarin/xamarin-macios/pull/7760
+		// ref: https://github.com/dotnet/macios/pull/7760
 		public void IdentifyBackingFieldAssignation (AssemblyInfo info)
 		{
 			var assembly = info.Assembly;
@@ -50,7 +50,7 @@ namespace Cecil.Tests {
 		}
 
 		[TestCaseSource (typeof (Helper), nameof (Helper.NetPlatformImplementationAssemblyDefinitions))]
-		// ref: https://github.com/xamarin/xamarin-macios/issues/8249
+		// ref: https://github.com/dotnet/macios/issues/8249
 		public void EnsureUIThreadOnInit (AssemblyInfo info)
 		{
 			var assembly = info.Assembly;
@@ -150,7 +150,7 @@ namespace Cecil.Tests {
 		}
 
 		[TestCaseSource (typeof (Helper), nameof (Helper.NetPlatformAssemblyDefinitions))]
-		// ref: https://github.com/xamarin/xamarin-macios/issues/4835
+		// ref: https://github.com/dotnet/macios/issues/4835
 		public void Unavailable (AssemblyInfo info)
 		{
 			var assembly = info.Assembly;

@@ -4,7 +4,7 @@ using ObjCRuntime;
 
 namespace PhotosUI {
 
-	/// <summary>Enumerates how live photo playback will occur in a <see cref="T:PhotosUI.PHLivePhotoView" />.</summary>
+	/// <summary>Enumerates how live photo playback will occur in a <see cref="PhotosUI.PHLivePhotoView" />.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum PHLivePhotoViewPlaybackStyle : long {
@@ -28,7 +28,7 @@ namespace PhotosUI {
 		AspectFill,
 	}
 #else
-	/// <summary>Flagging enumeration that controls appearance of the playback badge on <see cref="T:PhotosUI.PHLivePhotoView" /> objects.</summary>
+	/// <summary>Flagging enumeration that controls appearance of the playback badge on <see cref="PhotosUI.PHLivePhotoView" /> objects.</summary>
 	[NoMac]
 	[MacCatalyst (13, 1)]
 	[Native]

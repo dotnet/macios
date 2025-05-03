@@ -33,7 +33,7 @@ namespace EventKitUI {
 		///           <para>To be added.</para>
 		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
 		///         </param>
-		/// <summary>Creates a new <see cref="T:EventKitUI.EKEventViewController" /> from the specified Nib name in the specified <paramref name="bundle" />.</summary>
+		/// <summary>Creates a new <see cref="EventKitUI.EKEventViewController" /> from the specified Nib name in the specified <paramref name="bundle" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Export ("initWithNibName:bundle:")]
 		[PostGet ("NibBundle")]
@@ -82,15 +82,15 @@ namespace EventKitUI {
 		IEKEventViewDelegate Delegate { get; set; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:EventKitUI.EKEventViewDelegate" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="EventKitUI.EKEventViewDelegate" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:EventKitUI.EKEventViewDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:EventKitUI.EKEventViewDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:EventKitUI.EKEventViewDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="EventKitUI.EKEventViewDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="EventKitUI.EKEventViewDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="EventKitUI.EKEventViewDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	interface IEKEventViewDelegate { }
 
-	/// <summary>A delegate object that provides the application developer fine-grained control over events in the life-cycle of a <see cref="T:EventKitUI.EKEventViewController" /> object.</summary>
+	/// <summary>A delegate object that provides the application developer fine-grained control over events in the life-cycle of a <see cref="EventKitUI.EKEventViewController" /> object.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/EventKitUI/Reference/EKEventViewDelegateProtocolRef/index.html">Apple documentation for <c>EKEventViewDelegate</c></related>
 	[BaseType (typeof (NSObject))]
@@ -122,14 +122,14 @@ namespace EventKitUI {
 		///           <para>To be added.</para>
 		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
 		///         </param>
-		/// <summary>Creates a new <see cref="T:EventKitUI.EKEventEditViewController" /> from the specified Nib name in the specified <paramref name="bundle" />.</summary>
+		/// <summary>Creates a new <see cref="EventKitUI.EKEventEditViewController" /> from the specified Nib name in the specified <paramref name="bundle" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Export ("initWithNibName:bundle:")]
 		[PostGet ("NibBundle")]
 		NativeHandle Constructor ([NullAllowed] string nibName, [NullAllowed] NSBundle bundle);
 
 		/// <param name="rootViewController">To be added.</param>
-		/// <summary>Creates a new <see cref="T:EventKitUI.EKEventEditViewController" /> with the specified root view controller.</summary>
+		/// <summary>Creates a new <see cref="EventKitUI.EKEventEditViewController" /> with the specified root view controller.</summary>
 		/// <remarks>To be added.</remarks>
 		[Export ("initWithRootViewController:")]
 		[PostGet ("ViewControllers")] // that will PostGet TopViewController and VisibleViewController too
@@ -172,11 +172,11 @@ namespace EventKitUI {
 		void CancelEditing ();
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:EventKitUI.EKEventEditViewDelegate" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="EventKitUI.EKEventEditViewDelegate" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:EventKitUI.EKEventEditViewDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:EventKitUI.EKEventEditViewDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:EventKitUI.EKEventEditViewDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="EventKitUI.EKEventEditViewDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="EventKitUI.EKEventEditViewDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="EventKitUI.EKEventEditViewDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	interface IEKEventEditViewDelegate { }
 
@@ -211,7 +211,7 @@ namespace EventKitUI {
 		EKCalendar GetDefaultCalendarForNewEvents (EKEventEditViewController controller);
 	}
 
-	/// <summary>A <see cref="T:UIKit.UIViewController" /> that manages the selection of one or more calendars.</summary>
+	/// <summary>A <see cref="UIKit.UIViewController" /> that manages the selection of one or more calendars.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/EventKitUI/Reference/EKCalendarChooserClassRef/index.html">Apple documentation for <c>EKCalendarChooser</c></related>
 	[BaseType (typeof (UIViewController),
@@ -226,7 +226,7 @@ namespace EventKitUI {
 		///           <para>To be added.</para>
 		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
 		///         </param>
-		/// <summary>Creates a new <see cref="T:EventKitUI.EKCalendarChooser" /> from the specified Nib name in the specified <paramref name="bundle" />.</summary>
+		/// <summary>Creates a new <see cref="EventKitUI.EKCalendarChooser" /> from the specified Nib name in the specified <paramref name="bundle" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Export ("initWithNibName:bundle:")]
 		[PostGet ("NibBundle")]
@@ -235,7 +235,7 @@ namespace EventKitUI {
 		/// <param name="selectionStyle">To be added.</param>
 		/// <param name="displayStyle">To be added.</param>
 		/// <param name="eventStore">To be added.</param>
-		/// <summary>Creates a new <see cref="T:EventKitUI.EKCalendarChooser" /> with the specified selection style, display style, and event store.</summary>
+		/// <summary>Creates a new <see cref="EventKitUI.EKCalendarChooser" /> with the specified selection style, display style, and event store.</summary>
 		/// <remarks>To be added.</remarks>
 		[Export ("initWithSelectionStyle:displayStyle:eventStore:")]
 		NativeHandle Constructor (EKCalendarChooserSelectionStyle selectionStyle, EKCalendarChooserDisplayStyle displayStyle, EKEventStore eventStore);
@@ -244,7 +244,7 @@ namespace EventKitUI {
 		/// <param name="displayStyle">To be added.</param>
 		/// <param name="entityType">To be added.</param>
 		/// <param name="eventStore">To be added.</param>
-		/// <summary>Creates a new <see cref="T:EventKitUI.EKCalendarChooser" /> with the provided data.</summary>
+		/// <summary>Creates a new <see cref="EventKitUI.EKCalendarChooser" /> with the provided data.</summary>
 		/// <remarks>To be added.</remarks>
 		[Export ("initWithSelectionStyle:displayStyle:entityType:eventStore:")]
 		NativeHandle Constructor (EKCalendarChooserSelectionStyle selectionStyle, EKCalendarChooserDisplayStyle displayStyle, EKEntityType entityType, EKEventStore eventStore);
@@ -300,15 +300,15 @@ namespace EventKitUI {
 		NSSet SelectedCalendars { get; set; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:EventKitUI.EKCalendarChooserDelegate" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="EventKitUI.EKCalendarChooserDelegate" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:EventKitUI.EKCalendarChooserDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:EventKitUI.EKCalendarChooserDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:EventKitUI.EKCalendarChooserDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="EventKitUI.EKCalendarChooserDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="EventKitUI.EKCalendarChooserDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="EventKitUI.EKCalendarChooserDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	interface IEKCalendarChooserDelegate { }
 
-	/// <summary>A delegate object that provides the application developer fine-grained control over events relating to the lifecycle of a <see cref="T:EventKitUI.EKCalendarChooser" /> object.</summary>
+	/// <summary>A delegate object that provides the application developer fine-grained control over events relating to the lifecycle of a <see cref="EventKitUI.EKCalendarChooser" /> object.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/EventKitUI/Reference/EKCalendarChooserDelegateProtocolRef/index.html">Apple documentation for <c>EKCalendarChooserDelegate</c></related>
 	[BaseType (typeof (NSObject))]

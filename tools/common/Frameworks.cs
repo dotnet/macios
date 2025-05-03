@@ -443,7 +443,7 @@ public class Frameworks : Dictionary<string, Framework> {
 				{ "MLCompute", "MLCompute", new Version (14,0), NotAvailableInSimulator },
 				{ "NearbyInteraction", "NearbyInteraction", 14,0 },
 				{ "ScreenTime", "ScreenTime", 14,0 },
-				{ "SensorKit", "SensorKit", new Version (14, 0), null, true }, /* not always present on device, e.g. any iPad, so must be weak linked; https://github.com/xamarin/xamarin-macios/issues/9938 */
+				{ "SensorKit", "SensorKit", new Version (14, 0), null, true }, /* not always present on device, e.g. any iPad, so must be weak linked; https://github.com/dotnet/macios/issues/9938 */
 				{ "UniformTypeIdentifiers", "UniformTypeIdentifiers", 14,0 },
 
 				{ "AdServices", "AdServices", 14,3 },
@@ -763,7 +763,7 @@ public class Frameworks : Dictionary<string, Framework> {
 		case ApplePlatform.MacOSX:
 			return true;
 		default:
-			throw ErrorHelper.CreateError (71, Errors.MX0071 /* "Unknown platform: {0}. This usually indicates a bug in {1}; please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new with a test case." */, app.Platform, app.GetProductName ());
+			throw ErrorHelper.CreateError (71, Errors.MX0071 /* "Unknown platform: {0}. This usually indicates a bug in {1}; please file a bug report at https://github.com/dotnet/macios/issues/new with a test case." */, app.Platform, app.GetProductName ());
 		}
 		return true;
 	}

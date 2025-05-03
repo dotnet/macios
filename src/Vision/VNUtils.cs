@@ -35,7 +35,7 @@ namespace Vision {
 	public static partial class VNUtils {
 
 		// initialized only once (see tests/cecil-tests/)
-		/// <summary>Gets the normalized identity <see cref="T:CoreGraphics.CGRect" /> [0, 0, 1, 1].</summary>
+		/// <summary>Gets the normalized identity <see cref="CoreGraphics.CGRect" /> [0, 0, 1, 1].</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("VNNormalizedIdentityRect", Constants.VisionLibrary)]

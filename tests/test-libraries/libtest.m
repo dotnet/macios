@@ -1357,4 +1357,75 @@ static void block_called ()
 
 @end
 
+@implementation VeryGenericCollection
+- (id _Nullable)getElement:(id)alias
+{
+	return self.element;
+}
+
+- (NSEnumerator<id> *)elementEnumerator
+{
+	return nil;
+}
+
+- (void) add: (id) value
+{
+	self.element = value;
+	self.count = 1;
+}
+
+- (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(id __unsafe_unretained _Nullable [_Nonnull])buffer count:(NSUInteger)len;
+{
+	if (len > 0)
+		buffer [0] = self.element;
+	return 1;
+}
+
+@end
+
+@interface VeryGenericElementClass1 : NSObject<VeryGenericElementProtocol1>
+@property (retain) NSDate * when;
+@property NSInteger number;
+@end
+@implementation VeryGenericElementClass1
+@end
+
+@interface VeryGenericElementClass2 : NSObject<VeryGenericElementProtocol2>
+@property (retain) NSDate * when;
+@property (retain) NSString * animal;
+@end
+@implementation VeryGenericElementClass2
+@end
+
+@interface VeryGenericConsumerClass : NSObject<VeryGenericConsumerProtocol>
+@property (retain) VeryGenericCollection<NSString *, id<VeryGenericElementProtocol1>> *first;
+@property (retain) VeryGenericCollection<NSString *, id<VeryGenericElementProtocol2>> *second;
+@end
+@implementation VeryGenericConsumerClass
+@end
+
+@implementation VeryGenericFactory
++(id<VeryGenericConsumerProtocol>) getConsumer
+{
+	VeryGenericCollection<NSString *, id<VeryGenericElementProtocol1>> *first = [[VeryGenericCollection alloc] init];
+
+	VeryGenericElementClass1* firstA = [[VeryGenericElementClass1 alloc] init];
+	firstA.when = NSDate.distantPast;
+	firstA.number = 42;
+	[first add: firstA];
+
+	VeryGenericCollection<NSString *, id<VeryGenericElementProtocol2>> *second = [[VeryGenericCollection alloc] init];
+
+	VeryGenericElementClass2* secondA = [[VeryGenericElementClass2 alloc] init];
+	secondA.when = NSDate.distantFuture;
+	secondA.animal = @"Sand cat";
+	[second add: secondA];
+
+	VeryGenericConsumerClass *rv = [[VeryGenericConsumerClass alloc] init];
+	rv.first = first;
+	rv.second = second;
+	return rv;
+}
+@end
+
 #include "libtest.decompile.m"

@@ -173,7 +173,7 @@ namespace Compression {
 		/// <summary>A stream object that represents the underlying stream.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		///         <exception cref="T:System.ObjectDisposedException">
+		///         <exception cref="System.ObjectDisposedException">
 		///           The underlying stream is closed.
 		///         </exception>
 		public Stream? BaseStream => _stream;
@@ -240,7 +240,7 @@ namespace Compression {
 		///         <summary>Asynchronously clears all buffers for this stream and causes any buffered data to be written to the underlying device.</summary>
 		///         <returns>A task that represents the asynchronous flush operation.</returns>
 		///         <remarks>To be added.</remarks>
-		///         <exception cref="T:System.ObjectDisposedException">
+		///         <exception cref="System.ObjectDisposedException">
 		///           Either the current stream or the destination stream is disposed.
 		///         </exception>
 		public override Task FlushAsync (CancellationToken cancellationToken)
@@ -280,7 +280,7 @@ namespace Compression {
 		///         <summary>This operation is not supported and always throws a NotSupportedException.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		///         <exception cref="T:System.NotSupportedException">
+		///         <exception cref="System.NotSupportedException">
 		///           This property is not supported on this stream.
 		///         </exception>
 		public override long Seek (long offset, SeekOrigin origin)
@@ -299,10 +299,10 @@ namespace Compression {
 		/// <summary>Reads a byte from the stream and advances the position within the stream by one byte, or returns -1 if at the end of the stream.</summary>
 		///         <returns>The unsigned byte cast to an Int32, or -1 if at the end of the stream.</returns>
 		///         <remarks>To be added.</remarks>
-		///         <exception cref="T:System.ObjectDisposedException">
+		///         <exception cref="System.ObjectDisposedException">
 		///           The current stream stream is disposed.
 		///         </exception>
-		///         <exception cref="T:System.NotSupportedException">
+		///         <exception cref="System.NotSupportedException">
 		///           The current stream does not support reading.
 		///         </exception>
 		public override int ReadByte ()
@@ -432,7 +432,7 @@ namespace Compression {
 		///         <summary>Waits for the pending asynchronous read to complete.</summary>
 		///         <returns>The number of bytes read from the stream, between 0 (zero) and the number of bytes you requested. CompressionStream returns 0 only at the end of the stream; otherwise, it blocks until at least one byte is available.</returns>
 		///         <remarks>To be added.</remarks>
-		///         <exception cref="T:System.InvalidOperationException">
+		///         <exception cref="System.InvalidOperationException">
 		///           The end call is invalid because asynchronous read operations for this stream are not yet complete.
 		///         </exception>
 		public override int EndRead (IAsyncResult asyncResult) =>
@@ -703,7 +703,7 @@ namespace Compression {
 		/// <param name="asyncResult">The reference to the pending asynchronous request to finish.</param>
 		///         <summary>Ends an asynchronous write operation.</summary>
 		///         <remarks>To be added.</remarks>
-		///         <exception cref="T:System.InvalidOperationException">
+		///         <exception cref="System.InvalidOperationException">
 		///           The end call is invalid because asynchronous read operations for this stream are not yet complete.
 		///         </exception>
 		public override void EndWrite (IAsyncResult asyncResult) => TaskToApm.End (asyncResult);

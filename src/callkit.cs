@@ -205,7 +205,7 @@ namespace CallKit {
 	}
 
 	/// <summary>Base class for CallKit actions, such as those taken when a call begins or ends, a call is put on hold, and so on.</summary>
-	///     <remarks>Developers manage the life cycle of a call by sending and receiving objects that derive from <see cref="T:CallKit.CXAction" /> to and from <see cref="T:CallKit.CXProvider" /> and <see cref="T:CallKit.CXCallController" /> objects.</remarks>
+	///     <remarks>Developers manage the life cycle of a call by sending and receiving objects that derive from <see cref="CallKit.CXAction" /> to and from <see cref="CallKit.CXProvider" /> and <see cref="CallKit.CXCallController" /> objects.</remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/CallKit/CXAction">Apple documentation for <c>CXAction</c></related>
 	[NoMac]
 	[MacCatalyst (13, 1)]
@@ -238,7 +238,7 @@ namespace CallKit {
 
 	/// <summary>Contains the information that the application needs in order to answer a call at the user's request.</summary>
 	///     <remarks>
-	///       <see cref="T:CallKit.CXAnswerCallAction" /> objects are passed to the developer's <see cref="M:CallKit.CXProviderDelegate.PerformAnswerCallAction(CallKit.CXProvider,CallKit.CXAnswerCallAction)" /> method when the user answers a call.</remarks>
+	///       <see cref="CallKit.CXAnswerCallAction" /> objects are passed to the developer's <see cref="CallKit.CXProviderDelegate.PerformAnswerCallAction(CallKit.CXProvider,CallKit.CXAnswerCallAction)" /> method when the user answers a call.</remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/CallKit/CXAnswerCallAction">Apple documentation for <c>CXAnswerCallAction</c></related>
 	[NoMac]
 	[MacCatalyst (13, 1)]
@@ -474,7 +474,7 @@ namespace CallKit {
 
 	}
 
-	/// <summary>Interface that represents the required methods (if any) of the <see cref="T:CallKit.CXCallObserverDelegate" /> protocol.</summary>
+	/// <summary>Interface that represents the required methods (if any) of the <see cref="CallKit.CXCallObserverDelegate" /> protocol.</summary>
 	interface ICXCallObserverDelegate { }
 
 	/// <summary>Delegate object that responds to call changes.</summary>
@@ -495,7 +495,7 @@ namespace CallKit {
 		void CallChanged (CXCallObserver callObserver, CXCall call);
 	}
 
-	/// <summary>Observer for the calls in a <see cref="T:CallKit.CXCallController" />.</summary>
+	/// <summary>Observer for the calls in a <see cref="CallKit.CXCallController" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/CallKit/CXCallObserver">Apple documentation for <c>CXCallObserver</c></related>
 	[NoMac]
@@ -542,7 +542,7 @@ namespace CallKit {
 
 	/// <summary>Contains the information that the application needs in order to end a call.</summary>
 	///     <remarks>
-	///       <see cref="T:CallKit.CXAnswerCallAction" /> objects are passed to the developer's <see cref="M:CallKit.CXProviderDelegate.PerformEndCallAction(CallKit.CXProvider,CallKit.CXEndCallAction)" /> method when a call is ended.</remarks>
+	///       <see cref="CallKit.CXAnswerCallAction" /> objects are passed to the developer's <see cref="CallKit.CXProviderDelegate.PerformEndCallAction(CallKit.CXProvider,CallKit.CXEndCallAction)" /> method when a call is ended.</remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/CallKit/CXEndCallAction">Apple documentation for <c>CXEndCallAction</c></related>
 	[NoMac]
 	[MacCatalyst (13, 1)]
@@ -578,11 +578,11 @@ namespace CallKit {
 		CXPlayDtmfCallActionType Type { get; set; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:CallKit.CXProviderDelegate" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="CallKit.CXProviderDelegate" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:CallKit.CXProviderDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:CallKit.CXProviderDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:CallKit.CXProviderDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="CallKit.CXProviderDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="CallKit.CXProviderDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="CallKit.CXProviderDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	interface ICXProviderDelegate { }
 
@@ -805,7 +805,7 @@ namespace CallKit {
 
 	/// <summary>Contains the data that are needed to join a group call.</summary>
 	///     <remarks>
-	///       <see cref="T:CallKit.CXSetGroupCallAction" /> objects are passed to the developer's <see cref="M:CallKit.CXProviderDelegate.PerformSetGroupCallAction(CallKit.CXProvider,CallKit.CXSetGroupCallAction)" /> method when the user joins a call.</remarks>
+	///       <see cref="CallKit.CXSetGroupCallAction" /> objects are passed to the developer's <see cref="CallKit.CXProviderDelegate.PerformSetGroupCallAction(CallKit.CXProvider,CallKit.CXSetGroupCallAction)" /> method when the user joins a call.</remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/CallKit/CXSetGroupCallAction">Apple documentation for <c>CXSetGroupCallAction</c></related>
 	[NoMac]
 	[MacCatalyst (13, 1)]
@@ -823,7 +823,7 @@ namespace CallKit {
 
 	/// <summary>Contains the information that is needed to put a call on hold or take a call off hold.</summary>
 	///     <remarks>
-	///       <see cref="T:CallKit.CXSetHeldCallAction" /> objects are passed to the developer's <see cref="M:CallKit.CXProviderDelegate.PerformSetHeldCallAction(CallKit.CXProvider,CallKit.CXSetHeldCallAction)" /> method when the user puts a call on hold or takes a call off hold.</remarks>
+	///       <see cref="CallKit.CXSetHeldCallAction" /> objects are passed to the developer's <see cref="CallKit.CXProviderDelegate.PerformSetHeldCallAction(CallKit.CXProvider,CallKit.CXSetHeldCallAction)" /> method when the user puts a call on hold or takes a call off hold.</remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/CallKit/CXSetHeldCallAction">Apple documentation for <c>CXSetHeldCallAction</c></related>
 	[NoMac]
 	[MacCatalyst (13, 1)]

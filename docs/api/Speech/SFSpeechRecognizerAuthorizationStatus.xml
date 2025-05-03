@@ -2,7 +2,7 @@
   <Docs DocId="T:Speech.SFSpeechRecognizerAuthorizationStatus">
     <summary>Enumeration of the permission status of speech recognition.</summary>
     <remarks>
-      <para>Applications that use speech recognition must have an entry in their <c>info.plist</c> file with a key of <c>NSSpeechRecognitionUsageDescription</c> and a string value. The string value will be displayed in a standard system dialog after the developer calls <see cref="M:Speech.SFSpeechRecognizer.RequestAuthorization(System.Action{Speech.SFSpeechRecognizerAuthorizationStatus})" />.</para>
+      <para>Applications that use speech recognition must have an entry in their <c>info.plist</c> file with a key of <c>NSSpeechRecognitionUsageDescription</c> and a string value. The string value will be displayed in a standard system dialog after the developer calls <see cref="Speech.SFSpeechRecognizer.RequestAuthorization(System.Action{Speech.SFSpeechRecognizerAuthorizationStatus})" />.</para>
       <example>
         <code lang="XML"><![CDATA[
 	<key>NSMicrophoneUsageDescription</key>

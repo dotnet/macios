@@ -40,7 +40,7 @@ using System.Runtime.Versioning;
 using CFIndex = System.IntPtr;
 
 namespace CoreFoundation {
-	/// <summary>A <see cref="T:CoreFoundation.CFStream" /> that writes streams of bytes.</summary>
+	/// <summary>A <see cref="CoreFoundation.CFStream" /> that writes streams of bytes.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]

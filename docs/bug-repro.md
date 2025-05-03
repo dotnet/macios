@@ -156,4 +156,4 @@ process a lot.
 Thank you so much for taking some of your valuable time to make .NET MAUI the
 best version it can be! We really appreciate it.
 
-[1]: https://github.com/xamarin/xamarin-macios/wiki/Diagnosis#binary-build-logs
+[1]: https://github.com/dotnet/macios/wiki/Diagnosis#binary-build-logs

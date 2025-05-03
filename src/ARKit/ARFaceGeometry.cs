@@ -37,7 +37,7 @@ namespace ARKit {
 		}
 
 		// Going for GetXXX methods so we can keep the same name as the matching obsoleted property 'TextureCoordinates'.
-		/// <summary>The UV texture coordinates for the corresponding vertex in the <see cref="M:ARKit.ARFaceGeometry.GetVertices" /> array.</summary>
+		/// <summary>The UV texture coordinates for the corresponding vertex in the <see cref="ARKit.ARFaceGeometry.GetVertices" /> array.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		public unsafe Vector2 [] GetTextureCoordinates ()
@@ -51,7 +51,7 @@ namespace ARKit {
 		}
 
 		// Going for GetXXX methods so we can keep the same name as the matching obsoleted property 'TriangleIndices'.
-		/// <summary>An array of indices into the <see cref="M:ARKit.ARFaceGeometry.GetVertices" /> and <see cref="M:ARKit.ARFaceGeometry.GetTextureCoordinates" /> arrays.</summary>
+		/// <summary>An array of indices into the <see cref="ARKit.ARFaceGeometry.GetVertices" /> and <see cref="ARKit.ARFaceGeometry.GetTextureCoordinates" /> arrays.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>
 		///           <para>Every three subsequent values define the indices of a single triangle. </para>

@@ -43,7 +43,7 @@ namespace GameplayKit {
 
 		// helper - cannot be virtual as it would not be called from GameplayKit/ObjC
 		/// <param name="stateType">To be added.</param>
-		///         <summary>Whether the <see cref="P:GameplayKit.GKState.StateMachine" /> can transition from this <see cref="T:GameplayKit.GKState" /> to <paramref name="stateType" />.</summary>
+		///         <summary>Whether the <see cref="GameplayKit.GKState.StateMachine" /> can transition from this <see cref="GameplayKit.GKState" /> to <paramref name="stateType" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		public bool IsValidNextState (Type stateType)
@@ -53,7 +53,7 @@ namespace GameplayKit {
 
 		// helper [#32844] - cannot be virtual as it would not be called from GameplayKit/ObjC
 		/// <param name="state">To be added.</param>
-		///         <summary>Whether the <see cref="P:GameplayKit.GKState.StateMachine" /> can transition from this <see cref="T:GameplayKit.GKState" /> to <paramref name="state" />.</summary>
+		///         <summary>Whether the <see cref="GameplayKit.GKState.StateMachine" /> can transition from this <see cref="GameplayKit.GKState" /> to <paramref name="state" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		public bool IsValidNextState (GKState state)

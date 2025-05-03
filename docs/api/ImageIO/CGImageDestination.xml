@@ -2,25 +2,25 @@
   <Docs DocId="T:ImageIO.CGImageDestination">
     <summary>Use this class to save images and have detailed control over how the images are saved.</summary>
     <remarks>
-      <para>You create new instances of <see cref="T:ImageIO.CGImageDestination" /> by calling one of the factory methods.   There are three versions of it:</para>
+      <para>You create new instances of <see cref="ImageIO.CGImageDestination" /> by calling one of the factory methods.   There are three versions of it:</para>
       <list type="bullet">
         <item>
           <term>Storing the generated image into a file pointed to by an NSUrl.</term>
         </item>
         <item>
-          <term>Storing the generated image into an <see cref="T:Foundation.NSMutableData" /></term>
+          <term>Storing the generated image into an <see cref="Foundation.NSMutableData" /></term>
         </item>
         <item>
-          <term>Storing the generated image into a <see cref="T:CoreGraphics.CGDataConsumer" /></term>
+          <term>Storing the generated image into a <see cref="CoreGraphics.CGDataConsumer" /></term>
         </item>
       </list>
-      <para>In the classic API, those methods were called FromUrl, FromData and Create respectively.   But this naming was incorrect, as it did not really create an image destination from a url, or a data.  In the Unified API, they have all been turned into <see cref="M:ImageIO.CGImageDestination.Create(Foundation.NSMutableData,System.String,System.Int32,ImageIO.CGImageDestinationOptions)" /> methods.</para>
+      <para>In the classic API, those methods were called FromUrl, FromData and Create respectively.   But this naming was incorrect, as it did not really create an image destination from a url, or a data.  In the Unified API, they have all been turned into <see cref="ImageIO.CGImageDestination.Create(Foundation.NSMutableData,System.String,System.Int32,ImageIO.CGImageDestinationOptions)" /> methods.</para>
       <para>
       </para>
-      <para>Once you have created the image, you can call <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Image%20IOCGImage%20Destination%20Add%20Image&amp;scope=Xamarin" title="M:ImageIO.CGImageDestination.AddImage*">M:ImageIO.CGImageDestination.AddImage*</a></format> or <see cref="M:ImageIO.CGImageDestination.AddImageAndMetadata(CoreGraphics.CGImage,ImageIO.CGImageMetadata,ImageIO.CGImageDestinationOptions)" /> to add one or more images.   </para>
+      <para>Once you have created the image, you can call <see cref="AddImage(CGImage,CGImageDestinationOptions)" />, <see cref="AddImage(CGImage,NSDictionary)" />, <see cref="AddImage(CGImageSource,int,CGImageDestinationOptions)" />, <see cref="AddImage(CGImageSource,int,NSDictionary)" />, <see cref="ImageIO.CGImageDestination.AddImageAndMetadata(CoreGraphics.CGImage,ImageIO.CGImageMetadata,ImageIO.CGImageDestinationOptions)" /> or <see cref="ImageIO.CGImageDestination.AddImageAndMetadata(CoreGraphics.CGImage,ImageIO.CGImageMetadata,NSDictionary)" /> to add one or more images.</para>
       <para>
       </para>
-      <para>To write out the image, you must call the <see cref="M:ImageIO.CGImageDestination.Close" /> method.   </para>
+      <para>To write out the image, you must call the <see cref="ImageIO.CGImageDestination.Close" /> method.   </para>
       <para>
       </para>
       <para>

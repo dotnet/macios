@@ -35,7 +35,7 @@ using NativeHandle = System.IntPtr;
 
 namespace Social {
 	/// <summary>NSString constants with the various service types supported by the Social framework</summary>
-	///     <remarks>These constants are used typically when interacting with low-level Objective-C APIs.   In general, you can just use the higher level APIs that use strongly typed enumerations of type <see cref="T:Social.SLServiceKind" />.</remarks>
+	///     <remarks>These constants are used typically when interacting with low-level Objective-C APIs.   In general, you can just use the higher level APIs that use strongly typed enumerations of type <see cref="Social.SLServiceKind" />.</remarks>
 	[Static]
 	interface SLServiceType {
 		/// <summary>Developers should not use this deprecated property. Developers should use Facebook SDK instead.</summary>
@@ -192,7 +192,7 @@ namespace Social {
 		void PerformRequest (Action<NSData, NSHttpUrlResponse, NSError> handler);
 	}
 
-	/// <summary>A <see cref="T:UIKit.UIViewController" /> that manages the user experience for the composition of a post for a social service.</summary>
+	/// <summary>A <see cref="UIKit.UIViewController" /> that manages the user experience for the composition of a post for a social service.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/NetworkingInternet/Reference/SLComposeViewController_Class/index.html">Apple documentation for <c>SLComposeViewController</c></related>
 	[NoMac]

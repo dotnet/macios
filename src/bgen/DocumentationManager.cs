@@ -22,15 +22,17 @@ public class DocumentationManager {
 		}
 	}
 
-	public void WriteDocumentation (StreamWriter sw, int indent, MemberInfo member, Func<XmlNode, XmlNode>? transformNode = null)
+	public bool WriteDocumentation (StreamWriter sw, int indent, MemberInfo member, Func<XmlNode, XmlNode>? transformNode = null)
 	{
 		if (!TryGetDocumentation (member, out var docs, transformNode))
-			return;
+			return false;
 
 		foreach (var line in docs) {
 			sw.Write ('\t', indent);
 			sw.WriteLine (line);
 		}
+
+		return true;
 	}
 
 	public bool TryGetDocumentation (MemberInfo member, [NotNullWhen (true)] out string []? documentation, Func<XmlNode, XmlNode>? transformNode = null)

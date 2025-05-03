@@ -15,7 +15,7 @@ using ObjCRuntime;
 
 namespace CoreText {
 
-	/// <summary>A class whose static properties can be used as keys for the <see cref="T:Foundation.NSDictionary" /> used by <see cref="T:CoreText.CTFontFeatures" />.</summary>
+	/// <summary>A class whose static properties can be used as keys for the <see cref="Foundation.NSDictionary" /> used by <see cref="CoreText.CTFontFeatures" />.</summary>
 	[Static]
 	interface CTFontFeatureKey {
 		/// <summary>To be added.</summary>
@@ -43,7 +43,7 @@ namespace CoreText {
 		NSString Selectors { get; }
 	}
 
-	/// <summary>A class whose static properties can be used as keys for the <see cref="T:Foundation.NSDictionary" /> used by <see cref="T:CoreText.CTFontFeatureSelectors" />.</summary>
+	/// <summary>A class whose static properties can be used as keys for the <see cref="Foundation.NSDictionary" /> used by <see cref="CoreText.CTFontFeatureSelectors" />.</summary>
 	[Static]
 	interface CTFontFeatureSelectorKey {
 		/// <summary>To be added.</summary>
@@ -81,7 +81,7 @@ namespace CoreText {
 		NSString TooltipText { get; }
 	}
 
-	/// <summary>A class whose static properties can be used as keys for the <see cref="T:Foundation.NSDictionary" /> used by <see cref="T:CoreText.CTFontVariationAxes" />.</summary>
+	/// <summary>A class whose static properties can be used as keys for the <see cref="Foundation.NSDictionary" /> used by <see cref="CoreText.CTFontVariationAxes" />.</summary>
 	[Static]
 	interface CTFontVariationAxisKey {
 
@@ -123,7 +123,7 @@ namespace CoreText {
 		NSString Hidden { get; }
 	}
 
-	/// <summary>A class whose static properties can be used as keys for the <see cref="T:Foundation.NSDictionary" /> used by <see cref="T:CoreText.CTTypesetterOptions" />.</summary>
+	/// <summary>A class whose static properties can be used as keys for the <see cref="Foundation.NSDictionary" /> used by <see cref="CoreText.CTTypesetterOptions" />.</summary>
 	[Static]
 	interface CTTypesetterOptionKey {
 
@@ -199,7 +199,7 @@ namespace CoreText {
 		NSString Original { get; }
 	}
 
-	/// <summary>A valid key for use with <see cref="T:CoreText.CTFontDescriptor" /> attribute properties.</summary>
+	/// <summary>A valid key for use with <see cref="CoreText.CTFontDescriptor" /> attribute properties.</summary>
 	[Static]
 	interface CTFontDescriptorAttributeKey {
 		/// <summary>To be added.</summary>
@@ -341,7 +341,7 @@ namespace CoreText {
 		NSString RegistrationUserInfo { get; }
 	}
 
-	/// <summary>A class whose static properties can be used as keys for the <see cref="T:Foundation.NSDictionary" /> used by <see cref="T:CoreText.CTTextTabOptions" />.</summary>
+	/// <summary>A class whose static properties can be used as keys for the <see cref="Foundation.NSDictionary" /> used by <see cref="CoreText.CTTextTabOptions" />.</summary>
 	[Static]
 	interface CTTextTabOptionKey {
 		/// <summary>To be added.</summary>
@@ -350,7 +350,7 @@ namespace CoreText {
 		NSString ColumnTerminators { get; }
 	}
 
-	/// <summary>A class whose static properties can be used as keys for the <see cref="T:Foundation.NSDictionary" /> used by <see cref="T:CoreText.CTFrameAttributes" />.</summary>
+	/// <summary>A class whose static properties can be used as keys for the <see cref="Foundation.NSDictionary" /> used by <see cref="CoreText.CTFrameAttributes" />.</summary>
 	[Static]
 	interface CTFrameAttributeKey {
 		/// <summary>To be added.</summary>
@@ -379,7 +379,7 @@ namespace CoreText {
 		NSString PathClippingPath { get; }
 	}
 
-	/// <summary>A class whose static properties can be used as keys for the <see cref="T:Foundation.NSDictionary" /> used by <see cref="T:CoreText.CTFontTraits" />.</summary>
+	/// <summary>A class whose static properties can be used as keys for the <see cref="Foundation.NSDictionary" /> used by <see cref="CoreText.CTFontTraits" />.</summary>
 	[Static]
 	interface CTFontTraitKey {
 		/// <summary>To be added.</summary>
@@ -462,7 +462,7 @@ namespace CoreText {
 		NSString PostscriptCid { get; }
 	}
 
-	/// <summary>A class whose static property can be used as a key for the <see cref="T:Foundation.NSDictionary" /> used by <see cref="T:CoreText.CTFontCollectionOptions" />.</summary>
+	/// <summary>A class whose static property can be used as a key for the <see cref="Foundation.NSDictionary" /> used by <see cref="CoreText.CTFontCollectionOptions" />.</summary>
 	[Static]
 	interface CTFontCollectionOptionKey {
 		/// <summary>To be added.</summary>
@@ -511,7 +511,7 @@ namespace CoreText {
 		NSError Error { get; }
 	}
 
-	/// <summary>A class whose static properties can be used as keys for the <see cref="T:Foundation.NSDictionary" /> used by <see cref="T:CoreText.CTStringAttributes" />.</summary>
+	/// <summary>A class whose static properties can be used as keys for the <see cref="Foundation.NSDictionary" /> used by <see cref="CoreText.CTStringAttributes" />.</summary>
 	[Static]
 	[Partial]
 	interface CTStringAttributeKey {

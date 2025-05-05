@@ -7,15 +7,12 @@ using Foundation;
 namespace UIKit {
 	static public partial class UIContentSizeCategoryExtensions {
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		[DllImport (Constants.UIKitLibrary)]
 		static extern nint /* NSComparisonResult */ UIContentSizeCategoryCompareToCategory (IntPtr /* NSString */ lhs, IntPtr /* NSString */ rhs);
 
-#if NET
 		/// <param name="category1">To be added.</param>
 		///         <param name="category2">To be added.</param>
 		///         <summary>To be added.</summary>
@@ -24,7 +21,6 @@ namespace UIKit {
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public static NSComparisonResult Compare (UIContentSizeCategory category1, UIContentSizeCategory category2)
 		{
 			var c1 = category1.GetConstant ();
@@ -41,15 +37,12 @@ namespace UIKit {
 			return result;
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		[DllImport (Constants.UIKitLibrary)]
 		static extern byte UIContentSizeCategoryIsAccessibilityCategory (IntPtr /* NSString */ category);
 
-#if NET
 		/// <param name="self">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
@@ -57,7 +50,6 @@ namespace UIKit {
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		static public bool IsAccessibilityCategory (this UIContentSizeCategory self)
 		{
 			var c1 = self.GetConstant ();

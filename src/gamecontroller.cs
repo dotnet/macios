@@ -12,6 +12,7 @@
 using System;
 
 using CoreFoundation;
+using CoreGraphics;
 using Foundation;
 using ObjCRuntime;
 #if !NET
@@ -36,6 +37,16 @@ using NativeHandle = System.IntPtr;
 #endif
 
 namespace GameController {
+
+	[Flags]
+	[Native]
+	public enum GCPhysicalInputSourceDirection : ulong {
+		NotApplicable = 0x0,
+		Up = (1uL << 0),
+		Right = (1uL << 1),
+		Down = (1uL << 2),
+		Left = (1uL << 3),
+	}
 
 	/// <summary>The base class for input elements of a game controller.</summary>
 	///     
@@ -392,6 +403,7 @@ namespace GameController {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("controller", ArgumentSemantic.Assign)]
+		[NullAllowed]
 		GCController Controller { get; }
 
 		/// <summary>To be added.</summary>
@@ -743,6 +755,10 @@ namespace GameController {
 		[Static]
 		[Export ("shouldMonitorBackgroundEvents")]
 		bool ShouldMonitorBackgroundEvents { get; set; }
+
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[Export ("input", ArgumentSemantic.Strong)]
+		GCControllerLiveInput Input { get; }
 	}
 
 	/// <summary>Holds position data of a game controller.</summary>
@@ -907,6 +923,7 @@ namespace GameController {
 		///         <value>The controller for this profile.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("controller", ArgumentSemantic.Assign)]
+		[NullAllowed]
 		GCController Controller { get; }
 
 		/// <summary>Gets or sets a handler that is called whenever the state of any controller element changes</summary>
@@ -1111,7 +1128,6 @@ namespace GameController {
 		[Export ("supportedLocalities", ArgumentSemantic.Strong)]
 		NSSet<NSString> SupportedLocalities { get; }
 
-		[NoMac] // TODO: Remove [NoMac] when CoreHaptics can compile on Mac OSX: https://github.com/xamarin/maccore/issues/2261
 		[MacCatalyst (13, 1)]
 		[Export ("createEngineWithLocality:")]
 		[return: NullAllowed]
@@ -1476,6 +1492,14 @@ namespace GameController {
 		[NoiOS, Mac (13, 0), NoTV, MacCatalyst (16, 0)]
 		[Field ("GCInputSteeringWheel")]
 		NSString /* IGCAxisElementName */ SteeringWheel { get; }
+
+		[TV (17, 4), Mac (14, 4), iOS (17, 4), MacCatalyst (17, 4)]
+		[Field ("GCInputLeftBumper")]
+		NSString /* GCButtonElementName */ LeftBumper { get; }
+
+		[TV (17, 4), Mac (14, 4), iOS (17, 4), MacCatalyst (17, 4)]
+		[Field ("GCInputRightBumper")]
+		NSString /* GCButtonElementName */ RightBumper { get; }
 	}
 
 	[TV (14, 0), iOS (14, 0)]
@@ -1497,6 +1521,125 @@ namespace GameController {
 		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		[NullAllowed, Export ("buttonShare")]
 		GCControllerButtonInput ButtonShare { get; }
+	}
+
+	[NoiOS, Mac (13, 0), NoTV, MacCatalyst (16, 0)]
+	public enum GCInputElementName {
+		[Field ("GCInputShifter")]
+		Shifter,
+	}
+
+	[TV (14, 0), iOS (14, 0), MacCatalyst (14, 0)]
+	public enum GCInputButtonName {
+		[Field ("GCInputButtonA")]
+		ButtonA,
+
+		[Field ("GCInputButtonB")]
+		ButtonB,
+
+		[Field ("GCInputButtonX")]
+		ButtonX,
+
+		[Field ("GCInputButtonY")]
+		ButtonY,
+
+		[Field ("GCInputLeftThumbstickButton")]
+		LeftThumbstickButton,
+
+		[Field ("GCInputRightThumbstickButton")]
+		RightThumbstickButton,
+
+		[Field ("GCInputLeftShoulder")]
+		LeftShoulder,
+
+		[Field ("GCInputRightShoulder")]
+		RightShoulder,
+
+		[TV (17, 4), Mac (14, 4), iOS (17, 4), MacCatalyst (17, 4)]
+		[Field ("GCInputLeftBumper")]
+		LeftBumper,
+
+		[TV (17, 4), Mac (14, 4), iOS (17, 4), MacCatalyst (17, 4)]
+		[Field ("GCInputRightBumper")]
+		RightBumper,
+
+		[Field ("GCInputLeftTrigger")]
+		LeftTrigger,
+
+		[Field ("GCInputRightTrigger")]
+		RightTrigger,
+
+		[Field ("GCInputButtonHome")]
+		ButtonHome,
+
+		[Field ("GCInputButtonMenu")]
+		ButtonMenu,
+
+		[Field ("GCInputButtonOptions")]
+		ButtonOptions,
+
+		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[Field ("GCInputButtonShare")]
+		ButtonShare,
+
+		[Field ("GCInputXboxPaddleOne")]
+		PaddleOne,
+
+		[Field ("GCInputXboxPaddleTwo")]
+		PaddleTwo,
+
+		[Field ("GCInputXboxPaddleThree")]
+		PaddleThree,
+
+		[Field ("GCInputXboxPaddleFour")]
+		PaddleFour,
+
+		[Field ("GCInputDualShockTouchpadButton")]
+		DualShockTouchpadButton,
+
+		[NoiOS, Mac (13, 0), NoTV, MacCatalyst (16, 0)]
+		[Field ("GCInputLeftPaddle")]
+		LeftPaddle,
+
+		[NoiOS, Mac (13, 0), NoTV, MacCatalyst (16, 0)]
+		[Field ("GCInputPedalAccelerator")]
+		PedalAccelerator,
+
+		[NoiOS, Mac (13, 0), NoTV, MacCatalyst (16, 0)]
+		[Field ("GCInputPedalBrake")]
+		PedalBrake,
+
+		[NoiOS, Mac (13, 0), NoTV, MacCatalyst (16, 0)]
+		[Field ("GCInputPedalClutch")]
+		PedalClutch,
+
+		[NoiOS, Mac (13, 0), NoTV, MacCatalyst (16, 0)]
+		[Field ("GCInputRightPaddle")]
+		RightPaddle,
+	}
+
+	[NoiOS, Mac (13, 0), NoTV, MacCatalyst (16, 0)]
+	public enum GCInputAxisName {
+		[Field ("GCInputSteeringWheel")]
+		SteeringWheel,
+	}
+
+	[TV (14, 0), iOS (14, 0), MacCatalyst (14, 0)]
+	public enum GCInputDirectionPadName {
+		[Field ("GCInputDirectionPad")]
+		DirectionPad,
+
+		[Field ("GCInputLeftThumbstick")]
+		LeftThumbstick,
+
+		[Field ("GCInputRightThumbstick")]
+		RightThumbstick,
+
+		[Field ("GCInputDualShockTouchpadOne")]
+		DualShockTouchpadOne,
+
+		[Field ("GCInputDualShockTouchpadTwo")]
+		DualShockTouchpadTwo,
 	}
 
 	[Static]
@@ -2517,6 +2660,14 @@ namespace GameController {
 
 		[Export ("updateConfigurationForElement:configuration:")]
 		void UpdateConfiguration (string element, GCVirtualControllerElementUpdateBlock configuration);
+
+		[iOS (17, 0), MacCatalyst (17, 0)]
+		[Export ("setValue:forButtonElement:")]
+		void SetValue (nfloat value, string element);
+
+		[iOS (17, 0), MacCatalyst (17, 0)]
+		[Export ("setPosition:forDirectionPadElement:")]
+		void SetPosition (CGPoint position, string element);
 	}
 
 	[NoTV, NoMac, iOS (15, 0), MacCatalyst (15, 0)]
@@ -2580,9 +2731,20 @@ namespace GameController {
 		[Field ("GCProductCategoryKeyboard")]
 		NSString Keyboard { get; }
 
+#if !XAMCORE_5_0
+		[Obsolete ("Use 'Hid' instead.")]
 		[iOS (16, 0), Mac (13, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Field ("GCProductCategoryHID")]
 		NSString GCProductCategoryHid { get; }
+#endif
+
+		[iOS (16, 0), Mac (13, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[Field ("GCProductCategoryHID")]
+		NSString Hid { get; }
+
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[Field ("GCProductCategoryArcadeStick")]
+		NSString ArcadeStick { get; }
 	}
 
 	[NoiOS, Mac (13, 0), NoTV, MacCatalyst (16, 0)]
@@ -2657,28 +2819,27 @@ namespace GameController {
 		float MaximumDegreesOfRotation { get; }
 	}
 
-	// There are issues with the Generic Types listed here: https://github.com/dotnet/macios/issues/15725
-	// [iOS (16,0), Mac (13,0), TV (16,0), MacCatalyst (16,0)]
-	// [BaseType (typeof (NSObject))]
-	// [DisableDefaultCtor]
-	// interface GCPhysicalInputElementCollection<KeyIdentifierType, ElementIdentifierType> // : INSFastEnumeration // # no generator support for FastEnumeration - https://bugzilla.xamarin.com/show_bug.cgi?id=4391
-	// 	where KeyIdentifierType : IGCPhysicalInputElementName /* NSString */ // there's currently not an conversion from GCPhysicalInputElementName, GCButtonElementName, and GCDirectionPadElementName to NSString
-	// 	where ElementIdentifierType : IGCPhysicalInputElement /* id<GCPhysicalInputElement>> */
-	// {
-	// 	[Export ("count")]
-	// 	nuint Count { get; }
+	[iOS (16, 0), Mac (13, 0), TV (16, 0), MacCatalyst (16, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface GCPhysicalInputElementCollection<KeyIdentifierType, ElementIdentifierType> : INSFastEnumeration // # no generator support for FastEnumeration - https://github.com/dotnet/macios/issues/22516
+		where KeyIdentifierType : NSString
+		where ElementIdentifierType : IGCPhysicalInputElement /* id<GCPhysicalInputElement>> */
+	{
+		[Export ("count")]
+		nuint Count { get; }
 
-	// 	[Export ("elementForAlias:")]
-	// 	[return: NullAllowed]
-	// 	IGCPhysicalInputElement GetElement (string alias);
+		[Export ("elementForAlias:")]
+		[return: NullAllowed]
+		IGCPhysicalInputElement GetElement (string alias);
 
-	// 	[Export ("objectForKeyedSubscript:")]
-	// 	[return: NullAllowed]
-	// 	IGCPhysicalInputElement GetObject (string key);
+		[Export ("objectForKeyedSubscript:")]
+		[return: NullAllowed]
+		IGCPhysicalInputElement GetObject (string key);
 
-	// 	[Export ("elementEnumerator")]
-	// 	NSEnumerator<IGCPhysicalInputElement> ElementEnumerator { get; }
-	// }
+		[Export ("elementEnumerator")]
+		NSEnumerator<ElementIdentifierType> ElementEnumerator { get; }
+	}
 
 	interface IGCDevicePhysicalInputState { }
 
@@ -2697,30 +2858,25 @@ namespace GameController {
 		[Export ("lastEventLatency")]
 		double LastEventLatency { get; }
 
-		// Issue with GCPhysicalInputElementCollection found here: https://github.com/dotnet/macios/issues/15725
-		// [Abstract]
-		// [Export ("elements")]
-		// GCPhysicalInputElementCollection<IGCPhysicalInputElementName, IGCPhysicalInputElement> Elements { get; }
+		[Abstract]
+		[Export ("elements")]
+		GCPhysicalInputElementCollection<NSString, IGCPhysicalInputElement> Elements { get; }
 
-		// Issue with GCPhysicalInputElementCollection found here: https://github.com/dotnet/macios/issues/15725
-		// [Abstract]
-		// [Export ("buttons")]
-		// GCPhysicalInputElementCollection<IGCButtonElementName, IGCButtonElement> Buttons { get; }
+		[Abstract]
+		[Export ("buttons")]
+		GCPhysicalInputElementCollection<NSString, IGCButtonElement> Buttons { get; }
 
-		// Issue with GCPhysicalInputElementCollection found here: https://github.com/dotnet/macios/issues/15725
-		// [Abstract]
-		// [Export ("axes")]
-		// GCPhysicalInputElementCollection<IGCAxisElementName, IGCAxisElement> Axes { get; }
+		[Abstract]
+		[Export ("axes")]
+		GCPhysicalInputElementCollection<NSString, IGCAxisElement> Axes { get; }
 
-		// Issue with GCPhysicalInputElementCollection found here: https://github.com/dotnet/macios/issues/15725
-		// [Abstract]
-		// [Export ("switches")]
-		// GCPhysicalInputElementCollection<IGCSwitchElementName, IGCSwitchElement> Switches { get; }
+		[Abstract]
+		[Export ("switches")]
+		GCPhysicalInputElementCollection<NSString, IGCSwitchElement> Switches { get; }
 
-		// Issue with GCPhysicalInputElementCollection found here: https://github.com/dotnet/macios/issues/15725
-		// [Abstract]
-		// [Export ("dpads")]
-		// GCPhysicalInputElementCollection<IGCDirectionPadElementName, IGCDirectionPadElement> Dpads { get; }
+		[Abstract]
+		[Export ("dpads")]
+		GCPhysicalInputElementCollection<NSString, IGCDirectionPadElement> Dpads { get; }
 
 		[Abstract]
 		[Export ("objectForKeyedSubscript:")]
@@ -2756,9 +2912,14 @@ namespace GameController {
 		[Abstract]
 		[Export ("lastValueLatency")]
 		double LastValueLatency { get; }
+
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[Abstract]
+		[Export ("sources", ArgumentSemantic.Copy)]
+		NSSet<IGCPhysicalInputSource> Sources { get; }
 	}
 
-	interface IGCAxisElement { }
+	interface IGCAxisElement : IGCPhysicalInputElement { }
 
 	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 	[Protocol]
@@ -2772,7 +2933,7 @@ namespace GameController {
 		IGCRelativeInput RelativeInput { get; }
 	}
 
-	interface IGCButtonElement { }
+	interface IGCButtonElement : IGCPhysicalInputElement { }
 
 	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 	[Protocol]
@@ -2789,7 +2950,7 @@ namespace GameController {
 	delegate void ElementValueDidChangeHandler (IGCDevicePhysicalInput physicalInput, IGCPhysicalInputElement element);
 	delegate void InputStateAvailableHandler (IGCDevicePhysicalInput physicalInput);
 
-	interface IGCDevicePhysicalInput { }
+	interface IGCDevicePhysicalInput : IGCPhysicalInputElement { }
 
 	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 	[Protocol]
@@ -2821,6 +2982,11 @@ namespace GameController {
 		[Abstract]
 		[NullAllowed, Export ("nextInputState")]
 		NSObject NextInputState { get; }
+
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[Abstract]
+		[NullAllowed, Export ("queue", ArgumentSemantic.Strong)]
+		DispatchQueue Queue { get; set; }
 	}
 
 	interface IGCDevicePhysicalInputStateDiff { }
@@ -2837,7 +3003,7 @@ namespace GameController {
 		NSEnumerator<IGCPhysicalInputElement> ChangedElements { get; }
 	}
 
-	interface IGCDirectionPadElement { }
+	interface IGCDirectionPadElement : IGCPhysicalInputElement { }
 
 	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 	[Protocol]
@@ -2865,6 +3031,11 @@ namespace GameController {
 		[Abstract]
 		[Export ("right")]
 		NSObject Right { get; }
+
+		[TV (17, 4), Mac (14, 3), iOS (17, 4), MacCatalyst (17, 4)]
+		[Abstract]
+		[Export ("xyAxes")]
+		IGCAxis2DInput XyAxes { get; }
 	}
 
 	interface IGCLinearInput { }
@@ -2895,6 +3066,11 @@ namespace GameController {
 		[Abstract]
 		[Export ("lastValueLatency")]
 		double LastValueLatency { get; }
+
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[Abstract]
+		[Export ("sources", ArgumentSemantic.Copy)]
+		NSSet<IGCPhysicalInputSource> Sources { get; }
 	}
 
 	interface IGCPhysicalInputElement { }
@@ -2935,6 +3111,11 @@ namespace GameController {
 		[Abstract]
 		[Export ("lastPressedStateLatency")]
 		double LastPressedStateLatency { get; }
+
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[Abstract]
+		[Export ("sources", ArgumentSemantic.Copy)]
+		NSSet<IGCPhysicalInputSource> Sources { get; }
 	}
 
 	interface IGCRelativeInput { }
@@ -2961,9 +3142,14 @@ namespace GameController {
 		[Abstract]
 		[Export ("lastDeltaLatency")]
 		double LastDeltaLatency { get; }
+
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 4)]
+		[Abstract]
+		[Export ("sources", ArgumentSemantic.Copy)]
+		NSSet<IGCPhysicalInputSource> Sources { get; }
 	}
 
-	interface IGCSwitchElement { }
+	interface IGCSwitchElement : IGCPhysicalInputElement { }
 
 	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 	[Protocol]
@@ -3005,6 +3191,11 @@ namespace GameController {
 		[Abstract]
 		[Export ("lastPositionLatency")]
 		double LastPositionLatency { get; }
+
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[Abstract]
+		[Export ("sources", ArgumentSemantic.Copy)]
+		NSSet<IGCPhysicalInputSource> Sources { get; }
 	}
 
 	interface IGCTouchedStateInput { }
@@ -3027,6 +3218,11 @@ namespace GameController {
 		[Abstract]
 		[Export ("lastTouchedStateLatency")]
 		double LastTouchedStateLatency { get; }
+
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[Abstract]
+		[Export ("sources", ArgumentSemantic.Copy)]
+		NSSet<IGCPhysicalInputSource> Sources { get; }
 	}
 
 	[NoiOS, Mac (13, 0), NoTV, MacCatalyst (16, 0)]
@@ -3047,7 +3243,13 @@ namespace GameController {
 		NSString DidChangeNotification { get; }
 	}
 
-	[TV (18, 0), NoMac, iOS (18, 0), MacCatalyst (18, 0)]
+#if !XAMCORE_5_0
+	[TV (18, 0)]
+#if __TVOS__
+	[Obsolete ("This enum does not exist on this platform.")]
+#endif
+#endif
+	[NoMac, iOS (18, 0), MacCatalyst (18, 0)]
 	[Native]
 	enum GCUIEventTypes : ulong {
 		None = 0U,
@@ -3092,5 +3294,102 @@ namespace GameController {
 		[Export ("gameControllerActivationContext")]
 		[return: NullAllowed]
 		GCGameControllerActivationContext GetGameControllerActivationContext ();
+	}
+
+	delegate void GCAxis2DInputValueDidChangeCallback (IGCPhysicalInputElement element, IGCAxis2DInput input, GCPoint2 point);
+
+	[TV (17, 4), Mac (14, 3), iOS (17, 4), MacCatalyst (17, 4)]
+	[Protocol (BackwardsCompatibleCodeGeneration = false)]
+	interface GCAxis2DInput {
+		[Abstract]
+		[NullAllowed, Export ("valueDidChangeHandler", ArgumentSemantic.Copy)]
+		GCAxis2DInputValueDidChangeCallback ValueDidChangeHandler { get; set; }
+
+		[Abstract]
+		[Export ("value")]
+		GCPoint2 Value { get; }
+
+		[Abstract]
+		[Export ("analog")]
+		bool Analog { [Bind ("isAnalog")] get; }
+
+		[Abstract]
+		[Export ("canWrap")]
+		bool CanWrap { get; }
+
+		[Abstract]
+		[Export ("lastValueTimestamp")]
+		double LastValueTimestamp { get; }
+
+		[Abstract]
+		[Export ("lastValueLatency")]
+		double LastValueLatency { get; }
+
+		[Abstract]
+		[Export ("sources", ArgumentSemantic.Copy)]
+		NSSet<IGCPhysicalInputSource> Sources { get; }
+	}
+
+	interface IGCAxis2DInput { }
+
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[Protocol (BackwardsCompatibleCodeGeneration = false)]
+	interface GCPhysicalInputSource {
+		[Abstract]
+		[Export ("elementAliases", ArgumentSemantic.Copy)]
+		NSSet<NSString> ElementAliases { get; }
+
+		[Abstract]
+		[NullAllowed, Export ("elementLocalizedName")]
+		string ElementLocalizedName { get; }
+
+		[Abstract]
+		[NullAllowed, Export ("sfSymbolsName")]
+		string SfSymbolsName { get; }
+
+		[Abstract]
+		[Export ("direction")]
+		GCPhysicalInputSourceDirection Direction { get; }
+	}
+
+	interface IGCPhysicalInputSource { }
+
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[BaseType (typeof (GCControllerInputState))]
+	[DisableDefaultCtor]
+	interface GCControllerLiveInput : GCDevicePhysicalInput {
+		[NullAllowed, Export ("unmappedInput")]
+		GCControllerLiveInput UnmappedInput { get; }
+
+		// 'new' because this is also implemented in GCDevicePhysicalInput, but with a less defined property type (IGCDevicePhysicalInputState)
+		[Export ("capture")]
+		new GCControllerInputState Capture { get; }
+
+		[NullAllowed, Export ("nextInputState")]
+		// The property type is both GCControllerInputState + implements the GCDevicePhysicalInputStateDiff protocol,
+		// which can't be expressed in C#. Choosing to bind as GCControllerInputState.
+		// 'new' because this is also implemented in GCDevicePhysicalInput, but with a less defined property type (NSObject)
+		new GCControllerInputState NextInputState { get; }
+	}
+
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface GCControllerInputState : GCDevicePhysicalInputState {
+	}
+}
+
+namespace Foundation {
+	using GameController;
+
+	partial interface NSValue {
+		[TV (17, 4), Mac (14, 3), iOS (17, 4), MacCatalyst (17, 4)]
+		[Static]
+		[Export ("valueWithGCPoint2:")]
+		NSValue FromGCPoint2 (GCPoint2 point);
+
+		[TV (17, 4), Mac (14, 3), iOS (17, 4), MacCatalyst (17, 4)]
+		[Export ("GCPoint2Value")]
+		GCPoint2 GCPoint2Value { get; }
 	}
 }

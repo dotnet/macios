@@ -947,12 +947,15 @@ GAMECONTROLLER_API_SOURCES = \
 GAMECONTROLLER_CORE_SOURCES = \
 	GameController/GCController.cs \
 	GameController/GCMotion.cs \
+	GameController/GCPoint2.cs \
 
 GAMECONTROLLER_SOURCES = \
 	GameController/GCExtendedGamepadSnapshot.cs \
 	GameController/GCGamepadSnapshot.cs \
+	GameController/GCInput.cs \
 	GameController/GCMicroGamepadSnapshot.cs \
 	GameController/GCMouse.cs \
+	GameController/GCPhysicalInputElementCollection.cs \
 
 # GameKit
 
@@ -1769,7 +1772,6 @@ UIKIT_SOURCES = \
 	UIKit/UIView.cs \
 	UIKit/UIViewController.cs \
 	UIKit/UIViewControllerTransitionCoordinatorContext.cs \
-	UIKit/UIWindow.cs \
 	UIKit/UIWindowScene.cs \
 	UIKit/NSValue.cs \
 

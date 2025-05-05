@@ -33,14 +33,6 @@ namespace UIKit {
 			for (int i = 1; i < otherButtons.Length; i++)
 				AddButton (otherButtons [i]);
 		}
-
-#if !NET
-		[Obsolete ("Use overload with a IUIAlertViewDelegate parameter")]
-		public UIAlertView (string title, string message, UIAlertViewDelegate del, string cancelButtonTitle, params string [] otherButtons)
-			: this (title, message, (IUIAlertViewDelegate) del, cancelButtonTitle, otherButtons)
-		{
-		}
-#endif
 	}
 }
 

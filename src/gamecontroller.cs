@@ -15,9 +15,6 @@ using CoreFoundation;
 using CoreGraphics;
 using Foundation;
 using ObjCRuntime;
-#if !NET
-using OpenTK;
-#endif
 #if MONOMAC
 using AppKit;
 using UIViewController = AppKit.NSViewController;
@@ -30,10 +27,6 @@ using UIInteraction = Foundation.NSObject;
 using CoreHaptics;
 using UIKit;
 using BezierPath = UIKit.UIBezierPath;
-#endif
-
-#if !NET
-using NativeHandle = System.IntPtr;
 #endif
 
 namespace GameController {
@@ -153,13 +146,6 @@ namespace GameController {
 	[BaseType (typeof (GCControllerElement))]
 	[DisableDefaultCtor] // return nil handle -> only exposed as getter
 	partial interface GCControllerButtonInput {
-
-#if !NET
-		[Obsolete ("Use the 'ValueChangedHandler' property.")]
-		[Wrap ("ValueChangedHandler = handler;", IsVirtual = true)]
-		void SetValueChangedHandler (GCControllerButtonValueChanged handler);
-#endif
-
 		/// <summary>Handler that is called when the button pressure changes.</summary>
 		///         <value>
 		///           <para>(More documentation for this node is coming)</para>
@@ -187,12 +173,6 @@ namespace GameController {
 		///         <remarks>To be added.</remarks>
 		[Export ("pressed")]
 		bool IsPressed { [Bind ("isPressed")] get; }
-
-#if !NET
-		[Obsolete ("Use the 'PressedChangedHandler' property.")]
-		[Wrap ("PressedChangedHandler = handler;", IsVirtual = true)]
-		void SetPressedChangedHandler (GCControllerButtonValueChanged handler);
-#endif
 
 		/// <summary>Handler that is called when the button press state changes.</summary>
 		///         <value>
@@ -603,12 +583,7 @@ namespace GameController {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("playerIndex")]
-#if NET
-		// enum only added in iOS9 / OSX 10.11 - but with compatible values
 		GCControllerPlayerIndex PlayerIndex { get; set; }
-#else
-		nint PlayerIndex { get; set; }
-#endif
 
 		/// <summary>If not null, the <see cref="GameController.GCController" /> is a standard controller.</summary>
 		///         <value>To be added.</value>
@@ -776,12 +751,6 @@ namespace GameController {
 		[Export ("controller", ArgumentSemantic.Assign)]
 		GCController Controller { get; }
 
-#if !NET
-		[Obsolete ("Use the 'ValueChangedHandler' property.")]
-		[Wrap ("ValueChangedHandler = handler;", IsVirtual = true)]
-		void SetValueChangedHandler (Action<GCMotion> handler);
-#endif
-
 		/// <summary>Handler that is called when a value changes.</summary>
 		///         <value>
 		///           <para>(More documentation for this node is coming)</para>
@@ -796,43 +765,27 @@ namespace GameController {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("gravity", ArgumentSemantic.Assign)]
-#if NET
 		GCAcceleration Gravity { get; }
-#else
-		Vector3d Gravity { get; }
-#endif
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("userAcceleration", ArgumentSemantic.Assign)]
-#if NET
 		GCAcceleration UserAcceleration { get; }
-#else
-		Vector3d UserAcceleration { get; }
-#endif
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("attitude", ArgumentSemantic.Assign)]
-#if NET
 		GCQuaternion Attitude { get; }
-#else
-		Quaterniond Attitude { get; }
-#endif
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("rotationRate", ArgumentSemantic.Assign)]
-#if NET
 		GCRotationRate RotationRate { get; }
-#else
-		Vector3d RotationRate { get; }
-#endif
 
 		/// <summary>Gets a Boolean value that tells whether the controller  can return attitude and rotation data.</summary>
 		///         <value>To be added.</value>

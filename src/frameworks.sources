@@ -945,7 +945,6 @@ GAMECONTROLLER_API_SOURCES = \
 	GameController/Enums.cs \
 
 GAMECONTROLLER_CORE_SOURCES = \
-	GameController/GCController.cs \
 	GameController/GCMotion.cs \
 	GameController/GCPoint2.cs \
 

@@ -166,6 +166,15 @@ steps:
     }
   displayName: "Cleanup temporary files"
 
+- pwsh: |
+    Write-Host "Current long paths state:"
+    Get-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem -Name LongPathsEnabled
+    Write-Host "Enabling long paths":
+    Set-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem -Name LongPathsEnabled -Value 1
+    Write-Host "Updated long paths state:"
+    Get-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem -Name LongPathsEnabled
+  displayName: 'Enable long paths'
+
 # This task fixes errors such as these:
 #     error MSB4242: SDK Resolver Failure: "The SDK resolver "NuGetSdkResolver" failed while attempting to resolve the SDK "Microsoft.Build.NoTargets/3.3.0".
 #                    Exception: "NuGet.Packaging.Core.PackagingException: Unable to find fallback package folder 'D:\Program Files (x86)\Microsoft Visual Studio\Shared\NuGetPackages'.

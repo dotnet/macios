@@ -87,6 +87,7 @@ namespace MonoTouchFixtures.Network {
 			bool listeningDone = false;
 			Exception ex = null;
 			NWError? errorState = null;
+			NWBrowserState state = NWBrowserState.Invalid;
 			var changesEvent = new AutoResetEvent (false);
 			var browserReady = new AutoResetEvent (false);
 			var finalEvent = new AutoResetEvent (false);
@@ -95,14 +96,11 @@ namespace MonoTouchFixtures.Network {
 				browser.SetStateChangesHandler ((st, er) => {
 					// assert here with a `st` of `Fail`
 					errorState ??= er;
-					if (st == NWBrowserState.Ready)
+					state = st;
+					if (st == NWBrowserState.Ready || st == NWBrowserState.Failed)
 						browserReady.Set ();
 				});
-#if NET
 				browser.IndividualChangesDelegate = (oldResult, newResult) => {
-#else
-				browser.SetChangesHandler ((oldResult, newResult) => {
-#endif
 					didRun = true;
 					try {
 						receivedNotNullChange = oldResult is not null || newResult is not null;
@@ -112,26 +110,20 @@ namespace MonoTouchFixtures.Network {
 						changesEvent.Set ();
 						eventsDone = true;
 					}
-#if NET
 				};
-#else
-				});
-#endif
 				browser.Start ();
-				browserReady.WaitOne (30000);
+				Assert.That (browserReady.WaitOne (30000), Is.True, "Browser ready");
+				Assert.IsNull (errorState, "Ready Error");
+				Assert.That (state, Is.EqualTo (NWBrowserState.Ready), "NWBrowserState");
+
 				using (var advertiser = NWAdvertiseDescriptor.CreateBonjourService ("MonoTouchFixtures.Network", type))
-#if NET
 				using (var tcpOptions = new NWProtocolTcpOptions ())
 				using (var tlsOptions = new NWProtocolTlsOptions ())
-#else
-				using (var tcpOptions = NWProtocolOptions.CreateTcp ())
-				using (var tlsOptions = NWProtocolOptions.CreateTls ())
-#endif
 				using (var paramenters = NWParameters.CreateTcp ()) {
 					paramenters.ProtocolStack.PrependApplicationProtocol (tlsOptions);
 					paramenters.ProtocolStack.PrependApplicationProtocol (tcpOptions);
 					paramenters.IncludePeerToPeer = true;
-					using (var listener = NWListener.Create ("1234", paramenters)) {
+					using (var listener = NWListener.Create ("0", paramenters)) {
 						listener.SetQueue (DispatchQueue.CurrentQueue);
 						listener.SetAdvertiseDescriptor (advertiser);
 						// we need the connection handler, else we will get an exception
@@ -152,6 +144,7 @@ namespace MonoTouchFixtures.Network {
 			}, () => eventsDone);
 
 			finalEvent.WaitOne (30000);
+			Assert.IsNull (errorState?.CFError, "Error.CFError");
 			Assert.IsNull (errorState, "Error");
 			Assert.IsTrue (eventsDone, "eventDone");
 			Assert.IsTrue (listeningDone, "listeningDone");

@@ -9,7 +9,7 @@ if ("$Env:DOTNET" -eq "") {
 $Env:ServerAddress = $Env:MAC_AGENT_IP
 $Env:ServerUser = $Env:MAC_AGENT_USER
 $Env:ServerPassword = $Env:XMA_PASSWORD
-$Env:_DotNetRootRemoteDirectory = "/Users/$Env:MAC_AGENT_USER/Library/Caches/Xamarin/XMA/SDKs/dotnet/"
+$Env:_DotNetRootRemoteDirectory = "/Users/$Env:MAC_AGENT_USER/Library/Caches/maui/PairToMac/Sdks/dotnet/"
 
 & $Env:DOTNET `
     test `

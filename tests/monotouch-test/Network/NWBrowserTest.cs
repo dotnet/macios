@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading;
 
 using CoreFoundation;
@@ -91,16 +92,22 @@ namespace MonoTouchFixtures.Network {
 			var changesEvent = new AutoResetEvent (false);
 			var browserReady = new AutoResetEvent (false);
 			var finalEvent = new AutoResetEvent (false);
-			TestRuntime.RunAsync (TimeSpan.FromSeconds (30), () => {
+			var log = new List<string> ();
+			var finishedBeforeTimeout = TestRuntime.RunAsync (TimeSpan.FromSeconds (30), () => {
 				// start the browser, before the listener
+				log.Add ($"Starting browser...");
 				browser.SetStateChangesHandler ((st, er) => {
 					// assert here with a `st` of `Fail`
+					lock (log)
+						log.Add ($"browser.SetStateChangedHandler ({st}, {er})");
 					errorState ??= er;
 					state = st;
 					if (st == NWBrowserState.Ready || st == NWBrowserState.Failed)
 						browserReady.Set ();
 				});
 				browser.IndividualChangesDelegate = (oldResult, newResult) => {
+					lock (log)
+						log.Add ($"browser.IndividualChangesDelegate ({oldResult}, {newResult})");
 					didRun = true;
 					try {
 						receivedNotNullChange = oldResult is not null || newResult is not null;
@@ -127,8 +134,13 @@ namespace MonoTouchFixtures.Network {
 						listener.SetQueue (DispatchQueue.CurrentQueue);
 						listener.SetAdvertiseDescriptor (advertiser);
 						// we need the connection handler, else we will get an exception
-						listener.SetNewConnectionHandler ((c) => { });
+						listener.SetNewConnectionHandler ((c) => {
+							lock (log)
+								log.Add ($"listener.SetNewConnectionHandler ()");
+						});
 						listener.SetStateChangedHandler ((s, e) => {
+							lock (log)
+								log.Add ($"listener.SetStateChangedHandler ({s}, {e})");
 							if (e is not null) {
 								Console.WriteLine ($"Got error {e.ErrorCode} {e.ErrorDomain} '{e.CFError.FailureReason}' {e.ToString ()}");
 							}
@@ -143,15 +155,18 @@ namespace MonoTouchFixtures.Network {
 
 			}, () => eventsDone);
 
-			finalEvent.WaitOne (30000);
-			Assert.IsNull (errorState?.CFError, "Error.CFError");
-			Assert.IsNull (errorState, "Error");
-			Assert.IsTrue (eventsDone, "eventDone");
-			Assert.IsTrue (listeningDone, "listeningDone");
-			Assert.IsNull (ex, "Exception");
-			Assert.IsTrue (didRun, "didRan");
-			Assert.IsTrue (receivedNotNullChange, "receivedNotNullChange");
+			var l = $"\n\t{string.Join ("\n\t", log)}";
+			Assert.That (finishedBeforeTimeout, Is.True, $"RunAsync timeout{l}");
+			Assert.That (finalEvent.WaitOne (30000), Is.True, $"Final event{l}");
+			Assert.IsNull (errorState?.CFError, $"Error.CFError{l}");
+			Assert.IsNull (errorState, $"Error{l}");
+			Assert.IsTrue (eventsDone, $"eventDone{l}");
+			Assert.IsTrue (listeningDone, $"listeningDone{l}");
+			Assert.IsNull (ex, $"Exception{l}");
+			Assert.IsTrue (didRun, $"didRan{l}");
+			Assert.IsTrue (receivedNotNullChange, $"receivedNotNullChange{l}");
 			browser.Cancel ();
+			Console.WriteLine (l);
 		}
 	}
 }

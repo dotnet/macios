@@ -114,8 +114,13 @@ class Nomenclator {
 	/// <returns>The name to be used for the temporary variable or null if it was unknown.</returns>
 	public static string? GetNameForTempTrampolineVariable (in Parameter parameterInfo)
 	{
-		return parameterInfo switch { { Type.IsReferenceType: false, Type.IsNullable: true } => $"__xamarin_nullified__{parameterInfo.Position}", { Type.SpecialType: SpecialType.System_Boolean } => $"__xamarin_bool__{parameterInfo.Position}", { Type.IsReferenceType: true } => $"__xamarin_pref{parameterInfo.Position}",
+#pragma warning disable forma
+		return parameterInfo switch {
+			{ Type.IsReferenceType: false, Type.IsNullable: true } => $"__xamarin_nullified__{parameterInfo.Position}",
+			{ Type.SpecialType: SpecialType.System_Boolean } => $"__xamarin_bool__{parameterInfo.Position}",
+			{ Type.IsReferenceType: true } => $"__xamarin_pref{parameterInfo.Position}",
 			_ => null,
 		};
+#pragma warning restore forma
 	}
 }

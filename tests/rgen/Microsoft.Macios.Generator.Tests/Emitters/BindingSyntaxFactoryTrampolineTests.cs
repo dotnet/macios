@@ -253,30 +253,30 @@ namespace NS {
 		var expression = GetTrampolineInvokeReturnType (parameter.Type, auxVariableName);
 		Assert.Equal (expectedExpression, expression?.ToString ());
 	}
-	
+
 	class TestDataCreateNativeClass : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{
 			yield return [
-				"GetGeolocationCallback", 
+				"GetGeolocationCallback",
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg0"))
-				), 
+				),
 				"NIDGetGeolocationCallback.Create (arg0)!"
 			];
-			
+
 			yield return [
-				"AVAssetImageGenerateAsynchronouslyForTimeCompletionHandler", 
+				"AVAssetImageGenerateAsynchronouslyForTimeCompletionHandler",
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg0")),
 					Argument (IdentifierName ("arg1"))
-				), 
+				),
 				"NIDAVAssetImageGenerateAsynchronouslyForTimeCompletionHandler.Create (arg0, arg1)!"
 			];
-			
+
 			yield return [
-				"AVAssetImageGeneratorCompletionHandler", 
-				ImmutableArray.Create<ArgumentSyntax> (), 
+				"AVAssetImageGeneratorCompletionHandler",
+				ImmutableArray.Create<ArgumentSyntax> (),
 				"NIDAVAssetImageGeneratorCompletionHandler.Create ()!"
 			];
 		}
@@ -291,5 +291,5 @@ namespace NS {
 		var expression = CreateTrampolineNativeInvocationClass (trampolineName, arguments);
 		Assert.Equal (expectedExpression, expression.ToString ());
 	}
-	
+
 }

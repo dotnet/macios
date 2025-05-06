@@ -115,10 +115,7 @@ class Nomenclator {
 	public static string? GetNameForTempTrampolineVariable (in Parameter parameterInfo)
 	{
 #pragma warning disable forma
-		return parameterInfo switch {
-			{ Type.IsReferenceType: false, Type.IsNullable: true } => $"__xamarin_nullified__{parameterInfo.Position}",
-			{ Type.SpecialType: SpecialType.System_Boolean } => $"__xamarin_bool__{parameterInfo.Position}",
-			{ Type.IsReferenceType: true } => $"__xamarin_pref{parameterInfo.Position}",
+		return parameterInfo switch { { Type.IsReferenceType: false, Type.IsNullable: true } => $"__xamarin_nullified__{parameterInfo.Position}", { Type.SpecialType: SpecialType.System_Boolean } => $"__xamarin_bool__{parameterInfo.Position}", { Type.IsReferenceType: true } => $"__xamarin_pref{parameterInfo.Position}",
 			_ => null,
 		};
 #pragma warning restore forma

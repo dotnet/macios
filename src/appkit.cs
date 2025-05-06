@@ -33575,8 +33575,7 @@ namespace AppKit {
 	[NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface NSFontAssetRequest : NSProgressReporting
-	{
+	interface NSFontAssetRequest : NSProgressReporting {
 		[Export ("initWithFontDescriptors:options:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSFontDescriptor [] fontDescriptors, NSFontAssetRequestOptions options);

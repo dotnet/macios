@@ -72,6 +72,7 @@ namespace MonoTouchFixtures.Network {
 		[Test]
 		public void TestStateChangesHandler ()
 		{
+			Func<string> dt = () => DateTime.Now.ToString ("yyyy-MM-dd HH:mm:ss.fffffff");
 			// In the test we are doing the following:
 			//
 			// 1. Start a browser. At this point, we have no listeners (unless someone is exposing it in the lab)
@@ -93,13 +94,14 @@ namespace MonoTouchFixtures.Network {
 			var browserReady = new AutoResetEvent (false);
 			var finalEvent = new AutoResetEvent (false);
 			var log = new List<string> ();
+				log.Add ($"{dt ()} Starting async...");
 			var finishedBeforeTimeout = TestRuntime.RunAsync (TimeSpan.FromSeconds (30), () => {
 				// start the browser, before the listener
-				log.Add ($"Starting browser...");
+				log.Add ($"{dt ()} Starting browser...");
 				browser.SetStateChangesHandler ((st, er) => {
 					// assert here with a `st` of `Fail`
 					lock (log)
-						log.Add ($"browser.SetStateChangedHandler ({st}, {er})");
+						log.Add ($"{dt ()} browser.SetStateChangedHandler ({st}, {er} => {er?.CFError})");
 					errorState ??= er;
 					state = st;
 					if (st == NWBrowserState.Ready || st == NWBrowserState.Failed)
@@ -107,7 +109,7 @@ namespace MonoTouchFixtures.Network {
 				});
 				browser.IndividualChangesDelegate = (oldResult, newResult) => {
 					lock (log)
-						log.Add ($"browser.IndividualChangesDelegate ({oldResult}, {newResult})");
+						log.Add ($"{dt ()} browser.IndividualChangesDelegate ({oldResult}, {newResult})");
 					didRun = true;
 					try {
 						receivedNotNullChange = oldResult is not null || newResult is not null;
@@ -136,11 +138,11 @@ namespace MonoTouchFixtures.Network {
 						// we need the connection handler, else we will get an exception
 						listener.SetNewConnectionHandler ((c) => {
 							lock (log)
-								log.Add ($"listener.SetNewConnectionHandler ()");
+								log.Add ($"{dt ()} listener.SetNewConnectionHandler ()");
 						});
 						listener.SetStateChangedHandler ((s, e) => {
 							lock (log)
-								log.Add ($"listener.SetStateChangedHandler ({s}, {e})");
+								log.Add ($"{dt ()} listener.SetStateChangedHandler ({s}, {e})");
 							if (e is not null) {
 								Console.WriteLine ($"Got error {e.ErrorCode} {e.ErrorDomain} '{e.CFError.FailureReason}' {e.ToString ()}");
 							}
@@ -154,6 +156,7 @@ namespace MonoTouchFixtures.Network {
 				}
 
 			}, () => eventsDone);
+			log.Add ($"{dt ()} Async done...");
 
 			var l = $"\n\t{string.Join ("\n\t", log)}";
 			Assert.That (finishedBeforeTimeout, Is.True, $"RunAsync timeout{l}");
@@ -165,7 +168,9 @@ namespace MonoTouchFixtures.Network {
 			Assert.IsNull (ex, $"Exception{l}");
 			Assert.IsTrue (didRun, $"didRan{l}");
 			Assert.IsTrue (receivedNotNullChange, $"receivedNotNullChange{l}");
+			log.Add ($"{dt ()} about to cancel...");
 			browser.Cancel ();
+			log.Add ($"{dt ()} cancelled...");
 			Console.WriteLine (l);
 		}
 	}

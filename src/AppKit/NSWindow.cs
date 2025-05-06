@@ -52,7 +52,7 @@ namespace AppKit {
 		static bool? track_relased_when_closed;
 		public static bool TrackReleasedWhenClosed {
 			get {
-#if NET9_0
+#if NET9_0_OR_GREATER
 				return track_relased_when_closed != false;
 #else
 				return track_relased_when_closed == true;

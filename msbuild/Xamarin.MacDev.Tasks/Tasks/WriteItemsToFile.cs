@@ -91,10 +91,10 @@ namespace Xamarin.MacDev.Tasks {
 		}
 
 		//We are expecting the files to be already present in the Mac
- 		public bool ShouldCopyToBuildServer (ITaskItem item) => false;
- 
+		public bool ShouldCopyToBuildServer (ITaskItem item) => false;
+
 		//We want empty output files to be created in Windows
- 		public bool ShouldCreateOutputFile (ITaskItem item) => true;
+		public bool ShouldCreateOutputFile (ITaskItem item) => true;
 
 		public IEnumerable<ITaskItem> GetAdditionalItemsToBeCopied () => [];
 	}

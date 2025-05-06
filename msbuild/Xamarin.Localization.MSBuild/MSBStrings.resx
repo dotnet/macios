@@ -1753,4 +1753,11 @@
         <value>Unable to analyze file changes in '{0}'. An unexpected error occurred.</value>
         <comment>{0}: path to use for file changes calculation</comment>
     </data>
+
+    <data name="E7151" xml:space="preserve">
+        <value>The app requests the entitlement '{0}', but this entitlement is not allowed on the current platform ({1}). It's only allowed on macOS and Mac Catalyst.</value>
+        <comment>
+            This may be either a warning or an error, depending on build configuration.
+        </comment>
+    </data>
 </root>

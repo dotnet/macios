@@ -931,7 +931,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 		var declaration = AsRef (objectType, arguments);
 		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
 	}
-	
+
 	class TestDataGetDelegateForFunctionPointer : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{
@@ -955,7 +955,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
 	}
-	
+
 	[Theory]
 	[ClassData (typeof (TestDataGetDelegateForFunctionPointer))]
 	void GetDelegateForFunctionPointerTests (string objectType, ImmutableArray<ArgumentSyntax> arguments, string expectedDeclaration)

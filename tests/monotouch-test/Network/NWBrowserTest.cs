@@ -94,10 +94,13 @@ namespace MonoTouchFixtures.Network {
 			var browserReady = new AutoResetEvent (false);
 			var finalEvent = new AutoResetEvent (false);
 			var log = new List<string> ();
-			log.Add ($"{dt ()} Starting async...");
+
+			lock (log)
+				log.Add ($"{dt ()} Starting async...");
 			var finishedBeforeTimeout = TestRuntime.RunAsync (TimeSpan.FromSeconds (30), () => {
 				// start the browser, before the listener
-				log.Add ($"{dt ()} Starting browser...");
+				lock (log)
+					log.Add ($"{dt ()} Starting browser...");
 				browser.SetStateChangesHandler ((st, er) => {
 					// assert here with a `st` of `Fail`
 					lock (log)
@@ -105,6 +108,8 @@ namespace MonoTouchFixtures.Network {
 					errorState ??= er;
 					state = st;
 					if (st == NWBrowserState.Ready || st == NWBrowserState.Failed)
+						browserReady.Set ();
+					else if (er is not null)
 						browserReady.Set ();
 				});
 				browser.IndividualChangesDelegate = (oldResult, newResult) => {
@@ -122,6 +127,13 @@ namespace MonoTouchFixtures.Network {
 				};
 				browser.Start ();
 				Assert.That (browserReady.WaitOne (30000), Is.True, "Browser ready");
+
+				if (errorState?.CFError?.Code == -65570/* kDNSServiceErr_PolicyDenied */ ) {
+					// https://developer.apple.com/forums/thread/663852
+					// "If you’re using Bonjour, you will get the kDNSServiceErr_PolicyDenied (-65570) error if your Bonjour operation failed because you don’t have local network access."
+					Assert.Ignore ("This test requires access to the local network, and this has not been granted.");
+				}
+
 				Assert.IsNull (errorState, "Ready Error");
 				Assert.That (state, Is.EqualTo (NWBrowserState.Ready), "NWBrowserState");
 
@@ -156,7 +168,8 @@ namespace MonoTouchFixtures.Network {
 				}
 
 			}, () => eventsDone);
-			log.Add ($"{dt ()} Async done...");
+			lock (log)
+				log.Add ($"{dt ()} Async done...");
 
 			var l = $"\n\t{string.Join ("\n\t", log)}";
 			Assert.That (finishedBeforeTimeout, Is.True, $"RunAsync timeout{l}");
@@ -168,9 +181,12 @@ namespace MonoTouchFixtures.Network {
 			Assert.IsNull (ex, $"Exception{l}");
 			Assert.IsTrue (didRun, $"didRan{l}");
 			Assert.IsTrue (receivedNotNullChange, $"receivedNotNullChange{l}");
-			log.Add ($"{dt ()} about to cancel...");
+			lock (log)
+				log.Add ($"{dt ()} about to cancel...");
 			browser.Cancel ();
-			log.Add ($"{dt ()} cancelled...");
+			lock (log)
+				log.Add ($"{dt ()} cancelled...");
+			l = $"\n\t{string.Join ("\n\t", log)}";
 			Console.WriteLine (l);
 		}
 	}

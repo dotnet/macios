@@ -2,7 +2,9 @@
 // Licensed under the MIT License.
 
 using System.Collections.Generic;
+using Microsoft.CodeAnalysis;
 using Microsoft.Macios.Generator.DataModel;
+using TypeInfo = Microsoft.Macios.Generator.DataModel.TypeInfo;
 
 namespace Microsoft.Macios.Generator;
 
@@ -103,4 +105,20 @@ class Nomenclator {
 	/// </summary>
 	/// <param name="typeInfo">The type info whose name we want for the return type.</param>
 	public static string GetReturnVariableName (in TypeInfo typeInfo) => "ret"; // nothing fancy for now
+	
+	/// <summary>
+	/// Returns the name of the trampoline variable for the given parameter info. This variables are used as
+	/// temporary variables to hold the value of the parameter before passing it to the trampoline.
+	/// </summary>
+	/// <param name="parameterInfo">The parameter information for the trampoline.</param>
+	/// <returns>The name to be used for the temporary variable or null if it was unknown.</returns>
+	public static string? GetNameForTempTrampolineVariable (in Parameter parameterInfo)
+	{
+		return parameterInfo switch {
+			{ Type.IsReferenceType: false, Type.IsNullable: true } => $"__xamarin_nullified__{parameterInfo.Position}",
+			{ Type.SpecialType: SpecialType.System_Boolean } => $"__xamarin_bool__{parameterInfo.Position}",
+			{ Type.IsReferenceType: true } => $"__xamarin_pref{parameterInfo.Position}",
+			_ => null,
+		};
+	}
 }

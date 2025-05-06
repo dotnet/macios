@@ -637,7 +637,6 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		</ItemGroup>
 		<!-- If any of the above values change, the file will be written and invalidate _CompileAppManifest -->
 		<WriteLinesToFile
-			SessionId="$(BuildSessionId)"
 			File="$(_CompileAppManifestInputsFile)"
 			Lines="@(_CompileAppManifestInputLine)"
 			Overwrite="true"

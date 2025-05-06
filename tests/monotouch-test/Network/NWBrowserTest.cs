@@ -94,7 +94,7 @@ namespace MonoTouchFixtures.Network {
 			var browserReady = new AutoResetEvent (false);
 			var finalEvent = new AutoResetEvent (false);
 			var log = new List<string> ();
-				log.Add ($"{dt ()} Starting async...");
+			log.Add ($"{dt ()} Starting async...");
 			var finishedBeforeTimeout = TestRuntime.RunAsync (TimeSpan.FromSeconds (30), () => {
 				// start the browser, before the listener
 				log.Add ($"{dt ()} Starting browser...");

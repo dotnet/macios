@@ -65,6 +65,50 @@ public class Example {
 		Assert.Equal ("GenericTrampolineArity1V1", name2);
 		Assert.NotEqual (name1, name2);
 	}
+	
+	[Theory]
+	[AllSupportedPlatforms]
+	public void GetTrampolineClassNameTest (ApplePlatform platform)
+	{
+		var nomenclator = new Nomenclator ();
+
+		// write a sample code to retrieve the roslyn symbol and type info so that 
+		// we can test the nomenclator.
+		var code = @"
+using System;
+using System.Collections.Generic;
+
+namespace Test;
+
+public class GenericTrampoline<T> where T : class {
+	void DidAccelerateSeveral (object accelerometer, object second, object last);
+}
+
+public class Example {
+	public 	GenericTrampoline<string> Trampoline { get; set; }
+}
+";
+
+		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: code);
+
+		Assert.Single (syntaxTrees);
+		var declaration = syntaxTrees [0].GetRoot ()
+			.DescendantNodes ()
+			.OfType<PropertyDeclarationSyntax> ()
+			.FirstOrDefault ();
+		Assert.NotNull (declaration);
+		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
+		Assert.NotNull (semanticModel);
+		Assert.True (Property.TryCreate (declaration, semanticModel, out var property));
+		Assert.NotNull (property);
+		var type = property.Value.ReturnType;
+
+		var trampolineName = nomenclator.GetTrampolineName (type);
+		// get the class name for each of the types and ensure that the correct value is used
+		Assert.Equal ($"D{trampolineName}", nomenclator.GetTrampolineClassName (trampolineName, Nomenclator.TrampolineClassType.DelegateType));
+		Assert.Equal ($"SD{trampolineName}", nomenclator.GetTrampolineClassName (trampolineName, Nomenclator.TrampolineClassType.StaticBridgeClass));
+		Assert.Equal ($"NID{trampolineName}", nomenclator.GetTrampolineClassName (trampolineName, Nomenclator.TrampolineClassType.NativeInvocationClass));
+	}
 
 	class TestDataGetVariableName : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()

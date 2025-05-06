@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System;
 using System.Collections.Generic;
 using Microsoft.Macios.Generator.DataModel;
 
@@ -73,6 +74,43 @@ class Nomenclator {
 		trampolineName = trampolineName + "V" + trampolinesGenericVersions [typeInfo.Name]++;
 
 		return trampolineName;
+	}
+
+	/// <summary>
+	/// Enumeration of the trampoline class types that we will generate for the trampolines.
+	/// </summary>
+	public enum TrampolineClassType {
+		/// <summary>
+		/// Get name for the C# delegate type (the function signature).
+		/// </summary>
+		DelegateType,
+		/// <summary>
+		/// The static helper class bridging the native block invocation to the C# delegate.
+		/// </summary>
+		StaticBridgeClass,
+		/// <summary>
+		/// The native invocation class that wraps the block and calls the C# delegate.
+		/// </summary>
+		NativeInvocationClass,
+	}
+
+	/// <summary>
+	/// Return the name of the trampoline class to be used for the given type info.
+	/// </summary>
+	/// <param name="trampolineName">The namne of the trampoline.</param>
+	/// <param name="trampolineClassType">The type of class to be generated.</param>
+	/// <returns>The name to be used by the generated class.</returns>
+	/// <exception cref="ArgumentOutOfRangeException">Thrown when the trampolineClassType value is out
+	/// of range.</exception>
+	public static string GetTrampolineClassName (string trampolineName, TrampolineClassType trampolineClassType)
+	{
+		// get the name of the trampoline a based on the class type we will return one of the other
+		return trampolineClassType switch {
+			TrampolineClassType.DelegateType => $"D{trampolineName}",
+			TrampolineClassType.StaticBridgeClass => $"SD{trampolineName}",
+			TrampolineClassType.NativeInvocationClass => $"NID{trampolineName}",
+			_ => throw new ArgumentOutOfRangeException (nameof (trampolineClassType), trampolineClassType, null)
+		};
 	}
 
 	/// <summary>

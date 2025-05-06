@@ -65,7 +65,7 @@ public class Example {
 		Assert.Equal ("GenericTrampolineArity1V1", name2);
 		Assert.NotEqual (name1, name2);
 	}
-	
+
 	[Theory]
 	[AllSupportedPlatforms]
 	public void GetTrampolineClassNameTest (ApplePlatform platform)

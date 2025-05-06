@@ -601,6 +601,8 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		>
 		<PropertyGroup>
 			<_CompileAppManifestInputsFile>$(DeviceSpecificIntermediateOutputPath)_CompileAppManifest.inputs</_CompileAppManifestInputsFile>
+			<_CompileAppManifestFontFilesToRegister>@(_FontFilesToRegister)</_CompileAppManifestFontFilesToRegister>
+			<_CompileAppManifestPartialAppManifest>@(PartialAppManifest)</_CompileAppManifestPartialAppManifest>
 		</PropertyGroup>
 		<ItemGroup>
 			<_CompileAppManifestInputLine Include="SessionId=$(BuildSessionId)" />
@@ -614,14 +616,14 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<_CompileAppManifestInputLine Include="CompiledAppManifest=$(_TemporaryAppManifest)" />
 			<_CompileAppManifestInputLine Include="Debug=$(_BundlerDebug)" />
 			<_CompileAppManifestInputLine Include="DefaultSdkVersion=$(_SdkVersion)" />
-			<_CompileAppManifestInputLine Include="FontFilesToRegister=@(_FontFilesToRegister)" />
+			<_CompileAppManifestInputLine Include="FontFilesToRegister=$(_CompileAppManifestFontFilesToRegister)" />
 			<_CompileAppManifestInputLine Include="GenerateApplicationManifest=$(GenerateApplicationManifest)" />
 			<_CompileAppManifestInputLine Include="IsAppExtension=$(IsAppExtension)" />
 			<_CompileAppManifestInputLine Include="IsWatchApp=$(IsWatchApp)" />
 			<_CompileAppManifestInputLine Include="IsWatchExtension=$(IsWatchExtension)" />
 			<_CompileAppManifestInputLine Include="IsXPCService=$(IsXPCService)" />
 			<_CompileAppManifestInputLine Include="MinSupportedOSPlatformVersion=$(MinSupportedOSPlatformVersion)" />
-			<_CompileAppManifestInputLine Include="PartialAppManifests=@(PartialAppManifest)" />
+			<_CompileAppManifestInputLine Include="PartialAppManifests=$(_CompileAppManifestPartialAppManifest)" />
 			<_CompileAppManifestInputLine Include="ProjectDir=$(MSBuildProjectDirectory)" />
 			<_CompileAppManifestInputLine Include="ResourcePrefix=$(_ResourcePrefix)" />
 			<_CompileAppManifestInputLine Include="ResourceRules=$(_PreparedResourceRules)" />

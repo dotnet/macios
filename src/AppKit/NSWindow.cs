@@ -63,35 +63,13 @@ namespace AppKit {
 			}
 		}
 
-#if !NET
-		static IntPtr selInitWithWindowRef = Selector.GetHandle ("initWithWindowRef:");
-
-		// Do not actually export because NSObjectFlag is not exportable.
-		// The Objective C method already exists. This is just to allow
-		// access on the managed side via the static method.
-		//[Export ("initWithWindowRef:")]
-		private NSWindow (IntPtr windowRef, NSObjectFlag x) : base (NSObjectFlag.Empty)
-		{
-			if (IsDirectBinding) {
-				Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend (this.Handle, selInitWithWindowRef);
-			} else {
-				Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper (this.SuperHandle, selInitWithWindowRef);
-			}
-			InitializeReleasedWhenClosed ();
-		}
-#endif
-
 		/// <param name="windowRef">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		static public NSWindow FromWindowRef (IntPtr windowRef)
 		{
-#if NET
 			return new NSWindow (windowRef);
-#else
-			return new NSWindow (windowRef, NSObjectFlag.Empty);
-#endif
 		}
 
 		void InitializeReleasedWhenClosed ()

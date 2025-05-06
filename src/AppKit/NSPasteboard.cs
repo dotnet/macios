@@ -21,16 +21,6 @@ namespace AppKit {
 			nsa_pasteboardReading.Dispose ();
 			return result;
 		}
-
-#if !NET
-		public bool WriteObjects (NSPasteboardWriting [] objects)
-		{
-			var nsa_pasteboardReading = NSArray.FromNSObjects (objects);
-			bool result = WriteObjects (nsa_pasteboardReading.Handle);
-			nsa_pasteboardReading.Dispose ();
-			return result;
-		}
-#endif
 	}
 }
 #endif // !__MACCATALYST__

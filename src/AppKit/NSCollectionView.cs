@@ -25,14 +25,6 @@ namespace AppKit {
 		{
 			_RegisterClassForSupplementaryView (viewClass is null ? IntPtr.Zero : Class.GetHandle (viewClass), kind, identifier);
 		}
-
-#if !NET
-		[Obsolete ("Use 'GetLayoutAttributes' instead.")]
-		public virtual NSCollectionViewLayoutAttributes? GetLayoutAttributest (string kind, NSIndexPath indexPath)
-		{
-			return GetLayoutAttributes (kind, indexPath);
-		}
-#endif // !NET
 	}
 }
 #endif // !__MACCATALYST__

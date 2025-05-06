@@ -87,12 +87,8 @@ namespace AppKit {
 
 	[NoMacCatalyst]
 	[Flags]
-#if NET
 	[Native]
 	public enum NSSpellingState : long
-#else
-	public enum NSSpellingState : int
-#endif
 	{
 		/// <summary>To be added.</summary>
 		None = 0x0,

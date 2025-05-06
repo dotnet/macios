@@ -579,6 +579,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<PropertyGroup>
 		<_CompileAppManifestDependsOn>
 			CollectAppManifests;
+			_CompileAppManifestInputs;
 			$(_CompileAppManifestDependsOn);
 			_DetectBuildType;
 			_DetectAppManifest;
@@ -595,10 +596,61 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		 to the CollectAppManifestsDependsOn property. -->
 	<Target Name="CollectAppManifests" DependsOnTargets="$(CollectAppManifestsDependsOn)" />
 
-	<!-- This target has no inputs, because it must still be run if there are no input app manifests, to set default values -->
+	<Target Name="_CompileAppManifestInputs"
+		Condition="'$(IsMacEnabled)' == 'true' Or '$(IsHotRestartBuild)' == 'true'"
+		>
+		<PropertyGroup>
+			<_CompileAppManifestInputsFile>$(DeviceSpecificIntermediateOutputPath)_CompileAppManifest.inputs</_CompileAppManifestInputsFile>
+		</PropertyGroup>
+		<ItemGroup>
+			<_CompileAppManifestInputLine Include="SessionId=$(BuildSessionId)" />
+			<_CompileAppManifestInputLine Include="ApplicationId=$(ApplicationId)" />
+			<_CompileAppManifestInputLine Include="ApplicationTitle=$(ApplicationTitle)" />
+			<_CompileAppManifestInputLine Include="ApplicationVersion=$(ApplicationVersion)" />
+			<_CompileAppManifestInputLine Include="ApplicationDisplayVersion=$(ApplicationDisplayVersion)" />
+			<_CompileAppManifestInputLine Include="AppBundleName=$(_AppBundleName)" />
+			<_CompileAppManifestInputLine Include="AppManifest=$(AppBundleManifest)" />
+			<_CompileAppManifestInputLine Include="AssemblyName=$(AssemblyName)" />
+			<_CompileAppManifestInputLine Include="CompiledAppManifest=$(_TemporaryAppManifest)" />
+			<_CompileAppManifestInputLine Include="Debug=$(_BundlerDebug)" />
+			<_CompileAppManifestInputLine Include="DefaultSdkVersion=$(_SdkVersion)" />
+			<_CompileAppManifestInputLine Include="FontFilesToRegister=@(_FontFilesToRegister)" />
+			<_CompileAppManifestInputLine Include="GenerateApplicationManifest=$(GenerateApplicationManifest)" />
+			<_CompileAppManifestInputLine Include="IsAppExtension=$(IsAppExtension)" />
+			<_CompileAppManifestInputLine Include="IsWatchApp=$(IsWatchApp)" />
+			<_CompileAppManifestInputLine Include="IsWatchExtension=$(IsWatchExtension)" />
+			<_CompileAppManifestInputLine Include="IsXPCService=$(IsXPCService)" />
+			<_CompileAppManifestInputLine Include="MinSupportedOSPlatformVersion=$(MinSupportedOSPlatformVersion)" />
+			<_CompileAppManifestInputLine Include="PartialAppManifests=@(PartialAppManifest)" />
+			<_CompileAppManifestInputLine Include="ProjectDir=$(MSBuildProjectDirectory)" />
+			<_CompileAppManifestInputLine Include="ResourcePrefix=$(_ResourcePrefix)" />
+			<_CompileAppManifestInputLine Include="ResourceRules=$(_PreparedResourceRules)" />
+			<_CompileAppManifestInputLine Include="TargetArchitectures=$(TargetArchitectures)" />
+			<_CompileAppManifestInputLine Include="TargetFrameworkMoniker=$(_ComputedTargetFrameworkMoniker)" />
+			<_CompileAppManifestInputLine Include="SdkIsSimulator=$(_SdkIsSimulator)" />
+			<_CompileAppManifestInputLine Include="SdkVersion=$(_SdkVersion)" />
+			<_CompileAppManifestInputLine Include="SupportedOSPlatformVersion=$(SupportedOSPlatformVersion)" />
+			<_CompileAppManifestInputLine Include="DebugIPAddresses=$(_DebugIPAddresses)" />
+			<_CompileAppManifestInputLine Include="Validate=$(_CreateAppManifest)" />
+		</ItemGroup>
+		<!-- If any of the above values change, the file will be written and invalidate _CompileAppManifest -->
+		<WriteLinesToFile
+			SessionId="$(BuildSessionId)"
+			File="$(_CompileAppManifestInputsFile)"
+			Lines="@(_CompileAppManifestInputLine)"
+			Overwrite="true"
+			WriteOnlyWhenDifferent="true"
+		/>
+		<ItemGroup>
+			<FileWrites Include="$(_CompileAppManifestInputsFile)" />
+		</ItemGroup>
+	</Target>
+
+	<!-- NOTE: Keep new parameters to <CompileAppManifest/> in sync with @(_CompileAppManifestInputLine) above -->
 	<Target Name="_CompileAppManifest"
 		Condition="'$(_BundleOriginalResources)' != 'true'"
 		DependsOnTargets="$(_CompileAppManifestDependsOn)"
+		Inputs="$(_CompileAppManifestInputsFile)"
 		Outputs="$(_TemporaryAppManifest)"
 		>
 

@@ -23,12 +23,12 @@ sealed record DelegateInfo {
 	/// Method return type.
 	/// </summary>
 	public TypeInfo ReturnType { get; }
-	
+
 	/// <summary>
 	/// True if the delegate was decorated with the BlockCallbackAttribute.
 	/// </summary>
 	public bool IsBlockCallback { get; init; }
-	
+
 	/// <summary>
 	/// True if the delegate was decorated with the CCallbackAttribute.
 	/// </summary>
@@ -52,7 +52,7 @@ sealed record DelegateInfo {
 			change = null;
 			return false;
 		}
-			
+
 		var method = symbol.DelegateInvokeMethod;
 		var parametersBucket = ImmutableArray.CreateBuilder<DelegateParameter> ();
 		// loop over the parameters of the construct since changes on those implies a change in the generated code
@@ -62,11 +62,10 @@ sealed record DelegateInfo {
 			parametersBucket.Add (parameterChange.Value);
 		}
 
-		change = new(
+		change = new (
 			name: method.Name,
-			returnType: new(method.ReturnType),
-			parameters: parametersBucket.ToImmutableArray ()) 
-		{
+			returnType: new (method.ReturnType),
+			parameters: parametersBucket.ToImmutableArray ()) {
 			IsBlockCallback = symbol.HasAttribute ("ObjCRuntime.BlockCallbackAttribute"),
 			IsCCallback = symbol.HasAttribute ("ObjCRuntime.CCallbackAttribute"),
 		};

@@ -399,8 +399,8 @@ namespace NS {
 					]
 				)
 			];
-			
-			const string customDelegateCcallback= @"
+
+			const string customDelegateCcallback = @"
 using System;
 using Foundation;
 using ObjCRuntime;
@@ -453,8 +453,7 @@ namespace NS {
 								}
 							),
 							name: "cb"
-						)
-						{
+						) {
 							Attributes = [
 								new ("ObjCRuntime.CCallbackAttribute")
 							]
@@ -462,8 +461,8 @@ namespace NS {
 					]
 				)
 			];
-			
-			const string customDelegateBlockcallback= @"
+
+			const string customDelegateBlockcallback = @"
 using System;
 using Foundation;
 using ObjCRuntime;
@@ -517,7 +516,7 @@ namespace NS {
 							),
 							name: "cb"
 						) {
-							Attributes = [ 
+							Attributes = [
 								new ("ObjCRuntime.BlockCallbackAttribute")
 							]
 						}

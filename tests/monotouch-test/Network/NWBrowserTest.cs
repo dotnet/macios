@@ -85,12 +85,11 @@ namespace MonoTouchFixtures.Network {
 			// The test will block until the different events are set by the callbacks that are executed in a diff thread.
 			bool didRun = false;
 			bool receivedNotNullChange = false;
-			bool eventsDone = false;
 			bool listeningDone = false;
 			Exception ex = null;
-			NWError? errorState = null;
+			NWError? browserErrorState = null;
 			NWBrowserState state = NWBrowserState.Invalid;
-			var changesEvent = new AutoResetEvent (false);
+			var changesEvent = new ManualResetEventSlim (false, 0);
 			var browserReady = new AutoResetEvent (false);
 			var finalEvent = new AutoResetEvent (false);
 			var log = new List<string> ();
@@ -102,15 +101,19 @@ namespace MonoTouchFixtures.Network {
 				lock (log)
 					log.Add ($"{dt ()} Starting browser...");
 				browser.SetStateChangesHandler ((st, er) => {
-					// assert here with a `st` of `Fail`
 					lock (log)
 						log.Add ($"{dt ()} browser.SetStateChangedHandler ({st}, {er} => {er?.CFError})");
-					errorState ??= er;
+
+					browserErrorState ??= er;
 					state = st;
-					if (st == NWBrowserState.Ready || st == NWBrowserState.Failed)
-						browserReady.Set ();
-					else if (er is not null)
-						browserReady.Set ();
+					browserReady.Set ();
+
+					if (er is not null) {
+						// we can get errors after reaching the NWBrowserState.Ready state,
+						// and in that case we may not get any other callbacks, so signal
+						// completion so that the test doesn't hang.
+						changesEvent.Set ();
+					}
 				});
 				browser.IndividualChangesDelegate = (oldResult, newResult) => {
 					lock (log)
@@ -122,20 +125,10 @@ namespace MonoTouchFixtures.Network {
 						ex = e;
 					} finally {
 						changesEvent.Set ();
-						eventsDone = true;
 					}
 				};
 				browser.Start ();
 				Assert.That (browserReady.WaitOne (30000), Is.True, "Browser ready");
-
-				if (errorState?.CFError?.Code == -65570/* kDNSServiceErr_PolicyDenied */ ) {
-					// https://developer.apple.com/forums/thread/663852
-					// "If you’re using Bonjour, you will get the kDNSServiceErr_PolicyDenied (-65570) error if your Bonjour operation failed because you don’t have local network access."
-					Assert.Ignore ("This test requires access to the local network, and this has not been granted.");
-				}
-
-				Assert.IsNull (errorState, "Ready Error");
-				Assert.That (state, Is.EqualTo (NWBrowserState.Ready), "NWBrowserState");
 
 				using (var advertiser = NWAdvertiseDescriptor.CreateBonjourService ("MonoTouchFixtures.Network", type))
 				using (var tcpOptions = new NWProtocolTcpOptions ())
@@ -160,23 +153,31 @@ namespace MonoTouchFixtures.Network {
 							}
 						});
 						listener.Start ();
-						changesEvent.WaitOne (30000);
+						Assert.IsTrue (changesEvent.Wait (30000), "changesEvent.Wait ()");
 						listener.Cancel ();
 						listeningDone = true;
 						finalEvent.Set ();
 					}
 				}
 
-			}, () => eventsDone);
+			}, () => changesEvent.IsSet);
 			lock (log)
 				log.Add ($"{dt ()} Async done...");
+
+			if (browserErrorState?.CFError?.Code == -65570/* kDNSServiceErr_PolicyDenied */ ) {
+				// https://developer.apple.com/forums/thread/663852
+				// "If you’re using Bonjour, you will get the kDNSServiceErr_PolicyDenied (-65570) error if your Bonjour operation failed because you don’t have local network access."
+				Assert.Ignore ("This test requires access to the local network, and this has not been granted.");
+			}
+
+			Assert.IsNull (browserErrorState, "Ready Error");
+			Assert.That (state, Is.EqualTo (NWBrowserState.Ready), "NWBrowserState");
 
 			var l = $"\n\t{string.Join ("\n\t", log)}";
 			Assert.That (finishedBeforeTimeout, Is.True, $"RunAsync timeout{l}");
 			Assert.That (finalEvent.WaitOne (30000), Is.True, $"Final event{l}");
-			Assert.IsNull (errorState?.CFError, $"Error.CFError{l}");
-			Assert.IsNull (errorState, $"Error{l}");
-			Assert.IsTrue (eventsDone, $"eventDone{l}");
+			Assert.IsNull (browserErrorState?.CFError, $"Error.CFError{l}");
+			Assert.IsNull (browserErrorState, $"Error{l}");
 			Assert.IsTrue (listeningDone, $"listeningDone{l}");
 			Assert.IsNull (ex, $"Exception{l}");
 			Assert.IsTrue (didRun, $"didRan{l}");

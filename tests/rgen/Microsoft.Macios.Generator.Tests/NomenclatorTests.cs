@@ -105,9 +105,9 @@ public class Example {
 
 		var trampolineName = nomenclator.GetTrampolineName (type);
 		// get the class name for each of the types and ensure that the correct value is used
-		Assert.Equal ($"D{trampolineName}", nomenclator.GetTrampolineClassName (trampolineName, Nomenclator.TrampolineClassType.DelegateType));
-		Assert.Equal ($"SD{trampolineName}", nomenclator.GetTrampolineClassName (trampolineName, Nomenclator.TrampolineClassType.StaticBridgeClass));
-		Assert.Equal ($"NID{trampolineName}", nomenclator.GetTrampolineClassName (trampolineName, Nomenclator.TrampolineClassType.NativeInvocationClass));
+		Assert.Equal ($"D{trampolineName}", Nomenclator.GetTrampolineClassName (trampolineName, Nomenclator.TrampolineClassType.DelegateType));
+		Assert.Equal ($"SD{trampolineName}", Nomenclator.GetTrampolineClassName (trampolineName, Nomenclator.TrampolineClassType.StaticBridgeClass));
+		Assert.Equal ($"NID{trampolineName}", Nomenclator.GetTrampolineClassName (trampolineName, Nomenclator.TrampolineClassType.NativeInvocationClass));
 	}
 
 	class TestDataGetVariableName : IEnumerable<object []> {

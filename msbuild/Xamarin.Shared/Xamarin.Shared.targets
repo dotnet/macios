@@ -599,6 +599,10 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<Target Name="_CompileAppManifestInputs"
 		Condition="'$(IsMacEnabled)' == 'true' Or '$(IsHotRestartBuild)' == 'true'"
 		>
+		<ItemGroup>
+			<_FontFilesToRegister Include="@(BundleResource)" Condition="'%(BundleResource.RegisterFont)' == 'true'" />
+		</ItemGroup>
+
 		<PropertyGroup>
 			<_CompileAppManifestInputFile>$(DeviceSpecificIntermediateOutputPath)_CompileAppManifest.inputs</_CompileAppManifestInputFile>
 			<_CompileAppManifestFontFilesToRegister>@(_FontFilesToRegister)</_CompileAppManifestFontFilesToRegister>
@@ -658,10 +662,6 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		Inputs="@(_CompileAppManifestInputFile)"
 		Outputs="$(_TemporaryAppManifest)"
 		>
-
-		<ItemGroup>
-			<_FontFilesToRegister Include="@(BundleResource)" Condition="'%(BundleResource.RegisterFont)' == 'true'" />
-		</ItemGroup>
 
 		<CompileAppManifest
 			SessionId="$(BuildSessionId)"

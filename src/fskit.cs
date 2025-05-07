@@ -23,13 +23,13 @@ namespace FSKit {
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
-	[Mac (15, 0)]
+	[Mac (15, 4)]
 	delegate void FetchInstalledExtensionsCallback ([NullAllowed] FSModuleIdentity[] identities, [NullAllowed] NSError error);
 
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
-	[Mac (15, 0)]
+	[Mac (15, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface FSClient
@@ -48,7 +48,7 @@ namespace FSKit {
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
-	[Mac (15, 0)]
+	[Mac (15, 4)]
 	[Native]
 	public enum FSContainerState : long
 	{
@@ -61,7 +61,7 @@ namespace FSKit {
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
-	[Mac (15, 0)]
+	[Mac (15, 4)]
 	[BaseType (typeof (FSEntityIdentifier))]
 	interface FSContainerIdentifier
 	{
@@ -72,7 +72,7 @@ namespace FSKit {
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
-	[Mac (15, 0)]
+	[Mac (15, 4)]
 	[BaseType (typeof (NSObject))]
 	interface FSEntityIdentifier : INSCopying, INSSecureCoding
 	{
@@ -122,7 +122,7 @@ namespace FSKit {
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
-	[Mac (15, 0)]
+	[Mac (15, 4)]
 	[Category]
 	[BaseType (typeof (NSUuid))]
 	interface NSUuid_FSEntityIdentifier
@@ -140,7 +140,7 @@ namespace FSKit {
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
-	[Mac (15, 0)]
+	[Mac (15, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface FSFileName : INSSecureCoding, INSCopying
@@ -195,7 +195,7 @@ namespace FSKit {
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
-	[Mac (15, 0)]
+	[Mac (15, 4)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
 	interface FSFileSystemBase
 	{
@@ -215,7 +215,7 @@ namespace FSKit {
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
-	[Mac (15, 0)]
+	[Mac (15, 4)]
 	[Native]
 	public enum FSItemAttribute : long {
 		Uid = 1 << 0,
@@ -242,7 +242,7 @@ namespace FSKit {
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
-	[Mac (15, 0)]
+	[Mac (15, 4)]
 	[Native]
 	public enum FSItemType : long
 	{
@@ -259,7 +259,7 @@ namespace FSKit {
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
-	[Mac (15, 0)]
+	[Mac (15, 4)]
 	[BaseType (typeof (NSObject))]
 	interface FSItemAttributes : INSSecureCoding
 	{
@@ -328,7 +328,7 @@ namespace FSKit {
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
-	[Mac (15, 0)]
+	[Mac (15, 4)]
 	[BaseType (typeof (FSItemAttributes))]
 	interface FSItemSetAttributesRequest
 	{
@@ -342,7 +342,7 @@ namespace FSKit {
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
-	[Mac (15, 0)]
+	[Mac (15, 4)]
 	[BaseType (typeof(NSObject))]
 	interface FSItemGetAttributesRequest : INSSecureCoding
 	{
@@ -356,7 +356,7 @@ namespace FSKit {
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
-	[Mac (15, 0)]
+	[Mac (15, 4)]
 	[BaseType (typeof (NSObject))]
 	interface FSItem
 	{
@@ -365,7 +365,7 @@ namespace FSKit {
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
-	[Mac (15, 0)]
+	[Mac (15, 4)]
 	[BaseType (typeof (FSItem))]
 	interface FSUnaryItem
 	{
@@ -376,7 +376,7 @@ namespace FSKit {
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
-	[Mac (15, 0)]
+	[Mac (15, 4)]
 	[Partial]
 	interface FSKitConstants
 	{
@@ -402,7 +402,7 @@ namespace FSKit {
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
-	[Mac (15, 0)]
+	[Mac (15, 4)]
 	[BaseType (typeof (NSObject))]
 	interface FSMessageConnection
 	{
@@ -418,7 +418,7 @@ namespace FSKit {
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
-	[Mac (15, 0)]
+	[Mac (15, 4)]
 	[Static]
 	interface FSModuleIdentityAttribute {
 		[Field ("FSModuleIdentityAttributeSupportsServerURLs")]
@@ -453,7 +453,7 @@ namespace FSKit {
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
-	[Mac (15, 0)]
+	[Mac (15, 4)]
 	[StrongDictionary (nameof (FSModuleIdentityAttribute), Suffix = "")]
 	interface FSModuleIdentityAttributes {
 		/* There's no documentation about the types of these properties, so I just guessed the types for these properties based on the names whenever possible, otherwise bound as NSObject */
@@ -471,7 +471,7 @@ namespace FSKit {
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
-	[Mac (15, 0)]
+	[Mac (15, 4)]
 	[BaseType (typeof (NSObject))]
 	interface FSModuleIdentity
 	{
@@ -498,7 +498,7 @@ namespace FSKit {
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
-	[Mac (15, 0)]
+	[Mac (15, 4)]
 	[Native]
 	public enum FSMatchResult : long
 	{
@@ -511,7 +511,7 @@ namespace FSKit {
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
-	[Mac (15, 0)]
+	[Mac (15, 4)]
 	[BaseType (typeof (NSObject))]
 	interface FSResource : INSSecureCoding
 	{
@@ -528,7 +528,7 @@ namespace FSKit {
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
-	[Mac (15, 0)]
+	[Mac (15, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface FSMetadataBlockRange
@@ -566,7 +566,7 @@ namespace FSKit {
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
-	[Mac (15, 0)]
+	[Mac (15, 4)]
 	[BaseType (typeof (FSResource))]
 	[DisableDefaultCtor]
 	interface FSBlockDeviceResource
@@ -651,7 +651,7 @@ namespace FSKit {
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
-	[Mac (15, 0)]
+	[Mac (15, 4)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
 	interface FSManageableResourceMaintenanceOperations
 	{
@@ -665,7 +665,7 @@ namespace FSKit {
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
-	[Mac (15, 0)]
+	[Mac (15, 4)]
 	[BaseType (typeof(FSResource), Name = "FSGenericURLResource")]
 	[DisableDefaultCtor]
 	interface FSGenericUrlResource
@@ -682,7 +682,7 @@ namespace FSKit {
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
-	[Mac (15, 0)]
+	[Mac (15, 4)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (NSObject))]
 	interface FSProbeResult : NSSecureCoding {
@@ -709,7 +709,7 @@ namespace FSKit {
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
-	[Mac (15, 0)]
+	[Mac (15, 4)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
 	interface FSBlockDeviceOperations
 	{
@@ -721,7 +721,7 @@ namespace FSKit {
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
-	[Mac (15, 0)]
+	[Mac (15, 4)]
 	[BaseType (typeof (NSObject))]
 	interface FSUnaryFileSystem : FSFileSystemBase {
 	}
@@ -734,7 +734,7 @@ namespace FSKit {
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
-	[Mac (15, 0)]
+	[Mac (15, 4)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
 	interface FSUnaryFileSystemOperations
 	{
@@ -749,7 +749,7 @@ namespace FSKit {
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
-	[Mac (15, 0)]
+	[Mac (15, 4)]
 	[BaseType (typeof (FSEntityIdentifier))]
 	interface FSVolumeIdentifier {
 	}
@@ -757,7 +757,7 @@ namespace FSKit {
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
-	[Mac (15, 0)]
+	[Mac (15, 4)]
 	[ErrorDomain ("FSVolumeErrorDomain")]
 	[Native]
 	public enum FSVolumeErrorCode : long
@@ -768,7 +768,7 @@ namespace FSKit {
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
-	[Mac (15, 0)]
+	[Mac (15, 4)]
 	[Native]
 	public enum FSDeactivateOptions : long
 	{
@@ -778,7 +778,7 @@ namespace FSKit {
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
-	[Mac (15, 0)]
+	[Mac (15, 4)]
 	[BaseType (typeof (NSObject))]
 	interface FSVolumeSupportedCapabilities : INSSecureCoding
 	{
@@ -849,7 +849,7 @@ namespace FSKit {
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
-	[Mac (15, 0)]
+	[Mac (15, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface FSVolume
@@ -868,7 +868,7 @@ namespace FSKit {
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
-	[Mac (15, 0)]
+	[Mac (15, 4)]
 	[Static]
 	interface FSConstants {
 		[Field ("FSDirectoryCookieInitial")]
@@ -881,7 +881,7 @@ namespace FSKit {
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
-	[Mac (15, 0)]
+	[Mac (15, 4)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
 	interface FSVolumePathConfOperations
 	{
@@ -918,7 +918,7 @@ namespace FSKit {
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
-	[Mac (15, 0)]
+	[Mac (15, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface FSStatFSResult : INSSecureCoding
@@ -1042,7 +1042,7 @@ namespace FSKit {
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
-	[Mac (15, 0)]
+	[Mac (15, 4)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
 	interface FSVolumeOperations : FSVolumePathConfOperations
 	{
@@ -1122,7 +1122,7 @@ namespace FSKit {
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
-	[Mac (15, 0)]
+	[Mac (15, 4)]
 	[Native]
 	enum FSSetXattrPolicy : ulong {
 		AlwaysSet   = 0,
@@ -1149,7 +1149,7 @@ namespace FSKit {
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
-	[Mac (15, 0)]
+	[Mac (15, 4)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
 	interface FSVolumeXattrOperations
 	{
@@ -1176,7 +1176,7 @@ namespace FSKit {
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
-	[Mac (15, 0)]
+	[Mac (15, 4)]
 	[Native]
 	[Flags]
 	enum FSVolumeOpenModes : ulong {
@@ -1192,7 +1192,7 @@ namespace FSKit {
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
-	[Mac (15, 0)]
+	[Mac (15, 4)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
 	interface FSVolumeOpenCloseOperations
 	{
@@ -1218,7 +1218,7 @@ namespace FSKit {
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
-	[Mac (15, 0)]
+	[Mac (15, 4)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
 	interface FSVolumeReadWriteOperations
 	{
@@ -1234,7 +1234,7 @@ namespace FSKit {
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
-	[Mac (15, 0)]
+	[Mac (15, 4)]
 	[Flags]
 	[Native]
 	enum FSAccessMask : ulong {
@@ -1265,7 +1265,7 @@ namespace FSKit {
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
-	[Mac (15, 0)]
+	[Mac (15, 4)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
 	interface FSVolumeAccessCheckOperations
 	{
@@ -1285,7 +1285,7 @@ namespace FSKit {
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
-	[Mac (15, 0)]
+	[Mac (15, 4)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
 	interface FSVolumeRenameOperations
 	{
@@ -1300,7 +1300,7 @@ namespace FSKit {
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
-	[Mac (15, 0)]
+	[Mac (15, 4)]
 	[Flags]
 	public enum FSBlockmapFlags : uint {
 		Read       = 0x000100,
@@ -1313,7 +1313,7 @@ namespace FSKit {
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
-	[Mac (15, 0)]
+	[Mac (15, 4)]
 	public enum FSExtentType
 	{
 		Data = 0,
@@ -1344,7 +1344,7 @@ namespace FSKit {
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
-	[Mac (15, 0)]
+	[Mac (15, 4)]
 	[Protocol (Name = "FSVolumeKOIOOperations", BackwardsCompatibleCodeGeneration = false)]
 	interface FSVolumeKoioOperations
 	{
@@ -1368,7 +1368,7 @@ namespace FSKit {
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
-	[Mac (15, 0)]
+	[Mac (15, 4)]
 	[Flags]
 	enum FSPreallocateFlags : uint {
 		All        = 0x00000002,
@@ -1385,7 +1385,7 @@ namespace FSKit {
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
-	[Mac (15, 0)]
+	[Mac (15, 4)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
 	interface FSVolumePreallocateOperations
 	{

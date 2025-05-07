@@ -18,7 +18,7 @@ namespace FSKit {
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
-	[SupportedOSPlatform ("macos15.0")]
+	[SupportedOSPlatform ("macos15.4")]
 	[UnsupportedOSPlatform ("maccatalyst")]
 	[UnsupportedOSPlatform ("ios")]
 	[UnsupportedOSPlatform ("tvos")]

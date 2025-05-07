@@ -2032,6 +2032,7 @@ MACOS_FRAMEWORKS =          \
 	FileProvider	\
 	FileProviderUI	\
 	FinderSync		\
+	FSKit                   \
 	GameController          \
 	GameplayKit             \
 	GLKit                   \

@@ -1,4 +1,0 @@
-!deprecated-attribute-missing! sec_protocol_metadata_get_negotiated_protocol missing a [Deprecated] attribute
-!deprecated-attribute-missing! sec_protocol_metadata_get_server_name missing a [Deprecated] attribute
-!missing-pinvoke! sec_protocol_metadata_copy_negotiated_protocol is not bound
-!missing-pinvoke! sec_protocol_metadata_copy_server_name is not bound

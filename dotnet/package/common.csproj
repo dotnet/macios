@@ -66,6 +66,7 @@
       BeforeTargets="ProcessFrameworkReferences" >
     <ItemGroup>
       <KnownFrameworkReference Remove="Microsoft.$(_PlatformName)" />
+      <KnownFrameworkReference Remove="Microsoft.$(_PlatformName).Runtimes" />
     </ItemGroup>
   </Target>
 

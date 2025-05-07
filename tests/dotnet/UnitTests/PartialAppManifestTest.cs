@@ -32,7 +32,7 @@ namespace Xamarin.Tests {
 
 			rv = DotNet.AssertBuild (project_path, GetDefaultProperties (runtimeIdentifiers));
 			allTargets = BinLog.GetAllTargets (rv.BinLogPath);
-			AssertTargetExecuted (allTargets, "_CompileAppManifest", "_CompileAppManifest rebuild 2");
+			AssertTargetNotExecuted (allTargets, "_CompileAppManifest", "_CompileAppManifest rebuild 2");
 		}
 	}
 }

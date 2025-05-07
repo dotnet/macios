@@ -23670,7 +23670,7 @@ namespace AVFoundation {
 		[Static]
 		[MacCatalyst (18, 5), TV (18, 5), Mac (15, 5), iOS (18, 5)]
 		[Export ("predicateForAudioSampleRate:operatorType:")]
-		NSPredicate GetPredicateForAudioSampleRate (double sampleRate, NSPredicateOperatorType operatorType); 
+		NSPredicate GetPredicateForAudioSampleRate (double sampleRate, NSPredicateOperatorType operatorType);
 	}
 
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]

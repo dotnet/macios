@@ -120,208 +120,63 @@ namespace UIKit {
 	[Native]
 	public enum UIApplicationShortcutIconType : long {
 		/// <summary>Icon for a "Compose" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Compose.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Compose,
 		/// <summary>Icon for a "Play" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Play.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Play,
 		/// <summary>Icon for a "Pause" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Pause.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Pause,
 		/// <summary>Icon for a "Add" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Add.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Add,
 		/// <summary>Icon for a "Location" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Location.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Location,
 		/// <summary>Icon for a "Search" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Search.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Search,
 		/// <summary>Icon for a "Share" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Share.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Share,
 		// iOS 9.1 
 		/// <summary>Icon for a "Prohibit" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Prohibit.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Prohibit,
 		/// <summary>Icon for a "Contact" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Contact.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Contact,
 		/// <summary>Icon for a "Home" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Home.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Home,
 		/// <summary>Icon for a "MarkLocation" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.MarkLocation.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		MarkLocation,
 		/// <summary>Icon for a "Favorite" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Favorite.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Favorite,
 		/// <summary>Icon for a "Love" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Love.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Love,
 		/// <summary>Icon for a "Cloud" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Cloud.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Cloud,
 		/// <summary>Icon for a "Invitation" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Invitation.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Invitation,
 		/// <summary>Icon for a "Confirmation" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Confirmation.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Confirmation,
 		/// <summary>Icon for a "Mail" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Mail.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Mail,
 		/// <summary>Icon for a "Message" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Message.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Message,
 		/// <summary>Icon for a "Date" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Date.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Date,
 		/// <summary>Icon for a "Time" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Time.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Time,
 		/// <summary>Icon for a "CapturePhoto" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.CapturePhoto.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		CapturePhoto,
 		/// <summary>Icon for a "CaptureVideo" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.CaptureVideo.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		CaptureVideo,
 		/// <summary>Icon for a "Task" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Task.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Task,
 		/// <summary>Icon for a "TaskCompleted" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.TaskCompleted.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		TaskCompleted,
 		/// <summary>Icon for a "Alarm" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Alarm.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Alarm,
 		/// <summary>Icon for a "Bookmark" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Bookmark.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Bookmark,
 		/// <summary>Icon for a "Shuffle" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Shuffle.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Shuffle,
 		/// <summary>Icon for a "Audio" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Audio.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Audio,
 		/// <summary>Icon for a "Update" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Update.png" alt="Shortcut icon for update" />
-		///           </para>
-		///         </remarks>
 		Update,
 	}
 

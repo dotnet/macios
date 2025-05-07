@@ -4210,7 +4210,6 @@ namespace CoreImage {
 		Rgba16 = 2, // same as value in old enum
 
 		/// <summary>Represents the value associated with the constant kCIFormatARGB8</summary>
-		/// <remarks>32-bit color in ARGB format.</remarks>
 		[Field ("kCIFormatARGB8")]
 		Argb8 = 0, // same as value in old enum
 

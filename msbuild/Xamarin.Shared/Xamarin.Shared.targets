@@ -600,21 +600,22 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		Condition="'$(IsMacEnabled)' == 'true' Or '$(IsHotRestartBuild)' == 'true'"
 		>
 		<PropertyGroup>
-			<_CompileAppManifestInputsFile>$(DeviceSpecificIntermediateOutputPath)_CompileAppManifest.inputs</_CompileAppManifestInputsFile>
+			<_CompileAppManifestInputFile>$(DeviceSpecificIntermediateOutputPath)_CompileAppManifest.inputs</_CompileAppManifestInputFile>
 			<_CompileAppManifestFontFilesToRegister>@(_FontFilesToRegister)</_CompileAppManifestFontFilesToRegister>
 			<_CompileAppManifestPartialAppManifest>@(PartialAppManifest)</_CompileAppManifestPartialAppManifest>
 		</PropertyGroup>
 		<ItemGroup>
-			<_CompileAppManifestInputLine Include="SessionId=$(BuildSessionId)" />
+			<!-- @(_CompileAppManifestInputLine) are lines to write in $(_CompileAppManifestInputFile) -->
+			<_CompileAppManifestInputLine Include="AppBundleName=$(_AppBundleName)" />
+			<_CompileAppManifestInputLine Include="ApplicationDisplayVersion=$(ApplicationDisplayVersion)" />
 			<_CompileAppManifestInputLine Include="ApplicationId=$(ApplicationId)" />
 			<_CompileAppManifestInputLine Include="ApplicationTitle=$(ApplicationTitle)" />
 			<_CompileAppManifestInputLine Include="ApplicationVersion=$(ApplicationVersion)" />
-			<_CompileAppManifestInputLine Include="ApplicationDisplayVersion=$(ApplicationDisplayVersion)" />
-			<_CompileAppManifestInputLine Include="AppBundleName=$(_AppBundleName)" />
 			<_CompileAppManifestInputLine Include="AppManifest=$(AppBundleManifest)" />
 			<_CompileAppManifestInputLine Include="AssemblyName=$(AssemblyName)" />
 			<_CompileAppManifestInputLine Include="CompiledAppManifest=$(_TemporaryAppManifest)" />
 			<_CompileAppManifestInputLine Include="Debug=$(_BundlerDebug)" />
+			<_CompileAppManifestInputLine Include="DebugIPAddresses=$(_DebugIPAddresses)" />
 			<_CompileAppManifestInputLine Include="DefaultSdkVersion=$(_SdkVersion)" />
 			<_CompileAppManifestInputLine Include="FontFilesToRegister=$(_CompileAppManifestFontFilesToRegister)" />
 			<_CompileAppManifestInputLine Include="GenerateApplicationManifest=$(GenerateApplicationManifest)" />
@@ -627,23 +628,26 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<_CompileAppManifestInputLine Include="ProjectDir=$(MSBuildProjectDirectory)" />
 			<_CompileAppManifestInputLine Include="ResourcePrefix=$(_ResourcePrefix)" />
 			<_CompileAppManifestInputLine Include="ResourceRules=$(_PreparedResourceRules)" />
-			<_CompileAppManifestInputLine Include="TargetArchitectures=$(TargetArchitectures)" />
-			<_CompileAppManifestInputLine Include="TargetFrameworkMoniker=$(_ComputedTargetFrameworkMoniker)" />
 			<_CompileAppManifestInputLine Include="SdkIsSimulator=$(_SdkIsSimulator)" />
 			<_CompileAppManifestInputLine Include="SdkVersion=$(_SdkVersion)" />
 			<_CompileAppManifestInputLine Include="SupportedOSPlatformVersion=$(SupportedOSPlatformVersion)" />
-			<_CompileAppManifestInputLine Include="DebugIPAddresses=$(_DebugIPAddresses)" />
+			<_CompileAppManifestInputLine Include="TargetArchitectures=$(TargetArchitectures)" />
+			<_CompileAppManifestInputLine Include="TargetFrameworkMoniker=$(_ComputedTargetFrameworkMoniker)" />
 			<_CompileAppManifestInputLine Include="Validate=$(_CreateAppManifest)" />
+			<!-- @(_CompileAppManifestInputFile) contains additional files to use as Inputs -->
+			<_CompileAppManifestInputFile Include="$(_CompileAppManifestInputFile)" />
+			<_CompileAppManifestInputFile Include="@(_FontFilesToRegister)" />
+			<_CompileAppManifestInputFile Include="@(PartialAppManifest)" />
 		</ItemGroup>
 		<!-- If any of the above values change, the file will be written and invalidate _CompileAppManifest -->
 		<WriteLinesToFile
-			File="$(_CompileAppManifestInputsFile)"
+			File="$(_CompileAppManifestInputFile)"
 			Lines="@(_CompileAppManifestInputLine)"
 			Overwrite="true"
 			WriteOnlyWhenDifferent="true"
 		/>
 		<ItemGroup>
-			<FileWrites Include="$(_CompileAppManifestInputsFile)" />
+			<FileWrites Include="$(_CompileAppManifestInputFile)" />
 		</ItemGroup>
 	</Target>
 
@@ -651,7 +655,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<Target Name="_CompileAppManifest"
 		Condition="'$(_BundleOriginalResources)' != 'true'"
 		DependsOnTargets="$(_CompileAppManifestDependsOn)"
-		Inputs="$(_CompileAppManifestInputsFile)"
+		Inputs="@(_CompileAppManifestInputFile)"
 		Outputs="$(_TemporaryAppManifest)"
 		>
 
@@ -662,15 +666,16 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		<CompileAppManifest
 			SessionId="$(BuildSessionId)"
 			Condition="'$(IsMacEnabled)' == 'true' Or '$(IsHotRestartBuild)' == 'true'"
+			AppBundleName="$(_AppBundleName)"
+			ApplicationDisplayVersion="$(ApplicationDisplayVersion)"
 			ApplicationId="$(ApplicationId)"
 			ApplicationTitle="$(ApplicationTitle)"
 			ApplicationVersion="$(ApplicationVersion)"
-			ApplicationDisplayVersion="$(ApplicationDisplayVersion)"
-			AppBundleName="$(_AppBundleName)"
 			AppManifest="$(AppBundleManifest)"
 			AssemblyName="$(AssemblyName)"
 			CompiledAppManifest="$(_TemporaryAppManifest)"
 			Debug="$(_BundlerDebug)"
+			DebugIPAddresses="$(_DebugIPAddresses)"
 			DefaultSdkVersion="$(_SdkVersion)"
 			FontFilesToRegister="@(_FontFilesToRegister)"
 			GenerateApplicationManifest="$(GenerateApplicationManifest)"
@@ -683,12 +688,11 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			ProjectDir="$(MSBuildProjectDirectory)"
 			ResourcePrefix="$(_ResourcePrefix)"
 			ResourceRules="$(_PreparedResourceRules)"
-			TargetArchitectures="$(TargetArchitectures)"
-			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
 			SdkIsSimulator="$(_SdkIsSimulator)"
 			SdkVersion="$(_SdkVersion)"
 			SupportedOSPlatformVersion="$(SupportedOSPlatformVersion)"
-			DebugIPAddresses="$(_DebugIPAddresses)"
+			TargetArchitectures="$(TargetArchitectures)"
+			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
 			Validate="$(_CreateAppManifest)"
 			>
 		</CompileAppManifest>

@@ -130,5 +130,34 @@ public class Example {
 	[ClassData (typeof (TestDataGetVariableName))]
 	void GetNameForVariableTypeTests (Parameter parameter, Nomenclator.VariableType variableType, string expectedName)
 		=> Assert.Equal (expectedName, Nomenclator.GetNameForVariableType (parameter.Name, variableType));
+
+	class TestDataGetNameForTempTrampolineVariable : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
+		{
+			var exampleParameter = new Parameter (0, ReturnTypeForBool (), "firstParameter");
+			// bool, diff pos
+			yield return [exampleParameter, $"__xamarin_bool__{exampleParameter.Position}"];
+			exampleParameter = new Parameter (4, ReturnTypeForBool (), "firstParameter");
+			yield return [exampleParameter, $"__xamarin_bool__{exampleParameter.Position}"];
+
+			// nullable value type, diff pos
+			exampleParameter = new Parameter (0, ReturnTypeForInt (isNullable: true), "firstParameter");
+			yield return [exampleParameter, $"__xamarin_nullified__{exampleParameter.Position}"];
+			exampleParameter = new Parameter (4, ReturnTypeForInt (isNullable: true), "firstParameter");
+			yield return [exampleParameter, $"__xamarin_nullified__{exampleParameter.Position}"];
+
+			exampleParameter = new Parameter (0, ReturnTypeForNSObject ("MyNSObject"), "firstParameter");
+			yield return [exampleParameter, $"__xamarin_pref{exampleParameter.Position}"];
+			exampleParameter = new Parameter (4, ReturnTypeForNSObject ("MyNSObject"), "firstParameter");
+			yield return [exampleParameter, $"__xamarin_pref{exampleParameter.Position}"];
+		}
+
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
+	}
+
+	[Theory]
+	[ClassData (typeof (TestDataGetNameForTempTrampolineVariable))]
+	void GetNameForTempTrampolineVariable (Parameter parameter, string expectedName)
+		=> Assert.Equal (expectedName, Nomenclator.GetNameForTempTrampolineVariable (parameter));
 }
 

@@ -72,7 +72,7 @@ namespace Xamarin.MacDev.Tasks {
 			}
 		}
 
-		protected override void AppendCommandLineArguments (IDictionary<string, string?> environment, CommandLineArgumentBuilder args, ITaskItem [] items)
+		protected override void AppendCommandLineArguments (IDictionary<string, string?> environment, List<string> args, ITaskItem [] items)
 		{
 			var assetDirs = new HashSet<string> (items.Select (x => BundleResource.GetVirtualProjectPath (this, x)));
 
@@ -93,15 +93,18 @@ namespace Xamarin.MacDev.Tasks {
 					var assetName = Path.GetFileNameWithoutExtension (rpath);
 
 					args.Add ("--app-icon");
-					args.AddQuoted (assetName);
+					args.Add (assetName);
 
-					if (IsMessagesExtension)
-						args.Add ("--product-type com.apple.product-type.app-extension.messages");
+					if (IsMessagesExtension) {
+						args.Add ("--product-type");
+						args.Add ("com.apple.product-type.app-extension.messages");
+					}
 				}
 			}
 
 			if (!string.IsNullOrEmpty (AccentColor)) {
-				args.Add ("--accent-color", AccentColor);
+				args.Add ("--accent-color");
+				args.Add (AccentColor);
 			}
 
 			if (!string.IsNullOrEmpty (XSLaunchImageAssets)) {
@@ -115,29 +118,37 @@ namespace Xamarin.MacDev.Tasks {
 				if (assetDirs is not null && assetDir is not null && assetDirs.Contains (assetDir)) {
 					var assetName = Path.GetFileNameWithoutExtension (rpath);
 					args.Add ("--launch-image");
-					args.AddQuoted (assetName);
+					args.Add (assetName);
 				}
 			}
 
-			if (!string.IsNullOrEmpty (CLKComplicationGroup))
-				args.Add ("--complication", CLKComplicationGroup);
+			if (!string.IsNullOrEmpty (CLKComplicationGroup)) {
+				args.Add ("--complication");
+				args.Add (CLKComplicationGroup);
+			}
 
 			if (OptimizePNGs)
 				args.Add ("--compress-pngs");
 
 			if (AppleSdkSettings.XcodeVersion.Major >= 7) {
-				if (!string.IsNullOrEmpty (outputSpecs))
-					args.Add ("--enable-on-demand-resources", EnableOnDemandResources ? "YES" : "NO");
+				if (!string.IsNullOrEmpty (outputSpecs)) {
+					args.Add ("--enable-on-demand-resources");
+					args.Add (EnableOnDemandResources ? "YES" : "NO");
+				}
 
-				if (!string.IsNullOrEmpty (DeviceModel))
-					args.Add ("--filter-for-device-model", DeviceModel);
+				if (!string.IsNullOrEmpty (DeviceModel)) {
+					args.Add ("--filter-for-device-model");
+					args.Add (DeviceModel);
+				}
 
-				if (!string.IsNullOrEmpty (DeviceOSVersion))
-					args.Add ("--filter-for-device-os-version", DeviceOSVersion);
+				if (!string.IsNullOrEmpty (DeviceOSVersion)) {
+					args.Add ("--filter-for-device-os-version");
+					args.Add (DeviceOSVersion);
+				}
 
 				if (!string.IsNullOrEmpty (outputSpecs)) {
 					args.Add ("--asset-pack-output-specifications");
-					args.AddQuoted (Path.GetFullPath (outputSpecs));
+					args.Add (Path.GetFullPath (outputSpecs));
 				}
 			}
 
@@ -146,16 +157,22 @@ namespace Xamarin.MacDev.Tasks {
 				args.Add ("uikit");
 			}
 
-			foreach (var targetDevice in GetTargetDevices ())
-				args.Add ("--target-device", targetDevice);
+			foreach (var targetDevice in GetTargetDevices ()) {
+				args.Add ("--target-device");
+				args.Add (targetDevice);
+			}
 
-			if (!string.IsNullOrEmpty (MinimumOSVersion))
-				args.Add ("--minimum-deployment-target", MinimumOSVersion);
+			if (!string.IsNullOrEmpty (MinimumOSVersion)) {
+				args.Add ("--minimum-deployment-target");
+				args.Add (MinimumOSVersion);
+			}
 
 			var platform = PlatformUtils.GetTargetPlatform (SdkPlatform, IsWatchApp);
 
-			if (platform is not null)
-				args.Add ("--platform", platform);
+			if (platform is not null) {
+				args.Add ("--platform");
+				args.Add (platform);
+			}
 
 			if (!string.IsNullOrEmpty (AppIcon)) {
 				if (Platform == ApplePlatform.TVOS) {
@@ -170,7 +187,7 @@ namespace Xamarin.MacDev.Tasks {
 					}
 				}
 				args.Add ("--app-icon");
-				args.AddQuoted (AppIcon);
+				args.Add (AppIcon);
 			}
 
 			foreach (var alternate in AlternateAppIcons) {
@@ -192,14 +209,14 @@ namespace Xamarin.MacDev.Tasks {
 				}
 				// This doesn't seem to be necessary/applicable for tvOS (it also triggers a warning from actool)
 				args.Add ("--alternate-app-icon");
-				args.AddQuoted (alternateAppIcon);
+				args.Add (alternateAppIcon);
 			}
 
 			if (IncludeAllAppIcons)
 				args.Add ("--include-all-app-icons");
 
 			args.Add ("--output-partial-info-plist");
-			args.AddQuoted (Path.GetFullPath (partialAppManifestPath));
+			args.Add (Path.GetFullPath (partialAppManifestPath));
 		}
 
 		IEnumerable<ITaskItem> GetCompiledBundleResources (PDictionary output, string intermediateBundleDir)

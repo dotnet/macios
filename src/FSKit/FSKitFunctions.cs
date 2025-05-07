@@ -10,7 +10,7 @@ using ObjCRuntime;
 
 // Let's hope that by .NET 11 we've ironed out all the bugs in the API.
 // This can of course be adjusted as needed (until we've released as stable).
-#if NET110_0_OR_GREATER
+#if NET11_0_OR_GREATER
 #define STABLE_FSKIT
 #endif
 

@@ -57,7 +57,7 @@ namespace Security {
 				var rv = sec_protocol_metadata_copy_negotiated_protocol (GetCheckedHandle ());
 				var str = Marshal.PtrToStringUTF8 (rv);
 				unsafe {
-					NativeMemory.Free ((void *) rv);
+					NativeMemory.Free ((void*) rv);
 				}
 				return str;
 			}
@@ -350,7 +350,7 @@ namespace Security {
 				var rv = sec_protocol_metadata_copy_server_name (GetCheckedHandle ());
 				var str = Marshal.PtrToStringUTF8 (rv);
 				unsafe {
-					NativeMemory.Free ((void *) rv);
+					NativeMemory.Free ((void*) rv);
 				}
 				return str;
 			}

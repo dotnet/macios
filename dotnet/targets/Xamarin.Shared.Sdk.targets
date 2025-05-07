@@ -995,10 +995,11 @@
 
 			<_MonoNugetPackageId>Microsoft.NETCore.App.Runtime.$(_PackageIdInfix)$(RuntimeIdentifier)</_MonoNugetPackageId>
 			<_XamarinNugetPackageId>Microsoft.$(_PlatformName).Runtime.$(RuntimeIdentifier).$(_XamarinPackSuffix)</_XamarinNugetPackageId>
+			<_XamarinNugetManagedPackageId>Microsoft.$(_PlatformName).Runtime.$(_PlatformRidNoArch).$(_XamarinPackSuffix)</_XamarinNugetManagedPackageId>
 		</PropertyGroup>
 		<ItemGroup>
 			<!-- Look in the ResolvedFrameworkReference for our Microsoft.* package. This should only find a single package. -->
-			<_XamarinFrameworkReference Include="@(ResolvedFrameworkReference)" Condition="'%(ResolvedFrameworkReference.Identity)' == 'Microsoft.$(_PlatformName)'" />
+			<_XamarinFrameworkReference Include="@(ResolvedFrameworkReference)" Condition="'%(ResolvedFrameworkReference.Identity)' == 'Microsoft.$(_PlatformName).Runtimes'" />
 			<_MonoFrameworkReference Include="@(ResolvedFrameworkReference)" Condition="'%(ResolvedFrameworkReference.RuntimePackName)' == '$(_MonoNugetPackageId)'" />
 		</ItemGroup>
 		<PropertyGroup>
@@ -1740,7 +1741,7 @@
 		<ItemGroup>
 			<ReferenceCopyLocalPaths
 				Include="@(ReferenceCopyLocalPaths->'%(RootDir)%(Directory)%(Filename).pdb')"
-				Condition="'%(ReferenceCopyLocalPaths.NuGetPackageId)' == '$(_XamarinNugetPackageId)' and Exists('%(RootDir)%(Directory)%(Filename).pdb')" />
+				Condition="'%(ReferenceCopyLocalPaths.NuGetPackageId)' == '$(_XamarinNugetManagedPackageId)' and Exists('%(RootDir)%(Directory)%(Filename).pdb')" />
 		</ItemGroup>
 	</Target>
 

@@ -77,14 +77,6 @@ namespace AppKit {
 		{
 			return NSFileTypeForHFSTypeCode (fourCcTypeCode);
 		}
-
-#if !NET
-		[Obsolete ("Use the overload that takes 'out NSError' instead.")]
-		public virtual NSRunningApplication LaunchApplication (NSUrl url, NSWorkspaceLaunchOptions options, NSDictionary configuration, NSError error)
-		{
-			return LaunchApplication (url, options, configuration, out error);
-		}
-#endif
 	}
 }
 #endif // !__MACCATALYST__

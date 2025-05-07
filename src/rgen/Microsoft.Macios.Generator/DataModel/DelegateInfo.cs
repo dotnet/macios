@@ -5,6 +5,7 @@ using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Microsoft.CodeAnalysis;
+using Microsoft.Macios.Generator.Extensions;
 
 namespace Microsoft.Macios.Generator.DataModel;
 
@@ -24,6 +25,16 @@ sealed record DelegateInfo {
 	public TypeInfo ReturnType { get; }
 
 	/// <summary>
+	/// True if the delegate was decorated with the BlockCallbackAttribute.
+	/// </summary>
+	public bool IsBlockCallback { get; init; }
+
+	/// <summary>
+	/// True if the delegate was decorated with the CCallbackAttribute.
+	/// </summary>
+	public bool IsCCallback { get; init; }
+
+	/// <summary>
 	/// Parameters list.
 	/// </summary>
 	public ImmutableArray<DelegateParameter> Parameters { get; } = [];
@@ -35,8 +46,14 @@ sealed record DelegateInfo {
 		Parameters = parameters;
 	}
 
-	public static bool TryCreate (IMethodSymbol method, [NotNullWhen (true)] out DelegateInfo? change)
+	public static bool TryCreate (INamedTypeSymbol symbol, [NotNullWhen (true)] out DelegateInfo? change)
 	{
+		if (symbol.DelegateInvokeMethod is null) {
+			change = null;
+			return false;
+		}
+
+		var method = symbol.DelegateInvokeMethod;
 		var parametersBucket = ImmutableArray.CreateBuilder<DelegateParameter> ();
 		// loop over the parameters of the construct since changes on those implies a change in the generated code
 		foreach (var parameter in method.Parameters) {
@@ -48,7 +65,10 @@ sealed record DelegateInfo {
 		change = new (
 			name: method.Name,
 			returnType: new (method.ReturnType),
-			parameters: parametersBucket.ToImmutableArray ());
+			parameters: parametersBucket.ToImmutableArray ()) {
+			IsBlockCallback = symbol.HasAttribute ("ObjCRuntime.BlockCallbackAttribute"),
+			IsCCallback = symbol.HasAttribute ("ObjCRuntime.CCallbackAttribute"),
+		};
 		return true;
 	}
 

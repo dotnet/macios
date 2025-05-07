@@ -61,6 +61,7 @@ trigger:
     - refs/heads/dev/*
     - refs/heads/darc-*
     - refs/heads/backport-pr-*
+    - refs/heads/lego/*
 
 pr:
   autoCancel: true

@@ -76,6 +76,7 @@ trigger:
       - refs/heads/dev/*
       - refs/heads/darc-*
       - refs/heads/backport-pr-*
+      - refs/heads/lego/*
   paths:
     exclude:
       - .github

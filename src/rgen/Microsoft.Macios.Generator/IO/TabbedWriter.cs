@@ -166,7 +166,7 @@ abstract class TabbedWriter<T> : IDisposable, IAsyncDisposable where T : TextWri
 		return this;
 	}
 
-#if NET9_0
+#if NET9_0_OR_GREATER
 	public TabbedWriter<T> Write (ref DefaultInterpolatedStringHandler handler)
 	{
 		Writer.Write (handler.ToStringAndClear ());

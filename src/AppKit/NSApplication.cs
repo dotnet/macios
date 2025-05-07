@@ -44,10 +44,6 @@ namespace AppKit {
 		///         <remarks>To be added.</remarks>
 		public static bool CheckForEventAndDelegateMismatches = true;
 
-#if !NET
-		public static bool IgnoreMissingAssembliesDuringRegistration = false;
-#endif
-
 		private static Thread? mainThread;
 
 		[DllImport (Constants.AppKitLibrary)]
@@ -68,12 +64,8 @@ namespace AppKit {
 
 			initialized = true;
 
-#if NET
 			if (Runtime.DynamicRegistrationSupported)
 				Runtime.RegisterAssemblies ();
-#else
-			Runtime.RegisterAssemblies ();
-#endif
 
 			// Runtime hosts embedding MonoMac may use a different sync context 
 			// and call NSApplicationMain externally prior to this Init, so only
@@ -176,13 +168,6 @@ namespace AppKit {
 		{
 			DiscardEvents ((nuint) (ulong) mask, lastEvent);
 		}
-
-#if !NET
-		[Obsolete ("This method does nothing.")]
-		public static void RestoreWindow (string identifier, Foundation.NSCoder state, NSWindowCompletionHandler onCompletion)
-		{
-		}
-#endif
 
 		// note: if needed override the protected Get|Set methods
 		/// <summary>To be added.</summary>

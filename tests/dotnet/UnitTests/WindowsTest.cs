@@ -234,11 +234,13 @@ namespace Xamarin.Tests {
 			Configuration.Touch (appDelegatePath);
 
 			rv = DotNet.AssertBuild (project_path, properties);
+			var allTargets = BinLog.GetAllTargets (rv.BinLogPath);
 			warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).ToArray ();
 			warningMessages = BundleStructureTest.FilterWarnings (warnings, canonicalizePaths: true);
 
 			BundleStructureTest.CheckZippedAppBundleContents (platform, zippedAppBundlePath, rids, signature, isReleaseBuild);
 			AssertWarningsEqual (expectedWarnings, warningMessages, "Warnings Rebuild 1");
+			AssertTargetNotExecuted (allTargets, "_CompileAppManifest", "_CompileAppManifest Rebuild 1");
 			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
 
 			// remove the bin directory, and rebuild should succeed and do the right thing
@@ -246,20 +248,24 @@ namespace Xamarin.Tests {
 			Directory.Delete (binDirectory, true);
 
 			rv = DotNet.AssertBuild (project_path, properties);
+			allTargets = BinLog.GetAllTargets (rv.BinLogPath);
 			warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).ToArray ();
 			warningMessages = BundleStructureTest.FilterWarnings (warnings, canonicalizePaths: true);
 
 			BundleStructureTest.CheckZippedAppBundleContents (platform, zippedAppBundlePath, rids, signature, isReleaseBuild);
 			AssertWarningsEqual (expectedWarnings, warningMessages, "Warnings Rebuild 2");
+			AssertTargetNotExecuted (allTargets, "_CompileAppManifest", "_CompileAppManifest Rebuild 2");
 			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
 
 			// a simple rebuild should succeed
 			rv = DotNet.AssertBuild (project_path, properties);
+			allTargets = BinLog.GetAllTargets (rv.BinLogPath);
 			warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).ToArray ();
 			warningMessages = BundleStructureTest.FilterWarnings (warnings, canonicalizePaths: true);
 
 			BundleStructureTest.CheckZippedAppBundleContents (platform, zippedAppBundlePath, rids, signature, isReleaseBuild);
 			AssertWarningsEqual (expectedWarnings, warningMessages, "Warnings Rebuild 3");
+			AssertTargetNotExecuted (allTargets, "_CompileAppManifest", "_CompileAppManifest Rebuild 3");
 			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
 		}
 

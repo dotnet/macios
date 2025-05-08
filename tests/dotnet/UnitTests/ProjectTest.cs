@@ -786,6 +786,16 @@ namespace Xamarin.Tests {
 			Assert.AreEqual (runtimeIdentifiers.Split (';').Any (v => v.EndsWith ("-arm64")), File.Exists (arm64txt), "arm64.txt");
 			Assert.AreEqual (runtimeIdentifiers.Split (';').Any (v => v.EndsWith ("-arm")), File.Exists (armtxt), "arm.txt");
 			Assert.AreEqual (runtimeIdentifiers.Split (';').Any (v => v.EndsWith ("-x64")), File.Exists (x64txt), "x64.txt");
+
+			var b_otf = Path.Combine (Path.GetDirectoryName (project_path)!, "Resources", "B.otf");
+			Configuration.Touch (b_otf);
+			var rv = DotNet.AssertBuild (project_path, GetDefaultProperties (runtimeIdentifiers));
+			var allTargets = BinLog.GetAllTargets (rv.BinLogPath);
+			AssertTargetExecuted (allTargets, "_CompileAppManifest", "_CompileAppManifest rebuild");
+
+			rv = DotNet.AssertBuild (project_path, GetDefaultProperties (runtimeIdentifiers));
+			allTargets = BinLog.GetAllTargets (rv.BinLogPath);
+			AssertTargetNotExecuted (allTargets, "_CompileAppManifest", "_CompileAppManifest rebuild 2");
 		}
 
 		[Category ("Windows")]

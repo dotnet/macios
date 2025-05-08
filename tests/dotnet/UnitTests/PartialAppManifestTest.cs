@@ -23,6 +23,16 @@ namespace Xamarin.Tests {
 			Assert.AreEqual ("3.14", infoPlist.GetString ("CFBundleVersion").Value, "CFBundleVersion");
 			Assert.AreEqual ("3.14", infoPlist.GetString ("CFBundleShortVersionString").Value, "CFBundleShortVersionString");
 			Assert.AreEqual ("SomeValue", infoPlist.GetString ("Something").Value, "Something");
+
+			var partialAppManifestPath = Path.Combine (Path.GetDirectoryName (project_path)!, "..", "Partial.plist");
+			Configuration.Touch (partialAppManifestPath);
+			var rv = DotNet.AssertBuild (project_path, GetDefaultProperties (runtimeIdentifiers));
+			var allTargets = BinLog.GetAllTargets (rv.BinLogPath);
+			AssertTargetExecuted (allTargets, "_CompileAppManifest", "_CompileAppManifest rebuild");
+
+			rv = DotNet.AssertBuild (project_path, GetDefaultProperties (runtimeIdentifiers));
+			allTargets = BinLog.GetAllTargets (rv.BinLogPath);
+			AssertTargetNotExecuted (allTargets, "_CompileAppManifest", "_CompileAppManifest rebuild 2");
 		}
 	}
 }

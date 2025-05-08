@@ -171,8 +171,8 @@ namespace Xamarin.MacDev.Tasks {
 			Validation (plist);
 
 			// write the resulting app manifest
-			if (FileUtils.UpdateFile (CompiledAppManifest!.ItemSpec, (tmpfile) => plist.Save (tmpfile, true, true)))
-				Log.LogMessage (MessageImportance.Low, "The file {0} is up-to-date.", CompiledAppManifest.ItemSpec);
+			plist.Save (CompiledAppManifest!.ItemSpec, true, true);
+			Log.LogMessage (MessageImportance.Low, "The app manifest {0} was updated.", CompiledAppManifest.ItemSpec);
 
 			return !Log.HasLoggedErrors;
 		}

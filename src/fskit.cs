@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
 using System;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
@@ -7,17 +10,15 @@ using Darwin;
 using Foundation;
 using ObjCRuntime;
 
-#if NET
-
 // Let's hope that by .NET 11 we've ironed out all the bugs in the API.
 // This can of course be adjusted as needed (until we've released as stable).
 #if NET11_0_OR_GREATER
 #define STABLE_FSKIT
 #endif
 
-using FSDirectoryCookie = System.UIntPtr /* NSUInteger= nuint */;
-using FSDirectoryVerifier = System.UIntPtr /* NSUInteger= nuint */;
-using FSOperationID = System.UInt64;
+using FSDirectoryCookie = System.UInt64;
+using FSDirectoryVerifier = System.UInt64;
+using FSOperationId = System.UIntPtr; // typedef NSUInteger FSOperationID
 
 namespace FSKit {
 #if !STABLE_FSKIT
@@ -35,14 +36,12 @@ namespace FSKit {
 	interface FSClient
 	{
 		[Static]
+		[Export ("sharedInstance")]
+		FSClient SharedInstance { get; }
+
 		[Async]
 		[Export ("fetchInstalledExtensionsWithCompletionHandler:")]
 		void FetchInstalledExtensions (FetchInstalledExtensionsCallback results);
-
-		[Static]
-		[Export ("installedExtensionsWithError:")]
-		[return: NullAllowed]
-		FSModuleIdentity[] GetInstalledExtensions (out NSError error);
 	}
 
 #if !STABLE_FSKIT
@@ -79,62 +78,17 @@ namespace FSKit {
 		[Export ("initWithUUID:")]
 		NativeHandle Constructor (NSUuid uuid);
 
+		[Export ("initWithUUID:qualifier:")]
+		NativeHandle Constructor (NSUuid uuid, ulong qualifier);
+
 		[Export ("initWithUUID:data:")]
 		NativeHandle Constructor (NSUuid uuid, NSData qualifier);
-
-		// There's no documentation on what the 'bytes' pointer is, so wait with the binding for it.
-		// [Export ("initWithUUID:byteQualifier:")]
-		// NativeHandle Constructor (NSUuid uuid, IntPtr /* sbyte* */ bytes);
-
-		// There's no documentation on what the 'bytes' pointer is, so wait with the binding for it.
-		// [Export ("initWithUUID:longByteQualifier:")]
-		// NativeHandle Constructor (NSUuid uuid, IntPtr /* sbyte* */ bytes);
-
-		[Static]
-		[Export ("identifier")]
-		FSEntityIdentifier Create ();
-
-		[Static]
-		[Export ("identifierWithUUID:")]
-		FSEntityIdentifier Create (NSUuid uuid);
-
-		[Static]
-		[Export ("identifierWithUUID:data:")]
-		FSEntityIdentifier Create (NSUuid uuid, NSData qualifier);
-
-		// There's no documentation on what the 'bytes' pointer is, so wait with the binding for it.
-		// [Static]
-		// [Export ("identifierWithUUID:byteQualifier:")]
-		// FSEntityIdentifier CreateWithByteQualifier (NSUuid uuid, IntPtr /* sbyte* */ bytes);
-
-		// There's no documentation on what the 'bytes' pointer is, so wait with the binding for it.
-		// [Static]
-		// [Export ("identifierWithUUID:longByteQualifier:")]
-		// FSEntityIdentifier CreateWithLongByteQualifier (NSUuid uuid, IntPtr /* sbyte* */ bytes);
 
 		[Export ("uuid", ArgumentSemantic.Retain)]
 		NSUuid Uuid { get; set; }
 
 		[NullAllowed, Export ("qualifier", ArgumentSemantic.Retain)]
 		NSData Qualifier { get; set; }
-	}
-
-#if !STABLE_FSKIT
-	[Experimental ("APL0002")]
-#endif
-	[Mac (15, 4)]
-	[Category]
-	[BaseType (typeof (NSUuid))]
-	interface NSUuid_FSEntityIdentifier
-	{
-		[Export ("fs_containerIdentifier")]
-		FSContainerIdentifier GetFSContainerIdentifier ();
-
-		[Export ("fs_entityIdentifier")]
-		FSEntityIdentifier GetFSEntityIdentifier ();
-
-		[Export ("fs_volumeIdentifier")]
-		FSVolumeIdentifier GetFSVolumeIdentifier ();
 	}
 
 #if !STABLE_FSKIT
@@ -159,7 +113,7 @@ namespace FSKit {
 
 		[Export ("initWithBytes:length:")]
 		[Internal]
-		NativeHandle InitWithBytes (IntPtr bytes, nuint length);
+		NativeHandle _InitWithBytes (IntPtr bytes, nuint length);
 
 		[Export ("initWithData:")]
 		NativeHandle Constructor (NSData name);
@@ -200,16 +154,12 @@ namespace FSKit {
 	interface FSFileSystemBase
 	{
 		[Abstract]
-		[NullAllowed, Export ("errorState", ArgumentSemantic.Strong)]
-		NSError ErrorState { get; set; }
+		[Export ("containerStatus", ArgumentSemantic.Copy)]
+		FSContainerStatus ContainerStatus { get; set; }
 
 		[Abstract]
-		[Export ("containerState", ArgumentSemantic.Assign)]
-		FSContainerState ContainerState { get; set; }
-
-		[Abstract]
-		[Export ("wipeResource:includingRanges:excludingRanges:completionHandler:")]
-		void WipeResource (FSBlockDeviceResource resource, NSIndexSet includingRanges, NSIndexSet excludingRanges, FSFileSystemBaseWipeResourceCompletionHandler completionHandler);
+		[Export ("wipeResource:completionHandler:")]
+		void WipeResource (FSBlockDeviceResource resource, FSFileSystemBaseWipeResourceCompletionHandler completionHandler);
 	}
 
 #if !STABLE_FSKIT
@@ -218,25 +168,24 @@ namespace FSKit {
 	[Mac (15, 4)]
 	[Native]
 	public enum FSItemAttribute : long {
-		Uid = 1 << 0,
-		Gid = 1 << 1,
-		Mode = 1 << 2,
-		Type = 1 << 3,
-		LinkCount = 1 << 4,
-		Flags = 1 << 5,
-		Size = 1 << 6,
-		AllocSize = 1 << 7,
-		FileId = 1 << 8,
-		ParentId = 1 << 9,
-		SupportsLimitedXAttrs = 1 << 10,
-		/// <summary>Inhibit Kernel Offloaded IO.</summary>
-		InhibitKoio = 1 << 11,
-		ModifyTime = 1 << 12,
-		AddedTime = 1 << 13,
-		ChangeTime = 1 << 14,
-		AccessTime = 1 << 15,
-		BirthTime = 1 << 16,
-		BackupTime = 1 << 17,
+		Type = 1L << 0,
+		Mode = 1L << 1,
+		LinkCount = 1L << 2,
+		Uid = 1L << 3,
+		Gid = 1L << 4,
+		Flags = 1L << 5,
+		Size = 1L << 6,
+		AllocSize = 1L << 7,
+		FileId = 1L << 8,
+		ParentId = 1L << 9,
+		AccessTime = 1L << 10,
+		ModifyTime = 1L << 11,
+		ChangeTime = 1L << 12,
+		BirthTime = 1L << 13,
+		BackupTime = 1L << 14,
+		AddedTime = 1L << 15,
+		SupportsLimitedXAttrs = 1L << 16,
+		InhibitKernelOffloadedIo = 1L << 17,
 	}
 
 #if !STABLE_FSKIT
@@ -291,17 +240,16 @@ namespace FSKit {
 		ulong AllocSize { get; set; }
 
 		[Export ("fileID")]
-		ulong FileId { get; set; }
+		FSItemId FileId { get; set; }
 
 		[Export ("parentID")]
-		ulong ParentId { get; set; }
+		FSItemId ParentId { get; set; }
 
 		[Export ("supportsLimitedXAttrs")]
 		bool SupportsLimitedXAttrs { get; set; }
 
-		// KOIO = Kernel Offloaded IO
-		[Export ("inhibitKOIO")]
-		bool InhibitKoio { get; set; }
+		[Export ("inhibitKernelOffloadedIO")]
+		bool InhibitKernelOffloadedIo { get; set; }
 
 		[Export ("modifyTime")]
 		TimeSpec ModifyTime { get; set; }
@@ -335,8 +283,8 @@ namespace FSKit {
 		[Export ("consumedAttributes")]
 		FSItemAttribute ConsumedAttributes { get; set; }
 
-		[Export ("wasConsumed:")]
-		bool WasConsumed (FSItemAttribute attribute);
+		[Export ("wasAttributeConsumed:")]
+		bool WasAttributeConsumed (FSItemAttribute attribute);
 	}
 
 #if !STABLE_FSKIT
@@ -349,8 +297,8 @@ namespace FSKit {
 		[Export ("wantedAttributes")]
 		FSItemAttribute WantedAttributes { get; set; }
 
-		[Export ("isWanted:")]
-		bool IsWanted (FSItemAttribute attribute);
+		[Export ("isAttributeWanted:")]
+		bool IsAttributeWanted (FSItemAttribute attribute);
 	}
 
 #if !STABLE_FSKIT
@@ -366,19 +314,8 @@ namespace FSKit {
 	[Experimental ("APL0002")]
 #endif
 	[Mac (15, 4)]
-	[BaseType (typeof (FSItem))]
-	interface FSUnaryItem
-	{
-		[Export ("queue", ArgumentSemantic.Retain)]
-		DispatchQueue Queue { get; }
-	}
-
-#if !STABLE_FSKIT
-	[Experimental ("APL0002")]
-#endif
-	[Mac (15, 4)]
 	[Partial]
-	interface FSKitConstants
+	interface FSConstants
 	{
 		[Field ("FSKitVersionNumber")]
 		double FSKitVersionNumber { get; }
@@ -392,6 +329,15 @@ namespace FSKit {
 			[Wrap ("Marshal.PtrToStringUTF8 (_FSKitVersionString)!")]
 			get;
 		}
+
+		[Field ("FSDirectoryCookieInitial")]
+		nuint FSDirectoryCookieInitial { get; }
+
+		[Field ("FSDirectoryVerifierInitial")]
+		nuint FSDirectoryVerifierInitial { get; }
+
+		[Field ("FSOperationIDUnspecified")]
+		FSOperationId FSOperationIdUnspecified { get; }
 	}
 
 #if !STABLE_FSKIT
@@ -404,95 +350,16 @@ namespace FSKit {
 #endif
 	[Mac (15, 4)]
 	[BaseType (typeof (NSObject))]
-	interface FSMessageConnection
-	{
-		[Abstract]
-		[Export ("logMessage:")]
-		void LogMessage (string str);
-
-		[Abstract]
-		[Export ("didCompleteWithError:completionHandler:")]
-		void DidComplete ([NullAllowed] NSError taskError, FSMessageConnectionDidCompleteHandler completionHandler);
-	}
-
-#if !STABLE_FSKIT
-	[Experimental ("APL0002")]
-#endif
-	[Mac (15, 4)]
-	[Static]
-	interface FSModuleIdentityAttribute {
-		[Field ("FSModuleIdentityAttributeSupportsServerURLs")]
-		NSString SupportsServerUrls { get; }
-
-		[Field ("FSModuleIdentityAttributeSupportsBlockResources")]
-		NSString SupportsBlockResources { get; }
-
-		// KOIO = Kernel Offloaded IO
-		[Field ("FSModuleIdentityAttributeSupportsKOIO")]
-		NSString SupportsKoio { get; }
-
-		[Field ("FSModuleIdentityAttributeShortName")]
-		NSString ShortName { get; }
-
-		[Field ("FSModuleIdentityAttributeMediaTypes")]
-		NSString MediaTypes { get; }
-
-		[Field ("FSModuleIdentityAttributePersonalities")]
-		NSString Personalities { get; }
-
-		[Field ("FSModuleIdentityAttributeCheckOptionSyntax")]
-		NSString CheckOptionSyntax { get; }
-
-		[Field ("FSModuleIdentityAttributeFormatOptionSyntax")]
-		NSString FormatOptionSyntax { get; }
-
-		[Field ("FSModuleIdentityAttributeActivateOptionSyntax")]
-		NSString ActivateOptionSyntax { get; }
-	}
-
-#if !STABLE_FSKIT
-	[Experimental ("APL0002")]
-#endif
-	[Mac (15, 4)]
-	[StrongDictionary (nameof (FSModuleIdentityAttribute), Suffix = "")]
-	interface FSModuleIdentityAttributes {
-		/* There's no documentation about the types of these properties, so I just guessed the types for these properties based on the names whenever possible, otherwise bound as NSObject */
-		bool SupportsServerUrls { get; }
-		bool SupportsBlockResources { get; }
-		bool SupportsKoio { get; } // KOIO = Kernel Offloaded IO
-		string ShortName { get; }
-		NSObject MediaTypes { get; }
-		NSObject Personalities { get; }
-		NSObject CheckOptionSyntax { get; }
-		NSObject FormatOptionSyntax { get; }
-		NSObject ActivateOptionSyntax { get; }
-	}
-
-#if !STABLE_FSKIT
-	[Experimental ("APL0002")]
-#endif
-	[Mac (15, 4)]
-	[BaseType (typeof (NSObject))]
 	interface FSModuleIdentity
 	{
 		[Export ("bundleIdentifier")]
 		string BundleIdentifier { get; }
-
-		[EditorBrowsable (EditorBrowsableState.Advanced)]
-		[Export ("attributes")]
-		NSDictionary WeakAttributes { get; }
-
-		[Wrap ("WeakAttributes")]
-		FSModuleIdentityAttributes Attributes { get; }
 
 		[Export ("url")]
 		NSUrl Url { get; }
 
 		[Export ("enabled")]
 		bool Enabled { [Bind ("isEnabled")] get; }
-
-		[Export ("system")]
-		bool IsSystem { [Bind ("isSystem")] get; }
 	}
 
 #if !STABLE_FSKIT
@@ -528,40 +395,11 @@ namespace FSKit {
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
-	[Mac (15, 4)]
-	[BaseType (typeof (NSObject))]
-	[DisableDefaultCtor]
-	interface FSMetadataBlockRange
-	{
-		[Export ("startBlockOffset")]
-		long StartBlockOffset { get; }
-
-		[Export ("blockLength")]
-		uint BlockLength { get; }
-
-		[Export ("numberOfBlocks")]
-		uint NumberOfBlocks { get; }
-
-		[Export ("initWithOffset:blockLength:numberOfBlocks:")]
-		NativeHandle Constructor (long startBlockOffset, uint blockLength, uint numberOfBlocks);
-
-		[Static]
-		[Export ("rangeWithOffset:blockLength:numberOfBlocks:")]
-		FSMetadataBlockRange Create (long startBlockOffset, uint blockLength, uint numberOfBlocks);
-	}
-
-#if !STABLE_FSKIT
-	[Experimental ("APL0002")]
-#endif
 	delegate void FSBlockDeviceResourceReadReplyHandler (nuint actuallyRead, [NullAllowed] NSError error);
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
 	delegate void FSBlockDeviceResourceWriteReplyHandler (nuint actuallyWritten, [NullAllowed] NSError error);
-#if !STABLE_FSKIT
-	[Experimental ("APL0002")]
-#endif
-	delegate void FSBlockDeviceResourceMetadataReplyHandler ([NullAllowed] NSError error);
 
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
@@ -596,51 +434,40 @@ namespace FSKit {
 		[Export ("physicalBlockSize")]
 		ulong PhysicalBlockSize { get; }
 
-		[Export ("terminated")]
-		bool Terminated { [Bind ("isTerminated")] get; }
+		[Async]
+		[Export ("readInto:startingAt:length:completionHandler:")]
+		void Read (IntPtr buffer, long offset, nuint length, FSBlockDeviceResourceReadReplyHandler completionHandler);
 
-		[Export ("terminate")]
-		void Terminate ();
+		[Export ("readInto:startingAt:length:error:")]
+		nuint Read (IntPtr buffer, long offset, nuint length, [NullAllowed] out NSError error);
 
 		[Async]
-		[Export ("readInto:startingAt:length:replyHandler:")]
-		void Read (IntPtr buffer, long offset, nuint length, FSBlockDeviceResourceReadReplyHandler reply);
+		[Export ("writeFrom:startingAt:length:completionHandler:")]
+		void Write (IntPtr buffer, long offset, nuint length, FSBlockDeviceResourceWriteReplyHandler completionHandler);
 
-		[Export ("synchronousReadInto:startingAt:length:replyHandler:")]
-		void SynchronousRead (IntPtr buffer, long offset, nuint length, FSBlockDeviceResourceReadReplyHandler reply);
+		[Export ("writeFrom:startingAt:length:error:")]
+		nuint Write (IntPtr buffer, long offset, nuint length, [NullAllowed] out NSError error);
 
-		[Async]
-		[Export ("writeFrom:startingAt:length:replyHandler:")]
-		void Write (IntPtr buffer, long offset, nuint length, FSBlockDeviceResourceWriteReplyHandler reply);
+		[Export ("metadataReadInto:startingAt:length:error:")]
+		bool MetadataRead (IntPtr buffer, long offset, nuint length, [NullAllowed] out NSError error);
 
-		[Export ("synchronousWriteFrom:startingAt:length:replyHandler:")]
-		void SynchronousWrite (IntPtr buffer, long offset, nuint length, FSBlockDeviceResourceWriteReplyHandler reply);
+		[Export ("metadataWriteFrom:startingAt:length:error:")]
+		bool MetadataWrite (IntPtr buffer, long offset, nuint length, [NullAllowed] out NSError error);
 
-		[Export ("synchronousMetadataReadInto:startingAt:length:replyHandler:")]
-		void SynchronousMetadataRead (IntPtr buffer, long offset, nuint length, FSBlockDeviceResourceMetadataReplyHandler reply);
+		[Export ("delayedMetadataWriteFrom:startingAt:length:error:")]
+		bool DelayedMetadataWrite (IntPtr buffer, long offset, nuint length, [NullAllowed] out NSError error);
 
-		[Export ("synchronousMetadataReadInto:startingAt:length:readAheadExtents:readAheadCount:replyHandler:")]
-		void SynchronousMetadataRead (IntPtr buffer, long offset, nuint length, IntPtr readAheadExtents, nint readAheadExtentsCount, FSBlockDeviceResourceMetadataReplyHandler reply);
+		[Export ("metadataFlushWithError:")]
+		bool MetadataFlush ([NullAllowed] out NSError error);
 
-		[Async]
-		[Export ("metadataWriteFrom:startingAt:length:replyHandler:")]
-		void MetadataWrite (IntPtr buffer, long offset, nuint length, FSBlockDeviceResourceMetadataReplyHandler reply);
+		[Export ("asynchronousMetadataFlushWithError:")]
+		bool AsynchronousMetadataFlush ([NullAllowed] out NSError error);
 
-		[Export ("synchronousMetadataWriteFrom:startingAt:length:replyHandler:")]
-		void SynchronousMetadataWrite (IntPtr buffer, long offset, nuint length, FSBlockDeviceResourceMetadataReplyHandler reply);
+		[Export ("metadataClear:withDelayedWrites:error:")]
+		bool MetadataClear (FSMetadataRange[] rangesToClear, bool withDelayedWrites, [NullAllowed] out NSError error);
 
-		[Async]
-		[Export ("delayedMetadataWriteFrom:startingAt:length:replyHandler:")]
-		void DelayedMetadataWriteFrom (IntPtr buffer, long offset, nuint length, FSBlockDeviceResourceMetadataReplyHandler reply);
-
-		[Export ("synchronousMetadataFlushWithReplyHandler:")]
-		void SynchronousMetadataFlush (FSBlockDeviceResourceMetadataReplyHandler reply);
-
-		[Export ("synchronousMetadataClear:wait:replyHandler:")]
-		void SynchronousMetadataClear (FSMetadataBlockRange[] rangesToClear, bool wait, FSBlockDeviceResourceMetadataReplyHandler reply);
-
-		[Export ("synchronousMetadataPurge:replyHandler:")]
-		void SynchronousMetadataPurge (FSMetadataBlockRange[] rangesToPurge, FSBlockDeviceResourceMetadataReplyHandler reply);
+		[Export ("metadataPurge:error:")]
+		bool MetadataPurge (FSMetadataRange[] rangesToPurge, [NullAllowed] out NSError error);
 	}
 
 #if !STABLE_FSKIT
@@ -655,28 +482,14 @@ namespace FSKit {
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
 	interface FSManageableResourceMaintenanceOperations
 	{
-		[Export ("checkWithParameters:connection:taskID:replyHandler:")]
-		void Check (string[] parameters, FSMessageConnection connection, NSUuid taskId, FSManageableResourceMaintenanceOperationsHandler reply);
+		[Abstract]
+		[Export ("startCheckWithTask:options:error:")]
+		NSProgress StartCheckWithTask (FSTask task, FSTaskOptions options, [NullAllowed] out NSError error);
 
-		[Export ("formatWithParameters:connection:taskID:replyHandler:")]
-		void Format (string[] parameters, FSMessageConnection connection, NSUuid taskId, FSManageableResourceMaintenanceOperationsHandler reply);
-	}
-
-#if !STABLE_FSKIT
-	[Experimental ("APL0002")]
-#endif
-	[Mac (15, 4)]
-	[BaseType (typeof(FSResource), Name = "FSGenericURLResource")]
-	[DisableDefaultCtor]
-	interface FSGenericUrlResource
-	{
-		[Export ("URL", ArgumentSemantic.Strong)]
-		NSUrl Url { get; }
-
-		[Static]
-		[Export ("resourceWithURL:")]
+		[Abstract]
+		[Export ("startFormatWithTask:options:error:")]
 		[return: NullAllowed]
-		FSGenericUrlResource Create (NSUrl url);
+		NSProgress StartFormat (FSTask task, FSTaskOptions options, [NullAllowed] out NSError error);
 	}
 
 #if !STABLE_FSKIT
@@ -695,27 +508,25 @@ namespace FSKit {
 		[Export ("containerID"), NullAllowed]
 		FSContainerIdentifier ContainerId { get; }
 
-		[return: NullAllowed]
 		[Static]
-		[Export ("resultWithResult:name:containerID:")]
-		FSProbeResult Create (FSMatchResult result, [NullAllowed] string name, [NullAllowed] FSContainerIdentifier containerUuid);
-	}
+		[Export ("notRecognizedProbeResult")]
+		FSProbeResult NotRecognizedProbeResult { get; }
 
-#if !STABLE_FSKIT
-	[Experimental ("APL0002")]
-#endif
-	delegate void FSBlockDeviceOperationsProbeResult ([NullAllowed] FSProbeResult result, [NullAllowed] NSError error);
+		[Static]
+		[Export ("recognizedProbeResultWithName:containerID:")]
+		FSProbeResult CreateRecognizedProbeResult (string name, FSContainerIdentifier containerId);
 
-#if !STABLE_FSKIT
-	[Experimental ("APL0002")]
-#endif
-	[Mac (15, 4)]
-	[Protocol (BackwardsCompatibleCodeGeneration = false)]
-	interface FSBlockDeviceOperations
-	{
-		[Abstract]
-		[Export ("probeResource:replyHandler:")]
-		void ProbeResource (FSResource resource, FSBlockDeviceOperationsProbeResult reply);
+		[Static]
+		[Export ("usableButLimitedProbeResult")]
+		FSProbeResult UsableButLimitedProbeResult { get; }
+
+		[Static]
+		[Export ("usableButLimitedProbeResultWithName:containerID:")]
+		FSProbeResult CreateUsableButLimitedProbeResult (string name, FSContainerIdentifier containerId);
+
+		[Static]
+		[Export ("usableProbeResultWithName:containerID:")]
+		FSProbeResult CreateUsableProbeResult (string name, FSContainerIdentifier containerId);
 	}
 
 #if !STABLE_FSKIT
@@ -730,6 +541,15 @@ namespace FSKit {
 	[Experimental ("APL0002")]
 #endif
 	delegate void FSUnaryFileSystemOperationsLoadResourceResult ([NullAllowed] FSVolume volume, [NullAllowed] NSError error);
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	delegate void FSUnaryFileSystemOperationsProbeResourceResult ([NullAllowed] FSProbeResult volume, [NullAllowed] NSError error);
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	delegate void FSUnaryFileSystemOperationsUnloadResourceResult ([NullAllowed] NSError error);
+
 
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
@@ -739,11 +559,20 @@ namespace FSKit {
 	interface FSUnaryFileSystemOperations
 	{
 		[Abstract]
+		[Export ("probeResource:replyHandler:")]
+		void ProbeResource (FSResource resource, FSUnaryFileSystemOperationsProbeResourceResult replyHandler);
+
+		[Abstract]
 		[Export ("loadResource:options:replyHandler:")]
-		void LoadResource (FSResource resource, string[] options, FSUnaryFileSystemOperationsLoadResourceResult reply);
+		void LoadResource (FSResource resource, FSTaskOptions options, FSUnaryFileSystemOperationsLoadResourceResult replyHandler);
+
+		[Abstract]
+		[Export ("unloadResource:options:replyHandler:")]
+		void UnloadResource (FSResource resource, FSTaskOptions options, FSUnaryFileSystemOperationsUnloadResourceResult reply);
 
 		[Export ("didFinishLoading")]
 		void DidFinishLoading ();
+
 	}
 
 #if !STABLE_FSKIT
@@ -752,17 +581,6 @@ namespace FSKit {
 	[Mac (15, 4)]
 	[BaseType (typeof (FSEntityIdentifier))]
 	interface FSVolumeIdentifier {
-	}
-
-#if !STABLE_FSKIT
-	[Experimental ("APL0002")]
-#endif
-	[Mac (15, 4)]
-	[ErrorDomain ("FSVolumeErrorDomain")]
-	[Native]
-	public enum FSVolumeErrorCode : long
-	{
-		BadDirectoryCookie = 1,
 	}
 
 #if !STABLE_FSKIT
@@ -806,12 +624,6 @@ namespace FSKit {
 		[Export ("supportsZeroRuns")]
 		bool SupportsZeroRuns { get; set; }
 
-		[Export ("supportsCaseSensitiveNames")]
-		bool SupportsCaseSensitiveNames { get; set; }
-
-		[Export ("supportsCasePreservingNames")]
-		bool SupportsCasePreservingNames { get; set; }
-
 		[Export ("supportsFastStatFS")]
 		bool SupportsFastStatFS { get; set; }
 
@@ -844,6 +656,9 @@ namespace FSKit {
 
 		[Export ("supportsVolumeGroups")]
 		bool SupportsVolumeGroups { get; set; }
+
+		[Export ("caseFormat", ArgumentSemantic.Assign)]
+		FSVolumeCaseFormat CaseFormat { get; set; }
 	}
 
 #if !STABLE_FSKIT
@@ -869,45 +684,36 @@ namespace FSKit {
 	[Experimental ("APL0002")]
 #endif
 	[Mac (15, 4)]
-	[Static]
-	interface FSConstants {
-		[Field ("FSDirectoryCookieInitial")]
-		nuint FSDirectoryCookieInitial { get; }
-
-		[Field ("FSDirectoryVerifierInitial")]
-		nuint FSDirectoryVerifierInitial { get; }
-	}
-
-#if !STABLE_FSKIT
-	[Experimental ("APL0002")]
-#endif
-	[Mac (15, 4)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
 	interface FSVolumePathConfOperations
 	{
 		[Abstract]
-		[Export ("maxLinkCount")]
-		int MaxLinkCount { get; }
+		[Export ("maximumLinkCount")]
+		nint MaximumLinkCount { get; }
 
 		[Abstract]
-		[Export ("maxNameLength")]
-		int MaxNameLength { get; }
+		[Export ("maximumNameLength")]
+		nint MaximumNameLength { get; }
 
 		[Abstract]
-		[Export ("chownRestricted")]
-		bool ChownRestricted { [Bind ("isChownRestricted")] get; }
+		[Export ("restrictsOwnershipChanges")]
+		bool RestrictsOwnershipChanges { get; }
 
 		[Abstract]
-		[Export ("longNameTruncated")]
-		bool LongNameTruncated { [Bind ("isLongNameTruncated")] get; }
+		[Export ("truncatesLongNames")]
+		bool TruncatesLongNames { get; }
 
-		[Abstract]
-		[Export ("maxXattrSizeInBits")]
-		int MaxXattrSizeInBits { get; }
+		[Export ("maximumXattrSize")]
+		nint MaximumXattrSize { get; }
 
-		[Abstract]
-		[Export ("maxFileSizeInBits")]
-		int MaxFileSizeInBits { get; }
+		[Export ("maximumXattrSizeInBits")]
+		nint MaximumXattrSizeInBits { get; }
+
+		[Export ("maximumFileSize")]
+		ulong MaximumFileSize { get; }
+
+		[Export ("maximumFileSizeInBits")]
+		nint MaximumFileSizeInBits { get; }
 	}
 
 #if !STABLE_FSKIT
@@ -924,10 +730,10 @@ namespace FSKit {
 	interface FSStatFSResult : INSSecureCoding
 	{
 		[Export ("blockSize")]
-		ulong BlockSize { get; set; }
+		nint BlockSize { get; set; }
 
 		[Export ("ioSize")]
-		ulong IoSize { get; set; }
+		nint IoSize { get; set; }
 
 		[Export ("totalBlocks")]
 		ulong TotalBlocks { get; set; }
@@ -959,25 +765,20 @@ namespace FSKit {
 		[Export ("freeFiles")]
 		ulong FreeFiles { get; set; }
 
-		[Export ("filesystemSubType")]
-		uint FilesystemSubType { get; set; }
+		[Export ("fileSystemSubType")]
+		nint FileSystemSubType { get; set; }
 
-		[Export ("filesystemTypeName", ArgumentSemantic.Copy)]
-		string FilesystemTypeName { get; }
+		[Export ("fileSystemTypeName", ArgumentSemantic.Copy)]
+		string FileSystemTypeName { get; }
 
-		[Export ("initWithFSTypeName:")]
-		NativeHandle Constructor (string filesystemTypeName);
+		[Export ("initWithFileSystemTypeName:")]
+		NativeHandle Constructor (string fileSystemTypeName);
 	}
 
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
-	delegate bool FSDirectoryEntryPacker (FSFileName name, FSItemType itemType, ulong itemId, FSDirectoryCookie nextCookie, [NullAllowed] FSItemAttributes itemAttributes, bool isLast);
-
-#if !STABLE_FSKIT
-	[Experimental ("APL0002")]
-#endif
-	delegate void FSVolumeOperationsMountHandler ([NullAllowed] FSItem rootItem, [NullAllowed] NSError error);
+	delegate void FSVolumeOperationsMountHandler ([NullAllowed] NSError error);
 
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
@@ -1056,15 +857,15 @@ namespace FSKit {
 
 		[Abstract]
 		[Export ("mountWithOptions:replyHandler:")]
-		void Mount (string[] options, FSVolumeOperationsMountHandler reply);
+		void Mount (FSTaskOptions options, FSVolumeOperationsMountHandler reply);
 
 		[Abstract]
 		[Export ("unmountWithReplyHandler:")]
 		void Unmount (Action reply);
 
 		[Abstract]
-		[Export ("synchronizeWithReplyHandler:")]
-		void Synchronize (FSVolumeOperationsSynchronizeHandler reply);
+		[Export ("synchronizeWithFlags:replyHandler:")]
+		void Synchronize (FSSyncFlags flags, FSVolumeOperationsSynchronizeHandler reply);
 
 		[Abstract]
 		[Export ("getAttributes:ofItem:replyHandler:")]
@@ -1107,12 +908,12 @@ namespace FSKit {
 		void RenameItem (FSItem item, FSItem sourceDirectory, FSFileName sourceName, FSFileName destinationName, FSItem destinationDirectory, [NullAllowed] FSItem overItem, FSVolumeOperationsRenameItemHandler reply);
 
 		[Abstract]
-		[Export ("enumerateDirectory:startingAtCookie:verifier:providingAttributes:usingBlock:replyHandler:")]
+		[Export ("enumerateDirectory:startingAtCookie:verifier:providingAttributes:usingPacker:replyHandler:")]
 		void EnumerateDirectory (FSItem directory, FSDirectoryCookie startingAt, FSDirectoryVerifier verifier, [NullAllowed] FSItemGetAttributesRequest attributes, FSDirectoryEntryPacker packer, FSVolumeOperationsEnumerateDirectoryHandler reply);
 
 		[Abstract]
 		[Export ("activateWithOptions:replyHandler:")]
-		void Activate (string[] options, FSVolumeOperationsActivateHandler reply);
+		void Activate (FSTaskOptions options, FSVolumeOperationsActivateHandler reply);
 
 		[Abstract]
 		[Export ("deactivateWithOptions:replyHandler:")]
@@ -1161,7 +962,7 @@ namespace FSKit {
 		FSFileName [] GetSupportedXattrNames (FSItem item);
 
 		[Abstract]
-		[Export ("xattrNamed:ofItem:replyHandler:")]
+		[Export ("getXattrNamed:ofItem:replyHandler:")]
 		void GetXattr (FSFileName name, FSItem item, FSVolumeXattrOperationsGetHandler reply);
 
 		[Abstract]
@@ -1180,8 +981,8 @@ namespace FSKit {
 	[Native]
 	[Flags]
 	enum FSVolumeOpenModes : ulong {
-		Read = 0x00000001,/* FREAD */
-		Write = 0x00000002, /* FWRITE */
+		Read = 0x1,/* FREAD */
+		Write = 0x2,
 	}
 
 #if !STABLE_FSKIT
@@ -1196,6 +997,9 @@ namespace FSKit {
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
 	interface FSVolumeOpenCloseOperations
 	{
+		[Export ("openCloseInhibited")]
+		bool IsOpenCloseInhibited { [Bind ("isOpenCloseInhibited")] get; set; }
+
 		[Abstract]
 		[Export ("openItem:withModes:replyHandler:")]
 		void OpenItem (FSItem item, FSVolumeOpenModes mode, FSVolumeOpenCloseOperationsHandler reply);
@@ -1224,11 +1028,11 @@ namespace FSKit {
 	{
 		[Abstract]
 		[Export ("readFromFile:offset:length:intoBuffer:replyHandler:")]
-		void Read (FSItem item, ulong offset, nuint length, NSMutableData buffer, FSVolumeReadWriteOperationsReadHandler reply);
+		void Read (FSItem item, long offset, nuint length, FSMutableFileDataBuffer buffer, FSVolumeReadWriteOperationsReadHandler reply);
 
 		[Abstract]
 		[Export ("writeContents:toFile:atOffset:replyHandler:")]
-		void Write (NSData contents, FSItem item, ulong offset, FSVolumeReadWriteOperationsWriteHandler reply);
+		void Write (NSData contents, FSItem item, long offset, FSVolumeReadWriteOperationsWriteHandler reply);
 	}
 
 #if !STABLE_FSKIT
@@ -1269,18 +1073,18 @@ namespace FSKit {
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
 	interface FSVolumeAccessCheckOperations
 	{
-		[Export ("accessCheckOperationsInhibited")]
-		bool AccessCheckOperationsInhibited { get; set; }
+		[Export ("accessCheckInhibited")]
+		bool IsAccessCheckInhibited { [Bind ("isAccessCheckInhibited")] get; set; }
 
 		[Abstract]
 		[Export ("checkAccessToItem:requestedAccess:replyHandler:")]
-		void CheckAccess (FSItem theItem, FSAccessMask access, FSVolumeAccessCheckOperationsCheckAccessHandler reply);
+		void RequestedAccess (FSItem theItem, FSAccessMask access, FSVolumeAccessCheckOperationsCheckAccessHandler reply);
 	}
 
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
-	delegate void FSVolumeRenameOperationsSetVolumeNameHandler (FSFileName newName, [NullAllowed] NSError error);
+	delegate void FSVolumeRenameOperationsSetVolumeNameHandler ([NullAllowed] FSFileName newName, [NullAllowed] NSError error);
 
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
@@ -1289,12 +1093,12 @@ namespace FSKit {
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
 	interface FSVolumeRenameOperations
 	{
-		[Export ("volumeRenameOperationsInhibited")]
-		bool VolumeRenameOperationsInhibited { get; set; }
+		[Export ("volumeRenameInhibited")]
+		bool IsVolumeRenameInhibited { [Bind ("isVolumeRenameInhibited")] get; set; }
 
 		[Abstract]
 		[Export ("setVolumeName:replyHandler:")]
-		void RenameVolume (FSFileName name, FSVolumeRenameOperationsSetVolumeNameHandler reply);
+		void SetVolumeName (FSFileName name, FSVolumeRenameOperationsSetVolumeNameHandler reply);
 	}
 
 #if !STABLE_FSKIT
@@ -1302,67 +1106,80 @@ namespace FSKit {
 #endif
 	[Mac (15, 4)]
 	[Flags]
-	public enum FSBlockmapFlags : uint {
-		Read       = 0x000100,
-		Write      = 0x000200,
-		Async      = 0x000400,
-		NoCache    = 0x000800,
-		FileIssued = 0x001000,
+	[Native]
+	public enum FSBlockmapFlags : ulong {
+		Read       = 0x100,
+		Write      = 0x200,
 	}
 
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
 	[Mac (15, 4)]
-	public enum FSExtentType
+	[Native]
+	public enum FSExtentType : long
 	{
 		Data = 0,
-		Zero = 1,
+		ZeroFill = 1,
 	}
 
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
-	delegate bool FSExtentPacker (FSBlockDeviceResource resource, FSExtentType type, ulong logicalOffset, ulong physicalOffset, uint length);
+	[Mac (15, 4)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface FSExtentPacker
+	{
+		[Export ("packExtentWithResource:type:logicalOffset:physicalOffset:length:")]
+		bool PackExtent (FSBlockDeviceResource resource, FSExtentType type, long logicalOffset, long physicalOffset, nuint length);
+	}
 
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
-	delegate void FSVolumeKoioOperationsHandler ([NullAllowed] NSError error);
+	delegate void FSVolumeKernelOffloadedIoOperationsHandler ([NullAllowed] NSError error);
 
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
-	delegate void FSVolumeKoioOperationsCreateFileHandler ([NullAllowed] FSItem newItem, [NullAllowed] FSFileName newItemName, [NullAllowed] NSError error);
+	delegate void FSVolumeKernelOffloadedIoOperationsCreateFileHandler ([NullAllowed] FSItem newItem, [NullAllowed] FSFileName newItemName, [NullAllowed] NSError error);
 
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
-	delegate void FSVolumeKoioOperationsLookupItemHandler ([NullAllowed] FSItem newItem, [NullAllowed] FSFileName newItemName, [NullAllowed] NSError error);
+	delegate void FSVolumeKernelOffloadedIoOperationsLookupItemHandler ([NullAllowed] FSItem newItem, [NullAllowed] FSFileName newItemName, [NullAllowed] NSError error);
 
-	// KOIO = Kernel Offloaded IO
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	delegate void FSVolumeKernelOffloadedIoOperationsPreallocateSpaceHandler (nuint bytesAllocated, [NullAllowed] NSError error);
+
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
 	[Mac (15, 4)]
-	[Protocol (Name = "FSVolumeKOIOOperations", BackwardsCompatibleCodeGeneration = false)]
-	interface FSVolumeKoioOperations
+	[Protocol (Name = "FSVolumeKernelOffloadedIOOperations", BackwardsCompatibleCodeGeneration = false)]
+	interface FSVolumeKernelOffloadedIoOperations
 	{
 		[Abstract]
-		[Export ("blockmapFile:range:startIO:flags:operationID:usingPacker:replyHandler:")]
-		void BlockmapFile (FSItem item, NSRange theRange, bool firstIo, FSBlockmapFlags flags, FSOperationID operationId, FSExtentPacker packer, FSVolumeKoioOperationsHandler reply);
+		[Export ("blockmapFile:offset:length:flags:operationID:packer:replyHandler:")]
+		void BlockmapFile (FSItem item, long offset, nuint lengthIo, FSBlockmapFlags flags, FSOperationId operationId, FSExtentPacker packer, FSVolumeKernelOffloadedIoOperationsHandler reply);
 
 		[Abstract]
-		[Export ("endIO:range:status:flags:operationID:replyHandler:")]
-		void EndIo (FSItem item, NSRange originalRange, NSError ioStatus, FSBlockmapFlags flags, FSOperationID operationId, FSVolumeKoioOperationsHandler reply);
+		[Export ("completeIOForFile:offset:length:status:flags:operationID:replyHandler:")]
+		void CompleteIo (FSItem item, long offset, nuint length, NSError status, FSCompleteIoFlags flags, FSOperationId operationId, FSVolumeKernelOffloadedIoOperationsHandler reply);
 
 		[Abstract]
-		[Export ("createFileNamed:inDirectory:attributes:usingPacker:replyHandler:")]
-		void CreateFile (FSFileName name, FSItem directory, FSItemSetAttributesRequest newAttributes, FSExtentPacker packer, FSVolumeKoioOperationsCreateFileHandler reply);
+		[Export ("createFileNamed:inDirectory:attributes:packer:replyHandler:")]
+		void CreateFile (FSFileName name, FSItem directory, FSItemSetAttributesRequest newAttributes, FSExtentPacker packer, FSVolumeKernelOffloadedIoOperationsCreateFileHandler reply);
 
 		[Abstract]
-		[Export ("lookupItemNamed:inDirectory:usingPacker:replyHandler:")]
-		void LookupItem (FSFileName name, FSItem directory, FSExtentPacker packer, FSVolumeKoioOperationsLookupItemHandler reply);
+		[Export ("lookupItemNamed:inDirectory:packer:replyHandler:")]
+		void LookupItem (FSFileName name, FSItem directory, FSExtentPacker packer, FSVolumeKernelOffloadedIoOperationsLookupItemHandler reply);
+
+		[Export ("preallocateSpaceForFile:atOffset:length:flags:packer:replyHandler:")]
+		void PreallocateSpace (FSItem file, long offset, nuint length, FSPreallocateFlags flags, FSExtentPacker packer, FSVolumeKernelOffloadedIoOperationsPreallocateSpaceHandler reply);
 	}
 
 #if !STABLE_FSKIT
@@ -1370,11 +1187,12 @@ namespace FSKit {
 #endif
 	[Mac (15, 4)]
 	[Flags]
-	enum FSPreallocateFlags : uint {
-		All        = 0x00000002,
-		Contig     = 0x00000004,
-		FromEof    = 0x00000010,
-		FromVol    = 0x00000020,
+	[Native]
+	enum FSPreallocateFlags : ulong {
+		Contiguous = 0x2,
+		All        = 0x4,
+		Persist    = 0x8,
+		FromEof    = 0x10,
 	}
 
 #if !STABLE_FSKIT
@@ -1389,13 +1207,233 @@ namespace FSKit {
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
 	interface FSVolumePreallocateOperations
 	{
-		[Export ("preallocateOperationsInhibited")]
-		bool PreallocateOperationsInhibited { get; set; }
+		[Export ("preallocateInhibited")]
+		bool IsPreallocateInhibited { [Bind ("isPreallocateInhibited")] get; set; }
 
 		[Abstract]
-		[Export ("preallocate:offset:length:flags:usingPacker:replyHandler:")]
-		void Preallocate (FSItem item, ulong offset, nuint length, FSPreallocateFlags flags, FSExtentPacker packer, FSVolumePreallocateOperationsHandler reply);
+		[Export ("preallocateSpaceForItem:atOffset:length:flags:replyHandler:")]
+		void PreallocateSpace (FSItem item, long offset, nuint length, FSPreallocateFlags flags, FSVolumePreallocateOperationsHandler reply);
+	}
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (15, 4)]
+	[Flags]
+	[Native]
+	[NativeName ("FSCompleteIOFlags")]
+	public enum FSCompleteIoFlags : ulong
+	{
+		Read = FSBlockmapFlags.Read,
+		Write = FSBlockmapFlags.Write,
+		Async = 0x400,
+	}
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[ErrorDomain ("FSKitErrorDomain")]
+	[Mac (15, 4)]
+	[Native]
+	public enum FSErrorCode : long
+	{
+		ModuleLoadFailed = 4500,
+		ResourceUnrecognized = 4501,
+		ResourceDamaged = 4502,
+		ResourceUnusable = 4503,
+		StatusOperationInProgress = 4504,
+		StatusOperationPaused = 4505,
+		InvalidDirectoryCookie = 4506,
+	}
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (15, 4)]
+	[Flags]
+	[Native]
+	public enum FSItemDeactivationOptions : ulong
+	{
+		Never = 0x0,
+		Always = ulong.MaxValue,
+		ForRemovedItems = (1uL << 0),
+		ForPreallocatedItems = (1uL << 1)
+	}
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (15, 4)]
+	public enum FSItemId : ulong
+	{
+		Invalid = 0,
+		ParentOfRoot = 1,
+		RootDirectory = 2,
+	}
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (15, 4)]
+	[Native]
+	public enum FSSyncFlags : long
+	{
+		Wait = 1,
+		NoWait = 2,
+		DWait = 4,
+	}
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (15, 4)]
+	[Native]
+	public enum FSVolumeCaseFormat : long
+	{
+		Sensitive = 0,
+		Insensitive = 1,
+		InsensitiveCasePreserving = 2,
+	}
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	delegate void FSVolumeItemDeactivationDeactivateItemHandler ([NullAllowed] NSError error);
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (15, 4)]
+	[Protocol (BackwardsCompatibleCodeGeneration = false)]
+	interface FSVolumeItemDeactivation
+	{
+		[Abstract]
+		[Export ("itemDeactivationPolicy")]
+		FSItemDeactivationOptions ItemDeactivationPolicy { get; }
+
+		[Abstract]
+		[Export ("deactivateItem:replyHandler:")]
+		void DeactivateItem (FSItem item, FSVolumeItemDeactivationDeactivateItemHandler reply);
+	}
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (15, 4)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface FSContainerStatus : NSCopying
+	{
+		[Export ("state")]
+		FSContainerState State { get; }
+
+		[NullAllowed, Export ("status", ArgumentSemantic.Copy)]
+		NSError Status { get; }
+
+		[Static]
+		[Export ("active")]
+		FSContainerStatus Active { get; }
+
+		[Static]
+		[Export ("activeWithStatus:")]
+		FSContainerStatus CreateActive (NSError errorStatus);
+
+		[Static]
+		[Export ("blockedWithStatus:")]
+		FSContainerStatus CreateBlocked (NSError errorStatus);
+
+		[Static]
+		[Export ("notReadyWithStatus:")]
+		FSContainerStatus CreateNotReady (NSError errorStatus);
+
+		[Static]
+		[Export ("ready")]
+		FSContainerStatus Ready { get; }
+
+		[Static]
+		[Export ("readyWithStatus:")]
+		FSContainerStatus CreateReady (NSError errorStatus);
+	}
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (15, 4)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface FSDirectoryEntryPacker
+	{
+		[Export ("packEntryWithName:itemType:itemID:nextCookie:attributes:")]
+		bool PackEntry (FSFileName name, FSItemType itemType, FSItemId itemId, FSDirectoryCookie nextCookie, [NullAllowed] FSItemAttributes attributes);
+	}
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (15, 4)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface FSMetadataRange
+	{
+		[Export ("startOffset")]
+		long StartOffset { get; }
+
+		[Export ("segmentLength")]
+		ulong SegmentLength { get; }
+
+		[Export ("segmentCount")]
+		ulong SegmentCount { get; }
+
+		[Export ("initWithOffset:segmentLength:segmentCount:")]
+		NativeHandle Constructor (long startOffset, ulong segmentLength, ulong segmentCount);
+
+		[Static]
+		[Export ("rangeWithOffset:segmentLength:segmentCount:")]
+		FSMetadataRange Create (long startOffset, ulong segmentLength, ulong segmentCount);
+	}
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (15, 4)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface FSMutableFileDataBuffer
+	{
+		[Export ("length")]
+		nuint Length { get; }
+
+		[Export ("mutableBytes")]
+		IntPtr MutableBytes { get; }
+	}
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (15, 4)]
+	[BaseType (typeof (NSObject))]
+	interface FSTask
+	{
+		[Export ("logMessage:")]
+		void LogMessage (string str);
+
+		[Export ("didCompleteWithError:")]
+		void DidComplete ([NullAllowed] NSError error);
+	}
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (15, 4)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface FSTaskOptions
+	{
+		[Export ("taskOptions", ArgumentSemantic.Copy)]
+		string[] TaskOptions { get; }
+
+		[Export ("urlForOption:")]
+		[return: NullAllowed]
+		NSUrl GetUrl (string option);
 	}
 }
-
-#endif // NET

@@ -929,13 +929,11 @@ FOUNDATION_SOURCES = \
 # FSKit
 
 FSKIT_CORE_SOURCES = \
-	FSKit/FSMetaReadahead.cs \
 
 FSKIT_SOURCES = \
 	FSKit/FSBlockDeviceResource.cs \
 	FSKit/FSFileName.cs \
 	FSKit/FSKitFunctions.cs \
-	FSKit/FSMessageConnection.cs \
 
 # GameController
 

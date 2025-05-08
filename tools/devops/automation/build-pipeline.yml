@@ -134,3 +134,22 @@ extends:
           forceInsertion: ${{ parameters.forceInsertion }}
           pushNugets: ${{ parameters.pushNugets }}
           pushNugetsToMaestro: ${{ parameters.pushNugetsToMaestro }}
+
+      - template: localization/v1.yml@yaml-templates
+        parameters:
+          preSteps:
+            - bash: |
+                make LocProject.json              
+              workingDirectory: $(Build.SourcesDirectory)/tools/devops
+              displayName: 'Generate LocProject.json'
+                
+          settings:
+            locProjectPath: '$(Build.SourcesDirectory)\\Localize\\LocProject.json'
+            outputPath: '$(Build.ArtifactStagingDirectory)'
+            createPr: true
+            autoCompletePr: false
+            deletePrSourceBranch: false
+            prSourceBranchPrefix: 'locfiles'
+            repoType: gitHub
+            gitHubPatVariable: '$(GitHub.Token)'
+            postLocPowerShellScript: '$(Build.SourcesDirectory)\\tools\\devops\\automation\\scripts\\localizationBomRemoval.ps1'

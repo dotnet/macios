@@ -47,12 +47,12 @@ readonly partial struct DelegateParameter : IEquatable<DelegateParameter> {
 	/// The reference type used.
 	/// </summary>
 	public ReferenceKind ReferenceKind { get; init; }
-	
+
 	/// <summary>
 	/// The parameter is passed by reference. This means any possible reference mode: in, out, ref.
 	/// </summary>
 	public bool IsByRef => ReferenceKind != ReferenceKind.None;
-	
+
 	/// <summary>
 	/// True if the delegate was decorated with the BlockCallbackAttribute.
 	/// </summary>
@@ -62,7 +62,7 @@ readonly partial struct DelegateParameter : IEquatable<DelegateParameter> {
 	/// True if the delegate was decorated with the CCallbackAttribute.
 	/// </summary>
 	public bool IsCCallback { get; init; }
-	
+
 	public DelegateParameter (int position, TypeInfo type, string name)
 	{
 		Position = position;

@@ -197,8 +197,8 @@ static partial class BindingSyntaxFactory {
 		// create the builder for the arguments, we already know the size of the array
 		var bucket = ImmutableArray.CreateBuilder<ArgumentSyntax> (delegateInfo.Parameters.Length);
 		foreach (var parameter in delegateInfo.Parameters) {
-			bucket.Add (GetTrampolineInvokeArgument(trampolineName, parameter));
-		}	
+			bucket.Add (GetTrampolineInvokeArgument (trampolineName, parameter));
+		}
 		return bucket.ToImmutable ();
 	}
 }

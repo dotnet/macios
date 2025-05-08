@@ -291,7 +291,7 @@ namespace NS {
 		var expression = CreateTrampolineNativeInvocationClass (trampolineName, arguments);
 		Assert.Equal (expectedExpression, expression.ToString ());
 	}
-	
+
 	class TestDataGetTrampolineInvokeArgument : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{
@@ -322,13 +322,13 @@ namespace NS {
 	}
 }
 ";
-			
+
 			yield return [
 				"someTrampolineName",
 				ccallbackParameter,
 				"global::System.Runtime.InteropServices.Marshal.GetDelegateForFunctionPointer<System.Action> (callbackParameter)"
 			];
-			
+
 			var blockParameter = @"
 using System;
 using ObjCRuntime;
@@ -340,7 +340,7 @@ namespace NS {
 	}
 }
 ";
-			
+
 			yield return [
 				"someTrampolineName",
 				blockParameter,
@@ -367,13 +367,13 @@ namespace NS {
         }
 }
 ";
-			
+
 			yield return [
 				"someTrampolineName",
 				nativeEnumParameter,
 				"(IntPtr) (long) enumParameter",
 			];
-			
+
 			var boolParameter = @"
 using System;
 using ObjCRuntime;
@@ -385,13 +385,13 @@ namespace NS {
 	}
 }
 ";
-			
+
 			yield return [
 				"someTrampolineName",
 				boolParameter,
 				"boolParameter ? (byte) 1 : (byte) 0",
 			];
-			
+
 			var nsObjectArray = @"
 using System;
 using Foundation;
@@ -404,13 +404,13 @@ namespace NS {
 	}
 }
 ";
-			
+
 			yield return [
 				"someTrampolineName",
 				nsObjectArray,
 				"global::CoreFoundation.CFArray.ArrayFromHandle<Foundation.NSObject> (nsObjectArray)!",
 			];
-			
+
 			var iNativeObjectArray = @"
 using System;
 using Foundation;
@@ -424,13 +424,13 @@ namespace NS {
 	}
 }
 ";
-			
+
 			yield return [
 				"someTrampolineName",
 				iNativeObjectArray,
 				"global::Foundation.NSArray.ArrayFromHandle<CoreMedia.CMTimebase> (inativeArray)!",
 			];
-			
+
 			var stringArray = @"
 using System;
 using Foundation;
@@ -443,13 +443,13 @@ namespace NS {
 	}
 }
 ";
-			
+
 			yield return [
 				"someTrampolineName",
 				stringArray,
 				"global::CoreFoundation.CFArray.StringArrayFromHandle (stringArray)!",
 			];
-			
+
 			var stringParameter = @"
 using System;
 using Foundation;
@@ -462,13 +462,13 @@ namespace NS {
 	}
 }
 ";
-			
+
 			yield return [
 				"someTrampolineName",
 				stringParameter,
 				"global::CoreFoundation.CFString.FromHandle (stringParameter)!",
 			];
-			
+
 			var protocolParameter = @"
 using System;
 using Foundation;
@@ -481,13 +481,13 @@ namespace NS {
 	}
 }
 ";
-			
+
 			yield return [
 				"someTrampolineName",
 				protocolParameter,
 				"global::ObjCRuntime.Runtime.GetINativeObject<Foundation.INSUrlConnectionDataDelegate> (protocolParameter, false)!",
 			];
-			
+
 			var forcedParameterOwnsFalse = @"
 using System;
 using Foundation;
@@ -500,13 +500,13 @@ namespace NS {
 	}
 }
 ";
-			
+
 			yield return [
 				"someTrampolineName",
 				forcedParameterOwnsFalse,
 				"global::ObjCRuntime.Runtime.GetINativeObject<Foundation.INSUrlConnectionDataDelegate> (forcedParameter, true, false)!",
 			];
-			
+
 			var forcedParameterOwnsTrue = @"
 using System;
 using Foundation;
@@ -519,13 +519,13 @@ namespace NS {
 	}
 }
 ";
-			
+
 			yield return [
 				"someTrampolineName",
 				forcedParameterOwnsTrue,
 				"global::ObjCRuntime.Runtime.GetINativeObject<Foundation.INSUrlConnectionDataDelegate> (forcedParameter, true, true)!",
 			];
-			
+
 			var nsObjectParameter = @"
 using System;
 using Foundation;
@@ -538,13 +538,13 @@ namespace NS {
 	}
 }
 ";
-			
+
 			yield return [
 				"someTrampolineName",
 				nsObjectParameter,
 				"global::ObjCRuntime.Runtime.GetNSObject<Foundation.NSObject> (nsObjectParameter)!",
 			];
-			
+
 			var iNativeParameter = @"
 using System;
 using CoreMedia;
@@ -558,13 +558,13 @@ namespace NS {
 	}
 }
 ";
-			
+
 			yield return [
 				"someTrampolineName",
 				iNativeParameter,
 				"global::ObjCRuntime.Runtime.GetINativeObject<CoreMedia.CMTimebase> (inativeParameter, false)!",
 			];
-			
+
 			var cmSampleBuffer = @"
 using System;
 using CoreMedia;
@@ -578,13 +578,13 @@ namespace NS {
 	}
 }
 ";
-			
+
 			yield return [
 				"someTrampolineName",
 				cmSampleBuffer,
 				"cmSampleBuffer == IntPtr.Zero ? null! : new global::CoreMedia.CMSampleBuffer (cmSampleBuffer, false)",
 			];
-			
+
 			var audioBuffer = @"
 using System;
 using AudioToolbox;
@@ -598,13 +598,13 @@ namespace NS {
 	}
 }
 ";
-			
+
 			yield return [
 				"someTrampolineName",
 				audioBuffer,
 				"new AudioToolbox.AudioBuffers (audioBuffer)",
 			];
-			
+
 			var outNullableInt = @"
 using System;
 using Foundation;
@@ -617,13 +617,13 @@ namespace NS {
 	}
 }
 ";
-			
+
 			yield return [
 				"someTrampolineName",
 				outNullableInt,
 				"__xamarin_nullified__0",
 			];
-			
+
 			var outBoolean = @"
 using System;
 using Foundation;
@@ -636,13 +636,13 @@ namespace NS {
 	}
 }
 ";
-			
+
 			yield return [
 				"someTrampolineName",
 				outBoolean,
 				"__xamarin_bool__0",
 			];
-			
+
 			var outNSObject = @"
 using System;
 using Foundation;
@@ -655,13 +655,13 @@ namespace NS {
 	}
 }
 ";
-			
+
 			yield return [
 				"someTrampolineName",
 				outNSObject,
 				"__xamarin_pref0",
 			];
-			
+
 			var valueType = @"
 using System;
 using Foundation;
@@ -674,7 +674,7 @@ namespace NS {
 	}
 }
 ";
-			
+
 			yield return [
 				"someTrampolineName",
 				valueType,
@@ -686,7 +686,7 @@ namespace NS {
 	}
 
 	[Theory]
-	[AllSupportedPlatformsClassData<TestDataGetTrampolineInvokeArgument >]
+	[AllSupportedPlatformsClassData<TestDataGetTrampolineInvokeArgument>]
 	void GetTrampolineInvokeArgumentTests (ApplePlatform platform, string trampolineName, string inputText, string expectedExpression)
 	{
 		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
@@ -703,8 +703,8 @@ namespace NS {
 		var parameter = changes.Value.Parameters [0];
 		// assert it is indeed a delegate
 		Assert.NotNull (parameter.Type.Delegate);
-		var expression = GetTrampolineInvokeArgument (trampolineName, parameter.Type.Delegate!.Parameters[0]);
+		var expression = GetTrampolineInvokeArgument (trampolineName, parameter.Type.Delegate!.Parameters [0]);
 		Assert.Equal (expectedExpression, expression.ToString ());
 	}
-	
+
 }

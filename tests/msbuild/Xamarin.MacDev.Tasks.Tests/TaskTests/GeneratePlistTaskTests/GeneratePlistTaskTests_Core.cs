@@ -34,10 +34,6 @@ namespace Xamarin.MacDev.Tasks {
 
 		protected abstract ApplePlatform Platform { get; }
 
-		protected GeneratePlistTaskTests_Core ()
-		{
-		}
-
 		protected virtual void ConfigureTask ()
 		{
 			Task = CreateTask<CompileAppManifest> ();

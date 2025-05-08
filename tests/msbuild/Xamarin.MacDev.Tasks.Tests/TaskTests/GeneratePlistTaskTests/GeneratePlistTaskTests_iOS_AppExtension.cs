@@ -2,8 +2,7 @@ using NUnit.Framework;
 using Xamarin.MacDev;
 
 namespace Xamarin.MacDev.Tasks {
-	[TestFixture (true)]
-	[TestFixture (false)]
+	[TestFixture]
 	public class GeneratePlistTaskTests_iOS_AppExtension : GeneratePlistTaskTests_iOS {
 		protected override void ConfigureTask ()
 		{

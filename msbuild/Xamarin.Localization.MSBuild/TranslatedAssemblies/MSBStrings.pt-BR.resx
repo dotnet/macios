@@ -20,10 +20,6 @@
         <value>A execução da ferramenta {0} foi concluída (código de saída = {1}).
         </value>
     </data>
-  <data name="E0003" xml:space="preserve">
-        <value>Erro ao executar a ferramenta '{0}': {1}
-        </value>
-    </data>
   <data name="E0004" xml:space="preserve">
         <value>Falha ao coprojetar '{0}': {1}
         </value>
@@ -414,10 +410,6 @@
     </data>
   <data name="E0115" xml:space="preserve">
         <value>Erro ao gravar o arquivo archived-expanded-entitlements.xcent: {0}
-        </value>
-    </data>
-  <data name="M0116" xml:space="preserve">
-        <value>A execução da ferramenta {0} foi concluída.
         </value>
     </data>
   <data name="E0117" xml:space="preserve">
@@ -1422,5 +1414,11 @@
   <data name="E7148" xml:space="preserve">
         <value>Unable to analyze file changes in '{0}'. An unexpected error occurred.</value>
         <comment>{0}: path to use for file changes calculation</comment>
+    </data>
+  <data name="E7151" xml:space="preserve">
+        <value>The app requests the entitlement '{0}', but this entitlement is not allowed on the current platform ({1}). It's only allowed on macOS and Mac Catalyst.</value>
+        <comment>
+            This may be either a warning or an error, depending on build configuration.
+        </comment>
     </data>
 </root>

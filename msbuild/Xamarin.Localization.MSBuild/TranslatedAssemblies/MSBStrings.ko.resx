@@ -20,10 +20,6 @@
         <value>{0} 도구 실행이 완료되었습니다(종료 코드 = {1}).
         </value>
     </data>
-  <data name="E0003" xml:space="preserve">
-        <value>'{0}' 도구를 실행하는 동안 오류 발생: {1}
-        </value>
-    </data>
   <data name="E0004" xml:space="preserve">
         <value>'{0}'을(를) 코드 서명하지 못함: {1}
         </value>
@@ -414,10 +410,6 @@
     </data>
   <data name="E0115" xml:space="preserve">
         <value>archived-expanded-entitlements.xcent 파일을 쓰는 동안 오류 발생: {0}
-        </value>
-    </data>
-  <data name="M0116" xml:space="preserve">
-        <value>{0} 도구 실행이 완료되었습니다.
         </value>
     </data>
   <data name="E0117" xml:space="preserve">
@@ -1422,5 +1414,11 @@
   <data name="E7148" xml:space="preserve">
         <value>Unable to analyze file changes in '{0}'. An unexpected error occurred.</value>
         <comment>{0}: path to use for file changes calculation</comment>
+    </data>
+  <data name="E7151" xml:space="preserve">
+        <value>The app requests the entitlement '{0}', but this entitlement is not allowed on the current platform ({1}). It's only allowed on macOS and Mac Catalyst.</value>
+        <comment>
+            This may be either a warning or an error, depending on build configuration.
+        </comment>
     </data>
 </root>

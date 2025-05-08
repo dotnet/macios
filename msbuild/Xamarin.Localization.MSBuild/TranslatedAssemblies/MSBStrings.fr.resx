@@ -20,10 +20,6 @@
         <value>L'exécution de l'outil {0} s'est achevé (code de sortie = {1}).
         </value>
     </data>
-  <data name="E0003" xml:space="preserve">
-        <value>Erreur durant l'exécution de l'outil '{0}' : {1}
-        </value>
-    </data>
   <data name="E0004" xml:space="preserve">
         <value>Échec de la coconception de '{0}' : {1}
         </value>
@@ -414,10 +410,6 @@
     </data>
   <data name="E0115" xml:space="preserve">
         <value>Erreur durant l'écriture du fichier archived-expanded-entitlements.xcent : {0}
-        </value>
-    </data>
-  <data name="M0116" xml:space="preserve">
-        <value>Fin de l'exécution de l'outil {0}.
         </value>
     </data>
   <data name="E0117" xml:space="preserve">
@@ -1422,5 +1414,11 @@
   <data name="E7148" xml:space="preserve">
         <value>Unable to analyze file changes in '{0}'. An unexpected error occurred.</value>
         <comment>{0}: path to use for file changes calculation</comment>
+    </data>
+  <data name="E7151" xml:space="preserve">
+        <value>The app requests the entitlement '{0}', but this entitlement is not allowed on the current platform ({1}). It's only allowed on macOS and Mac Catalyst.</value>
+        <comment>
+            This may be either a warning or an error, depending on build configuration.
+        </comment>
     </data>
 </root>

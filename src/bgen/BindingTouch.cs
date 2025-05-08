@@ -327,8 +327,7 @@ public class BindingTouch : IDisposable {
 			api = TypeManager.ParseApi (apiAssembly, config.ProcessEnums);
 			namespaceCache ??= new NamespaceCache (
 				CurrentPlatform,
-				config.HelperClassNamespace ?? firstApiDefinitionName,
-				LibraryManager.DetermineSkipSystemDrawing (LibraryInfo.TargetFramework)
+				config.HelperClassNamespace ?? firstApiDefinitionName
 			);
 
 

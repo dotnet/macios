@@ -46,6 +46,15 @@ static partial class BindingSyntaxFactory {
 	/// <returns>The cast C# expression.</returns>
 	internal static CastExpressionSyntax? CastToNative (in Parameter parameter)
 		=> CastToNative (parameter.Name, parameter.Type);
+	
+	/// <summary>
+	/// Returns the expression needed to cast a parameter to its native type.
+	/// </summary>
+	/// <param name="parameter">The parameter whose casting we need to generate. The type info has to be
+	/// and enum and be marked as native. If it is not, the method returns null</param>
+	/// <returns>The cast C# expression.</returns>
+	internal static CastExpressionSyntax? CastToNative (in DelegateParameter parameter)
+		=> CastToNative (parameter.Name, parameter.Type);
 
 	/// <summary>
 	/// Returns the expression needed to cast a varuable to its native type.

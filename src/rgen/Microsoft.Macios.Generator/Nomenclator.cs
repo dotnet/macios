@@ -150,7 +150,7 @@ class Nomenclator {
 	/// </summary>
 	/// <param name="parameterInfo">The parameter information for the trampoline.</param>
 	/// <returns>The name to be used for the temporary variable or null if it was unknown.</returns>
-	public static string? GetNameForTempTrampolineVariable (in Parameter parameterInfo)
+	public static string? GetNameForTempTrampolineVariable (in DelegateParameter parameterInfo)
 	{
 #pragma warning disable format
 		return parameterInfo switch {

@@ -9,7 +9,7 @@ using Foundation;
 
 namespace FSKit {
 	public partial class FSBlockDeviceResource {
-		static void ValidateArray (byte[] buffer, long offset, nuint length)
+		static void ValidateArray (byte [] buffer, long offset, nuint length)
 		{
 			if (buffer is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (buffer));

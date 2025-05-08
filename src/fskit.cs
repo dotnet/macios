@@ -25,7 +25,7 @@ namespace FSKit {
 	[Experimental ("APL0002")]
 #endif
 	[Mac (15, 4)]
-	delegate void FetchInstalledExtensionsCallback ([NullAllowed] FSModuleIdentity[] identities, [NullAllowed] NSError error);
+	delegate void FetchInstalledExtensionsCallback ([NullAllowed] FSModuleIdentity [] identities, [NullAllowed] NSError error);
 
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
@@ -33,8 +33,7 @@ namespace FSKit {
 	[Mac (15, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface FSClient
-	{
+	interface FSClient {
 		[Static]
 		[Export ("sharedInstance")]
 		FSClient SharedInstance { get; }
@@ -49,8 +48,7 @@ namespace FSKit {
 #endif
 	[Mac (15, 4)]
 	[Native]
-	public enum FSContainerState : long
-	{
+	public enum FSContainerState : long {
 		NotReady = 0,
 		Blocked,
 		Ready,
@@ -62,8 +60,7 @@ namespace FSKit {
 #endif
 	[Mac (15, 4)]
 	[BaseType (typeof (FSEntityIdentifier))]
-	interface FSContainerIdentifier
-	{
+	interface FSContainerIdentifier {
 		[Export ("volumeIdentifier")]
 		FSVolumeIdentifier VolumeIdentifier { get; }
 	}
@@ -73,8 +70,7 @@ namespace FSKit {
 #endif
 	[Mac (15, 4)]
 	[BaseType (typeof (NSObject))]
-	interface FSEntityIdentifier : INSCopying, INSSecureCoding
-	{
+	interface FSEntityIdentifier : INSCopying, INSSecureCoding {
 		[Export ("initWithUUID:")]
 		NativeHandle Constructor (NSUuid uuid);
 
@@ -97,8 +93,7 @@ namespace FSKit {
 	[Mac (15, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface FSFileName : INSSecureCoding, INSCopying
-	{
+	interface FSFileName : INSSecureCoding, INSCopying {
 		[Export ("data")]
 		NSData Data { get; }
 
@@ -151,8 +146,7 @@ namespace FSKit {
 #endif
 	[Mac (15, 4)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
-	interface FSFileSystemBase
-	{
+	interface FSFileSystemBase {
 		[Abstract]
 		[Export ("containerStatus", ArgumentSemantic.Copy)]
 		FSContainerStatus ContainerStatus { get; set; }
@@ -193,8 +187,7 @@ namespace FSKit {
 #endif
 	[Mac (15, 4)]
 	[Native]
-	public enum FSItemType : long
-	{
+	public enum FSItemType : long {
 		Unknown = 0,
 		File,
 		Directory,
@@ -210,8 +203,7 @@ namespace FSKit {
 #endif
 	[Mac (15, 4)]
 	[BaseType (typeof (NSObject))]
-	interface FSItemAttributes : INSSecureCoding
-	{
+	interface FSItemAttributes : INSSecureCoding {
 		[Export ("invalidateAllProperties")]
 		void InvalidateAllProperties ();
 
@@ -278,8 +270,7 @@ namespace FSKit {
 #endif
 	[Mac (15, 4)]
 	[BaseType (typeof (FSItemAttributes))]
-	interface FSItemSetAttributesRequest
-	{
+	interface FSItemSetAttributesRequest {
 		[Export ("consumedAttributes")]
 		FSItemAttribute ConsumedAttributes { get; set; }
 
@@ -291,9 +282,8 @@ namespace FSKit {
 	[Experimental ("APL0002")]
 #endif
 	[Mac (15, 4)]
-	[BaseType (typeof(NSObject))]
-	interface FSItemGetAttributesRequest : INSSecureCoding
-	{
+	[BaseType (typeof (NSObject))]
+	interface FSItemGetAttributesRequest : INSSecureCoding {
 		[Export ("wantedAttributes")]
 		FSItemAttribute WantedAttributes { get; set; }
 
@@ -306,8 +296,7 @@ namespace FSKit {
 #endif
 	[Mac (15, 4)]
 	[BaseType (typeof (NSObject))]
-	interface FSItem
-	{
+	interface FSItem {
 	}
 
 #if !STABLE_FSKIT
@@ -315,8 +304,7 @@ namespace FSKit {
 #endif
 	[Mac (15, 4)]
 	[Partial]
-	interface FSConstants
-	{
+	interface FSConstants {
 		[Field ("FSKitVersionNumber")]
 		double FSKitVersionNumber { get; }
 
@@ -350,8 +338,7 @@ namespace FSKit {
 #endif
 	[Mac (15, 4)]
 	[BaseType (typeof (NSObject))]
-	interface FSModuleIdentity
-	{
+	interface FSModuleIdentity {
 		[Export ("bundleIdentifier")]
 		string BundleIdentifier { get; }
 
@@ -367,8 +354,7 @@ namespace FSKit {
 #endif
 	[Mac (15, 4)]
 	[Native]
-	public enum FSMatchResult : long
-	{
+	public enum FSMatchResult : long {
 		NotRecognized = 0,
 		Recognized,
 		UsableButLimited,
@@ -380,8 +366,7 @@ namespace FSKit {
 #endif
 	[Mac (15, 4)]
 	[BaseType (typeof (NSObject))]
-	interface FSResource : INSSecureCoding
-	{
+	interface FSResource : INSSecureCoding {
 		[Export ("isRevoked")]
 		bool IsRevoked { get; }
 
@@ -407,8 +392,7 @@ namespace FSKit {
 	[Mac (15, 4)]
 	[BaseType (typeof (FSResource))]
 	[DisableDefaultCtor]
-	interface FSBlockDeviceResource
-	{
+	interface FSBlockDeviceResource {
 		[Static]
 		[Export ("proxyResourceForBSDName:")]
 		[return: NullAllowed]
@@ -464,10 +448,10 @@ namespace FSKit {
 		bool AsynchronousMetadataFlush ([NullAllowed] out NSError error);
 
 		[Export ("metadataClear:withDelayedWrites:error:")]
-		bool MetadataClear (FSMetadataRange[] rangesToClear, bool withDelayedWrites, [NullAllowed] out NSError error);
+		bool MetadataClear (FSMetadataRange [] rangesToClear, bool withDelayedWrites, [NullAllowed] out NSError error);
 
 		[Export ("metadataPurge:error:")]
-		bool MetadataPurge (FSMetadataRange[] rangesToPurge, [NullAllowed] out NSError error);
+		bool MetadataPurge (FSMetadataRange [] rangesToPurge, [NullAllowed] out NSError error);
 	}
 
 #if !STABLE_FSKIT
@@ -480,8 +464,7 @@ namespace FSKit {
 #endif
 	[Mac (15, 4)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
-	interface FSManageableResourceMaintenanceOperations
-	{
+	interface FSManageableResourceMaintenanceOperations {
 		[Abstract]
 		[Export ("startCheckWithTask:options:error:")]
 		NSProgress StartCheckWithTask (FSTask task, FSTaskOptions options, [NullAllowed] out NSError error);
@@ -556,8 +539,7 @@ namespace FSKit {
 #endif
 	[Mac (15, 4)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
-	interface FSUnaryFileSystemOperations
-	{
+	interface FSUnaryFileSystemOperations {
 		[Abstract]
 		[Export ("probeResource:replyHandler:")]
 		void ProbeResource (FSResource resource, FSUnaryFileSystemOperationsProbeResourceResult replyHandler);
@@ -588,8 +570,7 @@ namespace FSKit {
 #endif
 	[Mac (15, 4)]
 	[Native]
-	public enum FSDeactivateOptions : long
-	{
+	public enum FSDeactivateOptions : long {
 		Force = 1 << 0,
 	}
 
@@ -598,8 +579,7 @@ namespace FSKit {
 #endif
 	[Mac (15, 4)]
 	[BaseType (typeof (NSObject))]
-	interface FSVolumeSupportedCapabilities : INSSecureCoding
-	{
+	interface FSVolumeSupportedCapabilities : INSSecureCoding {
 		[Export ("supportsPersistentObjectIDs")]
 		bool SupportsPersistentObjectIds { get; set; }
 
@@ -667,8 +647,7 @@ namespace FSKit {
 	[Mac (15, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface FSVolume
-	{
+	interface FSVolume {
 		[Export ("volumeID", ArgumentSemantic.Strong)]
 		FSVolumeIdentifier VolumeId { get; }
 
@@ -685,8 +664,7 @@ namespace FSKit {
 #endif
 	[Mac (15, 4)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
-	interface FSVolumePathConfOperations
-	{
+	interface FSVolumePathConfOperations {
 		[Abstract]
 		[Export ("maximumLinkCount")]
 		nint MaximumLinkCount { get; }
@@ -719,7 +697,7 @@ namespace FSKit {
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
-	interface IFSVolumePathConfOperations {}
+	interface IFSVolumePathConfOperations { }
 
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
@@ -727,8 +705,7 @@ namespace FSKit {
 	[Mac (15, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface FSStatFSResult : INSSecureCoding
-	{
+	interface FSStatFSResult : INSSecureCoding {
 		[Export ("blockSize")]
 		nint BlockSize { get; set; }
 
@@ -845,8 +822,7 @@ namespace FSKit {
 #endif
 	[Mac (15, 4)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
-	interface FSVolumeOperations : FSVolumePathConfOperations
-	{
+	interface FSVolumeOperations : FSVolumePathConfOperations {
 		[Abstract]
 		[Export ("supportedVolumeCapabilities")]
 		FSVolumeSupportedCapabilities SupportedVolumeCapabilities { get; }
@@ -926,10 +902,10 @@ namespace FSKit {
 	[Mac (15, 4)]
 	[Native]
 	enum FSSetXattrPolicy : ulong {
-		AlwaysSet   = 0,
-		MustCreate  = 1,
+		AlwaysSet = 0,
+		MustCreate = 1,
 		MustReplace = 2,
-		Delete      = 3,
+		Delete = 3,
 	}
 
 #if !STABLE_FSKIT
@@ -945,15 +921,14 @@ namespace FSKit {
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
-	delegate void FSVolumeXattrOperationsListHandler ([NullAllowed] FSFileName[] value, [NullAllowed] NSError error);
+	delegate void FSVolumeXattrOperationsListHandler ([NullAllowed] FSFileName [] value, [NullAllowed] NSError error);
 
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
 	[Mac (15, 4)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
-	interface FSVolumeXattrOperations
-	{
+	interface FSVolumeXattrOperations {
 		[Export ("xattrOperationsInhibited")]
 		bool XattrOperationsInhibited { get; set; }
 
@@ -995,8 +970,7 @@ namespace FSKit {
 #endif
 	[Mac (15, 4)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
-	interface FSVolumeOpenCloseOperations
-	{
+	interface FSVolumeOpenCloseOperations {
 		[Export ("openCloseInhibited")]
 		bool IsOpenCloseInhibited { [Bind ("isOpenCloseInhibited")] get; set; }
 
@@ -1024,8 +998,7 @@ namespace FSKit {
 #endif
 	[Mac (15, 4)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
-	interface FSVolumeReadWriteOperations
-	{
+	interface FSVolumeReadWriteOperations {
 		[Abstract]
 		[Export ("readFromFile:offset:length:intoBuffer:replyHandler:")]
 		void Read (FSItem item, long offset, nuint length, FSMutableFileDataBuffer buffer, FSVolumeReadWriteOperationsReadHandler reply);
@@ -1042,23 +1015,23 @@ namespace FSKit {
 	[Flags]
 	[Native]
 	enum FSAccessMask : ulong {
-		ReadData        = (1<<1),
-		ListDirectory   = ReadData,
-		WriteData       = (1<<2),
-		AddFile         = WriteData,
-		Execute         = (1<<3),
-		Search          = Execute,
-		Delete          = (1<<4),
-		AppendData      = (1<<5),
+		ReadData = (1 << 1),
+		ListDirectory = ReadData,
+		WriteData = (1 << 2),
+		AddFile = WriteData,
+		Execute = (1 << 3),
+		Search = Execute,
+		Delete = (1 << 4),
+		AppendData = (1 << 5),
 		AddSubdirectory = AppendData,
-		DeleteChild     = (1<<6),
-		ReadAttributes  = (1<<7),
-		WriteAttributes = (1<<8),
-		ReadXattr       = (1<<9),
-		WriteXattr      = (1<<10),
-		ReadSecurity    = (1<<11),
-		WriteSecurity   = (1<<12),
-		TakeOwnership   = (1<<13),
+		DeleteChild = (1 << 6),
+		ReadAttributes = (1 << 7),
+		WriteAttributes = (1 << 8),
+		ReadXattr = (1 << 9),
+		WriteXattr = (1 << 10),
+		ReadSecurity = (1 << 11),
+		WriteSecurity = (1 << 12),
+		TakeOwnership = (1 << 13),
 	}
 
 #if !STABLE_FSKIT
@@ -1071,8 +1044,7 @@ namespace FSKit {
 #endif
 	[Mac (15, 4)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
-	interface FSVolumeAccessCheckOperations
-	{
+	interface FSVolumeAccessCheckOperations {
 		[Export ("accessCheckInhibited")]
 		bool IsAccessCheckInhibited { [Bind ("isAccessCheckInhibited")] get; set; }
 
@@ -1091,8 +1063,7 @@ namespace FSKit {
 #endif
 	[Mac (15, 4)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
-	interface FSVolumeRenameOperations
-	{
+	interface FSVolumeRenameOperations {
 		[Export ("volumeRenameInhibited")]
 		bool IsVolumeRenameInhibited { [Bind ("isVolumeRenameInhibited")] get; set; }
 
@@ -1108,8 +1079,8 @@ namespace FSKit {
 	[Flags]
 	[Native]
 	public enum FSBlockmapFlags : ulong {
-		Read       = 0x100,
-		Write      = 0x200,
+		Read = 0x100,
+		Write = 0x200,
 	}
 
 #if !STABLE_FSKIT
@@ -1117,8 +1088,7 @@ namespace FSKit {
 #endif
 	[Mac (15, 4)]
 	[Native]
-	public enum FSExtentType : long
-	{
+	public enum FSExtentType : long {
 		Data = 0,
 		ZeroFill = 1,
 	}
@@ -1129,8 +1099,7 @@ namespace FSKit {
 	[Mac (15, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface FSExtentPacker
-	{
+	interface FSExtentPacker {
 		[Export ("packExtentWithResource:type:logicalOffset:physicalOffset:length:")]
 		bool PackExtent (FSBlockDeviceResource resource, FSExtentType type, long logicalOffset, long physicalOffset, nuint length);
 	}
@@ -1160,8 +1129,7 @@ namespace FSKit {
 #endif
 	[Mac (15, 4)]
 	[Protocol (Name = "FSVolumeKernelOffloadedIOOperations", BackwardsCompatibleCodeGeneration = false)]
-	interface FSVolumeKernelOffloadedIoOperations
-	{
+	interface FSVolumeKernelOffloadedIoOperations {
 		[Abstract]
 		[Export ("blockmapFile:offset:length:flags:operationID:packer:replyHandler:")]
 		void BlockmapFile (FSItem item, long offset, nuint lengthIo, FSBlockmapFlags flags, FSOperationId operationId, FSExtentPacker packer, FSVolumeKernelOffloadedIoOperationsHandler reply);
@@ -1190,9 +1158,9 @@ namespace FSKit {
 	[Native]
 	enum FSPreallocateFlags : ulong {
 		Contiguous = 0x2,
-		All        = 0x4,
-		Persist    = 0x8,
-		FromEof    = 0x10,
+		All = 0x4,
+		Persist = 0x8,
+		FromEof = 0x10,
 	}
 
 #if !STABLE_FSKIT
@@ -1205,8 +1173,7 @@ namespace FSKit {
 #endif
 	[Mac (15, 4)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
-	interface FSVolumePreallocateOperations
-	{
+	interface FSVolumePreallocateOperations {
 		[Export ("preallocateInhibited")]
 		bool IsPreallocateInhibited { [Bind ("isPreallocateInhibited")] get; set; }
 
@@ -1222,8 +1189,7 @@ namespace FSKit {
 	[Flags]
 	[Native]
 	[NativeName ("FSCompleteIOFlags")]
-	public enum FSCompleteIoFlags : ulong
-	{
+	public enum FSCompleteIoFlags : ulong {
 		Read = FSBlockmapFlags.Read,
 		Write = FSBlockmapFlags.Write,
 		Async = 0x400,
@@ -1235,8 +1201,7 @@ namespace FSKit {
 	[ErrorDomain ("FSKitErrorDomain")]
 	[Mac (15, 4)]
 	[Native]
-	public enum FSErrorCode : long
-	{
+	public enum FSErrorCode : long {
 		ModuleLoadFailed = 4500,
 		ResourceUnrecognized = 4501,
 		ResourceDamaged = 4502,
@@ -1252,8 +1217,7 @@ namespace FSKit {
 	[Mac (15, 4)]
 	[Flags]
 	[Native]
-	public enum FSItemDeactivationOptions : ulong
-	{
+	public enum FSItemDeactivationOptions : ulong {
 		Never = 0x0,
 		Always = ulong.MaxValue,
 		ForRemovedItems = (1uL << 0),
@@ -1264,8 +1228,7 @@ namespace FSKit {
 	[Experimental ("APL0002")]
 #endif
 	[Mac (15, 4)]
-	public enum FSItemId : ulong
-	{
+	public enum FSItemId : ulong {
 		Invalid = 0,
 		ParentOfRoot = 1,
 		RootDirectory = 2,
@@ -1276,8 +1239,7 @@ namespace FSKit {
 #endif
 	[Mac (15, 4)]
 	[Native]
-	public enum FSSyncFlags : long
-	{
+	public enum FSSyncFlags : long {
 		Wait = 1,
 		NoWait = 2,
 		DWait = 4,
@@ -1288,8 +1250,7 @@ namespace FSKit {
 #endif
 	[Mac (15, 4)]
 	[Native]
-	public enum FSVolumeCaseFormat : long
-	{
+	public enum FSVolumeCaseFormat : long {
 		Sensitive = 0,
 		Insensitive = 1,
 		InsensitiveCasePreserving = 2,
@@ -1305,8 +1266,7 @@ namespace FSKit {
 #endif
 	[Mac (15, 4)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
-	interface FSVolumeItemDeactivation
-	{
+	interface FSVolumeItemDeactivation {
 		[Abstract]
 		[Export ("itemDeactivationPolicy")]
 		FSItemDeactivationOptions ItemDeactivationPolicy { get; }
@@ -1322,8 +1282,7 @@ namespace FSKit {
 	[Mac (15, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface FSContainerStatus : NSCopying
-	{
+	interface FSContainerStatus : NSCopying {
 		[Export ("state")]
 		FSContainerState State { get; }
 
@@ -1361,8 +1320,7 @@ namespace FSKit {
 	[Mac (15, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface FSDirectoryEntryPacker
-	{
+	interface FSDirectoryEntryPacker {
 		[Export ("packEntryWithName:itemType:itemID:nextCookie:attributes:")]
 		bool PackEntry (FSFileName name, FSItemType itemType, FSItemId itemId, FSDirectoryCookie nextCookie, [NullAllowed] FSItemAttributes attributes);
 	}
@@ -1373,8 +1331,7 @@ namespace FSKit {
 	[Mac (15, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface FSMetadataRange
-	{
+	interface FSMetadataRange {
 		[Export ("startOffset")]
 		long StartOffset { get; }
 
@@ -1398,8 +1355,7 @@ namespace FSKit {
 	[Mac (15, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface FSMutableFileDataBuffer
-	{
+	interface FSMutableFileDataBuffer {
 		[Export ("length")]
 		nuint Length { get; }
 
@@ -1412,8 +1368,7 @@ namespace FSKit {
 #endif
 	[Mac (15, 4)]
 	[BaseType (typeof (NSObject))]
-	interface FSTask
-	{
+	interface FSTask {
 		[Export ("logMessage:")]
 		void LogMessage (string str);
 
@@ -1427,10 +1382,9 @@ namespace FSKit {
 	[Mac (15, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface FSTaskOptions
-	{
+	interface FSTaskOptions {
 		[Export ("taskOptions", ArgumentSemantic.Copy)]
-		string[] TaskOptions { get; }
+		string [] TaskOptions { get; }
 
 		[Export ("urlForOption:")]
 		[return: NullAllowed]

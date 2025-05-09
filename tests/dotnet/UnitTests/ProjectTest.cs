@@ -2847,6 +2847,7 @@ namespace Xamarin.Tests {
 			"/System/Library/Frameworks/FileProviderUI.framework/Versions/A/FileProviderUI",
 			"/System/Library/Frameworks/FinderSync.framework/Versions/A/FinderSync",
 			"/System/Library/Frameworks/Foundation.framework/Versions/C/Foundation",
+			"/System/Library/Frameworks/FSKit.framework/Versions/A/FSKit",
 			"/System/Library/Frameworks/GameController.framework/Versions/A/GameController",
 			"/System/Library/Frameworks/GameKit.framework/Versions/A/GameKit",
 			"/System/Library/Frameworks/GameplayKit.framework/Versions/A/GameplayKit",

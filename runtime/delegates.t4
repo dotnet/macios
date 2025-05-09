@@ -677,6 +677,14 @@
 		) {
 			WrappedManagedFunction = "LookupUnmanagedFunction",
 		},
+
+		new XDelegate ("void", "void", "xamarin_bridge_raise_appdomain_unhandled_exception_event",
+			"GCHandle", "IntPtr", "gchandle"
+		) {
+			WrappedManagedFunction = "RaiseAppDomainUnhandledExceptionEvent",
+			OnlyDynamicUsage = false,
+			OnlyCoreCLR = true,
+		},
 	};
 	delegates.CalculateLengths ();
 #><#+

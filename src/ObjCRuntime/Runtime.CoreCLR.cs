@@ -203,6 +203,13 @@ namespace ObjCRuntime {
 			return exceptionHandler;
 		}
 
+		static void RaiseAppDomainUnhandledExceptionEvent (IntPtr gchandle)
+		{
+			var exception = GetGCHandleTarget (gchandle);
+			if (exception is not null)
+				ExceptionHandling.RaiseAppDomainUnhandledExceptionEvent (exception);
+		}
+
 		// Size: 2 pointers
 		internal struct TrackedObjectInfo {
 			public IntPtr Handle;

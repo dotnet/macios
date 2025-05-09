@@ -2343,7 +2343,7 @@ namespace Xamarin.Tests {
 		[Test]
 		// [TestCase (ApplePlatform.iOS)] // Skipping because we're not executing tvOS apps anyway (but it should work)
 		// [TestCase (ApplePlatform.TVOS)] // Skipping because we're not executing tvOS apps anyway (but it should work)
-		[TestCase (ApplePlatform.MacOSX)] // https://github.com/dotnet/runtime/issues/102730
+		[TestCase (ApplePlatform.MacOSX)]
 		[TestCase (ApplePlatform.MacCatalyst)]
 		public void RaisesAppDomainUnhandledExceptionEvent (ApplePlatform platform)
 		{

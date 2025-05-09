@@ -33,7 +33,7 @@ static partial class AVMediaCharacteristicsExtensions
 		get
 		{
 			fixed (IntPtr *storage = &values [0])
-				return Dlfcn.CachePointer (Libraries.AVFoundation.Handle, "AVMediaCharacteristicVisual", storage);
+				return Dlfcn.CachePointer (global::ObjCRuntime.Libraries.AVFoundation.Handle, "AVMediaCharacteristicVisual", storage);
 		}
 	}
 
@@ -47,7 +47,7 @@ static partial class AVMediaCharacteristicsExtensions
 		get
 		{
 			fixed (IntPtr *storage = &values [1])
-				return Dlfcn.CachePointer (Libraries.AVFoundation.Handle, "AVMediaCharacteristicAudible", storage);
+				return Dlfcn.CachePointer (global::ObjCRuntime.Libraries.AVFoundation.Handle, "AVMediaCharacteristicAudible", storage);
 		}
 	}
 
@@ -61,7 +61,7 @@ static partial class AVMediaCharacteristicsExtensions
 		get
 		{
 			fixed (IntPtr *storage = &values [2])
-				return Dlfcn.CachePointer (Libraries.AVFoundation.Handle, "AVMediaCharacteristicLegible", storage);
+				return Dlfcn.CachePointer (global::ObjCRuntime.Libraries.AVFoundation.Handle, "AVMediaCharacteristicLegible", storage);
 		}
 	}
 
@@ -75,7 +75,7 @@ static partial class AVMediaCharacteristicsExtensions
 		get
 		{
 			fixed (IntPtr *storage = &values [3])
-				return Dlfcn.CachePointer (Libraries.AVFoundation.Handle, "AVMediaCharacteristicFrameBased", storage);
+				return Dlfcn.CachePointer (global::ObjCRuntime.Libraries.AVFoundation.Handle, "AVMediaCharacteristicFrameBased", storage);
 		}
 	}
 
@@ -89,7 +89,7 @@ static partial class AVMediaCharacteristicsExtensions
 		get
 		{
 			fixed (IntPtr *storage = &values [4])
-				return Dlfcn.CachePointer (Libraries.AVFoundation.Handle, "AVMediaCharacteristicUsesWideGamutColorSpace", storage);
+				return Dlfcn.CachePointer (global::ObjCRuntime.Libraries.AVFoundation.Handle, "AVMediaCharacteristicUsesWideGamutColorSpace", storage);
 		}
 	}
 
@@ -103,7 +103,7 @@ static partial class AVMediaCharacteristicsExtensions
 		get
 		{
 			fixed (IntPtr *storage = &values [5])
-				return Dlfcn.CachePointer (Libraries.AVFoundation.Handle, "AVMediaCharacteristicIsMainProgramContent", storage);
+				return Dlfcn.CachePointer (global::ObjCRuntime.Libraries.AVFoundation.Handle, "AVMediaCharacteristicIsMainProgramContent", storage);
 		}
 	}
 
@@ -117,7 +117,7 @@ static partial class AVMediaCharacteristicsExtensions
 		get
 		{
 			fixed (IntPtr *storage = &values [6])
-				return Dlfcn.CachePointer (Libraries.AVFoundation.Handle, "AVMediaCharacteristicIsAuxiliaryContent", storage);
+				return Dlfcn.CachePointer (global::ObjCRuntime.Libraries.AVFoundation.Handle, "AVMediaCharacteristicIsAuxiliaryContent", storage);
 		}
 	}
 
@@ -131,7 +131,7 @@ static partial class AVMediaCharacteristicsExtensions
 		get
 		{
 			fixed (IntPtr *storage = &values [7])
-				return Dlfcn.CachePointer (Libraries.AVFoundation.Handle, "AVMediaCharacteristicContainsOnlyForcedSubtitles", storage);
+				return Dlfcn.CachePointer (global::ObjCRuntime.Libraries.AVFoundation.Handle, "AVMediaCharacteristicContainsOnlyForcedSubtitles", storage);
 		}
 	}
 
@@ -145,7 +145,7 @@ static partial class AVMediaCharacteristicsExtensions
 		get
 		{
 			fixed (IntPtr *storage = &values [8])
-				return Dlfcn.CachePointer (Libraries.AVFoundation.Handle, "AVMediaCharacteristicTranscribesSpokenDialogForAccessibility", storage);
+				return Dlfcn.CachePointer (global::ObjCRuntime.Libraries.AVFoundation.Handle, "AVMediaCharacteristicTranscribesSpokenDialogForAccessibility", storage);
 		}
 	}
 
@@ -159,7 +159,7 @@ static partial class AVMediaCharacteristicsExtensions
 		get
 		{
 			fixed (IntPtr *storage = &values [9])
-				return Dlfcn.CachePointer (Libraries.AVFoundation.Handle, "AVMediaCharacteristicDescribesMusicAndSoundForAccessibility", storage);
+				return Dlfcn.CachePointer (global::ObjCRuntime.Libraries.AVFoundation.Handle, "AVMediaCharacteristicDescribesMusicAndSoundForAccessibility", storage);
 		}
 	}
 
@@ -173,7 +173,7 @@ static partial class AVMediaCharacteristicsExtensions
 		get
 		{
 			fixed (IntPtr *storage = &values [10])
-				return Dlfcn.CachePointer (Libraries.AVFoundation.Handle, "AVMediaCharacteristicDescribesVideoForAccessibility", storage);
+				return Dlfcn.CachePointer (global::ObjCRuntime.Libraries.AVFoundation.Handle, "AVMediaCharacteristicDescribesVideoForAccessibility", storage);
 		}
 	}
 
@@ -187,7 +187,7 @@ static partial class AVMediaCharacteristicsExtensions
 		get
 		{
 			fixed (IntPtr *storage = &values [11])
-				return Dlfcn.CachePointer (Libraries.AVFoundation.Handle, "AVMediaCharacteristicLanguageTranslation", storage);
+				return Dlfcn.CachePointer (global::ObjCRuntime.Libraries.AVFoundation.Handle, "AVMediaCharacteristicLanguageTranslation", storage);
 		}
 	}
 
@@ -201,7 +201,7 @@ static partial class AVMediaCharacteristicsExtensions
 		get
 		{
 			fixed (IntPtr *storage = &values [12])
-				return Dlfcn.CachePointer (Libraries.AVFoundation.Handle, "AVMediaCharacteristicDubbedTranslation", storage);
+				return Dlfcn.CachePointer (global::ObjCRuntime.Libraries.AVFoundation.Handle, "AVMediaCharacteristicDubbedTranslation", storage);
 		}
 	}
 
@@ -215,7 +215,7 @@ static partial class AVMediaCharacteristicsExtensions
 		get
 		{
 			fixed (IntPtr *storage = &values [13])
-				return Dlfcn.CachePointer (Libraries.AVFoundation.Handle, "AVMediaCharacteristicVoiceOverTranslation", storage);
+				return Dlfcn.CachePointer (global::ObjCRuntime.Libraries.AVFoundation.Handle, "AVMediaCharacteristicVoiceOverTranslation", storage);
 		}
 	}
 
@@ -229,7 +229,7 @@ static partial class AVMediaCharacteristicsExtensions
 		get
 		{
 			fixed (IntPtr *storage = &values [14])
-				return Dlfcn.CachePointer (Libraries.AVFoundation.Handle, "AVMediaCharacteristicIsOriginalContent", storage);
+				return Dlfcn.CachePointer (global::ObjCRuntime.Libraries.AVFoundation.Handle, "AVMediaCharacteristicIsOriginalContent", storage);
 		}
 	}
 
@@ -243,7 +243,7 @@ static partial class AVMediaCharacteristicsExtensions
 		get
 		{
 			fixed (IntPtr *storage = &values [15])
-				return Dlfcn.CachePointer (Libraries.AVFoundation.Handle, "AVMediaCharacteristicContainsHDRVideo", storage);
+				return Dlfcn.CachePointer (global::ObjCRuntime.Libraries.AVFoundation.Handle, "AVMediaCharacteristicContainsHDRVideo", storage);
 		}
 	}
 
@@ -257,7 +257,7 @@ static partial class AVMediaCharacteristicsExtensions
 		get
 		{
 			fixed (IntPtr *storage = &values [16])
-				return Dlfcn.CachePointer (Libraries.AVFoundation.Handle, "AVMediaCharacteristicContainsAlphaChannel", storage);
+				return Dlfcn.CachePointer (global::ObjCRuntime.Libraries.AVFoundation.Handle, "AVMediaCharacteristicContainsAlphaChannel", storage);
 		}
 	}
 
@@ -374,7 +374,7 @@ static partial class AVMediaCharacteristicsExtensions
 	/// Retrieves the <see cref="AVMediaCharacteristicsExtensions" /> value represented by the backing field value in <paramref name="handle" />.
 	/// </summary>
 	/// <param name="handle">The native handle with the name of the constant to retrieve.</param>
-	public static AVMediaCharacteristics GetValue (NativeHandle handle)
+	public static AVMediaCharacteristics GetValue (global::ObjCRuntime.NativeHandle handle)
 	{
 		using var str = Runtime.GetNSObject<NSString> (handle)!;
 		return GetValue (str);
@@ -384,7 +384,7 @@ static partial class AVMediaCharacteristicsExtensions
 	/// Retrieves the <see cref="AVMediaCharacteristicsExtensions" /> value represented by the backing field value in <paramref name="handle" />.
 	/// </summary>
 	/// <param name="handle">The native handle with the name of the constant to retrieve.</param>
-	public static AVMediaCharacteristics? GetNullableValue (NativeHandle handle)
+	public static AVMediaCharacteristics? GetNullableValue (global::ObjCRuntime.NativeHandle handle)
 	{
 		using var str = Runtime.GetNSObject<NSString> (handle);
 		if (str is null)

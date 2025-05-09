@@ -34,10 +34,10 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIActivityIndicatorView.h
-	/// <summary>The visual style for a <see cref="T:UIKit.UIActivityIndicatorView" />.</summary>
+	/// <summary>The visual style for a <see cref="UIKit.UIActivityIndicatorView" />.</summary>
 	/// <remarks>To be added.</remarks>
-	/// <altmember cref="T:UIKit.UIActivityIndicatorView" />
-	/// <altmember cref="T:UIKit.UIActivityIndicatorView+UIActivityIndicatorViewAppearance" />
+	/// <altmember cref="UIKit.UIActivityIndicatorView" />
+	/// <altmember cref="UIKit.UIActivityIndicatorView.UIActivityIndicatorViewAppearance" />
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UIActivityIndicatorViewStyle : long {
@@ -66,10 +66,10 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIAlertView.h
-	/// <summary>The visual style for a <see cref="T:UIKit.UIAlertView" />.</summary>
+	/// <summary>The visual style for a <see cref="UIKit.UIAlertView" />.</summary>
 	///     <remarks>
 	///       <para>
-	///         The values other than <see cref="F:UIKit.UIAlertViewStyle.Default" /> allow the user to enter text, including the option to obscure the text as it is being entered.
+	///         The values other than <see cref="UIKit.UIAlertViewStyle.Default" /> allow the user to enter text, including the option to obscure the text as it is being entered.
 	///       </para>
 	///     </remarks>
 	[Native]
@@ -87,7 +87,7 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIBarButtonItem.h
-	/// <summary>The visual style of a <see cref="T:UIKit.UIBarButtonItem" />.</summary>
+	/// <summary>The visual style of a <see cref="UIKit.UIBarButtonItem" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
@@ -96,7 +96,7 @@ namespace UIKit {
 		Plain,
 
 		/// <summary>Developers should not use this deprecated field. Developers should use 'UIBarButtonItemStyle.Plain' instead.</summary>
-		///         <remarks>Application developers should instead use <see cref="F:UIKit.UIBarButtonItemStyle.Plain" />.</remarks>
+		///         <remarks>Application developers should instead use <see cref="UIKit.UIBarButtonItemStyle.Plain" />.</remarks>
 		[Deprecated (PlatformName.iOS, 8, 0, message: "Use 'UIBarButtonItemStyle.Plain' instead.")]
 		[Deprecated (PlatformName.TvOS, 9, 0, message: "Use 'UIBarButtonItemStyle.Plain' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'UIBarButtonItemStyle.Plain' instead.")]
@@ -107,7 +107,7 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIBarButtonItem.h
-	/// <summary>An enumeration of the predefined <see cref="T:UIKit.UIBarButtonItem" />s.</summary>
+	/// <summary>An enumeration of the predefined <see cref="UIKit.UIBarButtonItem" />s.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
@@ -321,7 +321,7 @@ namespace UIKit {
 	}
 
 	// NSUInteger -> UIControl.h
-	/// <summary>An enumeration of possible states for a <see cref="T:UIKit.UIControl" />.</summary>
+	/// <summary>An enumeration of possible states for a <see cref="UIKit.UIControl" />.</summary>
 	/// <remarks>Flags representing the state of a control.</remarks>
 	[Native]
 	[Flags]
@@ -345,7 +345,7 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIImage.h
-	/// <summary>An enumeration of values used to specify the orientation of a <see cref="T:UIKit.UIImage" />.</summary>
+	/// <summary>An enumeration of values used to specify the orientation of a <see cref="UIKit.UIImage" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
 	public enum UIImageOrientation : long {
@@ -368,7 +368,7 @@ namespace UIKit {
 	}
 
 	// NSUInteger -> UIView.h
-	/// <summary>An enumeration indicating the resizing style for <see cref="T:UIKit.UIView" />s.</summary>
+	/// <summary>An enumeration indicating the resizing style for <see cref="UIKit.UIView" />s.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
 	[Flags]
@@ -390,7 +390,7 @@ namespace UIKit {
 		FlexibleBottomMargin = 1 << 5,
 		/// <summary>Combination of all flexible margin values.</summary>
 		FlexibleMargins = FlexibleBottomMargin | FlexibleTopMargin | FlexibleLeftMargin | FlexibleRightMargin,
-		/// <summary>Combines <see cref="F:UIKit.UIViewAutoresizing.FlexibleHeight" /> and <see cref="F:UIKit.UIViewAutoresizing.FlexibleWidth" />.</summary>
+		/// <summary>Combines <see cref="UIKit.UIViewAutoresizing.FlexibleHeight" /> and <see cref="UIKit.UIViewAutoresizing.FlexibleWidth" />.</summary>
 		FlexibleDimensions = FlexibleHeight | FlexibleWidth,
 		/// <summary>The UIView resizes on all sides.</summary>
 		All = 63,
@@ -438,7 +438,7 @@ namespace UIKit {
 		///           </para>
 		///         </remarks>
 		ScaleAspectFill,
-		/// <summary>This forces a redraw when the <see cref="P:UIKit.UIView.Frame" /> of an object changes.</summary>
+		/// <summary>This forces a redraw when the <see cref="UIKit.UIView.Frame" /> of an object changes.</summary>
 		///         <remarks>
 		///           <para>
 		///             <img href="~/UIKit/_images/UIViewContentMode.Redraw.png" alt="Image layout for the specified content mode" />
@@ -559,14 +559,14 @@ namespace UIKit {
 
 	// NSInteger -> UIButton.h
 	/// <summary>An enumeration of predefined button types.</summary>
-	/// <remarks>The type of a <see cref="T:UIKit.UIButton" />.</remarks>
+	/// <remarks>The type of a <see cref="UIKit.UIButton" />.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UIButtonType : long {
 		/// <summary>No button style.</summary>
 		Custom,
-		/// <summary>Rounded rectangle style. This style is deprecated as of iOS 7; developers should use <see cref="F:UIKit.UIButtonType.System" />.</summary>
-		///         <remarks>Application developers should instead use <see cref="F:UIKit.UIButtonType.System" />.</remarks>
+		/// <summary>Rounded rectangle style. This style is deprecated as of iOS 7; developers should use <see cref="UIKit.UIButtonType.System" />.</summary>
+		///         <remarks>Application developers should instead use <see cref="UIKit.UIButtonType.System" />.</remarks>
 		RoundedRect,
 		/// <summary>Uses a detail disclosure button (arrow).</summary>
 		DetailDisclosure,
@@ -622,8 +622,8 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIDatePicker.h
-	/// <summary>An enumeration of modes available to the <see cref="T:UIKit.UIDatePicker" />.</summary>
-	///     <remarks>Valid modes for the <see cref="T:UIKit.UIDatePicker" />.</remarks>
+	/// <summary>An enumeration of modes available to the <see cref="UIKit.UIDatePicker" />.</summary>
+	///     <remarks>Valid modes for the <see cref="UIKit.UIDatePicker" />.</remarks>
 	[Native]
 	[NoTV]
 	[MacCatalyst (13, 1)]
@@ -666,7 +666,7 @@ namespace UIKit {
 	// NSInteger -> UIDevice.h
 	/// <summary>An enumeration of values indicating the state of the battery.</summary>
 	///     <remarks>
-	///       <para>This is a qualitative description of the battery state (e.g., <see cref="F:UIKit.UIDeviceBatteryState.Charging" />). For a quantitative view of battery charge level, use <see cref="P:UIKit.UIDevice.BatteryLevel" />.</para>
+	///       <para>This is a qualitative description of the battery state (e.g., <see cref="UIKit.UIDeviceBatteryState.Charging" />). For a quantitative view of battery charge level, use <see cref="UIKit.UIDevice.BatteryLevel" />.</para>
 	///     </remarks>
 	[Native]
 	[NoTV]
@@ -683,7 +683,7 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIDocument.h
-	/// <summary>An enumeration indicating what kind of change has occurred to a <see cref="T:UIKit.UIDocument" />.</summary>
+	/// <summary>An enumeration indicating what kind of change has occurred to a <see cref="UIKit.UIDocument" />.</summary>
 	[Native]
 	[NoTV]
 	[MacCatalyst (13, 1)]
@@ -699,34 +699,34 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIDocument.h
-	/// <summary>An enumeration indicating whether the <see cref="T:UIKit.UIDocument" /> is being saved for the first time or should overwrite an existing save.</summary>
+	/// <summary>An enumeration indicating whether the <see cref="UIKit.UIDocument" /> is being saved for the first time or should overwrite an existing save.</summary>
 	///     <remarks>
-	///       <para>One of these enumerated values is used as a parameter to <see cref="T:UIKit.UIDocument" />s various save-oriented functions (e.g., <see cref="M:UIKit.UIDocument.Save(Foundation.NSUrl,UIKit.UIDocumentSaveOperation,UIKit.UIOperationHandler)" />, <see cref="M:UIKit.UIDocument.GetFileAttributesToWrite(Foundation.NSUrl,UIKit.UIDocumentSaveOperation,Foundation.NSError@)" />, etc.).</para>
+	///       <para>One of these enumerated values is used as a parameter to <see cref="UIKit.UIDocument" />s various save-oriented functions (e.g., <see cref="UIKit.UIDocument.Save(Foundation.NSUrl,UIKit.UIDocumentSaveOperation,UIKit.UIOperationHandler)" />, <see cref="UIKit.UIDocument.GetFileAttributesToWrite(Foundation.NSUrl,UIKit.UIDocumentSaveOperation,out Foundation.NSError)" />, etc.).</para>
 	///     </remarks>
 	[Native]
 	[NoTV]
 	[MacCatalyst (13, 1)]
 	public enum UIDocumentSaveOperation : long {
-		/// <summary>The <see cref="T:UIKit.UIDocument" /> is being saved for the first time.</summary>
+		/// <summary>The <see cref="UIKit.UIDocument" /> is being saved for the first time.</summary>
 		ForCreating,
-		/// <summary>The existing version of the <see cref="T:UIKit.UIDocument" /> is intended to be overwritten.</summary>
+		/// <summary>The existing version of the <see cref="UIKit.UIDocument" /> is intended to be overwritten.</summary>
 		ForOverwriting,
 	}
 
 	// NSUInteger -> UIDocument.h
-	/// <summary>An enumeration indicating the editing/saving state of a <see cref="T:UIKit.UIDocument" />.</summary>
+	/// <summary>An enumeration indicating the editing/saving state of a <see cref="UIKit.UIDocument" />.</summary>
 	[Native]
 	[Flags]
 	[NoTV]
 	[MacCatalyst (13, 1)]
 	public enum UIDocumentState : ulong {
-		/// <summary>The <see cref="T:UIKit.UIDocument" /> is open, editing is allowed, and there are no detected conflicts.</summary>
+		/// <summary>The <see cref="UIKit.UIDocument" /> is open, editing is allowed, and there are no detected conflicts.</summary>
 		Normal = 0,
 		/// <summary>Either the document did not open successfully or has been closed.</summary>
 		Closed = 1 << 0,
-		/// <summary>A conflict exists. The application developer should resolve these by examining the results of <see cref="M:Foundation.NSFileVersion.GetOtherVersions(Foundation.NSUrl)" />.</summary>
+		/// <summary>A conflict exists. The application developer should resolve these by examining the results of <see cref="Foundation.NSFileVersion.GetOtherVersions(Foundation.NSUrl)" />.</summary>
 		InConflict = 1 << 1,
-		/// <summary>Something has interfered with the proper saving of the <see cref="T:UIKit.UIDocument" />.</summary>
+		/// <summary>Something has interfered with the proper saving of the <see cref="UIKit.UIDocument" />.</summary>
 		SavingError = 1 << 2,
 		/// <summary>The document is busy and the application developer must not allow the application user to introduce changes.</summary>
 		EditingDisabled = 1 << 3,
@@ -735,7 +735,7 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIImagePickerController.h
-	/// <summary>An enumeration of values used to specify the source using by the <see cref="T:UIKit.UIImagePickerController" />.</summary>
+	/// <summary>An enumeration of values used to specify the source using by the <see cref="UIKit.UIImagePickerController" />.</summary>
 	[Native]
 	[NoTV]
 	[MacCatalyst (13, 1)]
@@ -753,7 +753,7 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIImagePickerController.h
-	/// <summary>An enumeration of values used by <see cref="T:UIKit.UIImagePickerControllerCameraCaptureMode" />.</summary>
+	/// <summary>An enumeration of values used by <see cref="UIKit.UIImagePickerControllerCameraCaptureMode" />.</summary>
 	///     <remarks>
 	///       <para>Specifies whether the camera will capture still images or video.</para>
 	///     </remarks>
@@ -768,7 +768,7 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIImagePickerController.h
-	/// <summary>An enumeration of values used by <see cref="P:UIKit.UIImagePickerController.CameraDevice" /> and related functions.</summary>
+	/// <summary>An enumeration of values used by <see cref="UIKit.UIImagePickerController.CameraDevice" /> and related functions.</summary>
 	///     <remarks>Used to differentiate between front (screen-side) and rear cameras.</remarks>
 	[Native]
 	[NoTV]
@@ -781,7 +781,7 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIImagePickerController.h
-	/// <summary>An enumeration of values used by <see cref="P:UIKit.UIImagePickerController.CameraFlashMode" /></summary>
+	/// <summary>An enumeration of values used by <see cref="UIKit.UIImagePickerController.CameraFlashMode" /></summary>
 	///     <remarks>Determines whether the flash will be on, off, or as-needed.</remarks>
 	[Native]
 	[NoTV]
@@ -798,7 +798,7 @@ namespace UIKit {
 	// NSInteger -> UIInterface.h
 	/// <summary>The visual style for a navigation, search, or tool bar.</summary>
 	///     <remarks>
-	///       <para>The style used for <see cref="T:UIKit.UINavigationBar" />, <see cref="T:UIKit.UISearchBar" />, and <see cref="T:UIKit.UIToolbar" />.</para>
+	///       <para>The style used for <see cref="UIKit.UINavigationBar" />, <see cref="UIKit.UISearchBar" />, and <see cref="UIKit.UIToolbar" />.</para>
 	///     </remarks>
 	[Native]
 	[NoTV]
@@ -823,7 +823,7 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIProgressView.h
-	/// <summary>The visual style for a <see cref="T:UIKit.UIProgressView" />.</summary>
+	/// <summary>The visual style for a <see cref="UIKit.UIProgressView" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
@@ -841,11 +841,11 @@ namespace UIKit {
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UIScrollViewIndicatorStyle : long {
-		/// <summary>A black scroll indicator with a narrow white border. Slightly wider than either <see cref="F:UIKit.UIScrollViewIndicatorStyle.Black" /> or <see cref="F:UIKit.UIScrollViewIndicatorStyle.White" /></summary>
+		/// <summary>A black scroll indicator with a narrow white border. Slightly wider than either <see cref="UIKit.UIScrollViewIndicatorStyle.Black" /> or <see cref="UIKit.UIScrollViewIndicatorStyle.White" /></summary>
 		Default,
-		/// <summary>A black, borderless scroll indicator. Slightly narrower than <see cref="F:UIKit.UIScrollViewIndicatorStyle.Default" />.</summary>
+		/// <summary>A black, borderless scroll indicator. Slightly narrower than <see cref="UIKit.UIScrollViewIndicatorStyle.Default" />.</summary>
 		Black,
-		/// <summary>A white, borderless scroll indicator. Slightly narrower than <see cref="F:UIKit.UIScrollViewIndicatorStyle.Default" />.</summary>
+		/// <summary>A white, borderless scroll indicator. Slightly narrower than <see cref="UIKit.UIScrollViewIndicatorStyle.Default" />.</summary>
 		White,
 	}
 
@@ -883,7 +883,7 @@ namespace UIKit {
 	// NSInteger -> UITextInputTraits.h
 	/// <summary>An enumeration of keyboard types.</summary>
 	/// <remarks>
-	///       <para>In order to change the keyboard appearance, the currently displaying keyboard must be dismissed. This is achieved by having the <see cref="T:UIKit.UIControl" /> associated with the keyboard resigning as first responder, changing the keyboard type, and then re-subscribed as the first subscriber, as shown in the following code:</para>
+	///       <para>In order to change the keyboard appearance, the currently displaying keyboard must be dismissed. This is achieved by having the <see cref="UIKit.UIControl" /> associated with the keyboard resigning as first responder, changing the keyboard type, and then re-subscribed as the first subscriber, as shown in the following code:</para>
 	///       <example>
 	///         <code lang="csharp lang-csharp"><![CDATA[
 	/// void AddKeyboardTypeButton (UIKeyboardType kbType, RectangleF frame)
@@ -934,7 +934,7 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UISegmentedControl.h
-	/// <summary>The visual style for a <see cref="T:UIKit.UISegmentedControl" />.</summary>
+	/// <summary>The visual style for a <see cref="UIKit.UISegmentedControl" />.</summary>
 	[Native]
 	[NoTV]
 	[Deprecated (PlatformName.iOS, 7, 0, message: "This no longer has any effect.")]
@@ -952,7 +952,7 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UITabBarItem.h
-	/// <summary>An enumeration of predefined <see cref="T:UIKit.UITabBarSystemItem" />s.</summary>
+	/// <summary>An enumeration of predefined <see cref="UIKit.UITabBarSystemItem" />s.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
@@ -984,7 +984,7 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UITableView.h
-	/// <summary>The visual style for a <see cref="T:UIKit.UITableView" />. A table view's style can only be set when it is instantiated.</summary>
+	/// <summary>The visual style for a <see cref="UIKit.UITableView" />. A table view's style can only be set when it is instantiated.</summary>
 	/// <remarks>Some table view features are only available for a specific style, for example Plain tables can provide an index to help scroll through long lists but Grouped tables should not.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
@@ -1000,7 +1000,7 @@ namespace UIKit {
 
 	// NSInteger -> UITableView.h
 	/// <summary>An enumeration of predefined scroll positions.</summary>
-	/// <remarks>This is used by the <see cref="M:UIKit.UITableView.ScrollToRow(Foundation.NSIndexPath,UIKit.UITableViewScrollPosition,System.Boolean)" /> method</remarks>
+	/// <remarks>This is used by the <see cref="UIKit.UITableView.ScrollToRow(Foundation.NSIndexPath,UIKit.UITableViewScrollPosition,System.Boolean)" /> method</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UITableViewScrollPosition : long {
@@ -1040,7 +1040,7 @@ namespace UIKit {
 	}
 
 	// #defines over UIBarPosition -> NSInteger -> UIBarCommon.h
-	/// <summary>An enumeration of the valid positions for a <see cref="T:UIKit.UIToolbar" />.</summary>
+	/// <summary>An enumeration of the valid positions for a <see cref="UIKit.UIToolbar" />.</summary>
 	[Native]
 	[NoTV]
 	[MacCatalyst (13, 1)]
@@ -1054,7 +1054,7 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UITouch.h
-	/// <summary>An enumeration of phases associated with a <see cref="T:UIKit.UITouch" />.</summary>
+	/// <summary>An enumeration of phases associated with a <see cref="UIKit.UITouch" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
@@ -1080,7 +1080,7 @@ namespace UIKit {
 		RegionExited,
 	}
 
-	/// <summary>Enumerates different kinds of <see cref="T:UIKit.UITouch" /> objects.</summary>
+	/// <summary>Enumerates different kinds of <see cref="UIKit.UITouch" /> objects.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -1096,21 +1096,21 @@ namespace UIKit {
 		IndirectPointer,
 	}
 
-	/// <summary>A flagging enumeration of the properties of a <see cref="T:UIKit.UITouch" /> that may change.</summary>
+	/// <summary>A flagging enumeration of the properties of a <see cref="UIKit.UITouch" /> that may change.</summary>
 	/// <remarks>
-	///       <para>Different hardware devices have different capabilities that can vary over the duration of a touch. For instance, all current hardware allows the <see cref="F:UIKit.UITouchProperties.Location" /> property to vary, but only the Apple Pencil currently supports the <see cref="F:UIKit.UITouchProperties.Altitude" /> and <see cref="F:UIKit.UITouchProperties.Azimuth" /> values to change over the course of a touch.</para>
+	///       <para>Different hardware devices have different capabilities that can vary over the duration of a touch. For instance, all current hardware allows the <see cref="UIKit.UITouchProperties.Location" /> property to vary, but only the Apple Pencil currently supports the <see cref="UIKit.UITouchProperties.Altitude" /> and <see cref="UIKit.UITouchProperties.Azimuth" /> values to change over the course of a touch.</para>
 	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	[Flags]
 	public enum UITouchProperties : long {
-		/// <summary>The device allows for the possibility that the <see cref="P:UIKit.UITouch.Force" /> will vary over the course of a touch.</summary>
+		/// <summary>The device allows for the possibility that the <see cref="UIKit.UITouch.Force" /> will vary over the course of a touch.</summary>
 		Force = (1 << 0),
-		/// <summary>The device allows for the possibility that the <see cref="M:UIKit.UITouch.GetAzimuthAngle(UIKit.UIView)" /> and <see cref="M:UIKit.UITouch.GetAzimuthUnitVector(UIKit.UIView)" /> will vary over the course of a touch.</summary>
+		/// <summary>The device allows for the possibility that the <see cref="UIKit.UITouch.GetAzimuthAngle(UIKit.UIView)" /> and <see cref="UIKit.UITouch.GetAzimuthUnitVector(UIKit.UIView)" /> will vary over the course of a touch.</summary>
 		Azimuth = (1 << 1),
-		/// <summary>The device allows for the possibility that the <see cref="P:UIKit.UITouch.AltitudeAngle" /> will vary over the course of a touch.</summary>
+		/// <summary>The device allows for the possibility that the <see cref="UIKit.UITouch.AltitudeAngle" /> will vary over the course of a touch.</summary>
 		Altitude = (1 << 2),
-		/// <summary>The device allows for the possibility that the <see cref="M:UIKit.UITouch.LocationInView(UIKit.UIView)" /> will vary over the course of a touch.</summary>
+		/// <summary>The device allows for the possibility that the <see cref="UIKit.UITouch.LocationInView(UIKit.UIView)" /> will vary over the course of a touch.</summary>
 		Location = (1 << 3),
 		[iOS (17, 5), MacCatalyst (17, 5), NoTV]
 		Roll = (1L << 4),
@@ -1146,25 +1146,25 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UITableViewCell.h
-	/// <summary>The visual style of a <see cref="T:UIKit.UITableViewCell" />.</summary>
+	/// <summary>The visual style of a <see cref="UIKit.UITableViewCell" />.</summary>
 	/// <remarks>
 	///     </remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UITableViewCellStyle : long {
-		/// <summary>Plain style with a black, left-aligned <see cref="P:UIKit.UITableViewCell.TextLabel" /> and an optional <see cref="P:UIKit.UITableViewCell.ImageView" /> (that will appear to the left of the text).</summary>
+		/// <summary>Plain style with a black, left-aligned <see cref="UIKit.UITableViewCell.TextLabel" /> and an optional <see cref="UIKit.UITableViewCell.ImageView" /> (that will appear to the left of the text).</summary>
 		Default,
-		/// <summary>Style with two text labels. The <see cref="P:UIKit.UITableViewCell.TextLabel" /> appears on the left, and is left-aligned with black text. <see cref="P:UIKit.UITableViewCell.DetailTextLabel" /> appears to the right, and is right-aligned with smaller blue text. The Settings app uses this style.</summary>
+		/// <summary>Style with two text labels. The <see cref="UIKit.UITableViewCell.TextLabel" /> appears on the left, and is left-aligned with black text. <see cref="UIKit.UITableViewCell.DetailTextLabel" /> appears to the right, and is right-aligned with smaller blue text. The Settings app uses this style.</summary>
 		Value1,
-		/// <summary>Style with two text labels. The <see cref="P:UIKit.UITableViewCell.TextLabel" /> appears on the left, but is right-aligned with blue text. <see cref="P:UIKit.UITableViewCell.DetailTextLabel" /> appears to the right, but is left-aligned with black text. The detailed contact information in the Contacts app is an example of this cell style.</summary>
+		/// <summary>Style with two text labels. The <see cref="UIKit.UITableViewCell.TextLabel" /> appears on the left, but is right-aligned with blue text. <see cref="UIKit.UITableViewCell.DetailTextLabel" /> appears to the right, but is left-aligned with black text. The detailed contact information in the Contacts app is an example of this cell style.</summary>
 		Value2,
-		/// <summary>Style with two text labels. They are both left-aligned, the top <see cref="P:UIKit.UITableViewCell.TextLabel" /> is large black text and the bottom <see cref="P:UIKit.UITableViewCell.DetailTextLabel" /> uses smaller gray text. The Music app's Albums listing is an example of this cell style.</summary>
+		/// <summary>Style with two text labels. They are both left-aligned, the top <see cref="UIKit.UITableViewCell.TextLabel" /> is large black text and the bottom <see cref="UIKit.UITableViewCell.DetailTextLabel" /> uses smaller gray text. The Music app's Albums listing is an example of this cell style.</summary>
 		Subtitle,
 	}
 
 	// NSInteger -> UITableViewCell.h
-	/// <summary>The visual style of a <see cref="T:UIKit.UITableView" />'s cell separator.</summary>
-	///     <remarks>The cell separator style is set via a table view's <see cref="P:UIKit.UITableView.SeparatorStyle" /> property.</remarks>
+	/// <summary>The visual style of a <see cref="UIKit.UITableView" />'s cell separator.</summary>
+	///     <remarks>The cell separator style is set via a table view's <see cref="UIKit.UITableView.SeparatorStyle" /> property.</remarks>
 	[Native]
 	[NoTV]
 	[MacCatalyst (13, 1)]
@@ -1182,8 +1182,8 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UITableViewCell.h
-	/// <summary>The visual appearance of a <see cref="T:UIKit.UITableViewCell" /> when it is selected.</summary>
-	/// <remarks>Used to set the <see cref="P:UIKit.UITableViewCell.SelectionStyle" /> of a cell.</remarks>
+	/// <summary>The visual appearance of a <see cref="UIKit.UITableViewCell" /> when it is selected.</summary>
+	/// <remarks>Used to set the <see cref="UIKit.UITableViewCell.SelectionStyle" /> of a cell.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UITableViewCellSelectionStyle : long {
@@ -1198,8 +1198,8 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UITableViewCell.h
-	/// <summary>An enumeration of editing styles for a <see cref="T:UIKit.UITableView" /> cell.</summary>
-	/// <remarks>The editing style of a cell is set on the <see cref="P:UIKit.UITableViewCell.EditingStyle" /> property.  The editing control is displayed on the left hand side of the cell when it is in editing mode.</remarks>
+	/// <summary>An enumeration of editing styles for a <see cref="UIKit.UITableView" /> cell.</summary>
+	/// <remarks>The editing style of a cell is set on the <see cref="UIKit.UITableViewCell.EditingStyle" /> property.  The editing control is displayed on the left hand side of the cell when it is in editing mode.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UITableViewCellEditingStyle : long {
@@ -1212,8 +1212,8 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UITableViewCell.h
-	/// <summary>An enumeration of standard accessory controls that can be used by a <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:UIKIt.UITableViewCell&amp;scope=Xamarin" title="T:UIKIt.UITableViewCell">T:UIKIt.UITableViewCell</a></format>.</summary>
-	/// <remarks>Set the type of accessory to display in a <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:UIKIt.UITableViewCell&amp;scope=Xamarin" title="T:UIKIt.UITableViewCell">T:UIKIt.UITableViewCell</a></format> using the <see cref="P:UIKit.UITableViewCell.Accessory" /> property.</remarks>
+	/// <summary>An enumeration of standard accessory controls that can be used by a <see cref="UIKit.UITableViewCell" />.</summary>
+	/// <remarks>Set the type of accessory to display in a <see cref="UIKit.UITableViewCell" /> using the <see cref="UIKit.UITableViewCell.Accessory" /> property.</remarks>
 	[Native ("UITableViewCellAccessoryType")]
 	[MacCatalyst (13, 1)]
 	public enum UITableViewCellAccessory : long {
@@ -1225,7 +1225,7 @@ namespace UIKit {
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		DetailDisclosureButton,
-		/// <summary>A tick is displayed on the right side of the cell. This accessory does not track touches. The table view's <see cref="T:UIKit.UITableViewSource" /> can manage check marks (possibly limiting the check mark to a single row) in the <see cref="M:UIKit.UITableViewSource.RowSelected(UIKit.UITableView,Foundation.NSIndexPath)" /> method.</summary>
+		/// <summary>A tick is displayed on the right side of the cell. This accessory does not track touches. The table view's <see cref="UIKit.UITableViewSource" /> can manage check marks (possibly limiting the check mark to a single row) in the <see cref="UIKit.UITableViewSource.RowSelected(UIKit.UITableView,Foundation.NSIndexPath)" /> method.</summary>
 		Checkmark,
 		/// <summary>A standard button indicating additional detail.</summary>
 		[NoTV]
@@ -1234,7 +1234,7 @@ namespace UIKit {
 	}
 
 	// NSUInteger -> UITableViewCell.h
-	/// <summary>An enumeration of states for a <see cref="T:UIKit.UITableViewCell" />.</summary>
+	/// <summary>An enumeration of states for a <see cref="UIKit.UITableViewCell" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native ("UITableViewCellStateMask")]
 	[Flags]
@@ -1265,7 +1265,7 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UITextField.h
-	/// <summary>An enumeration indicating the behavior of the clear button on a <see cref="T:UIKit.UITextField" />.</summary>
+	/// <summary>An enumeration indicating the behavior of the clear button on a <see cref="UIKit.UITextField" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
@@ -1281,7 +1281,7 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIViewController.h
-	/// <summary> An enumeration of values used to specify the transition style of presented <see cref="T:UIKit.UIViewController" />s.</summary>
+	/// <summary> An enumeration of values used to specify the transition style of presented <see cref="UIKit.UIViewController" />s.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
@@ -1294,7 +1294,7 @@ namespace UIKit {
 		FlipHorizontal,
 		/// <summary>The old view fades out while the new view simultaneously fades in.</summary>
 		CrossDissolve,
-		/// <summary>A corner of the presented <see cref="T:UIKit.UIViewController" /> is "curled up" like a book page. On transition, the curl peels up the screen. Application developers must only use this style when the <see cref="T:UIKit.UIViewController" /> is being presented with <see cref="F:UIKit.UIModalPresentationStyle.FullScreen" />.</summary>
+		/// <summary>A corner of the presented <see cref="UIKit.UIViewController" /> is "curled up" like a book page. On transition, the curl peels up the screen. Application developers must only use this style when the <see cref="UIKit.UIViewController" /> is being presented with <see cref="UIKit.UIModalPresentationStyle.FullScreen" />.</summary>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		PartialCurl,
@@ -1303,7 +1303,7 @@ namespace UIKit {
 	// NSInteger -> UIApplication.h
 	/// <summary>An enumeration of values that specify the orientation of the user interface.</summary>
 	///     <remarks>
-	///       <para>The <see cref="T:UIKit.UIInterfaceOrientation" /> represents the rotation of the user interface and, in portrait modes, is the opposite of the <see cref="P:UIKit.UIDevice.Orientation" /> property. For instance, if the device is rotated 90 degrees clockwise from normal portrait mode such that the home button is to the left, the <see cref="P:UIKit.UIViewController.InterfaceOrientation" /> property will be  <see cref="F:UIKit.UIInterfaceOrientation.LandscapeLeft" /> but the <see cref="P:UIKit.UIDevice.Orientation" /> property will be <see cref="F:UIKit.UIDeviceOrientation.LandscapeRight" />.
+	///       <para>The <see cref="UIKit.UIInterfaceOrientation" /> represents the rotation of the user interface and, in portrait modes, is the opposite of the <see cref="UIKit.UIDevice.Orientation" /> property. For instance, if the device is rotated 90 degrees clockwise from normal portrait mode such that the home button is to the left, the <see cref="UIKit.UIViewController.InterfaceOrientation" /> property will be  <see cref="UIKit.UIInterfaceOrientation.LandscapeLeft" /> but the <see cref="UIKit.UIDevice.Orientation" /> property will be <see cref="UIKit.UIDeviceOrientation.LandscapeRight" />.
 	///         </para>
 	///     </remarks>
 	[Native]
@@ -1325,7 +1325,7 @@ namespace UIKit {
 	// NSUInteger -> UIApplication.h
 	/// <summary>An enumeration of values that specify the available orientations of the user interface.</summary>
 	///     <remarks>
-	///       <para>A <see cref="T:UIKit.UIViewController" /> may support more than one <see cref="T:UIKit.UIInterfaceOrientation" />. This value, returned from <see cref="M:UIKit.UIViewController.GetSupportedInterfaceOrientations" /> and <see cref="M:UIKit.UIApplication.SupportedInterfaceOrientationsForWindow(UIKit.UIWindow)" />, specifies which orientations are supported by the application.</para>
+	///       <para>A <see cref="UIKit.UIViewController" /> may support more than one <see cref="UIKit.UIInterfaceOrientation" />. This value, returned from <see cref="UIKit.UIViewController.GetSupportedInterfaceOrientations" /> and <see cref="UIKit.UIApplication.SupportedInterfaceOrientationsForWindow(UIKit.UIWindow)" />, specifies which orientations are supported by the application.</para>
 	///     </remarks>
 	[Native]
 	[Flags]
@@ -1350,7 +1350,7 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIApplication.h
-	/// <summary>An enumeration of navigation types for use in a <see cref="T:UIKit.UIWebView" />.</summary>
+	/// <summary>An enumeration of navigation types for use in a <see cref="UIKit.UIWebView" />.</summary>
 	[Native]
 	[NoTV]
 	[MacCatalyst (13, 1)]
@@ -1407,10 +1407,10 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIActionSheet.h
-	/// <summary>The visual style for a <see cref="T:UIKit.UIActionSheet" />.</summary>
+	/// <summary>The visual style for a <see cref="UIKit.UIActionSheet" />.</summary>
 	///     <remarks>
-	///       <para>The values of <see cref="F:UIKit.UIActionSheetStyle.Automatic" /> and <see cref="F:UIKit.UIActionSheetStyle.Default" /> are the same.</para>
-	///       <para>In this image, the left phone is displaying with <see cref="F:UIKit.UIActionSheetStyle.BlackTranslucent" /> style and the right with <see cref="F:UIKit.UIActionSheetStyle.BlackOpaque" /> style.</para>
+	///       <para>The values of <see cref="UIKit.UIActionSheetStyle.Automatic" /> and <see cref="UIKit.UIActionSheetStyle.Default" /> are the same.</para>
+	///       <para>In this image, the left phone is displaying with <see cref="UIKit.UIActionSheetStyle.BlackTranslucent" /> style and the right with <see cref="UIKit.UIActionSheetStyle.BlackOpaque" /> style.</para>
 	///       <para>
 	///         <img href="~/UIKit/_images/UIKit.UIActionSheetStyle.png" alt="Screenshot showing alternate styles for the UIActionSheet" />
 	///       </para>
@@ -1421,7 +1421,7 @@ namespace UIKit {
 	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 	public enum UIActionSheetStyle : long {
-		/// <summary>Same as <see cref="F:UIKit.UIActionSheetStyle.Default" /> default.</summary>
+		/// <summary>Same as <see cref="UIKit.UIActionSheetStyle.Default" /> default.</summary>
 		Automatic = -1,
 		/// <summary>The default style takes appearance of the bottom bar.</summary>
 		Default = UIBarStyle.Default,
@@ -1434,7 +1434,7 @@ namespace UIKit {
 	// NSInteger -> UIApplication.h
 	/// <summary>The visual style of the status bar.</summary>
 	///     <remarks>
-	///       <para>Starting in iOS 7, the status bar does not have background content, so application developers must ensure that the style of the status bar works with the content of the <see cref="T:UIKit.UIView" /> that will appear behind it. The <see cref="F:UIKit.UIStatusBarStyle.Default" /> style of the status bar presents dark content (i.e., its text and content are dark). If the underlying view has dark content, the status bar will be more legible if the application developer overrides <see cref="M:UIKit.UIViewController.PreferredStatusBarStyle" /> so that it returns <see cref="F:UIKit.UIStatusBarStyle.LightContent" />.</para>
+	///       <para>Starting in iOS 7, the status bar does not have background content, so application developers must ensure that the style of the status bar works with the content of the <see cref="UIKit.UIView" /> that will appear behind it. The <see cref="UIKit.UIStatusBarStyle.Default" /> style of the status bar presents dark content (i.e., its text and content are dark). If the underlying view has dark content, the status bar will be more legible if the application developer overrides <see cref="UIKit.UIViewController.PreferredStatusBarStyle" /> so that it returns <see cref="UIKit.UIStatusBarStyle.LightContent" />.</para>
 	///     </remarks>
 	[Native]
 	[NoTV]
@@ -1445,7 +1445,7 @@ namespace UIKit {
 
 		/// <summary>Application developers should not use this deprecated style.</summary>
 		///         <remarks>
-		///           <para>Application developers should not use this deprecated style. Specifying it will result in a return of <see cref="F:UIKit.UIStatusBarStyle.LightContent" />.</para>
+		///           <para>Application developers should not use this deprecated style. Specifying it will result in a return of <see cref="UIKit.UIStatusBarStyle.LightContent" />.</para>
 		///         </remarks>
 		[Deprecated (PlatformName.iOS, 7, 0, message: "Use 'LightContent' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'LightContent' instead.")]
@@ -1456,7 +1456,7 @@ namespace UIKit {
 
 		/// <summary>Developers should not use this deprecated field. Developers should use 'LightContent' instead.</summary>
 		///         <remarks>
-		///           <para>Application developers should not use this deprecated style. Specifying it will result in a return of <see cref="F:UIKit.UIStatusBarStyle.LightContent" />.</para>
+		///           <para>Application developers should not use this deprecated style. Specifying it will result in a return of <see cref="UIKit.UIStatusBarStyle.LightContent" />.</para>
 		///         </remarks>
 		[Deprecated (PlatformName.iOS, 7, 0, message: "Use 'LightContent' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'LightContent' instead.")]
@@ -1482,10 +1482,10 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIGestureRecognizer.h
-	/// <summary>An enumeration of states for a <see cref="T:UIKit.UIGestureRecognizer" />.</summary>
+	/// <summary>An enumeration of states for a <see cref="UIKit.UIGestureRecognizer" />.</summary>
 	/// <remarks>
 	///       <para>
-	/// 	This describes the state of a <see cref="T:UIKit.UIGestureRecognizer" />.  All of
+	/// 	This describes the state of a <see cref="UIKit.UIGestureRecognizer" />.  All of
 	/// 	UIGestureRecognizers start in the Possible state.  Once one or
 	/// 	more touches has been received, the recognizers transition to
 	/// 	the Began state.  For one-shot patterns (like Tap), this will
@@ -1585,8 +1585,8 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIViewController.h
-	/// <summary>An enumeration of values used by <see cref="P:UIKit.UIViewController.ModalPresentationStyle" /></summary>
-	/// <remarks>iPhones and iTouches should always use <see cref="F:UIKit.UIModalPresentationStyle.FullScreen" />. iPads may use any value.</remarks>
+	/// <summary>An enumeration of values used by <see cref="UIKit.UIViewController.ModalPresentationStyle" /></summary>
+	/// <remarks>iPhones and iTouches should always use <see cref="UIKit.UIModalPresentationStyle.FullScreen" />. iPads may use any value.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UIModalPresentationStyle : long {
@@ -1642,7 +1642,7 @@ namespace UIKit {
 	}
 
 	// NSUInteger -> UIPopoverController.h
-	/// <summary>An enumeration indicating the direction of the arrow attached to a <see cref="T:UIKit.UIPopoverController" />.</summary>
+	/// <summary>An enumeration indicating the direction of the arrow attached to a <see cref="UIKit.UIPopoverController" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
 	[Flags]
@@ -1663,7 +1663,7 @@ namespace UIKit {
 	};
 
 	// NSInteger -> UIMenuController.h
-	/// <summary>An enumeration indicating in which direction the arrow of the <see cref="T:UIKit.UIMenuController" /> points.</summary>
+	/// <summary>An enumeration indicating in which direction the arrow of the <see cref="UIKit.UIMenuController" /> points.</summary>
 	[Native]
 	[NoTV]
 	[MacCatalyst (13, 1)]
@@ -1874,7 +1874,7 @@ namespace UIKit {
 
 	// NSInteger -> UIAccessibility.h
 	/// <summary>An enumeration indicating the scrolling direction desired.</summary>
-	/// <remarks>Used as the argument to <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Foundation%20NSObject%20Accessibility%20Scroll&amp;scope=Xamarin" title="M:Foundation.NSObject.AccessibilityScroll*">M:Foundation.NSObject.AccessibilityScroll*</a></format> to generate a scrolling action.</remarks>
+	/// <remarks>Used as the argument to <see cref="Foundation.NSObject.AccessibilityScroll" /> to generate a scrolling action.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UIAccessibilityScrollDirection : long {
@@ -1895,7 +1895,7 @@ namespace UIKit {
 	// NSInteger -> UIScreen.h
 	/// <summary>An enumeration of strategies for dealing with pixels lost at the edge of the screen.</summary>
 	/// <remarks>To be added.</remarks>
-	/// <altmember cref="P:UIKit.UIScreen.OverscanCompensation" />
+	/// <altmember cref="UIKit.UIScreen.OverscanCompensation" />
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UIScreenOverscanCompensation : long {
@@ -1911,7 +1911,7 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UISegmentedControl.h
-	/// <summary>An enumeration of locations in a <see cref="T:UIKit.UISegmentedControl" />.</summary>
+	/// <summary>An enumeration of locations in a <see cref="UIKit.UISegmentedControl" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
@@ -1951,7 +1951,7 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIPageViewController.h
-	/// <summary>An enumeration indicating the orientation of <see cref="T:UIKit.UIPageViewController" /> page turns.</summary>
+	/// <summary>An enumeration indicating the orientation of <see cref="UIKit.UIPageViewController" /> page turns.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
@@ -1963,7 +1963,7 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIPageViewController.h
-	/// <summary>An enumeration indicating the location of the spine around which the <see cref="T:UIKit.UIPageViewController" /> transitions occur.</summary>
+	/// <summary>An enumeration indicating the location of the spine around which the <see cref="UIKit.UIPageViewController" /> transitions occur.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
@@ -1979,7 +1979,7 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIPageViewController.h
-	/// <summary>An enumeration indicating the direction of <see cref="T:UIKit.UIPageViewController" /> page turns.</summary>
+	/// <summary>An enumeration indicating the direction of <see cref="UIKit.UIPageViewController" /> page turns.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
@@ -1991,7 +1991,7 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIPageViewController.h
-	/// <summary>An enumeration indicating the transition style of a <see cref="T:UIKit.UIPageViewController" />.</summary>
+	/// <summary>An enumeration indicating the transition style of a <see cref="UIKit.UIPageViewController" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
@@ -2019,8 +2019,8 @@ namespace UIKit {
 	// NSInteger -> UITextInput.h
 	/// <summary>An enumeation indicating the direction in which text is stored.</summary>
 	/// <remarks>To be added.</remarks>
-	/// <altmember cref="T:UIKit.UITextField" />
-	/// <altmember cref="T:UIKit.UITextView" />
+	/// <altmember cref="UIKit.UITextField" />
+	/// <altmember cref="UIKit.UITextView" />
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UITextStorageDirection : long {
@@ -2050,8 +2050,8 @@ namespace UIKit {
 	// NSInteger -> UITextInput.h
 	/// <summary>An enumeration of values that specify text direction.</summary>
 	/// <remarks>To be added.</remarks>
-	/// <altmember cref="T:UIKit.UITextStorageDirection" />
-	/// <altmember cref="T:UIKit.UITextLayoutDirection" />
+	/// <altmember cref="UIKit.UITextStorageDirection" />
+	/// <altmember cref="UIKit.UITextLayoutDirection" />
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UITextDirection : long {
@@ -2069,23 +2069,11 @@ namespace UIKit {
 		Down,
 	}
 
-#if !NET
-	// NSInteger -> UITextInput.h
-	// Use Foundation.NSWritingDirection in .NET.
-	// see: https://github.com/xamarin/xamarin-macios/issues/6573
-	[Native]
-	public enum UITextWritingDirection : long {
-		Natural = -1,
-		LeftToRight,
-		RightToLeft,
-	}
-#endif
-
 	// NSInteger -> UITextInput.h
 	/// <summary>An enumeration of values that specify the granularity of a text range .</summary>
 	/// <remarks>To be added.</remarks>
-	/// <altmember cref="T:UIKit.UITextInputStringTokenizer" />
-	/// <altmember cref="T:UIKit.UITextInputTokenizer" />
+	/// <altmember cref="UIKit.UITextInputStringTokenizer" />
+	/// <altmember cref="UIKit.UITextInputTokenizer" />
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UITextGranularity : long {
@@ -2108,7 +2096,7 @@ namespace UIKit {
 	// values can still be used (and useful) since they will be casted
 	/// <summary>An enumeration of values used by flow layouts to prioritize constraints.</summary>
 	/// <remarks>
-	///       <para>Higher values are considered more important by the flow layout constraint engine. Application developers should not specify a layout priority greater than the value of <see cref="F:UIKit.UILayoutPriority.Required" /></para>
+	///       <para>Higher values are considered more important by the flow layout constraint engine. Application developers should not specify a layout priority greater than the value of <see cref="UIKit.UILayoutPriority.Required" /></para>
 	///     </remarks>
 	[MacCatalyst (13, 1)]
 	public enum UILayoutPriority {
@@ -2132,9 +2120,9 @@ namespace UIKit {
 	}
 
 	// NSInteger -> NSLayoutConstraint.h
-	/// <summary>An enumeration of valid <see cref="P:UIKit.UICollectionViewUpdateItem.UpdateAction" /> properties.</summary>
+	/// <summary>An enumeration of valid <see cref="UIKit.UICollectionViewUpdateItem.UpdateAction" /> properties.</summary>
 	/// <remarks>To be added.</remarks>
-	/// <altmember cref="P:UIKit.UICollectionViewUpdateItem.UpdateAction" />
+	/// <altmember cref="UIKit.UICollectionViewUpdateItem.UpdateAction" />
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UICollectionUpdateAction : long {
@@ -2151,10 +2139,10 @@ namespace UIKit {
 	}
 
 	// NSUInteger -> UICollectionView.h
-	/// <summary>An enumeration of values used to specify to where a <see cref="T:UIKit.UIView" /> should end up after a scroll into a <see cref="T:UIKit.UICollectionView" />.</summary>
+	/// <summary>An enumeration of values used to specify to where a <see cref="UIKit.UIView" /> should end up after a scroll into a <see cref="UIKit.UICollectionView" />.</summary>
 	/// <remarks>To be added.</remarks>
 	/// <!--TODO : Confirm that it's UIView and not a specialized type -->
-	/// <altmember cref="T:UIKit.UICollectionView" />
+	/// <altmember cref="UIKit.UICollectionView" />
 	/// <related type="article" href="https://docs.xamarin.com/ios/Guides/User_Interface/Introduction_to_Collection_Views">Introduction to Collection Views</related>
 	[Native]
 	[Flags]
@@ -2177,9 +2165,9 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UICollectionViewFlowLayout.h
-	/// <summary>An enumeration of values used by the <see cref="P:UIKit.UICollectionViewFlowLayout.ScrollDirection" /> property.</summary>
+	/// <summary>An enumeration of values used by the <see cref="UIKit.UICollectionViewFlowLayout.ScrollDirection" /> property.</summary>
 	/// <remarks>To be added.</remarks>
-	/// <altmember cref="P:UIKit.UICollectionViewFlowLayout.ScrollDirection" />
+	/// <altmember cref="UIKit.UICollectionViewFlowLayout.ScrollDirection" />
 	/// <related type="article" href="https://docs.xamarin.com/ios/Guides/User_Interface/Introduction_to_Collection_Views">Introduction to Collection Views</related>
 	[Native]
 	[MacCatalyst (13, 1)]
@@ -2204,9 +2192,9 @@ namespace UIKit {
 
 	// NSInteger -> UIImage.h
 #if __MACCATALYST__
-	/// <summary>An enumeration of values that specify how a <see cref="T:UIKit.UIImage" /> ought to be resized.</summary>
+	/// <summary>An enumeration of values that specify how a <see cref="UIKit.UIImage" /> ought to be resized.</summary>
 	/// <remarks>To be added.</remarks>
-	/// <altmember cref="T:UIKit.UIImage" />
+	/// <altmember cref="UIKit.UIImage" />
 	[Native (ConvertToNative = "UIImageResizingModeExtensions.ToNative", ConvertToManaged = "UIImageResizingModeExtensions.ToManaged")]
 #else
 	[Native]
@@ -2219,28 +2207,28 @@ namespace UIKit {
 	}
 
 	// NSUInteger -> UICollectionViewLayout.h
-	/// <summary>An enumeration of values used by <see cref="P:UIKit.UICollectionViewLayoutAttributes.RepresentedElementCategory" />.</summary>
+	/// <summary>An enumeration of values used by <see cref="UIKit.UICollectionViewLayoutAttributes.RepresentedElementCategory" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UICollectionElementCategory : ulong {
-		/// <summary>The related <see cref="T:UIKit.UIView" /> is a cell in a <see cref="T:UIKit.UICollectionView" />.</summary>
+		/// <summary>The related <see cref="UIKit.UIView" /> is a cell in a <see cref="UIKit.UICollectionView" />.</summary>
 		Cell,
-		/// <summary>The related <see cref="T:UIKit.UIView" /> is a field in a <see cref="T:UIKit.UICollectionView" />.</summary>
+		/// <summary>The related <see cref="UIKit.UIView" /> is a field in a <see cref="UIKit.UICollectionView" />.</summary>
 		SupplementaryView,
-		/// <summary>The related <see cref="T:UIKit.UIView" /> is a decoration in a <see cref="T:UIKit.UICollectionView" />.</summary>
+		/// <summary>The related <see cref="UIKit.UIView" /> is a decoration in a <see cref="UIKit.UICollectionView" />.</summary>
 		DecorationView,
 	}
 
 	// that's a convenience enum that maps to UICollectionElementKindSection[Footer|Header] which are NSString
 	/// <summary>An enumeration of view types that are supported in flow layouts.</summary>
 	/// <remarks>To be added.</remarks>
-	/// <altmember cref="T:UIKit.UICollectionViewFlowLayout" />
+	/// <altmember cref="UIKit.UICollectionViewFlowLayout" />
 	[MacCatalyst (13, 1)]
 	public enum UICollectionElementKindSection {
-		/// <summary>The <see cref="T:UIKit.UIView" /> should be treated as a header.</summary>
+		/// <summary>The <see cref="UIKit.UIView" /> should be treated as a header.</summary>
 		Header,
-		/// <summary>The <see cref="T:UIKit.UIView" /> should be treated as a footer.</summary>
+		/// <summary>The <see cref="UIKit.UIView" /> should be treated as a footer.</summary>
 		Footer,
 	}
 
@@ -2248,7 +2236,7 @@ namespace UIKit {
 	// note: IMO not really worth changing to ulong for backwards compatibility concerns
 	// This is not an enum in ObjC but several fields exported (and we have them too)
 	// Unit tests (ViewTest.cs) already ensure we expose the same value as iOS returns
-	/// <summary>An enumeration whose values can be used as flags for <see cref="P:UIKit.UIView.AccessibilityTraits" />.</summary>
+	/// <summary>An enumeration whose values can be used as flags for <see cref="UIKit.UIView.AccessibilityTraits" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Flags]
 	public enum UIAccessibilityTrait : long {
@@ -2289,9 +2277,9 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIImage.h
-	/// <summary>An enumeration whose values specify rendering modes for a <see cref="T:UIKit.UIImage" />.</summary>
+	/// <summary>An enumeration whose values specify rendering modes for a <see cref="UIKit.UIImage" />.</summary>
 	/// <remarks>
-	///       <para>A template image is used as a mask to create the final image. A template image inherits the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIImage%20Tint%20Color&amp;scope=Xamarin" title="P:UIKit.UIImage.TintColor">P:UIKit.UIImage.TintColor</a></format> of its parent. Application developers who do not want this behavior should use <see cref="F:UIKit.UIImageRenderingMode.AlwaysOriginal" />.</para>
+	///       <para>A template image is used as a mask to create the final image. A template image inherits the <see cref="UIKit.UIImage.TintColor" /> of its parent. Application developers who do not want this behavior should use <see cref="UIKit.UIImageRenderingMode.AlwaysOriginal" />.</para>
 	///     </remarks>
 	[Native]
 	public enum UIImageRenderingMode : long {
@@ -2304,7 +2292,7 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIMotionEffect.h
-	/// <summary>An enumeration whose values specify the axis being monitored by a <see cref="T:UIKit.UIInterpolatingMotionEffect" />.</summary>
+	/// <summary>An enumeration whose values specify the axis being monitored by a <see cref="UIKit.UIInterpolatingMotionEffect" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
@@ -2316,8 +2304,8 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UINavigationController.h
-	/// <summary>An enumeration whose values specify operations on <see cref="T:UIKit.UINavigationController" />.</summary>
-	/// <remarks>This enumeration is used in calls to <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UINavigation%20Controller%20Get%20Animation%20Controller&amp;scope=Xamarin" title="M:UIKit.UINavigationController.GetAnimationController*">M:UIKit.UINavigationController.GetAnimationController*</a></format>.</remarks>
+	/// <summary>An enumeration whose values specify operations on <see cref="UIKit.UINavigationController" />.</summary>
+	/// <remarks>This enumeration is used in calls to <see cref="UIKit.UINavigationController.GetAnimationController" />.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UINavigationControllerOperation : long {
@@ -2330,7 +2318,7 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIActivity.h
-	/// <summary>An enumeration whose values specify a category for a <see cref="T:UIKit.UIActivity" />.</summary>
+	/// <summary>An enumeration whose values specify a category for a <see cref="UIKit.UIActivity" />.</summary>
 	///     <remarks>
 	///       <para>Application developers may choose to group activities in their UI based on this value.</para>
 	///     </remarks>
@@ -2345,7 +2333,7 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIAttachmentBehavior.h
-	/// <summary>An enumeration whose values specify whether a <see cref="T:UIKit.UIAttachmentBehavior" /> is anchored to a fixed point or to an <see cref="T:UIKit.IUIDynamicItem" />.</summary>
+	/// <summary>An enumeration whose values specify whether a <see cref="UIKit.UIAttachmentBehavior" /> is anchored to a fixed point or to an <see cref="UIKit.IUIDynamicItem" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
@@ -2357,7 +2345,7 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIBarCommon.h
-	/// <summary>An enumeration whose values specify locations for <see cref="T:UIKit.UISearchBar" />, <see cref="T:UIKit.UINavigationBar" />, or <see cref="T:UIKit.UIToolbar" />.</summary>
+	/// <summary>An enumeration whose values specify locations for <see cref="UIKit.UISearchBar" />, <see cref="UIKit.UINavigationBar" />, or <see cref="UIKit.UIToolbar" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
@@ -2373,7 +2361,7 @@ namespace UIKit {
 	}
 
 	// NSUInteger -> UICollisionBehavior.h
-	/// <summary>An enumeration whose values specify whether a <see cref="T:UIKit.UICollisionBehavior" /> detects collisions to boundaries, items, or everything.</summary>
+	/// <summary>An enumeration whose values specify whether a <see cref="UIKit.UICollisionBehavior" /> detects collisions to boundaries, items, or everything.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
 	[Flags]
@@ -2440,7 +2428,7 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIResponder.h
-	/// <summary>An enumeration whose values flag the hardware modifier keys associated with a <see cref="T:UIKit.UIKeyCommand" />.</summary>
+	/// <summary>An enumeration whose values flag the hardware modifier keys associated with a <see cref="UIKit.UIKeyCommand" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
 	[Flags]
@@ -2463,7 +2451,7 @@ namespace UIKit {
 	// NSInteger -> UIScrollView.h
 	/// <summary>An enumeration whose values specify the mode in which the keyboard is dismissed in a scrollview.</summary>
 	/// <remarks>To be added.</remarks>
-	/// <altmember cref="P:UIKit.UIScrollView.KeyboardDismissMode" />
+	/// <altmember cref="UIKit.UIScrollView.KeyboardDismissMode" />
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UIScrollViewKeyboardDismissMode : long {
@@ -2480,7 +2468,7 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIWebView.h
-	/// <summary>An enumeration whose values specify whether a <see cref="T:UIKit.UIWebView" />'s <see cref="P:UIKit.UIWebView.PaginationMode" /> should break by columns or page.</summary>
+	/// <summary>An enumeration whose values specify whether a <see cref="UIKit.UIWebView" />'s <see cref="UIKit.UIWebView.PaginationMode" /> should break by columns or page.</summary>
 	[NoTV]
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -2492,7 +2480,7 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIWebView.h
-	/// <summary>An enumeration whose values specify valid page-break modes for the <see cref="T:UIKit.UIWebView" />'s <see cref="P:UIKit.UIWebView.PaginationMode" /> property.</summary>
+	/// <summary>An enumeration whose values specify valid page-break modes for the <see cref="UIKit.UIWebView" />'s <see cref="UIKit.UIWebView.PaginationMode" /> property.</summary>
 	[NoTV]
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -2510,9 +2498,9 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIPushBehavior.h
-	/// <summary>An enumeration whose values specify whether a <see cref="T:UIKit.UIPushBehavior" /> force is applied continuously or instantaneously.</summary>
+	/// <summary>An enumeration whose values specify whether a <see cref="UIKit.UIPushBehavior" /> force is applied continuously or instantaneously.</summary>
 	/// <remarks>To be added.</remarks>
-	/// <altmember cref="T:UIKit.UIPushBehavior" />
+	/// <altmember cref="UIKit.UIPushBehavior" />
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UIPushBehaviorMode : long {
@@ -2523,9 +2511,9 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UITabBar.h
-	/// <summary>An enumeration whose values specify how a <see cref="T:UIKit.UITabBarItem" /> is positioned.</summary>
+	/// <summary>An enumeration whose values specify how a <see cref="UIKit.UITabBarItem" /> is positioned.</summary>
 	/// <remarks>To be added.</remarks>
-	/// <altmember cref="P:UIKit.UITabBarItem.ItemPositioning" />
+	/// <altmember cref="UIKit.UITabBarItem.ItemPositioning" />
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UITabBarItemPositioning : long {
@@ -2538,7 +2526,7 @@ namespace UIKit {
 	}
 
 	// NSUInteger -> UIView.h
-	/// <summary>An enumeration whose values specify valid options for the <see cref="M:UIKit.UIView.AnimateKeyframes(System.Double,System.Double,UIKit.UIViewKeyframeAnimationOptions,System.Action,UIKit.UICompletionHandler)" /> method.</summary>
+	/// <summary>An enumeration whose values specify valid options for the <see cref="UIKit.UIView.AnimateKeyframes(System.Double,System.Double,UIKit.UIViewKeyframeAnimationOptions,System.Action,UIKit.UICompletionHandler)" /> method.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
@@ -2571,7 +2559,7 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIView.h
-	/// <summary>An enumeration whose values specify adjustment modes for <see cref="P:UIKit.UIView.TintAdjustmentMode" />.</summary>
+	/// <summary>An enumeration whose values specify adjustment modes for <see cref="UIKit.UIView.TintAdjustmentMode" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
@@ -2595,7 +2583,7 @@ namespace UIKit {
 	}
 
 	// NSUInteger -> UIGeometry.h
-	/// <summary>An enumeration whose values specify screen edges, for use with <see cref="P:UIKit.UIScreenEdgePanGestureRecognizer.Edges" /> and <see cref="P:UIKit.UIViewController.EdgesForExtendedLayout" />.</summary>
+	/// <summary>An enumeration whose values specify screen edges, for use with <see cref="UIKit.UIScreenEdgePanGestureRecognizer.Edges" /> and <see cref="UIKit.UIViewController.EdgesForExtendedLayout" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
 	[Flags]
@@ -2615,7 +2603,7 @@ namespace UIKit {
 	}
 
 	// Xamarin.iOS home-grown define
-	/// <summary>An enumeration whose values specify text effects (e.g., Letterpress). Used with <see cref="P:UIKit.UIStringAttributes.TextEffect" />.</summary>
+	/// <summary>An enumeration whose values specify text effects (e.g., Letterpress). Used with <see cref="UIKit.UIStringAttributes.TextEffect" />.</summary>
 	/// <remarks>To be added.</remarks>
 	public enum NSTextEffect {
 		/// <summary>No style.</summary>
@@ -2624,17 +2612,17 @@ namespace UIKit {
 		LetterPressStyle,
 
 		// An unkonwn value, the real value can be fetched using the WeakTextEffect: Apple added a new effect and the bindings are old.
-		/// <summary>This value is returned when the underlying <see cref="P:UIKit.UIStringAttributes.WeakTextEffect" />
+		/// <summary>This value is returned when the underlying <see cref="UIKit.UIStringAttributes.WeakTextEffect" />
 		/// 	can not be mapped to one of the strongly typed known
-		/// 	enumeration values.   In that case use the <see cref="P:UIKit.UIStringAttributes.WeakTextEffect" />
+		/// 	enumeration values.   In that case use the <see cref="UIKit.UIStringAttributes.WeakTextEffect" />
 		/// 	value to determine what kind of effect is being applied. </summary>
 		UnknownUseWeakEffect,
 	}
 
 	// NSUInteger -> UISearchBar.h
-	/// <summary>An enumeration whose values specify the prominence of the <see cref="T:UIKit.UISearchBar" />.</summary>
+	/// <summary>An enumeration whose values specify the prominence of the <see cref="UIKit.UISearchBar" />.</summary>
 	/// <remarks>To be added.</remarks>
-	/// <altmember cref="P:UIKit.UISearchBar.SearchBarStyle" />
+	/// <altmember cref="UIKit.UISearchBar.SearchBarStyle" />
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UISearchBarStyle : ulong {
@@ -2647,16 +2635,16 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIInputView.h
-	/// <summary>An enumeration whose value specify the blurring and tinting effects applied to a <see cref="T:UIKit.UIInputView" />.</summary>
+	/// <summary>An enumeration whose value specify the blurring and tinting effects applied to a <see cref="UIKit.UIInputView" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UIInputViewStyle : long {
 		/// <summary>Applies blurring, but not tinting.</summary>
-		///         <remarks>This style is appropriate for <see cref="T:UIKit.UIInputView" />s that should be themed like, but do not look like, the keyboard.</remarks>
+		///         <remarks>This style is appropriate for <see cref="UIKit.UIInputView" />s that should be themed like, but do not look like, the keyboard.</remarks>
 		Default,
 		/// <summary>Applies both blurring and tinting.</summary>
-		///         <remarks>This style is appropriate for <see cref="T:UIKit.UIInputView" />s that look like the keyboard (extensions or replacements).</remarks>
+		///         <remarks>This style is appropriate for <see cref="UIKit.UIInputView" />s that look like the keyboard (extensions or replacements).</remarks>
 		Keyboard,
 	}
 
@@ -2673,20 +2661,20 @@ namespace UIKit {
 		Regular = 2,
 	}
 
-	/// <summary>Enumeration of the styles showing the effect of a <see cref="T:UIKit.UIAlertAction" />.</summary>
+	/// <summary>Enumeration of the styles showing the effect of a <see cref="UIKit.UIAlertAction" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UIAlertActionStyle : long {
 		/// <summary>A style indicating default behavior.</summary>
 		Default,
-		/// <summary>A style indicating a <see cref="T:UIKit.UIAlertAction" /> that cancels the operation associated with the alert.</summary>
+		/// <summary>A style indicating a <see cref="UIKit.UIAlertAction" /> that cancels the operation associated with the alert.</summary>
 		Cancel,
-		/// <summary>A style indicating the <see cref="T:UIKit.UIAlertAction" /> might change or delete data.</summary>
+		/// <summary>A style indicating the <see cref="UIKit.UIAlertAction" /> might change or delete data.</summary>
 		Destructive,
 	}
 
-	/// <summary>Enumerates whether a <see cref="T:UIKit.UIAlertController" /> is displaying an action sheet or an alert.</summary>
+	/// <summary>Enumerates whether a <see cref="UIKit.UIAlertController" /> is displaying an action sheet or an alert.</summary>
 	/// <remarks>
 	///       <para>This is how an action sheet is displayed:</para>
 	///       <para>
@@ -2708,7 +2696,7 @@ namespace UIKit {
 		Alert,
 	}
 
-	/// <summary>Enumerates the types of blur effect supported by <see cref="T:UIKit.UIBlurEffect" />.</summary>
+	/// <summary>Enumerates the types of blur effect supported by <see cref="UIKit.UIBlurEffect" />.</summary>
 	/// <remarks>To be added.</remarks>
 	/// <related type="article" href="https://blog.xamarin.com/adding-view-effects-in-ios-8/">Adding View Effects in iOS 8</related>
 	[Native]
@@ -2777,7 +2765,7 @@ namespace UIKit {
 		SystemChromeMaterialDark,
 	}
 
-	/// <summary>Enumerates various types of printing tasks. Used with <see cref="P:UIKit.UIPrinter.SupportedJobTypes" />.</summary>
+	/// <summary>Enumerates various types of printing tasks. Used with <see cref="UIKit.UIPrinter.SupportedJobTypes" />.</summary>
 	[Native]
 	[NoTV]
 	[MacCatalyst (13, 1)]
@@ -2820,7 +2808,7 @@ namespace UIKit {
 		Alert = 1 << 2,
 	}
 
-	/// <summary>Whether a <see cref="T:UIKit.UIUserNotificationAction" /> should run the app in foreground or background mode.</summary>
+	/// <summary>Whether a <see cref="UIKit.UIUserNotificationAction" /> should run the app in foreground or background mode.</summary>
 	[NoTV]
 	[Deprecated (PlatformName.iOS, 10, 0, message: "Use 'UNNotificationActionOptions' instead.")]
 	[MacCatalyst (13, 1)]
@@ -2833,16 +2821,16 @@ namespace UIKit {
 		Background,
 	}
 
-	/// <summary>Enumerates the amount of space available for a <see cref="T:UIKit.UIUserNotificationAction" />. Used with <see cref="M:UIKit.UIMutableUserNotificationCategory.SetActions(UIKit.UIUserNotificationAction[],UIKit.UIUserNotificationActionContext)" /></summary>
+	/// <summary>Enumerates the amount of space available for a <see cref="UIKit.UIUserNotificationAction" />. Used with <see cref="UIKit.UIMutableUserNotificationCategory.SetActions(UIKit.UIUserNotificationAction[],UIKit.UIUserNotificationActionContext)" /></summary>
 	[NoTV]
 	[Deprecated (PlatformName.iOS, 10, 0, message: "Use 'UNNotificationCategory.Actions' instead.")]
 	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'UNNotificationCategory.Actions' instead.")]
 	[Native]
 	public enum UIUserNotificationActionContext : ulong {
-		/// <summary>The full UI is displayed for the notification's alert. Allows up to four <see cref="T:UIKit.UIUserNotificationAction" />s.</summary>
+		/// <summary>The full UI is displayed for the notification's alert. Allows up to four <see cref="UIKit.UIUserNotificationAction" />s.</summary>
 		Default,
-		/// <summary>Only minimal space is available for the notification's alert. Allows up to two <see cref="T:UIKit.UIUserNotificationAction" />s.</summary>
+		/// <summary>Only minimal space is available for the notification's alert. Allows up to two <see cref="UIKit.UIUserNotificationAction" />s.</summary>
 		Minimal,
 	}
 
@@ -2890,7 +2878,7 @@ namespace UIKit {
 		Combined = 2,
 	}
 
-	/// <summary>Enumerates valid display modes for an expanded <see cref="T:UIKit.UISplitViewController" />.</summary>
+	/// <summary>Enumerates valid display modes for an expanded <see cref="UIKit.UISplitViewController" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
@@ -2916,26 +2904,26 @@ namespace UIKit {
 		[MacCatalyst (14, 0)]
 		TwoDisplaceSecondary,
 
-		/// <summary>The primary <see cref="T:UIKit.UISplitViewController" /> is hidden.</summary>
+		/// <summary>The primary <see cref="UIKit.UISplitViewController" /> is hidden.</summary>
 		[Deprecated (PlatformName.iOS, 14, 0, message: "Use 'SecondaryOnly' instead.")]
 		[Deprecated (PlatformName.TvOS, 14, 0, message: "Use 'SecondaryOnly' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 14, 0, message: "Use 'SecondaryOnly' instead.")]
 		PrimaryHidden = SecondaryOnly,
 
-		/// <summary>The primary and secondary <see cref="T:UIKit.UIViewController" />s are displayed side-by-side.</summary>
+		/// <summary>The primary and secondary <see cref="UIKit.UIViewController" />s are displayed side-by-side.</summary>
 		[Deprecated (PlatformName.iOS, 14, 0, message: "Use 'OneBesideSecondary' instead.")]
 		[Deprecated (PlatformName.TvOS, 14, 0, message: "Use 'OneBesideSecondary' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 14, 0, message: "Use 'OneBesideSecondary' instead.")]
 		AllVisible = OneBesideSecondary,
 
-		/// <summary>The primary <see cref="T:UIKit.UISplitViewController" /> overlays the secondary, which is partially visible.</summary>
+		/// <summary>The primary <see cref="UIKit.UISplitViewController" /> overlays the secondary, which is partially visible.</summary>
 		[Deprecated (PlatformName.iOS, 14, 0, message: "Use 'OneOverSecondary' instead.")]
 		[Deprecated (PlatformName.TvOS, 14, 0, message: "Use 'OneOverSecondary' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 14, 0, message: "Use 'OneOverSecondary' instead.")]
 		PrimaryOverlay = OneOverSecondary,
 	}
 
-	/// <summary>Enumerates characteristics of the button displayed in a table row. Used with the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=C:UIKit.UITableViewRowAction(UIKit.UITableViewRowActionStyle,string ,Action`1,Foundation.NSIndexPath)&amp;scope=Xamarin" title="C:UIKit.UITableViewRowAction(UIKit.UITableViewRowActionStyle,string ,Action`1,Foundation.NSIndexPath)">C:UIKit.UITableViewRowAction(UIKit.UITableViewRowActionStyle,string ,Action`1,Foundation.NSIndexPath)</a></format> constructor.</summary>
+	/// <summary>Enumerates characteristics of the button displayed in a table row. Used with the <see cref="UIKit.UITableViewRowAction(UIKit.UITableViewRowActionStyle,string ,Action{T},Foundation.NSIndexPath)" /> constructor.</summary>
 	[Native]
 	[NoTV]
 	[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'UIContextualActionStyle' and corresponding APIs instead.")]
@@ -2951,7 +2939,7 @@ namespace UIKit {
 	}
 
 	// Utility enum for UITransitionContext[To|From]ViewKey
-	/// <summary>Enumerates whether a <see cref="T:UIKit.UIViewController" /> for a transition is associated with the "from" <see cref="T:UIKit.UIView" /> or the "to" <see cref="T:UIKit.UIView" />. Used with <see cref="M:UIKit.UIViewControllerTransitionCoordinatorContext_Extensions.GetTransitionViewController(UIKit.IUIViewControllerTransitionCoordinatorContext,UIKit.UITransitionViewControllerKind)" />.</summary>
+	/// <summary>Enumerates whether a <see cref="UIKit.UIViewController" /> for a transition is associated with the "from" <see cref="UIKit.UIView" /> or the "to" <see cref="UIKit.UIView" />. Used with <see cref="UIKit.UIViewControllerTransitionCoordinatorContext_Extensions.GetTransitionViewController(UIKit.IUIViewControllerTransitionCoordinatorContext,UIKit.UITransitionViewControllerKind)" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	public enum UITransitionViewControllerKind {
@@ -2994,20 +2982,20 @@ namespace UIKit {
 		Compressed,
 	}
 
-	/// <summary>How the views in a <see cref="T:UIKit.UIStackView" /> are distributed along the view's alignment axis.</summary>
+	/// <summary>How the views in a <see cref="UIKit.UIStackView" /> are distributed along the view's alignment axis.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIStackViewDistribution : long {
-		/// <summary>Attempts to fill along the <see cref="P:UIKit.UIStackView.Axis" /> according to the <see cref="P:UIKit.UIStackView.ArrangedSubviews" />' <see cref="M:UIKit.UIView.ContentCompressionResistancePriority(UIKit.UILayoutConstraintAxis)" /> and <see cref="M:UIKit.UIView.ContentHuggingPriority(UIKit.UILayoutConstraintAxis)" /> properties.</summary>
+		/// <summary>Attempts to fill along the <see cref="UIKit.UIStackView.Axis" /> according to the <see cref="UIKit.UIStackView.ArrangedSubviews" />' <see cref="UIKit.UIView.ContentCompressionResistancePriority(UIKit.UILayoutConstraintAxis)" /> and <see cref="UIKit.UIView.ContentHuggingPriority(UIKit.UILayoutConstraintAxis)" /> properties.</summary>
 		Fill,
-		/// <summary>Attempts to fill along the <see cref="P:UIKit.UIStackView.Axis" /> by giving the <see cref="P:UIKit.UIStackView.ArrangedSubviews" /> the same space.</summary>
+		/// <summary>Attempts to fill along the <see cref="UIKit.UIStackView.Axis" /> by giving the <see cref="UIKit.UIStackView.ArrangedSubviews" /> the same space.</summary>
 		FillEqually,
-		/// <summary>Attempts to fill along the <see cref="P:UIKit.UIStackView.Axis" /> by giving the <see cref="P:UIKit.UIStackView.ArrangedSubviews" /> the space required by their <see cref="P:UIKit.UIView.IntrinsicContentSize" /> property.</summary>
+		/// <summary>Attempts to fill along the <see cref="UIKit.UIStackView.Axis" /> by giving the <see cref="UIKit.UIStackView.ArrangedSubviews" /> the space required by their <see cref="UIKit.UIView.IntrinsicContentSize" /> property.</summary>
 		FillProportionally,
-		/// <summary>Attempts to maintain equal spacing between <see cref="P:UIKit.UIStackView.ArrangedSubviews" />.</summary>
+		/// <summary>Attempts to maintain equal spacing between <see cref="UIKit.UIStackView.ArrangedSubviews" />.</summary>
 		EqualSpacing,
-		/// <summary>Attempts to maintain equal center-to-center spacing between <see cref="P:UIKit.UIStackView.ArrangedSubviews" />.</summary>
+		/// <summary>Attempts to maintain equal center-to-center spacing between <see cref="UIKit.UIStackView.ArrangedSubviews" />.</summary>
 		EqualCentering,
 	}
 
@@ -3015,22 +3003,22 @@ namespace UIKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIStackViewAlignment : long {
-		/// <summary>Views are arranged to fill available space perpendicular to the <see cref="P:UIKit.UIStackView.Axis" />.</summary>
+		/// <summary>Views are arranged to fill available space perpendicular to the <see cref="UIKit.UIStackView.Axis" />.</summary>
 		Fill,
-		/// <summary>Views are aligned based on the leading edge of the first <see cref="P:UIKit.UIStackView.ArrangedSubviews" />. (Vertical only.)
+		/// <summary>Views are aligned based on the leading edge of the first <see cref="UIKit.UIStackView.ArrangedSubviews" />. (Vertical only.)
 		/// </summary>
 		Leading,
-		/// <summary>Horizontal layout, top edges aligned to the top of the <see cref="T:UIKit.UIStackView" />.</summary>
+		/// <summary>Horizontal layout, top edges aligned to the top of the <see cref="UIKit.UIStackView" />.</summary>
 		Top = Leading,
-		/// <summary>Views are aligned based on the baseline of the first <see cref="P:UIKit.UIStackView.ArrangedSubviews" />. (Horizontal only.)</summary>
+		/// <summary>Views are aligned based on the baseline of the first <see cref="UIKit.UIStackView.ArrangedSubviews" />. (Horizontal only.)</summary>
 		FirstBaseline,
-		/// <summary>Views are aligned along the <see cref="P:UIKit.UIStackView.Axis" />, in the center of the <see cref="T:UIKit.UIStackView" />.</summary>
+		/// <summary>Views are aligned along the <see cref="UIKit.UIStackView.Axis" />, in the center of the <see cref="UIKit.UIStackView" />.</summary>
 		Center,
-		/// <summary>Views are aligned based on the trailing edge of the first <see cref="P:UIKit.UIStackView.ArrangedSubviews" />. (Vertical only.)</summary>
+		/// <summary>Views are aligned based on the trailing edge of the first <see cref="UIKit.UIStackView.ArrangedSubviews" />. (Vertical only.)</summary>
 		Trailing,
-		/// <summary>Horizontal layout, bottom edges aligned to the bottom of the <see cref="T:UIKit.UIStackView" />.</summary>
+		/// <summary>Horizontal layout, bottom edges aligned to the bottom of the <see cref="UIKit.UIStackView" />.</summary>
 		Bottom = Trailing,
-		/// <summary>Views are aligned based on the baseline of the last <see cref="P:UIKit.UIStackView.ArrangedSubviews" />. (Horizontal only.)</summary>
+		/// <summary>Views are aligned based on the baseline of the last <see cref="UIKit.UIStackView.ArrangedSubviews" />. (Horizontal only.)</summary>
 		LastBaseline,
 	}
 
@@ -3119,7 +3107,7 @@ namespace UIKit {
 		Available = 2,
 	}
 
-	/// <summary>Enumeration that defines the various styles of <see cref="T:UIKit.UIPreviewAction" /> objects.</summary>
+	/// <summary>Enumeration that defines the various styles of <see cref="UIKit.UIPreviewAction" /> objects.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
 	[MacCatalyst (13, 1)]
@@ -3135,7 +3123,7 @@ namespace UIKit {
 	/// <summary>Enumerates the phases of the button-press life-cycle.</summary>
 	/// <remarks>
 	///       <para>
-	///         <see cref="T:UIKit.UIPress" /> objects model not just digital presses but, for instance, trackpads, so a <see cref="T:UIKit.UIPress" /> may have both location and force data. Additionally, the system may cancel tracking of a button press at any time. This leads to the following state-machine:</para>
+	///         <see cref="UIKit.UIPress" /> objects model not just digital presses but, for instance, trackpads, so a <see cref="UIKit.UIPress" /> may have both location and force data. Additionally, the system may cancel tracking of a button press at any time. This leads to the following state-machine:</para>
 	///       <para>
 	///         <img href="~/UIKit/_images/UIKit.UIPressPhase_States.png" alt="Statechart showing states and transitions occuring during a press" />
 	///       </para>
@@ -3145,7 +3133,7 @@ namespace UIKit {
 	public enum UIPressPhase : long {
 		/// <summary>The initial state of a button. Indicates that a press has begun.</summary>
 		Began,
-		/// <summary>Indicates that either the location of the button press or it's <see cref="P:UIKit.UIPress.Force" /> has changed.</summary>
+		/// <summary>Indicates that either the location of the button press or it's <see cref="UIKit.UIPress.Force" /> has changed.</summary>
 		Changed,
 		/// <summary>Indicates that the button is still down, with the same location and force as previously.</summary>
 		Stationary,
@@ -3155,7 +3143,7 @@ namespace UIKit {
 		Cancelled,
 	}
 
-	/// <summary>Enumerates button types for <see cref="T:UIKit.UIPress" /> objects (see <see cref="P:UIKit.UIPress.Type" />).</summary>
+	/// <summary>Enumerates button types for <see cref="UIKit.UIPress" /> objects (see <see cref="UIKit.UIPress.Type" />).</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -3188,7 +3176,7 @@ namespace UIKit {
 		TVRemoteFourColors = 33,
 	}
 
-	/// <summary>Enumeration whose values define how a <see cref="T:UIKit.UITableViewCell" /> displays when it is focused.</summary>
+	/// <summary>Enumeration whose values define how a <see cref="UIKit.UITableViewCell" /> displays when it is focused.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -3318,12 +3306,8 @@ namespace UIKit {
 		Next,
 	}
 
-#if NET
 	/// <summary>Flagging enumeration for the permission options for Cloud sharing.</summary>
 	[NoTV]
-#else
-	// Xcode 8.2 beta 1 added __TVOS_PROHIBITED but we need to keep it for binary compatibility
-#endif
 	[MacCatalyst (13, 1)]
 	[Native]
 	[Flags]
@@ -3381,7 +3365,7 @@ namespace UIKit {
 		Always,
 	}
 
-	/// <summary>Enumerates the types that implement the <see cref="T:UIKit.IUIAccessibilityContainer" /> interface.</summary>
+	/// <summary>Enumerates the types that implement the <see cref="UIKit.IUIAccessibilityContainer" /> interface.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -3438,7 +3422,7 @@ namespace UIKit {
 		Yes,
 	}
 
-	/// <summary>Enumerates the types of content that may be represented by a <see cref="T:UIKit.UIAccessibilityCustomRotor" /> object.</summary>
+	/// <summary>Enumerates the types of content that may be represented by a <see cref="UIKit.UIAccessibilityCustomRotor" /> object.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -3761,7 +3745,7 @@ namespace UIKit {
 		LayoutMargins,
 	}
 
-	/// <summary>Enumerates how the data from a <see cref="T:Foundation.NSItemProvider" /> should be presented.</summary>
+	/// <summary>Enumerates how the data from a <see cref="Foundation.NSItemProvider" /> should be presented.</summary>
 	[NoTV]
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -4716,7 +4700,7 @@ namespace UIKit {
 	/// <summary>An enumeration whose values specify whether a Guided Access restriction is in an allow or deny state.</summary>
 	/// <remarks>
 	///     </remarks>
-	/// <altmember cref="M:UIKit.UIGuidedAccessRestriction.GetState" />
+	/// <altmember cref="UIKit.UIGuidedAccessRestriction.GetState" />
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UIGuidedAccessRestrictionState : long {

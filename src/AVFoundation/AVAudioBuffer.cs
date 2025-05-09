@@ -25,7 +25,7 @@ namespace AVFoundation {
 			}
 		}
 
-		/// <summary>Gets a mutable version of the underlying <see cref="T:AudioToolbox.AudioBuffers" />.</summary>
+		/// <summary>Gets a mutable version of the underlying <see cref="AudioToolbox.AudioBuffers" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public AudioBuffers MutableAudioBufferList {

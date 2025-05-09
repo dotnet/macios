@@ -292,6 +292,8 @@ Copyright (C) 2020 Microsoft. All rights reserved.
 		<!-- Does not apply unless we're actually building a library - and since BundleOriginalResources can be specified on the command line, use a secondary property -->
 		<!-- that also encapsulates whether we're a library or not (this makes conditions simpler) -->
 		<_BundleOriginalResources Condition="'$(OutputType)' == 'Library' And '$(IsAppExtension)' != 'true' And '$(BundleOriginalResources)' == 'true'">true</_BundleOriginalResources>
+
+		<EnableProfiling Condition="'$(EnableProfiling)' == '' And '$(_BundlerDebug)' == 'true'">true</EnableProfiling>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(IsBindingProject)' == 'true'">

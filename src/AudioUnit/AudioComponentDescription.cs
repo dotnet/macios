@@ -45,23 +45,23 @@ namespace AudioUnit {
 	///       <para />
 	///     </remarks>
 	public enum AudioComponentType : uint { // OSType in AudioComponentDescription
-		/// <summary>An effect component, when set, you want to set a component subtype in the <see cref="F:AudioUnit.AudioComponentDescription.ComponentSubType" /> to one of the values from <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Audio%20Unit%20AUAudio%20Unit%20Sub%20Type%20Output&amp;scope=Xamarin" title="T:AudioUnit.AUAudioUnitSubType.Output">T:AudioUnit.AUAudioUnitSubType.Output</a></format></summary>
+		/// <summary>An effect component, when set, you want to set a component subtype in the <see cref="AudioComponentDescription.ComponentSubType" /> to one of the values from <see cref="AudioTypeOutput" /></summary>
 		Output = 0x61756f75, //'auou',
-		/// <summary>A music device component, when set, you want to set a component subtype in the <see cref="F:AudioUnit.AudioComponentDescription.ComponentSubType" /> to one of the values from <see cref="T:AudioUnit.AudioTypeMusicDevice" /></summary>
+		/// <summary>A music device component, when set, you want to set a component subtype in the <see cref="AudioComponentDescription.ComponentSubType" /> to one of the values from <see cref="AudioTypeMusicDevice" /></summary>
 		MusicDevice = 0x61756d75, // 'aumu'
 		/// <summary>An effect component that can also work on MIDI control messages.</summary>
 		MusicEffect = 0x61756d66, // 'aumf'
-		/// <summary>An format converter component, when set, you want to set a component subtype in the <see cref="F:AudioUnit.AudioComponentDescription.ComponentSubType" /> to one of the values from <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Audio%20Unit%20AUAudio%20Unit%20Sub%20Type%20Format%20Converter&amp;scope=Xamarin" title="T:AudioUnit.AUAudioUnitSubType.FormatConverter">T:AudioUnit.AUAudioUnitSubType.FormatConverter</a></format></summary>
+		/// <summary>An format converter component, when set, you want to set a component subtype in the <see cref="AudioComponentDescription.ComponentSubType" /> to one of the values from <see cref="AudioTypeConverter" /></summary>
 		FormatConverter = 0x61756663, // 'aufc'
-		/// <summary>An effect component, when set, you want to set a component subtype in the <see cref="F:AudioUnit.AudioComponentDescription.ComponentSubType" /> to one of the values from <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Audio%20Unit%20AUAudio%20Unit%20Sub%20Type%20Effect&amp;scope=Xamarin" title="T:AudioUnit.AUAudioUnitSubType.Effect">T:AudioUnit.AUAudioUnitSubType.Effect</a></format></summary>
+		/// <summary>An effect component, when set, you want to set a component subtype in the <see cref="AudioComponentDescription.ComponentSubType" /> to one of the values from <see cref="AudioTypeEffect" /></summary>
 		Effect = 0x61756678, // 'aufx'
-		/// <summary>A mixer component, when set, you want to set a component subtype in the <see cref="F:AudioUnit.AudioComponentDescription.ComponentSubType" /> to one of the values from <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Audio%20Unit%20AUAudio%20Unit%20Sub%20Type%20Mixer&amp;scope=Xamarin" title="T:AudioUnit.AUAudioUnitSubType.Mixer">T:AudioUnit.AUAudioUnitSubType.Mixer</a></format></summary>
+		/// <summary>A mixer component, when set, you want to set a component subtype in the <see cref="AudioComponentDescription.ComponentSubType" /> to one of the values from <see cref="AudioTypeMixer" /></summary>
 		Mixer = 0x61756d78, // 'aumx'
-		/// <summary>A panner component that will pan a single audio input to a single output. When set, you want to set a component subtype in the <see cref="F:AudioUnit.AudioComponentDescription.ComponentSubType" /> to one of the values from <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Audio%20Unit%20AUAudio%20Unit%20Sub%20Type%20Panner&amp;scope=Xamarin" title="T:AudioUnit.AUAudioUnitSubType.Panner">T:AudioUnit.AUAudioUnitSubType.Panner</a></format></summary>
+		/// <summary>A panner component that will pan a single audio input to a single output. When set, you want to set a component subtype in the <see cref="AudioComponentDescription.ComponentSubType" /> to one of the values from <see cref="AudioTypePanner" /></summary>
 		Panner = 0x6175706e, // 'aupn'
 		/// <summary>An offline effect component, used to process data from files or to perform offline audio processing (not real time)</summary>
 		OfflineEffect = 0x61756f6c, // 'auol'
-		/// <summary>A generator component, when set, you want to set a component subtype in the <see cref="F:AudioUnit.AudioComponentDescription.ComponentSubType" /> to one of the values from <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Audio%20Unit%20AUAudio%20Unit%20Sub%20Type%20Generator&amp;scope=Xamarin" title="T:AudioUnit.AUAudioUnitSubType.Generator">T:AudioUnit.AUAudioUnitSubType.Generator</a></format></summary>
+		/// <summary>A generator component, when set, you want to set a component subtype in the <see cref="AudioComponentDescription.ComponentSubType" /> to one of the values from <see cref="AudioTypeGenerator" /></summary>
 		Generator = 0x6175676e, // 'augn'
 #if NET
 		/// <summary>A MIDI processor component, they can receive MIDI input and generate MIDI output, but they do not actually produce audio.</summary>
@@ -363,7 +363,7 @@ namespace AudioUnit {
 		Apple = 0x6170706c, // little endian 0x6c707061 //'appl'
 	}
 
-	/// <summary>A flagging enumeration whose value specifies whether an audio component is searchable. Used with <see cref="F:AudioUnit.AudioComponentDescription.ComponentFlags" /></summary>
+	/// <summary>A flagging enumeration whose value specifies whether an audio component is searchable. Used with <see cref="AudioComponentDescription.ComponentFlags" /></summary>
 	///     <remarks>To be added.</remarks>
 	[Flags]
 	public enum AudioComponentFlag // UInt32 in AudioComponentDescription
@@ -389,7 +389,7 @@ namespace AudioUnit {
 #endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AudioComponentDescription {
-		/// <summary>Describes the component type, some of the component types have subtypes, in those cases, you should also set the <see cref="F:AudioUnit.AudioComponentDescription.ComponentSubType" /> property.</summary>
+		/// <summary>Describes the component type, some of the component types have subtypes, in those cases, you should also set the <see cref="AudioComponentDescription.ComponentSubType" /> property.</summary>
 		///         <remarks>
 		///           <para />
 		///         </remarks>
@@ -428,7 +428,7 @@ namespace AudioUnit {
 
 		/// <param name="type">To be added.</param>
 		///         <param name="subType">To be added.</param>
-		///         <summary>Initializes an <see cref="T:AudioUnit.AudioComponentDescription" /> with the given type and given subtype.   This method is here for cases where you might want to create a component description that is not covered by the built-in enumerations for component subtypes.</summary>
+		///         <summary>Initializes an <see cref="AudioComponentDescription" /> with the given type and given subtype.   This method is here for cases where you might want to create a component description that is not covered by the built-in enumerations for component subtypes.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		public static AudioComponentDescription CreateGeneric (AudioComponentType type, int subType)
@@ -438,7 +438,7 @@ namespace AudioUnit {
 
 		/// <param name="outputType">To be added.</param>
 		///         <summary>Creates an output component description.</summary>
-		///         <returns>An initialized AudioComponentDescription with the <see cref="F:AudioUnit.AudioComponentDescription.ComponentType" /> set to <see cref="F:AudioUnit.AudioComponentType.Output" /> and the specified output type.</returns>
+		///         <returns>An initialized AudioComponentDescription with the <see cref="AudioComponentDescription.ComponentType" /> set to <see cref="AudioComponentType.Output" /> and the specified output type.</returns>
 		///         <remarks>To be added.</remarks>
 		public static AudioComponentDescription CreateOutput (AudioTypeOutput outputType)
 		{
@@ -447,7 +447,7 @@ namespace AudioUnit {
 
 		/// <param name="musicDevice">To be added.</param>
 		///         <summary>Creates a music effect component description.</summary>
-		///         <returns>An initialized AudioComponentDescription with the <see cref="F:AudioUnit.AudioComponentDescription.ComponentType" /> set to <see cref="F:AudioUnit.AudioComponentType.MusicDevice" /> and the specified device.</returns>
+		///         <returns>An initialized AudioComponentDescription with the <see cref="AudioComponentDescription.ComponentType" /> set to <see cref="AudioComponentType.MusicDevice" /> and the specified device.</returns>
 		///         <remarks>To be added.</remarks>
 		public static AudioComponentDescription CreateMusicDevice (AudioTypeMusicDevice musicDevice)
 		{
@@ -465,7 +465,7 @@ namespace AudioUnit {
 
 		/// <param name="effect">To be added.</param>
 		///         <summary>Creates an audio effect component description.</summary>
-		///         <returns>An initialized AudioComponentDescription with the <see cref="F:AudioUnit.AudioComponentDescription.ComponentType" /> set to <see cref="F:AudioUnit.AudioComponentType.Effect" /> and the specified effect.</returns>
+		///         <returns>An initialized AudioComponentDescription with the <see cref="AudioComponentDescription.ComponentType" /> set to <see cref="AudioComponentType.Effect" /> and the specified effect.</returns>
 		///         <remarks>To be added.</remarks>
 		public static AudioComponentDescription CreateEffect (AudioTypeEffect effect)
 		{
@@ -474,7 +474,7 @@ namespace AudioUnit {
 
 		/// <param name="mixer">To be added.</param>
 		///         <summary>Creates an audio mixer component description.</summary>
-		///         <returns>An initialized AudioComponentDescription with the <see cref="F:AudioUnit.AudioComponentDescription.ComponentType" /> set to <see cref="F:AudioUnit.AudioComponentType.Mixer" /> and the specified mixer.</returns>
+		///         <returns>An initialized AudioComponentDescription with the <see cref="AudioComponentDescription.ComponentType" /> set to <see cref="AudioComponentType.Mixer" /> and the specified mixer.</returns>
 		///         <remarks>To be added.</remarks>
 		public static AudioComponentDescription CreateMixer (AudioTypeMixer mixer)
 		{
@@ -483,7 +483,7 @@ namespace AudioUnit {
 
 		/// <param name="panner">To be added.</param>
 		///         <summary>Creates a panner component description.</summary>
-		///         <returns>An initialized AudioComponentDescription with the <see cref="F:AudioUnit.AudioComponentDescription.ComponentType" /> set to <see cref="F:AudioUnit.AudioComponentType.Panner" /> and the specified panner.</returns>
+		///         <returns>An initialized AudioComponentDescription with the <see cref="AudioComponentDescription.ComponentType" /> set to <see cref="AudioComponentType.Panner" /> and the specified panner.</returns>
 		///         <remarks>To be added.</remarks>
 		public static AudioComponentDescription CreatePanner (AudioTypePanner panner)
 		{
@@ -492,7 +492,7 @@ namespace AudioUnit {
 
 		/// <param name="generator">To be added.</param>
 		///         <summary>Creates an audio generator component description.</summary>
-		///         <returns>An initialized AudioComponentDescription with the <see cref="F:AudioUnit.AudioComponentDescription.ComponentType" /> set to <see cref="F:AudioUnit.AudioComponentType.Generator" /> and the specified generator.</returns>
+		///         <returns>An initialized AudioComponentDescription with the <see cref="AudioComponentDescription.ComponentType" /> set to <see cref="AudioComponentType.Generator" /> and the specified generator.</returns>
 		///         <remarks>To be added.</remarks>
 		public static AudioComponentDescription CreateGenerator (AudioTypeGenerator generator)
 		{

@@ -15,7 +15,7 @@ using NativeHandle = System.IntPtr;
 #endif
 
 namespace CloudKit {
-	/// <summary>A <see cref="T:CloudKit.CKOperation" /> that modifies the badge of the app's icon, either on the current device or all the user's devices.</summary>
+	/// <summary>A <see cref="CloudKit.CKOperation" /> that modifies the badge of the app's icon, either on the current device or all the user's devices.</summary>
 	///     <remarks>To be added.</remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CloudKit/Reference/CKModifyBadgeOperation_class/index.html">Apple documentation for <c>CKModifyBadgeOperation</c></related>
 	[Register ("CKModifyBadgeOperation", SkipRegistration = true)]

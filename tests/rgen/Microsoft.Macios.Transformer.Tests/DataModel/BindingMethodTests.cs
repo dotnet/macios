@@ -45,10 +45,10 @@ interface MyNSArray : NSSecureCoding, NSMutableCopying, INSFastEnumeration, CKRe
 			yield return [
 				(Source: noMethods, Path: path),
 				new Binding (
-					symbolName: "MyNSArray",
+					name: "MyNSArray",
 					@namespace: ["Test"],
 					fullyQualifiedSymbol: "Test.MyNSArray",
-					info: new BindingInfo (new ("Foundation.NSObject"), BindingType.Class),
+					bindingInfo: new BindingInfo (new ("Foundation.NSObject"), BindingType.Class),
 					symbolAvailability: availabilityBuilder.ToImmutable (),
 					attributes: new ()
 				) {
@@ -88,10 +88,10 @@ interface MyNSArray : NSSecureCoding, NSMutableCopying, INSFastEnumeration, CKRe
 			yield return [
 				(Source: noExportedMethods, Path: path),
 				new Binding (
-					symbolName: "MyNSArray",
+					name: "MyNSArray",
 					@namespace: ["Test"],
 					fullyQualifiedSymbol: "Test.MyNSArray",
-					info: new BindingInfo (new ("Foundation.NSObject"), BindingType.Class),
+					bindingInfo: new BindingInfo (new ("Foundation.NSObject"), BindingType.Class),
 					symbolAvailability: availabilityBuilder.ToImmutable (),
 					attributes: new ()
 				) {
@@ -132,10 +132,10 @@ interface MyNSArray : NSSecureCoding, NSMutableCopying, INSFastEnumeration, CKRe
 			yield return [
 				(Source: simpleExportMethod, Path: path),
 				new Binding (
-					symbolName: "MyNSArray",
+					name: "MyNSArray",
 					@namespace: ["Test"],
 					fullyQualifiedSymbol: "Test.MyNSArray",
-					info: new BindingInfo (new ("Foundation.NSObject"), BindingType.Class),
+					bindingInfo: new BindingInfo (new ("Foundation.NSObject"), BindingType.Class),
 					symbolAvailability: availabilityBuilder.ToImmutable (),
 					attributes: new ()
 				) {
@@ -191,10 +191,10 @@ interface MyNSArray : NSSecureCoding, NSMutableCopying, INSFastEnumeration, CKRe
 			yield return [
 				(Source: methodWithParameters, Path: path),
 				new Binding (
-					symbolName: "MyNSArray",
+					name: "MyNSArray",
 					@namespace: ["Test"],
 					fullyQualifiedSymbol: "Test.MyNSArray",
-					info: new BindingInfo (new ("Foundation.NSObject"), BindingType.Class),
+					bindingInfo: new BindingInfo (new ("Foundation.NSObject"), BindingType.Class),
 					symbolAvailability: availabilityBuilder.ToImmutable (),
 					attributes: new ()
 				) {
@@ -257,10 +257,10 @@ interface MyNSArray : NSSecureCoding, NSMutableCopying, INSFastEnumeration, CKRe
 			yield return [
 				(Source: constructorNoParams, Path: path),
 				new Binding (
-					symbolName: "MyNSArray",
+					name: "MyNSArray",
 					@namespace: ["Test"],
 					fullyQualifiedSymbol: "Test.MyNSArray",
-					info: new BindingInfo (new ("Foundation.NSObject"), BindingType.Class),
+					bindingInfo: new BindingInfo (new ("Foundation.NSObject"), BindingType.Class),
 					symbolAvailability: availabilityBuilder.ToImmutable (),
 					attributes: new ()
 				) {
@@ -314,10 +314,10 @@ interface MyNSArray : NSSecureCoding, NSMutableCopying, INSFastEnumeration, CKRe
 			yield return [
 				(Source: constructorWithParams, Path: path),
 				new Binding (
-					symbolName: "MyNSArray",
+					name: "MyNSArray",
 					@namespace: ["Test"],
 					fullyQualifiedSymbol: "Test.MyNSArray",
-					info: new BindingInfo (new ("Foundation.NSObject"), BindingType.Class),
+					bindingInfo: new BindingInfo (new ("Foundation.NSObject"), BindingType.Class),
 					symbolAvailability: availabilityBuilder.ToImmutable (),
 					attributes: new ()
 				) {

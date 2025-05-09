@@ -6,23 +6,17 @@ using Xamarin.Tests;
 using Xamarin.Utils;
 
 namespace Xamarin.MacDev.Tasks {
-	[TestFixture (true)]
-	[TestFixture (false)]
+	[TestFixture]
 	public class GeneratePlistTaskTests_iOS : GeneratePlistTaskTests_Core {
 		protected override ApplePlatform Platform => ApplePlatform.iOS;
 
-		public GeneratePlistTaskTests_iOS (bool isDotNet)
-			: base (isDotNet)
-		{
-		}
-
-		protected override void ConfigureTask (bool isDotNet)
+		protected override void ConfigureTask ()
 		{
 			Configuration.IgnoreIfIgnoredPlatform (ApplePlatform.iOS);
 
-			base.ConfigureTask (isDotNet);
+			base.ConfigureTask ();
 			Task.DefaultSdkVersion = Sdks.IOS.GetClosestInstalledSdk (AppleSdkVersion.V6_1, true).ToString ();
-			Task.TargetFrameworkMoniker = isDotNet ? TargetFramework.DotNet_iOS_String : TargetFramework.Xamarin_iOS_1_0.ToString ();
+			Task.TargetFrameworkMoniker = TargetFramework.DotNet_iOS_String;
 			Task.TargetArchitectures = "ARM64";
 		}
 

@@ -76,6 +76,7 @@ trigger:
       - refs/heads/dev/*
       - refs/heads/darc-*
       - refs/heads/backport-pr-*
+      - refs/heads/lego/*
   paths:
     exclude:
       - .github
@@ -133,3 +134,31 @@ extends:
           forceInsertion: ${{ parameters.forceInsertion }}
           pushNugets: ${{ parameters.pushNugets }}
           pushNugetsToMaestro: ${{ parameters.pushNugetsToMaestro }}
+
+      - template: localization/v1.yml@yaml-templates
+        parameters:
+          preSteps:
+            - template: ../sdk-unified/steps/checkout/v1.yml@yaml-templates
+              parameters:
+                resource: self
+                commit: HEAD
+                clean: true
+                submodules: recursive
+                path: s/$(BUILD_REPOSITORY_TITLE)
+                fetchTags: false
+              
+            - bash: |
+                make LocProject.json              
+              workingDirectory: $(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops
+              displayName: 'Generate LocProject.json'
+                
+          settings:
+            locProjectPath: '$(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/Localize/LocProject.json'
+            outputPath: '$(Build.ArtifactStagingDirectory)'
+            createPr: true
+            autoCompletePr: false
+            deletePrSourceBranch: false
+            prSourceBranchPrefix: 'locfiles'
+            repoType: gitHub
+            gitHubPatVariable: '$(GitHub.Token)'
+            postLocPowerShellScript: '$(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/automation/scripts/localizationBomRemoval.ps1'

@@ -95,7 +95,7 @@ namespace LinkAll {
 		public void ConstantsVersion_4859 ()
 		{
 			// Check that the Makefile generated a valid version number, e.g. "12.3." was not
-			// reference: https://github.com/xamarin/xamarin-macios/issues/4859
+			// reference: https://github.com/dotnet/macios/issues/4859
 			Assert.True (Version.TryParse (ObjCRuntime.Constants.Version, out var _), "Version");
 		}
 	}

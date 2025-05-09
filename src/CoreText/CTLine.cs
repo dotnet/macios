@@ -42,7 +42,7 @@ namespace CoreText {
 	// defined as uint32_t - /System/Library/Frameworks/CoreText.framework/Headers/CTLine.h
 	/// <summary>An enumeration whose values specify valid options for line truncation.</summary>
 	///     <remarks>To be added.</remarks>
-	///     <altmember cref="M:CoreText.CTLine.GetTruncatedLine" />
+	///     <altmember cref="CoreText.CTLine.GetTruncatedLine" />
 	public enum CTLineTruncation : uint {
 		/// <summary>To be added.</summary>
 		Start = 0,
@@ -96,7 +96,7 @@ namespace CoreText {
 		IncludeLanguageExtents = 1 << 5, // iOS8 and Mac 10.11
 	}
 
-	/// <summary>A line of text, comprising an array of <see cref="T:CoreText.CTRun" />s.</summary>
+	/// <summary>A line of text, comprising an array of <see cref="CoreText.CTRun" />s.</summary>
 	///     <remarks>To be added.</remarks>
 	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/SimpleTextInput/">SimpleTextInput</related>
 	[SupportedOSPlatform ("ios")]
@@ -225,7 +225,7 @@ namespace CoreText {
 		static extern CGRect CTLineGetBoundsWithOptions (IntPtr line, nuint options);
 
 		/// <param name="options">Determines the kind of typographical information to return.</param>
-		///         <summary>Returns the bounds of the line as a rectangle, based on the specified <see cref="T:CoreText.CTLineBoundsOptions" />.</summary>
+		///         <summary>Returns the bounds of the line as a rectangle, based on the specified <see cref="CoreText.CTLineBoundsOptions" />.</summary>
 		///         <returns>The bounding rectangle based on the parameter you pass on the options.</returns>
 		///         <remarks>
 		///           <para>
@@ -253,10 +253,10 @@ namespace CoreText {
 		///         <returns>The width of the line, or zero if there are any errors.</returns>
 		///         <remarks>
 		///           <para>
-		/// 	    Use the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:CoreText.CTLine.GetTypographicBounds(out float, out float, out float)&amp;scope=Xamarin" title="M:CoreText.CTLine.GetTypographicBounds(out float, out float, out float)">M:CoreText.CTLine.GetTypographicBounds(out float, out float, out float)</a></format> method to retrieve more information about the typographical features of the line.
+		/// 	    Use the <see cref="CoreText.CTLine.GetTypographicBounds(out nfloat, out nfloat, out nfloat)" /> method to retrieve more information about the typographical features of the line.
 		/// 	  </para>
 		///           <para>
-		/// 	    Starting with iOS 6.0, the <see cref="M:CoreText.CTLine.GetBounds(CoreText.CTLineBoundsOptions)" /> provides finer typorgraphical information than this method.
+		/// 	    Starting with iOS 6.0, the <see cref="CoreText.CTLine.GetBounds(CoreText.CTLineBoundsOptions)" /> provides finer typorgraphical information than this method.
 		/// 	  </para>
 		///         </remarks>
 		public double GetTypographicBounds ()

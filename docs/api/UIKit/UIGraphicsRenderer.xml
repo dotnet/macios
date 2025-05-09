@@ -3,9 +3,9 @@
     <summary>A color-managed rendering context.</summary>
     <remarks>
       <para>
-      Introduced in iOS 10, <see cref="T:UIKit.UIGraphicsRenderer" /> and its subclasses (<see cref="T:UIKit.UIGraphicsImageRenderer" /> and <see cref="T:UIKit.UIGraphicsPdfRendererFormat" />) allow custom drawing code that utilitizes wide color.
+      Introduced in iOS 10, <see cref="UIKit.UIGraphicsRenderer" /> and its subclasses (<see cref="UIKit.UIGraphicsImageRenderer" /> and <see cref="UIKit.UIGraphicsPdfRendererFormat" />) allow custom drawing code that utilitizes wide color.
       </para>
-      <para>In versions prior to iOS 10, custom drawing was done by retrieving a <see cref="T:CoreGraphics.CGContext" />, manipulating its state, and then retrieving the custom image. Now, the standard technique is to use <see cref="M:UIKit.UIGraphicsImageRenderer.CreateImage(System.Action{UIKit.UIGraphicsImageRendererContext})" /> or <see cref="M:UIKit.UIGraphicsPdfRenderer.CreatePdf(System.Action{UIKit.UIGraphicsPdfRendererContext})" />, both of which take an <c>Action</c> as an argument, allowing the developer to either pass in drawing code or use a lambda expression:</para>
+      <para>In versions prior to iOS 10, custom drawing was done by retrieving a <see cref="CoreGraphics.CGContext" />, manipulating its state, and then retrieving the custom image. Now, the standard technique is to use <see cref="UIKit.UIGraphicsImageRenderer.CreateImage(System.Action{UIKit.UIGraphicsImageRendererContext})" /> or <see cref="UIKit.UIGraphicsPdfRenderer.CreatePdf(System.Action{UIKit.UIGraphicsPdfRendererContext})" />, both of which take an <c>Action</c> as an argument, allowing the developer to either pass in drawing code or use a lambda expression:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
 // Pre-iOS 10 drawing pattern
@@ -38,7 +38,7 @@ var img = r.CreateImage((UIGraphicsImageRendererContext ctxt) =>
     });
     ]]></code>
       </example>
-      <para>The new drawing method is still based on manipulating the state of a "current context" but instead of a <see cref="T:CoreGraphics.CGContext" /> it is now a subclass of <see cref="T:UIKit.UIGraphicsRendererContext" /> (either <see cref="T:UIKit.UIGraphicsImageRendererContext" /> or <see cref="T:UIKit.UIGraphicsPdfRendererContext" />). If necessary, developers can retrieve the current context as a <see cref="T:CoreGraphics.CGContext" /> using <see cref="M:UIKit.UIGraphicsRenderer.GetContext(UIKit.UIGraphicsRendererFormat)" />.</para>
+      <para>The new drawing method is still based on manipulating the state of a "current context" but instead of a <see cref="CoreGraphics.CGContext" /> it is now a subclass of <see cref="UIKit.UIGraphicsRendererContext" /> (either <see cref="UIKit.UIGraphicsImageRendererContext" /> or <see cref="UIKit.UIGraphicsPdfRendererContext" />). If necessary, developers can retrieve the current context as a <see cref="CoreGraphics.CGContext" /> using <see cref="UIKit.UIGraphicsRenderer.GetContext(UIKit.UIGraphicsRendererFormat)" />.</para>
     </remarks>
     <related type="externalDocumentation" href="https://developer.apple.com/reference/UIKit/UIGraphicsRenderer">Apple documentation for <c>UIGraphicsRenderer</c></related>
   </Docs>

@@ -34,7 +34,7 @@
     </remarks>
   </Docs>
   <Docs DocId="T:CoreFoundation.CFStream">
-    <summary>An abstract class that defines a stream for reading or writing bytes - modern applications should use the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Network&amp;scope=Xamarin" title="N:Network">N:Network</a></format> APIs instead.</summary>
+    <summary>An abstract class that defines a stream for reading or writing bytes - modern applications should use the <see cref="Network" /> APIs instead.</summary>
     <remarks>
       <format type="text/html">
         <h2>Converting CFStreams to NSStreams</h2>

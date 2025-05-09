@@ -21,7 +21,7 @@ namespace MetalPerformanceShaders {
 		///         <returns>
 		///           <see langword="true" /> if <paramref name="device" /> is supported. Oterwise, returns <see langword="false" /></returns>
 		///         <remarks>
-		///           <para>Before copying shaders to a new device, application developers should call the <see cref="M:MetalPerformanceShaders.MPSKernel.Supports(Metal.IMTLDevice)" /> method to determine if the <paramref name="device" /> is supported.</para>
+		///           <para>Before copying shaders to a new device, application developers should call the <see cref="MetalPerformanceShaders.MPSKernel.Supports(Metal.IMTLDevice)" /> method to determine if the <paramref name="device" /> is supported.</para>
 		///         </remarks>
 		public static bool Supports (IMTLDevice device)
 		{

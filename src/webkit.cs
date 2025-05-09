@@ -5062,7 +5062,7 @@ namespace WebKit {
 		System,
 	}
 
-	/// <summary>A page within a <see cref="T:WebKit.WKBackForwardList" />.</summary>
+	/// <summary>A page within a <see cref="WebKit.WKBackForwardList" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/WebKit/Reference/WKBackForwardListItem_Ref/index.html">Apple documentation for <c>WKBackForwardListItem</c></related>
 	[MacCatalyst (13, 1)]
@@ -5182,7 +5182,7 @@ namespace WebKit {
 		void GetAvailableContentRuleListIdentifiers (Action<string []> callback);
 	}
 
-	/// <summary>Manages cookies for a <see cref="T:WebKit.WKWebsiteDataStore" />.</summary>
+	/// <summary>Manages cookies for a <see cref="WebKit.WKWebsiteDataStore" />.</summary>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject), Name = "WKHTTPCookieStore")]
 	[DisableDefaultCtor]
@@ -5328,7 +5328,7 @@ namespace WebKit {
 		bool ShouldPerformDownload { get; }
 	}
 
-	/// <summary>Delegate object for <see cref="T:WebKit.WKNavigation" /> objects, provides methods relating to navigation and load policies.</summary>
+	/// <summary>Delegate object for <see cref="WebKit.WKNavigation" /> objects, provides methods relating to navigation and load policies.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/WebKit/Reference/WKNavigationDelegate_Ref/index.html">Apple documentation for <c>WKNavigationDelegate</c></related>
 	[MacCatalyst (13, 1)]
@@ -5438,11 +5438,11 @@ namespace WebKit {
 
 	delegate void WKNavigationDelegateShouldGoToBackForwardListItemCallback (bool shouldGoToItem);
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:WebKit.WKNavigationDelegate" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="WebKit.WKNavigationDelegate" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:WebKit.WKNavigationDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:WebKit.WKNavigationDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:WebKit.WKNavigationDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="WebKit.WKNavigationDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="WebKit.WKNavigationDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="WebKit.WKNavigationDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	interface IWKNavigationDelegate { }
 
@@ -5466,7 +5466,7 @@ namespace WebKit {
 		bool CanShowMimeType { get; }
 	}
 
-	/// <summary>Preference settings for a <see cref="T:WebKit.WKWebView" />.</summary>
+	/// <summary>Preference settings for a <see cref="WebKit.WKWebView" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/WebKit/Reference/WKPreferences_Ref/index.html">Apple documentation for <c>WKPreferences</c></related>
 	[MacCatalyst (13, 1)]
@@ -5602,7 +5602,7 @@ namespace WebKit {
 	}
 
 
-	/// <summary>Holds the specification for a snapshot of a Webpage taken with <see cref="M:WebKit.WKWebView.TakeSnapshotAsync(WebKit.WKSnapshotConfiguration)" />.</summary>
+	/// <summary>Holds the specification for a snapshot of a Webpage taken with <see cref="WebKit.WKWebView.TakeSnapshotAsync(WebKit.WKSnapshotConfiguration)" />.</summary>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface WKSnapshotConfiguration : NSCopying {
@@ -5919,7 +5919,7 @@ namespace WebKit {
 		/// <param name="configuration">To be added.</param>
 		/// <param name="navigationAction">To be added.</param>
 		/// <param name="windowFeatures">To be added.</param>
-		/// <summary>Creates and configures a new <see cref="T:WebKit.WKWebView" />.</summary>
+		/// <summary>Creates and configures a new <see cref="WebKit.WKWebView" />.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[Export ("webView:createWebViewWithConfiguration:forNavigationAction:windowFeatures:")]
@@ -5956,7 +5956,7 @@ namespace WebKit {
 		/// <param name="completionHandler">To be added.</param>
 		/// <summary>Shows a JavaScript text input box to the user.</summary>
 		/// <remarks>To be added.</remarks>
-		[Obsolete ("It's not possible to call the completion handler with a null value using this method. Please see https://github.com/xamarin/xamarin-macios/issues/15728 for a workaround.")]
+		[Obsolete ("It's not possible to call the completion handler with a null value using this method. Please see https://github.com/dotnet/macios/issues/15728 for a workaround.")]
 		[Export ("webView:runJavaScriptTextInputPanelWithPrompt:defaultText:initiatedByFrame:completionHandler:")]
 		void RunJavaScriptTextInputPanel (WKWebView webView, string prompt, [NullAllowed] string defaultText,
 			WKFrameInfo frame, Action<string> completionHandler);
@@ -6070,11 +6070,11 @@ namespace WebKit {
 		void WillDismissEditMenu (WKWebView webView, IUIEditMenuInteractionAnimating animator);
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:WebKit.WKUIDelegate" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="WebKit.WKUIDelegate" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:WebKit.WKUIDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:WebKit.WKUIDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:WebKit.WKUIDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="WebKit.WKUIDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="WebKit.WKUIDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="WebKit.WKUIDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	interface IWKUIDelegate { }
 
@@ -6324,10 +6324,10 @@ namespace WebKit {
 			<param name="javascript">The JavaScript string to evaluate</param>
 			<summary>Evaluates the given JavaScript string.</summary>
 			<returns>
-			          <para>A task that represents the asynchronous EvaluateJavaScript operation.   The value of the TResult parameter is a <see cref="T:WebKit.WKJavascriptEvaluationResult" />.</para>
+			          <para>A task that represents the asynchronous EvaluateJavaScript operation.   The value of the TResult parameter is a <see cref="WebKit.WKJavascriptEvaluationResult" />.</para>
 			        </returns>
 			<remarks>
-			          <para>This method will throw a <see cref="T:Foundation.NSErrorException" /> if the JavaScript is not evaluated successfully.</para>
+			          <para>This method will throw a <see cref="Foundation.NSErrorException" /> if the JavaScript is not evaluated successfully.</para>
 			          <example>
 			            <code lang="csharp lang-csharp"><![CDATA[
 			var config = new WKWebViewConfiguration();
@@ -6337,7 +6337,7 @@ namespace WebKit {
 			    ]]></code>
 			          </example>
 			          <para>The EvaluateJavaScriptAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
-			          <para>The arguments to the handler are an <see cref="T:Foundation.NSObject" /> containing the results of the evaluation and an <see cref="T:Foundation.NSError" /> if an error. If an error occurred, the <c>result</c> argument will be <see langword="null" />. If no error occurred, the <c>error</c> argument will be <see langword="null" />.</para>
+			          <para>The arguments to the handler are an <see cref="Foundation.NSObject" /> containing the results of the evaluation and an <see cref="Foundation.NSError" /> if an error. If an error occurred, the <c>result</c> argument will be <see langword="null" />. If no error occurred, the <c>error</c> argument will be <see langword="null" />.</para>
 			          <example>
 			            <code lang="csharp lang-csharp"><![CDATA[
 			var config = new WKWebViewConfiguration();
@@ -6367,7 +6367,7 @@ namespace WebKit {
 			<summary>Evaluates the given JavaScript string.</summary>
 			<returns>A task that represents the asynchronous EvaluateJavaScript operation. The TResult holds the results of the evaluation.</returns>
 			<remarks>
-			          <para>This method will throw a <see cref="T:Foundation.NSErrorException" /> if the JavaScript is not evaluated successfully.</para>
+			          <para>This method will throw a <see cref="Foundation.NSErrorException" /> if the JavaScript is not evaluated successfully.</para>
 			          <example>
 			            <code lang="csharp lang-csharp"><![CDATA[
 			var config = new WKWebViewConfiguration();
@@ -6651,7 +6651,7 @@ namespace WebKit {
 	///     </remarks>
 	delegate void WKJavascriptEvaluationResult ([NullAllowed] NSObject result, [NullAllowed] NSError error);
 
-	/// <summary>Properties configuring a <see cref="T:WebKit.WKWebView" />.</summary>
+	/// <summary>Properties configuring a <see cref="WebKit.WKWebView" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/WebKit/Reference/WKWebViewConfiguration_Ref/index.html">Apple documentation for <c>WKWebViewConfiguration</c></related>
 	[MacCatalyst (13, 1)]

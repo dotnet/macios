@@ -41,7 +41,7 @@ namespace MapKit {
 	}
 
 #if NET
-	/// <summary>Encapsulates properties to be used with <see cref="M:MapKit.MKMapItem.OpenInMaps(MapKit.MKLaunchOptions)" />.</summary>
+	/// <summary>Encapsulates properties to be used with <see cref="MapKit.MKMapItem.OpenInMaps(MapKit.MKLaunchOptions)" />.</summary>
 	///     <remarks>
 	///     </remarks>
 	[SupportedOSPlatform ("ios")]

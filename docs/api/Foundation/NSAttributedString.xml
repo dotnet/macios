@@ -9,7 +9,7 @@
       <para>
         <img href="~/Foundation/_images/NSAttributedString.png" alt="Diagram showing an attributed string." />
       </para>
-      <para> The companion <see cref="T:Foundation.NSMutableAttributedString" /> type
+      <para> The companion <see cref="Foundation.NSMutableAttributedString" /> type
 	can be used to create attributed strings that have overlapping
 	attributes and whose contents can be modified after creation.
       </para>
@@ -40,13 +40,13 @@
       </para>
       <para>
 	To create NSAttributedStrings that you can use with CoreText's
-	rendering, you create an instance of the <see cref="T:CoreText.CTStringAttributes" /> class, set its
+	rendering, you create an instance of the <see cref="CoreText.CTStringAttributes" /> class, set its
 	properties to the attributes that you desire, and then invoke
 	the NSAttributedString constructor with it.   
       </para>
       <para>
 	To create NSAttributedStrings that you can use with UIKit's
-	rendering, you create an instance of the <see cref="T:UIKit.UIStringAttributes" /> class, set its
+	rendering, you create an instance of the <see cref="UIKit.UIStringAttributes" /> class, set its
 	properties to the attributes that you desire, and then invoke
 	the NSAttributedString constructor with it.   
       </para>
@@ -85,9 +85,9 @@ label.AttributedText = myText;
 	]]></code>
       </example>
       <para>
-	While both <see cref="T:CoreText.CTStringAttributes" /> and <see cref="T:UIKit.UIStringAttributes" /> are useful to
+	While both <see cref="CoreText.CTStringAttributes" /> and <see cref="UIKit.UIStringAttributes" /> are useful to
 	create attributes that can later be used with attributed
-	strings, it is also possible to use the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=C:Foundation.NSAttributedString(string,UIKit.UIFont,UIKit.UIColor,UIKit.UIColor,UIKit.UIColor,UIKit.NSParagraphStyle,Foundation.NSLigatureType,float,Foundation.NSUnderlineStyle,UIKit.NSShadow,float,Foundation.NSUnderlineStyle&amp;scope=Xamarin" title="C:Foundation.NSAttributedString(string,UIKit.UIFont,UIKit.UIColor,UIKit.UIColor,UIKit.UIColor,UIKit.NSParagraphStyle,Foundation.NSLigatureType,float,Foundation.NSUnderlineStyle,UIKit.NSShadow,float,Foundation.NSUnderlineStyle">C:Foundation.NSAttributedString(string,UIKit.UIFont,UIKit.UIColor,UIKit.UIColor,UIKit.UIColor,UIKit.NSParagraphStyle,Foundation.NSLigatureType,float,Foundation.NSUnderlineStyle,UIKit.NSShadow,float,Foundation.NSUnderlineStyle</a></format> constructor
+	strings, it is also possible to use the <see cref="Foundation.NSAttributedString(string,UIKit.UIFont,UIKit.UIColor,UIKit.UIColor,UIKit.UIColor,UIKit.NSParagraphStyle,Foundation.NSLigatureType,float,Foundation.NSUnderlineStyle,UIKit.NSShadow,float,Foundation.NSUnderlineStyle" /> constructor
 	with C# named parameters for quickly creating attributed
 	strings inline.
       </para>
@@ -185,7 +185,7 @@ var text = new NSAttributedString (
         <returns>IntPtr handle to a native NSDictionary class.</returns>
         <remarks>
           <para>
-	    In general, you should use the <see cref="M:Foundation.NSAttributedString.LowLevelGetAttributes(System.nint,Foundation.NSRange@)" />
+	    In general, you should use the <see cref="Foundation.NSAttributedString.LowLevelGetAttributes(System.IntPtr,out Foundation.NSRange)" />
 	    methods, which will return a high-level NSDictionary.
 	  </para>
           <para>

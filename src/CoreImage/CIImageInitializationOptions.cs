@@ -53,7 +53,7 @@ namespace CoreImage {
 #endif
 	}
 
-	/// <summary>A type of <see cref="T:CoreImage.CIImageInitializationOptions" /> that has additional metadata properties.</summary>
+	/// <summary>A type of <see cref="CoreImage.CIImageInitializationOptions" /> that has additional metadata properties.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]

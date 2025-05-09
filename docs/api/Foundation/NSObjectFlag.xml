@@ -26,14 +26,14 @@
 // This is taken from Xamarin's source code:
 //
 [Export ("initWithFrame:")]
-public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
+public UIView (CGRect frame) : base (NSObjectFlag.Empty)
 {
 	// Invoke the init method now.
 	var initWithFrame = new Selector ("initWithFrame:").Handle;
 	if (IsDirectBinding) {
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_CGRect (this.Handle, initWithFrame, frame);
 	} else {
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (this.SuperHandle, initWithFrame, frame);
 	}
 }
 ]]></code>
@@ -48,10 +48,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <code lang="csharp lang-csharp"><![CDATA[
 class MyViw : UIView {
 	[Export ("initWithFrame:")]
-	public MyView (RectangleF frame) : base (frame)
+	public MyView (CGRect frame) : base (frame)
 	{
 		// this initialized MyView by calling the UIView constructor
-		// that initializes the object from a RectangleF frame.
+		// that initializes the object from a CGRect frame.
 	}
 }
 ]]></code>

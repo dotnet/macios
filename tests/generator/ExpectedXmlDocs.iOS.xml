@@ -151,7 +151,7 @@
             // This is taken from the iOS SDK's source code for the UIView class:
             //
             [Export ("initWithFrame:")]
-            public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
+            public UIView (CGRect frame) : base (NSObjectFlag.Empty)
             {
                 // Invoke the init method now.
                 var initWithFrame = new Selector ("initWithFrame:").Handle;
@@ -376,7 +376,7 @@
             // This is taken from the iOS SDK's source code for the UIView class:
             //
             [Export ("initWithFrame:")]
-            public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
+            public UIView (CGRect frame) : base (NSObjectFlag.Empty)
             {
                 // Invoke the init method now.
                 var initWithFrame = new Selector ("initWithFrame:").Handle;
@@ -571,7 +571,7 @@
             // This is taken from the iOS SDK's source code for the UIView class:
             //
             [Export ("initWithFrame:")]
-            public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
+            public UIView (CGRect frame) : base (NSObjectFlag.Empty)
             {
                 // Invoke the init method now.
                 var initWithFrame = new Selector ("initWithFrame:").Handle;
@@ -681,7 +681,7 @@
             // This is taken from the iOS SDK's source code for the UIView class:
             //
             [Export ("initWithFrame:")]
-            public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
+            public UIView (CGRect frame) : base (NSObjectFlag.Empty)
             {
                 // Invoke the init method now.
                 var initWithFrame = new Selector ("initWithFrame:").Handle;
@@ -761,7 +761,7 @@
             // This is taken from the iOS SDK's source code for the UIView class:
             //
             [Export ("initWithFrame:")]
-            public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
+            public UIView (CGRect frame) : base (NSObjectFlag.Empty)
             {
                 // Invoke the init method now.
                 var initWithFrame = new Selector ("initWithFrame:").Handle;
@@ -851,7 +851,7 @@
             // This is taken from the iOS SDK's source code for the UIView class:
             //
             [Export ("initWithFrame:")]
-            public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
+            public UIView (CGRect frame) : base (NSObjectFlag.Empty)
             {
                 // Invoke the init method now.
                 var initWithFrame = new Selector ("initWithFrame:").Handle;

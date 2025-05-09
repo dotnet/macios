@@ -12,7 +12,7 @@
         <img href="~/Foundation/_images/NSMutableAttributedString.png" alt="Diagram showing elements within a mutated attributed string." />
       </para>
       <para>
-	Unlike the <see cref="T:Foundation.NSAttributedString" /> both the
+	Unlike the <see cref="Foundation.NSAttributedString" /> both the
 	contents of the string as well as the attributes applied to it
 	can be changed after the string has been constructed.
 
@@ -30,9 +30,9 @@
       </para>
       <para> If you are performing multiple changes to an
 	NSMutableAttributedString, you can optimize the performance by
-	surrounding your changes with calls to <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Foundation%20Begin%20Editing(%20)&amp;scope=Xamarin" title="M:Foundation.BeginEditing()">M:Foundation.BeginEditing()</a></format> and <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Foundation%20End%20Editing(%20)&amp;scope=Xamarin" title="M:Foundation.EndEditing()">M:Foundation.EndEditing()</a></format>.  This will
+	surrounding your changes with calls to <see cref="Foundation.BeginEditing()" /> and <see cref="Foundation.EndEditing()" />.  This will
 	prevent the internal data structures to be updated on every
-	change and delay the internal changes until the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Foundation%20End%20Editing(%20)&amp;scope=Xamarin" title="M:Foundation.EndEditing()">M:Foundation.EndEditing()</a></format> method is called.
+	change and delay the internal changes until the <see cref="Foundation.EndEditing()" /> method is called.
 	</para>
     </remarks>
     

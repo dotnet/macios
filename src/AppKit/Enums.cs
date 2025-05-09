@@ -143,15 +143,6 @@ namespace AppKit {
 		ReplyLater,
 	}
 
-#if !NET
-	[NoMacCatalyst]
-	[Native]
-	public enum NSApplicationLayoutDirection : long {
-		LeftToRight = 0,
-		RightToLeft = 1,
-	}
-#endif
-
 	[NoMacCatalyst]
 	[Native]
 	public enum NSImageInterpolation : ulong {
@@ -375,21 +366,6 @@ namespace AppKit {
 	#endregion
 
 	#region NSCell Defines 
-
-#if !NET
-	[NoMacCatalyst]
-	[Native]
-	[Deprecated (PlatformName.MacOSX, 10, 10, message: "Use formatters instead.")]
-	public enum NSType : ulong {
-		Any = 0,
-		Int = 1,
-		PositiveInt = 2,
-		Float = 3,
-		PositiveFloat = 4,
-		Double = 6,
-		PositiveDouble = 7,
-	}
-#endif
 
 	[NoMacCatalyst]
 	[Native]
@@ -834,12 +810,7 @@ namespace AppKit {
 	// This enum is defined as an untyped enum in MacOSX.sdk/System/Library/Frameworks/Carbon.framework/Versions/A/Frameworks/HIToolbox.framework/Versions/A/Headers/Events.h
 	// It represents values that may be returned by NSEvent.KeyCode (which isn't typed as 'NSKey' because it may be many other values as well).
 	[NoMacCatalyst]
-#if NET
 	public enum NSKey {
-#else
-	[Native]
-	public enum NSKey : ulong {
-#endif
 		/// <summary>To be added.</summary>
 		A = 0x00,
 		/// <summary>To be added.</summary>
@@ -1080,12 +1051,7 @@ namespace AppKit {
 
 	// This is an untyped enum in AppKit's NSEvent.h
 	[NoMacCatalyst]
-#if !NET
-	[Native]
-	public enum NSFunctionKey : ulong {
-#else
 	public enum NSFunctionKey : int {
-#endif
 		/// <summary>To be added.</summary>
 		UpArrow = 0xF700,
 		/// <summary>To be added.</summary>
@@ -1233,12 +1199,7 @@ namespace AppKit {
 	}
 
 	[NoMacCatalyst]
-#if !NET
-	[Native]
-	public enum NSEventSubtype : ulong {
-#else
 	public enum NSEventSubtype : short {
-#endif
 		/* event subtypes for NSEventTypeAppKitDefined events */
 		/// <summary>To be added.</summary>
 		WindowExposed = 0,
@@ -1250,10 +1211,6 @@ namespace AppKit {
 		WindowMoved = 4,
 		/// <summary>To be added.</summary>
 		ScreenChanged = 8,
-#if !NET
-		[Obsolete ("This API is not available on this platform.")]
-		AWT = 16,
-#endif
 		/* event subtypes for NSEventTypeSystemDefined events */
 		/* the value is repeated from above */
 		PowerOff = 1,
@@ -1265,30 +1222,6 @@ namespace AppKit {
 		TabletProximity = 2, /* NX_SUBTYPE_TABLET_PROXIMITY */
 		Touch = 3, /* NX_SUBTYPE_MOUSE_TOUCH */
 	}
-
-#if !NET
-	[NoMacCatalyst]
-	[Native]
-	public enum NSSystemDefinedEvents : ulong {
-		[Deprecated (PlatformName.MacOSX, 10, 12, message: "Use 'NSEventSubtype.PowerOff' instead.")]
-		NSPowerOffEventType = 1,
-	}
-#endif // !NET
-
-#if !NET
-	[NoMacCatalyst]
-	[Native]
-	public enum NSEventMouseSubtype : ulong {
-		[Deprecated (PlatformName.MacOSX, 10, 12, message: "Use 'NSEventSubtype.MouseEvent' instead.")]
-		Mouse,
-		[Deprecated (PlatformName.MacOSX, 10, 12, message: "Use 'NSEventSubtype.TabletPoint' instead.")]
-		TablePoint,
-		[Deprecated (PlatformName.MacOSX, 10, 12, message: "Use 'NSEventSubtype.TabletProximity' instead.")]
-		TabletProximity,
-		[Deprecated (PlatformName.MacOSX, 10, 12, message: "Use 'NSEventSubtype.Touch' instead.")]
-		Touch,
-	}
-#endif // !NET
 
 	#endregion
 
@@ -1404,10 +1337,6 @@ namespace AppKit {
 		/// <summary>To be added.</summary>
 		[Deprecated (PlatformName.MacOSX, 11, 0, message: "Don't use 'TexturedBackground' anymore.")]
 		TexturedBackground = 1 << 8,
-#if !NET
-		[Deprecated (PlatformName.MacOSX, 10, 9, message: "Don't use, this value has no effect.")]
-		Unscaled = 1 << 11,
-#endif
 		/// <summary>To be added.</summary>
 		UnifiedTitleAndToolbar = 1 << 12,
 		/// <summary>To be added.</summary>
@@ -2015,10 +1944,6 @@ namespace AppKit {
 	public enum NSStackViewVisibilityPriority : int {
 		/// <summary>To be added.</summary>
 		MustHold = 1000,
-#if !NET
-		[Obsolete ("Use 'MustHold' instead.")]
-		Musthold = MustHold,
-#endif
 		/// <summary>To be added.</summary>
 		DetachOnlyIfNecessary = 900,
 		/// <summary>To be added.</summary>
@@ -2096,20 +2021,6 @@ namespace AppKit {
 		/// <summary>To be added.</summary>
 		Natural = 4,
 	}
-
-#if !NET && MONOMAC
-	// Use Foundation.NSWritingDirection in .NET.
-	// see: https://github.com/xamarin/xamarin-macios/issues/6573
-	[Flags]
-	[Native]
-	public enum NSWritingDirection : long {
-		Natural = -1, LeftToRight, RightToLeft,
-		[Obsolete ("Use 'LeftToRight' instead.")]
-		Embedding = 0,
-		[Obsolete ("This API is not available on this platform.")]
-		Override = 2,
-	}
-#endif // !NET && MONOMAC
 
 	[NoMacCatalyst]
 	[Native]
@@ -2369,29 +2280,6 @@ namespace AppKit {
 		/// <summary>To be added.</summary>
 		Clip,
 	}
-
-#if !NET
-	[NoMacCatalyst]
-	[Flags]
-	[Native]
-	[Deprecated (PlatformName.MacOSX, 10, 11, message: "Use 'NSGlyphProperty' instead.")]
-	public enum NSGlyphStorageOptions : ulong {
-		ShowControlGlyphs = 1,
-		ShowInvisibleGlyphs = 2,
-		WantsBidiLevels = 4,
-	}
-#endif // !NET
-
-#if !NET
-	[NoMacCatalyst]
-	[Deprecated (PlatformName.MacOSX, 10, 11, message: "Use NSTextStorageEditActions instead.")]
-	[Flags]
-	[Native]
-	public enum NSTextStorageEditedFlags : ulong {
-		EditedAttributed = 1,
-		EditedCharacters = 2,
-	}
-#endif
 
 	[NoMacCatalyst]
 	[Native]
@@ -2666,28 +2554,6 @@ namespace AppKit {
 		Small,
 	}
 
-#if !NET
-	[NoMacCatalyst]
-	[Deprecated (PlatformName.MacOSX, 10, 10, message: "Use NSAlertButtonReturn instead.")]
-	[Native]
-	public enum NSAlertType : long {
-		ErrorReturn = -2,
-		OtherReturn,
-		AlternateReturn,
-		DefaultReturn,
-	}
-#endif // !NET
-
-#if !NET
-	[NoMacCatalyst]
-	[Deprecated (PlatformName.MacOSX, 10, 10, message: "Use NSModalResponse instead.")]
-	[Native]
-	public enum NSPanelButtonType : long {
-		Cancel,
-		Ok,
-	}
-#endif
-
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTableViewColumnAutoresizingStyle : ulong {
@@ -2819,10 +2685,6 @@ namespace AppKit {
 	public enum NSSpeechBoundary : ulong {
 		/// <summary>To be added.</summary>
 		Immediate = 0,
-#if !NET
-		[Obsolete ("Use 'Word' instead.")]
-		hWord,
-#endif
 		/// <summary>To be added.</summary>
 		Word = 1,
 		/// <summary>To be added.</summary>
@@ -3265,10 +3127,6 @@ namespace AppKit {
 		DoubleBuffer = 5,
 		/// <summary>To be added.</summary>
 		TripleBuffer = 3,
-#if !NET
-		[Obsolete ("Use 'TripleBuffer' instead.")]
-		TrippleBuffer = TripleBuffer,
-#endif
 		/// <summary>To be added.</summary>
 		Stereo = 6,
 		/// <summary>To be added.</summary>
@@ -3515,10 +3373,6 @@ namespace AppKit {
 		GenericPreferencesIcon = 0x70726566,   //'pref'
 		GenericQueryDocumentIcon = 0x71657279,   //'qery'
 		GenericRamDiskIcon = 0x72616D64,   //'ramd'
-#if !NET
-		[Obsolete ("Use 'GenericSharedLibraryIcon' instead.")]
-		GenericSharedLibaryIcon = 0x73686C62,   //'shlb'
-#endif
 		GenericSharedLibraryIcon = 0x73686C62,   //'shlb'
 		GenericStationeryIcon = 0x73646F63,   //'sdoc'
 		GenericSuitcaseIcon = 0x73756974,   //'suit'
@@ -4132,10 +3986,6 @@ namespace AppKit {
 		Visible = 0,
 		/// <summary>To be added.</summary>
 		Hidden = 1,
-#if !NET
-		[Obsolete ("This API is not available on this platform.")]
-		HiddenWhenActive = 2,
-#endif
 	}
 
 	[NoMacCatalyst]

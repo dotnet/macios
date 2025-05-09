@@ -23,11 +23,6 @@
         </value>
     </data>
     
-    <data name="E0003" xml:space="preserve">
-        <value>Error executing tool '{0}': {1}
-        </value>
-    </data>
-    
     <data name="E0004" xml:space="preserve">
         <value>Failed to codesign '{0}': {1}
         </value>
@@ -514,11 +509,6 @@
     
     <data name="E0115" xml:space="preserve">
         <value>Error writing archived-expanded-entitlements.xcent file: {0}
-        </value>
-    </data>
-    
-    <data name="M0116" xml:space="preserve">
-        <value>Tool {0} execution finished.
         </value>
     </data>
     
@@ -1535,7 +1525,7 @@
     </data>
 
     <data name="E7120" xml:space="preserve">
-        <value>Unable to compute the remote generator properties. Please file an issue at https://github.com/xamarin/xamarin-macios/issues/new and attach the following file: {0}</value>
+        <value>Unable to compute the remote generator properties. Please file an issue at https://github.com/dotnet/macios/issues/new and attach the following file: {0}</value>
         <comment>
             {0}: the path to a file
         </comment>
@@ -1752,5 +1742,12 @@
     <data name="E7148" xml:space="preserve">
         <value>Unable to analyze file changes in '{0}'. An unexpected error occurred.</value>
         <comment>{0}: path to use for file changes calculation</comment>
+    </data>
+
+    <data name="E7151" xml:space="preserve">
+        <value>The app requests the entitlement '{0}', but this entitlement is not allowed on the current platform ({1}). It's only allowed on macOS and Mac Catalyst.</value>
+        <comment>
+            This may be either a warning or an error, depending on build configuration.
+        </comment>
     </data>
 </root>

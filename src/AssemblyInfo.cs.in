@@ -29,5 +29,5 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyVersion ("@NUGET_VERSION_MAJOR@.@NUGET_VERSION_MINOR@.0.0")]
 
 #if !XCODE_IS_STABLE && !COREBUILD
-[assembly: Experimental("XCODE_@XCODE_VERSION@_PREVIEW", UrlFormat = "https://github.com/xamarin/xamarin-macios/blob/main/docs/preview-apis.md")]
+[assembly: Experimental("XCODE_@XCODE_VERSION@_PREVIEW", UrlFormat = "https://github.com/dotnet/macios/blob/main/docs/preview-apis.md")]
 #endif

@@ -61,9 +61,9 @@ namespace SceneKit {
 		Default = AOne,
 	}
 
-	/// <summary>Enumeration determining which faces of a surface <see cref="T:SceneKit.SCNMaterial" /> are rendered.</summary>
+	/// <summary>Enumeration determining which faces of a surface <see cref="SceneKit.SCNMaterial" /> are rendered.</summary>
 	///     <remarks>
-	///       <para>See <see cref="P:SceneKit.SCNMaterial.CullMode" />.</para>
+	///       <para>See <see cref="SceneKit.SCNMaterial.CullMode" />.</para>
 	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -117,7 +117,7 @@ namespace SceneKit {
 		Complete = 16,
 	}
 
-	/// <summary>Enumerates the ways a <see cref="T:SceneKit.SCNShape" /> can be chamfered; on its front, back, or both sides.</summary>
+	/// <summary>Enumerates the ways a <see cref="SceneKit.SCNShape" /> can be chamfered; on its front, back, or both sides.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNChamferMode : long {
@@ -129,7 +129,7 @@ namespace SceneKit {
 		Back,
 	}
 
-	/// <summary>Enumeration of valid interpolation formulae for <see cref="P:SceneKit.SCNMorpher.CalculationMode" />.</summary>
+	/// <summary>Enumeration of valid interpolation formulae for <see cref="SceneKit.SCNMorpher.CalculationMode" />.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNMorpherCalculationMode : long {
@@ -139,7 +139,7 @@ namespace SceneKit {
 		Additive,
 	}
 
-	/// <summary>Enumerates rate curves for use with <see cref="T:SceneKit.SCNAction" /> objects.</summary>
+	/// <summary>Enumerates rate curves for use with <see cref="SceneKit.SCNAction" /> objects.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNActionTimingMode : long {
@@ -165,7 +165,7 @@ namespace SceneKit {
 		Modulated,
 	}
 
-	/// <summary>An enumeration specifying whether the <see cref="T:SceneKit.SCNPhysicsBody" /> is dynamic, kinematic, or static. Used with <see cref="M:SceneKit.SCNPhysicsBody.CreateBody(SceneKit.SCNPhysicsBodyType,SceneKit.SCNPhysicsShape)" />.</summary>
+	/// <summary>An enumeration specifying whether the <see cref="SceneKit.SCNPhysicsBody" /> is dynamic, kinematic, or static. Used with <see cref="SceneKit.SCNPhysicsBody.CreateBody(SceneKit.SCNPhysicsBodyType,SceneKit.SCNPhysicsShape)" />.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNPhysicsBodyType : long {
@@ -177,7 +177,7 @@ namespace SceneKit {
 		Kinematic,
 	}
 
-	/// <summary>Enumerates values specifying whether an <see cref="T:SceneKit.SCNPhysicsField" /> affects objects inside or outside its border.</summary>
+	/// <summary>Enumerates values specifying whether an <see cref="SceneKit.SCNPhysicsField" /> affects objects inside or outside its border.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNPhysicsFieldScope : long {
@@ -187,9 +187,9 @@ namespace SceneKit {
 		OutsideExtent,
 	}
 
-	/// <summary>Enumeration specifying the order in which particles emitted by a <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Scene%20Kit%20SCNParticle%20Scene&amp;scope=Xamarin" title="T:SceneKit.SCNParticleScene">T:SceneKit.SCNParticleScene</a></format> are rendered.</summary>
+	/// <summary>Enumeration specifying the order in which particles emitted by a <see cref="SceneKit.SCNParticleScene" /> are rendered.</summary>
 	///     <remarks>
-	///       <para>Along with <see cref="P:SceneKit.SCNParticleSystem.BlendMode" />, <see cref="P:SceneKit.SCNParticleSystem.SortingMode" /> affects the appearance of overlapping particles.</para>
+	///       <para>Along with <see cref="SceneKit.SCNParticleSystem.BlendMode" />, <see cref="SceneKit.SCNParticleSystem.SortingMode" /> affects the appearance of overlapping particles.</para>
 	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -206,7 +206,7 @@ namespace SceneKit {
 		YoungestFirst,
 	}
 
-	/// <summary>Enumeration of the ways in which overlapping particles emitted by a <see cref="T:SceneKit.SCNParticleSystem" /> will be rendered.</summary>
+	/// <summary>Enumeration of the ways in which overlapping particles emitted by a <see cref="SceneKit.SCNParticleSystem" /> will be rendered.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNParticleBlendMode : long {
@@ -224,7 +224,7 @@ namespace SceneKit {
 		Replace,
 	}
 
-	/// <summary>Enumerates the alignment of particles emitted by a <see cref="T:SceneKit.SCNParticleSystem" />. Used with <see cref="P:SceneKit.SCNParticleSystem.OrientationMode" />.</summary>
+	/// <summary>Enumerates the alignment of particles emitted by a <see cref="SceneKit.SCNParticleSystem" />. Used with <see cref="SceneKit.SCNParticleSystem.OrientationMode" />.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNParticleOrientationMode : long {
@@ -238,7 +238,7 @@ namespace SceneKit {
 		BillboardYAligned,
 	}
 
-	/// <summary>Enumeration of the initial location of particles emitted by a <see cref="T:SceneKit.SCNParticleSystem" />.</summary>
+	/// <summary>Enumeration of the initial location of particles emitted by a <see cref="SceneKit.SCNParticleSystem" />.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNParticleBirthLocation : long {
@@ -250,7 +250,7 @@ namespace SceneKit {
 		Vertex,
 	}
 
-	/// <summary>Enumerates the initial direction of particles emitted by a <see cref="T:SceneKit.SCNParticleSystem" />.</summary>
+	/// <summary>Enumerates the initial direction of particles emitted by a <see cref="SceneKit.SCNParticleSystem" />.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNParticleBirthDirection : long {
@@ -262,7 +262,7 @@ namespace SceneKit {
 		Random,
 	}
 
-	/// <summary>Enumeration of playing modes for <see cref="T:SceneKit.SCNParticleSystem" />'s whose particles are rendered as a sequence of images.</summary>
+	/// <summary>Enumeration of playing modes for <see cref="SceneKit.SCNParticleSystem" />'s whose particles are rendered as a sequence of images.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNParticleImageSequenceAnimationMode : long {
@@ -274,7 +274,7 @@ namespace SceneKit {
 		AutoReverse,
 	}
 
-	/// <summary>Enumerates how a particle property is animated (over the lifetime of the particle, as the particle travels over a distance, or based on another property). Used with <see cref="P:SceneKit.SCNParticlePropertyController.InputMode" />.</summary>
+	/// <summary>Enumerates how a particle property is animated (over the lifetime of the particle, as the particle travels over a distance, or based on another property). Used with <see cref="SceneKit.SCNParticlePropertyController.InputMode" />.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNParticleInputMode : long {
@@ -286,7 +286,7 @@ namespace SceneKit {
 		OverOtherProperty,
 	}
 
-	/// <summary>Enumerates moments when the modifier specified in <see cref="M:SceneKit.SCNParticleSystem.AddModifier(Foundation.NSString[],SceneKit.SCNParticleModifierStage,SceneKit.SCNParticleModifierHandler)" /> should be applied.</summary>
+	/// <summary>Enumerates moments when the modifier specified in <see cref="SceneKit.SCNParticleSystem.AddModifier(Foundation.NSString[],SceneKit.SCNParticleModifierStage,SceneKit.SCNParticleModifierHandler)" /> should be applied.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNParticleModifierStage : long {
@@ -300,7 +300,7 @@ namespace SceneKit {
 		PostCollision,
 	}
 
-	/// <summary>Enumeration of lifecycle events for particles emitted by a <see cref="T:SceneKit.SCNParticleSystem" />. Used with <see cref="M:SceneKit.SCNParticleSystem.HandleEvent(SceneKit.SCNParticleEvent,Foundation.NSString[],SceneKit.SCNParticleEventHandler)" />.</summary>
+	/// <summary>Enumeration of lifecycle events for particles emitted by a <see cref="SceneKit.SCNParticleSystem" />. Used with <see cref="SceneKit.SCNParticleSystem.HandleEvent(SceneKit.SCNParticleEvent,Foundation.NSString[],SceneKit.SCNParticleEventHandler)" />.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNParticleEvent : long {
@@ -391,7 +391,7 @@ namespace SceneKit {
 #endif
 	}
 
-	/// <summary>Defaults for the collision properties of a <see cref="T:SceneKit.SCNPhysicsBody" />.</summary>
+	/// <summary>Defaults for the collision properties of a <see cref="SceneKit.SCNPhysicsBody" />.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNPhysicsCollisionCategory : ulong {
@@ -405,7 +405,7 @@ namespace SceneKit {
 		All = UInt64.MaxValue,
 	}
 
-	/// <summary>Enumeration of axes' locks available to nodes constrained by <see cref="T:SceneKit.SCNBillboardConstraint" />.</summary>
+	/// <summary>Enumeration of axes' locks available to nodes constrained by <see cref="SceneKit.SCNBillboardConstraint" />.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNBillboardAxis : ulong {
@@ -419,13 +419,13 @@ namespace SceneKit {
 		All = (X | Y | Z),
 	}
 
-	/// <summary>Enumerates possible loading policies for <see cref="T:SceneKit.SCNReferenceNode" /> objects.</summary>
+	/// <summary>Enumerates possible loading policies for <see cref="SceneKit.SCNReferenceNode" /> objects.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNReferenceLoadingPolicy : long {
-		/// <summary>The scene is loaded as soon as the <see cref="P:SceneKit.SCNReferenceNode.ReferenceUrl" /> is initialized.</summary>
+		/// <summary>The scene is loaded as soon as the <see cref="SceneKit.SCNReferenceNode.ReferenceUrl" /> is initialized.</summary>
 		Immediate = 0,
-		/// <summary>The scene is loaded only when the <see cref="T:SceneKit.SCNReferenceNode" /> is first about to be displayed.</summary>
+		/// <summary>The scene is loaded only when the <see cref="SceneKit.SCNReferenceNode" /> is first about to be displayed.</summary>
 		OnDemand = 1,
 	}
 
@@ -614,7 +614,7 @@ namespace SceneKit {
 		Horizontal = 1,
 	}
 
-	/// <summary>Enumerates the focusable states of a <see cref="T:SceneKit.SCNNode" />.</summary>
+	/// <summary>Enumerates the focusable states of a <see cref="SceneKit.SCNNode" />.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNNodeFocusBehavior : long {
@@ -650,7 +650,7 @@ namespace SceneKit {
 		Polygon = 4,
 	}
 
-	/// <summary>Enumeration of categories for <see cref="T:SceneKit.SCNPhysicsShape" />s.</summary>
+	/// <summary>Enumeration of categories for <see cref="SceneKit.SCNPhysicsShape" />s.</summary>
 	[MacCatalyst (13, 1)]
 	public enum SCNPhysicsShapeType {
 		/// <summary>To be added.</summary>

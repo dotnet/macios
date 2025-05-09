@@ -30,7 +30,7 @@ using ObjCRuntime;
 
 namespace CoreText {
 
-	/// <summary>An enumeration whose values specify errors relating to operations on <see cref="T:CoreText.CTFontManager" />.</summary>
+	/// <summary>An enumeration whose values specify errors relating to operations on <see cref="CoreText.CTFontManager" />.</summary>
 	[Native]
 	[ErrorDomain ("kCTFontManagerErrorDomain")]
 	// defined as CFIndex (signed long [long] = nint) - /System/Library/Frameworks/CoreText.framework/Headers/CTFontManagerError.h

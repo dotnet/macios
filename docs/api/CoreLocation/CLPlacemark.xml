@@ -7,32 +7,32 @@
           <list type="bullet">
             <item>
               <term>
-                <see cref="P:AddressBook.ABPersonAddressKey.Street" />
+                <see cref="AddressBook.ABPersonAddressKey.Street" />
               </term>
             </item>
             <item>
               <term>
-                <see cref="P:AddressBook.ABPersonAddressKey.City" />
+                <see cref="AddressBook.ABPersonAddressKey.City" />
               </term>
             </item>
             <item>
               <term>
-                <see cref="P:AddressBook.ABPersonAddressKey.State" />
+                <see cref="AddressBook.ABPersonAddressKey.State" />
               </term>
             </item>
             <item>
               <term>
-                <see cref="P:AddressBook.ABPersonAddressKey.Zip" />
+                <see cref="AddressBook.ABPersonAddressKey.Zip" />
               </term>
             </item>
             <item>
               <term>
-                <see cref="P:AddressBook.ABPersonAddressKey.Country" />
+                <see cref="AddressBook.ABPersonAddressKey.Country" />
               </term>
             </item>
             <item>
               <term>
-                <see cref="P:AddressBook.ABPersonAddressKey.CountryCode" />
+                <see cref="AddressBook.ABPersonAddressKey.CountryCode" />
               </term>
             </item>
           </list>

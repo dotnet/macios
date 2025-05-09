@@ -39,9 +39,7 @@ namespace CoreBluetooth {
 	// It's intentionally not called AdvertisementDataOptions because different options
 	// are valid in different contexts
 	//
-	/// <summary>Manages access to options used by <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Bluetooth%20Start%20Advertising&amp;scope=Xamarin" title="M:CoreBluetooth.StartAdvertising*">M:CoreBluetooth.StartAdvertising*</a></format> method.</summary>
-	///     <remarks>
-	///     </remarks>
+	/// <summary>Manages access to options used by <see cref="CBPeripheralManager.StartAdvertising(StartAdvertisingOptions)" />.</summary>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -76,7 +74,7 @@ namespace CoreBluetooth {
 			}
 		}
 
-		/// <summary>One or more <see cref="T:CoreBluetooth.CBUUID" /> objects.</summary>
+		/// <summary>One or more <see cref="CoreBluetooth.CBUUID" /> objects.</summary>
 		///         <value>
 		///         </value>
 		///         <remarks>The property uses constant CBAdvertisementDataServiceUUIDsKey value to access the underlying dictionary.</remarks>

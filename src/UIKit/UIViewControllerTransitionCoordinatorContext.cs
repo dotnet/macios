@@ -10,14 +10,14 @@
 #nullable disable
 
 namespace UIKit {
-	/// <summary>Extension class that, together with the <see cref="T:UIKit.IUIViewControllerTransitionCoordinatorContext" /> interface, comprise the UIViewControllerTransitionCoordinatorContext protocol.</summary>
+	/// <summary>Extension class that, together with the <see cref="UIKit.IUIViewControllerTransitionCoordinatorContext" /> interface, comprise the UIViewControllerTransitionCoordinatorContext protocol.</summary>
 	///     <remarks>To be added.</remarks>
 	public static partial class UIViewControllerTransitionCoordinatorContext_Extensions {
-		/// <param name="This">The instance on which this method operates.</param>
-		///         <param name="kind">To be added.</param>
-		///         <summary>Gets a view controller that controls a transition.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets a view controller that controls a transition.</summary>
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[UnsupportedOSPlatform ("macos")]
 		public static UIView GetTransitionViewController (this IUIViewControllerTransitionCoordinatorContext This, UITransitionViewControllerKind kind)
 		{
 			switch (kind) {

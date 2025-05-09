@@ -30,7 +30,7 @@ namespace LocalAuthentication {
 		OpticId = 1L << 2,
 	}
 
-	/// <summary>Signature for a function to be invoked in response to a <see cref="M:LocalAuthentication.LAContext.EvaluatePolicy(LocalAuthentication.LAPolicy,System.String,LocalAuthentication.LAContextReplyHandler)" /> invocation.</summary>
+	/// <summary>Signature for a function to be invoked in response to a <see cref="LocalAuthentication.LAContext.EvaluatePolicy(LocalAuthentication.LAPolicy,System.String,LocalAuthentication.LAContextReplyHandler)" /> invocation.</summary>
 	///     <remarks>The method when invoked returns a boolean indicating if the policy evaluation was successful, and on failure a detailed description of the error in the error parameter.</remarks>
 	[MacCatalyst (13, 1)]
 	delegate void LAContextReplyHandler (bool success, NSError error);

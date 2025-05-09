@@ -52,7 +52,7 @@ namespace UIKit {
 			return other.Horizontal == Horizontal && other.Vertical == Vertical;
 		}
 
-		/// <summary>The hash code for this <see cref="T:UIKit.UIOffset" />.</summary>
+		/// <summary>The hash code for this <see cref="UIKit.UIOffset" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		public override int GetHashCode ()

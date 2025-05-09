@@ -45,7 +45,7 @@ using System.Runtime.Versioning;
 
 namespace AudioToolbox {
 
-	/// <summary>An enumeration whose values flag whether a <see cref="T:AudioToolbox.AudioFileStreamProperty" /> is cached.</summary>
+	/// <summary>An enumeration whose values flag whether a <see cref="AudioToolbox.AudioFileStreamProperty" /> is cached.</summary>
 	///     <remarks>To be added.</remarks>
 	[Flags]
 	public enum AudioFileStreamPropertyFlag { // UInt32 in AudioFileStream_PropertyListenerProc
@@ -55,7 +55,7 @@ namespace AudioToolbox {
 		CacheProperty = 2,
 	}
 
-	/// <summary>An enumeration whose values indicate the status following calls to the <see cref="M:AudioToolbox.AudioFileStream.Seek(System.Int64,System.Int64@,System.Boolean@)" /> or <see cref="M:AudioToolbox.AudioFileStream.ParseBytes(System.Byte[],System.Int32,System.Int32,System.Boolean)" /> methods.</summary>
+	/// <summary>An enumeration whose values indicate the status following calls to the <see cref="AudioToolbox.AudioFileStream.Seek(System.Int64,out System.Int64,out System.Boolean)" /> or <see cref="AudioToolbox.AudioFileStream.ParseBytes(System.Byte[],System.Int32,System.Int32,System.Boolean)" /> methods.</summary>
 	///     <remarks>To be added.</remarks>
 	public enum AudioFileStreamStatus { // Implictly cast to OSType
 		/// <summary>To be added.</summary>
@@ -86,7 +86,7 @@ namespace AudioToolbox {
 		DiscontinuityCantRecover = 0x64736321,
 	}
 
-	/// <summary>An enumeration whose values represent properties of <see cref="T:AudioToolbox.AudioFileStream" />.</summary>
+	/// <summary>An enumeration whose values represent properties of <see cref="AudioToolbox.AudioFileStream" />.</summary>
 	///     <remarks>To be added.</remarks>
 	public enum AudioFileStreamProperty { // UInt32 AudioFileStreamPropertyID
 		/// <summary>To be added.</summary>
@@ -129,7 +129,7 @@ namespace AudioToolbox {
 		InfoDictionary = 0x696e666f,
 	}
 
-	/// <summary>Provides data for the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Audio%20Toolbox%20Property%20Found%20Event%20Args%20Property%20Found&amp;scope=Xamarin" title="E:AudioToolbox.PropertyFoundEventArgs.PropertyFound">E:AudioToolbox.PropertyFoundEventArgs.PropertyFound</a></format> event.</summary>
+	/// <summary>Provides data for the <see cref="AudioToolbox.AudioFileStream.PropertyFound" /> event.</summary>
 	///     <remarks>
 	///     </remarks>
 	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/StreamingAudio/">StreamingAudio</related>
@@ -167,7 +167,7 @@ namespace AudioToolbox {
 		}
 	}
 
-	/// <summary>Provides data for the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Audio%20Toolbox%20Packet%20Received%20Event%20Args%20Packet%20Decoded&amp;scope=Xamarin" title="E:AudioToolbox.PacketReceivedEventArgs.PacketDecoded">E:AudioToolbox.PacketReceivedEventArgs.PacketDecoded</a></format> event.</summary>
+	/// <summary>Provides data for the <see cref="AudioToolbox.AudioFileStream.PacketDecoded" /> event.</summary>
 	///     <remarks>
 	///     </remarks>
 	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/StreamingAudio/">StreamingAudio</related>
@@ -225,7 +225,7 @@ namespace AudioToolbox {
 	/// 	This can be used to parse audio files when you are streaming audio from the network for example.
 	///       </para>
 	///       <para>
-	/// 	The methods and properties in this class update the <see cref="P:AudioToolbox.AudioFileStream.LastError" />
+	/// 	The methods and properties in this class update the <see cref="AudioToolbox.AudioFileStream.LastError" />
 	/// 	property to track any potential errors during parsing, but
 	/// 	without throwing an exception.
 	///
@@ -259,7 +259,7 @@ namespace AudioToolbox {
 		/// <summary>Closes (and disposes the audio stream).</summary>
 		///         <remarks>
 		///           <para>
-		/// 	    This updates the <see cref="P:AudioToolbox.AudioFileStream.LastError" /> property.
+		/// 	    This updates the <see cref="AudioToolbox.AudioFileStream.LastError" /> property.
 		/// 	  </para>
 		///         </remarks>
 		public void Close ()
@@ -385,7 +385,7 @@ namespace AudioToolbox {
 		///         <remarks>
 		///           <para>The OnPacketDecoded/OnProperty found methods are invoked as data is parsed.   If you have not subclassed this class, you can alternatively hook up to the PacketDecoded and PropertyFound events to receive parsing notifications.</para>
 		///           <para>
-		/// 	    This updates the <see cref="P:AudioToolbox.AudioFileStream.LastError" /> property.
+		/// 	    This updates the <see cref="AudioToolbox.AudioFileStream.LastError" /> property.
 		/// 	  </para>
 		///         </remarks>
 		public AudioFileStreamStatus ParseBytes (int size, IntPtr data, bool discontinuity)
@@ -408,7 +408,7 @@ namespace AudioToolbox {
 		/// 	    notifications.  
 		/// 	  </para>
 		///           <para>
-		/// 	    This updates the <see cref="P:AudioToolbox.AudioFileStream.LastError" /> property.
+		/// 	    This updates the <see cref="AudioToolbox.AudioFileStream.LastError" /> property.
 		/// 	  </para>
 		///         </remarks>
 		public AudioFileStreamStatus ParseBytes (byte [] bytes, bool discontinuity)
@@ -431,7 +431,7 @@ namespace AudioToolbox {
 		///         <remarks>
 		///           <para>The OnPacketDecoded/OnProperty found methods are invoked as data is parsed.   If you have not subclassed this class, you can alternatively hook up to the PacketDecoded and PropertyFound events to receive parsing notifications.</para>
 		///           <para>
-		/// 	    This updates the <see cref="P:AudioToolbox.AudioFileStream.LastError" /> property.
+		/// 	    This updates the <see cref="AudioToolbox.AudioFileStream.LastError" /> property.
 		/// 	  </para>
 		///         </remarks>
 		public AudioFileStreamStatus ParseBytes (byte [] bytes, int offset, int count, bool discontinuity)
@@ -466,7 +466,7 @@ namespace AudioToolbox {
 		///         </returns>
 		///         <remarks>
 		///           <para>
-		/// 	    This updates the <see cref="P:AudioToolbox.AudioFileStream.LastError" /> property.
+		/// 	    This updates the <see cref="AudioToolbox.AudioFileStream.LastError" /> property.
 		/// 	  </para>
 		///         </remarks>
 		public AudioFileStreamStatus Seek (long packetOffset, out long dataByteOffset, out bool isEstimate)
@@ -522,7 +522,7 @@ namespace AudioToolbox {
 		///         <returns>True on success.</returns>
 		///         <remarks>
 		///           <para>
-		/// 	    This updates the <see cref="P:AudioToolbox.AudioFileStream.LastError" /> property.
+		/// 	    This updates the <see cref="AudioToolbox.AudioFileStream.LastError" /> property.
 		/// 	  </para>
 		///         </remarks>
 		public bool GetProperty (AudioFileStreamProperty property, ref int dataSize, IntPtr outPropertyData)
@@ -549,7 +549,7 @@ namespace AudioToolbox {
 		/// 	    You are responsible for releasing the memory allocated by this method by calling Marshal.FreeHGlobal. 
 		/// 	  </para>
 		///           <para>
-		/// 	    This updates the <see cref="P:AudioToolbox.AudioFileStream.LastError" /> property.
+		/// 	    This updates the <see cref="AudioToolbox.AudioFileStream.LastError" /> property.
 		/// 	  </para>
 		///         </remarks>
 		public IntPtr GetProperty (AudioFileStreamProperty property, out int size)
@@ -661,7 +661,7 @@ namespace AudioToolbox {
 		///         </value>
 		///         <remarks>
 		///           <para>
-		/// 	    This updates the <see cref="P:AudioToolbox.AudioFileStream.LastError" /> property.
+		/// 	    This updates the <see cref="AudioToolbox.AudioFileStream.LastError" /> property.
 		/// 	  </para>
 		///         </remarks>
 		public bool ReadyToProducePackets {
@@ -675,7 +675,7 @@ namespace AudioToolbox {
 		///         </value>
 		///         <remarks>
 		///           <para>
-		/// 	    This updates the <see cref="P:AudioToolbox.AudioFileStream.LastError" /> property.
+		/// 	    This updates the <see cref="AudioToolbox.AudioFileStream.LastError" /> property.
 		/// 	  </para>
 		///         </remarks>
 		public AudioFileType FileType {
@@ -689,7 +689,7 @@ namespace AudioToolbox {
 		///         </value>
 		///         <remarks>
 		///           <para>
-		/// 	    This updates the <see cref="P:AudioToolbox.AudioFileStream.LastError" /> property.
+		/// 	    This updates the <see cref="AudioToolbox.AudioFileStream.LastError" /> property.
 		/// 	  </para>
 		///         </remarks>
 		[Advice ("Use 'DataFormat' instead.")]
@@ -703,7 +703,7 @@ namespace AudioToolbox {
 		///         <value>.</value>
 		///         <remarks>
 		///           <para>
-		/// 	    This updates the <see cref="P:AudioToolbox.AudioFileStream.LastError" /> property.
+		/// 	    This updates the <see cref="AudioToolbox.AudioFileStream.LastError" /> property.
 		/// 	  </para>
 		///         </remarks>
 		public AudioStreamBasicDescription DataFormat {
@@ -721,11 +721,11 @@ namespace AudioToolbox {
 		/// 	    will set this property to the available audio formats.
 		/// 	    You would typically use one of the returned
 		/// 	    AudioStreamBasicDescription descriptions to create an
-		/// 	    <see cref="T:AudioToolbox.AudioQueue" />.
+		/// 	    <see cref="AudioToolbox.AudioQueue" />.
 		///
 		/// 	  </para>
 		///           <para>
-		/// 	    This updates the <see cref="P:AudioToolbox.AudioFileStream.LastError" /> property.
+		/// 	    This updates the <see cref="AudioToolbox.AudioFileStream.LastError" /> property.
 		/// 	  </para>
 		///         </remarks>
 		public unsafe AudioFormat []? FormatList {
@@ -753,7 +753,7 @@ namespace AudioToolbox {
 		///         </value>
 		///         <remarks>
 		///           <para>
-		/// 	    This updates the <see cref="P:AudioToolbox.AudioFileStream.LastError" /> property.
+		/// 	    This updates the <see cref="AudioToolbox.AudioFileStream.LastError" /> property.
 		/// 	  </para>
 		///         </remarks>
 		public AudioFilePacketTableInfo? PacketTableInfo {
@@ -772,7 +772,7 @@ namespace AudioToolbox {
 		/// 	    the magic cookie for this file stream.
 		/// 	  </para>
 		///           <para>
-		/// 	    This updates the <see cref="P:AudioToolbox.AudioFileStream.LastError" /> property.
+		/// 	    This updates the <see cref="AudioToolbox.AudioFileStream.LastError" /> property.
 		/// 	  </para>
 		///         </remarks>
 		public byte [] MagicCookie {
@@ -798,7 +798,7 @@ namespace AudioToolbox {
 		/// 	    After the audio stream header is parsed, it is possible to determine the number of bytes of audio data.  For streaming formats, this value is not specified.
 		/// 	  </para>
 		///           <para>
-		/// 	    This updates the <see cref="P:AudioToolbox.AudioFileStream.LastError" /> property.
+		/// 	    This updates the <see cref="AudioToolbox.AudioFileStream.LastError" /> property.
 		/// 	  </para>
 		///         </remarks>
 		public long DataByteCount {
@@ -812,7 +812,7 @@ namespace AudioToolbox {
 		///         </value>
 		///         <remarks>
 		///           <para>
-		/// 	    This updates the <see cref="P:AudioToolbox.AudioFileStream.LastError" /> property.
+		/// 	    This updates the <see cref="AudioToolbox.AudioFileStream.LastError" /> property.
 		/// 	  </para>
 		///         </remarks>
 		public long DataPacketCount {
@@ -826,7 +826,7 @@ namespace AudioToolbox {
 		///         </value>
 		///         <remarks>
 		///           <para>
-		/// 	    This updates the <see cref="P:AudioToolbox.AudioFileStream.LastError" /> property.
+		/// 	    This updates the <see cref="AudioToolbox.AudioFileStream.LastError" /> property.
 		/// 	  </para>
 		///         </remarks>
 		public int MaximumPacketSize {
@@ -840,7 +840,7 @@ namespace AudioToolbox {
 		///         </value>
 		///         <remarks>
 		///           <para>
-		/// 	    This updates the <see cref="P:AudioToolbox.AudioFileStream.LastError" /> property.
+		/// 	    This updates the <see cref="AudioToolbox.AudioFileStream.LastError" /> property.
 		/// 	  </para>
 		///         </remarks>
 		public long DataOffset {
@@ -854,7 +854,7 @@ namespace AudioToolbox {
 		///         </value>
 		///         <remarks>
 		///           <para>
-		/// 	    This updates the <see cref="P:AudioToolbox.AudioFileStream.LastError" /> property.
+		/// 	    This updates the <see cref="AudioToolbox.AudioFileStream.LastError" /> property.
 		/// 	  </para>
 		///         </remarks>
 		public AudioChannelLayout? ChannelLayout {
@@ -877,7 +877,7 @@ namespace AudioToolbox {
 		///         </returns>
 		///         <remarks>
 		///           <para>
-		/// 	    This updates the <see cref="P:AudioToolbox.AudioFileStream.LastError" /> property.
+		/// 	    This updates the <see cref="AudioToolbox.AudioFileStream.LastError" /> property.
 		/// 	  </para>
 		///         </remarks>
 		public long PacketToFrame (long packet)
@@ -901,7 +901,7 @@ namespace AudioToolbox {
 		///         <returns>The packet number that corresponds to the specified frame.</returns>
 		///         <remarks>
 		///           <para>
-		/// 	    This updates the <see cref="P:AudioToolbox.AudioFileStream.LastError" /> property.
+		/// 	    This updates the <see cref="AudioToolbox.AudioFileStream.LastError" /> property.
 		/// 	  </para>
 		///         </remarks>
 		public long FrameToPacket (long frame, out int frameOffsetInPacket)
@@ -929,7 +929,7 @@ namespace AudioToolbox {
 		///         </returns>
 		///         <remarks>
 		///           <para>
-		/// 	    This updates the <see cref="P:AudioToolbox.AudioFileStream.LastError" /> property.
+		/// 	    This updates the <see cref="AudioToolbox.AudioFileStream.LastError" /> property.
 		/// 	  </para>
 		///         </remarks>
 		public long PacketToByte (long packet, out bool isEstimate)
@@ -957,7 +957,7 @@ namespace AudioToolbox {
 		///         <returns>The packet number that corresponds to this byte in the file.</returns>
 		///         <remarks>
 		///           <para>
-		/// 	    This updates the <see cref="P:AudioToolbox.AudioFileStream.LastError" /> property.
+		/// 	    This updates the <see cref="AudioToolbox.AudioFileStream.LastError" /> property.
 		/// 	  </para>
 		///         </remarks>
 		public long ByteToPacket (long byteval, out int byteOffsetInPacket, out bool isEstimate)
@@ -985,7 +985,7 @@ namespace AudioToolbox {
 		///         </value>
 		///         <remarks>
 		///           <para>
-		/// 	    This updates the <see cref="P:AudioToolbox.AudioFileStream.LastError" /> property.
+		/// 	    This updates the <see cref="AudioToolbox.AudioFileStream.LastError" /> property.
 		/// 	  </para>
 		///         </remarks>
 		public int BitRate {
@@ -999,7 +999,7 @@ namespace AudioToolbox {
 		///         </value>
 		///         <remarks>
 		///           <para>
-		/// 	    This updates the <see cref="P:AudioToolbox.AudioFileStream.LastError" /> property.
+		/// 	    This updates the <see cref="AudioToolbox.AudioFileStream.LastError" /> property.
 		/// 	  </para>
 		///         </remarks>
 		public int PacketSizeUpperBound {
@@ -1013,7 +1013,7 @@ namespace AudioToolbox {
 		///         </value>
 		///         <remarks>
 		///           <para>
-		/// 	    This updates the <see cref="P:AudioToolbox.AudioFileStream.LastError" /> property.
+		/// 	    This updates the <see cref="AudioToolbox.AudioFileStream.LastError" /> property.
 		/// 	  </para>
 		///         </remarks>
 		public double AverageBytesPerPacket {

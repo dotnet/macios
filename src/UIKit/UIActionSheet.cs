@@ -21,15 +21,7 @@ using Foundation;
 namespace UIKit {
 	public partial class UIActionSheet : IEnumerable {
 
-#if !NET
-		[Obsolete ("Use overload with a IUIActionSheetDelegate parameter")]
-		public UIActionSheet (string title, UIActionSheetDelegate del, string cancelTitle, string destroy, params string [] other)
-			: this (title, del as IUIActionSheetDelegate, cancelTitle, destroy, other)
-		{
-		}
-#endif
-
-		/// <include file="../../docs/api/UIKit/UIActionSheet.xml" path="/Documentation/Docs[@DocId='M:UIKit.UIActionSheet.#ctor(System.String,UIKit.IUIActionSheetDelegate,System.String,System.String,System.String[])']/*" />
+	/// <include file="../../docs/api/UIKit/UIActionSheet.xml" path="/Documentation/Docs[@DocId='M:UIKit.UIActionSheet.#ctor(System.String,UIKit.IUIActionSheetDelegate,System.String,System.String,System.String[])']/*" />
 	public UIActionSheet (string title, IUIActionSheetDelegate del, string cancelTitle, string destroy, params string [] other)
 			: this (title, del, null, null, (string) null)
 		{
@@ -51,14 +43,6 @@ namespace UIKit {
 				CancelButtonIndex = AddButton (cancelTitle);
 		}
 
-#if !NET
-		[Obsolete ("Use overload with a IUIActionSheetDelegate parameter")]
-		public UIActionSheet (string title, UIActionSheetDelegate del)
-			: this (title, del as IUIActionSheetDelegate, null, null, (string) null)
-		{
-		}
-#endif
-
 		/// <summary>Initialize a <see cref="UIActionSheet" /> with a title and a delegate that will handle taps.</summary>
 		/// <param name="title">A title to be displayed in the title area of the action sheet.</param>
 		/// <param name="del">A delegate that will respond to taps in the action sheet.</param>
@@ -67,7 +51,7 @@ namespace UIKit {
 		: this (title, del, null, null, (string) null) { }
 
 		/// <param name="title">A title to be displayed in the title area of the action sheet.</param>
-		///         <summary>Initialize an <see cref="T:UIKit.UIActionSheet" /> with a title.</summary>
+		///         <summary>Initialize an <see cref="UIKit.UIActionSheet" /> with a title.</summary>
 		///         <remarks>Pass <see langword="null" /> to <paramref name="title" /> if there is no text to display in the title area.</remarks>
 		public UIActionSheet (string title)
 		: this (title, null, null, null, (string) null) { }

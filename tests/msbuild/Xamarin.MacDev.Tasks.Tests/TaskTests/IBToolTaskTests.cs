@@ -53,7 +53,7 @@ namespace Xamarin.MacDev.Tasks {
 			task.SdkUsrPath = usr;
 			task.SdkBinPath = bin;
 			task.SdkRoot = root;
-			task.TargetFrameworkMoniker = "Xamarin.iOS,v1.0";
+			task.TargetFrameworkMoniker = TargetFramework.DotNet_iOS_String;
 			return task;
 		}
 

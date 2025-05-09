@@ -33,6 +33,10 @@ static partial class BindingSyntaxFactory {
 		@namespace: ["Foundation"],
 		@class: "NSNumber",
 		isGlobal: true);
+	public readonly static TypeSyntax NativeHandle = GetIdentifierName (
+		@namespace: ["ObjCRuntime"],
+		@class: "NativeHandle",
+		isGlobal: true);
 
 	/// <summary>
 	/// Returns the expression needed to cast a parameter to its native type.
@@ -749,7 +753,7 @@ static partial class BindingSyntaxFactory {
 
 		// generates: NativeHandler selectorName = Selector.GetHandle (selector);
 		return LocalDeclarationStatement (
-			VariableDeclaration (IdentifierName ("NativeHandle").WithTrailingTrivia (Space))
+			VariableDeclaration (NativeHandle.WithTrailingTrivia (Space))
 				.WithVariables (
 					SingletonSeparatedList (
 						VariableDeclarator (Identifier (selectorName).WithTrailingTrivia (Space))

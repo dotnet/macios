@@ -24,7 +24,7 @@ public static partial class GKCustomErrorExtensions
 	public static NSString? GetDomain (this GKCustomError self)
 	{
 		if (_domain is null)
-			_domain = Dlfcn.GetStringConstant (Libraries.customlibrary.Handle, "GKErrorDomain");
+			_domain = Dlfcn.GetStringConstant (global::ObjCRuntime.Libraries.customlibrary.Handle, "GKErrorDomain");
 		return _domain;
 	}
 }

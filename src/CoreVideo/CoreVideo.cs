@@ -52,7 +52,7 @@ namespace CoreVideo {
 	}
 
 	// CVPixelBuffer.h
-	/// <summary>A struct that holds the <see cref="T:CoreVideo.CVPlanarComponentInfo" />s of a planar buffer.</summary>
+	/// <summary>A struct that holds the <see cref="CoreVideo.CVPlanarComponentInfo" />s of a planar buffer.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -65,7 +65,7 @@ namespace CoreVideo {
 	}
 
 	// CVPixelBuffer.h
-	/// <summary>A struct that defines the <see cref="T:CoreVideo.CVPlanarComponentInfo" />s of a YCbCr planar buffer.</summary>
+	/// <summary>A struct that defines the <see cref="CoreVideo.CVPlanarComponentInfo" />s of a YCbCr planar buffer.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -173,7 +173,7 @@ namespace CoreVideo {
 #if !XAMCORE_5_0
 	/// <summary>Encapsulates the description of a custom extended-pixel fill algorithm.</summary>
 	///     <remarks>To be added.</remarks>
-	///     <altmember cref="T:CoreVideo.CVFillExtendedPixelsCallBack" />
+	///     <altmember cref="CoreVideo.CVFillExtendedPixelsCallBack" />
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -195,7 +195,7 @@ namespace CoreVideo {
 	///     <summary>A delegate that defines the function used to pad buffers that use a custom pixel format.</summary>
 	///     <returns>To be added.</returns>
 	///     <remarks>To be added.</remarks>
-	///     <altmember cref="T:CoreVideo.CVFillExtendedPixelsCallBackData" />
+	///     <altmember cref="CoreVideo.CVFillExtendedPixelsCallBackData" />
 	public delegate bool CVFillExtendedPixelsCallBack (IntPtr pixelBuffer, IntPtr refCon);
 #endif // !XAMCORE_5_0
 

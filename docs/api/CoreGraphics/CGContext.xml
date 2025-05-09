@@ -1,9 +1,9 @@
 <Documentation>
   <Docs DocId="M:CoreGraphics.CGContext.GetCTM">
     <summary>Retrieves the current Context Transformation Matrix.</summary>
-    <returns>The <see cref="T:CoreGraphics.CGAffineTransform" /> currently being used by the <see cref="T:CoreGraphics.CGContext" />.</returns>
+    <returns>The <see cref="CoreGraphics.CGAffineTransform" /> currently being used by the <see cref="CoreGraphics.CGContext" />.</returns>
     <remarks>
-      <para>The <see cref="T:CoreGraphics.CGContext" /> has, as part of its drawing state, a <see cref="T:CoreGraphics.CGAffineTransform" /> called the Context Transformation Matrix (CTM).</para>
+      <para>The <see cref="CoreGraphics.CGContext" /> has, as part of its drawing state, a <see cref="CoreGraphics.CGAffineTransform" /> called the Context Transformation Matrix (CTM).</para>
       <para>By default, the CTM's X and Y axes increase to the right and downward, as indicated by the red rays in the following image. </para>
       <para>A common transform is to locate the origin in the lower left-hand corner, with X and Y increasing to the right and upward, as shown with the green rays in the following image (note that, for visibility, the rays are set to originate at (5,5) rather than (0,0)). This is done with <c>ScaleCTM(1,-1)</c> and  <c>TranslateCTM(0, -Bounds.Height)</c> (see example below).</para>
       <para>More complex transforms are, possible, as illustrated by the blue rays, which illustrate a transform that is both translated and rotated. Note that manipulation of the CTM is stateful and order-dependent: the final transform is translated and rotated relative to the CTM used to the draw the 2nd-to-last green rays.</para>
@@ -13,55 +13,55 @@
       <para>The following example shows the manipulation of the CTM to create the example image.</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
-public override void Draw (RectangleF rect)
+public override void Draw (CGRect rect)
 {
 	base.Draw (rect);
 
 	using (var ctxt = UIGraphics.GetCurrentContext ()) {
-		DrawRay (ctxt, new PointF (5, 5), new PointF (105, 5), UIColor.Red.CGColor);
-		DrawRay (ctxt, new PointF (5, 5), new PointF (5, 105), UIColor.Red.CGColor);
+		DrawRay (ctxt, new CGPoint (5, 5), new CGPoint (105, 5), UIColor.Red.CGColor);
+		DrawRay (ctxt, new CGPoint (5, 5), new CGPoint (5, 105), UIColor.Red.CGColor);
 		ctxt.ScaleCTM (1, -1);
 		ctxt.TranslateCTM (0, -Bounds.Height);
-		DrawRay (ctxt, new PointF (5, 5), new PointF (105, 5), UIColor.Green.CGColor);
-		DrawRay (ctxt, new PointF (5, 5), new PointF (5, 105), UIColor.Green.CGColor);
+		DrawRay (ctxt, new CGPoint (5, 5), new CGPoint (105, 5), UIColor.Green.CGColor);
+		DrawRay (ctxt, new CGPoint (5, 5), new CGPoint (5, 105), UIColor.Green.CGColor);
 
 		var cos = .707f;
 		var sin = -.707f;
 		var xform = new CGAffineTransform (cos, sin, -sin, cos, Bounds.Width / 2, 100);
 
 		ctxt.ConcatCTM (xform);
-		DrawRay (ctxt, new PointF (0, 0), new PointF (100, 0), UIColor.Blue.CGColor);
-		DrawRay (ctxt, new PointF (0, 0), new PointF (0, 100), UIColor.Blue.CGColor);
+		DrawRay (ctxt, new CGPoint (0, 0), new CGPoint (100, 0), UIColor.Blue.CGColor);
+		DrawRay (ctxt, new CGPoint (0, 0), new CGPoint (0, 100), UIColor.Blue.CGColor);
 
 	}
 }              
               ]]></code>
       </example>
     </remarks>
-    <altmember cref="M:CoreGraphics.CGContext.ConcatCTM" />
-    <altmember cref="M:CoreGraphics.CGContext.RotateCTM" />
-    <altmember cref="M:CoreGraphics.CGContext.ScaleCTM" />
-    <altmember cref="M:CoreGraphics.CGContext.TranslateCTM" />
+    <altmember cref="CoreGraphics.CGContext.ConcatCTM" />
+    <altmember cref="CoreGraphics.CGContext.RotateCTM" />
+    <altmember cref="CoreGraphics.CGContext.ScaleCTM" />
+    <altmember cref="CoreGraphics.CGContext.TranslateCTM" />
   </Docs>
   <Docs DocId="M:CoreGraphics.CGContext.AddLines(CoreGraphics.CGPoint[])">
-    <param name="points">An array of two or more <see cref="T:System.Drawing.PointF" />s. Straight segments are added between sequential points.</param>
+    <param name="points">An array of two or more <see cref="CGPoint" />s. Straight segments are added between sequential points.</param>
     <summary>Adds the given lines to the current path.</summary>
     <remarks>
-      <para>Lines are added to the current path, with the first line segment beginning at <paramref name="points" />[0]. A line is not added from the <see cref="M:CoreGraphics.CGContext.GetPathCurrentPoint" />. In the following example, the current location of the <see cref="T:CoreGraphics.CGContext" /> is {20,20} after the call to <see cref="M:CoreGraphics.CGContext.MoveTo(System.nfloat,System.nfloat)" />, but as shown in the image, only two line segments are added.</para>
+      <para>Lines are added to the current path, with the first line segment beginning at <paramref name="points" />[0]. A line is not added from the <see cref="CoreGraphics.CGContext.GetPathCurrentPoint" />. In the following example, the current location of the <see cref="CoreGraphics.CGContext" /> is {20,20} after the call to <see cref="CoreGraphics.CGContext.MoveTo(nfloat,nfloat)" />, but as shown in the image, only two line segments are added.</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
 using (var ctxt = UIGraphics.GetCurrentContext ()) {
-	var startingPoint = new PointF (20, 20);
+	var startingPoint = new CGPoint (20, 20);
 	ctxt.MoveTo (startingPoint.X, startingPoint.Y);
 	ctxt.SetStrokeColor (UIColor.Red.CGColor);
-	var sz = new SizeF (2, 2);
-	Func<PointF,PointF> offset = (PointF pt) => new PointF (pt.X - 1, pt.Y - 1);
-	ctxt.AddEllipseInRect (new RectangleF (offset (startingPoint), sz));
+	var sz = new CGSize (2, 2);
+	Func<CGPoint,CGPoint> offset = (CGPoint pt) => new CGPoint (pt.X - 1, pt.Y - 1);
+	ctxt.AddEllipseInRect (new CGRect (offset (startingPoint), sz));
 
-	ctxt.AddLines (new PointF[] {
-		new PointF (30, 30),
-		new PointF (60, 30),
-		new PointF (40, 40)
+	ctxt.AddLines (new CGPoint[] {
+		new CGPoint (30, 30),
+		new CGPoint (60, 30),
+		new CGPoint (40, 40)
 	});
 
 	ctxt.StrokePath ();
@@ -112,18 +112,18 @@ using (var ctxt = UIGraphics.GetCurrentContext ()) {
     </remarks>
   </Docs>
   <Docs DocId="M:CoreGraphics.CGContext.AsBitmapContext">
-    <summary>Casts the CGContext into a CGBitmapContext.</summary>
+    <summary>Casts the <see cref="CGContext" /> into a <see cref="CGBitmapContext" />.</summary>
     <returns>
     </returns>
     <remarks>
       <para>
-	    While there are different kinds of CGContext kinds (regular, bitmap and PDF), Apple does not support a way
-	    to tell those apart.   Certain CGContext objects are actually known to be CGBitmapContext objects in a few
-	    situations (calling <see cref="M:UIKit.UIGraphics.GetImageFromCurrentImageContext" /> after creating a 
-	    context with <see cref="M:UIKit.UIGraphics.BeginImageContext(CoreGraphics.CGSize)" /> or <see cref="M:UIKit.UIGraphics.BeginImageContextWithOptions(CoreGraphics.CGSize,System.Boolean,System.nfloat)" />).
+      While there are different kinds of <see cref="CGContext" /> kinds (regular, bitmap and PDF), Apple does not support a way
+      to tell those apart. In some cases <see cref="CGContext" /> objects are actually known to be <see cref="CGBitmapContext" /> objects in a few
+	    situations (calling <see cref="UIKit.UIGraphics.GetImageFromCurrentImageContext" /> after creating a 
+	    context with <see cref="UIKit.UIGraphics.BeginImageContext(CoreGraphics.CGSize)" /> or <see cref="UIKit.UIGraphics.BeginImageContextWithOptions(CoreGraphics.CGSize,System.Boolean,nfloat)" />).
 	  </para>
       <para>
-	    Those are really CGBitmapContext objects and by converting it, application developers can access the various bitmap properties
+      Those are really <see cref="CGBitmapContext" /> objects and by converting it, application developers can access the various bitmap properties
 	    on it.
 	  </para>
       <example>
@@ -144,28 +144,54 @@ var effectInBuffer = new vImageBuffer () {
       </example>
     </remarks>
   </Docs>
+  <Docs DocId="M:CoreGraphics.CGContext.AsBitmapContext" Platforms="macOS">
+    <summary>Casts the <see cref="CGContext" /> into a <see cref="CGBitmapContext" />.</summary>
+    <returns>
+    </returns>
+    <remarks>
+      <para>
+      While there are different kinds of <see cref="CGContext" /> kinds (regular, bitmap and PDF), Apple does not support a way
+      to tell those apart. In some cases <see cref="CGContext" /> objects are actually known to be <see cref="CGBitmapContext" /> objects in a few
+      situations.
+    </para>
+      <para>
+      Those are really <see cref="CGBitmapContext" /> objects and by converting it, application developers can access the various bitmap properties
+      on it.
+    </para>
+    </remarks>
+  </Docs>
   <Docs DocId="T:CoreGraphics.CGContext">
     <summary>Graphics context and primitives to draw in them.</summary>
     <remarks>
-      <para>A <see cref="T:CoreGraphics.CGContext" /> is a Quartz 2D destination for drawing. It holds parameters and their states (set with functions such as <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Graphics%20CGContext%20Set%20Fill%20Color&amp;scope=Xamarin" title="M:CoreGraphics.CGContext.SetFillColor*">M:CoreGraphics.CGContext.SetFillColor*</a></format>) and device information (for instance, <see cref="M:CoreGraphics.CGContext.ConvertSizeToDeviceSpace(CoreGraphics.CGSize)" />). <see cref="T:CoreGraphics.CGContext" />s may represent a screen area, a bitmap, a PDF document, or a printer.</para>
-      <para>There are a limited number of <see cref="T:CoreGraphics.CGContext" />s available and application developer's should be conscientious about disposing of them after use. Generally, that means putting the drawing code in <c>using</c> blocks, as shown in the following example:</para>
+      <para>A <see cref="CoreGraphics.CGContext" /> is a Quartz 2D destination for drawing. It holds parameters and their states (set with functions such as <see cref="CoreGraphics.CGContext.SetFillColor(CGColor)" />) and device information (for instance, <see cref="CoreGraphics.CGContext.ConvertSizeToDeviceSpace(CoreGraphics.CGSize)" />). <see cref="CoreGraphics.CGContext" />s may represent a screen area, a bitmap, a PDF document, or a printer.</para>
+      <para>There are a limited number of <see cref="CoreGraphics.CGContext" />s available and application developer's should be conscientious about disposing of them after use. Generally, that means putting the drawing code in <c>using</c> blocks, as shown in the following example:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
-public override void Draw (RectangleF rect)
+public override void Draw (CGRect rect)
 {
     base.Draw (rect);
     using (var context = UIGraphics.GetCurrentContext ())
     {
         // draw a rectangle using a path
 	var myRectangleButtonPath = new CGPath ();
-	myRectangleButtonPath.AddRect (new RectangleF (new PointF (100, 10), new SizeF (200, 400)));
+	myRectangleButtonPath.AddRect (new CGRect (new CGPoint (100, 10), new CGPoint (200, 400)));
 	context.AddPath (myRectangleButtonPath);
 	context.DrawPath (CGPathDrawingMode.Stroke);
     }
 }          
           ]]></code>
       </example>
-      <para>The example additionally shows the very common pattern of an overridden <see cref="M:UIKit.UIView.Draw(CoreGraphics.CGRect)" /> method in a custom <see cref="T:UIKit.UIView" /> and the use of <see cref="M:UIKit.UIGraphics.GetImageFromCurrentImageContext" /> to retrieve the current <see cref="T:CoreGraphics.CGContext" /> on which to draw.</para>
+      <para>The example additionally shows the very common pattern of an overridden <see cref="UIKit.UIView.Draw(CoreGraphics.CGRect)" /> method in a custom <see cref="UIKit.UIView" /> and the use of <see cref="UIKit.UIGraphics.GetImageFromCurrentImageContext" /> to retrieve the current <see cref="CoreGraphics.CGContext" /> on which to draw.</para>
+    </remarks>
+    <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/AVTouchSample/">avTouch</related>
+    <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/Drawing/">Example_Drawing</related>
+    <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/QuartzSample/">QuartzSample</related>
+    <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/ZoomingPdfViewer/">ZoomingPdfViewer</related>
+  </Docs>
+  <Docs DocId="T:CoreGraphics.CGContext" Platforms="macOS">
+    <summary>Graphics context and primitives to draw in them.</summary>
+    <remarks>
+      <para>A <see cref="CoreGraphics.CGContext" /> is a Quartz 2D destination for drawing. It holds parameters and their states (set with functions such as <see cref="CoreGraphics.CGContext.SetFillColor(CGColor)" />) and device information (for instance, <see cref="CoreGraphics.CGContext.ConvertSizeToDeviceSpace(CoreGraphics.CGSize)" />). <see cref="CoreGraphics.CGContext" />s may represent a screen area, a bitmap, a PDF document, or a printer.</para>
     </remarks>
     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/AVTouchSample/">avTouch</related>
     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/Drawing/">Example_Drawing</related>

@@ -1,6 +1,6 @@
 <Documentation>
   <Docs DocId="T:CoreImage.CIBlendWithMask">
-    <summary>A <see cref="T:CoreImage.CIBlendFilter" /> that uses a grayscale mask to blends its foreground and background images.</summary>
+    <summary>A <see cref="CoreImage.CIBlendFilter" /> that uses a grayscale mask to blends its foreground and background images.</summary>
     <remarks>
       <para>The following example shows this filter in use</para>
       <example>

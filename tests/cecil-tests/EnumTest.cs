@@ -14,7 +14,7 @@ namespace Cecil.Tests {
 	public class EnumTest {
 
 		[TestCaseSource (typeof (Helper), nameof (Helper.NetPlatformAssemblyDefinitions))]
-		// https://github.com/xamarin/xamarin-macios/issues/9724
+		// https://github.com/dotnet/macios/issues/9724
 		public void NoAvailabilityOnError (AssemblyInfo info)
 		{
 			var assembly = info.Assembly;

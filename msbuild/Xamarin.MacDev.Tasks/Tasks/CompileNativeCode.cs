@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 using Microsoft.Build.Framework;
@@ -48,10 +49,29 @@ namespace Xamarin.MacDev.Tasks {
 				return new TaskRunner (SessionId, BuildEngine4).RunAsync (this).Result;
 			}
 
-			var processes = new Task<Execution> [CompileInfo.Length];
+			// Sort the list of inputs to compile:
+			// We want to start with the input that takes the longest to compile, because
+			// that will make most efficient use of parallel resources.
+			// 1. The dedup assembly is typically quite big, so do that first.
+			// 2. Sort the rest of the inputs by size, in decreasing order.
+			var sortedCompileInfo = CompileInfo
+				// Compute the data we need to sort. We set file length to long.MaxValue if it's a dedup assembly so that it sorts where we want it
+				.Select (item => {
+					var isDedup = Boolean.TryParse (item.GetMetadata ("IsDedupAssembly"), out var isDedupAssembly) && isDedupAssembly;
+					return (Item: item, InputLength: isDedup ? long.MaxValue : new FileInfo (item.ItemSpec).Length);
+				})
+				// Sort
+				.OrderByDescending (x => x.InputLength);
+			foreach (var item in sortedCompileInfo) {
+				Log.LogMessage (MessageImportance.Low, $"Compiling with sort order {item.InputLength}: {item.Item.ItemSpec}");
+			}
 
-			for (var i = 0; i < CompileInfo.Length; i++) {
-				var info = CompileInfo [i];
+			var compileInfo = sortedCompileInfo.Select (v => v.Item).ToArray ();
+
+			var processes = new Task<Execution> [compileInfo.Length];
+
+			for (var i = 0; i < compileInfo.Length; i++) {
+				var info = compileInfo [i];
 				var src = Path.GetFullPath (info.ItemSpec);
 				var arguments = new List<string> ();
 

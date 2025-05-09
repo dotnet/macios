@@ -10,8 +10,8 @@ namespace MapKit {
 
 	public partial class MKPolygon {
 
-		/// <param name="points">An array of <see cref="T:MapKit.MKMapPoint" />s that define the polygon.</param>
-		///         <summary>Creates an <see cref="T:MapKit.MKPolygon" /> from the specified <paramref name="points" />.</summary>
+		/// <param name="points">An array of <see cref="MapKit.MKMapPoint" />s that define the polygon.</param>
+		///         <summary>Creates an <see cref="MapKit.MKPolygon" /> from the specified <paramref name="points" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>
 		///           <para>(More documentation for this node is coming)</para>
@@ -29,9 +29,9 @@ namespace MapKit {
 			}
 		}
 
-		/// <param name="points">An array of <see cref="T:MapKit.MKMapPoint" />s that define the polygon.</param>
-		///         <param name="interiorPolygons">An array of <see cref="T:MapKit.MKPolygon" />s that should be excluded from the polygon's interior.</param>
-		///         <summary>Creates an <see cref="T:MapKit.MKPolygon" /> from the specified <paramref name="points" />, excluding the specified <paramref name="interiorPolygons" />.</summary>
+		/// <param name="points">An array of <see cref="MapKit.MKMapPoint" />s that define the polygon.</param>
+		///         <param name="interiorPolygons">An array of <see cref="MapKit.MKPolygon" />s that should be excluded from the polygon's interior.</param>
+		///         <summary>Creates an <see cref="MapKit.MKPolygon" /> from the specified <paramref name="points" />, excluding the specified <paramref name="interiorPolygons" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>
 		///           <para>(More documentation for this node is coming)</para>
@@ -49,8 +49,8 @@ namespace MapKit {
 			}
 		}
 
-		/// <param name="coords">An array of <see cref="T:CoreLocation.CLLocationCoordinate2D" />s that define the desired polygon.</param>
-		///         <summary>Creates an <see cref="T:MapKit.MKPolygon" /> from the specified <paramref name="coords" />.</summary>
+		/// <param name="coords">An array of <see cref="CoreLocation.CLLocationCoordinate2D" />s that define the desired polygon.</param>
+		///         <summary>Creates an <see cref="MapKit.MKPolygon" /> from the specified <paramref name="coords" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>
 		///           <para>(More documentation for this node is coming)</para>
@@ -68,9 +68,9 @@ namespace MapKit {
 			}
 		}
 
-		/// <param name="coords">An array of <see cref="T:CoreLocation.CLLocationCoordinate2D" />s that define the desired polygon.</param>
-		///         <param name="interiorPolygons">An array of <see cref="T:MapKit.MKPolygon" />s that should be excluded from the polygon's interior.</param>
-		///         <summary>Creates an <see cref="T:MapKit.MKPolygon" /> from the specified <paramref name="coords" />, excluding the specified <paramref name="interiorPolygons" />.</summary>
+		/// <param name="coords">An array of <see cref="CoreLocation.CLLocationCoordinate2D" />s that define the desired polygon.</param>
+		///         <param name="interiorPolygons">An array of <see cref="MapKit.MKPolygon" />s that should be excluded from the polygon's interior.</param>
+		///         <summary>Creates an <see cref="MapKit.MKPolygon" /> from the specified <paramref name="coords" />, excluding the specified <paramref name="interiorPolygons" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>
 		///           <para>(More documentation for this node is coming)</para>

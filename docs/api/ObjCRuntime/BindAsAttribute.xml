@@ -17,7 +17,7 @@ NSNumber ShouldDraw ([BindAs (typeof (CGRect))] NSValue rect);
 NSString [] SupportedScrollModes { get; set; }
           ]]></code>
       </example>
-      <para>In this example, the <c>rect</c> parameter will be bound as a managed <see cref="T:CoreGraphics.CGRect" />, and the return value will be bound as <c>bool?</c>.</para>
+      <para>In this example, the <c>rect</c> parameter will be bound as a managed <see cref="CoreGraphics.CGRect" />, and the return value will be bound as <c>bool?</c>.</para>
       <list type="table">
         <listheader>
           <term>Supported combinations:</term>

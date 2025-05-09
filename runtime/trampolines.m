@@ -163,7 +163,7 @@ xamarin_marshal_return_value_impl (MonoType *mtype, const char *type, MonoObject
 					//    3) Thread U runs the GC, and tries to lock the framework peer lock, and
 					//       deadlocks because thread T already has the framework peer lock.
 					//
-					//    This is https://github.com/xamarin/xamarin-macios/issues/13066
+					//    This is https://github.com/dotnet/macios/issues/13066
 					//
 					// See also comment in xamarin_release_managed_ref
 
@@ -188,7 +188,7 @@ xamarin_marshal_return_value_impl (MonoType *mtype, const char *type, MonoObject
 					} else {
 						// This will try to retain the object if and only if it's an NSObject -
 						// in which case we known it's 'id' here and we can call autorelease on it.
-						bool retained = xamarin_attempt_retain_nsobject (retval, exception_gchandle);
+						bool retained = xamarin_attempt_retain_nsobject (retval, exception_gchandle) != 0;
 						if (*exception_gchandle != INVALID_GCHANDLE)
 							return returnValue;
 						if (retained) {
@@ -201,7 +201,7 @@ xamarin_marshal_return_value_impl (MonoType *mtype, const char *type, MonoObject
 				if (xamarin_is_class_intptr (r_klass) || xamarin_is_class_nativehandle (r_klass)) {
 					returnValue = *(void **) mono_object_unbox (retval);
 				} else {
-					xamarin_assertion_message ("Don't know how to marshal a return value of type '%s.%s'. Please file a bug with a test case at https://github.com/xamarin/xamarin-macios/issues/new\n", mono_class_get_namespace (r_klass), mono_class_get_name (r_klass));
+					xamarin_assertion_message ("Don't know how to marshal a return value of type '%s.%s'. Please file a bug with a test case at https://github.com/dotnet/macios/issues/new\n", mono_class_get_namespace (r_klass), mono_class_get_name (r_klass));
 				}
 			}
 
@@ -1869,7 +1869,7 @@ xamarin_create_bindas_exception (MonoType *inputType, MonoType *outputType, Mono
 		goto exception_handling;
 
 	method_full_name = mono_method_full_name (method, TRUE);
-	msg = xamarin_strdup_printf ("Internal error: can't convert from '%s' to '%s' in %s. Please file a bug report with a test case (https://github.com/xamarin/xamarin-macios/issues/new).",
+	msg = xamarin_strdup_printf ("Internal error: can't convert from '%s' to '%s' in %s. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new).",
 										from_name, to_name, method_full_name);
 	exception_gchandle = xamarin_gchandle_new ((MonoObject *) xamarin_create_exception (msg), false);
 

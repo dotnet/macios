@@ -43,7 +43,7 @@ using NSEvent = System.Object;
 #endif
 
 namespace SpriteKit {
-	/// <summary>The delegate that acts as the enumeration handler for <see cref="M:SpriteKit.SKNode.EnumerateChildNodes(System.String,SpriteKit.SKNodeChildEnumeratorHandler)" />.</summary>
+	/// <summary>The delegate that acts as the enumeration handler for <see cref="SpriteKit.SKNode.EnumerateChildNodes(System.String,SpriteKit.SKNodeChildEnumeratorHandler)" />.</summary>
 	delegate void SKNodeChildEnumeratorHandler (SKNode node, out bool stop);
 #if !XAMCORE_5_0
 	/// <summary>A method that maps <paramref name="time" />, a value between 0 and 1, to a return value between 0 snd 1.</summary>
@@ -339,7 +339,7 @@ namespace SpriteKit {
 
 		// Moved from SpriteKit to GameplayKit header in iOS 10 beta 1
 		/// <param name="nodes">To be added.</param>
-		///         <summary>Creates a new <see cref="T:GameplayKit.GKPolygonObstacle" /> for each <see cref="T:SpriteKit.SKNode" /> in <paramref name="nodes" />.</summary>
+		///         <summary>Creates a new <see cref="GameplayKit.GKPolygonObstacle" /> for each <see cref="SpriteKit.SKNode" /> in <paramref name="nodes" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
@@ -349,7 +349,7 @@ namespace SpriteKit {
 
 		// Moved from SpriteKit to GameplayKit header in iOS 10 beta 1
 		/// <param name="nodes">To be added.</param>
-		///         <summary>Creates a new <see cref="T:GameplayKit.GKPolygonObstacle" /> for each <see cref="P:SpriteKit.SKNode.PhysicsBody" /> in the <see cref="T:SpriteKit.SKNode" /> object in <paramref name="nodes" /></summary>
+		///         <summary>Creates a new <see cref="GameplayKit.GKPolygonObstacle" /> for each <see cref="SpriteKit.SKNode.PhysicsBody" /> in the <see cref="SpriteKit.SKNode" /> object in <paramref name="nodes" /></summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
@@ -360,7 +360,7 @@ namespace SpriteKit {
 		// Moved from SpriteKit to GameplayKit header in iOS 10 beta 1
 		/// <param name="sprites">To be added.</param>
 		///         <param name="accuracy">To be added.</param>
-		///         <summary>Creates a new <see cref="T:GameplayKit.GKPolygonObstacle" /> by converting the <see cref="P:SpriteKit.SKSpriteNode.Texture" /> of each <see cref="T:SpriteKit.SKNode" /> object in <paramref name="sprites" />.</summary>
+		///         <summary>Creates a new <see cref="GameplayKit.GKPolygonObstacle" /> by converting the <see cref="SpriteKit.SKSpriteNode.Texture" /> of each <see cref="SpriteKit.SKNode" /> object in <paramref name="sprites" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
@@ -412,7 +412,7 @@ namespace SpriteKit {
 		CGPoint LocationInNode (SKNode node);
 	}
 
-	/// <summary>Extension methods for <see cref="T:UIKit.UITouch" /> that aide with conversion to Sprite Kit coordinates.</summary>
+	/// <summary>Extension methods for <see cref="UIKit.UITouch" /> that aide with conversion to Sprite Kit coordinates.</summary>
 	[NoMac]
 	[MacCatalyst (13, 1)]
 	[Category, BaseType (typeof (UITouch))]
@@ -433,10 +433,10 @@ namespace SpriteKit {
 		CGPoint PreviousLocationInNode (SKNode node);
 	}
 
-	/// <summary>An <see cref="T:SpriteKit.SKNode" /> that applies a Core Graphics <see cref="T:CoreImage.CIFilter" /> to its output.</summary>
+	/// <summary>An <see cref="SpriteKit.SKNode" /> that applies a Core Graphics <see cref="CoreImage.CIFilter" /> to its output.</summary>
 	///     <remarks>
-	///       <para>Application developers should ensure that <see cref="P:SpriteKit.SKEffectNode.ShouldEnableEffects" /> is <see langword="true" />.</para>
-	///       <para>Note that <see cref="T:SpriteKit.SKScene" /> is a subclass of <see cref="T:SpriteKit.SKEffectNode" />.</para>
+	///       <para>Application developers should ensure that <see cref="SpriteKit.SKEffectNode.ShouldEnableEffects" /> is <see langword="true" />.</para>
+	///       <para>Note that <see cref="SpriteKit.SKScene" /> is a subclass of <see cref="SpriteKit.SKEffectNode" />.</para>
 	///     </remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SpriteKit/Reference/SKEffectNode_Ref/index.html">Apple documentation for <c>SKEffectNode</c></related>
 	[MacCatalyst (13, 1)]
@@ -684,11 +684,11 @@ namespace SpriteKit {
 		SKNode Listener { get; set; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:SpriteKit.SKSceneDelegate" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="SpriteKit.SKSceneDelegate" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:SpriteKit.SKSceneDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:SpriteKit.SKSceneDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:SpriteKit.SKSceneDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="SpriteKit.SKSceneDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="SpriteKit.SKSceneDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="SpriteKit.SKSceneDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	interface ISKSceneDelegate { }
 
@@ -779,7 +779,7 @@ namespace SpriteKit {
 		SKAttribute [] Attributes { get; set; }
 	}
 
-	/// <summary>A <see cref="T:SpriteKit.SKShapeNode" /> that displays a textured, colored sprite.</summary>
+	/// <summary>A <see cref="SpriteKit.SKShapeNode" /> that displays a textured, colored sprite.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SpriteKit/Reference/SKSpriteNode_Ref/index.html">Apple documentation for <c>SKSpriteNode</c></related>
 	[MacCatalyst (13, 1)]
@@ -887,7 +887,7 @@ namespace SpriteKit {
 		void SetValue (SKAttributeValue value, string key);
 	}
 
-	/// <summary>An object that can control the properties of particles emitted by a <see cref="T:SpriteKit.SKEmitterNode" />.</summary>
+	/// <summary>An object that can control the properties of particles emitted by a <see cref="SpriteKit.SKEmitterNode" />.</summary>
 	///     <remarks>
 	///       <para>The total time of the sequence is normalized from 0.0 to 1.0.</para>
 	///     </remarks>
@@ -906,7 +906,7 @@ namespace SpriteKit {
 		NativeHandle Constructor ([NullAllowed] NSObject [] values, [NullAllowed] NSArray times);
 
 		/// <param name="numItems">To be added.</param>
-		/// <summary>Creates a new <see cref="T:SpriteKit.SKKeyframeSequence" /> with the capacity to hold <paramref name="numItems" /> keyframe values.</summary>
+		/// <summary>Creates a new <see cref="SpriteKit.SKKeyframeSequence" /> with the capacity to hold <paramref name="numItems" /> keyframe values.</summary>
 		/// <remarks>To be added.</remarks>
 		[Export ("initWithCapacity:")]
 		NativeHandle Constructor (nuint numItems);
@@ -981,9 +981,9 @@ namespace SpriteKit {
 		SKRepeatMode RepeatMode { get; set; }
 	}
 
-	/// <summary>A  <see cref="T:SpriteKit.SKNode" /> that produces colored and textured particles.</summary>
+	/// <summary>A  <see cref="SpriteKit.SKNode" /> that produces colored and textured particles.</summary>
 	///     <remarks>
-	///       <para>Emitted particles are not directly accessible to the application developer; their behavior can be controlled either via the creation parameters configurable in <see cref="T:SpriteKit.SKEmitterNode" /> or by a <see cref="T:SpriteKit.SKKeyframeSequence" />.</para>
+	///       <para>Emitted particles are not directly accessible to the application developer; their behavior can be controlled either via the creation parameters configurable in <see cref="SpriteKit.SKEmitterNode" /> or by a <see cref="SpriteKit.SKKeyframeSequence" />.</para>
 	///     </remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SpriteKit/Reference/SKEmitterNode_Ref/index.html">Apple documentation for <c>SKEmitterNode</c></related>
 	[MacCatalyst (13, 1)]
@@ -1176,7 +1176,7 @@ namespace SpriteKit {
 		void SetValue (SKAttributeValue value, string key);
 	}
 
-	/// <summary>A <see cref="T:SpriteKit.SKShapeNode" /> defined by a Core Graphics <see cref="T:CoreGraphics.CGPath" />.</summary>
+	/// <summary>A <see cref="SpriteKit.SKShapeNode" /> defined by a Core Graphics <see cref="CoreGraphics.CGPath" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SpriteKit/Reference/SKShapeNode_Ref/index.html">Apple documentation for <c>SKShapeNode</c></related>
 	[MacCatalyst (13, 1)]
@@ -1341,7 +1341,7 @@ namespace SpriteKit {
 	interface SKReachConstraints : NSSecureCoding {
 		/// <param name="lowerAngleLimit">To be added.</param>
 		/// <param name="upperAngleLimit">To be added.</param>
-		/// <summary>Creates a new <see cref="T:SpriteKit.SKReachConstraints" /> object with the specified limits.</summary>
+		/// <summary>Creates a new <see cref="SpriteKit.SKReachConstraints" /> object with the specified limits.</summary>
 		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithLowerAngleLimit:upperAngleLimit:")]
@@ -1392,7 +1392,7 @@ namespace SpriteKit {
 		bool ContainsPoint (CGPoint point);
 	}
 
-	/// <summary>A <see cref="T:SpriteKit.SKNode" /> that displays a string.</summary>
+	/// <summary>A <see cref="SpriteKit.SKNode" /> that displays a string.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SpriteKit/Reference/SKLabelNode_Ref/index.html">Apple documentation for <c>SKLabelNode</c></related>
 	[MacCatalyst (13, 1)]
@@ -1490,7 +1490,7 @@ namespace SpriteKit {
 		uint CategoryBitMask { get; set; } /* uint32_t */
 	}
 
-	/// <summary>A <see cref="T:SpriteKit.SKNode" /> that displays video.</summary>
+	/// <summary>A <see cref="SpriteKit.SKNode" /> that displays video.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SpriteKit/Reference/SKVideoNode/index.html">Apple documentation for <c>SKVideoNode</c></related>
 	[MacCatalyst (13, 1)]
@@ -1499,33 +1499,31 @@ namespace SpriteKit {
 		[Static, Export ("videoNodeWithAVPlayer:")]
 		SKVideoNode FromPlayer (AVPlayer player);
 
-		[Static, Export ("videoNodeWithVideoFileNamed:"), Internal]
-		SKVideoNode VideoNodeWithVideoFileNamed (string videoFile);
+		/// <summary>Create a video node from the named video file.</summary>
+		/// <param name="videoFile">The video file to create the <see cref="SKVideoNode" /> from.</param>
+		[Static, Export ("videoNodeWithFileNamed:")]
+		SKVideoNode FromFile (string videoFile);
 
-		[Static, Export ("videoNodeWithFileNamed:"), Internal]
-		SKVideoNode VideoNodeWithFileNamed (string videoFile);
-
-		[Static, Export ("videoNodeWithVideoURL:"), Internal]
-		SKVideoNode VideoNodeWithVideoURL (NSUrl videoURL);
-
-		[Static, Export ("videoNodeWithURL:"), Internal]
-		SKVideoNode VideoNodeWithURL (NSUrl videoURL);
+		/// <summary>Creates a video node from the file at the specified URL.</summary>
+		/// <param name="videoUrl">The video url to create the <see cref="SKVideoNode" /> from.</param>
+		[Static, Export ("videoNodeWithURL:")]
+		SKVideoNode FromUrl (NSUrl videoUrl);
 
 		[DesignatedInitializer]
 		[Export ("initWithAVPlayer:")]
 		NativeHandle Constructor (AVPlayer player);
 
-		[Export ("initWithVideoFileNamed:"), Internal]
-		IntPtr InitWithVideoFileNamed (string videoFile);
+		/// <summary>Create a video node from the named video file.</summary>
+		/// <param name="videoFile">The video file to create the <see cref="SKVideoNode" /> from.</param>
+		[Export ("initWithFileNamed:")]
+		[DesignatedInitializer]
+		NativeHandle Constructor (string videoFile);
 
-		[Export ("initWithFileNamed:"), Internal]
-		IntPtr InitWithFileNamed (string videoFile);
-
-		[Export ("initWithVideoURL:"), Internal]
-		IntPtr InitWithVideoURL (NSUrl url);
-
-		[Export ("initWithURL:"), Internal]
-		IntPtr InitWithURL (NSUrl url);
+		/// <summary>Creates a video node from the file at the specified URL.</summary>
+		/// <param name="url">The video url to create the <see cref="SKVideoNode" /> from.</param>
+		[Export ("initWithURL:")]
+		[DesignatedInitializer]
+		NativeHandle Constructor (NSUrl url);
 
 		[Export ("play")]
 		void Play ();
@@ -1586,7 +1584,7 @@ namespace SpriteKit {
 
 	/// <summary>A node that masks its children's pixels.</summary>
 	///     <remarks>
-	///       <para>An <see cref="T:SpriteKit.SKCropNode" /> masks pixels outside of the area defined by its <see cref="P:SpriteKit.SKCropNode.MaskNode" /> node. Pixels that fall outside of that area are not passed up towards the root of the <see cref="T:SpriteKit.SKScene" />.</para>
+	///       <para>An <see cref="SpriteKit.SKCropNode" /> masks pixels outside of the area defined by its <see cref="SpriteKit.SKCropNode.MaskNode" /> node. Pixels that fall outside of that area are not passed up towards the root of the <see cref="SpriteKit.SKScene" />.</para>
 	///     </remarks>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SpriteKit/Reference/SKCropNode_Ref/index.html">Apple documentation for <c>SKCropNode</c></related>
@@ -1599,9 +1597,9 @@ namespace SpriteKit {
 		SKNode MaskNode { get; set; }
 	}
 
-	/// <summary>A <see cref="T:UIKit.UIView" /> that displays a <see cref="T:SpriteKit.SKScene" />.</summary>
+	/// <summary>A <see cref="UIKit.UIView" /> that displays a <see cref="SpriteKit.SKScene" />.</summary>
 	///     <remarks>
-	///       <para>Application developers should note the availability of debugging properties, such as <see cref="P:SpriteKit.SKView.ShowsFPS" />.</para>
+	///       <para>Application developers should note the availability of debugging properties, such as <see cref="SpriteKit.SKView.ShowsFPS" />.</para>
 	///     </remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SpriteKit/Reference/SKView/index.html">Apple documentation for <c>SKView</c></related>
 	[MacCatalyst (13, 1)]
@@ -1715,15 +1713,15 @@ namespace SpriteKit {
 		bool DisableDepthStencilBuffer { get; set; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:SpriteKit.SKViewDelegate" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="SpriteKit.SKViewDelegate" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:SpriteKit.SKViewDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:SpriteKit.SKViewDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:SpriteKit.SKViewDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="SpriteKit.SKViewDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="SpriteKit.SKViewDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="SpriteKit.SKViewDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	interface ISKViewDelegate { }
 
-	/// <summary>Delegate object for <see cref="T:SpriteKit.SKView" /> objects, allowing the developer to control the frame rate.</summary>
+	/// <summary>Delegate object for <see cref="SpriteKit.SKView" /> objects, allowing the developer to control the frame rate.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/SpriteKit/SKViewDelegate">Apple documentation for <c>SKViewDelegate</c></related>
 	[MacCatalyst (13, 1)]
@@ -1739,7 +1737,7 @@ namespace SpriteKit {
 		bool ShouldRender (SKView view, double time);
 	}
 
-	/// <summary>Transitions that can be used between <see cref="T:SpriteKit.SKScene" />s. Used with the <see cref="M:SpriteKit.SKView.PresentScene(SpriteKit.SKScene,SpriteKit.SKTransition)" /> method.</summary>
+	/// <summary>Transitions that can be used between <see cref="SpriteKit.SKScene" />s. Used with the <see cref="SpriteKit.SKView.PresentScene(SpriteKit.SKScene,SpriteKit.SKTransition)" /> method.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SpriteKit/Reference/SKTransition_Ref/index.html">Apple documentation for <c>SKTransition</c></related>
 	[MacCatalyst (13, 1)]
@@ -1797,7 +1795,7 @@ namespace SpriteKit {
 		bool PausesOutgoingScene { get; set; }
 	}
 
-	/// <summary>An image that can be used with one or more <see cref="T:SpriteKit.SKSpriteNode" />s and particles.</summary>
+	/// <summary>An image that can be used with one or more <see cref="SpriteKit.SKSpriteNode" />s and particles.</summary>
 	///     <remarks>
 	///       <para>Sprite Kit attempts to be efficient with the memory associated with textures. Textures are lazy-loaded from their source files and in preparation for loading onto the graphics hardware. This lazy-loading can be overridden with the <c>Preload*</c> methods.</para>
 	///     </remarks>
@@ -1941,7 +1939,7 @@ namespace SpriteKit {
 
 	delegate void SKTextureAtlasLoadCallback (NSError error, SKTextureAtlas foundAtlases);
 
-	/// <summary>A collection of <see cref="T:SpriteKit.SKTexture" />s that are loaded from a single source.</summary>
+	/// <summary>A collection of <see cref="SpriteKit.SKTexture" />s that are loaded from a single source.</summary>
 	///     
 	///     <!-- TODO: These can be created in XCode. Can we load them? Sample code or at least discussion. -->
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SpriteKit/Reference/SKTextureAtlas/index.html">Apple documentation for <c>SKTextureAtlas</c></related>
@@ -2155,7 +2153,7 @@ namespace SpriteKit {
 		SKUniform Create (string name, MatrixFloat4x4 value);
 	}
 
-	/// <summary>The delegate for a custom action, used with <see cref="M:SpriteKit.SKAction.CustomActionWithDuration(System.Double,SpriteKit.SKActionDurationHandler)" />.</summary>
+	/// <summary>The delegate for a custom action, used with <see cref="SpriteKit.SKAction.CustomActionWithDuration(System.Double,SpriteKit.SKActionDurationHandler)" />.</summary>
 	delegate void SKActionDurationHandler (SKNode node, nfloat elapsedTime);
 
 	/// <include file="../docs/api/SpriteKit/SKAction.xml" path="/Documentation/Docs[@DocId='T:SpriteKit.SKAction']/*" />
@@ -2407,7 +2405,7 @@ namespace SpriteKit {
 
 		/// <param name="path">To be added.</param>
 		/// <param name="speed">To be added.</param>
-		/// <summary>Creates an action that moves the <see cref="T:SpriteKit.SKNode" /> on which it is run over the <paramref name="path" />, at the specified <paramref name="speed" />.</summary>
+		/// <summary>Creates an action that moves the <see cref="SpriteKit.SKNode" /> on which it is run over the <paramref name="path" />, at the specified <paramref name="speed" />.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
@@ -2418,7 +2416,7 @@ namespace SpriteKit {
 		/// <param name="offset">To be added.</param>
 		/// <param name="orient">To be added.</param>
 		/// <param name="speed">To be added.</param>
-		/// <summary>Creates an action that moves the <see cref="T:SpriteKit.SKNode" /> on which it is run over the <paramref name="path" />, with the specified offset, orientation, and speed.</summary>
+		/// <summary>Creates an action that moves the <see cref="SpriteKit.SKNode" /> on which it is run over the <paramref name="path" />, with the specified offset, orientation, and speed.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
@@ -2909,7 +2907,7 @@ namespace SpriteKit {
 		bool Pinned { get; set; }
 	}
 
-	/// <summary>Encapsulates the data of a collision between two <see cref="T:SpriteKit.SKPhysicsBody" />s.</summary>
+	/// <summary>Encapsulates the data of a collision between two <see cref="SpriteKit.SKPhysicsBody" />s.</summary>
 	///     
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SpriteKit/Reference/SKPhysicsContact/index.html">Apple documentation for <c>SKPhysicsContact</c></related>
@@ -2936,11 +2934,11 @@ namespace SpriteKit {
 
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:SpriteKit.SKPhysicsContactDelegate" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="SpriteKit.SKPhysicsContactDelegate" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:SpriteKit.SKPhysicsContactDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:SpriteKit.SKPhysicsContactDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:SpriteKit.SKPhysicsContactDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="SpriteKit.SKPhysicsContactDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="SpriteKit.SKPhysicsContactDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="SpriteKit.SKPhysicsContactDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	interface ISKPhysicsContactDelegate { }
 
@@ -2974,7 +2972,7 @@ namespace SpriteKit {
 
 	/// <include file="../docs/api/SpriteKit/SKPhysicsWorldBodiesEnumeratorHandler.xml" path="/Documentation/Docs[@DocId='T:SpriteKit.SKPhysicsWorldBodiesEnumeratorHandler']/*" />
 	delegate void SKPhysicsWorldBodiesEnumeratorHandler (SKPhysicsBody body, out bool stop);
-	/// <summary>The delegate used for enumerating bodies that fall along a ray when used with <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:SpriteKit.SKPhysicsWorld.EnumerateBodies(System.Drawing.PointF,System.Drawing.PointF,SpriteKit.SKPhysicsWorldBodiesAlongRayStartEnumeratorHandler*&amp;scope=Xamarin" title="M:SpriteKit.SKPhysicsWorld.EnumerateBodies(System.Drawing.PointF,System.Drawing.PointF,SpriteKit.SKPhysicsWorldBodiesAlongRayStartEnumeratorHandler*">M:SpriteKit.SKPhysicsWorld.EnumerateBodies(System.Drawing.PointF,System.Drawing.PointF,SpriteKit.SKPhysicsWorldBodiesAlongRayStartEnumeratorHandler*</a></format>.</summary>
+	/// <summary>The delegate used for enumerating bodies that fall along a ray when used with <see cref="SpriteKit.SKPhysicsWorld.EnumerateBodies(CGPoint,CGPoint,SpriteKit.SKPhysicsWorldBodiesAlongRayStartEnumeratorHandler)" />.</summary>
 	delegate void SKPhysicsWorldBodiesAlongRayStartEnumeratorHandler (SKPhysicsBody body, CGPoint point, CGVector normal, out bool stop);
 
 	/// <include file="../docs/api/SpriteKit/SKPhysicsWorld.xml" path="/Documentation/Docs[@DocId='T:SpriteKit.SKPhysicsWorld']/*" />
@@ -3063,7 +3061,7 @@ namespace SpriteKit {
 		nfloat ReactionTorque { get; }
 	}
 
-	/// <summary>A <see cref="T:SpriteKit.SKPhysicsJoint" /> that pins two bodies to a common point.</summary>
+	/// <summary>A <see cref="SpriteKit.SKPhysicsJoint" /> that pins two bodies to a common point.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SpriteKit/Reference/SKPhysicsJointPin_Ref/index.html">Apple documentation for <c>SKPhysicsJointPin</c></related>
 	[MacCatalyst (13, 1)]
@@ -3091,7 +3089,7 @@ namespace SpriteKit {
 		nfloat RotationSpeed { get; set; }
 	}
 
-	/// <summary>A <see cref="T:SpriteKit.SKPhysicsJoint" /> that connects two bodies as if by a spring.</summary>
+	/// <summary>A <see cref="SpriteKit.SKPhysicsJoint" /> that connects two bodies as if by a spring.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SpriteKit/Reference/SKPhysicsJointSpring_Ref/index.html">Apple documentation for <c>SKPhysicsJointSpring</c></related>
 	[MacCatalyst (13, 1)]
@@ -3109,9 +3107,9 @@ namespace SpriteKit {
 		nfloat Frequency { get; set; }
 	}
 
-	/// <summary>A <see cref="T:SpriteKit.SKPhysicsJoint" /> that rigidly connects two bodies.</summary>
+	/// <summary>A <see cref="SpriteKit.SKPhysicsJoint" /> that rigidly connects two bodies.</summary>
 	///     <remarks>
-	///       <para>At least one of the <see cref="T:SpriteKit.SKPhysicsBody" />s must have its <see cref="P:SpriteKit.SKPhysicsBody.AllowsRotation" /> property set to <see langword="true" /> or this <see cref="T:SpriteKit.SKPhysicsJointFixed" /> will not behave properly.</para>
+	///       <para>At least one of the <see cref="SpriteKit.SKPhysicsBody" />s must have its <see cref="SpriteKit.SKPhysicsBody.AllowsRotation" /> property set to <see langword="true" /> or this <see cref="SpriteKit.SKPhysicsJointFixed" /> will not behave properly.</para>
 	///     </remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SpriteKit/Reference/SKPhysicsJointFixed_Ref/index.html">Apple documentation for <c>SKPhysicsJointFixed</c></related>
 	[MacCatalyst (13, 1)]
@@ -3123,7 +3121,7 @@ namespace SpriteKit {
 		SKPhysicsJointFixed Create (SKPhysicsBody bodyA, SKPhysicsBody bodyB, CGPoint anchor);
 	}
 
-	/// <summary>A <see cref="T:SpriteKit.SKPhysicsJoint" /> that connects two bodies as if by a sliding rod.</summary>
+	/// <summary>A <see cref="SpriteKit.SKPhysicsJoint" /> that connects two bodies as if by a sliding rod.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SpriteKit/Reference/SKPhysicsJointSliding_Ref/index.html">Apple documentation for <c>SKPhysicsJointSliding</c></related>
 	[MacCatalyst (13, 1)]
@@ -3144,7 +3142,7 @@ namespace SpriteKit {
 		nfloat UpperDistanceLimit { get; set; }
 	}
 
-	/// <summary>A <see cref="T:SpriteKit.SKPhysicsJoint" /> that connects two bodies as if by a rope.</summary>
+	/// <summary>A <see cref="SpriteKit.SKPhysicsJoint" /> that connects two bodies as if by a rope.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SpriteKit/Reference/SKPhysicsJointLimit/index.html">Apple documentation for <c>SKPhysicsJointLimit</c></related>
 	[MacCatalyst (13, 1)]
@@ -3167,7 +3165,7 @@ namespace SpriteKit {
 	interface SKRange : NSSecureCoding, NSCopying {
 		/// <param name="lowerLimit">To be added.</param>
 		/// <param name="upperLimier">To be added.</param>
-		/// <summary>Creates a new <see cref="T:SpriteKit.SKRange" /> with the specified limits.</summary>
+		/// <summary>Creates a new <see cref="SpriteKit.SKRange" /> with the specified limits.</summary>
 		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithLowerLimit:upperLimit:")]
@@ -3220,7 +3218,7 @@ namespace SpriteKit {
 		SKRange CreateUnlimited ();
 	}
 
-	/// <summary>A <see cref="T:SpriteKit.SKNode" /> that holds audio information.</summary>
+	/// <summary>A <see cref="SpriteKit.SKNode" /> that holds audio information.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/SpriteKit/SKAudioNode">Apple documentation for <c>SKAudioNode</c></related>
 	[MacCatalyst (13, 1)]
@@ -3250,7 +3248,7 @@ namespace SpriteKit {
 		bool Positional { [Bind ("isPositional")] get; set; }
 	}
 
-	/// <summary>A node that specifies the position inside a <see cref="T:SpriteKit.SKScene" /> from which it can be rendered.</summary>
+	/// <summary>A node that specifies the position inside a <see cref="SpriteKit.SKScene" /> from which it can be rendered.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/SpriteKit/SKCameraNode">Apple documentation for <c>SKCameraNode</c></related>
 	[MacCatalyst (13, 1)]
@@ -3263,7 +3261,7 @@ namespace SpriteKit {
 		NSSet<SKNode> ContainedNodeSet { get; }
 	}
 
-	/// <summary>A <see cref="T:SpriteKit.SKNode" /> that holds an archived collection of child nodes that can be used in multiple places throughout the game.</summary>
+	/// <summary>A <see cref="SpriteKit.SKNode" /> that holds an archived collection of child nodes that can be used in multiple places throughout the game.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/SpriteKit/SKReferenceNode">Apple documentation for <c>SKReferenceNode</c></related>
 	[MacCatalyst (13, 1)]
@@ -3315,7 +3313,7 @@ namespace SpriteKit {
 		SKAttributeType Type { get; }
 	}
 
-	/// <summary>Holds the value, of the appropriate <see cref="T:SpriteKit.SKAttributeType" />, for an <see cref="T:SpriteKit.SKAttribute" />.</summary>
+	/// <summary>Holds the value, of the appropriate <see cref="SpriteKit.SKAttributeType" />, for an <see cref="SpriteKit.SKAttribute" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/SpriteKit/SKAttributeValue">Apple documentation for <c>SKAttributeValue</c></related>
 	[MacCatalyst (13, 1)]
@@ -3478,7 +3476,7 @@ namespace SpriteKit {
 		/// <param name="columns">To be added.</param>
 		/// <param name="rows">To be added.</param>
 		/// <param name="tileSize">To be added.</param>
-		/// <summary>Factory method to create an <see cref="T:SpriteKit.SKTileMapNode" /> with the specified properties.</summary>
+		/// <summary>Factory method to create an <see cref="SpriteKit.SKTileMapNode" /> with the specified properties.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[Static]
@@ -3579,7 +3577,7 @@ namespace SpriteKit {
 
 		/// <param name="column">To be added.</param>
 		/// <param name="row">To be added.</param>
-		/// <summary>Gets the <see cref="T:SpriteKit.SKTileDefinition" /> for the tile at the specified position.</summary>
+		/// <summary>Gets the <see cref="SpriteKit.SKTileDefinition" /> for the tile at the specified position.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[Export ("tileDefinitionAtColumn:row:")]
@@ -3588,7 +3586,7 @@ namespace SpriteKit {
 
 		/// <param name="column">To be added.</param>
 		/// <param name="row">To be added.</param>
-		/// <summary>Gets the <see cref="T:SpriteKit.SKTileGroup" /> for the tile at the specified position.</summary>
+		/// <summary>Gets the <see cref="SpriteKit.SKTileGroup" /> for the tile at the specified position.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[Export ("tileGroupAtColumn:row:")]
@@ -3601,7 +3599,7 @@ namespace SpriteKit {
 		///         </param>
 		/// <param name="column">To be added.</param>
 		/// <param name="row">To be added.</param>
-		/// <summary>Sets the <see cref="T:SpriteKit.SKTileGroup" /> at the specified location.</summary>
+		/// <summary>Sets the <see cref="SpriteKit.SKTileGroup" /> at the specified location.</summary>
 		/// <remarks>To be added.</remarks>
 		[Export ("setTileGroup:forColumn:row:")]
 		void SetTileGroup ([NullAllowed] SKTileGroup tileGroup, nuint column, nuint row);
@@ -3623,7 +3621,7 @@ namespace SpriteKit {
 
 		/// <param name="column">To be added.</param>
 		/// <param name="row">To be added.</param>
-		/// <summary>Retrieves the <see cref="T:CoreGraphics.CGPoint" /> at the center of the specified position.</summary>
+		/// <summary>Retrieves the <see cref="CoreGraphics.CGPoint" /> at the center of the specified position.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[Export ("centerOfTileAtColumn:row:")]
@@ -3655,9 +3653,9 @@ namespace SpriteKit {
 		void SetValue (SKAttributeValue value, string key);
 	}
 
-	/// <summary>Represents the possible elements of a <see cref="T:SpriteKit.SKTileMapNode" /> in the form of <see cref="T:SpriteKit.SKTileGroup" /> objects.</summary>
+	/// <summary>Represents the possible elements of a <see cref="SpriteKit.SKTileMapNode" /> in the form of <see cref="SpriteKit.SKTileGroup" /> objects.</summary>
 	///     <remarks>
-	///       <para>An <see cref="T:SpriteKit.SKTileSet" /> collects a set of related <see cref="T:SpriteKit.SKTileGroup" /> objects that may be placed on a <see cref="T:SpriteKit.SKTileMapNode" />. Additionally, it may define a default tile group and tile size.</para>
+	///       <para>An <see cref="SpriteKit.SKTileSet" /> collects a set of related <see cref="SpriteKit.SKTileGroup" /> objects that may be placed on a <see cref="SpriteKit.SKTileMapNode" />. Additionally, it may define a default tile group and tile size.</para>
 	///     </remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/SpriteKit/SKTileSet">Apple documentation for <c>SKTileSet</c></related>
 	[MacCatalyst (13, 1)]
@@ -3732,7 +3730,7 @@ namespace SpriteKit {
 		string Name { get; set; }
 	}
 
-	/// <summary>Defines adjacency rules for tiles in an <see cref="T:SpriteKit.SKTileGroup" />.</summary>
+	/// <summary>Defines adjacency rules for tiles in an <see cref="SpriteKit.SKTileGroup" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/SpriteKit/SKTileGroupRule">Apple documentation for <c>SKTileGroupRule</c></related>
 	[MacCatalyst (13, 1)]
@@ -3755,14 +3753,14 @@ namespace SpriteKit {
 		string Name { get; set; }
 	}
 
-	/// <summary>Defines geometry deformation on <see cref="T:SpriteKit.SKNode" /> objects.</summary>
+	/// <summary>Defines geometry deformation on <see cref="SpriteKit.SKNode" /> objects.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/SpriteKit/SKWarpGeometry">Apple documentation for <c>SKWarpGeometry</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface SKWarpGeometry : NSCopying, NSSecureCoding { }
 
-	/// <summary>Associates a <see cref="T:SpriteKit.SKWarpGeometry" /> and subdivision levels with an implementation.</summary>
+	/// <summary>Associates a <see cref="SpriteKit.SKWarpGeometry" /> and subdivision levels with an implementation.</summary>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface SKWarpable {
@@ -3781,7 +3779,7 @@ namespace SpriteKit {
 		nint SubdivisionLevels { get; set; }
 	}
 
-	/// <summary>A <see cref="T:SpriteKit.SKWarpGeometry" /> subclass that defines a warpable grid.</summary>
+	/// <summary>A <see cref="SpriteKit.SKWarpGeometry" /> subclass that defines a warpable grid.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/SpriteKit/SKWarpGeometryGrid">Apple documentation for <c>SKWarpGeometryGrid</c></related>
 	[MacCatalyst (13, 1)]
@@ -3889,7 +3887,7 @@ namespace SpriteKit {
 		bool ShowsFields { get; set; }
 	}
 
-	/// <summary>A <see cref="T:SpriteKit.SKNode" /> that holds a geometric transform.</summary>
+	/// <summary>A <see cref="SpriteKit.SKNode" /> that holds a geometric transform.</summary>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (SKNode))]
 	interface SKTransformNode {

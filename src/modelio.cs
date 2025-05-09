@@ -142,7 +142,7 @@ namespace ModelIO {
 		float Aspect { get; set; }
 	}
 
-	/// <summary>A container that stores 3D assets as an indexed collection of <see cref="T:ModelIO.MDLObject" /> trees.</summary>
+	/// <summary>A container that stores 3D assets as an indexed collection of <see cref="ModelIO.MDLObject" /> trees.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ModelIO/Reference/MDLAsset_Class/index.html">Apple documentation for <c>MDLAsset</c></related>
 	[MacCatalyst (13, 1)]
@@ -297,7 +297,7 @@ namespace ModelIO {
 
 		/// <summary>Gets the smallest box that contains all of the objects in the asset.</summary>
 		///         <value>To be added.</value>
-		///         <remarks>If any of the asset's contents contain timed information, application developers should use <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Model%20IOMDLObject%20Bounding%20Box%20At%20Time&amp;scope=Xamarin" title="M:ModelIO.MDLObject.BoundingBoxAtTime*">M:ModelIO.MDLObject.BoundingBoxAtTime*</a></format>, instead.</remarks>
+		///         <remarks>If any of the asset's contents contain timed information, application developers should use <see cref="ModelIO.MDLObject.BoundingBoxAtTime" />, instead.</remarks>
 		[Export ("boundingBox")]
 		MDLAxisAlignedBoundingBox BoundingBox {
 			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
@@ -369,25 +369,25 @@ namespace ModelIO {
 		MDLVertexDescriptor VertexDescriptor { get; }
 
 		/// <param name="object">To be added.</param>
-		///         <summary>Adds the specified <see cref="T:ModelIO.MDLObject" />, which may be a <see cref="T:ModelIO.MDLCamera" />, <see cref="T:ModelIO.MDLMesh" />, or <see cref="T:ModelIO.MDLLight" />, to the end of the indexed list of objects for this <see cref="T:ModelIO.MDLAsset" />.</summary>
+		///         <summary>Adds the specified <see cref="ModelIO.MDLObject" />, which may be a <see cref="ModelIO.MDLCamera" />, <see cref="ModelIO.MDLMesh" />, or <see cref="ModelIO.MDLLight" />, to the end of the indexed list of objects for this <see cref="ModelIO.MDLAsset" />.</summary>
 		///         <remarks>To be added.</remarks>
 		[Export ("addObject:")]
 		void AddObject (MDLObject @object);
 
 		/// <param name="object">To be added.</param>
-		///         <summary>Removes the specified <see cref="T:ModelIO.MDLObject" />.</summary>
+		///         <summary>Removes the specified <see cref="ModelIO.MDLObject" />.</summary>
 		///         <remarks>To be added.</remarks>
 		[Export ("removeObject:")]
 		void RemoveObject (MDLObject @object);
 
-		/// <summary>Gets the number of top-level <see cref="T:ModelIO.MDLObject" /> nodes that are indexed by the asset, each of which contains zero or more child <see cref="T:ModelIO.MDLObject" /> nodes.</summary>
+		/// <summary>Gets the number of top-level <see cref="ModelIO.MDLObject" /> nodes that are indexed by the asset, each of which contains zero or more child <see cref="ModelIO.MDLObject" /> nodes.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("count")]
 		nuint Count { get; }
 
 		/// <param name="index">To be added.</param>
-		/// <summary>Returns the top-level <see cref="T:ModelIO.MDLObject" /> node in this asset's indexed list of <see cref="T:ModelIO.MDLObject" /> nodes, at the specified index.</summary>
+		/// <summary>Returns the top-level <see cref="ModelIO.MDLObject" /> node in this asset's indexed list of <see cref="ModelIO.MDLObject" /> nodes, at the specified index.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[Export ("objectAtIndexedSubscript:")]
@@ -458,11 +458,11 @@ namespace ModelIO {
 		MDLLightProbe [] PlaceLightProbes (float density, MDLProbePlacement type, IMDLLightProbeIrradianceDataSource dataSource);
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:ModelIO.MDLLightProbeIrradianceDataSource" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="ModelIO.MDLLightProbeIrradianceDataSource" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:ModelIO.MDLLightProbeIrradianceDataSource" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:ModelIO.MDLLightProbeIrradianceDataSource" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:ModelIO.MDLLightProbeIrradianceDataSource_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="ModelIO.MDLLightProbeIrradianceDataSource" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="ModelIO.MDLLightProbeIrradianceDataSource" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="ModelIO.MDLLightProbeIrradianceDataSource_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	interface IMDLLightProbeIrradianceDataSource { }
 
@@ -635,7 +635,7 @@ namespace ModelIO {
 		float MaximumCircleOfConfusion { get; set; }
 
 		/// <param name="size">To be added.</param>
-		/// <summary>Creates and returns a texture, of the specified size, that is used to simulate bokeh effects by using the value of the <see cref="P:ModelIO.MDLCamera.ApertureBladeCount" /> property.</summary>
+		/// <summary>Creates and returns a texture, of the specified size, that is used to simulate bokeh effects by using the value of the <see cref="ModelIO.MDLCamera.ApertureBladeCount" /> property.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[Export ("bokehKernelWithSize:")]
@@ -832,8 +832,8 @@ namespace ModelIO {
 		///           <para>A name for the texture.</para>
 		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
 		///         </param>
-		/// <param name="textureDimensions">The dimensions of the <see cref="T:ModelIO.MDLColorSwatchTexture" /> to create, in texels.</param>
-		/// <summary>Creates a new <see cref="T:ModelIO.MDLColorSwatchTexture" /> vertical gradient from <paramref name="colorTemperature1" /> to <paramref name="colorTemperature2" />.</summary>
+		/// <param name="textureDimensions">The dimensions of the <see cref="ModelIO.MDLColorSwatchTexture" /> to create, in texels.</param>
+		/// <summary>Creates a new <see cref="ModelIO.MDLColorSwatchTexture" /> vertical gradient from <paramref name="colorTemperature1" /> to <paramref name="colorTemperature2" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Export ("initWithColorTemperatureGradientFrom:toColorTemperature:name:textureDimensions:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
@@ -846,8 +846,8 @@ namespace ModelIO {
 		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
 		///         </param>
 		/// <param name="textureDimensions">To be added.</param>
-		/// <summary>Creates a new <see cref="T:ModelIO.MDLColorSwatchTexture" /> vertical gradient from <paramref name="color1" /> to <paramref name="color2" />.</summary>
-		/// <remarks>The dimensions of the <see cref="T:ModelIO.MDLColorSwatchTexture" /> to create, in texels.</remarks>
+		/// <summary>Creates a new <see cref="ModelIO.MDLColorSwatchTexture" /> vertical gradient from <paramref name="color1" /> to <paramref name="color2" />.</summary>
+		/// <remarks>The dimensions of the <see cref="ModelIO.MDLColorSwatchTexture" /> to create, in texels.</remarks>
 		[Export ("initWithColorGradientFrom:toColor:name:textureDimensions:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		NativeHandle Constructor (CGColor color1, CGColor color2, [NullAllowed] string name, Vector2i textureDimensions);
@@ -887,7 +887,7 @@ namespace ModelIO {
 		NSString ColorSpace { get; set; }
 
 		/// <param name="sceneLight">To be added.</param>
-		///         <summary>Creates a new MDLLight instance from the specified <see cref="T:SceneKit.SCNLight" />.</summary>
+		///         <summary>Creates a new MDLLight instance from the specified <see cref="SceneKit.SCNLight" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[Static]
@@ -938,9 +938,9 @@ namespace ModelIO {
 		[NullAllowed, Export ("irradianceTexture", ArgumentSemantic.Retain)]
 		MDLTexture IrradianceTexture { get; }
 
-		/// <summary>Gets a value from <c>0</c> to <c>3</c> that represents the number of harmonics that are represented by  <see cref="P:ModelIO.MDLLightProbe.SphericalHarmonicsCoefficients" />.</summary>
+		/// <summary>Gets a value from <c>0</c> to <c>3</c> that represents the number of harmonics that are represented by  <see cref="ModelIO.MDLLightProbe.SphericalHarmonicsCoefficients" />.</summary>
 		///         <value>To be added.</value>
-		///         <remarks>There are 3 values in each coefficient. <see cref="P:ModelIO.MDLLightProbe.SphericalHarmonicsLevel" /> represent the highest index level in <see cref="P:ModelIO.MDLLightProbe.SphericalHarmonicsCoefficients" />. There are 2^(<see cref="P:ModelIO.MDLLightProbe.SphericalHarmonicsLevel" /> + 1) sets of 3-valued coefficients in the array.</remarks>
+		///         <remarks>There are 3 values in each coefficient. <see cref="ModelIO.MDLLightProbe.SphericalHarmonicsLevel" /> represent the highest index level in <see cref="ModelIO.MDLLightProbe.SphericalHarmonicsCoefficients" />. There are 2^(<see cref="ModelIO.MDLLightProbe.SphericalHarmonicsLevel" /> + 1) sets of 3-valued coefficients in the array.</remarks>
 		[Export ("sphericalHarmonicsLevel")]
 		nuint SphericalHarmonicsLevel { get; }
 
@@ -949,7 +949,7 @@ namespace ModelIO {
 		///           <para>(More documentation for this node is coming)</para>
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
 		///         </value>
-		///         <remarks>There are 3 values in each coefficient. <see cref="P:ModelIO.MDLLightProbe.SphericalHarmonicsLevel" /> represent the highest index level in <see cref="P:ModelIO.MDLLightProbe.SphericalHarmonicsCoefficients" />. There are 2^(<see cref="P:ModelIO.MDLLightProbe.SphericalHarmonicsLevel" /> + 1) sets of 3-valued coefficients in the array.</remarks>
+		///         <remarks>There are 3 values in each coefficient. <see cref="ModelIO.MDLLightProbe.SphericalHarmonicsLevel" /> represent the highest index level in <see cref="ModelIO.MDLLightProbe.SphericalHarmonicsCoefficients" />. There are 2^(<see cref="ModelIO.MDLLightProbe.SphericalHarmonicsLevel" /> + 1) sets of 3-valued coefficients in the array.</remarks>
 		[NullAllowed, Export ("sphericalHarmonicsCoefficients", ArgumentSemantic.Copy)]
 		NSData SphericalHarmonicsCoefficients { get; }
 
@@ -1436,7 +1436,7 @@ namespace ModelIO {
 		MDLMaterialPropertyConnection [] Connections { get; }
 	}
 
-	/// <summary>A collection of <see cref="T:ModelIO.MDLSubmesh" /> objects that, together, define the geometric and material properties for rendering a 3D object.</summary>
+	/// <summary>A collection of <see cref="ModelIO.MDLSubmesh" /> objects that, together, define the geometric and material properties for rendering a 3D object.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ModelIO/Reference/MDLMesh_Class/index.html">Apple documentation for <c>MDLMesh</c></related>
 	[MacCatalyst (13, 1)]
@@ -1871,26 +1871,26 @@ namespace ModelIO {
 		MDLMesh FromGeometry (SCNGeometry geometry, [NullAllowed] IMDLMeshBufferAllocator bufferAllocator);
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:ModelIO.IMDLMeshBuffer" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="ModelIO.IMDLMeshBuffer" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:ModelIO.IMDLMeshBuffer" />.</para>
-	///       <para>If you create objects that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:ModelIO.IMDLMeshBuffer" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:ModelIO.MDLMeshBuffer_Extensions" /> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="ModelIO.IMDLMeshBuffer" />.</para>
+	///       <para>If you create objects that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="ModelIO.IMDLMeshBuffer" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="ModelIO.MDLMeshBuffer_Extensions" /> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
 	///     </remarks>
-	/// <summary>Extension methods to the <see cref="T:ModelIO.IMDLMeshBuffer" /> interface to support all the methods from the <see cref="T:ModelIO.IMDLMeshBuffer" /> protocol.</summary>
+	/// <summary>Extension methods to the <see cref="ModelIO.IMDLMeshBuffer" /> interface to support all the methods from the <see cref="ModelIO.IMDLMeshBuffer" /> protocol.</summary>
 	///     <remarks>
-	///       <para>The extension methods for <see cref="T:ModelIO.IMDLMeshBuffer" /> allow developers to treat instances of the interface as having all the optional methods of the original <see cref="T:ModelIO.IMDLMeshBuffer" /> protocol.   Since the interface only contains the required members, these extension methods allow developers to call the optional members of the protocol.</para>
+	///       <para>The extension methods for <see cref="ModelIO.IMDLMeshBuffer" /> allow developers to treat instances of the interface as having all the optional methods of the original <see cref="ModelIO.IMDLMeshBuffer" /> protocol.   Since the interface only contains the required members, these extension methods allow developers to call the optional members of the protocol.</para>
 	///     </remarks>
 	interface IMDLMeshBuffer { }
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:ModelIO.IMDLMeshBuffer" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="ModelIO.IMDLMeshBuffer" />.</summary>
 	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:ModelIO.IMDLMeshBuffer" />.</para>
-	///       <para>If you create objects that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:ModelIO.IMDLMeshBuffer" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:ModelIO.MDLMeshBuffer_Extensions" /> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="ModelIO.IMDLMeshBuffer" />.</para>
+	///       <para>If you create objects that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="ModelIO.IMDLMeshBuffer" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="ModelIO.MDLMeshBuffer_Extensions" /> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
 	///     </remarks>
-	/// <summary>Extension methods to the <see cref="T:ModelIO.IMDLMeshBuffer" /> interface to support all the methods from the <see cref="T:ModelIO.IMDLMeshBuffer" /> protocol.</summary>
+	/// <summary>Extension methods to the <see cref="ModelIO.IMDLMeshBuffer" /> interface to support all the methods from the <see cref="ModelIO.IMDLMeshBuffer" /> protocol.</summary>
 	/// <remarks>
-	///       <para>The extension methods for <see cref="T:ModelIO.IMDLMeshBuffer" /> allow developers to treat instances of the interface as having all the optional methods of the original <see cref="T:ModelIO.IMDLMeshBuffer" /> protocol.   Since the interface only contains the required members, these extension methods allow developers to call the optional members of the protocol.</para>
+	///       <para>The extension methods for <see cref="ModelIO.IMDLMeshBuffer" /> allow developers to treat instances of the interface as having all the optional methods of the original <see cref="ModelIO.IMDLMeshBuffer" /> protocol.   Since the interface only contains the required members, these extension methods allow developers to call the optional members of the protocol.</para>
 	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
@@ -2012,7 +2012,7 @@ namespace ModelIO {
 		IMDLMeshBuffer CreateBuffer ([NullAllowed] IMDLMeshBufferZone zone, NSData data, MDLMeshBufferType type);
 	}
 
-	/// <summary>An implementation of <see cref="T:ModelIO.IMDLMeshBufferAllocator" /> that allocates mesh buffer data space within main memory, not GPU memory.</summary>
+	/// <summary>An implementation of <see cref="ModelIO.IMDLMeshBufferAllocator" /> that allocates mesh buffer data space within main memory, not GPU memory.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ModelIO/Reference/MDLMeshBufferDataAllocator_Class/index.html">Apple documentation for <c>MDLMeshBufferDataAllocator</c></related>
 	[MacCatalyst (13, 1)]
@@ -2021,7 +2021,7 @@ namespace ModelIO {
 
 	}
 
-	/// <summary>A default implementation of a <see cref="T:ModelIO.IMDLMeshBufferZone" />.</summary>
+	/// <summary>A default implementation of a <see cref="ModelIO.IMDLMeshBufferZone" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ModelIO/Reference/MDLMeshBufferZoneDefault_Class/index.html">Apple documentation for <c>MDLMeshBufferZoneDefault</c></related>
 	[MacCatalyst (13, 1)]
@@ -2035,7 +2035,7 @@ namespace ModelIO {
 		// IMDLMeshBufferAllocator Allocator { get; }
 	}
 
-	/// <summary>Provides storage for vertex and index data for a <see cref="T:ModelIO.MDLMesh" /> object.</summary>
+	/// <summary>Provides storage for vertex and index data for a <see cref="ModelIO.MDLMesh" /> object.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ModelIO/Reference/MDLMeshBufferData_Class/index.html">Apple documentation for <c>MDLMeshBufferData</c></related>
 	[MacCatalyst (13, 1)]
@@ -2065,26 +2065,26 @@ namespace ModelIO {
 		NSData Data { get; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:ModelIO.IMDLMeshBufferZone" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="ModelIO.IMDLMeshBufferZone" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:ModelIO.IMDLMeshBufferZone" />.</para>
-	///       <para>If you create objects that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:ModelIO.IMDLMeshBufferZone" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:ModelIO.MDLMeshBufferZone_Extensions" /> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="ModelIO.IMDLMeshBufferZone" />.</para>
+	///       <para>If you create objects that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="ModelIO.IMDLMeshBufferZone" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="ModelIO.MDLMeshBufferZone_Extensions" /> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
 	///     </remarks>
-	/// <summary>Extension methods to the <see cref="T:ModelIO.IMDLMeshBufferZone" /> interface to support all the methods from the <see cref="T:ModelIO.IMDLMeshBufferZone" /> protocol.</summary>
+	/// <summary>Extension methods to the <see cref="ModelIO.IMDLMeshBufferZone" /> interface to support all the methods from the <see cref="ModelIO.IMDLMeshBufferZone" /> protocol.</summary>
 	///     <remarks>
-	///       <para>The extension methods for <see cref="T:ModelIO.IMDLMeshBufferZone" /> allow developers to treat instances of the interface as having all the optional methods of the original <see cref="T:ModelIO.IMDLMeshBufferZone" /> protocol.   Since the interface only contains the required members, these extension methods allow developers to call the optional members of the protocol.</para>
+	///       <para>The extension methods for <see cref="ModelIO.IMDLMeshBufferZone" /> allow developers to treat instances of the interface as having all the optional methods of the original <see cref="ModelIO.IMDLMeshBufferZone" /> protocol.   Since the interface only contains the required members, these extension methods allow developers to call the optional members of the protocol.</para>
 	///     </remarks>
 	interface IMDLMeshBufferZone { }
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:ModelIO.IMDLMeshBufferZone" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="ModelIO.IMDLMeshBufferZone" />.</summary>
 	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:ModelIO.IMDLMeshBufferZone" />.</para>
-	///       <para>If you create objects that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:ModelIO.IMDLMeshBufferZone" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:ModelIO.MDLMeshBufferZone_Extensions" /> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="ModelIO.IMDLMeshBufferZone" />.</para>
+	///       <para>If you create objects that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="ModelIO.IMDLMeshBufferZone" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="ModelIO.MDLMeshBufferZone_Extensions" /> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
 	///     </remarks>
-	/// <summary>Extension methods to the <see cref="T:ModelIO.IMDLMeshBufferZone" /> interface to support all the methods from the <see cref="T:ModelIO.IMDLMeshBufferZone" /> protocol.</summary>
+	/// <summary>Extension methods to the <see cref="ModelIO.IMDLMeshBufferZone" /> interface to support all the methods from the <see cref="ModelIO.IMDLMeshBufferZone" /> protocol.</summary>
 	/// <remarks>
-	///       <para>The extension methods for <see cref="T:ModelIO.IMDLMeshBufferZone" /> allow developers to treat instances of the interface as having all the optional methods of the original <see cref="T:ModelIO.IMDLMeshBufferZone" /> protocol.   Since the interface only contains the required members, these extension methods allow developers to call the optional members of the protocol.</para>
+	///       <para>The extension methods for <see cref="ModelIO.IMDLMeshBufferZone" /> allow developers to treat instances of the interface as having all the optional methods of the original <see cref="ModelIO.IMDLMeshBufferZone" /> protocol.   Since the interface only contains the required members, these extension methods allow developers to call the optional members of the protocol.</para>
 	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
@@ -2108,7 +2108,7 @@ namespace ModelIO {
 		IMDLMeshBufferAllocator Allocator { get; }
 	}
 
-	/// <summary>Interface whose implementers define a <see cref="P:ModelIO.IMDLNamed.Name" /> property.</summary>
+	/// <summary>Interface whose implementers define a <see cref="ModelIO.IMDLNamed.Name" /> property.</summary>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface MDLNamed {
@@ -2214,7 +2214,7 @@ namespace ModelIO {
 		NativeHandle Constructor (MDLTexture sourceTexture, [NullAllowed] string name, float smoothness, float contrast);
 	}
 
-	/// <summary>Base class for objects in a <see cref="T:ModelIO.MDLAsset" />.</summary>
+	/// <summary>Base class for objects in a <see cref="ModelIO.MDLAsset" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ModelIO/Reference/MDLObject_Class/index.html">Apple documentation for <c>MDLObject</c></related>
 	[MacCatalyst (13, 1)]
@@ -2269,7 +2269,7 @@ namespace ModelIO {
 		[return: NullAllowed]
 		IMDLComponent GetComponent (Type type);
 
-		/// <summary>Gets or sets this <see cref="T:ModelIO.MDLObject" /> object's parent, or <see langword="null" /> if this is a top-level object.</summary>
+		/// <summary>Gets or sets this <see cref="ModelIO.MDLObject" /> object's parent, or <see langword="null" /> if this is a top-level object.</summary>
 		///         <value>
 		///           <para>(More documentation for this node is coming)</para>
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
@@ -2313,7 +2313,7 @@ namespace ModelIO {
 		[Export ("enumerateChildObjectsOfClass:root:usingBlock:stopPointer:")]
 		void EnumerateChildObjects (Class objectClass, MDLObject root, MDLObjectHandler handler, ref bool stop);
 
-		/// <summary>Gets or sets the possibly time-dependent transform that establishes this <see cref="T:ModelIO.MDLObject" /> object's coordinate system in relation to its parent's coordinate system.</summary>
+		/// <summary>Gets or sets the possibly time-dependent transform that establishes this <see cref="ModelIO.MDLObject" /> object's coordinate system in relation to its parent's coordinate system.</summary>
 		///         <value>
 		///           <para>(More documentation for this node is coming)</para>
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
@@ -2322,7 +2322,7 @@ namespace ModelIO {
 		[NullAllowed, Export ("transform", ArgumentSemantic.Retain)]
 		IMDLTransformComponent Transform { get; set; }
 
-		/// <summary>Gets or sets the list of the objects of type <see cref="T:ModelIO.MDLObject" /> that belong to this <see cref="T:ModelIO.MDLObject" />.</summary>
+		/// <summary>Gets or sets the list of the objects of type <see cref="ModelIO.MDLObject" /> that belong to this <see cref="ModelIO.MDLObject" />.</summary>
 		///         <value>
 		///           <para>(More documentation for this node is coming)</para>
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
@@ -2339,7 +2339,7 @@ namespace ModelIO {
 		bool Hidden { get; set; }
 
 		/// <param name="child">To be added.</param>
-		///         <summary>Adds <paramref name="child" /> to this <see cref="T:ModelIO.MDLObject" /> object's <see cref="P:ModelIO.MDLObject.Children" /> property, creating <see cref="P:ModelIO.MDLObject.Children" />, if necessary.</summary>
+		///         <summary>Adds <paramref name="child" /> to this <see cref="ModelIO.MDLObject" /> object's <see cref="ModelIO.MDLObject.Children" /> property, creating <see cref="ModelIO.MDLObject.Children" />, if necessary.</summary>
 		///         <remarks>To be added.</remarks>
 		[Export ("addChild:")]
 		void AddChild (MDLObject child);
@@ -2374,7 +2374,7 @@ namespace ModelIO {
 		MDLObject FromNode (SCNNode node, [NullAllowed] IMDLMeshBufferAllocator bufferAllocator);
 	}
 
-	/// <summary>A default implementation of the abstract <see cref="T:ModelIO.IMDLObjectContainerComponent" /> class.</summary>
+	/// <summary>A default implementation of the abstract <see cref="ModelIO.IMDLObjectContainerComponent" /> class.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ModelIO/Reference/MDLObjectContainer_Class/index.html">Apple documentation for <c>MDLObjectContainer</c></related>
 	[MacCatalyst (13, 1)]
@@ -2382,26 +2382,26 @@ namespace ModelIO {
 	interface MDLObjectContainer : MDLObjectContainerComponent {
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:ModelIO.IMDLObjectContainerComponent" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="ModelIO.IMDLObjectContainerComponent" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:ModelIO.IMDLObjectContainerComponent" />.</para>
-	///       <para>If you create objects that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:ModelIO.IMDLObjectContainerComponent" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:ModelIO.MDLObjectContainerComponent_Extensions" /> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="ModelIO.IMDLObjectContainerComponent" />.</para>
+	///       <para>If you create objects that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="ModelIO.IMDLObjectContainerComponent" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="ModelIO.MDLObjectContainerComponent_Extensions" /> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
 	///     </remarks>
-	/// <summary>Extension methods to the <see cref="T:ModelIO.IMDLObjectContainerComponent" /> interface to support all the methods from the <see cref="T:ModelIO.IMDLObjectContainerComponent" /> protocol.</summary>
+	/// <summary>Extension methods to the <see cref="ModelIO.IMDLObjectContainerComponent" /> interface to support all the methods from the <see cref="ModelIO.IMDLObjectContainerComponent" /> protocol.</summary>
 	///     <remarks>
-	///       <para>The extension methods for <see cref="T:ModelIO.IMDLObjectContainerComponent" /> allow developers to treat instances of the interface as having all the optional methods of the original <see cref="T:ModelIO.IMDLObjectContainerComponent" /> protocol.   Since the interface only contains the required members, these extension methods allow developers to call the optional members of the protocol.</para>
+	///       <para>The extension methods for <see cref="ModelIO.IMDLObjectContainerComponent" /> allow developers to treat instances of the interface as having all the optional methods of the original <see cref="ModelIO.IMDLObjectContainerComponent" /> protocol.   Since the interface only contains the required members, these extension methods allow developers to call the optional members of the protocol.</para>
 	///     </remarks>
 	interface IMDLObjectContainerComponent { }
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:ModelIO.IMDLObjectContainerComponent" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="ModelIO.IMDLObjectContainerComponent" />.</summary>
 	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:ModelIO.IMDLObjectContainerComponent" />.</para>
-	///       <para>If you create objects that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:ModelIO.IMDLObjectContainerComponent" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:ModelIO.MDLObjectContainerComponent_Extensions" /> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="ModelIO.IMDLObjectContainerComponent" />.</para>
+	///       <para>If you create objects that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="ModelIO.IMDLObjectContainerComponent" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="ModelIO.MDLObjectContainerComponent_Extensions" /> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
 	///     </remarks>
-	/// <summary>Extension methods to the <see cref="T:ModelIO.IMDLObjectContainerComponent" /> interface to support all the methods from the <see cref="T:ModelIO.IMDLObjectContainerComponent" /> protocol.</summary>
+	/// <summary>Extension methods to the <see cref="ModelIO.IMDLObjectContainerComponent" /> interface to support all the methods from the <see cref="ModelIO.IMDLObjectContainerComponent" /> protocol.</summary>
 	/// <remarks>
-	///       <para>The extension methods for <see cref="T:ModelIO.IMDLObjectContainerComponent" /> allow developers to treat instances of the interface as having all the optional methods of the original <see cref="T:ModelIO.IMDLObjectContainerComponent" /> protocol.   Since the interface only contains the required members, these extension methods allow developers to call the optional members of the protocol.</para>
+	///       <para>The extension methods for <see cref="ModelIO.IMDLObjectContainerComponent" /> allow developers to treat instances of the interface as having all the optional methods of the original <see cref="ModelIO.IMDLObjectContainerComponent" /> protocol.   Since the interface only contains the required members, these extension methods allow developers to call the optional members of the protocol.</para>
 	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
@@ -2449,19 +2449,19 @@ namespace ModelIO {
 		MDLObject [] Objects { get; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:ModelIO.IMDLComponent" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="ModelIO.IMDLComponent" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:ModelIO.IMDLComponent" />.</para>
-	///       <para>If you create objects that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:ModelIO.IMDLComponent" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Model%20IOMDLComponent_%20Extensions&amp;scope=Xamarin" title="T:ModelIO.MDLComponent_Extensions">T:ModelIO.MDLComponent_Extensions</a></format> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="ModelIO.IMDLComponent" />.</para>
+	///       <para>If you create objects that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="ModelIO.IMDLComponent" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="ModelIO.MDLComponent_Extensions" /> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	interface IMDLComponent { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:ModelIO.IMDLComponent" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="ModelIO.IMDLComponent" />.</summary>
 	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:ModelIO.IMDLComponent" />.</para>
-	///       <para>If you create objects that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:ModelIO.IMDLComponent" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Model%20IOMDLComponent_%20Extensions&amp;scope=Xamarin" title="T:ModelIO.MDLComponent_Extensions">T:ModelIO.MDLComponent_Extensions</a></format> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="ModelIO.IMDLComponent" />.</para>
+	///       <para>If you create objects that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="ModelIO.IMDLComponent" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="ModelIO.MDLComponent_Extensions" /> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
@@ -2481,13 +2481,13 @@ namespace ModelIO {
 		NativeHandle Constructor (NSUrl url);
 
 		/// <param name="sphericalHarmonicsLevel">To be added.</param>
-		/// <summary>Fills the <see cref="P:ModelIO.MDLPhotometricLight.SphericalHarmonicsCoefficients" /> property to the depth that is specified by <paramref name="sphericalHarmonicsLevel" />.</summary>
+		/// <summary>Fills the <see cref="ModelIO.MDLPhotometricLight.SphericalHarmonicsCoefficients" /> property to the depth that is specified by <paramref name="sphericalHarmonicsLevel" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Export ("generateSphericalHarmonicsFromLight:")]
 		void GenerateSphericalHarmonics (nuint sphericalHarmonicsLevel);
 
 		/// <param name="textureSize">To be added.</param>
-		/// <summary>Fills the <see cref="P:ModelIO.MDLPhotometricLight.LightCubeMap" /> property with cube map data that has sides of length <paramref name="textureSize" />.</summary>
+		/// <summary>Fills the <see cref="ModelIO.MDLPhotometricLight.LightCubeMap" /> property with cube map data that has sides of length <paramref name="textureSize" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Export ("generateCubemapFromLight:")]
 		void GenerateCubemap (nuint textureSize);
@@ -2509,9 +2509,9 @@ namespace ModelIO {
 		[NullAllowed, Export ("lightCubeMap", ArgumentSemantic.Retain)]
 		MDLTexture LightCubeMap { get; }
 
-		/// <summary>Gets a value from <c>0</c> to <c>3</c> that represents the number of harmonics that are represented by  <see cref="P:ModelIO.MDLPhotometricLight.SphericalHarmonicsCoefficients" />.</summary>
+		/// <summary>Gets a value from <c>0</c> to <c>3</c> that represents the number of harmonics that are represented by  <see cref="ModelIO.MDLPhotometricLight.SphericalHarmonicsCoefficients" />.</summary>
 		///         <value>To be added.</value>
-		///         <remarks>There are 3 values in each coefficient. <see cref="P:ModelIO.MDLPhotometricLight.SphericalHarmonicsLevel" /> represent the highest index level in <see cref="P:ModelIO.MDLPhotometricLight.SphericalHarmonicsCoefficients" />. There are 2^(<see cref="P:ModelIO.MDLPhotometricLight.SphericalHarmonicsLevel" /> + 1) sets of 3-valued coefficients in the array.</remarks>
+		///         <remarks>There are 3 values in each coefficient. <see cref="ModelIO.MDLPhotometricLight.SphericalHarmonicsLevel" /> represent the highest index level in <see cref="ModelIO.MDLPhotometricLight.SphericalHarmonicsCoefficients" />. There are 2^(<see cref="ModelIO.MDLPhotometricLight.SphericalHarmonicsLevel" /> + 1) sets of 3-valued coefficients in the array.</remarks>
 		[Export ("sphericalHarmonicsLevel")]
 		nuint SphericalHarmonicsLevel { get; }
 
@@ -2577,8 +2577,8 @@ namespace ModelIO {
 		float AttenuationEndDistance { get; set; }
 	}
 
-	/// <summary>Represents a bidirectional reflectance distribution function to use when rendering a <see cref="T:ModelIO.MDLMaterialTextureWrapMode" />.</summary>
-	///     <remarks>The properties on this object, except for <see cref="P:ModelIO.MDLPhysicallyPlausibleScatteringFunction.Version" /> have valid values only in the range [0.0, 1.0].</remarks>
+	/// <summary>Represents a bidirectional reflectance distribution function to use when rendering a <see cref="ModelIO.MDLMaterialTextureWrapMode" />.</summary>
+	///     <remarks>The properties on this object, except for <see cref="ModelIO.MDLPhysicallyPlausibleScatteringFunction.Version" /> have valid values only in the range [0.0, 1.0].</remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ModelIO/Reference/MDLPhysicallyPlausibleScatteringFunction_Class/index.html">Apple documentation for <c>MDLPhysicallyPlausibleScatteringFunction</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MDLScatteringFunction))]
@@ -3626,18 +3626,18 @@ namespace ModelIO {
 		}
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:ModelIO.IMDLTransformComponent" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="ModelIO.IMDLTransformComponent" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:ModelIO.IMDLTransformComponent" />.</para>
-	///       <para>If you create objects that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:ModelIO.IMDLTransformComponent" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:ModelIO.MDLTransformComponent_Extensions" /> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="ModelIO.IMDLTransformComponent" />.</para>
+	///       <para>If you create objects that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="ModelIO.IMDLTransformComponent" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="ModelIO.MDLTransformComponent_Extensions" /> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	interface IMDLTransformComponent { }
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:ModelIO.IMDLTransformComponent" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="ModelIO.IMDLTransformComponent" />.</summary>
 	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:ModelIO.IMDLTransformComponent" />.</para>
-	///       <para>If you create objects that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:ModelIO.IMDLTransformComponent" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:ModelIO.MDLTransformComponent_Extensions" /> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="ModelIO.IMDLTransformComponent" />.</para>
+	///       <para>If you create objects that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="ModelIO.IMDLTransformComponent" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="ModelIO.MDLTransformComponent_Extensions" /> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
@@ -3776,7 +3776,7 @@ namespace ModelIO {
 		[Export ("initWithName:format:offset:bufferIndex:")]
 		NativeHandle Constructor (string name, MDLVertexFormat format, nuint offset, nuint bufferIndex);
 
-		/// <summary>Gets or sets the name of the attribute. Application developers should use values from <see cref="T:ModelIO.MDLVertexAttributes" />.</summary>
+		/// <summary>Gets or sets the name of the attribute. Application developers should use values from <see cref="ModelIO.MDLVertexAttributes" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("name")]
@@ -3819,7 +3819,7 @@ namespace ModelIO {
 		}
 	}
 
-	/// <summary>Provides convenient access to vertex data for a specific <see cref="T:ModelIO.MDLMesh" /> object.</summary>
+	/// <summary>Provides convenient access to vertex data for a specific <see cref="ModelIO.MDLMesh" /> object.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ModelIO/Reference/MDLVertexAttributeData_Class/index.html">Apple documentation for <c>MDLVertexAttributeData</c></related>
 	[MacCatalyst (13, 1)]
@@ -3924,7 +3924,7 @@ namespace ModelIO {
 		[Export ("attributes", ArgumentSemantic.Retain)]
 		NSMutableArray<MDLVertexAttribute> Attributes { get; set; }
 
-		/// <summary>Gets or sets the vertex buffer layouts that describe the corresponding attributes that are contained in the <see cref="P:ModelIO.MDLVertexDescriptor.Attributes" /> property.</summary>
+		/// <summary>Gets or sets the vertex buffer layouts that describe the corresponding attributes that are contained in the <see cref="ModelIO.MDLVertexDescriptor.Attributes" /> property.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("layouts", ArgumentSemantic.Retain)]
@@ -4384,7 +4384,7 @@ namespace ModelIO {
 		[NullAllowed, Export ("vertexCreaseIndices", ArgumentSemantic.Retain)]
 		IMDLMeshBuffer VertexCreaseIndices { get; set; }
 
-		/// <summary>Gets or sets the sparse mesh buffer that contains vertex smoothness data that are indexed by <see cref="P:ModelIO.MDLSubmeshTopology.VertexCreaseIndices" /> property</summary>
+		/// <summary>Gets or sets the sparse mesh buffer that contains vertex smoothness data that are indexed by <see cref="ModelIO.MDLSubmeshTopology.VertexCreaseIndices" /> property</summary>
 		///         <value>
 		///           <para>(More documentation for this node is coming)</para>
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
@@ -4393,7 +4393,7 @@ namespace ModelIO {
 		[NullAllowed, Export ("vertexCreases", ArgumentSemantic.Retain)]
 		IMDLMeshBuffer VertexCreases { get; set; }
 
-		/// <summary>Gets or sets the number of values in the <see cref="P:ModelIO.MDLSubmeshTopology.VertexCreaseIndices" /> property.</summary>
+		/// <summary>Gets or sets the number of values in the <see cref="ModelIO.MDLSubmeshTopology.VertexCreaseIndices" /> property.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("vertexCreaseCount", ArgumentSemantic.Assign)]
@@ -4408,7 +4408,7 @@ namespace ModelIO {
 		[NullAllowed, Export ("edgeCreaseIndices", ArgumentSemantic.Retain)]
 		IMDLMeshBuffer EdgeCreaseIndices { get; set; }
 
-		/// <summary>Gets or sets the mesh buffer that contains edge smoothness data that correlates with the vertex pairs that are contained in <see cref="P:ModelIO.MDLSubmeshTopology.EdgeCreaseIndices" /> property.</summary>
+		/// <summary>Gets or sets the mesh buffer that contains edge smoothness data that correlates with the vertex pairs that are contained in <see cref="ModelIO.MDLSubmeshTopology.EdgeCreaseIndices" /> property.</summary>
 		///         <value>
 		///           <para>(More documentation for this node is coming)</para>
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>

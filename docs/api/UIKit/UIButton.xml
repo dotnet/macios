@@ -1,7 +1,7 @@
 <Documentation>
   <Docs DocId="T:UIKit.UIButton">
     <summary>Button control.</summary>
-    <remarks>A <see cref="T:UIKit.UIControl" /> that receives touch events. <see cref="T:UIKit.UIButton" />s are generally visible and often have a text <see cref="M:UIKit.UIButton.Title(UIKit.UIControlState)" />. </remarks>
+    <remarks>A <see cref="UIKit.UIControl" /> that receives touch events. <see cref="UIKit.UIButton" />s are generally visible and often have a text <see cref="UIKit.UIButton.Title(UIKit.UIControlState)" />. </remarks>
     <related type="recipe" href="https://developer.xamarin.com/ios/Recipes/Standard_Controls/Buttons/Create_Different_Types_of_Buttons">Create Different Types of Buttons</related>
     <related type="recipe" href="https://developer.xamarin.com/ios/Recipes/Standard_Controls/Buttons/Handle_Clicks">Handle Clicks</related>
     <related type="recipe" href="https://developer.xamarin.com/ios/Recipes/Standard_Controls/Buttons/Set_Button_Text">Set Button Text</related>
@@ -26,7 +26,7 @@ var b = new UIButton (UIButtonType.Custom) {
           <para>
 	    This constructor can not be used when subclassing as it is
 	    not a real constructor, but instead a convenience
-	    constructor that calls the static <see cref="M:UIKit.UIButton.FromType(UIKit.UIButtonType)" /> method and
+	    constructor that calls the static <see cref="UIKit.UIButton.FromType(UIKit.UIButtonType)" /> method and
 	    then wraps the result into this object.  So you should
 	    avoid subclassing UIButton and then calling into this
 	    constructor from your subclass constructor.

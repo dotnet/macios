@@ -2292,7 +2292,7 @@ public partial class Generator : IMemberGatherer {
 	bool FilterMinimumVersion (AvailabilityBaseAttribute aa)
 	{
 		// dotnet can never filter minimum versions, as they are semantically important in some cases
-		// See for details: https://github.com/xamarin/xamarin-macios/issues/10170
+		// See for details: https://github.com/dotnet/macios/issues/10170
 		return true;
 	}
 
@@ -4369,7 +4369,7 @@ public partial class Generator : IMemberGatherer {
 		// when we inline methods (e.g. from a protocol) 
 		if (minfo.type != minfo.Method.DeclaringType) {
 			// we must look if the type has an [Availability] attribute
-			// but we must not duplicate existing attributes for a platform, see https://github.com/xamarin/xamarin-macios/issues/7194
+			// but we must not duplicate existing attributes for a platform, see https://github.com/dotnet/macios/issues/7194
 			PrintPlatformAttributesNoDuplicates (minfo.type, minfo.Method);
 		} else {
 			PrintPlatformAttributes (minfo.Method);
@@ -5952,7 +5952,7 @@ public partial class Generator : IMemberGatherer {
 							sw.WriteLine ("\t\t/// // This is taken from the iOS SDK's source code for the UIView class:");
 							sw.WriteLine ("\t\t/// //");
 							sw.WriteLine ("\t\t/// [Export (\"initWithFrame:\")]");
-							sw.WriteLine ("\t\t/// public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)");
+							sw.WriteLine ("\t\t/// public UIView (CGRect frame) : base (NSObjectFlag.Empty)");
 							sw.WriteLine ("\t\t/// {");
 							sw.WriteLine ("\t\t///     // Invoke the init method now.");
 							sw.WriteLine ("\t\t///     var initWithFrame = new Selector (\"initWithFrame:\").Handle;");

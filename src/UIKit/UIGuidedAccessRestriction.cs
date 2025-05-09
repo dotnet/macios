@@ -24,26 +24,22 @@ namespace UIKit {
 	///     </remarks>
 	public static partial class UIGuidedAccessRestriction {
 #if !COREBUILD
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		[DllImport (Constants.UIKitLibrary)]
 		extern static /* UIGuidedAccessRestrictionState */ nint UIGuidedAccessRestrictionStateForIdentifier (/* NSString */ IntPtr restrictionIdentifier);
 
-#if NET
 		/// <param name="restrictionIdentifier">The identifier of the restriction.</param>
 		///         <summary>Returns the state (allow,deny) for the specified <paramref name="restrictionIdentifier" />.</summary>
 		///         <returns>
-		///           <see cref="F:UIKit.UIGuidedAccessRestrictionState.Allow" /> means that the application should allow the behavior. <see cref="F:UIKit.UIGuidedAccessRestrictionState.Deny" /> means that the application should not allow the behavior.</returns>
+		///           <see cref="UIKit.UIGuidedAccessRestrictionState.Allow" /> means that the application should allow the behavior. <see cref="UIKit.UIGuidedAccessRestrictionState.Deny" /> means that the application should not allow the behavior.</returns>
 		///         <remarks>
-		/// 	  You can enable Guided Access mode by calling <see cref="M:UIKit.UIAccessibility.RequestGuidedAccessSession(System.Boolean,System.Action{System.Boolean})" />.
+		/// 	  You can enable Guided Access mode by calling <see cref="UIKit.UIAccessibility.RequestGuidedAccessSession(System.Boolean,System.Action{System.Boolean})" />.
 		/// 	</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public static UIGuidedAccessRestrictionState GetState (string restrictionIdentifier)
 		{
 			IntPtr p = NSString.CreateNative (restrictionIdentifier);
@@ -53,40 +49,20 @@ namespace UIKit {
 		}
 
 #if IOS
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		[DllImport (Constants.UIKitLibrary)]
 		static unsafe extern void UIGuidedAccessConfigureAccessibilityFeatures (/* UIGuidedAccessAccessibilityFeature */ nuint features, byte enabled, BlockLiteral* completion);
 
-#if NET
-		// [SupportedOSPlatform ("ios")] -- Not valid for Delegates
-		// [SupportedOSPlatform ("maccatalyst")]
-		// [SupportedOSPlatform ("tvos")]
-#endif
 		/// <param name="success">To be added.</param>
 		///     <param name="error">To be added.</param>
 		///     <summary>To be added.</summary>
 		///     <remarks>To be added.</remarks>
 		public delegate void UIGuidedAccessConfigureAccessibilityFeaturesCompletionHandler (bool success, NSError error);
 
-#if !NET
-		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
-		internal delegate void DUIGuidedAccessConfigureAccessibilityFeaturesCompletionHandler (IntPtr block, byte success, IntPtr error);
-#endif
-
 		static internal class UIGuidedAccessConfigureAccessibilityFeaturesTrampoline {
-#if !NET
-			static internal readonly DUIGuidedAccessConfigureAccessibilityFeaturesCompletionHandler Handler = Invoke;
-#endif
-
-#if NET
 			[UnmanagedCallersOnlyAttribute]
-#else
-			[MonoPInvokeCallback (typeof (DUIGuidedAccessConfigureAccessibilityFeaturesCompletionHandler))]
-#endif
 			internal static unsafe void Invoke (IntPtr block, byte success, IntPtr error)
 			{
 				var descriptor = (BlockLiteral*) block;
@@ -96,7 +72,6 @@ namespace UIKit {
 			}
 		}
 
-#if NET
 		/// <param name="features">To be added.</param>
 		///         <param name="enabled">To be added.</param>
 		///         <param name="completionHandler">To be added.</param>
@@ -105,7 +80,6 @@ namespace UIKit {
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public static void ConfigureAccessibilityFeatures (UIGuidedAccessAccessibilityFeature features, bool enabled, UIGuidedAccessConfigureAccessibilityFeaturesCompletionHandler completionHandler)
 		{
@@ -113,18 +87,12 @@ namespace UIKit {
 				throw new ArgumentNullException (nameof (completionHandler));
 
 			unsafe {
-#if NET
 				delegate* unmanaged<IntPtr, byte, IntPtr, void> trampoline = &UIGuidedAccessConfigureAccessibilityFeaturesTrampoline.Invoke;
 				using var block = new BlockLiteral (trampoline, completionHandler, typeof (UIGuidedAccessConfigureAccessibilityFeaturesTrampoline), nameof (UIGuidedAccessConfigureAccessibilityFeaturesTrampoline.Invoke));
-#else
-				using var block = new BlockLiteral ();
-				block.SetupBlockUnsafe (UIGuidedAccessConfigureAccessibilityFeaturesTrampoline.Handler, completionHandler);
-#endif
 				UIGuidedAccessConfigureAccessibilityFeatures ((nuint) (ulong) features, enabled ? (byte) 1 : (byte) 0, &block);
 			}
 		}
 
-#if NET
 		/// <param name="features">To be added.</param>
 		///         <param name="enabled">To be added.</param>
 		///         <summary>To be added.</summary>
@@ -133,7 +101,6 @@ namespace UIKit {
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public static Task<(bool Success, NSError Error)> ConfigureAccessibilityFeaturesAsync (UIGuidedAccessAccessibilityFeature features, bool enabled)
 		{

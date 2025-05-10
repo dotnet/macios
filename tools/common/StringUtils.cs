@@ -21,6 +21,7 @@ namespace Xamarin.Utils {
 		static char [] mustQuoteCharacters = new char [] { ' ', '\'', ',', '$', '\\' };
 		static char [] mustQuoteCharactersProcess = { ' ', '\\', '"', '\'' };
 
+		[return: NotNullIfNotNull (nameof (array))]
 		public static string []? Quote (params string [] array)
 		{
 			if (array is null || array.Length == 0)
@@ -124,6 +125,14 @@ namespace Xamarin.Utils {
 				builder.Append (input [i]);
 			}
 			return builder.ToString ();
+		}
+
+		public static string [] ParseArguments (string quotedArguments)
+		{
+			if (!TryParseArguments (quotedArguments, out var argv, out var ex))
+				throw ex;
+
+			return argv;
 		}
 
 		public static bool TryParseArguments (string quotedArguments, [NotNullWhen (true)] out string []? argv, [NotNullWhen (false)] out Exception? ex)

@@ -344,25 +344,15 @@ namespace Xamarin.MacDev.Tasks {
 			ArchiveMSym (msymDir, archiveDir);
 		}
 
-		protected static int Ditto (string source, string destination)
+		protected int Ditto (string source, string destination)
 		{
-			var args = new CommandLineArgumentBuilder ();
-
-			args.AddQuoted (source);
-			args.AddQuoted (destination);
-
-			var psi = new ProcessStartInfo ("/usr/bin/ditto", args.ToString ()) {
-				RedirectStandardOutput = false,
-				RedirectStandardError = false,
-				UseShellExecute = false,
-				CreateNoWindow = true,
+			var args = new string [] {
+				source,
+				destination,
 			};
 
-			using (var process = Process.Start (psi)) {
-				process.WaitForExit ();
-
-				return process.ExitCode;
-			}
+			var rv = ExecuteAsync ("/usr/bin/ditto", args).Result;
+			return rv.ExitCode;
 		}
 
 		static bool IsWatchAppExtension (ITaskItem appex, PDictionary plist, out string watchAppBundleDir)

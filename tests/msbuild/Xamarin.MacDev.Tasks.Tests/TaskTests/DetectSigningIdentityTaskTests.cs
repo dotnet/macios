@@ -12,7 +12,7 @@ using Xamarin.Utils;
 namespace Xamarin.MacDev.Tasks {
 	[TestFixture]
 	public class DetectSigningIdentityTaskTests : TestBase {
-		DetectSigningIdentity CreateTask (string? tmpdir = null, ApplePlatform platform = ApplePlatform.iOS, bool simulator = true, bool isDotNet = true)
+		DetectSigningIdentity CreateTask (string? tmpdir = null, ApplePlatform platform = ApplePlatform.iOS, bool simulator = true)
 		{
 			if (string.IsNullOrEmpty (tmpdir))
 				tmpdir = Cache.CreateTemporaryDirectory ();
@@ -20,7 +20,7 @@ namespace Xamarin.MacDev.Tasks {
 			var task = CreateTask<DetectSigningIdentity> ();
 			task.AppBundleName = "AssemblyName";
 			task.SdkPlatform = PlatformFrameworkHelper.GetSdkPlatform (platform, simulator);
-			task.TargetFrameworkMoniker = TargetFramework.GetTargetFramework (platform, isDotNet).ToString ();
+			task.TargetFrameworkMoniker = TargetFramework.GetTargetFramework (platform).ToString ();
 
 			return task;
 		}

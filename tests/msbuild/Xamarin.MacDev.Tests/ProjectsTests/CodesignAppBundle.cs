@@ -26,12 +26,13 @@ namespace Xamarin.MacDev.Tasks {
 		static bool IsCodesigned (string path)
 		{
 			var psi = new ProcessStartInfo ("/usr/bin/codesign");
-			var args = new CommandLineArgumentBuilder ();
+			var args = new List<string> ();
 
 			args.Add ("--verify");
-			args.AddQuoted (path);
+			args.Add (path);
 
-			psi.Arguments = args.ToString ();
+			foreach (var arg in args)
+				psi.ArgumentList.Add (arg);
 
 			var process = Process.Start (psi);
 			process.WaitForExit ();

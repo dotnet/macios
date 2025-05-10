@@ -147,13 +147,11 @@ namespace UIKit {
 #endif
 	}
 
-#if NET
 	/// <summary>A range of single-precision floating point numbers.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct UIFloatRange : IEquatable<UIFloatRange> {
 
@@ -223,13 +221,8 @@ namespace UIKit {
 	}
 
 #if IOS || __MACCATALYST__
-#if NET
 	[SupportedOSPlatform ("ios15.0")]
 	[SupportedOSPlatform ("maccatalyst")]
-#else
-	[Introduced (PlatformName.iOS, 15,0)]
-	[Introduced (PlatformName.MacCatalyst, 15,0)]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct UIPointerAccessoryPosition {
 		public nfloat Offset;

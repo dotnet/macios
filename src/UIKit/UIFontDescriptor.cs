@@ -348,7 +348,6 @@ namespace UIKit {
 			}
 		}
 
-#if NET
 		/// <summary>Gets the <see cref="UIKit.UIFontDescriptor" /> describing the preferred font for titles ('Title 1').</summary>
 		///         <value>To be added.</value>
 		///         <remarks>
@@ -358,14 +357,12 @@ namespace UIKit {
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public static UIFontDescriptor PreferredTitle1 {
 			get {
 				return GetPreferredDescriptorForTextStyle (UIFontTextStyle.Title1);
 			}
 		}
 
-#if NET
 		/// <summary>Gets the <see cref="UIKit.UIFontDescriptor" /> describing the preferred font for level 2 titles ('Title 2').</summary>
 		///         <value>To be added.</value>
 		///         <remarks>
@@ -375,14 +372,12 @@ namespace UIKit {
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public static UIFontDescriptor PreferredTitle2 {
 			get {
 				return GetPreferredDescriptorForTextStyle (UIFontTextStyle.Title2);
 			}
 		}
 
-#if NET
 		/// <summary>Gets the <see cref="UIKit.UIFontDescriptor" /> describing the preferred font for level 3 titles ('Title 3').</summary>
 		///         <value>To be added.</value>
 		///         <remarks>
@@ -392,14 +387,12 @@ namespace UIKit {
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public static UIFontDescriptor PreferredTitle3 {
 			get {
 				return GetPreferredDescriptorForTextStyle (UIFontTextStyle.Title3);
 			}
 		}
 
-#if NET
 		/// <summary>Gets the <see cref="UIKit.UIFontDescriptor" /> describing the preferred font for callouts.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>
@@ -409,7 +402,6 @@ namespace UIKit {
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public static UIFontDescriptor PreferredCallout {
 			get {
 				return GetPreferredDescriptorForTextStyle (UIFontTextStyle.Callout);

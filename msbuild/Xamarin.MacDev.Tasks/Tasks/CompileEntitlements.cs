@@ -608,6 +608,21 @@ namespace Xamarin.MacDev.Tasks {
 						Log.LogMessage (MessageImportance.Low, $"The app requests the entitlement '{key}' with the value '{requestedApsEnvironment}', which the provisioning profile '{provisioningProfileName}' grants.");
 					}
 					break;
+				case "com.apple.security.personal-information.calendars":
+				case "com.apple.security.personal-information.location":
+					// desktop only entitlements
+					switch (Platform) {
+					case ApplePlatform.iOS:
+					case ApplePlatform.TVOS:
+						LogEntitlementValidationFailure (onlyWarn, 7151, MSBStrings.E7151, key, Platform.AsString ()); // The app requests the entitlement '{0}', but this entitlement is not allowed on the current platform ({1}). It's only allowed on macOS and Mac Catalyst.
+						break;
+					case ApplePlatform.MacOSX:
+					case ApplePlatform.MacCatalyst:
+						break;
+					default:
+						throw new InvalidOperationException (string.Format (MSBStrings.InvalidPlatform, Platform));
+					}
+					break;
 				default:
 					Log.LogMessage (MessageImportance.Low, $"The app requests entitlement '{key}', but no validation has been implemented for this entitlement. Assuming everything is OK.");
 					break;

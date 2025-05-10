@@ -61,7 +61,7 @@ public class BaseGeneratorTestClass {
 		var references = Directory.GetFiles (Configuration.DotNetBclDir, "*.dll")
 			.Select (assembly => MetadataReference.CreateFromFile (assembly)).ToList ();
 		// get the dll for the current platform
-		var targetFramework = TargetFramework.GetTargetFramework (platform, isDotNet: true);
+		var targetFramework = TargetFramework.GetTargetFramework (platform);
 		// get the platform definitions
 		var preprocessorSymbols = GetPlatformDefines (targetFramework);
 		var platformDll = Configuration.GetBaseLibrary (targetFramework);

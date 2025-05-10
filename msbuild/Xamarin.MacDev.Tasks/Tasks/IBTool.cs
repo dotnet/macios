@@ -52,22 +52,25 @@ namespace Xamarin.MacDev.Tasks {
 			get { return AppleSdkSettings.XcodeVersion.Major > 7 || (AppleSdkSettings.XcodeVersion.Major == 7 && AppleSdkSettings.XcodeVersion.Minor >= 2); }
 		}
 
-		protected override void AppendCommandLineArguments (IDictionary<string, string?> environment, CommandLineArgumentBuilder args, ITaskItem [] items)
+		protected override void AppendCommandLineArguments (IDictionary<string, string?> environment, List<string> args, ITaskItem [] items)
 		{
 			environment.Add ("IBSC_MINIMUM_COMPATIBILITY_VERSION", MinimumOSVersion);
 			environment.Add ("IBC_MINIMUM_COMPATIBILITY_VERSION", MinimumOSVersion);
 
-			args.Add ("--minimum-deployment-target", MinimumOSVersion);
+			args.Add ("--minimum-deployment-target");
+			args.Add (MinimumOSVersion);
 
-			foreach (var targetDevice in GetTargetDevices ())
-				args.Add ("--target-device", targetDevice);
+			foreach (var targetDevice in GetTargetDevices ()) {
+				args.Add ("--target-device");
+				args.Add (targetDevice);
+			}
 
 			if (AppleSdkSettings.XcodeVersion.Major >= 6 && AutoActivateCustomFonts)
 				args.Add ("--auto-activate-custom-fonts");
 
 			if (!string.IsNullOrEmpty (SdkRoot)) {
 				args.Add ("--sdk");
-				args.AddQuoted (SdkRoot);
+				args.Add (SdkRoot);
 			}
 		}
 

@@ -21,15 +21,7 @@ using Foundation;
 namespace UIKit {
 	public partial class UIActionSheet : IEnumerable {
 
-#if !NET
-		[Obsolete ("Use overload with a IUIActionSheetDelegate parameter")]
-		public UIActionSheet (string title, UIActionSheetDelegate del, string cancelTitle, string destroy, params string [] other)
-			: this (title, del as IUIActionSheetDelegate, cancelTitle, destroy, other)
-		{
-		}
-#endif
-
-		/// <include file="../../docs/api/UIKit/UIActionSheet.xml" path="/Documentation/Docs[@DocId='M:UIKit.UIActionSheet.#ctor(System.String,UIKit.IUIActionSheetDelegate,System.String,System.String,System.String[])']/*" />
+	/// <include file="../../docs/api/UIKit/UIActionSheet.xml" path="/Documentation/Docs[@DocId='M:UIKit.UIActionSheet.#ctor(System.String,UIKit.IUIActionSheetDelegate,System.String,System.String,System.String[])']/*" />
 	public UIActionSheet (string title, IUIActionSheetDelegate del, string cancelTitle, string destroy, params string [] other)
 			: this (title, del, null, null, (string) null)
 		{
@@ -50,14 +42,6 @@ namespace UIKit {
 			if (cancelTitle is not null)
 				CancelButtonIndex = AddButton (cancelTitle);
 		}
-
-#if !NET
-		[Obsolete ("Use overload with a IUIActionSheetDelegate parameter")]
-		public UIActionSheet (string title, UIActionSheetDelegate del)
-			: this (title, del as IUIActionSheetDelegate, null, null, (string) null)
-		{
-		}
-#endif
 
 		/// <summary>Initialize a <see cref="UIActionSheet" /> with a title and a delegate that will handle taps.</summary>
 		/// <param name="title">A title to be displayed in the title area of the action sheet.</param>

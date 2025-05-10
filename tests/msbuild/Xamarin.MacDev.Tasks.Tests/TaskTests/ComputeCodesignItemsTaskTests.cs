@@ -19,14 +19,11 @@ namespace Xamarin.MacDev.Tasks {
 	public class ComputeCodesignItemsTaskTests : TestBase {
 
 		[Test]
-		[TestCase (ApplePlatform.iOS, true)]
-		[TestCase (ApplePlatform.iOS, false)]
-		[TestCase (ApplePlatform.TVOS, true)]
-		[TestCase (ApplePlatform.TVOS, false)]
-		[TestCase (ApplePlatform.MacOSX, true)]
-		[TestCase (ApplePlatform.MacOSX, false)]
-		[TestCase (ApplePlatform.MacCatalyst, true)]
-		public void Compute (ApplePlatform platform, bool isDotNet)
+		[TestCase (ApplePlatform.iOS)]
+		[TestCase (ApplePlatform.TVOS)]
+		[TestCase (ApplePlatform.MacOSX)]
+		[TestCase (ApplePlatform.MacCatalyst)]
+		public void Compute (ApplePlatform platform)
 		{
 			var tmpdir = Cache.CreateTemporaryDirectory ();
 
@@ -345,7 +342,7 @@ namespace Xamarin.MacDev.Tasks {
 				task.CodesignStampPath = "codesign-stamp-path/";
 				task.GenerateDSymItems = generateDSymItems.ToArray ();
 				task.NativeStripItems = nativeStripItems.ToArray ();
-				task.TargetFrameworkMoniker = TargetFramework.GetTargetFramework (platform, isDotNet).ToString ();
+				task.TargetFrameworkMoniker = TargetFramework.GetTargetFramework (platform).ToString ();
 				Assert.IsTrue (task.Execute (), "Execute");
 				Assert.AreEqual (0, Engine.Logger.WarningsEvents.Count, "Warning Count");
 
@@ -356,14 +353,11 @@ namespace Xamarin.MacDev.Tasks {
 		}
 
 		[Test]
-		[TestCase (ApplePlatform.iOS, true)]
-		[TestCase (ApplePlatform.iOS, false)]
-		[TestCase (ApplePlatform.TVOS, true)]
-		[TestCase (ApplePlatform.TVOS, false)]
-		[TestCase (ApplePlatform.MacOSX, true)]
-		[TestCase (ApplePlatform.MacOSX, false)]
-		[TestCase (ApplePlatform.MacCatalyst, true)]
-		public void Duplicated (ApplePlatform platform, bool isDotNet)
+		[TestCase (ApplePlatform.iOS)]
+		[TestCase (ApplePlatform.TVOS)]
+		[TestCase (ApplePlatform.MacOSX)]
+		[TestCase (ApplePlatform.MacCatalyst)]
+		public void Duplicated (ApplePlatform platform)
 		{
 			var tmpdir = Cache.CreateTemporaryDirectory ();
 
@@ -411,7 +405,7 @@ namespace Xamarin.MacDev.Tasks {
 				task.CodesignBundle = codesignBundle.ToArray ();
 				task.CodesignItems = codesignItems.ToArray ();
 				task.CodesignStampPath = "codesign-stamp-path/";
-				task.TargetFrameworkMoniker = TargetFramework.GetTargetFramework (platform, isDotNet).ToString ();
+				task.TargetFrameworkMoniker = TargetFramework.GetTargetFramework (platform).ToString ();
 				Assert.IsTrue (task.Execute (), "Execute");
 				Assert.AreEqual (0, Engine.Logger.WarningsEvents.Count, "Warning Count");
 
@@ -422,14 +416,11 @@ namespace Xamarin.MacDev.Tasks {
 		}
 
 		[Test]
-		[TestCase (ApplePlatform.iOS, true)]
-		[TestCase (ApplePlatform.iOS, false)]
-		[TestCase (ApplePlatform.TVOS, true)]
-		[TestCase (ApplePlatform.TVOS, false)]
-		[TestCase (ApplePlatform.MacOSX, true)]
-		[TestCase (ApplePlatform.MacOSX, false)]
-		[TestCase (ApplePlatform.MacCatalyst, true)]
-		public void DuplicatedWithDifferentMetadata (ApplePlatform platform, bool isDotNet)
+		[TestCase (ApplePlatform.iOS)]
+		[TestCase (ApplePlatform.TVOS)]
+		[TestCase (ApplePlatform.MacOSX)]
+		[TestCase (ApplePlatform.MacCatalyst)]
+		public void DuplicatedWithDifferentMetadata (ApplePlatform platform)
 		{
 			var tmpdir = Cache.CreateTemporaryDirectory ();
 
@@ -488,7 +479,7 @@ namespace Xamarin.MacDev.Tasks {
 				task.CodesignBundle = codesignBundle.ToArray ();
 				task.CodesignItems = codesignItems.ToArray ();
 				task.CodesignStampPath = "codesign-stamp-path/";
-				task.TargetFrameworkMoniker = TargetFramework.GetTargetFramework (platform, isDotNet).ToString ();
+				task.TargetFrameworkMoniker = TargetFramework.GetTargetFramework (platform).ToString ();
 				Assert.IsTrue (task.Execute (), "Execute");
 				Assert.AreEqual (3, Engine.Logger.WarningsEvents.Count, "Warning Count");
 				Assert.AreEqual ("Code signing has been requested multiple times for 'Bundle.app/Contents/MonoBundle/createdump', with different metadata. The metadata 'OnlyIn1=true' has been set for one item, but not the other.", Engine.Logger.WarningsEvents [0].Message, "Message #0");

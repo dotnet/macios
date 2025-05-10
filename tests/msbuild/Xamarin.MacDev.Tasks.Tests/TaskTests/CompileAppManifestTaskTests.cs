@@ -25,7 +25,7 @@ namespace Xamarin.MacDev.Tasks {
 			task.MinSupportedOSPlatformVersion = "10.0";
 			task.SupportedOSPlatformVersion = "15.0";
 			task.SdkVersion = task.DefaultSdkVersion ?? string.Empty;
-			task.TargetFrameworkMoniker = TargetFramework.GetTargetFramework (platform, true).ToString ();
+			task.TargetFrameworkMoniker = TargetFramework.GetTargetFramework (platform).ToString ();
 
 			return task;
 		}

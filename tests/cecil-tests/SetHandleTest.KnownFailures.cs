@@ -13,7 +13,6 @@ namespace Cecil.Tests {
 			"CoreFoundation.DispatchBlock::Retain()",
 			"CoreFoundation.OSLog::.ctor(System.String,System.String)",
 			"CoreGraphics.CGPattern::.ctor(CoreGraphics.CGRect,CoreGraphics.CGAffineTransform,System.Runtime.InteropServices.NFloat,System.Runtime.InteropServices.NFloat,CoreGraphics.CGPatternTiling,System.Boolean,CoreGraphics.CGPattern/DrawPattern)",
-			"Foundation.NSHttpCookie::CreateCookie(System.String,System.String,System.String,System.String,System.String,System.String,System.Nullable`1<System.Boolean>,System.Nullable`1<System.DateTime>,System.Nullable`1<System.Int32>,System.String,System.Nullable`1<System.Boolean>,System.Nullable`1<System.Int32>)",
 			"Foundation.NSKeyedUnarchiver::.ctor(Foundation.NSData)",
 			"Foundation.NSUuid::.ctor(System.Byte[])",
 			"GameplayKit.GKPath::.ctor(System.Numerics.Vector2[],System.Single,System.Boolean)",
@@ -23,8 +22,6 @@ namespace Cecil.Tests {
 			"ScreenCaptureKit.SCContentFilter::.ctor(ScreenCaptureKit.SCDisplay,ScreenCaptureKit.SCRunningApplication[],ScreenCaptureKit.SCWindow[],ScreenCaptureKit.SCContentFilterOption)",
 			"ScreenCaptureKit.SCContentFilter::.ctor(ScreenCaptureKit.SCDisplay,ScreenCaptureKit.SCWindow[],ScreenCaptureKit.SCContentFilterOption)",
 			"Security.SecTrust2::.ctor(Security.SecTrust)",
-			"SpriteKit.SKVideoNode::.ctor(Foundation.NSUrl)",
-			"SpriteKit.SKVideoNode::.ctor(System.String)",
 		};
 	}
 }

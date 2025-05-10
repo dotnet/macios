@@ -106,7 +106,7 @@ class EnumEmitter : ICodeEmitter {
 		// get value from a handle, this is a helper method used in the BindAs bindings.
 		classBlock.WriteDocumentation (Documentation.SmartEnum.GetValueHandle (symbolName));
 		using (var getValueFromHandle =
-			   classBlock.CreateBlock ($"public static {binding.Name} GetValue (NativeHandle handle)",
+			   classBlock.CreateBlock ($"public static {binding.Name} GetValue ({NativeHandle} handle)",
 				   true)) {
 			getValueFromHandle.WriteRaw (
 @"using var str = Runtime.GetNSObject<NSString> (handle)!;
@@ -119,7 +119,7 @@ return GetValue (str);
 		// does have methods that return null for enums)
 		classBlock.WriteDocumentation (Documentation.SmartEnum.GetValueHandle (symbolName));
 		using (var getValueFromHandle =
-			   classBlock.CreateBlock ($"public static {binding.Name}? GetNullableValue (NativeHandle handle)",
+			   classBlock.CreateBlock ($"public static {binding.Name}? GetNullableValue ({NativeHandle} handle)",
 				   true)) {
 			getValueFromHandle.WriteRaw (
 @"using var str = Runtime.GetNSObject<NSString> (handle);

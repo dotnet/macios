@@ -22,14 +22,14 @@ public partial class TrampolinePropertyTests
 {
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selCompletionHandlerX = "completionHandler";
-	static readonly NativeHandle selCompletionHandlerXHandle = global::ObjCRuntime.Selector.GetHandle ("completionHandler");
+	static readonly global::ObjCRuntime.NativeHandle selCompletionHandlerXHandle = global::ObjCRuntime.Selector.GetHandle ("completionHandler");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selSetCompletionHandler_X = "setCompletionHandler:";
-	static readonly NativeHandle selSetCompletionHandler_XHandle = global::ObjCRuntime.Selector.GetHandle ("setCompletionHandler:");
+	static readonly global::ObjCRuntime.NativeHandle selSetCompletionHandler_XHandle = global::ObjCRuntime.Selector.GetHandle ("setCompletionHandler:");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	static readonly NativeHandle class_ptr = Class.GetHandle ("TrampolinePropertyTests");
+	static readonly global::ObjCRuntime.NativeHandle class_ptr = Class.GetHandle ("TrampolinePropertyTests");
 
 	/// <summary>The Objective-C class handle for this class.</summary>
 	/// <value>The pointer to the Objective-C class.</value>
@@ -38,7 +38,7 @@ public partial class TrampolinePropertyTests
 	///     This value contains the pointer to the Objective-C class.
 	///     It is similar to calling the managed <see cref=\"ObjCRuntime.Class.GetHandle(string)\" /> or the native <see href=\"https://developer.apple.com/documentation/objectivec/1418952-objc_getclass\">objc_getClass</see> method with the type name.
 	/// </remarks>
-	public override NativeHandle ClassHandle => class_ptr;
+	public override global::ObjCRuntime.NativeHandle ClassHandle => class_ptr;
 
 	/// <summary>Creates a new <see cref="TrampolinePropertyTests" /> with default values.</summary>
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
@@ -111,7 +111,7 @@ public partial class TrampolinePropertyTests
 	/// </remarks>
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable (EditorBrowsableState.Advanced)]
-	protected internal TrampolinePropertyTests (NativeHandle handle) : base (handle) {}
+	protected internal TrampolinePropertyTests (global::ObjCRuntime.NativeHandle handle) : base (handle) {}
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public partial System.Action CompletionHandler

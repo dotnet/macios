@@ -27,19 +27,11 @@ namespace UIKit {
 			var nsa_items = NSArray.FromNSObjects (items);
 			var nsa_itemsHandle = nsa_items.Handle;
 
-#if NET
 			if (IsDirectBinding) {
 				ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle_bool (this.Handle, Selector.GetHandle ("setItems:animated:"), nsa_itemsHandle, animated ? (byte) 1 : (byte) 0);
 			} else {
 				ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle_bool (this.SuperHandle, Selector.GetHandle ("setItems:animated:"), nsa_itemsHandle, animated ? (byte) 1 : (byte) 0);
 			}
-#else
-			if (IsDirectBinding) {
-				ObjCRuntime.Messaging.void_objc_msgSend_IntPtr_bool (this.Handle, Selector.GetHandle ("setItems:animated:"), nsa_itemsHandle, animated ? (byte) 1 : (byte) 0);
-			} else {
-				ObjCRuntime.Messaging.void_objc_msgSendSuper_IntPtr_bool (this.SuperHandle, Selector.GetHandle ("setItems:animated:"), nsa_itemsHandle, animated ? (byte) 1 : (byte) 0);
-			}
-#endif
 			nsa_items.Dispose ();
 		}
 	}

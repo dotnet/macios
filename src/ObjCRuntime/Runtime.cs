@@ -756,7 +756,7 @@ namespace ObjCRuntime {
 			return TryGetNSObject (ptr, evenInFinalizerQueue: false) is not null;
 		}
 
-		internal static sbyte HasNSObject (IntPtr ptr)
+		internal static nint HasNSObject (IntPtr ptr)
 		{
 			var rv = TryGetNSObject (ptr, evenInFinalizerQueue: false) is not null;
 			return (sbyte) (rv ? 1 : 0);
@@ -837,7 +837,7 @@ namespace ObjCRuntime {
 			((IDisposable?) GetGCHandleTarget (gchandle))?.Dispose ();
 		}
 
-		static sbyte IsParameterTransient (IntPtr info, int parameter)
+		static nint IsParameterTransient (IntPtr info, int parameter)
 		{
 			var minfo = GetGCHandleTarget (info) as MethodInfo;
 			if (minfo is null)
@@ -847,10 +847,10 @@ namespace ObjCRuntime {
 			if (parameters.Length <= parameter)
 				return 0;
 			var rv = parameters [parameter].IsDefined (typeof (TransientAttribute), false);
-			return (sbyte) (rv ? 1 : 0);
+			return rv ? 1 : 0;
 		}
 
-		static sbyte IsParameterOut (IntPtr info, int parameter)
+		static nint IsParameterOut (IntPtr info, int parameter)
 		{
 			var minfo = GetGCHandleTarget (info) as MethodInfo;
 			if (minfo is null)
@@ -860,7 +860,7 @@ namespace ObjCRuntime {
 			if (parameters.Length <= parameter)
 				return 0;
 			var rv = parameters [parameter].IsOut;
-			return (sbyte) (rv ? 1 : 0);
+			return rv ? 1 : 0;
 		}
 
 		unsafe static void GetMethodAndObjectForSelector (IntPtr klass, IntPtr sel, sbyte is_static, IntPtr obj, IntPtr* mthisPtr, IntPtr desc)
@@ -2331,12 +2331,12 @@ namespace ObjCRuntime {
 
 		// Check if the input is an NSObject, and in that case retain it (and return true)
 		// This way the caller knows if it can call 'autorelease' on our input.
-		static sbyte AttemptRetainNSObject (IntPtr gchandle)
+		static nint AttemptRetainNSObject (IntPtr gchandle)
 		{
 			var obj = GetGCHandleTarget (gchandle) as NSObject;
 			obj?.DangerousRetain ();
 			var rv = obj is not null;
-			return (sbyte) (rv ? 1 : 0);
+			return rv ? 1 : 0;
 		}
 #endif // !COREBUILD
 
@@ -2636,13 +2636,13 @@ namespace ObjCRuntime {
 		[DllImport ("__Internal")]
 		static extern IntPtr xamarin_get_original_working_directory_path ();
 
-		static sbyte InvokeConformsToProtocol (IntPtr handle, IntPtr protocol)
+		static nint InvokeConformsToProtocol (IntPtr handle, IntPtr protocol)
 		{
 			var obj = Runtime.GetNSObject (handle);
 			if (obj is null)
 				return 0;
 			var rv = obj.ConformsToProtocol (protocol);
-			return (sbyte) (rv ? 1 : 0);
+			return rv ? 1 : 0;
 		}
 
 		static IntPtr LookupUnmanagedFunction (IntPtr assembly, IntPtr symbol, int id)

@@ -123,26 +123,6 @@ namespace AppKit {
 				_AppendPathWithPoints ((IntPtr) ptr, points.Length);
 		}
 
-#if !NET
-		[Obsolete ("Use 'Append (CGPoint[])' instead.")]
-		public unsafe void AppendPathWithPoints (CGPoint [] points)
-		{
-			Append (points);
-		}
-
-		[Obsolete ("Use 'Append (uint[], NSFont)' instead.")]
-		public unsafe void AppendPathWithGlyphs (uint [] glyphs, NSFont font)
-		{
-			if (glyphs is null)
-				throw new ArgumentNullException ("glyphs");
-			if (glyphs.Length < 1)
-				throw new ArgumentException ("glyphs array is empty");
-
-			fixed (uint* ptr = glyphs)
-				_AppendPathWithGlyphs ((IntPtr) ptr, glyphs.Length, font);
-		}
-#endif
-
 		/// <param name="glyphs">To be added.</param>
 		///         <param name="font">To be added.</param>
 		///         <summary>To be added.</summary>

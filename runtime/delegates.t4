@@ -123,7 +123,7 @@
 			OnlyDynamicUsage = true,
 		},
 
-		new XDelegate ("int8_t", "sbyte", "xamarin_has_nsobject",
+		new XDelegate ("NSInteger", "nint", "xamarin_has_nsobject",
 			"id", "IntPtr", "obj"
 		) {
 			WrappedManagedFunction = "HasNSObject",
@@ -208,7 +208,7 @@
 			OnlyDynamicUsage = false,
 		},
 
-		new XDelegate ("int8_t", "sbyte", "xamarin_is_parameter_transient",
+		new XDelegate ("NSInteger", "nint", "xamarin_is_parameter_transient",
 			"GCHandle->MonoReflectionMethod *", "IntPtr", "method",
 			"int", "int", "parameter"
 		) {
@@ -216,7 +216,7 @@
 			OnlyDynamicUsage = true,
 		},
 
-		new XDelegate ("int8_t", "sbyte", "xamarin_is_parameter_out",
+		new XDelegate ("NSInteger", "nint", "xamarin_is_parameter_out",
 			"GCHandle->MonoReflectionMethod *", "IntPtr", "method",
 			"int", "int", "parameter"
 		) {
@@ -656,14 +656,14 @@
 			OnlyDynamicUsage = false,
 		},
 
-		new XDelegate ("int8_t", "sbyte", "xamarin_attempt_retain_nsobject",
+		new XDelegate ("NSInteger", "nint", "xamarin_attempt_retain_nsobject",
 			"GCHandle->MonoObject *", "IntPtr", "obj"
 		) {
 			WrappedManagedFunction = "AttemptRetainNSObject",
 			OnlyDynamicUsage = false,
 		},
 
-		new XDelegate ("int8_t", "sbyte", "xamarin_invoke_conforms_to_protocol",
+		new XDelegate ("NSInteger", "nint", "xamarin_invoke_conforms_to_protocol",
 			"id", "IntPtr", "obj",
 			"Protocol *", "IntPtr", "protocol"
 		) {

@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
@@ -54,5 +55,18 @@ static partial class BindingSyntaxFactory {
 
 		};
 #pragma warning restore format
+	}
+
+	/// <summary>
+	/// Returns the expression for the creation of the NativeInvocationClass for a given trampoline.
+	/// </summary>
+	/// <param name="trampolineName">The name of the trampoline whose class we want to create.</param>
+	/// <param name="arguments">The arguments for pass to the create method.</param>
+	/// <returns>The expression needed to create the native invocation class.</returns>
+	internal static ExpressionSyntax CreateTrampolineNativeInvocationClass (string trampolineName, ImmutableArray<ArgumentSyntax> arguments)
+	{
+		var className = Nomenclator.GetTrampolineClassName (trampolineName, Nomenclator.TrampolineClassType.NativeInvocationClass);
+		var staticClassName = IdentifierName (className);
+		return StaticInvocationExpression (staticClassName, "Create", arguments, suppressNullableWarning: true);
 	}
 }

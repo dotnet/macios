@@ -90,7 +90,7 @@ xamarin_invoke_trampoline (enum TrampolineType type, id self, SEL sel, iterator_
 	MonoType *sig_ret_type = NULL;
 
 	if (is_ctor) {
-		bool has_nsobject = xamarin_has_nsobject (self, &exception_gchandle);
+		bool has_nsobject = xamarin_has_nsobject (self, &exception_gchandle) != 0;
 		if (exception_gchandle != INVALID_GCHANDLE) {
 			xamarin_process_managed_exception_gchandle (exception_gchandle);
 			return; // we shouldn't get here.
@@ -292,7 +292,7 @@ xamarin_invoke_trampoline (enum TrampolineType type, id self, SEL sel, iterator_
 								goto exception_handling;
 							}
 							MonoReflectionMethod *rmethod = mono_method_get_object (domain, method, NULL);
-							bool is_parameter_out = xamarin_is_parameter_out (rmethod, (int) i, &exception_gchandle);
+							bool is_parameter_out = xamarin_is_parameter_out (rmethod, (int) i, &exception_gchandle) != 0;
 							ADD_TO_MONOOBJECT_RELEASE_LIST (rmethod);
 							if (exception_gchandle != INVALID_GCHANDLE)
 								goto exception_handling;
@@ -498,7 +498,7 @@ xamarin_invoke_trampoline (enum TrampolineType type, id self, SEL sel, iterator_
 
 							if (created && obj) {
 								MonoReflectionMethod *rmethod = mono_method_get_object (domain, method, NULL);
-								bool is_transient = xamarin_is_parameter_transient (rmethod, (int32_t) i, &exception_gchandle);
+								bool is_transient = xamarin_is_parameter_transient (rmethod, (int32_t) i, &exception_gchandle) != 0;
 								ADD_TO_MONOOBJECT_RELEASE_LIST (rmethod);
 								if (exception_gchandle != INVALID_GCHANDLE)
 									goto exception_handling;

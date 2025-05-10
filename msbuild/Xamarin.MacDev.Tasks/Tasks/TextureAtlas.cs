@@ -28,10 +28,10 @@ namespace Xamarin.MacDev.Tasks {
 			get { return "TextureAtlas"; }
 		}
 
-		protected override void AppendCommandLineArguments (IDictionary<string, string> environment, CommandLineBuilder args, ITaskItem input, ITaskItem output)
+		protected override void AppendCommandLineArguments (IDictionary<string, string?> environment, List<string> args, ITaskItem input, ITaskItem output)
 		{
-			args.AppendFileNameIfNotNull (input.GetMetadata ("FullPath"));
-			args.AppendFileNameIfNotNull (Path.GetDirectoryName (output.GetMetadata ("FullPath")));
+			args.Add (input.GetMetadata ("FullPath"));
+			args.Add (Path.GetDirectoryName (output.GetMetadata ("FullPath")));
 		}
 
 		protected override string GetBundleRelativeOutputPath (ITaskItem input)

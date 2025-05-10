@@ -10,6 +10,7 @@ using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 
 using Xamarin.MacDev;
+using Xamarin.Utils;
 
 #nullable enable
 
@@ -43,7 +44,7 @@ namespace Xamarin.MacDev.Tasks {
 				task.ProvisioningProfile = Path.Combine (Path.GetDirectoryName (GetType ().Assembly.Location)!, "Resources", mobileProvision);
 			task.SdkPlatform = "iPhoneOS";
 			task.SdkVersion = "6.1";
-			task.TargetFrameworkMoniker = "Xamarin.iOS,v1.0";
+			task.TargetFrameworkMoniker = TargetFramework.DotNet_iOS_String;
 
 			compiledEntitlements = task.CompiledEntitlements.ItemSpec;
 			archivedEntitlements = Path.Combine (AppBundlePath, "archived-expanded-entitlements.xcent");
@@ -388,6 +389,77 @@ namespace Xamarin.MacDev.Tasks {
 			Assert.AreEqual (0, Engine.Logger.WarningsEvents.Count, "WarningCount");
 		}
 
+		[Test]
+		[TestCase ("com.apple.security.personal-information.location", EntitlementsMode.InCustomEntitlements, ApplePlatform.iOS)]
+		[TestCase ("com.apple.security.personal-information.location", EntitlementsMode.InFile, ApplePlatform.iOS)]
+		[TestCase ("com.apple.security.personal-information.calendars", EntitlementsMode.InCustomEntitlements, ApplePlatform.iOS)]
+		[TestCase ("com.apple.security.personal-information.calendars", EntitlementsMode.InFile, ApplePlatform.iOS)]
+		[TestCase ("com.apple.security.personal-information.location", EntitlementsMode.InCustomEntitlements, ApplePlatform.TVOS)]
+		[TestCase ("com.apple.security.personal-information.location", EntitlementsMode.InFile, ApplePlatform.TVOS)]
+		[TestCase ("com.apple.security.personal-information.calendars", EntitlementsMode.InCustomEntitlements, ApplePlatform.TVOS)]
+		[TestCase ("com.apple.security.personal-information.calendars", EntitlementsMode.InFile, ApplePlatform.TVOS)]
+		public void ValidateEntitlementsDesktopOnly_Disable_Fail (string entitlement, EntitlementsMode mode, ApplePlatform platform)
+		{
+			ValidateEntitlementsImpl (platform, "disable", 0, mode, entitlement: entitlement, "Boolean", "true");
+			Assert.AreEqual (0, Engine.Logger.WarningsEvents.Count, "WarningCount-disable");
+		}
+
+		[Test]
+		[TestCase ("com.apple.security.personal-information.location", EntitlementsMode.InCustomEntitlements, ApplePlatform.iOS)]
+		[TestCase ("com.apple.security.personal-information.location", EntitlementsMode.InFile, ApplePlatform.iOS)]
+		[TestCase ("com.apple.security.personal-information.calendars", EntitlementsMode.InCustomEntitlements, ApplePlatform.iOS)]
+		[TestCase ("com.apple.security.personal-information.calendars", EntitlementsMode.InFile, ApplePlatform.iOS)]
+		[TestCase ("com.apple.security.personal-information.location", EntitlementsMode.InCustomEntitlements, ApplePlatform.TVOS)]
+		[TestCase ("com.apple.security.personal-information.location", EntitlementsMode.InFile, ApplePlatform.TVOS)]
+		[TestCase ("com.apple.security.personal-information.calendars", EntitlementsMode.InCustomEntitlements, ApplePlatform.TVOS)]
+		[TestCase ("com.apple.security.personal-information.calendars", EntitlementsMode.InFile, ApplePlatform.TVOS)]
+		public void ValidateEntitlementsDesktopOnly_Warn_Fail (string entitlement, EntitlementsMode mode, ApplePlatform platform)
+		{
+			ValidateEntitlementsImpl (platform, "warn", 0, mode, entitlement: entitlement, "Boolean", "true");
+			Assert.AreEqual (1, Engine.Logger.WarningsEvents.Count, "WarningCount-warn");
+			Console.WriteLine (Engine.Logger.WarningsEvents [0].Message);
+			Assert.AreEqual ($"The app requests the entitlement '{entitlement}', but this entitlement is not allowed on the current platform ({platform.AsString ()}). It's only allowed on macOS and Mac Catalyst.", Engine.Logger.WarningsEvents [0].Message, "Warning message-warn");
+			Assert.AreEqual ("MT7151", Engine.Logger.WarningsEvents [0].Code, "Warning code-warn");
+		}
+
+		[Test]
+		[TestCase ("com.apple.security.personal-information.location", EntitlementsMode.InCustomEntitlements, ApplePlatform.iOS)]
+		[TestCase ("com.apple.security.personal-information.location", EntitlementsMode.InFile, ApplePlatform.iOS)]
+		[TestCase ("com.apple.security.personal-information.calendars", EntitlementsMode.InCustomEntitlements, ApplePlatform.iOS)]
+		[TestCase ("com.apple.security.personal-information.calendars", EntitlementsMode.InFile, ApplePlatform.iOS)]
+		[TestCase ("com.apple.security.personal-information.location", EntitlementsMode.InCustomEntitlements, ApplePlatform.TVOS)]
+		[TestCase ("com.apple.security.personal-information.location", EntitlementsMode.InFile, ApplePlatform.TVOS)]
+		[TestCase ("com.apple.security.personal-information.calendars", EntitlementsMode.InCustomEntitlements, ApplePlatform.TVOS)]
+		[TestCase ("com.apple.security.personal-information.calendars", EntitlementsMode.InFile, ApplePlatform.TVOS)]
+		public void ValidateEntitlementsDesktopOnly_Error_Fail (string entitlement, EntitlementsMode mode, ApplePlatform platform)
+		{
+			ValidateEntitlementsImpl (platform, "error", 1, mode, entitlement: entitlement, "Boolean", "true");
+			Assert.AreEqual (0, Engine.Logger.WarningsEvents.Count, "WarningCount-error");
+			Assert.AreEqual ($"The app requests the entitlement '{entitlement}', but this entitlement is not allowed on the current platform ({platform.AsString ()}). It's only allowed on macOS and Mac Catalyst.", Engine.Logger.ErrorEvents [0].Message, "Error message");
+			Assert.AreEqual ("MT7151", Engine.Logger.ErrorEvents [0].Code, "Error code");
+		}
+
+		[Test]
+		[TestCase ("com.apple.security.personal-information.location", EntitlementsMode.InCustomEntitlements, ApplePlatform.MacCatalyst)]
+		[TestCase ("com.apple.security.personal-information.location", EntitlementsMode.InFile, ApplePlatform.MacCatalyst)]
+		[TestCase ("com.apple.security.personal-information.calendars", EntitlementsMode.InCustomEntitlements, ApplePlatform.MacCatalyst)]
+		[TestCase ("com.apple.security.personal-information.calendars", EntitlementsMode.InFile, ApplePlatform.MacCatalyst)]
+		[TestCase ("com.apple.security.personal-information.location", EntitlementsMode.InCustomEntitlements, ApplePlatform.MacOSX)]
+		[TestCase ("com.apple.security.personal-information.location", EntitlementsMode.InFile, ApplePlatform.MacOSX)]
+		[TestCase ("com.apple.security.personal-information.calendars", EntitlementsMode.InCustomEntitlements, ApplePlatform.MacOSX)]
+		[TestCase ("com.apple.security.personal-information.calendars", EntitlementsMode.InFile, ApplePlatform.MacOSX)]
+		public void ValidateEntitlementsDesktopOnly_Pass (string entitlement, EntitlementsMode mode, ApplePlatform platform)
+		{
+			ValidateEntitlementsImpl (platform, "disable", 0, mode, entitlement, "Boolean", "true");
+			Assert.AreEqual (0, Engine.Logger.WarningsEvents.Count, "WarningCount-disable");
+
+			ValidateEntitlementsImpl (platform, "warn", 0, mode, entitlement, "Boolean", "true");
+			Assert.AreEqual (0, Engine.Logger.WarningsEvents.Count, "WarningCount-warn");
+
+			ValidateEntitlementsImpl (platform, "error", 0, mode, entitlement, "Boolean", "true");
+			Assert.AreEqual (0, Engine.Logger.WarningsEvents.Count, "WarningCount-error");
+		}
+
 		public enum EntitlementsMode {
 			None,
 			InFile,
@@ -395,6 +467,11 @@ namespace Xamarin.MacDev.Tasks {
 		}
 
 		CompileEntitlements ValidateEntitlementsImpl (string validateEntitlements, int expectedErrorCount, EntitlementsMode entitlementsMode, string mobileProvision = "profile.mobileprovision", string apsEnvironmentValue = "production")
+		{
+			return ValidateEntitlementsImpl (ApplePlatform.iOS, validateEntitlements, expectedErrorCount, entitlementsMode, "aps-environment", "String", apsEnvironmentValue, mobileProvision);
+		}
+
+		CompileEntitlements ValidateEntitlementsImpl (ApplePlatform platform, string validateEntitlements, int expectedErrorCount, EntitlementsMode entitlementsMode, string entitlement, string type, string value, string mobileProvision = "profile.mobileprovision")
 		{
 			var task = CreateTask<CustomCompileEntitlements> ();
 
@@ -405,21 +482,48 @@ namespace Xamarin.MacDev.Tasks {
 			switch (entitlementsMode) {
 			case EntitlementsMode.InFile:
 				var path = Path.Combine (dir, "Entitlements.plist");
-				File.WriteAllText (path, $"<plist version=\"1.0\"><dict><key>aps-environment</key><string>{apsEnvironmentValue}</string></dict></plist>");
+				string plist;
+				switch (type.ToLowerInvariant ()) {
+				case "boolean":
+					value = string.Equals (value, "true", StringComparison.OrdinalIgnoreCase) ? "<true />" : "<false />";
+					plist = $"<plist version=\"1.0\"><dict><key>{entitlement}</key>{value}</dict></plist>";
+					break;
+				default:
+					plist = $"<plist version=\"1.0\"><dict><key>{entitlement}</key><{type.ToLowerInvariant ()}>{value}</{type.ToLowerInvariant ()}></dict></plist>";
+					break;
+				}
+				File.WriteAllText (path, plist);
 				task.Entitlements = path;
 				break;
 			case EntitlementsMode.InCustomEntitlements:
-				var apsEnvironment = new TaskItem ("aps-environment");
-				apsEnvironment.SetMetadata ("Type", "String");
-				apsEnvironment.SetMetadata ("Value", apsEnvironmentValue);
-				task.CustomEntitlements = new [] { apsEnvironment };
+				var entitlementItem = new TaskItem (entitlement);
+				entitlementItem.SetMetadata ("Type", type);
+				entitlementItem.SetMetadata ("Value", value);
+				task.CustomEntitlements = new [] { entitlementItem };
 				break;
 			}
 			if (!string.IsNullOrEmpty (mobileProvision))
 				task.ProvisioningProfile = Path.Combine (Path.GetDirectoryName (GetType ().Assembly.Location)!, "Resources", mobileProvision);
-			task.SdkPlatform = "iPhoneOS";
-			// task.SdkVersion = "6.1";
-			task.TargetFrameworkMoniker = ".NETCoreApp,Version=v6.0,Profile=ios";
+			switch (platform) {
+			case ApplePlatform.iOS:
+				task.SdkPlatform = "iPhoneOS";
+				task.TargetFrameworkMoniker = ".NETCoreApp,Version=v6.0,Profile=ios";
+				break;
+			case ApplePlatform.TVOS:
+				task.SdkPlatform = "AppleTVOS";
+				task.TargetFrameworkMoniker = ".NETCoreApp,Version=v6.0,Profile=tvos";
+				break;
+			case ApplePlatform.MacOSX:
+				task.SdkPlatform = "MacOSX";
+				task.TargetFrameworkMoniker = ".NETCoreApp,Version=v6.0,Profile=macos";
+				break;
+			case ApplePlatform.MacCatalyst:
+				task.SdkPlatform = "MacCatalyst";
+				task.TargetFrameworkMoniker = ".NETCoreApp,Version=v6.0,Profile=maccatalyst";
+				break;
+			default:
+				throw new NotImplementedException ();
+			}
 			task.ValidateEntitlements = validateEntitlements;
 			ExecuteTask (task, expectedErrorCount: expectedErrorCount);
 			return task;

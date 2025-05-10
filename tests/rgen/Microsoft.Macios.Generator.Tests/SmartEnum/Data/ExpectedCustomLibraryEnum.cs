@@ -92,7 +92,7 @@ public static partial class CustomLibraryEnumExtensions
 	/// Retrieves the <see cref="CustomLibraryEnumExtensions" /> value represented by the backing field value in <paramref name="handle" />.
 	/// </summary>
 	/// <param name="handle">The native handle with the name of the constant to retrieve.</param>
-	public static CustomLibraryEnum GetValue (NativeHandle handle)
+	public static CustomLibraryEnum GetValue (global::ObjCRuntime.NativeHandle handle)
 	{
 		using var str = Runtime.GetNSObject<NSString> (handle)!;
 		return GetValue (str);
@@ -102,7 +102,7 @@ public static partial class CustomLibraryEnumExtensions
 	/// Retrieves the <see cref="CustomLibraryEnumExtensions" /> value represented by the backing field value in <paramref name="handle" />.
 	/// </summary>
 	/// <param name="handle">The native handle with the name of the constant to retrieve.</param>
-	public static CustomLibraryEnum? GetNullableValue (NativeHandle handle)
+	public static CustomLibraryEnum? GetNullableValue (global::ObjCRuntime.NativeHandle handle)
 	{
 		using var str = Runtime.GetNSObject<NSString> (handle);
 		if (str is null)

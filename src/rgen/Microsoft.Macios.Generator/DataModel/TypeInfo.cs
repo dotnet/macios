@@ -286,7 +286,7 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 			];
 
 			if (namedTypeSymbol.DelegateInvokeMethod is not null &&
-				DelegateInfo.TryCreate (namedTypeSymbol.DelegateInvokeMethod, out var delegateInfo))
+				DelegateInfo.TryCreate (namedTypeSymbol, out var delegateInfo))
 				Delegate = delegateInfo;
 		}
 

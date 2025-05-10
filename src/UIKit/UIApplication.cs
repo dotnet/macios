@@ -17,10 +17,6 @@ using System.Runtime.InteropServices;
 using CoreFoundation;
 using Foundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 #nullable enable
 
 namespace UIKit {

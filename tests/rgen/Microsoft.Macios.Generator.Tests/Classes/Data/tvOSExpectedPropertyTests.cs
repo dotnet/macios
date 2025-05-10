@@ -23,106 +23,106 @@ public partial class PropertyTests
 {
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selCountX = "count";
-	static readonly NativeHandle selCountXHandle = global::ObjCRuntime.Selector.GetHandle ("count");
+	static readonly global::ObjCRuntime.NativeHandle selCountXHandle = global::ObjCRuntime.Selector.GetHandle ("count");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selLineSpacingX = "lineSpacing";
-	static readonly NativeHandle selLineSpacingXHandle = global::ObjCRuntime.Selector.GetHandle ("lineSpacing");
+	static readonly global::ObjCRuntime.NativeHandle selLineSpacingXHandle = global::ObjCRuntime.Selector.GetHandle ("lineSpacing");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selSetLineSpacing_X = "setLineSpacing:";
-	static readonly NativeHandle selSetLineSpacing_XHandle = global::ObjCRuntime.Selector.GetHandle ("setLineSpacing:");
+	static readonly global::ObjCRuntime.NativeHandle selSetLineSpacing_XHandle = global::ObjCRuntime.Selector.GetHandle ("setLineSpacing:");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selSizesX = "sizes";
-	static readonly NativeHandle selSizesXHandle = global::ObjCRuntime.Selector.GetHandle ("sizes");
+	static readonly global::ObjCRuntime.NativeHandle selSizesXHandle = global::ObjCRuntime.Selector.GetHandle ("sizes");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selContainsAttachmentsX = "containsAttachments";
-	static readonly NativeHandle selContainsAttachmentsXHandle = global::ObjCRuntime.Selector.GetHandle ("containsAttachments");
+	static readonly global::ObjCRuntime.NativeHandle selContainsAttachmentsXHandle = global::ObjCRuntime.Selector.GetHandle ("containsAttachments");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selNameX = "name";
-	static readonly NativeHandle selNameXHandle = global::ObjCRuntime.Selector.GetHandle ("name");
+	static readonly global::ObjCRuntime.NativeHandle selNameXHandle = global::ObjCRuntime.Selector.GetHandle ("name");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selSetName_X = "setName:";
-	static readonly NativeHandle selSetName_XHandle = global::ObjCRuntime.Selector.GetHandle ("setName:");
+	static readonly global::ObjCRuntime.NativeHandle selSetName_XHandle = global::ObjCRuntime.Selector.GetHandle ("setName:");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selSurnamesX = "surnames";
-	static readonly NativeHandle selSurnamesXHandle = global::ObjCRuntime.Selector.GetHandle ("surnames");
+	static readonly global::ObjCRuntime.NativeHandle selSurnamesXHandle = global::ObjCRuntime.Selector.GetHandle ("surnames");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selSetSurnames_X = "setSurnames:";
-	static readonly NativeHandle selSetSurnames_XHandle = global::ObjCRuntime.Selector.GetHandle ("setSurnames:");
+	static readonly global::ObjCRuntime.NativeHandle selSetSurnames_XHandle = global::ObjCRuntime.Selector.GetHandle ("setSurnames:");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selAttributedStringByInflectingStringX = "attributedStringByInflectingString";
-	static readonly NativeHandle selAttributedStringByInflectingStringXHandle = global::ObjCRuntime.Selector.GetHandle ("attributedStringByInflectingString");
+	static readonly global::ObjCRuntime.NativeHandle selAttributedStringByInflectingStringXHandle = global::ObjCRuntime.Selector.GetHandle ("attributedStringByInflectingString");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selDelegateX = "delegate";
-	static readonly NativeHandle selDelegateXHandle = global::ObjCRuntime.Selector.GetHandle ("delegate");
+	static readonly global::ObjCRuntime.NativeHandle selDelegateXHandle = global::ObjCRuntime.Selector.GetHandle ("delegate");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selSetDelegate_X = "setDelegate:";
-	static readonly NativeHandle selSetDelegate_XHandle = global::ObjCRuntime.Selector.GetHandle ("setDelegate:");
+	static readonly global::ObjCRuntime.NativeHandle selSetDelegate_XHandle = global::ObjCRuntime.Selector.GetHandle ("setDelegate:");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selResultsX = "results";
-	static readonly NativeHandle selResultsXHandle = global::ObjCRuntime.Selector.GetHandle ("results");
+	static readonly global::ObjCRuntime.NativeHandle selResultsXHandle = global::ObjCRuntime.Selector.GetHandle ("results");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selSizeX = "size";
-	static readonly NativeHandle selSizeXHandle = global::ObjCRuntime.Selector.GetHandle ("size");
+	static readonly global::ObjCRuntime.NativeHandle selSizeXHandle = global::ObjCRuntime.Selector.GetHandle ("size");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selAlphanumericCharacterSetX = "alphanumericCharacterSet";
-	static readonly NativeHandle selAlphanumericCharacterSetXHandle = global::ObjCRuntime.Selector.GetHandle ("alphanumericCharacterSet");
+	static readonly global::ObjCRuntime.NativeHandle selAlphanumericCharacterSetXHandle = global::ObjCRuntime.Selector.GetHandle ("alphanumericCharacterSet");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selLocaleX = "locale";
-	static readonly NativeHandle selLocaleXHandle = global::ObjCRuntime.Selector.GetHandle ("locale");
+	static readonly global::ObjCRuntime.NativeHandle selLocaleXHandle = global::ObjCRuntime.Selector.GetHandle ("locale");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selSetLocale_X = "setLocale:";
-	static readonly NativeHandle selSetLocale_XHandle = global::ObjCRuntime.Selector.GetHandle ("setLocale:");
+	static readonly global::ObjCRuntime.NativeHandle selSetLocale_XHandle = global::ObjCRuntime.Selector.GetHandle ("setLocale:");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selIsForPersonMassUseX = "isForPersonMassUse";
-	static readonly NativeHandle selIsForPersonMassUseXHandle = global::ObjCRuntime.Selector.GetHandle ("isForPersonMassUse");
+	static readonly global::ObjCRuntime.NativeHandle selIsForPersonMassUseXHandle = global::ObjCRuntime.Selector.GetHandle ("isForPersonMassUse");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selSetForPersonMassUse_X = "setForPersonMassUse:";
-	static readonly NativeHandle selSetForPersonMassUse_XHandle = global::ObjCRuntime.Selector.GetHandle ("setForPersonMassUse:");
+	static readonly global::ObjCRuntime.NativeHandle selSetForPersonMassUse_XHandle = global::ObjCRuntime.Selector.GetHandle ("setForPersonMassUse:");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selIsLenientX = "isLenient";
-	static readonly NativeHandle selIsLenientXHandle = global::ObjCRuntime.Selector.GetHandle ("isLenient");
+	static readonly global::ObjCRuntime.NativeHandle selIsLenientXHandle = global::ObjCRuntime.Selector.GetHandle ("isLenient");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selSetLenient_X = "setLenient:";
-	static readonly NativeHandle selSetLenient_XHandle = global::ObjCRuntime.Selector.GetHandle ("setLenient:");
+	static readonly global::ObjCRuntime.NativeHandle selSetLenient_XHandle = global::ObjCRuntime.Selector.GetHandle ("setLenient:");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selCanDrawX = "canDraw";
-	static readonly NativeHandle selCanDrawXHandle = global::ObjCRuntime.Selector.GetHandle ("canDraw");
+	static readonly global::ObjCRuntime.NativeHandle selCanDrawXHandle = global::ObjCRuntime.Selector.GetHandle ("canDraw");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selSetCanDraw_X = "setCanDraw:";
-	static readonly NativeHandle selSetCanDraw_XHandle = global::ObjCRuntime.Selector.GetHandle ("setCanDraw:");
+	static readonly global::ObjCRuntime.NativeHandle selSetCanDraw_XHandle = global::ObjCRuntime.Selector.GetHandle ("setCanDraw:");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selCenterX = "Center";
-	static readonly NativeHandle selCenterXHandle = global::ObjCRuntime.Selector.GetHandle ("Center");
+	static readonly global::ObjCRuntime.NativeHandle selCenterXHandle = global::ObjCRuntime.Selector.GetHandle ("Center");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selSetCenter_X = "setCenter:";
-	static readonly NativeHandle selSetCenter_XHandle = global::ObjCRuntime.Selector.GetHandle ("setCenter:");
+	static readonly global::ObjCRuntime.NativeHandle selSetCenter_XHandle = global::ObjCRuntime.Selector.GetHandle ("setCenter:");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	static readonly NativeHandle class_ptr = Class.GetHandle ("PropertyTests");
+	static readonly global::ObjCRuntime.NativeHandle class_ptr = Class.GetHandle ("PropertyTests");
 
 	/// <summary>The Objective-C class handle for this class.</summary>
 	/// <value>The pointer to the Objective-C class.</value>
@@ -131,7 +131,7 @@ public partial class PropertyTests
 	///     This value contains the pointer to the Objective-C class.
 	///     It is similar to calling the managed <see cref=\"ObjCRuntime.Class.GetHandle(string)\" /> or the native <see href=\"https://developer.apple.com/documentation/objectivec/1418952-objc_getclass\">objc_getClass</see> method with the type name.
 	/// </remarks>
-	public override NativeHandle ClassHandle => class_ptr;
+	public override global::ObjCRuntime.NativeHandle ClassHandle => class_ptr;
 
 	/// <summary>Creates a new <see cref="PropertyTests" /> with default values.</summary>
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
@@ -204,7 +204,7 @@ public partial class PropertyTests
 	/// </remarks>
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable (EditorBrowsableState.Advanced)]
-	protected internal PropertyTests (NativeHandle handle) : base (handle) {}
+	protected internal PropertyTests (global::ObjCRuntime.NativeHandle handle) : base (handle) {}
 
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]

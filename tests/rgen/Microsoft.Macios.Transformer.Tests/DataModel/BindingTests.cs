@@ -44,10 +44,10 @@ interface MyNSArray : NSSecureCoding, NSMutableCopying, INSFastEnumeration, CKRe
 			yield return [
 				(Source: simpleNSObject, Path: path),
 				new Binding (
-					symbolName: "MyNSArray",
+					name: "MyNSArray",
 					@namespace: ["Test"],
 					fullyQualifiedSymbol: "Test.MyNSArray",
-					info: new BindingInfo (new ("Foundation.NSObject"), BindingType.Class),
+					bindingInfo: new BindingInfo (new ("Foundation.NSObject"), BindingType.Class),
 					symbolAvailability: availabilityBuilder.ToImmutable (),
 					attributes: new ()
 				) {
@@ -86,10 +86,10 @@ interface MyNSArray : NSSecureCoding, NSMutableCopying, INSFastEnumeration, CKRe
 			yield return [
 				(Source: internalSimpleNSObject, Path: path),
 				new Binding (
-					symbolName: "MyNSArray",
+					name: "MyNSArray",
 					@namespace: ["Test"],
 					fullyQualifiedSymbol: "Test.MyNSArray",
-					info: new BindingInfo (new ("Foundation.NSObject"), BindingType.Class),
+					bindingInfo: new BindingInfo (new ("Foundation.NSObject"), BindingType.Class),
 					symbolAvailability: availabilityBuilder.ToImmutable (),
 					attributes: new ()
 				) {
@@ -128,10 +128,10 @@ interface MyNSArray {
 			yield return [
 				(Source: staticNSObject, Path: path),
 				new Binding (
-					symbolName: "MyNSArray",
+					name: "MyNSArray",
 					@namespace: ["Test"],
 					fullyQualifiedSymbol: "Test.MyNSArray",
-					info: new BindingInfo (new ("Foundation.NSObject"), BindingType.Class),
+					bindingInfo: new BindingInfo (new ("Foundation.NSObject"), BindingType.Class),
 					symbolAvailability: availabilityBuilder.ToImmutable (),
 					attributes: new ()
 				) {
@@ -167,10 +167,10 @@ interface MyNSArray : NSSecureCoding, NSMutableCopying, INSFastEnumeration, CKRe
 			yield return [
 				(Source: nsObjectWithParent, Path: path),
 				new Binding (
-					symbolName: "MyNSArray",
+					name: "MyNSArray",
 					@namespace: ["Test"],
 					fullyQualifiedSymbol: "Test.MyNSArray",
-					info: new BindingInfo (new ("Foundation.NSArray"), BindingType.Class),
+					bindingInfo: new BindingInfo (new ("Foundation.NSArray"), BindingType.Class),
 					symbolAvailability: availabilityBuilder.ToImmutable (),
 					attributes: new ()
 				) {
@@ -207,10 +207,10 @@ partial interface MyNSKeyValueSorting_NSOrderedSet { }
 			yield return [
 				(Source: publicCategory, Path: path),
 				new Binding (
-					symbolName: "MyNSKeyValueSorting_NSOrderedSet",
+					name: "MyNSKeyValueSorting_NSOrderedSet",
 					@namespace: ["Test"],
 					fullyQualifiedSymbol: "Test.MyNSKeyValueSorting_NSOrderedSet",
-					info: new BindingInfo (new ("Foundation.NSOrderedSet"), BindingType.Category),
+					bindingInfo: new BindingInfo (new ("Foundation.NSOrderedSet"), BindingType.Category),
 					symbolAvailability: availabilityBuilder.ToImmutable (),
 					attributes: new ()
 				) {
@@ -245,10 +245,10 @@ partial interface MyNSKeyValueSorting_NSOrderedSet { }
 			yield return [
 				(Source: internalCategory, Path: path),
 				new Binding (
-					symbolName: "MyNSKeyValueSorting_NSOrderedSet",
+					name: "MyNSKeyValueSorting_NSOrderedSet",
 					@namespace: ["Test"],
 					fullyQualifiedSymbol: "Test.MyNSKeyValueSorting_NSOrderedSet",
-					info: new BindingInfo (new ("Foundation.NSOrderedSet"), BindingType.Category),
+					bindingInfo: new BindingInfo (new ("Foundation.NSOrderedSet"), BindingType.Category),
 					symbolAvailability: availabilityBuilder.ToImmutable (),
 					attributes: new ()
 				) {
@@ -284,10 +284,10 @@ interface MyNSCacheDelegate { }
 			yield return [
 				(Source: simpleProtocol, Path: path),
 				new Binding (
-					symbolName: "MyNSCacheDelegate",
+					name: "MyNSCacheDelegate",
 					@namespace: ["Test"],
 					fullyQualifiedSymbol: "Test.MyNSCacheDelegate",
-					info: new BindingInfo (new ("Foundation.NSObject"), BindingType.Protocol),
+					bindingInfo: new BindingInfo (new ("Foundation.NSObject"), BindingType.Protocol),
 					symbolAvailability: availabilityBuilder.ToImmutable (),
 					attributes: new ()
 				) {
@@ -322,10 +322,10 @@ interface MyNSCacheDelegate : NSSecureCoding { }
 			yield return [
 				(Source: protocolWithParent, Path: path),
 				new Binding (
-					symbolName: "MyNSCacheDelegate",
+					name: "MyNSCacheDelegate",
 					@namespace: ["Test"],
 					fullyQualifiedSymbol: "Test.MyNSCacheDelegate",
-					info: new BindingInfo (new ("Foundation.NSObject"), BindingType.Protocol),
+					bindingInfo: new BindingInfo (new ("Foundation.NSObject"), BindingType.Protocol),
 					symbolAvailability: availabilityBuilder.ToImmutable (),
 					attributes: new ()
 				) {
@@ -363,10 +363,10 @@ interface MyCIAccordionFoldTransition : CIAccordionFoldTransitionProtocol {
 			yield return [
 				(Source: coreImageFilter, Path: path),
 				new Binding (
-					symbolName: "MyCIAccordionFoldTransition",
+					name: "MyCIAccordionFoldTransition",
 					@namespace: ["Test"],
 					fullyQualifiedSymbol: "Test.MyCIAccordionFoldTransition",
-					info: new BindingInfo (new ("CoreImage.CIFilter"), BindingType.CoreImageFilter),
+					bindingInfo: new BindingInfo (new ("CoreImage.CIFilter"), BindingType.CoreImageFilter),
 					symbolAvailability: availabilityBuilder.ToImmutable (),
 					attributes: new ()
 				) {
@@ -403,10 +403,10 @@ interface MyCMHevcTemporalLevelInfoSettings {
 			yield return [
 				(Source: strongDictionary, Path: path),
 				new Binding (
-					symbolName: "MyCMHevcTemporalLevelInfoSettings",
+					name: "MyCMHevcTemporalLevelInfoSettings",
 					@namespace: ["Test"],
 					fullyQualifiedSymbol: "Test.MyCMHevcTemporalLevelInfoSettings",
-					info: new BindingInfo (null, BindingType.StrongDictionary),
+					bindingInfo: new BindingInfo (null, BindingType.StrongDictionary),
 					symbolAvailability: availabilityBuilder.ToImmutable (),
 					attributes: new ()
 				) {

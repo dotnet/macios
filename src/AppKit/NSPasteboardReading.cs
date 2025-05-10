@@ -7,7 +7,6 @@ using ObjCRuntime;
 
 #nullable enable
 
-#if NET
 namespace AppKit {
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
@@ -19,5 +18,4 @@ namespace AppKit {
 		}
 	}
 }
-#endif // NET
 #endif // !__MACCATALYST__

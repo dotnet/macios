@@ -13,6 +13,7 @@ using Microsoft.Build.Utilities;
 using Xamarin.MacDev;
 using Xamarin.Localization.MSBuild;
 using Xamarin.Messaging.Build.Client;
+using Xamarin.Utils;
 
 #nullable enable
 
@@ -139,7 +140,7 @@ namespace Xamarin.MacDev.Tasks {
 		{
 			var target = this.MainAssembly!.ItemSpec;
 
-			string [] argv = CommandLineArgumentBuilder.Parse (extraArgs);
+			string [] argv = StringUtils.ParseArguments (extraArgs);
 			var customTags = new Dictionary<string, string> (StringComparer.OrdinalIgnoreCase) {
 				{ "projectdir",   Path.GetDirectoryName (this.ProjectPath) },
 				{ "appbundledir", this.AppBundleDir },

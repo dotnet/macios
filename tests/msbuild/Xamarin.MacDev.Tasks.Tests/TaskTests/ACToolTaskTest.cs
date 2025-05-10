@@ -68,7 +68,7 @@ namespace Xamarin.MacDev.Tasks {
 			task.SdkVersion = version.ToString ();
 			task.SdkUsrPath = usr;
 			task.SdkBinPath = bin;
-			task.TargetFrameworkMoniker = TargetFramework.GetTargetFramework (platform, true).ToString ();
+			task.TargetFrameworkMoniker = TargetFramework.GetTargetFramework (platform).ToString ();
 			task.UIDeviceFamily = uiDeviceFamily;
 			return task;
 		}

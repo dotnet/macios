@@ -194,7 +194,7 @@ namespace Xamarin.MacDev.Tasks {
 			cmd.Add ($"/target-framework={TargetFrameworkMoniker}");
 
 			if (!string.IsNullOrEmpty (ExtraArgs)) {
-				var extraArgs = CommandLineArgumentBuilder.Parse (ExtraArgs);
+				var extraArgs = StringUtils.ParseArguments (ExtraArgs);
 				var target = OutputAssembly;
 				string projectDir;
 

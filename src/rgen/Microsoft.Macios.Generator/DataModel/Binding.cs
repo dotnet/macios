@@ -155,7 +155,7 @@ readonly partial struct Binding {
 	}
 
 	/// <summary>
-	/// Return sall the selectors for the properties.
+	/// Returns all the selectors for the properties.
 	/// </summary>
 	public ImmutableArray<string> PropertySelectors => [.. propertyIndex.Keys];
 

@@ -87,7 +87,6 @@
   <data name="W0020" xml:space="preserve">
         <value>Desteklenen iPhone yönleri eşleşen çiftler halinde değil
         </value>
-        <comment>The iPhone orientation settings do not match iPad, see: https://xamarin.github.io/bugzilla-archives/85/850/bug.html</comment>
     </data>
   <data name="W0021" xml:space="preserve">
         <value>Desteklenen iPad yönleri ayarlanmamış
@@ -96,7 +95,6 @@
   <data name="W0022" xml:space="preserve">
         <value>Desteklenen iPad yönleri eşleşen çiftler halinde değil
         </value>
-        <comment>The iPad orientation settings do not match iPhone, see: https://xamarin.github.io/bugzilla-archives/85/850/bug.html</comment>
     </data>
   <data name="E0023" xml:space="preserve">
         <value>1'den fazla iTunesMetadata.plist dosyası bulunamaz.
@@ -137,6 +135,11 @@
         <comment>The following are literal names and should not be translated: Xcode, Apple SDK, Visual Studio
 {0} - The selected Xcode / Apple SDK directory.</comment>
     </data>
+  <data name="E0044v2" xml:space="preserve">
+        <value>Could not find a valid Xcode app bundle at '{0}'. Please verify that 'xcode-select -p' points to your Xcode installation. For more information see https://aka.ms/macios-missing-xcode.
+        </value>
+        <comment>The following are literal names and should not be translated: Xcode</comment>
+    </data>
   <data name="E0045" xml:space="preserve">
         <value>Geçerli bir kullanılabilir Xcode geliştirici yolu bulunamadı
         </value>
@@ -170,7 +173,7 @@
         </value>
     </data>
   <data name="E0053" xml:space="preserve">
-        <value>ARMv6 hedef mimarisi, Xamarin.iOS içinde artık desteklenmiyor. Lütfen desteklenen bir mimari seçin.
+        <value>Target architecture ARMv6 is no longer supported. Please select a supported architecture.
         </value>
     </data>
   <data name="W0054" xml:space="preserve">
@@ -383,13 +386,11 @@
         <value>'{0}' adlı kısmi Info.plist şablon dosyası yüklenirken hata oluştu: {1}
         </value>
     </data>
-  <data name="W0108" xml:space="preserve">
-        <value>Sağlama profili olmadan Entitlements.plist dosyasındaki $(TeamIdentifierPrefix) genişletilemiyor.
-        </value>
+  <data name="W0108b" xml:space="preserve">
+        <value>Cannot expand $(TeamIdentifierPrefix) in Entitlements.plist without a provisioning profile for key '{0}' with value '{1}'.</value>
     </data>
-  <data name="W0109" xml:space="preserve">
-        <value>Sağlama profili olmadan Entitlements.plist dosyasındaki $(AppIdentifierPrefix) genişletilemiyor.
-        </value>
+  <data name="W0109b" xml:space="preserve">
+        <value>Cannot expand $(AppIdentifierPrefix) in Entitlements.plist without a provisioning profile for key '{0}' with value '{1}'.</value>
     </data>
   <data name="W0110" xml:space="preserve">
         <value>'{0}' gibi iCloud yetkilendirmeleri için Sağlama Profili gerekir.
@@ -573,6 +574,10 @@
 {0} - The '%(LogicalName)' of the file, or a relative path.
 {1} - The location the file was found.</comment>
     </data>
+  <data name="M0149b" xml:space="preserve">
+        <value>Discarded '{0}' with logical name '{1}' because the logical name does not match '{2}'</value>
+        <comment>{0} - A path to a file.</comment>
+    </data>
   <data name="E0150" xml:space="preserve">
         <value>  AssemblyPath null veya boş olamaz
         </value>
@@ -701,16 +706,6 @@
     </data>
   <data name="E0182" xml:space="preserve">
         <value>{1} kataloğundaki {0} için UTI çözümlenemedi</value>
-    </data>
-  <data name="E0183" xml:space="preserve">
-        <value>Xcode ve Xamarin.iOS arasındaki uyumluluk doğrulanmaya çalışılırken bir hata oluştu</value>
-    </data>
-  <data name="E0184" xml:space="preserve">
-        <value>Proje, uyumlu olmayan bir Xcode sürümüyle ({0}) oluşturulduğundan beklenmeyen uyarı veya hatalarla karşılaşılabilir. Lütfen Xcode '{1}' yükleyin veya daha fazla bilgi için belgelere bakın.</value>
-    </data>
-  <data name="E0185" xml:space="preserve">
-        <value>Xcode ve Xamarin.iOS arasındaki uyumluluk doğrulanmaya çalışılırken bir hata oluştu. Ayrıntılar: {0}
-        </value>
     </data>
   <data name="E0186" xml:space="preserve">
         <value>Sağlanan Arşiv yolu geçerli bir arşiv dosyasından (.xcarchive) değil. Arşiv Yolu: '{0}'</value>
@@ -1005,6 +1000,7 @@
         </value>
     </data>
   <!-- E7068: not in use anymore -->
+  <!-- legacy only error -->
   <data name="E7069" xml:space="preserve">
         <value>Xamarin.iOS 14+ uzantısı watchOS 1 uygulamalarını desteklemiyor. Lütfen projenizi watchOS 2+ sürümüne geçirin.</value>
     </data>
@@ -1236,5 +1232,195 @@
             {0}: the path to an assembly
             {1}: the exit code of a process
         </comment>
+    </data>
+  <data name="E7119" xml:space="preserve">
+        <value>Task execution was cancelled.</value>
+        <comment></comment>
+    </data>
+  <data name="E7120" xml:space="preserve">
+        <value>Unable to compute the remote generator properties. Please file an issue at https://github.com/dotnet/macios/issues/new and attach the following file: {0}</value>
+        <comment>
+            {0}: the path to a file
+        </comment>
+    </data>
+  <data name="W7121" xml:space="preserve">
+        <value>Unable to parse the value '{0}' for the property 'MaxDegreeOfParallelism'. Falling back to the default value (number of processors / 2).</value>
+        <comment>
+            {0}: a developer-supplied property value.
+            MaxDegreeOfParallelism: name of the property (do not translate)
+        </comment>
+    </data>
+  <data name="E7122" xml:space="preserve">
+        <value>A path exceeding max path was detected. Enabling long paths in Windows may help. For more information see https://learn.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation.</value>
+    </data>
+  <data name="E7123" xml:space="preserve">
+        <value>The app bundle '{0}' contains a subdirectory named 'Resources'. This is not allowed on this platform. Typically resource files should be in the root directory of the app bundle (or a custom subdirectory, but named anything other than 'Resources').</value>
+        <comment>0: a path</comment>
+    </data>
+  <data name="E7124" xml:space="preserve">
+        <value>Can't compute the architecture for the archive for the RuntimeIdentifier '{0}' (unknown value)</value>
+        <comment>RuntimeIdentifier: don't translate (it's the name of a MSBuild property)</comment>
+    </data>
+  <data name="E7125" xml:space="preserve">
+        <value>Unable to parse the value '{0}' for the property '{1}.</value>
+        <comment>
+            {0}: user-provided value
+            {1}: name of an MSBuild property
+        </comment>
+    </data>
+  <data name="E7126" xml:space="preserve">
+        <value>The SupportedOSPlatformVersion value '{0}' in the project file is lower than the minimum value '{1}'.</value>
+        <comment>SupportedOSPlatformVersion: don't translate (it's the name of an MSBuild property)</comment>
+    </data>
+  <data name="E7127" xml:space="preserve">
+        <value>Can't find the AlternateAppIcon '{0}' among the image resources. There are {1} app icons in the image resources: {2}.</value>
+        <comment>
+            * AlternateAppIcon: don't translate (it's the name of an MSBuild property)
+            * {1}: count of image resources
+            * {2}: comma separated list of resources.
+        </comment>
+    </data>
+  <data name="E7128" xml:space="preserve">
+        <value>The image resource '{0}' is specified as both 'AppIcon' and 'AlternateAppIcon'.</value>
+        <comment>
+            * AppIcon: don't translate (it's the name of an MSBuild property)
+            * AlternateAppIcon: don't translate (it's the name of an MSBuild property)
+        </comment>
+    </data>
+  <data name="E7129" xml:space="preserve">
+        <value>Can't specify both 'XSAppIconAssets' in the Info.plist and 'AppIcon' in the project file. Please select one or the other.</value>
+        <comment>
+            * XSAppIconAssets: don't translate (it's the name of an MSBuild property)
+            * AppIcon: don't translate (it's the name of an MSBuild property)
+        </comment>
+    </data>
+  <data name="E7130" xml:space="preserve">
+        <value>Can't find the AppIcon '{0}' among the image resources. There are {1} app icons in the image resources: {2}.</value>
+        <comment>
+            * AppIcon: don't translate (it's the name of an MSBuild property)
+            * {1}: count of image resources
+            * {2}: comma separated list of resources.
+        </comment>
+    </data>
+  <data name="E7131" xml:space="preserve">
+        <value>The source '{0}' does not exist.</value>
+        <comment>{0}: path to a file or a directory</comment>
+    </data>
+  <data name="E7132" xml:space="preserve">
+        <value>Unable to parse the 'AdditionalArguments' value: {0}</value>
+        <comment>
+            AdditionalArguments: don't translate (it's the name of an MSBuild property)
+            {0}: additional arguments passed to the task
+        </comment>
+    </data>
+  <data name="E7133" xml:space="preserve">
+        <value>The item '{0}' does not have a '{1}' value set.</value>
+        <comment>
+            {0}: a path to a file
+            {1}: the name of a MSBuild metadata
+        </comment>
+    </data>
+  <data name="XcodeBuild_CreateNativeRef" xml:space="preserve">
+        <value>Adding reference to Xcode project output: '{0}'. The '%(CreateNativeReference)' metadata can be set to 'false' to opt out of this behavior.</value>
+        <comment>
+            The following are literal names and should not be translated: Xcode, '%(CreateNativeReference)', metadata, 'false'
+            {0}: The path to the XCFramework output that will be referenced
+        </comment>
+    </data>
+  <data name="XcodeBuild_InvalidItem" xml:space="preserve">
+        <value>The Xcode project item: '{0}' could not be found. Please update the 'Include' value to a path containing a valid '.xcodeproj' file.</value>
+        <comment>
+            The following are literal names and should not be translated: Xcode, 'Include', '.xcodeproj'
+            {0}: An invalid path to an Xcode project file
+        </comment>
+    </data>
+  <data name="E7134" xml:space="preserve">
+        <value>Failed to optimize the image {0}, pngcrush exited with code {1}.</value>
+        <comment>
+            {0}: the path to an image
+            {1}: the exit code of a process
+        </comment>
+    </data>
+  <data name="E7135" xml:space="preserve">
+        <value>Unknown resource type: {1}.</value>
+    </data>
+  <data name="E7136" xml:space="preserve">
+        <value>Unknown resource type: {1}.</value>
+    </data>
+  <data name="E7137" xml:space="preserve">
+        <value>The app requests the entitlement '{0}' with the value '{1}', but the provisioning profile '{2}' grants it for the value '{3}'.</value>
+        <comment>
+            This may be either a warning or an error, depending on build configuration.
+        </comment>
+    </data>
+  <data name="E7138" xml:space="preserve">
+        <value>Invalid value '{0}' for the 'ValidateEntitlements' property. Valid values are: 'disable', 'warn' or 'error'.</value>
+        <comment>
+            The following are literal names and should not be translated: ValidateEntitlements, disable, warn, error
+        </comment>
+    </data>
+  <data name="E7139" xml:space="preserve">
+        <value>The app requests the entitlement '{0}', but no provisioning profile has been specified. Please specify the name of the provisioning profile to use with the 'CodesignProvision' property in the project file.</value>
+        <comment>
+            This may be either a warning or an error, depending on build configuration.
+            The following are literal names and should not be translated: CodesignProvision
+        </comment>
+    </data>
+  <data name="E7140" xml:space="preserve">
+        <value>The app requests the entitlement '{0}', but the provisioning profile '{1}' does not contain this entitlement.</value>
+        <comment>
+            This may be either a warning or an error, depending on build configuration.
+        </comment>
+    </data>
+  <data name="E7141" xml:space="preserve">
+        <value>The library {0} is a static library, and static libraries are not supported with Hot Restart. Set 'SkipStaticLibraryValidation=true' in the project file to ignore this error.</value>
+        <comment>
+            The following are literal names and should not be translated: SkipStaticLibraryValidation, true
+            {0}: the path to a file
+        </comment>
+    </data>
+  <data name="E7142" xml:space="preserve">
+        <value>Unknown value for 'SkipStaticLibraryValidation': {0}. Valid values are: 'true', 'false', 'warn'.</value>
+        <comment>
+            The following are literal names and should not be translated: SkipStaticLibraryValidation
+        </comment>
+    </data>
+  <data name="E7143" xml:space="preserve">
+        <value>The file {0} is an object file, and object files are not supported with Hot Restart. Set 'SkipStaticLibraryValidation=true' in the project file to ignore this error.</value>
+        <comment>
+            The following are literal names and should not be translated: SkipStaticLibraryValidation, true
+            {0}: the path to a file
+        </comment>
+    </data>
+  <data name="W7144" xml:space="preserve">
+        <value>Did not extract {0} because it would write outside the target directory.</value>
+    </data>
+  <data name="E7145" xml:space="preserve">
+        <value>Can't process the native reference '{0}' on this platform because it is or contains a symlink.</value>
+    </data>
+  <data name="E7149" xml:space="preserve">
+        <value>Unable to calculate the assemblies report from '{0}'. Directory not found.</value>
+        <comment>{0}: path from where to calculate assemblies report</comment>
+    </data>
+  <data name="W7145" xml:space="preserve">
+        <value>Unable to retrieve information from '{0}'. The file may not be a valid PE file.</value>
+        <comment>{0}: path of the file that failed the VMID calculation</comment>
+    </data>
+  <data name="E7150" xml:space="preserve">
+        <value>Unable to calculate assemblies report from '{0}'. An unexpected error occurred.</value>
+        <comment>{0}: path from where to calculate assemblies report</comment>
+    </data>
+  <data name="E7146" xml:space="preserve">
+        <value>Unable to analyze file changes in '{0}'. Directory not found.</value>
+        <comment>{0}: path to use for file changes calculation</comment>
+    </data>
+  <data name="E7147" xml:space="preserve">
+        <value>Unable to analyze file changes in '{0}'. The report file '{1}' does not exist.</value>
+        <comment>{0}: path to use for file changes calculation
+    {1}: path of the assemblies report file</comment>
+    </data>
+  <data name="E7148" xml:space="preserve">
+        <value>Unable to analyze file changes in '{0}'. An unexpected error occurred.</value>
+        <comment>{0}: path to use for file changes calculation</comment>
     </data>
 </root>

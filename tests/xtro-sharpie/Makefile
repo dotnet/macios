@@ -143,7 +143,8 @@ X$(2)_DOTNET ?= $(DOTNET_DESTDIR)/$($(X$(2)_RID)_NUGET_RUNTIME_NAME)/runtimes/$(
 endif
 
 $(3)-$($(2)_SDK_VERSION).g.cs: .stamp-check-sharpie $$(X$(2)_PCH)
-	$$(SHARPIE) query -bind $$(XIOS_$(2)) > $$@
+	$$(Q_GEN) $$(SHARPIE) query -bind $$(X$(2)_PCH) > $$@.tmp
+	$$(Q) mv $$@.tmp $$@
 
 gen-$(3): $(3)-$$($(2)_SDK_VERSION).g.cs
 gen-all:: gen-$(3)

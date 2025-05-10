@@ -19,7 +19,7 @@ public class NamespaceCache {
 	public ICollection<string> NamespacesThatConflictWithTypes { get; private set; }
 	public ICollection<string> TypesInMultipleNamespaces { get; private set; }
 
-	public NamespaceCache (PlatformName currentPlatform, string customObjCRuntimeNS, bool skipSystemDrawing)
+	public NamespaceCache (PlatformName currentPlatform, string customObjCRuntimeNS)
 	{
 		Frameworks = new (currentPlatform);
 		ObjCRuntime = String.IsNullOrEmpty (customObjCRuntimeNS)
@@ -151,7 +151,6 @@ public class NamespaceCache {
 			"NWEndpoint", // Both in Network and NetworkExtension
 		};
 
-		if (!skipSystemDrawing)
-			ImplicitNamespaces.Add ("System.Drawing");
+		ImplicitNamespaces.Add ("System.Drawing");
 	}
 }

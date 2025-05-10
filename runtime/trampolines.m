@@ -188,7 +188,7 @@ xamarin_marshal_return_value_impl (MonoType *mtype, const char *type, MonoObject
 					} else {
 						// This will try to retain the object if and only if it's an NSObject -
 						// in which case we known it's 'id' here and we can call autorelease on it.
-						bool retained = xamarin_attempt_retain_nsobject (retval, exception_gchandle);
+						bool retained = xamarin_attempt_retain_nsobject (retval, exception_gchandle) != 0;
 						if (*exception_gchandle != INVALID_GCHANDLE)
 							return returnValue;
 						if (retained) {

@@ -115,16 +115,16 @@ namespace Xamarin.MacDev.Tasks {
 
 		protected string GenerateCommandLineCommands ()
 		{
-			var sb = new CommandLineArgumentBuilder ();
+			var sb = new List<string> ();
 
 			if (!string.IsNullOrEmpty (LaunchApp)) {
 				sb.Add (SdkIsSimulator ? "--launchsim" : "--launchdev");
-				sb.AddQuoted (LaunchApp);
+				sb.Add (LaunchApp);
 			}
 
 			if (!string.IsNullOrEmpty (InstallApp)) {
 				sb.Add (SdkIsSimulator ? "--installsim" : "--installdev");
-				sb.AddQuoted (InstallApp);
+				sb.Add (InstallApp);
 			}
 
 			if (SdkIsSimulator && string.IsNullOrEmpty (DeviceName)) {
@@ -162,7 +162,7 @@ namespace Xamarin.MacDev.Tasks {
 				} else {
 					sb.Add ("--devname");
 				}
-				sb.AddQuoted (DeviceName);
+				sb.Add (DeviceName);
 			}
 
 			if (CaptureOutput && string.IsNullOrEmpty (StandardOutputPath))
@@ -173,25 +173,25 @@ namespace Xamarin.MacDev.Tasks {
 
 			if (!string.IsNullOrEmpty (StandardOutputPath)) {
 				sb.Add ("--stdout");
-				sb.AddQuoted (StandardOutputPath);
+				sb.Add (StandardOutputPath);
 			}
 
 			if (!string.IsNullOrEmpty (StandardErrorPath)) {
 				sb.Add ("--stderr");
-				sb.AddQuoted (StandardErrorPath);
+				sb.Add (StandardErrorPath);
 			}
 
 			foreach (var envvar in EnvironmentVariables)
-				sb.AddQuoted ("--setenv=" + envvar.ItemSpec);
+				sb.Add ("--setenv=" + envvar.ItemSpec);
 
 			sb.Add (WaitForExit ? "--wait-for-exit:true" : "--wait-for-exit:false");
 
 			// Add additional arguments at the end, so they can override any
 			// other argument.
 			foreach (var arg in AdditionalArguments)
-				sb.AddQuoted (arg.ItemSpec);
+				sb.Add (arg.ItemSpec);
 
-			return sb.ToString ();
+			return StringUtils.FormatArguments (sb);
 		}
 
 		static string GetTerminalName (int fd)

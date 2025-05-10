@@ -906,13 +906,13 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 			yield return [
 				"RTFDFileWrapperFromRange:documentAttributes:",
 				"selRTFDFileWrapperFromRange_DocumentAttributes_XHandle",
-				"static readonly NativeHandle selRTFDFileWrapperFromRange_DocumentAttributes_XHandle = global::ObjCRuntime.Selector.GetHandle (\"RTFDFileWrapperFromRange:documentAttributes:\");"
+				"static readonly global::ObjCRuntime.NativeHandle selRTFDFileWrapperFromRange_DocumentAttributes_XHandle = global::ObjCRuntime.Selector.GetHandle (\"RTFDFileWrapperFromRange:documentAttributes:\");"
 			];
 
 			yield return [
 				"RTFDFromRange:documentAttributes:",
 				"selRTFDFromRange_DocumentAttributes_XHandle",
-				"static readonly NativeHandle selRTFDFromRange_DocumentAttributes_XHandle = global::ObjCRuntime.Selector.GetHandle (\"RTFDFromRange:documentAttributes:\");"
+				"static readonly global::ObjCRuntime.NativeHandle selRTFDFromRange_DocumentAttributes_XHandle = global::ObjCRuntime.Selector.GetHandle (\"RTFDFromRange:documentAttributes:\");"
 			];
 
 		}

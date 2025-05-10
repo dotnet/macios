@@ -48,9 +48,6 @@ namespace Xamarin.Bundler {
 					throw ErrorHelper.CreateError (23, Errors.MT0023, root_assembly.MainModule.FileName, reference);
 				}
 
-				if (ad.MainModule.Runtime > TargetRuntime.Net_4_0)
-					ErrorHelper.Show (new ProductException (11, false, Errors.MT0011, Path.GetFileName (reference), ad.MainModule.Runtime));
-
 				// Figure out if we're referencing Xamarin.iOS or monotouch.dll
 				var filename = ad.MainModule.FileName;
 				if (Path.GetFileNameWithoutExtension (filename) == Driver.GetProductAssembly (App))

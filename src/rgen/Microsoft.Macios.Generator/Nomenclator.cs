@@ -141,8 +141,7 @@ class Nomenclator {
 	/// <summary>
 	/// Get the name of the variable for the type when it is used as a return value.
 	/// </summary>
-	/// <param name="typeInfo">The type info whose name we want for the return type.</param>
-	public static string GetReturnVariableName (in TypeInfo typeInfo) => "ret"; // nothing fancy for now
+	public static string GetReturnVariableName () => "ret"; // nothing fancy for now
 
 	/// <summary>
 	/// Returns the name of the trampoline variable for the given parameter info. This variables are used as
@@ -161,4 +160,10 @@ class Nomenclator {
 		};
 #pragma warning restore format
 	}
+
+	/// <summary>
+	/// Returns the name of the trampoline delegate variable.
+	/// </summary>
+	/// <returns>The name of the variable used to store delegates in trampolines.</returns>
+	public static string GetTrampolineDelegateVariableName () => "del";
 }

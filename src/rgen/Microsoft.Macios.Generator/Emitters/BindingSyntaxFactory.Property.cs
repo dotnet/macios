@@ -66,8 +66,8 @@ static partial class BindingSyntaxFactory {
 
 		// get the getter invocation and assign it to the return variable 
 		return (
-			Send: AssignVariable (Nomenclator.GetReturnVariableName (property.ReturnType), getterSend),
-			SendSuper: AssignVariable (Nomenclator.GetReturnVariableName (property.ReturnType), getterSuperSend)
+			Send: AssignVariable (Nomenclator.GetReturnVariableName (), getterSend),
+			SendSuper: AssignVariable (Nomenclator.GetReturnVariableName (), getterSuperSend)
 		);
 
 #pragma warning disable format

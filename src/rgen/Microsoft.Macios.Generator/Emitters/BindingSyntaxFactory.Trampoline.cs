@@ -423,12 +423,12 @@ static partial class BindingSyntaxFactory {
 			.ToImmutableArray ();
 		var invocation = InvocationExpression (
 				IdentifierName (Nomenclator.GetTrampolineDelegateVariableName ()).WithTrailingTrivia (Space))
-			.WithArgumentList ( ArgumentList (SeparatedList<ArgumentSyntax> (args.ToSyntaxNodeOrTokenArray ())));
-		
+			.WithArgumentList (ArgumentList (SeparatedList<ArgumentSyntax> (args.ToSyntaxNodeOrTokenArray ())));
+
 		// return the invocation expression if the delegate return type is a void type
 		if (delegateInfo.ReturnType.IsVoid)
 			return ExpressionStatement (invocation);
-		
+
 		// perform an assigment to the return variable
 		var declaration = VariableDeclaration (
 				IdentifierName (

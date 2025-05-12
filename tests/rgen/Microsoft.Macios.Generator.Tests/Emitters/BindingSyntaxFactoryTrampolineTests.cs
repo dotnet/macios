@@ -1551,7 +1551,7 @@ namespace NS {
 		sb.Write (conversions);
 		Assert.Equal (expectedExpression, sb.ToCode ());
 	}
-	
+
 	class TestDataCallTrampolineDelegate : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{
@@ -1570,7 +1570,7 @@ namespace NS {
 				pointerParameter,
 				"del (pointerParameter);",
 			];
-			
+
 			var pointerParameterWithReturn = @"
 using System;
 
@@ -1621,7 +1621,7 @@ namespace NS {
 				severalParametersConversion,
 				"del (global::System.Runtime.InteropServices.Marshal.GetDelegateForFunctionPointer<System.Action> (callbackParameter), NIDsomeTrampolineName.Create (callbackParameter)!);",
 			];
-			
+
 			var severalParametersConversionReturn = @"
 using System;
 using ObjCRuntime;
@@ -1644,7 +1644,7 @@ namespace NS {
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
 	}
-	
+
 	[Theory]
 	[AllSupportedPlatformsClassData<TestDataCallTrampolineDelegate>]
 	void CallTrampolineDelegateTests (ApplePlatform platform, string trampolineName, string inputText, string expectedExpression)

@@ -193,19 +193,19 @@ static partial class BindingSyntaxFactory {
 		// 2. the parameter is a boolean type and we need a conversion
 		// any other case we can just use the parameter as is and we will return an empty array
 		var tempVariableName = Nomenclator.GetNameForTempTrampolineVariable (parameter);
-		if (tempVariableName == null)
+		if (tempVariableName is null)
 			return [];
-		
+
 		if (parameter.Type.IsNullable) {
 			// declare a new variable to hold the temp var
 			// ParameterType? tempVariable = null;
 			var declarationNode = LocalDeclarationStatement (
 				VariableDeclaration (
 						NullableType (
-							IdentifierName(parameter.Type.FullyQualifiedName)))
+							IdentifierName (parameter.Type.FullyQualifiedName)))
 					.WithVariables (
 						SingletonSeparatedList (
-							VariableDeclarator(
+							VariableDeclarator (
 									Identifier (tempVariableName))
 								.WithInitializer (
 									EqualsValueClause (
@@ -240,7 +240,7 @@ static partial class BindingSyntaxFactory {
 			var variableDeclaration = LocalDeclarationStatement (
 				VariableDeclaration (
 						PredefinedType (
-							Token(SyntaxKind.BoolKeyword)))
+							Token (SyntaxKind.BoolKeyword)))
 					.WithVariables (
 						SingletonSeparatedList (
 							VariableDeclarator (
@@ -254,22 +254,22 @@ static partial class BindingSyntaxFactory {
 												IdentifierName (parameter.Name)),
 											LiteralExpression (
 												SyntaxKind.NumericLiteralExpression,
-												Literal(0))))))));
+												Literal (0))))))));
 			return [variableDeclaration];
 		}
-		
+
 		// default case, we do not need to do anything
 		return [];
 	}
 
-	internal static ImmutableArray<SyntaxNode> GetTrampolinePostInvokeByRefArgument (string trampolineName, 
+	internal static ImmutableArray<SyntaxNode> GetTrampolinePostInvokeByRefArgument (string trampolineName,
 		in DelegateParameter parameter)
 	{
 		// similar to the pre invoke case, we need to do something with the byref parameters:
 		// 1. the parameter is by ref and nullable we need to assign the value
 		// 2. the parameter is a boolean type we need to convert back the value from a byte
 		var tempVariableName = Nomenclator.GetNameForTempTrampolineVariable (parameter);
-		if (tempVariableName == null)
+		if (tempVariableName is null)
 			return [];
 
 		if (parameter.Type.IsNullable) {
@@ -369,18 +369,16 @@ static partial class BindingSyntaxFactory {
 		in DelegateParameter parameter)
 	{
 		// decide the type of conversion we need to do based on the type of the parameter
-		return parameter switch {
-			{ IsByRef: true } => GetTrampolinePreInvokeByRefArgument (parameter),
+		return parameter switch { { IsByRef: true } => GetTrampolinePreInvokeByRefArgument (parameter),
 			_ => []
 		};
 	}
-	
+
 	internal static ImmutableArray<SyntaxNode> GetTrampolinePostInvokeArgumentConversions (string trampolineName,
 		in DelegateParameter parameter)
 	{
 		// decide the type of conversion we need to do based on the type of the parameter
-		return parameter switch {
-			{ IsByRef: true } => GetTrampolinePostInvokeByRefArgument (trampolineName, parameter),
+		return parameter switch { { IsByRef: true } => GetTrampolinePostInvokeByRefArgument (trampolineName, parameter),
 			_ => []
 		};
 	}
@@ -403,7 +401,7 @@ static partial class BindingSyntaxFactory {
 				PostDelegateCallConversion = GetTrampolinePostInvokeArgumentConversions (trampolineName, parameter),
 			};
 			bucket.Add (argument);
-		}	
+		}
 		return bucket.ToImmutable ();
 	}
 }

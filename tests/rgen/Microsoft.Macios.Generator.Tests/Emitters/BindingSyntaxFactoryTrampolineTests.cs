@@ -707,8 +707,8 @@ namespace NS {
 		var expression = GetTrampolineInvokeArgument (trampolineName, parameter.Type.Delegate!.Parameters [0]);
 		Assert.Equal (expectedExpression, expression.ToString ());
 	}
-	
-	
+
+
 	class TestDataGetTrampolinePreInvokeArgumentConversions : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{
@@ -1038,7 +1038,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				outNullableInt,
-@"int? __xamarin_nullified__0 = null;
+				@"int? __xamarin_nullified__0 = null;
 if (outNullableInt is not null)
 	__xamarin_nullified__0 = *outNullableInt;
 ",
@@ -1104,7 +1104,7 @@ namespace NS {
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
 	}
-	
+
 	[Theory]
 	[AllSupportedPlatformsClassData<TestDataGetTrampolinePreInvokeArgumentConversions>]
 	void GetTrampolinePreInvokeArgumentConversionsTests (ApplePlatform platform, string trampolineName, string inputText, string expectedExpression)
@@ -1129,7 +1129,7 @@ namespace NS {
 		sb.Write (conversions);
 		Assert.Equal (expectedExpression, sb.ToCode ());
 	}
-	
+
 	class TestDataGetTrampolinePostInvokeArgumentConversions : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{
@@ -1459,7 +1459,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				outNullableInt,
-@"if (outNullableInt is not null && __xamarin_nullified__0.HasValue)
+				@"if (outNullableInt is not null && __xamarin_nullified__0.HasValue)
 	*outNullableInt = __xamarin_nullified__0.Value;
 ",
 			];
@@ -1499,7 +1499,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				outNSObject,
-@"if (outNSObject is not null)
+				@"if (outNSObject is not null)
 	*outNSObject = Runtime.RetainAndAutoreleaseNativeObject(__xamarin_pref0);
 ",
 			];
@@ -1526,7 +1526,7 @@ namespace NS {
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
 	}
-	
+
 	[Theory]
 	[AllSupportedPlatformsClassData<TestDataGetTrampolinePostInvokeArgumentConversions>]
 	void GetTrampolinePostInvokeArgumentConversionsTests (ApplePlatform platform, string trampolineName, string inputText, string expectedExpression)

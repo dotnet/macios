@@ -23,11 +23,6 @@
         </value>
     </data>
     
-    <data name="E0003" xml:space="preserve">
-        <value>Error executing tool '{0}': {1}
-        </value>
-    </data>
-    
     <data name="E0004" xml:space="preserve">
         <value>Failed to codesign '{0}': {1}
         </value>
@@ -514,11 +509,6 @@
     
     <data name="E0115" xml:space="preserve">
         <value>Error writing archived-expanded-entitlements.xcent file: {0}
-        </value>
-    </data>
-    
-    <data name="M0116" xml:space="preserve">
-        <value>Tool {0} execution finished.
         </value>
     </data>
     

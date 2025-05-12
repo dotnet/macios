@@ -44,7 +44,7 @@ namespace Xamarin.MacDev.Tasks {
 				task.ProvisioningProfile = Path.Combine (Path.GetDirectoryName (GetType ().Assembly.Location)!, "Resources", mobileProvision);
 			task.SdkPlatform = "iPhoneOS";
 			task.SdkVersion = "6.1";
-			task.TargetFrameworkMoniker = "Xamarin.iOS,v1.0";
+			task.TargetFrameworkMoniker = TargetFramework.DotNet_iOS_String;
 
 			compiledEntitlements = task.CompiledEntitlements.ItemSpec;
 			archivedEntitlements = Path.Combine (AppBundlePath, "archived-expanded-entitlements.xcent");

@@ -9,7 +9,7 @@ using Xamarin.Utils;
 namespace Xamarin.MMP.Tests {
 	[TestFixture]
 	public class TargetFrameworkDetectionTests {
-		TargetFramework [] XMTargetFrameworks = { TargetFramework.Xamarin_Mac_2_0_Mobile, TargetFramework.Xamarin_Mac_4_5_Full, TargetFramework.Xamarin_Mac_4_5_System };
+		TargetFramework [] XMTargetFrameworks = { };
 
 		string CreateTestExe (string tmpDir)
 		{
@@ -40,10 +40,7 @@ namespace Xamarin.MMP.Tests {
 
 		string GetWrongXMReference (TargetFramework target)
 		{
-			if (target.Profile == "Mobile")
-				return GetXMReference (TargetFramework.Xamarin_Mac_4_5_Full);
-			else
-				return GetXMReference (TargetFramework.Xamarin_Mac_2_0_Mobile);
+			throw new NotImplementedException ();
 		}
 
 		string GetXMReference (TargetFramework target)

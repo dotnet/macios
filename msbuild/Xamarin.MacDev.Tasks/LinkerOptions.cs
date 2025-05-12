@@ -6,17 +6,18 @@ using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 
 using Xamarin.Localization.MSBuild;
+using Xamarin.Utils;
 
 namespace Xamarin.MacDev.Tasks {
 	public class LinkerOptions {
-		public CommandLineArgumentBuilder Arguments { get; private set; }
+		public List<string> Arguments { get; private set; }
 		public HashSet<string> WeakFrameworks { get; private set; }
 		public HashSet<string> Frameworks { get; private set; }
 		public bool Cxx { get; set; }
 
 		public LinkerOptions ()
 		{
-			Arguments = new CommandLineArgumentBuilder ();
+			Arguments = new List<string> ();
 			WeakFrameworks = new HashSet<string> ();
 			Frameworks = new HashSet<string> ();
 		}
@@ -44,7 +45,7 @@ namespace Xamarin.MacDev.Tasks {
 						Arguments.Add ("-force_load");
 					}
 
-					Arguments.AddQuoted (item.ItemSpec);
+					Arguments.Add (item.ItemSpec);
 
 					value = item.GetMetadata ("IsCxx");
 
@@ -62,15 +63,15 @@ namespace Xamarin.MacDev.Tasks {
 					var lib = Path.GetFileName (path);
 					if (lib.StartsWith ("lib", StringComparison.Ordinal)) {
 						if (!string.IsNullOrEmpty (directory) && !libraryPaths.Contains (directory)) {
-							Arguments.AddQuoted ("-L" + directory);
+							Arguments.Add ("-L" + directory);
 							libraryPaths.Add (directory);
 						}
 						// remove extension + "lib" prefix
 						if (lib.EndsWith (".dylib", StringComparison.OrdinalIgnoreCase))
 							lib = Path.GetFileNameWithoutExtension (lib);
-						Arguments.AddQuoted ("-l" + lib.Substring (3));
+						Arguments.Add ("-l" + lib.Substring (3));
 					} else {
-						Arguments.AddQuoted (path);
+						Arguments.Add (path);
 					}
 				} else {
 					Log.LogWarning (MSBStrings.W0052, item.ItemSpec);
@@ -98,10 +99,10 @@ namespace Xamarin.MacDev.Tasks {
 				// Note: these get merged into gccArgs by our caller
 				value = item.GetMetadata ("LinkerFlags");
 				if (!string.IsNullOrEmpty (value)) {
-					var linkerFlags = CommandLineArgumentBuilder.Parse (value);
+					var linkerFlags = StringUtils.ParseArguments (value);
 
 					foreach (var flag in linkerFlags)
-						Arguments.AddQuoted (flag);
+						Arguments.Add (flag);
 				}
 			}
 		}

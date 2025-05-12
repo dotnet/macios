@@ -97,7 +97,7 @@ namespace Xamarin.MacDev.Tasks {
 					// the MtouchExtraArgs property for instance):
 					extraArgs = extraArgs.Replace ('\\', '/');
 				}
-				var args = CommandLineArgumentBuilder.Parse (extraArgs);
+				var args = StringUtils.ParseArguments (extraArgs);
 				List<string> xml = null;
 				List<string> customLinkFlags = null;
 				var aot = new List<ITaskItem> ();

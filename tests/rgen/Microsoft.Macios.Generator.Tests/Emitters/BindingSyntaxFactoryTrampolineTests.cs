@@ -3,6 +3,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Macios.Generator.DataModel;
@@ -10,6 +11,7 @@ using Xamarin.Tests;
 using Xamarin.Utils;
 using Xunit;
 using static Microsoft.Macios.Generator.Emitters.BindingSyntaxFactory;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Microsoft.Macios.Generator.Tests.Emitters;
 
@@ -251,4 +253,43 @@ namespace NS {
 		var expression = GetTrampolineInvokeReturnType (parameter.Type, auxVariableName);
 		Assert.Equal (expectedExpression, expression?.ToString ());
 	}
+
+	class TestDataCreateNativeClass : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
+		{
+			yield return [
+				"GetGeolocationCallback",
+				ImmutableArray.Create (
+					Argument (IdentifierName ("arg0"))
+				),
+				"NIDGetGeolocationCallback.Create (arg0)!"
+			];
+
+			yield return [
+				"AVAssetImageGenerateAsynchronouslyForTimeCompletionHandler",
+				ImmutableArray.Create (
+					Argument (IdentifierName ("arg0")),
+					Argument (IdentifierName ("arg1"))
+				),
+				"NIDAVAssetImageGenerateAsynchronouslyForTimeCompletionHandler.Create (arg0, arg1)!"
+			];
+
+			yield return [
+				"AVAssetImageGeneratorCompletionHandler",
+				ImmutableArray.Create<ArgumentSyntax> (),
+				"NIDAVAssetImageGeneratorCompletionHandler.Create ()!"
+			];
+		}
+
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
+	}
+
+	[Theory]
+	[ClassData (typeof (TestDataCreateNativeClass))]
+	public void CreateTrampolineNativeInvocationClassTest (string trampolineName, ImmutableArray<ArgumentSyntax> arguments, string expectedExpression)
+	{
+		var expression = CreateTrampolineNativeInvocationClass (trampolineName, arguments);
+		Assert.Equal (expectedExpression, expression.ToString ());
+	}
+
 }

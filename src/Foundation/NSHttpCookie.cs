@@ -23,67 +23,68 @@ using ObjCRuntime;
 using System;
 using System.Net;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Foundation {
 	public partial class NSHttpCookie {
 		// same order as System.Net.Cookie
 		// http://msdn.microsoft.com/en-us/library/a18ka3h2.aspx
+		/// <summary>Create a new cookie with the supplied name and value.</summary>
 		/// <param name="name">Cookie's name. Cannot be null.</param>
-		///         <param name="value">Cookie's value. Cannot be null.</param>
-		///         <summary>Create a new cookie with the supplied name and value.</summary>
-		///         <remarks>A default Path and Domain will be used to ensure a valid instance is created.</remarks>
-		public NSHttpCookie (string name, string value) : this (name, value, null, null)
+		/// <param name="value">Cookie's value. Cannot be null.</param>
+		/// <remarks>A default Path and Domain will be used to ensure a valid instance is created.</remarks>
+		public NSHttpCookie (string name, string value)
+			: this (name, value, null, null)
 		{
-			CreateCookie (name, value, null, null, null, null, null, null, null, null, null, null);
 		}
 
+		/// <summary>Create a new cookie with the supplied name, value and path.</summary>
 		/// <param name="name">Cookie's name. Cannot be null.</param>
-		///         <param name="value">Cookie's value. Cannot be null.</param>
-		///         <param name="path">Path where the cookie will be applied on the domain. Using "/" will send the cookie to every URL on the domain.</param>
-		///         <summary>Create a new cookie with the supplied name, value and path.</summary>
-		///         <remarks>A default Domain will be used to ensure a valid instance is created</remarks>
-		public NSHttpCookie (string name, string value, string path) : this (name, value, path, null)
+		/// <param name="value">Cookie's value. Cannot be null.</param>
+		/// <param name="path">Path where the cookie will be applied on the domain. Using "/" will send the cookie to every URL on the domain.</param>
+		/// <remarks>A default Domain will be used to ensure a valid instance is created</remarks>
+		public NSHttpCookie (string name, string value, string? path)
+			: this (name, value, path, null)
 		{
-			CreateCookie (name, value, path, null, null, null, null, null, null, null, null, null);
 		}
 
+		/// <summary>Create a new cookie with the supplied name, value, path and domain.</summary>
 		/// <param name="name">Cookie's name. Cannot be null.</param>
-		///         <param name="value">Cookie's value. Cannot be null.</param>
-		///         <param name="path">Path where the cookie will be applied on the domain. Using "/" will send the cookie to every URL on the domain.</param>
-		///         <param name="domain">Domain (e.g. xamarin.com) related to the cookie</param>
-		///         <summary>Create a new cookie with the supplied name, value, path and domain.</summary>
-		///         <remarks>An ArgumentNullException will be thrown if either `name` or `value` are null.</remarks>
-		public NSHttpCookie (string name, string value, string path, string domain)
+		/// <param name="value">Cookie's value. Cannot be null.</param>
+		/// <param name="path">Path where the cookie will be applied on the domain. Using "/" will send the cookie to every URL on the domain.</param>
+		/// <param name="domain">Domain (e.g. microsoft.com) related to the cookie</param>
+		/// <remarks>An <see cref="ArgumentNullException" /> will be thrown if either <paramref name="name" /> or <paramref name="value" /> are null.</remarks>
+		public NSHttpCookie (string name, string value, string? path, string? domain)
+			: base (NSObjectFlag.Empty)
 		{
 			CreateCookie (name, value, path, domain, null, null, null, null, null, null, null, null);
 		}
 
 		// FIXME: should we expose more complex/long ctor or point people to use a Cookie ?
 
-		/// <param name="cookie">An existing Cookie from the .NET framework</param>
-		///         <summary>Create a new cookie from the supplied System.Net.Cookie instance properties</summary>
-		///         <remarks>This constructor will throw an ArgumentNullException if `cookie` is null</remarks>
+		/// <summary>Create a new cookie from the supplied <see cref="System.Net.Cookie" /> instance's properties.</summary>
+		/// <param name="cookie">An existing <see cref="System.Net.Cookie" /> from the .NET framework</param>
+		/// <remarks>This constructor will throw an <see cref="ArgumentNullException" /> if <paramref name="cookie" /> is null</remarks>
 		public NSHttpCookie (Cookie cookie)
+			: base (NSObjectFlag.Empty)
 		{
 			if (cookie is null)
-				throw new ArgumentNullException ("cookie");
+				throw new ArgumentNullException (nameof (cookie));
 
-			string commentUrl = cookie.CommentUri is not null ? cookie.CommentUri.ToString () : null;
+			var commentUrl = cookie.CommentUri?.ToString ();
 			bool? discard = null;
 			if (cookie.Discard)
 				discard = true;
 			CreateCookie (cookie.Name, cookie.Value, cookie.Path, cookie.Domain, cookie.Comment, commentUrl, discard, cookie.Expires, null, cookie.Port, cookie.Secure, cookie.Version);
 		}
 
-		void CreateCookie (string name, string value, string path, string domain, string comment, string commentUrl, bool? discard, DateTime? expires, int? maximumAge, string ports, bool? secure, int? version)
+		void CreateCookie (string name, string value, string? path, string? domain, string? comment, string? commentUrl, bool? discard, DateTime? expires, int? maximumAge, string? ports, bool? secure, int? version)
 		{
 			// mandatory checks or defaults
 			if (name is null)
-				throw new ArgumentNullException ("name");
+				throw new ArgumentNullException (nameof (name));
 			if (value is null)
-				throw new ArgumentNullException ("value");
+				throw new ArgumentNullException (nameof (value));
 			if (String.IsNullOrEmpty (path))
 				path = "/"; // default in .net
 			if (String.IsNullOrEmpty (domain))
@@ -115,10 +116,16 @@ namespace Foundation {
 				if (version.HasValue)
 					properties.Add (NSHttpCookie.KeyVersion, new NSString (version.Value.ToString ()));
 
+#if NET10_0_OR_GREATER
+				var throwOnInitFailure = true;
+#else
+				var throwOnInitFailure = false;
+#endif
+
 				if (IsDirectBinding) {
-					Handle = Messaging.IntPtr_objc_msgSend_IntPtr (this.Handle, Selector.GetHandle ("initWithProperties:"), properties.Handle);
+					InitializeHandle (Messaging.IntPtr_objc_msgSend_IntPtr (this.Handle, Selector.GetHandle ("initWithProperties:"), properties.Handle), "initWithProperties:", throwOnInitFailure);
 				} else {
-					Handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr (this.SuperHandle, Selector.GetHandle ("initWithProperties:"), properties.Handle);
+					InitializeHandle (Messaging.IntPtr_objc_msgSendSuper_IntPtr (this.SuperHandle, Selector.GetHandle ("initWithProperties:"), properties.Handle), "initWithProperties:", throwOnInitFailure);
 				}
 			}
 		}

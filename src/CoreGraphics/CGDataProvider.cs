@@ -123,7 +123,7 @@ namespace CoreGraphics {
 		}
 
 		/// <param name="url">To be added.</param>
-		///         <summary>Creates a new <see cref="T:CoreGraphics.CGDataProvider" /> from the data at the specified <paramref name="url" />.</summary>
+		///         <summary>Creates a new <see cref="CoreGraphics.CGDataProvider" /> from the data at the specified <paramref name="url" />.</summary>
 		///         <remarks>To be added.</remarks>
 		public CGDataProvider (NSUrl url)
 			: base (Create (url), true)
@@ -144,7 +144,7 @@ namespace CoreGraphics {
 		}
 
 		/// <param name="data">To be added.</param>
-		///         <summary>Creates a new <see cref="T:CoreGraphics.CGDataProvider" /> from the provided <paramref name="data" />.</summary>
+		///         <summary>Creates a new <see cref="CoreGraphics.CGDataProvider" /> from the provided <paramref name="data" />.</summary>
 		///         <remarks>To be added.</remarks>
 		public CGDataProvider (NSData data)
 			: base (Create (data), true)
@@ -223,7 +223,7 @@ namespace CoreGraphics {
 		/// <param name="memoryBlock">To be added.</param>
 		///         <param name="size">To be added.</param>
 		///         <param name="releaseMemoryBlockCallback">To be added.</param>
-		///         <summary>Creates a new <see cref="T:CoreGraphics.CGDataProvider" /> from the data at the specified <paramref name="memoryBlock" />.</summary>
+		///         <summary>Creates a new <see cref="CoreGraphics.CGDataProvider" /> from the data at the specified <paramref name="memoryBlock" />.</summary>
 		///         <remarks>To be added.</remarks>
 		public CGDataProvider (IntPtr memoryBlock, int size, Action<IntPtr> releaseMemoryBlockCallback)
 			: base (Create (memoryBlock, size, releaseMemoryBlockCallback), true)
@@ -257,7 +257,7 @@ namespace CoreGraphics {
 		}
 
 		/// <param name="buffer">To be added.</param>
-		///         <summary>Creates a new <see cref="T:CoreGraphics.CGDataProvider" /> from the data in the provided <paramref name="buffer" />.</summary>
+		///         <summary>Creates a new <see cref="CoreGraphics.CGDataProvider" /> from the data in the provided <paramref name="buffer" />.</summary>
 		///         <remarks>To be added.</remarks>
 		public CGDataProvider (byte [] buffer)
 			: this (buffer, 0, buffer.Length)

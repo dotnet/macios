@@ -69,18 +69,18 @@ namespace CoreText {
 	public enum CTFontSymbolicTraits : uint {
 		/// <summary>Used when no values are set.</summary>
 		None = 0,
-		/// <summary>This is an italic font.  If querying <see cref="T:CoreText.CTFontTraits" /> you can get more
-		/// 	  information about the slant from the <see cref="P:CoreText.CTFontTraits.Slant" /> property.</summary>
+		/// <summary>This is an italic font.  If querying <see cref="CoreText.CTFontTraits" /> you can get more
+		/// 	  information about the slant from the <see cref="CoreText.CTFontTraits.Slant" /> property.</summary>
 		Italic = (1 << 0),
 		/// <summary>
-		/// 	  This is a bold font.  If querying <see cref="T:CoreText.CTFontTraits" /> you can get more
-		/// 	  information about the weight from the <see cref="P:CoreText.CTFontTraits.Weight" /> property.
+		/// 	  This is a bold font.  If querying <see cref="CoreText.CTFontTraits" /> you can get more
+		/// 	  information about the weight from the <see cref="CoreText.CTFontTraits.Weight" /> property.
 		/// 	</summary>
 		Bold = (1 << 1),
 		/// <summary>This is an expanded font.</summary>
 		Expanded = (1 << 5),
-		/// <summary>This is a condensed font.  If querying <see cref="T:CoreText.CTFontTraits" /> you can get more
-		/// 	  information about the width from the <see cref="P:CoreText.CTFontTraits.Width" /> property.</summary>
+		/// <summary>This is a condensed font.  If querying <see cref="CoreText.CTFontTraits" /> you can get more
+		/// 	  information about the width from the <see cref="CoreText.CTFontTraits.Width" /> property.</summary>
 		Condensed = (1 << 6),
 		/// <summary>Use fixed fonts if available.</summary>
 		MonoSpace = (1 << 10),
@@ -98,7 +98,7 @@ namespace CoreText {
 	}
 
 	// defined as uint32_t - /System/Library/Frameworks/CoreText.framework/Headers/CTFontTraits.h
-	/// <summary>An enumeration whose values specify the serif style of a <see cref="T:CoreText.CTFont" />.</summary>
+	/// <summary>An enumeration whose values specify the serif style of a <see cref="CoreText.CTFont" />.</summary>
 	///     <remarks>To be added.</remarks>
 	public enum CTFontStylisticClass : uint {
 		/// <summary>To be added.</summary>
@@ -127,7 +127,7 @@ namespace CoreText {
 		Symbolic = ((uint) 12 << CTFontTraits.ClassMaskShift),
 	}
 
-	/// <summary>The standard traits for a <see cref="T:CoreText.CTFontDescriptor" />.</summary>
+	/// <summary>The standard traits for a <see cref="CoreText.CTFontDescriptor" />.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]

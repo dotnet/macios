@@ -19,11 +19,11 @@ namespace WatchConnectivity {
 	public enum WCErrorCode : long {
 		/// <summary>The exact error is unknown.</summary>
 		GenericError = 7001,
-		/// <summary>The device does not support <see cref="T:WatchConnectivity.WCSession" /> objects.</summary>
+		/// <summary>The device does not support <see cref="WatchConnectivity.WCSession" /> objects.</summary>
 		SessionNotSupported = 7002,
-		/// <summary>There is no active extension delegate for the <see cref="T:WatchConnectivity.WCSession" />.</summary>
+		/// <summary>There is no active extension delegate for the <see cref="WatchConnectivity.WCSession" />.</summary>
 		SessionMissingDelegate = 7003,
-		/// <summary>The companion app has not activated a <see cref="T:WatchConnectivity.WCSession" />.</summary>
+		/// <summary>The companion app has not activated a <see cref="WatchConnectivity.WCSession" />.</summary>
 		SessionNotActivated = 7004,
 		/// <summary>Indicates that no device was paired.</summary>
 		DeviceNotPaired = 7005,

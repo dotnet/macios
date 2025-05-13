@@ -92,8 +92,8 @@ namespace CoreGraphics {
 		}
 
 		/// <summary>Create an event tap</summary>
-		/// <return>A <see cref="T:CoreFoundation.CFMachPort" /> that represents the new tap, or null if the tap couldn't be created.</return>
-		/// <remarks>Calling Dispose on the returned <see cref="T:CoreFoundation.CFMachPort" /> (or letting the GC collect it) will release the tap as well.</remarks>
+		/// <return>A <see cref="CoreFoundation.CFMachPort" /> that represents the new tap, or null if the tap couldn't be created.</return>
+		/// <remarks>Calling Dispose on the returned <see cref="CoreFoundation.CFMachPort" /> (or letting the GC collect it) will release the tap as well.</remarks>
 		/// <param name="location">The location of the tap.</param>
 		/// <param name="place">The placement of the tap in the list of active taps.</param>
 		/// <param name="options">Any options for the new tap.</param>
@@ -133,8 +133,8 @@ namespace CoreGraphics {
 #endif
 
 		/// <summary>Create an event tap monitoring the specified process serial number (psn)</summary>
-		/// <return>A <see cref="T:CoreFoundation.CFMachPort" /> that represents the new tap, or null if the tap couldn't be created.</return>
-		/// <remarks>Calling Dispose on the returned <see cref="T:CoreFoundation.CFMachPort" /> (or letting the GC collect it) will release the tap as well.</remarks>
+		/// <return>A <see cref="CoreFoundation.CFMachPort" /> that represents the new tap, or null if the tap couldn't be created.</return>
+		/// <remarks>Calling Dispose on the returned <see cref="CoreFoundation.CFMachPort" /> (or letting the GC collect it) will release the tap as well.</remarks>
 		/// <param name="processSerialNumber">The process serial number (psn) to monitor</param>
 		/// <param name="place">The placement of the tap in the list of active taps.</param>
 		/// <param name="options">Any options for the new tap.</param>
@@ -155,8 +155,8 @@ namespace CoreGraphics {
 		extern static unsafe IntPtr CGEventTapCreateForPid (int pid, CGEventTapPlacement place, CGEventTapOptions options, CGEventMask mask, delegate* unmanaged<IntPtr, CGEventType, IntPtr, IntPtr, IntPtr> cback, IntPtr data);
 
 		/// <summary>Create an event tap monitoring the specified process</summary>
-		/// <return>A <see cref="T:CoreFoundation.CFMachPort" /> that represents the new tap, or null if the tap couldn't be created.</return>
-		/// <remarks>Calling Dispose on the returned <see cref="T:CoreFoundation.CFMachPort" /> (or letting the GC collect it) will release the tap as well.</remarks>
+		/// <return>A <see cref="CoreFoundation.CFMachPort" /> that represents the new tap, or null if the tap couldn't be created.</return>
+		/// <remarks>Calling Dispose on the returned <see cref="CoreFoundation.CFMachPort" /> (or letting the GC collect it) will release the tap as well.</remarks>
 		/// <param name="pid">The pid to monitor</param>
 		/// <param name="place">The placement of the tap in the list of active taps.</param>
 		/// <param name="options">Any options for the new tap.</param>

@@ -22,6 +22,46 @@
 			"LciFile": "",
 			"Parser": "",
 			"LssFiles": []
+		  },
+		  {
+			"SourceFile": "@WORKING_DIRECTORY@/../../src/Resources.resx",
+			"Languages": "",
+			"CopyOption": "LangIDOnName",
+			"OutputPath": "@WORKING_DIRECTORY@/../../src/TranslatedAssemblies",
+			"LclFile": "",
+			"LciFile": "",
+			"Parser": "",
+			"LssFiles": []
+		  },
+		  {
+			"SourceFile": "@WORKING_DIRECTORY@/../../src/rgen/Microsoft.Macios.Generator/Resources.resx",
+			"Languages": "",
+			"CopyOption": "LangIDOnName",
+			"OutputPath": "@WORKING_DIRECTORY@/../../src/rgen/Microsoft.Macios.Generator/TranslatedAssemblies",
+			"LclFile": "",
+			"LciFile": "",
+			"Parser": "",
+			"LssFiles": []
+		  },
+		  {
+			"SourceFile": "@WORKING_DIRECTORY@/../../src/rgen/Microsoft.Macios.Generator/Resources.resx",
+			"Languages": "",
+			"CopyOption": "LangIDOnName",
+			"OutputPath": "@WORKING_DIRECTORY@/../../src/rgen/Microsoft.Macios.Generator/TranslatedAssemblies",
+			"LclFile": "",
+			"LciFile": "",
+			"Parser": "",
+			"LssFiles": []
+		  },
+		  {
+			"SourceFile": "@WORKING_DIRECTORY@/../../src/rgen/Microsoft.Macios.Bindings.Analyzer/Resources.resx",
+			"Languages": "",
+			"CopyOption": "LangIDOnName",
+			"OutputPath": "@WORKING_DIRECTORY@/../../src/rgen/Microsoft.Macios.Bindings.Analyzer/TranslatedAssemblies",
+			"LclFile": "",
+			"LciFile": "",
+			"Parser": "",
+			"LssFiles": []
 		  }
 		],
 		"LssFiles": [],

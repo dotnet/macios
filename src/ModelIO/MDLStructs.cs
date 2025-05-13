@@ -30,7 +30,7 @@ namespace ModelIO {
 
 #if !COREBUILD
 #if NET
-	/// <summary>Extension methods for <see cref="T:ModelIO.MDLVertexFormat" />.</summary>
+	/// <summary>Extension methods for <see cref="ModelIO.MDLVertexFormat" />.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]

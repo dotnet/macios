@@ -20,7 +20,7 @@ namespace TestNamespace;
 public partial class CIImage
 {
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	static readonly NativeHandle class_ptr = Class.GetHandle ("CIImage");
+	static readonly global::ObjCRuntime.NativeHandle class_ptr = Class.GetHandle ("CIImage");
 
 	/// <summary>The Objective-C class handle for this class.</summary>
 	/// <value>The pointer to the Objective-C class.</value>
@@ -29,7 +29,7 @@ public partial class CIImage
 	///     This value contains the pointer to the Objective-C class.
 	///     It is similar to calling the managed <see cref=\"ObjCRuntime.Class.GetHandle(string)\" /> or the native <see href=\"https://developer.apple.com/documentation/objectivec/1418952-objc_getclass\">objc_getClass</see> method with the type name.
 	/// </remarks>
-	public override NativeHandle ClassHandle => class_ptr;
+	public override global::ObjCRuntime.NativeHandle ClassHandle => class_ptr;
 
 	/// <summary>Creates a new <see cref="CIImage" /> with default values.</summary>
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
@@ -102,7 +102,7 @@ public partial class CIImage
 	/// </remarks>
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable (EditorBrowsableState.Advanced)]
-	protected internal CIImage (NativeHandle handle) : base (handle) {}
+	protected internal CIImage (global::ObjCRuntime.NativeHandle handle) : base (handle) {}
 
 	static Foundation.NSString? _DidProcessEditingNotification;
 
@@ -121,7 +121,7 @@ public partial class CIImage
 		get
 		{
 			if (_DidProcessEditingNotification is null)
-				_DidProcessEditingNotification = global::ObjCRuntime.Dlfcn.GetStringConstant (Libraries.TestNamespace.Handle, "kCIFormatLA8")!;
+				_DidProcessEditingNotification = global::ObjCRuntime.Dlfcn.GetStringConstant (global::ObjCRuntime.Libraries.TestNamespace.Handle, "kCIFormatLA8")!;
 			return _DidProcessEditingNotification;
 		}
 	}
@@ -140,7 +140,7 @@ public partial class CIImage
 		[SupportedOSPlatform ("maccatalyst13.1")]
 		get
 		{
-			return global::ObjCRuntime.Dlfcn.GetInt32 (Libraries.TestNamespace.Handle, "kCIFormatABGR8");
+			return global::ObjCRuntime.Dlfcn.GetInt32 (global::ObjCRuntime.Libraries.TestNamespace.Handle, "kCIFormatABGR8");
 		}
 	}
 
@@ -158,7 +158,7 @@ public partial class CIImage
 		[SupportedOSPlatform ("maccatalyst13.1")]
 		get
 		{
-			return global::ObjCRuntime.Dlfcn.GetInt32 (Libraries.TestNamespace.Handle, "kCIFormatLA8");
+			return global::ObjCRuntime.Dlfcn.GetInt32 (global::ObjCRuntime.Libraries.TestNamespace.Handle, "kCIFormatLA8");
 		}
 
 		[SupportedOSPlatform ("macos14.0")]
@@ -167,7 +167,7 @@ public partial class CIImage
 		[SupportedOSPlatform ("maccatalyst17.0")]
 		set
 		{
-			global::ObjCRuntime.Dlfcn.SetInt32 (Libraries.TestNamespace.Handle, "kCIFormatLA8", value);
+			global::ObjCRuntime.Dlfcn.SetInt32 (global::ObjCRuntime.Libraries.TestNamespace.Handle, "kCIFormatLA8", value);
 		}
 	}
 
@@ -185,7 +185,7 @@ public partial class CIImage
 		[SupportedOSPlatform ("maccatalyst13.1")]
 		get
 		{
-			return global::ObjCRuntime.Dlfcn.GetInt32 (Libraries.TestNamespace.Handle, "FormatRGBA16Int");
+			return global::ObjCRuntime.Dlfcn.GetInt32 (global::ObjCRuntime.Libraries.TestNamespace.Handle, "FormatRGBA16Int");
 		}
 	}
 

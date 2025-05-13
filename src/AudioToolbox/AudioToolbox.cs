@@ -14,7 +14,7 @@ using ObjCRuntime;
 using Foundation;
 
 namespace AudioToolbox {
-	/// <summary>Information on an instrument. Returned by <see cref="M:AudioToolbox.SoundBank.GetInstrumentInfo(Foundation.NSUrl)" />.</summary>
+	/// <summary>Information on an instrument. Returned by <see cref="AudioToolbox.SoundBank.GetInstrumentInfo(Foundation.NSUrl)" />.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]

@@ -18,7 +18,7 @@ using Foundation;
 namespace VideoSubscriberAccount {
 	public partial class VSAccountManager {
 
-		/// <param name="accessOptions">If not empty, may contain the key <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Video%20Subscriber%20Account%20VSCheck%20Access%20Option%20Keys&amp;scope=Xamarin" title="P:VideoSubscriberAccount.VSCheckAccessOptionKeys">P:VideoSubscriberAccount.VSCheckAccessOptionKeys</a></format>.</param>
+		/// <param name="accessOptions">If not empty, may contain the key <see cref="VideoSubscriberAccount.VSCheckAccessOptionKeys" />.</param>
 		///         <param name="completionHandler">Called by the system with the results of the permission check.</param>
 		///         <summary>Checks whether the user has provided permission for the app to access their subscription information.</summary>
 		///         <remarks>To be added.</remarks>

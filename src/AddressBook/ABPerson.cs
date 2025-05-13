@@ -189,7 +189,7 @@ namespace AddressBook {
 
 		/// <summary>Represents the value associated with the constant kABPersonAddressCityKey</summary>
 		///         <value>
-		///           A <see cref="T:Foundation.NSString" /> containing the
+		///           A <see cref="Foundation.NSString" /> containing the
 		///           key to use for the City portion of the address.
 		///         </value>
 		///         <remarks>
@@ -197,7 +197,7 @@ namespace AddressBook {
 		public static NSString? City { get; private set; }
 		/// <summary>Represents the value associated with the constant kABPersonAddressCountryKey</summary>
 		///         <value>
-		///           A <see cref="T:Foundation.NSString" /> containing the
+		///           A <see cref="Foundation.NSString" /> containing the
 		///           key to use for the Country portion of the address.
 		///         </value>
 		///         <remarks>
@@ -205,7 +205,7 @@ namespace AddressBook {
 		public static NSString? Country { get; private set; }
 		/// <summary>Represents the value associated with the constant kABPersonAddressCountryCodeKey</summary>
 		///         <value>
-		///           A <see cref="T:Foundation.NSString" /> containing the
+		///           A <see cref="Foundation.NSString" /> containing the
 		///           key to use for the CountryCode portion of the address.
 		///         </value>
 		///         <remarks>
@@ -220,7 +220,7 @@ namespace AddressBook {
 		public static NSString? CountryCode { get; private set; }
 		/// <summary>Represents the value associated with the constant kABPersonAddressStateKey</summary>
 		///         <value>
-		///           A <see cref="T:Foundation.NSString" /> containing the
+		///           A <see cref="Foundation.NSString" /> containing the
 		///           key to use for the State portion of the address.
 		///         </value>
 		///         <remarks>
@@ -228,7 +228,7 @@ namespace AddressBook {
 		public static NSString? State { get; private set; }
 		/// <summary>Represents the value associated with the constant kABPersonAddressStreetKey</summary>
 		///         <value>
-		///           A <see cref="T:Foundation.NSString" /> containing the
+		///           A <see cref="Foundation.NSString" /> containing the
 		///           key to use for the Street portion of the address.
 		///         </value>
 		///         <remarks>
@@ -236,7 +236,7 @@ namespace AddressBook {
 		public static NSString? Street { get; private set; }
 		/// <summary>Represents the value associated with the constant kABPersonAddressZIPKey</summary>
 		///         <value>
-		///           A <see cref="T:Foundation.NSString" /> containing the
+		///           A <see cref="Foundation.NSString" /> containing the
 		///           key to use for the Zip portion of the address.
 		///         </value>
 		///         <remarks>
@@ -270,7 +270,7 @@ namespace AddressBook {
 	public static class ABPersonDateLabel {
 		/// <summary>Represents the value associated with the constant kABPersonAnniversaryLabel</summary>
 		///         <value>
-		///           A <see cref="T:Foundation.NSString" /> containing
+		///           A <see cref="Foundation.NSString" /> containing
 		///           the "Birthdate" label.
 		///         </value>
 		///         <remarks>
@@ -405,7 +405,7 @@ namespace AddressBook {
 	public static class ABPersonPhoneLabel {
 		/// <summary>Represents the value associated with the constant kABPersonPhoneHomeFAXLabel</summary>
 		///         <value>
-		///           A <see cref="T:Foundation.NSString" /> containing
+		///           A <see cref="Foundation.NSString" /> containing
 		///           the Home fax phone number label.
 		///         </value>
 		///         <remarks>
@@ -413,7 +413,7 @@ namespace AddressBook {
 		public static NSString? HomeFax { get; private set; }
 		/// <summary>Represents the value associated with the constant kABPersonPhoneIPhoneLabel</summary>
 		///         <value>
-		///           A <see cref="T:Foundation.NSString" /> containing
+		///           A <see cref="Foundation.NSString" /> containing
 		///           the iPhone phone number label.
 		///         </value>
 		///         <remarks>
@@ -421,7 +421,7 @@ namespace AddressBook {
 		public static NSString? iPhone { get; private set; }
 		/// <summary>Represents the value associated with the constant kABPersonPhoneMainLabel</summary>
 		///         <value>
-		///           A <see cref="T:Foundation.NSString" /> containing
+		///           A <see cref="Foundation.NSString" /> containing
 		///           the Main phone number label.
 		///         </value>
 		///         <remarks>
@@ -429,7 +429,7 @@ namespace AddressBook {
 		public static NSString? Main { get; private set; }
 		/// <summary>Represents the value associated with the constant kABPersonPhoneMobileLabel</summary>
 		///         <value>
-		///           A <see cref="T:Foundation.NSString" /> containing
+		///           A <see cref="Foundation.NSString" /> containing
 		///           the Mobile phone number label.
 		///         </value>
 		///         <remarks>
@@ -437,7 +437,7 @@ namespace AddressBook {
 		public static NSString? Mobile { get; private set; }
 		/// <summary>Represents the value associated with the constant kABPersonPhonePagerLabel</summary>
 		///         <value>
-		///           A <see cref="T:Foundation.NSString" /> containing
+		///           A <see cref="Foundation.NSString" /> containing
 		///           the Pager phone number label.
 		///         </value>
 		///         <remarks>
@@ -445,7 +445,7 @@ namespace AddressBook {
 		public static NSString? Pager { get; private set; }
 		/// <summary>Represents the value associated with the constant kABPersonPhoneWorkFAXLabel</summary>
 		///         <value>
-		///           A <see cref="T:Foundation.NSString" /> containing
+		///           A <see cref="Foundation.NSString" /> containing
 		///           the Work fax phone number label.
 		///         </value>
 		///         <remarks>
@@ -477,27 +477,27 @@ namespace AddressBook {
 
 	/// <summary>
 	///       Possible
-	///       <see cref="P:AddressBook.ABPersonInstantMessageKey.Service" />
+	///       <see cref="AddressBook.ABPersonInstantMessageKey.Service" />
 	///       key values.
 	///     </summary>
 	///     <remarks>
 	///       <para>
 	///         Instant message information is stored within
-	///         <see cref="T:Foundation.NSDictionary" /> instances where
+	///         <see cref="Foundation.NSDictionary" /> instances where
 	///         the the
-	///         <see cref="P:AddressBook.ABPersonInstantMessageKey.Service" />
+	///         <see cref="AddressBook.ABPersonInstantMessageKey.Service" />
 	///         key is used to store the service name, and the
-	///         <see cref="P:AddressBook.ABPersonInstantMessageKey.Username" />
+	///         <see cref="AddressBook.ABPersonInstantMessageKey.Username" />
 	///         key is used to store the service login name.
 	///       </para>
 	///       <para>
 	///         The <c>ABPersonInstantMessageService</c> stores predefined
-	///         <see cref="P:AddressBook.ABPersonInstantMessageKey.Service" />
+	///         <see cref="AddressBook.ABPersonInstantMessageKey.Service" />
 	///         values.
 	///       </para>
 	///     </remarks>
-	///     <altmember cref="M:AddressBook.ABPerson.GetInstantMessages" />
-	///     <altmember cref="M:AddressBook.ABPerson.SetInstantMessages(AddressBook.ABMultiValue{Foundation.NSDictionary})" />
+	///     <altmember cref="AddressBook.ABPerson.GetInstantMessages" />
+	///     <altmember cref="AddressBook.ABPerson.SetInstantMessages(AddressBook.ABMultiValue{Foundation.NSDictionary})" />
 	[SupportedOSPlatform ("ios")]
 	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -507,7 +507,7 @@ namespace AddressBook {
 	public static class ABPersonInstantMessageService {
 		/// <summary>Represents the value associated with the constant kABPersonInstantMessageServiceAIM</summary>
 		///         <value>
-		///           A <see cref="T:Foundation.NSString" /> containing
+		///           A <see cref="Foundation.NSString" /> containing
 		///           the AIM instant message service.
 		///         </value>
 		///         <remarks>
@@ -515,7 +515,7 @@ namespace AddressBook {
 		public static NSString? Aim { get; private set; }
 		/// <summary>Represents the value associated with the constant kABPersonInstantMessageServiceICQ</summary>
 		///         <value>
-		///           A <see cref="T:Foundation.NSString" /> containing
+		///           A <see cref="Foundation.NSString" /> containing
 		///           the ICQ instant message service.
 		///         </value>
 		///         <remarks>
@@ -523,7 +523,7 @@ namespace AddressBook {
 		public static NSString? Icq { get; private set; }
 		/// <summary>Represents the value associated with the constant kABPersonInstantMessageServiceJabber</summary>
 		///         <value>
-		///           A <see cref="T:Foundation.NSString" /> containing
+		///           A <see cref="Foundation.NSString" /> containing
 		///           the Jabber instant message service.
 		///         </value>
 		///         <remarks>
@@ -531,7 +531,7 @@ namespace AddressBook {
 		public static NSString? Jabber { get; private set; }
 		/// <summary>Represents the value associated with the constant kABPersonInstantMessageServiceMSN</summary>
 		///         <value>
-		///           A <see cref="T:Foundation.NSString" /> containing
+		///           A <see cref="Foundation.NSString" /> containing
 		///           the MSN instant message service.
 		///         </value>
 		///         <remarks>
@@ -539,7 +539,7 @@ namespace AddressBook {
 		public static NSString? Msn { get; private set; }
 		/// <summary>Represents the value associated with the constant kABPersonInstantMessageServiceYahoo</summary>
 		///         <value>
-		///           A <see cref="T:Foundation.NSString" /> containing
+		///           A <see cref="Foundation.NSString" /> containing
 		///           the Yahoo instant message service.
 		///         </value>
 		///         <remarks>
@@ -602,7 +602,7 @@ namespace AddressBook {
 	public static class ABPersonInstantMessageKey {
 		/// <summary>Represents the value associated with the constant kABPersonInstantMessageServiceKey</summary>
 		///         <value>
-		///           A <see cref="T:Foundation.NSString" /> containing the
+		///           A <see cref="Foundation.NSString" /> containing the
 		///           key to use for the Service portion of the instant message information.
 		///         </value>
 		///         <remarks>
@@ -610,7 +610,7 @@ namespace AddressBook {
 		public static NSString? Service { get; private set; }
 		/// <summary>Represents the value associated with the constant kABPersonInstantMessageUsernameKey</summary>
 		///         <value>
-		///           A <see cref="T:Foundation.NSString" /> containing the
+		///           A <see cref="Foundation.NSString" /> containing the
 		///           key to use for the Username portion of the instant message information.
 		///         </value>
 		///         <remarks>
@@ -640,7 +640,7 @@ namespace AddressBook {
 	public static class ABPersonUrlLabel {
 		/// <summary>Represents the value associated with the constant kABPersonHomePageLabel</summary>
 		///         <value>
-		///           A <see cref="T:Foundation.NSString" /> containing
+		///           A <see cref="Foundation.NSString" /> containing
 		///           the Home page URL label.
 		///         </value>
 		///         <remarks>
@@ -668,7 +668,7 @@ namespace AddressBook {
 	public static class ABPersonRelatedNamesLabel {
 		/// <summary>Represents the value associated with the constant kABPersonAssistantLabel</summary>
 		///         <value>
-		///           A <see cref="T:Foundation.NSString" /> containing
+		///           A <see cref="Foundation.NSString" /> containing
 		///           the Assistant related name label.
 		///         </value>
 		///         <remarks>
@@ -676,7 +676,7 @@ namespace AddressBook {
 		public static NSString? Assistant { get; private set; }
 		/// <summary>Represents the value associated with the constant kABPersonBrotherLabel</summary>
 		///         <value>
-		///           A <see cref="T:Foundation.NSString" /> containing
+		///           A <see cref="Foundation.NSString" /> containing
 		///           the Brother related name label.
 		///         </value>
 		///         <remarks>
@@ -684,7 +684,7 @@ namespace AddressBook {
 		public static NSString? Brother { get; private set; }
 		/// <summary>Represents the value associated with the constant kABPersonChildLabel</summary>
 		///         <value>
-		///           A <see cref="T:Foundation.NSString" /> containing
+		///           A <see cref="Foundation.NSString" /> containing
 		///           the Child related name label.
 		///         </value>
 		///         <remarks>
@@ -692,7 +692,7 @@ namespace AddressBook {
 		public static NSString? Child { get; private set; }
 		/// <summary>Represents the value associated with the constant kABPersonFatherLabel</summary>
 		///         <value>
-		///           A <see cref="T:Foundation.NSString" /> containing
+		///           A <see cref="Foundation.NSString" /> containing
 		///           the Father related name label.
 		///         </value>
 		///         <remarks>
@@ -700,7 +700,7 @@ namespace AddressBook {
 		public static NSString? Father { get; private set; }
 		/// <summary>Represents the value associated with the constant kABPersonFriendLabel</summary>
 		///         <value>
-		///           A <see cref="T:Foundation.NSString" /> containing
+		///           A <see cref="Foundation.NSString" /> containing
 		///           the Friend related name label.
 		///         </value>
 		///         <remarks>
@@ -708,7 +708,7 @@ namespace AddressBook {
 		public static NSString? Friend { get; private set; }
 		/// <summary>Represents the value associated with the constant kABPersonManagerLabel</summary>
 		///         <value>
-		///           A <see cref="T:Foundation.NSString" /> containing
+		///           A <see cref="Foundation.NSString" /> containing
 		///           the Manager related name label.
 		///         </value>
 		///         <remarks>
@@ -716,7 +716,7 @@ namespace AddressBook {
 		public static NSString? Manager { get; private set; }
 		/// <summary>Represents the value associated with the constant kABPersonMotherLabel</summary>
 		///         <value>
-		///           A <see cref="T:Foundation.NSString" /> containing
+		///           A <see cref="Foundation.NSString" /> containing
 		///           the Mother related name label.
 		///         </value>
 		///         <remarks>
@@ -724,7 +724,7 @@ namespace AddressBook {
 		public static NSString? Mother { get; private set; }
 		/// <summary>Represents the value associated with the constant kABPersonParentLabel</summary>
 		///         <value>
-		///           A <see cref="T:Foundation.NSString" /> containing
+		///           A <see cref="Foundation.NSString" /> containing
 		///           the Parent related name label.
 		///         </value>
 		///         <remarks>
@@ -732,7 +732,7 @@ namespace AddressBook {
 		public static NSString? Parent { get; private set; }
 		/// <summary>Represents the value associated with the constant kABPersonPartnerLabel</summary>
 		///         <value>
-		///           A <see cref="T:Foundation.NSString" /> containing
+		///           A <see cref="Foundation.NSString" /> containing
 		///           the Partner related name label.
 		///         </value>
 		///         <remarks>
@@ -740,7 +740,7 @@ namespace AddressBook {
 		public static NSString? Partner { get; private set; }
 		/// <summary>Represents the value associated with the constant kABPersonSisterLabel</summary>
 		///         <value>
-		///           A <see cref="T:Foundation.NSString" /> containing
+		///           A <see cref="Foundation.NSString" /> containing
 		///           the Sister related name label.
 		///         </value>
 		///         <remarks>
@@ -748,7 +748,7 @@ namespace AddressBook {
 		public static NSString? Sister { get; private set; }
 		/// <summary>Represents the value associated with the constant kABPersonSpouseLabel</summary>
 		///         <value>
-		///           A <see cref="T:Foundation.NSString" /> containing
+		///           A <see cref="Foundation.NSString" /> containing
 		///           the Spouse related name label.
 		///         </value>
 		///         <remarks>
@@ -783,10 +783,10 @@ namespace AddressBook {
 	///     <remarks>
 	///       <para>
 	///         Labels are used with
-	///         <see cref="M:AddressBook.ABAddressBook.LocalizedLabel(Foundation.NSString)" />,
-	///         <see cref="P:AddressBook.ABMultiValueEntry`1.Label" />,
-	///         <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:AddressBook.ABMultiValue`1.Add(`0,Foundation.NSString)&amp;scope=Xamarin" title="M:AddressBook.ABMultiValue`1.Add(`0,Foundation.NSString)">M:AddressBook.ABMultiValue`1.Add(`0,Foundation.NSString)</a></format>, and
-	///         <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:AddressBook.ABMultiValue`1.Insert(System.Int32,`0,Foundation.NSString)&amp;scope=Xamarin" title="M:AddressBook.ABMultiValue`1.Insert(System.Int32,`0,Foundation.NSString)">M:AddressBook.ABMultiValue`1.Insert(System.Int32,`0,Foundation.NSString)</a></format>.
+	///         <see cref="AddressBook.ABAddressBook.LocalizedLabel(Foundation.NSString)" />,
+	///         <see cref="AddressBook.ABMultiValueEntry{T}.Label" />,
+	///         <see cref="AddressBook.ABMutableMultiValue{T}.Add" />, and
+	///         <see cref="AddressBook.ABMutableMultiValue{T}.Insert" />.
 	///       </para>
 	///     </remarks>
 	[SupportedOSPlatform ("ios")]
@@ -798,7 +798,7 @@ namespace AddressBook {
 	public static class ABLabel {
 		/// <summary>Represents the value associated with the constant kABHomeLabel</summary>
 		///         <value>
-		///           A <see cref="T:Foundation.NSString" /> containing
+		///           A <see cref="Foundation.NSString" /> containing
 		///           the "Home" label.
 		///         </value>
 		///         <remarks>
@@ -806,7 +806,7 @@ namespace AddressBook {
 		public static NSString? Home { get; private set; }
 		/// <summary>Represents the value associated with the constant kABOtherLabel</summary>
 		///         <value>
-		///           A <see cref="T:Foundation.NSString" /> containing
+		///           A <see cref="Foundation.NSString" /> containing
 		///           the "Other" label.
 		///         </value>
 		///         <remarks>
@@ -814,7 +814,7 @@ namespace AddressBook {
 		public static NSString? Other { get; private set; }
 		/// <summary>Represents the value associated with the constant kABWorkLabel</summary>
 		///         <value>
-		///           A <see cref="T:Foundation.NSString" /> containing
+		///           A <see cref="Foundation.NSString" /> containing
 		///           the "Work" label.
 		///         </value>
 		///         <remarks>
@@ -848,7 +848,7 @@ namespace AddressBook {
 
 		/// <summary>
 		///           Constructs and initializes a
-		///           <see cref="T:AddressBook.ABPerson" /> instance.
+		///           <see cref="AddressBook.ABPerson" /> instance.
 		///         </summary>
 		///         <remarks>
 		///         </remarks>
@@ -914,14 +914,14 @@ namespace AddressBook {
 		[DllImport (Constants.AddressBookLibrary)]
 		extern static IntPtr ABPersonCopyLocalizedPropertyName (int /* ABPropertyID = int32_t */ propertyId);
 		/// <param name="property">
-		///           A <see cref="T:AddressBook.ABPersonProperty" />
+		///           A <see cref="AddressBook.ABPersonProperty" />
 		///           containing the property to get the localized name of.
 		///         </param>
 		///         <summary>
 		///           Gets the localized name of a <paramref name="property" />.
 		///         </summary>
 		///         <returns>
-		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> containing the localized
+		///           A <see cref="System.String" /> containing the localized
 		///           name of a <paramref name="property" />.
 		///         </returns>
 		///         <remarks>
@@ -937,7 +937,7 @@ namespace AddressBook {
 		///           Gets the localized name of a <paramref name="propertyId" />.
 		///         </summary>
 		///         <returns>
-		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> containing the localized
+		///           A <see cref="System.String" /> containing the localized
 		///           name of a <paramref name="propertyId" />.
 		///         </returns>
 		///         <remarks>
@@ -960,14 +960,14 @@ namespace AddressBook {
 		[DllImport (Constants.AddressBookLibrary)]
 		extern static ABPropertyType ABPersonGetTypeOfProperty (int /* ABPropertyID = int32_t */ propertyId);
 		/// <param name="property">
-		///           A <see cref="T:AddressBook.ABPersonProperty" />
+		///           A <see cref="AddressBook.ABPersonProperty" />
 		///           specifying which property to query.
 		///         </param>
 		///         <summary>
 		///           Gets the type of the property <paramref name="property" />.
 		///         </summary>
 		///         <returns>
-		///           A <see cref="T:AddressBook.ABPropertyType" /> value containing
+		///           A <see cref="AddressBook.ABPropertyType" /> value containing
 		///           the type of the property <paramref name="property" />.
 		///         </returns>
 		///         <remarks>
@@ -981,7 +981,7 @@ namespace AddressBook {
 		/// 	the low-level kABPersonProperty fields.</param>
 		///         <summary>Gets the type of the property <paramref name="propertyId" />.</summary>
 		///         <returns>
-		///           A <see cref="T:AddressBook.ABPropertyType" /> value containing
+		///           A <see cref="AddressBook.ABPropertyType" /> value containing
 		///           the type of the property <paramref name="propertyId" />.
 		///         </returns>
 		///         <remarks>
@@ -1008,19 +1008,19 @@ namespace AddressBook {
 
 		/// <summary>
 		///           Gets or sets the
-		///           <see cref="T:AddressBook.ABPerson" />'s picture.
+		///           <see cref="AddressBook.ABPerson" />'s picture.
 		///         </summary>
 		///         <value>
-		///           A <see cref="T:Foundation.NSData" /> containing
+		///           A <see cref="Foundation.NSData" /> containing
 		///           the picture data.
 		///         </value>
 		///         <remarks>
 		///         </remarks>
-		///         <exception cref="T:CoreFoundation.CFException">
+		///         <exception cref="CoreFoundation.CFException">
 		///           The reason the picture couldn't be set.
 		///         </exception>
-		///         <altmember cref="P:AddressBook.ABPerson.HasImage" />
-		///         <altmember cref="P:AddressBook.ABPerson.RemoveImage" />
+		///         <altmember cref="AddressBook.ABPerson.HasImage" />
+		///         <altmember cref="AddressBook.ABPerson.RemoveImage" />
 		public NSData? Image {
 			get { return Runtime.GetNSObject<NSData> (ABPersonCopyImageData (Handle)); }
 			set {
@@ -1037,11 +1037,11 @@ namespace AddressBook {
 		extern static byte ABPersonHasImageData (IntPtr person);
 		/// <summary>
 		///           Gets a value indicating whether the
-		///           <see cref="T:AddressBook.ABPerson" /> has a picture.
+		///           <see cref="AddressBook.ABPerson" /> has a picture.
 		///         </summary>
 		///         <value>
 		///           <see langword="true" /> if the
-		///           <see cref="T:AddressBook.ABPerson" /> has a picture;
+		///           <see cref="AddressBook.ABPerson" /> has a picture;
 		///           otherwise, <see langword="false" />.
 		///         </value>
 		///         <remarks>
@@ -1053,14 +1053,14 @@ namespace AddressBook {
 		[DllImport (Constants.AddressBookLibrary)]
 		unsafe extern static byte ABPersonRemoveImageData (IntPtr person, IntPtr* error);
 		/// <summary>
-		///           Removes a <see cref="T:AddressBook.ABPerson" />'s picture.
+		///           Removes a <see cref="AddressBook.ABPerson" />'s picture.
 		///         </summary>
 		///         <remarks>
 		///         </remarks>
-		///         <exception cref="T:CoreFoundation.CFException">
+		///         <exception cref="CoreFoundation.CFException">
 		///           The reason the picture couldn't be removed.
 		///         </exception>
-		///         <altmember cref="P:AddressBook.ABPerson.Image" />
+		///         <altmember cref="AddressBook.ABPerson.Image" />
 		public void RemoveImage ()
 		{
 			IntPtr error;
@@ -1075,7 +1075,7 @@ namespace AddressBook {
 
 		/// <summary>Developers should not use this deprecated property. Developers should use GetCompositeNameFormat (null) instead</summary>
 		///         <value>
-		///           A <see cref="T:AddressBook.ABPersonCompositeNameFormat" />
+		///           A <see cref="AddressBook.ABPersonCompositeNameFormat" />
 		///           which controls the format used for the person's composite name.
 		///         </value>
 		///         <remarks>
@@ -1125,7 +1125,7 @@ namespace AddressBook {
 		///           Gets the user's sort ordering preference for lists of persons.
 		///         </summary>
 		///         <value>
-		///           A <see cref="T:AddressBook.ABPersonSortBy" /> which
+		///           A <see cref="AddressBook.ABPersonSortBy" /> which
 		///           is the user's sort ordering preference for lists of persons.
 		///         </value>
 		///         <remarks>
@@ -1135,11 +1135,11 @@ namespace AddressBook {
 		}
 
 		/// <summary>
-		///           Gets or sets the <see cref="T:AddressBook.ABPerson" />'s first name.
+		///           Gets or sets the <see cref="AddressBook.ABPerson" />'s first name.
 		///         </summary>
 		///         <value>
-		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> containing
-		///           the <see cref="T:AddressBook.ABPerson" />'s first name.
+		///           A <see cref="System.String" /> containing
+		///           the <see cref="AddressBook.ABPerson" />'s first name.
 		///         </value>
 		///         <remarks>
 		///         </remarks>
@@ -1149,12 +1149,12 @@ namespace AddressBook {
 		}
 
 		/// <summary>
-		///           Gets or sets <see cref="T:AddressBook.ABPerson" />'s first name
+		///           Gets or sets <see cref="AddressBook.ABPerson" />'s first name
 		///           phonetic pronounciation.
 		///         </summary>
 		///         <value>
-		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> containing
-		///           the <see cref="T:AddressBook.ABPerson" />'s first name
+		///           A <see cref="System.String" /> containing
+		///           the <see cref="AddressBook.ABPerson" />'s first name
 		///           phonetic pronounciation.
 		///         </value>
 		///         <remarks>
@@ -1165,11 +1165,11 @@ namespace AddressBook {
 		}
 
 		/// <summary>
-		///           Gets or sets the <see cref="T:AddressBook.ABPerson" />'s last name.
+		///           Gets or sets the <see cref="AddressBook.ABPerson" />'s last name.
 		///         </summary>
 		///         <value>
-		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> containing
-		///           the <see cref="T:AddressBook.ABPerson" />'s last name.
+		///           A <see cref="System.String" /> containing
+		///           the <see cref="AddressBook.ABPerson" />'s last name.
 		///         </value>
 		///         <remarks>
 		///         </remarks>
@@ -1179,12 +1179,12 @@ namespace AddressBook {
 		}
 
 		/// <summary>
-		///           Gets or sets the <see cref="T:AddressBook.ABPerson" />'s last name
+		///           Gets or sets the <see cref="AddressBook.ABPerson" />'s last name
 		///           phonetic pronounciation.
 		///         </summary>
 		///         <value>
-		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> containing
-		///           the <see cref="T:AddressBook.ABPerson" />'s last name phonetic pronounciation.
+		///           A <see cref="System.String" /> containing
+		///           the <see cref="AddressBook.ABPerson" />'s last name phonetic pronounciation.
 		///         </value>
 		///         <remarks>
 		///         </remarks>
@@ -1194,11 +1194,11 @@ namespace AddressBook {
 		}
 
 		/// <summary>
-		///           Gets or sets the <see cref="T:AddressBook.ABPerson" />'s middle name.
+		///           Gets or sets the <see cref="AddressBook.ABPerson" />'s middle name.
 		///         </summary>
 		///         <value>
-		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> containing
-		///           the <see cref="T:AddressBook.ABPerson" />'s middle name.
+		///           A <see cref="System.String" /> containing
+		///           the <see cref="AddressBook.ABPerson" />'s middle name.
 		///         </value>
 		///         <remarks>
 		///         </remarks>
@@ -1208,12 +1208,12 @@ namespace AddressBook {
 		}
 
 		/// <summary>
-		///           Gets or sets the <see cref="T:AddressBook.ABPerson" />'s middle name
+		///           Gets or sets the <see cref="AddressBook.ABPerson" />'s middle name
 		///           phonetic pronounciation.
 		///         </summary>
 		///         <value>
-		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> containing
-		///           the <see cref="T:AddressBook.ABPerson" />'s middle name phonetic pronounciation.
+		///           A <see cref="System.String" /> containing
+		///           the <see cref="AddressBook.ABPerson" />'s middle name phonetic pronounciation.
 		///         </value>
 		///         <remarks>
 		///         </remarks>
@@ -1223,11 +1223,11 @@ namespace AddressBook {
 		}
 
 		/// <summary>
-		///           Gets or sets the <see cref="T:AddressBook.ABPerson" />'s prefix.
+		///           Gets or sets the <see cref="AddressBook.ABPerson" />'s prefix.
 		///         </summary>
 		///         <value>
-		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> containing
-		///           the <see cref="T:AddressBook.ABPerson" />'s prefix.
+		///           A <see cref="System.String" /> containing
+		///           the <see cref="AddressBook.ABPerson" />'s prefix.
 		///         </value>
 		///         <remarks>
 		///         </remarks>
@@ -1237,11 +1237,11 @@ namespace AddressBook {
 		}
 
 		/// <summary>
-		///           Gets or sets the <see cref="T:AddressBook.ABPerson" />'s suffix.
+		///           Gets or sets the <see cref="AddressBook.ABPerson" />'s suffix.
 		///         </summary>
 		///         <value>
-		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> containing
-		///           the <see cref="T:AddressBook.ABPerson" />'s suffix.
+		///           A <see cref="System.String" /> containing
+		///           the <see cref="AddressBook.ABPerson" />'s suffix.
 		///         </value>
 		///         <remarks>
 		///         </remarks>
@@ -1251,11 +1251,11 @@ namespace AddressBook {
 		}
 
 		/// <summary>
-		///           Gets or sets the <see cref="T:AddressBook.ABPerson" />'s nickname.
+		///           Gets or sets the <see cref="AddressBook.ABPerson" />'s nickname.
 		///         </summary>
 		///         <value>
-		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> containing
-		///           the <see cref="T:AddressBook.ABPerson" />'s nickname.
+		///           A <see cref="System.String" /> containing
+		///           the <see cref="AddressBook.ABPerson" />'s nickname.
 		///         </value>
 		///         <remarks>
 		///         </remarks>
@@ -1265,11 +1265,11 @@ namespace AddressBook {
 		}
 
 		/// <summary>
-		///           Gets or sets the <see cref="T:AddressBook.ABPerson" />'s organization.
+		///           Gets or sets the <see cref="AddressBook.ABPerson" />'s organization.
 		///         </summary>
 		///         <value>
-		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> containing
-		///           the <see cref="T:AddressBook.ABPerson" />'s organization.
+		///           A <see cref="System.String" /> containing
+		///           the <see cref="AddressBook.ABPerson" />'s organization.
 		///         </value>
 		///         <remarks>
 		///         </remarks>
@@ -1279,11 +1279,11 @@ namespace AddressBook {
 		}
 
 		/// <summary>
-		///           Gets or sets the <see cref="T:AddressBook.ABPerson" />'s job title.
+		///           Gets or sets the <see cref="AddressBook.ABPerson" />'s job title.
 		///         </summary>
 		///         <value>
-		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> containing
-		///           the <see cref="T:AddressBook.ABPerson" />'s job title.
+		///           A <see cref="System.String" /> containing
+		///           the <see cref="AddressBook.ABPerson" />'s job title.
 		///         </value>
 		///         <remarks>
 		///         </remarks>
@@ -1293,11 +1293,11 @@ namespace AddressBook {
 		}
 
 		/// <summary>
-		///           Gets or sets the <see cref="T:AddressBook.ABPerson" />'s department.
+		///           Gets or sets the <see cref="AddressBook.ABPerson" />'s department.
 		///         </summary>
 		///         <value>
-		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> containing
-		///           the <see cref="T:AddressBook.ABPerson" />'s department.
+		///           A <see cref="System.String" /> containing
+		///           the <see cref="AddressBook.ABPerson" />'s department.
 		///         </value>
 		///         <remarks>
 		///         </remarks>
@@ -1328,15 +1328,15 @@ namespace AddressBook {
 		}
 
 		/// <summary>
-		///           Gets the <see cref="T:AddressBook.ABPerson" />'s email addresses.
+		///           Gets the <see cref="AddressBook.ABPerson" />'s email addresses.
 		///         </summary>
 		///         <returns>
-		///           A <see cref="T:AddressBook.ABMultiValue`1" />
-		///           containing the <see cref="T:AddressBook.ABPerson" />'s email addresses.
+		///           A <see cref="AddressBook.ABMultiValue{T}" />
+		///           containing the <see cref="AddressBook.ABPerson" />'s email addresses.
 		///         </returns>
 		///         <remarks>
 		///         </remarks>
-		///         <altmember cref="M:AddressBook.ABPerson.SetEmails(AddressBook.ABMultiValue`1)" />
+		///         <altmember cref="SetEmails" />
 		public ABMultiValue<string>? GetEmails ()
 		{
 			return CreateStringMultiValue (CopyValue (ABPersonPropertyId.Email));
@@ -1350,15 +1350,15 @@ namespace AddressBook {
 		}
 
 		/// <param name="value">
-		///           A <see cref="T:AddressBook.ABMultiValue`1" />
-		///           containing the <see cref="T:AddressBook.ABPerson" />'s new email addresses
+		///           A <see cref="AddressBook.ABMultiValue{T}" />
+		///           containing the <see cref="AddressBook.ABPerson" />'s new email addresses
 		///         </param>
 		///         <summary>
-		///           Sets the <see cref="T:AddressBook.ABPerson" />'s new email addresses.
+		///           Sets the <see cref="AddressBook.ABPerson" />'s new email addresses.
 		///         </summary>
 		///         <remarks>
 		///         </remarks>
-		///         <altmember cref="T:AddressBook.ABPerson.GetEmails" />
+		///         <altmember cref="AddressBook.ABPerson.GetEmails" />
 		public void SetEmails (ABMultiValue<string>? value)
 		{
 			SetValue (ABPersonPropertyId.Email, value.GetHandle ());
@@ -1366,10 +1366,10 @@ namespace AddressBook {
 		}
 
 		/// <summary>
-		///           Gets or sets the <see cref="T:AddressBook.ABPerson" />'s birthday.
+		///           Gets or sets the <see cref="AddressBook.ABPerson" />'s birthday.
 		///         </summary>
 		///         <value>
-		///           A <see cref="T:Foundation.NSDate" /> containing
+		///           A <see cref="Foundation.NSDate" /> containing
 		///           the person's birthday.
 		///         </value>
 		///         <remarks>
@@ -1380,11 +1380,11 @@ namespace AddressBook {
 		}
 
 		/// <summary>
-		///           Gets or sets the <see cref="T:AddressBook.ABPerson" />'s note.
+		///           Gets or sets the <see cref="AddressBook.ABPerson" />'s note.
 		///         </summary>
 		///         <value>
-		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> containing
-		///           the <see cref="T:AddressBook.ABPerson" />'s note.
+		///           A <see cref="System.String" /> containing
+		///           the <see cref="AddressBook.ABPerson" />'s note.
 		///         </value>
 		///         <remarks>
 		///         </remarks>
@@ -1397,7 +1397,7 @@ namespace AddressBook {
 		///           Gets or sets the record's creation date.
 		///         </summary>
 		///         <value>
-		///           A <see cref="T:Foundation.NSDate" /> containing
+		///           A <see cref="Foundation.NSDate" /> containing
 		///           the record's creation date.
 		///         </value>
 		///         <remarks>
@@ -1408,11 +1408,11 @@ namespace AddressBook {
 		}
 
 		/// <summary>
-		///           Gets or sets the <see cref="T:AddressBook.ABPerson" />'s modification date.
+		///           Gets or sets the <see cref="AddressBook.ABPerson" />'s modification date.
 		///         </summary>
 		///         <value>
-		///           A <see cref="T:Foundation.NSDate" /> containing
-		///           the <see cref="T:AddressBook.ABPerson" />'s modification date.
+		///           A <see cref="Foundation.NSDate" /> containing
+		///           the <see cref="AddressBook.ABPerson" />'s modification date.
 		///         </value>
 		///         <remarks>
 		///         </remarks>
@@ -1431,16 +1431,16 @@ namespace AddressBook {
 
 		// Obsolete
 		/// <param name="value">
-		///           A <see cref="T:AddressBook.ABMultiValue{Foundation.NSDictionary}" />
-		///           containing the <see cref="T:AddressBook.ABPerson" />'s new addresses.
+		///           A <see cref="AddressBook.ABMultiValue{T}" /> of <see cref="Foundation.NSDictionary" />
+		///           containing the <see cref="AddressBook.ABPerson" />'s new addresses.
 		///         </param>
 		///         <summary>
-		///           Sets the <see cref="T:AddressBook.ABPerson" />'s new addresses.
+		///           Sets the <see cref="AddressBook.ABPerson" />'s new addresses.
 		///         </summary>
 		///         <remarks>
 		///         </remarks>
-		///         <altmember cref="T:AddressBook.ABPersonAddressKey" />
-		///         <altmember cref="T:AddressBook.ABPerson.GetAddresses" />
+		///         <altmember cref="AddressBook.ABPersonAddressKey" />
+		///         <altmember cref="AddressBook.ABPerson.GetAllAddresses" />
 		public void SetAddresses (ABMultiValue<NSDictionary>? value)
 		{
 			SetValue (ABPersonPropertyId.Address, value.GetHandle ());
@@ -1476,16 +1476,16 @@ namespace AddressBook {
 		}
 
 		/// <summary>
-		///           Gets the <see cref="T:AddressBook.ABPerson" />'s dates.
+		///           Gets the <see cref="AddressBook.ABPerson" />'s dates.
 		///         </summary>
 		///         <returns>
-		///           A <see cref="T:AddressBook.ABMultiValue{Foundation.NSDate}" />
-		///           containing the <see cref="T:AddressBook.ABPerson" />'s dates.
+		///           A <see cref="AddressBook.ABMultiValue{T}" /> of <see cref="Foundation.NSDate" />
+		///           containing the <see cref="AddressBook.ABPerson" />'s dates.
 		///         </returns>
 		///         <remarks>
 		///         </remarks>
-		///         <altmember cref="T:AddressBook.ABPersonDateLabel" />
-		///         <altmember cref="M:AddressBook.ABPerson.SetDates(AddressBook.ABMultiValue{Foundation.NSDate})" />
+		///         <altmember cref="AddressBook.ABPersonDateLabel" />
+		///         <altmember cref="AddressBook.ABPerson.SetDates(AddressBook.ABMultiValue{Foundation.NSDate})" />
 		public ABMultiValue<NSDate>? GetDates ()
 		{
 			return CreateDateMultiValue (CopyValue (ABPersonPropertyId.Date));
@@ -1499,16 +1499,16 @@ namespace AddressBook {
 		}
 
 		/// <param name="value">
-		///           A <see cref="T:AddressBook.ABMultiValue{Foundation.NSDate}" />
-		///           containing the <see cref="T:AddressBook.ABPerson" />'s new dates.
+		///           A <see cref="AddressBook.ABMultiValue{T}" /> of <see cref="Foundation.NSDate" />
+		///           containing the <see cref="AddressBook.ABPerson" />'s new dates.
 		///         </param>
 		///         <summary>
-		///           Sets the <see cref="T:AddressBook.ABPerson" />'s new dates.
+		///           Sets the <see cref="AddressBook.ABPerson" />'s new dates.
 		///         </summary>
 		///         <remarks>
 		///         </remarks>
-		///         <altmember cref="T:AddressBook.ABPersonDateLabel" />
-		///         <altmember cref="T:AddressBook.ABPerson.GetDates" />
+		///         <altmember cref="AddressBook.ABPersonDateLabel" />
+		///         <altmember cref="AddressBook.ABPerson.GetDates" />
 		public void SetDates (ABMultiValue<NSDate>? value)
 		{
 			SetValue (ABPersonPropertyId.Date, value.GetHandle ());
@@ -1516,16 +1516,16 @@ namespace AddressBook {
 		}
 
 		/// <summary>
-		///           Gets or sets the <see cref="T:AddressBook.ABPerson" />'s
-		///           <see cref="T:AddressBook.ABPersonKind" />.
+		///           Gets or sets the <see cref="AddressBook.ABPerson" />'s
+		///           <see cref="AddressBook.ABPersonKind" />.
 		///         </summary>
 		///         <value>
-		///           A <see cref="T:AddressBook.ABPersonKind" /> containing
-		///           the <see cref="T:AddressBook.ABPerson" />'s kind.
+		///           A <see cref="AddressBook.ABPersonKind" /> containing
+		///           the <see cref="AddressBook.ABPerson" />'s kind.
 		///         </value>
 		///         <remarks>
 		///           <para>
-		///             The <see cref="T:AddressBook.ABPersonKind" />
+		///             The <see cref="AddressBook.ABPersonKind" />
 		///             controls whether the instance is a person or an organization.
 		///           </para>
 		///         </remarks>
@@ -1535,30 +1535,30 @@ namespace AddressBook {
 		}
 
 		/// <summary>
-		///           Gets the <see cref="T:AddressBook.ABPerson" />'s phone numbers.
+		///           Gets the <see cref="AddressBook.ABPerson" />'s phone numbers.
 		///         </summary>
 		///         <returns>
-		///           A <see cref="T:AddressBook.ABMultiValue`1" />
-		///           containing the <see cref="T:AddressBook.ABPerson" />'s phone numbers.
+		///           A <see cref="AddressBook.ABMultiValue{T}" />
+		///           containing the <see cref="AddressBook.ABPerson" />'s phone numbers.
 		///         </returns>
 		///         <remarks>
 		///         </remarks>
-		///         <altmember cref="M:AddressBook.ABPerson.SetPhones(AddressBook.ABMultiValue`1)" />
+		///         <altmember cref="SetPhones" />
 		public ABMultiValue<string>? GetPhones ()
 		{
 			return CreateStringMultiValue (CopyValue (ABPersonPropertyId.Phone));
 		}
 
 		/// <param name="value">
-		///           A <see cref="T:AddressBook.ABMultiValue`1" />
-		///           containing the <see cref="T:AddressBook.ABPerson" />'s new phone numbers.
+		///           A <see cref="AddressBook.ABMultiValue{T}" />
+		///           containing the <see cref="AddressBook.ABPerson" />'s new phone numbers.
 		///         </param>
 		///         <summary>
-		///           Sets the <see cref="T:AddressBook.ABPerson" />'s new phone numbers.
+		///           Sets the <see cref="AddressBook.ABPerson" />'s new phone numbers.
 		///         </summary>
 		///         <remarks>
 		///         </remarks>
-		///         <altmember cref="T:AddressBook.ABPerson.GetPhones" />
+		///         <altmember cref="AddressBook.ABPerson.GetPhones" />
 		public void SetPhones (ABMultiValue<string>? value)
 		{
 			SetValue (ABPersonPropertyId.Phone, value.GetHandle ());
@@ -1581,15 +1581,15 @@ namespace AddressBook {
 
 		// Obsolete
 		/// <param name="value">
-		///           A <see cref="T:AddressBook.ABMultiValue{Foundation.NSDictionary}" />
-		///           containing the <see cref="T:AddressBook.ABPerson" />'s new instant messaging services.
+		///           A <see cref="AddressBook.ABMultiValue{T}" /> of <see cref="Foundation.NSDictionary" />
+		///           containing the <see cref="AddressBook.ABPerson" />'s new instant messaging services.
 		///         </param>
 		///         <summary>
-		///           Sets the <see cref="T:AddressBook.ABPerson" />'s new instant messaging services.
+		///           Sets the <see cref="AddressBook.ABPerson" />'s new instant messaging services.
 		///         </summary>
 		///         <remarks>
 		///         </remarks>
-		///         <altmember cref="T:AddressBook.ABPerson.GetInstantMessages" />
+		///         <altmember cref="AddressBook.ABPerson.GetInstantMessages" />
 		public void SetInstantMessages (ABMultiValue<NSDictionary>? value)
 		{
 			SetValue (ABPersonPropertyId.InstantMessage, value.GetHandle ());
@@ -1639,30 +1639,30 @@ namespace AddressBook {
 		}
 
 		/// <summary>
-		///           Gets the <see cref="T:AddressBook.ABPerson" />'s URLs.
+		///           Gets the <see cref="AddressBook.ABPerson" />'s URLs.
 		///         </summary>
 		///         <returns>
-		///           A <see cref="T:AddressBook.ABMultiValue`1" />
-		///           containing the <see cref="T:AddressBook.ABPerson" />'s URLs.
+		///           A <see cref="AddressBook.ABMultiValue{T}" />
+		///           containing the <see cref="AddressBook.ABPerson" />'s URLs.
 		///         </returns>
 		///         <remarks>
 		///         </remarks>
-		///         <altmember cref="M:AddressBook.ABPerson.SetUrls(AddressBook.ABMultiValue`1)" />
+		///         <altmember cref="SetUrls" />
 		public ABMultiValue<string>? GetUrls ()
 		{
 			return CreateStringMultiValue (CopyValue (ABPersonPropertyId.Url));
 		}
 
 		/// <param name="value">
-		///           A <see cref="T:AddressBook.ABMultiValue`1" />
-		///           containing the <see cref="T:AddressBook.ABPerson" />'s new URLs.
+		///           A <see cref="AddressBook.ABMultiValue{T}" />
+		///           containing the <see cref="AddressBook.ABPerson" />'s new URLs.
 		///         </param>
 		///         <summary>
-		///           Sets the <see cref="T:AddressBook.ABPerson" />'s new URLs.
+		///           Sets the <see cref="AddressBook.ABPerson" />'s new URLs.
 		///         </summary>
 		///         <remarks>
 		///         </remarks>
-		///         <altmember cref="T:AddressBook.ABPerson.GetUrls" />
+		///         <altmember cref="AddressBook.ABPerson.GetUrls" />
 		public void SetUrls (ABMultiValue<string>? value)
 		{
 			SetValue (ABPersonPropertyId.Url, value.GetHandle ());
@@ -1670,30 +1670,30 @@ namespace AddressBook {
 		}
 
 		/// <summary>
-		///           Gets the <see cref="T:AddressBook.ABPerson" />'s related names.
+		///           Gets the <see cref="AddressBook.ABPerson" />'s related names.
 		///         </summary>
 		///         <returns>
-		///           A <see cref="T:AddressBook.ABMultiValue`1" />
-		///           containing the <see cref="T:AddressBook.ABPerson" />'s related names.
+		///           A <see cref="AddressBook.ABMultiValue{T}" />
+		///           containing the <see cref="AddressBook.ABPerson" />'s related names.
 		///         </returns>
 		///         <remarks>
 		///         </remarks>
-		///         <altmember cref="M:AddressBook.ABPerson.SetRelatedNames(AddressBook.ABMultiValue`1)" />
+		///         <altmember cref="SetRelatedNames" />
 		public ABMultiValue<string>? GetRelatedNames ()
 		{
 			return CreateStringMultiValue (CopyValue (ABPersonPropertyId.RelatedNames));
 		}
 
 		/// <param name="value">
-		///           A <see cref="T:AddressBook.ABMultiValue`1" />
-		///           containing the <see cref="T:AddressBook.ABPerson" />'s new related names.
+		///           A <see cref="AddressBook.ABMultiValue{T}" />
+		///           containing the <see cref="AddressBook.ABPerson" />'s new related names.
 		///         </param>
 		///         <summary>
-		///           Sets the <see cref="T:AddressBook.ABPerson" />'s new related names.
+		///           Sets the <see cref="AddressBook.ABPerson" />'s new related names.
 		///         </summary>
 		///         <remarks>
 		///         </remarks>
-		///         <altmember cref="T:AddressBook.ABPerson.GetRelatedNames" />
+		///         <altmember cref="AddressBook.ABPerson.GetRelatedNames" />
 		public void SetRelatedNames (ABMultiValue<string>? value)
 		{
 			SetValue (ABPersonPropertyId.RelatedNames, value.GetHandle ());
@@ -1701,14 +1701,14 @@ namespace AddressBook {
 		}
 
 		/// <param name="property">
-		///           A <see cref="T:AddressBook.ABPersonProperty" />
+		///           A <see cref="AddressBook.ABPersonProperty" />
 		///           specifying which property to return.
 		///         </param>
 		///         <summary>
 		///           Gets the specified property.
 		///         </summary>
 		///         <returns>
-		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Object&amp;scope=Xamarin" title="T:System.Object">T:System.Object</a></format> containing the value of the specified property.
+		///           A <see cref="System.Object" /> containing the value of the specified property.
 		///         </returns>
 		///         <remarks>
 		///         </remarks>

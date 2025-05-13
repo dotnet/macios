@@ -2,23 +2,23 @@
   <Docs DocId="T:UIKit.NSLayoutConstraint">
     <summary>A relationship between two layout attributes used in a constraint-based layout.</summary>
     <remarks>
-      <para>An <see cref="T:UIKit.NSLayoutConstraint" /> specifies the relationship between two layout attributes (<see cref="P:UIKit.NSLayoutConstraint.FirstAttribute" /> and <see cref="P:UIKit.NSLayoutConstraint.SecondAttribute" />, both of which are of type <see cref="T:UIKit.NSLayoutAttribute" />) in a constraint-based layout.</para>
+      <para>An <see cref="UIKit.NSLayoutConstraint" /> specifies the relationship between two layout attributes (<see cref="UIKit.NSLayoutConstraint.FirstAttribute" /> and <see cref="UIKit.NSLayoutConstraint.SecondAttribute" />, both of which are of type <see cref="UIKit.NSLayoutAttribute" />) in a constraint-based layout.</para>
       <para>The relationship consists of:</para>
       <list type="bullet">
         <item>
-          <term>A <see cref="T:UIKit.NSLayoutRelation" /> (e.g., <see cref="F:UIKit.NSLayoutRelation.GreaterThanOrEqual" />)</term>
+          <term>A <see cref="UIKit.NSLayoutRelation" /> (e.g., <see cref="UIKit.NSLayoutRelation.GreaterThanOrEqual" />)</term>
         </item>
         <item>
-          <term>A floating point <see cref="P:UIKit.NSLayoutConstraint.Multiplier" /></term>
+          <term>A floating point <see cref="UIKit.NSLayoutConstraint.Multiplier" /></term>
         </item>
         <item>
-          <term>A single-precision floating point <see cref="P:UIKit.NSLayoutConstraint.Constant" /></term>
+          <term>A single-precision floating point <see cref="UIKit.NSLayoutConstraint.Constant" /></term>
         </item>
         <item>
-          <term>A floating point <see cref="P:UIKit.NSLayoutConstraint.Priority" />. Constraints with higher priorities are satisfied before constraints with lower priorities.</term>
+          <term>A floating point <see cref="UIKit.NSLayoutConstraint.Priority" />. Constraints with higher priorities are satisfied before constraints with lower priorities.</term>
         </item>
       </list>
-      <para>The constraint engine will set the value of the <see cref="P:UIKit.NSLayoutConstraint.FirstAttribute" /> such that it satisfies the constraint <c>FirstAttribute &lt;Relation&gt; &lt;Constant&gt; + &lt;Multiplier&gt; * &lt;SecondAttribute&gt;</c>.  For instance, in the following code from the "Media Notes" sample, <c>tconstraint2</c> is a constraint that specifies that the top of the <c>toolbar</c> is going to be equal to the top of the <c>View</c> plus the value of the <c>toolbarVerticalOffset</c>, while <c>tconstraint1</c> specifies that the width of the <c>toolbar</c> will be equal to the width of the <c>View</c>. Both of these constraints have a <see cref="P:UIKit.NSLayoutConstraint.Priority" /> of <c>1.0</c>.</para>
+      <para>The constraint engine will set the value of the <see cref="UIKit.NSLayoutConstraint.FirstAttribute" /> such that it satisfies the constraint <c>FirstAttribute &lt;Relation&gt; &lt;Constant&gt; + &lt;Multiplier&gt; * &lt;SecondAttribute&gt;</c>.  For instance, in the following code from the "Media Notes" sample, <c>tconstraint2</c> is a constraint that specifies that the top of the <c>toolbar</c> is going to be equal to the top of the <c>View</c> plus the value of the <c>toolbarVerticalOffset</c>, while <c>tconstraint1</c> specifies that the width of the <c>toolbar</c> will be equal to the width of the <c>View</c>. Both of these constraints have a <see cref="UIKit.NSLayoutConstraint.Priority" /> of <c>1.0</c>.</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
 var tconstraint2 = NSLayoutConstraint.Create (toolbar, NSLayoutAttribute.Top, NSLayoutRelation.Equal,
@@ -35,13 +35,13 @@ var tconstraint1 = NSLayoutConstraint.Create (toolbar, NSLayoutAttribute.Width, 
     <param name="format">Visual format to use to create the constraints.</param>
     <param name="formatOptions">options.</param>
     <param name="viewsAndMetrics">
-      <para>Pairs of names and values.   The names should be strings (or NSStrings) and the values should be either UIViews, numbers (any C# number or NSNumber) or <see cref="T:ObjCRuntime.INativeObject" /> instances that are suitable to be passed to the underlying engine. </para>
+      <para>Pairs of names and values.   The names should be strings (or NSStrings) and the values should be either UIViews, numbers (any C# number or NSNumber) or <see cref="ObjCRuntime.INativeObject" /> instances that are suitable to be passed to the underlying engine. </para>
       <para>
       </para>
       <para> This binds the provided name with the view or binds the name with the number as a metric.</para>
     </param>
     <summary>Factory method for creating a constraint using Visual Format Language.</summary>
-    <returns>An array of layout constraints that are suitable to be added to a UIView using <see cref="M:UIKit.UIView.AddConstraints(UIKit.NSLayoutConstraint[])" /> method.</returns>
+    <returns>An array of layout constraints that are suitable to be added to a <see cref="View" /> using <see cref="View.AddConstraints(NSLayoutConstraint[])" /> method.</returns>
     <remarks>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
@@ -54,7 +54,7 @@ NSLayoutConstraint.FromVisualFormat ("|-8-[messageView]-8-|", NSLayoutOptions.No
     <param name="constraints">Constraints to activate.</param>
     <summary>Activates all of the constraints passed.</summary>
     <remarks>
-      <para>This method has the same effect as setting the <see cref="P:UIKit.NSLayoutConstraint.Active" /> property to <see langword="true" />.</para>
+      <para>This method has the same effect as setting the <see cref="UIKit.NSLayoutConstraint.Active" /> property to <see langword="true" />.</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
 var blueView = new ContentView(UIColor.Blue);
@@ -88,9 +88,9 @@ NSLayoutConstraint.ActivateConstraints(blueConstraints);
     </param>
     <param name="views">Dictionary containing mappings of names to UIViews.</param>
     <summary>Factory method for creating a constraint using Visual Format Language.</summary>
-    <returns>An array of layout constraints that are suitable to be added to a UIView using <see cref="M:UIKit.UIView.AddConstraints(UIKit.NSLayoutConstraint[])" /> method.</returns>
+    <returns>An array of layout constraints that are suitable to be added to a <see cref="View" /> using <see cref="View.AddConstraints(NSLayoutConstraint[])" /> method.</returns>
     <remarks>
-      <para>It is easier to use the <see cref="M:UIKit.NSLayoutConstraint.FromVisualFormat(System.String,UIKit.NSLayoutFormatOptions,System.Object[])" /> overload as it combines support for both metrics and views in a single call.</para>
+      <para>It is easier to use the <see cref="UIKit.NSLayoutConstraint.FromVisualFormat(System.String,UIKit.NSLayoutFormatOptions,System.Object[])" /> overload as it combines support for both metrics and views in a single call.</para>
     </remarks>
   </Docs>
   <Docs DocId="M:UIKit.NSLayoutConstraint.Create(Foundation.NSObject,UIKit.NSLayoutAttribute,UIKit.NSLayoutRelation,Foundation.NSObject,UIKit.NSLayoutAttribute,System.Runtime.InteropServices.NFloat,System.Runtime.InteropServices.NFloat)">

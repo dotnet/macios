@@ -128,7 +128,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 	<Target Name="_SanitizeNativeReferences">
 		<!-- Remove trailing slashes from native references, so that we treat '.framework' the same as '.framework/'.
-			Ref: https://github.com/xamarin/xamarin-macios/issues/15430
+			Ref: https://github.com/dotnet/macios/issues/15430
 		-->
 		<ItemGroup>
 			<NativeReference>
@@ -295,7 +295,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<Target Name="_CleanAppBundleRootDirectory" Condition="'$(_PlatformName)' == 'MacCatalyst' Or '$(_PlatformName)' == 'macOS'" DependsOnTargets="_GenerateBundleName">
 		<!-- There shouldn't be any files in the root directory of the app bundle for macOS or Mac Catalyst (signing will fail) -->
 
-		<!-- Delete any crash dumps in the app bundle that might exist. Ref: https://github.com/xamarin/xamarin-macios/issues/12320 -->
+		<!-- Delete any crash dumps in the app bundle that might exist. Ref: https://github.com/dotnet/macios/issues/12320 -->
 		<!-- Use a task to collect the files, so that we get the correct behavior on Windows -->
 		<!-- This is enabled by default, but can be disabled by setting EnableAutomaticAppBundleRootDirectoryCleanup=false -->
 		<GetFileSystemEntries
@@ -2018,7 +2018,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<Target Name="_GetCompileToNativeInputs"
 		DependsOnTargets="ResolveReferences">
 		<ItemGroup>
-			<!-- Skip the reference assemblies. Execution may fail at runtime if they're copied to the .app (instead of the implementation assembly), or AOT will fail in both 'mtouch' and 'mmp'. Similar to: https://github.com/xamarin/xamarin-macios/issues/3199 -->
+			<!-- Skip the reference assemblies. Execution may fail at runtime if they're copied to the .app (instead of the implementation assembly), or AOT will fail in both 'mtouch' and 'mmp'. Similar to: https://github.com/dotnet/macios/issues/3199 -->
 			<!-- Remove exact references, such as if a package had a framework reference to 'System' that we already have -->
 			<!-- This is exactly what "Microsoft.NuGet.Build.Tasks"'s 'ResolveNuGetPackageAssets' target is doing -->
 			<!-- Effectively 'ResolveNuGetPackageAssets' computes the NuGet packages using their json asset file, adds the full assemblies to 'ReferenceCopyLocalPaths' and outputs the resolved references via '_ReferencesFromNuGetPackages' -->
@@ -2902,7 +2902,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			This means that we need the path to the symbols list in the main app's project, and it needs to be a full path when executing remotely from Windows,
 			because the projects are not in the same position relative to eachother when building remotely (so a relative path doesn't work).
 			This needs to be executed in a task (and not here inside the target) so the execution always occur on the mac, even when the build is done from Windows.
-			Ref: https://github.com/xamarin/xamarin-macios/issues/15046
+			Ref: https://github.com/dotnet/macios/issues/15046
 		-->
 		<GetFullPath SessionId="$(BuildSessionId)" Condition="'$(IsMacEnabled)' == 'true'" RelativePath="$(_MtouchSymbolsList)">
 			<Output TaskParameter="FullPath" PropertyName="_SymbolsListFullPath" />

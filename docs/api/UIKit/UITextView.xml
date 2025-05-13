@@ -1,14 +1,14 @@
 <Documentation>
   <Docs DocId="T:UIKit.UITextView">
-    <summary>A <see cref="T:UIKit.UIControl" /> that displays a scrollable multi-line text editor.</summary>
+    <summary>A <see cref="UIKit.UIControl" /> that displays a scrollable multi-line text editor.</summary>
     <remarks>
-      <para>The <see cref="T:UIKit.UITextView" /> is a scrollable, multi-line text view that can display styled text and can be editable.</para>
+      <para>The <see cref="UIKit.UITextView" /> is a scrollable, multi-line text view that can display styled text and can be editable.</para>
       <format type="text/html">
         <h2>Editing</h2>
       </format>
-      <para>If <see cref="P:UIKit.UITextView.Editable" /> is <see langword="true" />, the text view will be editable by the application user. When the application user taps on the view, it becomes the first responder and displays the system keyboard. It is the application developer's responsibility to ensure that the keyboard does not obscure functionality (e.g., by scrolling or rearranging views). To make the keyboard disappear, the application developer must have the <see cref="T:UIKit.UITextView" /> resign first responder status (by calling <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIResponder%20Resign%20First%20Responder&amp;scope=Xamarin" title="M:UIKit.UIResponder.ResignFirstResponder*">M:UIKit.UIResponder.ResignFirstResponder*</a></format>).</para>
-      <para>Application developers can use <see cref="T:UIKit.UIKeyboard.Notifications" /> to calculate the necessary scrolling or rearranging of views associated with the appearance and disappearance of the keyboard. </para>
-      <para>Since the <see cref="T:UIKit.UITextView" /> is multiline, unlike the <see cref="T:UIKit.UITextField" />, the keyboard's <c>return</c> key cannot be replaced by a <c>done</c> key and there is no equivalent to the <see cref="P:UIKit.UITextField.ShouldReturn" /> property. A common idiom for a <see cref="T:UIKit.UITextView" /> is to "end editing when the user touches anywhere outside the text field." This can be done by overriding <see cref="M:UIKit.UIResponder.TouchesBegan(Foundation.NSSet,UIKit.UIEvent)" /> in the containing <see cref="T:UIKit.UIView" /> and calling <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIView%20End%20Editing&amp;scope=Xamarin" title="M:UIKit.UIView.EndEditing*">M:UIKit.UIView.EndEditing*</a></format>, as shown in the following example:</para>
+      <para>If <see cref="UIKit.UITextView.Editable" /> is <see langword="true" />, the text view will be editable by the application user. When the application user taps on the view, it becomes the first responder and displays the system keyboard. It is the application developer's responsibility to ensure that the keyboard does not obscure functionality (e.g., by scrolling or rearranging views). To make the keyboard disappear, the application developer must have the <see cref="UIKit.UITextView" /> resign first responder status (by calling <see cref="UIKit.UIResponder.ResignFirstResponder" />).</para>
+      <para>Application developers can use <see cref="UIKit.UIKeyboard.Notifications" /> to calculate the necessary scrolling or rearranging of views associated with the appearance and disappearance of the keyboard. </para>
+      <para>Since the <see cref="UIKit.UITextView" /> is multiline, unlike the <see cref="UIKit.UITextField" />, the keyboard's <c>return</c> key cannot be replaced by a <c>done</c> key and there is no equivalent to the <see cref="UIKit.UITextField.ShouldReturn" /> property. A common idiom for a <see cref="UIKit.UITextView" /> is to "end editing when the user touches anywhere outside the text field." This can be done by overriding <see cref="UIKit.UIResponder.TouchesBegan(Foundation.NSSet,UIKit.UIEvent)" /> in the containing <see cref="UIKit.UIView" /> and calling <see cref="UIKit.UIView.EndEditing" />, as shown in the following example:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
 public class MyView : UIView
@@ -17,7 +17,7 @@ public class MyView : UIView
 
 	public MyView()
 	{
-		textView = new UITextView(new RectangleF(10, 44, UIScreen.MainScreen.Bounds.Width - 20, 300)){
+		textView = new UITextView(new CGRect(10, 44, UIScreen.MainScreen.Bounds.Width - 20, 300)){
 			Editable = true
 		};
 		AddSubview(textView);
@@ -33,12 +33,12 @@ public class MyView : UIView
       <format type="text/html">
         <h2>Text Kit</h2>
       </format>
-      <para>iOS 7 introduced "Text Kit," a broad set of APIs and modifications of existing classes, built on <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Text&amp;scope=Xamarin" title="N:CoreText">N:CoreText</a></format>, that greatly expands the typographical flexibility of iOS.</para>
+      <para>iOS 7 introduced "Text Kit," a broad set of APIs and modifications of existing classes, built on <see cref="CoreText" />, that greatly expands the typographical flexibility of iOS.</para>
       <para>
-        <see cref="T:UIKit.UITextView" />s are intended to display large amounts of text. The text is stored in <see cref="T:UIKit.NSTextStorage" /> objects and layout of the text is managed by a <see cref="T:UIKit.NSLayoutManager" />, which lays out the text in an area defined by <see cref="T:UIKit.NSTextContainer" /> objects. </para>
-      <para>Mapped to the Model-View-Controller pattern, the <see cref="T:UIKit.NSLayoutManager" /> is the Controller, the <see cref="T:UIKit.UITextView" /> is the View, and <see cref="T:UIKit.NSTextStorage" /> and <see cref="T:UIKit.NSTextContainer" />s are Model elements.</para>
+        <see cref="UIKit.UITextView" />s are intended to display large amounts of text. The text is stored in <see cref="UIKit.NSTextStorage" /> objects and layout of the text is managed by a <see cref="UIKit.NSLayoutManager" />, which lays out the text in an area defined by <see cref="UIKit.NSTextContainer" /> objects. </para>
+      <para>Mapped to the Model-View-Controller pattern, the <see cref="UIKit.NSLayoutManager" /> is the Controller, the <see cref="UIKit.UITextView" /> is the View, and <see cref="UIKit.NSTextStorage" /> and <see cref="UIKit.NSTextContainer" />s are Model elements.</para>
       <para>
-        <see cref="T:UIKit.NSTextStorage" /> is a subclass of <see cref="T:Foundation.NSMutableAttributedString" /> and is responsible for holding the string, with various text styles. <see cref="T:UIKit.NSTextContainer" /> objects are responsible for modeling the geometric layout of the page. The <see cref="T:UIKit.NSLayoutManager" /> translates characters in the <see cref="T:UIKit.NSTextStorage" /> into glyphs, lays those out in lines according to the constraints of the <see cref="T:UIKit.NSTextContainer" />s, and coordinates the display of one or more <see cref="T:UIKit.UITextView" /> objects.</para>
+        <see cref="UIKit.NSTextStorage" /> is a subclass of <see cref="Foundation.NSMutableAttributedString" /> and is responsible for holding the string, with various text styles. <see cref="UIKit.NSTextContainer" /> objects are responsible for modeling the geometric layout of the page. The <see cref="UIKit.NSLayoutManager" /> translates characters in the <see cref="UIKit.NSTextStorage" /> into glyphs, lays those out in lines according to the constraints of the <see cref="UIKit.NSTextContainer" />s, and coordinates the display of one or more <see cref="UIKit.UITextView" /> objects.</para>
       <para>The following example shows the basic use of two important Text Kit features: multiple text styles and exclusion paths:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
@@ -65,7 +65,7 @@ public class MyView : UIView
 	layoutManager.AddTextContainer(container);
 
 	//UITextView == MVC View
-	TextView = new UITextView(new RectangleF(new PointF(0, 0), size), container);
+	TextView = new UITextView(new CGRect(new CGPoint(0, 0), size), container);
 	TextView.AttributedText = attributedString;
 	TextView.ScrollEnabled = false;
 	TextView.Editable = false;
@@ -73,7 +73,7 @@ public class MyView : UIView
 	AddSubview(TextView);
 
 	//Add an image overlay, with exclusion path..
-	var logoRect = new RectangleF(96, 195, 95, 90);
+	var logoRect = new CGRect(96, 195, 95, 90);
 	var img = UIImage.FromBundle("xam.png");
 	var imgView = new UIImageView(logoRect);
 	imgView.Image = img;
@@ -86,7 +86,7 @@ public class MyView : UIView
 }
             ]]></code>
       </example>
-      <para>iOS 6 added multiple text-style capability to <see cref="T:UIKit.UITextView" />. To use multiple styles, application developers must use the <see cref="P:UIKit.UITextView.AttributedText" /> property. The <see cref="P:UIKit.UITextView.Font" />, <see cref="P:UIKit.UITextView.TextColor" />, and <see cref="P:UIKit.UITextView.TextAlignment" /> properties apply to all the text in the <see cref="T:UIKit.UITextView" />.</para>
+      <para>iOS 6 added multiple text-style capability to <see cref="UIKit.UITextView" />. To use multiple styles, application developers must use the <see cref="UIKit.UITextView.AttributedText" /> property. The <see cref="UIKit.UITextView.Font" />, <see cref="UIKit.UITextView.TextColor" />, and <see cref="UIKit.UITextView.TextAlignment" /> properties apply to all the text in the <see cref="UIKit.UITextView" />.</para>
       <format type="text/html">
         <br />
       </format>
@@ -96,7 +96,7 @@ public class MyView : UIView
       <para>
         The C# style allows the user to add or remove event handlers at runtime by assigning to the events of properties of this class.    Event handlers can be anyone of a method, an anonymous methods or a lambda expression.  Using the C# style events or properties will override any manual settings to the Objective-C Delegate or WeakDelegate settings.
       </para>
-      <para>The Objective-C style requires the user to create a new class derived from <see cref="T:UIKit.UITextViewDelegate" /> class and assign it to the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20Delegate&amp;scope=Xamarin" title="P:UIKit.Delegate">P:UIKit.Delegate</a></format> property.   Alternatively, for low-level control, by creating a class derived from <see cref="T:Foundation.NSObject" /> which has every entry point properly decorated with an [Export] attribute.   The instance of this object can then be assigned to the <see cref="P:UIKit.UITextView.WeakDelegate" /> property.   
+      <para>The Objective-C style requires the user to create a new class derived from <see cref="UIKit.UITextViewDelegate" /> class and assign it to the <see cref="UIKit.Delegate" /> property.   Alternatively, for low-level control, by creating a class derived from <see cref="Foundation.NSObject" /> which has every entry point properly decorated with an [Export] attribute.   The instance of this object can then be assigned to the <see cref="UIKit.UITextView.WeakDelegate" /> property.   
       </para>
     </remarks>
     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UITextView_Class/index.html">Apple documentation for <c>UITextView</c></related>
@@ -105,8 +105,8 @@ public class MyView : UIView
         <summary>Notification constant for TextDidBeginEditing</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIKit.UITextView.Notifications" />.<see cref="M:UIKit.UITextView.Notifications.ObserveTextDidBeginEditing*" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="UIKit.UITextView.Notifications" />.<see cref="UIKit.UITextView.Notifications.ObserveTextDidBeginEditing" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
@@ -169,8 +169,8 @@ void Setup ()
         <summary>Notification constant for TextDidChange</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIKit.UITextView.Notifications" />.<see cref="M:UIKit.UITextView.Notifications.ObserveTextDidChange*" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="UIKit.UITextView.Notifications" />.<see cref="UIKit.UITextView.Notifications.ObserveTextDidChange" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
@@ -233,8 +233,8 @@ void Setup ()
         <summary>Notification constant for TextDidEndEditing</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIKit.UITextView.Notifications" />.<see cref="M:UIKit.UITextView.Notifications.ObserveTextDidEndEditing*" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="UIKit.UITextView.Notifications" />.<see cref="UIKit.UITextView.Notifications.ObserveTextDidEndEditing" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[

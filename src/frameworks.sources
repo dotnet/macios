@@ -93,7 +93,6 @@ APPKIT_SOURCES = \
 	AppKit/AppKitSynchronizationContext.cs \
 	AppKit/AppKitThreadAccessException.cs \
 	AppKit/BeginSheet.cs \
-	AppKit/Compat.cs \
 	AppKit/DoubleWrapper.cs \
 	AppKit/EventArgs.cs \
 	AppKit/Functions.cs \
@@ -111,10 +110,8 @@ APPKIT_SOURCES = \
 	AppKit/NSControl.cs \
 	AppKit/NSDraggingInfo.cs \
 	AppKit/NSDraggingSession.cs \
-	AppKit/NSDraggingItem.cs \
 	AppKit/NSPasteboard.cs \
 	AppKit/NSPasteboardReading.cs \
-	AppKit/NSSharingServiceDelegate.cs \
 	AppKit/NSDocument.cs \
 	AppKit/NSEnumsExtensions.cs \
 	AppKit/NSEvent.cs \
@@ -124,7 +121,6 @@ APPKIT_SOURCES = \
 	AppKit/NSGraphics.cs \
 	AppKit/NSGraphicsContext.cs \
 	AppKit/NSImage.cs \
-	AppKit/NSLayoutManager.cs \
 	UIKit/NSLayoutManager.cs \
 	AppKit/NSLevelIndicator.cs \
 	AppKit/NSMatrix.cs \
@@ -156,9 +152,6 @@ APPKIT_SOURCES = \
 	AppKit/NSWindow.cs \
 	AppKit/NSWorkspace.cs \
 	AppKit/NSCollectionView.cs \
-	AppKit/NSCollectionViewDelegate.cs \
-	AppKit/NSTextTableBlock.cs \
-	AppKit/NSMutableFontCollection.cs \
 	AppKit/NSCollectionViewLayout.cs \
 	AppKit/NSColorPickerTouchBarItem.cs \
 	AppKit/NSSliderTouchBarItem.cs \
@@ -945,14 +938,16 @@ GAMECONTROLLER_API_SOURCES = \
 	GameController/Enums.cs \
 
 GAMECONTROLLER_CORE_SOURCES = \
-	GameController/GCController.cs \
 	GameController/GCMotion.cs \
+	GameController/GCPoint2.cs \
 
 GAMECONTROLLER_SOURCES = \
 	GameController/GCExtendedGamepadSnapshot.cs \
 	GameController/GCGamepadSnapshot.cs \
+	GameController/GCInput.cs \
 	GameController/GCMicroGamepadSnapshot.cs \
 	GameController/GCMouse.cs \
+	GameController/GCPhysicalInputElementCollection.cs \
 
 # GameKit
 
@@ -1418,46 +1413,6 @@ OPENGL_CORE_SOURCES = \
 	OpenGL/CGLContext.cs \
 	OpenGL/CGLEnums.cs \
 	OpenGL/CGLPixelFormat.cs \
-	OpenGL/OpenTK/Math/MathHelper.cs \
-	OpenGL/OpenTK/Math/Matrix2.cs \
-	OpenGL/OpenTK/Math/Matrix3.cs \
-	OpenGL/OpenTK/Math/Matrix3d.cs \
-	OpenGL/OpenTK/Math/Matrix4.cs \
-	OpenGL/OpenTK/Math/Matrix4d.cs \
-	OpenGL/OpenTK/Math/Quaternion.cs \
-	OpenGL/OpenTK/Math/Quaterniond.cs \
-	OpenGL/OpenTK/Math/Vector2.cs \
-	OpenGL/OpenTK/Math/Vector2d.cs \
-	OpenGL/OpenTK/Math/Vector3.cs \
-	OpenGL/OpenTK/Math/Vector3d.cs \
-	OpenGL/OpenTK/Math/Vector4.cs \
-	OpenGL/OpenTK/Math/Vector4d.cs \
-	OpenGLES/OpenTK/Math/Vector2i.cs \
-	OpenGLES/OpenTK/Math/Vector3i.cs \
-	OpenGLES/OpenTK/Math/Vector4i.cs \
-
-OPENGL_SOURCES = \
-	OpenGL/FrameEventArgs.cs \
-	OpenGL/IGameWindow.cs \
-	OpenGL/INativeWindow.cs \
-	OpenGL/MonoMacGameView.cs \
-	OpenGL/OpenTK/Audio/BlittableValueType.cs \
-	OpenGL/OpenTK/Audio/ContextHandle.cs \
-	OpenGL/OpenTK/Audio/OpenAL/AL/AL.cs \
-	OpenGL/OpenTK/Audio/OpenAL/AL/ALEnums.cs \
-	OpenGL/OpenTK/Audio/OpenAL/Alc/Alc.cs \
-	OpenGL/OpenTK/Audio/OpenAL/Alc/AlcEnums.cs \
-	OpenGL/OpenTK/Graphics/Color4.cs \
-	OpenGL/OpenTK/Graphics/OpenGL/GL.cs \
-	OpenGL/OpenTK/Graphics/OpenGL/GLCore.cs \
-	OpenGL/OpenTK/Graphics/OpenGL/GLEnums.cs \
-	OpenGL/OpenTK/Graphics/OpenGL/GLHelper.cs \
-	OpenGL/OpenTK/Math/Half.cs \
-	OpenGL/OpenTK/Math/Vector2h.cs \
-	OpenGL/OpenTK/Math/Vector3h.cs \
-	OpenGL/OpenTK/Math/Vector4h.cs \
-	OpenGL/WindowBorder.cs \
-	OpenGL/WindowState.cs \
 
 # OpenGLES
 
@@ -1677,7 +1632,6 @@ SPRITEKIT_SOURCES = \
 	SpriteKit/SKKeyframeSequence.cs \
 	SpriteKit/SKNode.cs \
 	SpriteKit/SKShapeNode.cs \
-	SpriteKit/SKVideoNode.cs \
 	SpriteKit/SKWarpGeometryGrid.cs \
 
 # StoreKit
@@ -1743,7 +1697,6 @@ UIKIT_CORE_SOURCES = \
 UIKIT_SOURCES = \
 	UIKit/Compat.cs \
 	UIKit/NSLayoutManager.cs \
-	AppKit/NSLayoutManager.cs \
 	UIKit/UIAccessibility.cs \
 	UIKit/UIAccessibilityCustomAction.cs \
 	UIKit/UIActionSheet.cs \
@@ -1809,7 +1762,6 @@ UIKIT_SOURCES = \
 	UIKit/UIView.cs \
 	UIKit/UIViewController.cs \
 	UIKit/UIViewControllerTransitionCoordinatorContext.cs \
-	UIKit/UIWindow.cs \
 	UIKit/UIWindowScene.cs \
 	UIKit/NSValue.cs \
 

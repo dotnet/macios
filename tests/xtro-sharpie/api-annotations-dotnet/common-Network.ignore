@@ -33,7 +33,7 @@
 !missing-protocol! OS_nw_ws_response not bound
 
 
-# no need, please see comment: https://github.com/xamarin/xamarin-macios/pull/4251#issuecomment-410815837
+# no need, please see comment: https://github.com/dotnet/macios/pull/4251#issuecomment-410815837
 !missing-pinvoke! nw_release is not bound
 !missing-pinvoke! nw_retain is not bound
 

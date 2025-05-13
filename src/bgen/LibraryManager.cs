@@ -20,11 +20,6 @@ public class LibraryManager {
 			yield return lib;
 	}
 
-	public static bool DetermineSkipSystemDrawing (TargetFramework targetFramework) =>
-		 targetFramework.Platform is ApplePlatform.MacOSX &&
-			   (targetFramework == TargetFramework.Xamarin_Mac_2_0_Mobile ||
-				targetFramework == TargetFramework.Xamarin_Mac_4_5_Full);
-
 	public static PlatformName DetermineCurrentPlatform (ApplePlatform applePlatform)
 	{
 		switch (applePlatform) {

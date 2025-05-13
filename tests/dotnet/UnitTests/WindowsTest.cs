@@ -123,7 +123,7 @@ namespace Xamarin.Tests {
 			BundleStructureTest.CheckAppBundleContents (platform, merged, rids, BundleStructureTest.CodeSignature.None, configuration == "Release");
 
 			// Assert that no files were copied to the signed directory after the app was signed.
-			// https://github.com/xamarin/xamarin-macios/issues/19278
+			// https://github.com/dotnet/macios/issues/19278
 			var signedAppBundleFilesWithInfo = hotRestartAppBundleFiles.Select (v => new { Name = v, Info = new FileInfo (v) });
 			Console.WriteLine ($"{signedAppBundleFilesWithInfo.Count ()} files in app bundle:");
 			foreach (var fileWithInfo2 in signedAppBundleFilesWithInfo) {

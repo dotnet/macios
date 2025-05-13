@@ -34,7 +34,7 @@ namespace HomeKit {
 #if NET
 		/// <param name="significantEvent">To be added.</param>
 		///         <param name="offset">To be added.</param>
-		///         <summary>Factory method to create an <see cref="T:Foundation.NSPredicate" /> that evaluates to <see langword="true" /> if the <paramref name="significantEvent" /> occurred.</summary>
+		///         <summary>Factory method to create an <see cref="Foundation.NSPredicate" /> that evaluates to <see langword="true" /> if the <paramref name="significantEvent" /> occurred.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("tvos")]

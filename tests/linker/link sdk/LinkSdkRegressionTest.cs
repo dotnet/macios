@@ -1048,7 +1048,7 @@ namespace LinkSdk {
 		}
 
 		[Test]
-		// https://github.com/xamarin/xamarin-macios/issues/6711
+		// https://github.com/dotnet/macios/issues/6711
 		public void PreserveINativeObject ()
 		{
 			// linker will keep the MTAudioProcessingTap type
@@ -1058,7 +1058,7 @@ namespace LinkSdk {
 		}
 
 		[Test]
-		// https://github.com/xamarin/xamarin-macios/issues/6346
+		// https://github.com/dotnet/macios/issues/6346
 		public void AsQueryable_Enumerable ()
 		{
 			var list = new List<string> { "hello hello" };
@@ -1077,7 +1077,7 @@ namespace LinkSdk {
 		}
 
 		[Test]
-		// https://github.com/xamarin/xamarin-macios/issues/7321
+		// https://github.com/dotnet/macios/issues/7321
 		public void Principal ()
 		{
 			Thread.CurrentPrincipal = new CustomPrincipal ();

@@ -47,7 +47,7 @@ namespace CoreAudioKit {
 	}
 
 	/// <summary>
-	///       <see cref="T:UIKit.UIViewController" /> class that handles extension requests to support audio unit extensions that have a UI.</summary>
+	///       <see cref="UIKit.UIViewController" /> class that handles extension requests to support audio unit extensions that have a UI.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/CoreAudioKit/AUViewController">Apple documentation for <c>AUViewController</c></related>
 	[MacCatalyst (13, 1)]
@@ -196,7 +196,7 @@ namespace CoreAudioKit {
 	}
 
 #if !MONOMAC
-	/// <summary>A <see cref="T:UIKit.UIViewController" /> that allows discovery and connection to MIDI over Bluetooth peripherals.</summary>
+	/// <summary>A <see cref="UIKit.UIViewController" /> that allows discovery and connection to MIDI over Bluetooth peripherals.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CoreAudioKit/Reference/CABTMIDICentralViewController_Ref/index.html">Apple documentation for <c>CABTMIDICentralViewController</c></related>
 	[NoMac]
@@ -212,21 +212,21 @@ namespace CoreAudioKit {
 		///           <para>To be added.</para>
 		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
 		///         </param>
-		/// <summary>Creates and returns a new <see cref="T:CoreAudioKit.CABTMidiCentralViewController" /> from the specified <paramref name="nibName" /> in the specified <paramref name="bundle" />.</summary>
+		/// <summary>Creates and returns a new <see cref="CoreAudioKit.CABTMidiCentralViewController" /> from the specified <paramref name="nibName" /> in the specified <paramref name="bundle" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Export ("initWithNibName:bundle:")]
 		[PostGet ("NibBundle")]
 		NativeHandle Constructor ([NullAllowed] string nibName, [NullAllowed] NSBundle bundle);
 
 		/// <param name="withStyle">To be added.</param>
-		/// <summary>Creates a new <see cref="T:CoreAudioKit.CABTMidiCentralViewController" /> with the specified style.</summary>
+		/// <summary>Creates a new <see cref="CoreAudioKit.CABTMidiCentralViewController" /> with the specified style.</summary>
 		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("initWithStyle:")]
 		NativeHandle Constructor (UITableViewStyle withStyle);
 	}
 
-	/// <summary>A <see cref="T:UIKit.UIViewController" /> that allows the iOS device to serve as a Midi-over-Bluetooth peripheral.</summary>
+	/// <summary>A <see cref="UIKit.UIViewController" /> that allows the iOS device to serve as a Midi-over-Bluetooth peripheral.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CoreAudioKit/Reference/CABTMIDILocalPeripheralViewController/index.html">Apple documentation for <c>CABTMIDILocalPeripheralViewController</c></related>
 	[NoMac]
@@ -241,14 +241,14 @@ namespace CoreAudioKit {
 		///           <para>To be added.</para>
 		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
 		///         </param>
-		/// <summary>Creates and returns a new <see cref="T:CoreAudioKit.CABTMidiLocalPeripheralViewController" /> from the specified <paramref name="nibName" /> in the specified <paramref name="bundle" />.</summary>
+		/// <summary>Creates and returns a new <see cref="CoreAudioKit.CABTMidiLocalPeripheralViewController" /> from the specified <paramref name="nibName" /> in the specified <paramref name="bundle" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Export ("initWithNibName:bundle:")]
 		[PostGet ("NibBundle")]
 		NativeHandle Constructor ([NullAllowed] string nibName, [NullAllowed] NSBundle bundle);
 	}
 
-	/// <summary>A <see cref="T:UIKit.UIView" /> that defines the standard inter-app audio user interface.</summary>
+	/// <summary>A <see cref="UIKit.UIView" /> that defines the standard inter-app audio user interface.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/CoreAudioKit/CAInterAppAudioSwitcherView">Apple documentation for <c>CAInterAppAudioSwitcherView</c></related>
 	[NoMac]
@@ -279,7 +279,7 @@ namespace CoreAudioKit {
 		nfloat ContentWidth ();
 	}
 
-	/// <summary>A <see cref="T:UIKit.UIView" /> that shows the standard inter-app audio transport view (rewind, play, record, time, etc.).</summary>
+	/// <summary>A <see cref="UIKit.UIView" /> that shows the standard inter-app audio transport view (rewind, play, record, time, etc.).</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/CoreAudioKit/CAInterAppAudioTransportView">Apple documentation for <c>CAInterAppAudioTransportView</c></related>
 	[NoMac]

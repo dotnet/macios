@@ -554,8 +554,8 @@ namespace UserNotifications {
 	[DisableDefaultCtor] // as per docs
 	interface UNNotificationContent : NSCopying, NSMutableCopying, NSSecureCoding {
 
-		/// <summary>Gets an array of <see cref="T:UserNotifications.UNNotificationAttachment" /> objects that contains the attachments for the notification.</summary>
-		///         <value>An array of <see cref="T:UserNotifications.UNNotificationAttachment" /> objects that contains the attachments for the notification.</value>
+		/// <summary>Gets an array of <see cref="UserNotifications.UNNotificationAttachment" /> objects that contains the attachments for the notification.</summary>
+		///         <value>An array of <see cref="UserNotifications.UNNotificationAttachment" /> objects that contains the attachments for the notification.</value>
 		///         <remarks>To be added.</remarks>
 		[Unavailable (PlatformName.TvOS)]
 		[Export ("attachments", ArgumentSemantic.Copy)]
@@ -682,8 +682,8 @@ namespace UserNotifications {
 	[BaseType (typeof (UNNotificationContent))]
 	interface UNMutableNotificationContent {
 
-		/// <summary>Gets or sets an array of <see cref="T:UserNotifications.UNNotificationAttachment" /> objects that contains the attachments for the notification.</summary>
-		///         <value>An array of <see cref="T:UserNotifications.UNNotificationAttachment" /> objects that contains the attachments for the notification.</value>
+		/// <summary>Gets or sets an array of <see cref="UserNotifications.UNNotificationAttachment" /> objects that contains the attachments for the notification.</summary>
+		///         <value>An array of <see cref="UserNotifications.UNNotificationAttachment" /> objects that contains the attachments for the notification.</value>
 		///         <remarks>To be added.</remarks>
 		[Unavailable (PlatformName.TvOS)]
 		[Export ("attachments", ArgumentSemantic.Copy)]
@@ -796,8 +796,8 @@ namespace UserNotifications {
 		string FilterCriteria { get; set; }
 	}
 
-	/// <summary>Contains the content and trigger for a notification that the developer requests from <see cref="T:UserNotifications.UNUserNotificationCenter" />..</summary>
-	/// <remarks>This class is not related to <see cref="T:UserNotifications.UNNotificationResponse" />, which details a user response to a notification.</remarks>
+	/// <summary>Contains the content and trigger for a notification that the developer requests from <see cref="UserNotifications.UNUserNotificationCenter" />..</summary>
+	/// <remarks>This class is not related to <see cref="UserNotifications.UNNotificationResponse" />, which details a user response to a notification.</remarks>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/UserNotifications/UNNotificationRequest">Apple documentation for <c>UNNotificationRequest</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
@@ -853,7 +853,7 @@ namespace UserNotifications {
 	}
 
 	/// <summary>A system-created object that contains information about how a user responded to a notification.</summary>
-	///     <remarks>This class is not related to <see cref="T:UserNotifications.UNNotificationRequest" />, which represents the data needed to request a notification from the system.</remarks>
+	///     <remarks>This class is not related to <see cref="UserNotifications.UNNotificationRequest" />, which represents the data needed to request a notification from the system.</remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/UserNotifications/UNNotificationResponse">Apple documentation for <c>UNNotificationResponse</c></related>
 	[Unavailable (PlatformName.TvOS)]
 	[MacCatalyst (13, 1)]
@@ -897,7 +897,7 @@ namespace UserNotifications {
 		UIScene TargetScene { get; }
 	}
 
-	/// <summary>System-created object that contains a user response to a <see cref="T:UserNotifications.UNTextInputNotificationAction" />.</summary>
+	/// <summary>System-created object that contains a user response to a <see cref="UserNotifications.UNTextInputNotificationAction" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/UserNotifications/UNTextInputNotificationResponse">Apple documentation for <c>UNTextInputNotificationResponse</c></related>
 	[Unavailable (PlatformName.TvOS)]
@@ -1139,7 +1139,7 @@ namespace UserNotifications {
 	}
 
 	/// <summary>Triggers a notification after a time interval.</summary>
-	/// <remarks>Application developers can set <see cref="P:CoreLocation.CLRegion.NotifyOnEntry" /> and <see cref="P:CoreLocation.CLRegion.NotifyOnExit" /> to control when the trigger is activated.</remarks>
+	/// <remarks>Application developers can set <see cref="CoreLocation.CLRegion.NotifyOnEntry" /> and <see cref="CoreLocation.CLRegion.NotifyOnExit" /> to control when the trigger is activated.</remarks>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/UserNotifications/UNTimeIntervalNotificationTrigger">Apple documentation for <c>UNTimeIntervalNotificationTrigger</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (UNNotificationTrigger))]
@@ -1148,7 +1148,7 @@ namespace UserNotifications {
 
 		/// <summary>Gets the time interval after which the trigger is activated.</summary>
 		///         <value>Te time interval after which the trigger is activated.</value>
-		///         <remarks>Application developers can set <see cref="P:CoreLocation.CLRegion.NotifyOnEntry" /> and <see cref="P:CoreLocation.CLRegion.NotifyOnExit" /> to control when the trigger is activated.</remarks>
+		///         <remarks>Application developers can set <see cref="CoreLocation.CLRegion.NotifyOnEntry" /> and <see cref="CoreLocation.CLRegion.NotifyOnExit" /> to control when the trigger is activated.</remarks>
 		[Export ("timeInterval")]
 		double TimeInterval { get; }
 
@@ -1166,7 +1166,7 @@ namespace UserNotifications {
 		///           <para>The date and time that the trigger will activate next.</para>
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
 		///         </value>
-		///         <remarks>Application developers can set <see cref="P:CoreLocation.CLRegion.NotifyOnEntry" /> and <see cref="P:CoreLocation.CLRegion.NotifyOnExit" /> to control when the trigger is activated.</remarks>
+		///         <remarks>Application developers can set <see cref="CoreLocation.CLRegion.NotifyOnEntry" /> and <see cref="CoreLocation.CLRegion.NotifyOnExit" /> to control when the trigger is activated.</remarks>
 		[NullAllowed, Export ("nextTriggerDate")]
 		NSDate NextTriggerDate { get; }
 	}
@@ -1205,7 +1205,7 @@ namespace UserNotifications {
 	}
 
 	/// <summary>Triggers the delivery of a notification when the device enters or leaves a geographic area.</summary>
-	///     <remarks>Application developers can set <see cref="P:CoreLocation.CLRegion.NotifyOnEntry" /> and <see cref="P:CoreLocation.CLRegion.NotifyOnExit" /> to control when the trigger is activated.</remarks>
+	///     <remarks>Application developers can set <see cref="CoreLocation.CLRegion.NotifyOnEntry" /> and <see cref="CoreLocation.CLRegion.NotifyOnExit" /> to control when the trigger is activated.</remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/UserNotifications/UNLocationNotificationTrigger">Apple documentation for <c>UNLocationNotificationTrigger</c></related>
 	[NoMac]
 	[NoMacCatalyst]
@@ -1215,7 +1215,7 @@ namespace UserNotifications {
 	interface UNLocationNotificationTrigger {
 
 		/// <summary>Gets the region whose boundary activates the trigger.</summary>
-		///         <value>Application developers can set <see cref="P:CoreLocation.CLRegion.NotifyOnEntry" /> and <see cref="P:CoreLocation.CLRegion.NotifyOnExit" /> to control when the trigger is activated.</value>
+		///         <value>Application developers can set <see cref="CoreLocation.CLRegion.NotifyOnEntry" /> and <see cref="CoreLocation.CLRegion.NotifyOnExit" /> to control when the trigger is activated.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("region", ArgumentSemantic.Copy)]
 		CLRegion Region { get; }
@@ -1232,11 +1232,11 @@ namespace UserNotifications {
 
 	interface IUNUserNotificationCenterDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:UserNotifications.UNUserNotificationCenterDelegate" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UserNotifications.UNUserNotificationCenterDelegate" />.</summary>
 	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:UserNotifications.UNUserNotificationCenterDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:UserNotifications.UNUserNotificationCenterDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:UserNotifications.UNUserNotificationCenterDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UserNotifications.UNUserNotificationCenterDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UserNotifications.UNUserNotificationCenterDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="UserNotifications.UNUserNotificationCenterDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol, Model]
@@ -1271,7 +1271,7 @@ namespace UserNotifications {
 	}
 
 	/// <summary>System-provided class that lets the developer schedule and manage notifications.</summary>
-	/// <remarks>Developers use <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=User%20Notifications%20UNUser%20Notification%20Center%20Current%20Notification%20Center&amp;scope=Xamarin" title="M:UserNotifications.UNUserNotificationCenter.CurrentNotificationCenter*">M:UserNotifications.UNUserNotificationCenter.CurrentNotificationCenter*</a></format> to obtain the singleton that coordinates and schedules notifications.</remarks>
+	/// <remarks>Developers use <see cref="UserNotifications.UNUserNotificationCenter.CurrentNotificationCenter" /> to obtain the singleton that coordinates and schedules notifications.</remarks>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/UserNotifications/UNUserNotificationCenter">Apple documentation for <c>UNUserNotificationCenter</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]

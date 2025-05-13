@@ -15,7 +15,7 @@ using ObjCRuntime;
 namespace UIKit {
 
 #if IOS
-	/// <summary>Extension methods for the <see cref="T:UIKit.UIDeviceOrientation" /> class.</summary>
+	/// <summary>Extension methods for the <see cref="UIKit.UIDeviceOrientation" /> class.</summary>
 	///     <remarks>To be added.</remarks>
 	public static class UIDeviceOrientationExtensions {
 		/// <param name="orientation">To be added.</param>

@@ -886,7 +886,7 @@ namespace Introspection {
 					var memberAndTypeFormat = mi.Name == typeName ? "Type: {0}" : "Member name: {1}, Type: {0}";
 					var memberAndType = string.Format (memberAndTypeFormat, typeName, mi.Name);
 
-					// Rule 1: https://github.com/xamarin/xamarin-macios/wiki/BINDINGS#rule-1
+					// Rule 1: https://github.com/dotnet/macios/wiki/BINDINGS#rule-1
 					// Note: we don't enforce that rule for the Obsolete (not Obsoleted) attribute since the attribute itself doesn't support versions.
 					if (!(ca is ObsoleteAttribute)) {
 						var forbiddenOSNames = new [] { "iOS", "watchOS", "tvOS", "macOS" };
@@ -896,13 +896,13 @@ namespace Introspection {
 						}
 					}
 
-					// Rule 2: https://github.com/xamarin/xamarin-macios/wiki/BINDINGS#rule-2
+					// Rule 2: https://github.com/dotnet/macios/wiki/BINDINGS#rule-2
 					if (message.Contains ('`')) {
 						ReportError ("[Rule 2] Replace grave accent (`) by apostrophe (') in attribute's message: \"{0}\" - {1}", message, memberAndType);
 						totalErrors++;
 					}
 
-					// Rule 3: https://github.com/xamarin/xamarin-macios/wiki/BINDINGS#rule-3
+					// Rule 3: https://github.com/dotnet/macios/wiki/BINDINGS#rule-3
 					if (!message.EndsWith (".", StringComparison.Ordinal)) {
 						if (!allowedRule3.Contains (typeName)) {
 							ReportError ("[Rule 3] Missing '.' in attribute's message: \"{0}\" - {1}", message, memberAndType);
@@ -910,7 +910,7 @@ namespace Introspection {
 						}
 					}
 
-					// Rule 4: https://github.com/xamarin/xamarin-macios/wiki/BINDINGS#rule-4
+					// Rule 4: https://github.com/dotnet/macios/wiki/BINDINGS#rule-4
 					if (!allowedMemberRule4.Contains (mi.Name)) {
 						var forbiddenAvailabilityKeywords = new [] { "introduced", "deprecated", "obsolete", "obsoleted" };
 						if (forbiddenAvailabilityKeywords.Any (s => Regex.IsMatch (message, $"({s})", RegexOptions.IgnoreCase))) {

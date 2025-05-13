@@ -21,19 +21,11 @@ namespace UIKit {
 		}
 
 #if !TVOS && !__MACCATALYST__
-#if !NET
-		[Deprecated (PlatformName.iOS, 3, 2)]
-		public static CGRect BoundsFromNotification (NSNotification n)
-		{
-			return RectangleFFrom (BoundsUserInfoKey, n);
-		}
-#endif
-
 		/// <param name="n">notification and its payload.</param>
 		///         <summary>Deprecated: helper method to extract the animation duration from a notification.</summary>
 		///         <returns>
 		///         </returns>
-		///         <remarks>Use the <see cref="T:UIKit.UIKeyboard.Notifications" /> strongly typed methods instead.</remarks>
+		///         <remarks>Use the <see cref="UIKit.UIKeyboard.Notifications" /> strongly typed methods instead.</remarks>
 		public static double AnimationDurationFromNotification (NSNotification n)
 		{
 			if (n is null || n.UserInfo is null)
@@ -48,7 +40,7 @@ namespace UIKit {
 		///         <summary>Deprecated: helper method to extract the animation curve from a notification.</summary>
 		///         <returns>
 		///         </returns>
-		///         <remarks>Use the <see cref="T:UIKit.UIKeyboard.Notifications" /> strongly typed methods instead.</remarks>
+		///         <remarks>Use the <see cref="UIKit.UIKeyboard.Notifications" /> strongly typed methods instead.</remarks>
 		public static uint AnimationCurveFromNotification (NSNotification n)
 		{
 			if (n is null || n.UserInfo is null)
@@ -71,27 +63,11 @@ namespace UIKit {
 		}
 
 #if !TVOS && !__MACCATALYST__
-#if !NET
-		[Deprecated (PlatformName.iOS, 3, 2)]
-		static public CGPoint CenterBeginFromNotification (NSNotification n)
-		{
-			return PointFFrom (CenterBeginUserInfoKey, n);
-		}
-#endif
-
-#if !NET
-		[Deprecated (PlatformName.iOS, 3, 2)]
-		static public CGPoint CenterEndFromNotification (NSNotification n)
-		{
-			return PointFFrom (CenterEndUserInfoKey, n);
-		}
-#endif
-
 		/// <param name="n">notification and its payload.</param>
 		///         <summary>Deprecated: helper method to extract the keyboard's starting frame from a notification</summary>
 		///         <returns>
 		///         </returns>
-		///         <remarks>Use the <see cref="T:UIKit.UIKeyboard.Notifications" /> strongly typed methods instead.</remarks>
+		///         <remarks>Use the <see cref="UIKit.UIKeyboard.Notifications" /> strongly typed methods instead.</remarks>
 		static public CGRect FrameBeginFromNotification (NSNotification n)
 		{
 			return RectangleFFrom (FrameBeginUserInfoKey, n);
@@ -101,7 +77,7 @@ namespace UIKit {
 		///         <summary>Deprecated: helper method to extract the keyboard's ending frame from a notification</summary>
 		///         <returns>
 		///         </returns>
-		///         <remarks>Use the <see cref="T:UIKit.UIKeyboard.Notifications" /> strongly typed methods instead.</remarks>
+		///         <remarks>Use the <see cref="UIKit.UIKeyboard.Notifications" /> strongly typed methods instead.</remarks>
 		static public CGRect FrameEndFromNotification (NSNotification n)
 		{
 			return RectangleFFrom (FrameEndUserInfoKey, n);

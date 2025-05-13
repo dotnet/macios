@@ -16,7 +16,7 @@
           <term>
             Visualization: UIView instances are responsible for displaying
             their content, typically this is done by implementing a draw
-            method using either <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Graphics&amp;scope=Xamarin" title="N:CoreGraphics">N:CoreGraphics</a></format>,
+            method using either <see cref="CoreGraphics" />,
             OpenGL or customizing some of their visual properties.  Views 
             also have built-in support for animating elements of the view.  
           </term>
@@ -37,7 +37,7 @@
           <term>
             Event Handling: UIViews are a natural place to handle touch
             events since they are self-contained user interface elements.
-            UIViews subclass the <see cref="T:UIKit.UIResponder" />
+            UIViews subclass the <see cref="UIKit.UIResponder" />
             class, so they participate both on system events (like motion
             and actions) as well as being able to process touch events.
             
@@ -57,23 +57,23 @@
       <para>
         To cause the UIView to respond to user input by updating its
         display, developers should call the
-        <see cref="M:UIKit.UIView.SetNeedsDisplayInRect(CoreGraphics.CGRect)" /> or
-        <see cref="M:UIKit.UIView.SetNeedsDisplayInRect(CoreGraphics.CGRect)" /> which will queue a call to the developer's
-        <see cref="M:UIKit.UIView.Draw(CoreGraphics.CGRect)" /> method
+        <see cref="UIKit.UIView.SetNeedsDisplayInRect(CoreGraphics.CGRect)" /> or
+        <see cref="UIKit.UIView.SetNeedsDisplayInRect(CoreGraphics.CGRect)" /> which will queue a call to the developer's
+        <see cref="UIKit.UIView.Draw(CoreGraphics.CGRect)" /> method
         where the developer has implemented logic to re-render the control with the new state.
       </para>
       <para>
         Event delivery can be turned off either by setting the
-        <see cref="P:UIKit.UIView.UserInteractionEnabled" /> to false or you can
+        <see cref="UIKit.UIView.UserInteractionEnabled" /> to false or you can
         disable them temporarily at the application level by calling
-        <see cref="M:UIKit.UIApplication.BeginIgnoringInteractionEvents" />.  In
+        <see cref="UIKit.UIApplication.BeginIgnoringInteractionEvents" />.  In
         both cases, events destined for the view are dropped and are not
         delivered to the views.
       </para>
       <para>
         Events are disabled while animation are playing back.  Devs can
         change this behavior when using explicit animations by using the
-        <see cref="T:UIKit.UIViewAnimationOptions" />'s AllowUserInteraction
+        <see cref="UIKit.UIViewAnimationOptions" />'s AllowUserInteraction
         flag in the animation.
       </para>
       <format type="text/html">
@@ -91,38 +91,38 @@
       <list type="bullet">
         <item>
           <term>
-            <see cref="T:UIKit.UILongPressGestureRecognizer" />
+            <see cref="UIKit.UILongPressGestureRecognizer" />
           </term>
         </item>
         <item>
           <term>
-            <see cref="T:UIKit.UIPanGestureRecognizer" />
+            <see cref="UIKit.UIPanGestureRecognizer" />
           </term>
         </item>
         <item>
           <term>
-            <see cref="T:UIKit.UIPinchGestureRecognizer" />
+            <see cref="UIKit.UIPinchGestureRecognizer" />
           </term>
         </item>
         <item>
           <term>
-            <see cref="T:UIKit.UIRotationGestureRecognizer" />
+            <see cref="UIKit.UIRotationGestureRecognizer" />
           </term>
         </item>
         <item>
           <term>
-            <see cref="T:UIKit.UISwipeGestureRecognizer" />
+            <see cref="UIKit.UISwipeGestureRecognizer" />
           </term>
         </item>
         <item>
           <term>
-            <see cref="T:UIKit.UITapGestureRecognizer" />
+            <see cref="UIKit.UITapGestureRecognizer" />
           </term>
         </item>
       </list>
       <para>
         In addition, developers can create their own custom gesture recognizer by
-        subclassing <see cref="T:UIKit.UIGestureRecognizer" />.
+        subclassing <see cref="UIKit.UIGestureRecognizer" />.
       </para>
       <para>
         Developers use the recognizer by creating an instance of the
@@ -151,7 +151,7 @@ myView.AddGestureRecognizer (recognizer);
         is an instance of the gesture recognizer that detected the gesture.
         The developr can query the parameters of the recognized query by looking at
         the properties in the recognizer; the
-        <see cref="P:UIKit.UIGestureRecognizer.State" /> property contains the
+        <see cref="UIKit.UIGestureRecognizer.State" /> property contains the
         recognizer state.
         
       </para>
@@ -168,25 +168,25 @@ myView.AddGestureRecognizer (recognizer);
       <list type="bullet">
         <item>
           <term>
-            <see cref="M:UIKit.UIResponder.TouchesBegan(Foundation.NSSet,UIKit.UIEvent)" />:
+            <see cref="UIKit.UIResponder.TouchesBegan(Foundation.NSSet,UIKit.UIEvent)" />:
             sent when one or more fingers touch the screen.
           </term>
         </item>
         <item>
           <term>
-            <see cref="M:UIKit.UIResponder.TouchesMoved(Foundation.NSSet,UIKit.UIEvent)" />:
+            <see cref="UIKit.UIResponder.TouchesMoved(Foundation.NSSet,UIKit.UIEvent)" />:
             sent when one or more fingers move.
           </term>
         </item>
         <item>
           <term>
-            <see cref="M:UIKit.UIResponder.TouchesEnded(Foundation.NSSet,UIKit.UIEvent)" />:
+            <see cref="UIKit.UIResponder.TouchesEnded(Foundation.NSSet,UIKit.UIEvent)" />:
             sent when one or more fingers are lifted from the screen.
           </term>
         </item>
         <item>
           <term>
-            <see cref="M:UIKit.UIResponder.TouchesCancelled(Foundation.NSSet,UIKit.UIEvent)" />:
+            <see cref="UIKit.UIResponder.TouchesCancelled(Foundation.NSSet,UIKit.UIEvent)" />:
             sent when the touch is cancelled by the system (for example if
             the phone interrupts your application).
           </term>
@@ -195,20 +195,20 @@ myView.AddGestureRecognizer (recognizer);
       <para>
         UIViews by default only handle a single touch event at once.  If you
         want your view to handle multiple touches, you must set the
-        <see cref="P:UIKit.UIView.MultipleTouchEnabled" /> to true.
+        <see cref="UIKit.UIView.MultipleTouchEnabled" /> to true.
       </para>
       <para>
-        iOS creates a <see cref="T:UIKit.UIEvent" /> object any time a finger
-        touches the screen, moves or is removed from the screen.  The <see cref="T:UIKit.UIEvent" /> encapsulates all of the touches
+        iOS creates a <see cref="UIKit.UIEvent" /> object any time a finger
+        touches the screen, moves or is removed from the screen.  The <see cref="UIKit.UIEvent" /> encapsulates all of the touches
         that are taking place on the screen at this point, even those that
-        do not belong to this view.  In addition to the <see cref="T:UIKit.UIEvent" />, there is an <see cref="T:Foundation.NSSet" /> containing <see cref="T:UIKit.UITouch" /> objects that represent the state
+        do not belong to this view.  In addition to the <see cref="UIKit.UIEvent" />, there is an <see cref="Foundation.NSSet" /> containing <see cref="UIKit.UITouch" /> objects that represent the state
         of each finger on the screen for this particular view.
       </para>
       <para>
         If the application handles touches directly, developers can
-        override the <see cref="M:UIKit.UIView.GestureRecognizerShouldBegin(UIKit.UIGestureRecognizer)" />
+        override the <see cref="UIKit.UIView.GestureRecognizerShouldBegin(UIKit.UIGestureRecognizer)" />
         method to control whether an associated
-        <see cref="T:UIKit.UIGestureRecognizer" /> should execute or not.
+        <see cref="UIKit.UIGestureRecognizer" /> should execute or not.
         
       </para>
       <format type="text/html">
@@ -217,11 +217,11 @@ myView.AddGestureRecognizer (recognizer);
       <para>
         UIViews are typically created by invoking the constructor that takes
         a frame as its parameter (the frame is of type
-        <see cref="T:System.Drawing.RectangleF" />), for example:
+        <see cref="CGRect" />), for example:
       </para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
-var myView = new UIView (new RectangleF (0, 0, 100, 100));
+var myView = new UIView (new CGRect (0, 0, 100, 100));
 ]]></code>
       </example>
       <para>
@@ -232,38 +232,38 @@ var myView = new UIView (new RectangleF (0, 0, 100, 100));
       </para>
       <para>
          The developer should configure the
-        <see cref="P:UIKit.UIView.AutoresizingMask" /> property, which determines how the
+        <see cref="UIKit.UIView.AutoresizingMask" /> property, which determines how the
         view will be resized when
-        <see cref="M:UIKit.UIView.SetNeedsLayout" /> is invoked or when the geometry of the
+        <see cref="UIKit.UIView.SetNeedsLayout" /> is invoked or when the geometry of the
         view container changes (for example, in response to a device
         rotation).
       </para>
       <para>
         After creating a view, the developer adds it to a containing view.
         On the main screen, this could be a UIWindow or it could be the
-        <see cref="P:UIKit.UIViewController.View" /> property of the current
-        <see cref="T:UIKit.UIViewController" />. This is done using one of the
+        <see cref="UIKit.UIViewController.View" /> property of the current
+        <see cref="UIKit.UIViewController" />. This is done using one of the
         following methods:
       </para>
       <list type="bullet">
         <item>
           <term>
-            <see cref="M:UIKit.UIView.AddSubview(UIKit.UIView)" />
+            <see cref="UIKit.UIView.AddSubview(UIKit.UIView)" />
           </term>
         </item>
         <item>
           <term>
-            <see cref="M:UIKit.UIView.InsertSubview(UIKit.UIView,System.nint)" />
+            <see cref="UIKit.UIView.InsertSubview(UIKit.UIView,System.IntPtr)" />
           </term>
         </item>
         <item>
           <term>
-            <see cref="M:UIKit.UIView.InsertSubviewAbove(UIKit.UIView,UIKit.UIView)" />
+            <see cref="UIKit.UIView.InsertSubviewAbove(UIKit.UIView,UIKit.UIView)" />
           </term>
         </item>
         <item>
           <term>
-            <see cref="M:UIKit.UIView.InsertSubviewBelow(UIKit.UIView,UIKit.UIView)" />
+            <see cref="UIKit.UIView.InsertSubviewBelow(UIKit.UIView,UIKit.UIView)" />
           </term>
         </item>
       </list>
@@ -277,8 +277,8 @@ var myView = new UIView (new RectangleF (0, 0, 100, 100));
         <h2>Bounds and Sizes</h2>
       </format>
       <para>
-        Each view is created with an initial <see cref="P:UIKit.UIView.Frame" />.  The Frame is a
-        <see cref="T:System.Drawing.RectangleF" /> structure that represents both the size and the initial
+        Each view is created with an initial <see cref="UIKit.UIView.Frame" />.  The Frame is a
+        <see cref="CGRect" /> structure that represents both the size and the initial
         position for the view.  The coordinates for the Frame are used to
         specify the position relative to its superview.
       </para>
@@ -289,70 +289,70 @@ var myView = new UIView (new RectangleF (0, 0, 100, 100));
         it relays out the view and all its subviews.
       </para>
       <para>
-        The <see cref="P:UIKit.UIView.Bounds" /> is the usable
-        frame of the view.  Unlike the <see cref="P:UIKit.UIView.Frame" />, the <see cref="P:UIKit.UIView.Bounds" /> do not use the container's
+        The <see cref="UIKit.UIView.Bounds" /> is the usable
+        frame of the view.  Unlike the <see cref="UIKit.UIView.Frame" />, the <see cref="UIKit.UIView.Bounds" /> do not use the container's
         coordinate space, but instead represent the size in the view's own
-        coordinate space.  By default the <see cref="P:UIKit.UIView.Bounds" /> location is (0,0).
+        coordinate space.  By default the <see cref="UIKit.UIView.Bounds" /> location is (0,0).
       </para>
       <para>
-        When the developer updates the <see cref="P:UIKit.UIView.Bounds" />
-        property, it will modify the <see cref="P:UIKit.UIView.Frame" /> based on the value of the
-        <see cref="P:UIKit.UIView.Center" />.  Developers can also change the position of a view by updating the <see cref="P:UIKit.UIView.Center" /> property.
+        When the developer updates the <see cref="UIKit.UIView.Bounds" />
+        property, it will modify the <see cref="UIKit.UIView.Frame" /> based on the value of the
+        <see cref="UIKit.UIView.Center" />.  Developers can also change the position of a view by updating the <see cref="UIKit.UIView.Center" /> property.
         
       </para>
       <para>
-        When the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIView%20Bound&amp;scope=Xamarin" title="P:UIKit.UIView.Bound">P:UIKit.UIView.Bound</a></format> property is changed, the size of the view is affected
-        relative to the <see cref="P:UIKit.UIView.Center" /> property.
+        When the <see cref="UIKit.UIView.Bound" /> property is changed, the size of the view is affected
+        relative to the <see cref="UIKit.UIView.Center" /> property.
       </para>
       <format type="text/html">
         <h2>Animation</h2>
       </format>
-      <para>Apple recommends that app developers use the <see cref="T:UIKit.UIViewPropertyAnimator" /> class to implement animations on their <see cref="T:UIKit.UIView" /> objects. Apple also discourages, but has not deprecated, any other animation APIs on the <see cref="T:UIKit.UIView" /> class. Additionally, developers can implement implicit animations for some or all properties by creating a custom views that has a custom <see cref="P:UIKit.UIView.Layer" /> property that provides animation actions for animation keys.</para>
-      <para>Developers can animate changes in the geometry or appearance of a UIView by creating a new <see cref="T:UIKit.UIViewPropertyAnimator" />, configuring it, and calling its <see cref="M:UIKit.UIViewPropertyAnimator.StartAnimation(System.Double)" /> method. Developers can update the animations (for example, to cancel it) by calling the <see cref="M:UIKit.UIViewPropertyAnimator.AddAnimations(System.Action,System.nfloat)" /> method while the animation is in progress. The <format type="text/html"><a href="https://developer.xamarin.com/recipes/ios/animation/coreanimation/animate_a_uiview_using_uikit/">Animate a UIView using UIKit</a></format> recipe shows how to create an cancel an animation by using the <see cref="T:UIKit.UIViewPropertyAnimator" /> class.</para>
+      <para>Apple recommends that app developers use the <see cref="UIKit.UIViewPropertyAnimator" /> class to implement animations on their <see cref="UIKit.UIView" /> objects. Apple also discourages, but has not deprecated, any other animation APIs on the <see cref="UIKit.UIView" /> class. Additionally, developers can implement implicit animations for some or all properties by creating a custom views that has a custom <see cref="UIKit.UIView.Layer" /> property that provides animation actions for animation keys.</para>
+      <para>Developers can animate changes in the geometry or appearance of a UIView by creating a new <see cref="UIKit.UIViewPropertyAnimator" />, configuring it, and calling its <see cref="UIKit.UIViewPropertyAnimator.StartAnimation(System.Double)" /> method. Developers can update the animations (for example, to cancel it) by calling the <see cref="UIKit.UIViewPropertyAnimator.AddAnimations(System.Action,nfloat)" /> method while the animation is in progress. The <format type="text/html"><a href="https://developer.xamarin.com/recipes/ios/animation/coreanimation/animate_a_uiview_using_uikit/">Animate a UIView using UIKit</a></format> recipe shows how to create an cancel an animation by using the <see cref="UIKit.UIViewPropertyAnimator" /> class.</para>
       <para>
         Alternatively, developers can create animations by calling the
-        <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:UIKit.UIView.BeginAnimations(string)&amp;scope=Xamarin" title="M:UIKit.UIView.BeginAnimations(string)">M:UIKit.UIView.BeginAnimations(string)</a></format> method, configuring the animation, making the
+        <see cref="UIKit.UIView.BeginAnimations(string)" /> method, configuring the animation, making the
         changes to the animatable properties and then completing the
-        transaction by calling <see cref="M:UIKit.UIView.CommitAnimations" />.
+        transaction by calling <see cref="UIKit.UIView.CommitAnimations" />.
       </para>
       <para>
-        After the developer calls <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:UIKit.UIView.BeginAnimations(string)&amp;scope=Xamarin" title="M:UIKit.UIView.BeginAnimations(string)">M:UIKit.UIView.BeginAnimations(string)</a></format>, they can
+        After the developer calls <see cref="UIKit.UIView.BeginAnimations(string)" />, they can
         call the following methods to configure the animation:
       </para>
       <list type="bullet">
         <item>
           <term>
-            <see cref="M:UIKit.UIView.SetAnimationDuration(System.Double)" />
+            <see cref="UIKit.UIView.SetAnimationDuration(System.Double)" />
           </term>
         </item>
         <item>
           <term>
-            <see cref="M:UIKit.UIView.SetAnimationCurve(UIKit.UIViewAnimationCurve)" />
+            <see cref="UIKit.UIView.SetAnimationCurve(UIKit.UIViewAnimationCurve)" />
           </term>
         </item>
         <item>
           <term>
-            <see cref="M:UIKit.UIView.SetAnimationDelay(System.Double)" />
+            <see cref="UIKit.UIView.SetAnimationDelay(System.Double)" />
           </term>
         </item>
         <item>
           <term>
-            <see cref="M:UIKit.UIView.SetAnimationDelegate(Foundation.NSObject)" />
+            <see cref="UIKit.UIView.SetAnimationDelegate(Foundation.NSObject)" />
           </term>
         </item>
         <item>
           <term>
-            <see cref="M:UIKit.UIView.SetAnimationRepeatAutoreverses(System.Boolean)" />
+            <see cref="UIKit.UIView.SetAnimationRepeatAutoreverses(System.Boolean)" />
           </term>
         </item>
         <item>
           <term>
-            <see cref="M:UIKit.UIView.SetAnimationRepeatCount(System.Single)" />
+            <see cref="UIKit.UIView.SetAnimationRepeatCount(System.Single)" />
           </term>
         </item>
         <item>
           <term>
-            <see cref="M:UIKit.UIView.SetAnimationDidStopSelector(ObjCRuntime.Selector)" />
+            <see cref="UIKit.UIView.SetAnimationDidStopSelector(ObjCRuntime.Selector)" />
           </term>
         </item>
       </list>
@@ -365,22 +365,22 @@ var myView = new UIView (new RectangleF (0, 0, 100, 100));
 UIView.BeginAnimations (null);
 UIView.SetAnimationDuration (5);
 UIView.SetAnimationCurve (UIViewAnimationCurve.EaseOut);
-view.Bounds = new RectangleF (0, 0, 100, 100);
-view.Position = new PointF (200, 200);
+view.Bounds = new CGRect (0, 0, 100, 100);
+view.Position = new CGPoint (200, 200);
 UIView.CommitAnimations ();
 ]]></code>
       </example>
       <para>
         Alternatively, developers can create transactions and set configuration
-        options in the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIView%20Animate&amp;scope=Xamarin" title="M:UIKit.UIView.Animate*">M:UIKit.UIView.Animate*</a></format> collection of methods. These methods take, in a single call, the delay, the duration, an animation block, and an action to be invoked when the animation
+        options in <see cref="Animate(double,Action)" />, <see cref="Animate(double,Action,Action)" />, <see cref="Animate(double,double,UIViewAnimationOptions,Action,Action)" /> or <see cref="Animate(double,nfloat,nfloat,double,UIViewAnimationOptions,Action,Action{bool})" />. These methods take, in a single call, the delay, the duration, an animation block, and an action to be invoked when the animation
         completes. However, Apple also discourages the use of these APIs. Their use is shown below:
       </para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
 UIView.Animate (duration, delay, UIViewAnimationOption.Autoreverse,
   delegate {
-      view.Bounds = new RectangleF (0, 0, 100, 100);
-      view.Position = new PointF (200, 200);
+      view.Bounds = new CGRect (0, 0, 100, 100);
+      view.Position = new CGPoint (200, 200);
    },
    delegate {
        Console.WriteLine ("Animation completed");
@@ -389,7 +389,7 @@ UIView.Animate (duration, delay, UIViewAnimationOption.Autoreverse,
           ]]></code>
       </example>
       <para>
-        The above is the basic set of animations that are directly supported by the UIView class. For finer control over animations, developers can use the  <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Animation&amp;scope=Xamarin" title="N:CoreAnimation">N:CoreAnimation</a></format> API to animate properties on their UI elements. While implicit animation is disabled for the default layer of a UIView, developers can extend the <see cref="T:UIKit.UIView" /> class to create a derived UIView that contain a derived <see cref="T:CoreAnimation.CALayer" /> that handles animation action keys correctly. Developers should note that animated properties that are changed when adding a subview will be animated during the addition if their default value differs from the final value. For example, the "bounds" and "position" keys, if captured and animated, will cause added subviews to animate in from the origin of the screen.
+        The above is the basic set of animations that are directly supported by the UIView class. For finer control over animations, developers can use the  <see cref="CoreAnimation" /> API to animate properties on their UI elements. While implicit animation is disabled for the default layer of a UIView, developers can extend the <see cref="UIKit.UIView" /> class to create a derived UIView that contain a derived <see cref="CoreAnimation.CALayer" /> that handles animation action keys correctly. Developers should note that animated properties that are changed when adding a subview will be animated during the addition if their default value differs from the final value. For example, the "bounds" and "position" keys, if captured and animated, will cause added subviews to animate in from the origin of the screen.
       </para>
       <example>
         <para>To enable implicit animation, the developer first creates a custom layer that supplies customized animations for the keys or combinations of keys that the layer will handle. The following custom layer example animates the corner radius and transparency for custom views that use it:</para>
@@ -452,23 +452,23 @@ fadeAndRound = () =>
         or invoking any of the UIView static methods from any thread that is
         not the main thread.  Newer versions of MonoTouch catch these
         mistakes in Debug builds by throwing an exception.  See the
-        <see cref="F:UIKit.UIApplication.CheckForIllegalCrossThreadCalls" /> for
+        <see cref="UIKit.UIApplication.CheckForIllegalCrossThreadCalls" /> for
         more information.
       </para>
       <para>
         To perform some work in a background thread that must
         update any of the UIView properties, or to invoke any of the
         UIView static methods, developers should use either the
-        <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:Foundation.NSObject.BeginInvokeOnMainThread()&amp;scope=Xamarin" title="M:Foundation.NSObject.BeginInvokeOnMainThread()">M:Foundation.NSObject.BeginInvokeOnMainThread()</a></format> or
-        <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:Foundation.NSObject.InvokeOnMainThread()&amp;scope=Xamarin" title="M:Foundation.NSObject.InvokeOnMainThread()">M:Foundation.NSObject.InvokeOnMainThread()</a></format> methods.  Both
+        <see cref="Foundation.NSObject.BeginInvokeOnMainThread()" /> or
+        <see cref="Foundation.NSObject.InvokeOnMainThread()" /> methods.  Both
         methods take a C# delegate or lambda that is invoked on the main
         thread.
       </para>
       <para>
-        The <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:Foundation.NSObject.InvokeOnMainThread()&amp;scope=Xamarin" title="M:Foundation.NSObject.InvokeOnMainThread()">M:Foundation.NSObject.InvokeOnMainThread()</a></format> method will
+        The <see cref="Foundation.NSObject.InvokeOnMainThread()" /> method will
         invoke the specified delegate method synchronously on the main
         thread. The
-        <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:Foundation.NSObject.BeginInvokeOnMainThread()&amp;scope=Xamarin" title="M:Foundation.NSObject.BeginInvokeOnMainThread()">M:Foundation.NSObject.BeginInvokeOnMainThread()</a></format> will queue
+        <see cref="Foundation.NSObject.BeginInvokeOnMainThread()" /> will queue
         the action to be executed on the main thread.
       </para>
       <para>
@@ -526,12 +526,12 @@ public static void EnsureInvokedOnMainThread (Action action)
       </format>
       <para>
         Subclasses of UIView should chain into either the UIView
-        constructor that is initialized with an initial frame (<format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=C:UIKit.UIView(System.Drawing.RectangleF)&amp;scope=Xamarin" title="C:UIKit.UIView(System.Drawing.RectangleF)">C:UIKit.UIView(System.Drawing.RectangleF)</a></format>). The following code shows one way to do this:
+        constructor that is initialized with an initial frame (<see cref="UIKit.UIView(CGRect)" />). The following code shows one way to do this:
       </para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
 public class MyView : UIView {
-    public MyView (RectangleF frame) : base (frame)
+    public MyView (CGRect frame) : base (frame)
     {
         // Your initialization code goes here
     }
@@ -540,7 +540,7 @@ public class MyView : UIView {
       </example>
       <para>
         In an object that will be deserialized from an archive produced by the
-        UI designer, the developer must chain to the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=C:UIKit.UIView(Foundation.NSCoder)&amp;scope=Xamarin" title="C:UIKit.UIView(Foundation.NSCoder)">C:UIKit.UIView(Foundation.NSCoder)</a></format>
+        UI designer, the developer must chain to the <see cref="UIKit.UIView(Foundation.NSCoder)" />
         constructor and  flag the constructor as being the one
         implementing the selector "initWithCoder:", as shown in the code below:
       </para>
@@ -556,7 +556,7 @@ public class MyView : UIView {
           ]]></code>
       </example>
       <para>
-        By default UIViews will use a <see cref="T:CoreAnimation.CALayer" /> instance for their
+        By default UIViews will use a <see cref="CoreAnimation.CALayer" /> instance for their
         backing store.  The section on "Changing the CALayer" below has both
         information on how to make this change and a sample.
       </para>
@@ -568,8 +568,8 @@ public class MyView : UIView {
       </format>
       <para>
         To implement custom drawing code in a view, developers can subclass the
-        UIView and override the <see cref="M:UIKit.UIView.Draw(CoreGraphics.CGRect)" />
-        method. The drawing code placed in the Draw method can use <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Graphics&amp;scope=Xamarin" title="N:CoreGraphics">N:CoreGraphics</a></format> to draw with. The steps to draw
+        UIView and override the <see cref="UIKit.UIView.Draw(CoreGraphics.CGRect)" />
+        method. The drawing code placed in the Draw method can use <see cref="CoreGraphics" /> to draw with. The steps to draw
         with Core Graphics are:
       </para>
       <list type="bullet">
@@ -592,7 +592,7 @@ public class MyView : UIView {
       </para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
-public override void Draw (RectangleF rect)
+public override void Draw (CGRect rect)
 {
     base.Draw (rect);
 
@@ -604,10 +604,10 @@ public override void Draw (RectangleF rect)
 
     var path = new CGPath ();
 
-    path.AddLines(new PointF[]{
-        new PointF(100,200),
-        new PointF(160,100), 
-        new PointF(220,200)
+    path.AddLines(new CGPoint[]{
+        new CGPoint(100,200),
+        new CGPoint(160,100), 
+        new CGPoint(220,200)
     });
 
     path.CloseSubpath();
@@ -618,10 +618,10 @@ public override void Draw (RectangleF rect)
           ]]></code>
       </example>
       <para>
-        The developer should not call <see cref="M:UIKit.UIView.Draw(CoreGraphics.CGRect)" /> directly. iOS calls it
+        The developer should not call <see cref="UIKit.UIView.Draw(CoreGraphics.CGRect)" /> directly. iOS calls it
         during run loop processing. iOS first calls it the first time through the run loop, and then whenever the view
-        has been marked as needing display with a call to <see cref="M:UIKit.UIView.SetNeedsDisplayInRect(CoreGraphics.CGRect)" /> or
-        <see cref="M:UIKit.UIView.SetNeedsDisplayInRect(CoreGraphics.CGRect)" />.
+        has been marked as needing display with a call to <see cref="UIKit.UIView.SetNeedsDisplayInRect(CoreGraphics.CGRect)" /> or
+        <see cref="UIKit.UIView.SetNeedsDisplayInRect(CoreGraphics.CGRect)" />.
       </para>
       <para>
         Core Graphics uses device independent points rather than
@@ -635,12 +635,12 @@ public override void Draw (RectangleF rect)
       </format>
       <para>
         UIViews can be printed.  The default behavior is for the contents of
-        the UIView as rendered by the <see cref="M:UIKit.UIView.Draw(CoreGraphics.CGRect)" />
+        the UIView as rendered by the <see cref="UIKit.UIView.Draw(CoreGraphics.CGRect)" />
         method to be printed.
       </para>
       <para>
         Developers can provide a different rendering for the view when
-        printed by overriding the <see cref="M:UIKit.UIView.DrawRect(CoreGraphics.CGRect,UIKit.UIViewPrintFormatter)" />
+        printed by overriding the <see cref="UIKit.UIView.DrawRect(CoreGraphics.CGRect,UIKit.UIViewPrintFormatter)" />
         method.
       </para>
       <format type="text/html">
@@ -663,16 +663,16 @@ class MyView : UIView {
           ]]></code>
       </example>
       <para>
-        To use constraints to layout the subviews of a view, developers must override the <see cref="M:UIKit.UIView.UpdateConstraints" /> method. This method is
+        To use constraints to layout the subviews of a view, developers must override the <see cref="UIKit.UIView.UpdateConstraints" /> method. This method is
         called before the constraints-based layout is performed.
       </para>
       <para>
         Constraints-based layout is performed on the alignment rectangle
-        instead of the view's <see cref="P:UIKit.UIView.Frame" />.
-        The alignment rectangle by default is computed as the <see cref="P:UIKit.UIView.Frame" /> modified by the <see cref="P:UIKit.UIView.AlignmentRectInsets" />.  Developers can
+        instead of the view's <see cref="UIKit.UIView.Frame" />.
+        The alignment rectangle by default is computed as the <see cref="UIKit.UIView.Frame" /> modified by the <see cref="UIKit.UIView.AlignmentRectInsets" />.  Developers can
         change that behavior and provide a custom alignment rectangle by
-        overriding the <see cref="M:UIKit.UIView.AlignmentRectForFrame(CoreGraphics.CGRect)" />
-        and <see cref="M:UIKit.UIView.FrameForAlignmentRect(CoreGraphics.CGRect)" />
+        overriding the <see cref="UIKit.UIView.AlignmentRectForFrame(CoreGraphics.CGRect)" />
+        and <see cref="UIKit.UIView.FrameForAlignmentRect(CoreGraphics.CGRect)" />
         methods.
       </para>
       <format type="text/html">
@@ -680,47 +680,47 @@ class MyView : UIView {
       </format>
       <para>
         The default layout system for UIViews is very simple.  UIViews are
-        created with an initial <see cref="P:UIKit.UIView.Frame" />
-        and an <see cref="P:UIKit.UIView.AutoresizingMask" /> that
+        created with an initial <see cref="UIKit.UIView.Frame" />
+        and an <see cref="UIKit.UIView.AutoresizingMask" /> that
         determines how the view will be resized in response to changes in
         the container's boundaries.
       </para>
       <para>
-        Developers should set the default <see cref="P:UIKit.UIView.AutoresizingMask" /> property after
+        Developers should set the default <see cref="UIKit.UIView.AutoresizingMask" /> property after
         initialization.
       </para>
       <para>
         For views the will be a container for other views, developers should
-        configure their <see cref="P:UIKit.UIView.AutoresizingMask" /> property.  If the
+        configure their <see cref="UIKit.UIView.AutoresizingMask" /> property.  If the
         layout behavior provided is not sufficient, the developer should override the
-        <see cref="M:UIKit.UIView.LayoutSubviews" /> method.
-        This method is responsible for updating the <see cref="P:UIKit.UIView.Frame" /> property of each of the
+        <see cref="UIKit.UIView.LayoutSubviews" /> method.
+        This method is responsible for updating the <see cref="UIKit.UIView.Frame" /> property of each of the
         subviews.
       </para>
       <para>
         For views that change their state in response to some API calls,
-        developers should call the <see cref="M:UIKit.UIView.SetNeedsLayout" />, instead of laying out the view themselves. The layout event will then be processed
+        developers should call the <see cref="UIKit.UIView.SetNeedsLayout" />, instead of laying out the view themselves. The layout event will then be processed
         the next time the main loop runs.  By using this approach, develoers can
         coalesce multiple changes to the layout in a single pass.
       </para>
       <para>
-        UIViews can implement the <see cref="M:UIKit.UIView.SizeThatFits(CoreGraphics.CGSize)" />
+        UIViews can implement the <see cref="UIKit.UIView.SizeThatFits(CoreGraphics.CGSize)" />
         method to report back what is their desired size based on the
         contents of the view.
       </para>
       <para>
-        Developers can override the <see cref="M:UIKit.UIView.SubviewAdded(UIKit.UIView)" />
-        and the <see cref="M:UIKit.UIView.WillRemoveSubview(UIKit.UIView)" />
+        Developers can override the <see cref="UIKit.UIView.SubviewAdded(UIKit.UIView)" />
+        and the <see cref="UIKit.UIView.WillRemoveSubview(UIKit.UIView)" />
         to track when subviews are added or removed to a UIView.
       </para>
       <para>
-        Developers can override the <see cref="M:UIKit.UIView.WillMoveToWindow(UIKit.UIWindow)" />
-        and the <see cref="M:UIKit.UIView.MovedToWindow" /> to
-        track when views are moved from one <see cref="T:UIKit.UIWindow" /> to another.
+        Developers can override the <see cref="UIKit.UIView.WillMoveToWindow(UIKit.UIWindow)" />
+        and the <see cref="UIKit.UIView.MovedToWindow" /> to
+        track when views are moved from one <see cref="UIKit.UIWindow" /> to another.
       </para>
       <para>
-        Developers can override the <see cref="M:UIKit.UIView.WillMoveToSuperview(UIKit.UIView)" />
-        and the <see cref="M:UIKit.UIView.MovedToSuperview" /> to
+        Developers can override the <see cref="UIKit.UIView.WillMoveToSuperview(UIKit.UIView)" />
+        and the <see cref="UIKit.UIView.MovedToSuperview" /> to
         track when views are added or removed from a superview.
       </para>
       <format type="text/html">
@@ -759,9 +759,9 @@ class MyView : UIView {
         the constructor at initialization time.
       </para>
       <para>
-        To perform low-level touch event handling, developers override the <see cref="M:UIKit.UIResponder.TouchesBegan(Foundation.NSSet,UIKit.UIEvent)" />, <see cref="M:UIKit.UIResponder.TouchesMoved(Foundation.NSSet,UIKit.UIEvent)" />, <see cref="M:UIKit.UIResponder.TouchesEnded(Foundation.NSSet,UIKit.UIEvent)" /> and <see cref="M:UIKit.UIResponder.TouchesCancelled(Foundation.NSSet,UIKit.UIEvent)" /> methods.
+        To perform low-level touch event handling, developers override the <see cref="UIKit.UIResponder.TouchesBegan(Foundation.NSSet,UIKit.UIEvent)" />, <see cref="UIKit.UIResponder.TouchesMoved(Foundation.NSSet,UIKit.UIEvent)" />, <see cref="UIKit.UIResponder.TouchesEnded(Foundation.NSSet,UIKit.UIEvent)" /> and <see cref="UIKit.UIResponder.TouchesCancelled(Foundation.NSSet,UIKit.UIEvent)" /> methods.
       </para>
-      <para>Since iOS 9.0, <see cref="M:UIKit.UIResponder.TouchesMoved(Foundation.NSSet,UIKit.UIEvent)" /> events are raised on supported hardware and configurations for changes in user-applied pressure. The <see cref="P:UIKit.UITouch.Force" /> property of the <see cref="T:UIKit.UITouch" /> object in the <c>touches</c> set argument contains the magnitude of the touch that raised the event. The following example shows a basic use:</para>
+      <para>Since iOS 9.0, <see cref="UIKit.UIResponder.TouchesMoved(Foundation.NSSet,UIKit.UIEvent)" /> events are raised on supported hardware and configurations for changes in user-applied pressure. The <see cref="UIKit.UITouch.Force" /> property of the <see cref="UIKit.UITouch" /> object in the <c>touches</c> set argument contains the magnitude of the touch that raised the event. The following example shows a basic use:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
 if (TraitCollection.ForceTouchCapability == UIForceTouchCapability.Available) {
@@ -778,31 +778,31 @@ else {
       </para>
       <para>
         Application developers can control whether a gesture recognizer is activated by
-        overriding the <see cref="M:UIKit.UIView.GestureRecognizerShouldBegin(UIKit.UIGestureRecognizer)" />
+        overriding the <see cref="UIKit.UIView.GestureRecognizerShouldBegin(UIKit.UIGestureRecognizer)" />
         method.
       </para>
       <format type="text/html">
         <h2>Views and CALayers</h2>
       </format>
       <para>
-        Each UIView is backed by a <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Animation&amp;scope=Xamarin" title="N:CoreAnimation">N:CoreAnimation</a></format> Layer (<see cref="T:CoreAnimation.CALayer" />).  A CALayer
+        Each UIView is backed by a <see cref="CoreAnimation" /> Layer (<see cref="CoreAnimation.CALayer" />).  A CALayer
         represents the GPU-backed bitmap that is used to render the view
         into the screen.  Painting into a UIView  actually
         paints into the CALayer.
       </para>
       <para>
         While the appearance of a UIView can be controlled by setting its
-        <see cref="P:UIKit.UIView.Frame" />, <see cref="P:UIKit.UIView.Alpha" />, <see cref="P:UIKit.UIView.BackgroundColor" />, or by overriding its <see cref="M:UIKit.UIView.Draw(CoreGraphics.CGRect)" /> method, all
-        those properties and functions are in fact modifying the <see cref="T:CoreAnimation.CALayer" />
+        <see cref="UIKit.UIView.Frame" />, <see cref="UIKit.UIView.Alpha" />, <see cref="UIKit.UIView.BackgroundColor" />, or by overriding its <see cref="UIKit.UIView.Draw(CoreGraphics.CGRect)" /> method, all
+        those properties and functions are in fact modifying the <see cref="CoreAnimation.CALayer" />
         owned by the view.
       </para>
       <para>
-        The <see cref="P:UIKit.UIView.Layer" /> property is a reference to the
+        The <see cref="UIKit.UIView.Layer" /> property is a reference to the
         CALayer owned by the view. Developers change the appearance of the view
         by modifying the properties of that layer.
       </para>
       <para>
-        For example, modifyng the <see cref="P:CoreAnimation.CALayer.CornerRadius" /> property of a view's layer change the corner radius of the view:
+        For example, modifyng the <see cref="CoreAnimation.CALayer.CornerRadius" /> property of a view's layer change the corner radius of the view:
       </para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
@@ -816,7 +816,7 @@ view.Layer.CornerRadius = 4;
         <code lang="csharp lang-csharp"><![CDATA[
 view.Layer.ShadowColor = new CGColor (1, 0, 0);
 view.Layer.ShadowOpacity = 1.0f;
-view.Layer.ShadowOffset = new SizeF (0, 4);
+view.Layer.ShadowOffset = new CGSize (0, 4);
         ]]></code>
       </example>
       <para>
@@ -836,14 +836,14 @@ view.Layer.Transform = CATransform3D.MakeRotation ((float)(Math.PI / 2), 1, 1, 1
         <h3>Changing the CALayer</h3>
       </format>
       <para>
-        The <see cref="P:UIKit.UIView.Layer" /> owned by a view is automatically
+        The <see cref="UIKit.UIView.Layer" /> owned by a view is automatically
         created and assigned to the view by UIKit and it defaults to be a
-        <see cref="T:CoreAnimation.CALayer" /> instance.   You can control the type
+        <see cref="CoreAnimation.CALayer" /> instance.   You can control the type
         of layer that is created for a view by responding to the "layerClass" 
         selector in a static method.
       </para>
       <para>
-        Here is an example of a UIView subclass that uses a custom <see cref="T:CoreAnimation.CALayer" /> to do its drawing. This
+        Here is an example of a UIView subclass that uses a custom <see cref="CoreAnimation.CALayer" /> to do its drawing. This
         layer, and therefore the view, always displays the color blue:
       </para>
       <example>
@@ -856,7 +856,7 @@ public class BlueView : UIView
         return new Class (typeof (BlueLayer));
     }
 
-    public override void Draw (RectangleF rect)
+    public override void Draw (CGRect rect)
     {
         // Do nothing, the Layer will do all the drawing
     }
@@ -881,7 +881,7 @@ public class BlueLayer : CALayer
       <para>
         It is now up to the BlueLayer to provide the visual representation
         of the view. It does this by executing CoreGraphics drawing code in
-        its <see cref="M:CoreAnimation.CALayer.DrawInContext(CoreGraphics.CGContext)" />
+        its <see cref="CoreAnimation.CALayer.DrawInContext(CoreGraphics.CGContext)" />
         method. This method is very similar to a UIView's Draw method but is used to fill the layer.
         
       </para>
@@ -899,32 +899,32 @@ public class BlueLayer : CALayer
 	  the device tilt.  </para>
       <para>
 	  Developers can tie to motion effects the same properties that are
-	  animatable already.  UIKit ships with <see cref="T:UIKit.UIInterpolatingMotionEffect" /> which
+	  animatable already.  UIKit ships with <see cref="UIKit.UIInterpolatingMotionEffect" /> which
 	  allows control over a single property in response to a device tilt.
 
 	</para>
       <para>
 	  After the developer creates an effect, they attach it to a view by
-	  calling the <see cref="M:UIKit.UIView.AddMotionEffect(UIKit.UIMotionEffect)" /> method and
-	  remove it by calling the <see cref="M:UIKit.UIView.RemoveMotionEffect(UIKit.UIMotionEffect)" /> method.
-	  The <see cref="P:UIKit.UIView.MotionEffects" />
+	  calling the <see cref="UIKit.UIView.AddMotionEffect(UIKit.UIMotionEffect)" /> method and
+	  remove it by calling the <see cref="UIKit.UIView.RemoveMotionEffect(UIKit.UIMotionEffect)" /> method.
+	  The <see cref="UIKit.UIView.MotionEffects" />
 	  property can also be used to query or set a number of motion
 	  effects at once.
 
 	</para>
       <para>
-	  The developer can also create custom motion effects by subclassing the <see cref="T:UIKit.UIMotionEffect" />.
+	  The developer can also create custom motion effects by subclassing the <see cref="UIKit.UIMotionEffect" />.
 	</para>
       <format type="text/html">
         <h2>Tint Color</h2>
       </format>
       <para>
-	Starting with iOS 7, the <see cref="P:UIKit.UIView.TintColor" /> property will now
+	Starting with iOS 7, the <see cref="UIKit.UIView.TintColor" /> property will now
 	propagate to subviews.  This allows the developer to set a
 	global tint color, and the color will be passed down to
 	subviews for views that matter.  Some UIViews will respond
 	specially based on the TintColor.  Developers should also set the
-	<see cref="P:UIKit.UIView.TintAdjustmentMode" /> to
+	<see cref="UIKit.UIView.TintAdjustmentMode" /> to
 	control the desaturation when some views are no longer active.
 
       </para>
@@ -936,60 +936,60 @@ public class BlueLayer : CALayer
       <format type="text/html">
         <h2>View Hierarchies</h2>
       </format>
-      <para>iOS user interfaces are built from <see cref="T:UIKit.UIView" /> hierarchies. Parent-child relationships determine not only the visual aspects of the UI, but determine how the application responds to touch events and orientation changes.</para>
-      <para>View relationships may be built programmatically or via XIB files. <see cref="T:UIKit.UIView" />s may have many <see cref="P:UIKit.UIView.Subviews" /> but only one <see cref="P:UIKit.UIView.Superview" />.</para>
-      <para>The most common way to add subviews is to use <see cref="M:UIKit.UIView.AddSubview(UIKit.UIView)" />, which appends the child view to the list of <see cref="P:UIKit.UIView.Subviews" />. More precise control of ordering during insertion may be done with the <see cref="M:UIKit.UIView.InsertSubview(UIKit.UIView,System.nint)" />, <see cref="M:UIKit.UIView.InsertSubviewAbove(UIKit.UIView,UIKit.UIView)" />, and <see cref="M:UIKit.UIView.InsertSubviewBelow(UIKit.UIView,UIKit.UIView)" /> methods.</para>
-      <para>The ordering of <see cref="P:UIKit.UIView.Subviews" /> may be manipulated with the <see cref="M:UIKit.UIView.BringSubviewToFront(UIKit.UIView)" />, <see cref="M:UIKit.UIView.SendSubviewToBack(UIKit.UIView)" />, and <see cref="M:UIKit.UIView.ExchangeSubview(System.nint,System.nint)" /> methods.</para>
+      <para>iOS user interfaces are built from <see cref="UIKit.UIView" /> hierarchies. Parent-child relationships determine not only the visual aspects of the UI, but determine how the application responds to touch events and orientation changes.</para>
+      <para>View relationships may be built programmatically or via XIB files. <see cref="UIKit.UIView" />s may have many <see cref="UIKit.UIView.Subviews" /> but only one <see cref="UIKit.UIView.Superview" />.</para>
+      <para>The most common way to add subviews is to use <see cref="UIKit.UIView.AddSubview(UIKit.UIView)" />, which appends the child view to the list of <see cref="UIKit.UIView.Subviews" />. More precise control of ordering during insertion may be done with the <see cref="UIKit.UIView.InsertSubview(UIKit.UIView,System.IntPtr)" />, <see cref="UIKit.UIView.InsertSubviewAbove(UIKit.UIView,UIKit.UIView)" />, and <see cref="UIKit.UIView.InsertSubviewBelow(UIKit.UIView,UIKit.UIView)" /> methods.</para>
+      <para>The ordering of <see cref="UIKit.UIView.Subviews" /> may be manipulated with the <see cref="UIKit.UIView.BringSubviewToFront(UIKit.UIView)" />, <see cref="UIKit.UIView.SendSubviewToBack(UIKit.UIView)" />, and <see cref="UIKit.UIView.ExchangeSubview(System.IntPtr,System.IntPtr)" /> methods.</para>
       <format type="text/html">
         <h2>Focus</h2>
       </format>
-      <para>On handheld iOS devices, the user interacts directly with screen objects. On tvOS, a remote is used to navigate through the elements on the screen and only one <see cref="T:UIKit.UIView" /> has "focus." Focus-related APIs include:</para>
+      <para>On handheld iOS devices, the user interacts directly with screen objects. On tvOS, a remote is used to navigate through the elements on the screen and only one <see cref="UIKit.UIView" /> has "focus." Focus-related APIs include:</para>
       <list type="bullet">
         <item>
           <term>
-            <see cref="P:UIKit.UIView.CanBecomeFocused" />
+            <see cref="UIKit.UIView.CanBecomeFocused" />
           </term>
           <description>
-            <see langword="true" /> if the <see cref="T:UIKit.UIView" /> may become the focused view. (See discussion below about additional requirements.)</description>
+            <see langword="true" /> if the <see cref="UIKit.UIView" /> may become the focused view. (See discussion below about additional requirements.)</description>
         </item>
         <item>
           <term>
-            <see cref="M:UIKit.UIView.DidUpdateFocus(UIKit.UIFocusUpdateContext,UIKit.UIFocusAnimationCoordinator)" />
+            <see cref="UIKit.UIView.DidUpdateFocus(UIKit.UIFocusUpdateContext,UIKit.UIFocusAnimationCoordinator)" />
           </term>
-          <description>Called after the <see cref="T:UIKit.UIView" /> has either lost or received focus. (See also <see cref="M:UIKit.UIView.ShouldUpdateFocus(UIKit.UIFocusUpdateContext)" />.)</description>
+          <description>Called after the <see cref="UIKit.UIView" /> has either lost or received focus. (See also <see cref="UIKit.UIView.ShouldUpdateFocus(UIKit.UIFocusUpdateContext)" />.)</description>
         </item>
         <item>
           <term>
-            <see cref="P:UIKit.UIView.Focused" />
+            <see cref="UIKit.UIView.Focused" />
           </term>
-          <description>Whether the <see cref="T:UIKit.UIView" /> is the focused view.</description>
+          <description>Whether the <see cref="UIKit.UIView" /> is the focused view.</description>
         </item>
         <item>
           <term>
-            <see cref="P:UIKit.UIView.PreferredFocusedView" />
+            <see cref="UIKit.UIView.PreferredFocusedView" />
           </term>
-          <description>Returns the <see cref="T:UIKit.UIView" /> that should actually be focused. (For instance, a child <see cref="T:UIKit.UIView" />.)</description>
+          <description>Returns the <see cref="UIKit.UIView" /> that should actually be focused. (For instance, a child <see cref="UIKit.UIView" />.)</description>
         </item>
         <item>
           <term>
-            <see cref="M:UIKit.UIView.SetNeedsFocusUpdate" />
+            <see cref="UIKit.UIView.SetNeedsFocusUpdate" />
           </term>
-          <description>When this is the active focus environment, requests a focus update, which can potentially change the <see cref="P:UIKit.UIViewController.PreferredFocusedView" />. (See also <see cref="M:UIKit.UIViewController.UpdateFocusIfNeeded" />.)</description>
+          <description>When this is the active focus environment, requests a focus update, which can potentially change the <see cref="UIKit.UIViewController.PreferredFocusedView" />. (See also <see cref="UIKit.UIViewController.UpdateFocusIfNeeded" />.)</description>
         </item>
         <item>
           <term>
-            <see cref="M:UIKit.UIView.ShouldUpdateFocus(UIKit.UIFocusUpdateContext)" />
+            <see cref="UIKit.UIView.ShouldUpdateFocus(UIKit.UIFocusUpdateContext)" />
           </term>
-          <description>Called prior to the <see cref="T:UIKit.UIView" /> either losing or receiving focus. If either focus environment returns <see langword="false" />, the focus update is canceled.</description>
+          <description>Called prior to the <see cref="UIKit.UIView" /> either losing or receiving focus. If either focus environment returns <see langword="false" />, the focus update is canceled.</description>
         </item>
         <item>
           <term>
-            <see cref="M:UIKit.UIViewController.UpdateFocusIfNeeded" />
+            <see cref="UIKit.UIViewController.UpdateFocusIfNeeded" />
           </term>
-          <description>If any focus environment has a pending update, this method forces an immediate focus update. Unlike <see cref="M:UIKit.UIView.SetNeedsFocusUpdate" />, this method may be called by any <see cref="T:UIKit.UIView" />, whether it currently contains focus or not.</description>
+          <description>If any focus environment has a pending update, this method forces an immediate focus update. Unlike <see cref="UIKit.UIView.SetNeedsFocusUpdate" />, this method may be called by any <see cref="UIKit.UIView" />, whether it currently contains focus or not.</description>
         </item>
       </list>
-      <para>In addition to <see cref="P:UIKit.UIView.CanBecomeFocused" /> returning <see langword="true" />, for a <see cref="T:UIKit.UIView" /> to be focused, it must have a <see cref="P:UIKit.UIView.Hidden" /> value of <see langword="false" />, a <see cref="P:UIKit.UIView.UserInteractionEnabled" /> value of <see langword="true" />, a <see cref="P:UIKit.UIView.Alpha" /> value greater than 0, and it must not be obscured by another <see cref="T:UIKit.UIView" />. </para>
+      <para>In addition to <see cref="UIKit.UIView.CanBecomeFocused" /> returning <see langword="true" />, for a <see cref="UIKit.UIView" /> to be focused, it must have a <see cref="UIKit.UIView.Hidden" /> value of <see langword="false" />, a <see cref="UIKit.UIView.UserInteractionEnabled" /> value of <see langword="true" />, a <see cref="UIKit.UIView.Alpha" /> value greater than 0, and it must not be obscured by another <see cref="UIKit.UIView" />. </para>
     </remarks>
     <related type="recipe" href="https://developer.xamarin.com/ios/Recipes/Animation/CoreAnimation/Animate_a_UIView_using_UIKit">Animate a UIView using UIKit</related>
     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIView_Class/index.html">Apple documentation for <c>UIView</c></related>
@@ -998,8 +998,8 @@ public class BlueLayer : CALayer
     <param name="animation">The animation identifier.</param>
     <summary>Indicates the beginning of an animation block.</summary>
     <remarks>
-      <para>Application developers should prefer to use the more compact syntax of the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIView%20Animate&amp;scope=Xamarin" title="M:UIKit.UIView.Animate*">M:UIKit.UIView.Animate*</a></format> method.</para>
-      <para>Older versions of iOS used a matched set of <see cref="M:UIKit.UIView.BeginAnimations(System.String,System.IntPtr)" /> and <see cref="M:UIKit.UIView.CommitAnimations" /> to specify an animation block. The following code, taken from the "Animate a UIView using UIKit" recipe, shows the technique:</para>
+      <para>Application developers should prefer to use the more compact syntax of <see cref="Animate(double,Action)" />, <see cref="Animate(double,Action,Action)" />, <see cref="Animate(double,double,UIViewAnimationOptions,Action,Action)" /> or <see cref="Animate(double,nfloat,nfloat,double,UIViewAnimationOptions,Action,Action{bool})" />.</para>
+      <para>Older versions of iOS used a matched set of <see cref="UIKit.UIView.BeginAnimations(System.String,System.IntPtr)" /> and <see cref="UIKit.UIView.CommitAnimations" /> to specify an animation block. The following code, taken from the "Animate a UIView using UIKit" recipe, shows the technique:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
 UIView.BeginAnimations ("slideAnimation");
@@ -1011,13 +1011,13 @@ UIView.SetAnimationRepeatAutoreverses (true);
 UIView.SetAnimationDelegate (this);
 UIView.SetAnimationDidStopSelector (
   new Selector ("slideAnimationFinished:"));
-_imageView.Center = new PointF (UIScreen.MainScreen.Bounds.Right -
+_imageView.Center = new CGPoint (UIScreen.MainScreen.Bounds.Right -
   _imageView.Frame.Width / 2, _imageView.Center.Y);
 UIView.CommitAnimations ();
               ]]></code>
       </example>
     </remarks>
-    <altmember cref="M:UIKit.UIView.CommitAnimations" />
+    <altmember cref="UIKit.UIView.CommitAnimations" />
     <related type="recipe" href="https://developer.xamarin.com/ios/Recipes/Animation/CoreAnimation/Animate_a_UIView_using_UIKit" />
     <!-- TODO: Switch to UUID-based URL -->
   </Docs>
@@ -1034,14 +1034,14 @@ UIView.CommitAnimations ();
     </param>
     <summary>Executes a view animation that uses a timing curve that corresponds to the activity of a physical spring.</summary>
     <remarks>
-      <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
+      <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
     </remarks>
   </Docs>
   <Docs DocId="P:UIKit.UIView.AnnouncementDidFinishNotification">
         <summary>Notification constant for AnnouncementDidFinish</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
@@ -1064,39 +1064,39 @@ void Setup ()
               ]]></code>
           </example>
         </remarks>
-        <altmember cref="P:UIKit.UIView.AnnouncementNotification" />
-        <altmember cref="P:UIKit.UIView.AnnouncementDidFinishNotification" />
-        <altmember cref="P:UIKit.UIView.ClosedCaptioningStatusDidChangeNotification" />
-        <altmember cref="P:UIKit.UIView.GuidedAccessStatusDidChangeNotification" />
-        <altmember cref="P:UIKit.UIView.InvertColorStatusDidChangeNotification" />
-        <altmember cref="P:UIKit.UIView.AnnouncementNotification" />
-        <altmember cref="P:UIKit.UIView.LayoutChangedNotification" />
-        <altmember cref="P:UIKit.UIView.MonoAudioStatusDidChangeNotification" />
-        <altmember cref="P:UIKit.UIView.PageScrolledNotification" />
-        <altmember cref="P:UIKit.UIView.ScreenChangedNotification" />
-        <altmember cref="P:UIKit.UIView.VoiceOverStatusChangedNotification" />
+        <altmember cref="UIKit.UIView.AnnouncementNotification" />
+        <altmember cref="UIKit.UIView.AnnouncementDidFinishNotification" />
+        <altmember cref="UIKit.UIView.ClosedCaptioningStatusDidChangeNotification" />
+        <altmember cref="UIKit.UIView.GuidedAccessStatusDidChangeNotification" />
+        <altmember cref="UIKit.UIView.InvertColorStatusDidChangeNotification" />
+        <altmember cref="UIKit.UIView.AnnouncementNotification" />
+        <altmember cref="UIKit.UIView.LayoutChangedNotification" />
+        <altmember cref="UIKit.UIView.MonoAudioStatusDidChangeNotification" />
+        <altmember cref="UIKit.UIView.PageScrolledNotification" />
+        <altmember cref="UIKit.UIView.ScreenChangedNotification" />
+        <altmember cref="UIKit.UIView.VoiceOverStatusChangedNotification" />
       </Docs>
   <Docs DocId="P:UIKit.UIView.VoiceOverStatusChanged">
         <summary>An accessibility notification indicating that the status of voice-over has changed.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
-        <altmember cref="P:UIKit.UIView.AnnouncementNotification" />
-        <altmember cref="P:UIKit.UIView.AnnouncementDidFinishNotification" />
-        <altmember cref="P:UIKit.UIView.ClosedCaptioningStatusDidChangeNotification" />
-        <altmember cref="P:UIKit.UIView.GuidedAccessStatusDidChangeNotification" />
-        <altmember cref="P:UIKit.UIView.InvertColorStatusDidChangeNotification" />
-        <altmember cref="P:UIKit.UIView.AnnouncementNotification" />
-        <altmember cref="P:UIKit.UIView.LayoutChangedNotification" />
-        <altmember cref="P:UIKit.UIView.MonoAudioStatusDidChangeNotification" />
-        <altmember cref="P:UIKit.UIView.PageScrolledNotification" />
-        <altmember cref="P:UIKit.UIView.ScreenChangedNotification" />
-        <altmember cref="P:UIKit.UIView.VoiceOverStatusChangedNotification" />
+        <altmember cref="UIKit.UIView.AnnouncementNotification" />
+        <altmember cref="UIKit.UIView.AnnouncementDidFinishNotification" />
+        <altmember cref="UIKit.UIView.ClosedCaptioningStatusDidChangeNotification" />
+        <altmember cref="UIKit.UIView.GuidedAccessStatusDidChangeNotification" />
+        <altmember cref="UIKit.UIView.InvertColorStatusDidChangeNotification" />
+        <altmember cref="UIKit.UIView.AnnouncementNotification" />
+        <altmember cref="UIKit.UIView.LayoutChangedNotification" />
+        <altmember cref="UIKit.UIView.MonoAudioStatusDidChangeNotification" />
+        <altmember cref="UIKit.UIView.PageScrolledNotification" />
+        <altmember cref="UIKit.UIView.ScreenChangedNotification" />
+        <altmember cref="UIKit.UIView.VoiceOverStatusChangedNotification" />
       </Docs>
   <Docs DocId="P:UIKit.UIView.VoiceOverStatusDidChangeNotification">
         <summary>Notification constant for VoiceOverStatusDidChange</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:UIKit.UIView.Notifications.ObserveVoiceOverStatusDidChange*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="UIKit.UIView.Notifications.ObserveVoiceOverStatusDidChange" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
@@ -1122,7 +1122,7 @@ void Setup ()
         <summary>Notification constant for MonoAudioStatusDidChange</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
@@ -1145,23 +1145,23 @@ void Setup ()
               ]]></code>
           </example>
         </remarks>
-        <altmember cref="P:UIKit.UIView.AnnouncementNotification" />
-        <altmember cref="P:UIKit.UIView.AnnouncementDidFinishNotification" />
-        <altmember cref="P:UIKit.UIView.ClosedCaptioningStatusDidChangeNotification" />
-        <altmember cref="P:UIKit.UIView.GuidedAccessStatusDidChangeNotification" />
-        <altmember cref="P:UIKit.UIView.InvertColorStatusDidChangeNotification" />
-        <altmember cref="P:UIKit.UIView.AnnouncementNotification" />
-        <altmember cref="P:UIKit.UIView.LayoutChangedNotification" />
-        <altmember cref="P:UIKit.UIView.MonoAudioStatusDidChangeNotification" />
-        <altmember cref="P:UIKit.UIView.PageScrolledNotification" />
-        <altmember cref="P:UIKit.UIView.ScreenChangedNotification" />
-        <altmember cref="P:UIKit.UIView.VoiceOverStatusChangedNotification" />
+        <altmember cref="UIKit.UIView.AnnouncementNotification" />
+        <altmember cref="UIKit.UIView.AnnouncementDidFinishNotification" />
+        <altmember cref="UIKit.UIView.ClosedCaptioningStatusDidChangeNotification" />
+        <altmember cref="UIKit.UIView.GuidedAccessStatusDidChangeNotification" />
+        <altmember cref="UIKit.UIView.InvertColorStatusDidChangeNotification" />
+        <altmember cref="UIKit.UIView.AnnouncementNotification" />
+        <altmember cref="UIKit.UIView.LayoutChangedNotification" />
+        <altmember cref="UIKit.UIView.MonoAudioStatusDidChangeNotification" />
+        <altmember cref="UIKit.UIView.PageScrolledNotification" />
+        <altmember cref="UIKit.UIView.ScreenChangedNotification" />
+        <altmember cref="UIKit.UIView.VoiceOverStatusChangedNotification" />
       </Docs>
   <Docs DocId="P:UIKit.UIView.ClosedCaptioningStatusDidChangeNotification">
         <summary>Notification constant for ClosedCaptioningStatusDidChange</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
@@ -1183,23 +1183,23 @@ void Setup ()
               ]]></code>
           </example>
         </remarks>
-        <altmember cref="P:UIKit.UIView.AnnouncementNotification" />
-        <altmember cref="P:UIKit.UIView.AnnouncementDidFinishNotification" />
-        <altmember cref="P:UIKit.UIView.ClosedCaptioningStatusDidChangeNotification" />
-        <altmember cref="P:UIKit.UIView.GuidedAccessStatusDidChangeNotification" />
-        <altmember cref="P:UIKit.UIView.InvertColorStatusDidChangeNotification" />
-        <altmember cref="P:UIKit.UIView.AnnouncementNotification" />
-        <altmember cref="P:UIKit.UIView.LayoutChangedNotification" />
-        <altmember cref="P:UIKit.UIView.MonoAudioStatusDidChangeNotification" />
-        <altmember cref="P:UIKit.UIView.PageScrolledNotification" />
-        <altmember cref="P:UIKit.UIView.ScreenChangedNotification" />
-        <altmember cref="P:UIKit.UIView.VoiceOverStatusChangedNotification" />
+        <altmember cref="UIKit.UIView.AnnouncementNotification" />
+        <altmember cref="UIKit.UIView.AnnouncementDidFinishNotification" />
+        <altmember cref="UIKit.UIView.ClosedCaptioningStatusDidChangeNotification" />
+        <altmember cref="UIKit.UIView.GuidedAccessStatusDidChangeNotification" />
+        <altmember cref="UIKit.UIView.InvertColorStatusDidChangeNotification" />
+        <altmember cref="UIKit.UIView.AnnouncementNotification" />
+        <altmember cref="UIKit.UIView.LayoutChangedNotification" />
+        <altmember cref="UIKit.UIView.MonoAudioStatusDidChangeNotification" />
+        <altmember cref="UIKit.UIView.PageScrolledNotification" />
+        <altmember cref="UIKit.UIView.ScreenChangedNotification" />
+        <altmember cref="UIKit.UIView.VoiceOverStatusChangedNotification" />
       </Docs>
   <Docs DocId="P:UIKit.UIView.InvertColorsStatusDidChangeNotification">
         <summary>Notification constant for InvertColorsStatusDidChange</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
@@ -1222,23 +1222,23 @@ void Setup ()
               ]]></code>
           </example>
         </remarks>
-        <altmember cref="P:UIKit.UIView.AnnouncementNotification" />
-        <altmember cref="P:UIKit.UIView.AnnouncementDidFinishNotification" />
-        <altmember cref="P:UIKit.UIView.ClosedCaptioningStatusDidChangeNotification" />
-        <altmember cref="P:UIKit.UIView.GuidedAccessStatusDidChangeNotification" />
-        <altmember cref="P:UIKit.UIView.InvertColorStatusDidChangeNotification" />
-        <altmember cref="P:UIKit.UIView.AnnouncementNotification" />
-        <altmember cref="P:UIKit.UIView.LayoutChangedNotification" />
-        <altmember cref="P:UIKit.UIView.MonoAudioStatusDidChangeNotification" />
-        <altmember cref="P:UIKit.UIView.PageScrolledNotification" />
-        <altmember cref="P:UIKit.UIView.ScreenChangedNotification" />
-        <altmember cref="P:UIKit.UIView.VoiceOverStatusChangedNotification" />
+        <altmember cref="UIKit.UIView.AnnouncementNotification" />
+        <altmember cref="UIKit.UIView.AnnouncementDidFinishNotification" />
+        <altmember cref="UIKit.UIView.ClosedCaptioningStatusDidChangeNotification" />
+        <altmember cref="UIKit.UIView.GuidedAccessStatusDidChangeNotification" />
+        <altmember cref="UIKit.UIView.InvertColorStatusDidChangeNotification" />
+        <altmember cref="UIKit.UIView.AnnouncementNotification" />
+        <altmember cref="UIKit.UIView.LayoutChangedNotification" />
+        <altmember cref="UIKit.UIView.MonoAudioStatusDidChangeNotification" />
+        <altmember cref="UIKit.UIView.PageScrolledNotification" />
+        <altmember cref="UIKit.UIView.ScreenChangedNotification" />
+        <altmember cref="UIKit.UIView.VoiceOverStatusChangedNotification" />
       </Docs>
   <Docs DocId="P:UIKit.UIView.GuidedAccessStatusDidChangeNotification">
         <summary>Notification constant for GuidedAccessStatusDidChange</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
@@ -1261,39 +1261,39 @@ void Setup ()
               ]]></code>
           </example>
         </remarks>
-        <altmember cref="P:UIKit.UIView.AnnouncementNotification" />
-        <altmember cref="P:UIKit.UIView.AnnouncementDidFinishNotification" />
-        <altmember cref="P:UIKit.UIView.ClosedCaptioningStatusDidChangeNotification" />
-        <altmember cref="P:UIKit.UIView.GuidedAccessStatusDidChangeNotification" />
-        <altmember cref="P:UIKit.UIView.InvertColorStatusDidChangeNotification" />
-        <altmember cref="P:UIKit.UIView.AnnouncementNotification" />
-        <altmember cref="P:UIKit.UIView.LayoutChangedNotification" />
-        <altmember cref="P:UIKit.UIView.MonoAudioStatusDidChangeNotification" />
-        <altmember cref="P:UIKit.UIView.PageScrolledNotification" />
-        <altmember cref="P:UIKit.UIView.ScreenChangedNotification" />
-        <altmember cref="P:UIKit.UIView.VoiceOverStatusChangedNotification" />
+        <altmember cref="UIKit.UIView.AnnouncementNotification" />
+        <altmember cref="UIKit.UIView.AnnouncementDidFinishNotification" />
+        <altmember cref="UIKit.UIView.ClosedCaptioningStatusDidChangeNotification" />
+        <altmember cref="UIKit.UIView.GuidedAccessStatusDidChangeNotification" />
+        <altmember cref="UIKit.UIView.InvertColorStatusDidChangeNotification" />
+        <altmember cref="UIKit.UIView.AnnouncementNotification" />
+        <altmember cref="UIKit.UIView.LayoutChangedNotification" />
+        <altmember cref="UIKit.UIView.MonoAudioStatusDidChangeNotification" />
+        <altmember cref="UIKit.UIView.PageScrolledNotification" />
+        <altmember cref="UIKit.UIView.ScreenChangedNotification" />
+        <altmember cref="UIKit.UIView.VoiceOverStatusChangedNotification" />
       </Docs>
   <Docs DocId="P:UIKit.UIView.LayoutChangedNotification">
         <summary>An accessibility notification indicating that the layout has changed.</summary>
         <value>The layer that the view is being rendered on..</value>
         <remarks>To be added.</remarks>
-        <altmember cref="P:UIKit.UIView.AnnouncementNotification" />
-        <altmember cref="P:UIKit.UIView.AnnouncementDidFinishNotification" />
-        <altmember cref="P:UIKit.UIView.ClosedCaptioningStatusDidChangeNotification" />
-        <altmember cref="P:UIKit.UIView.GuidedAccessStatusDidChangeNotification" />
-        <altmember cref="P:UIKit.UIView.InvertColorStatusDidChangeNotification" />
-        <altmember cref="P:UIKit.UIView.AnnouncementNotification" />
-        <altmember cref="P:UIKit.UIView.LayoutChangedNotification" />
-        <altmember cref="P:UIKit.UIView.MonoAudioStatusDidChangeNotification" />
-        <altmember cref="P:UIKit.UIView.PageScrolledNotification" />
-        <altmember cref="P:UIKit.UIView.ScreenChangedNotification" />
-        <altmember cref="P:UIKit.UIView.VoiceOverStatusChangedNotification" />
+        <altmember cref="UIKit.UIView.AnnouncementNotification" />
+        <altmember cref="UIKit.UIView.AnnouncementDidFinishNotification" />
+        <altmember cref="UIKit.UIView.ClosedCaptioningStatusDidChangeNotification" />
+        <altmember cref="UIKit.UIView.GuidedAccessStatusDidChangeNotification" />
+        <altmember cref="UIKit.UIView.InvertColorStatusDidChangeNotification" />
+        <altmember cref="UIKit.UIView.AnnouncementNotification" />
+        <altmember cref="UIKit.UIView.LayoutChangedNotification" />
+        <altmember cref="UIKit.UIView.MonoAudioStatusDidChangeNotification" />
+        <altmember cref="UIKit.UIView.PageScrolledNotification" />
+        <altmember cref="UIKit.UIView.ScreenChangedNotification" />
+        <altmember cref="UIKit.UIView.VoiceOverStatusChangedNotification" />
       </Docs>
   <Docs DocId="P:UIKit.UIView.BoldTextStatusDidChangeNotification">
         <summary>Notification constant for BoldTextStatusDidChange</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
@@ -1319,7 +1319,7 @@ void Setup ()
         <summary>Notification constant for DarkerSystemColorsStatusDidChange</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
@@ -1345,7 +1345,7 @@ void Setup ()
         <summary>Notification constant for GrayscaleStatusDidChange</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
@@ -1371,7 +1371,7 @@ void Setup ()
         <summary>Notification constant for ReduceMotionStatusDidChange</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
@@ -1397,7 +1397,7 @@ void Setup ()
         <summary>Notification constant for ReduceTransparencyStatusDidChange</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
@@ -1423,7 +1423,7 @@ void Setup ()
         <summary>Notification constant for SwitchControlStatusDidChange</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
@@ -1449,7 +1449,7 @@ void Setup ()
         <summary>Notification constant for NotificationSwitchContr</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
@@ -1475,7 +1475,7 @@ void Setup ()
         <summary>Notification constant for SpeakScreenStatusDidChange</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
@@ -1501,7 +1501,7 @@ void Setup ()
         <summary>Notification constant for SpeakSelectionStatusDidChange</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
@@ -1527,7 +1527,7 @@ void Setup ()
         <summary>Notification constant for ShakeToUndoDidChange</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
@@ -1553,7 +1553,7 @@ void Setup ()
         <summary>Notification constant for ElementFocused</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
@@ -1579,7 +1579,7 @@ void Setup ()
         <summary>Notification constant for NotificationVoiceOv</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
@@ -1605,7 +1605,7 @@ void Setup ()
         <summary>Notification constant for AssistiveTouchStatusDidChange</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
@@ -1631,7 +1631,7 @@ void Setup ()
         <summary>Notification constant for HearingDevicePairedEarDidChange</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style

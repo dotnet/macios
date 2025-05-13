@@ -35,7 +35,7 @@ using CoreVideo;
 #nullable enable
 
 namespace CoreImage {
-	/// <summary>When passed to <see cref="M:CoreImage.CIImage.GetAutoAdjustmentFilters(CoreImage.CIAutoAdjustmentFilterOptions)" />, limits the results.</summary>
+	/// <summary>When passed to <see cref="CoreImage.CIImage.GetAutoAdjustmentFilters(CoreImage.CIAutoAdjustmentFilterOptions)" />, limits the results.</summary>
 	///     <remarks>
 	///       <para>The sample below shows a typical use.</para>
 	///       <example>
@@ -65,7 +65,7 @@ namespace CoreImage {
 		/// <summary>Set to false if you want to prevent filters that perform enhancements to be returned.</summary>
 		///         <remarks>
 		///
-		/// 	  By default an invocation to <see cref="M:CoreImage.CIImage.GetAutoAdjustmentFilters(CoreImage.CIAutoAdjustmentFilterOptions)" /> will return filters that include enhancement filters.  To
+		/// 	  By default an invocation to <see cref="CoreImage.CIImage.GetAutoAdjustmentFilters(CoreImage.CIAutoAdjustmentFilterOptions)" /> will return filters that include enhancement filters.  To
 		/// 	  prevent this, set this property to false.
 		///
 		/// 	</remarks>
@@ -74,7 +74,7 @@ namespace CoreImage {
 		// The default value is true
 		/// <summary>Set to false if you want to prevent the filter that performs red-eye removal from being returned.</summary>
 		///         <remarks>
-		/// 	  By default an invocation to <see cref="M:CoreImage.CIImage.GetAutoAdjustmentFilters(CoreImage.CIAutoAdjustmentFilterOptions)" /> will return filters that include red-eye removal.  To
+		/// 	  By default an invocation to <see cref="CoreImage.CIImage.GetAutoAdjustmentFilters(CoreImage.CIAutoAdjustmentFilterOptions)" /> will return filters that include red-eye removal.  To
 		/// 	  prevent this, set this property to false.
 		/// 	</remarks>
 		public bool? RedEye;
@@ -175,7 +175,7 @@ namespace CoreImage {
 
 		/// <param name="image">CoreGraphics image.</param>
 		///         <param name="colorSpace">Colorspace to use.</param>
-		///         <summary>Creates a <see cref="T:CoreImage.CIImage" /> in <paramref name="colorSpace" /> from a <see cref="T:CoreGraphics.CGImage" />.</summary>
+		///         <summary>Creates a <see cref="CoreImage.CIImage" /> in <paramref name="colorSpace" /> from a <see cref="CoreGraphics.CGImage" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		public static CIImage FromCGImage (CGImage image, CGColorSpace colorSpace)
@@ -200,7 +200,7 @@ namespace CoreImage {
 		///         <returns>Returns an array of configured filters to apply to the image to automatically adjust it.</returns>
 		///         <remarks>
 		///           <para>
-		/// 	    In general, you should try to use the <see cref="M:CoreImage.CIImage.GetAutoAdjustmentFilters(CoreImage.CIAutoAdjustmentFilterOptions)" />
+		/// 	    In general, you should try to use the <see cref="CoreImage.CIImage.GetAutoAdjustmentFilters(CoreImage.CIAutoAdjustmentFilterOptions)" />
 		/// 	    as that method allows you to customize which kind of filters you want to get.
 		///
 		/// 	  </para>

@@ -24,7 +24,7 @@ namespace CarPlay {
 	interface NSUnitLength : NSUnit { }
 	interface NSUnitAngle : NSUnit { }
 
-	/// <summary>Enumerates the styles for a <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Car%20Play%20CPAlert&amp;scope=Xamarin" title="T:CarPlay.CPAlert">T:CarPlay.CPAlert</a></format> object's action button.</summary>
+	/// <summary>Enumerates the styles for a <see cref="CarPlay.CPAlert" /> object's action button.</summary>
 	[NoTV, NoMac]
 	[Native]
 	enum CPAlertActionStyle : ulong {
@@ -36,7 +36,7 @@ namespace CarPlay {
 		Destructive,
 	}
 
-	/// <summary>Enumerates the kinds of <see cref="T:CarPlay.CPBarButton" />.</summary>
+	/// <summary>Enumerates the kinds of <see cref="CarPlay.CPBarButton" />.</summary>
 	[NoTV, NoMac]
 	[Native]
 	enum CPBarButtonType : ulong {
@@ -391,23 +391,23 @@ namespace CarPlay {
 		CPBarButtonStyle ButtonStyle { get; set; }
 	}
 
-	/// <summary>Interface defining necessary methods for the <see cref="T:CarPlay.ICPBarButtonProviding" /> protocol.</summary>
+	/// <summary>Interface defining necessary methods for the <see cref="CarPlay.ICPBarButtonProviding" /> protocol.</summary>
 	interface ICPBarButtonProviding { }
 
-	/// <summary>Interface defining necessary methods for the <see cref="T:CarPlay.ICPBarButtonProviding" /> protocol.</summary>
+	/// <summary>Interface defining necessary methods for the <see cref="CarPlay.ICPBarButtonProviding" /> protocol.</summary>
 	/// <remarks>To be added.</remarks>
 	[NoTV, NoMac]
 	[Protocol]
 	interface CPBarButtonProviding {
 
-		/// <summary>Developers must override this with the array of <see cref="T:CarPlay.CPBarButton" /> objects on the leading part of the navigation bar.</summary>
+		/// <summary>Developers must override this with the array of <see cref="CarPlay.CPBarButton" /> objects on the leading part of the navigation bar.</summary>
 		/// <value>To be added.</value>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("leadingNavigationBarButtons", ArgumentSemantic.Strong)]
 		CPBarButton [] LeadingNavigationBarButtons { get; set; }
 
-		/// <summary>Developers must override this with the array of <see cref="T:CarPlay.CPBarButton" /> objects on the trailing part of the navigation bar..</summary>
+		/// <summary>Developers must override this with the array of <see cref="CarPlay.CPBarButton" /> objects on the trailing part of the navigation bar..</summary>
 		/// <value>To be added.</value>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
@@ -421,7 +421,7 @@ namespace CarPlay {
 		CPBarButton BackButton { get; set; }
 	}
 
-	/// <summary>A menu item displayed in a <see cref="T:CarPlay.CPGridTemplate" />.</summary>
+	/// <summary>A menu item displayed in a <see cref="CarPlay.CPGridTemplate" />.</summary>
 	[NoTV, NoMac]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -445,7 +445,7 @@ namespace CarPlay {
 	}
 
 	/// <summary>
-	///       <see cref="T:CarPlay.CPTemplate" /> subclass that displays a menu in grid form.</summary>
+	///       <see cref="CarPlay.CPTemplate" /> subclass that displays a menu in grid form.</summary>
 	[NoTV, NoMac]
 	[BaseType (typeof (CPTemplate))]
 	[DisableDefaultCtor]
@@ -473,7 +473,7 @@ namespace CarPlay {
 		nuint MaximumItems { get; }
 	}
 
-	/// <summary>A system-created controller object (similar, but not derived from, <see cref="T:UIKit.UIViewController" />).</summary>
+	/// <summary>A system-created controller object (similar, but not derived from, <see cref="UIKit.UIViewController" />).</summary>
 	[NoTV, NoMac]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -585,10 +585,10 @@ namespace CarPlay {
 		UITraitCollection CarTraitCollection { get; }
 	}
 
-	/// <summary>Delegate object for <see cref="T:CarPlay.CPInterfaceController" /> objects.</summary>
+	/// <summary>Delegate object for <see cref="CarPlay.CPInterfaceController" /> objects.</summary>
 	interface ICPInterfaceControllerDelegate { }
 
-	/// <summary>Default implementation of <see cref="T:CarPlay.ICPInterfaceControllerDelegate" />, the delegate object for <see cref="T:CarPlay.CPInterfaceController" /> objects.</summary>
+	/// <summary>Default implementation of <see cref="CarPlay.ICPInterfaceControllerDelegate" />, the delegate object for <see cref="CarPlay.CPInterfaceController" /> objects.</summary>
 	[NoTV, NoMac]
 #if NET
 	[Protocol, Model]
@@ -631,7 +631,7 @@ namespace CarPlay {
 		void TemplateDidDisappear (CPTemplate aTemplate, bool animated);
 	}
 
-	/// <summary>Application delegate for the required methods of the <see cref="T:CarPlay.CPApplicationDelegate" /> protocol.</summary>
+	/// <summary>Application delegate for the required methods of the <see cref="CarPlay.CPApplicationDelegate" /> protocol.</summary>
 	interface ICPApplicationDelegate { }
 
 	/// <summary>The application delegate for CarPlay applications.</summary>
@@ -680,7 +680,7 @@ namespace CarPlay {
 		void DidSelectManeuver (UIApplication application, CPManeuver maneuver);
 	}
 
-	/// <summary>A line in a <see cref="T:CarPlay.CPListTemplate" />.</summary>
+	/// <summary>A line in a <see cref="CarPlay.CPListTemplate" />.</summary>
 	[NoTV, NoMac]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -757,7 +757,7 @@ namespace CarPlay {
 		void SetText (string text);
 	}
 
-	/// <summary>Organizational element within a <see cref="T:CarPlay.CPListTemplate" />.</summary>
+	/// <summary>Organizational element within a <see cref="CarPlay.CPListTemplate" />.</summary>
 	[NoTV, NoMac]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -844,7 +844,7 @@ namespace CarPlay {
 	}
 
 	/// <summary>
-	///       <see cref="T:CarPlay.CPTemplate" /> that presents a hierarchical menu of choices.</summary>
+	///       <see cref="CarPlay.CPTemplate" /> that presents a hierarchical menu of choices.</summary>
 	[NoTV, NoMac]
 	[BaseType (typeof (CPTemplate))]
 	[DisableDefaultCtor]
@@ -926,10 +926,10 @@ namespace CarPlay {
 		bool ShowsSpinnerWhileEmpty { get; set; }
 	}
 
-	/// <summary>Delegate object for <see cref="T:CarPlay.CPListTemplate" /> objects.</summary>
+	/// <summary>Delegate object for <see cref="CarPlay.CPListTemplate" /> objects.</summary>
 	interface ICPListTemplateDelegate { }
 
-	/// <summary>Abstract implementation of <see cref="T:CarPlay.ICPListTemplateDelegate" />, the delegate object for <see cref="T:CarPlay.CPListTemplate" /> objects.</summary>
+	/// <summary>Abstract implementation of <see cref="CarPlay.ICPListTemplateDelegate" />, the delegate object for <see cref="CarPlay.CPListTemplate" /> objects.</summary>
 	[Deprecated (PlatformName.iOS, 14, 0, message: "Use 'CPListItem.Handler' instead.")]
 	[NoTV, NoMac]
 	[Deprecated (PlatformName.MacCatalyst, 14, 0, message: "Use 'CPListItem.Handler' instead.")]
@@ -951,7 +951,7 @@ namespace CarPlay {
 		void DidSelectListItem (CPListTemplate listTemplate, CPListItem item, Action completionHandler);
 	}
 
-	/// <summary>A step in a <see cref="T:CarPlay.CPTrip" />.</summary>
+	/// <summary>A step in a <see cref="CarPlay.CPTrip" />.</summary>
 	[NoTV, NoMac]
 	[BaseType (typeof (NSObject))]
 	interface CPManeuver : NSCopying, NSSecureCoding {
@@ -1052,7 +1052,7 @@ namespace CarPlay {
 		string HighwayExitLabel { get; set; }
 	}
 
-	/// <summary>A button displayed on the <see cref="T:CarPlay.CPMapTemplate" />.</summary>
+	/// <summary>A button displayed on the <see cref="CarPlay.CPMapTemplate" />.</summary>
 	[NoTV, NoMac]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -1082,7 +1082,7 @@ namespace CarPlay {
 	}
 
 	/// <summary>
-	///       <see cref="T:CarPlay.CPTemplate" /> subclass that displays a map.</summary>
+	///       <see cref="CarPlay.CPTemplate" /> subclass that displays a map.</summary>
 	[NoTV, NoMac]
 	[BaseType (typeof (CPTemplate))]
 	[DisableDefaultCtor]
@@ -1163,10 +1163,10 @@ namespace CarPlay {
 		void ShowTripPreviews (CPTrip [] tripPreviews, [NullAllowed] CPTrip selectedTrip, [NullAllowed] CPTripPreviewTextConfiguration textConfiguration);
 	}
 
-	/// <summary>Delegate object for <see cref="T:CarPlay.CPMapTemplate" /> objects.</summary>
+	/// <summary>Delegate object for <see cref="CarPlay.CPMapTemplate" /> objects.</summary>
 	interface ICPMapTemplateDelegate { }
 
-	/// <summary>Default implementation of <see cref="T:CarPlay.ICPMapTemplateDelegate" />, providing the delegate object for <see cref="T:CarPlay.CPMapTemplate" /> objects.</summary>
+	/// <summary>Default implementation of <see cref="CarPlay.ICPMapTemplateDelegate" />, providing the delegate object for <see cref="CarPlay.CPMapTemplate" /> objects.</summary>
 	[NoTV, NoMac]
 #if NET
 	[Protocol, Model]
@@ -1425,7 +1425,7 @@ namespace CarPlay {
 	}
 
 	/// <summary>
-	///       <see cref="T:CarPlay.CPTemplate" /> subclass showing the destination search results.</summary>
+	///       <see cref="CarPlay.CPTemplate" /> subclass showing the destination search results.</summary>
 	[NoTV, NoMac]
 	[BaseType (typeof (CPTemplate))]
 	interface CPSearchTemplate {
@@ -1445,11 +1445,11 @@ namespace CarPlay {
 		NSObject WeakDelegate { get; set; }
 	}
 
-	/// <summary>Delegate object used by <see cref="T:CarPlay.CPSearchTemplate" />.</summary>
+	/// <summary>Delegate object used by <see cref="CarPlay.CPSearchTemplate" />.</summary>
 	interface ICPSearchTemplateDelegate { }
 	delegate void CPSearchTemplateDelegateUpdateHandler (CPListItem [] searchResults);
 
-	/// <summary>Delegate object for the <see cref="T:CarPlay.CPSearchTemplate" /> class.</summary>
+	/// <summary>Delegate object for the <see cref="CarPlay.CPSearchTemplate" /> class.</summary>
 	[NoTV, NoMac]
 #if NET
 	[Protocol, Model]
@@ -1516,10 +1516,10 @@ namespace CarPlay {
 		NSObject WeakDelegate { get; set; }
 	}
 
-	/// <summary>Delegate object used by <see cref="T:CarPlay.CPSessionConfiguration" />.</summary>
+	/// <summary>Delegate object used by <see cref="CarPlay.CPSessionConfiguration" />.</summary>
 	interface ICPSessionConfigurationDelegate { }
 
-	/// <summary>Abstract implementation of <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=I:Carlay.ICPSessionConfigurationDelegate&amp;scope=Xamarin" title="I:Carlay.ICPSessionConfigurationDelegate">I:Carlay.ICPSessionConfigurationDelegate</a></format>.</summary>
+	/// <summary>Abstract implementation of <see cref="Carlay.ICPSessionConfigurationDelegate" />.</summary>
 	[NoTV, NoMac]
 #if NET
 	[Protocol, Model]
@@ -1596,7 +1596,7 @@ namespace CarPlay {
 		NSObject UserInfo { get; set; }
 	}
 
-	/// <summary>A journey from <see cref="P:CarPlay.CPTrip.Origin" /> to <see cref="P:CarPlay.CPTrip.Destination" />.</summary>
+	/// <summary>A journey from <see cref="CarPlay.CPTrip.Origin" /> to <see cref="CarPlay.CPTrip.Destination" />.</summary>
 	[NoTV, NoMac]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -1644,7 +1644,7 @@ namespace CarPlay {
 	}
 
 	/// <summary>
-	///       <see cref="T:CarPlay.CPTemplate" /> subclass for displaying the voice control indicator.</summary>
+	///       <see cref="CarPlay.CPTemplate" /> subclass for displaying the voice control indicator.</summary>
 	[NoTV, NoMac]
 	[BaseType (typeof (CPTemplate))]
 	[DisableDefaultCtor]

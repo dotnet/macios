@@ -73,7 +73,7 @@ namespace PhotosUI {
 		bool ShouldShowCancelConfirmation { get; }
 	}
 
-	/// <summary>A <see cref="T:UIKit.UIView" /> that displays a <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:Photo.PHLivePhoto&amp;scope=Xamarin" title="T:Photo.PHLivePhoto">T:Photo.PHLivePhoto</a></format>.</summary>
+	/// <summary>A <see cref="UIKit.UIView" /> that displays a <see cref="Photo.PHLivePhoto" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/PhotosUI/PHLivePhotoView">Apple documentation for <c>PHLivePhotoView</c></related>
 	[MacCatalyst (13, 1)]
@@ -163,15 +163,15 @@ namespace PhotosUI {
 		CGRect ContentsRect { get; set; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:PhotosUI.PHLivePhotoViewDelegate" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="PhotosUI.PHLivePhotoViewDelegate" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:PhotosUI.PHLivePhotoViewDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:PhotosUI.PHLivePhotoViewDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:PhotosUI.PHLivePhotoViewDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="PhotosUI.PHLivePhotoViewDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="PhotosUI.PHLivePhotoViewDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="PhotosUI.PHLivePhotoViewDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	interface IPHLivePhotoViewDelegate { }
 
-	/// <summary>Delegate object for <see cref="T:PhotosUI.PHLivePhotoView" /> objects that adds methods for responding to playback beginning and ending.</summary>
+	/// <summary>Delegate object for <see cref="PhotosUI.PHLivePhotoView" /> objects that adds methods for responding to playback beginning and ending.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/PhotosUI/PHLivePhotoViewDelegate">Apple documentation for <c>PHLivePhotoViewDelegate</c></related>
 	[MacCatalyst (13, 1)]

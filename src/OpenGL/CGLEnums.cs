@@ -27,15 +27,10 @@ using System;
 using ObjCRuntime;
 
 namespace OpenGL {
-
-#if NET
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	[ObsoletedOSPlatform ("macos10.14", "Use 'Metal' Framework instead.")]
-#else
-	[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'Metal' Framework instead.")]
-#endif
 	public enum CGLErrorCode : uint {
 		/// <summary>To be added.</summary>
 		NoError = 0,        /* no error */
@@ -78,14 +73,10 @@ namespace OpenGL {
 
 	}
 
-#if NET
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	[ObsoletedOSPlatform ("macos10.14", "Use 'Metal' Framework instead.")]
-#else
-	[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'Metal' Framework instead.")]
-#endif
 	public enum CGLPixelFormatAttribute : uint {
 		/// <summary>To be added.</summary>
 		AllRenderers = 1,

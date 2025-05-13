@@ -43,7 +43,7 @@ namespace CoreGraphics {
 	///       encouraged to use this instead of CGBitmaps for off-screen
 	///       rendering operations.</para>
 	///       <para>
-	/// 	To create CGLayers, use the <see cref="M:CoreGraphics.CGLayer.Create(CoreGraphics.CGContext,CoreGraphics.CGSize)" /> method.
+	/// 	To create CGLayers, use the <see cref="CoreGraphics.CGLayer.Create(CoreGraphics.CGContext,CoreGraphics.CGSize)" /> method.
 	///       </para>
 	///       <para>
 	/// 	Once you create a CGLayer, you extract the CGContext instance by accessing the Context property.

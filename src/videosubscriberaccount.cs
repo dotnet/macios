@@ -136,11 +136,11 @@ namespace VideoSubscriberAccount {
 		string AccountProviderResponse { get; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:VideoSubscriberAccount.VSAccountManagerDelegate" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="VideoSubscriberAccount.VSAccountManagerDelegate" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:VideoSubscriberAccount.VSAccountManagerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:VideoSubscriberAccount.VSAccountManagerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:VideoSubscriberAccount.VSAccountManagerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="VideoSubscriberAccount.VSAccountManagerDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="VideoSubscriberAccount.VSAccountManagerDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="VideoSubscriberAccount.VSAccountManagerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	interface IVSAccountManagerDelegate { }
 
@@ -152,7 +152,7 @@ namespace VideoSubscriberAccount {
 
 		/// <param name="accountManager">To be added.</param>
 		///         <param name="viewController">To be added.</param>
-		///         <summary>Developers override this to specify the <see cref="T:UIKit.UIViewController" /> to be shown when the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:VideoSubscriberAccounts.VSAccountManager&amp;scope=Xamarin" title="T:VideoSubscriberAccounts.VSAccountManager">T:VideoSubscriberAccounts.VSAccountManager</a></format> requires user interaction.</summary>
+		///         <summary>Developers override this to specify the <see cref="UIKit.UIViewController" /> to be shown when the <see cref="VideoSubscriberAccounts.VSAccountManager" /> requires user interaction.</summary>
 		///         <remarks>To be added.</remarks>
 		[Abstract]
 #if NET
@@ -202,7 +202,7 @@ namespace VideoSubscriberAccount {
 		[NullAllowed, Export ("delegate", ArgumentSemantic.Weak)]
 		IVSAccountManagerDelegate Delegate { get; set; }
 
-		/// <param name="options">If not empty, may contain the key <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Video%20Subscriber%20Account%20VSCheck%20Access%20Option%20Keys&amp;scope=Xamarin" title="P:VideoSubscriberAccount.VSCheckAccessOptionKeys">P:VideoSubscriberAccount.VSCheckAccessOptionKeys</a></format>.</param>
+		/// <param name="options">If not empty, may contain the key <see cref="VideoSubscriberAccount.VSCheckAccessOptionKeys" />.</param>
 		///         <param name="completionHandler">Called by the system with the results of the permission check.</param>
 		///         <summary>Checks whether the user has provided permission for the app to access their subscription information.</summary>
 		///         <remarks>To be added.</remarks>
@@ -261,7 +261,7 @@ namespace VideoSubscriberAccount {
 		NSString CheckAccessOptionPrompt { get; }
 	}
 
-	/// <summary>A <see cref="T:Foundation.DictionaryContainer" /> holding keys appropriate to <see cref="M:VideoSubscriberAccount.VSAccountManager.CheckAccessStatusAsync(VideoSubscriberAccount.VSAccountManagerAccessOptions)" /> and <see cref="M:VideoSubscriberAccount.VSAccountManager.CheckAccessStatusAsync(VideoSubscriberAccount.VSAccountManagerAccessOptions)" />.</summary>
+	/// <summary>A <see cref="Foundation.DictionaryContainer" /> holding keys appropriate to <see cref="VideoSubscriberAccount.VSAccountManager.CheckAccessStatusAsync(VideoSubscriberAccount.VSAccountManagerAccessOptions)" /> and <see cref="VideoSubscriberAccount.VSAccountManager.CheckAccessStatusAsync(VideoSubscriberAccount.VSAccountManagerAccessOptions)" />.</summary>
 	[NoMacCatalyst]
 	[StrongDictionary ("VSCheckAccessOptionKeys")]
 	interface VSAccountManagerAccessOptions {
@@ -281,7 +281,7 @@ namespace VideoSubscriberAccount {
 	[DisableDefaultCtor]
 	interface VSAccountManagerResult {
 
-		/// <summary>Informs the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:VideoSubscriberAccounts.VSAccountManager&amp;scope=Xamarin" title="T:VideoSubscriberAccounts.VSAccountManager">T:VideoSubscriberAccounts.VSAccountManager</a></format> that the app no longer needs the requested work.</summary>
+		/// <summary>Informs the <see cref="VSAccountManager" /> that the app no longer needs the requested work.</summary>
 		///         <remarks>To be added.</remarks>
 		[Export ("cancel")]
 		void Cancel ();
@@ -312,7 +312,7 @@ namespace VideoSubscriberAccount {
 		[NullAllowed, Export ("authenticationExpirationDate", ArgumentSemantic.Copy)]
 		NSDate AuthenticationExpirationDate { get; }
 
-		/// <summary>Arbitrary data, for instance to hold cryptographic verify the <see cref="P:VideoSubscriberAccount.VSAccountMetadata.SamlAttributeQueryResponse" />.</summary>
+		/// <summary>Arbitrary data, for instance to hold cryptographic verify the <see cref="VideoSubscriberAccount.VSAccountMetadata.SamlAttributeQueryResponse" />.</summary>
 		///         <value>
 		///           <para>(More documentation for this node is coming)</para>
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>

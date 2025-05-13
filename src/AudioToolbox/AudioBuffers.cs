@@ -61,7 +61,7 @@ namespace AudioToolbox {
 		///         <summary>Creates and AudioBuffers object that can be used to query and manipulate a native AudioBuffersList structure.</summary>
 		///         <remarks>
 		/// 	  If you set owns to true, the structure pointed to by
-		/// 	  "address" will be released when you call <see cref="M:AudioToolbox.AudioBuffers.Dispose(System.Boolean)" />.
+		/// 	  "address" will be released when you call <see cref="AudioToolbox.AudioBuffers.Dispose(System.Boolean)" />.
 		/// 	</remarks>
 		public AudioBuffers (IntPtr address, bool owns)
 		{
@@ -73,9 +73,9 @@ namespace AudioToolbox {
 		}
 
 		/// <param name="count">Number of buffers to create for this AudioBuffer.</param>
-		///         <summary>Creates an AudioBuffers structure that can hold a fixed number of <see cref="T:AudioToolbox.AudioBuffer" /> structures.</summary>
+		///         <summary>Creates an AudioBuffers structure that can hold a fixed number of <see cref="AudioToolbox.AudioBuffer" /> structures.</summary>
 		///         <remarks>
-		/// 	  The allocated structure will be released when you call <see cref="M:AudioToolbox.AudioBuffers.Dispose(System.Boolean)" />.
+		/// 	  The allocated structure will be released when you call <see cref="AudioToolbox.AudioBuffers.Dispose(System.Boolean)" />.
 		/// 	</remarks>
 		public unsafe AudioBuffers (int count)
 		{

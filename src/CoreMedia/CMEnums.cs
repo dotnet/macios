@@ -106,7 +106,7 @@ namespace CoreMedia {
 	}
 
 	// uint32_t -> CMTime.h
-	/// <summary>An enumeration whose values specify the rounding method to be used with a <see cref="T:CoreMedia.CMTime" />.</summary>
+	/// <summary>An enumeration whose values specify the rounding method to be used with a <see cref="CoreMedia.CMTime" />.</summary>
 	[MacCatalyst (13, 1)]
 	public enum CMTimeRoundingMethod : uint {
 		/// <summary>To be added.</summary>
@@ -238,7 +238,7 @@ namespace CoreMedia {
 	}
 
 	/// <summary>Enumerates attachment propagation policies.</summary>
-	///     <remarks>This setting controls whether <see cref="M:CoreMedia.CMAttachmentBearer.PropagateAttachments(CoreMedia.ICMAttachmentBearer,CoreMedia.ICMAttachmentBearer)" /> will propagate a given attachment.</remarks>
+	///     <remarks>This setting controls whether <see cref="CoreMedia.CMAttachmentBearer.PropagateAttachments(CoreMedia.ICMAttachmentBearer,CoreMedia.ICMAttachmentBearer)" /> will propagate a given attachment.</remarks>
 	[MacCatalyst (13, 1)]
 	public enum CMAttachmentMode : uint {
 		/// <summary>Indicates that the attachment does not propagate.</summary>
@@ -248,7 +248,7 @@ namespace CoreMedia {
 	};
 
 	// untyped enum (used as OSStatus) -> CMBlockBuffer.h
-	/// <summary>An enumeration whose values specify errors relating to <see cref="T:CoreMedia.CMBlockBuffer" />s.</summary>
+	/// <summary>An enumeration whose values specify errors relating to <see cref="CoreMedia.CMBlockBuffer" />s.</summary>
 	[MacCatalyst (13, 1)]
 	public enum CMBlockBufferError : int {
 		/// <summary>To be added.</summary>
@@ -274,7 +274,7 @@ namespace CoreMedia {
 	}
 
 	// uint32_t -> CMBlockBuffer.h
-	/// <summary>An enumeration of flags to be used with <see cref="M:CoreMedia.CMBlockBuffer.CreateEmpty(System.UInt32,CoreMedia.CMBlockBufferFlags,CoreMedia.CMBlockBufferError@)" />.</summary>
+	/// <summary>An enumeration of flags to be used with <see cref="CoreMedia.CMBlockBuffer.CreateEmpty(System.UInt32,CoreMedia.CMBlockBufferFlags,out CoreMedia.CMBlockBufferError)" />.</summary>
 	[Flags]
 	[MacCatalyst (13, 1)]
 	public enum CMBlockBufferFlags : uint {
@@ -289,7 +289,7 @@ namespace CoreMedia {
 	}
 
 	// untyped enum (uses as OSStatus) -> CMFormatDescription.h
-	/// <summary>An enumeration whose values specify errors relating to <see cref="T:CoreMedia.CMFormatDescription" />s.</summary>
+	/// <summary>An enumeration whose values specify errors relating to <see cref="CoreMedia.CMFormatDescription" />s.</summary>
 	[MacCatalyst (13, 1)]
 	public enum CMFormatDescriptionError : int {
 		/// <summary>To be added.</summary>
@@ -303,7 +303,7 @@ namespace CoreMedia {
 	}
 
 	// untyped enum (used as an OSStatus) -> CMSampleBuffer.h
-	/// <summary>An enumeration whose values specify errors relating to <see cref="T:CoreMedia.CMSampleBuffer" />s.</summary>
+	/// <summary>An enumeration whose values specify errors relating to <see cref="CoreMedia.CMSampleBuffer" />s.</summary>
 	[MacCatalyst (13, 1)]
 	public enum CMSampleBufferError : int {
 		/// <summary>To be added.</summary>
@@ -354,7 +354,7 @@ namespace CoreMedia {
 	}
 
 	// untyped enum (used as OSStatus) -> CMSync.h
-	/// <summary>An enumeration whose values specify errors relating to <see cref="T:CoreMedia.CMClock" />s.</summary>
+	/// <summary>An enumeration whose values specify errors relating to <see cref="CoreMedia.CMClock" />s.</summary>
 	[MacCatalyst (13, 1)]
 	public enum CMClockError : int {
 		/// <summary>To be added.</summary>
@@ -370,7 +370,7 @@ namespace CoreMedia {
 	}
 
 	// untyped enum (used as OSStatus) -> CMSync.h
-	/// <summary>An enumeration whose values specify errors relating to <see cref="T:CoreMedia.CMTimebase" />s.</summary>
+	/// <summary>An enumeration whose values specify errors relating to <see cref="CoreMedia.CMTimebase" />s.</summary>
 	[MacCatalyst (13, 1)]
 	public enum CMTimebaseError : int {
 		/// <summary>To be added.</summary>
@@ -388,7 +388,7 @@ namespace CoreMedia {
 	}
 
 	// untyped enum (used as OSStatus) -> CMSync.h
-	/// <summary>An enumeration whose values specify errors returned by <see cref="M:CoreMedia.CMClockOrTimebase.GetRelativeRateAndAnchorTime(CoreMedia.CMClockOrTimebase,CoreMedia.CMClockOrTimebase,System.Double@,CoreMedia.CMTime@,CoreMedia.CMTime@)" />.</summary>
+	/// <summary>An enumeration whose values specify errors returned by <see cref="CoreMedia.CMClockOrTimebase.GetRelativeRateAndAnchorTime(CoreMedia.CMClockOrTimebase,CoreMedia.CMClockOrTimebase,ref System.Double,ref CoreMedia.CMTime,ref CoreMedia.CMTime)" />.</summary>
 	[MacCatalyst (13, 1)]
 	public enum CMSyncError : int {
 		/// <summary>To be added.</summary>

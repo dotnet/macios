@@ -19,7 +19,7 @@ using ObjCRuntime;
 namespace ImageIO {
 
 #if NET
-	/// <summary>A mutable container of metadata. (See <see cref="T:ImageIO.CGImageMetadata" />.)</summary>
+	/// <summary>A mutable container of metadata. (See <see cref="ImageIO.CGImageMetadata" />.)</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]

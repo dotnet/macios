@@ -15,7 +15,7 @@ using Foundation;
 using ObjCRuntime;
 
 namespace AddressBookUI {
-	/// <summary>Provides data for the <see cref="E:AddressBookUI.ABUnknownPersonViewController.PersonCreated" /> event.</summary>
+	/// <summary>Provides data for the <see cref="AddressBookUI.ABUnknownPersonViewController.PersonCreated" /> event.</summary>
 	///     <remarks>
 	///     </remarks>
 	[SupportedOSPlatform ("ios")]
@@ -77,7 +77,7 @@ namespace AddressBookUI {
 	partial class ABUnknownPersonViewController {
 
 		ABPerson? displayedPerson;
-		/// <summary>Gets or sets the <see cref="T:AddressBook.ABPerson" /> whose data is being displayed.</summary>
+		/// <summary>Gets or sets the <see cref="AddressBook.ABPerson" /> whose data is being displayed.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public ABPerson? DisplayedPerson {
@@ -92,7 +92,7 @@ namespace AddressBookUI {
 		}
 
 		ABAddressBook? addressBook;
-		/// <summary>Gets or sets the <see cref="T:AddressBook.ABAddressBook" /> to which the controller will save data.</summary>
+		/// <summary>Gets or sets the <see cref="AddressBook.ABAddressBook" /> to which the controller will save data.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public ABAddressBook? AddressBook {

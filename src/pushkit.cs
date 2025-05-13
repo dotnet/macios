@@ -8,7 +8,7 @@ using NativeHandle = System.IntPtr;
 #endif
 
 namespace PushKit {
-	/// <summary>Holds the <see cref="P:PushKit.PKPushCredentials.Token" /> that holds the user's credentials.</summary>
+	/// <summary>Holds the <see cref="PushKit.PKPushCredentials.Token" /> that holds the user's credentials.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/PushKit/Reference/PKPushCredentials_Class/index.html">Apple documentation for <c>PKPushCredentials</c></related>
 	[MacCatalyst (13, 1)]
@@ -102,11 +102,11 @@ namespace PushKit {
 		NSString FileProvider { get; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:PushKit.PKPushRegistryDelegate" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="PushKit.PKPushRegistryDelegate" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:PushKit.PKPushRegistryDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:PushKit.PKPushRegistryDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:PushKit.PKPushRegistryDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="PushKit.PKPushRegistryDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="PushKit.PKPushRegistryDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="PushKit.PKPushRegistryDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	interface IPKPushRegistryDelegate { }
 

@@ -18,7 +18,7 @@
 // This is taken from Xamarin.iOS's source code:
 //
 [Export ("initWithFrame:")]
-public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
+public UIView (CGRect frame) : base (NSObjectFlag.Empty)
 {
 // Invoke the init method now.
 	var initWithFrame = new Selector ("initWithFrame:").Handle;
@@ -38,26 +38,26 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           <para>
 	    This returns a thumbnail image representing the asset.
 	    The thumbnail returned will preserve the original aspect
-	    ration of the original image returned by the <see cref="T:AssetsLibrary.ALAssetRepresentation" />.<format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:AssetsLibrary.ALAssetRepresentation.GetImage()&amp;scope=Xamarin" title="M:AssetsLibrary.ALAssetRepresentation.GetImage()">M:AssetsLibrary.ALAssetRepresentation.GetImage()</a></format>.
+	    ration of the original image returned by the <see cref="AssetsLibrary.ALAssetRepresentation" />.<see cref="AssetsLibrary.ALAssetRepresentation.GetImage()" />.
 	    The image will be rendered in the correct orientation, so
 	    it is not necessary to apply any rotation on the returned value.
 
 	  </para>
           <para>
 	    This API is only available on iOS 5.  On previous version
-	    of the operating system you can obtain a square thumbnail by using the <see cref="P:AssetsLibrary.ALAsset.Thumbnail" />
+	    of the operating system you can obtain a square thumbnail by using the <see cref="AssetsLibrary.ALAsset.Thumbnail" />
 	    property.
 	  </para>
         </remarks>
       </Docs>
   <Docs DocId="M:AssetsLibrary.ALAsset.SetVideoAtPathAsync(Foundation.NSUrl)">
         <param name="videoPathURL">To be added.</param>
-        <summary>Modifies the <see cref="T:AssetsLibrary.ALAsset" /> to refer to the <paramref name="videoPathURL" />.</summary>
+        <summary>Modifies the <see cref="AssetsLibrary.ALAsset" /> to refer to the <paramref name="videoPathURL" />.</summary>
         <returns>
-          <para>A task that represents the asynchronous SetVideoAtPath operation.   The value of the TResult parameter is a <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Assets%20Library%20ALAssets%20Library%20Write%20Completion%20Delegate&amp;scope=Xamarin" title="T:AssetsLibrary.ALAssetsLibraryWriteCompletionDelegate">T:AssetsLibrary.ALAssetsLibraryWriteCompletionDelegate</a></format>.</para>
+          <para>A task that represents the asynchronous SetVideoAtPath operation. The value of the TResult parameter is a <see cref="NSUrl" />.</para>
         </returns>
         <remarks>
-          <para>Application developers should check the <see cref="P:AssetsLibrary.ALAsset.Editable" /> property prior to calling this method.</para>
+          <para>Application developers should check the <see cref="AssetsLibrary.ALAsset.Editable" /> property prior to calling this method.</para>
           <para copied="true">The SetVideoAtPathAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
           <para copied="true">To be added.</para>
         </remarks>

@@ -27,12 +27,12 @@ namespace Xamarin.Bundler {
 
 		public static bool Force { get; set; }
 
-		public static bool IsUnifiedFullXamMacFramework { get { return TargetFramework == TargetFramework.Xamarin_Mac_4_5_Full; } }
-		public static bool IsUnifiedFullSystemFramework { get { return TargetFramework == TargetFramework.Xamarin_Mac_4_5_System; } }
-		public static bool IsUnifiedMobile { get { return TargetFramework == TargetFramework.Xamarin_Mac_2_0_Mobile; } }
+		public static bool IsUnifiedFullXamMacFramework { get { return false; } }
+		public static bool IsUnifiedFullSystemFramework { get { return false; } }
+		public static bool IsUnifiedMobile { get { return false; } }
 
 #if MMP
-		// We know that Xamarin.Mac apps won't compile unless the developer is using Xcode 12+: https://github.com/xamarin/xamarin-macios/issues/11937, so just set that as the min Xcode version.
+		// We know that Xamarin.Mac apps won't compile unless the developer is using Xcode 12+: https://github.com/dotnet/macios/issues/11937, so just set that as the min Xcode version.
 		static Version min_xcode_version = new Version (12, 0);
 #else
 		static Version min_xcode_version = new Version (6, 0);
@@ -230,22 +230,11 @@ namespace Xamarin.Bundler {
 				throw ErrorHelper.CreateError (86, Errors.MX0086 /* A target framework (--target-framework) must be specified */);
 
 			var fx = target_framework;
-			switch (fx.Trim ().ToLowerInvariant ()) {
-			case "xammac":
-			case "mobile":
-			case "xamarin.mac":
-				targetFramework = TargetFramework.Xamarin_Mac_2_0_Mobile;
-				ErrorHelper.Warning (90, Errors.MX0090, /* The target framework '{0}' is deprecated. Use '{1}' instead. */ fx, targetFramework);
-				return;
-			default:
-				TargetFramework parsedFramework;
-				if (!TargetFramework.TryParse (fx, out parsedFramework))
-					throw ErrorHelper.CreateError (68, Errors.MX0068, fx);
+			TargetFramework parsedFramework;
+			if (!TargetFramework.TryParse (fx, out parsedFramework))
+				throw ErrorHelper.CreateError (68, Errors.MX0068, fx);
 
-				targetFramework = parsedFramework;
-
-				break;
-			}
+			targetFramework = parsedFramework;
 
 			bool show_0090 = false;
 #if MONOMAC
@@ -257,44 +246,6 @@ namespace Xamarin.Bundler {
 				// Detect Classic usage, and show an error.
 				if (App.References.Any ((v) => Path.GetFileName (v) == "XamMac.dll"))
 					throw ErrorHelper.CreateError (143, Errors.MM0143 /* Projects using the Classic API are not supported anymore. Please migrate the project to the Unified API. */);
-
-				if (targetFramework == TargetFramework.Net_2_0
-					|| targetFramework == TargetFramework.Net_3_0
-					|| targetFramework == TargetFramework.Net_3_5
-					|| targetFramework == TargetFramework.Net_4_0
-					|| targetFramework == TargetFramework.Net_4_5) {
-					// .NETFramework,v2.0 => Xamarin.Mac,Version=v4.5,Profile=Full
-					// .NETFramework,v3.0 => Xamarin.Mac,Version=v4.5,Profile=Full
-					// .NETFramework,v3.5 => Xamarin.Mac,Version=v4.5,Profile=Full
-					// .NETFramework,v4.0 => Xamarin.Mac,Version=v4.5,Profile=Full
-					// .NETFramework,v4.5 => Xamarin.Mac,Version=v4.5,Profile=Full
-					TargetFramework = TargetFramework.Xamarin_Mac_4_5_Full;
-				} else if (TargetFramework.Identifier == TargetFramework.Xamarin_Mac_2_0_Mobile.Identifier
-					&& TargetFramework.Version == TargetFramework.Xamarin_Mac_2_0_Mobile.Version) {
-					// At least once instance of a TargetFramework of Xamarin.Mac,v2.0,(null) was found already. Assume any v2.0 implies a desire for Modern.
-					TargetFramework = TargetFramework.Xamarin_Mac_2_0_Mobile;
-				} else if (TargetFramework.Identifier == TargetFramework.Xamarin_Mac_4_5_Full.Identifier
-						 && TargetFramework.Profile == TargetFramework.Xamarin_Mac_4_5_Full.Profile) {
-					// Xamarin.Mac,Version=vX.Y,Profile=Full => Xamarin.Mac,Version=v4.5,Profile=Full
-					TargetFramework = TargetFramework.Xamarin_Mac_4_5_Full;
-				} else if (TargetFramework.Identifier == TargetFramework.Xamarin_Mac_4_5_System.Identifier
-						 && TargetFramework.Profile == TargetFramework.Xamarin_Mac_4_5_System.Profile) {
-					// Xamarin.Mac,Version=vX.Y,Profile=System => Xamarin.Mac,Version=v4.5,Profile=System
-					TargetFramework = TargetFramework.Xamarin_Mac_4_5_System;
-				} else {
-					// This is a total hack. Instead of passing in an argument, we walk the references looking for
-					// the "right" Xamarin.Mac and assume you are doing something
-					foreach (var asm in App.References) {
-						if (asm.EndsWith ("reference/full/Xamarin.Mac.dll", StringComparison.Ordinal)) {
-							force45From40UnifiedSystemFull = TargetFramework == TargetFramework.Net_4_0;
-							TargetFramework = TargetFramework.Xamarin_Mac_4_5_System;
-							break;
-						} else if (asm.EndsWith ("mono/4.5/Xamarin.Mac.dll", StringComparison.Ordinal)) {
-							TargetFramework = TargetFramework.Xamarin_Mac_4_5_Full;
-							break;
-						}
-					}
-				}
 
 				show_0090 = true;
 			}
@@ -917,7 +868,7 @@ namespace Xamarin.Bundler {
 		static bool XcrunFind (Application app, ApplePlatform platform, bool is_simulator, string tool, out string path)
 		{
 			var env = new Dictionary<string, string> ();
-			// Unset XCODE_DEVELOPER_DIR_PATH. See https://github.com/xamarin/xamarin-macios/issues/3931.
+			// Unset XCODE_DEVELOPER_DIR_PATH. See https://github.com/dotnet/macios/issues/3931.
 			env.Add ("XCODE_DEVELOPER_DIR_PATH", null);
 			// Set DEVELOPER_DIR if we have it
 			if (!string.IsNullOrEmpty (DeveloperDirectory))
@@ -939,7 +890,7 @@ namespace Xamarin.Bundler {
 					args.Add (is_simulator ? "appletvsimulator" : "appletvos");
 					break;
 				default:
-					throw ErrorHelper.CreateError (71, Errors.MX0071 /* Unknown platform: {0}. This usually indicates a bug in {1}; please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new with a test case. */, platform.ToString (), app.ProductName);
+					throw ErrorHelper.CreateError (71, Errors.MX0071 /* Unknown platform: {0}. This usually indicates a bug in {1}; please file a bug report at https://github.com/dotnet/macios/issues/new with a test case. */, platform.ToString (), app.ProductName);
 				}
 			}
 			args.Add ("-f");

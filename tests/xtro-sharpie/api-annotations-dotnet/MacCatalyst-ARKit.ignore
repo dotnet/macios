@@ -4,7 +4,7 @@
 # "This framework ignores calls from Mac apps built with Mac Catalyst." (https://developer.apple.com/documentation/arkit/)
 #
 # If that changes, here's the start of the Mac Catalyst work at least:
-# https://github.com/xamarin/xamarin-macios/pull/14281
+# https://github.com/dotnet/macios/pull/14281
 #
 
 !missing-enum! ARAltitudeSource not bound

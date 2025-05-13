@@ -20,7 +20,7 @@ namespace CoreGraphics {
 		None,
 	}
 
-	/// <summary>Specifies various boxes for the <see cref="M:CoreGraphics.CGContextPDF.BeginPage(CoreGraphics.CGPDFPageInfo)" /> method.</summary>
+	/// <summary>Specifies various boxes for the <see cref="CoreGraphics.CGContextPDF.BeginPage(CoreGraphics.CGPDFPageInfo)" /> method.</summary>
 	[Partial]
 	interface CGPDFPageInfo {
 
@@ -45,7 +45,7 @@ namespace CoreGraphics {
 		IntPtr kCGPDFContextArtBox { get; }
 	}
 
-	/// <summary>Auxiliary parameters for constructing a <see cref="T:CoreGraphics.CGContextPDF" />.</summary>
+	/// <summary>Auxiliary parameters for constructing a <see cref="CoreGraphics.CGContextPDF" />.</summary>
 	[Partial]
 	interface CGPDFInfo {
 

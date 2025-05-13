@@ -28,7 +28,7 @@ namespace ObjCRuntime {
 		public BindingImplOptions Options { get; set; }
 	}
 
-	/// <summary>This enum is used by the <see cref="T:ObjCRuntime.BindingImplAttribute" /> type to provide information about binding code.</summary>
+	/// <summary>This enum is used by the <see cref="ObjCRuntime.BindingImplAttribute" /> type to provide information about binding code.</summary>
 	///     <remarks>
 	///     </remarks>
 	[Flags]

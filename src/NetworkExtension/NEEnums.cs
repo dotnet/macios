@@ -46,7 +46,7 @@ namespace NetworkExtension {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NEVpnIkeAuthenticationMethod : long {
-		/// <summary>In IKEv2, supports extended authentication if <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Network%20Extension%20NEVpn%20Protocol%20Ip%20Sec%20Extended%20Authentication&amp;scope=Xamarin" title="T:NetworkExtension.NEVpnProtocolIpSec.ExtendedAuthentication">T:NetworkExtension.NEVpnProtocolIpSec.ExtendedAuthentication</a></format> is <see langword="true" />.</summary>
+		/// <summary>In IKEv2, supports extended authentication if <see cref="NetworkExtension.NEVpnProtocolIpSec.ExtendedAuthentication" /> is <see langword="true" />.</summary>
 		None = 0,
 		/// <summary>A certificate and private key.</summary>
 		Certificate = 1,
@@ -54,7 +54,7 @@ namespace NetworkExtension {
 		SharedSecret = 2,
 	}
 
-	/// <summary>Enumerates the algorithms that can be used for <see cref="P:NetworkExtension.NEVpnIke2SecurityAssociationParameters.EncryptionAlgorithm" />.</summary>
+	/// <summary>Enumerates the algorithms that can be used for <see cref="NetworkExtension.NEVpnIke2SecurityAssociationParameters.EncryptionAlgorithm" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native ("NEVPNIKEv2EncryptionAlgorithm")]
@@ -80,7 +80,7 @@ namespace NetworkExtension {
 		ChaCha20Poly1305 = 7,
 	}
 
-	/// <summary>Enumerates the valid integrity algorithms for <see cref="P:NetworkExtension.NEVpnIke2SecurityAssociationParameters.IntegrityAlgorithm" />.</summary>
+	/// <summary>Enumerates the valid integrity algorithms for <see cref="NetworkExtension.NEVpnIke2SecurityAssociationParameters.IntegrityAlgorithm" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native ("NEVPNIKEv2IntegrityAlgorithm")]
@@ -155,7 +155,7 @@ namespace NetworkExtension {
 		Group32 = 32,
 	}
 
-	/// <summary>Enumerates the <see cref="P:NetworkExtension.NEOnDemandRule.Action" /> values of a <see cref="T:NetworkExtension.NEOnDemandRule" />.</summary>
+	/// <summary>Enumerates the <see cref="NetworkExtension.NEOnDemandRule.Action" /> values of a <see cref="NetworkExtension.NEOnDemandRule" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -221,7 +221,7 @@ namespace NetworkExtension {
 	}
 
 	// in Xcode7 SDK but marked as 8.0
-	/// <summary>Enumerates errors associated with <see cref="T:NetworkExtension.NEFilterManager" />.</summary>
+	/// <summary>Enumerates errors associated with <see cref="NetworkExtension.NEFilterManager" />.</summary>
 	[NoTV]
 	[MacCatalyst (13, 1)]
 	[ErrorDomain ("NEFilterErrorDomain")]
@@ -257,7 +257,7 @@ namespace NetworkExtension {
 		Failed = 3,
 	}
 
-	/// <summary>Enumerates <see cref="T:NetworkExtension.NEAppProxyFlow" /> error codes.</summary>
+	/// <summary>Enumerates <see cref="NetworkExtension.NEAppProxyFlow" /> error codes.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[ErrorDomain ("NEAppProxyErrorDomain")]

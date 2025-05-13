@@ -22,10 +22,10 @@ namespace UIKit {
 	public partial class UIView : IEnumerable {
 
 		/// <param name="view">The subview to add.</param>
-		///         <summary>This is an alias for <see cref="M:UIKit.UIView.AddSubview(UIKit.UIView)" />, but uses the Add pattern as it allows C# 3.0 constructs to add subviews after creating the object.</summary>
+		///         <summary>This is an alias for <see cref="UIKit.UIView.AddSubview(UIKit.UIView)" />, but uses the Add pattern as it allows C# 3.0 constructs to add subviews after creating the object.</summary>
 		///         <remarks>
 		///           <para>
-		///             This method is equivalent to <see cref="M:UIKit.UIView.AddSubview(UIKit.UIView)" /> and is present to enable C# 3.0 to add subviews at creation time.
+		///             This method is equivalent to <see cref="UIKit.UIView.AddSubview(UIKit.UIView)" /> and is present to enable C# 3.0 to add subviews at creation time.
 		///           </para>
 		///           <example>
 		///             <code lang="csharp lang-csharp"><![CDATA[
@@ -44,7 +44,7 @@ namespace UIKit {
 			AddSubview (view);
 		}
 
-		/// <param name="views">An array of zero or more <see cref="T:UIKit.UIView" />s.</param>
+		/// <param name="views">An array of zero or more <see cref="UIKit.UIView" />s.</param>
 		///         <summary>Convenience routine to add various views to a UIView.</summary>
 		///         <remarks>
 		///           <para>
@@ -126,8 +126,8 @@ namespace UIKit {
 
 		/// <summary>This event is raised when the animations will start.</summary>
 		/// <remarks>
-		///           <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
-		///           <para>Notice that these events are only fired as long as the application does not install its own animation delegate by calling <see cref="M:UIKit.UIView.SetAnimationDelegate(Foundation.NSObject)" />.</para>
+		///           <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
+		///           <para>Notice that these events are only fired as long as the application does not install its own animation delegate by calling <see cref="UIKit.UIView.SetAnimationDelegate(Foundation.NSObject)" />.</para>
 		///         </remarks>
 		public static event Action AnimationWillStart {
 			add {
@@ -140,8 +140,8 @@ namespace UIKit {
 
 		/// <summary>This event is raised when the animations will end.</summary>
 		/// <remarks>
-		///           <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
-		///           <para>Notice that these events are only fired as long as the application does not install its own animation delegate by calling <see cref="M:UIKit.UIView.SetAnimationDelegate(Foundation.NSObject)" />.</para>
+		///           <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
+		///           <para>Notice that these events are only fired as long as the application does not install its own animation delegate by calling <see cref="UIKit.UIView.SetAnimationDelegate(Foundation.NSObject)" />.</para>
 		///         </remarks>
 		public static event Action AnimationWillEnd {
 			add {
@@ -157,7 +157,7 @@ namespace UIKit {
 		///         <param name="completion">Code that is invoked when the animation completes.</param>
 		///         <summary>Animates the property changes that take place in the specified action and invokes a completion callback when the animation completes.</summary>
 		///         <remarks>
-		///           <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
+		///           <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
 		///           <para>
 		///             This uses the CurveEaseOut and TransitionNone flags for the animation.
 		///           </para>
@@ -185,7 +185,7 @@ namespace UIKit {
 		///         <param name="completion">Code that is invoked when the animation completes.</param>
 		///         <summary>Invokes animation changes to one or more views by specifying duration, delay, options, and a completion handler.</summary>
 		///         <remarks>
-		///           <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
+		///           <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
 		///           <para>This method initiates a set of animations that areto be performed on this view. The action indicated in the animations parameter contains the code for the animation of the properties of one or more views.</para>
 		///         </remarks>
 		[Advice ("Use the *Notify method that has 'UICompletionHandler completion' parameter, the 'bool' will tell you if the operation finished.")]
@@ -205,7 +205,7 @@ namespace UIKit {
 		///         <param name="completion">An action to be executed at the end of the animation.</param>
 		///         <summary>Specifies a transition animation on the specified collection view.</summary>
 		///         <remarks>
-		///           <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
+		///           <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
 		///         </remarks>
 		[Advice ("Use the *Notify method that has 'UICompletionHandler completion' parameter, the 'bool' will tell you if the operation finished.")]
 		public static void Transition (UIView fromView, UIView toView, double duration, UIViewAnimationOptions options, Action completion)
@@ -223,7 +223,7 @@ namespace UIKit {
 		///         <param name="completion">Action object for execution when the animation sequence completes.</param>
 		///         <summary>Specifies a transition animation on the specified collection view.</summary>
 		///         <remarks>
-		///           <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
+		///           <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
 		///         </remarks>
 		[Advice ("Use the *Notify method that has 'UICompletionHandler completion' parameter, the 'bool' will tell you if the operation finished.")]
 		public static void Transition (UIView withView, double duration, UIViewAnimationOptions options, Action animation, Action completion)
@@ -240,7 +240,7 @@ namespace UIKit {
 		///         <summary>Animates the property changes that take place in the specified <paramref name="animation" /> as an asynchronous operation.</summary>
 		///         <returns>Indicates whether the animation ran to completion or not.</returns>
 		///         <remarks>
-		///           <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
+		///           <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
 		///         </remarks>
 		public static Task<bool> AnimateAsync (double duration, Action animation)
 		{
@@ -248,10 +248,10 @@ namespace UIKit {
 		}
 
 		/// <param name="afterScreenUpdates">If <see langword="true" />, the capture occurs after screen updating has finished.</param>
-		///         <summary>Performs a screen-capture of the <see cref="T:UIKit.UIView" />.</summary>
+		///         <summary>Performs a screen-capture of the <see cref="UIKit.UIView" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>
-		///           <para>This method is slower than <see cref="M:UIKit.UIView.SnapshotView(System.Boolean)" />.</para>
+		///           <para>This method is slower than <see cref="UIKit.UIView.SnapshotView(System.Boolean)" />.</para>
 		///         </remarks>
 		public UIImage Capture (bool afterScreenUpdates = true)
 		{
@@ -273,7 +273,7 @@ namespace UIKit {
 		/// </summary>
 		/// <param name="traits">The traits to observe.</param>
 		/// <param name="handler">The callback to execute when any of the specified traits changes.</param>
-		/// <returns>A token that can be used to unregister the callback by calling <see cref="M:UnregisterForTraitChanges" />.</returns>
+		/// <returns>A token that can be used to unregister the callback by calling <see cref="UnregisterForTraitChanges" />.</returns>
 		public IUITraitChangeRegistration RegisterForTraitChanges (Type [] traits, Action<IUITraitEnvironment, UITraitCollection> handler)
 		{
 			return IUITraitChangeObservable._RegisterForTraitChanges (this, traits, handler);
@@ -284,7 +284,7 @@ namespace UIKit {
 		/// </summary>
 		/// <param name="traits">The traits to observe.</param>
 		/// <param name="handler">The callback to execute when any of the specified traits changes.</param>
-		/// <returns>A token that can be used to unregister the callback by calling <see cref="M:UnregisterForTraitChanges" />.</returns>
+		/// <returns>A token that can be used to unregister the callback by calling <see cref="UnregisterForTraitChanges" />.</returns>
 		public unsafe IUITraitChangeRegistration RegisterForTraitChanges (Action<IUITraitEnvironment, UITraitCollection> handler, params Type [] traits)
 		{
 			// Add an override with 'params', unfortunately this means reordering the parameters.
@@ -296,7 +296,7 @@ namespace UIKit {
 		/// </summary>
 		/// <typeparam name="T">The trait to observe.</typeparam>
 		/// <param name="handler">The callback to execute when any of the specified traits changes.</param>
-		/// <returns>A token that can be used to unregister the callback by calling <see cref="M:UnregisterForTraitChanges" />.</returns>
+		/// <returns>A token that can be used to unregister the callback by calling <see cref="UnregisterForTraitChanges" />.</returns>
 		public unsafe IUITraitChangeRegistration RegisterForTraitChanges<T> (Action<IUITraitEnvironment, UITraitCollection> handler)
 			where T : IUITraitDefinition
 		{
@@ -309,7 +309,7 @@ namespace UIKit {
 		/// <typeparam name="T1">A trait to observe</typeparam>
 		/// <typeparam name="T2">A trait to observe</typeparam>
 		/// <param name="handler">The callback to execute when any of the specified traits changes.</param>
-		/// <returns>A token that can be used to unregister the callback by calling <see cref="M:UnregisterForTraitChanges" />.</returns>
+		/// <returns>A token that can be used to unregister the callback by calling <see cref="UnregisterForTraitChanges" />.</returns>
 		public unsafe IUITraitChangeRegistration RegisterForTraitChanges<T1, T2> (Action<IUITraitEnvironment, UITraitCollection> handler)
 			where T1 : IUITraitDefinition
 			where T2 : IUITraitDefinition
@@ -324,7 +324,7 @@ namespace UIKit {
 		/// <typeparam name="T2">A trait to observe</typeparam>
 		/// <typeparam name="T3">A trait to observe</typeparam>
 		/// <param name="handler">The callback to execute when any of the specified traits changes.</param>
-		/// <returns>A token that can be used to unregister the callback by calling <see cref="M:UnregisterForTraitChanges" />.</returns>
+		/// <returns>A token that can be used to unregister the callback by calling <see cref="UnregisterForTraitChanges" />.</returns>
 		public unsafe IUITraitChangeRegistration RegisterForTraitChanges<T1, T2, T3> (Action<IUITraitEnvironment, UITraitCollection> handler)
 			where T1 : IUITraitDefinition
 			where T2 : IUITraitDefinition
@@ -341,7 +341,7 @@ namespace UIKit {
 		/// <typeparam name="T3">A trait to observe</typeparam>
 		/// <typeparam name="T4">A trait to observe</typeparam>
 		/// <param name="handler">The callback to execute when any of the specified traits changes.</param>
-		/// <returns>A token that can be used to unregister the callback by calling <see cref="M:UnregisterForTraitChanges" />.</returns>
+		/// <returns>A token that can be used to unregister the callback by calling <see cref="UnregisterForTraitChanges" />.</returns>
 		public unsafe IUITraitChangeRegistration RegisterForTraitChanges<T1, T2, T3, T4> (Action<IUITraitEnvironment, UITraitCollection> handler)
 			where T1 : IUITraitDefinition
 			where T2 : IUITraitDefinition
@@ -357,7 +357,7 @@ namespace UIKit {
 		/// <param name="traits">The traits to observe.</param>
 		/// <param name="target">The object whose specified selector will be called.</param>
 		/// <param name="action">The selector to call on the specified object.</param>
-		/// <returns>A token that can be used to unregister the callback by calling <see cref="M:UnregisterForTraitChanges" />.</returns>
+		/// <returns>A token that can be used to unregister the callback by calling <see cref="UnregisterForTraitChanges" />.</returns>
 		public IUITraitChangeRegistration RegisterForTraitChanges (Type [] traits, NSObject target, Selector action)
 		{
 			return IUITraitChangeObservable._RegisterForTraitChanges (this, traits, target, action);
@@ -368,7 +368,7 @@ namespace UIKit {
 		/// </summary>
 		/// <param name="traits">The traits to observe.</param>
 		/// <param name="action">The selector to call on the current object.</param>
-		/// <returns>A token that can be used to unregister the callback by calling <see cref="M:UnregisterForTraitChanges" />.</returns>
+		/// <returns>A token that can be used to unregister the callback by calling <see cref="UnregisterForTraitChanges" />.</returns>
 		public IUITraitChangeRegistration RegisterForTraitChanges (Type [] traits, Selector action)
 		{
 			return IUITraitChangeObservable._RegisterForTraitChanges (this, traits, action);

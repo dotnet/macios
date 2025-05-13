@@ -17,7 +17,7 @@ using Metal;
 
 namespace VideoToolbox {
 
-	/// <summary>A class that encapsulates keys necessary for compression sessions. Used by <see cref="T:VideoToolbox.VTCompressionProperties" /></summary>
+	/// <summary>A class that encapsulates keys necessary for compression sessions. Used by <see cref="VideoToolbox.VTCompressionProperties" /></summary>
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface VTCompressionPropertyKey {
@@ -819,7 +819,7 @@ namespace VideoToolbox {
 		Disable = 0,
 	}
 
-	/// <summary>A class that encapsulates keys necessary by <see cref="T:VideoToolbox.VTProfileLevel" />.</summary>
+	/// <summary>A class that encapsulates keys necessary by <see cref="VideoToolbox.VTProfileLevel" />.</summary>
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface VTProfileLevelKeys {
@@ -1173,7 +1173,7 @@ namespace VideoToolbox {
 		NSString H263_Profile3_Level45 { get; }
 	}
 
-	/// <summary>A class that encapsulates keys necessary by <see cref="T:VideoToolbox.VTH264EntropyMode" />.</summary>
+	/// <summary>A class that encapsulates keys necessary by <see cref="VideoToolbox.VTH264EntropyMode" />.</summary>
 	[Static]
 	[MacCatalyst (13, 1)]
 	interface VTH264EntropyModeKeys {
@@ -1226,7 +1226,7 @@ namespace VideoToolbox {
 		uint PreferredEncoderGpuRegistryId { get; set; }
 	}
 
-	/// <summary>A class that encapsulates keys necessary by <see cref="T:VideoToolbox.VTVideoEncoderSpecification" />.</summary>
+	/// <summary>A class that encapsulates keys necessary by <see cref="VideoToolbox.VTVideoEncoderSpecification" />.</summary>
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface VTVideoEncoderSpecificationKeys {
@@ -1274,7 +1274,7 @@ namespace VideoToolbox {
 		bool ForceKeyFrame { get; set; }
 	}
 
-	/// <summary>A class that encapsulates keys necessary by <see cref="T:VideoToolbox.VTEncodeFrameOptions" /></summary>
+	/// <summary>A class that encapsulates keys necessary by <see cref="VideoToolbox.VTEncodeFrameOptions" /></summary>
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface VTEncodeFrameOptionKey {
@@ -1327,7 +1327,7 @@ namespace VideoToolbox {
 		NSString ChromaRedMeanSquaredError { get; }
 	}
 
-	/// <summary>A class that encapsulates keys necessary for decompression sessions. Used by <see cref="T:VideoToolbox.VTDecompressionProperties" /></summary>
+	/// <summary>A class that encapsulates keys necessary for decompression sessions. Used by <see cref="VideoToolbox.VTDecompressionProperties" /></summary>
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface VTDecompressionPropertyKey {
@@ -1789,7 +1789,7 @@ namespace VideoToolbox {
 		NSNumber PreferredDecoderGpuRegistryId { get; }
 	}
 
-	/// <summary>A class that encapsulates keys necessary by <see cref="T:VideoToolbox.VTVideoDecoderSpecification" />.</summary>
+	/// <summary>A class that encapsulates keys necessary by <see cref="VideoToolbox.VTVideoDecoderSpecification" />.</summary>
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface VTVideoDecoderSpecificationKeys {
@@ -1824,7 +1824,7 @@ namespace VideoToolbox {
 		NSString PreferredDecoderGpuRegistryId { get; }
 	}
 
-	/// <summary>Strongly typed set of options used by <see cref="P:VideoToolbox.VTDecompressionProperties.ReducedResolutionDecode" />.</summary>
+	/// <summary>Strongly typed set of options used by <see cref="VideoToolbox.VTDecompressionProperties.ReducedResolutionDecode" />.</summary>
 	[MacCatalyst (13, 1)]
 	[StrongDictionary ("VTDecompressionResolutionKeys")]
 	interface VTDecompressionResolutionOptions {
@@ -1841,7 +1841,7 @@ namespace VideoToolbox {
 		float Height { get; set; }
 	}
 
-	/// <summary>A class that encapsulates keys necessary by <see cref="T:VideoToolbox.VTEncodeFrameOptions" />.</summary>
+	/// <summary>A class that encapsulates keys necessary by <see cref="VideoToolbox.VTEncodeFrameOptions" />.</summary>
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface VTDecompressionResolutionKeys {
@@ -1894,7 +1894,7 @@ namespace VideoToolbox {
 		NSString Documentation { get; set; }
 	}
 
-	/// <summary>A class that encapsulates keys necessary by <see cref="T:VideoToolbox.VTPropertyOptions" />.</summary>
+	/// <summary>A class that encapsulates keys necessary by <see cref="VideoToolbox.VTPropertyOptions" />.</summary>
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface VTPropertyKeys {
@@ -1941,7 +1941,7 @@ namespace VideoToolbox {
 		NSString DocumentationKey { get; }
 	}
 
-	/// <summary>A class that encapsulates keys necessary by <see cref="T:VideoToolbox.VTPropertyType" />.</summary>
+	/// <summary>A class that encapsulates keys necessary by <see cref="VideoToolbox.VTPropertyType" />.</summary>
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface VTPropertyTypeKeys {
@@ -1964,7 +1964,7 @@ namespace VideoToolbox {
 		NSString Number { get; }
 	}
 
-	/// <summary>A class that encapsulates keys necessary by <see cref="P:VideoToolbox.VTPropertyOptions.ReadWriteStatus" />.</summary>
+	/// <summary>A class that encapsulates keys necessary by <see cref="VideoToolbox.VTPropertyOptions.ReadWriteStatus" />.</summary>
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface VTPropertyReadWriteStatusKeys {
@@ -2042,11 +2042,11 @@ namespace VideoToolbox {
 		NSString IncludeStandardDefinitionDVEncoders { get; }
 
 		// VTVideoEncoder.cs should be updated when new constants are added here
-		// some are missing https://github.com/xamarin/xamarin-macios/issues/9904
+		// some are missing https://github.com/dotnet/macios/issues/9904
 	}
 
 	// VTMultiPassStorage.h
-	/// <summary>A class that encapsulates keys necessary by <see cref="T:VideoToolbox.VTMultiPassStorageCreationOptions" /></summary>
+	/// <summary>A class that encapsulates keys necessary by <see cref="VideoToolbox.VTMultiPassStorageCreationOptions" /></summary>
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface VTMultiPassStorageCreationOptionKeys {
@@ -2069,7 +2069,7 @@ namespace VideoToolbox {
 	}
 
 	// VTPixelTransferProperties are available in iOS 9 radar://22614931 https://trello.com/c/bTl6hRu9
-	/// <summary>Strongly typed set of options used by <see cref="P:VideoToolbox.VTDecompressionProperties.PixelTransferSettings" />.</summary>
+	/// <summary>Strongly typed set of options used by <see cref="VideoToolbox.VTDecompressionProperties.PixelTransferSettings" />.</summary>
 	[MacCatalyst (13, 1)]
 	[StrongDictionary ("VTPixelTransferPropertyKeys")]
 	interface VTPixelTransferProperties {
@@ -2101,7 +2101,7 @@ namespace VideoToolbox {
 	}
 
 	// VTPixelTransferProperties are available in iOS 9 radar://22614931 https://trello.com/c/bTl6hRu9
-	/// <summary>A class that encapsulates keys needed by <see cref="T:VideoToolbox.VTPixelTransferProperties" />.</summary>
+	/// <summary>A class that encapsulates keys needed by <see cref="VideoToolbox.VTPixelTransferProperties" />.</summary>
 	[MacCatalyst (13, 1)]
 	[Static]
 	[AdvancedAttribute]

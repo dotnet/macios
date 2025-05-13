@@ -106,7 +106,7 @@ namespace UIKit {
 			return !insets1.Equals (insets2);
 		}
 
-		/// <summary>The hash for this <see cref="T:UIKit.UIEdgeInsets" />.</summary>
+		/// <summary>The hash for this <see cref="UIKit.UIEdgeInsets" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		public override int GetHashCode ()
@@ -147,13 +147,11 @@ namespace UIKit {
 #endif
 	}
 
-#if NET
 	/// <summary>A range of single-precision floating point numbers.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct UIFloatRange : IEquatable<UIFloatRange> {
 
@@ -187,13 +185,13 @@ namespace UIKit {
 		// static extern bool UIFloatRangeIsEqualToRange (UIFloatRange range, UIFloatRange otherRange);
 
 		/// <param name="other">To be added.</param>
-		///         <summary>Whether two <see cref="T:UIKit.UIFloatRange" /> objects have equal values.</summary>
+		///         <summary>Whether two <see cref="UIKit.UIFloatRange" /> objects have equal values.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		public bool Equals (UIFloatRange other) => this.Minimum == other.Minimum && this.Maximum == other.Maximum;
 
 		/// <param name="other">To be added.</param>
-		///         <summary>Whether two <see cref="T:UIKit.UIFloatRange" /> objects have equal values.</summary>
+		///         <summary>Whether two <see cref="UIKit.UIFloatRange" /> objects have equal values.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		public override bool Equals (object other)
@@ -211,7 +209,7 @@ namespace UIKit {
 			return HashCode.Combine (Minimum, Maximum);
 		}
 
-		/// <summary>Gets a <see cref="T:UIKit.UIFloatRange" /> that has no magnitude.</summary>
+		/// <summary>Gets a <see cref="UIKit.UIFloatRange" /> that has no magnitude.</summary>
 		///         <remarks>To be added.</remarks>
 		[Field ("UIFloatRangeZero")] // fake (but helps testing and could also help documentation)
 		public static UIFloatRange Zero;
@@ -223,13 +221,8 @@ namespace UIKit {
 	}
 
 #if IOS || __MACCATALYST__
-#if NET
 	[SupportedOSPlatform ("ios15.0")]
 	[SupportedOSPlatform ("maccatalyst")]
-#else
-	[Introduced (PlatformName.iOS, 15,0)]
-	[Introduced (PlatformName.MacCatalyst, 15,0)]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct UIPointerAccessoryPosition {
 		public nfloat Offset;

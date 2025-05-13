@@ -15,10 +15,6 @@ using Foundation;
 using ObjCRuntime;
 using CoreText;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace UIKit {
 	/// <include file="../../docs/api/UIKit/UIFontFeature.xml" path="/Documentation/Docs[@DocId='T:UIKit.UIFontFeature']/*" />
 	public class UIFontFeature : INativeObject {
@@ -66,7 +62,9 @@ namespace UIKit {
 			case FontFeatureGroup.CursiveConnection:
 				fontFeatureValue = (CTFontFeatureCursiveConnection.Selector) n;
 				break;
+#pragma warning disable CA1422 // This call site is reachable on: 'ios' 12.2 and later, 'maccatalyst' 12.2 and later, 'macOS/OSX' 12.0 and later, 'tvos' 12.2 and later. 'FontFeatureGroup.LetterCase' is obsoleted on: 'ios' 6.0 and later, 'maccatalyst' all versions, 'macOS/OSX' 10.7 and later, 'tvos' all versions.
 			case FontFeatureGroup.LetterCase:
+#pragma warning restore CA1422
 				fontFeatureValue = (CTFontFeatureLetterCase.Selector) n;
 				break;
 			case FontFeatureGroup.VerticalSubstitution:
@@ -231,6 +229,14 @@ namespace UIKit {
 		///         <remarks>
 		/// 	  This creates a new instance of the UIFontFeature with the CoreText's CTFontFeatureLetterCase type using the <paramref name="featureSelector" /> as its parameter.
 		/// 	</remarks>
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("tvos")]
+		[ObsoletedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("ios")]
+		[ObsoletedOSPlatform ("tvos")]
+		[ObsoletedOSPlatform ("maccatalyst")]
 		public UIFontFeature (CTFontFeatureLetterCase.Selector featureSelector) : this (FontFeatureGroup.LetterCase, (int) featureSelector, featureSelector) { }
 		/// <param name="featureSelector">The value for this setting.</param>
 		///         <summary>Creates a new UIFontFeature that describes a CoreText CTFontFeatureVerticalSubstitutionConnection with the given value.</summary>

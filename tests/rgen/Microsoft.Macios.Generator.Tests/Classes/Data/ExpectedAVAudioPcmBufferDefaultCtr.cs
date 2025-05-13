@@ -20,7 +20,7 @@ namespace TestNamespace;
 public partial class AVAudioPcmBuffer
 {
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	static readonly NativeHandle class_ptr = Class.GetHandle ("AVAudioPCMBuffer");
+	static readonly global::ObjCRuntime.NativeHandle class_ptr = Class.GetHandle ("AVAudioPCMBuffer");
 
 	/// <summary>The Objective-C class handle for this class.</summary>
 	/// <value>The pointer to the Objective-C class.</value>
@@ -29,7 +29,7 @@ public partial class AVAudioPcmBuffer
 	///     This value contains the pointer to the Objective-C class.
 	///     It is similar to calling the managed <see cref=\"ObjCRuntime.Class.GetHandle(string)\" /> or the native <see href=\"https://developer.apple.com/documentation/objectivec/1418952-objc_getclass\">objc_getClass</see> method with the type name.
 	/// </remarks>
-	public override NativeHandle ClassHandle => class_ptr;
+	public override global::ObjCRuntime.NativeHandle ClassHandle => class_ptr;
 
 	/// <summary>Creates a new <see cref="AVAudioPcmBuffer" /> with default values.</summary>
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
@@ -102,6 +102,6 @@ public partial class AVAudioPcmBuffer
 	/// </remarks>
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable (EditorBrowsableState.Advanced)]
-	protected internal AVAudioPcmBuffer (NativeHandle handle) : base (handle) {}
+	protected internal AVAudioPcmBuffer (global::ObjCRuntime.NativeHandle handle) : base (handle) {}
 	// TODO: add binding code here
 }

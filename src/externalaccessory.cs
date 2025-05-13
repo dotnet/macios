@@ -116,11 +116,11 @@ namespace ExternalAccessory {
 
 	interface IEAAccessoryDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:ExternalAccessory.EAAccessoryDelegate" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="ExternalAccessory.EAAccessoryDelegate" />.</summary>
 	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:ExternalAccessory.EAAccessoryDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:ExternalAccessory.EAAccessoryDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:ExternalAccessory.EAAccessoryDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="ExternalAccessory.EAAccessoryDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="ExternalAccessory.EAAccessoryDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="ExternalAccessory.EAAccessoryDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
@@ -409,7 +409,7 @@ namespace ExternalAccessory {
 #endif
 	}
 
-	/// <summary>Delegate object for <see cref="T:ExternalAccessory.EAWiFiUnconfiguredAccessoryBrowser" />, providing events related to scanning, connecting, and configuring compatible accessories.</summary>
+	/// <summary>Delegate object for <see cref="ExternalAccessory.EAWiFiUnconfiguredAccessoryBrowser" />, providing events related to scanning, connecting, and configuring compatible accessories.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ExternalAccessory/Reference/EAWiFiUnconfiguredAccessoryBrowserDelegate_Protocol/index.html">Apple documentation for <c>EAWiFiUnconfiguredAccessoryBrowserDelegate</c></related>
 	[NoMac]

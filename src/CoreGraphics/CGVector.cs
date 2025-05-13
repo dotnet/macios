@@ -98,7 +98,7 @@ namespace CoreGraphics {
 		[DllImport (Constants.UIKitLibrary)]
 		extern static IntPtr NSStringFromCGVector (CGVector vector);
 
-		/// <summary>String representation of the vector, suitable to be passed later to <see cref="M:CoreGraphics.CGVector.FromString(System.String)" /> method.</summary>
+		/// <summary>String representation of the vector, suitable to be passed later to <see cref="CoreGraphics.CGVector.FromString(System.String)" /> method.</summary>
 		///         <returns>
 		///           <para />
 		///         </returns>
@@ -121,7 +121,7 @@ namespace CoreGraphics {
 		[DllImport (Constants.UIKitLibrary)]
 		extern static CGVector CGVectorFromString (IntPtr str);
 
-		/// <param name="s">String representation, created previously with either the <see cref="M:CoreGraphics.CGVector.ToString" /> method or serialized in the CGVector format.</param>
+		/// <param name="s">String representation, created previously with either the <see cref="CoreGraphics.CGVector.ToString" /> method or serialized in the CGVector format.</param>
 		///         <summary>Creates a CGVector from a stringified representation of the vector.</summary>
 		///         <returns>The CGVector represented by the string representation.</returns>
 		///         <remarks>

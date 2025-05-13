@@ -3,9 +3,9 @@
     <summary>Changes that ocurred to an object being observed by Key-Value-Observing</summary>
     <remarks>
       <para>This class exposes the various components that were changes in a Key-Value-Observed property.</para>
-      <para>These are merely accessors to the underlying NSDictionary that is provided to the <see cref="M:Foundation.NSObject.ObserveValue(Foundation.NSString,Foundation.NSObject,Foundation.NSDictionary,System.IntPtr)" /> method.</para>
-      <para>Instances of this class are provided to your callback methods that you provide to <see cref="M:Foundation.NSObject.AddObserver(Foundation.NSObject,System.String,Foundation.NSKeyValueObservingOptions,System.IntPtr)" />.</para>
-      <para>You can also create these objects if you have a dictionary that contains the keys from a key-value-observing change.   For example if you override the <see cref="M:Foundation.NSObject.ObserveValue(Foundation.NSString,Foundation.NSObject,Foundation.NSDictionary,System.IntPtr)" /> method.</para>
+      <para>These are merely accessors to the underlying NSDictionary that is provided to the <see cref="Foundation.NSObject.ObserveValue(Foundation.NSString,Foundation.NSObject,Foundation.NSDictionary,System.IntPtr)" /> method.</para>
+      <para>Instances of this class are provided to your callback methods that you provide to <see cref="Foundation.NSObject.AddObserver(Foundation.NSObject,System.String,Foundation.NSKeyValueObservingOptions,System.IntPtr)" />.</para>
+      <para>You can also create these objects if you have a dictionary that contains the keys from a key-value-observing change.   For example if you override the <see cref="Foundation.NSObject.ObserveValue(Foundation.NSString,Foundation.NSObject,Foundation.NSDictionary,System.IntPtr)" /> method.</para>
       <para />
       <example>
         <code lang="csharp lang-csharp"><![CDATA[class MyObserved : NSObject {

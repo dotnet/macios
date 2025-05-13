@@ -71,34 +71,6 @@ namespace UIKit {
 			}
 		}
 
-#if !NET && !__MACCATALYST__
-#if MONOMAC
-		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use the overload that takes 'nint glyphCount' instead.")]
-		[Deprecated (PlatformName.iOS, 13, 0, message: "Use the overload that takes 'nint glyphCount' instead.")]
-		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use the overload that takes 'nint glyphCount' instead.")]
-		public unsafe void ShowGlyphs (
-#else
-		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use the 'ShowGlyphs' overload that takes 'nint glyphCount' instead.")]
-		[Deprecated (PlatformName.iOS, 13, 0, message: "Use the 'ShowGlyphs' overload that takes 'nint glyphCount' instead.")]
-		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use the 'ShowGlyphs' overload that takes 'nint glyphCount' instead.")]
-		public unsafe void ShowCGGlyphs (
-#endif // MONOMAC
-			short [] /* const CGGlyph* = CGFontIndex* = unsigned short* */ glyphs,
-			CGPoint [] /* const CGPoint* */ positions,
-			nuint /* NSUInteger */ glyphCount,
-			UIFont font,
-			CGAffineTransform textMatrix,
-			NSDictionary attributes,
-			CGContext graphicsContext)
-		{
-			fixed (short* gl = glyphs) {
-				fixed (CGPoint* pos = positions) {
-					ShowGlyphs ((IntPtr) gl, (IntPtr) pos, glyphCount, font, textMatrix, attributes, graphicsContext);
-				}
-			}
-		}
-#endif // !NET
-
 		/// <summary>Renders <paramref name="glyphs" /> at <paramref name="positions" /> into <paramref name="graphicsContext" />.</summary>
 		/// <param name="glyphs">To be added.</param>
 		/// <param name="positions">To be added.</param>
@@ -107,15 +79,10 @@ namespace UIKit {
 		/// <param name="textMatrix">To be added.</param>
 		/// <param name="attributes">To be added.</param>
 		/// <param name="graphicsContext">To be added.</param>
-#if NET
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (13, 0)]
-		[iOS (13, 0)]
-#endif
 		public unsafe void ShowGlyphs (
 			short [] /* const CGGlyph* = CGFontIndex* = unsigned short* */ glyphs,
 			CGPoint [] /* const CGPoint* */ positions,
@@ -131,73 +98,6 @@ namespace UIKit {
 				}
 			}
 		}
-
-#if !NET && !MONOMAC
-		// TextContainerForGlyphAtIndex
-		[Obsolete ("Use 'GetTextContainer' instead.")]
-		public NSTextContainer TextContainerForGlyphAtIndex (nuint glyphIndex)
-		{
-			return GetTextContainer (glyphIndex);
-		}
-
-		[Obsolete ("Use 'GetTextContainer' instead.")]
-		public NSTextContainer TextContainerForGlyphAtIndex (nuint glyphIndex, ref NSRange effectiveGlyphRange)
-		{
-			return GetTextContainer (glyphIndex, out effectiveGlyphRange);
-		}
-
-		// LineFragmentRectForGlyphAtIndex
-		[Obsolete ("Use 'GetLineFragmentRect' instead.")]
-		public CGRect LineFragmentRectForGlyphAtIndex (nuint glyphIndex)
-		{
-			return GetLineFragmentRect (glyphIndex);
-		}
-
-		[Obsolete ("Use 'GetLineFragmentRect' instead.")]
-		public CGRect LineFragmentRectForGlyphAtIndex (nuint glyphIndex, ref NSRange effectiveGlyphRange)
-		{
-			return GetLineFragmentRect (glyphIndex, out effectiveGlyphRange);
-		}
-
-		// LineFragmentUsedRectForGlyphAtIndex
-		[Obsolete ("Use 'GetLineFragmentUsedRect' instead.")]
-		public CGRect LineFragmentUsedRectForGlyphAtIndex (nuint glyphIndex)
-		{
-			return GetLineFragmentUsedRect (glyphIndex);
-		}
-
-		[Obsolete ("Use 'GetLineFragmentUsedRect' instead.")]
-		public CGRect LineFragmentUsedRectForGlyphAtIndex (nuint glyphIndex, ref NSRange effectiveGlyphRange)
-		{
-			return GetLineFragmentUsedRect (glyphIndex, out effectiveGlyphRange);
-		}
-
-		// GlyphRangeForCharacterRange
-		[Obsolete ("Use 'GetGlyphRange' instead.")]
-		public NSRange GlyphRangeForCharacterRange (NSRange charRange)
-		{
-			return GetGlyphRange (charRange);
-		}
-
-		[Obsolete ("Use 'GetGlyphRange' instead.")]
-		public NSRange GlyphRangeForCharacterRange (NSRange charRange, ref NSRange actualCharRange)
-		{
-			return GetGlyphRange (charRange, out actualCharRange);
-		}
-
-		// CharacterRangeForGlyphRange
-		[Obsolete ("Use 'GetCharacterRange' instead.")]
-		public NSRange CharacterRangeForGlyphRange (NSRange charRange)
-		{
-			return GetCharacterRange (charRange);
-		}
-
-		[Obsolete ("Use 'GetCharacterRange' instead.")]
-		public NSRange CharacterRangeForGlyphRange (NSRange charRange, ref NSRange actualCharRange)
-		{
-			return GetCharacterRange (charRange, out actualCharRange);
-		}
-#endif // !NET && !MONOMAC
 
 		/// <param name="charIndex">To be added.</param>
 		/// <param name="alternatePosition">To be added.</param>

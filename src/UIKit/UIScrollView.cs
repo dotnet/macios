@@ -10,7 +10,7 @@
 using System;
 
 namespace UIKit {
-	/// <summary>Provides data for the <see cref="E:UIKit.UIScrollView.DraggingEnded" /> event.</summary>
+	/// <summary>Provides data for the <see cref="UIKit.UIScrollView.DraggingEnded" /> event.</summary>
 	///     <remarks>
 	///     </remarks>
 	public partial class DraggingEventArgs : EventArgs {

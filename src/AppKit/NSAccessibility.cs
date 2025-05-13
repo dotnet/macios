@@ -19,10 +19,6 @@ using ObjCRuntime;
 
 #nullable enable
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace AppKit {
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>

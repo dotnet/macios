@@ -45,7 +45,7 @@ namespace CoreSpotlight {
 
 	}
 
-	/// <summary>An author or a recipient stored in a <see cref="T:CoreSpotlight.CSSearchableItemAttributeSet" />.</summary>
+	/// <summary>An author or a recipient stored in a <see cref="CoreSpotlight.CSSearchableItemAttributeSet" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CoreSpotlight/Reference/CSPerson_Class/index.html">Apple documentation for <c>CSPerson</c></related>
 	[NoTV] // CS_TVOS_UNAVAILABLE
@@ -91,7 +91,7 @@ namespace CoreSpotlight {
 		///           <para>(More documentation for this node is coming)</para>
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
 		///         </value>
-		///         <remarks>Setting this property to the <see cref="P:Contacts.CNContact.Identifier" /> property for the contact enables direct lookup of the contact.</remarks>
+		///         <remarks>Setting this property to the <see cref="Contacts.CNContact.Identifier" /> property for the contact enables direct lookup of the contact.</remarks>
 		[NullAllowed]
 		[Export ("contactIdentifier")]
 		string ContactIdentifier { get; set; }
@@ -99,7 +99,7 @@ namespace CoreSpotlight {
 
 	/// <summary>A search index used by Spotlight.</summary>
 	///     <remarks>
-	///       <para>Typically, developers should use <see cref="P:CoreSpotlight.CSSearchableIndex.DefaultSearchableIndex" /> to index their application data.</para>
+	///       <para>Typically, developers should use <see cref="CoreSpotlight.CSSearchableIndex.DefaultSearchableIndex" /> to index their application data.</para>
 	///     </remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CoreSpotlight/Reference/CSSearchableIndex_Class/index.html">Apple documentation for <c>CSSearchableIndex</c></related>
 	[NoTV] // CS_TVOS_UNAVAILABLE
@@ -233,12 +233,12 @@ namespace CoreSpotlight {
 		void FetchData (string bundleIdentifier, string itemIdentifier, UTType contentType, Action<NSData, NSError> completionHandler);
 	}
 
-	/// <summary>Completion handler used in <see cref="M:CoreSpotlight.CSSearchableIndex_CSOptionalBatchingExtension.FetchLastClientState(CoreSpotlight.CSSearchableIndex,CoreSpotlight.CSSearchableIndexFetchHandler)" />.</summary>
+	/// <summary>Completion handler used in <see cref="CoreSpotlight.CSSearchableIndex_CSOptionalBatchingExtension.FetchLastClientState(CoreSpotlight.CSSearchableIndex,CoreSpotlight.CSSearchableIndexFetchHandler)" />.</summary>
 	delegate void CSSearchableIndexFetchHandler (NSData clientState, NSError error);
 
 	delegate void CSSearchableIndexEndIndexHandler ([NullAllowed] NSError error);
 
-	/// <summary>Extension methods for <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:CoreServices.CSSearchableIndex&amp;scope=Xamarin" title="T:CoreServices.CSSearchableIndex">T:CoreServices.CSSearchableIndex</a></format>.</summary>
+	/// <summary>Extension methods for <see cref="CoreServices.CSSearchableIndex" />.</summary>
 	[NoTV] // CS_TVOS_UNAVAILABLE
 	[MacCatalyst (13, 1)]
 	[Category]
@@ -271,11 +271,11 @@ namespace CoreSpotlight {
 		void EndIndexBatch ([NullAllowed] NSData expectedClientState, NSData newClientState, [NullAllowed] CSSearchableIndexEndIndexHandler completionHandler);
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:CoreSpotlight.CSSearchableIndexDelegate" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="CoreSpotlight.CSSearchableIndexDelegate" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:CoreSpotlight.CSSearchableIndexDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:CoreSpotlight.CSSearchableIndexDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:CoreSpotlight.CSSearchableIndexDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="CoreSpotlight.CSSearchableIndexDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="CoreSpotlight.CSSearchableIndexDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="CoreSpotlight.CSSearchableIndexDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	interface ICSSearchableIndexDelegate { }
 
@@ -357,7 +357,7 @@ namespace CoreSpotlight {
 
 	delegate void CSSearchableIndexDelegateGetSearchableItemsHandler (CSSearchableItem [] items);
 
-	/// <summary>A uniquely identifiable, searchable object in a <see cref="T:CoreSpotlight.CSSearchableIndex" />.</summary>
+	/// <summary>A uniquely identifiable, searchable object in a <see cref="CoreSpotlight.CSSearchableIndex" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CoreSpotlight/Reference/CSSearchableItem_Class/index.html">Apple documentation for <c>CSSearchableItem</c></related>
 	[NoTV] // CS_TVOS_UNAVAILABLE
@@ -1887,7 +1887,7 @@ namespace CoreSpotlight {
 		[Export ("textContent")]
 		string TextContent { get; set; }
 
-		/// <summary>Gets or sets an array of <see cref="T:CoreSpotlight.CSPerson" /> objects that represent the authors of a message.</summary>
+		/// <summary>Gets or sets an array of <see cref="CoreSpotlight.CSPerson" /> objects that represent the authors of a message.</summary>
 		///         <value>
 		///           <para>(More documentation for this node is coming)</para>
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
@@ -1897,7 +1897,7 @@ namespace CoreSpotlight {
 		[Export ("authors", ArgumentSemantic.Copy)]
 		CSPerson [] Authors { get; set; }
 
-		/// <summary>Gets or sets an array of <see cref="T:CoreSpotlight.CSPerson" /> objects that represent the recipients on the To: line of an email.</summary>
+		/// <summary>Gets or sets an array of <see cref="CoreSpotlight.CSPerson" /> objects that represent the recipients on the To: line of an email.</summary>
 		///         <value>
 		///           <para>(More documentation for this node is coming)</para>
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
@@ -1907,7 +1907,7 @@ namespace CoreSpotlight {
 		[Export ("primaryRecipients", ArgumentSemantic.Copy)]
 		CSPerson [] PrimaryRecipients { get; set; }
 
-		/// <summary>Gets or sets an array of <see cref="T:CoreSpotlight.CSPerson" /> objects that comprise the recipients on the Cc: field.</summary>
+		/// <summary>Gets or sets an array of <see cref="CoreSpotlight.CSPerson" /> objects that comprise the recipients on the Cc: field.</summary>
 		///         <value>
 		///           <para>(More documentation for this node is coming)</para>
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
@@ -1917,7 +1917,7 @@ namespace CoreSpotlight {
 		[Export ("additionalRecipients", ArgumentSemantic.Copy)]
 		CSPerson [] AdditionalRecipients { get; set; }
 
-		/// <summary>Gets or sets an array of <see cref="T:CoreSpotlight.CSPerson" /> objects that represent the recipients on the Bcc: line of an email.</summary>
+		/// <summary>Gets or sets an array of <see cref="CoreSpotlight.CSPerson" /> objects that represent the recipients on the Bcc: line of an email.</summary>
 		///         <value>
 		///           <para>(More documentation for this node is coming)</para>
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
@@ -2521,7 +2521,7 @@ namespace CoreSpotlight {
 	interface CSSearchQuery {
 		/// <param name="queryString">To be added.</param>
 		/// <param name="attributes">
-		///           <para>A list of strings from <see cref="T:CoreSpotlight.CSSearchableItemAttributeSet" /> to match.</para>
+		///           <para>A list of strings from <see cref="CoreSpotlight.CSSearchableItemAttributeSet" /> to match.</para>
 		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
 		///         </param>
 		/// <summary>Creates a new search query object for the specified query string and attributes.</summary>
@@ -2580,7 +2580,7 @@ namespace CoreSpotlight {
 		[Export ("start")]
 		void Start ();
 
-		/// <summary>Cancels the current search and calls <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Spotlight%20Completion%20Handler&amp;scope=Xamarin" title="P:CoreSpotlight.CompletionHandler">P:CoreSpotlight.CompletionHandler</a></format>, if present, with <see cref="F:CoreSpotlight.CSSearchQueryErrorCode.Cancelled" />.</summary>
+		/// <summary>Cancels the current search and calls <see cref="CoreSpotlight.CompletionHandler" />, if present, with <see cref="CoreSpotlight.CSSearchQueryErrorCode.Cancelled" />.</summary>
 		///         <remarks>To be added.</remarks>
 		[Export ("cancel")]
 		void Cancel ();

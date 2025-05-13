@@ -2,7 +2,7 @@
   <Docs DocId="T:MapKit.MKDirections">
     <summary>An Apple-provided route to a destination.</summary>
     <remarks>
-      <para>Application developers should be aware that sending too many routing requests from the same device may lead to a throttling error (see <see cref="F:MapKit.MKErrorCode.LoadingThrottled" />).</para>
+      <para>Application developers should be aware that sending too many routing requests from the same device may lead to a throttling error (see <see cref="MapKit.MKErrorCode.LoadingThrottled" />).</para>
       <para>To request routing, application developers must set the <c>MKDirectionsApplicationSupportedModes</c> key in the application's <c>info.plist</c> file. The following example shows an automobile routing request:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[

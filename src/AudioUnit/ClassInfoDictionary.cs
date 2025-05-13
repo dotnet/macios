@@ -37,7 +37,7 @@ using System.Runtime.Versioning;
 
 namespace AudioUnit {
 #if NET
-	/// <summary>Holds key-value pairs on class information. Used with <see cref="M:AudioUnit.AudioUnit.SetClassInfo(AudioUnit.ClassInfoDictionary,AudioUnit.AudioUnitScopeType,System.UInt32)" /> and <see cref="M:AudioUnit.AudioUnit.GetClassInfo(AudioUnit.AudioUnitScopeType,System.UInt32)" />.</summary>
+	/// <summary>Holds key-value pairs on class information. Used with <see cref="AudioUnit.SetClassInfo(ClassInfoDictionary,AudioUnitScopeType,System.UInt32)" /> and <see cref="AudioUnit.GetClassInfo(AudioUnitScopeType,System.UInt32)" />.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]

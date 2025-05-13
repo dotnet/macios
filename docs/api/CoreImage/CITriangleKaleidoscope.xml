@@ -1,6 +1,6 @@
 <Documentation>
   <Docs DocId="T:CoreImage.CITriangleKaleidoscope">
-    <summary>A <see cref="T:CoreImage.CIFilter" /> that creates a kaleidoscopic effect.</summary>
+    <summary>A <see cref="CoreImage.CIFilter" /> that creates a kaleidoscopic effect.</summary>
     <remarks>
       <para>The following example shows this filter in use</para>
       <example>

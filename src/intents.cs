@@ -43,7 +43,7 @@ namespace Intents {
 	interface NSUnitMass : NSUnit { }
 	interface NSUnitPower : NSUnit { }
 
-	/// <summary>Enumerates the results of an <see cref="T:Intents.INBookRestaurantReservationIntent" />.</summary>
+	/// <summary>Enumerates the results of an <see cref="Intents.INBookRestaurantReservationIntent" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Unavailable (PlatformName.MacOSX)]
 	[MacCatalyst (13, 1)]
@@ -105,7 +105,7 @@ namespace Intents {
 		OnHold,
 	}
 
-	/// <summary>Enumerates results codes for the <see cref="T:Intents.INCancelWorkoutIntent" />.</summary>
+	/// <summary>Enumerates results codes for the <see cref="Intents.INCancelWorkoutIntent" />.</summary>
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
 	[MacCatalyst (13, 1)]
@@ -249,7 +249,7 @@ namespace Intents {
 		None,
 	}
 
-	/// <summary>Enumerates results codes for the <see cref="T:Intents.INEndWorkoutIntent" />.</summary>
+	/// <summary>Enumerates results codes for the <see cref="Intents.INEndWorkoutIntent" />.</summary>
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
 	[MacCatalyst (13, 1)]
@@ -279,7 +279,7 @@ namespace Intents {
 		Success,
 	}
 
-	/// <summary>Enumerates results codes for the <see cref="T:Intents.INGetAvailableRestaurantReservationBookingDefaultsIntent" />.</summary>
+	/// <summary>Enumerates results codes for the <see cref="Intents.INGetAvailableRestaurantReservationBookingDefaultsIntent" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Unavailable (PlatformName.MacOSX)]
 	[MacCatalyst (13, 1)]
@@ -293,7 +293,7 @@ namespace Intents {
 		Unspecified,
 	}
 
-	/// <summary>Enumerates results codes for the <see cref="T:Intents.INGetAvailableRestaurantReservationBookingsIntent" />.</summary>
+	/// <summary>Enumerates results codes for the <see cref="Intents.INGetAvailableRestaurantReservationBookingsIntent" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Unavailable (PlatformName.MacOSX)]
 	[MacCatalyst (13, 1)]
@@ -309,7 +309,7 @@ namespace Intents {
 		FailureRequestUnspecified,
 	}
 
-	/// <summary>Enumerates results codes for the <see cref="T:Intents.INGetRestaurantGuestIntent" />.</summary>
+	/// <summary>Enumerates results codes for the <see cref="Intents.INGetRestaurantGuestIntent" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Unavailable (PlatformName.MacOSX)]
 	[MacCatalyst (13, 1)]
@@ -321,7 +321,7 @@ namespace Intents {
 		Failure,
 	}
 
-	/// <summary>Enumerates results codes for the <see cref="T:Intents.INGetRideStatusIntent" />.</summary>
+	/// <summary>Enumerates results codes for the <see cref="Intents.INGetRideStatusIntent" />.</summary>
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
 	[MacCatalyst (13, 1)]
@@ -347,7 +347,7 @@ namespace Intents {
 		FailureRequiringAppLaunchServiceTemporarilyUnavailable,
 	}
 
-	/// <summary>Enumerates results codes for the <see cref="T:Intents.INGetUserCurrentRestaurantReservationBookingsIntent" />.</summary>
+	/// <summary>Enumerates results codes for the <see cref="Intents.INGetUserCurrentRestaurantReservationBookingsIntent" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Unavailable (PlatformName.MacOSX)]
 	[MacCatalyst (13, 1)]
@@ -475,7 +475,7 @@ namespace Intents {
 		Incoming,
 	}
 
-	/// <summary>Enumerates results codes for the <see cref="T:Intents.INListRideOptionsIntent" />.</summary>
+	/// <summary>Enumerates results codes for the <see cref="Intents.INListRideOptionsIntent" />.</summary>
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
 	[MacCatalyst (13, 1)]
@@ -551,7 +551,7 @@ namespace Intents {
 		Played = (1UL << 4),
 	}
 
-	/// <summary>Enumerates results codes for the <see cref="T:Intents.INPauseWorkoutIntent" />.</summary>
+	/// <summary>Enumerates results codes for the <see cref="Intents.INPauseWorkoutIntent" />.</summary>
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
 	[MacCatalyst (13, 1)]
@@ -626,7 +626,7 @@ namespace Intents {
 		Unpaid,
 	}
 
-	/// <summary>Enumerates the source of the data for a <see cref="T:Intents.INPerson" /> (see <see cref="P:Intents.INPerson.SuggestionType" />).</summary>
+	/// <summary>Enumerates the source of the data for a <see cref="Intents.INPerson" /> (see <see cref="Intents.INPerson.SuggestionType" />).</summary>
 	[NoTV]
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -772,7 +772,7 @@ namespace Intents {
 		Highest,
 	}
 
-	/// <summary>Enumerates results codes for the <see cref="T:Intents.INRequestPaymentIntent" />.</summary>
+	/// <summary>Enumerates results codes for the <see cref="Intents.INRequestPaymentIntent" />.</summary>
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
 	[MacCatalyst (13, 1)]
@@ -810,7 +810,7 @@ namespace Intents {
 		FailureTermsAndConditionsAcceptanceRequired,
 	}
 
-	/// <summary>Enumerates results codes for the <see cref="T:Intents.INRequestRideIntent" />.</summary>
+	/// <summary>Enumerates results codes for the <see cref="Intents.INRequestRideIntent" />.</summary>
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
 	[MacCatalyst (13, 1)]
@@ -857,7 +857,7 @@ namespace Intents {
 		Denied,
 	}
 
-	/// <summary>Enumerates results codes for the <see cref="T:Intents.INResumeWorkoutIntent" />.</summary>
+	/// <summary>Enumerates results codes for the <see cref="Intents.INResumeWorkoutIntent" />.</summary>
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
 	[MacCatalyst (13, 1)]
@@ -895,7 +895,7 @@ namespace Intents {
 	public enum INRidePhase : long {
 		/// <summary>The status of the ride is not known.</summary>
 		Unknown = 0,
-		/// <summary>The ride request has been received but is not yet <see cref="F:Intents.INRidePhase.Confirmed" />.</summary>
+		/// <summary>The ride request has been received but is not yet <see cref="Intents.INRidePhase.Confirmed" />.</summary>
 		Received,
 		/// <summary>The ride is accepted and confirmed.</summary>
 		Confirmed,
@@ -909,7 +909,7 @@ namespace Intents {
 		Pickup,
 	}
 
-	/// <summary>Enumerates results codes for the <see cref="T:Intents.INSaveProfileInCarIntent" />.</summary>
+	/// <summary>Enumerates results codes for the <see cref="Intents.INSaveProfileInCarIntent" />.</summary>
 	[Deprecated (PlatformName.iOS, 15, 0)]
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
@@ -931,7 +931,7 @@ namespace Intents {
 		FailureRequiringAppLaunch,
 	}
 
-	/// <summary>Enumerates results codes for the <see cref="T:Intents.INSearchCallHistoryIntent" />.</summary>
+	/// <summary>Enumerates results codes for the <see cref="Intents.INSearchCallHistoryIntent" />.</summary>
 	[NoMac]
 	[Deprecated (PlatformName.iOS, 15, 0)]
 	[NoTV]
@@ -960,7 +960,7 @@ namespace Intents {
 		Success,
 	}
 
-	/// <summary>Enumerates results codes for the <see cref="T:Intents.INSearchForMessagesIntent" />.</summary>
+	/// <summary>Enumerates results codes for the <see cref="Intents.INSearchForMessagesIntent" />.</summary>
 	[NoMac]
 	[NoTV]
 	[MacCatalyst (13, 1)]
@@ -987,7 +987,7 @@ namespace Intents {
 		FailureRequiringInAppAuthentication,
 	}
 
-	/// <summary>Enumerates results codes for the <see cref="T:Intents.INSearchForPhotosIntent" />.</summary>
+	/// <summary>Enumerates results codes for the <see cref="Intents.INSearchForPhotosIntent" />.</summary>
 	[Deprecated (PlatformName.iOS, 15, 0)]
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
@@ -1010,7 +1010,7 @@ namespace Intents {
 		FailureAppConfigurationRequired,
 	}
 
-	/// <summary>Enumerates results codes for the <see cref="T:Intents.INSendMessageIntentResponse" />.</summary>
+	/// <summary>Enumerates results codes for the <see cref="Intents.INSendMessageIntentResponse" />.</summary>
 	[NoTV]
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -1032,7 +1032,7 @@ namespace Intents {
 		FailureRequiringInAppAuthentication,
 	}
 
-	/// <summary>Enumerates results codes for the <see cref="T:Intents.INSendPaymentIntent" />.</summary>
+	/// <summary>Enumerates results codes for the <see cref="Intents.INSendPaymentIntent" />.</summary>
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
 	[MacCatalyst (13, 1)]
@@ -1070,7 +1070,7 @@ namespace Intents {
 		FailureTermsAndConditionsAcceptanceRequired,
 	}
 
-	/// <summary>Enumerates results codes for the <see cref="T:Intents.INSetAudioSourceInCarIntent" />.</summary>
+	/// <summary>Enumerates results codes for the <see cref="Intents.INSetAudioSourceInCarIntent" />.</summary>
 	[Deprecated (PlatformName.iOS, 15, 0)]
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
@@ -1092,7 +1092,7 @@ namespace Intents {
 		FailureRequiringAppLaunch,
 	}
 
-	/// <summary>Enumerates results codes for the <see cref="T:Intents.INSetClimateSettingsInCarIntent" />.</summary>
+	/// <summary>Enumerates results codes for the <see cref="Intents.INSetClimateSettingsInCarIntent" />.</summary>
 	[Deprecated (PlatformName.iOS, 15, 0)]
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
@@ -1114,7 +1114,7 @@ namespace Intents {
 		FailureRequiringAppLaunch,
 	}
 
-	/// <summary>Enumerates results codes for the <see cref="T:Intents.INSetDefrosterSettingsInCarIntentResponseCode" />.</summary>
+	/// <summary>Enumerates results codes for the <see cref="Intents.INSetDefrosterSettingsInCarIntentResponseCode" />.</summary>
 	[Deprecated (PlatformName.iOS, 15, 0)]
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
@@ -1136,7 +1136,7 @@ namespace Intents {
 		FailureRequiringAppLaunch,
 	}
 
-	/// <summary>Enumerates results codes for the <see cref="T:Intents.INSetMessageAttributeIntent" />.</summary>
+	/// <summary>Enumerates results codes for the <see cref="Intents.INSetMessageAttributeIntent" />.</summary>
 	[NoMac]
 	[NoTV]
 	[MacCatalyst (13, 1)]
@@ -1160,7 +1160,7 @@ namespace Intents {
 		FailureMessageAttributeNotSet,
 	}
 
-	/// <summary>Enumerates results codes for the <see cref="T:Intents.INSetProfileInCarIntent" />.</summary>
+	/// <summary>Enumerates results codes for the <see cref="Intents.INSetProfileInCarIntent" />.</summary>
 	[Deprecated (PlatformName.iOS, 15, 0)]
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
@@ -1182,7 +1182,7 @@ namespace Intents {
 		FailureRequiringAppLaunch,
 	}
 
-	/// <summary>Enumerates results codes for the <see cref="T:Intents.INSetRadioStationIntent" />.</summary>
+	/// <summary>Enumerates results codes for the <see cref="Intents.INSetRadioStationIntent" />.</summary>
 	[Deprecated (PlatformName.iOS, 15, 0)]
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
@@ -1206,7 +1206,7 @@ namespace Intents {
 		FailureNotSubscribed,
 	}
 
-	/// <summary>Enumerates results codes for the <see cref="T:Intents.INSetSeatSettingsInCarIntent" />.</summary>
+	/// <summary>Enumerates results codes for the <see cref="Intents.INSetSeatSettingsInCarIntent" />.</summary>
 	[Deprecated (PlatformName.iOS, 15, 0)]
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
@@ -1244,7 +1244,7 @@ namespace Intents {
 		Authorized,
 	}
 
-	/// <summary>Enumerates results codes for the <see cref="T:Intents.INStartAudioCallIntent" />.</summary>
+	/// <summary>Enumerates results codes for the <see cref="Intents.INStartAudioCallIntent" />.</summary>
 	[NoMac]
 	[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'INStartCallIntentResponseCode' instead.")]
 	[NoTV]
@@ -1276,7 +1276,7 @@ namespace Intents {
 		FailureNoValidNumber,
 	}
 
-	/// <summary>Enumerates results codes for the <see cref="T:Intents.INStartPhotoPlaybackIntent" />.</summary>
+	/// <summary>Enumerates results codes for the <see cref="Intents.INStartPhotoPlaybackIntent" />.</summary>
 	[Deprecated (PlatformName.iOS, 15, 0)]
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
@@ -1299,7 +1299,7 @@ namespace Intents {
 		FailureAppConfigurationRequired,
 	}
 
-	/// <summary>Enumerates results codes for the <see cref="T:Intents.INStartVideoCallIntent" />.</summary>
+	/// <summary>Enumerates results codes for the <see cref="Intents.INStartVideoCallIntent" />.</summary>
 	[NoMac]
 	[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'INStartCallIntentResponseCode' instead.")]
 	[NoTV]
@@ -1331,7 +1331,7 @@ namespace Intents {
 		FailureInvalidNumber,
 	}
 
-	/// <summary>Enumerates results codes for the <see cref="T:Intents.INStartWorkoutIntent" />.</summary>
+	/// <summary>Enumerates results codes for the <see cref="Intents.INStartWorkoutIntent" />.</summary>
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
 	[MacCatalyst (13, 1)]
@@ -1361,7 +1361,7 @@ namespace Intents {
 		Success = 8,
 	}
 
-	/// <summary>Enumerates the kind of thing a <see cref="T:Intents.INVocabulary" /> string represents.</summary>
+	/// <summary>Enumerates the kind of thing a <see cref="Intents.INVocabulary" /> string represents.</summary>
 	/// <remarks>To be added.</remarks>
 	[Unavailable (PlatformName.MacOSX)]
 	[TV (14, 0)]
@@ -1456,7 +1456,7 @@ namespace Intents {
 		Indoor,
 	}
 
-	/// <summary>Enumerates the types of values that are associated with a <see cref="T:Intents.INPersonHandle" />.</summary>
+	/// <summary>Enumerates the types of values that are associated with a <see cref="Intents.INPersonHandle" />.</summary>
 	[NoTV]
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -1493,7 +1493,7 @@ namespace Intents {
 		Saving,
 	}
 
-	/// <summary>Enumerates the results of an <see cref="T:Intents.INActivateCarSignalIntent" />.</summary>
+	/// <summary>Enumerates the results of an <see cref="Intents.INActivateCarSignalIntent" />.</summary>
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
 	[MacCatalyst (13, 1)]
@@ -1607,7 +1607,7 @@ namespace Intents {
 		Visible = (1 << 1),
 	}
 
-	/// <summary>Enumerates the results of an <see cref="T:Intents.INGetCarLockStatusIntent" />.</summary>
+	/// <summary>Enumerates the results of an <see cref="Intents.INGetCarLockStatusIntent" />.</summary>
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
 	[MacCatalyst (13, 1)]
@@ -1627,7 +1627,7 @@ namespace Intents {
 		FailureRequiringAppLaunch,
 	}
 
-	/// <summary>Enumerates the results of an <see cref="T:Intents.INGetCarPowerLevelStatusIntent" />.</summary>
+	/// <summary>Enumerates the results of an <see cref="Intents.INGetCarPowerLevelStatusIntent" />.</summary>
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
 	[MacCatalyst (13, 1)]
@@ -1647,7 +1647,7 @@ namespace Intents {
 		FailureRequiringAppLaunch,
 	}
 
-	/// <summary>Enumerates the results of an <see cref="T:Intents.INPayBillIntent" />.</summary>
+	/// <summary>Enumerates the results of an <see cref="Intents.INPayBillIntent" />.</summary>
 	[Deprecated (PlatformName.iOS, 15, 0)]
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
@@ -1673,7 +1673,7 @@ namespace Intents {
 		FailureInsufficientFunds,
 	}
 
-	/// <summary>Enumerates the results of an <see cref="T:Intents.INSearchForBillsIntent" />.</summary>
+	/// <summary>Enumerates the results of an <see cref="Intents.INSearchForBillsIntent" />.</summary>
 	[Deprecated (PlatformName.iOS, 15, 0)]
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
@@ -1699,7 +1699,7 @@ namespace Intents {
 		FailureBillNotFound,
 	}
 
-	/// <summary>Enumerates the results of an <see cref="T:Intents.INSetCarLockStatusIntent" />.</summary>
+	/// <summary>Enumerates the results of an <see cref="Intents.INSetCarLockStatusIntent" />.</summary>
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
 	[MacCatalyst (13, 1)]
@@ -1719,7 +1719,7 @@ namespace Intents {
 		FailureRequiringAppLaunch,
 	}
 
-	/// <summary>Enumerates results codes for the <see cref="T:Intents.INAddTasksIntent" />.</summary>
+	/// <summary>Enumerates results codes for the <see cref="Intents.INAddTasksIntent" />.</summary>
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -1738,7 +1738,7 @@ namespace Intents {
 		FailureRequiringAppLaunch,
 	}
 
-	/// <summary>Enumerates results codes for the <see cref="T:Intents.INAppendToNoteIntent" />.</summary>
+	/// <summary>Enumerates results codes for the <see cref="Intents.INAppendToNoteIntent" />.</summary>
 	[Deprecated (PlatformName.iOS, 15, 0)]
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
@@ -1836,7 +1836,7 @@ namespace Intents {
 		OnHold = (1 << 7),
 	}
 
-	/// <summary>Enumerates results codes for the <see cref="T:Intents.INCancelRideIntent" />.</summary>
+	/// <summary>Enumerates results codes for the <see cref="Intents.INCancelRideIntent" />.</summary>
 	[NoMac, NoTV]
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -1851,7 +1851,7 @@ namespace Intents {
 		Failure,
 	}
 
-	/// <summary>Enumerates results codes for the <see cref="T:Intents.INCreateNoteIntent" />.</summary>
+	/// <summary>Enumerates results codes for the <see cref="Intents.INCreateNoteIntent" />.</summary>
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -1870,7 +1870,7 @@ namespace Intents {
 		FailureRequiringAppLaunch,
 	}
 
-	/// <summary>Enumerates results codes for the <see cref="T:Intents.INCreateTaskListIntent" />.</summary>
+	/// <summary>Enumerates results codes for the <see cref="Intents.INCreateTaskListIntent" />.</summary>
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -1904,7 +1904,7 @@ namespace Intents {
 		ByCreatedDate,
 	}
 
-	/// <summary>Enumerates results codes for the <see cref="T:Intents.INGetVisualCodeIntent" />.</summary>
+	/// <summary>Enumerates results codes for the <see cref="Intents.INGetVisualCodeIntent" />.</summary>
 	[Deprecated (PlatformName.iOS, 15, 0)]
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
@@ -2112,7 +2112,7 @@ namespace Intents {
 		Tip = (1 << 1),
 	}
 
-	/// <summary>Enumerates results codes for the <see cref="T:Intents.INSearchForAccountsIntent" />.</summary>
+	/// <summary>Enumerates results codes for the <see cref="Intents.INSearchForAccountsIntent" />.</summary>
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -2139,7 +2139,7 @@ namespace Intents {
 		FailureNotEligible,
 	}
 
-	/// <summary>Enumerates results codes for the <see cref="T:Intents.INSearchForNotebookItemsIntent" />.</summary>
+	/// <summary>Enumerates results codes for the <see cref="Intents.INSearchForNotebookItemsIntent" />.</summary>
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -2208,7 +2208,7 @@ namespace Intents {
 		NoValidHandle,
 	}
 
-	/// <summary>Enumerates results codes for the <see cref="T:Intents.INSendRideFeedbackIntent" />.</summary>
+	/// <summary>Enumerates results codes for the <see cref="Intents.INSendRideFeedbackIntent" />.</summary>
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -2223,7 +2223,7 @@ namespace Intents {
 		Failure,
 	}
 
-	/// <summary>Enumerates results codes for the <see cref="T:Intents.INSetTaskAttributeIntent" />.</summary>
+	/// <summary>Enumerates results codes for the <see cref="Intents.INSetTaskAttributeIntent" />.</summary>
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -2293,7 +2293,7 @@ namespace Intents {
 		Completable,
 	}
 
-	/// <summary>Enumerates results codes for the <see cref="T:Intents.INTransferMoneyIntent" />.</summary>
+	/// <summary>Enumerates results codes for the <see cref="Intents.INTransferMoneyIntent" />.</summary>
 	[Deprecated (PlatformName.iOS, 15, 0)]
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
@@ -3098,7 +3098,7 @@ namespace Intents {
 		HangUpCall,
 	}
 
-	/// <summary>Enumerates the types of information associated with a particular value of a <see cref="T:Intents.INPersonHandleType" />.</summary>
+	/// <summary>Enumerates the types of information associated with a particular value of a <see cref="Intents.INPersonHandleType" />.</summary>
 	[NoTV]
 	[MacCatalyst (13, 1)]
 	enum INPersonHandleLabel {
@@ -3250,7 +3250,7 @@ namespace Intents {
 		[Field ("INWorkoutNameIdentifierSteps")]
 		Steps,
 
-		/// <summary>Indicates a workout that's somewhat better than <see cref="F:Intents.INWorkoutNameIdentifier.Sit" />.</summary>
+		/// <summary>Indicates a workout that's somewhat better than <see cref="Intents.INWorkoutNameIdentifier.Sit" />.</summary>
 		[Field ("INWorkoutNameIdentifierStand")]
 		Stand,
 
@@ -3399,7 +3399,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResolutionResult" /> for resolving parameters in reservation-related interactions.</summary>
+	///       <see cref="Intents.INIntentResolutionResult" /> for resolving parameters in reservation-related interactions.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INBookRestaurantReservationIntent">Apple documentation for <c>INBookRestaurantReservationIntent</c></related>
 	[NoTV]
@@ -3443,7 +3443,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INBookRestaurantReservationIntentResponse" /> appropriate to the <see cref="T:Intents.INBookRestaurantReservationIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="System.Action{T}" /> with an <see cref="Intents.INBookRestaurantReservationIntentResponse" /> appropriate to the <see cref="Intents.INBookRestaurantReservationIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleBookRestaurantReservation:completion:")]
@@ -3493,7 +3493,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResponse" /> subclass that developers of <see cref="T:Intents.IINBookRestaurantReservationIntentHandling" /> interface implementations populate with their extension's results.</summary>
+	///       <see cref="Intents.INIntentResponse" /> subclass that developers of <see cref="Intents.IINBookRestaurantReservationIntentHandling" /> interface implementations populate with their extension's results.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INBookRestaurantReservationIntentResponse">Apple documentation for <c>INBookRestaurantReservationIntentResponse</c></related>
 	[NoTV]
@@ -3560,7 +3560,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResolutionResult" /> for resolving parameters in interactions involving call records.</summary>
+	///       <see cref="Intents.INIntentResolutionResult" /> for resolving parameters in interactions involving call records.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INCallRecordTypeResolutionResult">Apple documentation for <c>INCallRecordTypeResolutionResult</c></related>
 	[NoTV]
@@ -3612,7 +3612,7 @@ namespace Intents {
 		INCallRecordTypeResolutionResult GetConfirmationRequired (NSObject itemToConfirm, nint reason);
 	}
 
-	/// <summary>An <see cref="T:Intents.INIntent" /> indicating the user wishes to cancel the workout.</summary>
+	/// <summary>An <see cref="Intents.INIntent" /> indicating the user wishes to cancel the workout.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INCancelWorkoutIntent">Apple documentation for <c>INCancelWorkoutIntent</c></related>
 	[Unavailable (PlatformName.MacOSX)]
@@ -3639,7 +3639,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INCancelWorkoutIntentResponse" /> appropriate to the <see cref="T:Intents.INCancelWorkoutIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="System.Action{T}" /> with an <see cref="Intents.INCancelWorkoutIntentResponse" /> appropriate to the <see cref="Intents.INCancelWorkoutIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleCancelWorkout:completion:")]
@@ -3661,7 +3661,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResponse" /> subclass that developers of <see cref="T:Intents.IINCancelWorkoutIntentHandling" /> interface implementations populate with their extension's results.</summary>
+	///       <see cref="Intents.INIntentResponse" /> subclass that developers of <see cref="Intents.IINCancelWorkoutIntentHandling" /> interface implementations populate with their extension's results.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INCancelWorkoutIntentResponse">Apple documentation for <c>INCancelWorkoutIntentResponse</c></related>
 	[Unavailable (PlatformName.MacOSX)]
@@ -3680,7 +3680,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResolutionResult" /> for resolving parameters in interactions involving air conditioning.</summary>
+	///       <see cref="Intents.INIntentResolutionResult" /> for resolving parameters in interactions involving air conditioning.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INCarAirCirculationModeResolutionResult">Apple documentation for <c>INCarAirCirculationModeResolutionResult</c></related>
 	[Deprecated (PlatformName.iOS, 15, 0)]
@@ -3744,7 +3744,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResolutionResult" /> for resolving parameters in interactions involving car audio systems.</summary>
+	///       <see cref="Intents.INIntentResolutionResult" /> for resolving parameters in interactions involving car audio systems.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INCarAudioSourceResolutionResult">Apple documentation for <c>INCarAudioSourceResolutionResult</c></related>
 	[Deprecated (PlatformName.iOS, 15, 0)]
@@ -3800,7 +3800,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResolutionResult" /> for resolving parameters in interactions involving car defrosters and their settings.</summary>
+	///       <see cref="Intents.INIntentResolutionResult" /> for resolving parameters in interactions involving car defrosters and their settings.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INCarDefrosterResolutionResult">Apple documentation for <c>INCarDefrosterResolutionResult</c></related>
 	[Deprecated (PlatformName.iOS, 15, 0)]
@@ -3856,7 +3856,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResolutionResult" /> for resolving parameters in interactions involving car seats and their settings.</summary>
+	///       <see cref="Intents.INIntentResolutionResult" /> for resolving parameters in interactions involving car seats and their settings.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INCarSeatResolutionResult">Apple documentation for <c>INCarSeatResolutionResult</c></related>
 	[Deprecated (PlatformName.iOS, 15, 0)]
@@ -3932,7 +3932,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResolutionResult" /> for resolving parameters in interactions involving payments.</summary>
+	///       <see cref="Intents.INIntentResolutionResult" /> for resolving parameters in interactions involving payments.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INCurrencyAmountResolutionResult">Apple documentation for <c>INCurrencyAmountResolutionResult</c></related>
 	[NoTV]
@@ -4030,7 +4030,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResolutionResult" /> for resolving parameters in interactions involving a range of dates.</summary>
+	///       <see cref="Intents.INIntentResolutionResult" /> for resolving parameters in interactions involving a range of dates.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INDateComponentsRangeResolutionResult">Apple documentation for <c>INDateComponentsRangeResolutionResult</c></related>
 	[NoMac]
@@ -4246,7 +4246,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResolutionResult" /> for resolving parameters in interactions involving dates.</summary>
+	///       <see cref="Intents.INIntentResolutionResult" /> for resolving parameters in interactions involving dates.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INDateComponentsResolutionResult">Apple documentation for <c>INDateComponentsResolutionResult</c></related>
 	[NoTV]
@@ -4300,7 +4300,7 @@ namespace Intents {
 		INDateComponentsResolutionResult GetConfirmationRequired (NSObject itemToConfirm, nint reason);
 	}
 
-	/// <summary>An <see cref="T:Intents.INIntent" /> indicating the user wishes to finish the workout.</summary>
+	/// <summary>An <see cref="Intents.INIntent" /> indicating the user wishes to finish the workout.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INEndWorkoutIntent">Apple documentation for <c>INEndWorkoutIntent</c></related>
 	[Unavailable (PlatformName.MacOSX)]
@@ -4327,7 +4327,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INEndWorkoutIntentResponse" /> appropriate to the <see cref="T:Intents.INEndWorkoutIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="System.Action{T}" /> with an <see cref="Intents.INEndWorkoutIntentResponse" /> appropriate to the <see cref="Intents.INEndWorkoutIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleEndWorkout:completion:")]
@@ -4349,7 +4349,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResponse" /> subclass that developers of <see cref="T:Intents.IINEndWorkoutIntentHandling" /> interface implementations populate with their extension's results.</summary>
+	///       <see cref="Intents.INIntentResponse" /> subclass that developers of <see cref="Intents.IINEndWorkoutIntentHandling" /> interface implementations populate with their extension's results.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INEndWorkoutIntentResponse">Apple documentation for <c>INEndWorkoutIntentResponse</c></related>
 	[Unavailable (PlatformName.MacOSX)]
@@ -4367,7 +4367,7 @@ namespace Intents {
 		INEndWorkoutIntentResponseCode Code { get; }
 	}
 
-	/// <summary>Defines the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Intents%20IINIntent%20Handler%20Provider&amp;scope=Xamarin" title="M:Intents.IINIntentHandlerProvider*">M:Intents.IINIntentHandlerProvider*</a></format> interface implemented by <see cref="T:Intents.INExtension" />.</summary>
+	/// <summary>Defines the <see cref="Intents.IINIntentHandlerProvider" /> interface implemented by <see cref="Intents.INExtension" />.</summary>
 	/// <remarks>
 	///     </remarks>
 	[TV (14, 0)]
@@ -4375,7 +4375,7 @@ namespace Intents {
 	[Protocol]
 	interface INIntentHandlerProviding {
 
-		/// <param name="intent">The <see cref="T:Intents.INIntent" /> received by the system.</param>
+		/// <param name="intent">The <see cref="Intents.INIntent" /> received by the system.</param>
 		/// <summary>Developers override this method to return the handler object if <paramref name="intent" /> is one their extension can respond to.</summary>
 		/// <returns>The developer's handler object or <see langword="null" /> if <paramref name="intent" /> is not handled by the extension.</returns>
 		/// <remarks>To be added.</remarks>
@@ -4391,7 +4391,7 @@ namespace Intents {
 	interface INExtension : INIntentHandlerProviding {
 	}
 
-	/// <summary>An <see cref="T:Intents.INIntent" /> indicating the user wishes to receive a list of available reservation times.</summary>
+	/// <summary>An <see cref="Intents.INIntent" /> indicating the user wishes to receive a list of available reservation times.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INGetAvailableRestaurantReservationBookingDefaultsIntent">Apple documentation for <c>INGetAvailableRestaurantReservationBookingDefaultsIntent</c></related>
 	[Unavailable (PlatformName.MacOSX)]
@@ -4418,7 +4418,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INGetAvailableRestaurantReservationBookingDefaultsIntentResponse" /> appropriate to the <see cref="T:Intents.INGetAvailableRestaurantReservationBookingDefaultsIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="System.Action{T}" /> with an <see cref="Intents.INGetAvailableRestaurantReservationBookingDefaultsIntentResponse" /> appropriate to the <see cref="Intents.INGetAvailableRestaurantReservationBookingDefaultsIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleGetAvailableRestaurantReservationBookingDefaults:completion:")]
@@ -4440,7 +4440,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResponse" /> subclass that developers of <see cref="T:Intents.IINGetAvailableRestaurantReservationBookingDefaultsIntentHandling" /> interface implementations populate with their extension's results.</summary>
+	///       <see cref="Intents.INIntentResponse" /> subclass that developers of <see cref="Intents.IINGetAvailableRestaurantReservationBookingDefaultsIntentHandling" /> interface implementations populate with their extension's results.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INGetAvailableRestaurantReservationBookingDefaultsIntentResponse">Apple documentation for <c>INGetAvailableRestaurantReservationBookingDefaultsIntentResponse</c></related>
 	[Unavailable (PlatformName.MacOSX)]
@@ -4524,7 +4524,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INGetAvailableRestaurantReservationBookingsIntentResponse" /> appropriate to the <see cref="T:Intents.INGetAvailableRestaurantReservationBookingsIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="System.Action{T}" /> with an <see cref="Intents.INGetAvailableRestaurantReservationBookingsIntentResponse" /> appropriate to the <see cref="Intents.INGetAvailableRestaurantReservationBookingsIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleGetAvailableRestaurantReservationBookings:completion:")]
@@ -4560,7 +4560,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResponse" /> subclass that developers of <see cref="T:Intents.IINGetAvailableRestaurantReservationBookingsIntentHandling" /> interface implementations populate with their extension's results.</summary>
+	///       <see cref="Intents.INIntentResponse" /> subclass that developers of <see cref="Intents.IINGetAvailableRestaurantReservationBookingsIntentHandling" /> interface implementations populate with their extension's results.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INGetAvailableRestaurantReservationBookingsIntentResponse">Apple documentation for <c>INGetAvailableRestaurantReservationBookingsIntentResponse</c></related>
 	[Unavailable (PlatformName.MacOSX)]
@@ -4589,7 +4589,7 @@ namespace Intents {
 		INRestaurantReservationBooking [] AvailableBookings { get; }
 	}
 
-	/// <summary>An <see cref="T:Intents.INIntent" /> indicating the user wishes to retrieve information about a particular guest making a reservation.</summary>
+	/// <summary>An <see cref="Intents.INIntent" /> indicating the user wishes to retrieve information about a particular guest making a reservation.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INGetRestaurantGuestIntent">Apple documentation for <c>INGetRestaurantGuestIntent</c></related>
 	[Unavailable (PlatformName.MacOSX)]
@@ -4609,7 +4609,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INGetRestaurantGuestIntentResponse" /> appropriate to the <see cref="T:Intents.INGetRestaurantGuestIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="System.Action{T}" /> with an <see cref="Intents.INGetRestaurantGuestIntentResponse" /> appropriate to the <see cref="Intents.INGetRestaurantGuestIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleGetRestaurantGuest:completion:")]
@@ -4624,7 +4624,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResponse" /> subclass that developers of <see cref="T:Intents.IINGetRestaurantGuestIntentHandling" /> interface implementations populate with their extension's results.</summary>
+	///       <see cref="Intents.INIntentResponse" /> subclass that developers of <see cref="Intents.IINGetRestaurantGuestIntentHandling" /> interface implementations populate with their extension's results.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INGetRestaurantGuestIntentResponse">Apple documentation for <c>INGetRestaurantGuestIntentResponse</c></related>
 	[Unavailable (PlatformName.MacOSX)]
@@ -4647,7 +4647,7 @@ namespace Intents {
 		INGetRestaurantGuestIntentResponseCode Code { get; }
 	}
 
-	/// <summary>An <see cref="T:Intents.INIntent" /> indicating the user wishes to get information about the current ride.</summary>
+	/// <summary>An <see cref="Intents.INIntent" /> indicating the user wishes to get information about the current ride.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INGetRideStatusIntent">Apple documentation for <c>INGetRideStatusIntent</c></related>
 	[Unavailable (PlatformName.MacOSX)]
@@ -4672,7 +4672,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INGetRideStatusIntentResponse" /> appropriate to the <see cref="T:Intents.INGetRideStatusIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="System.Action{T}" /> with an <see cref="Intents.INGetRideStatusIntentResponse" /> appropriate to the <see cref="Intents.INGetRideStatusIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleGetRideStatus:completion:")]
@@ -4719,7 +4719,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResponse" /> subclass that developers of <see cref="T:Intents.IINGetRideStatusIntentHandling" /> interface implementations populate with their extension's results.</summary>
+	///       <see cref="Intents.INIntentResponse" /> subclass that developers of <see cref="Intents.IINGetRideStatusIntentHandling" /> interface implementations populate with their extension's results.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INGetRideStatusIntentResponse">Apple documentation for <c>INGetRideStatusIntentResponse</c></related>
 	[Unavailable (PlatformName.MacOSX)]
@@ -4786,7 +4786,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INGetUserCurrentRestaurantReservationBookingsIntentResponse" /> appropriate to the <see cref="T:Intents.INGetUserCurrentRestaurantReservationBookingsIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="System.Action{T}" /> with an <see cref="Intents.INGetUserCurrentRestaurantReservationBookingsIntentResponse" /> appropriate to the <see cref="Intents.INGetUserCurrentRestaurantReservationBookingsIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleGetUserCurrentRestaurantReservationBookings:completion:")]
@@ -4808,7 +4808,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResponse" /> subclass that developers of <see cref="T:Intents.IINGetUserCurrentRestaurantReservationBookingsIntentHandling" /> interface implementations populate with their extension's results.</summary>
+	///       <see cref="Intents.INIntentResponse" /> subclass that developers of <see cref="Intents.IINGetUserCurrentRestaurantReservationBookingsIntentHandling" /> interface implementations populate with their extension's results.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INGetUserCurrentRestaurantReservationBookingsIntentResponse">Apple documentation for <c>INGetUserCurrentRestaurantReservationBookingsIntentResponse</c></related>
 	[Unavailable (PlatformName.MacOSX)]
@@ -4869,7 +4869,7 @@ namespace Intents {
 		// INImage_IntentsUI (IntentsUI)
 
 		/// <param name="image">To be added.</param>
-		///         <summary>Static factory method to create an <see cref="T:Intents.INImage" /> from a <see cref="T:CoreGraphics.CGImage" />.</summary>
+		///         <summary>Static factory method to create an <see cref="Intents.INImage" /> from a <see cref="CoreGraphics.CGImage" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[NoMac, NoTV]
@@ -4879,7 +4879,7 @@ namespace Intents {
 		INImage FromImage (CGImage image);
 
 		/// <param name="image">To be added.</param>
-		///         <summary>Static factory method to create an <see cref="T:Intents.INImage" /> from a <see cref="T:UIKit.UIImage" />.</summary>
+		///         <summary>Static factory method to create an <see cref="Intents.INImage" /> from a <see cref="UIKit.UIImage" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[NoMac, NoTV]
@@ -4924,7 +4924,7 @@ namespace Intents {
 	interface INIntegerResolutionResult {
 
 		/// <param name="resolvedValue">To be added.</param>
-		/// <summary>Factory method to create an <see cref="T:Intents.INIntentResolutionResult" /> object indicating that the parameter value was successfully matched.</summary>
+		/// <summary>Factory method to create an <see cref="Intents.INIntentResolutionResult" /> object indicating that the parameter value was successfully matched.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[Static]
@@ -4977,7 +4977,7 @@ namespace Intents {
 		[NullAllowed, Export ("identifier")]
 		NSString IdentifierString { get; }
 
-		/// <summary>Gets the <see cref="T:Intents.INIntentIdentifier" /> that uniquely identifies the intent instance, or <see langword="null" /> if there is no identifier.</summary>
+		/// <summary>Gets the <see cref="Intents.INIntentIdentifier" /> that uniquely identifies the intent instance, or <see langword="null" /> if there is no identifier.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Unavailable (PlatformName.MacOSX)]
@@ -5086,7 +5086,7 @@ namespace Intents {
 		NativeHandle Constructor (INIntent intent, [NullAllowed] INIntentResponse response);
 
 		[Async (XmlDocs = """
-			<summary>Donates this <see cref="T:Intents.INInteraction" /> to the system.</summary>
+			<summary>Donates this <see cref="Intents.INInteraction" /> to the system.</summary>
 			<returns>A task that represents the asynchronous DonateInteraction operation</returns>
 			<remarks>To be added.</remarks>
 			""")]
@@ -5155,7 +5155,7 @@ namespace Intents {
 		IntPtr _GetParameterValue (INParameter parameter);
 	}
 
-	/// <summary>An <see cref="T:Intents.INIntent" /> indicating the user wishes to receive a list of available ride options.</summary>
+	/// <summary>An <see cref="Intents.INIntent" /> indicating the user wishes to receive a list of available ride options.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INListRideOptionsIntent">Apple documentation for <c>INListRideOptionsIntent</c></related>
 	[Unavailable (PlatformName.MacOSX)]
@@ -5185,7 +5185,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INListRideOptionsIntentResponse" /> appropriate to the <see cref="T:Intents.INListRideOptionsIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="System.Action{T}" /> with an <see cref="Intents.INListRideOptionsIntentResponse" /> appropriate to the <see cref="Intents.INListRideOptionsIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleListRideOptions:completion:")]
@@ -5214,7 +5214,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResponse" /> subclass that developers of <see cref="T:Intents.IINListRideOptionsIntentHandling" /> interface implementations populate with their extension's results.</summary>
+	///       <see cref="Intents.INIntentResponse" /> subclass that developers of <see cref="Intents.IINListRideOptionsIntentHandling" /> interface implementations populate with their extension's results.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INListRideOptionsIntentResponse">Apple documentation for <c>INListRideOptionsIntentResponse</c></related>
 	[Unavailable (PlatformName.MacOSX)]
@@ -5388,7 +5388,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResolutionResult" /> for resolving parameters in interactions involving messages.</summary>
+	///       <see cref="Intents.INIntentResolutionResult" /> for resolving parameters in interactions involving messages.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INMessageAttributeOptionsResolutionResult">Apple documentation for <c>INMessageAttributeOptionsResolutionResult</c></related>
 	[NoMac]
@@ -5442,7 +5442,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResolutionResult" /> for resolving parameters in interactions involving messages.</summary>
+	///       <see cref="Intents.INIntentResolutionResult" /> for resolving parameters in interactions involving messages.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INMessageAttributeResolutionResult">Apple documentation for <c>INMessageAttributeResolutionResult</c></related>
 	[NoMac]
@@ -5495,7 +5495,7 @@ namespace Intents {
 		INMessageAttributeResolutionResult GetConfirmationRequired (NSObject itemToConfirm, nint reason);
 	}
 
-	/// <summary>An <see cref="T:Intents.INIntent" /> indicating the user wishes to pause the workout.</summary>
+	/// <summary>An <see cref="Intents.INIntent" /> indicating the user wishes to pause the workout.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INPauseWorkoutIntent">Apple documentation for <c>INPauseWorkoutIntent</c></related>
 	[Unavailable (PlatformName.MacOSX)]
@@ -5522,7 +5522,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INPauseWorkoutIntentResponse" /> appropriate to the <see cref="T:Intents.INPauseWorkoutIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="System.Action{T}" /> with an <see cref="Intents.INPauseWorkoutIntentResponse" /> appropriate to the <see cref="Intents.INPauseWorkoutIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handlePauseWorkout:completion:")]
@@ -5544,7 +5544,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResponse" /> subclass that developers of <see cref="T:Intents.IINPauseWorkoutIntentHandling" /> interface implementations populate with their extension's results.</summary>
+	///       <see cref="Intents.INIntentResponse" /> subclass that developers of <see cref="Intents.IINPauseWorkoutIntentHandling" /> interface implementations populate with their extension's results.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INPauseWorkoutIntentResponse">Apple documentation for <c>INPauseWorkoutIntentResponse</c></related>
 	[Unavailable (PlatformName.MacOSX)]
@@ -5768,7 +5768,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResolutionResult" /> for resolving parameters in interactions involving known people (contacts).</summary>
+	///       <see cref="Intents.INIntentResolutionResult" /> for resolving parameters in interactions involving known people (contacts).</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INPersonResolutionResult">Apple documentation for <c>INPersonResolutionResult</c></related>
 	[NoTV]
@@ -5823,7 +5823,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResolutionResult" /> for resolving parameters in interactions involving named locations.</summary>
+	///       <see cref="Intents.INIntentResolutionResult" /> for resolving parameters in interactions involving named locations.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INPlacemarkResolutionResult">Apple documentation for <c>INPlacemarkResolutionResult</c></related>
 	[NoTV]
@@ -5945,7 +5945,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResolutionResult" /> for resolving parameters in interactions involving radio formats.</summary>
+	///       <see cref="Intents.INIntentResolutionResult" /> for resolving parameters in interactions involving radio formats.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INRadioTypeResolutionResult">Apple documentation for <c>INRadioTypeResolutionResult</c></related>
 	[Deprecated (PlatformName.iOS, 15, 0)]
@@ -6001,7 +6001,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResolutionResult" /> for resolving parameters in interactions involving relative locations.</summary>
+	///       <see cref="Intents.INIntentResolutionResult" /> for resolving parameters in interactions involving relative locations.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INRelativeReferenceResolutionResult">Apple documentation for <c>INRelativeReferenceResolutionResult</c></related>
 	[Deprecated (PlatformName.iOS, 15, 0)]
@@ -6057,7 +6057,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResolutionResult" /> for resolving parameters in interactions involving values that have relative settings (higher / lower, more / less).</summary>
+	///       <see cref="Intents.INIntentResolutionResult" /> for resolving parameters in interactions involving values that have relative settings (higher / lower, more / less).</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INRelativeSettingResolutionResult">Apple documentation for <c>INRelativeSettingResolutionResult</c></related>
 	[Deprecated (PlatformName.iOS, 15, 0)]
@@ -6112,7 +6112,7 @@ namespace Intents {
 		INRelativeSettingResolutionResult GetConfirmationRequired (NSObject itemToConfirm, nint reason);
 	}
 
-	/// <summary>An <see cref="T:Intents.INIntent" /> indicating the user wishes to request a payment.</summary>
+	/// <summary>An <see cref="Intents.INIntent" /> indicating the user wishes to request a payment.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INRequestPaymentIntent">Apple documentation for <c>INRequestPaymentIntent</c></related>
 	[Unavailable (PlatformName.MacOSX)]
@@ -6145,7 +6145,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INRequestPaymentIntentResponse" /> appropriate to the <see cref="T:Intents.INRequestPaymentIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="System.Action{T}" /> with an <see cref="Intents.INRequestPaymentIntentResponse" /> appropriate to the <see cref="Intents.INRequestPaymentIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleRequestPayment:completion:")]
@@ -6201,7 +6201,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResponse" /> subclass that developers of <see cref="T:Intents.IINRequestPaymentIntentHandling" /> interface implementations populate with their extension's results.</summary>
+	///       <see cref="Intents.INIntentResponse" /> subclass that developers of <see cref="Intents.IINRequestPaymentIntentHandling" /> interface implementations populate with their extension's results.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INRequestPaymentIntentResponse">Apple documentation for <c>INRequestPaymentIntentResponse</c></related>
 	[Unavailable (PlatformName.MacOSX)]
@@ -6222,7 +6222,7 @@ namespace Intents {
 		INPaymentRecord PaymentRecord { get; set; }
 	}
 
-	/// <summary>An <see cref="T:Intents.INIntent" /> indicating the user wishes to request a ride.</summary>
+	/// <summary>An <see cref="Intents.INIntent" /> indicating the user wishes to request a ride.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INRequestRideIntent">Apple documentation for <c>INRequestRideIntent</c></related>
 	[Unavailable (PlatformName.MacOSX)]
@@ -6271,7 +6271,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INRequestRideIntentResponse" /> appropriate to the <see cref="T:Intents.INRequestRideIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="System.Action{T}" /> with an <see cref="Intents.INRequestRideIntentResponse" /> appropriate to the <see cref="Intents.INRequestRideIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleRequestRide:completion:")]
@@ -6322,7 +6322,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResponse" /> subclass that developers of <see cref="T:Intents.IINRequestRideIntentHandling" /> interface implementations populate with their extension's results.</summary>
+	///       <see cref="Intents.INIntentResponse" /> subclass that developers of <see cref="Intents.IINRequestRideIntentHandling" /> interface implementations populate with their extension's results.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INRequestRideIntentResponse">Apple documentation for <c>INRequestRideIntentResponse</c></related>
 	[Unavailable (PlatformName.MacOSX)]
@@ -6369,7 +6369,7 @@ namespace Intents {
 		string RestaurantIdentifier { get; set; }
 	}
 
-	/// <summary>A <see cref="T:Intents.INPerson" /> expected at a restaurant reservation.</summary>
+	/// <summary>A <see cref="Intents.INPerson" /> expected at a restaurant reservation.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INRestaurantGuest">Apple documentation for <c>INRestaurantGuest</c></related>
 	[Unavailable (PlatformName.MacOSX)]
@@ -6425,7 +6425,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResolutionResult" /> for resolving parameters in interactions involving restaurant reservations.</summary>
+	///       <see cref="Intents.INIntentResolutionResult" /> for resolving parameters in interactions involving restaurant reservations.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INRestaurantGuestResolutionResult">Apple documentation for <c>INRestaurantGuestResolutionResult</c></related>
 	[Unavailable (PlatformName.MacOSX)]
@@ -6499,7 +6499,7 @@ namespace Intents {
 		string OfferIdentifier { get; set; }
 	}
 
-	/// <summary>A potential restaurant reservation (see also <see cref="T:Intents.INRestaurantReservationUserBooking" />).</summary>
+	/// <summary>A potential restaurant reservation (see also <see cref="Intents.INRestaurantReservationUserBooking" />).</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INRestaurantReservationBooking">Apple documentation for <c>INRestaurantReservationBooking</c></related>
 	[Unavailable (PlatformName.MacOSX)]
@@ -6606,7 +6606,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResolutionResult" /> for resolving parameters in interactions involving restaurant names.</summary>
+	///       <see cref="Intents.INIntentResolutionResult" /> for resolving parameters in interactions involving restaurant names.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INRestaurantResolutionResult">Apple documentation for <c>INRestaurantResolutionResult</c></related>
 	[Unavailable (PlatformName.MacOSX)]
@@ -6661,7 +6661,7 @@ namespace Intents {
 		INRestaurantResolutionResult GetConfirmationRequired (NSObject itemToConfirm, nint reason);
 	}
 
-	/// <summary>An <see cref="T:Intents.INIntent" /> indicating the user wishes to resume a paused workout.</summary>
+	/// <summary>An <see cref="Intents.INIntent" /> indicating the user wishes to resume a paused workout.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INResumeWorkoutIntent">Apple documentation for <c>INResumeWorkoutIntent</c></related>
 	[Unavailable (PlatformName.MacOSX)]
@@ -6688,7 +6688,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INResumeWorkoutIntentResponse" /> appropriate to the <see cref="T:Intents.INResumeWorkoutIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="System.Action{T}" /> with an <see cref="Intents.INResumeWorkoutIntentResponse" /> appropriate to the <see cref="Intents.INResumeWorkoutIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleResumeWorkout:completion:")]
@@ -6710,7 +6710,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResponse" /> subclass that developers of <see cref="T:Intents.IINResumeWorkoutIntentHandling" /> interface implementations populate with their extension's results.</summary>
+	///       <see cref="Intents.INIntentResponse" /> subclass that developers of <see cref="Intents.IINResumeWorkoutIntentHandling" /> interface implementations populate with their extension's results.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INResumeWorkoutIntentResponse">Apple documentation for <c>INResumeWorkoutIntentResponse</c></related>
 	[Unavailable (PlatformName.MacOSX)]
@@ -7012,7 +7012,7 @@ namespace Intents {
 		INImage MapAnnotationImage { get; set; }
 	}
 
-	/// <summary>An <see cref="T:Intents.INIntent" /> indicating the user wishes to save a user profile.</summary>
+	/// <summary>An <see cref="Intents.INIntent" /> indicating the user wishes to save a user profile.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INSaveProfileInCarIntent">Apple documentation for <c>INSaveProfileInCarIntent</c></related>
 	[Deprecated (PlatformName.iOS, 15, 0)]
@@ -7056,7 +7056,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INSaveProfileInCarIntentResponse" /> appropriate to the <see cref="T:Intents.INSaveProfileInCarIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="System.Action{T}" /> with an <see cref="Intents.INSaveProfileInCarIntentResponse" /> appropriate to the <see cref="Intents.INSaveProfileInCarIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleSaveProfileInCar:completion:")]
@@ -7086,7 +7086,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResponse" /> subclass that developers of <see cref="T:Intents.IINSaveProfileInCarIntentHandling" /> interface implementations populate with their extension's results.</summary>
+	///       <see cref="Intents.INIntentResponse" /> subclass that developers of <see cref="Intents.IINSaveProfileInCarIntentHandling" /> interface implementations populate with their extension's results.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INSaveProfileInCarIntentResponse">Apple documentation for <c>INSaveProfileInCarIntentResponse</c></related>
 	[Deprecated (PlatformName.iOS, 15, 0)]
@@ -7106,7 +7106,7 @@ namespace Intents {
 		INSaveProfileInCarIntentResponseCode Code { get; }
 	}
 
-	/// <summary>An <see cref="T:Intents.INIntent" /> indicating the user wishes to search the call history.</summary>
+	/// <summary>An <see cref="Intents.INIntent" /> indicating the user wishes to search the call history.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INSearchCallHistoryIntent">Apple documentation for <c>INSearchCallHistoryIntent</c></related>
 	[NoMac]
@@ -7174,7 +7174,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INSearchCallHistoryIntentResponse" /> appropriate to the <see cref="T:Intents.INSearchCallHistoryIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="System.Action{T}" /> with an <see cref="Intents.INSearchCallHistoryIntentResponse" /> appropriate to the <see cref="Intents.INSearchCallHistoryIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleSearchCallHistory:completion:")]
@@ -7230,7 +7230,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResponse" /> subclass that developers of <see cref="T:Intents.IINSearchCallHistoryIntentHandling" /> interface implementations populate with their extension's results.</summary>
+	///       <see cref="Intents.INIntentResponse" /> subclass that developers of <see cref="Intents.IINSearchCallHistoryIntentHandling" /> interface implementations populate with their extension's results.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INSearchCallHistoryIntentResponse">Apple documentation for <c>INSearchCallHistoryIntentResponse</c></related>
 	[NoMac]
@@ -7254,7 +7254,7 @@ namespace Intents {
 		INCallRecord [] CallRecords { get; set; }
 	}
 
-	/// <summary>An <see cref="T:Intents.INIntent" /> indicating the user wishes to search their message history.</summary>
+	/// <summary>An <see cref="Intents.INIntent" /> indicating the user wishes to search their message history.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INSearchForMessagesIntent">Apple documentation for <c>INSearchForMessagesIntent</c></related>
 	[NoMac]
@@ -7356,7 +7356,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INSearchForMessagesIntentResponse" /> appropriate to the <see cref="T:Intents.INSearchForMessagesIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="System.Action{T}" /> with an <see cref="Intents.INSearchForMessagesIntentResponse" /> appropriate to the <see cref="Intents.INSearchForMessagesIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleSearchForMessages:completion:")]
@@ -7417,7 +7417,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResponse" /> subclass that developers of <see cref="T:Intents.IINSearchForMessagesIntentHandling" /> interface implementations populate with their extension's results.</summary>
+	///       <see cref="Intents.INIntentResponse" /> subclass that developers of <see cref="Intents.IINSearchForMessagesIntentHandling" /> interface implementations populate with their extension's results.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INSearchForMessagesIntentResponse">Apple documentation for <c>INSearchForMessagesIntentResponse</c></related>
 	[NoMac]
@@ -7438,7 +7438,7 @@ namespace Intents {
 		INMessage [] Messages { get; set; }
 	}
 
-	/// <summary>An <see cref="T:Intents.INIntent" /> indicating the user wishes to search for photos.</summary>
+	/// <summary>An <see cref="Intents.INIntent" /> indicating the user wishes to search for photos.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INSearchForPhotosIntent">Apple documentation for <c>INSearchForPhotosIntent</c></related>
 	[Deprecated (PlatformName.iOS, 15, 0)]
@@ -7493,7 +7493,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INSearchForPhotosIntentResponse" /> appropriate to the <see cref="T:Intents.INSearchForPhotosIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="System.Action{T}" /> with an <see cref="Intents.INSearchForPhotosIntentResponse" /> appropriate to the <see cref="Intents.INSearchForPhotosIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleSearchForPhotos:completion:")]
@@ -7544,7 +7544,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResponse" /> subclass that developers of <see cref="T:Intents.IINSearchForPhotosIntentHandling" /> interface implementations populate with their extension's results.</summary>
+	///       <see cref="Intents.INIntentResponse" /> subclass that developers of <see cref="Intents.IINSearchForPhotosIntentHandling" /> interface implementations populate with their extension's results.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INSearchForPhotosIntentResponse">Apple documentation for <c>INSearchForPhotosIntentResponse</c></related>
 	[Deprecated (PlatformName.iOS, 15, 0)]
@@ -7567,7 +7567,7 @@ namespace Intents {
 		NSNumber SearchResultsCount { get; set; }
 	}
 
-	/// <summary>An <see cref="T:Intents.INIntent" /> indicating the user wishes to send a message.</summary>
+	/// <summary>An <see cref="Intents.INIntent" /> indicating the user wishes to send a message.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INSendMessageIntent">Apple documentation for <c>INSendMessageIntent</c></related>
 	[NoTV]
@@ -7662,7 +7662,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INSendMessageIntentResponse" /> appropriate to the <see cref="T:Intents.INSendMessageIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="System.Action{T}" /> with an <see cref="Intents.INSendMessageIntentResponse" /> appropriate to the <see cref="Intents.INSendMessageIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleSendMessage:completion:")]
@@ -7726,7 +7726,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResponse" /> subclass that developers of <see cref="T:Intents.IINSendMessageIntentHandling" /> interface implementations populate with their extension's results.</summary>
+	///       <see cref="Intents.INIntentResponse" /> subclass that developers of <see cref="Intents.IINSendMessageIntentHandling" /> interface implementations populate with their extension's results.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INSendMessageIntentResponse">Apple documentation for <c>INSendMessageIntentResponse</c></related>
 	[NoTV]
@@ -7756,7 +7756,7 @@ namespace Intents {
 		INMessage [] SentMessages { get; set; }
 	}
 
-	/// <summary>An <see cref="T:Intents.INIntent" /> indicating the user wishes to make a payment.</summary>
+	/// <summary>An <see cref="Intents.INIntent" /> indicating the user wishes to make a payment.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INSendPaymentIntent">Apple documentation for <c>INSendPaymentIntent</c></related>
 	[NoTV]
@@ -7789,7 +7789,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INSendPaymentIntentResponse" /> appropriate to the <see cref="T:Intents.INSendPaymentIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="System.Action{T}" /> with an <see cref="Intents.INSendPaymentIntentResponse" /> appropriate to the <see cref="Intents.INSendPaymentIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleSendPayment:completion:")]
@@ -7845,7 +7845,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResponse" /> subclass that developers of <see cref="T:Intents.IINSendPaymentIntentHandling" /> interface implementations populate with their extension's results.</summary>
+	///       <see cref="Intents.INIntentResponse" /> subclass that developers of <see cref="Intents.IINSendPaymentIntentHandling" /> interface implementations populate with their extension's results.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INSendPaymentIntentResponse">Apple documentation for <c>INSendPaymentIntentResponse</c></related>
 	[Unavailable (PlatformName.MacOSX)]
@@ -7866,7 +7866,7 @@ namespace Intents {
 		INPaymentRecord PaymentRecord { get; set; }
 	}
 
-	/// <summary>An <see cref="T:Intents.INIntent" /> indicating the user wishes to specify the source for audio playback.</summary>
+	/// <summary>An <see cref="Intents.INIntent" /> indicating the user wishes to specify the source for audio playback.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INSetAudioSourceInCarIntent">Apple documentation for <c>INSetAudioSourceInCarIntent</c></related>
 	[Deprecated (PlatformName.iOS, 15, 0)]
@@ -7900,7 +7900,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INSetAudioSourceInCarIntentResponse" /> appropriate to the <see cref="T:Intents.INSetAudioSourceInCarIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="System.Action{T}" /> with an <see cref="Intents.INSetAudioSourceInCarIntentResponse" /> appropriate to the <see cref="Intents.INSetAudioSourceInCarIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleSetAudioSourceInCar:completion:")]
@@ -7929,7 +7929,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResponse" /> subclass that developers of <see cref="T:Intents.IINSetAudioSourceInCarIntentHandling" /> interface implementations populate with their extension's results.</summary>
+	///       <see cref="Intents.INIntentResponse" /> subclass that developers of <see cref="Intents.IINSetAudioSourceInCarIntentHandling" /> interface implementations populate with their extension's results.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INSetAudioSourceInCarIntentResponse">Apple documentation for <c>INSetAudioSourceInCarIntentResponse</c></related>
 	[Deprecated (PlatformName.iOS, 15, 0)]
@@ -7949,7 +7949,7 @@ namespace Intents {
 		INSetAudioSourceInCarIntentResponseCode Code { get; }
 	}
 
-	/// <summary>An <see cref="T:Intents.INIntent" /> indicating the user wishes to control the climate.</summary>
+	/// <summary>An <see cref="Intents.INIntent" /> indicating the user wishes to control the climate.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INSetClimateSettingsInCarIntent">Apple documentation for <c>INSetClimateSettingsInCarIntent</c></related>
 	[Deprecated (PlatformName.iOS, 15, 0)]
@@ -8027,7 +8027,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INSetClimateSettingsInCarIntentResponse" /> appropriate to the <see cref="T:Intents.INSetClimateSettingsInCarIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="System.Action{T}" /> with an <see cref="Intents.INSetClimateSettingsInCarIntentResponse" /> appropriate to the <see cref="Intents.INSetClimateSettingsInCarIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleSetClimateSettingsInCar:completion:")]
@@ -8127,7 +8127,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResponse" /> subclass that developers of <see cref="T:Intents.IINSetClimateSettingsInCarIntentHandling" /> interface implementations populate with their extension's results.</summary>
+	///       <see cref="Intents.INIntentResponse" /> subclass that developers of <see cref="Intents.IINSetClimateSettingsInCarIntentHandling" /> interface implementations populate with their extension's results.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INSetClimateSettingsInCarIntentResponse">Apple documentation for <c>INSetClimateSettingsInCarIntentResponse</c></related>
 	[Deprecated (PlatformName.iOS, 15, 0)]
@@ -8147,7 +8147,7 @@ namespace Intents {
 		INSetClimateSettingsInCarIntentResponseCode Code { get; }
 	}
 
-	/// <summary>An <see cref="T:Intents.INIntent" /> indicating the user wishes to control the defroster.</summary>
+	/// <summary>An <see cref="Intents.INIntent" /> indicating the user wishes to control the defroster.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INSetDefrosterSettingsInCarIntent">Apple documentation for <c>INSetDefrosterSettingsInCarIntent</c></related>
 	[Deprecated (PlatformName.iOS, 15, 0)]
@@ -8193,7 +8193,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INSetDefrosterSettingsInCarIntentResponse" /> appropriate to the <see cref="T:Intents.INSetDefrosterSettingsInCarIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="System.Action{T}" /> with an <see cref="Intents.INSetDefrosterSettingsInCarIntentResponse" /> appropriate to the <see cref="Intents.INSetDefrosterSettingsInCarIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleSetDefrosterSettingsInCar:completion:")]
@@ -8230,7 +8230,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResponse" /> subclass that developers of <see cref="T:Intents.IINSetDefrosterSettingsInCarIntentHandling" /> interface implementations populate with their extension's results.</summary>
+	///       <see cref="Intents.INIntentResponse" /> subclass that developers of <see cref="Intents.IINSetDefrosterSettingsInCarIntentHandling" /> interface implementations populate with their extension's results.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INSetDefrosterSettingsInCarIntentResponse">Apple documentation for <c>INSetDefrosterSettingsInCarIntentResponse</c></related>
 	[Deprecated (PlatformName.iOS, 15, 0)]
@@ -8250,7 +8250,7 @@ namespace Intents {
 		INSetDefrosterSettingsInCarIntentResponseCode Code { get; }
 	}
 
-	/// <summary>An <see cref="T:Intents.INIntent" /> indicating the user wishes to set a message characteristic.</summary>
+	/// <summary>An <see cref="Intents.INIntent" /> indicating the user wishes to set a message characteristic.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INSetMessageAttributeIntent">Apple documentation for <c>INSetMessageAttributeIntent</c></related>
 	[Unavailable (PlatformName.MacOSX)]
@@ -8280,7 +8280,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INSetMessageAttributeIntentResponse" /> appropriate to the <see cref="T:Intents.INSetMessageAttributeIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="System.Action{T}" /> with an <see cref="Intents.INSetMessageAttributeIntentResponse" /> appropriate to the <see cref="Intents.INSetMessageAttributeIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleSetMessageAttribute:completion:")]
@@ -8302,7 +8302,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResponse" /> subclass that developers of <see cref="T:Intents.IINSetMessageAttributeIntentHandling" /> interface implementations populate with their extension's results.</summary>
+	///       <see cref="Intents.INIntentResponse" /> subclass that developers of <see cref="Intents.IINSetMessageAttributeIntentHandling" /> interface implementations populate with their extension's results.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INSetMessageAttributeIntentResponse">Apple documentation for <c>INSetMessageAttributeIntentResponse</c></related>
 	[Unavailable (PlatformName.MacOSX)]
@@ -8320,7 +8320,7 @@ namespace Intents {
 		INSetMessageAttributeIntentResponseCode Code { get; }
 	}
 
-	/// <summary>An <see cref="T:Intents.INIntent" /> indicating the user wishes to choose a particular user profile.</summary>
+	/// <summary>An <see cref="Intents.INIntent" /> indicating the user wishes to choose a particular user profile.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INSetProfileInCarIntent">Apple documentation for <c>INSetProfileInCarIntent</c></related>
 	[Deprecated (PlatformName.iOS, 15, 0)]
@@ -8380,7 +8380,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INSetProfileInCarIntentResponse" /> appropriate to the <see cref="T:Intents.INSetProfileInCarIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="System.Action{T}" /> with an <see cref="Intents.INSetProfileInCarIntentResponse" /> appropriate to the <see cref="Intents.INSetProfileInCarIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleSetProfileInCar:completion:")]
@@ -8427,7 +8427,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResponse" /> subclass that developers of <see cref="T:Intents.IINSetProfileInCarIntentHandling" /> interface implementations populate with their extension's results.</summary>
+	///       <see cref="Intents.INIntentResponse" /> subclass that developers of <see cref="Intents.IINSetProfileInCarIntentHandling" /> interface implementations populate with their extension's results.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INSetProfileInCarIntentResponse">Apple documentation for <c>INSetProfileInCarIntentResponse</c></related>
 	[Deprecated (PlatformName.iOS, 15, 0)]
@@ -8447,7 +8447,7 @@ namespace Intents {
 		INSetProfileInCarIntentResponseCode Code { get; }
 	}
 
-	/// <summary>An <see cref="T:Intents.INIntent" /> indicating the user wishes to choose a station.</summary>
+	/// <summary>An <see cref="Intents.INIntent" /> indicating the user wishes to choose a station.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INSetRadioStationIntent">Apple documentation for <c>INSetRadioStationIntent</c></related>
 	[Deprecated (PlatformName.iOS, 15, 0)]
@@ -8490,7 +8490,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INSetRadioStationIntentResponse" /> appropriate to the <see cref="T:Intents.INSetRadioStationIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="System.Action{T}" /> with an <see cref="Intents.INSetRadioStationIntentResponse" /> appropriate to the <see cref="Intents.INSetRadioStationIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleSetRadioStation:completion:")]
@@ -8540,7 +8540,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResponse" /> subclass that developers of <see cref="T:Intents.IINSetRadioStationIntentHandling" /> interface implementations populate with their extension's results.</summary>
+	///       <see cref="Intents.INIntentResponse" /> subclass that developers of <see cref="Intents.IINSetRadioStationIntentHandling" /> interface implementations populate with their extension's results.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INSetRadioStationIntentResponse">Apple documentation for <c>INSetRadioStationIntentResponse</c></related>
 	[Deprecated (PlatformName.iOS, 15, 0)]
@@ -8560,7 +8560,7 @@ namespace Intents {
 		INSetRadioStationIntentResponseCode Code { get; }
 	}
 
-	/// <summary>An <see cref="T:Intents.INIntent" /> indicating the user wishes to modify the seat settings.</summary>
+	/// <summary>An <see cref="Intents.INIntent" /> indicating the user wishes to modify the seat settings.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INSetSeatSettingsInCarIntent">Apple documentation for <c>INSetSeatSettingsInCarIntent</c></related>
 	[Deprecated (PlatformName.iOS, 15, 0)]
@@ -8621,7 +8621,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INSetSeatSettingsInCarIntentResponse" /> appropriate to the <see cref="T:Intents.INSetSeatSettingsInCarIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="System.Action{T}" /> with an <see cref="Intents.INSetSeatSettingsInCarIntentResponse" /> appropriate to the <see cref="Intents.INSetSeatSettingsInCarIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleSetSeatSettingsInCar:completion:")]
@@ -8686,7 +8686,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResponse" /> subclass that developers of <see cref="T:Intents.IINSetSeatSettingsInCarIntentHandling" /> interface implementations populate with their extension's results.</summary>
+	///       <see cref="Intents.INIntentResponse" /> subclass that developers of <see cref="Intents.IINSetSeatSettingsInCarIntentHandling" /> interface implementations populate with their extension's results.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INSetSeatSettingsInCarIntentResponse">Apple documentation for <c>INSetSeatSettingsInCarIntentResponse</c></related>
 	[Deprecated (PlatformName.iOS, 15, 0)]
@@ -8815,7 +8815,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResolutionResult" /> for resolving parameters in interactions involving arbitrary strings.</summary>
+	///       <see cref="Intents.INIntentResolutionResult" /> for resolving parameters in interactions involving arbitrary strings.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INSpeakableStringResolutionResult">Apple documentation for <c>INSpeakableStringResolutionResult</c></related>
 	[NoMac]
@@ -8870,7 +8870,7 @@ namespace Intents {
 		INSpeakableStringResolutionResult GetConfirmationRequired (NSObject itemToConfirm, nint reason);
 	}
 
-	/// <summary>An <see cref="T:Intents.INIntent" /> indicating the user wishes to start an audio call.</summary>
+	/// <summary>An <see cref="Intents.INIntent" /> indicating the user wishes to start an audio call.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INStartAudioCallIntent">Apple documentation for <c>INStartAudioCallIntent</c></related>
 	[NoMac]
@@ -8912,7 +8912,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INStartAudioCallIntentResponse" /> appropriate to the <see cref="T:Intents.INStartAudioCallIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="System.Action{T}" /> with an <see cref="Intents.INStartAudioCallIntentResponse" /> appropriate to the <see cref="Intents.INStartAudioCallIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleStartAudioCall:completion:")]
@@ -8942,7 +8942,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResponse" /> subclass that developers of <see cref="T:Intents.IINStartAudioCallIntentHandling" /> interface implementations populate with their extension's results.</summary>
+	///       <see cref="Intents.INIntentResponse" /> subclass that developers of <see cref="Intents.IINStartAudioCallIntentHandling" /> interface implementations populate with their extension's results.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INStartAudioCallIntentResponse">Apple documentation for <c>INStartAudioCallIntentResponse</c></related>
 	[NoMac]
@@ -8962,7 +8962,7 @@ namespace Intents {
 		INStartAudioCallIntentResponseCode Code { get; }
 	}
 
-	/// <summary>An <see cref="T:Intents.INIntent" /> indicating the user wishes to begin a slide show.</summary>
+	/// <summary>An <see cref="Intents.INIntent" /> indicating the user wishes to begin a slide show.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INStartPhotoPlaybackIntent">Apple documentation for <c>INStartPhotoPlaybackIntent</c></related>
 	[Deprecated (PlatformName.iOS, 15, 0)]
@@ -9017,7 +9017,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INStartPhotoPlaybackIntentResponse" /> appropriate to the <see cref="T:Intents.INStartPhotoPlaybackIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="System.Action{T}" /> with an <see cref="Intents.INStartPhotoPlaybackIntentResponse" /> appropriate to the <see cref="Intents.INStartPhotoPlaybackIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleStartPhotoPlayback:completion:")]
@@ -9060,7 +9060,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResponse" /> subclass that developers of <see cref="T:Intents.IINStartPhotoPlaybackIntentHandling" /> interface implementations populate with their extension's results.</summary>
+	///       <see cref="Intents.INIntentResponse" /> subclass that developers of <see cref="Intents.IINStartPhotoPlaybackIntentHandling" /> interface implementations populate with their extension's results.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INStartPhotoPlaybackIntentResponse">Apple documentation for <c>INStartPhotoPlaybackIntentResponse</c></related>
 	[Deprecated (PlatformName.iOS, 15, 0)]
@@ -9083,7 +9083,7 @@ namespace Intents {
 		NSNumber SearchResultsCount { get; set; }
 	}
 
-	/// <summary>An <see cref="T:Intents.INIntent" /> indicating the user wishes to start a video call.</summary>
+	/// <summary>An <see cref="Intents.INIntent" /> indicating the user wishes to start a video call.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INStartVideoCallIntent">Apple documentation for <c>INStartVideoCallIntent</c></related>
 	[NoMac]
@@ -9114,7 +9114,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INStartVideoCallIntentResponse" /> appropriate to the <see cref="T:Intents.INStartVideoCallIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="System.Action{T}" /> with an <see cref="Intents.INStartVideoCallIntentResponse" /> appropriate to the <see cref="Intents.INStartVideoCallIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleStartVideoCall:completion:")]
@@ -9136,7 +9136,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResponse" /> subclass that developers of <see cref="T:Intents.IINStartVideoCallIntentHandling" /> interface implementations populate with their extension's results.</summary>
+	///       <see cref="Intents.INIntentResponse" /> subclass that developers of <see cref="Intents.IINStartVideoCallIntentHandling" /> interface implementations populate with their extension's results.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INStartVideoCallIntentResponse">Apple documentation for <c>INStartVideoCallIntentResponse</c></related>
 	[NoMac]
@@ -9156,7 +9156,7 @@ namespace Intents {
 		INStartVideoCallIntentResponseCode Code { get; }
 	}
 
-	/// <summary>An <see cref="T:Intents.INIntent" /> indicating the user wishes to begin a workout.</summary>
+	/// <summary>An <see cref="Intents.INIntent" /> indicating the user wishes to begin a workout.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INStartWorkoutIntent">Apple documentation for <c>INStartWorkoutIntent</c></related>
 	[Unavailable (PlatformName.MacOSX)]
@@ -9197,7 +9197,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INStartWorkoutIntentResponse" /> appropriate to the <see cref="T:Intents.INStartWorkoutIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="System.Action{T}" /> with an <see cref="Intents.INStartWorkoutIntentResponse" /> appropriate to the <see cref="Intents.INStartWorkoutIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleStartWorkout:completion:")]
@@ -9247,7 +9247,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResponse" /> subclass that developers of <see cref="T:Intents.IINStartWorkoutIntentHandling" /> interface implementations populate with their extension's results.</summary>
+	///       <see cref="Intents.INIntentResponse" /> subclass that developers of <see cref="Intents.IINStartWorkoutIntentHandling" /> interface implementations populate with their extension's results.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INStartWorkoutIntentResponse">Apple documentation for <c>INStartWorkoutIntentResponse</c></related>
 	[Unavailable (PlatformName.MacOSX)]
@@ -9266,7 +9266,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResolutionResult" /> for resolving parameters in interactions involving arbitrary strings.</summary>
+	///       <see cref="Intents.INIntentResolutionResult" /> for resolving parameters in interactions involving arbitrary strings.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INStringResolutionResult">Apple documentation for <c>INStringResolutionResult</c></related>
 	[NoTV]
@@ -9321,7 +9321,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResolutionResult" /> for resolving parameters in temperature-related  interactions.</summary>
+	///       <see cref="Intents.INIntentResolutionResult" /> for resolving parameters in temperature-related  interactions.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INTemperatureResolutionResult">Apple documentation for <c>INTemperatureResolutionResult</c></related>
 	[Deprecated (PlatformName.iOS, 15, 0)]
@@ -9424,7 +9424,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResolutionResult" /> for resolving parameters in workout-related  interactions.</summary>
+	///       <see cref="Intents.INIntentResolutionResult" /> for resolving parameters in workout-related  interactions.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INWorkoutGoalUnitTypeResolutionResult">Apple documentation for <c>INWorkoutGoalUnitTypeResolutionResult</c></related>
 	[Unavailable (PlatformName.MacOSX)] // xtro mac !unknown-type! INWorkoutGoalUnitTypeResolutionResult bound
@@ -9478,7 +9478,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResolutionResult" /> for resolving parameters in workout-related  interactions.</summary>
+	///       <see cref="Intents.INIntentResolutionResult" /> for resolving parameters in workout-related  interactions.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Intents/INWorkoutLocationTypeResolutionResult">Apple documentation for <c>INWorkoutLocationTypeResolutionResult</c></related>
 	[Unavailable (PlatformName.MacOSX)] // xtro mac !unknown-type! INWorkoutLocationTypeResolutionResult bound
@@ -9531,7 +9531,7 @@ namespace Intents {
 		INWorkoutLocationTypeResolutionResult GetConfirmationRequired (NSObject itemToConfirm, nint reason);
 	}
 
-	/// <summary>Optional methods for the <see cref="T:Foundation.NSUserActivity" /> interface.</summary>
+	/// <summary>Optional methods for the <see cref="Foundation.NSUserActivity" /> interface.</summary>
 	/// <remarks>To be added.</remarks>
 	[TV (14, 0)]
 	[MacCatalyst (13, 1)]
@@ -9539,7 +9539,7 @@ namespace Intents {
 	[BaseType (typeof (NSUserActivity))]
 	interface NSUserActivity_IntentsAdditions {
 
-		/// <summary>Retrieves the <see cref="T:Intents.INInteraction" /> associated with <c>this</c><see cref="T:Foundation.NSUserActivity" />.</summary>
+		/// <summary>Retrieves the <see cref="Intents.INInteraction" /> associated with <c>this</c><see cref="Foundation.NSUserActivity" />.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
@@ -9569,7 +9569,7 @@ namespace Intents {
 		void SetShortcutAvailability (INShortcutAvailabilityOptions shortcutAvailabilityOptions);
 	}
 
-	/// <summary>An <see cref="T:Intents.INIntent" /> for causing a car to make its presence known by flashing its lights or honking its horn.</summary>
+	/// <summary>An <see cref="Intents.INIntent" /> for causing a car to make its presence known by flashing its lights or honking its horn.</summary>
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
 	[MacCatalyst (13, 1)]
@@ -9598,7 +9598,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INActivateCarSignalIntentResponse" /> appropriate to the <see cref="T:Intents.INActivateCarSignalIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="System.Action{T}" /> with an <see cref="Intents.INActivateCarSignalIntentResponse" /> appropriate to the <see cref="Intents.INActivateCarSignalIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleActivateCarSignal:completion:")]
@@ -9690,7 +9690,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResolutionResult" /> for resolving parameters in interactions involving bill payments.</summary>
+	///       <see cref="Intents.INIntentResolutionResult" /> for resolving parameters in interactions involving bill payments.</summary>
 	[Deprecated (PlatformName.iOS, 15, 0)]
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
@@ -9746,7 +9746,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResolutionResult" /> for resolving parameters in interactions involving bill payments.</summary>
+	///       <see cref="Intents.INIntentResolutionResult" /> for resolving parameters in interactions involving bill payments.</summary>
 	[Deprecated (PlatformName.iOS, 15, 0)]
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
@@ -9799,7 +9799,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResolutionResult" /> for resolving parameters in interactions involving a car signaling its whereabouts.</summary>
+	///       <see cref="Intents.INIntentResolutionResult" /> for resolving parameters in interactions involving a car signaling its whereabouts.</summary>
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
 	[MacCatalyst (13, 1)]
@@ -9850,7 +9850,7 @@ namespace Intents {
 		INCarSignalOptionsResolutionResult GetConfirmationRequired (NSObject itemToConfirm, nint reason);
 	}
 
-	/// <summary>An <see cref="T:Intents.INIntent" /> for retrieving information on a car’s locks.</summary>
+	/// <summary>An <see cref="Intents.INIntent" /> for retrieving information on a car’s locks.</summary>
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
 	[MacCatalyst (13, 1)]
@@ -9876,7 +9876,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INGetCarLockStatusIntentResponse" /> appropriate to the <see cref="T:Intents.INGetCarLockStatusIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="System.Action{T}" /> with an <see cref="Intents.INGetCarLockStatusIntentResponse" /> appropriate to the <see cref="Intents.INGetCarLockStatusIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleGetCarLockStatus:completion:")]
@@ -9898,7 +9898,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResponse" /> subclass that developers of <see cref="T:Intents.IINGetCarLockStatusIntentHandling" /> interface implementations populate with their extension's results.</summary>
+	///       <see cref="Intents.INIntentResponse" /> subclass that developers of <see cref="Intents.IINGetCarLockStatusIntentHandling" /> interface implementations populate with their extension's results.</summary>
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
 	[MacCatalyst (13, 1)]
@@ -9918,7 +9918,7 @@ namespace Intents {
 		NSNumber Locked { get; set; }
 	}
 
-	/// <summary>An <see cref="T:Intents.INIntent" /> for retrieving the current power level of a car.</summary>
+	/// <summary>An <see cref="Intents.INIntent" /> for retrieving the current power level of a car.</summary>
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
 	[MacCatalyst (13, 1)]
@@ -9944,7 +9944,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INGetCarPowerLevelStatusIntentResponse" /> appropriate to the <see cref="T:Intents.INGetCarPowerLevelStatusIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="System.Action{T}" /> with an <see cref="Intents.INGetCarPowerLevelStatusIntentResponse" /> appropriate to the <see cref="Intents.INGetCarPowerLevelStatusIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleGetCarPowerLevelStatus:completion:")]
@@ -9991,7 +9991,7 @@ namespace Intents {
 	interface NSUnitLength : NSUnit { }
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResponse" /> subclass that developers of <see cref="T:Intents.IINSendPaymentIntentHandling" /> interface implementations populate with their extension's results.</summary>
+	///       <see cref="Intents.INIntentResponse" /> subclass that developers of <see cref="Intents.IINSendPaymentIntentHandling" /> interface implementations populate with their extension's results.</summary>
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
 	[MacCatalyst (13, 1)]
@@ -10094,7 +10094,7 @@ namespace Intents {
 		NSMeasurement<NSUnitEnergy> MinimumBatteryCapacity { get; set; }
 	}
 
-	/// <summary>An <see cref="T:Intents.INIntent" /> for paying a bill.</summary>
+	/// <summary>An <see cref="Intents.INIntent" /> for paying a bill.</summary>
 	[Deprecated (PlatformName.iOS, 15, 0)]
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
@@ -10204,7 +10204,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResponse" /> subclass that developers of <see cref="T:Intents.IINPayBillIntentHandling" /> interface implementations populate with their extension's results.</summary>
+	///       <see cref="Intents.INIntentResponse" /> subclass that developers of <see cref="Intents.IINPayBillIntentHandling" /> interface implementations populate with their extension's results.</summary>
 	[Deprecated (PlatformName.iOS, 15, 0)]
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
@@ -10277,7 +10277,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResolutionResult" /> for resolving parameters in interactions involving payments.</summary>
+	///       <see cref="Intents.INIntentResolutionResult" /> for resolving parameters in interactions involving payments.</summary>
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
 	[MacCatalyst (13, 1)]
@@ -10350,7 +10350,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResolutionResult" /> for resolving parameters in interactions involving payments.</summary>
+	///       <see cref="Intents.INIntentResolutionResult" /> for resolving parameters in interactions involving payments.</summary>
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
 	[MacCatalyst (13, 1)]
@@ -10404,7 +10404,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResolutionResult" /> for resolving parameters in interactions involving payments.</summary>
+	///       <see cref="Intents.INIntentResolutionResult" /> for resolving parameters in interactions involving payments.</summary>
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
 	[MacCatalyst (13, 1)]
@@ -10455,7 +10455,7 @@ namespace Intents {
 		INPaymentStatusResolutionResult GetConfirmationRequired (NSObject itemToConfirm, nint reason);
 	}
 
-	/// <summary>An <see cref="T:Intents.INIntent" /> for locating bills.</summary>
+	/// <summary>An <see cref="Intents.INIntent" /> for locating bills.</summary>
 	[Deprecated (PlatformName.iOS, 15, 0)]
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
@@ -10545,7 +10545,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResponse" /> subclass that developers of <see cref="T:Intents.IINSearchForBillsIntentHandling" /> interface implementations populate with their extension's results.</summary>
+	///       <see cref="Intents.INIntentResponse" /> subclass that developers of <see cref="Intents.IINSearchForBillsIntentHandling" /> interface implementations populate with their extension's results.</summary>
 	[Deprecated (PlatformName.iOS, 15, 0)]
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
@@ -10597,7 +10597,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INSetCarLockStatusIntentResponse" /> appropriate to the <see cref="T:Intents.INSetCarLockStatusIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="System.Action{T}" /> with an <see cref="Intents.INSetCarLockStatusIntentResponse" /> appropriate to the <see cref="Intents.INSetCarLockStatusIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleSetCarLockStatus:completion:")]
@@ -10626,7 +10626,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResponse" /> subclass that developers of <see cref="T:Intents.IINSetCarLockStatusIntentHandling" /> interface implementations populate with their extension's results.</summary>
+	///       <see cref="Intents.INIntentResponse" /> subclass that developers of <see cref="Intents.IINSetCarLockStatusIntentHandling" /> interface implementations populate with their extension's results.</summary>
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
 	[MacCatalyst (13, 1)]
@@ -10643,7 +10643,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResponse" /> subclass that developers of <see cref="T:Intents.IINActivateCarSignalIntentHandling" /> interface implementations populate with their extension's results.</summary>
+	///       <see cref="Intents.INIntentResponse" /> subclass that developers of <see cref="Intents.IINActivateCarSignalIntentHandling" /> interface implementations populate with their extension's results.</summary>
 	[Unavailable (PlatformName.MacOSX)]
 	[NoTV]
 	[MacCatalyst (13, 1)]
@@ -10663,7 +10663,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResolutionResult" /> for resolving parameters in account-related interactions.</summary>
+	///       <see cref="Intents.INIntentResolutionResult" /> for resolving parameters in account-related interactions.</summary>
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (INIntentResolutionResult))]
@@ -10711,7 +10711,7 @@ namespace Intents {
 		INAccountTypeResolutionResult GetConfirmationRequired (NSObject itemToConfirm, nint reason);
 	}
 
-	/// <summary>An <see cref="T:Intents.INIntent" /> indicating the user wishes to add a task to a list.</summary>
+	/// <summary>An <see cref="Intents.INIntent" /> indicating the user wishes to add a task to a list.</summary>
 	[NoMac, NoTV]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (INIntent))]
@@ -10755,7 +10755,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INAddTasksIntentResponse" /> appropriate to the <see cref="T:Intents.INAddTasksIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="System.Action{T}" /> with an <see cref="Intents.INAddTasksIntentResponse" /> appropriate to the <see cref="Intents.INAddTasksIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleAddTasks:completion:")]
@@ -10817,7 +10817,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResponse" /> subclass that developers of <see cref="T:Intents.IINAddTasksIntentHandling" /> interface implementations populate with their extension's results.</summary>
+	///       <see cref="Intents.INIntentResponse" /> subclass that developers of <see cref="Intents.IINAddTasksIntentHandling" /> interface implementations populate with their extension's results.</summary>
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (INIntentResponse))]
@@ -10838,7 +10838,7 @@ namespace Intents {
 		INTask [] AddedTasks { get; set; }
 	}
 
-	/// <summary>An <see cref="T:Intents.INIntent" /> indicating the user wishes to append content to a note.</summary>
+	/// <summary>An <see cref="Intents.INIntent" /> indicating the user wishes to append content to a note.</summary>
 	[Deprecated (PlatformName.iOS, 15, 0)]
 	[NoMac, NoTV]
 	[MacCatalyst (13, 1)]
@@ -10868,7 +10868,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INAppendToNoteIntentResponse" /> appropriate to the <see cref="T:Intents.INAppendToNoteIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="System.Action{T}" /> with an <see cref="Intents.INAppendToNoteIntentResponse" /> appropriate to the <see cref="Intents.INAppendToNoteIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleAppendToNote:completion:")]
@@ -10897,7 +10897,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResponse" /> subclass that developers of <see cref="T:Intents.IINAppendToNoteIntentHandling" /> interface implementations populate with their extension's results.</summary>
+	///       <see cref="Intents.INIntentResponse" /> subclass that developers of <see cref="Intents.IINAppendToNoteIntentHandling" /> interface implementations populate with their extension's results.</summary>
 	[Deprecated (PlatformName.iOS, 15, 0)]
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
@@ -10943,7 +10943,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResolutionResult" /> for resolving parameters in interactions related to account balances.</summary>
+	///       <see cref="Intents.INIntentResolutionResult" /> for resolving parameters in interactions related to account balances.</summary>
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (INIntentResolutionResult))]
@@ -10992,7 +10992,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResolutionResult" /> for resolving parameters in interactions related to call destinations.</summary>
+	///       <see cref="Intents.INIntentResolutionResult" /> for resolving parameters in interactions related to call destinations.</summary>
 	[NoTV]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (INIntentResolutionResult))]
@@ -11123,7 +11123,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResolutionResult" /> for resolving parameters in call recording-related interactions.</summary>
+	///       <see cref="Intents.INIntentResolutionResult" /> for resolving parameters in call recording-related interactions.</summary>
 	[NoTV]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (INIntentResolutionResult))]
@@ -11171,7 +11171,7 @@ namespace Intents {
 		INCallRecordTypeOptionsResolutionResult GetConfirmationRequired (NSObject itemToConfirm, nint reason);
 	}
 
-	/// <summary>An <see cref="T:Intents.INIntent" /> indicating the user wishes to cancel a ride.</summary>
+	/// <summary>An <see cref="Intents.INIntent" /> indicating the user wishes to cancel a ride.</summary>
 	[NoMac, NoTV]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (INIntent))]
@@ -11195,7 +11195,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INCancelRideIntentResponse" /> appropriate to the <see cref="T:Intents.INCancelRideIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="System.Action{T}" /> with an <see cref="Intents.INCancelRideIntentResponse" /> appropriate to the <see cref="Intents.INCancelRideIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleCancelRide:completion:")]
@@ -11210,7 +11210,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResponse" /> subclass that developers of <see cref="T:Intents.IINCancelRideIntentHandling" /> interface implementations populate with their extension's results.</summary>
+	///       <see cref="Intents.INIntentResponse" /> subclass that developers of <see cref="Intents.IINCancelRideIntentHandling" /> interface implementations populate with their extension's results.</summary>
 	[NoMac, NoTV]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (INIntentResponse))]
@@ -11231,7 +11231,7 @@ namespace Intents {
 		NSDateComponents CancellationFeeThreshold { get; set; }
 	}
 
-	/// <summary>An <see cref="T:Intents.INIntent" /> indicating the user wishes to create a new note.</summary>
+	/// <summary>An <see cref="Intents.INIntent" /> indicating the user wishes to create a new note.</summary>
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (INIntent))]
@@ -11261,7 +11261,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INCreateNoteIntentResponse" /> appropriate to the <see cref="T:Intents.INCreateNoteIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="System.Action{T}" /> with an <see cref="Intents.INCreateNoteIntentResponse" /> appropriate to the <see cref="Intents.INCreateNoteIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleCreateNote:completion:")]
@@ -11297,7 +11297,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResponse" /> subclass that developers of <see cref="T:Intents.IINCreateNoteIntentHandling" /> interface implementations populate with their extension's results.</summary>
+	///       <see cref="Intents.INIntentResponse" /> subclass that developers of <see cref="Intents.IINCreateNoteIntentHandling" /> interface implementations populate with their extension's results.</summary>
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (INIntentResponse))]
@@ -11315,7 +11315,7 @@ namespace Intents {
 		INNote CreatedNote { get; set; }
 	}
 
-	/// <summary>An <see cref="T:Intents.INIntent" /> indicating the user wishes to create a new task list.</summary>
+	/// <summary>An <see cref="Intents.INIntent" /> indicating the user wishes to create a new task list.</summary>
 	[Deprecated (PlatformName.iOS, 15, 0)]
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
@@ -11349,7 +11349,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INAddTasksIntentResponse" /> appropriate to the <see cref="T:Intents.INAddTasksIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="System.Action{T}" /> with an <see cref="Intents.INAddTasksIntentResponse" /> appropriate to the <see cref="Intents.INAddTasksIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleCreateTaskList:completion:")]
@@ -11385,7 +11385,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResponse" /> subclass that developers of <see cref="T:Intents.IINCreateTaskListIntentHandling" /> interface implementations populate with their extension's results.</summary>
+	///       <see cref="Intents.INIntentResponse" /> subclass that developers of <see cref="Intents.IINCreateTaskListIntentHandling" /> interface implementations populate with their extension's results.</summary>
 	[Deprecated (PlatformName.iOS, 15, 0)]
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
@@ -11452,7 +11452,7 @@ namespace Intents {
 		INDateSearchTypeResolutionResult GetConfirmationRequired (NSObject itemToConfirm, nint reason);
 	}
 
-	/// <summary>An <see cref="T:Intents.INIntent" /> indicating the user wishes to get a bar or QR code for payment or contact information.</summary>
+	/// <summary>An <see cref="Intents.INIntent" /> indicating the user wishes to get a bar or QR code for payment or contact information.</summary>
 	[Deprecated (PlatformName.iOS, 15, 0)]
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
@@ -11480,7 +11480,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INGetVisualCodeIntentResponse" /> appropriate to the <see cref="T:Intents.INGetVisualCodeIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="System.Action{T}" /> with an <see cref="Intents.INGetVisualCodeIntentResponse" /> appropriate to the <see cref="Intents.INGetVisualCodeIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleGetVisualCode:completion:")]
@@ -11502,7 +11502,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResponse" /> subclass that developers of <see cref="T:Intents.IINGetVisualCodeIntentHandling" /> interface implementations populate with their extension's results.</summary>
+	///       <see cref="Intents.INIntentResponse" /> subclass that developers of <see cref="Intents.IINGetVisualCodeIntentHandling" /> interface implementations populate with their extension's results.</summary>
 	[Deprecated (PlatformName.iOS, 15, 0)]
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
@@ -11536,7 +11536,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResolutionResult" /> for resolving parameters in location search-related interactions.</summary>
+	///       <see cref="Intents.INIntentResolutionResult" /> for resolving parameters in location search-related interactions.</summary>
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (INIntentResolutionResult))]
@@ -11621,7 +11621,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResolutionResult" /> for resolving parameters in note content-related interactions.</summary>
+	///       <see cref="Intents.INIntentResolutionResult" /> for resolving parameters in note content-related interactions.</summary>
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (INIntentResolutionResult))]
@@ -11674,7 +11674,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResolutionResult" /> for resolving parameters in note content type-related interactions.</summary>
+	///       <see cref="Intents.INIntentResolutionResult" /> for resolving parameters in note content type-related interactions.</summary>
 	[Deprecated (PlatformName.iOS, 13, 0, message: "Not used anymore.")]
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
@@ -11724,7 +11724,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResolutionResult" /> for resolving parameters in note-related interactions.</summary>
+	///       <see cref="Intents.INIntentResolutionResult" /> for resolving parameters in note-related interactions.</summary>
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (INIntentResolutionResult))]
@@ -11776,7 +11776,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResolutionResult" /> for resolving parameters in notebook item type-related interactions.</summary>
+	///       <see cref="Intents.INIntentResolutionResult" /> for resolving parameters in notebook item type-related interactions.</summary>
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (INIntentResolutionResult))]
@@ -11908,7 +11908,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResolutionResult" /> for resolving parameters in currency-related interactions.</summary>
+	///       <see cref="Intents.INIntentResolutionResult" /> for resolving parameters in currency-related interactions.</summary>
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (INCurrencyAmountResolutionResult))]
@@ -11956,7 +11956,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResolutionResult" /> for resolving parameters in payer-related interactions.</summary>
+	///       <see cref="Intents.INIntentResolutionResult" /> for resolving parameters in payer-related interactions.</summary>
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (INPersonResolutionResult))]
@@ -12019,7 +12019,7 @@ namespace Intents {
 		INRequestPaymentPayerResolutionResult GetConfirmationRequired (NSObject itemToConfirm, nint reason);
 	}
 
-	/// <summary>An <see cref="T:Intents.INIntent" /> indicating the user wishes to search for accounts information.</summary>
+	/// <summary>An <see cref="Intents.INIntent" /> indicating the user wishes to search for accounts information.</summary>
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (INIntent))]
@@ -12051,7 +12051,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INSearchForAccountsIntentResponse" /> appropriate to the <see cref="T:Intents.INSearchForAccountsIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="System.Action{T}" /> with an <see cref="Intents.INSearchForAccountsIntentResponse" /> appropriate to the <see cref="Intents.INSearchForAccountsIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleSearchForAccounts:completion:")]
@@ -12094,7 +12094,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResponse" /> subclass that developers of <see cref="T:Intents.IINSearchForAccountsIntentHandling" /> interface implementations populate with their extension's results.</summary>
+	///       <see cref="Intents.INIntentResponse" /> subclass that developers of <see cref="Intents.IINSearchForAccountsIntentHandling" /> interface implementations populate with their extension's results.</summary>
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (INIntentResponse))]
@@ -12112,7 +12112,7 @@ namespace Intents {
 		INPaymentAccount [] Accounts { get; set; }
 	}
 
-	/// <summary>An <see cref="T:Intents.INIntent" /> indicating the user wishes to search for notes, tasks, or reminders.</summary>
+	/// <summary>An <see cref="Intents.INIntent" /> indicating the user wishes to search for notes, tasks, or reminders.</summary>
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (INIntent))]
@@ -12183,7 +12183,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INSearchForNotebookItemsIntentResponse" /> appropriate to the <see cref="T:Intents.INSearchForNotebookItemsIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="System.Action{T}" /> with an <see cref="Intents.INSearchForNotebookItemsIntentResponse" /> appropriate to the <see cref="Intents.INSearchForNotebookItemsIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleSearchForNotebookItems:completion:")]
@@ -12264,7 +12264,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResponse" /> subclass that developers of <see cref="T:Intents.IINSearchForNotebookItemsIntentHandling" /> interface implementations populate with their extension's results.</summary>
+	///       <see cref="Intents.INIntentResponse" /> subclass that developers of <see cref="Intents.IINSearchForNotebookItemsIntentHandling" /> interface implementations populate with their extension's results.</summary>
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (INIntentResponse))]
@@ -12292,7 +12292,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResolutionResult" /> for resolving parameters in recipient-related message send interactions.</summary>
+	///       <see cref="Intents.INIntentResolutionResult" /> for resolving parameters in recipient-related message send interactions.</summary>
 	[NoTV]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (INPersonResolutionResult))]
@@ -12356,7 +12356,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResolutionResult" /> for resolving parameters in currency-related interactions for sending payments.</summary>
+	///       <see cref="Intents.INIntentResolutionResult" /> for resolving parameters in currency-related interactions for sending payments.</summary>
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (INCurrencyAmountResolutionResult))]
@@ -12404,7 +12404,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResolutionResult" /> for resolving parameters in payee-related interactions for sending payments.</summary>
+	///       <see cref="Intents.INIntentResolutionResult" /> for resolving parameters in payee-related interactions for sending payments.</summary>
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (INPersonResolutionResult))]
@@ -12467,7 +12467,7 @@ namespace Intents {
 		INSendPaymentPayeeResolutionResult GetConfirmationRequired (NSObject itemToConfirm, nint reason);
 	}
 
-	/// <summary>An <see cref="T:Intents.INIntent" /> indicating the user wishes to send feedback about a ride.</summary>
+	/// <summary>An <see cref="Intents.INIntent" /> indicating the user wishes to send feedback about a ride.</summary>
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (INIntent))]
@@ -12497,7 +12497,7 @@ namespace Intents {
 
 		/// <param name="sendRideFeedbackintent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INSendRideFeedbackIntentResponse" /> appropriate to the <see cref="T:Intents.INSendRideFeedbackIntent" /> <paramref name="sendRideFeedbackintent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="System.Action{T}" /> with an <see cref="Intents.INSendRideFeedbackIntentResponse" /> appropriate to the <see cref="Intents.INSendRideFeedbackIntent" /> <paramref name="sendRideFeedbackintent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleSendRideFeedback:completion:")]
@@ -12512,7 +12512,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResponse" /> subclass that developers of <see cref="T:Intents.IINSendRideFeedbackIntentHandling" /> interface implementations populate with their extension's results.</summary>
+	///       <see cref="Intents.INIntentResponse" /> subclass that developers of <see cref="Intents.IINSendRideFeedbackIntentHandling" /> interface implementations populate with their extension's results.</summary>
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (INIntentResponse))]
@@ -12527,7 +12527,7 @@ namespace Intents {
 		INSendRideFeedbackIntentResponseCode Code { get; }
 	}
 
-	/// <summary>An <see cref="T:Intents.INIntent" /> indicating the user wishes to modify a task attribute, for example, by marking a task complete.</summary>
+	/// <summary>An <see cref="Intents.INIntent" /> indicating the user wishes to modify a task attribute, for example, by marking a task complete.</summary>
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (INIntent))]
@@ -12576,7 +12576,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INSetTaskAttributeIntentResponse" /> appropriate to the <see cref="T:Intents.INSetTaskAttributeIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="System.Action{T}" /> with an <see cref="Intents.INSetTaskAttributeIntentResponse" /> appropriate to the <see cref="Intents.INSetTaskAttributeIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleSetTaskAttribute:completion:")]
@@ -12636,7 +12636,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResponse" /> subclass that developers of <see cref="T:Intents.IINSetTaskAttributeIntentHandling" /> interface implementations populate with their extension's results.</summary>
+	///       <see cref="Intents.INIntentResponse" /> subclass that developers of <see cref="Intents.IINSetTaskAttributeIntentHandling" /> interface implementations populate with their extension's results.</summary>
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (INIntentResponse))]
@@ -12672,7 +12672,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResolutionResult" /> for resolving parameters in spatial event trigger-related interactions.</summary>
+	///       <see cref="Intents.INIntentResolutionResult" /> for resolving parameters in spatial event trigger-related interactions.</summary>
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (INIntentResolutionResult))]
@@ -12801,7 +12801,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResolutionResult" /> for resolving parameters in task list-related interactions.</summary>
+	///       <see cref="Intents.INIntentResolutionResult" /> for resolving parameters in task list-related interactions.</summary>
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (INIntentResolutionResult))]
@@ -12854,7 +12854,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResolutionResult" /> for resolving parameters in task-related interactions.</summary>
+	///       <see cref="Intents.INIntentResolutionResult" /> for resolving parameters in task-related interactions.</summary>
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (INIntentResolutionResult))]
@@ -12907,7 +12907,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResolutionResult" /> for resolving parameters in task status-related interactions.</summary>
+	///       <see cref="Intents.INIntentResolutionResult" /> for resolving parameters in task status-related interactions.</summary>
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (INIntentResolutionResult))]
@@ -12971,7 +12971,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResolutionResult" /> for resolving parameters in temporal event trigger-related interactions.</summary>
+	///       <see cref="Intents.INIntentResolutionResult" /> for resolving parameters in temporal event trigger-related interactions.</summary>
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (INIntentResolutionResult))]
@@ -13037,7 +13037,7 @@ namespace Intents {
 		string Text { get; }
 	}
 
-	/// <summary>An <see cref="T:Intents.INIntent" /> indicating the user wishes to transfer funds.</summary>
+	/// <summary>An <see cref="Intents.INIntent" /> indicating the user wishes to transfer funds.</summary>
 	[Deprecated (PlatformName.iOS, 15, 0)]
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
@@ -13077,7 +13077,7 @@ namespace Intents {
 
 		/// <param name="intent">Specifies the user's intention.</param>
 		/// <param name="completion">Completion method that must be called by the override.</param>
-		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INTransferMoneyIntentResponse" /> appropriate to the <see cref="T:Intents.INTransferMoneyIntent" /> <paramref name="intent" />.</summary>
+		/// <summary>Developers must override this method and invoke the <see cref="System.Action{T}" /> with an <see cref="Intents.INTransferMoneyIntentResponse" /> appropriate to the <see cref="Intents.INTransferMoneyIntent" /> <paramref name="intent" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleTransferMoney:completion:")]
@@ -13127,7 +13127,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResponse" /> subclass that developers of <see cref="T:Intents.IINTransferMoneyIntentHandling" /> interface implementations populate with their extension's results.</summary>
+	///       <see cref="Intents.INIntentResponse" /> subclass that developers of <see cref="Intents.IINTransferMoneyIntentHandling" /> interface implementations populate with their extension's results.</summary>
 	[Deprecated (PlatformName.iOS, 15, 0)]
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
@@ -13163,7 +13163,7 @@ namespace Intents {
 	}
 
 	/// <summary>
-	///       <see cref="T:Intents.INIntentResolutionResult" /> for resolving parameters in visual code type-related interactions.</summary>
+	///       <see cref="Intents.INIntentResolutionResult" /> for resolving parameters in visual code type-related interactions.</summary>
 	[Deprecated (PlatformName.iOS, 15, 0)]
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]

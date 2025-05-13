@@ -95,7 +95,9 @@ namespace MonoTouchFixtures.HttpClientTests {
 			using (var client = new HttpClient (wrapper.Handler))
 			using (var request = new HttpRequestMessage (HttpMethod.Get, "http://xamarin.com")) {
 				var token = new CancellationTokenSource ();
+#pragma warning disable CA2025
 				client.SendAsync (request, token.Token);
+#pragma warning restore CA2025
 				Exception e = null;
 				try {
 					wrapper.AllowAutoRedirect = !wrapper.AllowAutoRedirect;

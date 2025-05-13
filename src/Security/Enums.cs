@@ -858,7 +858,7 @@ namespace Security {
 	}
 
 	// convenience enum mapping to kSecUseAuthenticationUI* fields
-	/// <summary>Enumeration whose values represent valid options for <see cref="P:Security.SecRecord.AuthenticationUI" />.</summary>
+	/// <summary>Enumeration whose values represent valid options for <see cref="Security.SecRecord.AuthenticationUI" />.</summary>
 	[MacCatalyst (13, 1)]
 	public enum SecAuthenticationUI {
 		/// <summary>To be added.</summary>
@@ -885,7 +885,7 @@ namespace Security {
 		Skip,
 	}
 
-	/// <summary>Enumeration defining valid options for <see cref="P:Security.SecRecord.TokenID" />.</summary>
+	/// <summary>Enumeration defining valid options for <see cref="Security.SecRecord.TokenID" />.</summary>
 	[MacCatalyst (13, 1)]
 	public enum SecTokenID {
 		/// <summary>To be added.</summary>

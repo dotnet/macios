@@ -224,13 +224,11 @@ namespace UIKit {
 			}
 		}
 
-#if NET
-		/// <summary>Event associated with the most-likely behavior of the <see cref="T:UIKit.UIControl" />.</summary>
+		/// <summary>Event associated with the most-likely behavior of the <see cref="UIKit.UIControl" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public event EventHandler PrimaryActionTriggered {
 			add {
 				AddTarget (value, UIControlEvent.PrimaryActionTriggered);

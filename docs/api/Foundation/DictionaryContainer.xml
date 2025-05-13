@@ -1,6 +1,6 @@
 <Documentation>
   <Docs DocId="M:Foundation.DictionaryContainer.#ctor">
-    <summary>When overridden, call the base-class constructor with a <see cref="T:Foundation.NSMutableDictionary" />.</summary>
+    <summary>When overridden, call the base-class constructor with a <see cref="Foundation.NSMutableDictionary" />.</summary>
     <remarks>
       <para>
 	When creating a strongly-typed wrapper for NSDictionary,

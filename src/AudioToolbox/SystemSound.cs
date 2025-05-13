@@ -86,7 +86,7 @@ namespace AudioToolbox {
 			}
 		}
 
-		/// <summary>Gets or sets whether to override user preferences when calling <see cref="M:AudioToolbox.SystemSound.PlaySystemSound" />.</summary>
+		/// <summary>Gets or sets whether to override user preferences when calling <see cref="PlaySystemSound()" /> or <see cref="PlaySystemSound(Action)" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public bool IsUISound {
@@ -244,7 +244,7 @@ namespace AudioToolbox {
 			}
 		}
 
-		/// <summary>Asynchronously plays a sound or alert, returning a <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Threading%20Task&amp;scope=Xamarin" title="T:System.Threading.Task">T:System.Threading.Task</a></format> that completes after the sound ends.</summary>
+		/// <summary>Asynchronously plays a sound or alert, returning a <see cref="Task" /> that completes after the sound ends.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
@@ -281,7 +281,7 @@ namespace AudioToolbox {
 			}
 		}
 
-		/// <summary>Asynchronously plays a system sound and returns a <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Threading%20Tasks%20Task&amp;scope=Xamarin" title="T:System.Threading.Tasks.Task">T:System.Threading.Tasks.Task</a></format> that is completed when the sound ends.</summary>
+		/// <summary>Asynchronously plays a system sound and returns a <see cref="System.Threading.Tasks.Task" /> that is completed when the sound ends.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]

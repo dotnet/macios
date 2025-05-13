@@ -61,7 +61,7 @@ namespace CoreLocation {
 			}
 		}
 
-		/// <summary>Constructor that produces a region identified by <paramref name="identifier" /> that reports iBeacons associated with the <paramref name="proximityUuid" /> and that assigns the <see cref="P:CoreLocation.CLBeaconRegion.Major" /> property.</summary>
+		/// <summary>Constructor that produces a region identified by <paramref name="identifier" /> that reports iBeacons associated with the <paramref name="proximityUuid" /> and that assigns the <see cref="CoreLocation.CLBeaconRegion.Major" /> property.</summary>
 		/// <param name="proximityUuid">The unique ID of the iBeacons of interest.</param>
 		/// <param name="major">Can be used by the app developer for any purpose.</param>
 		/// <param name="identifier">The name of the region to be created.</param>
@@ -78,7 +78,7 @@ namespace CoreLocation {
 			InitializeHandle (_InitWithProximityUuid (proximityUuid, major, identifier), "initWithProximityUUID:major:identifier:");
 		}
 
-		/// <summary>Constructor that produces a region identified by <paramref name="identifier" /> that reports iBeacons associated with the <paramref name="uuid" /> and that assigns the <see cref="P:CoreLocation.CLBeaconRegion.Major" /> property.</summary>
+		/// <summary>Constructor that produces a region identified by <paramref name="identifier" /> that reports iBeacons associated with the <paramref name="uuid" /> and that assigns the <see cref="CoreLocation.CLBeaconRegion.Major" /> property.</summary>
 		/// <param name="uuid">The unique ID of the iBeacons of interest.</param>
 		/// <param name="major">Can be used by the app developer for any purpose.</param>
 		/// <param name="identifier">The name of the region to be created.</param>
@@ -98,7 +98,7 @@ namespace CoreLocation {
 			}
 		}
 
-		/// <summary>Constructor that produces a region identified by <paramref name="identifier" /> that reports iBeacons associated with the <paramref name="proximityUuid" /> and that assigns the <see cref="P:CoreLocation.CLBeaconRegion.Major" /> and <see cref="P:CoreLocation.CLBeaconRegion.Minor" /> properties.</summary>
+		/// <summary>Constructor that produces a region identified by <paramref name="identifier" /> that reports iBeacons associated with the <paramref name="proximityUuid" /> and that assigns the <see cref="CoreLocation.CLBeaconRegion.Major" /> and <see cref="CoreLocation.CLBeaconRegion.Minor" /> properties.</summary>
 		/// <param name="proximityUuid">The unique ID of the iBeacons of interest.</param>
 		/// <param name="major">Can be used by the app developer for any purpose.</param>
 		/// <param name="minor">Can be used by the app developer for any purpose.</param>
@@ -116,7 +116,7 @@ namespace CoreLocation {
 			InitializeHandle (_InitWithProximityUuid (proximityUuid, major, minor, identifier), "initWithProximityUUID:major:minor:identifier:");
 		}
 
-		/// <summary>Constructor that produces a region identified by <paramref name="identifier" /> that reports iBeacons associated with the <paramref name="uuid" /> and that assigns the <see cref="P:CoreLocation.CLBeaconRegion.Major" /> and <see cref="P:CoreLocation.CLBeaconRegion.Minor" /> properties.</summary>
+		/// <summary>Constructor that produces a region identified by <paramref name="identifier" /> that reports iBeacons associated with the <paramref name="uuid" /> and that assigns the <see cref="CoreLocation.CLBeaconRegion.Major" /> and <see cref="CoreLocation.CLBeaconRegion.Minor" /> properties.</summary>
 		/// <param name="uuid">The unique ID of the iBeacons of interest.</param>
 		/// <param name="major">Can be used by the app developer for any purpose.</param>
 		/// <param name="minor">Can be used by the app developer for any purpose.</param>

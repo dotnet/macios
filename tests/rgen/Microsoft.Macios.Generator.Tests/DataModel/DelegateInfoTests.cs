@@ -399,6 +399,130 @@ namespace NS {
 					]
 				)
 			];
+
+			const string customDelegateCcallback = @"
+using System;
+using Foundation;
+using ObjCRuntime;
+using ObjCBindings;
+
+namespace NS {
+
+	public class MyNSObject : NSObject {
+	}
+
+	public class MyClass {
+		public delegate int? Callback([ForcedType] MyNSObject name);
+
+		public void MyMethod ([CCallback] Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				customDelegateCcallback,
+				new Method (
+					type: "NS.MyClass",
+					name: "MyMethod",
+					returnType: ReturnTypeForVoid (),
+					symbolAvailability: new (),
+					exportMethodData: new (),
+					attributes: [],
+					modifiers: [
+						SyntaxFactory.Token (SyntaxKind.PublicKeyword),
+					],
+					parameters: [
+						new (
+							position: 0,
+							type: ReturnTypeForDelegate (
+								"NS.MyClass.Callback",
+								delegateInfo: new (
+									name: "Invoke",
+									returnType: ReturnTypeForInt (isNullable: true),
+									parameters: [
+										new (
+											position: 0,
+											type: ReturnTypeForNSObject (nsObjectName: "NS.MyNSObject"),
+											name: "name"
+										) {
+											ForcedType = new (),
+										},
+									]
+								) {
+									IsCCallback = true,
+								}
+							),
+							name: "cb"
+						) {
+							Attributes = [
+								new ("ObjCRuntime.CCallbackAttribute")
+							]
+						}
+					]
+				)
+			];
+
+			const string customDelegateBlockcallback = @"
+using System;
+using Foundation;
+using ObjCRuntime;
+using ObjCBindings;
+
+namespace NS {
+
+	public class MyNSObject : NSObject {
+	}
+
+	public class MyClass {
+		public delegate int? Callback([ForcedType] MyNSObject name);
+
+		public void MyMethod ([BlockCallback] Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				customDelegateBlockcallback,
+				new Method (
+					type: "NS.MyClass",
+					name: "MyMethod",
+					returnType: ReturnTypeForVoid (),
+					symbolAvailability: new (),
+					exportMethodData: new (),
+					attributes: [],
+					modifiers: [
+						SyntaxFactory.Token (SyntaxKind.PublicKeyword),
+					],
+					parameters: [
+						new (
+							position: 0,
+							type: ReturnTypeForDelegate (
+								"NS.MyClass.Callback",
+								delegateInfo: new (
+									name: "Invoke",
+									returnType: ReturnTypeForInt (isNullable: true),
+									parameters: [
+										new (
+											position: 0,
+											type: ReturnTypeForNSObject (nsObjectName: "NS.MyNSObject"),
+											name: "name"
+										) {
+											ForcedType = new (),
+										},
+									]
+								) {
+									IsBlockCallback = true,
+								}
+							),
+							name: "cb"
+						) {
+							Attributes = [
+								new ("ObjCRuntime.BlockCallbackAttribute")
+							]
+						}
+					]
+				)
+			];
 		}
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();

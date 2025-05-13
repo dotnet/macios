@@ -175,7 +175,7 @@ namespace CoreGraphics {
 			}
 		}
 
-		/// <summary>Serializes a CGSize into an <see cref="T:Foundation.NSDictionary" />.</summary>
+		/// <summary>Serializes a CGSize into an <see cref="Foundation.NSDictionary" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		public NSDictionary ToDictionary ()

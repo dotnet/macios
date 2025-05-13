@@ -37,7 +37,7 @@ using Foundation;
 using ObjCRuntime;
 
 namespace AudioToolbox {
-	/// <summary>An enumeration whose values specify various types of errors relating to the <see cref="T:AudioToolbox.AudioConverter" />.</summary>
+	/// <summary>An enumeration whose values specify various types of errors relating to the <see cref="AudioToolbox.AudioConverter" />.</summary>
 	///     <remarks>To be added.</remarks>
 	public enum AudioConverterError // Impliclty cast to OSStatus in AudioConverter.h
 	{
@@ -512,7 +512,7 @@ namespace AudioToolbox {
 		/// <summary>Completely filled output audio description.</summary>
 		///         <value>
 		///         </value>
-		///         <remarks>The property can be used to obtain converter filled <see cref="T:AudioToolbox.AudioStreamBasicDescription" /> for output audio stream.</remarks>
+		///         <remarks>The property can be used to obtain converter filled <see cref="AudioToolbox.AudioStreamBasicDescription" /> for output audio stream.</remarks>
 		public unsafe AudioStreamBasicDescription CurrentOutputStreamDescription {
 			get {
 				int size;
@@ -535,7 +535,7 @@ namespace AudioToolbox {
 		/// <summary>Completely filled input audio description.</summary>
 		///         <value>
 		///         </value>
-		///         <remarks>The property can be used to obtain converter filled <see cref="T:AudioToolbox.AudioStreamBasicDescription" /> for input audio stream.</remarks>
+		///         <remarks>The property can be used to obtain converter filled <see cref="AudioToolbox.AudioStreamBasicDescription" /> for input audio stream.</remarks>
 		public unsafe AudioStreamBasicDescription CurrentInputStreamDescription {
 			get {
 				int size;
@@ -792,7 +792,7 @@ namespace AudioToolbox {
 		///         </returns>
 		///         <remarks>
 		///           <para>The
-		/// 	  <see cref="E:AudioToolbox.AudioConverter.InputData" />
+		/// 	  <see cref="AudioToolbox.AudioConverter.InputData" />
 		/// 	  event is invoked to supply the input data for the
 		/// 	  conversion.
 		/// 	  </para>

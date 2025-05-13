@@ -900,4 +900,68 @@ public class BindingSyntaxFactoryRuntimeTests {
 		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
 	}
 
+	class TestDataAsRefTests : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
+		{
+			yield return [
+				"NSObject",
+				ImmutableArray.Create (
+					Argument (IdentifierName ("arg1"))
+				),
+				"global::System.Runtime.CompilerServices.Unsafe.AsRef<NSObject> (arg1)"
+			];
+
+			yield return [
+				"NSString",
+				ImmutableArray.Create (
+					Argument (IdentifierName ("arg1")),
+					Argument (IdentifierName ("arg2")),
+					Argument (IdentifierName ("arg3"))),
+				"global::System.Runtime.CompilerServices.Unsafe.AsRef<NSString> (arg1, arg2, arg3)"
+			];
+		}
+
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
+	}
+
+	[Theory]
+	[ClassData (typeof (TestDataAsRefTests))]
+	void AsRefTests (string objectType, ImmutableArray<ArgumentSyntax> arguments, string expectedDeclaration)
+	{
+		var declaration = AsRef (objectType, arguments);
+		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
+	}
+
+	class TestDataGetDelegateForFunctionPointer : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
+		{
+			yield return [
+				"MyDelegateType",
+				ImmutableArray.Create (
+					Argument (IdentifierName ("arg1"))
+				),
+				"global::System.Runtime.InteropServices.Marshal.GetDelegateForFunctionPointer<MyDelegateType> (arg1)"
+			];
+
+			yield return [
+				"Action<string>",
+				ImmutableArray.Create (
+					Argument (IdentifierName ("arg1")),
+					Argument (IdentifierName ("arg2")),
+					Argument (IdentifierName ("arg3"))),
+				"global::System.Runtime.InteropServices.Marshal.GetDelegateForFunctionPointer<Action<string>> (arg1, arg2, arg3)"
+			];
+		}
+
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
+	}
+
+	[Theory]
+	[ClassData (typeof (TestDataGetDelegateForFunctionPointer))]
+	void GetDelegateForFunctionPointerTests (string objectType, ImmutableArray<ArgumentSyntax> arguments, string expectedDeclaration)
+	{
+		var declaration = GetDelegateForFunctionPointer (objectType, arguments);
+		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
+	}
+
 }

@@ -534,7 +534,7 @@ namespace Xamarin.Tests {
 
 		public static IList<string> GetRuntimeIdentifiersNoArch (ApplePlatform platform)
 		{
-			return GetVariableArray($"DOTNET_{platform.AsString().ToUpper()}_RUNTIME_IDENTIFIERS_NO_ARCH");
+			return GetVariableArray ($"DOTNET_{platform.AsString ().ToUpper ()}_RUNTIME_IDENTIFIERS_NO_ARCH");
 		}
 
 		public static IList<string> GetArchitectures (ApplePlatform platform)

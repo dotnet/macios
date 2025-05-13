@@ -3142,7 +3142,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<_AppPlugInsRelativeLocation Condition="'$(_PlatformName)' == 'iOS' Or '$(_PlatformName)' == 'tvOS'"></_AppPlugInsRelativeLocation>
 
 			<_AppPlugInsRelativePath>$(_AppPlugInsRelativeLocation)PlugIns\</_AppPlugInsRelativePath>
-			<_AppExtensionRoot>$(_AppBundlePath)$(_AppPlugInsRelativePath)</_AppExtensionRoot>
+			<_AppExtensionRoot>$(_AppBundlePath)$(_AppPlugInsRelativeLocation)</_AppExtensionRoot>
 			<_AppPlugInsPath>$(_AppBundlePath)$(_AppPlugInsRelativePath)</_AppPlugInsPath>
 
 			<_AppXpcServicesRelativePath Condition="'$(_PlatformName)' == 'macOS' Or '$(_PlatformName)' == 'MacCatalyst'">Contents\XPCServices\</_AppXpcServicesRelativePath>

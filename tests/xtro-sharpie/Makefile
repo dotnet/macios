@@ -137,9 +137,9 @@ $$(X$(2)_PCH): .stamp-check-sharpie
 pch:: $$(X$(2)_PCH)
 
 ifdef TESTS_USE_SYSTEM
-X$(2)_DOTNET ?= $(DOTNET_DIR)/packs/$($(X$(2)_RID)_NUGET_RUNTIME_NAME)/$($(2)_WORKLOAD_VERSION)/runtimes/$(X$(2)_RID)/lib/$(DOTNET_TFM)/$(DOTNET_$(2)_ASSEMBLY_NAME).dll
+X$(2)_DOTNET ?= $(DOTNET_DIR)/packs/$($(2)_NUGET_RUNTIME_MANAGED_NAME)/$($(2)_WORKLOAD_VERSION)/runtimes/$(DOTNET_$(2)_RUNTIME_IDENTIFIERS_NO_ARCH)/lib/$(DOTNET_TFM)/$(DOTNET_$(2)_ASSEMBLY_NAME).dll
 else
-X$(2)_DOTNET ?= $(DOTNET_DESTDIR)/$($(X$(2)_RID)_NUGET_RUNTIME_NAME)/runtimes/$(X$(2)_RID)/lib/$(DOTNET_TFM)/$(DOTNET_$(2)_ASSEMBLY_NAME).dll
+X$(2)_DOTNET ?= $(DOTNET_DESTDIR)/$($(2)_NUGET_RUNTIME_MANAGED_NAME)/runtimes/$(DOTNET_$(2)_RUNTIME_IDENTIFIERS_NO_ARCH)/lib/$(DOTNET_TFM)/$(DOTNET_$(2)_ASSEMBLY_NAME).dll
 endif
 
 $(3)-$($(2)_SDK_VERSION).g.cs: .stamp-check-sharpie $$(X$(2)_PCH)

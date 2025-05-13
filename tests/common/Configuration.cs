@@ -385,6 +385,12 @@ namespace Xamarin.Tests {
 			return GetVariable (variableName, variableName + " not found");
 		}
 
+		static string GetManagedRuntimeNuGetName (ApplePlatform platform)
+		{
+			var variableName = platform.AsString ().ToUpper () + "_NUGET_RUNTIME_MANAGED_NAME";
+			return GetVariable (variableName, variableName + " not found");
+		}
+
 		static string GetRuntimeNuGetName (ApplePlatform platform, string runtimeIdentifier)
 		{
 			var variableName = runtimeIdentifier + "_NUGET_RUNTIME_NAME";
@@ -446,9 +452,9 @@ namespace Xamarin.Tests {
 		}
 
 		// This is only applicable for .NET
-		public static string GetRuntimeDirectory (ApplePlatform platform, string runtimeIdentifier)
+		public static string GetRuntimeDirectory (ApplePlatform platform, string runtimeIdentifier, bool isManagedRuntimePack = false)
 		{
-			var rv = Path.Combine (GetDotNetRoot (), GetRuntimeNuGetName (platform, runtimeIdentifier));
+			var rv = Path.Combine (GetDotNetRoot (), isManagedRuntimePack ? GetManagedRuntimeNuGetName (platform) : GetRuntimeNuGetName (platform, runtimeIdentifier));
 			if (UseSystem)
 				rv = Path.Combine (rv, GetNuGetVersionNoMetadata (platform));
 			return Path.Combine (rv, "runtimes", runtimeIdentifier);
@@ -526,6 +532,11 @@ namespace Xamarin.Tests {
 			return GetVariableArray ($"DOTNET_{platform.AsString ().ToUpper ()}_RUNTIME_IDENTIFIERS");
 		}
 
+		public static IList<string> GetRuntimeIdentifiersNoArch (ApplePlatform platform)
+		{
+			return GetVariableArray($"DOTNET_{platform.AsString().ToUpper()}_RUNTIME_IDENTIFIERS_NO_ARCH");
+		}
+
 		public static IList<string> GetArchitectures (ApplePlatform platform)
 		{
 			var rv = new List<string> ();
@@ -548,9 +559,9 @@ namespace Xamarin.Tests {
 
 		public static IEnumerable<string> GetBaseLibraryImplementations (ApplePlatform platform)
 		{
-			var runtimeIdentifiers = GetRuntimeIdentifiers (platform);
-			foreach (var rid in runtimeIdentifiers) {
-				var libdir = Path.Combine (GetRuntimeDirectory (platform, rid), "lib", DotNetTfm);
+			var runtimeIdentifiersNoArch = GetRuntimeIdentifiersNoArch (platform);
+			foreach (var noArchRid in runtimeIdentifiersNoArch) {
+				var libdir = Path.Combine (GetRuntimeDirectory (platform, noArchRid, isManagedRuntimePack: true), "lib", DotNetTfm);
 				yield return Path.Combine (libdir, GetBaseLibraryName (platform));
 			}
 		}

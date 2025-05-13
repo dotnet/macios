@@ -3138,10 +3138,11 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<_AppCodeSignatureRelativePath Condition="'$(_PlatformName)' == 'iOS' Or '$(_PlatformName)' == 'tvOS' Or '$(_PlatformName)' == 'watchOS'"></_AppCodeSignatureRelativePath>
 			<_AppCodeSignaturePath>$(_AppBundlePath)$(_AppCodeSignatureRelativePath)</_AppCodeSignaturePath>
 
-			<_AppExtensionRoot Condition="'$(_PlatformName)' == 'macOS' Or '$(_PlatformName)' == 'MacCatalyst'">Contents\</_AppExtensionRoot>
-			<_AppExtensionRoot Condition="'$(_PlatformName)' == 'iOS' Or '$(_PlatformName)' == 'tvOS'"></_AppExtensionRoot>
+			<_AppPlugInsRelativeLocation Condition="'$(_PlatformName)' == 'macOS' Or '$(_PlatformName)' == 'MacCatalyst'">Contents\</_AppPlugInsRelativeLocation>
+			<_AppPlugInsRelativeLocation Condition="'$(_PlatformName)' == 'iOS' Or '$(_PlatformName)' == 'tvOS'"></_AppPlugInsRelativeLocation>
 
-			<_AppPlugInsRelativePath>$(_AppExtensionRoot)PlugIns\</_AppPlugInsRelativePath>
+			<_AppPlugInsRelativePath>$(_AppPlugInsRelativeLocation)PlugIns\</_AppPlugInsRelativePath>
+			<_AppExtensionRoot>$(_AppBundlePath)$(_AppPlugInsRelativePath)</_AppExtensionRoot>
 			<_AppPlugInsPath>$(_AppBundlePath)$(_AppPlugInsRelativePath)</_AppPlugInsPath>
 
 			<_AppXpcServicesRelativePath Condition="'$(_PlatformName)' == 'macOS' Or '$(_PlatformName)' == 'MacCatalyst'">Contents\XPCServices\</_AppXpcServicesRelativePath>

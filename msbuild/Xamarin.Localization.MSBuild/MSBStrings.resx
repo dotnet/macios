@@ -789,6 +789,11 @@
         </value>
     </data>
     
+    <data name="M0169" xml:space="preserve">
+        <value>Adjusted path from '{0}' to '{1}'
+        </value>
+    </data>
+
     <data name="E0169" xml:space="preserve">
         <value>Unknown target framework identifier: {0}.
         </value>

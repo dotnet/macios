@@ -972,6 +972,15 @@ The validation process may not validate every entitlement, nor is it guaranteed 
 
 If the validation fails for entitlements that actually work, please file a new issue.
 
+## ValidateXcodeVersion
+
+Choose whether the current Xcode version should be validated.
+
+The default value is to validate; set to `false` to disable.
+
+> [!NOTE]
+> Using a different than the recommended version is likely to produce problems later on in the build process.
+
 ## XamMacResourcePrefix
 
 The directory where resources are stored (this prefix will be removed when copying resources to the app bundle).

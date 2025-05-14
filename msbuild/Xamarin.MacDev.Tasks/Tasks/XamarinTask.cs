@@ -250,7 +250,8 @@ namespace Xamarin.MacDev.Tasks {
 		void ICustomLogger.LogError (string message, Exception ex)
 		{
 			Log.LogError (message);
-			Log.LogErrorFromException (ex);
+			if (ex is not null)
+				Log.LogErrorFromException (ex);
 		}
 
 		void ICustomLogger.LogWarning (string messageFormat, params object [] args)

@@ -10,7 +10,7 @@ namespace Xamarin.Tests {
 		{
 			var platforms = Configuration.GetAllPlatforms ();
 			var xcodes = Configuration.GetAllXcodes ();
-			var rv = new List<object[]> ();
+			var rv = new List<object []> ();
 			foreach (var platform in platforms) {
 				foreach (var xcode in xcodes)
 					rv.Add (new object [] { platform, xcode.Path, xcode.Version });

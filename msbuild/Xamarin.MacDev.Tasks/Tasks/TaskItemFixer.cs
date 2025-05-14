@@ -6,20 +6,6 @@ using Microsoft.Build.Utilities;
 
 namespace Xamarin.MacDev.Tasks {
 	public static class TaskItemFixer {
-		const string XIFrameworkRootDir = "/Library/Frameworks/Xamarin.iOS.framework/Versions/Current/lib/mono/";
-
-		public static void FixFrameworkItemSpecs (TaskLoggingHelper log, Func<ITaskItem, string> itemPathFactory, string targetFrameworkIdentifier, params ITaskItem [] items)
-		{
-			foreach (var item in items) {
-				var macDir = XIFrameworkRootDir + targetFrameworkIdentifier + "/";
-
-				if (item.GetMetadata ("ResolvedFrom") == "ImplicitlyExpandDesignTimeFacades" || Path.GetDirectoryName (item.ItemSpec).EndsWith ("\\Facades"))
-					macDir = macDir + "Facades/";
-
-				item.ItemSpec = macDir + item.GetMetadata ("Filename") + item.GetMetadata ("Extension");
-			}
-		}
-
 		public static void FixItemSpecs (TaskLoggingHelper log, Func<ITaskItem, string> itemPathFactory, params ITaskItem [] items)
 		{
 			foreach (var item in items) {

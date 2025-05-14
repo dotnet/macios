@@ -2259,21 +2259,41 @@
 	</Target>
 
 	<!-- This is only needed for mobile platforms, RunCommand and RunArguments are defined for macOS in Microsoft.macOS.Sdk.targets. -->
-	<Target Name="_PrepareRunMobile" DependsOnTargets="_InstallMobile;ComputeMlaunchRunArguments" Condition="'$(_PlatformName)' != 'macOS' And '$(_PlatformName)' != 'MacCatalyst'">
+	<Target
+		Name="_PrepareRunMobile"
+		BeforeTargets="ComputeRunArguments"
+		DependsOnTargets="_InstallMobile;ComputeMlaunchRunArguments"
+		Condition="'$(_PlatformName)' != 'macOS' And '$(_PlatformName)' != 'MacCatalyst'">
 		<PropertyGroup>
-			<RunCommand>'$(MlaunchPath)'</RunCommand>
-			<RunArguments>$(MlaunchRunArguments)</RunArguments>
+			<RunCommand>$(MlaunchPath)</RunCommand>
+			<RunArguments>$(MlaunchRunArguments) -- </RunArguments>
 		</PropertyGroup>
 	</Target>
 
-	<PropertyGroup>
-		<_PrepareRunDependsOn>
-			Build;
-			_PrepareRunMobile;
-		</_PrepareRunDependsOn>
-	</PropertyGroup>
+	<Target
+		Name="_PrepareRunDesktop"
+		BeforeTargets="ComputeRunArguments"
+		Condition="'$(_PlatformName)' == 'macOS' Or '$(_PlatformName)' == 'MacCatalyst'">
 
-	<Target Name="_PrepareRun" DependsOnTargets="$(_PrepareRunDependsOn)" BeforeTargets="Run" />
+		<PropertyGroup Condition="'$(RunWithOpen)' != 'false'">
+			<RunEnvironment Condition="'$(XamarinDebugMode)' != ''">$(RunEnvironment) --env __XAMARIN_DEBUG_MODE__=$(XamarinDebugMode)</RunEnvironment>
+			<RunEnvironment Condition="'$(XamarinDebugPort)' != ''">$(RunEnvironment) --env __XAMARIN_DEBUG_PORT__=$(XamarinDebugPort)</RunEnvironment>
+			<RunEnvironment Condition="'$(XamarinDebugHosts)' != ''">$(RunEnvironment) --env "__XAMARIN_DEBUG_HOSTS__=$(XamarinDebugHosts)"</RunEnvironment>
+			<RunEnvironment Condition="'$(XamarinDebugConnectTimeout)' != ''">$(RunEnvironment) --env __XAMARIN_DEBUG_CONNECT_TIMEOUT__=$(XamarinDebugConnectTimeout)</RunEnvironment>
+			<OpenArguments>$(OpenArguments) $(RunEnvironment)</OpenArguments>
+			<OpenArguments Condition="'$(StandardOutputPath)' != ''">$(OpenArguments) --stdout "$(StandardOutputPath)"</OpenArguments>
+			<OpenArguments Condition="'$(StandardErrorPath)' != ''">$(OpenArguments) --stderr "$(StandardErrorPath)"</OpenArguments>
+			<OpenArguments Condition="'$(StandardInputPath)' != ''">$(OpenArguments) --stdin "$(StandardInputPath)"</OpenArguments>
+			<OpenArguments Condition="'$(OpenNewInstance)' == 'true'">$(OpenArguments) -n</OpenArguments>
+			<RunCommand>open</RunCommand>
+			<RunArguments>$(OpenArguments) "$(TargetDir)/$(AssemblyName).app" --args</RunArguments>
+		</PropertyGroup>
+
+		<PropertyGroup Condition="'$(RunWithOpen)' == 'false'">
+			<RunCommand>$(TargetDir)/$(AssemblyName).app/Contents/MacOS/$(AssemblyName)</RunCommand>
+			<RunArguments />
+		</PropertyGroup>
+	</Target>
 
 	<!--
 		Add a 'global using nfloat = System.Runtime.InteropServices.NFloat' to ease migration from Xamarin.

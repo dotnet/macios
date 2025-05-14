@@ -2153,7 +2153,7 @@
 
 	<Target Name="_ValidateXcodeVersion"
 		AfterTargets="_DetectSdkLocations"
-		Condition="'$(ValidateXcodeVersion)' != 'false' And '$(_CanOutputAppBundle)' == 'true' ">
+		Condition="'$(ValidateXcodeVersion)' != 'false' And '$(_CanOutputAppBundle)' == 'true' And '$(IsMacEnabled)' == 'true'">
 		<!-- we only want to validate major.minor, not any revision or build numbers -->
 		<PropertyGroup>
 			<_XcodeVersionMajorMinorOnly>$([System.Version]::Parse('$(_XcodeVersion)').Major).$([System.Version]::Parse('$(_XcodeVersion)').Minor)</_XcodeVersionMajorMinorOnly>

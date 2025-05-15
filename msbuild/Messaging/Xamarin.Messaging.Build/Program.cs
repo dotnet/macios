@@ -13,7 +13,7 @@ namespace Xamarin.Messaging.Build {
 			var runner = new AgentConsoleRunner<BuildAgent> (agent, arguments);
 
 			//Hack to support legacy paths from Windows (likely Dev17 versions)
-			if (MessagingContext.BasePath.Contains("Xamarin")) {
+			if (MessagingContext.BasePath.Contains ("Xamarin")) {
 				var xamarinPath = MessagingContext.BasePath.Substring (0, MessagingContext.BasePath.IndexOf ("Xamarin") + "Xamarin".Length);
 
 				MessagingContext.BuildsPath = Path.Combine (xamarinPath, "mtbs", "builds");

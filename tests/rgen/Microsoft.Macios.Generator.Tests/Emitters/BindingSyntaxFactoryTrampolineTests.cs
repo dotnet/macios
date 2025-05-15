@@ -1551,8 +1551,8 @@ namespace NS {
 		sb.Write (conversions);
 		Assert.Equal (expectedExpression, sb.ToCode ());
 	}
-	
-	class TestDataGetTrampolineDelegateDeclaration: IEnumerable<object []> {
+
+	class TestDataGetTrampolineDelegateDeclaration : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{
 			var pointerParameter = @"
@@ -1588,7 +1588,7 @@ namespace NS {
 				"DCallback",
 				"unsafe internal delegate void DCallback (IntPtr block, System.Action callbackParameter);",
 			];
-			
+
 			var nativeEnumParameter = @"
 using System;
 using ObjCBindings;
@@ -1615,7 +1615,7 @@ namespace NS {
 				"DCallback",
 				"unsafe internal delegate void DCallback (IntPtr block, NS.NativeSampleEnum enumParameter);",
 			];
-			
+
 			var boolParameter = @"
 using System;
 using ObjCRuntime;
@@ -1672,7 +1672,7 @@ namespace NS {
 				"DCallback",
 				"unsafe internal delegate void DCallback (IntPtr block, CoreMedia.CMTimebase[] inativeArray);"
 			];
-			
+
 
 			var stringArray = @"
 using System;
@@ -1711,7 +1711,7 @@ namespace NS {
 				"DCallback",
 				"unsafe internal delegate void DCallback (IntPtr block, Foundation.INSUrlConnectionDataDelegate protocolParameter);"
 			];
-			
+
 			var outNullableInt = @"
 using System;
 using Foundation;
@@ -1730,7 +1730,7 @@ namespace NS {
 				"DCallback",
 				"unsafe internal delegate void DCallback (IntPtr block, out int? outNullableInt);"
 			];
-			
+
 			var outBoolean = @"
 using System;
 using Foundation;
@@ -1749,7 +1749,7 @@ namespace NS {
 				"DCallback",
 				"unsafe internal delegate void DCallback (IntPtr block, out bool outBool);",
 			];
-			
+
 
 			var outNSObject = @"
 using System;
@@ -1769,7 +1769,7 @@ namespace NS {
 				"DCallback",
 				"unsafe internal delegate void DCallback (IntPtr block, ref Foundation.NSObject outNSObject);"
 			];
-			
+
 			var valueReturnboolParameter = @"
 using System;
 using ObjCRuntime;
@@ -1787,7 +1787,7 @@ namespace NS {
 				"DCallback",
 				"unsafe internal delegate int DCallback (IntPtr block, bool boolParameter);",
 			];
-			
+
 			var nsObjectReturnBoolParameter = @"
 using System;
 using Foundation;
@@ -1806,7 +1806,7 @@ namespace NS {
 				"DCallback",
 				"unsafe internal delegate Foundation.NSObject DCallback (IntPtr block, bool boolParameter);",
 			];
-			
+
 			var nullableNSObjectReturnBoolParameter = @"
 using System;
 using Foundation;
@@ -1825,7 +1825,7 @@ namespace NS {
 				"DCallback",
 				"unsafe internal delegate Foundation.NSObject? DCallback (IntPtr block, bool boolParameter);",
 			];
-			
+
 			var arrayNSObjectReturnBoolParameter = @"
 using System;
 using Foundation;
@@ -1844,7 +1844,7 @@ namespace NS {
 				"DCallback",
 				"unsafe internal delegate Foundation.NSObject[] DCallback (IntPtr block, bool boolParameter);",
 			];
-			
+
 			var nullableArrayNSObjectReturnBoolParameter = @"
 using System;
 using Foundation;
@@ -1863,7 +1863,7 @@ namespace NS {
 				"DCallback",
 				"unsafe internal delegate Foundation.NSObject[]? DCallback (IntPtr block, bool boolParameter);",
 			];
-			
+
 			var genericNSObjectReturnBoolParameter = @"
 using System;
 using System.Collections.Generic;
@@ -1883,7 +1883,7 @@ namespace NS {
 				"DCallback",
 				"unsafe internal delegate System.Collections.Generic.List<Foundation.NSObject> DCallback (IntPtr block, bool boolParameter);",
 			];
-			
+
 			var genericNullableNSObjectReturnBoolParameter = @"
 using System;
 using System.Collections.Generic;
@@ -1903,7 +1903,7 @@ namespace NS {
 				"DCallback",
 				"unsafe internal delegate System.Collections.Generic.List<Foundation.NSObject?> DCallback (IntPtr block, bool boolParameter);",
 			];
-			
+
 			var genericDictNullableNSObjectReturnBoolParameter = @"
 using System;
 using System.Collections.Generic;
@@ -1927,7 +1927,7 @@ namespace NS {
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
 	}
-	
+
 	[Theory]
 	[AllSupportedPlatformsClassData<TestDataGetTrampolineDelegateDeclaration>]
 	void GetTrampolineDelegateDeclarationTests (ApplePlatform platform, string inputText, string expectedDelegateName, string expectedExpression)
@@ -1946,7 +1946,7 @@ namespace NS {
 		var parameter = changes.Value.Parameters [0];
 		// assert it is indeed a delegate
 		Assert.NotNull (parameter.Type.Delegate);
-		var delegateDeclaration= GetTrampolineDelegateDeclaration (parameter.Type, out string delegateName);
+		var delegateDeclaration = GetTrampolineDelegateDeclaration (parameter.Type, out string delegateName);
 		Assert.Equal (expectedDelegateName, delegateName);
 		Assert.Equal (expectedExpression, delegateDeclaration.ToString ());
 	}

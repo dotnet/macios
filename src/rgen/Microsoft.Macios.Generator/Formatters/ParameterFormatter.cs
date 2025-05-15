@@ -36,7 +36,7 @@ static class ParameterFormatter {
 
 		return ParameterList (SeparatedList<ParameterSyntax> (nodes)).NormalizeWhitespace ();
 	}
-	
+
 	public static ParameterSyntax ToDeclaration (this in ParameterDataModel parameter)
 	{
 		// modifiers come from two situations, we have the params keyword or not. We cannot have params + a ref modifier

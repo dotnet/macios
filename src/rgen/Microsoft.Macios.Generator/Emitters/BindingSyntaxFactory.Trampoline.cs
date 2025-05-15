@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System;
 using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.CodeAnalysis;
@@ -8,6 +9,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Macios.Generator.DataModel;
 using Microsoft.Macios.Generator.Extensions;
+using Microsoft.Macios.Generator.Formatters;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using TypeInfo = Microsoft.Macios.Generator.DataModel.TypeInfo;
 
@@ -445,5 +447,50 @@ static partial class BindingSyntaxFactory {
 						.WithInitializer (
 							EqualsValueClause (invocation.WithLeadingTrivia (Space)).WithLeadingTrivia (Space))));
 		return LocalDeclarationStatement (declaration);
+	}
+
+	/// <summary>
+	/// Return the delegate declaration for the trampoline delegate. The trampoline delegate is a delegate that
+	/// takes as a first parameter a IntPtr that represents the block to be called. The rest of the parameters are
+	/// the same as the original delegate.
+	/// </summary>
+	/// <param name="delegateTypeInfo">The delegate type information.</param>
+	/// <param name="delegateName">The name of the delegate generated.</param>
+	/// <returns>The syntax of the delegate.</returns>
+	internal static SyntaxNode GetTrampolineDelegateDeclaration (in TypeInfo delegateTypeInfo, out string delegateName)
+	{
+		// generate a new delegate type with the addition of the IntPtr parameter for block
+		var modifiers = TokenList (new [] {Token (SyntaxKind.UnsafeKeyword), Token (SyntaxKind.InternalKeyword)});
+		delegateName = Nomenclator.GetTrampolineClassName (delegateTypeInfo.Name, Nomenclator.TrampolineClassType.DelegateType);
+		
+		// build the arguments for the delegate, but add a IntPtr parameter at the start of the list 
+		var parameterBucket = ImmutableArray.CreateBuilder<ParameterSyntax> (delegateTypeInfo.Delegate!.Parameters.Length + 1);
+		// block parameter needed for the trampoline
+		parameterBucket.Add (
+			Parameter(Identifier(Nomenclator.GetTrampolineBlockParameterName ()))
+				.WithType(IdentifierName("IntPtr")
+			));
+		foreach (var parameterInfo in delegateTypeInfo.Delegate!.Parameters) {
+			// build the parameter
+			var parameterType = parameterInfo.Type.GetIdentifierSyntax ();
+			var parameterSyntax = Parameter (Identifier (parameterInfo.Name))
+				.WithType (parameterType);
+			// add a modifier if needed
+			if (parameterInfo.IsByRef) {
+				parameterSyntax = parameterSyntax.WithModifiers (parameterInfo.ReferenceKind.ToTokens ());
+			}
+			parameterBucket.Add (parameterSyntax);
+		}
+		var parametersSyntax = ParameterList (
+			SeparatedList<ParameterSyntax> (
+			parameterBucket.ToImmutableArray ().ToSyntaxNodeOrTokenArray ())).NormalizeWhitespace ();
+		// delegate declaration
+		var declaration = DelegateDeclaration (
+					delegateTypeInfo.Delegate!.ReturnType.GetIdentifierSyntax (),
+				Identifier (delegateName))
+			.WithModifiers (modifiers).NormalizeWhitespace ()
+			.WithParameterList (parametersSyntax.WithLeadingTrivia (Space));
+		
+		return declaration;
 	}
 }

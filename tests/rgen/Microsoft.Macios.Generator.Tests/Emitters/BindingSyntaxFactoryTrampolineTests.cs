@@ -1551,6 +1551,406 @@ namespace NS {
 		sb.Write (conversions);
 		Assert.Equal (expectedExpression, sb.ToCode ());
 	}
+	
+	class TestDataGetTrampolineDelegateDeclaration: IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
+		{
+			var pointerParameter = @"
+using System;
+
+namespace NS {
+	public delegate void Callback (int* pointerParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				pointerParameter,
+				"DCallback",
+				"unsafe internal delegate void DCallback (IntPtr block, int* pointerParameter);",
+			];
+
+			var ccallbackParameter = @"
+using System;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate void Callback ([CCallback] Action callbackParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				ccallbackParameter,
+				"DCallback",
+				"unsafe internal delegate void DCallback (IntPtr block, System.Action callbackParameter);",
+			];
+			
+			var nativeEnumParameter = @"
+using System;
+using ObjCBindings;
+using ObjCRuntime;
+
+namespace NS {
+
+        [Native (""""GKErrorCode"""")]
+        [BindingType<SmartEnum> (Flags = SmartEnum.ErrorCode, ErrorDomain = """"GKErrorDomain"""")]
+        public enum NativeSampleEnum : long {
+                None = 0,
+                Unknown = 1,
+        }
+
+        public delegate void Callback (NativeSampleEnum enumParameter);
+        public class MyClass {
+                public void MyMethod (Callback cb) {}
+        }
+}
+";
+
+			yield return [
+				nativeEnumParameter,
+				"DCallback",
+				"unsafe internal delegate void DCallback (IntPtr block, NS.NativeSampleEnum enumParameter);",
+			];
+			
+			var boolParameter = @"
+using System;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate void Callback (bool boolParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				boolParameter,
+				"DCallback",
+				"unsafe internal delegate void DCallback (IntPtr block, bool boolParameter);",
+			];
+
+			var nsObjectArray = @"
+using System;
+using Foundation;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate void Callback (NSObject[] nsObjectArray);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				nsObjectArray,
+				"DCallback",
+				"unsafe internal delegate void DCallback (IntPtr block, Foundation.NSObject[] nsObjectArray);",
+			];
+
+			var iNativeObjectArray = @"
+using System;
+using Foundation;
+using CoreMedia;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate void Callback (CMTimebase[] inativeArray);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				iNativeObjectArray,
+				"DCallback",
+				"unsafe internal delegate void DCallback (IntPtr block, CoreMedia.CMTimebase[] inativeArray);"
+			];
+			
+
+			var stringArray = @"
+using System;
+using Foundation;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate void Callback (string [] stringArray);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				stringArray,
+				"DCallback",
+				"unsafe internal delegate void DCallback (IntPtr block, string[] stringArray);",
+			];
+
+			var protocolParameter = @"
+using System;
+using Foundation;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate void Callback (INSUrlConnectionDataDelegate protocolParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				protocolParameter,
+				"DCallback",
+				"unsafe internal delegate void DCallback (IntPtr block, Foundation.INSUrlConnectionDataDelegate protocolParameter);"
+			];
+			
+			var outNullableInt = @"
+using System;
+using Foundation;
+using ObjCBindings;
+
+namespace NS {
+	public delegate void Callback (out int? outNullableInt);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				outNullableInt,
+				"DCallback",
+				"unsafe internal delegate void DCallback (IntPtr block, out int? outNullableInt);"
+			];
+			
+			var outBoolean = @"
+using System;
+using Foundation;
+using ObjCBindings;
+
+namespace NS {
+	public delegate void Callback (out bool outBool);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				outBoolean,
+				"DCallback",
+				"unsafe internal delegate void DCallback (IntPtr block, out bool outBool);",
+			];
+			
+
+			var outNSObject = @"
+using System;
+using Foundation;
+using ObjCBindings;
+
+namespace NS {
+	public delegate void Callback (ref NSObject outNSObject);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				outNSObject,
+				"DCallback",
+				"unsafe internal delegate void DCallback (IntPtr block, ref Foundation.NSObject outNSObject);"
+			];
+			
+			var valueReturnboolParameter = @"
+using System;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate int Callback (bool boolParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				valueReturnboolParameter,
+				"DCallback",
+				"unsafe internal delegate int DCallback (IntPtr block, bool boolParameter);",
+			];
+			
+			var nsObjectReturnBoolParameter = @"
+using System;
+using Foundation;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate NSObject Callback (bool boolParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				nsObjectReturnBoolParameter,
+				"DCallback",
+				"unsafe internal delegate Foundation.NSObject DCallback (IntPtr block, bool boolParameter);",
+			];
+			
+			var nullableNSObjectReturnBoolParameter = @"
+using System;
+using Foundation;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate NSObject? Callback (bool boolParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				nullableNSObjectReturnBoolParameter,
+				"DCallback",
+				"unsafe internal delegate Foundation.NSObject? DCallback (IntPtr block, bool boolParameter);",
+			];
+			
+			var arrayNSObjectReturnBoolParameter = @"
+using System;
+using Foundation;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate NSObject[] Callback (bool boolParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				arrayNSObjectReturnBoolParameter,
+				"DCallback",
+				"unsafe internal delegate Foundation.NSObject[] DCallback (IntPtr block, bool boolParameter);",
+			];
+			
+			var nullableArrayNSObjectReturnBoolParameter = @"
+using System;
+using Foundation;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate NSObject[]? Callback (bool boolParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				nullableArrayNSObjectReturnBoolParameter,
+				"DCallback",
+				"unsafe internal delegate Foundation.NSObject[]? DCallback (IntPtr block, bool boolParameter);",
+			];
+			
+			var genericNSObjectReturnBoolParameter = @"
+using System;
+using System.Collections.Generic;
+using Foundation;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate List<NSObject> Callback (bool boolParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				genericNSObjectReturnBoolParameter,
+				"DCallback",
+				"unsafe internal delegate System.Collections.Generic.List<Foundation.NSObject> DCallback (IntPtr block, bool boolParameter);",
+			];
+			
+			var genericNullableNSObjectReturnBoolParameter = @"
+using System;
+using System.Collections.Generic;
+using Foundation;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate List<NSObject?> Callback (bool boolParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				genericNullableNSObjectReturnBoolParameter,
+				"DCallback",
+				"unsafe internal delegate System.Collections.Generic.List<Foundation.NSObject?> DCallback (IntPtr block, bool boolParameter);",
+			];
+			
+			var genericDictNullableNSObjectReturnBoolParameter = @"
+using System;
+using System.Collections.Generic;
+using Foundation;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate Dictionary<string, NSObject?> Callback (bool boolParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				genericDictNullableNSObjectReturnBoolParameter,
+				"DCallback",
+				"unsafe internal delegate System.Collections.Generic.Dictionary<string, Foundation.NSObject?> DCallback (IntPtr block, bool boolParameter);",
+			];
+		}
+
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
+	}
+	
+	[Theory]
+	[AllSupportedPlatformsClassData<TestDataGetTrampolineDelegateDeclaration>]
+	void GetTrampolineDelegateDeclarationTests (ApplePlatform platform, string inputText, string expectedDelegateName, string expectedExpression)
+	{
+		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
+		Assert.Single (syntaxTrees);
+		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
+		var declaration = syntaxTrees [0].GetRoot ()
+			.DescendantNodes ().OfType<MethodDeclarationSyntax> ()
+			.FirstOrDefault ();
+		Assert.NotNull (declaration);
+		Assert.True (Method.TryCreate (declaration, semanticModel, out var changes));
+		Assert.NotNull (changes);
+		// we know the first parameter of the method is the delegate
+		Assert.Single (changes.Value.Parameters);
+		var parameter = changes.Value.Parameters [0];
+		// assert it is indeed a delegate
+		Assert.NotNull (parameter.Type.Delegate);
+		var delegateDeclaration= GetTrampolineDelegateDeclaration (parameter.Type, out string delegateName);
+		Assert.Equal (expectedDelegateName, delegateName);
+		var e = delegateDeclaration.ToString ();
+		Assert.Equal (expectedExpression, delegateDeclaration.ToString ());
+	}
 
 	class TestDataCallTrampolineDelegate : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()

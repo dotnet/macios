@@ -311,7 +311,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			// Assemblies and their related files
 			var assemblyDebugExtensions = new string [] {
-				".pdb",
+				".pdb", ".dll.mdb", ".exe.mdb",
 			};
 			foreach (var extension in assemblyDebugExtensions) {
 				if (filename.EndsWith (extension, StringComparison.OrdinalIgnoreCase))

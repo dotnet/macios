@@ -173,4 +173,10 @@ class Nomenclator {
 	/// </summary>
 	/// <returns>The name to be used in the delegate.</returns>
 	public static string GetTrampolineBlockParameterName () => "block";
+	
+	/// <summary>
+	/// Return the name of the invoke method of the trampoline.
+	/// </summary>
+	/// <returns>The method name to be used.</returns>
+	public static string GetTrampolineInvokeMethodName () => "Invoke";
 }

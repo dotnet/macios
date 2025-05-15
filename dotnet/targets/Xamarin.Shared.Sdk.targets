@@ -2172,19 +2172,46 @@
 		<RelativeMlaunchPath Condition="'$(RelativeMlaunchPath)' == '' And '$(_RelativeMlaunchPath)' != ''">$(_RelativeMlaunchPath)</RelativeMlaunchPath>
 		<RelativeMlaunchPath Condition="'$(RelativeMlaunchPath)' == ''">$(XamarinRelativeSdkRootDirectory)tools\bin\mlaunch</RelativeMlaunchPath>
 		<_RelativeMlaunchPath Condition="'$(_RelativeMlaunchPath)' == ''">$(RelativeMlaunchPath)</_RelativeMlaunchPath>
+
+		<DeviceName Condition="'$(DeviceName)' == ''">$(_DeviceName)</DeviceName>
 	</PropertyGroup>
 
-	<Target Name="ComputeMlaunchInstallArguments" DependsOnTargets="_DetectSdkLocations;_GenerateBundleName;_DetectAppManifest;_ComputeMlaunchInstallArguments" />
-	<Target Name="_ComputeMlaunchInstallArguments" Condition="'$(_SdkIsSimulator)' == 'false'">
+	<Target
+		Name="ShowRunHelp"
+		DependsOnTargets="_DetectSdkLocations;_GenerateBundleName;_DetectAppManifest">
+		<Error Condition="$([MSBuild]::IsOSPlatform('windows'))" Text="It's currently not supported to launch an app from the command line on Windows." />
+		<Error Condition="!Exists('$(_AppBundleManifestPath)')" Text="The app must be built before showing how to launch it." />
+
+		<GetMlaunchArguments
+			AppManifestPath="$(_AppBundleManifestPath)"
+			Help="true"
+			MlaunchPath="$(MlaunchPath)"
+			SdkDevPath="$(_SdkDevPath)"
+			SdkIsSimulator="$(_SdkIsSimulator)"
+			SdkVersion="$(_SdkVersion)"
+			SupportedOSPlatformVersion="$(SupportedOSPlatformVersion)"
+			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
+		>
+		</GetMlaunchArguments>
+
+		<!-- If invoked from 'dotnet run', don't actually run anything -->
+		<PropertyGroup>
+			<RunCommand>true</RunCommand>
+			<RunArguments />
+		</PropertyGroup>
+	</Target>
+	<Target Name="_ShowRunHelpConditioned" Condition="'$(Help)' == 'true'" DependsOnTargets="ShowRunHelp" />
+
+	<Target Name="ComputeMlaunchInstallArguments" DependsOnTargets="_DetectSdkLocations;_GenerateBundleName;_DetectAppManifest;_ShowRunHelpConditioned;_ComputeMlaunchInstallArguments" />
+	<Target Name="_ComputeMlaunchInstallArguments" Condition="'$(_SdkIsSimulator)' == 'false' And '$(Help)' != 'true'">
 		<!-- Launching from the command line on windows hasn't been implemented: https://github.com/dotnet/macios/issues/16609 -->
 		<Error Condition="$([MSBuild]::IsOSPlatform('windows'))" Text="It's currently not supported to launch an app from the command line on Windows." />
 		<Error Condition="!Exists('$(_AppBundleManifestPath)')" Text="The app must be built before the arguments to launch the app using mlaunch can be computed." />
 
 		<GetMlaunchArguments
 			SessionId="$(BuildSessionId)"
-			AppBundlePath="$(_AppBundlePath)"
 			AppManifestPath="$(_AppBundleManifestPath)"
-			DeviceName="$(_DeviceName)"
+			DeviceName="$(DeviceName)"
 			InstallApp="$(_AppBundlePath)"
 			MlaunchPath="$(MlaunchPath)"
 			SdkDevPath="$(_SdkDevPath)"
@@ -2208,7 +2235,9 @@
 		<Exec SessionId="$(BuildSessionId)" Command="'$(MlaunchPath)' $(MlaunchInstallArguments)" />
 	</Target>
 
-	<Target Name="ComputeMlaunchRunArguments" DependsOnTargets="_DetectSdkLocations;_GenerateBundleName;_DetectAppManifest" Condition="'$(_PlatformName)' != 'macOS' And '$(_PlatformName)' != 'MacCatalyst'">
+	<Target Name="ComputeMlaunchRunArguments" DependsOnTargets="_DetectSdkLocations;_GenerateBundleName;_DetectAppManifest;_ShowRunHelpConditioned;_ComputeMlaunchRunArguments" Condition="'$(_PlatformName)' != 'macOS' And '$(_PlatformName)' != 'MacCatalyst'" />
+
+	<Target Name="_ComputeMlaunchRunArguments" Condition="'$(Help)' != 'true'">
 		<!-- Launching from the command line on windows hasn't been implemented: https://github.com/dotnet/macios/issues/16609 -->
 		<Error Condition="$([MSBuild]::IsOSPlatform('windows'))" Text="It's currently not supported to launch an app from the command line on Windows." />
 		<Error Condition="!Exists('$(_AppBundleManifestPath)')" Text="The app must be built before the arguments to launch the app using mlaunch can be computed." />
@@ -2231,10 +2260,9 @@
 		<GetMlaunchArguments
 			SessionId="$(BuildSessionId)"
 			AdditionalArguments="@(MlaunchAdditionalArguments)"
-			AppBundlePath="$(_AppBundlePath)"
 			AppManifestPath="$(_AppBundleManifestPath)"
 			CaptureOutput="$(_MlaunchCaptureOutput)"
-			DeviceName="$(_DeviceName)"
+			DeviceName="$(DeviceName)"
 			EnvironmentVariables="@(MlaunchEnvironmentVariables)"
 			LaunchApp="$(_AppBundlePath)"
 			MlaunchPath="$(MlaunchPath)"
@@ -2256,6 +2284,11 @@
 			WriteOnlyWhenDifferent="true"
 			Condition="'$(MlaunchRunScript)' != ''"
 			 />
+
+		<PropertyGroup>
+			<RunCommand>$(MlaunchPath)</RunCommand>
+			<RunArguments>$(MlaunchRunArguments) -- </RunArguments>
+		</PropertyGroup>
 	</Target>
 
 	<!-- This is only needed for mobile platforms, RunCommand and RunArguments are defined for macOS in Microsoft.macOS.Sdk.targets. -->
@@ -2264,10 +2297,6 @@
 		BeforeTargets="ComputeRunArguments"
 		DependsOnTargets="_InstallMobile;ComputeMlaunchRunArguments"
 		Condition="'$(_PlatformName)' != 'macOS' And '$(_PlatformName)' != 'MacCatalyst'">
-		<PropertyGroup>
-			<RunCommand>$(MlaunchPath)</RunCommand>
-			<RunArguments>$(MlaunchRunArguments) -- </RunArguments>
-		</PropertyGroup>
 	</Target>
 
 	<Target

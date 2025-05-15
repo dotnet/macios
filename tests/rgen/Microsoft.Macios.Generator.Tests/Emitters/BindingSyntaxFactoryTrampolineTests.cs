@@ -1948,7 +1948,6 @@ namespace NS {
 		Assert.NotNull (parameter.Type.Delegate);
 		var delegateDeclaration= GetTrampolineDelegateDeclaration (parameter.Type, out string delegateName);
 		Assert.Equal (expectedDelegateName, delegateName);
-		var e = delegateDeclaration.ToString ();
 		Assert.Equal (expectedExpression, delegateDeclaration.ToString ());
 	}
 

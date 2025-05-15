@@ -163,14 +163,14 @@ namespace Xamarin.MacDev.Tasks {
 				BuildConnection.CancelAsync (BuildEngine4).Wait ();
 		}
 
-		string GetIncludeDirectory(ITaskItem item)
+		string GetIncludeDirectory (ITaskItem item)
 		{
 			var path = Path.GetFullPath (item.ItemSpec);
 
 			if (string.IsNullOrEmpty (DotNetRoot)) {
 				return path;
 			}
-				
+
 			var packsIdentifier = "packs";
 			var dotnetPacksIdentifier = Path.Combine ("dotnet", packsIdentifier);
 

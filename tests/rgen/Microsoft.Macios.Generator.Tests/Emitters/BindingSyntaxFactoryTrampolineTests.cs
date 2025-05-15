@@ -2066,7 +2066,7 @@ namespace NS {
 		var invocation = CallTrampolineDelegate (parameter.Type.Delegate, argumentSyntax);
 		Assert.Equal (expectedExpression, invocation.ToFullString ());
 	}
-	
+
 	class TestDataGetTrampolineInvokeDeclaration : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{
@@ -2423,7 +2423,7 @@ namespace NS {
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
 	}
-	
+
 	[Theory]
 	[AllSupportedPlatformsClassData<TestDataGetTrampolineInvokeDeclaration>]
 	void GetTrampolineInvokeDeclarationTests (ApplePlatform platform, string inputText, string expectedExpression)

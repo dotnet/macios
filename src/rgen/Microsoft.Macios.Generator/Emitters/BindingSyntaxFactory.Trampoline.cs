@@ -448,7 +448,7 @@ static partial class BindingSyntaxFactory {
 							EqualsValueClause (invocation.WithLeadingTrivia (Space)).WithLeadingTrivia (Space))));
 		return LocalDeclarationStatement (declaration);
 	}
-	
+
 	/// <summary>
 	/// Helper method to get the parameters of the trampoline delegate and its invoke implementation.
 	/// </summary>
@@ -479,7 +479,7 @@ static partial class BindingSyntaxFactory {
 				parameterBucket.ToImmutableArray ().ToSyntaxNodeOrTokenArray ())).NormalizeWhitespace ();
 		return parametersSyntax;
 	}
-	
+
 	/// <summary>
 	/// Return the delegate declaration for the trampoline delegate. The trampoline delegate is a delegate that
 	/// takes as a first parameter a IntPtr that represents the block to be called. The rest of the parameters are
@@ -514,13 +514,13 @@ static partial class BindingSyntaxFactory {
 	internal static MemberDeclarationSyntax GetTrampolineInvokeSignature (in TypeInfo delegateTypeInfo)
 	{
 		var modifiers = TokenList (
-			Token (SyntaxKind.InternalKeyword), 
-			Token (SyntaxKind.StaticKeyword), 
+			Token (SyntaxKind.InternalKeyword),
+			Token (SyntaxKind.StaticKeyword),
 			Token (SyntaxKind.UnsafeKeyword));
 		var parametersSyntax = GetBlockDelegateParameters (delegateTypeInfo);
-		
+
 		var method = MethodDeclaration (
-				delegateTypeInfo.Delegate!.ReturnType.GetIdentifierSyntax (), 
+				delegateTypeInfo.Delegate!.ReturnType.GetIdentifierSyntax (),
 				Identifier (Nomenclator.GetTrampolineInvokeMethodName ()))
 			.WithModifiers (modifiers).NormalizeWhitespace ()
 			.WithParameterList (parametersSyntax.WithLeadingTrivia (Space));

@@ -550,12 +550,12 @@ namespace Xamarin.MacDev.Tasks {
 			InCustomEntitlements,
 		}
 
-		CompileEntitlements ValidateEntitlementsImpl (string validateEntitlements, string[] expectedErrors, EntitlementsMode entitlementsMode, string mobileProvision = "profile.mobileprovision", string apsEnvironmentValue = "production")
+		CompileEntitlements ValidateEntitlementsImpl (string validateEntitlements, string [] expectedErrors, EntitlementsMode entitlementsMode, string mobileProvision = "profile.mobileprovision", string apsEnvironmentValue = "production")
 		{
 			return ValidateEntitlementsImpl (ApplePlatform.iOS, validateEntitlements, expectedErrors, entitlementsMode, "aps-environment", "String", apsEnvironmentValue, mobileProvision);
 		}
 
-		CompileEntitlements ValidateEntitlementsImpl (ApplePlatform platform, string validateEntitlements, string[] expectedErrors, EntitlementsMode entitlementsMode, string entitlement, string type, string value, string mobileProvision = "profile.mobileprovision")
+		CompileEntitlements ValidateEntitlementsImpl (ApplePlatform platform, string validateEntitlements, string [] expectedErrors, EntitlementsMode entitlementsMode, string entitlement, string type, string value, string mobileProvision = "profile.mobileprovision")
 		{
 			var task = CreateTask<CustomCompileEntitlements> ();
 			Engine.Logger.Clear ();

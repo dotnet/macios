@@ -16,21 +16,15 @@ using CoreFoundation;
 using ObjCRuntime;
 using Foundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace ImageIO {
 
 	// CGImageMetadata.h
-#if NET
 	/// <summary>An EXIF, IPTC, or XMP property and value.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CGImageMetadataTag : NativeObject {
 
 		// note: CGImageMetadataType is always an int (4 bytes) so it's ok to use in the pinvoke declaration
@@ -38,13 +32,6 @@ namespace ImageIO {
 		extern static /* CGImageMetadataTagRef __nullable */ IntPtr CGImageMetadataTagCreate (
 			/* CFStringRef __nonnull */ IntPtr xmlns, /* CFStringRef __nullable */ IntPtr prefix,
 			/* CFStringRef __nonnull */ IntPtr name, CGImageMetadataType type, /* CFTypeRef __nonnull */ IntPtr value);
-
-#if !NET
-		public CGImageMetadataTag (NativeHandle handle)
-			: base (handle, false)
-		{
-		}
-#endif
 
 		[Preserve (Conditional = true)]
 		internal CGImageMetadataTag (NativeHandle handle, bool owns)

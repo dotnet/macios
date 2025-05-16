@@ -1,4 +1,3 @@
-#if NET
 using System;
 
 using ObjCRuntime;
@@ -33,4 +32,3 @@ namespace FSKit {
 		}
 	}
 }
-#endif // NET

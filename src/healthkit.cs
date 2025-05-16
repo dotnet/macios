@@ -25,10 +25,6 @@ using UIKit;
 using NSViewController = Foundation.NSObject;
 #endif
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace HealthKit {
 
 	/// <summary>Enumerates HealthKit document types.</summary>
@@ -234,16 +230,9 @@ namespace HealthKit {
 		Right = 1,
 	}
 
-#if NET
 	/// <summary>The completion handler for <see cref="HealthKit.HKAnchoredObjectQuery.HKAnchoredObjectQuery(HealthKit.HKSampleType,Foundation.NSPredicate,System.UIntPtr,System.UIntPtr,HealthKit.HKAnchoredObjectResultHandler2)" />.</summary>
 	/// <summary>Completion handler for anchored object queries.</summary>
 	delegate void HKAnchoredObjectResultHandler (HKAnchoredObjectQuery query, HKSample [] results, nuint newAnchor, NSError error);
-#else
-	delegate void HKAnchoredObjectResultHandler2 (HKAnchoredObjectQuery query, HKSample [] results, nuint newAnchor, NSError error);
-
-	[Obsolete ("Use HKAnchoredObjectResultHandler2 instead")]
-	delegate void HKAnchoredObjectResultHandler (HKAnchoredObjectQuery query, HKSampleType [] results, nuint newAnchor, NSError error);
-#endif
 
 	delegate void HKAnchoredObjectUpdateHandler (HKAnchoredObjectQuery query, HKSample [] addedObjects, HKDeletedObject [] deletedObjects, HKQueryAnchor newAnchor, NSError error);
 
@@ -257,10 +246,6 @@ namespace HealthKit {
 	[BaseType (typeof (HKQuery))]
 	[DisableDefaultCtor] // NSInvalidArgumentException: The -init method is not available on HKAnchoredObjectQuery
 	interface HKAnchoredObjectQuery {
-
-#if !NET
-		[Obsolete ("Use the overload that takes HKAnchoredObjectResultHandler2 instead")]
-#endif
 		/// <param name="type">To be added.</param>
 		/// <param name="predicate">
 		///           <para>To be added.</para>
@@ -276,13 +261,6 @@ namespace HealthKit {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 		[Export ("initWithType:predicate:anchor:limit:completionHandler:")]
 		NativeHandle Constructor (HKSampleType type, [NullAllowed] NSPredicate predicate, nuint anchor, nuint limit, HKAnchoredObjectResultHandler completion);
-
-#if !NET
-		[Sealed]
-		[Deprecated (PlatformName.iOS, 9, 0)]
-		[Export ("initWithType:predicate:anchor:limit:completionHandler:")]
-		NativeHandle Constructor (HKSampleType type, [NullAllowed] NSPredicate predicate, nuint anchor, nuint limit, HKAnchoredObjectResultHandler2 completion);
-#endif
 
 		/// <param name="type">To be added.</param>
 		/// <param name="predicate">
@@ -1904,9 +1882,7 @@ namespace HealthKit {
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/HealthKit/Reference/HKObject_Class/index.html">Apple documentation for <c>HKObject</c></related>
 	[Mac (13, 0)]
 	[MacCatalyst (13, 1)]
-#if NET
 	[Abstract] // as per docs
-#endif
 	[DisableDefaultCtor] // - (instancetype)init NS_UNAVAILABLE;
 	[BaseType (typeof (NSObject))]
 	interface HKObject : NSSecureCoding {
@@ -1941,9 +1917,7 @@ namespace HealthKit {
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/HealthKit/Reference/HKObjectType_Class/index.html">Apple documentation for <c>HKObjectType</c></related>
 	[Mac (13, 0)]
 	[MacCatalyst (13, 1)]
-#if NET
 	[Abstract]
-#endif
 	[DisableDefaultCtor] // - (instancetype)init NS_UNAVAILABLE;
 	[BaseType (typeof (NSObject))]
 	interface HKObjectType : NSSecureCoding, NSCopying {
@@ -1951,57 +1925,41 @@ namespace HealthKit {
 		[Export ("identifier")]
 		NSString Identifier { get; }
 
-#if NET
 		/// <param name="hkTypeIdentifier">To be added.</param>
 		///         <summary>Returns the quantity type of <paramref name="hkTypeIdentifier" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[Internal]
-#else
-		[Obsolete ("Use 'HKQuantityType.Create (HKQuantityTypeIdentifier)'.")]
-#endif
 		[Static]
 		[Export ("quantityTypeForIdentifier:")]
 		[return: NullAllowed]
 		HKQuantityType GetQuantityType ([NullAllowed] NSString hkTypeIdentifier);
 
-#if NET
 		/// <param name="hkCategoryTypeIdentifier">To be added.</param>
 		///         <summary>Returns the category type for <paramref name="hkCategoryTypeIdentifier" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[Internal]
-#else
-		[Obsolete ("Use 'HKCategoryType.Create (HKCategoryTypeIdentifier)'.")]
-#endif
 		[Static]
 		[Export ("categoryTypeForIdentifier:")]
 		[return: NullAllowed]
 		HKCategoryType GetCategoryType ([NullAllowed] NSString hkCategoryTypeIdentifier);
 
-#if NET
 		/// <param name="hkCharacteristicTypeIdentifier">To be added.</param>
 		///         <summary>Returns the characteristic type of <paramref name="hkCharacteristicTypeIdentifier" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[Internal]
-#else
-		[Obsolete ("Use 'HKCharacteristicType.Create (HKCharacteristicTypeIdentifier)'.")]
-#endif
 		[Static]
 		[Export ("characteristicTypeForIdentifier:")]
 		[return: NullAllowed]
 		HKCharacteristicType GetCharacteristicType ([NullAllowed] NSString hkCharacteristicTypeIdentifier);
 
-#if NET
 		/// <param name="hkCorrelationTypeIdentifier">To be added.</param>
 		///         <summary>Returns the correlation type of <paramref name="hkCorrelationTypeIdentifier" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[Internal]
-#else
-		[Obsolete ("Use 'HKCorrelationType.Create (HKCorrelationTypeIdentifier)'.")]
-#endif
 		[Static, Export ("correlationTypeForIdentifier:")]
 		[return: NullAllowed]
 		HKCorrelationType GetCorrelationType ([NullAllowed] NSString hkCorrelationTypeIdentifier);
@@ -2014,11 +1972,7 @@ namespace HealthKit {
 		HKDocumentType _GetDocumentType (NSString hkDocumentTypeIdentifier);
 
 		[Static, Export ("workoutType")]
-#if NET
 		HKWorkoutType WorkoutType { get; }
-#else
-		HKWorkoutType GetWorkoutType ();
-#endif
 
 		[Mac (13, 0)]
 		[MacCatalyst (13, 1)]
@@ -2192,9 +2146,7 @@ namespace HealthKit {
 	[Mac (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (HKQuery))]
-#if NET
 	[Abstract]
-#endif
 	[DisableDefaultCtor] // NSInvalidArgumentException Reason: The -init method is not available on HKObserverQuery
 	interface HKObserverQuery {
 		[Export ("initWithSampleType:predicate:updateHandler:")]
@@ -2563,9 +2515,7 @@ namespace HealthKit {
 	[Mac (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (HKObject))]
-#if NET
 	[Abstract]
-#endif
 	[DisableDefaultCtor] // NSInvalidArgumentException Reason: The -init method is not available on HKSample
 	interface HKSample {
 

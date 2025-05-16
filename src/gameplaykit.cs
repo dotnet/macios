@@ -9,35 +9,21 @@
 
 using System;
 using System.ComponentModel;
+using System.Numerics;
 using ObjCRuntime;
 using Foundation;
 using SpriteKit;
 using SceneKit;
-#if NET
+
 using MatrixFloat3x3 = global::CoreGraphics.NMatrix3;
-using Vector2 = global::System.Numerics.Vector2;
-using Vector3 = global::System.Numerics.Vector3;
 using Vector2d = global::CoreGraphics.NVector2d;
 using Vector2i = global::CoreGraphics.NVector2i;
 using Vector3d = global::CoreGraphics.NVector3d;
-#else
-using Matrix3 = global::OpenTK.Matrix3;
-using MatrixFloat3x3 = global::OpenTK.NMatrix3;
-using Vector2 = global::OpenTK.Vector2;
-using Vector3 = global::OpenTK.Vector3;
-using Vector2d = global::OpenTK.Vector2d;
-using Vector2i = global::OpenTK.Vector2i;
-using Vector3d = global::OpenTK.Vector3d;
-#endif
 
 #if MONOMAC
 using SKColor = AppKit.NSColor;
 #else
 using SKColor = UIKit.UIColor;
-#endif
-
-#if !NET
-using NativeHandle = System.IntPtr;
 #endif
 
 namespace GameplayKit {
@@ -182,24 +168,8 @@ namespace GameplayKit {
 		[Export ("rightHanded")]
 		bool RightHanded { get; set; }
 
-#if !NET
-		[Obsolete ("Use 'Rotation3x3' instead.")]
 		[Export ("rotation", ArgumentSemantic.Assign)]
-		Matrix3 Rotation {
-			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
-			get;
-			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
-			set;
-		}
-#endif
-
-		[Export ("rotation", ArgumentSemantic.Assign)]
-#if NET
 		MatrixFloat3x3 Rotation {
-#else
-		[Sealed]
-		MatrixFloat3x3 Rotation3x3 {
-#endif
 			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 			get;
 			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
@@ -507,17 +477,9 @@ namespace GameplayKit {
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface GKGameModelPlayer {
-
-#if NET
 		[Abstract]
 		[Export ("playerId")]
 		nint PlayerId { get; }
-#else
-		// This was a property but changed it to Get semantic due to
-		// there are no Extension properties
-		[Export ("playerId")]
-		nint GetPlayerId ();
-#endif
 	}
 
 	interface IGKGameModel { }
@@ -1024,10 +986,6 @@ namespace GameplayKit {
 		Vector2i GridPosition {
 			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 			get;
-#if !NET
-			[NotImplemented]
-			set;
-#endif
 		}
 
 		[Static]
@@ -1784,12 +1742,6 @@ namespace GameplayKit {
 
 		[Export ("displaceXWithNoise:yWithNoise:zWithNoise:")]
 		void Displace (GKNoise xDisplacementNoise, GKNoise yDisplacementNoise, GKNoise zDisplacementNoise);
-
-#if !NET
-		[Obsolete ("Use 'GKNoise.Displace' instead.")]
-		[Wrap ("Displace (xDisplacementNoise, yDisplacementNoise, zDisplacementNoise)", isVirtual: true)]
-		void DisplaceX (GKNoise xDisplacementNoise, GKNoise yDisplacementNoise, GKNoise zDisplacementNoise);
-#endif
 	}
 
 	/// <summary>Slices a finite, two-dimensional rectangle from a <see cref="GameplayKit.GKNoise" /> object's infinite, three-dimensional noise field.</summary>
@@ -2343,53 +2295,5 @@ namespace GameplayKit {
 
 		[Export ("removeElement:withNode:")]
 		bool RemoveElement (NSObject data, GKQuadTreeNode node);
-
-#if !NET && !MONOMAC // This API is removed in Xcode 8
-
-		[Deprecated (PlatformName.iOS, 10, 0)]
-		[Deprecated (PlatformName.TvOS, 10, 0)]
-		[NoMacCatalyst]
-		[Export ("initWithMinPosition:maxPosition:minCellSize:")]
-		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
-		[MarshalNativeExceptions]
-		NativeHandle Constructor (Vector2 min, Vector2 max, float minCellSize);
-
-		[Deprecated (PlatformName.iOS, 10, 0)]
-		[Deprecated (PlatformName.TvOS, 10, 0)]
-		[NoMacCatalyst]
-		[Export ("addDataWithPoint:point:")]
-		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
-		[MarshalNativeExceptions] // added
-		GKQuadTreeNode AddData (NSObject data, Vector2 point);
-
-		[Deprecated (PlatformName.iOS, 10, 0)]
-		[Deprecated (PlatformName.TvOS, 10, 0)]
-		[NoMacCatalyst]
-		[Export ("addDataWithQuad:quadOrigin:quadSize:")]
-		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
-		[MarshalNativeExceptions]
-		GKQuadTreeNode AddData (NSObject data, Vector2 quadOrigin, Vector2 quadSize);
-
-		[Deprecated (PlatformName.iOS, 10, 0)]
-		[Deprecated (PlatformName.TvOS, 10, 0)]
-		[NoMacCatalyst]
-		[Export ("queryDataForPoint:")]
-		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
-		NSObject [] QueryData (Vector2 point);
-
-		[Deprecated (PlatformName.iOS, 10, 0)]
-		[Deprecated (PlatformName.TvOS, 10, 0)]
-		[NoMacCatalyst]
-		[Export ("queryDataForQuad:quadSize:")]
-		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
-		[MarshalNativeExceptions]
-		NSObject [] QueryData (Vector2 quadOrigin, Vector2 quadSize);
-
-		[Deprecated (PlatformName.iOS, 10, 0)]
-		[Deprecated (PlatformName.TvOS, 10, 0)]
-		[NoMacCatalyst]
-		[Export ("removeData:withNode:")]
-		bool RemoveData (NSObject data, GKQuadTreeNode node);
-#endif
 	}
 }

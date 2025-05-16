@@ -1,5 +1,3 @@
-#if NET
-
 using System;
 
 using CoreFoundation;
@@ -38,4 +36,3 @@ namespace FSKit {
 		}
 	}
 }
-#endif // NET

@@ -14,20 +14,14 @@ using System.Runtime.Versioning;
 
 using ObjCRuntime;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 // Disable until we get around to enable + fix any issues.
 #nullable disable
 
 namespace Foundation {
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[Register ("NSMutableOrderedSet", SkipRegistration = true)]
 	public sealed partial class NSMutableOrderedSet<TKey> : NSMutableOrderedSet, IEnumerable<TKey>
 		where TKey : class, INativeObject {
@@ -305,11 +299,7 @@ namespace Foundation {
 		}
 
 #if false // https://github.com/dotnet/macios/issues/15577
-#if !NET
-		[TV (13,0), iOS (13,0)]
-#else
 		[SupportedOSPlatform ("ios13.0"), SupportedOSPlatform ("tvos13.0"), SupportedOSPlatform ("macos")]
-#endif
 		public void ApplyDifference (NSOrderedCollectionDifference<TKey> difference)
 		{
 			if (difference is null)

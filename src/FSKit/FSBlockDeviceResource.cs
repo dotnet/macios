@@ -1,4 +1,3 @@
-#if NET
 using Foundation;
 
 #nullable enable
@@ -71,4 +70,3 @@ namespace FSKit {
 		}
 	}
 }
-#endif // NET

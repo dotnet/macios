@@ -7,8 +7,6 @@ using Darwin;
 using Foundation;
 using ObjCRuntime;
 
-#if NET
-
 // Let's hope that by .NET 11 we've ironed out all the bugs in the API.
 // This can of course be adjusted as needed (until we've released as stable).
 #if NET110_0_OR_GREATER
@@ -1397,5 +1395,3 @@ namespace FSKit {
 		void Preallocate (FSItem item, ulong offset, nuint length, FSPreallocateFlags flags, FSExtentPacker packer, FSVolumePreallocateOperationsHandler reply);
 	}
 }
-
-#endif // NET

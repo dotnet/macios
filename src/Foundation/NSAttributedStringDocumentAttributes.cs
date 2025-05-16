@@ -124,14 +124,10 @@ namespace Foundation {
 #if !TVOS
 		// documentation is unclear if an NSString or an NSUrl should be used...
 		// but providing an `NSString` throws a `NSInvalidArgumentException Reason: (null) is not a file URL`
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]
-#else
-		[iOS (13, 0)]
-#endif
 		public NSUrl? ReadAccessUrl {
 			get {
 				return GetNativeValue<NSUrl> (NSAttributedStringDocumentReadingOptionKey.ReadAccessUrlDocumentOption);
@@ -143,7 +139,6 @@ namespace Foundation {
 #endif // !TVOS
 
 #if __MACOS__
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -151,7 +146,6 @@ namespace Foundation {
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
-#endif // NET
 		public WebPreferences? WebPreferences {
 			get {
 				return GetNativeValue<WebPreferences> (NSAttributedStringDocumentReadingOptionKey.WebPreferencesDocumentOption);
@@ -163,7 +157,6 @@ namespace Foundation {
 #endif // !__MACOS__
 
 #if __MACOS__
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -171,7 +164,6 @@ namespace Foundation {
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
-#endif // NET
 		public NSObject? WebResourceLoadDelegate {
 			get {
 				return GetNativeValue<NSObject> (NSAttributedStringDocumentReadingOptionKey.WebResourceLoadDelegateDocumentOption);
@@ -183,7 +175,6 @@ namespace Foundation {
 #endif // !__MACOS__
 
 #if __MACOS__
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -191,7 +182,6 @@ namespace Foundation {
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
-#endif // NET
 		public NSUrl? BaseUrl {
 			get {
 				return GetNativeValue<NSUrl> (NSAttributedStringDocumentReadingOptionKey.BaseUrlDocumentOption);
@@ -203,7 +193,6 @@ namespace Foundation {
 #endif // !__MACOS__
 
 #if __MACOS__
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -211,7 +200,6 @@ namespace Foundation {
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
-#endif // NET
 		public float? TextSizeMultiplier {
 			get {
 				return GetFloatValue (NSAttributedStringDocumentReadingOptionKey.TextSizeMultiplierDocumentOption);
@@ -223,7 +211,6 @@ namespace Foundation {
 #endif // !__MACOS__
 
 #if __MACOS__
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -231,7 +218,6 @@ namespace Foundation {
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
-#endif // NET
 		public float? Timeout {
 			get {
 				return GetFloatValue (NSAttributedStringDocumentReadingOptionKey.TimeoutDocumentOption);

@@ -10,27 +10,17 @@
 #nullable enable
 
 using System;
+using System.Numerics;
 using System.Runtime.InteropServices;
 using ObjCRuntime;
 
-#if NET
-using Vector2 = global::System.Numerics.Vector2;
-using Vector3 = global::System.Numerics.Vector3;
-#else
-using Vector2 = global::OpenTK.Vector2;
-using Vector3 = global::OpenTK.Vector3;
-#endif
-
 namespace GameplayKit {
-
-#if NET
 	/// <summary>An axis-aligned rectangular three-dimensional box.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct GKBox {
 		/// <summary>To be added.</summary>
@@ -41,14 +31,12 @@ namespace GameplayKit {
 		public Vector3 Max;
 	}
 
-#if NET
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct GKQuad {
 		/// <summary>To be added.</summary>
@@ -59,14 +47,12 @@ namespace GameplayKit {
 		public Vector2 Max;
 	}
 
-#if NET
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct GKTriangle {
 		Vector3 point1;

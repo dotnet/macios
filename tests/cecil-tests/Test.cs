@@ -144,7 +144,6 @@ namespace Cecil.Tests {
 			None,
 			MacOSX,
 			iOS,
-			WatchOS,
 			TvOS,
 			MacCatalyst,
 		}
@@ -157,18 +156,12 @@ namespace Cecil.Tests {
 
 			var platform = PlatformName.None;
 			switch (assembly.Name.Name) {
-			case "Xamarin.Mac":
 			case "Microsoft.macOS":
 				platform = PlatformName.MacOSX;
 				break;
-			case "Xamarin.iOS":
 			case "Microsoft.iOS":
 				platform = PlatformName.iOS;
 				break;
-			case "Xamarin.WatchOS":
-				platform = PlatformName.WatchOS;
-				break;
-			case "Xamarin.TVOS":
 			case "Microsoft.tvOS":
 				platform = PlatformName.TvOS;
 				break;
@@ -212,7 +205,7 @@ namespace Cecil.Tests {
 		}
 
 		// UnavailableAttribute and it's subclasses
-		// NoMacAttribute (1), NoiOSAttribute (2), NoWatchAttribute (3), NoTVAttribute (4)
+		// NoMacAttribute (1), NoiOSAttribute (2), NoTVAttribute (4)
 		// MacCatalyst (5) does not have an attribute right now (but [Unavailable] is possible on the PlatformName)
 		bool IsUnavailable (ICustomAttributeProvider cap, PlatformName platform)
 		{
@@ -230,9 +223,6 @@ namespace Cecil.Tests {
 					break;
 				case "ObjCRuntime.NoiOSAttribute":
 					unavailable = platform == PlatformName.iOS;
-					break;
-				case "ObjCRuntime.NoWatchAttribute":
-					unavailable = platform == PlatformName.WatchOS;
 					break;
 				case "ObjCRuntime.NoTVAttribute":
 					unavailable = platform == PlatformName.TvOS;

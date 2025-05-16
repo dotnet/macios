@@ -22,7 +22,6 @@ namespace Xamarin.Tests {
 		public static string DotNetTfm;
 		public static string mt_src_root;
 		public static string sdk_version;
-		public static string watchos_sdk_version;
 		public static string tvos_sdk_version;
 		public static string macos_sdk_version;
 		public static string xcode_root;
@@ -273,7 +272,6 @@ namespace Xamarin.Tests {
 			ParseConfigFiles ();
 
 			sdk_version = GetVariable ("IOS_SDK_VERSION", "8.0");
-			watchos_sdk_version = GetVariable ("WATCH_SDK_VERSION", "2.0");
 			tvos_sdk_version = GetVariable ("TVOS_SDK_VERSION", "9.0");
 			macos_sdk_version = GetVariable ("MACOS_SDK_VERSION", "10.12");
 			xcode_root = GetVariable ("XCODE_DEVELOPER_ROOT", "/Applications/Xcode.app/Contents/Developer");

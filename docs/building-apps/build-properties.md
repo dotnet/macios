@@ -215,7 +215,7 @@ Specifies whether a provisioning profile is required when signing the app bundle
 By default we require a provisioning profile if:
 
 * macOS, Mac Catalyst: a provisioning profile has been specified (with the [CodesignProvision](#codesignprovision) property).
-* iOS, tvOS, watchOS: building for device or an entitlements file has been specified (with the [CodesignEntitlements](#codesignentitlements) property).
+* iOS, tvOS: building for device or an entitlements file has been specified (with the [CodesignEntitlements](#codesignentitlements) property).
 
 Setting this property to `true` or `false` will override the default logic.
 

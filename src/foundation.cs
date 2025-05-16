@@ -5942,10 +5942,10 @@ namespace Foundation {
 		NSSet GetKeys (NSEnumerationOptions options, NSDictionaryKeyFilter predicate);
 
 		[Export ("keysSortedByValueUsingComparator:")]
-		NSObject[] GetKeysSortedByValue (NSComparator comparator);
+		NSObject [] GetKeysSortedByValue (NSComparator comparator);
 
 		[Export ("keysSortedByValueWithOptions:usingComparator:")]
-		NSObject[] GetKeysSortedByValue (NSSortOptions options, NSComparator comparator);
+		NSObject [] GetKeysSortedByValue (NSSortOptions options, NSComparator comparator);
 
 		[return: NullAllowed]
 		[Export ("valueForKey:")]

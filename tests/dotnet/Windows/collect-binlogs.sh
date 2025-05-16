@@ -18,7 +18,9 @@ ps auxww || true
 
 # Collect and zip up all the binlogs
 mkdir -p ~/remote_build_testing/binlogs
-rsync -avv --prune-empty-dirs --exclude 'artifacts/' --include '*/' --include '*.binlog' --exclude '*' "$TOPLEVEL/.." ~/remote_build_testing/binlogs
+if ! rsync -avv --prune-empty-dirs --exclude 'artifacts/' --include '*/' --include '*.binlog' --exclude '*' "$TOPLEVEL/.." ~/remote_build_testing/binlogs; then
+	echo "rsync failed, but continuing collecting binlogs"
+fi
 
 rm -f ~/remote_build_testing/windows-remote-logs.zip
 zip -9r ~/remote_build_testing/windows-remote-logs.zip ~/remote_build_testing/binlogs

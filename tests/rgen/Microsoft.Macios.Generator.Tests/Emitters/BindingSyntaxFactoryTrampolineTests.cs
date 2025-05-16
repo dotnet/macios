@@ -1552,4 +1552,120 @@ namespace NS {
 		Assert.Equal (expectedExpression, sb.ToCode ());
 	}
 
+	class TestDataCallTrampolineDelegate : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
+		{
+			var pointerParameter = @"
+using System;
+
+namespace NS {
+	public delegate void Callback (int* pointerParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				"someTrampolineName",
+				pointerParameter,
+				"del (pointerParameter);",
+			];
+
+			var pointerParameterWithReturn = @"
+using System;
+
+namespace NS {
+	public delegate int Callback (int* pointerParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				"someTrampolineName",
+				pointerParameterWithReturn,
+				"var ret = del (pointerParameter);",
+			];
+			var ccallbackParameter = @"
+using System;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate void Callback ([CCallback] Action callbackParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				"someTrampolineName",
+				ccallbackParameter,
+				"del (global::System.Runtime.InteropServices.Marshal.GetDelegateForFunctionPointer<System.Action> (callbackParameter));",
+			];
+
+			var severalParametersConversion = @"
+using System;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate void Callback ([CCallback] Action callbackParameter, [BlockCallback] Action callbackParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				"someTrampolineName",
+				severalParametersConversion,
+				"del (global::System.Runtime.InteropServices.Marshal.GetDelegateForFunctionPointer<System.Action> (callbackParameter), NIDsomeTrampolineName.Create (callbackParameter)!);",
+			];
+
+			var severalParametersConversionReturn = @"
+using System;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate int Callback ([CCallback] Action callbackParameter, [BlockCallback] Action callbackParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				"someTrampolineName",
+				severalParametersConversionReturn,
+				"var ret = del (global::System.Runtime.InteropServices.Marshal.GetDelegateForFunctionPointer<System.Action> (callbackParameter), NIDsomeTrampolineName.Create (callbackParameter)!);",
+			];
+
+		}
+
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
+	}
+
+	[Theory]
+	[AllSupportedPlatformsClassData<TestDataCallTrampolineDelegate>]
+	void CallTrampolineDelegateTests (ApplePlatform platform, string trampolineName, string inputText, string expectedExpression)
+	{
+		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
+		Assert.Single (syntaxTrees);
+		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
+		var declaration = syntaxTrees [0].GetRoot ()
+			.DescendantNodes ().OfType<MethodDeclarationSyntax> ()
+			.FirstOrDefault ();
+		Assert.NotNull (declaration);
+		Assert.True (Method.TryCreate (declaration, semanticModel, out var changes));
+		Assert.NotNull (changes);
+		// we know the first parameter of the method is the delegate
+		Assert.Single (changes.Value.Parameters);
+		var parameter = changes.Value.Parameters [0];
+		// assert it is indeed a delegate
+		Assert.NotNull (parameter.Type.Delegate);
+		var argumentSyntax = GetTrampolineInvokeArguments (trampolineName, parameter.Type.Delegate);
+		var invocation = CallTrampolineDelegate (parameter.Type.Delegate, argumentSyntax);
+		Assert.Equal (expectedExpression, invocation.ToFullString ());
+	}
+
 }

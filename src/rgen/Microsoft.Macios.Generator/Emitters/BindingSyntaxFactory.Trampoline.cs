@@ -2,10 +2,12 @@
 // Licensed under the MIT License.
 
 using System.Collections.Immutable;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Macios.Generator.DataModel;
+using Microsoft.Macios.Generator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using TypeInfo = Microsoft.Macios.Generator.DataModel.TypeInfo;
 
@@ -403,5 +405,45 @@ static partial class BindingSyntaxFactory {
 			bucket.Add (argument);
 		}
 		return bucket.ToImmutable ();
+	}
+
+	/// <summary>
+	/// Generates the call to the trampoline delegate.
+	/// </summary>
+	/// <param name="delegateInfo">The information of the delegate.</param>
+	/// <param name="argumentSyntax">The argument syntax for the parameters of the delegate.</param>
+	/// <returns>The needed statement to call the delegate with the parameters of the trampoline.</returns>
+	internal static StatementSyntax CallTrampolineDelegate (in DelegateInfo delegateInfo,
+		in ImmutableArray<TrampolineArgumentSyntax> argumentSyntax)
+	{
+		// we always need to create a block that performs the call to the trampoline variable with the argument syntax
+		// these arguments already have all the needed conversions
+		var args = argumentSyntax
+			.Select (x => x.ArgumentSyntax)
+			.ToImmutableArray ();
+		var invocation = InvocationExpression (
+				IdentifierName (Nomenclator.GetTrampolineDelegateVariableName ()).WithTrailingTrivia (Space))
+			.WithArgumentList (ArgumentList (SeparatedList<ArgumentSyntax> (args.ToSyntaxNodeOrTokenArray ())));
+
+		// return the invocation expression if the delegate return type is a void type
+		if (delegateInfo.ReturnType.IsVoid)
+			return ExpressionStatement (invocation);
+
+		// perform an assigment to the return variable
+		var declaration = VariableDeclaration (
+				IdentifierName (
+					Identifier (
+						TriviaList (),
+						SyntaxKind.VarKeyword,
+						"var",
+						"var",
+						TriviaList (Space))))
+			.WithVariables (
+				SingletonSeparatedList (
+					VariableDeclarator (
+							Identifier (Nomenclator.GetReturnVariableName ()))
+						.WithInitializer (
+							EqualsValueClause (invocation.WithLeadingTrivia (Space)).WithLeadingTrivia (Space))));
+		return LocalDeclarationStatement (declaration);
 	}
 }

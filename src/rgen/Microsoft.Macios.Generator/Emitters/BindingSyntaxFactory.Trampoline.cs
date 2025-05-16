@@ -2,9 +2,12 @@
 // Licensed under the MIT License.
 
 using System.Collections.Immutable;
+using System.Linq;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Macios.Generator.DataModel;
+using Microsoft.Macios.Generator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using TypeInfo = Microsoft.Macios.Generator.DataModel.TypeInfo;
 
@@ -185,6 +188,203 @@ static partial class BindingSyntaxFactory {
 		return Argument (expression);
 	}
 
+	internal static ImmutableArray<SyntaxNode> GetTrampolinePreInvokeByRefArgument (in DelegateParameter parameter)
+	{
+		// there are two cases in which we need to do something with the byref parameters:
+		// 1. the parameter is by ref and nullable, we need to create a temporary variable to hold the value
+		// 2. the parameter is a boolean type and we need a conversion
+		// any other case we can just use the parameter as is and we will return an empty array
+		var tempVariableName = Nomenclator.GetNameForTempTrampolineVariable (parameter);
+		if (tempVariableName is null)
+			return [];
+
+		if (parameter.Type.IsNullable) {
+			// declare a new variable to hold the temp var
+			// ParameterType? tempVariable = null;
+			var declarationNode = LocalDeclarationStatement (
+				VariableDeclaration (
+						NullableType (
+							IdentifierName (parameter.Type.FullyQualifiedName)))
+					.WithVariables (
+						SingletonSeparatedList (
+							VariableDeclarator (
+									Identifier (tempVariableName))
+								.WithInitializer (
+									EqualsValueClause (
+										LiteralExpression (
+											SyntaxKind.NullLiteralExpression))))));
+			// check for the parameter being null and assign the value if needed.
+			// if (parameterName is not null)
+			//     tempVariable =  *parameterName;
+			var ifNode = IfStatement (
+				IsPatternExpression (
+					IdentifierName (parameter.Name),
+					UnaryPattern (
+						ConstantPattern (
+							LiteralExpression (
+								SyntaxKind.NullLiteralExpression)))),
+				ExpressionStatement (
+					AssignmentExpression (
+						SyntaxKind.SimpleAssignmentExpression,
+						IdentifierName (tempVariableName),
+						PrefixUnaryExpression (
+							SyntaxKind.PointerIndirectionExpression,
+							IdentifierName (parameter.Name)))));
+			return [
+				declarationNode,
+				ifNode,
+			];
+		}
+
+		if (parameter.Type.SpecialType == SpecialType.System_Boolean) {
+			// generates the following:
+			// bool {tempVariable} = *{parameterName} != 0;
+			var variableDeclaration = LocalDeclarationStatement (
+				VariableDeclaration (
+						PredefinedType (
+							Token (SyntaxKind.BoolKeyword)))
+					.WithVariables (
+						SingletonSeparatedList (
+							VariableDeclarator (
+									Identifier (tempVariableName))
+								.WithInitializer (
+									EqualsValueClause (
+										BinaryExpression (
+											SyntaxKind.NotEqualsExpression,
+											PrefixUnaryExpression (
+												SyntaxKind.PointerIndirectionExpression,
+												IdentifierName (parameter.Name)),
+											LiteralExpression (
+												SyntaxKind.NumericLiteralExpression,
+												Literal (0))))))));
+			return [variableDeclaration];
+		}
+
+		// default case, we do not need to do anything
+		return [];
+	}
+
+	internal static ImmutableArray<SyntaxNode> GetTrampolinePostInvokeByRefArgument (string trampolineName,
+		in DelegateParameter parameter)
+	{
+		// similar to the pre invoke case, we need to do something with the byref parameters:
+		// 1. the parameter is by ref and nullable we need to assign the value
+		// 2. the parameter is a boolean type we need to convert back the value from a byte
+		var tempVariableName = Nomenclator.GetNameForTempTrampolineVariable (parameter);
+		if (tempVariableName is null)
+			return [];
+
+		if (parameter.Type.IsNullable) {
+			// check if the temp variable has a value and assign it to the parameter
+			// if (ParameterName is not null && TempVariable.HasValue)
+			//     *ParameterName = TempVariable.Value;
+			var ifNode = IfStatement (
+				BinaryExpression (
+					SyntaxKind.LogicalAndExpression,
+					IsPatternExpression (
+						IdentifierName (parameter.Name),
+						UnaryPattern (
+							ConstantPattern (
+								LiteralExpression (
+									SyntaxKind.NullLiteralExpression)))),
+					MemberAccessExpression (
+						SyntaxKind.SimpleMemberAccessExpression,
+						IdentifierName (tempVariableName),
+						IdentifierName ("HasValue"))),
+				ExpressionStatement (
+					AssignmentExpression (
+						SyntaxKind.SimpleAssignmentExpression,
+						PrefixUnaryExpression (
+							SyntaxKind.PointerIndirectionExpression,
+							IdentifierName (parameter.Name)),
+						MemberAccessExpression (
+							SyntaxKind.SimpleMemberAccessExpression,
+							IdentifierName (tempVariableName),
+							IdentifierName ("Value")))));
+			return [ifNode];
+		}
+
+		if (parameter.Type.SpecialType == SpecialType.System_Boolean) {
+			// set the boolean value from a byte
+			// *ParameterName = TempVariable ? (byte) 1 : (byte) 0;
+			var assignment = AssignmentExpression (
+				SyntaxKind.SimpleAssignmentExpression,
+				PrefixUnaryExpression (
+					SyntaxKind.PointerIndirectionExpression,
+					IdentifierName (parameter.Name)),
+				ConditionalExpression (
+					IdentifierName (tempVariableName),
+					CastExpression (
+						PredefinedType (
+							Token (SyntaxKind.ByteKeyword)),
+						LiteralExpression (
+							SyntaxKind.NumericLiteralExpression,
+							Literal (1))).WithTrailingTrivia (Space),
+					CastExpression (
+						PredefinedType (
+							Token (SyntaxKind.ByteKeyword)),
+						LiteralExpression (
+							SyntaxKind.NumericLiteralExpression,
+							Literal (0).WithLeadingTrivia (Space)))));
+			return [ExpressionStatement (assignment)];
+		}
+
+		if (parameter.Type.IsReferenceType) {
+			// assign the value of the temp variable to the parameter	
+			var assignment = IfStatement (
+				IsPatternExpression (
+					IdentifierName (parameter.Name),
+					UnaryPattern (
+						ConstantPattern (
+							LiteralExpression (
+								SyntaxKind.NullLiteralExpression)))),
+				ExpressionStatement (
+					AssignmentExpression (
+						SyntaxKind.SimpleAssignmentExpression,
+						PrefixUnaryExpression (
+							SyntaxKind.PointerIndirectionExpression,
+							IdentifierName (parameter.Name)),
+						InvocationExpression (
+								MemberAccessExpression (
+									SyntaxKind.SimpleMemberAccessExpression,
+									IdentifierName ("Runtime"),
+									IdentifierName ("RetainAndAutoreleaseNativeObject").WithTrailingTrivia (Space)))
+							.WithArgumentList (
+								ArgumentList (
+									SingletonSeparatedList (
+										Argument (
+											IdentifierName (tempVariableName))))))));
+			return [assignment];
+		}
+		return [];
+	}
+
+	/// <summary>
+	/// Returns the list of expressions that need to be executed before the trampoline is invoked. This allows to
+	/// help the trampoline to convert the parameters to the expected types.
+	/// </summary>
+	/// <param name="trampolineName">The trampoline name to which the conversion is needed.</param>
+	/// <param name="parameter">The parameters whose conversions we need.</param>
+	/// <returns>An immutable array with the needed conversion expressions. Empty is return if no conversion
+	/// is needed.</returns>
+	internal static ImmutableArray<SyntaxNode> GetTrampolinePreInvokeArgumentConversions (string trampolineName,
+		in DelegateParameter parameter)
+	{
+		// decide the type of conversion we need to do based on the type of the parameter
+		return parameter switch { { IsByRef: true } => GetTrampolinePreInvokeByRefArgument (parameter),
+			_ => []
+		};
+	}
+
+	internal static ImmutableArray<SyntaxNode> GetTrampolinePostInvokeArgumentConversions (string trampolineName,
+		in DelegateParameter parameter)
+	{
+		// decide the type of conversion we need to do based on the type of the parameter
+		return parameter switch { { IsByRef: true } => GetTrampolinePostInvokeByRefArgument (trampolineName, parameter),
+			_ => []
+		};
+	}
+
 	/// <summary>
 	/// Return a immutable array of arguments to be used for the trampoline invoke method. The arguments are all
 	/// the different expressions needed to pass the parameters to the trampoline.
@@ -192,13 +392,58 @@ static partial class BindingSyntaxFactory {
 	/// <param name="trampolineName">The trampoline whose parameters we are generating.</param>
 	/// <param name="delegateInfo">The delegate info of the trampoline we are generating.</param>
 	/// <returns>An immutable array with the argument expressions needed to invoke the trampoline delegate.</returns>
-	internal static ImmutableArray<ArgumentSyntax> GetTrampolineInvokeArguments (string trampolineName, in DelegateInfo delegateInfo)
+	internal static ImmutableArray<TrampolineArgumentSyntax> GetTrampolineInvokeArguments (string trampolineName,
+		in DelegateInfo delegateInfo)
 	{
 		// create the builder for the arguments, we already know the size of the array
-		var bucket = ImmutableArray.CreateBuilder<ArgumentSyntax> (delegateInfo.Parameters.Length);
+		var bucket = ImmutableArray.CreateBuilder<TrampolineArgumentSyntax> (delegateInfo.Parameters.Length);
 		foreach (var parameter in delegateInfo.Parameters) {
-			bucket.Add (GetTrampolineInvokeArgument (trampolineName, parameter));
+			var argument = new TrampolineArgumentSyntax (GetTrampolineInvokeArgument (trampolineName, parameter)) {
+				PreDelegateCallConversion = GetTrampolinePreInvokeArgumentConversions (trampolineName, parameter),
+				PostDelegateCallConversion = GetTrampolinePostInvokeArgumentConversions (trampolineName, parameter),
+			};
+			bucket.Add (argument);
 		}
 		return bucket.ToImmutable ();
+	}
+
+	/// <summary>
+	/// Generates the call to the trampoline delegate.
+	/// </summary>
+	/// <param name="delegateInfo">The information of the delegate.</param>
+	/// <param name="argumentSyntax">The argument syntax for the parameters of the delegate.</param>
+	/// <returns>The needed statement to call the delegate with the parameters of the trampoline.</returns>
+	internal static StatementSyntax CallTrampolineDelegate (in DelegateInfo delegateInfo,
+		in ImmutableArray<TrampolineArgumentSyntax> argumentSyntax)
+	{
+		// we always need to create a block that performs the call to the trampoline variable with the argument syntax
+		// these arguments already have all the needed conversions
+		var args = argumentSyntax
+			.Select (x => x.ArgumentSyntax)
+			.ToImmutableArray ();
+		var invocation = InvocationExpression (
+				IdentifierName (Nomenclator.GetTrampolineDelegateVariableName ()).WithTrailingTrivia (Space))
+			.WithArgumentList (ArgumentList (SeparatedList<ArgumentSyntax> (args.ToSyntaxNodeOrTokenArray ())));
+
+		// return the invocation expression if the delegate return type is a void type
+		if (delegateInfo.ReturnType.IsVoid)
+			return ExpressionStatement (invocation);
+
+		// perform an assigment to the return variable
+		var declaration = VariableDeclaration (
+				IdentifierName (
+					Identifier (
+						TriviaList (),
+						SyntaxKind.VarKeyword,
+						"var",
+						"var",
+						TriviaList (Space))))
+			.WithVariables (
+				SingletonSeparatedList (
+					VariableDeclarator (
+							Identifier (Nomenclator.GetReturnVariableName ()))
+						.WithInitializer (
+							EqualsValueClause (invocation.WithLeadingTrivia (Space)).WithLeadingTrivia (Space))));
+		return LocalDeclarationStatement (declaration);
 	}
 }

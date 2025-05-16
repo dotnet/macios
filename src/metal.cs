@@ -5668,7 +5668,6 @@ namespace Metal {
 		[Export ("maxSampleCount")]
 		MTLSize MaxSampleCount { get; }
 
-		[iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("sampleCount", ArgumentSemantic.Assign)]
 		MTLSize SampleCount { get; set; }
 	}

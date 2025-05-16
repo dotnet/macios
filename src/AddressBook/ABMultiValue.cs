@@ -40,10 +40,6 @@ using CoreFoundation;
 using Foundation;
 using ObjCRuntime;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace AddressBook {
 
 	[SupportedOSPlatform ("ios")]

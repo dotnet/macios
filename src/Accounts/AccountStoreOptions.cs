@@ -49,14 +49,12 @@ namespace Accounts {
 		OnlyMe,
 	}
 
-#if NET
 	/// <summary>Options available when requesting Facebook access.</summary>
 	///     <remarks>
 	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
-#endif
 	public class AccountStoreOptions : DictionaryContainer {
 #if !COREBUILD
 		/// <summary>To be added.</summary>

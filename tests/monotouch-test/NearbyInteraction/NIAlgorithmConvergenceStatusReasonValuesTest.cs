@@ -1,6 +1,6 @@
 // Copyright 2022 Microsoft Corp.
 
-#if IOS|| __MACCATALYST__
+#if IOS || __MACCATALYST__
 
 using System;
 using Foundation;

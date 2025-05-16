@@ -321,7 +321,6 @@ BUSINESSCHAT_SOURCES = \
 # CallKit
 
 CALLKIT_SOURCES = \
-	CallKit/CXCompat.cs \
 	CallKit/CXProvider.cs \
 
 # CarPlay
@@ -354,7 +353,6 @@ CLOUDKIT_API_SOURCES = \
 	CloudKit/Enums.cs \
 
 CLOUDKIT_SOURCES = \
-	CloudKit/CKCompat.cs \
 	CloudKit/CKFetchNotificationChangesOperation.cs \
 	CloudKit/CKMarkNotificationsReadOperation.cs \
 	CloudKit/CKModifyBadgeOperation.cs \
@@ -412,13 +410,11 @@ COREANIMATION_CORE_SOURCES = \
 
 COREANIMATION_SOURCES = \
 	CoreAnimation/CABasicAnimation.cs \
-	CoreAnimation/CACompat.cs \
 	CoreAnimation/CADefs.cs \
 	CoreAnimation/CALayer.cs \
 	CoreAnimation/CAKeyFrameAnimation.cs \
 	CoreAnimation/CALayerDelegate.cs \
 	CoreAnimation/CAMediaTimingFunction.cs \
-	CoreAnimation/CAScrollLayer.cs \
 	CoreAnimation/CATextLayer.cs \
 	CoreAnimation/NSValue.cs \
 
@@ -446,7 +442,6 @@ COREDATA_API_SOURCES = \
 COREDATA_SOURCES = \
 	CoreData/NSEntityDescription.cs \
 	CoreData/NSPersistentStoreCoordinator.cs \
-	CoreData/Obsolete.cs \
 
 # CoreFoundation
 
@@ -573,7 +568,6 @@ CORELOCATION_CORE_SOURCES = \
 
 CORELOCATION_SOURCES = \
 	CoreLocation/CLBeaconRegion.cs \
-	CoreLocation/CLCompat.cs \
 	CoreLocation/CLLocationManager.cs \
 	CoreLocation/NSValue.cs \
 

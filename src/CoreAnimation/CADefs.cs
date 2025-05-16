@@ -36,10 +36,6 @@ using ObjCRuntime;
 using Foundation;
 using CoreGraphics;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 #nullable enable
 
 namespace CoreAnimation {
@@ -53,11 +49,7 @@ namespace CoreAnimation {
 	}
 
 	public partial class CAGradientLayer {
-#if NET
 		CGColor CreateColor (NativeHandle p)
-#else
-		public CGColor CreateColor (IntPtr p)
-#endif
 		{
 			return new CGColor (p, false);
 		}

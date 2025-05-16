@@ -12,17 +12,6 @@ using ObjCRuntime;
 using CoreFoundation;
 using Foundation;
 
-#if !NET
-using NFCFeliCaEncryptionId = CoreNFC.EncryptionId;
-using NFCFeliCaPollingRequestCode = CoreNFC.PollingRequestCode;
-using NFCFeliCaPollingTimeSlot = CoreNFC.PollingTimeSlot;
-using NFCIso15693RequestFlag = CoreNFC.RequestFlag;
-using NFCVasErrorCode = CoreNFC.VasErrorCode;
-using NFCVasMode = CoreNFC.VasMode;
-
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreNFC {
 
 	/// <summary>Enumerates errors relating to NFC tag detection and reading.</summary>
@@ -283,241 +272,181 @@ namespace CoreNFC {
 
 		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("stayQuietWithCompletionHandler:")]
 		void StayQuiet (Action<NSError> completionHandler);
 
 		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("readSingleBlockWithRequestFlags:blockNumber:completionHandler:")]
 		void ReadSingleBlock (NFCIso15693RequestFlag flags, byte blockNumber, Action<NSData, NSError> completionHandler);
 
 		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("writeSingleBlockWithRequestFlags:blockNumber:dataBlock:completionHandler:")]
 		void WriteSingleBlock (NFCIso15693RequestFlag flags, byte blockNumber, NSData dataBlock, Action<NSError> completionHandler);
 
 		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("lockBlockWithRequestFlags:blockNumber:completionHandler:")]
 		void LockBlock (NFCIso15693RequestFlag flags, byte blockNumber, Action<NSError> completionHandler);
 
 		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("readMultipleBlocksWithRequestFlags:blockRange:completionHandler:")]
 		void ReadMultipleBlocks (NFCIso15693RequestFlag flags, NSRange blockRange, Action<NSData [], NSError> completionHandler);
 
 		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("writeMultipleBlocksWithRequestFlags:blockRange:dataBlocks:completionHandler:")]
 		void WriteMultipleBlocks (NFCIso15693RequestFlag flags, NSRange blockRange, NSData [] dataBlocks, Action<NSError> completionHandler);
 
 		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("selectWithRequestFlags:completionHandler:")]
 		void Select (NFCIso15693RequestFlag flags, Action<NSError> completionHandler);
 
 		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("resetToReadyWithRequestFlags:completionHandler:")]
 		void ResetToReady (NFCIso15693RequestFlag flags, Action<NSError> completionHandler);
 
 		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("writeAFIWithRequestFlag:afi:completionHandler:")]
 		void WriteAfi (NFCIso15693RequestFlag flags, byte afi, Action<NSError> completionHandler);
 
 		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("lockAFIWithRequestFlag:completionHandler:")]
 		void LockAfi (NFCIso15693RequestFlag flags, Action<NSError> completionHandler);
 
 		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("writeDSFIDWithRequestFlag:dsfid:completionHandler:")]
 		void WriteDsfi (NFCIso15693RequestFlag flags, byte dsfid, Action<NSError> completionHandler);
 
 		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("lockDFSIDWithRequestFlag:completionHandler:")]
 		void LockDfsi (NFCIso15693RequestFlag flags, Action<NSError> completionHandler);
 
 		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("getSystemInfoWithRequestFlag:completionHandler:")]
 		void GetSystemInfo (NFCIso15693RequestFlag flags, NFCGetSystemInfoCompletionHandler completionHandler);
 
 		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("getMultipleBlockSecurityStatusWithRequestFlag:blockRange:completionHandler:")]
 		void GetMultipleBlockSecurityStatus (NFCIso15693RequestFlag flags, NSRange blockRange, Action<NSNumber [], NSError> completionHandler);
 
 		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("customCommandWithRequestFlag:customCommandCode:customRequestParameters:completionHandler:")]
 		void CustomCommand (NFCIso15693RequestFlag flags, nint customCommandCode, NSData customRequestParameters, Action<NSData, NSError> completionHandler);
 
 		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("extendedReadSingleBlockWithRequestFlags:blockNumber:completionHandler:")]
 		void ExtendedReadSingleBlock (NFCIso15693RequestFlag flags, nint blockNumber, Action<NSData, NSError> completionHandler);
 
 		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("extendedWriteSingleBlockWithRequestFlags:blockNumber:dataBlock:completionHandler:")]
 		void ExtendedWriteSingleBlock (NFCIso15693RequestFlag flags, nint blockNumber, NSData dataBlock, Action<NSError> completionHandler);
 
 		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("extendedLockBlockWithRequestFlags:blockNumber:completionHandler:")]
 		void ExtendedLockBlock (NFCIso15693RequestFlag flags, nint blockNumber, Action<NSError> completionHandler);
 
 		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("extendedReadMultipleBlocksWithRequestFlags:blockRange:completionHandler:")]
 		void ExtendedReadMultipleBlocks (NFCIso15693RequestFlag flags, NSRange blockRange, Action<NSData [], NSError> completionHandler);
 
 		[iOS (14, 0)]
 		[MacCatalyst (14, 0)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("extendedWriteMultipleBlocksWithRequestFlags:blockRange:dataBlocks:completionHandler:")]
 		void ExtendedWriteMultipleBlocks (NFCIso15693RequestFlag flags, NSRange blockRange, NSData [] dataBlocks, Action<NSError> completionHandler);
 
 		[iOS (14, 0)]
 		[MacCatalyst (14, 0)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("authenticateWithRequestFlags:cryptoSuiteIdentifier:message:completionHandler:")]
 		void Authenticate (NFCIso15693RequestFlag flags, nint cryptoSuiteIdentifier, NSData message, NFCIso15693TagResponseCallback completionHandler);
 
 		[iOS (14, 0)]
 		[MacCatalyst (14, 0)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("keyUpdateWithRequestFlags:keyIdentifier:message:completionHandler:")]
 		void KeyUpdate (NFCIso15693RequestFlag flags, nint keyIdentifier, NSData message, NFCIso15693TagResponseCallback completionHandler);
 
 		[iOS (14, 0)]
 		[MacCatalyst (14, 0)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("challengeWithRequestFlags:cryptoSuiteIdentifier:message:completionHandler:")]
 		void Challenge (NFCIso15693RequestFlag flags, nint cryptoSuiteIdentifier, NSData message, Action<NSError> completionHandler);
 
 		[iOS (14, 0)]
 		[MacCatalyst (14, 0)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("readBufferWithRequestFlags:completionHandler:")]
 		void ReadBuffer (NFCIso15693RequestFlag flags, NFCIso15693TagResponseCallback completionHandler);
 
 		[iOS (14, 0)]
 		[MacCatalyst (14, 0)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("extendedGetMultipleBlockSecurityStatusWithRequestFlag:blockRange:completionHandler:")]
 		void ExtendedGetMultipleBlockSecurityStatus (NFCIso15693RequestFlag flags, NSRange blockRange, NFCIso15693TagGetMultipleBlockSecurityStatusCallback completionHandler);
 
 		[iOS (14, 0)]
 		[MacCatalyst (14, 0)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("extendedFastReadMultipleBlocksWithRequestFlag:blockRange:completionHandler:")]
 		void ExtendedFastReadMultipleBlocks (NFCIso15693RequestFlag flags, NSRange blockRange, NFCIso15693TagReadMultipleBlocksCallback completionHandler);
 
 		[iOS (14, 0)]
 		[MacCatalyst (14, 0)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("sendRequestWithFlag:commandCode:data:completionHandler:")]
 		void SendRequest (nint flags, nint commandCode, [NullAllowed] NSData data, NFCIso15693TagResponseCallback completionHandler);
 
 		[iOS (14, 0)]
 		[MacCatalyst (14, 0)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("getSystemInfoAndUIDWithRequestFlag:completionHandler:")]
 		void GetSystemInfoAndUid (NFCIso15693RequestFlag flags, NFCIso15693TagGetSystemInfoAndUidCallback completionHandler);
 
 		[iOS (14, 0)]
 		[MacCatalyst (14, 0)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("fastReadMultipleBlocksWithRequestFlag:blockRange:completionHandler:")]
 		void FastReadMultipleBlocks (NFCIso15693RequestFlag flags, NSRange blockRange, NFCIso15693TagReadMultipleBlocksCallback completionHandler);
 
 		[iOS (14, 0)]
 		[MacCatalyst (14, 0)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("lockDSFIDWithRequestFlag:completionHandler:")]
 		void LockDsfId (NFCIso15693RequestFlag flags, Action<NSError> completionHandler);
 
@@ -765,9 +694,7 @@ namespace CoreNFC {
 
 		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("invalidateSessionWithErrorMessage:")]
 		void InvalidateSession (string errorMessage);
 	}
@@ -789,9 +716,6 @@ namespace CoreNFC {
 		[Export ("readerSessionDidBecomeActive:")]
 		void DidBecomeActive (NFCReaderSession session);
 
-#if !NET
-		[Abstract]
-#endif
 		/// <param name="session">The session that detected the tags.</param>
 		///         <param name="tags">The tags that were detected.</param>
 		///         <summary>Developers may override this method to react to the detection of NFC <paramref name="tags" />.</summary>
@@ -839,50 +763,30 @@ namespace CoreNFC {
 		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("asNFCISO15693Tag")]
-#if NET
 		[Abstract]
 		[NullAllowed]
 		INFCIso15693Tag AsNFCIso15693Tag { get; }
-#else
-		[return: NullAllowed]
-		INFCIso15693Tag GetNFCIso15693Tag ();
-#endif
 
 		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("asNFCISO7816Tag")]
-#if NET
 		[Abstract]
 		[NullAllowed]
 		INFCIso7816Tag AsNFCIso7816Tag { get; }
-#else
-		[return: NullAllowed]
-		INFCIso7816Tag GetNFCIso7816Tag ();
-#endif
 
 		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("asNFCFeliCaTag")]
-#if NET
 		[Abstract]
 		[NullAllowed]
 		INFCFeliCaTag AsNFCFeliCaTag { get; }
-#else
-		[return: NullAllowed]
-		INFCFeliCaTag GetNFCFeliCaTag ();
-#endif
 
 		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("asNFCMiFareTag")]
-#if NET
 		[Abstract]
 		[NullAllowed]
 		INFCMiFareTag AsNFCMiFareTag { get; }
-#else
-		[return: NullAllowed]
-		INFCMiFareTag GetNFCMiFareTag ();
-#endif
 	}
 
 	//[NoTV, NoMac]
@@ -918,13 +822,8 @@ namespace CoreNFC {
 
 	[iOS (13, 0)]
 	[MacCatalyst (13, 1)]
-#if NET
 	[Native]
 	enum NFCFeliCaEncryptionId
-#else
-	[Native ("NFCFeliCaEncryptionId")]
-	enum EncryptionId
-#endif
 		: long {
 		Aes = 79,
 		Des = 65,
@@ -962,13 +861,8 @@ namespace CoreNFC {
 
 	[iOS (13, 0)]
 	[MacCatalyst (13, 1)]
-#if NET
 	[Native]
 	enum NFCFeliCaPollingRequestCode
-#else
-	[Native ("NFCFeliCaPollingRequestCode")]
-	enum PollingRequestCode
-#endif
 		: long {
 		NoRequest = 0,
 		SystemCode = 1,
@@ -977,13 +871,8 @@ namespace CoreNFC {
 
 	[iOS (13, 0)]
 	[MacCatalyst (13, 1)]
-#if NET
 	[Native]
 	enum NFCFeliCaPollingTimeSlot
-#else
-	[Native ("NFCFeliCaPollingTimeSlot")]
-	enum PollingTimeSlot
-#endif
 		: long {
 		Max1 = 0,
 		Max2 = 1,
@@ -996,11 +885,7 @@ namespace CoreNFC {
 	[MacCatalyst (13, 1)]
 	[Flags]
 	[NativeName ("NFCISO15693RequestFlag")]
-#if NET
 	enum NFCIso15693RequestFlag
-#else
-	enum RequestFlag
-#endif
 		: byte {
 		DualSubCarriers = (1 << 0),
 		HighDataRate = (1 << 1),
@@ -1027,13 +912,8 @@ namespace CoreNFC {
 
 	[iOS (13, 0)]
 	[MacCatalyst (13, 1)]
-#if NET
 	[Native]
 	enum NFCVasErrorCode
-#else
-	[Native ("NFCVASErrorCode")]
-	enum VasErrorCode
-#endif
 		: long {
 		Success = 36864,
 		DataNotFound = 27267,
@@ -1047,13 +927,8 @@ namespace CoreNFC {
 
 	[iOS (13, 0)]
 	[MacCatalyst (13, 1)]
-#if NET
 	[Native]
 	enum NFCVasMode
-#else
-	[Native ("NFCVASMode")]
-	enum VasMode
-#endif
 		: long {
 		UrlOnly = 0,
 		Normal = 1,
@@ -1222,9 +1097,7 @@ namespace CoreNFC {
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface NFCMiFareTag : NFCTag, NFCNdefTag {
-#if NET
 		[Abstract]
-#endif
 		[Export ("mifareFamily", ArgumentSemantic.Assign)]
 		NFCMiFareFamily MifareFamily { get; }
 
@@ -1249,13 +1122,8 @@ namespace CoreNFC {
 
 	[iOS (13, 0)]
 	[MacCatalyst (13, 1)]
-#if NET
 	[Protocol]
 	[Model]
-#else
-	[Protocol]
-	[Model (AutoGeneratedName = true)]
-#endif
 	[BaseType (typeof (NSObject))]
 	interface NFCTagReaderSessionDelegate {
 
@@ -1298,13 +1166,8 @@ namespace CoreNFC {
 
 	[iOS (13, 0)]
 	[MacCatalyst (13, 1)]
-#if NET
 	[Protocol]
 	[Model]
-#else
-	[Protocol]
-	[Model (AutoGeneratedName = true)]
-#endif
 	[BaseType (typeof (NSObject), Name = "NFCVASReaderSessionDelegate")]
 	interface NFCVasReaderSessionDelegate {
 

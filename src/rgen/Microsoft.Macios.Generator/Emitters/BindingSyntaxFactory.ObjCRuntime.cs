@@ -717,7 +717,7 @@ static partial class BindingSyntaxFactory {
 	internal static (string Name, LocalDeclarationStatementSyntax Declaration) GetReturnValueAuxVariable (in TypeInfo returnType)
 	{
 		var typeSyntax = returnType.GetIdentifierSyntax ();
-		var variableName = Nomenclator.GetReturnVariableName (returnType);
+		var variableName = Nomenclator.GetReturnVariableName ();
 		// generates Type ret; The GetIdentifierSyntax will ensure that the correct type and nullable annotation is used
 		var declaration = LocalDeclarationStatement (
 			VariableDeclaration (typeSyntax.WithTrailingTrivia (Space))

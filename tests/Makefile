@@ -90,6 +90,7 @@ test-system.config: Makefile $(TOP)/Make.config $(TOP)/mk/mono.mk $(TOP)/eng/Ver
 	@echo "INCLUDE_MACCATALYST=$(INCLUDE_MACCATALYST)" >> $@
 	@printf "$(foreach platform,$(DOTNET_PLATFORMS_UPPERCASE),$(platform)_NUGET_SDK_NAME=$($(platform)_NUGET_SDK_NAME)\\n)" | sed 's/^ //' >> $@
 	@printf "$(foreach platform,$(DOTNET_PLATFORMS_UPPERCASE),$(platform)_NUGET_REF_NAME=$($(platform)_NUGET_REF_NAME)\\n)" | sed 's/^ //' >> $@
+	@printf "$(foreach platform,$(DOTNET_PLATFORMS_UPPERCASE),$(platform)_NUGET_RUNTIME_MANAGED_NAME=$($(platform)_NUGET_RUNTIME_MANAGED_NAME)\\n)" | sed 's/^ //' >> $@
 	@printf "$(foreach platform,$(DOTNET_PLATFORMS_UPPERCASE),$(foreach rid,$(DOTNET_$(platform)_RUNTIME_IDENTIFIERS),$(rid)_NUGET_RUNTIME_NAME=$($(rid)_NUGET_RUNTIME_NAME)\\n))" | sed 's/^ //' >> $@
 	@printf "$(foreach platform,$(DOTNET_PLATFORMS_UPPERCASE),SUPPORTED_API_VERSIONS_$(platform)='$(SUPPORTED_API_VERSIONS_$(platform))'\\n)" | sed 's/^ //' >> $@
 	@printf "ENABLE_XAMARIN=$(ENABLE_XAMARIN)\n" >> $@

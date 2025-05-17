@@ -58,6 +58,11 @@ readonly partial struct Parameter : IEquatable<Parameter> {
 	public ReferenceKind ReferenceKind { get; init; }
 
 	/// <summary>
+	/// The parameter is passed by reference. This means any possible reference mode: in, out, ref.
+	/// </summary>
+	public bool IsByRef => ReferenceKind != ReferenceKind.None;
+
+	/// <summary>
 	/// List of attributes attached to the parameter.
 	/// </summary>
 	public ImmutableArray<AttributeCodeChange> Attributes { get; init; } = [];

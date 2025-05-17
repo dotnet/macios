@@ -24,6 +24,8 @@ readonly partial struct DelegateParameter {
 			IsParams = symbol.IsParams,
 			IsThis = symbol.IsThis,
 			ReferenceKind = symbol.RefKind.ToReferenceKind (),
+			IsCCallback = symbol.HasAttribute (AttributesNames.CCallbackAttribute),
+			IsBlockCallback = symbol.HasAttribute (AttributesNames.BlockCallbackAttribute),
 		};
 		return true;
 	}

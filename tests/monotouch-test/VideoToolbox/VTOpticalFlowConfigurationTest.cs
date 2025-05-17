@@ -26,6 +26,7 @@ namespace MonoTouchFixtures.VideoToolbox {
 		public void Properties ()
 		{
 			TestRuntime.AssertXcodeVersion (16, 3);
+			TestRuntime.AssertOnlyARM64 (); // "Fail to create effect configuration" is printed to the terminal
 
 			Assert.Multiple (() => {
 				using var obj = new VTOpticalFlowConfiguration (320, 320, VTOpticalFlowConfigurationQualityPrioritization.Normal, VTOpticalFlowConfigurationRevision.Revision1);

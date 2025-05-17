@@ -101,6 +101,7 @@ namespace Xamarin.MacDev.Tasks {
 			return ExecuteAsync (Log, fileName, arguments, sdkDevPath, environment, mergeOutput, showErrorIfFailure, workingDirectory);
 		}
 
+		static int executionCounter;
 		internal protected static async System.Threading.Tasks.Task<Execution> ExecuteAsync (TaskLoggingHelper log, string fileName, IList<string> arguments, string? sdkDevPath = null, Dictionary<string, string?>? environment = null, bool mergeOutput = true, bool showErrorIfFailure = true, string? workingDirectory = null, CancellationToken? cancellationToken = null)
 		{
 			// Create a new dictionary if we're given one, to make sure we don't change the caller's dictionary.
@@ -108,7 +109,8 @@ namespace Xamarin.MacDev.Tasks {
 			if (!string.IsNullOrEmpty (sdkDevPath))
 				launchEnvironment ["DEVELOPER_DIR"] = sdkDevPath;
 
-			log.LogMessage (MessageImportance.Normal, MSBStrings.M0001, fileName, StringUtils.FormatArguments (arguments));
+			var currentId = Interlocked.Increment (ref executionCounter);
+			log.LogMessage (MessageImportance.Normal, MSBStrings.M0001, currentId, fileName, StringUtils.FormatArguments (arguments)); // Started external tool execution #{0}: {1} {2}
 			if (!string.IsNullOrEmpty (workingDirectory)) {
 				log.LogMessage (MessageImportance.Low, "    Working directory: {0}", workingDirectory);
 			} else {
@@ -121,7 +123,7 @@ namespace Xamarin.MacDev.Tasks {
 				}
 			}
 			var rv = await Execution.RunAsync (fileName, arguments, environment: launchEnvironment, mergeOutput: mergeOutput, workingDirectory: workingDirectory, cancellationToken: cancellationToken);
-			log.LogMessage (rv.ExitCode == 0 ? MessageImportance.Low : MessageImportance.High, MSBStrings.M0002, fileName, rv.ExitCode);
+			log.LogMessage (rv.ExitCode == 0 ? MessageImportance.Low : MessageImportance.High, MSBStrings.M0002, currentId, rv.Duration, rv.ExitCode); // Finished external tool execution #{0} in {1} and with exit code {2}.
 
 			// Show the output
 			var output = rv.StandardOutput!.ToString ();
@@ -250,7 +252,8 @@ namespace Xamarin.MacDev.Tasks {
 		void ICustomLogger.LogError (string message, Exception ex)
 		{
 			Log.LogError (message);
-			Log.LogErrorFromException (ex);
+			if (ex is not null)
+				Log.LogErrorFromException (ex);
 		}
 
 		void ICustomLogger.LogWarning (string messageFormat, params object [] args)

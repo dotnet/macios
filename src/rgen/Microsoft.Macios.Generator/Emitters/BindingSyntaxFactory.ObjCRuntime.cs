@@ -48,6 +48,15 @@ static partial class BindingSyntaxFactory {
 		=> CastToNative (parameter.Name, parameter.Type);
 
 	/// <summary>
+	/// Returns the expression needed to cast a parameter to its native type.
+	/// </summary>
+	/// <param name="parameter">The parameter whose casting we need to generate. The type info has to be
+	/// and enum and be marked as native. If it is not, the method returns null</param>
+	/// <returns>The cast C# expression.</returns>
+	internal static CastExpressionSyntax? CastToNative (in DelegateParameter parameter)
+		=> CastToNative (parameter.Name, parameter.Type);
+
+	/// <summary>
 	/// Returns the expression needed to cast a varuable to its native type.
 	/// </summary>
 	/// <param name="variableName">The variable whose casting we need to generate.</param>
@@ -708,7 +717,7 @@ static partial class BindingSyntaxFactory {
 	internal static (string Name, LocalDeclarationStatementSyntax Declaration) GetReturnValueAuxVariable (in TypeInfo returnType)
 	{
 		var typeSyntax = returnType.GetIdentifierSyntax ();
-		var variableName = Nomenclator.GetReturnVariableName (returnType);
+		var variableName = Nomenclator.GetReturnVariableName ();
 		// generates Type ret; The GetIdentifierSyntax will ensure that the correct type and nullable annotation is used
 		var declaration = LocalDeclarationStatement (
 			VariableDeclaration (typeSyntax.WithTrailingTrivia (Space))

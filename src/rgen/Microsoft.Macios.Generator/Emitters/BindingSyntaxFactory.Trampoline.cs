@@ -160,7 +160,7 @@ static partial class BindingSyntaxFactory {
 			.WithType (parameterInfo.ParameterType)
 			.NormalizeWhitespace ();
 	}
-	
+
 	/// <summary>
 	/// Returns the argument syntax of a parameter to be used for the trampoliner to invoke a delegate.
 	/// </summary>

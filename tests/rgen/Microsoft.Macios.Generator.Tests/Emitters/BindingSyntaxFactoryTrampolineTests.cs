@@ -1667,7 +1667,7 @@ namespace NS {
 		var invocation = CallTrampolineDelegate (parameter.Type.Delegate, argumentSyntax);
 		Assert.Equal (expectedExpression, invocation.ToFullString ());
 	}
-	
+
 	class TestDataGetTrampolineInvokeParameter : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{
@@ -1686,7 +1686,7 @@ namespace NS {
 				pointerParameter,
 				"int* pointerParameter"
 			];
-			
+
 
 			var ccallbackParameter = @"
 using System;
@@ -1705,7 +1705,7 @@ namespace NS {
 				ccallbackParameter,
 				"global::System.IntPtr callbackParameter"
 			];
-			
+
 			var blockParameter = @"
 using System;
 using ObjCRuntime;
@@ -1723,7 +1723,7 @@ namespace NS {
 				blockParameter,
 				"global::System.IntPtr callbackParameter",
 			];
-			
+
 			var nativeEnumParameter = @"
 using System;
 using ObjCBindings;
@@ -1750,7 +1750,7 @@ namespace NS {
 				nativeEnumParameter,
 				"long enumParameter",
 			];
-			
+
 			var boolParameter = @"
 using System;
 using ObjCRuntime;
@@ -1768,7 +1768,7 @@ namespace NS {
 				boolParameter,
 				"byte boolParameter",
 			];
-			
+
 			var nsObjectArray = @"
 using System;
 using Foundation;
@@ -1787,7 +1787,7 @@ namespace NS {
 				nsObjectArray,
 				"global::ObjCRuntime.NativeHandle nsObjectArray",
 			];
-			
+
 
 
 			var iNativeObjectArray = @"
@@ -1809,7 +1809,7 @@ namespace NS {
 				iNativeObjectArray,
 				"global::ObjCRuntime.NativeHandle inativeArray",
 			];
-			
+
 
 			var stringArray = @"
 using System;
@@ -1829,7 +1829,7 @@ namespace NS {
 				stringArray,
 				"global::ObjCRuntime.NativeHandle stringArray",
 			];
-			
+
 			var stringParameter = @"
 using System;
 using Foundation;
@@ -1848,7 +1848,7 @@ namespace NS {
 				stringParameter,
 				"global::ObjCRuntime.NativeHandle stringParameter",
 			];
-			
+
 			var protocolParameter = @"
 using System;
 using Foundation;
@@ -1867,7 +1867,7 @@ namespace NS {
 				protocolParameter,
 				"global::ObjCRuntime.NativeHandle protocolParameter",
 			];
-			
+
 
 			var forcedParameterOwnsFalse = @"
 using System;
@@ -1887,7 +1887,7 @@ namespace NS {
 				forcedParameterOwnsFalse,
 				"global::ObjCRuntime.NativeHandle forcedParameter",
 			];
-			
+
 			var nsObjectParameter = @"
 using System;
 using Foundation;
@@ -1946,7 +1946,7 @@ namespace NS {
 				cmSampleBuffer,
 				"global::ObjCRuntime.NativeHandle cmSampleBuffer",
 			];
-			
+
 			var audioBuffer = @"
 using System;
 using AudioToolbox;
@@ -1966,7 +1966,7 @@ namespace NS {
 				audioBuffer,
 				"global::ObjCRuntime.NativeHandle audioBuffer",
 			];
-			
+
 			var outNullableInt = @"
 using System;
 using Foundation;
@@ -1985,7 +1985,7 @@ namespace NS {
 				outNullableInt,
 				"int* outNullableInt",
 			];
-			
+
 			var outBoolean = @"
 using System;
 using Foundation;
@@ -2004,7 +2004,7 @@ namespace NS {
 				outBoolean,
 				"byte* outBool",
 			];
-			
+
 			var outNSObject = @"
 using System;
 using Foundation;
@@ -2023,7 +2023,7 @@ namespace NS {
 				outNSObject,
 				"global::ObjCRuntime.NativeHandle* outNSObject",
 			];
-			
+
 			var valueType = @"
 using System;
 using Foundation;

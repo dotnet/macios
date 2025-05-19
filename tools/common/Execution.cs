@@ -33,6 +33,8 @@ namespace Xamarin.Utils {
 		public TextWriter? StandardOutput { get; private set; }
 		public TextWriter? StandardError { get; private set; }
 
+		public TimeSpan Duration { get; private set; }
+
 		static Thread StartOutputThread (TaskCompletionSource<Execution> tcs, object lockobj, StreamReader reader, TextWriter writer, string thread_name)
 		{
 			var thread = new Thread (() => {
@@ -100,6 +102,7 @@ namespace Xamarin.Utils {
 							Log.WriteLine ("{0} {1}", p.StartInfo.FileName, p.StartInfo.Arguments);
 						}
 
+						var stopwatch = Stopwatch.StartNew ();
 						p.Start ();
 						var pid = p.Id;
 
@@ -132,6 +135,7 @@ namespace Xamarin.Utils {
 						// even if we've called the WaitForExit (int) overload
 						p.WaitForExit ();
 						ExitCode = p.ExitCode;
+						Duration = stopwatch.Elapsed;
 
 						stdoutThread.Join (TimeSpan.FromSeconds (1));
 						stderrThread.Join (TimeSpan.FromSeconds (1));

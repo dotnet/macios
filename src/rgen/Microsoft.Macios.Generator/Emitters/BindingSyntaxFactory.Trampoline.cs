@@ -546,7 +546,7 @@ static partial class BindingSyntaxFactory {
 		// calculate the rest of the parameters  
 		foreach (var currentParameter in delegateTypeInfo.Delegate!.Parameters) {
 			// build the parameter
-			var parameterInfo= GetTrampolineInvokeParameter (currentParameter);
+			var parameterInfo = GetTrampolineInvokeParameter (currentParameter);
 			var parameter = Parameter (parameterInfo.ParameterName)
 				.WithType (parameterInfo.ParameterType)
 				.NormalizeWhitespace ();
@@ -596,7 +596,7 @@ static partial class BindingSyntaxFactory {
 		// build the function parameter list
 		var parameterBucket = ImmutableArray.CreateBuilder<FunctionPointerParameterSyntax> (delegateTypeInfo.Delegate!.Parameters.Length + 1);
 		// block parameter needed for the trampoline
-		parameterBucket.Add (FunctionPointerParameter(IntPtr));
+		parameterBucket.Add (FunctionPointerParameter (IntPtr));
 		// calculate the rest of the parameters  
 		foreach (var currentParameter in delegateTypeInfo.Delegate!.Parameters) {
 			// build the parameter
@@ -613,12 +613,12 @@ static partial class BindingSyntaxFactory {
 		var parametersSyntax = FunctionPointerParameterList (
 			SeparatedList<FunctionPointerParameterSyntax> (
 				parameterBucket.ToImmutableArray ().ToSyntaxNodeOrTokenArray ())).NormalizeWhitespace ();
-		
+
 		// function pointer type
-		var pointerType = FunctionPointerType()
-			.WithCallingConvention(
-				FunctionPointerCallingConvention(
-					Token(SyntaxKind.UnmanagedKeyword)))
+		var pointerType = FunctionPointerType ()
+			.WithCallingConvention (
+				FunctionPointerCallingConvention (
+					Token (SyntaxKind.UnmanagedKeyword)))
 			.WithParameterList (parametersSyntax.WithLeadingTrivia (Space));
 		// declare the delegate pointer variable:
 		var declaration = VariableDeclaration (pointerType)

@@ -2386,7 +2386,7 @@ namespace NS {
 		var parameter = changes.Value.Parameters [0];
 		// assert it is indeed a delegate
 		Assert.NotNull (parameter.Type.Delegate);
-		var parameterInfo= GetTrampolineInvokeParameter (parameter.Type.Delegate!.Parameters [0]);
+		var parameterInfo = GetTrampolineInvokeParameter (parameter.Type.Delegate!.Parameters [0]);
 		var expression = Parameter (parameterInfo.ParameterName)
 			.WithType (parameterInfo.ParameterType)
 			.NormalizeWhitespace ();
@@ -2696,7 +2696,7 @@ namespace NS {
 		var delegateDeclaration = GetTrampolineInvokeSignature (parameter.Type);
 		Assert.Equal (expectedExpression, delegateDeclaration.ToString ());
 	}
-	
+
 	class TestDataGetTrampolineDelegatePointer : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{
@@ -2713,7 +2713,7 @@ namespace NS {
 				pointerParameter,
 				"delegate* unmanaged<global::System.IntPtr, int*, void> trampoline = &Invoke;",
 			];
-			
+
 			var ccallbackParameter = @"
 using System;
 using ObjCRuntime;
@@ -2975,7 +2975,7 @@ namespace NS {
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
 	}
-	
+
 	[Theory]
 	[AllSupportedPlatformsClassData<TestDataGetTrampolineDelegatePointer>]
 	void GetTrampolineDelegatePointerTests (ApplePlatform platform, string inputText, string expectedExpression)

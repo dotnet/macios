@@ -28,8 +28,16 @@
     <Reference Include="Microsoft.Build.Framework" HintPath="$(MSBuildBinPath)\Microsoft.Build.Framework.dll" />
     <Reference Include="Microsoft.Build.Tasks.Core" HintPath="$(MSBuildBinPath)\Microsoft.Build.Tasks.Core.dll" />
     <Reference Include="Microsoft.Build.Utilities.Core" HintPath="$(MSBuildBinPath)\Microsoft.Build.Utilities.Core.dll" />
-    <Reference Include="Xamarin.MacDev.Tasks" HintPath="..\..\..\msbuild\Xamarin.MacDev.Tasks\bin\$(Configuration)\netstandard2.0\Xamarin.MacDev.Tasks.dll" />
-    <Reference Include="Xamarin.Localization.MSBuild" HintPath="..\..\..\msbuild\Xamarin.MacDev.Tasks\bin\$(Configuration)\netstandard2.0\Xamarin.Localization.MSBuild.dll" />
+
+    <!-- Reference the ILMerged assemblies for testing / runtime -->
+    <Reference Include="Xamarin.MacDev.Tasks" Condition="'$(DesignTimeBuild)' != 'true'" HintPath="..\..\..\msbuild\Xamarin.MacDev.Tasks\bin\$(Configuration)\netstandard2.0\Xamarin.MacDev.Tasks.dll" />
+    <Reference Include="Xamarin.Localization.MSBuild" Condition="'$(DesignTimeBuild)' != 'true'" HintPath="..\..\..\msbuild\Xamarin.MacDev.Tasks\bin\$(Configuration)\netstandard2.0\Xamarin.Localization.MSBuild.dll" />
+
+    <!-- Reference the projects for intellisense in VSCode. -->
+    <ProjectReference Include="../../../msbuild/Xamarin.MacDev.Tasks/Xamarin.MacDev.Tasks.csproj" Condition="'$(DesignTimeBuild)' == 'true'" />
+    <ProjectReference Include="../../../external/Xamarin.MacDev/Xamarin.MacDev/Xamarin.MacDev.csproj" Condition="'$(DesignTimeBuild)' == 'true'"/>
+    <ProjectReference Include="../../../msbuild/Xamarin.Localization.MSBuild/Xamarin.Localization.MSBuild.csproj" Condition="'$(DesignTimeBuild)' == 'true'" />
+
     <PackageReference Include="System.Collections.Immutable" Version="8.0.0" />
     <PackageReference Include="NUnit" Version="3.12.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.15.1" />
@@ -45,7 +53,7 @@
     <PackageReference Include="System.Security.Cryptography.Xml" Version="$(SystemSecurityCryptographyXmlPackageVersion)" />
   </ItemGroup>
 
-  <Target Name="BuildTasksAssembly" AfterTargets="BeforeBuild">
+  <Target Name="BuildTasksAssembly" AfterTargets="BeforeBuild" Condition="'$(DesignTimeBuild)' != 'true'">
     <MSBuild Projects="..\..\..\msbuild\Xamarin.MacDev.Tasks\Xamarin.MacDev.Tasks.csproj" Targets="Restore" Properties="SomeGlobalPropertyToMakeThisUnique=RestoreMe" />
     <MSBuild Projects="..\..\..\msbuild\Xamarin.MacDev.Tasks\Xamarin.MacDev.Tasks.csproj" />
   </Target>

@@ -301,6 +301,12 @@ partial class TestRuntime {
 #endif
 	}
 
+	public static void AssertOnlyARM64 ()
+	{
+		if (!IsARM64)
+			NUnit.Framework.Assert.Ignore ("This test only runs on ARM64 simulators.");
+	}
+
 	public static void AssertNotSimulator (string message = "This test does not work in the simulator.")
 	{
 		if (IsSimulator)

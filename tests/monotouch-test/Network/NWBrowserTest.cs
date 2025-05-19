@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading;
 
 using CoreFoundation;
@@ -83,26 +84,46 @@ namespace MonoTouchFixtures.Network {
 			// The test will block until the different events are set by the callbacks that are executed in a diff thread.
 			bool didRun = false;
 			bool receivedNotNullChange = false;
-			bool eventsDone = false;
 			bool listeningDone = false;
 			Exception ex = null;
-			NWError? errorState = null;
-			var changesEvent = new AutoResetEvent (false);
+			NWError? browserErrorState = null;
+			NWBrowserState state = NWBrowserState.Invalid;
+			var changesEvent = new ManualResetEventSlim (false, 0);
 			var browserReady = new AutoResetEvent (false);
 			var finalEvent = new AutoResetEvent (false);
-			TestRuntime.RunAsync (TimeSpan.FromSeconds (30), () => {
+			var logLines = new List<string> ();
+
+			var log = new Action<string> ((v) => {
+				var line = $"{DateTime.Now.ToString ("yyyy-MM-dd HH:mm:ss.fffffff")} {v}";
+				lock (logLines)
+					logLines.Add (line);
+				Console.WriteLine (line);
+			});
+			var printLog = new Func<string> (() => {
+				lock (logLines)
+					return $"\n\t{string.Join ($"\n\t", logLines)}";
+			});
+
+			log ("Starting async...");
+			var finishedBeforeTimeout = TestRuntime.RunAsync (TimeSpan.FromSeconds (30), () => {
 				// start the browser, before the listener
+				log ("Starting browser...");
 				browser.SetStateChangesHandler ((st, er) => {
-					// assert here with a `st` of `Fail`
-					errorState ??= er;
-					if (st == NWBrowserState.Ready)
-						browserReady.Set ();
+					log ($"browser.SetStateChangedHandler ({st}, {er} => {er?.CFError})");
+
+					browserErrorState ??= er;
+					state = st;
+					browserReady.Set ();
+
+					if (er is not null) {
+						// we can get errors after reaching the NWBrowserState.Ready state,
+						// and in that case we may not get any other callbacks, so signal
+						// completion so that the test doesn't hang.
+						changesEvent.Set ();
+					}
 				});
-#if NET
 				browser.IndividualChangesDelegate = (oldResult, newResult) => {
-#else
-				browser.SetChangesHandler ((oldResult, newResult) => {
-#endif
+					log ($"browser.IndividualChangesDelegate ({oldResult}, {newResult})");
 					didRun = true;
 					try {
 						receivedNotNullChange = oldResult is not null || newResult is not null;
@@ -110,55 +131,59 @@ namespace MonoTouchFixtures.Network {
 						ex = e;
 					} finally {
 						changesEvent.Set ();
-						eventsDone = true;
 					}
-#if NET
 				};
-#else
-				});
-#endif
 				browser.Start ();
-				browserReady.WaitOne (30000);
+				Assert.That (browserReady.WaitOne (30000), Is.True, "Browser ready");
+
 				using (var advertiser = NWAdvertiseDescriptor.CreateBonjourService ("MonoTouchFixtures.Network", type))
-#if NET
 				using (var tcpOptions = new NWProtocolTcpOptions ())
 				using (var tlsOptions = new NWProtocolTlsOptions ())
-#else
-				using (var tcpOptions = NWProtocolOptions.CreateTcp ())
-				using (var tlsOptions = NWProtocolOptions.CreateTls ())
-#endif
 				using (var paramenters = NWParameters.CreateTcp ()) {
 					paramenters.ProtocolStack.PrependApplicationProtocol (tlsOptions);
 					paramenters.ProtocolStack.PrependApplicationProtocol (tcpOptions);
 					paramenters.IncludePeerToPeer = true;
-					using (var listener = NWListener.Create ("1234", paramenters)) {
+					using (var listener = NWListener.Create ("0", paramenters)) {
 						listener.SetQueue (DispatchQueue.CurrentQueue);
 						listener.SetAdvertiseDescriptor (advertiser);
 						// we need the connection handler, else we will get an exception
-						listener.SetNewConnectionHandler ((c) => { });
+						listener.SetNewConnectionHandler ((c) => {
+							log ($"listener.SetNewConnectionHandler ()");
+						});
 						listener.SetStateChangedHandler ((s, e) => {
-							if (e is not null) {
-								Console.WriteLine ($"Got error {e.ErrorCode} {e.ErrorDomain} '{e.CFError.FailureReason}' {e.ToString ()}");
-							}
+							log ($"listener.SetStateChangedHandler ({s}, {e} (ErrorCode = {e?.ErrorCode}, ErrorDomain = {e?.ErrorDomain}, CFError: {e?.CFError}, CFError.FailureReason: {e?.CFError?.FailureReason}))");
 						});
 						listener.Start ();
-						changesEvent.WaitOne (30000);
+						Assert.IsTrue (changesEvent.Wait (30000), $"changesEvent.Wait (){printLog ()}");
 						listener.Cancel ();
 						listeningDone = true;
 						finalEvent.Set ();
 					}
 				}
 
-			}, () => eventsDone);
+			}, () => changesEvent.IsSet);
+			log ($"Async done...");
 
-			finalEvent.WaitOne (30000);
-			Assert.IsNull (errorState, "Error");
-			Assert.IsTrue (eventsDone, "eventDone");
-			Assert.IsTrue (listeningDone, "listeningDone");
-			Assert.IsNull (ex, "Exception");
-			Assert.IsTrue (didRun, "didRan");
-			Assert.IsTrue (receivedNotNullChange, "receivedNotNullChange");
+			if (browserErrorState?.CFError?.Code == -65570/* kDNSServiceErr_PolicyDenied */ ) {
+				// https://developer.apple.com/forums/thread/663852
+				// "If you’re using Bonjour, you will get the kDNSServiceErr_PolicyDenied (-65570) error if your Bonjour operation failed because you don’t have local network access."
+				Assert.Ignore ("This test requires access to the local network, and this has not been granted.");
+			}
+
+			Assert.IsNull (browserErrorState, "Ready Error");
+			Assert.That (state, Is.EqualTo (NWBrowserState.Ready), "NWBrowserState");
+
+			Assert.That (finishedBeforeTimeout, Is.True, $"RunAsync timeout{printLog ()}");
+			Assert.That (finalEvent.WaitOne (30000), Is.True, $"Final event{printLog ()}");
+			Assert.IsNull (browserErrorState?.CFError, $"Error.CFError{printLog ()}");
+			Assert.IsNull (browserErrorState, $"Error{printLog ()}");
+			Assert.IsTrue (listeningDone, $"listeningDone{printLog ()}");
+			Assert.IsNull (ex, $"Exception{printLog ()}");
+			Assert.IsTrue (didRun, $"didRan{printLog ()}");
+			Assert.IsTrue (receivedNotNullChange, $"receivedNotNullChange{printLog ()}");
+			log ($"about to cancel...");
 			browser.Cancel ();
+			log ($"cancelled...");
 		}
 	}
 }

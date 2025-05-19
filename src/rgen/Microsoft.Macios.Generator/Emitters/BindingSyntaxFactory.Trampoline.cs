@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using System;
 using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.CodeAnalysis;
@@ -76,23 +75,68 @@ static partial class BindingSyntaxFactory {
 		return StaticInvocationExpression (staticClassName, "Create", arguments, suppressNullableWarning: true);
 	}
 
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="typeInfo"></param>
+	/// <returns></returns>
+	internal static TypeSyntax GetLowLevelType (in TypeInfo typeInfo)
+	{
+#pragma warning disable format
+		return typeInfo switch {
+			// pointer parameter 
+			{ IsPointer: true } => typeInfo.GetIdentifierSyntax (),
+			
+			// delegate parameter is a NativeHandle
+			{ IsDelegate: true } => IntPtr,
+			
+			// native enum, return the conversion expression to the native type
+			{ IsNativeEnum: true} =>  IdentifierName(typeInfo.EnumUnderlyingType!.Value.GetKeyword ()),
+
+			// boolean, convert it to byte
+			{ SpecialType: SpecialType.System_Boolean } => PredefinedType (Token(SyntaxKind.ByteKeyword)),
+
+			{ IsArray: true } => NativeHandle,
+
+			{ SpecialType: SpecialType.System_String } =>  NativeHandle,
+
+			{ IsProtocol: true } => NativeHandle,
+
+			// special types
+
+			// CoreMedia.CMSampleBuffer
+			{ FullyQualifiedName: "CoreMedia.CMSampleBuffer" } => NativeHandle,
+
+			// AudioToolbox.AudioBuffers
+			{ FullyQualifiedName: "AudioToolbox.AudioBuffers" } => NativeHandle,
+
+			// general NSObject/INativeObject, has to be after the special types otherwise the special types will
+			// fall into the NSObject/INativeObject case
+
+			// same name, native handle
+			{ IsNSObject: true } => NativeHandle,
+
+			// same name, native handle
+			{ IsINativeObject: true } => NativeHandle,
+			
+			// by default, we will use the parameter name as is and the type of the parameter
+			_ => typeInfo.GetIdentifierSyntax (),
+		};
+#pragma warning restore format
+	}
 
 	/// <summary>
 	/// Returns the needed data to build the parameter syntax for the native trampoline delegate.
 	/// </summary>
-	/// <param name="trampolineName">The trampoline name of the parameter we want to generate.</param>
 	/// <param name="parameter">The parameter we want to generate for the lower invoke method.</param>
 	/// <returns>The parameter syntax needed for the parameter.</returns>
-	internal static ParameterSyntax GetTrampolineInvokeParameter (string trampolineName, in DelegateParameter parameter)
+	internal static ParameterSyntax GetTrampolineInvokeParameter (in DelegateParameter parameter)
 	{
+		// in the general case we will return the low level type conversion of the parameter type but we 
+		// need to handle in a special case those parameters that are passed by reference
 		var parameterIdentifier = Identifier (parameter.Name);
 #pragma warning disable format
-		(SyntaxToken ParameterName, TypeSyntax? ParameterType) parameterInfo = parameter switch {
-			// pointer parameter 
-			{ Type.IsPointer: true } 
-				=> (parameterIdentifier, 
-					parameter.Type.GetIdentifierSyntax ()),
-			
+		(SyntaxToken ParameterName, TypeSyntax ParameterType) parameterInfo = parameter switch {
 			// parameters that are passed by reference, depend on the type that is referenced
 			{ IsByRef: true, Type.IsReferenceType: false, Type.IsNullable: true} 
 				=> (parameterIdentifier, 
@@ -106,54 +150,8 @@ static partial class BindingSyntaxFactory {
 				=> (parameterIdentifier,
 					PointerType (NativeHandle)),
 			
-			// delegate parameter is a NativeHandle
-			{ Type.IsDelegate: true } => (parameterIdentifier, IntPtr),
-			
-			// native enum, return the conversion expression to the native type
-			{ Type.IsNativeEnum: true}
-				=> (parameterIdentifier, IdentifierName(parameter.Type.EnumUnderlyingType!.Value.GetKeyword ())),
-
-			// boolean, convert it to byte
-			{ Type.SpecialType: SpecialType.System_Boolean }
-				=> (parameterIdentifier, 
-					PredefinedType (Token(SyntaxKind.ByteKeyword))),
-
-			// same name, native handle
-			{ Type.IsArray: true }
-				=> (parameterIdentifier, NativeHandle),
-
-			// string
-			// same name, native handle
-			{ Type.SpecialType: SpecialType.System_String }
-				=> (parameterIdentifier, NativeHandle),
-
-			// same name, NativeHandle
-			{ Type.IsProtocol: true } => (parameterIdentifier, NativeHandle),
-
-			// same name, NativeHandle
-			{ ForcedType: not null } => (parameterIdentifier, NativeHandle),
-
-			// special types
-
-			// CoreMedia.CMSampleBuffer
-			// same name, native handle
-			{ Type.FullyQualifiedName: "CoreMedia.CMSampleBuffer" } => (parameterIdentifier, NativeHandle),
-
-			// AudioToolbox.AudioBuffers
-			// same name, native handle
-			{ Type.FullyQualifiedName: "AudioToolbox.AudioBuffers" } => (parameterIdentifier, NativeHandle),
-
-			// general NSObject/INativeObject, has to be after the special types otherwise the special types will
-			// fall into the NSObject/INativeObject case
-
-			// same name, native handle
-			{ Type.IsNSObject: true } => (parameterIdentifier, NativeHandle),
-
-			// same name, native handle
-			{ Type.IsINativeObject: true } => (parameterIdentifier, NativeHandle),
-			
 			// by default, we will use the parameter name as is and the type of the parameter
-			_ => (parameterIdentifier, parameter.Type.GetIdentifierSyntax ()),
+			_ => (parameterIdentifier, GetLowLevelType (parameter.Type)),
 		};
 #pragma warning restore format
 		
@@ -546,7 +544,7 @@ static partial class BindingSyntaxFactory {
 	internal static SyntaxNode GetTrampolineDelegateDeclaration (in TypeInfo delegateTypeInfo, out string delegateName)
 	{
 		// generate a new delegate type with the addition of the IntPtr parameter for block
-		var modifiers = TokenList (new [] { Token (SyntaxKind.UnsafeKeyword), Token (SyntaxKind.InternalKeyword) });
+		var modifiers = TokenList (Token (SyntaxKind.UnsafeKeyword), Token (SyntaxKind.InternalKeyword));
 		delegateName = Nomenclator.GetTrampolineClassName (delegateTypeInfo.Name, Nomenclator.TrampolineClassType.DelegateType);
 
 		// build the arguments for the delegate, but add a IntPtr parameter at the start of the list 
@@ -554,25 +552,19 @@ static partial class BindingSyntaxFactory {
 		// block parameter needed for the trampoline
 		parameterBucket.Add (
 			Parameter (Identifier (Nomenclator.GetTrampolineBlockParameterName ()))
-				.WithType (IdentifierName ("IntPtr")
-			));
+				.WithType (IntPtr));
+		// calculate the rest of the parameters  
 		foreach (var parameterInfo in delegateTypeInfo.Delegate!.Parameters) {
 			// build the parameter
-			var parameterType = parameterInfo.Type.GetIdentifierSyntax ();
-			var parameterSyntax = Parameter (Identifier (parameterInfo.Name))
-				.WithType (parameterType);
-			// add a modifier if needed
-			if (parameterInfo.IsByRef) {
-				parameterSyntax = parameterSyntax.WithModifiers (parameterInfo.ReferenceKind.ToTokens ());
-			}
-			parameterBucket.Add (parameterSyntax);
+			parameterBucket.Add (GetTrampolineInvokeParameter (parameterInfo));
 		}
+		
 		var parametersSyntax = ParameterList (
 			SeparatedList<ParameterSyntax> (
 			parameterBucket.ToImmutableArray ().ToSyntaxNodeOrTokenArray ())).NormalizeWhitespace ();
 		// delegate declaration
 		var declaration = DelegateDeclaration (
-					delegateTypeInfo.Delegate!.ReturnType.GetIdentifierSyntax (),
+				GetLowLevelType (delegateTypeInfo.Delegate!.ReturnType), // return the low level type, not the manged version
 				Identifier (delegateName))
 			.WithModifiers (modifiers).NormalizeWhitespace ()
 			.WithParameterList (parametersSyntax.WithLeadingTrivia (Space));

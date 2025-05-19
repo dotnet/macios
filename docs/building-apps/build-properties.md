@@ -941,15 +941,23 @@ Example:
 $ dotnet run -p:OpenNewInstance=false
 ```
 
-### RunEnvironment
+### OpenArguments
 
-This property can be used to set additional environment variables when the app is launched.
+This property can be used to pass additional arguments to the `open` command.
 
-Example:
+Example (to set environment variables):
 
 ```shell
-$ dotnet run -p:RunEnvironment="--env VARIABLE1=VALUE1 --env VARIABLE2=VALUE2"
+$ dotnet run -p:OpenArguments="--env VARIABLE1=VALUE1 --env VARIABLE2=value2"
 ```
+
+Example (to redirect stdout and stderr to a file):
+
+```shell
+$ dotnet run -p:OpenArguments="--stdout /tmp/stdout.txt --stderr /tmp/stderr.txt"
+```
+
+Run `man open` to see a list of all the options `open` accepts.
 
 ### StandardOutputPath
 
@@ -968,6 +976,8 @@ $ dotnet run -p:StandardOutputPath=$(tty)
 [... Console.WriteLine output from app ...]
 ```
 
+Note: this can also be accomplished by passing `--stdout ...` using the [OpenArguments](#openarguments) property.
+
 ### StandardErrorPath
 
 This property can be used to redirect the stderr output from the app to a file.
@@ -985,6 +995,8 @@ $ dotnet run -p:StandardErrorPath=$(tty)
 [... Console.Error.WriteLine output from app ...]
 ```
 
+Note: this can also be accomplished by passing `--stderr ...` using the [OpenArguments](#openarguments) property.
+
 ### StandardInputPath
 
 This property can be used to redirect the stdin input to the app from a file.
@@ -994,6 +1006,8 @@ Example:
 ```shell
 $ dotnet run -p:StandardInputPath=stdin.txt
 ```
+
+Note: this can also be accomplished by passing `--stdin ...` using the [OpenArguments](#openarguments) property.
 
 ## SkipStaticLibraryValidation
 

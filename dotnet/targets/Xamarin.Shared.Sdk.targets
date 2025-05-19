@@ -2276,17 +2276,17 @@
 		Condition="'$(_PlatformName)' == 'macOS' Or '$(_PlatformName)' == 'MacCatalyst'">
 
 		<PropertyGroup Condition="'$(RunWithOpen)' != 'false'">
-			<RunEnvironment Condition="'$(XamarinDebugMode)' != ''">$(RunEnvironment) --env __XAMARIN_DEBUG_MODE__=$(XamarinDebugMode)</RunEnvironment>
-			<RunEnvironment Condition="'$(XamarinDebugPort)' != ''">$(RunEnvironment) --env __XAMARIN_DEBUG_PORT__=$(XamarinDebugPort)</RunEnvironment>
-			<RunEnvironment Condition="'$(XamarinDebugHosts)' != ''">$(RunEnvironment) --env "__XAMARIN_DEBUG_HOSTS__=$(XamarinDebugHosts)"</RunEnvironment>
-			<RunEnvironment Condition="'$(XamarinDebugConnectTimeout)' != ''">$(RunEnvironment) --env __XAMARIN_DEBUG_CONNECT_TIMEOUT__=$(XamarinDebugConnectTimeout)</RunEnvironment>
-			<OpenArguments>$(OpenArguments) $(RunEnvironment)</OpenArguments>
-			<OpenArguments Condition="'$(StandardOutputPath)' != ''">$(OpenArguments) --stdout "$(StandardOutputPath)"</OpenArguments>
-			<OpenArguments Condition="'$(StandardErrorPath)' != ''">$(OpenArguments) --stderr "$(StandardErrorPath)"</OpenArguments>
-			<OpenArguments Condition="'$(StandardInputPath)' != ''">$(OpenArguments) --stdin "$(StandardInputPath)"</OpenArguments>
-			<OpenArguments Condition="'$(OpenNewInstance)' == 'true'">$(OpenArguments) -n</OpenArguments>
+			<_OpenArguments Condition="'$(XamarinDebugMode)' != ''">$(OpenArguments) --env __XAMARIN_DEBUG_MODE__=$(XamarinDebugMode)</_OpenArguments>
+			<_OpenArguments Condition="'$(XamarinDebugPort)' != ''">$(OpenArguments) --env __XAMARIN_DEBUG_PORT__=$(XamarinDebugPort)</_OpenArguments>
+			<_OpenArguments Condition="'$(XamarinDebugHosts)' != ''">$(OpenArguments) --env "__XAMARIN_DEBUG_HOSTS__=$(XamarinDebugHosts)"</_OpenArguments>
+			<_OpenArguments Condition="'$(XamarinDebugConnectTimeout)' != ''">$(OpenArguments) --env __XAMARIN_DEBUG_CONNECT_TIMEOUT__=$(XamarinDebugConnectTimeout)</_OpenArguments>
+			<_OpenArguments Condition="'$(StandardOutputPath)' != ''">$(OpenArguments) --stdout "$(StandardOutputPath)"</_OpenArguments>
+			<_OpenArguments Condition="'$(StandardErrorPath)' != ''">$(OpenArguments) --stderr "$(StandardErrorPath)"</_OpenArguments>
+			<_OpenArguments Condition="'$(StandardInputPath)' != ''">$(OpenArguments) --stdin "$(StandardInputPath)"</_OpenArguments>
+			<_OpenArguments Condition="'$(OpenNewInstance)' == 'true'">$(OpenArguments) -n</_OpenArguments>
+			<_OpenArguments>$(OpenArguments) $(RunEnvironment)</_OpenArguments>
 			<RunCommand>open</RunCommand>
-			<RunArguments>$(OpenArguments) "$(TargetDir)/$(AssemblyName).app" --args</RunArguments>
+			<RunArguments>$(_OpenArguments) "$(TargetDir)/$(AssemblyName).app" --args</RunArguments>
 		</PropertyGroup>
 
 		<PropertyGroup Condition="'$(RunWithOpen)' == 'false'">

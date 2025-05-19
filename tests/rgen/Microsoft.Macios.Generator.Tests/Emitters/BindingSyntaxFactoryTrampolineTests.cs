@@ -16,12 +16,10 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Microsoft.Macios.Generator.Tests.Emitters;
 
-public class BindingSyntaxFactoryTrampolineTests : BaseGeneratorTestClass
-{
+public class BindingSyntaxFactoryTrampolineTests : BaseGeneratorTestClass {
 
-	class TestDataGetTrampolineInvokeReturnType : IEnumerable<object[]>
-	{
-		public IEnumerator<object[]> GetEnumerator()
+	class TestDataGetTrampolineInvokeReturnType : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
 		{
 			const string arrayNSObjectResult = @"
 using System;
@@ -233,33 +231,32 @@ namespace NS {
 			];
 		}
 
-		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
 	}
 
 	[Theory]
 	[AllSupportedPlatformsClassData<TestDataGetTrampolineInvokeReturnType>]
-	void GetTrampolineInvokeReturnTypeTests(ApplePlatform platform, string inputText, string? expectedExpression)
+	void GetTrampolineInvokeReturnTypeTests (ApplePlatform platform, string inputText, string? expectedExpression)
 	{
-		var (compilation, syntaxTrees) = CreateCompilation(platform, sources: inputText);
-		Assert.Single(syntaxTrees);
-		var semanticModel = compilation.GetSemanticModel(syntaxTrees[0]);
-		var declaration = syntaxTrees[0].GetRoot()
-			.DescendantNodes().OfType<MethodDeclarationSyntax>()
-			.FirstOrDefault();
-		Assert.NotNull(declaration);
-		Assert.True(Method.TryCreate(declaration, semanticModel, out var changes));
-		Assert.NotNull(changes);
+		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
+		Assert.Single (syntaxTrees);
+		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
+		var declaration = syntaxTrees [0].GetRoot ()
+			.DescendantNodes ().OfType<MethodDeclarationSyntax> ()
+			.FirstOrDefault ();
+		Assert.NotNull (declaration);
+		Assert.True (Method.TryCreate (declaration, semanticModel, out var changes));
+		Assert.NotNull (changes);
 		// we know the first parameter of the method is the delegate
-		Assert.Single(changes.Value.Parameters);
-		var parameter = changes.Value.Parameters[0];
+		Assert.Single (changes.Value.Parameters);
+		var parameter = changes.Value.Parameters [0];
 		var auxVariableName = "auxVariable";
-		var expression = GetTrampolineInvokeReturnType(parameter.Type, auxVariableName);
-		Assert.Equal(expectedExpression, expression?.ToString());
+		var expression = GetTrampolineInvokeReturnType (parameter.Type, auxVariableName);
+		Assert.Equal (expectedExpression, expression?.ToString ());
 	}
 
-	class TestDataCreateNativeClass : IEnumerable<object[]>
-	{
-		public IEnumerator<object[]> GetEnumerator()
+	class TestDataCreateNativeClass : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
 		{
 			yield return [
 				"GetGeolocationCallback",
@@ -285,20 +282,19 @@ namespace NS {
 			];
 		}
 
-		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
 	}
 
 	[Theory]
-	[ClassData(typeof(TestDataCreateNativeClass))]
-	public void CreateTrampolineNativeInvocationClassTest(string trampolineName, ImmutableArray<ArgumentSyntax> arguments, string expectedExpression)
+	[ClassData (typeof (TestDataCreateNativeClass))]
+	public void CreateTrampolineNativeInvocationClassTest (string trampolineName, ImmutableArray<ArgumentSyntax> arguments, string expectedExpression)
 	{
-		var expression = CreateTrampolineNativeInvocationClass(trampolineName, arguments);
-		Assert.Equal(expectedExpression, expression.ToString());
+		var expression = CreateTrampolineNativeInvocationClass (trampolineName, arguments);
+		Assert.Equal (expectedExpression, expression.ToString ());
 	}
 
-	class TestDataGetTrampolineInvokeArgument : IEnumerable<object[]>
-	{
-		public IEnumerator<object[]> GetEnumerator()
+	class TestDataGetTrampolineInvokeArgument : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
 		{
 			var pointerParameter = @"
 using System;
@@ -687,35 +683,34 @@ namespace NS {
 			];
 		}
 
-		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
 	}
 
 	[Theory]
 	[AllSupportedPlatformsClassData<TestDataGetTrampolineInvokeArgument>]
-	void GetTrampolineInvokeArgumentTests(ApplePlatform platform, string trampolineName, string inputText, string expectedExpression)
+	void GetTrampolineInvokeArgumentTests (ApplePlatform platform, string trampolineName, string inputText, string expectedExpression)
 	{
-		var (compilation, syntaxTrees) = CreateCompilation(platform, sources: inputText);
-		Assert.Single(syntaxTrees);
-		var semanticModel = compilation.GetSemanticModel(syntaxTrees[0]);
-		var declaration = syntaxTrees[0].GetRoot()
-			.DescendantNodes().OfType<MethodDeclarationSyntax>()
-			.FirstOrDefault();
-		Assert.NotNull(declaration);
-		Assert.True(Method.TryCreate(declaration, semanticModel, out var changes));
-		Assert.NotNull(changes);
+		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
+		Assert.Single (syntaxTrees);
+		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
+		var declaration = syntaxTrees [0].GetRoot ()
+			.DescendantNodes ().OfType<MethodDeclarationSyntax> ()
+			.FirstOrDefault ();
+		Assert.NotNull (declaration);
+		Assert.True (Method.TryCreate (declaration, semanticModel, out var changes));
+		Assert.NotNull (changes);
 		// we know the first parameter of the method is the delegate
-		Assert.Single(changes.Value.Parameters);
-		var parameter = changes.Value.Parameters[0];
+		Assert.Single (changes.Value.Parameters);
+		var parameter = changes.Value.Parameters [0];
 		// assert it is indeed a delegate
-		Assert.NotNull(parameter.Type.Delegate);
-		var expression = GetTrampolineInvokeArgument(trampolineName, parameter.Type.Delegate!.Parameters[0]);
-		Assert.Equal(expectedExpression, expression.ToString());
+		Assert.NotNull (parameter.Type.Delegate);
+		var expression = GetTrampolineInvokeArgument (trampolineName, parameter.Type.Delegate!.Parameters [0]);
+		Assert.Equal (expectedExpression, expression.ToString ());
 	}
 
 
-	class TestDataGetTrampolinePreInvokeArgumentConversions : IEnumerable<object[]>
-	{
-		public IEnumerator<object[]> GetEnumerator()
+	class TestDataGetTrampolinePreInvokeArgumentConversions : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
 		{
 			var pointerParameter = @"
 using System;
@@ -1107,37 +1102,36 @@ namespace NS {
 			];
 		}
 
-		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
 	}
 
 	[Theory]
 	[AllSupportedPlatformsClassData<TestDataGetTrampolinePreInvokeArgumentConversions>]
-	void GetTrampolinePreInvokeArgumentConversionsTests(ApplePlatform platform, string trampolineName, string inputText, string expectedExpression)
+	void GetTrampolinePreInvokeArgumentConversionsTests (ApplePlatform platform, string trampolineName, string inputText, string expectedExpression)
 	{
-		var (compilation, syntaxTrees) = CreateCompilation(platform, sources: inputText);
-		Assert.Single(syntaxTrees);
-		var semanticModel = compilation.GetSemanticModel(syntaxTrees[0]);
-		var declaration = syntaxTrees[0].GetRoot()
-			.DescendantNodes().OfType<MethodDeclarationSyntax>()
-			.FirstOrDefault();
-		Assert.NotNull(declaration);
-		Assert.True(Method.TryCreate(declaration, semanticModel, out var changes));
-		Assert.NotNull(changes);
+		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
+		Assert.Single (syntaxTrees);
+		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
+		var declaration = syntaxTrees [0].GetRoot ()
+			.DescendantNodes ().OfType<MethodDeclarationSyntax> ()
+			.FirstOrDefault ();
+		Assert.NotNull (declaration);
+		Assert.True (Method.TryCreate (declaration, semanticModel, out var changes));
+		Assert.NotNull (changes);
 		// we know the first parameter of the method is the delegate
-		Assert.Single(changes.Value.Parameters);
-		var parameter = changes.Value.Parameters[0];
+		Assert.Single (changes.Value.Parameters);
+		var parameter = changes.Value.Parameters [0];
 		// assert it is indeed a delegate
-		Assert.NotNull(parameter.Type.Delegate);
-		var conversions = GetTrampolinePreInvokeArgumentConversions(trampolineName, parameter.Type.Delegate!.Parameters[0]);
+		Assert.NotNull (parameter.Type.Delegate);
+		var conversions = GetTrampolinePreInvokeArgumentConversions (trampolineName, parameter.Type.Delegate!.Parameters [0]);
 		// uses a tabbeb string builder to get the conversion string and test
-		var sb = new TabbedStringBuilder(new());
-		sb.Write(conversions);
-		Assert.Equal(expectedExpression, sb.ToCode());
+		var sb = new TabbedStringBuilder (new ());
+		sb.Write (conversions);
+		Assert.Equal (expectedExpression, sb.ToCode ());
 	}
 
-	class TestDataGetTrampolinePostInvokeArgumentConversions : IEnumerable<object[]>
-	{
-		public IEnumerator<object[]> GetEnumerator()
+	class TestDataGetTrampolinePostInvokeArgumentConversions : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
 		{
 			var pointerParameter = @"
 using System;
@@ -1530,37 +1524,36 @@ namespace NS {
 			];
 		}
 
-		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
 	}
 
 	[Theory]
 	[AllSupportedPlatformsClassData<TestDataGetTrampolinePostInvokeArgumentConversions>]
-	void GetTrampolinePostInvokeArgumentConversionsTests(ApplePlatform platform, string trampolineName, string inputText, string expectedExpression)
+	void GetTrampolinePostInvokeArgumentConversionsTests (ApplePlatform platform, string trampolineName, string inputText, string expectedExpression)
 	{
-		var (compilation, syntaxTrees) = CreateCompilation(platform, sources: inputText);
-		Assert.Single(syntaxTrees);
-		var semanticModel = compilation.GetSemanticModel(syntaxTrees[0]);
-		var declaration = syntaxTrees[0].GetRoot()
-			.DescendantNodes().OfType<MethodDeclarationSyntax>()
-			.FirstOrDefault();
-		Assert.NotNull(declaration);
-		Assert.True(Method.TryCreate(declaration, semanticModel, out var changes));
-		Assert.NotNull(changes);
+		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
+		Assert.Single (syntaxTrees);
+		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
+		var declaration = syntaxTrees [0].GetRoot ()
+			.DescendantNodes ().OfType<MethodDeclarationSyntax> ()
+			.FirstOrDefault ();
+		Assert.NotNull (declaration);
+		Assert.True (Method.TryCreate (declaration, semanticModel, out var changes));
+		Assert.NotNull (changes);
 		// we know the first parameter of the method is the delegate
-		Assert.Single(changes.Value.Parameters);
-		var parameter = changes.Value.Parameters[0];
+		Assert.Single (changes.Value.Parameters);
+		var parameter = changes.Value.Parameters [0];
 		// assert it is indeed a delegate
-		Assert.NotNull(parameter.Type.Delegate);
-		var conversions = GetTrampolinePostInvokeArgumentConversions(trampolineName, parameter.Type.Delegate!.Parameters[0]);
+		Assert.NotNull (parameter.Type.Delegate);
+		var conversions = GetTrampolinePostInvokeArgumentConversions (trampolineName, parameter.Type.Delegate!.Parameters [0]);
 		// uses a tabbeb string builder to get the conversion string and test
-		var sb = new TabbedStringBuilder(new());
-		sb.Write(conversions);
-		Assert.Equal(expectedExpression, sb.ToCode());
+		var sb = new TabbedStringBuilder (new ());
+		sb.Write (conversions);
+		Assert.Equal (expectedExpression, sb.ToCode ());
 	}
 
-	class TestDataGetTrampolineDelegateDeclaration : IEnumerable<object[]>
-	{
-		public IEnumerator<object[]> GetEnumerator()
+	class TestDataGetTrampolineDelegateDeclaration : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
 		{
 			var pointerParameter = @"
 using System;
@@ -1872,35 +1865,34 @@ namespace NS {
 			];
 		}
 
-		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
 	}
 
 	[Theory]
 	[AllSupportedPlatformsClassData<TestDataGetTrampolineDelegateDeclaration>]
-	void GetTrampolineDelegateDeclarationTests(ApplePlatform platform, string inputText, string expectedDelegateName, string expectedExpression)
+	void GetTrampolineDelegateDeclarationTests (ApplePlatform platform, string inputText, string expectedDelegateName, string expectedExpression)
 	{
-		var (compilation, syntaxTrees) = CreateCompilation(platform, sources: inputText);
-		Assert.Single(syntaxTrees);
-		var semanticModel = compilation.GetSemanticModel(syntaxTrees[0]);
-		var declaration = syntaxTrees[0].GetRoot()
-			.DescendantNodes().OfType<MethodDeclarationSyntax>()
-			.FirstOrDefault();
-		Assert.NotNull(declaration);
-		Assert.True(Method.TryCreate(declaration, semanticModel, out var changes));
-		Assert.NotNull(changes);
+		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
+		Assert.Single (syntaxTrees);
+		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
+		var declaration = syntaxTrees [0].GetRoot ()
+			.DescendantNodes ().OfType<MethodDeclarationSyntax> ()
+			.FirstOrDefault ();
+		Assert.NotNull (declaration);
+		Assert.True (Method.TryCreate (declaration, semanticModel, out var changes));
+		Assert.NotNull (changes);
 		// we know the first parameter of the method is the delegate
-		Assert.Single(changes.Value.Parameters);
-		var parameter = changes.Value.Parameters[0];
+		Assert.Single (changes.Value.Parameters);
+		var parameter = changes.Value.Parameters [0];
 		// assert it is indeed a delegate
-		Assert.NotNull(parameter.Type.Delegate);
-		var delegateDeclaration = GetTrampolineDelegateDeclaration(parameter.Type, out string delegateName);
-		Assert.Equal(expectedDelegateName, delegateName);
-		Assert.Equal(expectedExpression, delegateDeclaration.ToString());
+		Assert.NotNull (parameter.Type.Delegate);
+		var delegateDeclaration = GetTrampolineDelegateDeclaration (parameter.Type, out string delegateName);
+		Assert.Equal (expectedDelegateName, delegateName);
+		Assert.Equal (expectedExpression, delegateDeclaration.ToString ());
 	}
 
-	class TestDataCallTrampolineDelegate : IEnumerable<object[]>
-	{
-		public IEnumerator<object[]> GetEnumerator()
+	class TestDataCallTrampolineDelegate : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
 		{
 			var pointerParameter = @"
 using System;
@@ -1989,35 +1981,34 @@ namespace NS {
 
 		}
 
-		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
 	}
 
 	[Theory]
 	[AllSupportedPlatformsClassData<TestDataCallTrampolineDelegate>]
-	void CallTrampolineDelegateTests(ApplePlatform platform, string trampolineName, string inputText, string expectedExpression)
+	void CallTrampolineDelegateTests (ApplePlatform platform, string trampolineName, string inputText, string expectedExpression)
 	{
-		var (compilation, syntaxTrees) = CreateCompilation(platform, sources: inputText);
-		Assert.Single(syntaxTrees);
-		var semanticModel = compilation.GetSemanticModel(syntaxTrees[0]);
-		var declaration = syntaxTrees[0].GetRoot()
-			.DescendantNodes().OfType<MethodDeclarationSyntax>()
-			.FirstOrDefault();
-		Assert.NotNull(declaration);
-		Assert.True(Method.TryCreate(declaration, semanticModel, out var changes));
-		Assert.NotNull(changes);
+		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
+		Assert.Single (syntaxTrees);
+		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
+		var declaration = syntaxTrees [0].GetRoot ()
+			.DescendantNodes ().OfType<MethodDeclarationSyntax> ()
+			.FirstOrDefault ();
+		Assert.NotNull (declaration);
+		Assert.True (Method.TryCreate (declaration, semanticModel, out var changes));
+		Assert.NotNull (changes);
 		// we know the first parameter of the method is the delegate
-		Assert.Single(changes.Value.Parameters);
-		var parameter = changes.Value.Parameters[0];
+		Assert.Single (changes.Value.Parameters);
+		var parameter = changes.Value.Parameters [0];
 		// assert it is indeed a delegate
-		Assert.NotNull(parameter.Type.Delegate);
-		var argumentSyntax = GetTrampolineInvokeArguments(trampolineName, parameter.Type.Delegate);
-		var invocation = CallTrampolineDelegate(parameter.Type.Delegate, argumentSyntax);
-		Assert.Equal(expectedExpression, invocation.ToFullString());
+		Assert.NotNull (parameter.Type.Delegate);
+		var argumentSyntax = GetTrampolineInvokeArguments (trampolineName, parameter.Type.Delegate);
+		var invocation = CallTrampolineDelegate (parameter.Type.Delegate, argumentSyntax);
+		Assert.Equal (expectedExpression, invocation.ToFullString ());
 	}
 
-	class TestDataGetTrampolineInvokeParameter : IEnumerable<object[]>
-	{
-		public IEnumerator<object[]> GetEnumerator()
+	class TestDataGetTrampolineInvokeParameter : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
 		{
 			var pointerParameter = @"
 using System;
@@ -2373,32 +2364,32 @@ namespace NS {
 			];
 		}
 
-		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
 	}
 
 	[Theory]
 	[AllSupportedPlatformsClassData<TestDataGetTrampolineInvokeParameter>]
-	void GetTrampolineInvokeParameterTests(ApplePlatform platform, string inputText, string expectedExpression)
+	void GetTrampolineInvokeParameterTests (ApplePlatform platform, string inputText, string expectedExpression)
 	{
-		var (compilation, syntaxTrees) = CreateCompilation(platform, sources: inputText);
-		Assert.Single(syntaxTrees);
-		var semanticModel = compilation.GetSemanticModel(syntaxTrees[0]);
-		var declaration = syntaxTrees[0].GetRoot()
-			.DescendantNodes().OfType<MethodDeclarationSyntax>()
-			.FirstOrDefault();
-		Assert.NotNull(declaration);
-		Assert.True(Method.TryCreate(declaration, semanticModel, out var changes));
-		Assert.NotNull(changes);
+		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
+		Assert.Single (syntaxTrees);
+		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
+		var declaration = syntaxTrees [0].GetRoot ()
+			.DescendantNodes ().OfType<MethodDeclarationSyntax> ()
+			.FirstOrDefault ();
+		Assert.NotNull (declaration);
+		Assert.True (Method.TryCreate (declaration, semanticModel, out var changes));
+		Assert.NotNull (changes);
 		// we know the first parameter of the method is the delegate
-		Assert.Single(changes.Value.Parameters);
-		var parameter = changes.Value.Parameters[0];
+		Assert.Single (changes.Value.Parameters);
+		var parameter = changes.Value.Parameters [0];
 		// assert it is indeed a delegate
-		Assert.NotNull(parameter.Type.Delegate);
-		var expression = GetTrampolineInvokeParameter(parameter.Type.Delegate!.Parameters[0]);
-		Assert.Equal(expectedExpression, expression.ToString());
+		Assert.NotNull (parameter.Type.Delegate);
+		var expression = GetTrampolineInvokeParameter (parameter.Type.Delegate!.Parameters [0]);
+		Assert.Equal (expectedExpression, expression.ToString ());
 	}
 
-		class TestDataGetTrampolineInvokeDeclaration : IEnumerable<object []> {
+	class TestDataGetTrampolineInvokeDeclaration : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{
 			var pointerParameter = @"

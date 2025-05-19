@@ -558,7 +558,7 @@ static partial class BindingSyntaxFactory {
 			// build the parameter
 			parameterBucket.Add (GetTrampolineInvokeParameter (parameterInfo));
 		}
-		
+
 		var parametersSyntax = ParameterList (
 			SeparatedList<ParameterSyntax> (
 			parameterBucket.ToImmutableArray ().ToSyntaxNodeOrTokenArray ())).NormalizeWhitespace ();

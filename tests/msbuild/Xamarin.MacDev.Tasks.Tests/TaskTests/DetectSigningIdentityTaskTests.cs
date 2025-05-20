@@ -145,7 +145,7 @@ namespace Xamarin.MacDev.Tasks {
 			Assert.AreEqual ("-", task.DetectedCodeSigningKey, "DetectedCodeSigningKey");
 			Assert.AreEqual ($"{Xamarin.Tests.Configuration.XcodeLocation}/Toolchains/XcodeDefault.xctoolchain/usr/bin/codesign_allocate", task.DetectedCodesignAllocate, "DetectedCodesignAllocate");
 			Assert.AreEqual ("Any", task.DetectedDistributionType, "DetectedDistributionType");
-			Assert.That (task.DetectedProvisioningProfile, Is.Null.Or.Empty,"DetectedProvisioningProfile");
+			Assert.That (task.DetectedProvisioningProfile, Is.Null.Or.Empty, "DetectedProvisioningProfile");
 			Assert.IsTrue (task.HasEntitlements, "HasEntitlements");
 		}
 	}

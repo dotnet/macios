@@ -60,12 +60,12 @@ namespace Xamarin.MacDev.Tasks {
 			Other,
 		}
 
-		class Entries(string bundlePath, string specificSubdirectory) : List<Entry> {
+		class Entries (string bundlePath, string specificSubdirectory) : List<Entry> {
 			public string BundlePath => bundlePath;
 			public string SpecificSubdirectory => specificSubdirectory;
 		}
 
-		class Entry(MergeAppBundles task, Entries appBundle, string relativePath, FileType type) {
+		class Entry (MergeAppBundles task, Entries appBundle, string relativePath, FileType type) {
 			public MergeAppBundles Task => task;
 			public Entries AppBundle => appBundle;
 			public string RelativePath => relativePath;

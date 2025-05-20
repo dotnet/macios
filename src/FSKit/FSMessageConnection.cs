@@ -8,7 +8,7 @@ using ObjCRuntime;
 
 namespace FSKit {
 	public partial class FSMessageConnection {
-		public NSString GetLocalizedMessage (NSString message, NSString tableName, NSBundle bundle, params NSObject[] arguments)
+		public NSString GetLocalizedMessage (NSString message, NSString tableName, NSBundle bundle, params NSObject [] arguments)
 		{
 			var argumentPtrs = new IntPtr [arguments.Length];
 			for (var i = 0; i < arguments.Length; i++)
@@ -30,7 +30,7 @@ namespace FSKit {
 			return Runtime.GetNSObject<NSString> (rv)!;
 		}
 
-		public string GetLocalizedMessage (string message, string tableName, NSBundle bundle, params NSObject[] arguments)
+		public string GetLocalizedMessage (string message, string tableName, NSBundle bundle, params NSObject [] arguments)
 		{
 			return (string) GetLocalizedMessage ((NSString) message, (NSString) tableName, bundle, arguments);
 		}

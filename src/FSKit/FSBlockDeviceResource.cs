@@ -39,7 +39,7 @@ namespace FSKit {
 			}
 		}
 
-		public unsafe void SynchronousMetadataRead (byte [] buffer, long offset, nuint length, FSMetadataReadahead[] readAheadExtents, FSBlockDeviceResourceMetadataReplyHandler reply)
+		public unsafe void SynchronousMetadataRead (byte [] buffer, long offset, nuint length, FSMetadataReadahead [] readAheadExtents, FSBlockDeviceResourceMetadataReplyHandler reply)
 		{
 			fixed (byte* bufferPtr = buffer) {
 				fixed (FSMetadataReadahead* readAheadExtentsPtr = readAheadExtents) {

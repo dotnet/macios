@@ -9563,8 +9563,7 @@ namespace Foundation {
 
 	[BaseType (typeof (NSObject), Name = "NSURLConnection")]
 	interface NSUrlConnection :
-		NSUrlAuthenticationChallengeSender
-	{
+		NSUrlAuthenticationChallengeSender {
 		[Export ("canHandleRequest:")]
 		[Static]
 		bool CanHandleRequest (NSUrlRequest request);

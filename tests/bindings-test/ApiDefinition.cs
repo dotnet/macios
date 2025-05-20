@@ -316,6 +316,9 @@ namespace Bindings.Test {
 
 		[Export ("methodEncodings:obj2:obj3:obj4:obj5:obj6:obj7:")]
 		void GetMethodEncodings (ref NSObject obj1, ref NSObject obj2, ref NSObject obj3, ref NSObject obj4, ref NSObject obj5, ref NSObject obj6, ref NSObject obj7);
+
+		[Export ("setPtrPropertyCGRect:p2:p3:p4:p5:p6:")]
+		void SetPtrPropertyCGRect (nint p1, nint p2, nint p3, nint p4, ref global::CoreGraphics.CGRect p5, nint p6);
 	}
 
 	[Protocol]

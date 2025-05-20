@@ -436,7 +436,8 @@ skip_nested_brace (const char *type)
 	while (*++type) {
 		switch (*type) {
 		case '{':
-			return skip_nested_brace (type);
+			type = skip_nested_brace (type);
+			break;
 		case '}':
 			return type++;
 		default:

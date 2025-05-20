@@ -12986,7 +12986,6 @@ M:Metal.MTLLibrary_Extensions.CreateFunctionAsync(Metal.IMTLLibrary,System.Strin
 M:Metal.MTLLibrary_Extensions.CreateIntersectionFunction(Metal.IMTLLibrary,Metal.MTLIntersectionFunctionDescriptor,Foundation.NSError@)
 M:Metal.MTLLibrary_Extensions.CreateIntersectionFunction(Metal.IMTLLibrary,Metal.MTLIntersectionFunctionDescriptor,System.Action{Metal.IMTLFunction,Foundation.NSError})
 M:Metal.MTLOrigin.#ctor(System.IntPtr,System.IntPtr,System.IntPtr)
-M:Metal.MTLRasterizationRateLayerDescriptor.Create(Metal.MTLSize,System.Single[],System.Single[])
 M:Metal.MTLRegion.Create1D(System.IntPtr,System.IntPtr)
 M:Metal.MTLRegion.Create1D(System.UIntPtr,System.UIntPtr)
 M:Metal.MTLRegion.Create2D(System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr)

@@ -2,7 +2,7 @@
   <!--Package versions-->
   <PropertyGroup>
     <!-- Versions updated by maestro -->
-    <MicrosoftNETSdkPackageVersion>9.0.107-servicing.25266.47</MicrosoftNETSdkPackageVersion>
+    <MicrosoftNETSdkPackageVersion>9.0.107-servicing.25269.12</MicrosoftNETSdkPackageVersion>
     <MicrosoftNETILLinkTasksPackageVersion>9.0.5</MicrosoftNETILLinkTasksPackageVersion>
     <MicrosoftNETILLinkPackageVersion>9.0.0-alpha.1.23556.4</MicrosoftNETILLinkPackageVersion>
     <MicrosoftDotNetBuildTasksFeedPackageVersion>9.0.0-beta.25164.2</MicrosoftDotNetBuildTasksFeedPackageVersion>

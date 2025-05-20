@@ -162,9 +162,6 @@
     <Compile Include="..\..\src\ObjCRuntime\PlatformAvailability2.cs">
       <Link>external\src\ObjCRuntime\PlatformAvailability2.cs</Link>
     </Compile>
-    <Compile Include="..\..\src\ObjCRuntime\RuntimeOptions.cs">
-      <Link>external\src\ObjCRuntime\RuntimeOptions.cs</Link>
-    </Compile>
     <Compile Include="..\linker\ApplyPreserveAttribute.cs">
       <Link>external\tools\linker\ApplyPreserveAttribute.cs</Link>
     </Compile>

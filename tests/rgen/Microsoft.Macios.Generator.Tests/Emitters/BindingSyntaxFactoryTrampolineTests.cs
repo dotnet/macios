@@ -2678,12 +2678,12 @@ namespace NS {
 	}
 }
 ";
-			
+
 			yield return [
 				blockNamedParameter,
 				"internal static unsafe global::ObjCRuntime.NativeHandle Invoke (global::System.IntPtr block_ptr_0, byte block_ptr)",
 			];
-			
+
 			var doubleBlockNamedParameter = @"
 using System;
 using Foundation;
@@ -2695,7 +2695,7 @@ namespace NS {
 	}
 }
 ";
-			
+
 			yield return [
 				doubleBlockNamedParameter,
 				"internal static unsafe global::ObjCRuntime.NativeHandle Invoke (global::System.IntPtr block_ptr_1, byte block_ptr, byte block_ptr_0)",

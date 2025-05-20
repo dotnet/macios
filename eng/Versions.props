@@ -12,7 +12,7 @@
     <MicrosoftTemplateEngineAuthoringTasksPackageVersion>10.0.100-preview.5.25265.101</MicrosoftTemplateEngineAuthoringTasksPackageVersion>
     <MicrosoftTemplateEngineTasksVersion>7.0.100-alpha.1.21601.1</MicrosoftTemplateEngineTasksVersion>
     <MicrosoftDotNetCecilPackageVersion>0.11.5-alpha.25265.101</MicrosoftDotNetCecilPackageVersion>
-    <MicrosoftDotNetXHarnessiOSSharedPackageVersion>10.0.0-prerelease.25255.1</MicrosoftDotNetXHarnessiOSSharedPackageVersion>
+    <MicrosoftDotNetXHarnessiOSSharedPackageVersion>10.0.0-prerelease.25262.1</MicrosoftDotNetXHarnessiOSSharedPackageVersion>
     <MicrosoftDotNetArcadeSdkPackageVersion>10.0.0-beta.25265.101</MicrosoftDotNetArcadeSdkPackageVersion>
     <!-- Manually updated versions -->
     <MicrosoftDotnetSdkInternalPackageVersion>$(MicrosoftNETSdkPackageVersion)</MicrosoftDotnetSdkInternalPackageVersion>

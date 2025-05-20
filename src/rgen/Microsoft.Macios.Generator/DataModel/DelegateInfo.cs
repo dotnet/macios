@@ -66,8 +66,8 @@ sealed record DelegateInfo {
 			name: method.Name,
 			returnType: new (method.ReturnType),
 			parameters: parametersBucket.ToImmutableArray ()) {
-			IsBlockCallback = symbol.HasAttribute ("ObjCRuntime.BlockCallbackAttribute"),
-			IsCCallback = symbol.HasAttribute ("ObjCRuntime.CCallbackAttribute"),
+			IsBlockCallback = symbol.HasAttribute (AttributesNames.BlockCallbackAttribute),
+			IsCCallback = symbol.HasAttribute (AttributesNames.CCallbackAttribute),
 		};
 		return true;
 	}

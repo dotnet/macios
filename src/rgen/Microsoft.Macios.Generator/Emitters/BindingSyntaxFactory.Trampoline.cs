@@ -8,6 +8,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Macios.Generator.DataModel;
 using Microsoft.Macios.Generator.Extensions;
+using Microsoft.Macios.Generator.Formatters;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using TypeInfo = Microsoft.Macios.Generator.DataModel.TypeInfo;
 
@@ -72,6 +73,92 @@ static partial class BindingSyntaxFactory {
 		var className = Nomenclator.GetTrampolineClassName (trampolineName, Nomenclator.TrampolineClassType.NativeInvocationClass);
 		var staticClassName = IdentifierName (className);
 		return StaticInvocationExpression (staticClassName, "Create", arguments, suppressNullableWarning: true);
+	}
+
+
+	/// <summary>
+	/// Returns the needed data to build the parameter syntax for the native trampoline delegate.
+	/// </summary>
+	/// <param name="trampolineName">The trampoline name of the parameter we want to generate.</param>
+	/// <param name="parameter">The parameter we want to generate for the lower invoke method.</param>
+	/// <returns>The parameter syntax needed for the parameter.</returns>
+	internal static ParameterSyntax GetTrampolineInvokeParameter (string trampolineName, in DelegateParameter parameter)
+	{
+		var parameterIdentifier = Identifier (parameter.Name);
+#pragma warning disable format
+		(SyntaxToken ParameterName, TypeSyntax? ParameterType) parameterInfo = parameter switch {
+			// pointer parameter 
+			{ Type.IsPointer: true } 
+				=> (parameterIdentifier, 
+					parameter.Type.GetIdentifierSyntax ()),
+			
+			// parameters that are passed by reference, depend on the type that is referenced
+			{ IsByRef: true, Type.IsReferenceType: false, Type.IsNullable: true} 
+				=> (parameterIdentifier, 
+					PointerType (IdentifierName (parameter.Type.FullyQualifiedName))),
+			
+			{ IsByRef: true, Type.SpecialType: SpecialType.System_Boolean} 
+				=> (parameterIdentifier,
+					PointerType (PredefinedType (Token(SyntaxKind.ByteKeyword)))),
+			
+			{ IsByRef: true, Type.IsReferenceType: true, Type.IsNullable: false} 
+				=> (parameterIdentifier,
+					PointerType (NativeHandle)),
+			
+			// delegate parameter is a NativeHandle
+			{ Type.IsDelegate: true } => (parameterIdentifier, IntPtr),
+			
+			// native enum, return the conversion expression to the native type
+			{ Type.IsNativeEnum: true}
+				=> (parameterIdentifier, IdentifierName(parameter.Type.EnumUnderlyingType!.Value.GetKeyword ())),
+
+			// boolean, convert it to byte
+			{ Type.SpecialType: SpecialType.System_Boolean }
+				=> (parameterIdentifier, 
+					PredefinedType (Token(SyntaxKind.ByteKeyword))),
+
+			// same name, native handle
+			{ Type.IsArray: true }
+				=> (parameterIdentifier, NativeHandle),
+
+			// string
+			// same name, native handle
+			{ Type.SpecialType: SpecialType.System_String }
+				=> (parameterIdentifier, NativeHandle),
+
+			// same name, NativeHandle
+			{ Type.IsProtocol: true } => (parameterIdentifier, NativeHandle),
+
+			// same name, NativeHandle
+			{ ForcedType: not null } => (parameterIdentifier, NativeHandle),
+
+			// special types
+
+			// CoreMedia.CMSampleBuffer
+			// same name, native handle
+			{ Type.FullyQualifiedName: "CoreMedia.CMSampleBuffer" } => (parameterIdentifier, NativeHandle),
+
+			// AudioToolbox.AudioBuffers
+			// same name, native handle
+			{ Type.FullyQualifiedName: "AudioToolbox.AudioBuffers" } => (parameterIdentifier, NativeHandle),
+
+			// general NSObject/INativeObject, has to be after the special types otherwise the special types will
+			// fall into the NSObject/INativeObject case
+
+			// same name, native handle
+			{ Type.IsNSObject: true } => (parameterIdentifier, NativeHandle),
+
+			// same name, native handle
+			{ Type.IsINativeObject: true } => (parameterIdentifier, NativeHandle),
+			
+			// by default, we will use the parameter name as is and the type of the parameter
+			_ => (parameterIdentifier, parameter.Type.GetIdentifierSyntax ()),
+		};
+#pragma warning restore format
+		
+		return Parameter (parameterInfo.ParameterName)
+			.WithType (parameterInfo.ParameterType)
+			.NormalizeWhitespace ();
 	}
 
 	/// <summary>

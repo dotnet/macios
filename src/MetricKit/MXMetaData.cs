@@ -19,8 +19,13 @@ namespace MetricKit {
 			get {
 				if (SystemVersion.IsAtLeastXcode12)
 					return _DictionaryRepresentation14;
-				else
+				else {
+#pragma warning disable CA1416 // This call site is reachable on: 'ios' 14.0 and later, 'maccatalyst' 14.0 and later, 'macOS/OSX' 12.0 and later. 'MXMetaData._DictionaryRepresentation13' is only supported on: 'ios' 12.2 and later, 'maccatalyst' 12.2 and later. (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1416) [/Users/rolf/work/dotnet/macios/main/macios/src/build/dotnet/MacCatalyst/csproj/platform/Microsoft.MacCatalyst.csproj]
+#pragma warning disable CA1422 // This call site is reachable on: 'ios' 14.0 and later, 'maccatalyst' 14.0 and later, 'macOS/OSX' 12.0 and later. 'MXMetaData._DictionaryRepresentation13' is obsoleted on: 'ios' 14.0 and later, 'maccatalyst' 14.0 and later. (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1422) [/Users/rolf/work/dotnet/macios/main/macios/src/build/dotnet/MacCatalyst/csproj/platform/Microsoft.MacCatalyst.csproj]
 					return _DictionaryRepresentation13;
+#pragma warning restore CA1422
+#pragma warning restore CA1416
+				}
 			}
 		}
 	}

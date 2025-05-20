@@ -37,6 +37,10 @@ static partial class BindingSyntaxFactory {
 		@namespace: ["ObjCRuntime"],
 		@class: "NativeHandle",
 		isGlobal: true);
+	public readonly static TypeSyntax IntPtr = GetIdentifierName (
+		@namespace: ["System"],
+		@class: "IntPtr",
+		isGlobal: true);
 
 	/// <summary>
 	/// Returns the expression needed to cast a parameter to its native type.

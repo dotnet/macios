@@ -17,6 +17,16 @@ The full path to the `altool` tool.
 
 The default behavior is to use `xcrun altool`.
 
+## AppBundleResourcePrefix
+
+The directory where resources are stored (this prefix will be removed when copying resources to the app bundle).
+
+This is the unified resource prefix property for all platforms in .NET.
+
+For legacy projects, this property will be used as the default value for the platform-specific resource prefix properties ([IPhoneResourcePrefix](#iphoneresourceprefix), [MonoMacResourcePrefix](#monomacresourceprefix), and [XamMacResourcePrefix](#xammacresourceprefix)) if they are not explicitly set.
+
+Default: "Resources"
+
 ## AppBundleDir
 
 The location of the built app bundle.
@@ -379,6 +389,8 @@ The directory where resources are stored (this prefix will be removed when copyi
 
 Applicable to iOS, tvOS and Mac Catalyst projects.
 
+For .NET projects, consider using the unified [AppBundleResourcePrefix](#appbundleresourceprefix) property instead.
+
 See also [MonoMacResourcePrefix](#monomacresourceprefix) and [XamMacResourcePrefix](#xammacresourceprefix).
 
 ## IpaIncludeArtwork
@@ -559,6 +571,8 @@ This property is deprecated, use [AppBundleExtraOptions](#appbundleextraoptions)
 The directory where resources are stored (this prefix will be removed when copying resources to the app bundle).
 
 Only applicable to macOS projects.
+
+For .NET projects, consider using the unified [AppBundleResourcePrefix](#appbundleresourceprefix) property instead.
 
 See also [IPhoneResourcePrefix](#iphoneresourceprefix) and [XamMacResourcePrefix](#xammacresourceprefix).
 
@@ -977,6 +991,8 @@ If the validation fails for entitlements that actually work, please file a new i
 The directory where resources are stored (this prefix will be removed when copying resources to the app bundle).
 
 Applicable to macOS projects.
+
+For .NET projects, consider using the unified [AppBundleResourcePrefix](#appbundleresourceprefix) property instead.
 
 See also [IPhoneResourcePrefix](#iphoneresourceprefix) and [MonoMacResourcePrefix](#monomacresourceprefix).
 

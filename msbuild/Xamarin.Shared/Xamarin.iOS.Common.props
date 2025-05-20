@@ -20,16 +20,6 @@ Copyright (C) 2013-2016 Xamarin. All rights reserved.
 	<Import Project="$(MSBuildThisFileDirectory)Xamarin.Shared.props" />
 
 	<PropertyGroup>
-		<MtouchFastDev Condition="'$(MtouchFastDev)' == ''">False</MtouchFastDev>
-		<MtouchHttpClientHandler Condition="'$(MtouchHttpClientHandler)' == ''">NSUrlSessionHandler</MtouchHttpClientHandler>
-		<MtouchProfiling Condition="'$(MtouchProfiling)' == ''">False</MtouchProfiling>
-		<MtouchLinkerDumpDependencies Condition="'$(MtouchLinkerDumpDependencies)' == ''">False</MtouchLinkerDumpDependencies>
-		<MtouchUseLlvm Condition="'$(MtouchUseLlvm)' == ''">False</MtouchUseLlvm>
-		<MtouchEnableBitcode Condition="'$(MtouchEnableBitcode)' == ''">False</MtouchEnableBitcode>
-		<MtouchUseThumb Condition="'$(MtouchUseThumb)' == ''">False</MtouchUseThumb>
-		<MtouchProjectDirectory>$(MSBuildProjectDirectory)</MtouchProjectDirectory>
-		<MtouchVerbosity Condition="$(MtouchVerbosity) == ''">2</MtouchVerbosity>
-
 		<IpaIncludeArtwork Condition="'$(IpaIncludeArtwork)' == ''">False</IpaIncludeArtwork>
 		<BuildSessionId></BuildSessionId>
 

@@ -12,7 +12,6 @@ namespace GeneratorTests {
 	public class PlatformNameExtensions {
 
 		[TestCase (PlatformName.iOS, "UIApplication")]
-		[TestCase (PlatformName.WatchOS, "UIApplication")]
 		[TestCase (PlatformName.TvOS, "UIApplication")]
 		[TestCase (PlatformName.MacCatalyst, "UIApplication")]
 		[TestCase (PlatformName.MacOSX, "NSApplication")]
@@ -23,7 +22,6 @@ namespace GeneratorTests {
 		}
 
 		[TestCase (PlatformName.iOS, "CoreImage")]
-		[TestCase (PlatformName.WatchOS, "CoreImage")]
 		[TestCase (PlatformName.TvOS, "CoreImage")]
 		[TestCase (PlatformName.MacCatalyst, "CoreImage")]
 		[TestCase (PlatformName.MacOSX, "Quartz")]
@@ -31,7 +29,6 @@ namespace GeneratorTests {
 			=> Assert.AreEqual (expected, platformName.GetCoreImageMap ());
 
 		[TestCase (PlatformName.iOS, "MobileCoreServices")]
-		[TestCase (PlatformName.WatchOS, "MobileCoreServices")]
 		[TestCase (PlatformName.TvOS, "MobileCoreServices")]
 		[TestCase (PlatformName.MacCatalyst, "MobileCoreServices")]
 		[TestCase (PlatformName.MacOSX, "CoreServices")]

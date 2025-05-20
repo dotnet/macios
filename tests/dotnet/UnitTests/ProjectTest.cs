@@ -1327,7 +1327,7 @@ namespace Xamarin.Tests {
 
 			ExecutionHelper.Execute ("launchctl", new [] { "remove", "com.apple.CoreSimulator.CoreSimulatorService" }, timeout: TimeSpan.FromSeconds (10));
 
-			var to_kill = new string [] { "iPhone Simulator", "iOS Simulator", "Simulator", "Simulator (Watch)", "com.apple.CoreSimulator.CoreSimulatorService", "ibtoold" };
+			var to_kill = new string [] { "iPhone Simulator", "iOS Simulator", "Simulator", "com.apple.CoreSimulator.CoreSimulatorService", "ibtoold" };
 
 			var args = new List<string> ();
 			args.Add ("-9");
@@ -1335,7 +1335,6 @@ namespace Xamarin.Tests {
 			ExecutionHelper.Execute ("killall", args, timeout: TimeSpan.FromSeconds (10));
 
 			var dirsToBeDeleted = new [] {
-				Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.UserProfile), "Library", "Saved Application State", "com.apple.watchsimulator.savedState"),
 				Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.UserProfile), "Library", "Saved Application State", "com.apple.iphonesimulator.savedState"),
 			};
 

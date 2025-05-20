@@ -5671,17 +5671,11 @@ namespace MonoTouchFixtures.ObjCRuntime {
 	[ProtocolMember (IsRequired = false, IsProperty = false, IsStatic = false, Name = "DetectPremonition", Selector = "detectPremonition:", ParameterType = new Type [] { typeof (FutureClass) }, ParameterByRef = new bool [] { false })]
 	public interface ISomeDelegate : INativeObject, IDisposable {
 	}
-#if NET
+
 	[SupportedOSPlatform ("macos100.0")]
 	[SupportedOSPlatform ("ios100.0")]
 	[SupportedOSPlatform ("tvos100.0")]
 	[SupportedOSPlatform ("maccatalyst100.0")]
-#else
-	[Introduced (PlatformName.MacOSX, 100, 0)]
-	[Introduced (PlatformName.iOS, 100, 0)]
-	[Introduced (PlatformName.TvOS, 100, 0)]
-	[Introduced (PlatformName.WatchOS, 100, 0)]
-#endif
 	public class FutureClass : NSObject {
 	}
 	[Preserve]
@@ -5700,7 +5694,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		}
 	}
 
-#if !__TVOS__ // No WebKit on watchOS/tvOS
+#if !__TVOS__ // No WebKit on tvOS
 	[Preserve]
 	public class GenericWebNavigationThingie<WebViewModel> : NSObject, IWKNavigationDelegate {
 		[Export ("webView:decidePolicyForNavigationAction:decisionHandler:")]

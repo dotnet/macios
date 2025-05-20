@@ -118,7 +118,7 @@ Example:
 
 would place the file in the following location:
 
-* /Resources/Documentation/Readme.txt: iOS, tvOS, watchOS
+* /Resources/Documentation/Readme.txt: iOS, tvOS
 * /Contents/Resources/Documentation/Readme.txt: macOS, Mac Catalyst
 
 See also:

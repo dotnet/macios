@@ -5813,7 +5813,7 @@ namespace Foundation {
 
 		[Export ("dictionaryWithObjects:forKeys:")]
 		[Static, Internal]
-		NSDictionary FromObjectsAndKeysInternal ([NullAllowed] NSArray objects, [NullAllowed] NSArray keys);
+		NSDictionary FromObjectsAndKeysInternal (NSArray objects, NSArray keys);
 
 		[Export ("initWithDictionary:")]
 		NativeHandle Constructor (NSDictionary other);
@@ -5856,6 +5856,7 @@ namespace Foundation {
 		[Export ("objectForKey:")]
 		IntPtr _ObjectForKey (IntPtr key);
 
+		[return: NullAllowed]
 		[Export ("objectForKey:")]
 		NSObject ObjectForKey (NSObject key);
 
@@ -5922,7 +5923,44 @@ namespace Foundation {
 		[Export ("sharedKeySetForKeys:")]
 		NSObject GetSharedKeySetForKeys (NSObject [] keys);
 
+		[Export ("descriptionWithLocale:")]
+		string GetDescription ([NullAllowed] NSObject locale);
+
+		[Export ("descriptionWithLocale:indent:")]
+		string GetDescription ([NullAllowed] NSObject locale, nuint level);
+
+		[Export ("enumerateKeysAndObjectsUsingBlock:")]
+		void Enumerate (NSDictionaryEnumerator block);
+
+		[Export ("enumerateKeysAndObjectsWithOptions:usingBlock:")]
+		void Enumerate (NSEnumerationOptions options, NSDictionaryEnumerator block);
+
+		[Export ("keysOfEntriesPassingTest:")]
+		NSSet GetKeys (NSDictionaryKeyFilter predicate);
+
+		[Export ("keysOfEntriesWithOptions:passingTest:")]
+		NSSet GetKeys (NSEnumerationOptions options, NSDictionaryKeyFilter predicate);
+
+		[Export ("keysSortedByValueUsingComparator:")]
+		NSObject [] GetKeysSortedByValue (NSComparator comparator);
+
+		[Export ("keysSortedByValueWithOptions:usingComparator:")]
+		NSObject [] GetKeysSortedByValue (NSSortOptions options, NSComparator comparator);
+
+		[return: NullAllowed]
+		[Export ("valueForKey:")]
+		[MarshalNativeExceptions]
+		NSObject ValueForKey (NSString key);
+
+		[Export ("writeToURL:error:")]
+		bool WriteToUrl (NSUrl url, [NullAllowed] out NSError error);
+
+		[Export ("keyEnumerator")]
+		NSEnumerator KeyEnumerator { get; }
 	}
+
+	delegate void NSDictionaryEnumerator (NSObject key, NSObject obj, ref bool stop);
+	delegate bool NSDictionaryKeyFilter (NSObject key, NSObject obj, ref bool stop);
 
 	interface NSDictionary<K, V> : NSDictionary { }
 

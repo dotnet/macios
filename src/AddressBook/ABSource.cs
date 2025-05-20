@@ -38,10 +38,6 @@ using CoreFoundation;
 using Foundation;
 using ObjCRuntime;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace AddressBook {
 
 	/// <summary>A data source that produces address book data. (See <see cref="AddressBook.ABSourceType" />.)</summary>

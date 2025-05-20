@@ -6,10 +6,6 @@ using System;
 using ObjCRuntime;
 using Foundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace Accounts {
 
 	/// <include file="../docs/api/Accounts/ACAccount.xml" path="/Documentation/Docs[@DocId='T:Accounts.ACAccount']/*" />
@@ -105,9 +101,7 @@ namespace Accounts {
 			""")]
 		void SaveAccount (ACAccount account, ACAccountStoreSaveCompletionHandler completionHandler);
 
-#if NET
 		[NoMac] // marked as unavailable in xcode10 beta 2
-#endif
 		[Export ("requestAccessToAccountsWithType:withCompletionHandler:")]
 		[Deprecated (PlatformName.iOS, 6, 0, message: "Use 'RequestAccess (ACAccountType, AccountStoreOptions, ACRequestCompletionHandler)' instead.")]
 		[MacCatalyst (13, 1)]

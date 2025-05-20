@@ -47,12 +47,7 @@ namespace AddressBook {
 	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[Deprecated (PlatformName.MacCatalyst, 14, 0, message: "Use the 'Contacts' API instead.")]
 	[ErrorDomain ("ABAddressBookErrorDomain")]
-#if NET
 	public enum ABAddressBookError {
-#else
-	[Native]
-	public enum ABAddressBookError : long {
-#endif
 		/// <summary>The operation is not permitted.</summary>
 		OperationNotPermittedByStore = 0,
 		/// <summary>To be added.</summary>
@@ -227,12 +222,7 @@ namespace AddressBook {
 	/// <summary>An enumeration whose values specify whether the form of the image requested from the <see cref="AddressBook.ABPerson.GetImage(AddressBook.ABPersonImageFormat)" /> method.</summary>
 	[Deprecated (PlatformName.iOS, 9, 0, message: "Use the 'Contacts' API instead.")]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use the 'Contacts' API instead.")]
-#if NET
 	public enum ABPersonImageFormat {
-#else
-	[Native]
-	public enum ABPersonImageFormat : long {
-#endif
 		/// <summary>To be added.</summary>
 		Thumbnail = 0,
 		/// <summary>To be added.</summary>

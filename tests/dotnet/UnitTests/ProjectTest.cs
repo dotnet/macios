@@ -3237,5 +3237,70 @@ namespace Xamarin.Tests {
 			var errors = BinLog.GetBuildLogErrors (rv.BinLogPath).ToArray ();
 			AssertErrorMessages (errors, $"The SupportedOSPlatformVersion value '{version}' in the project file is lower than the minimum value '{minVersion}'.");
 		}
+
+		// macOS doesn't support UseNativeHttpHandler / any of our native http handlers being the default http handler.
+		[Test]
+		[TestCase (ApplePlatform.MacCatalyst, "NSUrlSessionHandler")]
+		[TestCase (ApplePlatform.iOS, "CFNetworkHandler")]
+		[TestCase (ApplePlatform.TVOS, "")]
+		public void HttpClientHandlerFeatureTrimmedAway (ApplePlatform platform, string handler)
+		{
+			var project = "ApiTestApp";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+
+			var runtimeIdentifiers = GetDefaultRuntimeIdentifier (platform);
+			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath);
+			Clean (project_path);
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties ["AdditionalDefineConstants"] = "HttpClientHandlerFeatureTrimmedAway";
+			properties ["TrimMode"] = "partial";
+			properties ["UseNativeHttpHandler"] = string.IsNullOrEmpty (handler) ? "false" : "true";
+			if (!string.IsNullOrEmpty (handler))
+				properties ["MtouchHttpClientHandler"] = handler;
+			properties ["ExcludeTouchUnitReference"] = "true"; // speed things up a bit
+			properties ["ExcludeNUnitLiteReference"] = "true"; // speed things up a bit
+			var rv = DotNet.AssertBuild (project_path, properties);
+			var platformAssembly = Path.Combine (appPath, GetRelativeAssemblyDirectory (platform), $"Microsoft.{platform.AsString ()}.dll");
+			var ad = AssemblyDefinition.ReadAssembly (platformAssembly, new ReaderParameters { ReadingMode = ReadingMode.Deferred });
+			var runtimeType = ad.MainModule.Types.Single (v => v.FullName == "ObjCRuntime.Runtime");
+
+			var get_UseCFNetworkHandler = runtimeType.Methods.SingleOrDefault (v => v.Name == "get_UseCFNetworkHandler");
+			Assert.That (get_UseCFNetworkHandler, Is.Null, "get_UseCFNetworkHandler");
+			var get_UseNSUrlSessionHandler = runtimeType.Methods.SingleOrDefault (v => v.Name == "get_UseNSUrlSessionHandler");
+			Assert.That (get_UseNSUrlSessionHandler, Is.Null, "get_UseNSUrlSessionHandler");
+
+			string nsurlSessionHandleNamespace;
+			switch (platform) {
+			case ApplePlatform.iOS:
+			case ApplePlatform.TVOS:
+			case ApplePlatform.MacCatalyst:
+				nsurlSessionHandleNamespace = "System.Net.Http.NSUrlSessionHandler";
+				break;
+			case ApplePlatform.MacOSX:
+				nsurlSessionHandleNamespace = "Foundation.NSUrlSessionHandler";
+				break;
+			default:
+				throw new NotImplementedException ();
+			}
+
+			var cfnetworkHandlerType = ad.MainModule.Types.SingleOrDefault (v => v.FullName == "System.Net.Http.CFNetworkHandler");
+			var nsUrlSessionHandlerType = ad.MainModule.Types.SingleOrDefault (v => v.FullName == nsurlSessionHandleNamespace);
+			switch (handler) {
+			case "":
+				Assert.That (cfnetworkHandlerType, Is.Null, $"System.Net.Http.CFNetworkHandler: {platformAssembly}");
+				Assert.That (nsUrlSessionHandlerType, Is.Null, $"{nsurlSessionHandleNamespace}: {platformAssembly}");
+				break;
+			case "NSUrlSessionHandler":
+				Assert.That (cfnetworkHandlerType, Is.Null, $"System.Net.Http.CFNetworkHandler: {platformAssembly}");
+				Assert.That (nsUrlSessionHandlerType, Is.Not.Null, $"{nsurlSessionHandleNamespace}: {platformAssembly}");
+				break;
+			case "CFNetworkHandler":
+				Assert.That (cfnetworkHandlerType, Is.Not.Null, $"System.Net.Http.CFNetworkHandler: {platformAssembly}");
+				Assert.That (nsUrlSessionHandlerType, Is.Null, $"{nsurlSessionHandleNamespace}: {platformAssembly}");
+				break;
+			default:
+				throw new InvalidOperationException ();
+			}
+		}
 	}
 }

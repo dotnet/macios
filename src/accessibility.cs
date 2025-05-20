@@ -3,10 +3,6 @@ using CoreGraphics;
 using Foundation;
 using ObjCRuntime;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 #nullable enable
 
 namespace Accessibility {
@@ -330,16 +326,9 @@ namespace Accessibility {
 	[TV (15, 2), Mac (12, 1), iOS (15, 2), MacCatalyst (15, 2)]
 	[Protocol]
 	interface AXBrailleMapRenderer {
-
-#if !NET
-		[Abstract]
-#endif
 		[Export ("accessibilityBrailleMapRenderRegion", ArgumentSemantic.Assign)]
 		CGRect AccessibilityBrailleMapRenderRegion { get; set; }
 
-#if !NET
-		[Abstract]
-#endif
 		[Export ("accessibilityBrailleMapRenderer", ArgumentSemantic.Copy)]
 		Action<AXBrailleMap> AccessibilityBrailleMapRenderer { get; set; }
 	}

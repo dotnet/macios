@@ -81,7 +81,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			Runtime.MarshalObjectiveCException -= ObjExceptionHandler;
 		}
 
-		// Simulator/desktop only (except for watchOS, where it works everywhere)
+		// Simulator/desktop only
 		[Test]
 		public void ObjCException ()
 		{
@@ -127,7 +127,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			}
 		}
 
-		// Simulator/desktop only test (except for watchOS, where it works everywhere)
+		// Simulator/desktop only test
 		[Test]
 		public void ManagedExceptionPassthrough ()
 		{

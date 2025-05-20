@@ -155,7 +155,7 @@ pch-info.proj: Makefile
 	$(Q) rm -f $@.tmp
 	$(Q) printf "<Project>\\n" >> $@.tmp
 	$(Q) printf "\\t<PropertyGroup>\\n" >> $@.tmp
-	$(Q) printf "$(foreach platform,$(ALL_DOTNET_PLATFORMS) watchOS,\\t\\t<$(platform)_PCH>$(X$(shell echo $(platform) | tr '[:lower:]' '[:upper:]')_PCH)</$(platform)_PCH>\\n)" >> $@.tmp
+	$(Q) printf "$(foreach platform,$(ALL_DOTNET_PLATFORMS),\\t\\t<$(platform)_PCH>$(X$(shell echo $(platform) | tr '[:lower:]' '[:upper:]')_PCH)</$(platform)_PCH>\\n)" >> $@.tmp
 	$(Q) printf "$(foreach platform,$(ALL_DOTNET_PLATFORMS),\\t\\t<$(platform)_DLL>$(X$(shell echo $(platform) | tr '[:lower:]' '[:upper:]')_DOTNET)</$(platform)_DLL>\\n)" >> $@.tmp
 	$(Q) printf "\\t</PropertyGroup>\\n" >> $@.tmp
 	$(Q) printf "</Project>\\n" >> $@.tmp

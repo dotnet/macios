@@ -1,4 +1,3 @@
-#if NET
 using System;
 
 using CoreBluetooth;
@@ -257,5 +256,3 @@ namespace AccessorySetupKit {
 		NativeHandle Constructor (string name, UIImage productImage, ASDiscoveryDescriptor descriptor);
 	}
 }
-
-#endif // !NET

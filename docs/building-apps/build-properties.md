@@ -215,7 +215,7 @@ Specifies whether a provisioning profile is required when signing the app bundle
 By default we require a provisioning profile if:
 
 * macOS, Mac Catalyst: a provisioning profile has been specified (with the [CodesignProvision](#codesignprovision) property).
-* iOS, tvOS, watchOS: building for device or an entitlements file has been specified (with the [CodesignEntitlements](#codesignentitlements) property).
+* iOS, tvOS: building for device or an entitlements file has been specified (with the [CodesignEntitlements](#codesignentitlements) property).
 
 Setting this property to `true` or `false` will override the default logic.
 
@@ -971,6 +971,15 @@ Valid values for this property:
 The validation process may not validate every entitlement, nor is it guaranteed to not be overeager.
 
 If the validation fails for entitlements that actually work, please file a new issue.
+
+## ValidateXcodeVersion
+
+Choose whether the current Xcode version should be validated.
+
+The default value is to validate; set to `false` to disable.
+
+> [!NOTE]
+> Using a different than the recommended version is likely to produce problems later on in the build process.
 
 ## XamMacResourcePrefix
 

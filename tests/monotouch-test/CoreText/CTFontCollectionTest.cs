@@ -19,14 +19,6 @@ namespace MonoTouchFixtures.CoreText {
 	[TestFixture]
 	[Preserve (AllMembers = true)]
 	public class CTFontCollectionTest {
-
-		[SetUp]
-		public void Setup ()
-		{
-			// CoreText was introduced in watchOS 2.2
-			TestRuntime.AssertXcodeVersion (7, 3);
-		}
-
 		[Test]
 		public void GetMatchingFontDescriptorsTest ()
 		{

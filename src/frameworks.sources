@@ -1836,7 +1836,6 @@ WEBKIT_SOURCES = \
 	WebKit/WebNavigationPolicyEventArgs.cs \
 	WebKit/WebPolicyDelegate.cs \
 	WebKit/WebView.cs \
-	WebKit/WKCompat.cs \
 	WebKit/WKPreferences.cs \
 	WebKit/WKWebExtensionMatchPattern.cs \
 	WebKit/WKWindowFeatures.cs \

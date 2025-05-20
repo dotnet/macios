@@ -1568,7 +1568,7 @@ namespace NS {
 			yield return [
 				pointerParameter,
 				"DCallback",
-				"unsafe internal delegate void DCallback (global::System.IntPtr block, int* pointerParameter);",
+				"unsafe internal delegate void DCallback (global::System.IntPtr block_ptr, int* pointerParameter);",
 			];
 
 			var ccallbackParameter = @"
@@ -1586,7 +1586,7 @@ namespace NS {
 			yield return [
 				ccallbackParameter,
 				"DCallback",
-				"unsafe internal delegate void DCallback (global::System.IntPtr block, global::System.IntPtr callbackParameter);",
+				"unsafe internal delegate void DCallback (global::System.IntPtr block_ptr, global::System.IntPtr callbackParameter);",
 			];
 
 			var nativeEnumParameter = @"
@@ -1613,7 +1613,7 @@ namespace NS {
 			yield return [
 				nativeEnumParameter,
 				"DCallback",
-				"unsafe internal delegate void DCallback (global::System.IntPtr block, long enumParameter);",
+				"unsafe internal delegate void DCallback (global::System.IntPtr block_ptr, long enumParameter);",
 			];
 
 			var boolParameter = @"
@@ -1631,7 +1631,7 @@ namespace NS {
 			yield return [
 				boolParameter,
 				"DCallback",
-				"unsafe internal delegate void DCallback (global::System.IntPtr block, byte boolParameter);",
+				"unsafe internal delegate void DCallback (global::System.IntPtr block_ptr, byte boolParameter);",
 			];
 
 			var nsObjectArray = @"
@@ -1650,7 +1650,7 @@ namespace NS {
 			yield return [
 				nsObjectArray,
 				"DCallback",
-				"unsafe internal delegate void DCallback (global::System.IntPtr block, global::ObjCRuntime.NativeHandle nsObjectArray);",
+				"unsafe internal delegate void DCallback (global::System.IntPtr block_ptr, global::ObjCRuntime.NativeHandle nsObjectArray);",
 			];
 
 			var iNativeObjectArray = @"
@@ -1670,7 +1670,7 @@ namespace NS {
 			yield return [
 				iNativeObjectArray,
 				"DCallback",
-				"unsafe internal delegate void DCallback (global::System.IntPtr block, global::ObjCRuntime.NativeHandle inativeArray);"
+				"unsafe internal delegate void DCallback (global::System.IntPtr block_ptr, global::ObjCRuntime.NativeHandle inativeArray);"
 			];
 
 
@@ -1690,7 +1690,7 @@ namespace NS {
 			yield return [
 				stringArray,
 				"DCallback",
-				"unsafe internal delegate void DCallback (global::System.IntPtr block, global::ObjCRuntime.NativeHandle stringArray);",
+				"unsafe internal delegate void DCallback (global::System.IntPtr block_ptr, global::ObjCRuntime.NativeHandle stringArray);",
 			];
 
 			var protocolParameter = @"
@@ -1709,7 +1709,7 @@ namespace NS {
 			yield return [
 				protocolParameter,
 				"DCallback",
-				"unsafe internal delegate void DCallback (global::System.IntPtr block, global::ObjCRuntime.NativeHandle protocolParameter);"
+				"unsafe internal delegate void DCallback (global::System.IntPtr block_ptr, global::ObjCRuntime.NativeHandle protocolParameter);"
 			];
 
 			var outNullableInt = @"
@@ -1728,7 +1728,7 @@ namespace NS {
 			yield return [
 				outNullableInt,
 				"DCallback",
-				"unsafe internal delegate void DCallback (global::System.IntPtr block, int* outNullableInt);"
+				"unsafe internal delegate void DCallback (global::System.IntPtr block_ptr, int* outNullableInt);"
 			];
 
 			var outBoolean = @"
@@ -1747,7 +1747,7 @@ namespace NS {
 			yield return [
 				outBoolean,
 				"DCallback",
-				"unsafe internal delegate void DCallback (global::System.IntPtr block, byte* outBool);",
+				"unsafe internal delegate void DCallback (global::System.IntPtr block_ptr, byte* outBool);",
 			];
 
 
@@ -1767,7 +1767,7 @@ namespace NS {
 			yield return [
 				outNSObject,
 				"DCallback",
-				"unsafe internal delegate void DCallback (global::System.IntPtr block, global::ObjCRuntime.NativeHandle* outNSObject);"
+				"unsafe internal delegate void DCallback (global::System.IntPtr block_ptr, global::ObjCRuntime.NativeHandle* outNSObject);"
 			];
 
 			var valueReturnboolParameter = @"
@@ -1785,7 +1785,7 @@ namespace NS {
 			yield return [
 				valueReturnboolParameter,
 				"DCallback",
-				"unsafe internal delegate int DCallback (global::System.IntPtr block, byte boolParameter);",
+				"unsafe internal delegate int DCallback (global::System.IntPtr block_ptr, byte boolParameter);",
 			];
 
 			var nsObjectReturnBoolParameter = @"
@@ -1804,7 +1804,7 @@ namespace NS {
 			yield return [
 				nsObjectReturnBoolParameter,
 				"DCallback",
-				"unsafe internal delegate global::ObjCRuntime.NativeHandle DCallback (global::System.IntPtr block, byte boolParameter);",
+				"unsafe internal delegate global::ObjCRuntime.NativeHandle DCallback (global::System.IntPtr block_ptr, byte boolParameter);",
 			];
 
 			var nullableNSObjectReturnBoolParameter = @"
@@ -1823,7 +1823,7 @@ namespace NS {
 			yield return [
 				nullableNSObjectReturnBoolParameter,
 				"DCallback",
-				"unsafe internal delegate global::ObjCRuntime.NativeHandle DCallback (global::System.IntPtr block, byte boolParameter);",
+				"unsafe internal delegate global::ObjCRuntime.NativeHandle DCallback (global::System.IntPtr block_ptr, byte boolParameter);",
 			];
 
 			var arrayNSObjectReturnBoolParameter = @"
@@ -1842,7 +1842,7 @@ namespace NS {
 			yield return [
 				arrayNSObjectReturnBoolParameter,
 				"DCallback",
-				"unsafe internal delegate global::ObjCRuntime.NativeHandle DCallback (global::System.IntPtr block, byte boolParameter);",
+				"unsafe internal delegate global::ObjCRuntime.NativeHandle DCallback (global::System.IntPtr block_ptr, byte boolParameter);",
 			];
 
 			var nullableArrayNSObjectReturnBoolParameter = @"
@@ -1861,7 +1861,7 @@ namespace NS {
 			yield return [
 				nullableArrayNSObjectReturnBoolParameter,
 				"DCallback",
-				"unsafe internal delegate global::ObjCRuntime.NativeHandle DCallback (global::System.IntPtr block, byte boolParameter);",
+				"unsafe internal delegate global::ObjCRuntime.NativeHandle DCallback (global::System.IntPtr block_ptr, byte boolParameter);",
 			];
 		}
 
@@ -2403,7 +2403,7 @@ namespace NS {
 ";
 			yield return [
 				pointerParameter,
-				"internal static unsafe void Invoke (global::System.IntPtr block, int* pointerParameter)",
+				"internal static unsafe void Invoke (global::System.IntPtr block_ptr, int* pointerParameter)",
 			];
 
 			var ccallbackParameter = @"
@@ -2419,7 +2419,7 @@ namespace NS {
 
 			yield return [
 				ccallbackParameter,
-				"internal static unsafe void Invoke (global::System.IntPtr block, global::System.IntPtr callbackParameter)",
+				"internal static unsafe void Invoke (global::System.IntPtr block_ptr, global::System.IntPtr callbackParameter)",
 			];
 
 			var nativeEnumParameter = @"
@@ -2442,7 +2442,7 @@ namespace NS {
 
 			yield return [
 				nativeEnumParameter,
-				"internal static unsafe void Invoke (global::System.IntPtr block, long enumParameter)",
+				"internal static unsafe void Invoke (global::System.IntPtr block_ptr, long enumParameter)",
 			];
 
 			var boolParameter = @"
@@ -2458,7 +2458,7 @@ namespace NS {
 
 			yield return [
 				boolParameter,
-				"internal static unsafe void Invoke (global::System.IntPtr block, byte boolParameter)",
+				"internal static unsafe void Invoke (global::System.IntPtr block_ptr, byte boolParameter)",
 			];
 
 			var nsObjectArray = @"
@@ -2475,7 +2475,7 @@ namespace NS {
 
 			yield return [
 				nsObjectArray,
-				"internal static unsafe void Invoke (global::System.IntPtr block, global::ObjCRuntime.NativeHandle nsObjectArray)",
+				"internal static unsafe void Invoke (global::System.IntPtr block_ptr, global::ObjCRuntime.NativeHandle nsObjectArray)",
 			];
 
 			var iNativeObjectArray = @"
@@ -2493,7 +2493,7 @@ namespace NS {
 
 			yield return [
 				iNativeObjectArray,
-				"internal static unsafe void Invoke (global::System.IntPtr block, global::ObjCRuntime.NativeHandle inativeArray)"
+				"internal static unsafe void Invoke (global::System.IntPtr block_ptr, global::ObjCRuntime.NativeHandle inativeArray)"
 			];
 
 
@@ -2511,7 +2511,7 @@ namespace NS {
 
 			yield return [
 				stringArray,
-				"internal static unsafe void Invoke (global::System.IntPtr block, global::ObjCRuntime.NativeHandle stringArray)",
+				"internal static unsafe void Invoke (global::System.IntPtr block_ptr, global::ObjCRuntime.NativeHandle stringArray)",
 			];
 
 			var protocolParameter = @"
@@ -2528,7 +2528,7 @@ namespace NS {
 
 			yield return [
 				protocolParameter,
-				"internal static unsafe void Invoke (global::System.IntPtr block, global::ObjCRuntime.NativeHandle protocolParameter)"
+				"internal static unsafe void Invoke (global::System.IntPtr block_ptr, global::ObjCRuntime.NativeHandle protocolParameter)"
 			];
 
 			var outNullableInt = @"
@@ -2545,7 +2545,7 @@ namespace NS {
 
 			yield return [
 				outNullableInt,
-				"internal static unsafe void Invoke (global::System.IntPtr block, int* outNullableInt)"
+				"internal static unsafe void Invoke (global::System.IntPtr block_ptr, int* outNullableInt)"
 			];
 
 			var outBoolean = @"
@@ -2562,7 +2562,7 @@ namespace NS {
 
 			yield return [
 				outBoolean,
-				"internal static unsafe void Invoke (global::System.IntPtr block, byte* outBool)",
+				"internal static unsafe void Invoke (global::System.IntPtr block_ptr, byte* outBool)",
 			];
 
 
@@ -2580,7 +2580,7 @@ namespace NS {
 
 			yield return [
 				outNSObject,
-				"internal static unsafe void Invoke (global::System.IntPtr block, global::ObjCRuntime.NativeHandle* outNSObject)"
+				"internal static unsafe void Invoke (global::System.IntPtr block_ptr, global::ObjCRuntime.NativeHandle* outNSObject)"
 			];
 
 			var valueReturnboolParameter = @"
@@ -2596,7 +2596,7 @@ namespace NS {
 
 			yield return [
 				valueReturnboolParameter,
-				"internal static unsafe int Invoke (global::System.IntPtr block, byte boolParameter)",
+				"internal static unsafe int Invoke (global::System.IntPtr block_ptr, byte boolParameter)",
 			];
 
 			var nsObjectReturnBoolParameter = @"
@@ -2613,7 +2613,7 @@ namespace NS {
 
 			yield return [
 				nsObjectReturnBoolParameter,
-				"internal static unsafe global::ObjCRuntime.NativeHandle Invoke (global::System.IntPtr block, byte boolParameter)",
+				"internal static unsafe global::ObjCRuntime.NativeHandle Invoke (global::System.IntPtr block_ptr, byte boolParameter)",
 			];
 
 			var nullableNSObjectReturnBoolParameter = @"
@@ -2630,7 +2630,7 @@ namespace NS {
 
 			yield return [
 				nullableNSObjectReturnBoolParameter,
-				"internal static unsafe global::ObjCRuntime.NativeHandle Invoke (global::System.IntPtr block, byte boolParameter)",
+				"internal static unsafe global::ObjCRuntime.NativeHandle Invoke (global::System.IntPtr block_ptr, byte boolParameter)",
 			];
 
 			var arrayNSObjectReturnBoolParameter = @"
@@ -2647,7 +2647,7 @@ namespace NS {
 
 			yield return [
 				arrayNSObjectReturnBoolParameter,
-				"internal static unsafe global::ObjCRuntime.NativeHandle Invoke (global::System.IntPtr block, byte boolParameter)",
+				"internal static unsafe global::ObjCRuntime.NativeHandle Invoke (global::System.IntPtr block_ptr, byte boolParameter)",
 			];
 
 			var nullableArrayNSObjectReturnBoolParameter = @"
@@ -2664,7 +2664,41 @@ namespace NS {
 
 			yield return [
 				nullableArrayNSObjectReturnBoolParameter,
-				"internal static unsafe global::ObjCRuntime.NativeHandle Invoke (global::System.IntPtr block, byte boolParameter)",
+				"internal static unsafe global::ObjCRuntime.NativeHandle Invoke (global::System.IntPtr block_ptr, byte boolParameter)",
+			];
+
+			var blockNamedParameter = @"
+using System;
+using Foundation;
+using ObjCRuntime;
+namespace NS {
+	public delegate NSObject[]? Callback (bool block_ptr);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			
+			yield return [
+				blockNamedParameter,
+				"internal static unsafe global::ObjCRuntime.NativeHandle Invoke (global::System.IntPtr block_ptr_0, byte block_ptr)",
+			];
+			
+			var doubleBlockNamedParameter = @"
+using System;
+using Foundation;
+using ObjCRuntime;
+namespace NS {
+	public delegate NSObject[]? Callback (bool block_ptr, bool block_ptr_0);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			
+			yield return [
+				doubleBlockNamedParameter,
+				"internal static unsafe global::ObjCRuntime.NativeHandle Invoke (global::System.IntPtr block_ptr_1, byte block_ptr, byte block_ptr_0)",
 			];
 		}
 

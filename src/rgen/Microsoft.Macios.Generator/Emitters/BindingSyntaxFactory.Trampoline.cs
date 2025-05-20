@@ -630,7 +630,7 @@ static partial class BindingSyntaxFactory {
 		var parameterBucket = ImmutableArray.CreateBuilder<ParameterSyntax> (delegateTypeInfo.Delegate!.Parameters.Length + 1);
 		// block parameter needed for the trampoline
 		parameterBucket.Add (
-			Parameter (Identifier (Nomenclator.GetTrampolineBlockParameterName ()))
+			Parameter (Identifier (Nomenclator.GetTrampolineBlockParameterName (delegateTypeInfo.Delegate!.Parameters)))
 				.WithType (IntPtr));
 		// calculate the rest of the parameters  
 		foreach (var parameterInfo in delegateTypeInfo.Delegate!.Parameters) {

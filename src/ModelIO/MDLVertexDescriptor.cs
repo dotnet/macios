@@ -26,16 +26,13 @@ namespace ModelIO {
 			return result;
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		[DllImport (Constants.MetalKitLibrary)]
 		unsafe static extern /* MDLVertexDescriptor __nonnull */ IntPtr MTKModelIOVertexDescriptorFromMetalWithError (/* MTLVertexDescriptor __nonnull */ IntPtr metalDescriptor, /* NSError */ IntPtr* error);
 
-#if NET
 		/// <param name="descriptor">To be added.</param>
 		///         <param name="error">To be added.</param>
 		///         <summary>Creates a Model IO vertex descriptor from the specified metal vertex descriptor.</summary>
@@ -45,7 +42,6 @@ namespace ModelIO {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public static MDLVertexDescriptor? FromMetal (MTLVertexDescriptor descriptor, out NSError? error)
 		{
 			if (descriptor is null)

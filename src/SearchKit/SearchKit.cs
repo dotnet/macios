@@ -29,10 +29,6 @@ using Foundation;
 
 using System.Runtime.InteropServices;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace SearchKit {
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
@@ -61,11 +57,9 @@ namespace SearchKit {
 		FindSimilar = 1 << 2,
 	}
 
-#if NET
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
-#endif
 	public class SKSearch : NativeObject {
 		[Preserve (Conditional = true)]
 		internal SKSearch (NativeHandle handle, bool owns)
@@ -132,11 +126,9 @@ namespace SearchKit {
 		}
 	}
 
-#if NET
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
-#endif
 	public class SKDocument : NativeObject {
 		[DllImport (Constants.SearchKitLibrary)]
 		extern static IntPtr SKDocumentCreate (IntPtr scheme, IntPtr docParent, IntPtr name);
@@ -233,14 +225,10 @@ namespace SearchKit {
 		}
 	}
 
-#if NET
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	public class SKIndex : DisposableObject
-#else
-	public class SKIndex : NativeObject
-#endif
 	{
 		[DllImport (Constants.SearchKitLibrary)]
 		extern static IntPtr SKIndexCreateWithURL (IntPtr url, IntPtr str, SKIndexType type, IntPtr dict);
@@ -388,16 +376,6 @@ namespace SearchKit {
 		{
 			Dispose ();
 		}
-
-#if !NET
-		protected internal override void Retain ()
-		{
-		}
-
-		protected internal override void Release ()
-		{
-		}
-#endif
 
 		/// <param name="disposing">To be added.</param>
 		///         <summary>To be added.</summary>
@@ -653,11 +631,9 @@ namespace SearchKit {
 		}
 	}
 
-#if NET
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
-#endif
 	public class SKSummary : NativeObject {
 		[Preserve (Conditional = true)]
 		internal SKSummary (NativeHandle handle, bool owns)

@@ -1107,7 +1107,6 @@ MAPKIT_CORE_SOURCES = \
 
 MAPKIT_SOURCES = \
 	MapKit/MKAddressFilter.cs \
-	MapKit/MKCompat.cs \
 	MapKit/MKFeatureDisplayPriority.cs \
 	MapKit/MKGeodesicPolyline.cs \
 	MapKit/MKLocalSearch.cs \
@@ -1281,8 +1280,6 @@ MODELIO_SOURCES = \
 	ModelIO/MDLAsset.cs \
 	ModelIO/MDLMaterial.cs \
 	ModelIO/MDLNoiseTexture.cs \
-	ModelIO/MDLTransform.cs \
-	ModelIO/MDLTransformComponent.cs \
 	ModelIO/MDLVertexDescriptor.cs \
 	ModelIO/MDLMesh.cs \
 
@@ -1447,7 +1444,6 @@ PDFKIT_API_SOURCES = \
 
 PDFKIT_SOURCES = \
 	PdfKit/PdfAnnotation.cs \
-	PdfKit/PdfCompat.cs \
 	PdfKit/PdfKit.cs \
 
 # Photos
@@ -1458,7 +1454,6 @@ PHOTOS_API_SOURCES = \
 PHOTOS_SOURCES = \
 	Photos/PHAssetChangeRequest.cs \
 	Photos/PHAssetCreationRequest.cs \
-	Photos/PHCompat.cs \
 	Photos/PHFetchResult.cs \
 	Photos/PHLivePhoto.cs \
 	Photos/PHPhotoLibrary.cs \

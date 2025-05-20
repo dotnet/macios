@@ -14,10 +14,6 @@ using UIVibrancyEffect = Foundation.NSObject;
 using UIVibrancyEffectStyle = Foundation.NSObject;
 #endif
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace NotificationCenter {
 	/// <summary>Coordinates the display of a widget's content with its containing app.</summary>
 	///     
@@ -73,10 +69,6 @@ namespace NotificationCenter {
 		[Export ("widgetAllowsEditing")]
 		bool WidgetAllowsEditing {
 			get;
-#if !NET
-			[NotImplemented]
-			set;
-#endif
 		}
 
 		/// <summary>To be added.</summary>
@@ -103,14 +95,8 @@ namespace NotificationCenter {
 	/// <summary>Defines the appropriate vibrancy effect for widgets (extensions) displayed in the Today view.</summary>
 	[NoMac]
 	[BaseType (typeof (UIVibrancyEffect))]
-#if NET
 	[Internal]
 	[Category]
-#else
-#pragma warning disable 0618 // warning CS0618: 'CategoryAttribute.CategoryAttribute(bool)' is obsolete: 'Inline the static members in this category in the category's class (and remove this obsolete once fixed)'
-	[Category (allowStaticMembers: true)] // Classic isn't internal so we need this
-#pragma warning restore
-#endif
 	interface UIVibrancyEffect_NotificationCenter {
 		[Internal]
 		[Deprecated (PlatformName.iOS, 10, 0, message: "Use 'UIVibrancyEffect.GetWidgetEffect' instead.")]
@@ -369,11 +355,6 @@ namespace NotificationCenter {
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface NCWidgetSearchViewDelegate {
-#if !NET
-		[Abstract]
-		[Export ("widgetSearch:searchForTerm:maxResults:"), EventArgs ("NSWidgetSearchForTerm"), DefaultValue (false)]
-		void SearchForTearm (NCWidgetSearchViewController controller, string searchTerm, nuint max);
-#else
 		/// <param name="controller">To be added.</param>
 		/// <param name="searchTerm">To be added.</param>
 		/// <param name="max">To be added.</param>
@@ -385,7 +366,6 @@ namespace NotificationCenter {
 			<remarks>To be added.</remarks>
 			"""), DefaultValue (false)]
 		void SearchForTerm (NCWidgetSearchViewController controller, string searchTerm, nuint max);
-#endif
 
 		/// <param name="controller">To be added.</param>
 		///         <summary>To be added.</summary>

@@ -1,11 +1,7 @@
 using System;
 using ObjCRuntime;
 
-#if NET
 using Vector2i = global::CoreGraphics.NVector2i;
-#else
-using Vector2i = global::OpenTK.Vector2i;
-#endif
 
 #nullable enable
 
@@ -17,12 +13,10 @@ namespace ModelIO {
 		{
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public MDLNoiseTexture (float input, string name, Vector2i textureDimensions, MDLTextureChannelEncoding channelEncoding, MDLNoiseTextureType type)
 		{
 			// two different `init*` would share the same C# signature

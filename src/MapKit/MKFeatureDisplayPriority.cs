@@ -4,15 +4,12 @@ using ObjCRuntime;
 #nullable enable
 
 namespace MapKit {
-
-#if NET
 	/// <summary>Enumerates annotation display priorities.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
-#endif
 	// .net does not allow float-based enumerations
 	public static class MKFeatureDisplayPriority {
 		/// <summary>Indicates that the annotation is required to be displayed.</summary>

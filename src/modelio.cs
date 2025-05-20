@@ -8,6 +8,7 @@
 
 using System;
 using System.ComponentModel;
+using System.Numerics;
 
 using AudioUnit;
 using CoreFoundation;
@@ -16,15 +17,12 @@ using ObjCRuntime;
 using CoreAnimation;
 using CoreGraphics;
 using SceneKit;
-#if NET
-using Vector2 = global::System.Numerics.Vector2;
+
 using Vector2d = global::CoreGraphics.NVector2d;
 using Vector2i = global::CoreGraphics.NVector2i;
 using NVector3d = global::CoreGraphics.NVector3d;
 using NVector3 = global::CoreGraphics.NVector3;
-using Vector3 = global::System.Numerics.Vector3;
 using Vector3i = global::CoreGraphics.NVector3i;
-using Vector4 = global::System.Numerics.Vector4;
 using Vector4d = global::CoreGraphics.NVector4d;
 using Vector4i = global::CoreGraphics.NVector4i;
 using Matrix2 = global::CoreGraphics.NMatrix2;
@@ -36,27 +34,6 @@ using MatrixFloat4x4 = global::CoreGraphics.NMatrix4;
 using NMatrix4 = global::CoreGraphics.NMatrix4;
 using NMatrix4d = global::CoreGraphics.NMatrix4d;
 using Quaterniond = global::CoreGraphics.NQuaterniond;
-using Quaternion = global::System.Numerics.Quaternion;
-#else
-using Vector2 = global::OpenTK.Vector2;
-using Vector2d = global::OpenTK.Vector2d;
-using Vector2i = global::OpenTK.Vector2i;
-using NVector3d = global::OpenTK.NVector3d;
-using NVector3 = global::OpenTK.NVector3;
-using Vector3 = global::OpenTK.Vector3;
-using Vector3i = global::OpenTK.Vector3i;
-using Vector4 = global::OpenTK.Vector4;
-using Vector4d = global::OpenTK.Vector4d;
-using Vector4i = global::OpenTK.Vector4i;
-using Matrix2 = global::OpenTK.Matrix2;
-using Matrix3 = global::OpenTK.Matrix3;
-using Matrix4 = global::OpenTK.Matrix4;
-using MatrixFloat4x4 = global::OpenTK.NMatrix4;
-using NMatrix4 = global::OpenTK.NMatrix4;
-using NMatrix4d = global::OpenTK.NMatrix4d;
-using Quaterniond = global::OpenTK.Quaterniond;
-using Quaternion = global::OpenTK.Quaternion;
-#endif
 
 #if MONOMAC
 using AppKit;
@@ -64,10 +41,6 @@ using AUViewControllerBase = AppKit.NSViewController;
 #else
 using UIKit;
 using AUViewControllerBase = UIKit.UIViewController;
-#endif
-
-#if !NET
-using NativeHandle = System.IntPtr;
 #endif
 
 namespace ModelIO {
@@ -500,22 +473,10 @@ namespace ModelIO {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("projectionMatrix")]
-#if !NET
-		[Obsolete ("Use 'ProjectionMatrix4x4' instead.")]
-#endif
 		Matrix4 ProjectionMatrix {
 			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 			get;
 		}
-
-#if !NET
-		[Sealed]
-		[Export ("projectionMatrix")]
-		MatrixFloat4x4 ProjectionMatrix4x4 {
-			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
-			get;
-		}
-#endif
 
 		/// <summary>Gets or sets a value that controls whether the projection is perspective or orthographic.</summary>
 		///         <value>To be added.</value>
@@ -1155,18 +1116,7 @@ namespace ModelIO {
 		/// <remarks>To be added.</remarks>
 		[Export ("initWithName:semantic:matrix4x4:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
-#if !NET
-		[Obsolete ("Use the '(string, MDLMaterialSemantic, MatrixFloat4x4)' overload instead.")]
-#endif
 		NativeHandle Constructor (string name, MDLMaterialSemantic semantic, Matrix4 value);
-
-
-#if !NET
-		[Sealed]
-		[Export ("initWithName:semantic:matrix4x4:")]
-		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
-		NativeHandle Constructor (string name, MDLMaterialSemantic semantic, MatrixFloat4x4 value);
-#endif
 
 		/// <param name="name">To be added.</param>
 		/// <param name="semantic">To be added.</param>
@@ -1310,9 +1260,6 @@ namespace ModelIO {
 			set;
 		}
 
-#if !NET
-		[Obsolete ("Use 'MatrixFloat4x4' instead.")]
-#endif
 		/// <summary>Gets or sets the 4x4 matrix of floating-point values.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -1323,17 +1270,6 @@ namespace ModelIO {
 			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 			set;
 		}
-
-#if !NET
-		[Sealed]
-		[Export ("matrix4x4", ArgumentSemantic.Assign)]
-		MatrixFloat4x4 MatrixFloat4x4 {
-			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
-			get;
-			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
-			set;
-		}
-#endif
 
 		/// <summary>Gets or sets the luminance of the material.</summary>
 		///         <value>To be added.</value>
@@ -1910,40 +1846,32 @@ namespace ModelIO {
 		[Export ("map")]
 		MDLMeshBufferMap Map { get; }
 
-#if NET
 		/// <summary>Gets the length of the buffer, in bytes.</summary>
 		/// <value>To be added.</value>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
-#endif
 		[Export ("length")]
 		nuint Length { get; }
 
-#if NET
 		/// <summary>Gets the allocator that is used to allocate memory for the mesh buffer.</summary>
 		/// <value>To be added.</value>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
-#endif
 		[Export ("allocator", ArgumentSemantic.Retain)]
 		IMDLMeshBufferAllocator Allocator { get; }
 
-#if NET
 		/// <summary>Gets the memory pool that the buffer occupies.</summary>
 		/// <value>To be added.</value>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
-#endif
 		[Export ("zone", ArgumentSemantic.Retain)]
 		[NullAllowed]
 		IMDLMeshBufferZone Zone { get; }
 
-#if NET
 		/// <summary>Gets a value that indicates whether the buffer contains indices or vertices.</summary>
 		/// <value>To be added.</value>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
-#endif
 		[Export ("type")]
 		MDLMeshBufferType Type { get; }
 	}
@@ -2089,21 +2017,17 @@ namespace ModelIO {
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface MDLMeshBufferZone {
-#if NET
 		/// <summary>Gets the capacity of the zone, in bytes.</summary>
 		/// <value>To be added.</value>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
-#endif
 		[Export ("capacity")]
 		nuint Capacity { get; }
 
-#if NET
 		/// <summary>Gets the allocator that created the zone.</summary>
 		/// <value>To be added.</value>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
-#endif
 		[Export ("allocator")]
 		IMDLMeshBufferAllocator Allocator { get; }
 	}
@@ -2241,23 +2165,12 @@ namespace ModelIO {
 		[Wrap ("SetComponent (component, new Protocol (type!))")]
 		void SetComponent (IMDLComponent component, Type type);
 
-#if !NET
-		[Obsolete ("Use 'GetComponent (Type type)'.")]
-		[Export ("componentConformingToProtocol:")]
-		[return: NullAllowed]
-		IMDLComponent IsComponentConforming (Protocol protocol);
-#endif
-
 		/// <param name="protocol">The protocol for which to get the component.</param>
 		///         <summary>Gets this object's component that conforms to <paramref name="protocol" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
-#if NET
 		[Export ("componentConformingToProtocol:")]
-#else
-		[Wrap ("IsComponentConforming (protocol!)")]
-#endif
 		[return: NullAllowed]
 		IMDLComponent GetComponent (Protocol protocol);
 
@@ -2420,23 +2333,19 @@ namespace ModelIO {
 		[Export ("removeObject:")]
 		void RemoveObject (MDLObject @object);
 
-#if NET
 		/// <param name="index">The index of the object to get.</param>
 		/// <summary>Returns the object at the specified <paramref name="index" />.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
-#endif
 		[MacCatalyst (13, 1)]
 		[Export ("objectAtIndexedSubscript:")]
 		MDLObject GetObject (nuint index);
 
-#if NET
 		/// <summary>Gets the number of objects in this container.</summary>
 		/// <value>To be added.</value>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
-#endif
 		[MacCatalyst (13, 1)]
 		[Export ("count")]
 		nuint Count { get; }
@@ -2896,9 +2805,6 @@ namespace ModelIO {
 		[Export ("overlap")]
 		float Overlap { get; set; }
 
-#if !NET
-		[Obsolete ("Use 'LeftViewMatrix4x4' instead.")]
-#endif
 		/// <summary>Gets the view matrix for the left viewpoint.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -2908,18 +2814,6 @@ namespace ModelIO {
 			get;
 		}
 
-#if !NET
-		[Sealed]
-		[Export ("leftViewMatrix")]
-		MatrixFloat4x4 LeftViewMatrix4x4 {
-			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
-			get;
-		}
-#endif
-
-#if !NET
-		[Obsolete ("Use 'RightViewMatrix4x4' instead.")]
-#endif
 		/// <summary>Gets the view matrix for the right viewpoint.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -2929,18 +2823,6 @@ namespace ModelIO {
 			get;
 		}
 
-#if !NET
-		[Sealed]
-		[Export ("rightViewMatrix")]
-		MatrixFloat4x4 RightViewMatrix4x4 {
-			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
-			get;
-		}
-#endif
-
-#if !NET
-		[Obsolete ("Use 'LeftProjectionMatrix4x4' instead.")]
-#endif
 		/// <summary>Gets the projection matrix for the left viewpoint.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -2950,18 +2832,6 @@ namespace ModelIO {
 			get;
 		}
 
-#if !NET
-		[Sealed]
-		[Export ("leftProjectionMatrix")]
-		MatrixFloat4x4 LeftProjectionMatrix4x4 {
-			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
-			get;
-		}
-#endif
-
-#if !NET
-		[Obsolete ("Use 'RightProjectionMatrix4x4' instead.")]
-#endif
 		/// <summary>Gets the projection matrix for the right viewpoint.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -2970,15 +2840,6 @@ namespace ModelIO {
 			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 			get;
 		}
-
-#if !NET
-		[Sealed]
-		[Export ("rightProjectionMatrix")]
-		MatrixFloat4x4 RightProjectionMatrix4x4 {
-			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
-			get;
-		}
-#endif
 	}
 
 	/// <summary>Indexes and identifies a portion of an MDLMesh, and contains material information about the indexed portion.</summary>
@@ -3130,27 +2991,11 @@ namespace ModelIO {
 		[Export ("init")]
 		NativeHandle Constructor ();
 
-#if !NET
-		[Static]
-		[Obsolete ("Use 'CreateTexture' instead.")]
-		[Wrap ("CreateTexture (name)")]
-		[return: NullAllowed]
-		MDLTexture FromBundle (string name);
-#endif
-
 		/// <summary>Creates a new texture from the specified texture in the default application bundle.</summary>
 		[Static]
 		[Export ("textureNamed:")]
 		[return: NullAllowed]
 		MDLTexture CreateTexture (string name);
-
-#if !NET
-		[Static]
-		[Obsolete ("Use 'CreateTexture' instead.")]
-		[Wrap ("CreateTexture (name, bundleOrNil)")]
-		[return: NullAllowed]
-		MDLTexture FromBundle (string name, [NullAllowed] NSBundle bundleOrNil);
-#endif
 
 		/// <summary>Creates a new texture from the specified texture in the specified application bundle.</summary>
 		[Static]
@@ -3459,9 +3304,6 @@ namespace ModelIO {
 		[Export ("initWithTransformComponent:resetsTransform:")]
 		NativeHandle Constructor (IMDLTransformComponent component, bool resetsTransform);
 
-#if !NET
-		[Obsolete ("Use the '(MatrixFloat4x4)' overload instead.")]
-#endif
 		/// <param name="matrix">To be added.</param>
 		/// <summary>Creates a new MDLTransform from the specified matrix.</summary>
 		/// <remarks>To be added.</remarks>
@@ -3469,16 +3311,6 @@ namespace ModelIO {
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		NativeHandle Constructor (Matrix4 matrix);
 
-#if !NET
-		[Sealed]
-		[Export ("initWithMatrix:")]
-		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
-		NativeHandle Constructor (MatrixFloat4x4 matrix);
-#endif
-
-#if !NET
-		[Obsolete ("Use the '(MatrixFloat4x4, bool)' overload instead.")]
-#endif
 		/// <param name="matrix">To be added.</param>
 		/// <param name="resetsTransform">To be added.</param>
 		/// <summary>Creates a new MDLTransform from the specified matrix.</summary>
@@ -3487,13 +3319,6 @@ namespace ModelIO {
 		[Export ("initWithMatrix:resetsTransform:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		NativeHandle Constructor (Matrix4 matrix, bool resetsTransform);
-
-#if !NET
-		[Sealed]
-		[Export ("initWithMatrix:resetsTransform:")]
-		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
-		NativeHandle Constructor (MatrixFloat4x4 matrix, bool resetsTransform);
-#endif
 
 		/// <summary>Makes the transform identical to the identity transform.</summary>
 		///         <remarks>To be added.</remarks>
@@ -3532,9 +3357,6 @@ namespace ModelIO {
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		Vector3 GetRotation (double atTime);
 
-#if !NET
-		[Obsolete ("Use 'GetRotationMatrix4x4' instead.")]
-#endif
 		/// <param name="atTime">To be added.</param>
 		///         <summary>Returns the rotation of the transform at the specified time.</summary>
 		///         <returns>To be added.</returns>
@@ -3542,13 +3364,6 @@ namespace ModelIO {
 		[Export ("rotationMatrixAtTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		Matrix4 GetRotationMatrix (double atTime);
-
-#if !NET
-		[Sealed]
-		[Export ("rotationMatrixAtTime:")]
-		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
-		MatrixFloat4x4 GetRotationMatrix4x4 (double atTime);
-#endif
 
 		[Export ("setShear:forTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
@@ -3569,17 +3384,7 @@ namespace ModelIO {
 		[MacCatalyst (13, 1)]
 		[Export ("setMatrix:forTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
-#if !NET
-		[Obsolete ("Use 'SetMatrix4x4' instead.")]
-#endif
 		void SetMatrix (Matrix4 matrix, double time);
-
-#if !NET
-		[Sealed]
-		[Export ("setMatrix:forTime:")]
-		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
-		void SetMatrix4x4 (MatrixFloat4x4 matrix, double time);
-#endif
 
 		/// <summary>Gets or sets the shear of the transform.</summary>
 		///         <value>To be added.</value>
@@ -3656,9 +3461,7 @@ namespace ModelIO {
 
 		/// <summary>Inserts the specified transform at the specified time.</summary>
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("resetsTransform")]
 		bool ResetsTransform { get; set; }
 
@@ -3681,9 +3484,7 @@ namespace ModelIO {
 		/// <value>To be added.</value>
 		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("keyTimes", ArgumentSemantic.Copy)]
 		NSNumber [] KeyTimes { get; }
 
@@ -3705,9 +3506,6 @@ namespace ModelIO {
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		Matrix4 GetLocalTransform (double atTime);
 
-#if !NET
-		[Obsolete ("Use 'CreateGlobalTransform4x4' instead.")]
-#endif
 		/// <summary>Creates and returns a global transform for the specified object at the specified time.</summary>
 		/// <param name="obj">The object that represents the spatial transform.</param>
 		/// <param name="atTime">The time at which to apply the transform.</param>
@@ -3962,16 +3760,12 @@ namespace ModelIO {
 		/// <summary>Developers should not use this deprecated constructor. Developers should use 'new MDLVoxelArray (MDLAsset, int, float)'.</summary>
 		/// <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 10, 12, message: "Use 'new MDLVoxelArray (MDLAsset, int, float)'.")]
-#if NET
 		[NoiOS]
 #if XAMCORE_5_0
 		[NoTV]
 #else
 		[Obsoleted (PlatformName.TvOS, 10, 0, message: "Use 'new MDLVoxelArray (MDLAsset, int, float)'.")]
 		[NoMacCatalyst]
-#endif
-#else
-		[Obsoleted (PlatformName.iOS, 10, 0, message: "Use 'new MDLVoxelArray (MDLAsset, int, float)'.")]
 #endif
 		[Export ("initWithAsset:divisions:interiorShells:exteriorShells:patchRadius:")]
 		NativeHandle Constructor (MDLAsset asset, int divisions, int interiorShells, int exteriorShells, float patchRadius);
@@ -3984,16 +3778,12 @@ namespace ModelIO {
 		/// <summary>Creates a new MDLVoxelArray from the provided asset, with the specified number of divisions and the specified numbers of concentric interior and exterior shells of voxels.</summary>
 		/// <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 10, 12, message: "Use 'new MDLVoxelArray (MDLAsset, int, float)'.")]
-#if NET
 		[NoiOS]
 #if XAMCORE_5_0
 		[NoTV]
 #else
 		[Obsoleted (PlatformName.TvOS, 10, 0, message: "Use 'new MDLVoxelArray (MDLAsset, int, float)'.")]
 		[NoMacCatalyst]
-#endif
-#else
-		[Obsoleted (PlatformName.iOS, 10, 0, message: "Use 'new MDLVoxelArray (MDLAsset, int, float)'.")]
 #endif
 		[Export ("initWithAsset:divisions:interiorNBWidth:exteriorNBWidth:patchRadius:")]
 		NativeHandle Constructor (MDLAsset asset, int divisions, float interiorNBWidth, float exteriorNBWidth, float patchRadius);
@@ -4052,16 +3842,12 @@ namespace ModelIO {
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 10, 12, message: "Use 'SetVoxels (MDLMesh, int, float)' instead.")]
-#if NET
 		[NoiOS]
 #if XAMCORE_5_0
 		[NoTV]
 #else
 		[Obsoleted (PlatformName.TvOS, 10, 0, message: "Use 'SetVoxels (MDLMesh, int, float)' instead.")]
 		[NoMacCatalyst]
-#endif
-#else
-		[Obsoleted (PlatformName.iOS, 10, 0, message: "Use 'SetVoxels (MDLMesh, int, float)' instead.")]
 #endif
 		[Export ("setVoxelsForMesh:divisions:interiorShells:exteriorShells:patchRadius:")]
 		void SetVoxels (MDLMesh mesh, int divisions, int interiorShells, int exteriorShells, float patchRadius);
@@ -4074,7 +3860,6 @@ namespace ModelIO {
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 10, 12, message: "Use 'SetVoxels (MDLMesh, int, float)' instead.")]
-#if NET
 		[NoiOS]
 #if XAMCORE_5_0
 		[NoTV]
@@ -4082,32 +3867,17 @@ namespace ModelIO {
 		[Obsoleted (PlatformName.TvOS, 10, 0, message: "Use 'SetVoxels (MDLMesh, int, float)' instead.")]
 		[NoMacCatalyst]
 #endif
-#else
-		[Obsoleted (PlatformName.iOS, 10, 0, message: "Use 'SetVoxels (MDLMesh, int, float)' instead.")]
-#endif
 		[Export ("setVoxelsForMesh:divisions:interiorNBWidth:exteriorNBWidth:patchRadius:")]
 		void SetVoxels (MDLMesh mesh, int divisions, float interiorNBWidth, float exteriorNBWidth, float patchRadius);
 
-#if !NET
-		[Obsolete ("Use 'GetVoxels (MDLVoxelIndexExtent2)' instead.")]
-#else
 		/// <param name="withinExtent">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
-#endif
 		[Export ("voxelsWithinExtent:")]
 		[return: NullAllowed]
 		NSData GetVoxels (MDLVoxelIndexExtent withinExtent);
-
-#if !NET
-		[Sealed]
-		[Export ("voxelsWithinExtent:")]
-		[return: NullAllowed]
-		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
-		NSData GetVoxels (MDLVoxelIndexExtent2 withinExtent);
-#endif
 
 		/// <summary>Returns a list of all the voxel indices as an array of 4-component integer arrays.</summary>
 		///         <returns>To be added.</returns>
@@ -4152,28 +3922,14 @@ namespace ModelIO {
 		[Export ("count")]
 		nuint Count { get; }
 
-#if !NET
-		[Obsolete ("Use 'VoxelIndexExtent2' instead.")]
-#endif
 		/// <summary>Gets the allowable ranges for the four components of a voxel index.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("voxelIndexExtent")]
 		MDLVoxelIndexExtent VoxelIndexExtent {
-#if NET
-			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
-#endif
-			get;
-		}
-
-#if !NET
-		[Export ("voxelIndexExtent")]
-		[Sealed]
-		MDLVoxelIndexExtent2 VoxelIndexExtent2 {
 			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 			get;
 		}
-#endif
 
 		/// <summary>Gets the smallest box that contains all the voxels.</summary>
 		///         <value>To be added.</value>

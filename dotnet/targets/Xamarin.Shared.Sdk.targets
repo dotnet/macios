@@ -560,6 +560,12 @@
 			<_IsNativeAOTFeature Condition="'$(_XamarinRuntime)' == 'NativeAOT'">true</_IsNativeAOTFeature>
 			<_IsNativeAOTFeature Condition="'$(_XamarinRuntime)' != 'NativeAOT'">false</_IsNativeAOTFeature>
 
+			<!-- Set CFNetworkHandler and NSUrlSessionHandler values -->
+			<_IsCFNetworkHandlerFeature Condition="'$(UseNativeHttpHandler)' == 'true' And '$(MtouchHttpClientHandler)' == 'CFNetworkHandler'">true</_IsCFNetworkHandlerFeature>
+			<_IsCFNetworkHandlerFeature Condition="'$(_IsCFNetworkHandlerFeature)' == ''">false</_IsCFNetworkHandlerFeature>
+			<_IsNSUrlSessionHandlerFeature Condition="'$(UseNativeHttpHandler)' == 'true' And '$(MtouchHttpClientHandler)' == 'NSUrlSessionHandler'">true</_IsNSUrlSessionHandlerFeature>
+			<_IsNSUrlSessionHandlerFeature Condition="'$(_IsNSUrlSessionHandlerFeature)' == ''">false</_IsNSUrlSessionHandlerFeature>
+
 			<!-- Set default ValidateObjectPointers value -->
 			<_ValidateObjectPointers Condition="'$(_ValidateObjectPointers)' == ''">false</_ValidateObjectPointers>
 
@@ -677,6 +683,10 @@
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.IsManagedStaticRegistrar" Value="$(_IsManagedStaticRegistrarFeature)" Trim="true" />
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.IsNativeAOT" Value="$(_IsNativeAOTFeature)" Trim="true" />
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Class.ValidateObjectPointers" Value="$(_ValidateObjectPointers)" Trim="true" />
+
+			<!-- Configure System.Net.Http Native Handlers -->
+			<RuntimeHostConfigurationOption Include="System.Net.Http.NativeHandler.UseNSUrlSessionHandler" Value="$(_IsNSUrlSessionHandlerFeature)" Trim="true" />
+			<RuntimeHostConfigurationOption Include="System.Net.Http.NativeHandler.UseCFNetworkHandler" Value="$(_IsCFNetworkHandlerFeature)" Trim="true" />
 
 			<!-- Mark all assemblies to be copied if we're not linking any assemblies -->
 			<ResolvedFileToPublish

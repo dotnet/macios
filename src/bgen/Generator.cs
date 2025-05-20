@@ -1597,11 +1597,6 @@ public partial class Generator : IMemberGatherer {
 			print ("//\n// This class bridges native block invocations that call into C#\n//");
 			PrintExperimentalAttribute (ti.Type);
 			print ("static internal class {0} {{", ti.StaticName); indent++;
-			// it can't be conditional without fixing https://github.com/mono/linker/issues/516
-			// but we have a workaround in place because we can't fix old, binary bindings so...
-			// print ("[Preserve (Conditional=true)]");
-			// For .NET we fix it using the DynamicDependency attribute below
-			print ("[Preserve (Conditional = true)]");
 			print ("[UnmanagedCallersOnly]");
 			print ("[UserDelegateType (typeof ({0}))]", ti.UserDelegate);
 			print ("internal static unsafe {0} Invoke ({1}) {{", ti.ReturnType, ti.Parameters);
@@ -1674,7 +1669,6 @@ public partial class Generator : IMemberGatherer {
 			print ("invoker = block->GetDelegateForBlock<{0}> ();", ti.DelegateName);
 			indent--; print ("}");
 			print ("");
-			print ("[Preserve (Conditional=true)]");
 			print_generated_code ();
 			print ("public unsafe static {0}? Create (IntPtr block)\n{{", ti.UserDelegate); indent++;
 			print ("if (block == IntPtr.Zero)"); indent++;
@@ -1812,13 +1806,11 @@ public partial class Generator : IMemberGatherer {
 				if (BindingTouch.SupportsXmlDocumentation) {
 					print ($"/// <summary>Creates a new <see cref=\"{typeName}\" /> with default (empty) values.</summary>");
 				}
-				print ("[Preserve (Conditional = true)]");
 				print ("public {0} () : base (new NSMutableDictionary ()) {{}}\n", typeName);
 				if (BindingTouch.SupportsXmlDocumentation) {
 					print ($"/// <summary>Creates a new <see cref=\"{typeName}\" /> from the values that are specified in <paramref name=\"dictionary\" />.</summary>");
 					print ($"/// <param name=\"dictionary\">The dictionary to use to populate the properties of this type.</param>");
 				}
-				print ("[Preserve (Conditional = true)]");
 				print ("public {0} (NSDictionary? dictionary) : base (dictionary) {{}}\n", typeName);
 
 				foreach (var pi in dictType.GatherProperties (this)) {
@@ -4986,6 +4978,7 @@ public partial class Generator : IMemberGatherer {
 			}
 		}
 
+		var dynamicDependencies = new List<string> ();
 		if (instanceMethods.Any () || instanceProperties.Any ()) {
 			// Tell the trimmer to not remove any instance method/property if the interface itself isn't trimmed away.
 			// These members are required for the registrar to determine if a particular implementing method
@@ -4995,11 +4988,14 @@ public partial class Generator : IMemberGatherer {
 			// Ref: https://github.com/dotnet/runtime/issues/37352#issuecomment-644385807
 			var docIds = instanceMethods
 				.Select (mi => DocumentationManager.GetDocId (mi, includeDeclaringType: false, alwaysIncludeParenthesis: true))
-				.Concat (instanceProperties.Select (v => v.Name))
-				.OrderBy (name => name);
-			foreach (var docId in docIds) {
+				.Concat (instanceProperties.Select (v => v.Name));
+			dynamicDependencies.AddRange (docIds);
+		}
+		// Tell the trimmer to not remove the wrapper type if the interface itself isn't trimmed away
+		dynamicDependencies.Add ($"T:{(type.Namespace is not null ? type.Namespace + "." : "")}{TypeName}Wrapper");
+		if (dynamicDependencies.Count > 0) {
+			foreach (var docId in dynamicDependencies.OrderBy (v => v))
 				print ($"[DynamicDependencyAttribute (\"{docId}\")]");
-			}
 			print ("[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]");
 			print ($"static I{TypeName} ()");
 			print ("{");
@@ -5112,7 +5108,6 @@ public partial class Generator : IMemberGatherer {
 		indent++;
 		// ctor (IntPtr, bool)
 		PrintExperimentalAttribute (type);
-		print ("[Preserve (Conditional = true)]");
 		print ("public {0}Wrapper ({1} handle, bool owns)", TypeName, NativeHandleType);
 		print ("\t: base (handle, owns)");
 		print ("{");
@@ -5329,6 +5324,9 @@ public partial class Generator : IMemberGatherer {
 		var p = AttributeManager.GetCustomAttribute<PreserveAttribute> (mi);
 		if (p is null)
 			return;
+
+		if (!BindThirdPartyLibrary)
+			throw new InvalidOperationException ($"Found [Preserve] on {FormatProvider (mi)}: [Preserve] is deprecated, so don't use it.");
 
 		if (p.AllMembers)
 			print ("[Preserve (AllMembers = true)]");
@@ -6522,7 +6520,6 @@ public partial class Generator : IMemberGatherer {
 						} else
 							print ("internal {0}? {1};", Nomenclator.GetDelegateName (mi), miname);
 
-						print ("[Preserve (Conditional = true)]");
 						if (isProtocolEventBacked)
 							print ("[Export (\"{0}\")]", FindSelector (dtype, mi));
 
@@ -6629,7 +6626,6 @@ public partial class Generator : IMemberGatherer {
 							selRespondsToSelector = "selRespondsToSelector";
 						}
 
-						print ("[Preserve (Conditional = true)]");
 						print ("public override bool RespondsToSelector (Selector? sel)");
 						print ("{");
 						++indent;

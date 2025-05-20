@@ -7394,8 +7394,6 @@ namespace Foundation {
 		[Export ("fireDate", ArgumentSemantic.Copy)]
 		NSDate FireDate { get; set; }
 
-		// Note: preserving this member allows us to re-enable the `Optimizable` binding flag
-		[Preserve (Conditional = true)]
 		[Export ("invalidate")]
 		void Invalidate ();
 

@@ -272,14 +272,6 @@ steps:
   env:
     XMA_PASSWORD: $(XMA.Password)
 
-- pwsh: $(Build.SourcesDirectory)\$(BUILD_REPOSITORY_TITLE)\tools\devops\automation\scripts\fetch-remote-binlogs.ps1
-  displayName: 'Fetch remote binlogs'
-  timeoutInMinutes: 5
-  condition: always()
-  continueOnError: true
-  env:
-    XMA_PASSWORD: $(XMA.Password)
-
 - pwsh: |
     Import-Module $Env:SYSTEM_DEFAULTWORKINGDIRECTORY\\$Env:BUILD_REPOSITORY_TITLE\\tools\\devops\\automation\\scripts\\MaciosCI.psd1
     $configFile = "$(Build.SourcesDirectory)\\artifacts\\${{ parameters.uploadPrefix }}build-configuration\\configuration.json"
@@ -299,6 +291,14 @@ steps:
   displayName: 'Fail if test failures'
   timeoutInMinutes: 1
   condition: eq(variables['Agent.JobStatus'], 'SucceededWithIssues')
+
+- pwsh: $(Build.SourcesDirectory)\$(BUILD_REPOSITORY_TITLE)\tools\devops\automation\scripts\fetch-remote-binlogs.ps1
+  displayName: 'Fetch remote binlogs'
+  timeoutInMinutes: 5
+  condition: always()
+  continueOnError: true
+  env:
+    XMA_PASSWORD: $(XMA.Password)
 
 # Copy the binlogs to the html report
 - pwsh: |

@@ -2151,6 +2151,23 @@
 		<Error Text=".NET for $(_PlatformName) does not support server garbage collection. Please don't set the 'ServerGarbageCollection' property." />
 	</Target>
 
+	<Target Name="_ValidateXcodeVersion"
+		AfterTargets="_DetectSdkLocations"
+		Condition="'$(ValidateXcodeVersion)' != 'false' And '$(_CanOutputAppBundle)' == 'true' And '$(IsMacEnabled)' == 'true'">
+		<!-- we only want to validate major.minor, not any revision or build numbers -->
+		<PropertyGroup>
+			<_XcodeVersionMajorMinorOnly>$([System.Version]::Parse('$(_XcodeVersion)').Major).$([System.Version]::Parse('$(_XcodeVersion)').Minor)</_XcodeVersionMajorMinorOnly>
+			<_RecommendedXcodeVersionMajorMinorOnly>$([System.Version]::Parse('$(_RecommendedXcodeVersion)').Major).$([System.Version]::Parse('$(_RecommendedXcodeVersion)').Minor)</_RecommendedXcodeVersionMajorMinorOnly>
+			<_IsMatchingXcode Condition="'$(_RecommendedXcodeVersionMajorMinorOnly)' == '$(_XcodeVersionMajorMinorOnly)'">true</_IsMatchingXcode>
+		</PropertyGroup>
+		<MacDevMessage
+			Error="true"
+			ResourceName="E0191"
+			FormatArguments="Microsoft.$(_PlatformName);$(_PlatformName);$(_ShortPackageVersion);$(_RecommendedXcodeVersion);$(_XcodeVersion)"
+			Condition="'$(_IsMatchingXcode)' != 'true'"
+		/>
+	</Target>
+
 	<!-- This target can be removed in .NET 9 (when we stop supporting the compat logic to make the invalid TPV just a warning instead of an error) -->
 	<Target Name="_XamarinValidateTargetPlatformVersion"
 		BeforeTargets="Build;ResolvedFrameworkReference;ResolveRuntimePackAssets"

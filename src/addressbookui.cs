@@ -16,10 +16,6 @@ using UIKit;
 using AddressBook;
 using System;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace AddressBookUI {
 
 	/// <summary>A view controller used to create a new contact.</summary>

@@ -305,7 +305,7 @@ namespace Cecil.Tests {
 					"MediaPlayer.MPMediaItem.GetObject (Foundation.NSObject)",
 					"MediaPlayer.MPMediaItem.PropertyPersistentID",
 
-					// Despite what headers say, NSAttributedString only implements NSItemProviderReading and NSItemProviderWriting on iOS (headers say tvOS and watchOS as well).
+					// Despite what headers say, NSAttributedString only implements NSItemProviderReading and NSItemProviderWriting on iOS (headers say tvOS as well).
 					// Ref: https://github.com/dotnet/macios/pull/17306
 					"Foundation.NSAttributedString.GetItemProviderVisibilityForTypeIdentifier (System.String)",
 					"Foundation.NSAttributedString.GetObject (Foundation.NSData, System.String, Foundation.NSError&)",
@@ -568,8 +568,6 @@ namespace Cecil.Tests {
 					return "macos";
 				case string s when full.StartsWith ("maccatalyst", StringComparison.Ordinal):
 					return "maccatalyst";
-				case string s when full.StartsWith ("watchos", StringComparison.Ordinal):
-					return null; // WatchOS is ignored for comparision
 				default:
 					throw new System.NotImplementedException ($"Unknown platform kind: {full}");
 				}

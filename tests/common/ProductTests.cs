@@ -41,8 +41,6 @@ namespace Xamarin.Tests {
 		[TestCase (Profile.macOSMobile, MachO.LoadCommands.MinMacOSX, MachO.Platform.MacOS)]
 		[TestCase (Profile.iOS, MachO.LoadCommands.MiniPhoneOS, MachO.Platform.IOSSimulator, false)]
 		[TestCase (Profile.iOS, MachO.LoadCommands.MiniPhoneOS, MachO.Platform.IOS, true)]
-		[TestCase (Profile.watchOS, MachO.LoadCommands.MinwatchOS, MachO.Platform.WatchOSSimulator, false)]
-		[TestCase (Profile.watchOS, MachO.LoadCommands.MinwatchOS, MachO.Platform.WatchOS, true)]
 		[TestCase (Profile.tvOS, MachO.LoadCommands.MintvOS, MachO.Platform.TvOSSimulator, false)]
 		[TestCase (Profile.tvOS, MachO.LoadCommands.MintvOS, MachO.Platform.TvOS, true)]
 		public void MinOSVersion (Profile profile, MachO.LoadCommands load_command, MachO.Platform platform, bool device = false)
@@ -93,9 +91,6 @@ namespace Xamarin.Tests {
 							case MachO.Platform.TvOSSimulator:
 								alternativePlatform = MachO.Platform.TvOS;
 								break;
-							case MachO.Platform.WatchOSSimulator:
-								alternativePlatform = MachO.Platform.WatchOS;
-								break;
 							}
 							Assert.That (buildver.Platform, Is.EqualTo (platform).Or.EqualTo (alternativePlatform), $"Unexpected build version command in {machoFile} ({slice.Filename})");
 							lc_min_version = buildver.MinOS;
@@ -129,15 +124,6 @@ namespace Xamarin.Tests {
 							alternate_version = new Version (9, 0, 0); // some libs from mono are still tvOS 9.0
 							mono_native_compat_version = new Version (9, 0, 0);
 							mono_native_unified_version = new Version (10, 0, 0);
-							break;
-						case MachO.LoadCommands.MinwatchOS:
-							version = SdkVersions.MinWatchOSVersion;
-							alternate_version = new Version (5, 1, 0); // arm64_32 has min OS 5.1
-							alternate_version2 = new Version (2, 0, 0); // some libs from mono are still watchOS 2.0
-							mono_native_compat_version = new Version (2, 0, 0);
-							mono_native_unified_version = new Version (5, 0, 0);
-							if (device)
-								alternate_mono_native_unified_version = new Version (5, 1, 0); // armv7k has 5.0, arm64_32 has 5.1
 							break;
 						default:
 							throw new NotImplementedException (load_command.ToString ());

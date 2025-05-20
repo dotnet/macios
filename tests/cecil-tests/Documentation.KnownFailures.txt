@@ -26193,6 +26193,8 @@ T:Foundation.NSBindingSelectionMarker
 T:Foundation.NSCollectionChangeType
 T:Foundation.NSConnectionDelegate
 T:Foundation.NSDataCompressionAlgorithm
+T:Foundation.NSDictionaryEnumerator
+T:Foundation.NSDictionaryKeyFilter
 T:Foundation.NSExceptionError
 T:Foundation.NSExpressionCallbackHandler
 T:Foundation.NSFileManager_NSUserInformation

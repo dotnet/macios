@@ -74,7 +74,6 @@ ADDRESSBOOKUI_SOURCES = \
 # AdSupport
 
 ADSUPPORT_SOURCES = \
-	AdSupport/ASCompat.cs \
 
 # AppKit
 
@@ -161,7 +160,6 @@ APPKIT_SOURCES = \
 # ARKit
 
 ARKIT_SOURCES = \
-	ARKit/ARCompat.cs \
 	ARKit/ARFaceGeometry.cs \
 	ARKit/ARPlaneGeometry.cs \
 	ARKit/ARPointCloud.cs \

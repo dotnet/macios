@@ -12,7 +12,6 @@ namespace GeneratorTests {
 	public class PlatformNameExtensions {
 
 		[TestCase (PlatformName.iOS, "UIApplication")]
-		[TestCase (PlatformName.WatchOS, "UIApplication")]
 		[TestCase (PlatformName.TvOS, "UIApplication")]
 		[TestCase (PlatformName.MacCatalyst, "UIApplication")]
 		[TestCase (PlatformName.MacOSX, "NSApplication")]
@@ -23,7 +22,6 @@ namespace GeneratorTests {
 		}
 
 		[TestCase (PlatformName.iOS, "CoreImage")]
-		[TestCase (PlatformName.WatchOS, "CoreImage")]
 		[TestCase (PlatformName.TvOS, "CoreImage")]
 		[TestCase (PlatformName.MacCatalyst, "CoreImage")]
 		[TestCase (PlatformName.MacOSX, "Quartz")]
@@ -31,7 +29,6 @@ namespace GeneratorTests {
 			=> Assert.AreEqual (expected, platformName.GetCoreImageMap ());
 
 		[TestCase (PlatformName.iOS, "MobileCoreServices")]
-		[TestCase (PlatformName.WatchOS, "MobileCoreServices")]
 		[TestCase (PlatformName.TvOS, "MobileCoreServices")]
 		[TestCase (PlatformName.MacCatalyst, "MobileCoreServices")]
 		[TestCase (PlatformName.MacOSX, "CoreServices")]
@@ -56,8 +53,6 @@ namespace GeneratorTests {
 		[TestCase (PlatformName.iOS, "MD_MTOUCH_SDK_ROOT", new [] { "lib", "mono", "Xamarin.iOS", "Xamarin.iOS.dll" }, "/Library/Frameworks/Xamarin.iOS.framework/Versions/Current/lib/mono/Xamarin.iOS/Xamarin.iOS.dll")]
 		[TestCase (PlatformName.TvOS, "MD_MTOUCH_SDK_ROOT", new [] { "lib/mono/Xamarin.TVOS/Xamarin.TVOS.dll" }, "/Library/Frameworks/Xamarin.iOS.framework/Versions/Current/lib/mono/Xamarin.TVOS/Xamarin.TVOS.dll")]
 		[TestCase (PlatformName.TvOS, "MD_MTOUCH_SDK_ROOT", new [] { "lib", "mono", "Xamarin.TVOS", "Xamarin.TVOS.dll" }, "/Library/Frameworks/Xamarin.iOS.framework/Versions/Current/lib/mono/Xamarin.TVOS/Xamarin.TVOS.dll")]
-		[TestCase (PlatformName.WatchOS, "MD_MTOUCH_SDK_ROOT", new [] { "lib/mono/Xamarin.WatchOS/Xamarin.WatchOS.dll" }, "/Library/Frameworks/Xamarin.iOS.framework/Versions/Current/lib/mono/Xamarin.WatchOS/Xamarin.WatchOS.dll")]
-		[TestCase (PlatformName.WatchOS, "MD_MTOUCH_SDK_ROOT", new [] { "lib", "mono", "Xamarin.WatchOS", "Xamarin.WatchOS.dll" }, "/Library/Frameworks/Xamarin.iOS.framework/Versions/Current/lib/mono/Xamarin.WatchOS/Xamarin.WatchOS.dll")]
 		[TestCase (PlatformName.MacCatalyst, "MD_MTOUCH_SDK_ROOT", new [] { "lib/mono/Xamarin.MacCatalyst/Xamarin.MacCatalyst.dll" }, "/Library/Frameworks/Xamarin.iOS.framework/Versions/Current/lib/mono/Xamarin.MacCatalyst/Xamarin.MacCatalyst.dll")]
 		[TestCase (PlatformName.MacCatalyst, "MD_MTOUCH_SDK_ROOT", new [] { "lib", "mono", "Xamarin.MacCatalyst", "Xamarin.MacCatalyst.dll" }, "/Library/Frameworks/Xamarin.iOS.framework/Versions/Current/lib/mono/Xamarin.MacCatalyst/Xamarin.MacCatalyst.dll")]
 		public void GetPath (PlatformName platformName, string envVar, string [] paths, string expectedResult)

@@ -36,7 +36,7 @@ The sample code is to support a new type for NSValue, the exact code locations w
 
 7. Finally run the following tests (at least)
 
-* All variations of monotouch-test (iOS/watchOS/tvOS) on both simulator and device.
+* All variations of monotouch-test (iOS/tvOS) on both simulator and device.
 * link all on both simulator and device.
 
 

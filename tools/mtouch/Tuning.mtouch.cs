@@ -28,7 +28,6 @@ namespace MonoTouch.Tuner {
 		public IList<string> ExtraDefinitions { get; set; }
 		public bool DebugBuild { get; set; }
 		public bool DumpDependencies { get; set; }
-		internal RuntimeOptions RuntimeOptions { get; set; }
 		public List<string> WarnOnTypeRef { get; set; }
 		public bool RemoveRejectedTypes { get; set; }
 

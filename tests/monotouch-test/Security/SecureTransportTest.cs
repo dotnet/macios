@@ -181,7 +181,6 @@ namespace MonoTouchFixtures.Security {
 		}
 #endif
 
-		// This test uses sockets (TcpClient), which doesn't work on watchOS.
 		[Test]
 		public void Tls12 ()
 		{

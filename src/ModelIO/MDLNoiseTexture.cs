@@ -1,4 +1,5 @@
 using System;
+using Foundation;
 using ObjCRuntime;
 
 using Vector2i = global::CoreGraphics.NVector2i;
@@ -18,17 +19,18 @@ namespace ModelIO {
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
 		public MDLNoiseTexture (float input, string name, Vector2i textureDimensions, MDLTextureChannelEncoding channelEncoding, MDLNoiseTextureType type)
+			: base (NSObjectFlag.Empty)
 		{
 			// two different `init*` would share the same C# signature
 			switch (type) {
 			case MDLNoiseTextureType.Vector:
-				Handle = InitVectorNoiseWithSmoothness (input, name, textureDimensions, channelEncoding);
+				InitializeHandle (_InitVectorNoiseWithSmoothness (input, name, textureDimensions, channelEncoding), "initVectorNoiseWithSmoothness:name:textureDimensions:channelEncoding:");
 				break;
 			case MDLNoiseTextureType.Cellular:
-				Handle = InitCellularNoiseWithFrequency (input, name, textureDimensions, channelEncoding);
+				InitializeHandle (_InitCellularNoiseWithFrequency (input, name, textureDimensions, channelEncoding), "initCellularNoiseWithFrequency:name:textureDimensions:channelEncoding:");
 				break;
 			default:
-				throw new ArgumentException ("type");
+				throw new ArgumentException (nameof (type));
 			}
 		}
 	}

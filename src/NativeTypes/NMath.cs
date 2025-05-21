@@ -13,8 +13,7 @@ using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.Versioning;
 
-namespace ObjCRuntime
-{
+namespace ObjCRuntime {
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

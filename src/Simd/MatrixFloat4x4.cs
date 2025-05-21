@@ -20,8 +20,7 @@ using ObjCRuntime;
 
 using VectorFloat4 = global::System.Numerics.Vector4;
 
-namespace CoreGraphics
-{
+namespace CoreGraphics {
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

@@ -18,8 +18,7 @@ using System.Runtime.Versioning;
 using VectorFloat4 = global::System.Numerics.Vector4;
 
 // This type does not come from the CoreGraphics framework; it's defined in /usr/include/simd/matrix_types.h
-namespace CoreGraphics
-{
+namespace CoreGraphics {
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

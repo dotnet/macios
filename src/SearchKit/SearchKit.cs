@@ -228,8 +228,7 @@ namespace SearchKit {
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
-	public class SKIndex : DisposableObject
-	{
+	public class SKIndex : DisposableObject {
 		[DllImport (Constants.SearchKitLibrary)]
 		extern static IntPtr SKIndexCreateWithURL (IntPtr url, IntPtr str, SKIndexType type, IntPtr dict);
 		[DllImport (Constants.SearchKitLibrary)]

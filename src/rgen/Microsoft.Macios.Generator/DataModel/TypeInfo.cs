@@ -31,7 +31,7 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 			// there are few things to consider when setting the name of the class, first we need to
 			// to make the diff between a generic class and a non generic class
 			var nonGenericName = fullyQualifiedName.Contains ('<')
-				? fullyQualifiedName.Substring (0, fullyQualifiedName.IndexOf('<')) 
+				? fullyQualifiedName.Substring (0, fullyQualifiedName.IndexOf ('<'))
 				: fullyQualifiedName;
 			var index = nonGenericName.LastIndexOf ('.');
 			Name = index != -1
@@ -42,7 +42,7 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 				Namespace = [];
 			else
 				// remove the name + 1 for the dot
-				Namespace = [..nonGenericName.Remove (nonGenericName.Length - (Name.Length + 1)).Split ('.')];
+				Namespace = [.. nonGenericName.Remove (nonGenericName.Length - (Name.Length + 1)).Split ('.')];
 		}
 	}
 

@@ -442,7 +442,7 @@ namespace NS {
 		// ensure that the first parameter is a pointer
 		Assert.True (changes.Value.Parameters [0].Type.IsPointer);
 	}
-	
+
 	[Theory]
 	[AllSupportedPlatforms]
 	void TypeInfoGenericName (ApplePlatform platform)
@@ -486,7 +486,7 @@ namespace NS {
 		Assert.Equal ("System.Collections.Generic.List<NS.ExampleClass>", changes.Value.Parameters [0].Type.FullyQualifiedName);
 		Assert.Equal ("System.Collections.Generic", string.Join ('.', changes.Value.Parameters [0].Type.Namespace));
 	}
-	
+
 	[Theory]
 	[AllSupportedPlatforms]
 	void TypeInfoNonGenericNoNamespace (ApplePlatform platform)
@@ -523,7 +523,7 @@ namespace NS {
 		Assert.Equal ("int", changes.Value.Parameters [0].Type.FullyQualifiedName);
 		Assert.Empty (changes.Value.Parameters [0].Type.Namespace);
 	}
-	
+
 	[Theory]
 	[AllSupportedPlatforms]
 	void TypeInfoGeneralCase (ApplePlatform platform)

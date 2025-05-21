@@ -3243,6 +3243,7 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.MacCatalyst, "NSUrlSessionHandler")]
 		[TestCase (ApplePlatform.iOS, "CFNetworkHandler")]
 		[TestCase (ApplePlatform.TVOS, "")]
+		[TestCase (ApplePlatform.MacCatalyst, "Invalid")]
 		public void HttpClientHandlerFeatureTrimmedAway (ApplePlatform platform, string handler)
 		{
 			var project = "ApiTestApp";
@@ -3259,6 +3260,12 @@ namespace Xamarin.Tests {
 				properties ["MtouchHttpClientHandler"] = handler;
 			properties ["ExcludeTouchUnitReference"] = "true"; // speed things up a bit
 			properties ["ExcludeNUnitLiteReference"] = "true"; // speed things up a bit
+			if (handler == "Invalid") {
+				var rv2 = DotNet.AssertBuildFailure (project_path, properties);
+				var errors = BinLog.GetBuildLogErrors (rv2.BinLogPath).ToArray ();
+				AssertErrorMessages (errors, $"Invalid value for 'MtouchHttpClientHandler' ('Invalid', must be either 'NSUrlSessionHandler' or 'CFNetworkHandler' (or not set at all).");
+				return;
+			}
 			var rv = DotNet.AssertBuild (project_path, properties);
 			var platformAssembly = Path.Combine (appPath, GetRelativeAssemblyDirectory (platform), $"Microsoft.{platform.AsString ()}.dll");
 			var ad = AssemblyDefinition.ReadAssembly (platformAssembly, new ReaderParameters { ReadingMode = ReadingMode.Deferred });

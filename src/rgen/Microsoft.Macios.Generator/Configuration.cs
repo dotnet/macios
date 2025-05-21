@@ -4,7 +4,7 @@
 namespace Microsoft.Macios.Generator;
 
 public static class GeneratorConfiguration {
-	
+
 	/// <summary>
 	/// Use the global namespace for the generated code.
 	/// </summary>

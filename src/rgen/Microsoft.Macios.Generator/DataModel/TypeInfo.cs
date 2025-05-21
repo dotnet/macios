@@ -41,7 +41,7 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	/// Type name.
 	/// </summary>
 	public string Name { get; private init; } = string.Empty;
-	
+
 	/// <summary>
 	/// Type name.
 	/// </summary>

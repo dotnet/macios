@@ -29,10 +29,6 @@ using UIKit;
 using MonoTouch.Dialog;
 
 namespace MonoTouch.NUnit.UI {
-
-#if !NET
-	[CLSCompliant (false)]
-#endif
 	public partial class TouchViewController : DialogViewController {
 
 		public TouchViewController (RootElement root) : base (root, true)

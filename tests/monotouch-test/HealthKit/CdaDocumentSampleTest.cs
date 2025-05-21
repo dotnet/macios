@@ -54,11 +54,7 @@ namespace MonoTouchFixtures.HealthKit {
 #endif
 
 				if (throwsException) {
-#if NET || MONOMAC
 					var ex = Assert.Throws<ObjCException> (action, "Exception");
-#else
-					var ex = Assert.Throws<MonoTouchException> (action, "Exception");
-#endif
 
 					var possibleMessages = new string [] {
 						"startDate.*and endDate.*exceed the maximum allowed duration for this sample type",

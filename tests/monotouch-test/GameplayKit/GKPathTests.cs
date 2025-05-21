@@ -13,11 +13,7 @@ using System;
 using Foundation;
 using GameplayKit;
 using NUnit.Framework;
-#if NET
 using System.Numerics;
-#else
-using OpenTK;
-#endif
 
 namespace MonoTouchFixtures.GamePlayKit {
 

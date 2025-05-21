@@ -620,6 +620,31 @@ static partial class BindingSyntaxFactory {
 	}
 
 	/// <summary>
+	/// Helper method to get the parameters of the trampoline delegate and its invoke implementation.
+	/// </summary>
+	/// <param name="delegateTypeInfo">The delegate type info.</param>
+	/// <returns>The parameter list for the delegate to be used in the trampoline.</returns>
+	static ParameterListSyntax GetBlockDelegateParameters (in TypeInfo delegateTypeInfo)
+	{
+		// build the arguments for the delegate, but add a IntPtr parameter at the start of the list 
+		var parameterBucket = ImmutableArray.CreateBuilder<ParameterSyntax> (delegateTypeInfo.Delegate!.Parameters.Length + 1);
+		// block parameter needed for the trampoline
+		parameterBucket.Add (
+			Parameter (Identifier (Nomenclator.GetTrampolineBlockParameterName (delegateTypeInfo.Delegate!.Parameters)))
+				.WithType (IntPtr));
+		// calculate the rest of the parameters  
+		foreach (var parameterInfo in delegateTypeInfo.Delegate!.Parameters) {
+			// build the parameter
+			parameterBucket.Add (GetTrampolineInvokeParameter (parameterInfo));
+		}
+
+		var parametersSyntax = ParameterList (
+			SeparatedList<ParameterSyntax> (
+				parameterBucket.ToImmutableArray ().ToSyntaxNodeOrTokenArray ())).NormalizeWhitespace ();
+		return parametersSyntax;
+	}
+
+	/// <summary>
 	/// Return the delegate declaration for the trampoline delegate. The trampoline delegate is a delegate that
 	/// takes as a first parameter a IntPtr that represents the block to be called. The rest of the parameters are
 	/// the same as the original delegate.
@@ -633,21 +658,7 @@ static partial class BindingSyntaxFactory {
 		var modifiers = TokenList (Token (SyntaxKind.UnsafeKeyword), Token (SyntaxKind.InternalKeyword));
 		delegateName = Nomenclator.GetTrampolineClassName (delegateTypeInfo.Name, Nomenclator.TrampolineClassType.DelegateType);
 
-		// build the arguments for the delegate, but add a IntPtr parameter at the start of the list 
-		var parameterBucket = ImmutableArray.CreateBuilder<ParameterSyntax> (delegateTypeInfo.Delegate!.Parameters.Length + 1);
-		// block parameter needed for the trampoline
-		parameterBucket.Add (
-			Parameter (Identifier (Nomenclator.GetTrampolineBlockParameterName ()))
-				.WithType (IntPtr));
-		// calculate the rest of the parameters  
-		foreach (var parameterInfo in delegateTypeInfo.Delegate!.Parameters) {
-			// build the parameter
-			parameterBucket.Add (GetTrampolineInvokeParameter (parameterInfo));
-		}
-
-		var parametersSyntax = ParameterList (
-			SeparatedList<ParameterSyntax> (
-			parameterBucket.ToImmutableArray ().ToSyntaxNodeOrTokenArray ())).NormalizeWhitespace ();
+		var parametersSyntax = GetBlockDelegateParameters (delegateTypeInfo);
 		// delegate declaration
 		var declaration = DelegateDeclaration (
 				GetLowLevelType (delegateTypeInfo.Delegate!.ReturnType), // return the low level type, not the manged version
@@ -656,5 +667,27 @@ static partial class BindingSyntaxFactory {
 			.WithParameterList (parametersSyntax.WithLeadingTrivia (Space));
 
 		return declaration;
+	}
+
+	/// <summary>
+	/// Returns the method declaration for the trampoline invoke method. The trampoline invoke method, this is the
+	/// method that will be invoked by the native code.
+	/// </summary>
+	/// <param name="delegateTypeInfo">The delegate whose signature we want to declare.</param>
+	/// <returns>The invoke member delcaration.</returns>
+	internal static MemberDeclarationSyntax GetTrampolineInvokeSignature (in TypeInfo delegateTypeInfo)
+	{
+		var modifiers = TokenList (
+			Token (SyntaxKind.InternalKeyword),
+			Token (SyntaxKind.StaticKeyword),
+			Token (SyntaxKind.UnsafeKeyword));
+		var parametersSyntax = GetBlockDelegateParameters (delegateTypeInfo);
+
+		var method = MethodDeclaration (
+				GetLowLevelType (delegateTypeInfo.Delegate!.ReturnType), // return the low level type, not the manged version
+				Identifier (Nomenclator.GetTrampolineInvokeMethodName ()))
+			.WithModifiers (modifiers).NormalizeWhitespace ()
+			.WithParameterList (parametersSyntax.WithLeadingTrivia (Space));
+		return method;
 	}
 }

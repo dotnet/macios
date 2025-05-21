@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.Macios.Generator.DataModel;
 using TypeInfo = Microsoft.Macios.Generator.DataModel.TypeInfo;
@@ -170,7 +171,33 @@ class Nomenclator {
 	/// <summary>
 	/// Return the name of the trampoline block parameter. This is the name of the parameter that will be containing the
 	/// IntPtr to the trampoline block.
+	///
+	/// The default value to used is 'block' but we need to ensure that the name is not already used by
+	/// the delegate, so we will use block_ptr_ + the name of the delegate if it is already used.
 	/// </summary>
-	/// <returns>The name to be used in the delegate.</returns>
-	public static string GetTrampolineBlockParameterName () => "block";
+	/// <returns>The name to be used in the delegate for the block pointer.</returns>
+	public static string GetTrampolineBlockParameterName (in ImmutableArray<DelegateParameter> parameters)
+	{
+		// the default value of the block pointer is block, yet we need to ensure that the name is not
+		// already used by the delegate, so we will use block_ptr_ + the name of the delegate
+		var parameterNames = new HashSet<string> (StringComparer.InvariantCulture);
+		foreach (var parameter in parameters) {
+			parameterNames.Add (parameter.Name);
+		}
+		// default value
+		if (parameterNames.Add ("block_ptr"))
+			return "block_ptr";
+		// perform a loop until we find a name that is not used	
+		for (var i = 0; ; i++) {
+			var name = $"block_ptr_{i}";
+			if (parameterNames.Add (name))
+				return name;
+		}
+	}
+
+	/// <summary>
+	/// Return the name of the invoke method of the trampoline.
+	/// </summary>
+	/// <returns>The method name to be used.</returns>
+	public static string GetTrampolineInvokeMethodName () => "Invoke";
 }

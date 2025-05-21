@@ -141,18 +141,6 @@ namespace CoreAnimation {
 			GC.KeepAlive (value);
 		}
 
-#if MONOMAC && !NET
-		[Obsolete ("Use 'AutoresizingMask' instead.")]
-		public virtual CAAutoresizingMask AutoresizinMask { 
-			get {
-				return AutoresizingMask;
-			}
-			set {
-				AutoresizingMask = value;
-			}
-		}
-#endif
-#if NET
 		/// <summary>Gets the contents format for the layer.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -160,7 +148,6 @@ namespace CoreAnimation {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public CAContentsFormat ContentsFormat {
 			get { return CAContentsFormatExtensions.GetValue (_ContentsFormat); }
 			set { _ContentsFormat = value.GetConstant ()!; }

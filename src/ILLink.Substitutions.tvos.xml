@@ -12,6 +12,10 @@
       <method signature="System.Int32 GetRuntimeArch()" body="stub" feature="ObjCRuntime.Runtime.Arch.IsSimulator" featurevalue="true" value="1" />
       <method signature="System.Boolean get_IsManagedStaticRegistrar()" body="stub" feature="ObjCRuntime.Runtime.IsManagedStaticRegistrar" featurevalue="false" value="false" />
       <method signature="System.Boolean get_IsManagedStaticRegistrar()" body="stub" feature="ObjCRuntime.Runtime.IsManagedStaticRegistrar" featurevalue="true" value="true" />
+      <method signature="System.Boolean get_UseCFNetworkHandler()" body="stub" feature="System.Net.Http.NativeHandler.UseCFNetworkHandler" featurevalue="false" value="false" />
+      <method signature="System.Boolean get_UseCFNetworkHandler()" body="stub" feature="System.Net.Http.NativeHandler.UseCFNetworkHandler" featurevalue="true" value="true" />
+      <method signature="System.Boolean get_UseNSUrlSessionHandler()" body="stub" feature="System.Net.Http.NativeHandler.UseNSUrlSessionHandler" featurevalue="false" value="false" />
+      <method signature="System.Boolean get_UseNSUrlSessionHandler()" body="stub" feature="System.Net.Http.NativeHandler.UseNSUrlSessionHandler" featurevalue="true" value="true" />
     </type>
     <type fullname="ObjCRuntime.Class">
       <method signature="System.Boolean get_ValidateObjectPointers()" body="stub" feature="ObjCRuntime.Class.ValidateObjectPointers" featurevalue="false" value="false" />

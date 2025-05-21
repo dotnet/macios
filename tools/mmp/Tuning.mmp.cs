@@ -15,7 +15,6 @@ namespace MonoMac.Tuner {
 		public LinkMode LinkMode { get; set; }
 		public IEnumerable<string> SkippedAssemblies { get; set; }
 		public IList<string> ExtraDefinitions { get; set; }
-		internal RuntimeOptions RuntimeOptions { get; set; }
 		public bool SkipExportedSymbolsInSdkAssemblies { get; set; }
 		public DerivedLinkContext LinkContext { get; set; }
 		public Target Target { get; set; }

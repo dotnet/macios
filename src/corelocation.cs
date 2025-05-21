@@ -26,10 +26,6 @@ using System;
 using CNPostalAddress = Foundation.NSObject;
 #endif
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreLocation {
 
 	/// <summary>An enumeration whose values specify whether the device is inside or outside a region or unknown.</summary>
@@ -64,11 +60,7 @@ namespace CoreLocation {
 	}
 
 	[ErrorDomain ("CLLocationPushServiceErrorDomain")]
-#if NET // Apple fixed this in Xcode 13.1
 	[iOS (15, 0), NoTV, NoMacCatalyst, NoMac]
-#else
-	[iOS (15, 0), NoTV, MacCatalyst (15, 0), NoMac]
-#endif
 	[Native]
 	public enum CLLocationPushServiceError : long {
 		Unknown = 0,
@@ -1751,11 +1743,7 @@ namespace CoreLocation {
 		NSNumber Minor { get; }
 	}
 
-#if NET // Apple fixed this in Xcode 13.1
 	[iOS (15, 0), NoTV, NoMacCatalyst, NoMac]
-#else
-	[iOS (15, 0), NoTV, MacCatalyst (15, 0), NoMac]
-#endif
 	[Protocol]
 	interface CLLocationPushServiceExtension {
 		[Abstract]

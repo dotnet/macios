@@ -103,9 +103,6 @@
     <Compile Include="..\common\LinkMode.cs">
       <Link>tools\common\LinkMode.cs</Link>
     </Compile>
-    <Compile Include="..\..\src\ObjCRuntime\RuntimeOptions.cs">
-      <Link>src\ObjCRuntime\RuntimeOptions.cs</Link>
-    </Compile>
     <Compile Include="..\..\src\ObjCRuntime\PlatformAvailability2.cs">
       <Link>src\ObjCRuntime\PlatformAvailability2.cs</Link>
     </Compile>

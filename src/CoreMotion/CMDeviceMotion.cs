@@ -11,13 +11,11 @@ using System.Runtime.InteropServices;
 namespace CoreMotion {
 
 	// CMDeviceMotion.h
-#if NET
 	/// <summary>Encapsulates the accuracy and field strength of the magnetometer after calibration.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct CMCalibratedMagneticField {
 		/// <summary>The magnetic field.</summary>

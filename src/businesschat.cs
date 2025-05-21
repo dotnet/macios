@@ -18,10 +18,6 @@ using UIControl = AppKit.NSControl;
 using UIKit;
 #endif
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace BusinessChat {
 
 	[Deprecated (PlatformName.MacOSX, 13, 1)]

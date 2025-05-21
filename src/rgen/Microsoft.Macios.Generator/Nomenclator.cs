@@ -166,4 +166,11 @@ class Nomenclator {
 	/// </summary>
 	/// <returns>The name of the variable used to store delegates in trampolines.</returns>
 	public static string GetTrampolineDelegateVariableName () => "del";
+
+	/// <summary>
+	/// Return the name of the trampoline block parameter. This is the name of the parameter that will be containing the
+	/// IntPtr to the trampoline block.
+	/// </summary>
+	/// <returns>The name to be used in the delegate.</returns>
+	public static string GetTrampolineBlockParameterName () => "block";
 }

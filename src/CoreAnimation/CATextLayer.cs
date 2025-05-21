@@ -180,19 +180,7 @@ namespace CoreAnimation {
 				}
 			}
 		}
-#if !NET
-		[Obsolete ("Use 'TextTruncationMode' instead.")]
-		public virtual string TruncationMode {
-			get { return (string) WeakTruncationMode; }
-			set { WeakTruncationMode = (NSString) value; }
-		}
 
-		[Obsolete ("Use 'TextAlignmentMode' instead.")]
-		public virtual string AlignmentMode {
-			get { return (string) WeakAlignmentMode; }
-			set { WeakAlignmentMode = (NSString) value; }
-		}
-#endif // !NET
 		/// <summary>Gets or sets a value that controls how text will be truncated, if necessary, for display.</summary>
 		public CATextLayerTruncationMode TextTruncationMode {
 			get { return CATextLayerTruncationModeExtensions.GetValue (WeakTruncationMode); }

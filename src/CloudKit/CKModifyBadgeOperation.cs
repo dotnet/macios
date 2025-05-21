@@ -10,25 +10,15 @@ using ObjCRuntime;
 
 #nullable enable
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CloudKit {
 	/// <summary>A <see cref="CloudKit.CKOperation" /> that modifies the badge of the app's icon, either on the current device or all the user's devices.</summary>
 	///     <remarks>To be added.</remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CloudKit/Reference/CKModifyBadgeOperation_class/index.html">Apple documentation for <c>CKModifyBadgeOperation</c></related>
 	[Register ("CKModifyBadgeOperation", SkipRegistration = true)]
-#if NET
 	[UnsupportedOSPlatform ("ios", "Modifying badge counts is no longer supported.")]
 	[UnsupportedOSPlatform ("macos", "Modifying badge counts is no longer supported.")]
 	[UnsupportedOSPlatform ("tvos", "Modifying badge counts is no longer supported.")]
 	[UnsupportedOSPlatform ("maccatalyst", "Modifying badge counts is no longer supported.")]
-#else
-	[Deprecated (PlatformName.MacOSX, 15, 0, message: "Modifying badge counts is no longer supported.")]
-	[Deprecated (PlatformName.iOS, 18, 0, message: "Modifying badge counts is no longer supported.")]
-	[Deprecated (PlatformName.TvOS, 18, 0, message: "Modifying badge counts is no longer supported.")]
-#endif
 	[EditorBrowsable (EditorBrowsableState.Never)]
 	public class CKModifyBadgeOperation : CKOperation {
 		/// <summary>The handle for this class.</summary>

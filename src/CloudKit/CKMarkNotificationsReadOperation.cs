@@ -10,21 +10,15 @@ using ObjCRuntime;
 
 #nullable enable
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CloudKit {
 	/// <summary>Marks push notifications as read. Typically used by apps that use push notifications to track record changes.</summary>
 	///     <remarks>To be added.</remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CloudKit/Reference/CKMarkNotificationsReadOperation_class/index.html">Apple documentation for <c>CKMarkNotificationsReadOperation</c></related>
 	[Register ("CKMarkNotificationsReadOperation", SkipRegistration = true)]
-#if NET
 	[UnsupportedOSPlatform ("ios", "Use 'CKDatabaseSubscription', 'CKFetchDatabaseChangesOperation' and 'CKFetchRecordZoneChangesOperation' instead.")]
 	[UnsupportedOSPlatform ("macos", "Use 'CKDatabaseSubscription', 'CKFetchDatabaseChangesOperation' and 'CKFetchRecordZoneChangesOperation' instead.")]
 	[UnsupportedOSPlatform ("tvos", "Use 'CKDatabaseSubscription', 'CKFetchDatabaseChangesOperation' and 'CKFetchRecordZoneChangesOperation' instead.")]
 	[UnsupportedOSPlatform ("maccatalyst", "Use 'CKDatabaseSubscription', 'CKFetchDatabaseChangesOperation' and 'CKFetchRecordZoneChangesOperation' instead.")]
-#endif
 	[EditorBrowsable (EditorBrowsableState.Never)]
 	public unsafe partial class CKMarkNotificationsReadOperation : CKOperation {
 		/// <summary>The handle for this class.</summary>

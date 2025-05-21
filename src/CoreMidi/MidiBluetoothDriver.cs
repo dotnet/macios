@@ -1,5 +1,4 @@
-#if !TVOS
-//
+
 // MidiBluetoothDriver.cs
 //
 // Authors: TJ Lambert (TJ.Lambert@microsoft.com)
@@ -38,4 +37,3 @@ namespace CoreMidi {
 		}
 	}
 }
-#endif

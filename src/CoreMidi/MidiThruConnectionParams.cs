@@ -1,5 +1,4 @@
-#if !TVOS
-// 
+
 // MidiThruConnectionParams.cs: A C# wrapper around MidiThruConnectionParamsStruct
 //
 // Authors: Alex Soto (alex.soto@xamarin.com)
@@ -62,6 +61,7 @@ namespace CoreMidi {
 		FourteenBitNRpn = 5,
 	}
 
+#if !TVOS
 	/// <summary>Object that defines how a MIDI event is transformed.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
@@ -655,5 +655,5 @@ namespace CoreMidi {
 		}
 	}
 #endif // !COREBUILD
+#endif // TVOS
 }
-#endif

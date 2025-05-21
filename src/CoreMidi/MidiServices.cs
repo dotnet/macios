@@ -1,4 +1,3 @@
-#if !TVOS
 //
 // MidiServices.cs: Implementation of the MidiObject base class and its derivates
 //
@@ -61,6 +60,7 @@ using MidiEntityRef = System.Int32;
 
 namespace CoreMidi {
 
+#if !TVOS
 	// anonymous enum - MIDIServices.h
 	/// <summary>Errors raised by the CoreMIDI stack.</summary>
 	///     <remarks>
@@ -99,6 +99,7 @@ namespace CoreMidi {
 		/// <summary>To be added.</summary>
 		NotPermitted = -10844,
 	}
+#endif // TVOS
 
 	[Flags]
 	// SInt32 - MIDIServices.h
@@ -116,6 +117,7 @@ namespace CoreMidi {
 		ExternalDestination = ExternalMask | Destination,
 	}
 
+#if !TVOS
 	public static partial class Midi {
 #if !COREBUILD
 		[DllImport (Constants.CoreMidiLibrary)]
@@ -3513,6 +3515,8 @@ namespace CoreMidi {
 		// MidiEndpoint 
 #endif // !COREBUILD
 	}
+#endif // TVOS
+
 
 	// SInt32 - MIDIServices.h
 	[NativeName ("MIDINotificationMessageID")]
@@ -3528,10 +3532,12 @@ namespace CoreMidi {
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("macos")]
+		[UnsupportedOSPlatform ("tvos")]
 		InternalStart = 0x1000,
 #endif
 	}
 
+#if !TVOS
 	//
 	// The notification EventArgs
 	//
@@ -3705,5 +3711,5 @@ namespace CoreMidi {
 		}
 #endif // !COREBUILD
 	}
+#endif // TVOS
 }
-#endif

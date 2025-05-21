@@ -121,6 +121,9 @@
         <Compile Include="../Microsoft.Macios.Generator/Extensions/StringExtensions.cs" >
             <Link>Generator/Extensions/StringExtensions.cs</Link>
         </Compile>
+        <Compile Include="../Microsoft.Macios.Generator/Formatters/TypeInfoFormatter.cs" >
+            <Link>Generator/Formatters/TypeInfoFormatter.cs</Link>
+        </Compile>
         <Compile Include="../Microsoft.Macios.Generator/Availability/*.cs" >
             <Link>Generator/Availability/*.cs</Link>
         </Compile>

@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.Macios.Generator.Extensions;
+using Microsoft.Macios.Generator.Formatters;
 
 namespace Microsoft.Macios.Generator.DataModel;
 
@@ -27,10 +28,21 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		get => fullyQualifiedName;
 		init {
 			fullyQualifiedName = value;
-			var index = fullyQualifiedName.LastIndexOf ('.');
-			Name = index != -1
-				? fullyQualifiedName.Substring (index + 1)
+			// there are few things to consider when setting the name of the class, first we need to
+			// to make the diff between a generic class and a non generic class
+			var nonGenericName = fullyQualifiedName.Contains ('<')
+				? fullyQualifiedName.Substring (0, fullyQualifiedName.IndexOf('<')) 
 				: fullyQualifiedName;
+			var index = nonGenericName.LastIndexOf ('.');
+			Name = index != -1
+				? nonGenericName.Substring (index + 1)
+				: nonGenericName;
+			// based on the name, calculate the name space for the class
+			if (Name.Length == nonGenericName.Length)
+				Namespace = [];
+			else
+				// remove the name + 1 for the dot
+				Namespace = [..nonGenericName.Remove (nonGenericName.Length - (Name.Length + 1)).Split ('.')];
 		}
 	}
 
@@ -38,6 +50,11 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	/// Type name.
 	/// </summary>
 	public string Name { get; private init; } = string.Empty;
+
+	/// <summary>
+	/// The namespace of the type, split by '.'.
+	/// </summary>
+	public ImmutableArray<string> Namespace { get; init; } = [];
 
 	/// <summary>
 	/// The metadata name of the type. This is normally the same as name except
@@ -238,12 +255,16 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		IsStruct = isStruct;
 	}
 
+	static string GetTypeName (ITypeSymbol symbol)
+	{
+		// calculating the name of the type is a little more complicated that just using the 
+		return symbol is IArrayTypeSymbol arrayTypeSymbol
+			? arrayTypeSymbol.ElementType.ToDisplayString ()
+			: symbol.ToDisplayString ().Trim ('?', '[', ']');
+	}
+
 	internal TypeInfo (ITypeSymbol symbol) :
-		this (
-			symbol is IArrayTypeSymbol arrayTypeSymbol
-				? arrayTypeSymbol.ElementType.ToDisplayString ()
-				: symbol.ToDisplayString ().Trim ('?', '[', ']'),
-			symbol.SpecialType)
+		this (GetTypeName (symbol), symbol.SpecialType)
 	{
 		IsNullable = symbol.NullableAnnotation == NullableAnnotation.Annotated;
 		IsBlittable = symbol.IsBlittable ();
@@ -280,10 +301,15 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		EnumUnderlyingType = namedTypeSymbol?.EnumUnderlyingType?.SpecialType;
 		if (namedTypeSymbol is not null) {
 			IsGenericType = namedTypeSymbol.IsGenericType;
-			TypeArguments = [
-				.. namedTypeSymbol.TypeArguments
-					.Select (x => x.ToDisplayString ())
-			];
+			var typeArgumentsBucket = ImmutableArray.CreateBuilder<string> (namedTypeSymbol.TypeArguments.Length);
+			foreach (var typeArgument in namedTypeSymbol.TypeArguments) {
+				// rather than use the display name, which could be a generic name, we will create a struct for the 
+				// type and use our type formater
+				var info = new TypeInfo (typeArgument);
+				var syntax = info.GetIdentifierSyntax ();
+				typeArgumentsBucket.Add (syntax.ToString ());
+			}
+			TypeArguments = typeArgumentsBucket.ToImmutable ();
 
 			if (namedTypeSymbol.DelegateInvokeMethod is not null &&
 				DelegateInfo.TryCreate (namedTypeSymbol, out var delegateInfo))

@@ -92,6 +92,9 @@
         <Compile Include="../Microsoft.Macios.Generator/Extensions/TypeSymbolExtensions.Core.cs">
             <Link>Extensions/TypeSymbolExtensions.Core.cs</Link>
         </Compile>
+        <Compile Include="../Microsoft.Macios.Generator/Formatters/TypeInfoFormatter.cs" >
+            <Link>Formatters/TypeInfoFormatter.cs</Link>
+        </Compile>
         <Compile Include="..\..\bgen\Extensions\PlatformNameExtensions.cs" >
             <Link>external\PlatformNameExtensions.cs</Link>
         </Compile>

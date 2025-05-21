@@ -681,7 +681,7 @@
 		<MacDevMessage
 			Error="true"
 			Condition="'$(UseNativeHttpHandler)' == 'true' And '$(_IsNSUrlSessionHandlerFeature)' != 'true' And '$(_IsCFNetworkHandlerFeature)' != 'true'"
-			ResourceName="E7152_InvalidMtouchHttpClientHandler" FormatArguments="'$(MtouchHttpClientHandler)'">
+			ResourceName="E7152_InvalidMtouchHttpClientHandler" FormatArguments="$(MtouchHttpClientHandler)">
 			<!-- Invalid value for 'MtouchHttpClientHandler' ('$(MtouchHttpClientHandler)', must be either 'NSUrlSessionHandler' or 'CFNetworkHandler' (or not set at all). -->
 		</MacDevMessage>
 

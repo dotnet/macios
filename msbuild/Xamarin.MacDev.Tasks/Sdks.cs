@@ -10,13 +10,8 @@ using Xamarin.MacDev.Tasks;
 
 namespace Xamarin.MacDev {
 	public static class Sdks {
-		const string MTOUCH_LOCATION_ENV_VAR = "MD_MTOUCH_SDK_ROOT";
-
-		public static XamMacSdk XamMac { get; private set; }
 		public static AppleIPhoneSdk IOS { get; private set; }
-
 		public static MacOSXSdk MacOS { get; private set; }
-		public static MonoTouchSdk XamIOS { get; internal set; }
 		public static AppleTVOSSdk TVOS { get; private set; }
 
 		static Sdks ()
@@ -26,22 +21,8 @@ namespace Xamarin.MacDev {
 
 		static void Reload ()
 		{
-			var monotouch = Environment.GetEnvironmentVariable (MTOUCH_LOCATION_ENV_VAR);
-
-			if (string.IsNullOrEmpty (monotouch)) {
-				foreach (var location in MonoTouchSdk.DefaultLocations) {
-					if (Directory.Exists (location)) {
-						monotouch = location;
-						break;
-					}
-				}
-			}
-
-			XamIOS = new MonoTouchSdk (monotouch);
 			IOS = new AppleIPhoneSdk (AppleSdkSettings.DeveloperRoot, AppleSdkSettings.DeveloperRootVersionPlist);
 			TVOS = new AppleTVOSSdk (AppleSdkSettings.DeveloperRoot, AppleSdkSettings.DeveloperRootVersionPlist);
-
-			XamMac = new XamMacSdk (null);
 			MacOS = new MacOSXSdk (AppleSdkSettings.DeveloperRoot, AppleSdkSettings.DeveloperRootVersionPlist);
 		}
 

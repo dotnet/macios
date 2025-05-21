@@ -17,12 +17,6 @@ Copyright (C) 2015-2016 Xamarin. All rights reserved.
 	<Import Project="$(MSBuildThisFileDirectory)$(MSBuildThisFileName).Before.targets"
 			Condition="Exists('$(MSBuildThisFileDirectory)$(MSBuildThisFileName).Before.targets')"/>
 
-	<PropertyGroup>
-		<!-- Version/fx properties -->
-		<TargetFrameworkIdentifier Condition="'$(TargetFrameworkIdentifier)' == ''">Xamarin.MacCatalyst</TargetFrameworkIdentifier>
-		<TargetFrameworkVersion Condition="'$(TargetFrameworkVersion)' == ''">v1.0</TargetFrameworkVersion>
-	</PropertyGroup>
-
 	<!-- xbuild searches multiple MSBuildExtensionsPath32, but only in the Import element so we can't determine this with a variable -->
 	<Import
 		Condition="'$(Language)' != 'F#' And Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\FSharp\Microsoft.FSharp.Targets')"

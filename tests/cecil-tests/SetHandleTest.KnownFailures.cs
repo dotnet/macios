@@ -15,7 +15,6 @@ namespace Cecil.Tests {
 			"CoreGraphics.CGPattern::.ctor(CoreGraphics.CGRect,CoreGraphics.CGAffineTransform,System.Runtime.InteropServices.NFloat,System.Runtime.InteropServices.NFloat,CoreGraphics.CGPatternTiling,System.Boolean,CoreGraphics.CGPattern/DrawPattern)",
 			"Foundation.NSKeyedUnarchiver::.ctor(Foundation.NSData)",
 			"Foundation.NSUuid::.ctor(System.Byte[])",
-			"ModelIO.MDLNoiseTexture::.ctor(System.Single,System.String,CoreGraphics.NVector2i,ModelIO.MDLTextureChannelEncoding,ModelIO.MDLNoiseTextureType)",
 			"ObjCRuntime.Runtime::RegisterNSObject(Foundation.NSObject,System.IntPtr)",
 			"ScreenCaptureKit.SCContentFilter::.ctor(ScreenCaptureKit.SCDisplay,ScreenCaptureKit.SCRunningApplication[],ScreenCaptureKit.SCWindow[],ScreenCaptureKit.SCContentFilterOption)",
 			"ScreenCaptureKit.SCContentFilter::.ctor(ScreenCaptureKit.SCDisplay,ScreenCaptureKit.SCWindow[],ScreenCaptureKit.SCContentFilterOption)",

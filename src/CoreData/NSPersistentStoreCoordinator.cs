@@ -1,4 +1,3 @@
-#if NET
 using System;
 using System.Runtime.Versioning;
 using System.Runtime.InteropServices;
@@ -23,4 +22,3 @@ namespace CoreData {
 #endif // !__TVOS__
 	}
 }
-#endif

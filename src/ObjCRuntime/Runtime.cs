@@ -285,6 +285,14 @@ namespace ObjCRuntime {
 			}
 		}
 
+		// The linker may turn calls to this property into a constant
+		[BindingImpl (BindingImplOptions.Optimizable)]
+		internal static bool UseNSUrlSessionHandler => AppContext.TryGetSwitch ("System.Net.Http.NativeHandler.UseNSUrlSessionHandler", out bool isDefault) ? isDefault : true;
+
+		// The linker may turn calls to this property into a constant
+		[BindingImpl (BindingImplOptions.Optimizable)]
+		internal static bool UseCFNetworkHandler => AppContext.TryGetSwitch ("System.Net.Http.NativeHandler.UseCFNetworkHandler", out bool isDefault) ? isDefault : false;
+
 		internal static bool Initialized {
 			get { return initialized; }
 		}

@@ -887,6 +887,17 @@
         </comment>
     </data>
 
+    <data name="E0191" xml:space="preserve">
+        <value>This version of {0} requires the {1} {2} SDK (shipped with Xcode {3}). The current version of Xcode is {4}. Either install Xcode {3}, or use a different version of {0}. See https://aka.ms/xcode-requirement for more information.</value>
+        <comments>
+            0: Microsoft.[platform]
+            1: platform (iOS, tvOS, macOS or Mac Catalyst)
+            2: version
+            3: version
+            4: version
+        </comments>
+    </data>
+
     <data name="E7001" xml:space="preserve">
         <value>Could not resolve host IPs for WiFi debugger settings.
         </value>

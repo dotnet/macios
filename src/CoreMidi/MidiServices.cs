@@ -38,9 +38,16 @@
 
 #nullable enable
 
+// Let's hope that by .NET 11 we've ironed out all the bugs in the API.
+// This can of course be adjusted as needed (until we've released as stable).
+#if NET110_0_OR_GREATER
+#define STABLE_MIDIDRIVER
+#endif
+
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -2070,8 +2077,11 @@ namespace CoreMidi {
 			return (MidiError) MIDIDeviceRemoveEntity (GetCheckedHandle (), entity.GetCheckedHandle ());
 		}
 
+#if !STABLE_MIDIDRIVER
+		[Experimental ("APL0004")]
+#endif
 		[DllImport (Constants.CoreMidiLibrary)]
-		unsafe extern static OSStatus MIDIDeviceCreate (IntPtr /* MidiDriverRef _nullable */ owner, IntPtr /* CFStringRef */ name, IntPtr /* CFStringRef */ manufacturer, IntPtr /* CFStringRef */ model, MidiDeviceRef* outDevice);
+		unsafe extern static OSStatus MIDIDeviceCreate (MidiDriverInterface** /* MidiDriverRef _nullable */ owner, IntPtr /* CFStringRef */ name, IntPtr /* CFStringRef */ manufacturer, IntPtr /* CFStringRef */ model, MidiDeviceRef* outDevice);
 
 		/// <summary>Create a new device corresponding to a specific piece of hardware.</summary>
 		/// <param name="owner">The driver that owns the new device. Pass null if the owner isn't a driver.</param>
@@ -2080,6 +2090,9 @@ namespace CoreMidi {
 		/// <param name="model">The model for the new device.</param>
 		/// <param name="status">A status code that describes the result of creating the new device. This will be <see cref="MidiError.Ok" /> in case of success.</param>
 		/// <returns>A newly created <see cref="MidiDevice" /> instance, null otherwise.</returns>
+#if !STABLE_MIDIDRIVER
+		[Experimental ("APL0004")]
+#endif
 		public static MidiDevice? Create (MidiDriver? owner, string name, string manufacturer, string model, out MidiError status)
 		{
 			var handle = default (MidiDeviceRef);
@@ -2088,15 +2101,14 @@ namespace CoreMidi {
 			using var modelPtr = new TransientCFString (model);
 
 			unsafe {
-				var driverInterface = default (MidiDriverInterface);
+				MidiDriverInterface* driverInterfacePtr = owner is null ? null : owner.DriverInterface;
+				MidiDriverInterface** driverPtr = null;
 				if (owner is not null)
-					driverInterface = owner.DriverInterface;
-				MidiDriverInterface* driverInterfacePtr1 = &driverInterface;
-				var driverInterfacePtr2 = default (IntPtr);
-				if (owner is not null)
-					driverInterfacePtr2 = (IntPtr) (&driverInterfacePtr1);
-				status = (MidiError) MIDIDeviceCreate (driverInterfacePtr2, namePtr, manufacturerPtr, modelPtr, &handle);
+					driverPtr = &driverInterfacePtr;
+				status = (MidiError) MIDIDeviceCreate (driverPtr, namePtr, manufacturerPtr, modelPtr, &handle);
 			}
+
+			GC.KeepAlive (owner);
 
 			if (handle == MidiObject.InvalidRef)
 				return null;

@@ -1,5 +1,3 @@
-#if NET
-
 using System;
 
 using AVFoundation;
@@ -1305,4 +1303,3 @@ namespace BrowserEngineKit {
 		NSData CreateAccessToken ();
 	}
 }
-#endif

@@ -13,10 +13,6 @@ using CoreFoundation;
 using Foundation;
 using ObjCRuntime;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CallKit {
 
 	/// <summary>Enumerates call directory states.</summary>
@@ -125,12 +121,8 @@ namespace CallKit {
 		MissingNotificationFilteringEntitlement = 2,
 	}
 
-#if NET
 	/// <summary>Enumerates DTMF play action types.</summary>
 	[NoMac]
-#else
-	[Obsoleted (PlatformName.MacOSX, 12, 1)]
-#endif
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CXPlayDtmfCallActionType : long {
@@ -142,12 +134,8 @@ namespace CallKit {
 		HardPause = 3,
 	}
 
-#if NET
 	/// <summary>Enumerates reasons that calls can end.</summary>
 	[NoMac]
-#else
-	[Obsoleted (PlatformName.MacOSX, 12, 1)]
-#endif
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CXCallEndedReason : long {
@@ -163,13 +151,9 @@ namespace CallKit {
 		DeclinedElsewhere = 5,
 	}
 
-#if NET
 	/// <summary>Enumerates handle types.</summary>
 	///     <remarks>Handles act as identifiers for VOIP users.</remarks>
 	[NoMac]
-#else
-	[Obsoleted (PlatformName.MacOSX, 12, 1)]
-#endif
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CXHandleType : long {

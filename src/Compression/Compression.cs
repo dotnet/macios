@@ -18,7 +18,6 @@ using System.Diagnostics.CodeAnalysis;
 using ObjCRuntime;
 
 namespace Compression {
-#if NET
 	/// <summary>Provides methods and properties for compressing and decompressing streams by using the deflate algorithm.</summary>
 	///     <remarks>
 	///       <para>
@@ -43,7 +42,6 @@ namespace Compression {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public partial class CompressionStream : Stream {
 		private const int DefaultBufferSize = 8192;
 

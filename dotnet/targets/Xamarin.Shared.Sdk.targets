@@ -563,7 +563,7 @@
 			<!-- Set CFNetworkHandler and NSUrlSessionHandler values -->
 			<_IsCFNetworkHandlerFeature Condition="'$(UseNativeHttpHandler)' == 'true' And '$(MtouchHttpClientHandler)' == 'CFNetworkHandler'">true</_IsCFNetworkHandlerFeature>
 			<_IsCFNetworkHandlerFeature Condition="'$(_IsCFNetworkHandlerFeature)' == ''">false</_IsCFNetworkHandlerFeature>
-			<_IsNSUrlSessionHandlerFeature Condition="'$(UseNativeHttpHandler)' == 'true' And '$(MtouchHttpClientHandler)' == 'NSUrlSessionHandler'">true</_IsNSUrlSessionHandlerFeature>
+			<_IsNSUrlSessionHandlerFeature Condition="'$(UseNativeHttpHandler)' == 'true' And ('$(MtouchHttpClientHandler)' == 'NSUrlSessionHandler' Or '$(MtouchHttpClientHandler)' == '')">true</_IsNSUrlSessionHandlerFeature>
 			<_IsNSUrlSessionHandlerFeature Condition="'$(_IsNSUrlSessionHandlerFeature)' == ''">false</_IsNSUrlSessionHandlerFeature>
 
 			<!-- Set default ValidateObjectPointers value -->
@@ -676,6 +676,14 @@
 			<_AdditionalTaskAssemblyDirectory>$(_XamarinSdkRootDirectoryOnMac)tools/dotnet-linker/</_AdditionalTaskAssemblyDirectory>
 			<_AdditionalTaskAssembly>$(_AdditionalTaskAssemblyDirectory)dotnet-linker.dll</_AdditionalTaskAssembly>
 		</PropertyGroup>
+
+		<!-- Validate that one of our native handlers are selected (if using a native handler), otherwise we end up with crashes (infinite recursion) at runtime. -->
+		<MacDevMessage
+			Error="true"
+			Condition="'$(UseNativeHttpHandler)' == 'true' And '$(_IsNSUrlSessionHandlerFeature)' != 'true' And '$(_IsCFNetworkHandlerFeature)' != 'true'"
+			ResourceName="E7152_InvalidMtouchHttpClientHandler" FormatArguments="$(MtouchHttpClientHandler)">
+			<!-- Invalid value for 'MtouchHttpClientHandler' ('$(MtouchHttpClientHandler)', must be either 'NSUrlSessionHandler' or 'CFNetworkHandler' (or not set at all). -->
+		</MacDevMessage>
 
 		<ItemGroup>
 			<!-- Configure linker features -->

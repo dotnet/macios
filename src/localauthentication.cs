@@ -44,10 +44,6 @@ namespace LocalAuthentication {
 		[Export ("localizedFallbackTitle")]
 		string LocalizedFallbackTitle { get; set; }
 
-		[NoTV]
-		[Field ("LAErrorDomain")]
-		NSString ErrorDomain { get; }
-
 		/// <param name="policy">To be added.</param>
 		///         <param name="error">To be added.</param>
 		///         <summary>Preflights <paramref name="policy" />, and reports any errors in the <paramref name="error" /><see langword="out" /> parameter.</summary>

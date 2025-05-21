@@ -102,6 +102,7 @@ namespace CoreMidi {
 
 	[Flags]
 	// SInt32 - MIDIServices.h
+	[NativeName ("MIDIObjectType")]
 	enum MidiObjectType : int {
 		Other = -1,
 		Device,
@@ -3514,6 +3515,7 @@ namespace CoreMidi {
 	}
 
 	// SInt32 - MIDIServices.h
+	[NativeName ("MIDINotificationMessageID")]
 	enum MidiNotificationMessageId : int {
 		SetupChanged = 1,
 		ObjectAdded,

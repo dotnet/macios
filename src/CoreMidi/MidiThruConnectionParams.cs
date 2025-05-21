@@ -24,6 +24,7 @@ using MidiUniqueID = System.Int32;
 namespace CoreMidi {
 	/// <summary>MIDI transform types.</summary>
 	///     <remarks>To be added.</remarks>
+	[NativeName ("MIDITransformType")]
 	public enum MidiTransformType : ushort {
 		/// <summary>To be added.</summary>
 		None = 0,
@@ -45,6 +46,7 @@ namespace CoreMidi {
 
 	/// <summary>MIDI Control Transformation Type.</summary>
 	///     <remarks>To be added.</remarks>
+	[NativeName ("MIDITransformControlType")]
 	public enum MidiTransformControlType : byte {
 		/// <summary>To be added.</summary>
 		SevenBit = 0,

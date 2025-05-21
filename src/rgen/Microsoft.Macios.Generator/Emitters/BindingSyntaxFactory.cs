@@ -193,7 +193,7 @@ static partial class BindingSyntaxFactory {
 	/// <param name="isGlobal">If the global alias qualifier will be used. This will only be used if the namespace
 	/// was provided.</param>
 	/// <returns>The identifier expression for a given class.</returns>
-	internal static TypeSyntax GetIdentifierName (string []? @namespace, string @class, bool isGlobal = false)
+	internal static TypeSyntax GetIdentifierName (string []? @namespace, string @class, bool isGlobal = GeneratorConfiguration.UseGlobalNamespace)
 	{
 		// retrieve the name syntax for the namespace
 		if (@namespace is null) {
@@ -234,8 +234,7 @@ static partial class BindingSyntaxFactory {
 	{
 		var unsafeType = GetIdentifierName (
 			@namespace: ["System", "Runtime", "CompilerServices"],
-			@class: "Unsafe",
-			isGlobal: true);
+			@class: "Unsafe");
 		var argsList = ArgumentList (SeparatedList<ArgumentSyntax> (arguments.ToSyntaxNodeOrTokenArray ()));
 		return StaticInvocationGenericExpression (unsafeType, "AsRef",
 			objectType, argsList);
@@ -252,8 +251,7 @@ static partial class BindingSyntaxFactory {
 	{
 		var marshalType = GetIdentifierName (
 			@namespace: ["System", "Runtime", "InteropServices"],
-			@class: "Marshal",
-			isGlobal: true);
+			@class: "Marshal");
 		// Marshal.GetDelegateForFunctionPointer<T>(IntPtr)
 		var argsList = ArgumentList (SeparatedList<ArgumentSyntax> (arguments.ToSyntaxNodeOrTokenArray ()));
 		return StaticInvocationGenericExpression (marshalType, "GetDelegateForFunctionPointer",

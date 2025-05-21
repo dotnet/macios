@@ -14,20 +14,16 @@ namespace Microsoft.Macios.Generator.Emitters;
 static partial class BindingSyntaxFactory {
 	public static readonly TypeSyntax Runtime = GetIdentifierName (
 		@namespace: ["ObjCRuntime"],
-		@class: "Runtime",
- 		isGlobal: true);
+		@class: "Runtime");
 	public static readonly TypeSyntax NSArray = GetIdentifierName (
 		@namespace: ["Foundation"],
-		@class: "NSArray",
-		isGlobal: true);
+		@class: "NSArray");
 	public static readonly TypeSyntax CFArray = GetIdentifierName (
 		@namespace: ["CoreFoundation"],
-		@class: "CFArray",
-	isGlobal: true);
+		@class: "CFArray");
 	public static readonly TypeSyntax CFString = GetIdentifierName (
 		@namespace: ["CoreFoundation"],
-		@class: "CFString",
-		isGlobal: true);
+		@class: "CFString");
 	public const string ClassPtr = "class_ptr";
 
 	/// <summary>

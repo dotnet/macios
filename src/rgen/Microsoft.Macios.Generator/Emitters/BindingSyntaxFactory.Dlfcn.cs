@@ -19,12 +19,10 @@ namespace Microsoft.Macios.Generator.Emitters;
 static partial class BindingSyntaxFactory {
 	readonly static TypeSyntax Dlfcn = GetIdentifierName (
 		@namespace: ["ObjCRuntime"],
-		@class: "Dlfcn",
-		isGlobal: true);
+		@class: "Dlfcn");
 	public readonly static TypeSyntax Libraries = GetIdentifierName (
 		@namespace: ["ObjCRuntime"],
-		@class: "Libraries",
-		isGlobal: true);
+		@class: "Libraries");
 
 	/// <summary>
 	/// Get the syntax needed to access a library handle.

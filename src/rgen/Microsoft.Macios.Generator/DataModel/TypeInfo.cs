@@ -215,7 +215,7 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	{
 		FullyQualifiedName = name;
 		SpecialType = specialType;
-		
+
 		// calculate the name and namespace based on the name. This is not the most efficient way to do it and it is
 		// a internal constructor for testing purposes only.
 		// there are few things to consider when setting the name of the class, first we need to
@@ -254,15 +254,15 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 
 	static (string Name, ImmutableArray<string> Namespace) GetTypeNameAndNamespace (ITypeSymbol symbol)
 	{
-		if (symbol.SpecialType == SpecialType.None) 
+		if (symbol.SpecialType == SpecialType.None)
 			return (symbol.Name, GetNamespaceComponents (symbol));
-		
+
 		var token = symbol.SpecialType.GetKeyword ();
 		var name = string.IsNullOrEmpty (token) ? symbol.Name : token;
 		// if we are dealing with int, uint etc.. we will ignore the namespace since it is not needed
 		return (name, []);
 	}
-	
+
 	/// <summary>
 	/// Returns the namespace components of the type symbol.
 	/// </summary>
@@ -272,12 +272,11 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	{
 		var namespaceSymbol = symbol.ContainingNamespace;
 		var components = ImmutableArray.CreateBuilder<string> ();
-		while (namespaceSymbol is { IsGlobalNamespace: false })
-		{
-			components.Insert(0, namespaceSymbol.Name);
+		while (namespaceSymbol is { IsGlobalNamespace: false }) {
+			components.Insert (0, namespaceSymbol.Name);
 			namespaceSymbol = namespaceSymbol.ContainingNamespace;
 		}
-		return components.ToImmutableArray();
+		return components.ToImmutableArray ();
 	}
 
 	internal TypeInfo (ITypeSymbol symbol)

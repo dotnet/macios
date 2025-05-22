@@ -486,7 +486,7 @@ namespace NS {
 		Assert.Equal ("System.Collections.Generic.List<NS.ExampleClass>", changes.Value.Parameters [0].Type.FullyQualifiedName);
 		Assert.Equal ("System.Collections.Generic", string.Join ('.', changes.Value.Parameters [0].Type.Namespace));
 	}
-	
+
 	[Theory]
 	[AllSupportedPlatforms]
 	void TypeInfoArrayName (ApplePlatform platform)
@@ -565,7 +565,7 @@ namespace NS {
 		Assert.Equal ("int", changes.Value.Parameters [0].Type.FullyQualifiedName);
 		Assert.Empty (changes.Value.Parameters [0].Type.Namespace);
 	}
-	
+
 	[Theory]
 	[AllSupportedPlatforms]
 	void TypeInfoNameStringArray (ApplePlatform platform)

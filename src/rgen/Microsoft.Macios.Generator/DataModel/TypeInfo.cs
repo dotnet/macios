@@ -31,6 +31,9 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 			Name = index != -1
 				? fullyQualifiedName.Substring (index + 1)
 				: fullyQualifiedName;
+			Namespace = index != -1
+				? fullyQualifiedName.Substring (0, index) // not index + 1 since that includes the dot
+				: string.Empty;
 		}
 	}
 
@@ -38,6 +41,11 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	/// Type name.
 	/// </summary>
 	public string Name { get; private init; } = string.Empty;
+
+	/// <summary>
+	/// Type name.
+	/// </summary>
+	public string Namespace { get; private init; } = string.Empty;
 
 	/// <summary>
 	/// The metadata name of the type. This is normally the same as name except

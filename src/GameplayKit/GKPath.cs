@@ -43,6 +43,7 @@ namespace GameplayKit {
 
 		[DesignatedInitializer]
 		public GKPath (Vector2 [] points, float radius, bool cyclical)
+			: base (NSObjectFlag.Empty)
 		{
 			if (points is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (points));
@@ -51,7 +52,7 @@ namespace GameplayKit {
 			try {
 				PrepareBuffer (out buffer, ref points);
 
-				Handle = InitWithPoints (buffer, (nuint) points.Length, radius, cyclical);
+				InitializeHandle (_InitWithPoints (buffer, (nuint) points.Length, radius, cyclical), "initWithPoints:count:radius:cyclical:");
 			} finally {
 				if (buffer != IntPtr.Zero)
 					Marshal.FreeHGlobal (buffer);
@@ -87,6 +88,7 @@ namespace GameplayKit {
 		[SupportedOSPlatform ("maccatalyst")]
 #endif
 		public GKPath (Vector3 [] points, float radius, bool cyclical)
+			: base (NSObjectFlag.Empty)
 		{
 			if (points is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (points));
@@ -95,7 +97,7 @@ namespace GameplayKit {
 			try {
 				PrepareBuffer (out buffer, ref points);
 
-				Handle = InitWithFloat3Points (buffer, (nuint) points.Length, radius, cyclical);
+				InitializeHandle (_InitWithFloat3Points (buffer, (nuint) points.Length, radius, cyclical), "initWithFloat3Points:count:radius:cyclical:");
 			} finally {
 				if (buffer != IntPtr.Zero)
 					Marshal.FreeHGlobal (buffer);

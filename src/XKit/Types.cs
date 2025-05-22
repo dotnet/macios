@@ -35,15 +35,12 @@ namespace AppKit {
 #else
 namespace UIKit {
 #endif
-
-#if NET
 	/// <summary>Edge insets that account for text direction.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct NSDirectionalEdgeInsets {
 

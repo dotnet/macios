@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Macios.Generator.DataModel;
 using Microsoft.Macios.Generator.IO;
@@ -1568,7 +1569,7 @@ namespace NS {
 			yield return [
 				pointerParameter,
 				"DCallback",
-				"unsafe internal delegate void DCallback (global::System.IntPtr block, int* pointerParameter);",
+				"unsafe internal delegate void DCallback (global::System.IntPtr block_ptr, int* pointerParameter);",
 			];
 
 			var ccallbackParameter = @"
@@ -1586,7 +1587,7 @@ namespace NS {
 			yield return [
 				ccallbackParameter,
 				"DCallback",
-				"unsafe internal delegate void DCallback (global::System.IntPtr block, global::System.IntPtr callbackParameter);",
+				"unsafe internal delegate void DCallback (global::System.IntPtr block_ptr, global::System.IntPtr callbackParameter);",
 			];
 
 			var nativeEnumParameter = @"
@@ -1613,7 +1614,7 @@ namespace NS {
 			yield return [
 				nativeEnumParameter,
 				"DCallback",
-				"unsafe internal delegate void DCallback (global::System.IntPtr block, long enumParameter);",
+				"unsafe internal delegate void DCallback (global::System.IntPtr block_ptr, long enumParameter);",
 			];
 
 			var boolParameter = @"
@@ -1631,7 +1632,7 @@ namespace NS {
 			yield return [
 				boolParameter,
 				"DCallback",
-				"unsafe internal delegate void DCallback (global::System.IntPtr block, byte boolParameter);",
+				"unsafe internal delegate void DCallback (global::System.IntPtr block_ptr, byte boolParameter);",
 			];
 
 			var nsObjectArray = @"
@@ -1650,7 +1651,7 @@ namespace NS {
 			yield return [
 				nsObjectArray,
 				"DCallback",
-				"unsafe internal delegate void DCallback (global::System.IntPtr block, global::ObjCRuntime.NativeHandle nsObjectArray);",
+				"unsafe internal delegate void DCallback (global::System.IntPtr block_ptr, global::ObjCRuntime.NativeHandle nsObjectArray);",
 			];
 
 			var iNativeObjectArray = @"
@@ -1670,7 +1671,7 @@ namespace NS {
 			yield return [
 				iNativeObjectArray,
 				"DCallback",
-				"unsafe internal delegate void DCallback (global::System.IntPtr block, global::ObjCRuntime.NativeHandle inativeArray);"
+				"unsafe internal delegate void DCallback (global::System.IntPtr block_ptr, global::ObjCRuntime.NativeHandle inativeArray);"
 			];
 
 
@@ -1690,7 +1691,7 @@ namespace NS {
 			yield return [
 				stringArray,
 				"DCallback",
-				"unsafe internal delegate void DCallback (global::System.IntPtr block, global::ObjCRuntime.NativeHandle stringArray);",
+				"unsafe internal delegate void DCallback (global::System.IntPtr block_ptr, global::ObjCRuntime.NativeHandle stringArray);",
 			];
 
 			var protocolParameter = @"
@@ -1709,7 +1710,7 @@ namespace NS {
 			yield return [
 				protocolParameter,
 				"DCallback",
-				"unsafe internal delegate void DCallback (global::System.IntPtr block, global::ObjCRuntime.NativeHandle protocolParameter);"
+				"unsafe internal delegate void DCallback (global::System.IntPtr block_ptr, global::ObjCRuntime.NativeHandle protocolParameter);"
 			];
 
 			var outNullableInt = @"
@@ -1728,7 +1729,7 @@ namespace NS {
 			yield return [
 				outNullableInt,
 				"DCallback",
-				"unsafe internal delegate void DCallback (global::System.IntPtr block, int* outNullableInt);"
+				"unsafe internal delegate void DCallback (global::System.IntPtr block_ptr, int* outNullableInt);"
 			];
 
 			var outBoolean = @"
@@ -1747,7 +1748,7 @@ namespace NS {
 			yield return [
 				outBoolean,
 				"DCallback",
-				"unsafe internal delegate void DCallback (global::System.IntPtr block, byte* outBool);",
+				"unsafe internal delegate void DCallback (global::System.IntPtr block_ptr, byte* outBool);",
 			];
 
 
@@ -1767,7 +1768,7 @@ namespace NS {
 			yield return [
 				outNSObject,
 				"DCallback",
-				"unsafe internal delegate void DCallback (global::System.IntPtr block, global::ObjCRuntime.NativeHandle* outNSObject);"
+				"unsafe internal delegate void DCallback (global::System.IntPtr block_ptr, global::ObjCRuntime.NativeHandle* outNSObject);"
 			];
 
 			var valueReturnboolParameter = @"
@@ -1785,7 +1786,7 @@ namespace NS {
 			yield return [
 				valueReturnboolParameter,
 				"DCallback",
-				"unsafe internal delegate int DCallback (global::System.IntPtr block, byte boolParameter);",
+				"unsafe internal delegate int DCallback (global::System.IntPtr block_ptr, byte boolParameter);",
 			];
 
 			var nsObjectReturnBoolParameter = @"
@@ -1804,7 +1805,7 @@ namespace NS {
 			yield return [
 				nsObjectReturnBoolParameter,
 				"DCallback",
-				"unsafe internal delegate global::ObjCRuntime.NativeHandle DCallback (global::System.IntPtr block, byte boolParameter);",
+				"unsafe internal delegate global::ObjCRuntime.NativeHandle DCallback (global::System.IntPtr block_ptr, byte boolParameter);",
 			];
 
 			var nullableNSObjectReturnBoolParameter = @"
@@ -1823,7 +1824,7 @@ namespace NS {
 			yield return [
 				nullableNSObjectReturnBoolParameter,
 				"DCallback",
-				"unsafe internal delegate global::ObjCRuntime.NativeHandle DCallback (global::System.IntPtr block, byte boolParameter);",
+				"unsafe internal delegate global::ObjCRuntime.NativeHandle DCallback (global::System.IntPtr block_ptr, byte boolParameter);",
 			];
 
 			var arrayNSObjectReturnBoolParameter = @"
@@ -1842,7 +1843,7 @@ namespace NS {
 			yield return [
 				arrayNSObjectReturnBoolParameter,
 				"DCallback",
-				"unsafe internal delegate global::ObjCRuntime.NativeHandle DCallback (global::System.IntPtr block, byte boolParameter);",
+				"unsafe internal delegate global::ObjCRuntime.NativeHandle DCallback (global::System.IntPtr block_ptr, byte boolParameter);",
 			];
 
 			var nullableArrayNSObjectReturnBoolParameter = @"
@@ -1861,7 +1862,7 @@ namespace NS {
 			yield return [
 				nullableArrayNSObjectReturnBoolParameter,
 				"DCallback",
-				"unsafe internal delegate global::ObjCRuntime.NativeHandle DCallback (global::System.IntPtr block, byte boolParameter);",
+				"unsafe internal delegate global::ObjCRuntime.NativeHandle DCallback (global::System.IntPtr block_ptr, byte boolParameter);",
 			];
 		}
 
@@ -2385,8 +2386,650 @@ namespace NS {
 		var parameter = changes.Value.Parameters [0];
 		// assert it is indeed a delegate
 		Assert.NotNull (parameter.Type.Delegate);
-		var expression = GetTrampolineInvokeParameter (parameter.Type.Delegate!.Parameters [0]);
+		var parameterInfo = GetTrampolineInvokeParameter (parameter.Type.Delegate!.Parameters [0]);
+		var expression = Parameter (parameterInfo.ParameterName)
+			.WithType (parameterInfo.ParameterType)
+			.NormalizeWhitespace ();
 		Assert.Equal (expectedExpression, expression.ToString ());
+	}
+
+	class TestDataGetTrampolineInvokeDeclaration : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
+		{
+			var pointerParameter = @"
+using System;
+namespace NS {
+	public delegate void Callback (int* pointerParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				pointerParameter,
+				"internal static unsafe void Invoke (global::System.IntPtr block_ptr, int* pointerParameter)",
+			];
+
+			var ccallbackParameter = @"
+using System;
+using ObjCRuntime;
+namespace NS {
+	public delegate void Callback ([CCallback] Action callbackParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				ccallbackParameter,
+				"internal static unsafe void Invoke (global::System.IntPtr block_ptr, global::System.IntPtr callbackParameter)",
+			];
+
+			var nativeEnumParameter = @"
+using System;
+using ObjCBindings;
+using ObjCRuntime;
+namespace NS {
+        [Native (""""GKErrorCode"""")]
+        [BindingType<SmartEnum> (Flags = SmartEnum.ErrorCode, ErrorDomain = """"GKErrorDomain"""")]
+        public enum NativeSampleEnum : long {
+                None = 0,
+                Unknown = 1,
+        }
+        public delegate void Callback (NativeSampleEnum enumParameter);
+        public class MyClass {
+                public void MyMethod (Callback cb) {}
+        }
+}
+";
+
+			yield return [
+				nativeEnumParameter,
+				"internal static unsafe void Invoke (global::System.IntPtr block_ptr, long enumParameter)",
+			];
+
+			var boolParameter = @"
+using System;
+using ObjCRuntime;
+namespace NS {
+	public delegate void Callback (bool boolParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				boolParameter,
+				"internal static unsafe void Invoke (global::System.IntPtr block_ptr, byte boolParameter)",
+			];
+
+			var nsObjectArray = @"
+using System;
+using Foundation;
+using ObjCRuntime;
+namespace NS {
+	public delegate void Callback (NSObject[] nsObjectArray);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				nsObjectArray,
+				"internal static unsafe void Invoke (global::System.IntPtr block_ptr, global::ObjCRuntime.NativeHandle nsObjectArray)",
+			];
+
+			var iNativeObjectArray = @"
+using System;
+using Foundation;
+using CoreMedia;
+using ObjCRuntime;
+namespace NS {
+	public delegate void Callback (CMTimebase[] inativeArray);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				iNativeObjectArray,
+				"internal static unsafe void Invoke (global::System.IntPtr block_ptr, global::ObjCRuntime.NativeHandle inativeArray)"
+			];
+
+
+			var stringArray = @"
+using System;
+using Foundation;
+using ObjCRuntime;
+namespace NS {
+	public delegate void Callback (string [] stringArray);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				stringArray,
+				"internal static unsafe void Invoke (global::System.IntPtr block_ptr, global::ObjCRuntime.NativeHandle stringArray)",
+			];
+
+			var protocolParameter = @"
+using System;
+using Foundation;
+using ObjCRuntime;
+namespace NS {
+	public delegate void Callback (INSUrlConnectionDataDelegate protocolParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				protocolParameter,
+				"internal static unsafe void Invoke (global::System.IntPtr block_ptr, global::ObjCRuntime.NativeHandle protocolParameter)"
+			];
+
+			var outNullableInt = @"
+using System;
+using Foundation;
+using ObjCBindings;
+namespace NS {
+	public delegate void Callback (out int? outNullableInt);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				outNullableInt,
+				"internal static unsafe void Invoke (global::System.IntPtr block_ptr, int* outNullableInt)"
+			];
+
+			var outBoolean = @"
+using System;
+using Foundation;
+using ObjCBindings;
+namespace NS {
+	public delegate void Callback (out bool outBool);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				outBoolean,
+				"internal static unsafe void Invoke (global::System.IntPtr block_ptr, byte* outBool)",
+			];
+
+
+			var outNSObject = @"
+using System;
+using Foundation;
+using ObjCBindings;
+namespace NS {
+	public delegate void Callback (ref NSObject outNSObject);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				outNSObject,
+				"internal static unsafe void Invoke (global::System.IntPtr block_ptr, global::ObjCRuntime.NativeHandle* outNSObject)"
+			];
+
+			var valueReturnboolParameter = @"
+using System;
+using ObjCRuntime;
+namespace NS {
+	public delegate int Callback (bool boolParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				valueReturnboolParameter,
+				"internal static unsafe int Invoke (global::System.IntPtr block_ptr, byte boolParameter)",
+			];
+
+			var nsObjectReturnBoolParameter = @"
+using System;
+using Foundation;
+using ObjCRuntime;
+namespace NS {
+	public delegate NSObject Callback (bool boolParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				nsObjectReturnBoolParameter,
+				"internal static unsafe global::ObjCRuntime.NativeHandle Invoke (global::System.IntPtr block_ptr, byte boolParameter)",
+			];
+
+			var nullableNSObjectReturnBoolParameter = @"
+using System;
+using Foundation;
+using ObjCRuntime;
+namespace NS {
+	public delegate NSObject? Callback (bool boolParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				nullableNSObjectReturnBoolParameter,
+				"internal static unsafe global::ObjCRuntime.NativeHandle Invoke (global::System.IntPtr block_ptr, byte boolParameter)",
+			];
+
+			var arrayNSObjectReturnBoolParameter = @"
+using System;
+using Foundation;
+using ObjCRuntime;
+namespace NS {
+	public delegate NSObject[] Callback (bool boolParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				arrayNSObjectReturnBoolParameter,
+				"internal static unsafe global::ObjCRuntime.NativeHandle Invoke (global::System.IntPtr block_ptr, byte boolParameter)",
+			];
+
+			var nullableArrayNSObjectReturnBoolParameter = @"
+using System;
+using Foundation;
+using ObjCRuntime;
+namespace NS {
+	public delegate NSObject[]? Callback (bool boolParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				nullableArrayNSObjectReturnBoolParameter,
+				"internal static unsafe global::ObjCRuntime.NativeHandle Invoke (global::System.IntPtr block_ptr, byte boolParameter)",
+			];
+
+			var blockNamedParameter = @"
+using System;
+using Foundation;
+using ObjCRuntime;
+namespace NS {
+	public delegate NSObject[]? Callback (bool block_ptr);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				blockNamedParameter,
+				"internal static unsafe global::ObjCRuntime.NativeHandle Invoke (global::System.IntPtr block_ptr_0, byte block_ptr)",
+			];
+
+			var doubleBlockNamedParameter = @"
+using System;
+using Foundation;
+using ObjCRuntime;
+namespace NS {
+	public delegate NSObject[]? Callback (bool block_ptr, bool block_ptr_0);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				doubleBlockNamedParameter,
+				"internal static unsafe global::ObjCRuntime.NativeHandle Invoke (global::System.IntPtr block_ptr_1, byte block_ptr, byte block_ptr_0)",
+			];
+		}
+
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
+	}
+
+	[Theory]
+	[AllSupportedPlatformsClassData<TestDataGetTrampolineInvokeDeclaration>]
+	void GetTrampolineInvokeDeclarationTests (ApplePlatform platform, string inputText, string expectedExpression)
+	{
+		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
+		Assert.Single (syntaxTrees);
+		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
+		var declaration = syntaxTrees [0].GetRoot ()
+			.DescendantNodes ().OfType<MethodDeclarationSyntax> ()
+			.FirstOrDefault ();
+		Assert.NotNull (declaration);
+		Assert.True (Method.TryCreate (declaration, semanticModel, out var changes));
+		Assert.NotNull (changes);
+		// we know the first parameter of the method is the delegate
+		Assert.Single (changes.Value.Parameters);
+		var parameter = changes.Value.Parameters [0];
+		// assert it is indeed a delegate
+		Assert.NotNull (parameter.Type.Delegate);
+		var delegateDeclaration = GetTrampolineInvokeSignature (parameter.Type);
+		Assert.Equal (expectedExpression, delegateDeclaration.ToString ());
+	}
+
+	class TestDataGetTrampolineDelegatePointer : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
+		{
+			var pointerParameter = @"
+using System;
+namespace NS {
+	public delegate void Callback (int* pointerParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				pointerParameter,
+				"delegate* unmanaged<global::System.IntPtr, int*, void> trampoline = &Invoke;",
+			];
+
+			var ccallbackParameter = @"
+using System;
+using ObjCRuntime;
+namespace NS {
+	public delegate void Callback ([CCallback] Action callbackParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				ccallbackParameter,
+				"delegate* unmanaged<global::System.IntPtr, global::System.IntPtr, void> trampoline = &Invoke;",
+			];
+
+			var nativeEnumParameter = @"
+using System;
+using ObjCBindings;
+using ObjCRuntime;
+namespace NS {
+        [Native (""""GKErrorCode"""")]
+        [BindingType<SmartEnum> (Flags = SmartEnum.ErrorCode, ErrorDomain = """"GKErrorDomain"""")]
+        public enum NativeSampleEnum : long {
+                None = 0,
+                Unknown = 1,
+        }
+        public delegate void Callback (NativeSampleEnum enumParameter);
+        public class MyClass {
+                public void MyMethod (Callback cb) {}
+        }
+}
+";
+
+			yield return [
+				nativeEnumParameter,
+				"delegate* unmanaged<global::System.IntPtr, long, void> trampoline = &Invoke;",
+			];
+
+			var boolParameter = @"
+using System;
+using ObjCRuntime;
+namespace NS {
+	public delegate void Callback (bool boolParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				boolParameter,
+				"delegate* unmanaged<global::System.IntPtr, byte, void> trampoline = &Invoke;",
+			];
+
+			var nsObjectArray = @"
+using System;
+using Foundation;
+using ObjCRuntime;
+namespace NS {
+	public delegate void Callback (NSObject[] nsObjectArray);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				nsObjectArray,
+				"delegate* unmanaged<global::System.IntPtr, global::ObjCRuntime.NativeHandle, void> trampoline = &Invoke;",
+			];
+
+			var iNativeObjectArray = @"
+using System;
+using Foundation;
+using CoreMedia;
+using ObjCRuntime;
+namespace NS {
+	public delegate void Callback (CMTimebase[] inativeArray);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				iNativeObjectArray,
+				"delegate* unmanaged<global::System.IntPtr, global::ObjCRuntime.NativeHandle, void> trampoline = &Invoke;",
+			];
+
+			var stringArray = @"
+using System;
+using Foundation;
+using ObjCRuntime;
+namespace NS {
+	public delegate void Callback (string [] stringArray);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				stringArray,
+				"delegate* unmanaged<global::System.IntPtr, global::ObjCRuntime.NativeHandle, void> trampoline = &Invoke;",
+			];
+
+			var protocolParameter = @"
+using System;
+using Foundation;
+using ObjCRuntime;
+namespace NS {
+	public delegate void Callback (INSUrlConnectionDataDelegate protocolParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				protocolParameter,
+				"delegate* unmanaged<global::System.IntPtr, global::ObjCRuntime.NativeHandle, void> trampoline = &Invoke;",
+			];
+			var outNullableInt = @"
+using System;
+using Foundation;
+using ObjCBindings;
+namespace NS {
+	public delegate void Callback (out int? outNullableInt);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				outNullableInt,
+				"delegate* unmanaged<global::System.IntPtr, int*, void> trampoline = &Invoke;",
+			];
+
+			var outBoolean = @"
+using System;
+using Foundation;
+using ObjCBindings;
+namespace NS {
+	public delegate void Callback (out bool outBool);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				outBoolean,
+				"delegate* unmanaged<global::System.IntPtr, byte*, void> trampoline = &Invoke;",
+			];
+
+			var outNSObject = @"
+using System;
+using Foundation;
+using ObjCBindings;
+namespace NS {
+	public delegate void Callback (ref NSObject outNSObject);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				outNSObject,
+				"delegate* unmanaged<global::System.IntPtr, global::ObjCRuntime.NativeHandle*, void> trampoline = &Invoke;",
+			];
+
+			var valueReturnboolParameter = @"
+using System;
+using ObjCRuntime;
+namespace NS {
+	public delegate int Callback (bool boolParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				valueReturnboolParameter,
+				"delegate* unmanaged<global::System.IntPtr, byte, int> trampoline = &Invoke;",
+			];
+
+			var nsObjectReturnBoolParameter = @"
+using System;
+using Foundation;
+using ObjCRuntime;
+namespace NS {
+	public delegate NSObject Callback (bool boolParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				nsObjectReturnBoolParameter,
+				"delegate* unmanaged<global::System.IntPtr, byte, global::ObjCRuntime.NativeHandle> trampoline = &Invoke;",
+			];
+
+			var nullableNSObjectReturnBoolParameter = @"
+using System;
+using Foundation;
+using ObjCRuntime;
+namespace NS {
+	public delegate NSObject? Callback (bool boolParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				nullableNSObjectReturnBoolParameter,
+				"delegate* unmanaged<global::System.IntPtr, byte, global::ObjCRuntime.NativeHandle> trampoline = &Invoke;",
+			];
+
+			var arrayNSObjectReturnBoolParameter = @"
+using System;
+using Foundation;
+using ObjCRuntime;
+namespace NS {
+	public delegate NSObject[] Callback (bool boolParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				arrayNSObjectReturnBoolParameter,
+				"delegate* unmanaged<global::System.IntPtr, byte, global::ObjCRuntime.NativeHandle> trampoline = &Invoke;",
+			];
+
+			var nullableArrayNSObjectReturnBoolParameter = @"
+using System;
+using Foundation;
+using ObjCRuntime;
+namespace NS {
+	public delegate NSObject[]? Callback (bool boolParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				nullableArrayNSObjectReturnBoolParameter,
+				"delegate* unmanaged<global::System.IntPtr, byte, global::ObjCRuntime.NativeHandle> trampoline = &Invoke;",
+			];
+		}
+
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
+	}
+
+	[Theory]
+	[AllSupportedPlatformsClassData<TestDataGetTrampolineDelegatePointer>]
+	void GetTrampolineDelegatePointerTests (ApplePlatform platform, string inputText, string expectedExpression)
+	{
+		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
+		Assert.Single (syntaxTrees);
+		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
+		var declaration = syntaxTrees [0].GetRoot ()
+			.DescendantNodes ().OfType<MethodDeclarationSyntax> ()
+			.FirstOrDefault ();
+		Assert.NotNull (declaration);
+		Assert.True (Method.TryCreate (declaration, semanticModel, out var changes));
+		Assert.NotNull (changes);
+		// we know the first parameter of the method is the delegate
+		Assert.Single (changes.Value.Parameters);
+		var parameter = changes.Value.Parameters [0];
+		// assert it is indeed a delegate
+		Assert.NotNull (parameter.Type.Delegate);
+		var delegateDeclaration = GetTrampolineDelegatePointer (parameter.Type);
+		Assert.Equal (expectedExpression, delegateDeclaration.ToString ());
 	}
 
 }

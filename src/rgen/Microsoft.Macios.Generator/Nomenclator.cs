@@ -200,4 +200,10 @@ class Nomenclator {
 	/// </summary>
 	/// <returns>The method name to be used.</returns>
 	public static string GetTrampolineInvokeMethodName () => "Invoke";
+
+	/// <summary>
+	/// Return the name of the invoke method of the trampoline.
+	/// </summary>
+	/// <returns>The method name to be used.</returns>
+	public static string GetTrampolineDelegatePointerVariableName () => "trampoline";
 }

@@ -216,7 +216,7 @@ static partial class BindingSyntaxFactory {
 	/// </summary>
 	/// <param name="parameter">The parameter we want to generate for the lower invoke method.</param>
 	/// <returns>The parameter syntax needed for the parameter.</returns>
-	internal static ParameterSyntax GetTrampolineInvokeParameter (in DelegateParameter parameter)
+	internal static (SyntaxToken ParameterName, TypeSyntax ParameterType) GetTrampolineInvokeParameter (in DelegateParameter parameter)
 	{
 		// in the general case we will return the low level type conversion of the parameter type but we 
 		// need to handle in a special case those parameters that are passed by reference
@@ -240,10 +240,7 @@ static partial class BindingSyntaxFactory {
 			_ => (parameterIdentifier, GetLowLevelType (parameter.Type)),
 		};
 #pragma warning restore format
-		
-		return Parameter (parameterInfo.ParameterName)
-			.WithType (parameterInfo.ParameterType)
-			.NormalizeWhitespace ();
+		return parameterInfo;
 	}
 
 	/// <summary>
@@ -633,9 +630,13 @@ static partial class BindingSyntaxFactory {
 			Parameter (Identifier (Nomenclator.GetTrampolineBlockParameterName (delegateTypeInfo.Delegate!.Parameters)))
 				.WithType (IntPtr));
 		// calculate the rest of the parameters  
-		foreach (var parameterInfo in delegateTypeInfo.Delegate!.Parameters) {
+		foreach (var currentParameter in delegateTypeInfo.Delegate!.Parameters) {
 			// build the parameter
-			parameterBucket.Add (GetTrampolineInvokeParameter (parameterInfo));
+			var parameterInfo = GetTrampolineInvokeParameter (currentParameter);
+			var parameter = Parameter (parameterInfo.ParameterName)
+				.WithType (parameterInfo.ParameterType)
+				.NormalizeWhitespace ();
+			parameterBucket.Add (parameter);
 		}
 
 		var parametersSyntax = ParameterList (
@@ -667,6 +668,56 @@ static partial class BindingSyntaxFactory {
 			.WithParameterList (parametersSyntax.WithLeadingTrivia (Space));
 
 		return declaration;
+	}
+
+	/// <summary>
+	/// Generatees the delegate pointer variable for the trampoline. The delegate pointer is a function pointer that
+	/// takes the same parameters as the delegate but with the addition of a IntPtr parameter that represents
+	/// the native block.
+	/// </summary>
+	/// <param name="delegateTypeInfo">The information of the delegate.</param>
+	/// <returns>The expression that defines a variable that holds the function pointer.</returns>
+	internal static StatementSyntax GetTrampolineDelegatePointer (in TypeInfo delegateTypeInfo)
+	{
+		// build the function parameter list
+		var parameterBucket = ImmutableArray.CreateBuilder<FunctionPointerParameterSyntax> (delegateTypeInfo.Delegate!.Parameters.Length + 1);
+		// block parameter needed for the trampoline
+		parameterBucket.Add (FunctionPointerParameter (IntPtr));
+		// calculate the rest of the parameters  
+		foreach (var currentParameter in delegateTypeInfo.Delegate!.Parameters) {
+			// build the parameter
+			var (_, parameterType) = GetTrampolineInvokeParameter (currentParameter);
+			parameterBucket.Add (FunctionPointerParameter (parameterType));
+		}
+		// we need to add the return type of the delegate
+		parameterBucket.Add (FunctionPointerParameter (GetLowLevelType (delegateTypeInfo.Delegate!.ReturnType)));
+
+		// generates the function parameter list:
+		// example:
+		// <IntPtr, int, int, int>
+		// that is, the block ptr, the parameters and the return type
+		var parametersSyntax = FunctionPointerParameterList (
+			SeparatedList<FunctionPointerParameterSyntax> (
+				parameterBucket.ToImmutableArray ().ToSyntaxNodeOrTokenArray ())).NormalizeWhitespace ();
+
+		// function pointer type
+		var pointerType = FunctionPointerType ()
+			.WithCallingConvention (
+				FunctionPointerCallingConvention (
+					Token (SyntaxKind.UnmanagedKeyword)))
+			.WithParameterList (parametersSyntax.WithLeadingTrivia (Space));
+		// declare the delegate pointer variable:
+		var declaration = VariableDeclaration (pointerType)
+			.WithVariables (SingletonSeparatedList (
+				VariableDeclarator (
+						Identifier (Nomenclator.GetTrampolineDelegatePointerVariableName ()))
+					.WithInitializer (
+						EqualsValueClause (
+							PrefixUnaryExpression (
+								SyntaxKind.AddressOfExpression,
+								IdentifierName (Nomenclator.GetTrampolineInvokeMethodName ()))))));
+
+		return LocalDeclarationStatement (declaration.NormalizeWhitespace ());
 	}
 
 	/// <summary>

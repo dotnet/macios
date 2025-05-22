@@ -20,36 +20,15 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 
 	public static TypeInfo Void = new ("void", SpecialType.System_Void) { Parents = ["System.ValueType", "object"], };
 
-	readonly string fullyQualifiedName = string.Empty;
 	/// <summary>
 	/// The fully qualified name of the type.
 	/// </summary>
-	public string FullyQualifiedName {
-		get => fullyQualifiedName;
-		init {
-			fullyQualifiedName = value;
-			// there are few things to consider when setting the name of the class, first we need to
-			// to make the diff between a generic class and a non generic class
-			var nonGenericName = fullyQualifiedName.Contains ('<')
-				? fullyQualifiedName.Substring (0, fullyQualifiedName.IndexOf ('<'))
-				: fullyQualifiedName;
-			var index = nonGenericName.LastIndexOf ('.');
-			Name = index != -1
-				? nonGenericName.Substring (index + 1)
-				: nonGenericName;
-			// based on the name, calculate the name space for the class
-			if (Name.Length == nonGenericName.Length)
-				Namespace = [];
-			else
-				// remove the name + 1 for the dot
-				Namespace = [.. nonGenericName.Remove (nonGenericName.Length - (Name.Length + 1)).Split ('.')];
-		}
-	}
+	public string FullyQualifiedName { get; init; } = string.Empty;
 
 	/// <summary>
 	/// Type name.
 	/// </summary>
-	public string Name { get; private init; } = string.Empty;
+	public string Name { get; init; } = string.Empty;
 
 	/// <summary>
 	/// The namespace of the type, split by '.'.
@@ -236,6 +215,24 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	{
 		FullyQualifiedName = name;
 		SpecialType = specialType;
+		
+		// calculate the name and namespace based on the name. This is not the most efficient way to do it and it is
+		// a internal constructor for testing purposes only.
+		// there are few things to consider when setting the name of the class, first we need to
+		// to make the diff between a generic class and a non generic class
+		var nonGenericName = FullyQualifiedName.Contains ('<')
+			? FullyQualifiedName.Substring (0, FullyQualifiedName.IndexOf ('<'))
+			: FullyQualifiedName;
+		var index = nonGenericName.LastIndexOf ('.');
+		Name = index != -1
+			? nonGenericName.Substring (index + 1)
+			: nonGenericName;
+		// based on the name, calculate the name space for the class
+		if (Name.Length == nonGenericName.Length)
+			Namespace = [];
+		else
+			// remove the name + 1 for the dot
+			Namespace = [.. nonGenericName.Remove (nonGenericName.Length - (Name.Length + 1)).Split ('.')];
 	}
 
 	internal TypeInfo (string name,
@@ -255,17 +252,41 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		IsStruct = isStruct;
 	}
 
-	static string GetTypeName (ITypeSymbol symbol)
+	static (string Name, ImmutableArray<string> Namespace) GetTypeNameAndNamespace (ITypeSymbol symbol)
 	{
-		// calculating the name of the type is a little more complicated that just using the 
-		return symbol is IArrayTypeSymbol arrayTypeSymbol
-			? arrayTypeSymbol.ElementType.ToDisplayString ()
-			: symbol.ToDisplayString ().Trim ('?', '[', ']');
+		if (symbol.SpecialType == SpecialType.None) 
+			return (symbol.Name, GetNamespaceComponents (symbol));
+		
+		var token = symbol.SpecialType.GetKeyword ();
+		var name = string.IsNullOrEmpty (token) ? symbol.Name : token;
+		// if we are dealing with int, uint etc.. we will ignore the namespace since it is not needed
+		return (name, []);
+	}
+	
+	/// <summary>
+	/// Returns the namespace components of the type symbol.
+	/// </summary>
+	/// <param name="symbol">The symbol we are interested in.</param>
+	/// <returns>An immutable array with the namespace components.</returns>
+	static ImmutableArray<string> GetNamespaceComponents (ITypeSymbol symbol)
+	{
+		var namespaceSymbol = symbol.ContainingNamespace;
+		var components = ImmutableArray.CreateBuilder<string> ();
+		while (namespaceSymbol is { IsGlobalNamespace: false })
+		{
+			components.Insert(0, namespaceSymbol.Name);
+			namespaceSymbol = namespaceSymbol.ContainingNamespace;
+		}
+		return components.ToImmutableArray();
 	}
 
-	internal TypeInfo (ITypeSymbol symbol) :
-		this (GetTypeName (symbol), symbol.SpecialType)
+	internal TypeInfo (ITypeSymbol symbol)
 	{
+		// general case, get the name and namespace. If we are dealing with a generic type or an array type
+		// the name will be later overwritten with the generic name or the array name
+		(Name, Namespace) = GetTypeNameAndNamespace (symbol);
+		SpecialType = symbol.SpecialType;
+		FullyQualifiedName = symbol.ToDisplayString ().Trim ('?', '[', ']');
 		IsNullable = symbol.NullableAnnotation == NullableAnnotation.Annotated;
 		IsBlittable = symbol.IsBlittable ();
 		IsSmartEnum = symbol.IsSmartEnum ();
@@ -288,6 +309,9 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 
 		IsWrapped = symbol.IsWrapped (isNSObject);
 		if (symbol is IArrayTypeSymbol arraySymbol) {
+			// override the name and namespace with the array name
+			(Name, Namespace) = GetTypeNameAndNamespace (arraySymbol.ElementType);
+			FullyQualifiedName = arraySymbol.ElementType.ToDisplayString ();
 			IsArray = true;
 			ArrayElementType = arraySymbol.ElementType.SpecialType;
 			ArrayElementTypeIsWrapped = arraySymbol.ElementType.IsWrapped ();

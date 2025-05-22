@@ -80,12 +80,12 @@ namespace Xamarin.BindingTests {
 		}
 
 		class SubclassedTypeProvidingProtocolConstructors : TypeProvidingProtocolConstructors {
-			SubclassedTypeProvidingProtocolConstructors (NativeHandle handle) : base (handle) {}
+			SubclassedTypeProvidingProtocolConstructors (NativeHandle handle) : base (handle) { }
 
 		}
 
 		class SubclassedTypeProvidingProtocolConstructors2 : TypeProvidingProtocolConstructors {
-			SubclassedTypeProvidingProtocolConstructors2 (NativeHandle handle) : base (handle) {}
+			SubclassedTypeProvidingProtocolConstructors2 (NativeHandle handle) : base (handle) { }
 
 			[Export ("initRequired:")]
 			public SubclassedTypeProvidingProtocolConstructors2 (string value)

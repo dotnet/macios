@@ -94,9 +94,7 @@ namespace ReplayKit {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-#if MONOMAC
 	[Sealed]
-#endif
 	interface RPScreenRecorder {
 
 		[Static]

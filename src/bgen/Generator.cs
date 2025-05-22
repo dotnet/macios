@@ -4988,14 +4988,15 @@ public partial class Generator : IMemberGatherer {
 			// Ref: https://github.com/dotnet/runtime/issues/37352#issuecomment-644385807
 			var docIds = instanceMethods
 				.Select (mi => DocumentationManager.GetDocId (mi, includeDeclaringType: false, alwaysIncludeParenthesis: true))
-				.Concat (instanceProperties.Select (v => v.Name));
+				.Concat (instanceProperties.Select (v => v.Name))
+				.Select (v => $"\"{v}\"");
 			dynamicDependencies.AddRange (docIds);
 		}
 		// Tell the trimmer to not remove the wrapper type if the interface itself isn't trimmed away
-		dynamicDependencies.Add ($"T:{(type.Namespace is not null ? type.Namespace + "." : "")}{TypeName}Wrapper");
+		dynamicDependencies.Add ($"DynamicallyAccessedMemberTypes.PublicConstructors, typeof ({TypeName}Wrapper)");
 		if (dynamicDependencies.Count > 0) {
-			foreach (var docId in dynamicDependencies.OrderBy (v => v))
-				print ($"[DynamicDependencyAttribute (\"{docId}\")]");
+			foreach (var dd in dynamicDependencies.OrderBy (v => v))
+				print ($"[DynamicDependencyAttribute ({dd})]");
 			print ("[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]");
 			print ($"static I{TypeName} ()");
 			print ("{");

@@ -23,24 +23,19 @@ static partial class BindingSyntaxFactory {
 	readonly static string objc_msgSendSuper = "objc_msgSendSuper";
 	readonly static TypeSyntax Selector = GetIdentifierName (
 		@namespace: ["ObjCRuntime"],
-		@class: "Selector",
-		isGlobal: true);
+		@class: "Selector");
 	public static readonly TypeSyntax NSValue = GetIdentifierName (
 		@namespace: ["Foundation"],
-		@class: "NSValue",
-		isGlobal: true);
+		@class: "NSValue");
 	public static readonly TypeSyntax NSNumber = GetIdentifierName (
 		@namespace: ["Foundation"],
-		@class: "NSNumber",
-		isGlobal: true);
+		@class: "NSNumber");
 	public readonly static TypeSyntax NativeHandle = GetIdentifierName (
 		@namespace: ["ObjCRuntime"],
-		@class: "NativeHandle",
-		isGlobal: true);
+		@class: "NativeHandle");
 	public readonly static TypeSyntax IntPtr = GetIdentifierName (
 		@namespace: ["System"],
-		@class: "IntPtr",
-		isGlobal: true);
+		@class: "IntPtr");
 
 	/// <summary>
 	/// Returns the expression needed to cast a parameter to its native type.

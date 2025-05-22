@@ -1429,4 +1429,7 @@
             This may be either a warning or an error, depending on build configuration.
         </comment>
     </data>
+  <data name="E7152_InvalidMtouchHttpClientHandler" xml:space="preserve">
+        <value>Invalid value for 'MtouchHttpClientHandler' ('{0}', must be either 'NSUrlSessionHandler' or 'CFNetworkHandler' (or not set at all).</value>
+    </data>
 </root>

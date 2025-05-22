@@ -24,53 +24,53 @@ namespace Xamarin.MacDev.Tasks {
 		public ITaskItem [] EnvironmentVariables { get; set; } = [];
 
 		[Output]
-		public string MarshalManagedExceptionMode { get; set; } = "";
+		public string? MarshalManagedExceptionMode { get; set; }
 
 		[Output]
-		public string MarshalObjectiveCExceptionMode { get; set; } = "";
+		public string? MarshalObjectiveCExceptionMode { get; set; }
 
 		[Output]
-		public string CustomBundleName { get; set; } = "";
+		public string? CustomBundleName { get; set; }
 
 		[Output]
 		public ITaskItem [] CustomLinkFlags { get; set; } = [];
 
 		[Output]
-		public string NoSymbolStrip { get; set; } = "";
+		public string? NoSymbolStrip { get; set; }
 
 		[Output]
-		public string NoDSymUtil { get; set; } = "";
+		public string? NoDSymUtil { get; set; }
 
 		[Output]
-		public string NoWarn { get; set; } = "";
+		public string? NoWarn { get; set; }
 
 		[Output]
-		public string Optimize { get; set; } = "";
+		public string? Optimize { get; set; }
 
 		[Output]
-		public string PackageDebugSymbols { get; set; } = "";
+		public string? PackageDebugSymbols { get; set; }
 
 		[Output]
-		public string Registrar { get; set; } = "";
+		public string? Registrar { get; set; }
 
 		[Output]
-		public string RequirePInvokeWrappers { get; set; } = "";
+		public string? RequirePInvokeWrappers { get; set; }
 
 		// This is input too
 		[Output]
-		public string NoStrip { get; set; } = "";
+		public string? NoStrip { get; set; }
 
 		[Output]
-		public string SkipMarkingNSObjectsInUserAssemblies { get; set; } = "";
+		public string? SkipMarkingNSObjectsInUserAssemblies { get; set; }
 
 		[Output]
 		public int Verbosity { get; set; }
 
 		[Output]
-		public string Warn { get; set; } = "";
+		public string? Warn { get; set; }
 
 		[Output]
-		public string WarnAsError { get; set; } = "";
+		public string? WarnAsError { get; set; }
 
 		[Output]
 		public ITaskItem [] XmlDefinitions { get; set; } = [];

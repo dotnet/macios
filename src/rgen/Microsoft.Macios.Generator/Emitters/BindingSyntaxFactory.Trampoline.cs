@@ -226,11 +226,11 @@ static partial class BindingSyntaxFactory {
 			// parameters that are passed by reference, depend on the type that is referenced
 			{ IsByRef: true, Type.IsReferenceType: false, Type.IsNullable: true} 
 				=> (parameterIdentifier, 
-					PointerType (parameter.Type.ToNonNullable ().GetIdentifierSyntax ())),
+					PointerType (GetLowLevelType (parameter.Type.ToNonNullable ()))),
 			
-			{ IsByRef: true, Type.SpecialType: SpecialType.System_Boolean} 
-				=> (parameterIdentifier,
-					PointerType (PredefinedType (Token(SyntaxKind.ByteKeyword)))),
+			{ IsByRef: true, Type.IsReferenceType: false, Type.IsNullable: false} 
+				=> (parameterIdentifier, 
+					PointerType (GetLowLevelType (parameter.Type))),
 			
 			{ IsByRef: true, Type.IsReferenceType: true, Type.IsNullable: false} 
 				=> (parameterIdentifier,

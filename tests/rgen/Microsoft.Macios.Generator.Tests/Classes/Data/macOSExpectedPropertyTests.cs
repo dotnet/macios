@@ -439,7 +439,7 @@ public partial class PropertyTests
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual partial global::CompareGeneratedCode.CompareGeneratedCode.netmodule..nfloat LineSpacing
+	public virtual partial global::System.Runtime.InteropServices.NFloat LineSpacing
 	{
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
@@ -447,7 +447,7 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("maccatalyst13.1")]
 		get
 		{
-			global::CompareGeneratedCode.CompareGeneratedCode.netmodule..nfloat ret;
+			global::System.Runtime.InteropServices.NFloat ret;
 			if (IsDirectBinding) {
 				ret = global::ObjCRuntime.Messaging.nfloat_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("lineSpacing"));
 			} else {

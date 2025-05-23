@@ -278,7 +278,7 @@ static partial class BindingSyntaxFactory {
 			
 			// boolean, convert it to byte
 			{ Type.SpecialType: SpecialType.System_Boolean } 
-				=> CastToByte (parameter.Name, parameter.Type)!,
+				=> CastToBool (parameter.Name, parameter.Type)!,
 			
 			// array types
 			

@@ -391,7 +391,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				boolParameter,
-				"boolParameter ? (byte) 1 : (byte) 0",
+				"boolParameter != 0",
 			];
 
 			var nsObjectArray = @"

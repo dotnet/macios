@@ -604,7 +604,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				audioBuffer,
-				"new AudioToolbox.AudioBuffers (audioBuffer)",
+				$"new {Global ("AudioToolbox.AudioBuffers")} (audioBuffer)",
 			];
 
 			var outNullableInt = @"

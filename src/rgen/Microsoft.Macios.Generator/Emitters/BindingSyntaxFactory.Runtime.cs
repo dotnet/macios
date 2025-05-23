@@ -6,6 +6,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Macios.Generator.Extensions;
+using Microsoft.Macios.Generator.Formatters;
 using TypeInfo = Microsoft.Macios.Generator.DataModel.TypeInfo;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
@@ -493,18 +494,11 @@ static partial class BindingSyntaxFactory {
 	/// <param name="arguments">The argument list for the object creation expression.</param>
 	/// <param name="global">If the global qualifier should be used.</param>
 	/// <returns>An object creation expression.</returns>
-	internal static ObjectCreationExpressionSyntax New (in TypeInfo type, ImmutableArray<ArgumentSyntax> arguments,
-		bool global = false)
+	internal static ObjectCreationExpressionSyntax New (in TypeInfo type, ImmutableArray<ArgumentSyntax> arguments)
 	{
 		var argumentList = ArgumentList (
 			SeparatedList<ArgumentSyntax> (arguments.ToSyntaxNodeOrTokenArray ()));
-		NameSyntax identifier = global
-			? AliasQualifiedName (
-				IdentifierName (Token (SyntaxKind.GlobalKeyword)),
-				IdentifierName (type.FullyQualifiedName))
-			: IdentifierName (type.FullyQualifiedName);
-
-		return ObjectCreationExpression (identifier.WithLeadingTrivia (Space).WithTrailingTrivia (Space))
+		return ObjectCreationExpression (type.GetIdentifierSyntax ().WithLeadingTrivia (Space).WithTrailingTrivia (Space))
 			.WithArgumentList (argumentList);
 	}
 

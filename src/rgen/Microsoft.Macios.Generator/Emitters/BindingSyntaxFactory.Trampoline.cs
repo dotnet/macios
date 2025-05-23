@@ -324,7 +324,7 @@ static partial class BindingSyntaxFactory {
 			// {0} == IntPtr.Zero ? null! : new global::CoreMedia.CMSampleBuffer ({0}, false)
 			{ Type.FullyQualifiedName: "CoreMedia.CMSampleBuffer" } =>
 				IntPtrZeroCheck (parameter.Name, 
-					expressionSyntax: New (parameter.Type, [Argument (parameterIdentifier), BoolArgument (false)], true), 
+					expressionSyntax: New (parameter.Type, [Argument (parameterIdentifier), BoolArgument (false)]), 
 					suppressNullableWarning: true),
 			
 			// AudioToolbox.AudioBuffers

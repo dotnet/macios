@@ -41,6 +41,7 @@ class TrampolineEmitter (
 		var className = Nomenclator.GetTrampolineClassName (trampolineName, Nomenclator.TrampolineClassType.StaticBridgeClass);
 		var invokeMethodName = Nomenclator.GetTrampolineInvokeMethodName ();
 		var trampolineVariableName = Nomenclator.GetTrampolineDelegatePointerVariableName ();
+		var delegateVariableName = Nomenclator.GetTrampolineDelegateVariableName ();
 		
 		classBuilder.WriteDocumentation (Documentation.Class.TrampolineStaticClass (className));
 		using (var classBlock = classBuilder.CreateBlock ($"static internal class {className}", true)) {
@@ -50,8 +51,8 @@ class TrampolineEmitter (
 			classBlock.WriteLine ($"[UserDelegateType (typeof ({delegateIdentifier}))]");
 			using (var invokeMethod = classBlock.CreateBlock (GetTrampolineInvokeSignature (typeInfo).ToString (), true)) {
 				invokeMethod.WriteRaw (
-@$"var del = { BlockLiteral }.GetTarget<{delegateIdentifier}> ({Nomenclator.GetTrampolineBlockParameterName (typeInfo.Delegate!.Parameters)});
-if (del is not null) {{
+@$"var {delegateVariableName} = { BlockLiteral }.GetTarget<{delegateIdentifier}> ({Nomenclator.GetTrampolineBlockParameterName (typeInfo.Delegate!.Parameters)});
+if ({delegateVariableName} is not null) {{
 	{CallTrampolineDelegate (typeInfo.Delegate!, argumentSyntax)}
 }}
 "

@@ -18,14 +18,7 @@ namespace Microsoft.Macios.Generator.Emitters;
 /// Syntax factory for the Dlfcn calls.
 /// </summary>
 static partial class BindingSyntaxFactory {
-	internal readonly static TypeSyntax Dlfcn = StringExtensions.GetIdentifierName (
-		@namespace: ["ObjCRuntime"],
-		@class: "Dlfcn");
-
-	public readonly static TypeSyntax Libraries = StringExtensions.GetIdentifierName (
-		@namespace: ["ObjCRuntime"],
-		@class: "Libraries");
-
+	
 	/// <summary>
 	/// Get the syntax needed to access a library handle.
 	/// </summary>

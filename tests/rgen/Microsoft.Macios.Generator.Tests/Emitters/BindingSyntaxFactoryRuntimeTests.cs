@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -837,14 +838,14 @@ public class BindingSyntaxFactoryRuntimeTests {
 		{
 			// no namespace
 			yield return [
-				null!,
+				Array.Empty<string>(),
 				"NSObject",
 				false,
 				"NSObject",
 			];
 
 			yield return [
-				null!,
+				Array.Empty<string>(),
 				"NSObject",
 				true,
 				"NSObject",
@@ -896,7 +897,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 
 	[Theory]
 	[ClassData (typeof (TestDataGetIdentifierNameTests))]
-	void GetIdentifierNameTests (string []? @namespace, string @class, bool isGlobal, string expectedDeclaration)
+	void GetIdentifierNameTests (string [] @namespace, string @class, bool isGlobal, string expectedDeclaration)
 	{
 		var declaration = @class.GetIdentifierName (@namespace, isGlobal);
 		Assert.Equal (expectedDeclaration, declaration.ToFullString ());

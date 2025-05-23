@@ -12,18 +12,6 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 namespace Microsoft.Macios.Generator.Emitters;
 
 static partial class BindingSyntaxFactory {
-	public static readonly TypeSyntax Runtime = StringExtensions.GetIdentifierName (
-		@namespace: ["ObjCRuntime"],
-		@class: "Runtime");
-	public static readonly TypeSyntax NSArray = StringExtensions.GetIdentifierName (
-		@namespace: ["Foundation"],
-		@class: "NSArray");
-	public static readonly TypeSyntax CFArray = StringExtensions.GetIdentifierName (
-		@namespace: ["CoreFoundation"],
-		@class: "CFArray");
-	public static readonly TypeSyntax CFString = StringExtensions.GetIdentifierName (
-		@namespace: ["CoreFoundation"],
-		@class: "CFString");
 	public const string ClassPtr = "class_ptr";
 
 	/// <summary>

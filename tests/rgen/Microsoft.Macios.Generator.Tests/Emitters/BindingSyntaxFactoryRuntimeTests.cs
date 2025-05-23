@@ -838,14 +838,14 @@ public class BindingSyntaxFactoryRuntimeTests {
 		{
 			// no namespace
 			yield return [
-				Array.Empty<string>(),
+				Array.Empty<string> (),
 				"NSObject",
 				false,
 				"NSObject",
 			];
 
 			yield return [
-				Array.Empty<string>(),
+				Array.Empty<string> (),
 				"NSObject",
 				true,
 				"NSObject",

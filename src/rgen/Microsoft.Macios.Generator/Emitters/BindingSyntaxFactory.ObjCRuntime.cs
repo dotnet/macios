@@ -21,7 +21,7 @@ namespace Microsoft.Macios.Generator.Emitters;
 static partial class BindingSyntaxFactory {
 	readonly static string objc_msgSend = "objc_msgSend";
 	readonly static string objc_msgSendSuper = "objc_msgSendSuper";
-	
+
 	/// <summary>
 	/// Returns the expression needed to cast a parameter to its native type.
 	/// </summary>

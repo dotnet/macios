@@ -7,60 +7,60 @@ using Microsoft.Macios.Generator.Extensions;
 namespace Microsoft.Macios.Generator.Emitters;
 
 static partial class BindingSyntaxFactory {
-	
+
 	// CoreFoundation types
-	
+
 	/// <summary>
 	/// TypeSyntax for CoreFoundation.CFArray.
 	/// </summary>
 	public static readonly TypeSyntax CFArray = StringExtensions.GetIdentifierName (
 		@namespace: ["CoreFoundation"],
 		@class: "CFArray");
-	
+
 	/// <summary>
 	/// TypeSyntax for CoreFoundation.CFString.
 	/// </summary>
 	public static readonly TypeSyntax CFString = StringExtensions.GetIdentifierName (
 		@namespace: ["CoreFoundation"],
 		@class: "CFString");
-	
+
 	// ObjC runtime types
-	
+
 	/// <summary>
 	/// TypeSyntax for ObjCRuntime.Selector.
 	/// </summary>
 	public readonly static TypeSyntax Selector = StringExtensions.GetIdentifierName (
 		@namespace: ["ObjCRuntime"],
 		@class: "Selector");
-	
+
 	/// <summary>
 	/// TypeSyntax for ObjCRuntime.NativeHandle.
 	/// </summary>
 	public readonly static TypeSyntax NativeHandle = StringExtensions.GetIdentifierName (
 		@namespace: ["ObjCRuntime"],
 		@class: "NativeHandle");
-	
+
 	/// <summary>
 	/// TypeSyntax for ObjCRuntime.Class.
 	/// </summary>
 	public readonly static TypeSyntax Class = StringExtensions.GetIdentifierName (
 		@namespace: ["ObjCRuntime"],
 		@class: "Class");
-	
+
 	/// <summary>
 	/// TypeSyntax for ObjCRuntime.Dlfcn.
 	/// </summary>
 	internal readonly static TypeSyntax Dlfcn = StringExtensions.GetIdentifierName (
 		@namespace: ["ObjCRuntime"],
 		@class: "Dlfcn");
-	
+
 	/// <summary>
 	/// TypeSyntax for ObjCRuntime.Libraries.
 	/// </summary>
 	public readonly static TypeSyntax Libraries = StringExtensions.GetIdentifierName (
 		@namespace: ["ObjCRuntime"],
 		@class: "Libraries");
-	
+
 	/// <summary>
 	/// TypeSyntax for ObjCRuntime.Runtime.
 	/// </summary>

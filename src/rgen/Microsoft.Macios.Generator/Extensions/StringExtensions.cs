@@ -76,7 +76,7 @@ static class StringExtensions {
 	internal static TypeSyntax GetIdentifierName (this string @class, IEnumerable<string> @namespace, bool isGlobal = GeneratorConfiguration.UseGlobalNamespace)
 	{
 		// retrieve the name syntax for the namespace
-		var namespaceArray = @namespace as string[] ?? @namespace.ToArray();
+		var namespaceArray = @namespace as string [] ?? @namespace.ToArray ();
 		if (namespaceArray.Length == 0) {
 			// if we have no namespace, we do not care about it being global
 			return IdentifierName (@class);

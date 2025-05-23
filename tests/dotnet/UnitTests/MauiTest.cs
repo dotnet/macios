@@ -12,6 +12,11 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
 		public void BuildMauiApp (ApplePlatform platform, string runtimeIdentifiers)
 		{
+			BuildMauiAppImpl (platform, runtimeIdentifiers);
+		}
+
+		void BuildMauiAppImpl (ApplePlatform platform, string runtimeIdentifiers, Diagnostics<string, string?> properties = null)
+		{
 			var project = "MyMauiApp";
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 
@@ -20,7 +25,7 @@ namespace Xamarin.Tests {
 
 			DotNet.InstallWorkload ("maui-tizen");
 
-			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties = GetDefaultProperties (runtimeIdentifiers, extraProperties: properties);
 			var rv = DotNet.AssertBuild (project_path, properties);
 			AssertThatLinkerExecuted (rv);
 			var infoPlistPath = GetInfoPListPath (platform, appPath);
@@ -38,6 +43,14 @@ namespace Xamarin.Tests {
 			Assert.AreEqual ("copy", trimModeValue, "TrimMode");
 			Assert.AreEqual ("None", linkModeValue, "LinkMode");
 			Assert.AreEqual ("None", mtouchLinkValue, "MtouchLink");
+		}
+
+		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		[Category ("RemoteWindows")]
+		public void BuildMauiAppOnRemoteWindows (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			Configuration.IgnoreIfNotOnWindows ();
+			BuildMauiApp (platform, runtimeIdentifiers, AddRemoteProperties ());
 		}
 	}
 }

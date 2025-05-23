@@ -21,7 +21,7 @@ namespace Microsoft.Macios.Generator.Emitters;
 static partial class BindingSyntaxFactory {
 	readonly static string objc_msgSend = "objc_msgSend";
 	readonly static string objc_msgSendSuper = "objc_msgSendSuper";
-	
+
 	// ObjC runtime types
 	readonly static TypeSyntax Selector = StringExtensions.GetIdentifierName (
 		@namespace: ["ObjCRuntime"],
@@ -32,7 +32,7 @@ static partial class BindingSyntaxFactory {
 	public readonly static TypeSyntax Class = StringExtensions.GetIdentifierName (
 		@namespace: ["ObjCRuntime"],
 		@class: "Class");
-	
+
 	// Foundation types
 	public static readonly TypeSyntax NSValue = StringExtensions.GetIdentifierName (
 		@namespace: ["Foundation"],
@@ -55,13 +55,13 @@ static partial class BindingSyntaxFactory {
 	public readonly static TypeSyntax NSNotificationEventArgs = StringExtensions.GetIdentifierName (
 		@namespace: ["Foundation"],
 		@class: "NSNotificationEventArgs");
-	
+
 	// CoreMedia types
 	public readonly static TypeSyntax CMTag = StringExtensions.GetIdentifierName (
 		@namespace: ["CoreMedia"],
 		@class: "CMTag");
-	
-	
+
+
 	// System types
 	public readonly static TypeSyntax IntPtr = StringExtensions.GetIdentifierName (
 		@namespace: ["System"],

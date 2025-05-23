@@ -47,7 +47,7 @@ static class TypeInfoFormatter {
 			// dealing with a non-array or generic type
 			classSyntax = IdentifierName (typeInfo.Name);
 		}
-		
+
 		// build the full type name using the namespace and the class name
 		classSyntax = classSyntax.ToString ().GetIdentifierName (typeInfo.Namespace.ToArray ());
 		// we still need to check if the type is nullable

@@ -275,7 +275,7 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		while (namespaceSymbol is not null) {
 			components.Insert (0, namespaceSymbol.Name);
 			namespaceSymbol = namespaceSymbol.ContainingSymbol;
-			if (namespaceSymbol is INamespaceSymbol {IsGlobalNamespace: true})
+			if (namespaceSymbol is INamespaceSymbol { IsGlobalNamespace: true })
 				break;
 		}
 		return components.ToImmutableArray ();
@@ -518,8 +518,8 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 			SpecialType = ArrayElementType ?? SpecialType.None,
 		};
 	}
-	
-	public TypeInfo ToNonNullable()
+
+	public TypeInfo ToNonNullable ()
 	{
 		if (!IsNullable)
 			return this;

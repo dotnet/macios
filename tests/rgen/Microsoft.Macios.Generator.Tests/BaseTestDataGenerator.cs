@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 namespace Microsoft.Macios.Generator.Tests;
 
 public class BaseTestDataGenerator {
-	public static string ReadFileAsString (string file, [CallerFilePath] string filePath = "",  bool isGlobal = GeneratorConfiguration.UseGlobalNamespace)
+	public static string ReadFileAsString (string file, [CallerFilePath] string filePath = "", bool isGlobal = GeneratorConfiguration.UseGlobalNamespace)
 	{
 		var directoryPath = Path.GetDirectoryName (filePath);
 		var fullPath = Path.Join (directoryPath, "Data", file);

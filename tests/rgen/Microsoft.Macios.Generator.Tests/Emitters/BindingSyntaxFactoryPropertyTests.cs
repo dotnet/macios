@@ -10,7 +10,7 @@ using ObjCRuntime;
 using Xunit;
 using static Microsoft.Macios.Generator.Emitters.BindingSyntaxFactory;
 using static Microsoft.Macios.Generator.Tests.TestDataFactory;
-using static  Microsoft.Macios.Generator.Tests.BaseGeneratorTestClass;
+using static Microsoft.Macios.Generator.Tests.BaseGeneratorTestClass;
 
 namespace Microsoft.Macios.Generator.Tests.Emitters;
 

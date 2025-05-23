@@ -61,7 +61,7 @@ static class StringExtensions {
 			sb.Append ("XHandle");
 		return sb.ToString ();
 	}
-	
+
 	/// <summary>
 	/// Returns the expression required for an identifier name. The method will add the namespace and global qualifier
 	/// if needed based on the parameters.

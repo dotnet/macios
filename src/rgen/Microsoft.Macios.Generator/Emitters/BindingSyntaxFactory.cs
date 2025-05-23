@@ -179,7 +179,7 @@ static partial class BindingSyntaxFactory {
 			IdentifierName (variableName).WithTrailingTrivia (Space),
 			value.WithLeadingTrivia (Space));
 	}
-	
+
 	/// <summary>
 	/// Helper method that will return the Identifier name for a class. 
 	/// </summary>

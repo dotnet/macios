@@ -135,7 +135,7 @@ static partial class BindingSyntaxFactory {
 			whenTrue: castOne.WithLeadingTrivia (Space),
 			whenFalse: castZero);
 	}
-	
+
 	/// <summary>
 	/// Returns the expression needed to cast a byte to a bool to be used in a call. 
 	/// </summary>
@@ -151,7 +151,7 @@ static partial class BindingSyntaxFactory {
 			IdentifierName (variableName),
 			LiteralExpression (
 				SyntaxKind.NumericLiteralExpression,
-				Literal (0))).NormalizeWhitespace (); 
+				Literal (0))).NormalizeWhitespace ();
 	}
 
 	/// <summary>

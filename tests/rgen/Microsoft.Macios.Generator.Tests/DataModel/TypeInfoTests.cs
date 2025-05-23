@@ -645,7 +645,7 @@ namespace Example {
 		Assert.Equal ("Example.NS.ExampleClass", changes.Value.Parameters [0].Type.FullyQualifiedName);
 		Assert.Equal ("Example.NS", string.Join ('.', changes.Value.Parameters [0].Type.Namespace));
 	}
-	
+
 	[Theory]
 	[AllSupportedPlatforms]
 	void TypeInfoNestedCase (ApplePlatform platform)

@@ -270,18 +270,17 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	static string GetName (ITypeSymbol symbol)
 	{
 		// before we return the name, make sure that we do not have parent types, if we do, append those to the name
-		var sb = new StringBuilder();
+		var sb = new StringBuilder ();
 		var parentSymbol = symbol.ContainingType;
 
-		while (parentSymbol is not null)
-		{
+		while (parentSymbol is not null) {
 			// add in reverse order, since we are going from the child to the parent
-			sb.Insert(0, parentSymbol.Name + ".");
+			sb.Insert (0, parentSymbol.Name + ".");
 			parentSymbol = parentSymbol.ContainingType;
 		}
 
-		sb.Append(symbol.Name);
-		return sb.ToString();
+		sb.Append (symbol.Name);
+		return sb.ToString ();
 	}
 
 	/// <summary>

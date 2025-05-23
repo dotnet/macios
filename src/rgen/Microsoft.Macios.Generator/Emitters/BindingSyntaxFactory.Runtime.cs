@@ -12,16 +12,16 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 namespace Microsoft.Macios.Generator.Emitters;
 
 static partial class BindingSyntaxFactory {
-	public static readonly TypeSyntax Runtime = GetIdentifierName (
+	public static readonly TypeSyntax Runtime = StringExtensions.GetIdentifierName (
 		@namespace: ["ObjCRuntime"],
 		@class: "Runtime");
-	public static readonly TypeSyntax NSArray = GetIdentifierName (
+	public static readonly TypeSyntax NSArray = StringExtensions.GetIdentifierName (
 		@namespace: ["Foundation"],
 		@class: "NSArray");
-	public static readonly TypeSyntax CFArray = GetIdentifierName (
+	public static readonly TypeSyntax CFArray = StringExtensions.GetIdentifierName (
 		@namespace: ["CoreFoundation"],
 		@class: "CFArray");
-	public static readonly TypeSyntax CFString = GetIdentifierName (
+	public static readonly TypeSyntax CFString = StringExtensions.GetIdentifierName (
 		@namespace: ["CoreFoundation"],
 		@class: "CFString");
 	public const string ClassPtr = "class_ptr";
@@ -33,7 +33,7 @@ static partial class BindingSyntaxFactory {
 	/// <param name="args">The arguments to pass to the GetNSObject method.</param>
 	/// <param name="suppressNullableWarning">If we should suppress the nullable warning.</param>
 	/// <returns>The expression that calls GetNSObject method.</returns>
-	public static ExpressionSyntax GetNSObject (string nsObjectType, ImmutableArray<ArgumentSyntax> args,
+	public static ExpressionSyntax GetNSObject (TypeSyntax nsObjectType, ImmutableArray<ArgumentSyntax> args,
 		bool suppressNullableWarning = false)
 	{
 		var argsList = ArgumentList (SeparatedList<ArgumentSyntax> (args.ToSyntaxNodeOrTokenArray ()));
@@ -48,7 +48,7 @@ static partial class BindingSyntaxFactory {
 	/// <param name="args">The arguments to pass to the GetNSObject method.</param>
 	/// <param name="suppressNullableWarning">If we should suppress the nullable warning.</param>
 	/// <returns>The expression that calls GetNSObject method.</returns>
-	public static ExpressionSyntax GetINativeObject (string nsObjectType, ImmutableArray<ArgumentSyntax> args,
+	public static ExpressionSyntax GetINativeObject (TypeSyntax nsObjectType, ImmutableArray<ArgumentSyntax> args,
 		bool suppressNullableWarning = false)
 	{
 		var argsList = ArgumentList (SeparatedList<ArgumentSyntax> (args.ToSyntaxNodeOrTokenArray ()));
@@ -63,7 +63,7 @@ static partial class BindingSyntaxFactory {
 	/// <param name="args">The arguments to bass to the ArrayFromHandle method.</param>
 	/// <param name="suppressNullableWarning">If we should suppress the nullable warning.</param>
 	/// <returns>The expression that calls ArrayFromHandle method.</returns>
-	public static ExpressionSyntax GetCFArrayFromHandle (string nsObjectType, ImmutableArray<ArgumentSyntax> args,
+	public static ExpressionSyntax GetCFArrayFromHandle (TypeSyntax nsObjectType, ImmutableArray<ArgumentSyntax> args,
 		bool suppressNullableWarning = false)
 	{
 		var argsList = ArgumentList (SeparatedList<ArgumentSyntax> (args.ToSyntaxNodeOrTokenArray ()));
@@ -78,7 +78,7 @@ static partial class BindingSyntaxFactory {
 	/// <param name="args">The arguments to pass to the ArrayFromHandle method.</param>
 	/// <param name="suppressNullableWarning">If we should suppress the nullable warning.</param>
 	/// <returns>The expression that calls ArrayFromHandle method.</returns>
-	public static ExpressionSyntax GetNSArrayFromHandle (string nsObjectType, ImmutableArray<ArgumentSyntax> args,
+	public static ExpressionSyntax GetNSArrayFromHandle (TypeSyntax nsObjectType, ImmutableArray<ArgumentSyntax> args,
 		bool suppressNullableWarning = false)
 	{
 		var argsList = ArgumentList (SeparatedList<ArgumentSyntax> (args.ToSyntaxNodeOrTokenArray ()));
@@ -401,7 +401,7 @@ static partial class BindingSyntaxFactory {
 	/// <param name="returnType">The generic return type of the call.</param>
 	/// <param name="arguments">An immutable array of arguments.</param>
 	/// <returns>The invocation syntax for the method.</returns>
-	internal static InvocationExpressionSyntax NSArrayFromHandleFunc (string returnType,
+	internal static InvocationExpressionSyntax NSArrayFromHandleFunc (TypeSyntax returnType,
 		ImmutableArray<ArgumentSyntax> arguments)
 	{
 		// generate: (arg1, arg2, arg3)
@@ -409,7 +409,7 @@ static partial class BindingSyntaxFactory {
 			SeparatedList<ArgumentSyntax> (arguments.ToSyntaxNodeOrTokenArray ()));
 		// generate <returnType>
 		var genericsList = TypeArgumentList (
-			SingletonSeparatedList<TypeSyntax> (IdentifierName (returnType)));
+			SingletonSeparatedList (returnType));
 
 		// generate NSArray.ArrayFromHandleFunc<returnType> (arg1, arg2, arg3)
 		return InvocationExpression (

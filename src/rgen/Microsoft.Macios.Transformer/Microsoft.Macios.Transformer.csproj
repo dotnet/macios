@@ -32,6 +32,9 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Compile Include="../Microsoft.Macios.Generator/Configuration.cs" >
+            <Link>Configuration.cs</Link>
+        </Compile>
         <Compile Include="../Microsoft.Macios.Generator/DictionaryComparer.cs">
             <Link>DictionaryComparer.cs</Link>
         </Compile>
@@ -61,6 +64,9 @@
         </Compile>
         <Compile Include="../Microsoft.Macios.Generator/Extensions/ApplePlatformExtensions.cs">
             <Link>Extensions/ApplePlatformExtensions.cs</Link>
+        </Compile>
+        <Compile Include="../Microsoft.Macios.Generator/Extensions/ArgumentSyntaxExtensions.cs" >
+            <Link>Extensions/ArgumentSyntaxExtensions.cs</Link>
         </Compile>
         <Compile Include="../Microsoft.Macios.Generator/Extensions/BaseTypeDeclarationSyntaxExtensions.cs">
             <Link>Extensions/BaseTypeDeclarationSyntaxExtensions.cs</Link>

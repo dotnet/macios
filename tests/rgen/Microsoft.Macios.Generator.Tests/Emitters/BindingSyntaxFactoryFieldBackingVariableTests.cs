@@ -38,7 +38,7 @@ namespace CoreGraphics {
 
 			yield return [
 				nsStringFieldProperty,
-				"static Foundation.NSString? _GenericGray;"
+				$"static {Global ("Foundation.NSString")}? _GenericGray;"
 			];
 
 			const string byteFieldProperty = @"
@@ -485,6 +485,7 @@ namespace CoreGraphics {
 using System;
 using Foundation;
 using ObjCBindings;
+using nfloat = System.Runtime.InteropServices.NFloat;
 
 namespace CoreGraphics {
 
@@ -500,7 +501,7 @@ namespace CoreGraphics {
 
 			yield return [
 				nfloatFieldProperty,
-				"static nfloat? _GenericGray;"
+				$"static {Global ("System.Runtime.InteropServices.NFloat")} _GenericGray;"
 			];
 
 			const string cgsizeFieldProperty = @"
@@ -523,7 +524,7 @@ namespace CoreGraphics {
 
 			yield return [
 				cgsizeFieldProperty,
-				"static CoreGraphics.CGSize _GenericGray;"
+				$"static {Global ("CoreGraphics.CGSize")} _GenericGray;"
 			];
 
 			const string cmtagFieldProperty = @"
@@ -546,7 +547,7 @@ namespace CoreGraphics {
 
 			yield return [
 				cmtagFieldProperty,
-				"static CoreMedia.CMTag _GenericGray;"
+				$"static {Global ("CoreMedia.CMTag")} _GenericGray;"
 			];
 
 			const string nsArrayFieldProperty = @"
@@ -569,7 +570,7 @@ namespace CoreGraphics {
 
 			yield return [
 				nsArrayFieldProperty,
-				"static Foundation.NSArray? _GenericGray;"
+				$"static {Global ("Foundation.NSArray")}? _GenericGray;"
 			];
 
 			const string nsNumberFieldProperty = @"
@@ -592,7 +593,7 @@ namespace CoreGraphics {
 
 			yield return [
 				nsNumberFieldProperty,
-				"static Foundation.NSNumber? _GenericGray;"
+				$"static {Global ("Foundation.NSNumber")}? _GenericGray;"
 			];
 
 			const string enumFieldProperty = @"
@@ -620,7 +621,7 @@ namespace CoreGraphics {
 
 			yield return [
 				enumFieldProperty,
-				"static CoreGraphics.CGColorSpaceGenericGray _GenericGray;"
+				$"static {Global ("CoreGraphics.CGColorSpaceGenericGray")} _GenericGray;"
 			];
 		}
 

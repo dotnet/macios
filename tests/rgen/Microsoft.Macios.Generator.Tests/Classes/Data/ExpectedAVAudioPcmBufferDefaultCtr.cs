@@ -20,7 +20,7 @@ namespace TestNamespace;
 public partial class AVAudioPcmBuffer
 {
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	static readonly global::ObjCRuntime.NativeHandle class_ptr = Class.GetHandle ("AVAudioPCMBuffer");
+	static readonly global::ObjCRuntime.NativeHandle class_ptr = $GLOBAL$ObjCRuntime.Class.GetHandle ("AVAudioPCMBuffer");
 
 	/// <summary>The Objective-C class handle for this class.</summary>
 	/// <value>The pointer to the Objective-C class.</value>
@@ -35,7 +35,7 @@ public partial class AVAudioPcmBuffer
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[DesignatedInitializer]
 	[Export ("init")]
-	public AVAudioPcmBuffer () : base (NSObjectFlag.Empty)
+	public AVAudioPcmBuffer () : base (global::Foundation.NSObjectFlag.Empty)
 	{
 		if (IsDirectBinding)
 			InitializeHandle (global::ObjCRuntime.Messaging.IntPtr_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("init")), "init");
@@ -90,7 +90,7 @@ public partial class AVAudioPcmBuffer
 	/// </remarks>
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable (EditorBrowsableState.Advanced)]
-	protected AVAudioPcmBuffer (NSObjectFlag t) : base (t) {}
+	protected AVAudioPcmBuffer (global::Foundation.NSObjectFlag t) : base (t) {}
 
 	/// <summary>A constructor used when creating managed representations of unmanaged objects. Called by the runtime.</summary>
 	/// <param name="handle">Pointer (handle) to the unmanaged object.</param>

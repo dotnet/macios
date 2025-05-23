@@ -588,7 +588,7 @@ static partial class BindingSyntaxFactory {
 		if (!property.IsField)
 			throw new NotSupportedException ("Cannot retrieve getter for non field property.");
 
-		// needed because you cannot use a in parameter in a lambda
+		// needed because you cannot use an in parameter in a lambda
 		var fieldType = property.ReturnType.FullyQualifiedName;
 		var underlyingEnumType = property.ReturnType.EnumUnderlyingType.GetKeyword ();
 

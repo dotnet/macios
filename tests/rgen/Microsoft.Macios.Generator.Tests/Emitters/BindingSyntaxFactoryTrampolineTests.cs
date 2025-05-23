@@ -1731,7 +1731,7 @@ namespace NS {
 				"DCallback",
 				"unsafe internal delegate void DCallback (global::System.IntPtr block_ptr, int* outNullableInt);"
 			];
-			
+
 			var outInt = @"
 using System;
 using Foundation;
@@ -2570,7 +2570,7 @@ namespace NS {
 				outNullableInt,
 				"internal static unsafe void Invoke (global::System.IntPtr block_ptr, int* outNullableInt)"
 			];
-			
+
 			var outInt = @"
 using System;
 using Foundation;
@@ -2923,7 +2923,7 @@ namespace NS {
 				outNullableInt,
 				"delegate* unmanaged<global::System.IntPtr, int*, void> trampoline = &Invoke;",
 			];
-			
+
 			var outInt = @"
 using System;
 using Foundation;

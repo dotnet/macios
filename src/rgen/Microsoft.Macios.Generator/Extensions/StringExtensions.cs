@@ -1,7 +1,9 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -71,15 +73,16 @@ static class StringExtensions {
 	/// <param name="isGlobal">If the global alias qualifier will be used. This will only be used if the namespace
 	/// was provided.</param>
 	/// <returns>The identifier expression for a given class.</returns>
-	internal static TypeSyntax GetIdentifierName (this string @class, string []? @namespace, bool isGlobal = GeneratorConfiguration.UseGlobalNamespace)
+	internal static TypeSyntax GetIdentifierName (this string @class, IEnumerable<string> @namespace, bool isGlobal = GeneratorConfiguration.UseGlobalNamespace)
 	{
 		// retrieve the name syntax for the namespace
-		if (@namespace is null || @namespace.Length == 0) {
+		var namespaceArray = @namespace as string[] ?? @namespace.ToArray();
+		if (namespaceArray.Length == 0) {
 			// if we have no namespace, we do not care about it being global
 			return IdentifierName (@class);
 		}
 
-		var fullNamespace = string.Join (".", @namespace);
+		var fullNamespace = string.Join (".", namespaceArray);
 		if (isGlobal) {
 			return QualifiedName (
 				AliasQualifiedName (

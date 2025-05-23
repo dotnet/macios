@@ -49,7 +49,7 @@ static class TypeInfoFormatter {
 		}
 
 		// build the full type name using the namespace and the class name
-		classSyntax = classSyntax.ToString ().GetIdentifierName (typeInfo.Namespace.ToArray ());
+		classSyntax = classSyntax.ToString ().GetIdentifierName (typeInfo.Namespace);
 		// we still need to check if the type is nullable
 		return typeInfo.IsNullable ? NullableType (classSyntax) : classSyntax;
 	}

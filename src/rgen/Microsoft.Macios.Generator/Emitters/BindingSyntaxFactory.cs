@@ -119,7 +119,7 @@ static partial class BindingSyntaxFactory {
 	/// <returns>The variable declaration syntax.</returns>
 	internal static MemberDeclarationSyntax FieldPropertyBackingVariable (in Property property)
 	{
-		var variableType = property.ReturnType.Name.GetIdentifierName (property.ReturnType.Namespace.ToArray ());
+		var variableType = property.ReturnType.Name.GetIdentifierName (property.ReturnType.Namespace);
 		return StaticVariable (property.BackingField, variableType, property.IsReferenceType);
 	}
 

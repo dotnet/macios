@@ -271,7 +271,7 @@ return GetValue (str);
 			// emit the extension method to return the error domain
 			classBlock.WriteDocumentation (Documentation.SmartEnum.GetDomain (bindingContext.Changes.FullyQualifiedSymbol));
 			classBlock.WriteRaw (
-$@"public static {NSString}? GetDomain (this {bindingContext.Changes.Name.GetIdentifierName (bindingContext.Changes.Namespace.ToArray ())} self)
+$@"public static {NSString}? GetDomain (this {bindingContext.Changes.Name.GetIdentifierName (bindingContext.Changes.Namespace)} self)
 {{
 	if ({backingFieldName} is null)
 		{backingFieldName} = {Dlfcn}.GetStringConstant ({Libraries}.{libraryName}.Handle, ""{bindingTypeData.ErrorDomain}"");

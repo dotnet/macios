@@ -26,8 +26,9 @@ static partial class Trampolines
 		[UserDelegateType (typeof (global::System.Action))]
 		internal static unsafe void Invoke (global::System.IntPtr block_ptr)
 		{
-			var del = global::ObjCRuntime.BlockLiteral.GetTarget<global::System.Action> (block_ptr);
-			if (del is not null) {
+			var del = global::ObjCRuntime.BlockLiteral.GetTarget<global::System.Action> (block_ptr
+			if (del is not null)
+			{
 				del ();
 			}
 		}
@@ -60,10 +61,13 @@ static partial class Trampolines
 		[UserDelegateType (typeof (global::CoreImage.CIKernelRoiCallback))]
 		internal static unsafe global::CoreGraphics.CGRect Invoke (global::System.IntPtr block_ptr, int index, global::CoreGraphics.CGRect rect)
 		{
-			var del = global::ObjCRuntime.BlockLiteral.GetTarget<global::CoreImage.CIKernelRoiCallback> (block_ptr);
-			if (del is not null) {
+			var del = global::ObjCRuntime.BlockLiteral.GetTarget<global::CoreImage.CIKernelRoiCallback> (block_ptr
+			if (del is not null)
+			{
 				var ret = del (index, rect);
+				return ret;
 			}
+			return default;
 		}
 
 		internal static unsafe global::ObjCRuntime.BlockLiteral CreateNullableBlock (global::CoreImage.CIKernelRoiCallback? callback)
@@ -91,8 +95,9 @@ static partial class Trampolines
 		[UserDelegateType (typeof (global::System.Action<string>))]
 		internal static unsafe void Invoke (global::System.IntPtr block_ptr, global::ObjCRuntime.NativeHandle obj)
 		{
-			var del = global::ObjCRuntime.BlockLiteral.GetTarget<global::System.Action<string>> (block_ptr);
-			if (del is not null) {
+			var del = global::ObjCRuntime.BlockLiteral.GetTarget<global::System.Action<string>> (block_ptr
+			if (del is not null)
+			{
 				del (global::CoreFoundation.CFString.FromHandle (obj)!);
 			}
 		}
@@ -122,8 +127,9 @@ static partial class Trampolines
 		[UserDelegateType (typeof (global::System.Action<int>))]
 		internal static unsafe void Invoke (global::System.IntPtr block_ptr, int obj)
 		{
-			var del = global::ObjCRuntime.BlockLiteral.GetTarget<global::System.Action<int>> (block_ptr);
-			if (del is not null) {
+			var del = global::ObjCRuntime.BlockLiteral.GetTarget<global::System.Action<int>> (block_ptr
+			if (del is not null)
+			{
 				del (obj);
 			}
 		}
@@ -156,8 +162,9 @@ static partial class Trampolines
 		[UserDelegateType (typeof (global::AVFoundation.AVAssetImageGenerateAsynchronouslyForTimeCompletionHandler))]
 		internal static unsafe void Invoke (global::System.IntPtr block_ptr, global::ObjCRuntime.NativeHandle imageRef, global::CoreMedia.CMTime actualTime, global::ObjCRuntime.NativeHandle error)
 		{
-			var del = global::ObjCRuntime.BlockLiteral.GetTarget<global::AVFoundation.AVAssetImageGenerateAsynchronouslyForTimeCompletionHandler> (block_ptr);
-			if (del is not null) {
+			var del = global::ObjCRuntime.BlockLiteral.GetTarget<global::AVFoundation.AVAssetImageGenerateAsynchronouslyForTimeCompletionHandler> (block_ptr
+			if (del is not null)
+			{
 				del (global::ObjCRuntime.Runtime.GetINativeObject<global::CoreGraphics.CGImage> (imageRef, false)!, actualTime, global::ObjCRuntime.Runtime.GetNSObject<global::Foundation.NSError> (error)!);
 			}
 		}

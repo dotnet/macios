@@ -50,13 +50,14 @@ class TrampolineEmitter (
 			classBlock.WriteLine ("[UnmanagedCallersOnly]");
 			classBlock.WriteLine ($"[UserDelegateType (typeof ({delegateIdentifier}))]");
 			using (var invokeMethod = classBlock.CreateBlock (GetTrampolineInvokeSignature (typeInfo).ToString (), true)) {
-				invokeMethod.WriteRaw (
-@$"var {delegateVariableName} = { BlockLiteral }.GetTarget<{delegateIdentifier}> ({Nomenclator.GetTrampolineBlockParameterName (typeInfo.Delegate!.Parameters)});
-if ({delegateVariableName} is not null) {{
-	{CallTrampolineDelegate (typeInfo.Delegate!, argumentSyntax)}
-}}
-"
-				);
+				invokeMethod.WriteLine($"var {delegateVariableName} = {BlockLiteral}.GetTarget<{delegateIdentifier}> ({Nomenclator.GetTrampolineBlockParameterName (typeInfo.Delegate!.Parameters)}");
+				using (var ifBlock = invokeMethod.CreateBlock ($"if ({delegateVariableName} is not null)", true)) {
+					ifBlock.WriteLine ($"{CallTrampolineDelegate (typeInfo.Delegate!, argumentSyntax)}");
+					if (typeInfo.Delegate.ReturnType.SpecialType != SpecialType.System_Void) 
+						ifBlock.WriteLine($"return {Nomenclator.GetReturnVariableName ()};");
+				}
+				if (typeInfo.Delegate.ReturnType.SpecialType != SpecialType.System_Void) 
+					invokeMethod.WriteLine ("return default;");
 			}
 			
 			// CreateNullableBlock

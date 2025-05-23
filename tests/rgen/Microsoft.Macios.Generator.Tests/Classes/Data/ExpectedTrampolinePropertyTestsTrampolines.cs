@@ -2,6 +2,8 @@
 
 #nullable enable
 
+using AVFoundation;
+using CoreImage;
 using Foundation;
 using ObjCBindings;
 using ObjCRuntime;
@@ -12,6 +14,168 @@ namespace ObjCRuntime;
 static partial class Trampolines
 {
 	// Generate trampolines for compilation
+	[UnmanagedFunctionPointerAttribute (CallingConvention.Cdecl)]
+	[UserDelegateType (typeof (global::System.Action))]
+	unsafe internal delegate void DAction (global::System.IntPtr block_ptr);
+
+	/// <summary>This class bridges native block invocations that call into C#</summary>
+	static internal class SDAction
+	{
+		[Preserve (Conditional = true)]
+		[UnmanagedCallersOnly]
+		[UserDelegateType (typeof (global::System.Action))]
+		internal static unsafe void Invoke (global::System.IntPtr block_ptr)
+		{
+			var del = global::ObjCRuntime.BlockLiteral.GetTarget<global::System.Action> (block_ptr);
+			if (del is not null) {
+				del ();
+			}
+		}
+
+		internal static unsafe global::ObjCRuntime.BlockLiteral CreateNullableBlock CreateNullableBlock (global::System.Action? callback)
+		{
+			if (callback is null)
+				return default (global::ObjCRuntime.BlockLiteral);
+			return CreateBlock (callback);
+		}
+
+		[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+		internal static unsafe global::ObjCRuntime.BlockLiteral CreateBlock (global::System.Action callback)
+		{
+			delegate* unmanaged<global::System.IntPtr, void> trampoline = &Invoke;
+			return new global::ObjCRuntime.BlockLiteral (trampoline, callback, typeof (SDAction), nameof (Invoke));
+		}
+	}
 	// TODO: generate trampoline for System.Action
+
+	[UnmanagedFunctionPointerAttribute (CallingConvention.Cdecl)]
+	[UserDelegateType (typeof (global::CoreImage.CIKernelRoiCallback))]
+	unsafe internal delegate global::CoreGraphics.CGRect DCIKernelRoiCallback (global::System.IntPtr block_ptr, int index, global::CoreGraphics.CGRect rect);
+
+	/// <summary>This class bridges native block invocations that call into C#</summary>
+	static internal class SDCIKernelRoiCallback
+	{
+		[Preserve (Conditional = true)]
+		[UnmanagedCallersOnly]
+		[UserDelegateType (typeof (global::CoreImage.CIKernelRoiCallback))]
+		internal static unsafe global::CoreGraphics.CGRect Invoke (global::System.IntPtr block_ptr, int index, global::CoreGraphics.CGRect rect)
+		{
+			var del = global::ObjCRuntime.BlockLiteral.GetTarget<global::CoreImage.CIKernelRoiCallback> (block_ptr);
+			if (del is not null) {
+				var ret = del (index, rect);
+			}
+		}
+
+		internal static unsafe global::ObjCRuntime.BlockLiteral CreateNullableBlock CreateNullableBlock (global::CoreImage.CIKernelRoiCallback? callback)
+		{
+			if (callback is null)
+				return default (global::ObjCRuntime.BlockLiteral);
+			return CreateBlock (callback);
+		}
+
+		[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+		internal static unsafe global::ObjCRuntime.BlockLiteral CreateBlock (global::CoreImage.CIKernelRoiCallback callback)
+		{
+			delegate* unmanaged<global::System.IntPtr, int, global::CoreGraphics.CGRect, global::CoreGraphics.CGRect> trampoline = &Invoke;
+			return new global::ObjCRuntime.BlockLiteral (trampoline, callback, typeof (SDCIKernelRoiCallback), nameof (Invoke));
+		}
+	}
+	// TODO: generate trampoline for CoreImage.CIKernelRoiCallback
+
+
+	/// <summary>This class bridges native block invocations that call into C#</summary>
+	static internal class SDActionArity1V0
+	{
+		[Preserve (Conditional = true)]
+		[UnmanagedCallersOnly]
+		[UserDelegateType (typeof (global::System.Action<string>))]
+		internal static unsafe void Invoke (global::System.IntPtr block_ptr, global::ObjCRuntime.NativeHandle obj)
+		{
+			var del = global::ObjCRuntime.BlockLiteral.GetTarget<global::System.Action<string>> (block_ptr);
+			if (del is not null) {
+				del (global::CoreFoundation.CFString.FromHandle (obj)!);
+			}
+		}
+
+		internal static unsafe global::ObjCRuntime.BlockLiteral CreateNullableBlock CreateNullableBlock (global::System.Action<string>? callback)
+		{
+			if (callback is null)
+				return default (global::ObjCRuntime.BlockLiteral);
+			return CreateBlock (callback);
+		}
+
+		[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+		internal static unsafe global::ObjCRuntime.BlockLiteral CreateBlock (global::System.Action<string> callback)
+		{
+			delegate* unmanaged<global::System.IntPtr, global::ObjCRuntime.NativeHandle, void> trampoline = &Invoke;
+			return new global::ObjCRuntime.BlockLiteral (trampoline, callback, typeof (SDActionArity1V0), nameof (Invoke));
+		}
+	}
+	// TODO: generate trampoline for System.Action<string>
+
+
+	/// <summary>This class bridges native block invocations that call into C#</summary>
+	static internal class SDActionArity1V1
+	{
+		[Preserve (Conditional = true)]
+		[UnmanagedCallersOnly]
+		[UserDelegateType (typeof (global::System.Action<int>))]
+		internal static unsafe void Invoke (global::System.IntPtr block_ptr, int obj)
+		{
+			var del = global::ObjCRuntime.BlockLiteral.GetTarget<global::System.Action<int>> (block_ptr);
+			if (del is not null) {
+				del (obj);
+			}
+		}
+
+		internal static unsafe global::ObjCRuntime.BlockLiteral CreateNullableBlock CreateNullableBlock (global::System.Action<int>? callback)
+		{
+			if (callback is null)
+				return default (global::ObjCRuntime.BlockLiteral);
+			return CreateBlock (callback);
+		}
+
+		[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+		internal static unsafe global::ObjCRuntime.BlockLiteral CreateBlock (global::System.Action<int> callback)
+		{
+			delegate* unmanaged<global::System.IntPtr, int, void> trampoline = &Invoke;
+			return new global::ObjCRuntime.BlockLiteral (trampoline, callback, typeof (SDActionArity1V1), nameof (Invoke));
+		}
+	}
+	// TODO: generate trampoline for System.Action<int>
+
+	[UnmanagedFunctionPointerAttribute (CallingConvention.Cdecl)]
+	[UserDelegateType (typeof (global::AVFoundation.AVAssetImageGenerateAsynchronouslyForTimeCompletionHandler))]
+	unsafe internal delegate void DAVAssetImageGenerateAsynchronouslyForTimeCompletionHandler (global::System.IntPtr block_ptr, global::ObjCRuntime.NativeHandle imageRef, global::CoreMedia.CMTime actualTime, global::ObjCRuntime.NativeHandle error);
+
+	/// <summary>This class bridges native block invocations that call into C#</summary>
+	static internal class SDAVAssetImageGenerateAsynchronouslyForTimeCompletionHandler
+	{
+		[Preserve (Conditional = true)]
+		[UnmanagedCallersOnly]
+		[UserDelegateType (typeof (global::AVFoundation.AVAssetImageGenerateAsynchronouslyForTimeCompletionHandler))]
+		internal static unsafe void Invoke (global::System.IntPtr block_ptr, global::ObjCRuntime.NativeHandle imageRef, global::CoreMedia.CMTime actualTime, global::ObjCRuntime.NativeHandle error)
+		{
+			var del = global::ObjCRuntime.BlockLiteral.GetTarget<global::AVFoundation.AVAssetImageGenerateAsynchronouslyForTimeCompletionHandler> (block_ptr);
+			if (del is not null) {
+				del (global::ObjCRuntime.Runtime.GetINativeObject<global::CoreGraphics.CGImage> (imageRef, false)!, actualTime, global::ObjCRuntime.Runtime.GetNSObject<global::Foundation.NSError> (error)!);
+			}
+		}
+
+		internal static unsafe global::ObjCRuntime.BlockLiteral CreateNullableBlock CreateNullableBlock (global::AVFoundation.AVAssetImageGenerateAsynchronouslyForTimeCompletionHandler? callback)
+		{
+			if (callback is null)
+				return default (global::ObjCRuntime.BlockLiteral);
+			return CreateBlock (callback);
+		}
+
+		[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+		internal static unsafe global::ObjCRuntime.BlockLiteral CreateBlock (global::AVFoundation.AVAssetImageGenerateAsynchronouslyForTimeCompletionHandler callback)
+		{
+			delegate* unmanaged<global::System.IntPtr, global::ObjCRuntime.NativeHandle, global::CoreMedia.CMTime, global::ObjCRuntime.NativeHandle, void> trampoline = &Invoke;
+			return new global::ObjCRuntime.BlockLiteral (trampoline, callback, typeof (SDAVAssetImageGenerateAsynchronouslyForTimeCompletionHandler), nameof (Invoke));
+		}
+	}
+	// TODO: generate trampoline for AVFoundation.AVAssetImageGenerateAsynchronouslyForTimeCompletionHandler
 
 }

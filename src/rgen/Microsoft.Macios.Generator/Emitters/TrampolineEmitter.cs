@@ -61,7 +61,7 @@ if (del is not null) {{
 			// CreateNullableBlock
 			classBlock.WriteLine (); // empty line for readability
 			using (var createNullableBlock = classBlock.CreateBlock (
-				       $"internal static unsafe { BlockLiteral } CreateNullableBlock CreateNullableBlock ({delegateIdentifier}? callback)", true)) {
+				       $"internal static unsafe { BlockLiteral } CreateNullableBlock ({delegateIdentifier}? callback)", true)) {
 				createNullableBlock.WriteRaw (
 $@"if (callback is null)
 	return default ({BlockLiteral});

@@ -32,7 +32,7 @@ static partial class Trampolines
 			}
 		}
 
-		internal static unsafe global::ObjCRuntime.BlockLiteral CreateNullableBlock CreateNullableBlock (global::System.Action? callback)
+		internal static unsafe global::ObjCRuntime.BlockLiteral CreateNullableBlock (global::System.Action? callback)
 		{
 			if (callback is null)
 				return default (global::ObjCRuntime.BlockLiteral);
@@ -66,7 +66,7 @@ static partial class Trampolines
 			}
 		}
 
-		internal static unsafe global::ObjCRuntime.BlockLiteral CreateNullableBlock CreateNullableBlock (global::CoreImage.CIKernelRoiCallback? callback)
+		internal static unsafe global::ObjCRuntime.BlockLiteral CreateNullableBlock (global::CoreImage.CIKernelRoiCallback? callback)
 		{
 			if (callback is null)
 				return default (global::ObjCRuntime.BlockLiteral);
@@ -97,7 +97,7 @@ static partial class Trampolines
 			}
 		}
 
-		internal static unsafe global::ObjCRuntime.BlockLiteral CreateNullableBlock CreateNullableBlock (global::System.Action<string>? callback)
+		internal static unsafe global::ObjCRuntime.BlockLiteral CreateNullableBlock (global::System.Action<string>? callback)
 		{
 			if (callback is null)
 				return default (global::ObjCRuntime.BlockLiteral);
@@ -128,7 +128,7 @@ static partial class Trampolines
 			}
 		}
 
-		internal static unsafe global::ObjCRuntime.BlockLiteral CreateNullableBlock CreateNullableBlock (global::System.Action<int>? callback)
+		internal static unsafe global::ObjCRuntime.BlockLiteral CreateNullableBlock (global::System.Action<int>? callback)
 		{
 			if (callback is null)
 				return default (global::ObjCRuntime.BlockLiteral);
@@ -162,7 +162,7 @@ static partial class Trampolines
 			}
 		}
 
-		internal static unsafe global::ObjCRuntime.BlockLiteral CreateNullableBlock CreateNullableBlock (global::AVFoundation.AVAssetImageGenerateAsynchronouslyForTimeCompletionHandler? callback)
+		internal static unsafe global::ObjCRuntime.BlockLiteral CreateNullableBlock (global::AVFoundation.AVAssetImageGenerateAsynchronouslyForTimeCompletionHandler? callback)
 		{
 			if (callback is null)
 				return default (global::ObjCRuntime.BlockLiteral);

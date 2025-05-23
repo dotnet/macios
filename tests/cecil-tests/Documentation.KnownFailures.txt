@@ -19886,6 +19886,7 @@ P:Foundation.NSUrlSessionConfiguration.StrongConnectionProxyDictionary
 P:Foundation.NSUrlSessionConfiguration.UsesClassicLoadingMode
 P:Foundation.NSUrlSessionHandler.AllowsCellularAccess
 P:Foundation.NSUrlSessionHandler.AutomaticDecompression
+P:Foundation.NSUrlSessionHandler.ClientCertificateOptions
 P:Foundation.NSUrlSessionHandler.CookieContainer
 P:Foundation.NSUrlSessionHandler.MaxAutomaticRedirections
 P:Foundation.NSUrlSessionHandler.ServerCertificateCustomValidationCallback
@@ -23289,6 +23290,7 @@ P:StoreKit.StoreProductParameters.ProductIdentifier
 P:StoreKit.StoreProductParameters.ProviderToken
 P:System.Net.Http.NSUrlSessionHandler.AllowsCellularAccess
 P:System.Net.Http.NSUrlSessionHandler.AutomaticDecompression
+P:System.Net.Http.NSUrlSessionHandler.ClientCertificateOptions
 P:System.Net.Http.NSUrlSessionHandler.CookieContainer
 P:System.Net.Http.NSUrlSessionHandler.MaxAutomaticRedirections
 P:System.Net.Http.NSUrlSessionHandler.ServerCertificateCustomValidationCallback

@@ -16,10 +16,6 @@ using AppKit;
 #endif
 using CoreSpotlight;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreData {
 	/// <summary>Contains Core Data error information.</summary>
 	/// <remarks>To be added.</remarks>
@@ -498,11 +494,7 @@ namespace CoreData {
 		NSEntityDescription EntityForName (string entityName, NSManagedObjectContext context);
 
 		[Static, Export ("insertNewObjectForEntityForName:inManagedObjectContext:")]
-#if !NET
-		NSObject InsertNewObjectForEntityForName (string entityName, NSManagedObjectContext context);
-#else
 		NSManagedObject InsertNewObject (string entityName, NSManagedObjectContext context);
-#endif
 
 		/// <summary>Gets the managed object model for the receiver.</summary>
 		///         <value>To be added.</value>
@@ -1255,16 +1247,6 @@ namespace CoreData {
 		// name like UITableViewSource's similar (and linked) selector
 		nint SectionFor (string title, nint atIndex);
 
-#if !NET
-		// badly named and conflict with the property
-		[Export ("sectionIndexTitleForSectionName:")]
-		[return: NullAllowed]
-		string SectionIndexTitles (string sectionName);
-
-		// expose a method as the property name is taken
-		[Export ("sectionIndexTitles")]
-		string [] GetSectionIndexTitles ();
-#else
 		/// <param name="sectionName">To be added.</param>
 		/// <summary>Returns the section index titles for the specified section name.</summary>
 		/// <returns>To be added.</returns>
@@ -1278,7 +1260,6 @@ namespace CoreData {
 		/// <remarks>To be added.</remarks>
 		[Export ("sectionIndexTitles")]
 		string [] SectionIndexTitles { get; }
-#endif
 
 		/// <param name="name">
 		///           <para>Name of the cache to delete.</para>
@@ -1398,16 +1379,13 @@ namespace CoreData {
 
 	// 	NSInvalidArgumentException *** -loadMetadata: cannot be sent to an abstract object of class NSIncrementalStore: Create a concrete instance!
 	//	Apple doc quote: "NSIncrementalStore is an abstract superclass..."
-#if NET
 	// Making a class abstract has problems: https://github.com/dotnet/macios/issues/4969, so we're not doing this yet
 	// [Abstract] // Abstract superclass.
-#endif
 	/// <summary>Supports the use of persistent stores that are loaded and saved incrementally, allowing for larger and shared datasets.</summary>
 	/// <remarks>To be added.</remarks>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CoreData/Reference/NSIncrementalStore_Class/index.html">Apple documentation for <c>NSIncrementalStore</c></related>
 	[BaseType (typeof (NSPersistentStore))]
 	interface NSIncrementalStore {
-#if NET
 		/// <param name="root">To be added.</param>
 		/// <param name="name">To be added.</param>
 		/// <param name="url">To be added.</param>
@@ -1415,7 +1393,6 @@ namespace CoreData {
 		/// <summary>Creates a new <see cref="CoreData.NSIncrementalStore" /> with the specified values.</summary>
 		/// <remarks>To be added.</remarks>
 		[Protected]
-#endif
 		[Export ("initWithPersistentStoreCoordinator:configurationName:URL:options:")]
 		NativeHandle Constructor (NSPersistentStoreCoordinator root, string name, NSUrl url, NSDictionary options);
 
@@ -1469,11 +1446,7 @@ namespace CoreData {
 		/// <remarks>To be added.</remarks>
 		[Static]
 		[Export ("identifierForNewStoreAtURL:")]
-#if NET
 		NSObject GetIdentifierForNewStore (NSUrl storeUrl);
-#else
-		NSObject IdentifierForNewStoreAtURL (NSUrl storeUrl);
-#endif
 
 		/// <param name="array">To be added.</param>
 		///         <param name="error">To be added.</param>
@@ -1766,22 +1739,14 @@ namespace CoreData {
 		/// <remarks>To be added.</remarks>
 		[Export ("valueForKey:")]
 		[return: NullAllowed]
-#if NET
 		NSObject GetValue (string key);
-#else
-		IntPtr ValueForKey (string key);
-#endif
 
 		/// <param name="value">To be added.</param>
 		/// <param name="key">To be added.</param>
 		/// <summary>Sets the receiver's value for the property that is specified by the provided <paramref name="key" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Export ("setValue:forKey:")]
-#if NET
 		void SetValue ([NullAllowed] NSObject value, string key);
-#else
-		void SetValue (IntPtr value, string key);
-#endif
 
 		/// <param name="key">To be added.</param>
 		/// <summary>Returns the receiver's internal primitive value for the property that is specified by the provided <paramref name="key" />.</summary>
@@ -1789,22 +1754,14 @@ namespace CoreData {
 		/// <remarks>To be added.</remarks>
 		[Export ("primitiveValueForKey:")]
 		[return: NullAllowed]
-#if NET
 		NSObject GetPrimitiveValue (string key);
-#else
-		IntPtr PrimitiveValueForKey (string key);
-#endif
 
 		/// <param name="value">To be added.</param>
 		/// <param name="key">To be added.</param>
 		/// <summary>Sets the receiver's internal primitive value for the property that is specified by the provided <paramref name="key" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Export ("setPrimitiveValue:forKey:")]
-#if NET
 		void SetPrimitiveValue ([NullAllowed] NSObject value, string key);
-#else
-		void SetPrimitiveValue (IntPtr value, string key);
-#endif
 
 		/// <param name="keys">
 		///           <para>To be added.</para>
@@ -1816,10 +1773,8 @@ namespace CoreData {
 		[Export ("committedValuesForKeys:")]
 #if XAMCORE_5_0
 		NSDictionary<NSString, NSObject> GetCommittedValues ([NullAllowed] string[] keys);
-#elif NET
-		NSDictionary GetCommittedValues ([NullAllowed] string [] keys);
 #else
-		NSDictionary CommittedValuesForKeys ([NullAllowed] string [] keys);
+		NSDictionary GetCommittedValues ([NullAllowed] string [] keys);
 #endif
 
 		/// <summary>Gets a dictionary of the old values of persistent values that were recently changed since the receiver was last fetched.</summary>
@@ -2028,10 +1983,8 @@ namespace CoreData {
 		[Export ("observeValueForKeyPath:ofObject:change:context:")]
 #if XAMCORE_5_0
 		void ObserveValue ([NullAllowed] string keyPath, [NullAllowed] NSObject object1, [NullAllowed] NSDictionary<NSString, NSObject> change, IntPtr context);
-#elif NET
-		void ObserveValue ([NullAllowed] string keyPath, [NullAllowed] NSObject object1, [NullAllowed] NSDictionary change, IntPtr context);
 #else
-		void ObserveValueForKeyPath ([NullAllowed] string keyPath, IntPtr object1, [NullAllowed] NSDictionary change, IntPtr context);
+		void ObserveValue ([NullAllowed] string keyPath, [NullAllowed] NSObject object1, [NullAllowed] NSDictionary change, IntPtr context);
 #endif
 
 		/// <summary>Tells the receiver to process all changes on the object graph.</summary>
@@ -2044,11 +1997,7 @@ namespace CoreData {
 		/// <summary>Assigns <paramref name="object1" /> to <paramref name="store" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Export ("assignObject:toPersistentStore:")]
-#if NET
 		void AssignObject (NSObject object1, NSPersistentStore store);
-#else
-		void AssignObject (IntPtr object1, NSPersistentStore store);
-#endif
 
 		/// <summary>Gets the inserted, but unsaved, objects in the context.</summary>
 		///         <value>To be added.</value>
@@ -2483,11 +2432,7 @@ namespace CoreData {
 		/// <remarks>To be added.</remarks>
 		[Static, Export ("mergedModelFromBundles:")]
 		[return: NullAllowed]
-#if NET
 		NSManagedObjectModel GetMergedModel ([NullAllowed] NSBundle [] bundles);
-#else
-		NSManagedObjectModel MergedModelFromBundles ([NullAllowed] NSBundle [] bundles);
-#endif
 
 		/// <param name="models">
 		///           <para>To be added.</para>
@@ -2558,20 +2503,14 @@ namespace CoreData {
 
 		[Export ("fetchRequestTemplateForName:")]
 		[return: NullAllowed]
-#if NET
 		NSFetchRequest GetFetchRequestTemplate (string name);
-#else
-		NSFetchRequest FetchRequestTemplateForName (string name);
-#endif
 
 		[Export ("fetchRequestFromTemplateWithName:substitutionVariables:")]
 		[return: NullAllowed]
 #if XAMCORE_5_0
 		NSFetchRequest GetFetchRequestFromTemplate (string name, NSDictionary<NSString, NSObject> variables);
-#elif NET
-		NSFetchRequest GetFetchRequestFromTemplate (string name, NSDictionary variables);
 #else
-		NSFetchRequest FetchRequestFromTemplateWithName (string name, NSDictionary variables);
+		NSFetchRequest GetFetchRequestFromTemplate (string name, NSDictionary variables);
 #endif
 
 		/// <summary>To be added.</summary>
@@ -2600,20 +2539,16 @@ namespace CoreData {
 		[return: NullAllowed]
 #if XAMCORE_5_0
 		NSManagedObjectModel GetMergedModel ([NullAllowed] NSBundle[] bundles, NSDictionary<NSString, NSObject> metadata);
-#elif NET
-		NSManagedObjectModel GetMergedModel ([NullAllowed] NSBundle [] bundles, NSDictionary metadata);
 #else
-		NSManagedObjectModel MergedModelFromBundles ([NullAllowed] NSBundle [] bundles, NSDictionary metadata);
+		NSManagedObjectModel GetMergedModel ([NullAllowed] NSBundle [] bundles, NSDictionary metadata);
 #endif
 
 		[Static, Export ("modelByMergingModels:forStoreMetadata:")]
 		[return: NullAllowed]
 #if XAMCORE_5_0
 		NSManagedObjectModel GetModelByMerging (NSManagedObjectModel[] models, NSDictionary<NSString, NSObject> metadata);
-#elif NET
-		NSManagedObjectModel GetModelByMerging (NSManagedObjectModel [] models, NSDictionary metadata);
 #else
-		NSManagedObjectModel ModelByMergingModels (NSManagedObjectModel [] models, NSDictionary metadata);
+		NSManagedObjectModel GetModelByMerging (NSManagedObjectModel [] models, NSDictionary metadata);
 #endif
 
 		/// <summary>To be added.</summary>
@@ -2643,10 +2578,8 @@ namespace CoreData {
 		[Export ("isConfiguration:compatibleWithStoreMetadata:")]
 #if XAMCORE_5_0
 		bool IsConfigurationCompatibleWithStoreMetadata ([NullAllowed] string configuration, NSDictionary<NSString, NSObject> metadata);
-#elif NET
-		bool IsConfigurationCompatibleWithStoreMetadata ([NullAllowed] string configuration, NSDictionary metadata);
 #else
-		bool IsConfiguration ([NullAllowed] string configuration, NSDictionary metadata);
+		bool IsConfigurationCompatibleWithStoreMetadata ([NullAllowed] string configuration, NSDictionary metadata);
 #endif
 
 		/// <summary>To be added.</summary>
@@ -2678,11 +2611,7 @@ namespace CoreData {
 
 		[Static, Export ("mappingModelFromBundles:forSourceModel:destinationModel:")]
 		[return: NullAllowed]
-#if NET
 		NSMappingModel GetMappingModel ([NullAllowed] NSBundle [] bundles, [NullAllowed] NSManagedObjectModel sourceModel, [NullAllowed] NSManagedObjectModel destinationModel);
-#else
-		NSMappingModel MappingModelFromBundles ([NullAllowed] NSBundle [] bundles, [NullAllowed] NSManagedObjectModel sourceModel, [NullAllowed] NSManagedObjectModel destinationModel);
-#endif
 
 		/// <param name="source">To be added.</param>
 		///         <param name="destination">To be added.</param>
@@ -2793,10 +2722,8 @@ namespace CoreData {
 		[Export ("initWithSource:newVersion:oldVersion:cachedSnapshot:persistedSnapshot:")]
 #if XAMCORE_5_0
 		NativeHandle Constructor (NSManagedObject sourceObject, nuint newVersion, nuint oldVersion, [NullAllowed] NSDictionary<NSString, NSObject> cachedSnapshot, [NullAllowed] NSDictionary<NSString, NSObject> persistedSnapshot);
-#elif NET
-		NativeHandle Constructor (NSManagedObject sourceObject, nuint newVersion, nuint oldVersion, [NullAllowed] NSDictionary cachedSnapshot, [NullAllowed] NSDictionary persistedSnapshot);
 #else
-		NativeHandle Constructor (NSManagedObject srcObject, nuint newvers, nuint oldvers, [NullAllowed] NSDictionary cachesnap, [NullAllowed] NSDictionary persnap);
+		NativeHandle Constructor (NSManagedObject sourceObject, nuint newVersion, nuint oldVersion, [NullAllowed] NSDictionary cachedSnapshot, [NullAllowed] NSDictionary persistedSnapshot);
 #endif
 	}
 
@@ -2825,11 +2752,7 @@ namespace CoreData {
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[Export ("resolveConflicts:error:")]
-#if NET
 		bool ResolveConflicts (NSMergeConflict [] list, out NSError error);
-#else
-		bool ResolveConflictserror (NSMergeConflict [] list, out NSError error);
-#endif
 
 		/// <param name="list">To be added.</param>
 		///         <param name="error">
@@ -3453,7 +3376,6 @@ namespace CoreData {
 		bool SetMetadata ([NullAllowed] NSDictionary metadata, NSUrl url, out NSError error);
 #endif
 
-#if NET
 		/// <param name="root">
 		///           <para>To be added.</para>
 		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
@@ -3470,7 +3392,6 @@ namespace CoreData {
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
 		[Protected]
-#endif
 		[DesignatedInitializer]
 		[Export ("initWithPersistentStoreCoordinator:configurationName:URL:options:")]
 		NativeHandle Constructor ([NullAllowed] NSPersistentStoreCoordinator root, [NullAllowed] string name, NSUrl url, [NullAllowed] NSDictionary options);
@@ -3935,10 +3856,8 @@ namespace CoreData {
 		[Export ("metadataForPersistentStore:")]
 #if XAMCORE_5_0
 		NSDictionary<NSString, NSObject> GetMetadata (NSPersistentStore store);
-#elif NET
-		NSDictionary GetMetadata (NSPersistentStore store);
 #else
-		NSDictionary MetadataForPersistentStore (NSPersistentStore store);
+		NSDictionary GetMetadata (NSPersistentStore store);
 #endif
 
 		[DesignatedInitializer]
@@ -3982,11 +3901,7 @@ namespace CoreData {
 
 		[Export ("addPersistentStoreWithType:configuration:URL:options:error:")]
 		[return: NullAllowed]
-#if NET
 		NSPersistentStore AddPersistentStore (NSString storeType, [NullAllowed] string configuration, [NullAllowed] NSUrl storeUrl, [NullAllowed] NSDictionary options, out NSError error);
-#else
-		NSPersistentStore AddPersistentStoreWithType (NSString storeType, [NullAllowed] string configuration, [NullAllowed] NSUrl storeUrl, [NullAllowed] NSDictionary options, out NSError error);
-#endif
 
 		/// <param name="storeDescription">To be added.</param>
 		///         <param name="block">To be added.</param>
@@ -4254,11 +4169,7 @@ namespace CoreData {
 		// 5.0
 		[Export ("executeRequest:withContext:error:")]
 		[return: NullAllowed]
-#if NET
 		NSObject Execute (NSPersistentStoreRequest request, NSManagedObjectContext context, out NSError error);
-#else
-		NSObject ExecuteRequestwithContexterror (NSPersistentStoreRequest request, NSManagedObjectContext context, out NSError error);
-#endif
 
 		/// <include file="../docs/api/CoreData/NSPersistentStoreCoordinator.xml" path="/Documentation/Docs[@DocId='P:CoreData.NSPersistentStoreCoordinator.DidImportUbiquitousContentChangesNotification']/*" />
 		[NoTV]
@@ -4285,11 +4196,7 @@ namespace CoreData {
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Please see the release notes and Core Data documentation.")]
 		[Field ("NSPersistentStoreUbiquitousContentURLKey")]
-#if NET
 		NSString PersistentStoreUbiquitousContentUrlKey { get; }
-#else
-		NSString PersistentStoreUbiquitousContentUrlLKey { get; }
-#endif
 
 		/// <summary>Represents the value associated with the constant NSPersistentStoreFileProtectionKey</summary>
 		///         <value>
@@ -4520,11 +4427,7 @@ namespace CoreData {
 		///         <remarks>To be added.</remarks>
 		[Export ("finalResult", ArgumentSemantic.Retain)]
 		[NullAllowed]
-#if NET
 		INSFetchRequestResult [] FinalResult { get; }
-#else
-		NSObject [] FinalResult { get; }
-#endif
 	}
 
 	/// <summary>Class that represents the result of request that was made of a persistent data store.</summary>

@@ -75,11 +75,9 @@ namespace Cecil.Tests {
 					case "iOSAttribute":
 					case "MacAttribute":
 					case "TVAttribute":
-					case "WatchAttribute":
 					case "NoiOSAttribute":
 					case "NoMacAttribute":
 					case "NoTVAttribute":
-					case "NoWatchAttribute":
 					case "SupportedOSPlatformAttribute":
 					case "UnsupportedOSPlatformAttribute":
 						found.Add ($"{type.FullName}.{f.Name}: {ca.AttributeType.Name}");

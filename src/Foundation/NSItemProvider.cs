@@ -8,15 +8,6 @@ using ObjCRuntime;
 
 namespace Foundation {
 	public partial class NSItemProvider {
-#if !NET && MONOMAC
-		[Obsolete ("Use RegisterCloudKitShare (CloudKitRegistrationPreparationAction) instead.")]
-		public virtual void RegisterCloudKitShare (Action<CloudKitRegistrationPreparationHandler> preparationHandler)
-		{
-			CloudKitRegistrationPreparationAction action = handler => preparationHandler (handler);
-			RegisterCloudKitShare (action);
-		}
-#endif
-
 #if MONOMAC
 		/// <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
@@ -32,7 +23,6 @@ namespace Foundation {
 		}
 #endif
 
-#if NET
 		/// <typeparam name="T">To be added.</typeparam>
 		///         <param name="completionHandler">To be added.</param>
 		///         <summary>To be added.</summary>
@@ -42,7 +32,6 @@ namespace Foundation {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public NSProgress LoadObject<T> (Action<T, NSError> completionHandler) where T : NSObject, INSItemProviderReading
 		{
 			return LoadObject (new Class (typeof (T)), (rv, err) => {
@@ -55,7 +44,6 @@ namespace Foundation {
 			});
 		}
 
-#if NET
 		/// <typeparam name="T">To be added.</typeparam>
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
@@ -64,7 +52,6 @@ namespace Foundation {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public Task<T> LoadObjectAsync<T> () where T : NSObject, INSItemProviderReading
 		{
 			var rv = LoadObjectAsync (new Class (typeof (T)));
@@ -76,7 +63,6 @@ namespace Foundation {
 			});
 		}
 
-#if NET
 		/// <typeparam name="T">To be added.</typeparam>
 		///         <param name="result">To be added.</param>
 		///         <summary>To be added.</summary>
@@ -86,7 +72,6 @@ namespace Foundation {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public Task<T> LoadObjectAsync<T> (out NSProgress result) where T : NSObject, INSItemProviderReading
 		{
 			var rv = LoadObjectAsync (new Class (typeof (T)), out result);

@@ -18,10 +18,6 @@ using UIViewController = AppKit.NSViewController;
 using UIKit;
 #endif
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace MultipeerConnectivity {
 
 	/// <summary>Identifies a device in a multipeer connectivity network.</summary>

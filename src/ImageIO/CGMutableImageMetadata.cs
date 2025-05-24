@@ -17,15 +17,12 @@ using Foundation;
 using ObjCRuntime;
 
 namespace ImageIO {
-
-#if NET
 	/// <summary>A mutable container of metadata. (See <see cref="ImageIO.CGImageMetadata" />.)</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CGMutableImageMetadata : CGImageMetadata {
 
 		[DllImport (Constants.ImageIOLibrary)]

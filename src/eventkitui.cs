@@ -15,10 +15,6 @@ using UIKit;
 using EventKit;
 using System;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace EventKitUI {
 	/// <summary>UIViewController used to display the details of a calendar event.</summary>
 	///     

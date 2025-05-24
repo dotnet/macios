@@ -32,6 +32,8 @@ namespace WebKit {
 
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
+	[ObsoletedOSPlatform ("macos10.14", "No longer supported.")]
+	[SupportedOSPlatform ("macos")]
 	partial class WebNavigationPolicyEventArgs {
 
 		/// <summary>To be added.</summary>

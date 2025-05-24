@@ -18,7 +18,6 @@
 		     msbuild feature yet, so F# doesn't have this. Once, upstream F# adds it, we can
 		     remove this -->
 		<_DebugFileExt Condition="'$(FscDebugFileExt)' != ''">$(FscDebugFileExt)</_DebugFileExt>
-		<_DebugFileExt Condition="'$(_DebugFileExt)' == ''">.mdb</_DebugFileExt>
 
 		<!-- Enable nuget package conflict resolution -->
 		<!-- This must be set before importing Microsoft.CSharp.targets -->

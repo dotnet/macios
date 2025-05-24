@@ -17,10 +17,6 @@ using OS_nw_parameters = System.IntPtr;
 using OS_nw_endpoint = System.IntPtr;
 using OS_nw_error = System.IntPtr;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace DeviceDiscoveryUI {
 
 	[Internal]

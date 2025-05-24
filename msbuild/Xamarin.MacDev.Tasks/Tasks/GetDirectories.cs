@@ -10,22 +10,21 @@ using Xamarin.MacDev.Tasks;
 using Xamarin.Localization.MSBuild;
 using Xamarin.Messaging.Build.Client;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Xamarin.MacDev.Tasks {
 	public class GetDirectories : XamarinTask, ITaskCallback, ICancelableTask {
 		[Required]
-		public string Path { get; set; }
+		public string Path { get; set; } = "";
 
-		public string Pattern { get; set; }
+		public string Pattern { get; set; } = "";
 
-		public string Option { get; set; }
+		public string Option { get; set; } = "";
 
-		public string Exclude { get; set; }
+		public string Exclude { get; set; } = "";
 
 		[Output]
-		public ITaskItem [] Directories { get; set; }
+		public ITaskItem [] Directories { get; set; } = [];
 
 		public override bool Execute ()
 		{

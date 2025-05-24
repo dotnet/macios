@@ -213,7 +213,6 @@ namespace GLKit {
 	}
 
 	// glVertexAttribPointer structure values, again, problems with definitions being in different namespaces
-#if NET
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
@@ -223,11 +222,6 @@ namespace GLKit {
 	[ObsoletedOSPlatform ("tvos12.0", "Use 'Metal' instead.")]
 	[ObsoletedOSPlatform ("macos10.14", "Use 'Metal' instead.")]
 	[ObsoletedOSPlatform ("ios12.0", "Use 'Metal' instead.")]
-#else
-	[Deprecated (PlatformName.iOS, 12, 0, message: "Use 'Metal' instead.")]
-	[Deprecated (PlatformName.TvOS, 12, 0, message: "Use 'Metal' instead.")]
-	[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'Metal' instead.")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct GLKVertexAttributeParameters {
 		/// <summary>To be added.</summary>

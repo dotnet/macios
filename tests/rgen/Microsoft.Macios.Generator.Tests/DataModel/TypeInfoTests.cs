@@ -442,4 +442,207 @@ namespace NS {
 		// ensure that the first parameter is a pointer
 		Assert.True (changes.Value.Parameters [0].Type.IsPointer);
 	}
+
+	[Theory]
+	[AllSupportedPlatforms]
+	void TypeInfoGenericName (ApplePlatform platform)
+	{
+		var inputText = @"
+using System;
+using System.Collections.Generic;
+using ObjCRuntime;
+using System.Collections.Generic;
+
+namespace NS {
+
+	public class ExampleClass {
+		public int Number => 0;
+	}
+
+	public class MyClass {
+		public int ProcessPointer (List<ExampleClass> pointer)
+		{
+			return pointer.Count;
+		}
+	}
+}
+";
+		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
+		Assert.Single (syntaxTrees);
+		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
+		var declaration = syntaxTrees [0].GetRoot ()
+			.DescendantNodes ().OfType<MethodDeclarationSyntax> ()
+			.FirstOrDefault ();
+		Assert.NotNull (declaration);
+		Assert.True (Method.TryCreate (declaration, semanticModel, out var changes));
+		Assert.NotNull (changes);
+		// ensure that the method has a single parameter
+		Assert.Single (changes.Value.Parameters);
+		// ensure that the first parameter is a pointer
+		Assert.True (changes.Value.Parameters [0].Type.IsGenericType);
+		Assert.Single (changes.Value.Parameters [0].Type.TypeArguments);
+		Assert.Equal (Global ("NS.ExampleClass"), changes.Value.Parameters [0].Type.TypeArguments [0]);
+		Assert.Equal ("List", changes.Value.Parameters [0].Type.Name);
+		Assert.Equal ("System.Collections.Generic.List<NS.ExampleClass>", changes.Value.Parameters [0].Type.FullyQualifiedName);
+		Assert.Equal ("System.Collections.Generic", string.Join ('.', changes.Value.Parameters [0].Type.Namespace));
+	}
+
+	[Theory]
+	[AllSupportedPlatforms]
+	void TypeInfoArrayName (ApplePlatform platform)
+	{
+		var inputText = @"
+using System;
+using System.Collections.Generic;
+using ObjCRuntime;
+using System.Collections.Generic;
+
+namespace NS {
+
+	public class ExampleClass {
+		public int Number => 0;
+	}
+
+	public class MyClass {
+		public int ProcessPointer (ExampleClass[] pointer)
+		{
+			return pointer.Length;
+		}
+	}
+}
+";
+		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
+		Assert.Single (syntaxTrees);
+		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
+		var declaration = syntaxTrees [0].GetRoot ()
+			.DescendantNodes ().OfType<MethodDeclarationSyntax> ()
+			.FirstOrDefault ();
+		Assert.NotNull (declaration);
+		Assert.True (Method.TryCreate (declaration, semanticModel, out var changes));
+		Assert.NotNull (changes);
+		// ensure that the method has a single parameter
+		Assert.Single (changes.Value.Parameters);
+		// ensure that the first parameter is a pointer
+		Assert.True (changes.Value.Parameters [0].Type.IsArray);
+		Assert.Equal ("ExampleClass", changes.Value.Parameters [0].Type.Name);
+		Assert.Equal ("NS.ExampleClass", changes.Value.Parameters [0].Type.FullyQualifiedName);
+		Assert.Equal ("NS", string.Join ('.', changes.Value.Parameters [0].Type.Namespace));
+	}
+
+	[Theory]
+	[AllSupportedPlatforms]
+	void TypeInfoNonGenericNoNamespace (ApplePlatform platform)
+	{
+		var inputText = @"
+using System;
+using System.Collections.Generic;
+using ObjCRuntime;
+using System.Collections.Generic;
+
+namespace NS {
+	public class MyClass {
+		public int ProcessPointer (int pointer)
+		{
+			return pointer;
+		}
+	}
+}
+";
+		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
+		Assert.Single (syntaxTrees);
+		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
+		var declaration = syntaxTrees [0].GetRoot ()
+			.DescendantNodes ().OfType<MethodDeclarationSyntax> ()
+			.FirstOrDefault ();
+		Assert.NotNull (declaration);
+		Assert.True (Method.TryCreate (declaration, semanticModel, out var changes));
+		Assert.NotNull (changes);
+		// ensure that the method has a single parameter
+		Assert.Single (changes.Value.Parameters);
+		// ensure that the first parameter is a pointer
+		Assert.False (changes.Value.Parameters [0].Type.IsGenericType);
+		Assert.Equal ("int", changes.Value.Parameters [0].Type.Name);
+		Assert.Equal ("int", changes.Value.Parameters [0].Type.FullyQualifiedName);
+		Assert.Empty (changes.Value.Parameters [0].Type.Namespace);
+	}
+
+	[Theory]
+	[AllSupportedPlatforms]
+	void TypeInfoNameStringArray (ApplePlatform platform)
+	{
+		var inputText = @"
+using System;
+using System.Collections.Generic;
+using ObjCRuntime;
+using System.Collections.Generic;
+
+namespace NS {
+	public class MyClass {
+		public int ProcessPointer (string[] pointer)
+		{
+			return pointer.Length;
+		}
+	}
+}
+";
+		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
+		Assert.Single (syntaxTrees);
+		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
+		var declaration = syntaxTrees [0].GetRoot ()
+			.DescendantNodes ().OfType<MethodDeclarationSyntax> ()
+			.FirstOrDefault ();
+		Assert.NotNull (declaration);
+		Assert.True (Method.TryCreate (declaration, semanticModel, out var changes));
+		Assert.NotNull (changes);
+		// ensure that the method has a single parameter
+		Assert.Single (changes.Value.Parameters);
+		// ensure that the first parameter is a pointer
+		Assert.False (changes.Value.Parameters [0].Type.IsGenericType);
+		Assert.Equal ("string", changes.Value.Parameters [0].Type.Name);
+		Assert.Equal ("string", changes.Value.Parameters [0].Type.FullyQualifiedName);
+		Assert.Empty (changes.Value.Parameters [0].Type.Namespace);
+	}
+
+	[Theory]
+	[AllSupportedPlatforms]
+	void TypeInfoGeneralCase (ApplePlatform platform)
+	{
+		var inputText = @"
+using System;
+using System.Collections.Generic;
+using ObjCRuntime;
+using System.Collections.Generic;
+
+namespace Example {
+	namespace NS {
+		public class ExampleClass {
+			public int Number => 0;
+		}
+
+		public class MyClass {
+			public int ProcessPointer (ExampleClass pointer)
+			{
+				return pointer.Number;
+			}
+		}
+	}
+}
+";
+		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
+		Assert.Single (syntaxTrees);
+		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
+		var declaration = syntaxTrees [0].GetRoot ()
+			.DescendantNodes ().OfType<MethodDeclarationSyntax> ()
+			.FirstOrDefault ();
+		Assert.NotNull (declaration);
+		Assert.True (Method.TryCreate (declaration, semanticModel, out var changes));
+		Assert.NotNull (changes);
+		// ensure that the method has a single parameter
+		Assert.Single (changes.Value.Parameters);
+		// ensure that the first parameter is a pointer
+		Assert.False (changes.Value.Parameters [0].Type.IsGenericType);
+		Assert.Equal ("ExampleClass", changes.Value.Parameters [0].Type.Name);
+		Assert.Equal ("Example.NS.ExampleClass", changes.Value.Parameters [0].Type.FullyQualifiedName);
+		Assert.Equal ("Example.NS", string.Join ('.', changes.Value.Parameters [0].Type.Namespace));
+	}
 }

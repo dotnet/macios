@@ -12,10 +12,6 @@ using UIKit;
 using Twitter;
 using Accounts;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace Twitter {
 
 	/// <summary>A delegate that is used as the <c>handler</c> in calls to <see cref="Twitter.TWRequest.PerformRequest(Twitter.TWRequestHandler)" />.</summary>

@@ -5,16 +5,15 @@ using Microsoft.Build.Utilities;
 using Microsoft.Build.Framework;
 using Xamarin.Localization.MSBuild;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Xamarin.MacDev.Tasks {
 	public class GenerateBundleName : XamarinTask {
 		[Required]
-		public string ProjectName { get; set; }
+		public string ProjectName { get; set; } = "";
 
 		[Output]
-		public string BundleName { get; set; }
+		public string BundleName { get; set; } = "";
 
 		static string SanitizeName (string name)
 		{

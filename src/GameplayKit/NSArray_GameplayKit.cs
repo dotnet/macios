@@ -14,15 +14,12 @@ using Foundation;
 using ObjCRuntime;
 
 namespace GameplayKit {
-
-#if NET
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
-#endif
 	public static class NSArray_GameplayKit {
 
 		/// <typeparam name="T">To be added.</typeparam>

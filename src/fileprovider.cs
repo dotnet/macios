@@ -15,20 +15,7 @@ using CoreGraphics;
 using Foundation;
 using UniformTypeIdentifiers;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
-#if IOS && !NET && !__MACCATALYST__
-using FileProvider;
-
-// This is the original (iOS 8) location of `NSFileProviderExtension`
-// but it moved into it's own framework later (iOS 11) and it's now
-// shared with macOS...
-namespace UIKit {
-#else
 namespace FileProvider {
-#endif
 	/// <summary>Delegate for handling a thumbnail fetch operation.</summary>
 	delegate void NSFileProviderExtensionFetchThumbnailsHandler (NSString identifier, [NullAllowed] NSData imageData, [NullAllowed] NSError error);
 
@@ -298,14 +285,6 @@ namespace FileProvider {
 		AddingSubItems = Writing,
 		/// <summary>To be added.</summary>
 		ContentEnumerating = Reading,
-#if !NET
-		[Obsolete ("This enum value is not constant across OS and versions.")]
-#if MONOMAC
-		All = Reading | Writing | Reparenting | Renaming | Trashing | Deleting | Evicting,
-#else
-		All = Reading | Writing | Reparenting | Renaming | Trashing | Deleting,
-#endif
-#endif
 	}
 
 	[Flags, NoTV, NoMacCatalyst, NoiOS, Mac (12, 3)]
@@ -591,10 +570,6 @@ namespace FileProvider {
 		[Export ("filename")]
 		string Filename { get; }
 
-#if !NET
-		// became optional when deprecated
-		[Abstract]
-#endif
 		/// <summary>To be added.</summary>
 		/// <value>To be added.</value>
 		/// <remarks>To be added.</remarks>
@@ -664,14 +639,10 @@ namespace FileProvider {
 		[Export ("favoriteRank", ArgumentSemantic.Copy)]
 		NSNumber GetFavoriteRank ();
 
-#if NET // Not available in mac
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[NoMac]
-#elif MONOMAC
-		[Obsolete ("'IsTrashed' is not available in macOS and will be removed in the future.")]
-#endif
 		[Export ("isTrashed")]
 		bool IsTrashed ();
 

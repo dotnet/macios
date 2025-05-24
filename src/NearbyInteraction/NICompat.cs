@@ -8,6 +8,7 @@
 
 using System;
 using System.ComponentModel;
+using System.Numerics;
 using System.Threading.Tasks;
 using Foundation;
 using CoreFoundation;
@@ -19,14 +20,7 @@ using ARSession = Foundation.NSObject;
 using ARKit;
 #endif
 
-#if NET
-using Vector3 = global::System.Numerics.Vector3;
 using MatrixFloat4x4 = global::CoreGraphics.NMatrix4;
-#else
-using NativeHandle = System.IntPtr;
-using Vector3 = global::OpenTK.Vector3;
-using MatrixFloat4x4 = global::OpenTK.NMatrix4;
-#endif
 
 #nullable enable
 namespace NearbyInteraction {

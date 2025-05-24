@@ -10,18 +10,17 @@ using Xamarin.MacDev;
 using Xamarin.Localization.MSBuild;
 using Xamarin.Messaging.Build.Client;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Xamarin.MacDev.Tasks {
 	public class CreateDebugSettings : XamarinTask, ICancelableTask {
 		#region Inputs
 
 		[Required]
-		public string AppBundleDir { get; set; }
+		public string AppBundleDir { get; set; } = "";
 
 		[Required]
-		public string DebuggerPort { get; set; }
+		public string DebuggerPort { get; set; } = "";
 
 		#endregion
 
@@ -36,7 +35,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			if (File.Exists (path)) {
 				try {
-					plist = PDictionary.FromFile (path);
+					plist = PDictionary.FromFile (path)!;
 				} catch (Exception ex) {
 					Log.LogError (MSBStrings.E0024, Path.GetFileName (AppBundleDir), ex.Message);
 					return false;

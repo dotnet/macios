@@ -43,10 +43,6 @@ using ObjCRuntime;
 using Foundation;
 using CoreFoundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace AudioUnit {
 	/// <summary>Enumerates errors produced by AudioUnit functions.</summary>
 	///     <remarks>To be added.</remarks>
@@ -72,7 +68,6 @@ namespace AudioUnit {
 		InvalidElement = -10877,
 	}
 
-#if NET
 	/// <include file="../../docs/api/AudioUnit/AUGraph.xml" path="/Documentation/Docs[@DocId='T:AudioUnit.AUGraph']/*" />
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -82,11 +77,6 @@ namespace AudioUnit {
 	[ObsoletedOSPlatform ("macos11.0", "Use 'AVAudioEngine' instead.")]
 	[ObsoletedOSPlatform ("ios14.0", "Use 'AVAudioEngine' instead.")]
 	[ObsoletedOSPlatform ("maccatalyst14.0", "Use 'AVAudioEngine' instead.")]
-#else
-	[Deprecated (PlatformName.iOS, 14, 0, message: "Use 'AVAudioEngine' instead.")]
-	[Deprecated (PlatformName.TvOS, 14, 0, message: "Use 'AVAudioEngine' instead.")]
-	[Deprecated (PlatformName.MacOSX, 11, 0, message: "Use 'AVAudioEngine' instead.")]
-#endif
 	public class AUGraph : DisposableObject {
 		readonly GCHandle gcHandle;
 
@@ -180,15 +170,10 @@ namespace AudioUnit {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (callback));
 
 			AudioUnitStatus error = AudioUnitStatus.OK;
-#if NET
 			unsafe {
 				if (graphUserCallbacks.Count == 0)
 					error = (AudioUnitStatus) AUGraphAddRenderNotify (Handle, &renderCallback, GCHandle.ToIntPtr (gcHandle));
 			}
-#else
-			if (graphUserCallbacks.Count == 0)
-				error = (AudioUnitStatus) AUGraphAddRenderNotify (Handle, renderCallback, GCHandle.ToIntPtr (gcHandle));
-#endif
 
 			if (error == AudioUnitStatus.OK)
 				graphUserCallbacks.Add (callback);
@@ -209,15 +194,10 @@ namespace AudioUnit {
 				throw new ArgumentException ("Cannot unregister a callback that has not been registered");
 
 			AudioUnitStatus error = AudioUnitStatus.OK;
-#if NET
 			unsafe {
 				if (graphUserCallbacks.Count == 0)
 					error = (AudioUnitStatus) AUGraphRemoveRenderNotify (Handle, &renderCallback, GCHandle.ToIntPtr (gcHandle));
 			}
-#else
-			if (graphUserCallbacks.Count == 0)
-				error = (AudioUnitStatus) AUGraphRemoveRenderNotify (Handle, renderCallback, GCHandle.ToIntPtr (gcHandle));
-#endif
 
 			graphUserCallbacks.Remove (callback); // Remove from list even if there is an error
 			return error;
@@ -225,18 +205,6 @@ namespace AudioUnit {
 
 		HashSet<RenderDelegate> graphUserCallbacks = new HashSet<RenderDelegate> ();
 
-#if !NET
-		static CallbackShared? _static_CallbackShared;
-		static CallbackShared static_CallbackShared {
-			get {
-				if (_static_CallbackShared is null)
-					_static_CallbackShared = new CallbackShared (renderCallback);
-				return _static_CallbackShared;
-			}
-		}
-#endif
-
-#if NET
 		[UnmanagedCallersOnly]
 		static unsafe AudioUnitStatus renderCallback (IntPtr inRefCon,
 					AudioUnitRenderActionFlags* _ioActionFlags,
@@ -244,15 +212,6 @@ namespace AudioUnit {
 					uint _inBusNumber,
 					uint _inNumberFrames,
 					IntPtr _ioData)
-#else
-		[MonoPInvokeCallback (typeof (CallbackShared))]
-		static AudioUnitStatus renderCallback (IntPtr inRefCon,
-					ref AudioUnitRenderActionFlags _ioActionFlags,
-					ref AudioTimeStamp _inTimeStamp,
-					uint _inBusNumber,
-					uint _inNumberFrames,
-					IntPtr _ioData)
-#endif
 		{
 			// getting audiounit instance
 			var handler = GCHandle.FromIntPtr (inRefCon);
@@ -265,11 +224,7 @@ namespace AudioUnit {
 			if (renderers.Count != 0) {
 				using (var buffers = new AudioBuffers (_ioData)) {
 					foreach (RenderDelegate renderer in renderers) {
-#if NET
 						renderer (*_ioActionFlags, *_inTimeStamp, _inBusNumber, _inNumberFrames, buffers);
-#else
-						renderer (_ioActionFlags, _inTimeStamp, _inBusNumber, _inNumberFrames, buffers);
-#endif
 					}
 					return AudioUnitStatus.OK;
 				}
@@ -496,9 +451,6 @@ namespace AudioUnit {
 		}
 
 		Dictionary<uint, RenderDelegate>? nodesCallbacks;
-#if !NET
-		static readonly CallbackShared CreateRenderCallback = RenderCallbackImpl;
-#endif
 
 		/// <param name="destNode">To be added.</param>
 		///         <param name="destInputNumber">To be added.</param>
@@ -515,23 +467,14 @@ namespace AudioUnit {
 
 			var cb = new AURenderCallbackStruct ();
 			unsafe {
-#if NET
 				cb.Proc = &RenderCallbackImpl;
-#else
-				cb.Proc = Marshal.GetFunctionPointerForDelegate (CreateRenderCallback);
-#endif
 				cb.ProcRefCon = GCHandle.ToIntPtr (gcHandle);
 				return AUGraphSetNodeInputCallback (Handle, destNode, destInputNumber, &cb);
 			}
 		}
-#if NET
+
 		[UnmanagedCallersOnly]
 		static unsafe AudioUnitStatus RenderCallbackImpl (IntPtr clientData, AudioUnitRenderActionFlags* actionFlags, AudioTimeStamp* timeStamp, uint busNumber, uint numberFrames, IntPtr data)
-#else
-
-		[MonoPInvokeCallback (typeof (CallbackShared))]
-		static AudioUnitStatus RenderCallbackImpl (IntPtr clientData, ref AudioUnitRenderActionFlags actionFlags, ref AudioTimeStamp timeStamp, uint busNumber, uint numberFrames, IntPtr data)
-#endif
 		{
 			GCHandle gch = GCHandle.FromIntPtr (clientData);
 			var au = gch.Target as AUGraph;
@@ -542,11 +485,7 @@ namespace AudioUnit {
 				return AudioUnitStatus.InvalidParameter;
 
 			using (var buffers = new AudioBuffers (data)) {
-#if NET
 				return callback (*actionFlags, *timeStamp, busNumber, numberFrames, buffers);
-#else
-				return callback (actionFlags, timeStamp, busNumber, numberFrames, buffers);
-#endif
 			}
 		}
 
@@ -660,19 +599,10 @@ namespace AudioUnit {
 		static extern AUGraphError AUGraphInitialize (IntPtr inGraph);
 
 		[DllImport (Constants.AudioToolboxLibrary)]
-#if NET
 		static unsafe extern int AUGraphAddRenderNotify (IntPtr inGraph, delegate* unmanaged<IntPtr, AudioUnitRenderActionFlags*, AudioTimeStamp*, uint, uint, IntPtr, AudioUnitStatus> inCallback, IntPtr inRefCon);
-#else
-		static extern int AUGraphAddRenderNotify (IntPtr inGraph, CallbackShared inCallback, IntPtr inRefCon);
-#endif
 
-#if NET
 		[DllImport (Constants.AudioToolboxLibrary)]
 		static unsafe extern int AUGraphRemoveRenderNotify (IntPtr inGraph, delegate* unmanaged<IntPtr, AudioUnitRenderActionFlags*, AudioTimeStamp*, uint, uint, IntPtr, AudioUnitStatus> inCallback, IntPtr inRefCon);
-#else
-		[DllImport (Constants.AudioToolboxLibrary)]
-		static extern int AUGraphRemoveRenderNotify (IntPtr inGraph, CallbackShared inCallback, IntPtr inRefCon);
-#endif
 
 		[DllImport (Constants.AudioToolboxLibrary)]
 		static extern AUGraphError AUGraphStart (IntPtr inGraph);

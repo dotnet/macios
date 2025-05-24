@@ -63,52 +63,38 @@ namespace AudioUnit {
 		OfflineEffect = 0x61756f6c, // 'auol'
 		/// <summary>A generator component, when set, you want to set a component subtype in the <see cref="AudioComponentDescription.ComponentSubType" /> to one of the values from <see cref="AudioTypeGenerator" /></summary>
 		Generator = 0x6175676e, // 'augn'
-#if NET
 		/// <summary>A MIDI processor component, they can receive MIDI input and generate MIDI output, but they do not actually produce audio.</summary>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		MIDIProcessor = 0x61756d69, // 'aumi'
-#if NET
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("maccatalyst16.0")]
 		[SupportedOSPlatform ("macos13.0")]
 		[SupportedOSPlatform ("tvos16.0")]
-#else
-		[iOS (16, 0), Mac (13, 0), TV (16, 0), MacCatalyst (16, 0)]
-#endif
 		SpeechSynthesize = 0x61757370, // ausp
 
 #if !MONOMAC
-#if NET
 		/// <summary>A remote effect component</summary>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		RemoteEffect = 0x61757278, // 'aurx',
-#if NET
 		/// <summary>A remote generator.</summary>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		RemoteGenerator = 0x61757267, // 'aurg',
-#if NET
 		/// <summary>A remote instrument</summary>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		RemoteInstrument = 0x61757269, // 'auri',
-#if NET
 		/// <summary>A remote music effect</summary>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		RemoteMusicEffect = 0x6174726d, // 'aurm'
 #endif
 	}
@@ -126,13 +112,11 @@ namespace AudioUnit {
 		/// <summary>To be added.</summary>
 		System = 0x73797320, // 'sys'
 #endif
-#if NET
 		/// <summary>To be added.</summary>
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		Remote = 0x72696f63, // 'rioc'
 		/// <summary>To be added.</summary>
 		VoiceProcessingIO = 0x7670696f, // 'vpio'
@@ -148,13 +132,11 @@ namespace AudioUnit {
 		/// <summary>To be added.</summary>
 		Sampler = 0x73616d70, // 'samp'
 
-#if NET
 		/// <summary>To be added.</summary>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		MidiSynth = 0x6d73796e, // 'msyn'
 	}
 
@@ -183,7 +165,6 @@ namespace AudioUnit {
 		/// <summary>To be added.</summary>
 		TimePitch = 0x746d7074, // 'tmpt'
 #else
-#if NET
 		/// <summary>Indicates an iPhone audio unit that provides basic control over playback.</summary>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -192,10 +173,6 @@ namespace AudioUnit {
 		[ObsoletedOSPlatform ("tvos13.0", "Use 'AudioTypeConverter.NewTimePitch' instead.")]
 		[ObsoletedOSPlatform ("ios13.0", "Use 'AudioTypeConverter.NewTimePitch' instead.")]
 		[ObsoletedOSPlatform ("maccatalyst13.1", "Use 'AudioTypeConverter.NewTimePitch' instead.")]
-#else
-		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'AudioTypeConverter.NewTimePitch' instead.")]
-		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use 'AudioTypeConverter.NewTimePitch' instead.")]
-#endif
 		AUiPodTime = 0x6970746d, // 'iptm'
 #endif
 	}
@@ -215,7 +192,6 @@ namespace AudioUnit {
 		HighShelfFilter = 0x68736866, // 'hshf'
 		/// <summary>To be added.</summary>
 		LowShelfFilter = 0x6c736866, // 'lshf'
-#if NET
 		/// <summary>To be added.</summary>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -225,22 +201,17 @@ namespace AudioUnit {
 		[ObsoletedOSPlatform ("maccatalyst13.1")]
 		[ObsoletedOSPlatform ("tvos9.0")]
 		[ObsoletedOSPlatform ("macos10.9")]
-#else
-		[Obsoleted (PlatformName.iOS, 7, 0)]
-#endif
 		DCFilter = 0x6463666c, // 'dcfl'
 		/// <summary>To be added.</summary>
 		ParametricEQ = 0x706d6571, // 'pmeq'
 		/// <summary>To be added.</summary>
 		Delay = 0x64656c79, // 'dely'
 
-#if NET
 		/// <summary>To be added.</summary>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		SampleDelay = 0x73646c79, // 'sdly'
 		/// <summary>To be added.</summary>
 		Distortion = 0x64697374, // 'dist'
@@ -262,7 +233,6 @@ namespace AudioUnit {
 		/// <summary>To be added.</summary>
 		RogerBeep = 0x726f6772, // 'rogr'
 #else
-#if NET
 		/// <summary>To be added.</summary>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
@@ -270,22 +240,13 @@ namespace AudioUnit {
 		[ObsoletedOSPlatform ("tvos13.0", "Use 'AudioTypeEffect.GraphicEQ' instead.")]
 		[ObsoletedOSPlatform ("ios13.0", "Use 'AudioTypeEffect.GraphicEQ' instead.")]
 		[UnsupportedOSPlatform ("maccatalyst")]
-#else
-		[Unavailable (PlatformName.MacCatalyst)]
-		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'AudioTypeEffect.GraphicEQ' instead.")]
-		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use 'AudioTypeEffect.GraphicEQ' instead.")]
-#endif
 		AUiPodEQ = 0x69706571, // 'ipeq'
 #endif
-#if NET
 		/// <summary>To be added.</summary>
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
-#else
-		[Unavailable (PlatformName.MacCatalyst)]
-#endif
 		Reverb2 = 0x72766232, // 'rvb2'
 		/// <summary>To be added.</summary>
 		NBandEq = 0x6e626571, // 'nbeq'
@@ -303,26 +264,20 @@ namespace AudioUnit {
 #if MONOMAC
 		/// <summary>To be added.</summary>
 		Stereo = 0x736d7872, // 'smxr'
-#if NET
 		/// <summary>To be added.</summary>
 		[UnsupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos10.10", "Use 'Spacial' instead.")]
-#else
-		[Deprecated (PlatformName.MacOSX, 10, 10, message : "Use 'Spacial' instead.")]
-#endif
 		ThreeD = 0x33646d78, // '3dmx'
 #else
-#if NET
 		/// <summary>Developers should not use this deprecated field. Developers should use 'Spacial' instead.</summary>
 		[SupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("ios8.0", "Use 'Spacial' instead.")]
-#endif
 		Embedded3D = 0x3364656d, // '3dem'
 #endif
 	}
@@ -380,13 +335,11 @@ namespace AudioUnit {
 		CanLoadInProcess = 0x10,
 	}
 
-#if NET
 	/// <include file="../../docs/api/AudioUnit/AudioComponentDescription.xml" path="/Documentation/Docs[@DocId='T:AudioUnit.AudioComponentDescription']/*" />
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AudioComponentDescription {
 		/// <summary>Describes the component type, some of the component types have subtypes, in those cases, you should also set the <see cref="AudioComponentDescription.ComponentSubType" /> property.</summary>
@@ -395,9 +348,9 @@ namespace AudioUnit {
 		///         </remarks>
 		public AudioComponentType ComponentType;
 
-#if NET && !COREBUILD
+#if !COREBUILD
 		/// <include file="../../docs/api/AudioUnit/AudioComponentDescription.xml" path="/Documentation/Docs[@DocId='F:AudioUnit.AudioComponentDescription.ComponentSubType']/*" />
-	public AudioUnitSubType ComponentSubType;
+		public AudioUnitSubType ComponentSubType;
 #else
 		public int ComponentSubType;
 #endif
@@ -416,7 +369,7 @@ namespace AudioUnit {
 		internal AudioComponentDescription (AudioComponentType type, int subType)
 		{
 			ComponentType = type;
-#if NET && !COREBUILD
+#if !COREBUILD
 			ComponentSubType = (AudioUnitSubType) subType;
 #else
 			ComponentSubType = subType;

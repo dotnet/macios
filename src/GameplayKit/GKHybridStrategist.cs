@@ -7,22 +7,16 @@ using ObjCRuntime;
 
 #nullable enable
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 #if !XAMCORE_5_0 && !__MACOS__
 namespace GameplayKit {
 	/// <summary>A <see cref="GameplayKit.IGKStrategist" /> that combines Monte Carlo Tree Search and local search via MinMax.</summary>
 	///     <remarks>To be added.</remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/GameplayKit/GKHybridStrategist">Apple documentation for <c>GKHybridStrategist</c></related>
 	[Register ("GKHybridStrategist", SkipRegistration = true)]
-#if NET
 	[UnsupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[EditorBrowsable (EditorBrowsableState.Never)]
 	public class GKHybridStrategist : NSObject, IGKStrategist {
 		/// <summary>Do not use</summary>

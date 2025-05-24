@@ -3,10 +3,6 @@ using Foundation;
 using CoreFoundation;
 using System;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace PushKit {
 	/// <summary>Holds the <see cref="PushKit.PKPushCredentials.Token" /> that holds the user's credentials.</summary>
 	///     
@@ -133,9 +129,6 @@ namespace PushKit {
 		/// <summary>Developers should not use this deprecated method. Developers should use the 'DidReceiveIncomingPushWithPayload' overload accepting an 'Action' argument instead.</summary>
 		/// <remarks>To be added.</remarks>
 		[NoMac]
-#if !NET
-		[Abstract] // now optional in iOS 11
-#endif
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use the 'DidReceiveIncomingPushWithPayload' overload accepting an 'Action' argument instead.")]
 		[NoMacCatalyst]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use the 'DidReceiveIncomingPushWithPayload' overload accepting an 'Action' argument instead.")]

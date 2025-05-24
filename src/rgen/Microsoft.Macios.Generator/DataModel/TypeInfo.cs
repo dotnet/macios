@@ -528,7 +528,7 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 			IsNullable = false,
 		};
 	}
-	
+
 	public TypeInfo ToPointedAtType ()
 	{
 		if (!IsPointer)

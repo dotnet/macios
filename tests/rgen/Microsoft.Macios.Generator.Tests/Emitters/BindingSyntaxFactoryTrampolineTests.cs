@@ -625,7 +625,7 @@ namespace NS {
 				outNullableInt,
 				"out __xamarin_nullified__0",
 			];
-			
+
 			var refNullableInt = @"
 using System;
 using Foundation;
@@ -663,7 +663,7 @@ namespace NS {
 				outBoolean,
 				"out __xamarin_bool__0",
 			];
-			
+
 			var refBoolean = @"
 using System;
 using Foundation;
@@ -682,7 +682,7 @@ namespace NS {
 				refBoolean,
 				"ref __xamarin_bool__0",
 			];
-			
+
 			var outInt = @"
 using System;
 using Foundation;
@@ -701,7 +701,7 @@ namespace NS {
 				outInt,
 				$"out {Global ("System.Runtime.CompilerServices.Unsafe")}.AsRef<int> (outInt)",
 			];
-			
+
 			var refInt = @"
 using System;
 using Foundation;

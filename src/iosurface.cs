@@ -13,10 +13,6 @@ using CoreFoundation;
 using Foundation;
 using ObjCRuntime;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace IOSurface {
 
 	[Static]

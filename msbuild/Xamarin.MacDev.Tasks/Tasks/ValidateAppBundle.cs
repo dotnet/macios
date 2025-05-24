@@ -11,15 +11,14 @@ using Xamarin.Utils;
 using Xamarin.Messaging.Build.Client;
 using Xamarin.Localization.MSBuild;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Xamarin.MacDev.Tasks {
 	public class ValidateAppBundleTask : XamarinTask, ICancelableTask {
 		#region Inputs
 
 		[Required]
-		public string AppBundlePath { get; set; }
+		public string AppBundlePath { get; set; } = "";
 
 		[Required]
 		public bool SdkIsSimulator { get; set; }
@@ -35,7 +34,7 @@ namespace Xamarin.MacDev.Tasks {
 				return;
 			}
 
-			var plist = PDictionary.FromFile (info);
+			var plist = PDictionary.FromFile (info)!;
 
 			var bundleIdentifier = plist.GetCFBundleIdentifier ();
 			if (string.IsNullOrEmpty (bundleIdentifier)) {
@@ -130,7 +129,7 @@ namespace Xamarin.MacDev.Tasks {
 				return;
 			}
 
-			var plist = PDictionary.FromFile (info);
+			var plist = PDictionary.FromFile (info)!;
 			var bundleIdentifier = plist.GetCFBundleIdentifier ();
 			if (string.IsNullOrEmpty (bundleIdentifier)) {
 				Log.LogError (7015, info, MSBStrings.E7015, name);
@@ -162,12 +161,11 @@ namespace Xamarin.MacDev.Tasks {
 			if (string.IsNullOrEmpty (watchExecutable))
 				Log.LogError (7018, info, MSBStrings.E7018, name);
 
-			var wkCompanionAppBundleIdentifier = plist.GetString ("WKCompanionAppBundleIdentifier").Value;
+			var wkCompanionAppBundleIdentifier = plist.GetString ("WKCompanionAppBundleIdentifier")?.Value;
 			if (wkCompanionAppBundleIdentifier != mainBundleIdentifier)
 				Log.LogError (7019, info, MSBStrings.E7019, name, wkCompanionAppBundleIdentifier, mainBundleIdentifier);
 
-			PBoolean watchKitApp;
-			if (plist.TryGetValue ("WKWatchKitApp", out watchKitApp)) {
+			if (plist.TryGetValue<PBoolean> ("WKWatchKitApp", out var watchKitApp)) {
 				if (!watchKitApp.Value)
 					Log.LogError (7020, info, MSBStrings.E7020, name);
 			} else {
@@ -204,7 +202,7 @@ namespace Xamarin.MacDev.Tasks {
 				return;
 			}
 
-			var plist = PDictionary.FromFile (info);
+			var plist = PDictionary.FromFile (info)!;
 
 			var bundleIdentifier = plist.GetCFBundleIdentifier ();
 			if (string.IsNullOrEmpty (bundleIdentifier)) {
@@ -254,8 +252,7 @@ namespace Xamarin.MacDev.Tasks {
 				Log.LogError (7029, info, MSBStrings.E7029_A, name);
 			}
 
-			PDictionary attributes;
-			if (!extension.TryGetValue ("NSExtensionAttributes", out attributes)) {
+			if (!extension.TryGetValue<PDictionary> ("NSExtensionAttributes", out var attributes)) {
 				Log.LogError (7030, info, MSBStrings.E7030, name);
 				return;
 			}
@@ -268,16 +265,12 @@ namespace Xamarin.MacDev.Tasks {
 				Log.LogError (7031, info, MSBStrings.E7031_A, name);
 			}
 
-			PObject requiredDeviceCapabilities;
-
-			if (plist.TryGetValue ("UIRequiredDeviceCapabilities", out requiredDeviceCapabilities)) {
+			if (plist.TryGetValue<PObject> ("UIRequiredDeviceCapabilities", out var requiredDeviceCapabilities)) {
 				var requiredDeviceCapabilitiesDictionary = requiredDeviceCapabilities as PDictionary;
 				var requiredDeviceCapabilitiesArray = requiredDeviceCapabilities as PArray;
 
 				if (requiredDeviceCapabilitiesDictionary is not null) {
-					PBoolean watchCompanion;
-
-					if (requiredDeviceCapabilitiesDictionary.TryGetValue ("watch-companion", out watchCompanion))
+					if (requiredDeviceCapabilitiesDictionary.TryGetValue<PBoolean> ("watch-companion", out var watchCompanion))
 						Log.LogError (7032, info, MSBStrings.E7032, name);
 				} else if (requiredDeviceCapabilitiesArray is not null) {
 					if (requiredDeviceCapabilitiesArray.OfType<PString> ().Any (x => x.Value == "watch-companion"))
@@ -297,7 +290,7 @@ namespace Xamarin.MacDev.Tasks {
 				return false;
 			}
 
-			var plist = PDictionary.FromFile (mainInfoPath);
+			var plist = PDictionary.FromFile (mainInfoPath)!;
 
 			var bundleIdentifier = plist.GetCFBundleIdentifier ();
 			if (string.IsNullOrEmpty (bundleIdentifier)) {
@@ -320,8 +313,8 @@ namespace Xamarin.MacDev.Tasks {
 			// Validate UIDeviceFamily
 			var deviceTypes = plist.GetUIDeviceFamily ();
 			var deviceFamilies = deviceTypes.ToDeviceFamily ();
-			AppleDeviceFamily [] validFamilies = null;
-			AppleDeviceFamily [] requiredFamilies = null;
+			AppleDeviceFamily []? validFamilies = null;
+			AppleDeviceFamily []? requiredFamilies = null;
 
 			switch (Platform) {
 			case ApplePlatform.MacCatalyst:

@@ -18,24 +18,13 @@ using System.Runtime.Versioning;
 
 using ObjCRuntime;
 
-#if NET
 using VectorFloat4 = global::System.Numerics.Vector4;
-#else
-using VectorFloat4 = global::OpenTK.Vector4;
-#endif
 
-#if NET
-namespace CoreGraphics
-#else
-namespace OpenTK
-#endif
-{
-#if NET
+namespace CoreGraphics {
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	[NativeName ("simd_float4x4")]
 	public struct NMatrix4 : IEquatable<NMatrix4> {
@@ -303,7 +292,6 @@ namespace OpenTK
 			return !left.Equals (right);
 		}
 
-#if NET
 		public static explicit operator global::System.Numerics.Matrix4x4 (NMatrix4 value)
 		{
 			return new global::System.Numerics.Matrix4x4 (
@@ -321,22 +309,6 @@ namespace OpenTK
 				value.M31, value.M32, value.M33, value.M34,
 				value.M41, value.M42, value.M43, value.M44);
 		}
-
-#else
-		public static explicit operator global::OpenTK.Matrix4 (NMatrix4 value)
-		{
-			return new global::OpenTK.Matrix4 (
-				value.M11, value.M12, value.M13, value.M14,
-				value.M21, value.M22, value.M23, value.M24,
-				value.M31, value.M32, value.M33, value.M34,
-				value.M41, value.M42, value.M43, value.M44);
-		}
-
-		public static explicit operator NMatrix4 (global::OpenTK.Matrix4 value)
-		{
-			return new NMatrix4 (value.Row0, value.Row1, value.Row2, value.Row3);
-		}
-#endif
 
 		public override string ToString ()
 		{

@@ -36,14 +36,12 @@ using CoreImage;
 using System.Runtime.Versioning;
 
 namespace AudioUnit {
-#if NET
 	/// <summary>Holds key-value pairs on class information. Used with <see cref="AudioUnit.SetClassInfo(ClassInfoDictionary,AudioUnitScopeType,System.UInt32)" /> and <see cref="AudioUnit.GetClassInfo(AudioUnitScopeType,System.UInt32)" />.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class ClassInfoDictionary : DictionaryContainer {
 		const string VersionKey = "version";
 		const string TypeKey = "type";

@@ -8,8 +8,7 @@ using Xamarin.Localization.MSBuild;
 using Xamarin.Messaging.Build.Client;
 using Xamarin.Utils;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Xamarin.MacDev.Tasks {
 	public class DetectSdkLocations : XamarinTask, ICancelableTask {
@@ -18,11 +17,11 @@ namespace Xamarin.MacDev.Tasks {
 
 		public string TargetArchitectures {
 			get; set;
-		}
+		} = "";
 
 		public string IsDotNetSimulatorBuild {
 			get; set;
-		}
+		} = "";
 
 		#endregion Inputs
 
@@ -31,22 +30,22 @@ namespace Xamarin.MacDev.Tasks {
 		[Output]
 		public string SdkRoot {
 			get; set;
-		}
+		} = "";
 
 		[Output]
 		public string SdkBinPath {
 			get; set;
-		}
+		} = "";
 
 		[Output]
 		public string SdkDevPath {
 			get; set;
-		}
+		} = "";
 
 		[Output]
 		public string SdkUsrPath {
 			get; set;
-		}
+		} = "";
 
 		[Output]
 		public bool SdkIsSimulator {
@@ -56,44 +55,30 @@ namespace Xamarin.MacDev.Tasks {
 		[Output]
 		public string SdkPlatform {
 			get; set;
-		}
+		} = "";
 
 		// This is also an input
 		[Output]
 		public string SdkVersion {
 			get; set;
-		}
+		} = "";
 
 		// This is also an input
 		[Output]
 		public string XamarinSdkRoot {
 			get; set;
-		}
+		} = "";
 
 		[Output]
 		public string XcodeVersion {
 			get; set;
-		}
+		} = "";
 
 		#endregion Outputs
 
 		protected IAppleSdk CurrentSdk {
 			get {
 				return Sdks.GetAppleSdk (Platform);
-			}
-		}
-
-		string GetDefaultXamarinSdkRoot ()
-		{
-			switch (Platform) {
-			case ApplePlatform.iOS:
-			case ApplePlatform.TVOS:
-			case ApplePlatform.MacCatalyst:
-				return Sdks.XamIOS.SdkDir;
-			case ApplePlatform.MacOSX:
-				return Sdks.XamMac.FrameworkDirectory;
-			default:
-				throw new InvalidOperationException (string.Format (MSBStrings.InvalidPlatform, Platform));
 			}
 		}
 
@@ -107,20 +92,6 @@ namespace Xamarin.MacDev.Tasks {
 			case ApplePlatform.MacOSX:
 				var v = CurrentSdk.GetInstalledSdkVersions (false);
 				return v.Count > 0 ? v [v.Count - 1] : AppleSdkVersion.UseDefault;
-			default:
-				throw new InvalidOperationException (string.Format (MSBStrings.InvalidPlatform, Platform));
-			}
-		}
-
-		protected string GetEnvironmentVariableOverride ()
-		{
-			switch (Platform) {
-			case ApplePlatform.iOS:
-			case ApplePlatform.TVOS:
-			case ApplePlatform.MacCatalyst:
-				return "MD_MTOUCH_SDK_ROOT";
-			case ApplePlatform.MacOSX:
-				return "XAMMAC_FRAMEWORK_PATH";
 			default:
 				throw new InvalidOperationException (string.Format (MSBStrings.InvalidPlatform, Platform));
 			}
@@ -160,20 +131,17 @@ namespace Xamarin.MacDev.Tasks {
 			if (string.IsNullOrEmpty (SdkRoot))
 				Log.LogError (MSBStrings.E0084 /* Could not locate the {0} '{1}' SDK at path '{2}' */, PlatformName, SdkVersion, SdkRoot);
 
-			SdkUsrPath = DirExists ("SDK usr directory", Path.Combine (currentSdk.DeveloperRoot, "usr"));
+			SdkUsrPath = DirExists ("SDK usr directory", Path.Combine (currentSdk.DeveloperRoot, "usr")) ?? "";
 			if (string.IsNullOrEmpty (SdkUsrPath))
 				Log.LogError (MSBStrings.E0085 /* Could not locate the {0} '{1}' SDK usr path at '{2}' */, PlatformName, SdkVersion, SdkRoot);
 
-			SdkBinPath = DirExists ("SDK bin directory", Path.Combine (SdkUsrPath, "bin"));
+			SdkBinPath = DirExists ("SDK bin directory", Path.Combine (SdkUsrPath, "bin")) ?? "";
 			if (string.IsNullOrEmpty (SdkBinPath))
 				Log.LogError (MSBStrings.E0032 /* Could not locate SDK bin directory */);
 		}
 
 		void EnsureXamarinSdkRoot ()
 		{
-			if (string.IsNullOrEmpty (XamarinSdkRoot))
-				XamarinSdkRoot = GetDefaultXamarinSdkRoot ();
-
 			if (string.IsNullOrEmpty (XamarinSdkRoot))
 				Log.LogError (MSBStrings.E0046 /* Could not find '{0}' */, Product);
 			else if (!Directory.Exists (XamarinSdkRoot))
@@ -205,11 +173,6 @@ namespace Xamarin.MacDev.Tasks {
 			AppleSdkSettings.Init ();
 
 			SetIsSimulator ();
-
-			// If XamarinSdkRoot is set, then make that override any other value, and in order to do so,
-			// set the corresponding environment variable accordingly.
-			if (!string.IsNullOrEmpty (XamarinSdkRoot))
-				Environment.SetEnvironmentVariable (GetEnvironmentVariableOverride (), XamarinSdkRoot);
 
 			if (EnsureAppleSdkRoot ())
 				EnsureSdkPath ();
@@ -257,7 +220,7 @@ namespace Xamarin.MacDev.Tasks {
 			return true;
 		}
 
-		protected string DirExists (string checkingFor, params string [] paths)
+		protected string? DirExists (string checkingFor, params string [] paths)
 		{
 			try {
 				if (paths.Any (p => string.IsNullOrEmpty (p)))

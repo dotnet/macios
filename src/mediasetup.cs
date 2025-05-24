@@ -3,10 +3,6 @@ using Foundation;
 using ObjCRuntime;
 using UIKit;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace MediaSetup {
 
 	[NoTV]

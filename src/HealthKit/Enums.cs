@@ -727,12 +727,6 @@ namespace HealthKit {
 		Basal = 1,
 		/// <summary>Indicates that a dose was given in response to an event, such as a meal, that affected blood chemistry.</summary>
 		Bolus,
-#if !NET
-		[Obsolete ("Use 'Basal' instead.")]
-		Asal = Basal,
-		[Obsolete ("Use 'Bolus' instead.")]
-		Olus = Bolus,
-#endif
 	}
 
 	/// <summary>Enumerates values that tell whether a blood glucose level was taken before or after a meal.</summary>
@@ -744,12 +738,6 @@ namespace HealthKit {
 		Preprandial = 1,
 		/// <summary>Indicates a measurement taken after a meal.</summary>
 		Postprandial,
-#if !NET
-		[Obsolete ("Use 'Preprandial' instead.")]
-		Reprandial = Preprandial,
-		[Obsolete ("Use 'Postprandial' instead.")]
-		Ostprandial = Postprandial,
-#endif
 	}
 
 	/// <summary>Enumerates the testing process used for establishing VO2 Max.</summary>

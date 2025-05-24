@@ -25,10 +25,6 @@ using AppKit;
 using Foundation;
 using ObjCRuntime;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace MediaLibrary {
 	[Static]
 	[Deprecated (PlatformName.MacOSX, 10, 15)]

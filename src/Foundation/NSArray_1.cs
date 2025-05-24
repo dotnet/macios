@@ -22,7 +22,6 @@ namespace Foundation {
 	public delegate bool NSOrderedCollectionDifferenceEquivalenceTest<TValue> (TValue? first, TValue? second);
 	internal delegate bool NSOrderedCollectionDifferenceEquivalenceTestProxy (IntPtr blockLiteral, /* NSObject */ IntPtr first, /* NSObject */ IntPtr second);
 #endif
-#if NET
 	/// <typeparam name="TKey">To be added.</typeparam>
 	///     <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
@@ -30,7 +29,6 @@ namespace Foundation {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[Register (SkipRegistration = true)]
 	public sealed partial class NSArray<TKey> : NSArray, IEnumerable<TKey>
 		where TKey : class, INativeObject {

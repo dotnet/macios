@@ -7,6 +7,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Macios.Generator.DataModel;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using ParameterDataModel = Microsoft.Macios.Generator.DataModel.Parameter;
+using TypeInfo = Microsoft.Macios.Generator.DataModel.TypeInfo;
 
 namespace Microsoft.Macios.Generator.Formatters;
 
@@ -34,24 +35,6 @@ static class ParameterFormatter {
 		}
 
 		return ParameterList (SeparatedList<ParameterSyntax> (nodes)).NormalizeWhitespace ();
-	}
-	static TypeSyntax GetIdentifierSyntax (this in ParameterDataModel parameter)
-	{
-		if (parameter.Type.IsArray) {
-			// could be a params array or simply an array
-			var arrayType = ArrayType (IdentifierName (parameter.Type.FullyQualifiedName))
-				.WithRankSpecifiers (SingletonList (
-					ArrayRankSpecifier (
-						SingletonSeparatedList<ExpressionSyntax> (OmittedArraySizeExpression ()))));
-			return parameter.Type.IsNullable
-				? NullableType (arrayType)
-				: arrayType;
-		}
-
-		// dealing with a non-array type
-		return parameter.Type.IsNullable
-			? NullableType (IdentifierName (parameter.Type.FullyQualifiedName))
-			: IdentifierName (parameter.Type.FullyQualifiedName);
 	}
 
 	public static ParameterSyntax ToDeclaration (this in ParameterDataModel parameter)
@@ -89,7 +72,7 @@ static class ParameterFormatter {
 		// }
 		var syntax = Parameter (Identifier (parameter.Name))
 			.WithModifiers (modifiers)
-			.WithType (parameter.GetIdentifierSyntax ());
+			.WithType (parameter.Type.GetIdentifierSyntax ());
 
 		return syntax.NormalizeWhitespace ();
 	}

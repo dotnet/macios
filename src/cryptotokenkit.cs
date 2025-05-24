@@ -1,5 +1,3 @@
-#if NET
-
 // Let's hope that by .NET 10 we've ironed out all the bugs in the API.
 // This can of course be adjusted as needed (until we've released as stable).
 #if NET10_0_OR_GREATER
@@ -976,4 +974,3 @@ namespace CryptoTokenKit {
 	}
 
 }
-#endif // NET

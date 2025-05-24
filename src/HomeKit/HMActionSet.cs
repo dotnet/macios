@@ -7,15 +7,12 @@ using Foundation;
 namespace HomeKit {
 
 	partial class HMActionSet {
-
-#if NET
 		/// <summary>What kind of <see cref="HomeKit.HMActionSetType" /><c>this</c> is&gt;.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public HMActionSetType ActionSetType {
 			get {
 				var s = _ActionSetType;

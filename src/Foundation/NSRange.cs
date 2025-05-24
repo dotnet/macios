@@ -28,7 +28,6 @@ using System.Runtime.Versioning;
 #nullable disable
 
 namespace Foundation {
-#if NET
 	/// <summary>Represents a range given by a location and length.</summary>
 	///     <remarks>To be added.</remarks>
 	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/SimpleTextInput/">SimpleTextInput</related>
@@ -36,7 +35,6 @@ namespace Foundation {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public struct NSRange : IEquatable<NSRange> {
 		/// <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>

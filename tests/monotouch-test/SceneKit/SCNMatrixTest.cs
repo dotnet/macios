@@ -128,7 +128,6 @@ namespace MonoTouchFixtures.SceneKit {
 #endif
 		}
 
-#if !WATCH
 		[Test]
 		public void Constructor_CATransform3d ()
 		{
@@ -165,7 +164,6 @@ namespace MonoTouchFixtures.SceneKit {
 			var transformed = SCNVector3.TransformPosition (pos, matrix);
 			Asserts.AreEqual (new SCNVector3 (1501, 1562, 1623), transformed, "Transformed");
 		}
-#endif
 
 		[Test]
 		public void Determinant ()

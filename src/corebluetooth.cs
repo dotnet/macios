@@ -1011,11 +1011,7 @@ namespace CoreBluetooth {
 			<summary>Event raised by the object.</summary>
 			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
 			""")]
-#if NET
 		void DiscoveredCharacteristics (CBPeripheral peripheral, CBService service, [NullAllowed] NSError error);
-#else
-		void DiscoveredCharacteristic (CBPeripheral peripheral, CBService service, [NullAllowed] NSError error);
-#endif
 
 		/// <param name="peripheral">To be added.</param>
 		///         <param name="characteristic">To be added.</param>

@@ -128,10 +128,6 @@ using NSTextBlock = Foundation.NSObject;
 using NSTextTable = Foundation.NSString; // Different frmo NSTextBlock, because some methods overload on these two types.
 #endif
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace Foundation {
 	/// <param name="reacquirer">To be added.</param>
 	/// <summary>Completion handler for relinquishing a file to a reader.</summary>
@@ -171,15 +167,11 @@ namespace Foundation {
 	/// <summary>The delegate used as the callback in calls to <see cref="Foundation.NSMetadataQuery.EnumerateResultsUsingBlock(Foundation.NSMetadataQueryEnumerationCallback)" /> and <see cref="Foundation.NSMetadataQuery.EnumerateResultsWithOptions(Foundation.NSEnumerationOptions,Foundation.NSMetadataQueryEnumerationCallback)" />.</summary>
 	/// <remarks>To be added.</remarks>
 	delegate void NSMetadataQueryEnumerationCallback (NSObject result, nuint idx, ref bool stop);
-#if NET
 	/// <param name="itemBeingLoaded">To be added.</param>
 	/// <param name="error">To be added.</param>
 	/// <summary>The completion handler used with <see cref="Foundation.NSItemProviderLoadHandler" /> delegates.</summary>
 	/// <remarks>To be added.</remarks>
 	delegate void NSItemProviderCompletionHandler (INSSecureCoding itemBeingLoaded, NSError error);
-#else
-	delegate void NSItemProviderCompletionHandler (NSObject itemBeingLoaded, NSError error);
-#endif
 	/// <param name="completionHandler">To be added.</param>
 	/// <param name="expectedValueClass">To be added.</param>
 	/// <param name="options">To be added.</param>
@@ -200,11 +192,9 @@ namespace Foundation {
 	delegate void CloudKitRegistrationPreparationAction ([BlockCallback] CloudKitRegistrationPreparationHandler handler);
 	delegate void CloudKitRegistrationPreparationHandler (CKShare share, CKContainer container, NSError error);
 
-#if NET
 	[BaseType (typeof (NSObject))]
 	interface NSAutoreleasePool {
 	}
-#endif
 
 	interface NSArray<TValue> : NSArray { }
 
@@ -353,11 +343,7 @@ namespace Foundation {
 		IntPtr LowLevelValue { get; }
 
 		[Export ("attributesAtIndex:effectiveRange:")]
-#if NET
 		IntPtr LowLevelGetAttributes (nint location, IntPtr effectiveRange);
-#else
-		IntPtr LowLevelGetAttributes (nint location, out NSRange effectiveRange);
-#endif
 
 		[Export ("length")]
 		nint Length { get; }
@@ -1400,20 +1386,8 @@ namespace Foundation {
 		[Export ("components:fromDate:toDate:options:")]
 		NSDateComponents Components (NSCalendarUnit unitFlags, NSDate fromDate, NSDate toDate, NSCalendarOptions opts);
 
-#if !NET
-		[Obsolete ("Use the overload with a 'NSCalendarOptions' parameter.")]
-		[Wrap ("Components (unitFlags, fromDate, toDate, (NSCalendarOptions) opts)")]
-		NSDateComponents Components (NSCalendarUnit unitFlags, NSDate fromDate, NSDate toDate, NSDateComponentsWrappingBehavior opts);
-#endif
-
 		[Export ("dateByAddingComponents:toDate:options:")]
 		NSDate DateByAddingComponents (NSDateComponents comps, NSDate date, NSCalendarOptions opts);
-
-#if !NET
-		[Obsolete ("Use the overload with a 'NSCalendarOptions' parameter.")]
-		[Wrap ("DateByAddingComponents (comps, date, (NSCalendarOptions) opts)")]
-		NSDate DateByAddingComponents (NSDateComponents comps, NSDate date, NSDateComponentsWrappingBehavior opts);
-#endif
 
 		[Export ("dateFromComponents:")]
 		NSDate DateFromComponents (NSDateComponents comps);
@@ -1974,18 +1948,10 @@ namespace Foundation {
 		void RemoveCharacters (NSRange aRange);
 
 		[Export ("addCharactersInString:")]
-#if MONOMAC && !NET
-		void AddCharacters (string str);
-#else
 		void AddCharacters (NSString str);
-#endif
 
 		[Export ("removeCharactersInString:")]
-#if MONOMAC && !NET
-		void RemoveCharacters (string str);
-#else
 		void RemoveCharacters (NSString str);
-#endif
 
 		[Export ("formUnionWithCharacterSet:")]
 		void UnionWith (NSCharacterSet otherSet);
@@ -3567,11 +3533,7 @@ namespace Foundation {
 		[Static]
 		[Export ("archivedDataWithRootObject:requiringSecureCoding:error:")]
 		[return: NullAllowed]
-#if NET
 		NSData GetArchivedData (NSObject @object, bool requiresSecureCoding, [NullAllowed] out NSError error);
-#else
-		NSData ArchivedDataWithRootObject (NSObject @object, bool requiresSecureCoding, [NullAllowed] out NSError error);
-#endif
 
 		[Deprecated (PlatformName.TvOS, 12, 0, message: "Use 'ArchivedDataWithRootObject (NSObject, bool, out NSError)' instead.")]
 		[Deprecated (PlatformName.iOS, 12, 0, message: "Use 'ArchivedDataWithRootObject (NSObject, bool, out NSError)' instead.")]
@@ -3579,11 +3541,7 @@ namespace Foundation {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'ArchivedDataWithRootObject (NSObject, bool, out NSError)' instead.")]
 		[Export ("archivedDataWithRootObject:")]
 		[Static]
-#if NET
 		NSData GetArchivedData (NSObject root);
-#else
-		NSData ArchivedDataWithRootObject (NSObject root);
-#endif
 
 		[Deprecated (PlatformName.TvOS, 12, 0, message: "Use 'ArchivedDataWithRootObject (NSObject, bool, out NSError)' instead.")]
 		[Deprecated (PlatformName.iOS, 12, 0, message: "Use 'ArchivedDataWithRootObject (NSObject, bool, out NSError)' instead.")]
@@ -3627,16 +3585,8 @@ namespace Foundation {
 		[Field ("NSKeyedArchiveRootObjectKey")]
 		NSString RootObjectKey { get; }
 
-#if NET
 		[Export ("requiresSecureCoding")]
 		bool RequiresSecureCoding { get; set; }
-#else
-		[Export ("setRequiresSecureCoding:")]
-		void SetRequiresSecureCoding (bool requireSecureEncoding);
-
-		[Export ("requiresSecureCoding")]
-		bool GetRequiresSecureCoding ();
-#endif
 
 		[MacCatalyst (13, 1)]
 		[Export ("encodedData", ArgumentSemantic.Strong)]
@@ -3746,16 +3696,8 @@ namespace Foundation {
 		[return: NullAllowed]
 		Class GetClass (string codedName);
 
-#if NET
 		[Export ("requiresSecureCoding")]
 		bool RequiresSecureCoding { get; set; }
-#else
-		[Export ("setRequiresSecureCoding:")]
-		void SetRequiresSecureCoding (bool requireSecureEncoding);
-
-		[Export ("requiresSecureCoding")]
-		bool GetRequiresSecureCoding ();
-#endif
 
 		[TV (14, 0), iOS (14, 0)]
 		[MacCatalyst (14, 0)]
@@ -5312,9 +5254,7 @@ namespace Foundation {
 	}
 
 	[BaseType (typeof (NSObject))]
-#if NET
 	[DisableDefaultCtor] // points to nothing so access properties crash the apps
-#endif
 	interface NSMetadataItem {
 
 		[NoiOS]
@@ -5813,7 +5753,7 @@ namespace Foundation {
 
 		[Export ("dictionaryWithObjects:forKeys:")]
 		[Static, Internal]
-		NSDictionary FromObjectsAndKeysInternal ([NullAllowed] NSArray objects, [NullAllowed] NSArray keys);
+		NSDictionary FromObjectsAndKeysInternal (NSArray objects, NSArray keys);
 
 		[Export ("initWithDictionary:")]
 		NativeHandle Constructor (NSDictionary other);
@@ -5856,6 +5796,7 @@ namespace Foundation {
 		[Export ("objectForKey:")]
 		IntPtr _ObjectForKey (IntPtr key);
 
+		[return: NullAllowed]
 		[Export ("objectForKey:")]
 		NSObject ObjectForKey (NSObject key);
 
@@ -5922,7 +5863,44 @@ namespace Foundation {
 		[Export ("sharedKeySetForKeys:")]
 		NSObject GetSharedKeySetForKeys (NSObject [] keys);
 
+		[Export ("descriptionWithLocale:")]
+		string GetDescription ([NullAllowed] NSObject locale);
+
+		[Export ("descriptionWithLocale:indent:")]
+		string GetDescription ([NullAllowed] NSObject locale, nuint level);
+
+		[Export ("enumerateKeysAndObjectsUsingBlock:")]
+		void Enumerate (NSDictionaryEnumerator block);
+
+		[Export ("enumerateKeysAndObjectsWithOptions:usingBlock:")]
+		void Enumerate (NSEnumerationOptions options, NSDictionaryEnumerator block);
+
+		[Export ("keysOfEntriesPassingTest:")]
+		NSSet GetKeys (NSDictionaryKeyFilter predicate);
+
+		[Export ("keysOfEntriesWithOptions:passingTest:")]
+		NSSet GetKeys (NSEnumerationOptions options, NSDictionaryKeyFilter predicate);
+
+		[Export ("keysSortedByValueUsingComparator:")]
+		NSObject [] GetKeysSortedByValue (NSComparator comparator);
+
+		[Export ("keysSortedByValueWithOptions:usingComparator:")]
+		NSObject [] GetKeysSortedByValue (NSSortOptions options, NSComparator comparator);
+
+		[return: NullAllowed]
+		[Export ("valueForKey:")]
+		[MarshalNativeExceptions]
+		NSObject ValueForKey (NSString key);
+
+		[Export ("writeToURL:error:")]
+		bool WriteToUrl (NSUrl url, [NullAllowed] out NSError error);
+
+		[Export ("keyEnumerator")]
+		NSEnumerator KeyEnumerator { get; }
 	}
+
+	delegate void NSDictionaryEnumerator (NSObject key, NSObject obj, ref bool stop);
+	delegate bool NSDictionaryKeyFilter (NSObject key, NSObject obj, ref bool stop);
 
 	interface NSDictionary<K, V> : NSDictionary { }
 
@@ -6025,13 +6003,11 @@ namespace Foundation {
 		[Field ("NSURLErrorDomain")]
 		NSString NSUrlErrorDomain { get; }
 
-#if NET
 		/// <summary>Represents the value associated with the constant NSNetServicesErrorDomain</summary>
 		///         <value>
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
-#endif
 		[Field ("NSNetServicesErrorDomain")]
 		NSString NSNetServicesErrorDomain { get; }
 
@@ -6255,10 +6231,6 @@ namespace Foundation {
 		string [] CallStackSymbols { get; }
 	}
 
-#if !NET
-	[Obsolete ("NSExpressionHandler is deprecated, please use FromFormat (string, NSObject[]) instead.")]
-	delegate void NSExpressionHandler (NSObject evaluatedObject, NSExpression [] expressions, NSMutableDictionary context);
-#endif
 	delegate NSObject NSExpressionCallbackHandler (NSObject evaluatedObject, NSExpression [] expressions, NSMutableDictionary context);
 	[BaseType (typeof (NSObject))]
 	// Objective-C exception thrown.  Name: NSInvalidArgumentException Reason: *** -predicateFormat cannot be sent to an abstract object of class NSExpression: Create a concrete instance!
@@ -6282,12 +6254,6 @@ namespace Foundation {
 		[Static, Export ("expressionWithFormat:")]
 		NSExpression FromFormat (string expressionFormat);
 
-#if !NET
-		[Obsolete ("Use 'FromFormat (string, NSObject[])' instead.")]
-		[Static, Export ("expressionWithFormat:argumentArray:")]
-		NSExpression FromFormat (string format, NSExpression [] parameters);
-#endif
-
 		[Static, Export ("expressionWithFormat:argumentArray:")]
 		NSExpression FromFormat (string format, NSObject [] parameters);
 
@@ -6310,12 +6276,6 @@ namespace Foundation {
 
 		[Static, Export ("expressionForFunction:selectorName:arguments:")]
 		NSExpression FromFunction (NSExpression target, string name, NSExpression [] parameters);
-
-#if !NET
-		[Obsolete ("Use 'FromFunction (NSExpressionCallbackHandler, NSExpression[])' instead.")]
-		[Static, Export ("expressionForBlock:arguments:")]
-		NSExpression FromFunction (NSExpressionHandler target, [NullAllowed] NSExpression [] parameters);
-#endif
 
 		[Static, Export ("expressionForBlock:arguments:")]
 		NSExpression FromFunction (NSExpressionCallbackHandler target, NSExpression [] parameters);
@@ -6689,126 +6649,6 @@ namespace Foundation {
 
 	delegate void LinguisticTagEnumerator (string tag, NSRange tokenRange, bool stop);
 
-#if !NET
-	[Obsolete ("Use 'NSLinguisticTagUnit' enum instead.")]
-	[Static]
-	interface NSLinguisticTag {
-		[Field ("NSLinguisticTagSchemeTokenType")]
-		NSString SchemeTokenType { get; }
-
-		[Field ("NSLinguisticTagSchemeLexicalClass")]
-		NSString SchemeLexicalClass { get; }
-
-		[Field ("NSLinguisticTagSchemeNameType")]
-		NSString SchemeNameType { get; }
-
-		[Field ("NSLinguisticTagSchemeNameTypeOrLexicalClass")]
-		NSString SchemeNameTypeOrLexicalClass { get; }
-
-		[Field ("NSLinguisticTagSchemeLemma")]
-		NSString SchemeLemma { get; }
-
-		[Field ("NSLinguisticTagSchemeLanguage")]
-		NSString SchemeLanguage { get; }
-
-		[Field ("NSLinguisticTagSchemeScript")]
-		NSString SchemeScript { get; }
-
-		[Field ("NSLinguisticTagWord")]
-		NSString Word { get; }
-
-		[Field ("NSLinguisticTagPunctuation")]
-		NSString Punctuation { get; }
-
-		[Field ("NSLinguisticTagWhitespace")]
-		NSString Whitespace { get; }
-
-		[Field ("NSLinguisticTagOther")]
-		NSString Other { get; }
-
-		[Field ("NSLinguisticTagNoun")]
-		NSString Noun { get; }
-
-		[Field ("NSLinguisticTagVerb")]
-		NSString Verb { get; }
-
-		[Field ("NSLinguisticTagAdjective")]
-		NSString Adjective { get; }
-
-		[Field ("NSLinguisticTagAdverb")]
-		NSString Adverb { get; }
-
-		[Field ("NSLinguisticTagPronoun")]
-		NSString Pronoun { get; }
-
-		[Field ("NSLinguisticTagDeterminer")]
-		NSString Determiner { get; }
-
-		[Field ("NSLinguisticTagParticle")]
-		NSString Particle { get; }
-
-		[Field ("NSLinguisticTagPreposition")]
-		NSString Preposition { get; }
-
-		[Field ("NSLinguisticTagNumber")]
-		NSString Number { get; }
-
-		[Field ("NSLinguisticTagConjunction")]
-		NSString Conjunction { get; }
-
-		[Field ("NSLinguisticTagInterjection")]
-		NSString Interjection { get; }
-
-		[Field ("NSLinguisticTagClassifier")]
-		NSString Classifier { get; }
-
-		[Field ("NSLinguisticTagIdiom")]
-		NSString Idiom { get; }
-
-		[Field ("NSLinguisticTagOtherWord")]
-		NSString OtherWord { get; }
-
-		[Field ("NSLinguisticTagSentenceTerminator")]
-		NSString SentenceTerminator { get; }
-
-		[Field ("NSLinguisticTagOpenQuote")]
-		NSString OpenQuote { get; }
-
-		[Field ("NSLinguisticTagCloseQuote")]
-		NSString CloseQuote { get; }
-
-		[Field ("NSLinguisticTagOpenParenthesis")]
-		NSString OpenParenthesis { get; }
-
-		[Field ("NSLinguisticTagCloseParenthesis")]
-		NSString CloseParenthesis { get; }
-
-		[Field ("NSLinguisticTagWordJoiner")]
-		NSString WordJoiner { get; }
-
-		[Field ("NSLinguisticTagDash")]
-		NSString Dash { get; }
-
-		[Field ("NSLinguisticTagOtherPunctuation")]
-		NSString OtherPunctuation { get; }
-
-		[Field ("NSLinguisticTagParagraphBreak")]
-		NSString ParagraphBreak { get; }
-
-		[Field ("NSLinguisticTagOtherWhitespace")]
-		NSString OtherWhitespace { get; }
-
-		[Field ("NSLinguisticTagPersonalName")]
-		NSString PersonalName { get; }
-
-		[Field ("NSLinguisticTagPlaceName")]
-		NSString PlaceName { get; }
-
-		[Field ("NSLinguisticTagOrganizationName")]
-		NSString OrganizationName { get; }
-	}
-#endif
-
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSLocale : NSSecureCoding, NSCopying {
@@ -7009,19 +6849,8 @@ namespace Foundation {
 		[Export ("enumerateMatchesInString:options:range:usingBlock:")]
 		void EnumerateMatches (NSString str, NSMatchingOptions options, NSRange range, NSMatchEnumerator enumerator);
 
-#if !NET
-		[Obsolete ("Use 'GetMatches2' instead, this method has the wrong return type.")]
 		[Export ("matchesInString:options:range:")]
-		NSString [] GetMatches (NSString str, NSMatchingOptions options, NSRange range);
-#endif
-
-		[Export ("matchesInString:options:range:")]
-#if NET
 		NSTextCheckingResult [] GetMatches (NSString str, NSMatchingOptions options, NSRange range);
-#else
-		[Sealed]
-		NSTextCheckingResult [] GetMatches2 (NSString str, NSMatchingOptions options, NSRange range);
-#endif
 
 		[Export ("numberOfMatchesInString:options:range:")]
 		nuint GetNumberOfMatches (NSString str, NSMatchingOptions options, NSRange range);
@@ -7143,37 +6972,6 @@ namespace Foundation {
 		[MacCatalyst (13, 1)]
 		[Wrap ("Perform (modes.GetConstants ()!, block)")]
 		void Perform (NSRunLoopMode [] modes, Action block);
-
-#if !NET
-		[Obsolete ("Use the 'NSRunLoopMode' enum instead.")]
-		[Field ("NSDefaultRunLoopMode")]
-		NSString NSDefaultRunLoopMode { get; }
-
-		[Obsolete ("Use the 'NSRunLoopMode' enum instead.")]
-		[Field ("NSRunLoopCommonModes")]
-		NSString NSRunLoopCommonModes { get; }
-
-		[Obsolete ("Use the 'NSRunLoopMode' enum instead.")]
-		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'NSXpcConnection' instead.")]
-		[NoiOS, NoTV, MacCatalyst (15, 0)]
-		[Field ("NSConnectionReplyMode")]
-		NSString NSRunLoopConnectionReplyMode { get; }
-
-		[Obsolete ("Use the 'NSRunLoopMode' enum instead.")]
-		[NoiOS, NoTV]
-		[Field ("NSModalPanelRunLoopMode", "AppKit")]
-		NSString NSRunLoopModalPanelMode { get; }
-
-		[Obsolete ("Use the 'NSRunLoopMode' enum instead.")]
-		[NoiOS, NoTV]
-		[Field ("NSEventTrackingRunLoopMode", "AppKit")]
-		NSString NSRunLoopEventTracking { get; }
-
-		[Obsolete ("Use the 'NSRunLoopMode' enum instead.")]
-		[NoMac]
-		[Field ("UITrackingRunLoopMode", "UIKit")]
-		NSString UITrackingRunLoopMode { get; }
-#endif
 	}
 
 	[BaseType (typeof (NSObject))]
@@ -9735,13 +9533,7 @@ namespace Foundation {
 	///       <para>Optional methods (if any) are provided by the <see cref="Foundation.NSURLAuthenticationChallengeSender_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	[Protocol (Name = "NSURLAuthenticationChallengeSender")]
-#if NET
 	interface NSUrlAuthenticationChallengeSender {
-#else
-	[Model]
-	[BaseType (typeof (NSObject))]
-	interface NSURLAuthenticationChallengeSender {
-#endif
 		[Abstract]
 		[Export ("useCredential:forAuthenticationChallenge:")]
 		void UseCredential (NSUrlCredential credential, NSUrlAuthenticationChallenge challenge);
@@ -9771,12 +9563,7 @@ namespace Foundation {
 
 	[BaseType (typeof (NSObject), Name = "NSURLConnection")]
 	interface NSUrlConnection :
-#if NET
-		NSUrlAuthenticationChallengeSender
-#else
-		NSURLAuthenticationChallengeSender
-#endif
-	{
+		NSUrlAuthenticationChallengeSender {
 		[Export ("canHandleRequest:")]
 		[Static]
 		bool CanHandleRequest (NSUrlRequest request);
@@ -10230,11 +10017,6 @@ namespace Foundation {
 		[Static, Export ("sessionWithConfiguration:delegate:delegateQueue:")]
 		NSUrlSession FromWeakConfiguration (NSUrlSessionConfiguration configuration, [NullAllowed] NSObject weakDelegate, [NullAllowed] NSOperationQueue delegateQueue);
 
-#if !NET
-		[Obsolete ("Use the overload with a 'INSUrlSessionDelegate' parameter.")]
-		[Static, Wrap ("FromWeakConfiguration (configuration, sessionDelegate, delegateQueue);")]
-		NSUrlSession FromConfiguration (NSUrlSessionConfiguration configuration, NSUrlSessionDelegate sessionDelegate, [NullAllowed] NSOperationQueue delegateQueue);
-#endif
 		/// <param name="configuration">To be added.</param>
 		///         <param name="sessionDelegate">To be added.</param>
 		///         <param name="delegateQueue">To be added.</param>
@@ -10299,14 +10081,6 @@ namespace Foundation {
 			<remarks>To be added.</remarks>
 			""")]
 		void GetTasks (NSUrlSessionPendingTasks completionHandler);
-
-#if !NET
-		// Workaround, not needed for NET+
-		[Sealed]
-		[Export ("getTasksWithCompletionHandler:")]
-		[Async (ResultTypeName = "NSUrlSessionActiveTasks2")]
-		void GetTasks2 (NSUrlSessionPendingTasks2 completionHandler);
-#endif
 
 		[Export ("dataTaskWithRequest:")]
 		[return: ForcedType]
@@ -11312,13 +11086,8 @@ namespace Foundation {
 		[Export ("levelsOfUndo")]
 		nint LevelsOfUndo { get; set; }
 
-#if NET
 		[Export ("runLoopModes", ArgumentSemantic.Copy)]
 		NSString [] WeakRunLoopModes { get; set; }
-#else
-		[Export ("runLoopModes")]
-		string [] RunLoopModes { get; set; }
-#endif
 
 		[Export ("undo")]
 		void Undo ();
@@ -11373,14 +11142,8 @@ namespace Foundation {
 		[Export ("redoActionName")]
 		string RedoActionName { get; }
 
-#if NET
 		[Export ("setActionName:")]
 		void SetActionName (string actionName);
-#else
-		[Advice ("Use the correctly named method: 'SetActionName'.")]
-		[Export ("setActionName:")]
-		void SetActionname (string actionName);
-#endif
 
 		[Export ("undoMenuItemTitle")]
 		string UndoMenuItemTitle { get; }
@@ -11985,34 +11748,22 @@ namespace Foundation {
 		[Wrap ("WeakDelegate")]
 		INSStreamDelegate Delegate { get; set; }
 
-#if NET
 		[Abstract]
-#endif
 		[return: NullAllowed]
 		[Protected]
 		[Export ("propertyForKey:")]
 		NSObject GetProperty (NSString key);
 
-#if NET
 		[Abstract]
-#endif
 		[Protected]
 		[Export ("setProperty:forKey:")]
 		bool SetProperty ([NullAllowed] NSObject property, NSString key);
 
-#if NET
 		[Export ("scheduleInRunLoop:forMode:")]
 		void Schedule (NSRunLoop aRunLoop, NSString mode);
 
 		[Export ("removeFromRunLoop:forMode:")]
 		void Unschedule (NSRunLoop aRunLoop, NSString mode);
-#else
-		[Export ("scheduleInRunLoop:forMode:")]
-		void Schedule (NSRunLoop aRunLoop, string mode);
-
-		[Export ("removeFromRunLoop:forMode:")]
-		void Unschedule (NSRunLoop aRunLoop, string mode);
-#endif
 		/// <param name="aRunLoop">To be added.</param>
 		///         <param name="mode">To be added.</param>
 		///         <summary>To be added.</summary>
@@ -12751,7 +12502,6 @@ namespace Foundation {
 		[Export ("inputStreamWithURL:")]
 		NSInputStream FromUrl (NSUrl url);
 
-#if NET
 		[return: NullAllowed]
 		[Protected]
 		[Export ("propertyForKey:"), Override]
@@ -12760,9 +12510,6 @@ namespace Foundation {
 		[Protected]
 		[Export ("setProperty:forKey:"), Override]
 		bool SetProperty ([NullAllowed] NSObject property, NSString key);
-
-#endif
-
 	}
 
 	/// <param name="tag">To be added.</param>
@@ -12777,7 +12524,6 @@ namespace Foundation {
 	[Category]
 	[BaseType (typeof (NSString))]
 	interface NSLinguisticAnalysis {
-#if NET
 		/// <param name="range">To be added.</param>
 		/// <param name="scheme">To be added.</param>
 		/// <param name="options">To be added.</param>
@@ -12787,9 +12533,6 @@ namespace Foundation {
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[return: BindAs (typeof (NSLinguisticTag []))]
-#else
-		[return: BindAs (typeof (NSLinguisticTagUnit []))]
-#endif
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		[Export ("linguisticTagsInRange:scheme:options:orthography:tokenRanges:")]
 		NSString [] GetLinguisticTags (NSRange range, NSString scheme, NSLinguisticTaggerOptions options, [NullAllowed] NSOrthography orthography, [NullAllowed] out NSValue [] tokenRanges);
@@ -12803,11 +12546,7 @@ namespace Foundation {
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[Wrap ("GetLinguisticTags (This, range, scheme.GetConstant ()!, options, orthography, out tokenRanges)")]
-#if NET
 		NSLinguisticTag [] GetLinguisticTags (NSRange range, NSLinguisticTagScheme scheme, NSLinguisticTaggerOptions options, [NullAllowed] NSOrthography orthography, [NullAllowed] out NSValue [] tokenRanges);
-#else
-		NSLinguisticTagUnit [] GetLinguisticTags (NSRange range, NSLinguisticTagScheme scheme, NSLinguisticTaggerOptions options, [NullAllowed] NSOrthography orthography, [NullAllowed] out NSValue [] tokenRanges);
-#endif
 
 		/// <param name="range">To be added.</param>
 		/// <param name="scheme">To be added.</param>
@@ -12952,109 +12691,36 @@ namespace Foundation {
 		NSString ChangeNotificationIsPriorKey { get; }
 
 		// Cocoa Bindings added by Kenneth J. Pouncey 2010/11/17
-#if !NET
-		[Sealed]
-#endif
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]
 		[Export ("valueClassForBinding:")]
 		Class GetBindingValueClass (NSString binding);
 
-#if !NET
-		[NoiOS]
-		[NoMacCatalyst]
-		[NoTV]
-		[Obsolete ("Use 'Bind (NSString binding, NSObject observable, string keyPath, [NullAllowed] NSDictionary options)' instead.")]
-		[Export ("bind:toObject:withKeyPath:options:")]
-		void Bind (string binding, NSObject observable, string keyPath, [NullAllowed] NSDictionary options);
-
-		[NoiOS]
-		[NoMacCatalyst]
-		[NoTV]
-		[Obsolete ("Use 'Unbind (NSString binding)' instead.")]
-		[Export ("unbind:")]
-		void Unbind (string binding);
-
-		[NoiOS]
-		[NoMacCatalyst]
-		[NoTV]
-		[Obsolete ("Use 'GetBindingValueClass (NSString binding)' instead.")]
-		[Export ("valueClassForBinding:")]
-		Class BindingValueClass (string binding);
-
-		[NoiOS]
-		[NoMacCatalyst]
-		[NoTV]
-		[Obsolete ("Use 'GetBindingInfo (NSString binding)' instead.")]
-		[Export ("infoForBinding:")]
-		NSDictionary BindingInfo (string binding);
-
-		[NoiOS]
-		[NoMacCatalyst]
-		[NoTV]
-		[Obsolete ("Use 'GetBindingOptionDescriptions (NSString aBinding)' instead.")]
-		[Export ("optionDescriptionsForBinding:")]
-		NSObject [] BindingOptionDescriptions (string aBinding);
-
-		[Static]
-		[NoiOS]
-		[NoMacCatalyst]
-		[NoTV]
-		[Wrap ("GetDefaultPlaceholder (marker, (NSString) binding)")]
-		NSObject GetDefaultPlaceholder (NSObject marker, string binding);
-
-		[Static]
-		[NoiOS]
-		[NoMacCatalyst]
-		[NoTV]
-		[Obsolete ("Use 'SetDefaultPlaceholder (NSObject placeholder, NSObject marker, NSString binding)' instead.")]
-		[Wrap ("SetDefaultPlaceholder (placeholder, marker, (NSString) binding)")]
-		void SetDefaultPlaceholder (NSObject placeholder, NSObject marker, string binding);
-
-		[NoiOS]
-		[NoMacCatalyst]
-		[NoTV]
-		[Export ("exposedBindings")]
-		NSString [] ExposedBindings ();
-#else
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]
 		[Export ("exposedBindings")]
 		NSString [] ExposedBindings { get; }
-#endif
 
-#if !NET
-		[Sealed]
-#endif
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]
 		[Export ("bind:toObject:withKeyPath:options:")]
 		void Bind (NSString binding, NSObject observable, string keyPath, [NullAllowed] NSDictionary options);
 
-#if !NET
-		[Sealed]
-#endif
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]
 		[Export ("unbind:")]
 		void Unbind (NSString binding);
 
-#if !NET
-		[Sealed]
-#endif
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]
 		[Export ("infoForBinding:")]
 		NSDictionary GetBindingInfo (NSString binding);
 
-#if !NET
-		[Sealed]
-#endif
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]
@@ -13911,7 +13577,6 @@ namespace Foundation {
 		[Export ("outputStreamToFileAtPath:append:")]
 		NSOutputStream CreateFile (string path, bool shouldAppend);
 
-#if NET
 		[return: NullAllowed]
 		[Protected]
 		[Export ("propertyForKey:"), Override]
@@ -13920,8 +13585,6 @@ namespace Foundation {
 		[Protected]
 		[Export ("setProperty:forKey:"), Override]
 		bool SetProperty ([NullAllowed] NSObject property, NSString key);
-
-#endif
 	}
 
 	[BaseType (typeof (NSObject), Name = "NSHTTPCookie")]
@@ -15397,21 +15060,13 @@ namespace Foundation {
 		[Wrap ("WeakDelegate")]
 		INSNetServiceDelegate Delegate { get; set; }
 
-#if NET
 		[Export ("scheduleInRunLoop:forMode:")]
 		void Schedule (NSRunLoop aRunLoop, NSString forMode);
 
 		// For consistency with other APIs (NSUrlConnection) we call this Unschedule
 		[Export ("removeFromRunLoop:forMode:")]
 		void Unschedule (NSRunLoop aRunLoop, NSString forMode);
-#else
-		[Export ("scheduleInRunLoop:forMode:")]
-		void Schedule (NSRunLoop aRunLoop, string forMode);
 
-		// For consistency with other APIs (NSUrlConnection) we call this Unschedule
-		[Export ("removeFromRunLoop:forMode:")]
-		void Unschedule (NSRunLoop aRunLoop, string forMode);
-#endif
 		/// <param name="aRunLoop">To be added.</param>
 		///         <param name="forMode">To be added.</param>
 		///         <summary>To be added.</summary>
@@ -15620,21 +15275,12 @@ namespace Foundation {
 		[Wrap ("WeakDelegate")]
 		INSNetServiceBrowserDelegate Delegate { get; set; }
 
-#if NET
 		[Export ("scheduleInRunLoop:forMode:")]
 		void Schedule (NSRunLoop aRunLoop, NSString forMode);
 
 		// For consistency with other APIs (NSUrlConnection) we call this Unschedule
 		[Export ("removeFromRunLoop:forMode:")]
 		void Unschedule (NSRunLoop aRunLoop, NSString forMode);
-#else
-		[Export ("scheduleInRunLoop:forMode:")]
-		void Schedule (NSRunLoop aRunLoop, string forMode);
-
-		// For consistency with other APIs (NSUrlConnection) we call this Unschedule
-		[Export ("removeFromRunLoop:forMode:")]
-		void Unschedule (NSRunLoop aRunLoop, string forMode);
-#endif
 
 		/// <param name="aRunLoop">To be added.</param>
 		///         <param name="forMode">To be added.</param>
@@ -15847,16 +15493,7 @@ namespace Foundation {
 	interface NSDistributedNotificationCenter {
 		[Static]
 		[Export ("defaultCenter")]
-#if NET
 		NSDistributedNotificationCenter DefaultCenter { get; }
-#else
-		NSDistributedNotificationCenter GetDefaultCenter ();
-
-		[Static]
-		[Advice ("Use 'GetDefaultCenter ()' for a strongly typed version.")]
-		[Wrap ("GetDefaultCenter ()")]
-		NSObject DefaultCenter { get; }
-#endif
 
 		[Export ("addObserver:selector:name:object:suspensionBehavior:")]
 		void AddObserver (NSObject observer, Selector selector, [NullAllowed] string notificationName, [NullAllowed] string notificationSenderc, NSNotificationSuspensionBehavior suspensionBehavior);
@@ -15905,14 +15542,10 @@ namespace Foundation {
 		void EnqueueNotification (NSNotification notification, NSPostingStyle postingStyle);
 
 		[Export ("enqueueNotification:postingStyle:coalesceMask:forModes:")]
-#if !NET
-		void EnqueueNotification (NSNotification notification, NSPostingStyle postingStyle, NSNotificationCoalescing coalesceMask, [NullAllowed] string [] modes);
-#else
 		void EnqueueNotification (NSNotification notification, NSPostingStyle postingStyle, NSNotificationCoalescing coalesceMask, [NullAllowed] NSString [] modes);
 
 		[Wrap ("EnqueueNotification (notification, postingStyle, coalesceMask, modes?.GetConstants ())")]
 		void EnqueueNotification (NSNotification notification, NSPostingStyle postingStyle, NSNotificationCoalescing coalesceMask, [NullAllowed] NSRunLoopMode [] modes);
-#endif
 
 		[Export ("dequeueNotificationsMatching:coalesceMask:")]
 		void DequeueNotificationsMatchingcoalesceMask (NSNotification notification, NSNotificationCoalescing coalesceMask);
@@ -16302,28 +15935,6 @@ namespace Foundation {
 		[Export ("reverseTransformedValue:")]
 		[return: NullAllowed]
 		NSObject ReverseTransformedValue ([NullAllowed] NSObject value);
-
-#if IOS && !NET
-		[Notification]
-		[Obsolete ("Use 'NSUserDefaults.SizeLimitExceededNotification' instead.")]
-		[Field ("NSUserDefaultsSizeLimitExceededNotification")]
-		NSString SizeLimitExceededNotification { get; }
-
-		[Notification]
-		[Obsolete ("Use 'NSUserDefaults.DidChangeAccountsNotification' instead.")]
-		[Field ("NSUbiquitousUserDefaultsDidChangeAccountsNotification")]
-		NSString DidChangeAccountsNotification { get; }
-
-		[Notification]
-		[Obsolete ("Use 'NSUserDefaults.CompletedInitialSyncNotification' instead.")]
-		[Field ("NSUbiquitousUserDefaultsCompletedInitialSyncNotification")]
-		NSString CompletedInitialSyncNotification { get; }
-
-		[Notification]
-		[Obsolete ("Use 'NSUserDefaults.DidChangeNotification' instead.")]
-		[Field ("NSUserDefaultsDidChangeNotification")]
-		NSString UserDefaultsDidChangeNotification { get; }
-#endif
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
@@ -17741,9 +17352,7 @@ namespace Foundation {
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface NSProgressReporting {
-#if NET
 		[Abstract]
-#endif
 		[Export ("progress")]
 		NSProgress Progress { get; }
 	}
@@ -17812,12 +17421,6 @@ namespace Foundation {
 		[Export ("initWithFilePresenter:")]
 		NativeHandle Constructor ([NullAllowed] INSFilePresenter filePresenterOrNil);
 
-#if !NET
-		[Obsolete ("Use '.ctor(INSFilePresenter)' instead.")]
-		[Wrap ("this (filePresenterOrNil as INSFilePresenter)")]
-		NativeHandle Constructor ([NullAllowed] NSFilePresenter filePresenterOrNil);
-#endif
-
 		[Export ("coordinateReadingItemAtURL:options:error:byAccessor:")]
 		void CoordinateRead (NSUrl itemUrl, NSFileCoordinatorReadingOptions options, out NSError error, /* non null */ Action<NSUrl> worker);
 
@@ -17829,12 +17432,6 @@ namespace Foundation {
 
 		[Export ("coordinateWritingItemAtURL:options:writingItemAtURL:options:error:byAccessor:")]
 		void CoordinateWriteWrite (NSUrl writingURL, NSFileCoordinatorWritingOptions writingOptions, NSUrl writingURL2, NSFileCoordinatorWritingOptions writingOptions2, out NSError error, /* non null */ NSFileCoordinatorWorkerRW writeWriteWorker);
-
-#if !NET
-		[Obsolete ("Use 'CoordinateBatch' instead.")]
-		[Wrap ("CoordinateBatch (readingURLs, readingOptions, writingURLs, writingOptions, out error, batchHandler)", IsVirtual = true)]
-		void CoordinateBatc (NSUrl [] readingURLs, NSFileCoordinatorReadingOptions readingOptions, NSUrl [] writingURLs, NSFileCoordinatorWritingOptions writingOptions, out NSError error, /* non null */ Action batchHandler);
-#endif
 
 		[Export ("prepareForReadingItemsAtURLs:options:writingItemsAtURLs:options:error:byAccessor:")]
 		void CoordinateBatch (NSUrl [] readingURLs, NSFileCoordinatorReadingOptions readingOptions, NSUrl [] writingURLs, NSFileCoordinatorWritingOptions writingOptions, out NSError error, /* non null */ Action batchHandler);
@@ -18587,22 +18184,14 @@ namespace Foundation {
 		[Abstract]
 		[Export ("presentedItemURL", ArgumentSemantic.Retain)]
 		[NullAllowed]
-#if NET
 		NSUrl PresentedItemUrl { get; }
-#else
-		NSUrl PresentedItemURL { get; }
-#endif
 
 		/// <summary>Gets the <see cref="Monotouch.Foundation.NSOperationQueue" /> on which presenter-related methods are executed.</summary>
 		/// <value>The <see cref="Monotouch.Foundation.NSOperationQueue" /> on which methods are executed.</value>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("presentedItemOperationQueue", ArgumentSemantic.Retain)]
-#if NET
 		NSOperationQueue PresentedItemOperationQueue { get; }
-#else
-		NSOperationQueue PesentedItemOperationQueue { get; }
-#endif
 
 #if DOUBLE_BLOCKS
 		/// <param name="readerAction">To be added.</param>
@@ -20898,11 +20487,6 @@ namespace Foundation {
 		[Export ("terminationReason")]
 		NSTaskTerminationReason TerminationReason { get; }
 
-#if !NET && MONOMAC
-		[Field ("NSTaskDidTerminateNotification")]
-		NSString NSTaskDidTerminateNotification { get; }
-#endif
-
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -21317,11 +20901,7 @@ namespace Foundation {
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("negotiatedTLSCipherSuite", ArgumentSemantic.Copy)]
 		// <quote>It is a 2-byte sequence in host byte order.</quote> but it refers to (nicer) `tls_ciphersuite_t`
-#if NET
 		[BindAs (typeof (TlsCipherSuite?))]
-#else
-		[BindAs (typeof (SslCipherSuite?))]
-#endif
 		NSNumber NegotiatedTlsCipherSuite { get; }
 
 		[TV (13, 0), iOS (13, 0)]
@@ -22544,11 +22124,7 @@ namespace Foundation {
 	}
 
 	[BaseType (typeof (NSObject), Name = "NSXPCListenerDelegate")]
-#if NET
 	[Protocol, Model]
-#else
-	[Model (AutoGeneratedName = true), Protocol]
-#endif
 	interface NSXpcListenerDelegate {
 		[Export ("listener:shouldAcceptNewConnection:")]
 		bool ShouldAcceptConnection (NSXpcListener listener, NSXpcConnection newConnection);
@@ -22913,13 +22489,8 @@ namespace Foundation {
 
 	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
-#if NET
 	[Protocol]
 	[Model]
-#else
-	[Protocol]
-	[Model (AutoGeneratedName = true)]
-#endif
 	[BaseType (typeof (NSUrlSessionTaskDelegate), Name = "NSURLSessionWebSocketDelegate")]
 	interface NSUrlSessionWebSocketDelegate {
 

@@ -4,10 +4,12 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.Macios.Generator.Attributes;
 using Microsoft.Macios.Generator.Context;
 using Microsoft.Macios.Generator.DataModel;
+using Microsoft.Macios.Generator.Extensions;
 using Microsoft.Macios.Generator.Formatters;
 using Microsoft.Macios.Generator.IO;
 using ObjCBindings;
@@ -263,16 +265,16 @@ return GetValue (str);
 			classBlock.WriteLine ();
 			// emit the field that holds the error domain
 			classBlock.WriteLine ($"[Field (\"{bindingTypeData.ErrorDomain}\", \"{library}\")]");
-			classBlock.WriteLine (StaticVariable (backingFieldName, "Foundation.NSString", true).ToString ());
+			classBlock.WriteLine (StaticVariable (backingFieldName, NSString, true).ToString ());
 			classBlock.WriteLine ();
 
 			// emit the extension method to return the error domain
 			classBlock.WriteDocumentation (Documentation.SmartEnum.GetDomain (bindingContext.Changes.FullyQualifiedSymbol));
 			classBlock.WriteRaw (
-$@"public static NSString? GetDomain (this {bindingContext.Changes.Name} self)
+$@"public static {NSString}? GetDomain (this {bindingContext.Changes.Name.GetIdentifierName (bindingContext.Changes.Namespace)} self)
 {{
 	if ({backingFieldName} is null)
-		{backingFieldName} = Dlfcn.GetStringConstant ({Libraries}.{libraryName}.Handle, ""{bindingTypeData.ErrorDomain}"");
+		{backingFieldName} = {Dlfcn}.GetStringConstant ({Libraries}.{libraryName}.Handle, ""{bindingTypeData.ErrorDomain}"");
 	return {backingFieldName};
 }}
 ");

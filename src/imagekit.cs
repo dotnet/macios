@@ -35,10 +35,6 @@ using ImageCaptureCore;
 using CoreGraphics;
 using CoreAnimation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace ImageKit {
 
 	enum IKToolMode { // Constants introduced in 10.5 and 10.6
@@ -1474,13 +1470,8 @@ namespace ImageKit {
 		[Export ("backgroundColor", ArgumentSemantic.Assign)]
 		NSColor BackgroundColor { get; set; }
 
-#if !NET
-		[Export ("setImage:imageProperties:")]
-		void SetImageimageProperties (CGImage image, NSDictionary metaData);
-#else
 		[Export ("setImage:imageProperties:")]
 		void SetImage (CGImage image, NSDictionary metaData);
-#endif
 
 		/// <param name="url">To be added.</param>
 		///         <summary>To be added.</summary>

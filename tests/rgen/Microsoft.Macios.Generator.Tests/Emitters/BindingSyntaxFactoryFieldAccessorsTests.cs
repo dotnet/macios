@@ -498,7 +498,7 @@ namespace CoreGraphics {
 ";
 
 			yield return [cmtagFieldProperty,
-				"global::ObjCRuntime.Dlfcn.GetStruct<CoreMedia.CMTag> (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\")"];
+				$"global::ObjCRuntime.Dlfcn.GetStruct<{Global ("CoreMedia.CMTag")}> (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\")"];
 
 			const string nsArrayFieldProperty = @"
 using System;
@@ -519,7 +519,7 @@ namespace CoreGraphics {
 ";
 
 			yield return [nsArrayFieldProperty,
-				"global::ObjCRuntime.Runtime.GetNSObject<Foundation.NSArray> (global::ObjCRuntime.Dlfcn.GetIndirect (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\"))!"];
+				$"global::ObjCRuntime.Runtime.GetNSObject<{Global ("Foundation.NSArray")}> (global::ObjCRuntime.Dlfcn.GetIndirect (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\"))!"];
 
 			const string nsNumberFieldProperty = @"
 using System;
@@ -540,7 +540,7 @@ namespace CoreGraphics {
 ";
 
 			yield return [nsNumberFieldProperty,
-				"global::ObjCRuntime.Runtime.GetNSObject<Foundation.NSNumber> (global::ObjCRuntime.Dlfcn.GetIndirect (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\"))!"];
+				$"global::ObjCRuntime.Runtime.GetNSObject<{Global ("Foundation.NSNumber")}> (global::ObjCRuntime.Dlfcn.GetIndirect (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\"))!"];
 
 			const string sbyteEnumFieldProperty = @"
 using System;
@@ -786,7 +786,7 @@ namespace CoreGraphics {
 
 			yield return [
 				cmTimeFieldProperty,
-				"*((CoreMedia.CMTime*) global::ObjCRuntime.Dlfcn.dlsym (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\"))"
+				$"*(({Global ("CoreMedia.CMTime")}*) global::ObjCRuntime.Dlfcn.dlsym (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\"))"
 			];
 
 			const string whiteFieldProperty = @"
@@ -810,7 +810,7 @@ namespace CoreGraphics {
 
 			yield return [
 				whiteFieldProperty,
-				"*((AVFoundation.AVCaptureWhiteBalanceGains*) global::ObjCRuntime.Dlfcn.dlsym (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\"))"
+				$"*(({Global ("AVFoundation.AVCaptureWhiteBalanceGains")}*) global::ObjCRuntime.Dlfcn.dlsym (global::ObjCRuntime.Libraries.CoreGraphics.Handle, \"kCGColorSpaceGenericGray\"))"
 			];
 		}
 

@@ -17,10 +17,6 @@ using AppKit;
 #endif
 using FileProvider;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace FileProviderUI {
 
 	/// <summary>Enumerates file provider UI extension errors.</summary>

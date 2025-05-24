@@ -107,10 +107,8 @@ namespace WebKit {
 		CredentialNotFound,
 	}
 
-#if NET
 	/// <summary>Enumerates values the controls how selections are created.</summary>
 	[NoMac]
-#endif
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum WKSelectionGranularity : long {

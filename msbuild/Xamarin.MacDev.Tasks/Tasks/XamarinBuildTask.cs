@@ -8,15 +8,14 @@ using Xamarin.Localization.MSBuild;
 using Xamarin.Messaging.Build.Client;
 using Threading = System.Threading.Tasks;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Xamarin.MacDev.Tasks {
 	public abstract class XamarinBuildTask : XamarinTask, ITaskCallback, ICancelableTask {
 		public bool KeepTemporaryOutput { get; set; }
 
 		[Required]
-		public string RuntimeIdentifier { get; set; }
+		public string RuntimeIdentifier { get; set; } = "";
 
 		/// <summary>
 		/// Runs the target passed in computeValueTarget and returns its result.
@@ -41,7 +40,7 @@ namespace Xamarin.MacDev.Tasks {
 			File.WriteAllText (projectPath, csproj);
 
 			var dotnetPath = this.GetDotNetPath ();
-			var environment = new Dictionary<string, string> ();
+			var environment = new Dictionary<string, string?> ();
 			var customHome = Environment.GetEnvironmentVariable ("DOTNET_CUSTOM_HOME");
 
 			if (!string.IsNullOrEmpty (customHome)) {
@@ -77,7 +76,7 @@ namespace Xamarin.MacDev.Tasks {
 				arguments.Add ("/p:RestoreConfigFile=" + configFile);
 		}
 
-		async Threading.Task ExecuteRestoreAsync (string dotnetPath, string projectPath, string targetName, Dictionary<string, string> environment)
+		async Threading.Task ExecuteRestoreAsync (string dotnetPath, string projectPath, string targetName, Dictionary<string, string?> environment)
 		{
 			var projectDirectory = Path.GetDirectoryName (projectPath);
 			var binlog = Path.Combine (projectDirectory, targetName + ".binlog");
@@ -100,7 +99,7 @@ namespace Xamarin.MacDev.Tasks {
 			}
 		}
 
-		async Threading.Task<string> ExecuteBuildAsync (string dotnetPath, string projectPath, string targetName, Dictionary<string, string> environment)
+		async Threading.Task<string> ExecuteBuildAsync (string dotnetPath, string projectPath, string targetName, Dictionary<string, string?> environment)
 		{
 			var projectDirectory = Path.GetDirectoryName (projectPath);
 			var outputFile = Path.Combine (projectDirectory, "Output.txt");

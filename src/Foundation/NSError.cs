@@ -33,14 +33,11 @@ using System.Runtime.Versioning;
 #nullable disable
 
 namespace Foundation {
-
-#if NET
 	/// <include file="../../docs/api/Foundation/NSErrorEventArgs.xml" path="/Documentation/Docs[@DocId='T:Foundation.NSErrorEventArgs']/*" />
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class NSErrorEventArgs : EventArgs {
 		/// <param name="error">The underlying error.</param>
 		///         <summary>Initializes a new instance of the NSErrorEventArgs class.</summary>

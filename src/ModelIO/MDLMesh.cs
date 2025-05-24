@@ -8,20 +8,15 @@
 //
 //
 using System;
+using System.Numerics;
 using System.Runtime.InteropServices;
 using Foundation;
 using CoreFoundation;
 using CoreGraphics;
 using ObjCRuntime;
-#if NET
+
 using Vector2i = global::CoreGraphics.NVector2i;
-using Vector3 = global::System.Numerics.Vector3;
 using Vector3i = global::CoreGraphics.NVector3i;
-#else
-using Vector2i = global::OpenTK.Vector2i;
-using Vector3 = global::OpenTK.Vector3;
-using Vector3i = global::OpenTK.Vector3i;
-#endif
 
 #nullable enable
 
@@ -82,12 +77,10 @@ namespace ModelIO {
 
 		// Note: we turn these constructors into static constructors because we don't want to lose the shape name. Also, the signatures of these constructors differ so it would not be possible to use an enum to differentiate the shapes.
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public static MDLMesh CreateBox (Vector3 dimensions, Vector3i segments, MDLGeometryType geometryType, bool inwardNormals, IMDLMeshBufferAllocator allocator)
 		{
 			return CreateBox (dimensions, segments, geometryType, inwardNormals, allocator, MDLMeshVectorType.Dimensions);
@@ -100,12 +93,10 @@ namespace ModelIO {
 		/// <param name="inwardNormals">Whether to generate inward-pointing normals.</param>
 		/// <param name="allocator">The allocator to use instead of the default, internal allocator.</param>
 		/// <param name="type">The mesh vector type.</param>
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public static MDLMesh CreateBox (Vector3 vector, Vector3i segments, MDLGeometryType geometryType, bool inwardNormals, IMDLMeshBufferAllocator allocator, MDLMeshVectorType type = MDLMeshVectorType.Dimensions)
 		{
 			switch (type) {
@@ -118,29 +109,24 @@ namespace ModelIO {
 			}
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public static MDLMesh CreateSphere (Vector3 dimensions, Vector2i segments, MDLGeometryType geometryType, bool inwardNormals, IMDLMeshBufferAllocator allocator)
 		{
 			return new MDLMesh (dimensions, segments, inwardNormals, geometryType, allocator, null, null, null);
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public static MDLMesh CreateHemisphere (Vector3 dimensions, Vector2i segments, MDLGeometryType geometryType, bool inwardNormals, bool cap, IMDLMeshBufferAllocator allocator)
 		{
 			return new MDLMesh (dimensions, segments, inwardNormals, geometryType, allocator, null, cap, false);
 		}
 
-#if NET
 		/// <param name="extent">The extent of the cylinder.</param>
 		/// <param name="segments">The number of divisions to create in each dimension.</param>
 		/// <param name="inwardNormals">Whether to generate inward-pointing normals.</param>
@@ -158,35 +144,29 @@ namespace ModelIO {
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public static MDLMesh CreateCylinder (Vector3 extent, Vector2i segments, bool inwardNormals, bool topCap, bool bottomCap, MDLGeometryType geometryType, IMDLMeshBufferAllocator allocator)
 		{
 			return new MDLMesh (extent, segments, inwardNormals, topCap, bottomCap, geometryType, allocator);
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public static MDLMesh CreateCapsule (Vector3 dimensions, Vector2i segments, MDLGeometryType geometryType, bool inwardNormals, int hemisphereSegments, IMDLMeshBufferAllocator allocator)
 		{
 			return new MDLMesh (dimensions, segments, inwardNormals, geometryType, allocator, hemisphereSegments, null, null);
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public static MDLMesh CreateCone (Vector3 dimensions, Vector2i segments, MDLGeometryType geometryType, bool inwardNormals, bool cap, IMDLMeshBufferAllocator allocator)
 		{
 			return new MDLMesh (dimensions, segments, inwardNormals, geometryType, allocator, null, cap, true);
 		}
 
-#if NET
 		/// <param name="extent">The extent of the plane.</param>
 		/// <param name="segments">The number of divisions to create in each dimension.</param>
 		/// <param name="geometryType">Whether to create triangles, quadrilaterals, or lines.</param>
@@ -201,13 +181,11 @@ namespace ModelIO {
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public static MDLMesh CreatePlane (Vector3 extent, Vector2i segments, MDLGeometryType geometryType, IMDLMeshBufferAllocator allocator)
 		{
 			return new MDLMesh (extent, segments, geometryType, allocator);
 		}
 
-#if NET
 		/// <param name="extent">The extents of the icosahedron.</param>
 		/// <param name="inwardNormals">Whether to generate inward-pointing normals.</param>
 		/// <param name="geometryType">Whether to create triangles, quadrilaterals, or lines.</param>
@@ -222,7 +200,6 @@ namespace ModelIO {
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public static MDLMesh CreateIcosahedron (Vector3 extent, bool inwardNormals, MDLGeometryType geometryType, IMDLMeshBufferAllocator allocator)
 		{
 			return new MDLMesh (extent, inwardNormals, geometryType, allocator);

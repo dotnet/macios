@@ -12,10 +12,6 @@ using System;
 using Foundation;
 using ObjCRuntime;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace IdentityLookup {
 
 	/// <summary>Enumerates actions that can be taken in response to a message.</summary>
@@ -30,10 +26,6 @@ namespace IdentityLookup {
 		Allow = 1,
 		/// <summary>Indicates that the message will be filtered.</summary>
 		Junk = 2,
-#if !NET
-		[Obsolete ("Use 'Junk' instead.")]
-		Filter = Junk,
-#endif
 		[iOS (14, 0)]
 		[Introduced (PlatformName.MacCatalyst, 14, 0)]
 		Promotion = 3,

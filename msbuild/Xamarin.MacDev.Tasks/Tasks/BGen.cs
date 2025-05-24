@@ -241,7 +241,6 @@ namespace Xamarin.MacDev.Tasks {
 					BGenToolPath = PlatformPath.GetPathForCurrentPlatform (BGenToolPath);
 					BaseLibDll = PlatformPath.GetPathForCurrentPlatform (BaseLibDll);
 
-					TaskItemFixer.FixFrameworkItemSpecs (Log, item => OutputPath, TargetFramework.Identifier, References.Where (x => x.IsFrameworkItem ()).ToArray ());
 					TaskItemFixer.FixItemSpecs (Log, item => OutputPath, References.Where (x => !x.IsFrameworkItem ()).ToArray ());
 
 					var taskRunner = new TaskRunner (SessionId, BuildEngine4);

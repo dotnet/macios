@@ -12,7 +12,6 @@ namespace Extrospection {
 	public enum Platforms {
 		macOS,
 		iOS,
-		watchOS,
 		tvOS,
 		MacCatalyst,
 	}
@@ -60,14 +59,12 @@ namespace Extrospection {
 
 		public static int GetPlatformManagedValue (Platforms platform)
 		{
-			// None, MacOSX, iOS, WatchOS, TvOS, MacCatalyst
+			// None, MacOSX, iOS, TvOS, MacCatalyst
 			switch (platform) {
 			case Platforms.macOS:
 				return 1;
 			case Platforms.iOS:
 				return 2;
-			case Platforms.watchOS:
-				return 3;
 			case Platforms.tvOS:
 				return 4;
 			case Platforms.MacCatalyst:
@@ -85,8 +82,6 @@ namespace Extrospection {
 					return "macos";
 				case Platforms.iOS:
 					return "ios";
-				case Platforms.watchOS:
-					return "watchos";
 				case Platforms.tvOS:
 					return "tvos";
 				case Platforms.MacCatalyst:
@@ -114,10 +109,6 @@ namespace Extrospection {
 					break;
 				case "NoTVAttribute":
 					if (Platform == Platforms.tvOS)
-						return false;
-					break;
-				case "NoWatchAttribute":
-					if (Platform == Platforms.watchOS)
 						return false;
 					break;
 				case "NoMacAttribute":
@@ -157,9 +148,9 @@ namespace Extrospection {
 				}
 			}
 
-			// but right now most frameworks consider tvOS, watchOS, and catalyst like iOS unless 
+			// but right now most frameworks consider tvOS, and catalyst like iOS unless 
 			// decorated otherwise so we must check again if we do not get a definitve answer
-			if ((result is null) && ((Platform == Platforms.tvOS) || (Platform == Platforms.watchOS) || (Platform == Platforms.MacCatalyst)))
+			if ((result is null) && ((Platform == Platforms.tvOS) || (Platform == Platforms.MacCatalyst)))
 				result = decl.IsAvailable (Platforms.iOS);
 			return !result.HasValue ? true : result.Value;
 		}
@@ -209,9 +200,9 @@ namespace Extrospection {
 				}
 			}
 
-			// but right now most frameworks consider tvOS, watchOS, and catalyst like iOS unless 
+			// but right now most frameworks consider tvOS and catalyst like iOS unless 
 			// decorated otherwise so we must check again if we do not get a definitve answer
-			if ((result is null) && ((Platform == Platforms.tvOS) || (Platform == Platforms.watchOS) || (Platform == Platforms.MacCatalyst)))
+			if ((result is null) && ((Platform == Platforms.tvOS) || (Platform == Platforms.MacCatalyst)))
 				result = decl.IsDeprecated (Platforms.iOS);
 			return result == true;
 		}
@@ -551,8 +542,6 @@ namespace Extrospection {
 				return "macos";
 			case Platforms.tvOS:
 				return "tvos";
-			case Platforms.watchOS:
-				return "watchos";
 			default:
 				throw new NotImplementedException (platform.ToString ());
 			}

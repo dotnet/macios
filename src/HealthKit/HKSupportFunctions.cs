@@ -8,14 +8,10 @@ using ObjCRuntime;
 
 namespace HealthKit {
 	/// <summary>This class contains helper functions for the <see cref="HKStateOfMindValenceClassification" /> enum.</summary>
-#if NET
 	[SupportedOSPlatform ("ios18.0")]
 	[SupportedOSPlatform ("maccatalyst18.0")]
 	[SupportedOSPlatform ("macos15.0")]
 	[UnsupportedOSPlatform ("tvos")]
-#else
-	[NoTV, Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
-#endif
 	public static class HKStateOfMindValence {
 		[DllImport (Constants.HealthKitLibrary)]
 		static extern IntPtr HKStateOfMindValenceClassificationForValence (double valence);

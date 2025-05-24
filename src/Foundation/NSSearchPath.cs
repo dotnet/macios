@@ -37,7 +37,6 @@ using System.Runtime.Versioning;
 #nullable disable
 
 namespace Foundation {
-#if NET
 	/// <summary>Search paths utilities.</summary>
 	///     <remarks>
 	///     </remarks>
@@ -45,7 +44,6 @@ namespace Foundation {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public static class NSSearchPath {
 		/// <param name="directory">Searched directory kind.</param>
 		///         <param name="domainMask">Searched domains mask.</param>

@@ -12,10 +12,6 @@ using ObjCRuntime;
 using UIKit;
 #endif
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace ExternalAccessory {
 
 	/// <summary>Provides information about a connected external accessory.</summary>
@@ -324,11 +320,9 @@ namespace ExternalAccessory {
 #else
 	[BaseType (typeof (NSObject), Delegates = new string [] { "WeakDelegate" }, Events = new Type [] { typeof (EAWiFiUnconfiguredAccessoryBrowserDelegate) })]
 #endif
-#if NET
 	// There's a designated initializer, which leads to think that the default ctor
 	// should not be used (documentation says nothing).
 	[DisableDefaultCtor]
-#endif
 	interface EAWiFiUnconfiguredAccessoryBrowser {
 
 		/// <param name="accessoryBrowserDelegate">

@@ -36,10 +36,6 @@ using MidiCIProfile = Foundation.NSObject;
 using MidiCIProfileState = Foundation.NSObject;
 #endif
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace AudioUnit {
 	delegate AudioUnitStatus AUInternalRenderBlock (ref AudioUnitRenderActionFlags actionFlags, ref AudioTimeStamp timestamp, uint frameCount, nint outputBusNumber, AudioBuffers outputData, AURenderEventEnumerator realtimeEventListHead, [BlockCallback][NullAllowed] AURenderPullInputBlock pullInputBlock);
 	delegate AudioUnitStatus AURenderBlock (ref AudioUnitRenderActionFlags actionFlags, ref AudioTimeStamp timestamp, uint frameCount, nint outputBusNumber, AudioBuffers outputData, [BlockCallback][NullAllowed] AURenderPullInputBlock pullInputBlock);
@@ -69,12 +65,7 @@ namespace AudioUnit {
 	// 	AUAudioTODO - We need testing for these bindings
 	// 	delegate void AUScheduleMidiEventBlock (AUEventSampleTime eventSampleTime, byte cable, nint length, ref byte midiBytes);
 	// 	delegate bool AUHostMusicalContextBlock (ref double currentTempo, ref double timeSignatureNumerator, ref nint timeSignatureDenominator, ref double currentBeatPosition, ref nint sampleOffsetToNextBeat, ref double currentMeasureDownbeatPosition);
-#if !NET
-	[Advice ("The signature will change in the future to return a string")]
-	delegate NSString AUImplementorStringFromValueCallback (AUParameter param, ref float? value);
-#else
 	delegate string AUImplementorStringFromValueCallback (AUParameter param, ref float? value);
-#endif
 
 	/// <param name="node">The parameter node for which to get a possibly shortened name.</param>
 	///     <param name="desiredLength">The maximum desired length of the display name.</param>

@@ -45,19 +45,14 @@ namespace QuickLook {
 
 		// QuickLook.framework/Versions/A/Headers/QLThumbnailImage.h
 		// note: documented as Thread-Safe
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[ObsoletedOSPlatform ("macos15.0", "Use the QuickLookThumbnailing framework instead for creating thumbnails for files.")]
-#else
-		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use the QuickLookThumbnailing framework instead for creating thumbnails for files.")]
-#endif
 		[DllImport (Constants.QuickLookLibrary)]
 		extern static /* CGImageRef */ IntPtr QLThumbnailImageCreate (/* CFAllocatorRef */ IntPtr allocator, /* CFUrlRef */ IntPtr url, CGSize maxThumbnailSize, /* CFDictionaryRef */ IntPtr options);
 
-#if NET
 		/// <param name="url">To be added.</param>
 		///         <param name="maxThumbnailSize">To be added.</param>
 		///         <param name="scaleFactor">To be added.</param>
@@ -70,9 +65,6 @@ namespace QuickLook {
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[ObsoletedOSPlatform ("macos15.0", "Use the QuickLookThumbnailing framework instead for creating thumbnails for files.")]
-#else
-		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use the QuickLookThumbnailing framework instead for creating thumbnails for files.")]
-#endif
 		public static CGImage? Create (NSUrl url, CGSize maxThumbnailSize, float scaleFactor = 1, bool iconMode = false)
 		{
 			if (url is null)

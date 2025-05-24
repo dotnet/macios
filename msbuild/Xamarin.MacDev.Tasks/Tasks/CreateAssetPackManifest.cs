@@ -10,8 +10,7 @@ using Xamarin.MacDev;
 using Xamarin.Localization.MSBuild;
 using Xamarin.Messaging.Build.Client;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Xamarin.MacDev.Tasks {
 	public class CreateAssetPackManifest : XamarinTask, ICancelableTask {
@@ -19,14 +18,14 @@ namespace Xamarin.MacDev.Tasks {
 		const double TopDownloadPriority = 0.95;
 
 		[Required]
-		public ITaskItem AppBundleDir { get; set; }
+		public ITaskItem? AppBundleDir { get; set; }
 
-		public string InitialInstallTags { get; set; }
+		public string InitialInstallTags { get; set; } = "";
 
-		public string PrefetchOrder { get; set; }
+		public string PrefetchOrder { get; set; } = "";
 
 		[Required]
-		public string OutputPath { get; set; }
+		public string OutputPath { get; set; } = "";
 
 		static double GetDownloadPriority (int index, int length)
 		{
@@ -46,8 +45,8 @@ namespace Xamarin.MacDev.Tasks {
 			if (ShouldExecuteRemotely ())
 				return new TaskRunner (SessionId, BuildEngine4).RunAsync (this).Result;
 
-			var manifestPath = Path.Combine (AppBundleDir.ItemSpec, "AssetPackManifestTemplate.plist");
-			var onDemandResourcesPath = Path.Combine (AppBundleDir.ItemSpec, "OnDemandResources.plist");
+			var manifestPath = Path.Combine (AppBundleDir!.ItemSpec, "AssetPackManifestTemplate.plist");
+			var onDemandResourcesPath = Path.Combine (AppBundleDir!.ItemSpec, "OnDemandResources.plist");
 			var onDemandResourcesDir = Path.Combine (OutputPath, "OnDemandResources");
 			var onDemandResourcesStamp = File.GetLastWriteTimeUtc (onDemandResourcesPath);
 			var initialInstallTags = new HashSet<string> (AssetPackUtils.ParseTags (InitialInstallTags));
@@ -82,7 +81,7 @@ namespace Xamarin.MacDev.Tasks {
 				updateManifest = updateManifest || mtime > manifestStamp;
 
 				try {
-					info = PDictionary.FromFile (path);
+					info = PDictionary.FromFile (path)!;
 				} catch {
 					continue;
 				}
@@ -110,7 +109,6 @@ namespace Xamarin.MacDev.Tasks {
 				var priority = double.NaN;
 
 				foreach (var tag in tags) {
-					PDictionary dict;
 					PArray packs;
 
 					if (initialInstallTags.Contains (tag)) {
@@ -126,7 +124,7 @@ namespace Xamarin.MacDev.Tasks {
 						}
 					}
 
-					if (!requestTags.TryGetValue (tag, out dict)) {
+					if (!requestTags.TryGetValue<PDictionary> (tag, out var dict)) {
 						dict = new PDictionary ();
 						dict.Add ("NSAssetPacks", new PArray ());
 

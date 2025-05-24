@@ -1,5 +1,3 @@
-#if NET
-
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 
@@ -16,10 +14,8 @@ namespace FSKit {
 	[Experimental ("APL0002")]
 #endif
 	[StructLayout (LayoutKind.Sequential)]
-	public struct FSMetadataReadahead
-	{
+	public struct FSMetadataReadahead {
 		public long Offset;
 		public nuint Length;
 	}
 }
-#endif

@@ -7,7 +7,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Macios.Generator.Attributes;
 using Microsoft.Macios.Generator.Context;
 using Microsoft.Macios.Generator.DataModel;
@@ -46,7 +45,7 @@ class ClassEmitter : ICodeEmitter {
 			classBlock.AppendDesignatedInitializer ();
 			classBlock.WriteRaw (
 $@"[Export (""init"")]
-public {bindingContext.Changes.Name} () : base (NSObjectFlag.Empty)
+public {bindingContext.Changes.Name} () : base ({NSObjectFlag}.Empty)
 {{
 	if (IsDirectBinding)
 		InitializeHandle (global::ObjCRuntime.Messaging.IntPtr_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle (""init"")), ""init"");
@@ -60,7 +59,7 @@ public {bindingContext.Changes.Name} () : base (NSObjectFlag.Empty)
 		classBlock.WriteDocumentation (Documentation.Class.DefaultInitWithFlag (bindingContext.Changes.Name));
 		classBlock.AppendGeneratedCodeAttribute ();
 		classBlock.AppendEditorBrowsableAttribute (EditorBrowsableState.Advanced);
-		classBlock.WriteLine ($"protected {bindingContext.Changes.Name} (NSObjectFlag t) : base (t) {{}}");
+		classBlock.WriteLine ($"protected {bindingContext.Changes.Name} ({NSObjectFlag} t) : base (t) {{}}");
 
 		classBlock.WriteLine ();
 		classBlock.WriteDocumentation (Documentation.Class.DefaultInitWithHandle (bindingContext.Changes.Name));
@@ -217,10 +216,6 @@ return {tempVar};
 		if (properties.Length == 0)
 			return;
 
-		// default values
-		const string defaultNotificationCenter = "NSNotificationCenter.DefaultCenter";
-		const string defaultEventArgument = "Foundation.NSNotificationEventArgs";
-
 		// add a space just to make it nicer to read
 		classBlock.WriteLine ();
 
@@ -231,16 +226,16 @@ return {tempVar};
 			foreach (var notification in properties) {
 				var count = 12; // == "Notification".Length;
 				var name = $"Observe{notification.Name [..^count]}";
-				var notificationCenter = notification.ExportFieldData?.FieldData.NotificationCenter ?? defaultNotificationCenter;
-				var eventType = notification.ExportFieldData?.FieldData.Type ?? defaultEventArgument;
+				var notificationCenter = notification.ExportFieldData?.FieldData.NotificationCenter ?? $"{NotificationCenter}.DefaultCenter";
+				var eventType = notification.ExportFieldData?.FieldData.Type ?? NSNotificationEventArgs.ToString ();
 				// use the raw writer which makes it easier to read in this case
 				notificationClass.WriteRaw (
-@$"public static NSObject {name} (EventHandler<{eventType}> handler)
+@$"public static {NSObject} {name} ({EventHandler}<{eventType}> handler)
 {{
 	return {notificationCenter}.AddObserver ({notification.Name}, notification => handler (null, new {eventType} (notification)));
 }}
 
-public static NSObject {name} (NSObject objectToObserve, EventHandler<{eventType}> handler)
+public static NSObject {name} ({NSObject} objectToObserve, {EventHandler}<{eventType}> handler)
 {{
 	return {notificationCenter}.AddObserver ({notification.Name}, notification => handler (null, new {eventType} (notification)), objectToObserve);
 }}
@@ -341,7 +336,7 @@ public static NSObject {name} (NSObject objectToObserve, EventHandler<{eventType
 
 			if (!bindingContext.Changes.IsStatic) {
 				classBlock.AppendGeneratedCodeAttribute (optimizable: true);
-				classBlock.WriteLine ($"static readonly {NativeHandle} {ClassPtr} = Class.GetHandle (\"{registrationName}\");");
+				classBlock.WriteLine ($"static readonly {NativeHandle} {ClassPtr} = {BindingSyntaxFactory.Class}.GetHandle (\"{registrationName}\");");
 				classBlock.WriteLine ();
 				classBlock.WriteDocumentation (Documentation.Class.ClassHandle (bindingContext.Changes.Name));
 				classBlock.WriteLine ($"public override {NativeHandle} ClassHandle => {ClassPtr};");
@@ -349,7 +344,7 @@ public static NSObject {name} (NSObject objectToObserve, EventHandler<{eventType
 
 				EmitDefaultConstructors (bindingContext: bindingContext,
 					classBlock: classBlock,
-					disableDefaultCtor: bindingData.Flags.HasFlag (Class.DisableDefaultCtor));
+					disableDefaultCtor: bindingData.Flags.HasFlag (ObjCBindings.Class.DisableDefaultCtor));
 			}
 
 			EmitFields (bindingContext.Changes.Name, bindingContext.Changes.Properties, classBlock,

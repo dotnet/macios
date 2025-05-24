@@ -29,16 +29,12 @@ using ObjCRuntime;
 #nullable enable
 
 namespace Foundation {
-
-#if NET
 	/// <summary>Defines the operating system version. Particularly for use with the <see cref="Foundation.NSProcessInfo.IsOperatingSystemAtLeastVersion(Foundation.NSOperatingSystemVersion)" /> method.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
-
 	public struct NSOperatingSystemVersion : IEquatable<NSOperatingSystemVersion>, IComparable {
 		/// <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>

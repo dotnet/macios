@@ -20,7 +20,7 @@ namespace TestNamespace;
 public partial class AVAudioPcmBuffer
 {
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	static readonly global::ObjCRuntime.NativeHandle class_ptr = Class.GetHandle ("AVAudioPcmBuffer");
+	static readonly $GLOBAL$ObjCRuntime.NativeHandle class_ptr = $GLOBAL$ObjCRuntime.Class.GetHandle ("AVAudioPcmBuffer");
 
 	/// <summary>The Objective-C class handle for this class.</summary>
 	/// <value>The pointer to the Objective-C class.</value>
@@ -29,7 +29,7 @@ public partial class AVAudioPcmBuffer
 	///     This value contains the pointer to the Objective-C class.
 	///     It is similar to calling the managed <see cref=\"ObjCRuntime.Class.GetHandle(string)\" /> or the native <see href=\"https://developer.apple.com/documentation/objectivec/1418952-objc_getclass\">objc_getClass</see> method with the type name.
 	/// </remarks>
-	public override global::ObjCRuntime.NativeHandle ClassHandle => class_ptr;
+	public override $GLOBAL$ObjCRuntime.NativeHandle ClassHandle => class_ptr;
 
 	/// <summary>Constructor to call on derived classes to skip initialization and merely allocate the object.</summary>
 	/// <param name="t">Unused sentinel value, pass NSObjectFlag.Empty.</param>
@@ -78,7 +78,7 @@ public partial class AVAudioPcmBuffer
 	/// </remarks>
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable (EditorBrowsableState.Advanced)]
-	protected AVAudioPcmBuffer (NSObjectFlag t) : base (t) {}
+	protected AVAudioPcmBuffer ($GLOBAL$Foundation.NSObjectFlag t) : base (t) {}
 
 	/// <summary>A constructor used when creating managed representations of unmanaged objects. Called by the runtime.</summary>
 	/// <param name="handle">Pointer (handle) to the unmanaged object.</param>
@@ -90,6 +90,6 @@ public partial class AVAudioPcmBuffer
 	/// </remarks>
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable (EditorBrowsableState.Advanced)]
-	protected internal AVAudioPcmBuffer (global::ObjCRuntime.NativeHandle handle) : base (handle) {}
+	protected internal AVAudioPcmBuffer ($GLOBAL$ObjCRuntime.NativeHandle handle) : base (handle) {}
 	// TODO: add binding code here
 }

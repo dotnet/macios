@@ -6,14 +6,11 @@ using ObjCRuntime;
 using Foundation;
 
 namespace HomeKit {
-
-#if NET
 	/// <summary>Common capabilities of an <see cref="HomeKit.HMCharacteristic" />, such as whether it's writable or supports events.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class HMCharacteristicProperties {
 
 		/// <summary>Gets or sets a value that tells whether the property supports numbered changes.</summary>

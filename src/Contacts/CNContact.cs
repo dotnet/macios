@@ -110,11 +110,7 @@ namespace Contacts {
 		public bool AreKeysAvailable (CNContactOptions options)
 		{
 			using (var array = new NSMutableArray ()) {
-#if NET
 				foreach (var value in Enum.GetValues<CNContactOptions> ()) {
-#else
-				foreach (CNContactOptions value in Enum.GetValues (typeof (CNContactOptions))) {
-#endif
 					if ((options & value) != CNContactOptions.None)
 						array.Add (ContactOptionsToNSString (value));
 				}

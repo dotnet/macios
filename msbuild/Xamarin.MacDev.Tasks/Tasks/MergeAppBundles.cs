@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-
+using System.Threading.Tasks;
 using Microsoft.Build.Framework;
 
 using Xamarin.Bundler;
@@ -11,8 +11,7 @@ using Xamarin.Localization.MSBuild;
 using Xamarin.Messaging.Build.Client;
 using Xamarin.Utils;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Xamarin.MacDev.Tasks {
 	// This task will take two or more app bundles and merge them into a universal/fat app bundle.
@@ -33,22 +32,22 @@ namespace Xamarin.MacDev.Tasks {
 		#region Inputs
 		// This is a list of files (filename only, no path, will match any file with the given name in the app bundle)
 		// that can be put in a RID-specific subdirectory.
-		public ITaskItem [] ArchitectureSpecificFiles { get; set; }
+		public ITaskItem [] ArchitectureSpecificFiles { get; set; } = [];
 
 		// This is a list of files (filename only, no path, will match any file with the given name in the app bundle)
 		// to ignore/skip.
-		public ITaskItem [] IgnoreFiles { get; set; }
+		public ITaskItem [] IgnoreFiles { get; set; } = [];
 
 		// A list of the .app bundles to merge
 		[Required]
-		public ITaskItem [] InputAppBundles { get; set; }
+		public ITaskItem [] InputAppBundles { get; set; } = [];
 
 		// The output app bundle
 		[Required]
-		public string OutputAppBundle { get; set; }
+		public string OutputAppBundle { get; set; } = "";
 
 		[Required]
-		public string SdkDevPath { get; set; }
+		public string SdkDevPath { get; set; } = "";
 
 		#endregion
 
@@ -61,17 +60,17 @@ namespace Xamarin.MacDev.Tasks {
 			Other,
 		}
 
-		class Entries : List<Entry> {
-			public string BundlePath;
-			public string SpecificSubdirectory;
+		class Entries (string bundlePath, string specificSubdirectory) : List<Entry> {
+			public string BundlePath => bundlePath;
+			public string SpecificSubdirectory => specificSubdirectory;
 		}
 
-		class Entry {
-			public MergeAppBundles Task;
-			public Entries AppBundle;
-			public string RelativePath;
-			public FileType Type;
-			public List<Entry> DependentFiles;
+		class Entry (MergeAppBundles task, Entries appBundle, string relativePath, FileType type) {
+			public MergeAppBundles Task => task;
+			public Entries AppBundle => appBundle;
+			public string RelativePath => relativePath;
+			public FileType Type => type;
+			public List<Entry>? DependentFiles;
 
 			public string FullPath => Path.Combine (AppBundle.BundlePath, RelativePath);
 
@@ -190,7 +189,7 @@ namespace Xamarin.MacDev.Tasks {
 				return true;
 			}
 
-			public void CopyTo (string outputDirectory, string subDirectory = null)
+			public void CopyTo (string outputDirectory, string? subDirectory = null)
 			{
 				string outputFile;
 
@@ -286,10 +285,7 @@ namespace Xamarin.MacDev.Tasks {
 					fullInput = fullInput.Substring (0, fullInput.Length - 1);
 				// get all the files and subdirectories in the input app bundle
 				var files = Directory.GetFileSystemEntries (fullInput, "*", SearchOption.AllDirectories);
-				var entries = new Entries () {
-					BundlePath = fullInput,
-					SpecificSubdirectory = specificSubdirectory,
-				};
+				var entries = new Entries (fullInput, specificSubdirectory);
 				// Remove any files inside directories which are symlinks (we only need to process the symlink itself)
 				var symlinkDirectories = files.Where (v => PathUtils.IsSymlink (v) && Directory.Exists (v));
 				if (symlinkDirectories.Any ()) {
@@ -297,12 +293,7 @@ namespace Xamarin.MacDev.Tasks {
 				}
 				foreach (var file in files) {
 					var relativePath = file.Substring (fullInput.Length + 1);
-					var entry = new Entry {
-						Task = this,
-						RelativePath = relativePath,
-						AppBundle = entries,
-						Type = GetFileType (file),
-					};
+					var entry = new Entry (this, entries, relativePath, GetFileType (file));
 					entries.Add (entry);
 				}
 				inputFiles [i] = entries;

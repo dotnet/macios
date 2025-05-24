@@ -7,21 +7,20 @@ using Xamarin.Localization.MSBuild;
 using Xamarin.Messaging.Build.Client;
 using Xamarin.Utils;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Xamarin.MacDev.Tasks {
 	public class EmbedProvisionProfile : XamarinTask {
 		#region Inputs
 
 		[Required]
-		public string AppBundleDir { get; set; }
+		public string AppBundleDir { get; set; } = "";
 
 		[Required]
-		public string ProvisioningProfile { get; set; }
+		public string ProvisioningProfile { get; set; } = "";
 
 		[Required]
-		public string EmbeddedProvisionProfilePath { get; set; }
+		public string EmbeddedProvisionProfilePath { get; set; } = "";
 
 		#endregion
 

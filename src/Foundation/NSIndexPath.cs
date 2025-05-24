@@ -107,7 +107,6 @@ namespace Foundation {
 			return ret;
 		}
 
-#if NET
 		/// <param name="range">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
@@ -116,7 +115,6 @@ namespace Foundation {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public unsafe nuint [] GetIndexes (NSRange range)
 		{
 			var ret = new nuint [range.Length];

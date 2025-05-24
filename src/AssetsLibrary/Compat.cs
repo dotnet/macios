@@ -14,10 +14,6 @@ using CoreLocation;
 using UIKit;
 using MediaPlayer;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace AssetsLibrary {
 
 	/// <param name="result">The asset.</param>

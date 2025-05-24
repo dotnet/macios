@@ -5,10 +5,6 @@ using ObjCRuntime;
 
 #nullable enable
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 #if !TVOS
 
 namespace PassKit {
@@ -24,14 +20,10 @@ namespace PassKit {
 	 */
 
 	/// <summary>The four-digit type, in ISO 18245 format, that represents the type of goods or service a merchant provides for a transaction.</summary>
-#if NET
 	[SupportedOSPlatform ("macos15.0")]
 	[SupportedOSPlatform ("ios18.0")]
 	[SupportedOSPlatform ("maccatalyst18.0")]
 	[UnsupportedOSPlatform ("tvos")]
-#else
-	[Mac (15, 0), iOS (18, 0), NoTV, MacCatalyst (18, 0)]
-#endif
 	public struct PKMerchantCategoryCode {
 		short value;
 

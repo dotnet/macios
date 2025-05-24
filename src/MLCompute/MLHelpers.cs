@@ -8,16 +8,10 @@ using Foundation;
 using ObjCRuntime;
 
 namespace MLCompute {
-
-#if NET
 	[SupportedOSPlatform ("ios14.0")]
 	[SupportedOSPlatform ("tvos14.0")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
-#else
-	[iOS (14, 0)]
-	[TV (14, 0)]
-#endif
 	public static class MLCActivationTypeExtensions {
 
 		[DllImport (Constants.MLComputeLibrary)]
@@ -29,15 +23,10 @@ namespace MLCompute {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios14.0")]
 	[SupportedOSPlatform ("tvos14.0")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
-#else
-	[iOS (14, 0)]
-	[TV (14, 0)]
-#endif
 	public static class MLCArithmeticOperationExtensions {
 
 		[DllImport (Constants.MLComputeLibrary)]
@@ -49,15 +38,10 @@ namespace MLCompute {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios14.0")]
 	[SupportedOSPlatform ("tvos14.0")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
-#else
-	[iOS (14, 0)]
-	[TV (14, 0)]
-#endif
 	public static class MLCPaddingPolicyExtensions {
 
 		[DllImport (Constants.MLComputeLibrary)]
@@ -69,15 +53,10 @@ namespace MLCompute {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios14.0")]
 	[SupportedOSPlatform ("tvos14.0")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
-#else
-	[iOS (14, 0)]
-	[TV (14, 0)]
-#endif
 	public static class MLCLossTypeExtensions {
 
 		[DllImport (Constants.MLComputeLibrary)]
@@ -89,15 +68,10 @@ namespace MLCompute {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios14.0")]
 	[SupportedOSPlatform ("tvos14.0")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
-#else
-	[iOS (14, 0)]
-	[TV (14, 0)]
-#endif
 	public static class MLCReductionTypeExtensions {
 
 		[DllImport (Constants.MLComputeLibrary)]
@@ -109,15 +83,10 @@ namespace MLCompute {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios14.0")]
 	[SupportedOSPlatform ("tvos14.0")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
-#else
-	[iOS (14, 0)]
-	[TV (14, 0)]
-#endif
 	public static class MLCPaddingTypeExtensions {
 
 		[DllImport (Constants.MLComputeLibrary)]
@@ -129,15 +98,10 @@ namespace MLCompute {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios14.0")]
 	[SupportedOSPlatform ("tvos14.0")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
-#else
-	[iOS (14, 0)]
-	[TV (14, 0)]
-#endif
 	public static class MLCConvolutionTypeExtensions {
 
 		[DllImport (Constants.MLComputeLibrary)]
@@ -149,15 +113,10 @@ namespace MLCompute {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios14.0")]
 	[SupportedOSPlatform ("tvos14.0")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
-#else
-	[iOS (14, 0)]
-	[TV (14, 0)]
-#endif
 	public static class MLCPoolingTypeExtensions {
 
 		[DllImport (Constants.MLComputeLibrary)]
@@ -169,15 +128,10 @@ namespace MLCompute {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios14.0")]
 	[SupportedOSPlatform ("tvos14.0")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
-#else
-	[iOS (14, 0)]
-	[TV (14, 0)]
-#endif
 	public static class MLCSoftmaxOperationExtensions {
 
 		[DllImport (Constants.MLComputeLibrary)]
@@ -189,15 +143,10 @@ namespace MLCompute {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios14.0")]
 	[SupportedOSPlatform ("tvos14.0")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
-#else
-	[iOS (14, 0)]
-	[TV (14, 0)]
-#endif
 	public static class MLCSampleModeExtensions {
 
 		[DllImport (Constants.MLComputeLibrary)]
@@ -209,15 +158,10 @@ namespace MLCompute {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios14.0")]
 	[SupportedOSPlatform ("tvos14.0")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
-#else
-	[iOS (14, 0)]
-	[TV (14, 0)]
-#endif
 	public static class MLCLstmResultModeExtensions {
 
 		[DllImport (Constants.MLComputeLibrary)]
@@ -229,15 +173,10 @@ namespace MLCompute {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("tvos14.5")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios14.5")]
 	[SupportedOSPlatform ("maccatalyst")]
-#else
-	[TV (14, 5)]
-	[iOS (14, 5)]
-#endif
 	public static class MLCComparisonOperationExtensions {
 
 		[DllImport (Constants.MLComputeLibrary)]
@@ -249,16 +188,10 @@ namespace MLCompute {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("tvos15.0")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios15.0")]
 	[SupportedOSPlatform ("maccatalyst")]
-#else
-	[TV (15, 0)]
-	[iOS (15, 0)]
-	[MacCatalyst (15, 0)]
-#endif
 	public static class MLCGradientClippingTypeExtensions {
 
 		[DllImport (Constants.MLComputeLibrary)]

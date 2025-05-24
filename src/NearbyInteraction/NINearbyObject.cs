@@ -10,18 +10,14 @@
 #nullable enable
 
 using System;
+using System.Numerics;
 using System.Runtime.InteropServices;
 
 using CoreFoundation;
 using Foundation;
 using ObjCRuntime;
-#if NET
-using Vector3 = global::System.Numerics.Vector3;
+
 using MatrixFloat4x4 = global::CoreGraphics.NMatrix4;
-#else
-using Vector3 = global::OpenTK.Vector3;
-using MatrixFloat4x4 = global::OpenTK.NMatrix4;
-#endif
 
 #if __IOS__
 namespace NearbyInteraction {
@@ -45,14 +41,10 @@ namespace NearbyInteraction {
 
 		static MatrixFloat4x4? _WorldTransformNotAvailable;
 
-#if NET
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("maccatalyst16.0")]
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("macos")]
-#else
-		[iOS (16,0), MacCatalyst (16,0)]
-#endif // NET
 		// Following similar strategy found here: https://github.com/xamarin/maccore/issues/2274
 		[Field ("NINearbyObjectWorldTransformNotAvailable", "NearbyInteraction")]
 		public static MatrixFloat4x4 WorldTransformNotAvailable {

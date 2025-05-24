@@ -4,14 +4,13 @@
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Microsoft.Macios.Generator.Extensions;
 
 static class ArgumentSyntaxExtensions {
 
-	public static SyntaxNodeOrToken [] ToSyntaxNodeOrTokenArray (this ImmutableArray<ArgumentSyntax> arguments)
+	public static SyntaxNodeOrToken [] ToSyntaxNodeOrTokenArray<T> (this ImmutableArray<T> arguments) where T : CSharpSyntaxNode
 	{
 		// the size of the array is simple to calculate, we need space for all parameters
 		// and for a comma for each parameter except for the last one

@@ -46,14 +46,12 @@ namespace CoreLocation {
 	// CLLocationDegrees -> double -> CLLocation.h
 
 	// CLLocation.h
-#if NET
 	/// <summary>Geographical coordinates.</summary>
 	///     <remarks>The geographical coordinates use the WGS 84 reference frame.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct CLLocationCoordinate2D {
 		/// <summary>Latitude in degrees. Positive values are north of the equator, negative values are south of the equator.</summary>
@@ -100,7 +98,6 @@ namespace CoreLocation {
 	///     <remarks>To be added.</remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CoreLocation/Reference/CLPlacemark_class/index.html">Apple documentation for <c>CLPlacemark</c></related>
 	public partial class CLPlacemark {
-#if NET
 		/// <param name="location">To be added.</param>
 		///         <param name="name">To be added.</param>
 		///         <param name="postalAddress">To be added.</param>
@@ -111,7 +108,6 @@ namespace CoreLocation {
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("macos")]
-#endif
 		static public CLPlacemark GetPlacemark (CLLocation location, string name, CNPostalAddress postalAddress)
 		{
 			return (null as CLPlacemark)!._GetPlacemark (location, name, postalAddress);

@@ -17,42 +17,34 @@ namespace BackgroundAssets {
 
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		[Obsolete ("This property has been removed. It will always return string.Empty.")]
-#if NET
 		[UnsupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("macos")]
-#endif
 		public virtual string ApplicationIdentifier => string.Empty;
 
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		[Obsolete ("This property has been removed. It will always return string.Empty.")]
-#if NET
 		[UnsupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("macos")]
-#endif
 		bool DownloadSizeRestricted => false;
 
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		[Obsolete ("This property has been removed. It will always return string.Empty.")]
-#if NET
 		[UnsupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("macos")]
-#endif
 		public virtual NSDate LastPeriodicCheckTime => NSDate.Now;
 
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		[Obsolete ("This property has been removed. It will always return string.Empty.")]
-#if NET
 		[UnsupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("macos")]
-#endif
 		public virtual NSDate LastApplicationLaunchTime => NSDate.Now;
 	}
 
@@ -60,12 +52,10 @@ namespace BackgroundAssets {
 
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		[Obsolete ("This property has been removed. It will always return string.Empty.")]
-#if NET
 		[UnsupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("macos")]
-#endif
 		public virtual void PerformWithExclusiveControl (NSDate date, Action<bool, NSError?> performHandler) => performHandler?.Invoke (false, null);
 	}
 
@@ -73,12 +63,10 @@ namespace BackgroundAssets {
 
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		[Obsolete ("This property has been removed. It will always return string.Empty.")]
-#if NET
 		[UnsupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("macos")]
-#endif
 		public virtual NSError? Error => null;
 	}
 

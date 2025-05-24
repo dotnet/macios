@@ -15,17 +15,11 @@ using System.Runtime.Versioning;
 
 using ObjCRuntime;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace Foundation {
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[Register ("NSOrderedSet", SkipRegistration = true)]
 	public sealed partial class NSOrderedSet<TKey> : NSOrderedSet, IEnumerable<TKey>
 		where TKey : class, INativeObject {
@@ -267,27 +261,15 @@ namespace Foundation {
 
 #if false // https://github.com/dotnet/macios/issues/15577
 
-#if !NET
-		[TV (13,0), iOS (13,0)]
-#else
 		[SupportedOSPlatform ("ios13.0"), SupportedOSPlatform ("tvos13.0"), SupportedOSPlatform ("macos")]
-#endif
 		public NSOrderedCollectionDifference<TKey> GetDifference (NSOrderedSet<TKey> other, NSOrderedCollectionDifferenceCalculationOptions options)
 			=> new NSOrderedCollectionDifference<TKey> (_GetDifference (other, options));
 
-#if !NET
-		[TV (13,0), iOS (13,0)]
-#else
 		[SupportedOSPlatform ("ios13.0"), SupportedOSPlatform ("tvos13.0"), SupportedOSPlatform ("macos")]
-#endif
 		public NSOrderedCollectionDifference<TKey> GetDifference (NSOrderedSet other)
 			=> new NSOrderedCollectionDifference<TKey> (_GetDifference (other));
 
-#if !NET
-		[TV (13,0), iOS (13,0)]
-#else
 		[SupportedOSPlatform ("ios13.0"), SupportedOSPlatform ("tvos13.0"), SupportedOSPlatform ("macos")]
-#endif
 		public NSOrderedSet<TKey>? GetOrderedSet (NSOrderedCollectionDifference difference)
 		{
 			var ptr = _GetOrderedSet (difference); 
@@ -308,11 +290,7 @@ namespace Foundation {
 			return false;
 		}
 
-#if !NET
-		[TV (13,0), iOS (13,0)]
-#else
 		[SupportedOSPlatform ("ios13.0"), SupportedOSPlatform ("tvos13.0"), SupportedOSPlatform ("macos")]
-#endif
 		public NSOrderedCollectionDifference<TKey>? GetDifference (NSOrderedSet<TKey> other, NSOrderedCollectionDifferenceCalculationOptions options, NSOrderedCollectionDifferenceEquivalenceTest<TKey> equivalenceTest) 
 		{
 			if (equivalenceTest is null)

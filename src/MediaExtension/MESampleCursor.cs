@@ -1,4 +1,3 @@
-#if NET
 #if MONOMAC
 using System;
 
@@ -25,4 +24,3 @@ namespace MediaExtension {
 	}
 }
 #endif // MONOMAC
-#endif // NET

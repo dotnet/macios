@@ -302,7 +302,6 @@ namespace WatchConnectivity {
 		[Export ("session:didReceiveFile:")]
 		void DidReceiveFile (WCSession session, WCSessionFile file);
 
-#if NET
 		/// <param name="session">To be added.</param>
 		///         <param name="activationState">To be added.</param>
 		///         <param name="error">
@@ -312,25 +311,20 @@ namespace WatchConnectivity {
 		///         <summary>Method that is called when session activation completes.</summary>
 		///         <remarks>To be added.</remarks>
 		[Abstract] // OS 10 beta 1 SDK made this required
-#endif
 		[Export ("session:activationDidCompleteWithState:error:")]
 		void ActivationDidComplete (WCSession session, WCSessionActivationState activationState, [NullAllowed] NSError error);
 
-#if NET
 		/// <param name="session">To be added.</param>
 		///         <summary>Method that is called when the session becomes inactive.</summary>
 		///         <remarks>To be added.</remarks>
 		[Abstract] // OS 10 beta 1 SDK made this required
-#endif
 		[Export ("sessionDidBecomeInactive:")]
 		void DidBecomeInactive (WCSession session);
 
-#if NET
 		/// <param name="session">To be added.</param>
 		///         <summary>Method that is called after the session deactivates.</summary>
 		///         <remarks>To be added.</remarks>
 		[Abstract] // OS 10 beta 1 SDK made this required
-#endif
 		[Export ("sessionDidDeactivate:")]
 		void DidDeactivate (WCSession session);
 

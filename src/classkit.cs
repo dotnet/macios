@@ -13,10 +13,6 @@ using ObjCRuntime;
 using CoreGraphics;
 using System.Reflection;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace ClassKit {
 
 	/// <summary>Enumerates activity outcome types.</summary>

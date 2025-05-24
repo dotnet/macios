@@ -35,17 +35,11 @@ namespace CoreServices {
 		IgnoreSelf = 0x00000008,
 		/// <summary>To be added.</summary>
 		FileEvents = 0x00000010,
-#if NET
 		[SupportedOSPlatform ("macos")]
-#endif
 		MarkSelf = 0x00000020,
-#if NET
 		[SupportedOSPlatform ("macos")]
-#endif
 		UseExtendedData = 0x00000040,
-#if NET
 		[SupportedOSPlatform ("macos")]
-#endif
 		FullHistory = 0x00000080,
 	}
 
@@ -100,17 +94,13 @@ namespace CoreServices {
 		ItemIsHardlink = 0x00100000,
 		/// <summary>To be added.</summary>
 		ItemIsLastHardlink = 0x00200000,
-#if NET
 		[SupportedOSPlatform ("macos")]
-#endif
 		ItemCloned = 0x00400000,
 	}
 
-#if NET
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
-#endif
 	public struct FSEvent {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
@@ -201,11 +191,7 @@ namespace CoreServices {
 		nint version; /* CFIndex: only valid value is zero */
 		internal IntPtr Info; /* void * __nullable */
 		IntPtr Retain; /* CFAllocatorRetainCallBack __nullable */
-#if NET
 		internal unsafe delegate* unmanaged<IntPtr, void> Release; /* CFAllocatorReleaseCallBack __nullable */
-#else
-		internal IntPtr Release; /* CFAllocatorReleaseCallBack __nullable */
-#endif
 		IntPtr CopyDescription; /* CFAllocatorCopyDescriptionCallBack __nullable */
 	}
 
@@ -215,11 +201,9 @@ namespace CoreServices {
 	///     <remarks>To be added.</remarks>
 	public delegate void FSEventStreamEventsHandler (object sender, FSEventStreamEventsArgs args);
 
-#if NET
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
-#endif
 	public sealed class FSEventStreamEventsArgs : EventArgs {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
@@ -235,9 +219,7 @@ namespace CoreServices {
 	/// <summary>
 	/// Creation options for <see cref="FSEventStream"/>.
 	/// </summary>
-#if NET
 	[SupportedOSPlatform ("macos")]
-#endif
 	public sealed class FSEventStreamCreateOptions {
 		/// <summary>
 		/// The allocator to use to allocate memory for the stream. If <c>null</c>, the default
@@ -310,11 +292,9 @@ namespace CoreServices {
 		public FSEventStream CreateStream () => new (this);
 	}
 
-#if NET
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
-#endif
 	public class FSEventStream : NativeObject {
 		[DllImport (Constants.CoreServicesLibrary)]
 		static extern void FSEventStreamRetain (IntPtr handle);
@@ -337,21 +317,13 @@ namespace CoreServices {
 
 		[DllImport (Constants.CoreServicesLibrary)]
 		unsafe static extern IntPtr FSEventStreamCreate (IntPtr allocator,
-#if NET
 			delegate* unmanaged<IntPtr, IntPtr, nint, IntPtr, IntPtr, IntPtr, void> callback,
-#else
-			IntPtr callback,
-#endif
 			FSEventStreamContext* context, IntPtr pathsToWatch,
 			ulong sinceWhen, double latency, FSEventStreamCreateFlags flags);
 
 		[DllImport (Constants.CoreServicesLibrary)]
 		unsafe static extern IntPtr FSEventStreamCreateRelativeToDevice (IntPtr allocator,
-#if NET
 			delegate* unmanaged<IntPtr, IntPtr, nint, IntPtr, IntPtr, IntPtr, void> callback,
-#else
-			IntPtr callback,
-#endif
 			FSEventStreamContext* context, ulong deviceToWatch, IntPtr pathsToWatchRelativeToDevice,
 			ulong sinceWhen, double latency, FSEventStreamCreateFlags flags);
 
@@ -377,13 +349,9 @@ namespace CoreServices {
 
 			var context = default (FSEventStreamContext);
 			context.Info = GCHandle.ToIntPtr (gch);
-#if NET
 			unsafe {
 				context.Release = &FreeGCHandle;
 			}
-#else
-			context.Release = Marshal.GetFunctionPointerForDelegate (releaseContextCallback);
-#endif
 
 			var allocator = options.Allocator.GetHandle ();
 			var sinceWhenId = options.SinceWhenId ?? FSEvent.SinceNowId;
@@ -395,11 +363,7 @@ namespace CoreServices {
 				if (options.DeviceToWatch.HasValue) {
 					handle = FSEventStreamCreateRelativeToDevice (
 						allocator,
-#if NET
 						&EventsCallback,
-#else
-						Marshal.GetFunctionPointerForDelegate (eventsCallback),
-#endif
 						&context,
 						options.DeviceToWatch.Value,
 						pathsToWatch.Handle, sinceWhenId, latency, flags);
@@ -407,11 +371,7 @@ namespace CoreServices {
 				} else {
 					handle = FSEventStreamCreate (
 						allocator,
-#if NET
 						&EventsCallback,
-#else
-						Marshal.GetFunctionPointerForDelegate (eventsCallback),
-#endif
 						&context,
 						pathsToWatch.Handle, sinceWhenId, latency, flags);
 					GC.KeepAlive (pathsToWatch);
@@ -454,16 +414,7 @@ namespace CoreServices {
 		{
 		}
 
-#if !NET
-		static readonly FSEventStreamCallback eventsCallback = EventsCallback;
-
-		static readonly ReleaseContextCallback releaseContextCallback = FreeGCHandle;
-		internal delegate void ReleaseContextCallback (IntPtr info);
-#endif
-
-#if NET
 		[UnmanagedCallersOnly]
-#endif
 		static void FreeGCHandle (IntPtr gchandle)
 		{
 			GCHandle.FromIntPtr (gchandle).Free ();
@@ -478,9 +429,7 @@ namespace CoreServices {
 		static readonly NSString kFSEventStreamEventExtendedFileIDKey = new ("fileID");
 		static readonly NSString kFSEventStreamEventExtendedDocIDKey = new ("docID");
 
-#if NET
 		[UnmanagedCallersOnly]
-#endif
 		static void EventsCallback (IntPtr handle, IntPtr userData, nint numEvents,
 			IntPtr eventPaths, IntPtr eventFlags, IntPtr eventIds)
 		{
@@ -598,16 +547,12 @@ namespace CoreServices {
 		static extern void FSEventStreamScheduleWithRunLoop (IntPtr handle,
 			IntPtr runLoop, IntPtr runLoopMode);
 
-#if NET
 		/// <param name="runLoop">To be added.</param>
 		///         <param name="runLoopMode">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos13.0", "Use 'SetDispatchQueue' instead.")]
-#else
-		[Deprecated (PlatformName.MacOSX, 13,0, message: "Use 'SetDispatchQueue' instead.")]
-#endif
 		public void ScheduleWithRunLoop (CFRunLoop runLoop, NSString runLoopMode)
 		{
 			FSEventStreamScheduleWithRunLoop (GetCheckedHandle (), runLoop.Handle, runLoopMode.Handle);
@@ -644,12 +589,8 @@ namespace CoreServices {
 		static extern void FSEventStreamUnscheduleFromRunLoop (IntPtr handle,
 			IntPtr runLoop, IntPtr runLoopMode);
 
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos13.0", "Use 'SetDispatchQueue' instead.")]
-#else
-		[Deprecated (PlatformName.MacOSX, 13,0, message: "Use 'SetDispatchQueue' instead.")]
-#endif
 		public void UnscheduleFromRunLoop (CFRunLoop runLoop, NSString runLoopMode)
 		{
 			FSEventStreamScheduleWithRunLoop (GetCheckedHandle (), runLoop.Handle, runLoopMode.Handle);

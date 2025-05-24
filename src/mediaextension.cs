@@ -1,5 +1,3 @@
-#if NET
-
 using System;
 
 using AVFoundation;
@@ -780,4 +778,3 @@ namespace MediaExtension {
 		bool RealTimePlayback { get; set; }
 	}
 }
-#endif // NET

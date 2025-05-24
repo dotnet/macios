@@ -41,10 +41,6 @@ using System;
 using System.ComponentModel;
 using UniformTypeIdentifiers;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace QuickLook {
 #if !MONOMAC
 	/// <summary>A <see cref="UIKit.UIViewController" /> that manages the user experience of previewing an item.</summary>
@@ -289,22 +285,13 @@ namespace QuickLook {
 		[Abstract]
 		[NullAllowed]
 		[Export ("previewItemURL")]
-#if NET
 		NSUrl PreviewItemUrl { get; }
-#else
-		NSUrl ItemUrl { get; }
-#endif
 
 		/// <summary>Gets the title for the preview item.</summary>
 		/// <value>The title for the preview item.</value>
 		[Export ("previewItemTitle")]
 		[NullAllowed]
-#if !NET
-		[Abstract]
-		string ItemTitle { get; }
-#else
 		string PreviewItemTitle { get; }
-#endif
 	}
 
 	delegate bool QLPreviewReplyDrawingHandler (CGContext context, QLPreviewReply reply, out NSError error);

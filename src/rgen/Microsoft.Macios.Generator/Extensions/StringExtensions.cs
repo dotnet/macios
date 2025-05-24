@@ -1,10 +1,14 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Xamarin.Utils;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Microsoft.Macios.Generator.Extensions;
 
@@ -58,5 +62,38 @@ static class StringExtensions {
 		if (!inlineSelectors)
 			sb.Append ("XHandle");
 		return sb.ToString ();
+	}
+
+	/// <summary>
+	/// Returns the expression required for an identifier name. The method will add the namespace and global qualifier
+	/// if needed based on the parameters.
+	/// </summary>
+	/// <param name="namespace">The namespace of the class. This can be null.</param>
+	/// <param name="class">The class name.</param>
+	/// <param name="isGlobal">If the global alias qualifier will be used. This will only be used if the namespace
+	/// was provided.</param>
+	/// <returns>The identifier expression for a given class.</returns>
+	internal static TypeSyntax GetIdentifierName (this string @class, IEnumerable<string> @namespace, bool isGlobal = GeneratorConfiguration.UseGlobalNamespace)
+	{
+		// retrieve the name syntax for the namespace
+		var namespaceArray = @namespace as string [] ?? @namespace.ToArray ();
+		if (namespaceArray.Length == 0) {
+			// if we have no namespace, we do not care about it being global
+			return IdentifierName (@class);
+		}
+
+		var fullNamespace = string.Join (".", namespaceArray);
+		if (isGlobal) {
+			return QualifiedName (
+				AliasQualifiedName (
+					IdentifierName (
+						Token (SyntaxKind.GlobalKeyword)),
+					IdentifierName (fullNamespace)),
+				IdentifierName (@class));
+		}
+
+		return QualifiedName (
+			IdentifierName (fullNamespace),
+			IdentifierName (@class));
 	}
 }

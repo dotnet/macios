@@ -15,7 +15,6 @@ using System;
 using System.Runtime.InteropServices;
 
 // This type does not come from the CoreGraphics framework; it's defined in /usr/include/simd/vector_types.h
-#if NET
 namespace CoreGraphics {
 	[StructLayout (LayoutKind.Sequential)]
 	public struct NVector3i : IEquatable<NVector3i> {
@@ -70,4 +69,3 @@ namespace CoreGraphics {
 		}
 	}
 }
-#endif //!NET

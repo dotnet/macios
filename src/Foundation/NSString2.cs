@@ -45,15 +45,7 @@ namespace Foundation {
 		///         <remarks>To be added.</remarks>
 		public NSData Encode (NSStringEncoding enc, bool allowLossyConversion = false)
 		{
-#if NET
 			return new NSData (Messaging.NativeHandle_objc_msgSend_NativeHandle_bool (Handle, Selector.GetHandle (selDataUsingEncodingAllow), (IntPtr) (int) enc, allowLossyConversion ? (byte) 1 : (byte) 0));
-#else
-#if MONOMAC
-			return new NSData (Messaging.IntPtr_objc_msgSend_IntPtr_bool (Handle, selDataUsingEncodingAllowHandle, (IntPtr) (int) enc, allowLossyConversion ? (byte) 1 : (byte) 0));
-#else
-			return new NSData (Messaging.IntPtr_objc_msgSend_IntPtr_bool (Handle, Selector.GetHandle (selDataUsingEncodingAllow), (IntPtr) (int) enc, allowLossyConversion ? (byte) 1 : (byte) 0));
-#endif
-#endif
 		}
 
 		/// <param name="data">The byte buffer.</param>
@@ -87,13 +79,5 @@ namespace Foundation {
 				return _characterAtIndex (idx);
 			}
 		}
-
-#if !NET && !MONOMAC
-		[Obsolete ("Use 'GetLocalizedUserNotificationString' that takes 'NSString' to preserve localization.")]
-		public static string GetLocalizedUserNotificationString (string key, params NSObject [] arguments)
-		{
-			return GetLocalizedUserNotificationString ((NSString) key, arguments);
-		}
-#endif
 	}
 }

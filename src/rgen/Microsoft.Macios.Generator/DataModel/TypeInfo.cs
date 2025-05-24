@@ -528,6 +528,16 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 			IsNullable = false,
 		};
 	}
+	
+	public TypeInfo ToPointedAtType ()
+	{
+		if (!IsPointer)
+			return this;
+		// copy all the elements from the current array type and set the array type to false
+		return this with {
+			IsPointer = false,
+		};
+	}
 
 	/// <inheritdoc/>
 	public override string ToString ()

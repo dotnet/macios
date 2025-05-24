@@ -260,7 +260,19 @@ static partial class BindingSyntaxFactory {
 			
 			// parameters that are passed by reference, the nomenclator will return the name of the
 			// temporary variable to use for the trampoline, there is no need for us to do anything
-			{ IsByRef: true } => IdentifierName (Nomenclator.GetNameForTempTrampolineVariable (parameter) ?? parameter.Name),
+			{ IsByRef: true, Type.IsReferenceType: false, Type.IsNullable: true} => 
+				IdentifierName (Nomenclator.GetNameForTempTrampolineVariable (parameter) ?? parameter.Name),
+			
+			{ IsByRef: true, Type.IsReferenceType: true } => 
+				IdentifierName (Nomenclator.GetNameForTempTrampolineVariable (parameter) ?? parameter.Name),
+			
+			{ IsByRef: true, Type.SpecialType: SpecialType.System_Boolean } => 
+				IdentifierName (Nomenclator.GetNameForTempTrampolineVariable (parameter) ?? parameter.Name),
+			
+			// other cases in which we will use AsRef for the pointed type
+			{IsByRef: true } 
+				=> AsRef (parameter.Type.ToPointedAtType ().GetIdentifierSyntax (), 
+					[Argument (IdentifierName (parameter.Name))]),
 			
 			// delegate parameter, c callback
 			// System.Runtime.InteropServices.Marshal.GetDelegateForFunctionPointer<ParameterType> (ParameterName)
@@ -353,8 +365,13 @@ static partial class BindingSyntaxFactory {
 		};
 #pragma warning restore format
 		
-		// this are arguments no parameters, therefore we do not need to add the ref modifiers
-		return Argument (expression);
+		// Argument syntax is the same as the expression syntax, but we need to add the ref kind keyword if needed
+		var argument = Argument (expression);
+		if (parameter.IsByRef)
+			argument = argument.WithRefKindKeyword (
+				Token (parameter.ReferenceKind.ToSyntaxKind ()) // match the correct syntax kind
+				.WithTrailingTrivia (Space));
+		return argument;
 	}
 
 	internal static ImmutableArray<SyntaxNode> GetTrampolinePreInvokeByRefArgument (in DelegateParameter parameter)

@@ -30,6 +30,11 @@ static class RefKindExtensions {
 		_ => ReferenceKind.None,
 	};
 
+	/// <summary>
+	/// Returns the appropriate SyntaxTokenList for the given ReferenceKind.
+	/// </summary>
+	/// <param name="self">The ReferenceKind value.</param>
+	/// <returns>A SyntaxTokenList representing the modifier(s) for the parameter.</returns>
 	public static SyntaxTokenList ToTokens (this ReferenceKind self) => self switch {
 		ReferenceKind.Ref => new (Token (SyntaxKind.RefKeyword)),
 		ReferenceKind.Out => new (Token (SyntaxKind.OutKeyword)),
@@ -37,4 +42,18 @@ static class RefKindExtensions {
 		ReferenceKind.RefReadOnlyParameter => new (Token (SyntaxKind.RefKeyword), Token (SyntaxKind.ReadOnlyKeyword)),
 		_ => []
 	};
+
+	/// <summary>
+	/// Converts the ReferenceKind to the corresponding SyntaxKind keyword.
+	/// </summary>
+	/// <param name="self">The ReferenceKind value.</param>
+	/// <returns>The SyntaxKind keyword for the modifier, or SyntaxKind.None if not applicable.</returns>
+	public static SyntaxKind ToSyntaxKind (this ReferenceKind self) => self switch {
+		ReferenceKind.Ref => SyntaxKind.RefKeyword,
+		ReferenceKind.Out => SyntaxKind.OutKeyword,
+		ReferenceKind.In => SyntaxKind.InKeyword,
+		ReferenceKind.RefReadOnlyParameter => SyntaxKind.RefKeyword, // 'ref readonly' is a combination, return 'ref'
+		_ => SyntaxKind.None
+	};
 }
+

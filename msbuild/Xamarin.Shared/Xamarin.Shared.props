@@ -237,7 +237,7 @@ Copyright (C) 2020 Microsoft. All rights reserved.
 		<!-- that also encapsulates whether we're a library or not (this makes conditions simpler) -->
 		<_BundleOriginalResources Condition="'$(OutputType)' == 'Library' And '$(IsAppExtension)' != 'true' And '$(BundleOriginalResources)' == 'true'">true</_BundleOriginalResources>
 
-		<EnableProfiling Condition="'$(EnableProfiling)' == '' And '$(_BundlerDebug)' == 'true'">true</EnableProfiling>
+		<EnableProfiler Condition="'$(EnableProfiler)' == '' And '$(_BundlerDebug)' == 'true'">true</EnableProfiler>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(IsBindingProject)' == 'true'">

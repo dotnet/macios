@@ -16,12 +16,8 @@ using ModelIO;
 using ObjCRuntime;
 using NUnit.Framework;
 
-#if NET
 using System.Numerics;
 using Vector2i = global::CoreGraphics.NVector2i;
-#else
-using OpenTK;
-#endif
 
 namespace MonoTouchFixtures.ModelIO {
 

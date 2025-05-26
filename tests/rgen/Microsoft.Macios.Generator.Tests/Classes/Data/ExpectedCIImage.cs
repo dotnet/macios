@@ -20,7 +20,7 @@ namespace TestNamespace;
 public partial class CIImage
 {
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	static readonly global::ObjCRuntime.NativeHandle class_ptr = Class.GetHandle ("CIImage");
+	static readonly $GLOBAL$ObjCRuntime.NativeHandle class_ptr = $GLOBAL$ObjCRuntime.Class.GetHandle ("CIImage");
 
 	/// <summary>The Objective-C class handle for this class.</summary>
 	/// <value>The pointer to the Objective-C class.</value>
@@ -29,18 +29,18 @@ public partial class CIImage
 	///     This value contains the pointer to the Objective-C class.
 	///     It is similar to calling the managed <see cref=\"ObjCRuntime.Class.GetHandle(string)\" /> or the native <see href=\"https://developer.apple.com/documentation/objectivec/1418952-objc_getclass\">objc_getClass</see> method with the type name.
 	/// </remarks>
-	public override global::ObjCRuntime.NativeHandle ClassHandle => class_ptr;
+	public override $GLOBAL$ObjCRuntime.NativeHandle ClassHandle => class_ptr;
 
 	/// <summary>Creates a new <see cref="CIImage" /> with default values.</summary>
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[DesignatedInitializer]
 	[Export ("init")]
-	public CIImage () : base (NSObjectFlag.Empty)
+	public CIImage () : base ($GLOBAL$Foundation.NSObjectFlag.Empty)
 	{
 		if (IsDirectBinding)
-			InitializeHandle (global::ObjCRuntime.Messaging.IntPtr_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("init")), "init");
+			InitializeHandle ($GLOBAL$ObjCRuntime.Messaging.IntPtr_objc_msgSend (this.Handle, $GLOBAL$ObjCRuntime.Selector.GetHandle ("init")), "init");
 		else
-			InitializeHandle (global::ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper (this.SuperHandle, global::ObjCRuntime.Selector.GetHandle ("init")), "init");
+			InitializeHandle ($GLOBAL$ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper (this.SuperHandle, $GLOBAL$ObjCRuntime.Selector.GetHandle ("init")), "init");
 	}
 
 	/// <summary>Constructor to call on derived classes to skip initialization and merely allocate the object.</summary>
@@ -90,7 +90,7 @@ public partial class CIImage
 	/// </remarks>
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable (EditorBrowsableState.Advanced)]
-	protected CIImage (NSObjectFlag t) : base (t) {}
+	protected CIImage ($GLOBAL$Foundation.NSObjectFlag t) : base (t) {}
 
 	/// <summary>A constructor used when creating managed representations of unmanaged objects. Called by the runtime.</summary>
 	/// <param name="handle">Pointer (handle) to the unmanaged object.</param>
@@ -102,9 +102,9 @@ public partial class CIImage
 	/// </remarks>
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable (EditorBrowsableState.Advanced)]
-	protected internal CIImage (global::ObjCRuntime.NativeHandle handle) : base (handle) {}
+	protected internal CIImage ($GLOBAL$ObjCRuntime.NativeHandle handle) : base (handle) {}
 
-	static Foundation.NSString? _DidProcessEditingNotification;
+	static $GLOBAL$Foundation.NSString? _DidProcessEditingNotification;
 
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios11.0")]
@@ -112,7 +112,7 @@ public partial class CIImage
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[Advice ("Use 'CIImage.Notifications.DidProcessEditingNotification' helper method instead.")]
-	public static partial Foundation.NSString DidProcessEditingNotification
+	public static partial $GLOBAL$Foundation.NSString DidProcessEditingNotification
 	{
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios11.0")]
@@ -121,7 +121,7 @@ public partial class CIImage
 		get
 		{
 			if (_DidProcessEditingNotification is null)
-				_DidProcessEditingNotification = global::ObjCRuntime.Dlfcn.GetStringConstant (global::ObjCRuntime.Libraries.TestNamespace.Handle, "kCIFormatLA8")!;
+				_DidProcessEditingNotification = $GLOBAL$ObjCRuntime.Dlfcn.GetStringConstant ($GLOBAL$ObjCRuntime.Libraries.TestNamespace.Handle, "kCIFormatLA8")!;
 			return _DidProcessEditingNotification;
 		}
 	}
@@ -140,7 +140,7 @@ public partial class CIImage
 		[SupportedOSPlatform ("maccatalyst13.1")]
 		get
 		{
-			return global::ObjCRuntime.Dlfcn.GetInt32 (global::ObjCRuntime.Libraries.TestNamespace.Handle, "kCIFormatABGR8");
+			return $GLOBAL$ObjCRuntime.Dlfcn.GetInt32 ($GLOBAL$ObjCRuntime.Libraries.TestNamespace.Handle, "kCIFormatABGR8");
 		}
 	}
 
@@ -158,7 +158,7 @@ public partial class CIImage
 		[SupportedOSPlatform ("maccatalyst13.1")]
 		get
 		{
-			return global::ObjCRuntime.Dlfcn.GetInt32 (global::ObjCRuntime.Libraries.TestNamespace.Handle, "kCIFormatLA8");
+			return $GLOBAL$ObjCRuntime.Dlfcn.GetInt32 ($GLOBAL$ObjCRuntime.Libraries.TestNamespace.Handle, "kCIFormatLA8");
 		}
 
 		[SupportedOSPlatform ("macos14.0")]
@@ -167,7 +167,7 @@ public partial class CIImage
 		[SupportedOSPlatform ("maccatalyst17.0")]
 		set
 		{
-			global::ObjCRuntime.Dlfcn.SetInt32 (global::ObjCRuntime.Libraries.TestNamespace.Handle, "kCIFormatLA8", value);
+			$GLOBAL$ObjCRuntime.Dlfcn.SetInt32 ($GLOBAL$ObjCRuntime.Libraries.TestNamespace.Handle, "kCIFormatLA8", value);
 		}
 	}
 
@@ -185,21 +185,21 @@ public partial class CIImage
 		[SupportedOSPlatform ("maccatalyst13.1")]
 		get
 		{
-			return global::ObjCRuntime.Dlfcn.GetInt32 (global::ObjCRuntime.Libraries.TestNamespace.Handle, "FormatRGBA16Int");
+			return $GLOBAL$ObjCRuntime.Dlfcn.GetInt32 ($GLOBAL$ObjCRuntime.Libraries.TestNamespace.Handle, "FormatRGBA16Int");
 		}
 	}
 
 	public static partial class Notifications
 	{
 
-		public static NSObject ObserveDidProcessEditing (EventHandler<Foundation.NSNotificationEventArgs> handler)
+		public static $GLOBAL$Foundation.NSObject ObserveDidProcessEditing ($GLOBAL$System.EventHandler<$GLOBAL$Foundation.NSNotificationEventArgs> handler)
 		{
-			return NSNotificationCenter.DefaultCenter.AddObserver (DidProcessEditingNotification, notification => handler (null, new Foundation.NSNotificationEventArgs (notification)));
+			return $GLOBAL$Foundation.NotificationCenter.DefaultCenter.AddObserver (DidProcessEditingNotification, notification => handler (null, new $GLOBAL$Foundation.NSNotificationEventArgs (notification)));
 		}
 
-		public static NSObject ObserveDidProcessEditing (NSObject objectToObserve, EventHandler<Foundation.NSNotificationEventArgs> handler)
+		public static NSObject ObserveDidProcessEditing ($GLOBAL$Foundation.NSObject objectToObserve, $GLOBAL$System.EventHandler<$GLOBAL$Foundation.NSNotificationEventArgs> handler)
 		{
-			return NSNotificationCenter.DefaultCenter.AddObserver (DidProcessEditingNotification, notification => handler (null, new Foundation.NSNotificationEventArgs (notification)), objectToObserve);
+			return $GLOBAL$Foundation.NotificationCenter.DefaultCenter.AddObserver (DidProcessEditingNotification, notification => handler (null, new $GLOBAL$Foundation.NSNotificationEventArgs (notification)), objectToObserve);
 		}
 
 	}

@@ -3,14 +3,8 @@ using System;
 using System.Diagnostics;
 
 using Foundation;
+using CoreGraphics;
 using ObjCRuntime;
-
-#if NET
-using NVector3d = global::CoreGraphics.NVector3d;
-#else
-using OpenTK;
-using NVector3d = global::OpenTK.NVector3d;
-#endif
 
 using NUnit.Framework;
 
@@ -68,26 +62,6 @@ namespace MonoTouchFixtures.Simd {
 			Assert.IsFalse (inputL != inputR, "equality 2 expected");
 			Assert.IsFalse (inputSimdL != inputSimdR, "equality 2 actual");
 		}
-
-#if !NET
-		[Test]
-		public void Explicit_Operator_ToVector3 ()
-		{
-			var expected = GetTestVector ();
-			var actual = (Vector3d) expected;
-
-			Asserts.AreEqual (expected, actual, "ToVector3d");
-		}
-
-		[Test]
-		public void Explicit_Operator_FromVector3 ()
-		{
-			var expected = new Vector3d (2, 3, 7.7d);
-			var actual = (NVector3d) expected;
-
-			Asserts.AreEqual (expected, actual, "FromVector3d");
-		}
-#endif // !NET
 
 		[Test]
 		public void ToStringTest ()

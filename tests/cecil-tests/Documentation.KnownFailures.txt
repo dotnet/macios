@@ -9304,8 +9304,6 @@ M:CoreFoundation.CFBundle.IsArchitectureLoadable(CoreFoundation.CFBundle.Archite
 M:CoreFoundation.CFBundle.IsExecutableLoadable(CoreFoundation.CFBundle)
 M:CoreFoundation.CFBundle.IsExecutableLoadable(Foundation.NSUrl)
 M:CoreFoundation.CFException.#ctor(System.String,Foundation.NSString,System.IntPtr,System.String,System.String)
-M:CoreFoundation.CFMutableString.#ctor(CoreFoundation.CFString,System.IntPtr)
-M:CoreFoundation.CFMutableString.#ctor(System.String,System.IntPtr)
 M:CoreFoundation.CFNetwork.ExecuteProxyAutoConfigurationScript(System.String,System.Uri,Foundation.NSError@)
 M:CoreFoundation.CFNetwork.ExecuteProxyAutoConfigurationScriptAsync(System.String,System.Uri,System.Threading.CancellationToken)
 M:CoreFoundation.CFNetwork.ExecuteProxyAutoConfigurationUrl(System.Uri,System.Uri,Foundation.NSError@)
@@ -19886,6 +19884,7 @@ P:Foundation.NSUrlSessionConfiguration.StrongConnectionProxyDictionary
 P:Foundation.NSUrlSessionConfiguration.UsesClassicLoadingMode
 P:Foundation.NSUrlSessionHandler.AllowsCellularAccess
 P:Foundation.NSUrlSessionHandler.AutomaticDecompression
+P:Foundation.NSUrlSessionHandler.ClientCertificateOptions
 P:Foundation.NSUrlSessionHandler.CookieContainer
 P:Foundation.NSUrlSessionHandler.MaxAutomaticRedirections
 P:Foundation.NSUrlSessionHandler.ServerCertificateCustomValidationCallback
@@ -23289,6 +23288,7 @@ P:StoreKit.StoreProductParameters.ProductIdentifier
 P:StoreKit.StoreProductParameters.ProviderToken
 P:System.Net.Http.NSUrlSessionHandler.AllowsCellularAccess
 P:System.Net.Http.NSUrlSessionHandler.AutomaticDecompression
+P:System.Net.Http.NSUrlSessionHandler.ClientCertificateOptions
 P:System.Net.Http.NSUrlSessionHandler.CookieContainer
 P:System.Net.Http.NSUrlSessionHandler.MaxAutomaticRedirections
 P:System.Net.Http.NSUrlSessionHandler.ServerCertificateCustomValidationCallback

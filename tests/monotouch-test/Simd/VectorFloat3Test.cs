@@ -4,14 +4,9 @@ using System.Diagnostics;
 
 using Foundation;
 using ObjCRuntime;
-
-#if NET
 using System.Numerics;
+
 using VectorFloat3 = global::CoreGraphics.NVector3;
-#else
-using OpenTK;
-using VectorFloat3 = global::OpenTK.NVector3;
-#endif
 
 using NUnit.Framework;
 

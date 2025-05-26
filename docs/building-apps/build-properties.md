@@ -673,6 +673,23 @@ This means the .dSYM archive will be generated in the following cases (by defaul
 * On iOS and tvOS when building for device.
 * On macOS and Mac Catalyst when creating an archive (`ArchiveOnBuild=true`).
 
+## NoSymbolStrip
+
+A boolean property that specifies whether debug symbols are removed from the app at build time.
+
+The default behavior is to keep debug symbols for:
+
+* `Debug` builds for desktop platforms.
+* Simulator builds for mobile platforms.
+
+Example to keep debug symbols:
+
+```xml
+<PropertyGroup>
+  <NoSymbolStrip>true</NoSymbolStrip>
+</PropertyGroup>
+```
+
 ## OnDemandResourcesInitialInstallTags
 
 A string property that specifies the initial install tags for on-demand resources.

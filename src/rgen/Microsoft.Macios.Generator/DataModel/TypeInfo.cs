@@ -55,12 +55,12 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	/// <summary>
 	/// The special type enum of the type info. This is used to differentiate nint from IntPtr and other.
 	/// </summary>
-	public SpecialType SpecialType { get; } = SpecialType.None;
+	public SpecialType SpecialType { get; init; } = SpecialType.None;
 
 	/// <summary>
 	/// True if the parameter is nullable.
 	/// </summary>
-	public bool IsNullable { get; }
+	public bool IsNullable { get; init; }
 
 	/// <summary>
 	/// True if the parameter type is blittable.
@@ -81,7 +81,7 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	/// Returns if the return type is an array type.
 	/// </summary>
 	[MemberNotNullWhen (true, nameof (ArrayElementType))]
-	public bool IsArray { get; }
+	public bool IsArray { get; init; }
 
 	/// <summary>
 	/// Returns if the return type is a reference type.
@@ -270,11 +270,13 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	/// <returns>An immutable array with the namespace components.</returns>
 	static ImmutableArray<string> GetNamespaceComponents (ITypeSymbol symbol)
 	{
-		var namespaceSymbol = symbol.ContainingNamespace;
+		var namespaceSymbol = symbol.ContainingSymbol;
 		var components = ImmutableArray.CreateBuilder<string> ();
-		while (namespaceSymbol is { IsGlobalNamespace: false }) {
+		while (namespaceSymbol is not null) {
 			components.Insert (0, namespaceSymbol.Name);
-			namespaceSymbol = namespaceSymbol.ContainingNamespace;
+			namespaceSymbol = namespaceSymbol.ContainingSymbol;
+			if (namespaceSymbol is INamespaceSymbol { IsGlobalNamespace: true })
+				break;
 		}
 		return components.ToImmutableArray ();
 	}
@@ -293,7 +295,6 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		IsStruct = symbol.TypeKind == TypeKind.Struct;
 		IsInterface = symbol.TypeKind == TypeKind.Interface;
 		IsDelegate = symbol.TypeKind == TypeKind.Delegate;
-		IsPointer = symbol is IPointerTypeSymbol;
 		IsNativeIntegerType = symbol.IsNativeIntegerType;
 		IsNativeEnum = symbol.HasAttribute (AttributesNames.NativeAttribute);
 		IsProtocol = symbol.HasAttribute (AttributesNames.ProtocolAttribute);
@@ -343,12 +344,23 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 			// get the type argument for nullable, which we know is the data that was boxed and use it to 
 			// overwrite the SpecialType 
 			var typeArgument = namedTypeSymbol.TypeArguments [0];
+			// we need to update the name and namespace with the type argument
+			(Name, Namespace) = GetTypeNameAndNamespace (typeArgument);
+			// we need to decide if is generic based on the inner type
+			if (typeArgument is INamedTypeSymbol innerType) {
+				IsGenericType = innerType.IsGenericType;
+			}
 			SpecialType = typeArgument.SpecialType;
 			MetadataName = SpecialType is SpecialType.None or SpecialType.System_Void
 				? null : typeArgument.MetadataName;
 		} else {
 			MetadataName = SpecialType is SpecialType.None or SpecialType.System_Void
 				? null : symbol.MetadataName;
+		}
+
+		if (symbol is IPointerTypeSymbol pointerTypeSymbol) {
+			IsPointer = true;
+			(Name, Namespace) = GetTypeNameAndNamespace (pointerTypeSymbol.PointedAtType);
 		}
 	}
 
@@ -494,6 +506,27 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		};
 #pragma warning restore format
 		return type;
+	}
+
+	public TypeInfo ToArrayElementType ()
+	{
+		if (!IsArray)
+			return this;
+		// copy all the elements from the current array type and set the array type to false
+		return this with {
+			IsArray = false,
+			SpecialType = ArrayElementType ?? SpecialType.None,
+		};
+	}
+
+	public TypeInfo ToNonNullable ()
+	{
+		if (!IsNullable)
+			return this;
+		// copy all the elements from the current array type and set the array type to false
+		return this with {
+			IsNullable = false,
+		};
 	}
 
 	/// <inheritdoc/>

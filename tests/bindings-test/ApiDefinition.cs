@@ -431,7 +431,6 @@ namespace Bindings.Test {
 	delegate void InnerBlock (int magic_number);
 	delegate void OuterBlock ([BlockCallback] InnerBlock callback);
 
-#if NET
 	[Protocol]
 	interface ConstructorProtocol {
 		[Abstract]
@@ -457,7 +456,6 @@ namespace Bindings.Test {
 		[Export ("dateValue")]
 		NSDate DateValue { get; set; }
 	}
-#endif
 
 	[BaseType (typeof (NSObject))]
 	interface EvilDeallocator {

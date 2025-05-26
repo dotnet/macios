@@ -95,7 +95,7 @@ static partial class BindingSyntaxFactory {
 			// parameters that are passed by reference, depend on the type that is referenced
 			{ IsByRef: true, Type.IsReferenceType: false, Type.IsNullable: true} 
 				=> (parameterIdentifier, 
-					PointerType (IdentifierName (parameter.Type.FullyQualifiedName))),
+					PointerType (parameter.Type.GetIdentifierSyntax ())),
 			
 			{ IsByRef: true, Type.SpecialType: SpecialType.System_Boolean} 
 				=> (parameterIdentifier,
@@ -226,7 +226,7 @@ static partial class BindingSyntaxFactory {
 			// parameters that are passed by reference, depend on the type that is referenced
 			{ IsByRef: true, Type.IsReferenceType: false, Type.IsNullable: true} 
 				=> (parameterIdentifier, 
-					PointerType (IdentifierName (parameter.Type.FullyQualifiedName))),
+					PointerType (parameter.Type.ToNonNullable ().GetIdentifierSyntax ())),
 			
 			{ IsByRef: true, Type.SpecialType: SpecialType.System_Boolean} 
 				=> (parameterIdentifier,
@@ -265,7 +265,7 @@ static partial class BindingSyntaxFactory {
 			// delegate parameter, c callback
 			// System.Runtime.InteropServices.Marshal.GetDelegateForFunctionPointer<ParameterType> (ParameterName)
 			{ Type.IsDelegate: true, IsCCallback: true } => 
-				GetDelegateForFunctionPointer (parameter.Type.FullyQualifiedName, [Argument (parameterIdentifier)]),
+				GetDelegateForFunctionPointer (parameter.Type.GetIdentifierSyntax (), [Argument (parameterIdentifier)]),
 			
 			// delegate parameter, block callback
 			// TrampolineNativeInvocationClass.Create (ParameterName)!
@@ -284,13 +284,13 @@ static partial class BindingSyntaxFactory {
 			
 			// CFArray.ArrayFromHandle<{0}> ({1})!
 			{ Type.IsArray: true, Type.ArrayElementTypeIsWrapped: true } 
-				=> GetCFArrayFromHandle (parameter.Type.FullyQualifiedName, [
+				=> GetCFArrayFromHandle (parameter.Type.ToArrayElementType ().GetIdentifierSyntax (), [
 					Argument (parameterIdentifier)
 				], suppressNullableWarning: true), 
 			
 			// NSArray.ArrayFromHandle<{0}> ({1})!
 			{ Type.IsArray: true, Type.ArrayElementIsINativeObject: true } 
-				=> GetNSArrayFromHandle (parameter.Type.FullyQualifiedName, [
+				=> GetNSArrayFromHandle (parameter.Type.ToArrayElementType ().GetIdentifierSyntax (), [
 					Argument (parameterIdentifier)
 				], suppressNullableWarning: true),
 			
@@ -306,12 +306,12 @@ static partial class BindingSyntaxFactory {
 			
 			// Runtime.GetINativeObject<ParameterType> (ParameterName, false)!
 			{ Type.IsProtocol: true } => 
-				GetINativeObject (parameter.Type.FullyQualifiedName, [
+				GetINativeObject (parameter.Type.GetIdentifierSyntax (), [
 						Argument (parameterIdentifier), 
 						BoolArgument (false)
 					], suppressNullableWarning: true),
 			// Runtime.GetINativeObject<ParameterType> (ParameterName, true, Forced.Owns)!
-			{ ForcedType: not null } => GetINativeObject (parameter.Type.FullyQualifiedName, 
+			{ ForcedType: not null } => GetINativeObject (parameter.Type.GetIdentifierSyntax (), 
 				[
 					Argument (parameterIdentifier),
 					BoolArgument (true),
@@ -337,13 +337,13 @@ static partial class BindingSyntaxFactory {
 			
 			// Runtime.GetNSObject<ParameterType> (ParameterName)! 
 			{ Type.IsNSObject: true } =>
-				GetNSObject (parameter.Type.FullyQualifiedName, [
+				GetNSObject (parameter.Type.GetIdentifierSyntax (), [
 					Argument (parameterIdentifier)
 				], suppressNullableWarning: true),
 			
 			// Runtime.GetINativeObject<ParameterType> (ParameterName, false)!
 			{ Type.IsINativeObject: true } =>
-				GetINativeObject (parameter.Type.FullyQualifiedName, [
+				GetINativeObject (parameter.Type.GetIdentifierSyntax (), [
 					Argument (parameterIdentifier), 
 					BoolArgument (false)
 				], suppressNullableWarning: true),
@@ -371,9 +371,7 @@ static partial class BindingSyntaxFactory {
 			// declare a new variable to hold the temp var
 			// ParameterType? tempVariable = null;
 			var declarationNode = LocalDeclarationStatement (
-				VariableDeclaration (
-						NullableType (
-							IdentifierName (parameter.Type.FullyQualifiedName)))
+				VariableDeclaration (parameter.Type.GetIdentifierSyntax ())
 					.WithVariables (
 						SingletonSeparatedList (
 							VariableDeclarator (

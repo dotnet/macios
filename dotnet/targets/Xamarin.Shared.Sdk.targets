@@ -1274,8 +1274,62 @@
 			_ReadAppManifest;
 			_WriteAppManifest;
 			_CreateAOTDedupAssembly;
+			_GenerateAOTCompileDependencyCache;
+			_CleanAOTCompileCache;
 		</_AOTCompileDependsOn>
 	</PropertyGroup>
+
+	<!--
+		_GenerateAOTCompileDependencyCache
+
+		Generate a file used to track dependencies between incremental build
+		executions. This handles cases where properties change that can't be
+		tracked with timestamps. The file contains a hash of aot compiler
+		inputs that are known to contribute to incremental build
+		inconsistencies.
+
+	-->
+	<Target Name="_GenerateAOTCompileDependencyCache">
+		<PropertyGroup>
+			<_AOTCompileCachePath>$(DeviceSpecificOutputPath)AOTCompileInputs.cache</_AOTCompileCachePath>
+			<_AOTCompileCachePath2>$(_AOTCompileCachePath).uptodate</_AOTCompileCachePath2>
+		</PropertyGroup>
+		<ItemGroup>
+			<_CustomAdditionalAOTCompileInputs Include="$(_AOTCompileCachePath)" />
+			<_AOTCompileCache Include="$(_XamarinAOTCompiler)" />
+			<_AOTCompileCache Include="$(_MinimumOSVersion)" />
+			<_AOTCompileCache Include="$(_SdkDevPath)" />
+			<_AOTCompileCache Include="$(_ComputedTargetFrameworkMoniker)" />
+			<_AOTCompileCache Include="$(MtouchInterpreter)" />
+			<_AOTCompileCache Include="$(MtouchUseLlvm)" />
+			<_AOTCompileCache Include="$(_BundlerDebug)" />
+			<_AOTCompileCache Include="$(AppBundleExtraOptions)" />
+		</ItemGroup>
+
+		<Hash
+			ItemsToHash="@(_AOTCompileCache)"
+			IgnoreCase="false">
+			<Output TaskParameter="HashResult" PropertyName="_AOTCompileDependencyHash" />
+		</Hash>
+
+		<WriteLinesToFile Lines="$(_AOTCompileDependencyHash)" File="$(_AOTCompileCachePath)" Overwrite="true" WriteOnlyWhenDifferent="true" />
+
+		<ItemGroup>
+			<FileWrites Include="$(_AOTCompileCachePath)" />
+		</ItemGroup>
+	</Target>
+	<!-- Delete any cached aot compiler output if the cache is stale -->
+	<Target Name="_CleanAOTCompileCache"
+			Inputs="$(_AOTCompileCachePath)"
+			Outputs="$(_AOTCompileCachePath2)"
+		>
+		<RemoveDir Directories="$(_AOTOutputDirectory)" />
+		<Copy SourceFiles="$(_AOTCompileCachePath)" DestinationFiles="$(_AOTCompileCachePath2)" />
+		<ItemGroup>
+			<FileWrites Include="$(_AOTCompileCachePath2)" />
+		</ItemGroup>
+	</Target>
+
 	<Target Name="_AOTCompile"
 			Condition="'$(_RunAotCompiler)' == 'true'"
 			DependsOnTargets="$(_AOTCompileDependsOn)"

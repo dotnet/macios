@@ -9,15 +9,7 @@ using MapKit;
 using CoreGraphics;
 using Foundation;
 
-#if NET
 using System.Numerics;
-#else
-using OpenTK;
-#endif
-
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
 
 namespace ObjCRuntime {
 	static class Messaging {
@@ -177,11 +169,6 @@ namespace ObjCRuntime {
 		[DllImport (LIBOBJC_DYLIB, EntryPoint = "objc_msgSend")]
 		public extern static CGRect CGRect_objc_msgSend_CGRect_CGRect_CGRect (IntPtr receiver, IntPtr selector, CGRect p1, CGRect p2, CGRect p3);
 
-#if !NET
-		[DllImport (LIBOBJC_DYLIB, EntryPoint = "objc_msgSend")]
-		public extern static Matrix3 Matrix3_objc_msgSend (IntPtr receiver, IntPtr selector);
-#endif // !NET
-
 		[DllImport (LIBOBJC_DYLIB, EntryPoint = "objc_msgSend")]
 		public extern static CATransform3D CATransform3D_objc_msgSend (IntPtr receiver, IntPtr selector);
 
@@ -231,10 +218,8 @@ namespace ObjCRuntime {
 		[DllImport (LIBOBJC_DYLIB, EntryPoint = "objc_msgSend")]
 		public extern static void void_objc_msgSend_int_IntPtr_IntPtr (IntPtr receiver, IntPtr selector, int p1, ref IntPtr p2, out IntPtr p3);
 
-#if NET
 		[DllImport (LIBOBJC_DYLIB, EntryPoint = "objc_msgSend")]
 		public extern static void void_objc_msgSend_int_IntPtr_IntPtr (IntPtr receiver, IntPtr selector, int p1, ref NativeHandle p2, out NativeHandle p3);
-#endif
 
 		[DllImport (LIBOBJC_DYLIB, EntryPoint = "objc_msgSend")]
 		public extern static void void_objc_msgSend_int_IntPtr_IntPtr (IntPtr receiver, IntPtr selector, int p1, IntPtr p2, IntPtr p3);

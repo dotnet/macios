@@ -57,34 +57,22 @@ namespace Cecil.Tests {
 	//         AssignSomeCallback (SomeCallImpl, someHandle);
 	//    }
 	//    Fix:
-	//    #if NET
 	//    // note that this call is now unsafe in addition to the delegate*
 	//    extern unsafe static void AssignSomeCallback (delegate* unmanaged<int, IntPtr, void>, IntPtr someHandle);
-	//    #else
-	//    ...old pinvoke goes here...
-	//    #endif
 	//    // you have to change the callback decoration. You *must* have a single
 	//    // callback implementation that calls out to the actual callback because
 	//    // the UnmanagedCallersOnly is strict. If you try to call it from C# you
 	//    // get a compiler error.
-	//    #if NET
 	//    [UnmanagedCallersOnly]
-	//    #else   
-	//    [MonoPInvokeCallback (typeof (SomeCall))]
-	//    #endif
 	//    static void SomeCallImpl (int a, IntPtr someHandle)
 	//    { /* ... */ }
 	//    public void SetSomeCallback (SomeCall callMe)
 	//    {
 	//        var handle = GCHandle.Alloc (callMe);
-	//    #if NET
 	//        // calling code is now also unsafe because of the & operator
 	//        unsafe {
 	//            AssignSomeCallback (&SomeCallImpl, someHandle);
 	//        }
-	//    #else
-	//        AssignSomeCallback (SomeCallImpl, someHandle);
-	//    #endif
 	//
 	//    3. ref/out types - these are disallowed. Replace them with pointers and
 	//       make the pinvoke unsafe. Can you use an IntPtr instead of unsafe? Yes.
@@ -99,18 +87,13 @@ namespace Cecil.Tests {
 	//         return new Point (x, y);
 	//    }
 	//    Fix:
-	//    #if NET
 	//    extern unsafe static void TPGetCoordinates (NativeHandle obj, int* x, int* y);
 	//    public Point GetCoordingates ()
 	//    {
 	//        int x = 0, y = 0;
-	//    #if NET
 	//        unsafe {
 	//            TPGetCoordinates (this.GetHandle (), &x, &y);
 	//        }
-	//    #else
-	//        TPGetCoordinates (this.GetHandle (), out x, out y);
-	//    #endif
 	//        return new Point (x, y);
 	//    }
 	//

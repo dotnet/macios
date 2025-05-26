@@ -25,11 +25,7 @@ namespace MonoTouchFixtures.Network {
 		[Test]
 		public void ProtocolOptionsTest ()
 		{
-#if NET
 			Assert.NotNull (options.ProtocolOptions);
-#else
-			Assert.NotNull (options.TlsProtocolOptions);
-#endif
 		}
 	}
 }

@@ -10,17 +10,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 using NUnit.Framework;
 
 using CoreGraphics;
 using Foundation;
 using Vision;
-
-#if NET
-using Vector2 = global::System.Numerics.Vector2;
-#else
-using Vector2 = global::OpenTK.Vector2;
-#endif
 
 namespace MonoTouchFixtures.Vision {
 

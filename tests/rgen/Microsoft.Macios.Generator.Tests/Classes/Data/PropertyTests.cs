@@ -8,6 +8,7 @@ using CoreGraphics;
 using Foundation;
 using ObjCBindings;
 using ObjCRuntime;
+using nfloat = System.Runtime.InteropServices.NFloat;
 
 namespace TestNamespace;
 

@@ -24,11 +24,7 @@ namespace MonoTouchFixtures.MediaPlayer {
 			string file = Path.Combine (NSBundle.MainBundle.ResourcePath, "basn3p08.png");
 			using (var img = UIImage.FromFile (file))
 			using (var mia = new MPMediaItemArtwork (img)) {
-#if NET
 				const string expected = "{32, 32}";
-#else
-				const string expected = "{Width=32, Height=32}";
-#endif
 				Assert.That (img.Size.ToString (), Is.EqualTo (expected), "original");
 				var upscale = mia.ImageWithSize (new CGSize (100, 100));
 				Assert.That (upscale.Size.ToString (), Is.EqualTo (expected), "upscale");

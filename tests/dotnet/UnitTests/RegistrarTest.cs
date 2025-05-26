@@ -55,7 +55,6 @@ namespace Xamarin.Tests {
 			}
 		}
 
-#if NET
 		[TestCase (ApplePlatform.MacCatalyst, false)]
 		[TestCase (ApplePlatform.MacOSX, false)]
 		[TestCase (ApplePlatform.iOS, false)]
@@ -127,7 +126,6 @@ namespace Xamarin.Tests {
 				}
 			}
 		}
-#endif
 	}
 }
 

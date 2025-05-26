@@ -19,13 +19,8 @@ namespace MonoTouchFixtures.Network {
 		[Test]
 		public void CreateTlsTest ()
 		{
-#if NET
 			using (var options = new NWProtocolTlsOptions ()) {
 				var sec = options.ProtocolOptions;
-#else
-			using (var options = NWProtocolOptions.CreateTls ()) {
-				var sec = options.TlsProtocolOptions;
-#endif
 				// we cannot test much more :(
 				Assert.AreNotEqual (IntPtr.Zero, options.Handle);
 			}
@@ -34,11 +29,7 @@ namespace MonoTouchFixtures.Network {
 		[Test]
 		public void CreateTcpTest ()
 		{
-#if NET
 			using (var options = new NWProtocolTcpOptions ()) {
-#else
-			using (var options = NWProtocolOptions.CreateTcp ()) {
-#endif
 				// we cannot test much more :(
 				Assert.AreNotEqual (IntPtr.Zero, options.Handle);
 			}
@@ -47,11 +38,7 @@ namespace MonoTouchFixtures.Network {
 		[Test]
 		public void CreateUdpTest ()
 		{
-#if NET
 			using (var options = new NWProtocolUdpOptions ()) {
-#else
-			using (var options = NWProtocolOptions.CreateUdp ()) {
-#endif
 				// we cannot test much more :(
 				Assert.AreNotEqual (IntPtr.Zero, options.Handle);
 			}
@@ -63,23 +50,11 @@ namespace MonoTouchFixtures.Network {
 			TestRuntime.AssertXcodeVersion (11, 0);
 
 			foreach (var ipOption in new [] { NWIPLocalAddressPreference.Default, NWIPLocalAddressPreference.Stable, NWIPLocalAddressPreference.Temporary }) {
-#if NET
 				using (var options = new NWProtocolTlsOptions ())
-#else
-				using (var options = NWProtocolOptions.CreateTls ())
-#endif
 					Assert.DoesNotThrow (() => options.IPLocalAddressPreference = ipOption, "Tls");
-#if NET
 				using (var options = new NWProtocolTcpOptions ())
-#else
-				using (var options = NWProtocolOptions.CreateTcp ())
-#endif
 					Assert.DoesNotThrow (() => options.IPLocalAddressPreference = ipOption, "Tcp");
-#if NET
 				using (var options = new NWProtocolUdpOptions ())
-#else
-				using (var options = NWProtocolOptions.CreateUdp ())
-#endif
 					Assert.DoesNotThrow (() => options.IPLocalAddressPreference = ipOption, "Udp");
 			}
 		}

@@ -16,6 +16,7 @@ static class SyntaxTreeExtensions {
 		var usingDirectives = self.GetRoot ()
 			.DescendantNodes ()
 			.OfType<UsingDirectiveSyntax> ()
+			.Where (d => d.Alias is null)
 			.Select (d => d.Name!.ToString ()).ToArray ();
 
 		// remove any possible duplicates by using a set

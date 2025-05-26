@@ -481,7 +481,7 @@ namespace NS {
 		// ensure that the first parameter is a pointer
 		Assert.True (changes.Value.Parameters [0].Type.IsGenericType);
 		Assert.Single (changes.Value.Parameters [0].Type.TypeArguments);
-		Assert.Equal ("NS.ExampleClass", changes.Value.Parameters [0].Type.TypeArguments [0]);
+		Assert.Equal (Global ("NS.ExampleClass"), changes.Value.Parameters [0].Type.TypeArguments [0]);
 		Assert.Equal ("List", changes.Value.Parameters [0].Type.Name);
 		Assert.Equal ("System.Collections.Generic.List<NS.ExampleClass>", changes.Value.Parameters [0].Type.FullyQualifiedName);
 		Assert.Equal ("System.Collections.Generic", string.Join ('.', changes.Value.Parameters [0].Type.Namespace));

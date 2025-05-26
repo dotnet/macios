@@ -20,21 +20,11 @@ using Foundation;
 #if MONOMAC
 using AppKit;
 using UIColor = AppKit.NSColor;
-using PlatformException = ObjCRuntime.RuntimeException;
-#if NET
-using NativeException = ObjCRuntime.ObjCException;
-#else
-using NativeException = Foundation.ObjCException;
-#endif
 #else
 using UIKit;
+#endif
 using PlatformException = ObjCRuntime.RuntimeException;
-#if NET
 using NativeException = ObjCRuntime.ObjCException;
-#else
-using NativeException = Foundation.MonoTouchException;
-#endif
-#endif
 using ObjCRuntime;
 using CoreAnimation;
 using CoreGraphics;
@@ -45,7 +35,7 @@ using Contacts;
 #if HAS_COREMIDI
 using CoreMidi;
 #endif
-#if !(__TVOS__ && NET)
+#if !__TVOS__
 using WebKit;
 #endif
 using NUnit.Framework;
@@ -58,10 +48,6 @@ using CategoryAttribute = ObjCRuntime.CategoryAttribute;
 
 using XamarinTests.ObjCRuntime;
 using Xamarin.Utils;
-
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
 
 namespace MonoTouchFixtures.ObjCRuntime {
 
@@ -105,9 +91,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		}
 
 		[Test]
-#if NET
 		[UnconditionalSuppressMessage ("Trimming", "IL2026", Justification = "This test verifies linker behavior, and as such any behavioral difference when the trimmer is enabled is exactly what it's looking for.")]
-#endif
 		public void RegistrarRemoval ()
 		{
 			// define set by xharness when creating test variations.
@@ -661,11 +645,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		[Test]
 		public void TestNativeEnum ()
 		{
-#if NET
 			var nativeEnumValue = NSWritingDirection.RightToLeft;
-#else
-			var nativeEnumValue = UITextWritingDirection.RightToLeft;
-#endif
 			//public virtual void TestNativeEnum1 (UITextWritingDirection twd)
 			using (var obj = new RegistrarTestClass ()) {
 				if (IntPtr.Size == 4) {
@@ -1010,17 +990,10 @@ namespace MonoTouchFixtures.ObjCRuntime {
 
 #if !MONOMAC
 			[Export ("testNativeEnum1:")]
-#if NET
 			public virtual void TestNativeEnum1 (NSWritingDirection twd)
 			{
 				Assert.That (Enum.GetValues<NSWritingDirection> (), Contains.Item (twd), "TestNativeEnum1");
 			}
-#else
-			public virtual void TestNativeEnum1 (UITextWritingDirection twd)
-			{
-				Assert.That (Enum.GetValues (typeof (UITextWritingDirection)), Contains.Item (twd), "TestNativeEnum1");
-			}
-#endif // NET
 
 			public virtual UIPopoverArrowDirection TestNativeEnum2 {
 				[Export ("testNativeEnum2")]
@@ -1034,7 +1007,6 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			}
 
 
-#if NET
 			[Export ("testNativeEnum3:a:b:")]
 			public virtual void TestNativeEnum1 (NSWritingDirection twd, int a, long b)
 			{
@@ -1042,19 +1014,6 @@ namespace MonoTouchFixtures.ObjCRuntime {
 				Assert.AreEqual (31415, a, "TestNativeEnum3 a");
 				Assert.AreEqual (3141592, b, "TestNativeEnum3 b");
 			}
-#else
-			[Export ("testNativeEnum3:a:b:")]
-			public virtual void TestNativeEnum1 (UITextWritingDirection twd, int a, long b)
-			{
-#if NET
-				Assert.That (Enum.GetValues<UITextWritingDirection> (), Contains.Item (twd), "TestNativeEnum3");
-#else
-				Assert.That (Enum.GetValues (typeof (UITextWritingDirection)), Contains.Item (twd), "TestNativeEnum3");
-#endif
-				Assert.AreEqual (31415, a, "TestNativeEnum3 a");
-				Assert.AreEqual (3141592, b, "TestNativeEnum3 b");
-			}
-#endif // NET
 #endif // !MONOMAC
 
 			[Export ("testCGPoint:out:")]
@@ -1303,7 +1262,6 @@ namespace MonoTouchFixtures.ObjCRuntime {
 
 		void ThrowsICEIfDebug (TestDelegate code, string message, bool execute_release_mode = true)
 		{
-#if NET
 			if (TestRuntime.IsCoreCLR || global::XamarinTests.ObjCRuntime.Registrar.CurrentRegistrar == Registrars.ManagedStatic) {
 				if (execute_release_mode) {
 					// In CoreCLR will either throw an ArgumentException:
@@ -1330,7 +1288,6 @@ namespace MonoTouchFixtures.ObjCRuntime {
 				}
 				return;
 			}
-#endif
 
 			// The type checks have been disabled for now.
 			//#if DEBUG
@@ -2251,20 +2208,14 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		// This test uses Assembly.LoadFrom, which isn't supported with NativeAOT
 #if __MACOS__ && !NATIVEAOT
 		[Test]
-#if NET
 		[UnconditionalSuppressMessage ("Trimming", "IL2026", Justification = "This test loads an assembly dynamically, so it's expected to not be trimmer safe. It works though, so unless something changes, we're going to assume it's trimmer-compatible.")]
 		[UnconditionalSuppressMessage ("Trimming", "IL2072", Justification = "This test loads an assembly dynamically, so it's expected to not be trimmer safe. It works though, so unless something changes, we're going to assume it's trimmer-compatible.")]
-#endif
 		public void CustomUserTypeWithDynamicallyLoadedAssembly ()
 		{
 			if (!global::Xamarin.Tests.Configuration.TryGetRootPath (out var rootPath))
 				Assert.Ignore ("This test must be executed a source checkout.");
 
-#if NET
 			var customTypeAssemblyPath = global::System.IO.Path.Combine (rootPath, "tests", "test-libraries", "custom-type-assembly", ".libs", "dotnet", "macos", "custom-type-assembly.dll");
-#else
-			var customTypeAssemblyPath = global::System.IO.Path.Combine (rootPath, "tests", "test-libraries", "custom-type-assembly", ".libs", "macos", "custom-type-assembly.dll");
-#endif
 			Assert.That (customTypeAssemblyPath, Does.Exist, "existence");
 
 			var size = 10;
@@ -2348,11 +2299,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 				var targetContentOffset = new CGPoint (3, 4);
 				Messaging.void_objc_msgSend_IntPtr_CGPoint_ref_CGPoint (obj.Handle, Selector.GetHandle ("scrollViewWillEndDragging:withVelocity:targetContentOffset:"), IntPtr.Zero, velocity, ref targetContentOffset);
 				Console.WriteLine (targetContentOffset);
-#if NET
 				Assert.AreEqual ("{123, 345}", targetContentOffset.ToString (), "ref output");
-#else
-				Assert.AreEqual ("{X=123, Y=345}", targetContentOffset.ToString (), "ref output");
-#endif
 			}
 		}
 #endif // !MONOMAC
@@ -2362,13 +2309,8 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			[Export ("scrollViewWillEndDragging:withVelocity:targetContentOffset:")]
 			public void WillEndDragging (UIScrollView scrollView, PointF velocity, ref PointF targetContentOffset)
 			{
-#if NET
 				Assert.AreEqual ("{1, 2}", velocity.ToString (), "velocity");
 				Assert.AreEqual ("{3, 4}", targetContentOffset.ToString (), "targetContentOffset");
-#else
-				Assert.AreEqual ("{X=1, Y=2}", velocity.ToString (), "velocity");
-				Assert.AreEqual ("{X=3, Y=4}", targetContentOffset.ToString (), "targetContentOffset");
-#endif
 				targetContentOffset = new CGPoint (123, 345);
 			}
 		}
@@ -2572,7 +2514,6 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		[DllImport ("/usr/lib/libobjc.dylib")]
 		static extern IntPtr class_getInstanceMethod (IntPtr cls, IntPtr sel);
 
-#if !MONOMAC || NET // Registrar_OutExportDerivedClass is from fsharp tests
 		[Test]
 		public void OutOverriddenWithoutOutAttribute ()
 		{
@@ -2585,7 +2526,6 @@ namespace MonoTouchFixtures.ObjCRuntime {
 				}
 			}
 		}
-#endif
 
 		class ProtocolArgumentClass : NSObject {
 			[Export ("someMethod:")]
@@ -5523,7 +5463,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			}
 		}
 
-#if NET && HAS_UIKIT
+#if HAS_UIKIT
 		[Test]
 		public void ProtocolsTrimmedAway ()
 		{
@@ -5555,7 +5495,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		{
 			GC.KeepAlive (obj);
 		}
-#endif // NET && HAS_UIKIT
+#endif // HAS_UIKIT
 	}
 
 	[Category (typeof (CALayer))]
@@ -5729,7 +5669,6 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			throw new NotImplementedException ();
 		}
 
-#if NET
 		public void PresentAfter (double presentationTime)
 		{
 			throw new NotImplementedException ();
@@ -5743,7 +5682,6 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		public double PresentedTime { get => throw new NotImplementedException (); }
 
 		public nuint DrawableId { get => throw new NotImplementedException (); }
-#endif
 	}
 #if !__TVOS__ // MetalPerformanceShaders isn't available in the tvOS simulator either
 	class MetalPerformanceShadersTypesInTheSimulator : NSObject, global::MetalPerformanceShaders.IMPSDeviceProvider {

@@ -15,7 +15,7 @@ namespace Xamarin.Tests {
 			BuildMauiAppImpl (platform, runtimeIdentifiers);
 		}
 
-		void BuildMauiAppImpl (ApplePlatform platform, string runtimeIdentifiers, Diagnostics<string, string?> properties = null)
+		void BuildMauiAppImpl (ApplePlatform platform, string runtimeIdentifiers, Dictionary<string, string>? properties = null)
 		{
 			var project = "MyMauiApp";
 			Configuration.IgnoreIfIgnoredPlatform (platform);
@@ -50,7 +50,7 @@ namespace Xamarin.Tests {
 		public void BuildMauiAppOnRemoteWindows (ApplePlatform platform, string runtimeIdentifiers)
 		{
 			Configuration.IgnoreIfNotOnWindows ();
-			BuildMauiApp (platform, runtimeIdentifiers, AddRemoteProperties ());
+			BuildMauiAppImpl (platform, runtimeIdentifiers, AddRemoteProperties ());
 		}
 	}
 }

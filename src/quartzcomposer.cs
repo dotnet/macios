@@ -32,10 +32,6 @@ using CoreAnimation;
 using CoreImage;
 using CoreVideo;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace QuartzComposer {
 
 	[Deprecated (PlatformName.MacOSX, 10, 15)]

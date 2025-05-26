@@ -36,11 +36,7 @@ namespace MonoTouchFixtures.HealthKit {
 #endif
 
 
-#if NET
 			using (var t = HKObjectType.WorkoutType) {
-#else
-			using (var t = HKObjectType.GetWorkoutType ()) {
-#endif
 				Assert.That (t.Handle, Is.Not.EqualTo (IntPtr.Zero), "Handle");
 			}
 		}

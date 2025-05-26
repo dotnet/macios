@@ -10,15 +10,9 @@
 #nullable enable
 
 using System;
+using System.Numerics;
 using Foundation;
 using ObjCRuntime;
-#if NET
-using Vector2 = global::System.Numerics.Vector2;
-using Vector3 = global::System.Numerics.Vector3;
-#else
-using Vector2 = global::OpenTK.Vector2;
-using Vector3 = global::OpenTK.Vector3;
-#endif
 
 using System.Runtime.InteropServices;
 
@@ -59,12 +53,10 @@ namespace GameplayKit {
 			}
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public static GKPath FromPoints (Vector3 [] points, float radius, bool cyclical)
 		{
 			if (points is null)
@@ -81,12 +73,10 @@ namespace GameplayKit {
 			}
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public GKPath (Vector3 [] points, float radius, bool cyclical)
 			: base (NSObjectFlag.Empty)
 		{

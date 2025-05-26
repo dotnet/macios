@@ -30,6 +30,18 @@ public class BaseGeneratorTestClass {
 		{ TargetFramework.DotNet_MacCatalyst, new [] { "__MACCATALYST__" } },
 	};
 
+	/// <summary>
+	/// Returns the name of the class in the global namespace if the generator configuration has set to do so. If
+	/// not, the same string will be returned.
+	/// </summary>
+	/// <param name="className">The class that should have global prepend to it.</param>
+	/// <param name="isGlobal">If global should be used.</param>
+	/// <returns>A modified class name with the global alias if needed.</returns>
+	public static string Global (string className, bool isGlobal = GeneratorConfiguration.UseGlobalNamespace)
+	{
+		return isGlobal ? $"global::{className}" : className;
+	}
+
 	protected Compilation RunGeneratorsAndUpdateCompilation (CSharpGeneratorDriver driver, Compilation compilation, out ImmutableArray<Diagnostic> diagnostics)
 	{
 		driver.RunGeneratorsAndUpdateCompilation (compilation, out var updatedCompilation, out diagnostics);

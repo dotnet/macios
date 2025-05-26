@@ -65,7 +65,7 @@ class Nomenclator {
 		// trampoline name will the the name of the type + the arity + the length of the generic types
 		// else it will be the trampoline name 
 		var trampolineName = typeInfo.IsGenericType
-			? $"{typeInfo.Name [..typeInfo.Name.IndexOf ('<')]}Arity{typeInfo.TypeArguments.Length}"
+			? $"{typeInfo.Name}Arity{typeInfo.TypeArguments.Length}"
 			: typeInfo.Name;
 
 		if (!typeInfo.IsGenericType)

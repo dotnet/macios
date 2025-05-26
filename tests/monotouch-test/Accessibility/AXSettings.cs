@@ -15,7 +15,6 @@ namespace MonoTouchFixtures.Accessibility {
 	[TestFixture]
 	[Preserve (AllMembers = true)]
 	public class AXSettingsTest {
-#if NET
 		[Test]
 		public void IsAssistiveAccessEnabled ()
 		{
@@ -43,6 +42,5 @@ namespace MonoTouchFixtures.Accessibility {
 			Assert.IsTrue (TestRuntime.RunAsync (TimeSpan.FromSeconds (30), didComplete.Task), "Timed out");
 			Assert.IsNull (error);
 		}
-#endif
 	}
 }

@@ -239,7 +239,6 @@ namespace Foundation {
 			return false;
 		}
 
-#if NET
 		/// <param name="type">To be added.</param>
 		///         <param name="key">To be added.</param>
 		///         <param name="error">To be added.</param>
@@ -250,7 +249,6 @@ namespace Foundation {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public NSObject DecodeTopLevelObject (Type type, string key, out NSError error)
 		{
 			if (type is null)
@@ -258,7 +256,6 @@ namespace Foundation {
 			return DecodeTopLevelObject (new Class (type), key, out error);
 		}
 
-#if NET
 		/// <param name="types">To be added.</param>
 		///         <param name="key">To be added.</param>
 		///         <param name="error">To be added.</param>
@@ -269,7 +266,6 @@ namespace Foundation {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public NSObject DecodeTopLevelObject (Type [] types, string key, out NSError error)
 		{
 			NSSet<Class> typeSet = null;

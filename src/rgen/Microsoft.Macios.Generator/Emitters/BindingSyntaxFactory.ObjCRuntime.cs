@@ -21,21 +21,6 @@ namespace Microsoft.Macios.Generator.Emitters;
 static partial class BindingSyntaxFactory {
 	readonly static string objc_msgSend = "objc_msgSend";
 	readonly static string objc_msgSendSuper = "objc_msgSendSuper";
-	readonly static TypeSyntax Selector = GetIdentifierName (
-		@namespace: ["ObjCRuntime"],
-		@class: "Selector");
-	public static readonly TypeSyntax NSValue = GetIdentifierName (
-		@namespace: ["Foundation"],
-		@class: "NSValue");
-	public static readonly TypeSyntax NSNumber = GetIdentifierName (
-		@namespace: ["Foundation"],
-		@class: "NSNumber");
-	public readonly static TypeSyntax NativeHandle = GetIdentifierName (
-		@namespace: ["ObjCRuntime"],
-		@class: "NativeHandle");
-	public readonly static TypeSyntax IntPtr = GetIdentifierName (
-		@namespace: ["System"],
-		@class: "IntPtr");
 
 	/// <summary>
 	/// Returns the expression needed to cast a parameter to its native type.

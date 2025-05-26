@@ -13,26 +13,25 @@ using Xamarin.Localization.MSBuild;
 using Xamarin.Messaging.Build.Client;
 using Xamarin.Utils;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Xamarin.MacDev.Tasks {
 	public class CreateBindingResourcePackage : XamarinTask, ITaskCallback, ICancelableTask {
 		[Required]
-		public string Compress { get; set; }
+		public string Compress { get; set; } = "";
 
 		[Required]
-		public string BindingResourcePath { get; set; }
+		public string BindingResourcePath { get; set; } = "";
 
 		[Required]
-		public string IntermediateOutputPath { get; set; }
+		public string IntermediateOutputPath { get; set; } = "";
 
 		[Required]
-		public ITaskItem [] NativeReferences { get; set; }
+		public ITaskItem [] NativeReferences { get; set; } = [];
 
 		// This is a list of files to copy back to Windows
 		[Output]
-		public ITaskItem [] PackagedFiles { get; set; }
+		public ITaskItem [] PackagedFiles { get; set; } = [];
 
 		public override bool Execute ()
 		{

@@ -17,10 +17,6 @@ using ObjCRuntime;
 
 using System.ComponentModel;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace Speech {
 
 	/// <summary>Enumerates the states of a <see cref="Speech.SFSpeechRecognitionTask" />.</summary>

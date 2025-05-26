@@ -15,10 +15,6 @@ using UIKit;
 using NSImage = Foundation.NSObject;
 #endif
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace QuickLookThumbnailing {
 
 	[iOS (13, 0)]
@@ -145,12 +141,7 @@ namespace QuickLookThumbnailing {
 	}
 }
 
-#if IOS && !NET
-namespace QuickLook {
-#else
 namespace QuickLookThumbnailing {
-#endif
-
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface QLThumbnailProvider {

@@ -9,29 +9,28 @@ using Microsoft.Build.Utilities;
 using Xamarin.MacDev;
 using Xamarin.Messaging.Build.Client;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Xamarin.MacDev.Tasks {
 	public class ComputeBundleResourceOutputPaths : XamarinTask, ITaskCallback, ICancelableTask {
 		[Required]
-		public ITaskItem AppResourcesPath { get; set; }
+		public ITaskItem? AppResourcesPath { get; set; }
 
 		[Required]
-		public string BundleIdentifier { get; set; }
+		public string BundleIdentifier { get; set; } = "";
 
-		public ITaskItem [] BundleResources { get; set; }
+		public ITaskItem [] BundleResources { get; set; } = [];
 
 		public bool EnableOnDemandResources { get; set; }
 
 		[Required]
-		public string IntermediateOutputPath { get; set; }
+		public string IntermediateOutputPath { get; set; } = "";
 
 		[Required]
-		public string OutputPath { get; set; }
+		public string OutputPath { get; set; } = "";
 
 		[Output]
-		public ITaskItem [] BundleResourcesWithOutputPaths { get; set; }
+		public ITaskItem [] BundleResourcesWithOutputPaths { get; set; } = [];
 
 		public override bool Execute ()
 		{
@@ -54,7 +53,7 @@ namespace Xamarin.MacDev.Tasks {
 					if (string.IsNullOrEmpty (logicalName))
 						logicalName = Path.GetFileName (item.GetMetadata ("FullPath"));
 					var outputPath = item.GetMetadata ("OutputPath");
-					IList<string> tags;
+					IList<string>? tags;
 					string hash;
 
 					if (EnableOnDemandResources && (tags = AssetPackUtils.GetResourceTags (item)) is not null) {
@@ -85,7 +84,7 @@ namespace Xamarin.MacDev.Tasks {
 
 						outputPath = Path.Combine (assetpack, logicalName);
 					} else if (string.IsNullOrEmpty (outputPath)) {
-						outputPath = Path.Combine (AppResourcesPath.ItemSpec, logicalName);
+						outputPath = Path.Combine (AppResourcesPath!.ItemSpec, logicalName);
 					}
 
 					var bundleResource = new TaskItem (item);

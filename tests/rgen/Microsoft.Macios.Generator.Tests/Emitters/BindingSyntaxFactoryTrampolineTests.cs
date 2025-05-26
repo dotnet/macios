@@ -328,7 +328,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				ccallbackParameter,
-				"global::System.Runtime.InteropServices.Marshal.GetDelegateForFunctionPointer<System.Action> (callbackParameter)"
+				$"global::System.Runtime.InteropServices.Marshal.GetDelegateForFunctionPointer<{Global ("System.Action")}> (callbackParameter)"
 			];
 
 			var blockParameter = @"
@@ -410,7 +410,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				nsObjectArray,
-				"global::CoreFoundation.CFArray.ArrayFromHandle<Foundation.NSObject> (nsObjectArray)!",
+				$"global::CoreFoundation.CFArray.ArrayFromHandle<{Global ("Foundation.NSObject")}> (nsObjectArray)!",
 			];
 
 			var iNativeObjectArray = @"
@@ -430,7 +430,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				iNativeObjectArray,
-				"global::Foundation.NSArray.ArrayFromHandle<CoreMedia.CMTimebase> (inativeArray)!",
+				$"global::Foundation.NSArray.ArrayFromHandle<{Global ("CoreMedia.CMTimebase")}> (inativeArray)!",
 			];
 
 			var stringArray = @"
@@ -487,7 +487,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				protocolParameter,
-				"global::ObjCRuntime.Runtime.GetINativeObject<Foundation.INSUrlConnectionDataDelegate> (protocolParameter, false)!",
+				$"global::ObjCRuntime.Runtime.GetINativeObject<{Global ("Foundation.INSUrlConnectionDataDelegate")}> (protocolParameter, false)!",
 			];
 
 			var forcedParameterOwnsFalse = @"
@@ -506,7 +506,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				forcedParameterOwnsFalse,
-				"global::ObjCRuntime.Runtime.GetINativeObject<Foundation.INSUrlConnectionDataDelegate> (forcedParameter, true, false)!",
+				$"global::ObjCRuntime.Runtime.GetINativeObject<{Global ("Foundation.INSUrlConnectionDataDelegate")}> (forcedParameter, true, false)!",
 			];
 
 			var forcedParameterOwnsTrue = @"
@@ -525,7 +525,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				forcedParameterOwnsTrue,
-				"global::ObjCRuntime.Runtime.GetINativeObject<Foundation.INSUrlConnectionDataDelegate> (forcedParameter, true, true)!",
+				$"global::ObjCRuntime.Runtime.GetINativeObject<{Global ("Foundation.INSUrlConnectionDataDelegate")}> (forcedParameter, true, true)!",
 			];
 
 			var nsObjectParameter = @"
@@ -544,7 +544,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				nsObjectParameter,
-				"global::ObjCRuntime.Runtime.GetNSObject<Foundation.NSObject> (nsObjectParameter)!",
+				$"global::ObjCRuntime.Runtime.GetNSObject<{Global ("Foundation.NSObject")}> (nsObjectParameter)!",
 			];
 
 			var iNativeParameter = @"
@@ -564,7 +564,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				iNativeParameter,
-				"global::ObjCRuntime.Runtime.GetINativeObject<CoreMedia.CMTimebase> (inativeParameter, false)!",
+				$"global::ObjCRuntime.Runtime.GetINativeObject<{Global ("CoreMedia.CMTimebase")}> (inativeParameter, false)!",
 			];
 
 			var cmSampleBuffer = @"
@@ -1941,7 +1941,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				ccallbackParameter,
-				"del (global::System.Runtime.InteropServices.Marshal.GetDelegateForFunctionPointer<System.Action> (callbackParameter));",
+				$"del (global::System.Runtime.InteropServices.Marshal.GetDelegateForFunctionPointer<{Global ("System.Action")}> (callbackParameter));",
 			];
 
 			var severalParametersConversion = @"
@@ -1959,7 +1959,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				severalParametersConversion,
-				"del (global::System.Runtime.InteropServices.Marshal.GetDelegateForFunctionPointer<System.Action> (callbackParameter), NIDsomeTrampolineName.Create (callbackParameter)!);",
+				$"del (global::System.Runtime.InteropServices.Marshal.GetDelegateForFunctionPointer<{Global ("System.Action")}> (callbackParameter), NIDsomeTrampolineName.Create (callbackParameter)!);",
 			];
 
 			var severalParametersConversionReturn = @"
@@ -1977,7 +1977,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				severalParametersConversionReturn,
-				"var ret = del (global::System.Runtime.InteropServices.Marshal.GetDelegateForFunctionPointer<System.Action> (callbackParameter), NIDsomeTrampolineName.Create (callbackParameter)!);",
+				$"var ret = del (global::System.Runtime.InteropServices.Marshal.GetDelegateForFunctionPointer<{Global ("System.Action")}> (callbackParameter), NIDsomeTrampolineName.Create (callbackParameter)!);",
 			];
 
 		}

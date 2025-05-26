@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.Macios.Generator.Extensions;
+using Microsoft.Macios.Generator.Formatters;
 
 namespace Microsoft.Macios.Generator.DataModel;
 
@@ -19,33 +20,20 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 
 	public static TypeInfo Void = new ("void", SpecialType.System_Void) { Parents = ["System.ValueType", "object"], };
 
-	readonly string fullyQualifiedName = string.Empty;
 	/// <summary>
 	/// The fully qualified name of the type.
 	/// </summary>
-	public string FullyQualifiedName {
-		get => fullyQualifiedName;
-		init {
-			fullyQualifiedName = value;
-			var index = fullyQualifiedName.LastIndexOf ('.');
-			Name = index != -1
-				? fullyQualifiedName.Substring (index + 1)
-				: fullyQualifiedName;
-			Namespace = index != -1
-				? fullyQualifiedName.Substring (0, index) // not index + 1 since that includes the dot
-				: string.Empty;
-		}
-	}
+	public string FullyQualifiedName { get; init; } = string.Empty;
 
 	/// <summary>
 	/// Type name.
 	/// </summary>
-	public string Name { get; private init; } = string.Empty;
+	public string Name { get; init; } = string.Empty;
 
 	/// <summary>
-	/// Type name.
+	/// The namespace of the type, split by '.'.
 	/// </summary>
-	public string Namespace { get; private init; } = string.Empty;
+	public ImmutableArray<string> Namespace { get; init; } = [];
 
 	/// <summary>
 	/// The metadata name of the type. This is normally the same as name except
@@ -67,12 +55,12 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	/// <summary>
 	/// The special type enum of the type info. This is used to differentiate nint from IntPtr and other.
 	/// </summary>
-	public SpecialType SpecialType { get; } = SpecialType.None;
+	public SpecialType SpecialType { get; init; } = SpecialType.None;
 
 	/// <summary>
 	/// True if the parameter is nullable.
 	/// </summary>
-	public bool IsNullable { get; }
+	public bool IsNullable { get; init; }
 
 	/// <summary>
 	/// True if the parameter type is blittable.
@@ -93,7 +81,7 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	/// Returns if the return type is an array type.
 	/// </summary>
 	[MemberNotNullWhen (true, nameof (ArrayElementType))]
-	public bool IsArray { get; }
+	public bool IsArray { get; init; }
 
 	/// <summary>
 	/// Returns if the return type is a reference type.
@@ -227,6 +215,24 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	{
 		FullyQualifiedName = name;
 		SpecialType = specialType;
+
+		// calculate the name and namespace based on the name. This is not the most efficient way to do it and it is
+		// a internal constructor for testing purposes only.
+		// there are few things to consider when setting the name of the class, first we need to
+		// to make the diff between a generic class and a non generic class
+		var nonGenericName = FullyQualifiedName.Contains ('<')
+			? FullyQualifiedName.Substring (0, FullyQualifiedName.IndexOf ('<'))
+			: FullyQualifiedName;
+		var index = nonGenericName.LastIndexOf ('.');
+		Name = index != -1
+			? nonGenericName.Substring (index + 1)
+			: nonGenericName;
+		// based on the name, calculate the name space for the class
+		if (Name.Length == nonGenericName.Length)
+			Namespace = [];
+		else
+			// remove the name + 1 for the dot
+			Namespace = [.. nonGenericName.Remove (nonGenericName.Length - (Name.Length + 1)).Split ('.')];
 	}
 
 	internal TypeInfo (string name,
@@ -246,13 +252,42 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		IsStruct = isStruct;
 	}
 
-	internal TypeInfo (ITypeSymbol symbol) :
-		this (
-			symbol is IArrayTypeSymbol arrayTypeSymbol
-				? arrayTypeSymbol.ElementType.ToDisplayString ()
-				: symbol.ToDisplayString ().Trim ('?', '[', ']'),
-			symbol.SpecialType)
+	static (string Name, ImmutableArray<string> Namespace) GetTypeNameAndNamespace (ITypeSymbol symbol)
 	{
+		if (symbol.SpecialType == SpecialType.None)
+			return (symbol.Name, GetNamespaceComponents (symbol));
+
+		var token = symbol.SpecialType.GetKeyword ();
+		var name = string.IsNullOrEmpty (token) ? symbol.Name : token;
+		// if we are dealing with int, uint etc.. we will ignore the namespace since it is not needed
+		return (name, []);
+	}
+
+	/// <summary>
+	/// Returns the namespace components of the type symbol.
+	/// </summary>
+	/// <param name="symbol">The symbol we are interested in.</param>
+	/// <returns>An immutable array with the namespace components.</returns>
+	static ImmutableArray<string> GetNamespaceComponents (ITypeSymbol symbol)
+	{
+		var namespaceSymbol = symbol.ContainingSymbol;
+		var components = ImmutableArray.CreateBuilder<string> ();
+		while (namespaceSymbol is not null) {
+			components.Insert (0, namespaceSymbol.Name);
+			namespaceSymbol = namespaceSymbol.ContainingSymbol;
+			if (namespaceSymbol is INamespaceSymbol { IsGlobalNamespace: true })
+				break;
+		}
+		return components.ToImmutableArray ();
+	}
+
+	internal TypeInfo (ITypeSymbol symbol)
+	{
+		// general case, get the name and namespace. If we are dealing with a generic type or an array type
+		// the name will be later overwritten with the generic name or the array name
+		(Name, Namespace) = GetTypeNameAndNamespace (symbol);
+		SpecialType = symbol.SpecialType;
+		FullyQualifiedName = symbol.ToDisplayString ().Trim ('?', '[', ']');
 		IsNullable = symbol.NullableAnnotation == NullableAnnotation.Annotated;
 		IsBlittable = symbol.IsBlittable ();
 		IsSmartEnum = symbol.IsSmartEnum ();
@@ -260,7 +295,6 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		IsStruct = symbol.TypeKind == TypeKind.Struct;
 		IsInterface = symbol.TypeKind == TypeKind.Interface;
 		IsDelegate = symbol.TypeKind == TypeKind.Delegate;
-		IsPointer = symbol is IPointerTypeSymbol;
 		IsNativeIntegerType = symbol.IsNativeIntegerType;
 		IsNativeEnum = symbol.HasAttribute (AttributesNames.NativeAttribute);
 		IsProtocol = symbol.HasAttribute (AttributesNames.ProtocolAttribute);
@@ -275,6 +309,9 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 
 		IsWrapped = symbol.IsWrapped (isNSObject);
 		if (symbol is IArrayTypeSymbol arraySymbol) {
+			// override the name and namespace with the array name
+			(Name, Namespace) = GetTypeNameAndNamespace (arraySymbol.ElementType);
+			FullyQualifiedName = arraySymbol.ElementType.ToDisplayString ();
 			IsArray = true;
 			ArrayElementType = arraySymbol.ElementType.SpecialType;
 			ArrayElementTypeIsWrapped = arraySymbol.ElementType.IsWrapped ();
@@ -288,10 +325,15 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		EnumUnderlyingType = namedTypeSymbol?.EnumUnderlyingType?.SpecialType;
 		if (namedTypeSymbol is not null) {
 			IsGenericType = namedTypeSymbol.IsGenericType;
-			TypeArguments = [
-				.. namedTypeSymbol.TypeArguments
-					.Select (x => x.ToDisplayString ())
-			];
+			var typeArgumentsBucket = ImmutableArray.CreateBuilder<string> (namedTypeSymbol.TypeArguments.Length);
+			foreach (var typeArgument in namedTypeSymbol.TypeArguments) {
+				// rather than use the display name, which could be a generic name, we will create a struct for the 
+				// type and use our type formater
+				var info = new TypeInfo (typeArgument);
+				var syntax = info.GetIdentifierSyntax ();
+				typeArgumentsBucket.Add (syntax.ToString ());
+			}
+			TypeArguments = typeArgumentsBucket.ToImmutable ();
 
 			if (namedTypeSymbol.DelegateInvokeMethod is not null &&
 				DelegateInfo.TryCreate (namedTypeSymbol, out var delegateInfo))
@@ -302,12 +344,23 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 			// get the type argument for nullable, which we know is the data that was boxed and use it to 
 			// overwrite the SpecialType 
 			var typeArgument = namedTypeSymbol.TypeArguments [0];
+			// we need to update the name and namespace with the type argument
+			(Name, Namespace) = GetTypeNameAndNamespace (typeArgument);
+			// we need to decide if is generic based on the inner type
+			if (typeArgument is INamedTypeSymbol innerType) {
+				IsGenericType = innerType.IsGenericType;
+			}
 			SpecialType = typeArgument.SpecialType;
 			MetadataName = SpecialType is SpecialType.None or SpecialType.System_Void
 				? null : typeArgument.MetadataName;
 		} else {
 			MetadataName = SpecialType is SpecialType.None or SpecialType.System_Void
 				? null : symbol.MetadataName;
+		}
+
+		if (symbol is IPointerTypeSymbol pointerTypeSymbol) {
+			IsPointer = true;
+			(Name, Namespace) = GetTypeNameAndNamespace (pointerTypeSymbol.PointedAtType);
 		}
 	}
 
@@ -453,6 +506,27 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		};
 #pragma warning restore format
 		return type;
+	}
+
+	public TypeInfo ToArrayElementType ()
+	{
+		if (!IsArray)
+			return this;
+		// copy all the elements from the current array type and set the array type to false
+		return this with {
+			IsArray = false,
+			SpecialType = ArrayElementType ?? SpecialType.None,
+		};
+	}
+
+	public TypeInfo ToNonNullable ()
+	{
+		if (!IsNullable)
+			return this;
+		// copy all the elements from the current array type and set the array type to false
+		return this with {
+			IsNullable = false,
+		};
 	}
 
 	/// <inheritdoc/>

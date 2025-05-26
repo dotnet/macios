@@ -7,9 +7,6 @@ using Foundation;
 using ObjCRuntime;
 
 #nullable enable
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
 
 namespace NewsstandKit {
 	/// <summary>An asset is a downloadable component (text, media, an entire compressed issue, etc.) of a Newsstand application.</summary>

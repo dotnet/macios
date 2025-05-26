@@ -4,6 +4,7 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Macios.Generator.DataModel;
+using Microsoft.Macios.Generator.Formatters;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using TypeInfo = Microsoft.Macios.Generator.DataModel.TypeInfo;
 
@@ -81,7 +82,7 @@ static partial class BindingSyntaxFactory {
 				
 				// bind from NSNumber array: NSArray.ArrayFromHandleFunc <int> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (class_ptr, Selector.GetHandle ("selector"), NSNumber.ToInt32, false))
 				{ BindAs.Type.FullyQualifiedName: "Foundation.NSNumber", ReturnType.IsArray: true } => 
-					NSArrayFromHandleFunc (property.ReturnType.FullyQualifiedName, [Argument (objMsgSend), Argument(NSNumberFromHandle (property.ReturnType)!), BoolArgument (false)]),
+					NSArrayFromHandleFunc (property.ReturnType.ToArrayElementType ().GetIdentifierSyntax (), [Argument (objMsgSend), Argument(NSNumberFromHandle (property.ReturnType)!), BoolArgument (false)]),
 				
 				// bind from NSValue: NSValue.ToCGPoint (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle (\"myProperty\")))
 				{ BindAs.Type.FullyQualifiedName: "Foundation.NSValue", ReturnType.IsArray: false } => 
@@ -89,7 +90,7 @@ static partial class BindingSyntaxFactory {
 				
 				// bind from NSValue array: NSArray.ArrayFromHandleFunc<CoreGraphics.CGPoint> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle (\"myProperty\")), NSValue.ToCGPoint, false)
 				{ BindAs.Type.FullyQualifiedName: "Foundation.NSValue", ReturnType.IsArray: true } => 
-					NSArrayFromHandleFunc (property.ReturnType.FullyQualifiedName, [Argument (objMsgSend), Argument(NSValueFromHandle (property.ReturnType)!), BoolArgument (false)]),
+					NSArrayFromHandleFunc (property.ReturnType.ToArrayElementType ().GetIdentifierSyntax (), [Argument (objMsgSend), Argument(NSValueFromHandle (property.ReturnType)!), BoolArgument (false)]),
 
 				// bind from NSString to a SmartEnum: "global::AVFoundation.AVCaptureSystemPressureLevelExtensions.GetNullableValue (arg1)
 				{ BindAs.Type.FullyQualifiedName: "Foundation.NSString", ReturnType.IsSmartEnum: true} =>
@@ -105,11 +106,14 @@ static partial class BindingSyntaxFactory {
 				
 				// NSObject[] => CFArray.ArrayFromHandle<Foundation.NSMetadataItem> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle ("results")))!;
 				{ ReturnType.IsArray: true, ReturnType.ArrayElementTypeIsWrapped: true } => 
-					GetCFArrayFromHandle (property.ReturnType.FullyQualifiedName, [Argument (objMsgSend)], suppressNullableWarning: !property.ReturnType.IsNullable),
+					GetCFArrayFromHandle (property.ReturnType.ToArrayElementType ().GetIdentifierSyntax (), [Argument (objMsgSend)], suppressNullableWarning: !property.ReturnType.IsNullable),
 				
 				// Runtime.GetNSObject<Foundation.NSObject> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle ("delegate")));
-				{ ReturnType.IsArray: false, ReturnType.IsNSObject: true } => 
-					GetNSObject (property.ReturnType.FullyQualifiedName, [Argument (objMsgSend)], suppressNullableWarning: !property.ReturnType.IsNullable),
+				{ ReturnType.IsArray: false, ReturnType.IsNSObject: true, ReturnType.IsNullable: true} => 
+					GetNSObject (property.ReturnType.ToNonNullable ().GetIdentifierSyntax (), [Argument (objMsgSend)], suppressNullableWarning: false),
+				
+				{ ReturnType.IsArray: false, ReturnType.IsNSObject: true, ReturnType.IsNullable: false} => 
+					GetNSObject (property.ReturnType.GetIdentifierSyntax (), [Argument (objMsgSend)], suppressNullableWarning: true),
 
 				// string => CFString.FromHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle ("tunnelRemoteAddress")), false);
 				{ ReturnType.SpecialType: SpecialType.System_String, ReturnType.IsNullable: true } =>

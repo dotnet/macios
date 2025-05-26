@@ -138,8 +138,6 @@ namespace UIKit
 			return Create ((INativeObject) view1, attribute1, relation, view2, attribute2, multiplier, constant);
 		}
 
-#if !MONOMAC || NET
-#if NET
 		/// <typeparam name="AnchorType">To be added.</typeparam>
 		///         <summary>For an anchor-based constraint, returns the first anchor, properly downcast to <c>AnchorType</c>.</summary>
 		///         <returns>To be added.</returns>
@@ -148,13 +146,11 @@ namespace UIKit
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-#endif
 		public NSLayoutAnchor<AnchorType> FirstAnchor<AnchorType> () where AnchorType : NSObject
 		{
 			return Runtime.GetNSObject<NSLayoutAnchor<AnchorType>> (_FirstAnchor ());
 		}
 
-#if NET
 		/// <typeparam name="AnchorType">To be added.</typeparam>
 		///         <summary>For an anchor-based constraint, returns the second anchor, properly downcast to <c>AnchorType</c>.</summary>
 		///         <returns>To be added.</returns>
@@ -163,11 +159,9 @@ namespace UIKit
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-#endif
 		public NSLayoutAnchor<AnchorType> SecondAnchor<AnchorType> () where AnchorType : NSObject
 		{
 			return Runtime.GetNSObject<NSLayoutAnchor<AnchorType>> (_SecondAnchor ());
 		}
-#endif // !MONOMAC || NET
 	}
 }

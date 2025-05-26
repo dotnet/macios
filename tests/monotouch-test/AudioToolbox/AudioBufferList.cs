@@ -1,5 +1,3 @@
-#if NET
-
 using System;
 using System.Runtime.InteropServices;
 
@@ -56,5 +54,3 @@ namespace MonoTouchFixtures.AudioToolbox {
 		}
 	}
 }
-
-#endif // NET

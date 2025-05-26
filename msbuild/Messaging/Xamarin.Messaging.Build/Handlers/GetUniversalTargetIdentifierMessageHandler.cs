@@ -13,9 +13,9 @@ namespace Xamarin.Messaging.Build {
 		{
 			return await Task.Run (() => {
 				var response = new GetUniversalTypeIdentifierResult ();
-				var tempFilePath = Path.Combine (Path.GetTempPath (), message.FileName);
+				var tempFilePath = Path.Combine (Path.GetTempPath (), message.FileName!);
 
-				File.WriteAllBytes (tempFilePath, message.Payload);
+				File.WriteAllBytes (tempFilePath, message.Payload!);
 
 				response.UniversalTypeIdentifier = GetUniversalTypeIdentifier (tempFilePath);
 

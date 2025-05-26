@@ -24,11 +24,7 @@ namespace MonoTouchFixtures.Foundation {
 			var range = new NSRange (0, text.Length);
 			var detector = NSDataDetector.Create (NSTextCheckingType.Link, out NSError error);
 
-#if NET
 			var matches = detector.GetMatches (new NSString (text), 0, range);
-#else
-			var matches = detector.GetMatches2 (new NSString (text), 0, range);
-#endif
 
 			Assert.AreEqual ((nint) 10, matches [0].Range.Location, "Range.Location");
 			Assert.AreEqual ((nint) 21, matches [0].Range.Length, "Range.Length");

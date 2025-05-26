@@ -33,6 +33,9 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Compile Include="../Microsoft.Macios.Generator/Configuration.cs" >
+            <Link>Generator/Configuration.cs</Link>
+        </Compile>
         <Compile Include="../Microsoft.Macios.Generator/AttributesNames.cs" >
             <Link>Generator/AttributesNames.cs</Link>
         </Compile>
@@ -100,6 +103,9 @@
         <Compile Include="../Microsoft.Macios.Generator/Extensions/ApplePlatformExtensions.cs" >
             <Link>Generator/Extensions/ApplePlatformExtensions.cs</Link>
         </Compile>
+        <Compile Include="../Microsoft.Macios.Generator/Extensions/ArgumentSyntaxExtensions.cs" >
+            <Link>Generator/Extensions/ArgumentSyntaxExtensions.cs</Link>
+        </Compile>
         <Compile Include="../Microsoft.Macios.Generator/Extensions/CompilationExtensions.cs" >
             <Link>Generator/Extensions/CompilationExtensions.cs</Link>
         </Compile>
@@ -120,6 +126,9 @@
         </Compile>
         <Compile Include="../Microsoft.Macios.Generator/Extensions/StringExtensions.cs" >
             <Link>Generator/Extensions/StringExtensions.cs</Link>
+        </Compile>
+        <Compile Include="../Microsoft.Macios.Generator/Formatters/TypeInfoFormatter.cs" >
+            <Link>Generator/Formatters/TypeInfoFormatter.cs</Link>
         </Compile>
         <Compile Include="../Microsoft.Macios.Generator/Availability/*.cs" >
             <Link>Generator/Availability/*.cs</Link>

@@ -63,16 +63,5 @@ namespace Foundation {
 			GC.KeepAlive (kls);
 			return result;
 		}
-
-#if !NET
-		public bool RequiresSecureCoding {
-			get {
-				return GetRequiresSecureCoding ();
-			}
-			set {
-				SetRequiresSecureCoding (value);
-			}
-		}
-#endif
 	}
 }

@@ -7,10 +7,6 @@ using HealthKit;
 using ObjCRuntime;
 using UIKit;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace HealthKitUI {
 
 	/// <include file="../docs/api/HealthKitUI/HKActivityRingView.xml" path="/Documentation/Docs[@DocId='T:HealthKitUI.HKActivityRingView']/*" />

@@ -89,7 +89,7 @@ namespace CoreFoundation {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (category));
 			using var subsystemPtr = new TransientString (subsystem);
 			using var categoryPtr = new TransientString (category);
-			Handle = os_log_create (subsystemPtr, categoryPtr);
+			InitializeHandle (os_log_create (subsystemPtr, categoryPtr));
 		}
 
 		public void Log (string message)

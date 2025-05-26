@@ -98,7 +98,7 @@ public partial class MyClass {
 	public MyClass(MyStruct myParam);
 }
 ";
-			yield return [customParamConstructor, "public MyClass (NS.MyStruct myParam)"];
+			yield return [customParamConstructor, $"public MyClass ({Global ("NS.MyStruct")} myParam)"];
 
 			const string nullableCustomParamConstructor = @"
 using System;
@@ -115,7 +115,7 @@ public partial class MyClass {
 	public MyClass(MyStruct? myParam);
 }
 ";
-			yield return [nullableCustomParamConstructor, "public MyClass (NS.MyStruct? myParam)"];
+			yield return [nullableCustomParamConstructor, $"public MyClass ({Global ("NS.MyStruct")}? myParam)"];
 
 			const string refCustomParamConstructor = @"
 using System;
@@ -132,7 +132,7 @@ public partial class MyClass {
 	public MyClass(ref MyStruct myParam);
 }
 ";
-			yield return [refCustomParamConstructor, "public MyClass (ref NS.MyStruct myParam)"];
+			yield return [refCustomParamConstructor, $"public MyClass (ref {Global ("NS.MyStruct")} myParam)"];
 
 			const string inCustomParamConstructor = @"
 using System;
@@ -149,7 +149,7 @@ public partial class MyClass {
 	public MyClass(in MyStruct myParam);
 }
 ";
-			yield return [inCustomParamConstructor, "public MyClass (in NS.MyStruct myParam)"];
+			yield return [inCustomParamConstructor, $"public MyClass (in {Global ("NS.MyStruct")} myParam)"];
 
 			const string refReadonlyCustomParamConstructor = @"
 using System;
@@ -166,7 +166,7 @@ public partial class MyClass {
 	public MyClass(ref readonly MyStruct myParam);
 }
 ";
-			yield return [refReadonlyCustomParamConstructor, "public MyClass (ref readonly NS.MyStruct myParam)"];
+			yield return [refReadonlyCustomParamConstructor, $"public MyClass (ref readonly {Global ("NS.MyStruct")} myParam)"];
 
 			const string arrayParamConbstructor = @"
 using System;
@@ -184,7 +184,7 @@ public partial class MyClass {
 }
 ";
 
-			yield return [arrayParamConbstructor, "public MyClass (NS.MyStruct[] myParam)"];
+			yield return [arrayParamConbstructor, $"public MyClass ({Global ("NS.MyStruct")}[] myParam)"];
 
 			const string nullableArrayParamConstructor = @"
 using System;
@@ -202,7 +202,7 @@ public partial class MyClass {
 }
 ";
 
-			yield return [nullableArrayParamConstructor, "public MyClass (NS.MyStruct[]? myParam)"];
+			yield return [nullableArrayParamConstructor, $"public MyClass ({Global ("NS.MyStruct")}[]? myParam)"];
 
 			const string genericParamConstructor = @"
 using System;
@@ -216,7 +216,7 @@ public partial class MyClass {
 }
 ";
 
-			yield return [genericParamConstructor, "public MyClass (System.Collections.Generic.List<string> myParam)"];
+			yield return [genericParamConstructor, $"public MyClass ({Global ("System.Collections.Generic.List")}<string> myParam)"];
 
 			const string genericCustomParamConstructor = @"
 using System;
@@ -235,7 +235,7 @@ public partial class MyClass {
 }
 ";
 
-			yield return [genericCustomParamConstructor, "public MyClass (System.Collections.Generic.List<NS.MyStruct> myParam)"];
+			yield return [genericCustomParamConstructor, $"public MyClass ({Global ("System.Collections.Generic.List")}<{Global ("NS.MyStruct")}> myParam)"];
 
 			const string nullableGenericParamConstructor = @"
 using System;
@@ -249,7 +249,7 @@ public partial class MyClass {
 }
 ";
 
-			yield return [nullableGenericParamConstructor, "public MyClass (System.Collections.Generic.List<string>? myParam)"];
+			yield return [nullableGenericParamConstructor, $"public MyClass ({Global ("System.Collections.Generic.List")}<string>? myParam)"];
 
 			const string nullableGenericCustomParamConstructor = @"
 using System;
@@ -268,7 +268,7 @@ public partial class MyClass {
 }
 ";
 
-			yield return [nullableGenericCustomParamConstructor, "public MyClass (System.Collections.Generic.List<NS.MyStruct>? myParam)"];
+			yield return [nullableGenericCustomParamConstructor, $"public MyClass ({Global ("System.Collections.Generic.List")}<{Global ("NS.MyStruct")}>? myParam)"];
 
 			const string nullableNullableGenericParamConstructor = @"
 using System;
@@ -282,7 +282,7 @@ public partial class MyClass {
 }
 ";
 
-			yield return [nullableNullableGenericParamConstructor, "public MyClass (System.Collections.Generic.List<string?>? myParam)"];
+			yield return [nullableNullableGenericParamConstructor, $"public MyClass ({Global ("System.Collections.Generic.List")}<string?>? myParam)"];
 
 			const string nullableNullableGenericCustomParamConstructor = @"
 using System;
@@ -301,7 +301,7 @@ public partial class MyClass {
 }
 ";
 
-			yield return [nullableNullableGenericCustomParamConstructor, "public MyClass (System.Collections.Generic.List<NS.MyStruct?>? myParam)"];
+			yield return [nullableNullableGenericCustomParamConstructor, $"public MyClass ({Global ("System.Collections.Generic.List")}<{Global ("NS.MyStruct")}?>? myParam)"];
 
 
 			const string genericDictParamConstructor = @"
@@ -316,7 +316,7 @@ public partial class MyClass {
 }
 ";
 
-			yield return [genericDictParamConstructor, "public MyClass (System.Collections.Generic.Dictionary<string, string> myParam)"];
+			yield return [genericDictParamConstructor, $"public MyClass ({Global ("System.Collections.Generic.Dictionary")}<string, string> myParam)"];
 
 			const string paramsConstructor = @"
 using System;

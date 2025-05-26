@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using System.Collections.Immutable;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -45,7 +46,7 @@ static partial class BindingSyntaxFactory {
 
 
 	static ExpressionSyntax StaticInvocationGenericExpression (ExpressionSyntax staticClassName, string methodName,
-		string genericName,
+		TypeSyntax genericName,
 		ArgumentListSyntax argumentList, bool suppressNullableWarning = false)
 	{
 		var invocation = InvocationExpression (
@@ -55,7 +56,7 @@ static partial class BindingSyntaxFactory {
 				GenericName (
 						Identifier (methodName))
 					.WithTypeArgumentList (TypeArgumentList (
-						SingletonSeparatedList<TypeSyntax> (IdentifierName (genericName))))
+						SingletonSeparatedList (genericName)))
 					.WithTrailingTrivia (Space)
 			)
 		).WithArgumentList (argumentList);
@@ -95,13 +96,13 @@ static partial class BindingSyntaxFactory {
 	/// <param name="variableType">The variable type.</param>
 	/// <param name="nullable">If the variable type should be made nullable.. </param>
 	/// <returns>The syntax for the field declaration.</returns>
-	internal static MemberDeclarationSyntax StaticVariable (string variableName, string variableType, bool nullable)
+	internal static MemberDeclarationSyntax StaticVariable (string variableName, TypeSyntax variableType, bool nullable)
 	{
 		return FieldDeclaration (
 				VariableDeclaration (
 						nullable
-							? NullableType (IdentifierName (variableType))
-							: IdentifierName (variableType)
+							? NullableType (variableType)
+							: variableType
 					)
 					.WithVariables (
 						SingletonSeparatedList (
@@ -118,12 +119,7 @@ static partial class BindingSyntaxFactory {
 	/// <returns>The variable declaration syntax.</returns>
 	internal static MemberDeclarationSyntax FieldPropertyBackingVariable (in Property property)
 	{
-		var variableType = property.ReturnType.FullyQualifiedName;
-		if (property.ReturnType.SpecialType is SpecialType.System_IntPtr or SpecialType.System_UIntPtr
-			&& property.ReturnType.MetadataName is not null) {
-			variableType = property.ReturnType.MetadataName;
-		}
-
+		var variableType = property.ReturnType.Name.GetIdentifierName (property.ReturnType.Namespace);
 		return StaticVariable (property.BackingField, variableType, property.IsReferenceType);
 	}
 
@@ -185,38 +181,6 @@ static partial class BindingSyntaxFactory {
 	}
 
 	/// <summary>
-	/// Returns the expression required for an identifier name. The method will add the namespace and global qualifier
-	/// if needed based on the parameters.
-	/// </summary>
-	/// <param name="namespace">The namespace of the class. This can be null.</param>
-	/// <param name="class">The class name.</param>
-	/// <param name="isGlobal">If the global alias qualifier will be used. This will only be used if the namespace
-	/// was provided.</param>
-	/// <returns>The identifier expression for a given class.</returns>
-	internal static TypeSyntax GetIdentifierName (string []? @namespace, string @class, bool isGlobal = GeneratorConfiguration.UseGlobalNamespace)
-	{
-		// retrieve the name syntax for the namespace
-		if (@namespace is null) {
-			// if we have no namespace, we do not care about it being global
-			return IdentifierName (@class);
-		}
-
-		var fullNamespace = string.Join (".", @namespace);
-		if (isGlobal) {
-			return QualifiedName (
-				AliasQualifiedName (
-					IdentifierName (
-						Token (SyntaxKind.GlobalKeyword)),
-					IdentifierName (fullNamespace)),
-				IdentifierName (@class));
-		}
-
-		return QualifiedName (
-			IdentifierName (fullNamespace),
-			IdentifierName (@class));
-	}
-
-	/// <summary>
 	/// Helper method that will return the Identifier name for a class. 
 	/// </summary>
 	/// <param name="class">The class whose identifier we want to retrieve.</param>
@@ -230,9 +194,9 @@ static partial class BindingSyntaxFactory {
 	/// <param name="objectType">The target type for get the ref from.</param>
 	/// <param name="arguments">The arguments to pass to the AsRef method.</param>
 	/// <returns>The needed expression to call the AsRef method.</returns>
-	internal static ExpressionSyntax AsRef (string objectType, ImmutableArray<ArgumentSyntax> arguments)
+	internal static ExpressionSyntax AsRef (TypeSyntax objectType, ImmutableArray<ArgumentSyntax> arguments)
 	{
-		var unsafeType = GetIdentifierName (
+		var unsafeType = StringExtensions.GetIdentifierName (
 			@namespace: ["System", "Runtime", "CompilerServices"],
 			@class: "Unsafe");
 		var argsList = ArgumentList (SeparatedList<ArgumentSyntax> (arguments.ToSyntaxNodeOrTokenArray ()));
@@ -246,10 +210,10 @@ static partial class BindingSyntaxFactory {
 	/// <param name="delegateType">The type of the delegate function pointer to cast to.</param>
 	/// <param name="arguments">Arguments for the GetDelegateForFunctionPointer call.</param>
 	/// <returns>The needed expression to call the GetDelegateForFunctionPointer method.</returns>
-	internal static ExpressionSyntax GetDelegateForFunctionPointer (string delegateType,
+	internal static ExpressionSyntax GetDelegateForFunctionPointer (TypeSyntax delegateType,
 		ImmutableArray<ArgumentSyntax> arguments)
 	{
-		var marshalType = GetIdentifierName (
+		var marshalType = StringExtensions.GetIdentifierName (
 			@namespace: ["System", "Runtime", "InteropServices"],
 			@class: "Marshal");
 		// Marshal.GetDelegateForFunctionPointer<T>(IntPtr)

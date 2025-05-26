@@ -33,11 +33,11 @@ namespace Xamarin.MacDev.Tasks {
 
 			ExecuteTask (task);
 
-			Assert.IsNull (task.DetectedAppId, "DetectedAppId");
+			Assert.That (task.DetectedAppId, Is.Null.Or.Empty, "DetectedAppId");
 			Assert.AreEqual ("-", task.DetectedCodeSigningKey, "DetectedCodeSigningKey");
 			Assert.AreEqual ($"{Xamarin.Tests.Configuration.XcodeLocation}/Toolchains/XcodeDefault.xctoolchain/usr/bin/codesign_allocate", task.DetectedCodesignAllocate, "DetectedCodesignAllocate");
 			Assert.AreEqual ("Any", task.DetectedDistributionType, "DetectedDistributionType");
-			Assert.IsNull (task.DetectedProvisioningProfile, "DetectedProvisioningProfile");
+			Assert.That (task.DetectedProvisioningProfile, Is.Null.Or.Empty, "DetectedProvisioningProfile");
 			Assert.IsFalse (task.HasEntitlements, "HasEntitlements");
 		}
 
@@ -125,10 +125,10 @@ namespace Xamarin.MacDev.Tasks {
 				Assert.That (task.DetectedDistributionType, Is.EqualTo ("Development").Or.EqualTo ("AppStore"), "DetectedDistributionType");
 				Assert.That (task.DetectedProvisioningProfile, Is.Not.Null.And.Not.Empty, "DetectedProvisioningProfile");
 			} else {
-				Assert.IsNull (task.DetectedAppId, "DetectedAppId");
-				Assert.IsNull (task.DetectedCodeSigningKey, "DetectedCodeSigningKey");
+				Assert.That (task.DetectedAppId, Is.Null.Or.Empty, "DetectedAppId");
+				Assert.That (task.DetectedCodeSigningKey, Is.Null.Or.Empty, "DetectedCodeSigningKey");
 				Assert.AreEqual ("Any", task.DetectedDistributionType, "DetectedDistributionType");
-				Assert.IsNull (task.DetectedProvisioningProfile, "DetectedProvisioningProfile");
+				Assert.That (task.DetectedProvisioningProfile, Is.Null.Or.Empty, "DetectedProvisioningProfile");
 			}
 			Assert.AreEqual ($"{Xamarin.Tests.Configuration.XcodeLocation}/Toolchains/XcodeDefault.xctoolchain/usr/bin/codesign_allocate", task.DetectedCodesignAllocate, "DetectedCodesignAllocate");
 		}
@@ -141,11 +141,11 @@ namespace Xamarin.MacDev.Tasks {
 			task.CustomEntitlements = new ITaskItem [] { new TaskItem ("keychain-access-group") };
 			ExecuteTask (task);
 
-			Assert.IsNull (task.DetectedAppId, "DetectedAppId");
+			Assert.That (task.DetectedAppId, Is.Null.Or.Empty, "DetectedAppId");
 			Assert.AreEqual ("-", task.DetectedCodeSigningKey, "DetectedCodeSigningKey");
 			Assert.AreEqual ($"{Xamarin.Tests.Configuration.XcodeLocation}/Toolchains/XcodeDefault.xctoolchain/usr/bin/codesign_allocate", task.DetectedCodesignAllocate, "DetectedCodesignAllocate");
 			Assert.AreEqual ("Any", task.DetectedDistributionType, "DetectedDistributionType");
-			Assert.IsNull (task.DetectedProvisioningProfile, "DetectedProvisioningProfile");
+			Assert.That (task.DetectedProvisioningProfile, Is.Null.Or.Empty, "DetectedProvisioningProfile");
 			Assert.IsTrue (task.HasEntitlements, "HasEntitlements");
 		}
 	}

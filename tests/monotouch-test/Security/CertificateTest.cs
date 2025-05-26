@@ -331,11 +331,7 @@ namespace MonoTouchFixtures.Security {
 		[Test]
 		public void MailX1 ()
 		{
-#if NET
 			using (var cert = X509CertificateLoader.LoadCertificate (mail_google_com)) {
-#else
-			using (var cert = new X509Certificate (mail_google_com)) {
-#endif
 				/*
 				 * This X509Certificate constructor will use SecCertificateCreateWithData() and
 				 * store the SecCertificateRef in its Handle.
@@ -343,13 +339,8 @@ namespace MonoTouchFixtures.Security {
 				Assert.That (cert.Handle, Is.Not.EqualTo (IntPtr.Zero), "Handle");
 				Assert.That (CFGetRetainCount (cert.Handle), Is.EqualTo ((nint) 1), "RetainCount");
 				using (var sc = new SecCertificate (cert)) {
-#if NET
 					// dotnet PAL layer does not return the same instance
 					CheckMailGoogleCom (sc, 1); // so the new one is RC == 1
-#else
-					Assert.That (sc.Handle, Is.EqualTo (cert.Handle), "Same Handle");
-					CheckMailGoogleCom (sc, 2); // same handle means another reference was added
-#endif
 					Assert.That (cert.ToString (true), Is.EqualTo (sc.ToX509Certificate ().ToString (true)), "X509Certificate");
 				}
 			}
@@ -359,11 +350,7 @@ namespace MonoTouchFixtures.Security {
 		[Ignore ("https://bugzilla.xamarin.com/show_bug.cgi?id=39952")]
 		public void MailX2 ()
 		{
-#if NET
 			using (var cert = X509CertificateLoader.LoadCertificate (mail_google_com)) {
-#else
-			using (var cert = new X509Certificate2 (mail_google_com)) {
-#endif
 				/*
 				 * FIXME: This X509Certificate2 constructor will use Mono.Security to parse the
 				 *        certificate, but also call the base class'es .ctor with the byte array.

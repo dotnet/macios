@@ -5,8 +5,7 @@ using Xamarin.Localization.MSBuild;
 using Xamarin.Utils;
 using Xamarin.MacDev.Tasks;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Xamarin.MacDev {
 	public static class Sdks {
@@ -15,11 +14,6 @@ namespace Xamarin.MacDev {
 		public static AppleTVOSSdk TVOS { get; private set; }
 
 		static Sdks ()
-		{
-			Reload ();
-		}
-
-		static void Reload ()
 		{
 			IOS = new AppleIPhoneSdk (AppleSdkSettings.DeveloperRoot, AppleSdkSettings.DeveloperRootVersionPlist);
 			TVOS = new AppleTVOSSdk (AppleSdkSettings.DeveloperRoot, AppleSdkSettings.DeveloperRootVersionPlist);

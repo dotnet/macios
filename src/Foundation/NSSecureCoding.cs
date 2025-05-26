@@ -6,16 +6,10 @@ using ObjCRuntime;
 #nullable enable
 
 namespace Foundation {
-
-#if NET
 	/// <summary>Implementors handle encoding and decoding in a manner robust against object-substitution attacks.</summary>
 	///     <remarks>To be added.</remarks>
 	///     <!-- 2015-01-05: Our NSCoding doesn't bind decodeObjectOfClass:forKey:, which is needed for NSSecureCoding. -->
 	public static partial class NSSecureCoding {
-#else
-	public partial class NSSecureCoding {
-#endif
-
 		const string selConformsToProtocol = "conformsToProtocol:";
 		const string selSupportsSecureCoding = "supportsSecureCoding";
 #if !MONOMAC

@@ -9,6 +9,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Macios.Generator.DataModel;
 using Microsoft.Macios.Generator.Extensions;
+using Microsoft.Macios.Generator.Formatters;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Microsoft.Macios.Generator.Emitters;
@@ -17,12 +18,6 @@ namespace Microsoft.Macios.Generator.Emitters;
 /// Syntax factory for the Dlfcn calls.
 /// </summary>
 static partial class BindingSyntaxFactory {
-	readonly static TypeSyntax Dlfcn = GetIdentifierName (
-		@namespace: ["ObjCRuntime"],
-		@class: "Dlfcn");
-	public readonly static TypeSyntax Libraries = GetIdentifierName (
-		@namespace: ["ObjCRuntime"],
-		@class: "Libraries");
 
 	/// <summary>
 	/// Get the syntax needed to access a library handle.
@@ -93,7 +88,7 @@ static partial class BindingSyntaxFactory {
 		return StaticInvocationExpression (Dlfcn, methodName, arguments);
 	}
 
-	static ExpressionSyntax GetGenericConstant (string methodName, string genericName, string libraryName,
+	static ExpressionSyntax GetGenericConstant (string methodName, TypeSyntax genericName, string libraryName,
 		string fieldName)
 	{
 		var arguments = new SyntaxNodeOrToken [] {
@@ -130,7 +125,7 @@ static partial class BindingSyntaxFactory {
 	/// <param name="libraryName">The library from where the field will be loaded.</param>
 	/// <param name="fieldName">The field name.</param>
 	/// <returns>A compilation unit with the desired Dlfcn call.</returns>
-	public static ExpressionSyntax GetStruct (string type, string libraryName, string fieldName)
+	public static ExpressionSyntax GetStruct (TypeSyntax type, string libraryName, string fieldName)
 		=> GetGenericConstant ("GetStruct", type, libraryName, fieldName);
 
 	/// <summary>
@@ -532,7 +527,7 @@ static partial class BindingSyntaxFactory {
 	/// <param name="libraryName">The library from where the field will be loaded.</param>
 	/// <param name="fieldName">The field name.</param>
 	/// <returns>A compilation unit with the desired Dlfcn call.</returns>
-	public static ExpressionSyntax GetNSObjectField (string nsObjectType, string libraryName, string fieldName)
+	public static ExpressionSyntax GetNSObjectField (TypeSyntax nsObjectType, string libraryName, string fieldName)
 	{
 		var getIndirectArguments = new SyntaxNodeOrToken [] {
 			GetLibraryArgument (libraryName), Token (SyntaxKind.CommaToken),
@@ -550,7 +545,7 @@ static partial class BindingSyntaxFactory {
 		return GetNSObject (nsObjectType, [Argument (getIndirectInvocation)], suppressNullableWarning: true);
 	}
 
-	public static ExpressionSyntax GetBlittableField (string blittableType, string libraryName, string fieldName)
+	public static ExpressionSyntax GetBlittableField (TypeSyntax blittableType, string libraryName, string fieldName)
 	{
 		var arguments = new SyntaxNodeOrToken [] {
 			GetLibraryArgument (libraryName), Token (SyntaxKind.CommaToken),
@@ -571,8 +566,7 @@ static partial class BindingSyntaxFactory {
 			SyntaxKind.PointerIndirectionExpression,
 			ParenthesizedExpression (
 				CastExpression (
-					PointerType (
-						IdentifierName (blittableType)),
+					PointerType (blittableType),
 					dlsymInvocation.WithLeadingTrivia (Space)
 				)));
 
@@ -594,11 +588,12 @@ static partial class BindingSyntaxFactory {
 		if (!property.IsField)
 			throw new NotSupportedException ("Cannot retrieve getter for non field property.");
 
+		// needed because you cannot use an in parameter in a lambda
 		var fieldType = property.ReturnType.FullyQualifiedName;
 		var underlyingEnumType = property.ReturnType.EnumUnderlyingType.GetKeyword ();
 
-		Func<string, string, ExpressionSyntax> WrapGenericCall (string genericType,
-			Func<string, string, string, ExpressionSyntax> genericCall)
+		Func<string, string, ExpressionSyntax> WrapGenericCall (TypeSyntax genericType,
+			Func<TypeSyntax, string, string, ExpressionSyntax> genericCall)
 		{
 			return (libraryName, fieldName) => genericCall (genericType, libraryName, fieldName);
 		}
@@ -620,10 +615,10 @@ static partial class BindingSyntaxFactory {
 			return property.ReturnType switch { 
 				{ FullyQualifiedName: "Foundation.NSString" } => (Getter: GetStringConstant, Setter: SetString), 
 				{ FullyQualifiedName: "Foundation.NSArray" } => (
-					Getter: WrapGenericCall (property.ReturnType.FullyQualifiedName, GetNSObjectField),
+					Getter: WrapGenericCall (property.ReturnType.GetIdentifierSyntax (), GetNSObjectField),
 					Setter: SetArray),
 				_ => (
-					Getter: WrapGenericCall (property.ReturnType.FullyQualifiedName, GetNSObjectField),
+					Getter: WrapGenericCall (property.ReturnType.GetIdentifierSyntax (), GetNSObjectField),
 					Setter: SetObject)
 			};
 		}
@@ -633,13 +628,13 @@ static partial class BindingSyntaxFactory {
 			// special types
 			{ FullyQualifiedName: "CoreGraphics.CGSize" } => (Getter: GetCGSize, Setter: SetCGSize),
 			{ FullyQualifiedName: "CoreMedia.CMTag" } => (
-				Getter: WrapGenericCall ("CoreMedia.CMTag", GetStruct),
+				Getter: WrapGenericCall (CMTag, GetStruct),
 				Setter: WrapThrow ()),
 			{ FullyQualifiedName: "nfloat" } => (Getter: GetNFloat, Setter: SetNFloat),
 
 			// Blittable types 
 			{ FullyQualifiedName: "CoreMedia.CMTime" or "AVFoundation.AVCaptureWhiteBalanceGains" }
-				=> (Getter: WrapGenericCall (property.ReturnType.FullyQualifiedName, GetBlittableField),
+				=> (Getter: WrapGenericCall (property.ReturnType.GetIdentifierSyntax (), GetBlittableField),
 					Setter: WrapThrow ()),
 
 			// enum types, decide based on its enum backing field, smart enums have to be done in the binding

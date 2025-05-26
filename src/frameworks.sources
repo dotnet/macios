@@ -747,7 +747,6 @@ EVENTKIT_API_SOURCES = \
 	EventKit/EKEnums.cs
 
 EVENTKIT_SOURCES = \
-	EventKit/EventKit.cs \
 
 # EventKitUI
 
@@ -768,7 +767,6 @@ FILEPROVIDER_CORE_SOURCES = \
 	FileProvider/Structs.cs \
 
 FILEPROVIDER_SOURCES = \
-	FileProvider/Compat.cs \
 
 # FinderSync
 
@@ -793,7 +791,6 @@ FOUNDATION_CORE_SOURCES = \
 	Foundation/ModelNotImplementedException.cs \
 	Foundation/NotImplementedAttribute.cs \
 	Foundation/NSAction.cs \
-	Foundation/NSAutoreleasePool.cs \
 	Foundation/NSDecimal.cs \
 	Foundation/NSDimension.cs \
 	Foundation/NSError.cs \
@@ -809,7 +806,6 @@ FOUNDATION_CORE_SOURCES = \
 	Foundation/PreserveAttribute.cs \
 	Foundation/ProtocolAttribute.cs \
 	Foundation/RegisterAttribute.cs \
-	Foundation/NSObject.iOS.cs \
 	Foundation/NSAttributedStringDocumentAttributes.cs  \
 	Foundation/NSObject.mac.cs \
 	Foundation/NSDateComponents.cs \
@@ -845,7 +841,6 @@ FOUNDATION_SOURCES = \
 	Foundation/NSFastEnumerator.cs \
 	Foundation/NSFileManager.cs \
 	Foundation/NSFileManagerDelegate.cs \
-	Foundation/NSFormatter.cs \
 	Foundation/NSHost.cs \
 	Foundation/NSHttpCookie.cs \
 	Foundation/NSIndexPath.cs \
@@ -892,14 +887,11 @@ FOUNDATION_SOURCES = \
 	Foundation/NSTimeZone.cs \
 	Foundation/NSUbiquitousKeyValueStore.cs \
 	Foundation/NSUndoManager.cs \
-	Foundation/NSUnit.cs \
 	Foundation/NSUrl.cs \
 	Foundation/NSUrlComponents.cs \
 	Foundation/NSUrlCredential.cs \
 	Foundation/NSUrlDownload.cs \
 	Foundation/NSUrlProtectionSpace.cs \
-	Foundation/NSUrlProtocol.cs \
-	Foundation/NSUrlProtocolClient.cs \
 	Foundation/NSUrlSession.cs \
 	Foundation/NSUrlSessionConfiguration.cs \
 	Foundation/NSUserDefaults.cs \
@@ -957,7 +949,6 @@ GAMEPLAYKIT_CORE_SOURCES = \
 
 GAMEPLAYKIT_SOURCES = \
 	GameplayKit/GKBehavior.cs \
-	GameplayKit/GKCompat.cs \
 	GameplayKit/GKComponentSystem.cs \
 	GameplayKit/GKCompositeBehavior.cs \
 	GameplayKit/GKEntity.cs \
@@ -986,7 +977,6 @@ HEALTHKIT_API_SOURCES = \
 	HealthKit/Enums.cs \
 
 HEALTHKIT_SOURCES = \
-	HealthKit/EnumsCompat.cs \
 	HealthKit/HKAppleSleepingBreathingDisturbances.cs \
 	HealthKit/HKAppleWalkingSteadiness.cs \
 	HealthKit/HKAnchoredObjectQuery.cs \
@@ -1072,7 +1062,6 @@ ITUNESLIBRARY_API_SOURCES = \
 	iTunesLibrary/Enums.cs \
 
 ITUNESLIBRARY_SOURCES = \
-	iTunesLibrary/ITCompat.cs \
 
 # JavaScriptCore
 
@@ -1100,7 +1089,6 @@ MAPKIT_CORE_SOURCES = \
 
 MAPKIT_SOURCES = \
 	MapKit/MKAddressFilter.cs \
-	MapKit/MKCompat.cs \
 	MapKit/MKFeatureDisplayPriority.cs \
 	MapKit/MKGeodesicPolyline.cs \
 	MapKit/MKLocalSearch.cs \
@@ -1274,8 +1262,6 @@ MODELIO_SOURCES = \
 	ModelIO/MDLAsset.cs \
 	ModelIO/MDLMaterial.cs \
 	ModelIO/MDLNoiseTexture.cs \
-	ModelIO/MDLTransform.cs \
-	ModelIO/MDLTransformComponent.cs \
 	ModelIO/MDLVertexDescriptor.cs \
 	ModelIO/MDLMesh.cs \
 
@@ -1440,7 +1426,6 @@ PDFKIT_API_SOURCES = \
 
 PDFKIT_SOURCES = \
 	PdfKit/PdfAnnotation.cs \
-	PdfKit/PdfCompat.cs \
 	PdfKit/PdfKit.cs \
 
 # Photos
@@ -1451,7 +1436,6 @@ PHOTOS_API_SOURCES = \
 PHOTOS_SOURCES = \
 	Photos/PHAssetChangeRequest.cs \
 	Photos/PHAssetCreationRequest.cs \
-	Photos/PHCompat.cs \
 	Photos/PHFetchResult.cs \
 	Photos/PHLivePhoto.cs \
 	Photos/PHPhotoLibrary.cs \

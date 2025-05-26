@@ -115,7 +115,7 @@ namespace CoreGraphics {
 			gch = GCHandle.Alloc (drawPattern);
 			unsafe {
 				fixed (CGPatternCallbacks* callbacksptr = &callbacks)
-					Handle = CGPatternCreate (GCHandle.ToIntPtr (gch), bounds, matrix, xStep, yStep, tiling, isColored.AsByte (), callbacksptr);
+					InitializeHandle (CGPatternCreate (GCHandle.ToIntPtr (gch), bounds, matrix, xStep, yStep, tiling, isColored.AsByte (), callbacksptr));
 			}
 		}
 

@@ -27,30 +27,18 @@
 //
 
 using System;
+using System.Numerics;
 using Foundation;
 using ObjCRuntime;
 using CoreGraphics;
 using CoreFoundation;
 using ModelIO;
 
-#if NET
-using Vector3 = global::System.Numerics.Vector3;
-using Vector4 = global::System.Numerics.Vector4;
 using Matrix3 = global::CoreGraphics.RMatrix3;
 using Matrix4 = global::System.Numerics.Matrix4x4;
-#else
-using Vector3 = global::OpenTK.Vector3;
-using Vector4 = global::OpenTK.Vector4;
-using Matrix3 = global::OpenTK.Matrix3;
-using Matrix4 = global::OpenTK.Matrix4;
-#endif // NET 
 
 #if MONOMAC
-#if NET
 using pfloat = System.Runtime.InteropServices.NFloat;
-#else
-using pfloat = System.nfloat;
-#endif
 using AppKit;
 using EAGLSharegroup = Foundation.NSObject;
 using EAGLContext = Foundation.NSObject;
@@ -62,10 +50,6 @@ using OpenGLES;
 using UIKit;
 using pfloat = System.Single;
 using NSOpenGLContext = Foundation.NSObject;
-#endif
-
-#if !NET
-using NativeHandle = System.IntPtr;
 #endif
 
 namespace GLKit {

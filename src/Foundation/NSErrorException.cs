@@ -27,7 +27,6 @@ using System;
 using System.Runtime.Versioning;
 
 namespace Foundation {
-#if NET
 	/// <summary>Exception that wraps an Objective-C NSError.</summary>
 	///     <remarks>
 	///       The exception wraps an Objective-C NSError.  These are created
@@ -38,7 +37,6 @@ namespace Foundation {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class NSErrorException : Exception {
 		NSError error;
 

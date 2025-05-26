@@ -39,10 +39,10 @@ namespace ScreenCaptureKit {
 		{
 			switch (option) {
 			case SCContentFilterOption.Include:
-				Handle = _InitWithDisplayIncludingWindows (display, windows);
+				InitializeHandle (_InitWithDisplayIncludingWindows (display, windows), "initWithDisplay:includingWindows:");
 				break;
 			case SCContentFilterOption.Exclude:
-				Handle = _InitWithDisplayExcludingWindows (display, windows);
+				InitializeHandle (_InitWithDisplayExcludingWindows (display, windows), "initWithDisplay:excludingWindows:");
 				break;
 			default:
 				ObjCRuntime.ThrowHelper.ThrowArgumentOutOfRangeException (nameof (option), $"Unknown option {option}");
@@ -59,10 +59,10 @@ namespace ScreenCaptureKit {
 		{
 			switch (option) {
 			case SCContentFilterOption.Include:
-				Handle = _InitWithDisplayIncludingApplications (display, applications, exceptingWindows);
+				InitializeHandle (_InitWithDisplayIncludingApplications (display, applications, exceptingWindows), "initWithDisplay:includingApplications:exceptingWindows:");
 				break;
 			case SCContentFilterOption.Exclude:
-				Handle = _InitWithDisplayExcludingApplications (display, applications, exceptingWindows);
+				InitializeHandle (_InitWithDisplayExcludingApplications (display, applications, exceptingWindows), "initWithDisplay:excludingApplications:exceptingWindows:");
 				break;
 			default:
 				ObjCRuntime.ThrowHelper.ThrowArgumentOutOfRangeException (nameof (option), $"Unknown option {option}");

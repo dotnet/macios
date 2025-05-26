@@ -31,7 +31,7 @@ namespace Xamarin.Tests {
 				{ "DEVELOPER_DIR", Configuration.XcodeLocation },
 			};
 			foreach (var action in new string [] { "clean", "build" })
-				ExecutionHelper.Execute ("/usr/bin/xcodebuild", xcodeBuildArgs.Concat (new [] { action }).ToArray (), environmentVariables: env, timeout: TimeSpan.FromMinutes (1), throwOnError: true);
+				ExecutionHelper.Execute ("/usr/bin/xcodebuild", xcodeBuildArgs.Concat (new [] { action }).ToArray (), environmentVariables: env, timeout: TimeSpan.FromMinutes (1), throwOnError: true, hide_output: true);
 
 			string buildPlatform;
 			switch (platform) {
@@ -61,10 +61,14 @@ namespace Xamarin.Tests {
 				var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath)
 					.Where (v => v?.Message?.Contains ("Supported iPhone orientations have not been set") != true)
 					.ToArray ();
-				var extensionPath = Path.Combine (appPath, GetPlugInsRelativePath (platform), $"{extensionProject}.appex");
-				AssertWarningMessages (warnings, [
-					$"No entitlements set for {extensionPath}."
-				]);
+				if (IsRuntimeIdentifierSigned (runtimeIdentifiers)) {
+					var extensionPath = Path.Combine (appPath, GetPlugInsRelativePath (platform), $"{extensionProject}.appex");
+					AssertWarningMessages (warnings, [
+						$"No entitlements set for {extensionPath}."
+					]);
+				} else {
+					rv.AssertNoWarnings ();
+				}
 			}
 
 			var expectedDirectories = new List<string> ();

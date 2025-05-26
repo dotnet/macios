@@ -59,8 +59,8 @@ sequence of events would be:
 	$ darc add-default-channel --repo https://github.com/dotnet/macios --channel '.NET 10.0.1xx SDK Preview 42' --branch release/10.0.1xx-preview42
 	```
 
-	>[!NOTE]
-    >See [eng/README.md][2] for details on `darc` commands.
+>[!NOTE]
+>See [eng/README.md][2] for details on `darc` commands.
 
 7. Add a subscription to the .NET channel in maestro:
 

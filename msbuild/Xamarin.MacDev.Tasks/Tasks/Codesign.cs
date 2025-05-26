@@ -126,10 +126,8 @@ namespace Xamarin.MacDev.Tasks {
 			return true;
 		}
 
-		// 'sortedItems' is sorted by length of path, longest first.
-		bool NeedsCodesign (ITaskItem [] sortedItems, int index, string stampFileContents)
+		bool StampFileNeedsUpdate (ITaskItem item)
 		{
-			var item = sortedItems [index];
 			var stampFile = GetCodesignStampFile (item);
 			if (!File.Exists (stampFile)) {
 				Log.LogMessage (MessageImportance.Low, "The stamp file '{0}' does not exist, so the item '{1}' needs to be codesigned.", stampFile, item.ItemSpec);
@@ -140,6 +138,17 @@ namespace Xamarin.MacDev.Tasks {
 				Log.LogMessage (MessageImportance.Low, "The stamp file '{0}' for the item '{1}' is not up-to-date, so the item needs to be codesigned.", stampFile, item.ItemSpec);
 				return true;
 			}
+
+			return false;
+		}
+
+		// 'sortedItems' is sorted by length of path, longest first.
+		bool NeedsCodesign (ITaskItem [] sortedItems, int index, string stampFileContents)
+		{
+			var item = sortedItems [index];
+			var stampFile = GetCodesignStampFile (item);
+			if (StampFileNeedsUpdate (item))
+				return true;
 
 			if (Directory.Exists (item.ItemSpec)) {
 				// We're signing a directory. First check if any of the
@@ -153,8 +162,11 @@ namespace Xamarin.MacDev.Tasks {
 					if (sortedItems [i] is null)
 						continue; // this item does not need to be signed
 					if (sortedItems [i].ItemSpec.StartsWith (itemPath, StringComparison.OrdinalIgnoreCase)) {
-						Log.LogMessage (MessageImportance.Low, "The item '{0}' contains '{1}', which must be signed, which means that the item must be signed too.", item.ItemSpec, sortedItems [i].ItemSpec);
-						return true; // there's an item inside this directory that needs to be signed, so this directory must be signed too
+						if (StampFileNeedsUpdate (sortedItems [i])) {
+							Log.LogMessage (MessageImportance.Low, "The item '{0}' contains '{1}', which must be signed, which means that the item must be signed too.", item.ItemSpec, sortedItems [i].ItemSpec);
+							return true; // there's an item inside this directory that needs to be signed, so this directory must be signed too
+						}
+						Log.LogMessage (MessageImportance.Low, "The item '{0}' contains '{1}', which must be signed, which means that the item must be signed too; however this other item has an up-to-date signature.", item.ItemSpec, sortedItems [i].ItemSpec);
 					}
 				}
 

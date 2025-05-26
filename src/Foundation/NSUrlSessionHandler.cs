@@ -170,9 +170,9 @@ namespace Foundation {
 			var sp = ServicePointManager.SecurityProtocol;
 #pragma warning restore SYSLIB0014
 
-// The analyzer has a bug where SupportedOSPlatformGuard attributes don't work correctly (https://github.com/dotnet/roslyn-analyzers/issues/7665#issuecomment-2898275765), so ignore CA1416/CA1422 here
-// warning CA1422: This call site is reachable on: 'ios' 12.2 and later, 'maccatalyst' 12.2 and later, 'macOS/OSX' 12.0 and later, 'tvos' 12.2 and later. 'NSUrlSessionConfiguration.[...]' is obsoleted on: 'ios' 13.0 and later (Use '...' instead.), 'maccatalyst' 13.0 and later (Use '...' instead.), 'macOS/OSX' 10.15 and later (Use '...' instead.).
-// warning CA1416: This call site is reachable on: 'ios' 12.2 and later, 'maccatalyst' 12.2 and later, 'macOS/OSX' 10.15 and later, 'tvos' 12.2 and later. 'NSUrlSessionConfiguration.[...]' is only supported on: 'ios' 13.0 and later, 'tvos' 13.0 and later
+			// The analyzer has a bug where SupportedOSPlatformGuard attributes don't work correctly (https://github.com/dotnet/roslyn-analyzers/issues/7665#issuecomment-2898275765), so ignore CA1416/CA1422 here
+			// warning CA1422: This call site is reachable on: 'ios' 12.2 and later, 'maccatalyst' 12.2 and later, 'macOS/OSX' 12.0 and later, 'tvos' 12.2 and later. 'NSUrlSessionConfiguration.[...]' is obsoleted on: 'ios' 13.0 and later (Use '...' instead.), 'maccatalyst' 13.0 and later (Use '...' instead.), 'macOS/OSX' 10.15 and later (Use '...' instead.).
+			// warning CA1416: This call site is reachable on: 'ios' 12.2 and later, 'maccatalyst' 12.2 and later, 'macOS/OSX' 10.15 and later, 'tvos' 12.2 and later. 'NSUrlSessionConfiguration.[...]' is only supported on: 'ios' 13.0 and later, 'tvos' 13.0 and later
 #pragma warning disable CA1416
 #pragma warning disable CA1422
 			if (SystemVersion.IsAtLeastXcode11) {

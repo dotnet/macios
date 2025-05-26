@@ -21,6 +21,7 @@
 // Copyright 2011-2014 Xamarin Inc.
 //
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Collections;
 using System.Runtime.InteropServices;
@@ -123,6 +124,19 @@ namespace Foundation {
 		public NSTimer (NSDate date, TimeSpan when, Action<NSTimer> action, System.Boolean repeats)
 			: this (date, when.TotalSeconds, new NSTimerActionDispatcher (action), NSTimerActionDispatcher.Selector, null, repeats)
 		{
+		}
+
+		// The dependency attribute is required because:
+		// * We inject a call to Invalidate in the generated Dispose method
+		// * We optimize Dispose methods to not touch fields that aren't otherwise used, which we do by
+		//   removing the contents of the Dispose method before the linker runs, then after the linker runs
+		//   we determine which fields the Dispose method touches have been linked away and remove any such code.
+		//   We won't remove the call to Invalidate, but the linker may have trimmed away the Invalidate method
+		///  itself (because we temporarly removed the call to it). So make sure the linker doesn't remove it.
+		[DynamicDependency ("Invalidate()")]
+		static NSTimer ()
+		{
+			GC.KeepAlive (null);
 		}
 	}
 }

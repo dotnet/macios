@@ -69,5 +69,19 @@ namespace Xamarin.Utils {
 				throw new System.InvalidOperationException ($"Unknown platform: {platform}");
 			}
 		}
+
+		public static bool IsDesktop (this ApplePlatform @this)
+		{
+			switch (@this) {
+			case ApplePlatform.iOS:
+			case ApplePlatform.TVOS:
+				return false;
+			case ApplePlatform.MacOSX:
+			case ApplePlatform.MacCatalyst:
+				return true;
+			default:
+				throw new System.InvalidOperationException ($"Unknown platform: {@this}");
+			}
+		}
 	}
 }

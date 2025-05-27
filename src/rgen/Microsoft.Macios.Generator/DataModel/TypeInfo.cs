@@ -273,6 +273,9 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		var sb = new StringBuilder ();
 		var parentSymbol = symbol.ContainingType;
 
+		if (parentSymbol is null)
+			return symbol.Name;
+
 		while (parentSymbol is not null) {
 			// add in reverse order, since we are going from the child to the parent
 			sb.Insert (0, parentSymbol.Name + ".");

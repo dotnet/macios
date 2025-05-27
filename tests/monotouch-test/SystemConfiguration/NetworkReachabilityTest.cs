@@ -8,6 +8,7 @@
 //
 
 using System;
+using CoreFoundation;
 using Foundation;
 #if !MONOMAC
 using UIKit;
@@ -136,6 +137,15 @@ namespace MonoTouchFixtures.SystemConfiguration {
 				Assert.Fail ("#3");
 			} catch (ArgumentException) {
 			}
+		}
+
+		[Test]
+		public void Schedule ()
+		{
+			var ip = new IPAddress (0);
+			using var defaultRouteReachability = new NetworkReachability (ip);
+			Assert.IsTrue (defaultRouteReachability.Schedule (CFRunLoop.Main, CFRunLoop.ModeDefault), "Schedule");
+			Assert.IsTrue (defaultRouteReachability.Unschedule (CFRunLoop.Main, CFRunLoop.ModeDefault), "Unschedule");
 		}
 	}
 }

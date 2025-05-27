@@ -576,7 +576,7 @@ namespace SystemConfiguration {
 			if (mode is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (mode));
 
-			using var modeHandle = new TransientString (mode);
+			using var modeHandle = new TransientCFString (mode);
 			bool result = SCNetworkReachabilityScheduleWithRunLoop (Handle, runLoop.GetCheckedHandle (), modeHandle) != 0;
 			GC.KeepAlive (runLoop);
 			return result;
@@ -629,7 +629,7 @@ namespace SystemConfiguration {
 			if (mode is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (mode));
 
-			using var modeHandle = new TransientString (mode);
+			using var modeHandle = new TransientCFString (mode);
 			bool result = SCNetworkReachabilityUnscheduleFromRunLoop (Handle, runLoop.GetCheckedHandle (), modeHandle) != 0;
 			GC.KeepAlive (runLoop);
 			return result;

@@ -389,7 +389,7 @@ The directory where resources are stored (this prefix will be removed when copyi
 
 Applicable to iOS, tvOS and Mac Catalyst projects.
 
-For .NET projects, consider using the unified [AppBundleResourcePrefix](#appbundleresourceprefix) property instead.
+Consider using the unified [AppBundleResourcePrefix](#appbundleresourceprefix) property instead.
 
 See also [MonoMacResourcePrefix](#monomacresourceprefix) and [XamMacResourcePrefix](#xammacresourceprefix).
 
@@ -572,7 +572,7 @@ The directory where resources are stored (this prefix will be removed when copyi
 
 Only applicable to macOS projects.
 
-For .NET projects, consider using the unified [AppBundleResourcePrefix](#appbundleresourceprefix) property instead.
+Consider using the unified [AppBundleResourcePrefix](#appbundleresourceprefix) property instead.
 
 See also [IPhoneResourcePrefix](#iphoneresourceprefix) and [XamMacResourcePrefix](#xammacresourceprefix).
 
@@ -992,7 +992,7 @@ The directory where resources are stored (this prefix will be removed when copyi
 
 Applicable to macOS projects.
 
-For .NET projects, consider using the unified [AppBundleResourcePrefix](#appbundleresourceprefix) property instead.
+Consider using the unified [AppBundleResourcePrefix](#appbundleresourceprefix) property instead.
 
 See also [IPhoneResourcePrefix](#iphoneresourceprefix) and [MonoMacResourcePrefix](#monomacresourceprefix).
 

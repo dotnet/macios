@@ -43,10 +43,28 @@ public class ClassGenerationTests : BaseGeneratorTestClass {
 			//(ApplePlatform.MacOSX, "NSUserDefaults", "NSUserDefaults.cs", "ExpectedNSUserDefaults.cs", null, null),
 
 			// trampoline tests
-			(ApplePlatform.iOS, "TrampolinePropertyTests", "TrampolinePropertyTests.cs", "ExpectedTrampolinePropertyTests.cs", null, "ExpectedTrampolinePropertyTestsTrampolines.cs"),
-			//(ApplePlatform.TVOS, "TrampolinePropertyTests", "TrampolinePropertyTests.cs", "ExpectedTrampolinePropertyTests.cs", null, "ExpectedTrampolinePropertyTestsTrampolines.cs"),
-			//(ApplePlatform.MacCatalyst, "TrampolinePropertyTests", "TrampolinePropertyTests.cs", "ExpectedTrampolinePropertyTests.cs", null, "ExpectedTrampolinePropertyTestsTrampolines.cs"),
-			//(ApplePlatform.MacOSX, "TrampolinePropertyTests", "TrampolinePropertyTests.cs", "ExpectedTrampolinePropertyTests.cs", null, "ExpectedTrampolinePropertyTestsTrampolines.cs"),
+			//(ApplePlatform.iOS, "TrampolinePropertyTests", "Trampolines/TrampolinePropertyTests.cs", "Trampolines/ExpectedTrampolinePropertyTests.cs", null, "Trampolines/ExpectedTrampolinePropertyTestsTrampolines.cs"),
+			//(ApplePlatform.TVOS, "TrampolinePropertyTests", "Trampolines/TrampolinePropertyTests.cs", "Trampolines/ExpectedTrampolinePropertyTests.cs", null, "Trampolines/ExpectedTrampolinePropertyTestsTrampolines.cs"),
+			//(ApplePlatform.MacCatalyst, "TrampolinePropertyTests", "Trampolines/TrampolinePropertyTests.cs", "Trampolines/ExpectedTrampolinePropertyTests.cs", null, "Trampolines/ExpectedTrampolinePropertyTestsTrampolines.cs"),
+			//(ApplePlatform.MacOSX, "TrampolinePropertyTests", "Trampolines/TrampolinePropertyTests.cs", "Trampolines/ExpectedTrampolinePropertyTests.cs", null, "Trampolines/ExpectedTrampolinePropertyTestsTrampolines.cs"),
+			
+			//(ApplePlatform.iOS, "ARKitTrampolines", "Trampolines/ARKitTrampolines.cs", "Trampolines/ExpectedARKitTrampolinesProperties.cs", null, "Trampolines/ExpectedARKitTrampolinesTrampolines.cs"),
+			(ApplePlatform.iOS, "AVFoundationTrampolines", "Trampolines/AVFoundationTrampolines.cs", "Trampolines/ExpectedAVFoundationTrampolinesProperties.cs", null, "Trampolines/ExpectedAVFoundationTrampolinesTrampolines.cs"),
+			// (ApplePlatform.iOS, "AVKitTrampolines", "Trampolines/AVKitTrampolines.cs", "Trampolines/ExpectedAVKitTrampolinesProperties.cs", null, "Trampolines/ExpectedAVKitTrampolinesTrampolines.cs"),
+			// (ApplePlatform.iOS, "AccessibilityTrampolines", "Trampolines/AccessibilityTrampolines.cs", "Trampolines/ExpectedAccessibilityTrampolinesProperties.cs", null, "Trampolines/ExpectedAccessibilityTrampolinesTrampolines.cs"),
+			// (ApplePlatform.iOS, "AccountsTrampolines", "Trampolines/AccountsTrampolines.cs", "Trampolines/ExpectedAccountsTrampolinesProperties.cs", null, "Trampolines/ExpectedAccountsTrampolinesTrampolines.cs"),
+			// (ApplePlatform.iOS, "AudioUnitTrampolines", "Trampolines/AudioUnitTrampolines.cs", "Trampolines/ExpectedAudioUnitTrampolinesProperties.cs", null, "Trampolines/ExpectedAudioUnitTrampolinesTrampolines.cs"),
+			// (ApplePlatform.iOS, "AuthenticationServicesTrampolines", "Trampolines/AuthenticationServicesTrampolines.cs", "Trampolines/ExpectedAuthenticationServicesTrampolinesProperties.cs", null, "Trampolines/ExpectedAuthenticationServicesTrampolinesTrampolines.cs"),
+			// (ApplePlatform.iOS, "BrowserEngineKitTrampolines", "Trampolines/BrowserEngineKitTrampolines.cs", "Trampolines/ExpectedBrowserEngineKitTrampolinesProperties.cs", null, "Trampolines/ExpectedBrowserEngineKitTrampolinesTrampolines.cs"),
+			// (ApplePlatform.iOS, "CarPlayTrampolines", "Trampolines/CarPlayTrampolines.cs", "Trampolines/ExpectedCarPlayTrampolinesProperties.cs", null, "Trampolines/ExpectedCarPlayTrampolinesTrampolines.cs"),
+			// (ApplePlatform.iOS, "CloudKitTrampolines", "Trampolines/CloudKitTrampolines.cs", "Trampolines/ExpectedCloudKitTrampolinesProperties.cs", null, "Trampolines/ExpectedCloudKitTrampolinesTrampolines.cs"),
+			// (ApplePlatform.iOS, "ContactsTrampolines", "Trampolines/ContactsTrampolines.cs", "Trampolines/ExpectedContactsTrampolinesProperties.cs", null, "Trampolines/ExpectedContactsTrampolinesTrampolines.cs"),
+			// (ApplePlatform.iOS, "CoreDataTrampolines", "Trampolines/CoreDataTrampolines.cs", "Trampolines/ExpectedCoreDataTrampolinesProperties.cs", null, "Trampolines/ExpectedCoreDataTrampolinesTrampolines.cs"),
+			// (ApplePlatform.iOS, "CoreImageTrampolines", "Trampolines/CoreImageTrampolines.cs", "Trampolines/ExpectedCoreImageTrampolinesProperties.cs", null, "Trampolines/ExpectedCoreImageTrampolinesTrampolines.cs"),
+			// (ApplePlatform.iOS, "CoreLocationTrampolines", "Trampolines/CoreLocationTrampolines.cs", "Trampolines/ExpectedCoreLocationTrampolinesProperties.cs", null, "Trampolines/ExpectedCoreLocationTrampolinesTrampolines.cs"),
+			// (ApplePlatform.iOS, "CoreMLTrampolines", "Trampolines/CoreMLTrampolines.cs", "Trampolines/ExpectedCoreMLTrampolinesProperties.cs", null, "Trampolines/ExpectedCoreMLTrampolinesTrampolines.cs"),
+			// (ApplePlatform.iOS, "CoreMidiTrampolines", "Trampolines/CoreMidiTrampolines.cs", "Trampolines/ExpectedCoreMidiTrampolinesProperties.cs", null, "Trampolines/ExpectedCoreMidiTrampolinesTrampolines.cs"),
+			// (ApplePlatform.iOS, "CoreMotionTrampolines", "Trampolines/CoreMotionTrampolines.cs", "Trampolines/ExpectedCoreMotionTrampolinesProperties.cs", null, "Trampolines/ExpectedCoreMotionTrampolinesTrampolines.cs"),
 		};
 
 		public IEnumerator<object []> GetEnumerator ()

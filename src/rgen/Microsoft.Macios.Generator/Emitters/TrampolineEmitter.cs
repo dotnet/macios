@@ -51,7 +51,7 @@ class TrampolineEmitter (
 			classBlock.WriteLine ($"[UserDelegateType (typeof ({delegateIdentifier}))]");
 			using (var invokeMethod = classBlock.CreateBlock (GetTrampolineInvokeSignature (typeInfo).ToString (), true)) {
 				// initialized the parameters, this might be needed for the parameters that are out or ref
-				invokeMethod.WriteLine ($"var {delegateVariableName} = {BlockLiteral}.GetTarget<{delegateIdentifier}> ({Nomenclator.GetTrampolineBlockParameterName (typeInfo.Delegate!.Parameters)}");
+				invokeMethod.WriteLine ($"var {delegateVariableName} = {BlockLiteral}.GetTarget<{delegateIdentifier}> ({Nomenclator.GetTrampolineBlockParameterName (typeInfo.Delegate!.Parameters)});");
 				using (var ifBlock = invokeMethod.CreateBlock ($"if ({delegateVariableName} is not null)", true)) {
 					
 					// build any needed pre conversion operations before calling the delegate

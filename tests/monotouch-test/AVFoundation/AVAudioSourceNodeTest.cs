@@ -46,11 +46,7 @@ namespace MonoTouchFixtures.AVFoundation {
 		{
 			var callbackEvent = new TaskCompletionSource<bool> ();
 			SourceNodeCallbackTest (callbackEvent, () => {
-#if NET
 				var handler = new AVAudioSourceNodeRenderHandler ((ref bool isSilence, ref AudioTimeStamp timestamp, uint frameCount, ref AudioBuffers buffers) => SourceHandler (ref isSilence, ref timestamp, frameCount, buffers, callbackEvent));
-#else
-				var handler = new AVAudioSourceNodeRenderHandler2 ((ref bool isSilence, ref AudioTimeStamp timestamp, uint frameCount, ref AudioBuffers buffers) => SourceHandler (ref isSilence, ref timestamp, frameCount, buffers, callbackEvent));
-#endif
 				return new AVAudioSourceNode (handler);
 			});
 		}

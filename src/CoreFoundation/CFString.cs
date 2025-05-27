@@ -190,16 +190,15 @@ namespace CoreFoundation {
 				CFObject.CFRelease (handle);
 		}
 
-		/// <param name="str">To be added.</param>
-		///         <summary>Creates a CFString from a C# string.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Creates a <see cref="CFString" /> from a C# string.</summary>
+		/// <param name="str">The managed string to initialize the new <see cref="CFString" /> with.</param>
 		public CFString (string str)
 		{
 			if (str is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (str));
 
 			using var strPtr = new TransientString (str, TransientString.Encoding.Unicode);
-			Handle = CFStringCreateWithCharacters (IntPtr.Zero, strPtr, str.Length);
+			InitializeHandle (CFStringCreateWithCharacters (IntPtr.Zero, strPtr, str.Length));
 			this.str = str;
 		}
 

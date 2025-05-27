@@ -2,8 +2,6 @@
 // Unit tests for VTHdrPerFrameMetadataGenerationSession
 //
 
-#if NET
-
 using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
@@ -82,5 +80,3 @@ namespace MonoTouchFixtures.VideoToolbox {
 		}
 	}
 }
-
-#endif // NET

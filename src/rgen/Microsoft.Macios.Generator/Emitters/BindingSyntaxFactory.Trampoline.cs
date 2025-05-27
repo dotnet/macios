@@ -226,11 +226,11 @@ static partial class BindingSyntaxFactory {
 			// parameters that are passed by reference, depend on the type that is referenced
 			{ IsByRef: true, Type.IsReferenceType: false, Type.IsNullable: true} 
 				=> (parameterIdentifier, 
-					PointerType (parameter.Type.ToNonNullable ().GetIdentifierSyntax ())),
+					PointerType (GetLowLevelType (parameter.Type.ToNonNullable ()))),
 			
-			{ IsByRef: true, Type.SpecialType: SpecialType.System_Boolean} 
-				=> (parameterIdentifier,
-					PointerType (PredefinedType (Token(SyntaxKind.ByteKeyword)))),
+			{ IsByRef: true, Type.IsReferenceType: false, Type.IsNullable: false} 
+				=> (parameterIdentifier, 
+					PointerType (GetLowLevelType (parameter.Type))),
 			
 			{ IsByRef: true, Type.IsReferenceType: true, Type.IsNullable: false} 
 				=> (parameterIdentifier,
@@ -260,7 +260,19 @@ static partial class BindingSyntaxFactory {
 			
 			// parameters that are passed by reference, the nomenclator will return the name of the
 			// temporary variable to use for the trampoline, there is no need for us to do anything
-			{ IsByRef: true } => IdentifierName (Nomenclator.GetNameForTempTrampolineVariable (parameter) ?? parameter.Name),
+			{ IsByRef: true, Type.IsReferenceType: false, Type.IsNullable: true} => 
+				IdentifierName (Nomenclator.GetNameForTempTrampolineVariable (parameter) ?? parameter.Name),
+			
+			{ IsByRef: true, Type.IsReferenceType: true } => 
+				IdentifierName (Nomenclator.GetNameForTempTrampolineVariable (parameter) ?? parameter.Name),
+			
+			{ IsByRef: true, Type.SpecialType: SpecialType.System_Boolean } => 
+				IdentifierName (Nomenclator.GetNameForTempTrampolineVariable (parameter) ?? parameter.Name),
+			
+			// other cases in which we will use AsRef for the pointed type
+			{IsByRef: true } 
+				=> AsRef (parameter.Type.ToPointedAtType ().GetIdentifierSyntax (), 
+					[Argument (IdentifierName (parameter.Name))]),
 			
 			// delegate parameter, c callback
 			// System.Runtime.InteropServices.Marshal.GetDelegateForFunctionPointer<ParameterType> (ParameterName)
@@ -278,7 +290,7 @@ static partial class BindingSyntaxFactory {
 			
 			// boolean, convert it to byte
 			{ Type.SpecialType: SpecialType.System_Boolean } 
-				=> CastToByte (parameter.Name, parameter.Type)!,
+				=> CastToBool (parameter.Name, parameter.Type)!,
 			
 			// array types
 			
@@ -324,7 +336,7 @@ static partial class BindingSyntaxFactory {
 			// {0} == IntPtr.Zero ? null! : new global::CoreMedia.CMSampleBuffer ({0}, false)
 			{ Type.FullyQualifiedName: "CoreMedia.CMSampleBuffer" } =>
 				IntPtrZeroCheck (parameter.Name, 
-					expressionSyntax: New (parameter.Type, [Argument (parameterIdentifier), BoolArgument (false)], true), 
+					expressionSyntax: New (parameter.Type, [Argument (parameterIdentifier), BoolArgument (false)]), 
 					suppressNullableWarning: true),
 			
 			// AudioToolbox.AudioBuffers
@@ -353,8 +365,13 @@ static partial class BindingSyntaxFactory {
 		};
 #pragma warning restore format
 		
-		// this are arguments no parameters, therefore we do not need to add the ref modifiers
-		return Argument (expression);
+		// Argument syntax is the same as the expression syntax, but we need to add the ref kind keyword if needed
+		var argument = Argument (expression);
+		if (parameter.IsByRef)
+			argument = argument.WithRefKindKeyword (
+				Token (parameter.ReferenceKind.ToSyntaxKind ()) // match the correct syntax kind
+				.WithTrailingTrivia (Space));
+		return argument;
 	}
 
 	internal static ImmutableArray<SyntaxNode> GetTrampolinePreInvokeByRefArgument (in DelegateParameter parameter)

@@ -138,6 +138,7 @@ extends:
 
       - template: localization/v1.yml@yaml-templates
         parameters:
+          condition: endsWith(coalesce(variables['System.PullRequest.SourceBranch'], variables['Build.SourceBranch'], 'refs/heads/main'), 'main')
           preSteps:
             - template: ../sdk-unified/steps/checkout/v1.yml@yaml-templates
               parameters:

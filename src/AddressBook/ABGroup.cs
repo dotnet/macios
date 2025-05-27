@@ -123,7 +123,7 @@ namespace AddressBook {
 			if (source is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (source));
 
-			Handle = ABGroupCreateInSource (source.Handle);
+			InitializeHandle (ABGroupCreateInSource (source.Handle));
 			GC.KeepAlive (source);
 		}
 

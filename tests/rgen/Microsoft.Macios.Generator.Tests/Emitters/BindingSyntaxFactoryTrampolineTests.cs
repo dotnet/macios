@@ -391,7 +391,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				boolParameter,
-				"boolParameter ? (byte) 1 : (byte) 0",
+				"boolParameter != 0",
 			];
 
 			var nsObjectArray = @"
@@ -604,7 +604,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				audioBuffer,
-				"new AudioToolbox.AudioBuffers (audioBuffer)",
+				$"new {Global ("AudioToolbox.AudioBuffers")} (audioBuffer)",
 			];
 
 			var outNullableInt = @"
@@ -623,7 +623,26 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				outNullableInt,
-				"__xamarin_nullified__0",
+				"out __xamarin_nullified__0",
+			];
+
+			var refNullableInt = @"
+using System;
+using Foundation;
+using ObjCBindings;
+
+namespace NS {
+	public delegate void Callback (ref int? outNullableInt);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				"someTrampolineName",
+				refNullableInt,
+				"ref __xamarin_nullified__0",
 			];
 
 			var outBoolean = @"
@@ -642,7 +661,64 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				outBoolean,
-				"__xamarin_bool__0",
+				"out __xamarin_bool__0",
+			];
+
+			var refBoolean = @"
+using System;
+using Foundation;
+using ObjCBindings;
+
+namespace NS {
+	public delegate void Callback (ref bool outBool);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				"someTrampolineName",
+				refBoolean,
+				"ref __xamarin_bool__0",
+			];
+
+			var outInt = @"
+using System;
+using Foundation;
+using ObjCBindings;
+
+namespace NS {
+	public delegate void Callback (out int outInt);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				"someTrampolineName",
+				outInt,
+				$"out {Global ("System.Runtime.CompilerServices.Unsafe")}.AsRef<int> (outInt)",
+			];
+
+			var refInt = @"
+using System;
+using Foundation;
+using ObjCBindings;
+
+namespace NS {
+	public delegate void Callback (ref int outInt);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				"someTrampolineName",
+				refInt,
+				$"ref {Global ("System.Runtime.CompilerServices.Unsafe")}.AsRef<int> (outInt)",
 			];
 
 			var outNSObject = @"
@@ -661,7 +737,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				outNSObject,
-				"__xamarin_pref0",
+				"out __xamarin_pref0",
 			];
 
 			var valueType = @"
@@ -1732,6 +1808,25 @@ namespace NS {
 				"unsafe internal delegate void DCallback (global::System.IntPtr block_ptr, int* outNullableInt);"
 			];
 
+			var outInt = @"
+using System;
+using Foundation;
+using ObjCBindings;
+
+namespace NS {
+	public delegate void Callback (out int? outNullableInt);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				outInt,
+				"DCallback",
+				"unsafe internal delegate void DCallback (global::System.IntPtr block_ptr, int* outNullableInt);"
+			];
+
 			var outBoolean = @"
 using System;
 using Foundation;
@@ -2552,6 +2647,23 @@ namespace NS {
 				"internal static unsafe void Invoke (global::System.IntPtr block_ptr, int* outNullableInt)"
 			];
 
+			var outInt = @"
+using System;
+using Foundation;
+using ObjCBindings;
+namespace NS {
+	public delegate void Callback (out int? outNullableInt);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				outInt,
+				"internal static unsafe void Invoke (global::System.IntPtr block_ptr, int* outNullableInt)"
+			];
+
 			var outBoolean = @"
 using System;
 using Foundation;
@@ -2885,6 +2997,23 @@ namespace NS {
 
 			yield return [
 				outNullableInt,
+				"delegate* unmanaged<global::System.IntPtr, int*, void> trampoline = &Invoke;",
+			];
+
+			var outInt = @"
+using System;
+using Foundation;
+using ObjCBindings;
+namespace NS {
+	public delegate void Callback (out int outNullableInt);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				outInt,
 				"delegate* unmanaged<global::System.IntPtr, int*, void> trampoline = &Invoke;",
 			];
 

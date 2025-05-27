@@ -461,15 +461,15 @@ static partial class BindingSyntaxFactory {
 		// create the pointer variable and assign it to its default value
 		// generates the following:
 		// *{ParameterName} = default;
-		var expr = ExpressionStatement(
-			AssignmentExpression(
+		var expr = ExpressionStatement (
+			AssignmentExpression (
 				SyntaxKind.SimpleAssignmentExpression,
-				PrefixUnaryExpression(
+				PrefixUnaryExpression (
 					SyntaxKind.PointerIndirectionExpression,
-					IdentifierName(parameter.Name)),
-				LiteralExpression(
+					IdentifierName (parameter.Name)),
+				LiteralExpression (
 					SyntaxKind.DefaultLiteralExpression,
-					Token(SyntaxKind.DefaultKeyword)))).NormalizeWhitespace ();
+					Token (SyntaxKind.DefaultKeyword)))).NormalizeWhitespace ();
 		return [expr];
 	}
 
@@ -567,7 +567,7 @@ static partial class BindingSyntaxFactory {
 		}
 		return [];
 	}
-	
+
 	/// <summary>
 	/// Returns a list of syntax nodes representing the necessary initializations for a trampoline argument before the delegate is invoked.
 	/// This is primarily used for handling 'byref' parameters, which may require temporary variables or conversions.

@@ -3160,7 +3160,7 @@ namespace NS {
 		var delegateDeclaration = GetTrampolineDelegatePointer (parameter.Type);
 		Assert.Equal (expectedExpression, delegateDeclaration.ToString ());
 	}
-	
+
 	class TestDataGetTrampolineInvokeArgumentInitializations : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{
@@ -3224,7 +3224,7 @@ namespace NS {
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
 	}
-	
+
 	[Theory]
 	[AllSupportedPlatformsClassData<TestDataGetTrampolineInvokeArgumentInitializations>]
 	void GetTrampolineInvokeArgumentInitializationsTests (ApplePlatform platform, string trampolineName, string inputText, string expectedExpression)

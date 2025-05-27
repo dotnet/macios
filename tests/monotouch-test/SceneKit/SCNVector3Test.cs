@@ -18,11 +18,7 @@ using SceneKit;
 using NUnit.Framework;
 
 #if __MACOS__
-#if NET
 using pfloat = System.Runtime.InteropServices.NFloat;
-#else
-using pfloat = System.nfloat;
-#endif
 #else
 using pfloat = System.Single;
 #endif
@@ -42,9 +38,6 @@ namespace MonoTouchFixtures.SceneKit {
 				21, 22, 23, 24,
 				31, 32, 33, 34,
 				41, 42, 43, 44);
-#if !NET
-			matrix.Transpose ();
-#endif
 
 			var pos = new SCNVector3 (10, 20, 30);
 			var transformed = SCNVector3.TransformVector (pos, matrix);
@@ -59,9 +52,6 @@ namespace MonoTouchFixtures.SceneKit {
 				21, 22, 23, 24,
 				31, 32, 33, 34,
 				41, 42, 43, 44);
-#if !NET
-			matrix.Transpose ();
-#endif
 
 			var pos = new SCNVector3 (10, 20, 30);
 			SCNVector3.TransformVector (ref pos, ref matrix, out var transformed);
@@ -76,9 +66,6 @@ namespace MonoTouchFixtures.SceneKit {
 				21, -22, 23, 24,
 				31, 32, 33, 34,
 				41, 42, 43, -44);
-#if !NET
-			matrix.Transpose ();
-#endif
 
 			var pos = new SCNVector3 (10, 20, 30);
 			pos.Normalize ();
@@ -94,9 +81,6 @@ namespace MonoTouchFixtures.SceneKit {
 				21, -22, 23, 24,
 				31, 32, 33, 34,
 				41, 42, 43, -44);
-#if !NET
-			matrix.Transpose ();
-#endif
 
 			var pos = new SCNVector3 (10, 20, 30);
 			pos.Normalize ();
@@ -112,9 +96,6 @@ namespace MonoTouchFixtures.SceneKit {
 				21, 22, 23, 24,
 				31, 32, 33, 34,
 				41, 42, 43, 44);
-#if !NET
-			matrix.Transpose ();
-#endif
 
 			var pos = new SCNVector3 (10, 20, 30);
 			pos.Normalize ();
@@ -130,9 +111,6 @@ namespace MonoTouchFixtures.SceneKit {
 				21, 22, 23, 24,
 				31, 32, 33, 34,
 				41, 42, 43, 44);
-#if !NET
-			matrix.Transpose ();
-#endif
 
 			var pos = new SCNVector3 (10, 20, 30);
 			pos.Normalize ();
@@ -148,9 +126,6 @@ namespace MonoTouchFixtures.SceneKit {
 				21, 22, 23, 24,
 				31, 32, 33, 34,
 				41, 42, 43, 44);
-#if !NET
-			matrix.Transpose ();
-#endif
 
 			var pos = new SCNVector3 (10, 20, 30);
 			var transformed = SCNVector3.TransformPosition (pos, matrix);
@@ -165,9 +140,6 @@ namespace MonoTouchFixtures.SceneKit {
 				21, 22, 23, 24,
 				31, 32, 33, 34,
 				41, 42, 43, 44);
-#if !NET
-			matrix.Transpose ();
-#endif
 
 			var pos = new SCNVector3 (10, 20, 30);
 			SCNVector3.TransformPosition (ref pos, ref matrix, out var transformed);
@@ -182,9 +154,6 @@ namespace MonoTouchFixtures.SceneKit {
 				21, 22, 23, 24,
 				31, 32, 33, 34,
 				41, 42, 43, 44);
-#if !NET
-			matrix.Transpose ();
-#endif
 
 			var pos = new SCNVector3 (10, 20, 30);
 			var transformed = SCNVector3.Transform (pos, matrix);
@@ -199,9 +168,6 @@ namespace MonoTouchFixtures.SceneKit {
 				21, 22, 23, 24,
 				31, 32, 33, 34,
 				41, 42, 43, 44);
-#if !NET
-			matrix.Transpose ();
-#endif
 
 			var pos = new SCNVector3 (10, 20, 30);
 			SCNVector3.Transform (ref pos, ref matrix, out var transformed);
@@ -216,9 +182,6 @@ namespace MonoTouchFixtures.SceneKit {
 				21, 22, 23, 24,
 				31, 32, 33, 34,
 				41, 42, 43, 44);
-#if !NET
-			matrix.Transpose ();
-#endif
 
 			var pos = new SCNVector3 (10, 20, 30);
 			var transformed = SCNVector3.TransformPerspective (pos, matrix);
@@ -233,9 +196,6 @@ namespace MonoTouchFixtures.SceneKit {
 				21, 22, 23, 24,
 				31, 32, 33, 34,
 				41, 42, 43, 44);
-#if !NET
-			matrix.Transpose ();
-#endif
 
 			var pos = new SCNVector3 (10, 20, 30);
 			SCNVector3.TransformPerspective (ref pos, ref matrix, out var transformed);

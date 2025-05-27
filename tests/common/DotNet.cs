@@ -91,11 +91,7 @@ namespace Xamarin.Tests {
 				args.Add (name!);
 			}
 
-#if NET
 			if (!string.IsNullOrEmpty (language)) {
-#else
-			if (language is not null && !string.IsNullOrEmpty (language)) {
-#endif
 				args.Add ("--language");
 				args.Add (language);
 			}

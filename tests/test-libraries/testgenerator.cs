@@ -932,13 +932,7 @@ using Security;
 using UIKit;
 #endif
 using MonoTouchException=ObjCRuntime.RuntimeException;
-#if NET
 using NativeException=ObjCRuntime.ObjCException;
-#elif __MACOS__
-using NativeException=Foundation.ObjCException;
-#else
-using NativeException=Foundation.MonoTouchException;
-#endif
 using NUnit.Framework;
 using Bindings.Test;
 

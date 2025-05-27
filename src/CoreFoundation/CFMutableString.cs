@@ -30,6 +30,9 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		static extern /* CFMutableStringRef* */ IntPtr CFStringCreateMutable (/* CFAllocatorRef* */ IntPtr alloc, nint maxLength);
 
+		/// <summary>Create a new <see cref="CFMutableString" /> with the specified managed string and maximum length.</summary>
+		/// <param name="string">The managed string to initialize the new <see cref="CFMutableString" /> with.</param>
+		/// <param name="maxLength">The maximum length of the new <see cref="CFMutableString" /> instance.</param>
 		public CFMutableString (string @string = "", nint maxLength = default (nint))
 		{
 			// not really needed - but it's consistant with other .ctor
@@ -38,7 +41,7 @@ namespace CoreFoundation {
 			// NSMallocException Out of memory. We suggest restarting the application. If you have an unsaved document, create a backup copy in Finder, then try to save.
 			if (maxLength < 0)
 				throw new ArgumentException (nameof (maxLength));
-			Handle = CFStringCreateMutable (IntPtr.Zero, maxLength);
+			InitializeHandle (CFStringCreateMutable (IntPtr.Zero, maxLength));
 			if (@string is not null) {
 				using var stringPtr = new TransientString (@string, TransientString.Encoding.Unicode);
 				CFStringAppendCharacters (Handle, stringPtr, @string.Length);
@@ -48,6 +51,9 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		static extern /* CFMutableStringRef* */ IntPtr CFStringCreateMutableCopy (/* CFAllocatorRef* */ IntPtr alloc, nint maxLength, /* CFStringRef* */ IntPtr theString);
 
+		/// <summary>Create a new <see cref="CFMutableString" /> with a copy of the specified <see cref="CFString" /> and maximum length.</summary>
+		/// <param name="theString">The managed string to initialize the new <see cref="CFMutableString" /> with.</param>
+		/// <param name="maxLength">The maximum length of the new <see cref="CFMutableString" /> instance.</param>
 		public CFMutableString (CFString theString, nint maxLength = default (nint))
 		{
 			if (theString is null)
@@ -55,7 +61,7 @@ namespace CoreFoundation {
 			// NSMallocException Out of memory. We suggest restarting the application. If you have an unsaved document, create a backup copy in Finder, then try to save.
 			if (maxLength < 0)
 				throw new ArgumentException (nameof (maxLength));
-			Handle = CFStringCreateMutableCopy (IntPtr.Zero, maxLength, theString.GetHandle ());
+			InitializeHandle (CFStringCreateMutableCopy (IntPtr.Zero, maxLength, theString.GetHandle ()));
 			GC.KeepAlive (theString);
 		}
 

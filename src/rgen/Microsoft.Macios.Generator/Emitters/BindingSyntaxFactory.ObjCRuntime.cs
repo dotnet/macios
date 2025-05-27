@@ -137,6 +137,24 @@ static partial class BindingSyntaxFactory {
 	}
 
 	/// <summary>
+	/// Returns the expression needed to cast a byte to a bool to be used in a call. 
+	/// </summary>
+	/// <param name="variableName">The variable to cast.</param>
+	/// <param name="typeInfo">The type information of the variable.</param>
+	/// <returns>A binary expression that casts a byte to a bool.</returns>
+	internal static BinaryExpressionSyntax CastToBool (string variableName, in TypeInfo typeInfo)
+	{
+		// with this exact space count
+		// byte != 0;
+		return BinaryExpression (
+			SyntaxKind.NotEqualsExpression,
+			IdentifierName (variableName),
+			LiteralExpression (
+				SyntaxKind.NumericLiteralExpression,
+				Literal (0))).NormalizeWhitespace ();
+	}
+
+	/// <summary>
 	/// Return the expression needed to cast an invocation that returns a byte to a bool.
 	/// </summary>
 	/// <param name="expression">The byte returning invocation expression.</param>

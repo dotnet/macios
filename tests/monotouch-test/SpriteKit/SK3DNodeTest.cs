@@ -9,12 +9,7 @@ using SceneKit;
 using NUnit.Framework;
 using Xamarin.Utils;
 
-#if NET
 using System.Numerics;
-#else
-using CoreGraphics;
-using OpenTK;
-#endif
 
 namespace MonoTouchFixtures.SpriteKit {
 

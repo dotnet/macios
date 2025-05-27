@@ -9304,8 +9304,6 @@ M:CoreFoundation.CFBundle.IsArchitectureLoadable(CoreFoundation.CFBundle.Archite
 M:CoreFoundation.CFBundle.IsExecutableLoadable(CoreFoundation.CFBundle)
 M:CoreFoundation.CFBundle.IsExecutableLoadable(Foundation.NSUrl)
 M:CoreFoundation.CFException.#ctor(System.String,Foundation.NSString,System.IntPtr,System.String,System.String)
-M:CoreFoundation.CFMutableString.#ctor(CoreFoundation.CFString,System.IntPtr)
-M:CoreFoundation.CFMutableString.#ctor(System.String,System.IntPtr)
 M:CoreFoundation.CFNetwork.ExecuteProxyAutoConfigurationScript(System.String,System.Uri,Foundation.NSError@)
 M:CoreFoundation.CFNetwork.ExecuteProxyAutoConfigurationScriptAsync(System.String,System.Uri,System.Threading.CancellationToken)
 M:CoreFoundation.CFNetwork.ExecuteProxyAutoConfigurationUrl(System.Uri,System.Uri,Foundation.NSError@)

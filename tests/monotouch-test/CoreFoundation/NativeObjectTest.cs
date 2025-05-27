@@ -123,12 +123,10 @@ namespace MonoTouchFixtures.CoreFoundation {
 				Assert.False (x.Equals (x), "self");
 				Assert.True (x.Equals (null), "null");
 			}
-#if NET
 			// check that equality is based on handle only (and not System.Object.Equals)
 			using (var n1 = new NativeObjectPoker ((IntPtr) 42))
 			using (var n2 = new NativeObjectPoker ((IntPtr) 42))
 				Assert.True (n1.Equals (n2), "1");
-#endif
 		}
 
 		[Test]
@@ -138,14 +136,12 @@ namespace MonoTouchFixtures.CoreFoundation {
 			using (var n = new FakeNativeObject ((IntPtr) 42, true)) {
 				Assert.That (n.GetHashCode, Is.EqualTo (0), "GetHashCode");
 			}
-#if NET
 			// check that only the handle is used to compute the hash code of the selector
 			// which means DisposableObject base implementation (not System.Object) is used
 			using (var n = new NativeObjectPoker ((IntPtr) 42)) {
 				Assert.AreNotEqual (n.GetHashCode (), RuntimeHelpers.GetHashCode (n), "GetHashCode-old");
 				Assert.AreEqual (n.GetHashCode (), n.Handle.GetHashCode (), "GetHashCode-net");
 			}
-#endif
 		}
 	}
 }

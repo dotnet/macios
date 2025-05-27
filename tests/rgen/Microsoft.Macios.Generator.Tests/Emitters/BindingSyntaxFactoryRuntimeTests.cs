@@ -479,15 +479,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 			yield return [
 				ReturnTypeForNSObject ("AudioToolbox.AudioBuffers"),
 				ImmutableArray<ArgumentSyntax>.Empty,
-				false,
-				"new AudioToolbox.AudioBuffers ()"
-			];
-
-			yield return [
-				ReturnTypeForNSObject ("AudioToolbox.AudioBuffers"),
-				ImmutableArray<ArgumentSyntax>.Empty,
-				true,
-				"new global::AudioToolbox.AudioBuffers ()"
+				$"new {Global ("AudioToolbox.AudioBuffers")} ()"
 			];
 
 			// single param
@@ -496,39 +488,17 @@ public class BindingSyntaxFactoryRuntimeTests {
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1"))
 				),
-				false,
-				"new AudioToolbox.AudioBuffers (arg1)"
-			];
-
-			yield return [
-				ReturnTypeForNSObject ("AudioToolbox.AudioBuffers"),
-				ImmutableArray.Create (
-					Argument (IdentifierName ("arg1"))
-				),
-				true,
-				"new global::AudioToolbox.AudioBuffers (arg1)"
+				$"new {Global ("AudioToolbox.AudioBuffers")} (arg1)"
 			];
 
 			// several params
-
 			yield return [
 				ReturnTypeForNSObject ("AudioToolbox.AudioBuffers"),
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1")),
 					Argument (IdentifierName ("arg2"))
 				),
-				false,
-				"new AudioToolbox.AudioBuffers (arg1, arg2)"
-			];
-
-			yield return [
-				ReturnTypeForNSObject ("AudioToolbox.AudioBuffers"),
-				ImmutableArray.Create (
-					Argument (IdentifierName ("arg1")),
-					Argument (IdentifierName ("arg2"))
-				),
-				true,
-				"new global::AudioToolbox.AudioBuffers (arg1, arg2)"
+				$"new {Global ("AudioToolbox.AudioBuffers")} (arg1, arg2)"
 			];
 
 			// out params
@@ -540,20 +510,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 						.WithRefOrOutKeyword (Token (SyntaxKind.OutKeyword))
 						.NormalizeWhitespace ()
 				),
-				false,
-				"new AudioToolbox.AudioBuffers (arg1, out arg2)"
-			];
-
-			yield return [
-				ReturnTypeForNSObject ("AudioToolbox.AudioBuffers"),
-				ImmutableArray.Create (
-					Argument (IdentifierName ("arg1")),
-					Argument (IdentifierName ("arg2"))
-						.WithRefOrOutKeyword (Token (SyntaxKind.OutKeyword))
-						.NormalizeWhitespace ()
-				),
-				true,
-				"new global::AudioToolbox.AudioBuffers (arg1, out arg2)"
+				$"new {Global ("AudioToolbox.AudioBuffers")} (arg1, out arg2)"
 			];
 		}
 
@@ -562,9 +519,9 @@ public class BindingSyntaxFactoryRuntimeTests {
 
 	[Theory]
 	[ClassData (typeof (TestDataNew))]
-	void NewTests (TypeInfo typeInfo, ImmutableArray<ArgumentSyntax> arguments, bool global, string expectedDeclaration)
+	void NewTests (TypeInfo typeInfo, ImmutableArray<ArgumentSyntax> arguments, string expectedDeclaration)
 	{
-		var declaration = New (typeInfo, arguments, global);
+		var declaration = New (typeInfo, arguments);
 		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
 	}
 

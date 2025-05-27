@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System;
 using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.CodeAnalysis;
@@ -49,7 +50,7 @@ static partial class BindingSyntaxFactory {
 			
 			// (UIntPtr) (ulong) myParam 
 			{ IsNativeEnum: true }
-				=> CastToNative (auxVariableName, typeInfo.Delegate.ReturnType),
+				=> CastEnumToNative (auxVariableName, typeInfo.Delegate.ReturnType),
 			
 			// auxVariable ? (byte) 1 : (byte) 0; 
 			{ SpecialType: SpecialType.System_Boolean } 
@@ -162,10 +163,45 @@ static partial class BindingSyntaxFactory {
 	}
 
 	/// <summary>
-	/// 
+	/// Gets the low-level native type syntax for a given native enum type.
+	/// This is used when generating code that interacts with native representations of enums.
 	/// </summary>
-	/// <param name="typeInfo"></param>
-	/// <returns></returns>
+	/// <param name="typeInfo">The <see cref="TypeInfo"/> for the native enum.</param>
+	/// <returns>A <see cref="TypeSyntax"/> representing the low-level native type. 
+	/// For <see cref="SpecialType.System_Int64"/> it returns <c>IntPtr</c>,
+	/// for <see cref="SpecialType.System_UInt64"/> it returns <c>UIntPtr</c>,
+	/// and for other underlying types, it returns the corresponding keyword.
+	/// </returns>
+	/// <exception cref="InvalidOperationException">Thrown if the <paramref name="typeInfo"/> does not have an underlying type for the native enum.</exception>
+	internal static TypeSyntax GetNativeEnumLowLevel (in TypeInfo typeInfo)
+	{
+		// based on the underlying type, the only ones in which we have to be careful are
+		// * System_Int64 -> IntPtr
+		// * System_UInt64 -> UIntPtr
+		// in all other cases, we can use the underlying type as is
+		if (typeInfo.EnumUnderlyingType is null)
+			throw new InvalidOperationException ("The type info does not have an underlying type for the native enum.");
+		
+		return typeInfo.EnumUnderlyingType.Value switch {
+			SpecialType.System_Int64 => IntPtr,
+			SpecialType.System_UInt64 => UIntPtr,
+			_ => IdentifierName (typeInfo.EnumUnderlyingType.Value.GetKeyword ()),
+		};
+		
+	}
+
+	/// <summary>
+	/// Gets the low-level native type syntax for a given <see cref="TypeInfo"/>.
+	/// This method is used to determine the appropriate C# type to represent a native type in contexts
+	/// like P/Invoke signatures or trampoline function parameters.
+	/// </summary>
+	/// <param name="typeInfo">The <see cref="TypeInfo"/> for which to get the low-level native type.</param>
+	/// <returns>A <see cref="TypeSyntax"/> representing the low-level native type.
+	/// For example, pointers return their original syntax, delegates and most Objective-C objects return <c>IntPtr</c>,
+	/// native enums return their underlying native type (e.g., <c>int</c>, <c>long</c>, or <c>IntPtr</c>/<c>UIntPtr</c> for 64-bit enums),
+	/// booleans return <c>byte</c>, and arrays or strings return <c>NativeHandle</c>.
+	/// Other types generally return their direct C# identifier syntax.
+	/// </returns>
 	internal static TypeSyntax GetLowLevelType (in TypeInfo typeInfo)
 	{
 #pragma warning disable format
@@ -177,7 +213,7 @@ static partial class BindingSyntaxFactory {
 			{ IsDelegate: true } => IntPtr,
 			
 			// native enum, return the conversion expression to the native type
-			{ IsNativeEnum: true} =>  IdentifierName(typeInfo.EnumUnderlyingType!.Value.GetKeyword ()),
+			{ IsNativeEnum: true} =>  GetNativeEnumLowLevel (typeInfo),
 
 			// boolean, convert it to byte
 			{ SpecialType: SpecialType.System_Boolean } => PredefinedType (Token(SyntaxKind.ByteKeyword)),
@@ -286,7 +322,7 @@ static partial class BindingSyntaxFactory {
 			
 			// native enum, return the conversion expression to the native type
 			{ Type.IsNativeEnum: true} 
-				=> CastToNative (parameter)!,
+				=> CastNativeToEnum (parameter)!,
 			
 			// boolean, convert it to byte
 			{ Type.SpecialType: SpecialType.System_Boolean } 

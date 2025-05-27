@@ -373,7 +373,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				nativeEnumParameter,
-				"(IntPtr) (long) enumParameter",
+				$"({Global ("NS.NativeSampleEnum")}) (long) enumParameter",
 			];
 
 			var boolParameter = @"
@@ -1690,7 +1690,7 @@ namespace NS {
 			yield return [
 				nativeEnumParameter,
 				"DCallback",
-				"unsafe internal delegate void DCallback (global::System.IntPtr block_ptr, long enumParameter);",
+				$"unsafe internal delegate void DCallback (global::System.IntPtr block_ptr, {Global ("System.IntPtr")} enumParameter);",
 			];
 
 			var boolParameter = @"
@@ -2179,7 +2179,7 @@ namespace NS {
 
 			yield return [
 				nativeEnumParameter,
-				"long enumParameter",
+				$"{Global ("System.IntPtr")} enumParameter",
 			];
 
 			var boolParameter = @"
@@ -2541,7 +2541,7 @@ namespace NS {
 
 			yield return [
 				nativeEnumParameter,
-				"internal static unsafe void Invoke (global::System.IntPtr block_ptr, long enumParameter)",
+				$"internal static unsafe void Invoke ({Global ("System.IntPtr")} block_ptr, {Global ("System.IntPtr")} enumParameter)",
 			];
 
 			var boolParameter = @"
@@ -2896,7 +2896,7 @@ namespace NS {
 
 			yield return [
 				nativeEnumParameter,
-				"delegate* unmanaged<global::System.IntPtr, long, void> trampoline = &Invoke;",
+				$"delegate* unmanaged<global::System.IntPtr, {Global ("System.IntPtr")}, void> trampoline = &Invoke;",
 			];
 
 			var boolParameter = @"

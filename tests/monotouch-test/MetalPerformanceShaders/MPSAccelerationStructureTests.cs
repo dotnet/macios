@@ -17,11 +17,7 @@ using MetalPerformanceShaders;
 
 using NUnit.Framework;
 
-#if NET
 using CoreGraphics;
-#else
-using OpenTK;
-#endif
 
 namespace MonoTouchFixtures.MetalPerformanceShaders {
 	[TestFixture]

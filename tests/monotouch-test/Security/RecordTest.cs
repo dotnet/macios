@@ -426,21 +426,13 @@ namespace MonoTouchFixtures.Security {
 		[Test]
 		public void SecRecordRecordTest ()
 		{
-#if NET
 			using (var cert = X509CertificateLoader.LoadCertificate (CertificateTest.mail_google_com))
-#else
-			using (var cert = new X509Certificate (CertificateTest.mail_google_com))
-#endif
 			using (var sc = new SecCertificate (cert))
 			using (var rec = CreateSecRecord (sc)) {
 				Assert.NotNull (rec, "rec is null");
 
 				var ret = rec.GetCertificate ();
 				Assert.That (ret.Handle, Is.Not.EqualTo (IntPtr.Zero), "Handle");
-#if !NET
-				// dotnet PAL layer does not return the same instance
-				Assert.That (ret.Handle, Is.EqualTo (cert.Handle), "Same Handle");
-#endif
 				Assert.That (cert.ToString (true), Is.EqualTo (ret.ToX509Certificate ().ToString (true)), "X509Certificate");
 
 				Assert.Throws<InvalidOperationException> (() => rec.GetKey (), "GetKey should throw");
@@ -451,11 +443,7 @@ namespace MonoTouchFixtures.Security {
 		[Test]
 		public void KeyRecordTest ()
 		{
-#if NET
 			using (var cert = X509CertificateLoader.LoadPkcs12 (ImportExportTest.farscape_pfx, "farscape"))
-#else
-			using (var cert = new X509Certificate2 (ImportExportTest.farscape_pfx, "farscape"))
-#endif
 			using (var policy = SecPolicy.CreateBasicX509Policy ())
 			using (var trust = new SecTrust (cert, policy)) {
 				trust.Evaluate ();

@@ -118,7 +118,10 @@ namespace CoreFoundation {
 		///         <remarks>To be added.</remarks>
 		protected internal override void Retain ()
 		{
-			Handle = BlockLiteral._Block_copy (GetCheckedHandle ());
+			// Retaining a block (using _Block_copy) can move it, if it's originally
+			// a stack-allocated block (it will become a heap-allocated block), and
+			// in that case we end up with a different handle (so we're not)
+			InitializeHandle (BlockLiteral._Block_copy (GetCheckedHandle ()));
 		}
 
 		/// <summary>To be added.</summary>

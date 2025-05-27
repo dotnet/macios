@@ -34,7 +34,6 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			Assert.That (err, Is.EqualTo (expected), "dlclose");
 		}
 
-#if NET
 		[Test]
 		public void GetVariables ()
 		{
@@ -128,6 +127,5 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			public ulong Value;
 		}
 #pragma warning restore CS0649
-#endif
 	}
 }

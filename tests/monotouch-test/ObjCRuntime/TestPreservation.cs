@@ -22,10 +22,8 @@ namespace MonoTouchFixtures {
 			TestAssembly (typeof (TestRuntime).Assembly);
 		}
 
-#if NET
 		[UnconditionalSuppressMessage ("Trimming", "IL2026", Justification = "This test verifies that all tests have been correctly preserved, and fails if that's not the case. It'll thus fail if the trimmer removed anything it didn't expect - and is then technically trimmer safe in that it's aware and react accordingly if there's any behavioral change when the trimmer is enabled.")]
 		[UnconditionalSuppressMessage ("Trimming", "IL2045", Justification = "This test verifies that all tests have been correctly preserved, and fails if that's not the case. It'll thus fail if the trimmer removed anything it didn't expect - and is then technically trimmer safe in that it's aware and react accordingly if there's any behavioral change when the trimmer is enabled.")]
-#endif
 		void TestAssembly (Assembly asm)
 		{
 			var failedTypes = new List<string> ();
@@ -61,9 +59,7 @@ namespace MonoTouchFixtures {
 			return false;
 		}
 
-#if NET
 		[UnconditionalSuppressMessage ("Trimming", "IL2070", Justification = "This test verifies that all tests have been correctly preserved, and fails if that's not the case. It'll thus fail if the trimmer removed anything it didn't expect - and is then technically trimmer safe in that it's aware and react accordingly if there's any behavioral change when the trimmer is enabled.")]
-#endif
 		bool IsTestFixture (Type type)
 		{
 			// what's a test fixture: https://docs.nunit.org/articles/nunit/writing-tests/attributes/testfixture.html

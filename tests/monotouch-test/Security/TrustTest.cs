@@ -69,11 +69,7 @@ namespace MonoTouchFixtures.Security {
 		[Test]
 		public void Trust_Leaf_Only ()
 		{
-#if NET
 			X509Certificate x = X509CertificateLoader.LoadCertificate (CertificateTest.mail_google_com);
-#else
-			X509Certificate x = new X509Certificate (CertificateTest.mail_google_com);
-#endif
 			using (var policy = SecPolicy.CreateSslPolicy (true, "mail.google.com"))
 			using (var trust = new SecTrust (x, policy)) {
 				Trust_Leaf_Only (trust, policy);
@@ -141,11 +137,7 @@ namespace MonoTouchFixtures.Security {
 		[Test]
 		public void HostName_Leaf_Only ()
 		{
-#if NET
 			X509Certificate x = X509CertificateLoader.LoadCertificate (CertificateTest.mail_google_com);
-#else
-			X509Certificate x = new X509Certificate (CertificateTest.mail_google_com);
-#endif
 			// a bad hostname (mismatched) is recoverable (e.g. if you change policy)
 			using (var policy = SecPolicy.CreateSslPolicy (true, "mail.xamarin.com"))
 			using (var trust = new SecTrust (x, policy)) {
@@ -186,11 +178,7 @@ namespace MonoTouchFixtures.Security {
 		[Test]
 		public void NoHostName ()
 		{
-#if NET
 			X509Certificate x = X509CertificateLoader.LoadCertificate (CertificateTest.mail_google_com);
-#else
-			X509Certificate x = new X509Certificate (CertificateTest.mail_google_com);
-#endif
 			// a null host name means "*" (accept any name) which is not stated in Apple documentation
 			using (var policy = SecPolicy.CreateSslPolicy (true, null))
 			using (var trust = new SecTrust (x, policy)) {
@@ -223,11 +211,7 @@ namespace MonoTouchFixtures.Security {
 		[Test]
 		public void Client_Leaf_Only ()
 		{
-#if NET
 			X509Certificate x = X509CertificateLoader.LoadCertificate (CertificateTest.mail_google_com);
-#else
-			X509Certificate x = new X509Certificate (CertificateTest.mail_google_com);
-#endif
 			using (var policy = SecPolicy.CreateSslPolicy (false, null))
 			using (var trust = new SecTrust (x, policy)) {
 				// that certificate stopped being valid on September 30th, 2013 so we validate it with a date earlier than that
@@ -262,11 +246,7 @@ namespace MonoTouchFixtures.Security {
 		[Test]
 		public void Basic_Leaf_Only ()
 		{
-#if NET
 			X509Certificate x = X509CertificateLoader.LoadCertificate (CertificateTest.mail_google_com);
-#else
-			X509Certificate x = new X509Certificate (CertificateTest.mail_google_com);
-#endif
 			using (var policy = SecPolicy.CreateBasicX509Policy ())
 			using (var trust = new SecTrust (x, policy)) {
 				// that certificate stopped being valid on September 30th, 2013 so we validate it with a date earlier than that
@@ -301,13 +281,8 @@ namespace MonoTouchFixtures.Security {
 		public void Trust_NoRoot ()
 		{
 			X509CertificateCollection certs = new X509CertificateCollection ();
-#if NET
 			certs.Add (X509CertificateLoader.LoadCertificate (CertificateTest.mail_google_com));
 			certs.Add (X509CertificateLoader.LoadCertificate (CertificateTest.gts_ca_1c3));
-#else
-			certs.Add (new X509Certificate (CertificateTest.mail_google_com));
-			certs.Add (new X509Certificate (CertificateTest.gts_ca_1c3));
-#endif
 			using (var policy = SecPolicy.CreateSslPolicy (true, "mail.google.com"))
 			using (var trust = new SecTrust (certs, policy)) {
 				Trust_NoRoot (trust, policy);
@@ -344,15 +319,9 @@ namespace MonoTouchFixtures.Security {
 		public void Trust_FullChain ()
 		{
 			X509CertificateCollection certs = new X509CertificateCollection ();
-#if NET
 			certs.Add (X509CertificateLoader.LoadCertificate (CertificateTest.mail_google_com));
 			certs.Add (X509CertificateLoader.LoadCertificate (CertificateTest.gts_ca_1c3));
 			certs.Add (X509CertificateLoader.LoadCertificate (CertificateTest.gts_root_r1));
-#else
-			certs.Add (new X509Certificate (CertificateTest.mail_google_com));
-			certs.Add (new X509Certificate (CertificateTest.gts_ca_1c3));
-			certs.Add (new X509Certificate (CertificateTest.gts_root_r1));
-#endif
 			using (var policy = SecPolicy.CreateSslPolicy (true, "mail.google.com"))
 			using (var trust = new SecTrust (certs, policy)) {
 				Trust_FullChain (trust, policy, certs);
@@ -400,11 +369,7 @@ namespace MonoTouchFixtures.Security {
 		[Test]
 		public void Trust2_Leaf_Only ()
 		{
-#if NET
 			X509Certificate x = X509CertificateLoader.LoadCertificate (CertificateTest.mail_google_com);
-#else
-			X509Certificate x = new X509Certificate2 (CertificateTest.mail_google_com);
-#endif
 			using (var policy = SecPolicy.CreateSslPolicy (true, "mail.google.com"))
 			using (var trust = new SecTrust (x, policy)) {
 				Trust_Leaf_Only (trust, policy);
@@ -415,13 +380,8 @@ namespace MonoTouchFixtures.Security {
 		public void Trust2_NoRoot ()
 		{
 			X509Certificate2Collection certs = new X509Certificate2Collection ();
-#if NET
 			certs.Add (X509CertificateLoader.LoadCertificate (CertificateTest.mail_google_com));
 			certs.Add (X509CertificateLoader.LoadCertificate (CertificateTest.gts_ca_1c3));
-#else
-			certs.Add (new X509Certificate2 (CertificateTest.mail_google_com));
-			certs.Add (new X509Certificate2 (CertificateTest.gts_ca_1c3));
-#endif
 			using (var policy = SecPolicy.CreateSslPolicy (true, "mail.google.com"))
 			using (var trust = new SecTrust (certs, policy)) {
 				Trust_NoRoot (trust, policy);
@@ -432,15 +392,9 @@ namespace MonoTouchFixtures.Security {
 		public void Trust2_FullChain ()
 		{
 			X509Certificate2Collection certs = new X509Certificate2Collection ();
-#if NET
 			certs.Add (X509CertificateLoader.LoadCertificate (CertificateTest.mail_google_com));
 			certs.Add (X509CertificateLoader.LoadCertificate (CertificateTest.gts_ca_1c3));
 			certs.Add (X509CertificateLoader.LoadCertificate (CertificateTest.gts_root_r1));
-#else
-			certs.Add (new X509Certificate2 (CertificateTest.mail_google_com));
-			certs.Add (new X509Certificate2 (CertificateTest.gts_ca_1c3));
-			certs.Add (new X509Certificate2 (CertificateTest.gts_root_r1));
-#endif
 			using (var policy = SecPolicy.CreateSslPolicy (true, "mail.google.com"))
 			using (var trust = new SecTrust (certs, policy)) {
 				Trust_FullChain (trust, policy, certs);
@@ -453,15 +407,9 @@ namespace MonoTouchFixtures.Security {
 			TestRuntime.AssertXcodeVersion (10, 1); // old API exposed publicly
 
 			X509Certificate2Collection certs = new X509Certificate2Collection ();
-#if NET
 			certs.Add (X509CertificateLoader.LoadCertificate (CertificateTest.mail_google_com));
 			certs.Add (X509CertificateLoader.LoadCertificate (CertificateTest.gts_ca_1c3));
 			certs.Add (X509CertificateLoader.LoadCertificate (CertificateTest.gts_root_r1));
-#else
-			certs.Add (new X509Certificate2 (CertificateTest.mail_google_com));
-			certs.Add (new X509Certificate2 (CertificateTest.gts_ca_1c3));
-			certs.Add (new X509Certificate2 (CertificateTest.gts_root_r1));
-#endif
 			using (var policy = SecPolicy.CreateSslPolicy (true, "mail.google.com"))
 			using (var trust = new SecTrust (certs, policy)) {
 				var a = new NSArray<NSData> ();

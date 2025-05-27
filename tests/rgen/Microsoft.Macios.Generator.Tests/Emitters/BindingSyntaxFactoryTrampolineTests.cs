@@ -391,7 +391,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				boolParameter,
-				"boolParameter ? (byte) 1 : (byte) 0",
+				"boolParameter != 0",
 			];
 
 			var nsObjectArray = @"
@@ -604,7 +604,7 @@ namespace NS {
 			yield return [
 				"someTrampolineName",
 				audioBuffer,
-				"new AudioToolbox.AudioBuffers (audioBuffer)",
+				$"new {Global ("AudioToolbox.AudioBuffers")} (audioBuffer)",
 			];
 
 			var outNullableInt = @"

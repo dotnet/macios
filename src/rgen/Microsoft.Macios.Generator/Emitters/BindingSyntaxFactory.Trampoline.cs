@@ -278,7 +278,7 @@ static partial class BindingSyntaxFactory {
 			
 			// boolean, convert it to byte
 			{ Type.SpecialType: SpecialType.System_Boolean } 
-				=> CastToByte (parameter.Name, parameter.Type)!,
+				=> CastToBool (parameter.Name, parameter.Type)!,
 			
 			// array types
 			
@@ -324,7 +324,7 @@ static partial class BindingSyntaxFactory {
 			// {0} == IntPtr.Zero ? null! : new global::CoreMedia.CMSampleBuffer ({0}, false)
 			{ Type.FullyQualifiedName: "CoreMedia.CMSampleBuffer" } =>
 				IntPtrZeroCheck (parameter.Name, 
-					expressionSyntax: New (parameter.Type, [Argument (parameterIdentifier), BoolArgument (false)], true), 
+					expressionSyntax: New (parameter.Type, [Argument (parameterIdentifier), BoolArgument (false)]), 
 					suppressNullableWarning: true),
 			
 			// AudioToolbox.AudioBuffers

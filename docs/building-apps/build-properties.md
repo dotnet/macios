@@ -23,7 +23,7 @@ The directory where resources are stored (this prefix will be removed when copyi
 
 This is the unified resource prefix property for all platforms in .NET.
 
-For legacy projects, this property will be used as the default value for the platform-specific resource prefix properties ([IPhoneResourcePrefix](#iphoneresourceprefix), [MonoMacResourcePrefix](#monomacresourceprefix), and [XamMacResourcePrefix](#xammacresourceprefix)) if they are not explicitly set.
+If not explicitly set, this property will inherit its value from the platform-specific resource prefix properties ([IPhoneResourcePrefix](#iphoneresourceprefix), [MonoMacResourcePrefix](#monomacresourceprefix), or [XamMacResourcePrefix](#xammacresourceprefix) depending on the platform).
 
 Default: "Resources"
 

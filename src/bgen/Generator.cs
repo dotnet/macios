@@ -1669,6 +1669,12 @@ public partial class Generator : IMemberGatherer {
 			print ("invoker = block->GetDelegateForBlock<{0}> ();", ti.DelegateName);
 			indent--; print ("}");
 			print ("");
+			print ("[DynamicDependency (nameof (Create))]");
+			print ($"static {ti.NativeInvokerName} ()");
+			print ("{");
+			print ("\tGC.KeepAlive (null);"); // need to do _something_ (doesn't seem to matter what), otherwise the static cctor (and the DynamicDependency attributes) are trimmed away.
+			print ("}");
+			print ("");
 			print_generated_code ();
 			print ("public unsafe static {0}? Create (IntPtr block)\n{{", ti.UserDelegate); indent++;
 			print ("if (block == IntPtr.Zero)"); indent++;

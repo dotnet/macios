@@ -12,7 +12,7 @@ namespace TestNamespace;
 
 [BindingType<Class>]
 public class AVKitTrampolines {
-	
+
 	[Export<Property> ("avCustomRoutingControllerDelegateCompletionHandler", ArgumentSemantic.Copy)]
 	public partial AVKit.AVCustomRoutingControllerDelegateCompletionHandler AVCustomRoutingControllerDelegateCompletionHandler { get; set; }
 }

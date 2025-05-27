@@ -12,7 +12,7 @@ namespace TestNamespace;
 
 [BindingType<Class>]
 public class AccessibilityTrampolines {
-	
+
 	[Export<Property> ("valueDescriptionProviderHandler", ArgumentSemantic.Copy)]
 	public partial Accessibility.ValueDescriptionProviderHandler ValueDescriptionProviderHandler { get; set; }
 }

@@ -12,7 +12,7 @@ namespace TestNamespace;
 
 [BindingType<Class>]
 public class AudioUnitTrampolines {
-	
+
 	[Export<Property> ("auHostTransportStateBlock", ArgumentSemantic.Copy)]
 	public partial AudioUnit.AUHostTransportStateBlock AUHostTransportStateBlock { get; set; }
 

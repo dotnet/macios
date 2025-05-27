@@ -12,7 +12,7 @@ namespace TestNamespace;
 
 [BindingType<Class>]
 public class CoreImageTrampolines {
-	
+
 	[Export<Property> ("ciKernelRoiCallback", ArgumentSemantic.Copy)]
 	public partial CoreImage.CIKernelRoiCallback CIKernelRoiCallback { get; set; }
 }

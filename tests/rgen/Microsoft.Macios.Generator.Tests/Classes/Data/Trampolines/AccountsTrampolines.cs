@@ -12,7 +12,7 @@ namespace TestNamespace;
 
 [BindingType<Class>]
 public class AccountsTrampolines {
-	
+
 	[Export<Property> ("acAccountStoreRemoveCompletionHandler", ArgumentSemantic.Copy)]
 	public partial Accounts.ACAccountStoreRemoveCompletionHandler ACAccountStoreRemoveCompletionHandler { get; set; }
 

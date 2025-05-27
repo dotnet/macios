@@ -12,7 +12,7 @@ namespace TestNamespace;
 
 [BindingType<Class>]
 public class AuthenticationServicesTrampolines {
-	
+
 	[Export<Property> ("asCredentialIdentityStoreCompletionHandler", ArgumentSemantic.Copy)]
 	public partial AuthenticationServices.ASCredentialIdentityStoreCompletionHandler ASCredentialIdentityStoreCompletionHandler { get; set; }
 

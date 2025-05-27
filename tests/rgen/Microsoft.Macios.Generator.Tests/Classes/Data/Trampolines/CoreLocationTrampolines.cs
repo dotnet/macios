@@ -12,13 +12,13 @@ namespace TestNamespace;
 
 [BindingType<Class>]
 public class CoreLocationTrampolines {
-	
-	[Export("clBackgroundActivitySessionCreateHandler", ArgumentSemantic.Copy)]
+
+	[Export ("clBackgroundActivitySessionCreateHandler", ArgumentSemantic.Copy)]
 	public partial CoreLocation.CLBackgroundActivitySessionCreateHandler CLBackgroundActivitySessionCreateHandler { get; set; }
 
-	[Export("clGeocodeCompletionHandler", ArgumentSemantic.Copy)]
+	[Export ("clGeocodeCompletionHandler", ArgumentSemantic.Copy)]
 	public partial CoreLocation.CLGeocodeCompletionHandler CLGeocodeCompletionHandler { get; set; }
 
-	[Export("clServiceSessionCreateHandler", ArgumentSemantic.Copy)]
+	[Export ("clServiceSessionCreateHandler", ArgumentSemantic.Copy)]
 	public partial CoreLocation.CLServiceSessionCreateHandler CLServiceSessionCreateHandler { get; set; }
 }

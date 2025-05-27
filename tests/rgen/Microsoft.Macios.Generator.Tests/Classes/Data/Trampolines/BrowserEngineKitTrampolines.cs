@@ -12,7 +12,7 @@ namespace TestNamespace;
 
 [BindingType<Class>]
 public class BrowserEngineKitTrampolines {
-	
+
 	[Export<Property> ("beDownloadMonitorBeginMonitoringCallback", ArgumentSemantic.Copy)]
 	public partial BrowserEngineKit.BEDownloadMonitorBeginMonitoringCallback BEDownloadMonitorBeginMonitoringCallback { get; set; }
 

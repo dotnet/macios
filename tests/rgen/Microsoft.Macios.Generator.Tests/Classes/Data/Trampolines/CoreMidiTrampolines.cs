@@ -12,7 +12,7 @@ namespace TestNamespace;
 
 [BindingType<Class>]
 public class CoreMidiTrampolines {
-	
+
 	[Export<Property> ("midiCIDiscoveryResponseDelegate", ArgumentSemantic.Copy)]
 	public partial CoreMidi.MidiCIDiscoveryResponseDelegate MidiCIDiscoveryResponseDelegate { get; set; }
 

@@ -12,7 +12,7 @@ namespace TestNamespace;
 
 [BindingType<Class>]
 public class AVFoundationTrampolines {
-	
+
 	[Export<Property> ("avAssetImageGenerateAsynchronouslyForTimeCompletionHandler", ArgumentSemantic.Copy)]
 	public partial AVFoundation.AVAssetImageGenerateAsynchronouslyForTimeCompletionHandler AVAssetImageGenerateAsynchronouslyForTimeCompletionHandler { get; set; }
 

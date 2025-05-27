@@ -12,7 +12,7 @@ namespace TestNamespace;
 
 [BindingType<Class>]
 public class CloudKitTrampolines {
-	
+
 	[Export<Property> ("ckAcceptPerShareCompletionHandler", ArgumentSemantic.Copy)]
 	public partial CloudKit.CKAcceptPerShareCompletionHandler CKAcceptPerShareCompletionHandler { get; set; }
 

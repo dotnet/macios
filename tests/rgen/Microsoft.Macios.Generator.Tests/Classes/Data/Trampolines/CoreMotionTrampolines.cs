@@ -12,7 +12,7 @@ namespace TestNamespace;
 
 [BindingType<Class>]
 public class CoreMotionTrampolines {
-	
+
 	[Export<Property> ("cmAccelerometerHandler", ArgumentSemantic.Copy)]
 	public partial CoreMotion.CMAccelerometerHandler CMAccelerometerHandler { get; set; }
 

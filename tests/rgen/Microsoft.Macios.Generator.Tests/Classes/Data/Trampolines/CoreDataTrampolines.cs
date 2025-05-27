@@ -12,7 +12,7 @@ namespace TestNamespace;
 
 [BindingType<Class>]
 public class CoreDataTrampolines {
-	
+
 	[Export<Property> ("nsBatchInsertRequestDictionaryHandler", ArgumentSemantic.Copy)]
 	public partial CoreData.NSBatchInsertRequestDictionaryHandler NSBatchInsertRequestDictionaryHandler { get; set; }
 

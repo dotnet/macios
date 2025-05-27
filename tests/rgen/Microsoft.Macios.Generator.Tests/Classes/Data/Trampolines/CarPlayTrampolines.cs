@@ -12,7 +12,7 @@ namespace TestNamespace;
 
 [BindingType<Class>]
 public class CarPlayTrampolines {
-	
+
 	[Export<Property> ("cpBarButtonHandler", ArgumentSemantic.Copy)]
 	public partial CarPlay.CPBarButtonHandler CPBarButtonHandler { get; set; }
 

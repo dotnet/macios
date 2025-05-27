@@ -23,6 +23,14 @@ namespace Microsoft.Macios.Generator.Tests.Classes.Data.TestNamespace;
 public partial class TrampolinePropertyTests
 {
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	const string selCreateObjectHandlerX = "createObjectHandler";
+	static readonly global::ObjCRuntime.NativeHandle selCreateObjectHandlerXHandle = global::ObjCRuntime.Selector.GetHandle ("createObjectHandler");
+
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	const string selSetCreateObjectHandler_X = "setCreateObjectHandler:";
+	static readonly global::ObjCRuntime.NativeHandle selSetCreateObjectHandler_XHandle = global::ObjCRuntime.Selector.GetHandle ("setCreateObjectHandler:");
+
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selCompletionHandlerX = "completionHandler";
 	static readonly global::ObjCRuntime.NativeHandle selCompletionHandlerXHandle = global::ObjCRuntime.Selector.GetHandle ("completionHandler");
 
@@ -69,6 +77,22 @@ public partial class TrampolinePropertyTests
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selSetIntActionHandler_X = "setIntActionHandler:";
 	static readonly global::ObjCRuntime.NativeHandle selSetIntActionHandler_XHandle = global::ObjCRuntime.Selector.GetHandle ("setIntActionHandler:");
+
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	const string selBoolActionHandlerX = "boolActionHandler";
+	static readonly global::ObjCRuntime.NativeHandle selBoolActionHandlerXHandle = global::ObjCRuntime.Selector.GetHandle ("boolActionHandler");
+
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	const string selSetBoolActionHandler_X = "setBoolActionHandler:";
+	static readonly global::ObjCRuntime.NativeHandle selSetBoolActionHandler_XHandle = global::ObjCRuntime.Selector.GetHandle ("setBoolActionHandler:");
+
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	const string selManualRenderingCallbackX = "manualRenderingCallback";
+	static readonly global::ObjCRuntime.NativeHandle selManualRenderingCallbackXHandle = global::ObjCRuntime.Selector.GetHandle ("manualRenderingCallback");
+
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	const string selSetManualRenderingCallback_X = "setManualRenderingCallback:";
+	static readonly global::ObjCRuntime.NativeHandle selSetManualRenderingCallback_XHandle = global::ObjCRuntime.Selector.GetHandle ("setManualRenderingCallback:");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	static readonly global::ObjCRuntime.NativeHandle class_ptr = global::ObjCRuntime.Class.GetHandle ("TrampolinePropertyTests");
@@ -156,6 +180,27 @@ public partial class TrampolinePropertyTests
 	protected internal TrampolinePropertyTests (global::ObjCRuntime.NativeHandle handle) : base (handle) {}
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public partial global::System.Action<bool> BoolActionHandler
+	{
+		get
+		{
+			global::System.Action<bool> ret;
+			if (IsDirectBinding) {
+				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("boolActionHandler"));
+			} else {
+				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("boolActionHandler"));
+			}
+			GC.KeepAlive (this);
+			return ret;
+		}
+
+		set
+		{
+			throw new NotImplementedException();
+		}
+	}
+
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public partial global::System.Action CompletionHandler
 	{
 		get
@@ -165,6 +210,27 @@ public partial class TrampolinePropertyTests
 				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("completionHandler"));
 			} else {
 				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("completionHandler"));
+			}
+			GC.KeepAlive (this);
+			return ret;
+		}
+
+		set
+		{
+			throw new NotImplementedException();
+		}
+	}
+
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public partial global::Microsoft.Macios.Generator.Tests.Classes.Data.TestNamespace.TrampolinePropertyTests.CreateObject CreateObjectHandler
+	{
+		get
+		{
+			global::Microsoft.Macios.Generator.Tests.Classes.Data.TestNamespace.TrampolinePropertyTests.CreateObject ret;
+			if (IsDirectBinding) {
+				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("createObjectHandler"));
+			} else {
+				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("createObjectHandler"));
 			}
 			GC.KeepAlive (this);
 			return ret;
@@ -291,6 +357,27 @@ public partial class TrampolinePropertyTests
 				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("kernelRoiCallback"));
 			} else {
 				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("kernelRoiCallback"));
+			}
+			GC.KeepAlive (this);
+			return ret;
+		}
+
+		set
+		{
+			throw new NotImplementedException();
+		}
+	}
+
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public partial global::AVFoundation.AVAudioEngineManualRenderingBlock ManualRendering
+	{
+		get
+		{
+			global::AVFoundation.AVAudioEngineManualRenderingBlock ret;
+			if (IsDirectBinding) {
+				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("manualRenderingCallback"));
+			} else {
+				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("manualRenderingCallback"));
 			}
 			GC.KeepAlive (this);
 			return ret;

@@ -64,7 +64,7 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 			Assert.Equal (expectedCast, expression?.ToString ());
 		}
 	}
-	
+
 	class TestDataCastNativeToEnum : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{
@@ -100,7 +100,7 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
 	}
-	
+
 	[Theory]
 	[ClassData (typeof (TestDataCastNativeToEnum))]
 	void CastNativeToEnumTests (Parameter parameter, string? expectedCast)

@@ -181,13 +181,13 @@ static partial class BindingSyntaxFactory {
 		// in all other cases, we can use the underlying type as is
 		if (typeInfo.EnumUnderlyingType is null)
 			throw new InvalidOperationException ("The type info does not have an underlying type for the native enum.");
-		
+
 		return typeInfo.EnumUnderlyingType.Value switch {
 			SpecialType.System_Int64 => IntPtr,
 			SpecialType.System_UInt64 => UIntPtr,
 			_ => IdentifierName (typeInfo.EnumUnderlyingType.Value.GetKeyword ()),
 		};
-		
+
 	}
 
 	/// <summary>

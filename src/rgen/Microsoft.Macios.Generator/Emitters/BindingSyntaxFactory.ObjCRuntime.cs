@@ -68,7 +68,7 @@ static partial class BindingSyntaxFactory {
 				.WithLeadingTrivia (Space)); // (backingfield) (variable) cast
 		return castExpression;
 	}
-	
+
 	/// <summary>
 	/// Returns the expression needed to cast a native representation of an enum back to its enum type.
 	/// </summary>
@@ -86,7 +86,7 @@ static partial class BindingSyntaxFactory {
 	/// <returns>The cast C# expression, or null if the parameter is not a native enum.</returns>
 	internal static CastExpressionSyntax? CastNativeToEnum (in DelegateParameter parameter)
 		=> CastNativeToEnum (parameter.Name, parameter.Type);
-	
+
 	/// <summary>
 	/// Returns the expression needed to cast a native representation of an enum back to its enum type.
 	/// </summary>

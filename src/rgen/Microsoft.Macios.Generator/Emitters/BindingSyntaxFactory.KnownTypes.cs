@@ -144,7 +144,7 @@ static partial class BindingSyntaxFactory {
 	public readonly static TypeSyntax IntPtr = StringExtensions.GetIdentifierName (
 		@namespace: ["System"],
 		@class: "IntPtr");
-	
+
 	/// <summary>
 	/// TypeSyntax for System.UIntPtr.
 	/// </summary>

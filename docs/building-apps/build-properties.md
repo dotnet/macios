@@ -21,8 +21,6 @@ The default behavior is to use `xcrun altool`.
 
 The directory where resources are stored (this prefix will be removed when copying resources to the app bundle).
 
-This is the unified resource prefix property for all platforms in .NET.
-
 If not explicitly set, this property will inherit its value from the platform-specific resource prefix properties ([IPhoneResourcePrefix](#iphoneresourceprefix), [MonoMacResourcePrefix](#monomacresourceprefix), or [XamMacResourcePrefix](#xammacresourceprefix) depending on the platform).
 
 Default: "Resources"

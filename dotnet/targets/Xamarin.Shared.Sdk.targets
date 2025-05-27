@@ -2181,7 +2181,7 @@
 		<MacDevMessage
 			Error="true"
 			ResourceName="E0191"
-			FormatArguments="Microsoft.$(_PlatformName);$(_PlatformName);$(_ShortPackageVersion);$(_RecommendedXcodeVersion);$(_XcodeVersion)"
+			FormatArguments="$(_PlatformName);$(_ShortPackageVersion);$(_RecommendedXcodeVersion);$(_XcodeVersion)"
 			Condition="'$(_IsMatchingXcode)' != 'true'"
 		/>
 	</Target>

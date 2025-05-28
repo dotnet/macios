@@ -18,7 +18,7 @@ readonly partial struct DelegateParameter {
 	public static bool TryCreate (IParameterSymbol symbol,
 		[NotNullWhen (true)] out DelegateParameter? parameter)
 	{
-		parameter = new (symbol.Ordinal, new (symbol.Type), symbol.Name) {
+		parameter = new (symbol.Ordinal, new (symbol.Type), symbol.GetSaveName ()) {
 			ForcedType = symbol.GetForceTypeData (),
 			IsOptional = symbol.IsOptional,
 			IsParams = symbol.IsParams,

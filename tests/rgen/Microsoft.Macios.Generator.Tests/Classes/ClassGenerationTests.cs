@@ -47,6 +47,9 @@ public class ClassGenerationTests : BaseGeneratorTestClass {
 			(ApplePlatform.TVOS, "TrampolinePropertyTests", "TrampolinePropertyTests.cs", "ExpectedTrampolinePropertyTests.cs", null, "ExpectedTrampolinePropertyTestsTrampolines.cs"),
 			(ApplePlatform.MacCatalyst, "TrampolinePropertyTests", "TrampolinePropertyTests.cs", "ExpectedTrampolinePropertyTests.cs", null, "ExpectedTrampolinePropertyTestsTrampolines.cs"),
 			(ApplePlatform.MacOSX, "TrampolinePropertyTests", "TrampolinePropertyTests.cs", "ExpectedTrampolinePropertyTests.cs", null, "ExpectedTrampolinePropertyTestsTrampolines.cs"),
+			
+			// ARKit trampoline tests, only present on iOS
+			(ApplePlatform.iOS, "ARKitTrampolines", "Trampolines/ARKitTrampolines.cs", "Trampolines/ExpectedARKitTrampolinesProperties.cs", null, "Trampolines/ExpectedARKitTrampolinesTrampolines.cs"),
 		};
 
 		public IEnumerator<object []> GetEnumerator ()

@@ -54,30 +54,30 @@ class TrampolineEmitter (
 				foreach (var argument in argumentSyntax) {
 					invokeMethod.Write (argument.Initializers);
 				}
-				
+
 				// get the delegate from the block literal to execute with the trampoline
 				invokeMethod.WriteLine ($"var {delegateVariableName} = {BlockLiteral}.GetTarget<{delegateIdentifier}> ({Nomenclator.GetTrampolineBlockParameterName (typeInfo.Delegate!.Parameters)});");
-				
+
 				// if the deletate is null, we return default, otherwise we call the delegate
 				using (var ifBlock = invokeMethod.CreateBlock ($"if ({delegateVariableName} is not null)", true)) {
-					
+
 					// build any needed pre conversion operations before calling the delegate
 					foreach (var argument in argumentSyntax) {
 						ifBlock.Write (argument.PreDelegateCallConversion);
 					}
-					
+
 					ifBlock.WriteLine ($"{CallTrampolineDelegate (typeInfo.Delegate!, argumentSyntax)}");
-					
+
 					// build any needed post conversion operations after calling the delegate
 					foreach (var argument in argumentSyntax) {
 						ifBlock.Write (argument.PostDelegateCallConversion);
 					}
-					
+
 					// perform any needed
-					if (typeInfo.Delegate.ReturnType.SpecialType != SpecialType.System_Void) 
-						ifBlock.WriteLine($"return {GetTrampolineInvokeReturnType (typeInfo, Nomenclator.GetReturnVariableName ())};");
+					if (typeInfo.Delegate.ReturnType.SpecialType != SpecialType.System_Void)
+						ifBlock.WriteLine ($"return {GetTrampolineInvokeReturnType (typeInfo, Nomenclator.GetReturnVariableName ())};");
 				}
-				if (typeInfo.Delegate.ReturnType.SpecialType != SpecialType.System_Void) 
+				if (typeInfo.Delegate.ReturnType.SpecialType != SpecialType.System_Void)
 					invokeMethod.WriteLine ("return default;");
 			}
 

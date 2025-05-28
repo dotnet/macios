@@ -7,7 +7,7 @@ using Microsoft.CodeAnalysis.CSharp;
 namespace Microsoft.Macios.Generator.Extensions;
 
 public static class ParameterSymbolExtensions {
-	
+
 	/// <summary>
 	/// Gets the safe name of the parameter symbol, prefixing with "@" if it's a C# keyword.
 	/// </summary>
@@ -21,8 +21,8 @@ public static class ParameterSymbolExtensions {
 		// identifiers. However, when working with Roslyn's IParameterSymbol, the Name property returns the identifier
 		// without the @ prefix because the @ is only required in the source code to escape the keyword.
 		// Internally, the compiler treats the name as the unescaped version.
-		string parameterName = SyntaxFacts.GetKeywordKind(symbol.Name) != SyntaxKind.None 
-			? "@" + symbol.Name 
+		string parameterName = SyntaxFacts.GetKeywordKind (symbol.Name) != SyntaxKind.None
+			? "@" + symbol.Name
 			: symbol.Name;
 		return parameterName;
 	}

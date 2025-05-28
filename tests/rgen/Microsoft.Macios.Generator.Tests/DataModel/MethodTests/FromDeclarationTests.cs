@@ -160,7 +160,7 @@ namespace NS {
 					]
 				)
 			];
-			
+
 			const string singleParameterKeywordNameMethod = @"
 using System;
 

@@ -523,7 +523,7 @@ namespace NS {
 					]
 				)
 			];
-			
+
 			const string customDelegateKeywordParam = @"
 using System;
 

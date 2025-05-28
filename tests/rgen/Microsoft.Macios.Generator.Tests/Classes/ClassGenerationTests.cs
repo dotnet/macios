@@ -36,7 +36,7 @@ public class ClassGenerationTests : BaseGeneratorTestClass {
 			(ApplePlatform.MacCatalyst, "ThreadSafeUIKitPropertyTests", "ThreadSafeUIKitPropertyTests.cs", "ExpectedThreadSafeUIKitPropertyTests.cs", null, null),
 			(ApplePlatform.MacOSX, "AppKitPropertyTests", "AppKitPropertyTests.cs", "ExpectedAppKitPropertyTests.cs", null, null),
 			(ApplePlatform.MacOSX, "ThreadSafeAppKitPropertyTests", "ThreadSafeAppKitPropertyTests.cs", "ExpectedThreadSafeAppKitPropertyTests.cs", null, null),
-			
+
 			(ApplePlatform.iOS, "NSUserDefaults", "NSUserDefaults.cs", "ExpectedNSUserDefaults.cs", null, null),
 			(ApplePlatform.TVOS, "NSUserDefaults", "NSUserDefaults.cs", "ExpectedNSUserDefaults.cs", null, null),
 			(ApplePlatform.MacCatalyst, "NSUserDefaults", "NSUserDefaults.cs", "ExpectedNSUserDefaults.cs", null, null),

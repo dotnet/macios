@@ -1973,7 +1973,7 @@ namespace NS {
 }
 ";
 			yield return [
-				intPtrParameters ,
+				intPtrParameters,
 				"DCallback",
 				"unsafe internal delegate int DCallback (global::System.IntPtr block_ptr, global::System.IntPtr timestamp, uint frameCount, global::System.IntPtr inputData);",
 			];

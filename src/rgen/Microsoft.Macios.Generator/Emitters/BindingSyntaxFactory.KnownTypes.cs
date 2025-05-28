@@ -146,6 +146,13 @@ static partial class BindingSyntaxFactory {
 		@class: "IntPtr");
 
 	/// <summary>
+	/// TypeSyntax for System.UIntPtr.
+	/// </summary>
+	public readonly static TypeSyntax UIntPtr = StringExtensions.GetIdentifierName (
+		@namespace: ["System"],
+		@class: "UIntPtr");
+
+	/// <summary>
 	/// TypeSyntax for System.EventHandler.
 	/// </summary>
 	public readonly static TypeSyntax EventHandler = StringExtensions.GetIdentifierName (

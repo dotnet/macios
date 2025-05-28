@@ -645,4 +645,49 @@ namespace Example {
 		Assert.Equal ("Example.NS.ExampleClass", changes.Value.Parameters [0].Type.FullyQualifiedName);
 		Assert.Equal ("Example.NS", string.Join ('.', changes.Value.Parameters [0].Type.Namespace));
 	}
+
+	[Theory]
+	[AllSupportedPlatforms]
+	void TypeInfoNestedCase (ApplePlatform platform)
+	{
+		var inputText = @"
+using System;
+using System.Collections.Generic;
+using ObjCRuntime;
+using System.Collections.Generic;
+
+namespace Example {
+	namespace NS {
+
+		public class MyClass {
+
+			public class ExampleClass {
+				public int Number => 0;
+			}
+
+			public int ProcessPointer (ExampleClass pointer)
+			{
+				return pointer.Number;
+			}
+		}
+	}
+}
+";
+		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
+		Assert.Single (syntaxTrees);
+		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
+		var declaration = syntaxTrees [0].GetRoot ()
+			.DescendantNodes ().OfType<MethodDeclarationSyntax> ()
+			.FirstOrDefault ();
+		Assert.NotNull (declaration);
+		Assert.True (Method.TryCreate (declaration, semanticModel, out var changes));
+		Assert.NotNull (changes);
+		// ensure that the method has a single parameter
+		Assert.Single (changes.Value.Parameters);
+		// ensure that the first parameter is a pointer
+		Assert.False (changes.Value.Parameters [0].Type.IsGenericType);
+		Assert.Equal ("MyClass.ExampleClass", changes.Value.Parameters [0].Type.Name);
+		Assert.Equal ("Example.NS.MyClass.ExampleClass", changes.Value.Parameters [0].Type.FullyQualifiedName);
+		Assert.Equal ("Example.NS", string.Join ('.', changes.Value.Parameters [0].Type.Namespace));
+	}
 }

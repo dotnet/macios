@@ -15,7 +15,7 @@ public static class ParameterSymbolExtensions {
 	/// <returns>The safe name of the parameter, suitable for use in generated C# code. 
 	/// For example, if the parameter name is "event", this method returns "@event". 
 	/// Otherwise, it returns the original parameter name.</returns>
-	public static string GetSaveName (this IParameterSymbol symbol)
+	public static string GetSafeName (this IParameterSymbol symbol)
 	{
 		// In C#, the @ symbol is used as an escape character to allow reserved keywords (like event) to be used as
 		// identifiers. However, when working with Roslyn's IParameterSymbol, the Name property returns the identifier

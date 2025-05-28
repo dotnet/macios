@@ -47,6 +47,11 @@ public class ClassGenerationTests : BaseGeneratorTestClass {
 			(ApplePlatform.TVOS, "TrampolinePropertyTests", "TrampolinePropertyTests.cs", "ExpectedTrampolinePropertyTests.cs", null, "ExpectedTrampolinePropertyTestsTrampolines.cs"),
 			(ApplePlatform.MacCatalyst, "TrampolinePropertyTests", "TrampolinePropertyTests.cs", "ExpectedTrampolinePropertyTests.cs", null, "ExpectedTrampolinePropertyTestsTrampolines.cs"),
 			(ApplePlatform.MacOSX, "TrampolinePropertyTests", "TrampolinePropertyTests.cs", "ExpectedTrampolinePropertyTests.cs", null, "ExpectedTrampolinePropertyTestsTrampolines.cs"),
+			
+			// avfoundation trampoline tests, we are ignoring tvOS because is the same as iOS BUT with the AVCaptureCompletionHandler missing and we want to test that delgate
+			(ApplePlatform.iOS, "AVFoundationTrampolines", "Trampolines/AVFoundationTrampolines.cs", "Trampolines/ExpectedAVFoundationTrampolinesProperties.cs", null, "Trampolines/ExpectedAVFoundationTrampolinesTrampolines.cs"),
+			(ApplePlatform.MacCatalyst, "AVFoundationTrampolines", "Trampolines/AVFoundationTrampolines.cs", "Trampolines/ExpectedAVFoundationTrampolinesProperties.cs", null, "Trampolines/ExpectedAVFoundationTrampolinesTrampolines.cs"),
+			(ApplePlatform.MacOSX, "AVFoundationTrampolines", "Trampolines/AVFoundationTrampolines.cs", "Trampolines/ExpectedAVFoundationTrampolinesProperties.cs", null, "Trampolines/ExpectedAVFoundationTrampolinesTrampolines.cs"),
 		};
 
 		public IEnumerator<object []> GetEnumerator ()

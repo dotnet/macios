@@ -2,7 +2,9 @@
 
 #nullable enable
 
+using AVFoundation;
 using CoreGraphics;
+using CoreImage;
 using Foundation;
 using ObjCBindings;
 using ObjCRuntime;
@@ -21,12 +23,76 @@ namespace Microsoft.Macios.Generator.Tests.Classes.Data.TestNamespace;
 public partial class TrampolinePropertyTests
 {
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	const string selCreateObjectHandlerX = "createObjectHandler";
+	static readonly global::ObjCRuntime.NativeHandle selCreateObjectHandlerXHandle = global::ObjCRuntime.Selector.GetHandle ("createObjectHandler");
+
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	const string selSetCreateObjectHandler_X = "setCreateObjectHandler:";
+	static readonly global::ObjCRuntime.NativeHandle selSetCreateObjectHandler_XHandle = global::ObjCRuntime.Selector.GetHandle ("setCreateObjectHandler:");
+
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selCompletionHandlerX = "completionHandler";
 	static readonly global::ObjCRuntime.NativeHandle selCompletionHandlerXHandle = global::ObjCRuntime.Selector.GetHandle ("completionHandler");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selSetCompletionHandler_X = "setCompletionHandler:";
 	static readonly global::ObjCRuntime.NativeHandle selSetCompletionHandler_XHandle = global::ObjCRuntime.Selector.GetHandle ("setCompletionHandler:");
+
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	const string selDuplicateCompletionHandlerX = "duplicateCompletionHandler";
+	static readonly global::ObjCRuntime.NativeHandle selDuplicateCompletionHandlerXHandle = global::ObjCRuntime.Selector.GetHandle ("duplicateCompletionHandler");
+
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	const string selSetDuplicateCompletionHandler_X = "setDuplicateCompletionHandler:";
+	static readonly global::ObjCRuntime.NativeHandle selSetDuplicateCompletionHandler_XHandle = global::ObjCRuntime.Selector.GetHandle ("setDuplicateCompletionHandler:");
+
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	const string selImageGeneratorCompletionHandlerX = "imageGeneratorCompletionHandler";
+	static readonly global::ObjCRuntime.NativeHandle selImageGeneratorCompletionHandlerXHandle = global::ObjCRuntime.Selector.GetHandle ("imageGeneratorCompletionHandler");
+
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	const string selSetImageGeneratorCompletionHandler_X = "setImageGeneratorCompletionHandler:";
+	static readonly global::ObjCRuntime.NativeHandle selSetImageGeneratorCompletionHandler_XHandle = global::ObjCRuntime.Selector.GetHandle ("setImageGeneratorCompletionHandler:");
+
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	const string selKernelRoiCallbackX = "kernelRoiCallback";
+	static readonly global::ObjCRuntime.NativeHandle selKernelRoiCallbackXHandle = global::ObjCRuntime.Selector.GetHandle ("kernelRoiCallback");
+
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	const string selSetKernelRoiCallback_X = "setKernelRoiCallback:";
+	static readonly global::ObjCRuntime.NativeHandle selSetKernelRoiCallback_XHandle = global::ObjCRuntime.Selector.GetHandle ("setKernelRoiCallback:");
+
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	const string selStringActionHandlerX = "stringActionHandler";
+	static readonly global::ObjCRuntime.NativeHandle selStringActionHandlerXHandle = global::ObjCRuntime.Selector.GetHandle ("stringActionHandler");
+
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	const string selSetStringActionHandler_X = "setStringActionHandler:";
+	static readonly global::ObjCRuntime.NativeHandle selSetStringActionHandler_XHandle = global::ObjCRuntime.Selector.GetHandle ("setStringActionHandler:");
+
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	const string selIntActionHandlerX = "intActionHandler";
+	static readonly global::ObjCRuntime.NativeHandle selIntActionHandlerXHandle = global::ObjCRuntime.Selector.GetHandle ("intActionHandler");
+
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	const string selSetIntActionHandler_X = "setIntActionHandler:";
+	static readonly global::ObjCRuntime.NativeHandle selSetIntActionHandler_XHandle = global::ObjCRuntime.Selector.GetHandle ("setIntActionHandler:");
+
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	const string selBoolActionHandlerX = "boolActionHandler";
+	static readonly global::ObjCRuntime.NativeHandle selBoolActionHandlerXHandle = global::ObjCRuntime.Selector.GetHandle ("boolActionHandler");
+
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	const string selSetBoolActionHandler_X = "setBoolActionHandler:";
+	static readonly global::ObjCRuntime.NativeHandle selSetBoolActionHandler_XHandle = global::ObjCRuntime.Selector.GetHandle ("setBoolActionHandler:");
+
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	const string selManualRenderingCallbackX = "manualRenderingCallback";
+	static readonly global::ObjCRuntime.NativeHandle selManualRenderingCallbackXHandle = global::ObjCRuntime.Selector.GetHandle ("manualRenderingCallback");
+
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	const string selSetManualRenderingCallback_X = "setManualRenderingCallback:";
+	static readonly global::ObjCRuntime.NativeHandle selSetManualRenderingCallback_XHandle = global::ObjCRuntime.Selector.GetHandle ("setManualRenderingCallback:");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	static readonly global::ObjCRuntime.NativeHandle class_ptr = global::ObjCRuntime.Class.GetHandle ("TrampolinePropertyTests");
@@ -114,6 +180,27 @@ public partial class TrampolinePropertyTests
 	protected internal TrampolinePropertyTests (global::ObjCRuntime.NativeHandle handle) : base (handle) {}
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public partial global::System.Action<bool> BoolActionHandler
+	{
+		get
+		{
+			global::System.Action<bool> ret;
+			if (IsDirectBinding) {
+				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("boolActionHandler"));
+			} else {
+				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("boolActionHandler"));
+			}
+			GC.KeepAlive (this);
+			return ret;
+		}
+
+		set
+		{
+			throw new NotImplementedException();
+		}
+	}
+
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public partial global::System.Action CompletionHandler
 	{
 		get
@@ -123,6 +210,195 @@ public partial class TrampolinePropertyTests
 				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("completionHandler"));
 			} else {
 				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("completionHandler"));
+			}
+			GC.KeepAlive (this);
+			return ret;
+		}
+
+		set
+		{
+			throw new NotImplementedException();
+		}
+	}
+
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public partial global::Microsoft.Macios.Generator.Tests.Classes.Data.TestNamespace.TrampolinePropertyTests.CreateObject CreateObjectHandler
+	{
+		get
+		{
+			global::Microsoft.Macios.Generator.Tests.Classes.Data.TestNamespace.TrampolinePropertyTests.CreateObject ret;
+			if (IsDirectBinding) {
+				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("createObjectHandler"));
+			} else {
+				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("createObjectHandler"));
+			}
+			GC.KeepAlive (this);
+			return ret;
+		}
+
+		set
+		{
+			throw new NotImplementedException();
+		}
+	}
+
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public partial global::System.Action DuplicateCompletionHandler
+	{
+		get
+		{
+			global::System.Action ret;
+			if (IsDirectBinding) {
+				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("duplicateCompletionHandler"));
+			} else {
+				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("duplicateCompletionHandler"));
+			}
+			GC.KeepAlive (this);
+			return ret;
+		}
+
+		set
+		{
+			throw new NotImplementedException();
+		}
+	}
+
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public partial global::AVFoundation.AVAssetImageGenerator.AsynchronouslyForTimeCompletionHandler ImageGeneratorCompletionHandler
+	{
+		get
+		{
+			global::AVFoundation.AVAssetImageGenerator.AsynchronouslyForTimeCompletionHandler ret;
+			if (IsDirectBinding) {
+				ret = global::ObjCRuntime.Messaging._objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("imageGeneratorCompletionHandler"));
+			} else {
+				ret = global::ObjCRuntime.Messaging._objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("imageGeneratorCompletionHandler"));
+			}
+			GC.KeepAlive (this);
+			return ret;
+		}
+
+		set
+		{
+			throw new NotImplementedException();
+		}
+	}
+
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public partial global::AVFoundation.AVAssetImageGenerateAsynchronouslyForTimeCompletionHandler ImageGeneratorCompletionHandler
+	{
+		get
+		{
+			global::AVFoundation.AVAssetImageGenerateAsynchronouslyForTimeCompletionHandler ret;
+			if (IsDirectBinding) {
+				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("imageGeneratorCompletionHandler"));
+			} else {
+				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("imageGeneratorCompletionHandler"));
+			}
+			GC.KeepAlive (this);
+			return ret;
+		}
+
+		set
+		{
+			throw new NotImplementedException();
+		}
+	}
+
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public partial global::System.Action<int> IntActionHandler
+	{
+		get
+		{
+			global::System.Action<int> ret;
+			if (IsDirectBinding) {
+				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("intActionHandler"));
+			} else {
+				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("intActionHandler"));
+			}
+			GC.KeepAlive (this);
+			return ret;
+		}
+
+		set
+		{
+			throw new NotImplementedException();
+		}
+	}
+
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public partial global::CoreImage.CIKernelRoiCallback KernelRoiCallback
+	{
+		get
+		{
+			global::CoreImage.CIKernelRoiCallback ret;
+			if (IsDirectBinding) {
+				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("kernelRoiCallback"));
+			} else {
+				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("kernelRoiCallback"));
+			}
+			GC.KeepAlive (this);
+			return ret;
+		}
+
+		set
+		{
+			throw new NotImplementedException();
+		}
+	}
+
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public partial global::CoreImage.CIKernelRoiCallback KernelRoiCallback
+	{
+		get
+		{
+			global::CoreImage.CIKernelRoiCallback ret;
+			if (IsDirectBinding) {
+				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("kernelRoiCallback"));
+			} else {
+				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("kernelRoiCallback"));
+			}
+			GC.KeepAlive (this);
+			return ret;
+		}
+
+		set
+		{
+			throw new NotImplementedException();
+		}
+	}
+
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public partial global::AVFoundation.AVAudioEngineManualRenderingBlock ManualRendering
+	{
+		get
+		{
+			global::AVFoundation.AVAudioEngineManualRenderingBlock ret;
+			if (IsDirectBinding) {
+				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("manualRenderingCallback"));
+			} else {
+				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("manualRenderingCallback"));
+			}
+			GC.KeepAlive (this);
+			return ret;
+		}
+
+		set
+		{
+			throw new NotImplementedException();
+		}
+	}
+
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public partial global::System.Action<string> StringActionHandler
+	{
+		get
+		{
+			global::System.Action<string> ret;
+			if (IsDirectBinding) {
+				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("stringActionHandler"));
+			} else {
+				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("stringActionHandler"));
 			}
 			GC.KeepAlive (this);
 			return ret;

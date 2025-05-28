@@ -12,7 +12,7 @@ namespace TestNamespace;
 
 [BindingType<Class>]
 public class AVFoundationTrampolines {
-	
+
 	[Export<Property> ("avAssetImageGenerateAsynchronouslyForTimeCompletionHandler", ArgumentSemantic.Copy)]
 	public partial AVFoundation.AVAssetImageGenerateAsynchronouslyForTimeCompletionHandler AVAssetImageGenerateAsynchronouslyForTimeCompletionHandler { get; set; }
 
@@ -87,7 +87,7 @@ public class AVFoundationTrampolines {
 
 	[Export<Property> ("avMutableVideoCompositionCreateCallback", ArgumentSemantic.Copy)]
 	public partial AVFoundation.AVMutableVideoCompositionCreateCallback AVMutableVideoCompositionCreateCallback { get; set; }
-	
+
 	[Export<Property> ("avPlayerItemIntegratedTimelineAddBoundaryTimeObserverCallback", ArgumentSemantic.Copy)]
 	public partial AVFoundation.AVPlayerItemIntegratedTimelineAddBoundaryTimeObserverCallback AVPlayerItemIntegratedTimelineAddBoundaryTimeObserverCallback { get; set; }
 

@@ -302,7 +302,7 @@ namespace Xamarin.Tests {
 			}
 		}
 
-		public static string GetProperty (string projectPath, string name, string? target = null,  Dictionary<string, string>? properties = null)
+		public static string GetProperty (string projectPath, string name, string? target = null, Dictionary<string, string>? properties = null)
 		{
 			return Get (projectPath, name, "Property", target, properties);
 		}

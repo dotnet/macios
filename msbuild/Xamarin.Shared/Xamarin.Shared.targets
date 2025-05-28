@@ -587,7 +587,6 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			_ComputeTargetFrameworkMoniker;
 			_ComputeTargetArchitectures;
 			_SetResourceMetadata;
-			_ComputeVariables;
 		</_CompileAppManifestDependsOn>
 	</PropertyGroup>
 

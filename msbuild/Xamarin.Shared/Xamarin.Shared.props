@@ -239,6 +239,9 @@ Copyright (C) 2020 Microsoft. All rights reserved.
 		<_BundleOriginalResources Condition="'$(OutputType)' == 'Library' And '$(IsAppExtension)' != 'true' And '$(BundleOriginalResources)' == 'true'">true</_BundleOriginalResources>
 
 		<EnableProfiling Condition="'$(EnableProfiling)' == '' And '$(_BundlerDebug)' == 'true'">true</EnableProfiling>
+
+		<!-- Set the name of the native executable -->
+		<_NativeExecutableName Condition="'$(_NativeExecutableName)' == ''">$(AssemblyName)</_NativeExecutableName>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(IsBindingProject)' == 'true'">

@@ -302,6 +302,46 @@ namespace Xamarin.Tests {
 			}
 		}
 
+		public static string GetProperty (string projectPath, string name, string? target = null,  Dictionary<string, string>? properties = null)
+		{
+			return Get (projectPath, name, "Property", target, properties);
+		}
+
+		// returns json
+		public static string GetItems (string projectPath, string name, string? target = null, Dictionary<string, string>? properties = null)
+		{
+			return Get (projectPath, name, "Item", target, properties);
+		}
+
+		static string Get (string projectPath, string name, string what, string? target = null, Dictionary<string, string>? properties = null)
+		{
+			if (!File.Exists (projectPath))
+				throw new FileNotFoundException ($"The project file '{projectPath}' does not exist.");
+
+			var outputFile = Path.Combine (Cache.CreateTemporaryDirectory (), "evaluateOutput.txt");
+
+			var args = new List<string> ();
+			args.Add ("build");
+			args.Add (projectPath);
+			if (!string.IsNullOrEmpty (target))
+				args.Add ($"-target:{target}");
+			args.Add ($"-get{what}:{name}");
+			args.Add ("-nologo");
+			args.Add ("-verbosity:quiet");
+			args.Add ($"-getResultOutputFile:{outputFile}");
+			if (properties is not null) {
+				foreach (var prop in properties) {
+					if (prop.Value.IndexOfAny (new char [] { ';' }) >= 0) {
+						args.Add ($"/p:{prop.Key}=\"{prop.Value}\"");
+					} else {
+						args.Add ($"/p:{prop.Key}={prop.Value}");
+					}
+				}
+			}
+			ExecuteCommand (Executable, args.ToArray ());
+			return File.ReadAllText (outputFile);
+		}
+
 		public static void CompareApps (string old_app, string new_app)
 		{
 #if VERBOSE_COMPARISON

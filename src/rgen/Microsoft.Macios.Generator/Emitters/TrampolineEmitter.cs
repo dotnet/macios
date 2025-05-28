@@ -32,7 +32,7 @@ class TrampolineEmitter (
 	/// <param name="typeInfo">The type info of the trampoline to generate.</param>
 	/// <param name="trampolineName">The trampoline name.</param>
 	/// <param name="classBuilder">The tabbed string builder to use.</param>
-	/// <returns>Ture if the code was generated, fals otherwise.</returns>
+	/// <returns>True if the code was generated, false otherwise.</returns>
 	public bool TryEmitStaticClass (in TypeInfo typeInfo, string trampolineName, TabbedWriter<StringWriter> classBuilder)
 	{
 		// create a new static class using the name from the nomenclator

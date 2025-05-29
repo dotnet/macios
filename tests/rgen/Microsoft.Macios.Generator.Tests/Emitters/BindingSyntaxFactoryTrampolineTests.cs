@@ -1959,6 +1959,24 @@ namespace NS {
 				"DCallback",
 				"unsafe internal delegate global::ObjCRuntime.NativeHandle DCallback (global::System.IntPtr block_ptr, byte boolParameter);",
 			];
+
+			var intPtrParameters = @"
+using System;
+using Foundation;
+using ObjCRuntime;
+
+namespace NS {
+	public delegate int Callback (IntPtr timestamp, uint frameCount, IntPtr inputData);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				intPtrParameters,
+				"DCallback",
+				"unsafe internal delegate int DCallback (global::System.IntPtr block_ptr, global::System.IntPtr timestamp, uint frameCount, global::System.IntPtr inputData);",
+			];
 		}
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();

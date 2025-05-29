@@ -255,7 +255,7 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 
 	static (string Name, ImmutableArray<string> Namespace) GetTypeNameAndNamespace (ITypeSymbol symbol)
 	{
-		if (symbol.SpecialType == SpecialType.None)
+		if (symbol.SpecialType is SpecialType.None or SpecialType.System_IntPtr or SpecialType.System_UIntPtr)
 			return (GetName (symbol), GetNamespaceComponents (symbol));
 
 		var token = symbol.SpecialType.GetKeyword ();

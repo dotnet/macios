@@ -65,8 +65,8 @@ static class Nomenclator {
 			var argumentName = typeArgument.Replace ('.', '_');
 			if (GeneratorConfiguration.UseGlobalNamespace) {
 				// remove the global alias if it is present
-				argumentName = argumentName.StartsWith (globalPrefix) 
-					? argumentName.Substring (globalPrefix.Length) 
+				argumentName = argumentName.StartsWith (globalPrefix)
+					? argumentName.Substring (globalPrefix.Length)
 					: argumentName;
 			}
 			sb.Append (argumentName);

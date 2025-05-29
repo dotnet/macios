@@ -17,7 +17,7 @@ namespace Microsoft.Macios.Generator.Emitters;
 class TrampolineEmitter (
 	RootContext context,
 	TabbedStringBuilder builder) {
-	
+
 	public string SymbolNamespace => "ObjCRuntime";
 	public string SymbolName => "Trampolines";
 

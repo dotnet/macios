@@ -42,6 +42,7 @@ class TrampolineEmitter (
 		var invokeMethodName = Nomenclator.GetTrampolineInvokeMethodName ();
 		var trampolineVariableName = Nomenclator.GetTrampolineDelegatePointerVariableName ();
 		var delegateVariableName = Nomenclator.GetTrampolineDelegateVariableName ();
+		var trampolineParameterName = Nomenclator.GetTrampolineBlockParameterName (typeInfo.Delegate!.Parameters);
 
 		classBuilder.WriteDocumentation (Documentation.Class.TrampolineStaticClass (className));
 		using (var classBlock = classBuilder.CreateBlock ($"static internal class {className}", true)) {
@@ -56,29 +57,29 @@ class TrampolineEmitter (
 				}
 
 				// get the delegate from the block literal to execute with the trampoline
-				invokeMethod.WriteLine ($"var {delegateVariableName} = {BlockLiteral}.GetTarget<{delegateIdentifier}> ({Nomenclator.GetTrampolineBlockParameterName (typeInfo.Delegate!.Parameters)});");
-
-				// if the deletate is null, we return default, otherwise we call the delegate
-				using (var ifBlock = invokeMethod.CreateBlock ($"if ({delegateVariableName} is not null)", true)) {
-
-					// build any needed pre conversion operations before calling the delegate
-					foreach (var argument in argumentSyntax) {
-						ifBlock.Write (argument.PreDelegateCallConversion);
-					}
-
-					ifBlock.WriteLine ($"{CallTrampolineDelegate (typeInfo.Delegate!, argumentSyntax)}");
-
-					// build any needed post conversion operations after calling the delegate
-					foreach (var argument in argumentSyntax) {
-						ifBlock.Write (argument.PostDelegateCallConversion);
-					}
-
-					// perform any needed
-					if (typeInfo.Delegate.ReturnType.SpecialType != SpecialType.System_Void)
-						ifBlock.WriteLine ($"return {GetTrampolineInvokeReturnType (typeInfo, Nomenclator.GetReturnVariableName ())};");
+				invokeMethod.WriteLine ($"var {delegateVariableName} = {BlockLiteral}.GetTarget<{delegateIdentifier}> ({trampolineParameterName});");
+				// check if the delegate is null, if it is we will throw an exception
+				invokeMethod.WriteRaw (
+$@"if ({delegateVariableName} is null)
+	throw ErrorHelper.CreateError (8059, Errors.MX8059, {trampolineParameterName}, typeof ({delegateIdentifier}));
+"
+);
+				
+				// build any needed pre conversion operations before calling the delegate
+				foreach (var argument in argumentSyntax) {
+					invokeMethod.Write (argument.PreDelegateCallConversion);
 				}
+				
+				invokeMethod.WriteLine ($"{CallTrampolineDelegate (typeInfo.Delegate!, argumentSyntax)}");
+
+				// build any needed post conversion operations after calling the delegate
+				foreach (var argument in argumentSyntax) {
+					invokeMethod.Write (argument.PostDelegateCallConversion);
+				}
+
+				// perform any return conversions needed
 				if (typeInfo.Delegate.ReturnType.SpecialType != SpecialType.System_Void)
-					invokeMethod.WriteLine ("return default;");
+					invokeMethod.WriteLine ($"return {GetTrampolineInvokeReturnType (typeInfo, Nomenclator.GetReturnVariableName ())};");
 			}
 
 			// CreateNullableBlock

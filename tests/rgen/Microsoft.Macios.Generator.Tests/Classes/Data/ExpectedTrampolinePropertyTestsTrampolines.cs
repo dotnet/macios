@@ -28,12 +28,10 @@ static partial class Trampolines
 		internal static unsafe global::ObjCRuntime.NativeHandle Invoke (global::System.IntPtr block_ptr, global::ObjCRuntime.NativeHandle obj)
 		{
 			var del = global::ObjCRuntime.BlockLiteral.GetTarget<global::Microsoft.Macios.Generator.Tests.Classes.Data.TestNamespace.TrampolinePropertyTests.CreateObject> (block_ptr);
-			if (del is not null)
-			{
-				var ret = del (global::ObjCRuntime.Runtime.GetNSObject<global::Foundation.NSObject> (obj)!);
-				return global::ObjCRuntime.Runtime.RetainAndAutoreleaseNSObject (ret);
-			}
-			return default;
+			if (del is null)
+				throw ErrorHelper.CreateError (8059, Errors.MX8059, block_ptr, typeof (global::Microsoft.Macios.Generator.Tests.Classes.Data.TestNamespace.TrampolinePropertyTests.CreateObject));
+			var ret = del (global::ObjCRuntime.Runtime.GetNSObject<global::Foundation.NSObject> (obj)!);
+			return global::ObjCRuntime.Runtime.RetainAndAutoreleaseNSObject (ret);
 		}
 
 		internal static unsafe global::ObjCRuntime.BlockLiteral CreateNullableBlock (global::Microsoft.Macios.Generator.Tests.Classes.Data.TestNamespace.TrampolinePropertyTests.CreateObject? callback)
@@ -65,10 +63,9 @@ static partial class Trampolines
 		internal static unsafe void Invoke (global::System.IntPtr block_ptr)
 		{
 			var del = global::ObjCRuntime.BlockLiteral.GetTarget<global::System.Action> (block_ptr);
-			if (del is not null)
-			{
-				del ();
-			}
+			if (del is null)
+				throw ErrorHelper.CreateError (8059, Errors.MX8059, block_ptr, typeof (global::System.Action));
+			del ();
 		}
 
 		internal static unsafe global::ObjCRuntime.BlockLiteral CreateNullableBlock (global::System.Action? callback)
@@ -100,12 +97,10 @@ static partial class Trampolines
 		internal static unsafe global::CoreGraphics.CGRect Invoke (global::System.IntPtr block_ptr, int index, global::CoreGraphics.CGRect rect)
 		{
 			var del = global::ObjCRuntime.BlockLiteral.GetTarget<global::CoreImage.CIKernelRoiCallback> (block_ptr);
-			if (del is not null)
-			{
-				var ret = del (index, rect);
-				return ret;
-			}
-			return default;
+			if (del is null)
+				throw ErrorHelper.CreateError (8059, Errors.MX8059, block_ptr, typeof (global::CoreImage.CIKernelRoiCallback));
+			var ret = del (index, rect);
+			return ret;
 		}
 
 		internal static unsafe global::ObjCRuntime.BlockLiteral CreateNullableBlock (global::CoreImage.CIKernelRoiCallback? callback)
@@ -134,10 +129,9 @@ static partial class Trampolines
 		internal static unsafe void Invoke (global::System.IntPtr block_ptr, global::ObjCRuntime.NativeHandle obj)
 		{
 			var del = global::ObjCRuntime.BlockLiteral.GetTarget<global::System.Action<string>> (block_ptr);
-			if (del is not null)
-			{
-				del (global::CoreFoundation.CFString.FromHandle (obj)!);
-			}
+			if (del is null)
+				throw ErrorHelper.CreateError (8059, Errors.MX8059, block_ptr, typeof (global::System.Action<string>));
+			del (global::CoreFoundation.CFString.FromHandle (obj)!);
 		}
 
 		internal static unsafe global::ObjCRuntime.BlockLiteral CreateNullableBlock (global::System.Action<string>? callback)
@@ -166,10 +160,9 @@ static partial class Trampolines
 		internal static unsafe void Invoke (global::System.IntPtr block_ptr, int obj)
 		{
 			var del = global::ObjCRuntime.BlockLiteral.GetTarget<global::System.Action<int>> (block_ptr);
-			if (del is not null)
-			{
-				del (obj);
-			}
+			if (del is null)
+				throw ErrorHelper.CreateError (8059, Errors.MX8059, block_ptr, typeof (global::System.Action<int>));
+			del (obj);
 		}
 
 		internal static unsafe global::ObjCRuntime.BlockLiteral CreateNullableBlock (global::System.Action<int>? callback)
@@ -198,10 +191,9 @@ static partial class Trampolines
 		internal static unsafe void Invoke (global::System.IntPtr block_ptr, byte obj)
 		{
 			var del = global::ObjCRuntime.BlockLiteral.GetTarget<global::System.Action<bool>> (block_ptr);
-			if (del is not null)
-			{
-				del (obj != 0);
-			}
+			if (del is null)
+				throw ErrorHelper.CreateError (8059, Errors.MX8059, block_ptr, typeof (global::System.Action<bool>));
+			del (obj != 0);
 		}
 
 		internal static unsafe global::ObjCRuntime.BlockLiteral CreateNullableBlock (global::System.Action<bool>? callback)
@@ -233,10 +225,9 @@ static partial class Trampolines
 		internal static unsafe void Invoke (global::System.IntPtr block_ptr, global::ObjCRuntime.NativeHandle imageRef, global::CoreMedia.CMTime actualTime, global::ObjCRuntime.NativeHandle error)
 		{
 			var del = global::ObjCRuntime.BlockLiteral.GetTarget<global::AVFoundation.AVAssetImageGenerateAsynchronouslyForTimeCompletionHandler> (block_ptr);
-			if (del is not null)
-			{
-				del (global::ObjCRuntime.Runtime.GetINativeObject<global::CoreGraphics.CGImage> (imageRef, false)!, actualTime, global::ObjCRuntime.Runtime.GetNSObject<global::Foundation.NSError> (error)!);
-			}
+			if (del is null)
+				throw ErrorHelper.CreateError (8059, Errors.MX8059, block_ptr, typeof (global::AVFoundation.AVAssetImageGenerateAsynchronouslyForTimeCompletionHandler));
+			del (global::ObjCRuntime.Runtime.GetINativeObject<global::CoreGraphics.CGImage> (imageRef, false)!, actualTime, global::ObjCRuntime.Runtime.GetNSObject<global::Foundation.NSError> (error)!);
 		}
 
 		internal static unsafe global::ObjCRuntime.BlockLiteral CreateNullableBlock (global::AVFoundation.AVAssetImageGenerateAsynchronouslyForTimeCompletionHandler? callback)
@@ -269,12 +260,10 @@ static partial class Trampolines
 		{
 			*outError = default;
 			var del = global::ObjCRuntime.BlockLiteral.GetTarget<global::AVFoundation.AVAudioEngineManualRenderingBlock> (block_ptr);
-			if (del is not null)
-			{
-				var ret = del (numberOfFrames, new global::AudioToolbox.AudioBuffers (outBuffer), ref global::System.Runtime.CompilerServices.Unsafe.AsRef<int> (outError));
-				return (IntPtr) (long) ret;
-			}
-			return default;
+			if (del is null)
+				throw ErrorHelper.CreateError (8059, Errors.MX8059, block_ptr, typeof (global::AVFoundation.AVAudioEngineManualRenderingBlock));
+			var ret = del (numberOfFrames, new global::AudioToolbox.AudioBuffers (outBuffer), ref global::System.Runtime.CompilerServices.Unsafe.AsRef<int> (outError));
+			return (IntPtr) (long) ret;
 		}
 
 		internal static unsafe global::ObjCRuntime.BlockLiteral CreateNullableBlock (global::AVFoundation.AVAudioEngineManualRenderingBlock? callback)

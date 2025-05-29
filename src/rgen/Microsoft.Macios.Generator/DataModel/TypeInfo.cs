@@ -531,6 +531,14 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		return type;
 	}
 
+	/// <summary>
+	/// If the current <see cref="TypeInfo"/> represents an array, this method returns a new <see cref="TypeInfo"/>
+	/// representing the element type of the array. Otherwise, it returns the current instance.
+	/// </summary>
+	/// <returns>
+	/// A new <see cref="TypeInfo"/> instance representing the array element's type if <see cref="IsArray"/> is true;
+	/// otherwise, returns the current <see cref="TypeInfo"/> instance.
+	/// </returns>
 	public TypeInfo ToArrayElementType ()
 	{
 		if (!IsArray)
@@ -542,6 +550,14 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		};
 	}
 
+	/// <summary>
+	/// If the current <see cref="TypeInfo"/> is nullable, this method returns a new <see cref="TypeInfo"/>
+	/// representing the non-nullable version of the type. Otherwise, it returns the current instance.
+	/// </summary>
+	/// <returns>
+	/// A new <see cref="TypeInfo"/> instance with <see cref="IsNullable"/> set to false if the original <see cref="IsNullable"/> was true;
+	/// otherwise, returns the current <see cref="TypeInfo"/> instance.
+	/// </returns>
 	public TypeInfo ToNonNullable ()
 	{
 		if (!IsNullable)
@@ -552,6 +568,14 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		};
 	}
 
+	/// <summary>
+	/// If the current <see cref="TypeInfo"/> represents a pointer, this method returns a new <see cref="TypeInfo"/>
+	/// representing the type pointed to. Otherwise, it returns the current instance.
+	/// </summary>
+	/// <returns>
+	/// A new <see cref="TypeInfo"/> instance representing the pointed-at type if <see cref="IsPointer"/> is true;
+	/// otherwise, returns the current <see cref="TypeInfo"/> instance.
+	/// </returns>
 	public TypeInfo ToPointedAtType ()
 	{
 		if (!IsPointer)

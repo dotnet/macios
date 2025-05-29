@@ -383,11 +383,24 @@ static partial class BindingSyntaxFactory {
 			// general NSObject/INativeObject, has to be after the special types otherwise the special types will
 			// fall into the NSObject/INativeObject case
 			
+			// Runtime.GetNSObject<ParameterType> (ParameterName) 
+			{ Type.IsNSObject: true, Type.IsNullable: true} =>
+				GetNSObject (parameter.Type.ToNonNullable ().GetIdentifierSyntax (), [
+					Argument (parameterIdentifier)
+				], suppressNullableWarning: false),
+			
 			// Runtime.GetNSObject<ParameterType> (ParameterName)! 
 			{ Type.IsNSObject: true } =>
 				GetNSObject (parameter.Type.GetIdentifierSyntax (), [
 					Argument (parameterIdentifier)
 				], suppressNullableWarning: true),
+			
+			// Runtime.GetINativeObject<ParameterType> (ParameterName, false)!
+			{ Type.IsINativeObject: true, Type.IsNullable: true } =>
+				GetINativeObject (parameter.Type.ToNonNullable ().GetIdentifierSyntax (), [
+					Argument (parameterIdentifier), 
+					BoolArgument (false)
+				], suppressNullableWarning: false),
 			
 			// Runtime.GetINativeObject<ParameterType> (ParameterName, false)!
 			{ Type.IsINativeObject: true } =>

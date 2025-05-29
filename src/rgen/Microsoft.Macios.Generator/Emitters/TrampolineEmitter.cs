@@ -17,7 +17,7 @@ namespace Microsoft.Macios.Generator.Emitters;
 class TrampolineEmitter (
 	RootContext context,
 	TabbedStringBuilder builder) {
-	
+
 	public string SymbolNamespace => "ObjCRuntime";
 	public string SymbolName => "Trampolines";
 
@@ -99,7 +99,7 @@ return CreateBlock (callback);
 					$"return new {BlockLiteral} ({trampolineVariableName}, callback, typeof ({className}), nameof ({invokeMethodName}));");
 			}
 		}
-		
+
 		return true;
 	}
 
@@ -109,11 +109,11 @@ return CreateBlock (callback);
 		var className = Nomenclator.GetTrampolineClassName (trampolineName, Nomenclator.TrampolineClassType.NativeInvocationClass);
 		var delegateName = Nomenclator.GetTrampolineClassName (trampolineName, Nomenclator.TrampolineClassType.DelegateType);
 		var delegateIdentifier = Nomenclator.GetTrampolineClassName (trampolineName, Nomenclator.TrampolineClassType.DelegateType);
-		
+
 		using (var classBlock = classBuilder.CreateBlock ($"internal sealed class {className} : TrampolineBlockBase", true)) {
 			classBlock.WriteLine ($"{delegateName} invoker;");
 			classBlock.WriteLine (); // empty line for readability
-			// constructor
+									 // constructor
 			classBlock.WriteRaw (
 $@"[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 public unsafe {className} ({BlockLiteral} *block) : base (block)
@@ -123,7 +123,7 @@ public unsafe {className} ({BlockLiteral} *block) : base (block)
 "
 			);
 			classBlock.WriteLine (); // empty line for readability
-			// create method
+									 // create method
 			classBlock.WriteRaw (
 $@"[Preserve (Conditional=true)]
 [BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
@@ -137,7 +137,7 @@ public unsafe static {delegateIdentifier}? Create (IntPtr block)
 "
 );
 			classBlock.WriteLine (); // empty line for readability
-			// invoke method
+									 // invoke method
 			classBlock.WriteLine ("// TODO: generate invoke method.");
 		}
 
@@ -159,7 +159,7 @@ public unsafe static {delegateIdentifier}? Create (IntPtr block)
 		var delegateName = Nomenclator.GetTrampolineClassName (trampolineName, Nomenclator.TrampolineClassType.DelegateType);
 		// generate the delegate and get its name, if we already emitted it, skip it
 		var delegateDeclaration = GetTrampolineDelegateDeclaration (typeInfo, delegateName);
-		
+
 		// print the attributes needed for the delegate and the delegate itself
 		classBuilder.WriteLine ("[UnmanagedFunctionPointerAttribute (CallingConvention.Cdecl)]");
 		classBuilder.WriteLine ($"[UserDelegateType (typeof ({typeInfo.GetIdentifierSyntax ()}))]");

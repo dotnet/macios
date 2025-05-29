@@ -546,7 +546,7 @@ namespace NS {
 				nsObjectParameter,
 				$"global::ObjCRuntime.Runtime.GetNSObject<{Global ("Foundation.NSObject")}> (nsObjectParameter)!",
 			];
-			
+
 			var nullableNSObjectParameter = @"
 using System;
 using Foundation;
@@ -585,7 +585,7 @@ namespace NS {
 				iNativeParameter,
 				$"global::ObjCRuntime.Runtime.GetINativeObject<{Global ("CoreMedia.CMTimebase")}> (inativeParameter, false)!",
 			];
-			
+
 			var nullableINativeParameter = @"
 using System;
 using CoreMedia;

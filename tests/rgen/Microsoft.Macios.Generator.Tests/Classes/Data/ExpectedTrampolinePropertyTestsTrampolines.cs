@@ -20,7 +20,7 @@ static partial class Trampolines
 	unsafe internal delegate global::ObjCRuntime.NativeHandle DTrampolinePropertyTests.CreateObject (global::System.IntPtr block_ptr, global::ObjCRuntime.NativeHandle obj);
 
 	/// <summary>This class bridges native block invocations that call into C#</summary>
-	static internal class SDTrampolinePropertyTests.CreateObject
+	static internal class SDTrampolinePropertyTests_CreateObject
 	{
 		[Preserve (Conditional = true)]
 		[UnmanagedCallersOnly]
@@ -45,7 +45,7 @@ static partial class Trampolines
 		internal static unsafe global::ObjCRuntime.BlockLiteral CreateBlock (global::Microsoft.Macios.Generator.Tests.Classes.Data.TestNamespace.TrampolinePropertyTests.CreateObject callback)
 		{
 			delegate* unmanaged<global::System.IntPtr, global::ObjCRuntime.NativeHandle, global::ObjCRuntime.NativeHandle> trampoline = &Invoke;
-			return new global::ObjCRuntime.BlockLiteral (trampoline, callback, typeof (SDTrampolinePropertyTests.CreateObject), nameof (Invoke));
+			return new global::ObjCRuntime.BlockLiteral (trampoline, callback, typeof (SDTrampolinePropertyTests_CreateObject), nameof (Invoke));
 		}
 	}
 	// TODO: generate trampoline for Microsoft.Macios.Generator.Tests.Classes.Data.TestNamespace.TrampolinePropertyTests.CreateObject

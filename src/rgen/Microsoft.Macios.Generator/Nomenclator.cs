@@ -62,11 +62,13 @@ class Nomenclator {
 		// }
 		// return trampolineName;
 
-		// trampoline name will the the name of the type + the arity + the length of the generic types
-		// else it will be the trampoline name 
+		// trampoline name will the name of the type + the arity + the length of the generic types
+		// else it will be the trampoline name. We will replace any . with _ to ensure that the name is valid
+		// when working with nested classes.
+		var typeName = typeInfo.Name.Replace ('.', '_');
 		var trampolineName = typeInfo.IsGenericType
-			? $"{typeInfo.Name}Arity{typeInfo.TypeArguments.Length}"
-			: typeInfo.Name;
+			? $"{typeName}Arity{typeInfo.TypeArguments.Length}"
+			: typeName;
 
 		if (!typeInfo.IsGenericType)
 			return trampolineName;

@@ -3306,7 +3306,7 @@ namespace NS {
 		sb.Write (conversions);
 		Assert.Equal (expectedExpression, sb.ToCode ());
 	}
-	
+
 	class TestDataGetTrampolineNativeInvokeSignature : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{

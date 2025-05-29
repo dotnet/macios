@@ -854,7 +854,7 @@ static partial class BindingSyntaxFactory {
 			.WithParameterList (parametersSyntax.WithLeadingTrivia (Space));
 		return method;
 	}
-	
+
 	/// <summary>
 	/// Returns the method declaration signature for the native trampoline invoke method.
 	/// This is the method that will be directly called from the native side (e.g., by a block invocation).
@@ -882,11 +882,11 @@ static partial class BindingSyntaxFactory {
 		var parametersSyntax = ParameterList (
 			SeparatedList<ParameterSyntax> (
 				parameterBucket.ToImmutableArray ().ToSyntaxNodeOrTokenArray ())).NormalizeWhitespace ();
-		
-		var returnType = delegateTypeInfo.Delegate!.ReturnType.IsVoid 
-			? PredefinedType(Token(SyntaxKind.VoidKeyword))
+
+		var returnType = delegateTypeInfo.Delegate!.ReturnType.IsVoid
+			? PredefinedType (Token (SyntaxKind.VoidKeyword))
 			: delegateTypeInfo.Delegate!.ReturnType.GetIdentifierSyntax ();
-		
+
 		var method = MethodDeclaration (
 				returnType, // return the low level type, not the manged version
 				Identifier (Nomenclator.GetTrampolineInvokeMethodName ()))

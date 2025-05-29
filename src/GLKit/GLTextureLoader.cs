@@ -348,7 +348,6 @@ namespace GLKit {
 
 	}
 
-#if NET
 	/// <summary>Strong type used to configure GLKTextureLoader operations.</summary>
 	///     <remarks>
 	///       <example>
@@ -371,11 +370,6 @@ namespace GLKit {
 	[ObsoletedOSPlatform ("tvos12.0", "Use 'Metal' instead.")]
 	[ObsoletedOSPlatform ("macos10.14", "Use 'Metal' instead.")]
 	[ObsoletedOSPlatform ("ios12.0", "Use 'Metal' instead.")]
-#else
-	[Deprecated (PlatformName.iOS, 12, 0, message: "Use 'Metal' instead.")]
-	[Deprecated (PlatformName.TvOS, 12, 0, message: "Use 'Metal' instead.")]
-	[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'Metal' instead.")]
-#endif
 	public class GLKTextureOperations : DictionaryContainer {
 		/// <summary>Default constructor, creates an empty set of configuration options.</summary>
 		///         <remarks>
@@ -459,7 +453,6 @@ namespace GLKit {
 			}
 		}
 
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -470,7 +463,6 @@ namespace GLKit {
 		[ObsoletedOSPlatform ("tvos12.0", "Use 'Metal' instead.")]
 		[ObsoletedOSPlatform ("macos10.14", "Use 'Metal' instead.")]
 		[ObsoletedOSPlatform ("ios12.0", "Use 'Metal' instead.")]
-#endif
 		public bool? SRGB {
 			get {
 				return GetBoolValue (GLKTextureLoader.SRGB);

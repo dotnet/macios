@@ -5,10 +5,6 @@ using Foundation;
 using ObjCRuntime;
 using System.ComponentModel;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace Speech {
 
 	[Obsolete (Constants.ApiRemovedGeneral)]

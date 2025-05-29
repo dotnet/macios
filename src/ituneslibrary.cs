@@ -26,10 +26,6 @@ using AppKit;
 using Foundation;
 using ObjCRuntime;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace iTunesLibrary {
 
 	[BaseType (typeof (NSObject))]

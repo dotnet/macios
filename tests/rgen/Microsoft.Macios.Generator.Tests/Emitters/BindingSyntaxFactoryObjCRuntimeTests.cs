@@ -692,7 +692,6 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 	[InlineData (PlatformName.TvOS, "UIKit.UIApplication.EnsureUIThread ();")]
 	[InlineData (PlatformName.MacCatalyst, "UIKit.UIApplication.EnsureUIThread ();")]
 	[InlineData (PlatformName.MacOSX, "AppKit.NSApplication.EnsureUIThread ();")]
-	[InlineData (PlatformName.WatchOS, null)]
 	[InlineData (PlatformName.None, null)]
 	void EnsureUiThreadTests (PlatformName platform, string? expectedDeclaration)
 	{

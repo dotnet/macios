@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.Macios.Generator.DataModel;
 using TypeInfo = Microsoft.Macios.Generator.DataModel.TypeInfo;
@@ -64,7 +65,7 @@ class Nomenclator {
 		// trampoline name will the the name of the type + the arity + the length of the generic types
 		// else it will be the trampoline name 
 		var trampolineName = typeInfo.IsGenericType
-			? $"{typeInfo.Name [..typeInfo.Name.IndexOf ('<')]}Arity{typeInfo.TypeArguments.Length}"
+			? $"{typeInfo.Name}Arity{typeInfo.TypeArguments.Length}"
 			: typeInfo.Name;
 
 		if (!typeInfo.IsGenericType)
@@ -141,8 +142,7 @@ class Nomenclator {
 	/// <summary>
 	/// Get the name of the variable for the type when it is used as a return value.
 	/// </summary>
-	/// <param name="typeInfo">The type info whose name we want for the return type.</param>
-	public static string GetReturnVariableName (in TypeInfo typeInfo) => "ret"; // nothing fancy for now
+	public static string GetReturnVariableName () => "ret"; // nothing fancy for now
 
 	/// <summary>
 	/// Returns the name of the trampoline variable for the given parameter info. This variables are used as
@@ -150,7 +150,7 @@ class Nomenclator {
 	/// </summary>
 	/// <param name="parameterInfo">The parameter information for the trampoline.</param>
 	/// <returns>The name to be used for the temporary variable or null if it was unknown.</returns>
-	public static string? GetNameForTempTrampolineVariable (in Parameter parameterInfo)
+	public static string? GetNameForTempTrampolineVariable (in DelegateParameter parameterInfo)
 	{
 #pragma warning disable format
 		return parameterInfo switch {
@@ -161,4 +161,49 @@ class Nomenclator {
 		};
 #pragma warning restore format
 	}
+
+	/// <summary>
+	/// Returns the name of the trampoline delegate variable.
+	/// </summary>
+	/// <returns>The name of the variable used to store delegates in trampolines.</returns>
+	public static string GetTrampolineDelegateVariableName () => "del";
+
+	/// <summary>
+	/// Return the name of the trampoline block parameter. This is the name of the parameter that will be containing the
+	/// IntPtr to the trampoline block.
+	///
+	/// The default value to used is 'block' but we need to ensure that the name is not already used by
+	/// the delegate, so we will use block_ptr_ + the name of the delegate if it is already used.
+	/// </summary>
+	/// <returns>The name to be used in the delegate for the block pointer.</returns>
+	public static string GetTrampolineBlockParameterName (in ImmutableArray<DelegateParameter> parameters)
+	{
+		// the default value of the block pointer is block, yet we need to ensure that the name is not
+		// already used by the delegate, so we will use block_ptr_ + the name of the delegate
+		var parameterNames = new HashSet<string> (StringComparer.InvariantCulture);
+		foreach (var parameter in parameters) {
+			parameterNames.Add (parameter.Name);
+		}
+		// default value
+		if (parameterNames.Add ("block_ptr"))
+			return "block_ptr";
+		// perform a loop until we find a name that is not used	
+		for (var i = 0; ; i++) {
+			var name = $"block_ptr_{i}";
+			if (parameterNames.Add (name))
+				return name;
+		}
+	}
+
+	/// <summary>
+	/// Return the name of the invoke method of the trampoline.
+	/// </summary>
+	/// <returns>The method name to be used.</returns>
+	public static string GetTrampolineInvokeMethodName () => "Invoke";
+
+	/// <summary>
+	/// Return the name of the invoke method of the trampoline.
+	/// </summary>
+	/// <returns>The method name to be used.</returns>
+	public static string GetTrampolineDelegatePointerVariableName () => "trampoline";
 }

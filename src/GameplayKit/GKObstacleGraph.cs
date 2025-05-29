@@ -13,33 +13,23 @@ using System;
 using Foundation;
 using ObjCRuntime;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace GameplayKit {
 
 	public partial class GKObstacleGraph {
-#if !NET
-		public virtual GKGraphNode2D [] GetNodes (GKPolygonObstacle obstacle)
-#else
 		/// <param name="obstacle">To be added.</param>
 		///         <summary>Returns the array of <see cref="GameplayKit.GKGraphNode2D" /> corresponding to the <paramref name="obstacle" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		public GKGraphNode2D [] GetNodes (GKPolygonObstacle obstacle)
-#endif
 		{
 			return NSArray.ArrayFromHandle<GKGraphNode2D> (_GetNodes (obstacle));
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
-#endif
 	[Register ("GKObstacleGraph", SkipRegistration = true)]
 	public partial class GKObstacleGraph<NodeType> : GKObstacleGraph where NodeType : GKGraphNode2D {
 

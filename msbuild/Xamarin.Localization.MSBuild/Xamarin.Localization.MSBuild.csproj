@@ -13,7 +13,7 @@
     <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Remove="MSBStrings.Designer.cs" />
+    <Compile Remove="MSBStrings.Designer.cs" Condition="'$(DesignTimeBuild)' != 'true'"/>
     <EmbeddedResource Include="MSBStrings.resx">
       <Type>Resx</Type>
       <Generator>PublicResXFileCodeGenerator</Generator>

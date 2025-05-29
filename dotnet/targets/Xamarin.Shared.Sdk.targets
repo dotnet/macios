@@ -560,6 +560,12 @@
 			<_IsNativeAOTFeature Condition="'$(_XamarinRuntime)' == 'NativeAOT'">true</_IsNativeAOTFeature>
 			<_IsNativeAOTFeature Condition="'$(_XamarinRuntime)' != 'NativeAOT'">false</_IsNativeAOTFeature>
 
+			<!-- Set CFNetworkHandler and NSUrlSessionHandler values -->
+			<_IsCFNetworkHandlerFeature Condition="'$(UseNativeHttpHandler)' == 'true' And '$(MtouchHttpClientHandler)' == 'CFNetworkHandler'">true</_IsCFNetworkHandlerFeature>
+			<_IsCFNetworkHandlerFeature Condition="'$(_IsCFNetworkHandlerFeature)' == ''">false</_IsCFNetworkHandlerFeature>
+			<_IsNSUrlSessionHandlerFeature Condition="'$(UseNativeHttpHandler)' == 'true' And ('$(MtouchHttpClientHandler)' == 'NSUrlSessionHandler' Or '$(MtouchHttpClientHandler)' == '')">true</_IsNSUrlSessionHandlerFeature>
+			<_IsNSUrlSessionHandlerFeature Condition="'$(_IsNSUrlSessionHandlerFeature)' == ''">false</_IsNSUrlSessionHandlerFeature>
+
 			<!-- Set default ValidateObjectPointers value -->
 			<_ValidateObjectPointers Condition="'$(_ValidateObjectPointers)' == ''">false</_ValidateObjectPointers>
 
@@ -671,12 +677,24 @@
 			<_AdditionalTaskAssembly>$(_AdditionalTaskAssemblyDirectory)dotnet-linker.dll</_AdditionalTaskAssembly>
 		</PropertyGroup>
 
+		<!-- Validate that one of our native handlers are selected (if using a native handler), otherwise we end up with crashes (infinite recursion) at runtime. -->
+		<MacDevMessage
+			Error="true"
+			Condition="'$(UseNativeHttpHandler)' == 'true' And '$(_IsNSUrlSessionHandlerFeature)' != 'true' And '$(_IsCFNetworkHandlerFeature)' != 'true'"
+			ResourceName="E7152_InvalidMtouchHttpClientHandler" FormatArguments="$(MtouchHttpClientHandler)">
+			<!-- Invalid value for 'MtouchHttpClientHandler' ('$(MtouchHttpClientHandler)', must be either 'NSUrlSessionHandler' or 'CFNetworkHandler' (or not set at all). -->
+		</MacDevMessage>
+
 		<ItemGroup>
 			<!-- Configure linker features -->
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.Arch.IsSimulator" Value="$(_IsSimulatorFeature)" Trim="true" />
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.IsManagedStaticRegistrar" Value="$(_IsManagedStaticRegistrarFeature)" Trim="true" />
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.IsNativeAOT" Value="$(_IsNativeAOTFeature)" Trim="true" />
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Class.ValidateObjectPointers" Value="$(_ValidateObjectPointers)" Trim="true" />
+
+			<!-- Configure System.Net.Http Native Handlers -->
+			<RuntimeHostConfigurationOption Include="System.Net.Http.NativeHandler.UseNSUrlSessionHandler" Value="$(_IsNSUrlSessionHandlerFeature)" Trim="true" />
+			<RuntimeHostConfigurationOption Include="System.Net.Http.NativeHandler.UseCFNetworkHandler" Value="$(_IsCFNetworkHandlerFeature)" Trim="true" />
 
 			<!-- Mark all assemblies to be copied if we're not linking any assemblies -->
 			<ResolvedFileToPublish
@@ -1256,8 +1274,62 @@
 			_ReadAppManifest;
 			_WriteAppManifest;
 			_CreateAOTDedupAssembly;
+			_GenerateAOTCompileDependencyCache;
+			_CleanAOTCompileCache;
 		</_AOTCompileDependsOn>
 	</PropertyGroup>
+
+	<!--
+		_GenerateAOTCompileDependencyCache
+
+		Generate a file used to track dependencies between incremental build
+		executions. This handles cases where properties change that can't be
+		tracked with timestamps. The file contains a hash of aot compiler
+		inputs that are known to contribute to incremental build
+		inconsistencies.
+
+	-->
+	<Target Name="_GenerateAOTCompileDependencyCache">
+		<PropertyGroup>
+			<_AOTCompileCachePath>$(DeviceSpecificOutputPath)AOTCompileInputs.cache</_AOTCompileCachePath>
+			<_AOTCompileCachePath2>$(_AOTCompileCachePath).uptodate</_AOTCompileCachePath2>
+		</PropertyGroup>
+		<ItemGroup>
+			<_CustomAdditionalAOTCompileInputs Include="$(_AOTCompileCachePath)" />
+			<_AOTCompileCache Include="$(_XamarinAOTCompiler)" />
+			<_AOTCompileCache Include="$(_MinimumOSVersion)" />
+			<_AOTCompileCache Include="$(_SdkDevPath)" />
+			<_AOTCompileCache Include="$(_ComputedTargetFrameworkMoniker)" />
+			<_AOTCompileCache Include="$(MtouchInterpreter)" />
+			<_AOTCompileCache Include="$(MtouchUseLlvm)" />
+			<_AOTCompileCache Include="$(_BundlerDebug)" />
+			<_AOTCompileCache Include="$(AppBundleExtraOptions)" />
+		</ItemGroup>
+
+		<Hash
+			ItemsToHash="@(_AOTCompileCache)"
+			IgnoreCase="false">
+			<Output TaskParameter="HashResult" PropertyName="_AOTCompileDependencyHash" />
+		</Hash>
+
+		<WriteLinesToFile Lines="$(_AOTCompileDependencyHash)" File="$(_AOTCompileCachePath)" Overwrite="true" WriteOnlyWhenDifferent="true" />
+
+		<ItemGroup>
+			<FileWrites Include="$(_AOTCompileCachePath)" />
+		</ItemGroup>
+	</Target>
+	<!-- Delete any cached aot compiler output if the cache is stale -->
+	<Target Name="_CleanAOTCompileCache"
+			Inputs="$(_AOTCompileCachePath)"
+			Outputs="$(_AOTCompileCachePath2)"
+		>
+		<RemoveDir Directories="$(_AOTOutputDirectory)" />
+		<Copy SourceFiles="$(_AOTCompileCachePath)" DestinationFiles="$(_AOTCompileCachePath2)" />
+		<ItemGroup>
+			<FileWrites Include="$(_AOTCompileCachePath2)" />
+		</ItemGroup>
+	</Target>
+
 	<Target Name="_AOTCompile"
 			Condition="'$(_RunAotCompiler)' == 'true'"
 			DependsOnTargets="$(_AOTCompileDependsOn)"
@@ -2149,6 +2221,23 @@
 		Condition="'$(ServerGarbageCollection)' == 'true'"
 		BeforeTargets="Build;ResolvedFrameworkReference;ResolveRuntimePackAssets">
 		<Error Text=".NET for $(_PlatformName) does not support server garbage collection. Please don't set the 'ServerGarbageCollection' property." />
+	</Target>
+
+	<Target Name="_ValidateXcodeVersion"
+		AfterTargets="_DetectSdkLocations"
+		Condition="'$(ValidateXcodeVersion)' != 'false' And '$(_CanOutputAppBundle)' == 'true' And '$(IsMacEnabled)' == 'true'">
+		<!-- we only want to validate major.minor, not any revision or build numbers -->
+		<PropertyGroup>
+			<_XcodeVersionMajorMinorOnly>$([System.Version]::Parse('$(_XcodeVersion)').Major).$([System.Version]::Parse('$(_XcodeVersion)').Minor)</_XcodeVersionMajorMinorOnly>
+			<_RecommendedXcodeVersionMajorMinorOnly>$([System.Version]::Parse('$(_RecommendedXcodeVersion)').Major).$([System.Version]::Parse('$(_RecommendedXcodeVersion)').Minor)</_RecommendedXcodeVersionMajorMinorOnly>
+			<_IsMatchingXcode Condition="'$(_RecommendedXcodeVersionMajorMinorOnly)' == '$(_XcodeVersionMajorMinorOnly)'">true</_IsMatchingXcode>
+		</PropertyGroup>
+		<MacDevMessage
+			Error="true"
+			ResourceName="E0191"
+			FormatArguments="Microsoft.$(_PlatformName);$(_PlatformName);$(_ShortPackageVersion);$(_RecommendedXcodeVersion);$(_XcodeVersion)"
+			Condition="'$(_IsMatchingXcode)' != 'true'"
+		/>
 	</Target>
 
 	<!-- This target can be removed in .NET 9 (when we stop supporting the compat logic to make the invalid TPV just a warning instead of an error) -->

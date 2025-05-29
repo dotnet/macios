@@ -72,6 +72,11 @@ namespace MonoTouchFixtures.Network {
 		[Test]
 		public void TestStateChangesHandler ()
 		{
+			// This test may cause cause a dialog asking for access to the local network. The test will work if access is either granted or
+			// revoked, but it won't work _while the dialog is up_ (which can't be detected), which makes it rather annoying on the bots.
+			// So just skip it there.
+			TestRuntime.IgnoreInCI ("This test may pop up a dialog asking for access to the local network, which will cause the test to fail.");
+
 			// In the test we are doing the following:
 			//
 			// 1. Start a browser. At this point, we have no listeners (unless someone is exposing it in the lab)

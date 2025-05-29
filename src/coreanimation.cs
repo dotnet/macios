@@ -59,10 +59,6 @@ using CVTimeStamp = Foundation.NSObject;
 using CGLContext = System.IntPtr;
 #endif
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreAnimation {
 
 	/// <summary>Provides a hierarchical timing system, with support for repetition and sequencing.</summary>
@@ -1612,7 +1608,6 @@ namespace CoreAnimation {
 		[Export ("layer"), New, Static]
 		CALayer Create ();
 
-#if NET
 		[Protected]
 		[Export ("scrollMode", ArgumentSemantic.Copy)]
 		NSString WeakScrollMode { get; set; }
@@ -1626,10 +1621,6 @@ namespace CoreAnimation {
 			[Wrap ("WeakScrollMode = value.GetConstant ()!")]
 			set;
 		}
-#else
-		[Export ("scrollMode", ArgumentSemantic.Copy)]
-		NSString ScrollMode { get; set; }
-#endif
 
 		/// <param name="p">To be added.</param>
 		///         <summary>Scrolls the scroll layer to the supplied point.</summary>
@@ -1999,53 +1990,6 @@ namespace CoreAnimation {
 		[Export ("alignmentMode", ArgumentSemantic.Copy)]
 		NSString WeakAlignmentMode { get; set; }
 
-#if !NET // Use smart enums instead, CATruncationMode and CATextLayerAlignmentMode.
-		[Obsolete ("Use 'CATextLayerTruncationMode.None.GetConstant ()' instead.")]
-		[Static]
-		[Wrap ("CATextLayerTruncationMode.None.GetConstant ()")]
-		NSString TruncationNone { get; }
-
-		[Obsolete ("Use 'CATextLayerTruncationMode.Start.GetConstant ()' instead.")]
-		[Static]
-		[Wrap ("CATextLayerTruncationMode.Start.GetConstant ()")]
-		NSString TruncantionStart { get; }
-
-		[Obsolete ("Use 'CATextLayerTruncationMode.End.GetConstant ()' instead.")]
-		[Static]
-		[Wrap ("CATextLayerTruncationMode.End.GetConstant ()")]
-		NSString TruncantionEnd { get; }
-
-		[Obsolete ("Use 'CATextLayerTruncationMode.Middle.GetConstant ()' instead.")]
-		[Static]
-		[Wrap ("CATextLayerTruncationMode.Middle.GetConstant ()")]
-		NSString TruncantionMiddle { get; }
-
-		[Obsolete ("Use 'CATextLayerAlignmentMode.Natural.GetConstant ()' instead.")]
-		[Static]
-		[Wrap ("CATextLayerAlignmentMode.Natural.GetConstant ()")]
-		NSString AlignmentNatural { get; }
-
-		[Obsolete ("Use 'CATextLayerAlignmentMode.Left.GetConstant ()' instead.")]
-		[Static]
-		[Wrap ("CATextLayerAlignmentMode.Left.GetConstant ()")]
-		NSString AlignmentLeft { get; }
-
-		[Obsolete ("Use 'CATextLayerAlignmentMode.Right.GetConstant ()' instead.")]
-		[Static]
-		[Wrap ("CATextLayerAlignmentMode.Right.GetConstant ()")]
-		NSString AlignmentRight { get; }
-
-		[Obsolete ("Use 'CATextLayerAlignmentMode.Center.GetConstant ()' instead.")]
-		[Static]
-		[Wrap ("CATextLayerAlignmentMode.Center.GetConstant ()")]
-		NSString AlignmentCenter { get; }
-
-		[Obsolete ("Use 'CATextLayerAlignmentMode.Justified.GetConstant ()' instead.")]
-		[Static]
-		[Wrap ("CATextLayerAlignmentMode.Justified.GetConstant ()")]
-		NSString AlignmentJustified { get; }
-#endif // !NET
-
 		/// <summary>Gets or sets a Boolean value that controls whether subpixel quantization is allowed.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -2178,9 +2122,7 @@ namespace CoreAnimation {
 
 	/// <include file="../docs/api/CoreAnimation/CAAnimation.xml" path="/Documentation/Docs[@DocId='T:CoreAnimation.CAAnimation']/*" />
 	[BaseType (typeof (NSObject)
-#if NET
 		, Delegates = new string [] { "WeakDelegate" }, Events = new Type [] { typeof (CAAnimationDelegate) }
-#endif
 	)]
 	interface CAAnimation : CAAction, CAMediaTiming, NSSecureCoding, NSMutableCopying, SCNAnimationProtocol {
 		/// <summary>Creates a new animation, you will use the derived classes static method instead.</summary>
@@ -2211,7 +2153,6 @@ namespace CoreAnimation {
 		[Export ("timingFunction", ArgumentSemantic.Strong)]
 		CAMediaTimingFunction TimingFunction { get; set; }
 
-#if NET
 		// before that we need to be wrap this manually to avoid the BI1110 error
 		/// <summary>An instance of the CoreAnimation.CAAnimationDelegate model class which acts as the class delegate.</summary>
 		///         <value>The instance of the CoreAnimation.CAAnimationDelegate model class</value>
@@ -2222,7 +2163,6 @@ namespace CoreAnimation {
 		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		ICAAnimationDelegate Delegate { get; set; }
-#endif
 
 		/// <summary>An object that can respond to the delegate protocol for this type</summary>
 		///         <value>The instance that will respond to events and data requests.</value>
@@ -2327,11 +2267,6 @@ namespace CoreAnimation {
 		[Field ("kCAAnimationLinear")]
 		NSString AnimationLinear { get; }
 
-#if !NET
-		[Field ("kCAAnimationDiscrete")]
-		[Obsolete ("The name has been fixed, use 'AnimationDiscrete' instead.")]
-		NSString AnimationDescrete { get; }
-#endif
 		/// <summary>Represents the value associated with the constant kCAAnimationDiscrete</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -3028,7 +2963,6 @@ namespace CoreAnimation {
 		[Export ("endPoint")]
 		CGPoint EndPoint { get; set; }
 
-#if NET
 		/// <summary>The gradient type displayed.</summary>
 		CAGradientLayerType LayerType {
 			[Wrap ("CAGradientLayerTypeExtensions.GetValue (WeakLayerType)")]
@@ -3039,22 +2973,6 @@ namespace CoreAnimation {
 
 		[Export ("type", ArgumentSemantic.Copy)]
 		NSString WeakLayerType { get; set; }
-#else
-		CAGradientLayerType LayerType {
-			[Wrap ("CAGradientLayerTypeExtensions.GetValue ((NSString) Type)")]
-			get;
-			[Wrap ("Type = value.GetConstant ()")]
-			set;
-		}
-
-		[Obsolete ("Use 'LayerType' property instead.")]
-		[Export ("type", ArgumentSemantic.Copy)]
-		string Type { get; set; }
-
-		[Obsolete ("Use 'CAGradientLayerType.Axial' enum instead.")]
-		[Field ("kCAGradientLayerAxial")]
-		NSString GradientLayerAxial { get; }
-#endif
 	}
 
 	enum CAGradientLayerType {
@@ -3795,56 +3713,6 @@ namespace CoreAnimation {
 		[Field ("kCAEmitterLayerAdditive")]
 		NSString RenderAdditive { get; }
 	}
-
-	// Corresponding headers were removed in Xcode 9 without any explanation
-	// rdar #33590997 was filled - no news
-	// 'initWithType:', 'behaviorWithType:' and 'behaviorTypes' API now cause rejection
-	// https://trello.com/c/J8BDDUV9/86-33590997-coreanimation-quartzcore-api-removals
-#if !NET
-	[BaseType (typeof (NSObject))]
-	interface CAEmitterBehavior : NSSecureCoding {
-
-		// [Export ("initWithType:")]
-		// NativeHandle Constructor (NSString type);
-
-		[Export ("enabled")]
-		bool Enabled { [Bind ("isEnabled")] get; set; }
-
-		[NullAllowed] // by default this property is null
-		[Export ("name")]
-		string Name { get; set; }
-
-		[Export ("type")]
-		string Type { get; }
-
-		// [Static][Export ("behaviorWithType:")]
-		// CAEmitterBehavior Create (NSString type);
-
-		[Field ("kCAEmitterBehaviorAlignToMotion")]
-		NSString AlignToMotion { get; }
-
-		[Field ("kCAEmitterBehaviorAttractor")]
-		NSString Attractor { get; }
-
-		[Field ("kCAEmitterBehaviorSimpleAttractor")]
-		NSString SimpleAttractor { get; }
-
-		[Field ("kCAEmitterBehaviorColorOverLife")]
-		NSString ColorOverLife { get; }
-
-		[Field ("kCAEmitterBehaviorDrag")]
-		NSString Drag { get; }
-
-		[Field ("kCAEmitterBehaviorLight")]
-		NSString Light { get; }
-
-		[Field ("kCAEmitterBehaviorValueOverLife")]
-		NSString ValueOverLife { get; }
-
-		[Field ("kCAEmitterBehaviorWave")]
-		NSString Wave { get; }
-	}
-#endif
 
 	[Internal]
 	[Static]

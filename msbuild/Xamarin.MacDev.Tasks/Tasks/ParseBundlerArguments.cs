@@ -8,73 +8,72 @@ using Microsoft.Build.Framework;
 using Xamarin.Localization.MSBuild;
 using Xamarin.Utils;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Xamarin.MacDev.Tasks {
 	public class ParseBundlerArguments : XamarinTask {
-		public string ExtraArgs { get; set; }
+		public string ExtraArgs { get; set; } = "";
 
 		[Output]
-		public ITaskItem [] Aot { get; set; }
+		public ITaskItem [] Aot { get; set; } = [];
 
 		[Output]
-		public ITaskItem [] DlSym { get; set; }
+		public ITaskItem [] DlSym { get; set; } = [];
 
 		[Output]
-		public ITaskItem [] EnvironmentVariables { get; set; }
+		public ITaskItem [] EnvironmentVariables { get; set; } = [];
 
 		[Output]
-		public string MarshalManagedExceptionMode { get; set; }
+		public string? MarshalManagedExceptionMode { get; set; }
 
 		[Output]
-		public string MarshalObjectiveCExceptionMode { get; set; }
+		public string? MarshalObjectiveCExceptionMode { get; set; }
 
 		[Output]
-		public string CustomBundleName { get; set; }
+		public string? CustomBundleName { get; set; }
 
 		[Output]
-		public ITaskItem [] CustomLinkFlags { get; set; }
+		public ITaskItem [] CustomLinkFlags { get; set; } = [];
 
 		[Output]
-		public string NoSymbolStrip { get; set; }
+		public string? NoSymbolStrip { get; set; }
 
 		[Output]
-		public string NoDSymUtil { get; set; }
+		public string? NoDSymUtil { get; set; }
 
 		[Output]
-		public string NoWarn { get; set; }
+		public string? NoWarn { get; set; }
 
 		[Output]
-		public string Optimize { get; set; }
+		public string? Optimize { get; set; }
 
 		[Output]
-		public string PackageDebugSymbols { get; set; }
+		public string? PackageDebugSymbols { get; set; }
 
 		[Output]
-		public string Registrar { get; set; }
+		public string? Registrar { get; set; }
 
 		[Output]
-		public string RequirePInvokeWrappers { get; set; }
+		public string? RequirePInvokeWrappers { get; set; }
 
 		// This is input too
 		[Output]
-		public string NoStrip { get; set; }
+		public string? NoStrip { get; set; }
 
 		[Output]
-		public string SkipMarkingNSObjectsInUserAssemblies { get; set; }
+		public string? SkipMarkingNSObjectsInUserAssemblies { get; set; }
 
 		[Output]
 		public int Verbosity { get; set; }
 
 		[Output]
-		public string Warn { get; set; }
+		public string? Warn { get; set; }
 
 		[Output]
-		public string WarnAsError { get; set; }
+		public string? WarnAsError { get; set; }
 
 		[Output]
-		public ITaskItem [] XmlDefinitions { get; set; }
+		public ITaskItem [] XmlDefinitions { get; set; } = [];
 
 		public override bool Execute ()
 		{
@@ -98,8 +97,8 @@ namespace Xamarin.MacDev.Tasks {
 					extraArgs = extraArgs.Replace ('\\', '/');
 				}
 				var args = StringUtils.ParseArguments (extraArgs);
-				List<string> xml = null;
-				List<string> customLinkFlags = null;
+				List<string>? xml = null;
+				List<string>? customLinkFlags = null;
 				var aot = new List<ITaskItem> ();
 				var envVariables = new List<ITaskItem> ();
 				var dlsyms = new List<ITaskItem> ();

@@ -719,10 +719,6 @@ namespace MLCompute {
 		[Export ("optimizerData", ArgumentSemantic.Copy)]
 		MLCTensorData [] OptimizerData {
 			get;
-#if !NET
-			[NotImplemented]
-			set;
-#endif
 		}
 
 		[Export ("optimizerDeviceData", ArgumentSemantic.Copy)]

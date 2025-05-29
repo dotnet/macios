@@ -34,11 +34,7 @@ using CoreFoundation;
 using System.Net;
 using System.Net.Sockets;
 using ObjCRuntime;
-#if NET
 using CFNetwork;
-#else
-using CoreServices;
-#endif
 
 // Disable until we get around to enable + fix any issues.
 #nullable disable
@@ -94,7 +90,6 @@ namespace Foundation {
 		Voice,
 	}
 
-#if NET
 	/// <summary>Configuration options for SOCKS proxy servers.</summary>
 	///     <remarks>
 	///     </remarks>
@@ -102,7 +97,6 @@ namespace Foundation {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class NSStreamSocksOptions {
 		/// <summary>SOCKS proxy hostname.</summary>
 		///         <remarks>
@@ -332,6 +326,14 @@ namespace Foundation {
 		///         <param name="writeStream">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("tvos")]
+		[ObsoletedOSPlatform ("tvos15.0", Constants.UseNetworkInstead)]
+		[ObsoletedOSPlatform ("maccatalyst", Constants.UseNetworkInstead)]
+		[ObsoletedOSPlatform ("macos", Constants.UseNetworkInstead)]
+		[ObsoletedOSPlatform ("ios15.0", Constants.UseNetworkInstead)]
 		public static void CreatePairWithSocket (CFSocket socket,
 							 out NSInputStream readStream,
 												 out NSOutputStream writeStream)
@@ -354,6 +356,14 @@ namespace Foundation {
 		///         <param name="writeStream">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("tvos")]
+		[ObsoletedOSPlatform ("tvos15.0", Constants.UseNetworkInstead)]
+		[ObsoletedOSPlatform ("maccatalyst", Constants.UseNetworkInstead)]
+		[ObsoletedOSPlatform ("macos", Constants.UseNetworkInstead)]
+		[ObsoletedOSPlatform ("ios15.0", Constants.UseNetworkInstead)]
 		public static void CreatePairWithPeerSocketSignature (AddressFamily family, SocketType type,
 															  ProtocolType proto, IPEndPoint endpoint,
 															  out NSInputStream readStream,
@@ -374,6 +384,14 @@ namespace Foundation {
 		///         <param name="writeStream">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("tvos")]
+		[ObsoletedOSPlatform ("tvos15.0", Constants.UseNetworkInstead)]
+		[ObsoletedOSPlatform ("maccatalyst", Constants.UseNetworkInstead)]
+		[ObsoletedOSPlatform ("macos", Constants.UseNetworkInstead)]
+		[ObsoletedOSPlatform ("ios15.0", Constants.UseNetworkInstead)]
 		public static void CreatePairWithSocketToHost (IPEndPoint endpoint,
 													   out NSInputStream readStream,
 													   out NSOutputStream writeStream)

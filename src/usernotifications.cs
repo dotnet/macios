@@ -1366,7 +1366,11 @@ namespace UserNotifications {
 			<remarks>To be added.</remarks>
 			""")]
 		[Export ("getPendingNotificationRequestsWithCompletionHandler:")]
+#if XAMCORE_5_0
+		void GetPendingNotificationRequests (UNUserNotificationCenterGetPendingNotificationRequestsCallback Action<UNNotificationRequest []> completionHandler);
+#else
 		void GetPendingNotificationRequests (Action<UNNotificationRequest []> completionHandler);
+#endif
 
 		/// <param name="identifiers">The identifiers for which to remove the corresponding notification requests.</param>
 		///         <summary>Removes all pending notification requests for the app that have any of the the specified <paramref name="identifiers" /> from the notification center.</summary>
@@ -1412,6 +1416,10 @@ namespace UserNotifications {
 		[Export ("setBadgeCount:withCompletionHandler:")]
 		void SetBadgeCount (nint newBadgeCount, [NullAllowed] Action<NSError> completionHandler);
 	}
+
+#if XAMCORE_5_0
+	delegate void UNUserNotificationCenterGetPendingNotificationRequestsCallback ([NullAllowed] UNNotificationRequest [] pendingNotificationRequests);
+#endif
 
 	[iOS (15, 0), MacCatalyst (15, 0), TV (15, 0)]
 	[BaseType (typeof (NSObject))]

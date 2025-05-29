@@ -33,9 +33,7 @@ namespace Introspection {
 		{
 			switch (type.Namespace) {
 			case "MetalKit":
-			case "MonoTouch.MetalKit":
 			case "MetalPerformanceShaders":
-			case "MonoTouch.MetalPerformanceShaders":
 			case "MLCompute":
 			case "MediaSetup":
 			case "Phase":
@@ -151,9 +149,7 @@ namespace Introspection {
 		{
 			// some code cannot be run on the simulator (e.g. missing frameworks)
 			switch (type.Namespace) {
-			case "MonoTouch.Metal":
 			case "Metal":
-			case "MonoTouch.CoreAudioKit":
 			case "CoreAudioKit":
 				// they works with iOS9 beta 4 (but won't work on older simulators)
 				if (TestRuntime.IsSimulatorOrDesktop && !TestRuntime.CheckXcodeVersion (7, 0))
@@ -162,7 +158,6 @@ namespace Introspection {
 
 #if HAS_WATCHCONNECTIVITY
 			case "WatchConnectivity":
-			case "MonoTouch.WatchConnectivity":
 				if (!WCSession.IsSupported)
 					return true;
 				break;

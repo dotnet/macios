@@ -107,19 +107,11 @@ namespace Foundation {
 				(int) calComponents.Minute,
 				(int) calComponents.Second,
 				(int) milliseconds,
-#if NET
 				(int) microseconds,
-#endif
 				DateTimeKind.Utc);
 
-#if NET
 			if (ticks > 0)
 				rv = rv.AddTicks (ticks);
-#else
-			if (microseconds > 0 || ticks > 0)
-				rv = rv.AddTicks (ticks + 10 * (int) microseconds);
-#endif
-
 
 			return rv;
 		}

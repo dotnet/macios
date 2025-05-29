@@ -29,10 +29,6 @@ using NSWindowController = Foundation.NSObject;
 using NSViewController = Foundation.NSObject;
 #endif
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreAudioKit {
 	[NoiOS]
 	[NoMacCatalyst]

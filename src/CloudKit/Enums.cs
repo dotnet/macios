@@ -217,21 +217,6 @@ namespace CloudKit {
 
 	// NSInteger -> CKSubscription.h
 
-#if !NET
-	[Obsoleted (PlatformName.iOS, 14, 0, message: "Use 'CKQuerySubscriptionOptions' instead.")]
-	[Deprecated (PlatformName.iOS, 10, 0, message: "Use 'CKQuerySubscriptionOptions' instead.")]
-	[Obsoleted (PlatformName.MacOSX, 10, 16, message: "Use 'CKQuerySubscriptionOptions' instead.")]
-	[Deprecated (PlatformName.MacOSX, 10, 12, message: "Use 'CKQuerySubscriptionOptions' instead.")]
-	[Flags]
-	[Native]
-	public enum CKSubscriptionOptions : ulong {
-		FiresOnRecordCreation = 1 << 0,
-		FiresOnRecordUpdate = 1 << 1,
-		FiresOnRecordDeletion = 1 << 2,
-		FiresOnce = 1 << 3,
-	}
-#endif
-
 	/// <summary>Enumerates values that tell whether a database is private, shared, or public.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]

@@ -11,6 +11,7 @@
 		<_XamarinIsPreviewRelease>@XCODE_IS_PREVIEW@</_XamarinIsPreviewRelease>
 		<_XamarinDotNetVersion>@DOTNET_TFM@</_XamarinDotNetVersion>
 		<_XamarinPackSuffix>@DOTNET_TFM@_@NUGET_OS_VERSION@</_XamarinPackSuffix>
+		<_RecommendedXcodeVersion>@XCODE_VERSION@</_RecommendedXcodeVersion>
 	</PropertyGroup>
 
 	<ItemGroup>@VALID_RUNTIME_IDENTIFIERS@

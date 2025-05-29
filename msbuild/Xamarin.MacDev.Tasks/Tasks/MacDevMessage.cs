@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Resources;
 
 using Microsoft.Build.Framework;
@@ -22,15 +23,24 @@ namespace Xamarin.MacDev.Tasks {
 		/// <summary>
 		/// The string format arguments to use for any numbered format items in the resource provided by ResourceName
 		/// </summary>
-		public string [] FormatArguments { get; set; } = Array.Empty<string> ();
+		public ITaskItem [] FormatArguments { get; set; } = Array.Empty<ITaskItem> ();
+
+		public bool Error { get; set; }
+		public bool Warning { get; set; }
 
 		public override bool Execute ()
 		{
-			Log.LogMessage (
-				MSBStrings.ResourceManager.GetString (ResourceName, MSBStrings.Culture),
-				FormatArguments
-			);
-			return true;
+			var msg = MSBStrings.ResourceManager.GetString (ResourceName, MSBStrings.Culture);
+			var args = FormatArguments.Select (v => v.ItemSpec).ToArray ();
+			var message = string.Format (msg, args);
+			if (Error) {
+				Log.LogError (message);
+			} else if (Warning) {
+				Log.LogWarning (message);
+			} else {
+				Log.LogMessage (message);
+			}
+			return !Log.HasLoggedErrors;
 		}
 	}
 }

@@ -9,16 +9,15 @@ using Xamarin.MacDev.Tasks;
 using Xamarin.Messaging.Build.Client;
 using Xamarin.Messaging.Build.Contracts;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Xamarin.MacDev.Tasks {
 	public class ResolveUniversalTypeIdentifiers : XamarinTask {
 		[Required]
-		public ITaskItem [] ImageAssets { get; set; }
+		public ITaskItem [] ImageAssets { get; set; } = [];
 
 		[Required]
-		public string ProjectDir { get; set; }
+		public string ProjectDir { get; set; } = "";
 
 		public override bool Execute ()
 		{
@@ -43,7 +42,7 @@ namespace Xamarin.MacDev.Tasks {
 
 				foreach (var filePath in contentFiles) {
 					string content;
-					DataSet dataset = null;
+					DataSet? dataset = null;
 
 					if (File.Exists (filePath)) {
 						content = File.ReadAllText (filePath);

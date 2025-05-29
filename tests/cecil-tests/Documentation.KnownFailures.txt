@@ -9413,8 +9413,6 @@ M:CoreFoundation.CFBundle.IsArchitectureLoadable(CoreFoundation.CFBundle.Archite
 M:CoreFoundation.CFBundle.IsExecutableLoadable(CoreFoundation.CFBundle)
 M:CoreFoundation.CFBundle.IsExecutableLoadable(Foundation.NSUrl)
 M:CoreFoundation.CFException.#ctor(System.String,Foundation.NSString,System.IntPtr,System.String,System.String)
-M:CoreFoundation.CFMutableString.#ctor(CoreFoundation.CFString,System.IntPtr)
-M:CoreFoundation.CFMutableString.#ctor(System.String,System.IntPtr)
 M:CoreFoundation.CFNetwork.ExecuteProxyAutoConfigurationScript(System.String,System.Uri,Foundation.NSError@)
 M:CoreFoundation.CFNetwork.ExecuteProxyAutoConfigurationScriptAsync(System.String,System.Uri,System.Threading.CancellationToken)
 M:CoreFoundation.CFNetwork.ExecuteProxyAutoConfigurationUrl(System.Uri,System.Uri,Foundation.NSError@)
@@ -13175,7 +13173,6 @@ M:Metal.MTLLibrary_Extensions.CreateFunctionAsync(Metal.IMTLLibrary,System.Strin
 M:Metal.MTLLibrary_Extensions.CreateIntersectionFunction(Metal.IMTLLibrary,Metal.MTLIntersectionFunctionDescriptor,Foundation.NSError@)
 M:Metal.MTLLibrary_Extensions.CreateIntersectionFunction(Metal.IMTLLibrary,Metal.MTLIntersectionFunctionDescriptor,System.Action{Metal.IMTLFunction,Foundation.NSError})
 M:Metal.MTLOrigin.#ctor(System.IntPtr,System.IntPtr,System.IntPtr)
-M:Metal.MTLRasterizationRateLayerDescriptor.Create(Metal.MTLSize,System.Single[],System.Single[])
 M:Metal.MTLRegion.Create1D(System.IntPtr,System.IntPtr)
 M:Metal.MTLRegion.Create1D(System.UIntPtr,System.UIntPtr)
 M:Metal.MTLRegion.Create2D(System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr)
@@ -20093,6 +20090,7 @@ P:Foundation.NSUrlSessionConfiguration.SessionType
 P:Foundation.NSUrlSessionConfiguration.StrongConnectionProxyDictionary
 P:Foundation.NSUrlSessionHandler.AllowsCellularAccess
 P:Foundation.NSUrlSessionHandler.AutomaticDecompression
+P:Foundation.NSUrlSessionHandler.ClientCertificateOptions
 P:Foundation.NSUrlSessionHandler.CookieContainer
 P:Foundation.NSUrlSessionHandler.MaxAutomaticRedirections
 P:Foundation.NSUrlSessionHandler.ServerCertificateCustomValidationCallback
@@ -23601,6 +23599,7 @@ P:StoreKit.StoreProductParameters.ProductIdentifier
 P:StoreKit.StoreProductParameters.ProviderToken
 P:System.Net.Http.NSUrlSessionHandler.AllowsCellularAccess
 P:System.Net.Http.NSUrlSessionHandler.AutomaticDecompression
+P:System.Net.Http.NSUrlSessionHandler.ClientCertificateOptions
 P:System.Net.Http.NSUrlSessionHandler.CookieContainer
 P:System.Net.Http.NSUrlSessionHandler.MaxAutomaticRedirections
 P:System.Net.Http.NSUrlSessionHandler.ServerCertificateCustomValidationCallback
@@ -26577,6 +26576,8 @@ T:Foundation.NSBindingSelectionMarker
 T:Foundation.NSCollectionChangeType
 T:Foundation.NSConnectionDelegate
 T:Foundation.NSDataCompressionAlgorithm
+T:Foundation.NSDictionaryEnumerator
+T:Foundation.NSDictionaryKeyFilter
 T:Foundation.NSExceptionError
 T:Foundation.NSExpressionCallbackHandler
 T:Foundation.NSFileManager_NSUserInformation

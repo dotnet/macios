@@ -32,10 +32,6 @@ using UIActivity = Foundation.NSObject;
 using UIViewController = AppKit.NSViewController;
 #endif
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace SafariServices {
 	delegate void SFExtensionValidationHandler (bool shouldHide, NSString text);
 
@@ -154,11 +150,6 @@ namespace SafariServices {
 		///         <remarks>To be added.</remarks>
 		[Export ("addReadingListItemWithURL:title:previewText:error:")]
 		bool Add (NSUrl url, [NullAllowed] string title, [NullAllowed] string previewText, out NSError error);
-
-#if !NET
-		[Field ("SSReadingListErrorDomain")]
-		NSString ErrorDomain { get; }
-#endif
 	}
 
 	/// <summary>User interface for web browsing.</summary>

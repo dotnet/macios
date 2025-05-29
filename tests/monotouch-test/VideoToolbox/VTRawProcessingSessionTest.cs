@@ -2,7 +2,6 @@
 // Unit tests for VTRawProcessingSession
 //
 
-#if NET
 #if MONOMAC
 
 using System;
@@ -116,4 +115,3 @@ namespace MonoTouchFixtures.VideoToolbox {
 }
 
 #endif // MONOMAC
-#endif // NET

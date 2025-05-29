@@ -40,17 +40,12 @@ using Pixel16S = System.Int16;
 using ResamplingFilter = System.IntPtr;
 using GammaFunction = System.IntPtr;
 
-#if NET
 using vImagePixelCount = System.IntPtr;
-#else
-using vImagePixelCount = System.nint;
-#endif
 
 #nullable enable
 
 namespace Accelerate {
 	// vImage_Buffer - vImage_Types.h
-#if NET
 	/// <summary>Structure used to represent image data.</summary>
 	///     <remarks>
 	///       <para>This structure is used to describe a block of image data.   The image data is stored in the Data property with the Width and Height properties describing how many pixels the image has on each dimension.   </para>
@@ -62,7 +57,6 @@ namespace Accelerate {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct vImageBuffer {
 		/// <summary>Points to the image data.</summary>
@@ -104,14 +98,12 @@ namespace Accelerate {
 	}
 
 	// vImage_AffineTransform - vImage_Types.h
-#if NET
 	/// <summary>Struct that represents an affine transformation as a vector of six single-precision values.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct vImageAffineTransformFloat {
 		// all defined as 'float'
@@ -138,14 +130,12 @@ namespace Accelerate {
 	}
 
 	// vImage_AffineTransform_Double - vImage_Types.h
-#if NET
 	/// <summary>Struct that represents an affine transformation as a vector of six double-precision values.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct vImageAffineTransformDouble {
 		/// <summary>To be added.</summary>
@@ -290,14 +280,12 @@ namespace Accelerate {
 		NoAllocate = 512,
 	}
 
-#if NET
 	/// <summary>Represents a pixel using 32-bit floating points values for its alpha, red, green and blue components.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct PixelFFFF {
 		/// <summary>Alpha channel component.</summary>
@@ -321,14 +309,12 @@ namespace Accelerate {
 		public readonly static PixelFFFF Zero;
 	}
 
-#if NET
 	/// <summary>Represents a pixel using 8-bit integers for its red, green, blue and alpha components.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct Pixel8888 {
 		/// <summary>Alpha channel component.</summary>
@@ -353,7 +339,6 @@ namespace Accelerate {
 		public readonly static Pixel8888 Zero;
 	}
 
-#if NET
 	/// <summary>Represents a pixel using 16-bit unsigned integers for its alpha, red, green and blue components.</summary>
 	///     <remarks>
 	///       <para>
@@ -363,7 +348,6 @@ namespace Accelerate {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct PixelARGB16U {
 		/// <summary>Alpha Component.</summary>
@@ -383,7 +367,6 @@ namespace Accelerate {
 		public readonly static PixelARGB16U Zero;
 	}
 
-#if NET
 	/// <summary>Represents a pixel using 16-bit signed integers for its alpha, red, green and blue components.</summary>
 	///     <remarks>
 	///       <para>
@@ -393,7 +376,6 @@ namespace Accelerate {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct PixelARGB16S {
 		/// <summary>Alpha Component.</summary>
@@ -413,7 +395,6 @@ namespace Accelerate {
 		public readonly static PixelARGB16S Zero;
 	}
 
-#if NET
 	/// <summary>Accelerated image operations.</summary>
 	///     <remarks>
 	///       <para>
@@ -425,7 +406,6 @@ namespace Accelerate {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	unsafe public static class vImage {
 
 		#region Convolve

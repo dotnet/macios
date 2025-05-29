@@ -9,21 +9,15 @@ using System.Runtime.Versioning;
 using CoreFoundation;
 using ObjCRuntime;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace Foundation {
 
 	// Helper to (mostly) support NS[Mutable]Copying protocols
-#if NET
 	/// <summary>An OS-controlled area within memory from which objects are allocated.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class NSZone : INativeObject {
 		[DllImport (Constants.FoundationLibrary)]
 		static extern /* NSZone* */ IntPtr NSDefaultMallocZone ();
@@ -34,19 +28,8 @@ namespace Foundation {
 		[DllImport (Constants.FoundationLibrary)]
 		static extern void NSSetZoneName (/* NSZone* */ IntPtr zone, /* NSString* */ IntPtr name);
 
-#if !NET
-		public NSZone (NativeHandle handle)
-			: this (handle, false)
-		{
-		}
-#endif
-
 		[Preserve (Conditional = true)]
-#if NET
 		internal NSZone (NativeHandle handle, bool owns)
-#else
-		public NSZone (NativeHandle handle, bool owns)
-#endif
 		{
 			// NSZone is just an opaque pointer without reference counting, so we ignore the 'owns' parameter.
 			this.Handle = handle;

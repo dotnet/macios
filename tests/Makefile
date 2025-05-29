@@ -46,7 +46,6 @@ test.config: Makefile $(TOP)/Make.config $(TOP)/mk/mono.mk $(TOP)/eng/Version.De
 	@echo "DOTNET=$(DOTNET)" >> $@
 	@echo "IOS_SDK_VERSION=$(IOS_SDK_VERSION)" >> $@
 	@echo "TVOS_SDK_VERSION=$(TVOS_SDK_VERSION)" >> $@
-	@echo "WATCH_SDK_VERSION=$(WATCH_SDK_VERSION)" >> $@
 	@echo "MACOS_SDK_VERSION=$(MACOS_SDK_VERSION)" >> $@
 	@echo "DOTNET_BCL_DIR=$(DOTNET_BCL_DIR)" >> $@
 	@printf "$(foreach platform,$(DOTNET_PLATFORMS_UPPERCASE),DOTNET_$(platform)_RUNTIME_IDENTIFIERS='$(DOTNET_$(platform)_RUNTIME_IDENTIFIERS)'\\n)" | sed 's/^ //' >> $@
@@ -73,7 +72,6 @@ test-system.config: Makefile $(TOP)/Make.config $(TOP)/mk/mono.mk $(TOP)/eng/Ver
 	@echo "DOTNET=$(DOTNET)" >> $@
 	@echo "IOS_SDK_VERSION=$(IOS_SDK_VERSION)" >> $@
 	@echo "TVOS_SDK_VERSION=$(TVOS_SDK_VERSION)" >> $@
-	@echo "WATCH_SDK_VERSION=$(WATCH_SDK_VERSION)" >> $@
 	@echo "MACOS_SDK_VERSION=$(MACOS_SDK_VERSION)" >> $@
 	@echo "DOTNET_TFM=$(DOTNET_TFM)" >> $@
 	@echo "DOTNET_BCL_DIR=$(DOTNET_BCL_DIR)" >> $@

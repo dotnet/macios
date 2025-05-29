@@ -13,27 +13,14 @@ using Bindings.Test;
 
 using NUnit.Framework;
 
-#if !NET && !__MACOS__
-using ObjCException = Foundation.MonoTouchException;
-#endif
-
 namespace MonoTouchFixtures.ObjCRuntime {
 
 	[TestFixture]
 	[Preserve (AllMembers = true)]
 	public class ExceptionsTest {
 
-#if NET
 		MarshalObjectiveCExceptionMode defaultObjectiveCExceptionMode = MarshalObjectiveCExceptionMode.ThrowManagedException;
 		MarshalManagedExceptionMode defaultManagedExceptionMode = MarshalManagedExceptionMode.Default;
-#else
-#if (__MACOS__ || __MACCATALYST__) && DEBUG
-		MarshalObjectiveCExceptionMode defaultObjectiveCExceptionMode = MarshalObjectiveCExceptionMode.ThrowManagedException;
-#else
-		MarshalObjectiveCExceptionMode defaultObjectiveCExceptionMode = MarshalObjectiveCExceptionMode.UnwindManagedCode;
-#endif
-		MarshalManagedExceptionMode defaultManagedExceptionMode = MarshalManagedExceptionMode.Default;
-#endif
 
 		static List<MarshalObjectiveCExceptionEventArgs> objcEventArgs;
 		static List<MarshalManagedExceptionEventArgs> managedEventArgs;
@@ -81,7 +68,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			Runtime.MarshalObjectiveCException -= ObjExceptionHandler;
 		}
 
-		// Simulator/desktop only (except for watchOS, where it works everywhere)
+		// Simulator/desktop only
 		[Test]
 		public void ObjCException ()
 		{
@@ -127,7 +114,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			}
 		}
 
-		// Simulator/desktop only test (except for watchOS, where it works everywhere)
+		// Simulator/desktop only test
 		[Test]
 		public void ManagedExceptionPassthrough ()
 		{

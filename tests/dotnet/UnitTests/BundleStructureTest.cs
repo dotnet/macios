@@ -3,7 +3,7 @@
 namespace Xamarin.Tests {
 	[TestFixture]
 	public class BundleStructureTest : TestBaseClass {
-		// Returns true if the assembly name is _any_ of our platform assemblies (Microsoft.iOS/tvOS/macOS/MacCatalyst/watchOS.dll)
+		// Returns true if the assembly name is _any_ of our platform assemblies (Microsoft.iOS/tvOS/macOS/MacCatalyst.dll)
 		static bool IsPlatformAssembly (string assemblyName)
 		{
 			if (assemblyName.EndsWith (".dll", StringComparison.Ordinal) || assemblyName.EndsWith (".pdb", StringComparison.Ordinal))

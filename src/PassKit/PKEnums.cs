@@ -5,21 +5,6 @@ using Foundation;
 using ObjCRuntime;
 
 namespace PassKit {
-
-#if !NET
-	// untyped enum -> PKError.h
-	// This never seemed to be deprecatd, yet in iOS8 it's obsoleted
-	// this enum does not show up in the headers anymore
-	[Obsoleted (PlatformName.iOS, 8, 0)]
-	[NoMac]
-	public enum PKErrorCode {
-		None = 0,
-		Unknown = 1,
-		NotEntitled,
-		PermissionDenied, // new in iOS7
-	}
-#endif
-
 	// NSInteger -> PKPass.h
 	/// <summary>An enumeration whose values specify errors relating to the passes and passbook functionality.</summary>
 	[MacCatalyst (13, 1)]
@@ -211,17 +196,10 @@ namespace PassKit {
 		/// <summary>A button that reads "Donate with" and the Apple Pay logo.</summary>
 		[MacCatalyst (13, 1)]
 		Donate,
-#if NET
 		[MacCatalyst (13, 1)]
 		Checkout,
 		[MacCatalyst (13, 1)]
 		Book,
-#else
-		[Obsolete ("Use 'Book2'.")]
-		Book,
-		[Obsolete ("Use 'Checkout2'.")]
-		Checkout,
-#endif // !NET
 		[MacCatalyst (13, 1)]
 		Subscribe,
 		[iOS (14, 0)]
@@ -251,12 +229,6 @@ namespace PassKit {
 		[iOS (15, 0)]
 		[MacCatalyst (15, 0)]
 		Continue = 16,
-#if !NET
-#pragma warning disable 0618 // warning CS0618: 'PKPaymentButtonType.[field]' is obsolete: 'Use '[replacement]'.'
-		Book2 = Checkout,
-		Checkout2 = Book,
-#pragma warning restore
-#endif // !NET
 	}
 
 	/// <summary>Enumerates shipping methods.</summary>

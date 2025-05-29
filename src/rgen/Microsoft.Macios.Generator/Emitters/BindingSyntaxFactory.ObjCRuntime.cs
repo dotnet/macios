@@ -21,22 +21,6 @@ namespace Microsoft.Macios.Generator.Emitters;
 static partial class BindingSyntaxFactory {
 	readonly static string objc_msgSend = "objc_msgSend";
 	readonly static string objc_msgSendSuper = "objc_msgSendSuper";
-	readonly static TypeSyntax Selector = GetIdentifierName (
-		@namespace: ["ObjCRuntime"],
-		@class: "Selector",
-		isGlobal: true);
-	public static readonly TypeSyntax NSValue = GetIdentifierName (
-		@namespace: ["Foundation"],
-		@class: "NSValue",
-		isGlobal: true);
-	public static readonly TypeSyntax NSNumber = GetIdentifierName (
-		@namespace: ["Foundation"],
-		@class: "NSNumber",
-		isGlobal: true);
-	public readonly static TypeSyntax NativeHandle = GetIdentifierName (
-		@namespace: ["ObjCRuntime"],
-		@class: "NativeHandle",
-		isGlobal: true);
 
 	/// <summary>
 	/// Returns the expression needed to cast a parameter to its native type.
@@ -45,6 +29,15 @@ static partial class BindingSyntaxFactory {
 	/// and enum and be marked as native. If it is not, the method returns null</param>
 	/// <returns>The cast C# expression.</returns>
 	internal static CastExpressionSyntax? CastToNative (in Parameter parameter)
+		=> CastToNative (parameter.Name, parameter.Type);
+
+	/// <summary>
+	/// Returns the expression needed to cast a parameter to its native type.
+	/// </summary>
+	/// <param name="parameter">The parameter whose casting we need to generate. The type info has to be
+	/// and enum and be marked as native. If it is not, the method returns null</param>
+	/// <returns>The cast C# expression.</returns>
+	internal static CastExpressionSyntax? CastToNative (in DelegateParameter parameter)
 		=> CastToNative (parameter.Name, parameter.Type);
 
 	/// <summary>
@@ -141,6 +134,24 @@ static partial class BindingSyntaxFactory {
 			condition: IdentifierName (variableName).WithTrailingTrivia (Space),
 			whenTrue: castOne.WithLeadingTrivia (Space),
 			whenFalse: castZero);
+	}
+
+	/// <summary>
+	/// Returns the expression needed to cast a byte to a bool to be used in a call. 
+	/// </summary>
+	/// <param name="variableName">The variable to cast.</param>
+	/// <param name="typeInfo">The type information of the variable.</param>
+	/// <returns>A binary expression that casts a byte to a bool.</returns>
+	internal static BinaryExpressionSyntax CastToBool (string variableName, in TypeInfo typeInfo)
+	{
+		// with this exact space count
+		// byte != 0;
+		return BinaryExpression (
+			SyntaxKind.NotEqualsExpression,
+			IdentifierName (variableName),
+			LiteralExpression (
+				SyntaxKind.NumericLiteralExpression,
+				Literal (0))).NormalizeWhitespace ();
 	}
 
 	/// <summary>
@@ -708,7 +719,7 @@ static partial class BindingSyntaxFactory {
 	internal static (string Name, LocalDeclarationStatementSyntax Declaration) GetReturnValueAuxVariable (in TypeInfo returnType)
 	{
 		var typeSyntax = returnType.GetIdentifierSyntax ();
-		var variableName = Nomenclator.GetReturnVariableName (returnType);
+		var variableName = Nomenclator.GetReturnVariableName ();
 		// generates Type ret; The GetIdentifierSyntax will ensure that the correct type and nullable annotation is used
 		var declaration = LocalDeclarationStatement (
 			VariableDeclaration (typeSyntax.WithTrailingTrivia (Space))

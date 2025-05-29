@@ -82,7 +82,6 @@ namespace Xamarin.Bundler {
 		public bool DebugAll;
 		public bool UseInterpreter; // Only applicable to mobile platforms.
 		public List<string> DebugAssemblies = new List<string> ();
-		internal RuntimeOptions RuntimeOptions;
 		public Optimizations Optimizations = new Optimizations ();
 		public RegistrarMode Registrar = RegistrarMode.Default;
 		public RegistrarOptions RegistrarOptions = RegistrarOptions.Default;
@@ -376,16 +375,7 @@ namespace Xamarin.Bundler {
 
 		public string FrameworkLocationVariable {
 			get {
-				switch (Platform) {
-				case ApplePlatform.iOS:
-				case ApplePlatform.TVOS:
-				case ApplePlatform.MacCatalyst:
-					return "MD_MTOUCH_SDK_ROOT";
-				case ApplePlatform.MacOSX:
-					return "XAMMAC_FRAMEWORK_PATH";
-				default:
-					throw ErrorHelper.CreateError (71, Errors.MX0071, Platform, ProductName);
-				}
+				throw new NotImplementedException ();
 			}
 		}
 
@@ -807,8 +797,6 @@ namespace Xamarin.Bundler {
 		{
 			InitializeDeploymentTarget ();
 			SelectMonoNative ();
-
-			RuntimeOptions = RuntimeOptions.Create (this, HttpMessageHandler, TlsProvider);
 
 			if (Platform == ApplePlatform.MacCatalyst) {
 				// Our input SdkVersion is the macOS SDK version, but the rest of our code expects the supporting iOS version, so convert here.

@@ -18,28 +18,14 @@ using Foundation;
 using CoreMedia;
 using CoreVideo;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace VideoToolbox {
-
-#if NET
 	/// <summary>Base class of <see cref="VideoToolbox.VTCompressionSession" /> and <see cref="VideoToolbox.VTDecompressionSession" />.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
-#endif
 	public class VTSession : NativeObject {
-#if !NET
-		protected internal VTSession (NativeHandle handle)
-			: base (handle, false)
-		{
-		}
-#endif
-
 		[Preserve (Conditional = true)]
 		internal VTSession (NativeHandle handle, bool owns)
 			: base (handle, owns)

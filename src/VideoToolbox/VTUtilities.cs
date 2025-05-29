@@ -19,15 +19,12 @@ using Foundation;
 #nullable enable
 
 namespace VideoToolbox {
-
-#if NET
 	/// <summary>Extensions class for <see cref="CoreVideo.CVPixelBuffer" />.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst")]
-#endif
 	public static class VTUtilities {
 		[DllImport (Constants.VideoToolboxLibrary)]
 		unsafe extern static VTStatus VTCreateCGImageFromCVPixelBuffer (
@@ -64,40 +61,26 @@ namespace VideoToolbox {
 
 #if MONOMAC
 
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("ios")]
-#else
-		[NoTV]
-		[NoiOS]
-#endif
 		[DllImport (Constants.VideoToolboxLibrary)]
 		static extern void VTRegisterSupplementalVideoDecoderIfAvailable (uint codecType);
 
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("ios")]
-#else
-		[NoTV]
-		[NoiOS]
-#endif
 		public static void RegisterSupplementalVideoDecoder (CMVideoCodecType codecType)
 			=> VTRegisterSupplementalVideoDecoderIfAvailable ((uint) codecType);
 #endif
 
 #if __MACOS__
-#if NET
 		[UnsupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos15.0")]
 		[UnsupportedOSPlatform ("tvos")]
-#else
-		[NoTV, NoiOS, NoMacCatalyst, Mac (15, 0)]
-#endif
 		[DllImport (Constants.VideoToolboxLibrary)]
 		unsafe static extern VTStatus VTCopyVideoDecoderExtensionProperties (
 			IntPtr /* CMFormatDescriptionRef CM_NONNULL */ formatDesc,
@@ -108,14 +91,10 @@ namespace VideoToolbox {
 		/// <param name="formatDescription">The format description for the video format to analyze.</param>
 		/// <param name="error">An error code if the operation was unsuccessful, otherwise <see cref="VTStatus.Ok" />. If a Media Extension encoder won't be used to decode this format, <see cref="VTStatus.CouldNotFindExtensionErr" /> will be returned.</param>
 		/// <returns>A dictionary with the properties for the Media Extension that will be used to decode this format, or null in case of failure.</returns>
-#if NET
 		[UnsupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos15.0")]
 		[UnsupportedOSPlatform ("tvos")]
-#else
-		[NoTV, NoiOS, NoMacCatalyst, Mac (15, 0)]
-#endif
 		public static NSDictionary? CopyVideoDecoderExtensionProperties (CMFormatDescription formatDescription, out VTStatus error)
 		{
 			IntPtr handle;
@@ -128,14 +107,10 @@ namespace VideoToolbox {
 #endif // __MACOS__
 
 #if __MACOS__
-#if NET
 		[UnsupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos15.0")]
 		[UnsupportedOSPlatform ("tvos")]
-#else
-		[NoTV, NoiOS, NoMacCatalyst, Mac (15, 0)]
-#endif
 		[DllImport (Constants.VideoToolboxLibrary)]
 		unsafe static extern VTStatus VTCopyRAWProcessorExtensionProperties (
 			IntPtr /* CMFormatDescriptionRef CM_NONNULL */ formatDesc,
@@ -146,14 +121,10 @@ namespace VideoToolbox {
 		/// <param name="formatDescription">The format description for the video format to analyze.</param>
 		/// <param name="error">An error code if the operation was unsuccessful, otherwise <see cref="VTStatus.Ok" />. If a Media Extension RAW processor won't be used to decode this format, <see cref="VTStatus.CouldNotFindExtensionErr" /> will be returned.</param>
 		/// <returns>A dictionary with the properties for the Media Extension RAW processor that will be used to decode this format, or null in case of failure.</returns>
-#if NET
 		[UnsupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos15.0")]
 		[UnsupportedOSPlatform ("tvos")]
-#else
-		[NoTV, NoiOS, NoMacCatalyst, Mac (15, 0)]
-#endif
 		public static NSDictionary? CopyRawProcessorExtensionProperties (CMFormatDescription formatDescription, out VTStatus error)
 		{
 			IntPtr handle;

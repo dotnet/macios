@@ -523,6 +523,65 @@ namespace NS {
 					]
 				)
 			];
+
+			const string customDelegateKeywordParam = @"
+using System;
+
+namespace NS {
+	public class MyClass {
+		public delegate int? Callback(string @event, string? middleName, params string[] surname);
+
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				customDelegateKeywordParam,
+				new Method (
+					type: "NS.MyClass",
+					name: "MyMethod",
+					returnType: ReturnTypeForVoid (),
+					symbolAvailability: new (),
+					exportMethodData: new (),
+					attributes: [],
+					modifiers: [
+						SyntaxFactory.Token (SyntaxKind.PublicKeyword),
+					],
+					parameters: [
+						new (
+							position: 0,
+							type: ReturnTypeForDelegate (
+								"NS.MyClass.Callback",
+								delegateInfo: new (
+									name: "Invoke",
+									returnType: ReturnTypeForInt (isNullable: true),
+									parameters: [
+										new (
+											position: 0,
+											type: ReturnTypeForString (),
+											name: "@event"
+										),
+										new (
+											position: 1,
+											type: ReturnTypeForString (isNullable: true),
+											name: "middleName"
+										),
+										new (
+											position: 2,
+											type: ReturnTypeForArray ("string", isBlittable: false),
+											name: "surname"
+										) {
+											IsParams = true,
+										},
+									]
+								)
+							),
+							name: "cb"
+						)
+					]
+				)
+			];
 		}
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();

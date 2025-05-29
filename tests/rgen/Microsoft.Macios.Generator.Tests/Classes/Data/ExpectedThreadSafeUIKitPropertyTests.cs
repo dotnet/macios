@@ -113,7 +113,7 @@ public partial class ThreadSafeUIKitPropertyTests
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual partial UIntPtr Count
+	public virtual partial global::System.UIntPtr Count
 	{
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
@@ -121,7 +121,7 @@ public partial class ThreadSafeUIKitPropertyTests
 		[SupportedOSPlatform ("maccatalyst13.1")]
 		get
 		{
-			UIntPtr ret;
+			global::System.UIntPtr ret;
 			if (IsDirectBinding) {
 				ret = global::ObjCRuntime.Messaging.UIntPtr_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("count"));
 			} else {

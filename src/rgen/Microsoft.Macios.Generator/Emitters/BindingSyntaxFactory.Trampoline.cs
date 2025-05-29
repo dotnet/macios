@@ -854,4 +854,44 @@ static partial class BindingSyntaxFactory {
 			.WithParameterList (parametersSyntax.WithLeadingTrivia (Space));
 		return method;
 	}
+	
+	/// <summary>
+	/// Returns the method declaration signature for the native trampoline invoke method.
+	/// This is the method that will be directly called from the native side (e.g., by a block invocation).
+	/// The parameters and return type match the original managed delegate's signature, without low-level conversions
+	/// applied at this stage, as this method is part of the managed-to-native transition.
+	/// </summary>
+	/// <param name="delegateTypeInfo">The <see cref="TypeInfo"/> of the delegate for which to generate the native invoke signature.</param>
+	/// <returns>A <see cref="MemberDeclarationSyntax"/> representing the signature of the native invoke method.</returns>
+	internal static MemberDeclarationSyntax GetTrampolineNativeInvokeSignature (in TypeInfo delegateTypeInfo)
+	{
+		var modifiers = TokenList (
+			Token (SyntaxKind.UnsafeKeyword));
+		// the parameters are the exact same as the delegate parameters, we are not going to low level them
+		var parameterBucket = ImmutableArray.CreateBuilder<ParameterSyntax> (delegateTypeInfo.Delegate!.Parameters.Length);
+		foreach (var currentParameter in delegateTypeInfo.Delegate!.Parameters) {
+			// build the parameter
+			var parameter = Parameter (Identifier (currentParameter.Name))
+				.WithType (currentParameter.Type.GetIdentifierSyntax ())
+				.NormalizeWhitespace ();
+			if (currentParameter.IsByRef)
+				parameter = parameter.WithModifiers (TokenList (Token (currentParameter.ReferenceKind.ToSyntaxKind ())));
+			parameterBucket.Add (parameter);
+		}
+
+		var parametersSyntax = ParameterList (
+			SeparatedList<ParameterSyntax> (
+				parameterBucket.ToImmutableArray ().ToSyntaxNodeOrTokenArray ())).NormalizeWhitespace ();
+		
+		var returnType = delegateTypeInfo.Delegate!.ReturnType.IsVoid 
+			? PredefinedType(Token(SyntaxKind.VoidKeyword))
+			: delegateTypeInfo.Delegate!.ReturnType.GetIdentifierSyntax ();
+		
+		var method = MethodDeclaration (
+				returnType, // return the low level type, not the manged version
+				Identifier (Nomenclator.GetTrampolineInvokeMethodName ()))
+			.WithModifiers (modifiers).NormalizeWhitespace ()
+			.WithParameterList (parametersSyntax.WithLeadingTrivia (Space));
+		return method;
+	}
 }

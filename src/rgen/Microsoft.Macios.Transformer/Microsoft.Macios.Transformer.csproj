@@ -80,6 +80,9 @@
         <Compile Include="../Microsoft.Macios.Generator/Extensions/FieldSymbolExtensions.cs">
             <Link>Extensions/FieldSymbolExtensions.cs</Link>
         </Compile>
+        <Compile Include="../Microsoft.Macios.Generator/Extensions/ParameterSymbolExtensions.cs">
+            <Link>Extensions/ParameterSymbolExtensions.cs</Link>
+        </Compile>
         <Compile Include="../Microsoft.Macios.Generator/Extensions/ParameterSyntaxExtensions.cs">
             <Link>Extensions/ParameterSyntaxExtensions.cs</Link>
         </Compile>

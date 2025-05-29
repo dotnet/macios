@@ -3,6 +3,7 @@
 
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.CodeAnalysis;
+using Microsoft.Macios.Generator.Extensions;
 using Microsoft.Macios.Transformer.Attributes;
 
 namespace Microsoft.Macios.Generator.DataModel;
@@ -17,7 +18,7 @@ readonly partial struct DelegateParameter {
 	public static bool TryCreate (IParameterSymbol symbol,
 		[NotNullWhen (true)] out DelegateParameter? parameter)
 	{
-		parameter = new (symbol.Ordinal, new (symbol.Type), symbol.Name) {
+		parameter = new (symbol.Ordinal, new (symbol.Type), symbol.GetSafeName ()) {
 			IsOptional = symbol.IsOptional,
 			IsParams = symbol.IsParams,
 			IsThis = symbol.IsThis,

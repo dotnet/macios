@@ -18,32 +18,16 @@ using Foundation;
 using CoreMedia;
 using CoreVideo;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace VideoToolbox {
-
-#if NET
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios16.0")]
 	[SupportedOSPlatform ("maccatalyst16.0")]
 	[SupportedOSPlatform ("tvos16.0")]
-#else
-	[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
-#endif
 	public class VTPixelTransferSession : VTSession {
 
 		[DllImport (Constants.VideoToolboxLibrary)]
 		extern static /* CFTypeID */ nint VTPixelTransferSessionGetTypeID ();
 		public static nint GetTypeID () => VTPixelTransferSessionGetTypeID ();
-
-#if !NET
-		/* invoked by marshallers */
-		protected internal VTPixelTransferSession (NativeHandle handle) : base (handle)
-		{
-		}
-#endif
 
 		[Preserve (Conditional = true)]
 		internal VTPixelTransferSession (NativeHandle handle, bool owns) : base (handle, owns)

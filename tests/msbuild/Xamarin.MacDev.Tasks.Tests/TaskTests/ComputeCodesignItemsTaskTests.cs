@@ -10,6 +10,7 @@ using Microsoft.Build.Utilities;
 
 using NUnit.Framework;
 
+using Xamarin.Tests;
 using Xamarin.Utils;
 
 #nullable enable
@@ -342,6 +343,74 @@ namespace Xamarin.MacDev.Tasks {
 				task.CodesignStampPath = "codesign-stamp-path/";
 				task.GenerateDSymItems = generateDSymItems.ToArray ();
 				task.NativeStripItems = nativeStripItems.ToArray ();
+				task.TargetFrameworkMoniker = TargetFramework.GetTargetFramework (platform).ToString ();
+				Assert.IsTrue (task.Execute (), "Execute");
+				Assert.AreEqual (0, Engine.Logger.WarningsEvents.Count, "Warning Count");
+
+				VerifyCodesigningResults (infos, task.OutputCodesignItems, platform);
+			} finally {
+				Environment.CurrentDirectory = currentDir;
+			}
+		}
+
+		[Test]
+		[TestCase (ApplePlatform.MacOSX)]
+		[TestCase (ApplePlatform.MacCatalyst)]
+		public void Symlinks (ApplePlatform platform)
+		{
+			var tmpdir = Cache.CreateTemporaryDirectory ();
+
+			var currentDir = Environment.CurrentDirectory;
+			try {
+				Environment.CurrentDirectory = tmpdir;
+
+				var fwsdir = Path.Combine (tmpdir, "Bundle.app", "Contents", "Frameworks");
+				Directory.CreateDirectory (fwsdir);
+
+				var fwdir = Path.Combine (fwsdir, "XTest.framework");
+
+				Directory.CreateDirectory (Path.Combine (fwdir, "Versions", "A", "Resources"));
+				File.WriteAllText (Path.Combine (fwdir, "Versions", "A", "Resources", "Info.plist"), "Info.plist placeholder");
+				Directory.CreateDirectory (Path.Combine (fwdir, "Versions", "A", "Libraries"));
+				File.WriteAllText (Path.Combine (fwdir, "Versions", "A", "Libraries", "libTest.dylib"), "dylib placeholder");
+				File.WriteAllText (Path.Combine (fwdir, "Versions", "A", "XTest"), "Executable placeholder");
+				File.CreateSymbolicLink (Path.Combine (fwdir, "Versions", "Current"), "A");
+				File.CreateSymbolicLink (Path.Combine (fwdir, "Resources"), "Versions/A/Resources");
+				File.CreateSymbolicLink (Path.Combine (fwdir, "XTest"), "Versions/A/XTest");
+				File.CreateSymbolicLink (Path.Combine (fwdir, "Libraries"), "Versions/A/Libraries");
+
+				var codesignItems = new List<ITaskItem> ();
+				var codesignBundle = new List<ITaskItem> ();
+
+				string codeSignatureSubdirectory = string.Empty;
+				string symlinkSubdirectory = string.Empty;
+				switch (platform) {
+				case ApplePlatform.MacCatalyst:
+				case ApplePlatform.MacOSX:
+					codeSignatureSubdirectory = "Contents/";
+					symlinkSubdirectory = "Versions/A/";
+					break;
+				}
+
+				var bundleAppMetadata = new Dictionary<string, string> {
+					{ "RequireCodeSigning", "true" },
+					{ "CodesignSigningKey", "-" },
+				};
+
+				codesignBundle = new List<ITaskItem> {
+					new TaskItem ("Bundle.app", bundleAppMetadata),
+				};
+
+				var infos = new CodesignInfo [] {
+					new CodesignInfo ($"Bundle.app", Platforms.All, bundleAppMetadata.Set ("CodesignStampFile", $"codesign-stamp-path/Bundle.app/.stampfile")),
+					new CodesignInfo ($"Bundle.app/{codeSignatureSubdirectory}Frameworks/XTest.framework", Platforms.All, bundleAppMetadata.Set ("CodesignStampFile", $"codesign-stamp-path/Bundle.app/{codeSignatureSubdirectory}Frameworks/XTest.framework/.stampfile")),
+					new CodesignInfo ($"Bundle.app/{codeSignatureSubdirectory}Frameworks/XTest.framework/{symlinkSubdirectory}Libraries/libTest.dylib", Platforms.All, bundleAppMetadata.Set ("CodesignStampFile", $"codesign-stamp-path/Bundle.app/{codeSignatureSubdirectory}Frameworks/XTest.framework/{symlinkSubdirectory}Libraries/libTest.dylib")),
+				};
+
+				var task = CreateTask<ComputeCodesignItems> ();
+				task.AppBundleDir = "Bundle.app";
+				task.CodesignBundle = codesignBundle.ToArray ();
+				task.CodesignStampPath = "codesign-stamp-path/";
 				task.TargetFrameworkMoniker = TargetFramework.GetTargetFramework (platform).ToString ();
 				Assert.IsTrue (task.Execute (), "Execute");
 				Assert.AreEqual (0, Engine.Logger.WarningsEvents.Count, "Warning Count");

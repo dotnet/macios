@@ -161,6 +161,34 @@ namespace NS {
 				)
 			];
 
+			const string singleParameterKeywordNameMethod = @"
+using System;
+
+namespace NS {
+	public class MyClass {
+		public string MyMethod (string @event) => $""{@event}_test"";
+	}
+}
+";
+
+			yield return [
+				singleParameterKeywordNameMethod,
+				new Method (
+					type: "NS.MyClass",
+					name: "MyMethod",
+					returnType: ReturnTypeForString (),
+					symbolAvailability: new (),
+					exportMethodData: new (),
+					attributes: [],
+					modifiers: [
+						SyntaxFactory.Token (SyntaxKind.PublicKeyword),
+					],
+					parameters: [
+						new (position: 0, type: ReturnTypeForString (), name: "@event"),
+					]
+				)
+			];
+
 			const string singleArrayParameterMethod = @"
 using System;
 

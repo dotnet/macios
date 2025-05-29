@@ -64,12 +64,12 @@ $@"if ({delegateVariableName} is null)
 	throw ErrorHelper.CreateError (8059, Errors.MX8059, {trampolineParameterName}, typeof ({delegateIdentifier}));
 "
 );
-				
+
 				// build any needed pre conversion operations before calling the delegate
 				foreach (var argument in argumentSyntax) {
 					invokeMethod.Write (argument.PreDelegateCallConversion);
 				}
-				
+
 				invokeMethod.WriteLine ($"{CallTrampolineDelegate (typeInfo.Delegate!, argumentSyntax)}");
 
 				// build any needed post conversion operations after calling the delegate

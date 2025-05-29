@@ -16,15 +16,12 @@ using ObjCRuntime;
 using System.Runtime.Versioning;
 
 namespace VideoToolbox {
-
-#if NET
 	/// <summary>Strongly typed representation of bytes and seconds used in <see cref="VideoToolbox.VTCompressionProperties.DataRateLimits" />.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public struct VTDataRateLimit {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>

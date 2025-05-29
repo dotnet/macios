@@ -19,14 +19,10 @@ using Foundation;
 
 namespace VideoToolbox {
 
-#if NET
 	[SupportedOSPlatform ("macos")]
 	[UnsupportedOSPlatform ("ios")]
 	[UnsupportedOSPlatform ("maccatalyst")]
 	[UnsupportedOSPlatform ("tvos")]
-#else
-	[NoiOS, NoMacCatalyst, NoTV]
-#endif
 	public static class VTProfessionalVideoWorkflow {
 		[DllImport (Constants.VideoToolboxLibrary, EntryPoint = "VTRegisterProfessionalVideoWorkflowVideoDecoders")]
 		public extern static void RegisterVideoDecoders ();

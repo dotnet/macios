@@ -489,6 +489,9 @@
 			_ReadAppManifest;
 			_WriteAppManifest;
 			SelectRegistrar;
+			_ComputeLinkerInputs;
+			_GenerateLinkerDependencyCache;
+			_ForceLinkerRerun;
 		</_ComputeLinkerArgumentsDependsOn>
 	</PropertyGroup>
 
@@ -516,7 +519,9 @@
 		</PropertyGroup>
 	</Target>
 
-	<Target Name="_ComputeLinkerArguments" DependsOnTargets="$(_ComputeLinkerArgumentsDependsOn)">
+	<Target Name="_ComputeLinkerArguments" DependsOnTargets="$(_ComputeLinkerArgumentsDependsOn)" />
+
+	<Target Name="_ComputeLinkerInputs">
 		<!-- Validate the linker mode -->
 		<Error Text="Invalid link mode: '$(_LinkMode)'. Valid link modes are: 'None', 'SdkOnly' and 'Full'" Condition="'$(_LinkMode)' != 'None' And '$(_LinkMode)' != 'SdkOnly' And '$(_LinkMode)' != 'Full' And '$(_LinkMode)' != 'TrimMode'" />
 
@@ -775,6 +780,50 @@
 			File="$(_CustomLinkerOptionsFile)"
 			Lines="$(_CustomLinkerOptions)"
 			Overwrite="true" />
+	</Target>
+
+	<!--
+		_GenerateLinkerDependencyCache
+
+		Generate a file used to track dependencies between incremental build
+		executions. This handles cases where properties change that can't be
+		tracked with timestamps. The file contains a hash of linker inputs
+		that are known to contribute to incremental build inconsistencies.
+
+	-->
+	<Target Name="_GenerateLinkerDependencyCache">
+		<PropertyGroup>
+			<_LinkerCachePath>$(DeviceSpecificOutputPath)LinkerInputs.cache</_LinkerCachePath>
+			<_LinkerCachePath2>$(_LinkerCachePath).xml</_LinkerCachePath2>
+		</PropertyGroup>
+		<ItemGroup>
+			<_LinkerCache Include="$(_CustomLinkerOptions)" />
+		</ItemGroup>
+
+		<Hash
+			ItemsToHash="@(_LinkerCache)"
+			IgnoreCase="false">
+			<Output TaskParameter="HashResult" PropertyName="_LinkerCacheHash" />
+		</Hash>
+
+		<WriteLinesToFile Lines="$(_LinkerCacheHash)" File="$(_LinkerCachePath)" Overwrite="true" WriteOnlyWhenDifferent="true" />
+
+		<ItemGroup>
+			<FileWrites Include="$(_LinkerCachePath)" />
+		</ItemGroup>
+	</Target>
+	<!-- Force the linker to re-run by adding an empty xml definition with a new timestamp -->
+	<Target Name="_ForceLinkerRerun"
+			Inputs="$(_LinkerCachePath)"
+			Outputs="$(_LinkerCachePath2)"
+		>
+		<WriteLinesToFile Lines="&lt;linker/&gt;" File="$(_LinkerCachePath2)" Overwrite="true" />
+		<ItemGroup>
+			<TrimmerRootDescriptor Include="$(_LinkerCachePath2)" />
+		</ItemGroup>
+		<ItemGroup>
+			<FileWrites Include="$(_LinkerCachePath2)" />
+		</ItemGroup>
 	</Target>
 
 	<PropertyGroup>
@@ -1553,13 +1602,17 @@
 			_WriteAppManifest;
 			_CompileNativeExecutable;
 			_ReidentifyDynamicLibraries;
-			_ComputeLinkNativeExecutableInputs;
 			_AddSwiftLinkerFlags;
+			_ComputeLinkNativeExecutableInputs;
+			_ForceLinkNativeExecutable;
 		</_LinkNativeExecutableDependsOn>
 	</PropertyGroup>
 
 	<Target Name="_AddSwiftLinkerFlags" DependsOnTargets="_DetectSdkLocations">
 		<PropertyGroup>
+			<!-- Runtime now requires swift https://github.com/dotnet/runtime/commit/2c70e36356e8dfb50e6b32c8b7c9ce1a8e9f1331 -->
+			<LinkWithSwiftSystemLibraries>true</LinkWithSwiftSystemLibraries>
+
 			<_SwiftTargetPlatform Condition="'$(_PlatformName)' == 'iOS' And '$(_SdkIsSimulator)' == 'true'">iphonesimulator</_SwiftTargetPlatform>
 			<_SwiftTargetPlatform Condition="'$(_PlatformName)' == 'iOS' And '$(_SdkIsSimulator)' != 'true'">iphoneos</_SwiftTargetPlatform>
 			<_SwiftTargetPlatform Condition="'$(_PlatformName)' == 'tvOS' And '$(_SdkIsSimulator)' == 'true'">appletvsimulator</_SwiftTargetPlatform>
@@ -1584,8 +1637,9 @@
 		<PropertyGroup>
 			<_ExportedSymbolsFile Condition="'$(_ExportedSymbolsFile)' == '' and '$(_MtouchSymbolsList)' == ''">/dev/null</_ExportedSymbolsFile> <!-- nothing to export -->
 			<_ExportedSymbolsFile Condition="'$(_ExportedSymbolsFile)' == ''">$(_MtouchSymbolsList)</_ExportedSymbolsFile>
-			<!-- Runtime now requires swift https://github.com/dotnet/runtime/commit/2c70e36356e8dfb50e6b32c8b7c9ce1a8e9f1331 -->
-			<LinkWithSwiftSystemLibraries>true</LinkWithSwiftSystemLibraries>
+
+			<_NativeLinkCachePath>$(DeviceSpecificOutputPath)NativeLink.cache</_NativeLinkCachePath>
+			<_NativeLinkCachePath2>$(_NativeLinkCachePath).uptodate</_NativeLinkCachePath2>
 		</PropertyGroup>
 		<ItemGroup>
 			<_XamarinMainLibraries Include="$(_XamarinNativeLibraryDirectory)/$(_LibXamarinName)" />
@@ -1622,6 +1676,78 @@
 			<_LinkNativeExecutableInputs Include="@(_NativeExecutableObjectFiles)" />
 			<_LinkNativeExecutableInputs Include="@(_XamarinMainLibraries)" />
 			<_LinkNativeExecutableInputs Include="@(_FileNativeReference)" />
+
+			<_LinkNativeExecutableOutputs Include="$(_IntermediateNativeLibraryDir)$(_NativeExecutableName)" />
+			<_LinkNativeExecutableOutputs Include="$(_MtouchSymbolsList)" />
+		</ItemGroup>
+
+		<ItemGroup Condition="'$(IsMacEnabled)' == 'true'">
+			<_NativeReferences Include="@(_FrameworkNativeReference)" />
+			<!-- Do not link native references with LinkToExecutable='false' such as PluginLibrary files -->
+			<_NativeReferences Include="@(_FileNativeReference)" Condition="'%(_FileNativeReference.LinkToExecutable)' != 'false'" />
+		</ItemGroup>
+
+		<WriteLinesToFile SessionId="$(BuildSessionId)" File="$(_MtouchSymbolsList)" Lines="@(_ProcessedReferenceNativeSymbol)" Overwrite="true" />
+
+		<PropertyGroup>
+			<!-- There are known bugs in the classic linker with Xcode 15, so keep use the classic linker in that case -->
+			<!-- In Xcode 16 we don't know of any problems for now, so enable the new linker by default -->
+			<_UseClassicLinker Condition="'$(_UseClassicLinker)' == '' And $([MSBuild]::VersionGreaterThanOrEquals('$(_XcodeVersion)', '16.0'))">false</_UseClassicLinker>
+			<_UseClassicLinker Condition="'$(_UseClassicLinker)' == '' And $([MSBuild]::VersionGreaterThanOrEquals('$(_XcodeVersion)', '15.0'))">true</_UseClassicLinker>
+		</PropertyGroup>
+
+		<ItemGroup>
+			<_AllLinkerFlags Include="@(_AssemblyLinkerFlags);@(_MainLinkerFlags);@(_CustomLinkFlags)" />
+			<_AllLinkerFlags Condition="'$(_ExportSymbolsExplicitly)' != 'true'" Include="@(_ProcessedReferenceNativeSymbol->'-u%(Identity)')" />
+
+			<_AllLinkerFlags Condition="'$(_UseClassicLinker)' == 'true'" Include="-Xlinker" />
+			<_AllLinkerFlags Condition="'$(_UseClassicLinker)' == 'true'" Include="-ld_classic" />
+		</ItemGroup>
+
+		<!-- write a hash of all the relevant input so that we can force a re-link if necessary -->
+
+		<ItemGroup>
+			<_LinkNativeExecutableCache Include="$(LinkWithSwiftSystemLibraries)" />
+			<_LinkNativeExecutableCache Include="@(_NativeExecutableFrameworks)" />
+			<_LinkNativeExecutableCache Include="@(_MainLinkerFlags)" />
+			<_LinkNativeExecutableCache Include="@(_LinkNativeExecutableInputs)" />
+			<_LinkNativeExecutableCache Include="@(_NativeReferences)" />
+			<_LinkNativeExecutableCache Include="@(_ProcessedReferenceNativeSymbol)" />
+			<_LinkNativeExecutableCache Include="@(_UseClassicLinker)" />
+			<_LinkNativeExecutableCache Include="@(_AllLinkerFlags)" />
+			<_LinkNativeExecutableCache Include="$(_DylibRPath)" />
+			<_LinkNativeExecutableCache Include="$(_CompiledEntitlements)" />
+			<_LinkNativeExecutableCache Include="$(_EmbeddedFrameworksRPath)" />
+			<_LinkNativeExecutableCache Include="@(_BindingLibraryFrameworks)" />
+			<_LinkNativeExecutableCache Include="@(_BindingLibraryLinkWith)" />
+			<_LinkNativeExecutableCache Include="@(_MainLinkWith)" />
+			<_LinkNativeExecutableCache Include="$(_MinimumOSVersion)" />
+			<_LinkNativeExecutableCache Include="@(_NativeExecutableObjectFiles)" />
+			<_LinkNativeExecutableCache Include="$(_SdkDevPath)" />
+			<_LinkNativeExecutableCache Include="$(_ComputedTargetFrameworkMoniker)" />
+		</ItemGroup>
+
+		<Hash
+			ItemsToHash="@(_LinkNativeExecutableCache)"
+			IgnoreCase="false">
+			<Output TaskParameter="HashResult" PropertyName="_LinkNativeCacheHash" />
+		</Hash>
+
+		<WriteLinesToFile Lines="$(_LinkNativeCacheHash)" File="$(_NativeLinkCachePath)" Overwrite="true" WriteOnlyWhenDifferent="true" />
+
+		<ItemGroup>
+			<FileWrites Include="$(_NativeLinkCachePath)" />
+		</ItemGroup>
+	</Target>
+
+	<!-- force the native linker to run by deleting the executable -->
+	<Target Name="_ForceLinkNativeExecutable"
+			Inputs="$(_NativeLinkCachePath)"
+			Outputs="$(_NativeLinkCachePath2)">
+		<Delete Files="$(_IntermediateNativeLibraryDir)$(_NativeExecutableName)" />
+		<Copy SourceFiles="$(_NativeLinkCachePath)" DestinationFiles="$(_NativeLinkCachePath2)" />
+		<ItemGroup>
+			<FileWrites Include="$(_NativeLinkCachePath2)" />
 		</ItemGroup>
 	</Target>
 
@@ -1695,31 +1821,8 @@
 	<Target Name="_LinkNativeExecutable"
 			DependsOnTargets="$(_LinkNativeExecutableDependsOn)"
 			Inputs="@(_LinkNativeExecutableInputs)"
-			Outputs="$(_IntermediateNativeLibraryDir)$(_NativeExecutableName);$(_MtouchSymbolsList)"
+			Outputs="@(_LinkNativeExecutableOutputs)"
 		>
-
-		<ItemGroup Condition="'$(IsMacEnabled)' == 'true'">
-			<_NativeReferences Include="@(_FrameworkNativeReference)" />
-			<!-- Do not link native references with LinkToExecutable='false' such as PluginLibrary files -->
-			<_NativeReferences Include="@(_FileNativeReference)" Condition="'%(_FileNativeReference.LinkToExecutable)' != 'false'" />
-		</ItemGroup>
-
-		<WriteLinesToFile SessionId="$(BuildSessionId)" File="$(_MtouchSymbolsList)" Lines="@(_ProcessedReferenceNativeSymbol)" Overwrite="true" />
-
-		<PropertyGroup>
-			<!-- There are known bugs in the classic linker with Xcode 15, so keep use the classic linker in that case -->
-			<!-- In Xcode 16 we don't know of any problems for now, so enable the new linker by default -->
-			<_UseClassicLinker Condition="'$(_UseClassicLinker)' == '' And $([MSBuild]::VersionGreaterThanOrEquals('$(_XcodeVersion)', '16.0'))">false</_UseClassicLinker>
-			<_UseClassicLinker Condition="'$(_UseClassicLinker)' == '' And $([MSBuild]::VersionGreaterThanOrEquals('$(_XcodeVersion)', '15.0'))">true</_UseClassicLinker>
-		</PropertyGroup>
-
-		<ItemGroup>
-			<_AllLinkerFlags Include="@(_AssemblyLinkerFlags);@(_MainLinkerFlags);@(_CustomLinkFlags)" />
-			<_AllLinkerFlags Condition="'$(_ExportSymbolsExplicitly)' != 'true'" Include="@(_ProcessedReferenceNativeSymbol->'-u%(Identity)')" />
-
-			<_AllLinkerFlags Condition="'$(_UseClassicLinker)' == 'true'" Include="-Xlinker" />
-			<_AllLinkerFlags Condition="'$(_UseClassicLinker)' == 'true'" Include="-ld_classic" />
-		</ItemGroup>
 
 		<LinkNativeCode
 			SessionId="$(BuildSessionId)"

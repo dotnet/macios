@@ -4999,7 +4999,7 @@ public partial class Generator : IMemberGatherer {
 			dynamicDependencies.AddRange (docIds);
 		}
 		// Tell the trimmer to not remove the wrapper type if the interface itself isn't trimmed away
-		dynamicDependencies.Add ($"DynamicallyAccessedMemberTypes.PublicConstructors, typeof ({TypeName}Wrapper)");
+		dynamicDependencies.Add ($"DynamicallyAccessedMemberTypes.Interfaces | DynamicallyAccessedMemberTypes.PublicConstructors, typeof ({TypeName}Wrapper)");
 		if (dynamicDependencies.Count > 0) {
 			foreach (var dd in dynamicDependencies.OrderBy (v => v))
 				print ($"[DynamicDependencyAttribute ({dd})]");

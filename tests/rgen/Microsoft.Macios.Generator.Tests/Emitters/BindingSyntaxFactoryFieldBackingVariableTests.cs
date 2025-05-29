@@ -411,7 +411,7 @@ namespace CoreGraphics {
 
 			yield return [
 				intPtrFieldProperty,
-				"static IntPtr _GenericGray;"
+				$"static {Global ("System.IntPtr")} _GenericGray;"
 			];
 
 
@@ -434,7 +434,7 @@ namespace CoreGraphics {
 
 			yield return [
 				uintPtrFieldProperty,
-				"static UIntPtr _GenericGray;"
+				$"static {Global ("System.UIntPtr")} _GenericGray;"
 			];
 
 			const string nintFieldProperty = @"
@@ -456,7 +456,7 @@ namespace CoreGraphics {
 
 			yield return [
 				nintFieldProperty,
-				"static IntPtr _GenericGray;"
+				$"static {Global ("System.IntPtr")} _GenericGray;"
 			];
 
 			const string nuintFieldProperty = @"
@@ -478,7 +478,7 @@ namespace CoreGraphics {
 
 			yield return [
 				nuintFieldProperty,
-				"static UIntPtr _GenericGray;"
+				$"static {Global ("System.UIntPtr")} _GenericGray;"
 			];
 
 			const string nfloatFieldProperty = @"

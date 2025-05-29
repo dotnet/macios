@@ -764,14 +764,12 @@ static partial class BindingSyntaxFactory {
 	/// the same as the original delegate.
 	/// </summary>
 	/// <param name="delegateTypeInfo">The delegate type information.</param>
-	/// <param name="delegateName">The name of the delegate generated.</param>
+	/// <param name="delegateName">The name of the delegate.</param>
 	/// <returns>The syntax of the delegate.</returns>
-	internal static SyntaxNode GetTrampolineDelegateDeclaration (in TypeInfo delegateTypeInfo, out string delegateName)
+	internal static SyntaxNode GetTrampolineDelegateDeclaration (in TypeInfo delegateTypeInfo, string delegateName)
 	{
 		// generate a new delegate type with the addition of the IntPtr parameter for block
 		var modifiers = TokenList (Token (SyntaxKind.UnsafeKeyword), Token (SyntaxKind.InternalKeyword));
-		delegateName = Nomenclator.GetTrampolineClassName (delegateTypeInfo.Name, Nomenclator.TrampolineClassType.DelegateType);
-
 		var parametersSyntax = GetBlockDelegateParameters (delegateTypeInfo);
 		// delegate declaration
 		var declaration = DelegateDeclaration (

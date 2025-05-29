@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Xml;
 
 using Xamarin.Utils;
 
@@ -217,15 +218,19 @@ namespace Xamarin.Tests {
 						}
 					}
 					if (generatedProps is not null) {
+						var settings = new XmlWriterSettings ();
 						var sb = new StringBuilder ();
-						sb.AppendLine ("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
-						sb.AppendLine ("<Project>");
-						sb.AppendLine ("\t<PropertyGroup>");
+						var xml = XmlWriter.Create (sb, settings);
+						xml.WriteStartElement ("Project");
+						xml.WriteStartElement ("PropertyGroup");
 						foreach (var prop in generatedProps) {
-							sb.AppendLine ($"\t\t<{prop.Key}>{prop.Value}</{prop.Key}>");
+							xml.WriteStartElement (prop.Key);
+							xml.WriteString (prop.Value);
+							xml.WriteEndElement ();
 						}
-						sb.AppendLine ("\t</PropertyGroup>");
-						sb.AppendLine ("</Project>");
+						xml.WriteEndElement ();
+						xml.WriteEndElement ();
+						xml.Flush ();
 
 						var generatedProjectFile = Path.Combine (Cache.CreateTemporaryDirectory (), "GeneratedProjectFile.props");
 						File.WriteAllText (generatedProjectFile, sb.ToString ());

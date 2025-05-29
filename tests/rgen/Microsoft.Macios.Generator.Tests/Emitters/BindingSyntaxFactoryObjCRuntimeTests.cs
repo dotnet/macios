@@ -56,7 +56,56 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 	[ClassData (typeof (TestDataCastToNativeTests))]
 	void CastToNativeTests (Parameter parameter, string? expectedCast)
 	{
-		var expression = CastToNative (parameter);
+		var expression = CastEnumToNative (parameter);
+		if (expectedCast is null) {
+			Assert.Null (expression);
+		} else {
+			Assert.NotNull (expression);
+			Assert.Equal (expectedCast, expression?.ToString ());
+		}
+	}
+
+	class TestDataCastNativeToEnum : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
+		{
+			// not enum parameter
+			var boolParam = new Parameter (
+				position: 0,
+				type: ReturnTypeForBool (),
+				name: "myParam");
+			yield return [boolParam, null!];
+
+			// not smart enum parameter
+			var enumParam = new Parameter (
+				position: 0,
+				type: ReturnTypeForEnum ("MyEnum", isNativeEnum: false),
+				name: "myParam");
+
+			yield return [enumParam, null!];
+
+			// int64
+			var byteEnum = new Parameter (
+				position: 0,
+				type: ReturnTypeForEnum ("MyEnum", isNativeEnum: true, underlyingType: SpecialType.System_Int64),
+				name: "myParam");
+			yield return [byteEnum, "(MyEnum) (long) myParam"];
+
+			// uint64
+			var int64Enum = new Parameter (
+				position: 0,
+				type: ReturnTypeForEnum ("MyEnum", isNativeEnum: true, underlyingType: SpecialType.System_UInt64),
+				name: "myParam");
+			yield return [int64Enum, "(MyEnum) (ulong) myParam"];
+		}
+
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
+	}
+
+	[Theory]
+	[ClassData (typeof (TestDataCastNativeToEnum))]
+	void CastNativeToEnumTests (Parameter parameter, string? expectedCast)
+	{
+		var expression = CastNativeToEnum (parameter);
 		if (expectedCast is null) {
 			Assert.Null (expression);
 		} else {

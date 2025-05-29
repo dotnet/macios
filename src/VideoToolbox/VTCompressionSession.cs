@@ -17,31 +17,17 @@ using Foundation;
 using CoreMedia;
 using CoreVideo;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 #nullable enable
 
 namespace VideoToolbox {
-
-#if NET
 	/// <summary>Turns uncompressed frames into compressed video frames</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
-#endif
 	public class VTCompressionSession : VTSession {
 		GCHandle callbackHandle;
-
-#if !NET
-		/* invoked by marshallers */
-		protected internal VTCompressionSession (NativeHandle handle) : base (handle)
-		{
-		}
-#endif
 
 		[Preserve (Conditional = true)]
 		internal VTCompressionSession (NativeHandle handle, bool owns) : base (handle, owns)
@@ -63,21 +49,6 @@ namespace VideoToolbox {
 		// sourceFrame: It seems it's only used as a parameter to be passed into EncodeFrame so no need to strong type it
 		/// <include file="../../docs/api/VideoToolbox.VTCompressionSession/VTCompressionOutputCallback.xml" path="/Documentation/Docs[@DocId='T:VideoToolbox.VTCompressionSession.VTCompressionOutputCallback']/*" />
 		public delegate void VTCompressionOutputCallback (/* void* */ IntPtr sourceFrame, /* OSStatus */ VTStatus status, VTEncodeInfoFlags flags, CMSampleBuffer? buffer);
-#if !NET
-		delegate void CompressionOutputCallback (/* void* CM_NULLABLE */ IntPtr outputCallbackClosure, /* void* CM_NULLABLE */ IntPtr sourceFrame, /* OSStatus */ VTStatus status, VTEncodeInfoFlags infoFlags, /* CMSampleBufferRef CM_NULLABLE */ IntPtr cmSampleBufferPtr);
-
-		//
-		// Here for legacy code, which would only work under duress (user had to manually ref the CMSampleBuffer on the callback)
-		//
-		static CompressionOutputCallback? _static_CompressionOutputCallback;
-		static CompressionOutputCallback? static_CompressionOutputCallback {
-			get {
-				if (_static_CompressionOutputCallback is null)
-					_static_CompressionOutputCallback = new CompressionOutputCallback (CompressionCallback);
-				return _static_CompressionOutputCallback;
-			}
-		}
-#endif
 
 		static void CompressionCallback (IntPtr outputCallbackClosure, IntPtr sourceFrame, VTStatus status, VTEncodeInfoFlags infoFlags, IntPtr cmSampleBufferPtr, bool owns)
 		{
@@ -90,16 +61,6 @@ namespace VideoToolbox {
 					func (sourceFrame, status, infoFlags, sampleBuffer);
 			}
 		}
-
-#if !NET
-#if !MONOMAC
-		[MonoPInvokeCallback (typeof (CompressionOutputCallback))]
-#endif
-		static void CompressionCallback (IntPtr outputCallbackClosure, IntPtr sourceFrame, VTStatus status, VTEncodeInfoFlags infoFlags, IntPtr cmSampleBufferPtr)
-		{
-			CompressionCallback (outputCallbackClosure, sourceFrame, status, infoFlags, cmSampleBufferPtr, true);
-		}
-#endif // !NET
 
 		/// <param name="width">Frame width in pixels.</param>
 		///         <param name="height">Frame height in pixels.</param>
@@ -115,35 +76,12 @@ namespace VideoToolbox {
 			VTVideoEncoderSpecification? encoderSpecification = null, // hardware acceleration is default behavior on iOS. no opt-in required.
 			NSDictionary? sourceImageBufferAttributes = null)
 		{
-#if NET
 			unsafe {
 				return Create (width, height, codecType, compressionOutputCallback, encoderSpecification, sourceImageBufferAttributes, &NewCompressionCallback);
 			}
-#else
-			return Create (width, height, codecType, compressionOutputCallback, encoderSpecification, sourceImageBufferAttributes, static_newCompressionOutputCallback);
-#endif
 		}
 
-#if !NET
-		// End region of legacy code
-
-		static CompressionOutputCallback? _static_newCompressionOutputCallback;
-		static CompressionOutputCallback? static_newCompressionOutputCallback {
-			get {
-				if (_static_newCompressionOutputCallback is null)
-					_static_newCompressionOutputCallback = new CompressionOutputCallback (NewCompressionCallback);
-				return _static_newCompressionOutputCallback;
-			}
-		}
-#endif
-
-#if NET
 		[UnmanagedCallersOnly]
-#else
-#if !MONOMAC
-		[MonoPInvokeCallback (typeof (CompressionOutputCallback))]
-#endif
-#endif
 		static void NewCompressionCallback (IntPtr outputCallbackClosure, IntPtr sourceFrame, VTStatus status, VTEncodeInfoFlags infoFlags, IntPtr cmSampleBufferPtr)
 		{
 			CompressionCallback (outputCallbackClosure, sourceFrame, status, infoFlags, cmSampleBufferPtr, false);
@@ -158,11 +96,7 @@ namespace VideoToolbox {
 			/* CFDictionaryRef */ IntPtr dictionaryEncoderSpecification, /* can be null */
 			/* CFDictionaryRef */ IntPtr dictionarySourceImageBufferAttributes, /* can be null */
 			/* CFDictionaryRef */ IntPtr compressedDataAllocator, /* can be null */
-#if NET
 			/* VTCompressionOutputCallback */ delegate* unmanaged</* void* CM_NULLABLE */ IntPtr, /* void* CM_NULLABLE */ IntPtr, /* OSStatus */ VTStatus, VTEncodeInfoFlags, /* CMSampleBufferRef CM_NULLABLE */ IntPtr, void> outputCallback,
-#else
-			/* VTCompressionOutputCallback */ CompressionOutputCallback? outputCallback,
-#endif
 			/* void* */ IntPtr outputCallbackClosure,
 			/* VTCompressionSessionRef* */ IntPtr* compressionSessionOut);
 
@@ -189,22 +123,14 @@ namespace VideoToolbox {
 			VTVideoEncoderSpecification? encoderSpecification, // hardware acceleration is default behavior on iOS. no opt-in required.
 			CVPixelBufferAttributes? sourceImageBufferAttributes)
 		{
-#if NET
 			return Create (width, height, codecType, compressionOutputCallback, encoderSpecification, sourceImageBufferAttributes?.Dictionary);
-#else
-			return Create (width, height, codecType, compressionOutputCallback, encoderSpecification, sourceImageBufferAttributes?.Dictionary, static_CompressionOutputCallback);
-#endif
 		}
 
 		unsafe static VTCompressionSession? Create (int width, int height, CMVideoCodecType codecType,
 			VTCompressionOutputCallback compressionOutputCallback,
 			VTVideoEncoderSpecification? encoderSpecification, // hardware acceleration is default behavior on iOS. no opt-in required.
 				NSDictionary? sourceImageBufferAttributes, // Undocumented options, probably always null
-#if NET
 				delegate* unmanaged</* void* CM_NULLABLE */ IntPtr, /* void* CM_NULLABLE */ IntPtr, /* OSStatus */ VTStatus, VTEncodeInfoFlags, /* CMSampleBufferRef CM_NULLABLE */ IntPtr, void> staticCback)
-#else
-				CompressionOutputCallback? staticCback)
-#endif
 		{
 			var callbackHandle = default (GCHandle);
 			if (compressionOutputCallback is not null)
@@ -251,16 +177,13 @@ namespace VideoToolbox {
 			return null;
 		}
 
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		[DllImport (Constants.VideoToolboxLibrary)]
 		extern static VTStatus VTCompressionSessionPrepareToEncodeFrames (IntPtr handle);
 
-#if NET
 		/// <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
@@ -268,7 +191,6 @@ namespace VideoToolbox {
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public VTStatus PrepareToEncodeFrames ()
 		{
 			return VTCompressionSessionPrepareToEncodeFrames (GetCheckedHandle ());
@@ -397,16 +319,13 @@ namespace VideoToolbox {
 			return VTCompressionSessionCompleteFrames (GetCheckedHandle (), completeUntilPresentationTimeStamp);
 		}
 
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		[DllImport (Constants.VideoToolboxLibrary)]
 		extern static VTStatus VTCompressionSessionBeginPass (IntPtr session, VTCompressionSessionOptionFlags flags, IntPtr reserved);
 
-#if NET
 		/// <param name="flags">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
@@ -415,22 +334,18 @@ namespace VideoToolbox {
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public VTStatus BeginPass (VTCompressionSessionOptionFlags flags)
 		{
 			return VTCompressionSessionBeginPass (GetCheckedHandle (), flags, IntPtr.Zero);
 		}
 
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		[DllImport (Constants.VideoToolboxLibrary)]
 		unsafe extern static VTStatus VTCompressionSessionEndPass (IntPtr session, byte* furtherPassesRequestedOut, IntPtr reserved);
 
-#if NET
 		/// <param name="furtherPassesRequested">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
@@ -439,7 +354,6 @@ namespace VideoToolbox {
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public VTStatus EndPass (out bool furtherPassesRequested)
 		{
 			byte b;
@@ -462,19 +376,16 @@ namespace VideoToolbox {
 			}
 		}
 
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		[DllImport (Constants.VideoToolboxLibrary)]
 		unsafe extern static VTStatus VTCompressionSessionGetTimeRangesForNextPass (
 			/* VTCompressionSessionRef */ IntPtr session,
 			/* CMItemCount* */ int* itemCount,
 			/* const CMTimeRange** */ IntPtr* target);
 
-#if NET
 		/// <param name="timeRanges">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
@@ -483,7 +394,6 @@ namespace VideoToolbox {
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public VTStatus GetTimeRangesForNextPass (out CMTimeRange []? timeRanges)
 		{
 			VTStatus v;
@@ -517,27 +427,19 @@ namespace VideoToolbox {
 			return VTSessionSetProperties (GetCheckedHandle (), options.Dictionary.Handle);
 		}
 
-#if NET
 		[SupportedOSPlatform ("macos14.0")]
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
-#else
-		[iOS (17, 0), TV (17, 0), Mac (14, 0)]
-#endif
 		[DllImport (Constants.VideoToolboxLibrary)]
 		extern static /* Boolean */ byte VTIsStereoMVHEVCEncodeSupported ();
 
 		/// <summary>Returns whether the current system supports stereo MV-HEVC encode.</summary>
 		/// <returns>True if the current system supports stereo MV-HEVC encode, false otherwise.</returns>
-#if NET
 		[SupportedOSPlatform ("macos14.0")]
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
-#else
-		[iOS (17, 0), TV (17, 0), Mac (14, 0)]
-#endif
 		public static bool IsStereoMvHevcEncodeSupported ()
 		{
 			return VTIsStereoMVHEVCEncodeSupported () != 0;

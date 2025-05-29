@@ -4982,6 +4982,21 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			}
 		}
 
+		[Test]
+		public void MethodEncodings2 ()
+		{
+			using (var met = new MethodEncodingsTests ()) {
+				nint obj1 = 1;
+				nint obj2 = 2;
+				nint obj3 = 3;
+				nint obj4 = 4;
+				CGRect obj5 = new CGRect (1, 2, 3, 4);
+				nint obj6 = 6;
+				Messaging.void_objc_msgSend_IntPtr_IntPtr_IntPtr_IntPtr_CGRect_IntPtr (met.Handle, Selector.GetHandle ("setPtrPropertyCGRect:p2:p3:p4:p5:p6:"), obj1, obj2, obj3, obj4, ref obj5, obj6);
+				Assert.AreEqual (new CGRect (5, 6, 7, 8), obj5, "rv");
+			}
+		}
+
 		class MethodEncodingsTests : NSObject, IObjCProtocolTest {
 			[Export ("methodEncodings:obj2:obj3:obj4:obj5:obj6:obj7:")]
 			public void GetMethodEncodings (ref NSObject obj1, ref NSObject obj2, ref NSObject obj3, ref NSObject obj4, ref NSObject obj5, ref NSObject obj6, ref NSObject obj7)
@@ -5000,6 +5015,19 @@ namespace MonoTouchFixtures.ObjCRuntime {
 				obj5 = new NSObject ();
 				obj6 = new NSObject ();
 				obj7 = new NSObject ();
+			}
+
+			[Export ("setPtrPropertyCGRect:p2:p3:p4:p5:p6:")]
+			void SetPtrPropertyCGRect (nint p1, nint p2, nint p3, nint p4, ref global::CoreGraphics.CGRect p5, nint p6)
+			{
+				Assert.AreEqual ((nint) 1, p1, "1");
+				Assert.AreEqual ((nint) 2, p2, "2");
+				Assert.AreEqual ((nint) 3, p3, "3");
+				Assert.AreEqual ((nint) 4, p4, "4");
+				Assert.AreEqual (new CGRect (1, 2, 3, 4), p5, "5a");
+				Assert.AreEqual ((nint) 6, p6, "6");
+
+				p5 = new CGRect (5, 6, 7, 8);
 			}
 		}
 

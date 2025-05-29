@@ -428,6 +428,7 @@ xamarin_create_mt_exception (char *msg)
 // Example:
 //    {bc}d => d
 //    {a{b}cd}e => e
+//    {CGRect={CGPoint=dd}{CGSize=dd}}e =>
 static const char *
 skip_nested_brace (const char *type)
 {
@@ -436,7 +437,8 @@ skip_nested_brace (const char *type)
 	while (*++type) {
 		switch (*type) {
 		case '{':
-			return skip_nested_brace (type);
+			type = skip_nested_brace (type);
+			break;
 		case '}':
 			return type++;
 		default:
@@ -455,11 +457,14 @@ skip_nested_brace (const char *type)
 //     {CGRect=dddd} => dddd
 //     ^q => ^
 //	   @? => @ (this is a block)
+//    ^{CGRect={CGPoint=dd}{CGSize=dd}} => ^
 //
 // type: the input type name
 // struct_name: where to write the collapsed struct name. Returns an empty string if the array isn't big enough.
 // max_char: the maximum number of characters to write to struct_name
 // return value: false if something went wrong (an exception thrown, or struct_name wasn't big enough).
+//
+// There's a unit test for this method in monotouch-test (in NativeRuntimeTest.cs)
 bool
 xamarin_collapse_struct_name (const char *type, char struct_name[], int max_char, GCHandle *exception_gchandle)
 {

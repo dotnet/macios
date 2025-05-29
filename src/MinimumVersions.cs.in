@@ -14,7 +14,18 @@ using ObjCRuntime;
 #endif
 
 // undecorated API availability falls back to those minimum versions, per platform
-[assembly: SupportedOSPlatform ("ios@DOTNET_MIN_IOS_SDK_VERSION@")]
-[assembly: SupportedOSPlatform ("tvos@DOTNET_MIN_TVOS_SDK_VERSION@")]
-[assembly: SupportedOSPlatform ("macos@DOTNET_MIN_MACOS_SDK_VERSION@")]
-[assembly: SupportedOSPlatform ("maccatalyst@DOTNET_MIN_MACCATALYST_SDK_VERSION@")]
+[assembly: SupportedOSPlatform (Constants.MinimumVersions.iOS)]
+[assembly: SupportedOSPlatform (Constants.MinimumVersions.tvOS)]
+[assembly: SupportedOSPlatform (Constants.MinimumVersions.macOS)]
+[assembly: SupportedOSPlatform (Constants.MinimumVersions.MacCatalyst)]
+
+namespace ObjCRuntime {
+	public static partial class Constants {
+		internal static class MinimumVersions {
+			internal const string iOS = "ios@DOTNET_MIN_IOS_SDK_VERSION@";
+			internal const string tvOS = "tvos@DOTNET_MIN_TVOS_SDK_VERSION@";
+			internal const string macOS = "macos@DOTNET_MIN_MACOS_SDK_VERSION@";
+			internal const string MacCatalyst = "maccatalyst@DOTNET_MIN_MACCATALYST_SDK_VERSION@";
+		}
+	}
+}

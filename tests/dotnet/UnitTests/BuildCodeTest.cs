@@ -124,7 +124,7 @@ namespace Xamarin.Tests {
 			var properties = GetDefaultProperties (runtimeIdentifiers);
 			var result = DotNet.GetItems (project_path, "_MonoLibrary", target: "ResolveFrameworkReferences;_ComputeVariables;_ComputeMonoLibraries", properties: properties);
 			var libs = result.
-							Split ('\n').
+							Split (['\n', '\r']).
 							Where (v => v.Contains ("\"Identity\": ")).
 							Select (v => v.Replace ("\"Identity\":", "")).
 							Select (v => v.Trim (new char [] { ' ', '\t', '"', ',' })).

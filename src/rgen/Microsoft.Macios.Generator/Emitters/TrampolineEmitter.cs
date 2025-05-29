@@ -17,12 +17,7 @@ namespace Microsoft.Macios.Generator.Emitters;
 class TrampolineEmitter (
 	RootContext context,
 	TabbedStringBuilder builder) {
-	/// <summary>
-	/// The nomenclator is used to generate the name of the static class that will contain the trampoline, needs to
-	/// be an instance class since we want to keep track of the already generated names.
-	/// </summary>
-	Nomenclator nomenclator = new ();
-
+	
 	public string SymbolNamespace => "ObjCRuntime";
 	public string SymbolName => "Trampolines";
 
@@ -183,7 +178,7 @@ return CreateBlock (callback);
 			classBlock.WriteLine ($"// Generate trampolines for compilation");
 			_ = context.CurrentPlatform;
 			foreach (var info in trampolines) {
-				var trampolineName = nomenclator.GetTrampolineName (info);
+				var trampolineName = Nomenclator.GetTrampolineName (info);
 				// write the delegate declaration
 				if (!TryEmitInternalDelegate (info, classBlock, addedDelegates, out var delegateDeclaration)) {
 					diagnostics = [];

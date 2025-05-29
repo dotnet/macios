@@ -121,7 +121,7 @@ static partial class Trampolines
 
 
 	/// <summary>This class bridges native block invocations that call into C#</summary>
-	static internal class SDActionArity1V0
+	static internal class SDActionArity1string
 	{
 		[Preserve (Conditional = true)]
 		[UnmanagedCallersOnly]
@@ -145,14 +145,14 @@ static partial class Trampolines
 		internal static unsafe global::ObjCRuntime.BlockLiteral CreateBlock (global::System.Action<string> callback)
 		{
 			delegate* unmanaged<global::System.IntPtr, global::ObjCRuntime.NativeHandle, void> trampoline = &Invoke;
-			return new global::ObjCRuntime.BlockLiteral (trampoline, callback, typeof (SDActionArity1V0), nameof (Invoke));
+			return new global::ObjCRuntime.BlockLiteral (trampoline, callback, typeof (SDActionArity1string), nameof (Invoke));
 		}
 	}
 	// TODO: generate trampoline for System.Action<string>
 
 
 	/// <summary>This class bridges native block invocations that call into C#</summary>
-	static internal class SDActionArity1V1
+	static internal class SDActionArity1int
 	{
 		[Preserve (Conditional = true)]
 		[UnmanagedCallersOnly]
@@ -176,14 +176,14 @@ static partial class Trampolines
 		internal static unsafe global::ObjCRuntime.BlockLiteral CreateBlock (global::System.Action<int> callback)
 		{
 			delegate* unmanaged<global::System.IntPtr, int, void> trampoline = &Invoke;
-			return new global::ObjCRuntime.BlockLiteral (trampoline, callback, typeof (SDActionArity1V1), nameof (Invoke));
+			return new global::ObjCRuntime.BlockLiteral (trampoline, callback, typeof (SDActionArity1int), nameof (Invoke));
 		}
 	}
 	// TODO: generate trampoline for System.Action<int>
 
 
 	/// <summary>This class bridges native block invocations that call into C#</summary>
-	static internal class SDActionArity1V2
+	static internal class SDActionArity1bool
 	{
 		[Preserve (Conditional = true)]
 		[UnmanagedCallersOnly]
@@ -207,7 +207,7 @@ static partial class Trampolines
 		internal static unsafe global::ObjCRuntime.BlockLiteral CreateBlock (global::System.Action<bool> callback)
 		{
 			delegate* unmanaged<global::System.IntPtr, byte, void> trampoline = &Invoke;
-			return new global::ObjCRuntime.BlockLiteral (trampoline, callback, typeof (SDActionArity1V2), nameof (Invoke));
+			return new global::ObjCRuntime.BlockLiteral (trampoline, callback, typeof (SDActionArity1bool), nameof (Invoke));
 		}
 	}
 	// TODO: generate trampoline for System.Action<bool>

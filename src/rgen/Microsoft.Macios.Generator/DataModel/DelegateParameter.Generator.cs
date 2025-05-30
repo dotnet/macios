@@ -9,16 +9,22 @@ using Microsoft.Macios.Generator.Extensions;
 namespace Microsoft.Macios.Generator.DataModel;
 
 readonly partial struct DelegateParameter {
+	
+	/// <summary>
+	/// Returns the bind from data if present in the binding.
+	/// </summary>
+	public BindFromData? BindAs { get; init; }
 
 	/// <summary>
 	/// Returns the forced type data if present in the binding.
 	/// </summary>
 	public ForcedTypeData? ForcedType { get; init; }
-
+	
 	public static bool TryCreate (IParameterSymbol symbol,
 		[NotNullWhen (true)] out DelegateParameter? parameter)
 	{
 		parameter = new (symbol.Ordinal, new (symbol.Type), symbol.GetSafeName ()) {
+			BindAs = symbol.GetBindFromData (),
 			ForcedType = symbol.GetForceTypeData (),
 			IsOptional = symbol.IsOptional,
 			IsParams = symbol.IsParams,

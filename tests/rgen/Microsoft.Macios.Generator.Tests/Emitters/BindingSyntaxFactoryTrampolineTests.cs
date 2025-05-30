@@ -2016,7 +2016,7 @@ namespace NS {
 				"DCallback",
 				"unsafe internal delegate int DCallback (global::System.IntPtr block_ptr, global::System.IntPtr timestamp, uint frameCount, global::System.IntPtr inputData);",
 			];
-			
+
 			var nsNumberType = @"
 using System;
 using Foundation;
@@ -2532,7 +2532,7 @@ namespace NS {
 				valueType,
 				"int valueType",
 			];
-			
+
 			var nsNumberType = @"
 using System;
 using Foundation;
@@ -2908,7 +2908,7 @@ namespace NS {
 				doubleBlockNamedParameter,
 				"internal static unsafe global::ObjCRuntime.NativeHandle Invoke (global::System.IntPtr block_ptr_1, byte block_ptr, byte block_ptr_0)",
 			];
-			
+
 			var nsNumberIntParameter = @"
 using System;
 using Foundation;

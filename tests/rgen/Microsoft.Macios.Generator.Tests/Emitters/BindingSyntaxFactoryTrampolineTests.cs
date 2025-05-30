@@ -2016,7 +2016,7 @@ namespace NS {
 				"DCallback",
 				"unsafe internal delegate int DCallback (global::System.IntPtr block_ptr, global::System.IntPtr timestamp, uint frameCount, global::System.IntPtr inputData);",
 			];
-			
+
 			var nsNumberType = @"
 using System;
 using Foundation;
@@ -2148,7 +2148,7 @@ namespace NS {
 				severalParametersConversionReturn,
 				$"var ret = del (global::System.Runtime.InteropServices.Marshal.GetDelegateForFunctionPointer<{Global ("System.Action")}> (callbackParameter), NIDsomeTrampolineName.Create (callbackParameter)!);",
 			];
-			
+
 			var nsNumberParameterWithReturn = @"
 using System;
 using Foundation;
@@ -2166,7 +2166,7 @@ namespace NS {
 				nsNumberParameterWithReturn,
 				$"var ret = del ({Global ("ObjCRuntime.Runtime")}.GetNSObject<{Global ("Foundation.NSNumber")}> (pointerParameter)!.Int32Value);",
 			];
-			
+
 			var nsValueParameterWithReturn = @"
 using System;
 using Foundation;
@@ -2185,7 +2185,7 @@ namespace NS {
 				nsValueParameterWithReturn,
 				$"var ret = del ({Global ("ObjCRuntime.Runtime")}.GetNSObject<{Global ("Foundation.NSValue")}> (size)!.CGSizeValue);",
 			];
-			
+
 			var smartEnumParameterWithReturn = @"
 using System;
 using Foundation;
@@ -2599,7 +2599,7 @@ namespace NS {
 				valueType,
 				"int valueType",
 			];
-			
+
 			var nsNumberType = @"
 using System;
 using Foundation;
@@ -2975,7 +2975,7 @@ namespace NS {
 				doubleBlockNamedParameter,
 				"internal static unsafe global::ObjCRuntime.NativeHandle Invoke (global::System.IntPtr block_ptr_1, byte block_ptr, byte block_ptr_0)",
 			];
-			
+
 			var nsNumberIntParameter = @"
 using System;
 using Foundation;

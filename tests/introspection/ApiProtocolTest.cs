@@ -471,6 +471,11 @@ namespace Introspection {
 				case "SCWindow":
 				case "SCStreamConfiguration":
 					return true;
+				// Xcode 16.3 Conformance not in headers
+				case "FSMutableFileDataBuffer":
+				case "FSTask":
+				case "FSTaskOptions":
+					return true;
 				}
 				break;
 			case "NSSecureCoding":
@@ -694,6 +699,11 @@ namespace Introspection {
 				case "SCRunningApplication":
 				case "SCWindow":
 				case "SCStreamConfiguration":
+					return true;
+				// Xcode 16.3 Conformance not in headers
+				case "FSMutableFileDataBuffer":
+				case "FSTask":
+				case "FSTaskOptions":
 					return true;
 				}
 				break;

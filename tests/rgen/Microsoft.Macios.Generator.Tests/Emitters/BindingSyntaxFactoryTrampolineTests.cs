@@ -547,6 +547,25 @@ namespace NS {
 				$"global::ObjCRuntime.Runtime.GetNSObject<{Global ("Foundation.NSObject")}> (nsObjectParameter)!",
 			];
 
+			var nullableNSObjectParameter = @"
+using System;
+using Foundation;
+using ObjCBindings;
+
+namespace NS {
+	public delegate void Callback (NSObject? nsObjectParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				"someTrampolineName",
+				nullableNSObjectParameter,
+				$"global::ObjCRuntime.Runtime.GetNSObject<{Global ("Foundation.NSObject")}> (nsObjectParameter)",
+			];
+
 			var iNativeParameter = @"
 using System;
 using CoreMedia;
@@ -565,6 +584,26 @@ namespace NS {
 				"someTrampolineName",
 				iNativeParameter,
 				$"global::ObjCRuntime.Runtime.GetINativeObject<{Global ("CoreMedia.CMTimebase")}> (inativeParameter, false)!",
+			];
+
+			var nullableINativeParameter = @"
+using System;
+using CoreMedia;
+using Foundation;
+using ObjCBindings;
+
+namespace NS {
+	public delegate void Callback (CMTimebase? inativeParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				"someTrampolineName",
+				nullableINativeParameter,
+				$"global::ObjCRuntime.Runtime.GetINativeObject<{Global ("CoreMedia.CMTimebase")}> (inativeParameter, false)",
 			];
 
 			var cmSampleBuffer = @"
@@ -2000,8 +2039,7 @@ namespace NS {
 		var parameter = changes.Value.Parameters [0];
 		// assert it is indeed a delegate
 		Assert.NotNull (parameter.Type.Delegate);
-		var delegateDeclaration = GetTrampolineDelegateDeclaration (parameter.Type, out string delegateName);
-		Assert.Equal (expectedDelegateName, delegateName);
+		var delegateDeclaration = GetTrampolineDelegateDeclaration (parameter.Type, expectedDelegateName);
 		Assert.Equal (expectedExpression, delegateDeclaration.ToString ());
 	}
 

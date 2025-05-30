@@ -139,7 +139,7 @@ namespace Xamarin.Tests {
 				for (var i = 0; i < expectedLibraries.Length; i++) {
 					if (expectedLibraries [i] == libs [i])
 						continue;
-					Assert.Fail ($"Expected {expectedLibraries [i]} at index #{i}, got {libs[i]}.\nExpected:\n\t{string.Join ("\n\t", expectedLibraries)}\nActual:\n\t{string.Join ("\n\t", libs)}");
+					Assert.Fail ($"Expected {expectedLibraries [i]} at index #{i}, got {libs [i]}.\nExpected:\n\t{string.Join ("\n\t", expectedLibraries)}\nActual:\n\t{string.Join ("\n\t", libs)}");
 				}
 			}
 		}

@@ -329,6 +329,11 @@ namespace Xamarin.Tests {
 			args.Add ("-nologo");
 			args.Add ("-verbosity:quiet");
 			args.Add ($"-getResultOutputFile:{outputFile}");
+			var binlogPath = Path.Combine (Path.GetDirectoryName (projectPath)!, $"log-get{what}-{DateTime.Now:yyyyMMdd_HHmmss}.binlog");
+			args.Add ($"-bl:{binlogPath}");
+			args.Add ($"-v:diag");
+			Console.WriteLine ($"Binlog: {binlogPath}");
+
 			if (properties is not null) {
 				foreach (var prop in properties) {
 					if (prop.Value.IndexOfAny (new char [] { ';' }) >= 0) {

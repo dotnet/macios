@@ -131,7 +131,17 @@ namespace Xamarin.Tests {
 							Select (Path.GetFileName).
 							OrderBy (v => v).
 							ToArray ();
-			Assert.That (libs, Is.EqualTo (expectedLibraries), "libs");
+
+			// NUnit's rendering of assertions failures if the arrays are different is rather lacking.
+			if (expectedLibraries.Length != libs.Length) {
+				Assert.Fail ($"Expected {expectedLibraries.Length} components, got {libs.Length} components.\nExpected:\n\t{string.Join ("\n\t", expectedLibraries)}\nActual:\n\t{string.Join ("\n\t", libs)}");
+			} else {
+				for (var i = 0; i < expectedLibraries.Length; i++) {
+					if (expectedLibraries [i] == libs [i])
+						continue;
+					Assert.Fail ($"Expected {expectedLibraries [i]} at index #{i}, got {libs[i]}.\nExpected:\n\t{string.Join ("\n\t", expectedLibraries)}\nActual:\n\t{string.Join ("\n\t", libs)}");
+				}
+			}
 		}
 	}
 }

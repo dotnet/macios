@@ -14,7 +14,7 @@ readonly partial struct DelegateParameter {
 	/// Returns the bind from data if present in the binding.
 	/// </summary>
 	public BindAsData? BindAs => BindAsAttribute;
-	
+
 	/// <summary>
 	/// Returns the forced type data if present in the binding.
 	/// </summary>

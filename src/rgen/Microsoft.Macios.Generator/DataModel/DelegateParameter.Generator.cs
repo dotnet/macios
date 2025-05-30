@@ -9,7 +9,7 @@ using Microsoft.Macios.Generator.Extensions;
 namespace Microsoft.Macios.Generator.DataModel;
 
 readonly partial struct DelegateParameter {
-	
+
 	/// <summary>
 	/// Returns the bind from data if present in the binding.
 	/// </summary>
@@ -19,7 +19,7 @@ readonly partial struct DelegateParameter {
 	/// Returns the forced type data if present in the binding.
 	/// </summary>
 	public ForcedTypeData? ForcedType { get; init; }
-	
+
 	public static bool TryCreate (IParameterSymbol symbol,
 		[NotNullWhen (true)] out DelegateParameter? parameter)
 	{

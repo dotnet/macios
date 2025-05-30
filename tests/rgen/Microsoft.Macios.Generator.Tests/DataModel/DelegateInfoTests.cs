@@ -582,7 +582,7 @@ namespace NS {
 					]
 				)
 			];
-			
+
 			const string customDelegateBindFrom = @"
 using System;
 using Foundation;
@@ -628,7 +628,7 @@ namespace NS {
 											type: ReturnTypeForInt (),
 											name: "value"
 										) {
-											BindAs =  new (ReturnTypeForNSObject ("Foundation.NSNumber")),
+											BindAs = new (ReturnTypeForNSObject ("Foundation.NSNumber")),
 										},
 									]
 								) {

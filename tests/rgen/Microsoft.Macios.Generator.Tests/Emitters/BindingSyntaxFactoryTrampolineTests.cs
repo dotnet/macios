@@ -3625,7 +3625,7 @@ namespace NS {
 		var delegateDeclaration = GetTrampolineNativeInvokeSignature (parameter.Type);
 		Assert.Equal (expectedExpression, delegateDeclaration.ToString ());
 	}
-	
+
 	class TestDataGetTrampolineNativeInvokeArgumentInitializations : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{
@@ -3685,7 +3685,7 @@ namespace NS {
 				outNSObject,
 				"outNSObject = default;\n",
 			];
-			
+
 			var refNSObject = @"
 using System;
 using Foundation;
@@ -3704,7 +3704,7 @@ namespace NS {
 				refNSObject,
 				string.Empty,
 			];
-			
+
 		}
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();

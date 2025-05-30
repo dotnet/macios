@@ -892,7 +892,7 @@ static partial class BindingSyntaxFactory {
 			.WithParameterList (parametersSyntax.WithLeadingTrivia (Space));
 		return method;
 	}
-	
+
 	internal static ImmutableArray<SyntaxNode> GetTrampolineNativeInitializationByRefArgument (in DelegateParameter parameter)
 	{
 		// create the pointer variable and assign it to its default value
@@ -907,7 +907,7 @@ static partial class BindingSyntaxFactory {
 					Token (SyntaxKind.DefaultKeyword)))).NormalizeWhitespace ();
 		return [expr];
 	}
-	
+
 	internal static ImmutableArray<SyntaxNode> GetTrampolineNativeInvokeArgumentInitializations (string trampolineName,
 		in DelegateParameter parameter)
 	{

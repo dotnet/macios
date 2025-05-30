@@ -20,13 +20,28 @@ using UIKit;
 using System;
 
 namespace StoreKit {
+	/// <summary>Defines test properties for the <see cref="StoreKit.SKReceiptRefreshRequest(Foundation.NSDictionary)" /> constructor.</summary>
+	///     <remarks>To be added.</remarks>
+	[SupportedOSPlatform ("maccatalyst")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("tvos")]
+	[ObsoletedOSPlatform ("ios18.0")]
+	[ObsoletedOSPlatform ("maccatalyst18.0")]
+	[ObsoletedOSPlatform ("macos15.0")]
+	[ObsoletedOSPlatform ("tvos18.0")]
 	public partial class SKReceiptProperties : DictionaryContainer {
 #if !COREBUILD
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public SKReceiptProperties ()
 			: base (new NSMutableDictionary ())
 		{
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public SKReceiptProperties (NSDictionary dictionary)
 			: base (dictionary)
 		{

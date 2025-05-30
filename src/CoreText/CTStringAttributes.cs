@@ -47,6 +47,8 @@ namespace CoreText {
 
 	#region CFAttributedStringRef AttributeKey Prototypes
 	// defined as int32_t - System/Library/Frameworks/CoreText.framework/Headers/CTStringAttributes.h
+	/// <summary>Specifies the style of an underline ornament.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum CTUnderlineStyle : int {
 		/// <summary>To be added.</summary>
 		None = 0x00,
@@ -59,6 +61,8 @@ namespace CoreText {
 	}
 
 	// defined as int32_t - System/Library/Frameworks/CoreText.framework/Headers/CTStringAttributes.h
+	/// <summary>An enumeration whose values specify options for <see cref="CoreText.CTUnderlineStyle" />s.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum CTUnderlineStyleModifiers : int {
 		/// <summary>To be added.</summary>
 		PatternSolid = 0x0000,
@@ -72,6 +76,9 @@ namespace CoreText {
 		PatternDashDotDot = 0x0400,
 	}
 
+	/// <summary>An enumeration whose values specify the importance of ligatures in a <see cref="CoreText.CTStringAttributes" />.</summary>
+	///     <remarks>To be added.</remarks>
+	///     <altmember cref="CoreText.CTStringAttributes.LigatureFormation" />
 	public enum CTLigatureFormation {
 		/// <summary>To be added.</summary>
 		Essential = 0,
@@ -81,6 +88,8 @@ namespace CoreText {
 		All = 2,
 	}
 
+	/// <summary>An enumeration whose values describe the style of super- and sub- -scripts.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum CTSuperscriptStyle {
 		/// <summary>To be added.</summary>
 		None = 0,
@@ -91,17 +100,26 @@ namespace CoreText {
 	}
 	#endregion
 
+	/// <summary>Specifies the attributes of a <see cref="CoreText.CTRun" />.</summary>
+	///     <remarks>To be added.</remarks>
+	///     <altmember cref="CoreText.CTRun.GetAttributes" />
+	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/SimpleTextInput/">SimpleTextInput</related>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public class CTStringAttributes {
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTStringAttributes ()
 			: this (new NSMutableDictionary ())
 		{
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTStringAttributes (NSDictionary dictionary)
 		{
 			if (dictionary is null)
@@ -400,11 +418,20 @@ namespace CoreText {
 			}
 		}
 
+		/// <param name="baselineClass">To be added.</param>
+		///         <param name="offset">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void SetBaselineInfo (CTBaselineClass baselineClass, double offset)
 		{
 			SetBaseline (baselineClass, offset, CTStringAttributeKey.BaselineInfo);
 		}
 
+		/// <param name="baselineClass">The kind of baseline to set.</param>
+		///         <param name="offset">The offset to alter.</param>
+		///         <summary>Applies a baseline change.</summary>
+		///         <remarks>
+		///         </remarks>
 		public void SetBaselineReferenceInfo (CTBaselineClass baselineClass, double offset)
 		{
 			SetBaseline (baselineClass, offset, CTStringAttributeKey.BaselineReferenceInfo);
@@ -423,6 +450,9 @@ namespace CoreText {
 		}
 
 		// 'Value must be a CFArray of CFNumberRefs' - System/Library/Frameworks/CoreText.framework/Headers/CTStringAttributes.h
+		/// <param name="writingDirections">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void SetWritingDirection (params CTWritingDirection [] writingDirections)
 		{
 			var ptrs = new NativeHandle [writingDirections.Length];

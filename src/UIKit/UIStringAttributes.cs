@@ -40,13 +40,44 @@ using CoreText;
 
 namespace UIKit {
 
+	/// <summary>Strongly helper to define UIKit attributes for use with <see cref="Foundation.NSAttributedString" />. </summary>
+	///     <remarks>
+	///       <para>
+	/// 	You use this class to create attributes that can be used with
+	/// 	both <see cref="Foundation.NSAttributedString" />
+	/// 	and <see cref="Foundation.NSMutableAttributedString" />.
+	/// 	Since this class is strongly typed, you will get code
+	/// 	completion as well as avoid common mistakes when using
+	/// 	attributed strings with UIKit.
+	///
+	///       </para>
+	///       <example>
+	///         <code lang="csharp lang-csharp"><![CDATA[
+	/// // 
+	/// // Using NSAttributedString with UIKit
+	/// //
+	/// var myText = new NSAttributedString ("Hello, world",
+	///        new UIStringAttributes () {
+	///               ForegroundColor =  UIColor.Red,
+	/// 	      KerningAdjustment = 3
+	///        });
+	/// label.AttributedText = myText;
+	/// 	]]></code>
+	///       </example>
+	///     </remarks>
 	public class UIStringAttributes : DictionaryContainer {
 #if !COREBUILD
+		/// <summary>Default constructor</summary>
+		///         <remarks>
+		///         </remarks>
 		public UIStringAttributes ()
 			: base (new NSMutableDictionary ())
 		{
 		}
 
+		/// <param name="dictionary">Dictionary to initialize from</param>
+		///         <summary>Creates a UIStringAttributes from UIKit NSAttributedString attributes stored in a dictionary.</summary>
+		///         <remarks>To be added.</remarks>
 		public UIStringAttributes (NSDictionary dictionary)
 			: base (dictionary)
 		{
@@ -207,14 +238,12 @@ namespace UIKit {
 			}
 		}
 
-#if NET
 		/// <summary>A reference to the text effect that does not prevent garbage collection of the underlying resource.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public NSString WeakTextEffect {
 			get {
 				return Dictionary [UIStringAttributeKey.TextEffect] as NSString;
@@ -224,14 +253,12 @@ namespace UIKit {
 			}
 		}
 
-#if NET
 		/// <summary>The NSTextEffect applied to the string.</summary>
 		///         <value>The default value is <see langword="null" />.</value>
 		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public NSTextEffect TextEffect {
 			get {
 				var s = WeakTextEffect;
@@ -250,14 +277,12 @@ namespace UIKit {
 			}
 		}
 
-#if NET
 		/// <summary>The NSTextAttachment, if any.</summary>
 		///         <value>The default value is <see langword="null" />.</value>
 		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public NSTextAttachment TextAttachment {
 			get {
 				return Dictionary [UIStringAttributeKey.Attachment] as NSTextAttachment;
@@ -267,14 +292,12 @@ namespace UIKit {
 			}
 		}
 
-#if NET
 		/// <summary>The destination URL of a hyperlink.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public NSUrl Link {
 			get {
 				return Dictionary [UIStringAttributeKey.Link] as NSUrl;
@@ -284,14 +307,12 @@ namespace UIKit {
 			}
 		}
 
-#if NET
 		/// <summary>The distance from the bottom of the bounding box of the glyphs of the string to their baseline.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public float? BaselineOffset {
 			get {
 				return GetFloatValue (UIStringAttributeKey.BaselineOffset);
@@ -301,14 +322,12 @@ namespace UIKit {
 			}
 		}
 
-#if NET
 		/// <summary>The color to be used for the strikethrough stroke.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public UIColor StrikethroughColor {
 			get {
 				return Dictionary [UIStringAttributeKey.StrikethroughColor] as UIColor;
@@ -318,14 +337,12 @@ namespace UIKit {
 			}
 		}
 
-#if NET
 		/// <summary>The color of the underline stroke.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public UIColor UnderlineColor {
 			get {
 				return Dictionary [UIStringAttributeKey.UnderlineColor] as UIColor;
@@ -336,14 +353,12 @@ namespace UIKit {
 		}
 
 
-#if NET
 		/// <summary>The amount of skew to apply to glyphs.</summary>
 		///         <value>The default value of 0 indicates no skew.</value>
 		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public float? Obliqueness {
 			get {
 				return GetFloatValue (UIStringAttributeKey.Obliqueness);
@@ -353,14 +368,12 @@ namespace UIKit {
 			}
 		}
 
-#if NET
 		/// <summary>The log of the expansion factor to be applied to glyphs.</summary>
 		///         <value>The default value is 0, indicating no expansion.</value>
 		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public float? Expansion {
 			get {
 				return GetFloatValue (UIStringAttributeKey.Expansion);
@@ -370,14 +383,12 @@ namespace UIKit {
 			}
 		}
 
-#if NET
 		/// <summary>An array indicating the writing-direction overrides.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public NSNumber [] WritingDirectionInt {
 			get {
 				return GetArray<NSNumber> (UIStringAttributeKey.WritingDirection);

@@ -46,7 +46,6 @@ test.config: Makefile $(TOP)/Make.config $(TOP)/mk/mono.mk $(TOP)/eng/Version.De
 	@echo "DOTNET=$(DOTNET)" >> $@
 	@echo "IOS_SDK_VERSION=$(IOS_SDK_VERSION)" >> $@
 	@echo "TVOS_SDK_VERSION=$(TVOS_SDK_VERSION)" >> $@
-	@echo "WATCH_SDK_VERSION=$(WATCH_SDK_VERSION)" >> $@
 	@echo "MACOS_SDK_VERSION=$(MACOS_SDK_VERSION)" >> $@
 	@echo "DOTNET_BCL_DIR=$(DOTNET_BCL_DIR)" >> $@
 	@printf "$(foreach platform,$(DOTNET_PLATFORMS_UPPERCASE),DOTNET_$(platform)_RUNTIME_IDENTIFIERS='$(DOTNET_$(platform)_RUNTIME_IDENTIFIERS)'\\n)" | sed 's/^ //' >> $@
@@ -73,7 +72,6 @@ test-system.config: Makefile $(TOP)/Make.config $(TOP)/mk/mono.mk $(TOP)/eng/Ver
 	@echo "DOTNET=$(DOTNET)" >> $@
 	@echo "IOS_SDK_VERSION=$(IOS_SDK_VERSION)" >> $@
 	@echo "TVOS_SDK_VERSION=$(TVOS_SDK_VERSION)" >> $@
-	@echo "WATCH_SDK_VERSION=$(WATCH_SDK_VERSION)" >> $@
 	@echo "MACOS_SDK_VERSION=$(MACOS_SDK_VERSION)" >> $@
 	@echo "DOTNET_TFM=$(DOTNET_TFM)" >> $@
 	@echo "DOTNET_BCL_DIR=$(DOTNET_BCL_DIR)" >> $@
@@ -187,6 +185,7 @@ package-test-libraries.zip:
 	$(Q_GEN) rm -f "$@" "$@.tmp"
 	$(Q_GEN) cd $(TOP) && zip -9r --symlinks $(abspath $@).tmp ./tests/test-libraries
 	$(Q_GEN) cd $(TOP) && find tests -regex 'tests/test-libraries/custom-type-assembly/.libs/.*dll' -exec zip -9r --symlinks $(abspath $@).tmp {} +
+	$(Q_GEN) cd $(TOP) && git ls-files -o -- 'tests/bindings-test/*.generated.cs' | zip -9r --symlinks $(abspath $@).tmp -@
 	$(Q) mv "$@".tmp "$@"
 
 build-all:
@@ -195,14 +194,13 @@ build-all:
 	$(MAKE) build -C dotnet/UnitTests
 	$(MAKE) build -C rgen
 	$(MAKE) build -C xtro-sharpie
-	$(MAKE) build-all -C "linker/ios/dont link/dotnet"
-	$(MAKE) build-all -C "linker/ios/link all/dotnet"
-	$(MAKE) build-all -C "linker/ios/link sdk/dotnet"
-	$(MAKE) build-all -C "linker/ios/trimmode copy/dotnet"
-	$(MAKE) build-all -C "linker/ios/trimmode link/dotnet"
+	$(MAKE) build-all -C "linker/dont link/dotnet"
+	$(MAKE) build-all -C "linker/link all/dotnet"
+	$(MAKE) build-all -C "linker/link sdk/dotnet"
+	$(MAKE) build-all -C "linker/trimmode copy/dotnet"
+	$(MAKE) build-all -C "linker/trimmode link/dotnet"
 	$(MAKE) build-all -C fsharp/dotnet
 	$(MAKE) build-all -C interdependent-binding-projects/dotnet
 	$(MAKE) build-all -C introspection/dotnet
 	$(MAKE) build-all -C monotouch-test/dotnet
 	$(MAKE) build-all -C xcframework-test/dotnet
-

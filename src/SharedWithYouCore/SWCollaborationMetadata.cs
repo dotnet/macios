@@ -15,15 +15,10 @@ using ObjCRuntime;
 #if !TVOS
 
 namespace SharedWithYouCore {
-
-#if NET
 	[UnsupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos13.0")]
 	[SupportedOSPlatform ("ios16.0")]
 	[SupportedOSPlatform ("maccatalyst16.0")]
-#else
-	[NoTV, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
-#endif
 	public enum SWIdentifierType {
 		Local,
 		Collaboration,
@@ -33,14 +28,10 @@ namespace SharedWithYouCore {
 		public SWCollaborationMetadata (string localIdentifier) : base (NSObjectFlag.Empty) =>
 			InitializeHandle (_InitWithLocalIdentifier (localIdentifier), "initWithLocalIdentifier:");
 
-#if NET
 		[UnsupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos13.0")]
 		[SupportedOSPlatform ("ios16.1")]
 		[SupportedOSPlatform ("maccatalyst16.1")]
-#else
-		[iOS (16, 1), MacCatalyst (16, 1)]
-#endif
 		public SWCollaborationMetadata (string identifier, SWIdentifierType identifierType) : base (NSObjectFlag.Empty)
 		{
 			switch (identifierType) {

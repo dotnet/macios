@@ -7,7 +7,7 @@
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <PackageType Condition="'$(PackageType)'==''">DotnetPlatform</PackageType>
     <PackageVersion>$(_PackageVersion)</PackageVersion>
-    <RepositoryUrl>https://github.com/xamarin/xamarin-macios</RepositoryUrl>
+    <RepositoryUrl>https://github.com/dotnet/macios</RepositoryUrl>
     <RepositoryBranch>$(CurrentBranch)</RepositoryBranch>
     <RepositoryCommit>$(CurrentHash)</RepositoryCommit>
     <Authors>Microsoft</Authors>

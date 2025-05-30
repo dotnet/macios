@@ -16,7 +16,7 @@ namespace MetalPerformanceShaders {
 		None = 0,
 		/// <summary>Skip Metal's validation layer.</summary>
 		SkipApiValidation = 1 << 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Allow the use of reduced-precision types in calculations.</summary>
 		AllowReducedPrecision = 1 << 1,
 		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
@@ -27,10 +27,6 @@ namespace MetalPerformanceShaders {
 		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		Verbose = 1 << 4,
-#if !NET
-		[Obsolete ("Use 'AllowReducedPrecision' instead.")]
-		MPSKernelOptionsAllowReducedPrecision = AllowReducedPrecision,
-#endif
 	}
 
 	/// <summary>Enumerates shader behavior at the edges of regions and images.</summary>
@@ -240,15 +236,12 @@ namespace MetalPerformanceShaders {
 		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		GeLU,
-#if !NET
-		[Obsolete ("The value changes when newer versions are released. It will be removed in the future.")]
-		Count, // must always be last
-#endif
 	}
 
 	/// <summary>Flagging enumeration for options available to binary convolution kernels.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
+	[Flags]
 	public enum MPSCnnBinaryConvolutionFlags : ulong {
 		/// <summary>To be added.</summary>
 		None = 0,

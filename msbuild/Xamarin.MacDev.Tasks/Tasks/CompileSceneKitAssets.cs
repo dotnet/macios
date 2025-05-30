@@ -12,57 +12,56 @@ using Xamarin.Utils;
 using Xamarin.Localization.MSBuild;
 using Xamarin.Messaging.Build.Client;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Xamarin.MacDev.Tasks {
 	public class CompileSceneKitAssets : XamarinTask, ICancelableTask, IHasProjectDir, IHasResourcePrefix {
-		string toolExe;
+		string? toolExe;
 
 		#region Inputs
 
 		[Required]
-		public string AppBundleName { get; set; }
+		public string AppBundleName { get; set; } = "";
 
 		[Required]
-		public string IntermediateOutputPath { get; set; }
+		public string IntermediateOutputPath { get; set; } = "";
 
 		public bool IsWatchApp { get; set; }
 
 		[Required]
-		public string ProjectDir { get; set; }
+		public string ProjectDir { get; set; } = "";
 
 		[Required]
-		public string ResourcePrefix { get; set; }
+		public string ResourcePrefix { get; set; } = "";
 
 		[Required]
 		public ITaskItem [] SceneKitAssets { get; set; } = Array.Empty<ITaskItem> ();
 
 		[Required]
-		public string SdkDevPath { get; set; }
+		public string SdkDevPath { get; set; } = "";
 
 		[Required]
-		public string SdkPlatform { get; set; }
+		public string SdkPlatform { get; set; } = "";
 
 		[Required]
-		public string SdkRoot { get; set; }
+		public string SdkRoot { get; set; } = "";
 
 		[Required]
-		public string SdkVersion { get; set; }
+		public string SdkVersion { get; set; } = "";
 
 		public string ToolExe {
 			get { return toolExe ?? ToolName; }
 			set { toolExe = value; }
 		}
 
-		public string ToolPath { get; set; }
+		public string ToolPath { get; set; } = "";
 
 		#endregion
 
 		#region Outputs
 
 		[Output]
-		public ITaskItem [] BundleResources { get; set; }
+		public ITaskItem [] BundleResources { get; set; } = [];
 
 		#endregion
 
@@ -92,7 +91,7 @@ namespace Xamarin.MacDev.Tasks {
 
 		Task CopySceneKitAssets (string scnassets, string output, string intermediate)
 		{
-			var environment = new Dictionary<string, string> ();
+			var environment = new Dictionary<string, string?> ();
 			var args = new List<string> ();
 
 			environment.Add ("PATH", DeveloperRootBinDir);

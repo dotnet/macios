@@ -28,8 +28,17 @@ static partial class BindingSyntaxFactory {
 	/// <param name="parameter">The parameter whose casting we need to generate. The type info has to be
 	/// and enum and be marked as native. If it is not, the method returns null</param>
 	/// <returns>The cast C# expression.</returns>
-	internal static CastExpressionSyntax? CastToNative (in Parameter parameter)
-		=> CastToNative (parameter.Name, parameter.Type);
+	internal static CastExpressionSyntax? CastEnumToNative (in Parameter parameter)
+		=> CastEnumToNative (parameter.Name, parameter.Type);
+
+	/// <summary>
+	/// Returns the expression needed to cast a parameter to its native type.
+	/// </summary>
+	/// <param name="parameter">The parameter whose casting we need to generate. The type info has to be
+	/// and enum and be marked as native. If it is not, the method returns null</param>
+	/// <returns>The cast C# expression.</returns>
+	internal static CastExpressionSyntax? CastEnumToNative (in DelegateParameter parameter)
+		=> CastEnumToNative (parameter.Name, parameter.Type);
 
 	/// <summary>
 	/// Returns the expression needed to cast a varuable to its native type.
@@ -38,7 +47,7 @@ static partial class BindingSyntaxFactory {
 	/// <param name="typeInfo">The type information of the variable.  The type info has to be
 	/// and enum and be marked as native. If it is not, the method returns null</param>
 	/// <returns>The cast C# expression.</returns>
-	internal static CastExpressionSyntax? CastToNative (string variableName, in TypeInfo typeInfo)
+	internal static CastExpressionSyntax? CastEnumToNative (string variableName, in TypeInfo typeInfo)
 	{
 		// not an enum and not a native value. we cannot calculate the casting expression.
 		if (!typeInfo.IsEnum || !typeInfo.IsNativeEnum)
@@ -61,6 +70,47 @@ static partial class BindingSyntaxFactory {
 	}
 
 	/// <summary>
+	/// Returns the expression needed to cast a native representation of an enum back to its enum type.
+	/// </summary>
+	/// <param name="parameter">The parameter whose casting we need to generate. The type info has to be
+	/// an enum and be marked as native. If it is not, the method returns null.</param>
+	/// <returns>The cast C# expression, or null if the parameter is not a native enum.</returns>
+	internal static CastExpressionSyntax? CastNativeToEnum (in Parameter parameter)
+		=> CastNativeToEnum (parameter.Name, parameter.Type);
+
+	/// <summary>
+	/// Returns the expression needed to cast a native representation of an enum back to its enum type.
+	/// </summary>
+	/// <param name="parameter">The parameter whose casting we need to generate. The type info has to be
+	/// an enum and be marked as native. If it is not, the method returns null.</param>
+	/// <returns>The cast C# expression, or null if the parameter is not a native enum.</returns>
+	internal static CastExpressionSyntax? CastNativeToEnum (in DelegateParameter parameter)
+		=> CastNativeToEnum (parameter.Name, parameter.Type);
+
+	/// <summary>
+	/// Returns the expression needed to cast a native representation of an enum back to its enum type.
+	/// </summary>
+	/// <param name="variableName">The name of the variable holding the native enum value.</param>
+	/// <param name="typeInfo">The type information of the enum. The type info has to be
+	/// an enum and be marked as native. If it is not, the method returns null.</param>
+	/// <returns>The cast C# expression, or null if the typeInfo is not a native enum.</returns>
+	internal static CastExpressionSyntax? CastNativeToEnum (string variableName, in TypeInfo typeInfo)
+	{
+		// not an enum and not a native value. we cannot calculate the casting expression.
+		if (!typeInfo.IsEnum || !typeInfo.IsNativeEnum)
+			return null;
+
+		var enumBackingValue = typeInfo.EnumUnderlyingType.Value.GetKeyword ();
+		var castExpression = CastExpression (typeInfo.GetIdentifierSyntax (), // (IntPtr/UIntPtr) cast
+			CastExpression (
+					IdentifierName (enumBackingValue),
+					IdentifierName (variableName)
+						.WithLeadingTrivia (Space))
+				.WithLeadingTrivia (Space)); // (backingfield) (variable) cast
+		return castExpression;
+	}
+
+	/// <summary>
 	/// Returns the expression needed to cast an enum parameter to its primitive type to be used in marshaling.
 	/// </summary>
 	/// <param name="parameter">The parameter for which we need to generate the casting. The type info has to be
@@ -74,7 +124,7 @@ static partial class BindingSyntaxFactory {
 
 		if (parameter.Type.IsNativeEnum) {
 			// return the native casting
-			return CastToNative (parameter);
+			return CastEnumToNative (parameter);
 		}
 
 		// returns the enum primitive to be used
@@ -128,6 +178,24 @@ static partial class BindingSyntaxFactory {
 	}
 
 	/// <summary>
+	/// Returns the expression needed to cast a byte to a bool to be used in a call. 
+	/// </summary>
+	/// <param name="variableName">The variable to cast.</param>
+	/// <param name="typeInfo">The type information of the variable.</param>
+	/// <returns>A binary expression that casts a byte to a bool.</returns>
+	internal static BinaryExpressionSyntax CastToBool (string variableName, in TypeInfo typeInfo)
+	{
+		// with this exact space count
+		// byte != 0;
+		return BinaryExpression (
+			SyntaxKind.NotEqualsExpression,
+			IdentifierName (variableName),
+			LiteralExpression (
+				SyntaxKind.NumericLiteralExpression,
+				Literal (0))).NormalizeWhitespace ();
+	}
+
+	/// <summary>
 	/// Return the expression needed to cast an invocation that returns a byte to a bool.
 	/// </summary>
 	/// <param name="expression">The byte returning invocation expression.</param>
@@ -158,7 +226,7 @@ static partial class BindingSyntaxFactory {
 		};
 		// syntax that calls the NSArray factory method using the parameter: NSArray.FromNSObjects (targetTensors);
 		var factoryInvocation = InvocationExpression (MemberAccessExpression (SyntaxKind.SimpleMemberAccessExpression,
-				IdentifierName ("NSArray"), IdentifierName (nsArrayFactoryMethod).WithTrailingTrivia (Space)))
+				NSArray, IdentifierName (nsArrayFactoryMethod).WithTrailingTrivia (Space)))
 			.WithArgumentList (
 				ArgumentList (SingletonSeparatedList (
 					Argument (IdentifierName (parameter.Name)))));
@@ -352,7 +420,7 @@ static partial class BindingSyntaxFactory {
 		var factoryInvocation = InvocationExpression (
 			MemberAccessExpression (
 				SyntaxKind.SimpleMemberAccessExpression,
-				IdentifierName ("NSNumber"),
+				NSNumber,
 				IdentifierName (factoryMethod).WithTrailingTrivia (Space))
 		);
 
@@ -441,7 +509,7 @@ static partial class BindingSyntaxFactory {
 		var factoryInvocation = InvocationExpression (
 			MemberAccessExpression (
 				SyntaxKind.SimpleMemberAccessExpression,
-				IdentifierName ("NSValue"),
+				NSValue,
 				IdentifierName (factoryMethod).WithTrailingTrivia (Space))
 		).WithArgumentList (ArgumentList (SingletonSeparatedList (
 			Argument (IdentifierName (parameter.Name)))));
@@ -501,11 +569,11 @@ static partial class BindingSyntaxFactory {
 		// use a switch to decide which of the constructors we are going to use to build the array.
 		var lambdaFunctionVariable = "obj";
 		var nsNumberExpr = ObjectCreationExpression (
-				IdentifierName ("NSNumber").WithLeadingTrivia (Space).WithTrailingTrivia (Space))
+				NSNumber.WithLeadingTrivia (Space).WithTrailingTrivia (Space))
 			.WithArgumentList (ArgumentList (SingletonSeparatedList (
 				Argument (IdentifierName (lambdaFunctionVariable)))));
 		var nsValueExpr = ObjectCreationExpression (
-				IdentifierName ("NSValue").WithLeadingTrivia (Space).WithTrailingTrivia (Space))
+				NSValue.WithLeadingTrivia (Space).WithTrailingTrivia (Space))
 			.WithArgumentList (ArgumentList (SingletonSeparatedList (
 				Argument (IdentifierName (lambdaFunctionVariable)))));
 		var smartEnumExpr = InvocationExpression (MemberAccessExpression (
@@ -692,7 +760,7 @@ static partial class BindingSyntaxFactory {
 	internal static (string Name, LocalDeclarationStatementSyntax Declaration) GetReturnValueAuxVariable (in TypeInfo returnType)
 	{
 		var typeSyntax = returnType.GetIdentifierSyntax ();
-		var variableName = Nomenclator.GetReturnVariableName (returnType);
+		var variableName = Nomenclator.GetReturnVariableName ();
 		// generates Type ret; The GetIdentifierSyntax will ensure that the correct type and nullable annotation is used
 		var declaration = LocalDeclarationStatement (
 			VariableDeclaration (typeSyntax.WithTrailingTrivia (Space))
@@ -728,7 +796,7 @@ static partial class BindingSyntaxFactory {
 			Token (SyntaxKind.ReadOnlyKeyword).WithTrailingTrivia (Space));
 		// generates: Selector.GetHandle (selector);
 		var getHandleInvocation = InvocationExpression (MemberAccessExpression (SyntaxKind.SimpleMemberAccessExpression,
-					IdentifierName ("Selector"), IdentifierName ("GetHandle").WithTrailingTrivia (Space)))
+					Selector, IdentifierName ("GetHandle").WithTrailingTrivia (Space)))
 			.WithArgumentList (
 				ArgumentList (
 					SingletonSeparatedList (
@@ -737,7 +805,7 @@ static partial class BindingSyntaxFactory {
 
 		// generates: NativeHandler selectorName = Selector.GetHandle (selector);
 		return LocalDeclarationStatement (
-			VariableDeclaration (IdentifierName ("NativeHandle").WithTrailingTrivia (Space))
+			VariableDeclaration (NativeHandle.WithTrailingTrivia (Space))
 				.WithVariables (
 					SingletonSeparatedList (
 						VariableDeclarator (Identifier (selectorName).WithTrailingTrivia (Space))

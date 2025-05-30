@@ -13,10 +13,6 @@ using Foundation;
 using ObjCRuntime;
 using NUnit.Framework;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace MonoTouchFixtures.Foundation {
 
 	[TestFixture]
@@ -109,9 +105,13 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			// an invalid NSDictionary returns null from Objective-C but that
 			// results in an 'empty' instance inside MonoTouch
+#if NET10_0_OR_GREATER
+			Assert.Throws<Exception> (() => { new NSHttpCookie (new Cookie ()); }, "Exception");
+#else
 			using (var cookie = new NSHttpCookie (new Cookie ())) {
 				Assert.That (cookie.Handle, Is.EqualTo (NativeHandle.Zero), "ctor");
 			}
+#endif
 		}
 
 		[Test]

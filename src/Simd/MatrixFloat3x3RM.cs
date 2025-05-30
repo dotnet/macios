@@ -24,7 +24,6 @@ using System.Runtime.InteropServices;
 using ObjCRuntime;
 
 // This type does not come from the CoreGraphics framework
-#if NET
 namespace CoreGraphics {
 	[NativeName ("GLKMatrix3")]
 	[StructLayout (LayoutKind.Sequential)]
@@ -320,4 +319,3 @@ namespace CoreGraphics {
 		}
 	}
 }
-#endif // NET

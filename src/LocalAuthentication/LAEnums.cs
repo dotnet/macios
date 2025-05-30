@@ -52,22 +52,6 @@ namespace LocalAuthentication {
 		SystemCancel = -4,
 		/// <summary>Authentication could not start, because passcode is not set on the device.</summary>
 		PasscodeNotSet = -5,
-
-#if !NET
-		/// Authentication could not start, because Touch ID is not available on the device.
-		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'BiometryNotAvailable' instead.")]
-		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'BiometryNotAvailable' instead.")]
-		TouchIDNotAvailable = BiometryNotAvailable,
-
-		/// Authentication could not start, because Touch ID has no enrolled fingers.
-		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'BiometryNotEnrolled' instead.")]
-		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'BiometryNotEnrolled' instead.")]
-		TouchIDNotEnrolled = BiometryNotEnrolled,
-
-		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'BiometryLockout' instead.")]
-		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'BiometryLockout' instead.")]
-		TouchIDLockout = BiometryLockout,
-#endif
 		/// <summary>To be added.</summary>
 		AppCancel = -9,
 		/// <summary>To be added.</summary>
@@ -107,7 +91,7 @@ namespace LocalAuthentication {
 		SmartCardPin = -3,
 	}
 
-	/// <summary>Enumerates access control operations for the <see cref="M:LocalAuthentication.LAContext.EvaluateAccessControl(Security.SecAccessControl,LocalAuthentication.LAAccessControlOperation,System.String,System.Action{System.Boolean,Foundation.NSError})" /> method.</summary>
+	/// <summary>Enumerates access control operations for the <see cref="LocalAuthentication.LAContext.EvaluateAccessControl(Security.SecAccessControl,LocalAuthentication.LAAccessControlOperation,System.String,System.Action{System.Boolean,Foundation.NSError})" /> method.</summary>
 	[NoTV]
 	[MacCatalyst (13, 1)]
 	[Native]

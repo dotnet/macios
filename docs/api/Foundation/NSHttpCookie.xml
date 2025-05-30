@@ -11,12 +11,12 @@
 	For more complex scenarios that also require one or more of
 	comments, expiration, a port, a secure setting and a version,
 	you can either use the constructor that takes an
-	<format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Net%20Cookie&amp;scope=Xamarin" title="T:System.Net.Cookie">T:System.Net.Cookie</a></format>.
+	<see cref="System.Net.Cookie" />.
       </para>
       <para>
 	Alternatively, you can create it by passing an
 	NSDictionary to either the NSHttpCookie constructor or the
-	<see cref="M:Foundation.NSHttpCookie.CookieFromProperties(Foundation.NSDictionary)" />
+	<see cref="Foundation.NSHttpCookie.CookieFromProperties(Foundation.NSDictionary)" />
 	method.
       </para>
       <example>
@@ -34,17 +34,17 @@ var secondCookie = new NSHttpCookie (new Cookie () {
       </example>
       <para>
 	The actual keys have to be one the public Key static fields
-	from this class (<see cref="P:Foundation.NSHttpCookie.KeyName" />, <see cref="P:Foundation.NSHttpCookie.KeyValue" />, <see cref="P:Foundation.NSHttpCookie.KeyOriginUrl" />,
-	<see cref="P:Foundation.NSHttpCookie.KeyVersion" />,
-	<see cref="P:Foundation.NSHttpCookie.KeyDomain" />,
-	<see cref="P:Foundation.NSHttpCookie.KeyPath" />,
-	<see cref="P:Foundation.NSHttpCookie.KeySecure" />,
-	<see cref="P:Foundation.NSHttpCookie.KeyExpires" />,
-	<see cref="P:Foundation.NSHttpCookie.KeyComment" />,
-	<see cref="P:Foundation.NSHttpCookie.KeyCommentUrl" />,
-	<see cref="P:Foundation.NSHttpCookie.KeyDiscard" />,
-	<see cref="P:Foundation.NSHttpCookie.KeyMaximumAge" /> and
-	<see cref="P:Foundation.NSHttpCookie.KeyPort" />).
+	from this class (<see cref="Foundation.NSHttpCookie.KeyName" />, <see cref="Foundation.NSHttpCookie.KeyValue" />, <see cref="Foundation.NSHttpCookie.KeyOriginUrl" />,
+	<see cref="Foundation.NSHttpCookie.KeyVersion" />,
+	<see cref="Foundation.NSHttpCookie.KeyDomain" />,
+	<see cref="Foundation.NSHttpCookie.KeyPath" />,
+	<see cref="Foundation.NSHttpCookie.KeySecure" />,
+	<see cref="Foundation.NSHttpCookie.KeyExpires" />,
+	<see cref="Foundation.NSHttpCookie.KeyComment" />,
+	<see cref="Foundation.NSHttpCookie.KeyCommentUrl" />,
+	<see cref="Foundation.NSHttpCookie.KeyDiscard" />,
+	<see cref="Foundation.NSHttpCookie.KeyMaximumAge" /> and
+	<see cref="Foundation.NSHttpCookie.KeyPort" />).
       </para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[

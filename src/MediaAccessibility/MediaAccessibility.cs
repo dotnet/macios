@@ -18,41 +18,20 @@ using CoreText;
 using Foundation;
 
 namespace MediaAccessibility {
-
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public static partial class MACaptionAppearance {
-
-#if !NET
-		// FIXME: make this a real notification
-		public static readonly NSString? SettingsChangedNotification;
-
-		[Advice ("Use 'MediaCharacteristic.DescribesMusicAndSoundForAccessibility' getter.")]
-		public static readonly NSString? MediaCharacteristicDescribesMusicAndSoundForAccessibility;
-
-		[Advice ("Use 'MediaCharacteristic.TranscribesSpokenDialogForAccessibility' getter.")]
-		public static readonly NSString? MediaCharacteristicTranscribesSpokenDialogForAccessibility;
-
-		static MACaptionAppearance ()
-		{
-			var handle = Libraries.MediaAccessibility.Handle;
-			SettingsChangedNotification = Dlfcn.GetStringConstant (handle, "kMACaptionAppearanceSettingsChangedNotification");
-
-			MediaCharacteristicDescribesMusicAndSoundForAccessibility = Dlfcn.GetStringConstant (handle,
-				"MAMediaCharacteristicDescribesMusicAndSoundForAccessibility");
-			MediaCharacteristicTranscribesSpokenDialogForAccessibility = Dlfcn.GetStringConstant (handle,
-				"MAMediaCharacteristicTranscribesSpokenDialogForAccessibility");
-		}
-#endif
-
 		[DllImport (Constants.MediaAccessibilityLibrary)]
 		static extern byte MACaptionAppearanceAddSelectedLanguage (nint domain,
 			/* CFStringRef __nonnull */ IntPtr language);
 
+		/// <param name="domain">To be added.</param>
+		///         <param name="language">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static bool AddSelectedLanguage (MACaptionAppearanceDomain domain, string language)
 		{
 			// this will throw an ANE if language is null
@@ -66,6 +45,10 @@ namespace MediaAccessibility {
 		[DllImport (Constants.MediaAccessibilityLibrary)]
 		static extern /* CFArrayRef __nonnull */ IntPtr MACaptionAppearanceCopySelectedLanguages (nint domain);
 
+		/// <param name="domain">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static string? [] GetSelectedLanguages (MACaptionAppearanceDomain domain)
 		{
 			using (var langs = new CFArray (MACaptionAppearanceCopySelectedLanguages ((int) domain), owns: true)) {
@@ -80,6 +63,10 @@ namespace MediaAccessibility {
 		[DllImport (Constants.MediaAccessibilityLibrary)]
 		static extern nint MACaptionAppearanceGetDisplayType (nint domain);
 
+		/// <param name="domain">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static MACaptionAppearanceDisplayType GetDisplayType (MACaptionAppearanceDomain domain)
 		{
 			return (MACaptionAppearanceDisplayType) (int) MACaptionAppearanceGetDisplayType ((int) domain);
@@ -88,6 +75,10 @@ namespace MediaAccessibility {
 		[DllImport (Constants.MediaAccessibilityLibrary)]
 		static extern void MACaptionAppearanceSetDisplayType (nint domain, nint displayType);
 
+		/// <param name="domain">To be added.</param>
+		///         <param name="displayType">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static void SetDisplayType (MACaptionAppearanceDomain domain, MACaptionAppearanceDisplayType displayType)
 		{
 			MACaptionAppearanceSetDisplayType ((int) domain, (int) displayType);
@@ -96,6 +87,10 @@ namespace MediaAccessibility {
 		[DllImport (Constants.MediaAccessibilityLibrary)]
 		static extern /* CFArrayRef __nonnull */ IntPtr MACaptionAppearanceCopyPreferredCaptioningMediaCharacteristics (nint domain);
 
+		/// <param name="domain">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSString [] GetPreferredCaptioningMediaCharacteristics (MACaptionAppearanceDomain domain)
 		{
 			using (var chars = new CFArray (MACaptionAppearanceCopyPreferredCaptioningMediaCharacteristics ((int) domain), owns: true)) {
@@ -111,6 +106,11 @@ namespace MediaAccessibility {
 		unsafe static extern /* CGColorRef __nonnull */ IntPtr MACaptionAppearanceCopyForegroundColor (nint domain,
 			/* MACaptionAppearanceBehavior * __nullable */ nint* behavior);
 
+		/// <param name="domain">To be added.</param>
+		///         <param name="behavior">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static CGColor GetForegroundColor (MACaptionAppearanceDomain domain, ref MACaptionAppearanceBehavior behavior)
 		{
 			nint b = (int) behavior;
@@ -127,6 +127,11 @@ namespace MediaAccessibility {
 		unsafe static extern /* CGColorRef __nonnull */ IntPtr MACaptionAppearanceCopyBackgroundColor (nint domain,
 			/* MACaptionAppearanceBehavior * __nullable */ nint* behavior);
 
+		/// <param name="domain">To be added.</param>
+		///         <param name="behavior">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static CGColor GetBackgroundColor (MACaptionAppearanceDomain domain, ref MACaptionAppearanceBehavior behavior)
 		{
 			nint b = (int) behavior;
@@ -143,6 +148,11 @@ namespace MediaAccessibility {
 		unsafe static extern /* CGColorRef __nonnull */ IntPtr MACaptionAppearanceCopyWindowColor (nint domain,
 			/* MACaptionAppearanceBehavior * __nullable */ nint* behavior);
 
+		/// <param name="domain">To be added.</param>
+		///         <param name="behavior">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static CGColor GetWindowColor (MACaptionAppearanceDomain domain, ref MACaptionAppearanceBehavior behavior)
 		{
 			nint b = (int) behavior;
@@ -158,6 +168,11 @@ namespace MediaAccessibility {
 		[DllImport (Constants.MediaAccessibilityLibrary)]
 		unsafe static extern nfloat MACaptionAppearanceGetForegroundOpacity (nint domain, nint* behavior);
 
+		/// <param name="domain">To be added.</param>
+		///         <param name="behavior">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static nfloat GetForegroundOpacity (MACaptionAppearanceDomain domain, ref MACaptionAppearanceBehavior behavior)
 		{
 			nint b = (int) behavior;
@@ -173,6 +188,11 @@ namespace MediaAccessibility {
 		unsafe static extern nfloat MACaptionAppearanceGetBackgroundOpacity (nint domain,
 			/* MACaptionAppearanceBehavior * __nullable */ nint* behavior);
 
+		/// <param name="domain">To be added.</param>
+		///         <param name="behavior">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static nfloat GetBackgroundOpacity (MACaptionAppearanceDomain domain, ref MACaptionAppearanceBehavior behavior)
 		{
 			nint b = (int) behavior;
@@ -188,6 +208,11 @@ namespace MediaAccessibility {
 		unsafe static extern nfloat MACaptionAppearanceGetWindowOpacity (nint domain,
 			/* MACaptionAppearanceBehavior * __nullable */ nint* behavior);
 
+		/// <param name="domain">To be added.</param>
+		///         <param name="behavior">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static nfloat GetWindowOpacity (MACaptionAppearanceDomain domain, ref MACaptionAppearanceBehavior behavior)
 		{
 			nint b = (int) behavior;
@@ -203,6 +228,11 @@ namespace MediaAccessibility {
 		unsafe static extern nfloat MACaptionAppearanceGetWindowRoundedCornerRadius (nint domain,
 			/* MACaptionAppearanceBehavior * __nullable */ nint* behavior);
 
+		/// <param name="domain">To be added.</param>
+		///         <param name="behavior">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static nfloat GetWindowRoundedCornerRadius (MACaptionAppearanceDomain domain, ref MACaptionAppearanceBehavior behavior)
 		{
 			nint b = (int) behavior;
@@ -218,6 +248,12 @@ namespace MediaAccessibility {
 		unsafe static extern /* CTFontDescriptorRef __nonnull */ IntPtr MACaptionAppearanceCopyFontDescriptorForStyle (nint domain,
 			/* MACaptionAppearanceBehavior * __nullable */ nint* behavior, nint fontStyle);
 
+		/// <param name="domain">To be added.</param>
+		///         <param name="behavior">To be added.</param>
+		///         <param name="fontStyle">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static CTFontDescriptor GetFontDescriptor (MACaptionAppearanceDomain domain, ref MACaptionAppearanceBehavior behavior, MACaptionAppearanceFontStyle fontStyle)
 		{
 			nint b = (int) behavior;
@@ -234,6 +270,11 @@ namespace MediaAccessibility {
 		unsafe static extern nfloat MACaptionAppearanceGetRelativeCharacterSize (nint domain,
 			/* MACaptionAppearanceBehavior * __nullable */ nint* behavior);
 
+		/// <param name="domain">To be added.</param>
+		///         <param name="behavior">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static nfloat GetRelativeCharacterSize (MACaptionAppearanceDomain domain, ref MACaptionAppearanceBehavior behavior)
 		{
 			nint b = (int) behavior;
@@ -249,6 +290,11 @@ namespace MediaAccessibility {
 		unsafe static extern nint MACaptionAppearanceGetTextEdgeStyle (nint domain,
 			/* MACaptionAppearanceBehavior * __nullable */ nint* behavior);
 
+		/// <param name="domain">To be added.</param>
+		///         <param name="behavior">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static MACaptionAppearanceTextEdgeStyle GetTextEdgeStyle (MACaptionAppearanceDomain domain, ref MACaptionAppearanceBehavior behavior)
 		{
 			nint b = (int) behavior;
@@ -260,27 +306,17 @@ namespace MediaAccessibility {
 			return (MACaptionAppearanceTextEdgeStyle) (int) rv;
 		}
 
-#if NET
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (13, 0)]
-		[iOS (13, 0)]
-#endif
 		[DllImport (Constants.MediaAccessibilityLibrary)]
 		static extern void MACaptionAppearanceDidDisplayCaptions (IntPtr /* CFArratRef */ strings);
 
-#if NET
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (13, 0)]
-		[iOS (13, 0)]
-#endif
 		public static void DidDisplayCaptions (string [] strings)
 		{
 			if ((strings is null) || (strings.Length == 0))
@@ -291,15 +327,10 @@ namespace MediaAccessibility {
 			}
 		}
 
-#if NET
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (13, 0)]
-		[iOS (13, 0)]
-#endif
 		public static void DidDisplayCaptions (NSAttributedString [] strings)
 		{
 			// CFAttributedString is “toll-free bridged” with its Foundation counterpart, NSAttributedString.
@@ -312,52 +343,43 @@ namespace MediaAccessibility {
 			}
 		}
 
-#if NET
 		[SupportedOSPlatform ("tvos18.0")]
 		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("ios18.0")]
 		[SupportedOSPlatform ("maccatalyst18.0")]
-#else
-		[TV (18, 0), iOS (18, 0), MacCatalyst (18, 0), Mac (15, 0)]
-#endif
 		[DllImport (Constants.MediaAccessibilityLibrary)]
 		static extern byte MACaptionAppearanceIsCustomized (nint /* MACaptionAppearanceDomain */ domain);
 
 		/// <summary>Checks whether the specified style has been customized by the user.</summary>
 		/// <param name="domain">The style to check</param>
 		/// <returns>True if the specified style has been customized by the user, false otherwise.</returns>
-#if NET
 		[SupportedOSPlatform ("tvos18.0")]
 		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("ios18.0")]
 		[SupportedOSPlatform ("maccatalyst18.0")]
-#else
-		[TV (18, 0), iOS (18, 0), MacCatalyst (18, 0), Mac (15, 0)]
-#endif
 		public static bool IsCustomized (MACaptionAppearanceDomain domain)
 		{
 			return MACaptionAppearanceIsCustomized ((nint) (long) domain) != 0;
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	static partial class MAAudibleMedia {
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		[DllImport (Constants.MediaAccessibilityLibrary)]
 		static extern unsafe IntPtr /* CFArrayRef __nonnull */ MAAudibleMediaCopyPreferredCharacteristics ();
 
 		// according to webkit source code (the only use I could find) this is an array of CFString
 		// https://github.com/WebKit/webkit/blob/master/Source/WebCore/page/CaptionUserPreferencesMediaAF.cpp
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		static public string? []? GetPreferredCharacteristics ()
 		{
 			var handle = MAAudibleMediaCopyPreferredCharacteristics ();
@@ -369,32 +391,22 @@ namespace MediaAccessibility {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios16.4")]
 	[SupportedOSPlatform ("maccatalyst16.4")]
 	[SupportedOSPlatform ("macos13.3")]
 	[SupportedOSPlatform ("tvos16.4")]
-#endif
 	public static partial class MAVideoAccommodations {
-#if NET
 		[SupportedOSPlatform ("ios16.4")]
 		[SupportedOSPlatform ("maccatalyst16.4")]
 		[SupportedOSPlatform ("macos13.3")]
 		[SupportedOSPlatform ("tvos16.4")]
-#else
-		[Mac (13, 3), TV (16, 4), iOS (16, 4)]
-#endif
 		[DllImport (Constants.MediaAccessibilityLibrary)]
 		static extern byte MADimFlashingLightsEnabled ();
 
-#if NET
 		[SupportedOSPlatform ("ios16.4")]
 		[SupportedOSPlatform ("maccatalyst16.4")]
 		[SupportedOSPlatform ("macos13.3")]
 		[SupportedOSPlatform ("tvos16.4")]
-#else
-		[Mac (13, 3), TV (16, 4), iOS (16, 4)]
-#endif
 		public static bool IsDimFlashingLightsEnabled () => MADimFlashingLightsEnabled () != 0;
 	}
 }

@@ -29,38 +29,63 @@ using System.Collections.Generic;
 using System.Runtime.Versioning;
 using ObjCRuntime;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 // Disable until we get around to enable + fix any issues.
 #nullable disable
 
 namespace Foundation {
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[Register ("NSDictionary", SkipRegistration = true)]
 	public sealed partial class NSDictionary<TKey, TValue> : NSDictionary, IDictionary<TKey, TValue>
 		where TKey : class, INativeObject
 		where TValue : class, INativeObject {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSDictionary ()
 		{
 		}
 
+		/// <param name="coder">The unarchiver object.</param>
+		///         <summary>A constructor that initializes the object from the data stored in the unarchiver object.</summary>
+		///         <remarks>
+		///           <para>This constructor is provided to allow the class to be initialized from an unarchiver (for example, during NIB deserialization).   This is part of the <see cref="Foundation.NSCoding" />  protocol.</para>
+		///           <para>If developers want to create a subclass of this object and continue to support deserialization from an archive, they should implement a constructor with an identical signature: taking a single parameter of type <see cref="Foundation.NSCoder" /> and decorate it with the [Export("initWithCoder:"] attribute declaration.</para>
+		///           <para>The state of this object can also be serialized by using the companion method, EncodeTo.</para>
+		///         </remarks>
 		public NSDictionary (NSCoder coder)
 			: base (coder)
 		{
 		}
 
+		/// <param name="filename">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[ObsoletedOSPlatform ("macos10.15", "Use 'NSMutableDictionary(string)' constructor instead.")]
+		[ObsoletedOSPlatform ("ios13.0", "Use 'NSMutableDictionary(string)' constructor instead.")]
+		[ObsoletedOSPlatform ("tvos13.0", "Use 'NSMutableDictionary(string)' constructor instead.")]
+		[ObsoletedOSPlatform ("maccatalyst13.1", "Use 'NSMutableDictionary(string)' constructor instead.")]
 		public NSDictionary (string filename)
 			: base (filename)
 		{
 		}
 
+		/// <param name="url">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[ObsoletedOSPlatform ("macos10.15", "Use 'NSMutableDictionary(NSUrl)' constructor instead.")]
+		[ObsoletedOSPlatform ("ios13.0", "Use 'NSMutableDictionary(NSUrl)' constructor instead.")]
+		[ObsoletedOSPlatform ("tvos13.0", "Use 'NSMutableDictionary(NSUrl)' constructor instead.")]
+		[ObsoletedOSPlatform ("maccatalyst13.1", "Use 'NSMutableDictionary(NSUrl)' constructor instead.")]
 		public NSDictionary (NSUrl url)
 			: base (url)
 		{
@@ -71,6 +96,9 @@ namespace Foundation {
 		{
 		}
 
+		/// <param name="other">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSDictionary (NSDictionary<TKey, TValue> other)
 			: base (other)
 		{
@@ -95,11 +123,19 @@ namespace Foundation {
 		{
 		}
 
+		/// <param name="keys">To be added.</param>
+		///         <param name="values">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSDictionary (TKey [] keys, TValue [] values)
 			: this (keys, values, ValidateKeysAndValues (keys, values))
 		{
 		}
 
+		/// <param name="key">To be added.</param>
+		///         <param name="value">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSDictionary (TKey key, TValue value)
 			: base (NSArray.FromNSObjects (value), NSArray.FromNSObjects (key))
 		{
@@ -121,6 +157,10 @@ namespace Foundation {
 #nullable disable
 		// Strongly typed methods from NSDictionary
 
+		/// <param name="key">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public TValue ObjectForKey (TKey key)
 		{
 			if (key is null)
@@ -142,6 +182,10 @@ namespace Foundation {
 			}
 		}
 
+		/// <param name="obj">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public TKey [] KeysForObject (TValue obj)
 		{
 			if (obj is null)
@@ -164,6 +208,11 @@ namespace Foundation {
 			}
 		}
 
+		/// <param name="keys">To be added.</param>
+		///         <param name="marker">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public TValue [] ObjectsForKeys (TKey [] keys, TValue marker)
 		{
 			if (keys is null)
@@ -192,6 +241,12 @@ namespace Foundation {
 			return result;
 		}
 
+		/// <param name="objects">To be added.</param>
+		/// <param name="keys">To be added.</param>
+		/// <param name="count">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		public static NSDictionary<TKey, TValue> FromObjectsAndKeys (TValue [] objects, TKey [] keys, nint count)
 		{
 			if (objects is null)
@@ -208,12 +263,7 @@ namespace Foundation {
 				return GenericFromObjectsAndKeysInternal (no, nk);
 		}
 
-#if NET
 		public static NSDictionary<TKey, TValue> FromObjectsAndKeys (TValue [] objects, TKey [] keys)
-#else
-		[Obsolete ("'TKey' and 'TValue' are inversed and won't work unless both types are identical. Use the generic overload that takes a count parameter instead.")]
-		public static NSDictionary<TKey, TValue> FromObjectsAndKeys (TKey [] objects, TValue [] keys)
-#endif
 		{
 			if (objects is null)
 				throw new ArgumentNullException (nameof (objects));
@@ -227,6 +277,11 @@ namespace Foundation {
 				return GenericFromObjectsAndKeysInternal (no, nk);
 		}
 
+		/// <param name="objects">To be added.</param>
+		///         <param name="keys">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSDictionary<TKey, TValue> FromObjectsAndKeys (object [] objects, object [] keys)
 		{
 			if (objects is null)
@@ -241,6 +296,12 @@ namespace Foundation {
 				return GenericFromObjectsAndKeysInternal (no, nk);
 		}
 
+		/// <param name="objects">To be added.</param>
+		/// <param name="keys">To be added.</param>
+		/// <param name="count">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		public static NSDictionary<TKey, TValue> FromObjectsAndKeys (NSObject [] objects, NSObject [] keys, nint count)
 		{
 			if (objects is null)
@@ -257,6 +318,12 @@ namespace Foundation {
 				return GenericFromObjectsAndKeysInternal (no, nk);
 		}
 
+		/// <param name="objects">To be added.</param>
+		/// <param name="keys">To be added.</param>
+		/// <param name="count">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		public static NSDictionary<TKey, TValue> FromObjectsAndKeys (object [] objects, object [] keys, nint count)
 		{
 			if (objects is null)
@@ -275,6 +342,10 @@ namespace Foundation {
 
 		// Other implementations
 
+		/// <param name="key">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool ContainsKey (TKey key)
 		{
 			if (key is null)
@@ -285,6 +356,11 @@ namespace Foundation {
 			return ret;
 		}
 
+		/// <param name="key">To be added.</param>
+		///         <param name="value">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool TryGetValue (TKey key, out TValue value)
 		{
 			// NSDictionary can not contain NULLs, if you want a NULL, it exists as an NSNull
@@ -405,6 +481,9 @@ namespace Foundation {
 		#endregion
 
 		#region IEnumerable implementation
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		IEnumerator IEnumerable.GetEnumerator ()
 		{
 			return GetEnumerator ();

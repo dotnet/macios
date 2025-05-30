@@ -38,6 +38,8 @@ using ObjCRuntime;
 namespace CoreFoundation {
 
 	// CFURLPathStyle -> CFIndex -> CFURL.h
+	/// <summary>Url Style.</summary>
+	///     <remarks>How should the path be interpreted by the CFUrl methods.</remarks>
 	[Native]
 	public enum CFUrlPathStyle : long {
 		/// <summary>As a POSIX filename.   Path elements are separated with a slash character.</summary>
@@ -48,7 +50,8 @@ namespace CoreFoundation {
 		Windows = 2,
 	};
 
-
+	/// <summary>URL class used by C-only Cocoa APIs.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -172,7 +175,7 @@ namespace CoreFoundation {
 		///         <remarks>
 		///           <para>The returned token is the CoreFoundation type identifier (CFType) that has been assigned to this class.</para>
 		///           <para>This can be used to determine type identity between different CoreFoundation objects.</para>
-		///           <para>You can retrieve the type of a CoreFoundation object by invoking the <see cref="M:CoreFoundation.CFType.GetTypeID(System.IntPtr)" /> on the native handle of the object</para>
+		///           <para>You can retrieve the type of a CoreFoundation object by invoking the <see cref="CoreFoundation.CFType.GetTypeID(System.IntPtr)" /> on the native handle of the object</para>
 		///           <example>
 		///             <code lang="csharp lang-csharp"><![CDATA[bool isCFUrl = (CFType.GetTypeID (foo.Handle) == CFUrl.GetTypeID ());]]></code>
 		///           </example>

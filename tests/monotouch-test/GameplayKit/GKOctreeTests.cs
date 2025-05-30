@@ -14,11 +14,7 @@ using NUnit.Framework;
 using Foundation;
 using GameplayKit;
 
-#if NET
 using System.Numerics;
-#else
-using OpenTK;
-#endif
 
 namespace MonoTouchFixtures.GamePlayKit {
 	[TestFixture]

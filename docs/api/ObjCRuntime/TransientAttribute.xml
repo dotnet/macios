@@ -1,0 +1,45 @@
+<Documentation>
+  <Docs DocId="T:ObjCRuntime.TransientAttribute">
+    <summary>Flags a paramter in an NSObject subclass as being transient.</summary>
+    <remarks>
+      <para>
+	  This attribute is applied to parameters and is only used
+	  when transitioning from Objective-C to C#.  During those
+	  transitions the various Objective-C NSObjects parameters are
+	  wrapped into a managed representation of the object.
+	</para>
+      <para>
+	  The runtime will take a reference to the native object and
+	  keep the reference until the last managed reference to the
+	  object is gone, and the GC has a chance to run.
+	</para>
+      <para>
+	  In a few cases, it is important for the C# runtime to not
+	  keep a reference to the native object.  This sometimes happens
+	  when the underlying native code has attached a special
+	  behavior to the lifecycle of the parameter.  For example: the
+	  destructor for the parameter will perform some cleanup action,
+	  or dispose some precious resource.
+	</para>
+      <para>
+	  This attribute informs the runtime that you desire the
+	  object to be disposed if possible when returning back to
+	  Objective-C from your overwritten method.
+	</para>
+      <para>
+	  The rule is simple: if the runtime had to create a new
+	  managed representation from the native object, then at the end
+	  of the function, the retain count for the native object will
+	  be dropped, and the Handle property of the managed object will be
+	  cleared.   This means that if you kept a reference to the
+	  managed object, that reference will become useless (invoking
+	  methods on it will throw an exception).
+	</para>
+      <para>
+	  If the object passed was not created, or if there was
+	  already an outstanding managed representation of the object,
+	  the forced dispose does not take place.
+	</para>
+    </remarks>
+  </Docs>
+</Documentation>

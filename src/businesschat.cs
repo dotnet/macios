@@ -18,10 +18,6 @@ using UIControl = AppKit.NSControl;
 using UIKit;
 #endif
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace BusinessChat {
 
 	[Deprecated (PlatformName.MacOSX, 13, 1)]
@@ -31,6 +27,9 @@ namespace BusinessChat {
 	[BaseType (typeof (UIControl))]
 	[DisableDefaultCtor]
 	interface BCChatButton {
+		/// <param name="style">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithStyle:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (BCChatButtonStyle style);

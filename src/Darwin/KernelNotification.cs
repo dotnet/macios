@@ -36,11 +36,9 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Collections.Generic;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace Darwin {
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[StructLayout (LayoutKind.Sequential)]
 	public struct KernelEvent {
 		/// <summary>To be added.</summary>
@@ -52,13 +50,9 @@ namespace Darwin {
 		/// <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
 		public EventFlags /* uint16_t */ Flags;
-#if NET
 		/// <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
 		public FilterFlags /* uint32_t */ FilterFlags;
-#else
-		public uint /* uint32_t */ FilterFlags;
-#endif
 		/// <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
 		public IntPtr /* uintptr_t */ Data;
@@ -67,6 +61,8 @@ namespace Darwin {
 		public IntPtr /* void */ UserData;
 	}
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[Flags]
 	public enum EventFlags : ushort {
 		/// <summary>To be added.</summary>
@@ -100,6 +96,8 @@ namespace Darwin {
 		Error = 0x4000,
 	}
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum EventFilter : short {
 		/// <summary>To be added.</summary>
 		Read = -1,
@@ -125,6 +123,8 @@ namespace Darwin {
 		VM = -11,
 	}
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[Flags]
 	public enum FilterFlags : uint {
 		/// <summary>To be added.</summary>
@@ -221,6 +221,8 @@ namespace Darwin {
 		TimerAbsolute = 0x00000008,
 	}
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public class KernelQueue : IDisposable, INativeObject {
 		int handle;
 
@@ -341,73 +343,17 @@ namespace Darwin {
 			return rv;
 		}
 
-		// Don't worry about nullability for !NET
-#nullable disable
-#if !NET
-		[Obsolete ("Use any of the overloads that return an int to get how many events were returned from kevent.")]
-		public bool KEvent (KernelEvent [] changeList, int nChanges, KernelEvent [] eventList, int nEvents, ref TimeSpec timeOut)
-		{
-			if (changeList is not null && changeList.Length < nChanges)
-				throw new ArgumentException ("nChanges is larger than the number of elements in changeList");
-
-			if (eventList is not null && eventList.Length < nEvents)
-				throw new ArgumentException ("nChanges is larger than the number of elements in changeList");
-			
-			unsafe {
-				fixed (KernelEvent *cp = changeList)
-					fixed (KernelEvent *ep = eventList)
-						return kevent (handle, cp, nChanges, ep, nEvents, (TimeSpec *) Unsafe.AsPointer<TimeSpec> (ref timeOut)) != -1;
-			}
-		}
-
-		[Obsolete ("Use any of the overloads that return an int to get how many events were returned from kevent.")]
-		public bool KEvent (KernelEvent [] changeList, int nChanges, KernelEvent [] eventList, int nEvents)
-		{
-			if (changeList is not null && changeList.Length < nChanges)
-				throw new ArgumentException ("nChanges is larger than the number of elements in changeList");
-
-			if (eventList is not null && eventList.Length < nEvents)
-				throw new ArgumentException ("nChanges is larger than the number of elements in changeList");
-			
-			unsafe {
-				fixed (KernelEvent *cp = changeList)
-					fixed (KernelEvent *ep = eventList)
-						return kevent (handle, cp, nChanges, ep, nEvents, null) != -1;
-			}
-		}
-
-		[Obsolete ("Use any of the overloads that return an int to get how many events were returned from kevent.")]
-		public bool KEvent (KernelEvent [] changeList, KernelEvent [] eventList, ref TimeSpec timeOut)
-		{
-			unsafe {
-				fixed (KernelEvent *cp = changeList)
-					fixed (KernelEvent *ep = eventList)
-						return kevent (handle, cp, changeList?.Length ?? 0, ep, eventList?.Length ?? 0, (TimeSpec *) Unsafe.AsPointer<TimeSpec> (ref timeOut)) != -1;
-			}
-		}
-#endif
-#nullable enable
-
-#if NET
 		/// <param name="changeList">To be added.</param>
 		///         <param name="eventList">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		public int KEvent (KernelEvent [] changeList, KernelEvent [] eventList)
-#else
-		[Obsolete ("Use any of the overloads that return an int to get how many events were returned from kevent.")]
-		public bool KEvent (KernelEvent [] changeList, KernelEvent [] eventList)
-#endif
 		{
 			unsafe {
 				fixed (KernelEvent* cp = changeList)
 				fixed (KernelEvent* ep = eventList)
-#if NET
 					return kevent (handle, cp, changeList?.Length ?? 0, ep, eventList?.Length ?? 0, null);
-#else
-						return kevent (handle, cp, changeList?.Length ?? 0, ep, eventList?.Length ?? 0, null) != -1;
-#endif
 			}
 		}
 	}

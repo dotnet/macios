@@ -2,7 +2,7 @@
   <Docs DocId="T:GameKit.GKMatchRequest">
     <summary>Contains the parameters for a new match.</summary>
     <remarks>
-      <para>After instantiating a <see cref="T:GameKit.GKMatchRequest" />, application developers should pass it to the following classes, depending on the type of match desired:</para>
+      <para>After instantiating a <see cref="GameKit.GKMatchRequest" />, application developers should pass it to the following classes, depending on the type of match desired:</para>
       <list type="table">
         <listheader>
           <term />
@@ -12,19 +12,19 @@
         <item>
           <term>Using standard matchmaking interface</term>
           <description>
-            <see cref="T:GameKit.GKMatchmakerViewController" />
+            <see cref="GameKit.GKMatchmakerViewController" />
           </description>
           <description>
-            <see cref="T:GameKit.GKTurnBasedMatch" />
+            <see cref="GameKit.GKTurnBasedMatch" />
           </description>
         </item>
         <item>
           <term>Using application-provided UI</term>
           <description>
-            <see cref="T:GameKit.GKMatchmaker" />
+            <see cref="GameKit.GKMatchmaker" />
           </description>
           <description>
-            <see cref="T:GameKit.GKTurnBasedMatchmakerViewController" />
+            <see cref="GameKit.GKTurnBasedMatchmakerViewController" />
           </description>
         </item>
       </list>

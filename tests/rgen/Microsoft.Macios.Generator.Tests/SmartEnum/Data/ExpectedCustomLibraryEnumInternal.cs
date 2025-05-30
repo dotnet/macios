@@ -25,7 +25,7 @@ public static partial class CustomLibraryEnumInternalExtensions
 		get
 		{
 			fixed (IntPtr *storage = &values [0])
-				return Dlfcn.CachePointer (Libraries.__Internal.Handle, "None", storage);
+				return Dlfcn.CachePointer (global::ObjCRuntime.Libraries.__Internal.Handle, "None", storage);
 		}
 	}
 
@@ -35,7 +35,7 @@ public static partial class CustomLibraryEnumInternalExtensions
 		get
 		{
 			fixed (IntPtr *storage = &values [1])
-				return Dlfcn.CachePointer (Libraries.__Internal.Handle, "Medium", storage);
+				return Dlfcn.CachePointer (global::ObjCRuntime.Libraries.__Internal.Handle, "Medium", storage);
 		}
 	}
 
@@ -45,7 +45,7 @@ public static partial class CustomLibraryEnumInternalExtensions
 		get
 		{
 			fixed (IntPtr *storage = &values [2])
-				return Dlfcn.CachePointer (Libraries.__Internal.Handle, "High", storage);
+				return Dlfcn.CachePointer (global::ObjCRuntime.Libraries.__Internal.Handle, "High", storage);
 		}
 	}
 
@@ -92,7 +92,7 @@ public static partial class CustomLibraryEnumInternalExtensions
 	/// Retrieves the <see cref="CustomLibraryEnumInternalExtensions" /> value represented by the backing field value in <paramref name="handle" />.
 	/// </summary>
 	/// <param name="handle">The native handle with the name of the constant to retrieve.</param>
-	public static CustomLibraryEnumInternal GetValue (NativeHandle handle)
+	public static CustomLibraryEnumInternal GetValue (global::ObjCRuntime.NativeHandle handle)
 	{
 		using var str = Runtime.GetNSObject<NSString> (handle)!;
 		return GetValue (str);
@@ -102,7 +102,7 @@ public static partial class CustomLibraryEnumInternalExtensions
 	/// Retrieves the <see cref="CustomLibraryEnumInternalExtensions" /> value represented by the backing field value in <paramref name="handle" />.
 	/// </summary>
 	/// <param name="handle">The native handle with the name of the constant to retrieve.</param>
-	public static CustomLibraryEnumInternal? GetNullableValue (NativeHandle handle)
+	public static CustomLibraryEnumInternal? GetNullableValue (global::ObjCRuntime.NativeHandle handle)
 	{
 		using var str = Runtime.GetNSObject<NSString> (handle);
 		if (str is null)

@@ -1,6 +1,6 @@
 <Documentation>
   <Docs DocId="T:CoreImage.CITwirlDistortion">
-    <summary>A <see cref="T:CoreImage.CIDistortionFilter" /> that rotates pixels around a point.</summary>
+    <summary>A <see cref="CoreImage.CIDistortionFilter" /> that rotates pixels around a point.</summary>
     <remarks>
       <para>The following example shows this filter in use</para>
       <example>

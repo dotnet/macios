@@ -56,7 +56,7 @@ DOTNET_REFERENCES = \
 	/r:$(DOTNET_BCL_DIR)/System.Xml.ReaderWriter.dll \
 
 DOTNET_OR_GREATER_DEFINES:=$(foreach version,$(shell seq 6 $(firstword $(subst ., ,$(subst net,,$(DOTNET_TFM))))),/define:NET$(version)_0_OR_GREATER)
-DOTNET_FLAGS=/warnaserror+ /nostdlib+ /deterministic /features:strict /nologo /target:library /debug /unsafe /define:NET /define:NET_TODO $(DOTNET_OR_GREATER_DEFINES) $(DOTNET_REFERENCES)
+DOTNET_FLAGS=/warnaserror+ /nostdlib+ /deterministic /features:strict /nologo /target:library /debug /unsafe /define:NET $(DOTNET_OR_GREATER_DEFINES) $(DOTNET_REFERENCES) /fullpaths
 
 ifeq ($(XCODE_IS_STABLE),true)
 DOTNET_FLAGS+=/define:XCODE_IS_STABLE
@@ -82,6 +82,11 @@ MACCATALYST_GENERATOR_WARNASERROR=$(GENERATOR_WARNASERROR)
 # this is due to deprecated APIs used in the generated code.
 BGEN_WARNINGS_TO_FIX=BI1234
 
+# We ignore some xml docs warnings when building the core and apidefinition assemblies, because
+# the xml docs might want to reference generated APIs, so the compiler would warn about not
+# finding those APIs (because they haven't been generated yet).
+XML_DOCS_WARNINGS=CS0419,CS1574,CS1580
+
 #
 # Specific warnings we're ignoring from the C# compiler
 # We should look into each of these and see if they're really needed,
@@ -97,7 +102,7 @@ CSC_WARNINGS_TO_FIX:=$(CSC_WARNINGS_TO_FIX),1591
 # warning CS8981: The type name 'nfloat' only contains lower-cased ascii characters. Such names may become reserved for the language.
 CSC_WARNINGS_TO_FIX:=$(CSC_WARNINGS_TO_FIX),CS8981
 
-# availability warnings, need to fix https://github.com/xamarin/xamarin-macios/pull/21185 to stop ignoring this.
+# availability warnings, need to fix https://github.com/dotnet/macios/pull/21185 to stop ignoring this.
 CSC_WARNINGS_TO_FIX:=$(CSC_WARNINGS_TO_FIX),CA1416,CA1422
 
 WARNINGS_TO_FIX = -nowarn:$(CSC_WARNINGS_TO_FIX)
@@ -368,6 +373,7 @@ $($(2)_DOTNET_BUILD_DIR)/core-$(3).rsp: Makefile frameworks.sources $($(2)_DOTNE
 		-nullable+ \
 		-warnaserror+ \
 		-nowarn:1591 \
+		-nowarn:$(XML_DOCS_WARNINGS) \
 		-out:$($(2)_DOTNET_BUILD_DIR)/core-$(3).dll \
 		-doc:$($(2)_DOTNET_BUILD_DIR)/core-$(3).xml \
 		> $$@.tmp
@@ -383,6 +389,7 @@ $($(2)_DOTNET_BUILD_DIR)/apidefinition-$(3).rsp: Makefile frameworks.sources $($
 		-unsafe \
 		-target:library \
 		-nowarn:436,1591,CA1416,CS8981 \
+		-nowarn:$(XML_DOCS_WARNINGS) \
 		-warnaserror+ \
 		-out:$($(2)_DOTNET_BUILD_DIR)/apidefinition-$(3).dll \
 		-doc:$($(2)_DOTNET_BUILD_DIR)/apidefinition-$(3).xml \
@@ -410,7 +417,7 @@ $$(APIDEFINITION_$(1)_CSPROJ): $($(2)_DOTNET_BUILD_DIR)/apidefinition-$(3).rsp $
 	$$(Q) mv $$@.tmp $$@
 
 apidefinition:: $($(2)_DOTNET_BUILD_DIR)/apidefinition-$(3).dll
-$($(2)_DOTNET_BUILD_DIR)/apidefinition-$(3).dll: $($(2)_DOTNET_BUILD_DIR)/apidefinition-$(3).rsp $($(2)_DOTNET_BUILD_DIR)/core-$(3).dll $(DOTNET_BINDING_ATTRIBUTES)
+$($(2)_DOTNET_BUILD_DIR)/apidefinition-$(3).dll: $($(2)_DOTNET_BUILD_DIR)/apidefinition-$(3).rsp $($(2)_DOTNET_BUILD_DIR)/core-$(3).dll $(DOTNET_BINDING_ATTRIBUTES) $($(2)_APIS)
 	$$(Q_GEN) $(DOTNET_CSC) $(DOTNET_FLAGS) @$$<
 
 apidefinition:: $(3)-apidefinition
@@ -621,15 +628,10 @@ $(SHARED_PATH)/Delegates.generated.cs: $(SHARED_PATH)/Delegates.cs.t4 $(SHARED_P
 $(COMMON_TARGET_DIRS):
 	$(Q) mkdir -p $@
 
-DOTNET_GENERATE_FRAMEWORKS_CONSTANTS=generate-frameworks-constants/dotnet/bin/Debug/$(DOTNET_TFM)/generate-frameworks-constants.dll
-
-$(DOTNET_GENERATE_FRAMEWORKS_CONSTANTS): $(wildcard generate-frameworks-constants/*.cs*) $(TOP)/tools/common/Frameworks.cs Makefile
-	$(Q) $(DOTNET) build "/bl:$@.binlog" /r generate-frameworks-constants/dotnet/generate-frameworks-constants.csproj $(MSBUILD_VERBOSITY)
-	$(Q) touch $@ # Running 'dotnet build' doesn't always touch the target, so make sure we do here, otherwise make can end up confused.
-
 # This rule means: generate a Constants.<platform>.generated.cs for the frameworks in the variable <PLATFORM>_FRAMEWORKS
-$(DOTNET_BUILD_DIR)/%/Constants.generated.cs: Makefile $(DOTNET_GENERATE_FRAMEWORKS_CONSTANTS) | $(DOTNET_BUILD_DIR)
-	$(Q) $(DOTNET) $(DOTNET_GENERATE_FRAMEWORKS_CONSTANTS) "$*" "$@.tmp"
+include $(TOP)/scripts/generate-frameworks-constants/fragment.mk
+$(DOTNET_BUILD_DIR)/%/Constants.generated.cs: Makefile $(GENERATE_FRAMEWORKS_CONSTANTS) | $(DOTNET_BUILD_DIR)
+	$(Q) $(GENERATE_FRAMEWORKS_CONSTANTS_EXEC) "$*" "$@.tmp"
 	$(Q) mv "$@.tmp" "$@"
 
 # This target builds all the generated project files. It's not really useful by itself,

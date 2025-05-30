@@ -37,6 +37,11 @@ using CoreGraphics;
 
 namespace AppKit {
 	public partial class NSGraphicsContext {
+		/// <param name="context">To be added.</param>
+		///         <param name="initialFlippedState">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSGraphicsContext FromGraphicsPort (CGContext context, bool initialFlippedState)
 		{
 			if (context is null)

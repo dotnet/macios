@@ -16,7 +16,15 @@ using CoreFoundation;
 
 namespace MessageUI {
 
+	/// <summary>Provides data for the <see cref="MessageUI.MFMailComposeViewController.Finished" /> event.</summary>
+	///     <remarks />
 	public class MFComposeResultEventArgs : EventArgs {
+		/// <param name="controller">To be added.</param>
+		///         <param name="result">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>Initializes a new instance of the MFComposeResultEventArgs class.</summary>
+		///         <remarks>
+		///         </remarks>
 		public MFComposeResultEventArgs (MFMailComposeViewController controller, MFMailComposeResult result, NSError? error)
 		{
 			Result = result;
@@ -48,6 +56,8 @@ namespace MessageUI {
 			return (Mono_MFMailComposeViewControllerDelegate) del;
 		}
 
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		public event EventHandler<MFComposeResultEventArgs> Finished {
 			add {
 				EnsureDelegate ().cbFinished += value;
@@ -76,7 +86,15 @@ namespace MessageUI {
 	}
 
 
+	/// <summary>Provides data for the <see cref="MessageUI.MFMessageComposeViewController.Finished" /> event.</summary>
+	///     <remarks>
+	///     </remarks>
 	public class MFMessageComposeResultEventArgs : EventArgs {
+		/// <param name="controller">To be added.</param>
+		///         <param name="result">To be added.</param>
+		///         <summary>Initializes a new instance of the MFMessageComposeResultEventArgs class.</summary>
+		///         <remarks>
+		///         </remarks>
 		public MFMessageComposeResultEventArgs (MFMessageComposeViewController controller, MessageComposeResult result)
 		{
 			Result = result;
@@ -104,6 +122,8 @@ namespace MessageUI {
 			return (Mono_MFMessageComposeViewControllerDelegate) del;
 		}
 
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		public event EventHandler<MFMessageComposeResultEventArgs> Finished {
 			add {
 				EnsureDelegate ().cbFinished += value;

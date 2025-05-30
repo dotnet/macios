@@ -43,7 +43,8 @@ using Foundation;
 #nullable enable
 
 namespace CoreFoundation {
-
+	/// <summary>Represents a range from two integers: location and length.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -117,6 +118,8 @@ namespace CoreFoundation {
 	}
 
 	// nothing is exposed publicly
+	/// <summary>Base class for CoreFoundation objects.</summary>
+	///     <remarks>To be added.</remarks>
 	internal static class CFObject {
 
 		[DllImport (Constants.CoreFoundationLibrary)]
@@ -142,6 +145,8 @@ namespace CoreFoundation {
 		}
 	}
 
+	/// <summary>String class used by C-only Cocoa APIs.</summary>
+	///     <remarks>Use this class for creating strings that must be passed to methods in the low-level MonoTouch.CoreGraphics API.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -185,16 +190,15 @@ namespace CoreFoundation {
 				CFObject.CFRelease (handle);
 		}
 
-		/// <param name="str">To be added.</param>
-		///         <summary>Creates a CFString from a C# string.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Creates a <see cref="CFString" /> from a C# string.</summary>
+		/// <param name="str">The managed string to initialize the new <see cref="CFString" /> with.</param>
 		public CFString (string str)
 		{
 			if (str is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (str));
 
 			using var strPtr = new TransientString (str, TransientString.Encoding.Unicode);
-			Handle = CFStringCreateWithCharacters (IntPtr.Zero, strPtr, str.Length);
+			InitializeHandle (CFStringCreateWithCharacters (IntPtr.Zero, strPtr, str.Length));
 			this.str = str;
 		}
 
@@ -203,7 +207,7 @@ namespace CoreFoundation {
 		///         <remarks>
 		///           <para>The returned token is the CoreFoundation type identifier (CFType) that has been assigned to this class.</para>
 		///           <para>This can be used to determine type identity between different CoreFoundation objects.</para>
-		///           <para>You can retrieve the type of a CoreFoundation object by invoking the <see cref="M:CoreFoundation.CFType.GetTypeID(System.IntPtr)" /> on the native handle of the object</para>
+		///           <para>You can retrieve the type of a CoreFoundation object by invoking the <see cref="CoreFoundation.CFType.GetTypeID(System.IntPtr)" /> on the native handle of the object</para>
 		///           <example>
 		///             <code lang="csharp lang-csharp"><![CDATA[bool isCFString = (CFType.GetTypeID (foo.Handle) == CFString.GetTypeID ());]]></code>
 		///           </example>
@@ -309,6 +313,9 @@ namespace CoreFoundation {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override string ToString ()
 		{
 			if (str is null)

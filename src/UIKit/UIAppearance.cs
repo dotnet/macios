@@ -13,14 +13,17 @@ using System.Runtime.InteropServices;
 using Foundation;
 using ObjCRuntime;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 // Disable until we get around to enable + fix any issues.
 #nullable disable
 
 namespace UIKit {
+#if __TVOS__
+	/// <include file="../../docs/api/UIKit/UIAppearance.xml" path="/Documentation/Docs[@DocId='tvOS:T:UIKit.UIAppearance']/*" />
+#elif __MACCATALYST__
+	/// <include file="../../docs/api/UIKit/UIAppearance.xml" path="/Documentation/Docs[@DocId='MacCatalyst:T:UIKit.UIAppearance']/*" />
+#else
+	/// <include file="../../docs/api/UIKit/UIAppearance.xml" path="/Documentation/Docs[@DocId='T:UIKit.UIAppearance']/*" />
+#endif
 	public partial class UIAppearance {
 		/// <param name="other">To be added.</param>
 		///         <summary>Whether this is equivalent to <paramref name="other" />.</summary>
@@ -107,6 +110,11 @@ namespace UIKit {
 		const string selAppearanceWhenContainedIn = "appearanceWhenContainedIn:";
 		const string selAppearanceForTraitCollectionWhenContainedIn = "appearanceForTraitCollection:whenContainedIn:";
 
+		/// <param name="class_ptr">To be added.</param>
+		///         <param name="whenFoundIn">To be added.</param>
+		///         <summary>This object's appearance proxy in the specified containment hierarchy.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public static IntPtr GetAppearance (IntPtr class_ptr, params Type [] whenFoundIn)
 		{
@@ -123,6 +131,12 @@ namespace UIKit {
 				ptrs);
 		}
 
+		/// <param name="class_ptr">To be added.</param>
+		///         <param name="traits">To be added.</param>
+		///         <param name="whenFoundIn">To be added.</param>
+		///         <summary>Returns an appearance proxy for the specified <paramref name="traits" /> when found in the <paramref name="whenFoundIn" /> containment hierarchy.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public static IntPtr GetAppearance (IntPtr class_ptr, UITraitCollection traits, params Type [] whenFoundIn)
 		{
@@ -151,6 +165,11 @@ namespace UIKit {
 
 		const string selAppearanceForTraitCollection = "appearanceForTraitCollection:";
 
+		/// <param name="class_ptr">To be added.</param>
+		///         <param name="traits">To be added.</param>
+		///         <summary>Returns an appearance proxy for the specified <paramref name="traits" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static IntPtr GetAppearance (IntPtr class_ptr, UITraitCollection traits)
 		{
 			if (traits is null)

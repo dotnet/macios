@@ -1,10 +1,10 @@
 <Documentation>
   <Docs DocId="T:AVFoundation.AVPlayerLayer">
-    <summary>A type of <see cref="T:CoreAnimation.CALayer" /> on which a <see cref="T:AVFoundation.AVPlayer" /> renders its output.</summary>
+    <summary>A type of <see cref="CoreAnimation.CALayer" /> on which a <see cref="AVFoundation.AVPlayer" /> renders its output.</summary>
     <remarks>
       <para>
-        <see cref="T:AVFoundation.AVPlayerLayer" /> objects may be used for AV playback in a variety of situations where a heavier-weight component such as <see cref="T:UIKit.UIWebView" /> would be unnecessary or unavailable (such as on tvOS).</para>
-      <para>The following example shows how a <see cref="T:AVFoundation.AVPlayerLayer" /> can be used to stream a Web video:</para>
+        <see cref="AVFoundation.AVPlayerLayer" /> objects may be used for AV playback in a variety of situations where a heavier-weight component such as <see cref="UIKit.UIWebView" /> would be unnecessary or unavailable (such as on tvOS).</para>
+      <para>The following example shows how a <see cref="AVFoundation.AVPlayerLayer" /> can be used to stream a Web video:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
 var src = NSUrl.FromString("https://somevideo");

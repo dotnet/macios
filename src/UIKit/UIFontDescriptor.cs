@@ -16,6 +16,25 @@ using Foundation;
 
 namespace UIKit {
 
+	/// <summary>Attributes used to describe a font, used by <see cref="UIKit.UIFontDescriptor" /></summary>
+	///     <remarks>
+	///       <para>
+	/// 	This type defines the attributes used to describe a font, like
+	/// 	the font family, the font name, the character set, typographic features, glyph
+	/// 	advancement, advanced typesetting features and others.
+	///       </para>
+	///       <para>
+	/// 	Typically you create objects of this instance to create a <see cref="UIKit.UIFontDescriptor" />. 
+	///       </para>
+	///       <example>
+	///         <code lang="csharp lang-csharp"><![CDATA[
+	/// var attributes = new UIFontAttributes () {
+	///     Size = 14,
+	///     Matrix = MyTransform
+	/// };
+	/// ]]></code>
+	///       </example>
+	///     </remarks>
 	public class UIFontAttributes : DictionaryContainer {
 		/// <summary>Creates an empty UIFontAttributes.</summary>
 		///         <remarks>
@@ -257,7 +276,7 @@ namespace UIKit {
 
 #if !COREBUILD
 	public partial class UIFontDescriptor {
-		/// <summary>Gets the <see cref="T:UIKit.UIFontDescriptor" /> describing the preferred font for headlines.</summary>
+		/// <summary>Gets the <see cref="UIKit.UIFontDescriptor" /> describing the preferred font for headlines.</summary>
 		///         <value>
 		///         </value>
 		///         <remarks>
@@ -269,7 +288,7 @@ namespace UIKit {
 			}
 		}
 
-		/// <summary>Gets the <see cref="T:UIKit.UIFontDescriptor" /> describing the preferred font for body text.</summary>
+		/// <summary>Gets the <see cref="UIKit.UIFontDescriptor" /> describing the preferred font for body text.</summary>
 		///         <value>
 		///         </value>
 		///         <remarks>
@@ -281,7 +300,7 @@ namespace UIKit {
 			}
 		}
 
-		/// <summary>Gets the <see cref="T:UIKit.UIFontDescriptor" /> describing the preferred font for subheadings.</summary>
+		/// <summary>Gets the <see cref="UIKit.UIFontDescriptor" /> describing the preferred font for subheadings.</summary>
 		///         <value>
 		///         </value>
 		///         <remarks>
@@ -293,7 +312,7 @@ namespace UIKit {
 			}
 		}
 
-		/// <summary>Gets the <see cref="T:UIKit.UIFontDescriptor" /> describing the preferred font for footnotes.</summary>
+		/// <summary>Gets the <see cref="UIKit.UIFontDescriptor" /> describing the preferred font for footnotes.</summary>
 		///         <value>
 		///         </value>
 		///         <remarks>
@@ -305,7 +324,7 @@ namespace UIKit {
 			}
 		}
 
-		/// <summary>Gets the <see cref="T:UIKit.UIFontDescriptor" /> describing the preferred font for captions.</summary>
+		/// <summary>Gets the <see cref="UIKit.UIFontDescriptor" /> describing the preferred font for captions.</summary>
 		///         <value>
 		///         </value>
 		///         <remarks>
@@ -317,7 +336,7 @@ namespace UIKit {
 			}
 		}
 
-		/// <summary>Gets the <see cref="T:UIKit.UIFontDescriptor" /> describing the preferred font for 'caption 2'.</summary>
+		/// <summary>Gets the <see cref="UIKit.UIFontDescriptor" /> describing the preferred font for 'caption 2'.</summary>
 		///         <value>
 		///         </value>
 		///         <remarks>
@@ -329,8 +348,7 @@ namespace UIKit {
 			}
 		}
 
-#if NET
-		/// <summary>Gets the <see cref="T:UIKit.UIFontDescriptor" /> describing the preferred font for titles ('Title 1').</summary>
+		/// <summary>Gets the <see cref="UIKit.UIFontDescriptor" /> describing the preferred font for titles ('Title 1').</summary>
 		///         <value>To be added.</value>
 		///         <remarks>
 		///           <para>(More documentation for this node is coming)</para>
@@ -339,15 +357,13 @@ namespace UIKit {
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public static UIFontDescriptor PreferredTitle1 {
 			get {
 				return GetPreferredDescriptorForTextStyle (UIFontTextStyle.Title1);
 			}
 		}
 
-#if NET
-		/// <summary>Gets the <see cref="T:UIKit.UIFontDescriptor" /> describing the preferred font for level 2 titles ('Title 2').</summary>
+		/// <summary>Gets the <see cref="UIKit.UIFontDescriptor" /> describing the preferred font for level 2 titles ('Title 2').</summary>
 		///         <value>To be added.</value>
 		///         <remarks>
 		///           <para>(More documentation for this node is coming)</para>
@@ -356,15 +372,13 @@ namespace UIKit {
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public static UIFontDescriptor PreferredTitle2 {
 			get {
 				return GetPreferredDescriptorForTextStyle (UIFontTextStyle.Title2);
 			}
 		}
 
-#if NET
-		/// <summary>Gets the <see cref="T:UIKit.UIFontDescriptor" /> describing the preferred font for level 3 titles ('Title 3').</summary>
+		/// <summary>Gets the <see cref="UIKit.UIFontDescriptor" /> describing the preferred font for level 3 titles ('Title 3').</summary>
 		///         <value>To be added.</value>
 		///         <remarks>
 		///           <para>(More documentation for this node is coming)</para>
@@ -373,15 +387,13 @@ namespace UIKit {
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public static UIFontDescriptor PreferredTitle3 {
 			get {
 				return GetPreferredDescriptorForTextStyle (UIFontTextStyle.Title3);
 			}
 		}
 
-#if NET
-		/// <summary>Gets the <see cref="T:UIKit.UIFontDescriptor" /> describing the preferred font for callouts.</summary>
+		/// <summary>Gets the <see cref="UIKit.UIFontDescriptor" /> describing the preferred font for callouts.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>
 		///           <para>(More documentation for this node is coming)</para>
@@ -390,7 +402,6 @@ namespace UIKit {
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public static UIFontDescriptor PreferredCallout {
 			get {
 				return GetPreferredDescriptorForTextStyle (UIFontTextStyle.Callout);
@@ -626,6 +637,8 @@ namespace UIKit {
 	}
 
 	// that's a convenience enum that maps to UIFontDescriptorXXX which are internal (hidden) NSString
+	/// <summary>An enumeration whose values can be passed to <see cref="UIKit.UIFontDescriptor.GetMatchingFontDescriptors(UIKit.UIFontDescriptorAttribute[])" /> to specify which keys must be matched.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum UIFontDescriptorAttribute {
 		/// <summary>Key to specify that font family must be matched.</summary>
 		Family,
@@ -653,6 +666,8 @@ namespace UIKit {
 		TextStyle,
 	}
 
+	/// <summary>A <see cref="Foundation.DictionaryContainer" /> that describes the symbolic traits of a <see cref="UIKit.UIFont" />. Returned by <see cref="UIKit.UIFontAttributes.Traits" />.</summary>
+	///     <remarks>To be added.</remarks>
 	public class UIFontTraits : DictionaryContainer {
 		/// <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>

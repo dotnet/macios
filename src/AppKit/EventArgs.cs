@@ -34,6 +34,8 @@ using Foundation;
 #nullable enable
 
 namespace AppKit {
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum NSFontCollectionAction {
 		/// <summary>To be added.</summary>
 		Unknown,
@@ -45,6 +47,8 @@ namespace AppKit {
 		Renamed,
 	}
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public partial class NSFontCollectionChangedEventArgs {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
@@ -71,6 +75,8 @@ namespace AppKit {
 		}
 	}
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum NSPopoverCloseReason {
 		/// <summary>To be added.</summary>
 		Unknown,
@@ -80,6 +86,8 @@ namespace AppKit {
 		DetachToWindow,
 	}
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public partial class NSPopoverCloseEventArgs {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>

@@ -41,10 +41,6 @@ using CoreFoundation;
 using Foundation;
 using ObjCRuntime;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace AddressBook {
 	[SupportedOSPlatform ("ios")]
 	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
@@ -67,6 +63,32 @@ namespace AddressBook {
 		}
 	}
 
+	/// <summary>
+	///       A grouping of <see cref="AddressBook.ABPerson" /> and
+	///       other <see cref="AddressBook.ABGroup" /> records.
+	///     </summary>
+	///     <remarks>
+	///       <para>
+	///         <c>ABGroup</c> supports:
+	///       </para>
+	///       <list type="bullet">
+	///         <item>
+	///           <term>
+	///             Creating groups:
+	///             <see cref="AddressBook.ABGroup" />.
+	///           </term>
+	///         </item>
+	///         <item>
+	///           <term>
+	///             Managing group members:
+	///             <see cref="AddressBook.ABGroup.Add(AddressBook.ABRecord)" />,
+	///             <see cref="AddressBook.ABGroup.Remove(AddressBook.ABRecord)" />,
+	///             <see cref="AddressBook.ABGroup.GetEnumerator" />,
+	///             <see cref="AddressBook.ABGroup.GetMembers(AddressBook.ABPersonSortBy)" />.
+	///           </term>
+	///         </item>
+	///       </list>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -80,7 +102,7 @@ namespace AddressBook {
 
 		/// <summary>
 		///           Constructs and initializes a
-		///           <see cref="T:AddressBook.ABGroup" /> instance.
+		///           <see cref="AddressBook.ABGroup" /> instance.
 		///         </summary>
 		///         <remarks>To be added.</remarks>
 		public ABGroup ()
@@ -101,7 +123,7 @@ namespace AddressBook {
 			if (source is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (source));
 
-			Handle = ABGroupCreateInSource (source.Handle);
+			InitializeHandle (ABGroupCreateInSource (source.Handle));
 			GC.KeepAlive (source);
 		}
 
@@ -121,7 +143,7 @@ namespace AddressBook {
 		///           The name of the group.
 		///         </summary>
 		///         <value>
-		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> containing the name of the group.
+		///           A <see cref="System.String" /> containing the name of the group.
 		///         </value>
 		///         <remarks>
 		///         </remarks>
@@ -149,14 +171,14 @@ namespace AddressBook {
 		[DllImport (Constants.AddressBookLibrary)]
 		unsafe extern static byte ABGroupAddMember (IntPtr group, IntPtr person, IntPtr* error);
 		/// <param name="person">
-		///           The <see cref="T:AddressBook.ABRecord" /> to add to the group.
+		///           The <see cref="AddressBook.ABRecord" /> to add to the group.
 		///         </param>
 		///         <summary>
-		///           Adds a <see cref="T:AddressBook.ABRecord" /> to the group.
+		///           Adds a <see cref="AddressBook.ABRecord" /> to the group.
 		///         </summary>
 		///         <remarks>
 		///         </remarks>
-		///         <exception cref="T:CoreFoundation.CFException">
+		///         <exception cref="CoreFoundation.CFException">
 		///           The record couldn't be added to group.
 		///         </exception>
 		public void Add (ABRecord person)
@@ -178,7 +200,7 @@ namespace AddressBook {
 		///           Returns an enumerator that iterates through all members in the group.
 		///         </summary>
 		///         <returns>
-		///           An <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Collections%20IEnumerator&amp;scope=Xamarin" title="T:System.Collections.IEnumerator">T:System.Collections.IEnumerator</a></format>
+		///           An <see cref="System.Collections.IEnumerator" />
 		///           which will return all members in the group.
 		///         </returns>
 		///         <remarks>
@@ -193,7 +215,7 @@ namespace AddressBook {
 		///         </summary>
 		///         <returns>
 		///           An
-		///           <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Collections%20Generic%20IEnumerator{%20Address%20Book%20ABRecord}&amp;scope=Xamarin" title="T:System.Collections.Generic.IEnumerator{AddressBook.ABRecord}">T:System.Collections.Generic.IEnumerator{AddressBook.ABRecord}</a></format>
+		///           <see cref="System.Collections.Generic.IEnumerator{T}" /> of <see cref="AddressBook.ABRecord" />
 		///           which will return all members in the group.
 		///         </returns>
 		///         <remarks>
@@ -213,7 +235,7 @@ namespace AddressBook {
 		extern static IntPtr ABGroupCopyArrayOfAllMembersWithSortOrdering (IntPtr group, ABPersonSortBy sortOrdering);
 
 		/// <param name="sortOrdering">
-		///           A <see cref="T:AddressBook.ABPersonSortBy" /> which
+		///           A <see cref="AddressBook.ABPersonSortBy" /> which
 		///           specifies the odering of members in the returned array.
 		///         </param>
 		///         <summary>
@@ -221,7 +243,7 @@ namespace AddressBook {
 		///           <paramref name="sortOrdering" />.
 		///         </summary>
 		///         <returns>
-		///           A <see cref="T:AddressBook.ABRecord" /> array
+		///           A <see cref="AddressBook.ABRecord" /> array
 		///           containing the members of the group sorted by the
 		///           specified <paramref name="sortOrdering" />.
 		///         </returns>
@@ -238,7 +260,7 @@ namespace AddressBook {
 		[DllImport (Constants.AddressBookLibrary)]
 		unsafe extern static byte ABGroupRemoveMember (IntPtr group, IntPtr member, IntPtr* error);
 		/// <param name="member">
-		///           A <see cref="T:AddressBook.ABRecord" /> containing
+		///           A <see cref="AddressBook.ABRecord" /> containing
 		///           the record to remove from the group.
 		///         </param>
 		///         <summary>
@@ -246,7 +268,7 @@ namespace AddressBook {
 		///         </summary>
 		///         <remarks>
 		///         </remarks>
-		///         <exception cref="T:CoreFoundation.CFException">
+		///         <exception cref="CoreFoundation.CFException">
 		///           The record couldn't be remove from the group.
 		///         </exception>
 		public void Remove (ABRecord member)

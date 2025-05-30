@@ -21,21 +21,11 @@ using OS_nw_data_transfer_report = System.IntPtr;
 using OS_nw_connection = System.IntPtr;
 using OS_nw_interface = System.IntPtr;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace Network {
-
-#if NET
 	[SupportedOSPlatform ("tvos13.0")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios13.0")]
 	[SupportedOSPlatform ("maccatalyst")]
-#else
-	[TV (13, 0)]
-	[iOS (13, 0)]
-#endif
 	public class NWDataTransferReport : NativeObject {
 
 		[Preserve (Conditional = true)]
@@ -145,14 +135,7 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		unsafe static extern void nw_data_transfer_report_collect (OS_nw_data_transfer_report report, IntPtr queue, BlockLiteral* collect_block);
 
-#if !NET
-		delegate void nw_data_transfer_report_collect_t (IntPtr block, IntPtr report);
-		static nw_data_transfer_report_collect_t static_CollectHandler = TrampolineCollectHandler;
-
-		[MonoPInvokeCallback (typeof (nw_data_transfer_report_collect_t))]
-#else
 		[UnmanagedCallersOnly]
-#endif
 		static void TrampolineCollectHandler (IntPtr block, IntPtr report)
 		{
 			var del = BlockLiteral.GetTarget<Action<NWDataTransferReport>> (block);
@@ -171,13 +154,8 @@ namespace Network {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (handler));
 
 			unsafe {
-#if NET
 				delegate* unmanaged<IntPtr, IntPtr, void> trampoline = &TrampolineCollectHandler;
 				using var block = new BlockLiteral (trampoline, handler, typeof (NWDataTransferReport), nameof (TrampolineCollectHandler));
-#else
-				using var block = new BlockLiteral ();
-				block.SetupBlockUnsafe (static_CollectHandler, handler);
-#endif
 				nw_data_transfer_report_collect (GetCheckedHandle (), queue.Handle, &block);
 				GC.KeepAlive (queue);
 			}
@@ -188,43 +166,25 @@ namespace Network {
 
 		public NWDataTransferReportState State => nw_data_transfer_report_get_state (GetCheckedHandle ());
 
-#if NET
 		[SupportedOSPlatform ("tvos15.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (15, 0)]
-		[iOS (15, 0)]
-		[MacCatalyst (15, 0)]
-#endif
 		[DllImport (Constants.NetworkLibrary)]
 		static extern NWInterfaceRadioType nw_data_transfer_report_get_path_radio_type (OS_nw_data_transfer_report report, uint pathIndex);
 
-#if NET
 		[SupportedOSPlatform ("tvos15.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (15, 0)]
-		[iOS (15, 0)]
-		[MacCatalyst (15, 0)]
-#endif
 		public NWInterfaceRadioType GetPathRadioType (uint pathIndex)
 			=> nw_data_transfer_report_get_path_radio_type (GetCheckedHandle (), pathIndex);
 
 #if !XAMCORE_5_0
-#if NET
 		[SupportedOSPlatform ("tvos15.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (15, 0)]
-		[iOS (15, 0)]
-		[MacCatalyst (15, 0)]
-#endif
 		[Obsolete ("Use the 'GetPathRadioType' property instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		public NWInterfaceRadioType get_path_radio_type (uint pathIndex)

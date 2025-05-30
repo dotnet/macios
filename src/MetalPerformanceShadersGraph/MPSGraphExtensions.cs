@@ -11,11 +11,19 @@ using MetalPerformanceShaders;
 
 namespace MetalPerformanceShadersGraph {
 	public static partial class MPSGraphMemoryOps_Extensions {
+		[SupportedOSPlatform ("ios14.0")]
+		[SupportedOSPlatform ("tvos14.0")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
 		public static unsafe MPSGraphTensor Constant (this MPSGraph graph, float scalar)
 		{
 			return graph.Constant ((double) scalar, new [] { 1 }, MPSDataType.Float32);
 		}
 
+		[SupportedOSPlatform ("ios14.0")]
+		[SupportedOSPlatform ("tvos14.0")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
 		public static unsafe MPSGraphTensor Constant (this MPSGraph graph, ReadOnlySpan<float> values, int [] shape)
 		{
 			var length = 1;
@@ -29,6 +37,10 @@ namespace MetalPerformanceShadersGraph {
 			}
 		}
 
+		[SupportedOSPlatform ("ios14.0")]
+		[SupportedOSPlatform ("tvos14.0")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
 		public static MPSGraphTensor Variable (this MPSGraph graph, float initialValue, int [] shape, string? name = null)
 		{
 			var length = 1;
@@ -42,6 +54,10 @@ namespace MetalPerformanceShadersGraph {
 			return v;
 		}
 
+		[SupportedOSPlatform ("ios14.0")]
+		[SupportedOSPlatform ("tvos14.0")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
 		public static unsafe MPSGraphTensor Variable (this MPSGraph graph, ReadOnlySpan<float> initialValues, int [] shape, string? name = null)
 		{
 			var length = 1;

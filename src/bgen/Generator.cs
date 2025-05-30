@@ -50,6 +50,8 @@ using System.IO;
 using System.Text;
 using System.ComponentModel;
 using System.Reflection;
+using System.Xml;
+
 using ObjCBindings;
 using ObjCRuntime;
 using Foundation;
@@ -1807,8 +1809,15 @@ public partial class Generator : IMemberGatherer {
 				print ("public partial class {0} : DictionaryContainer {{", typeName);
 				indent++;
 				sw.WriteLine ("#if !COREBUILD");
+				if (BindingTouch.SupportsXmlDocumentation) {
+					print ($"/// <summary>Creates a new <see cref=\"{typeName}\" /> with default (empty) values.</summary>");
+				}
 				print ("[Preserve (Conditional = true)]");
 				print ("public {0} () : base (new NSMutableDictionary ()) {{}}\n", typeName);
+				if (BindingTouch.SupportsXmlDocumentation) {
+					print ($"/// <summary>Creates a new <see cref=\"{typeName}\" /> from the values that are specified in <paramref name=\"dictionary\" />.</summary>");
+					print ($"/// <param name=\"dictionary\">The dictionary to use to populate the properties of this type.</param>");
+				}
 				print ("[Preserve (Conditional = true)]");
 				print ("public {0} (NSDictionary? dictionary) : base (dictionary) {{}}\n", typeName);
 
@@ -2010,7 +2019,15 @@ public partial class Generator : IMemberGatherer {
 				indent++;
 			}
 
+			if (BindingTouch.SupportsXmlDocumentation) {
+				print ($"/// <summary>Provides data for an event based on a posted <see cref=\"NSNotification\" /> object.</summary>");
+			}
 			print ("public partial class {0} : NSNotificationEventArgs {{", eventType.Name); indent++;
+
+			if (BindingTouch.SupportsXmlDocumentation) {
+				print ($"/// <summary>Initializes a new instance of the <see cref=\"{eventType.Name}\" /> class.</summary>");
+				print ($"/// <param name=\"notification\">The underlying <see cref=\"NSNotification\" /> object from the posted notification.</param>");
+			}
 			print ("public {0} (NSNotification notification) : base (notification) \n{{\n}}\n", eventType.Name);
 			int i = 0;
 			foreach (var prop in eventType.GetProperties (BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)) {
@@ -2275,7 +2292,7 @@ public partial class Generator : IMemberGatherer {
 	bool FilterMinimumVersion (AvailabilityBaseAttribute aa)
 	{
 		// dotnet can never filter minimum versions, as they are semantically important in some cases
-		// See for details: https://github.com/xamarin/xamarin-macios/issues/10170
+		// See for details: https://github.com/dotnet/macios/issues/10170
 		return true;
 	}
 
@@ -3017,62 +3034,18 @@ public partial class Generator : IMemberGatherer {
 		bool x64_stret = Stret.X86_64NeedStret (returnType, this);
 		bool aligned = AttributeManager.HasAttribute<AlignAttribute> (mi);
 
-		if (CurrentPlatform == PlatformName.MacOSX || CurrentPlatform == PlatformName.MacCatalyst) {
-			if (x64_stret) {
-				print ("if (global::ObjCRuntime.Runtime.IsARM64CallingConvention) {");
-				indent++;
-				GenerateInvoke (false, supercall, mi, minfo, selector, args, category_type, false);
-				indent--;
-				print ("} else {");
-				indent++;
-				GenerateInvoke (x64_stret, supercall, mi, minfo, selector, args, category_type, aligned && x64_stret);
-				indent--;
-				print ("}");
-			} else {
-				GenerateInvoke (false, supercall, mi, minfo, selector, args, category_type, false);
-			}
-			return;
-		}
-
-		bool arm_stret = Stret.ArmNeedStret (returnType, this);
-		bool x86_stret = Stret.X86NeedStret (returnType, this);
-		bool is_stret_multi = arm_stret || x86_stret || x64_stret;
-		bool need_multi_path = is_stret_multi;
-
-		if (need_multi_path) {
-			if (is_stret_multi) {
-				// First check for arm64
-				print ("if (global::ObjCRuntime.Runtime.IsARM64CallingConvention) {");
-				indent++;
-				GenerateInvoke (false, supercall, mi, minfo, selector, args, category_type, false);
-				indent--;
-				// If we're not arm64, but we're 64-bit, then we're x86_64
-				print ("} else if (IntPtr.Size == 8) {");
-				indent++;
-				GenerateInvoke (x64_stret, supercall, mi, minfo, selector, args, category_type, aligned && x64_stret);
-				indent--;
-				// if we're not 64-bit, but we're on device, then we're 32-bit arm
-				print ("} else if (Runtime.Arch == Arch.DEVICE) {");
-				indent++;
-				GenerateInvoke (arm_stret, supercall, mi, minfo, selector, args, category_type, aligned && arm_stret);
-				indent--;
-				// if we're none of the above, we're x86
-				print ("} else {");
-				indent++;
-				GenerateInvoke (x86_stret, supercall, mi, minfo, selector, args, category_type, aligned && x86_stret);
-				indent--;
-				print ("}");
-			} else {
-				print ("if (IntPtr.Size == 8) {");
-				indent++;
-				GenerateInvoke (x64_stret, supercall, mi, minfo, selector, args, category_type, aligned && x64_stret);
-				indent--;
-				print ("} else {");
-				indent++;
-				GenerateInvoke (x86_stret, supercall, mi, minfo, selector, args, category_type, aligned && x86_stret);
-				indent--;
-				print ("}");
-			}
+		if (x64_stret) {
+			// First check for arm64
+			print ("if (global::ObjCRuntime.Runtime.IsARM64CallingConvention) {");
+			indent++;
+			GenerateInvoke (false, supercall, mi, minfo, selector, args, category_type, false);
+			indent--;
+			// If we're not arm64, then we're x86_64
+			print ("} else {");
+			indent++;
+			GenerateInvoke (x64_stret, supercall, mi, minfo, selector, args, category_type, aligned && x64_stret);
+			indent--;
+			print ("}");
 		} else {
 			GenerateInvoke (false, supercall, mi, minfo, selector, args, category_type, false);
 		}
@@ -3245,27 +3218,22 @@ public partial class Generator : IMemberGatherer {
 			} else if (mai.Type.IsArray) {
 				Type etype = mai.Type.GetElementType ();
 				if (HasBindAsAttribute (pi)) {
-					convs.AppendFormat ("var nsb_{0} = {1}\n", pi.Name, GetToBindAsWrapper (mi, null, pi));
-					disposes.AppendFormat ("\nnsb_{0}?.Dispose ();", pi.Name);
+					convs.AppendFormat ("using var nsb_{0} = {1}\n", pi.Name, GetToBindAsWrapper (mi, null, pi));
 				} else if (HasBindAsAttribute (propInfo)) {
 					disposes.AppendFormat ("\nnsb_{0}?.Dispose ();", propInfo.Name);
 				} else if (etype == TypeCache.System_String) {
 					if (null_allowed_override || AttributeManager.IsNullable (pi)) {
-						convs.AppendFormat ("var nsa_{0} = {1} is null ? null : NSArray.FromStrings ({1});\n", pi.Name, pi.Name.GetSafeParamName ());
-						disposes.AppendFormat ("if (nsa_{0} is not null)\n\tnsa_{0}.Dispose ();\n", pi.Name);
+						convs.AppendFormat ("using var nsa_{0} = {1} is null ? null : NSArray.FromStrings ({1});\n", pi.Name, pi.Name.GetSafeParamName ());
 					} else {
-						convs.AppendFormat ("var nsa_{0} = NSArray.FromStrings ({1});\n", pi.Name, pi.Name.GetSafeParamName ());
-						disposes.AppendFormat ("nsa_{0}.Dispose ();\n", pi.Name);
+						convs.AppendFormat ("using var nsa_{0} = NSArray.FromStrings ({1});\n", pi.Name, pi.Name.GetSafeParamName ());
 					}
 				} else if (etype == TypeCache.Selector) {
 					exceptions.Add (ErrorHelper.CreateError (1065, mai.Type.FullName, string.IsNullOrEmpty (pi.Name) ? $"#{pi.Position}" : pi.Name, mi.DeclaringType.FullName, mi.Name));
 				} else {
 					if (null_allowed_override || AttributeManager.IsNullable (pi)) {
-						convs.AppendFormat ("var nsa_{0} = {1} is null ? null : NSArray.FromNSObjects ({1});\n", pi.Name, pi.Name.GetSafeParamName ());
-						disposes.AppendFormat ("if (nsa_{0} is not null)\n\tnsa_{0}.Dispose ();\n", pi.Name);
+						convs.AppendFormat ("using var nsa_{0} = {1} is null ? null : NSArray.FromNSObjects ({1});\n", pi.Name, pi.Name.GetSafeParamName ());
 					} else {
-						convs.AppendFormat ("var nsa_{0} = NSArray.FromNSObjects ({1});\n", pi.Name, pi.Name.GetSafeParamName ());
-						disposes.AppendFormat ("nsa_{0}.Dispose ();\n", pi.Name);
+						convs.AppendFormat ("using var nsa_{0} = NSArray.FromNSObjects ({1});\n", pi.Name, pi.Name.GetSafeParamName ());
 					}
 				}
 			} else if (mai.Type.IsSubclassOf (TypeCache.System_Delegate)) {
@@ -3288,7 +3256,7 @@ public partial class Generator : IMemberGatherer {
 			} else if (pi.ParameterType.IsGenericParameter) {
 				//				convs.AppendFormat ("{0}.Handle", pi.Name.GetSafeParamName ());
 			} else if (HasBindAsAttribute (pi)) {
-				convs.AppendFormat ("var nsb_{0} = {1}\n", pi.Name, GetToBindAsWrapper (mi, null, pi));
+				convs.AppendFormat ("using var nsb_{0} = {1}\n", pi.Name, GetToBindAsWrapper (mi, null, pi));
 			} else if (mai.Type.IsPointer && mai.Type.GetElementType ().IsValueType) {
 				// nothing to do
 			} else {
@@ -3512,7 +3480,7 @@ public partial class Generator : IMemberGatherer {
 		}
 
 		if (propInfo is not null && IsSetter (mi) && HasBindAsAttribute (propInfo)) {
-			convs.AppendFormat ("var nsb_{0} = {1}\n", propInfo.Name, GetToBindAsWrapper (mi, minfo, null));
+			convs.AppendFormat ("using var nsb_{0} = {1}\n", propInfo.Name, GetToBindAsWrapper (mi, minfo, null));
 		}
 
 		if (convs.Length > 0)
@@ -3966,9 +3934,8 @@ public partial class Generator : IMemberGatherer {
 			}
 		}
 
-		WriteDocumentation (pi);
-
 		if (wrap is not null) {
+			WriteDocumentation (pi);
 			print_generated_code ();
 			PrintPropertyAttributes (pi, minfo);
 			PrintAttributes (pi, preserve: true, advice: true);
@@ -4045,6 +4012,7 @@ public partial class Generator : IMemberGatherer {
 			}
 		}
 
+		WriteDocumentation (pi);
 		print_generated_code (optimizable: IsOptimizable (pi));
 		PrintPropertyAttributes (pi, minfo);
 
@@ -4304,6 +4272,14 @@ public partial class Generator : IMemberGatherer {
 			}
 		}
 
+		var asyncAttribute = AttributeManager.GetCustomAttribute<AsyncAttribute> (mi);
+		var xmlDocs = asyncKind == AsyncMethodKind.Plain ? asyncAttribute.XmlDocs : asyncAttribute.XmlDocsWithOutParameter;
+		if (!string.IsNullOrEmpty (xmlDocs)) {
+			var docLines = xmlDocs.Split ('\n');
+			foreach (var line in docLines)
+				print ($"/// {line}");
+		}
+
 		PrintMethodAttributes (minfo);
 
 		PrintAsyncHeader (minfo, asyncKind);
@@ -4322,7 +4298,7 @@ public partial class Generator : IMemberGatherer {
 		print ("var tcs = new TaskCompletionSource<{0}> ();", ttype);
 		bool ignoreResult = !is_void &&
 			asyncKind == AsyncMethodKind.Plain &&
-			AttributeManager.GetCustomAttribute<AsyncAttribute> (mi).PostNonResultSnippet is null;
+			asyncAttribute.PostNonResultSnippet is null;
 		print ("{6}{5}{4}{0}{7}({1}{2}({3}) => {{",
 			mi.Name,
 			GetInvokeParamList (minfo.AsyncInitialParams, false),
@@ -4393,7 +4369,7 @@ public partial class Generator : IMemberGatherer {
 		// when we inline methods (e.g. from a protocol) 
 		if (minfo.type != minfo.Method.DeclaringType) {
 			// we must look if the type has an [Availability] attribute
-			// but we must not duplicate existing attributes for a platform, see https://github.com/xamarin/xamarin-macios/issues/7194
+			// but we must not duplicate existing attributes for a platform, see https://github.com/dotnet/macios/issues/7194
 			PrintPlatformAttributesNoDuplicates (minfo.type, minfo.Method);
 		} else {
 			PrintPlatformAttributes (minfo.Method);
@@ -4496,6 +4472,32 @@ public partial class Generator : IMemberGatherer {
 
 		if (minfo.is_extension_method) {
 			WriteDocumentation ((MemberInfo) GetProperty (minfo.Method) ?? minfo.Method);
+		} else if (minfo.is_category_extension) {
+			// If the method has xml docs, it's unlikely it'll have for the 'This' parameter we add to the method signature.
+			// So in that case, inject docs for the 'This' parameter.
+			var injectParamNode = new Func<XmlNode, XmlNode> (node => {
+				var children = node.ChildNodes.Cast<XmlNode> ();
+				XmlNode? firstParamDocs = null;
+				foreach (var p in children) {
+					if (p.Name != "param")
+						continue;
+					// if the method already has a 'param' doc for 'This', then we don't add any
+					if (p.Attributes ["name"].Value == "This")
+						return p;
+					if (firstParamDocs is null)
+						firstParamDocs = p;
+				}
+				// if the method has parameters, but doesn't have any 'param' docs, then we don't add any 'param' doc for 'This'.
+				if (minfo.Method.GetParameters ().Length > 0 && firstParamDocs is null)
+					return node;
+				// we're good for injection
+				var thisParamDoc = node.OwnerDocument.CreateElement ("param");
+				thisParamDoc.SetAttribute ("name", "This");
+				thisParamDoc.InnerText = "The instance on which this method operates.";
+				node.InsertBefore (thisParamDoc, firstParamDocs);
+				return node;
+			});
+			WriteDocumentation (minfo.Method, transformNode: injectParamNode);
 		} else {
 			WriteDocumentation (minfo.Method);
 		}
@@ -5419,9 +5421,9 @@ public partial class Generator : IMemberGatherer {
 		print ($"[Experimental (\"{e.DiagnosticId}\")]");
 	}
 
-	void WriteDocumentation (MemberInfo info)
+	bool WriteDocumentation (MemberInfo info, Func<XmlNode, XmlNode>? transformNode = null)
 	{
-		DocumentationManager.WriteDocumentation (sw, indent, info);
+		return DocumentationManager.WriteDocumentation (sw, indent, info, transformNode);
 	}
 
 	public bool TryComputeLibraryName (string attributeLibraryName, Type type, out string library_name, out string library_path)
@@ -5723,21 +5725,34 @@ public partial class Generator : IMemberGatherer {
 					class_name += TypeManager.FormatType (type, gargs [i]);
 
 					where_list += "\n\t\twhere " + gargs [i].Name + " : ";
+
+					var constraintList = new List<string> ();
+
+					var genericAttributes = gargs [i].GenericParameterAttributes;
+					if (genericAttributes.HasFlag (GenericParameterAttributes.ReferenceTypeConstraint)) {
+						constraintList.Add ("class");
+						genericAttributes &= ~GenericParameterAttributes.ReferenceTypeConstraint;
+					}
+					if (genericAttributes.HasFlag (GenericParameterAttributes.DefaultConstructorConstraint)) {
+						constraintList.Add ("new()");
+						genericAttributes &= ~GenericParameterAttributes.DefaultConstructorConstraint;
+					}
+					if (genericAttributes != GenericParameterAttributes.None) {
+						exceptions.Add (ErrorHelper.CreateError (99, $"Unexpected generic constraint attributes: {genericAttributes}"));
+					}
+
 					var constraints = gargs [i].GetGenericParameterConstraints ();
 					if (constraints.Length > 0) {
-						var comma = string.Empty;
-						if (IsProtocol (constraints [0])) {
-							where_list += "NSObject";
-							comma = ", ";
-						}
+						if (IsProtocol (constraints [0]))
+							constraintList.Add ("NSObject");
 
-						for (int c = 0; c < constraints.Length; c++) {
-							where_list += comma + TypeManager.FormatType (type, constraints [c]);
-							comma = ", ";
-						}
+						for (int c = 0; c < constraints.Length; c++)
+							constraintList.Add (TypeManager.FormatType (type, constraints [c]));
 					} else {
-						where_list += "NSObject";
+						constraintList.Add ("NSObject");
 					}
+
+					where_list += string.Join (", ", constraintList);
 				}
 				class_name += ">";
 				if (where_list.Length > 0)
@@ -5895,6 +5910,7 @@ public partial class Generator : IMemberGatherer {
 															   () => string.Format ("InitializeHandle (global::{1}.IntPtr_objc_msgSend_IntPtr (this.Handle, {0}, coder.Handle), \"initWithCoder:\");", initWithCoderSelector, NamespaceCache.Messaging),
 															   () => string.Format ("InitializeHandle (global::{1}.IntPtr_objc_msgSendSuper_IntPtr (this.SuperHandle, {0}, coder.Handle), \"initWithCoder:\");", initWithCoderSelector, NamespaceCache.Messaging));
 								WriteMarkDirtyIfDerived (sw, type);
+								sw.WriteLine ("\t\t\tGC.KeepAlive (coder);");
 							} else {
 								sw.WriteLine ("\t\t\tthrow new InvalidOperationException (\"Type does not conform to NSCoding\");");
 							}
@@ -5936,7 +5952,7 @@ public partial class Generator : IMemberGatherer {
 							sw.WriteLine ("\t\t/// // This is taken from the iOS SDK's source code for the UIView class:");
 							sw.WriteLine ("\t\t/// //");
 							sw.WriteLine ("\t\t/// [Export (\"initWithFrame:\")]");
-							sw.WriteLine ("\t\t/// public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)");
+							sw.WriteLine ("\t\t/// public UIView (CGRect frame) : base (NSObjectFlag.Empty)");
 							sw.WriteLine ("\t\t/// {");
 							sw.WriteLine ("\t\t///     // Invoke the init method now.");
 							sw.WriteLine ("\t\t///     var initWithFrame = new Selector (\"initWithFrame:\").Handle;");
@@ -6138,7 +6154,9 @@ public partial class Generator : IMemberGatherer {
 						print ("static {0}? _{1};", fieldTypeName, field_pi.Name);
 					}
 
-					WriteDocumentation (field_pi);
+					if (!WriteDocumentation (field_pi) && BindingTouch.SupportsXmlDocumentation) {
+						print ($"/// <summary>Represents the value associated with the constant '{fieldAttr.SymbolName}'.</summary>");
+					}
 					PrintAttributes (field_pi, preserve: true, advice: true);
 					PrintObsoleteAttributes (field_pi);
 					print ("[Field (\"{0}\",  \"{1}\")]", fieldAttr.SymbolName, library_path ?? library_name);
@@ -6670,6 +6688,14 @@ public partial class Generator : IMemberGatherer {
 						} else
 							prev_miname = miname;
 
+						var eventArgs = AttributeManager.GetCustomAttribute<EventArgsAttribute> (mi);
+						var xmlDocs = eventArgs?.XmlDocs;
+						if (!string.IsNullOrEmpty (xmlDocs)) {
+							var docLines = xmlDocs.Split ('\n');
+							foreach (var line in docLines)
+								print ($"/// {line}");
+						}
+
 						if (mi.ReturnType == TypeCache.System_Void) {
 							PrintObsoleteAttributes (mi);
 
@@ -7044,7 +7070,15 @@ public partial class Generator : IMemberGatherer {
 
 				var pars = eventArgTypes [eaclass];
 
+				if (BindingTouch.SupportsXmlDocumentation) {
+					print ("/// <summary>Provides data for an event based on an Objective-C protocol method.</summary>");
+				}
 				print ("public partial class {0} : EventArgs {{", eaclass); indent++;
+				if (BindingTouch.SupportsXmlDocumentation) {
+					print ($"/// <summary>Create a new instance of the <see cref=\"{eaclass}\" /> with the specified event data.</summary>");
+					foreach (var p in pars.Skip (1))
+						print ($"/// <param name=\"{p.Name.GetSafeParamName ()}\">The value for the <see cref=\"{GetPublicParameterName (p)}\" /> property.</param>");
+				}
 				print ("public {0} ({1})", eaclass, RenderParameterDecl (pars.Skip (1), true));
 				print ("{");
 				indent++;
@@ -7077,12 +7111,18 @@ public partial class Generator : IMemberGatherer {
 					continue;
 				async_result_types_emitted.Add (async_type.Item1);
 
+				if (BindingTouch.SupportsXmlDocumentation) {
+					print ($"/// <summary>This class holds the return values for an asynchronous operation.</summary>");
+				}
 				print ("public partial class {0} {{", async_type.Item1); indent++;
 
 				StringBuilder ctor = new StringBuilder ();
 
 				bool comma = false;
 				foreach (var pi in async_type.Item2) {
+					if (BindingTouch.SupportsXmlDocumentation) {
+						print ($"/// <summary>The result value from the asynchronous operation.</summary>");
+					}
 					var safe_name = pi.Name.GetSafeParamName ();
 					print ("public {0} {1} {{ get; set; }}",
 						TypeManager.FormatType (type, pi.ParameterType),
@@ -7096,6 +7136,13 @@ public partial class Generator : IMemberGatherer {
 
 				print ("\npartial void Initialize ();");
 
+				if (BindingTouch.SupportsXmlDocumentation) {
+					print ($"/// <summary>Creates a new instance of this class.</summary>");
+					foreach (var pi in async_type.Item2) {
+						var safe_name = pi.Name.GetSafeParamName ();
+						print ($"/// <param name=\"{safe_name}\">Result value from an asynchronous operation.</param>");
+					}
+				}
 				print ("\npublic {0} ({1}) {{", async_type.Item1, ctor); indent++;
 				foreach (var pi in async_type.Item2) {
 					var safe_name = pi.Name.GetSafeParamName ();

@@ -26,9 +26,19 @@ readonly partial struct Method {
 	}
 
 	/// <summary>
+	/// Return the native selector that references the enum value.
+	/// </summary>
+	public string? Selector => ExportMethodData?.Selector;
+
+	/// <summary>
 	/// Returns the bind from data if present in the binding.
 	/// </summary>
 	public BindAsData? BindAs => BindAsAttribute;
+
+	/// <summary>
+	/// Returns the forced type data if present in the binding.
+	/// </summary>
+	public ForcedTypeData? ForcedType => ForcedTypeAttribute;
 
 	/// <summary>
 	/// True if the method was exported with the MarshalNativeExceptions flag allowing it to support native exceptions.

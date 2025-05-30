@@ -8,6 +8,7 @@
 
 using System;
 using System.ComponentModel;
+using System.Numerics;
 
 using AudioUnit;
 using CoreFoundation;
@@ -16,15 +17,12 @@ using ObjCRuntime;
 using CoreAnimation;
 using CoreGraphics;
 using SceneKit;
-#if NET
-using Vector2 = global::System.Numerics.Vector2;
+
 using Vector2d = global::CoreGraphics.NVector2d;
 using Vector2i = global::CoreGraphics.NVector2i;
 using NVector3d = global::CoreGraphics.NVector3d;
 using NVector3 = global::CoreGraphics.NVector3;
-using Vector3 = global::System.Numerics.Vector3;
 using Vector3i = global::CoreGraphics.NVector3i;
-using Vector4 = global::System.Numerics.Vector4;
 using Vector4d = global::CoreGraphics.NVector4d;
 using Vector4i = global::CoreGraphics.NVector4i;
 using Matrix2 = global::CoreGraphics.NMatrix2;
@@ -36,27 +34,6 @@ using MatrixFloat4x4 = global::CoreGraphics.NMatrix4;
 using NMatrix4 = global::CoreGraphics.NMatrix4;
 using NMatrix4d = global::CoreGraphics.NMatrix4d;
 using Quaterniond = global::CoreGraphics.NQuaterniond;
-using Quaternion = global::System.Numerics.Quaternion;
-#else
-using Vector2 = global::OpenTK.Vector2;
-using Vector2d = global::OpenTK.Vector2d;
-using Vector2i = global::OpenTK.Vector2i;
-using NVector3d = global::OpenTK.NVector3d;
-using NVector3 = global::OpenTK.NVector3;
-using Vector3 = global::OpenTK.Vector3;
-using Vector3i = global::OpenTK.Vector3i;
-using Vector4 = global::OpenTK.Vector4;
-using Vector4d = global::OpenTK.Vector4d;
-using Vector4i = global::OpenTK.Vector4i;
-using Matrix2 = global::OpenTK.Matrix2;
-using Matrix3 = global::OpenTK.Matrix3;
-using Matrix4 = global::OpenTK.Matrix4;
-using MatrixFloat4x4 = global::OpenTK.NMatrix4;
-using NMatrix4 = global::OpenTK.NMatrix4;
-using NMatrix4d = global::OpenTK.NMatrix4d;
-using Quaterniond = global::OpenTK.Quaterniond;
-using Quaternion = global::OpenTK.Quaternion;
-#endif
 
 #if MONOMAC
 using AppKit;
@@ -64,10 +41,6 @@ using AUViewControllerBase = AppKit.NSViewController;
 #else
 using UIKit;
 using AUViewControllerBase = UIKit.UIViewController;
-#endif
-
-#if !NET
-using NativeHandle = System.IntPtr;
 #endif
 
 namespace ModelIO {
@@ -142,37 +115,90 @@ namespace ModelIO {
 		float Aspect { get; set; }
 	}
 
-	/// <summary>A container that stores 3D assets as an indexed collection of <see cref="T:ModelIO.MDLObject" /> trees.</summary>
+	/// <summary>A container that stores 3D assets as an indexed collection of <see cref="ModelIO.MDLObject" /> trees.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ModelIO/Reference/MDLAsset_Class/index.html">Apple documentation for <c>MDLAsset</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MDLAsset : NSCopying {
+		/// <param name="url">To be added.</param>
+		/// <summary>Creates a new MDLAsset by loading the file at the specified URL.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithURL:")]
 		NativeHandle Constructor (NSUrl url);
 
+		/// <param name="url">To be added.</param>
+		/// <param name="vertexDescriptor">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="bufferAllocator">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Creates a new MDLAsset by loading the file at the specified URL into the buffers provided by the buffer allocator, and formatting the data in memory as described by the vertex descriptor.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithURL:vertexDescriptor:bufferAllocator:")]
 		NativeHandle Constructor ([NullAllowed] NSUrl url, [NullAllowed] MDLVertexDescriptor vertexDescriptor, [NullAllowed] IMDLMeshBufferAllocator bufferAllocator);
 
+		/// <param name="bufferAllocator">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Creates a new Model IO asset by using the provided <paramref name="bufferAllocator" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("initWithBufferAllocator:")]
 		NativeHandle Constructor ([NullAllowed] IMDLMeshBufferAllocator bufferAllocator);
 
+		/// <param name="url">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="vertexDescriptor">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="bufferAllocator">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="preserveTopology">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>Creates a new MDLAsset by loading the file at the specified URL into the buffers provided by the buffer allocator, and formatting the data in memory as described by the vertex descriptor.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithURL:vertexDescriptor:bufferAllocator:preserveTopology:error:")]
 		NativeHandle Constructor (NSUrl url, [NullAllowed] MDLVertexDescriptor vertexDescriptor, [NullAllowed] IMDLMeshBufferAllocator bufferAllocator, bool preserveTopology, out NSError error);
 
 		// note: by choice we do not export "exportAssetToURL:"
+		/// <param name="url">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>Exports the data that is contained in the asset to the file at the specified URL.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("exportAssetToURL:error:")]
 		bool ExportAssetToUrl (NSUrl url, out NSError error);
 
+		/// <param name="atPath">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("objectAtPath:")]
 		MDLObject GetObject (string atPath);
 
+		/// <param name="extension">To be added.</param>
+		///         <summary>Returns <see langword="true" /> if the asset can import information from files with a format that corresponds to the specified extension. Otherwise, returns <see langword="false" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("canImportFileExtension:")]
 		bool CanImportFileExtension (string extension);
 
+		/// <param name="extension">To be added.</param>
+		///         <summary>Returns <see langword="true" /> if the asset can export information to files with a format that corresponds to the specified extension. Otherwise, returns <see langword="false" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("canExportFileExtension:")]
 		bool CanExportFileExtension (string extension);
@@ -184,41 +210,67 @@ namespace ModelIO {
 		[Export ("components", ArgumentSemantic.Copy)]
 		IMDLComponent [] Components { get; }
 
+		/// <param name="component">To be added.</param>
+		///         <param name="protocol">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		[Export ("setComponent:forProtocol:")]
 		void SetComponent (IMDLComponent component, Protocol protocol);
 
+		/// <param name="component">To be added.</param>
+		///         <param name="type">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("SetComponent (component, new Protocol (type))")]
 		void SetComponent (IMDLComponent component, Type type);
 
+		/// <param name="protocol">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		[Export ("componentConformingToProtocol:")]
 		[return: NullAllowed]
 		IMDLComponent GetComponent (Protocol protocol);
 
+		/// <param name="type">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("GetComponent (new Protocol (type!))")]
 		[return: NullAllowed]
 		IMDLComponent GetComponent (Type type);
 
+		/// <param name="objectClass">To be added.</param>
+		///         <summary>Gets the asset's child assets.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("childObjectsOfClass:")]
 		MDLObject [] GetChildObjects (Class objectClass);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("loadTextures")]
 		void LoadTextures ();
 
+		/// <param name="atTime">To be added.</param>
+		///         <summary>Gets the bounding box of the asset at the specified time.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("boundingBoxAtTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		MDLAxisAlignedBoundingBox GetBoundingBox (double atTime);
 
 		/// <summary>Gets the smallest box that contains all of the objects in the asset.</summary>
 		///         <value>To be added.</value>
-		///         <remarks>If any of the asset's contents contain timed information, application developers should use <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Model%20IOMDLObject%20Bounding%20Box%20At%20Time&amp;scope=Xamarin" title="M:ModelIO.MDLObject.BoundingBoxAtTime*">M:ModelIO.MDLObject.BoundingBoxAtTime*</a></format>, instead.</remarks>
+		///         <remarks>If any of the asset's contents contain timed information, application developers should use <see cref="ModelIO.MDLObject.BoundingBoxAtTime" />, instead.</remarks>
 		[Export ("boundingBox")]
 		MDLAxisAlignedBoundingBox BoundingBox {
 			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
@@ -289,22 +341,36 @@ namespace ModelIO {
 		[NullAllowed, Export ("vertexDescriptor", ArgumentSemantic.Retain)]
 		MDLVertexDescriptor VertexDescriptor { get; }
 
+		/// <param name="object">To be added.</param>
+		///         <summary>Adds the specified <see cref="ModelIO.MDLObject" />, which may be a <see cref="ModelIO.MDLCamera" />, <see cref="ModelIO.MDLMesh" />, or <see cref="ModelIO.MDLLight" />, to the end of the indexed list of objects for this <see cref="ModelIO.MDLAsset" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("addObject:")]
 		void AddObject (MDLObject @object);
 
+		/// <param name="object">To be added.</param>
+		///         <summary>Removes the specified <see cref="ModelIO.MDLObject" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("removeObject:")]
 		void RemoveObject (MDLObject @object);
 
-		/// <summary>Gets the number of top-level <see cref="T:ModelIO.MDLObject" /> nodes that are indexed by the asset, each of which contains zero or more child <see cref="T:ModelIO.MDLObject" /> nodes.</summary>
+		/// <summary>Gets the number of top-level <see cref="ModelIO.MDLObject" /> nodes that are indexed by the asset, each of which contains zero or more child <see cref="ModelIO.MDLObject" /> nodes.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("count")]
 		nuint Count { get; }
 
+		/// <param name="index">To be added.</param>
+		/// <summary>Returns the top-level <see cref="ModelIO.MDLObject" /> node in this asset's indexed list of <see cref="ModelIO.MDLObject" /> nodes, at the specified index.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("objectAtIndexedSubscript:")]
 		[return: NullAllowed]
 		MDLObject GetObjectAtIndexedSubscript (nuint index);
 
+		/// <param name="index">To be added.</param>
+		/// <summary>Returns the object at the specified index.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("objectAtIndex:")]
 		MDLObject GetObject (nuint index);
 
@@ -330,10 +396,22 @@ namespace ModelIO {
 		[Export ("animations", ArgumentSemantic.Retain)]
 		IMDLObjectContainerComponent Animations { get; set; }
 
+		/// <param name="scene">To be added.</param>
+		///         <summary>Creates and returns a new Model IO asset from the provided Scene Kit scene.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("assetWithSCNScene:")]
 		MDLAsset FromScene (SCNScene scene);
 
+		/// <param name="scene">To be added.</param>
+		///         <param name="bufferAllocator">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Creates and returns a new Model IO asset from the provided Scene Kit scene, using the specified buffer allocator.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("assetWithSCNScene:bufferAllocator:")]
@@ -341,17 +419,23 @@ namespace ModelIO {
 
 		// MDLAsset_MDLLightBaking (category)
 
+		/// <param name="density">To be added.</param>
+		///         <param name="type">To be added.</param>
+		///         <param name="dataSource">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("placeLightProbesWithDensity:heuristic:usingIrradianceDataSource:")]
 		[MacCatalyst (13, 1)]
 		MDLLightProbe [] PlaceLightProbes (float density, MDLProbePlacement type, IMDLLightProbeIrradianceDataSource dataSource);
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:ModelIO.MDLLightProbeIrradianceDataSource" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="ModelIO.MDLLightProbeIrradianceDataSource" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:ModelIO.MDLLightProbeIrradianceDataSource" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:ModelIO.MDLLightProbeIrradianceDataSource" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:ModelIO.MDLLightProbeIrradianceDataSource_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="ModelIO.MDLLightProbeIrradianceDataSource" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="ModelIO.MDLLightProbeIrradianceDataSource" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="ModelIO.MDLLightProbeIrradianceDataSource_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	interface IMDLLightProbeIrradianceDataSource { }
 
@@ -389,22 +473,10 @@ namespace ModelIO {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("projectionMatrix")]
-#if !NET
-		[Obsolete ("Use 'ProjectionMatrix4x4' instead.")]
-#endif
 		Matrix4 ProjectionMatrix {
 			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 			get;
 		}
-
-#if !NET
-		[Sealed]
-		[Export ("projectionMatrix")]
-		MatrixFloat4x4 ProjectionMatrix4x4 {
-			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
-			get;
-		}
-#endif
 
 		/// <summary>Gets or sets a value that controls whether the projection is perspective or orthographic.</summary>
 		///         <value>To be added.</value>
@@ -413,18 +485,34 @@ namespace ModelIO {
 		[Export ("projection", ArgumentSemantic.Assign)]
 		MDLCameraProjection Projection { get; set; }
 
+		/// <param name="boundingBox">To be added.</param>
+		///         <param name="setNearAndFar">To be added.</param>
+		///         <summary>Moves the camera to view <paramref name="boundingBox" /> looking parallel to the Z axis in a negative direction, and sets the near and far clipping planes to the bounding box if <paramref name="setNearAndFar" /> is <see langword="true" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("frameBoundingBox:setNearAndFar:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		void FrameBoundingBox (MDLAxisAlignedBoundingBox boundingBox, bool setNearAndFar);
 
+		/// <param name="focusPosition">To be added.</param>
+		/// <summary>Points the camera at <paramref name="focusPosition" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("lookAt:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		void LookAt (Vector3 focusPosition);
 
+		/// <param name="focusPosition">To be added.</param>
+		/// <param name="cameraPosition">To be added.</param>
+		/// <summary>Moves the camera to <paramref name="focusPosition" />, and points it at <paramref name="focusPosition" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("lookAt:from:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		void LookAt (Vector3 focusPosition, Vector3 cameraPosition);
 
+		/// <param name="pixel">To be added.</param>
+		/// <param name="size">To be added.</param>
+		/// <summary>Returns a truncated 3D ray that points from the camera toward the 2D point that is specified by taking <paramref name="pixel" /> as coordinates in a viewport with the dimensions in <paramref name="size" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("rayTo:forViewPort:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		Vector3 RayTo (Vector2i pixel, Vector2i size);
@@ -507,9 +595,17 @@ namespace ModelIO {
 		[Export ("maximumCircleOfConfusion")]
 		float MaximumCircleOfConfusion { get; set; }
 
+		/// <param name="size">To be added.</param>
+		/// <summary>Creates and returns a texture, of the specified size, that is used to simulate bokeh effects by using the value of the <see cref="ModelIO.MDLCamera.ApertureBladeCount" /> property.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("bokehKernelWithSize:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
+#if XAMCORE_5_0
+		MDLTexture GetBokehKernel (Vector2i size);
+#else
 		MDLTexture BokehKernelWithSize (Vector2i size);
+#endif
 
 		/// <summary>Gets or sets the time, in seconds, for which the simulated shutter is open per frame.</summary>
 		///         <value>To be added.</value>
@@ -584,6 +680,10 @@ namespace ModelIO {
 			set;
 		}
 
+		/// <param name="sceneCamera">To be added.</param>
+		///         <summary>Creates a new MDLCamera from the specified Scene Kit camera.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("cameraWithSCNCamera:")]
 		MDLCamera FromSceneCamera (SCNCamera sceneCamera);
@@ -596,11 +696,39 @@ namespace ModelIO {
 	[BaseType (typeof (MDLTexture))]
 	[DisableDefaultCtor]
 	interface MDLCheckerboardTexture {
+		/// <param name="pixelData">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="topLeftOrigin">To be added.</param>
+		/// <param name="name">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="dimensions">To be added.</param>
+		/// <param name="rowStride">To be added.</param>
+		/// <param name="channelCount">To be added.</param>
+		/// <param name="channelEncoding">To be added.</param>
+		/// <param name="isCube">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithData:topLeftOrigin:name:dimensions:rowStride:channelCount:channelEncoding:isCube:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		NativeHandle Constructor ([NullAllowed] NSData pixelData, bool topLeftOrigin, [NullAllowed] string name, Vector2i dimensions, nint rowStride, nuint channelCount, MDLTextureChannelEncoding channelEncoding, bool isCube);
 
 		// -(instancetype __nonnull)initWithDivisions:(float)divisions name:(NSString * __nullable)name dimensions:(vector_int2)dimensions channelCount:(int)channelCount channelEncoding:(MDLTextureChannelEncoding)channelEncoding color1:(CGColorRef __nonnull)color1 color2:(CGColorRef __nonnull)color2;
+		/// <param name="divisions">To be added.</param>
+		/// <param name="name">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="dimensions">To be added.</param>
+		/// <param name="channelCount">To be added.</param>
+		/// <param name="channelEncoding">To be added.</param>
+		/// <param name="color1">To be added.</param>
+		/// <param name="color2">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithDivisions:name:dimensions:channelCount:channelEncoding:color1:color2:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		NativeHandle Constructor (float divisions, [NullAllowed] string name, Vector2i dimensions, int channelCount, MDLTextureChannelEncoding channelEncoding, CGColor color1, CGColor color2);
@@ -639,14 +767,48 @@ namespace ModelIO {
 	[BaseType (typeof (MDLTexture))]
 	[DisableDefaultCtor]
 	interface MDLColorSwatchTexture {
+		/// <param name="pixelData">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="topLeftOrigin">To be added.</param>
+		/// <param name="name">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="dimensions">To be added.</param>
+		/// <param name="rowStride">To be added.</param>
+		/// <param name="channelCount">To be added.</param>
+		/// <param name="channelEncoding">To be added.</param>
+		/// <param name="isCube">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithData:topLeftOrigin:name:dimensions:rowStride:channelCount:channelEncoding:isCube:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		NativeHandle Constructor ([NullAllowed] NSData pixelData, bool topLeftOrigin, [NullAllowed] string name, Vector2i dimensions, nint rowStride, nuint channelCount, MDLTextureChannelEncoding channelEncoding, bool isCube);
 
+		/// <param name="colorTemperature1">To be added.</param>
+		/// <param name="colorTemperature2">To be added.</param>
+		/// <param name="name">
+		///           <para>A name for the texture.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="textureDimensions">The dimensions of the <see cref="ModelIO.MDLColorSwatchTexture" /> to create, in texels.</param>
+		/// <summary>Creates a new <see cref="ModelIO.MDLColorSwatchTexture" /> vertical gradient from <paramref name="colorTemperature1" /> to <paramref name="colorTemperature2" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithColorTemperatureGradientFrom:toColorTemperature:name:textureDimensions:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		NativeHandle Constructor (float colorTemperature1, float colorTemperature2, [NullAllowed] string name, Vector2i textureDimensions);
 
+		/// <param name="color1">The top color of the gradient.</param>
+		/// <param name="color2">The bottom color of the gradient.</param>
+		/// <param name="name">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="textureDimensions">To be added.</param>
+		/// <summary>Creates a new <see cref="ModelIO.MDLColorSwatchTexture" /> vertical gradient from <paramref name="color1" /> to <paramref name="color2" />.</summary>
+		/// <remarks>The dimensions of the <see cref="ModelIO.MDLColorSwatchTexture" /> to create, in texels.</remarks>
 		[Export ("initWithColorGradientFrom:toColor:name:textureDimensions:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		NativeHandle Constructor (CGColor color1, CGColor color2, [NullAllowed] string name, Vector2i textureDimensions);
@@ -659,6 +821,10 @@ namespace ModelIO {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MDLObject))]
 	interface MDLLight {
+		/// <param name="point">To be added.</param>
+		/// <summary>Calculates and returns the effect of the light on the specified point.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("irradianceAtPoint:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		CGColor GetIrradiance (Vector3 point);
@@ -681,6 +847,10 @@ namespace ModelIO {
 		// No documentation to confirm but this should be a constant (hence NSString).
 		NSString ColorSpace { get; set; }
 
+		/// <param name="sceneLight">To be added.</param>
+		///         <summary>Creates a new MDLLight instance from the specified <see cref="SceneKit.SCNLight" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("lightWithSCNLight:")]
 		MDLLight FromSceneLight (SCNLight sceneLight);
@@ -692,9 +862,22 @@ namespace ModelIO {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MDLLight))]
 	interface MDLLightProbe {
+		/// <param name="reflectiveTexture">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="irradianceTexture">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Creates a new MDLLightProbe instance with the specified reflectance and radiance textures.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithReflectiveTexture:irradianceTexture:")]
 		NativeHandle Constructor ([NullAllowed] MDLTexture reflectiveTexture, [NullAllowed] MDLTexture irradianceTexture);
 
+		/// <param name="sphericalHarmonicsLevel">To be added.</param>
+		/// <summary>Generates a spherical harmonics map from the irradiance map of the light probe, to the specified harmonics depth.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("generateSphericalHarmonicsFromIrradiance:")]
 		void GenerateSphericalHarmonicsFromIrradiance (nuint sphericalHarmonicsLevel);
 
@@ -716,9 +899,9 @@ namespace ModelIO {
 		[NullAllowed, Export ("irradianceTexture", ArgumentSemantic.Retain)]
 		MDLTexture IrradianceTexture { get; }
 
-		/// <summary>Gets a value from <c>0</c> to <c>3</c> that represents the number of harmonics that are represented by  <see cref="P:ModelIO.MDLLightProbe.SphericalHarmonicsCoefficients" />.</summary>
+		/// <summary>Gets a value from <c>0</c> to <c>3</c> that represents the number of harmonics that are represented by  <see cref="ModelIO.MDLLightProbe.SphericalHarmonicsCoefficients" />.</summary>
 		///         <value>To be added.</value>
-		///         <remarks>There are 3 values in each coefficient. <see cref="P:ModelIO.MDLLightProbe.SphericalHarmonicsLevel" /> represent the highest index level in <see cref="P:ModelIO.MDLLightProbe.SphericalHarmonicsCoefficients" />. There are 2^(<see cref="P:ModelIO.MDLLightProbe.SphericalHarmonicsLevel" /> + 1) sets of 3-valued coefficients in the array.</remarks>
+		///         <remarks>There are 3 values in each coefficient. <see cref="ModelIO.MDLLightProbe.SphericalHarmonicsLevel" /> represent the highest index level in <see cref="ModelIO.MDLLightProbe.SphericalHarmonicsCoefficients" />. There are 2^(<see cref="ModelIO.MDLLightProbe.SphericalHarmonicsLevel" /> + 1) sets of 3-valued coefficients in the array.</remarks>
 		[Export ("sphericalHarmonicsLevel")]
 		nuint SphericalHarmonicsLevel { get; }
 
@@ -727,13 +910,28 @@ namespace ModelIO {
 		///           <para>(More documentation for this node is coming)</para>
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
 		///         </value>
-		///         <remarks>There are 3 values in each coefficient. <see cref="P:ModelIO.MDLLightProbe.SphericalHarmonicsLevel" /> represent the highest index level in <see cref="P:ModelIO.MDLLightProbe.SphericalHarmonicsCoefficients" />. There are 2^(<see cref="P:ModelIO.MDLLightProbe.SphericalHarmonicsLevel" /> + 1) sets of 3-valued coefficients in the array.</remarks>
+		///         <remarks>There are 3 values in each coefficient. <see cref="ModelIO.MDLLightProbe.SphericalHarmonicsLevel" /> represent the highest index level in <see cref="ModelIO.MDLLightProbe.SphericalHarmonicsCoefficients" />. There are 2^(<see cref="ModelIO.MDLLightProbe.SphericalHarmonicsLevel" /> + 1) sets of 3-valued coefficients in the array.</remarks>
 		[NullAllowed, Export ("sphericalHarmonicsCoefficients", ArgumentSemantic.Copy)]
 		NSData SphericalHarmonicsCoefficients { get; }
 
 		// inlined from MDLLightBaking (MDLLightProbe)
 		// reason: static protocol members made very bad extensions methods
 
+		/// <param name="textureSize">To be added.</param>
+		/// <param name="transform">To be added.</param>
+		/// <param name="lightsToConsider">To be added.</param>
+		/// <param name="objectsToConsider">To be added.</param>
+		/// <param name="reflectiveCubemap">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="irradianceCubemap">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static]
 		[Export ("lightProbeWithTextureSize:forLocation:lightsToConsider:objectsToConsider:reflectiveCubemap:irradianceCubemap:")]
 		[return: NullAllowed]
@@ -746,34 +944,70 @@ namespace ModelIO {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MDLMaterial : MDLNamed, INSFastEnumeration {
+		/// <param name="name">To be added.</param>
+		/// <param name="scatteringFunction">To be added.</param>
+		/// <summary>Creates a new named material with the specified scattering function.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithName:scatteringFunction:")]
 		NativeHandle Constructor (string name, MDLScatteringFunction scatteringFunction);
 
+		/// <param name="property">To be added.</param>
+		///         <summary>Updates or adds the specified property.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setProperty:")]
 		void SetProperty (MDLMaterialProperty property);
 
+		/// <param name="property">To be added.</param>
+		///         <summary>Removes <paramref name="property" /> from the material.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("removeProperty:")]
 		void RemoveProperty (MDLMaterialProperty property);
 
+		/// <param name="name">To be added.</param>
+		///         <summary>Returns the property with the specifed name, if it exists. Otherwise, returns <see langword="null" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("propertyNamed:")]
 		[return: NullAllowed]
 		MDLMaterialProperty GetProperty (string name);
 
+		/// <param name="semantic">To be added.</param>
+		///         <summary>Returns the property value for the specifed semantic, if it exists. Otherwise, returns <see langword="null" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("propertyWithSemantic:")]
 		[return: NullAllowed]
 		MDLMaterialProperty GetProperty (MDLMaterialSemantic semantic);
 
+		/// <param name="semantic">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("propertiesWithSemantic:")]
 		MDLMaterialProperty [] GetProperties (MDLMaterialSemantic semantic);
 
+		/// <summary>Removes all properties from the material.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("removeAllProperties")]
 		void RemoveAllProperties ();
 
+		/// <param name="resolver">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("resolveTexturesWithResolver:")]
 		void ResolveTextures (IMDLAssetResolver resolver);
 
+		/// <param name="resolver">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("loadTexturesUsingResolver:")]
 		void LoadTextures (IMDLAssetResolver resolver);
@@ -816,6 +1050,10 @@ namespace ModelIO {
 		[Export ("materialFace", ArgumentSemantic.Assign)]
 		MDLMaterialFace MaterialFace { get; set; }
 
+		/// <param name="material">To be added.</param>
+		///         <summary>Creates a new MDLMaterial from the specified SCNMaterial.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("materialWithSCNMaterial:")]
 		MDLMaterial FromSceneMaterial (SCNMaterial material);
@@ -828,52 +1066,102 @@ namespace ModelIO {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MDLMaterialProperty : MDLNamed, NSCopying {
+		/// <param name="name">To be added.</param>
+		/// <param name="semantic">To be added.</param>
+		/// <summary>Creates a new MDLMaterialProperty with the specified name and semantic.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithName:semantic:")]
 		NativeHandle Constructor (string name, MDLMaterialSemantic semantic);
 
+		/// <param name="name">To be added.</param>
+		/// <param name="semantic">To be added.</param>
+		/// <param name="value">To be added.</param>
+		/// <summary>Creates a new MDLMaterialProperty with the specified name, semantic, and value.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithName:semantic:float:")]
 		NativeHandle Constructor (string name, MDLMaterialSemantic semantic, float value);
 
+		/// <param name="name">To be added.</param>
+		/// <param name="semantic">To be added.</param>
+		/// <param name="value">To be added.</param>
+		/// <summary>Creates a new MDLMaterialProperty with the specified name, semantic, and value.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithName:semantic:float2:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		NativeHandle Constructor (string name, MDLMaterialSemantic semantic, Vector2 value);
 
+		/// <param name="name">To be added.</param>
+		/// <param name="semantic">To be added.</param>
+		/// <param name="value">To be added.</param>
+		/// <summary>Creates a new MDLMaterialProperty with the specified name, semantic, and value.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithName:semantic:float3:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		NativeHandle Constructor (string name, MDLMaterialSemantic semantic, Vector3 value);
 
+		/// <param name="name">To be added.</param>
+		/// <param name="semantic">To be added.</param>
+		/// <param name="value">To be added.</param>
+		/// <summary>Creates a new MDLMaterialProperty with the specified name, semantic, and value.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithName:semantic:float4:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		NativeHandle Constructor (string name, MDLMaterialSemantic semantic, Vector4 value);
 
+		/// <param name="name">To be added.</param>
+		/// <param name="semantic">To be added.</param>
+		/// <param name="value">To be added.</param>
+		/// <summary>Creates a new MDLMaterialProperty with the specified name, semantic, and value.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithName:semantic:matrix4x4:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
-#if !NET
-		[Obsolete ("Use the '(string, MDLMaterialSemantic, MatrixFloat4x4)' overload instead.")]
-#endif
 		NativeHandle Constructor (string name, MDLMaterialSemantic semantic, Matrix4 value);
 
-
-#if !NET
-		[Sealed]
-		[Export ("initWithName:semantic:matrix4x4:")]
-		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
-		NativeHandle Constructor (string name, MDLMaterialSemantic semantic, MatrixFloat4x4 value);
-#endif
-
+		/// <param name="name">To be added.</param>
+		/// <param name="semantic">To be added.</param>
+		/// <param name="url">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Creates a new MDLMaterialProperty with the specified name and semantic, by loading the resource at the specified URL.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithName:semantic:URL:")]
 		NativeHandle Constructor (string name, MDLMaterialSemantic semantic, [NullAllowed] NSUrl url);
 
+		/// <param name="name">To be added.</param>
+		/// <param name="semantic">To be added.</param>
+		/// <param name="stringValue">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Creates a new MDLMaterialProperty with the specified name, semantic, and value.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithName:semantic:string:")]
 		NativeHandle Constructor (string name, MDLMaterialSemantic semantic, [NullAllowed] string stringValue);
 
+		/// <param name="name">To be added.</param>
+		/// <param name="semantic">To be added.</param>
+		/// <param name="textureSampler">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Creates a new MDLMaterialProperty with the specified name, semantic, and texture sampler.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithName:semantic:textureSampler:")]
 		NativeHandle Constructor (string name, MDLMaterialSemantic semantic, [NullAllowed] MDLTextureSampler textureSampler);
 
+		/// <param name="name">To be added.</param>
+		/// <param name="semantic">To be added.</param>
+		/// <param name="color">To be added.</param>
+		/// <summary>Creates a new color MDLMaterialProperty with the specified name, semantic, and color.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithName:semantic:color:")]
 		NativeHandle Constructor (string name, MDLMaterialSemantic semantic, CGColor color);
 
+		/// <param name="property">To be added.</param>
+		///         <summary>Sets the values of this MDLMaterialProperty to match those of <paramref name="property" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setProperties:")]
 		void SetProperties (MDLMaterialProperty property);
 
@@ -889,6 +1177,9 @@ namespace ModelIO {
 		[Export ("type", ArgumentSemantic.Assign)]
 		MDLMaterialPropertyType Type { get; }
 
+		/// <param name="type">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("setType:")]
 		void SetType (MDLMaterialPropertyType type);
@@ -969,9 +1260,6 @@ namespace ModelIO {
 			set;
 		}
 
-#if !NET
-		[Obsolete ("Use 'MatrixFloat4x4' instead.")]
-#endif
 		/// <summary>Gets or sets the 4x4 matrix of floating-point values.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -982,17 +1270,6 @@ namespace ModelIO {
 			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 			set;
 		}
-
-#if !NET
-		[Sealed]
-		[Export ("matrix4x4", ArgumentSemantic.Assign)]
-		MatrixFloat4x4 MatrixFloat4x4 {
-			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
-			get;
-			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
-			set;
-		}
-#endif
 
 		/// <summary>Gets or sets the luminance of the material.</summary>
 		///         <value>To be added.</value>
@@ -1007,6 +1284,10 @@ namespace ModelIO {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MDLMaterialPropertyConnection : MDLNamed {
+		/// <param name="output">To be added.</param>
+		/// <param name="input">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithOutput:input:")]
 		NativeHandle Constructor (MDLMaterialProperty output, MDLMaterialProperty input);
 
@@ -1034,6 +1315,11 @@ namespace ModelIO {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MDLMaterialPropertyNode : MDLNamed {
+		/// <param name="inputs">To be added.</param>
+		/// <param name="outputs">To be added.</param>
+		/// <param name="function">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithInputs:outputs:evaluationFunction:")]
 		NativeHandle Constructor (MDLMaterialProperty [] inputs, MDLMaterialProperty [] outputs, Action<MDLMaterialPropertyNode> function);
 
@@ -1061,9 +1347,15 @@ namespace ModelIO {
 	[BaseType (typeof (MDLMaterialPropertyNode))]
 	[DisableDefaultCtor]
 	interface MDLMaterialPropertyGraph {
+		/// <param name="nodes">To be added.</param>
+		/// <param name="connections">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithNodes:connections:")]
 		NativeHandle Constructor (MDLMaterialPropertyNode [] nodes, MDLMaterialPropertyConnection [] connections);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("evaluate")]
 		void Evaluate ();
 
@@ -1080,19 +1372,37 @@ namespace ModelIO {
 		MDLMaterialPropertyConnection [] Connections { get; }
 	}
 
-	/// <summary>A collection of <see cref="T:ModelIO.MDLSubmesh" /> objects that, together, define the geometric and material properties for rendering a 3D object.</summary>
+	/// <summary>A collection of <see cref="ModelIO.MDLSubmesh" /> objects that, together, define the geometric and material properties for rendering a 3D object.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ModelIO/Reference/MDLMesh_Class/index.html">Apple documentation for <c>MDLMesh</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MDLObject))]
 	interface MDLMesh {
+		/// <param name="bufferAllocator">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Creates a new Model IO mesh with the specified buffer allocator.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("initWithBufferAllocator:")]
 		NativeHandle Constructor ([NullAllowed] IMDLMeshBufferAllocator bufferAllocator);
 
+		/// <param name="vertexBuffer">To be added.</param>
+		/// <param name="vertexCount">To be added.</param>
+		/// <param name="descriptor">To be added.</param>
+		/// <param name="submeshes">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithVertexBuffer:vertexCount:descriptor:submeshes:")]
 		NativeHandle Constructor (IMDLMeshBuffer vertexBuffer, nuint vertexCount, MDLVertexDescriptor descriptor, MDLSubmesh [] submeshes);
 
+		/// <param name="vertexBuffers">To be added.</param>
+		/// <param name="vertexCount">To be added.</param>
+		/// <param name="descriptor">To be added.</param>
+		/// <param name="submeshes">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithVertexBuffers:vertexCount:descriptor:submeshes:")]
 		NativeHandle Constructor (IMDLMeshBuffer [] vertexBuffers, nuint vertexCount, MDLVertexDescriptor descriptor, MDLSubmesh [] submeshes);
 
@@ -1101,6 +1411,11 @@ namespace ModelIO {
 		[return: NullAllowed]
 		MDLVertexAttributeData GetVertexAttributeDataForAttribute (string attributeName);
 
+		/// <param name="attributeName">To be added.</param>
+		///         <param name="format">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("vertexAttributeDataForAttributeNamed:asFormat:")]
 		[return: NullAllowed]
@@ -1167,38 +1482,90 @@ namespace ModelIO {
 
 		// MDLMesh_Modifiers (category)
 
+		/// <param name="name">To be added.</param>
+		///         <param name="format">To be added.</param>
+		///         <summary>Adds the <paramref name="format" /> attribute, indexed by the keyword <paramref name="name" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("addAttributeWithName:format:")]
 		void AddAttribute (string name, MDLVertexFormat format);
 
+		/// <param name="name">To be added.</param>
+		/// <param name="format">To be added.</param>
+		/// <param name="type">The mesh vector type.</param>
+		/// <param name="data">To be added.</param>
+		/// <param name="stride">To be added.</param>
+		/// <summary>Adds a vertex attribute and a corresponding empty vertex buffer.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("addAttributeWithName:format:type:data:stride:")]
 		void AddAttribute (string name, MDLVertexFormat format, string type, NSData data, nint stride);
 
+		/// <param name="name">To be added.</param>
+		/// <param name="format">To be added.</param>
+		/// <param name="type">To be added.</param>
+		/// <param name="data">To be added.</param>
+		/// <param name="stride">To be added.</param>
+		/// <param name="time">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("addAttributeWithName:format:type:data:stride:time:")]
 		void AddAttribute (string name, MDLVertexFormat format, string type, NSData data, nint stride, double time);
 
+		/// <param name="name">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="creaseThreshold">To be added.</param>
+		///         <summary>Generates surface normals for a mesh, interpolating between adjacent faces when the dot product of their unit normals is greater than <paramref name="creaseThreshold" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("addNormalsWithAttributeNamed:creaseThreshold:")]
 		void AddNormals ([NullAllowed] string name, float creaseThreshold);
 
+		/// <param name="textureCoordinateAttributeName">To be added.</param>
+		///         <param name="tangentAttributeName">To be added.</param>
+		///         <param name="bitangentAttributeName">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Reads texture coordinates from the buffer that is specified by <paramref name="textureCoordinateAttributeName" />, calculates tangents and bitangents, and stores them in the specified buffers.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("addTangentBasisForTextureCoordinateAttributeNamed:tangentAttributeNamed:bitangentAttributeNamed:")]
 		void AddTangentBasis (string textureCoordinateAttributeName, string tangentAttributeName, [NullAllowed] string bitangentAttributeName);
 
+		/// <param name="textureCoordinateAttributeName">To be added.</param>
+		///         <param name="normalAttributeName">To be added.</param>
+		///         <param name="tangentAttributeName">To be added.</param>
+		///         <summary>Reads surface normals from the buffer that is specified by <paramref name="textureCoordinateAttributeName" />, calculates tangents and bitangents, and stores them in the specified buffers.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("addTangentBasisForTextureCoordinateAttributeNamed:normalAttributeNamed:tangentAttributeNamed:")]
 		void AddTangentBasisWithNormals (string textureCoordinateAttributeName, string normalAttributeName, string tangentAttributeName);
 
+		/// <param name="textureCoordinateAttributeName">To be added.</param>
+		///         <param name="normalAttributeName">To be added.</param>
+		///         <param name="tangentAttributeName">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("addOrthTanBasisForTextureCoordinateAttributeNamed:normalAttributeNamed:tangentAttributeNamed:")]
 		void AddOrthTanBasis (string textureCoordinateAttributeName, string normalAttributeName, string tangentAttributeName);
 
+		/// <param name="textureCoordinateAttributeName">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("addUnwrappedTextureCoordinatesForAttributeNamed:")]
 		void AddUnwrappedTextureCoordinates (string textureCoordinateAttributeName);
 
+		/// <param name="inTextureCoordinateAttributeNamed">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("flipTextureCoordinatesInAttributeNamed:")]
 		void FlipTextureCoordinates (string inTextureCoordinateAttributeNamed);
 
+		/// <summary>Developers should not use this deprecated method. Developers should use the 'NSError' overload.</summary>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use the 'NSError' overload.")]
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use the 'NSError' overload.")]
 		[Deprecated (PlatformName.TvOS, 11, 0, message: "Use the 'NSError' overload.")]
@@ -1206,18 +1573,33 @@ namespace ModelIO {
 		[Export ("makeVerticesUnique")]
 		void MakeVerticesUnique ();
 
+		/// <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("makeVerticesUniqueAndReturnError:")]
 		bool MakeVerticesUnique (out NSError error);
 
+		/// <param name="name">To be added.</param>
+		///         <param name="newData">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("replaceAttributeNamed:withData:")]
 		void ReplaceAttribute (string name, MDLVertexAttributeData newData);
 
+		/// <param name="name">To be added.</param>
+		///         <param name="newData">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("updateAttributeNamed:withData:")]
 		void UpdateAttribute (string name, MDLVertexAttributeData newData);
 
+		/// <param name="name">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("removeAttributeNamed:")]
 		void RemoveAttribute (string name);
@@ -1292,6 +1674,7 @@ namespace ModelIO {
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		MDLMesh CreateCylindroid (float height, Vector2 radii, nuint radialSegments, nuint verticalSegments, MDLGeometryType geometryType, bool inwardNormals, [NullAllowed] IMDLMeshBufferAllocator allocator);
 
+		/// <include file="../docs/api/ModelIO/MDLMesh.xml" path="/Documentation/Docs[@DocId='M:ModelIO.MDLMesh.CreateCapsule(System.Single,OpenTK.Vector2,System.nuint,System.nuint,System.nuint,ModelIO.MDLGeometryType,System.Boolean,ModelIO.IMDLMeshBufferAllocator)']/*" />
 		[Static]
 		[MacCatalyst (13, 1)]
 		[Export ("newCapsuleWithHeight:radii:radialSegments:verticalSegments:hemisphereSegments:geometryType:inwardNormals:allocator:")]
@@ -1303,15 +1686,40 @@ namespace ModelIO {
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		MDLMesh CreateEllipticalCone (float height, Vector2 radii, nuint radialSegments, nuint verticalSegments, MDLGeometryType geometryType, bool inwardNormals, [NullAllowed] IMDLMeshBufferAllocator allocator);
 
+		/// <param name="radius">The radius of the icosahedron.</param>
+		///         <param name="inwardNormals">Whether to generate inward-pointing normals.</param>
+		///         <param name="allocator">
+		///           <para>The allocator to use instead of the default, internal allocator.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Creates a regular icosohedron with the specified radius.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("newIcosahedronWithRadius:inwardNormals:allocator:")]
 		MDLMesh CreateIcosahedron (float radius, bool inwardNormals, [NullAllowed] IMDLMeshBufferAllocator allocator);
 
+		/// <param name="radius">The radius of the icosahedron.</param>
+		///         <param name="inwardNormals">Whether to generate inward-pointing normals.</param>
+		///         <param name="geometryType">Whether to create triangles, quadrilaterals, or lines.</param>
+		///         <param name="allocator">
+		///           <para>The allocator to use instead of the default, internal allocator.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Creates a regular icosahedron from the specified parameters.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[MacCatalyst (13, 1)]
 		[Export ("newIcosahedronWithRadius:inwardNormals:geometryType:allocator:")]
 		MDLMesh CreateIcosahedron (float radius, bool inwardNormals, MDLGeometryType geometryType, [NullAllowed] IMDLMeshBufferAllocator allocator);
 
+		/// <param name="mesh">To be added.</param>
+		/// <param name="submeshIndex">To be added.</param>
+		/// <param name="subdivisionLevels">To be added.</param>
+		/// <summary>Subdivides the indexed submesh within the specified mesh, the specified number of times.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static]
 		[Export ("newSubdividedMesh:submeshIndex:subdivisionLevels:")]
 		[return: NullAllowed]
@@ -1321,12 +1729,34 @@ namespace ModelIO {
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		bool GenerateAmbientOcclusionTexture (Vector2i textureSize, nint raysPerSample, float attenuationFactor, MDLObject [] objectsToConsider, string vertexAttributeName, string materialPropertyName);
 
+		/// <param name="bakeQuality">To be added.</param>
+		///         <param name="attenuationFactor">To be added.</param>
+		///         <param name="objectsToConsider">To be added.</param>
+		///         <param name="vertexAttributeName">To be added.</param>
+		///         <param name="materialPropertyName">To be added.</param>
+		///         <summary>Generates a texture that is used to simulate the occlusion of ambient light from recesses in the mesh.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("generateAmbientOcclusionTextureWithQuality:attenuationFactor:objectsToConsider:vertexAttributeNamed:materialPropertyNamed:")]
 		bool GenerateAmbientOcclusionTexture (float bakeQuality, float attenuationFactor, MDLObject [] objectsToConsider, string vertexAttributeName, string materialPropertyName);
 
+		/// <param name="raysPerSample">To be added.</param>
+		/// <param name="attenuationFactor">To be added.</param>
+		/// <param name="objectsToConsider">To be added.</param>
+		/// <param name="vertexAttributeName">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("generateAmbientOcclusionVertexColorsWithRaysPerSample:attenuationFactor:objectsToConsider:vertexAttributeNamed:")]
 		bool GenerateAmbientOcclusionVertexColors (nint raysPerSample, float attenuationFactor, MDLObject [] objectsToConsider, string vertexAttributeName);
 
+		/// <param name="bakeQuality">To be added.</param>
+		///         <param name="attenuationFactor">To be added.</param>
+		///         <param name="objectsToConsider">To be added.</param>
+		///         <param name="vertexAttributeName">To be added.</param>
+		///         <summary>Generates vertex color data that is used to simulate the occlusion of ambient light from recesses in the mesh.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("generateAmbientOcclusionVertexColorsWithQuality:attenuationFactor:objectsToConsider:vertexAttributeNamed:")]
 		bool GenerateAmbientOcclusionVertexColors (float bakeQuality, float attenuationFactor, MDLObject [] objectsToConsider, string vertexAttributeName);
 
@@ -1335,103 +1765,182 @@ namespace ModelIO {
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		bool GenerateLightMapTexture (Vector2i textureSize, MDLLight [] lightsToConsider, MDLObject [] objectsToConsider, string vertexAttributeName, string materialPropertyName);
 
+		/// <param name="bakeQuality">To be added.</param>
+		///         <param name="lightsToConsider">To be added.</param>
+		///         <param name="objectsToConsider">To be added.</param>
+		///         <param name="vertexAttributeName">To be added.</param>
+		///         <param name="materialPropertyName">To be added.</param>
+		///         <summary>Generates a map that represents the computed result of shading from the specified lights, obstructed by the specified objects.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("generateLightMapTextureWithQuality:lightsToConsider:objectsToConsider:vertexAttributeNamed:materialPropertyNamed:")]
 		bool GenerateLightMapTexture (float bakeQuality, MDLLight [] lightsToConsider, MDLObject [] objectsToConsider, string vertexAttributeName, string materialPropertyName);
 
+		/// <param name="lightsToConsider">To be added.</param>
+		///         <param name="objectsToConsider">To be added.</param>
+		///         <param name="vertexAttributeName">To be added.</param>
+		///         <summary>Generates vertex color data that represent the computed result of shading from the specified lights, obstructed by the specified objects.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("generateLightMapVertexColorsWithLightsToConsider:objectsToConsider:vertexAttributeNamed:")]
 		bool GenerateLightMapVertexColors (MDLLight [] lightsToConsider, MDLObject [] objectsToConsider, string vertexAttributeName);
 
+		/// <param name="geometry">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("meshWithSCNGeometry:")]
 		MDLMesh FromGeometry (SCNGeometry geometry);
 
+		/// <param name="geometry">To be added.</param>
+		///         <param name="bufferAllocator">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("meshWithSCNGeometry:bufferAllocator:")]
 		MDLMesh FromGeometry (SCNGeometry geometry, [NullAllowed] IMDLMeshBufferAllocator bufferAllocator);
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:ModelIO.IMDLMeshBuffer" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="ModelIO.IMDLMeshBuffer" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:ModelIO.IMDLMeshBuffer" />.</para>
-	///       <para>If you create objects that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:ModelIO.IMDLMeshBuffer" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:ModelIO.MDLMeshBuffer_Extensions" /> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="ModelIO.IMDLMeshBuffer" />.</para>
+	///       <para>If you create objects that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="ModelIO.IMDLMeshBuffer" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="ModelIO.MDLMeshBuffer_Extensions" /> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
 	///     </remarks>
-	/// <summary>Extension methods to the <see cref="T:ModelIO.IMDLMeshBuffer" /> interface to support all the methods from the <see cref="T:ModelIO.IMDLMeshBuffer" /> protocol.</summary>
+	/// <summary>Extension methods to the <see cref="ModelIO.IMDLMeshBuffer" /> interface to support all the methods from the <see cref="ModelIO.IMDLMeshBuffer" /> protocol.</summary>
 	///     <remarks>
-	///       <para>The extension methods for <see cref="T:ModelIO.IMDLMeshBuffer" /> allow developers to treat instances of the interface as having all the optional methods of the original <see cref="T:ModelIO.IMDLMeshBuffer" /> protocol.   Since the interface only contains the required members, these extension methods allow developers to call the optional members of the protocol.</para>
+	///       <para>The extension methods for <see cref="ModelIO.IMDLMeshBuffer" /> allow developers to treat instances of the interface as having all the optional methods of the original <see cref="ModelIO.IMDLMeshBuffer" /> protocol.   Since the interface only contains the required members, these extension methods allow developers to call the optional members of the protocol.</para>
 	///     </remarks>
 	interface IMDLMeshBuffer { }
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="ModelIO.IMDLMeshBuffer" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="ModelIO.IMDLMeshBuffer" />.</para>
+	///       <para>If you create objects that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="ModelIO.IMDLMeshBuffer" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="ModelIO.MDLMeshBuffer_Extensions" /> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
+	///     </remarks>
+	/// <summary>Extension methods to the <see cref="ModelIO.IMDLMeshBuffer" /> interface to support all the methods from the <see cref="ModelIO.IMDLMeshBuffer" /> protocol.</summary>
+	/// <remarks>
+	///       <para>The extension methods for <see cref="ModelIO.IMDLMeshBuffer" /> allow developers to treat instances of the interface as having all the optional methods of the original <see cref="ModelIO.IMDLMeshBuffer" /> protocol.   Since the interface only contains the required members, these extension methods allow developers to call the optional members of the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface MDLMeshBuffer : NSCopying {
+		/// <param name="data">To be added.</param>
+		/// <param name="offset">To be added.</param>
+		/// <summary>Writes <paramref name="data" /> into the buffer at the specified <paramref name="offset" /> number of bytes.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("fillData:offset:")]
 		void FillData (NSData data, nuint offset);
 
+		/// <summary>Gets a mesh buffer map that provides read-only access to the data in the buffer.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("map")]
 		MDLMeshBufferMap Map { get; }
 
-#if NET
+		/// <summary>Gets the length of the buffer, in bytes.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
-#endif
 		[Export ("length")]
 		nuint Length { get; }
 
-#if NET
+		/// <summary>Gets the allocator that is used to allocate memory for the mesh buffer.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
-#endif
 		[Export ("allocator", ArgumentSemantic.Retain)]
 		IMDLMeshBufferAllocator Allocator { get; }
 
-#if NET
+		/// <summary>Gets the memory pool that the buffer occupies.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
-#endif
 		[Export ("zone", ArgumentSemantic.Retain)]
 		[NullAllowed]
 		IMDLMeshBufferZone Zone { get; }
 
-#if NET
+		/// <summary>Gets a value that indicates whether the buffer contains indices or vertices.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
-#endif
 		[Export ("type")]
 		MDLMeshBufferType Type { get; }
 	}
 
 	/// <include file="../docs/api/ModelIO/IMDLMeshBufferAllocator.xml" path="/Documentation/Docs[@DocId='T:ModelIO.IMDLMeshBufferAllocator']/*" />
 	interface IMDLMeshBufferAllocator { }
+	/// <include file="../docs/api/ModelIO/IMDLMeshBufferAllocator.xml" path="/Documentation/Docs[@DocId='T:ModelIO.IMDLMeshBufferAllocator']/*" />
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface MDLMeshBufferAllocator {
+		/// <param name="capacity">To be added.</param>
+		/// <summary>Creates and returns a new mesh buffer zone with the specified  <paramref name="capacity" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("newZone:")]
 		IMDLMeshBufferZone CreateZone (nuint capacity);
 
+		/// <param name="sizes">To be added.</param>
+		/// <param name="types">To be added.</param>
+		/// <summary>Creates a new zone that is large enough to contain buffers from the list of sizes and corresponding types.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("newZoneForBuffersWithSize:andType:")]
 		IMDLMeshBufferZone CreateZone (NSNumber [] sizes, NSNumber [] types);
 
+		/// <param name="length">To be added.</param>
+		/// <param name="type">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("newBuffer:type:")]
 		IMDLMeshBuffer CreateBuffer (nuint length, MDLMeshBufferType type);
 
+		/// <param name="data">To be added.</param>
+		/// <param name="type">To be added.</param>
+		/// <summary>Creates a new buffer from the specified data, of the specified type, in the default zone of the implementor.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("newBufferWithData:type:")]
 		IMDLMeshBuffer CreateBuffer (NSData data, MDLMeshBufferType type);
 
+		/// <param name="zone">To be added.</param>
+		/// <param name="length">To be added.</param>
+		/// <param name="type">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("newBufferFromZone:length:type:")]
 		[return: NullAllowed]
 		IMDLMeshBuffer CreateBuffer ([NullAllowed] IMDLMeshBufferZone zone, nuint length, MDLMeshBufferType type);
 
+		/// <param name="zone">To be added.</param>
+		/// <param name="data">To be added.</param>
+		/// <param name="type">To be added.</param>
+		/// <summary>Creates a new buffer from the specified data, of the specified type, in the specified zone.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("newBufferFromZone:data:type:")]
 		[return: NullAllowed]
 		IMDLMeshBuffer CreateBuffer ([NullAllowed] IMDLMeshBufferZone zone, NSData data, MDLMeshBufferType type);
 	}
 
-	/// <summary>An implementation of <see cref="T:ModelIO.IMDLMeshBufferAllocator" /> that allocates mesh buffer data space within main memory, not GPU memory.</summary>
+	/// <summary>An implementation of <see cref="ModelIO.IMDLMeshBufferAllocator" /> that allocates mesh buffer data space within main memory, not GPU memory.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ModelIO/Reference/MDLMeshBufferDataAllocator_Class/index.html">Apple documentation for <c>MDLMeshBufferDataAllocator</c></related>
 	[MacCatalyst (13, 1)]
@@ -1440,7 +1949,7 @@ namespace ModelIO {
 
 	}
 
-	/// <summary>A default implementation of a <see cref="T:ModelIO.IMDLMeshBufferZone" />.</summary>
+	/// <summary>A default implementation of a <see cref="ModelIO.IMDLMeshBufferZone" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ModelIO/Reference/MDLMeshBufferZoneDefault_Class/index.html">Apple documentation for <c>MDLMeshBufferZoneDefault</c></related>
 	[MacCatalyst (13, 1)]
@@ -1454,15 +1963,26 @@ namespace ModelIO {
 		// IMDLMeshBufferAllocator Allocator { get; }
 	}
 
-	/// <summary>Provides storage for vertex and index data for a <see cref="T:ModelIO.MDLMesh" /> object.</summary>
+	/// <summary>Provides storage for vertex and index data for a <see cref="ModelIO.MDLMesh" /> object.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ModelIO/Reference/MDLMeshBufferData_Class/index.html">Apple documentation for <c>MDLMeshBufferData</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MDLMeshBufferData : MDLMeshBuffer, NSCopying {
+		/// <param name="type">To be added.</param>
+		/// <param name="length">To be added.</param>
+		/// <summary>Creates a new mesh buffer of the specified size in bytes and the specified type.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithType:length:")]
 		NativeHandle Constructor (MDLMeshBufferType type, nuint length);
 
+		/// <param name="type">To be added.</param>
+		/// <param name="data">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Creates a new mesh buffer that contains the specified data.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithType:data:")]
 		NativeHandle Constructor (MDLMeshBufferType type, [NullAllowed] NSData data);
 
@@ -1473,37 +1993,52 @@ namespace ModelIO {
 		NSData Data { get; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:ModelIO.IMDLMeshBufferZone" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="ModelIO.IMDLMeshBufferZone" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:ModelIO.IMDLMeshBufferZone" />.</para>
-	///       <para>If you create objects that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:ModelIO.IMDLMeshBufferZone" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:ModelIO.MDLMeshBufferZone_Extensions" /> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="ModelIO.IMDLMeshBufferZone" />.</para>
+	///       <para>If you create objects that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="ModelIO.IMDLMeshBufferZone" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="ModelIO.MDLMeshBufferZone_Extensions" /> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
 	///     </remarks>
-	/// <summary>Extension methods to the <see cref="T:ModelIO.IMDLMeshBufferZone" /> interface to support all the methods from the <see cref="T:ModelIO.IMDLMeshBufferZone" /> protocol.</summary>
+	/// <summary>Extension methods to the <see cref="ModelIO.IMDLMeshBufferZone" /> interface to support all the methods from the <see cref="ModelIO.IMDLMeshBufferZone" /> protocol.</summary>
 	///     <remarks>
-	///       <para>The extension methods for <see cref="T:ModelIO.IMDLMeshBufferZone" /> allow developers to treat instances of the interface as having all the optional methods of the original <see cref="T:ModelIO.IMDLMeshBufferZone" /> protocol.   Since the interface only contains the required members, these extension methods allow developers to call the optional members of the protocol.</para>
+	///       <para>The extension methods for <see cref="ModelIO.IMDLMeshBufferZone" /> allow developers to treat instances of the interface as having all the optional methods of the original <see cref="ModelIO.IMDLMeshBufferZone" /> protocol.   Since the interface only contains the required members, these extension methods allow developers to call the optional members of the protocol.</para>
 	///     </remarks>
 	interface IMDLMeshBufferZone { }
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="ModelIO.IMDLMeshBufferZone" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="ModelIO.IMDLMeshBufferZone" />.</para>
+	///       <para>If you create objects that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="ModelIO.IMDLMeshBufferZone" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="ModelIO.MDLMeshBufferZone_Extensions" /> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
+	///     </remarks>
+	/// <summary>Extension methods to the <see cref="ModelIO.IMDLMeshBufferZone" /> interface to support all the methods from the <see cref="ModelIO.IMDLMeshBufferZone" /> protocol.</summary>
+	/// <remarks>
+	///       <para>The extension methods for <see cref="ModelIO.IMDLMeshBufferZone" /> allow developers to treat instances of the interface as having all the optional methods of the original <see cref="ModelIO.IMDLMeshBufferZone" /> protocol.   Since the interface only contains the required members, these extension methods allow developers to call the optional members of the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface MDLMeshBufferZone {
-#if NET
+		/// <summary>Gets the capacity of the zone, in bytes.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
-#endif
 		[Export ("capacity")]
 		nuint Capacity { get; }
 
-#if NET
+		/// <summary>Gets the allocator that created the zone.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
-#endif
 		[Export ("allocator")]
 		IMDLMeshBufferAllocator Allocator { get; }
 	}
 
-	/// <summary>Interface whose implementers define a <see cref="P:ModelIO.IMDLNamed.Name" /> property.</summary>
+	/// <summary>Interface whose implementers define a <see cref="ModelIO.IMDLNamed.Name" /> property.</summary>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface MDLNamed {
+		/// <summary>Gets or sets the descriptive name of the named object.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("name")]
 		string Name { get; set; }
@@ -1516,6 +2051,22 @@ namespace ModelIO {
 	[BaseType (typeof (MDLTexture))]
 	[DisableDefaultCtor]
 	interface MDLNoiseTexture {
+		/// <param name="pixelData">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="topLeftOrigin">To be added.</param>
+		/// <param name="name">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="dimensions">To be added.</param>
+		/// <param name="rowStride">To be added.</param>
+		/// <param name="channelCount">To be added.</param>
+		/// <param name="channelEncoding">To be added.</param>
+		/// <param name="isCube">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithData:topLeftOrigin:name:dimensions:rowStride:channelCount:channelEncoding:isCube:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		NativeHandle Constructor ([NullAllowed] NSData pixelData, bool topLeftOrigin, [NullAllowed] string name, Vector2i dimensions, nint rowStride, nuint channelCount, MDLTextureChannelEncoding channelEncoding, bool isCube);
@@ -1523,8 +2074,19 @@ namespace ModelIO {
 		[Internal]
 		[Export ("initVectorNoiseWithSmoothness:name:textureDimensions:channelEncoding:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
-		IntPtr InitVectorNoiseWithSmoothness (float smoothness, [NullAllowed] string name, Vector2i textureDimensions, MDLTextureChannelEncoding channelEncoding);
+		IntPtr _InitVectorNoiseWithSmoothness (float smoothness, [NullAllowed] string name, Vector2i textureDimensions, MDLTextureChannelEncoding channelEncoding);
 
+		/// <param name="smoothness">To be added.</param>
+		/// <param name="name">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="textureDimensions">To be added.</param>
+		/// <param name="channelCount">To be added.</param>
+		/// <param name="channelEncoding">To be added.</param>
+		/// <param name="grayscale">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initScalarNoiseWithSmoothness:name:textureDimensions:channelCount:channelEncoding:grayscale:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		NativeHandle Constructor (float smoothness, [NullAllowed] string name, Vector2i textureDimensions, int channelCount, MDLTextureChannelEncoding channelEncoding, bool grayscale);
@@ -1533,7 +2095,7 @@ namespace ModelIO {
 		[MacCatalyst (13, 1)]
 		[Export ("initCellularNoiseWithFrequency:name:textureDimensions:channelEncoding:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
-		IntPtr InitCellularNoiseWithFrequency (float frequency, [NullAllowed] string name, Vector2i textureDimensions, MDLTextureChannelEncoding channelEncoding);
+		IntPtr _InitCellularNoiseWithFrequency (float frequency, [NullAllowed] string name, Vector2i textureDimensions, MDLTextureChannelEncoding channelEncoding);
 	}
 
 	/// <summary>Class that generates a texture that contains surface normal data.</summary>
@@ -1543,15 +2105,40 @@ namespace ModelIO {
 	[BaseType (typeof (MDLTexture))]
 	[DisableDefaultCtor]
 	interface MDLNormalMapTexture {
+		/// <param name="pixelData">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="topLeftOrigin">To be added.</param>
+		/// <param name="name">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="dimensions">To be added.</param>
+		/// <param name="rowStride">To be added.</param>
+		/// <param name="channelCount">To be added.</param>
+		/// <param name="channelEncoding">To be added.</param>
+		/// <param name="isCube">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithData:topLeftOrigin:name:dimensions:rowStride:channelCount:channelEncoding:isCube:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		NativeHandle Constructor ([NullAllowed] NSData pixelData, bool topLeftOrigin, [NullAllowed] string name, Vector2i dimensions, nint rowStride, nuint channelCount, MDLTextureChannelEncoding channelEncoding, bool isCube);
 
+		/// <param name="sourceTexture">To be added.</param>
+		/// <param name="name">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="smoothness">To be added.</param>
+		/// <param name="contrast">To be added.</param>
+		/// <summary>Creates a new normal map from the provided source texture and specified smoothness and contrast.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initByGeneratingNormalMapWithTexture:name:smoothness:contrast:")]
 		NativeHandle Constructor (MDLTexture sourceTexture, [NullAllowed] string name, float smoothness, float contrast);
 	}
 
-	/// <summary>Base class for objects in a <see cref="T:ModelIO.MDLAsset" />.</summary>
+	/// <summary>Base class for objects in a <see cref="ModelIO.MDLAsset" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ModelIO/Reference/MDLObject_Class/index.html">Apple documentation for <c>MDLObject</c></related>
 	[MacCatalyst (13, 1)]
@@ -1564,33 +2151,38 @@ namespace ModelIO {
 		[Export ("components", ArgumentSemantic.Copy)]
 		IMDLComponent [] Components { get; }
 
+		/// <param name="component">The component to associate with a protocol.</param>
+		///         <param name="protocol">The protocol to associate with the component.</param>
+		///         <summary>Associates <paramref name="component" /> with this MDLOBject for the specified protocol.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setComponent:forProtocol:")]
 		void SetComponent (IMDLComponent component, Protocol protocol);
 
+		/// <param name="component">The component to associate with a type.</param>
+		///         <param name="type">The type to associate with the component.</param>
+		///         <summary>Makes <paramref name="component" /> the object to provide for the specified <paramref name="type" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("SetComponent (component, new Protocol (type!))")]
 		void SetComponent (IMDLComponent component, Type type);
 
-#if !NET
-		[Obsolete ("Use 'GetComponent (Type type)'.")]
-		[Export ("componentConformingToProtocol:")]
-		[return: NullAllowed]
-		IMDLComponent IsComponentConforming (Protocol protocol);
-#endif
-
+		/// <param name="protocol">The protocol for which to get the component.</param>
+		///         <summary>Gets this object's component that conforms to <paramref name="protocol" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
-#if NET
 		[Export ("componentConformingToProtocol:")]
-#else
-		[Wrap ("IsComponentConforming (protocol!)")]
-#endif
 		[return: NullAllowed]
 		IMDLComponent GetComponent (Protocol protocol);
 
+		/// <param name="type">The type to filter by.</param>
+		///         <summary>Gets this object's component that matches the supplied <paramref name="type" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("GetComponent (new Protocol (type!))")]
 		[return: NullAllowed]
 		IMDLComponent GetComponent (Type type);
 
-		/// <summary>Gets or sets this <see cref="T:ModelIO.MDLObject" /> object's parent, or <see langword="null" /> if this is a top-level object.</summary>
+		/// <summary>Gets or sets this <see cref="ModelIO.MDLObject" /> object's parent, or <see langword="null" /> if this is a top-level object.</summary>
 		///         <value>
 		///           <para>(More documentation for this node is coming)</para>
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
@@ -1616,15 +2208,25 @@ namespace ModelIO {
 		[Export ("path")]
 		string Path { get; }
 
+		/// <param name="path">To be added.</param>
+		///         <summary>Returns the Model IO object at the specified path.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("objectAtPath:")]
 		MDLObject GetObject (string path);
 
+		/// <param name="objectClass">The class of child objects to enumerate.</param>
+		///         <param name="root">The root object whose children will be enumerated.</param>
+		///         <param name="handler">A handler to run on each child object.</param>
+		///         <param name="stop">Developers set this value to <see langword="true" /> to stop enumeration.</param>
+		///         <summary>Runs the provided <paramref name="handler" /> on each component in <paramref name="root" />'s object hierarchy that matches the specified <paramref name="objectClass" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("enumerateChildObjectsOfClass:root:usingBlock:stopPointer:")]
 		void EnumerateChildObjects (Class objectClass, MDLObject root, MDLObjectHandler handler, ref bool stop);
 
-		/// <summary>Gets or sets the possibly time-dependent transform that establishes this <see cref="T:ModelIO.MDLObject" /> object's coordinate system in relation to its parent's coordinate system.</summary>
+		/// <summary>Gets or sets the possibly time-dependent transform that establishes this <see cref="ModelIO.MDLObject" /> object's coordinate system in relation to its parent's coordinate system.</summary>
 		///         <value>
 		///           <para>(More documentation for this node is coming)</para>
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
@@ -1633,7 +2235,7 @@ namespace ModelIO {
 		[NullAllowed, Export ("transform", ArgumentSemantic.Retain)]
 		IMDLTransformComponent Transform { get; set; }
 
-		/// <summary>Gets or sets the list of the objects of type <see cref="T:ModelIO.MDLObject" /> that belong to this <see cref="T:ModelIO.MDLObject" />.</summary>
+		/// <summary>Gets or sets the list of the objects of type <see cref="ModelIO.MDLObject" /> that belong to this <see cref="ModelIO.MDLObject" />.</summary>
 		///         <value>
 		///           <para>(More documentation for this node is coming)</para>
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
@@ -1649,24 +2251,43 @@ namespace ModelIO {
 		[Export ("hidden")]
 		bool Hidden { get; set; }
 
+		/// <param name="child">To be added.</param>
+		///         <summary>Adds <paramref name="child" /> to this <see cref="ModelIO.MDLObject" /> object's <see cref="ModelIO.MDLObject.Children" /> property, creating <see cref="ModelIO.MDLObject.Children" />, if necessary.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("addChild:")]
 		void AddChild (MDLObject child);
 
+		/// <param name="atTime">To be added.</param>
+		///         <summary>Returns the bounding box of the Model IO object at the specified time.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("boundingBoxAtTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		MDLAxisAlignedBoundingBox GetBoundingBox (double atTime);
 
+		/// <param name="node">To be added.</param>
+		///         <summary>Creates a new MDLObject from the specified Scene Kit node.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("objectWithSCNNode:")]
 		MDLObject FromNode (SCNNode node);
 
+		/// <param name="node">To be added.</param>
+		///         <param name="bufferAllocator">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Creates and returns a new Model IO object from the provided node.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("objectWithSCNNode:bufferAllocator:")]
 		MDLObject FromNode (SCNNode node, [NullAllowed] IMDLMeshBufferAllocator bufferAllocator);
 	}
 
-	/// <summary>A default implementation of the abstract <see cref="T:ModelIO.IMDLObjectContainerComponent" /> class.</summary>
+	/// <summary>A default implementation of the abstract <see cref="ModelIO.IMDLObjectContainerComponent" /> class.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ModelIO/Reference/MDLObjectContainer_Class/index.html">Apple documentation for <c>MDLObjectContainer</c></related>
 	[MacCatalyst (13, 1)]
@@ -1674,55 +2295,83 @@ namespace ModelIO {
 	interface MDLObjectContainer : MDLObjectContainerComponent {
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:ModelIO.IMDLObjectContainerComponent" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="ModelIO.IMDLObjectContainerComponent" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:ModelIO.IMDLObjectContainerComponent" />.</para>
-	///       <para>If you create objects that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:ModelIO.IMDLObjectContainerComponent" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:ModelIO.MDLObjectContainerComponent_Extensions" /> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="ModelIO.IMDLObjectContainerComponent" />.</para>
+	///       <para>If you create objects that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="ModelIO.IMDLObjectContainerComponent" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="ModelIO.MDLObjectContainerComponent_Extensions" /> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
 	///     </remarks>
-	/// <summary>Extension methods to the <see cref="T:ModelIO.IMDLObjectContainerComponent" /> interface to support all the methods from the <see cref="T:ModelIO.IMDLObjectContainerComponent" /> protocol.</summary>
+	/// <summary>Extension methods to the <see cref="ModelIO.IMDLObjectContainerComponent" /> interface to support all the methods from the <see cref="ModelIO.IMDLObjectContainerComponent" /> protocol.</summary>
 	///     <remarks>
-	///       <para>The extension methods for <see cref="T:ModelIO.IMDLObjectContainerComponent" /> allow developers to treat instances of the interface as having all the optional methods of the original <see cref="T:ModelIO.IMDLObjectContainerComponent" /> protocol.   Since the interface only contains the required members, these extension methods allow developers to call the optional members of the protocol.</para>
+	///       <para>The extension methods for <see cref="ModelIO.IMDLObjectContainerComponent" /> allow developers to treat instances of the interface as having all the optional methods of the original <see cref="ModelIO.IMDLObjectContainerComponent" /> protocol.   Since the interface only contains the required members, these extension methods allow developers to call the optional members of the protocol.</para>
 	///     </remarks>
 	interface IMDLObjectContainerComponent { }
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="ModelIO.IMDLObjectContainerComponent" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="ModelIO.IMDLObjectContainerComponent" />.</para>
+	///       <para>If you create objects that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="ModelIO.IMDLObjectContainerComponent" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="ModelIO.MDLObjectContainerComponent_Extensions" /> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
+	///     </remarks>
+	/// <summary>Extension methods to the <see cref="ModelIO.IMDLObjectContainerComponent" /> interface to support all the methods from the <see cref="ModelIO.IMDLObjectContainerComponent" /> protocol.</summary>
+	/// <remarks>
+	///       <para>The extension methods for <see cref="ModelIO.IMDLObjectContainerComponent" /> allow developers to treat instances of the interface as having all the optional methods of the original <see cref="ModelIO.IMDLObjectContainerComponent" /> protocol.   Since the interface only contains the required members, these extension methods allow developers to call the optional members of the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface MDLObjectContainerComponent : MDLComponent, INSFastEnumeration {
+		/// <param name="object">To be added.</param>
+		/// <summary>Adds <paramref name="object" /> to the list of objects that are contained by this IMDLObjectContainerComponent.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("addObject:")]
 		void AddObject (MDLObject @object);
 
+		/// <param name="object">To be added.</param>
+		/// <summary>Removes <paramref name="object" /> from the list of objects that are contained by this IMDLObjectContainerComponent.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("removeObject:")]
 		void RemoveObject (MDLObject @object);
 
-#if NET
+		/// <param name="index">The index of the object to get.</param>
+		/// <summary>Returns the object at the specified <paramref name="index" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
-#endif
 		[MacCatalyst (13, 1)]
 		[Export ("objectAtIndexedSubscript:")]
 		MDLObject GetObject (nuint index);
 
-#if NET
+		/// <summary>Gets the number of objects in this container.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
-#endif
 		[MacCatalyst (13, 1)]
 		[Export ("count")]
 		nuint Count { get; }
 
+		/// <summary>Gets the list of objects that belong to this IMDLObjectContainerComponent.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("objects", ArgumentSemantic.Retain)]
 		MDLObject [] Objects { get; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:ModelIO.IMDLComponent" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="ModelIO.IMDLComponent" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:ModelIO.IMDLComponent" />.</para>
-	///       <para>If you create objects that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:ModelIO.IMDLComponent" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Model%20IOMDLComponent_%20Extensions&amp;scope=Xamarin" title="T:ModelIO.MDLComponent_Extensions">T:ModelIO.MDLComponent_Extensions</a></format> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="ModelIO.IMDLComponent" />.</para>
+	///       <para>If you create objects that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="ModelIO.IMDLComponent" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="ModelIO.MDLComponent_Extensions" /> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	interface IMDLComponent { }
 
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="ModelIO.IMDLComponent" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="ModelIO.IMDLComponent" />.</para>
+	///       <para>If you create objects that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="ModelIO.IMDLComponent" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="ModelIO.MDLComponent_Extensions" /> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface MDLComponent {
@@ -1734,15 +2383,28 @@ namespace ModelIO {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MDLPhysicallyPlausibleLight))]
 	interface MDLPhotometricLight {
+		/// <param name="url">To be added.</param>
+		/// <summary>Creates a new MDLPhotometricLight from IES data that is contained at the specified URL.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithIESProfile:")]
 		NativeHandle Constructor (NSUrl url);
 
+		/// <param name="sphericalHarmonicsLevel">To be added.</param>
+		/// <summary>Fills the <see cref="ModelIO.MDLPhotometricLight.SphericalHarmonicsCoefficients" /> property to the depth that is specified by <paramref name="sphericalHarmonicsLevel" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("generateSphericalHarmonicsFromLight:")]
 		void GenerateSphericalHarmonics (nuint sphericalHarmonicsLevel);
 
+		/// <param name="textureSize">To be added.</param>
+		/// <summary>Fills the <see cref="ModelIO.MDLPhotometricLight.LightCubeMap" /> property with cube map data that has sides of length <paramref name="textureSize" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("generateCubemapFromLight:")]
 		void GenerateCubemap (nuint textureSize);
 
+		/// <param name="textureSize">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("generateTexture:")]
 		MDLTexture GenerateTexture (nuint textureSize);
@@ -1756,9 +2418,9 @@ namespace ModelIO {
 		[NullAllowed, Export ("lightCubeMap", ArgumentSemantic.Retain)]
 		MDLTexture LightCubeMap { get; }
 
-		/// <summary>Gets a value from <c>0</c> to <c>3</c> that represents the number of harmonics that are represented by  <see cref="P:ModelIO.MDLPhotometricLight.SphericalHarmonicsCoefficients" />.</summary>
+		/// <summary>Gets a value from <c>0</c> to <c>3</c> that represents the number of harmonics that are represented by  <see cref="ModelIO.MDLPhotometricLight.SphericalHarmonicsCoefficients" />.</summary>
 		///         <value>To be added.</value>
-		///         <remarks>There are 3 values in each coefficient. <see cref="P:ModelIO.MDLPhotometricLight.SphericalHarmonicsLevel" /> represent the highest index level in <see cref="P:ModelIO.MDLPhotometricLight.SphericalHarmonicsCoefficients" />. There are 2^(<see cref="P:ModelIO.MDLPhotometricLight.SphericalHarmonicsLevel" /> + 1) sets of 3-valued coefficients in the array.</remarks>
+		///         <remarks>There are 3 values in each coefficient. <see cref="ModelIO.MDLPhotometricLight.SphericalHarmonicsLevel" /> represent the highest index level in <see cref="ModelIO.MDLPhotometricLight.SphericalHarmonicsCoefficients" />. There are 2^(<see cref="ModelIO.MDLPhotometricLight.SphericalHarmonicsLevel" /> + 1) sets of 3-valued coefficients in the array.</remarks>
 		[Export ("sphericalHarmonicsLevel")]
 		nuint SphericalHarmonicsLevel { get; }
 
@@ -1778,6 +2440,9 @@ namespace ModelIO {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MDLLight))]
 	interface MDLPhysicallyPlausibleLight {
+		/// <param name="temperature">To be added.</param>
+		///         <summary>Sets the color of light by modeling black-body radiation at the specified temperature in °K.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setColorByTemperature:")]
 		void SetColor (float temperature);
 
@@ -1821,8 +2486,8 @@ namespace ModelIO {
 		float AttenuationEndDistance { get; set; }
 	}
 
-	/// <summary>Represents a bidirectional reflectance distribution function to use when rendering a <see cref="T:ModelIO.MDLMaterialTextureWrapMode" />.</summary>
-	///     <remarks>The properties on this object, except for <see cref="P:ModelIO.MDLPhysicallyPlausibleScatteringFunction.Version" /> have valid values only in the range [0.0, 1.0].</remarks>
+	/// <summary>Represents a bidirectional reflectance distribution function to use when rendering a <see cref="ModelIO.MDLMaterialTextureWrapMode" />.</summary>
+	///     <remarks>The properties on this object, except for <see cref="ModelIO.MDLPhysicallyPlausibleScatteringFunction.Version" /> have valid values only in the range [0.0, 1.0].</remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ModelIO/Reference/MDLPhysicallyPlausibleScatteringFunction_Class/index.html">Apple documentation for <c>MDLPhysicallyPlausibleScatteringFunction</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MDLScatteringFunction))]
@@ -1962,19 +2627,62 @@ namespace ModelIO {
 	[BaseType (typeof (MDLTexture))]
 	[DisableDefaultCtor]
 	interface MDLSkyCubeTexture {
+		/// <param name="pixelData">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="topLeftOrigin">To be added.</param>
+		/// <param name="name">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="dimensions">To be added.</param>
+		/// <param name="rowStride">To be added.</param>
+		/// <param name="channelCount">To be added.</param>
+		/// <param name="channelEncoding">To be added.</param>
+		/// <param name="isCube">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithData:topLeftOrigin:name:dimensions:rowStride:channelCount:channelEncoding:isCube:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		NativeHandle Constructor ([NullAllowed] NSData pixelData, bool topLeftOrigin, [NullAllowed] string name, Vector2i dimensions, nint rowStride, nuint channelCount, MDLTextureChannelEncoding channelEncoding, bool isCube);
 
+		/// <param name="name">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="channelEncoding">To be added.</param>
+		/// <param name="textureDimensions">To be added.</param>
+		/// <param name="turbidity">To be added.</param>
+		/// <param name="sunElevation">To be added.</param>
+		/// <param name="upperAtmosphereScattering">To be added.</param>
+		/// <param name="groundAlbedo">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithName:channelEncoding:textureDimensions:turbidity:sunElevation:upperAtmosphereScattering:groundAlbedo:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		NativeHandle Constructor ([NullAllowed] string name, MDLTextureChannelEncoding channelEncoding, Vector2i textureDimensions, float turbidity, float sunElevation, float upperAtmosphereScattering, float groundAlbedo);
 
+		/// <param name="name">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="channelEncoding">To be added.</param>
+		/// <param name="textureDimensions">To be added.</param>
+		/// <param name="turbidity">To be added.</param>
+		/// <param name="sunElevation">To be added.</param>
+		/// <param name="sunAzimuth">To be added.</param>
+		/// <param name="upperAtmosphereScattering">To be added.</param>
+		/// <param name="groundAlbedo">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("initWithName:channelEncoding:textureDimensions:turbidity:sunElevation:sunAzimuth:upperAtmosphereScattering:groundAlbedo:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		NativeHandle Constructor ([NullAllowed] string name, MDLTextureChannelEncoding channelEncoding, Vector2i textureDimensions, float turbidity, float sunElevation, float sunAzimuth, float upperAtmosphereScattering, float groundAlbedo);
 
+		/// <summary>Regenerates the sky to match the current property values of this MDLSkyCubeTexture object.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("updateTexture")]
 		void UpdateTexture ();
 
@@ -2097,9 +2805,6 @@ namespace ModelIO {
 		[Export ("overlap")]
 		float Overlap { get; set; }
 
-#if !NET
-		[Obsolete ("Use 'LeftViewMatrix4x4' instead.")]
-#endif
 		/// <summary>Gets the view matrix for the left viewpoint.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -2109,18 +2814,6 @@ namespace ModelIO {
 			get;
 		}
 
-#if !NET
-		[Sealed]
-		[Export ("leftViewMatrix")]
-		MatrixFloat4x4 LeftViewMatrix4x4 {
-			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
-			get;
-		}
-#endif
-
-#if !NET
-		[Obsolete ("Use 'RightViewMatrix4x4' instead.")]
-#endif
 		/// <summary>Gets the view matrix for the right viewpoint.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -2130,18 +2823,6 @@ namespace ModelIO {
 			get;
 		}
 
-#if !NET
-		[Sealed]
-		[Export ("rightViewMatrix")]
-		MatrixFloat4x4 RightViewMatrix4x4 {
-			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
-			get;
-		}
-#endif
-
-#if !NET
-		[Obsolete ("Use 'LeftProjectionMatrix4x4' instead.")]
-#endif
 		/// <summary>Gets the projection matrix for the left viewpoint.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -2151,18 +2832,6 @@ namespace ModelIO {
 			get;
 		}
 
-#if !NET
-		[Sealed]
-		[Export ("leftProjectionMatrix")]
-		MatrixFloat4x4 LeftProjectionMatrix4x4 {
-			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
-			get;
-		}
-#endif
-
-#if !NET
-		[Obsolete ("Use 'RightProjectionMatrix4x4' instead.")]
-#endif
 		/// <summary>Gets the projection matrix for the right viewpoint.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -2171,15 +2840,6 @@ namespace ModelIO {
 			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 			get;
 		}
-
-#if !NET
-		[Sealed]
-		[Export ("rightProjectionMatrix")]
-		MatrixFloat4x4 RightProjectionMatrix4x4 {
-			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
-			get;
-		}
-#endif
 	}
 
 	/// <summary>Indexes and identifies a portion of an MDLMesh, and contains material information about the indexed portion.</summary>
@@ -2188,15 +2848,56 @@ namespace ModelIO {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MDLSubmesh : MDLNamed {
+		/// <param name="name">To be added.</param>
+		/// <param name="indexBuffer">To be added.</param>
+		/// <param name="indexCount">To be added.</param>
+		/// <param name="indexType">To be added.</param>
+		/// <param name="geometryType">To be added.</param>
+		/// <param name="material">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithName:indexBuffer:indexCount:indexType:geometryType:material:")]
 		NativeHandle Constructor (string name, IMDLMeshBuffer indexBuffer, nuint indexCount, MDLIndexBitDepth indexType, MDLGeometryType geometryType, [NullAllowed] MDLMaterial material);
 
+		/// <param name="indexBuffer">To be added.</param>
+		/// <param name="indexCount">To be added.</param>
+		/// <param name="indexType">To be added.</param>
+		/// <param name="geometryType">To be added.</param>
+		/// <param name="material">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithIndexBuffer:indexCount:indexType:geometryType:material:")]
 		NativeHandle Constructor (IMDLMeshBuffer indexBuffer, nuint indexCount, MDLIndexBitDepth indexType, MDLGeometryType geometryType, [NullAllowed] MDLMaterial material);
 
+		/// <param name="name">To be added.</param>
+		/// <param name="indexBuffer">To be added.</param>
+		/// <param name="indexCount">To be added.</param>
+		/// <param name="indexType">To be added.</param>
+		/// <param name="geometryType">To be added.</param>
+		/// <param name="material">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="topology">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithName:indexBuffer:indexCount:indexType:geometryType:material:topology:")]
 		NativeHandle Constructor (string name, IMDLMeshBuffer indexBuffer, nuint indexCount, MDLIndexBitDepth indexType, MDLGeometryType geometryType, [NullAllowed] MDLMaterial material, [NullAllowed] MDLSubmeshTopology topology);
 
+		/// <param name="indexBuffer">To be added.</param>
+		/// <param name="indexType">To be added.</param>
+		/// <param name="geometryType">To be added.</param>
+		/// <summary>Creates a new MDLSubmesh with the specified parameters.</summary>
+		/// <remarks>If either <paramref name="indexType" /> or <paramref name="geometryType" /> do not match the type of data in <paramref name="indexBuffer" />, then a new buffer is created and filled with converted data.</remarks>
 		[Export ("initWithMDLSubmesh:indexType:geometryType:")]
 		NativeHandle Constructor (MDLSubmesh indexBuffer, MDLIndexBitDepth indexType, MDLGeometryType geometryType);
 
@@ -2206,6 +2907,10 @@ namespace ModelIO {
 		[Export ("indexBuffer", ArgumentSemantic.Retain)]
 		IMDLMeshBuffer IndexBuffer { get; }
 
+		/// <param name="indexType">To be added.</param>
+		///         <summary>Returns the index buffer for the submesh with the specified bit depth.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("indexBufferAsIndexType:")]
 		IMDLMeshBuffer GetIndexBuffer (MDLIndexBitDepth indexType);
@@ -2250,10 +2955,22 @@ namespace ModelIO {
 			set;
 		}
 
+		/// <param name="element">To be added.</param>
+		///         <summary>Creates a new MDLSubmesh object from the specified Scene Kit geometry element.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("submeshWithSCNGeometryElement:")]
 		MDLSubmesh FromGeometryElement (SCNGeometryElement element);
 
+		/// <param name="element">To be added.</param>
+		///         <param name="bufferAllocator">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Creates a new submesh from the provided Scene Kit element.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("submeshWithSCNGeometryElement:bufferAllocator:")]
@@ -2267,52 +2984,67 @@ namespace ModelIO {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // designated
 	interface MDLTexture : MDLNamed {
+		/// <summary>Default constructor, initializes a new instance of this class.</summary>
+		/// <remarks>
+		///         </remarks>
 		[DesignatedInitializer]
 		[Export ("init")]
 		NativeHandle Constructor ();
 
-#if !NET
-		[Static]
-		[Obsolete ("Use 'CreateTexture' instead.")]
-		[Wrap ("CreateTexture (name)")]
-		[return: NullAllowed]
-		MDLTexture FromBundle (string name);
-#endif
-
+		/// <summary>Creates a new texture from the specified texture in the default application bundle.</summary>
 		[Static]
 		[Export ("textureNamed:")]
 		[return: NullAllowed]
 		MDLTexture CreateTexture (string name);
 
-#if !NET
-		[Static]
-		[Obsolete ("Use 'CreateTexture' instead.")]
-		[Wrap ("CreateTexture (name, bundleOrNil)")]
-		[return: NullAllowed]
-		MDLTexture FromBundle (string name, [NullAllowed] NSBundle bundleOrNil);
-#endif
-
+		/// <summary>Creates a new texture from the specified texture in the specified application bundle.</summary>
 		[Static]
 		[Export ("textureNamed:bundle:")]
 		[return: NullAllowed]
 		MDLTexture CreateTexture (string name, [NullAllowed] NSBundle bundleOrNil);
 
+		/// <param name="name">To be added.</param>
+		///         <param name="resolver">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("textureNamed:assetResolver:")]
 		[return: NullAllowed]
 		MDLTexture CreateTexture (string name, IMDLAssetResolver resolver);
 
+		/// <param name="imageNames">To be added.</param>
+		///         <summary>Creates a texture cube from the named images in the default application bundle.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("textureCubeWithImagesNamed:")]
 		[return: NullAllowed]
 		MDLTexture CreateTextureCube (string [] imageNames);
 
+		/// <param name="imageNames">To be added.</param>
+		///         <param name="bundleOrNil">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Creates a texture cube from the named images in the specified application bundle.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("textureCubeWithImagesNamed:bundle:")]
 		[return: NullAllowed]
 		MDLTexture CreateTextureCube (string [] imageNames, [NullAllowed] NSBundle bundleOrNil);
 
+		/// <param name="texture">To be added.</param>
+		/// <param name="name">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="dimensions">To be added.</param>
+		/// <summary>Creates an cubical irradiance map from an environment map.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static]
 		[Export ("irradianceTextureCubeWithTexture:name:dimensions:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
@@ -2323,46 +3055,105 @@ namespace ModelIO {
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		MDLTexture CreateIrradianceTextureCube (MDLTexture reflectiveTexture, [NullAllowed] string name, Vector2i dimensions, float roughness);
 
+		/// <param name="pixelData">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="topLeftOrigin">To be added.</param>
+		/// <param name="name">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="dimensions">To be added.</param>
+		/// <param name="rowStride">To be added.</param>
+		/// <param name="channelCount">To be added.</param>
+		/// <param name="channelEncoding">To be added.</param>
+		/// <param name="isCube">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithData:topLeftOrigin:name:dimensions:rowStride:channelCount:channelEncoding:isCube:")]
 		[DesignatedInitializer]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		NativeHandle Constructor ([NullAllowed] NSData pixelData, bool topLeftOrigin, [NullAllowed] string name, Vector2i dimensions, nint rowStride, nuint channelCount, MDLTextureChannelEncoding channelEncoding, bool isCube);
 
+		/// <param name="url">To be added.</param>
+		///         <summary>Writes the texture data to the specified URL.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("writeToURL:")]
 		bool WriteToUrl (NSUrl url);
 
+		/// <param name="url">To be added.</param>
+		/// <param name="level">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("writeToURL:level:")]
 		bool WriteToUrl (NSUrl url, nuint level);
 
+		/// <param name="url">To be added.</param>
+		///         <param name="type">To be added.</param>
+		///         <summary>Writes the texture data to the specified URL.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("writeToURL:type:")]
 		bool WriteToUrl (NSUrl url, string type);
 
+		/// <param name="nsurl">To be added.</param>
+		/// <param name="type">To be added.</param>
+		/// <param name="level">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("writeToURL:type:level:")]
 		bool WriteToUrl (NSUrl nsurl, string type, nuint level);
 
+		/// <summary>Returns an image created from the texture data.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("imageFromTexture")]
 		[return: NullAllowed]
 		CGImage GetImageFromTexture ();
 
+		/// <param name="level">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("imageFromTextureAtLevel:")]
 		[return: NullAllowed]
 		CGImage GetImageFromTexture (nuint level);
 
+		/// <summary>Gets the texel data such that the first texel represents the top left corner of the texture.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("texelDataWithTopLeftOrigin")]
 		[return: NullAllowed]
 		NSData GetTexelDataWithTopLeftOrigin ();
 
+		/// <summary>Gets the texel data such that the first texel represents the bottom left corner of the texture.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("texelDataWithBottomLeftOrigin")]
 		[return: NullAllowed]
 		NSData GetTexelDataWithBottomLeftOrigin ();
 
+		/// <param name="mipLevel">To be added.</param>
+		/// <param name="create">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("texelDataWithTopLeftOriginAtMipLevel:create:")]
 		[return: NullAllowed]
 		NSData GetTexelDataWithTopLeftOrigin (nint mipLevel, bool create);
 
+		/// <param name="mipLevel">To be added.</param>
+		/// <param name="create">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("texelDataWithBottomLeftOriginAtMipLevel:create:")]
 		[return: NullAllowed]
 		NSData GetTexelDataWithBottomLeftOrigin (nint mipLevel, bool create);
@@ -2499,74 +3290,80 @@ namespace ModelIO {
 	[DesignatedDefaultCtor]
 	interface MDLTransform : MDLTransformComponent, NSCopying {
 
+		/// <param name="component">To be added.</param>
+		/// <summary>Creates a new MDLTransform from the specified transform component.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithTransformComponent:")]
 		NativeHandle Constructor (IMDLTransformComponent component);
 
+		/// <param name="component">To be added.</param>
+		/// <param name="resetsTransform">To be added.</param>
+		/// <summary>Creates a new transform that represents the specified transform <paramref name="component" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("initWithTransformComponent:resetsTransform:")]
 		NativeHandle Constructor (IMDLTransformComponent component, bool resetsTransform);
 
-#if !NET
-		[Obsolete ("Use the '(MatrixFloat4x4)' overload instead.")]
-#endif
+		/// <param name="matrix">To be added.</param>
+		/// <summary>Creates a new MDLTransform from the specified matrix.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithMatrix:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		NativeHandle Constructor (Matrix4 matrix);
 
-#if !NET
-		[Sealed]
-		[Export ("initWithMatrix:")]
-		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
-		NativeHandle Constructor (MatrixFloat4x4 matrix);
-#endif
-
-#if !NET
-		[Obsolete ("Use the '(MatrixFloat4x4, bool)' overload instead.")]
-#endif
+		/// <param name="matrix">To be added.</param>
+		/// <param name="resetsTransform">To be added.</param>
+		/// <summary>Creates a new MDLTransform from the specified matrix.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("initWithMatrix:resetsTransform:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		NativeHandle Constructor (Matrix4 matrix, bool resetsTransform);
 
-#if !NET
-		[Sealed]
-		[Export ("initWithMatrix:resetsTransform:")]
-		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
-		NativeHandle Constructor (MatrixFloat4x4 matrix, bool resetsTransform);
-#endif
-
+		/// <summary>Makes the transform identical to the identity transform.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setIdentity")]
 		void SetIdentity ();
 
+		/// <param name="atTime">To be added.</param>
+		///         <summary>Returns the shear of the transform at the specified time.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("shearAtTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		Vector3 GetShear (double atTime);
 
+		/// <param name="atTime">To be added.</param>
+		///         <summary>Returns the scale of the transform at the specified time.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("scaleAtTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		Vector3 GetScale (double atTime);
 
+		/// <param name="atTime">To be added.</param>
+		///         <summary>Returns the translation of the transform at the specified time.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("translationAtTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		Vector3 GetTranslation (double atTime);
 
+		/// <param name="atTime">To be added.</param>
+		///         <summary>Returns the rotation of the transform at the specified time.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("rotationAtTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		Vector3 GetRotation (double atTime);
 
-#if !NET
-		[Obsolete ("Use 'GetRotationMatrix4x4' instead.")]
-#endif
+		/// <param name="atTime">To be added.</param>
+		///         <summary>Returns the rotation of the transform at the specified time.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("rotationMatrixAtTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		Matrix4 GetRotationMatrix (double atTime);
-
-#if !NET
-		[Sealed]
-		[Export ("rotationMatrixAtTime:")]
-		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
-		MatrixFloat4x4 GetRotationMatrix4x4 (double atTime);
-#endif
 
 		[Export ("setShear:forTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
@@ -2587,17 +3384,7 @@ namespace ModelIO {
 		[MacCatalyst (13, 1)]
 		[Export ("setMatrix:forTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
-#if !NET
-		[Obsolete ("Use 'SetMatrix4x4' instead.")]
-#endif
 		void SetMatrix (Matrix4 matrix, double time);
-
-#if !NET
-		[Sealed]
-		[Export ("setMatrix:forTime:")]
-		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
-		void SetMatrix4x4 (MatrixFloat4x4 matrix, double time);
-#endif
 
 		/// <summary>Gets or sets the shear of the transform.</summary>
 		///         <value>To be added.</value>
@@ -2644,16 +3431,25 @@ namespace ModelIO {
 		}
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:ModelIO.IMDLTransformComponent" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="ModelIO.IMDLTransformComponent" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:ModelIO.IMDLTransformComponent" />.</para>
-	///       <para>If you create objects that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:ModelIO.IMDLTransformComponent" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:ModelIO.MDLTransformComponent_Extensions" /> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="ModelIO.IMDLTransformComponent" />.</para>
+	///       <para>If you create objects that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="ModelIO.IMDLTransformComponent" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="ModelIO.MDLTransformComponent_Extensions" /> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	interface IMDLTransformComponent { }
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="ModelIO.IMDLTransformComponent" />.</summary>
+	/// <remarks>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="ModelIO.IMDLTransformComponent" />.</para>
+	///       <para>If you create objects that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="ModelIO.IMDLTransformComponent" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="ModelIO.MDLTransformComponent_Extensions" /> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
+	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface MDLTransformComponent : MDLComponent {
+		/// <summary>Gets or sets the matrix of the transform at the earliest specified time.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("matrix", ArgumentSemantic.Assign)]
 		Matrix4 Matrix {
@@ -2663,44 +3459,56 @@ namespace ModelIO {
 			set;
 		}
 
+		/// <summary>Inserts the specified transform at the specified time.</summary>
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("resetsTransform")]
 		bool ResetsTransform { get; set; }
 
+		/// <summary>Gets the first specified time in the transformation.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("minimumTime")]
 		double MinimumTime { get; }
 
+		/// <summary>Gets the last specified time in the transformation.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("maximumTime")]
 		double MaximumTime { get; }
 
 		// Added in iOS 10 SDK but it is supposed to be present in iOS 9.
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
-#if NET
 		[Abstract]
-#endif
 		[Export ("keyTimes", ArgumentSemantic.Copy)]
 		NSNumber [] KeyTimes { get; }
 
+		/// <summary>Causes this transform to represent the specified static transform.</summary>
 		[Export ("setLocalTransform:forTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		void SetLocalTransform (Matrix4 transform, double time);
 
+		/// <summary>Causes this transform to represent the specified static transform.</summary>
 		[Export ("setLocalTransform:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		void SetLocalTransform (Matrix4 transform);
 
+		/// <param name="atTime">The time for which to retrieve the local transform.</param>
+		/// <summary>Gets the local transform at the specified time.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("localTransformAtTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		Matrix4 GetLocalTransform (double atTime);
 
-#if !NET
-		[Obsolete ("Use 'CreateGlobalTransform4x4' instead.")]
-#endif
+		/// <summary>Creates and returns a global transform for the specified object at the specified time.</summary>
+		/// <param name="obj">The object that represents the spatial transform.</param>
+		/// <param name="atTime">The time at which to apply the transform.</param>
 		[Static]
 		[Export ("globalTransformWithObject:atTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
@@ -2714,10 +3522,33 @@ namespace ModelIO {
 	[BaseType (typeof (MDLTexture), Name = "MDLURLTexture")]
 	[DisableDefaultCtor]
 	interface MDLUrlTexture {
+		/// <param name="pixelData">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="topLeftOrigin">To be added.</param>
+		/// <param name="name">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="dimensions">To be added.</param>
+		/// <param name="rowStride">To be added.</param>
+		/// <param name="channelCount">To be added.</param>
+		/// <param name="channelEncoding">To be added.</param>
+		/// <param name="isCube">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithData:topLeftOrigin:name:dimensions:rowStride:channelCount:channelEncoding:isCube:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		NativeHandle Constructor ([NullAllowed] NSData pixelData, bool topLeftOrigin, [NullAllowed] string name, Vector2i dimensions, nint rowStride, nuint channelCount, MDLTextureChannelEncoding channelEncoding, bool isCube);
 
+		/// <param name="url">To be added.</param>
+		/// <param name="name">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Creates a new MDLUrlTexture with the specified URL and name.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithURL:name:")]
 		NativeHandle Constructor (NSUrl url, [NullAllowed] string name);
 
@@ -2734,10 +3565,16 @@ namespace ModelIO {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MDLVertexAttribute : NSCopying {
+		/// <param name="name">To be added.</param>
+		/// <param name="format">To be added.</param>
+		/// <param name="offset">To be added.</param>
+		/// <param name="bufferIndex">To be added.</param>
+		/// <summary>Creates a new MDLVertexAttribute with the specified values.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithName:format:offset:bufferIndex:")]
 		NativeHandle Constructor (string name, MDLVertexFormat format, nuint offset, nuint bufferIndex);
 
-		/// <summary>Gets or sets the name of the attribute. Application developers should use values from <see cref="T:ModelIO.MDLVertexAttributes" />.</summary>
+		/// <summary>Gets or sets the name of the attribute. Application developers should use values from <see cref="ModelIO.MDLVertexAttributes" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("name")]
@@ -2780,7 +3617,7 @@ namespace ModelIO {
 		}
 	}
 
-	/// <summary>Provides convenient access to vertex data for a specific <see cref="T:ModelIO.MDLMesh" /> object.</summary>
+	/// <summary>Provides convenient access to vertex data for a specific <see cref="ModelIO.MDLMesh" /> object.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ModelIO/Reference/MDLVertexAttributeData_Class/index.html">Apple documentation for <c>MDLVertexAttributeData</c></related>
 	[MacCatalyst (13, 1)]
@@ -2829,6 +3666,13 @@ namespace ModelIO {
 	[BaseType (typeof (NSObject))]
 	interface MDLMeshBufferMap {
 		// FIXME: provide better API.
+		/// <param name="bytes">To be added.</param>
+		/// <param name="deallocator">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Creates a new mesh buffer map.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithBytes:deallocator:")]
 		NativeHandle Constructor (IntPtr bytes, [NullAllowed] Action deallocator);
 
@@ -2845,16 +3689,29 @@ namespace ModelIO {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MDLVertexDescriptor : NSCopying {
+		/// <param name="vertexDescriptor">To be added.</param>
+		/// <summary>Performs a deep copy of <paramref name="vertexDescriptor" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithVertexDescriptor:")]
 		NativeHandle Constructor (MDLVertexDescriptor vertexDescriptor);
 
+		/// <param name="name">To be added.</param>
+		///         <summary>Returns the attribute that is identified by <paramref name="name" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("attributeNamed:")]
 		[return: NullAllowed]
 		MDLVertexAttribute AttributeNamed (string name);
 
+		/// <param name="attribute">To be added.</param>
+		///         <summary>Adds <paramref name="attribute" /> to the descriptor, or updates it if it is already present.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("addOrReplaceAttribute:")]
 		void AddOrReplaceAttribute (MDLVertexAttribute attribute);
 
+		/// <param name="name">To be added.</param>
+		///         <summary>Removes the attribute that has the specified name.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("removeAttributeNamed:")]
 		void RemoveAttribute (string name);
@@ -2865,18 +3722,24 @@ namespace ModelIO {
 		[Export ("attributes", ArgumentSemantic.Retain)]
 		NSMutableArray<MDLVertexAttribute> Attributes { get; set; }
 
-		/// <summary>Gets or sets the vertex buffer layouts that describe the corresponding attributes that are contained in the <see cref="P:ModelIO.MDLVertexDescriptor.Attributes" /> property.</summary>
+		/// <summary>Gets or sets the vertex buffer layouts that describe the corresponding attributes that are contained in the <see cref="ModelIO.MDLVertexDescriptor.Attributes" /> property.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("layouts", ArgumentSemantic.Retain)]
 		NSMutableArray<MDLVertexBufferLayout> Layouts { get; set; }
 
+		/// <summary>Clears all data from this vertex descriptor do that it contains a single default attribute and single default vertex buffer layout.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("reset")]
 		void Reset ();
 
+		/// <summary>Sets the per-vertex stride to produce the most compact vertex buffer for the current vertex offsets.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setPackedStrides")]
 		void SetPackedStrides ();
 
+		/// <summary>Sets vertex attribute offsets to produce the most compact vertices.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setPackedOffsets")]
 		void SetPackedOffsets ();
 	}
@@ -2889,23 +3752,32 @@ namespace ModelIO {
 	[DisableDefaultCtor]
 	interface MDLVoxelArray {
 
+		/// <param name="asset">To be added.</param>
+		/// <param name="divisions">To be added.</param>
+		/// <param name="interiorShells">To be added.</param>
+		/// <param name="exteriorShells">To be added.</param>
+		/// <param name="patchRadius">To be added.</param>
+		/// <summary>Developers should not use this deprecated constructor. Developers should use 'new MDLVoxelArray (MDLAsset, int, float)'.</summary>
+		/// <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 10, 12, message: "Use 'new MDLVoxelArray (MDLAsset, int, float)'.")]
-#if NET
 		[NoiOS]
 #if XAMCORE_5_0
 		[NoTV]
 #else
 		[Obsoleted (PlatformName.TvOS, 10, 0, message: "Use 'new MDLVoxelArray (MDLAsset, int, float)'.")]
 		[NoMacCatalyst]
-#endif
-#else
-		[Obsoleted (PlatformName.iOS, 10, 0, message: "Use 'new MDLVoxelArray (MDLAsset, int, float)'.")]
 #endif
 		[Export ("initWithAsset:divisions:interiorShells:exteriorShells:patchRadius:")]
 		NativeHandle Constructor (MDLAsset asset, int divisions, int interiorShells, int exteriorShells, float patchRadius);
 
+		/// <param name="asset">To be added.</param>
+		/// <param name="divisions">To be added.</param>
+		/// <param name="interiorNBWidth">To be added.</param>
+		/// <param name="exteriorNBWidth">To be added.</param>
+		/// <param name="patchRadius">To be added.</param>
+		/// <summary>Creates a new MDLVoxelArray from the provided asset, with the specified number of divisions and the specified numbers of concentric interior and exterior shells of voxels.</summary>
+		/// <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 10, 12, message: "Use 'new MDLVoxelArray (MDLAsset, int, float)'.")]
-#if NET
 		[NoiOS]
 #if XAMCORE_5_0
 		[NoTV]
@@ -2913,20 +3785,34 @@ namespace ModelIO {
 		[Obsoleted (PlatformName.TvOS, 10, 0, message: "Use 'new MDLVoxelArray (MDLAsset, int, float)'.")]
 		[NoMacCatalyst]
 #endif
-#else
-		[Obsoleted (PlatformName.iOS, 10, 0, message: "Use 'new MDLVoxelArray (MDLAsset, int, float)'.")]
-#endif
 		[Export ("initWithAsset:divisions:interiorNBWidth:exteriorNBWidth:patchRadius:")]
 		NativeHandle Constructor (MDLAsset asset, int divisions, float interiorNBWidth, float exteriorNBWidth, float patchRadius);
 
+		/// <param name="asset">To be added.</param>
+		/// <param name="divisions">To be added.</param>
+		/// <param name="patchRadius">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("initWithAsset:divisions:patchRadius:")]
 		NativeHandle Constructor (MDLAsset asset, int divisions, float patchRadius);
 
+		/// <param name="voxelData">To be added.</param>
+		/// <param name="boundingBox">To be added.</param>
+		/// <param name="voxelExtent">To be added.</param>
+		/// <summary>Creates a new MDLVoxelArray from the provided voxel data, bounding box, and voxel extent.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithData:boundingBox:voxelExtent:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		NativeHandle Constructor (NSData voxelData, MDLAxisAlignedBoundingBox boundingBox, float voxelExtent);
 
+		/// <param name="allocator">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Returns a mesh that encloses the voxels in the array.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("meshUsingAllocator:")]
 		[return: NullAllowed]
 		MDLMesh CreateMesh ([NullAllowed] IMDLMeshBufferAllocator allocator);
@@ -2939,27 +3825,41 @@ namespace ModelIO {
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		void SetVoxel (Vector4i index);
 
+		/// <param name="mesh">To be added.</param>
+		///         <param name="divisions">To be added.</param>
+		///         <param name="patchRadius">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("setVoxelsForMesh:divisions:patchRadius:")]
 		void SetVoxels (MDLMesh mesh, int divisions, float patchRadius);
 
+		/// <param name="mesh">To be added.</param>
+		///         <param name="divisions">To be added.</param>
+		///         <param name="interiorShells">To be added.</param>
+		///         <param name="exteriorShells">To be added.</param>
+		///         <param name="patchRadius">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 10, 12, message: "Use 'SetVoxels (MDLMesh, int, float)' instead.")]
-#if NET
 		[NoiOS]
 #if XAMCORE_5_0
 		[NoTV]
 #else
 		[Obsoleted (PlatformName.TvOS, 10, 0, message: "Use 'SetVoxels (MDLMesh, int, float)' instead.")]
 		[NoMacCatalyst]
-#endif
-#else
-		[Obsoleted (PlatformName.iOS, 10, 0, message: "Use 'SetVoxels (MDLMesh, int, float)' instead.")]
 #endif
 		[Export ("setVoxelsForMesh:divisions:interiorShells:exteriorShells:patchRadius:")]
 		void SetVoxels (MDLMesh mesh, int divisions, int interiorShells, int exteriorShells, float patchRadius);
 
+		/// <param name="mesh">To be added.</param>
+		///         <param name="divisions">To be added.</param>
+		///         <param name="interiorNBWidth">To be added.</param>
+		///         <param name="exteriorNBWidth">To be added.</param>
+		///         <param name="patchRadius">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 10, 12, message: "Use 'SetVoxels (MDLMesh, int, float)' instead.")]
-#if NET
 		[NoiOS]
 #if XAMCORE_5_0
 		[NoTV]
@@ -2967,39 +3867,40 @@ namespace ModelIO {
 		[Obsoleted (PlatformName.TvOS, 10, 0, message: "Use 'SetVoxels (MDLMesh, int, float)' instead.")]
 		[NoMacCatalyst]
 #endif
-#else
-		[Obsoleted (PlatformName.iOS, 10, 0, message: "Use 'SetVoxels (MDLMesh, int, float)' instead.")]
-#endif
 		[Export ("setVoxelsForMesh:divisions:interiorNBWidth:exteriorNBWidth:patchRadius:")]
 		void SetVoxels (MDLMesh mesh, int divisions, float interiorNBWidth, float exteriorNBWidth, float patchRadius);
 
-#if !NET
-		[Obsolete ("Use 'GetVoxels (MDLVoxelIndexExtent2)' instead.")]
-#else
+		/// <param name="withinExtent">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
-#endif
 		[Export ("voxelsWithinExtent:")]
 		[return: NullAllowed]
 		NSData GetVoxels (MDLVoxelIndexExtent withinExtent);
 
-#if !NET
-		[Sealed]
-		[Export ("voxelsWithinExtent:")]
-		[return: NullAllowed]
-		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
-		NSData GetVoxels (MDLVoxelIndexExtent2 withinExtent);
-#endif
-
+		/// <summary>Returns a list of all the voxel indices as an array of 4-component integer arrays.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("voxelIndices")]
 		[return: NullAllowed]
 		NSData GetVoxelIndices ();
 
+		/// <param name="voxels">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("unionWithVoxels:")]
 		void UnionWith (MDLVoxelArray voxels);
 
+		/// <param name="voxels">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("differenceWithVoxels:")]
 		void DifferenceWith (MDLVoxelArray voxels);
 
+		/// <param name="voxels">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("intersectWithVoxels:")]
 		void IntersectWith (MDLVoxelArray voxels);
 
@@ -3021,28 +3922,14 @@ namespace ModelIO {
 		[Export ("count")]
 		nuint Count { get; }
 
-#if !NET
-		[Obsolete ("Use 'VoxelIndexExtent2' instead.")]
-#endif
 		/// <summary>Gets the allowable ranges for the four components of a voxel index.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("voxelIndexExtent")]
 		MDLVoxelIndexExtent VoxelIndexExtent {
-#if NET
-			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
-#endif
-			get;
-		}
-
-#if !NET
-		[Export ("voxelIndexExtent")]
-		[Sealed]
-		MDLVoxelIndexExtent2 VoxelIndexExtent2 {
 			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 			get;
 		}
-#endif
 
 		/// <summary>Gets the smallest box that contains all the voxels.</summary>
 		///         <value>To be added.</value>
@@ -3053,6 +3940,8 @@ namespace ModelIO {
 			get;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("convertToSignedShellField")]
 		void ConvertToSignedShellField ();
@@ -3078,11 +3967,21 @@ namespace ModelIO {
 		[Export ("shellFieldExteriorThickness")]
 		float ShellFieldExteriorThickness { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("coarseMesh")]
 		[return: NullAllowed]
 		MDLMesh GetCoarseMesh ();
 
+		/// <param name="allocator">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("coarseMeshUsingAllocator:")]
 		[return: NullAllowed]
@@ -3190,6 +4089,9 @@ namespace ModelIO {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MDLVertexBufferLayout : NSCopying {
+		/// <param name="stride">To be added.</param>
+		/// <summary>Creates a new vertex buffer layout with the specified <paramref name="stride" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("initWithStride:")]
 		NativeHandle Constructor (nuint stride);
@@ -3207,6 +4109,9 @@ namespace ModelIO {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MDLSubmeshTopology {
+		/// <param name="submesh">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("initWithSubmesh:")]
 		NativeHandle Constructor (MDLSubmesh submesh);
@@ -3235,7 +4140,7 @@ namespace ModelIO {
 		[NullAllowed, Export ("vertexCreaseIndices", ArgumentSemantic.Retain)]
 		IMDLMeshBuffer VertexCreaseIndices { get; set; }
 
-		/// <summary>Gets or sets the sparse mesh buffer that contains vertex smoothness data that are indexed by <see cref="P:ModelIO.MDLSubmeshTopology.VertexCreaseIndices" /> property</summary>
+		/// <summary>Gets or sets the sparse mesh buffer that contains vertex smoothness data that are indexed by <see cref="ModelIO.MDLSubmeshTopology.VertexCreaseIndices" /> property</summary>
 		///         <value>
 		///           <para>(More documentation for this node is coming)</para>
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
@@ -3244,7 +4149,7 @@ namespace ModelIO {
 		[NullAllowed, Export ("vertexCreases", ArgumentSemantic.Retain)]
 		IMDLMeshBuffer VertexCreases { get; set; }
 
-		/// <summary>Gets or sets the number of values in the <see cref="P:ModelIO.MDLSubmeshTopology.VertexCreaseIndices" /> property.</summary>
+		/// <summary>Gets or sets the number of values in the <see cref="ModelIO.MDLSubmeshTopology.VertexCreaseIndices" /> property.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("vertexCreaseCount", ArgumentSemantic.Assign)]
@@ -3259,7 +4164,7 @@ namespace ModelIO {
 		[NullAllowed, Export ("edgeCreaseIndices", ArgumentSemantic.Retain)]
 		IMDLMeshBuffer EdgeCreaseIndices { get; set; }
 
-		/// <summary>Gets or sets the mesh buffer that contains edge smoothness data that correlates with the vertex pairs that are contained in <see cref="P:ModelIO.MDLSubmeshTopology.EdgeCreaseIndices" /> property.</summary>
+		/// <summary>Gets or sets the mesh buffer that contains edge smoothness data that correlates with the vertex pairs that are contained in <see cref="ModelIO.MDLSubmeshTopology.EdgeCreaseIndices" /> property.</summary>
 		///         <value>
 		///           <para>(More documentation for this node is coming)</para>
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
@@ -3337,6 +4242,8 @@ namespace ModelIO {
 		[Export ("keyTimes")]
 		NSNumber [] WeakKeyTimes { get; }
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("clear")]
 		void Clear ();
 
@@ -3487,15 +4394,31 @@ namespace ModelIO {
 	[BaseType (typeof (MDLAnimatedValue))]
 	interface MDLAnimatedScalar {
 
+		/// <param name="value">To be added.</param>
+		///         <param name="time">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setFloat:atTime:")]
 		void SetValue (float value, double time);
 
+		/// <param name="value">To be added.</param>
+		///         <param name="time">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setDouble:atTime:")]
 		void SetValue (double value, double time);
 
+		/// <param name="time">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("floatAtTime:")]
 		float GetFloat (double time);
 
+		/// <param name="time">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("doubleAtTime:")]
 		double GetDouble (double time);
 
@@ -3528,10 +4451,18 @@ namespace ModelIO {
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		void SetValue (Vector2d value, double time);
 
+		/// <param name="time">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("float2AtTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		Vector2 GetVector2Value (double time);
 
+		/// <param name="time">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("double2AtTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		Vector2d GetVector2dValue (double time);
@@ -3565,10 +4496,18 @@ namespace ModelIO {
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		void SetValue (NVector3d value, double time);
 
+		/// <param name="time">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("float3AtTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		NVector3 GetNVector3Value (double time);
 
+		/// <param name="time">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("double3AtTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		NVector3d GetNVector3dValue (double time);
@@ -3602,10 +4541,18 @@ namespace ModelIO {
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		void SetValue (Vector4d value, double time);
 
+		/// <param name="time">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("float4AtTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		Vector4 GetVector4Value (double time);
 
+		/// <param name="time">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("double4AtTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		Vector4d GetVector4dValue (double time);
@@ -3639,10 +4586,18 @@ namespace ModelIO {
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		void SetValue (NMatrix4d value, double time);
 
+		/// <param name="time">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("float4x4AtTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		NMatrix4 GetNMatrix4Value (double time);
 
+		/// <param name="time">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("double4x4AtTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		NMatrix4d GetNMatrix4dValue (double time);
@@ -3688,6 +4643,10 @@ namespace ModelIO {
 		[Export ("jointRestTransforms")]
 		MDLMatrix4x4Array JointRestTransforms { get; }
 
+		/// <param name="name">To be added.</param>
+		/// <param name="jointPaths">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithName:jointPaths:")]
 		NativeHandle Constructor (string name, string [] jointPaths);
 	}
@@ -3728,6 +4687,10 @@ namespace ModelIO {
 		[Export ("scales")]
 		MDLAnimatedVector3Array Scales { get; }
 
+		/// <param name="name">To be added.</param>
+		/// <param name="jointPaths">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithName:jointPaths:")]
 		NativeHandle Constructor (string name, string [] jointPaths);
 	}
@@ -3781,10 +4744,18 @@ namespace ModelIO {
 	[Protocol]
 	interface MDLAssetResolver {
 
+		/// <param name="name">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("canResolveAssetNamed:")]
 		bool CanResolveAsset (string name);
 
+		/// <param name="name">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("resolveAssetNamed:")]
 		NSUrl ResolveAsset (string name);
@@ -3795,6 +4766,9 @@ namespace ModelIO {
 	[DisableDefaultCtor]
 	interface MDLRelativeAssetResolver : MDLAssetResolver {
 
+		/// <param name="asset">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithAsset:")]
 		NativeHandle Constructor (MDLAsset asset);
 
@@ -3813,6 +4787,9 @@ namespace ModelIO {
 	[DisableDefaultCtor]
 	interface MDLPathAssetResolver : MDLAssetResolver {
 
+		/// <param name="path">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithPath:")]
 		NativeHandle Constructor (string path);
 
@@ -3828,6 +4805,9 @@ namespace ModelIO {
 	[DisableDefaultCtor]
 	interface MDLBundleAssetResolver : MDLAssetResolver {
 
+		/// <param name="path">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithBundle:")]
 		NativeHandle Constructor (string path);
 
@@ -3844,20 +4824,34 @@ namespace ModelIO {
 	[Protocol]
 	interface MDLTransformOp {
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("name")]
 		string Name { get; }
 
+		/// <param name="atTime">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("float4x4AtTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		NMatrix4 GetNMatrix4 (double atTime);
 
+		/// <param name="atTime">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("double4x4AtTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		NMatrix4d GetNMatrix4d (double atTime);
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("IsInverseOp")]
 		bool IsInverseOp { get; }
@@ -3985,24 +4979,60 @@ namespace ModelIO {
 	[BaseType (typeof (NSObject))]
 	interface MDLTransformStack : NSCopying, MDLTransformComponent {
 
+		/// <param name="animatedValueName">To be added.</param>
+		///         <param name="inverse">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("addTranslateOp:inverse:")]
 		MDLTransformTranslateOp AddTranslateOp (string animatedValueName, bool inverse);
 
+		/// <param name="animatedValueName">To be added.</param>
+		///         <param name="inverse">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("addRotateXOp:inverse:")]
 		MDLTransformRotateXOp AddRotateXOp (string animatedValueName, bool inverse);
 
+		/// <param name="animatedValueName">To be added.</param>
+		///         <param name="inverse">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("addRotateYOp:inverse:")]
 		MDLTransformRotateYOp AddRotateYOp (string animatedValueName, bool inverse);
 
+		/// <param name="animatedValueName">To be added.</param>
+		///         <param name="inverse">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("addRotateZOp:inverse:")]
 		MDLTransformRotateZOp AddRotateZOp (string animatedValueName, bool inverse);
 
+		/// <param name="animatedValueName">To be added.</param>
+		///         <param name="order">To be added.</param>
+		///         <param name="inverse">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("addRotateOp:order:inverse:")]
 		MDLTransformRotateOp AddRotateOp (string animatedValueName, MDLTransformOpRotationOrder order, bool inverse);
 
+		/// <param name="animatedValueName">To be added.</param>
+		///         <param name="inverse">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("addScaleOp:inverse:")]
 		MDLTransformScaleOp AddScaleOp (string animatedValueName, bool inverse);
 
+		/// <param name="animatedValueName">To be added.</param>
+		///         <param name="inverse">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("addMatrixOp:inverse:")]
 		MDLTransformMatrixOp AddMatrixOp (string animatedValueName, bool inverse);
 
@@ -4011,13 +5041,25 @@ namespace ModelIO {
 		[Export ("addOrientOp:inverse:")]
 		MDLTransformOrientOp AddOrientOp (string animatedValueName, bool inverse);
 
+		/// <param name="name">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("animatedValueWithName:")]
 		MDLAnimatedValue GetAnimatedValue (string name);
 
+		/// <param name="atTime">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("float4x4AtTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		NMatrix4 GetNMatrix4 (double atTime);
 
+		/// <param name="atTime">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("double4x4AtTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		NMatrix4d GetNMatrix4d (double atTime);
@@ -4056,6 +5098,8 @@ namespace ModelIO {
 		[Export ("precision")]
 		MDLDataPrecision Precision { get; }
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("clear")]
 		void Clear ();
 

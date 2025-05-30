@@ -129,6 +129,7 @@ targets/Microsoft.$(1).Sdk.Versions.props: targets/Microsoft.Sdk.Versions.templa
 		-e 's/@XCODE_IS_PREVIEW@/$(XCODE_IS_PREVIEW)/g' \
 		-e 's/@DOTNET_TFM@/$(DOTNET_TFM)/g' \
 		-e 's/@NUGET_OS_VERSION@/$$($(2)_NUGET_OS_VERSION)/g' \
+		-e 's/@XCODE_VERSION@/$(XCODE_VERSION)/g' \
 		$$< > $$@.tmp
 	$$(Q) mv $$@.tmp $$@
 
@@ -304,7 +305,7 @@ TARGETS += $(RUNTIME_PACKS) $(REF_PACKS) $(SDK_PACKS) $(TEMPLATE_PACKS) $(WORKLO
 
 define InstallWorkload
 # .NET comes with a workload for us, but we don't want that, we want our own. So delete the workload that comes with .NET.
-.stamp-workload-replace-$1-$(DOTNET_VERSION):
+.stamp-workload-replace-$1-$(DOTNET_VERSION): $$(ALL_SCRIPTS)
 	$(Q) echo "Removing existing workload shipped with .NET $(DOTNET_VERSION): $(shell echo $(DOTNET_SDK_MANIFESTS_PATH)/*/microsoft.net.sdk.$3)"
 	$(Q) rm -Rf $(DOTNET_SDK_MANIFESTS_PATH)/*/microsoft.net.sdk.$3
 	$(Q) rm -Rf $(DOTNET_SDK_MANIFESTS_PATH)/*/workloadsets

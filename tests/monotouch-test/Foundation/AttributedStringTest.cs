@@ -254,7 +254,6 @@ namespace MonoTouchFixtures.Foundation {
 			}
 		}
 
-#if NET // this test crashes in legacy Xamarin
 		[Test]
 		public void LowLevelGetAttributesOverrideTest ()
 		{
@@ -308,6 +307,5 @@ namespace MonoTouchFixtures.Foundation {
 				return attributesPtr;
 			}
 		}
-#endif // NET
 	}
 }

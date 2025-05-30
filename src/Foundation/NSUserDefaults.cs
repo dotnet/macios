@@ -5,58 +5,72 @@ using ObjCRuntime;
 
 namespace Foundation {
 
+	/// <summary>This enum is used to select how to initialize a new instance of an <see cref="NSUserDefaults" />.</summary>
 	public enum NSUserDefaultsType {
-		/// <summary>To be added.</summary>
+		/// <summary>The name specifies a user name.</summary>
 		UserName,
-		/// <summary>To be added.</summary>
+		/// <summary>The name specifies a suite name.</summary>
 		SuiteName,
 	}
 
 	public partial class NSUserDefaults {
-#if NET
+		/// <summary>Create a new <see cref="NSUserDefaults" /> instance.</summary>
+		/// <param name="name">The user name for the new <see cref="NSUserDefaults" /> instance.</param>
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-		[ObsoletedOSPlatform ("macos10.10")]
-		[ObsoletedOSPlatform ("ios7.0")]
-#else
-		[Deprecated (PlatformName.iOS, 7, 0)]
-		[Deprecated (PlatformName.MacOSX, 10, 10)]
-#endif
+		[ObsoletedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("ios")]
+		[ObsoletedOSPlatform ("tvos")]
+		[ObsoletedOSPlatform ("maccatalyst")]
 		public NSUserDefaults (string name) : this (name, NSUserDefaultsType.UserName)
 		{
 		}
 
-#if NET
+		/// <summary>Create a new <see cref="NSUserDefaults" /> instance.</summary>
+		/// <param name="name">The name for the new <see cref="NSUserDefaults" /> instance. Cannot be null if <paramref name="type" /> is <see cref="NSUserDefaultsType.UserName" />.</param>
+		/// <param name="type">Specify whether the <paramref name="name" /> parameter is a user name or a suite name.</param>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public NSUserDefaults (string? name, NSUserDefaultsType type)
+			: base (NSObjectFlag.Empty)
 		{
-			// two different `init*` would share the same C# signature
 			switch (type) {
 			case NSUserDefaultsType.UserName:
 				if (name is null)
-					throw new ArgumentNullException (nameof (name));
-				Handle = InitWithUserName (name);
+					throw new ArgumentNullException (nameof (name), "initWithUser:");
+				InitializeHandle (_InitWithUserName (name));
 				break;
 			case NSUserDefaultsType.SuiteName:
-				Handle = InitWithSuiteName (name);
+				InitializeHandle (_InitWithSuiteName (name), "initWithSuiteName:");
 				break;
 			default:
 				throw new ArgumentException (nameof (type));
 			}
 		}
 
+		/// <summary>Sets a string value at the specified key.</summary>
+		/// <param name="value">String value to store.</param>
+		/// <param name="defaultName">The key name used to store the value.</param>
 		public void SetString (string? value, string defaultName)
 		{
 			using var str = (NSString?) value;
 			SetObjectForKey (str, defaultName);
 		}
 
+		/// <param name="key">
+		///           <para>The key name used to lookup the stored value.</para>
+		///           <para>
+		///           </para>
+		///         </param>
+		/// <summary>Indexer, returns the <see cref="Foundation.NSObject" /> associated with the given key.</summary>
+		/// <value>The NSObject that was stored with the specific key, or <see langword="null" />if the stored value is not present.</value>
+		/// <remarks>
+		///           <para />
+		///         </remarks>
 		public NSObject? this [string key] {
 			get {
 				return ObjectForKey (key);

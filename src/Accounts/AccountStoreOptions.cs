@@ -37,6 +37,9 @@ using System.Runtime.Versioning;
 namespace Accounts {
 
 	// XI specific, not part of ObjC (NSString mapping)
+	/// <summary>Specifies target audience for Facebook posts.</summary>
+	///     <remarks>
+	///     </remarks>
 	public enum ACFacebookAudience {
 		/// <summary>Posts are visible to everyone.</summary>
 		Everyone = 1,
@@ -46,11 +49,12 @@ namespace Accounts {
 		OnlyMe,
 	}
 
-#if NET
+	/// <summary>Options available when requesting Facebook access.</summary>
+	///     <remarks>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
-#endif
 	public class AccountStoreOptions : DictionaryContainer {
 #if !COREBUILD
 		/// <summary>To be added.</summary>

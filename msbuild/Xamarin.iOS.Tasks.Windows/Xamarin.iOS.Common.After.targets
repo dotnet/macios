@@ -73,7 +73,12 @@ Copyright (C) 2011-2013 Xamarin. All rights reserved.
 		<!-- Creates AppBundle dir on the output path -->
 		<MakeDir Condition="'$(MtouchTargetsEnabled)' And '$(IsMacEnabled)' == 'true'" SessionId="$(BuildSessionId)" Directories="$(DeviceSpecificOutputPath)AppBundle" />
 		<!--Zip AppBundle-->
-		<Zip SessionId="$(BuildSessionId)" Condition="'$(MtouchTargetsEnabled)' And '$(IsMacEnabled)' == 'true'" ZipPath="$(ZipPath)" Recursive="true" Sources="$(DeviceSpecificOutputPath)$(_AppBundleName)$(AppBundleExtension)" OutputFile="$(DeviceSpecificOutputPath)AppBundle\$(_AppBundleName).zip" WorkingDirectory="$(DeviceSpecificOutputPath)AppBundle" />
+		<Zip
+			SessionId="$(BuildSessionId)"
+			Condition="'$(MtouchTargetsEnabled)' And '$(IsMacEnabled)' == 'true'"
+			Sources="$(DeviceSpecificOutputPath)$(_AppBundleName)$(AppBundleExtension)"
+			OutputFile="$(DeviceSpecificOutputPath)AppBundle\$(_AppBundleName).zip"
+			WorkingDirectory="$(DeviceSpecificOutputPath)AppBundle" />
 		<!--Unzip App Bundle on Windows-->
 		<Unzip Condition="Exists('$(DeviceSpecificOutputPath)AppBundle\$(_AppBundleName).zip')" ZipFilePath="$(DeviceSpecificOutputPath)AppBundle\$(_AppBundleName).zip" ExtractionPath="$(DeviceSpecificOutputPath)AppBundle\$(_AppBundleName)$(AppBundleExtension)" />
 		<!-- Delete Zip file -->
@@ -106,7 +111,12 @@ Copyright (C) 2011-2013 Xamarin. All rights reserved.
 		</PropertyGroup>
 		<MakeDir SessionId="$(BuildSessionId)" Directories="$(_ArchiveZipWorkingDirOnMac)" />
 		<CopyArchiveFiles ArchivePath="$(ArchiveDir)" SessionId="$(BuildSessionId)" AppName="$(BuildAppName)" TargetPath="$(_ArchiveZipWorkingDirOnMac)" />
-		<Zip SessionId="$(BuildSessionId)" Condition="'$(MtouchTargetsEnabled)'" ZipPath="$(ZipPath)" Recursive="true" Symlinks="true" Sources="$(ArchiveDir)" OutputFile="$(_ArchiveZipFileNameOnMac)" WorkingDirectory="$([System.IO.Path]::GetDirectoryName($(ArchiveDir)))" />
+		<Zip
+			SessionId="$(BuildSessionId)"
+			Condition="'$(MtouchTargetsEnabled)'"
+			Sources="$(ArchiveDir)"
+			OutputFile="$(_ArchiveZipFileNameOnMac)"
+			WorkingDirectory="$([System.IO.Path]::GetDirectoryName($(ArchiveDir)))" />
 		<CreateArchiveDirectory ArchiveBasePath="$(ArchiveBasePath)">
 			<Output TaskParameter="ArchiveRootDir" PropertyName="ArchiveRootDirOnWin" />
 		</CreateArchiveDirectory>
@@ -163,7 +173,12 @@ Copyright (C) 2011-2013 Xamarin. All rights reserved.
 			</_DSYMDir>
 		</ItemGroup>
 		<!--Zip Dsym folders-->
-		<Zip SessionId="$(BuildSessionId)" Condition="'$(MtouchTargetsEnabled)' And '$(IsMacEnabled)' == 'true' And '@(_DSYMDir)' != ''" ZipPath="$(ZipPath)" Recursive="true" Symlinks="true" Sources="@(_DSYMDir)" OutputFile="$(DeviceSpecificOutputPath)%(_DSYMDir.DsymFileName).zip" WorkingDirectory="$(DeviceSpecificOutputPath)" />
+		<Zip
+			SessionId="$(BuildSessionId)"
+			Condition="'$(MtouchTargetsEnabled)' And '$(IsMacEnabled)' == 'true' And '@(_DSYMDir)' != ''"
+			Sources="@(_DSYMDir)"
+			OutputFile="$(DeviceSpecificOutputPath)%(_DSYMDir.DsymFileName).zip"
+			WorkingDirectory="$(DeviceSpecificOutputPath)" />
 		<CopyFileFromBuildServer Condition="'$(MtouchTargetsEnabled)' And '$(IsMacEnabled)' == 'true' And '@(_DSYMDir)' != ''" SessionId="$(BuildSessionId)" File="$(DeviceSpecificOutputPath)%(_DSYMDir.DsymFileName).zip" />
 		<Unzip Condition="Exists('$(DeviceSpecificOutputPath)%(_DSYMDir.DsymFileName).zip')" ZipFilePath="$(DeviceSpecificOutputPath)%(_DSYMDir.DsymFileName).zip" ExtractionPath="$(DeviceSpecificOutputPath)" />
 		<Delete Condition="'$(MtouchTargetsEnabled)' And '$(IsMacEnabled)' == 'true' And Exists('$(DeviceSpecificOutputPath)%(_DSYMDir.DsymFileName).zip')" SessionId="$(BuildSessionId)" Files="$(DeviceSpecificOutputPath)%(_DSYMDir.DsymFileName).zip" />
@@ -190,12 +205,6 @@ Copyright (C) 2011-2013 Xamarin. All rights reserved.
 		</PropertyGroup>
 		
 		<Message Importance="high" Text="Resolved Path: $(IpaPackagePath)" />
-	</Target>
-
-	<Target Name="_SetMtouchProjectDirectory" AfterTargets="_SayHello" BeforeTargets="_CompileToNative">
-		<PropertyGroup>
-			<MtouchProjectDirectory>$(MacBuildPath)</MtouchProjectDirectory>
-		</PropertyGroup>
 	</Target>
 
 	<Target Name="_ResolveUniversalTypeIdentifiers" BeforeTargets="_CompileImageAssets" Condition="'$(IsMacEnabled)' == 'true' And '$(_BundleOriginalResources)' != 'true'"
@@ -417,7 +426,7 @@ Copyright (C) 2011-2013 Xamarin. All rights reserved.
 	<Target Name="_VerifyNoAbsoluteOutputPath" Condition="'$(AllowAbsoluteOutputPath)' != 'true'" AfterTargets="_SayHello">
 		<!--
 			Remote builds won't work if either OutputPath or IntermediateOutputPath are is an absolute path, so just show an error in that case that tells people what the actual problem is (instead of a random and unintelligible build error).
-				Ref: https://github.com/xamarin/xamarin-macios/issues/18510
+				Ref: https://github.com/dotnet/macios/issues/18510
 				Ref: https://dev.azure.com/devdiv/DevDiv/_workitems/edit/1847166
 		-->
 		<Error Condition="'$(IsMacEnabled)' == 'true' And $([System.IO.Path]::IsPathRooted('$(OutputPath)'))" Text="An absolute OutputPath is not supported when building remotely. Note that this may occur as a consequence of setting UseArtifactsOutput=true or ArtifactsPath." />

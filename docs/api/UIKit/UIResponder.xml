@@ -3,7 +3,7 @@
     <summary>Base class for objects that respond or handle events.</summary>
     <remarks>
       <para>
-        This is the base class for <see cref="T:UIKit.UIView" /> (and by extension, <see cref="T:UIKit.UIWindow" />), <see cref="T:UIKit.UIViewController" /> and <see cref="T:UIKit.UIApplication" />.
+        This is the base class for <see cref="UIKit.UIView" /> (and by extension, <see cref="UIKit.UIWindow" />), <see cref="UIKit.UIViewController" /> and <see cref="UIKit.UIApplication" />.
       </para>
       <format type="text/html">
         <h4>Responder Chain</h4>
@@ -21,35 +21,35 @@
       <list type="number">
         <item>
           <term>
-            The <see cref="T:UIKit.UIView" /> where the touch took place is determined by using the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:UIKit.UIView.HitTest(System.Drawing.PointF, UIKit.UIEvent*&amp;scope=Xamarin" title="M:UIKit.UIView.HitTest(System.Drawing.PointF, UIKit.UIEvent*">M:UIKit.UIView.HitTest(System.Drawing.PointF, UIKit.UIEvent*</a></format> 
+            The <see cref="UIKit.UIView" /> where the touch took place is determined by using the <see cref="UIKit.UIView.HitTest(CGPoint, UIKit.UIEvent" /> 
             and the touch is sent to that view.   
           </term>
         </item>
         <item>
           <term>
             If the view did not handle the event, the message is sents
-            to its <see cref="T:UIKit.UIViewController" /> if
-            there is one, or to its <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIView%20Super%20View&amp;scope=Xamarin" title="P:UIKit.UIView.SuperView">P:UIKit.UIView.SuperView</a></format> if there is no
+            to its <see cref="UIKit.UIViewController" /> if
+            there is one, or to its <see cref="UIKit.UIView.SuperView" /> if there is no
             view controller.
             
           </term>
         </item>
         <item>
           <term>
-            The process is repeated for each superview, until it reaches the topmost <see cref="T:UIKit.UIWindow" />.
+            The process is repeated for each superview, until it reaches the topmost <see cref="UIKit.UIWindow" />.
           </term>
         </item>
         <item>
           <term>
-            If the topmost UIWindow does not handle the event, the message is sent to the <see cref="T:UIKit.UIApplication" />.
+            If the topmost UIWindow does not handle the event, the message is sent to the <see cref="UIKit.UIApplication" />.
           </term>
         </item>
       </list>
       <para>
-        To receive messages UIResponders override the <see cref="P:UIKit.UIResponder.CanBecomeFirstResponder" />
+        To receive messages UIResponders override the <see cref="UIKit.UIResponder.CanBecomeFirstResponder" />
         property to return true and are notified that they became the
-        first responder when the <see cref="M:UIKit.UIResponder.BecomeFirstResponder" />
-        is invoked.  The system calls <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIResponder%20Resign%20First%20Responder&amp;scope=Xamarin" title="M:UIKit.UIResponder.ResignFirstResponder*">M:UIKit.UIResponder.ResignFirstResponder*</a></format>
+        first responder when the <see cref="UIKit.UIResponder.BecomeFirstResponder" />
+        is invoked.  The system calls <see cref="UIKit.UIResponder.ResignFirstResponder" />
         to notify a the first responder that the first responder is
         changing.  Text input responders will typically override both
         methods to activate and deactivate the virtual keyboard.
@@ -59,7 +59,7 @@
         For action messages, editing menu messages, remote events and
         motion events are sent to the designated first responder.
         These events, if they are not handled are bubbled up the
-        responder chain by sending the message to the <see cref="P:UIKit.UIResponder.NextResponder" />.
+        responder chain by sending the message to the <see cref="UIKit.UIResponder.NextResponder" />.
         Developers that override any of the UIResponder methods for
         these kinds of events should avoid directly calling the
         NextResponder methods, instead they should just call the base
@@ -70,30 +70,30 @@
         <h4>Touch Events</h4>
       </format>
       <para>
-        When an event is delivered to the topmost <see cref="T:UIKit.UIView" />, if the event is not
+        When an event is delivered to the topmost <see cref="UIKit.UIView" />, if the event is not
         handled, it is sent to its container recursively.  The
-        container can be a<see cref="T:UIKit.UIView" />, a
-        <see cref="T:UIKit.UIWindow" />, a <see cref="T:UIKit.UIViewController" /> or the <see cref="T:UIKit.UIApplication" />.  This allows
+        container can be a<see cref="UIKit.UIView" />, a
+        <see cref="UIKit.UIWindow" />, a <see cref="UIKit.UIViewController" /> or the <see cref="UIKit.UIApplication" />.  This allows
         developers to override the event handling methods at the level
         that is most convenient for them.   
       </para>
       <para>
-        iOS creates a <see cref="T:UIKit.UIEvent" /> object any time a
+        iOS creates a <see cref="UIKit.UIEvent" /> object any time a
         finger touches the screen, moves or is removed from the
-        screen.  The touch events are processed by the UIResponder by calling one of <see cref="M:UIKit.UIResponder.TouchesBegan(Foundation.NSSet,UIKit.UIEvent)" />, <see cref="M:UIKit.UIResponder.TouchesMoved(Foundation.NSSet,UIKit.UIEvent)" />, <see cref="M:UIKit.UIResponder.TouchesEnded(Foundation.NSSet,UIKit.UIEvent)" />, and <see cref="M:UIKit.UIResponder.TouchesCancelled(Foundation.NSSet,UIKit.UIEvent)" />.
+        screen.  The touch events are processed by the UIResponder by calling one of <see cref="UIKit.UIResponder.TouchesBegan(Foundation.NSSet,UIKit.UIEvent)" />, <see cref="UIKit.UIResponder.TouchesMoved(Foundation.NSSet,UIKit.UIEvent)" />, <see cref="UIKit.UIResponder.TouchesEnded(Foundation.NSSet,UIKit.UIEvent)" />, and <see cref="UIKit.UIResponder.TouchesCancelled(Foundation.NSSet,UIKit.UIEvent)" />.
       </para>
       <para>
-        An <see cref="T:UIKit.UIEvent" /> encapsulates all of the
+        An <see cref="UIKit.UIEvent" /> encapsulates all of the
         touches that are taking place on the screen at this point,
         even those that do not belong to the particular view.  In addition to
-        the <see cref="T:UIKit.UIEvent" />, an <see cref="T:Foundation.NSSet" /> containing
-        <see cref="T:UIKit.UITouch" /> objects that represent the state of
+        the <see cref="UIKit.UIEvent" />, an <see cref="Foundation.NSSet" /> containing
+        <see cref="UIKit.UITouch" /> objects that represent the state of
         each finger on the screen is sent to the various Touch methods.  
       </para>
       <para>
         It is considered a good coding practice to override all of the
         touch event methods.  If your application is tracking state in
-        response to a <see cref="M:UIKit.UIResponder.TouchesBegan(Foundation.NSSet,UIKit.UIEvent)" /> or a <see cref="M:UIKit.UIResponder.TouchesMoved(Foundation.NSSet,UIKit.UIEvent)" /> they should reset their state on the <see cref="M:UIKit.UIResponder.TouchesEnded(Foundation.NSSet,UIKit.UIEvent)" /> and <see cref="M:UIKit.UIResponder.TouchesCancelled(Foundation.NSSet,UIKit.UIEvent)" /> methods.
+        response to a <see cref="UIKit.UIResponder.TouchesBegan(Foundation.NSSet,UIKit.UIEvent)" /> or a <see cref="UIKit.UIResponder.TouchesMoved(Foundation.NSSet,UIKit.UIEvent)" /> they should reset their state on the <see cref="UIKit.UIResponder.TouchesEnded(Foundation.NSSet,UIKit.UIEvent)" /> and <see cref="UIKit.UIResponder.TouchesCancelled(Foundation.NSSet,UIKit.UIEvent)" /> methods.
       </para>
       <format type="text/html">
         <h4>Motion Events</h4>
@@ -101,13 +101,13 @@
       <para>
         Device motion events are also delivered to UIResponders.
         These are generated when the device moves (shakes).  The
-        operating system calls the <see cref="M:UIKit.UIResponder.MotionBegan(UIKit.UIEventSubtype,UIKit.UIEvent)" />
-        when the motion begins, the <see cref="M:UIKit.UIResponder.MotionCancelled(UIKit.UIEventSubtype,UIKit.UIEvent)" />
-        if the motion event is cancelled, and <see cref="M:UIKit.UIResponder.MotionEnded(UIKit.UIEventSubtype,UIKit.UIEvent)" />
+        operating system calls the <see cref="UIKit.UIResponder.MotionBegan(UIKit.UIEventSubtype,UIKit.UIEvent)" />
+        when the motion begins, the <see cref="UIKit.UIResponder.MotionCancelled(UIKit.UIEventSubtype,UIKit.UIEvent)" />
+        if the motion event is cancelled, and <see cref="UIKit.UIResponder.MotionEnded(UIKit.UIEventSubtype,UIKit.UIEvent)" />
         when the shaking stops.   Shakes are aggregated.
       </para>
       <para>
-        In particular, <see cref="T:UIKit.UIView" /> bubbles
+        In particular, <see cref="UIKit.UIView" /> bubbles
         the events up the responder chain.
       </para>
       <para>
@@ -123,19 +123,19 @@
       <para>
         The following methods are part of the standard edit protocol.
         You can implement these in your UIResponder to participate in
-        these standard operations: <see cref="M:UIKit.UIResponder.Copy(Foundation.NSObject)" />, <see cref="M:UIKit.UIResponder.Cut(Foundation.NSObject)" />, <see cref="M:UIKit.UIResponder.Delete(Foundation.NSObject)" />, <see cref="M:UIKit.UIResponder.Select(Foundation.NSObject)" />, <see cref="M:UIKit.UIResponder.SelectAll(Foundation.NSObject)" /> and <see cref="M:UIKit.UIResponder.Paste(Foundation.NSObject)" />.
+        these standard operations: <see cref="UIKit.UIResponder.Copy(Foundation.NSObject)" />, <see cref="UIKit.UIResponder.Cut(Foundation.NSObject)" />, <see cref="UIKit.UIResponder.Delete(Foundation.NSObject)" />, <see cref="UIKit.UIResponder.Select(Foundation.NSObject)" />, <see cref="UIKit.UIResponder.SelectAll(Foundation.NSObject)" /> and <see cref="UIKit.UIResponder.Paste(Foundation.NSObject)" />.
       </para>
       <para>
         The following methods are used to change the styling of text:
-        <see cref="M:UIKit.UIResponder.ToggleBoldface(Foundation.NSObject)" />,
-        <see cref="M:UIKit.UIResponder.ToggleItalics(Foundation.NSObject)" /> and
-        <see cref="M:UIKit.UIResponder.ToggleUnderline(Foundation.NSObject)" />.
+        <see cref="UIKit.UIResponder.ToggleBoldface(Foundation.NSObject)" />,
+        <see cref="UIKit.UIResponder.ToggleItalics(Foundation.NSObject)" /> and
+        <see cref="UIKit.UIResponder.ToggleUnderline(Foundation.NSObject)" />.
       </para>
       <para>
         If you are implementing a UIResponder subclass (like your own
         UIView) and you want it to display the standard editing menu,
-        you must: override <see cref="P:UIKit.UIResponder.CanBecomeFirstResponder" />
-        and return true, override the <see cref="M:UIKit.UIResponder.CanPerform(ObjCRuntime.Selector,Foundation.NSObject)" /> method and
+        you must: override <see cref="UIKit.UIResponder.CanBecomeFirstResponder" />
+        and return true, override the <see cref="UIKit.UIResponder.CanPerform(ObjCRuntime.Selector,Foundation.NSObject)" /> method and
         return true for all actions that you support and override the
         methods that actually carry out the action (the ones listed in
         "Standard Edit Actions" above)
@@ -149,7 +149,7 @@
           //
           public class SelectableLabel : UILabel {
           
-          public SelectableLabel (RectangleF rect) : base (rect)
+          public SelectableLabel (CGRect rect) : base (rect)
           {
           UserInteractionEnabled = true;
           var gesture = new UILongPressGestureRecognizer (LongPress);

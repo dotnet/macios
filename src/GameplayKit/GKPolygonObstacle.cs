@@ -10,18 +10,18 @@
 #nullable enable
 
 using System;
+using System.Numerics;
 using Foundation;
 using ObjCRuntime;
-#if NET
-using Vector2 = global::System.Numerics.Vector2;
-#else
-using Vector2 = global::OpenTK.Vector2;
-#endif
 using System.Runtime.InteropServices;
 
 namespace GameplayKit {
 	public partial class GKPolygonObstacle {
 
+		/// <param name="points">To be added.</param>
+		/// <summary>Factory method to create a <see cref="GameplayKit.GKPolygonObstacle" /> defined by the <paramref name="points" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		public static GKPolygonObstacle FromPoints (Vector2 [] points)
 		{
 			if (points is null)
@@ -67,6 +67,9 @@ namespace GameplayKit {
 			return ctor_pointer = buffer;
 		}
 
+		/// <param name="points">To be added.</param>
+		/// <summary>Creates a <see cref="GameplayKit.GKPolygonObstacle" /> with a shape defined by the specified <paramref name="points" />.</summary>
+		/// <remarks>To be added.</remarks>
 		public unsafe GKPolygonObstacle (Vector2 [] points)
 			: this (GetPointer (points), (nuint) points.Length)
 		{

@@ -2,6 +2,8 @@ using ObjCRuntime;
 
 namespace NetworkExtension {
 
+	/// <summary>Enumeration of error conditions relating to the VPN configuration.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[ErrorDomain ("NEVPNErrorDomain")]
 	[Native]
@@ -20,6 +22,8 @@ namespace NetworkExtension {
 		ConfigurationUnknown = 6,
 	}
 
+	/// <summary>Enumerates the state of a VPN connection.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NEVpnStatus : long {
@@ -37,10 +41,12 @@ namespace NetworkExtension {
 		Disconnecting = 5,
 	}
 
+	/// <summary>Enumerates supported techniques for authenticating Internet Key Exchange.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NEVpnIkeAuthenticationMethod : long {
-		/// <summary>In IKEv2, supports extended authentication if <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Network%20Extension%20NEVpn%20Protocol%20Ip%20Sec%20Extended%20Authentication&amp;scope=Xamarin" title="T:NetworkExtension.NEVpnProtocolIpSec.ExtendedAuthentication">T:NetworkExtension.NEVpnProtocolIpSec.ExtendedAuthentication</a></format> is <see langword="true" />.</summary>
+		/// <summary>In IKEv2, supports extended authentication if <see cref="NetworkExtension.NEVpnProtocolIpSec.ExtendedAuthentication" /> is <see langword="true" />.</summary>
 		None = 0,
 		/// <summary>A certificate and private key.</summary>
 		Certificate = 1,
@@ -48,6 +54,8 @@ namespace NetworkExtension {
 		SharedSecret = 2,
 	}
 
+	/// <summary>Enumerates the algorithms that can be used for <see cref="NetworkExtension.NEVpnIke2SecurityAssociationParameters.EncryptionAlgorithm" />.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native ("NEVPNIKEv2EncryptionAlgorithm")]
 	public enum NEVpnIke2EncryptionAlgorithm : long {
@@ -72,6 +80,8 @@ namespace NetworkExtension {
 		ChaCha20Poly1305 = 7,
 	}
 
+	/// <summary>Enumerates the valid integrity algorithms for <see cref="NetworkExtension.NEVpnIke2SecurityAssociationParameters.IntegrityAlgorithm" />.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native ("NEVPNIKEv2IntegrityAlgorithm")]
 	public enum NEVpnIke2IntegrityAlgorithm : long {
@@ -89,6 +99,8 @@ namespace NetworkExtension {
 		SHA512 = 5,
 	}
 
+	/// <summary>Enumerates the frequencies with which the connection attempts to detect dead peers.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native ("NEVPNIKEv2DeadPeerDetectionRate")]
 	public enum NEVpnIke2DeadPeerDetectionRate : long {
@@ -102,6 +114,8 @@ namespace NetworkExtension {
 		High = 3,
 	}
 
+	/// <summary>Enumeration of Diffie Hellman groups, which determine encryption strength.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native ("NEVPNIKEv2DiffieHellmanGroup")]
 	public enum NEVpnIke2DiffieHellman : long {
@@ -141,6 +155,8 @@ namespace NetworkExtension {
 		Group32 = 32,
 	}
 
+	/// <summary>Enumerates the <see cref="NetworkExtension.NEOnDemandRule.Action" /> values of a <see cref="NetworkExtension.NEOnDemandRule" />.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NEOnDemandRuleAction : long {
@@ -154,6 +170,8 @@ namespace NetworkExtension {
 		Ignore = 4,
 	}
 
+	/// <summary>Enumerates the valid network interface types.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[TV (17, 0)]
 	[Native]
@@ -170,6 +188,8 @@ namespace NetworkExtension {
 		Cellular = 3,
 	}
 
+	/// <summary>Enumerates behavior if the matching host name cannot be resolved.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NEEvaluateConnectionRuleAction : long {
@@ -179,6 +199,8 @@ namespace NetworkExtension {
 		NeverConnect = 2,
 	}
 
+	/// <summary>Enumerates the cryptographic algorithm associated with the certificate.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native ("NEVPNIKEv2CertificateType")] // NSInteger
 	public enum NEVpnIke2CertificateType : long {
@@ -199,7 +221,7 @@ namespace NetworkExtension {
 	}
 
 	// in Xcode7 SDK but marked as 8.0
-	/// <summary>Enumerates errors associated with <see cref="T:NetworkExtension.NEFilterManager" />.</summary>
+	/// <summary>Enumerates errors associated with <see cref="NetworkExtension.NEFilterManager" />.</summary>
 	[NoTV]
 	[MacCatalyst (13, 1)]
 	[ErrorDomain ("NEFilterErrorDomain")]
@@ -219,6 +241,8 @@ namespace NetworkExtension {
 		ConfigurationInternalError = 6,
 	}
 
+	/// <summary>Enumerates network tunnel errors.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[ErrorDomain ("NETunnelProviderErrorDomain")]
 	[Native]
@@ -233,6 +257,8 @@ namespace NetworkExtension {
 		Failed = 3,
 	}
 
+	/// <summary>Enumerates <see cref="NetworkExtension.NEAppProxyFlow" /> error codes.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[ErrorDomain ("NEAppProxyErrorDomain")]
 	[Native]
@@ -262,6 +288,8 @@ namespace NetworkExtension {
 		ReadAlreadyPending = 10,
 	}
 
+	/// <summary>Enumerates reasons that a provider extension has stopped.</summary>
+	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NEProviderStopReason : long {
@@ -305,6 +333,8 @@ namespace NetworkExtension {
 		InternalError = 17,
 	}
 
+	/// <summary>Enumerates status information about network connection paths.</summary>
+	/// <remarks>To be added.</remarks>
 	[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Network.NWPathStatus' instead.")]
 	[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'Network.NWPathStatus' instead.")]
 	[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'Network.NWPathStatus' instead.")]
@@ -322,6 +352,8 @@ namespace NetworkExtension {
 		Satisfiable = 3,
 	}
 
+	/// <summary>Enumerates states that can be encountered while establishing a TCP connection.</summary>
+	/// <remarks>To be added.</remarks>
 	[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Network.NWConnectionState' instead.")]
 	[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'Network.NWConnectionState' instead.")]
 	[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'Network.NWConnectionState' instead.")]
@@ -343,6 +375,8 @@ namespace NetworkExtension {
 		Cancelled = 5,
 	}
 
+	/// <summary>Enumerates states that can be encountered while establishing a UDP connection.</summary>
+	/// <remarks>To be added.</remarks>
 	[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Network.NWConnectionState' instead.")]
 	[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'Network.NWConnectionState' instead.")]
 	[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'Network.NWConnectionState' instead.")]

@@ -45,7 +45,6 @@ namespace MonoTouchFixtures.Metal {
 			encoder = null;
 		}
 
-#if NET
 		[Test]
 		public void SetBuffers ()
 		{
@@ -63,6 +62,5 @@ namespace MonoTouchFixtures.Metal {
 
 			}, "Should not throw");
 		}
-#endif
 	}
 }

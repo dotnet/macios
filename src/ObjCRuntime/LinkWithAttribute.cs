@@ -29,6 +29,11 @@ using System.IO;
 #nullable enable
 
 namespace ObjCRuntime {
+	/// <summary>Link targets available for <see cref="ObjCRuntime.LinkWithAttribute" /></summary>
+	///     <remarks>
+	///       <para>LinkTarget may be combined for native libraries which target multiple platforms.</para>
+	///       <para>The LinkTarget value for LinkWith attributes is deprecated and ignored, instead any native libraries are inspected to determine the architectures they actually contain.</para>
+	///     </remarks>
 	[Flags]
 	public enum LinkTarget : int {
 		/// <summary>A flag that signifies that the native library supports the Simulator (i386 architecture).</summary>
@@ -39,7 +44,7 @@ namespace ObjCRuntime {
 		ArmV6 = 2,
 		/// <summary>A flag that signifies that the native library supports the ARMv7 architecture.</summary>
 		ArmV7 = 4,
-		/// <summary>A flag that specifies that the native library targets the Thumb subset of <see cref="F:ObjCRuntime.LinkTarget.ArmV6" /> or <see cref="F:ObjCRuntime.LinkTarget.ArmV7" />.</summary>
+		/// <summary>A flag that specifies that the native library targets the Thumb subset of <see cref="ObjCRuntime.LinkTarget.ArmV6" /> or <see cref="ObjCRuntime.LinkTarget.ArmV7" />.</summary>
 		Thumb = 8,
 		/// <summary>A flag that signifies that the native library supports the ARMv7s architecture.</summary>
 		ArmV7s = 16,
@@ -51,6 +56,12 @@ namespace ObjCRuntime {
 		x86_64 = Simulator64,
 	}
 
+	/// <summary>Used to specify if a library requires using dlsym to resolve P/Invokes to native functions.</summary>
+	///     <remarks>
+	///       <para>This enum is used to specify whether a library requires using dlsym to resolve P/Invokes to native functions or not.</para>
+	///       <para>A library can require using dlsym if there are P/Invokes in the assembly that reference native functions that don't exist on the target platform.</para>
+	///       <para>If a library only contains P/Invokes to native functions that exist on the target platform, an AOT compiler can insert a direct call to the native function in the generated native code. This is faster than using dlsym at runtime to find the native function (and the code is also slightly smaller), but if the native function does not exist on the target platform, the app will not compile (the native linker will fail because it can't find the native function).</para>
+	///     </remarks>
 	public enum DlsymOption {
 		/// <summary>Use the default value for the platform (for backwards compatibility reasons the default is to use dlsym on platforms that support it - this may change in the future).</summary>
 		Default,
@@ -60,6 +71,33 @@ namespace ObjCRuntime {
 		Disabled,
 	}
 
+	/// <summary>A LinkWith attribute specifies how the native library associated with the assembly should be linked to the resulting application.</summary>
+	///     <remarks>
+	///       <para>
+	/// 	This attribute is only useful for assemblies that bind to native libraries.
+	///       </para>
+	///       <para>
+	/// 	When using this attribute, the specified library in the
+	/// 	constructor will be linked with the final application.  You
+	/// 	can use one or more of the properties of the attribute to
+	/// 	configure how the linking is done.
+	///
+	///       </para>
+	///       <example>
+	///         <code lang="csharp lang-csharp"><![CDATA[
+	/// // The following is used to link with GoogleAdMobAds:
+	///
+	/// [assembly: LinkWith ("libGoogleAdMobAds.a", 
+	/// 		     ForceLoad = true, 
+	/// 		     Frameworks = "AudioToolbox MessageUI SystemConfiguration CoreGraphics MediaPlayer StoreKit", 
+	/// 		     WeakFrameworks = "AdSupport", 
+	/// 		     IsCxx = true, 
+	/// 		     SmartLink = true,
+	/// 		     LinkerFlags = "-lz -lsqlite3")]
+	/// [assembly: LinkerSafe]
+	/// ]]></code>
+	///       </example>
+	///     </remarks>
 	[AttributeUsage (AttributeTargets.Assembly, AllowMultiple = true)]
 	public sealed class LinkWithAttribute : Attribute {
 		/// <param name="libraryName">The name of the native library. For example: libMyLibrary.a</param>
@@ -143,7 +181,7 @@ namespace ObjCRuntime {
 		}
 
 		/// <summary>The target platform (or platforms) that this library is built for.</summary>
-		///         <value>A bitwise-or'ing of <see cref="T:ObjCRuntime.LinkTarget" />.</value>
+		///         <value>A bitwise-or'ing of <see cref="ObjCRuntime.LinkTarget" />.</value>
 		///         <remarks>
 		///           <para>This field is ignored, Xamarin.iOS will instead look in the native library to see which architectures are present in the library.</para>
 		///         </remarks>

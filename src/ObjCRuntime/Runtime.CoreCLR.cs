@@ -17,7 +17,7 @@
 // Uncomment VERBOSE_LOG to enable verbose logging
 // #define VERBOSE_LOG
 
-#if NET && !COREBUILD
+#if !COREBUILD
 
 #nullable enable
 
@@ -41,6 +41,10 @@ using MonoObjectPtr = System.IntPtr;
 
 namespace ObjCRuntime {
 
+	/// <summary>Provides information about the Xamarin.iOS Runtime.</summary>
+	///     <remarks>
+	///     </remarks>
+	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/SysSound/">SysSound</related>
 	public partial class Runtime {
 		// Keep in sync with XamarinLookupTypes in main.h
 		internal enum TypeLookup {
@@ -131,6 +135,7 @@ namespace ObjCRuntime {
 			log_coreclr (string.Format (message, args));
 		}
 
+		[SupportedOSPlatform ("macos")]
 		static unsafe void InitializeCoreCLRBridge (InitializationOptions* options)
 		{
 			if (options->xamarin_objc_msgsend != IntPtr.Zero)
@@ -172,11 +177,9 @@ namespace ObjCRuntime {
 			return path is not null;
 		}
 
-#if NET
 		// Note that this method does not work with NativeAOT, so throw an exception in that case.
 		// IL2026: Using member 'System.Runtime.Loader.AssemblyLoadContext.LoadFromAssemblyPath(String)' which has 'RequiresUnreferencedCodeAttribute' can break functionality when trimming application code. Types and members the loaded assembly depends on might be removed.
 		[UnconditionalSuppressMessage ("", "IL2026", Justification = "The APIs this method tries to access are marked by other means, so this is linker-safe.")]
-#endif
 		static Assembly? ResolvingEventHandler (AssemblyLoadContext sender, AssemblyName assemblyName)
 		{
 			// Note that this method does not work with NativeAOT, so throw an exception in that case.
@@ -206,6 +209,7 @@ namespace ObjCRuntime {
 			public NSObject.Flags Flags;
 		}
 
+		[SupportedOSPlatform ("macos")]
 		internal static GCHandle CreateTrackingGCHandle (NSObject obj, IntPtr handle)
 		{
 			var gchandle = ObjectiveCMarshal.CreateReferenceTrackingHandle (obj, out var info);
@@ -300,6 +304,7 @@ namespace ObjCRuntime {
 			throw new InvalidOperationException ($"Could not find any assemblies named {name}");
 		}
 
+		[SupportedOSPlatform ("macos")]
 		static unsafe void SetPendingException (MonoObject* exception_obj)
 		{
 			var exc = (Exception?) GetMonoObjectTarget (exception_obj);
@@ -490,7 +495,7 @@ namespace ObjCRuntime {
 				throw CreateNativeAOTNotSupportedException ();
 
 			var structType = obj.GetType ();
-			// Unwrap enums, Marshal.StructureToPtr complains they're not blittable (https://github.com/xamarin/xamarin-macios/issues/15744)
+			// Unwrap enums, Marshal.StructureToPtr complains they're not blittable (https://github.com/dotnet/macios/issues/15744)
 			if (structType.IsEnum) {
 				structType = Enum.GetUnderlyingType (structType);
 				obj = Convert.ChangeType (obj, structType);
@@ -1106,4 +1111,4 @@ namespace ObjCRuntime {
 	}
 }
 
-#endif // NET && !COREBUILD
+#endif // !COREBUILD

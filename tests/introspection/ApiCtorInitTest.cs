@@ -132,6 +132,8 @@ namespace Introspection {
 #endif
 			case "AVSpeechSynthesisVoice": // Calling description crashes the test
 				return TestRuntime.CheckExactXcodeVersion (12, 2, beta: 3);
+			case "AVRouteDetector": // only seems to work on device.
+				return TestRuntime.IsSimulator;
 			case "SKView":
 				// Causes a crash later. Filed as radar://18440271.
 				// Apple said they won't fix this ('init' isn't a designated initializer)

@@ -37,6 +37,8 @@ using ObjCRuntime;
 using Foundation;
 
 namespace CoreGraphics {
+	/// <summary>A callback function to be used with various <see cref="CoreGraphics" /> functions.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -102,6 +104,10 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static unsafe IntPtr CGFunctionCreate (/* void* */ IntPtr data, /* size_t */ nint domainDimension, /* CGFloat* */ nfloat* domain, nint rangeDimension, /* CGFloat* */ nfloat* range, CGFunctionCallbacks* callbacks);
 
+		/// <param name="data">To be added.</param>
+		///     <param name="outData">To be added.</param>
+		///     <summary>A delegate used to specify the callback function of a <see cref="CoreGraphics.CGFunction" />.</summary>
+		///     <remarks>To be added.</remarks>
 		unsafe public delegate void CGFunctionEvaluate (nfloat* data, nfloat* outData);
 
 

@@ -18,10 +18,6 @@ using UIViewController = AppKit.NSViewController;
 using UIKit;
 #endif
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace VideoSubscriberAccount {
 
 	/// <summary>Encapsulates errors that may occur during attempts to verify credentials.</summary>
@@ -136,11 +132,11 @@ namespace VideoSubscriberAccount {
 		string AccountProviderResponse { get; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:VideoSubscriberAccount.VSAccountManagerDelegate" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="VideoSubscriberAccount.VSAccountManagerDelegate" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:VideoSubscriberAccount.VSAccountManagerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:VideoSubscriberAccount.VSAccountManagerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:VideoSubscriberAccount.VSAccountManagerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="VideoSubscriberAccount.VSAccountManagerDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="VideoSubscriberAccount.VSAccountManagerDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="VideoSubscriberAccount.VSAccountManagerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	interface IVSAccountManagerDelegate { }
 
@@ -150,24 +146,29 @@ namespace VideoSubscriberAccount {
 	[BaseType (typeof (NSObject))]
 	interface VSAccountManagerDelegate {
 
+		/// <param name="accountManager">To be added.</param>
+		///         <param name="viewController">To be added.</param>
+		///         <summary>Developers override this to specify the <see cref="UIKit.UIViewController" /> to be shown when the <see cref="VideoSubscriberAccounts.VSAccountManager" /> requires user interaction.</summary>
+		///         <remarks>To be added.</remarks>
 		[Abstract]
-#if NET
 		[NoMac]
-#elif MONOMAC
-		[Obsoleted (PlatformName.MacOSX, 12,0, message: "Unavailable on macOS, will be removed in the future.")]
-#endif
 		[Export ("accountManager:presentViewController:")]
 		void PresentViewController (VSAccountManager accountManager, UIViewController viewController);
 
+		/// <param name="accountManager">To be added.</param>
+		///         <param name="viewController">To be added.</param>
+		///         <summary>Called after the user has interacted with the <paramref name="viewController" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Abstract]
-#if NET
 		[NoMac]
-#elif MONOMAC
-		[Obsoleted (PlatformName.MacOSX, 12,0, message: "Unavailable on macOS, will be removed in the future.")]
-#endif
 		[Export ("accountManager:dismissViewController:")]
 		void DismissViewController (VSAccountManager accountManager, UIViewController viewController);
 
+		/// <param name="accountManager">To be added.</param>
+		///         <param name="accountProviderIdentifier">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("accountManager:shouldAuthenticateAccountProviderWithIdentifier:")]
 		bool ShouldAuthenticateAccountProvider (VSAccountManager accountManager, string accountProviderIdentifier);
 	}
@@ -189,13 +190,46 @@ namespace VideoSubscriberAccount {
 		[NullAllowed, Export ("delegate", ArgumentSemantic.Weak)]
 		IVSAccountManagerDelegate Delegate { get; set; }
 
+		/// <param name="options">If not empty, may contain the key <see cref="VideoSubscriberAccount.VSCheckAccessOptionKeys" />.</param>
+		///         <param name="completionHandler">Called by the system with the results of the permission check.</param>
+		///         <summary>Checks whether the user has provided permission for the app to access their subscription information.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="options">If not empty, may contain the key .</param>
+			<summary>Checks whether the user has provided permission for the app to access their subscription information.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous CheckAccessStatus operation.  The value of the TResult parameter is of type System.Action&lt;VideoSubscriberAccount.VSAccountAccessStatus,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("checkAccessStatusWithOptions:completionHandler:")]
 		void CheckAccessStatus (NSDictionary options, Action<VSAccountAccessStatus, NSError> completionHandler);
 
+		/// <param name="accountMetadataRequest">To be added.</param>
+		///         <param name="completionHandler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="accountMetadataRequest">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous Enqueue operation.  The value of the TResult parameter is of type System.Action&lt;VideoSubscriberAccount.VSAccountMetadata,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The EnqueueAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""",
+			XmlDocsWithOutParameter = """
+			<param name="accountMetadataRequest">To be added.</param>
+			<param name="result">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("enqueueAccountMetadataRequest:completionHandler:")]
 		VSAccountManagerResult Enqueue (VSAccountMetadataRequest accountMetadataRequest, Action<VSAccountMetadata, NSError> completionHandler);
 
@@ -215,7 +249,7 @@ namespace VideoSubscriberAccount {
 		NSString CheckAccessOptionPrompt { get; }
 	}
 
-	/// <summary>A <see cref="T:Foundation.DictionaryContainer" /> holding keys appropriate to <see cref="M:VideoSubscriberAccount.VSAccountManager.CheckAccessStatusAsync(VideoSubscriberAccount.VSAccountManagerAccessOptions)" /> and <see cref="M:VideoSubscriberAccount.VSAccountManager.CheckAccessStatusAsync(VideoSubscriberAccount.VSAccountManagerAccessOptions)" />.</summary>
+	/// <summary>A <see cref="Foundation.DictionaryContainer" /> holding keys appropriate to <see cref="VideoSubscriberAccount.VSAccountManager.CheckAccessStatusAsync(VideoSubscriberAccount.VSAccountManagerAccessOptions)" /> and <see cref="VideoSubscriberAccount.VSAccountManager.CheckAccessStatusAsync(VideoSubscriberAccount.VSAccountManagerAccessOptions)" />.</summary>
 	[NoMacCatalyst]
 	[StrongDictionary ("VSCheckAccessOptionKeys")]
 	interface VSAccountManagerAccessOptions {
@@ -235,6 +269,8 @@ namespace VideoSubscriberAccount {
 	[DisableDefaultCtor]
 	interface VSAccountManagerResult {
 
+		/// <summary>Informs the <see cref="VSAccountManager" /> that the app no longer needs the requested work.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("cancel")]
 		void Cancel ();
 	}
@@ -264,7 +300,7 @@ namespace VideoSubscriberAccount {
 		[NullAllowed, Export ("authenticationExpirationDate", ArgumentSemantic.Copy)]
 		NSDate AuthenticationExpirationDate { get; }
 
-		/// <summary>Arbitrary data, for instance to hold cryptographic verify the <see cref="P:VideoSubscriberAccount.VSAccountMetadata.SamlAttributeQueryResponse" />.</summary>
+		/// <summary>Arbitrary data, for instance to hold cryptographic verify the <see cref="VideoSubscriberAccount.VSAccountMetadata.SamlAttributeQueryResponse" />.</summary>
 		///         <value>
 		///           <para>(More documentation for this node is coming)</para>
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
@@ -494,6 +530,12 @@ namespace VideoSubscriberAccount {
 		[Export ("defaultSubscriptionRegistrationCenter")]
 		VSSubscriptionRegistrationCenter Default { get; }
 
+		/// <param name="currentSubscription">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setCurrentSubscription:")]
 		void SetCurrentSubscription ([NullAllowed] VSSubscription currentSubscription);
 	}

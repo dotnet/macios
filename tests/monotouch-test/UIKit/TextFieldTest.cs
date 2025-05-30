@@ -116,7 +116,6 @@ namespace MonoTouchFixtures.UIKit {
 			// that's even more confusing since they all fails for respondToSelector tests but works in real life
 			using (UITextField tf = new UITextField ()) {
 				// this is just to show we can get and set those values (even if respondToSelector returns NO)
-#if NET
 				tf.SetAutocapitalizationType (tf.GetAutocapitalizationType ());
 				tf.SetAutocorrectionType (tf.GetAutocorrectionType ());
 				tf.SetEnablesReturnKeyAutomatically (tf.GetEnablesReturnKeyAutomatically ());
@@ -125,16 +124,6 @@ namespace MonoTouchFixtures.UIKit {
 				tf.SetReturnKeyType (tf.GetReturnKeyType ());
 				tf.SetSecureTextEntry (tf.GetSecureTextEntry ());
 				tf.SetSpellCheckingType (tf.GetSpellCheckingType ());
-#else
-				tf.AutocapitalizationType = tf.AutocapitalizationType;
-				tf.AutocorrectionType = tf.AutocorrectionType;
-				tf.EnablesReturnKeyAutomatically = tf.EnablesReturnKeyAutomatically;
-				tf.KeyboardAppearance = tf.KeyboardAppearance;
-				tf.KeyboardType = tf.KeyboardType;
-				tf.ReturnKeyType = tf.ReturnKeyType;
-				tf.SecureTextEntry = tf.SecureTextEntry;
-				tf.SpellCheckingType = tf.SpellCheckingType;
-#endif
 			}
 		}
 	}

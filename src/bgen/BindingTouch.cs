@@ -327,8 +327,7 @@ public class BindingTouch : IDisposable {
 			api = TypeManager.ParseApi (apiAssembly, config.ProcessEnums);
 			namespaceCache ??= new NamespaceCache (
 				CurrentPlatform,
-				config.HelperClassNamespace ?? firstApiDefinitionName,
-				LibraryManager.DetermineSkipSystemDrawing (LibraryInfo.TargetFramework)
+				config.HelperClassNamespace ?? firstApiDefinitionName
 			);
 
 
@@ -454,6 +453,9 @@ public class BindingTouch : IDisposable {
 		cargs.Add ("-unsafe");
 		cargs.Add ("-target:library");
 		cargs.Add ("-nowarn:436");
+		cargs.Add ("-nowarn:CS0419"); // "Ambiguous reference in cref attribute: '...'. Assuming '...', but could have also matched other overloads including '...'." => we want to be able to write xml comments in api definition code for APIs that don't exist until all the code has been generated, so we ignore these warnings.
+		cargs.Add ("-nowarn:CS1574"); // "XML comment has cref attribute '...' that could not be resolved" => we want to be able to write xml comments in api definition code for APIs that don't exist until all the code has been generated, so we ignore these warnings.
+		cargs.Add ("-nowarn:CS1580"); // "Invalid type for parameter '#' in XML comment cref attribute" => we want to be able to write xml comments in api definition code for APIs that don't exist until all the code has been generated, so we ignore these warnings.
 		cargs.Add ("-out:" + tmpass);
 		cargs.Add ("-r:" + LibraryManager.GetAttributeLibraryPath (libraryInfo, CurrentPlatform));
 		cargs.AddRange (config.References);

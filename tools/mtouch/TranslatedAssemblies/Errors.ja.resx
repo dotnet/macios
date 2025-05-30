@@ -13,19 +13,20 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="default" xml:space="preserve">
-		<value>コード {0} のエラー メッセージが見つかりませんでした。見つからなかったメッセージを https://github.com/xamarin/xamarin-macios/issues/new の GitHub にお知らせください</value>
+		<value>コード {0} のエラー メッセージが見つかりませんでした。見つからなかったメッセージを https://github.com/dotnet/macios/issues/new の GitHub にお知らせください</value>
 		<comment>
 			This is the default message when an error code can not be found.
 		</comment>
 	</data>
   <data name="MT0000" xml:space="preserve">
-		<value>予期しないエラーです。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください
+		<value>予期しないエラーです。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください
 		</value>
 	</data>
   <data name="MT0001" xml:space="preserve">
 		<value>'-devname' が、デバイス固有のアクションなしで指定されました
 		</value>
 	</data>
+  <!-- legacy only error -->
   <data name="MM0001" xml:space="preserve">
 		<value>Xamarin.Mac のこのバージョンには、Mono {0} が必要です (現在の Mono バージョンは {1})。http://mono-project.com/Downloads から Mono.framework を更新してください
 		</value>
@@ -66,6 +67,7 @@
 		<value>コマンド ライン引数を解析できませんでした: {0}
 		</value>
 	</data>
+  <!-- legacy only error -->
   <data name="MT0011" xml:space="preserve">
 		<value>{0} は、Xamarin.iOS でサポートされているよりも新しいランタイム ({1}) に対してビルドされたものです。
 		</value>
@@ -158,10 +160,7 @@
 		<value>オプション '--debugtrack' は、'--debug' も同時に指定されている場合を除き、無視されます。
 		</value>
 	</data>
-  <data name="MT0033" xml:space="preserve">
-		<value>Xamarin.iOS プロジェクトは、monotouch.dll または Xamarin.iOS.dll のいずれかを参照する必要があります
-		</value>
-	</data>
+  <!-- MT0034 is not in use anymore -->
   <data name="MT0034" xml:space="preserve">
 		<value>{1} プロジェクト内で '{0}.dll' を参照することはできません。'{2}' によって暗黙的に参照されています。
 		</value>
@@ -170,18 +169,9 @@
 		<value>* シミュレーターを * アプリ用に起動できません。プロジェクトの iOS ビルド オプション (詳細設定ページ) で、適切なアーキテクチャを有効にしてください。
 		</value>
 	</data>
-  <data name="MT0037" xml:space="preserve">
-		<value>monotouch.dll は 64 ビット互換ではありません。Xamarin.iOS.dll を参照するか、64 ビット アーキテクチャ向け (ARM64 または x86_64) にはビルドしないでください。
-		</value>
-	</data>
-  <data name="MT0038" xml:space="preserve">
-		<value>Xamarin.iOS.dll を参照している場合、古いレジストラー (--registrar:oldstatic|olddynamic) はサポートされません。
-		</value>
-	</data>
-  <data name="MT0039" xml:space="preserve">
-		<value>ARMv6 を対象とするアプリケーションは、Xamarin.iOS.dll を参照できません。
-		</value>
-	</data>
+  <!-- MT0037 is not in use anymore -->
+  <!-- MT0038 is not in use anymore -->
+  <!-- MT0039 is not in use anymore -->
   <data name="MT0040" xml:space="preserve">
 		<value>アセンブリ '\*' ('\*' によって参照) が見つかりませんでした。
 		</value>
@@ -190,10 +180,7 @@
 		<value>{1} アプリ内で '{0}' を参照できません。
 		</value>
 	</data>
-  <data name="MT0042" xml:space="preserve">
-		<value>monotouch.dll と Xamarin.iOS.dll のどちらに対する参照も見つかりませんでした。monotouch.dll への参照が追加されます。
-		</value>
-	</data>
+  <!-- MT0042 is not in use anymore -->
   <data name="MX0043" xml:space="preserve">
 		<value>Boehm ガベージ コレクターはサポートされていません。代わりに、SGen ガベージ コレクターが選択されました。
 		</value>
@@ -270,14 +257,12 @@
 		<value>拡張機能 * に実行可能ファイルが見つかりません (Info.plist 内に CFBundleExecutable エントリがありません)
 		</value>
 	</data>
-  <data name="MT0064" xml:space="preserve">
-		<value>Xamarin.iOS は、Unified プロジェクトでのみ埋め込みフレームワークをサポートしています。
-		</value>
-	</data>
+  <!-- legacy only error -->
   <data name="MT0065" xml:space="preserve">
 		<value>Xamarin.iOS は、配置ターゲットが 8.0 以上の場合にのみ埋め込みフレームワークをサポートします (現在の配置ターゲット: '{0}'、埋め込みフレームワーク: '{1}')
 		</value>
 	</data>
+  <!-- legacy only error -->
   <data name="MT0065_A" xml:space="preserve">
 		<value>Xamarin.iOS は、配置ターゲットが 2.0 以上の場合にのみ埋め込みフレームワークをサポートします (現在の配置ターゲット: '{0}'、埋め込みフレームワーク: '{1}')
 		</value>
@@ -299,7 +284,7 @@
 		</value>
 	</data>
   <data name="MX0071" xml:space="preserve">
-		<value>不明なプラットフォーム: {0}。これは通常、{1} にバグがあることを示します。テスト ケースを添えて https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください。
+		<value>不明なプラットフォーム: {0}。これは通常、{1} にバグがあることを示します。テスト ケースを添えて https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください。
 		</value>
 	</data>
   <data name="MT0072" xml:space="preserve">
@@ -307,25 +292,25 @@
 		</value>
 	</data>
   <data name="MT0073" xml:space="preserve">
-		<value>{4} {0} は、{3} の配置ターゲット {1} をサポートしていません (最小は {2} です)。プロジェクトの Info.plist で、より新しい配置ターゲットを選択してください。
+		<value>{4} {0} does not support a deployment target of {1} for {3} (the minimum is {2}). Please select a newer deployment target in your project's Info.plist or change the SupportedOSPlatformVersion property in your project file.
 		</value>
-		<comment>The following are literal names and should not be translated: SDK, Xcode
-{0} - The version number of the Xamarin product.
+		<comment>The following are literal names and should not be translated: SDK, Xcode, SupportedOSPlatformVersion, Info.plist
+{0} - The version number of the .NET SDK.
 {1} - The name of the deployment target such as a device, simulator, etc.
 {2} - The minimum version number.
 {3} - The platform name, such as 'iOS'.
-{4} - The produce name such as Xamarin.iOS or Xamarin.Mac.
+{4} - The product name such as .NET for iOS or .NET for macOS.
 		</comment>
 	</data>
   <data name="MX0074" xml:space="preserve">
-		<value>{4} {0} は、{1} に対する {3} のデプロイ ターゲットをサポートしていません (最大は {2} です)。プロジェクトの Info.plist で、より古いデプロイ ターゲットを選択するか、より新しいバージョンの {4} にアップグレードしてください。
+		<value>{4} {0} does not support a deployment target of {1} for {3} (the maximum is {2}). Please select an older deployment target in your project's Info.plist or change the SupportedOSPlatformVersion property in your project file, or upgrade to a newer version of {4}.
 		</value>
-		<comment>The following are literal names and should not be translated: SDK, Xcode
-{0} - The version number of the Xamarin product.
+		<comment>The following are literal names and should not be translated: SDK, Xcode, SupportedOSPlatformVersion, Info.plist
+{0} - The version number of the .NET SDK product.
 {1} - The name of the deployment target such as a device, simulator, etc.
 {2} - The maximum version number.
 {3} - The platform name, such as 'iOS'.
-{4} - The produce name such as Xamarin.iOS or Xamarin.Mac.
+{4} - The product name such as .NET for iOS or .NET for macOS.
 		</comment>
 	</data>
   <data name="MT0075" xml:space="preserve">
@@ -336,10 +321,7 @@
 		<value>アーキテクチャが (--abi 引数を使用して) 指定されていません。{0} プロジェクトには、アーキテクチャが必要です。
 		</value>
 	</data>
-  <data name="MT0077" xml:space="preserve">
-		<value>WatchOS プロジェクトは拡張機能である必要があります。
-		</value>
-	</data>
+  <!-- MT0077 is not in use anymore -->
   <data name="MT0078" xml:space="preserve">
 		<value>インクリメンタル ビルドは、配置ターゲットが 8.0 より前の場合に有効になります (現在は {0})。これはサポートされていません (生成されるアプリケーションは iOS 9 で起動しません)。そのため、配置ターゲットは 8.0 に設定されます。
 		</value>
@@ -348,6 +330,7 @@
 		<value>{4} {0} に推奨される Xcode のバージョンは、Xcode {3} 以降です。現在の Xcode のバージョン ({2} 内で検出) は {1} です。
 		</value>
 	</data>
+  <!-- legacy only error -->
   <data name="MM0079" xml:space="preserve">
 		<value>アプリ バンドルに実行可能ファイルがコピーされませんでした。'support@xamarin.com' にお問い合わせください
 		</value>
@@ -364,10 +347,7 @@
 		<value>REPL (--enable-repl) は、リンクを使用していない場合にのみサポートされます (--nolink)。
 		</value>
 	</data>
-  <data name="MT0083" xml:space="preserve">
-		<value>ASM 専用のビットコードは watchOS ではサポートされていません。--bitcode:marker または --bitcode:full のいずれかを使用してください。
-		</value>
-	</data>
+  <!-- MT0083 is not in use anymore -->
   <data name="MT0084" xml:space="preserve">
 		<value>このシミュレーターではビットコードはサポートされていません。シミュレーター用にビルドするときは --bitcode を渡さないでください。
 		</value>
@@ -384,14 +364,8 @@
 		<value>インクリメンタル ビルド (--fastdev) は、Boehm GC ではサポートされていません。インクリメンタル ビルドは無効にされます。
 		</value>
 	</data>
-  <data name="MT0088" xml:space="preserve">
-		<value>watchOS アプリでは、GC は協調モードでなければなりません。mtouch に対する --coop:false 引数を削除してください。
-		</value>
-	</data>
-  <data name="MT0089" xml:space="preserve">
-		<value>GC で協調モードが有効になっている場合、オプション '{0}' に値 '{1}' を指定することはできません。
-		</value>
-	</data>
+  <!-- MT0088 is not in use anymore -->
+  <!-- MT0089 is not in use anymore -->
   <data name="MX0090" xml:space="preserve">
 		<value>ターゲット フレームワーク '{0}' は非推奨になりました。代わりに '{1}' を使用してください。
 		</value>
@@ -415,21 +389,18 @@
 		<value>AOT ファイルを宛先ディレクトリ {0} にコピーできませんでした
 		</value>
 	</data>
-  <data name="MT0096" xml:space="preserve">
-		<value>Xamarin.iOS.dll への参照が見つかりませんでした。
-		</value>
-	</data>
+  <!-- MT0096 is not in use anymore -->
   <data name="MM0097" xml:space="preserve">
 		<value>machine.config ファイル '{0}' を見つけることができませんでした。
 		</value>
 	</data>
   <!-- MM0098 has been used in the past -->
   <data name="MX0099" xml:space="preserve">
-		<value>内部エラー: {0}。問題を https://github.com/xamarin/xamarin-macios/issues/new にお寄せください。
+		<value>内部エラー: {0}。問題を https://github.com/dotnet/macios/issues/new にお寄せください。
 		</value>
 	</data>
   <data name="MT0100" xml:space="preserve">
-		<value>アセンブリ ビルド ターゲットが無効です: '{0}'。テスト ケースを添えてバグ報告をお寄せください (https://github.com/xamarin/xamarin-macios/issues/new)。
+		<value>アセンブリ ビルド ターゲットが無効です: '{0}'。テスト ケースを添えてバグ報告をお寄せください (https://github.com/dotnet/macios/issues/new)。
 		</value>
 	</data>
   <data name="MT0101" xml:space="preserve">
@@ -464,14 +435,8 @@
 		<value>アセンブリ '{0}' が、指定されたパスとは異なるパスから読み込まれました (指定されたパス: {1}、実際のパス: {2})。
 		</value>
 	</data>
-  <data name="MT0110" xml:space="preserve">
-		<value>このバージョンの Xamarin.iOS では、サード パーティのバインド ライブラリをインクルードしていてビットコードにコンパイルされるプロジェクトでのインクリメンタル ビルドがサポートされていないため、インクリメンタル ビルドは無効にされました。
-		</value>
-	</data>
-  <data name="MT0111" xml:space="preserve">
-		<value>このバージョンの Xamarin.iOS では、ビットコードを有効にしないと LLVM を使用した watchOS プロジェクトのビルドがサポートされないため、ビットコードが有効にされました。
-		</value>
-	</data>
+  <!-- MT0110 is not in use anymore -->
+  <!-- MT0111 is not in use anymore -->
   <data name="MT0112" xml:space="preserve">
 		<value>ネイティブ コードの共有が無効にされました。理由: {0}
 		</value>
@@ -595,7 +560,7 @@
 		</value>
 	</data>
   <data name="MT0127" xml:space="preserve">
-		<value>このバージョンの Xamarin.iOS では、サード パーティのバインド ライブラリを複数含むプロジェクトでのインクリメンタル ビルドがサポートされていないため、インクリメンタル ビルドは無効にされました。
+		<value>Incremental builds have been disabled because incremental builds are currently not supported in projects that include more than one third-party binding library.
 		</value>
 	</data>
   <data name="MT0128" xml:space="preserve">
@@ -654,14 +619,8 @@
 		<value>32 ビット アプリのビルドはサポートされなくなります。プロジェクトの Mac ビルド オプションのアーキテクチャを 'x86_64' に変更してください。
 		</value>
 	</data>
-  <data name="MT0145" xml:space="preserve">
-		<value>watchOS 上でデバッグ用にビルドするときは、デバイス固有のビルドを使用してください。
-		</value>
-	</data>
-  <data name="MT0146" xml:space="preserve">
-		<value>ARM64_32 デバッグ モードでは --interpreter[=all] が必要です。強制的に設定します。
-		</value>
-	</data>
+  <!-- MT0145 is not in use anymore -->
+  <!-- MT0146 is not in use anymore -->
   <data name="MM0147" xml:space="preserve">
 		<value>pkg-config から cflags '{0}' を解析できません: {1}
 		</value>
@@ -679,27 +638,27 @@
 		</value>
 	</data>
   <data name="MT0157" xml:space="preserve">
-		<value>内部エラー: {2} で '{0}' から '{1}' に変換できません。テスト ケースを添えてバグ報告をお寄せください (https://github.com/xamarin/xamarin-macios/issues/new)。
+		<value>内部エラー: {2} で '{0}' から '{1}' に変換できません。テスト ケースを添えてバグ報告をお寄せください (https://github.com/dotnet/macios/issues/new)。
 		</value>
 	</data>
   <data name="MT0158" xml:space="preserve">
-		<value>内部エラー: スマート列挙型 {0} が、スマートな列挙型ではないようです。テスト ケースを添えてバグ報告をお寄せください (https://github.com/xamarin/xamarin-macios/issues/new)。
+		<value>内部エラー: スマート列挙型 {0} が、スマートな列挙型ではないようです。テスト ケースを添えてバグ報告をお寄せください (https://github.com/dotnet/macios/issues/new)。
 		</value>
 	</data>
   <data name="MT0159" xml:space="preserve">
-		<value>内部エラー: {1} に対してサポートされていない tokentype ({0}) です。テスト ケースを添えてバグ報告をお寄せください (https://github.com/xamarin/xamarin-macios/issues/new)。
+		<value>内部エラー: {1} に対してサポートされていない tokentype ({0}) です。テスト ケースを添えてバグ報告をお寄せください (https://github.com/dotnet/macios/issues/new)。
 		</value>
 	</data>
   <data name="MT0160" xml:space="preserve">
-		<value>内部エラー: リンカーも実行されている場合 (または、無効にされた場合) 以外は、静的レジストラーを実行することはできません。回避策としては、追加の {0} 引数として '-f' を渡すことで完全ビルドを実行することが考えられます。テスト ケースを添えてバグ報告をお寄せください (https://github.com/xamarin/xamarin-macios/issues/new)。
+		<value>内部エラー: リンカーも実行されている場合 (または、無効にされた場合) 以外は、静的レジストラーを実行することはできません。回避策としては、追加の {0} 引数として '-f' を渡すことで完全ビルドを実行することが考えられます。テスト ケースを添えてバグ報告をお寄せください (https://github.com/dotnet/macios/issues/new)。
 		</value>
 	</data>
   <data name="MT0161" xml:space="preserve">
-		<value>内部エラー: 名前のないシンボルです (型: {0})。テスト ケースを添えてバグ報告をお寄せください (https://github.com/xamarin/xamarin-macios/issues/new)。
+		<value>内部エラー: 名前のないシンボルです (型: {0})。テスト ケースを添えてバグ報告をお寄せください (https://github.com/dotnet/macios/issues/new)。
 		</value>
 	</data>
   <data name="MT0168" xml:space="preserve">
-		<value>内部エラー: 'フレームワークをフレームワークに変換することはできません: {0}'。テスト ケースを添えてバグ報告をお寄せください (https://github.com/xamarin/xamarin-macios/issues/new)。
+		<value>内部エラー: 'フレームワークをフレームワークに変換することはできません: {0}'。テスト ケースを添えてバグ報告をお寄せください (https://github.com/dotnet/macios/issues/new)。
 		</value>
 	</data>
   <data name="MT0174_a" xml:space="preserve">
@@ -723,7 +682,7 @@
         </value>
     </data>
   <data name="MX0177" xml:space="preserve">
-		<value>不明なプラットフォーム: {0}。これは通常、バグがあることを示します。テスト ケースを添えて https://github.com/xamarin/xamarin-macios/issues/new にバグ報告を提出してください。		</value>
+		<value>不明なプラットフォーム: {0}。これは通常、バグがあることを示します。テスト ケースを添えて https://github.com/dotnet/macios/issues/new にバグ報告を提出してください。		</value>
 	</data>
   <data name="MX0178" xml:space="preserve">
         <value>'{0}' のデバッグ シンボル ファイルは無効であるため、無視されました。
@@ -762,7 +721,7 @@
 		</value>
 	</data>
   <data name="MT1013" xml:space="preserve">
-		<value>依存関係の追跡エラー: 比較するファイルがありません。テスト ケースを添えて https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください。
+		<value>依存関係の追跡エラー: 比較するファイルがありません。テスト ケースを添えて https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください。
 		</value>
 	</data>
   <data name="MT1014" xml:space="preserve">
@@ -846,6 +805,7 @@
 		<value>useFullXamMacFramework のターゲット フレームワークは常に .NET 4.5 にする必要があります。'{0}' は無効です。
 		</value>
 	</data>
+  <!-- legacy only error -->
   <data name="MM1407" xml:space="preserve">
 		<value>Xamarin.Mac 参照 '{0}' と選択されたターゲット フレームワーク '{1}' が一致しません。
 		</value>
@@ -919,6 +879,7 @@
 		<value>'{0}' からの定義を解析できませんでした。
 		</value>
 	</data>
+  <!-- legacy only error -->
   <data name="MT2006" xml:space="preserve">
 		<value>'{0}' から mscorlib.dll を読み込むことができません。Xamarin.iOS を再インストールしてください。
 		</value>
@@ -931,6 +892,7 @@
 		<value>"{0}" 参照を "{1}" から解決できませんでした
 		</value>
 	</data>
+  <!-- legacy only error -->
   <data name="MM2007" xml:space="preserve">
 		<value>完全な .NET Framework に対する Xamarin.Mac Unified API では、SDK または All アセンブリのリンクがサポートされません。`-nolink` または `-linkplatform` フラグのどちらかを渡してください。
 		</value>
@@ -957,10 +919,7 @@
 		<value>アセンブリ '{0}' は混合モードであるため、リンクできません。
 		</value>
 	</data>
-  <data name="MT2015" xml:space="preserve">
-		<value>watchOS では HttpMessageHandler `{0}` は無効です。有効な値は NSUrlSessionHandler のみです。
-		</value>
-	</data>
+  <!-- MT2015 is not in use anymore -->
   <data name="MX2016" xml:space="preserve">
 		<value>NativeAOT を使用する場合、動的レジストラーがサポートされていないため、('--optimize=-remove-dynamic-registrar' を渡すことによって) 動的レジストラーを維持することはできません。動的登録のサポートは引き続き削除されます。</value>
 	</data>
@@ -1071,6 +1030,7 @@
 		<value>アプリ ストアの制限に準拠するため、{0} から {1} 以外のアーキテクチャが削除されました。これにより、既存のコード署名用の署名が中断される可能性があります。lipo でライブラリを取り除くか、--optimize=-trim-architectures で無効にすることをご検討ください
 		</value>
 	</data>
+  <!-- legacy only error -->
   <data name="MM2110" xml:space="preserve">
 		<value>Xamarin.Mac の '部分的な静的' レジストラーは、リンクをサポートしていません。リンクを無効にするか、別のレジストラー モードを使用してください。
 		</value>
@@ -1079,9 +1039,15 @@
 		<value>読み込まれたアセンブリの一覧で corlib アセンブリ '{0}' が見つかりません。
 		</value>
 	</data>
+  <data name="MX2112_A" xml:space="preserve">
+		<value>Could not optimize the static constructor in the interface {0} because it did not have the expected instruction sequence (found end of method too soon).</value>
+	</data>
+  <data name="MX2112_B" xml:space="preserve">
+		<value>Could not optimize the static constructor in the interface {0} because it had an unexpected instruction {1} at offset {2}.</value>
+	</data>
   <!-- 2200 -> 2299 is used by/reserved for ExceptionalSubStep subclasses in the linker -->
   <!-- 220x: PreserveSmartEnumConversionsSubStep -->
-  <!-- 221x: RemoveBitcodeIncompatibleCodeStep -->
+  <!-- 221x: <unused> -->
   <!-- 222x: RemoveRejectedTypesStep -->
   <!-- 223x: CollectUnmarkedMembersSubStep -->
   <!-- 224x: PreserveBlockCodeSubStep -->
@@ -1133,6 +1099,7 @@
 		<value>アセンブリ '{1}' の依存関係 '{0}' が見つかりませんでした。プロジェクトの参照をご確認ください。
 		</value>
 	</data>
+  <!-- legacy only error -->
   <data name="MT3006" xml:space="preserve">
 		<value>プロジェクトの完全な依存関係マップを計算できませんでした。Xamarin.iOS ではリビルドする必要がある対象 (およびリビルドする必要のない対象) を適切に検出できないため、ビルドが低速になります。詳細については、前の警告をご確認ください。
 		</value>
@@ -1158,7 +1125,7 @@
 		</value>
 	</data>
   <data name="MT4002" xml:space="preserve">
-		<value>P/Invoke メソッドのために生成されたコードをコンパイルできませんでした。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください
+		<value>P/Invoke メソッドのために生成されたコードをコンパイルできませんでした。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください
 		</value>
 	</data>
   <data name="MT4101" xml:space="preserve">
@@ -1190,7 +1157,7 @@
 		</value>
 	</data>
   <data name="MT4109" xml:space="preserve">
-		<value>生成されたレジストラー コードをコンパイルできませんでした。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください
+		<value>生成されたレジストラー コードをコンパイルできませんでした。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください
 		</value>
 	</data>
   <data name="MT4110" xml:space="preserve">
@@ -1206,7 +1173,7 @@
 		</value>
 	</data>
   <data name="MT4114" xml:space="preserve">
-		<value>メソッド '{0}.{1}' についてレジストラーで予期しないエラーが発生しました。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください
+		<value>メソッド '{0}.{1}' についてレジストラーで予期しないエラーが発生しました。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください
 		</value>
 	</data>
   <data name="MT4116" xml:space="preserve">
@@ -1226,7 +1193,7 @@
 		</value>
 	</data>
   <data name="MT4120" xml:space="preserve">
-		<value>レジストラーにより、フィールド '{1}.{2}' に不明なフィールド型 '{0}' が検出されました。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください
+		<value>レジストラーにより、フィールド '{1}.{2}' に不明なフィールド型 '{0}' が検出されました。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください
 		</value>
 	</data>
   <data name="MT4121" xml:space="preserve">
@@ -1238,35 +1205,35 @@
 		</value>
 	</data>
   <data name="MT4124" xml:space="preserve">
-		<value>'{1}' に無効な {0} が見つかりました。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください
+		<value>'{1}' に無効な {0} が見つかりました。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください
 		</value>
 	</data>
   <data name="MT4124_A" xml:space="preserve">
-		<value>'{0}' に無効な RegisterAttribute プロパティ {1} が見つかりました。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください
+		<value>'{0}' に無効な RegisterAttribute プロパティ {1} が見つかりました。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください
 		</value>
 	</data>
   <data name="MT4124_B" xml:space="preserve">
-		<value>'{0}' に無効な AdoptsAttribute が見つかりました: 1 個のコンストラクター引数が必要ですが、{1} 個ありました。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください
+		<value>'{0}' に無効な AdoptsAttribute が見つかりました: 1 個のコンストラクター引数が必要ですが、{1} 個ありました。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください
 		</value>
 	</data>
   <data name="MT4124_C" xml:space="preserve">
-		<value>'{0}.{1}' に無効な BindAsAttribute が見つかりました: 不明なフィールド {2} があります。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください
+		<value>'{0}.{1}' に無効な BindAsAttribute が見つかりました: 不明なフィールド {2} があります。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください
 		</value>
 	</data>
   <data name="MT4124_D" xml:space="preserve">
-		<value>'{1}.{2}' に無効な {0} が見つかりました。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください
+		<value>'{1}.{2}' に無効な {0} が見つかりました。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください
 		</value>
 	</data>
   <data name="MT4124_E" xml:space="preserve">
-		<value>'{0}' に無効な BindAsAttribute が見つかりました: 1 個のコンストラクター引数が必要ですが、{1} 個見つかりました。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください
+		<value>'{0}' に無効な BindAsAttribute が見つかりました: 1 個のコンストラクター引数が必要ですが、{1} 個見つかりました。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください
 		</value>
 	</data>
   <data name="MT4124_H" xml:space="preserve">
-		<value>'{0}' に無効な BindAsAttribute が見つかりました: 基になる列挙型 {1} が見つかりませんでした。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください
+		<value>'{0}' に無効な BindAsAttribute が見つかりました: 基になる列挙型 {1} が見つかりませんでした。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください
 		</value>
 	</data>
   <data name="MT4124_I" xml:space="preserve">
-		<value>'{1}' に無効な {0} が見つかりました。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください</value>
+		<value>'{1}' に無効な {0} が見つかりました。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください</value>
 	</data>
   <data name="MT4125" xml:space="preserve">
 		<value>レジストラーにより、メソッド '{1}' のシグネチャ内で無効な型 '{0}' が検出されました: インターフェイスには、それのラッパー型を指定するプロトコル属性が必要です。
@@ -1333,7 +1300,7 @@
 		</value>
 	</data>
   <data name="MT4141" xml:space="preserve">
-		<value>セレクター '{0}' は Xamarin.iOS により暗黙的に登録されているため、メンバー '{1}.{2}' にこのセレクターを登録することはできません。
+		<value>Cannot register the selector '{0}' on the member '{1}.{2}' because this selector is already implicitly registered.
 		</value>
 	</data>
   <data name="MT4145" xml:space="preserve">
@@ -1348,7 +1315,7 @@
 		</value>
 	</data>
   <data name="MT4147" xml:space="preserve">
-		<value>'{1}' に無効な {0} が見つかりました。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください
+		<value>'{1}' に無効な {0} が見つかりました。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください
 		</value>
 	</data>
   <data name="MT4148" xml:space="preserve">
@@ -1457,15 +1424,15 @@
 		</comment>
 	</data>
   <data name="MT4163" xml:space="preserve">
-		<value>レジストラーで内部エラーが発生しました ({1} 個の引数を持つ {0} コンストラクター)。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください
+		<value>レジストラーで内部エラーが発生しました ({1} 個の引数を持つ {0} コンストラクター)。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください
 		</value>
 	</data>
   <data name="MT4163_A" xml:space="preserve">
-		<value>レジストラーで内部エラーが発生しました (不明な可用性の種類: {0})。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください
+		<value>レジストラーで内部エラーが発生しました (不明な可用性の種類: {0})。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください
 		</value>
 	</data>
   <data name="MT4163_B" xml:space="preserve">
-		<value>レジストラーで内部エラーが発生しました (BindAs パラメーターを ref/out にすることはできません: {0})。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください
+		<value>レジストラーで内部エラーが発生しました (BindAs パラメーターを ref/out にすることはできません: {0})。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください
 		</value>
 	</data>
   <data name="MT4164" xml:space="preserve">
@@ -1545,7 +1512,7 @@
 		</value>
 	</data>
   <data name="MT4184" xml:space="preserve">
-		<value>レジストラーで内部エラーが発生しました (BindAs パラメーターを ref/out にすることはできません: {0})。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください
+		<value>レジストラーで内部エラーが発生しました (BindAs パラメーターを ref/out にすることはできません: {0})。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください
 		</value>
 	</data>
   <data name="MT4185" xml:space="preserve">
@@ -1564,6 +1531,9 @@
   <data name="MX4189" xml:space="preserve">
 		<value>{1} SDK から削除されたため、クラス '{0}' は登録されません。</value>
 	</data>
+  <data name="MT4190" xml:space="preserve">
+		<value>The class '{0}' will not be registered because the {1} framework has been deprecated from the {2} SDK.</value>
+	</data>
   <data name="MT5101" xml:space="preserve">
 		<value>'{0}' コンパイラがありません。Xcode の 'Command-Line Tools' コンポーネントをインストールしてください
 		</value>
@@ -1573,15 +1543,15 @@
 		</value>
 	</data>
   <data name="MM5103" xml:space="preserve">
-		<value>コンパイルに失敗しました。エラー コード - {0}。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください
+		<value>コンパイルに失敗しました。エラー コード - {0}。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください
 		</value>
 	</data>
   <data name="MT5103_A" xml:space="preserve">
-		<value>ファイル '{0}' のコンパイルに失敗しました。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください
+		<value>ファイル '{0}' のコンパイルに失敗しました。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください
 		</value>
 	</data>
   <data name="MT5106" xml:space="preserve">
-		<value>ファイル '{0}' をコンパイルできませんでした。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください
+		<value>ファイル '{0}' をコンパイルできませんでした。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください
 		</value>
 	</data>
   <data name="MT5107" xml:space="preserve">
@@ -1612,6 +1582,7 @@
 		<value>ネイティブ リンクの警告: {0}
 		</value>
 	</data>
+  <!-- legacy only error -->
   <data name="MM5203" xml:space="preserve">
 		<value>{0} が見つかりません。インストールされている Xamarin.Mac が破損している可能性があります。Xamarin.Mac を再インストールしてください。
 		</value>
@@ -1653,7 +1624,7 @@
 		</value>
 	</data>
   <data name="MT5216" xml:space="preserve">
-		<value>'{0}' のネイティブ リンクに失敗しました。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください
+		<value>'{0}' のネイティブ リンクに失敗しました。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください
 		</value>
 	</data>
   <data name="MT5217" xml:space="preserve">
@@ -1677,14 +1648,14 @@
 		</value>
 	</data>
   <data name="MX5222" xml:space="preserve">
-		<value>ネイティブ リンカーが {0} を実行できませんでした。https://github.com/xamarin/xamarin-macios/issues/new でバグ報告を提出してください
+		<value>ネイティブ リンカーが {0} を実行できませんでした。https://github.com/dotnet/macios/issues/new でバグ報告を提出してください
 	</value>
 	</data>
   <data name="MX5223" xml:space="preserve">
 		<value>現在の {1} SDK でこのフレームワークのサポートがシミュレーターに含まれていないため、フレームワーク '{0}' とリンクしませんでした。</value>
 		<comment>This is a warning explaining why a native framework won't be referenced from the app when building for the simulator. The following are literal names and should not be translated: SDK
 			{0}: The name of the native framework
-			{1}: The current platform (will be either iOS, tvOS, watchOS or macOS).
+			{1}: The current platform (will be either iOS, tvOS, Mac Catalyst or macOS).
 		</comment>
 	</data>
   <data name="MT5301" xml:space="preserve">
@@ -1749,11 +1720,11 @@
 	</data>
   <!-- The linker says custom linker steps can't use error codes between 1000 and 6000, so we use >= 7000 -->
   <data name="MX7000" xml:space="preserve">
-		<value>カスタム リンカー ステップの実行中にエラーが発生しました。詳細については、ビルド ログを確認してください。</value>
+		<value>An error occurred while executing the custom linker steps. Please review the build log for more information.</value>
 	</data>
   <!-- 8XXX are for errors that occur at runtime -->
   <data name="MT8018" xml:space="preserve">
-		<value>内部整合性エラーです。https://github.com/xamarin/xamarin-macios/issues/new にバグ報告をお寄せください。
+		<value>内部整合性エラーです。https://github.com/dotnet/macios/issues/new にバグ報告をお寄せください。
 		</value>
 	</data>
   <!-- 8000 -> 8036 are missing here (except 8018), so skip to 8037 -->
@@ -1808,9 +1779,7 @@
   <data name="MX8046" xml:space="preserve">
 		<value>型 '{1}' にメソッド '{0}' が見つかりません</value>
 	</data>
-  <data name="MX8047" xml:space="preserve">
-		<value>トランポリン メソッド {0} が、トランポリン メソッド引数の関数ポインター 0x{1} と一致しません (それらは同じメソッドを参照していません)。</value>
-	</data>
+  <!-- MX8047: unused -->
   <data name="MX8048" xml:space="preserve">
 		<value>トランポリン メソッド {0} には少なくとも 1 つのパラメーターが必要です。</value>
 	</data>
@@ -1837,5 +1806,12 @@
 	</data>
   <data name="MX8056" xml:space="preserve">
 		<value>Objective-C オブジェクト 0x{0} (型: {1}) をマーシャリングできませんでした。このオブジェクトの既存のマネージド インスタンスが見つかりませんでした。また、ジェネリック型 {2} の新しいマネージド インスタンスを作成することもできませんでした。</value>
+	</data>
+  <data name="MX8057" xml:space="preserve">
+		<value>.NET for {0} does not support server garbage collection.</value>
+		<comment>{0}: the platform (iOS, macOS, etc.)</comment>
+	</data>
+  <data name="MX8058" xml:space="preserve">
+		<value>The dynamic registrar does not support calling base Objective-C constructors with arguments (type: %s, selector: %s). Please use any of the static registrars.</value>
 	</data>
 </root>

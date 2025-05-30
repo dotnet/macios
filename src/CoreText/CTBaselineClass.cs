@@ -36,6 +36,8 @@ using Foundation;
 namespace CoreText {
 
 	// Convenience enum for string values in ObjC.
+	/// <summary>The kind of baselines supported when typesetting text.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum CTBaselineClass {
 		/// <summary>Used to offset a roman baseline.</summary>
 		Roman,
@@ -80,6 +82,8 @@ namespace CoreText {
 	}
 
 	// Convenience enum for string values in ObjC.
+	/// <summary>An enumeration whose values specify the whether the baseline font is from the original font or a reference font.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum CTBaselineFont {
 		/// <summary>To be added.</summary>
 		Reference,

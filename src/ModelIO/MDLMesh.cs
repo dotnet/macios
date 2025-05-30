@@ -8,20 +8,15 @@
 //
 //
 using System;
+using System.Numerics;
 using System.Runtime.InteropServices;
 using Foundation;
 using CoreFoundation;
 using CoreGraphics;
 using ObjCRuntime;
-#if NET
+
 using Vector2i = global::CoreGraphics.NVector2i;
-using Vector3 = global::System.Numerics.Vector3;
 using Vector3i = global::CoreGraphics.NVector3i;
-#else
-using Vector2i = global::OpenTK.Vector2i;
-using Vector3 = global::OpenTK.Vector3;
-using Vector3i = global::OpenTK.Vector3i;
-#endif
 
 #nullable enable
 
@@ -29,6 +24,8 @@ namespace ModelIO {
 
 	partial class MDLMesh {
 
+		/// <summary>To be added.</summary>
+		///     <remarks>To be added.</remarks>
 		public enum MDLMeshVectorType {
 			/// <summary>To be added.</summary>
 			Dimensions,
@@ -80,23 +77,26 @@ namespace ModelIO {
 
 		// Note: we turn these constructors into static constructors because we don't want to lose the shape name. Also, the signatures of these constructors differ so it would not be possible to use an enum to differentiate the shapes.
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public static MDLMesh CreateBox (Vector3 dimensions, Vector3i segments, MDLGeometryType geometryType, bool inwardNormals, IMDLMeshBufferAllocator allocator)
 		{
 			return CreateBox (dimensions, segments, geometryType, inwardNormals, allocator, MDLMeshVectorType.Dimensions);
 		}
 
-#if NET
+		/// <summary>Creates a right rectangular box from the <paramref name="vector" />, with the specified number of segments and geometry kind.</summary>
+		/// <param name="vector">To be added.</param>
+		/// <param name="segments">The number of divisions to create in each dimension.</param>
+		/// <param name="geometryType">Whether to create triangles, quadrilaterals, or lines.</param>
+		/// <param name="inwardNormals">Whether to generate inward-pointing normals.</param>
+		/// <param name="allocator">The allocator to use instead of the default, internal allocator.</param>
+		/// <param name="type">The mesh vector type.</param>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public static MDLMesh CreateBox (Vector3 vector, Vector3i segments, MDLGeometryType geometryType, bool inwardNormals, IMDLMeshBufferAllocator allocator, MDLMeshVectorType type = MDLMeshVectorType.Dimensions)
 		{
 			switch (type) {
@@ -109,89 +109,118 @@ namespace ModelIO {
 			}
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public static MDLMesh CreateSphere (Vector3 dimensions, Vector2i segments, MDLGeometryType geometryType, bool inwardNormals, IMDLMeshBufferAllocator allocator)
 		{
 			return new MDLMesh (dimensions, segments, inwardNormals, geometryType, allocator, null, null, null);
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public static MDLMesh CreateHemisphere (Vector3 dimensions, Vector2i segments, MDLGeometryType geometryType, bool inwardNormals, bool cap, IMDLMeshBufferAllocator allocator)
 		{
 			return new MDLMesh (dimensions, segments, inwardNormals, geometryType, allocator, null, cap, false);
 		}
 
-#if NET
+		/// <param name="extent">The extent of the cylinder.</param>
+		/// <param name="segments">The number of divisions to create in each dimension.</param>
+		/// <param name="inwardNormals">Whether to generate inward-pointing normals.</param>
+		/// <param name="topCap">Whether to put a top cap on the cylinder.</param>
+		/// <param name="bottomCap">Whether to put a bottom cap on the cylinder.</param>
+		/// <param name="geometryType">Whether to create triangles, quadrilaterals, or lines.</param>
+		/// <param name="allocator">
+		///           <para>The allocator to use instead of the default, internal allocator.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Creates a cylinder from the specified parameters.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public static MDLMesh CreateCylinder (Vector3 extent, Vector2i segments, bool inwardNormals, bool topCap, bool bottomCap, MDLGeometryType geometryType, IMDLMeshBufferAllocator allocator)
 		{
 			return new MDLMesh (extent, segments, inwardNormals, topCap, bottomCap, geometryType, allocator);
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public static MDLMesh CreateCapsule (Vector3 dimensions, Vector2i segments, MDLGeometryType geometryType, bool inwardNormals, int hemisphereSegments, IMDLMeshBufferAllocator allocator)
 		{
 			return new MDLMesh (dimensions, segments, inwardNormals, geometryType, allocator, hemisphereSegments, null, null);
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public static MDLMesh CreateCone (Vector3 dimensions, Vector2i segments, MDLGeometryType geometryType, bool inwardNormals, bool cap, IMDLMeshBufferAllocator allocator)
 		{
 			return new MDLMesh (dimensions, segments, inwardNormals, geometryType, allocator, null, cap, true);
 		}
 
-#if NET
+		/// <param name="extent">The extent of the plane.</param>
+		/// <param name="segments">The number of divisions to create in each dimension.</param>
+		/// <param name="geometryType">Whether to create triangles, quadrilaterals, or lines.</param>
+		/// <param name="allocator">
+		///           <para>The allocator to use instead of the default, internal allocator.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Creates a planar region centered at the origin, aligned with the X-Z plane, with the specified dimensions.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public static MDLMesh CreatePlane (Vector3 extent, Vector2i segments, MDLGeometryType geometryType, IMDLMeshBufferAllocator allocator)
 		{
 			return new MDLMesh (extent, segments, geometryType, allocator);
 		}
 
-#if NET
+		/// <param name="extent">The extents of the icosahedron.</param>
+		/// <param name="inwardNormals">Whether to generate inward-pointing normals.</param>
+		/// <param name="geometryType">Whether to create triangles, quadrilaterals, or lines.</param>
+		/// <param name="allocator">
+		///           <para>The allocator to use instead of the default, internal allocator.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Creates a regular icosahedron from the specified parameters.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public static MDLMesh CreateIcosahedron (Vector3 extent, bool inwardNormals, MDLGeometryType geometryType, IMDLMeshBufferAllocator allocator)
 		{
 			return new MDLMesh (extent, inwardNormals, geometryType, allocator);
 		}
 
+		/// <param name="mesh">To be added.</param>
+		///         <param name="submeshIndex">To be added.</param>
+		///         <param name="subdivisionLevels">To be added.</param>
+		///         <param name="allocator">
+		///           <para>The allocator to use instead of the default, internal allocator.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static MDLMesh CreateSubdividedMesh (MDLMesh mesh, int submeshIndex, uint subdivisionLevels, IMDLMeshBufferAllocator allocator)
 		{
 			return new MDLMesh (mesh, submeshIndex, subdivisionLevels, allocator);
 		}
 
-		/// <summary>Gets the visual anisotropy of the surface, if present. This data is associated with the <see cref="P:ModelIO.MDLVertexAttributes.Anisotropy" /> key.</summary>
+		/// <summary>Gets the visual anisotropy of the surface, if present. This data is associated with the <see cref="ModelIO.MDLVertexAttributes.Anisotropy" /> key.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public MDLVertexAttributeData? AnisotropyVertexData {
@@ -200,7 +229,7 @@ namespace ModelIO {
 			}
 		}
 
-		/// <summary>Gets the binormal data at each vertex. These data are associated with the <see cref="P:ModelIO.MDLVertexAttributes.Binormal" /> key.</summary>
+		/// <summary>Gets the binormal data at each vertex. These data are associated with the <see cref="ModelIO.MDLVertexAttributes.Binormal" /> key.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public MDLVertexAttributeData? BinormalVertexData {
@@ -209,7 +238,7 @@ namespace ModelIO {
 			}
 		}
 
-		/// <summary>Gets the bitangent vectors for each vertex. These data are associated with the <see cref="P:ModelIO.MDLVertexAttributes.Bitangent" /> key.</summary>
+		/// <summary>Gets the bitangent vectors for each vertex. These data are associated with the <see cref="ModelIO.MDLVertexAttributes.Bitangent" /> key.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public MDLVertexAttributeData? BitangentVertexData {
@@ -218,7 +247,7 @@ namespace ModelIO {
 			}
 		}
 
-		/// <summary>Gets color data for each vertex. These data are associated with the <see cref="P:ModelIO.MDLVertexAttributes.Color" /> key.</summary>
+		/// <summary>Gets color data for each vertex. These data are associated with the <see cref="ModelIO.MDLVertexAttributes.Color" /> key.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public MDLVertexAttributeData? ColorVertexData {
@@ -227,7 +256,7 @@ namespace ModelIO {
 			}
 		}
 
-		/// <summary>Gets data that describe which edges that should not be modified when subdividing the surface. These data are associated with the <see cref="P:ModelIO.MDLVertexAttributes.EdgeCrease" /> key.</summary>
+		/// <summary>Gets data that describe which edges that should not be modified when subdividing the surface. These data are associated with the <see cref="ModelIO.MDLVertexAttributes.EdgeCrease" /> key.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public MDLVertexAttributeData? EdgeCreaseVertexData {
@@ -236,7 +265,7 @@ namespace ModelIO {
 			}
 		}
 
-		/// <summary>Gets bone and joint indices. These data are associated with the <see cref="P:ModelIO.MDLVertexAttributes.JointIndices" /> key.</summary>
+		/// <summary>Gets bone and joint indices. These data are associated with the <see cref="ModelIO.MDLVertexAttributes.JointIndices" /> key.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public MDLVertexAttributeData? JointIndicesVertexData {
@@ -245,7 +274,7 @@ namespace ModelIO {
 			}
 		}
 
-		/// <summary>Gets bone and joint weight information that is used to render a mesh that is associated with a skeleton. These data are associated with the <see cref="P:ModelIO.MDLVertexAttributes.JointWeights" /> key.</summary>
+		/// <summary>Gets bone and joint weight information that is used to render a mesh that is associated with a skeleton. These data are associated with the <see cref="ModelIO.MDLVertexAttributes.JointWeights" /> key.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public MDLVertexAttributeData? JointWeightsVertexData {
@@ -254,7 +283,7 @@ namespace ModelIO {
 			}
 		}
 
-		/// <summary>Gets normal vectors for the mesh vertices. These data are associated with the <see cref="P:ModelIO.MDLVertexAttributes.Normal" /> key.</summary>
+		/// <summary>Gets normal vectors for the mesh vertices. These data are associated with the <see cref="ModelIO.MDLVertexAttributes.Normal" /> key.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public MDLVertexAttributeData? NormalVertexData {
@@ -263,7 +292,7 @@ namespace ModelIO {
 			}
 		}
 
-		/// <summary>Gets occlusion data for the mesh vertices. These data are associated with the <see cref="P:ModelIO.MDLVertexAttributes.OcclusionValue" /> key.</summary>
+		/// <summary>Gets occlusion data for the mesh vertices. These data are associated with the <see cref="ModelIO.MDLVertexAttributes.OcclusionValue" /> key.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public MDLVertexAttributeData? OcclusionValueVertexData {
@@ -272,7 +301,7 @@ namespace ModelIO {
 			}
 		}
 
-		/// <summary>Gets the positions of the mesh vertices. These data are associated with the <see cref="P:ModelIO.MDLVertexAttributes.Position" /> key.</summary>
+		/// <summary>Gets the positions of the mesh vertices. These data are associated with the <see cref="ModelIO.MDLVertexAttributes.Position" /> key.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public MDLVertexAttributeData? PositionVertexData {
@@ -281,7 +310,7 @@ namespace ModelIO {
 			}
 		}
 
-		/// <summary>Gets the U basis vectors that are used for shading. These data are associated with the <see cref="P:ModelIO.MDLVertexAttributes.ShadingBasisU" /> key.</summary>
+		/// <summary>Gets the U basis vectors that are used for shading. These data are associated with the <see cref="ModelIO.MDLVertexAttributes.ShadingBasisU" /> key.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public MDLVertexAttributeData? ShadingBasisUVertexData {
@@ -290,7 +319,7 @@ namespace ModelIO {
 			}
 		}
 
-		/// <summary>Gets the V basis vectors that are used for shading. These data are associated with the <see cref="P:ModelIO.MDLVertexAttributes.ShadingBasisV" /> key.</summary>
+		/// <summary>Gets the V basis vectors that are used for shading. These data are associated with the <see cref="ModelIO.MDLVertexAttributes.ShadingBasisV" /> key.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public MDLVertexAttributeData? ShadingBasisVVertexData {
@@ -299,7 +328,7 @@ namespace ModelIO {
 			}
 		}
 
-		/// <summary>Gets the data that decide which neighboring vertices are used for subdivision calculations. These data are associated with the <see cref="P:ModelIO.MDLVertexAttributes.SubdivisionStencil" /> key.</summary>
+		/// <summary>Gets the data that decide which neighboring vertices are used for subdivision calculations. These data are associated with the <see cref="ModelIO.MDLVertexAttributes.SubdivisionStencil" /> key.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public MDLVertexAttributeData? SubdivisionStencilVertexData {
@@ -308,7 +337,7 @@ namespace ModelIO {
 			}
 		}
 
-		/// <summary>Gets the vertex tangent data. These data are associated with the <see cref="P:ModelIO.MDLVertexAttributes.Tangent" /> key.</summary>
+		/// <summary>Gets the vertex tangent data. These data are associated with the <see cref="ModelIO.MDLVertexAttributes.Tangent" /> key.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public MDLVertexAttributeData? TangentVertexData {
@@ -317,7 +346,7 @@ namespace ModelIO {
 			}
 		}
 
-		/// <summary>Gets the coordinate system for texture operations on vertices. These data are associated with the <see cref="P:ModelIO.MDLVertexAttributes.TextureCoordinate" /> key.</summary>
+		/// <summary>Gets the coordinate system for texture operations on vertices. These data are associated with the <see cref="ModelIO.MDLVertexAttributes.TextureCoordinate" /> key.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public MDLVertexAttributeData? TextureCoordinateVertexData {

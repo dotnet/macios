@@ -38,19 +38,21 @@ namespace Foundation {
 		static IntPtr selDataUsingEncodingAllowHandle = Selector.GetHandle (selDataUsingEncodingAllow);
 #endif
 
+		/// <param name="enc">To be added.</param>
+		///         <param name="allowLossyConversion">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public NSData Encode (NSStringEncoding enc, bool allowLossyConversion = false)
 		{
-#if NET
 			return new NSData (Messaging.NativeHandle_objc_msgSend_NativeHandle_bool (Handle, Selector.GetHandle (selDataUsingEncodingAllow), (IntPtr) (int) enc, allowLossyConversion ? (byte) 1 : (byte) 0));
-#else
-#if MONOMAC
-			return new NSData (Messaging.IntPtr_objc_msgSend_IntPtr_bool (Handle, selDataUsingEncodingAllowHandle, (IntPtr) (int) enc, allowLossyConversion ? (byte) 1 : (byte) 0));
-#else
-			return new NSData (Messaging.IntPtr_objc_msgSend_IntPtr_bool (Handle, Selector.GetHandle (selDataUsingEncodingAllow), (IntPtr) (int) enc, allowLossyConversion ? (byte) 1 : (byte) 0));
-#endif
-#endif
 		}
 
+		/// <param name="data">The byte buffer.</param>
+		///         <param name="encoding">Use this encoding to intepret the byte buffer.</param>
+		///         <summary>Creates an NSString from an NSData source.</summary>
+		///         <returns>An NSString created by parsing the byte buffer using the specified encoding.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSString? FromData (NSData data, NSStringEncoding encoding)
 		{
 			if (data is null)
@@ -77,13 +79,5 @@ namespace Foundation {
 				return _characterAtIndex (idx);
 			}
 		}
-
-#if !NET && !MONOMAC
-		[Obsolete ("Use 'GetLocalizedUserNotificationString' that takes 'NSString' to preserve localization.")]
-		public static string GetLocalizedUserNotificationString (string key, params NSObject [] arguments)
-		{
-			return GetLocalizedUserNotificationString ((NSString) key, arguments);
-		}
-#endif
 	}
 }

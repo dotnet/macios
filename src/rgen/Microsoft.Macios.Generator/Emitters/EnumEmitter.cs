@@ -4,10 +4,12 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.Macios.Generator.Attributes;
 using Microsoft.Macios.Generator.Context;
 using Microsoft.Macios.Generator.DataModel;
+using Microsoft.Macios.Generator.Extensions;
 using Microsoft.Macios.Generator.Formatters;
 using Microsoft.Macios.Generator.IO;
 using ObjCBindings;
@@ -36,7 +38,7 @@ class EnumEmitter : ICodeEmitter {
 			using (var getterBlock = propertyBlock.CreateBlock ("get", true)) {
 				getterBlock.WriteLine ($"fixed (IntPtr *storage = &values [{index}])");
 				getterBlock.WriteLine (
-					$"\treturn Dlfcn.CachePointer (Libraries.{libraryName}.Handle, \"{fieldData.SymbolName}\", storage);");
+					$"\treturn Dlfcn.CachePointer ({Libraries}.{libraryName}.Handle, \"{fieldData.SymbolName}\", storage);");
 			}
 		}
 	}
@@ -106,7 +108,7 @@ class EnumEmitter : ICodeEmitter {
 		// get value from a handle, this is a helper method used in the BindAs bindings.
 		classBlock.WriteDocumentation (Documentation.SmartEnum.GetValueHandle (symbolName));
 		using (var getValueFromHandle =
-			   classBlock.CreateBlock ($"public static {binding.Name} GetValue (NativeHandle handle)",
+			   classBlock.CreateBlock ($"public static {binding.Name} GetValue ({NativeHandle} handle)",
 				   true)) {
 			getValueFromHandle.WriteRaw (
 @"using var str = Runtime.GetNSObject<NSString> (handle)!;
@@ -119,7 +121,7 @@ return GetValue (str);
 		// does have methods that return null for enums)
 		classBlock.WriteDocumentation (Documentation.SmartEnum.GetValueHandle (symbolName));
 		using (var getValueFromHandle =
-			   classBlock.CreateBlock ($"public static {binding.Name}? GetNullableValue (NativeHandle handle)",
+			   classBlock.CreateBlock ($"public static {binding.Name}? GetNullableValue ({NativeHandle} handle)",
 				   true)) {
 			getValueFromHandle.WriteRaw (
 @"using var str = Runtime.GetNSObject<NSString> (handle);
@@ -175,7 +177,7 @@ return GetValue (str);
 		if (bindingContext.Changes.BindingType != BindingType.SmartEnum) {
 			diagnostics = [Diagnostic.Create (
 					Diagnostics
-						.RBI0000, // An unexpected error occurred while processing '{0}'. Please fill a bug report at https://github.com/xamarin/xamarin-macios/issues/new.
+						.RBI0000, // An unexpected error occurred while processing '{0}'. Please fill a bug report at https://github.com/dotnet/macios/issues/new.
 					null,
 					bindingContext.Changes.FullyQualifiedSymbol)];
 			return false;
@@ -218,7 +220,7 @@ return GetValue (str);
 		if (bindingContext.Changes.BindingType != BindingType.SmartEnum) {
 			diagnostics = [Diagnostic.Create (
 					Diagnostics
-						.RBI0000, // An unexpected error occurred while processing '{0}'. Please fill a bug report at https://github.com/xamarin/xamarin-macios/issues/new.
+						.RBI0000, // An unexpected error occurred while processing '{0}'. Please fill a bug report at https://github.com/dotnet/macios/issues/new.
 					null,
 					bindingContext.Changes.FullyQualifiedSymbol)];
 			return false;
@@ -228,7 +230,7 @@ return GetValue (str);
 		if (bindingTypeData.ErrorDomain is null) {
 			diagnostics = [Diagnostic.Create (
 					Diagnostics
-						.RBI0000, // An unexpected error occurred while processing '{0}'. Please fill a bug report at https://github.com/xamarin/xamarin-macios/issues/new.
+						.RBI0000, // An unexpected error occurred while processing '{0}'. Please fill a bug report at https://github.com/dotnet/macios/issues/new.
 					null,
 					bindingContext.Changes.FullyQualifiedSymbol)];
 			return false;
@@ -242,7 +244,7 @@ return GetValue (str);
 			// could not calculate the library name, this is a user error
 			diagnostics = [Diagnostic.Create (
 					Diagnostics
-						.RBI0000, // An unexpected error occurred while processing '{0}'. Please fill a bug report at https://github.com/xamarin/xamarin-macios/issues/new.
+						.RBI0000, // An unexpected error occurred while processing '{0}'. Please fill a bug report at https://github.com/dotnet/macios/issues/new.
 					null,
 					bindingContext.Changes.FullyQualifiedSymbol)];
 			return false;
@@ -263,16 +265,16 @@ return GetValue (str);
 			classBlock.WriteLine ();
 			// emit the field that holds the error domain
 			classBlock.WriteLine ($"[Field (\"{bindingTypeData.ErrorDomain}\", \"{library}\")]");
-			classBlock.WriteLine (StaticVariable (backingFieldName, "Foundation.NSString", true).ToString ());
+			classBlock.WriteLine (StaticVariable (backingFieldName, NSString, true).ToString ());
 			classBlock.WriteLine ();
 
 			// emit the extension method to return the error domain
 			classBlock.WriteDocumentation (Documentation.SmartEnum.GetDomain (bindingContext.Changes.FullyQualifiedSymbol));
 			classBlock.WriteRaw (
-$@"public static NSString? GetDomain (this {bindingContext.Changes.Name} self)
+$@"public static {NSString}? GetDomain (this {bindingContext.Changes.Name.GetIdentifierName (bindingContext.Changes.Namespace)} self)
 {{
 	if ({backingFieldName} is null)
-		{backingFieldName} = Dlfcn.GetStringConstant (Libraries.{libraryName}.Handle, ""{bindingTypeData.ErrorDomain}"");
+		{backingFieldName} = {Dlfcn}.GetStringConstant ({Libraries}.{libraryName}.Handle, ""{bindingTypeData.ErrorDomain}"");
 	return {backingFieldName};
 }}
 ");

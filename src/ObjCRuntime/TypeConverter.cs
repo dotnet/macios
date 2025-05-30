@@ -11,6 +11,11 @@ using Foundation;
 
 namespace ObjCRuntime {
 
+	/// <summary>Converts Obj-C type encodings to managed types.</summary>
+	///     <remarks>
+	///       <para>This class provides a way of converting Objective-C encoded type strings to .NET and viceversa.   The full details about type encodings are available <format type="html"><a href="https://developer.apple.com/documentation/DeveloperTools/gcc-4.0.1/gcc/Type-encoding.html">here</a></format>.
+	///     </para>
+	///     </remarks>
 	public static class TypeConverter {
 #if !COREBUILD
 		/*
@@ -135,9 +140,9 @@ namespace ObjCRuntime {
 			if (type == typeof (string)) return "@"; // We handle NSString as MonoString automagicaly
 			if (type == typeof (Selector)) return ":";
 			if (type == typeof (Class)) return "#";
-			if (type == typeof (nfloat)) return IntPtr.Size == 8 ? "d" : "f";
-			if (type == typeof (nint)) return IntPtr.Size == 8 ? "q" : "i";
-			if (type == typeof (nuint)) return IntPtr.Size == 8 ? "Q" : "I";
+			if (type == typeof (nfloat)) return "d";
+			if (type == typeof (nint)) return "q";
+			if (type == typeof (nuint)) return "Q";
 			if (typeof (INativeObject).IsAssignableFrom (type)) return "@";
 			if (type.IsValueType && !type.IsEnum) {
 				// TODO: We should cache the results of this in a temporary hash that we destroy when we're done initializing/registrations

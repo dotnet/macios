@@ -9,29 +9,28 @@ using Xamarin.MacDev;
 using Xamarin.Localization.MSBuild;
 using Xamarin.Utils;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Xamarin.MacDev.Tasks {
 	public class CompileProductDefinition : XamarinTask {
 		#region Inputs
 
-		public string ProductDefinition { get; set; }
+		public string ProductDefinition { get; set; } = "";
 
 		[Required]
-		public string OutputDirectory { get; set; }
+		public string OutputDirectory { get; set; } = "";
 
 		[Required]
-		public string TargetArchitectures { get; set; }
+		public string TargetArchitectures { get; set; } = "";
 
 		[Required]
-		public string AppManifest { get; set; }
+		public string AppManifest { get; set; } = "";
 		#endregion
 
 		#region Outputs
 
 		[Output]
-		public ITaskItem CompiledProductDefinition { get; set; }
+		public ITaskItem? CompiledProductDefinition { get; set; }
 
 		#endregion
 
@@ -43,7 +42,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			if (File.Exists (ProductDefinition)) {
 				try {
-					plist = PDictionary.FromFile (ProductDefinition);
+					plist = PDictionary.FromFile (ProductDefinition)!;
 				} catch (Exception ex) {
 					LogProductDefinitionError (MSBStrings.E0010, ProductDefinition, ex.Message);
 					return false;
@@ -60,7 +59,7 @@ namespace Xamarin.MacDev.Tasks {
 			// productbuild can do a guess of the targeted architectures if not provided, but the guess
 			// is very simple : on Catalina and lower, it will suppose it's x86_64 (even with an arm64 slice).
 			HashSet<string> archStrings = new HashSet<string> (architectures.ToArray ().Select (a => a.ToNativeArchitecture ()));
-			if (plist.TryGetValue (ProductDefinitionKeys.Architectures, out PArray archArray)) {
+			if (plist.TryGetValue<PArray> (ProductDefinitionKeys.Architectures, out var archArray)) {
 				var existingArchs = archArray.ToStringArray ();
 				if (!archStrings.SetEquals (existingArchs)) {
 					LogProductDefinitionWarning (MSBStrings.E7072, string.Join (", ", existingArchs), string.Join (", ", archStrings));
@@ -75,7 +74,7 @@ namespace Xamarin.MacDev.Tasks {
 			}
 			plist [ProductDefinitionKeys.Architectures] = archArray;
 
-			if (!plist.TryGetValue (ProductDefinitionKeys.MinimumSystemVersion, out PArray osVersionArray)) {
+			if (!plist.TryGetValue<PArray> (ProductDefinitionKeys.MinimumSystemVersion, out var osVersionArray)) {
 				var minOSVersion = GetMinimumOSVersion ();
 				if (minOSVersion is not null) {
 					osVersionArray = new PArray ();
@@ -91,12 +90,12 @@ namespace Xamarin.MacDev.Tasks {
 			return !Log.HasLoggedErrors;
 		}
 
-		private string GetMinimumOSVersion ()
+		private string? GetMinimumOSVersion ()
 		{
 			PDictionary plist;
 
 			try {
-				plist = PDictionary.FromFile (AppManifest);
+				plist = PDictionary.FromFile (AppManifest)!;
 			} catch (Exception ex) {
 				Log.LogError (null, null, null, AppManifest, 0, 0, 0, 0, MSBStrings.E0010, AppManifest, ex.Message);
 				return null;

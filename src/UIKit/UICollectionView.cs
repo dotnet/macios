@@ -20,7 +20,7 @@ namespace UIKit {
 
 		/// <param name="reuseIdentifier">To be added.</param>
 		///         <param name="indexPath">To be added.</param>
-		///         <summary>Returns a new or reused <see cref="T:UIKit.UICollectionReusableView" />.</summary>
+		///         <summary>Returns a new or reused <see cref="UIKit.UICollectionReusableView" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		public UICollectionReusableView DequeueReusableCell (string reuseIdentifier, NSIndexPath indexPath)
@@ -32,7 +32,7 @@ namespace UIKit {
 		/// <param name="kind">To be added.</param>
 		///         <param name="reuseIdentifier">To be added.</param>
 		///         <param name="indexPath">To be added.</param>
-		///         <summary>Returns a <see cref="T:UIKit.UICollectionReusableView" />.</summary>
+		///         <summary>Returns a <see cref="UIKit.UICollectionReusableView" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		public UICollectionReusableView DequeueReusableSupplementaryView (NSString kind, string reuseIdentifier, NSIndexPath indexPath)
@@ -44,7 +44,7 @@ namespace UIKit {
 		/// <param name="kind">To be added.</param>
 		///         <param name="reuseIdentifier">To be added.</param>
 		///         <param name="indexPath">To be added.</param>
-		///         <summary>Returns a <see cref="T:UIKit.UICollectionReusableView" />.</summary>
+		///         <summary>Returns a <see cref="UIKit.UICollectionReusableView" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		public UICollectionReusableView DequeueReusableSupplementaryView (UICollectionElementKindSection kind, string reuseIdentifier, NSIndexPath indexPath)
@@ -90,7 +90,7 @@ namespace UIKit {
 				RegisterClassForSupplementaryView (Class.GetHandle (cellType), kind, str);
 		}
 
-		/// <param name="cellType">A subtype of <see cref="T:UIKit.UICollectionReusableView" /> to be used for supplementary views.</param>
+		/// <param name="cellType">A subtype of <see cref="UIKit.UICollectionReusableView" /> to be used for supplementary views.</param>
 		///         <param name="kind">The type of supplementary view being registered (e.g., "UICollectionElementKindSectionHeader").</param>
 		///         <param name="reuseIdentifier">A non-empty string to be associated with the <paramref name="kind" />.</param>
 		///         <summary>Specifies the type to be used to populate supplementary views.</summary>
@@ -155,10 +155,10 @@ namespace UIKit {
 			}
 		}
 
-		/// <summary>An optional property that can substitute for the <see cref="P:UIKit.UICollectionView.DataSource" /> and <see cref="P:UIKit.UICollectionView.Delegate" /> properties</summary>
+		/// <summary>An optional property that can substitute for the <see cref="UIKit.UICollectionView.DataSource" /> and <see cref="UIKit.UICollectionView.Delegate" /> properties</summary>
 		///         <value>The default value is <see langword="null" />.</value>
 		///         <remarks>
-		///           <para>Rather than specify separate classes and provide two objects for the  <see cref="P:UIKit.UICollectionView.DataSource" /> and <see cref="P:UIKit.UICollectionView.Delegate" /> properties, one can provide a single class of type <see cref="T:UIKit.UICollectionViewSource" /> (which itself is simply defined as ).</para>
+		///           <para>Rather than specify separate classes and provide two objects for the  <see cref="UIKit.UICollectionView.DataSource" /> and <see cref="UIKit.UICollectionView.Delegate" /> properties, one can provide a single class of type <see cref="UIKit.UICollectionViewSource" /> (which itself is simply defined as ).</para>
 		///         </remarks>
 		public UICollectionViewSource Source {
 			get {

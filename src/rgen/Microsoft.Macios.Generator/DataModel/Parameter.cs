@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.Macios.Generator.Attributes;
 using Microsoft.Macios.Generator.Extensions;
 
 namespace Microsoft.Macios.Generator.DataModel;
@@ -57,6 +58,11 @@ readonly partial struct Parameter : IEquatable<Parameter> {
 	public ReferenceKind ReferenceKind { get; init; }
 
 	/// <summary>
+	/// The parameter is passed by reference. This means any possible reference mode: in, out, ref.
+	/// </summary>
+	public bool IsByRef => ReferenceKind != ReferenceKind.None;
+
+	/// <summary>
 	/// List of attributes attached to the parameter.
 	/// </summary>
 	public ImmutableArray<AttributeCodeChange> Attributes { get; init; } = [];
@@ -88,6 +94,8 @@ readonly partial struct Parameter : IEquatable<Parameter> {
 		if (ReferenceKind != other.ReferenceKind)
 			return false;
 		if (BindAs != other.BindAs)
+			return false;
+		if (ForcedType != other.ForcedType)
 			return false;
 		if (Type.Delegate != other.Type.Delegate)
 			return false;
@@ -144,6 +152,7 @@ readonly partial struct Parameter : IEquatable<Parameter> {
 		sb.Append ($"DefaultValue: {DefaultValue}, ");
 		sb.Append ($"ReferenceKind: {ReferenceKind}, ");
 		sb.Append ($"BindAs: {BindAs?.ToString () ?? "null"}, ");
+		sb.Append ($"ForcedType: {ForcedType?.ToString () ?? "null"}, ");
 		sb.Append ($"Delegate: {Type.Delegate?.ToString () ?? "null"} }}");
 		return sb.ToString ();
 	}

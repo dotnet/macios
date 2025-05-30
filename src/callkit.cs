@@ -13,10 +13,6 @@ using CoreFoundation;
 using Foundation;
 using ObjCRuntime;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CallKit {
 
 	/// <summary>Enumerates call directory states.</summary>
@@ -125,12 +121,8 @@ namespace CallKit {
 		MissingNotificationFilteringEntitlement = 2,
 	}
 
-#if NET
 	/// <summary>Enumerates DTMF play action types.</summary>
 	[NoMac]
-#else
-	[Obsoleted (PlatformName.MacOSX, 12, 1)]
-#endif
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CXPlayDtmfCallActionType : long {
@@ -142,12 +134,8 @@ namespace CallKit {
 		HardPause = 3,
 	}
 
-#if NET
 	/// <summary>Enumerates reasons that calls can end.</summary>
 	[NoMac]
-#else
-	[Obsoleted (PlatformName.MacOSX, 12, 1)]
-#endif
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CXCallEndedReason : long {
@@ -163,13 +151,9 @@ namespace CallKit {
 		DeclinedElsewhere = 5,
 	}
 
-#if NET
 	/// <summary>Enumerates handle types.</summary>
 	///     <remarks>Handles act as identifiers for VOIP users.</remarks>
 	[NoMac]
-#else
-	[Obsoleted (PlatformName.MacOSX, 12, 1)]
-#endif
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CXHandleType : long {
@@ -205,7 +189,7 @@ namespace CallKit {
 	}
 
 	/// <summary>Base class for CallKit actions, such as those taken when a call begins or ends, a call is put on hold, and so on.</summary>
-	///     <remarks>Developers manage the life cycle of a call by sending and receiving objects that derive from <see cref="T:CallKit.CXAction" /> to and from <see cref="T:CallKit.CXProvider" /> and <see cref="T:CallKit.CXCallController" /> objects.</remarks>
+	///     <remarks>Developers manage the life cycle of a call by sending and receiving objects that derive from <see cref="CallKit.CXAction" /> to and from <see cref="CallKit.CXProvider" /> and <see cref="CallKit.CXCallController" /> objects.</remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/CallKit/CXAction">Apple documentation for <c>CXAction</c></related>
 	[NoMac]
 	[MacCatalyst (13, 1)]
@@ -238,7 +222,7 @@ namespace CallKit {
 
 	/// <summary>Contains the information that the application needs in order to answer a call at the user's request.</summary>
 	///     <remarks>
-	///       <see cref="T:CallKit.CXAnswerCallAction" /> objects are passed to the developer's <see cref="M:CallKit.CXProviderDelegate.PerformAnswerCallAction(CallKit.CXProvider,CallKit.CXAnswerCallAction)" /> method when the user answers a call.</remarks>
+	///       <see cref="CallKit.CXAnswerCallAction" /> objects are passed to the developer's <see cref="CallKit.CXProviderDelegate.PerformAnswerCallAction(CallKit.CXProvider,CallKit.CXAnswerCallAction)" /> method when the user answers a call.</remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/CallKit/CXAnswerCallAction">Apple documentation for <c>CXAnswerCallAction</c></related>
 	[NoMac]
 	[MacCatalyst (13, 1)]
@@ -320,17 +304,35 @@ namespace CallKit {
 		[Export ("callObserver", ArgumentSemantic.Strong)]
 		CXCallObserver CallObserver { get; }
 
-		[Async]
+		[Async (XmlDocs = """
+			<param name="transaction">The transaction to run.</param>
+			<summary>Requests that the system run a transaction.</summary>
+			<returns>A task that represents the asynchronous RequestTransaction operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("requestTransaction:completion:")]
 		void RequestTransaction (CXTransaction transaction, Action<NSError> completion);
 
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="actions">To be added.</param>
+			<summary>Requests that the specified actions be performed by the provider, and runs a handler on the call controller's queue when the operation is complete.</summary>
+			<returns>A task that represents the asynchronous RequestTransaction operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("requestTransactionWithActions:completion:")]
 		void RequestTransaction (CXAction [] actions, Action<NSError> completion);
 
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="action">The transaction that is being requested.</param>
+			<summary>Requests that the specified action be performed by the provider, and runs a handler on the call controller's queue when the operation is complete.</summary>
+			<returns>A task that represents the asynchronous RequestTransaction operation</returns>
+			<remarks>
+			          <para copied="true">The RequestTransactionAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("requestTransactionWithAction:completion:")]
 		void RequestTransaction (CXAction action, Action<NSError> completion);
 	}
@@ -349,7 +351,14 @@ namespace CallKit {
 		[Export ("addIdentificationEntryWithNextSequentialPhoneNumber:label:")]
 		void AddIdentificationEntry (/* CXCallDirectoryPhoneNumber -> int64_t */ long phoneNumber, string label);
 
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Completes the call directory extension request.</summary>
+			<returns>A task that accepts the result of the request completion.</returns>
+			<remarks>
+			          <para copied="true">The CompleteRequestAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("completeRequestWithCompletionHandler:")]
 		void CompleteRequest ([NullAllowed] Action<bool> completion);
 
@@ -391,6 +400,10 @@ namespace CallKit {
 	[BaseType (typeof (NSObject))]
 	interface CXCallDirectoryExtensionContextDelegate {
 
+		/// <param name="extensionContext">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("requestFailedForExtensionContext:withError:")]
 		void RequestFailed (CXCallDirectoryExtensionContext extensionContext, NSError error);
@@ -408,11 +421,24 @@ namespace CallKit {
 		[Export ("sharedInstance")]
 		CXCallDirectoryManager SharedInstance { get; }
 
-		[Async]
+		[Async (XmlDocs = """
+			<param name="identifier">The unique id of the directory extension to check.</param>
+			<summary>Asynchronously reloads the identified directory extension.</summary>
+			<returns>A task that represents the asynchronous ReloadExtension operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("reloadExtensionWithIdentifier:completionHandler:")]
 		void ReloadExtension (string identifier, [NullAllowed] Action<NSError> completion);
 
-		[Async]
+		[Async (XmlDocs = """
+			<param name="identifier">The unique id of the directory extension to check.</param>
+			<summary>Asynchronously gets the enabled status of the identified extension.</summary>
+			<returns>A task that processes the enabled status of the extension.</returns>
+			<remarks>
+			          <para copied="true">The GetEnabledStatusForExtensionAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("getEnabledStatusForExtensionWithIdentifier:completionHandler:")]
 		void GetEnabledStatusForExtension (string identifier, Action<CXCallDirectoryEnabledStatus, NSError> completion);
 
@@ -432,7 +458,7 @@ namespace CallKit {
 
 	}
 
-	/// <summary>Interface that represents the required methods (if any) of the <see cref="T:CallKit.CXCallObserverDelegate" /> protocol.</summary>
+	/// <summary>Interface that represents the required methods (if any) of the <see cref="CallKit.CXCallObserverDelegate" /> protocol.</summary>
 	interface ICXCallObserverDelegate { }
 
 	/// <summary>Delegate object that responds to call changes.</summary>
@@ -444,12 +470,16 @@ namespace CallKit {
 	[BaseType (typeof (NSObject))]
 	interface CXCallObserverDelegate {
 
+		/// <param name="callObserver">The object on which this method operates.</param>
+		/// <param name="call">The new call.</param>
+		/// <summary>Method that is called when the call changes.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("callObserver:callChanged:")]
 		void CallChanged (CXCallObserver callObserver, CXCall call);
 	}
 
-	/// <summary>Observer for the calls in a <see cref="T:CallKit.CXCallController" />.</summary>
+	/// <summary>Observer for the calls in a <see cref="CallKit.CXCallController" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/CallKit/CXCallObserver">Apple documentation for <c>CXCallObserver</c></related>
 	[NoMac]
@@ -496,7 +526,7 @@ namespace CallKit {
 
 	/// <summary>Contains the information that the application needs in order to end a call.</summary>
 	///     <remarks>
-	///       <see cref="T:CallKit.CXAnswerCallAction" /> objects are passed to the developer's <see cref="M:CallKit.CXProviderDelegate.PerformEndCallAction(CallKit.CXProvider,CallKit.CXEndCallAction)" /> method when a call is ended.</remarks>
+	///       <see cref="CallKit.CXAnswerCallAction" /> objects are passed to the developer's <see cref="CallKit.CXProviderDelegate.PerformEndCallAction(CallKit.CXProvider,CallKit.CXEndCallAction)" /> method when a call is ended.</remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/CallKit/CXEndCallAction">Apple documentation for <c>CXEndCallAction</c></related>
 	[NoMac]
 	[MacCatalyst (13, 1)]
@@ -532,11 +562,11 @@ namespace CallKit {
 		CXPlayDtmfCallActionType Type { get; set; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:CallKit.CXProviderDelegate" />.</summary>
+	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="CallKit.CXProviderDelegate" />.</summary>
 	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:CallKit.CXProviderDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:CallKit.CXProviderDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="T:CallKit.CXProviderDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
+	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="CallKit.CXProviderDelegate" />.</para>
+	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="CallKit.CXProviderDelegate" /> protocol.</para>
+	///       <para>Optional methods (if any) are provided by the <see cref="CallKit.CXProviderDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
 	///     </remarks>
 	interface ICXProviderDelegate { }
 
@@ -547,46 +577,98 @@ namespace CallKit {
 	[BaseType (typeof (NSObject))]
 	interface CXProviderDelegate {
 
+		/// <param name="provider">The provider to which the provider delegate belongs.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("providerDidReset:")]
 		void DidReset (CXProvider provider);
 
+		/// <param name="provider">The provider to which the provider delegate belongs.</param>
+		/// <summary>The system began a call for the app.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("providerDidBegin:")]
 		void DidBegin (CXProvider provider);
 
+		/// <param name="provider">The provider to which the provider delegate belongs.</param>
+		/// <param name="transaction">The transaction to run.</param>
+		/// <summary>Atomically runs the actions that are contained in the <paramref name="transaction" />.</summary>
+		/// <returns>
+		///           <see langword="true" /> if the transaction succeeded. Otherwise, <see langword="false" />.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("provider:executeTransaction:")]
 		bool ExecuteTransaction (CXProvider provider, CXTransaction transaction);
 
+		/// <param name="provider">The provider to which the provider delegate belongs.</param>
+		/// <param name="action">The start call action to perform.</param>
+		/// <summary>Performs a start call action.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("provider:performStartCallAction:")]
 		void PerformStartCallAction (CXProvider provider, CXStartCallAction action);
 
+		/// <param name="provider">The provider to which the provider delegate belongs.</param>
+		/// <param name="action">The answer call action to perform.</param>
+		/// <summary>Performs an answer call action.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("provider:performAnswerCallAction:")]
 		void PerformAnswerCallAction (CXProvider provider, CXAnswerCallAction action);
 
+		/// <param name="provider">The provider to which the provider delegate belongs.</param>
+		/// <param name="action">The end call action to perform.</param>
+		/// <summary>Performs an end call action.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("provider:performEndCallAction:")]
 		void PerformEndCallAction (CXProvider provider, CXEndCallAction action);
 
+		/// <param name="provider">The provider to which the provider delegate belongs.</param>
+		/// <param name="action">The hold call action to perform.</param>
+		/// <summary>Performs a hold call action.</summary>
+		/// <remarks>This method can also be used to resume, or unhold, a call.</remarks>
 		[Export ("provider:performSetHeldCallAction:")]
 		void PerformSetHeldCallAction (CXProvider provider, CXSetHeldCallAction action);
 
+		/// <param name="provider">The provider to which the provider delegate belongs.</param>
+		/// <param name="action">The set muted call action to perform.</param>
+		/// <summary>Performs a set muted call action.</summary>
+		/// <remarks>This method can also be used to unmute a call.</remarks>
 		[Export ("provider:performSetMutedCallAction:")]
 		void PerformSetMutedCallAction (CXProvider provider, CXSetMutedCallAction action);
 
+		/// <param name="provider">The provider to which the provider delegate belongs.</param>
+		/// <param name="action">The set group call action to perform.</param>
+		/// <summary>Performs a set group call action.</summary>
+		/// <remarks>This method can also be used to unset a group call.</remarks>
 		[Export ("provider:performSetGroupCallAction:")]
 		void PerformSetGroupCallAction (CXProvider provider, CXSetGroupCallAction action);
 
+		/// <param name="provider">The provider to which the provider delegate belongs.</param>
+		/// <param name="action">The DTMF play call action to perform.</param>
+		/// <summary>Performs a DTMF play call action.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("provider:performPlayDTMFCallAction:")]
 		void PerformPlayDtmfCallAction (CXProvider provider, CXPlayDtmfCallAction action);
 
+		/// <param name="provider">The provider to which the provider delegate belongs.</param>
+		/// <param name="action">The action that timed out.</param>
+		/// <summary>Method that is called when a timeout is hit before an action is finished performing.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("provider:timedOutPerformingAction:")]
 		void TimedOutPerformingAction (CXProvider provider, CXAction action);
 
 		// Xcode 12 beta 1 issue, AVAudioSession does not appear on Mac OS X but this methods do: https://github.com/xamarin/maccore/issues/2257 
+		/// <param name="provider">The provider to which the provider delegate belongs.</param>
+		/// <param name="audioSession">To be added.</param>
+		/// <summary>The system activated a telephony-priority audio session for the call.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("provider:didActivateAudioSession:")]
 		void DidActivateAudioSession (CXProvider provider, AVAudioSession audioSession);
 
+		/// <param name="provider">The provider to which the provider delegate belongs.</param>
+		/// <param name="audioSession">The audio session that was deactivated.</param>
+		/// <summary>The system deactivated an audio session that the app had been using for a call.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("provider:didDeactivateAudioSession:")]
@@ -609,7 +691,16 @@ namespace CallKit {
 		[Export ("setDelegate:queue:")]
 		void SetDelegate ([NullAllowed] ICXProviderDelegate aDelegate, [NullAllowed] DispatchQueue queue);
 
-		[Async]
+		[Async (XmlDocs = """
+			<param name="uuid">The identifier of the call.</param>
+			<param name="update">An object that contains the updated parameters for the call.</param>
+			<summary>Reports a new incoming call to the system.</summary>
+			<returns>A task that represents the asynchronous ReportNewIncomingCall operation</returns>
+			<remarks>
+			          <para copied="true">The ReportNewIncomingCallAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("reportNewIncomingCallWithUUID:update:completion:")]
 		void ReportNewIncomingCall (NSUuid uuid, CXCallUpdate update, Action<NSError> completion);
 
@@ -698,7 +789,7 @@ namespace CallKit {
 
 	/// <summary>Contains the data that are needed to join a group call.</summary>
 	///     <remarks>
-	///       <see cref="T:CallKit.CXSetGroupCallAction" /> objects are passed to the developer's <see cref="M:CallKit.CXProviderDelegate.PerformSetGroupCallAction(CallKit.CXProvider,CallKit.CXSetGroupCallAction)" /> method when the user joins a call.</remarks>
+	///       <see cref="CallKit.CXSetGroupCallAction" /> objects are passed to the developer's <see cref="CallKit.CXProviderDelegate.PerformSetGroupCallAction(CallKit.CXProvider,CallKit.CXSetGroupCallAction)" /> method when the user joins a call.</remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/CallKit/CXSetGroupCallAction">Apple documentation for <c>CXSetGroupCallAction</c></related>
 	[NoMac]
 	[MacCatalyst (13, 1)]
@@ -716,7 +807,7 @@ namespace CallKit {
 
 	/// <summary>Contains the information that is needed to put a call on hold or take a call off hold.</summary>
 	///     <remarks>
-	///       <see cref="T:CallKit.CXSetHeldCallAction" /> objects are passed to the developer's <see cref="M:CallKit.CXProviderDelegate.PerformSetHeldCallAction(CallKit.CXProvider,CallKit.CXSetHeldCallAction)" /> method when the user puts a call on hold or takes a call off hold.</remarks>
+	///       <see cref="CallKit.CXSetHeldCallAction" /> objects are passed to the developer's <see cref="CallKit.CXProviderDelegate.PerformSetHeldCallAction(CallKit.CXProvider,CallKit.CXSetHeldCallAction)" /> method when the user puts a call on hold or takes a call off hold.</remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/CallKit/CXSetHeldCallAction">Apple documentation for <c>CXSetHeldCallAction</c></related>
 	[NoMac]
 	[MacCatalyst (13, 1)]

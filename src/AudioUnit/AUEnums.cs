@@ -43,7 +43,7 @@ using Foundation;
 #nullable enable
 
 namespace AudioUnit {
-	/// <summary>An enumeration whose values specify the status of an <see cref="T:AudioUnit.AudioUnit" />.</summary>
+	/// <summary>An enumeration whose values specify the status of an <see cref="AudioUnit.AudioUnit" />.</summary>
 	public enum AudioUnitStatus { // Implictly cast to OSType
 		/// <summary>To be added.</summary>
 		NoError = 0,
@@ -100,7 +100,7 @@ namespace AudioUnit {
 		MultipleVoiceProcessors = -66635,
 	}
 
-	/// <summary>Enumerates status values returned by <see cref="M:AudioUnit.AudioUnit.AudioOutputUnitPublish(AudioUnit.AudioComponentDescription,System.String,System.UInt32)" />.</summary>
+	/// <summary>Enumerates status values returned by <see cref="AudioUnit.AudioUnit.AudioOutputUnitPublish(AudioUnit.AudioComponentDescription,System.String,System.UInt32)" />.</summary>
 	public enum AudioComponentStatus { // Implictly cast to OSType
 		/// <summary>To be added.</summary>
 		OK = 0,
@@ -209,7 +209,7 @@ namespace AudioUnit {
 		MIDI2Controller = 27,
 	}
 
-	/// <summary>Flagging enumeration used with <see cref="P:AudioUnit.AudioUnitParameterInfo.Flags" />.</summary>
+	/// <summary>Flagging enumeration used with <see cref="AudioUnit.AudioUnitParameterInfo.Flags" />.</summary>
 	[Flags]
 	public enum AudioUnitParameterFlag : uint // UInt32 in AudioUnitParameterInfo
 	{
@@ -266,7 +266,7 @@ namespace AudioUnit {
 		IsWritable = ((uint) 1 << 31),
 	}
 
-	/// <summary>Enumerates values used by <see cref="T:AudioUnit.AudioUnitParameterInfo" />. Currenty reserved for system use.</summary>
+	/// <summary>Enumerates values used by <see cref="AudioUnit.AudioUnitParameterInfo" />. Currenty reserved for system use.</summary>
 	public enum AudioUnitClumpID // UInt32 in AudioUnitParameterInfo
 	{
 		/// <summary>To be added.</summary>
@@ -275,9 +275,7 @@ namespace AudioUnit {
 
 	[MacCatalyst (13, 1)]
 	[NoTV]
-#if NET
 	[NoiOS]
-#endif
 	public enum AudioObjectPropertySelector : uint {
 		/// <summary>To be added.</summary>
 		PropertyDevices = 1684370979, // 'dev#'
@@ -350,9 +348,7 @@ namespace AudioUnit {
 
 	[MacCatalyst (13, 1)]
 	[NoTV]
-#if NET
 	[NoiOS]
-#endif
 	public enum AudioObjectPropertyScope : uint {
 		/// <summary>To be added.</summary>
 		Global = 1735159650, // 'glob'
@@ -366,18 +362,13 @@ namespace AudioUnit {
 
 	[MacCatalyst (13, 1)]
 	[NoTV]
-#if NET
 	[NoiOS]
-#endif
 	public enum AudioObjectPropertyElement : uint {
-#if !NET
-		[Obsolete ("Use the 'Main' element instead.")]
-		Master = 0, // 0
-#endif
+		/// <summary>To be added.</summary>
 		Main = 0, // 0
 	}
 
-	/// <summary>An enumeration whose values specify a kind of <see cref="T:AudioUnit.AudioUnit" />.</summary>
+	/// <summary>An enumeration whose values specify a kind of <see cref="AudioUnit.AudioUnit" />.</summary>
 	[Internal]
 	enum AudioUnitPropertyIDType { // UInt32 AudioUnitPropertyID
 								   // Audio Unit Properties
@@ -1206,7 +1197,7 @@ namespace AudioUnit {
 		Immediate = unchecked((long) 0xffffffff00000000),
 	}
 
-	/// <summary>Enumerates options that can be used while instantiating a <see cref="T:AudioUnit.AUAudioUnit" />.</summary>
+	/// <summary>Enumerates options that can be used while instantiating a <see cref="AudioUnit.AUAudioUnit" />.</summary>
 	[MacCatalyst (13, 1)]
 	public enum AudioComponentInstantiationOptions : uint {
 		/// <summary>To be added.</summary>

@@ -16,13 +16,18 @@ readonly partial struct Parameter {
 	/// </summary>
 	public BindAsData? BindAs => BindAsAttribute;
 
+	/// <summary>
+	/// Returns the forced type data if present in the binding.
+	/// </summary>
+	public ForcedTypeData? ForcedType => ForcedTypeAttribute;
+
 	public static bool TryCreate (IParameterSymbol symbol, ParameterSyntax declaration, SemanticModel semanticModel,
 		[NotNullWhen (true)] out Parameter? parameter)
 	{
 		// retrieve the parameter attributes because those might affect the parameter type, for example, the 
 		// NullAllowed attribute can change the parameter type to be nullable.
 		var parameterAttrs = symbol.GetAttributeData ();
-		parameter = new (symbol.Ordinal, new (symbol.Type, parameterAttrs), symbol.Name) {
+		parameter = new (symbol.Ordinal, new (symbol.Type, parameterAttrs), symbol.GetSafeName ()) {
 			IsOptional = symbol.IsOptional,
 			IsParams = symbol.IsParams,
 			IsThis = symbol.IsThis,

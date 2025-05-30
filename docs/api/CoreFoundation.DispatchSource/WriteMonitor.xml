@@ -1,0 +1,35 @@
+<Documentation>
+  <Docs DocId="T:CoreFoundation.DispatchSource.WriteMonitor">
+    <summary>Sources of this type monitor file descriptors for available write buffer space.</summary>
+    <remarks>
+      <para>Users of this source type are strongly encouraged to perform non-blocking I/O and handle any truncated reads or error conditions that may occur.</para>
+      <example>
+        <code lang="c#"><![CDATA[
+var stream = File.Create ("Demo.txt");
+
+// The the unix file handle
+var safeHandle = stream.SafeFileHandle;
+IntPtr descriptor = safeHandle.DangerousGetHandle ();
+int fileDescriptor = descriptor.ToInt32 ();
+
+dispatchSource = new DispatchSource.WriteMonitor (fileDescriptor, DispatchQueue.MainQueue);
+
+dispatchSource.SetRegistrationHandler (() => {
+    Console.WriteLine ("Write monitor registered");
+});
+
+dispatchSource.SetEventHandler (() => {
+    Console.WriteLine ("Write monitor: was opened in write mode")
+    dispatchSource.Cancel ();
+    stream.Close ();
+});
+
+dispatchSource.SetCancelHandler (() => {
+    Console.WriteLine ("Write monitor cancelled");
+});
+
+dispatchSource.Resume ();]]></code>
+      </example>
+    </remarks>
+  </Docs>
+</Documentation>

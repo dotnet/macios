@@ -12,10 +12,6 @@ using CoreFoundation;
 using Foundation;
 using ObjCRuntime;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace BackgroundTasks {
 
 	[TV (13, 0), NoMac, iOS (13, 0)]

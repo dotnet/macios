@@ -31,6 +31,10 @@ namespace NaturalLanguage {
 
 	public partial class NLLanguageRecognizer {
 
+		/// <param name="string">The text to recognize.</param>
+		///         <summary>Returns the language in which the text that was analyzed with <see cref="NaturalLanguage.NLLanguageRecognizer.Process(System.String)" /> was most likely written.</summary>
+		///         <returns>The language in which the text was most likely written.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NLLanguage GetDominantLanguage (string @string)
 		{
 			var nsstring = CFString.CreateNative (@string);
@@ -42,6 +46,10 @@ namespace NaturalLanguage {
 			}
 		}
 
+		/// <param name="maxHypotheses">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		public Dictionary<NLLanguage, double> GetLanguageHypotheses (nuint maxHypotheses)
 		{
 			using (var hypo = GetNativeLanguageHypotheses (maxHypotheses)) {

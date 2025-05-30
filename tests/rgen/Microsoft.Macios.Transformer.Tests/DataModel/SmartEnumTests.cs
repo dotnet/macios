@@ -50,10 +50,10 @@ public enum AVCaptureDeviceType {
 			yield return [
 				(Source: smartEnum, Path: path),
 				new Binding (
-					symbolName: "AVCaptureDeviceType",
+					name: "AVCaptureDeviceType",
 					@namespace: ["AVFoundation"],
 					fullyQualifiedSymbol: "AVFoundation.AVCaptureDeviceType",
-					info: new BindingInfo (null, BindingType.SmartEnum),
+					bindingInfo: new BindingInfo (null, BindingType.SmartEnum),
 					symbolAvailability: availabilityBuilder.ToImmutable (),
 					attributes: new ()) {
 					Base = "System.Enum",
@@ -106,10 +106,10 @@ public enum AVCaptureDeviceType {
 				(Source: missingField, Path: path),
 
 				new Binding (
-					symbolName: "AVCaptureDeviceType",
+					name: "AVCaptureDeviceType",
 					@namespace: ["AVFoundation"],
 					fullyQualifiedSymbol: "AVFoundation.AVCaptureDeviceType",
-					info: new BindingInfo (null, BindingType.SmartEnum),
+					bindingInfo: new BindingInfo (null, BindingType.SmartEnum),
 					symbolAvailability: availabilityBuilder.ToImmutable (),
 					attributes: new ()) {
 					Base = "System.Enum",

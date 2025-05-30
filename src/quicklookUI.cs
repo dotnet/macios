@@ -7,15 +7,13 @@ using System;
 using System.ComponentModel;
 using UniformTypeIdentifiers;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace QuickLookUI {
 
 	[Native]
 	enum QLPreviewViewStyle : ulong {
+		/// <summary>To be added.</summary>
 		Normal = 0,
+		/// <summary>To be added.</summary>
 		Compact = 1,
 	}
 
@@ -24,10 +22,19 @@ namespace QuickLookUI {
 	[BaseType (typeof (NSObject))]
 	[Protocol, Model]
 	interface QLPreviewPanelDataSource {
+		/// <param name="panel">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("numberOfPreviewItemsInPreviewPanel:")]
 		[Abstract]
 		nint NumberOfPreviewItemsInPreviewPanel (QLPreviewPanel panel);
 
+		/// <param name="panel">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("previewPanel:previewItemAtIndex:")]
 		[Abstract]
 		IQLPreviewItem PreviewItemAtIndex (QLPreviewPanel panel, nint index);
@@ -38,12 +45,28 @@ namespace QuickLookUI {
 	[BaseType (typeof (NSObject))]
 	[Protocol, Model]
 	interface QLPreviewPanelDelegate : NSWindowDelegate {
+		/// <param name="panel">To be added.</param>
+		/// <param name="theEvent">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("previewPanel:handleEvent:")]
 		bool HandleEvent (QLPreviewPanel panel, NSEvent theEvent);
 
+		/// <param name="panel">To be added.</param>
+		/// <param name="item">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("previewPanel:sourceFrameOnScreenForPreviewItem:")]
 		CGRect SourceFrameOnScreenForPreviewItem (QLPreviewPanel panel, IQLPreviewItem item);
 
+		/// <param name="panel">To be added.</param>
+		/// <param name="item">To be added.</param>
+		/// <param name="contentRect">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("previewPanel:transitionImageForPreviewItem:contentRect:")]
 		NSObject TransitionImageForPreviewItem (QLPreviewPanel panel, IQLPreviewItem item, CGRect contentRect);
 	}
@@ -53,19 +76,16 @@ namespace QuickLookUI {
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface QLPreviewItem {
-#if NET
 		[Abstract]
-#endif
 		[Export ("previewItemURL")]
-#if NET
 		NSUrl PreviewItemUrl { get; }
-#else
-		NSUrl PreviewItemURL { get; }
-#endif
 
 		[Export ("previewItemTitle")]
 		string PreviewItemTitle { get; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Export ("previewItemDisplayState")]
 		NSObject PreviewItemDisplayState { get; }
 	}
@@ -74,12 +94,22 @@ namespace QuickLookUI {
 	[BaseType (typeof (NSObject))]
 	interface QLPreviewPanelController {
 
+		/// <param name="panel">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("acceptsPreviewPanelControl:")]
 		bool AcceptsPreviewPanelControl (QLPreviewPanel panel);
 
+		/// <param name="panel">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("beginPreviewPanelControl:")]
 		void BeginPreviewPanelControl (QLPreviewPanel panel);
 
+		/// <param name="panel">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("endPreviewPanelControl:")]
 		void EndPreviewPanelControl (QLPreviewPanel panel);
 	}
@@ -93,6 +123,9 @@ namespace QuickLookUI {
 		[NullAllowed]
 		NSObject WeakDataSource { get; set; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("WeakDataSource")]
 		[NullAllowed]
 		IQLPreviewPanelDataSource DataSource { get; set; }
@@ -110,10 +143,16 @@ namespace QuickLookUI {
 		[NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("WeakDelegate")]
 		[NullAllowed]
 		IQLPreviewPanelDelegate Delegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Export ("inFullScreenMode")]
 		bool InFullScreenMode { [Bind ("isInFullScreenMode")] get; }
 
@@ -171,9 +210,11 @@ namespace QuickLookUI {
 
 	[Protocol]
 	interface QLPreviewingController {
-#if !NET
-		[Abstract]
-#endif
+		/// <param name="identifier">To be added.</param>
+		/// <param name="queryString">To be added.</param>
+		/// <param name="ItemLoadingHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("preparePreviewOfSearchableItemWithIdentifier:queryString:completionHandler:")]
 #if XAMCORE_5_0
 		void PreparePreviewOfSearchableItem (string identifier, string queryString, Action<NSError> itemLoadingHandler);

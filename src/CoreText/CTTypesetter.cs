@@ -41,17 +41,24 @@ namespace CoreText {
 
 	#region Typesetter Values
 
+	/// <summary>Options applicable to a <see cref="CoreText.CTTypesetter" /> object.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public class CTTypesetterOptions {
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTTypesetterOptions ()
 			: this (new NSMutableDictionary ())
 		{
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTTypesetterOptions (NSDictionary dictionary)
 		{
 			if (dictionary is null)
@@ -122,6 +129,8 @@ namespace CoreText {
 	}
 	#endregion
 
+	/// <summary>A class that performs line layout.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -136,6 +145,9 @@ namespace CoreText {
 		#region Typesetter Creation
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern IntPtr CTTypesetterCreateWithAttributedString (IntPtr @string);
+		/// <param name="value">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTTypesetter (NSAttributedString value)
 			: base (CTTypesetterCreateWithAttributedString (value.GetNonNullHandle (nameof (value))), true, true)
 		{
@@ -144,6 +156,10 @@ namespace CoreText {
 
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern IntPtr CTTypesetterCreateWithAttributedStringAndOptions (IntPtr @string, IntPtr options);
+		/// <param name="value">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTTypesetter (NSAttributedString value, CTTypesetterOptions? options)
 			: base (CTTypesetterCreateWithAttributedStringAndOptions (value.GetNonNullHandle (nameof (value)), options.GetHandle ()), true, true)
 		{
@@ -154,6 +170,11 @@ namespace CoreText {
 		#region Typeset Line Creation
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern IntPtr CTTypesetterCreateLineWithOffset (IntPtr typesetter, NSRange stringRange, double offset);
+		/// <param name="stringRange">To be added.</param>
+		///         <param name="offset">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CTLine? GetLine (NSRange stringRange, double offset)
 		{
 			var h = CTTypesetterCreateLineWithOffset (Handle, stringRange, offset);
@@ -166,6 +187,10 @@ namespace CoreText {
 
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern IntPtr CTTypesetterCreateLine (IntPtr typesetter, NSRange stringRange);
+		/// <param name="stringRange">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CTLine? GetLine (NSRange stringRange)
 		{
 			var h = CTTypesetterCreateLine (Handle, stringRange);
@@ -180,6 +205,12 @@ namespace CoreText {
 		#region Typeset Line Breaking
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern nint CTTypesetterSuggestLineBreakWithOffset (IntPtr typesetter, nint startIndex, double width, double offset);
+		/// <param name="startIndex">To be added.</param>
+		///         <param name="width">To be added.</param>
+		///         <param name="offset">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public nint SuggestLineBreak (int startIndex, double width, double offset)
 		{
 			return CTTypesetterSuggestLineBreakWithOffset (Handle, startIndex, width, offset);
@@ -187,6 +218,11 @@ namespace CoreText {
 
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern nint CTTypesetterSuggestLineBreak (IntPtr typesetter, nint startIndex, double width);
+		/// <param name="startIndex">To be added.</param>
+		///         <param name="width">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public nint SuggestLineBreak (int startIndex, double width)
 		{
 			return CTTypesetterSuggestLineBreak (Handle, startIndex, width);
@@ -194,6 +230,12 @@ namespace CoreText {
 
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern nint CTTypesetterSuggestClusterBreakWithOffset (IntPtr typesetter, nint startIndex, double width, double offset);
+		/// <param name="startIndex">To be added.</param>
+		///         <param name="width">To be added.</param>
+		///         <param name="offset">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public nint SuggestClusterBreak (int startIndex, double width, double offset)
 		{
 			return CTTypesetterSuggestClusterBreakWithOffset (Handle, startIndex, width, offset);
@@ -201,6 +243,11 @@ namespace CoreText {
 
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern nint CTTypesetterSuggestClusterBreak (IntPtr typesetter, nint startIndex, double width);
+		/// <param name="startIndex">To be added.</param>
+		///         <param name="width">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public nint SuggestClusterBreak (int startIndex, double width)
 		{
 			return CTTypesetterSuggestClusterBreak (Handle, startIndex, width);

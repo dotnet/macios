@@ -1,6 +1,6 @@
 <Documentation>
   <Docs DocId="T:HealthKit.HKQuantitySample">
-    <summary>A <see cref="T:HealthKit.HKSample" /> that has a magnitude (see <see cref="P:HealthKit.HKQuantitySample.Quantity" />).</summary>
+    <summary>A <see cref="HealthKit.HKSample" /> that has a magnitude (see <see cref="HealthKit.HKQuantitySample.Quantity" />).</summary>
     <remarks>
       <para>The following examples show how you can create a HKQuantitySample, one using standard C#, and another using named parameters to make their use more obvious:</para>
       <para />

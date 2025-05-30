@@ -15,7 +15,7 @@ using CoreLocation;
 using System;
 
 namespace CoreMotion {
-	/// <summary>An accelerometer event, encapsulates an instance of <see cref="T:CoreMotion.CMAcceleration" /></summary>
+	/// <summary>An accelerometer event, encapsulates an instance of <see cref="CoreMotion.CMAcceleration" /></summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CoreMotion/Reference/CMAccelerometerData_Class/index.html">Apple documentation for <c>CMAccelerometerData</c></related>
 	[BaseType (typeof (CMLogItem))]
@@ -29,7 +29,7 @@ namespace CoreMotion {
 		CMAcceleration Acceleration { get; }
 	}
 
-	/// <summary>Accelerometer data stored by a <see cref="T:CoreMotion.CMSensorRecorder" />.</summary>
+	/// <summary>Accelerometer data stored by a <see cref="CoreMotion.CMSensorRecorder" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CoreMotion/Reference/CMRecordedAccelerometerData_class/index.html">Apple documentation for <c>CMRecordedAccelerometerData</c></related>
 	[NoMac]
@@ -66,10 +66,10 @@ namespace CoreMotion {
 
 	/// <param name="data">The accelerometer data for this event.</param>
 	///     <param name="error">An error, or null if there have been no errors.</param>
-	///     <summary>A delegate signature used to receive events from <see cref="T:CoreMotion.CMMotionManager" /></summary>
+	///     <summary>A delegate signature used to receive events from <see cref="CoreMotion.CMMotionManager" /></summary>
 	///     <remarks>
 	///       <para>
-	/// This signature is used as an argument to the <see cref="T:CoreMotion.CMMotionManager" />'s StartAccelerometerUpdates.  
+	/// This signature is used as an argument to the <see cref="CoreMotion.CMMotionManager" />'s StartAccelerometerUpdates.  
 	/// </para>
 	///       <example>
 	///         <code lang="csharp lang-csharp"><![CDATA[
@@ -86,10 +86,10 @@ namespace CoreMotion {
 	delegate void CMAccelerometerHandler (CMAccelerometerData data, NSError error);
 	/// <param name="gyroData">The gyroscope data for this event.</param>
 	///     <param name="error">Error or null if there are no errors.</param>
-	///     <summary>A delegate signature used to receive events from <see cref="T:CoreMotion.CMMotionManager" /></summary>
+	///     <summary>A delegate signature used to receive events from <see cref="CoreMotion.CMMotionManager" /></summary>
 	///     <remarks>
 	///       <para>
-	/// This signature is used as an argument to the <see cref="T:CoreMotion.CMMotionManager" />'s StartGyroUpdates.  
+	/// This signature is used as an argument to the <see cref="CoreMotion.CMMotionManager" />'s StartGyroUpdates.  
 	/// </para>
 	///       <para>
 	/// For example:</para>
@@ -141,12 +141,20 @@ namespace CoreMotion {
 		[Export ("accelerometerUpdateInterval")]
 		double AccelerometerUpdateInterval { get; set; }
 
+		/// <summary>Requests that the accelerometer begin delivering data updates.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("startAccelerometerUpdates")]
 		void StartAccelerometerUpdates ();
 
+		/// <param name="queue">To be added.</param>
+		///         <param name="handler">To be added.</param>
+		///         <summary>Requests that the accelerometer begin delivering data updates.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("startAccelerometerUpdatesToQueue:withHandler:")]
 		void StartAccelerometerUpdates (NSOperationQueue queue, CMAccelerometerHandler handler);
 
+		/// <summary>Requests that the accelerometer stop delivering data updates.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("stopAccelerometerUpdates")]
 		void StopAccelerometerUpdates ();
 
@@ -200,21 +208,37 @@ namespace CoreMotion {
 		[Export ("gyroData")]
 		CMGyroData GyroData { get; }
 
+		/// <summary>Requests that the gyroscope begin delivering data updates.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("startGyroUpdates")]
 		void StartGyroUpdates ();
 
+		/// <param name="toQueue">To be added.</param>
+		///         <param name="handler">To be added.</param>
+		///         <summary>Requests that the gyroscope begin delivering data updates.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("startGyroUpdatesToQueue:withHandler:")]
 		void StartGyroUpdates (NSOperationQueue toQueue, CMGyroHandler handler);
 
+		/// <summary>Requests that the gyroscope stop delivering data updates.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("stopGyroUpdates")]
 		void StopGyroUpdates ();
 
+		/// <summary>Requests that the device begin delivering device-motion data updates.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("startDeviceMotionUpdates")]
 		void StartDeviceMotionUpdates ();
 
+		/// <param name="toQueue">To be added.</param>
+		///         <param name="handler">To be added.</param>
+		///         <summary>Requests that the device begin delivering device-motion data updates.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("startDeviceMotionUpdatesToQueue:withHandler:")]
 		void StartDeviceMotionUpdates (NSOperationQueue toQueue, CMDeviceMotionHandler handler);
 
+		/// <summary>Requests that the device stop delivering device-motion updates.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("stopDeviceMotionUpdates")]
 		void StopDeviceMotionUpdates ();
 
@@ -243,12 +267,20 @@ namespace CoreMotion {
 		[Export ("magnetometerData")]
 		CMMagnetometerData MagnetometerData { get; }
 
+		/// <summary>Requests that the magnetometer begin delivering data updates.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("startMagnetometerUpdates")]
 		void StartMagnetometerUpdates ();
 
+		/// <param name="queue">To be added.</param>
+		///         <param name="handler">To be added.</param>
+		///         <summary>Requests that the gyroscope begin delivering data updates.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("startMagnetometerUpdatesToQueue:withHandler:")]
 		void StartMagnetometerUpdates (NSOperationQueue queue, CMMagnetometerHandler handler);
 
+		/// <summary>Requests that the magnetometer begin delivering data updates.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("stopMagnetometerUpdates")]
 		void StopMagnetometerUpdates ();
 
@@ -264,9 +296,17 @@ namespace CoreMotion {
 		[Export ("attitudeReferenceFrame")]
 		CMAttitudeReferenceFrame AttitudeReferenceFrame { get; }
 
+		/// <param name="referenceFrame">To be added.</param>
+		///         <summary>Requests that the device begin delivering device-motion data updates, using <paramref name="referenceFrame" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("startDeviceMotionUpdatesUsingReferenceFrame:")]
 		void StartDeviceMotionUpdates (CMAttitudeReferenceFrame referenceFrame);
 
+		/// <param name="referenceFrame">To be added.</param>
+		///         <param name="queue">To be added.</param>
+		///         <param name="handler">To be added.</param>
+		///         <summary>Requests that the device begin delivering device-motion data updates.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("startDeviceMotionUpdatesUsingReferenceFrame:toQueue:withHandler:")]
 		void StartDeviceMotionUpdates (CMAttitudeReferenceFrame referenceFrame, NSOperationQueue queue, CMDeviceMotionHandler handler);
 
@@ -313,6 +353,9 @@ namespace CoreMotion {
 		[Export ("roll")]
 		double Roll { get; }
 
+		/// <param name="attitude">To be added.</param>
+		///         <summary>Multiplies the attitude by the specified attitude.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("multiplyByInverseOfAttitude:")]
 		void MultiplyByInverseOfAttitude (CMAttitude attitude);
 	}
@@ -342,13 +385,13 @@ namespace CoreMotion {
 		[Export ("userAcceleration")]
 		CMAcceleration UserAcceleration { get; }
 
-		/// <summary>The current <see cref="T:CoreMotion.CMAttitude" /> of the device.</summary>
+		/// <summary>The current <see cref="CoreMotion.CMAttitude" /> of the device.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("attitude")]
 		CMAttitude Attitude { get; }
 
-		/// <summary>Returns the device's current <see cref="T:CoreMotion.CMCalibratedMagneticField" />.</summary>
+		/// <summary>Returns the device's current <see cref="CoreMotion.CMCalibratedMagneticField" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("magneticField")]
@@ -382,7 +425,7 @@ namespace CoreMotion {
 	}
 
 	/// <summary>A reading from the device magnetometer.</summary>
-	///     <remarks>Instances containing the magnetometer data are delivered to the method provided to the <see cref="M:CoreMotion.CMMotionManager.StartMagnetometerUpdates(Foundation.NSOperationQueue,CoreMotion.CMMagnetometerHandler)" /> method.</remarks>
+	///     <remarks>Instances containing the magnetometer data are delivered to the method provided to the <see cref="CoreMotion.CMMotionManager.StartMagnetometerUpdates(Foundation.NSOperationQueue,CoreMotion.CMMagnetometerHandler)" /> method.</remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CoreMotion/Reference/CMMagnetometerData_Class/index.html">Apple documentation for <c>CMMagnetometerData</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CMLogItem))]
@@ -393,7 +436,7 @@ namespace CoreMotion {
 		///
 		/// Magnetic field information for x, y, z coordinates.
 		///      </value>
-		///         <remarks>This method returns the raw magnetic field measured by the device.  If you want a version of the magnetic field that has been filtered from the magnetic field introduced by the device, use the <see cref="P:CoreMotion.CMDeviceMotion.MagneticField" /> property instead.</remarks>
+		///         <remarks>This method returns the raw magnetic field measured by the device.  If you want a version of the magnetic field that has been filtered from the magnetic field introduced by the device, use the <see cref="CoreMotion.CMDeviceMotion.MagneticField" /> property instead.</remarks>
 		[Export ("magneticField")]
 		CMMagneticField MagneticField { get; }
 	}
@@ -410,21 +453,21 @@ namespace CoreMotion {
 	/// Error, if any.
 	///   	   
 	///   	   </param>
-	///     <summary>A delegate that is the <c>handler</c> for the <see cref="M:CoreMotion.CMMotionManager.StartMagnetometerUpdates(Foundation.NSOperationQueue,CoreMotion.CMMagnetometerHandler)" /> method.</summary>
+	///     <summary>A delegate that is the <c>handler</c> for the <see cref="CoreMotion.CMMotionManager.StartMagnetometerUpdates(Foundation.NSOperationQueue,CoreMotion.CMMagnetometerHandler)" /> method.</summary>
 	///     <remarks>Signature for a method that can receive magnetometer data from the CMMotionManager.</remarks>
 	delegate void CMMagnetometerHandler (CMMagnetometerData magnetometerData, NSError error);
 
-	/// <summary>The delegate for use with <see cref="M:CoreMotion.CMStepCounter.QueryStepCount(Foundation.NSDate,Foundation.NSDate,Foundation.NSOperationQueue,CoreMotion.CMStepQueryHandler)" />.</summary>
+	/// <summary>The delegate for use with <see cref="CoreMotion.CMStepCounter.QueryStepCount(Foundation.NSDate,Foundation.NSDate,Foundation.NSOperationQueue,CoreMotion.CMStepQueryHandler)" />.</summary>
 	[MacCatalyst (13, 1)]
 	delegate void CMStepQueryHandler (nint numberOfSteps, NSError error);
 
-	/// <summary>The delegate used with <see cref="M:CoreMotion.CMStepCounter.StartStepCountingUpdates(Foundation.NSOperationQueue,System.nint,CoreMotion.CMStepUpdateHandler)" />.</summary>
+	/// <summary>The delegate used with <see cref="CoreMotion.CMStepCounter.StartStepCountingUpdates(Foundation.NSOperationQueue,System.IntPtr,CoreMotion.CMStepUpdateHandler)" />.</summary>
 	[MacCatalyst (13, 1)]
 	delegate void CMStepUpdateHandler (nint numberOfSteps, NSDate timestamp, NSError error);
 
 	/// <summary>On supported devices, stores the number of steps the user has taken with the device and allows step-counting to be dynamically tracked.</summary>
 	///     <remarks>
-	///       <para>Not all devices support step counting. Application developers should check <see cref="P:CoreMotion.CMStepCounter.IsStepCountingAvailable" />.</para>
+	///       <para>Not all devices support step counting. Application developers should check <see cref="CoreMotion.CMStepCounter.IsStepCountingAvailable" />.</para>
 	///     </remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CoreMotion/Reference/CMStepCounter_class/index.html">Apple documentation for <c>CMStepCounter</c></related>
 	[NoMac]
@@ -441,18 +484,43 @@ namespace CoreMotion {
 		[Export ("isStepCountingAvailable")]
 		bool IsStepCountingAvailable { get; }
 
+		/// <param name="start">To be added.</param>
+		///         <param name="end">To be added.</param>
+		///         <param name="queue">To be added.</param>
+		///         <param name="handler">To be added.</param>
+		///         <summary>Queries for step-counting data.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("queryStepCountStartingFrom:to:toQueue:withHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="start">To be added.</param>
+			<param name="end">To be added.</param>
+			<param name="queue">To be added.</param>
+			<summary>Queries for step-counting data.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous QueryStepCount operation.   The value of the TResult parameter is a CoreMotion.CMStepQueryHandler.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The QueryStepCountAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void QueryStepCount (NSDate start, NSDate end, NSOperationQueue queue, CMStepQueryHandler handler);
 
+		/// <param name="queue">To be added.</param>
+		/// <param name="stepCounts">To be added.</param>
+		/// <param name="handler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("startStepCountingUpdatesToQueue:updateOn:withHandler:")]
 		void StartStepCountingUpdates (NSOperationQueue queue, nint stepCounts, CMStepUpdateHandler handler);
 
+		/// <summary>End periodic updates of step-counting information.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("stopStepCountingUpdates")]
 		void StopStepCountingUpdates ();
 	}
 
-	/// <summary>Holds data relating to walking and floor-climbing. Generated by <see cref="T:CoreMotion.CMPedometer" />.</summary>
+	/// <summary>Holds data relating to walking and floor-climbing. Generated by <see cref="CoreMotion.CMPedometer" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CoreMotion/Reference/CMPedometerData_class/index.html">Apple documentation for <c>CMPedometerData</c></related>
 	[MacCatalyst (13, 1)]
@@ -558,14 +626,40 @@ namespace CoreMotion {
 		[Export ("isFloorCountingAvailable")]
 		bool IsFloorCountingAvailable { get; }
 
+		/// <param name="start">To be added.</param>
+		///         <param name="end">To be added.</param>
+		///         <param name="handler">To be added.</param>
+		///         <summary>Requests pedometer data for the specified range.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("queryPedometerDataFromDate:toDate:withHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="start">To be added.</param>
+			<param name="end">To be added.</param>
+			<summary>Requests pedometer data for the specified range.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous QueryPedometerData operation.  The value of the TResult parameter is of type System.Action&lt;CoreMotion.CMPedometerData,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void QueryPedometerData (NSDate start, NSDate end, Action<CMPedometerData, NSError> handler);
 
+		/// <param name="start">To be added.</param>
+		///         <param name="handler">To be added.</param>
+		///         <summary>Requests that the pedometer begin sending periodic updates to the app.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("startPedometerUpdatesFromDate:withHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="start">To be added.</param>
+			<summary>Requests that the pedometer begin sending periodic updates to the app.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous StartPedometerUpdates operation.  The value of the TResult parameter is of type System.Action&lt;CoreMotion.CMPedometerData,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void StartPedometerUpdates (NSDate start, Action<CMPedometerData, NSError> handler);
 
+		/// <summary>Requests that the pedometer stop sending periodic updates to the app.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("stopPedometerUpdates")]
 		void StopPedometerUpdates ();
 
@@ -593,11 +687,25 @@ namespace CoreMotion {
 		[Export ("isPedometerEventTrackingAvailable")]
 		bool IsPedometerEventTrackingAvailable { get; }
 
+		/// <param name="handler">An event handler for pedometer update events.</param>
+		///         <summary>Starts handling updates to pedestrian data.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Starts handling updates to pedestrian data.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous StartPedometerEventUpdates operation.  The value of the TResult parameter is of type System.Action&lt;CoreMotion.CMPedometerEvent,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The StartPedometerEventUpdatesAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("startPedometerEventUpdatesWithHandler:")]
 		void StartPedometerEventUpdates (Action<CMPedometerEvent, NSError> handler);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("stopPedometerEventUpdates")]
 		void StopPedometerEventUpdates ();
@@ -611,19 +719,19 @@ namespace CoreMotion {
 		CMAuthorizationStatus AuthorizationStatus { get; }
 	}
 
-	/// <summary>The delegate that acts as the handler for <see cref="M:CoreMotion.CMMotionActivityManager.QueryActivity(Foundation.NSDate,Foundation.NSDate,Foundation.NSOperationQueue,CoreMotion.CMMotionActivityQueryHandler)" />.</summary>
+	/// <summary>The delegate that acts as the handler for <see cref="CoreMotion.CMMotionActivityManager.QueryActivity(Foundation.NSDate,Foundation.NSDate,Foundation.NSOperationQueue,CoreMotion.CMMotionActivityQueryHandler)" />.</summary>
 	[NoMac]
 	[MacCatalyst (13, 1)]
 	delegate void CMMotionActivityHandler (CMMotionActivity activity);
 
-	/// <summary>The delegate that is the handler for <see cref="M:CoreMotion.CMMotionActivityManager.StartActivityUpdates(Foundation.NSOperationQueue,CoreMotion.CMMotionActivityHandler)" />.</summary>
+	/// <summary>The delegate that is the handler for <see cref="CoreMotion.CMMotionActivityManager.StartActivityUpdates(Foundation.NSOperationQueue,CoreMotion.CMMotionActivityHandler)" />.</summary>
 	[NoMac]
 	[MacCatalyst (13, 1)]
 	delegate void CMMotionActivityQueryHandler (CMMotionActivity [] activities, NSError error);
 
 	/// <summary>On supported devices, accesses stored motion data and allows monitoring of motion updates.</summary>
 	///     <remarks>
-	///       <para>Not everty device supports stored motion data. Application developers should check <see cref="P:CoreMotion.CMMotionActivityManager.IsActivityAvailable" />.</para>
+	///       <para>Not everty device supports stored motion data. Application developers should check <see cref="CoreMotion.CMMotionActivityManager.IsActivityAvailable" />.</para>
 	///     </remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CoreMotion/Reference/CMMotionActivityManager_class/index.html">Apple documentation for <c>CMMotionActivityManager</c></related>
 	[NoMac]
@@ -638,13 +746,37 @@ namespace CoreMotion {
 		[Export ("isActivityAvailable")]
 		bool IsActivityAvailable { get; }
 
+		/// <param name="start">To be added.</param>
+		///         <param name="end">To be added.</param>
+		///         <param name="queue">To be added.</param>
+		///         <param name="handler">To be added.</param>
+		///         <summary>Queries the device for stored motion activity.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("queryActivityStartingFromDate:toDate:toQueue:withHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="start">To be added.</param>
+			<param name="end">To be added.</param>
+			<param name="queue">To be added.</param>
+			<summary>Queries the device for stored motion activity.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous QueryActivity operation.   The value of the TResult parameter is a <see cref="CoreMotion.CMMotionActivityQueryHandler" />.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The QueryActivityAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void QueryActivity (NSDate start, NSDate end, NSOperationQueue queue, CMMotionActivityQueryHandler handler);
 
+		/// <param name="queue">To be added.</param>
+		///         <param name="handler">To be added.</param>
+		///         <summary>Begins periodically sending motion activity data to the app.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("startActivityUpdatesToQueue:withHandler:")]
 		void StartActivityUpdates (NSOperationQueue queue, CMMotionActivityHandler handler);
 
+		/// <summary>Stops periodically sending motion activity data to the app.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("stopActivityUpdates")]
 		void StopActivityUpdates ();
 
@@ -716,7 +848,7 @@ namespace CoreMotion {
 		bool Cycling { get; }
 	}
 
-	/// <summary>Holds relative-altitude data, generated by the <see cref="T:CoreMotion.CMAltitudeData" /> class.</summary>
+	/// <summary>Holds relative-altitude data, generated by the <see cref="CoreMotion.CMAltitudeData" /> class.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CoreMotion/Reference/CMAltitudeData_class/index.html">Apple documentation for <c>CMAltitudeData</c></related>
 	[NoMac]
@@ -756,9 +888,21 @@ namespace CoreMotion {
 		///         <summary>Requests periodic updates of altitude-adjustment data.</summary>
 		///         <remarks>To be added.</remarks>
 		[Export ("startRelativeAltitudeUpdatesToQueue:withHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="queue">To be added.</param>
+			<summary>Requests periodic updates of altitude-adjustment data.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous StartRelativeAltitudeUpdates operation.  The value of the TResult parameter is of type System.Action&lt;CoreMotion.CMAltitudeData,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The StartRelativeAltitudeUpdatesAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void StartRelativeAltitudeUpdates (NSOperationQueue queue, Action<CMAltitudeData, NSError> handler);
 
+		/// <summary>Stops periodic updates of altitude-adjustment data.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("stopRelativeAltitudeUpdates")]
 		void StopRelativeAltitudeUpdates ();
 
@@ -843,11 +987,19 @@ namespace CoreMotion {
 		[Export ("isAuthorizedForRecording")]
 		bool IsAuthorizedForRecording { get; }
 
+		/// <param name="fromDate">To be added.</param>
+		///         <param name="toDate">To be added.</param>
+		///         <summary>Retrieves accelerometer data for the specified time interval.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("accelerometerDataFromDate:toDate:")]
 		[return: NullAllowed]
 		CMSensorDataList GetAccelerometerData (NSDate fromDate, NSDate toDate);
 
+		/// <param name="duration">To be added.</param>
+		///         <summary>Begins recording sensor data for <paramref name="duration" /> seconds.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("recordAccelerometerForDuration:")]
 		void RecordAccelerometer (double duration);
@@ -1052,7 +1204,7 @@ namespace CoreMotion {
 		Size,
 	}
 
-	/// <summary>An enumeration whose values specify the reference frame from which <see cref="T:CoreMotion.CMAttitude" /> readings are referenced.</summary>
+	/// <summary>An enumeration whose values specify the reference frame from which <see cref="CoreMotion.CMAttitude" /> readings are referenced.</summary>
 	[NoMac]
 	[MacCatalyst (13, 1)]
 	// untyped enum -> CMAttitude.h
@@ -1073,7 +1225,7 @@ namespace CoreMotion {
 		XTrueNorthZVertical = 1 << 3,
 	}
 
-	/// <summary>An enumeration whose values specify the confidence in a <see cref="T:CoreMotion.CMMotionActivity" />.</summary>
+	/// <summary>An enumeration whose values specify the confidence in a <see cref="CoreMotion.CMMotionActivity" />.</summary>
 	[Mac (15, 0)]
 	[MacCatalyst (13, 1)]
 	// NSInteger -> CMMotionActivity.h
@@ -1163,11 +1315,7 @@ namespace CoreMotion {
 	[iOS (14, 0)]
 	[MacCatalyst (14, 0)]
 	[Mac (13, 0)]
-#if NET
 	[Protocol, Model]
-#else
-	[Protocol, Model (AutoGeneratedName = true)]
-#endif
 	[BaseType (typeof (NSObject))]
 	interface CMHeadphoneMotionManagerDelegate {
 
@@ -1248,11 +1396,7 @@ namespace CoreMotion {
 
 	[NoTV, NoMac, NoiOS]
 	[NoMacCatalyst]
-#if NET
 	[Protocol, Model]
-#else
-	[Protocol, Model (AutoGeneratedName = true)]
-#endif
 	[BaseType (typeof (NSObject))]
 	interface CMFallDetectionDelegate {
 
@@ -1371,11 +1515,7 @@ namespace CoreMotion {
 	interface ICMWaterSubmersionManagerDelegate { }
 
 	[NoMac, iOS (16, 0), NoMacCatalyst, NoTV]
-#if NET
 	[Protocol, Model]
-#else
-	[Protocol, Model (AutoGeneratedName = true)]
-#endif
 	[BaseType (typeof (NSObject))]
 	interface CMWaterSubmersionManagerDelegate {
 		[Abstract]

@@ -670,7 +670,7 @@ namespace Xamarin.MMP.Tests {
 		}
 
 		[Test]
-		[TestCase ("inline-runtime-arch")] // This is valid for iOS, tvOS and watchOS.
+		[TestCase ("inline-runtime-arch")] // This is valid for iOS and tvOS.
 		public void MM2003 (string opt)
 		{
 			RunMMPTest (tmpDir => {
@@ -679,7 +679,7 @@ namespace Xamarin.MMP.Tests {
 						"<LinkMode>Full</LinkMode>",
 				};
 				var rv = TI.TestUnifiedExecutable (test, shouldFail: false);
-				rv.Messages.AssertWarning (2003, $"Option '--optimize={opt}' will be ignored since it's only applicable to iOS, watchOS, tvOS.");
+				rv.Messages.AssertWarning (2003, $"Option '--optimize={opt}' will be ignored since it's only applicable to iOS, tvOS.");
 				rv.Messages.AssertErrorCount (0);
 			});
 		}
@@ -715,7 +715,7 @@ namespace Xamarin.MMP.Tests {
 		[Test]
 		public void HardenedRuntimeCodesignOption ()
 		{
-			// https://github.com/xamarin/xamarin-macios/issues/5653
+			// https://github.com/dotnet/macios/issues/5653
 			if (TI.InJenkins)
 				Assert.Ignore ("Requires macOS entitlements on bots.");
 
@@ -756,7 +756,7 @@ namespace Xamarin.MMP.Tests {
 		[TestCase (true)]
 		public void ArchiveTask (bool full)
 		{
-			// https://github.com/xamarin/xamarin-macios/issues/5653
+			// https://github.com/dotnet/macios/issues/5653
 			if (TI.InJenkins)
 				Assert.Ignore ("Requires macOS entitlements on bots.");
 

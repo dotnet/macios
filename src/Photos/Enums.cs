@@ -152,7 +152,7 @@ namespace Photos {
 	}
 
 	// NSInteger -> PhotosTypes.h
-	/// <summary>Enumerates varieties of <see cref="T:Photos.PHAssetCollection" />.</summary>
+	/// <summary>Enumerates varieties of <see cref="Photos.PHAssetCollection" />.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum PHAssetCollectionType : long {
@@ -257,7 +257,7 @@ namespace Photos {
 	}
 
 	// NSInteger -> PhotosTypes.h
-	/// <summary>Enumerates the forms of <see cref="T:Photos.PHAsset" />.</summary>
+	/// <summary>Enumerates the forms of <see cref="Photos.PHAsset" />.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum PHAssetMediaType : long {
@@ -336,7 +336,7 @@ namespace Photos {
 		Limited,
 	}
 
-	/// <summary>Enumerates types of <see cref="T:Photos.PHAssetResource" /> data.</summary>
+	/// <summary>Enumerates types of <see cref="Photos.PHAssetResource" /> data.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum PHAssetResourceType : long {
@@ -516,10 +516,6 @@ namespace Photos {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum PHPhotosError : long {
-#if !NET
-		[Deprecated (PlatformName.MacOSX, 12, 0, message: "Use 'InternalError' instead.")]
-		Invalid = -1,
-#endif
 		InternalError = -1,
 		UserCancelled = 3072,
 		LibraryVolumeOffline = 3114,

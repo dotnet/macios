@@ -6,8 +6,6 @@
 //
 // Copyright 2023 Microsoft Corp
 
-#if NET
-
 #nullable enable
 
 using System;
@@ -39,5 +37,3 @@ namespace ObjCRuntime {
 		INativeObject? ConstructINativeObject (RuntimeTypeHandle typeHandle, NativeHandle nativeHandle, bool owns);
 	}
 }
-
-#endif // NET

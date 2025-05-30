@@ -34,10 +34,6 @@ using ABRecord = Foundation.NSObject;
 using NSColor = UIKit.UIColor;
 #endif
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace EventKit {
 
 	/// <summary>The base-class for persistent Event Kit classes.</summary>
@@ -70,9 +66,7 @@ namespace EventKit {
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/EventKit/Reference/EKCalendarItemClassRef/index.html">Apple documentation for <c>EKCalendarItem</c></related>
 	[BaseType (typeof (EKObject))]
-#if NET
 	[Abstract] // "The EKCalendarItem class is a an abstract superclass ..." from Apple docs.
-#endif
 	interface EKCalendarItem {
 		// Never made avaialble on MonoMac
 		[Export ("UUID")]
@@ -210,7 +204,7 @@ namespace EventKit {
 		EKStructuredLocation FromMapItem (MKMapItem mapItem);
 	}
 
-	/// <summary>An alarm in the user's <see cref="T:EventKit.EKCalendar" />.</summary>
+	/// <summary>An alarm in the user's <see cref="EventKit.EKCalendar" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/EventKit/Reference/EKAlarmClassRef/index.html">Apple documentation for <c>EKAlarm</c></related>
 	[BaseType (typeof (EKObject))]
@@ -458,6 +452,10 @@ namespace EventKit {
 		[Export ("recurrenceEndWithEndDate:")]
 		EKRecurrenceEnd FromEndDate (NSDate endDate);
 
+		/// <param name="occurrenceCount">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static]
 		[Export ("recurrenceEndWithOccurrenceCount:")]
 		EKRecurrenceEnd FromOccurrenceCount (nint occurrenceCount);
@@ -469,39 +467,21 @@ namespace EventKit {
 	[BaseType (typeof (NSObject))]
 	interface EKRecurrenceDayOfWeek : NSCopying, NSSecureCoding {
 		[Export ("dayOfTheWeek")]
-#if NET
 		EKWeekday DayOfTheWeek { get; }
-#else
-		nint DayOfTheWeek { get; }
-#endif
 
 		[Export ("weekNumber")]
 		nint WeekNumber { get; }
 
 		[Static]
 		[Export ("dayOfWeek:")]
-#if NET
 		EKRecurrenceDayOfWeek FromDay (EKWeekday dayOfTheWeek);
-#else
-		[Internal]
-		EKRecurrenceDayOfWeek _FromDay (nint dayOfTheWeek);
-#endif
 
 		[Static]
 		[Export ("dayOfWeek:weekNumber:")]
-#if NET
 		EKRecurrenceDayOfWeek FromDay (EKWeekday dayOfTheWeek, nint weekNumber);
-#else
-		[Internal]
-		EKRecurrenceDayOfWeek _FromDay (nint dayOfTheWeek, nint weekNumber);
-#endif
 
 		[Export ("initWithDayOfTheWeek:weekNumber:")]
-#if NET
 		NativeHandle Constructor (EKWeekday dayOfTheWeek, nint weekNumber);
-#else
-		NativeHandle Constructor (nint dayOfTheWeek, nint weekNumber);
-#endif
 	}
 
 	/// <summary>Describes the recurring rule for an event.</summary>
@@ -523,12 +503,7 @@ namespace EventKit {
 		nint Interval { get; }
 
 		[Export ("firstDayOfTheWeek")]
-#if NET
 		EKWeekday FirstDayOfTheWeek { get; }
-#else
-		[Internal]
-		nint _FirstDayOfTheWeek { get; }
-#endif
 
 		[NullAllowed]
 		[Export ("daysOfTheWeek")]
@@ -552,18 +527,23 @@ namespace EventKit {
 
 		[NullAllowed]
 		[Export ("setPositions")]
-#if NET
 		NSNumber [] SetPositions { get; }
-#else
-		NSObject [] SetPositions { get; }
-#endif
 
+		/// <param name="type">To be added.</param>
+		/// <param name="interval">To be added.</param>
+		/// <param name="end">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initRecurrenceWithFrequency:interval:end:")]
 		NativeHandle Constructor (EKRecurrenceFrequency type, nint interval, [NullAllowed] EKRecurrenceEnd end);
 
+		/// <include file="../docs/api/EventKit/EKRecurrenceRule.xml" path="/Documentation/Docs[@DocId='M:EventKit.EKRecurrenceRule.#ctor(EventKit.EKRecurrenceFrequency,System.IntPtr,EventKit.EKRecurrenceDayOfWeek[],Foundation.NSNumber[],Foundation.NSNumber[],Foundation.NSNumber[],Foundation.NSNumber[],Foundation.NSNumber[],EventKit.EKRecurrenceEnd)']/*" />
 		[Export ("initRecurrenceWithFrequency:interval:daysOfTheWeek:daysOfTheMonth:monthsOfTheYear:weeksOfTheYear:daysOfTheYear:setPositions:end:")]
 		NativeHandle Constructor (EKRecurrenceFrequency type, nint interval, [NullAllowed] EKRecurrenceDayOfWeek [] days, [NullAllowed] NSNumber [] monthDays, [NullAllowed] NSNumber [] months,
-					[NullAllowed] NSNumber [] weeksOfTheYear, [NullAllowed] NSNumber [] daysOfTheYear, [NullAllowed] NSNumber [] setPositions, [NullAllowed] EKRecurrenceEnd end);
+						[NullAllowed] NSNumber [] weeksOfTheYear, [NullAllowed] NSNumber [] daysOfTheYear, [NullAllowed] NSNumber [] setPositions, [NullAllowed] EKRecurrenceEnd end);
 
 	}
 
@@ -666,7 +646,21 @@ namespace EventKit {
 		EKCalendar DefaultCalendarForNewReminders { get; }
 
 		[Export ("fetchRemindersMatchingPredicate:completion:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="predicate">A predicate for the reminders you want to fetch.</param>
+			<summary>Fetches the reminders that match the specified predicate.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous FetchReminders operation.  The value of the TResult parameter is of type System.Action&lt;EventKit.EKReminder[]&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""",
+			XmlDocsWithOutParameter = """
+			<param name="predicate">To be added.</param>
+			<param name="result">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		IntPtr FetchReminders (NSPredicate predicate, Action<EKReminder []> completion);
 
 		[Export ("cancelFetchRequest:")]
@@ -705,7 +699,16 @@ namespace EventKit {
 		[Deprecated (PlatformName.MacOSX, 14, 0, message: "Use RequestFullAccessToEvents, RequestWriteOnlyAccessToEvents, or RequestFullAccessToReminders.")]
 		[Deprecated (PlatformName.MacCatalyst, 17, 0, message: "Use RequestFullAccessToEvents, RequestWriteOnlyAccessToEvents, or RequestFullAccessToReminders.")]
 		[Export ("requestAccessToEntityType:completion:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="entityType">The  for which access is being requested.</param>
+			<summary>Shows, if necessary, the standard permissions dialog for the specified <paramref name="entityType" />.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous RequestAccess operation.  The value of the TResult parameter is of type System.Action&lt;System.Boolean,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The RequestAccessAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			        </remarks>
+			""")]
 		void RequestAccess (EKEntityType entityType, Action<bool, NSError> completionHandler);
 
 		[Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
@@ -732,7 +735,7 @@ namespace EventKit {
 	delegate void EKEventStoreRequestAccessCompletionHandler (bool didRequestAccess, NSError error);
 	/// <param name="theEvent">The matching event.</param>
 	///     <param name="stop">If you set this ref value to true, the enumeration will stop.</param>
-	///     <summary>Delegate signature for the event enumeration method in <see cref="T:EventKit.EKEventStore" /></summary>
+	///     <summary>Delegate signature for the event enumeration method in <see cref="EventKit.EKEventStore" /></summary>
 	///     <remarks>The method will be invoked repeatedly, once for each event that matches the provided NSPredicate.</remarks>
 	delegate void EKEventSearchCallback (EKEvent theEvent, ref bool stop);
 

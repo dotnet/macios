@@ -9,12 +9,8 @@ using ObjCRuntime;
 #nullable enable
 
 namespace Foundation {
-#if false // https://github.com/xamarin/xamarin-macios/issues/15577
-#if !NET
-	[iOS (13,0), TV (13,0)]
-#else
+#if false // https://github.com/dotnet/macios/issues/15577
 	[SupportedOSPlatform ("ios13.0"), SupportedOSPlatform ("tvos13.0"), SupportedOSPlatform ("macos")]
-#endif
 	public partial class NSOrderedCollectionChange
 	{
 

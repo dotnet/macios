@@ -36,7 +36,7 @@ The sample code is to support a new type for NSValue, the exact code locations w
 
 7. Finally run the following tests (at least)
 
-* All variations of monotouch-test (iOS/watchOS/tvOS) on both simulator and device.
+* All variations of monotouch-test (iOS/tvOS) on both simulator and device.
 * link all on both simulator and device.
 
 
@@ -47,7 +47,7 @@ The sample code is to support a new type for NSValue, the exact code locations w
 [5]: https://github.com/rolfbjarne/xamarin-macios/blob/b38c114fbe8c9d229ec41a312dc36802cb4f027e/runtime/trampolines.m#L799
 [6]: https://github.com/rolfbjarne/xamarin-macios/blob/b38c114fbe8c9d229ec41a312dc36802cb4f027e/runtime/trampolines.m#L1007-L1008
 [7]: https://github.com/rolfbjarne/xamarin-macios/blob/b38c114fbe8c9d229ec41a312dc36802cb4f027e/src/ObjCRuntime/Registrar.cs#L687
-[8]: https://github.com/xamarin/xamarin-macios/pull/2288/commits/b38c114fbe8c9d229ec41a312dc36802cb4f027e
+[8]: https://github.com/dotnet/macios/pull/2288/commits/b38c114fbe8c9d229ec41a312dc36802cb4f027e
 [9]: https://github.com/rolfbjarne/xamarin-macios/blob/b38c114fbe8c9d229ec41a312dc36802cb4f027e/tools/common/StaticRegistrar.cs#L3796
 [10]: https://github.com/rolfbjarne/xamarin-macios/blob/b38c114fbe8c9d229ec41a312dc36802cb4f027e/tools/common/StaticRegistrar.cs#L3830
 [11]: https://github.com/rolfbjarne/xamarin-macios/blob/b38c114fbe8c9d229ec41a312dc36802cb4f027e/src/generator.cs#L1223

@@ -31,12 +31,27 @@ using System;
 #nullable enable
 
 namespace Foundation {
+	/// <summary>This attribute is present on properties to indicate that they reflect an underlying unmanaged global variable.</summary>
+	///     <remarks>
+	///       When this attribute is present on a property, it indicates that the property actually reflects an underlying unmanaged global variable.
+	///     </remarks>
 	[AttributeUsage (AttributeTargets.Property | AttributeTargets.Field)]
 	public sealed class FieldAttribute : Attribute {
+		/// <param name="symbolName">The unmanaged symbol that this field represents.</param>
+		///         <summary>Creates a new FieldAttribute instance with the specific symbol to bind.</summary>
+		///         <remarks>
+		/// 	  Used by Objective-C bindings to bind an unmanaged global variable as a static field.   
+		/// 	</remarks>
 		public FieldAttribute (string symbolName)
 		{
 			SymbolName = symbolName;
 		}
+		/// <param name="symbolName">The unmanaged symbol that this field represents.</param>
+		///         <param name="libraryName">The library name to bind.   Use "__Internal" for referencing symbols on libraries that are statically linked with your application.</param>
+		///         <summary>Creates a new FieldAttribute instance with the specific symbol to bind.</summary>
+		///         <remarks>
+		/// 	  Used by Objective-C bindings to bind an unmanaged global variable as a static field.   
+		/// 	</remarks>
 		public FieldAttribute (string symbolName, string libraryName)
 		{
 			SymbolName = symbolName;

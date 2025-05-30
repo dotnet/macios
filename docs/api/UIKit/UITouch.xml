@@ -6,31 +6,31 @@
 	This object encapsulates a touch or a finger movement on the screen.
       </para>
       <para>
-	The UITouch event is typically available from the <see cref="T:Foundation.NSSet" /> passed to the Touch
-	methods and also from the <see cref="T:UIKit.UIEvent" /> instance that is passed to those methods.
+	The UITouch event is typically available from the <see cref="Foundation.NSSet" /> passed to the Touch
+	methods and also from the <see cref="UIKit.UIEvent" /> instance that is passed to those methods.
       </para>
       <list type="bullet">
         <item>
           <term>
-            <see cref="M:UIKit.UIResponder.TouchesBegan(Foundation.NSSet,UIKit.UIEvent)" />:
+            <see cref="UIKit.UIResponder.TouchesBegan(Foundation.NSSet,UIKit.UIEvent)" />:
             sent when one or more fingers touch the screen.
           </term>
         </item>
         <item>
           <term>
-            <see cref="M:UIKit.UIResponder.TouchesMoved(Foundation.NSSet,UIKit.UIEvent)" />:
+            <see cref="UIKit.UIResponder.TouchesMoved(Foundation.NSSet,UIKit.UIEvent)" />:
              sent when one or more fingers move.
           </term>
         </item>
         <item>
           <term>
-            <see cref="M:UIKit.UIResponder.TouchesEnded(Foundation.NSSet,UIKit.UIEvent)" />:
+            <see cref="UIKit.UIResponder.TouchesEnded(Foundation.NSSet,UIKit.UIEvent)" />:
              sent when one or more fingers are lifted from the screen.
            </term>
         </item>
         <item>
           <term>
-            <see cref="M:UIKit.UIResponder.TouchesCancelled(Foundation.NSSet,UIKit.UIEvent)" />:
+            <see cref="UIKit.UIResponder.TouchesCancelled(Foundation.NSSet,UIKit.UIEvent)" />:
             sent when the touch is cancelled by the system (for example if
             the phone interrupts your application).
           </term>
@@ -39,13 +39,13 @@
       <para>
         UIViews by default only handle a single touch event at once.  If you
         want your view to handle multiple touches, you must set the
-        <see cref="P:UIKit.UIView.MultipleTouchEnabled" /> to true.
+        <see cref="UIKit.UIView.MultipleTouchEnabled" /> to true.
       </para>
       <para>
-        iOS creates a <see cref="T:UIKit.UIEvent" /> object any time a finger
-        touches the screen, moves or is removed from the screen.  The <see cref="T:UIKit.UIEvent" /> encapsulates all of the touches
+        iOS creates a <see cref="UIKit.UIEvent" /> object any time a finger
+        touches the screen, moves or is removed from the screen.  The <see cref="UIKit.UIEvent" /> encapsulates all of the touches
         that are taking place on the screen at this point, even those that
-        do not belong to this view.  In addition to the <see cref="T:UIKit.UIEvent" />, there is an <see cref="T:Foundation.NSSet" /> containing <see cref="T:UIKit.UITouch" /> objects that represent the state
+        do not belong to this view.  In addition to the <see cref="UIKit.UIEvent" />, there is an <see cref="Foundation.NSSet" /> containing <see cref="UIKit.UITouch" /> objects that represent the state
         of each finger on the screen for this particular view.
       </para>
     </remarks>

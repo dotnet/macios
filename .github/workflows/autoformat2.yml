@@ -24,4 +24,4 @@ jobs:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           git_user_email: 'github-actions-autoformatter@xamarin.com'
           git_user_name: 'GitHub Actions Autoformatter'
-          commentContents: '# :warning: Your code has been reformatted. :warning:\n\nIf this is not desired, add the `actions-disable-autoformat` label, and revert the reformatting commit.\n\nIf files unrelated to your change were modified, try reverting the reformatting commit + merging with the target branch (and push those changes).'
+          commentOnPullRequest: false

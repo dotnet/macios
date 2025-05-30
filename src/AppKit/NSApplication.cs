@@ -44,10 +44,6 @@ namespace AppKit {
 		///         <remarks>To be added.</remarks>
 		public static bool CheckForEventAndDelegateMismatches = true;
 
-#if !NET
-		public static bool IgnoreMissingAssembliesDuringRegistration = false;
-#endif
-
 		private static Thread? mainThread;
 
 		[DllImport (Constants.AppKitLibrary)]
@@ -68,12 +64,8 @@ namespace AppKit {
 
 			initialized = true;
 
-#if NET
 			if (Runtime.DynamicRegistrationSupported)
 				Runtime.RegisterAssemblies ();
-#else
-			Runtime.RegisterAssemblies ();
-#endif
 
 			// Runtime hosts embedding MonoMac may use a different sync context 
 			// and call NSApplicationMain externally prior to this Init, so only
@@ -92,7 +84,7 @@ namespace AppKit {
 
 			// custom initialization might have happened before native NSApplication code was full ready to be queried
 			// as such it's possible that `class_ptr` might be empty and that will make things fails later
-			// reference: https://github.com/xamarin/xamarin-macios/issues/7932
+			// reference: https://github.com/dotnet/macios/issues/7932
 			if (class_ptr == IntPtr.Zero)
 				ResetHandle ();
 
@@ -176,13 +168,6 @@ namespace AppKit {
 		{
 			DiscardEvents ((nuint) (ulong) mask, lastEvent);
 		}
-
-#if !NET
-		[Obsolete ("This method does nothing.")]
-		public static void RestoreWindow (string identifier, Foundation.NSCoder state, NSWindowCompletionHandler onCompletion)
-		{
-		}
-#endif
 
 		// note: if needed override the protected Get|Set methods
 		/// <summary>To be added.</summary>

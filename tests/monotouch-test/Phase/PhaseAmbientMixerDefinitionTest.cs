@@ -11,11 +11,7 @@ using NUnit.Framework;
 using AVFoundation;
 using AudioToolbox;
 
-#if NET
 using System.Numerics;
-#else
-using OpenTK;
-#endif
 
 #nullable enable
 

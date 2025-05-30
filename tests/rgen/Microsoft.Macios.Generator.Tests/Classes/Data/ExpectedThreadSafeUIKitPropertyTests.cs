@@ -21,10 +21,10 @@ public partial class ThreadSafeUIKitPropertyTests
 {
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	const string selCountX = "count";
-	static readonly NativeHandle selCountXHandle = Selector.GetHandle ("count");
+	static readonly global::ObjCRuntime.NativeHandle selCountXHandle = global::ObjCRuntime.Selector.GetHandle ("count");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	static readonly NativeHandle class_ptr = Class.GetHandle ("ThreadSafeUIKitPropertyTests");
+	static readonly global::ObjCRuntime.NativeHandle class_ptr = global::ObjCRuntime.Class.GetHandle ("ThreadSafeUIKitPropertyTests");
 
 	/// <summary>The Objective-C class handle for this class.</summary>
 	/// <value>The pointer to the Objective-C class.</value>
@@ -33,13 +33,13 @@ public partial class ThreadSafeUIKitPropertyTests
 	///     This value contains the pointer to the Objective-C class.
 	///     It is similar to calling the managed <see cref=\"ObjCRuntime.Class.GetHandle(string)\" /> or the native <see href=\"https://developer.apple.com/documentation/objectivec/1418952-objc_getclass\">objc_getClass</see> method with the type name.
 	/// </remarks>
-	public override NativeHandle ClassHandle => class_ptr;
+	public override global::ObjCRuntime.NativeHandle ClassHandle => class_ptr;
 
 	/// <summary>Creates a new <see cref="ThreadSafeUIKitPropertyTests" /> with default values.</summary>
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[DesignatedInitializer]
 	[Export ("init")]
-	public ThreadSafeUIKitPropertyTests () : base (NSObjectFlag.Empty)
+	public ThreadSafeUIKitPropertyTests () : base (global::Foundation.NSObjectFlag.Empty)
 	{
 		if (IsDirectBinding)
 			InitializeHandle (global::ObjCRuntime.Messaging.IntPtr_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("init")), "init");
@@ -94,7 +94,7 @@ public partial class ThreadSafeUIKitPropertyTests
 	/// </remarks>
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable (EditorBrowsableState.Advanced)]
-	protected ThreadSafeUIKitPropertyTests (NSObjectFlag t) : base (t) {}
+	protected ThreadSafeUIKitPropertyTests (global::Foundation.NSObjectFlag t) : base (t) {}
 
 	/// <summary>A constructor used when creating managed representations of unmanaged objects. Called by the runtime.</summary>
 	/// <param name="handle">Pointer (handle) to the unmanaged object.</param>
@@ -106,14 +106,14 @@ public partial class ThreadSafeUIKitPropertyTests
 	/// </remarks>
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable (EditorBrowsableState.Advanced)]
-	protected internal ThreadSafeUIKitPropertyTests (NativeHandle handle) : base (handle) {}
+	protected internal ThreadSafeUIKitPropertyTests (global::ObjCRuntime.NativeHandle handle) : base (handle) {}
 
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	public virtual partial UIntPtr Count
+	public virtual partial global::System.UIntPtr Count
 	{
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
@@ -121,11 +121,14 @@ public partial class ThreadSafeUIKitPropertyTests
 		[SupportedOSPlatform ("maccatalyst13.1")]
 		get
 		{
+			global::System.UIntPtr ret;
 			if (IsDirectBinding) {
-				return global::ObjCRuntime.Messaging.UIntPtr_objc_msgSend (this.Handle, Selector.GetHandle ("count"));
+				ret = global::ObjCRuntime.Messaging.UIntPtr_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("count"));
 			} else {
-				return global::ObjCRuntime.Messaging.UIntPtr_objc_msgSendSuper (this.Handle, Selector.GetHandle ("count"));
+				ret = global::ObjCRuntime.Messaging.UIntPtr_objc_msgSendSuper (this.Handle, global::ObjCRuntime.Selector.GetHandle ("count"));
 			}
+			GC.KeepAlive (this);
+			return ret;
 		}
 	}
 	// TODO: add binding code here

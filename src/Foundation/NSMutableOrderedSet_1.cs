@@ -14,28 +14,31 @@ using System.Runtime.Versioning;
 
 using ObjCRuntime;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 // Disable until we get around to enable + fix any issues.
 #nullable disable
 
 namespace Foundation {
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[Register ("NSMutableOrderedSet", SkipRegistration = true)]
 	public sealed partial class NSMutableOrderedSet<TKey> : NSMutableOrderedSet, IEnumerable<TKey>
 		where TKey : class, INativeObject {
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSMutableOrderedSet ()
 		{
 		}
 
+		/// <param name="coder">The unarchiver object.</param>
+		///         <summary>A constructor that initializes the object from the data stored in the unarchiver object.</summary>
+		///         <remarks>
+		///           <para>This constructor is provided to allow the class to be initialized from an unarchiver (for example, during NIB deserialization).   This is part of the <see cref="Foundation.NSCoding" />  protocol.</para>
+		///           <para>If developers want to create a subclass of this object and continue to support deserialization from an archive, they should implement a constructor with an identical signature: taking a single parameter of type <see cref="Foundation.NSCoder" /> and decorate it with the [Export("initWithCoder:"] attribute declaration.</para>
+		///           <para>The state of this object can also be serialized by using the companion method, EncodeTo.</para>
+		///         </remarks>
 		public NSMutableOrderedSet (NSCoder coder) : base (coder)
 		{
 		}
@@ -44,26 +47,44 @@ namespace Foundation {
 		{
 		}
 
+		/// <param name="capacity">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		public NSMutableOrderedSet (nint capacity) : base (capacity)
 		{
 		}
 
+		/// <param name="start">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSMutableOrderedSet (TKey start) : base (start)
 		{
 		}
 
+		/// <param name="objs">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSMutableOrderedSet (params TKey [] objs) : base (objs)
 		{
 		}
 
+		/// <param name="source">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSMutableOrderedSet (NSSet<TKey> source) : base (source)
 		{
 		}
 
+		/// <param name="other">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSMutableOrderedSet (NSOrderedSet<TKey> other) : base (other)
 		{
 		}
 
+		/// <param name="other">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSMutableOrderedSet (NSMutableOrderedSet<TKey> other) : base (other)
 		{
 		}
@@ -83,12 +104,19 @@ namespace Foundation {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public NSSet<TKey> AsSet ()
 		{
 			var ret = _AsSet ();
 			return Runtime.GetINativeObject<NSSet<TKey>> (ret, false);
 		}
 
+		/// <param name="obj">To be added.</param>
+		/// <param name="atIndex">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		public void Insert (TKey obj, nint atIndex)
 		{
 			if (obj is null)
@@ -98,6 +126,10 @@ namespace Foundation {
 			GC.KeepAlive (obj);
 		}
 
+		/// <param name="objectAtIndex">To be added.</param>
+		/// <param name="newObject">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		public void Replace (nint objectAtIndex, TKey newObject)
 		{
 			if (newObject is null)
@@ -107,6 +139,9 @@ namespace Foundation {
 			GC.KeepAlive (newObject);
 		}
 
+		/// <param name="obj">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void Add (TKey obj)
 		{
 			if (obj is null)
@@ -116,6 +151,9 @@ namespace Foundation {
 			GC.KeepAlive (obj);
 		}
 
+		/// <param name="source">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void AddObjects (params TKey [] source)
 		{
 			if (source is null)
@@ -124,6 +162,10 @@ namespace Foundation {
 			_AddObjects (NSArray.FromNativeObjects (source));
 		}
 
+		/// <param name="objects">To be added.</param>
+		///         <param name="atIndexes">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void InsertObjects (TKey [] objects, NSIndexSet atIndexes)
 		{
 			if (objects is null)
@@ -134,6 +176,10 @@ namespace Foundation {
 			_InsertObjects (NSArray.FromNativeObjects (objects), atIndexes);
 		}
 
+		/// <param name="indexSet">To be added.</param>
+		///         <param name="replacementObjects">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void ReplaceObjects (NSIndexSet indexSet, params TKey [] replacementObjects)
 		{
 			if (replacementObjects is null)
@@ -144,6 +190,9 @@ namespace Foundation {
 			_ReplaceObjects (indexSet, NSArray.FromNativeObjects (replacementObjects));
 		}
 
+		/// <param name="obj">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void RemoveObject (TKey obj)
 		{
 			if (obj is null)
@@ -153,6 +202,9 @@ namespace Foundation {
 			GC.KeepAlive (obj);
 		}
 
+		/// <param name="objects">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void RemoveObjects (params TKey [] objects)
 		{
 			if (objects is null)
@@ -171,6 +223,9 @@ namespace Foundation {
 		#endregion
 
 		#region IEnumerable implementation
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		IEnumerator IEnumerable.GetEnumerator ()
 		{
 			return new NSFastEnumerator<TKey> (this);
@@ -243,12 +298,8 @@ namespace Foundation {
 			return copy;
 		}
 
-#if false // https://github.com/xamarin/xamarin-macios/issues/15577
-#if !NET
-		[TV (13,0), iOS (13,0)]
-#else
+#if false // https://github.com/dotnet/macios/issues/15577
 		[SupportedOSPlatform ("ios13.0"), SupportedOSPlatform ("tvos13.0"), SupportedOSPlatform ("macos")]
-#endif
 		public void ApplyDifference (NSOrderedCollectionDifference<TKey> difference)
 		{
 			if (difference is null)

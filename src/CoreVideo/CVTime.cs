@@ -35,6 +35,15 @@ using ObjCRuntime;
 namespace CoreVideo {
 
 	// CVBase.h
+	/// <summary>CoreVideo time representation.</summary>
+	///     <remarks>
+	///       <para>
+	/// 	The CVTime structure contains two important fields: TimeValue and TimeScale.   The TimeScale determines how many TimeValues exist per second.
+	///       </para>
+	///       <para>
+	/// 	For example, if TimeScale is 600, then to represent the 2 seconds, the value of TimeValue should be 1,200.   
+	///       </para>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

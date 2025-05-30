@@ -1,0 +1,61 @@
+<Documentation>
+  <Docs DocId="T:ObjCRuntime.BlockLiteral">
+    <summary>Wraps a ECMA CLI delegate (C# lambdas, anonymous methods or delegates) as an Objective-C block.</summary>
+    <remarks>
+      <para>
+	This is a low-level class that is automatically used by the Xamarin.iOS bindings when using Objective-C block APIs.
+      </para>
+      <para>
+	In the C#/ECMA CLI world delegates are automatically turned into blocks that can be consumed by Objective-C blocks-aware APIs.
+      </para>
+      <para>
+	If you need to P/Invoke a native C method that takes a block
+	parameter, you would need to manually setup the BlockLiteral
+	object and declare a proxy method that is invoked by the block
+	handler and will invoke your managed code.
+
+      </para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
+// Imagine that you want to invoke the following method:
+// void SetupHandler (void (^block)(double offset, int count));
+
+// Declare the signature of the method that users would have to provide
+public delegate void SetupHandlerCallback (double offset, int count);
+// Declare the signature of the method that the block will call
+delegate void SetupHandlerCallbackProxy (IntPtr blockLiteral, double offset, int count);
+// Static variable that points to our trampoline method
+static readonly SetupHandlerCallback static_handler = TrampolineHandler;
+
+// Our trampoline method must be registered for reverse-callback with Mono
+// it takes one extra parameter than the signature, which is the pointer
+// to the block that was originally passed.
+[MonoPInvokeCallback (typeof (SetupHandlerCallbackProxy))]
+static void TrampolineHandler (IntPtr block, double offset, int count)
+{
+    // Find the delegate for the block and call it
+    var callback = BlockLiteral.GetTarget<SetupHandlerCallback> (block);
+    if (callback != null)
+        callback (offset, count);
+}
+
+[DllImport ("YourLibrary")]
+static extern void SetupHandler (ref BlockLiteral block);
+
+public void SetupHandler (SetupHandlerCallback callback)
+{
+    if (callback == null)
+        throw new ArgumentNullException (nameof (callback));
+    BlockLiteral block = new BlockLiteral ();
+    block.SetupBlock (static_handler, callback);
+    try {
+        SetupHandler (ref block);
+    } finally {
+        block.CleanupBlock ();
+    }
+}
+]]></code>
+      </example>
+    </remarks>
+  </Docs>
+</Documentation>

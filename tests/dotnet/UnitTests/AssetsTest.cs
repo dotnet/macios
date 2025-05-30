@@ -17,7 +17,7 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64", true)]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64;maccatalyst-x64", true)]
 		[TestCase (ApplePlatform.MacOSX, "osx-x64", true)]
-		[TestCase (ApplePlatform.MacOSX, "osx-arm64;osx-x64", true)] // https://github.com/xamarin/xamarin-macios/issues/12410
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64;osx-x64", true)] // https://github.com/dotnet/macios/issues/12410
 																	 // Build, add the XCAssets, then build again
 		[TestCase (ApplePlatform.iOS, "iossimulator-x64", false)]
 		[TestCase (ApplePlatform.iOS, "ios-arm64", false)]
@@ -25,7 +25,7 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64", false)]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64;maccatalyst-x64", false)]
 		[TestCase (ApplePlatform.MacOSX, "osx-x64", false)]
-		[TestCase (ApplePlatform.MacOSX, "osx-arm64;osx-x64", false)] // https://github.com/xamarin/xamarin-macios/issues/12410
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64;osx-x64", false)] // https://github.com/dotnet/macios/issues/12410
 		public void TestXCAssets (ApplePlatform platform, string runtimeIdentifiers, bool isStartingWithAssets)
 		{
 			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);

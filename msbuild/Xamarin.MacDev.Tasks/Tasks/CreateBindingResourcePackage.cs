@@ -13,26 +13,25 @@ using Xamarin.Localization.MSBuild;
 using Xamarin.Messaging.Build.Client;
 using Xamarin.Utils;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Xamarin.MacDev.Tasks {
 	public class CreateBindingResourcePackage : XamarinTask, ITaskCallback, ICancelableTask {
 		[Required]
-		public string Compress { get; set; }
+		public string Compress { get; set; } = "";
 
 		[Required]
-		public string BindingResourcePath { get; set; }
+		public string BindingResourcePath { get; set; } = "";
 
 		[Required]
-		public string IntermediateOutputPath { get; set; }
+		public string IntermediateOutputPath { get; set; } = "";
 
 		[Required]
-		public ITaskItem [] NativeReferences { get; set; }
+		public ITaskItem [] NativeReferences { get; set; } = [];
 
 		// This is a list of files to copy back to Windows
 		[Output]
-		public ITaskItem [] PackagedFiles { get; set; }
+		public ITaskItem [] PackagedFiles { get; set; } = [];
 
 		public override bool Execute ()
 		{
@@ -86,23 +85,19 @@ namespace Xamarin.MacDev.Tasks {
 					File.Delete (zipFile);
 				Directory.CreateDirectory (Path.GetDirectoryName (zipFile));
 
-				var filesToZip = NativeReferences.Select (v => v.ItemSpec).ToList ();
+				var filesToZip = NativeReferences
+									// Canonicalize directory separators to the current platform
+									.Select (v => v.ItemSpec.Replace ('\\', Path.DirectorySeparatorChar).Replace ('/', Path.DirectorySeparatorChar))
+									.ToList ();
 				filesToZip.Add (manifestPath);
 
 				foreach (var nativeRef in filesToZip) {
-					var zipArguments = new List<string> ();
-					zipArguments.Add ("-9");
-					zipArguments.Add ("-r");
-					zipArguments.Add ("-y");
-					zipArguments.Add (zipFile);
-
-					var fullPath = Path.GetFullPath (nativeRef);
-					var workingDirectory = Path.GetDirectoryName (fullPath);
-					zipArguments.Add (Path.GetFileName (fullPath));
-					ExecuteAsync ("zip", zipArguments, workingDirectory: workingDirectory).Wait ();
-
-					packagedFiles.Add (zipFile);
+					var workingDirectory = Path.GetDirectoryName (nativeRef);
+					if (string.IsNullOrEmpty (workingDirectory))
+						workingDirectory = Directory.GetCurrentDirectory ();
+					CompressionHelper.TryCompress (Log, zipFile, new string [] { nativeRef }, false, workingDirectory, true);
 				}
+				packagedFiles.Add (zipFile);
 			} else {
 				var bindingResourcePath = BindingResourcePath;
 				Log.LogMessage (MSBStrings.M0121, bindingResourcePath);
@@ -127,11 +122,14 @@ namespace Xamarin.MacDev.Tasks {
 			return !Log.HasLoggedErrors;
 		}
 
-		static bool ContainsSymlinks (ITaskItem [] items)
+		bool ContainsSymlinks (ITaskItem [] items)
 		{
 			foreach (var item in items) {
-				if (PathUtils.IsSymlinkOrContainsSymlinks (item.ItemSpec))
+				if (PathUtils.IsSymlinkOrContainsSymlinks (item.ItemSpec)) {
+					if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+						Log.LogError (MSBStrings.E7145 /* Can't process the native reference '{0}' on this platform because it is or contains a symlink. */, item?.ItemSpec);
 					return true;
+				}
 			}
 
 			return false;

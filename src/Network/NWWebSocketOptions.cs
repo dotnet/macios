@@ -19,21 +19,11 @@ using CoreFoundation;
 using OS_nw_protocol_options = System.IntPtr;
 using nw_ws_request_t = System.IntPtr;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace Network {
-
-#if NET
 	[SupportedOSPlatform ("tvos13.0")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios13.0")]
 	[SupportedOSPlatform ("maccatalyst")]
-#else
-	[TV (13, 0)]
-	[iOS (13, 0)]
-#endif
 	public class NWWebSocketOptions : NWProtocolOptions {
 		bool autoReplyPing = false;
 		bool skipHandShake = false;
@@ -106,14 +96,7 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		unsafe static extern void nw_ws_options_set_client_request_handler (OS_nw_protocol_options options, IntPtr client_queue, BlockLiteral* handler);
 
-#if !NET
-		delegate void nw_ws_options_set_client_request_handler_t (IntPtr block, nw_ws_request_t request);
-		static nw_ws_options_set_client_request_handler_t static_ClientRequestHandler = TrampolineClientRequestHandler;
-
-		[MonoPInvokeCallback (typeof (nw_ws_options_set_client_request_handler_t))]
-#else
 		[UnmanagedCallersOnly]
-#endif
 		static void TrampolineClientRequestHandler (IntPtr block, nw_ws_request_t request)
 		{
 			var del = BlockLiteral.GetTarget<Action<NWWebSocketRequest>> (block);
@@ -132,13 +115,8 @@ namespace Network {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (handler));
 
 			unsafe {
-#if NET
 				delegate* unmanaged<IntPtr, nw_ws_request_t, void> trampoline = &TrampolineClientRequestHandler;
 				using var block = new BlockLiteral (trampoline, handler, typeof (NWWebSocketOptions), nameof (TrampolineClientRequestHandler));
-#else
-				using var block = new BlockLiteral ();
-				block.SetupBlockUnsafe (static_ClientRequestHandler, handler);
-#endif
 				nw_ws_options_set_client_request_handler (GetCheckedHandle (), queue.Handle, &block);
 				GC.KeepAlive (queue);
 			}

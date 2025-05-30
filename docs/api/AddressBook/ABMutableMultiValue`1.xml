@@ -1,0 +1,45 @@
+<Documentation>
+  <Docs DocId="T:AddressBook.ABMutableMultiValue`1">
+    <typeparam name="T">
+      The type of the value to store.
+    </typeparam>
+    <summary>
+      A <see cref="AddressBook.ABMultiValue{T}" /> that supports editing.
+    </summary>
+    <remarks>
+      <para>
+        "Editing" includes adding and removing
+        <see cref="AddressBook.ABMultiValueEntry{T}" /> entries
+        and changing the
+        <see cref="AddressBook.ABMultiValueEntry{T}.Value" /> and
+        <see cref="AddressBook.ABMultiValueEntry{T}.Label" />
+        properties on those entries.
+      </para>
+      <para>
+        Supported operations include:
+      </para>
+      <list type="bullet">
+        <item>
+          <term>
+            Creating properties:
+            <see cref="AddressBook.ABMutableDateMultiValue.ABMutableDateMultiValue" />,
+            <see cref="AddressBook.ABMutableDictionaryMultiValue.ABMutableDictionaryMultiValue" />,
+            <see cref="AddressBook.ABMutableStringMultiValue.ABMutableStringMultiValue" />.
+          </term>
+        </item>
+        <item>
+          <term>
+            Creating properties:
+            <see cref="AddressBook.ABMutableDateMultiValue.ABMutableDateMultiValue" />,
+            <see cref="AddressBook.ABMutableDictionaryMultiValue.ABMutableDictionaryMultiValue" />,
+            <see cref="AddressBook.ABMutableStringMultiValue.ABMutableStringMultiValue" />.
+          </term>
+        </item>
+      </list>
+    </remarks>
+    <altmember cref="AddressBook.ABMultiValue{T}.ToMutableMultiValue" />
+    <altmember cref="AddressBook.ABMutableDateMultiValue" />
+    <altmember cref="AddressBook.ABMutableDictionaryMultiValue" />
+    <altmember cref="AddressBook.ABMutableStringMultiValue" />
+  </Docs>
+</Documentation>

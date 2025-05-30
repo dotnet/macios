@@ -47,6 +47,8 @@ using AudioQueueTimelineRef = System.IntPtr;
 
 namespace AudioToolbox {
 
+	/// <summary>An enumeration whose values specify the status of an audio queue.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum AudioQueueStatus { // Implictly cast to OSType 
 		/// <summary>To be added.</summary>
 		Ok = 0,
@@ -118,6 +120,8 @@ namespace AudioToolbox {
 		GeneralParamError = -50,
 	}
 
+	/// <summary>An exception thrown by the AudioQueue class if there is a problem with the configuration parameters.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -213,6 +217,8 @@ namespace AudioToolbox {
 		public AudioQueueStatus ErrorCode { get; private set; }
 	}
 
+	/// <summary>An enumeration whose values specify properties of audio queues.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum AudioQueueProperty : uint // UInt32 AudioQueuePropertyID
 	{
 		/// <summary>To be added.</summary>
@@ -255,6 +261,8 @@ namespace AudioToolbox {
 #endif
 	}
 
+	/// <summary>An enumeration whose values specify the Time Pitch algorithm. Used with <see cref="AudioToolbox.AudioQueueProperty.TimePitchAlgorithm" />.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum AudioQueueTimePitchAlgorithm : uint {
 		/// <summary>To be added.</summary>
 		Spectral = 0x73706563,                  // spec
@@ -268,6 +276,16 @@ namespace AudioToolbox {
 		Varispeed = 0x76737064,                 // vspd
 	}
 
+#if !(XAMCORE_5_0 && __MACOS__)
+#if !__MACOS__
+	/// <summary>An enumeration whose values are used for the <see cref="AudioToolbox.AudioQueue.HardwareCodecPolicy" /> property.</summary>
+#endif
+#if XAMCORE_5_0
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[UnsupportedOSPlatform ("macos")]
+#endif // XAMCORE_5_0
 	public enum AudioQueueHardwareCodecPolicy { // A AudioQueuePropertyID (UInt32)
 		/// <summary>To be added.</summary>
 		Default = 0,
@@ -280,7 +298,10 @@ namespace AudioToolbox {
 		/// <summary>To be added.</summary>
 		PreferHardware = 4,
 	}
+#endif // !(XAMCORE_5_0 && __MACOS__)
 
+	/// <summary>An enumeration whose values specify various parameters of an audio queue.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum AudioQueueParameter : uint // UInt32 AudioQueueParameterID
 	{
 		/// <summary>To be added.</summary>
@@ -295,6 +316,8 @@ namespace AudioToolbox {
 		Pan = 13,
 	}
 
+	/// <summary>An enumeration whose values specify properties of an audio queue device (number of channels and sample rate).</summary>
+	///     <remarks>To be added.</remarks>
 	public enum AudioQueueDeviceProperty { // UInt32 AudioQueueParameterID
 		/// <summary>To be added.</summary>
 		SampleRate = 0x61717372,
@@ -302,6 +325,20 @@ namespace AudioToolbox {
 		NumberChannels = 0x61716463,
 	}
 
+	/// <summary>Flags used when an AudioQueue tap is created, and used by the tap processor callback.</summary>
+	///     <remarks>
+	///       <para>
+	/// 	The PostEffects, PreEffects, Siphon values are used both when
+	/// 	creating a audio queue tap (using <see cref="AudioToolbox.AudioQueue.CreateProcessingTap(AudioToolbox.AudioQueueProcessingTapDelegate,AudioToolbox.AudioQueueProcessingTapFlags,out AudioToolbox.AudioQueueStatus)" />)
+	/// 	and are provided to the tap callback (of type <see cref="AudioToolbox.AudioQueueProcessingTapDelegate" />).
+	///
+	///       </para>
+	///       <para>
+	/// 	The StartOfStream and EndOfStream are returned by <see cref="AudioToolbox.AudioQueueProcessingTap" />'s
+	/// 	GetSourceAudio method.
+	///
+	///       </para>
+	///     </remarks>
 	[Flags]
 	public enum AudioQueueProcessingTapFlags : uint // UInt32 in AudioQueueProcessingTapNew
 	{
@@ -318,6 +355,8 @@ namespace AudioToolbox {
 		EndOfStream = (1 << 9),
 	}
 
+	/// <summary>Represents an audio queue buffer.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -367,6 +406,8 @@ namespace AudioToolbox {
 		}
 	}
 
+	/// <summary>A class that encapsulates values used as <c>parameterEvents</c> in calls to the <see cref="AudioToolbox.InputAudioQueue.EnqueueBuffer(AudioToolbox.AudioQueueBuffer*)" /> method. </summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -401,6 +442,9 @@ namespace AudioToolbox {
 		}
 	}
 
+	/// <summary>Represents the level meter information on an audio channel.</summary>
+	///     <remarks>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -417,9 +461,17 @@ namespace AudioToolbox {
 		public float PeakPower;
 	}
 
+#if !(XAMCORE_5_0 && __MACOS__)
+#if !__MACOS__
+	/// <summary>Channel assignments used as a parameter to the <see cref="AudioToolbox.AudioQueue.SetChannelAssignments(AudioToolbox.AudioQueueChannelAssignment[])" /> method.</summary>
+#endif
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
+#if XAMCORE_5_0
+	[UnsupportedOSPlatform ("macos")]
+#else
 	[SupportedOSPlatform ("macos")]
+#endif
 	[SupportedOSPlatform ("tvos")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AudioQueueChannelAssignment {
@@ -437,9 +489,13 @@ namespace AudioToolbox {
 			GC.KeepAlive (deviceUID);
 		}
 	}
+#endif // !(XAMCORE_5_0 && __MACOS__)
 
 	delegate void AudioQueuePropertyListener (IntPtr userData, IntPtr AQ, AudioQueueProperty id);
 
+	/// <summary>Provides data for the <see cref="AudioToolbox.OutputAudioQueue.BufferCompleted" /> event.</summary>
+	///     <remarks>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -475,6 +531,9 @@ namespace AudioToolbox {
 		}
 	}
 
+	/// <summary>Provides data for the <see cref="AudioToolbox.InputAudioQueue.InputCompleted" /> event.</summary>
+	///     <remarks>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -520,6 +579,7 @@ namespace AudioToolbox {
 		public AudioStreamPacketDescription []? PacketDescriptions { get; private set; }
 	}
 
+	/// <include file="../../docs/api/AudioToolbox/AudioQueue.xml" path="/Documentation/Docs[@DocId='T:AudioToolbox.AudioQueue']/*" />
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -684,10 +744,10 @@ namespace AudioToolbox {
 		///         <returns>AudioQueueStatus.Ok on success, otherwise the error. </returns>
 		///         <remarks>
 		///           <para>
-		/// 	    Use the <see cref="M:AudioToolbox.AudioQueue.AllocateBufferWithPacketDescriptors(System.Int32,System.Int32,System.IntPtr@)" /> to allocate buffers that will be used with variable bit
+		/// 	    Use the <see cref="AudioToolbox.AudioQueue.AllocateBufferWithPacketDescriptors(System.Int32,System.Int32,out System.IntPtr)" /> to allocate buffers that will be used with variable bit
 		/// 	    rate encodings.
 		/// 	  </para>
-		///           <para>Use <see cref="M:AudioToolbox.AudioQueue.FreeBuffer(System.IntPtr)" /> to dispose the buffer.</para>
+		///           <para>Use <see cref="AudioToolbox.AudioQueue.FreeBuffer(System.IntPtr)" /> to dispose the buffer.</para>
 		///         </remarks>
 		public AudioQueueStatus AllocateBuffer (int bufferSize, out IntPtr audioQueueBuffer)
 		{
@@ -702,7 +762,7 @@ namespace AudioToolbox {
 		///         <summary>Allocates an audio buffer associated with this AudioQueue</summary>
 		///         <returns>AudioQueueStatus.Ok on success, otherwise the error. </returns>
 		///         <remarks>
-		/// 	  Use <see cref="M:AudioToolbox.AudioQueue.FreeBuffer(System.IntPtr)" /> to dispose the buffer.
+		/// 	  Use <see cref="AudioToolbox.AudioQueue.FreeBuffer(System.IntPtr)" /> to dispose the buffer.
 		///         </remarks>
 		public unsafe AudioQueueStatus AllocateBuffer (int bufferSize, out AudioQueueBuffer* audioQueueBuffer)
 		{
@@ -722,10 +782,10 @@ namespace AudioToolbox {
 		///         <returns>AudioQueueStatus.Ok on success and the audioQueueBuffer pointing to the buffer, otherwise the error.</returns>
 		///         <remarks>
 		///           <para>
-		/// 	    Use the <see cref="M:AudioToolbox.AudioQueue.AllocateBuffer(System.Int32,AudioToolbox.AudioQueueBuffer*@)" /> to allocate buffers that will be used with fixed bit
+		/// 	    Use the <see cref="AudioToolbox.AudioQueue.AllocateBuffer(System.Int32,out AudioToolbox.AudioQueueBuffer*)" /> to allocate buffers that will be used with fixed bit
 		/// 	    rate encodings.
 		/// 	  </para>
-		///           <para>Use <see cref="M:AudioToolbox.AudioQueue.FreeBuffer(System.IntPtr)" /> to dispose the buffer.</para>
+		///           <para>Use <see cref="AudioToolbox.AudioQueue.FreeBuffer(System.IntPtr)" /> to dispose the buffer.</para>
 		///         </remarks>
 		public AudioQueueStatus AllocateBufferWithPacketDescriptors (int bufferSize, int nPackets, out IntPtr audioQueueBuffer)
 		{
@@ -1131,6 +1191,9 @@ namespace AudioToolbox {
 			}
 		}
 
+		/// <param name="property">To be added.</param>
+		///     <summary>The delegate to be used with the <see cref="AudioToolbox.AudioQueue.AddListener(AudioToolbox.AudioQueueProperty,AudioToolbox.AudioQueue.AudioQueuePropertyChanged)" /> and <see cref="AudioToolbox.AudioQueue.RemoveListener(AudioToolbox.AudioQueueProperty,AudioToolbox.AudioQueue.AudioQueuePropertyChanged)" /> methods.</summary>
+		///     <remarks>To be added.</remarks>
 		public delegate void AudioQueuePropertyChanged (AudioQueueProperty property);
 
 		/// <param name="property">ID of the property to listen to.</param>
@@ -1428,8 +1491,8 @@ namespace AudioToolbox {
 		///
 		/// 	  Certain file format produce a MagicCookie that
 		/// 	  contains audio metadata.  When playing back or recording, you need to copy
-		/// 	  this magic cookie from the AudioQueue to the <see cref="T:AudioToolbox.AudioFileStream" /> by copying this property to the 
-		/// 	  <see cref="P:AudioToolbox.AudioFileStream.MagicCookie" />
+		/// 	  this magic cookie from the AudioQueue to the <see cref="AudioToolbox.AudioFileStream" /> by copying this property to the 
+		/// 	  <see cref="AudioToolbox.AudioFileStream.MagicCookie" />
 		/// 	  property.   
 		/// 	</remarks>
 		public byte [] MagicCookie {
@@ -1502,7 +1565,7 @@ namespace AudioToolbox {
 		///         </value>
 		///         <remarks>
 		///           <para>
-		/// 	    Enable level metering in your audio queue if you want to read the level meters with the <see cref="P:AudioToolbox.AudioQueue.CurrentLevelMeter" /> or <see cref="P:AudioToolbox.AudioQueue.CurrentLevelMeterDB" /> properties.n
+		/// 	    Enable level metering in your audio queue if you want to read the level meters with the <see cref="AudioToolbox.AudioQueue.CurrentLevelMeter" /> or <see cref="AudioToolbox.AudioQueue.CurrentLevelMeterDB" /> properties.n
 		/// 	  </para>
 		///         </remarks>
 		public bool EnableLevelMetering {
@@ -1674,10 +1737,26 @@ namespace AudioToolbox {
 		}
 	}
 
+	/// <include file="../../docs/api/AudioToolbox/AudioQueueProcessingTapDelegate.xml" path="/Documentation/Docs[@DocId='T:AudioToolbox.AudioQueueProcessingTapDelegate']/*" />
 	public delegate uint AudioQueueProcessingTapDelegate (AudioQueueProcessingTap audioQueueTap, uint numberOfFrames,
 														  ref AudioTimeStamp timeStamp, ref AudioQueueProcessingTapFlags flags,
 														  AudioBuffers data);
 
+	/// <summary>Holds the state for an AudioQueue processing tap.</summary>
+	///     <remarks>
+	///       <para>
+	/// 	Instances of this class are returned by the <see cref="AudioToolbox.AudioQueue.CreateProcessingTap(AudioToolbox.AudioQueueProcessingTapDelegate,AudioToolbox.AudioQueueProcessingTapFlags,out AudioToolbox.AudioQueueStatus)" />
+	/// 	from AudioQueue and hold the state to the audio processing tap that was created as well as containing information like MaxFrames and the ProcessingFormat.
+	///       </para>
+	///       <para>
+	/// 	You can terminate the processing tap by calling the Dispose
+	/// 	method or by releasing the AudioQueue that created it.
+	///       </para>
+	///       <example>
+	///         <code lang="c#">
+	///         </code>
+	///       </example>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -1807,6 +1886,17 @@ namespace AudioToolbox {
 		}
 	}
 
+	/// <summary>The output AudioQueue.</summary>
+	///     <remarks>
+	///       <para>Use this class to playback audio.</para>
+	///       <para>
+	/// You will usually create an OutputAudioQueue instance and allocate a number of buffers that you will use to fill in with data.   Once a buffer is filled, the buffer is enqueued and when the OutputAudioQueue has finished playing it back, the OutputCompleted event will be raised.
+	/// </para>
+	///       <para>
+	/// See the StreamingAudio sample program in monotouch-samples for an example program.
+	/// </para>
+	///     </remarks>
+	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/StreamingAudio/">StreamingAudio</related>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -1941,6 +2031,14 @@ namespace AudioToolbox {
 		}
 	}
 
+	/// <summary>An Input Audio Queue, used for audio capturing and recording.</summary>
+	///     <remarks>
+	///
+	///       To receive input completed notifications, you can either hook up
+	///       to the C# event InputCompleted or you can subclass and override the 
+	///       OnInputCompleted method.   They serve the same purpose.
+	///
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -1966,7 +2064,7 @@ namespace AudioToolbox {
 		/// 	    This method is invoked when the audio system has
 		/// 	    completely filled one of the buffers with audio data.  You
 		/// 	    would override this method to process the data, to either
-		/// 	    save the raw bytes to disk, encode them using the <see cref="T:AudioToolbox.AudioFile" /> or do some
+		/// 	    save the raw bytes to disk, encode them using the <see cref="AudioToolbox.AudioFile" /> or do some
 		/// 	    real-time processing with the audio packets.  
 		/// 	  </para>
 		///           <para>
@@ -2044,6 +2142,18 @@ namespace AudioToolbox {
 		}
 	}
 
+	/// <summary>Objects used to track audio queue timelines</summary>
+	///     <remarks>
+	///       <para>
+	/// 	This object is used to track discontinuities in the Audio Queue's audio.   
+	///       </para>
+	///       <para>
+	/// 	You create these objects by calling <see cref="AudioToolbox.AudioQueue.CreateTimeline" />
+	/// 	method and use them to probe audio discontinuities by calling
+	/// 	the <see cref="AudioToolbox.AudioQueue.GetCurrentTime(AudioToolbox.AudioQueueTimeline,ref AudioToolbox.AudioTimeStamp,ref System.Boolean)" />
+	/// 	method.
+	///       </para>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

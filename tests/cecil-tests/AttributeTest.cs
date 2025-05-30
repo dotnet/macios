@@ -18,7 +18,7 @@ namespace Cecil.Tests {
 
 	[TestFixture]
 	public class AttributeTest {
-		// https://github.com/xamarin/xamarin-macios/issues/10170
+		// https://github.com/dotnet/macios/issues/10170
 		// Every binding class that has net6 availability attributes on a method/property
 		// must have one matching every platform listed on the availabilities of the class
 		//
@@ -188,7 +188,7 @@ namespace Cecil.Tests {
 						case "AppKit":
 						case "UIKit":
 							// The availability attributes between AppKit and UIKit are quite inconsistent:
-							// https://github.com/xamarin/xamarin-macios/issues/17292
+							// https://github.com/dotnet/macios/issues/17292
 							// So let's just skip these two namespaces for now.
 							continue;
 						}
@@ -296,22 +296,17 @@ namespace Cecil.Tests {
 					"SceneKit.SCNRenderer.FromContext (OpenGLES.EAGLContext, Foundation.NSDictionary)",
 					"SceneKit.SCNRenderer.FromContext (OpenGL.CGLContext, Foundation.NSDictionary)",
 
-					// For historical reasons, MPMediaItem and MPMediaEntity are wildly different between platforms (https://github.com/xamarin/xamarin-macios/issues/17291).
+					// For historical reasons, MPMediaItem and MPMediaEntity are wildly different between platforms (https://github.com/dotnet/macios/issues/17291).
 					"MediaPlayer.MPMediaEntity.EncodeTo (Foundation.NSCoder)",
 					"MediaPlayer.MPMediaEntity.get_PropertyPersistentID ()",
 					"MediaPlayer.MPMediaEntity.GetObject (Foundation.NSObject)",
 					"MediaPlayer.MPMediaEntity.PropertyPersistentID",
-					"MediaPlayer.MPMediaItem.DateAdded",
 					"MediaPlayer.MPMediaItem.get_PropertyPersistentID ()",
 					"MediaPlayer.MPMediaItem.GetObject (Foundation.NSObject)",
-					"MediaPlayer.MPMediaItem.HasProtectedAsset",
-					"MediaPlayer.MPMediaItem.IsExplicitItem",
-					"MediaPlayer.MPMediaItem.IsPreorder",
-					"MediaPlayer.MPMediaItem.PlaybackStoreID",
 					"MediaPlayer.MPMediaItem.PropertyPersistentID",
 
-					// Despite what headers say, NSAttributedString only implements NSItemProviderReading and NSItemProviderWriting on iOS (headers say tvOS and watchOS as well).
-					// Ref: https://github.com/xamarin/xamarin-macios/pull/17306
+					// Despite what headers say, NSAttributedString only implements NSItemProviderReading and NSItemProviderWriting on iOS (headers say tvOS as well).
+					// Ref: https://github.com/dotnet/macios/pull/17306
 					"Foundation.NSAttributedString.GetItemProviderVisibilityForTypeIdentifier (System.String)",
 					"Foundation.NSAttributedString.GetObject (Foundation.NSData, System.String, Foundation.NSError&)",
 					"Foundation.NSAttributedString.LoadData (System.String, System.Action`2<Foundation.NSData, Foundation.NSError>)",
@@ -372,7 +367,7 @@ namespace Cecil.Tests {
 			var key = GetMemberLookupKeyInternal (member);
 
 			// The availability attributes between AppKit and UIKit are quite inconsistent:
-			// https://github.com/xamarin/xamarin-macios/issues/17292
+			// https://github.com/dotnet/macios/issues/17292
 			key = key
 				.Replace ("AppKit.NS", "XKit.X")
 				.Replace ("UIKit.NS", "XKit.X")
@@ -442,7 +437,7 @@ namespace Cecil.Tests {
 			}
 		}
 
-		// https://github.com/xamarin/xamarin-macios/issues/10170
+		// https://github.com/dotnet/macios/issues/10170
 		// Every binding class that has net6 any availability attributes on a method/property
 		// must have an introduced for the current platform.
 		//
@@ -573,8 +568,6 @@ namespace Cecil.Tests {
 					return "macos";
 				case string s when full.StartsWith ("maccatalyst", StringComparison.Ordinal):
 					return "maccatalyst";
-				case string s when full.StartsWith ("watchos", StringComparison.Ordinal):
-					return null; // WatchOS is ignored for comparision
 				default:
 					throw new System.NotImplementedException ($"Unknown platform kind: {full}");
 				}

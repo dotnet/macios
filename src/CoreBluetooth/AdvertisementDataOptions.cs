@@ -39,6 +39,7 @@ namespace CoreBluetooth {
 	// It's intentionally not called AdvertisementDataOptions because different options
 	// are valid in different contexts
 	//
+	/// <summary>Manages access to options used by <see cref="CBPeripheralManager.StartAdvertising(StartAdvertisingOptions)" />.</summary>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -73,7 +74,7 @@ namespace CoreBluetooth {
 			}
 		}
 
-		/// <summary>One or more <see cref="T:CoreBluetooth.CBUUID" /> objects.</summary>
+		/// <summary>One or more <see cref="CoreBluetooth.CBUUID" /> objects.</summary>
 		///         <value>
 		///         </value>
 		///         <remarks>The property uses constant CBAdvertisementDataServiceUUIDsKey value to access the underlying dictionary.</remarks>

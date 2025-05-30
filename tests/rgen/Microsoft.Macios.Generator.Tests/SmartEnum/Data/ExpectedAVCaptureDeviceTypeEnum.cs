@@ -24,7 +24,7 @@ public static partial class AVCaptureDeviceTypeExtensions
 		get
 		{
 			fixed (IntPtr *storage = &values [0])
-				return Dlfcn.CachePointer (Libraries.AVFoundation.Handle, "AVCaptureDeviceTypeBuiltInMicrophone", storage);
+				return Dlfcn.CachePointer (global::ObjCRuntime.Libraries.AVFoundation.Handle, "AVCaptureDeviceTypeBuiltInMicrophone", storage);
 		}
 	}
 
@@ -34,7 +34,7 @@ public static partial class AVCaptureDeviceTypeExtensions
 		get
 		{
 			fixed (IntPtr *storage = &values [1])
-				return Dlfcn.CachePointer (Libraries.AVFoundation.Handle, "AVCaptureDeviceTypeBuiltInWideAngleCamera", storage);
+				return Dlfcn.CachePointer (global::ObjCRuntime.Libraries.AVFoundation.Handle, "AVCaptureDeviceTypeBuiltInWideAngleCamera", storage);
 		}
 	}
 
@@ -44,7 +44,7 @@ public static partial class AVCaptureDeviceTypeExtensions
 		get
 		{
 			fixed (IntPtr *storage = &values [2])
-				return Dlfcn.CachePointer (Libraries.AVFoundation.Handle, "AVCaptureDeviceTypeBuiltInTelephotoCamera", storage);
+				return Dlfcn.CachePointer (global::ObjCRuntime.Libraries.AVFoundation.Handle, "AVCaptureDeviceTypeBuiltInTelephotoCamera", storage);
 		}
 	}
 
@@ -54,7 +54,7 @@ public static partial class AVCaptureDeviceTypeExtensions
 		get
 		{
 			fixed (IntPtr *storage = &values [3])
-				return Dlfcn.CachePointer (Libraries.AVFoundation.Handle, "AVCaptureDeviceTypeBuiltInDuoCamera", storage);
+				return Dlfcn.CachePointer (global::ObjCRuntime.Libraries.AVFoundation.Handle, "AVCaptureDeviceTypeBuiltInDuoCamera", storage);
 		}
 	}
 
@@ -64,7 +64,7 @@ public static partial class AVCaptureDeviceTypeExtensions
 		get
 		{
 			fixed (IntPtr *storage = &values [4])
-				return Dlfcn.CachePointer (Libraries.AVFoundation.Handle, "AVCaptureDeviceTypeBuiltInDualCamera", storage);
+				return Dlfcn.CachePointer (global::ObjCRuntime.Libraries.AVFoundation.Handle, "AVCaptureDeviceTypeBuiltInDualCamera", storage);
 		}
 	}
 
@@ -74,7 +74,7 @@ public static partial class AVCaptureDeviceTypeExtensions
 		get
 		{
 			fixed (IntPtr *storage = &values [5])
-				return Dlfcn.CachePointer (Libraries.AVFoundation.Handle, "AVCaptureDeviceTypeBuiltInTrueDepthCamera", storage);
+				return Dlfcn.CachePointer (global::ObjCRuntime.Libraries.AVFoundation.Handle, "AVCaptureDeviceTypeBuiltInTrueDepthCamera", storage);
 		}
 	}
 
@@ -84,7 +84,7 @@ public static partial class AVCaptureDeviceTypeExtensions
 		get
 		{
 			fixed (IntPtr *storage = &values [6])
-				return Dlfcn.CachePointer (Libraries.AVFoundation.Handle, "AVCaptureDeviceTypeBuiltInUltraWideCamera", storage);
+				return Dlfcn.CachePointer (global::ObjCRuntime.Libraries.AVFoundation.Handle, "AVCaptureDeviceTypeBuiltInUltraWideCamera", storage);
 		}
 	}
 
@@ -94,7 +94,7 @@ public static partial class AVCaptureDeviceTypeExtensions
 		get
 		{
 			fixed (IntPtr *storage = &values [7])
-				return Dlfcn.CachePointer (Libraries.AVFoundation.Handle, "AVCaptureDeviceTypeBuiltInTripleCamera", storage);
+				return Dlfcn.CachePointer (global::ObjCRuntime.Libraries.AVFoundation.Handle, "AVCaptureDeviceTypeBuiltInTripleCamera", storage);
 		}
 	}
 
@@ -104,7 +104,7 @@ public static partial class AVCaptureDeviceTypeExtensions
 		get
 		{
 			fixed (IntPtr *storage = &values [8])
-				return Dlfcn.CachePointer (Libraries.AVFoundation.Handle, "AVCaptureDeviceTypeBuiltInDualWideCamera", storage);
+				return Dlfcn.CachePointer (global::ObjCRuntime.Libraries.AVFoundation.Handle, "AVCaptureDeviceTypeBuiltInDualWideCamera", storage);
 		}
 	}
 
@@ -114,7 +114,7 @@ public static partial class AVCaptureDeviceTypeExtensions
 		get
 		{
 			fixed (IntPtr *storage = &values [9])
-				return Dlfcn.CachePointer (Libraries.AVFoundation.Handle, "AVCaptureDeviceTypeExternalUnknown", storage);
+				return Dlfcn.CachePointer (global::ObjCRuntime.Libraries.AVFoundation.Handle, "AVCaptureDeviceTypeExternalUnknown", storage);
 		}
 	}
 
@@ -124,7 +124,7 @@ public static partial class AVCaptureDeviceTypeExtensions
 		get
 		{
 			fixed (IntPtr *storage = &values [10])
-				return Dlfcn.CachePointer (Libraries.AVFoundation.Handle, "AVCaptureDeviceTypeBuiltInLiDARDepthCamera", storage);
+				return Dlfcn.CachePointer (global::ObjCRuntime.Libraries.AVFoundation.Handle, "AVCaptureDeviceTypeBuiltInLiDARDepthCamera", storage);
 		}
 	}
 
@@ -211,7 +211,7 @@ public static partial class AVCaptureDeviceTypeExtensions
 	/// Retrieves the <see cref="AVCaptureDeviceTypeExtensions" /> value represented by the backing field value in <paramref name="handle" />.
 	/// </summary>
 	/// <param name="handle">The native handle with the name of the constant to retrieve.</param>
-	public static AVCaptureDeviceType GetValue (NativeHandle handle)
+	public static AVCaptureDeviceType GetValue (global::ObjCRuntime.NativeHandle handle)
 	{
 		using var str = Runtime.GetNSObject<NSString> (handle)!;
 		return GetValue (str);
@@ -221,7 +221,7 @@ public static partial class AVCaptureDeviceTypeExtensions
 	/// Retrieves the <see cref="AVCaptureDeviceTypeExtensions" /> value represented by the backing field value in <paramref name="handle" />.
 	/// </summary>
 	/// <param name="handle">The native handle with the name of the constant to retrieve.</param>
-	public static AVCaptureDeviceType? GetNullableValue (NativeHandle handle)
+	public static AVCaptureDeviceType? GetNullableValue (global::ObjCRuntime.NativeHandle handle)
 	{
 		using var str = Runtime.GetNSObject<NSString> (handle);
 		if (str is null)

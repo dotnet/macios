@@ -31,6 +31,8 @@ using System.Runtime.Versioning;
 #nullable enable
 
 namespace AVFoundation {
+	/// <summary>A class that encapsulates the edge-widths used by an <see cref="AVFoundation.AVVideoCompositionRenderContext" />.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -84,11 +86,18 @@ namespace AVFoundation {
 				left.Bottom != right.Bottom;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override int GetHashCode ()
 		{
 			return HashCode.Combine (Left, Top, Right, Bottom);
 		}
 
+		/// <param name="other">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override bool Equals (object? other)
 		{
 			if (other is AVEdgeWidths) {

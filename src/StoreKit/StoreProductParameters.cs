@@ -35,8 +35,16 @@ using ObjCRuntime;
 
 namespace StoreKit {
 
+#if __TVOS__
+	/// <summary>A subclass of <see cref="Foundation.DictionaryContainer" /> that specifies the product to be displayed.</summary>
+#else
+	/// <summary>A subclass of <see cref="Foundation.DictionaryContainer" /> that, when passed to <see cref="StoreKit.SKStoreProductViewController.LoadProduct(StoreKit.StoreProductParameters,System.Action{System.Boolean,Foundation.NSError})" />, specifies the product to be displayed.</summary>
+#endif
 	public partial class StoreProductParameters : DictionaryContainer {
 #if !COREBUILD
+		/// <param name="iTunesItemIdentifier">To be added.</param>
+		///         <summary>Creates a new <see cref="StoreKit.StoreProductParameters" /> for the specified ITunes identifier.</summary>
+		///         <remarks>To be added.</remarks>
 		public StoreProductParameters (int iTunesItemIdentifier)
 			: this ()
 		{

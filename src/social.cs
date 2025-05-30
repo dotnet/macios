@@ -29,13 +29,9 @@ using SocialView = AppKit.NSView;
 using SocialViewController = AppKit.NSViewController;
 #endif
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace Social {
 	/// <summary>NSString constants with the various service types supported by the Social framework</summary>
-	///     <remarks>These constants are used typically when interacting with low-level Objective-C APIs.   In general, you can just use the higher level APIs that use strongly typed enumerations of type <see cref="T:Social.SLServiceKind" />.</remarks>
+	///     <remarks>These constants are used typically when interacting with low-level Objective-C APIs.   In general, you can just use the higher level APIs that use strongly typed enumerations of type <see cref="Social.SLServiceKind" />.</remarks>
 	[Static]
 	interface SLServiceType {
 		/// <summary>Developers should not use this deprecated property. Developers should use Facebook SDK instead.</summary>
@@ -140,6 +136,13 @@ namespace Social {
 		[Export ("requestForServiceType:requestMethod:URL:parameters:")]
 		SLRequest Create (NSString serviceType, SLRequestMethod requestMethod, NSUrl url, [NullAllowed] NSDictionary parameters);
 
+		/// <param name="serviceKind">To be added.</param>
+		///         <param name="method">To be added.</param>
+		///         <param name="url">To be added.</param>
+		///         <param name="parameters">To be added.</param>
+		///         <summary>Creates a new request object with the specified values.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Wrap ("Create (serviceKind.GetConstant ()!, method, url, parameters)")]
 		SLRequest Create (SLServiceKind serviceKind, SLRequestMethod method, NSUrl url, [NullAllowed] NSDictionary parameters);
@@ -172,11 +175,20 @@ namespace Social {
 
 		// async 
 		[Export ("performRequestWithHandler:")]
-		[Async (ResultTypeName = "SLRequestResult")]
+		[Async (ResultTypeName = "SLRequestResult", XmlDocs = """
+			<summary>Asynchronously makes the request.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous PerformRequest operation.  The value of the TResult parameter is of type System.Action&lt;Foundation.NSData,Foundation.NSHttpUrlResponse,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The PerformRequestAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void PerformRequest (Action<NSData, NSHttpUrlResponse, NSError> handler);
 	}
 
-	/// <summary>A <see cref="T:UIKit.UIViewController" /> that manages the user experience for the composition of a post for a social service.</summary>
+	/// <summary>A <see cref="UIKit.UIViewController" /> that manages the user experience for the composition of a post for a social service.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/NetworkingInternet/Reference/SLComposeViewController_Class/index.html">Apple documentation for <c>SLComposeViewController</c></related>
 	[NoMac]
@@ -184,6 +196,16 @@ namespace Social {
 	[BaseType (typeof (SocialViewController))]
 	[DisableDefaultCtor] // see note on 'composeViewControllerForServiceType:'
 	interface SLComposeViewController {
+		/// <param name="nibName">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="bundle">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Creates a new compose view controller from the named NIB in the specified <paramref name="bundle" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithNibName:bundle:")]
 		[PostGet ("NibBundle")]
 		NativeHandle Constructor ([NullAllowed] string nibName, [NullAllowed] NSBundle bundle);
@@ -225,6 +247,16 @@ namespace Social {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (SocialViewController))]
 	interface SLComposeServiceViewController : SocialTextViewDelegate {
+		/// <param name="nibName">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="bundle">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Creates a new view controller from a named NIB in the provided bundle.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithNibName:bundle:")]
 		[PostGet ("NibBundle")]
 		NativeHandle Constructor ([NullAllowed] string nibName, [NullAllowed] NSBundle bundle);
@@ -292,7 +324,6 @@ namespace Social {
 		[Export ("autoCompletionViewController", ArgumentSemantic.Strong)]
 		SocialViewController AutoCompletionViewController { get; set; }
 
-#if NET
 		// Inlined manually from UITextViewDelegate/NSTextViewDelegate, because the one from the *Delegate type
 		// has different availability attributes depending on the platform.
 		[iOS (18, 0), MacCatalyst (18, 0), Mac (15, 0), NoTV]
@@ -310,7 +341,6 @@ namespace Social {
 		[iOS (18, 0), MacCatalyst (18, 0), Mac (15, 0), NoTV]
 		[Export ("textView:writingToolsIgnoredRangesInEnclosingRange:")]
 		new NSValue [] GetWritingToolsIgnoredRangesInEnclosingRange (SocialTextView textView, NSRange enclosingRange);
-#endif
 	}
 
 

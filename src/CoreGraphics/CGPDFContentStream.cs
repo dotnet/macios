@@ -16,6 +16,8 @@ using ObjCRuntime;
 using CoreFoundation;
 
 namespace CoreGraphics {
+	/// <summary>Class that gets PDF resources as an object or stream.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -86,6 +88,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* CFArrayRef */ IntPtr CGPDFContentStreamGetStreams (/* CGPDFContentStreamRef */ IntPtr cs);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CGPDFStream? []? GetStreams ()
 		{
 			var rv = CGPDFContentStreamGetStreams (Handle);
@@ -95,6 +100,11 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* CGPDFObjectRef */ IntPtr CGPDFContentStreamGetResource (/* CGPDFContentStreamRef */ IntPtr cs, /* const char* */ IntPtr category, /* const char* */ IntPtr name);
 
+		/// <param name="category">To be added.</param>
+		///         <param name="name">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CGPDFObject? GetResource (string category, string name)
 		{
 			if (category is null)

@@ -34,7 +34,9 @@ using ObjCRuntime;
 #nullable enable
 
 namespace CoreBluetooth {
-
+	/// <summary>Peripheral connection options.</summary>
+	///     <remarks>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

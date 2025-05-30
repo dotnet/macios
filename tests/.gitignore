@@ -5,12 +5,7 @@ generated-projects
 build
 *-tvos.?sproj
 *-tvos.sln
-*-watchos.?sproj
-*-watchos-app.?sproj
-*-watchos-extension.?sproj
-*-watchos.sln
 *-tvos.plist
-*-watchos.plist
 *-mac.?sproj
 *-full.?sproj
 *-today.?sproj

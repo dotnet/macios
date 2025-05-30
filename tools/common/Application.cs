@@ -82,7 +82,6 @@ namespace Xamarin.Bundler {
 		public bool DebugAll;
 		public bool UseInterpreter; // Only applicable to mobile platforms.
 		public List<string> DebugAssemblies = new List<string> ();
-		internal RuntimeOptions RuntimeOptions;
 		public Optimizations Optimizations = new Optimizations ();
 		public RegistrarMode Registrar = RegistrarMode.Default;
 		public RegistrarOptions RegistrarOptions = RegistrarOptions.Default;
@@ -376,16 +375,7 @@ namespace Xamarin.Bundler {
 
 		public string FrameworkLocationVariable {
 			get {
-				switch (Platform) {
-				case ApplePlatform.iOS:
-				case ApplePlatform.TVOS:
-				case ApplePlatform.MacCatalyst:
-					return "MD_MTOUCH_SDK_ROOT";
-				case ApplePlatform.MacOSX:
-					return "XAMMAC_FRAMEWORK_PATH";
-				default:
-					throw ErrorHelper.CreateError (71, Errors.MX0071, Platform, ProductName);
-				}
+				throw new NotImplementedException ();
 			}
 		}
 
@@ -807,8 +797,6 @@ namespace Xamarin.Bundler {
 		{
 			InitializeDeploymentTarget ();
 			SelectMonoNative ();
-
-			RuntimeOptions = RuntimeOptions.Create (this, HttpMessageHandler, TlsProvider);
 
 			if (Platform == ApplePlatform.MacCatalyst) {
 				// Our input SdkVersion is the macOS SDK version, but the rest of our code expects the supporting iOS version, so convert here.
@@ -1290,7 +1278,7 @@ namespace Xamarin.Bundler {
 						MarshalManagedExceptions = EnableDebug ? MarshalManagedExceptionMode.UnwindNativeCode : MarshalManagedExceptionMode.Disable;
 						break;
 					default:
-						throw ErrorHelper.CreateError (71, Errors.MX0071 /* Unknown platform: {0}. This usually indicates a bug in {1}; please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new with a test case. */, Platform, ProductName);
+						throw ErrorHelper.CreateError (71, Errors.MX0071 /* Unknown platform: {0}. This usually indicates a bug in {1}; please file a bug report at https://github.com/dotnet/macios/issues/new with a test case. */, Platform, ProductName);
 					}
 				}
 				IsDefaultMarshalManagedExceptionMode = true;
@@ -1320,7 +1308,7 @@ namespace Xamarin.Bundler {
 						MarshalObjectiveCExceptions = EnableDebug ? MarshalObjectiveCExceptionMode.ThrowManagedException : MarshalObjectiveCExceptionMode.Disable;
 						break;
 					default:
-						throw ErrorHelper.CreateError (71, Errors.MX0071 /* Unknown platform: {0}. This usually indicates a bug in {1}; please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new with a test case. */, Platform, ProductName);
+						throw ErrorHelper.CreateError (71, Errors.MX0071 /* Unknown platform: {0}. This usually indicates a bug in {1}; please file a bug report at https://github.com/dotnet/macios/issues/new with a test case. */, Platform, ProductName);
 					}
 				}
 				break;
@@ -1513,7 +1501,7 @@ namespace Xamarin.Bundler {
 			// the developer has already set a value) to something higher than the default.
 			//
 			// Ref:
-			// * https://github.com/xamarin/xamarin-macios/issues/14887
+			// * https://github.com/dotnet/macios/issues/14887
 			// * https://github.com/dotnet/runtime/issues/68808
 			if (interp && (abi & Abi.x86_64) == Abi.x86_64) {
 				// The default values are here: https://github.com/dotnet/runtime/blob/main/src/mono/mono/mini/aot-compiler.c#L13945-L13953
@@ -1640,7 +1628,7 @@ namespace Xamarin.Bundler {
 			case ApplePlatform.TVOS:
 				return false;
 			case ApplePlatform.MacCatalyst:
-				// https://github.com/xamarin/xamarin-macios/issues/14437
+				// https://github.com/dotnet/macios/issues/14437
 				return true;
 			default:
 				throw ErrorHelper.CreateError (71, Errors.MX0071, Platform, ProductName);

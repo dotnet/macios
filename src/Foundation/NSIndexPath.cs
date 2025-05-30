@@ -17,6 +17,14 @@ using ObjCRuntime;
 namespace Foundation {
 
 	public partial class NSIndexPath {
+		/// <param name="indexes">
+		/// Array of indexes to make the index-path.
+		///   	   </param>
+		/// <summary>Creates an <see cref="Foundation.NSIndexPath" /> with the indexes specified in the provided array of native integers.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>
+		///           <para />
+		///         </remarks>
 		public unsafe static NSIndexPath Create (params nint [] indexes)
 		{
 			if (indexes is null)
@@ -26,6 +34,15 @@ namespace Foundation {
 				return _FromIndex ((IntPtr) ptr, indexes.Length);
 		}
 
+		/// <param name="indexes">
+		/// Array of indexes to make the index-path.
+		///   	   </param>
+		/// <summary>Creates an <see cref="Foundation.NSIndexPath" /> with the indexes specified in the provided array of native unsigned integers.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>
+		///           <para>
+		///           </para>
+		///         </remarks>
 		public unsafe static NSIndexPath Create (params nuint [] indexes)
 		{
 			if (indexes is null)
@@ -44,7 +61,7 @@ namespace Foundation {
 		///
 		///
 		///   	   </param>
-		///         <summary>Creates an <see cref="T:Foundation.NSIndexPath" /> with the indexes specified in the provided array of integers.</summary>
+		///         <summary>Creates an <see cref="Foundation.NSIndexPath" /> with the indexes specified in the provided array of integers.</summary>
 		///         <returns>
 		///         </returns>
 		///         <remarks>
@@ -67,7 +84,7 @@ namespace Foundation {
 		///
 		///
 		///   	   </param>
-		///         <summary>Creates an <see cref="T:Foundation.NSIndexPath" /> with the indexes specified in the provided array of unsigned integers.</summary>
+		///         <summary>Creates an <see cref="Foundation.NSIndexPath" /> with the indexes specified in the provided array of unsigned integers.</summary>
 		///         <returns>
 		///         </returns>
 		///         <remarks>
@@ -81,11 +98,7 @@ namespace Foundation {
 				return _FromIndex ((IntPtr) ptr, indexes.Length);
 		}
 
-		/// <summary>Copies the objects contained in the index-path to an array (not required for use with iOS <see cref="T:UIKit.UITableView" />).</summary>
-		///         <returns>
-		///         </returns>
-		///         <remarks>
-		///         </remarks>
+		/// <summary>Copies the objects contained in the index-path to an array.</summary>
 		public unsafe nuint [] GetIndexes ()
 		{
 			var ret = new nuint [Length];
@@ -94,7 +107,6 @@ namespace Foundation {
 			return ret;
 		}
 
-#if NET
 		/// <param name="range">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
@@ -103,7 +115,6 @@ namespace Foundation {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public unsafe nuint [] GetIndexes (NSRange range)
 		{
 			var ret = new nuint [range.Length];

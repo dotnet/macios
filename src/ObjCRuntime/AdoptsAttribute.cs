@@ -32,6 +32,7 @@ using System.Runtime.InteropServices;
 
 namespace ObjCRuntime {
 
+	/// <include file="../../docs/api/ObjCRuntime/AdoptsAttribute.xml" path="/Documentation/Docs[@DocId='T:ObjCRuntime.AdoptsAttribute']/*" />
 	[AttributeUsage (AttributeTargets.Class, AllowMultiple = true)]
 	public sealed class AdoptsAttribute : Attribute {
 #if !COREBUILD

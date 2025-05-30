@@ -14,11 +14,11 @@ using MonoTouch;
 
 namespace Xamarin {
 	static class SdkVersions {
-		public const string Xcode = "16.3";
-		public const string OSX = "15.4";
-		public const string iOS = "18.4";
-		public const string TVOS = "18.4";
-		public const string MacCatalyst = "18.4";
+		public const string Xcode = "16.4";
+		public const string OSX = "15.5";
+		public const string iOS = "18.5";
+		public const string TVOS = "18.5";
+		public const string MacCatalyst = "18.5";
 
 		public const string MinOSX = "12.0";
 		public const string MiniOS = "12.2";
@@ -32,16 +32,16 @@ namespace Xamarin {
 		public const string MiniOSSimulator = "16.0";
 		public const string MinTVOSSimulator = "16.0";
 
-		public const string MaxiOSSimulator = "18.4";
-		public const string MaxTVOSSimulator = "18.4";
+		public const string MaxiOSSimulator = "18.5";
+		public const string MaxTVOSSimulator = "18.5";
 
-		public const string MaxiOSDeploymentTarget = "18.4";
-		public const string MaxTVOSDeploymentTarget = "18.4";
+		public const string MaxiOSDeploymentTarget = "18.5";
+		public const string MaxTVOSDeploymentTarget = "18.5";
 
-		public const string TargetPlatformVersionExecutableiOS = "18.4";
-		public const string TargetPlatformVersionExecutabletvOS = "18.4";
-		public const string TargetPlatformVersionExecutablemacOS = "15.4";
-		public const string TargetPlatformVersionExecutableMacCatalyst = "18.4";
+		public const string TargetPlatformVersionExecutableiOS = "18.5";
+		public const string TargetPlatformVersionExecutabletvOS = "18.5";
+		public const string TargetPlatformVersionExecutablemacOS = "15.5";
+		public const string TargetPlatformVersionExecutableMacCatalyst = "18.5";
 
 		public const string TargetPlatformVersionLibraryiOS = "18.0";
 		public const string TargetPlatformVersionLibrarytvOS = "18.0";
@@ -78,7 +78,7 @@ namespace Xamarin {
 			case ApplePlatform.TVOS: return TVOSVersion;
 			case ApplePlatform.MacCatalyst: return MacCatalystVersion;
 			default:
-				throw ErrorHelper.CreateError (71, "Unknown platform: {0}. This usually indicates a bug in {1}; please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new with a test case.", app.Platform, app.ProductName);
+				throw ErrorHelper.CreateError (71, "Unknown platform: {0}. This usually indicates a bug in {1}; please file a bug report at https://github.com/dotnet/macios/issues/new with a test case.", app.Platform, app.ProductName);
 			}
 		}
 
@@ -89,7 +89,7 @@ namespace Xamarin {
 			case ApplePlatform.iOS: return iOSTargetVersion;
 			case ApplePlatform.TVOS: return TVOSTargetVersion;
 			default:
-				throw ErrorHelper.CreateError (71, "Unknown platform: {0}. This usually indicates a bug in {1}; please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new with a test case.", app.Platform, app.ProductName);
+				throw ErrorHelper.CreateError (71, "Unknown platform: {0}. This usually indicates a bug in {1}; please file a bug report at https://github.com/dotnet/macios/issues/new with a test case.", app.Platform, app.ProductName);
 			}
 		}
 
@@ -101,7 +101,7 @@ namespace Xamarin {
 			case ApplePlatform.TVOS: return MinTVOSVersion;
 			case ApplePlatform.MacCatalyst: return MinMacCatalystVersion;
 			default:
-				throw ErrorHelper.CreateError (71, "Unknown platform: {0}. This usually indicates a bug in {1}; please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new with a test case.", app.Platform, app.ProductName);
+				throw ErrorHelper.CreateError (71, "Unknown platform: {0}. This usually indicates a bug in {1}; please file a bug report at https://github.com/dotnet/macios/issues/new with a test case.", app.Platform, app.ProductName);
 			}
 		}
 #endif

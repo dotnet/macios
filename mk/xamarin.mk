@@ -78,7 +78,7 @@ reset-versions-impl:: reset-$(1)
 check-versions:: check-$(1)
 print-versions:: print-$(1)
 
-DEPENDENCY_DIRECTORIES += $($(2)_PATH)
+DEPENDENCY_DIRECTORIES += $$(abspath $($(2)_PATH))
 
 endef
 

@@ -38,23 +38,49 @@ using ObjCRuntime;
 using System.Runtime.Versioning;
 
 namespace CoreText {
+	/// <summary>Describes the style of a font.</summary>
+	///     <remarks>
+	///       <para>
+	/// 	You can use this to query trait information about a font.
+	///       </para>
+	///       <example>
+	///         <code lang="csharp lang-csharp"><![CDATA[
+	/// void ShowInfo (CTFont font)
+	/// {
+	///     var traits = font.GetTraits ();
+	///     if (traits.Bold)
+	/// 	Console.WriteLine ("Bold font, weight={0}", traits.Weight);
+	///     if (traits.Italic)
+	/// 	Console.WriteLine ("Italic font, slant={0}", traits.Slant);
+	///     if (traits.Condensed || traits.Expanded)
+	/// 	Console.WriteLine ("Condensed/Expanded font, width={0}", traits.Width);
+	///     if (traits.ColorGlyphs)
+	/// 	Console.WriteLine ("Font has colored glyphs");
+	///     if (traits.MonoSpace)
+	/// 	Console.WriteLine ("Font is monospaced");
+	///     if (traits.Vertical)
+	/// 	Console.WriteLine ("Font contains vertical metrics");
+	/// }
+	/// 	]]></code>
+	///       </example>
+	///     </remarks>
 	[Flags]
 	// defined as uint32_t - /System/Library/Frameworks/CoreText.framework/Headers/CTFontTraits.h
 	public enum CTFontSymbolicTraits : uint {
 		/// <summary>Used when no values are set.</summary>
 		None = 0,
-		/// <summary>This is an italic font.  If querying <see cref="T:CoreText.CTFontTraits" /> you can get more
-		/// 	  information about the slant from the <see cref="P:CoreText.CTFontTraits.Slant" /> property.</summary>
+		/// <summary>This is an italic font.  If querying <see cref="CoreText.CTFontTraits" /> you can get more
+		/// 	  information about the slant from the <see cref="CoreText.CTFontTraits.Slant" /> property.</summary>
 		Italic = (1 << 0),
 		/// <summary>
-		/// 	  This is a bold font.  If querying <see cref="T:CoreText.CTFontTraits" /> you can get more
-		/// 	  information about the weight from the <see cref="P:CoreText.CTFontTraits.Weight" /> property.
+		/// 	  This is a bold font.  If querying <see cref="CoreText.CTFontTraits" /> you can get more
+		/// 	  information about the weight from the <see cref="CoreText.CTFontTraits.Weight" /> property.
 		/// 	</summary>
 		Bold = (1 << 1),
 		/// <summary>This is an expanded font.</summary>
 		Expanded = (1 << 5),
-		/// <summary>This is a condensed font.  If querying <see cref="T:CoreText.CTFontTraits" /> you can get more
-		/// 	  information about the width from the <see cref="P:CoreText.CTFontTraits.Width" /> property.</summary>
+		/// <summary>This is a condensed font.  If querying <see cref="CoreText.CTFontTraits" /> you can get more
+		/// 	  information about the width from the <see cref="CoreText.CTFontTraits.Width" /> property.</summary>
 		Condensed = (1 << 6),
 		/// <summary>Use fixed fonts if available.</summary>
 		MonoSpace = (1 << 10),
@@ -72,6 +98,8 @@ namespace CoreText {
 	}
 
 	// defined as uint32_t - /System/Library/Frameworks/CoreText.framework/Headers/CTFontTraits.h
+	/// <summary>An enumeration whose values specify the serif style of a <see cref="CoreText.CTFont" />.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum CTFontStylisticClass : uint {
 		/// <summary>To be added.</summary>
 		None = 0,
@@ -99,17 +127,24 @@ namespace CoreText {
 		Symbolic = ((uint) 12 << CTFontTraits.ClassMaskShift),
 	}
 
+	/// <summary>The standard traits for a <see cref="CoreText.CTFontDescriptor" />.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public class CTFontTraits {
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTFontTraits ()
 			: this (new NSMutableDictionary ())
 		{
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTFontTraits (NSDictionary dictionary)
 		{
 			if (dictionary is null)

@@ -26,6 +26,12 @@ namespace AppKit {
 			set { base.Cell = value; }
 		}
 
+		/// <param name="labels">To be added.</param>
+		///         <param name="trackingMode">To be added.</param>
+		///         <param name="action">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
 		public static NSSegmentedControl FromLabels (string [] labels, NSSegmentSwitchTracking trackingMode, Action action)
@@ -36,6 +42,12 @@ namespace AppKit {
 			return control;
 		}
 
+		/// <param name="images">To be added.</param>
+		///         <param name="trackingMode">To be added.</param>
+		///         <param name="action">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
 		public static NSSegmentedControl FromImages (NSImage [] images, NSSegmentSwitchTracking trackingMode, Action action)
@@ -46,6 +58,8 @@ namespace AppKit {
 			return control;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void UnselectAllSegments ()
 		{
 			NSSegmentSwitchTracking current = this.Cell.TrackingMode;

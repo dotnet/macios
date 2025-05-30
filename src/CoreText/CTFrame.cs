@@ -39,6 +39,8 @@ using CoreGraphics;
 
 namespace CoreText {
 
+	/// <summary>An enumeration whose values can be used as flags with the <see cref="CoreText.CTFrameAttributes.Progression" /> property.</summary>
+	///     <remarks>Specifies the line-stacking behavior of a frame. <see cref="CoreText.CTFrameProgression.RightToLeft" /> stacks lines left-to-right when used with vertical text, <see cref="CoreText.CTFrameProgression.TopToBottom" /> stacks lines top-to-bottom for horizontal text.</remarks>
 	[Flags]
 	public enum CTFrameProgression : uint {
 		/// <summary>To be added.</summary>
@@ -48,6 +50,8 @@ namespace CoreText {
 		LeftToRight = 2,
 	}
 
+	/// <summary>An enumeration whose values specify the fill rule used by a <see cref="CoreText.CTFrame" />.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum CTFramePathFillRule {
 		/// <summary>To be added.</summary>
 		EvenOdd,
@@ -55,17 +59,25 @@ namespace CoreText {
 		WindingNumber,
 	}
 
+	/// <summary>Encapsulates the attributes used in the creation of a <see cref="CoreText.CTFrame" />.</summary>
+	///     <remarks>To be added.</remarks>
+	///     <altmember cref="CoreText.CTFrameAttributeKey" />
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public class CTFrameAttributes {
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTFrameAttributes ()
 			: this (new NSMutableDictionary ())
 		{
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTFrameAttributes (NSDictionary dictionary)
 		{
 			if (dictionary is null)
@@ -102,6 +114,10 @@ namespace CoreText {
 		}
 	}
 
+	/// <summary>A rectangular area containing lines of text.</summary>
+	///     <remarks>To be added.</remarks>
+	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/SimpleTextInput/">SimpleTextInput</related>
+	///     <altmember cref="CoreText.CTLine" />
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -118,11 +134,17 @@ namespace CoreText {
 		[DllImport (Constants.CoreTextLibrary)]
 		extern static NSRange CTFrameGetVisibleStringRange (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public NSRange GetStringRange ()
 		{
 			return CTFrameGetStringRange (Handle);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public NSRange GetVisibleStringRange ()
 		{
 			return CTFrameGetVisibleStringRange (Handle);
@@ -131,6 +153,9 @@ namespace CoreText {
 		[DllImport (Constants.CoreTextLibrary)]
 		extern static IntPtr CTFrameGetPath (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CGPath? GetPath ()
 		{
 			IntPtr h = CTFrameGetPath (Handle);
@@ -140,6 +165,9 @@ namespace CoreText {
 		[DllImport (Constants.CoreTextLibrary)]
 		extern static IntPtr CTFrameGetFrameAttributes (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CTFrameAttributes? GetFrameAttributes ()
 		{
 			var attrs = Runtime.GetNSObject<NSDictionary> (CTFrameGetFrameAttributes (Handle));
@@ -149,6 +177,9 @@ namespace CoreText {
 		[DllImport (Constants.CoreTextLibrary)]
 		extern static IntPtr CTFrameGetLines (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CTLine [] GetLines ()
 		{
 			var cfArrayRef = CTFrameGetLines (Handle);
@@ -163,6 +194,10 @@ namespace CoreText {
 
 		[DllImport (Constants.CoreTextLibrary)]
 		extern static void CTFrameGetLineOrigins (IntPtr handle, NSRange range, [Out] CGPoint [] origins);
+		/// <param name="range">To be added.</param>
+		///         <param name="origins">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void GetLineOrigins (NSRange range, CGPoint [] origins)
 		{
 			if (origins is null)
@@ -177,6 +212,9 @@ namespace CoreText {
 		[DllImport (Constants.CoreTextLibrary)]
 		extern static void CTFrameDraw (IntPtr handle, IntPtr context);
 
+		/// <param name="ctx">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void Draw (CGContext ctx)
 		{
 			if (ctx is null)

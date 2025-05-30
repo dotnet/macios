@@ -96,7 +96,7 @@ namespace CloudKit {
 		ConstraintViolation = 19,
 		/// <summary>Indicates the operation was cancelled programmatically by the app.</summary>
 		OperationCancelled = 20,
-		/// <summary>Indicates the <see cref="P:CloudKit.CKFetchRecordChangesOperation.PreviousServerChangeToken" /> expired and the client must resynchronize.</summary>
+		/// <summary>Indicates the <see cref="CloudKit.CKFetchRecordChangesOperation.PreviousServerChangeToken" /> expired and the client must resynchronize.</summary>
 		ChangeTokenExpired = 21,
 		/// <summary>An item failed in a zone with atomic updates, so the batch was rejected.</summary>
 		BatchRequestFailed = 22,
@@ -114,9 +114,9 @@ namespace CloudKit {
 		UserDeletedZone = 28,
 		/// <summary>Indicates that there are too many participants attached to the share.</summary>
 		TooManyParticipants = 29,
-		/// <summary>Indicates that the <see cref="T:CloudKit.CKRecord" /> or <see cref="T:CloudKit.CKShare" /> hierarchy already exists in another share.</summary>
+		/// <summary>Indicates that the <see cref="CloudKit.CKRecord" /> or <see cref="CloudKit.CKShare" /> hierarchy already exists in another share.</summary>
 		AlreadyShared = 30,
-		/// <summary>Indicates the <see cref="T:CloudKit.CKRecord" /> object's parent reference or it's share reference could not be found.</summary>
+		/// <summary>Indicates the <see cref="CloudKit.CKRecord" /> object's parent reference or it's share reference could not be found.</summary>
 		ReferenceViolation = 31,
 		/// <summary>Indicates an error due to a managed account restriction.</summary>
 		ManagedAccountRestricted = 32,
@@ -217,21 +217,6 @@ namespace CloudKit {
 
 	// NSInteger -> CKSubscription.h
 
-#if !NET
-	[Obsoleted (PlatformName.iOS, 14, 0, message: "Use 'CKQuerySubscriptionOptions' instead.")]
-	[Deprecated (PlatformName.iOS, 10, 0, message: "Use 'CKQuerySubscriptionOptions' instead.")]
-	[Obsoleted (PlatformName.MacOSX, 10, 16, message: "Use 'CKQuerySubscriptionOptions' instead.")]
-	[Deprecated (PlatformName.MacOSX, 10, 12, message: "Use 'CKQuerySubscriptionOptions' instead.")]
-	[Flags]
-	[Native]
-	public enum CKSubscriptionOptions : ulong {
-		FiresOnRecordCreation = 1 << 0,
-		FiresOnRecordUpdate = 1 << 1,
-		FiresOnRecordDeletion = 1 << 2,
-		FiresOnce = 1 << 3,
-	}
-#endif
-
 	/// <summary>Enumerates values that tell whether a database is private, shared, or public.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -290,7 +275,7 @@ namespace CloudKit {
 		PublicUser = 4,
 	}
 
-	/// <summary>Enumerates the time or times when a <see cref="T:CloudKit.CKSubscription" /> fires a notification.</summary>
+	/// <summary>Enumerates the time or times when a <see cref="CloudKit.CKSubscription" /> fires a notification.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CKQuerySubscriptionOptions : ulong {

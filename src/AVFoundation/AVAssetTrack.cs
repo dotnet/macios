@@ -8,7 +8,7 @@ namespace AVFoundation {
 	public partial class AVAssetTrack {
 
 		/// <summary>
-		/// An array of <see cref="T:CoreMedia.CMFormatDescription" />s that describe the formats of the samples in the <see cref="T:AVFoundation.AVAssetTrack" />.
+		/// An array of <see cref="CoreMedia.CMFormatDescription" />s that describe the formats of the samples in the <see cref="AVFoundation.AVAssetTrack" />.
 		/// </summary>
 		/// <value>To be added.</value>
 		/// <remarks>To be added.</remarks>

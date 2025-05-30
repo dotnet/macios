@@ -17,6 +17,8 @@ using Foundation;
 namespace WebKit {
 
 	// Convenience enum.
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum WebActionMouseButton {
 		/// <summary>To be added.</summary>
 		None = -1,
@@ -28,6 +30,10 @@ namespace WebKit {
 		Right = 2,
 	}
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
+	[ObsoletedOSPlatform ("macos10.14", "No longer supported.")]
+	[SupportedOSPlatform ("macos")]
 	partial class WebNavigationPolicyEventArgs {
 
 		/// <summary>To be added.</summary>

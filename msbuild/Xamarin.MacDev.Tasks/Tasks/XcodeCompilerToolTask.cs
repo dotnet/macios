@@ -161,7 +161,7 @@ namespace Xamarin.MacDev.Tasks {
 			yield break;
 		}
 
-		protected abstract void AppendCommandLineArguments (IDictionary<string, string?> environment, CommandLineArgumentBuilder args, ITaskItem [] items);
+		protected abstract void AppendCommandLineArguments (IDictionary<string, string?> environment, List<string> args, ITaskItem [] items);
 
 		static bool? translated;
 
@@ -182,7 +182,7 @@ namespace Xamarin.MacDev.Tasks {
 		protected int Compile (ITaskItem [] items, string output, ITaskItem manifest)
 		{
 			var environment = new Dictionary<string, string?> ();
-			var args = new CommandLineArgumentBuilder ();
+			var args = new List<string> ();
 
 			if (!string.IsNullOrEmpty (SdkBinPath))
 				environment.Add ("PATH", SdkBinPath);
@@ -198,14 +198,18 @@ namespace Xamarin.MacDev.Tasks {
 			if (IsTranslated ()) {
 				// we force the Intel (translated) msbuild process to launch ibtool as "Apple"
 				tool = "arch";
-				args.Add ("-arch", "arm64e");
+				args.Add ("-arch");
+				args.Add ("arm64e");
 				args.Add ("/usr/bin/xcrun");
 			} else {
 				tool = "/usr/bin/xcrun";
 			}
 			args.Add (ToolName);
-			args.Add ("--errors", "--warnings", "--notices");
-			args.Add ("--output-format", "xml1");
+			args.Add ("--errors");
+			args.Add ("--warnings");
+			args.Add ("--notices");
+			args.Add ("--output-format");
+			args.Add ("xml1");
 
 			AppendCommandLineArguments (environment, args, items);
 
@@ -216,18 +220,16 @@ namespace Xamarin.MacDev.Tasks {
 			else
 				args.Add ("--compile");
 
-			args.AddQuoted (Path.GetFullPath (output));
+			args.Add (Path.GetFullPath (output));
 
 			foreach (var item in items)
-				args.AddQuoted (item.GetMetadata ("FullPath"));
-
-			var arguments = args.ToList ();
+				args.Add (item.GetMetadata ("FullPath"));
 
 			// don't bother executing the tool if we've already looged errors.
 			if (Log.HasLoggedErrors)
 				return 1;
 
-			var rv = ExecuteAsync (tool, arguments, sdkDevPath, environment: environment, mergeOutput: false).Result;
+			var rv = ExecuteAsync (tool, args, sdkDevPath, environment: environment, mergeOutput: false).Result;
 			var exitCode = rv.ExitCode;
 			var messages = rv.StandardOutput!.ToString ();
 			File.WriteAllText (manifest.ItemSpec, messages);

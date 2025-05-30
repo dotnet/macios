@@ -14,7 +14,7 @@ namespace Cecil.Tests {
 	public class EnumTest {
 
 		[TestCaseSource (typeof (Helper), nameof (Helper.NetPlatformAssemblyDefinitions))]
-		// https://github.com/xamarin/xamarin-macios/issues/9724
+		// https://github.com/dotnet/macios/issues/9724
 		public void NoAvailabilityOnError (AssemblyInfo info)
 		{
 			var assembly = info.Assembly;
@@ -75,11 +75,9 @@ namespace Cecil.Tests {
 					case "iOSAttribute":
 					case "MacAttribute":
 					case "TVAttribute":
-					case "WatchAttribute":
 					case "NoiOSAttribute":
 					case "NoMacAttribute":
 					case "NoTVAttribute":
-					case "NoWatchAttribute":
 					case "SupportedOSPlatformAttribute":
 					case "UnsupportedOSPlatformAttribute":
 						found.Add ($"{type.FullName}.{f.Name}: {ca.AttributeType.Name}");

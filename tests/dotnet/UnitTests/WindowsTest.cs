@@ -123,7 +123,7 @@ namespace Xamarin.Tests {
 			BundleStructureTest.CheckAppBundleContents (platform, merged, rids, BundleStructureTest.CodeSignature.None, configuration == "Release");
 
 			// Assert that no files were copied to the signed directory after the app was signed.
-			// https://github.com/xamarin/xamarin-macios/issues/19278
+			// https://github.com/dotnet/macios/issues/19278
 			var signedAppBundleFilesWithInfo = hotRestartAppBundleFiles.Select (v => new { Name = v, Info = new FileInfo (v) });
 			Console.WriteLine ($"{signedAppBundleFilesWithInfo.Count ()} files in app bundle:");
 			foreach (var fileWithInfo2 in signedAppBundleFilesWithInfo) {
@@ -343,6 +343,7 @@ namespace Xamarin.Tests {
 			AssertThatLinkerExecuted (result);
 
 			var objDir = GetObjDir (project_path, platform, runtimeIdentifiers, configuration);
+
 			var zippedAppBundlePath = Path.Combine (objDir, "AppBundle.zip");
 			Assert.That (zippedAppBundlePath, Does.Exist, "AppBundle.zip");
 
@@ -398,7 +399,6 @@ namespace Xamarin.Tests {
 					using var peReader = new PEReader (stream);
 					MetadataReader metadataReader = peReader.GetMetadataReader ();
 					Guid mvid = metadataReader.GetGuid (metadataReader.GetModuleDefinition ().Mvid);
-
 					var fileWasUpdated = fileInfo.Length != localInfo.length || mvid != localInfo.mvid;
 
 					Assert.IsTrue (fileWasUpdated, $"The file '{fileName}' is identical to the one present in the output assemblies report file '{outputAssembliesReportFile}'");

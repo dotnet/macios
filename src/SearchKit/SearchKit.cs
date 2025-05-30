@@ -29,11 +29,9 @@ using Foundation;
 
 using System.Runtime.InteropServices;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace SearchKit {
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum SKIndexType {
 		/// <summary>To be added.</summary>
 		Unknown,
@@ -45,6 +43,8 @@ namespace SearchKit {
 		InvertedVector,
 	};
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[Flags]
 	public enum SKSearchOptions {
 		/// <summary>To be added.</summary>
@@ -57,9 +57,9 @@ namespace SearchKit {
 		FindSimilar = 1 << 2,
 	}
 
-#if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
-#endif
 	public class SKSearch : NativeObject {
 		[Preserve (Conditional = true)]
 		internal SKSearch (NativeHandle handle, bool owns)
@@ -118,15 +118,17 @@ namespace SearchKit {
 
 		[DllImport (Constants.SearchKitLibrary)]
 		extern static void SKSearchCancel (IntPtr h);
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void Cancel ()
 		{
 			SKSearchCancel (Handle);
 		}
 	}
 
-#if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
-#endif
 	public class SKDocument : NativeObject {
 		[DllImport (Constants.SearchKitLibrary)]
 		extern static IntPtr SKDocumentCreate (IntPtr scheme, IntPtr docParent, IntPtr name);
@@ -149,6 +151,11 @@ namespace SearchKit {
 			}
 		}
 
+		/// <param name="name">To be added.</param>
+		///         <param name="parent">To be added.</param>
+		///         <param name="scheme">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public SKDocument (string name, SKDocument? parent = null, string? scheme = null)
 			: base (Create (name, parent, scheme), true, true)
 		{
@@ -160,6 +167,9 @@ namespace SearchKit {
 		{
 		}
 
+		/// <param name="url">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public SKDocument (NSUrl url)
 			: base (SKDocumentCreateWithURL (url.GetNonNullHandle (nameof (url))), true, true)
 		{
@@ -192,6 +202,9 @@ namespace SearchKit {
 
 		[DllImport (Constants.SearchKitLibrary)]
 		extern static IntPtr SKDocumentGetParent (IntPtr h);
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public SKDocument? GetParent ()
 		{
 			var parent = SKDocumentGetParent (GetCheckedHandle ());
@@ -212,13 +225,10 @@ namespace SearchKit {
 		}
 	}
 
-#if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
-	public class SKIndex : DisposableObject
-#else
-	public class SKIndex : NativeObject
-#endif
-	{
+	public class SKIndex : DisposableObject {
 		[DllImport (Constants.SearchKitLibrary)]
 		extern static IntPtr SKIndexCreateWithURL (IntPtr url, IntPtr str, SKIndexType type, IntPtr dict);
 		[DllImport (Constants.SearchKitLibrary)]
@@ -239,6 +249,13 @@ namespace SearchKit {
 		{
 		}
 
+		/// <param name="url">To be added.</param>
+		///         <param name="indexName">To be added.</param>
+		///         <param name="type">To be added.</param>
+		///         <param name="analysisProperties">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static SKIndex? CreateWithUrl (NSUrl url, string indexName, SKIndexType type, SKTextAnalysis analysisProperties)
 		{
 			if (url is null)
@@ -256,6 +273,12 @@ namespace SearchKit {
 			}
 		}
 
+		/// <param name="url">To be added.</param>
+		///         <param name="indexName">To be added.</param>
+		///         <param name="writeAccess">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static SKIndex? FromUrl (NSUrl url, string indexName, bool writeAccess)
 		{
 			if (url is null)
@@ -274,6 +297,13 @@ namespace SearchKit {
 			}
 		}
 
+		/// <param name="data">To be added.</param>
+		///         <param name="indexName">To be added.</param>
+		///         <param name="type">To be added.</param>
+		///         <param name="analysisProperties">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static SKIndex? CreateWithMutableData (NSMutableData data, string indexName, SKIndexType type, SKTextAnalysis analysisProperties)
 		{
 			if (data is null)
@@ -293,6 +323,11 @@ namespace SearchKit {
 			}
 		}
 
+		/// <param name="data">To be added.</param>
+		///         <param name="indexName">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static SKIndex? FromMutableData (NSMutableData data, string indexName)
 		{
 			if (data is null)
@@ -311,6 +346,11 @@ namespace SearchKit {
 			}
 		}
 
+		/// <param name="data">To be added.</param>
+		///         <param name="indexName">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static SKIndex? FromData (NSData data, string indexName)
 		{
 			if (data is null)
@@ -329,21 +369,16 @@ namespace SearchKit {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void Close ()
 		{
 			Dispose ();
 		}
 
-#if !NET
-		protected internal override void Retain ()
-		{
-		}
-
-		protected internal override void Release ()
-		{
-		}
-#endif
-
+		/// <param name="disposing">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected override void Dispose (bool disposing)
 		{
 			if (Handle != NativeHandle.Zero) {
@@ -355,6 +390,12 @@ namespace SearchKit {
 		[DllImport (Constants.SearchKitLibrary)]
 		extern static byte SKIndexAddDocumentWithText (IntPtr h, IntPtr doc, IntPtr str, byte canreplace);
 
+		/// <param name="document">To be added.</param>
+		///         <param name="text">To be added.</param>
+		///         <param name="canReplace">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool AddDocumentWithText (SKDocument document, string text, bool canReplace)
 		{
 			if (document is null)
@@ -372,6 +413,12 @@ namespace SearchKit {
 		[DllImport (Constants.SearchKitLibrary)]
 		extern static byte SKIndexAddDocument (IntPtr h, IntPtr doc, IntPtr mimeHintStr, byte canReplace);
 
+		/// <param name="document">To be added.</param>
+		///         <param name="mimeHint">To be added.</param>
+		///         <param name="canReplace">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool AddDocument (SKDocument document, string mimeHint, bool canReplace)
 		{
 			if (document is null)
@@ -386,17 +433,25 @@ namespace SearchKit {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[DllImport (Constants.SearchKitLibrary, EntryPoint = "SKLoadDefaultExtractorPlugIns")]
 		public extern static void LoadDefaultExtractorPlugIns ();
 
 		[DllImport (Constants.SearchKitLibrary)]
 		extern static byte SKIndexFlush (IntPtr h);
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool Flush ()
 		{
 			return SKIndexFlush (Handle) != 0;
 		}
 		[DllImport (Constants.SearchKitLibrary)]
 		extern static byte SKIndexCompact (IntPtr h);
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool Compact ()
 		{
 			return SKIndexCompact (Handle) != 0;
@@ -449,6 +504,11 @@ namespace SearchKit {
 
 		[DllImport (Constants.SearchKitLibrary)]
 		extern static byte SKIndexMoveDocument (IntPtr h, IntPtr document, IntPtr newParent);
+		/// <param name="document">To be added.</param>
+		///         <param name="newParent">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool MoveDocument (SKDocument document, SKDocument newParent)
 		{
 			if (document is null)
@@ -465,6 +525,10 @@ namespace SearchKit {
 		[DllImport (Constants.SearchKitLibrary)]
 		extern static byte SKIndexRemoveDocument (IntPtr h, IntPtr doc);
 
+		/// <param name="document">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool RemoveDocument (SKDocument document)
 		{
 			if (document is null)
@@ -477,6 +541,11 @@ namespace SearchKit {
 
 		[DllImport (Constants.SearchKitLibrary)]
 		extern static byte SKIndexRenameDocument (IntPtr h, IntPtr doc, IntPtr newName);
+		/// <param name="document">To be added.</param>
+		///         <param name="newName">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool RenameDocument (SKDocument document, string newName)
 		{
 			if (document is null)
@@ -515,6 +584,11 @@ namespace SearchKit {
 		[DllImport (Constants.SearchKitLibrary)]
 		extern static IntPtr SKSearchCreate (IntPtr h, IntPtr str, SKSearchOptions options);
 
+		/// <param name="query">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public SKSearch Search (string query, SKSearchOptions options = SKSearchOptions.Default)
 		{
 			if (query is null)
@@ -540,6 +614,10 @@ namespace SearchKit {
 
 		[DllImport (Constants.SearchKitLibrary)]
 		extern static void SKIndexSetDocumentProperties (IntPtr h, IntPtr doc, IntPtr dict);
+		/// <param name="document">To be added.</param>
+		///         <param name="dict">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void SetDocumentProperties (SKDocument document, NSDictionary dict)
 		{
 			if (document is null)
@@ -552,9 +630,9 @@ namespace SearchKit {
 		}
 	}
 
-#if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
-#endif
 	public class SKSummary : NativeObject {
 		[Preserve (Conditional = true)]
 		internal SKSummary (NativeHandle handle, bool owns)
@@ -565,6 +643,10 @@ namespace SearchKit {
 		[DllImport (Constants.SearchKitLibrary)]
 		extern static IntPtr SKSummaryCreateWithString (/* NSString */ IntPtr str);
 
+		/// <param name="text">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static SKSummary? Create (string text)
 		{
 			if (text is null)
@@ -580,6 +662,10 @@ namespace SearchKit {
 			}
 		}
 
+		/// <param name="nsString">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static SKSummary? Create (NSString nsString)
 		{
 			if (nsString is null)

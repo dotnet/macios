@@ -16,18 +16,11 @@ using ObjCRuntime;
 using Foundation;
 using CoreFoundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace ImageIO {
-
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public partial class CGImageMetadataEnumerateOptions {
 
 		/// <summary>To be added.</summary>
@@ -46,23 +39,21 @@ namespace ImageIO {
 		}
 	}
 
+	/// <param name="path">To be added.</param>
+	///     <param name="tag">To be added.</param>
+	///     <summary>Callback for the &lt;see cref=M:MonoTouch.ImageIO.CGImageMetadata.EnumerateTags/&gt; method.</summary>
+	///     <returns>To be added.</returns>
+	///     <remarks>To be added.</remarks>
 	public delegate bool CGImageMetadataTagBlock (NSString path, CGImageMetadataTag tag);
 
 	// CGImageMetadata.h
-#if NET
+	/// <summary>An immutable container for metadata. (See <see cref="ImageIO.CGMutableImageMetadata" />.)</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public partial class CGImageMetadata : NativeObject {
-#if !NET
-		public CGImageMetadata (NativeHandle handle)
-			: base (handle, false)
-		{
-		}
-#endif
-
 		[Preserve (Conditional = true)]
 		internal CGImageMetadata (NativeHandle handle, bool owns)
 			: base (handle, owns)
@@ -87,7 +78,7 @@ namespace ImageIO {
 		///         <remarks>
 		///           <para>The returned token is the CoreFoundation type identifier (CFType) that has been assigned to this class.</para>
 		///           <para>This can be used to determine type identity between different CoreFoundation objects.</para>
-		///           <para>You can retrieve the type of a CoreFoundation object by invoking the <see cref="M:CoreFoundation.CFType.GetTypeID(System.IntPtr)" /> on the native handle of the object</para>
+		///           <para>You can retrieve the type of a CoreFoundation object by invoking the <see cref="CoreFoundation.CFType.GetTypeID(System.IntPtr)" /> on the native handle of the object</para>
 		///           <example>
 		///             <code lang="csharp lang-csharp"><![CDATA[bool isCGImageMetadata = (CFType.GetTypeID (foo.Handle) == CGImageMetadata.GetTypeID ());]]></code>
 		///           </example>
@@ -101,6 +92,11 @@ namespace ImageIO {
 			/* CGImageMetadataRef __nonnull */ IntPtr metadata, /* CGImageMetadataTagRef __nullable */ IntPtr parent,
 			/* CFStringRef __nonnull*/ IntPtr path);
 
+		/// <param name="parent">To be added.</param>
+		///         <param name="path">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public NSString? GetStringValue (CGImageMetadata? parent, NSString path)
 		{
 			// parent may be null
@@ -116,6 +112,9 @@ namespace ImageIO {
 		extern static /* CFArrayRef __nullable */ IntPtr CGImageMetadataCopyTags (
 			/* CGImageMetadataRef __nonnull */ IntPtr metadata);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CGImageMetadataTag []? GetTags ()
 		{
 			var result = CGImageMetadataCopyTags (Handle);
@@ -127,6 +126,11 @@ namespace ImageIO {
 			/* CGImageMetadataRef __nonnull */ IntPtr metadata, /* CGImageMetadataTagRef __nullable */ IntPtr parent,
 			/* CFStringRef __nonnull */ IntPtr path);
 
+		/// <param name="parent">To be added.</param>
+		///         <param name="path">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CGImageMetadataTag? GetTag (CGImageMetadata? parent, NSString path)
 		{
 			// parent may be null
@@ -142,13 +146,7 @@ namespace ImageIO {
 		extern unsafe static void CGImageMetadataEnumerateTagsUsingBlock (/* CGImageMetadataRef __nonnull */ IntPtr metadata,
 						/* CFStringRef __nullable */ IntPtr rootPath, /* CFDictionaryRef __nullable */ IntPtr options, BlockLiteral* block);
 
-#if !NET
-		delegate byte TrampolineCallback (IntPtr blockPtr, NativeHandle key, NativeHandle value);
-
-		[MonoPInvokeCallback (typeof (TrampolineCallback))]
-#else
 		[UnmanagedCallersOnly]
-#endif
 		static byte TagEnumerator (IntPtr block, NativeHandle key, NativeHandle value)
 		{
 			var nsKey = Runtime.GetNSObject<NSString> (key, false)!;
@@ -157,22 +155,18 @@ namespace ImageIO {
 			return del (nsKey, nsValue) ? (byte) 1 : (byte) 0;
 		}
 
-#if !NET
-		static unsafe readonly TrampolineCallback static_action = TagEnumerator;
-#endif
-
+		/// <param name="rootPath">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <param name="block">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void EnumerateTags (NSString? rootPath, CGImageMetadataEnumerateOptions? options, CGImageMetadataTagBlock block)
 		{
 			using var o = options?.ToDictionary ();
 			unsafe {
-#if NET
 				delegate* unmanaged<IntPtr, NativeHandle, NativeHandle, byte> trampoline = &TagEnumerator;
 				using var block_handler = new BlockLiteral (trampoline, block, typeof (CGImageMetadata), nameof (TagEnumerator));
-#else
-				using var block_handler = new BlockLiteral ();
-				block_handler.SetupBlockUnsafe (static_action, block);
-#endif
 				CGImageMetadataEnumerateTagsUsingBlock (Handle, rootPath.GetHandle (), o.GetHandle (), &block_handler);
 				GC.KeepAlive (rootPath);
 				GC.KeepAlive (o);
@@ -183,6 +177,9 @@ namespace ImageIO {
 		extern static /* CFDataRef __nullable */ IntPtr CGImageMetadataCreateXMPData (
 			/* CGImageMetadataRef __nonnull */ IntPtr metadata, /* CFDictionaryRef __nullable */ IntPtr options);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public NSData? CreateXMPData ()
 		{
 			// note: there's no options defined for iOS7 (needs to be null)
@@ -196,6 +193,11 @@ namespace ImageIO {
 			/* CGImageMetadataRef __nonnull */ IntPtr metadata, /* CFStringRef __nonnull */ IntPtr dictionaryName,
 			/* CFStringRef __nonnull */ IntPtr propertyName);
 
+		/// <param name="dictionaryName">To be added.</param>
+		///         <param name="propertyName">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CGImageMetadataTag? CopyTagMatchingImageProperty (NSString dictionaryName, NSString propertyName)
 		{
 			if (dictionaryName is null)

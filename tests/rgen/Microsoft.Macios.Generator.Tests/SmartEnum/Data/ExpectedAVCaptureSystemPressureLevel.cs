@@ -24,7 +24,7 @@ public static partial class AVCaptureSystemPressureLevelExtensions
 		get
 		{
 			fixed (IntPtr *storage = &values [0])
-				return Dlfcn.CachePointer (Libraries.AVFoundation.Handle, "AVCaptureSystemPressureLevelNominal", storage);
+				return Dlfcn.CachePointer (global::ObjCRuntime.Libraries.AVFoundation.Handle, "AVCaptureSystemPressureLevelNominal", storage);
 		}
 	}
 
@@ -34,7 +34,7 @@ public static partial class AVCaptureSystemPressureLevelExtensions
 		get
 		{
 			fixed (IntPtr *storage = &values [1])
-				return Dlfcn.CachePointer (Libraries.AVFoundation.Handle, "AVCaptureSystemPressureLevelFair", storage);
+				return Dlfcn.CachePointer (global::ObjCRuntime.Libraries.AVFoundation.Handle, "AVCaptureSystemPressureLevelFair", storage);
 		}
 	}
 
@@ -44,7 +44,7 @@ public static partial class AVCaptureSystemPressureLevelExtensions
 		get
 		{
 			fixed (IntPtr *storage = &values [2])
-				return Dlfcn.CachePointer (Libraries.AVFoundation.Handle, "AVCaptureSystemPressureLevelSerious", storage);
+				return Dlfcn.CachePointer (global::ObjCRuntime.Libraries.AVFoundation.Handle, "AVCaptureSystemPressureLevelSerious", storage);
 		}
 	}
 
@@ -54,7 +54,7 @@ public static partial class AVCaptureSystemPressureLevelExtensions
 		get
 		{
 			fixed (IntPtr *storage = &values [3])
-				return Dlfcn.CachePointer (Libraries.AVFoundation.Handle, "AVCaptureSystemPressureLevelCritical", storage);
+				return Dlfcn.CachePointer (global::ObjCRuntime.Libraries.AVFoundation.Handle, "AVCaptureSystemPressureLevelCritical", storage);
 		}
 	}
 
@@ -64,7 +64,7 @@ public static partial class AVCaptureSystemPressureLevelExtensions
 		get
 		{
 			fixed (IntPtr *storage = &values [4])
-				return Dlfcn.CachePointer (Libraries.AVFoundation.Handle, "AVCaptureSystemPressureLevelShutdown", storage);
+				return Dlfcn.CachePointer (global::ObjCRuntime.Libraries.AVFoundation.Handle, "AVCaptureSystemPressureLevelShutdown", storage);
 		}
 	}
 
@@ -121,7 +121,7 @@ public static partial class AVCaptureSystemPressureLevelExtensions
 	/// Retrieves the <see cref="AVCaptureSystemPressureLevelExtensions" /> value represented by the backing field value in <paramref name="handle" />.
 	/// </summary>
 	/// <param name="handle">The native handle with the name of the constant to retrieve.</param>
-	public static AVCaptureSystemPressureLevel GetValue (NativeHandle handle)
+	public static AVCaptureSystemPressureLevel GetValue (global::ObjCRuntime.NativeHandle handle)
 	{
 		using var str = Runtime.GetNSObject<NSString> (handle)!;
 		return GetValue (str);
@@ -131,7 +131,7 @@ public static partial class AVCaptureSystemPressureLevelExtensions
 	/// Retrieves the <see cref="AVCaptureSystemPressureLevelExtensions" /> value represented by the backing field value in <paramref name="handle" />.
 	/// </summary>
 	/// <param name="handle">The native handle with the name of the constant to retrieve.</param>
-	public static AVCaptureSystemPressureLevel? GetNullableValue (NativeHandle handle)
+	public static AVCaptureSystemPressureLevel? GetNullableValue (global::ObjCRuntime.NativeHandle handle)
 	{
 		using var str = Runtime.GetNSObject<NSString> (handle);
 		if (str is null)

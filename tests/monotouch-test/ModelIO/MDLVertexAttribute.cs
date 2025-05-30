@@ -19,12 +19,7 @@ using ModelIO;
 using ObjCRuntime;
 using NUnit.Framework;
 
-#if NET
 using System.Numerics;
-#else
-using CoreGraphics;
-using OpenTK;
-#endif
 
 namespace MonoTouchFixtures.ModelIO {
 

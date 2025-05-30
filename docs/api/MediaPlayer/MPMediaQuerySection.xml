@@ -1,9 +1,9 @@
 <Documentation>
   <Docs DocId="T:MediaPlayer.MPMediaQuerySection">
-    <summary>A subset of the values returned by a <see cref="T:MediaPlayer.MPMediaQuery" />, as specified by the <see cref="P:MediaPlayer.MPMediaQuery.ItemSections" /> or <see cref="P:MediaPlayer.MPMediaQuery.CollectionSections" /> properties.</summary>
+    <summary>A subset of the values returned by a <see cref="MediaPlayer.MPMediaQuery" />, as specified by the <see cref="MediaPlayer.MPMediaQuery.ItemSections" /> or <see cref="MediaPlayer.MPMediaQuery.CollectionSections" /> properties.</summary>
     <remarks>
       <para>
-        <see cref="T:MediaPlayer.MPMediaQuerySection" />s represent a subset of results of a <see cref="T:MediaPlayer.MPMediaQuery" />. You can control the grouping by specifying the <see cref="P:MediaPlayer.MPMediaQuery.GroupingType" /> as shown in the following example, which outputs the songs from albums whose title's start with the letter 'S':
+        <see cref="MediaPlayer.MPMediaQuerySection" />s represent a subset of results of a <see cref="MediaPlayer.MPMediaQuery" />. You can control the grouping by specifying the <see cref="MediaPlayer.MPMediaQuery.GroupingType" /> as shown in the following example, which outputs the songs from albums whose title's start with the letter 'S':
       </para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[

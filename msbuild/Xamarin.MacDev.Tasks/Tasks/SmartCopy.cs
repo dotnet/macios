@@ -9,8 +9,7 @@ using Microsoft.Build.Utilities;
 using Xamarin.Localization.MSBuild;
 using Xamarin.Messaging.Build.Client;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Xamarin.MacDev.Tasks {
 	public class SmartCopy : XamarinTask, ITaskCallback, ICancelableTask {
@@ -18,9 +17,9 @@ namespace Xamarin.MacDev.Tasks {
 
 		#region Inputs
 
-		public ITaskItem [] DestinationFiles { get; set; }
+		public ITaskItem [] DestinationFiles { get; set; } = [];
 
-		public ITaskItem DestinationFolder { get; set; }
+		public ITaskItem? DestinationFolder { get; set; }
 
 		[Required]
 		public ITaskItem [] SourceFiles { get; set; } = Array.Empty<ITaskItem> ();
@@ -30,7 +29,7 @@ namespace Xamarin.MacDev.Tasks {
 		#region Outputs
 
 		[Output]
-		public ITaskItem [] CopiedFiles { get; set; }
+		public ITaskItem [] CopiedFiles { get; set; } = [];
 
 		#endregion
 

@@ -36,8 +36,6 @@ using Foundation;
 namespace MobileCoreServices {
 
 	public static partial class UTType {
-
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -45,11 +43,9 @@ namespace MobileCoreServices {
 		[ObsoletedOSPlatform ("tvos14.0", "Use the 'UniformTypeIdentifiers.UTType' API instead.")]
 		[ObsoletedOSPlatform ("macos11.0", "Use the 'UniformTypeIdentifiers.UTType' API instead.")]
 		[ObsoletedOSPlatform ("ios14.0", "Use the 'UniformTypeIdentifiers.UTType' API instead.")]
-#endif
 		[DllImport (Constants.CoreServicesLibrary)]
 		extern static byte /* Boolean */ UTTypeIsDynamic (IntPtr /* CFStringRef */ handle);
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -57,11 +53,13 @@ namespace MobileCoreServices {
 		[ObsoletedOSPlatform ("tvos14.0", "Use the 'UniformTypeIdentifiers.UTType' API instead.")]
 		[ObsoletedOSPlatform ("macos11.0", "Use the 'UniformTypeIdentifiers.UTType' API instead.")]
 		[ObsoletedOSPlatform ("ios14.0", "Use the 'UniformTypeIdentifiers.UTType' API instead.")]
-#endif
 		[DllImport (Constants.CoreServicesLibrary)]
 		extern static byte /* Boolean */ UTTypeIsDeclared (IntPtr /* CFStringRef */ handle);
 
-#if NET
+		/// <param name="utType">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -69,7 +67,6 @@ namespace MobileCoreServices {
 		[ObsoletedOSPlatform ("tvos14.0", "Use the 'UniformTypeIdentifiers.UTType' API instead.")]
 		[ObsoletedOSPlatform ("macos11.0", "Use the 'UniformTypeIdentifiers.UTType' API instead.")]
 		[ObsoletedOSPlatform ("ios14.0", "Use the 'UniformTypeIdentifiers.UTType' API instead.")]
-#endif
 		public static bool IsDynamic (string utType)
 		{
 			if (utType is null)
@@ -81,7 +78,10 @@ namespace MobileCoreServices {
 			return result != 0;
 		}
 
-#if NET
+		/// <param name="utType">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -89,7 +89,6 @@ namespace MobileCoreServices {
 		[ObsoletedOSPlatform ("tvos14.0", "Use the 'UniformTypeIdentifiers.UTType' API instead.")]
 		[ObsoletedOSPlatform ("macos11.0", "Use the 'UniformTypeIdentifiers.UTType' API instead.")]
 		[ObsoletedOSPlatform ("ios14.0", "Use the 'UniformTypeIdentifiers.UTType' API instead.")]
-#endif
 		public static bool IsDeclared (string utType)
 		{
 			if (utType is null)
@@ -104,6 +103,12 @@ namespace MobileCoreServices {
 		[DllImport (Constants.CoreServicesLibrary)]
 		extern static IntPtr /* NSString */ UTTypeCreatePreferredIdentifierForTag (IntPtr /* CFStringRef */ tagClassStr, IntPtr /* CFStringRef */ tagStr, IntPtr /* CFStringRef */ conformingToUtiStr);
 
+		/// <param name="tagClass">To be added.</param>
+		///         <param name="tag">To be added.</param>
+		///         <param name="conformingToUti">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static string? CreatePreferredIdentifier (string tagClass, string tag, string conformingToUti)
 		{
 			var a = CFString.CreateNative (tagClass);
@@ -119,6 +124,12 @@ namespace MobileCoreServices {
 		[DllImport (Constants.CoreServicesLibrary)]
 		extern static IntPtr /* NSString Array */ UTTypeCreateAllIdentifiersForTag (IntPtr /* CFStringRef */ tagClassStr, IntPtr /* CFStringRef */ tagStr, IntPtr /* CFStringRef */ conformingToUtiStr);
 
+		/// <param name="tagClass">To be added.</param>
+		///         <param name="tag">To be added.</param>
+		///         <param name="conformingToUti">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static string? []? CreateAllIdentifiers (string tagClass, string tag, string conformingToUti)
 		{
 			if (tagClass is null)
@@ -136,7 +147,6 @@ namespace MobileCoreServices {
 			return ret;
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -144,11 +154,14 @@ namespace MobileCoreServices {
 		[ObsoletedOSPlatform ("tvos14.0", "Use the 'UniformTypeIdentifiers.UTType' API instead.")]
 		[ObsoletedOSPlatform ("macos11.0", "Use the 'UniformTypeIdentifiers.UTType' API instead.")]
 		[ObsoletedOSPlatform ("ios14.0", "Use the 'UniformTypeIdentifiers.UTType' API instead.")]
-#endif
 		[DllImport (Constants.CoreServicesLibrary)]
 		extern static IntPtr /* NSString Array */ UTTypeCopyAllTagsWithClass (IntPtr /* CFStringRef */ utiStr, IntPtr /* CFStringRef */ tagClassStr);
 
-#if NET
+		/// <param name="uti">To be added.</param>
+		///         <param name="tagClass">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -156,7 +169,6 @@ namespace MobileCoreServices {
 		[ObsoletedOSPlatform ("tvos14.0", "Use the 'UniformTypeIdentifiers.UTType' API instead.")]
 		[ObsoletedOSPlatform ("macos11.0", "Use the 'UniformTypeIdentifiers.UTType' API instead.")]
 		[ObsoletedOSPlatform ("ios14.0", "Use the 'UniformTypeIdentifiers.UTType' API instead.")]
-#endif
 		public static string? []? CopyAllTags (string uti, string tagClass)
 		{
 			if (uti is null)
@@ -175,6 +187,11 @@ namespace MobileCoreServices {
 		[DllImport (Constants.CoreServicesLibrary)]
 		extern static byte /* Boolean */ UTTypeConformsTo (IntPtr /* CFStringRef */ utiStr, IntPtr /* CFStringRef */ conformsToUtiStr);
 
+		/// <param name="uti">To be added.</param>
+		///         <param name="conformsToUti">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static bool ConformsTo (string uti, string conformsToUti)
 		{
 			if (uti is null)
@@ -193,6 +210,10 @@ namespace MobileCoreServices {
 		[DllImport (Constants.CoreServicesLibrary)]
 		extern static IntPtr /* NSString */ UTTypeCopyDescription (IntPtr /* CFStringRef */ utiStr);
 
+		/// <param name="uti">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static string? GetDescription (string uti)
 		{
 			if (uti is null)
@@ -207,6 +228,11 @@ namespace MobileCoreServices {
 		[DllImport (Constants.CoreServicesLibrary)]
 		extern static IntPtr /* CFStringRef */ UTTypeCopyPreferredTagWithClass (IntPtr /* CFStringRef */ uti, IntPtr /* CFStringRef */ tagClass);
 
+		/// <param name="uti">To be added.</param>
+		///         <param name="tagClass">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static string? GetPreferredTag (string uti, string tagClass)
 		{
 			if (uti is null)
@@ -225,6 +251,10 @@ namespace MobileCoreServices {
 		[DllImport (Constants.CoreServicesLibrary)]
 		extern static IntPtr /* NSDictionary */ UTTypeCopyDeclaration (IntPtr utiStr);
 
+		/// <param name="uti">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSDictionary? GetDeclaration (string uti)
 		{
 			if (uti is null)
@@ -239,11 +269,7 @@ namespace MobileCoreServices {
 		[DllImport (Constants.CoreServicesLibrary)]
 		extern static IntPtr /* NSUrl */ UTTypeCopyDeclaringBundleURL (IntPtr utiStr);
 
-#if NET
 		public static NSUrl? GetDeclaringBundleUrl (string uti)
-#else
-		public static NSUrl? GetDeclaringBundleURL (string uti)
-#endif
 		{
 			if (uti is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (uti));
@@ -257,7 +283,11 @@ namespace MobileCoreServices {
 		[DllImport (Constants.CoreServicesLibrary)]
 		static extern unsafe byte /* Boolean */ UTTypeEqual (/* CFStringRef */ IntPtr inUTI1, /* CFStringRef */ IntPtr inUTI2);
 
-#if NET
+		/// <param name="uti1">To be added.</param>
+		///         <param name="uti2">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -265,7 +295,6 @@ namespace MobileCoreServices {
 		[ObsoletedOSPlatform ("tvos14.0", "Use the 'UniformTypeIdentifiers.UTType' API instead.")]
 		[ObsoletedOSPlatform ("macos11.0", "Use the 'UniformTypeIdentifiers.UTType' API instead.")]
 		[ObsoletedOSPlatform ("ios14.0", "Use the 'UniformTypeIdentifiers.UTType' API instead.")]
-#endif
 		public static bool Equals (NSString uti1, NSString uti2)
 		{
 			if (uti1 is null)

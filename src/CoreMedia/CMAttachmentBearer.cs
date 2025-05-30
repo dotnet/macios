@@ -10,6 +10,8 @@ using ObjCRuntime;
 
 namespace CoreMedia {
 
+	/// <summary>Static and extension methods for objects that can bear attachments.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

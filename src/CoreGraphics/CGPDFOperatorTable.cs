@@ -17,6 +17,8 @@ using ObjCRuntime;
 using CoreFoundation;
 
 namespace CoreGraphics {
+	/// <summary>Class for storing callbacks for processing PDF documents.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -36,6 +38,8 @@ namespace CoreGraphics {
 		// CGPDFOperatorCallback
 		delegate void CGPDFOperatorCallback (/* CGPDFScannerRef */ IntPtr scanner, /* void* */ IntPtr info);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CGPDFOperatorTable ()
 			: base (CGPDFOperatorTableCreate (), true)
 		{
@@ -71,6 +75,10 @@ namespace CoreGraphics {
 			CGPDFOperatorTableSetCallback (Handle, namePtr, callback);
 		}
 
+		/// <param name="gchandle">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		static public CGPDFScanner? GetScannerFromInfo (IntPtr gchandle)
 		{
 			return GCHandle.FromIntPtr (gchandle).Target as CGPDFScanner;

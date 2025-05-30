@@ -34,6 +34,10 @@ using ObjCRuntime;
 
 namespace CoreVideo {
 
+	/// <summary>Manages the attributes associated with <see cref="CoreVideo.CVPixelBuffer" />.</summary>
+	///     <remarks>
+	///       <para />
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -48,7 +52,7 @@ namespace CoreVideo {
 		}
 
 		/// <param name="dictionary">To be added.</param>
-		///         <summary>Initializes the strongly typed <see cref="T:CoreVideo.CVPixelBufferAttributes" /> from the provided dictionary.</summary>
+		///         <summary>Initializes the strongly typed <see cref="CoreVideo.CVPixelBufferAttributes" /> from the provided dictionary.</summary>
 		///         <remarks>To be added.</remarks>
 		public CVPixelBufferAttributes (NSDictionary dictionary)
 			: base (dictionary)

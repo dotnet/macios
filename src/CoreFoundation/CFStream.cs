@@ -46,6 +46,9 @@ using CFIndex = System.IntPtr;
 namespace CoreFoundation {
 
 	// CFOptionFlags
+	/// <summary>Constants for stream-related events.</summary>
+	///     <remarks>
+	///     </remarks>
 	[Flags]
 	[Native] // System/Library/Frameworks/Foundation.framework/Headers/NSStream.h
 	public enum CFStreamEventType : ulong {
@@ -64,6 +67,9 @@ namespace CoreFoundation {
 	}
 
 	// NSStream.h
+	/// <summary>A structure used to support custom stream-related events.</summary>
+	///     <remarks>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -161,6 +167,8 @@ namespace CoreFoundation {
 	}
 
 	// CFIndex
+	/// <summary>An enumeration whose values specify valid statuses for a <see cref="CoreFoundation.CFStream" />.</summary>
+	///     <remarks>To be added.</remarks>
 	[Native] // System/Library/Frameworks/CoreFoundation.framework/Headers/CFStream.h
 	public enum CFStreamStatus : long {
 		/// <summary>To be added.</summary>
@@ -181,6 +189,7 @@ namespace CoreFoundation {
 		Error,
 	}
 
+	/// <include file="../../docs/api/CoreFoundation/CFStream.xml" path="/Documentation/Docs[@DocId='T:CoreFoundation.CFStream']/*" />
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -488,6 +497,8 @@ namespace CoreFoundation {
 				throw exc;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void Open ()
 		{
 			if (open || closed)
@@ -500,8 +511,13 @@ namespace CoreFoundation {
 			open = true;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		protected abstract bool DoOpen ();
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void Close ()
 		{
 			if (!open)
@@ -523,14 +539,22 @@ namespace CoreFoundation {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected abstract void DoClose ();
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CFStreamStatus GetStatus ()
 		{
 			GetCheckedHandle ();
 			return DoGetStatus ();
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		protected abstract CFStreamStatus DoGetStatus ();
 
 		internal IntPtr GetProperty (NSString name)
@@ -539,8 +563,17 @@ namespace CoreFoundation {
 			return DoGetProperty (name);
 		}
 
+		/// <param name="name">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		protected abstract IntPtr DoGetProperty (NSString name);
 
+		/// <param name="name">To be added.</param>
+		///         <param name="value">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		protected abstract bool DoSetProperty (NSString name, INativeObject? value);
 
 		internal void SetProperty (NSString name, INativeObject? value)
@@ -557,6 +590,8 @@ namespace CoreFoundation {
 
 		#region Events
 
+		/// <summary>An <see cref="System.EventArgs" /> used by several events in <see cref="CoreFoundation.CFString" />.</summary>
+		///     <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -570,11 +605,17 @@ namespace CoreFoundation {
 				private set;
 			}
 
+			/// <param name="type">To be added.</param>
+			///         <summary>To be added.</summary>
+			///         <remarks>To be added.</remarks>
 			public StreamEventArgs (CFStreamEventType type)
 			{
 				this.EventType = type;
 			}
 
+			/// <summary>To be added.</summary>
+			///         <returns>To be added.</returns>
+			///         <remarks>To be added.</remarks>
 			public override string ToString ()
 			{
 				return string.Format ("[StreamEventArgs: EventType={0}]", EventType);
@@ -587,6 +628,9 @@ namespace CoreFoundation {
 		public event EventHandler<StreamEventArgs>? ErrorEvent;
 		public event EventHandler<StreamEventArgs>? ClosedEvent;
 
+		/// <param name="args">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected virtual void OnOpenCompleted (StreamEventArgs args)
 		{
 			var e = OpenCompletedEvent;
@@ -594,6 +638,9 @@ namespace CoreFoundation {
 				e (this, args);
 		}
 
+		/// <param name="args">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected virtual void OnHasBytesAvailableEvent (StreamEventArgs args)
 		{
 			var e = HasBytesAvailableEvent;
@@ -601,6 +648,9 @@ namespace CoreFoundation {
 				e (this, args);
 		}
 
+		/// <param name="args">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected virtual void OnCanAcceptBytesEvent (StreamEventArgs args)
 		{
 			var e = CanAcceptBytesEvent;
@@ -608,6 +658,9 @@ namespace CoreFoundation {
 				e (this, args);
 		}
 
+		/// <param name="args">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected virtual void OnErrorEvent (StreamEventArgs args)
 		{
 			var e = ErrorEvent;
@@ -615,6 +668,9 @@ namespace CoreFoundation {
 				e (this, args);
 		}
 
+		/// <param name="args">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected virtual void OnClosedEvent (StreamEventArgs args)
 		{
 			var e = ClosedEvent;
@@ -624,10 +680,23 @@ namespace CoreFoundation {
 
 		#endregion
 
+		/// <param name="loop">To be added.</param>
+		///         <param name="mode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected abstract void ScheduleWithRunLoop (CFRunLoop loop, NSString? mode);
 
+		/// <param name="loop">To be added.</param>
+		///         <param name="mode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected abstract void UnscheduleFromRunLoop (CFRunLoop loop, NSString? mode);
 
+		/// <param name="s">To be added.</param>
+		///     <param name="type">To be added.</param>
+		///     <param name="info">To be added.</param>
+		///     <summary>A delegate used as a callback in various <see cref="CoreFoundation.CFStream" /> methods.</summary>
+		///     <remarks>To be added.</remarks>
 		protected delegate void CFStreamCallback (IntPtr s, nint type, IntPtr info);
 
 		[UnmanagedCallersOnly]
@@ -637,6 +706,9 @@ namespace CoreFoundation {
 			stream?.OnCallback ((CFStreamEventType) (long) type);
 		}
 
+		/// <param name="type">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected virtual void OnCallback (CFStreamEventType type)
 		{
 			var args = new StreamEventArgs (type);
@@ -659,6 +731,10 @@ namespace CoreFoundation {
 			}
 		}
 
+		/// <param name="runLoop">To be added.</param>
+		///         <param name="runLoopMode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void EnableEvents (CFRunLoop runLoop, NSString runLoopMode)
 		{
 			if (open || closed || (loop is not null))
@@ -717,6 +793,7 @@ namespace CoreFoundation {
 		{
 		}
 
+		/// <include file="../../docs/api/CoreFoundation/CFStream.xml" path="/Documentation/Docs[@DocId='M:CoreFoundation.CFStream.Dispose(System.Boolean)']/*" />
 		protected override void Dispose (bool disposing)
 		{
 			if (disposing) {

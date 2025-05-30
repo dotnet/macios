@@ -38,6 +38,8 @@ using OpenGL;
 #nullable enable
 
 namespace CoreVideo {
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	public class CVDisplayLink : NativeObject {
 		GCHandle callbackHandle;
@@ -383,6 +385,14 @@ namespace CoreVideo {
 			return ret;
 		}
 
+		/// <param name="displayLink">To be added.</param>
+		///     <param name="inNow">To be added.</param>
+		///     <param name="inOutputTime">To be added.</param>
+		///     <param name="flagsIn">To be added.</param>
+		///     <param name="flagsOut">To be added.</param>
+		///     <summary>To be added.</summary>
+		///     <returns>To be added.</returns>
+		///     <remarks>To be added.</remarks>
 		public delegate CVReturn DisplayLinkOutputCallback (CVDisplayLink displayLink, ref CVTimeStamp inNow, ref CVTimeStamp inOutputTime, CVOptionFlags flagsIn, ref CVOptionFlags flagsOut);
 		delegate CVReturn CVDisplayLinkOutputCallback (IntPtr displayLink, ref CVTimeStamp inNow, ref CVTimeStamp inOutputTime, CVOptionFlags flagsIn, ref CVOptionFlags flagsOut, IntPtr displayLinkContext);
 

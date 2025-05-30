@@ -40,10 +40,6 @@ using Xamarin.Utils;
 
 using NUnit.Framework;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 #nullable enable
 
 partial class TestRuntime {
@@ -191,6 +187,7 @@ partial class TestRuntime {
 		get {
 			if (!is_pull_request.HasValue) {
 				var pr = string.Equals (Environment.GetEnvironmentVariable ("BUILD_REASON"), "PullRequest", StringComparison.Ordinal);
+				pr |= string.Equals (Environment.GetEnvironmentVariable ("IS_PR"), "true", StringComparison.OrdinalIgnoreCase);
 				is_pull_request = pr;
 			}
 			return is_pull_request.Value;
@@ -206,25 +203,6 @@ partial class TestRuntime {
 		Console.WriteLine ($"Ignoring test, because not running in CI: {message}");
 		NUnit.Framework.Assert.Ignore (message);
 	}
-
-#if NET
-	// error CS1061: 'AppDomain' does not contain a definition for 'DefineDynamicAssembly' and no accessible extension method 'DefineDynamicAssembly' accepting a first argument of type 'AppDomain' could be found (are you missing a using directive or an assembly reference?)
-#else
-	static AssemblyName assemblyName = new AssemblyName ("DynamicAssemblyExample");
-	public static bool CheckExecutingWithInterpreter ()
-	{
-		// until System.Runtime.CompilerServices.RuntimeFeature.IsSupported("IsDynamicCodeCompiled") returns a valid result, atm it
-		// always return true, try to build an object of a class that should fail without introspection, and catch the exception to do the
-		// right thing
-		try {
-			AssemblyBuilder ab = AppDomain.CurrentDomain.DefineDynamicAssembly (assemblyName, AssemblyBuilderAccess.RunAndSave);
-			return true;
-		} catch (PlatformNotSupportedException) {
-			// we do not have the interpreter, lets continue
-			return false;
-		}
-	}
-#endif
 
 	public static void AssertNotInterpreter (string message = "This test does not run when using the interpreter")
 	{
@@ -298,6 +276,12 @@ partial class TestRuntime {
 		if (!IsARM64)
 			NUnit.Framework.Assert.Ignore ("This test does not run simulators that aren't ARM64 simulators.");
 #endif
+	}
+
+	public static void AssertOnlyARM64 ()
+	{
+		if (!IsARM64)
+			NUnit.Framework.Assert.Ignore ("This test only runs on ARM64 simulators.");
 	}
 
 	public static void AssertNotSimulator (string message = "This test does not work in the simulator.")
@@ -438,11 +422,7 @@ partial class TestRuntime {
 			 *
 			 * The above statement also applies to 'CheckExactmacOSSystemVersion' =S
 			 */
-#if NET
 			return NSProcessInfo.ProcessInfo.OperatingSystemVersionString.Contains (v.macOS.Build, StringComparison.Ordinal);
-#else
-			return NSProcessInfo.ProcessInfo.OperatingSystemVersionString.Contains (v.macOS.Build);
-#endif
 #else
 			throw new NotImplementedException ();
 #endif
@@ -1475,19 +1455,13 @@ partial class TestRuntime {
 
 	public static byte GetFlags (NSObject obj)
 	{
-#if NET
 		const string fieldName = "actual_flags";
-#else
-		const string fieldName = "flags";
-#endif
 		return (byte) typeof (NSObject).GetField (fieldName, BindingFlags.Instance | BindingFlags.GetField | BindingFlags.NonPublic)!.GetValue (obj)!;
 	}
 
 	// Determine if linkall was enabled by checking if an unused class in this assembly is still here.
 	static bool? link_all;
-#if NET
 	[UnconditionalSuppressMessage ("Trimming", "IL2026", Justification = "This property checks whether the trimmer is enabled by checking if a type survived trimming; it's thus trimmer safe in that the any behavioral difference when the trimmer is enabled is exactly what it's looking for.")]
-#endif
 	public static bool IsLinkAll {
 		get {
 			if (!link_all.HasValue)
@@ -1499,9 +1473,7 @@ partial class TestRuntime {
 
 	// Determine if any assemblies were linked by checking if a few uncommon classes in corlib are still here.
 	static bool? link_any;
-#if NET
 	[UnconditionalSuppressMessage ("Trimming", "IL2026", Justification = "This property checks whether the trimmer is enabled by checking if a type survived trimming; it's thus trimmer safe in that the any behavioral difference when the trimmer is enabled is exactly what it's looking for.")]
-#endif
 	public static bool IsLinkAny {
 		get {
 			if (!link_any.HasValue) {
@@ -1667,7 +1639,6 @@ partial class TestRuntime {
 	{
 		status = (HttpStatusCode) 0;
 
-#if NET // HttpRequestException.StatusCode only exists in .NET 5+
 		if (ex is HttpRequestException hre) {
 			if (hre.StatusCode.HasValue) {
 				status = hre.StatusCode.Value;
@@ -1675,7 +1646,6 @@ partial class TestRuntime {
 			}
 			return false;
 		}
-#endif
 
 		var we = ex as WebException;
 		if (we is null)
@@ -1778,11 +1748,9 @@ partial class TestRuntime {
 	}
 }
 
-#if NET
 internal static class NativeHandleExtensions {
 	public static string ToString (this NativeHandle @this, string format)
 	{
 		return ((IntPtr) @this).ToString (format);
 	}
 }
-#endif

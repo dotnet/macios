@@ -4,8 +4,7 @@ using System.Collections.Generic;
 
 using Xamarin.Utils;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Xamarin.Bundler {
 	public static partial class ErrorHelper {
@@ -23,7 +22,7 @@ namespace Xamarin.Bundler {
 			Disable = 1,
 		}
 
-		static Dictionary<int, WarningLevel> warning_levels;
+		static Dictionary<int, WarningLevel>? warning_levels;
 
 		public static WarningLevel GetWarningLevel (int code)
 		{

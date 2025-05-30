@@ -44,12 +44,10 @@ using ObjCRuntime;
 using UIKit;
 #endif
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace Security {
 
+	/// <summary>The kind of SecRecord.</summary>
+	///     <remarks>A SecRecord can represent one of the following values.</remarks>
 	public enum SecKind {
 		/// <summary>The SecRecord stores an internet password.</summary>
 		InternetPassword,
@@ -64,6 +62,13 @@ namespace Security {
 	}
 
 	// manually mapped to KeysAccessible
+	/// <summary>An enumeration whose values specify when a keychain item should be readable.</summary>
+	///     <remarks>
+	///       <para>There are a number of axis to consider for the accessible settings of an item.</para>
+	///       <para>Whether the information should be made accessible without entering a passcode, the device being unlocked or always available.</para>
+	///       <para>Another one is whether the information should be locked to this device, or whether the information can migrate to a new device via a backup restore.</para>
+	///       <para>This value is used by the <see cref="Security.SecAccessControl" /> constructor and surfaced as a property of the <see cref="Security.SecRecord" />.</para>
+	///     </remarks>
 	public enum SecAccessible {
 		/// <summary>Invalid value.</summary>
 		Invalid = -1,
@@ -71,40 +76,36 @@ namespace Security {
 		WhenUnlocked,
 		/// <summary>The data is only available after the first time the device has been unlocked after booting.</summary>
 		AfterFirstUnlock,
-#if NET
 		/// <summary>Always available.</summary>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-		[ObsoletedOSPlatform ("macos10.14", "Use 'AfterFirstUnlock' or a better suited option instead.")]
-		[ObsoletedOSPlatform ("ios12.0", "Use 'AfterFirstUnlock' or a better suited option instead.")]
-#else
-		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'AfterFirstUnlock' or a better suited option instead.")]
-		[Deprecated (PlatformName.iOS, 12, 0, message: "Use 'AfterFirstUnlock' or a better suited option instead.")]
-#endif
+		[ObsoletedOSPlatform ("macos", "Use 'AfterFirstUnlock' or a better suited option instead.")]
+		[ObsoletedOSPlatform ("ios", "Use 'AfterFirstUnlock' or a better suited option instead.")]
+		[ObsoletedOSPlatform ("tvos", "Use 'AfterFirstUnlock' or a better suited option instead.")]
+		[ObsoletedOSPlatform ("maccatalyst", "Use 'AfterFirstUnlock' or a better suited option instead.")]
 		Always,
 		/// <summary>Limits access to the item to this device and the device being unlocked.</summary>
 		WhenUnlockedThisDeviceOnly,
 		/// <summary>The data is only available after the first time the device has been unlocked after booting.</summary>
 		AfterFirstUnlockThisDeviceOnly,
-#if NET
 		/// <summary>Always available.</summary>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-		[ObsoletedOSPlatform ("macos10.14", "Use 'AfterFirstUnlockThisDeviceOnly' or a better suited option instead.")]
-		[ObsoletedOSPlatform ("ios12.0", "Use 'AfterFirstUnlockThisDeviceOnly' or a better suited option instead.")]
-#else
-		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'AfterFirstUnlockThisDeviceOnly' or a better suited option instead.")]
-		[Deprecated (PlatformName.iOS, 12, 0, message: "Use 'AfterFirstUnlockThisDeviceOnly' or a better suited option instead.")]
-#endif
+		[ObsoletedOSPlatform ("macos", "Use 'AfterFirstUnlockThisDeviceOnly' or a better suited option instead.")]
+		[ObsoletedOSPlatform ("ios", "Use 'AfterFirstUnlockThisDeviceOnly' or a better suited option instead.")]
+		[ObsoletedOSPlatform ("tvos", "Use 'AfterFirstUnlockThisDeviceOnly' or a better suited option instead.")]
+		[ObsoletedOSPlatform ("maccatalyst", "Use 'AfterFirstUnlockThisDeviceOnly' or a better suited option instead.")]
 		AlwaysThisDeviceOnly,
 		/// <summary>Limits access to the item to both this device and requires a passcode to be set and the data is only available if the device is currently unlocked.</summary>
 		WhenPasscodeSetThisDeviceOnly,
 	}
 
+	/// <summary>Protocol used for InternetPasswords</summary>
+	///     <remarks>To be added.</remarks>
 	public enum SecProtocol {
 		/// <summary>Invalid</summary>
 		Invalid = -1,
@@ -172,6 +173,10 @@ namespace Security {
 		Pop3s,
 	}
 
+	/// <summary>An enumeration whose values specify various types of authentication. Used with the <see cref="Security.SecRecord.AuthenticationType" /> property.</summary>
+	///     <remarks>
+	///       <para />
+	///     </remarks>
 	public enum SecAuthenticationType {
 		/// <summary>Invalid authentication setting</summary>
 		Invalid = -1,
@@ -194,12 +199,11 @@ namespace Security {
 		Default = 1953261156,
 	}
 
-#if NET
+	/// <include file="../../docs/api/Security/SecKeyChain.xml" path="/Documentation/Docs[@DocId='T:Security.SecKeyChain']/*" />
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class SecKeyChain : INativeObject {
 
 		internal SecKeyChain (NativeHandle handle)
@@ -232,6 +236,7 @@ namespace Security {
 			return n;
 		}
 
+		/// <include file="../../docs/api/Security/SecKeyChain.xml" path="/Documentation/Docs[@DocId='M:Security.SecKeyChain.QueryAsData(Security.SecRecord,System.Boolean,Security.SecStatusCode@)']/*" />
 		public static NSData? QueryAsData (SecRecord query, bool wantPersistentReference, out SecStatusCode status)
 		{
 			if (query is null)
@@ -251,6 +256,7 @@ namespace Security {
 			}
 		}
 
+		/// <include file="../../docs/api/Security/SecKeyChain.xml" path="/Documentation/Docs[@DocId='M:Security.SecKeyChain.QueryAsData(Security.SecRecord,System.Boolean,System.Int32,Security.SecStatusCode@)']/*" />
 		public static NSData []? QueryAsData (SecRecord query, bool wantPersistentReference, int max, out SecStatusCode status)
 		{
 			if (query is null)
@@ -280,18 +286,39 @@ namespace Security {
 			}
 		}
 
+		/// <include file="../../docs/api/Security/SecKeyChain.xml" path="/Documentation/Docs[@DocId='M:Security.SecKeyChain.QueryAsData(Security.SecRecord)']/*" />
 		public static NSData? QueryAsData (SecRecord query)
 		{
 			SecStatusCode status;
 			return QueryAsData (query, false, out status);
 		}
 
+		/// <include file="../../docs/api/Security/SecKeyChain.xml" path="/Documentation/Docs[@DocId='M:Security.SecKeyChain.QueryAsData(Security.SecRecord,System.Int32)']/*" />
 		public static NSData []? QueryAsData (SecRecord query, int max)
 		{
 			SecStatusCode status;
 			return QueryAsData (query, false, max, out status);
 		}
 
+		/// <param name="query">The query used to lookup the value on the keychain.</param>
+		///         <param name="result">Returns the status code from calling SecItemCopyMatching.</param>
+		///         <summary>Fetches a single SecRecord.</summary>
+		///         <returns>Returns a stronglty typed SecRecord.</returns>
+		///         <remarks>
+		///           <para>
+		/// 	    Unlike the <see cref="Security.SecKeyChain.QueryAsData(Security.SecRecord,System.Boolean,System.Int32,out Security.SecStatusCode)" />
+		/// 	    methods which return a binary blob inside an NSData, this
+		/// 	    returns a strongly typed SecRecord that you can easily
+		/// 	    inspect.
+		/// 	  </para>
+		///           <para>
+		/// 	    This is the strongly typed equivalent of calling the
+		/// 	    Security's framework SecItemCopyMatching method with the
+		/// 	    kSecReturnData set to true, kSecReturnAttributes set to
+		/// 	    true and kSecMatchLimit set to 1, forcing a single record
+		/// 	    to be returned.
+		/// 	  </para>
+		///         </remarks>
 		public static SecRecord? QueryAsRecord (SecRecord query, out SecStatusCode result)
 		{
 			if (query is null)
@@ -308,6 +335,7 @@ namespace Security {
 			}
 		}
 
+		/// <include file="../../docs/api/Security/SecKeyChain.xml" path="/Documentation/Docs[@DocId='M:Security.SecKeyChain.QueryAsRecord(Security.SecRecord,System.Int32,Security.SecStatusCode@)']/*" />
 		public static SecRecord []? QueryAsRecord (SecRecord query, int max, out SecStatusCode result)
 		{
 			if (query is null)
@@ -329,6 +357,12 @@ namespace Security {
 			}
 		}
 
+		/// <param name="query">To be added.</param>
+		///         <param name="max">To be added.</param>
+		///         <param name="result">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static INativeObject []? QueryAsReference (SecRecord query, int max, out SecStatusCode result)
 		{
 			if (query is null) {
@@ -363,6 +397,10 @@ namespace Security {
 			}
 		}
 
+		/// <param name="record">A populated record.</param>
+		///         <summary>Adds the specified record to the keychain.</summary>
+		///         <returns>The result of the operation.</returns>
+		///         <remarks>To be added.</remarks>
 		public static SecStatusCode Add (SecRecord record)
 		{
 			if (record is null)
@@ -371,6 +409,10 @@ namespace Security {
 
 		}
 
+		/// <param name="record">Record to be removed from the keychain.</param>
+		///         <summary>Removes the specified record from the keychain.</summary>
+		///         <returns>The status code from performing the remove operation.</returns>
+		///         <remarks>This calls the SecItemDelete method on the keychain.</remarks>
 		public static SecStatusCode Remove (SecRecord record)
 		{
 			if (record is null)
@@ -378,6 +420,18 @@ namespace Security {
 			return SecItem.SecItemDelete (record.queryDict.Handle);
 		}
 
+		/// <param name="query">The query to use to update the records on the keychain.</param>
+		///         <param name="newAttributes">The updated record value to store.</param>
+		///         <summary>Updates the record matching the query with the provided data.</summary>
+		///         <returns>Status code of calling SecItemUpdate.</returns>
+		///         <remarks>
+		///           <para>
+		/// 	    This performs an update on the keychain.
+		/// 	  </para>
+		///           <para>
+		/// 	    This calls the SecItemUpdate method.
+		/// 	  </para>
+		///         </remarks>
 		public static SecStatusCode Update (SecRecord query, SecRecord newAttributes)
 		{
 			if (query is null)
@@ -389,11 +443,11 @@ namespace Security {
 
 		}
 #if MONOMAC
-#if NET
-		[ObsoletedOSPlatform ("macos10.10")]
-#else
-		[Deprecated (PlatformName.MacOSX, 10,10)]
-#endif
+		[SupportedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("macos")]
+		[UnsupportedOSPlatform ("ios")]
+		[UnsupportedOSPlatform ("tvos")]
+		[UnsupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.SecurityLibrary)]
 		extern static SecStatusCode SecKeychainAddGenericPassword (
 			IntPtr keychain,
@@ -405,11 +459,11 @@ namespace Security {
 			byte [] passwordData,
 			IntPtr itemRef);
 
-#if NET
-		[ObsoletedOSPlatform ("macos10.10")]
-#else
-		[Deprecated (PlatformName.MacOSX, 10,10)]
-#endif
+		[SupportedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("macos")]
+		[UnsupportedOSPlatform ("ios")]
+		[UnsupportedOSPlatform ("tvos")]
+		[UnsupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.SecurityLibrary)]
 		unsafe extern static SecStatusCode SecKeychainFindGenericPassword (
 			IntPtr keychainOrArray,
@@ -421,11 +475,11 @@ namespace Security {
 			IntPtr* passwordData,
 			IntPtr itemRef);
 
-#if NET
-		[ObsoletedOSPlatform ("macos10.10")]
-#else
-		[Deprecated (PlatformName.MacOSX, 10,10)]
-#endif
+		[SupportedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("macos")]
+		[UnsupportedOSPlatform ("ios")]
+		[UnsupportedOSPlatform ("tvos")]
+		[UnsupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.SecurityLibrary)]
 		extern static SecStatusCode SecKeychainAddInternetPassword (
 			IntPtr keychain,
@@ -444,11 +498,11 @@ namespace Security {
 			byte [] passwordData,
 			IntPtr itemRef);
 
-#if NET
-		[ObsoletedOSPlatform ("macos10.10")]
-#else
-		[Deprecated (PlatformName.MacOSX, 10,10)]
-#endif
+		[SupportedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("macos")]
+		[UnsupportedOSPlatform ("ios")]
+		[UnsupportedOSPlatform ("tvos")]
+		[UnsupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.SecurityLibrary)]
 		unsafe extern static SecStatusCode SecKeychainFindInternetPassword (
 			IntPtr keychain,
@@ -467,14 +521,30 @@ namespace Security {
 			IntPtr* passwordData,
 			IntPtr itemRef);
 
-#if NET
-		[ObsoletedOSPlatform ("macos10.10")]
-#else
-		[Deprecated (PlatformName.MacOSX, 10,10)]
-#endif
+		[SupportedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("macos")]
+		[UnsupportedOSPlatform ("ios")]
+		[UnsupportedOSPlatform ("tvos")]
+		[UnsupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.SecurityLibrary)]
 		extern static SecStatusCode SecKeychainItemFreeContent (IntPtr attrList, IntPtr data);
 
+		/// <param name="serverName">To be added.</param>
+		///         <param name="accountName">To be added.</param>
+		///         <param name="password">To be added.</param>
+		///         <param name="protocolType">To be added.</param>
+		///         <param name="port">To be added.</param>
+		///         <param name="path">To be added.</param>
+		///         <param name="authenticationType">To be added.</param>
+		///         <param name="securityDomain">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
+		[SupportedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("macos")]
+		[UnsupportedOSPlatform ("ios")]
+		[UnsupportedOSPlatform ("tvos")]
+		[UnsupportedOSPlatform ("maccatalyst")]
 		public static SecStatusCode AddInternetPassword (
 			string serverName,
 			string accountName,
@@ -521,6 +591,22 @@ namespace Security {
 		}
 
 
+		/// <param name="serverName">To be added.</param>
+		///         <param name="accountName">To be added.</param>
+		///         <param name="password">To be added.</param>
+		///         <param name="protocolType">To be added.</param>
+		///         <param name="port">To be added.</param>
+		///         <param name="path">To be added.</param>
+		///         <param name="authenticationType">To be added.</param>
+		///         <param name="securityDomain">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
+		[SupportedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("macos")]
+		[UnsupportedOSPlatform ("ios")]
+		[UnsupportedOSPlatform ("tvos")]
+		[UnsupportedOSPlatform ("maccatalyst")]
 		public static SecStatusCode FindInternetPassword (
 			string serverName,
 			string accountName,
@@ -596,6 +682,17 @@ namespace Security {
 			}
 		}
 
+		/// <param name="serviceName">To be added.</param>
+		///         <param name="accountName">To be added.</param>
+		///         <param name="password">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
+		[SupportedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("macos")]
+		[UnsupportedOSPlatform ("ios")]
+		[UnsupportedOSPlatform ("tvos")]
+		[UnsupportedOSPlatform ("maccatalyst")]
 		public static SecStatusCode AddGenericPassword (string serviceName, string accountName, byte [] password)
 		{
 			byte []? serviceNameBytes = null;
@@ -619,6 +716,17 @@ namespace Security {
 				);
 		}
 
+		/// <param name="serviceName">To be added.</param>
+		///         <param name="accountName">To be added.</param>
+		///         <param name="password">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
+		[SupportedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("macos")]
+		[UnsupportedOSPlatform ("ios")]
+		[UnsupportedOSPlatform ("tvos")]
+		[UnsupportedOSPlatform ("maccatalyst")]
 		public static SecStatusCode FindGenericPassword (string serviceName, string accountName, out byte []? password)
 		{
 			password = null;
@@ -668,7 +776,9 @@ namespace Security {
 					SecKeychainItemFreeContent (IntPtr.Zero, passwordPtr);
 			}
 		}
-#else
+#endif
+
+		/// <include file="../../docs/api/Security/SecKeyChain.xml" path="/Documentation/Docs[@DocId='M:Security.SecKeyChain.QueryAsConcreteType(Security.SecRecord,Security.SecStatusCode@)']/*" />
 		public static object? QueryAsConcreteType (SecRecord query, out SecStatusCode result)
 		{
 			if (query is null) {
@@ -696,8 +806,10 @@ namespace Security {
 				return null;
 			}
 		}
-#endif
 
+		/// <param name="identity">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static void AddIdentity (SecIdentity identity)
 		{
 			if (identity is null)
@@ -712,6 +824,9 @@ namespace Security {
 			}
 		}
 
+		/// <param name="identity">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static void RemoveIdentity (SecIdentity identity)
 		{
 			if (identity is null)
@@ -726,6 +841,11 @@ namespace Security {
 			}
 		}
 
+		/// <param name="certificate">To be added.</param>
+		///         <param name="throwOnError">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static SecIdentity? FindIdentity (SecCertificate certificate, bool throwOnError = false)
 		{
 			if (certificate is null)
@@ -763,12 +883,33 @@ namespace Security {
 		}
 	}
 
-#if NET
+	/// <summary>Tracks a set of properties from the keychain.</summary>
+	///     <remarks>
+	///       <para>
+	/// 	This represents a set of properties on a keychain record.   It
+	/// 	can be used to query the keychain by filling out a few of the
+	/// 	properties and calling one of the Query methods on the <see cref="Security.SecKeyChain" /> class and it is
+	/// 	also used as a result from some of the same Query methods.
+	///       </para>
+	///       <para>
+	/// 	You would typically use it like this:
+	///       </para>
+	///       <example>
+	///         <code lang="csharp lang-csharp"><![CDATA[
+	/// var query = new SecRecord (SecKind.InternetPassword) {
+	///    Server = "bugzilla.novell.com",
+	///    Account = "miguel"
+	/// };
+	/// var password = SecKeyChain.QueryAsData (query);
+	/// Console.WriteLine ("The password for the account is: {0}", password);
+	/// ]]></code>
+	///       </example>
+	///     </remarks>
+	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/LineLayout/">Keychain</related>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class SecRecord : IDisposable {
 		// Fix <= iOS 6 Behaviour - Desk #83099
 		// NSCFDictionary: mutating method sent to immutable object
@@ -790,11 +931,14 @@ namespace Security {
 		}
 
 		// it's possible to query something without a class
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public SecRecord ()
 		{
 			queryDict = new NSMutableDictionary ();
 		}
 
+		/// <include file="../../docs/api/Security/SecRecord.xml" path="/Documentation/Docs[@DocId='M:Security.SecRecord.#ctor(Security.SecKind)']/*" />
 		public SecRecord (SecKind secKind)
 		{
 			var kind = SecClass.FromSecKind (secKind);
@@ -810,33 +954,51 @@ namespace Security {
 #endif
 		}
 
+		/// <param name="certificate">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public SecRecord (SecCertificate certificate) : this (SecKind.Certificate)
 		{
 			SetCertificate (certificate);
 		}
 
+		/// <param name="identity">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public SecRecord (SecIdentity identity) : this (SecKind.Identity)
 		{
 			SetIdentity (identity);
 		}
 
+		/// <param name="key">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public SecRecord (SecKey key) : this (SecKind.Key)
 		{
 			SetKey (key);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public SecCertificate? GetCertificate ()
 		{
 			CheckClass (SecClass.Certificate);
 			return GetValueRef<SecCertificate> ();
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public SecIdentity? GetIdentity ()
 		{
 			CheckClass (SecClass.Identity);
 			return GetValueRef<SecIdentity> ();
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public SecKey? GetKey ()
 		{
 			CheckClass (SecClass.Key);
@@ -850,23 +1012,35 @@ namespace Security {
 				throw new InvalidOperationException ("SecRecord of incompatible SecClass");
 		}
 
+		/// <summary>Makes a copy of this SecRecord.</summary>
+		///         <returns />
+		///         <remarks>To be added.</remarks>
 		public SecRecord Clone ()
 		{
 			return new SecRecord (NSMutableDictionary.FromDictionary (queryDict));
 		}
 
 		// some API are unusable without this (e.g. SecKey.GenerateKeyPair) without duplicating much of SecRecord logic
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public NSDictionary ToDictionary ()
 		{
 			return queryDict;
 		}
 
+		/// <summary>Releases the resources used by the SecRecord object.</summary>
+		///         <remarks>
+		///           <para>The Dispose method releases the resources used by the SecRecord class.</para>
+		///           <para>Calling the Dispose method when the application is finished using the SecRecord ensures that all external resources used by this managed object are released as soon as possible.  Once developers have invoked the Dispose method, the object is no longer useful and developers should no longer make any calls to it.  For more information on releasing resources see ``Cleaning up Unmananaged Resources'' at https://msdn.microsoft.com/en-us/library/498928w2.aspx</para>
+		///         </remarks>
 		public void Dispose ()
 		{
 			Dispose (true);
 			GC.SuppressFinalize (this);
 		}
 
+		/// <include file="../../docs/api/Security/SecRecord.xml" path="/Documentation/Docs[@DocId='M:Security.SecRecord.Dispose(System.Boolean)']/*" />
 		protected virtual void Dispose (bool disposing)
 		{
 			if (disposing)
@@ -976,7 +1150,6 @@ namespace Security {
 		}
 
 #if !MONOMAC
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -984,7 +1157,6 @@ namespace Security {
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("macos")]
-#endif
 		public string? SyncViewHint {
 			get {
 				return FetchString (SecAttributeKey.SyncViewHint);
@@ -994,7 +1166,6 @@ namespace Security {
 			}
 		}
 
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -1002,7 +1173,6 @@ namespace Security {
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public SecTokenID TokenID {
 			get {
 				return SecTokenIDExtensions.GetValue (Fetch<NSString> (SecKeyGenerationAttributeKeys.TokenIDKey.GetHandle ())!);
@@ -1135,7 +1305,7 @@ namespace Security {
 			}
 		}
 
-		/// <summary>Accout name.</summary>
+		/// <summary>Account name.</summary>
 		///         <value />
 		///         <remarks>Used by GenericPassword and InternetPassword kinds.</remarks>
 		public string? Account {
@@ -1167,6 +1337,13 @@ namespace Security {
 		///           <para />
 		///         </value>
 		///         <remarks>Set this value to a string that will be displayed to the user when the authentication takes place for the item to give the user some context for the request.</remarks>
+		[SupportedOSPlatform ("ios")]
+		[UnsupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[ObsoletedOSPlatform ("ios14.0", "Use 'LAContext.InteractionNotAllowed' instead.")]
+		[ObsoletedOSPlatform ("tvos14.0", "Use 'LAContext.InteractionNotAllowed' instead.")]
+		[ObsoletedOSPlatform ("maccatalyst", "Use 'LAContext.InteractionNotAllowed' instead.")]
 		public string? UseOperationPrompt {
 			get {
 				return FetchString (SecItem.UseOperationPrompt);
@@ -1176,7 +1353,6 @@ namespace Security {
 			}
 		}
 
-#if NET
 		/// <summary>Developers should not use this deprecated property. Developers should use AuthenticationUI property</summary>
 		///         <value>
 		///           <para />
@@ -1186,10 +1362,9 @@ namespace Security {
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-		[ObsoletedOSPlatform ("ios9.0", "Use 'AuthenticationUI' property instead.")]
-#else
-		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'AuthenticationUI' property instead.")]
-#endif
+		[ObsoletedOSPlatform ("tvos", "Use 'AuthenticationUI' property instead.")]
+		[ObsoletedOSPlatform ("maccatalyst", "Use 'AuthenticationUI' property instead.")]
+		[ObsoletedOSPlatform ("ios", "Use 'AuthenticationUI' property instead.")]
 		public bool UseNoAuthenticationUI {
 			get {
 				return Fetch (SecItem.UseNoAuthenticationUI) == CFBoolean.TrueHandle;
@@ -1199,7 +1374,6 @@ namespace Security {
 			}
 		}
 #endif
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -1207,7 +1381,6 @@ namespace Security {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public SecAuthenticationUI AuthenticationUI {
 			get {
 				var s = Fetch<NSString> (SecItem.UseAuthenticationUI);
@@ -1219,7 +1392,6 @@ namespace Security {
 		}
 
 #if !TVOS
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -1227,7 +1399,6 @@ namespace Security {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]
-#endif
 		public LocalAuthentication.LAContext? AuthenticationContext {
 			get {
 				return Fetch<LocalAuthentication.LAContext> (SecItem.UseAuthenticationContext);
@@ -1663,7 +1834,6 @@ namespace Security {
 			}
 		}
 
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -1671,7 +1841,6 @@ namespace Security {
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public bool PersistentReference {
 			get {
 				return Fetch (SecAttributeKey.PersistentReference) == CFBoolean.TrueHandle;
@@ -1681,15 +1850,10 @@ namespace Security {
 			}
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[iOS (13, 0)]
-		[TV (13, 0)]
-#endif
 		public bool UseDataProtectionKeychain {
 			get {
 				return Fetch (SecItem.UseDataProtectionKeychain) == CFBoolean.TrueHandle;
@@ -1833,20 +1997,40 @@ namespace Security {
 			}
 		}
 
+		/// <typeparam name="T">The desired strong type of the value to
+		/// 	get, one of <see cref="Security.SecCertificate" /><see cref="Security.SecIdentity" /> or <see cref="Security.SecKey" />.</typeparam>
+		///         <summary>Returns the associated Certificate, Identity, or Key stored in this record.</summary>
+		///         <returns>The return value, if present shoudl be one of the
+		/// 	allowed types <see cref="Security.SecCertificate" /><see cref="Security.SecIdentity" /> or <see cref="Security.SecKey" />.</returns>
+		///         <remarks>
+		///         </remarks>
 		public T? GetValueRef<T> () where T : class, INativeObject
 		{
 			return Runtime.GetINativeObject<T> (queryDict.LowlevelObjectForKey (SecItem.ValueRef), false);
 		}
 
 		// This can be used to store SecKey, SecCertificate, SecIdentity and SecKeyChainItem (not bound yet, and not availble on iOS)
+		/// <param name="value">An object of type <see cref="Security.SecCertificate" /><see cref="Security.SecIdentity" /> or <see cref="Security.SecKey" />.</param>
+		///         <summary>Use this to add a certificate, identity or key to the record.</summary>
+		///         <remarks>
+		///         </remarks>
 		public void SetValueRef (INativeObject value)
 		{
 			SetValue (value.GetHandle (), SecItem.ValueRef);
 			GC.KeepAlive (value);
 		}
 
+		/// <param name="cert">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void SetCertificate (SecCertificate cert) => SetValueRef (cert);
+		/// <param name="identity">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void SetIdentity (SecIdentity identity) => SetValueRef (identity);
+		/// <param name="key">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void SetKey (SecKey key) => SetValueRef (key);
 
 	}
@@ -1903,14 +2087,18 @@ namespace Security {
 				return WhenUnlocked;
 			case SecAccessible.AfterFirstUnlock:
 				return AfterFirstUnlock;
+#pragma warning disable CA1422 // This call site is reachable on: 'ios' 12.2 and later, 'maccatalyst' 12.2 and later, 'macOS/OSX' 12.0 and later, 'tvos' 12.2 and later. 'SecAccessible.Always' is obsoleted on: 'ios' 12.0 and later (Use 'AfterFirstUnlock' or a better suited option instead.), 'maccatalyst' 12.0 and later (Use 'AfterFirstUnlock' or a better suited option instead.), 'macOS/OSX' 10.14 and later (Use 'AfterFirstUnlock' or a better suited option instead.).
 			case SecAccessible.Always:
 				return Always;
+#pragma warning restore CA1422
 			case SecAccessible.WhenUnlockedThisDeviceOnly:
 				return WhenUnlockedThisDeviceOnly;
 			case SecAccessible.AfterFirstUnlockThisDeviceOnly:
 				return AfterFirstUnlockThisDeviceOnly;
+#pragma warning disable CA1422 // This call site is reachable on: 'ios' 12.2 and later, 'maccatalyst' 12.2 and later, 'macOS/OSX' 12.0 and later, 'tvos' 12.2 and later. 'SecAccessible.AlwaysThisDeviceOnly' is obsoleted on: 'ios' 12.0 and later (Use 'AfterFirstUnlockThisDeviceOnly' or a better suited option instead.), 'maccatalyst' 12.0 and later (Use 'AfterFirstUnlockThisDeviceOnly' or a better suited option instead.), 'macOS/OSX' 10.14 and later (Use 'AfterFirstUnlockThisDeviceOnly' or a better suited option instead.).
 			case SecAccessible.AlwaysThisDeviceOnly:
 				return AlwaysThisDeviceOnly;
+#pragma warning restore CA1422
 			case SecAccessible.WhenPasscodeSetThisDeviceOnly:
 				return WhenPasscodeSetThisDeviceOnly;
 			default:
@@ -1928,14 +2116,18 @@ namespace Security {
 				return SecAccessible.WhenUnlocked;
 			if (CFType.Equal (handle, AfterFirstUnlock))
 				return SecAccessible.AfterFirstUnlock;
+#pragma warning disable CA1422 // This call site is reachable on: 'ios' 12.2 and later, 'maccatalyst' 12.2 and later, 'macOS/OSX' 12.0 and later, 'tvos' 12.2 and later. 'SecAccessible.Always' is obsoleted on: 'ios' 12.0 and later (Use 'AfterFirstUnlock' or a better suited option instead.), 'maccatalyst' 12.0 and later (Use 'AfterFirstUnlock' or a better suited option instead.), 'macOS/OSX' 10.14 and later (Use 'AfterFirstUnlock' or a better suited option instead.).
 			if (CFType.Equal (handle, Always))
 				return SecAccessible.Always;
+#pragma warning restore CA1422
 			if (CFType.Equal (handle, WhenUnlockedThisDeviceOnly))
 				return SecAccessible.WhenUnlockedThisDeviceOnly;
 			if (CFType.Equal (handle, AfterFirstUnlockThisDeviceOnly))
 				return SecAccessible.AfterFirstUnlockThisDeviceOnly;
+#pragma warning disable CA1422 // This call site is reachable on: 'ios' 12.2 and later, 'maccatalyst' 12.2 and later, 'macOS/OSX' 12.0 and later, 'tvos' 12.2 and later. 'SecAccessible.AlwaysThisDeviceOnly' is obsoleted on: 'ios' 12.0 and later (Use 'AfterFirstUnlockThisDeviceOnly' or a better suited option instead.), 'maccatalyst' 12.0 and later (Use 'AfterFirstUnlockThisDeviceOnly' or a better suited option instead.), 'macOS/OSX' 10.14 and later (Use 'AfterFirstUnlockThisDeviceOnly' or a better suited option instead.).
 			if (CFType.Equal (handle, AlwaysThisDeviceOnly))
 				return SecAccessible.AlwaysThisDeviceOnly;
+#pragma warning restore CA1422
 			if (CFType.Equal (handle, WhenUnlockedThisDeviceOnly))
 				return SecAccessible.WhenUnlockedThisDeviceOnly;
 			return SecAccessible.Invalid;
@@ -2100,12 +2292,12 @@ namespace Security {
 		}
 	}
 
-#if NET
+	/// <summary>An exception based on a <see cref="Security.SecStatusCode" />.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class SecurityException : Exception {
 		static string ToMessage (SecStatusCode code)
 		{
@@ -2125,16 +2317,20 @@ namespace Security {
 			return String.Format ("Unknown error: 0x{0:x}", code);
 		}
 
+		/// <param name="code" />
+		///         <summary>Creates an exception from a status code.</summary>
+		///         <remarks>To be added.</remarks>
 		public SecurityException (SecStatusCode code) : base (ToMessage (code))
 		{
 		}
 	}
 
+	/// <summary>Contains parameters for use with <see cref="Security.SecKey.CreateRandomKey(Security.SecKeyType,System.Int32,Foundation.NSDictionary,out Foundation.NSError)" />.</summary>
+	///     <remarks>To be added.</remarks>
 	public partial class SecKeyParameters : DictionaryContainer {
 		// For caching, as we can't reverse it easily.
 		SecAccessControl? _secAccessControl;
 
-#if NET
 		/// <summary>Gets or sets the access control for the new key.</summary>
 		///         <value>The access control for the new key.</value>
 		///         <remarks>To be added.</remarks>
@@ -2142,7 +2338,6 @@ namespace Security {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public SecAccessControl AccessControl {
 			get {
 				return _secAccessControl!;
@@ -2156,6 +2351,8 @@ namespace Security {
 		}
 	}
 
+	/// <summary>Contains parameters for key generation.</summary>
+	///     <remarks>To be added.</remarks>
 	public partial class SecKeyGenerationParameters : DictionaryContainer {
 		/// <summary>Gets or sets the type of key to create.</summary>
 		///         <value>The type of key to create.</value>
@@ -2179,7 +2376,6 @@ namespace Security {
 		// For caching, as we can't reverse it easily.
 		SecAccessControl? _secAccessControl;
 
-#if NET
 		/// <summary>Gets or sets the access control for the new key.</summary>
 		///         <value>The access control for the new key.</value>
 		///         <remarks>To be added.</remarks>
@@ -2187,7 +2383,6 @@ namespace Security {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public SecAccessControl AccessControl {
 			get {
 				return _secAccessControl!;
@@ -2201,7 +2396,6 @@ namespace Security {
 			}
 		}
 
-#if NET
 		/// <summary>Gets or sets the token ID.</summary>
 		///         <value>The token ID.</value>
 		///         <remarks>To be added.</remarks>
@@ -2209,7 +2403,6 @@ namespace Security {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public SecTokenID TokenID {
 			get {
 				return SecTokenIDExtensions.GetValue (GetNSStringValue (SecKeyGenerationAttributeKeys.TokenIDKey)!);

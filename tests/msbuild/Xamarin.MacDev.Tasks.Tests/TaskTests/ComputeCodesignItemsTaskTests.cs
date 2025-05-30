@@ -489,7 +489,7 @@ namespace Xamarin.MacDev.Tasks {
 
 				var task = CreateTask<ComputeCodesignItems> ();
 				task.AppBundleDir = "Bundle.app";
-				task.SkipCodesignItems =new TaskItem [] { new TaskItem ("Contents/Frameworks/XTest2.framework") };
+				task.SkipCodesignItems = new TaskItem [] { new TaskItem ("Contents/Frameworks/XTest2.framework") };
 				task.CodesignBundle = codesignBundle.ToArray ();
 				task.CodesignStampPath = "codesign-stamp-path/";
 				task.TargetFrameworkMoniker = TargetFramework.GetTargetFramework (platform).ToString ();

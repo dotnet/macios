@@ -886,7 +886,7 @@ static partial class BindingSyntaxFactory {
 			: delegateTypeInfo.Delegate!.ReturnType.GetIdentifierSyntax ();
 
 		var method = MethodDeclaration (
-				returnType, // return the low level type, not the manged version
+				returnType, // return the low level type, not the managed version
 				Identifier (Nomenclator.GetTrampolineInvokeMethodName ()))
 			.WithModifiers (modifiers).NormalizeWhitespace ()
 			.WithParameterList (parametersSyntax.WithLeadingTrivia (Space));

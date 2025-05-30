@@ -255,25 +255,28 @@ static partial class BindingSyntaxFactory {
 	internal static (SyntaxToken ParameterName, TypeSyntax ParameterType) GetTrampolineInvokeParameter (in DelegateParameter parameter)
 	{
 		// in the general case we will return the low level type conversion of the parameter type but we 
-		// need to handle in a special case those parameters that are passed by reference
+		// need to handle in a special case those parameters that are passed by reference. We also need to ensure that
+		// if the parameter has been decorated with the BindFrom attribute, we will use the type specified in the attribute
+		// instead of the type of the parameter.
 		var parameterIdentifier = Identifier (parameter.Name);
+		TypeInfo parameterType = parameter.BindAs?.Type ?? parameter.Type; 
 #pragma warning disable format
-		(SyntaxToken ParameterName, TypeSyntax ParameterType) parameterInfo = parameter switch {
+		(SyntaxToken ParameterName, TypeSyntax ParameterType) parameterInfo = (IsByRef: parameter.IsByRef, Type: parameterType) switch {
 			// parameters that are passed by reference, depend on the type that is referenced
 			{ IsByRef: true, Type.IsReferenceType: false, Type.IsNullable: true} 
 				=> (parameterIdentifier, 
-					PointerType (GetLowLevelType (parameter.Type.ToNonNullable ()))),
+					PointerType (GetLowLevelType (parameterType.ToNonNullable ()))),
 			
 			{ IsByRef: true, Type.IsReferenceType: false, Type.IsNullable: false} 
 				=> (parameterIdentifier, 
-					PointerType (GetLowLevelType (parameter.Type))),
+					PointerType (GetLowLevelType (parameterType))),
 			
 			{ IsByRef: true, Type.IsReferenceType: true, Type.IsNullable: false} 
 				=> (parameterIdentifier,
 					PointerType (NativeHandle)),
 			
 			// by default, we will use the parameter name as is and the type of the parameter
-			_ => (parameterIdentifier, GetLowLevelType (parameter.Type)),
+			_ => (parameterIdentifier, GetLowLevelType (parameterType)),
 		};
 #pragma warning restore format
 		return parameterInfo;

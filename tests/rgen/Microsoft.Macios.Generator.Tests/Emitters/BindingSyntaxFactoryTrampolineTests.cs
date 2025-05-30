@@ -2016,6 +2016,24 @@ namespace NS {
 				"DCallback",
 				"unsafe internal delegate int DCallback (global::System.IntPtr block_ptr, global::System.IntPtr timestamp, uint frameCount, global::System.IntPtr inputData);",
 			];
+			
+			var nsNumberType = @"
+using System;
+using Foundation;
+using ObjCBindings;
+namespace NS {
+	public delegate void Callback ([BindFrom (typeof(NSNumber))]int valueType);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				nsNumberType,
+				"DCallback",
+				$"unsafe internal delegate void DCallback ({Global ("System.IntPtr")} block_ptr, {Global ("ObjCRuntime.NativeHandle")} valueType);",
+			];
 		}
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
@@ -2514,6 +2532,24 @@ namespace NS {
 				valueType,
 				"int valueType",
 			];
+			
+			var nsNumberType = @"
+using System;
+using Foundation;
+using ObjCBindings;
+
+namespace NS {
+	public delegate void Callback ([BindFrom (typeof(NSNumber))]int valueType);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				nsNumberType,
+				$"{Global ("ObjCRuntime.NativeHandle")} valueType",
+			];
 		}
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
@@ -2871,6 +2907,23 @@ namespace NS {
 			yield return [
 				doubleBlockNamedParameter,
 				"internal static unsafe global::ObjCRuntime.NativeHandle Invoke (global::System.IntPtr block_ptr_1, byte block_ptr, byte block_ptr_0)",
+			];
+			
+			var nsNumberIntParameter = @"
+using System;
+using Foundation;
+using ObjCBindings; 
+
+namespace NS {
+	public delegate void Callback ([BindFrom (typeof(NSNumber))] int pointerParameter);
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			yield return [
+				nsNumberIntParameter,
+				$"internal static unsafe void Invoke ({Global ("System.IntPtr")} block_ptr, {Global ("ObjCRuntime.NativeHandle")} pointerParameter)",
 			];
 		}
 

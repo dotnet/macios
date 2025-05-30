@@ -980,7 +980,7 @@ namespace Xamarin.MacDev.Tasks {
 			}
 		}
 
-		void ValidateTypeOrArray<T, M> (MobileProvision? profile, EntitlementInfo info, bool onlyWarn, string key, KeyValuePair<string?, PObject> kvp, string? provisioningProfileName, PDictionary? provisioningEntitlements, string requiredType)
+		void ValidateTypeOrArray<T, M> (MobileProvision? profile, EntitlementInfo info, bool onlyWarn, string key, KeyValuePair<string, PObject> kvp, string? provisioningProfileName, PDictionary? provisioningEntitlements, string requiredType)
 			where T : PObject
 		{
 			// entitlement is a boolean, provisioning profile has the entitlement with either a string or an array of strings of valid values for the entitlement

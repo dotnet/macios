@@ -479,16 +479,6 @@
     <data name="W0109b" xml:space="preserve">
         <value>Cannot expand $(AppIdentifierPrefix) in Entitlements.plist without a provisioning profile for key '{0}' with value '{1}'.</value>
     </data>
-        
-    <data name="W0110" xml:space="preserve">
-        <value>iCloud entitlements such as '{0}' require a Provisioning Profile.
-        </value>
-    </data>
-    
-    <data name="W0111" xml:space="preserve">
-        <value>The iCloud entitlement '{0}' is not supported by the Provisioning Profile.
-        </value>
-    </data>
     
     <data name="E0112" xml:space="preserve">
         <value>Entitlements.plist template '{0}' not found.
@@ -1684,7 +1674,7 @@
     </data>
 
     <data name="E7140" xml:space="preserve">
-        <value>The app requests the entitlement '{0}', but the provisioning profile '{1}' does not contain this entitlement.</value>
+        <value>The app requests the entitlement '{0}', but the provisioning profile '{1}' doesn't contain this entitlement.</value>
         <comment>
             This may be either a warning or an error, depending on build configuration.
         </comment>
@@ -1753,7 +1743,21 @@
     </data>
 
     <data name="E7151" xml:space="preserve">
-        <value>The app requests the entitlement '{0}', but this entitlement is not allowed on the current platform ({1}). It's only allowed on macOS and Mac Catalyst.</value>
+        <value>The app requests the entitlement '{0}', but this entitlement is not allowed on the current platform ({1}). It's only allowed on: {2}.</value>
+        <comment>
+            This may be either a warning or an error, depending on build configuration.
+        </comment>
+    </data>
+
+    <data name="E7152" xml:space="preserve">
+        <value>The app requests the entitlement '{0}' with the value '{1}', but the provisioning profile '{2}' grants it for the values '{3}'.</value>
+        <comment>
+            This may be either a warning or an error, depending on build configuration.
+        </comment>
+    </data>
+
+    <data name="E7153" xml:space="preserve">
+        <value>The app requests the entitlement '{0}' with the value '{1}' of type '{2}', but this entitlement must be of type '{3}'.</value>
         <comment>
             This may be either a warning or an error, depending on build configuration.
         </comment>

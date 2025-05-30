@@ -616,6 +616,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			AppBundleName="$(_AppBundleName)"
 			AppManifest="$(AppBundleManifest)"
 			AssemblyName="$(AssemblyName)"
+			BundleExecutable="$(_NativeExecutableName)"
 			CompiledAppManifest="$(_TemporaryAppManifest)"
 			Debug="$(_BundlerDebug)"
 			DefaultSdkVersion="$(_SdkVersion)"

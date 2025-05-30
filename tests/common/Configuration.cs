@@ -415,6 +415,11 @@ namespace Xamarin.Tests {
 			return GetVariable (variableName, variableName + " not found");
 		}
 
+		public static Version GetDotNetVersion ()
+		{
+			return Version.Parse (DotNetTfm.Replace ("net", ""));
+		}
+
 		public static string GetDotNetRoot ()
 		{
 			if (IsVsts) {

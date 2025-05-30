@@ -2039,8 +2039,7 @@ namespace NS {
 		var parameter = changes.Value.Parameters [0];
 		// assert it is indeed a delegate
 		Assert.NotNull (parameter.Type.Delegate);
-		var delegateDeclaration = GetTrampolineDelegateDeclaration (parameter.Type, out string delegateName);
-		Assert.Equal (expectedDelegateName, delegateName);
+		var delegateDeclaration = GetTrampolineDelegateDeclaration (parameter.Type, expectedDelegateName);
 		Assert.Equal (expectedExpression, delegateDeclaration.ToString ());
 	}
 

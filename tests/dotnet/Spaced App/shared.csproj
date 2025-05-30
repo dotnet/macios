@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+
+		<ApplicationTitle>Spaced App Title</ApplicationTitle>
+		<ApplicationId>com.xamarin.spacedapp</ApplicationId>
+		<ApplicationVersion>1.0</ApplicationVersion>
+
+		<UseInterpreter>true</UseInterpreter> <!-- speeds up testing -->
+		<ExcludeTouchUnitReference>true</ExcludeTouchUnitReference>
+		<ExcludeNUnitLiteReference>true</ExcludeNUnitLiteReference>
+	</PropertyGroup>
+
+	<Import Project="../../common/shared-dotnet.csproj" />
+
+	<ItemGroup>
+		<Compile Include="../*.cs" />
+	</ItemGroup>
+</Project>

@@ -112,6 +112,7 @@ namespace Extrospection {
 			case "FourCharCode":
 			case "OSStatus":
 				break;
+			case "UInt64":
 			case "int64_t":
 			case "uint64_t":
 			case "unsigned long long":

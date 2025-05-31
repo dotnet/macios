@@ -96,19 +96,11 @@ namespace MonoTouchFixtures.Metal {
 
 			// Apple claims that "Indirect command buffers" are available with MTLGPUFamilyCommon2, but it crashes on at least one machine.
 			// Log what the current device supports, just to have it in the log.
-#if NET
 			foreach (MTLFeatureSet fs in Enum.GetValues<MTLFeatureSet> ()) {
-#else
-			foreach (MTLFeatureSet fs in Enum.GetValues (typeof (MTLFeatureSet))) {
-#endif
 				Console.WriteLine ($"This device supports feature set: {fs}: {device.SupportsFeatureSet (fs)}");
 			}
 			if (TestRuntime.CheckXcodeVersion (11, 0)) {
-#if NET
 				foreach (var gf in Enum.GetValues<MTLGpuFamily> ()) {
-#else
-				foreach (MTLGpuFamily gf in Enum.GetValues (typeof (MTLGpuFamily))) {
-#endif
 					Console.WriteLine ($"This device supports Gpu family: {gf}: {device.SupportsFamily (gf)}");
 				}
 			}
@@ -295,15 +287,9 @@ namespace MonoTouchFixtures.Metal {
 			var url = "file://" + metallib_path;
 			url = url.Replace (" ", "%20"); // url encode!
 			using (var library = device.CreateLibrary (new NSUrl (url), out var error)) {
-#if NET
 				// Looks like creating a library with a url always fails: https://forums.developer.apple.com/thread/110416
 				Assert.IsNotNull (library, "CreateLibrary (NSUrl, NSError): Null");
 				Assert.IsNull (error, "CreateLibrary (NSUrl, NSError): NonNull error");
-#else
-				// Looks like creating a library with a url always fails: https://forums.developer.apple.com/thread/110416
-				Assert.IsNull (library, "CreateLibrary (NSUrl, NSError): Null");
-				Assert.IsNotNull (error, "CreateLibrary (NSUrl, NSError): NonNull error");
-#endif
 			}
 
 			using (var library = device.CreateArgumentEncoder (new MTLArgumentDescriptor [] { new MTLArgumentDescriptor () { DataType = MTLDataType.Int } })) {

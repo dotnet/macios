@@ -16,10 +16,6 @@ using Foundation;
 using ObjCRuntime;
 using NUnit.Framework;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace MonoTouchFixtures.ObjCRuntime {
 
 	[TestFixture]
@@ -34,7 +30,6 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		[DllImport ("/usr/lib/libobjc.dylib")]
 		static extern bool class_addMethod (IntPtr cls, IntPtr name, IntPtr imp, string types);
 
-#if NET
 		[Test]
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public unsafe void SignatureA ()
@@ -87,8 +82,6 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		static void SignatureTestC (IntPtr block, IntPtr value)
 		{
 		}
-#endif
-
 
 #pragma warning disable 649
 		[StructLayout (LayoutKind.Sequential)]

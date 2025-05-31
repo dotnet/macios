@@ -2846,6 +2846,7 @@ namespace Xamarin.Tests {
 			"/System/Library/Frameworks/FileProviderUI.framework/Versions/A/FileProviderUI",
 			"/System/Library/Frameworks/FinderSync.framework/Versions/A/FinderSync",
 			"/System/Library/Frameworks/Foundation.framework/Versions/C/Foundation",
+			"/System/Library/Frameworks/FSKit.framework/Versions/A/FSKit",
 			"/System/Library/Frameworks/GameController.framework/Versions/A/GameController",
 			"/System/Library/Frameworks/GameKit.framework/Versions/A/GameKit",
 			"/System/Library/Frameworks/GameplayKit.framework/Versions/A/GameplayKit",
@@ -3213,6 +3214,46 @@ namespace Xamarin.Tests {
 				}
 			}
 			return rv;
+		}
+
+		[Test]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64")]
+		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		[TestCase (ApplePlatform.TVOS, "tvos-arm64")]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64")]
+		public void SpacedAppTitle (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			var project = "Spaced App";
+			var title = "Spaced App Title";
+
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+
+			var applicationTitle = (platform.IsDesktop () && Version.Parse (Configuration.DotNetTfm.Replace ("net", "")).Major >= 10) ? title : project;
+			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath, applicationTitle: applicationTitle);
+			Clean (project_path);
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			var rv = DotNet.AssertBuild (project_path, properties);
+			var errors = BinLog.GetBuildLogErrors (rv.BinLogPath).ToArray ();
+
+			var infoPlistPath = GetInfoPListPath (platform, appPath);
+			var infoPlist = PDictionary.FromFile (infoPlistPath)!;
+			Assert.AreEqual ("com.xamarin.spacedapp", infoPlist.GetString ("CFBundleIdentifier").Value, "CFBundleIdentifier");
+			Assert.AreEqual ("Spaced App Title", infoPlist.GetString ("CFBundleDisplayName").Value, "CFBundleDisplayName");
+
+			var appName = Path.GetFileNameWithoutExtension (appPath);
+			switch (platform) {
+			case ApplePlatform.MacCatalyst:
+			case ApplePlatform.MacOSX:
+				Assert.That (appName, Is.EqualTo (applicationTitle), "Dock Name");
+				break;
+			case ApplePlatform.iOS:
+			case ApplePlatform.TVOS:
+				Assert.That (appName, Is.EqualTo (project), "App Name");
+				break;
+			default:
+				throw new NotImplementedException ();
+			}
 		}
 
 		[Test]

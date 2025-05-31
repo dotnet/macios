@@ -40,7 +40,7 @@ namespace Xamarin.Tests {
 					Environment.SetEnvironmentVariable ("MD_APPLE_SDK_ROOT", Path.GetDirectoryName (Path.GetDirectoryName (xcodePath)));
 					var rv = DotNet.AssertBuildFailure (project_path, properties);
 					var errors = BinLog.GetBuildLogErrors (rv.BinLogPath).ToArray ();
-					AssertErrorMessages (errors, $"This version of Microsoft.{platform.AsString ()} requires the {platform.AsString ()} {Configuration.GetNuGetVersionNoMetadata (platform)} SDK (shipped with Xcode {Configuration.XcodeVersion}). The current version of Xcode is {xcodeVersion}. Either install Xcode {Configuration.XcodeVersion}, or use a different version of Microsoft.{platform.AsString ()}. See https://aka.ms/xcode-requirement for more information.");
+					AssertErrorMessages (errors, $"This version of .NET for {platform.AsString ()} ({Configuration.GetNuGetVersionNoMetadata (platform)}) requires Xcode {Configuration.XcodeVersion}. The current version of Xcode is {xcodeVersion}. Either install Xcode {Configuration.XcodeVersion}, or use a different version of .NET for {platform.AsString ()}. See https://aka.ms/xcode-requirement for more information.");
 				} finally {
 					Environment.SetEnvironmentVariable ("MD_APPLE_SDK_ROOT", existingDeveloperDir);
 				}

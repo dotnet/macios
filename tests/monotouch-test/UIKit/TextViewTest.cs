@@ -106,7 +106,6 @@ namespace MonoTouchFixtures.UIKit {
 			// that's even more confusing since they all fails for respondToSelector tests but works in real life
 			using (UITextView tv = new UITextView ()) {
 				// this is just to show we can get and set those values (even if respondToSelector returns NO)
-#if NET
 				tv.SetAutocapitalizationType (tv.GetAutocapitalizationType ());
 				tv.SetAutocorrectionType (tv.GetAutocorrectionType ());
 				tv.SetEnablesReturnKeyAutomatically (tv.GetEnablesReturnKeyAutomatically ());
@@ -115,16 +114,6 @@ namespace MonoTouchFixtures.UIKit {
 				tv.SetReturnKeyType (tv.GetReturnKeyType ());
 				tv.SetSecureTextEntry (tv.GetSecureTextEntry ());
 				tv.SetSpellCheckingType (tv.GetSpellCheckingType ());
-#else
-				tv.AutocapitalizationType = tv.AutocapitalizationType;
-				tv.AutocorrectionType = tv.AutocorrectionType;
-				tv.EnablesReturnKeyAutomatically = tv.EnablesReturnKeyAutomatically;
-				tv.KeyboardAppearance = tv.KeyboardAppearance;
-				tv.KeyboardType = tv.KeyboardType;
-				tv.ReturnKeyType = tv.ReturnKeyType;
-				tv.SecureTextEntry = tv.SecureTextEntry;
-				tv.SpellCheckingType = tv.SpellCheckingType;
-#endif
 			}
 		}
 	}

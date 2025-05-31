@@ -134,6 +134,10 @@ namespace Foundation {
 		/// <param name="options">A dictionary of attributes that specifies how to interpret the document contents.</param>
 		/// <param name="baseUrl">The base url to use when resolving markdown urls.</param>
 		/// <param name="error">The error if an error occurred.</param>
+		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
 		public static NSAttributedString? Create (NSUrl markdownFile, NSAttributedStringMarkdownParsingOptions? options, NSUrl? baseUrl, out NSError? error)
 		{
 			var rv = new NSAttributedString (NSObjectFlag.Empty);
@@ -150,6 +154,10 @@ namespace Foundation {
 		/// <param name="options">A dictionary of attributes that specifies how to interpret the document contents.</param>
 		/// <param name="baseUrl">The base url to use when resolving markdown urls.</param>
 		/// <param name="error">The error if an error occurred.</param>
+		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
 		public static NSAttributedString? Create (NSData markdown, NSAttributedStringMarkdownParsingOptions? options, NSUrl? baseUrl, out NSError? error)
 		{
 			var rv = new NSAttributedString (NSObjectFlag.Empty);
@@ -166,6 +174,10 @@ namespace Foundation {
 		/// <param name="options">A dictionary of attributes that specifies how to interpret the document contents.</param>
 		/// <param name="baseUrl">The base url to use when resolving markdown urls.</param>
 		/// <param name="error">The error if an error occurred.</param>
+		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
 		public static NSAttributedString? Create (string markdownString, NSAttributedStringMarkdownParsingOptions? options, NSUrl? baseUrl, out NSError? error)
 		{
 			var rv = new NSAttributedString (NSObjectFlag.Empty);

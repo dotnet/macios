@@ -7,7 +7,7 @@
 // Copyright 2022 Microsoft Corp. All rights reserved.
 //
 
-#if __MACOS__ && NET
+#if __MACOS__
 
 using System;
 using System.Threading;
@@ -54,4 +54,4 @@ namespace MonoTouchFixtures.AudioToolbox {
 	}
 }
 
-#endif // __MACOS__ && NET
+#endif // __MACOS__

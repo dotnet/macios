@@ -2,7 +2,10 @@
 
 #nullable enable
 
+using AVFoundation;
+using CoreImage;
 using Foundation;
+using Microsoft.Macios.Generator.Tests.Classes.Data.TestNamespace;
 using ObjCBindings;
 using ObjCRuntime;
 using System;
@@ -12,6 +15,448 @@ namespace ObjCRuntime;
 static partial class Trampolines
 {
 	// Generate trampolines for compilation
-	// TODO: generate trampoline for System.Action
+	[UnmanagedFunctionPointerAttribute (CallingConvention.Cdecl)]
+	[UserDelegateType (typeof (global::Microsoft.Macios.Generator.Tests.Classes.Data.TestNamespace.TrampolinePropertyTests.CreateObject))]
+	unsafe internal delegate global::ObjCRuntime.NativeHandle DTrampolinePropertyTests_CreateObject (global::System.IntPtr block_ptr, global::ObjCRuntime.NativeHandle obj);
+
+	/// <summary>This class bridges native block invocations that call into C#</summary>
+	static internal class SDTrampolinePropertyTests_CreateObject
+	{
+		[Preserve (Conditional = true)]
+		[UnmanagedCallersOnly]
+		[UserDelegateType (typeof (global::Microsoft.Macios.Generator.Tests.Classes.Data.TestNamespace.TrampolinePropertyTests.CreateObject))]
+		internal static unsafe global::ObjCRuntime.NativeHandle Invoke (global::System.IntPtr block_ptr, global::ObjCRuntime.NativeHandle obj)
+		{
+			var del = global::ObjCRuntime.BlockLiteral.GetTarget<global::Microsoft.Macios.Generator.Tests.Classes.Data.TestNamespace.TrampolinePropertyTests.CreateObject> (block_ptr);
+			if (del is null)
+				throw ErrorHelper.CreateError (8059, Errors.MX8059, block_ptr, typeof (global::Microsoft.Macios.Generator.Tests.Classes.Data.TestNamespace.TrampolinePropertyTests.CreateObject));
+			var ret = del (global::ObjCRuntime.Runtime.GetNSObject<global::Foundation.NSObject> (obj)!);
+			return global::ObjCRuntime.Runtime.RetainAndAutoreleaseNSObject (ret);
+		}
+
+		internal static unsafe global::ObjCRuntime.BlockLiteral CreateNullableBlock (global::Microsoft.Macios.Generator.Tests.Classes.Data.TestNamespace.TrampolinePropertyTests.CreateObject? callback)
+		{
+			if (callback is null)
+				return default (global::ObjCRuntime.BlockLiteral);
+			return CreateBlock (callback);
+		}
+
+		[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+		internal static unsafe global::ObjCRuntime.BlockLiteral CreateBlock (global::Microsoft.Macios.Generator.Tests.Classes.Data.TestNamespace.TrampolinePropertyTests.CreateObject callback)
+		{
+			delegate* unmanaged<global::System.IntPtr, global::ObjCRuntime.NativeHandle, global::ObjCRuntime.NativeHandle> trampoline = &Invoke;
+			return new global::ObjCRuntime.BlockLiteral (trampoline, callback, typeof (SDTrampolinePropertyTests_CreateObject), nameof (Invoke));
+		}
+	}
+	internal sealed class NIDTrampolinePropertyTests_CreateObject : TrampolineBlockBase
+	{
+		DTrampolinePropertyTests_CreateObject invoker;
+
+		[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+		public unsafe NIDTrampolinePropertyTests_CreateObject (global::ObjCRuntime.BlockLiteral *block) : base (block)
+		{
+			invoker = block->GetDelegateForBlock<DTrampolinePropertyTests_CreateObject> ();
+		}
+
+		[Preserve (Conditional=true)]
+		[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+		public unsafe static DTrampolinePropertyTests_CreateObject? Create (IntPtr block)
+		{
+			if (block == IntPtr.Zero)
+				return null;
+			var del = (DTrampolinePropertyTests_CreateObject) GetExistingManagedDelegate (block);
+			return del ?? new NIDTrampolinePropertyTests_CreateObject ((global::ObjCRuntime.BlockLiteral *) block).Invoke;
+		}
+
+		// TODO: generate invoke method.
+	}
+
+	[UnmanagedFunctionPointerAttribute (CallingConvention.Cdecl)]
+	[UserDelegateType (typeof (global::System.Action))]
+	unsafe internal delegate void DAction (global::System.IntPtr block_ptr);
+
+	/// <summary>This class bridges native block invocations that call into C#</summary>
+	static internal class SDAction
+	{
+		[Preserve (Conditional = true)]
+		[UnmanagedCallersOnly]
+		[UserDelegateType (typeof (global::System.Action))]
+		internal static unsafe void Invoke (global::System.IntPtr block_ptr)
+		{
+			var del = global::ObjCRuntime.BlockLiteral.GetTarget<global::System.Action> (block_ptr);
+			if (del is null)
+				throw ErrorHelper.CreateError (8059, Errors.MX8059, block_ptr, typeof (global::System.Action));
+			del ();
+		}
+
+		internal static unsafe global::ObjCRuntime.BlockLiteral CreateNullableBlock (global::System.Action? callback)
+		{
+			if (callback is null)
+				return default (global::ObjCRuntime.BlockLiteral);
+			return CreateBlock (callback);
+		}
+
+		[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+		internal static unsafe global::ObjCRuntime.BlockLiteral CreateBlock (global::System.Action callback)
+		{
+			delegate* unmanaged<global::System.IntPtr, void> trampoline = &Invoke;
+			return new global::ObjCRuntime.BlockLiteral (trampoline, callback, typeof (SDAction), nameof (Invoke));
+		}
+	}
+	internal sealed class NIDAction : TrampolineBlockBase
+	{
+		DAction invoker;
+
+		[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+		public unsafe NIDAction (global::ObjCRuntime.BlockLiteral *block) : base (block)
+		{
+			invoker = block->GetDelegateForBlock<DAction> ();
+		}
+
+		[Preserve (Conditional=true)]
+		[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+		public unsafe static DAction? Create (IntPtr block)
+		{
+			if (block == IntPtr.Zero)
+				return null;
+			var del = (DAction) GetExistingManagedDelegate (block);
+			return del ?? new NIDAction ((global::ObjCRuntime.BlockLiteral *) block).Invoke;
+		}
+
+		// TODO: generate invoke method.
+	}
+
+	[UnmanagedFunctionPointerAttribute (CallingConvention.Cdecl)]
+	[UserDelegateType (typeof (global::CoreImage.CIKernelRoiCallback))]
+	unsafe internal delegate global::CoreGraphics.CGRect DCIKernelRoiCallback (global::System.IntPtr block_ptr, int index, global::CoreGraphics.CGRect rect);
+
+	/// <summary>This class bridges native block invocations that call into C#</summary>
+	static internal class SDCIKernelRoiCallback
+	{
+		[Preserve (Conditional = true)]
+		[UnmanagedCallersOnly]
+		[UserDelegateType (typeof (global::CoreImage.CIKernelRoiCallback))]
+		internal static unsafe global::CoreGraphics.CGRect Invoke (global::System.IntPtr block_ptr, int index, global::CoreGraphics.CGRect rect)
+		{
+			var del = global::ObjCRuntime.BlockLiteral.GetTarget<global::CoreImage.CIKernelRoiCallback> (block_ptr);
+			if (del is null)
+				throw ErrorHelper.CreateError (8059, Errors.MX8059, block_ptr, typeof (global::CoreImage.CIKernelRoiCallback));
+			var ret = del (index, rect);
+			return ret;
+		}
+
+		internal static unsafe global::ObjCRuntime.BlockLiteral CreateNullableBlock (global::CoreImage.CIKernelRoiCallback? callback)
+		{
+			if (callback is null)
+				return default (global::ObjCRuntime.BlockLiteral);
+			return CreateBlock (callback);
+		}
+
+		[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+		internal static unsafe global::ObjCRuntime.BlockLiteral CreateBlock (global::CoreImage.CIKernelRoiCallback callback)
+		{
+			delegate* unmanaged<global::System.IntPtr, int, global::CoreGraphics.CGRect, global::CoreGraphics.CGRect> trampoline = &Invoke;
+			return new global::ObjCRuntime.BlockLiteral (trampoline, callback, typeof (SDCIKernelRoiCallback), nameof (Invoke));
+		}
+	}
+	internal sealed class NIDCIKernelRoiCallback : TrampolineBlockBase
+	{
+		DCIKernelRoiCallback invoker;
+
+		[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+		public unsafe NIDCIKernelRoiCallback (global::ObjCRuntime.BlockLiteral *block) : base (block)
+		{
+			invoker = block->GetDelegateForBlock<DCIKernelRoiCallback> ();
+		}
+
+		[Preserve (Conditional=true)]
+		[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+		public unsafe static DCIKernelRoiCallback? Create (IntPtr block)
+		{
+			if (block == IntPtr.Zero)
+				return null;
+			var del = (DCIKernelRoiCallback) GetExistingManagedDelegate (block);
+			return del ?? new NIDCIKernelRoiCallback ((global::ObjCRuntime.BlockLiteral *) block).Invoke;
+		}
+
+		// TODO: generate invoke method.
+	}
+
+	[UnmanagedFunctionPointerAttribute (CallingConvention.Cdecl)]
+	[UserDelegateType (typeof (global::System.Action<string>))]
+	unsafe internal delegate void DActionArity1string (global::System.IntPtr block_ptr, global::ObjCRuntime.NativeHandle obj);
+
+	/// <summary>This class bridges native block invocations that call into C#</summary>
+	static internal class SDActionArity1string
+	{
+		[Preserve (Conditional = true)]
+		[UnmanagedCallersOnly]
+		[UserDelegateType (typeof (global::System.Action<string>))]
+		internal static unsafe void Invoke (global::System.IntPtr block_ptr, global::ObjCRuntime.NativeHandle obj)
+		{
+			var del = global::ObjCRuntime.BlockLiteral.GetTarget<global::System.Action<string>> (block_ptr);
+			if (del is null)
+				throw ErrorHelper.CreateError (8059, Errors.MX8059, block_ptr, typeof (global::System.Action<string>));
+			del (global::CoreFoundation.CFString.FromHandle (obj)!);
+		}
+
+		internal static unsafe global::ObjCRuntime.BlockLiteral CreateNullableBlock (global::System.Action<string>? callback)
+		{
+			if (callback is null)
+				return default (global::ObjCRuntime.BlockLiteral);
+			return CreateBlock (callback);
+		}
+
+		[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+		internal static unsafe global::ObjCRuntime.BlockLiteral CreateBlock (global::System.Action<string> callback)
+		{
+			delegate* unmanaged<global::System.IntPtr, global::ObjCRuntime.NativeHandle, void> trampoline = &Invoke;
+			return new global::ObjCRuntime.BlockLiteral (trampoline, callback, typeof (SDActionArity1string), nameof (Invoke));
+		}
+	}
+	internal sealed class NIDActionArity1string : TrampolineBlockBase
+	{
+		DActionArity1string invoker;
+
+		[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+		public unsafe NIDActionArity1string (global::ObjCRuntime.BlockLiteral *block) : base (block)
+		{
+			invoker = block->GetDelegateForBlock<DActionArity1string> ();
+		}
+
+		[Preserve (Conditional=true)]
+		[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+		public unsafe static DActionArity1string? Create (IntPtr block)
+		{
+			if (block == IntPtr.Zero)
+				return null;
+			var del = (DActionArity1string) GetExistingManagedDelegate (block);
+			return del ?? new NIDActionArity1string ((global::ObjCRuntime.BlockLiteral *) block).Invoke;
+		}
+
+		// TODO: generate invoke method.
+	}
+
+	[UnmanagedFunctionPointerAttribute (CallingConvention.Cdecl)]
+	[UserDelegateType (typeof (global::System.Action<int>))]
+	unsafe internal delegate void DActionArity1int (global::System.IntPtr block_ptr, int obj);
+
+	/// <summary>This class bridges native block invocations that call into C#</summary>
+	static internal class SDActionArity1int
+	{
+		[Preserve (Conditional = true)]
+		[UnmanagedCallersOnly]
+		[UserDelegateType (typeof (global::System.Action<int>))]
+		internal static unsafe void Invoke (global::System.IntPtr block_ptr, int obj)
+		{
+			var del = global::ObjCRuntime.BlockLiteral.GetTarget<global::System.Action<int>> (block_ptr);
+			if (del is null)
+				throw ErrorHelper.CreateError (8059, Errors.MX8059, block_ptr, typeof (global::System.Action<int>));
+			del (obj);
+		}
+
+		internal static unsafe global::ObjCRuntime.BlockLiteral CreateNullableBlock (global::System.Action<int>? callback)
+		{
+			if (callback is null)
+				return default (global::ObjCRuntime.BlockLiteral);
+			return CreateBlock (callback);
+		}
+
+		[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+		internal static unsafe global::ObjCRuntime.BlockLiteral CreateBlock (global::System.Action<int> callback)
+		{
+			delegate* unmanaged<global::System.IntPtr, int, void> trampoline = &Invoke;
+			return new global::ObjCRuntime.BlockLiteral (trampoline, callback, typeof (SDActionArity1int), nameof (Invoke));
+		}
+	}
+	internal sealed class NIDActionArity1int : TrampolineBlockBase
+	{
+		DActionArity1int invoker;
+
+		[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+		public unsafe NIDActionArity1int (global::ObjCRuntime.BlockLiteral *block) : base (block)
+		{
+			invoker = block->GetDelegateForBlock<DActionArity1int> ();
+		}
+
+		[Preserve (Conditional=true)]
+		[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+		public unsafe static DActionArity1int? Create (IntPtr block)
+		{
+			if (block == IntPtr.Zero)
+				return null;
+			var del = (DActionArity1int) GetExistingManagedDelegate (block);
+			return del ?? new NIDActionArity1int ((global::ObjCRuntime.BlockLiteral *) block).Invoke;
+		}
+
+		// TODO: generate invoke method.
+	}
+
+	[UnmanagedFunctionPointerAttribute (CallingConvention.Cdecl)]
+	[UserDelegateType (typeof (global::System.Action<bool>))]
+	unsafe internal delegate void DActionArity1bool (global::System.IntPtr block_ptr, byte obj);
+
+	/// <summary>This class bridges native block invocations that call into C#</summary>
+	static internal class SDActionArity1bool
+	{
+		[Preserve (Conditional = true)]
+		[UnmanagedCallersOnly]
+		[UserDelegateType (typeof (global::System.Action<bool>))]
+		internal static unsafe void Invoke (global::System.IntPtr block_ptr, byte obj)
+		{
+			var del = global::ObjCRuntime.BlockLiteral.GetTarget<global::System.Action<bool>> (block_ptr);
+			if (del is null)
+				throw ErrorHelper.CreateError (8059, Errors.MX8059, block_ptr, typeof (global::System.Action<bool>));
+			del (obj != 0);
+		}
+
+		internal static unsafe global::ObjCRuntime.BlockLiteral CreateNullableBlock (global::System.Action<bool>? callback)
+		{
+			if (callback is null)
+				return default (global::ObjCRuntime.BlockLiteral);
+			return CreateBlock (callback);
+		}
+
+		[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+		internal static unsafe global::ObjCRuntime.BlockLiteral CreateBlock (global::System.Action<bool> callback)
+		{
+			delegate* unmanaged<global::System.IntPtr, byte, void> trampoline = &Invoke;
+			return new global::ObjCRuntime.BlockLiteral (trampoline, callback, typeof (SDActionArity1bool), nameof (Invoke));
+		}
+	}
+	internal sealed class NIDActionArity1bool : TrampolineBlockBase
+	{
+		DActionArity1bool invoker;
+
+		[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+		public unsafe NIDActionArity1bool (global::ObjCRuntime.BlockLiteral *block) : base (block)
+		{
+			invoker = block->GetDelegateForBlock<DActionArity1bool> ();
+		}
+
+		[Preserve (Conditional=true)]
+		[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+		public unsafe static DActionArity1bool? Create (IntPtr block)
+		{
+			if (block == IntPtr.Zero)
+				return null;
+			var del = (DActionArity1bool) GetExistingManagedDelegate (block);
+			return del ?? new NIDActionArity1bool ((global::ObjCRuntime.BlockLiteral *) block).Invoke;
+		}
+
+		// TODO: generate invoke method.
+	}
+
+	[UnmanagedFunctionPointerAttribute (CallingConvention.Cdecl)]
+	[UserDelegateType (typeof (global::AVFoundation.AVAssetImageGenerateAsynchronouslyForTimeCompletionHandler))]
+	unsafe internal delegate void DAVAssetImageGenerateAsynchronouslyForTimeCompletionHandler (global::System.IntPtr block_ptr, global::ObjCRuntime.NativeHandle imageRef, global::CoreMedia.CMTime actualTime, global::ObjCRuntime.NativeHandle error);
+
+	/// <summary>This class bridges native block invocations that call into C#</summary>
+	static internal class SDAVAssetImageGenerateAsynchronouslyForTimeCompletionHandler
+	{
+		[Preserve (Conditional = true)]
+		[UnmanagedCallersOnly]
+		[UserDelegateType (typeof (global::AVFoundation.AVAssetImageGenerateAsynchronouslyForTimeCompletionHandler))]
+		internal static unsafe void Invoke (global::System.IntPtr block_ptr, global::ObjCRuntime.NativeHandle imageRef, global::CoreMedia.CMTime actualTime, global::ObjCRuntime.NativeHandle error)
+		{
+			var del = global::ObjCRuntime.BlockLiteral.GetTarget<global::AVFoundation.AVAssetImageGenerateAsynchronouslyForTimeCompletionHandler> (block_ptr);
+			if (del is null)
+				throw ErrorHelper.CreateError (8059, Errors.MX8059, block_ptr, typeof (global::AVFoundation.AVAssetImageGenerateAsynchronouslyForTimeCompletionHandler));
+			del (global::ObjCRuntime.Runtime.GetINativeObject<global::CoreGraphics.CGImage> (imageRef, false)!, actualTime, global::ObjCRuntime.Runtime.GetNSObject<global::Foundation.NSError> (error)!);
+		}
+
+		internal static unsafe global::ObjCRuntime.BlockLiteral CreateNullableBlock (global::AVFoundation.AVAssetImageGenerateAsynchronouslyForTimeCompletionHandler? callback)
+		{
+			if (callback is null)
+				return default (global::ObjCRuntime.BlockLiteral);
+			return CreateBlock (callback);
+		}
+
+		[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+		internal static unsafe global::ObjCRuntime.BlockLiteral CreateBlock (global::AVFoundation.AVAssetImageGenerateAsynchronouslyForTimeCompletionHandler callback)
+		{
+			delegate* unmanaged<global::System.IntPtr, global::ObjCRuntime.NativeHandle, global::CoreMedia.CMTime, global::ObjCRuntime.NativeHandle, void> trampoline = &Invoke;
+			return new global::ObjCRuntime.BlockLiteral (trampoline, callback, typeof (SDAVAssetImageGenerateAsynchronouslyForTimeCompletionHandler), nameof (Invoke));
+		}
+	}
+	internal sealed class NIDAVAssetImageGenerateAsynchronouslyForTimeCompletionHandler : TrampolineBlockBase
+	{
+		DAVAssetImageGenerateAsynchronouslyForTimeCompletionHandler invoker;
+
+		[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+		public unsafe NIDAVAssetImageGenerateAsynchronouslyForTimeCompletionHandler (global::ObjCRuntime.BlockLiteral *block) : base (block)
+		{
+			invoker = block->GetDelegateForBlock<DAVAssetImageGenerateAsynchronouslyForTimeCompletionHandler> ();
+		}
+
+		[Preserve (Conditional=true)]
+		[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+		public unsafe static DAVAssetImageGenerateAsynchronouslyForTimeCompletionHandler? Create (IntPtr block)
+		{
+			if (block == IntPtr.Zero)
+				return null;
+			var del = (DAVAssetImageGenerateAsynchronouslyForTimeCompletionHandler) GetExistingManagedDelegate (block);
+			return del ?? new NIDAVAssetImageGenerateAsynchronouslyForTimeCompletionHandler ((global::ObjCRuntime.BlockLiteral *) block).Invoke;
+		}
+
+		// TODO: generate invoke method.
+	}
+
+	[UnmanagedFunctionPointerAttribute (CallingConvention.Cdecl)]
+	[UserDelegateType (typeof (global::AVFoundation.AVAudioEngineManualRenderingBlock))]
+	unsafe internal delegate global::System.IntPtr DAVAudioEngineManualRenderingBlock (global::System.IntPtr block_ptr, uint numberOfFrames, global::ObjCRuntime.NativeHandle outBuffer, int* outError);
+
+	/// <summary>This class bridges native block invocations that call into C#</summary>
+	static internal class SDAVAudioEngineManualRenderingBlock
+	{
+		[Preserve (Conditional = true)]
+		[UnmanagedCallersOnly]
+		[UserDelegateType (typeof (global::AVFoundation.AVAudioEngineManualRenderingBlock))]
+		internal static unsafe global::System.IntPtr Invoke (global::System.IntPtr block_ptr, uint numberOfFrames, global::ObjCRuntime.NativeHandle outBuffer, int* outError)
+		{
+			*outError = default;
+			var del = global::ObjCRuntime.BlockLiteral.GetTarget<global::AVFoundation.AVAudioEngineManualRenderingBlock> (block_ptr);
+			if (del is null)
+				throw ErrorHelper.CreateError (8059, Errors.MX8059, block_ptr, typeof (global::AVFoundation.AVAudioEngineManualRenderingBlock));
+			var ret = del (numberOfFrames, new global::AudioToolbox.AudioBuffers (outBuffer), ref global::System.Runtime.CompilerServices.Unsafe.AsRef<int> (outError));
+			return (IntPtr) (long) ret;
+		}
+
+		internal static unsafe global::ObjCRuntime.BlockLiteral CreateNullableBlock (global::AVFoundation.AVAudioEngineManualRenderingBlock? callback)
+		{
+			if (callback is null)
+				return default (global::ObjCRuntime.BlockLiteral);
+			return CreateBlock (callback);
+		}
+
+		[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+		internal static unsafe global::ObjCRuntime.BlockLiteral CreateBlock (global::AVFoundation.AVAudioEngineManualRenderingBlock callback)
+		{
+			delegate* unmanaged<global::System.IntPtr, uint, global::ObjCRuntime.NativeHandle, int*, global::System.IntPtr> trampoline = &Invoke;
+			return new global::ObjCRuntime.BlockLiteral (trampoline, callback, typeof (SDAVAudioEngineManualRenderingBlock), nameof (Invoke));
+		}
+	}
+	internal sealed class NIDAVAudioEngineManualRenderingBlock : TrampolineBlockBase
+	{
+		DAVAudioEngineManualRenderingBlock invoker;
+
+		[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+		public unsafe NIDAVAudioEngineManualRenderingBlock (global::ObjCRuntime.BlockLiteral *block) : base (block)
+		{
+			invoker = block->GetDelegateForBlock<DAVAudioEngineManualRenderingBlock> ();
+		}
+
+		[Preserve (Conditional=true)]
+		[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+		public unsafe static DAVAudioEngineManualRenderingBlock? Create (IntPtr block)
+		{
+			if (block == IntPtr.Zero)
+				return null;
+			var del = (DAVAudioEngineManualRenderingBlock) GetExistingManagedDelegate (block);
+			return del ?? new NIDAVAudioEngineManualRenderingBlock ((global::ObjCRuntime.BlockLiteral *) block).Invoke;
+		}
+
+		// TODO: generate invoke method.
+	}
 
 }

@@ -13,10 +13,6 @@ using Foundation;
 using ObjCRuntime;
 using NUnit.Framework;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace MonoTouchFixtures.Foundation {
 
 	[TestFixture]

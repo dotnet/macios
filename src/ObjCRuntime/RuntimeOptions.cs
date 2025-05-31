@@ -22,8 +22,11 @@ namespace ObjCRuntime {
 			if (Runtime.UseNSUrlSessionHandler)
 				return new NSUrlSessionHandler ();
 
-			if (Runtime.UseCFNetworkHandler)
+			if (Runtime.UseCFNetworkHandler) {
+#pragma warning disable CA1422 // This call site is reachable on: 'ios' 12.2 and later, 'maccatalyst' 12.2 and later, 'macOS/OSX' 12.0 and later, 'tvos' 12.2 and later. 'CFNetworkHandler' is obsoleted on: 'ios' all versions, 'maccatalyst' all versions, 'macOS/OSX' all versions, 'tvos' all versions.
 				return new CFNetworkHandler ();
+#pragma warning restore CA1422
+			}
 
 			return new HttpClientHandler ();
 		}

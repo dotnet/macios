@@ -44,6 +44,7 @@ using System.Diagnostics.CodeAnalysis;
 
 using CoreFoundation;
 using Foundation;
+using ObjCRuntime;
 using Security;
 
 #if !MONOMAC
@@ -168,16 +169,38 @@ namespace Foundation {
 			// https://github.com/dotnet/macios/issues/20764
 			var sp = ServicePointManager.SecurityProtocol;
 #pragma warning restore SYSLIB0014
-			if ((sp & SecurityProtocolType.Ssl3) != 0)
-				configuration.TLSMinimumSupportedProtocol = SslProtocol.Ssl_3_0;
-			else if ((sp & SecurityProtocolType.Tls) != 0)
-				configuration.TLSMinimumSupportedProtocol = SslProtocol.Tls_1_0;
-			else if ((sp & SecurityProtocolType.Tls11) != 0)
-				configuration.TLSMinimumSupportedProtocol = SslProtocol.Tls_1_1;
-			else if ((sp & SecurityProtocolType.Tls12) != 0)
-				configuration.TLSMinimumSupportedProtocol = SslProtocol.Tls_1_2;
-			else if ((sp & (SecurityProtocolType) 12288) != 0) // Tls13 value not yet in monno
-				configuration.TLSMinimumSupportedProtocol = SslProtocol.Tls_1_3;
+
+			// The analyzer has a bug where SupportedOSPlatformGuard attributes don't work correctly (https://github.com/dotnet/roslyn-analyzers/issues/7665#issuecomment-2898275765), so ignore CA1416/CA1422 here
+			// warning CA1422: This call site is reachable on: 'ios' 12.2 and later, 'maccatalyst' 12.2 and later, 'macOS/OSX' 12.0 and later, 'tvos' 12.2 and later. 'NSUrlSessionConfiguration.[...]' is obsoleted on: 'ios' 13.0 and later (Use '...' instead.), 'maccatalyst' 13.0 and later (Use '...' instead.), 'macOS/OSX' 10.15 and later (Use '...' instead.).
+			// warning CA1416: This call site is reachable on: 'ios' 12.2 and later, 'maccatalyst' 12.2 and later, 'macOS/OSX' 10.15 and later, 'tvos' 12.2 and later. 'NSUrlSessionConfiguration.[...]' is only supported on: 'ios' 13.0 and later, 'tvos' 13.0 and later
+#pragma warning disable CA1416
+#pragma warning disable CA1422
+			if (SystemVersion.IsAtLeastXcode11) {
+				if ((sp & SecurityProtocolType.Ssl3) != 0) {
+					// no equivalent
+				} else if ((sp & SecurityProtocolType.Tls) != 0) {
+					configuration.TlsMinimumSupportedProtocolVersion = TlsProtocolVersion.Tls10;
+				} else if ((sp & SecurityProtocolType.Tls11) != 0) {
+					configuration.TlsMinimumSupportedProtocolVersion = TlsProtocolVersion.Tls11;
+				} else if ((sp & SecurityProtocolType.Tls12) != 0) {
+					configuration.TlsMinimumSupportedProtocolVersion = TlsProtocolVersion.Tls12;
+				} else if ((sp & SecurityProtocolType.Tls13) != 0) {
+					configuration.TlsMinimumSupportedProtocolVersion = TlsProtocolVersion.Tls13;
+				}
+			} else {
+				if ((sp & SecurityProtocolType.Ssl3) != 0)
+					configuration.TLSMinimumSupportedProtocol = SslProtocol.Ssl_3_0;
+				else if ((sp & SecurityProtocolType.Tls) != 0)
+					configuration.TLSMinimumSupportedProtocol = SslProtocol.Tls_1_0;
+				else if ((sp & SecurityProtocolType.Tls11) != 0)
+					configuration.TLSMinimumSupportedProtocol = SslProtocol.Tls_1_1;
+				else if ((sp & SecurityProtocolType.Tls12) != 0)
+					configuration.TLSMinimumSupportedProtocol = SslProtocol.Tls_1_2;
+				else if ((sp & SecurityProtocolType.Tls13) != 0)
+					configuration.TLSMinimumSupportedProtocol = SslProtocol.Tls_1_3;
+			}
+#pragma warning restore CA1422
+#pragma warning restore CA1416
 #endif // NET10_0_OR_GREATER
 
 			session = NSUrlSession.FromConfiguration (configuration, (INSUrlSessionDelegate) new NSUrlSessionHandlerDelegate (this), null);
@@ -718,33 +741,20 @@ namespace Foundation {
 			{
 				var certificates = new X509Certificate2 [secTrust.Count];
 
-				if (IsSecTrustGetCertificateChainSupported) {
+				if (SystemVersion.IsAtLeastXcode13) {
 					var originalChain = secTrust.GetCertificateChain ();
 					for (int i = 0; i < originalChain.Length; i++)
 						certificates [i] = originalChain [i].ToX509Certificate2 ();
 				} else {
-					for (int i = 0; i < secTrust.Count; i++)
+					for (int i = 0; i < secTrust.Count; i++) {
+						// The analyzer has a bug where SupportedOSPlatformGuard attributes don't work correctly (https://github.com/dotnet/roslyn-analyzers/issues/7665#issuecomment-2898275765), so ignore CA1422 here
+#pragma warning disable CA1422 // This call site is reachable on: 'ios' 12.2 and later, 'maccatalyst' 12.2 and later, 'macOS/OSX' 12.0 and later, 'tvos' 12.2 and later. 'SecTrust.this[nint]' is obsoleted on: 'ios' 15.0 and later
 						certificates [i] = secTrust [i].ToX509Certificate2 ();
+#pragma warning restore CA1422
+					}
 				}
 
 				return certificates;
-			}
-
-			static bool? isSecTrustGetCertificateChainSupported = null;
-			static bool IsSecTrustGetCertificateChainSupported {
-				get {
-					if (!isSecTrustGetCertificateChainSupported.HasValue) {
-#if MONOMAC
-						isSecTrustGetCertificateChainSupported = ObjCRuntime.SystemVersion.CheckmacOS (12, 0);
-#elif IOS || TVOS || MACCATALYST
-						isSecTrustGetCertificateChainSupported = ObjCRuntime.SystemVersion.CheckiOS (15, 0);
-#else
-#error Unknown platform
-#endif
-					}
-
-					return isSecTrustGetCertificateChainSupported.Value;
-				}
 			}
 
 			X509Chain CreateChain (X509Certificate2 [] certificates)

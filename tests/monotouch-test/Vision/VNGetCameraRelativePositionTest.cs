@@ -18,19 +18,10 @@ using Foundation;
 using Vision;
 using SceneKit;
 
-#if NET
 using System.Numerics;
-using Vector2 = global::System.Numerics.Vector2;
-using Vector3 = global::System.Numerics.Vector3;
+
 using Matrix3 = global::CoreGraphics.NMatrix3;
 using Matrix4 = global::CoreGraphics.NMatrix4;
-#else
-using OpenTK;
-using Vector2 = global::OpenTK.Vector2;
-using Vector3 = global::OpenTK.Vector3;
-using Matrix3 = global::OpenTK.NMatrix3;
-using Matrix4 = global::OpenTK.NMatrix4;
-#endif
 
 namespace MonoTouchFixtures.Vision {
 

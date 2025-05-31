@@ -1,4 +1,4 @@
-#if HAS_MEDIAEXTENSION && NET
+#if HAS_MEDIAEXTENSION
 using Foundation;
 using MediaExtension;
 

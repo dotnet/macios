@@ -112,6 +112,9 @@
         <Compile Include="../Microsoft.Macios.Generator/Extensions/Delegates.cs" >
             <Link>Generator/Extensions/Delegates.cs</Link>
         </Compile>
+        <Compile Include="../Microsoft.Macios.Generator/Extensions/ParameterSymbolExtensions.cs" >
+            <Link>Generator/Extensions/ParameterSymbolExtensions.cs</Link>
+        </Compile>
         <Compile Include="../Microsoft.Macios.Generator/Extensions/SpecialTypeExtensions.cs" >
             <Link>Generator/Extensions/SpecialTypeExtensions.cs</Link>
         </Compile>

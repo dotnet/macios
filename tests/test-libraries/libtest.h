@@ -197,6 +197,8 @@ typedef unsigned int (^RegistrarTestBlock) (unsigned int magic);
 		obj6: (byref NSObject **) obj6P
 		obj7: (oneway NSObject **) obj7P
 		;
+
+	-(void) setPtrPropertyCGRect: (void *) p1 p2:(void *)p2 p3:(void *)p3 p4:(void *)p4 p5:(CGRect*)p5 p6:(void *)p6;
 @end
 
 // We need this class so that the ObjCProtocolTest protocol

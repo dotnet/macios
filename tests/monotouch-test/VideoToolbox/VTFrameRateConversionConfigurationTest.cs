@@ -30,10 +30,10 @@ namespace MonoTouchFixtures.VideoToolbox {
 			TestRuntime.AssertOnlyARM64 (); // "Fail to create effect configuration" is printed to the terminal
 
 			Assert.Multiple (() => {
-				using var obj = new VTFrameRateConversionConfiguration (320, 320, true, VTFrameRateConversionConfigurationQualityPrioritization.Normal, VTFrameRateConversionConfigurationRevision.Revision1);
+				using var obj = new VTFrameRateConversionConfiguration (320, 320, false, VTFrameRateConversionConfigurationQualityPrioritization.Normal, VTFrameRateConversionConfigurationRevision.Revision1);
 				Assert.That (obj.FrameWidth, Is.EqualTo ((nint) 320), "FrameWidth");
 				Assert.That (obj.FrameHeight, Is.EqualTo ((nint) 320), "FrameHeight");
-				Assert.That (obj.UsePrecomputedFlow, Is.EqualTo (true), "UsePrecomputedFlow");
+				Assert.That (obj.UsePrecomputedFlow, Is.EqualTo (false), "UsePrecomputedFlow");
 				Assert.That (obj.QualityPrioritization, Is.EqualTo (VTFrameRateConversionConfigurationQualityPrioritization.Normal), "QualityPrioritization");
 				Assert.That (obj.Revision, Is.EqualTo (VTFrameRateConversionConfigurationRevision.Revision1), "Revision");
 				Assert.That (obj.FrameSupportedPixelFormats, Is.Not.Null, "FrameSupportedPixelFormats");

@@ -130,10 +130,16 @@ namespace Foundation {
 		[UnsupportedOSPlatform ("tvos")]
 		public NSUrl? ReadAccessUrl {
 			get {
+				// The warning is because NSAttributedStringDocumentReadingOptionKey is in AppKit for macOS, and UIKit for other platforms, so it's not possible to get the availability attributes correct here.
+#pragma warning disable CA1416 // This call site is reachable on: 'ios' 13.0 and later, 'maccatalyst' 13.0 and later, 'macOS/OSX' 12.0 and later. 'NSAttributedStringDocumentReadingOptionKey.ReadAccessUrlDocumentOption' is only supported on: 'macOS/OSX' 12.0 and later.
 				return GetNativeValue<NSUrl> (NSAttributedStringDocumentReadingOptionKey.ReadAccessUrlDocumentOption);
+#pragma warning restore CA1416
 			}
 			set {
+				// The warning is because NSAttributedStringDocumentReadingOptionKey is in AppKit for macOS, and UIKit for other platforms, so it's not possible to get the availability attributes correct here.
+#pragma warning disable CA1416 // This call site is reachable on: 'ios' 13.0 and later, 'maccatalyst' 13.0 and later, 'macOS/OSX' 12.0 and later. 'NSAttributedStringDocumentReadingOptionKey.ReadAccessUrlDocumentOption' is only supported on: 'macOS/OSX' 12.0 and later.
 				SetNativeValue (NSAttributedStringDocumentReadingOptionKey.ReadAccessUrlDocumentOption, value);
+#pragma warning restore CA1416
 			}
 		}
 #endif // !TVOS

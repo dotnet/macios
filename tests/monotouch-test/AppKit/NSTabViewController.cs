@@ -39,21 +39,6 @@ namespace Xamarin.Mac.Tests {
 		//			Assert.IsFalse (controller.TabView == tabView, "NSTabViewControllerShouldChangeTabView - Failed to set the TabView property");
 		//		}
 
-#if !NET
-		[Test]
-		public void NSTabViewControllerShouldChangeSegmentedControl ()
-		{
-			// This API was removed in 10.11
-			if (TestRuntime.CheckXcodeVersion (7, 0))
-				return;
-
-			var segmentedControl = controller.SegmentedControl;
-			controller.SegmentedControl = new NSSegmentedControl ();
-
-			Assert.IsFalse (controller.SegmentedControl == segmentedControl, "NSTabViewControllerShouldChangeSegmentedControl - Failed to set the SegmentedControl property");
-		}
-#endif
-
 		[Test]
 		public void NSTabViewControllerShouldChangeTransitionOptions ()
 		{

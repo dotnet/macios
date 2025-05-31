@@ -38,6 +38,9 @@ namespace Xamarin.MacDev.Tasks {
 		public string AssemblyName { get; set; } = String.Empty;
 
 		[Required]
+		public string BundleExecutable { get; set; } = "";
+
+		[Required]
 		[Output] // This is required to create an empty file on Windows for the Input/Outputs check.
 		public ITaskItem? CompiledAppManifest { get; set; }
 
@@ -133,7 +136,7 @@ namespace Xamarin.MacDev.Tasks {
 			plist.SetIfNotPresent (ManifestKeys.CFBundleInfoDictionaryVersion, "6.0");
 			plist.SetIfNotPresent (ManifestKeys.CFBundlePackageType, IsAppExtension ? "XPC!" : "APPL");
 			plist.SetIfNotPresent (ManifestKeys.CFBundleSignature, "????");
-			plist.SetIfNotPresent (ManifestKeys.CFBundleExecutable, AssemblyName);
+			plist.SetIfNotPresent (ManifestKeys.CFBundleExecutable, BundleExecutable);
 			plist.SetIfNotPresent (ManifestKeys.CFBundleName, AppBundleName);
 
 			if (GenerateApplicationManifest && !string.IsNullOrEmpty (ApplicationTitle))

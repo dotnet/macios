@@ -62,12 +62,10 @@ using SettingsDictionary = System.Collections.Generic.IDictionary<string, object
 using SettingsDictionary = System.Collections.IDictionary;
 #endif
 
-#if NET
 [assembly: SupportedOSPlatform ("ios10.0")]
 [assembly: SupportedOSPlatform ("tvos10.0")]
 [assembly: SupportedOSPlatform ("macos10.14")]
 [assembly: SupportedOSPlatform ("maccatalyst13.0")]
-#endif
 
 namespace MonoTouch.NUnit.UI {
 	public abstract class BaseTouchRunner : ITestListener {
@@ -707,9 +705,6 @@ namespace MonoTouch.NUnit.UI {
 		}
 	}
 
-#if !NET
-	[CLSCompliant (false)]
-#endif
 	public class TouchRunner : BaseTouchRunner {
 
 		UIWindow window;

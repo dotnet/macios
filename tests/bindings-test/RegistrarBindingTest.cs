@@ -1,8 +1,6 @@
 using System;
 using System.Threading;
-#if NET
 using System.Runtime.InteropServices;
-#endif
 
 using Foundation;
 using ObjCRuntime;
@@ -108,12 +106,10 @@ namespace Xamarin.BindingTests {
 				ObjCBlockTester.CallOptionalStaticCallback ();
 				DerivedBlockCallbackClass.Answer = 2;
 
-#if NET
 				Assert.IsFalse (obj.InvokeNullableCallbackNatively (null), "NullableCallback A rv");
 				int nullableResult = -1;
 				Assert.IsTrue (obj.InvokeNullableCallbackNatively ((v) => nullableResult = v), "NullableCallback B rv");
 				Assert.AreEqual (24, nullableResult, "NullableCallback result");
-#endif
 			}
 		}
 
@@ -256,7 +252,6 @@ namespace Xamarin.BindingTests {
 				return false;
 			}
 
-#if NET
 			[BindingImpl (BindingImplOptions.Optimizable)]
 			public bool InvokeNullableCallbackNatively (Action<int>? completionHandler)
 			{
@@ -282,7 +277,6 @@ namespace Xamarin.BindingTests {
 					del (magicNumber);
 				}
 			}
-#endif
 		}
 
 		public class PropertyBlock : NSObject, IProtocolWithBlockProperties {

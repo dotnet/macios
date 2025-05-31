@@ -47,6 +47,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <CustomEntitlements Include="com.apple.security.network.client" Condition="'$(_PlatformName)' == 'macOS' Or '$(_PlatformName)' == 'MacCatalyst'" Type="boolean" Value="true" />
+    <CustomEntitlements Include="com.apple.security.network.server" Condition="'$(_PlatformName)' == 'macOS' Or '$(_PlatformName)' == 'MacCatalyst'" Type="boolean" Value="true" />
+    <CustomEntitlements Include="com.apple.developer.networking.multicast" Condition="'$(_PlatformName)' == 'iOS'" Type="boolean" Value="true" />
+  </ItemGroup>
+
+  <ItemGroup>
     <TestVariations Include="static-registrar-all-optimizations" Description="Static registrar + all optimizations" />
     <TestVariations Include="static-registrar-all-optimizations-linkall" Description="Static registrar + all optimizations + Link all" />
     <TestVariations Include="static-registrar-optimizations-except-uithread-checks-linkall" Description="Static registrar + all optimizations + Link all" />

@@ -155,11 +155,6 @@ namespace MonoTouchFixtures.VideoToolbox {
 			return session;
 		}
 
-#if !NET
-		[DllImport ("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
-		static extern IntPtr CFRetain (IntPtr obj);
-#endif
-
 		[TestCase (true)]
 		[TestCase (false)]
 		public void TestCallback (bool stronglyTyped)
@@ -197,12 +192,6 @@ namespace MonoTouchFixtures.VideoToolbox {
 				Interlocked.Increment (ref callbackCounter);
 				if (status != VTStatus.Ok)
 					failures.Add ($"Callback #{callbackCounter} failed. Expected status = Ok, got status = {status}");
-#if !NET
-				// Work around a crash that occur if the buffer isn't retained
-				if (stronglyTyped) {
-					CFRetain (buffer.Handle);
-				}
-#endif
 			});
 			using var session = stronglyTyped
 				? VTCompressionSession.Create (

@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -254,13 +255,35 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 
 	static (string Name, ImmutableArray<string> Namespace) GetTypeNameAndNamespace (ITypeSymbol symbol)
 	{
-		if (symbol.SpecialType == SpecialType.None)
-			return (symbol.Name, GetNamespaceComponents (symbol));
+		if (symbol.SpecialType is SpecialType.None or SpecialType.System_IntPtr or SpecialType.System_UIntPtr)
+			return (GetName (symbol), GetNamespaceComponents (symbol));
 
 		var token = symbol.SpecialType.GetKeyword ();
 		var name = string.IsNullOrEmpty (token) ? symbol.Name : token;
 		// if we are dealing with int, uint etc.. we will ignore the namespace since it is not needed
 		return (name, []);
+	}
+
+	/// <summary>
+	/// Returns the name of the type symbol including any containing types BUT not namespaces.
+	/// </summary>
+	static string GetName (ITypeSymbol symbol)
+	{
+		// before we return the name, make sure that we do not have parent types, if we do, append those to the name
+		var sb = new StringBuilder ();
+		var parentSymbol = symbol.ContainingType;
+
+		if (parentSymbol is null)
+			return symbol.Name;
+
+		while (parentSymbol is not null) {
+			// add in reverse order, since we are going from the child to the parent
+			sb.Insert (0, parentSymbol.Name + ".");
+			parentSymbol = parentSymbol.ContainingType;
+		}
+
+		sb.Append (symbol.Name);
+		return sb.ToString ();
 	}
 
 	/// <summary>
@@ -270,11 +293,11 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	/// <returns>An immutable array with the namespace components.</returns>
 	static ImmutableArray<string> GetNamespaceComponents (ITypeSymbol symbol)
 	{
-		var namespaceSymbol = symbol.ContainingSymbol;
+		var namespaceSymbol = symbol.ContainingNamespace;
 		var components = ImmutableArray.CreateBuilder<string> ();
 		while (namespaceSymbol is not null) {
 			components.Insert (0, namespaceSymbol.Name);
-			namespaceSymbol = namespaceSymbol.ContainingSymbol;
+			namespaceSymbol = namespaceSymbol.ContainingNamespace;
 			if (namespaceSymbol is INamespaceSymbol { IsGlobalNamespace: true })
 				break;
 		}
@@ -508,6 +531,14 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		return type;
 	}
 
+	/// <summary>
+	/// If the current <see cref="TypeInfo"/> represents an array, this method returns a new <see cref="TypeInfo"/>
+	/// representing the element type of the array. Otherwise, it returns the current instance.
+	/// </summary>
+	/// <returns>
+	/// A new <see cref="TypeInfo"/> instance representing the array element's type if <see cref="IsArray"/> is true;
+	/// otherwise, returns the current <see cref="TypeInfo"/> instance.
+	/// </returns>
 	public TypeInfo ToArrayElementType ()
 	{
 		if (!IsArray)
@@ -519,6 +550,14 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		};
 	}
 
+	/// <summary>
+	/// If the current <see cref="TypeInfo"/> is nullable, this method returns a new <see cref="TypeInfo"/>
+	/// representing the non-nullable version of the type. Otherwise, it returns the current instance.
+	/// </summary>
+	/// <returns>
+	/// A new <see cref="TypeInfo"/> instance with <see cref="IsNullable"/> set to false if the original <see cref="IsNullable"/> was true;
+	/// otherwise, returns the current <see cref="TypeInfo"/> instance.
+	/// </returns>
 	public TypeInfo ToNonNullable ()
 	{
 		if (!IsNullable)
@@ -526,6 +565,24 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		// copy all the elements from the current array type and set the array type to false
 		return this with {
 			IsNullable = false,
+		};
+	}
+
+	/// <summary>
+	/// If the current <see cref="TypeInfo"/> represents a pointer, this method returns a new <see cref="TypeInfo"/>
+	/// representing the type pointed to. Otherwise, it returns the current instance.
+	/// </summary>
+	/// <returns>
+	/// A new <see cref="TypeInfo"/> instance representing the pointed-at type if <see cref="IsPointer"/> is true;
+	/// otherwise, returns the current <see cref="TypeInfo"/> instance.
+	/// </returns>
+	public TypeInfo ToPointedAtType ()
+	{
+		if (!IsPointer)
+			return this;
+		// copy all the elements from the current array type and set the array type to false
+		return this with {
+			IsPointer = false,
 		};
 	}
 

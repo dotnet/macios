@@ -17,30 +17,16 @@ using ObjCRuntime;
 using Foundation;
 using CoreMedia;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace VideoToolbox {
-
-#if NET
 	/// <summary>Class that provides a storage for encoding metadata.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst")]
-#endif
 	public class VTMultiPassStorage : NativeObject {
 		bool closed;
 		VTStatus closedStatus;
-
-#if !NET
-		protected internal VTMultiPassStorage (NativeHandle handle)
-			: base (handle, false)
-		{
-		}
-#endif
 
 		[Preserve (Conditional = true)]
 		internal VTMultiPassStorage (NativeHandle handle, bool owns)

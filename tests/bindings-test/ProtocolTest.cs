@@ -31,7 +31,6 @@ namespace Xamarin.BindingTests {
 			}
 		}
 
-#if NET
 		[Test]
 		public void Constructors ()
 		{
@@ -81,12 +80,12 @@ namespace Xamarin.BindingTests {
 		}
 
 		class SubclassedTypeProvidingProtocolConstructors : TypeProvidingProtocolConstructors {
-			SubclassedTypeProvidingProtocolConstructors (NativeHandle handle) : base (handle) {}
+			SubclassedTypeProvidingProtocolConstructors (NativeHandle handle) : base (handle) { }
 
 		}
 
 		class SubclassedTypeProvidingProtocolConstructors2 : TypeProvidingProtocolConstructors {
-			SubclassedTypeProvidingProtocolConstructors2 (NativeHandle handle) : base (handle) {}
+			SubclassedTypeProvidingProtocolConstructors2 (NativeHandle handle) : base (handle) { }
 
 			[Export ("initRequired:")]
 			public SubclassedTypeProvidingProtocolConstructors2 (string value)
@@ -100,12 +99,9 @@ namespace Xamarin.BindingTests {
 			{
 			}
 		}
-#endif
 
 		[Test]
-#if NET
 		[UnconditionalSuppressMessage ("Trimming", "IL2026", Justification = "This test verifies trimmer behavior, and as such must do trimmer-unsafe stuff.")]
-#endif
 		public void OnlyProtocol ()
 		{
 			// a binding with only [Protocol]
@@ -137,9 +133,7 @@ namespace Xamarin.BindingTests {
 		}
 
 		[Test]
-#if NET
 		[UnconditionalSuppressMessage ("Trimming", "IL2026", Justification = "This test verifies trimmer behavior, and as such must do trimmer-unsafe stuff.")]
-#endif
 		public void ProtocolWithBaseType ()
 		{
 			// a binding with [Protocol] and [BaseType]
@@ -176,9 +170,7 @@ namespace Xamarin.BindingTests {
 		}
 
 		[Test]
-#if NET
 		[UnconditionalSuppressMessage ("Trimming", "IL2026", Justification = "This test verifies trimmer behavior, and as such must do trimmer-unsafe stuff.")]
-#endif
 		public void ProtocolWithBaseTypeAndModel ()
 		{
 			// a binding with [Protocol] and [BaseType]

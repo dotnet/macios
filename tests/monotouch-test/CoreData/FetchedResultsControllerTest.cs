@@ -120,11 +120,7 @@ namespace MonoTouchFixtures.CoreData {
 						var storeUrl = new NSUrl (storePath, false);
 						NSError error;
 
-#if NET
 						if (PersistentStoreCoordinator.AddPersistentStore (NSPersistentStoreCoordinator.SQLiteStoreType, null, storeUrl, null, out error) is null) {
-#else
-						if (PersistentStoreCoordinator.AddPersistentStoreWithType (NSPersistentStoreCoordinator.SQLiteStoreType, null, storeUrl, null, out error) is null) {
-#endif
 							Assert.Fail ("Unresolved error " + error + ", " + error.UserInfo);
 						}
 					}

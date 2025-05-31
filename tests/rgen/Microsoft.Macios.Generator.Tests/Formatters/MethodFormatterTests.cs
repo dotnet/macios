@@ -543,7 +543,7 @@ public partial class MyClass {
 	public partial IntPtr TestMethod(string myParam, int myParamInt);
 }
 ";
-			yield return [intPtrReturnMethod, "public partial IntPtr TestMethod (string myParam, int myParamInt)"];
+			yield return [intPtrReturnMethod, $"public partial {Global ("System.IntPtr")} TestMethod (string myParam, int myParamInt)"];
 
 			const string nullableIntPtrReturnMethod = @"
 using System;
@@ -554,7 +554,7 @@ public partial class MyClass {
 	public partial IntPtr? TestMethod(string myParam, int myParamInt);
 }
 ";
-			yield return [nullableIntPtrReturnMethod, "public partial IntPtr? TestMethod (string myParam, int myParamInt)"];
+			yield return [nullableIntPtrReturnMethod, $"public partial {Global ("System.IntPtr")}? TestMethod (string myParam, int myParamInt)"];
 		}
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();

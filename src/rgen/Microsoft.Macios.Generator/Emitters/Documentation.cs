@@ -135,5 +135,8 @@ public static class Documentation {
 ///         Developers should not invoke this method directly, instead they should call <see cref=""ObjCRuntime.Runtime.GetNSObject(System.IntPtr)"" /> as it will prevent two instances of a managed object pointing to the same native object.
 ///     </para>
 /// </remarks>";
+
+		public static string TrampolineStaticClass (string name) =>
+"/// <summary>This class bridges native block invocations that call into C#</summary>";
 	}
 }

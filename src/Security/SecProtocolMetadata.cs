@@ -33,13 +33,35 @@ namespace Security {
 		internal SecProtocolMetadata (NativeHandle handle, bool owns) : base (handle, owns) { }
 
 #if !COREBUILD
+		[ObsoletedOSPlatform ("ios18.5")]
+		[ObsoletedOSPlatform ("tvos18.5")]
+		[ObsoletedOSPlatform ("maccatalyst18.5")]
+		[ObsoletedOSPlatform ("macos15.5")]
 		[DllImport (Constants.SecurityLibrary)]
 		extern static IntPtr sec_protocol_metadata_get_negotiated_protocol (IntPtr handle);
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		public string? NegotiatedProtocol => Marshal.PtrToStringAnsi (sec_protocol_metadata_get_negotiated_protocol (GetCheckedHandle ()));
+		[SupportedOSPlatform ("ios18.5")]
+		[SupportedOSPlatform ("tvos18.5")]
+		[SupportedOSPlatform ("maccatalyst18.5")]
+		[SupportedOSPlatform ("macos15.5")]
+		[DllImport (Constants.SecurityLibrary)]
+		extern static IntPtr sec_protocol_metadata_copy_negotiated_protocol (IntPtr handle);
+
+		/// <summary>Get the negotiated application protocol.</summary>
+		/// <value>The negotiated application protocol.</value>
+		public string? NegotiatedProtocol {
+			get {
+				if (!SystemVersion.IsAtLeastXcode16_4)
+					return Marshal.PtrToStringAnsi (sec_protocol_metadata_get_negotiated_protocol (GetCheckedHandle ()));
+
+				var rv = sec_protocol_metadata_copy_negotiated_protocol (GetCheckedHandle ());
+				var str = Marshal.PtrToStringUTF8 (rv);
+				unsafe {
+					NativeMemory.Free ((void*) rv);
+				}
+				return str;
+			}
+		}
 
 		[DllImport (Constants.SecurityLibrary)]
 		extern static IntPtr sec_protocol_metadata_copy_peer_public_key (IntPtr handle);
@@ -302,14 +324,37 @@ namespace Security {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
+		[ObsoletedOSPlatform ("ios18.5")]
+		[ObsoletedOSPlatform ("tvos18.5")]
+		[ObsoletedOSPlatform ("maccatalyst18.5")]
+		[ObsoletedOSPlatform ("macos15.5")]
 		[DllImport (Constants.SecurityLibrary)]
 		static extern /* const char* */ IntPtr sec_protocol_metadata_get_server_name (IntPtr /* sec_protocol_metadata_t */ handle);
+
+		[SupportedOSPlatform ("ios18.5")]
+		[SupportedOSPlatform ("tvos18.5")]
+		[SupportedOSPlatform ("maccatalyst18.5")]
+		[SupportedOSPlatform ("macos15.5")]
+		[DllImport (Constants.SecurityLibrary)]
+		static extern /* const char* */ IntPtr sec_protocol_metadata_copy_server_name (IntPtr /* sec_protocol_metadata_t */ handle);
 
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-		public string? ServerName => Marshal.PtrToStringAnsi (sec_protocol_metadata_get_server_name (GetCheckedHandle ()));
+		public string? ServerName {
+			get {
+				if (!SystemVersion.IsAtLeastXcode16_4)
+					return Marshal.PtrToStringAnsi (sec_protocol_metadata_get_server_name (GetCheckedHandle ()));
+
+				var rv = sec_protocol_metadata_copy_server_name (GetCheckedHandle ());
+				var str = Marshal.PtrToStringUTF8 (rv);
+				unsafe {
+					NativeMemory.Free ((void*) rv);
+				}
+				return str;
+			}
+		}
 
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("macos")]

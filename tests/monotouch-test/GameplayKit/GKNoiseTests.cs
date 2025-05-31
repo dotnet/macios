@@ -14,11 +14,7 @@ using NUnit.Framework;
 using Foundation;
 using GameplayKit;
 
-#if NET
 using Vector3d = global::CoreGraphics.NVector3d;
-#else
-using OpenTK;
-#endif
 
 namespace MonoTouchFixtures.GamePlayKit {
 	[TestFixture]

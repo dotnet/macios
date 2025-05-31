@@ -479,16 +479,6 @@
     <data name="W0109b" xml:space="preserve">
         <value>Cannot expand $(AppIdentifierPrefix) in Entitlements.plist without a provisioning profile for key '{0}' with value '{1}'.</value>
     </data>
-        
-    <data name="W0110" xml:space="preserve">
-        <value>iCloud entitlements such as '{0}' require a Provisioning Profile.
-        </value>
-    </data>
-    
-    <data name="W0111" xml:space="preserve">
-        <value>The iCloud entitlement '{0}' is not supported by the Provisioning Profile.
-        </value>
-    </data>
     
     <data name="E0112" xml:space="preserve">
         <value>Entitlements.plist template '{0}' not found.
@@ -888,13 +878,12 @@
     </data>
 
     <data name="E0191" xml:space="preserve">
-        <value>This version of {0} requires the {1} {2} SDK (shipped with Xcode {3}). The current version of Xcode is {4}. Either install Xcode {3}, or use a different version of {0}. See https://aka.ms/xcode-requirement for more information.</value>
+        <value>This version of .NET for {0} ({1}) requires Xcode {2}. The current version of Xcode is {3}. Either install Xcode {2}, or use a different version of .NET for {0}. See https://aka.ms/xcode-requirement for more information.</value>
         <comments>
-            0: Microsoft.[platform]
-            1: platform (iOS, tvOS, macOS or Mac Catalyst)
+            0: platform (iOS, tvOS, macOS or Mac Catalyst)
+            1: version
             2: version
             3: version
-            4: version
         </comments>
     </data>
 
@@ -1685,7 +1674,7 @@
     </data>
 
     <data name="E7140" xml:space="preserve">
-        <value>The app requests the entitlement '{0}', but the provisioning profile '{1}' does not contain this entitlement.</value>
+        <value>The app requests the entitlement '{0}', but the provisioning profile '{1}' doesn't contain this entitlement.</value>
         <comment>
             This may be either a warning or an error, depending on build configuration.
         </comment>
@@ -1754,7 +1743,21 @@
     </data>
 
     <data name="E7151" xml:space="preserve">
-        <value>The app requests the entitlement '{0}', but this entitlement is not allowed on the current platform ({1}). It's only allowed on macOS and Mac Catalyst.</value>
+        <value>The app requests the entitlement '{0}', but this entitlement is not allowed on the current platform ({1}). It's only allowed on: {2}.</value>
+        <comment>
+            This may be either a warning or an error, depending on build configuration.
+        </comment>
+    </data>
+
+    <data name="E7152" xml:space="preserve">
+        <value>The app requests the entitlement '{0}' with the value '{1}', but the provisioning profile '{2}' grants it for the values '{3}'.</value>
+        <comment>
+            This may be either a warning or an error, depending on build configuration.
+        </comment>
+    </data>
+
+    <data name="E7153" xml:space="preserve">
+        <value>The app requests the entitlement '{0}' with the value '{1}' of type '{2}', but this entitlement must be of type '{3}'.</value>
         <comment>
             This may be either a warning or an error, depending on build configuration.
         </comment>

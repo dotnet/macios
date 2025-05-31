@@ -534,9 +534,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		}
 
 		[Test]
-#if !MONOMAC || NET // Failing with 10 broken in legacy Xamarin.Mac
 		[TestCase (typeof (NSObject))]
-#endif
 		[TestCase (typeof (ResurrectedObjectsDisposedTestClass))]
 		public void ResurrectedObjectsDisposedTest (Type type)
 		{
@@ -849,11 +847,7 @@ Additional information:
 		{
 			var expectedDirectory = (string) ((NSString) Environment.CurrentDirectory).ResolveSymlinksInPath ();
 
-#if NET || !MONOMAC
 			var actualDirectory = (string) ((NSString) NSBundle.MainBundle.BundlePath).ResolveSymlinksInPath ();
-#else
-			var actualDirectory = (string) ((NSString) NSBundle.MainBundle.ResourcePath).ResolveSymlinksInPath ();
-#endif
 			Assert.AreEqual (expectedDirectory, actualDirectory, "Current directory at launch");
 		}
 
@@ -869,7 +863,6 @@ Additional information:
 			Assert.That (Runtime.OriginalWorkingDirectory, Is.Not.Null.And.Not.Empty, "OriginalWorkingDirectory");
 		}
 
-#if NET
 		[Test]
 		public void IntPtrCtor_1 ()
 		{
@@ -924,7 +917,6 @@ Additional information:
 			{
 			}
 		}
-#endif
 	}
 
 	[TestFixture]

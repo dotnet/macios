@@ -229,7 +229,8 @@ Copyright (C) 2020 Microsoft. All rights reserved.
 		<!-- Accept 'UseInterpreter' as an alternative for 'MtouchInterpreter', so that we have the same variable name as Android -->
 		<MtouchInterpreter Condition="'$(MtouchInterpreter)' == '' And '$(UseInterpreter)' == 'True'">all</MtouchInterpreter>
 
-		<_AppBundleName>$(AssemblyName)</_AppBundleName>
+		<_AppBundleName Condition="'$(_AppBundleName)' == '' And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), 10.0)) And ('$(_PlatformName)' == 'macOS' Or '$(_PlatformName)' == 'MacCatalyst')">$(ApplicationTitle)</_AppBundleName>
+		<_AppBundleName Condition="'$(_AppBundleName)' == ''">$(AssemblyName)</_AppBundleName>
 
 		<!-- If resources are pre-compiled/processed before being embedded in libraries, or if they're stored as-is -->
 		<BundleOriginalResources Condition="'$(BundleOriginalResources)' == '' And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), 10.0))">true</BundleOriginalResources>
@@ -237,7 +238,10 @@ Copyright (C) 2020 Microsoft. All rights reserved.
 		<!-- that also encapsulates whether we're a library or not (this makes conditions simpler) -->
 		<_BundleOriginalResources Condition="'$(OutputType)' == 'Library' And '$(IsAppExtension)' != 'true' And '$(BundleOriginalResources)' == 'true'">true</_BundleOriginalResources>
 
-		<EnableProfiling Condition="'$(EnableProfiling)' == '' And '$(_BundlerDebug)' == 'true'">true</EnableProfiling>
+		<EnableProfiler Condition="'$(EnableProfiler)' == '' And '$(_BundlerDebug)' == 'true'">true</EnableProfiler>
+
+		<!-- Set the name of the native executable -->
+		<_NativeExecutableName Condition="'$(_NativeExecutableName)' == ''">$(AssemblyName)</_NativeExecutableName>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(IsBindingProject)' == 'true'">

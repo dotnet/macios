@@ -9,7 +9,6 @@ using MetalPerformanceShaders;
 using SceneKit;
 #endif
 
-#if NET
 using System.Numerics;
 using CoreGraphics;
 using MatrixFloat2x2 = global::CoreGraphics.NMatrix2;
@@ -25,23 +24,9 @@ using Vector4d = global::CoreGraphics.NVector4d;
 using Vector2i = global::CoreGraphics.NVector2i;
 using Vector4i = global::CoreGraphics.NVector4i;
 using Quaterniond = global::CoreGraphics.NQuaterniond;
-#else
-using OpenTK;
-using MatrixFloat2x2 = global::OpenTK.NMatrix2;
-using MatrixFloat3x3 = global::OpenTK.NMatrix3;
-using MatrixFloat4x3 = global::OpenTK.NMatrix4x3;
-using MatrixFloat4x4 = global::OpenTK.NMatrix4;
-using VectorFloat3 = global::OpenTK.NVector3;
-using MatrixDouble4x4 = global::OpenTK.NMatrix4d;
-using VectorDouble3 = global::OpenTK.NVector3d;
-#endif
 
 #if __MACOS__
-#if NET
 using pfloat = System.Runtime.InteropServices.NFloat;
-#else
-using pfloat = System.nfloat;
-#endif
 #else
 using pfloat = System.Single;
 #endif
@@ -136,42 +121,6 @@ public static class Asserts {
 		Assert.AreEqual (expected.Z, actual.Z, delta, $"{message} (Z) expected: {expected} actual: {actual}");
 		Assert.AreEqual (expected.W, actual.W, delta, $"{message} (W) expected: {expected} actual: {actual}");
 	}
-
-#if !NET
-	public static void AreEqual (Matrix2 expected, Matrix2 actual, string message)
-	{
-		AreEqual (expected.R0C0, actual.R0C0, $"{message} (R0C0) expected: {expected} actual: {actual}");
-		AreEqual (expected.R0C1, actual.R0C1, $"{message} (R0C1) expected: {expected} actual: {actual}");
-		AreEqual (expected.R1C0, actual.R1C0, $"{message} (R1C0) expected: {expected} actual: {actual}");
-		AreEqual (expected.R1C1, actual.R1C1, $"{message} (R1C1) expected: {expected} actual: {actual}");
-	}
-
-	public static void AreEqual (Matrix3 expected, Matrix3 actual, string message)
-	{
-		AreEqual (expected.R0C0, actual.R0C0, $"{message} (R0C0) expected: {expected} actual: {actual}");
-		AreEqual (expected.R0C1, actual.R0C1, $"{message} (R0C1) expected: {expected} actual: {actual}");
-		AreEqual (expected.R0C2, actual.R0C2, $"{message} (R0C2) expected: {expected} actual: {actual}");
-		AreEqual (expected.R1C0, actual.R1C0, $"{message} (R1C0) expected: {expected} actual: {actual}");
-		AreEqual (expected.R1C1, actual.R1C1, $"{message} (R1C1) expected: {expected} actual: {actual}");
-		AreEqual (expected.R1C2, actual.R1C2, $"{message} (R1C2) expected: {expected} actual: {actual}");
-		AreEqual (expected.R2C0, actual.R2C0, $"{message} (R2C0) expected: {expected} actual: {actual}");
-		AreEqual (expected.R2C1, actual.R2C1, $"{message} (R2C1) expected: {expected} actual: {actual}");
-		AreEqual (expected.R2C2, actual.R2C2, $"{message} (R2C2) expected: {expected} actual: {actual}");
-	}
-
-	public static void AreEqual (Matrix3 expected, Matrix3 actual, float delta, string message)
-	{
-		AreEqual (expected.R0C0, actual.R0C0, delta, $"{message} (R0C0) expected: {expected} actual: {actual}");
-		AreEqual (expected.R0C1, actual.R0C1, delta, $"{message} (R0C1) expected: {expected} actual: {actual}");
-		AreEqual (expected.R0C2, actual.R0C2, delta, $"{message} (R0C2) expected: {expected} actual: {actual}");
-		AreEqual (expected.R1C0, actual.R1C0, delta, $"{message} (R1C0) expected: {expected} actual: {actual}");
-		AreEqual (expected.R1C1, actual.R1C1, delta, $"{message} (R1C1) expected: {expected} actual: {actual}");
-		AreEqual (expected.R1C2, actual.R1C2, delta, $"{message} (R1C2) expected: {expected} actual: {actual}");
-		AreEqual (expected.R2C0, actual.R2C0, delta, $"{message} (R2C0) expected: {expected} actual: {actual}");
-		AreEqual (expected.R2C1, actual.R2C1, delta, $"{message} (R2C1) expected: {expected} actual: {actual}");
-		AreEqual (expected.R2C2, actual.R2C2, delta, $"{message} (R2C2) expected: {expected} actual: {actual}");
-	}
-#endif
 
 	public static void AreEqual (Matrix4 expected, Matrix4 actual, string message)
 	{
@@ -305,24 +254,6 @@ public static class Asserts {
 		AreEqual (expected.R1C1, actual.R1C1, delta, $"{message} (R1C1) expected: {expected} actual: {actual}");
 	}
 
-#if !NET
-	public static void AreEqual (Matrix2 expected, MatrixFloat2x2 actual, string message)
-	{
-		AreEqual (expected.R0C0, actual.R0C0, $"{message} (R0C0) expected: {expected} actual: {actual}");
-		AreEqual (expected.R0C1, actual.R0C1, $"{message} (R0C1) expected: {expected} actual: {actual}");
-		AreEqual (expected.R1C0, actual.R1C0, $"{message} (R1C0) expected: {expected} actual: {actual}");
-		AreEqual (expected.R1C1, actual.R1C1, $"{message} (R1C1) expected: {expected} actual: {actual}");
-	}
-
-	public static void AreEqual (MatrixFloat2x2 expected, Matrix2 actual, string message)
-	{
-		AreEqual (expected.R0C0, actual.R0C0, $"{message} (R0C0) expected: {expected} actual: {actual}");
-		AreEqual (expected.R0C1, actual.R0C1, $"{message} (R0C1) expected: {expected} actual: {actual}");
-		AreEqual (expected.R1C0, actual.R1C0, $"{message} (R1C0) expected: {expected} actual: {actual}");
-		AreEqual (expected.R1C1, actual.R1C1, $"{message} (R1C1) expected: {expected} actual: {actual}");
-	}
-#endif // !NET
-
 	public static void AreEqual (MatrixFloat3x3 expected, MatrixFloat3x3 actual, string message)
 	{
 		AreEqual (expected.R0C0, actual.R0C0, $"{message} (R0C0) expected: {expected} actual: {actual}");
@@ -348,34 +279,6 @@ public static class Asserts {
 		AreEqual (expected.R1C2, actual.R1C2, delta, $"{message} (R1C2) expected: {expected} actual: {actual}");
 		AreEqual (expected.R2C2, actual.R2C2, delta, $"{message} (R2C2) expected: {expected} actual: {actual}");
 	}
-
-#if !NET
-	public static void AreEqual (Matrix3 expected, MatrixFloat3x3 actual, string message)
-	{
-		AreEqual (expected.R0C0, actual.R0C0, $"{message} (R0C0) expected: {expected} actual: {actual}");
-		AreEqual (expected.R0C1, actual.R0C1, $"{message} (R0C1) expected: {expected} actual: {actual}");
-		AreEqual (expected.R0C2, actual.R0C2, $"{message} (R0C2) expected: {expected} actual: {actual}");
-		AreEqual (expected.R1C0, actual.R1C0, $"{message} (R1C0) expected: {expected} actual: {actual}");
-		AreEqual (expected.R1C1, actual.R1C1, $"{message} (R1C1) expected: {expected} actual: {actual}");
-		AreEqual (expected.R1C2, actual.R1C2, $"{message} (R1C2) expected: {expected} actual: {actual}");
-		AreEqual (expected.R2C0, actual.R2C0, $"{message} (R2C0) expected: {expected} actual: {actual}");
-		AreEqual (expected.R2C1, actual.R2C1, $"{message} (R2C1) expected: {expected} actual: {actual}");
-		AreEqual (expected.R2C2, actual.R2C2, $"{message} (R2C2) expected: {expected} actual: {actual}");
-	}
-
-	public static void AreEqual (MatrixFloat3x3 expected, Matrix3 actual, string message)
-	{
-		AreEqual (expected.R0C0, actual.R0C0, $"{message} (R0C0) expected: {expected} actual: {actual}");
-		AreEqual (expected.R0C1, actual.R0C1, $"{message} (R0C1) expected: {expected} actual: {actual}");
-		AreEqual (expected.R0C2, actual.R0C2, $"{message} (R0C2) expected: {expected} actual: {actual}");
-		AreEqual (expected.R1C0, actual.R1C0, $"{message} (R1C0) expected: {expected} actual: {actual}");
-		AreEqual (expected.R1C1, actual.R1C1, $"{message} (R1C1) expected: {expected} actual: {actual}");
-		AreEqual (expected.R1C2, actual.R1C2, $"{message} (R1C2) expected: {expected} actual: {actual}");
-		AreEqual (expected.R2C0, actual.R2C0, $"{message} (R2C0) expected: {expected} actual: {actual}");
-		AreEqual (expected.R2C1, actual.R2C1, $"{message} (R2C1) expected: {expected} actual: {actual}");
-		AreEqual (expected.R2C2, actual.R2C2, $"{message} (R2C2) expected: {expected} actual: {actual}");
-	}
-#endif
 
 	public static void AreEqual (MatrixFloat4x4 expected, MatrixFloat4x4 actual, string message)
 	{
@@ -488,15 +391,6 @@ public static class Asserts {
 		Assert.AreEqual (expected, actual, delta, message);
 	}
 
-#if !NET
-	public static void AreEqual (Vector2d expected, Vector2d actual, string message)
-	{
-		Assert.AreEqual (expected.X, actual.X, $"{message} (X) expected: {expected} actual: {actual}");
-		Assert.AreEqual (expected.Y, actual.Y, $"{message} (Y) expected: {expected} actual: {actual}");
-	}
-#endif
-
-#if NET
 	public static void AreEqual (VectorDouble2 expected, VectorDouble2 actual, string message)
 	{
 		Assert.AreEqual (expected.X, actual.X, 0.001, message + " (X)");
@@ -508,37 +402,6 @@ public static class Asserts {
 		Assert.AreEqual (expected.X, actual.X, delta, message + " (X)");
 		Assert.AreEqual (expected.Y, actual.Y, delta, message + " (Y)");
 	}
-#endif
-
-#if !NET
-	public static void AreEqual (Vector3d expected, Vector3d actual, string message)
-	{
-		Assert.AreEqual (expected.X, actual.X, 0.001, $"{message} (X) expected: {expected} actual: {actual}");
-		Assert.AreEqual (expected.Y, actual.Y, 0.001, $"{message} (Y) expected: {expected} actual: {actual}");
-		Assert.AreEqual (expected.Z, actual.Z, 0.001, $"{message} (Z) expected: {expected} actual: {actual}");
-	}
-
-	public static void AreEqual (Vector3d expected, Vector3d actual, double delta, string message)
-	{
-		Assert.AreEqual (expected.X, actual.X, delta, $"{message} (X) expected: {expected} actual: {actual}");
-		Assert.AreEqual (expected.Y, actual.Y, delta, $"{message} (Y) expected: {expected} actual: {actual}");
-		Assert.AreEqual (expected.Z, actual.Z, delta, $"{message} (Z) expected: {expected} actual: {actual}");
-	}
-
-	public static void AreEqual (Vector3d expected, VectorDouble3 actual, string message)
-	{
-		Assert.AreEqual (expected.X, actual.X, 0.001, $"{message} (X) expected: {expected} actual: {actual}");
-		Assert.AreEqual (expected.Y, actual.Y, 0.001, $"{message} (Y) expected: {expected} actual: {actual}");
-		Assert.AreEqual (expected.Z, actual.Z, 0.001, $"{message} (Z) expected: {expected} actual: {actual}");
-	}
-
-	public static void AreEqual (VectorDouble3 expected, Vector3d actual, string message)
-	{
-		Assert.AreEqual (expected.X, actual.X, 0.001, $"{message} (X) expected: {expected} actual: {actual}");
-		Assert.AreEqual (expected.Y, actual.Y, 0.001, $"{message} (Y) expected: {expected} actual: {actual}");
-		Assert.AreEqual (expected.Z, actual.Z, 0.001, $"{message} (Z) expected: {expected} actual: {actual}");
-	}
-#endif
 
 	public static void AreEqual (VectorDouble3 expected, VectorDouble3 actual, string message)
 	{
@@ -569,24 +432,6 @@ public static class Asserts {
 		Assert.AreEqual (expected.Z, actual.Z, delta, $"{message} (Z) expected: {expected} actual: {actual}");
 		Assert.AreEqual (expected.W, actual.W, delta, $"{message} (W) expected: {expected} actual: {actual}");
 	}
-
-#if !NET
-	public static void AreEqual (Matrix4d expected, Matrix4d actual, string message)
-	{
-		AreEqual (expected.Column0, actual.Column0, $"{message} (Col0) expected: {expected} actual: {actual}");
-		AreEqual (expected.Column1, actual.Column1, $"{message} (Col1) expected: {expected} actual: {actual}");
-		AreEqual (expected.Column2, actual.Column2, $"{message} (Col2) expected: {expected} actual: {actual}");
-		AreEqual (expected.Column3, actual.Column3, $"{message} (Col3) expected: {expected} actual: {actual}");
-	}
-
-	public static void AreEqual (Matrix4d expected, Matrix4d actual, double delta, string message)
-	{
-		AreEqual (expected.Column0, actual.Column0, delta, $"{message} (Col0) expected: {expected} actual: {actual}");
-		AreEqual (expected.Column1, actual.Column1, delta, $"{message} (Col1) expected: {expected} actual: {actual}");
-		AreEqual (expected.Column2, actual.Column2, delta, $"{message} (Col2) expected: {expected} actual: {actual}");
-		AreEqual (expected.Column3, actual.Column3, delta, $"{message} (Col3) expected: {expected} actual: {actual}");
-	}
-#endif //!NET
 
 	public static void AreEqual (MatrixDouble4x4 expected, MatrixDouble4x4 actual, string message)
 	{
@@ -628,48 +473,6 @@ public static class Asserts {
 		AreEqual (expected.M44, actual.M44, delta, $"{message} (M44) expected: {expected} actual: {actual}");
 	}
 
-#if !NET
-	public static void AreEqual (Matrix4d expected, MatrixDouble4x4 actual, string message)
-	{
-		AreEqual (expected.M11, actual.M11, $"{message} (M11) expected: {expected} actual: {actual}");
-		AreEqual (expected.M21, actual.M21, $"{message} (M21) expected: {expected} actual: {actual}");
-		AreEqual (expected.M31, actual.M31, $"{message} (M31) expected: {expected} actual: {actual}");
-		AreEqual (expected.M41, actual.M41, $"{message} (M41) expected: {expected} actual: {actual}");
-		AreEqual (expected.M12, actual.M12, $"{message} (M12) expected: {expected} actual: {actual}");
-		AreEqual (expected.M22, actual.M22, $"{message} (M22) expected: {expected} actual: {actual}");
-		AreEqual (expected.M32, actual.M32, $"{message} (M32) expected: {expected} actual: {actual}");
-		AreEqual (expected.M42, actual.M42, $"{message} (M42) expected: {expected} actual: {actual}");
-		AreEqual (expected.M13, actual.M13, $"{message} (M13) expected: {expected} actual: {actual}");
-		AreEqual (expected.M23, actual.M23, $"{message} (M23) expected: {expected} actual: {actual}");
-		AreEqual (expected.M33, actual.M33, $"{message} (M33) expected: {expected} actual: {actual}");
-		AreEqual (expected.M43, actual.M43, $"{message} (M43) expected: {expected} actual: {actual}");
-		AreEqual (expected.M14, actual.M14, $"{message} (M14) expected: {expected} actual: {actual}");
-		AreEqual (expected.M24, actual.M24, $"{message} (M24) expected: {expected} actual: {actual}");
-		AreEqual (expected.M34, actual.M34, $"{message} (M34) expected: {expected} actual: {actual}");
-		AreEqual (expected.M44, actual.M44, $"{message} (M44) expected: {expected} actual: {actual}");
-	}
-
-	public static void AreEqual (Matrix4d expected, NMatrix4d actual, double delta, string message)
-	{
-		AreEqual (expected.M11, actual.M11, delta, $"{message} (M11) expected: {expected} actual: {actual}");
-		AreEqual (expected.M21, actual.M21, delta, $"{message} (M21) expected: {expected} actual: {actual}");
-		AreEqual (expected.M31, actual.M31, delta, $"{message} (M31) expected: {expected} actual: {actual}");
-		AreEqual (expected.M41, actual.M41, delta, $"{message} (M41) expected: {expected} actual: {actual}");
-		AreEqual (expected.M12, actual.M12, delta, $"{message} (M12) expected: {expected} actual: {actual}");
-		AreEqual (expected.M22, actual.M22, delta, $"{message} (M22) expected: {expected} actual: {actual}");
-		AreEqual (expected.M32, actual.M32, delta, $"{message} (M32) expected: {expected} actual: {actual}");
-		AreEqual (expected.M42, actual.M42, delta, $"{message} (M42) expected: {expected} actual: {actual}");
-		AreEqual (expected.M13, actual.M13, delta, $"{message} (M13) expected: {expected} actual: {actual}");
-		AreEqual (expected.M23, actual.M23, delta, $"{message} (M23) expected: {expected} actual: {actual}");
-		AreEqual (expected.M33, actual.M33, delta, $"{message} (M33) expected: {expected} actual: {actual}");
-		AreEqual (expected.M43, actual.M43, delta, $"{message} (M43) expected: {expected} actual: {actual}");
-		AreEqual (expected.M14, actual.M14, delta, $"{message} (M14) expected: {expected} actual: {actual}");
-		AreEqual (expected.M24, actual.M24, delta, $"{message} (M24) expected: {expected} actual: {actual}");
-		AreEqual (expected.M34, actual.M34, delta, $"{message} (M34) expected: {expected} actual: {actual}");
-		AreEqual (expected.M44, actual.M44, delta, $"{message} (M44) expected: {expected} actual: {actual}");
-	}
-#endif // !NET
-
 	public static void AreEqual (NMatrix4x3 expected, NMatrix4x3 actual, float delta, string message)
 	{
 		AreEqual (expected.M11, actual.M11, delta, $"{message} (M11) expected: {expected} actual: {actual}");
@@ -685,28 +488,6 @@ public static class Asserts {
 		AreEqual (expected.M24, actual.M24, delta, $"{message} (M24) expected: {expected} actual: {actual}");
 		AreEqual (expected.M34, actual.M34, delta, $"{message} (M34) expected: {expected} actual: {actual}");
 	}
-
-#if !NET
-	public static void AreEqual (NMatrix4d expected, Matrix4d actual, string message)
-	{
-		AreEqual (expected.M11, actual.M11, $"{message} (M11) expected: {expected} actual: {actual}");
-		AreEqual (expected.M21, actual.M21, $"{message} (M21) expected: {expected} actual: {actual}");
-		AreEqual (expected.M31, actual.M31, $"{message} (M31) expected: {expected} actual: {actual}");
-		AreEqual (expected.M41, actual.M41, $"{message} (M41) expected: {expected} actual: {actual}");
-		AreEqual (expected.M12, actual.M12, $"{message} (M12) expected: {expected} actual: {actual}");
-		AreEqual (expected.M22, actual.M22, $"{message} (M22) expected: {expected} actual: {actual}");
-		AreEqual (expected.M32, actual.M32, $"{message} (M32) expected: {expected} actual: {actual}");
-		AreEqual (expected.M42, actual.M42, $"{message} (M42) expected: {expected} actual: {actual}");
-		AreEqual (expected.M13, actual.M13, $"{message} (M13) expected: {expected} actual: {actual}");
-		AreEqual (expected.M23, actual.M23, $"{message} (M23) expected: {expected} actual: {actual}");
-		AreEqual (expected.M33, actual.M33, $"{message} (M33) expected: {expected} actual: {actual}");
-		AreEqual (expected.M43, actual.M43, $"{message} (M43) expected: {expected} actual: {actual}");
-		AreEqual (expected.M14, actual.M14, $"{message} (M14) expected: {expected} actual: {actual}");
-		AreEqual (expected.M24, actual.M24, $"{message} (M24) expected: {expected} actual: {actual}");
-		AreEqual (expected.M34, actual.M34, $"{message} (M34) expected: {expected} actual: {actual}");
-		AreEqual (expected.M44, actual.M44, $"{message} (M44) expected: {expected} actual: {actual}");
-	}
-#endif
 
 	public static void AreEqual (NMatrix4x3 expected, NMatrix4x3 actual, string message)
 	{
@@ -925,17 +706,10 @@ public static class Asserts {
 
 		var actualString = actual.ToString ();
 
-#if NET
 		var row1 = $"({m11}, {m21}, {m31}, {m41})";
 		var row2 = $"({m12}, {m22}, {m32}, {m42})";
 		var row3 = $"({m13}, {m23}, {m33}, {m43})";
 		var row4 = $"({m14}, {m24}, {m34}, {m44})";
-#else
-		var row1 = $"({m11}, {m12}, {m13}, {m14})";
-		var row2 = $"({m21}, {m22}, {m23}, {m24})";
-		var row3 = $"({m31}, {m32}, {m33}, {m34})";
-		var row4 = $"({m41}, {m42}, {m43}, {m44})";
-#endif
 		var expectedString = $"{row1}\n{row2}\n{row3}\n{row4}";
 
 		var diffRow1 = $"({d11}, {d12}, {d13}, {d14})";

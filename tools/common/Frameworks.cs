@@ -287,10 +287,9 @@ public class Frameworks : Dictionary<string, Framework> {
 					{ "BrowserEngineKit", "BrowserEngineKit", 14, 3},
 
 					{ "DeviceDiscoveryExtension", "DeviceDiscoveryExtension", 15, 0},
-					// FSKit was removed from Xcode 16 RC, but keeping it commented, because it's likely to return in a later release
-					// { "FSKit", "FSKit", 15, 0 },
 					{ "MediaExtension", "MediaExtension", 15, 0 },
 
+					{ "FSKit", "FSKit", 15, 4 },
 					{ "SecurityUI", "SecurityUI", 15, 4 },
 				};
 			}

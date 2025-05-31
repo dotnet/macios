@@ -23606,9 +23606,16 @@ namespace AVFoundation {
 		[Export ("assetVariantQualifierWithVariant:")]
 		AVAssetVariantQualifier Create (AVAssetVariant variant);
 
+#if !XAMCORE_5_0
+		[Obsolete ("Use 'GetPredicateForChannelCount' instead.")]
 		[Static]
 		[Export ("predicateForChannelCount:mediaSelectionOption:operatorType:")]
-		NSPredicate GetPredicate (nint channelCount, AVMediaSelectionOption mediaSelectionOption, NSPredicateOperatorType operatorType);
+		NSPredicate GetPredicate (nint channelCount, [NullAllowed] AVMediaSelectionOption mediaSelectionOption, NSPredicateOperatorType operatorType);
+#endif // XAMCORE_5_0
+
+		[Static]
+		[Export ("predicateForChannelCount:mediaSelectionOption:operatorType:")]
+		NSPredicate GetPredicateForChannelCount (nint channelCount, [NullAllowed] AVMediaSelectionOption mediaSelectionOption, NSPredicateOperatorType operatorType);
 
 		[Internal]
 		[Static]
@@ -23623,22 +23630,47 @@ namespace AVFoundation {
 		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Static]
 		[Export ("predicateForBinauralAudio:mediaSelectionOption:")]
-		NSPredicate GetPredicateForBinauralAudio (bool isBinauralAudio, AVMediaSelectionOption mediaSelectionOption);
+		NSPredicate GetPredicateForBinauralAudio (bool isBinauralAudio, [NullAllowed] AVMediaSelectionOption mediaSelectionOption);
 
 		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Static]
 		[Export ("predicateForImmersiveAudio:mediaSelectionOption:")]
-		NSPredicate GetPredicateForImmersiveAudio (bool isImmersiveAudio, AVMediaSelectionOption mediaSelectionOption);
+		NSPredicate GetPredicateForImmersiveAudio (bool isImmersiveAudio, [NullAllowed] AVMediaSelectionOption mediaSelectionOption);
 
 		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Static]
 		[Export ("predicateForDownmixAudio:mediaSelectionOption:")]
-		NSPredicate GetPredicateForDownmixAudio (bool isDownmixAudio, AVMediaSelectionOption mediaSelectionOption);
+		NSPredicate GetPredicateForDownmixAudio (bool isDownmixAudio, [NullAllowed] AVMediaSelectionOption mediaSelectionOption);
 
 		[MacCatalyst (18, 0), TV (18, 0), Mac (15, 0), iOS (18, 0)]
 		[Static]
 		[Export ("predicateForAudioSampleRate:mediaSelectionOption:operatorType:")]
-		NSPredicate GetPredicateForAudioSampleRate (double sampleRate, AVMediaSelectionOption mediaSelectionOption, NSPredicateOperatorType operatorType);
+		NSPredicate GetPredicateForAudioSampleRate (double sampleRate, [NullAllowed] AVMediaSelectionOption mediaSelectionOption, NSPredicateOperatorType operatorType);
+
+		[Static]
+		[MacCatalyst (18, 5), TV (18, 5), Mac (15, 5), iOS (18, 5)]
+		[Export ("predicateForChannelCount:operatorType:")]
+		NSPredicate GetPredicateForChannelCount (nint channelCount, NSPredicateOperatorType operatorType);
+
+		[Static]
+		[MacCatalyst (18, 5), TV (18, 5), Mac (15, 5), iOS (18, 5)]
+		[Export ("predicateForBinauralAudio:")]
+		NSPredicate GetPredicateForBinauralAudio (bool isBinauralAudio);
+
+		[Static]
+		[MacCatalyst (18, 5), TV (18, 5), Mac (15, 5), iOS (18, 5)]
+		[Export ("predicateForImmersiveAudio:")]
+		NSPredicate GetPredicateForImmersiveAudio (bool isImmersiveAudio);
+
+		[Static]
+		[MacCatalyst (18, 5), TV (18, 5), Mac (15, 5), iOS (18, 5)]
+		[Export ("predicateForDownmixAudio:")]
+		NSPredicate GetPredicateForDownmixAudio (bool isDownmixAudio);
+
+		[Static]
+		[MacCatalyst (18, 5), TV (18, 5), Mac (15, 5), iOS (18, 5)]
+		[Export ("predicateForAudioSampleRate:operatorType:")]
+		NSPredicate GetPredicateForAudioSampleRate (double sampleRate, NSPredicateOperatorType operatorType);
 	}
 
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]

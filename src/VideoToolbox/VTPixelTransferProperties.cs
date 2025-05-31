@@ -93,7 +93,6 @@ namespace VideoToolbox {
 			}
 		}
 
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -101,7 +100,6 @@ namespace VideoToolbox {
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
-#endif
 		public VTColorPrimaries DestinationColorPrimaries {
 			get {
 				var key = GetNSStringValue (VTPixelTransferPropertyKeys.DestinationColorPrimaries);
@@ -139,7 +137,6 @@ namespace VideoToolbox {
 			}
 		}
 
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -147,7 +144,6 @@ namespace VideoToolbox {
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
-#endif
 		public VTTransferFunction DestinationTransferFunction {
 			get {
 				var key = GetNSStringValue (VTPixelTransferPropertyKeys.DestinationTransferFunction);

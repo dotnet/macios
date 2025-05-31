@@ -13,6 +13,30 @@ application or library projects are built.
 
 An item group that contains any additional app extensions to copy into the app bundle.
 
+The following metadata can be set:
+
+* Include: The path to the build directory for the Xcode app extension project.
+* Name: The name of the extension.
+* BuildOutput: This value is appended to the `Include` value to produce the location of the appex bundle. Typically Xcode will place simulator and device builds in different locations, so this can be used to have a single `AdditionalAppExtensions` entry pointing to two different appex bundles, depending on whether building for the simulator or device.
+* CodesignEntitlements: Specifies the entitlements to use when signing the app extension. The default value is '%(Name).entitlements' in the 'Include' build directory (if this file exists).
+* CodesignWarnIfNoEntitlements: A warning will be produced if no `CodesignEntitlements` value is set. This property can be set to `false` to silence this warning.
+
+Example:
+
+```xml
+<ItemGroup>
+    <AdditionalAppExtensions Include="path/to/my.appex">
+        <Name>MyAppExtensionName</Name>
+        <BuildOutput Condition="'$(SdkIsSimulator)' == 'false'">DerivedData/MyAppExtensionName/Build/Products/Debug-iphoneos</BuildOutput>
+        <BuildOutput Condition="'$(SdkIsSimulator)' == 'true'">DerivedData/MyAppExtensionName/Build/Products/Debug-iphonesimulator</BuildOutput>
+        <CodesignEntitlements>path/to/Entitlements-appextension.plist</CodesignEntitlements>
+        <CodesignWarnIfNoEntitlements>false</CodesignWarnIfNoEntitlements>
+    </AdditionalAppExtensions>
+</ItemGroup>
+```
+
+An example solution can be found here: [TestApplication](https://github.com/chamons/xamarin-ios-swift-extension/tree/master/App/net6/TestApplication).
+
 ## AlternateAppIcon
 
 The `AlternateAppIcon` item group can be used to specify alternate app icons.

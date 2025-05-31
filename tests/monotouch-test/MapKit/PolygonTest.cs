@@ -106,11 +106,7 @@ namespace MonoTouchFixtures.MapKit {
 			try {
 				pg.Coordinate = new CLLocationCoordinate2D (10, 20);
 			}
-#if NET
 			catch (ObjCException mte) {
-#else
-			catch (MonoTouchException mte) {
-#endif
 				Assert.True (mte.Message.Contains ("unrecognized selector sent to instance"));
 			}
 			catch {

@@ -49,9 +49,6 @@ namespace MonoTouchFixtures.Security {
 					Assert.That (ssl.MinProtocol, Is.EqualTo (SslProtocol.Tls_1_0), "MinProtocol");
 				else
 					Assert.That (ssl.MinProtocol, Is.EqualTo (SslProtocol.Ssl_3_0), "MinProtocol");
-#if !NET
-				Assert.That (ssl.NegotiatedCipher, Is.EqualTo (SslCipherSuite.SSL_NULL_WITH_NULL_NULL), "NegotiatedCipher");
-#endif
 				Assert.That (ssl.NegotiatedProtocol, Is.EqualTo (SslProtocol.Unknown), "NegotiatedProtocol");
 
 				Assert.That (ssl.PeerDomainName, Is.Empty, "PeerDomainName");
@@ -121,9 +118,6 @@ namespace MonoTouchFixtures.Security {
 				Assert.That (ssl.MaxDatagramRecordSize, Is.EqualTo ((nint) 1400), "MaxDatagramRecordSize");
 				Assert.That (ssl.MaxProtocol, Is.EqualTo (SslProtocol.Dtls_1_0), "MaxProtocol");
 				Assert.That (ssl.MinProtocol, Is.EqualTo (SslProtocol.Dtls_1_0), "MinProtocol");
-#if !NET
-				Assert.That (ssl.NegotiatedCipher, Is.EqualTo (SslCipherSuite.SSL_NULL_WITH_NULL_NULL), "NegotiatedCipher");
-#endif
 				Assert.That (ssl.NegotiatedProtocol, Is.EqualTo (SslProtocol.Unknown), "NegotiatedProtocol");
 				Assert.Null (ssl.PeerId, "PeerId");
 				Assert.That (ssl.SessionState, Is.EqualTo (SslSessionState.Idle), "SessionState");
@@ -140,46 +134,6 @@ namespace MonoTouchFixtures.Security {
 				Assert.That (ssl.SetDatagramHelloCookie (null), Is.EqualTo (SslStatus.Success), "no more cookies");
 			}
 		}
-
-#if !NET
-		[Test]
-		public void SslSupportedCiphers ()
-		{
-			TestRuntime.AssertSystemVersion (ApplePlatform.MacOSX, 10, 8, throwIfOtherPlatform: false);
-			if (Runtime.IsARM64CallingConvention)
-				Assert.Ignore ("This test does not work on ARM64 because SslCipherSuite has the wrong size on ARM64 (the native enum is an ushort on ARM64, even on desktop, while we've defined our enum as uint on macOS and Mac Catalyst)");
-
-			int ssl_client_ciphers = -1;
-			using (var client = new SslContext (SslProtocolSide.Client, SslConnectionType.Stream)) {
-				// maximum downgrade
-				client.MaxProtocol = client.MinProtocol;
-				var ciphers = client.GetSupportedCiphers ();
-				ssl_client_ciphers = ciphers.Count;
-				Assert.That (ssl_client_ciphers, Is.AtLeast (1), "GetSupportedCiphers");
-				// we can't really scan for SSL_* since (some of) the values are identical to TLS_
-				// useful the other way around
-			}
-			int ssl_server_ciphers = -1;
-			using (var server = new SslContext (SslProtocolSide.Server, SslConnectionType.Stream)) {
-				// no downgrade, shows that the ciphers are not really restriced
-				var ciphers = server.GetSupportedCiphers ();
-				ssl_server_ciphers = ciphers.Count;
-				Assert.That (ssl_server_ciphers, Is.AtLeast (1), "GetSupportedCiphers");
-				// we can't really scan for SSL_* since (some of) the values are identical to TLS_
-				// useful the other way around
-
-				// make sure we have names for all ciphers - except old export ones (that we do not want to promote)
-				// e.g. iOS 5.1 still supports them
-				foreach (var cipher in ciphers) {
-					string s = cipher.ToString ();
-					if (s.Length < 8)
-						Console.WriteLine (s);
-					Assert.True (s.StartsWith ("SSL_", StringComparison.Ordinal) || s.StartsWith ("TLS_", StringComparison.Ordinal), s);
-				}
-			}
-			Assert.That (ssl_client_ciphers, Is.EqualTo (ssl_server_ciphers), "same");
-		}
-#endif
 
 		[Test]
 		public void Tls12 ()
@@ -207,9 +161,6 @@ namespace MonoTouchFixtures.Security {
 
 				// FIXME: iOS 8 beta 1 bug ?!? the state is not updated (maybe delayed?) but the code still works
 				//Assert.That (ssl.SessionState, Is.EqualTo (SslSessionState.Connected), "Connected");
-#if !NET
-				Assert.That (ssl.NegotiatedCipher, Is.Not.EqualTo (SslCipherSuite.SSL_NULL_WITH_NULL_NULL), "NegotiatedCipher");
-#endif
 				Assert.That (ssl.NegotiatedProtocol, Is.EqualTo (SslProtocol.Tls_1_2), "NegotiatedProtocol");
 
 				nint processed;

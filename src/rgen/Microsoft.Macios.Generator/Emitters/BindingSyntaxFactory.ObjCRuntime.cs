@@ -931,8 +931,8 @@ static partial class BindingSyntaxFactory {
 			{ SpecialType: SpecialType.System_UInt16 } => "UInt16Value",
 			{ SpecialType: SpecialType.System_UInt32 } => "UInt32Value",
 			{ SpecialType: SpecialType.System_UInt64 } => "UInt64Value",
-			{ SpecialType: SpecialType.System_IntPtr } => "NintValue",
-			{ SpecialType: SpecialType.System_UIntPtr } => "NUintValue",
+			{ SpecialType: SpecialType.System_IntPtr } => "NIntValue",
+			{ SpecialType: SpecialType.System_UIntPtr } => "NUIntValue",
 			_ => string.Empty,
 		};
 #pragma warning restore format

@@ -68,7 +68,7 @@ namespace Xamarin.Tests {
 			}
 
 			var expectedDirectories = new List<string> ();
-			expectedDirectories.Add (Path.Combine (appPath, GetRelativeCodesignDirectory (platform),  "_CodeSignature"));
+			expectedDirectories.Add (Path.Combine (appPath, GetRelativeCodesignDirectory (platform), "_CodeSignature"));
 			expectedDirectories.Add (Path.Combine (appPath, GetPlugInsRelativePath (platform), extensionProject + ".appex", GetRelativeCodesignDirectory (platform), "_CodeSignature"));
 
 			foreach (var dir in expectedDirectories)

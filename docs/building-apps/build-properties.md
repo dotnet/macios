@@ -219,6 +219,27 @@ By default we require a provisioning profile if:
 
 Setting this property to `true` or `false` will override the default logic.
 
+## CompressBindingResourcePackage
+
+The native references in a binding projects are copied to the output directory during the build process, next to the binding assembly (into something we call a "binding resource package").
+
+These native references can either be stored compressed inside a zip file (named `$(AssemblyName).resources.zip`, or as-is, inside a directory named `$(AssemblyName).resources`.
+
+The `CompressBindingResourcePackage` property specifies whether to create a zip file or a directory.
+
+The possible values are:
+
+* `auto`: create a zip file if a native reference contains symlinks (which is typical on macOS and Mac Catalyst, but rare on iOS and tvOS).
+* `true`: create a zipe file
+* `false`: create a directory
+
+The default is `auto`.
+
+This also applies to how native references are stored inside NuGets.
+
+> [!NOTE]
+> In some cases it can be beneficial to force a zip file on iOS as well, especially when there's a framework with files that have long names, because the zip file can sometimes work around MAX_PATH issues on Windows.
+
 ## CreateAppBundleDependsOn
 
 This is an extension point for the build: a developer can add any targets to

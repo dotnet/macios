@@ -36,7 +36,7 @@ steps:
   displayName: 'Install PowerShell Core'
   condition: and(succeeded(), eq(variables['Agent.OS'], 'Windows_NT'))
   env:
-      POWERSHELL_VERSION: 7.4.0
+    POWERSHELL_VERSION: 7.4.0
 
 - pwsh: ./undo_github_merge.ps1 -SourceBranch "$(Build.SourceBranch)" -IsPr "$Env:IS_PR"
   name: fix_commit

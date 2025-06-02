@@ -94,6 +94,11 @@ steps:
 - bash: make -C $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops provisioning
   displayName: 'Generate Xcode provisioning csx file'
 
+- bash:
+    rm -f ~/Library/Preferences/maui/Settings.plist
+    rm -f ~/Library/Preferences/Xamarin/Settings.plist
+  displayName: 'Clear old Xcode settings'
+
 - task: xamops.azdevex.provisionator-task.provisionator@2
   displayName: 'Provision Xcode'
   inputs:

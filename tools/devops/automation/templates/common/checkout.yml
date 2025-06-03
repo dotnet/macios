@@ -33,9 +33,9 @@ steps:
       $output = "$env:TEMP\PowerShell.msi"
       Write-Host "deleting any temporary msi files: $LASTEXITCODE"
       Remove-Item -Force $output -ErrorAction Ignore
-      Write-Host "downloading $url to $output: $LASTEXITCODE"
+      Write-Host "downloading $url to $output result: $LASTEXITCODE"
       Invoke-WebRequest -Uri $url -OutFile $output
-      Write-Host "installing $output: $LASTEXITCODE"
+      Write-Host "installing $output result: $LASTEXITCODE"
       msiexec.exe /package $output /quiet ADD_EXPLORER_CONTEXT_MENU_OPENPOWERSHELL=1 ENABLE_PSREMOTING=1 REGISTER_MANIFEST=1
       Write-Host "install completed: $LASTEXITCODE"
     } else {

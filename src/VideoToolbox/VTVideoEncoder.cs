@@ -56,19 +56,19 @@ namespace VideoToolbox {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		public string CodecName { get; private set; }
+		public string? CodecName { get; private set; }
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		public string DisplayName { get; private set; }
+		public string? DisplayName { get; private set; }
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		public string EncoderId { get; private set; }
+		public string? EncoderId { get; private set; }
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		public string EncoderName { get; private set; }
+		public string? EncoderName { get; private set; }
 
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios13.0")]

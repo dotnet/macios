@@ -130,7 +130,7 @@ See [CreatePackage](#createpackage) for macOS and Mac Catalyst projects.
 This property determines whether resources are compiled before being embedded
 into library projects, or if the original (uncompiled) version is embedded.
 
-Historically resources have been compiled before being embedded into library
+Historically, resources have been compiled before being embedded into library
 projects, but this requires having Xcode available, which has a few drawbacks:
 
 * It slows down remote builds on Windows.
@@ -145,10 +145,10 @@ projects, but this requires having Xcode available, which has a few drawbacks:
 As such, we've added supported for embedding the original resources into
 libraries. This will be opt-in in .NET 9, but opt-out starting in .NET 10.
 
-Default value: `false` in .NET 9, `true` in .NET 10+.
+The default value of this property `false` in .NET 9, and `true` in .NET 10+.
 
-Note: please file an issue if you find that you need to disable this feature,
-as it's possible we'll remove the option to disable it at some point.
+> [!NOTE]
+> File an issue if you find that you need to disable this feature, as it's possible that the option to disable it will be removed in future.
 
 ## CodesignAllocate
 
@@ -499,9 +499,7 @@ Valid values:
 * `abort`: Abort the process.
 * `disable`: Disable intercepting any managed exceptions. For MonoVM this is equivalent to `unwindnativecode`, for CoreCLR this is equivalent to `abort`.
 
-For more information see the article about [Exception marshaling](https://learn.microsoft.com/dotnet/ios/advanced-concepts/exception-marshaling)
-
-See also [MarshalObjectiveCExceptionMode](#marshalobjectivecexceptionmode)
+For more information, see [Exception marshaling](/dotnet/ios/advanced-concepts/exception-marshaling) and [MarshalObjectiveCExceptionMode](#marshalobjectivecexceptionmode).
 
 ## MarshalObjectiveCExceptionMode
 
@@ -516,9 +514,7 @@ Valid values:
 * `abort`: Abort the process.
 * `disable`: Disable intercepting any Objective-C exceptions.
 
-For more information see the article about [Exception marshaling](https://learn.microsoft.com/dotnet/ios/advanced-concepts/exception-marshaling)
-
-See also [MarshalManagedExceptionMode](#marshalmanagedexceptionmode)
+For more information, see [Exception marshaling](/dotnet/ios/advanced-concepts/exception-marshaling) and [MarshalManagedExceptionMode](#marshalmanagedexceptionmode).
 
 ## MdimportPath
 

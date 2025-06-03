@@ -4733,10 +4733,10 @@ namespace UIKit {
 		/// <param name="mask">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[Wrap ("this (format.GetConstant(), mask)")]
+		[Wrap ("this (format.GetConstant ()!, mask)")]
 		NativeHandle Constructor (NSTextListMarkerFormats format, NSTextListOptions mask);
 
-		[Wrap ("this (format.GetConstant(), NSTextListOptions.None)")]
+		[Wrap ("this (format.GetConstant ()!, NSTextListOptions.None)")]
 		NativeHandle Constructor (NSTextListMarkerFormats format);
 
 		[BindAs (typeof (NSTextListMarkerFormats))]

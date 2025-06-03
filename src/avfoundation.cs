@@ -5381,7 +5381,7 @@ namespace AVFoundation {
 		///         <summary>Returns an array of tracks of the specified media type.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[Wrap ("TracksWithMediaType (mediaType.GetConstant ())")]
+		[Wrap ("TracksWithMediaType (mediaType.GetConstant ()!)")]
 		AVAssetTrack [] GetTracks (AVMediaTypes mediaType);
 
 		[Deprecated (PlatformName.MacOSX, 15, 0)]
@@ -5395,7 +5395,7 @@ namespace AVFoundation {
 		///         <summary>Returns an array of tracks that have the specified characteristic.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[Wrap ("TracksWithMediaType (mediaCharacteristic.GetConstant ())")]
+		[Wrap ("TracksWithMediaType (mediaCharacteristic.GetConstant ()!)")]
 		AVAssetTrack [] GetTracks (AVMediaCharacteristics mediaCharacteristic);
 
 		[Export ("lyrics"), NullAllowed]
@@ -5693,7 +5693,7 @@ namespace AVFoundation {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		[Wrap ("This.GetTracks (mediaType.GetConstant ())")]
+		[Wrap ("This.GetTracks (mediaType.GetConstant ()!)")]
 		AVFragmentedAssetTrack [] GetTracks (AVMediaTypes mediaType);
 
 		/// <param name="mediaCharacteristic">To be added.</param>
@@ -5707,7 +5707,7 @@ namespace AVFoundation {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		[Wrap ("This.GetTracksWithMediaCharacteristic (mediaCharacteristic.GetConstant ())")]
+		[Wrap ("This.GetTracksWithMediaCharacteristic (mediaCharacteristic.GetConstant ()!)")]
 		AVFragmentedAssetTrack [] GetTracks (AVMediaCharacteristics mediaCharacteristic);
 
 		[Async]
@@ -12378,7 +12378,7 @@ namespace AVFoundation {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		[Wrap ("This.GetTracks (mediaType.GetConstant ())")]
+		[Wrap ("This.GetTracks (mediaType.GetConstant ()!)")]
 		AVMovieTrack [] GetTracks (AVMediaTypes mediaType);
 
 		/// <param name="mediaCharacteristic">To be added.</param>
@@ -12392,7 +12392,7 @@ namespace AVFoundation {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		[Wrap ("This.GetTracksWithMediaCharacteristic (mediaCharacteristic.GetConstant ())")]
+		[Wrap ("This.GetTracksWithMediaCharacteristic (mediaCharacteristic.GetConstant ()!)")]
 		AVMovieTrack [] GetTracks (AVMediaCharacteristics mediaCharacteristic);
 
 		[Async]
@@ -12609,7 +12609,7 @@ namespace AVFoundation {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		[Wrap ("This.GetTracks (mediaType.GetConstant ())")]
+		[Wrap ("This.GetTracks (mediaType.GetConstant ()!)")]
 		AVMutableMovieTrack [] GetTracks (AVMediaTypes mediaType);
 
 		/// <param name="mediaCharacteristic">To be added.</param>
@@ -12623,7 +12623,7 @@ namespace AVFoundation {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		[Wrap ("This.GetTracksWithMediaCharacteristic (mediaCharacteristic.GetConstant ())")]
+		[Wrap ("This.GetTracksWithMediaCharacteristic (mediaCharacteristic.GetConstant ()!)")]
 		AVMutableMovieTrack [] GetTracks (AVMediaCharacteristics mediaCharacteristic);
 	}
 
@@ -12703,7 +12703,7 @@ namespace AVFoundation {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		[Wrap ("This.GetTracks (mediaType.GetConstant ())")]
+		[Wrap ("This.GetTracks (mediaType.GetConstant ()!)")]
 		AVFragmentedMovieTrack [] GetTracks (AVMediaTypes mediaType);
 
 		/// <param name="mediaCharacteristic">To be added.</param>
@@ -12717,7 +12717,7 @@ namespace AVFoundation {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		[Wrap ("This.GetTracksWithMediaCharacteristic (mediaCharacteristic.GetConstant ())")]
+		[Wrap ("This.GetTracksWithMediaCharacteristic (mediaCharacteristic.GetConstant ()!)")]
 		AVFragmentedMovieTrack [] GetTracks (AVMediaCharacteristics mediaCharacteristic);
 
 		[Async]
@@ -13302,7 +13302,7 @@ namespace AVFoundation {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		[Wrap ("This.GetTracks (mediaType.GetConstant ())")]
+		[Wrap ("This.GetTracks (mediaType.GetConstant ()!)")]
 		AVCompositionTrack [] GetTracks (AVMediaTypes mediaType);
 
 		/// <param name="mediaCharacteristic">To be added.</param>
@@ -13316,7 +13316,7 @@ namespace AVFoundation {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		[Wrap ("This.GetTracksWithMediaCharacteristic (mediaCharacteristic.GetConstant ())")]
+		[Wrap ("This.GetTracksWithMediaCharacteristic (mediaCharacteristic.GetConstant ()!)")]
 		AVCompositionTrack [] GetTracks (AVMediaCharacteristics mediaCharacteristic);
 
 		[Async]
@@ -13416,7 +13416,7 @@ namespace AVFoundation {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		[Wrap ("This.GetTracks (mediaType.GetConstant ())")]
+		[Wrap ("This.GetTracks (mediaType.GetConstant ()!)")]
 		AVMutableCompositionTrack [] GetTracks (AVMediaTypes mediaType);
 
 		/// <param name="mediaCharacteristic">To be added.</param>
@@ -13430,7 +13430,7 @@ namespace AVFoundation {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		[Wrap ("This.GetTracksWithMediaCharacteristic (mediaCharacteristic.GetConstant ())")]
+		[Wrap ("This.GetTracksWithMediaCharacteristic (mediaCharacteristic.GetConstant ()!)")]
 		AVMutableCompositionTrack [] GetTracks (AVMediaCharacteristics mediaCharacteristic);
 
 		[Async]
@@ -13551,7 +13551,7 @@ namespace AVFoundation {
 		/// <param name="preset">To be added.</param>
 		/// <summary>Creates an export session from an AVAsset and a preset.</summary>
 		/// <remarks>To be added.</remarks>
-		[Wrap ("this (asset, preset.GetConstant ())")]
+		[Wrap ("this (asset, preset.GetConstant ()!)")]
 		NativeHandle Constructor (AVAsset asset, AVAssetExportSessionPreset preset);
 
 		[Export ("exportAsynchronouslyWithCompletionHandler:")]
@@ -15549,7 +15549,7 @@ namespace AVFoundation {
 		NSDictionary GetRecommendedVideoSettings (string videoCodecType, string outputFileType, [NullAllowed] NSUrl outputFileUrl);
 
 		[TV (17, 0), MacCatalyst (17, 0), Mac (14, 0), iOS (17, 0)]
-		[Wrap ("new AVPlayerItemVideoOutputSettings (GetRecommendedVideoSettings ((string) videoCodecType.GetConstant (), (string) outputFileType.GetConstant (), outputFileUrl)!)")]
+		[Wrap ("new AVPlayerItemVideoOutputSettings (GetRecommendedVideoSettings ((string) videoCodecType.GetConstant ()!, (string) outputFileType.GetConstant ()!, outputFileUrl)!)")]
 		[return: NullAllowed]
 		AVPlayerItemVideoOutputSettings GetRecommendedVideoSettings ([BindAs (typeof (AVVideoCodecType))] NSString videoCodecType, [BindAs (typeof (AVFileTypes))] NSString outputFileType, [NullAllowed] NSUrl outputFileUrl);
 
@@ -17271,7 +17271,7 @@ namespace AVFoundation {
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
-		[Wrap ("HasMediaType ((string) mediaType.GetConstant ())")]
+		[Wrap ("HasMediaType ((string) mediaType.GetConstant ()!)")]
 		bool HasMediaType (AVMediaTypes mediaType);
 
 		[MacCatalyst (13, 1)]

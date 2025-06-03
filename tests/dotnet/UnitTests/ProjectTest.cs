@@ -1793,6 +1793,7 @@ namespace Xamarin.Tests {
 			var directoriesThatMustExist = new string [] {
 				Path.Combine (codesignDirectory, "_CodeSignature"),
 				Path.Combine (sharedSupportDir, "app1.app", codesignDirectory, "_CodeSignature"),
+				Path.Combine (sharedSupportDir, "app3.app", codesignDirectory, "_CodeSignature"),
 			};
 
 			foreach (var mustExist in directoriesThatMustExist)
@@ -1802,12 +1803,12 @@ namespace Xamarin.Tests {
 
 			// And that there are no other signed apps
 			var signatures = appBundleContents.Where (v => v.EndsWith ("_CodeSignature", StringComparison.Ordinal));
-			Assert.That (signatures, Is.Empty, "No other signed app budnles");
+			Assert.That (signatures, Is.Empty, "No other signed app bundles");
 
 			// Assert that some dylibs are signed
 			var dylibs = appBundleContents.Where (v => Path.GetExtension (v) == ".dylib").ToList ();
 			var signedDylibs = new List<string> {
-				Path.Combine (sharedSupportDir, "app2.app", dylibDir, "lib2.dylib"),
+				Path.Combine (sharedSupportDir, "app3.app", dylibDir, "lib3.dylib"),
 			};
 
 			foreach (var dylib in signedDylibs) {
@@ -1825,7 +1826,7 @@ namespace Xamarin.Tests {
 				Assert.That (path, Does.Exist, "unsigned dylib existence");
 				Assert.IsFalse (IsDylibSigned (path), $"Unsigned: {path}");
 			}
-			Assert.AreEqual (1, remainingDylibs.Length, "Unsigned count");
+			Assert.AreEqual (2, remainingDylibs.Length, "Unsigned count");
 
 			// Verify that a Resources subdirectory causes the build to fail.
 			switch (platform) {

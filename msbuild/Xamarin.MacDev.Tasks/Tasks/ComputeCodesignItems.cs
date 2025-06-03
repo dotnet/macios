@@ -228,8 +228,8 @@ namespace Xamarin.MacDev.Tasks {
 					continue;
 				}
 
-				if (!Directory.Exists (outputPath))
-					continue;
+				if (Directory.Exists (outputPath))
+					outputPath = PathUtils.EnsureTrailingSlash (outputPath);
 
 				var matchingDirectory = canonicalizedDirectoriesToSkip.FirstOrDefault (v => outputPath.StartsWith (v, StringComparison.OrdinalIgnoreCase));
 				if (matchingDirectory is not null) {

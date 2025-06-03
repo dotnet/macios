@@ -314,9 +314,9 @@ If the .pkg that was created (if `CreatePackage` was enabled) should be signed.
 
 Only applicable to macOS and Mac Catalyst.
 
-## EnableProfiler
+## EnableDiagnostics
 
-Enable components that are required for profiling to work.
+Enable components that are required for diagnostics (such as profiling) to work.
 
 It's enabled by default for debug builds (when [MtouchDebug](#MtouchDebug) or
 [MmpDebug](#MmpDebug) is enabled), but needs to be enabled manually before
@@ -324,14 +324,14 @@ profiling release builds:
 
 ```xml
 <PropertyGroup>
-  <EnableProfiler>true</EnableProfiler>
+  <EnableDiagnostics>true</EnableDiagnostics>
 </PropertyGroup>
 ```
 
 This will increase the app size slightly.
 
 Only applicable when using the Mono runtime (CoreCLR always supports
-profiling, while NativeAOT never does).
+diagnostics, while NativeAOT never does).
 
 ## EnableSGenConc
 

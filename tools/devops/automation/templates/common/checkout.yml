@@ -41,6 +41,7 @@ steps:
     } else {
       Write-Host "pwsh is already installed: $LASTEXITCODE"
     }
+    exit 0
   displayName: 'Install PowerShell Core'
   condition: and(succeeded(), eq(variables['Agent.OS'], 'Windows_NT'))
   env:

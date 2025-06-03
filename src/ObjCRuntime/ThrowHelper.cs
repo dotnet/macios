@@ -53,7 +53,7 @@ namespace ObjCRuntime {
 			throw new ObjectDisposedException (o.GetType ().ToString ());
 		}
 
-		internal static T ThrowIfNull<T> (T? value, [CallerArgumentExpression ("value")] string paramName = "") where T: class
+		internal static T ThrowIfNull<T> (T? value, [CallerArgumentExpression ("value")] string paramName = "") where T : class
 		{
 			if (value is null)
 				ThrowArgumentNullException (paramName);

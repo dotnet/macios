@@ -35,7 +35,11 @@ build-perftest-with-coreclr: $(TARGETS)
 
 RUNTIME_IDENTIFIER?=osx-x64
 
-build-perf-test: $(TARGETS)
+BINARY=$(abspath dotnet/bin/$(XAMARIN_RUNTIME)/$(DOTNET_TFM)-macos/$(RUNTIME_IDENTIFIER)/perftest.app/Contents/MacOS/perftest)
+
+build-perf-test: $(BINARY)
+
+$(BINARY): $(TARGETS) $(wildcard *.cs *.csproj)
 	$(Q) test -n "$(XAMARIN_RUNTIME)" || ( echo "❌ XAMARIN_RUNTIME must be set! ❌"; exit 1)
 	$(Q) rm -Rf bin/$(XAMARIN_RUNTIME) obj/$(XAMARIN_RUNTIME)
 	$(Q) if ! (cd dotnet && $(DOTNET) build $(abspath dotnet/perftest.csproj) "/bl:$(abspath $@-$(XAMARIN_RUNTIME)-$(BINLOG_TIMESTAMP).binlog)" $(BUILD_PARAMETERS) /p:Configuration=$(XAMARIN_RUNTIME) /p:_XamarinRuntime=$(XAMARIN_RUNTIME) /p:RuntimeIdentifier=$(RUNTIME_IDENTIFIER) $(DOTNET_BUILD_VERBOSITY)); then \
@@ -80,8 +84,8 @@ run-perftest:
 	$(Q) $(MAKE) run-perftest-with-coreclr
 	@echo "Log files were stored in $(BENCHMARK_OUTPUT_PATH)"
 
-run-perftest-with-runtime: $(TARGETS)
+run-perftest-with-runtime: $(TARGETS) $(BINARY)
 	@echo "Running perftest ($(XAMARIN_RUNTIME)) and writing output to $(PERFLOGFILENAME)..."
 	$(Q) mkdir -p $(BENCHMARK_OUTPUT_PATH)
 	$(Q) echo "VM: $(XAMARIN_RUNTIME)" > $(PERFLOGFILENAME)
-	$(Q) set -o pipefail; (time $(abspath dotnet/bin/$(XAMARIN_RUNTIME)/$(DOTNET_TFM)-macos/$(RUNTIME_IDENTIFIER)/perftest.app/Contents/MacOS/perftest) $(ARGUMENTS) 2>&1) 2>&1 | tee -a $(PERFLOGFILENAME)
+	$(Q) set -o pipefail; (time $(BINARY) $(ARGUMENTS) 2>&1) 2>&1 | tee -a $(PERFLOGFILENAME)

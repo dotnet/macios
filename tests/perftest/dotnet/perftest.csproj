@@ -4,11 +4,12 @@
     <TargetFramework>net$(BundledNETCoreAppTargetFrameworkVersion)-macos</TargetFramework>
     <RuntimeIdentifier>osx-x64</RuntimeIdentifier>
     <OutputType>Exe</OutputType>
-    <MonoBundlingExtraArgs>--marshal-objectivec-exceptions:disable --registrar:static</MonoBundlingExtraArgs>
+    <MonoBundlingExtraArgs>--registrar:static</MonoBundlingExtraArgs>
     <LinkMode>None</LinkMode> <!-- never link -->
     <Optimize>true</Optimize> <!-- always optimize -->
     <SupportedOSPlatformVersion>12.0</SupportedOSPlatformVersion>
     <LangVersion>latest</LangVersion>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="BenchmarkDotNet" Version="0.12.1" />

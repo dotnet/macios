@@ -22,7 +22,15 @@ namespace PerfTest {
 			try {
 				// The call to NSApplication.Init is required
 				NSApplication.Init ();
-				BenchmarkRunner.Run (typeof (MainClass).Assembly, new Config ());
+
+				// var sr = new StringCreation ();
+				// sr.NewStyle ();
+				// sr.OldStyle ();
+				// sr.CFString ();
+				// return 2;
+
+				// BenchmarkRunner.Run (typeof (MainClass).Assembly, new Config ());
+				BenchmarkRunner.Run<StringCreation> (new Config ());
 			} catch (Exception e) {
 				Console.WriteLine ("Unhandled exception: {0}", e);
 				return 1;

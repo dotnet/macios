@@ -5,7 +5,7 @@ using CoreGraphics;
 using Foundation;
 using ObjCRuntime;
 
-class Messaging {
+partial class Messaging {
 	internal const string LIBOBJC_DYLIB = "/usr/lib/libobjc.dylib";
 
 	[DllImport (LIBOBJC_DYLIB, EntryPoint = "objc_msgSend")]
@@ -28,5 +28,8 @@ class Messaging {
 
 	[DllImport (LIBOBJC_DYLIB, EntryPoint = "objc_msgSend")]
 	public extern static void void_objc_msgSend (IntPtr r, IntPtr s);
+
+	[DllImport (LIBOBJC_DYLIB, EntryPoint = "objc_msgSend")]
+	public extern static IntPtr IntPtr_objc_msgSend_IntPtr_IntPtr (IntPtr receiver, IntPtr selector, IntPtr p1, IntPtr p2);
 
 }

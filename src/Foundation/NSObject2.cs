@@ -124,7 +124,7 @@ namespace Foundation {
 
 		// This enum has a native counterpart in runtime.h
 		[Flags]
-		internal enum Flags : byte {
+		internal enum Flags : uint {
 			Disposed = 1,
 			NativeRef = 2,
 			IsDirectBinding = 4,

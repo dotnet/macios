@@ -139,6 +139,25 @@ namespace Xamarin.Utils {
 			return attribute.AttributeType.Is ("System", "ObsoleteAttribute");
 		}
 
+		public static bool IsObsoletedOSPlatformAttribute (this ICustomAttributeProvider? provider)
+		{
+			if (provider?.HasCustomAttributes != true)
+				return false;
+
+			foreach (var attrib in provider.CustomAttributes) {
+				if (!IsObsoletedOSPlatformAttribute (attrib))
+					continue;
+
+				return true;
+			}
+
+			return false;
+		}
+
+		public static bool IsObsoletedOSPlatformAttribute (this CustomAttribute attribute)
+		{
+			return attribute.AttributeType.Is ("System.Runtime.Versioning", "ObsoletedOSPlatformAttribute");
+		}
 
 		public static bool HasEditorBrowseableNeverAttribute (this ICustomAttributeProvider? provider)
 		{

@@ -96,7 +96,7 @@ namespace AppKit {
 		///         <remarks>To be added.</remarks>
 		public static NSImage? ImageNamed (NSImageName name)
 		{
-			return ImageNamed (name.GetConstant ());
+			return ImageNamed (name.GetConstant ()!);
 		}
 	}
 

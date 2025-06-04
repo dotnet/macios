@@ -72,14 +72,12 @@ namespace Foundation {
 	}
 #endif
 
-#if NET
 	/// <summary>Encapsulates file attributes for use with <see cref="Foundation.NSFileManager" />.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class NSFileAttributes {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
@@ -382,14 +380,12 @@ namespace Foundation {
 		}
 	}
 
-#if NET
 	/// <summary>File system attributes (size, blocks and free information).</summary>
 	///     <remarks>This is a strong wrapper around the underlying NSDictionary returned by NSFileSystem APIs.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class NSFileSystemAttributes {
 		NSDictionary dict;
 

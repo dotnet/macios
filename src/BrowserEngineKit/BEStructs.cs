@@ -1,4 +1,3 @@
-#if NET
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
@@ -17,4 +16,3 @@ namespace BrowserEngineKit {
 	}
 #endif // __IOS__ || __MACCATALYST__
 }
-#endif // NET

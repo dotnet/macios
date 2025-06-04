@@ -3,12 +3,10 @@
 
 using System;
 
-#if NET
 #if IOS && !__MACCATALYST__
 using AccessorySetupKit;
 #else
 using ASAccessory = Foundation.NSObject;
-#endif
 #endif
 using CoreFoundation;
 using Foundation;
@@ -17,10 +15,6 @@ using Security;
 using Network;
 using OS_nw_parameters = System.IntPtr;
 using OS_nw_interface = System.IntPtr;
-
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
 
 #if MONOMAC || TVOS
 using NEHotspotHelperOptions = Foundation.NSObject;
@@ -356,11 +350,6 @@ namespace NetworkExtension {
 		[Export ("isBound")]
 		bool IsBound { get; }
 
-#if !NET
-		[Field ("NEAppProxyErrorDomain")]
-		NSString ErrorDomain { get; }
-#endif
-
 		[Async]
 		[NoTV, Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Export ("openWithLocalFlowEndpoint:completionHandler:")]
@@ -573,12 +562,10 @@ namespace NetworkExtension {
 		[NullAllowed, Export ("localEndpoint")]
 		NWEndpoint LocalEndpoint { get; }
 
-#if NET
 		[Async (ResultTypeName = "NEDatagramAndFlowEndpointsReadResult")]
 		[NoTV, Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Export ("readDatagramsAndFlowEndpointsWithCompletionHandler:")]
 		void ReadDatagramsAndFlowEndpoints (NEDatagramAndFlowEndpointsRead completionHandler);
-#endif
 
 		[Async]
 		[NoTV, Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
@@ -602,9 +589,7 @@ namespace NetworkExtension {
 		/// <summary>Creates a new app rule with the provided signing identifier.</summary>
 		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
-#if NET
 		[NoMac]
-#endif
 		[Export ("initWithSigningIdentifier:")]
 		NativeHandle Constructor (string signingIdentifier);
 
@@ -1114,11 +1099,6 @@ namespace NetworkExtension {
 		[Export ("grade", ArgumentSemantic.Assign)]
 		NEFilterManagerGrade Grade { get; set; }
 
-#if !NET
-		[Field ("NEFilterErrorDomain")]
-		NSString ErrorDomain { get; }
-#endif
-
 		[NoTV, Mac (15, 0), NoiOS, MacCatalyst (18, 0)]
 		[Export ("disableEncryptedDNSSettings", ArgumentSemantic.Assign)]
 		bool DisableEncryptedDnsSettings { get; set; }
@@ -1236,23 +1216,19 @@ namespace NetworkExtension {
 		[Export ("filterConfiguration")]
 		NEFilterProviderConfiguration FilterConfiguration { get; }
 
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
-#endif
 		[Field ("NEFilterProviderRemediationMapRemediationButtonTexts")]
 		NSString RemediationMapRemediationButtonTexts { get; }
 
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
-#endif
 		[Field ("NEFilterProviderRemediationMapRemediationURLs")]
 		NSString RemediationMapRemediationUrls { get; }
 	}
@@ -2225,7 +2201,6 @@ namespace NetworkExtension {
 		NEAppRule [] CopyAppRules ();
 
 		// CopyAppRules was incorrectly bound to AppRules and it is only available on macOS
-#if NET || MONOMAC || __MACCATALYST__
 		/// <summary>Gets a copy of the rules that control which apps can use the tunnel.</summary>
 		///         <value>
 		///           <para>(More documentation for this node is coming)</para>
@@ -2235,11 +2210,6 @@ namespace NetworkExtension {
 		[NoTV, NoiOS, MacCatalyst (15, 0)]
 		[Export ("appRules", ArgumentSemantic.Copy)]
 		NEAppRule [] AppRules { get; set; }
-#else
-		[NoTV]
-		[Obsolete ("Use 'CopyAppRules' instead, this property will be removed in the future.")]
-		NEAppRule [] AppRules { [Wrap ("CopyAppRules ()!", IsVirtual = true)] get; }
-#endif
 
 		/// <summary>Gets or sets the routing method.</summary>
 		///         <value>To be added.</value>
@@ -2263,11 +2233,6 @@ namespace NetworkExtension {
 		[NoTV, NoiOS, MacCatalyst (15, 0)]
 		[Export ("contactsDomains", ArgumentSemantic.Copy)]
 		string [] ContactsDomains { get; set; }
-
-#if !NET
-		[Field ("NETunnelProviderErrorDomain")]
-		NSString ErrorDomain { get; }
-#endif
 
 		[NoTV, NoiOS, MacCatalyst (15, 0)]
 		[Export ("excludedDomains", ArgumentSemantic.Copy)]
@@ -2383,11 +2348,6 @@ namespace NetworkExtension {
 		[Internal]
 		[Export ("setAuthorization:")]
 		void _SetAuthorization (IntPtr auth);
-
-#if !NET
-		[Field ("NEVPNErrorDomain")]
-		NSString ErrorDomain { get; }
-#endif
 
 		/// <include file="../docs/api/NetworkExtension/NEVpnManager.xml" path="/Documentation/Docs[@DocId='P:NetworkExtension.NEVpnManager.ConfigurationChangeNotification']/*" />
 		[Notification]
@@ -3699,10 +3659,6 @@ namespace NetworkExtension {
 		[Export ("socketFamily")]
 		int SocketFamily {
 			get;
-#if !NET
-			[NotImplemented]
-			set;
-#endif
 		}
 
 		/// <summary>Gets or sets the socket type.</summary>
@@ -3711,10 +3667,6 @@ namespace NetworkExtension {
 		[Export ("socketType")]
 		int SocketType {
 			get;
-#if !NET
-			[NotImplemented]
-			set;
-#endif
 		}
 
 		/// <summary>Gets or sets the socket protocol.</summary>
@@ -3723,10 +3675,6 @@ namespace NetworkExtension {
 		[Export ("socketProtocol")]
 		int SocketProtocol {
 			get;
-#if !NET
-			[NotImplemented]
-			set;
-#endif
 		}
 
 		[NullAllowed]
@@ -4513,7 +4461,6 @@ namespace NetworkExtension {
 		[Export ("getConfiguredSSIDsWithCompletionHandler:")]
 		void GetConfiguredSsids (Action<string []> completionHandler);
 
-#if NET
 		// Headers say this method is available on Mac Catalyst, but the AccessorySetupKit framework (thus the ASAccessory type) is not, so we can't expose it in Mac Catalyst for now.
 		[NoTV, NoMac, iOS (18, 0), NoMacCatalyst]
 		[Async]
@@ -4525,7 +4472,6 @@ namespace NetworkExtension {
 		[Async]
 		[Export ("joinAccessoryHotspotWithoutSecurity:completionHandler:")]
 		void JoinAccessoryHotspotWithoutSecurit (ASAccessory accessory, [NullAllowed] NEHotspotConfigurationManagerJoinHotspotCallback completionHandler);
-#endif
 	}
 
 	[NoTV]
@@ -4832,11 +4778,7 @@ namespace NetworkExtension {
 
 	[NoTV, NoMac, iOS (14, 0)]
 	[MacCatalyst (14, 0)]
-#if NET
 	[Protocol, Model]
-#else
-	[Protocol, Model (AutoGeneratedName = true)]
-#endif
 	[BaseType (typeof (NSObject))]
 	interface NEAppPushDelegate {
 		[Abstract]

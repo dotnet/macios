@@ -25,11 +25,7 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			var textList = new NSTextList (format);
 			Assert.AreEqual (format, textList.CustomMarkerFormat, "CustomMarkerFormat");
-#if NET
 			Assert.AreEqual (NSTextListMarkerFormats.CustomString, textList.MarkerFormat, "MarkerFormat");
-#else
-			Assert.AreEqual (format, textList.MarkerFormat, "MarkerFormat");
-#endif // NET
 			Assert.AreEqual (NSTextListOptions.None, textList.ListOptions, "ListOptions");
 		}
 
@@ -39,11 +35,7 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			var textList = new NSTextList (format, options);
 			Assert.AreEqual (format, textList.CustomMarkerFormat, "CustomMarkerFormat");
-#if NET
 			Assert.AreEqual (NSTextListMarkerFormats.CustomString, textList.MarkerFormat, "MarkerFormat");
-#else
-			Assert.AreEqual (format, textList.MarkerFormat, "MarkerFormat");
-#endif // NET
 			Assert.AreEqual (options, textList.ListOptions, "ListOptions");
 		}
 
@@ -54,11 +46,7 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			var textList = new NSTextList (format, options);
 			Assert.AreEqual ((string) format.GetConstant ()!, textList.CustomMarkerFormat, "CustomMarkerFormat");
-#if NET
 			Assert.AreEqual (format, textList.MarkerFormat, "MarkerFormat");
-#else
-			Assert.AreEqual ((string) format.GetConstant ()!, textList.MarkerFormat, "MarkerFormat");
-#endif // NET
 			Assert.AreEqual (options, textList.ListOptions, "ListOptions");
 		}
 
@@ -68,11 +56,7 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			var textList = new NSTextList (format);
 			Assert.AreEqual ((string) format.GetConstant ()!, textList.CustomMarkerFormat, "CustomMarkerFormat");
-#if NET
 			Assert.AreEqual (format, textList.MarkerFormat, "MarkerFormat");
-#else
-			Assert.AreEqual ((string) format.GetConstant ()!, textList.MarkerFormat, "MarkerFormat");
-#endif // NET
 			Assert.AreEqual (NSTextListOptions.None, textList.ListOptions, "ListOptions");
 		}
 	}

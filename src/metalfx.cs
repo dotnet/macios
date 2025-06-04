@@ -6,11 +6,6 @@ using Foundation;
 using Metal;
 using ObjCRuntime;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
-
 namespace MetalFX {
 
 	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]

@@ -30,8 +30,6 @@ namespace PassKit {
 	}
 
 	public partial class PKPaymentRequest {
-
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -39,13 +37,11 @@ namespace PassKit {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]
-#endif
 		public PKContactFields RequiredBillingContactFields {
 			get { return PKContactFieldsExtensions.GetValue (WeakRequiredBillingContactFields); }
 			set { WeakRequiredBillingContactFields = PKContactFieldsExtensions.GetSet (value); }
 		}
 
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -53,7 +49,6 @@ namespace PassKit {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]
-#endif
 		public PKContactFields RequiredShippingContactFields {
 			get { return PKContactFieldsExtensions.GetValue (WeakRequiredShippingContactFields); }
 			set { WeakRequiredShippingContactFields = PKContactFieldsExtensions.GetSet (value); }

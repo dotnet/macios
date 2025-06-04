@@ -13,10 +13,6 @@ using Intents;
 using ObjCRuntime;
 using UIKit;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace ClockKit {
 
 	[ErrorDomain ("CLKWatchFaceLibraryErrorDomain")]

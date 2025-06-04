@@ -26,6 +26,8 @@ static class AttributesNames {
 	public const string ObsoletedOSPlatformAttribute = "System.Runtime.Versioning.ObsoletedOSPlatformAttribute";
 	public const string NativeAttribute = "ObjCRuntime.NativeAttribute";
 	public const string ForcedTypeAttribute = "ObjCBindings.ForcedTypeAttribute";
+	public const string BlockCallbackAttribute = "ObjCRuntime.BlockCallbackAttribute";
+	public const string CCallbackAttribute = "ObjCRuntime.CCallbackAttribute";
 
 	public static readonly string [] BindingTypes = [
 		CategoryAttribute,

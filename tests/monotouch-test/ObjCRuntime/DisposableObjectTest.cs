@@ -5,10 +5,6 @@ using ObjCRuntime;
 
 using NUnit.Framework;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace MonoTouchFixtures.ObjCRuntime {
 	[TestFixture]
 	[Preserve (AllMembers = true)]

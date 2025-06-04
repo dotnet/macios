@@ -7,10 +7,11 @@ using Microsoft.Build.Logging.StructuredLogger;
 namespace Xamarin.Tests {
 	[TestFixture]
 	public class ExtensionsTest : TestBaseClass {
-		[TestCase (ApplePlatform.iOS, "ios-arm64")]
-		[TestCase (ApplePlatform.MacOSX, "osx-x64")]
-		[TestCase (ApplePlatform.TVOS, "tvos-arm64")]
-		public void AdditionalAppExtensionTest (ApplePlatform platform, string runtimeIdentifiers)
+		[TestCase (ApplePlatform.iOS, "ios-arm64", null)]
+		[TestCase (ApplePlatform.MacOSX, "osx-x64", null)]
+		[TestCase (ApplePlatform.TVOS, "tvos-arm64", null)]
+		[TestCase (ApplePlatform.iOS, "ios-arm64", "/does/not/exist")]
+		public void AdditionalAppExtensionTest (ApplePlatform platform, string runtimeIdentifiers, string entitlements)
 		{
 			var project = "AdditionalAppExtensionConsumer";
 			var extensionProject = "NativeIntentsExtension";
@@ -30,7 +31,7 @@ namespace Xamarin.Tests {
 				{ "DEVELOPER_DIR", Configuration.XcodeLocation },
 			};
 			foreach (var action in new string [] { "clean", "build" })
-				ExecutionHelper.Execute ("/usr/bin/xcodebuild", xcodeBuildArgs.Concat (new [] { action }).ToArray (), environmentVariables: env, timeout: TimeSpan.FromMinutes (1), throwOnError: true);
+				ExecutionHelper.Execute ("/usr/bin/xcodebuild", xcodeBuildArgs.Concat (new [] { action }).ToArray (), environmentVariables: env, timeout: TimeSpan.FromMinutes (1), throwOnError: true, hide_output: true);
 
 			string buildPlatform;
 			switch (platform) {
@@ -49,7 +50,26 @@ namespace Xamarin.Tests {
 			var properties = GetDefaultProperties (runtimeIdentifiers);
 			properties.Add ("AdditionalAppExtensionPath", xcodeProjectFolder);
 			properties.Add ("AdditionalAppExtensionBuildOutput", $"build/{configuration}{buildPlatform}");
-			var rv = DotNet.AssertBuild (project_path, properties);
+			if (!string.IsNullOrEmpty (entitlements)) {
+				properties.Add ("AdditionalAppExtensionEntitlements", entitlements);
+				var rv = DotNet.AssertBuildFailure (project_path, properties);
+				var errors = BinLog.GetBuildLogErrors (rv.BinLogPath).ToArray ();
+				AssertErrorMessages (errors, "Entitlements.plist template '/does/not/exist' not found.");
+				return;
+			} else {
+				var rv = DotNet.AssertBuild (project_path, properties);
+				var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath)
+					.Where (v => v?.Message?.Contains ("Supported iPhone orientations have not been set") != true)
+					.ToArray ();
+				if (IsRuntimeIdentifierSigned (runtimeIdentifiers)) {
+					var extensionPath = Path.Combine (appPath, GetPlugInsRelativePath (platform), $"{extensionProject}.appex");
+					AssertWarningMessages (warnings, [
+						$"No entitlements set for {extensionPath}."
+					]);
+				} else {
+					rv.AssertNoWarnings ();
+				}
+			}
 
 			var expectedDirectories = new List<string> ();
 			if (IsRuntimeIdentifierSigned (runtimeIdentifiers)) {

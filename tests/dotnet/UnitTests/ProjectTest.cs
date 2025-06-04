@@ -1327,7 +1327,7 @@ namespace Xamarin.Tests {
 
 			ExecutionHelper.Execute ("launchctl", new [] { "remove", "com.apple.CoreSimulator.CoreSimulatorService" }, timeout: TimeSpan.FromSeconds (10));
 
-			var to_kill = new string [] { "iPhone Simulator", "iOS Simulator", "Simulator", "Simulator (Watch)", "com.apple.CoreSimulator.CoreSimulatorService", "ibtoold" };
+			var to_kill = new string [] { "iPhone Simulator", "iOS Simulator", "Simulator", "com.apple.CoreSimulator.CoreSimulatorService", "ibtoold" };
 
 			var args = new List<string> ();
 			args.Add ("-9");
@@ -1335,7 +1335,6 @@ namespace Xamarin.Tests {
 			ExecutionHelper.Execute ("killall", args, timeout: TimeSpan.FromSeconds (10));
 
 			var dirsToBeDeleted = new [] {
-				Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.UserProfile), "Library", "Saved Application State", "com.apple.watchsimulator.savedState"),
 				Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.UserProfile), "Library", "Saved Application State", "com.apple.iphonesimulator.savedState"),
 			};
 
@@ -1794,6 +1793,7 @@ namespace Xamarin.Tests {
 			var directoriesThatMustExist = new string [] {
 				Path.Combine (codesignDirectory, "_CodeSignature"),
 				Path.Combine (sharedSupportDir, "app1.app", codesignDirectory, "_CodeSignature"),
+				Path.Combine (sharedSupportDir, "app3.app", codesignDirectory, "_CodeSignature"),
 			};
 
 			foreach (var mustExist in directoriesThatMustExist)
@@ -1803,12 +1803,12 @@ namespace Xamarin.Tests {
 
 			// And that there are no other signed apps
 			var signatures = appBundleContents.Where (v => v.EndsWith ("_CodeSignature", StringComparison.Ordinal));
-			Assert.That (signatures, Is.Empty, "No other signed app budnles");
+			Assert.That (signatures, Is.Empty, "No other signed app bundles");
 
 			// Assert that some dylibs are signed
 			var dylibs = appBundleContents.Where (v => Path.GetExtension (v) == ".dylib").ToList ();
 			var signedDylibs = new List<string> {
-				Path.Combine (sharedSupportDir, "app2.app", dylibDir, "lib2.dylib"),
+				Path.Combine (sharedSupportDir, "app3.app", dylibDir, "lib3.dylib"),
 			};
 
 			foreach (var dylib in signedDylibs) {
@@ -1826,7 +1826,7 @@ namespace Xamarin.Tests {
 				Assert.That (path, Does.Exist, "unsigned dylib existence");
 				Assert.IsFalse (IsDylibSigned (path), $"Unsigned: {path}");
 			}
-			Assert.AreEqual (1, remainingDylibs.Length, "Unsigned count");
+			Assert.AreEqual (2, remainingDylibs.Length, "Unsigned count");
 
 			// Verify that a Resources subdirectory causes the build to fail.
 			switch (platform) {
@@ -2847,6 +2847,7 @@ namespace Xamarin.Tests {
 			"/System/Library/Frameworks/FileProviderUI.framework/Versions/A/FileProviderUI",
 			"/System/Library/Frameworks/FinderSync.framework/Versions/A/FinderSync",
 			"/System/Library/Frameworks/Foundation.framework/Versions/C/Foundation",
+			"/System/Library/Frameworks/FSKit.framework/Versions/A/FSKit",
 			"/System/Library/Frameworks/GameController.framework/Versions/A/GameController",
 			"/System/Library/Frameworks/GameKit.framework/Versions/A/GameKit",
 			"/System/Library/Frameworks/GameplayKit.framework/Versions/A/GameplayKit",
@@ -3217,6 +3218,46 @@ namespace Xamarin.Tests {
 		}
 
 		[Test]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64")]
+		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		[TestCase (ApplePlatform.TVOS, "tvos-arm64")]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64")]
+		public void SpacedAppTitle (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			var project = "Spaced App";
+			var title = "Spaced App Title";
+
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+
+			var applicationTitle = (platform.IsDesktop () && Version.Parse (Configuration.DotNetTfm.Replace ("net", "")).Major >= 10) ? title : project;
+			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath, applicationTitle: applicationTitle);
+			Clean (project_path);
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			var rv = DotNet.AssertBuild (project_path, properties);
+			var errors = BinLog.GetBuildLogErrors (rv.BinLogPath).ToArray ();
+
+			var infoPlistPath = GetInfoPListPath (platform, appPath);
+			var infoPlist = PDictionary.FromFile (infoPlistPath)!;
+			Assert.AreEqual ("com.xamarin.spacedapp", infoPlist.GetString ("CFBundleIdentifier").Value, "CFBundleIdentifier");
+			Assert.AreEqual ("Spaced App Title", infoPlist.GetString ("CFBundleDisplayName").Value, "CFBundleDisplayName");
+
+			var appName = Path.GetFileNameWithoutExtension (appPath);
+			switch (platform) {
+			case ApplePlatform.MacCatalyst:
+			case ApplePlatform.MacOSX:
+				Assert.That (appName, Is.EqualTo (applicationTitle), "Dock Name");
+				break;
+			case ApplePlatform.iOS:
+			case ApplePlatform.TVOS:
+				Assert.That (appName, Is.EqualTo (project), "App Name");
+				break;
+			default:
+				throw new NotImplementedException ();
+			}
+		}
+
+		[Test]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64", "13.1")]
 		[TestCase (ApplePlatform.iOS, "ios-arm64", "10.0")]
 		[TestCase (ApplePlatform.TVOS, "tvossimulator-x64", "10.0")]
@@ -3237,6 +3278,78 @@ namespace Xamarin.Tests {
 			var rv = DotNet.AssertBuildFailure (project_path, properties);
 			var errors = BinLog.GetBuildLogErrors (rv.BinLogPath).ToArray ();
 			AssertErrorMessages (errors, $"The SupportedOSPlatformVersion value '{version}' in the project file is lower than the minimum value '{minVersion}'.");
+		}
+
+		// macOS doesn't support UseNativeHttpHandler / any of our native http handlers being the default http handler.
+		[Test]
+		[TestCase (ApplePlatform.MacCatalyst, "NSUrlSessionHandler")]
+		[TestCase (ApplePlatform.iOS, "CFNetworkHandler")]
+		[TestCase (ApplePlatform.TVOS, "")]
+		[TestCase (ApplePlatform.MacCatalyst, "Invalid")]
+		public void HttpClientHandlerFeatureTrimmedAway (ApplePlatform platform, string handler)
+		{
+			var project = "ApiTestApp";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+
+			var runtimeIdentifiers = GetDefaultRuntimeIdentifier (platform);
+			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath);
+			Clean (project_path);
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties ["AdditionalDefineConstants"] = "HttpClientHandlerFeatureTrimmedAway";
+			properties ["TrimMode"] = "partial";
+			properties ["UseNativeHttpHandler"] = string.IsNullOrEmpty (handler) ? "false" : "true";
+			if (!string.IsNullOrEmpty (handler))
+				properties ["MtouchHttpClientHandler"] = handler;
+			properties ["ExcludeTouchUnitReference"] = "true"; // speed things up a bit
+			properties ["ExcludeNUnitLiteReference"] = "true"; // speed things up a bit
+			if (handler == "Invalid") {
+				var rv2 = DotNet.AssertBuildFailure (project_path, properties);
+				var errors = BinLog.GetBuildLogErrors (rv2.BinLogPath).ToArray ();
+				AssertErrorMessages (errors, $"Invalid value for 'MtouchHttpClientHandler' ('Invalid', must be either 'NSUrlSessionHandler' or 'CFNetworkHandler' (or not set at all).");
+				return;
+			}
+			var rv = DotNet.AssertBuild (project_path, properties);
+			var platformAssembly = Path.Combine (appPath, GetRelativeAssemblyDirectory (platform), $"Microsoft.{platform.AsString ()}.dll");
+			var ad = AssemblyDefinition.ReadAssembly (platformAssembly, new ReaderParameters { ReadingMode = ReadingMode.Deferred });
+			var runtimeType = ad.MainModule.Types.Single (v => v.FullName == "ObjCRuntime.Runtime");
+
+			var get_UseCFNetworkHandler = runtimeType.Methods.SingleOrDefault (v => v.Name == "get_UseCFNetworkHandler");
+			Assert.That (get_UseCFNetworkHandler, Is.Null, "get_UseCFNetworkHandler");
+			var get_UseNSUrlSessionHandler = runtimeType.Methods.SingleOrDefault (v => v.Name == "get_UseNSUrlSessionHandler");
+			Assert.That (get_UseNSUrlSessionHandler, Is.Null, "get_UseNSUrlSessionHandler");
+
+			string nsurlSessionHandleNamespace;
+			switch (platform) {
+			case ApplePlatform.iOS:
+			case ApplePlatform.TVOS:
+			case ApplePlatform.MacCatalyst:
+				nsurlSessionHandleNamespace = "System.Net.Http.NSUrlSessionHandler";
+				break;
+			case ApplePlatform.MacOSX:
+				nsurlSessionHandleNamespace = "Foundation.NSUrlSessionHandler";
+				break;
+			default:
+				throw new NotImplementedException ();
+			}
+
+			var cfnetworkHandlerType = ad.MainModule.Types.SingleOrDefault (v => v.FullName == "System.Net.Http.CFNetworkHandler");
+			var nsUrlSessionHandlerType = ad.MainModule.Types.SingleOrDefault (v => v.FullName == nsurlSessionHandleNamespace);
+			switch (handler) {
+			case "":
+				Assert.That (cfnetworkHandlerType, Is.Null, $"System.Net.Http.CFNetworkHandler: {platformAssembly}");
+				Assert.That (nsUrlSessionHandlerType, Is.Null, $"{nsurlSessionHandleNamespace}: {platformAssembly}");
+				break;
+			case "NSUrlSessionHandler":
+				Assert.That (cfnetworkHandlerType, Is.Null, $"System.Net.Http.CFNetworkHandler: {platformAssembly}");
+				Assert.That (nsUrlSessionHandlerType, Is.Not.Null, $"{nsurlSessionHandleNamespace}: {platformAssembly}");
+				break;
+			case "CFNetworkHandler":
+				Assert.That (cfnetworkHandlerType, Is.Not.Null, $"System.Net.Http.CFNetworkHandler: {platformAssembly}");
+				Assert.That (nsUrlSessionHandlerType, Is.Null, $"{nsurlSessionHandleNamespace}: {platformAssembly}");
+				break;
+			default:
+				throw new InvalidOperationException ();
+			}
 		}
 	}
 }

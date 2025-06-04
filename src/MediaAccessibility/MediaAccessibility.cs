@@ -18,37 +18,11 @@ using CoreText;
 using Foundation;
 
 namespace MediaAccessibility {
-
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public static partial class MACaptionAppearance {
-
-#if !NET
-		// FIXME: make this a real notification
-		public static readonly NSString? SettingsChangedNotification;
-
-		[Advice ("Use 'MediaCharacteristic.DescribesMusicAndSoundForAccessibility' getter.")]
-		public static readonly NSString? MediaCharacteristicDescribesMusicAndSoundForAccessibility;
-
-		[Advice ("Use 'MediaCharacteristic.TranscribesSpokenDialogForAccessibility' getter.")]
-		public static readonly NSString? MediaCharacteristicTranscribesSpokenDialogForAccessibility;
-
-		static MACaptionAppearance ()
-		{
-			var handle = Libraries.MediaAccessibility.Handle;
-			SettingsChangedNotification = Dlfcn.GetStringConstant (handle, "kMACaptionAppearanceSettingsChangedNotification");
-
-			MediaCharacteristicDescribesMusicAndSoundForAccessibility = Dlfcn.GetStringConstant (handle,
-				"MAMediaCharacteristicDescribesMusicAndSoundForAccessibility");
-			MediaCharacteristicTranscribesSpokenDialogForAccessibility = Dlfcn.GetStringConstant (handle,
-				"MAMediaCharacteristicTranscribesSpokenDialogForAccessibility");
-		}
-#endif
-
 		[DllImport (Constants.MediaAccessibilityLibrary)]
 		static extern byte MACaptionAppearanceAddSelectedLanguage (nint domain,
 			/* CFStringRef __nonnull */ IntPtr language);
@@ -332,27 +306,17 @@ namespace MediaAccessibility {
 			return (MACaptionAppearanceTextEdgeStyle) (int) rv;
 		}
 
-#if NET
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (13, 0)]
-		[iOS (13, 0)]
-#endif
 		[DllImport (Constants.MediaAccessibilityLibrary)]
 		static extern void MACaptionAppearanceDidDisplayCaptions (IntPtr /* CFArratRef */ strings);
 
-#if NET
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (13, 0)]
-		[iOS (13, 0)]
-#endif
 		public static void DidDisplayCaptions (string [] strings)
 		{
 			if ((strings is null) || (strings.Length == 0))
@@ -363,15 +327,10 @@ namespace MediaAccessibility {
 			}
 		}
 
-#if NET
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (13, 0)]
-		[iOS (13, 0)]
-#endif
 		public static void DidDisplayCaptions (NSAttributedString [] strings)
 		{
 			// CFAttributedString is “toll-free bridged” with its Foundation counterpart, NSAttributedString.
@@ -384,47 +343,35 @@ namespace MediaAccessibility {
 			}
 		}
 
-#if NET
 		[SupportedOSPlatform ("tvos18.0")]
 		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("ios18.0")]
 		[SupportedOSPlatform ("maccatalyst18.0")]
-#else
-		[TV (18, 0), iOS (18, 0), MacCatalyst (18, 0), Mac (15, 0)]
-#endif
 		[DllImport (Constants.MediaAccessibilityLibrary)]
 		static extern byte MACaptionAppearanceIsCustomized (nint /* MACaptionAppearanceDomain */ domain);
 
 		/// <summary>Checks whether the specified style has been customized by the user.</summary>
 		/// <param name="domain">The style to check</param>
 		/// <returns>True if the specified style has been customized by the user, false otherwise.</returns>
-#if NET
 		[SupportedOSPlatform ("tvos18.0")]
 		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("ios18.0")]
 		[SupportedOSPlatform ("maccatalyst18.0")]
-#else
-		[TV (18, 0), iOS (18, 0), MacCatalyst (18, 0), Mac (15, 0)]
-#endif
 		public static bool IsCustomized (MACaptionAppearanceDomain domain)
 		{
 			return MACaptionAppearanceIsCustomized ((nint) (long) domain) != 0;
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	static partial class MAAudibleMedia {
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		[DllImport (Constants.MediaAccessibilityLibrary)]
 		static extern unsafe IntPtr /* CFArrayRef __nonnull */ MAAudibleMediaCopyPreferredCharacteristics ();
 
@@ -444,32 +391,22 @@ namespace MediaAccessibility {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios16.4")]
 	[SupportedOSPlatform ("maccatalyst16.4")]
 	[SupportedOSPlatform ("macos13.3")]
 	[SupportedOSPlatform ("tvos16.4")]
-#endif
 	public static partial class MAVideoAccommodations {
-#if NET
 		[SupportedOSPlatform ("ios16.4")]
 		[SupportedOSPlatform ("maccatalyst16.4")]
 		[SupportedOSPlatform ("macos13.3")]
 		[SupportedOSPlatform ("tvos16.4")]
-#else
-		[Mac (13, 3), TV (16, 4), iOS (16, 4)]
-#endif
 		[DllImport (Constants.MediaAccessibilityLibrary)]
 		static extern byte MADimFlashingLightsEnabled ();
 
-#if NET
 		[SupportedOSPlatform ("ios16.4")]
 		[SupportedOSPlatform ("maccatalyst16.4")]
 		[SupportedOSPlatform ("macos13.3")]
 		[SupportedOSPlatform ("tvos16.4")]
-#else
-		[Mac (13, 3), TV (16, 4), iOS (16, 4)]
-#endif
 		public static bool IsDimFlashingLightsEnabled () => MADimFlashingLightsEnabled () != 0;
 	}
 }

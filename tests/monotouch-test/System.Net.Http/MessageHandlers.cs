@@ -9,10 +9,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Net;
 using System.Net.Http;
-#if NET
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
-#endif
 using System.Linq;
 using System.IO;
 
@@ -40,10 +38,8 @@ namespace MonoTests.System.Net.Http {
 				return new HttpClientHandler ();
 			if (handler_type == typeof (CFNetworkHandler))
 				return new CFNetworkHandler ();
-#if NET
 			if (handler_type == typeof (SocketsHttpHandler))
 				return new SocketsHttpHandler ();
-#endif
 			if (handler_type == typeof (NSUrlSessionHandler))
 				return new NSUrlSessionHandler ();
 
@@ -54,9 +50,7 @@ namespace MonoTests.System.Net.Http {
 		[Test]
 		[TestCase (typeof (HttpClientHandler))]
 		[TestCase (typeof (CFNetworkHandler))]
-#if NET
 		[TestCase (typeof (SocketsHttpHandler))]
-#endif
 		[TestCase (typeof (NSUrlSessionHandler))]
 		public void DnsFailure (Type handlerType)
 		{
@@ -439,12 +433,7 @@ namespace MonoTests.System.Net.Http {
 			}
 		}
 
-#if !NET // By default HttpClientHandler redirects to a NSUrlSessionHandler, so no need to test that here.
-		[TestCase (typeof (HttpClientHandler))]
-#endif
-#if NET
 		[TestCase (typeof (SocketsHttpHandler))]
-#endif
 		[TestCase (typeof (NSUrlSessionHandler))]
 		public void RejectSslCertificatesServicePointManager (Type handlerType)
 		{
@@ -477,7 +466,6 @@ namespace MonoTests.System.Net.Http {
 					return false;
 				};
 #pragma warning restore SM02184
-#if NET
 			} else if (handler is SocketsHttpHandler shh) {
 				expectedExceptionType = typeof (AuthenticationException);
 				var sslOptions = new SslClientAuthenticationOptions {
@@ -490,14 +478,9 @@ namespace MonoTests.System.Net.Http {
 					},
 				};
 				shh.SslOptions = sslOptions;
-#endif // NET
 			} else if (handler is NSUrlSessionHandler ns) {
 				expectedExceptionType = typeof (WebException);
-#if NET
 				ns.TrustOverrideForUrl += (a, b, c) => {
-#else
-				ns.TrustOverride += (a, b) => {
-#endif
 					validationCbWasExecuted = true;
 					// return false, since we want to test that the exception is raised
 					return false;
@@ -545,11 +528,7 @@ namespace MonoTests.System.Net.Http {
 
 			var handler = GetHandler (handlerType);
 			if (handler is NSUrlSessionHandler ns) {
-#if NET
 				ns.TrustOverrideForUrl += (a, b, c) => {
-#else
-				ns.TrustOverride += (a, b) => {
-#endif
 					// servicePointManagerCbWasExcuted = true;
 					return true;
 				};
@@ -589,7 +568,6 @@ namespace MonoTests.System.Net.Http {
 			// Assert.IsTrue (servicePointManagerCbWasExcuted, "Executed");
 		}
 
-#if NET
 		[Ignore ("https://github.com/dotnet/macios/issues/21912")]
 		[TestCase ("https://self-signed.badssl.com/")]
 		[TestCase ("https://wrong.host.badssl.com/")]
@@ -706,8 +684,6 @@ namespace MonoTests.System.Net.Http {
 				Assert.AreEqual (certificate.Thumbprint, certificate2.Thumbprint);
 			}
 		}
-
-#endif
 
 		[Test]
 		public void AssertDefaultValuesNSUrlSessionHandler ()
@@ -876,7 +852,6 @@ namespace MonoTests.System.Net.Http {
 			}
 		}
 
-#if NET
 		[TestCase (typeof (NSUrlSessionHandler))]
 		[TestCase (typeof (SocketsHttpHandler))]
 		public void UpdateRequestUriAfterRedirect (Type handlerType)
@@ -925,6 +900,5 @@ namespace MonoTests.System.Net.Http {
 				Assert.IsNull (ex, "Exception");
 			}
 		}
-#endif // NET
 	}
 }

@@ -9,10 +9,6 @@ using ObjCRuntime;
 
 using System;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace Cinematic {
 
 	[TV (17, 0), Mac (14, 0), iOS (17, 0), NoMacCatalyst]

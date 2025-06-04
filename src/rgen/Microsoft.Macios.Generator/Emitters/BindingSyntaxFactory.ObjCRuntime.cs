@@ -21,22 +21,6 @@ namespace Microsoft.Macios.Generator.Emitters;
 static partial class BindingSyntaxFactory {
 	readonly static string objc_msgSend = "objc_msgSend";
 	readonly static string objc_msgSendSuper = "objc_msgSendSuper";
-	readonly static TypeSyntax Selector = GetIdentifierName (
-		@namespace: ["ObjCRuntime"],
-		@class: "Selector",
-		isGlobal: true);
-	public static readonly TypeSyntax NSValue = GetIdentifierName (
-		@namespace: ["Foundation"],
-		@class: "NSValue",
-		isGlobal: true);
-	public static readonly TypeSyntax NSNumber = GetIdentifierName (
-		@namespace: ["Foundation"],
-		@class: "NSNumber",
-		isGlobal: true);
-	public readonly static TypeSyntax NativeHandle = GetIdentifierName (
-		@namespace: ["ObjCRuntime"],
-		@class: "NativeHandle",
-		isGlobal: true);
 
 	/// <summary>
 	/// Returns the expression needed to cast a parameter to its native type.
@@ -44,8 +28,17 @@ static partial class BindingSyntaxFactory {
 	/// <param name="parameter">The parameter whose casting we need to generate. The type info has to be
 	/// and enum and be marked as native. If it is not, the method returns null</param>
 	/// <returns>The cast C# expression.</returns>
-	internal static CastExpressionSyntax? CastToNative (in Parameter parameter)
-		=> CastToNative (parameter.Name, parameter.Type);
+	internal static CastExpressionSyntax? CastEnumToNative (in Parameter parameter)
+		=> CastEnumToNative (parameter.Name, parameter.Type);
+
+	/// <summary>
+	/// Returns the expression needed to cast a parameter to its native type.
+	/// </summary>
+	/// <param name="parameter">The parameter whose casting we need to generate. The type info has to be
+	/// and enum and be marked as native. If it is not, the method returns null</param>
+	/// <returns>The cast C# expression.</returns>
+	internal static CastExpressionSyntax? CastEnumToNative (in DelegateParameter parameter)
+		=> CastEnumToNative (parameter.Name, parameter.Type);
 
 	/// <summary>
 	/// Returns the expression needed to cast a varuable to its native type.
@@ -54,7 +47,7 @@ static partial class BindingSyntaxFactory {
 	/// <param name="typeInfo">The type information of the variable.  The type info has to be
 	/// and enum and be marked as native. If it is not, the method returns null</param>
 	/// <returns>The cast C# expression.</returns>
-	internal static CastExpressionSyntax? CastToNative (string variableName, in TypeInfo typeInfo)
+	internal static CastExpressionSyntax? CastEnumToNative (string variableName, in TypeInfo typeInfo)
 	{
 		// not an enum and not a native value. we cannot calculate the casting expression.
 		if (!typeInfo.IsEnum || !typeInfo.IsNativeEnum)
@@ -77,6 +70,47 @@ static partial class BindingSyntaxFactory {
 	}
 
 	/// <summary>
+	/// Returns the expression needed to cast a native representation of an enum back to its enum type.
+	/// </summary>
+	/// <param name="parameter">The parameter whose casting we need to generate. The type info has to be
+	/// an enum and be marked as native. If it is not, the method returns null.</param>
+	/// <returns>The cast C# expression, or null if the parameter is not a native enum.</returns>
+	internal static CastExpressionSyntax? CastNativeToEnum (in Parameter parameter)
+		=> CastNativeToEnum (parameter.Name, parameter.Type);
+
+	/// <summary>
+	/// Returns the expression needed to cast a native representation of an enum back to its enum type.
+	/// </summary>
+	/// <param name="parameter">The parameter whose casting we need to generate. The type info has to be
+	/// an enum and be marked as native. If it is not, the method returns null.</param>
+	/// <returns>The cast C# expression, or null if the parameter is not a native enum.</returns>
+	internal static CastExpressionSyntax? CastNativeToEnum (in DelegateParameter parameter)
+		=> CastNativeToEnum (parameter.Name, parameter.Type);
+
+	/// <summary>
+	/// Returns the expression needed to cast a native representation of an enum back to its enum type.
+	/// </summary>
+	/// <param name="variableName">The name of the variable holding the native enum value.</param>
+	/// <param name="typeInfo">The type information of the enum. The type info has to be
+	/// an enum and be marked as native. If it is not, the method returns null.</param>
+	/// <returns>The cast C# expression, or null if the typeInfo is not a native enum.</returns>
+	internal static CastExpressionSyntax? CastNativeToEnum (string variableName, in TypeInfo typeInfo)
+	{
+		// not an enum and not a native value. we cannot calculate the casting expression.
+		if (!typeInfo.IsEnum || !typeInfo.IsNativeEnum)
+			return null;
+
+		var enumBackingValue = typeInfo.EnumUnderlyingType.Value.GetKeyword ();
+		var castExpression = CastExpression (typeInfo.GetIdentifierSyntax (), // (IntPtr/UIntPtr) cast
+			CastExpression (
+					IdentifierName (enumBackingValue),
+					IdentifierName (variableName)
+						.WithLeadingTrivia (Space))
+				.WithLeadingTrivia (Space)); // (backingfield) (variable) cast
+		return castExpression;
+	}
+
+	/// <summary>
 	/// Returns the expression needed to cast an enum parameter to its primitive type to be used in marshaling.
 	/// </summary>
 	/// <param name="parameter">The parameter for which we need to generate the casting. The type info has to be
@@ -90,7 +124,7 @@ static partial class BindingSyntaxFactory {
 
 		if (parameter.Type.IsNativeEnum) {
 			// return the native casting
-			return CastToNative (parameter);
+			return CastEnumToNative (parameter);
 		}
 
 		// returns the enum primitive to be used
@@ -141,6 +175,24 @@ static partial class BindingSyntaxFactory {
 			condition: IdentifierName (variableName).WithTrailingTrivia (Space),
 			whenTrue: castOne.WithLeadingTrivia (Space),
 			whenFalse: castZero);
+	}
+
+	/// <summary>
+	/// Returns the expression needed to cast a byte to a bool to be used in a call. 
+	/// </summary>
+	/// <param name="variableName">The variable to cast.</param>
+	/// <param name="typeInfo">The type information of the variable.</param>
+	/// <returns>A binary expression that casts a byte to a bool.</returns>
+	internal static BinaryExpressionSyntax CastToBool (string variableName, in TypeInfo typeInfo)
+	{
+		// with this exact space count
+		// byte != 0;
+		return BinaryExpression (
+			SyntaxKind.NotEqualsExpression,
+			IdentifierName (variableName),
+			LiteralExpression (
+				SyntaxKind.NumericLiteralExpression,
+				Literal (0))).NormalizeWhitespace ();
 	}
 
 	/// <summary>
@@ -708,7 +760,7 @@ static partial class BindingSyntaxFactory {
 	internal static (string Name, LocalDeclarationStatementSyntax Declaration) GetReturnValueAuxVariable (in TypeInfo returnType)
 	{
 		var typeSyntax = returnType.GetIdentifierSyntax ();
-		var variableName = Nomenclator.GetReturnVariableName (returnType);
+		var variableName = Nomenclator.GetReturnVariableName ();
 		// generates Type ret; The GetIdentifierSyntax will ensure that the correct type and nullable annotation is used
 		var declaration = LocalDeclarationStatement (
 			VariableDeclaration (typeSyntax.WithTrailingTrivia (Space))
@@ -818,4 +870,71 @@ static partial class BindingSyntaxFactory {
 	internal static string? GetObjCMessageSendMethod (in Method method, bool isSuper = false, bool isStret = false)
 		=> GetObjCMessageSendMethodName (method.ExportMethodData, method.ReturnType, method.Parameters, isSuper,
 			isStret);
+
+	/// <summary>
+	/// Gets the name of the NSValue instance method used to retrieve its underlying value, based on the provided type.
+	/// For example, if the type is CGPoint, this returns "CGPointValue".
+	/// </summary>
+	/// <param name="type">The <see cref="TypeInfo"/> representing the expected underlying type of the NSValue.</param>
+	/// <returns>A string representing the name of the NSValue method to call (e.g., "CGPointValue", "CGRectValue"),
+	/// or an empty string if the type is not a supported NSValue underlying type.</returns>
+	internal static string GetNSValueValue (in TypeInfo type)
+	{
+		// return the method needed to retrieve the value from the NSValue object based on the type
+#pragma warning disable format
+		// get the factory method based on the parameter type, if it is not found, return null
+		return type switch { 
+			{ FullyQualifiedName: "CoreGraphics.CGAffineTransform" } => "CGAffineTransformValue", 
+			{ FullyQualifiedName: "Foundation.NSRange" } => "RangeValue", 
+			{ FullyQualifiedName: "CoreGraphics.CGVector" } => "CGVectorValue", 
+			{ FullyQualifiedName: "SceneKit.SCNMatrix4" } => "SCNMatrix4Value", 
+			{ FullyQualifiedName: "CoreLocation.CLLocationCoordinate2D" } => "MKCoordinateValue", 
+			{ FullyQualifiedName: "SceneKit.SCNVector3" } => "VectorValue", 
+			{ FullyQualifiedName: "SceneKit.SCNVector4" } => "VectorValue", 
+			{ FullyQualifiedName: "CoreGraphics.CGPoint" } => "CGPointValue", 
+			{ FullyQualifiedName: "CoreGraphics.CGRect" } => "CGRectValue", 
+			{ FullyQualifiedName: "CoreGraphics.CGSize" } => "CGSizeValue", 
+			{ FullyQualifiedName: "UIKit.UIEdgeInsets" } => "UIEdgeInsetsValue", 
+			{ FullyQualifiedName: "UIKit.UIOffset" } => "UIOffsetValue", 
+			{ FullyQualifiedName: "MapKit.MKCoordinateSpan" } => "MKCoordinateSpanValue", 
+			{ FullyQualifiedName: "CoreMedia.CMTimeRange" } => "CMTimeRangeValue", 
+			{ FullyQualifiedName: "CoreMedia.CMTime" } => "CMTimeValue", 
+			{ FullyQualifiedName: "CoreMedia.CMTimeMapping" } => "CMTimeMappingValue", 
+			{ FullyQualifiedName: "CoreAnimation.CATransform3D" } => "CATransform3DValue",
+			_ => string.Empty,
+		};
+#pragma warning restore format
+	}
+
+	/// <summary>
+	/// Gets the name of the NSNumber instance method used to retrieve its underlying value, based on the provided type.
+	/// For example, if the type is `int`, this returns "Int32Value".
+	/// </summary>
+	/// <param name="type">The <see cref="TypeInfo"/> representing the expected underlying type of the NSNumber.</param>
+	/// <returns>A string representing the name of the NSNumber method to call (e.g., "Int32Value", "DoubleValue"),
+	/// or an empty string if the type is not a supported NSNumber underlying type.</returns>
+	internal static string GetNSNumberValue (in TypeInfo type)
+	{
+#pragma warning disable format
+		return type switch {
+			{ Name: "nint" } => "NIntValue",
+			{ Name: "nuint" } => "NUIntValue",
+			{ Name: "nfloat" or "NFloat" } => "NFloatValue",
+			{ SpecialType: SpecialType.System_Boolean } => "BooleanValue",
+			{ SpecialType: SpecialType.System_Byte } => "ByteValue",
+			{ SpecialType: SpecialType.System_Double } => "DoubleValue",
+			{ SpecialType: SpecialType.System_Single } => "FloatValue",
+			{ SpecialType: SpecialType.System_Int16 } => "Int16Value",
+			{ SpecialType: SpecialType.System_Int32 } => "Int32Value",
+			{ SpecialType: SpecialType.System_Int64 } => "Int64Value",
+			{ SpecialType: SpecialType.System_SByte } => "SByteValue",
+			{ SpecialType: SpecialType.System_UInt16 } => "UInt16Value",
+			{ SpecialType: SpecialType.System_UInt32 } => "UInt32Value",
+			{ SpecialType: SpecialType.System_UInt64 } => "UInt64Value",
+			{ SpecialType: SpecialType.System_IntPtr } => "NIntValue",
+			{ SpecialType: SpecialType.System_UIntPtr } => "NUIntValue",
+			_ => string.Empty,
+		};
+#pragma warning restore format
+	}
 }

@@ -8,6 +8,7 @@
 //
 
 using System;
+using System.Numerics;
 using CoreFoundation;
 using CoreGraphics;
 using CoreImage;
@@ -20,21 +21,8 @@ using ObjCRuntime;
 using ImageIO;
 using AVFoundation;
 
-#if NET
-using Vector2 = global::System.Numerics.Vector2;
-using Vector3 = global::System.Numerics.Vector3;
 using Matrix3 = global::CoreGraphics.NMatrix3;
 using Matrix4 = global::CoreGraphics.NMatrix4;
-#else
-using Vector2 = global::OpenTK.Vector2;
-using Vector3 = global::OpenTK.Vector3;
-using Matrix3 = global::OpenTK.NMatrix3;
-using Matrix4 = global::OpenTK.NMatrix4;
-#endif
-
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
 
 namespace Vision {
 
@@ -2745,10 +2733,6 @@ namespace Vision {
 		[Export ("alignmentTransform", ArgumentSemantic.Assign)]
 		CGAffineTransform AlignmentTransform {
 			get;
-#if !NET
-			[NotImplemented]
-			set;
-#endif
 		}
 	}
 
@@ -2762,10 +2746,6 @@ namespace Vision {
 		Matrix3 WarpTransform {
 			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 			get;
-#if !NET
-			[NotImplemented]
-			set;
-#endif
 		}
 	}
 

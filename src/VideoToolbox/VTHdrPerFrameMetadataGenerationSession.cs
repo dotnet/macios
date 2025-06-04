@@ -1,5 +1,3 @@
-#if NET
-
 #nullable enable
 
 using System;
@@ -11,16 +9,11 @@ using Foundation;
 using ObjCRuntime;
 
 namespace VideoToolbox {
-
 	/// <summary>This class can be used to perform HDR Per Frame Metadata Generation.</summary>
-#if NET
 	[SupportedOSPlatform ("ios18.0")]
 	[SupportedOSPlatform ("maccatalyst18.0")]
 	[SupportedOSPlatform ("macos15.0")]
 	[SupportedOSPlatform ("tvos18.0")]
-#else
-	[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
-#endif
 	public class VTHdrPerFrameMetadataGenerationSession : NativeObject {
 		[Preserve (Conditional = true)]
 		protected VTHdrPerFrameMetadataGenerationSession (NativeHandle handle, bool owns)
@@ -91,5 +84,3 @@ namespace VideoToolbox {
 		}
 	}
 }
-
-#endif // NET

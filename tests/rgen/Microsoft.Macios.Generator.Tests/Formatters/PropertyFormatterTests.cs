@@ -76,7 +76,7 @@ public partial class MyClass {
 	public partial MyStruct? Property { get; set; }
 }
 ";
-			yield return [nullableStructProperty, "public partial NS.MyStruct? Property"];
+			yield return [nullableStructProperty, $"public partial {Global ("NS.MyStruct")}? Property"];
 		}
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();

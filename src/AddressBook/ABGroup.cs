@@ -41,10 +41,6 @@ using CoreFoundation;
 using Foundation;
 using ObjCRuntime;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace AddressBook {
 	[SupportedOSPlatform ("ios")]
 	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
@@ -127,7 +123,7 @@ namespace AddressBook {
 			if (source is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (source));
 
-			Handle = ABGroupCreateInSource (source.Handle);
+			InitializeHandle (ABGroupCreateInSource (source.Handle));
 			GC.KeepAlive (source);
 		}
 

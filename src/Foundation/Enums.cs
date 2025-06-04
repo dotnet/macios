@@ -216,13 +216,9 @@ namespace Foundation {
 		Script,
 	}
 
-#if !NET
-	public enum NSLinguisticTagUnit {
-#else
 	/// <summary>Contains read-only static properties corresponding to the parts of speech recognized by a <see cref="Foundation.NSLinguisticTagger" />.</summary>
 	/// <summary>Enumerates tag values for linguistic units.</summary>
 	public enum NSLinguisticTag {
-#endif
 		[Field ("NSLinguisticTagWord")]
 		Word,
 

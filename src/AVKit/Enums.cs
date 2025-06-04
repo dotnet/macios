@@ -28,10 +28,8 @@ namespace AVKit {
 	/// <summary>Enumeration of error states that can occur while using AVKit.</summary>
 	/// <remarks>To be added.</remarks>
 	[TV (13, 0)]
-#if NET
 	[NoMac]
 	[MacCatalyst (13, 1)]
-#endif
 	[Native]
 	[ErrorDomain ("AVKitErrorDomain")]
 	public enum AVKitError : long {

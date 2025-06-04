@@ -14,10 +14,6 @@ using Foundation;
 using ObjCRuntime;
 using CoreMedia;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace SoundAnalysis {
 
 	[ErrorDomain ("SNErrorDomain")]
@@ -209,9 +205,7 @@ namespace SoundAnalysis {
 		[Export ("type", ArgumentSemantic.Assign)]
 		SNTimeDurationConstraintType Type { get; }
 
-#if NET
 		[BindAs (typeof (CMTime []))]
-#endif
 		[Export ("enumeratedDurations", ArgumentSemantic.Strong)]
 		NSValue [] EnumeratedDurations { get; }
 

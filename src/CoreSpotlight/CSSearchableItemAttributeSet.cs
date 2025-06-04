@@ -22,7 +22,6 @@ namespace CoreSpotlight {
 		}
 
 		// Manually deal with these properties until we get BindAs working
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -30,7 +29,6 @@ namespace CoreSpotlight {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]
-#endif
 		public bool? IsUserCreated {
 			get {
 				return _IsUserCreated?.BoolValue;
@@ -40,7 +38,6 @@ namespace CoreSpotlight {
 			}
 		}
 
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -48,7 +45,6 @@ namespace CoreSpotlight {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]
-#endif
 		public bool? IsUserOwned {
 			get {
 				return _IsUserOwned?.BoolValue;
@@ -58,7 +54,6 @@ namespace CoreSpotlight {
 			}
 		}
 
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -66,7 +61,6 @@ namespace CoreSpotlight {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]
-#endif
 		public bool? IsUserCurated {
 			get {
 				return _IsUserCurated?.BoolValue;

@@ -11,26 +11,25 @@ using Xamarin.Localization.MSBuild;
 using Xamarin.Messaging.Build.Client;
 using Xamarin.Utils;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Xamarin.MacDev.Tasks {
 	public class CompileNativeCode : XamarinTask, ICancelableTask, ITaskCallback {
 
 		#region Inputs
 		[Required]
-		public ITaskItem [] CompileInfo { get; set; }
+		public ITaskItem [] CompileInfo { get; set; } = [];
 
-		public ITaskItem [] IncludeDirectories { get; set; }
-
-		[Required]
-		public string MinimumOSVersion { get; set; }
+		public ITaskItem [] IncludeDirectories { get; set; } = [];
 
 		[Required]
-		public string SdkDevPath { get; set; }
+		public string MinimumOSVersion { get; set; } = "";
 
 		[Required]
-		public string SdkRoot { get; set; }
+		public string SdkDevPath { get; set; } = "";
+
+		[Required]
+		public string SdkRoot { get; set; } = "";
 
 		[Required]
 		public bool SdkIsSimulator { get; set; }

@@ -20,10 +20,6 @@ using NSView = UIKit.UIView;
 using NSRectEdge = Foundation.NSObject;
 #endif
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace ContactsUI {
 
 #if !MONOMAC

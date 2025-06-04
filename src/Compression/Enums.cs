@@ -26,11 +26,7 @@ namespace Compression {
 		Brotli = 0xB02,
 		/// <summary>The LZBitmap compression format.</summary>
 		/// <remarks>This compression algorithm is only available on Apple devices.</remarks>
-#if NET
 		[iOS (15, 0), Mac (12, 0), TV (15, 0), MacCatalyst (15, 0)]
-#else
-		[iOS (15, 0), Mac (12, 0), TV (15, 0)]
-#endif
 		LZBitmap = 0x702,
 	}
 

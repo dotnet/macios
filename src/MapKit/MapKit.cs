@@ -21,14 +21,12 @@ using ObjCRuntime;
 namespace MapKit {
 
 	// MKTileOverlay.h
-#if NET
 	/// <summary>Encapsulates the index values of a particular <see cref="MapKit.MKTileOverlay" />.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct MKTileOverlayPath {
 		/// <summary>The index of the <see cref="MapKit.MKTileOverlay" /> along the X axis.</summary>
@@ -70,14 +68,12 @@ namespace MapKit {
 
 	// MKGeometry.h
 	// note: CLLocationDegrees is double - see CLLocation.h
-#if NET
 	/// <summary>The area spanned by a region of the map.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct MKCoordinateSpan {
 		/// <summary>To be added.</summary>
@@ -108,14 +104,12 @@ namespace MapKit {
 	}
 
 	// MKGeometry.h
-#if NET
 	/// <summary>Defines a region of the map to display.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct MKCoordinateRegion {
 		/// <summary>The center for the region of the map to display.</summary>
@@ -170,13 +164,11 @@ namespace MapKit {
 	}
 
 	// MKGeometry.h
-#if NET
 	/// <include file="../../docs/api/MapKit/MKMapPoint.xml" path="/Documentation/Docs[@DocId='T:MapKit.MKMapPoint']/*" />
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct MKMapPoint {
 		/// <summary>To be added.</summary>
@@ -255,7 +247,6 @@ namespace MapKit {
 	}
 
 	// MKGeometry.h
-#if NET
 	/// <summary>The extent of a 2D map projection as measured in map points.</summary>
 	///     <remarks>
 	///     </remarks>
@@ -264,7 +255,6 @@ namespace MapKit {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct MKMapSize {
 		/// <summary>To be added.</summary>
@@ -285,7 +275,6 @@ namespace MapKit {
 			Height = height;
 		}
 
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -293,7 +282,6 @@ namespace MapKit {
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
-#endif
 		public static MKMapSize World { get { return new MKMapSize (0x10000000, 0x10000000); } }
 
 		// MKMapSizeEqualToSize
@@ -340,24 +328,20 @@ namespace MapKit {
 	}
 
 	// MKGeometry.h
-#if NET
 	/// <summary>A rectangular area in a 2D map projection, measured in map points.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct MKMapRect {
-#if NET
 		/// <summary>A known-invalid <see cref="MapKit.MKMapRect" /> (see <see cref="MapKit.MKMapRect.IsNull" />).</summary>
 		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public static readonly MKMapRect Null = new MKMapRect (double.PositiveInfinity, double.PositiveInfinity, 0, 0);
 
 		/// <summary>The starting location of the <see cref="MapKit.MKMapRect" />.</summary>
@@ -494,7 +478,6 @@ namespace MapKit {
 			}
 		}
 
-#if NET
 		/// <summary>The <see cref="MapKit.MKMapRect" /> that represents the world in the 2D map projection.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -502,7 +485,6 @@ namespace MapKit {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 
 #if XAMCORE_5_0
 		public static MKMapRect World {
@@ -696,14 +678,12 @@ namespace MapKit {
 	}
 
 	// MKGeometry.h
-#if NET
 	/// <summary>Helper class containing methods for calculating distances and latitude-dependent scales.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public static class MKGeometry {
 
 		/// <param name="latitude">To be added.</param>

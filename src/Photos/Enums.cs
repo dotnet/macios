@@ -516,10 +516,6 @@ namespace Photos {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum PHPhotosError : long {
-#if !NET
-		[Deprecated (PlatformName.MacOSX, 12, 0, message: "Use 'InternalError' instead.")]
-		Invalid = -1,
-#endif
 		InternalError = -1,
 		UserCancelled = 3072,
 		LibraryVolumeOffline = 3114,

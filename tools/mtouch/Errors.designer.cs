@@ -4212,5 +4212,14 @@ namespace Xamarin.Bundler {
                 return ResourceManager.GetString("MX8058", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to find a delegate to invoke for the block {0} (delegate type: {1})..
+        /// </summary>
+        public static string MX8059 {
+            get {
+                return ResourceManager.GetString("MX8059", resourceCulture);
+            }
+        }
     }
 }

@@ -18,10 +18,6 @@ using Foundation;
 using ObjCRuntime;
 using NUnit.Framework;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace MonoTouchFixtures.ObjCRuntime {
 
 	[TestFixture]
@@ -154,9 +150,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 #endif
 
 		[Test]
-#if NET
 		[UnconditionalSuppressMessage ("Trimming", "IL2026", Justification = "This test searches for types to tests; if a type has been trimmed away that's OK, just less to test.")]
-#endif
 		public void Bug33981 ()
 		{
 			var types = new List<Type> ();

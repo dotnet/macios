@@ -9,11 +9,7 @@
 
 using System;
 using System.Runtime.InteropServices;
-#if NET
 using Matrix4 = global::CoreGraphics.NMatrix4;
-#else
-using Matrix4 = global::OpenTK.NMatrix4;
-#endif
 
 #nullable enable
 

@@ -122,8 +122,8 @@ namespace Extrospection {
 				}
 			}
 
-			// This allows us to accept [Deprecated (iOS)] for watch and tv, which many of our bindings currently have
-			// If we want to force separate tv\watch attributes remove GetRelatedPlatforms and just check Helpers.Platform
+			// This allows us to accept [Deprecated (iOS)] for tv, which many of our bindings currently have
+			// If we want to force separate tv attributes remove GetRelatedPlatforms and just check Helpers.Platform
 			if (Helpers.IsDotNet) {
 				foreach (var attribute in item.CustomAttributes) {
 					if (AttributeHelpers.HasObsolete (attribute, Helpers.Platform))
@@ -165,7 +165,7 @@ namespace Extrospection {
 
 		static Platforms [] GetRelatedPlatforms ()
 		{
-			// TV and Watch also implictly accept iOS
+			// TV also implictly accept iOS
 			switch (Helpers.Platform) {
 			case Platforms.macOS:
 				return new Platforms [] { Platforms.macOS };
@@ -173,8 +173,6 @@ namespace Extrospection {
 				return new Platforms [] { Platforms.iOS };
 			case Platforms.tvOS:
 				return new Platforms [] { Platforms.iOS, Platforms.tvOS };
-			case Platforms.watchOS:
-				return new Platforms [] { Platforms.iOS, Platforms.watchOS };
 			case Platforms.MacCatalyst:
 				return new Platforms [] { Platforms.iOS, Platforms.MacCatalyst };
 			default:

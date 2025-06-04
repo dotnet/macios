@@ -3,10 +3,6 @@ using ObjCRuntime;
 using Foundation;
 using Security;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace LocalAuthentication {
 
 	/// <summary>Enumerates supported biometric authentication types.</summary>
@@ -21,11 +17,6 @@ namespace LocalAuthentication {
 		/// <summary>Indicates that Face ID is supported.</summary>
 		[MacCatalyst (13, 1)]
 		FaceId,
-#if !NET
-		[NoMac]
-		[Obsolete ("Use 'FaceId' instead.")]
-		TypeFaceId = FaceId,
-#endif
 		[iOS (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
 		OpticId = 1L << 2,
 	}
@@ -52,12 +43,6 @@ namespace LocalAuthentication {
 		[NullAllowed] // by default this property is null
 		[Export ("localizedFallbackTitle")]
 		string LocalizedFallbackTitle { get; set; }
-
-#if !NET
-		[NoTV]
-		[Field ("LAErrorDomain")]
-		NSString ErrorDomain { get; }
-#endif
 
 		/// <param name="policy">To be added.</param>
 		///         <param name="error">To be added.</param>

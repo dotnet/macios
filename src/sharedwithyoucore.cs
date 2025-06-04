@@ -14,10 +14,6 @@ using CoreFoundation;
 using Foundation;
 using ObjCRuntime;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace SharedWithYouCore {
 
 	[NoTV, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]

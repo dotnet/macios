@@ -28,18 +28,11 @@ using System.Runtime.Versioning;
 
 using ObjCRuntime;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace Foundation {
-
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[Register ("NSMutableArray", SkipRegistration = true)]
 	public sealed partial class NSMutableArray<TValue> : NSMutableArray, IEnumerable<TValue>
 		where TValue : class, INativeObject {
@@ -253,11 +246,7 @@ namespace Foundation {
 		#endregion
 
 #if false // https://github.com/dotnet/macios/issues/15577
-#if !NET
-		[TV (13,0), iOS (13,0)]
-#else
 		[SupportedOSPlatform ("ios13.0"), SupportedOSPlatform ("tvos13.0"), SupportedOSPlatform ("macos")]
-#endif
 		public void ApplyDifference (NSOrderedCollectionDifference<TValue> difference)
 			=> ApplyDifference ((NSOrderedCollectionDifference) difference);
 #endif

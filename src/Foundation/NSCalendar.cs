@@ -73,21 +73,17 @@ namespace Foundation {
 		EthiopicAmeteAlem,
 		/// <summary>To be added.</summary>
 		EthiopicAmeteMihret,
-#if NET
 		/// <summary>To be added.</summary>
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		IslamicTabular,
-#if NET
 		/// <summary>To be added.</summary>
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		IslamicUmmAlQura,
 	}
 

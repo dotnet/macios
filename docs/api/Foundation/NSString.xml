@@ -36,31 +36,4 @@
     </remarks>
     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/Classes/NSString_Class/index.html">Apple documentation for <c>NSString</c></related>
   </Docs>
-  <Docs DocId="M:Foundation.NSString.CreateNative(System.String)">
-        <param name="str">C# String to wrap</param>
-        <summary>Creates an Objective-C NSString from the C# string and returns a pointer to it.</summary>
-        <returns>Pointer to the <see cref="NSString" /> object, must be released with <see cref="ReleaseNative" />.</returns>
-        <remarks>
-          <para>
-	    This method creates an Objective-C NSString and returns an
-	    IntPtr that points to it.  This does not create the managed
-	    NSString object that points to it, which is ideal for
-	    transient strings that must be passed to Objectiv-C as it is
-	    not necessary for Mono's Garbage collector or the
-	    MonoTouch/Xamarin.Mac Framework engines to track this object.
-	  </para>
-          <para>
-	    The memory associated with this object should be released
-	    by calling the <see cref="Foundation.NSString.ReleaseNative" />
-	    method.
-	  </para>
-          <example>
-            <code lang="csharp lang-csharp"><![CDATA[
-IntPtr objcString = NSString.CreateNative ("Hello");
-// You can pass objcString to any methods that expect an Objective-C NSString pointer
-NSString.ReleaseNative (objcString);
-]]></code>
-          </example>
-        </remarks>
-      </Docs>
 </Documentation>

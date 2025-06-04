@@ -523,6 +523,127 @@ namespace NS {
 					]
 				)
 			];
+
+			const string customDelegateKeywordParam = @"
+using System;
+
+namespace NS {
+	public class MyClass {
+		public delegate int? Callback(string @event, string? middleName, params string[] surname);
+
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				customDelegateKeywordParam,
+				new Method (
+					type: "NS.MyClass",
+					name: "MyMethod",
+					returnType: ReturnTypeForVoid (),
+					symbolAvailability: new (),
+					exportMethodData: new (),
+					attributes: [],
+					modifiers: [
+						SyntaxFactory.Token (SyntaxKind.PublicKeyword),
+					],
+					parameters: [
+						new (
+							position: 0,
+							type: ReturnTypeForDelegate (
+								"NS.MyClass.Callback",
+								delegateInfo: new (
+									name: "Invoke",
+									returnType: ReturnTypeForInt (isNullable: true),
+									parameters: [
+										new (
+											position: 0,
+											type: ReturnTypeForString (),
+											name: "@event"
+										),
+										new (
+											position: 1,
+											type: ReturnTypeForString (isNullable: true),
+											name: "middleName"
+										),
+										new (
+											position: 2,
+											type: ReturnTypeForArray ("string", isBlittable: false),
+											name: "surname"
+										) {
+											IsParams = true,
+										},
+									]
+								)
+							),
+							name: "cb"
+						)
+					]
+				)
+			];
+
+			const string customDelegateBindFrom = @"
+using System;
+using Foundation;
+using ObjCRuntime;
+using ObjCBindings;
+
+namespace NS {
+
+	public class MyNSObject : NSObject {
+	}
+
+	public class MyClass {
+		public delegate int? Callback([BindFrom (typeof(NSNumber))] int value);
+
+		public void MyMethod ([BlockCallback] Callback cb) {}
+	}
+}
+";
+
+			yield return [
+				customDelegateBindFrom,
+				new Method (
+					type: "NS.MyClass",
+					name: "MyMethod",
+					returnType: ReturnTypeForVoid (),
+					symbolAvailability: new (),
+					exportMethodData: new (),
+					attributes: [],
+					modifiers: [
+						SyntaxFactory.Token (SyntaxKind.PublicKeyword),
+					],
+					parameters: [
+						new (
+							position: 0,
+							type: ReturnTypeForDelegate (
+								"NS.MyClass.Callback",
+								delegateInfo: new (
+									name: "Invoke",
+									returnType: ReturnTypeForInt (isNullable: true),
+									parameters: [
+										new (
+											position: 0,
+											type: ReturnTypeForInt (),
+											name: "value"
+										) {
+											BindAs = new (ReturnTypeForNSObject ("Foundation.NSNumber")),
+										},
+									]
+								) {
+									IsBlockCallback = true,
+								}
+							),
+							name: "cb"
+						) {
+							Attributes = [
+								new ("ObjCRuntime.BlockCallbackAttribute")
+							]
+						}
+					]
+				)
+			];
 		}
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();

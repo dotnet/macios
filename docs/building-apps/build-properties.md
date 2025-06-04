@@ -130,7 +130,7 @@ See [CreatePackage](#createpackage) for macOS and Mac Catalyst projects.
 This property determines whether resources are compiled before being embedded
 into library projects, or if the original (uncompiled) version is embedded.
 
-Historically resources have been compiled before being embedded into library
+Historically, resources have been compiled before being embedded into library
 projects, but this requires having Xcode available, which has a few drawbacks:
 
 * It slows down remote builds on Windows.
@@ -145,10 +145,10 @@ projects, but this requires having Xcode available, which has a few drawbacks:
 As such, we've added supported for embedding the original resources into
 libraries. This will be opt-in in .NET 9, but opt-out starting in .NET 10.
 
-Default value: `false` in .NET 9, `true` in .NET 10+.
+The default value of this property `false` in .NET 9, and `true` in .NET 10+.
 
-Note: please file an issue if you find that you need to disable this feature,
-as it's possible we'll remove the option to disable it at some point.
+> [!NOTE]
+> File an issue if you find that you need to disable this feature, as it's possible that the option to disable it will be removed in future.
 
 ## CodesignAllocate
 
@@ -218,6 +218,27 @@ By default we require a provisioning profile if:
 * iOS, tvOS: building for device or an entitlements file has been specified (with the [CodesignEntitlements](#codesignentitlements) property).
 
 Setting this property to `true` or `false` will override the default logic.
+
+## CompressBindingResourcePackage
+
+The native references in a binding projects are copied to the output directory during the build process, next to the binding assembly (into something we call a "binding resource package").
+
+These native references can either be stored compressed inside a zip file (named `$(AssemblyName).resources.zip`, or as-is, inside a directory named `$(AssemblyName).resources`.
+
+The `CompressBindingResourcePackage` property specifies whether to create a zip file or a directory.
+
+The possible values are:
+
+* `auto`: create a zip file if a native reference contains symlinks (which is typical on macOS and Mac Catalyst, but rare on iOS and tvOS).
+* `true`: create a zipe file
+* `false`: create a directory
+
+The default is `auto`.
+
+This also applies to how native references are stored inside NuGets.
+
+> [!NOTE]
+> In some cases it can be beneficial to force a zip file on iOS as well, especially when there's a framework with files that have long names, because the zip file can sometimes work around MAX_PATH issues on Windows.
 
 ## CreateAppBundleDependsOn
 
@@ -314,9 +335,9 @@ If the .pkg that was created (if `CreatePackage` was enabled) should be signed.
 
 Only applicable to macOS and Mac Catalyst.
 
-## EnableProfiler
+## EnableDiagnostics
 
-Enable components that are required for profiling to work.
+Enable components that are required for diagnostics (such as profiling) to work.
 
 It's enabled by default for debug builds (when [MtouchDebug](#MtouchDebug) or
 [MmpDebug](#MmpDebug) is enabled), but needs to be enabled manually before
@@ -324,14 +345,14 @@ profiling release builds:
 
 ```xml
 <PropertyGroup>
-  <EnableProfiler>true</EnableProfiler>
+  <EnableDiagnostics>true</EnableDiagnostics>
 </PropertyGroup>
 ```
 
 This will increase the app size slightly.
 
 Only applicable when using the Mono runtime (CoreCLR always supports
-profiling, while NativeAOT never does).
+diagnostics, while NativeAOT never does).
 
 ## EnableSGenConc
 
@@ -499,9 +520,7 @@ Valid values:
 * `abort`: Abort the process.
 * `disable`: Disable intercepting any managed exceptions. For MonoVM this is equivalent to `unwindnativecode`, for CoreCLR this is equivalent to `abort`.
 
-For more information see the article about [Exception marshaling](https://learn.microsoft.com/dotnet/ios/advanced-concepts/exception-marshaling)
-
-See also [MarshalObjectiveCExceptionMode](#marshalobjectivecexceptionmode)
+For more information, see [Exception marshaling](/dotnet/ios/advanced-concepts/exception-marshaling) and [MarshalObjectiveCExceptionMode](#marshalobjectivecexceptionmode).
 
 ## MarshalObjectiveCExceptionMode
 
@@ -516,9 +535,7 @@ Valid values:
 * `abort`: Abort the process.
 * `disable`: Disable intercepting any Objective-C exceptions.
 
-For more information see the article about [Exception marshaling](https://learn.microsoft.com/dotnet/ios/advanced-concepts/exception-marshaling)
-
-See also [MarshalManagedExceptionMode](#marshalmanagedexceptionmode)
+For more information, see [Exception marshaling](/dotnet/ios/advanced-concepts/exception-marshaling) and [MarshalManagedExceptionMode](#marshalmanagedexceptionmode).
 
 ## MdimportPath
 

@@ -128,6 +128,9 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		internal extern static IntPtr CFRetain (IntPtr obj);
 
+		[DllImport (Constants.CoreFoundationLibrary)]
+		internal extern static void CFAutorelease (IntPtr obj);
+
 		/// <summary>Does nothing if <paramref name="obj" /> is IntPtr.Zero, otherwise calls CFRelease.</summary>
 		internal static void SafeRelease (IntPtr obj)
 		{
@@ -175,6 +178,65 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary, CharSet = CharSet.Unicode)]
 		extern static unsafe IntPtr CFStringGetCharacters (IntPtr handle, CFRange range, char* buffer);
 
+		/// <summary>Creates a <see cref="CFString" /> from the C# string and returns a pointer to it.</summary>
+		/// <param name="value">C# String to wrap</param>
+		/// <param name="start">The offset of the managed string to create the native string from.</param>
+		/// <param name="length">The length of the managed string to create the native string from.</param>
+		/// <param name="autorelease">Whether the return value is autoreleased (in which case <see cref="ReleaseNative" /> must not be called on the return value).</param>
+		/// <returns>Pointer to the <see cref="CFString" /> object, must be released with <see cref="ReleaseNative" />.</returns>
+		/// <remarks>
+		///   <para>
+		///     This method creates an <see cref="CFString" /> and returns an
+		///     <see cref="NativeHandle" /> that points to it.  This does not create the managed
+		///     <see cref="CFString" /> object that points to it, which is ideal for
+		///     transient strings that must be passed to Objective-C as it is
+		///     not necessary for the garbage collector to track this object.
+		///   </para>
+		///   <para>
+		///     The memory associated with this object should be released
+		///     by calling the <see cref="ReleaseNative" />
+		///     method.
+		///   </para>
+		///   <example>
+		///     <code lang="csharp lang-csharp"><![CDATA[
+		/// IntPtr objcString = CFString.CreateNative ("Hello");
+		/// // You can pass objcString to any methods that expect an CFString pointer
+		/// CFString.ReleaseNative (objcString);
+		/// ]]></code></example>
+		///   </remarks>
+		public static NativeHandle CreateNative (string? value, int start, int length, bool autorelease)
+		{
+			if (value is null)
+				return NativeHandle.Zero;
+
+			if (start < 0 || start > value.Length)
+				throw new ArgumentOutOfRangeException (nameof (start));
+
+			if (length < 0 || start > value.Length - length)
+				throw new ArgumentOutOfRangeException (nameof (length));
+
+			using var valuePtr = new TransientString (value, TransientString.Encoding.Unicode);
+			var ptr = ((IntPtr) valuePtr) + (start * 2);
+			var rv = CFStringCreateWithCharacters (IntPtr.Zero, ptr, length);
+
+			if (rv != IntPtr.Zero && autorelease)
+				CFObject.CFAutorelease (rv);
+
+			return rv;
+		}
+
+		/// <inheritdoc cref="CreateNative(string)" />
+		/// <param name="value">C# String to wrap</param>
+		/// <param name="autorelease">Whether the return value is autoreleased (in which case <see cref="ReleaseNative" /> must not be called on the return value).</param>
+		public static NativeHandle CreateNative (string? value, bool autorelease)
+		{
+			if (value is null)
+				return NativeHandle.Zero;
+
+			return CreateNative (value, 0, value.Length, autorelease);
+		}
+
+		/// <inheritdoc cref="CreateNative(string,int,int,bool)" />
 		public static NativeHandle CreateNative (string? value)
 		{
 			if (value is null)
@@ -184,6 +246,9 @@ namespace CoreFoundation {
 			return CFStringCreateWithCharacters (IntPtr.Zero, valuePtr, value.Length);
 		}
 
+		/// <param name="handle">Handle to the Objective-C native <see cref="CFString" /> object.</param>
+		/// <summary>Releases a native Objective-C string.</summary>
+		/// <remarks>Use this method to release <see cref="CFString" /> handles that were previously allocated with <see cref="CreateNative(System.String)" />.</remarks>
 		public static void ReleaseNative (NativeHandle handle)
 		{
 			if (handle != NativeHandle.Zero)
@@ -221,7 +286,9 @@ namespace CoreFoundation {
 		{
 		}
 
-		// to be used when an API like CF*Get* returns a CFString
+		/// <summary>Utility method that returns a string from a pointer that points to an Objective-C NSString or CFString object.</summary>
+		/// <param name="handle">Pointer to an Objective-C NSString or CFString object.</param>
+		/// <returns>The Objective-C string in the NSString as a C# string.</returns>
 		public static string? FromHandle (NativeHandle handle)
 		{
 			if (handle == IntPtr.Zero)
@@ -258,7 +325,10 @@ namespace CoreFoundation {
 			return str;
 		}
 
-		// to be used when an API like CF*Copy* returns a CFString
+		/// <summary>Utility method that returns a string from a pointer that points to an Objective-C NSString or CFString object.</summary>
+		/// <param name="handle">Pointer to an Objective-C NSString or CFString object.</param>
+		/// <param name="releaseHandle">Whether the <paramref name="handle" /> should be released or not.</param>
+		/// <returns>The Objective-C string in the NSString as a C# string.</returns>
 		public static string? FromHandle (NativeHandle handle, bool releaseHandle)
 		{
 			var s = FromHandle (handle);

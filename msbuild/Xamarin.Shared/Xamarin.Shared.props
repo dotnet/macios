@@ -238,7 +238,7 @@ Copyright (C) 2020 Microsoft. All rights reserved.
 		<!-- that also encapsulates whether we're a library or not (this makes conditions simpler) -->
 		<_BundleOriginalResources Condition="'$(OutputType)' == 'Library' And '$(IsAppExtension)' != 'true' And '$(BundleOriginalResources)' == 'true'">true</_BundleOriginalResources>
 
-		<EnableProfiler Condition="'$(EnableProfiler)' == '' And '$(_BundlerDebug)' == 'true'">true</EnableProfiler>
+		<EnableDiagnostics Condition="'$(EnableDiagnostics)' == '' And '$(_BundlerDebug)' == 'true'">true</EnableDiagnostics>
 
 		<!-- Set the name of the native executable -->
 		<_NativeExecutableName Condition="'$(_NativeExecutableName)' == ''">$(AssemblyName)</_NativeExecutableName>

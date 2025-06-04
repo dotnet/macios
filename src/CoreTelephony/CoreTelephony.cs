@@ -11,7 +11,7 @@ namespace CoreTelephony {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		public string StateDialing {
+		public string? StateDialing {
 			get {
 				return Dlfcn.SlowGetStringConstant (Constants.CoreTelephonyLibrary, "CTCallStateDialing");
 			}
@@ -20,7 +20,7 @@ namespace CoreTelephony {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		public string StateIncoming {
+		public string? StateIncoming {
 			get {
 				return Dlfcn.SlowGetStringConstant (Constants.CoreTelephonyLibrary, "CTCallStateIncoming");
 			}
@@ -29,7 +29,7 @@ namespace CoreTelephony {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		public string StateConnected {
+		public string? StateConnected {
 			get {
 				return Dlfcn.SlowGetStringConstant (Constants.CoreTelephonyLibrary, "CTCallStateConnected");
 			}
@@ -38,7 +38,7 @@ namespace CoreTelephony {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		public string StateDisconnected {
+		public string? StateDisconnected {
 			get {
 				return Dlfcn.SlowGetStringConstant (Constants.CoreTelephonyLibrary, "CTCallStateDisconnected");
 			}

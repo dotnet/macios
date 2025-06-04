@@ -16,6 +16,21 @@ using ObjCRuntime;
 
 namespace CoreGraphics {
 
+	/// <summary>Structure defining a rectangle in terms of location and size.</summary>
+	///     <remarks>
+	///       <para>
+	/// 	CGRects structures define a rectangle using floating point
+	/// 	values of type <see cref="nfloat" /> and are defined
+	/// 	using an initial location (X,Y) as well as a size (Width,
+	/// 	Height). 
+	///       </para>
+	///       <para>
+	/// 	You can save the CGRect into an <see cref="Foundation.NSDictionary" /> by calling the
+	/// 	<see cref="CoreGraphics.CGRect.ToDictionary" />
+	/// 	method.   You can also get an CGRect out a serialized
+	/// 	dictionary by using the <see cref="CoreGraphics.CGRect.TryParse(Foundation.NSDictionary,out CoreGraphics.CGRect)" /> method. 
+	///       </para>
+	///     </remarks>
 	[Serializable]
 	public struct CGRect : IEquatable<CGRect> {
 		nfloat x;
@@ -24,7 +39,7 @@ namespace CoreGraphics {
 		nfloat height;
 
 #if !COREBUILD
-		/// <summary>Represents a <see cref="T:CoreGraphics.CGRect" /> structure with its properties left uninitialized.</summary>
+		/// <summary>Represents a <see cref="CoreGraphics.CGRect" /> structure with its properties left uninitialized.</summary>
 		///         <remarks>
 		///           <attribution license="cc4" from="Microsoft" modified="false" />
 		///           <para>A rectangle is defined by its width, height and upper-left corner.</para>
@@ -87,6 +102,16 @@ namespace CoreGraphics {
 		}
 #endif
 
+		/// <param name="a">
+		///           <attribution license="cc4" from="Microsoft" modified="false" />A rectangle to intersect. </param>
+		///         <param name="b">
+		///           <attribution license="cc4" from="Microsoft" modified="false" />A rectangle to intersect. </param>
+		///         <summary>Returns a third <see cref="CoreGraphics.CGRect" /> structure that represents the intersection of two other <see cref="CoreGraphics.CGRect" /> structures. If there is no intersection, an empty <see cref="CoreGraphics.CGRect" /> is returned.</summary>
+		///         <returns>
+		///           <attribution license="cc4" from="Microsoft" modified="false" />
+		///           <para>A <see cref="CoreGraphics.CGRect" /> that represents the intersection of <paramref name="a" /> and <paramref name="b" />.</para>
+		///         </returns>
+		///         <remarks>To be added</remarks>
 		public static CGRect Intersect (CGRect a, CGRect b)
 		{
 			// MS.NET returns a non-empty rectangle if the two rectangles
@@ -103,11 +128,16 @@ namespace CoreGraphics {
 			);
 		}
 
+		/// <param name="rect">
+		///           <attribution license="cc4" from="Microsoft" modified="false" />The <see cref="CoreGraphics.CGRect" /> with which to intersect. </param>
+		///         <summary>Replaces this <see cref="CoreGraphics.CGRect" /> with the intersection of itself and the specified <see cref="CoreGraphics.CGRect" />.</summary>
+		///         <remarks>To be added</remarks>
 		public void Intersect (CGRect rect)
 		{
 			this = CGRect.Intersect (this, rect);
 		}
 
+		/// <include file="../../docs/api/CoreGraphics/CGRect.xml" path="/Documentation/Docs[@DocId='M:CoreGraphics.CGRect.Union(CoreGraphics.CGRect,CoreGraphics.CGRect)']/*" />
 		public static CGRect Union (CGRect a, CGRect b)
 		{
 			return FromLTRB (
@@ -130,7 +160,7 @@ namespace CoreGraphics {
 			return inflated;
 		}
 
-		/// <summary>Tests whether all numeric properties of this <see cref="T:CoreGraphics.CGRect" /> have values of zero.</summary>
+		/// <summary>Tests whether all numeric properties of this <see cref="CoreGraphics.CGRect" /> have values of zero.</summary>
 		///         <value>
 		///         </value>
 		///         <remarks>To be added</remarks>
@@ -138,24 +168,24 @@ namespace CoreGraphics {
 			get { return width == 0.0 || height == 0.0; }
 		}
 
-		/// <summary>Gets or sets the x-coordinate of the upper-left corner of this <see cref="T:CoreGraphics.CGRect" /> structure.</summary>
+		/// <summary>Gets or sets the x-coordinate of the upper-left corner of this <see cref="CoreGraphics.CGRect" /> structure.</summary>
 		///         <value>
 		///         </value>
 		///         <remarks>
 		///           <attribution license="cc4" from="Microsoft" modified="false" />
-		///           <para>Changing the <see cref="P:CoreGraphics.CGRect.X" /> property will also cause a change in the <see cref="P:CoreGraphics.CGRect.Right" /> property of the <see cref="T:CoreGraphics.CGRect" />.</para>
+		///           <para>Changing the <see cref="CoreGraphics.CGRect.X" /> property will also cause a change in the <see cref="CoreGraphics.CGRect.Right" /> property of the <see cref="CoreGraphics.CGRect" />.</para>
 		///         </remarks>
 		public nfloat X {
 			get { return x; }
 			set { x = value; }
 		}
 
-		/// <summary>Gets or sets the y-coordinate of the upper-left corner of this <see cref="T:CoreGraphics.CGRect" /> structure.</summary>
+		/// <summary>Gets or sets the y-coordinate of the upper-left corner of this <see cref="CoreGraphics.CGRect" /> structure.</summary>
 		///         <value>
 		///         </value>
 		///         <remarks>
 		///           <attribution license="cc4" from="Microsoft" modified="false" />
-		///           <para>Changing the <see cref="P:CoreGraphics.CGRect.Y" /> property will also cause a change in the <see cref="P:CoreGraphics.CGRect.Bottom" /> property of the <see cref="T:CoreGraphics.CGRect" />.</para>
+		///           <para>Changing the <see cref="CoreGraphics.CGRect.Y" /> property will also cause a change in the <see cref="CoreGraphics.CGRect.Bottom" /> property of the <see cref="CoreGraphics.CGRect" />.</para>
 		///         </remarks>
 		public nfloat Y {
 			get { return y; }
@@ -181,18 +211,16 @@ namespace CoreGraphics {
 			get { return Y; }
 		}
 
-		/// <summary>Gets the y-coordinate that is the sum of the <see cref="P:CoreGraphics.CGRect.Y" /> and <see cref="P:CoreGraphics.CGRect.Height" /> property values of this <see cref="T:CoreGraphics.CGRect" /> structure.</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>
-		///           <attribution license="cc4" from="Microsoft" modified="false" />
-		///           <para>The value of the <see cref="P:CoreGraphics.CGRect.Bottom" /> property represents the y-coordinate of the first point at the bottom edge of the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:CoreGraphics.CGRect.Rectangle&amp;scope=Xamarin" title="T:CoreGraphics.CGRect.Rectangle">T:CoreGraphics.CGRect.Rectangle</a></format> that is not contained in the <see cref="T:CoreGraphics.CGRect" />.</para>
-		///         </remarks>
+		/// <summary>Gets the y-coordinate that is the sum of the <see cref="CoreGraphics.CGRect.Y" /> and <see cref="CoreGraphics.CGRect.Height" /> property values of this <see cref="CoreGraphics.CGRect" /> structure.</summary>
+		/// <remarks>
+		///   <attribution license="cc4" from="Microsoft" modified="false" />
+		///   <para>The value of the <see cref="CoreGraphics.CGRect.Bottom" /> property represents the y-coordinate of the first point at the bottom edge of the rectangle that is not contained in the <see cref="CoreGraphics.CGRect" />.</para>
+		/// </remarks>
 		public nfloat Bottom {
 			get { return Y + Height; }
 		}
 
-		/// <summary>Gets the x-coordinate of the left edge of this <see cref="T:CoreGraphics.CGRect" /> structure.</summary>
+		/// <summary>Gets the x-coordinate of the left edge of this <see cref="CoreGraphics.CGRect" /> structure.</summary>
 		///         <value>
 		///         </value>
 		///         <remarks>To be added</remarks>
@@ -200,18 +228,18 @@ namespace CoreGraphics {
 			get { return X; }
 		}
 
-		/// <summary>Gets the x-coordinate that is the sum of <see cref="P:CoreGraphics.CGRect.X" /> and <see cref="P:CoreGraphics.CGRect.Width" /> property values of this <see cref="T:CoreGraphics.CGRect" /> structure.</summary>
+		/// <summary>Gets the x-coordinate that is the sum of <see cref="CoreGraphics.CGRect.X" /> and <see cref="CoreGraphics.CGRect.Width" /> property values of this <see cref="CoreGraphics.CGRect" /> structure.</summary>
 		///         <value>
 		///         </value>
 		///         <remarks>
 		///           <attribution license="cc4" from="Microsoft" modified="false" />
-		///           <para>The value of the <see cref="P:CoreGraphics.CGRect.Right" /> property represents the x-coordinate of the first point at the right edge of the rectangle that is not contained in the rectangle.</para>
+		///           <para>The value of the <see cref="CoreGraphics.CGRect.Right" /> property represents the x-coordinate of the first point at the right edge of the rectangle that is not contained in the rectangle.</para>
 		///         </remarks>
 		public nfloat Right {
 			get { return X + Width; }
 		}
 
-		/// <summary>Gets or sets the coordinates of the upper-left corner of this <see cref="T:CoreGraphics.CGRect" /> structure.</summary>
+		/// <summary>Gets or sets the coordinates of the upper-left corner of this <see cref="CoreGraphics.CGRect" /> structure.</summary>
 		///         <value>
 		///         </value>
 		///         <remarks>To be added</remarks>
@@ -223,7 +251,7 @@ namespace CoreGraphics {
 			}
 		}
 
-		/// <summary>Gets or sets the size of this <see cref="T:CoreGraphics.CGRect" />.</summary>
+		/// <summary>Gets or sets the size of this <see cref="CoreGraphics.CGRect" />.</summary>
 		///         <value>
 		///         </value>
 		///         <remarks>To be added</remarks>
@@ -235,6 +263,11 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <param name="location">Rectangle location.</param>
+		///         <param name="size">Dimensions for the rectangle.</param>
+		///         <summary>Initializes a CGRect structure from a rectangle and a size parameters.</summary>
+		///         <remarks>
+		///         </remarks>
 		public CGRect (CGPoint location, CGSize size)
 		{
 			x = location.X;
@@ -253,6 +286,20 @@ namespace CoreGraphics {
 		}
 
 #if !COREBUILD
+		/// <param name="x">X component for the rectangle.</param>
+		///         <param name="y">Y component for the rectangle.</param>
+		///         <param name="width">Width component for the rectangle.</param>
+		///         <param name="height">Height component for the rectangle.</param>
+		///         <summary>Initializes a CGRect structure from a double
+		/// 	precision floating point values, with potential truncation on
+		/// 	32 bit systems.</summary>
+		///         <remarks>
+		///           <para>
+		/// 	    This initializes the structure with the given parameters.
+		/// 	    On 32-bit systems, the values will be explicitly cast to
+		/// 	    single precision floating point values.
+		/// 	  </para>
+		///         </remarks>
 		public CGRect (double x, double y, double width, double height)
 		{
 			this.x = (nfloat) x;
@@ -262,6 +309,12 @@ namespace CoreGraphics {
 		}
 
 
+		/// <param name="x">To be added.</param>
+		///         <param name="y">To be added.</param>
+		///         <param name="width">To be added.</param>
+		///         <param name="height">To be added.</param>
+		///         <summary>Constructs a rectangle with the specified dimensions.</summary>
+		///         <remarks>To be added.</remarks>
 		public CGRect (float x, float y, float width, float height)
 		{
 			this.x = x;
@@ -279,21 +332,54 @@ namespace CoreGraphics {
 				y < Bottom;
 		}
 
+		/// <param name="x">To be added.</param>
+		///         <param name="y">To be added.</param>
+		///         <summary>Determines if the specified point is contained within this <see cref="CoreGraphics.CGRect" /> structure.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool Contains (float x, float y)
 		{
 			return Contains ((nfloat) x, (nfloat) y);
 		}
 
+		/// <param name="x">To be added.</param>
+		///         <param name="y">To be added.</param>
+		///         <summary>
+		///           <see langword="true" /> if the point [<paramref name="x" />, <paramref name="y" />] is within the rectangle.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool Contains (double x, double y)
 		{
 			return Contains ((nfloat) x, (nfloat) y);
 		}
 
+		/// <param name="point">
+		///           <attribution license="cc4" from="Microsoft" modified="false" />The <see cref="System.Drawing.Point" /> to test. </param>
+		///         <summary>Determines if the specified point is contained within this <see cref="CoreGraphics.CGRect" /> structure.</summary>
+		///         <returns>
+		///           <attribution license="cc4" from="Microsoft" modified="false" />
+		///           <para>This method returns true if the point represented by <paramref name="point" /> is contained within this <see cref="CoreGraphics.CGRect" /> structure; otherwise false.</para>
+		///         </returns>
+		///         <remarks>
+		///           <attribution license="cc4" from="Microsoft" modified="false" />
+		///           <para>The containing rectangle must be normalized for this method to return accurate results.</para>
+		///         </remarks>
 		public bool Contains (CGPoint point)
 		{
 			return Contains (point.X, point.Y);
 		}
 
+		/// <param name="rect">
+		///           <attribution license="cc4" from="Microsoft" modified="false" />The <see cref="CoreGraphics.CGRect" /> to test. </param>
+		///         <summary>Determines if the rectangular region represented by <paramref name="rect" /> is entirely contained within this <see cref="CoreGraphics.CGRect" /> structure.</summary>
+		///         <returns>
+		///           <attribution license="cc4" from="Microsoft" modified="false" />
+		///           <para>This method returns true if the rectangular region represented by <paramref name="rect" /> is entirely contained within this <see cref="CoreGraphics.CGRect" /> structure; otherwise false.</para>
+		///         </returns>
+		///         <remarks>
+		///           <attribution license="cc4" from="Microsoft" modified="false" />
+		///           <para>The containing rectangle must be normalized for this method to return accurate results.</para>
+		///         </remarks>
 		public bool Contains (CGRect rect)
 		{
 			return
@@ -311,16 +397,34 @@ namespace CoreGraphics {
 			height += y * 2;
 		}
 
+		/// <param name="x">To be added.</param>
+		///         <param name="y">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void Inflate (float x, float y)
 		{
 			Inflate ((nfloat) x, (nfloat) y);
 		}
 
+		/// <param name="x">The amount to add to both horizontal sides.</param>
+		///         <param name="y">The amount to add to both vertical sides.</param>
+		///         <summary>Increases the size of the rectangle by adding the specified amounts along both directions of each axis.</summary>
+		///         <remarks>
+		///           <para>Inflating a rectangle that is of size [1,1] and centered on [1,1] results in a rectangle of size [,3,3] centered on the same spot, since the <paramref name="x" /> and <paramref name="y" /> inflations are applied to all sides.</para>
+		///         </remarks>
 		public void Inflate (double x, double y)
 		{
 			Inflate ((nfloat) x, (nfloat) y);
 		}
 
+		/// <param name="size">
+		///           <attribution license="cc4" from="Microsoft" modified="false" />The amount to inflate this rectangle. </param>
+		///         <summary>Enlarges this <see cref="CoreGraphics.CGRect" /> by the specified amount.</summary>
+		///         <remarks>
+		///           <attribution license="cc4" from="Microsoft" modified="false" />
+		///           <para>This method enlarges this rectangle, not a copy of it. The rectangle is enlarged in both directions along an axis. For example, if a 50 by 50 rectangle is enlarged by 50 in the x-axis, the resultant rectangle will be 150 units long (the original 50, the 50 in the minus direction, and the 50 in the plus direction) maintaining the rectangle's geometric center.</para>
+		///           <para>If either element of the <paramref name="size" /> parameter is negative, the <see cref="CoreGraphics.CGRect" /> structure is deflated in the corresponding direction.</para>
+		///         </remarks>
 		public void Inflate (CGSize size)
 		{
 			Inflate (size.Width, size.Height);
@@ -332,21 +436,44 @@ namespace CoreGraphics {
 			Y += y;
 		}
 
+		/// <param name="x">To be added.</param>
+		///         <param name="y">To be added.</param>
+		///         <summary>Adjusts the location of this rectangle by the specified amount.</summary>
+		///         <remarks>To be added.</remarks>
 		public void Offset (float x, float y)
 		{
 			Offset ((nfloat) x, (nfloat) y);
 		}
 
+		/// <param name="x">To be added.</param>
+		///         <param name="y">To be added.</param>
+		///         <summary>Adjusts the location of this rectangle by the specified amount.</summary>
+		///         <remarks>To be added.</remarks>
 		public void Offset (double x, double y)
 		{
 			Offset ((nfloat) x, (nfloat) y);
 		}
 
+		/// <param name="pos">
+		///           <attribution license="cc4" from="Microsoft" modified="false" />Amount to offset the location. </param>
+		///         <summary>Adjusts the location of this rectangle by the specified amount.</summary>
+		///         <remarks>
+		///           <attribution license="cc4" from="Microsoft" modified="false" />
+		///           <para>This method adjusts the location of the upper-left corner horizontally by the x-coordinate of the specified point, and vertically by the y-coordinate of the specified point.</para>
+		///         </remarks>
 		public void Offset (CGPoint pos)
 		{
 			Offset (pos.X, pos.Y);
 		}
 
+		/// <param name="rect">
+		///           <attribution license="cc4" from="Microsoft" modified="false" />The rectangle to test. </param>
+		///         <summary>Determines if this rectangle intersects with <paramref name="rect" />.</summary>
+		///         <returns>
+		///           <attribution license="cc4" from="Microsoft" modified="false" />
+		///           <para>This method returns true if there is any intersection, otherwise false.</para>
+		///         </returns>
+		///         <remarks>To be added</remarks>
 		public bool IntersectsWith (CGRect rect)
 		{
 			return !(
@@ -368,11 +495,13 @@ namespace CoreGraphics {
 		}
 #endif // !COREBUILD
 
+		/// <include file="../../docs/api/CoreGraphics/CGRect.xml" path="/Documentation/Docs[@DocId='M:CoreGraphics.CGRect.Equals(System.Object)']/*" />
 		public override bool Equals (object? obj)
 		{
 			return (obj is CGRect rect) && Equals (rect);
 		}
 
+		/// <include file="../../docs/api/CoreGraphics/CGRect.xml" path="/Documentation/Docs[@DocId='M:CoreGraphics.CGRect.Equals(CoreGraphics.CGRect)']/*" />
 		public bool Equals (CGRect rect)
 		{
 			return
@@ -382,12 +511,23 @@ namespace CoreGraphics {
 				height == rect.height;
 		}
 
+		/// <summary>Returns the hash code for this <see cref="CoreGraphics.CGRect" /> structure. For information about the use of hash codes, see <see cref="System.Object.GetHashCode" /> .</summary>
+		///         <returns>
+		///           <attribution license="cc4" from="Microsoft" modified="false" />
+		///           <para>An integer that represents the hash code for this rectangle.</para>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public override int GetHashCode ()
 		{
 			return HashCode.Combine (x, y, width, height);
 		}
 
 #if !COREBUILD
+		/// <summary>Gets the y-coordinate of the top edge of this <see cref="CoreGraphics.CGRect" /> structure.</summary>
+		///         <returns />
+		///         <remarks>
+		///         </remarks>
 		public override string? ToString ()
 		{
 			return CFString.FromHandle (NSStringFromCGRect (this));
@@ -407,6 +547,17 @@ namespace CoreGraphics {
 			size = Size;
 		}
 
+		/// <param name="dictionaryRepresentation">Dictionary containing
+		/// 	a serialized CGRect.</param>
+		///         <param name="rect">The rectangle value with the contents if
+		/// 	the return value is true.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>True if the NSDictionary contained a serialized
+		/// 	CGRect and the initialized <paramref name="rect" />  with the
+		/// 	contents on return.   False on failure, and the contents of
+		/// 	<paramref name="rect" /> are set to Empty in that case.</returns>
+		///         <remarks>Used to create a CGRect from a dictionary containing
+		/// 	keys for X, Y, Widht and Height.</remarks>
 		public static bool TryParse (NSDictionary? dictionaryRepresentation, out CGRect rect)
 		{
 			if (dictionaryRepresentation is null) {
@@ -421,6 +572,20 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>Serializes the state of the rectangle into an NSDictionary.</summary>
+		///         <returns>An NSDictionary representing the rectangle.</returns>
+		///         <remarks>
+		///           <para>
+		/// 	    The returned dictionary conforms to the serialization
+		/// 	    standard of Cocoa and CocoaTouch and can be used to serialize
+		/// 	    the state into objects that can be parsed by other Apple APIs.
+		/// 	  </para>
+		///           <para>
+		/// 	    It is possible to create CGRect from a Dictionary using
+		/// 	    the <see cref="CoreGraphics.CGRect.TryParse(Foundation.NSDictionary,out CoreGraphics.CGRect)" />
+		/// 	    method. 
+		/// 	  </para>
+		///         </remarks>
 		public NSDictionary ToDictionary ()
 		{
 			return new NSDictionary (NativeDrawingMethods.CGRectCreateDictionaryRepresentation (this));

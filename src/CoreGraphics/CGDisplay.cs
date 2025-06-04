@@ -7,6 +7,8 @@ using ObjCRuntime;
 using Foundation;
 
 namespace CoreGraphics {
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	public enum CGCaptureOptions : uint {
@@ -16,6 +18,8 @@ namespace CoreGraphics {
 		NoFill = 1 << 0,
 	}
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	public static class CGDisplay {

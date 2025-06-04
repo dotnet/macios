@@ -164,12 +164,8 @@ namespace WebKit {
 	}
 
 	[NoiOS, NoTV, NoMacCatalyst]
-#if !NET
-	public enum WebNavigationType : uint {
-#else
 	[Native]
 	public enum WebNavigationType : long {
-#endif
 		/// <summary>To be added.</summary>
 		LinkClicked,
 		/// <summary>To be added.</summary>

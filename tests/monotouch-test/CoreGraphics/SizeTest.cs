@@ -21,11 +21,7 @@ namespace MonoTouchFixtures.CoreGraphics {
 		public void ToStringTest ()
 		{
 			var size = new CGSize ((nfloat) 1, (nfloat) 2);
-#if NET
 			Assert.AreEqual ("{1, 2}", size.ToString (), "ToString");
-#else
-			Assert.AreEqual ("{Width=1, Height=2}", size.ToString (), "ToString");
-#endif
 		}
 	}
 }

@@ -8,11 +8,7 @@ using System.Threading;
 using Foundation;
 #if !MONOMAC
 using UIKit;
-#if NET
 using NativeException = ObjCRuntime.ObjCException;
-#else
-using NativeException = Foundation.MonoTouchException;
-#endif
 #endif
 using Bindings.Test;
 using ObjCRuntime;

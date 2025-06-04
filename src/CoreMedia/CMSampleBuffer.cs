@@ -30,6 +30,9 @@ using UIKit;
 
 namespace CoreMedia {
 
+	/// <summary>A container of zero-or-more samples of a particular media type.</summary>
+	///     <remarks>To be added.</remarks>
+	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/AVCaptureFrames/">avcaptureframes</related>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -614,7 +617,7 @@ namespace CoreMedia {
 		///         <remarks>
 		///           <para>The returned token is the CoreFoundation type identifier (CFType) that has been assigned to this class.</para>
 		///           <para>This can be used to determine type identity between different CoreFoundation objects.</para>
-		///           <para>You can retrieve the type of a CoreFoundation object by invoking the <see cref="M:CoreFoundation.CFType.GetTypeID(System.IntPtr)" /> on the native handle of the object</para>
+		///           <para>You can retrieve the type of a CoreFoundation object by invoking the <see cref="CoreFoundation.CFType.GetTypeID(System.IntPtr)" /> on the native handle of the object</para>
 		///           <example>
 		///             <code lang="csharp lang-csharp"><![CDATA[bool isCMSampleBuffer = (CFType.GetTypeID (foo.Handle) == CMSampleBuffer.GetTypeID ());]]></code>
 		///           </example>
@@ -795,6 +798,15 @@ namespace CoreMedia {
 			/* AudioStreamPacketDescription* */ AudioStreamPacketDescription* packetDescriptions,
 			/* CMSampleBufferRef* */ IntPtr* sBufOut);
 
+		/// <param name="dataBuffer">To be added.</param>
+		///         <param name="formatDescription">To be added.</param>
+		///         <param name="samplesCount">To be added.</param>
+		///         <param name="sampleTimestamp">To be added.</param>
+		///         <param name="packetDescriptions">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -901,6 +913,13 @@ namespace CoreMedia {
 			/* const CMSampleTimingInfo * CM_NONNULL */ CMSampleTimingInfo* sampleTiming,
 			/* CMSampleBufferRef* */ IntPtr* sBufOut);
 
+		/// <param name="imageBuffer">To be added.</param>
+		///         <param name="formatDescription">To be added.</param>
+		///         <param name="sampleTiming">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]

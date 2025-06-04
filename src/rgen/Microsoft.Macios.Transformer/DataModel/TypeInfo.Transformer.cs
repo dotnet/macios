@@ -10,13 +10,11 @@ namespace Microsoft.Macios.Generator.DataModel;
 
 readonly partial struct TypeInfo {
 
-	internal TypeInfo (ITypeSymbol symbol, Dictionary<string, List<AttributeData>> attributes) :
-		this (
-			symbol is IArrayTypeSymbol arrayTypeSymbol
-				? arrayTypeSymbol.ElementType.ToDisplayString ()
-				: symbol.ToDisplayString ().Trim ('?', '[', ']'),
-			symbol.SpecialType)
+	internal TypeInfo (ITypeSymbol symbol, Dictionary<string, List<AttributeData>> attributes)
 	{
+		(Name, Namespace) = GetTypeNameAndNamespace (symbol);
+		SpecialType = symbol.SpecialType;
+		FullyQualifiedName = symbol.ToDisplayString ().Trim ('?', '[', ']');
 		IsNullable = attributes.HasNullAllowedFlag ();
 		// special case, the old bindings might not have the ? operator but will have the attr 
 		IsBlittable = symbol.IsBlittable () && !IsNullable;

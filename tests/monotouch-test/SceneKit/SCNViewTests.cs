@@ -24,7 +24,7 @@ namespace MonoTouchFixtures.SceneKit {
 		[Test]
 		public void NullOverlaySceneTest ()
 		{
-			// Issue: https://github.com/xamarin/xamarin-macios/issues/3392
+			// Issue: https://github.com/dotnet/macios/issues/3392
 			TestRuntime.AssertXcodeVersion (7, 0);
 			TestRuntime.AssertNotVirtualMachine ();
 

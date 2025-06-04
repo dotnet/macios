@@ -1,0 +1,18 @@
+<Documentation>
+  <Docs DocId="T:AddressBook.ABPersonUrlLabel">
+    <summary>
+      URL property labels.
+    </summary>
+    <remarks>
+      <para>
+        Labels are used with
+        <see cref="AddressBook.ABAddressBook.LocalizedLabel(Foundation.NSString)" />,
+        <see cref="AddressBook.ABMultiValueEntry{T}.Label" />,
+        <see cref="AddressBook.ABMutableMultiValue{T}.Add" />, and
+        <see cref="AddressBook.ABMutableMultiValue{T}.Insert" />.
+      </para>
+    </remarks>
+    <altmember cref="AddressBook.ABPerson.GetUrls" />
+    <altmember cref="AddressBook.ABPerson.SetUrls" />
+  </Docs>
+</Documentation>

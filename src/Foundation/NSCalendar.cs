@@ -35,6 +35,9 @@ using CoreGraphics;
 using CoreMedia;
 
 namespace Foundation {
+	/// <summary>Calendar types that can be used with the NSCalendar constructor.</summary>
+	///     <remarks>
+	///     </remarks>
 	public enum NSCalendarType {
 		/// <summary>Gregorian calendar.</summary>
 		Gregorian,
@@ -70,21 +73,17 @@ namespace Foundation {
 		EthiopicAmeteAlem,
 		/// <summary>To be added.</summary>
 		EthiopicAmeteMihret,
-#if NET
 		/// <summary>To be added.</summary>
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		IslamicTabular,
-#if NET
 		/// <summary>To be added.</summary>
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		IslamicUmmAlQura,
 	}
 
@@ -131,6 +130,9 @@ namespace Foundation {
 			}
 		}
 
+		/// <param name="calendarType">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSCalendar (NSCalendarType calendarType) : this (GetCalendarIdentifier (calendarType)) { }
 	}
 }

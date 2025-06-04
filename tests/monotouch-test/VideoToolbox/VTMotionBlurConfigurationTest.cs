@@ -26,12 +26,13 @@ namespace MonoTouchFixtures.VideoToolbox {
 		public void Properties ()
 		{
 			TestRuntime.AssertXcodeVersion (16, 3);
+			TestRuntime.AssertOnlyARM64 (); // "Fail to create effect configuration" is printed to the terminal
 
 			Assert.Multiple (() => {
-				using var obj = new VTMotionBlurConfiguration (320, 320, true, VTMotionBlurConfigurationQualityPrioritization.Normal, VTMotionBlurConfigurationRevision.Revision1);
+				using var obj = new VTMotionBlurConfiguration (320, 320, false, VTMotionBlurConfigurationQualityPrioritization.Normal, VTMotionBlurConfigurationRevision.Revision1);
 				Assert.That (obj.FrameWidth, Is.EqualTo ((nint) 320), "FrameWidth");
 				Assert.That (obj.FrameHeight, Is.EqualTo ((nint) 320), "FrameHeight");
-				Assert.That (obj.UsePrecomputedFlow, Is.EqualTo (true), "UsePrecomputedFlow");
+				Assert.That (obj.UsePrecomputedFlow, Is.EqualTo (false), "UsePrecomputedFlow");
 				Assert.That (obj.QualityPrioritization, Is.EqualTo (VTMotionBlurConfigurationQualityPrioritization.Normal), "QualityPrioritization");
 				Assert.That (obj.Revision, Is.EqualTo (VTMotionBlurConfigurationRevision.Revision1), "Revision");
 				TestRuntime.NSLog ($"FrameSupportedPixelFormats: {obj.FrameSupportedPixelFormats}");

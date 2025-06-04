@@ -72,7 +72,7 @@ namespace Xamarin.MacDev.Tasks {
 
 		protected abstract IEnumerable<ITaskItem> EnumerateInputs ();
 
-		protected abstract void AppendCommandLineArguments (IDictionary<string, string> environment, CommandLineBuilder args, ITaskItem input, ITaskItem output);
+		protected abstract void AppendCommandLineArguments (IDictionary<string, string?> environment, List<string> args, ITaskItem input, ITaskItem output);
 
 		protected virtual string GetBundleRelativeOutputPath (ITaskItem input)
 		{
@@ -102,51 +102,18 @@ namespace Xamarin.MacDev.Tasks {
 			return File.Exists (path) ? path : ToolExe;
 		}
 
-		static ProcessStartInfo GetProcessStartInfo (Dictionary<string, string> environment, string tool, string args)
-		{
-			var startInfo = new ProcessStartInfo (tool, args);
-
-			startInfo.WorkingDirectory = Environment.CurrentDirectory;
-
-			foreach (var variable in environment)
-				startInfo.EnvironmentVariables [variable.Key] = variable.Value;
-
-			startInfo.RedirectStandardOutput = true;
-			startInfo.RedirectStandardError = true;
-			startInfo.UseShellExecute = false;
-			startInfo.CreateNoWindow = true;
-
-			return startInfo;
-		}
-
 		int ExecuteTool (ITaskItem input, ITaskItem output)
 		{
-			var environment = new Dictionary<string, string> ();
-			var args = new CommandLineBuilder ();
+			var environment = new Dictionary<string, string?> ();
+			var args = new List<string> ();
 
 			environment.Add ("PATH", SdkBinPath);
 			environment.Add ("XCODE_DEVELOPER_USR_PATH", SdkUsrPath);
 
 			AppendCommandLineArguments (environment, args, input, output);
 
-			var startInfo = GetProcessStartInfo (environment, GetFullPathToTool (), args.ToString ());
-
-			using (var process = new Process ()) {
-				Log.LogMessage (MessageImportance.Normal, MSBStrings.M0001, startInfo.FileName, startInfo.Arguments);
-				process.StartInfo = startInfo;
-
-				try {
-					process.Start ();
-					process.WaitForExit ();
-				} catch (Win32Exception ex) {
-					Log.LogError (MSBStrings.E0003, startInfo.FileName, ex.Message);
-					return -1;
-				}
-
-				Log.LogMessage (MessageImportance.Low, MSBStrings.M0116, startInfo.FileName);
-
-				return process.ExitCode;
-			}
+			var rv = ExecuteAsync (GetFullPathToTool (), args, environment: environment).Result;
+			return rv.ExitCode;
 		}
 
 		public override bool Execute ()

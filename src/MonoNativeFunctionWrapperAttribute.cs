@@ -24,6 +24,7 @@
 using System;
 
 namespace ObjCRuntime {
+	/// <include file="../docs/api/ObjCRuntime/MonoNativeFunctionWrapperAttribute.xml" path="/Documentation/Docs[@DocId='T:ObjCRuntime.MonoNativeFunctionWrapperAttribute']/*" />
 	[AttributeUsage (AttributeTargets.Delegate)]
 	public sealed class MonoNativeFunctionWrapperAttribute : Attribute {
 	}

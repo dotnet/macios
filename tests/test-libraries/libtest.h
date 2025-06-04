@@ -197,6 +197,8 @@ typedef unsigned int (^RegistrarTestBlock) (unsigned int magic);
 		obj6: (byref NSObject **) obj6P
 		obj7: (oneway NSObject **) obj7P
 		;
+
+	-(void) setPtrPropertyCGRect: (void *) p1 p2:(void *)p2 p3:(void *)p3 p4:(void *)p4 p5:(CGRect*)p5 p6:(void *)p6;
 @end
 
 // We need this class so that the ObjCProtocolTest protocol
@@ -312,6 +314,38 @@ typedef void (^outerBlock) (innerBlock callback);
 @property (copy) NSString* stringValue;
 @property (copy) NSDate* dateValue;
 
+@end
+
+// VeryGeneric stuff
+
+@protocol VeryGenericElementProtocol <NSObject>
+@property (retain, readonly) NSDate * when;
+@end
+
+@protocol VeryGenericElementProtocol1 <VeryGenericElementProtocol>
+@property (readonly) NSInteger number;
+@end
+
+@protocol VeryGenericElementProtocol2 <VeryGenericElementProtocol>
+@property (retain, readonly) NSString * animal;
+@end
+
+@interface VeryGenericCollection<Key: NSString*, __covariant Element: id<VeryGenericElementProtocol>> : NSObject <NSFastEnumeration>
+@property (retain) Element element;
+@property () NSUInteger count;
+- (Element _Nullable)getElement:(Key)alias;
+- (NSEnumerator<Element> *)elementEnumerator;
+- (void) add: (Element) value;
+@end
+
+@protocol VeryGenericConsumerProtocol <NSObject>
+@property (retain, readonly) VeryGenericCollection<NSString *, id<VeryGenericElementProtocol1>> *first;
+@property (retain, readonly) VeryGenericCollection<NSString *, id<VeryGenericElementProtocol2>> *second;
+@end
+
+@interface VeryGenericFactory : NSObject {
+}
+	+(id<VeryGenericConsumerProtocol>) getConsumer;
 @end
 
 #pragma clang diagnostic pop

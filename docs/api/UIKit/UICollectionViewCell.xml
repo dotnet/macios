@@ -1,19 +1,19 @@
 <Documentation>
   <Docs DocId="T:UIKit.UICollectionViewCell">
-    <summary>Represents a reusable content view in the set being presented by the <see cref="T:UIKit.UICollectionView" />.</summary>
+    <summary>Represents a reusable content view in the set being presented by the <see cref="UIKit.UICollectionView" />.</summary>
     <remarks>
       <para>
-        <see cref="T:UIKit.UICollectionViewCell" />s are reusable views that present a single item in the data set that is being presented by the collection view. As subtypes of <see cref="T:UIKit.UICollectionReusableView" />, they are expected to be managed by their containing <see cref="T:UIKit.UICollectionView" />.</para>
-      <para>The <see cref="T:UIKit.UICollectionView" /> class is designed to work with large datasets while respecting the resource limitations of iOS devices. To do this, the <see cref="T:UIKit.UICollectionView" /> maintains a reuse queue of component views of type <see cref="T:UIKit.UICollectionReusableView" />, instantiating only as many as are strictly necessary and replacing values in <see cref="T:UIKit.UICollectionViewCell" />s that are no longer visible with values appropriate to <see cref="T:UIKit.UICollectionViewCell" />s that are about to scroll onto the screen. </para>
-      <para>The reuse queue implies an unusual lifecycle for <see cref="T:UIKit.UICollectionViewCell" />s (and other subtypes of <see cref="T:UIKit.UICollectionReusableView" />). Rather than the application developer allocating them and allowing the garbage collector to scavenge them appropriately, <see cref="T:UIKit.UICollectionReusableView" />s are allocated by a <see cref="T:UIKit.UICollectionView" /> and those that are no longer on-screen are reused without deallocation. (See <see cref="T:UIKit.UICollectionView" /> for more discussion.)</para>
+        <see cref="UIKit.UICollectionViewCell" />s are reusable views that present a single item in the data set that is being presented by the collection view. As subtypes of <see cref="UIKit.UICollectionReusableView" />, they are expected to be managed by their containing <see cref="UIKit.UICollectionView" />.</para>
+      <para>The <see cref="UIKit.UICollectionView" /> class is designed to work with large datasets while respecting the resource limitations of iOS devices. To do this, the <see cref="UIKit.UICollectionView" /> maintains a reuse queue of component views of type <see cref="UIKit.UICollectionReusableView" />, instantiating only as many as are strictly necessary and replacing values in <see cref="UIKit.UICollectionViewCell" />s that are no longer visible with values appropriate to <see cref="UIKit.UICollectionViewCell" />s that are about to scroll onto the screen. </para>
+      <para>The reuse queue implies an unusual lifecycle for <see cref="UIKit.UICollectionViewCell" />s (and other subtypes of <see cref="UIKit.UICollectionReusableView" />). Rather than the application developer allocating them and allowing the garbage collector to scavenge them appropriately, <see cref="UIKit.UICollectionReusableView" />s are allocated by a <see cref="UIKit.UICollectionView" /> and those that are no longer on-screen are reused without deallocation. (See <see cref="UIKit.UICollectionView" /> for more discussion.)</para>
       <para>
-        Each cell is an instance of the <see cref="T:UIKit.UICollectionViewCell" /> class, which is comprised of three different views, as shown in the figure below, taken from the "Introduction to Collection Views" guide:
+        Each cell is an instance of the <see cref="UIKit.UICollectionViewCell" /> class, which is comprised of three different views, as shown in the figure below, taken from the "Introduction to Collection Views" guide:
       </para>
       <para>
         <img href="~/UIKit/_images/UIKit.UICollectionViewCell.png" alt="Diagram showing the structure of a UICollectionViewCell" />
       </para>
       <para>
-        The Cells in the screenshot above are created by inheriting from <see cref="T:UIKit.UICollectionView" /> and setting the <see cref="P:UIKit.UICollectionViewCell.ContentView" />, <see cref="P:UIKit.UICollectionViewCell.ContentView" />, and <see cref="P:UIKit.UICollectionView.BackgroundView" /> properties as shown in the following code:
+        The Cells in the screenshot above are created by inheriting from <see cref="UIKit.UICollectionView" /> and setting the <see cref="UIKit.UICollectionViewCell.ContentView" />, <see cref="UIKit.UICollectionViewCell.ContentView" />, and <see cref="UIKit.UICollectionView.BackgroundView" /> properties as shown in the following code:
       </para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
@@ -33,7 +33,7 @@
           ContentView.AddSubview (imageView);          
         ]]></code>
       </example>
-      <para>Since an individual instance of <see cref="T:UIKit.UICollectionViewCell" /> may be reused without being re-allocated, the application developer may also have to adjust aspects dynamically using the <see cref="M:UIKit.UICollectionViewSource.GetCell(UIKit.UICollectionView,Foundation.NSIndexPath)" /> method, as shown in the following code, taken from the "Introduction to Collection Views" sample. The <c>animalCell</c> is an instance of a subtype of <see cref="T:UIKit.UICollectionViewCell" /> while the <c>animal</c> variable refers to an instance of a model class. The <see cref="M:UIKit.UICollectionViewSource.GetCell(UIKit.UICollectionView,Foundation.NSIndexPath)" /> method sets visual aspects of the <see cref="T:UIKit.UICollectionViewCell" /> to conform to the <c>animal</c> data, in this case, setting an <c>Image</c> property appropriately.</para>
+      <para>Since an individual instance of <see cref="UIKit.UICollectionViewCell" /> may be reused without being re-allocated, the application developer may also have to adjust aspects dynamically using the <see cref="UIKit.UICollectionViewSource.GetCell(UIKit.UICollectionView,Foundation.NSIndexPath)" /> method, as shown in the following code, taken from the "Introduction to Collection Views" sample. The <c>animalCell</c> is an instance of a subtype of <see cref="UIKit.UICollectionViewCell" /> while the <c>animal</c> variable refers to an instance of a model class. The <see cref="UIKit.UICollectionViewSource.GetCell(UIKit.UICollectionView,Foundation.NSIndexPath)" /> method sets visual aspects of the <see cref="UIKit.UICollectionViewCell" /> to conform to the <c>animal</c> data, in this case, setting an <c>Image</c> property appropriately.</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
 public override UICollectionViewCell GetCell (UICollectionView collectionView, MonoTouch.Foundation.NSIndexPath indexPath)

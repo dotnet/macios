@@ -20,6 +20,8 @@ using Metal;
 
 namespace CoreVideo {
 
+	/// <summary>This type exposes a CoreVideo buffer as a Metal texture.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]

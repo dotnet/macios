@@ -46,14 +46,12 @@ namespace HomeKit {
 			}
 		}
 
-#if NET
 		/// <summary>If <see langword="true" />, the property should not be displayed to the user.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public bool Hidden {
 			get {
 				foreach (var p in Properties) {

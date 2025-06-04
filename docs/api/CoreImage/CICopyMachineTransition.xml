@@ -1,6 +1,6 @@
 <Documentation>
   <Docs DocId="T:CoreImage.CICopyMachineTransition">
-    <summary>A <see cref="T:CoreImage.CITransitionFilter" /> that mimics the effect of a photocopier.</summary>
+    <summary>A <see cref="CoreImage.CITransitionFilter" /> that mimics the effect of a photocopier.</summary>
     <remarks>
       <para>The following example shows this filter in use</para>
       <example>

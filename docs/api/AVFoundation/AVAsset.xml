@@ -2,9 +2,9 @@
   <Docs DocId="T:AVFoundation.AVAsset">
     <summary>Base class for timed video and audio.</summary>
     <remarks>
-      <para>An <see cref="T:AVFoundation.AVAsset" /> represents one or more media assets. These are held in its <see cref="P:AVFoundation.AVAsset.Tracks" /> property. Additionally, <see cref="T:AVFoundation.AVAsset" />s include metadata, track grouping, and preferences about the media.</para>
-      <para>Because media assets such as movies are large, instantiating an <see cref="T:AVFoundation.AVAsset" /> will not automatically load the file. Properties are loaded when they are queried or via explicit calls to <see cref="M:AVFoundation.AVAsset.LoadValuesTaskAsync(System.String[])" /> or <see cref="M:AVFoundation.AVAsset.LoadValuesAsynchronously(System.String[],System.Action)" />.</para>
-      <para>During playback, the current presentation state of an <see cref="T:AVFoundation.AVAsset" /> is represented by an <see cref="T:AVFoundation.AVPlayerItem" /> object, and the playback is controlled by a <see cref="T:AVFoundation.AVPlayer" />:</para>
+      <para>An <see cref="AVFoundation.AVAsset" /> represents one or more media assets. These are held in its <see cref="AVFoundation.AVAsset.Tracks" /> property. Additionally, <see cref="AVFoundation.AVAsset" />s include metadata, track grouping, and preferences about the media.</para>
+      <para>Because media assets such as movies are large, instantiating an <see cref="AVFoundation.AVAsset" /> will not automatically load the file. Properties are loaded when they are queried or via explicit calls to <see cref="AVFoundation.AVAsset.LoadValuesTaskAsync(System.String[])" /> or <see cref="AVFoundation.AVAsset.LoadValuesAsynchronously(System.String[],System.Action)" />.</para>
+      <para>During playback, the current presentation state of an <see cref="AVFoundation.AVAsset" /> is represented by an <see cref="AVFoundation.AVPlayerItem" /> object, and the playback is controlled by a <see cref="AVFoundation.AVPlayer" />:</para>
       <para>
         <img href="~/AVFoundation/_images/AVFoundation.AssetPlayerItemPlayer.png" alt="UML Class Diagram illustrating classes relating to AVAsset" />
       </para>
@@ -15,7 +15,7 @@
     <summary>Notification constant for ChapterMetadataGroupsDidChange</summary>
     <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
     <remarks>
-      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
@@ -41,7 +41,7 @@ void Setup ()
     <summary>Notification constant for DurationDidChange</summary>
     <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
     <remarks>
-      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
@@ -67,7 +67,7 @@ void Setup ()
     <summary>Notification constant for MediaSelectionGroupsDidChange</summary>
     <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
     <remarks>
-      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
@@ -93,7 +93,7 @@ void Setup ()
     <summary>Notification constant for WasDefragmented</summary>
     <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
     <remarks>
-      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:AVFoundation.AVAsset.Notifications.ObserveWasDefragmented*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="AVFoundation.AVAsset.Notifications.ObserveWasDefragmented" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
@@ -119,7 +119,7 @@ void Setup ()
     <summary>Notification constant for ContainsFragmentsDidChange</summary>
     <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
     <remarks>
-      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:AVFoundation.AVAsset.Notifications.ObserveContainsFragmentsDidChange*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="AVFoundation.AVAsset.Notifications.ObserveContainsFragmentsDidChange" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
@@ -145,7 +145,7 @@ void Setup ()
         <summary>Notification constant for DurationDidChange</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
@@ -171,7 +171,7 @@ void Setup ()
         <summary>Notification constant for ChapterMetadataGroupsDidChange</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
@@ -197,7 +197,7 @@ void Setup ()
         <summary>Notification constant for MediaSelectionGroupsDidChange</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
@@ -223,7 +223,7 @@ void Setup ()
         <summary>Notification constant for WasDefragmented</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:AVFoundation.AVAsset.Notifications.ObserveWasDefragmented*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="AVFoundation.AVAsset.Notifications.ObserveWasDefragmented" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
@@ -249,7 +249,7 @@ void Setup ()
         <summary>Notification constant for ContainsFragmentsDidChange</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:AVFoundation.AVAsset.Notifications.ObserveContainsFragmentsDidChange*" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="AVFoundation.AVAsset.Notifications.ObserveContainsFragmentsDidChange" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
           <example>
             <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style

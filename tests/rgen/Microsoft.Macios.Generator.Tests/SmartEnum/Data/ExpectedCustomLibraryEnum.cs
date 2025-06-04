@@ -25,7 +25,7 @@ public static partial class CustomLibraryEnumExtensions
 		get
 		{
 			fixed (IntPtr *storage = &values [0])
-				return Dlfcn.CachePointer (Libraries.customlibrary.Handle, "None", storage);
+				return Dlfcn.CachePointer (global::ObjCRuntime.Libraries.customlibrary.Handle, "None", storage);
 		}
 	}
 
@@ -35,7 +35,7 @@ public static partial class CustomLibraryEnumExtensions
 		get
 		{
 			fixed (IntPtr *storage = &values [1])
-				return Dlfcn.CachePointer (Libraries.customlibrary.Handle, "Medium", storage);
+				return Dlfcn.CachePointer (global::ObjCRuntime.Libraries.customlibrary.Handle, "Medium", storage);
 		}
 	}
 
@@ -45,7 +45,7 @@ public static partial class CustomLibraryEnumExtensions
 		get
 		{
 			fixed (IntPtr *storage = &values [2])
-				return Dlfcn.CachePointer (Libraries.customlibrary.Handle, "High", storage);
+				return Dlfcn.CachePointer (global::ObjCRuntime.Libraries.customlibrary.Handle, "High", storage);
 		}
 	}
 
@@ -92,7 +92,7 @@ public static partial class CustomLibraryEnumExtensions
 	/// Retrieves the <see cref="CustomLibraryEnumExtensions" /> value represented by the backing field value in <paramref name="handle" />.
 	/// </summary>
 	/// <param name="handle">The native handle with the name of the constant to retrieve.</param>
-	public static CustomLibraryEnum GetValue (NativeHandle handle)
+	public static CustomLibraryEnum GetValue (global::ObjCRuntime.NativeHandle handle)
 	{
 		using var str = Runtime.GetNSObject<NSString> (handle)!;
 		return GetValue (str);
@@ -102,7 +102,7 @@ public static partial class CustomLibraryEnumExtensions
 	/// Retrieves the <see cref="CustomLibraryEnumExtensions" /> value represented by the backing field value in <paramref name="handle" />.
 	/// </summary>
 	/// <param name="handle">The native handle with the name of the constant to retrieve.</param>
-	public static CustomLibraryEnum? GetNullableValue (NativeHandle handle)
+	public static CustomLibraryEnum? GetNullableValue (global::ObjCRuntime.NativeHandle handle)
 	{
 		using var str = Runtime.GetNSObject<NSString> (handle);
 		if (str is null)

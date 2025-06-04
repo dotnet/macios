@@ -141,18 +141,6 @@ namespace CoreAnimation {
 			GC.KeepAlive (value);
 		}
 
-#if MONOMAC && !NET
-		[Obsolete ("Use 'AutoresizingMask' instead.")]
-		public virtual CAAutoresizingMask AutoresizinMask { 
-			get {
-				return AutoresizingMask;
-			}
-			set {
-				AutoresizingMask = value;
-			}
-		}
-#endif
-#if NET
 		/// <summary>Gets the contents format for the layer.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -160,7 +148,6 @@ namespace CoreAnimation {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public CAContentsFormat ContentsFormat {
 			get { return CAContentsFormatExtensions.GetValue (_ContentsFormat); }
 			set { _ContentsFormat = value.GetConstant ()!; }
@@ -171,6 +158,10 @@ namespace CoreAnimation {
 	public partial class CADisplayLink {
 		NSActionDispatcher? dispatcher;
 
+		/// <param name="action">Method to invoke on each screen refresh.</param>
+		///         <summary>Registers the delegate to be invoked every time the display is about to be updated.</summary>
+		///         <returns>The DisplayLink object that will invoke the specified method on each screen update.</returns>
+		///         <remarks>Once you create the display link, you must add the handler to the runloop.</remarks>
 		public static CADisplayLink Create (Action action)
 		{
 			var dispatcher = new NSActionDispatcher (action);

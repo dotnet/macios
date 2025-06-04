@@ -163,7 +163,7 @@ xamarin_marshal_return_value_impl (MonoType *mtype, const char *type, MonoObject
 					//    3) Thread U runs the GC, and tries to lock the framework peer lock, and
 					//       deadlocks because thread T already has the framework peer lock.
 					//
-					//    This is https://github.com/xamarin/xamarin-macios/issues/13066
+					//    This is https://github.com/dotnet/macios/issues/13066
 					//
 					// See also comment in xamarin_release_managed_ref
 
@@ -188,7 +188,7 @@ xamarin_marshal_return_value_impl (MonoType *mtype, const char *type, MonoObject
 					} else {
 						// This will try to retain the object if and only if it's an NSObject -
 						// in which case we known it's 'id' here and we can call autorelease on it.
-						bool retained = xamarin_attempt_retain_nsobject (retval, exception_gchandle);
+						bool retained = xamarin_attempt_retain_nsobject (retval, exception_gchandle) != 0;
 						if (*exception_gchandle != INVALID_GCHANDLE)
 							return returnValue;
 						if (retained) {
@@ -201,7 +201,7 @@ xamarin_marshal_return_value_impl (MonoType *mtype, const char *type, MonoObject
 				if (xamarin_is_class_intptr (r_klass) || xamarin_is_class_nativehandle (r_klass)) {
 					returnValue = *(void **) mono_object_unbox (retval);
 				} else {
-					xamarin_assertion_message ("Don't know how to marshal a return value of type '%s.%s'. Please file a bug with a test case at https://github.com/xamarin/xamarin-macios/issues/new\n", mono_class_get_namespace (r_klass), mono_class_get_name (r_klass));
+					xamarin_assertion_message ("Don't know how to marshal a return value of type '%s.%s'. Please file a bug with a test case at https://github.com/dotnet/macios/issues/new\n", mono_class_get_namespace (r_klass), mono_class_get_name (r_klass));
 				}
 			}
 
@@ -428,6 +428,7 @@ xamarin_create_mt_exception (char *msg)
 // Example:
 //    {bc}d => d
 //    {a{b}cd}e => e
+//    {CGRect={CGPoint=dd}{CGSize=dd}}e =>
 static const char *
 skip_nested_brace (const char *type)
 {
@@ -436,7 +437,8 @@ skip_nested_brace (const char *type)
 	while (*++type) {
 		switch (*type) {
 		case '{':
-			return skip_nested_brace (type);
+			type = skip_nested_brace (type);
+			break;
 		case '}':
 			return type++;
 		default:
@@ -455,11 +457,14 @@ skip_nested_brace (const char *type)
 //     {CGRect=dddd} => dddd
 //     ^q => ^
 //	   @? => @ (this is a block)
+//    ^{CGRect={CGPoint=dd}{CGSize=dd}} => ^
 //
 // type: the input type name
 // struct_name: where to write the collapsed struct name. Returns an empty string if the array isn't big enough.
 // max_char: the maximum number of characters to write to struct_name
 // return value: false if something went wrong (an exception thrown, or struct_name wasn't big enough).
+//
+// There's a unit test for this method in monotouch-test (in NativeRuntimeTest.cs)
 bool
 xamarin_collapse_struct_name (const char *type, char struct_name[], int max_char, GCHandle *exception_gchandle)
 {
@@ -1137,36 +1142,8 @@ void *xamarin_nsvalue_to_scnmatrix4             (NSValue *value, void *ptr, Mono
 void *
 xamarin_nsvalue_to_scnvector3 (NSValue *value, void *ptr, MonoClass *managedType, void *context, GCHandle *exception_gchandle)
 {
-#if TARGET_OS_IOS && defined (__arm__)
-	// In earlier versions of iOS [NSValue SCNVector3Value] would return 4
-	// floats. This does not cause problems on 64-bit architectures, because
-	// the 4 floats end up in floating point registers that doesn't need to be
-	// preserved. On 32-bit architectures it becomes a real problem though,
-	// since objc_msgSend_stret will be called, and the return value will be
-	// written to the stack. Writing 4 floats to the stack, when clang
-	// allocates 3 bytes, is a bad idea. There's no radar since this has
-	// already been fixed in iOS, it only affects older versions.
-
-	// So we have to avoid the SCNVector3Value selector on 32-bit
-	// architectures, since we can't influence how clang generates the call.
-	// Instead use [NSValue getValue:]. Interestingly enough this function has
-	// the same bug: it will write 4 floats on 32-bit architectures (and
-	// amazingly 4 *doubles* on 64-bit architectures - this has been filed as
-	// radar 33104111), but since we control the input buffer, we can just
-	// allocate the necessary bytes. And for good measure allocate 32 bytes,
-	// just to be sure.
-
-	SCNVector3 *valueptr = (SCNVector3 *) xamarin_calloc (32);
-	[value getValue: valueptr];
-	if (ptr) {
-		memcpy (ptr, valueptr, sizeof (SCNVector3));
-		xamarin_free (valueptr);
-		valueptr = (SCNVector3 *) ptr;
-	}
-#else
 	SCNVector3 *valueptr = (SCNVector3 *) (ptr ? ptr : xamarin_calloc (sizeof (SCNVector3)));
 	*valueptr = [value SCNVector3Value];
-#endif
 
 	return valueptr;
 }
@@ -1897,7 +1874,7 @@ xamarin_create_bindas_exception (MonoType *inputType, MonoType *outputType, Mono
 		goto exception_handling;
 
 	method_full_name = mono_method_full_name (method, TRUE);
-	msg = xamarin_strdup_printf ("Internal error: can't convert from '%s' to '%s' in %s. Please file a bug report with a test case (https://github.com/xamarin/xamarin-macios/issues/new).",
+	msg = xamarin_strdup_printf ("Internal error: can't convert from '%s' to '%s' in %s. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new).",
 										from_name, to_name, method_full_name);
 	exception_gchandle = xamarin_gchandle_new ((MonoObject *) xamarin_create_exception (msg), false);
 

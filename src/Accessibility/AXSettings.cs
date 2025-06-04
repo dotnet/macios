@@ -7,8 +7,6 @@ using CoreGraphics;
 using Foundation;
 using ObjCRuntime;
 
-#if NET
-
 namespace Accessibility {
 
 	[SupportedOSPlatform ("ios18.0")]
@@ -78,5 +76,3 @@ namespace Accessibility {
 		}
 	}
 }
-
-#endif // NET

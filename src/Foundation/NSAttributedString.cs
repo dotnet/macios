@@ -134,6 +134,10 @@ namespace Foundation {
 		/// <param name="options">A dictionary of attributes that specifies how to interpret the document contents.</param>
 		/// <param name="baseUrl">The base url to use when resolving markdown urls.</param>
 		/// <param name="error">The error if an error occurred.</param>
+		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
 		public static NSAttributedString? Create (NSUrl markdownFile, NSAttributedStringMarkdownParsingOptions? options, NSUrl? baseUrl, out NSError? error)
 		{
 			var rv = new NSAttributedString (NSObjectFlag.Empty);
@@ -150,6 +154,10 @@ namespace Foundation {
 		/// <param name="options">A dictionary of attributes that specifies how to interpret the document contents.</param>
 		/// <param name="baseUrl">The base url to use when resolving markdown urls.</param>
 		/// <param name="error">The error if an error occurred.</param>
+		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
 		public static NSAttributedString? Create (NSData markdown, NSAttributedStringMarkdownParsingOptions? options, NSUrl? baseUrl, out NSError? error)
 		{
 			var rv = new NSAttributedString (NSObjectFlag.Empty);
@@ -166,6 +174,10 @@ namespace Foundation {
 		/// <param name="options">A dictionary of attributes that specifies how to interpret the document contents.</param>
 		/// <param name="baseUrl">The base url to use when resolving markdown urls.</param>
 		/// <param name="error">The error if an error occurred.</param>
+		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
 		public static NSAttributedString? Create (string markdownString, NSAttributedStringMarkdownParsingOptions? options, NSUrl? baseUrl, out NSError? error)
 		{
 			var rv = new NSAttributedString (NSObjectFlag.Empty);
@@ -198,21 +210,39 @@ namespace Foundation {
 		public NSAttributedString (NSData data, out NSError error)
 		: this (data, new NSDictionary (), out var _, out error) { }
 #else
+		/// <param name="url">To be added.</param>
+		///         <param name="documentAttributes">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		[Obsolete ("Use the 'Create' method instead, because there's no way to return an error from a constructor.")]
 		public NSAttributedString (NSUrl url, NSAttributedStringDocumentAttributes documentAttributes, ref NSError error)
 		: this (url, documentAttributes, out var _, ref error) { }
 
+		/// <param name="data">To be added.</param>
+		///         <param name="documentAttributes">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		[Obsolete ("Use the 'Create' method instead, because there's no way to return an error from a constructor.")]
 		public NSAttributedString (NSData data, NSAttributedStringDocumentAttributes documentAttributes, ref NSError error)
 		: this (data, documentAttributes, out var _, ref error) { }
 
+		/// <param name="url">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		[Obsolete ("Use the 'Create' method instead, because there's no way to return an error from a constructor.")]
 		public NSAttributedString (NSUrl url, ref NSError error)
 		: this (url, new NSDictionary (), out var _, ref error) { }
 
+		/// <param name="data">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		[Obsolete ("Use the 'Create' method instead, because there's no way to return an error from a constructor.")]
 		public NSAttributedString (NSData data, ref NSError error)
@@ -220,6 +250,10 @@ namespace Foundation {
 #endif
 
 #if __MACOS__
+		/// <param name="str">To be added.</param>
+		///         <param name="attributes">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSAttributedString (string str, NSStringAttributes? attributes)
 			: this (str, attributes?.Dictionary)
 		{
@@ -238,11 +272,17 @@ namespace Foundation {
 			}
 		}
 
+		/// <param name="location">To be added.</param>
+		/// <param name="effectiveRange">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		public NSDictionary? GetAttributes (nint location, out NSRange effectiveRange)
 		{
 			return Runtime.GetNSObject<NSDictionary> (LowLevelGetAttributes (location, out effectiveRange));
 		}
 
+		/// <include file="../../docs/api/Foundation/NSAttributedString.xml" path="/Documentation/Docs[@DocId='M:Foundation.NSAttributedString.LowLevelGetAttributes(System.IntPtr,Foundation.NSRange@)']/*" />
 		public IntPtr LowLevelGetAttributes (nint location, out NSRange effectiveRange)
 		{
 			unsafe {
@@ -252,40 +292,76 @@ namespace Foundation {
 			}
 		}
 
+		/// <param name="str">String.</param>
+		///         <param name="attributes">CoreText string attributes.</param>
+		///         <summary>Creates an NSAttributedString for use with CoreText rendering functions.</summary>
+		///         <remarks>
+		///         </remarks>
 		public NSAttributedString (string str, CTStringAttributes? attributes)
 			: this (str, attributes?.Dictionary)
 		{
 		}
 
+		/// <param name="location">To be added.</param>
+		/// <param name="effectiveRange">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		public CTStringAttributes? GetCoreTextAttributes (nint location, out NSRange effectiveRange)
 		{
 			var attr = GetAttributes (location, out effectiveRange);
 			return attr is null ? null : new CTStringAttributes (attr);
 		}
 
+		/// <param name="location">To be added.</param>
+		/// <param name="longestEffectiveRange">To be added.</param>
+		/// <param name="rangeLimit">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		public CTStringAttributes? GetCoreTextAttributes (nint location, out NSRange longestEffectiveRange, NSRange rangeLimit)
 		{
 			var attr = GetAttributes (location, out longestEffectiveRange, rangeLimit);
 			return attr is null ? null : new CTStringAttributes (attr);
 		}
 
+		/// <param name="start">To be added.</param>
+		/// <param name="len">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		public NSAttributedString Substring (nint start, nint len)
 		{
 			return Substring (new NSRange (start, len));
 		}
 
 #if !MONOMAC
+		/// <param name="str">To be added.</param>
+		///         <param name="attributes">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSAttributedString (string str, UIStringAttributes? attributes)
 			: this (str, attributes?.Dictionary)
 		{
 		}
 
+		/// <param name="location">To be added.</param>
+		/// <param name="effectiveRange">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		public UIStringAttributes? GetUIKitAttributes (nint location, out NSRange effectiveRange)
 		{
 			var attr = GetAttributes (location, out effectiveRange);
 			return attr is null ? null : new UIStringAttributes (attr);
 		}
 
+		/// <param name="location">To be added.</param>
+		/// <param name="longestEffectiveRange">To be added.</param>
+		/// <param name="rangeLimit">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		public UIStringAttributes? GetUIKitAttributes (nint location, out NSRange longestEffectiveRange, NSRange rangeLimit)
 		{
 			var attr = GetAttributes (location, out longestEffectiveRange, rangeLimit);
@@ -343,21 +419,22 @@ namespace Foundation {
 			return dict.Count == 0 ? null : dict;
 		}
 
+		/// <include file="../../docs/api/Foundation/NSAttributedString.xml" path="/Documentation/Docs[@DocId='M:Foundation.NSAttributedString.#ctor(System.String,UIKit.UIFont,UIKit.UIColor,UIKit.UIColor,UIKit.UIColor,UIKit.NSParagraphStyle,Foundation.NSLigatureType,System.Single,Foundation.NSUnderlineStyle,UIKit.NSShadow,System.Single,Foundation.NSUnderlineStyle)']/*" />
 		public NSAttributedString (string str,
-					   UIFont? font = null,
-					   UIColor? foregroundColor = null,
-					   UIColor? backgroundColor = null,
-					   UIColor? strokeColor = null,
-					   NSParagraphStyle? paragraphStyle = null,
-					   NSLigatureType ligatures = NSLigatureType.Default,
-					   float kerning = 0,
-					   NSUnderlineStyle underlineStyle = NSUnderlineStyle.None,
-					   NSShadow? shadow = null,
-					   float strokeWidth = 0,
-					   NSUnderlineStyle strikethroughStyle = NSUnderlineStyle.None)
-		: this (str, ToDictionary (font, foregroundColor, backgroundColor, strokeColor, paragraphStyle, ligatures, kerning, underlineStyle,
-			shadow,
-			strokeWidth, strikethroughStyle))
+						   UIFont? font = null,
+						   UIColor? foregroundColor = null,
+						   UIColor? backgroundColor = null,
+						   UIColor? strokeColor = null,
+						   NSParagraphStyle? paragraphStyle = null,
+						   NSLigatureType ligatures = NSLigatureType.Default,
+						   float kerning = 0,
+						   NSUnderlineStyle underlineStyle = NSUnderlineStyle.None,
+						   NSShadow? shadow = null,
+						   float strokeWidth = 0,
+						   NSUnderlineStyle strikethroughStyle = NSUnderlineStyle.None)
+			: this (str, ToDictionary (font, foregroundColor, backgroundColor, strokeColor, paragraphStyle, ligatures, kerning, underlineStyle,
+				shadow,
+				strokeWidth, strikethroughStyle))
 		{
 		}
 #endif

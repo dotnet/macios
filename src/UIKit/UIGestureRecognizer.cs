@@ -73,6 +73,15 @@ namespace UIKit {
 			MarkDirty ();
 		}
 
+		/// <summary>Represents an action that was added to a UIGestureRecognizer.</summary>
+		///     <remarks>
+		///
+		///       An instance of this class is returned when you invoke the <see cref="UIKit.UIGestureRecognizer" />'s <see cref="UIKit.UIGestureRecognizer.AddTarget(Foundation.NSObject,ObjCRuntime.Selector)" /> method.
+		///       The AddTarget returns this token as a mechanism for later
+		///       unsubscribing this particular action from the recognizer using the <see cref="UIKit.UIGestureRecognizer.RemoveTarget(Foundation.NSObject,ObjCRuntime.Selector)" /> method.
+		///
+		///     </remarks>
+		///     <related type="externalDocumentation" href="https://developer.apple.com/reference/UIKit/__UIGestureRecognizerToken">Apple documentation for <c>__UIGestureRecognizerToken</c></related>
 		[Register ("__UIGestureRecognizerToken")]
 		public class Token : NSObject {
 			/// <summary>To be added.</summary>
@@ -98,6 +107,10 @@ namespace UIKit {
 
 		}
 
+		/// <summary>Subtype of <see cref="UIKit.UIGestureRecognizer.Token" />, which is returned by <see cref="UIKit.UIView.AddGestureRecognizer(UIKit.UIGestureRecognizer)" />.</summary>
+		///     <remarks>To be added.</remarks>
+		///     <altmember cref="UIKit.UIGestureRecognizer.ParametrizedDispatch" />
+		///     <related type="externalDocumentation" href="https://developer.apple.com/reference/UIKit/__UIGestureRecognizerParameterlessToken">Apple documentation for <c>__UIGestureRecognizerParameterlessToken</c></related>
 		[Register ("__UIGestureRecognizerParameterlessToken")]
 		public class ParameterlessDispatch : Token {
 			Action action;
@@ -117,6 +130,10 @@ namespace UIKit {
 			}
 		}
 
+		/// <summary>Subtype of <see cref="UIKit.UIGestureRecognizer.Token" />.</summary>
+		///     <remarks>To be added.</remarks>
+		///     <altmember cref="UIKit.UIGestureRecognizer.ParameterlessDispatch" />
+		///     <related type="externalDocumentation" href="https://developer.apple.com/reference/UIKit/__UIGestureRecognizerParametrizedToken">Apple documentation for <c>__UIGestureRecognizerParametrizedToken</c></related>
 		[Register ("__UIGestureRecognizerParametrizedToken")]
 		public class ParametrizedDispatch : Token {
 			Action<UIGestureRecognizer> action;
@@ -153,7 +170,7 @@ namespace UIKit {
 
 		/// <param name="action">The method to invoke when the gesture has been recognized.</param>
 		///         <summary>Registers a new callback for when the gesture has been recognized.</summary>
-		///         <returns>The returned token can be used later to remove this particular action from being invoked by the gesture recognizer using the <see cref="M:UIKit.UIGestureRecognizer.RemoveTarget(Foundation.NSObject,ObjCRuntime.Selector)" /> method.</returns>
+		///         <returns>The returned token can be used later to remove this particular action from being invoked by the gesture recognizer using the <see cref="UIKit.UIGestureRecognizer.RemoveTarget(Foundation.NSObject,ObjCRuntime.Selector)" /> method.</returns>
 		///         <remarks>
 		///         </remarks>
 		public Token AddTarget (Action<NSObject> action)

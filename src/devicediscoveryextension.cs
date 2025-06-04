@@ -15,10 +15,6 @@ using UniformTypeIdentifiers;
 
 using nw_endpoint_t = System.IntPtr;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace DeviceDiscoveryExtension {
 
 	[Static]

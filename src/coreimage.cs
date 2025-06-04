@@ -66,55 +66,118 @@ namespace CoreImage {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CIColor : NSSecureCoding, NSCopying {
+		/// <param name="c">To be added.</param>
+		///         <summary>Creates a <see cref="CoreImage.CIColor" /> from a <see cref="CoreGraphics.CGColor" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("colorWithCGColor:")]
 		CIColor FromCGColor (CGColor c);
 
+		/// <param name="red">To be added.</param>
+		/// <param name="green">To be added.</param>
+		/// <param name="blue">To be added.</param>
+		/// <param name="alpha">To be added.</param>
+		/// <summary>Creates a <see cref="CoreImage.CIColor" /> from the supplied <paramref name="red" />, <paramref name="green" />, <paramref name="blue" />, and <paramref name="alpha" /> values.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static]
 		[Export ("colorWithRed:green:blue:alpha:")]
 		CIColor FromRgba (nfloat red, nfloat green, nfloat blue, nfloat alpha);
 
+		/// <param name="red">To be added.</param>
+		/// <param name="green">To be added.</param>
+		/// <param name="blue">To be added.</param>
+		/// <param name="alpha">To be added.</param>
+		/// <param name="colorSpace">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("colorWithRed:green:blue:alpha:colorSpace:")]
 		[return: NullAllowed]
 		CIColor FromRgba (nfloat red, nfloat green, nfloat blue, nfloat alpha, CGColorSpace colorSpace);
 
+		/// <param name="red">To be added.</param>
+		/// <param name="green">To be added.</param>
+		/// <param name="blue">To be added.</param>
+		/// <summary>Creates a <see cref="CoreImage.CIColor" /> from the supplied <paramref name="red" />, <paramref name="green" />, and <paramref name="blue" /> values.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static]
 		[Export ("colorWithRed:green:blue:")]
 		CIColor FromRgb (nfloat red, nfloat green, nfloat blue);
 
+		/// <param name="red">To be added.</param>
+		/// <param name="green">To be added.</param>
+		/// <param name="blue">To be added.</param>
+		/// <param name="colorSpace">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("colorWithRed:green:blue:colorSpace:")]
 		[return: NullAllowed]
 		CIColor FromRgb (nfloat red, nfloat green, nfloat blue, CGColorSpace colorSpace);
 
+		/// <param name="representation">To be added.</param>
+		///         <summary>Creates a <see cref="CoreImage.CIColor" /> from a string of the format "R G B A".</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("colorWithString:")]
 		CIColor FromString (string representation);
 
+		/// <param name="c">To be added.</param>
+		/// <summary>Creates a new CIColor with the specified color.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithCGColor:")]
 		NativeHandle Constructor (CGColor c);
 
+		/// <param name="red">To be added.</param>
+		/// <param name="green">To be added.</param>
+		/// <param name="blue">To be added.</param>
+		/// <summary>Creates a new CIColor from the specified color components.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("initWithRed:green:blue:")]
 		NativeHandle Constructor (nfloat red, nfloat green, nfloat blue);
 
+		/// <param name="red">To be added.</param>
+		/// <param name="green">To be added.</param>
+		/// <param name="blue">To be added.</param>
+		/// <param name="colorSpace">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("initWithRed:green:blue:colorSpace:")]
 		NativeHandle Constructor (nfloat red, nfloat green, nfloat blue, CGColorSpace colorSpace);
 
+		/// <param name="red">To be added.</param>
+		/// <param name="green">To be added.</param>
+		/// <param name="blue">To be added.</param>
+		/// <param name="alpha">To be added.</param>
+		/// <summary>Creates a new CIColor from the specified color components.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("initWithRed:green:blue:alpha:")]
 		NativeHandle Constructor (nfloat red, nfloat green, nfloat blue, nfloat alpha);
 
+		/// <param name="red">To be added.</param>
+		/// <param name="green">To be added.</param>
+		/// <param name="blue">To be added.</param>
+		/// <param name="alpha">To be added.</param>
+		/// <param name="colorSpace">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("initWithRed:green:blue:alpha:colorSpace:")]
 		NativeHandle Constructor (nfloat red, nfloat green, nfloat blue, nfloat alpha, CGColorSpace colorSpace);
 
-		/// <summary>Gets the number of components. This is also the number of components that are returned in the <see cref="P:CoreImage.CIColor.Components" /> property.</summary>
+		/// <summary>Gets the number of components. This is also the number of components that are returned in the <see cref="CoreImage.CIColor.Components" /> property.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("numberOfComponents")]
@@ -157,7 +220,7 @@ namespace CoreImage {
 		// while the one below are CIColor convenience helpers
 		// conflicting names means we have to keep the *Color suffix on them
 
-		/// <summary>A <see cref="T:CoreImage.CIColor" /> with RGBA values of [0.0, 0.0, 0.0, 1.0].</summary>
+		/// <summary>A <see cref="CoreImage.CIColor" /> with RGBA values of [0.0, 0.0, 0.0, 1.0].</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
@@ -165,7 +228,7 @@ namespace CoreImage {
 		[Export ("blackColor", ArgumentSemantic.Strong)]
 		CIColor BlackColor { get; }
 
-		/// <summary>A <see cref="T:CoreImage.CIColor" /> object whose RGBA values are [1, 1, 1, 1].</summary>
+		/// <summary>A <see cref="CoreImage.CIColor" /> object whose RGBA values are [1, 1, 1, 1].</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
@@ -173,7 +236,7 @@ namespace CoreImage {
 		[Export ("whiteColor", ArgumentSemantic.Strong)]
 		CIColor WhiteColor { get; }
 
-		/// <summary>A <see cref="T:CoreImage.CIColor" /> whose RGBA values are (0.5, 0.5, 0.5, 1.0).</summary>
+		/// <summary>A <see cref="CoreImage.CIColor" /> whose RGBA values are (0.5, 0.5, 0.5, 1.0).</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
@@ -181,7 +244,7 @@ namespace CoreImage {
 		[Export ("grayColor", ArgumentSemantic.Strong)]
 		CIColor GrayColor { get; }
 
-		/// <summary>A <see cref="T:CoreImage.CIColor" /> object whose RGBA values are [1, 0, 0, 1].</summary>
+		/// <summary>A <see cref="CoreImage.CIColor" /> object whose RGBA values are [1, 0, 0, 1].</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
@@ -189,7 +252,7 @@ namespace CoreImage {
 		[Export ("redColor", ArgumentSemantic.Strong)]
 		CIColor RedColor { get; }
 
-		/// <summary>A <see cref="T:CoreImage.CIColor" /> whose RGBA values are [0, 1, 0, 1].</summary>
+		/// <summary>A <see cref="CoreImage.CIColor" /> whose RGBA values are [0, 1, 0, 1].</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
@@ -197,7 +260,7 @@ namespace CoreImage {
 		[Export ("greenColor", ArgumentSemantic.Strong)]
 		CIColor GreenColor { get; }
 
-		/// <summary>A <see cref="T:CoreImage.CIColor" /> whose RGBA values are [0, 0, 1, 1].</summary>
+		/// <summary>A <see cref="CoreImage.CIColor" /> whose RGBA values are [0, 0, 1, 1].</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
@@ -205,7 +268,7 @@ namespace CoreImage {
 		[Export ("blueColor", ArgumentSemantic.Strong)]
 		CIColor BlueColor { get; }
 
-		/// <summary>A <see cref="T:CoreImage.CIColor" /> whose RGBA values are [0, 1, 1, 1].</summary>
+		/// <summary>A <see cref="CoreImage.CIColor" /> whose RGBA values are [0, 1, 1, 1].</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
@@ -213,7 +276,7 @@ namespace CoreImage {
 		[Export ("cyanColor", ArgumentSemantic.Strong)]
 		CIColor CyanColor { get; }
 
-		/// <summary>A <see cref="T:CoreImage.CIColor" /> whose RGBA values are [1, 0, 1, 1].</summary>
+		/// <summary>A <see cref="CoreImage.CIColor" /> whose RGBA values are [1, 0, 1, 1].</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
@@ -221,7 +284,7 @@ namespace CoreImage {
 		[Export ("magentaColor", ArgumentSemantic.Strong)]
 		CIColor MagentaColor { get; }
 
-		/// <summary>A <see cref="T:CoreImage.CIColor" /> objects whose RGBA values are [1, 1, 0, 1].</summary>
+		/// <summary>A <see cref="CoreImage.CIColor" /> objects whose RGBA values are [1, 1, 0, 1].</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
@@ -229,7 +292,7 @@ namespace CoreImage {
 		[Export ("yellowColor", ArgumentSemantic.Strong)]
 		CIColor YellowColor { get; }
 
-		/// <summary>A <see cref="T:CoreImage.CIColor" /> whose values are [0, 0, 0, 0].</summary>
+		/// <summary>A <see cref="CoreImage.CIColor" /> whose values are [0, 0, 0, 0].</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
@@ -237,9 +300,15 @@ namespace CoreImage {
 		[Export ("clearColor", ArgumentSemantic.Strong)]
 		CIColor ClearColor { get; }
 
+		/// <summary>Returns a string representation of the color, in the format "R G B [A]".</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("stringRepresentation")]
 		string StringRepresentation ();
 
+		/// <param name="color">To be added.</param>
+		/// <summary>Creates a new CIColor with the specified color.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithColor:")]
 		NativeHandle Constructor (Color color);
 	}
@@ -261,10 +330,16 @@ namespace CoreImage {
 	[DisableDefaultCtor]
 	interface CIContext {
 		// marked iOS5 but it's not working in iOS8.0
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("init")]
 		NativeHandle Constructor ();
 
+		/// <param name="device">To be added.</param>
+		///         <summary>Creates a new CIContext from the provided Metal device.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("contextWithMTLDevice:")]
@@ -276,6 +351,11 @@ namespace CoreImage {
 		[Export ("contextWithMTLDevice:options:")]
 		CIContext FromMetalDevice (IMTLDevice device, [NullAllowed] NSDictionary options);
 
+		/// <param name="device">The source <see cref="Metal.IMTLDevice" />.</param>
+		///         <param name="options">The desired options for the new <see cref="CoreImag.CIContext" />.<para tool="nullallowed">This parameter can be <see langword="null" />.</para></param>
+		///         <summary>Creates a new <see cref="CoreImage.CIContext" /> from the provided Metal <paramref name="device" />, applying the specified options.</summary>
+		///         <returns>A new <see cref="CoreImage.CIContext" />.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("contextWithMTLDevice:options:")]
@@ -295,7 +375,7 @@ namespace CoreImage {
 		[Export ("initWithOptions:")]
 		NativeHandle Constructor ([NullAllowed] NSDictionary options);
 
-		/// <summary>Creates a new <see cref="T:CoreImage.CIContext" /> with default options.</summary>
+		/// <summary>Creates a new <see cref="CoreImage.CIContext" /> with default options.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[Static]
@@ -303,6 +383,10 @@ namespace CoreImage {
 		CIContext Create ();
 
 #if HAS_OPENGLES
+		/// <param name="eaglContext">To be added.</param>
+		/// <summary>Creates a new <see cref="CoreImage.CIContext" /> from the provided <paramref name="eaglContext" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[NoMac]
 		[NoMacCatalyst]
 		[Deprecated (PlatformName.iOS, 12, 0)]
@@ -311,6 +395,14 @@ namespace CoreImage {
 		[Export ("contextWithEAGLContext:")]
 		CIContext FromContext (EAGLContext eaglContext);
 
+		/// <param name="eaglContext">To be added.</param>
+		/// <param name="dictionary">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Creates a new <see cref="CoreImage.CIContext" /> from the provided <paramref name="eaglContext" /> and by using the options that are named in <paramref name="dictionary" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[NoMac]
 		[NoMacCatalyst]
 		[Deprecated (PlatformName.iOS, 12, 0)]
@@ -320,15 +412,37 @@ namespace CoreImage {
 		CIContext FromContext (EAGLContext eaglContext, [NullAllowed] NSDictionary dictionary);
 #endif
 
+		/// <param name="image">To be added.</param>
+		///         <param name="buffer">To be added.</param>
+		///         <summary>Renders <paramref name="image" /> to <paramref name="buffer" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("render:toCVPixelBuffer:")]
 		void Render (CIImage image, CVPixelBuffer buffer);
 
+		/// <param name="image">To be added.</param>
+		///         <param name="buffer">To be added.</param>
+		///         <param name="rectangle">To be added.</param>
+		///         <param name="cs">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("render:toCVPixelBuffer:bounds:colorSpace:")]
 		// null is not documented for CGColorSpace but it makes sense with the other overload not having this parameter (unit tested)
 		void Render (CIImage image, CVPixelBuffer buffer, CGRect rectangle, [NullAllowed] CGColorSpace cs);
 
+		/// <param name="image">To be added.</param>
+		///         <param name="surface">To be added.</param>
+		///         <param name="bounds">To be added.</param>
+		///         <param name="colorSpace">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("render:toIOSurface:bounds:colorSpace:")]
 		void Render (CIImage image, IOSurface.IOSurface surface, CGRect bounds, [NullAllowed] CGColorSpace colorSpace);
@@ -349,10 +463,28 @@ namespace CoreImage {
 		[Export ("outputImageMaximumSize")]
 		CGSize OutputImageMaximumSize { get; }
 
+		/// <param name="image">To be added.</param>
+		///         <param name="texture">To be added.</param>
+		///         <param name="commandBuffer">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="bounds">To be added.</param>
+		///         <param name="colorSpace">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("render:toMTLTexture:commandBuffer:bounds:colorSpace:")]
 		void Render (CIImage image, IMTLTexture texture, [NullAllowed] IMTLCommandBuffer commandBuffer, CGRect bounds, CGColorSpace colorSpace);
 
+		/// <param name="image">To be added.</param>
+		///         <param name="atPoint">To be added.</param>
+		///         <param name="fromRect">To be added.</param>
+		///         <summary>Developers should not use this deprecated method. Developers should use 'DrawImage (image, CGRect, CGRect)' instead.</summary>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 6, 0, message: "Use 'DrawImage (image, CGRect, CGRect)' instead.")]
 		[Deprecated (PlatformName.TvOS, 9, 0, message: "Use 'DrawImage (image, CGRect, CGRect)' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 8, message: "Use 'DrawImage (image, CGRect, CGRect)' instead.")]
@@ -360,12 +492,17 @@ namespace CoreImage {
 		[Export ("drawImage:atPoint:fromRect:")]
 		void DrawImage (CIImage image, CGPoint atPoint, CGRect fromRect);
 
+		/// <param name="image">The image to draw.</param>
+		///         <param name="inRectangle">The rectangle where to draw the image.</param>
+		///         <param name="fromRectangle">The rectangle of the image to draw.</param>
+		///         <summary>Draws the <paramref name="fromRectangle" /> portion of <paramref name="image" /> into the rectangle specified by <paramref name="inRectangle" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("drawImage:inRect:fromRect:")]
 		void DrawImage (CIImage image, CGRect inRectangle, CGRect fromRectangle);
 
 		/// <param name="image">To be added.</param>
 		///         <param name="fromRectangle">To be added.</param>
-		///         <summary>Creates a new <see cref="T:CoreGraphics.CGImage" /> from the <paramref name="fromRectangle" /> region of <paramref name="image" />.</summary>
+		///         <summary>Creates a new <see cref="CoreGraphics.CGImage" /> from the <paramref name="fromRectangle" /> region of <paramref name="image" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[Export ("createCGImage:fromRect:")]
@@ -388,6 +525,17 @@ namespace CoreImage {
 		[return: NullAllowed]
 		CGImage CreateCGImage (CIImage image, CGRect fromRect, int /* CIFormat = int */ ciImageFormat, [NullAllowed] CGColorSpace colorSpace);
 
+		/// <param name="image">To be added.</param>
+		///         <param name="fromRect">To be added.</param>
+		///         <param name="format">To be added.</param>
+		///         <param name="colorSpace">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="deferred">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("createCGImage:fromRect:format:colorSpace:deferred:")]
 		[return: Release]
@@ -401,12 +549,25 @@ namespace CoreImage {
 		[return: NullAllowed]
 		CGLayer CreateCGLayer (CGSize size, [NullAllowed] NSDictionary info);
 
+		/// <param name="image">To be added.</param>
+		/// <param name="bitmapPtr">To be added.</param>
+		/// <param name="bytesPerRow">To be added.</param>
+		/// <param name="bounds">To be added.</param>
+		/// <param name="bitmapFormat">To be added.</param>
+		/// <param name="colorSpace">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("render:toBitmap:rowBytes:bounds:format:colorSpace:")]
 		void RenderToBitmap (CIImage image, IntPtr bitmapPtr, nint bytesPerRow, CGRect bounds, int /* CIFormat = int */ bitmapFormat, [NullAllowed] CGColorSpace colorSpace);
 
 		//[Export ("render:toIOSurface:bounds:colorSpace:")]
 		//void RendertoIOSurfaceboundscolorSpace (CIImage im, IOSurfaceRef surface, CGRect r, CGColorSpaceRef cs, );
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]
@@ -469,6 +630,10 @@ namespace CoreImage {
 		[Static]
 		int OfflineGPUCount { get; }
 
+		/// <param name="gpuIndex">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]
@@ -478,7 +643,7 @@ namespace CoreImage {
 		[return: NullAllowed]
 		CIContext FromOfflineGpu (int gpuIndex);
 
-		/// <summary>The working <see cref="T:CoreGraphics.CGColorSpace" />.</summary>
+		/// <summary>The working <see cref="CoreGraphics.CGColorSpace" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
@@ -526,36 +691,76 @@ namespace CoreImage {
 		NSData GetOpenEXRRepresentation (CIImage image, NSDictionary<NSString, NSObject> options, [NullAllowed] out NSError errorPtr);
 	}
 
-	/// <summary>Extension methods for <see cref="T:CoreImage.CIContext" /> that can generate common image formats.</summary>
+	/// <summary>Extension methods for <see cref="CoreImage.CIContext" /> that can generate common image formats.</summary>
 	[Category]
 	[BaseType (typeof (CIContext))]
 	interface CIContext_ImageRepresentation {
 
+		/// <param name="image">The image input to be processed.</param>
+		/// <param name="format">The desired pixel format.</param>
+		/// <param name="colorSpace">The color space to be used.</param>
+		/// <param name="options">Processing arguments.</param>
+		/// <summary>Applies the processing of this context to the <paramref name="image" /> and returns a TIFF image of the result.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("TIFFRepresentationOfImage:format:colorSpace:options:")]
 		[return: NullAllowed]
 		NSData GetTiffRepresentation (CIImage image, CIFormat format, CGColorSpace colorSpace, NSDictionary options);
 
+		/// <param name="image">To be added.</param>
+		/// <param name="format">To be added.</param>
+		/// <param name="colorSpace">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("GetTiffRepresentation (This, image, format, colorSpace, options.GetDictionary ()!)")]
 		[return: NullAllowed]
 		NSData GetTiffRepresentation (CIImage image, CIFormat format, CGColorSpace colorSpace, CIImageRepresentationOptions options);
 
+		/// <param name="image">The image input to be processed.</param>
+		/// <param name="colorSpace">The color space to be used.</param>
+		/// <param name="options">Processing arguments.</param>
+		/// <summary>Applies the processing of this context to the <paramref name="image" /> and returns a JPEG image of the result.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("JPEGRepresentationOfImage:colorSpace:options:")]
 		[return: NullAllowed]
 		NSData GetJpegRepresentation (CIImage image, CGColorSpace colorSpace, NSDictionary options);
 
+		/// <param name="image">To be added.</param>
+		/// <param name="colorSpace">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("GetJpegRepresentation (This, image, colorSpace, options.GetDictionary ()!)")]
 		[return: NullAllowed]
 		NSData GetJpegRepresentation (CIImage image, CGColorSpace colorSpace, CIImageRepresentationOptions options);
 
+		/// <param name="image">To be added.</param>
+		/// <param name="format">To be added.</param>
+		/// <param name="colorSpace">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("HEIFRepresentationOfImage:format:colorSpace:options:")]
 		[return: NullAllowed]
 		NSData GetHeifRepresentation (CIImage image, CIFormat format, CGColorSpace colorSpace, NSDictionary options);
 
+		/// <param name="image">To be added.</param>
+		/// <param name="format">To be added.</param>
+		/// <param name="colorSpace">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("GetHeifRepresentation (This, image, format, colorSpace, options.GetDictionary ()!)")]
 		[return: NullAllowed]
@@ -571,36 +776,108 @@ namespace CoreImage {
 		[return: NullAllowed]
 		NSData GetHeif10Representation (CIImage image, CGColorSpace colorSpace, CIImageRepresentationOptions options, [NullAllowed] out NSError error);
 
+		/// <param name="image">To be added.</param>
+		/// <param name="format">To be added.</param>
+		/// <param name="colorSpace">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("PNGRepresentationOfImage:format:colorSpace:options:")]
 		[return: NullAllowed]
 		NSData GetPngRepresentation (CIImage image, CIFormat format, CGColorSpace colorSpace, NSDictionary options);
 
+		/// <param name="image">To be added.</param>
+		/// <param name="format">To be added.</param>
+		/// <param name="colorSpace">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("GetPngRepresentation (This, image, format, colorSpace, options.GetDictionary ()!)")]
 		[return: NullAllowed]
 		NSData GetPngRepresentation (CIImage image, CIFormat format, CGColorSpace colorSpace, CIImageRepresentationOptions options);
 
+		/// <param name="image">The image input to be processed.</param>
+		/// <param name="url">To be added.</param>
+		/// <param name="format">The desired pixel format.</param>
+		/// <param name="colorSpace">The color space to be used.</param>
+		/// <param name="options">Processing arguments.</param>
+		/// <param name="error">If not <see langword="null" />, error that occurred during processing.</param>
+		/// <summary>Applies the processing of this context to the <paramref name="image" /> and writes a TIFF image of the result to <paramref name="url" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("writeTIFFRepresentationOfImage:toURL:format:colorSpace:options:error:")]
 		bool WriteTiffRepresentation (CIImage image, NSUrl url, CIFormat format, CGColorSpace colorSpace, NSDictionary options, out NSError error);
 
+		/// <param name="image">To be added.</param>
+		/// <param name="url">To be added.</param>
+		/// <param name="format">To be added.</param>
+		/// <param name="colorSpace">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("WriteTiffRepresentation (This, image, url, format, colorSpace, options.GetDictionary ()!, out error)")]
 		bool WriteTiffRepresentation (CIImage image, NSUrl url, CIFormat format, CGColorSpace colorSpace, CIImageRepresentationOptions options, out NSError error);
 
+		/// <param name="image">The image input to be processed.</param>
+		/// <param name="url">The file URL to which the image should be written.</param>
+		/// <param name="colorSpace">The color space to be used.</param>
+		/// <param name="options">Processing arguments.</param>
+		/// <param name="error">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Applies the processing of this context to the <paramref name="image" /> and writes a JPEG image of the result to <paramref name="url" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("writeJPEGRepresentationOfImage:toURL:colorSpace:options:error:")]
 		bool WriteJpegRepresentation (CIImage image, NSUrl url, CGColorSpace colorSpace, NSDictionary options, [NullAllowed] out NSError error);
 
+		/// <param name="image">To be added.</param>
+		/// <param name="url">To be added.</param>
+		/// <param name="colorSpace">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("WriteJpegRepresentation (This, image, url, colorSpace, options.GetDictionary ()!, out error)")]
 		bool WriteJpegRepresentation (CIImage image, NSUrl url, CGColorSpace colorSpace, CIImageRepresentationOptions options, [NullAllowed] out NSError error);
 
+		/// <param name="image">To be added.</param>
+		/// <param name="url">To be added.</param>
+		/// <param name="format">To be added.</param>
+		/// <param name="colorSpace">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="error">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("writeHEIFRepresentationOfImage:toURL:format:colorSpace:options:error:")]
 		bool WriteHeifRepresentation (CIImage image, NSUrl url, CIFormat format, CGColorSpace colorSpace, NSDictionary options, [NullAllowed] out NSError error);
 
+		/// <param name="image">To be added.</param>
+		/// <param name="url">To be added.</param>
+		/// <param name="format">To be added.</param>
+		/// <param name="colorSpace">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("WriteHeifRepresentation (This, image, url, format, colorSpace, options.GetDictionary ()!, out error)")]
 		bool WriteHeifRepresentation (CIImage image, NSUrl url, CIFormat format, CGColorSpace colorSpace, CIImageRepresentationOptions options, [NullAllowed] out NSError error);
@@ -613,10 +890,31 @@ namespace CoreImage {
 		[Wrap ("WriteHeif10Representation (This, image, url, colorSpace, options.GetDictionary ()!, out error)")]
 		bool WriteHeif10Representation (CIImage image, NSUrl url, CGColorSpace colorSpace, CIImageRepresentationOptions options, [NullAllowed] out NSError error);
 
+		/// <param name="image">To be added.</param>
+		/// <param name="url">To be added.</param>
+		/// <param name="format">To be added.</param>
+		/// <param name="colorSpace">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="error">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("writePNGRepresentationOfImage:toURL:format:colorSpace:options:error:")]
 		bool WritePngRepresentation (CIImage image, NSUrl url, CIFormat format, CGColorSpace colorSpace, NSDictionary options, [NullAllowed] out NSError error);
 
+		/// <param name="image">To be added.</param>
+		/// <param name="url">To be added.</param>
+		/// <param name="format">To be added.</param>
+		/// <param name="colorSpace">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("WritePngRepresentation (This, image, url, format, colorSpace, options.GetDictionary ()!, out error)")]
 		bool WritePngRepresentation (CIImage image, NSUrl url, CIFormat format, CGColorSpace colorSpace, CIImageRepresentationOptions options, [NullAllowed] out NSError error);
@@ -627,18 +925,36 @@ namespace CoreImage {
 	[BaseType (typeof (CIContext))]
 	interface CIContext_CIDepthBlurEffect {
 		// as per the docs: The 'options' parameter is a key value/pair reserved for future use.
+		/// <param name="url">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("depthBlurEffectFilterForImageURL:options:")]
 		[return: NullAllowed]
 		CIFilter GetDepthBlurEffectFilter (NSUrl url, [NullAllowed] NSDictionary options);
 
 		// as per the docs: The 'options' parameter is a key value/pair reserved for future use.
+		/// <param name="data">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("depthBlurEffectFilterForImageData:options:")]
 		[return: NullAllowed]
 		CIFilter GetDepthBlurEffectFilter (NSData data, [NullAllowed] NSDictionary options);
 
 		// as per the docs: The 'options' parameter is a key value/pair reserved for future use.
+		/// <param name="image">To be added.</param>
+		/// <param name="disparityImage">To be added.</param>
+		/// <param name="portraitEffectsMatte">To be added.</param>
+		/// <param name="orientation">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("depthBlurEffectFilterForImage:disparityImage:portraitEffectsMatte:orientation:options:")]
 		[return: NullAllowed]
@@ -675,6 +991,8 @@ namespace CoreImage {
 		[Export ("outputKeys")]
 		string [] OutputKeys { get; }
 
+		/// <summary>Sets all input values to their defaults.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setDefaults")]
 		void SetDefaults ();
 
@@ -705,17 +1023,33 @@ namespace CoreImage {
 			set;
 		}
 
+		/// <include file="../docs/api/CoreImage/CIFilter.xml" path="/Documentation/Docs[@DocId='M:CoreImage.CIFilter.FromName(System.String)']/*" />
 		[Static]
 		[Export ("filterWithName:")]
 		[return: NullAllowed]
 		CIFilter FromName (string name);
 
+		/// <param name="name">To be added.</param>
+		///         <param name="inputParameters">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Returns a <see cref="CoreImage.CIFilter" /> that corresponds to <paramref name="name" /> and is initialized with the parameters that are named in <paramref name="inputParameters" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("filterWithName:withInputParameters:")]
 		[return: NullAllowed]
 		CIFilter GetFilter (string name, [NullAllowed] NSDictionary inputParameters);
 
+		/// <param name="category">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Returns an array of strings that specifies the filters taht the system provides for the specified <paramref name="category" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("filterNamesInCategory:")]
 		string [] FilterNamesInCategory ([NullAllowed] string category);
@@ -724,34 +1058,61 @@ namespace CoreImage {
 		[Export ("filterNamesInCategories:"), Internal]
 		string [] _FilterNamesInCategories ([NullAllowed] string [] categories);
 
+		/// <param name="filterName">To be added.</param>
+		///         <summary>Gets the localized name for the specified filter name.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("localizedNameForFilterName:")]
 		[return: NullAllowed]
 		string FilterLocalizedName (string filterName);
 
+		/// <param name="category">To be added.</param>
+		///         <summary>Returns the localized name for the specified category.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("localizedNameForCategory:")]
 		string CategoryLocalizedName (string category);
 
+		/// <param name="filterName">To be added.</param>
+		///         <summary>Gets the localized description for the specified filter name.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("localizedDescriptionForFilterName:")]
 		[return: NullAllowed]
 		string FilterLocalizedDescription (string filterName);
 
+		/// <param name="filterName">To be added.</param>
+		///         <summary>Gets the localized reference documentation for the specified filter name.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("localizedReferenceDocumentationForFilterName:")]
 		[return: NullAllowed]
 		NSUrl FilterLocalizedReferenceDocumentation (string filterName);
 
+		/// <param name="name">An identifier for the filter type.</param>
+		/// <param name="constructorObject">The <see cref="CoreImage.ICIFilterConstructor" /> factory.</param>
+		/// <param name="classAttributes">The filter attributes.</param>
+		/// <summary>Registers the filter generated by the <paramref name="constructorObject" /> factory.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("registerFilterName:constructor:classAttributes:")]
 		void RegisterFilterName (string name, ICIFilterConstructor constructorObject, NSDictionary<NSString, NSObject> classAttributes);
 
+		/// <param name="k">To be added.</param>
+		///         <param name="args">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]
@@ -759,25 +1120,40 @@ namespace CoreImage {
 		[return: NullAllowed]
 		CIImage Apply (CIKernel k, [NullAllowed] NSArray args, [NullAllowed] NSDictionary options);
 
+		/// <param name="configurationOptions">To be added.</param>
+		///         <param name="excludedKeys">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]
 		[Export ("viewForUIConfiguration:excludedKeys:")]
 		IKFilterUIView GetFilterUIView (NSDictionary configurationOptions, [NullAllowed] NSArray excludedKeys);
 
-		// added in 10.10 but it was already accessible in a different way before (manual bindings)
-		[NoMac]
+		/// <summary>Gets the image that results from applying the filter.</summary>
 		[MacCatalyst (13, 1)]
 		[Export ("outputImage")]
 		[NullAllowed]
 		CIImage OutputImage { get; }
 
+		/// <param name="filters">To be added.</param>
+		///         <param name="extent">To be added.</param>
+		///         <summary>Returns a list of filters for an extent as serialized XMP data.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("serializedXMPFromFilters:inputImageExtent:"), Static]
 		[return: NullAllowed]
 		NSData SerializedXMP (CIFilter [] filters, CGRect extent);
 
+		/// <param name="xmpData">To be added.</param>
+		///         <param name="extent">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("filterArrayFromSerializedXMP:inputImageExtent:error:"), Static]
@@ -792,6 +1168,11 @@ namespace CoreImage {
 
 		// CIRAWFilter (CIFilter)
 
+		/// <param name="url">The URL from which the RAW image data can be read.</param>
+		///         <param name="options">The RAW processing options.</param>
+		///         <summary>Creates a <see cref="CoreImage.CIFilter" /> that applies the <paramref name="options" /> to the RAW data read from <paramref name="url" />.</summary>
+		///         <returns>A RAW processing filter.</returns>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 15, 0, message: "Use 'CIRawFilter' instead.")]
 		[Deprecated (PlatformName.MacOSX, 12, 0, message: "Use 'CIRawFilter' instead.")]
 		[Deprecated (PlatformName.TvOS, 15, 0, message: "Use 'CIRawFilter' instead.")]
@@ -801,6 +1182,11 @@ namespace CoreImage {
 		[Export ("filterWithImageURL:options:")]
 		CIFilter CreateRawFilter (NSUrl url, NSDictionary options);
 
+		/// <param name="url">The URL from which the RAW image data can be read.</param>
+		///         <param name="options">The RAW processing options.</param>
+		///         <summary>Creates a <see cref="CoreImage.CIFilter" /> that applies the <paramref name="options" /> to the RAW data read from <paramref name="url" />.</summary>
+		///         <returns>A RAW processing filter.</returns>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 15, 0, message: "Use 'CIRawFilter' instead.")]
 		[Deprecated (PlatformName.MacOSX, 12, 0, message: "Use 'CIRawFilter' instead.")]
 		[Deprecated (PlatformName.TvOS, 15, 0, message: "Use 'CIRawFilter' instead.")]
@@ -810,6 +1196,11 @@ namespace CoreImage {
 		[Wrap ("CreateRawFilter (url, options.GetDictionary ()!)")]
 		CIFilter CreateRawFilter (NSUrl url, CIRawFilterOptions options);
 
+		/// <param name="data">The RAW image data.</param>
+		///         <param name="options">The RAW processing options.</param>
+		///         <summary>Creates a <see cref="CoreImage.CIFilter" /> that applies the <paramref name="options" /> to the RAW data in <paramref name="data" />.</summary>
+		///         <returns>A RAW processing filter.</returns>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 15, 0, message: "Use 'CIRawFilter' instead.")]
 		[Deprecated (PlatformName.MacOSX, 12, 0, message: "Use 'CIRawFilter' instead.")]
 		[Deprecated (PlatformName.TvOS, 15, 0, message: "Use 'CIRawFilter' instead.")]
@@ -819,6 +1210,11 @@ namespace CoreImage {
 		[Export ("filterWithImageData:options:")]
 		CIFilter CreateRawFilter (NSData data, NSDictionary options);
 
+		/// <param name="data">The RAW image data.</param>
+		///         <param name="options">The RAW processing options.</param>
+		///         <summary>Creates a <see cref="CoreImage.CIFilter" /> that applies the <paramref name="options" /> to the RAW data in <paramref name="data" />.</summary>
+		///         <returns>A RAW processing filter.</returns>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 15, 0, message: "Use 'CIRawFilter' instead.")]
 		[Deprecated (PlatformName.MacOSX, 12, 0, message: "Use 'CIRawFilter' instead.")]
 		[Deprecated (PlatformName.TvOS, 15, 0, message: "Use 'CIRawFilter' instead.")]
@@ -828,6 +1224,12 @@ namespace CoreImage {
 		[Wrap ("CreateRawFilter (data, options.GetDictionary ()!)")]
 		CIFilter CreateRawFilter (NSData data, CIRawFilterOptions options);
 
+		/// <param name="pixelBuffer">The <see cref="CoreVideo.CVPixelBuffer" /> containing RAW data.</param>
+		///         <param name="properties">A dictionary of image data.</param>
+		///         <param name="options">The set of RAW processing options to be applied to the input image(s).</param>
+		///         <summary>Creates a RAW processing filter for converting the data in <paramref name="pixelBuffer" /> by applying the settings in <paramref name="options" />.</summary>
+		///         <returns>A RAW processing filter.</returns>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 15, 0, message: "Use 'CIRawFilter' instead.")]
 		[Deprecated (PlatformName.MacOSX, 12, 0, message: "Use 'CIRawFilter' instead.")]
 		[Deprecated (PlatformName.TvOS, 15, 0, message: "Use 'CIRawFilter' instead.")]
@@ -837,6 +1239,12 @@ namespace CoreImage {
 		[Export ("filterWithCVPixelBuffer:properties:options:")]
 		CIFilter CreateRawFilter (CVPixelBuffer pixelBuffer, NSDictionary properties, NSDictionary options);
 
+		/// <param name="pixelBuffer">The <see cref="CoreVideo.CVPixelBuffer" /> containing RAW data.</param>
+		///         <param name="properties">A dictionary of image data.</param>
+		///         <param name="options">The set of RAW processing options to be applied to the input image(s).</param>
+		///         <summary>Creates a RAW processing filter for converting the data in <paramref name="pixelBuffer" /> by applying the settings in <paramref name="options" />.</summary>
+		///         <returns>A RAW processing filter.</returns>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 15, 0, message: "Use 'CIRawFilter' instead.")]
 		[Deprecated (PlatformName.MacOSX, 12, 0, message: "Use 'CIRawFilter' instead.")]
 		[Deprecated (PlatformName.TvOS, 15, 0, message: "Use 'CIRawFilter' instead.")]
@@ -1174,7 +1582,7 @@ namespace CoreImage {
 		NSString ActiveKeysKey { get; }
 	}
 
-	/// <summary>Settings for use with <see cref="M:CoreImage.CIFilter.CreateRawFilter(CoreVideo.CVPixelBuffer,Foundation.NSDictionary,Foundation.NSDictionary)" />.</summary>
+	/// <summary>Settings for use with <see cref="CoreImage.CIFilter.CreateRawFilter(CoreVideo.CVPixelBuffer,Foundation.NSDictionary,Foundation.NSDictionary)" />.</summary>
 	[Deprecated (PlatformName.iOS, 15, 0, message: "Use 'CIRawFilter' instead.")]
 	[Deprecated (PlatformName.MacOSX, 12, 0, message: "Use 'CIRawFilter' instead.")]
 	[Deprecated (PlatformName.TvOS, 15, 0, message: "Use 'CIRawFilter' instead.")]
@@ -1190,7 +1598,7 @@ namespace CoreImage {
 		[MacCatalyst (13, 1)]
 		bool AllowDraftMode { get; set; }
 
-		/// <summary>The key of the current decoder (see <see cref="P:CoreImage.CIRawFilterOptions.SupportedDecoderVersions" />).</summary>
+		/// <summary>The key of the current decoder (see <see cref="CoreImage.CIRawFilterOptions.SupportedDecoderVersions" />).</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
@@ -1238,13 +1646,13 @@ namespace CoreImage {
 		[MacCatalyst (13, 1)]
 		float NeutralChromaticityY { get; set; }
 
-		/// <summary>The neutral color temperature. (Set using <see cref="P:CoreImage.CIRawFilterOptions.NeutralTint" />.)</summary>
+		/// <summary>The neutral color temperature. (Set using <see cref="CoreImage.CIRawFilterOptions.NeutralTint" />.)</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		float NeutralTemperature { get; set; }
 
-		/// <summary>The neutral tint. Setting this value also modifies <see cref="P:CoreImage.CIRawFilterOptions.NeutralTemperature" />.</summary>
+		/// <summary>The neutral tint. Setting this value also modifies <see cref="CoreImage.CIRawFilterOptions.NeutralTemperature" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
@@ -1332,7 +1740,7 @@ namespace CoreImage {
 		[Field ("kCIInputNoiseReductionDetailAmountKey")]
 		double NoiseReductionDetailAmount { get; set; }
 
-		/// <summary>The <see cref="T:CoreImage.CIFilter" /> applied to the image when, during RAW processing, it is in the linear color space.</summary>
+		/// <summary>The <see cref="CoreImage.CIFilter" /> applied to the image when, during RAW processing, it is in the linear color space.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
@@ -1977,6 +2385,10 @@ namespace CoreImage {
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface CIFilterConstructor {
+		/// <param name="name">To be added.</param>
+		/// <summary>Creates a new filter from the provided name.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("filterWithName:")]
 		[return: NullAllowed]
@@ -2059,26 +2471,56 @@ namespace CoreImage {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CIFilterGenerator : CIFilterConstructor, NSSecureCoding, NSCopying {
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static, Export ("filterGenerator")]
 		CIFilterGenerator Create ();
 
+		/// <param name="aURL">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("filterGeneratorWithContentsOfURL:")]
 		[return: NullAllowed]
 		CIFilterGenerator FromUrl (NSUrl aURL);
 
+		/// <param name="aURL">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithContentsOfURL:")]
 		NativeHandle Constructor (NSUrl aURL);
 
+		/// <param name="sourceObject">To be added.</param>
+		///         <param name="withSourceKey">To be added.</param>
+		///         <param name="targetObject">To be added.</param>
+		///         <param name="targetKey">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("connectObject:withKey:toObject:withKey:")]
 		void ConnectObject (NSObject sourceObject, [NullAllowed] string withSourceKey, NSObject targetObject, string targetKey);
 
+		/// <param name="sourceObject">To be added.</param>
+		///         <param name="sourceKey">To be added.</param>
+		///         <param name="targetObject">To be added.</param>
+		///         <param name="targetKey">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("disconnectObject:withKey:toObject:withKey:")]
 		void DisconnectObject (NSObject sourceObject, string sourceKey, NSObject targetObject, string targetKey);
 
+		/// <param name="key">To be added.</param>
+		///         <param name="targetObject">To be added.</param>
+		///         <param name="exportedKeyName">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("exportKey:fromObject:withName:")]
 		void ExportKey (string key, NSObject targetObject, [NullAllowed] string exportedKeyName);
 
+		/// <param name="exportedKeyName">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("removeExportedKey:")]
 		void RemoveExportedKey (string exportedKeyName);
 
@@ -2088,15 +2530,30 @@ namespace CoreImage {
 		[Export ("exportedKeys")]
 		NSDictionary ExportedKeys { get; }
 
+		/// <param name="attributes">To be added.</param>
+		///         <param name="exportedKey">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setAttributes:forExportedKey:")]
 		void SetAttributesforExportedKey (NSDictionary attributes, NSString exportedKey);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("filter")]
 		CIFilter CreateFilter ();
 
+		/// <param name="name">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("registerFilterName:")]
 		void RegisterFilterName (string name);
 
+		/// <param name="toUrl">To be added.</param>
+		///         <param name="atomically">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("writeToURL:atomically:")]
 		bool Save (NSUrl toUrl, bool atomically);
 
@@ -2136,28 +2593,63 @@ namespace CoreImage {
 	[DisableDefaultCtor]
 	[MacCatalyst (13, 1)]
 	interface CIFilterShape : NSCopying {
+		/// <param name="rect">To be added.</param>
+		///         <summary>Creates a new CIFilterShape that limits filter operations to the specified rectangle.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("shapeWithRect:")]
 		CIFilterShape FromRect (CGRect rect);
 
+		/// <param name="rect">To be added.</param>
+		/// <summary>Creates a new CIFilterShape that limits filter operations to the specified rectangle.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithRect:")]
 		NativeHandle Constructor (CGRect rect);
 
+		/// <param name="transformation">To be added.</param>
+		///         <param name="interiorFlag">Developers should pass <see langword="true" /> to indicate that the resulting transformed filter shape should definitely exclude the boundary points. Developers should pass <see langword="false" /> to indicate that the result should definitely include the boundary points.</param>
+		///         <summary>Creates a new CIFilterShape by applying the specified transformation to the current filter shape.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>
+		///           <para>App developers should realize that neither setting of <paramref name="interiorFlag" /> results in an exact operation. Points may be excluded or included along the boundary to guarantee inclusivity or exclusivity of the result.</para>
+		///         </remarks>
 		[Export ("transformBy:interior:")]
 		CIFilterShape Transform (CGAffineTransform transformation, bool interiorFlag);
 
+		/// <param name="dx">To be added.</param>
+		///         <param name="dy">To be added.</param>
+		///         <summary>Moves the filter region by the specified X and Y directions.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("insetByX:Y:")]
 		CIFilterShape Inset (int /* int, not NSInteger */ dx, int /* int, not NSInteger */  dy);
 
+		/// <param name="other">To be added.</param>
+		///         <summary>Creates a new CIFilterShape from the union of the current filter shape with <paramref name="other" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("unionWith:")]
 		CIFilterShape Union (CIFilterShape other);
 
+		/// <param name="rectangle">To be added.</param>
+		///         <summary>Creates a new CIFilterShape from the union of the current filter shape with the specified rectangle.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("unionWithRect:")]
 		CIFilterShape Union (CGRect rectangle);
 
+		/// <param name="other">To be added.</param>
+		///         <summary>Creates a new CIFilterShape from the intersection of the current filter shape with <paramref name="other" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("intersectWith:")]
 		CIFilterShape Intersect (CIFilterShape other);
 
+		/// <param name="rectangle">The rectangle with which to calculate the intersection.</param>
+		///         <summary>Returns a new <see cref="CoreImage.CIFilterShape" /> whose shape is defined by the overlap of <c>this</c> and the specified <paramref name="rectangle" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("intersectWithRect:")]
 		CIFilterShape Intersect (CGRect rectangle);
 
@@ -2168,7 +2660,7 @@ namespace CoreImage {
 		CGRect Extent { get; }
 	}
 
-	/// <summary>Options that can be used when initializing a new <see cref="T:CoreImage.CIImage" />.</summary>
+	/// <summary>Options that can be used when initializing a new <see cref="CoreImage.CIImage" />.</summary>
 	[StrongDictionary ("CIImageInitializationOptionsKeys")]
 	interface CIImageInitializationOptions {
 		// Bug #60726: [Generator] Support INativeObject in StrongDictionary
@@ -2306,15 +2798,32 @@ namespace CoreImage {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CIImage : NSSecureCoding, NSCopying {
+		/// <param name="image">CoreGraphics image.</param>
+		///         <summary>Creates an <see cref="CoreImage.CIImage" /> from a <see cref="CoreGraphics.CGImage" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("imageWithCGImage:")]
 		CIImage FromCGImage (CGImage image);
 
+		/// <param name="image">CoreGraphics image.</param>
+		///         <param name="d">
+		///           <para>Extra metadata, as an NSDictionary.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Creates a <see cref="CoreImage.CIImage" />  from a <see cref="CoreGraphics.CGImage" /> with the specified metadata,  <paramref name="d" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		[Static]
 		[Export ("imageWithCGImage:options:")]
 		CIImage FromCGImage (CGImage image, [NullAllowed] NSDictionary d);
 
+		/// <param name="image">CoreGraphics image.</param>
+		///         <param name="options">Options to initialize the image with.</param>
+		///         <summary>Creates a <see cref="CoreImage.CIImage" />  from a <see cref="CoreGraphics.CGImage" /> with the specified <paramref name="options" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Wrap ("FromCGImage (image, options.GetDictionary ())")]
 		CIImage FromCGImage (CGImage image, [NullAllowed] CIImageInitializationOptionsWithMetadata options);
@@ -2334,6 +2843,10 @@ namespace CoreImage {
 		[Wrap ("FromCGImageSource (source, index, options.GetDictionary ())")]
 		CIImage FromCGImageSource (CGImageSource source, nuint index, [NullAllowed] CIImageInitializationOptionsWithMetadata options);
 
+		/// <param name="layer">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]
@@ -2342,6 +2855,11 @@ namespace CoreImage {
 		[Export ("imageWithCGLayer:")]
 		CIImage FromLayer (CGLayer layer);
 
+		/// <param name="layer">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]
@@ -2355,6 +2873,16 @@ namespace CoreImage {
 		[Internal] // there's a CIFormat enum that maps to the kCIFormatARGB8, kCIFormatRGBA16, kCIFormatRGBAf, kCIFormatRGBAh constants
 		CIImage FromData (NSData bitmapData, nint bytesPerRow, CGSize size, int /* CIFormat = int */ pixelFormat, [NullAllowed] CGColorSpace colorSpace);
 
+		/// <param name="glTextureName">To be added.</param>
+		///         <param name="size">To be added.</param>
+		///         <param name="flipped">To be added.</param>
+		///         <param name="colorspace">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 12, 0)]
 		[Deprecated (PlatformName.TvOS, 12, 0)]
 		[Deprecated (PlatformName.MacOSX, 10, 14)]
@@ -2363,43 +2891,86 @@ namespace CoreImage {
 		[Export ("imageWithTexture:size:flipped:colorSpace:")]
 		CIImage ImageWithTexture (uint /* unsigned int */ glTextureName, CGSize size, bool flipped, [NullAllowed] CGColorSpace colorspace);
 
+		/// <param name="url">To be added.</param>
+		///         <summary>Creates a new <see cref="CoreImage.CIImage" /> from <paramref name="url" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("imageWithContentsOfURL:")]
 		[return: NullAllowed]
 		CIImage FromUrl (NSUrl url);
 
+		/// <param name="url">To be added.</param>
+		///         <param name="d">
+		///           <para>Extra configuration options, as an NSDictionary.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Creates a new <see cref="CoreImage.CIImage" /> from <paramref name="url" /> by using the options that are specified in <paramref name="d" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		[Static]
 		[Export ("imageWithContentsOfURL:options:")]
 		[return: NullAllowed]
 		CIImage FromUrl (NSUrl url, [NullAllowed] NSDictionary d);
 
+		/// <param name="url">To be added.</param>
+		///         <param name="options">Options to initialize the image with.</param>
+		///         <summary>Creates a new <see cref="CoreImage.CIImage" /> from <paramref name="url" /> by using the the specified <paramref name="options" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Wrap ("FromUrl (url, options.GetDictionary ())")]
 		[return: NullAllowed]
 		CIImage FromUrl (NSUrl url, [NullAllowed] CIImageInitializationOptions options);
 
+		/// <param name="data">Image data, in a format supported by the system.</param>
+		///         <summary>Creates a new image from the specified <paramref name="data" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("imageWithData:")]
 		[return: NullAllowed]
 		CIImage FromData (NSData data);
 
+		/// <param name="data">Image data, in a format supported by the system.</param>
+		///         <param name="d">
+		///           <para>Extra configuration options, as an NSDictionary.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Creates a new image from the specified <paramref name="data" /> and <paramref name="d" /> options dictionary.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		[Static]
 		[Export ("imageWithData:options:")]
 		[return: NullAllowed]
 		CIImage FromData (NSData data, [NullAllowed] NSDictionary d);
 
+		/// <param name="data">Image data, in a format supported by the system.</param>
+		///         <param name="options">Options to initialize the image with.</param>
+		///         <summary>Creates a new image from the specified <paramref name="data" /> and <paramref name="options" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Wrap ("FromData (data, options.GetDictionary ())")]
 		[return: NullAllowed]
 		CIImage FromData (NSData data, [NullAllowed] CIImageInitializationOptionsWithMetadata options);
 
+		/// <param name="imageBuffer">The source of the image.</param>
+		///         <summary>Creates a new <see cref="CoreImage.CIImage" /> based on the data in the <paramref name="imageBuffer" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[MacCatalyst (13, 1)]
 		[Export ("imageWithCVImageBuffer:")]
 		CIImage FromImageBuffer (CVImageBuffer imageBuffer);
 
+		/// <param name="imageBuffer">To be added.</param>
+		///         <param name="dict">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		[Static]
 		[MacCatalyst (13, 1)]
@@ -2407,23 +2978,48 @@ namespace CoreImage {
 		[Export ("imageWithCVImageBuffer:options:")]
 		CIImage FromImageBuffer (CVImageBuffer imageBuffer, [NullAllowed] NSDictionary dict);
 
+		/// <param name="imageBuffer">Source of the data for the image.</param>
+		///         <param name="dict">
+		///           <para>A dictionary of strings to objects, holding the options for image creation.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Creates a new <see cref="CoreImage.CIImage" /> based on the data in <paramref name="imageBuffer" /> and applying the options in <paramref name="dict" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		[Static]
 		[MacCatalyst (13, 1)]
 		[Export ("imageWithCVImageBuffer:options:")]
 		CIImage FromImageBuffer (CVImageBuffer imageBuffer, [NullAllowed] NSDictionary<NSString, NSObject> dict);
 
+		/// <param name="imageBuffer">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>Creates a new <see cref="CoreImage.CIImage" /> based on the data in the <paramref name="imageBuffer" /> and with the specified <paramref name="options" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[MacCatalyst (13, 1)]
 		[Wrap ("FromImageBuffer (imageBuffer, options.GetDictionary ())")]
 		CIImage FromImageBuffer (CVImageBuffer imageBuffer, CIImageInitializationOptions options);
 
+		/// <param name="buffer">To be added.</param>
+		///         <summary>Creates a new image from the data that is contained in <paramref name="buffer" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("imageWithCVPixelBuffer:")]
 		CIImage FromImageBuffer (CVPixelBuffer buffer);
 
+		/// <param name="buffer">To be added.</param>
+		///         <param name="dict">
+		///           <para>Extra configuration options, as an NSDictionary.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Creates a new image from the data that is contained in <paramref name="buffer" /> by using the options that are specified in <paramref name="dict" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
@@ -2431,28 +3027,51 @@ namespace CoreImage {
 		[Export ("imageWithCVPixelBuffer:options:")]
 		CIImage FromImageBuffer (CVPixelBuffer buffer, [NullAllowed] NSDictionary dict);
 
+		/// <param name="buffer">To be added.</param>
+		///         <param name="options">Options to initialize the image with.</param>
+		///         <summary>Creates a new image from the data that is contained in <paramref name="buffer" /> by using the specified <paramref name="options" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Wrap ("FromImageBuffer (buffer, options.GetDictionary ())")]
 		CIImage FromImageBuffer (CVPixelBuffer buffer, [NullAllowed] CIImageInitializationOptions options);
 
+		/// <param name="surface">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("imageWithIOSurface:")]
 		CIImage FromSurface (IOSurface.IOSurface surface);
 
+		/// <param name="surface">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		[Static]
 		[Export ("imageWithIOSurface:options:")]
 		CIImage FromSurface (IOSurface.IOSurface surface, [NullAllowed] NSDictionary options);
 
+		/// <param name="surface">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Wrap ("FromSurface (surface, options.GetDictionary ())")]
 		CIImage FromSurface (IOSurface.IOSurface surface, CIImageInitializationOptions options);
 
+		/// <param name="color">To be added.</param>
+		///         <summary>Creates a new single-color image.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("imageWithColor:")]
 		CIImage ImageWithColor (CIColor color);
@@ -2466,13 +3085,30 @@ namespace CoreImage {
 		[Export ("emptyImage")]
 		CIImage EmptyImage { get; }
 
+		/// <param name="image">CoreGraphics image.</param>
+		/// <summary>Initializes a CoreImage Image from a CoreGraphics bitmap representation</summary>
+		/// <remarks>
+		///         </remarks>
 		[Export ("initWithCGImage:")]
 		NativeHandle Constructor (CGImage image);
 
+		/// <param name="image">CoreGraphics image.</param>
+		/// <param name="d">
+		///           <para>Metadata to initialize with, as an NSDictionary.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Initializes a CoreImage Image from a CoreGraphics bitmap representation</summary>
+		/// <remarks>
+		///         </remarks>
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		[Export ("initWithCGImage:options:")]
 		NativeHandle Constructor (CGImage image, [NullAllowed] NSDictionary d);
 
+		/// <param name="image">CoreGraphics image.</param>
+		/// <param name="options">Options to initialize the image with.</param>
+		/// <summary>Initializes a CoreImage Image from a CoreGraphics bitmap representation</summary>
+		/// <remarks>
+		///         </remarks>
 		[Wrap ("this (image, options.GetDictionary ())")]
 		NativeHandle Constructor (CGImage image, [NullAllowed] CIImageInitializationOptionsWithMetadata options);
 
@@ -2489,6 +3125,9 @@ namespace CoreImage {
 		[Wrap ("this (source, index, options.GetDictionary ())")]
 		NativeHandle Constructor (CGImageSource source, nuint index, CIImageInitializationOptionsWithMetadata options);
 
+		/// <param name="layer">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]
@@ -2496,6 +3135,10 @@ namespace CoreImage {
 		[Export ("initWithCGLayer:")]
 		NativeHandle Constructor (CGLayer layer);
 
+		/// <param name="layer">To be added.</param>
+		/// <param name="d">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]
@@ -2504,24 +3147,64 @@ namespace CoreImage {
 		[Export ("initWithCGLayer:options:")]
 		NativeHandle Constructor (CGLayer layer, [NullAllowed] NSDictionary d);
 
+		/// <param name="layer">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]
 		[Wrap ("this (layer, options.GetDictionary ())")]
 		NativeHandle Constructor (CGLayer layer, [NullAllowed] CIImageInitializationOptions options);
 
+		/// <param name="data">Image data, in a format supported by the system.</param>
+		/// <summary>Creates a new CIImage from the specified data.   The image data must be premultiplied.</summary>
+		/// <remarks>
+		///         </remarks>
 		[Export ("initWithData:")]
 		NativeHandle Constructor (NSData data);
 
+		/// <param name="data">Image data, in a format supported by the system.</param>
+		/// <param name="d">
+		///           <para>Extra configuration options, as an NSDictionary.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Creates a new CIImage from the specified data.   The image data must be premultiplied.</summary>
+		/// <remarks>
+		///         </remarks>
 		[Export ("initWithData:options:")]
 		NativeHandle Constructor (NSData data, [NullAllowed] NSDictionary d);
 
+		/// <param name="data">Image data, in a format supported by the system.</param>
+		/// <param name="options">Options to initialize the image with.</param>
+		/// <summary>Creates a new CIImage from the specified data.   The image data must be premultiplied.</summary>
+		/// <remarks>
+		///         </remarks>
 		[Wrap ("this (data, options.GetDictionary ())")]
 		NativeHandle Constructor (NSData data, [NullAllowed] CIImageInitializationOptionsWithMetadata options);
 
+		/// <param name="d">To be added.</param>
+		/// <param name="bytesPerRow">To be added.</param>
+		/// <param name="size">To be added.</param>
+		/// <param name="pixelFormat">To be added.</param>
+		/// <param name="colorSpace">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithBitmapData:bytesPerRow:size:format:colorSpace:")]
 		NativeHandle Constructor (NSData d, nint bytesPerRow, CGSize size, int /* CIFormat = int */ pixelFormat, [NullAllowed] CGColorSpace colorSpace);
 
+		/// <param name="glTextureName">To be added.</param>
+		/// <param name="size">To be added.</param>
+		/// <param name="flipped">To be added.</param>
+		/// <param name="colorSpace">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 12, 0)]
 		[Deprecated (PlatformName.MacOSX, 10, 14)]
 		[Deprecated (PlatformName.TvOS, 10, 14)]
@@ -2529,64 +3212,140 @@ namespace CoreImage {
 		[Export ("initWithTexture:size:flipped:colorSpace:")]
 		NativeHandle Constructor (int /* unsigned int */ glTextureName, CGSize size, bool flipped, [NullAllowed] CGColorSpace colorSpace);
 
+		/// <param name="url">Location of the image data.</param>
+		/// <summary>Initializes a CoreImage image from the contents of the file pointed by the specified url.</summary>
+		/// <remarks>
+		///         </remarks>
 		[Export ("initWithContentsOfURL:")]
 		NativeHandle Constructor (NSUrl url);
 
+		/// <param name="url">Location of the image data.</param>
+		/// <param name="d">
+		///           <para>Extra configuration options, as an NSDictionary.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Initializes a CoreImage image from the contents of the file pointed by the specified url.</summary>
+		/// <remarks>
+		///         </remarks>
 		[Export ("initWithContentsOfURL:options:")]
 		NativeHandle Constructor (NSUrl url, [NullAllowed] NSDictionary d);
 
+		/// <param name="url">Location of the image data.</param>
+		/// <param name="options">Options to initialize the image with.</param>
+		/// <summary>Initializes a CoreImage image from the contents of the file pointed by the specified url.</summary>
+		/// <remarks>
+		///         </remarks>
 		[Wrap ("this (url, options.GetDictionary ())")]
 		NativeHandle Constructor (NSUrl url, [NullAllowed] CIImageInitializationOptions options);
 
+		/// <param name="surface">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("initWithIOSurface:")]
 		NativeHandle Constructor (IOSurface.IOSurface surface);
 
+		/// <param name="surface">To be added.</param>
+		/// <param name="options">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("initWithIOSurface:options:")]
 		NativeHandle Constructor (IOSurface.IOSurface surface, [NullAllowed] NSDictionary options);
 
+		/// <param name="surface">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("this (surface, options.GetDictionary ())")]
 		NativeHandle Constructor (IOSurface.IOSurface surface, [NullAllowed] CIImageInitializationOptions options);
 
+		/// <param name="imageBuffer">CoreVideo image buffer.</param>
+		/// <summary>Initializes a CoreImage image from the contents of the specified CoreVideo image buffer.</summary>
+		/// <remarks>
+		///         </remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("initWithCVImageBuffer:")]
 		NativeHandle Constructor (CVImageBuffer imageBuffer);
 
+		/// <param name="imageBuffer">Holds the data that is the basis of the image.</param>
+		/// <param name="dict">Dictionary of strings to objects, holding the options to be applied during construction. (See <see cref="CoreImage.CIImageInitializationOptions" />)<para tool="nullallowed">This parameter can be <see langword="null" />.</para></param>
+		/// <summary>Constructs a <see cref="CoreImage.CIImage" /> using the options in <paramref name="dict" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("initWithCVImageBuffer:options:")]
 		NativeHandle Constructor (CVImageBuffer imageBuffer, [NullAllowed] NSDictionary<NSString, NSObject> dict);
 
+		/// <param name="imageBuffer">To be added.</param>
+		/// <param name="dict">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Internal] // This overload is needed for our strong dictionary support (but only for Unified, since for Classic the generic version is transformed to this signature)
 		[Sealed]
 		[Export ("initWithCVImageBuffer:options:")]
 		NativeHandle Constructor (CVImageBuffer imageBuffer, [NullAllowed] NSDictionary dict);
 
+		/// <param name="imageBuffer">CoreVideo image buffer.</param>
+		/// <param name="options">Options to initialize the image with.</param>
+		/// <summary>Initializes a CoreImage image from the contents of the specified CoreVideo image buffer.</summary>
+		/// <remarks>
+		///         </remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("this (imageBuffer, options.GetDictionary ())")]
 		NativeHandle Constructor (CVImageBuffer imageBuffer, [NullAllowed] CIImageInitializationOptions options);
 
+		/// <param name="buffer">The pixel buffer that supplies the data for the image.</param>
+		/// <summary>Constructs a <see cref="CoreImage.CIImage" /> with the supplied <paramref name="buffer" /> data.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("initWithCVPixelBuffer:")]
 		NativeHandle Constructor (CVPixelBuffer buffer);
 
+		/// <param name="buffer">The data that forms the basis of the image.</param>
+		/// <param name="dict">
+		///           <para>A dictionary of strings to objects defining the options to be applied during construction. (See <see cref="CoreImage.CIImageInitializationOptions" />).</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Constructs a <see cref="CoreImage.CIImage" /> from the data in <paramref name="buffer" />, applying the options specified in <paramref name="dict" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("initWithCVPixelBuffer:options:")]
 		NativeHandle Constructor (CVPixelBuffer buffer, [NullAllowed] NSDictionary dict);
 
+		/// <param name="buffer">Holds the data that is the basis of the image.</param>
+		/// <param name="options">The options to be applied during initialization.</param>
+		/// <summary>Constructs a <see cref="CoreImage.CIImage" /> using <paramref name="options" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("this (buffer, options.GetDictionary ())")]
 		NativeHandle Constructor (CVPixelBuffer buffer, [NullAllowed] CIImageInitializationOptions options);
 
+		/// <param name="color">Color to use for the image.</param>
+		/// <summary>Creates an image with infinite dimensions that is filled with the specified color.</summary>
+		/// <remarks>
+		///         </remarks>
 		[Export ("initWithColor:")]
 		NativeHandle Constructor (CIColor color);
 
+		/// <param name="texture">The <see cref="Metal.IMTLTexture" /> that is the basis for the <see cref="CoreImage.CIImage" />.</param>
+		/// <param name="options">
+		///           <para>A dictionary of strings to objects that hold the configuration options.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Constructs a <see cref="CoreImage.CIImage" /> using the <paramref name="options" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("initWithMTLTexture:options:")]
 		NativeHandle Constructor (IMTLTexture texture, [NullAllowed] NSDictionary options);
 
+		/// <param name="imageRep">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]
@@ -2605,6 +3364,10 @@ namespace CoreImage {
 		[Export ("drawInRect:fromRect:operation:fraction:")]
 		void Draw (CGRect dstRect, CGRect srcRect, NSCompositingOperation op, nfloat delta);
 
+		/// <param name="matrix">To be added.</param>
+		///         <summary>Returns a new image that results from applying the affine transform <paramref name="matrix" /> to this <see cref="CoreImage.CIImage" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("imageByApplyingTransform:")]
 		CIImage ImageByApplyingTransform (CGAffineTransform matrix);
 
@@ -2614,6 +3377,10 @@ namespace CoreImage {
 		[Export ("imageByApplyingTransform:highQualityDownsample:")]
 		CIImage ImageByApplyingTransform (CGAffineTransform matrix, bool highQualityDownsample);
 
+		/// <param name="r">To be added.</param>
+		///         <summary>Creates a new image by cropping this <see cref="CoreImage.CIImage" /> to the rectangle <paramref name="r" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("imageByCroppingToRect:")]
 		CIImage ImageByCroppingToRect (CGRect r);
 
@@ -2628,7 +3395,7 @@ namespace CoreImage {
 		[Export ("properties"), Internal]
 		NSDictionary WeakProperties { get; }
 
-		/// <summary>Gets a collection of metadata for this <see cref="T:CoreImage.CIImage" />.</summary>
+		/// <summary>Gets a collection of metadata for this <see cref="CoreImage.CIImage" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakProperties")]
@@ -2853,16 +3620,33 @@ namespace CoreImage {
 		int FormatRgbXh { get; }
 
 		// UIKit extensions
+		/// <param name="image">UIKit image.</param>
+		/// <summary>Initializes a CoreImage image from a UIKit image.</summary>
+		/// <remarks>
+		///         </remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("initWithImage:")]
 		NativeHandle Constructor (UIImage image);
 
+		/// <param name="image">UIKit image.</param>
+		/// <param name="options">
+		///           <para>Extra configuration options, as an NSDictionary.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Initializes a CoreImage image from a UIKit image.</summary>
+		/// <remarks>
+		///         </remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("initWithImage:options:")]
 		NativeHandle Constructor (UIImage image, [NullAllowed] NSDictionary options);
 
+		/// <param name="image">UIKit image.</param>
+		/// <param name="options">Options to initialize the image with.</param>
+		/// <summary>Initializes a CoreImage image from a UIKit image.</summary>
+		/// <remarks>
+		///         </remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Wrap ("this (image, options.GetDictionary ())")]
@@ -2880,6 +3664,11 @@ namespace CoreImage {
 		[Export ("autoAdjustmentFiltersWithOptions:"), Internal]
 		NSArray _GetAutoAdjustmentFilters ([NullAllowed] NSDictionary opts);
 
+		/// <param name="im">To be added.</param>
+		///         <param name="r">To be added.</param>
+		///         <summary>Gets a rectangle that describes the region in <paramref name="im" />, an image in the transformation list, that corresponds to <paramref name="r" /> in this <see cref="CoreImage.CIImage" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("regionOfInterestForImage:inRect:")]
 		CGRect GetRegionOfInterest (CIImage im, CGRect r);
@@ -2887,34 +3676,67 @@ namespace CoreImage {
 		//
 		// iOS 8.0
 		//
+		/// <param name="orientation">To be added.</param>
+		///         <summary>Creates a new image by applying the <paramref name="orientation" /> to this <see cref="CoreImage.CIImage" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("imageByApplyingOrientation:")]
 		CIImage CreateWithOrientation (CIImageOrientation orientation);
 
+		/// <param name="orientation">To be added.</param>
+		///         <summary>Gets a transformation that results in <paramref name="orientation" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("imageTransformForOrientation:")]
 		CGAffineTransform GetImageTransform (CIImageOrientation orientation);
 
+		/// <summary>Creates a new image by clamping the current image to the rectangle that is defined by its <see cref="CoreImage.CIImage.Extent" /> property.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("imageByClampingToExtent")]
 		CIImage CreateByClampingToExtent ();
 
+		/// <param name="dest">To be added.</param>
+		///         <summary>Creates a new image by compositing this <see cref="CoreImage.CIImage" /> over <paramref name="dest" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("imageByCompositingOverImage:")]
 		CIImage CreateByCompositingOverImage (CIImage dest);
 
+		/// <param name="filterName">To be added.</param>
+		///         <param name="inputParameters">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Creates a new image by applying <paramref name="filterName" /> to this <see cref="CoreImage.CIImage" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("imageByApplyingFilter:withInputParameters:")]
 		CIImage CreateByFiltering (string filterName, [NullAllowed] NSDictionary inputParameters);
 
+		/// <param name="filterName">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("imageByApplyingFilter:")]
 		CIImage CreateByFiltering (string filterName);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("imageBySamplingLinear")]
 		CIImage CreateBySamplingLinear ();
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("imageBySamplingNearest")]
 		CIImage CreateBySamplingNearest ();
@@ -2957,47 +3779,92 @@ namespace CoreImage {
 		[Export ("initWithImageProvider:size::format:colorSpace:options:")]
 		NativeHandle Constructor (ICIImageProvider provider, nuint width, nuint height, int f, [NullAllowed] CGColorSpace colorSpace, [NullAllowed] NSDictionary options);
 
+		/// <param name="texture">The texture providing the basis of hte <see cref="CoreImage.CIImage" />.</param>
+		///         <param name="options">
+		///           <para>A dictionary of strings to objects, holding the creation options.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Creates a new <see cref="CoreImage.CIImage" /> from <paramref name="texture" />, applying the creation options specified in <paramref name="options" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("imageWithMTLTexture:options:")]
 		[return: NullAllowed]
 		CIImage FromMetalTexture (IMTLTexture texture, [NullAllowed] NSDictionary<NSString, NSObject> options);
 
+		/// <param name="rect">The clipping rectangle.</param>
+		///         <summary>Creates a new <see cref="CoreImage.CIImage" /> of infinite extent by cropping this <see cref="CoreImage.CIImage" /> to the <paramref name="rect" /> and then extending the pixels at the edges to infinity.</summary>
+		///         <returns>A <see cref="CoreImage.CIImage" /> of infinite extent.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("imageByClampingToRect:")]
 		CIImage CreateByClamping (CGRect rect);
 
+		/// <param name="colorSpace">The <see cref="CoreGraphics.CGColorSpace" /> to be matched from.</param>
+		///         <summary>Creates a new <see cref="CoreGraphics.CGImage" /> by matching colors from <paramref name="colorSpace" /> into the working color space.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("imageByColorMatchingColorSpaceToWorkingSpace:")]
 		[return: NullAllowed]
 		CIImage CreateByColorMatchingColorSpaceToWorkingSpace (CGColorSpace colorSpace);
 
+		/// <param name="colorSpace">The <see cref="CoreGraphics.CGColorSpace" /> to be matched.</param>
+		///         <summary>Creates a new <see cref="CoreGraphics.CGImage" /> by matching colors from the working space into colors in the specified <paramref name="colorSpace" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("imageByColorMatchingWorkingSpaceToColorSpace:")]
 		[return: NullAllowed]
 		CIImage CreateByColorMatchingWorkingSpaceToColorSpace (CGColorSpace colorSpace);
 
+		/// <summary>Creates a new image whose RGB values are created by multiplying this image's RGB values by this image's alpha value.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("imageByPremultiplyingAlpha")]
 		CIImage CreateByPremultiplyingAlpha ();
 
+		/// <summary>Creates a new image whose RGB values are created by dividing this image's RGB values by this image's alpha value.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("imageByUnpremultiplyingAlpha")]
 		CIImage CreateByUnpremultiplyingAlpha ();
 
+		/// <param name="extent">The area within the image to have alpha 1.0.</param>
+		///         <summary>Creates a new image by copying <c>this</c>, setting the alpha of pixels within <paramref name="extent" /> to 1.0 and setting those outside to 0.0.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("imageBySettingAlphaOneInExtent:")]
 		CIImage CreateBySettingAlphaOne (CGRect extent);
 
+		/// <param name="sigma">The standard deviation defining the 2D Gaussian.</param>
+		///         <summary>Creates a new <see cref="CoreImage.CIImage" /> by applying a Gaussian blur with the provided <paramref name="sigma" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>
+		///           <para>The 2D Gaussian is defined as:</para>
+		///           <para>
+		///             <img href="~/CoreImage/_images/CoreImage.GaussianEq.png" alt="Result of applying the filter." />
+		///           </para>
+		///           <para>Where zeta (<c>z</c>) is a vector holding the pixel coordinates and mu (μ) is a vector holding the mean of the Gaussian in either direction.</para>
+		///           <para>The <paramref name="sigma" /> defines the rate of falloff of the Gaussian. Smaller <paramref name="sigma" /> values blur over fewer pixels.</para>
+		///         </remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("imageByApplyingGaussianBlurWithSigma:")]
 		CIImage CreateByApplyingGaussianBlur (double sigma);
 
+		/// <param name="properties">To be added.</param>
+		///         <summary>Creates a new <see cref="CoreImage.CIImage" /> by copying <c>this</c>, and applying the <paramref name="properties" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("imageBySettingProperties:")]
 		CIImage CreateBySettingProperties (NSDictionary properties);
 
-		/// <summary>The image data, as a <see cref="T:CoreVideo.CVPixelBuffer" />.</summary>
+		/// <summary>The image data, as a <see cref="CoreVideo.CVPixelBuffer" />.</summary>
 		///         <value>
 		///           <para>(More documentation for this node is coming)</para>
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
@@ -3007,7 +3874,7 @@ namespace CoreImage {
 		[NullAllowed, Export ("pixelBuffer")]
 		CVPixelBuffer PixelBuffer { get; }
 
-		/// <summary>Copies the <see cref="T:CoreImage.CIImage" /> into a new <see cref="T:CoreGraphics.CGImage" />.</summary>
+		/// <summary>Copies the <see cref="CoreImage.CIImage" /> into a new <see cref="CoreGraphics.CGImage" />.</summary>
 		///         <value>
 		///           <para>(More documentation for this node is coming)</para>
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
@@ -3027,18 +3894,33 @@ namespace CoreImage {
 		[NullAllowed, Export ("depthData")]
 		AVDepthData DepthData { get; }
 
+		/// <param name="orientation">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("imageByApplyingCGOrientation:")]
 		CIImage CreateByApplyingOrientation (CGImagePropertyOrientation orientation);
 
+		/// <param name="orientation">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("imageTransformForCGOrientation:")]
 		CGAffineTransform GetImageTransform (CGImagePropertyOrientation orientation);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("imageByInsertingIntermediate")]
 		CIImage CreateByInsertingIntermediate ();
 
+		/// <param name="cache">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("imageByInsertingIntermediate:")]
 		CIImage CreateByInsertingIntermediate (bool cache);
@@ -3063,20 +3945,36 @@ namespace CoreImage {
 		[NullAllowed, Export ("portraitEffectsMatte")]
 		AVPortraitEffectsMatte PortraitEffectsMatte { get; }
 
+		/// <param name="matte">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("initWithPortaitEffectsMatte:options:")] // selector typo, rdar filled 42894821
 		NativeHandle Constructor (AVPortraitEffectsMatte matte, [NullAllowed] NSDictionary options);
 
+		/// <param name="matte">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("initWithPortaitEffectsMatte:")] // selector typo, rdar filled 42894821
 		NativeHandle Constructor (AVPortraitEffectsMatte matte);
 
+		/// <param name="matte">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("imageWithPortaitEffectsMatte:options:")] // selector typo, rdar filled 42894821
 		[return: NullAllowed]
 		CIImage FromPortraitEffectsMatte (AVPortraitEffectsMatte matte, [NullAllowed] NSDictionary options);
 
+		/// <param name="matte">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("imageWithPortaitEffectsMatte:")] // selector typo, rdar filled 42894821
@@ -3116,20 +4014,36 @@ namespace CoreImage {
 
 		// CIImage_AVDepthData category
 
+		/// <param name="data">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("initWithDepthData:options:")]
 		NativeHandle Constructor (AVDepthData data, [NullAllowed] NSDictionary options);
 
+		/// <param name="data">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("initWithDepthData:")]
 		NativeHandle Constructor (AVDepthData data);
 
+		/// <param name="data">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("imageWithDepthData:options:")]
 		[return: NullAllowed]
 		CIImage FromDepthData (AVDepthData data, [NullAllowed] NSDictionary options);
 
+		/// <param name="data">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("imageWithDepthData:")]
@@ -3227,30 +4141,48 @@ namespace CoreImage {
 
 	interface ICIImageProcessorInput { }
 
-	/// <summary>The input to a <see cref="T:CoreImage.CIImageProcessorKernel" />.</summary>
+	/// <summary>The input to a <see cref="CoreImage.CIImageProcessorKernel" />.</summary>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface CIImageProcessorInput {
+		/// <summary>The region of interest in the input image.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("region")]
 		CGRect Region { get; }
 
+		/// <summary>The number of bytes in a single row of the input image.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("bytesPerRow")]
 		nuint BytesPerRow { get; }
 
+		/// <summary>The pixel format of the input image.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("format")]
 		CIFormat Format { get; }
 
+		/// <summary>The memory address of the data buffer.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("baseAddress")]
 		IntPtr BaseAddress { get; }
 
+		/// <summary>The input <see cref="CoreVideo.CVPixelBuffer" />.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[NullAllowed, Export ("pixelBuffer")]
 		CVPixelBuffer PixelBuffer { get; }
 
+		/// <summary>The input <see cref="Metal.IMTLTexture" />.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[NullAllowed, Export ("metalTexture")]
 		IMTLTexture MetalTexture { get; }
@@ -3284,34 +4216,55 @@ namespace CoreImage {
 
 	interface ICIImageProcessorOutput { }
 
-	/// <summary>The output of a <see cref="T:CoreImage.CIImageProcessorKernel" />.</summary>
+	/// <summary>The output of a <see cref="CoreImage.CIImageProcessorKernel" />.</summary>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface CIImageProcessorOutput {
+		/// <summary>The <see cref="CoreGraphics.CGRect" /> to which the processing was applied.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("region")]
 		CGRect Region { get; }
 
+		/// <summary>The number of bytes in a single row of the output image.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("bytesPerRow")]
 		nuint BytesPerRow { get; }
 
+		/// <summary>The colorspace of the output image.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("format")]
 		CIFormat Format { get; }
 
+		/// <summary>The memory address of the data buffer.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("baseAddress")]
 		IntPtr BaseAddress { get; }
 
+		/// <summary>The output image, as a <see cref="CoreVideo.CVPixelBuffer" />.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[NullAllowed, Export ("pixelBuffer")]
 		CVPixelBuffer PixelBuffer { get; }
 
+		/// <summary>The Metal <see cref="Metal.IMTLTexture" /> of the output image.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[NullAllowed, Export ("metalTexture")]
 		IMTLTexture MetalTexture { get; }
 
+		/// <summary>The Metal command buffer for the output image.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[NullAllowed, Export ("metalCommandBuffer")]
 		IMTLCommandBuffer MetalCommandBuffer { get; }
@@ -3329,11 +4282,11 @@ namespace CoreImage {
 		ulong Digest { get; }
 	}
 
-	/// <summary>Options used in various calls to <see cref="T:CoreImage.CIImage" /> involving <see cref="T:CoreImage.ICIImageProvider" /> objects.</summary>
+	/// <summary>Options used in various calls to <see cref="CoreImage.CIImage" /> involving <see cref="CoreImage.ICIImageProvider" /> objects.</summary>
 	[MacCatalyst (13, 1)]
 	[StrongDictionary ("CIImageProviderKeys")]
 	interface CIImageProviderOptions {
-		/// <summary>A <see cref="T:Foundation.NSNumber" /> that holds an int that is the length of a tile square.</summary>
+		/// <summary>A <see cref="Foundation.NSNumber" /> that holds an int that is the length of a tile square.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		NSObject TileSize { get; set; }
@@ -3382,6 +4335,10 @@ namespace CoreImage {
 		[return: NullAllowed]
 		CIKernel [] FromMetalSource (string source, [NullAllowed] out NSError error);
 
+		/// <param name="coreImageShaderProgram">To be added.</param>
+		///         <summary>Creates an array of new <see cref="CoreImage.CIKernel" /> from a list of named system kernel routines.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 12, 0)]
 		[Deprecated (PlatformName.TvOS, 12, 0)]
 		[Deprecated (PlatformName.MacOSX, 10, 14)]
@@ -3390,6 +4347,10 @@ namespace CoreImage {
 		[return: NullAllowed]
 		CIKernel [] FromProgramMultiple (string coreImageShaderProgram);
 
+		/// <param name="coreImageShaderProgram">To be added.</param>
+		///         <summary>Creates a new <see cref="CoreImage.CIKernel" /> from a list of named system kernel routines.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 12, 0)]
 		[Deprecated (PlatformName.TvOS, 12, 0)]
 		[Deprecated (PlatformName.MacOSX, 10, 14)]
@@ -3398,12 +4359,31 @@ namespace CoreImage {
 		[return: NullAllowed]
 		CIKernel FromProgramSingle (string coreImageShaderProgram);
 
+		/// <param name="name">To be added.</param>
+		///         <param name="data">To be added.</param>
+		///         <param name="error">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("kernelWithFunctionName:fromMetalLibraryData:error:")]
 		[return: NullAllowed]
 		CIKernel FromFunction (string name, NSData data, [NullAllowed] out NSError error);
 
+		/// <param name="name">To be added.</param>
+		///         <param name="data">To be added.</param>
+		///         <param name="format">To be added.</param>
+		///         <param name="error">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("kernelWithFunctionName:fromMetalLibraryData:outputPixelFormat:error:")]
@@ -3417,18 +4397,30 @@ namespace CoreImage {
 		[Export ("kernelNamesFromMetalLibraryData:")]
 		string [] GetKernelNamesFromMetalLibrary (NSData data);
 
-		/// <summary>Gets the name of the <see cref="T:CoreImage.CIKernel" />.</summary>
+		/// <summary>Gets the name of the <see cref="CoreImage.CIKernel" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("name")]
 		string Name { get; }
 
+		/// <param name="aMethod">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("setROISelector:")]
 		void SetRegionOfInterestSelector (Selector aMethod);
 
+		/// <param name="extent">To be added.</param>
+		///         <param name="callback">To be added.</param>
+		///         <param name="args">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("applyWithExtent:roiCallback:arguments:")]
 		[return: NullAllowed]
@@ -3443,12 +4435,24 @@ namespace CoreImage {
 	[BaseType (typeof (CIKernel))]
 	[DisableDefaultCtor] // returns a nil handle -> instances of this type are returned from `kernel[s]WithString:`
 	interface CIColorKernel {
+		/// <param name="extent">To be added.</param>
+		///         <param name="args">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("applyWithExtent:arguments:")]
 		[return: NullAllowed]
 		CIImage ApplyWithExtent (CGRect extent, [NullAllowed] NSObject [] args);
 
 		// Note: the API is supported in iOS 8, but with iOS 9, they guarantee
 		// a more derived result
+		/// <param name="coreImageShaderProgram">To be added.</param>
+		///         <summary>Creates a new CIColorKernel from the provided image shader program code.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 12, 0)]
 		[Deprecated (PlatformName.TvOS, 12, 0)]
 		[Deprecated (PlatformName.MacOSX, 10, 14)]
@@ -3465,12 +4469,26 @@ namespace CoreImage {
 	[BaseType (typeof (CIKernel))]
 	[DisableDefaultCtor] // returns a nil handle -> instances of this type are returned from `kernel[s]WithString:`
 	interface CIWarpKernel {
+		/// <param name="extent">To be added.</param>
+		///         <param name="callback">To be added.</param>
+		///         <param name="image">To be added.</param>
+		///         <param name="args">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("applyWithExtent:roiCallback:inputImage:arguments:")]
 		[return: NullAllowed]
 		CIImage ApplyWithExtent (CGRect extent, CIKernelRoiCallback callback, CIImage image, [NullAllowed] NSObject [] args);
 
 		// Note: the API is supported in iOS 8, but with iOS 9, they guarantee
 		// a more derived result
+		/// <param name="coreImageShaderProgram">To be added.</param>
+		///         <summary>Creates a new CIWarpKernel from the supplied shader code.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 12, 0)]
 		[Deprecated (PlatformName.TvOS, 12, 0)]
 		[Deprecated (PlatformName.MacOSX, 10, 14)]
@@ -3487,19 +4505,39 @@ namespace CoreImage {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // does not work in iOS 11 beta 4
 	interface CIImageAccumulator {
+		/// <param name="rect">The rectangle from which to create the accumulator.</param>
+		///         <param name="format">The pixel format for the accumulator.</param>
+		///         <summary>Creates and returns a new image accumulator from the specified rectangle and using the specified format.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("imageAccumulatorWithExtent:format:")]
 		[return: NullAllowed]
 		CIImageAccumulator FromRectangle (CGRect rect, CIFormat format);
 
+		/// <param name="extent">To be added.</param>
+		///         <param name="format">The pixel format for the accumulator.</param>
+		///         <param name="colorSpace">The color space for the accumulator.</param>
+		///         <summary>Creates and returns a new image accumulator from the specified rectangle and using the specified format and color space.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("imageAccumulatorWithExtent:format:colorSpace:")]
 		[return: NullAllowed]
 		CIImageAccumulator FromRectangle (CGRect extent, CIFormat format, CGColorSpace colorSpace);
 
+		/// <param name="rectangle">To be added.</param>
+		/// <param name="format">To be added.</param>
+		/// <summary>Creates a new image accumulator from the specified rectangle and using the specified format.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithExtent:format:")]
 		NativeHandle Constructor (CGRect rectangle, CIFormat format);
 
+		/// <param name="extent">To be added.</param>
+		/// <param name="format">To be added.</param>
+		/// <param name="colorSpace">To be added.</param>
+		/// <summary>Creates a new image accumulator from the specified rectangle and using the specified format and color space.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithExtent:format:colorSpace:")]
 		NativeHandle Constructor (CGRect extent, CIFormat format, CGColorSpace colorSpace);
 
@@ -3515,9 +4553,15 @@ namespace CoreImage {
 		[Export ("format")]
 		int CIImageFormat { get; } /* CIFormat = int */
 
+		/// <param name="image">To be added.</param>
+		///         <param name="dirtyRect">To be added.</param>
+		///         <summary>Places the <paramref name="dirtyRect" /> portion of <paramref name="image" /> into the accumulator.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setImage:dirtyRect:")]
 		void SetImageDirty (CIImage image, CGRect dirtyRect);
 
+		/// <summary>Clears the accumulator.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("clear")]
 		void Clear ();
 
@@ -3534,11 +4578,15 @@ namespace CoreImage {
 	[NoTV]
 	[BaseType (typeof (NSObject))]
 	interface CIPlugIn {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use 'LoadNonExecutablePlugIns' for non-executable plugins instead.")]
 		[Static]
 		[Export ("loadAllPlugIns")]
 		void LoadAllPlugIns ();
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("loadNonExecutablePlugIns")]
 		void LoadNonExecutablePlugIns ();
@@ -3547,19 +4595,27 @@ namespace CoreImage {
 		[Export ("loadNonExecutablePlugIn:")]
 		void LoadNonExecutablePlugIn (NSUrl url);
 
+		/// <param name="pluginUrl">To be added.</param>
+		///         <param name="allowNonExecutable">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 10, 7)]
 		[Static]
 		[Export ("loadPlugIn:allowNonExecutable:")]
 		void LoadPlugIn (NSUrl pluginUrl, bool allowNonExecutable);
 	}
 
-	/// <summary>Samples images for processing by a <see cref="T:CoreImage.CISampler" />.</summary>
+	/// <summary>Samples images for processing by a <see cref="CoreImage.CISampler" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GraphicsImaging/Reference/QuartzCoreFramework/Classes/CISampler_Class/index.html">Apple documentation for <c>CISampler</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CISampler : NSCopying {
+		/// <param name="sourceImage">To be added.</param>
+		///         <summary>Creates a new <see cref="CoreImage.CISampler" /> from the <paramref name="sourceImage" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static, Export ("samplerWithImage:")]
 		CISampler FromImage (CIImage sourceImage);
 
@@ -3567,6 +4623,9 @@ namespace CoreImage {
 		[Export ("samplerWithImage:options:")]
 		CISampler FromImage (CIImage sourceImag, [NullAllowed] NSDictionary options);
 
+		/// <param name="sourceImage">The image from which to sample.</param>
+		/// <summary>Creates a new sampler from a source image.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithImage:")]
 		NativeHandle Constructor (CIImage sourceImage);
 
@@ -3574,13 +4633,13 @@ namespace CoreImage {
 		[Internal, Export ("initWithImage:options:")]
 		NSObject Constructor (CIImage image, [NullAllowed] NSDictionary options);
 
-		/// <summary>The bounding shape and domain of definition of this <see cref="T:CoreImage.CISampler" />.</summary>
+		/// <summary>The bounding shape and domain of definition of this <see cref="CoreImage.CISampler" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("definition")]
 		CIFilterShape Definition { get; }
 
-		/// <summary>The rectangle to which this <see cref="T:CoreImage.CISampler" /> applies.</summary>
+		/// <summary>The rectangle to which this <see cref="CoreImage.CISampler" /> applies.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("extent")]
@@ -3612,7 +4671,7 @@ namespace CoreImage {
 		NSString ColorSpace { get; }
 	}
 
-	/// <summary>A vector for use with Core Image objects such as <see cref="T:CoreImage.CIFilter" />.</summary>
+	/// <summary>A vector for use with Core Image objects such as <see cref="CoreImage.CIFilter" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GraphicsImaging/Reference/QuartzCoreFramework/Classes/CIVector_Class/index.html">Apple documentation for <c>CIVector</c></related>
 	[BaseType (typeof (NSObject))]
@@ -3621,76 +4680,144 @@ namespace CoreImage {
 		[Static, Internal, Export ("vectorWithValues:count:")]
 		CIVector _FromValues (IntPtr values, nint count);
 
+		/// <param name="x">To be added.</param>
+		/// <summary>Creates a vector with the specified <paramref name="x" /> value.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static]
 		[Export ("vectorWithX:")]
 		CIVector Create (nfloat x);
 
+		/// <param name="x">To be added.</param>
+		/// <param name="y">To be added.</param>
+		/// <summary>Creates a vector with the specified <paramref name="x" /> and <paramref name="y" /> values.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static]
 		[Export ("vectorWithX:Y:")]
 		CIVector Create (nfloat x, nfloat y);
 
+		/// <param name="x">To be added.</param>
+		/// <param name="y">To be added.</param>
+		/// <param name="z">To be added.</param>
+		/// <summary>Creates a vector with the specified <paramref name="x" />, <paramref name="y" />, and <paramref name="z" /> values.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static]
 		[Export ("vectorWithX:Y:Z:")]
 		CIVector Create (nfloat x, nfloat y, nfloat z);
 
+		/// <param name="x">To be added.</param>
+		/// <param name="y">To be added.</param>
+		/// <param name="z">To be added.</param>
+		/// <param name="w">To be added.</param>
+		/// <summary>Creates a vector with the specified <paramref name="x" />, <paramref name="y" />, and <paramref name="z" />, and <paramref name="w" /> values.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static]
 		[Export ("vectorWithX:Y:Z:W:")]
 		CIVector Create (nfloat x, nfloat y, nfloat z, nfloat w);
 
+		/// <param name="point">To be added.</param>
+		///         <summary>Creates a <see cref="CoreGraphics.CGAffineTransform" /> that represents a directed distance from the origin to <paramref name="point" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("vectorWithCGPoint:")]
 		CIVector Create (CGPoint point);
 
+		/// <param name="point">To be added.</param>
+		///         <summary>Creates a <see cref="CoreGraphics.CGAffineTransform" /> that stores the X-coordinate, Y-coordinate, height, and width in the <see cref="CoreImage.CIVector.X" />, <see cref="CoreImage.CIVector.Y" />. <see cref="CoreImage.CIVector.Z" />, and <see cref="CoreImage.CIVector.W" /> properties, respectively.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("vectorWithCGRect:")]
 		CIVector Create (CGRect point);
 
+		/// <param name="affineTransform">To be added.</param>
+		///         <summary>Creates a vector from a <see cref="CoreGraphics.CGAffineTransform" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("vectorWithCGAffineTransform:")]
 		CIVector Create (CGAffineTransform affineTransform);
 
+		/// <param name="representation">To be added.</param>
+		///         <summary>Creates a vector from a string, such as "[1.0, 2.0, 3.0]".</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("vectorWithString:")]
 		CIVector FromString (string representation);
 
+		/// <param name="p">To be added.</param>
+		/// <summary>Creates a new CIVector for the specified point.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("initWithCGPoint:")]
 		NativeHandle Constructor (CGPoint p);
 
+		/// <param name="r">To be added.</param>
+		/// <summary>Creates a new CIVector and fills it with the X, Y, height, and width values.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("initWithCGRect:")]
 		NativeHandle Constructor (CGRect r);
 
+		/// <param name="r">To be added.</param>
+		/// <summary>Creates a new CIVector by flattening the six values in an affine transform into the first six posistions in the new CIVector.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("initWithCGAffineTransform:")]
 		NativeHandle Constructor (CGAffineTransform r);
 
 
+		/// <param name="x">To be added.</param>
+		/// <summary>Creates a new one-dimensional vector.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithX:")]
 		NativeHandle Constructor (nfloat x);
 
+		/// <param name="x">To be added.</param>
+		/// <param name="y">To be added.</param>
+		/// <summary>Creates a new CIVector with the specified X and Y coordinates.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithX:Y:")]
 		NativeHandle Constructor (nfloat x, nfloat y);
 
+		/// <param name="x">To be added.</param>
+		/// <param name="y">To be added.</param>
+		/// <param name="z">To be added.</param>
+		/// <summary>Creates a new CIVector with the specified X, Y and Z coordinates.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithX:Y:Z:")]
 		NativeHandle Constructor (nfloat x, nfloat y, nfloat z);
 
+		/// <param name="x">To be added.</param>
+		/// <param name="y">To be added.</param>
+		/// <param name="z">To be added.</param>
+		/// <param name="w">To be added.</param>
+		/// <summary>Creates a new CIVector with the specified X, Y, Z, and W coordinates.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithX:Y:Z:W:")]
 		NativeHandle Constructor (nfloat x, nfloat y, nfloat z, nfloat w);
 
+		/// <param name="representation">To be added.</param>
+		/// <summary>Creates a new CIVector from the specified string representation.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithString:")]
 		NativeHandle Constructor (string representation);
 
 		[Export ("valueAtIndex:"), Internal]
 		nfloat ValueAtIndex (nint index);
 
-		/// <summary>Gets the number of items in this <see cref="T:CoreImage.CIVector" />.</summary>
+		/// <summary>Gets the number of items in this <see cref="CoreImage.CIVector" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("count")]
@@ -3720,21 +4847,21 @@ namespace CoreImage {
 		[Export ("W")]
 		nfloat W { get; }
 
-		/// <summary>Gets the point that is represented by (<see cref="P:CoreImage.CIVector.X" />,<see cref="P:CoreImage.CIVector.Y" />).</summary>
+		/// <summary>Gets the point that is represented by (<see cref="CoreImage.CIVector.X" />,<see cref="CoreImage.CIVector.Y" />).</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("CGPointValue")]
 		CGPoint Point { get; }
 
-		/// <summary>Gets a rectangle whose X-coordinate, Y-coordinate, height, and width are given by the <see cref="P:CoreImage.CIVector.X" />, <see cref="P:CoreImage.CIVector.Y" />. <see cref="P:CoreImage.CIVector.Z" />, and <see cref="P:CoreImage.CIVector.W" /> properties, respectively. .</summary>
+		/// <summary>Gets a rectangle whose X-coordinate, Y-coordinate, height, and width are given by the <see cref="CoreImage.CIVector.X" />, <see cref="CoreImage.CIVector.Y" />. <see cref="CoreImage.CIVector.Z" />, and <see cref="CoreImage.CIVector.W" /> properties, respectively. .</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("CGRectValue")]
 		CGRect Rectangle { get; }
 
-		/// <summary>Gets the affine transform that is represented by the first 6 elements of this <see cref="T:CoreImage.CIVector" />.</summary>
+		/// <summary>Gets the affine transform that is represented by the first 6 elements of this <see cref="CoreImage.CIVector" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
@@ -3754,9 +4881,23 @@ namespace CoreImage {
 		[return: NullAllowed]
 		CIDetector FromType (NSString detectorType, [NullAllowed] CIContext context, [NullAllowed] NSDictionary options);
 
+		/// <param name="image">Image to analyze.</param>
+		///         <summary>Analyzes the image and returns a list of features discovered in the image (faces, QR codes, rectangles).</summary>
+		///         <returns>Array of discovered features.</returns>
+		///         <remarks>
+		///         </remarks>
 		[Export ("featuresInImage:")]
 		CIFeature [] FeaturesInImage (CIImage image);
 
+		/// <param name="image">Image to analyze.</param>
+		///         <param name="options">
+		///           <para>Set of options to configure the search for features in the image.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Analyzes the image and returns a list of features discovered in the image (faces, QR codes, rectangles).</summary>
+		///         <returns>Array of discovered features.</returns>
+		///         <remarks>
+		///         </remarks>
 		[Export ("featuresInImage:options:")]
 		CIFeature [] FeaturesInImage (CIImage image, [NullAllowed] NSDictionary options);
 
@@ -3847,7 +4988,7 @@ namespace CoreImage {
 		NSString TypeText { get; }
 	}
 
-	/// <summary>An area of an image in which a <see cref="T:CoreImage.CIDetector" /> has detected a match.</summary>
+	/// <summary>An area of an image in which a <see cref="CoreImage.CIDetector" /> has detected a match.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CoreImage/Reference/CIFeature_Ref/index.html">Apple documentation for <c>CIFeature</c></related>
 	[BaseType (typeof (NSObject))]
@@ -3894,13 +5035,13 @@ namespace CoreImage {
 		NSString TypeText { get; }
 	}
 
-	/// <summary>Locations of the eyes and mouths in a detected face. In video sequences, attempts to maintain a consistent <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Image%20CIFace%20Feature%20Tracking%20ID&amp;scope=Xamarin" title="P:CoreImage.CIFaceFeature.TrackingID">P:CoreImage.CIFaceFeature.TrackingID</a></format>.</summary>
+	/// <summary>Locations of the eyes and mouths in a detected face. In video sequences, attempts to maintain a consistent <see cref="CoreImage.CIFaceFeature.TrackingID" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CoreImage/Reference/CIFaceFeature/index.html">Apple documentation for <c>CIFaceFeature</c></related>
 	[BaseType (typeof (CIFeature))]
 	[DisableDefaultCtor]
 	interface CIFaceFeature {
-		/// <summary>Gets a value that indicates whether the <see cref="P:CoreImage.CIFaceFeature.LeftEyePosition" /> property is set.</summary>
+		/// <summary>Gets a value that indicates whether the <see cref="CoreImage.CIFaceFeature.LeftEyePosition" /> property is set.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("hasLeftEyePosition", ArgumentSemantic.Assign)]
@@ -3912,7 +5053,7 @@ namespace CoreImage {
 		[Export ("leftEyePosition", ArgumentSemantic.Assign)]
 		CGPoint LeftEyePosition { get; }
 
-		/// <summary>Gets a value that indicates whether the <see cref="P:CoreImage.CIFaceFeature.RightEyePosition" /> property is set.</summary>
+		/// <summary>Gets a value that indicates whether the <see cref="CoreImage.CIFaceFeature.RightEyePosition" /> property is set.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("hasRightEyePosition", ArgumentSemantic.Assign)]
@@ -3924,7 +5065,7 @@ namespace CoreImage {
 		[Export ("rightEyePosition", ArgumentSemantic.Assign)]
 		CGPoint RightEyePosition { get; }
 
-		/// <summary>Gets a value that indicates whether the <see cref="P:CoreImage.CIFaceFeature.MouthPosition" /> property is set.</summary>
+		/// <summary>Gets a value that indicates whether the <see cref="CoreImage.CIFaceFeature.MouthPosition" /> property is set.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("hasMouthPosition", ArgumentSemantic.Assign)]
@@ -3936,7 +5077,7 @@ namespace CoreImage {
 		[Export ("mouthPosition", ArgumentSemantic.Assign)]
 		CGPoint MouthPosition { get; }
 
-		/// <summary>Gets a value that indicates whether the <see cref="P:CoreImage.CIFaceFeature.TrackingId" /> property is set.</summary>
+		/// <summary>Gets a value that indicates whether the <see cref="CoreImage.CIFaceFeature.TrackingId" /> property is set.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("hasTrackingID", ArgumentSemantic.Assign)]
@@ -3948,7 +5089,7 @@ namespace CoreImage {
 		[Export ("trackingID", ArgumentSemantic.Assign)]
 		int TrackingId { get; } /* int, not NSInteger */
 
-		/// <summary>Gets a value that indicates whether the <see cref="P:CoreImage.CIFaceFeature.TrackingFrameCount" /> property is set.</summary>
+		/// <summary>Gets a value that indicates whether the <see cref="CoreImage.CIFaceFeature.TrackingFrameCount" /> property is set.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("hasTrackingFrameCount", ArgumentSemantic.Assign)]
@@ -3974,14 +5115,14 @@ namespace CoreImage {
 		[Export ("faceAngle", ArgumentSemantic.Assign)]
 		float FaceAngle { get; } /* float, not CGFloat */
 
-		/// <summary>Gets a value that indicates whether the <see cref="P:CoreImage.CIFaceFeature.FaceAngle" /> property is set.</summary>
+		/// <summary>Gets a value that indicates whether the <see cref="CoreImage.CIFaceFeature.FaceAngle" /> property is set.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("hasFaceAngle", ArgumentSemantic.Assign)]
 		bool HasFaceAngle { get; }
 
-		/// <summary>Gets a value that indicates whether the <see cref="P:CoreImage.CIFaceFeature.HasSmile" /> property is set.</summary>
+		/// <summary>Gets a value that indicates whether the <see cref="CoreImage.CIFaceFeature.HasSmile" /> property is set.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
@@ -4003,7 +5144,7 @@ namespace CoreImage {
 		bool RightEyeClosed { get; }
 	}
 
-	/// <summary>A <see cref="T:CoreImage.CIFeature" /> an image space rectange that contains a detected physical rectangle.</summary>
+	/// <summary>A <see cref="CoreImage.CIFeature" /> an image space rectange that contains a detected physical rectangle.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/QuartzCore/Reference/CIRectangleFeature/index.html">Apple documentation for <c>CIRectangleFeature</c></related>
 	[MacCatalyst (13, 1)]
@@ -4145,14 +5286,33 @@ namespace CoreImage {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface CIImageProcessorKernel {
+		/// <param name="inputs">
+		///           <para>The input images.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="arguments">
+		///           <para>Additional arguments for the processing.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="output">The results of the processing</param>
+		///         <param name="error">Developers should set this <see cref="Foundation.NSError" /> as necessary.</param>
+		///         <summary>Developers should override this method to perform custom processing on the <paramref name="inputs" />.</summary>
+		///         <returns>
+		///           <see langword="true" /> if the processing completed successfuly.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("processWithInputs:arguments:output:error:")]
 		bool Process ([NullAllowed] ICIImageProcessorInput [] inputs, [NullAllowed] NSDictionary<NSString, NSObject> arguments, ICIImageProcessorOutput output, out NSError error);
 
+		/// <include file="../docs/api/CoreImage/CIImageProcessorKernel.xml" path="/Documentation/Docs[@DocId='M:CoreImage.CIImageProcessorKernel.GetRegionOfInterest(System.Int32,Foundation.NSDictionary{Foundation.NSString,Foundation.NSObject},CoreGraphics.CGRect)']/*" />
 		[Static]
 		[Export ("roiForInput:arguments:outputRect:")]
 		CGRect GetRegionOfInterest (int input, [NullAllowed] NSDictionary<NSString, NSObject> arguments, CGRect outputRect);
 
+		/// <param name="input">An index into the array of <see cref="CoreImage.ICIImageProcessorInput" /> objects passed to <see cref="CoreImage.CIImageProcessorKernel.Apply(CoreGraphics.CGRect,CoreImage.CIImage[],Foundation.NSDictionary{Foundation.NSString,Foundation.NSObject},out Foundation.NSError)" /> or <see cref="CoreImage.CIImageProcessorKernel.Process(CoreImage.ICIImageProcessorInput[],Foundation.NSDictionary{Foundation.NSString,Foundation.NSObject},CoreImage.ICIImageProcessorOutput,out Foundation.NSError)" />.</param>
+		///         <summary>The color space of the <see cref="CoreImage.ICIImageProcessorInput" /> at index <paramref name="input" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("formatForInputAtIndex:")]
 		CIFormat GetFormat (int input);
@@ -4171,6 +5331,19 @@ namespace CoreImage {
 		[Export ("synchronizeInputs")]
 		bool SynchronizeInputs { get; }
 
+		/// <param name="extent">The region to apply the custom processing.</param>
+		///         <param name="inputs">
+		///           <para>The input images.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="args">
+		///           <para>Additional arguments for the processing.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="error">Developers should set this <see cref="Foundation.NSError" /> as necessary.</param>
+		///         <summary>Developers should override this method to perform custom processing on the <paramref name="inputs" /> in the <paramref name="extent" /> rectangle.</summary>
+		///         <returns>The image after custom processing.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("applyWithExtent:inputs:arguments:error:")]
 		[return: NullAllowed]
@@ -4197,12 +5370,13 @@ namespace CoreImage {
 	interface CIAccordionFoldTransition : CIAccordionFoldTransitionProtocol {
 	}
 
-	/// <summary>An abstract <see cref="T:CoreImage.CIFilter" /> that composites two images.</summary>
+	/// <summary>An abstract <see cref="CoreImage.CIFilter" /> that composites two images.</summary>
 	[CoreImageFilter (IntPtrCtorVisibility = MethodAttributes.Family)] // was already protected in classic
 	[Abstract]
 	[BaseType (typeof (CIFilter))]
 	interface CICompositingFilter {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[CoreImageFilterProperty ("inputImage")]
 		CIImage InputImage { get; set; }
 
@@ -4220,7 +5394,7 @@ namespace CoreImage {
 	interface CIAdditionCompositing {
 	}
 
-	/// <summary>An abstract class that defines a <see cref="T:CoreImage.CIFilter" /> that performs an affine transform on an image and then performs a filtering operation on the transformed image.</summary>
+	/// <summary>An abstract class that defines a <see cref="CoreImage.CIFilter" /> that performs an affine transform on an image and then performs a filtering operation on the transformed image.</summary>
 	[CoreImageFilter (IntPtrCtorVisibility = MethodAttributes.Family)] // was already protected in classic
 	[Abstract]
 	[BaseType (typeof (CIFilter))]
@@ -4244,6 +5418,7 @@ namespace CoreImage {
 	[BaseType (typeof (CIAffineFilter))]
 	interface CIAffineTransform {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[CoreImageFilterProperty ("inputImage")]
 		CIImage InputImage { get; set; }
 
@@ -4279,6 +5454,7 @@ namespace CoreImage {
 	[Protocol (Name = "CIAreaReductionFilter")]
 	interface CIAreaReductionFilterProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -4294,10 +5470,14 @@ namespace CoreImage {
 	[Protocol (Name = "CIAreaHistogram")]
 	interface CIAreaHistogramProtocol : CIAreaReductionFilterProtocol {
 
+		/// <summary>Gets or sets the scale of the area.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("scale")]
 		float Scale { get; set; }
 
+		/// <summary>Gets or sets the number of buckets in the histogram.</summary>
 		[Abstract]
 		[Export ("count")]
 		nint InputCount { get; set; }
@@ -4305,7 +5485,7 @@ namespace CoreImage {
 
 	/// <summary>Creates histogram data for a given image and rectangle of interest.</summary>
 	///     <remarks>
-	///       <para>The <see cref="P:CoreImage.CIFilter.OutputImage" /> of this filter is a single-pixel high image of width <see cref="P:CoreImage.CIAreaHistogram.Count" />. </para>
+	///       <para>The <see cref="CoreImage.CIFilter.OutputImage" /> of this filter is a single-pixel high image of width <see cref="CoreImage.CIAreaHistogram.Count" />. </para>
 	///     </remarks>
 	[CoreImageFilter]
 	[MacCatalyst (13, 1)]
@@ -4336,6 +5516,7 @@ namespace CoreImage {
 	[BaseType (typeof (CIFilter))]
 	interface CIReductionFilter {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[CoreImageFilterProperty ("inputImage")]
 		CIImage InputImage { get; set; }
 
@@ -4414,7 +5595,7 @@ namespace CoreImage {
 		NSData Message { get; set; }
 	}
 
-	/// <summary>Generates an Aztec code for the specified <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Image%20CIAztec%20Code%20Generator%20Message&amp;scope=Xamarin" title="P:CoreImage.CIAztecCodeGenerator.Message">P:CoreImage.CIAztecCodeGenerator.Message</a></format>.</summary>
+	/// <summary>Generates an Aztec code for the specified <see cref="CoreImage.CIAztecCodeGenerator.Message" />.</summary>
 	///     <remarks>
 	///       <para>The Aztec code is defined at <format type="text/html"><a href="https://www.iso.org/iso/iso_catalogue/catalogue_tc/catalogue_detail.htm?csnumber=41548">www.iso.org/iso/iso_catalogue/catalogue_tc/catalogue_detail.htm?csnumber=41548</a></format>.</para>
 	///     </remarks>
@@ -4426,7 +5607,7 @@ namespace CoreImage {
 		CGImage OutputCGImage { get; }
 	}
 
-	/// <summary>A <see cref="T:CoreImage.CITransitionFilter" /> that animates a transition between two images.</summary>
+	/// <summary>A <see cref="CoreImage.CITransitionFilter" /> that animates a transition between two images.</summary>
 	[CoreImageFilter (IntPtrCtorVisibility = MethodAttributes.Family)] // was already protected in classic
 	[Abstract]
 	[BaseType (typeof (CIFilter))]
@@ -4483,12 +5664,13 @@ namespace CoreImage {
 	interface CIBoxBlur : CIBoxBlurProtocol {
 	}
 
-	/// <summary>An abstract <see cref="T:CoreImage.CIFilter" /> for distortions.</summary>
+	/// <summary>An abstract <see cref="CoreImage.CIFilter" /> for distortions.</summary>
 	[CoreImageFilter (IntPtrCtorVisibility = MethodAttributes.Family)] // was already protected in classic
 	[Abstract]
 	[BaseType (typeof (CIFilter))]
 	interface CIDistortionFilter {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[CoreImageFilterProperty ("inputImage")]
 		CIImage InputImage { get; set; }
 
@@ -4505,10 +5687,12 @@ namespace CoreImage {
 	[Protocol (Name = "CIBumpDistortion")]
 	interface CIBumpDistortionProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
 
+		/// <summary>Gets or sets the center of the effect.</summary>
 		[Abstract]
 		[Export ("center", ArgumentSemantic.Assign)]
 		CGPoint InputCenter { get; set; }
@@ -4517,6 +5701,9 @@ namespace CoreImage {
 		[Export ("radius")]
 		float Radius { get; set; }
 
+		/// <summary>Gets or sets the level of the bump distortion.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("scale")]
 		float Scale { get; set; }
@@ -4534,6 +5721,7 @@ namespace CoreImage {
 	[Protocol (Name = "CIBumpDistortionLinear")]
 	interface CIBumpDistortionLinearProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -4546,10 +5734,16 @@ namespace CoreImage {
 		[Export ("radius")]
 		float Radius { get; set; }
 
+		/// <summary>Gets or sets the angle of the line about which to distort the image.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("angle")]
 		float Angle { get; set; }
 
+		/// <summary>Gets or sets the amount of distortion to create.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("scale")]
 		float Scale { get; set; }
@@ -4573,6 +5767,7 @@ namespace CoreImage {
 	[Protocol (Name = "CICircleSplashDistortion")]
 	interface CICircleSplashDistortionProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -4592,7 +5787,7 @@ namespace CoreImage {
 	interface CICircleSplashDistortion : CICircleSplashDistortionProtocol {
 	}
 
-	/// <summary>A <see cref="T:CoreImage.CIFilter" /> that mimics halftone screens.</summary>
+	/// <summary>A <see cref="CoreImage.CIFilter" /> that mimics halftone screens.</summary>
 	[CoreImageFilter (IntPtrCtorVisibility = MethodAttributes.Family)] // was already protected in classic
 	[Abstract]
 	[BaseType (typeof (CIFilter))]
@@ -4604,6 +5799,7 @@ namespace CoreImage {
 		[CoreImageFilterProperty ("inputSharpness")]
 		float Sharpness { get; set; }
 
+		/// <summary>Gets or sets the center of the halftone pattern.</summary>
 		[CoreImageFilterProperty ("inputCenter")]
 		CGPoint InputCenter { get; set; }
 
@@ -4626,18 +5822,26 @@ namespace CoreImage {
 	[Protocol (Name = "CICircularWrap")]
 	interface CICircularWrapProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
 
+		/// <summary>Gets or sets the center of the distortion.</summary>
 		[Abstract]
 		[Export ("center", ArgumentSemantic.Assign)]
 		CGPoint InputCenter { get; set; }
 
+		/// <summary>Gets or sets the radius of the distortion.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("radius")]
 		float Radius { get; set; }
 
+		/// <summary>Gets or sets the angle of the image.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("angle")]
 		float Angle { get; set; }
@@ -4667,12 +5871,13 @@ namespace CoreImage {
 		CIImage OutputCGImage { get; }
 	}
 
-	/// <summary>An abstract <see cref="T:CoreImage.CIFilter" /> that combines a background and foreground image.</summary>
+	/// <summary>An abstract <see cref="CoreImage.CIFilter" /> that combines a background and foreground image.</summary>
 	[CoreImageFilter (IntPtrCtorVisibility = MethodAttributes.Family)] // was already protected in classic
 	[Abstract]
 	[BaseType (typeof (CIFilter))]
 	interface CIBlendFilter {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[CoreImageFilterProperty ("inputImage")]
 		CIImage InputImage { get; set; }
 
@@ -4814,6 +6019,7 @@ namespace CoreImage {
 	[BaseType (typeof (CIFilter))]
 	interface CIConvolutionCore {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[CoreImageFilterProperty ("inputImage")]
 		CIImage InputImage { get; set; }
 
@@ -4906,6 +6112,7 @@ namespace CoreImage {
 	[BaseType (typeof (CIFilter))]
 	interface CICrop {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[CoreImageFilterProperty ("inputImage")]
 		CIImage InputImage { get; set; }
 
@@ -4954,14 +6161,21 @@ namespace CoreImage {
 	[Protocol (Name = "CIDisplacementDistortion")]
 	interface CIDisplacementDistortionProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
 
+		/// <summary>Gets or sets the image that defines the texture displacement.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[NullAllowed, Export ("displacementImage", ArgumentSemantic.Retain)]
 		CIImage DisplacementImage { get; set; }
 
+		/// <summary>Gets or sets a value that determines how much distortion to apply. Default is 50.0.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("scale")]
 		float Scale { get; set; }
@@ -4980,7 +6194,7 @@ namespace CoreImage {
 	interface CIDissolveTransition {
 	}
 
-	/// <summary>A <see cref="T:CoreImage.CIBlendFilter" /> that divides the color values of its <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=CIBlend%20Filter%20Image&amp;scope=Xamarin" title="P:CIBlendFilter.Image">P:CIBlendFilter.Image</a></format> and <see cref="P:CoreImage.CIBlendFilter.BackgroundImage" />.</summary>
+	/// <summary>A <see cref="CoreImage.CIBlendFilter" /> that divides the color values of its <see cref="CIBlendFilter.Image" /> and <see cref="CoreImage.CIBlendFilter.BackgroundImage" />.</summary>
 	[CoreImageFilter]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIBlendFilter))]
@@ -4999,30 +6213,45 @@ namespace CoreImage {
 	[Protocol (Name = "CIDroste")]
 	interface CIDrosteProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
 
+		/// <summary>Gets or sets a vector that represents the first corner of the rectangular inset region.</summary>
 		[Abstract]
 		[Export ("insetPoint0", ArgumentSemantic.Assign)]
 		CGPoint InputInsetPoint0 { get; set; }
 
+		/// <summary>Gets or sets a vector that represents the second corner of the rectangular inset region.</summary>
 		[Abstract]
 		[Export ("insetPoint1", ArgumentSemantic.Assign)]
 		CGPoint InputInsetPoint1 { get; set; }
 
+		/// <summary>Gets or sets the number of droste strands. Default is 1.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("strands")]
 		float Strands { get; set; }
 
+		/// <summary>Gets or sets the number of times that the image is repeated in each spiral of a stranded Droste image. Default is 1.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("periodicity")]
 		float Periodicity { get; set; }
 
+		/// <summary>Gets or sets the amount by which to rotate the inset image. Default is 0.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("rotation")]
 		float Rotation { get; set; }
 
+		/// <summary>Gets or sets a value that controls by how much to zoom the inset image. Default is 1.0.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("zoom")]
 		float Zoom { get; set; }
@@ -5049,7 +6278,7 @@ namespace CoreImage {
 	interface CIEdgeWork : CIEdgeWorkProtocol {
 	}
 
-	/// <summary>A <see cref="T:CoreImage.CIFilter" /> that applies a filter and then tiles the results.</summary>
+	/// <summary>A <see cref="CoreImage.CIFilter" /> that applies a filter and then tiles the results.</summary>
 	[CoreImageFilter (IntPtrCtorVisibility = MethodAttributes.Family)] // was already protected in classic
 	[Abstract]
 	[BaseType (typeof (CIFilter))]
@@ -5061,6 +6290,7 @@ namespace CoreImage {
 		[CoreImageFilterProperty ("inputAngle")]
 		float Angle { get; set; }
 
+		/// <summary>Gets or sets the center of the tile pattern.</summary>
 		[CoreImageFilterProperty ("inputCenter")]
 		CGPoint InputCenter { get; set; }
 
@@ -5143,24 +6373,33 @@ namespace CoreImage {
 	[Protocol (Name = "CIGlassDistortion")]
 	interface CIGlassDistortionProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
 
+		/// <summary>Gets or sets the texture map to use for the glass distortion effect.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[NullAllowed, Export ("textureImage", ArgumentSemantic.Retain)]
 		CIImage Texture { get; set; }
 
+		/// <summary>Gets or sets the center of the input texture.</summary>
+		/// <value>The default value is 200.0.</value>
 		[Abstract]
 		[Export ("center", ArgumentSemantic.Assign)]
 		CGPoint InputCenter { get; set; }
 
+		/// <summary>Gets or sets the scale of the input texture.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("scale")]
 		float Scale { get; set; }
 	}
 
-	/// <summary>Distorts the input image so that it appears viewed through glass blocks whose geometry corresponds to the <see cref="P:CoreImage.CIGlassDistortion.Texture" /> image.</summary>
+	/// <summary>Distorts the input image so that it appears viewed through glass blocks whose geometry corresponds to the <see cref="CoreImage.CIGlassDistortion.Texture" /> image.</summary>
 	[CoreImageFilter]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIFilter))]
@@ -5173,22 +6412,31 @@ namespace CoreImage {
 	[Protocol (Name = "CIGlassLozenge")]
 	interface CIGlassLozengeProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
 
+		/// <summary>Gets or sets the first point that defines the long axis of the lozenge.</summary>
 		[Abstract]
 		[Export ("point0", ArgumentSemantic.Assign)]
 		CGPoint InputPoint0 { get; set; }
 
+		/// <summary>Gets or sets the second point that defines the long axis of the lozenge.</summary>
 		[Abstract]
 		[Export ("point1", ArgumentSemantic.Assign)]
 		CGPoint InputPoint1 { get; set; }
 
+		/// <summary>Gets or sets the radius, and therefore the half-width, of the lozenge.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("radius")]
 		float Radius { get; set; }
 
+		/// <summary>Gets or sets the amount simulated refraction for the lozenge. Default is 1.7.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("refraction")]
 		float Refraction { get; set; }
@@ -5225,7 +6473,7 @@ namespace CoreImage {
 	interface CIHatchedScreen : CIHatchedScreenProtocol {
 	}
 
-	/// <summary>Creates a continuous height field from a grayscale mask. Use with <see cref="T:CoreImage.CIShadedMaterial" /> to create realistic dropshadows.</summary>
+	/// <summary>Creates a continuous height field from a grayscale mask. Use with <see cref="CoreImage.CIShadedMaterial" /> to create realistic dropshadows.</summary>
 	[CoreImageFilter]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIFilter))]
@@ -5251,26 +6499,36 @@ namespace CoreImage {
 	[Protocol (Name = "CIHistogramDisplay")]
 	interface CIHistogramDisplayProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
 
+		/// <summary>Gets or sets the display height of the histogram.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("height")]
 		float Height { get; set; }
 
+		/// <summary>Gets or sets the height of the tallest histogram bar.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("highLimit")]
 		float HighLimit { get; set; }
 
+		/// <summary>Gets or sets the height of the shortest histogram bar.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("lowLimit")]
 		float LowLimit { get; set; }
 	}
 
-	/// <summary>Renders a one-dimensional <see cref="P:CoreImage.CIFilter.Image" /> histogram as a typical two-dimensional histogram.</summary>
+	/// <summary>Renders a one-dimensional <see cref="CoreImage.CIFilter.Image" /> histogram as a typical two-dimensional histogram.</summary>
 	///     <remarks>
-	///       <para>This filter can be used in conjunction with <see cref="T:CoreImage.CIAreaHistogram" /> to create a user-meaningful histogram, as shown in the following example.</para>
+	///       <para>This filter can be used in conjunction with <see cref="CoreImage.CIAreaHistogram" /> to create a user-meaningful histogram, as shown in the following example.</para>
 	///       <example>
 	///         <code lang="csharp lang-csharp"><![CDATA[
 	/// var histogram = new CIAreaHistogram () {
@@ -5314,6 +6572,7 @@ namespace CoreImage {
 	[Protocol (Name = "CIHoleDistortion")]
 	interface CIHoleDistortionProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -5377,18 +6636,26 @@ namespace CoreImage {
 	[Protocol (Name = "CILightTunnel")]
 	interface CILightTunnelProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
 
+		/// <summary>Gets or sets the center of the image portion to rotate.</summary>
 		[Abstract]
 		[Export ("center", ArgumentSemantic.Assign)]
 		CGPoint InputCenter { get; set; }
 
+		/// <summary>Gets or sets the initial anlge of the image sample.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("rotation")]
 		float Rotation { get; set; }
 
+		/// <summary>Gets or sets the distance about the center to sample.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("radius")]
 		float Radius { get; set; }
@@ -5559,7 +6826,7 @@ namespace CoreImage {
 		CGImage OutputCGImage { get; }
 	}
 
-	/// <summary>A <see cref="T:CoreImage.CIPerspectiveTransform" /> that is cropped according to the perspective control points, but whose pixels are not transformed.</summary>
+	/// <summary>A <see cref="CoreImage.CIPerspectiveTransform" /> that is cropped according to the perspective control points, but whose pixels are not transformed.</summary>
 	[CoreImageFilter]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIPerspectiveTransform))]
@@ -5657,6 +6924,7 @@ namespace CoreImage {
 	[Protocol (Name = "CIPinchDistortion")]
 	interface CIPinchDistortionProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -5669,6 +6937,9 @@ namespace CoreImage {
 		[Export ("radius")]
 		float Radius { get; set; }
 
+		/// <summary>Gets or sets a value that controls by how much the image will be pinched.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("scale")]
 		float Scale { get; set; }
@@ -5685,7 +6956,7 @@ namespace CoreImage {
 
 	/// <summary>Replaces image colors with the bright colors from the background image.</summary>
 	///     <remarks>
-	///       <para>If the <see cref="P:CoreImage.CIBlendFilter.BackgroundImage" /> pixel is more than half of the maximum brightness, that pixel is substituted for the pixel in the <see cref="P:CoreImage.CIFilter.Image" />. Also, even if the background pixel is less than 50% brightness, it will be substituted if the image pixel is lighter than the background pixel.</para>
+	///       <para>If the <see cref="CoreImage.CIBlendFilter.BackgroundImage" /> pixel is more than half of the maximum brightness, that pixel is substituted for the pixel in the <see cref="CoreImage.CIFilter.Image" />. Also, even if the background pixel is less than 50% brightness, it will be substituted if the image pixel is lighter than the background pixel.</para>
 	///       <para>This filter can be used to make an image look as if it were drawn with powder pastels.</para>
 	///     </remarks>
 	[CoreImageFilter]
@@ -5768,7 +7039,7 @@ namespace CoreImage {
 	interface CISepiaTone : CISepiaToneProtocol {
 	}
 
-	/// <summary>Produces a shaded image from a height field, such as that produced by <see cref="T:CoreImage.CIHeightFieldFromMask" />.</summary>
+	/// <summary>Produces a shaded image from a height field, such as that produced by <see cref="CoreImage.CIHeightFieldFromMask" />.</summary>
 	[CoreImageFilter]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIFilter))]
@@ -5869,18 +7140,26 @@ namespace CoreImage {
 	[Protocol (Name = "CIStretchCrop")]
 	interface CIStretchCropProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
 
+		/// <summary>Gets or sets the size of the output image in pixels.</summary>
 		[Abstract]
 		[Export ("size", ArgumentSemantic.Assign)]
 		CGPoint InputSize { get; set; }
 
+		/// <summary>Gets or sets a value that controls the ratio of stretching to cropping. 0 causes the image to be stretched so that no cropping is necessary. 1 causes the image to be cropped so that no stretching is necessary. Intermediate values combine these effects.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("cropAmount")]
 		float CropAmount { get; set; }
 
+		/// <summary>Gets or sets a value that controls by how much more to stretch the center of the image, with a value of 0 indicating uniform stretching with no distortion.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("centerStretchAmount")]
 		float CenterStretchAmount { get; set; }
@@ -5899,7 +7178,7 @@ namespace CoreImage {
 	interface CIStripesGenerator : CIStripesGeneratorProtocol {
 	}
 
-	/// <summary>Subtracts the background image pixels from those in the <see cref="P:CoreImage.CIFilter.Image" />.</summary>
+	/// <summary>Subtracts the background image pixels from those in the <see cref="CoreImage.CIFilter.Image" />.</summary>
 	[CoreImageFilter]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIBlendFilter))]
@@ -5963,22 +7242,33 @@ namespace CoreImage {
 	[Protocol (Name = "CITorusLensDistortion")]
 	interface CITorusLensDistortionProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
 
+		/// <summary>Gets or sets the center of the toroidal lens.</summary>
 		[Abstract]
 		[Export ("center", ArgumentSemantic.Assign)]
 		CGPoint InputCenter { get; set; }
 
+		/// <summary>Gets or sets the radius of the toroidal lens, the distance from the center of the torus to the center of its ring.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("radius")]
 		float Radius { get; set; }
 
+		/// <summary>Gets or sets the width of the ring of the torus.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("width")]
 		float Width { get; set; }
 
+		/// <summary>Gets or sets the index of refraction.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("refraction")]
 		float Refraction { get; set; }
@@ -6017,6 +7307,7 @@ namespace CoreImage {
 	[Protocol (Name = "CITwirlDistortion")]
 	interface CITwirlDistortionProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -6029,6 +7320,9 @@ namespace CoreImage {
 		[Export ("radius")]
 		float Radius { get; set; }
 
+		/// <summary>Gets or sets the angle of the twirl effect, in radians.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("angle")]
 		float Angle { get; set; }
@@ -6075,6 +7369,7 @@ namespace CoreImage {
 	[Protocol (Name = "CIVortexDistortion")]
 	interface CIVortexDistortionProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -6087,6 +7382,9 @@ namespace CoreImage {
 		[Export ("radius")]
 		float Radius { get; set; }
 
+		/// <summary>The angle, in degrees, through which to rotate.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("angle")]
 		float Angle { get; set; }
@@ -6134,9 +7432,9 @@ namespace CoreImage {
 	interface CIFaceBalance {
 	}
 
-	/// <summary>A <see cref="T:CoreImage.CIFilter" /> that blurs based on a black-and-white mask.</summary>
+	/// <summary>A <see cref="CoreImage.CIFilter" /> that blurs based on a black-and-white mask.</summary>
 	///     <remarks>
-	///       <para>The blur radius varies from 0 to <see cref="P:CoreImage.CIMaskedVariableBlur.Radius" />. In the mask image, pure black is 0 radius (no blur) and white is maximum radius (blurriest).</para>
+	///       <para>The blur radius varies from 0 to <see cref="CoreImage.CIMaskedVariableBlur.Radius" />. In the mask image, pure black is 0 radius (no blur) and white is maximum radius (blurriest).</para>
 	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[CoreImageFilter]
@@ -6149,10 +7447,11 @@ namespace CoreImage {
 	[BaseType (typeof (CIFilter))]
 	interface CIClamp {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[CoreImageFilterProperty ("inputImage")]
 		CIImage InputImage { get; set; }
 
-		/// <summary>A vector whose values define the clamped rectangle within the <see cref="P:CoreImage.CIFilter.Image" />.</summary>
+		/// <summary>A vector whose values define the clamped rectangle within the <see cref="CoreImage.CIFilter.Image" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[CoreImageFilterProperty ("inputExtent")]
@@ -6172,6 +7471,7 @@ namespace CoreImage {
 	[Protocol (Name = "CINinePartStretched")]
 	interface CINinePartStretchedProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -6201,6 +7501,7 @@ namespace CoreImage {
 	[Protocol (Name = "CINinePartTiled")]
 	interface CINinePartTiledProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -6261,7 +7562,7 @@ namespace CoreImage {
 		CIVector Extent { get; set; }
 	}
 
-	/// <summary>A <see cref="T:CoreImage.CIFilter" /> that generates images.</summary>
+	/// <summary>A <see cref="CoreImage.CIFilter" /> that generates images.</summary>
 	[CoreImageFilter]
 	[Abstract]
 	[MacCatalyst (13, 1)]
@@ -6274,14 +7575,14 @@ namespace CoreImage {
 		float ScaleFactor { get; set; }
 	}
 
-	/// <summary>A <see cref="T:CoreImage.CIImageGenerator" /> that generates an image from attributed text.</summary>
+	/// <summary>A <see cref="CoreImage.CIImageGenerator" /> that generates an image from attributed text.</summary>
 	[CoreImageFilter]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIImageGenerator))]
 	interface CIAttributedTextImageGenerator : CIAttributedTextImageGeneratorProtocol {
 	}
 
-	/// <summary>A <see cref="T:CoreImage.CIFilter" /> that generates barcodes.</summary>
+	/// <summary>A <see cref="CoreImage.CIFilter" /> that generates barcodes.</summary>
 	[CoreImageFilter]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIFilter))]
@@ -6346,6 +7647,7 @@ namespace CoreImage {
 	[BaseType (typeof (CIFilter))]
 	interface CIDepthBlurEffect {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[CoreImageFilterProperty ("inputImage")]
 		CIImage InputImage { get; set; }
 
@@ -6469,7 +7771,7 @@ namespace CoreImage {
 	interface CILabDeltaE : CILabDeltaEProtocol {
 	}
 
-	/// <summary>A <see cref="T:CoreImage.CIImageGenerator" /> that generates an image from text.</summary>
+	/// <summary>A <see cref="CoreImage.CIImageGenerator" /> that generates an image from text.</summary>
 	[CoreImageFilter]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIImageGenerator))]
@@ -6524,7 +7826,7 @@ namespace CoreImage {
 		// empty
 	}
 
-	/// <summary>A <see cref="T:CoreImage.CIBarcodeDescriptor" /> for QR codes.</summary>
+	/// <summary>A <see cref="CoreImage.CIBarcodeDescriptor" /> for QR codes.</summary>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIBarcodeDescriptor))]
 	interface CIQRCodeDescriptor {
@@ -6553,16 +7855,29 @@ namespace CoreImage {
 		[Export ("errorCorrectionLevel")]
 		CIQRCodeErrorCorrectionLevel ErrorCorrectionLevel { get; }
 
+		/// <param name="errorCorrectedPayload">To be added.</param>
+		/// <param name="symbolVersion">To be added.</param>
+		/// <param name="maskPattern">To be added.</param>
+		/// <param name="errorCorrectionLevel">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithPayload:symbolVersion:maskPattern:errorCorrectionLevel:")]
 		NativeHandle Constructor (NSData errorCorrectedPayload, nint symbolVersion, byte maskPattern, CIQRCodeErrorCorrectionLevel errorCorrectionLevel);
 
+		/// <param name="errorCorrectedPayload">To be added.</param>
+		/// <param name="symbolVersion">To be added.</param>
+		/// <param name="maskPattern">To be added.</param>
+		/// <param name="errorCorrectionLevel">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static]
 		[Export ("descriptorWithPayload:symbolVersion:maskPattern:errorCorrectionLevel:")]
 		[return: NullAllowed]
 		CIQRCodeDescriptor CreateDescriptor (NSData errorCorrectedPayload, nint symbolVersion, byte maskPattern, CIQRCodeErrorCorrectionLevel errorCorrectionLevel);
 	}
 
-	/// <summary>A <see cref="T:CoreImage.CIBarcodeDescriptor" /> for the Aztec barcode scheme.</summary>
+	/// <summary>A <see cref="CoreImage.CIBarcodeDescriptor" /> for the Aztec barcode scheme.</summary>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIBarcodeDescriptor))]
 	interface CIAztecCodeDescriptor {
@@ -6591,16 +7906,29 @@ namespace CoreImage {
 		[Export ("dataCodewordCount")]
 		nint DataCodewordCount { get; }
 
+		/// <param name="errorCorrectedPayload">To be added.</param>
+		/// <param name="isCompact">To be added.</param>
+		/// <param name="layerCount">To be added.</param>
+		/// <param name="dataCodewordCount">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithPayload:isCompact:layerCount:dataCodewordCount:")]
 		NativeHandle Constructor (NSData errorCorrectedPayload, bool isCompact, nint layerCount, nint dataCodewordCount);
 
+		/// <param name="errorCorrectedPayload">To be added.</param>
+		/// <param name="isCompact">To be added.</param>
+		/// <param name="layerCount">To be added.</param>
+		/// <param name="dataCodewordCount">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static]
 		[Export ("descriptorWithPayload:isCompact:layerCount:dataCodewordCount:")]
 		[return: NullAllowed]
 		CIAztecCodeDescriptor CreateDescriptor (NSData errorCorrectedPayload, bool isCompact, nint layerCount, nint dataCodewordCount);
 	}
 
-	/// <summary>A <see cref="T:CoreImage.CIBarcodeDescriptor" /> for the CIPDF417 barcode scheme.</summary>
+	/// <summary>A <see cref="CoreImage.CIBarcodeDescriptor" /> for the CIPDF417 barcode scheme.</summary>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIBarcodeDescriptor), Name = "CIPDF417CodeDescriptor")]
 	interface CIPdf417CodeDescriptor {
@@ -6629,16 +7957,29 @@ namespace CoreImage {
 		[Export ("columnCount")]
 		nint ColumnCount { get; }
 
+		/// <param name="errorCorrectedPayload">To be added.</param>
+		/// <param name="isCompact">To be added.</param>
+		/// <param name="rowCount">To be added.</param>
+		/// <param name="columnCount">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithPayload:isCompact:rowCount:columnCount:")]
 		NativeHandle Constructor (NSData errorCorrectedPayload, bool isCompact, nint rowCount, nint columnCount);
 
+		/// <param name="errorCorrectedPayload">To be added.</param>
+		/// <param name="isCompact">To be added.</param>
+		/// <param name="rowCount">To be added.</param>
+		/// <param name="columnCount">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static]
 		[Export ("descriptorWithPayload:isCompact:rowCount:columnCount:")]
 		[return: NullAllowed]
 		CIPdf417CodeDescriptor CreateDescriptor (NSData errorCorrectedPayload, bool isCompact, nint rowCount, nint columnCount);
 	}
 
-	/// <summary>A <see cref="T:CoreImage.CIBarcodeDescriptor" /> for the Data Matrix barcode scheme.</summary>
+	/// <summary>A <see cref="CoreImage.CIBarcodeDescriptor" /> for the Data Matrix barcode scheme.</summary>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIBarcodeDescriptor))]
 	interface CIDataMatrixCodeDescriptor {
@@ -6667,21 +8008,38 @@ namespace CoreImage {
 		[Export ("eccVersion")]
 		CIDataMatrixCodeEccVersion EccVersion { get; }
 
+		/// <param name="errorCorrectedPayload">To be added.</param>
+		/// <param name="rowCount">To be added.</param>
+		/// <param name="columnCount">To be added.</param>
+		/// <param name="eccVersion">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithPayload:rowCount:columnCount:eccVersion:")]
 		NativeHandle Constructor (NSData errorCorrectedPayload, nint rowCount, nint columnCount, CIDataMatrixCodeEccVersion eccVersion);
 
+		/// <param name="errorCorrectedPayload">To be added.</param>
+		/// <param name="rowCount">To be added.</param>
+		/// <param name="columnCount">To be added.</param>
+		/// <param name="eccVersion">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static]
 		[Export ("descriptorWithPayload:rowCount:columnCount:eccVersion:")]
 		[return: NullAllowed]
 		CIDataMatrixCodeDescriptor CreateDescriptor (NSData errorCorrectedPayload, nint rowCount, nint columnCount, CIDataMatrixCodeEccVersion eccVersion);
 	}
 
-	/// <summary>A <see cref="T:CoreImage.CIColorKernel" /> that blends images using the GPU.</summary>
+	/// <summary>A <see cref="CoreImage.CIColorKernel" /> that blends images using the GPU.</summary>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIColorKernel))]
 	[DisableDefaultCtor] // Handle is nil for `init`
 	interface CIBlendKernel {
 
+		/// <param name="string">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 12, 0)]
 		[Deprecated (PlatformName.TvOS, 12, 0)]
 		[Deprecated (PlatformName.MacOSX, 10, 14)]
@@ -6691,6 +8049,11 @@ namespace CoreImage {
 		[return: NullAllowed]
 		CIBlendKernel CreateKernel (string @string);
 
+		/// <param name="foreground">To be added.</param>
+		///         <param name="background">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("applyWithForeground:background:")]
 		[return: NullAllowed]
 		CIImage Apply (CIImage foreground, CIImage background);
@@ -6997,18 +8360,47 @@ namespace CoreImage {
 	[DisableDefaultCtor] // Handle is null if created thru `init`
 	interface CIRenderDestination {
 
+		/// <param name="pixelBuffer">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithPixelBuffer:")]
 		NativeHandle Constructor (CVPixelBuffer pixelBuffer);
 
+		/// <param name="surface">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithIOSurface:")]
 		NativeHandle Constructor (IOSurface.IOSurface surface);
 
+		/// <param name="texture">To be added.</param>
+		/// <param name="commandBuffer">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithMTLTexture:commandBuffer:")]
 		NativeHandle Constructor (IMTLTexture texture, [NullAllowed] IMTLCommandBuffer commandBuffer);
 
+		/// <param name="width">To be added.</param>
+		/// <param name="height">To be added.</param>
+		/// <param name="pixelFormat">To be added.</param>
+		/// <param name="commandBuffer">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="block">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithWidth:height:pixelFormat:commandBuffer:mtlTextureProvider:")]
 		NativeHandle Constructor (nuint width, nuint height, MTLPixelFormat pixelFormat, [NullAllowed] IMTLCommandBuffer commandBuffer, [NullAllowed] Func<IMTLTexture> block);
 
+		/// <param name="texture">To be added.</param>
+		/// <param name="target">To be added.</param>
+		/// <param name="width">To be added.</param>
+		/// <param name="height">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithGLTexture:target:width:height:")]
 		NativeHandle Constructor (uint texture, uint target, nuint width, nuint height);
 
@@ -7109,6 +8501,13 @@ namespace CoreImage {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // no docs, but only returned from CIContext.StartTaskToRender. Handle is null if created thru `init`
 	interface CIRenderTask {
+		/// <param name="error">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("waitUntilCompletedAndReturnError:")]
 		[return: NullAllowed]
 		CIRenderInfo WaitUntilCompleted ([NullAllowed] out NSError error);
@@ -7119,17 +8518,56 @@ namespace CoreImage {
 	[BaseType (typeof (CIContext))]
 	interface CIContext_CIRenderDestination {
 
+		/// <param name="image">To be added.</param>
+		/// <param name="fromRect">To be added.</param>
+		/// <param name="destination">To be added.</param>
+		/// <param name="atPoint">To be added.</param>
+		/// <param name="error">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("prepareRender:fromRect:toDestination:atPoint:error:")]
 		bool PrepareRender (CIImage image, CGRect fromRect, CIRenderDestination destination, CGPoint atPoint, [NullAllowed] out NSError error);
 
+		/// <param name="image">To be added.</param>
+		/// <param name="fromRect">To be added.</param>
+		/// <param name="destination">To be added.</param>
+		/// <param name="atPoint">To be added.</param>
+		/// <param name="error">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("startTaskToRender:fromRect:toDestination:atPoint:error:")]
 		[return: NullAllowed]
 		CIRenderTask StartTaskToRender (CIImage image, CGRect fromRect, CIRenderDestination destination, CGPoint atPoint, [NullAllowed] out NSError error);
 
+		/// <param name="image">To be added.</param>
+		/// <param name="destination">To be added.</param>
+		/// <param name="error">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("startTaskToRender:toDestination:error:")]
 		[return: NullAllowed]
 		CIRenderTask StartTaskToRender (CIImage image, CIRenderDestination destination, [NullAllowed] out NSError error);
 
+		/// <param name="destination">To be added.</param>
+		/// <param name="error">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("startTaskToClear:error:")]
 		[return: NullAllowed]
 		CIRenderTask StartTaskToClear (CIRenderDestination destination, [NullAllowed] out NSError error);
@@ -7298,6 +8736,7 @@ namespace CoreImage {
 	[BaseType (typeof (CIFilter))]
 	interface CIGuidedFilter {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[CoreImageFilterProperty ("inputImage")]
 		CIImage InputImage { get; set; }
 
@@ -7337,6 +8776,7 @@ namespace CoreImage {
 	[BaseType (typeof (CIFilter))]
 	interface CISampleNearest {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[CoreImageFilterProperty ("inputImage")]
 		CIImage InputImage { get; set; }
 	}
@@ -7346,6 +8786,7 @@ namespace CoreImage {
 	[BaseType (typeof (CIFilter))]
 	interface CICameraCalibrationLensCorrection {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[CoreImageFilterProperty ("inputImage")]
 		CIImage InputImage { get; set; }
 
@@ -7367,6 +8808,7 @@ namespace CoreImage {
 	[BaseType (typeof (CIFilter))]
 	interface CICoreMLModelFilter {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[CoreImageFilterProperty ("inputImage")]
 		CIImage InputImage { get; set; }
 
@@ -7593,14 +9035,21 @@ namespace CoreImage {
 	[Protocol (Name = "CITransitionFilter")]
 	interface CITransitionFilterProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
 
+		/// <summary>The image that will be displayed at the end of the transition.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[NullAllowed, Export ("targetImage", ArgumentSemantic.Retain)]
 		CIImage TargetImage { get; set; }
 
+		/// <summary>Gets or sets the current time in the transition.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("time")]
 		float Time { get; set; }
@@ -7612,15 +9061,22 @@ namespace CoreImage {
 	[Protocol (Name = "CIAccordionFoldTransition")]
 	interface CIAccordionFoldTransitionProtocol : CITransitionFilterProtocol {
 
+		/// <summary>Gets or sets the the position from which to start the accordion transition.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("bottomHeight")]
 		float BottomHeight { get; set; }
 
+		/// <summary>Gets or sets the number of folds to use in the transition.</summary>
 		[Abstract]
 		[Export ("numberOfFolds")]
 		// renamed for compatibility (originally bound as an integer)
 		float FoldCount { get; set; }
 
+		/// <summary>Gets or sets the fold shadow amount.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("foldShadowAmount")]
 		float FoldShadowAmount { get; set; }
@@ -7632,6 +9088,7 @@ namespace CoreImage {
 	[Protocol (Name = "CIAffineClamp")]
 	interface CIAffineClampProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -7647,6 +9104,7 @@ namespace CoreImage {
 	[Protocol (Name = "CIAffineTile")]
 	interface CIAffineTileProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -7688,14 +9146,19 @@ namespace CoreImage {
 		[Export ("message", ArgumentSemantic.Retain)]
 		NSData Message { get; set; }
 
+		/// <summary>Gets or sets the percentage of redundancy of the code.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("correctionLevel")]
 		float CorrectionLevel { get; set; }
 
+		/// <summary>Gets or sets the number of concentric squares to use when encoding data for the code.</summary>
 		[Abstract]
 		[Export ("layers")]
 		float InputLayers { get; set; }
 
+		/// <summary>Gets or sets whether to create compact or full-size code.</summary>
 		[Abstract]
 		[Export ("compactStyle")]
 		float InputCompactStyle { get; set; }
@@ -7737,6 +9200,7 @@ namespace CoreImage {
 	[Protocol (Name = "CIBicubicScaleTransform")]
 	interface CIBicubicScaleTransformProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -7766,6 +9230,7 @@ namespace CoreImage {
 	[Protocol (Name = "CIBlendWithMask")]
 	interface CIBlendWithMaskProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -7774,6 +9239,7 @@ namespace CoreImage {
 		[NullAllowed, Export ("backgroundImage", ArgumentSemantic.Retain)]
 		CIImage BackgroundImage { get; set; }
 
+		/// <summary>Gets or sets the mask to use for blending.</summary>
 		[Abstract]
 		[NullAllowed, Export ("maskImage", ArgumentSemantic.Retain)]
 		CIImage MaskImage { get; set; }
@@ -7785,14 +9251,21 @@ namespace CoreImage {
 	[Protocol (Name = "CIBloom")]
 	interface CIBloomProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
 
+		/// <summary>Gets or sets the radius of the center of the bloom.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("radius")]
 		float Radius { get; set; }
 
+		/// <summary>Gets or sets the intensity of the bloom.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("intensity")]
 		float Intensity { get; set; }
@@ -7804,6 +9277,7 @@ namespace CoreImage {
 	[Protocol (Name = "CIBokehBlur")]
 	interface CIBokehBlurProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -7831,10 +9305,14 @@ namespace CoreImage {
 	[Protocol (Name = "CIBoxBlur")]
 	interface CIBoxBlurProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
 
+		/// <summary>The circular extent of the filter.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("radius")]
 		float Radius { get; set; }
@@ -7846,22 +9324,35 @@ namespace CoreImage {
 	[Protocol (Name = "CICheckerboardGenerator")]
 	interface CICheckerboardGeneratorProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets the center of the checkerboard pattern.</summary>
 		[Abstract]
 		[Export ("center", ArgumentSemantic.Assign)]
 		CGPoint InputCenter { get; set; }
 
+		/// <summary>Gets or sets first square color</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("color0", ArgumentSemantic.Retain)]
 		CIColor Color0 { get; set; }
 
+		/// <summary>Gets or sets second square color</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("color1", ArgumentSemantic.Retain)]
 		CIColor Color1 { get; set; }
 
+		/// <summary>Gets or sets the length of the sides of the squares.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("width")]
 		float Width { get; set; }
 
+		/// <summary>Gets or sets the sharpness of the stripe pattern. 1 is sharp. 0 is maximally blurry.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("sharpness")]
 		float Sharpness { get; set; }
@@ -7873,6 +9364,7 @@ namespace CoreImage {
 	[Protocol (Name = "CICircularScreen")]
 	interface CICircularScreenProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -7896,6 +9388,7 @@ namespace CoreImage {
 	[Protocol (Name = "CICMYKHalftone")]
 	interface CICmykHalftoneProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -7937,6 +9430,9 @@ namespace CoreImage {
 		[Export ("message", ArgumentSemantic.Retain)]
 		NSData Message { get; set; }
 
+		/// <summary>Gets or sets the width of the quiet space in the code.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("quietSpace")]
 		float QuietSpace { get; set; }
@@ -7958,14 +9454,17 @@ namespace CoreImage {
 	[Protocol (Name = "CIColorClamp")]
 	interface CIColorClampProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
 
+		/// <summary>Gets or sets the minimum component values.</summary>
 		[Abstract]
 		[Export ("minComponents", ArgumentSemantic.Retain)]
 		CIVector MinComponents { get; set; }
 
+		/// <summary>Gets or sets the maximum component values.</summary>
 		[Abstract]
 		[Export ("maxComponents", ArgumentSemantic.Retain)]
 		CIVector MaxComponents { get; set; }
@@ -7977,18 +9476,28 @@ namespace CoreImage {
 	[Protocol (Name = "CIColorControls")]
 	interface CIColorControlsProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
 
+		/// <summary>Gets or sets the saturation of the resulting image. Values greater than 1 are more saturated than the original image.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("saturation")]
 		float Saturation { get; set; }
 
+		/// <summary>Gets or sets the brightness bias. </summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("brightness")]
 		float Brightness { get; set; }
 
+		/// <summary>Gets or sets the contrast in the resulting image.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("contrast")]
 		float Contrast { get; set; }
@@ -8000,18 +9509,28 @@ namespace CoreImage {
 	[Protocol (Name = "CIColorCrossPolynomial")]
 	interface CIColorCrossPolynomialProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
 
+		/// <summary>A ten-element vector where the first nine values are cross product weights, and the final value in a bias.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("redCoefficients", ArgumentSemantic.Retain)]
 		CIVector RedCoefficients { get; set; }
 
+		/// <summary>A ten-element vector where the first nine values are cross product weights, and the final value in a bias.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("greenCoefficients", ArgumentSemantic.Retain)]
 		CIVector GreenCoefficients { get; set; }
 
+		/// <summary>A ten-element vector where the first nine values are cross product weights, and the final value in a bias.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("blueCoefficients", ArgumentSemantic.Retain)]
 		CIVector BlueCoefficients { get; set; }
@@ -8023,14 +9542,21 @@ namespace CoreImage {
 	[Protocol (Name = "CIColorCube")]
 	interface CIColorCubeProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
 
+		/// <summary>Gets or sets the dimension of the cube data.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("cubeDimension")]
 		float CubeDimension { get; set; }
 
+		/// <summary>Gets or sets the cube data.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("cubeData", ArgumentSemantic.Retain)]
 		NSData CubeData { get; set; }
@@ -8049,6 +9575,7 @@ namespace CoreImage {
 	[Protocol (Name = "CIColorCubesMixedWithMask")]
 	interface CIColorCubesMixedWithMaskProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -8087,6 +9614,7 @@ namespace CoreImage {
 	[Protocol (Name = "CIColorCubeWithColorSpace")]
 	interface CIColorCubeWithColorSpaceProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -8099,6 +9627,9 @@ namespace CoreImage {
 		[Export ("cubeData", ArgumentSemantic.Retain)]
 		NSData CubeData { get; set; }
 
+		/// <summary>Gets or sets the color space to use.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[NullAllowed, Export ("colorSpace", ArgumentSemantic.Assign)]
 		CGColorSpace ColorSpace { get; set; }
@@ -8117,6 +9648,7 @@ namespace CoreImage {
 	[Protocol (Name = "CIColorCurves")]
 	interface CIColorCurvesProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -8140,6 +9672,7 @@ namespace CoreImage {
 	[Protocol (Name = "CIColorInvert")]
 	interface CIColorInvertProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -8151,10 +9684,14 @@ namespace CoreImage {
 	[Protocol (Name = "CIColorMap")]
 	interface CIColorMapProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
 
+		/// <summary>Gets or sets the gradient mapping image.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[NullAllowed, Export ("gradientImage", ArgumentSemantic.Retain)]
 		CIImage GradientImage { get; set; }
@@ -8166,26 +9703,42 @@ namespace CoreImage {
 	[Protocol (Name = "CIColorMatrix")]
 	interface CIColorMatrixProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
 
+		/// <summary>Weights to use to calculate the red value.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("RVector", ArgumentSemantic.Retain)]
 		CIVector RVector { get; set; }
 
+		/// <summary>Weights to use to calculate the green value.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("GVector", ArgumentSemantic.Retain)]
 		CIVector GVector { get; set; }
 
+		/// <summary>Weights to use to calculate the blue value.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("BVector", ArgumentSemantic.Retain)]
 		CIVector BVector { get; set; }
 
+		/// <summary>Weights to use to calculate the alpha value.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("AVector", ArgumentSemantic.Retain)]
 		CIVector AVector { get; set; }
 
+		/// <summary>Values to add to each component.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("biasVector", ArgumentSemantic.Retain)]
 		CIVector BiasVector { get; set; }
@@ -8197,14 +9750,21 @@ namespace CoreImage {
 	[Protocol (Name = "CIColorMonochrome")]
 	interface CIColorMonochromeProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
 
+		/// <summary>Gets or sets the monochrome color.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("color", ArgumentSemantic.Retain)]
 		CIColor Color { get; set; }
 
+		/// <summary>Gets or sets the intensity of the effect.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("intensity")]
 		float Intensity { get; set; }
@@ -8216,6 +9776,7 @@ namespace CoreImage {
 	[Protocol (Name = "CIColorPolynomial")]
 	interface CIColorPolynomialProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -8232,6 +9793,9 @@ namespace CoreImage {
 		[Export ("blueCoefficients", ArgumentSemantic.Retain)]
 		CIVector BlueCoefficients { get; set; }
 
+		/// <summary>Gets or sets the coefficients for the cubic polynomial that will be used to calculate the new alpha channel value.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("alphaCoefficients", ArgumentSemantic.Retain)]
 		CIVector AlphaCoefficients { get; set; }
@@ -8243,10 +9807,14 @@ namespace CoreImage {
 	[Protocol (Name = "CIColorPosterize")]
 	interface CIColorPosterizeProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
 
+		/// <summary>Gets or sets the single brightness level to which to shift all the color components in the image.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("levels")]
 		float Levels { get; set; }
@@ -8258,6 +9826,7 @@ namespace CoreImage {
 	[Protocol (Name = "CIComicEffect")]
 	interface CIComicEffectProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -8269,6 +9838,7 @@ namespace CoreImage {
 	[Protocol (Name = "CICompositeOperation")]
 	interface CICompositeOperationProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -8284,6 +9854,7 @@ namespace CoreImage {
 	[Protocol (Name = "CIConvolution")]
 	interface CIConvolutionProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -8330,6 +9901,7 @@ namespace CoreImage {
 	[Protocol (Name = "CICoreMLModel")]
 	interface CICoreMLModelProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -8353,14 +9925,19 @@ namespace CoreImage {
 	[Protocol (Name = "CICrystallize")]
 	interface CICrystallizeProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
 
+		/// <summary>Gets or sets the radius of the crystallization effect.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("radius")]
 		float Radius { get; set; }
 
+		/// <summary>Gets or sets the center of the crystallization pattern.</summary>
 		[Abstract]
 		[Export ("center", ArgumentSemantic.Assign)]
 		CGPoint InputCenter { get; set; }
@@ -8372,30 +9949,45 @@ namespace CoreImage {
 	[Protocol (Name = "CIDepthOfField")]
 	interface CIDepthOfFieldProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
 
+		/// <summary>Gets or sets the first endpoint of the line segment that represents the in-focus region.</summary>
 		[Abstract]
 		[Export ("point0", ArgumentSemantic.Assign)]
 		CGPoint InputPoint0 { get; set; }
 
+		/// <summary>Gets or sets the second endpoint of the line segment that represents the in-focus region.</summary>
 		[Abstract]
 		[Export ("point1", ArgumentSemantic.Assign)]
 		CGPoint InputPoint1 { get; set; }
 
+		/// <summary>Gets or sets a value that controls by how much to adjust the saturation of the in-focus region.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("saturation")]
 		float Saturation { get; set; }
 
+		/// <summary>Gets or sets the radius of the unsharp mask for the in-focus region.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("unsharpMaskRadius")]
 		float UnsharpMaskRadius { get; set; }
 
+		/// <summary>Gets or sets the intensity of the unsharp mask for the in-focus region.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("unsharpMaskIntensity")]
 		float UnsharpMaskIntensity { get; set; }
 
+		/// <summary>Gets or sets the unsharp mask radius for the out-of-focus region.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("radius")]
 		float Radius { get; set; }
@@ -8407,6 +9999,7 @@ namespace CoreImage {
 	[Protocol (Name = "CIDepthToDisparity")]
 	interface CIDepthToDisparityProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -8418,10 +10011,14 @@ namespace CoreImage {
 	[Protocol (Name = "CIDiscBlur")]
 	interface CIDiscBlurProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
 
+		/// <summary>The circular extent of the filter.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("radius")]
 		float Radius { get; set; }
@@ -8433,18 +10030,26 @@ namespace CoreImage {
 	[Protocol (Name = "CIDisintegrateWithMaskTransition")]
 	interface CIDisintegrateWithMaskTransitionProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets the mask to use for the transition.</summary>
 		[Abstract]
 		[NullAllowed, Export ("maskImage", ArgumentSemantic.Retain)]
 		CIImage MaskImage { get; set; }
 
+		/// <summary>Gets or set the shadow radius.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("shadowRadius")]
 		float ShadowRadius { get; set; }
 
+		/// <summary>Gets or sets the density of the mask shadows.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("shadowDensity")]
 		float ShadowDensity { get; set; }
 
+		/// <summary>Gets or sets the offset of the mask shadows.</summary>
 		[Abstract]
 		[Export ("shadowOffset", ArgumentSemantic.Assign)]
 		CGPoint InputShadowOffset { get; set; }
@@ -8456,6 +10061,7 @@ namespace CoreImage {
 	[Protocol (Name = "CIDisparityToDepth")]
 	interface CIDisparityToDepthProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -8474,6 +10080,7 @@ namespace CoreImage {
 	[Protocol (Name = "CIDither")]
 	interface CIDitherProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -8489,6 +10096,7 @@ namespace CoreImage {
 	[Protocol (Name = "CIDocumentEnhancer")]
 	interface CIDocumentEnhancerProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -8504,6 +10112,7 @@ namespace CoreImage {
 	[Protocol (Name = "CIDotScreen")]
 	interface CIDotScreenProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -8512,6 +10121,9 @@ namespace CoreImage {
 		[Export ("center", ArgumentSemantic.Assign)]
 		CGPoint InputCenter { get; set; }
 
+		/// <summary>Gets or sets the angle, in degrees, of the dot screen.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("angle")]
 		float Angle { get; set; }
@@ -8531,6 +10143,7 @@ namespace CoreImage {
 	[Protocol (Name = "CIEdgePreserveUpsample")]
 	interface CIEdgePreserveUpsampleProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -8554,10 +10167,14 @@ namespace CoreImage {
 	[Protocol (Name = "CIEdges")]
 	interface CIEdgesProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
 
+		/// <summary>The input intensity. Higher values detect more edges.</summary>
+		/// <value>The default value is 1.0                                                                                                 .</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("intensity")]
 		float Intensity { get; set; }
@@ -8569,10 +10186,14 @@ namespace CoreImage {
 	[Protocol (Name = "CIEdgeWork")]
 	interface CIEdgeWorkProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
 
+		/// <summary>The circular extent of the filter.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("radius")]
 		float Radius { get; set; }
@@ -8584,6 +10205,7 @@ namespace CoreImage {
 	[Protocol (Name = "CIEightfoldReflectedTile")]
 	interface CIEightfoldReflectedTileProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -8607,10 +10229,14 @@ namespace CoreImage {
 	[Protocol (Name = "CIExposureAdjust")]
 	interface CIExposureAdjustProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
 
+		/// <summary>Gets or sets the desired exposure.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("EV")]
 		float EV { get; set; }
@@ -8622,14 +10248,21 @@ namespace CoreImage {
 	[Protocol (Name = "CIFalseColor")]
 	interface CIFalseColorProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
 
+		/// <summary>Gets or sets the color that will be used for pixels of low luminance.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("color0", ArgumentSemantic.Retain)]
 		CIColor Color0 { get; set; }
 
+		/// <summary>Gets or sets the color that will be used for pixels of high luminance</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("color1", ArgumentSemantic.Retain)]
 		CIColor Color1 { get; set; }
@@ -8641,30 +10274,43 @@ namespace CoreImage {
 	[Protocol (Name = "CIFlashTransition")]
 	interface CIFlashTransitionProtocol : CITransitionFilterProtocol {
 
+		/// <summary>Gets or set the center of the flash.</summary>
 		[Abstract]
 		[Export ("center", ArgumentSemantic.Assign)]
 		CGPoint InputCenter { get; set; }
 
+		/// <summary>Gets or sets a vector of the form (x,y,w,h) that represents the rectangular extent of the flash.</summary>
 		[Abstract]
 		[Export ("extent", ArgumentSemantic.Assign)]
 		CGRect InputExtent { get; set; }
 
+		/// <summary>Gets or sets the color of the flash.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("color", ArgumentSemantic.Retain)]
 		CIColor Color { get; set; }
 
+		/// <summary>Gets or sets the maximum radius of the flash effect.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("maxStriationRadius")]
 		float MaxStriationRadius { get; set; }
 
+		/// <summary>Gets or sets the strength of the striations in the flash.</summary>
 		[Abstract]
 		[Export ("striationStrength")]
 		float StriationStrength { get; set; }
 
+		/// <summary>Gets or sets the striation contrast.</summary>
 		[Abstract]
 		[Export ("striationContrast")]
 		float StriationContrast { get; set; }
 
+		/// <summary>Gets or sets the threshold at which the flash starts or stops appearing.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("fadeThreshold")]
 		float FadeThreshold { get; set; }
@@ -8676,6 +10322,7 @@ namespace CoreImage {
 	[Protocol (Name = "CIFourCoordinateGeometryFilter")]
 	interface CIFourCoordinateGeometryFilterProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -8703,6 +10350,7 @@ namespace CoreImage {
 	[Protocol (Name = "CIFourfoldReflectedTile")]
 	interface CIFourfoldReflectedTileProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -8719,6 +10367,9 @@ namespace CoreImage {
 		[Export ("width")]
 		float Width { get; set; }
 
+		/// <summary>Gets or sets the skew, in degrees, of the tiles in the pattern.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("acuteAngle")]
 		float AcuteAngle { get; set; }
@@ -8730,6 +10381,7 @@ namespace CoreImage {
 	[Protocol (Name = "CIFourfoldRotatedTile")]
 	interface CIFourfoldRotatedTileProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -8753,6 +10405,7 @@ namespace CoreImage {
 	[Protocol (Name = "CIFourfoldTranslatedTile")]
 	interface CIFourfoldTranslatedTileProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -8769,6 +10422,9 @@ namespace CoreImage {
 		[Export ("width")]
 		float Width { get; set; }
 
+		/// <summary>Gets or sets the skew, in degrees, of the tiles in the pattern.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("acuteAngle")]
 		float AcuteAngle { get; set; }
@@ -8780,6 +10436,7 @@ namespace CoreImage {
 	[Protocol (Name = "CIGaborGradients")]
 	interface CIGaborGradientsProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -8791,10 +10448,14 @@ namespace CoreImage {
 	[Protocol (Name = "CIGammaAdjust")]
 	interface CIGammaAdjustProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
 
+		/// <summary>Gets or sets the exponent for the gamma curve.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("power")]
 		float Power { get; set; }
@@ -8806,10 +10467,14 @@ namespace CoreImage {
 	[Protocol (Name = "CIGaussianBlur")]
 	interface CIGaussianBlurProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
 
+		/// <summary>Gets or sets the radius of the blurring effect.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("radius")]
 		float Radius { get; set; }
@@ -8821,18 +10486,28 @@ namespace CoreImage {
 	[Protocol (Name = "CIGaussianGradient")]
 	interface CIGaussianGradientProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets the center of the gradient.</summary>
 		[Abstract]
 		[Export ("center", ArgumentSemantic.Assign)]
 		CGPoint InputCenter { get; set; }
 
+		/// <summary>Gets or sets the color at the center of the gradient.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("color0", ArgumentSemantic.Retain)]
 		CIColor Color0 { get; set; }
 
+		/// <summary>Gets or sets the color at the edge and beyond of the gradient.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("color1", ArgumentSemantic.Retain)]
 		CIColor Color1 { get; set; }
 
+		/// <summary>Gets or sets the radius of the gradient.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("radius")]
 		float Radius { get; set; }
@@ -8844,6 +10519,7 @@ namespace CoreImage {
 	[Protocol (Name = "CIGlideReflectedTile")]
 	interface CIGlideReflectedTileProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -8867,14 +10543,21 @@ namespace CoreImage {
 	[Protocol (Name = "CIGloom")]
 	interface CIGloomProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
 
+		/// <summary>Gets or sets the radius of highlights to darken.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("radius")]
 		float Radius { get; set; }
 
+		/// <summary>Gets or sets the severity of the gloom.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("intensity")]
 		float Intensity { get; set; }
@@ -8886,6 +10569,7 @@ namespace CoreImage {
 	[Protocol (Name = "CIHatchedScreen")]
 	interface CIHatchedScreenProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -8894,6 +10578,9 @@ namespace CoreImage {
 		[Export ("center", ArgumentSemantic.Assign)]
 		CGPoint InputCenter { get; set; }
 
+		/// <summary>Gets or sets the angle of the hatch pattern.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("angle")]
 		float Angle { get; set; }
@@ -8913,10 +10600,14 @@ namespace CoreImage {
 	[Protocol (Name = "CIHeightFieldFromMask")]
 	interface CIHeightFieldFromMaskProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
 
+		/// <summary>The circular extent of the filter.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("radius")]
 		float Radius { get; set; }
@@ -8928,14 +10619,19 @@ namespace CoreImage {
 	[Protocol (Name = "CIHexagonalPixellate")]
 	interface CIHexagonalPixellateProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
 
+		/// <summary>Gets or sets the center of the hexagonal pixel pattern.</summary>
 		[Abstract]
 		[Export ("center", ArgumentSemantic.Assign)]
 		CGPoint InputCenter { get; set; }
 
+		/// <summary>Gets or sets the size of the individual pixel cells.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("scale")]
 		float Scale { get; set; }
@@ -8947,18 +10643,28 @@ namespace CoreImage {
 	[Protocol (Name = "CIHighlightShadowAdjust")]
 	interface CIHighlightShadowAdjustProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
 
+		/// <summary>The circular extent of the filter.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("radius")]
 		float Radius { get; set; }
 
+		/// <summary>Gets or sets a value in the range [0,1] that contols by how much to brighten shaded areas.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("shadowAmount")]
 		float ShadowAmount { get; set; }
 
+		/// <summary>Gets or sets a value in the range [0,1] that contols by how much to dampen highlights.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("highlightAmount")]
 		float HighlightAmount { get; set; }
@@ -8970,10 +10676,14 @@ namespace CoreImage {
 	[Protocol (Name = "CIHueAdjust")]
 	interface CIHueAdjustProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
 
+		/// <summary>The amount, in degrees, by which to rotate the color cube about the neutral axis.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("angle")]
 		float Angle { get; set; }
@@ -8989,6 +10699,9 @@ namespace CoreImage {
 		[Export ("value")]
 		float Value { get; set; }
 
+		/// <summary>The circular extent of the filter.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("radius")]
 		float Radius { get; set; }
@@ -9012,18 +10725,24 @@ namespace CoreImage {
 	[Protocol (Name = "CIKaleidoscope")]
 	interface CIKaleidoscopeProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
 
+		/// <summary>Gets or sets the number of sections in the kaleidoscope.</summary>
 		[Abstract]
 		[Export ("count")]
 		nint InputCount { get; set; }
 
+		/// <summary>Gets or sets the center of the kaleidoscope.</summary>
 		[Abstract]
 		[Export ("center", ArgumentSemantic.Assign)]
 		CGPoint InputCenter { get; set; }
 
+		/// <summary>Gets or sets the kaleidoscope angle.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("angle")]
 		float Angle { get; set; }
@@ -9068,6 +10787,7 @@ namespace CoreImage {
 	[Protocol (Name = "CILabDeltaE")]
 	interface CILabDeltaEProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -9083,14 +10803,21 @@ namespace CoreImage {
 	[Protocol (Name = "CILanczosScaleTransform")]
 	interface CILanczosScaleTransformProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
 
+		/// <summary>Gets or sets the size of the transformed image, relative to the source.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("scale")]
 		float Scale { get; set; }
 
+		/// <summary>Gets or sets the aspect ratio of the transformed image, relative to the source.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("aspectRatio")]
 		float AspectRatio { get; set; }
@@ -9102,34 +10829,56 @@ namespace CoreImage {
 	[Protocol (Name = "CILenticularHaloGenerator")]
 	interface CILenticularHaloGeneratorProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets the center of the flare effect.</summary>
 		[Abstract]
 		[Export ("center", ArgumentSemantic.Assign)]
 		CGPoint InputCenter { get; set; }
 
+		/// <summary>Gets or sets the color of the red, green, and blue halos in  the flare effect.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("color", ArgumentSemantic.Retain)]
 		CIColor Color { get; set; }
 
+		/// <summary>Gets or sets the radius to the middle of the flare band.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("haloRadius")]
 		float HaloRadius { get; set; }
 
+		/// <summary>Gets or sets the distance between the inner and outer bands of the flare.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("haloWidth")]
 		float HaloWidth { get; set; }
 
+		/// <summary>Gets or sets a value that controls by how much the red, green, and blue halos overlap. 1 overlaps completely. The default is 0.77.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("haloOverlap")]
 		float HaloOverlap { get; set; }
 
+		/// <summary>Gets or sets the brightness of the striations of the flare.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("striationStrength")]
 		float StriationStrength { get; set; }
 
+		/// <summary>Gets or sets the contrast of the striations of the flare.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("striationContrast")]
 		float StriationContrast { get; set; }
 
+		/// <summary>Gets or sets a value that controls the shimmer of the flare over time. Default is 0.0.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("time")]
 		float Time { get; set; }
@@ -9141,18 +10890,26 @@ namespace CoreImage {
 	[Protocol (Name = "CILinearGradient")]
 	interface CILinearGradientProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets the first point.</summary>
 		[Abstract]
 		[Export ("point0", ArgumentSemantic.Assign)]
 		CGPoint InputPoint0 { get; set; }
 
+		/// <summary>Gets or sets the second point.</summary>
 		[Abstract]
 		[Export ("point1", ArgumentSemantic.Assign)]
 		CGPoint InputPoint1 { get; set; }
 
+		/// <summary>Gets or sets the color at <see cref="CoreImage.CILinearGradient.Point0" />.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("color0", ArgumentSemantic.Retain)]
 		CIColor Color0 { get; set; }
 
+		/// <summary>Gets or sets the color at <see cref="CoreImage.CILinearGradient.Point1" />.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("color1", ArgumentSemantic.Retain)]
 		CIColor Color1 { get; set; }
@@ -9164,6 +10921,7 @@ namespace CoreImage {
 	[Protocol (Name = "CILinearToSRGBToneCurve")]
 	interface CILinearToSrgbToneCurveProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -9175,26 +10933,42 @@ namespace CoreImage {
 	[Protocol (Name = "CILineOverlay")]
 	interface CILineOverlayProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
 
+		/// <summary>Gets or sets the input noise level to use when reducing noise before applying the line overlay filter.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("NRNoiseLevel")]
 		float NRNoiseLevel { get; set; }
 
+		/// <summary>Gets or sets the input sharpnsee to use when applying the line overlay filter.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("NRSharpness")]
 		float NRSharpness { get; set; }
 
+		/// <summary>Gets or sets the edge intensity to use when drawing the overlay.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("edgeIntensity")]
 		float EdgeIntensity { get; set; }
 
+		/// <summary>Gets or sets the line overlay threshold..</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("threshold")]
 		float Threshold { get; set; }
 
+		/// <summary>Gets or sets the contrast of the line overlay.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("contrast")]
 		float Contrast { get; set; }
@@ -9206,6 +10980,7 @@ namespace CoreImage {
 	[Protocol (Name = "CILineScreen")]
 	interface CILineScreenProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -9214,6 +10989,9 @@ namespace CoreImage {
 		[Export ("center", ArgumentSemantic.Assign)]
 		CGPoint InputCenter { get; set; }
 
+		/// <summary>Gets or sets the angle, in degrees, of the line pattern. 0 is vertical.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("angle")]
 		float Angle { get; set; }
@@ -9233,6 +11011,7 @@ namespace CoreImage {
 	[Protocol (Name = "CIMaskedVariableBlur")]
 	interface CIMaskedVariableBlurProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -9241,6 +11020,9 @@ namespace CoreImage {
 		[NullAllowed, Export ("mask", ArgumentSemantic.Retain)]
 		CIImage Mask { get; set; }
 
+		/// <summary>The circular extent of the filter.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("radius")]
 		float Radius { get; set; }
@@ -9252,6 +11034,7 @@ namespace CoreImage {
 	[Protocol (Name = "CIMaskToAlpha")]
 	interface CIMaskToAlphaProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -9263,6 +11046,7 @@ namespace CoreImage {
 	[Protocol (Name = "CIMaximumComponent")]
 	interface CIMaximumComponentProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -9274,6 +11058,7 @@ namespace CoreImage {
 	[Protocol (Name = "CIMedian")]
 	interface CIMedianProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -9304,6 +11089,7 @@ namespace CoreImage {
 	[Protocol (Name = "CIMinimumComponent")]
 	interface CIMinimumComponentProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -9315,6 +11101,7 @@ namespace CoreImage {
 	[Protocol (Name = "CIMix")]
 	interface CIMixProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -9334,18 +11121,28 @@ namespace CoreImage {
 	[Protocol (Name = "CIModTransition")]
 	interface CIModTransitionProtocol : CITransitionFilterProtocol {
 
+		/// <summary>Gets or sets the center of the mod transition.</summary>
 		[Abstract]
 		[Export ("center", ArgumentSemantic.Assign)]
 		CGPoint InputCenter { get; set; }
 
+		/// <summary>Gets or sets the angle of the mod transition.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("angle")]
 		float Angle { get; set; }
 
+		/// <summary>Gets or sets the radius of the mod transition.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("radius")]
 		float Radius { get; set; }
 
+		/// <summary>Gets or sets the compression.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("compression")]
 		float Compression { get; set; }
@@ -9357,6 +11154,7 @@ namespace CoreImage {
 	[Protocol (Name = "CIMorphologyGradient")]
 	interface CIMorphologyGradientProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -9372,6 +11170,7 @@ namespace CoreImage {
 	[Protocol (Name = "CIMorphologyMaximum")]
 	interface CIMorphologyMaximumProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -9387,6 +11186,7 @@ namespace CoreImage {
 	[Protocol (Name = "CIMorphologyMinimum")]
 	interface CIMorphologyMinimumProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -9402,6 +11202,7 @@ namespace CoreImage {
 	[Protocol (Name = "CIMorphologyRectangleMaximum")]
 	interface CIMorphologyRectangleMaximumProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -9421,6 +11222,7 @@ namespace CoreImage {
 	[Protocol (Name = "CIMorphologyRectangleMinimum")]
 	interface CIMorphologyRectangleMinimumProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -9440,6 +11242,7 @@ namespace CoreImage {
 	[Protocol (Name = "CIMotionBlur")]
 	interface CIMotionBlurProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -9448,6 +11251,9 @@ namespace CoreImage {
 		[Export ("radius")]
 		float Radius { get; set; }
 
+		/// <summary>Gets or sets the angle of the motion blur.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("angle")]
 		float Angle { get; set; }
@@ -9459,14 +11265,21 @@ namespace CoreImage {
 	[Protocol (Name = "CINoiseReduction")]
 	interface CINoiseReductionProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
 
+		/// <summary>Gets or sets the input noise level.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("noiseLevel")]
 		float NoiseLevel { get; set; }
 
+		/// <summary>Gets or sets the input sharpness.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("sharpness")]
 		float Sharpness { get; set; }
@@ -9478,6 +11291,7 @@ namespace CoreImage {
 	[Protocol (Name = "CIOpTile")]
 	interface CIOpTileProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -9486,6 +11300,9 @@ namespace CoreImage {
 		[Export ("center", ArgumentSemantic.Assign)]
 		CGPoint InputCenter { get; set; }
 
+		/// <summary>Gets or sets the scale factor for the tile effect.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("scale")]
 		float Scale { get; set; }
@@ -9505,22 +11322,35 @@ namespace CoreImage {
 	[Protocol (Name = "CIPageCurlTransition")]
 	interface CIPageCurlTransitionProtocol : CITransitionFilterProtocol {
 
+		/// <summary>Gets or sets the image that appears on the back side of the peeled page.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[NullAllowed, Export ("backsideImage", ArgumentSemantic.Retain)]
 		CIImage BacksideImage { get; set; }
 
+		/// <summary>Gets or sets the image to use for shading.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[NullAllowed, Export ("shadingImage", ArgumentSemantic.Retain)]
 		CIImage ShadingImage { get; set; }
 
+		/// <summary>Gets or sets the extent of the target image to display.</summary>
 		[Abstract]
 		[Export ("extent", ArgumentSemantic.Assign)]
 		CGRect InputExtent { get; set; }
 
+		/// <summary>Gets or sets the angle of the page transition.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("angle")]
 		float Angle { get; set; }
 
+		/// <summary>Gets or sets a value that controls the radius of the curl.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("radius")]
 		float Radius { get; set; }
@@ -9532,30 +11362,47 @@ namespace CoreImage {
 	[Protocol (Name = "CIPageCurlWithShadowTransition")]
 	interface CIPageCurlWithShadowTransitionProtocol : CITransitionFilterProtocol {
 
+		/// <summary>Gets or sets the image that appears on the back side of the peeled page</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[NullAllowed, Export ("backsideImage", ArgumentSemantic.Retain)]
 		CIImage BacksideImage { get; set; }
 
+		/// <summary>Gets or sets the extent of the target image to display.</summary>
 		[Abstract]
 		[Export ("extent", ArgumentSemantic.Assign)]
 		CGRect InputExtent { get; set; }
 
+		/// <summary>Gets or sets the angle of the page transition.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("angle")]
 		float Angle { get; set; }
 
+		/// <summary>Gets or sets a value that controls the radius of the curl.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("radius")]
 		float Radius { get; set; }
 
+		/// <summary>Gets or sets the size of the shadow effect.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("shadowSize")]
 		float ShadowSize { get; set; }
 
+		/// <summary>Gets or sets the darkness of the shadow effect.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("shadowAmount")]
 		float ShadowAmount { get; set; }
 
+		/// <summary>Gets or sets the extent of the target image to shade.</summary>
 		[Abstract]
 		[Export ("shadowExtent", ArgumentSemantic.Assign)]
 		CGRect InputShadowExtent { get; set; }
@@ -9567,6 +11414,7 @@ namespace CoreImage {
 	[Protocol (Name = "CIPaletteCentroid")]
 	interface CIPaletteCentroidProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -9586,6 +11434,7 @@ namespace CoreImage {
 	[Protocol (Name = "CIPalettize")]
 	interface CIPalettizeProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -9605,6 +11454,7 @@ namespace CoreImage {
 	[Protocol (Name = "CIParallelogramTile")]
 	interface CIParallelogramTileProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -9617,6 +11467,9 @@ namespace CoreImage {
 		[Export ("angle")]
 		float Angle { get; set; }
 
+		/// <summary>Gets or sets the angle of the most acute corners of the parallelograms in the tile pattern.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("acuteAngle")]
 		float AcuteAngle { get; set; }
@@ -9636,46 +11489,71 @@ namespace CoreImage {
 		[Export ("message", ArgumentSemantic.Retain)]
 		NSData Message { get; set; }
 
+		/// <summary>Gets or sets the minimum width of the data area, in pixels.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("minWidth")]
 		float MinWidth { get; set; }
 
+		/// <summary>Gets or sets the maximum width of the data area, in pixels.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("maxWidth")]
 		float MaxWidth { get; set; }
 
+		/// <summary>Gets or sets the minimum height of the data area, in pixels.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("minHeight")]
 		float MinHeight { get; set; }
 
+		/// <summary>Gets or sets the maximum height of the data area, in pixels.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("maxHeight")]
 		float MaxHeight { get; set; }
 
+		/// <summary>Gets or sets an integer value in the range [0,8] that controls how much error correction data to include in the code.</summary>
 		[Abstract]
 		[Export ("dataColumns")]
 		float InputDataColumns { get; set; }
 
+		/// <summary>Gets or sets the number of rows in the code. <c>0</c> causes the number of rows to be chosen based on the barcode extents.</summary>
 		[Abstract]
 		[Export ("rows")]
 		float InputRows { get; set; }
 
+		/// <summary>Gets or sets the preferred aspect ratio of the generated code.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("preferredAspectRatio")]
 		float PreferredAspectRatio { get; set; }
 
+
+		/// <summary>Gets or sets a value that controls how the data are compressed in the resulting code.</summary>
+		/// <remarks>
+		///   <c>0</c> indicates that the compression mode should be determined by the data type. <c>1</c> indicates that the data represent ASCII digits. <c>2</c> indicates that the data is ASCII text, numbers, and punctuation. <c>3</c> indicates that the data are in an unspecified format; The least compact compression scheme will be used.
+		/// </remarks>
 		[Abstract]
 		[Export ("compactionMode")]
 		float InputCompactionMode { get; set; }
 
+		/// <summary>Gets or sets an integer with Boolean semantics that controls whether redunant elements should be omitted to save space. <c>1</c> is true. <c>0</c> is false.</summary>
 		[Abstract]
 		[Export ("compactStyle")]
 		float InputCompactStyle { get; set; }
 
+		/// <summary>Gets or sets an integer value in the range [0,8] that controls how much error correction data to include in the code.</summary>
 		[Abstract]
 		[Export ("correctionLevel")]
 		float InputCorrectionLevel { get; set; }
 
+		/// <summary>If <see langword="true" />, the barcode will contain compaction information, even if that information is redundant.</summary>
 		[Abstract]
 		[Export ("alwaysSpecifyCompaction")]
 		float InputAlwaysSpecifyCompaction { get; set; }
@@ -9701,6 +11579,7 @@ namespace CoreImage {
 	[Protocol (Name = "CIPerspectiveRotate")]
 	interface CIPerspectiveRotateProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -9728,22 +11607,27 @@ namespace CoreImage {
 	[Protocol (Name = "CIPerspectiveTile")]
 	interface CIPerspectiveTileProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
 
+		/// <summary>Gets or sets location of the top left corner of the source image in the output.</summary>
 		[Abstract]
 		[Export ("topLeft", ArgumentSemantic.Assign)]
 		CGPoint InputTopLeft { get; set; }
 
+		/// <summary>Gets or sets location of the top right corner of the source image in the output.</summary>
 		[Abstract]
 		[Export ("topRight", ArgumentSemantic.Assign)]
 		CGPoint InputTopRight { get; set; }
 
+		/// <summary>Gets or sets location of the bottom right corner of the source image in the output.</summary>
 		[Abstract]
 		[Export ("bottomRight", ArgumentSemantic.Assign)]
 		CGPoint InputBottomRight { get; set; }
 
+		/// <summary>Gets or sets location of the bottom left corner of the source image in the output.</summary>
 		[Abstract]
 		[Export ("bottomLeft", ArgumentSemantic.Assign)]
 		CGPoint InputBottomLeft { get; set; }
@@ -9762,6 +11646,7 @@ namespace CoreImage {
 	[Protocol (Name = "CIPerspectiveTransformWithExtent")]
 	interface CIPerspectiveTransformWithExtentProtocol : CIFourCoordinateGeometryFilterProtocol {
 
+		/// <summary>Gets or sets the region in the source image to transform into the target image.</summary>
 		[Abstract]
 		[Export ("extent", ArgumentSemantic.Assign)]
 		CGRect InputExtent { get; set; }
@@ -9773,6 +11658,7 @@ namespace CoreImage {
 	[Protocol (Name = "CIPhotoEffect")]
 	interface CIPhotoEffectProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -9791,14 +11677,19 @@ namespace CoreImage {
 	[Protocol (Name = "CIPixellate")]
 	interface CIPixellateProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
 
+		/// <summary>Gets or sets the center of the pixellation.</summary>
 		[Abstract]
 		[Export ("center", ArgumentSemantic.Assign)]
 		CGPoint InputCenter { get; set; }
 
+		/// <summary>Gets or sets the size of the pixels to create.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("scale")]
 		float Scale { get; set; }
@@ -9810,14 +11701,19 @@ namespace CoreImage {
 	[Protocol (Name = "CIPointillize")]
 	interface CIPointillizeProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
 
+		/// <summary>Gets or sets the radius of the points in the pattern.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("radius")]
 		float Radius { get; set; }
 
+		/// <summary>Gets or sets the center of the pointillization.</summary>
 		[Abstract]
 		[Export ("center", ArgumentSemantic.Assign)]
 		CGPoint InputCenter { get; set; }
@@ -9833,6 +11729,9 @@ namespace CoreImage {
 		[Export ("message", ArgumentSemantic.Retain)]
 		NSData Message { get; set; }
 
+		/// <summary>Gets or sets the error correction level.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("correctionLevel", ArgumentSemantic.Retain)]
 		string CorrectionLevel { get; set; }
@@ -9844,22 +11743,35 @@ namespace CoreImage {
 	[Protocol (Name = "CIRadialGradient")]
 	interface CIRadialGradientProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets the center of the gradient.</summary>
 		[Abstract]
 		[Export ("center", ArgumentSemantic.Assign)]
 		CGPoint InputCenter { get; set; }
 
+		/// <summary>Gets or sets the first radius of the gradient.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>Application developers can set either of the two radii to be the larger. Swapping radii is equivalent to swapping colors.</remarks>
 		[Abstract]
 		[Export ("radius0")]
 		float Radius0 { get; set; }
 
+		/// <summary>Gets or sets the second radius of the gradient.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>Application developers can set either of the two radii to be the larger. Swapping radii is equivalent to swapping colors.</remarks>
 		[Abstract]
 		[Export ("radius1")]
 		float Radius1 { get; set; }
 
+		/// <summary>Gets or sets the color at the <see cref="CoreImage.CIColor.Radius0" /> location in the gradient.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("color0", ArgumentSemantic.Retain)]
 		CIColor Color0 { get; set; }
 
+		/// <summary>Gets or sets the color at the <see cref="CoreImage.CIColor.Radius1" /> location in the gradient.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("color1", ArgumentSemantic.Retain)]
 		CIColor Color1 { get; set; }
@@ -9878,22 +11790,33 @@ namespace CoreImage {
 	[Protocol (Name = "CIRippleTransition")]
 	interface CIRippleTransitionProtocol : CITransitionFilterProtocol {
 
+		/// <summary>Gets or sets the shading map to use for shading the transition effect.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[NullAllowed, Export ("shadingImage", ArgumentSemantic.Retain)]
 		CIImage ShadingImage { get; set; }
 
+		/// <summary>Gets or sets the center of the transition.</summary>
 		[Abstract]
 		[Export ("center", ArgumentSemantic.Assign)]
 		CGPoint InputCenter { get; set; }
 
+		/// <summary>Gets or sets the extent over which to apply the transition.</summary>
 		[Abstract]
 		[Export ("extent", ArgumentSemantic.Assign)]
 		CGRect InputExtent { get; set; }
 
+		/// <summary>Gets or sets the width of the ripple wave.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("width")]
 		float Width { get; set; }
 
+		/// <summary>Gets or sets the intensity of the ripple effect. Default is 100</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("scale")]
 		float Scale { get; set; }
@@ -9924,6 +11847,7 @@ namespace CoreImage {
 	[Protocol (Name = "CISaliencyMap")]
 	interface CISaliencyMapProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		[CoreImageFilterProperty ("inputImage")]
@@ -9936,10 +11860,14 @@ namespace CoreImage {
 	[Protocol (Name = "CISepiaTone")]
 	interface CISepiaToneProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
 
+		/// <summary>Gets or sets a value in the range (0,...) that controls the intensity of the sepia filter.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("intensity")]
 		float Intensity { get; set; }
@@ -9951,14 +11879,21 @@ namespace CoreImage {
 	[Protocol (Name = "CIShadedMaterial")]
 	interface CIShadedMaterialProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
 
+		/// <summary>Gets or sets the height field to use for shading.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[NullAllowed, Export ("shadingImage", ArgumentSemantic.Retain)]
 		CIImage ShadingImage { get; set; }
 
+		/// <summary>Gets or sets a multiplier for the height field.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("scale")]
 		float Scale { get; set; }
@@ -9970,10 +11905,14 @@ namespace CoreImage {
 	[Protocol (Name = "CISharpenLuminance")]
 	interface CISharpenLuminanceProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
 
+		/// <summary>Gets or sets the amount by which to sharpen.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("sharpness")]
 		float Sharpness { get; set; }
@@ -9992,6 +11931,7 @@ namespace CoreImage {
 	[Protocol (Name = "CISixfoldReflectedTile")]
 	interface CISixfoldReflectedTileProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -10015,6 +11955,7 @@ namespace CoreImage {
 	[Protocol (Name = "CISixfoldRotatedTile")]
 	interface CISixfoldRotatedTileProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -10037,18 +11978,26 @@ namespace CoreImage {
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CISmoothLinearGradient")]
 	interface CISmoothLinearGradientProtocol : CIFilterProtocol {
+		/// <summary>The point associated with <see cref="Color0" /></summary>
 		[Abstract]
 		[Export ("point0", ArgumentSemantic.Assign)]
 		CGPoint InputPoint0 { get; set; }
 
+		/// <summary>The point associated with <see cref="Color1" /></summary>
 		[Abstract]
 		[Export ("point1", ArgumentSemantic.Assign)]
 		CGPoint InputPoint1 { get; set; }
 
+		/// <summary>The color associated with <see cref="InputPoint0" />.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("color0", ArgumentSemantic.Retain)]
 		CIColor Color0 { get; set; }
 
+		/// <summary>The color associated with <see cref="InputPoint1" /></summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("color1", ArgumentSemantic.Retain)]
 		CIColor Color1 { get; set; }
@@ -10060,54 +12009,91 @@ namespace CoreImage {
 	[Protocol (Name = "CISpotColor")]
 	interface CISpotColorProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
 
+		/// <summary>Gets or sets the center of the first color range.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("centerColor1", ArgumentSemantic.Retain)]
 		CIColor CenterColor1 { get; set; }
 
+		/// <summary>Gets or sets the first replacement color.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("replacementColor1", ArgumentSemantic.Retain)]
 		CIColor ReplacementColor1 { get; set; }
 
+		/// <summary>Gets or sets the width about the center of the first color range.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("closeness1")]
 		float Closeness1 { get; set; }
 
+		/// <summary>Gets or sets the contrast of the first color range.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("contrast1")]
 		float Contrast1 { get; set; }
 
+		/// <summary>Gets or sets the center of the second color range.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("centerColor2", ArgumentSemantic.Retain)]
 		CIColor CenterColor2 { get; set; }
 
+		/// <summary>Gets or sets the second replacement color.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("replacementColor2", ArgumentSemantic.Retain)]
 		CIColor ReplacementColor2 { get; set; }
 
+		/// <summary>Gets or sets the width about the center of the second color range.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("closeness2")]
 		float Closeness2 { get; set; }
 
+		/// <summary>Gets or sets the contrast of the second color range.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("contrast2")]
 		float Contrast2 { get; set; }
 
+		/// <summary>Gets or sets the center of the third color range.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("centerColor3", ArgumentSemantic.Retain)]
 		CIColor CenterColor3 { get; set; }
 
+		/// <summary>Gets or sets the third replacement color.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("replacementColor3", ArgumentSemantic.Retain)]
 		CIColor ReplacementColor3 { get; set; }
 
+		/// <summary>Gets or sets the width about the center of the third color range.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("closeness3")]
 		float Closeness3 { get; set; }
 
+		/// <summary>Gets or sets the contrast of the third color range.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("contrast3")]
 		float Contrast3 { get; set; }
@@ -10119,26 +12105,42 @@ namespace CoreImage {
 	[Protocol (Name = "CISpotLight")]
 	interface CISpotLightProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
 
+		/// <summary>Gets or sets the 3-dimensional point in image coordinates from which the spotlight shines.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("lightPosition", ArgumentSemantic.Retain)]
 		CIVector LightPosition { get; set; }
 
+		/// <summary>Gets or sets the 3-dimensional point in image coordinates at which the spotlight points.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("lightPointsAt", ArgumentSemantic.Retain)]
 		CIVector LightPointsAt { get; set; }
 
+		/// <summary>Gets or sets the brightness of the spotlight.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("brightness")]
 		float Brightness { get; set; }
 
+		/// <summary>Gets or sets a value that controls how tightly the spotlight beam is focused.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("concentration")]
 		float Concentration { get; set; }
 
+		/// <summary>Gets or sets the color of the spotlight.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("color", ArgumentSemantic.Retain)]
 		CIColor Color { get; set; }
@@ -10150,6 +12152,7 @@ namespace CoreImage {
 	[Protocol (Name = "CISRGBToneCurveToLinear")]
 	interface CISrgbToneCurveToLinearProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -10161,34 +12164,56 @@ namespace CoreImage {
 	[Protocol (Name = "CIStarShineGenerator")]
 	interface CIStarShineGeneratorProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets the center of the star shine effect.</summary>
 		[Abstract]
 		[Export ("center", ArgumentSemantic.Assign)]
 		CGPoint InputCenter { get; set; }
 
+		/// <summary>Gets or sets the color of the star shine filter.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("color", ArgumentSemantic.Retain)]
 		CIColor Color { get; set; }
 
+		/// <summary>Gets or sets the radius of the entire flare.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("radius")]
 		float Radius { get; set; }
 
+		/// <summary>Gets or sets the ratio of the cross spike lengths to the radius of the center.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("crossScale")]
 		float CrossScale { get; set; }
 
+		/// <summary>Gets or sets the angle that the cross of the star shine makes with the horizontal, in radians.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("crossAngle")]
 		float CrossAngle { get; set; }
 
+		/// <summary>Gets or sets a value that controls the thickness of the radial spikes of the star shine.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("crossOpacity")]
 		float CrossOpacity { get; set; }
 
+		/// <summary>Gets or sets the thickness of the radial spikes of the star shine.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("crossWidth")]
 		float CrossWidth { get; set; }
 
+		/// <summary>Gets or sets the epsilon value for the star shine generator.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("epsilon")]
 		float Epsilon { get; set; }
@@ -10200,10 +12225,14 @@ namespace CoreImage {
 	[Protocol (Name = "CIStraighten")]
 	interface CIStraightenProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
 
+		/// <summary>Gets or sets the angle, in degrees, by which to rotate the image. (The image will be scaled to fit its original size.)</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("angle")]
 		float Angle { get; set; }
@@ -10215,22 +12244,35 @@ namespace CoreImage {
 	[Protocol (Name = "CIStripesGenerator")]
 	interface CIStripesGeneratorProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets the center of the stripes.</summary>
 		[Abstract]
 		[Export ("center", ArgumentSemantic.Assign)]
 		CGPoint InputCenter { get; set; }
 
+		/// <summary>Gets or sets first stripe color.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("color0", ArgumentSemantic.Retain)]
 		CIColor Color0 { get; set; }
 
+		/// <summary>Gets or sets the second stripe color.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("color1", ArgumentSemantic.Retain)]
 		CIColor Color1 { get; set; }
 
+		/// <summary>Gets or sets the width of the stripes.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("width")]
 		float Width { get; set; }
 
+		/// <summary>Gets or sets the sharpness of the stripe pattern. 1 is sharp. 0 is maximally blurry.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("sharpness")]
 		float Sharpness { get; set; }
@@ -10242,30 +12284,49 @@ namespace CoreImage {
 	[Protocol (Name = "CISunbeamsGenerator")]
 	interface CISunbeamsGeneratorProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets the center of the sunbeam effect.</summary>
 		[Abstract]
 		[Export ("center", ArgumentSemantic.Assign)]
 		CGPoint InputCenter { get; set; }
 
+		/// <summary>Gets or sets the color of the sunbeam effect.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("color", ArgumentSemantic.Retain)]
 		CIColor Color { get; set; }
 
+		/// <summary>Gets or sets the radius of the solid portion of the effect.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("sunRadius")]
 		float SunRadius { get; set; }
 
+		/// <summary>Gets or sets the maximum length of sunbeam rays.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("maxStriationRadius")]
 		float MaxStriationRadius { get; set; }
 
+		/// <summary>Gets or sets the intensity of the rays.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("striationStrength")]
 		float StriationStrength { get; set; }
 
+		/// <summary>Gets or sets the contrast of the rays.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("striationContrast")]
 		float StriationContrast { get; set; }
 
+		/// <summary>Gets or sets the time for the effect. Application developers can use this property to cause the effect to shimmer</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("time")]
 		float Time { get; set; }
@@ -10304,14 +12365,21 @@ namespace CoreImage {
 	[Protocol (Name = "CITemperatureAndTint")]
 	interface CITemperatureAndTintProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
 
+		/// <summary>A vector that represents tne temperature and tint of the source image.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("neutral", ArgumentSemantic.Retain)]
 		CIVector Neutral { get; set; }
 
+		/// <summary>A vector that represents tne temperature and tint of the target image.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("targetNeutral", ArgumentSemantic.Retain)]
 		CIVector TargetNeutral { get; set; }
@@ -10353,6 +12421,7 @@ namespace CoreImage {
 	[Protocol (Name = "CIThermal")]
 	interface CIThermalProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -10364,26 +12433,32 @@ namespace CoreImage {
 	[Protocol (Name = "CIToneCurve")]
 	interface CIToneCurveProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
 
+		/// <summary>Gets or sets tthe point in the zeroth index position through which to interpolate the tone curve.</summary>
 		[Abstract]
 		[Export ("point0", ArgumentSemantic.Assign)]
 		CGPoint InputPoint0 { get; set; }
 
+		/// <summary>Gets or sets the point in the first index position through which to interpolate the tone curve.</summary>
 		[Abstract]
 		[Export ("point1", ArgumentSemantic.Assign)]
 		CGPoint InputPoint1 { get; set; }
 
+		/// <summary>Gets or sets the point in the second index position through which to interpolate the tone curve.</summary>
 		[Abstract]
 		[Export ("point2", ArgumentSemantic.Assign)]
 		CGPoint InputPoint2 { get; set; }
 
+		/// <summary>Gets or sets the point in the third index position through which to interpolate the tone curve.</summary>
 		[Abstract]
 		[Export ("point3", ArgumentSemantic.Assign)]
 		CGPoint InputPoint3 { get; set; }
 
+		/// <summary>Gets or sets the point in the fourth index position through which to interpolate the tone curve.</summary>
 		[Abstract]
 		[Export ("point4", ArgumentSemantic.Assign)]
 		CGPoint InputPoint4 { get; set; }
@@ -10395,22 +12470,33 @@ namespace CoreImage {
 	[Protocol (Name = "CITriangleKaleidoscope")]
 	interface CITriangleKaleidoscopeProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
 
+		/// <summary>Gets or sets the point in the source image about which to sample for the kaleidoscopic effect.</summary>
 		[Abstract]
 		[Export ("point", ArgumentSemantic.Assign)]
 		CGPoint InputPoint { get; set; }
 
+		/// <summary>Gets or sets the characteristic size of the region to sample.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("size")]
 		float Size { get; set; }
 
+		/// <summary>Gets or sets the rotation of the kaleidoscopic effect.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("rotation")]
 		float Rotation { get; set; }
 
+		/// <summary>Gets or sets the decay.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("decay")]
 		float Decay { get; set; }
@@ -10422,6 +12508,7 @@ namespace CoreImage {
 	[Protocol (Name = "CITriangleTile")]
 	interface CITriangleTileProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -10445,6 +12532,7 @@ namespace CoreImage {
 	[Protocol (Name = "CITwelvefoldReflectedTile")]
 	interface CITwelvefoldReflectedTileProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -10468,14 +12556,21 @@ namespace CoreImage {
 	[Protocol (Name = "CIUnsharpMask")]
 	interface CIUnsharpMaskProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
 
+		/// <summary>Gets or sets the radius of the smallest feature to detect.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("radius")]
 		float Radius { get; set; }
 
+		/// <summary>Gets or sets the intensity of the enhanced contrast.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("intensity")]
 		float Intensity { get; set; }
@@ -10487,10 +12582,14 @@ namespace CoreImage {
 	[Protocol (Name = "CIVibrance")]
 	interface CIVibranceProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
 
+		/// <summary>Gets or sets a value in the range [-1,1] that controls the vibrance filter.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("amount")]
 		float Amount { get; set; }
@@ -10502,14 +12601,21 @@ namespace CoreImage {
 	[Protocol (Name = "CIVignette")]
 	interface CIVignetteProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
 
+		/// <summary>Gets or sets the intensity of the vignette effect.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("intensity")]
 		float Intensity { get; set; }
 
+		/// <summary>Gets or sets the radius of the vignette effect.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("radius")]
 		float Radius { get; set; }
@@ -10521,22 +12627,33 @@ namespace CoreImage {
 	[Protocol (Name = "CIVignetteEffect")]
 	interface CIVignetteEffectProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
 
+		/// <summary>Gets or sets the point about which the image will be vignetted.</summary>
 		[Abstract]
 		[Export ("center", ArgumentSemantic.Assign)]
 		CGPoint InputCenter { get; set; }
 
+		/// <summary>Gets or sets the radius of the area that will not be obscured.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("radius")]
 		float Radius { get; set; }
 
+		/// <summary>Gets or sets the intensity of the vignette.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("intensity")]
 		float Intensity { get; set; }
 
+		/// <summary>The rate of decay of the effect.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("falloff")]
 		float Falloff { get; set; }
@@ -10548,10 +12665,14 @@ namespace CoreImage {
 	[Protocol (Name = "CIWhitePointAdjust")]
 	interface CIWhitePointAdjustProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
 
+		/// <summary>Gets or sets the new white point color.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("color", ArgumentSemantic.Retain)]
 		CIColor Color { get; set; }
@@ -10563,6 +12684,7 @@ namespace CoreImage {
 	[Protocol (Name = "CIXRay")]
 	interface CIXRayProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -10574,14 +12696,19 @@ namespace CoreImage {
 	[Protocol (Name = "CIZoomBlur")]
 	interface CIZoomBlurProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
 
+		/// <summary>Gets or sets the center of the effect.</summary>
 		[Abstract]
 		[Export ("center", ArgumentSemantic.Assign)]
 		CGPoint InputCenter { get; set; }
 
+		/// <summary>Gets or sets the amount of blur.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("amount")]
 		float Amount { get; set; }
@@ -10593,6 +12720,7 @@ namespace CoreImage {
 	[Protocol (Name = "CIColorAbsoluteDifference")]
 	interface CIColorAbsoluteDifferenceProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -10616,6 +12744,7 @@ namespace CoreImage {
 	[Protocol (Name = "CIColorThreshold")]
 	interface CIColorThresholdProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -10639,6 +12768,7 @@ namespace CoreImage {
 	[Protocol (Name = "CIColorThresholdOtsu")]
 	interface CIColorThresholdOtsuProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -10662,6 +12792,7 @@ namespace CoreImage {
 		[CoreImageFilterProperty ("inputWeights")]
 		CIVector Weights { get; set; }
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[CoreImageFilterProperty ("inputImage")]
 		CIImage InputImage { get; set; }
 
@@ -10679,6 +12810,7 @@ namespace CoreImage {
 		[CoreImageFilterProperty ("inputWeights")]
 		CIVector Weights { get; set; }
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[CoreImageFilterProperty ("inputImage")]
 		CIImage InputImage { get; set; }
 
@@ -10696,6 +12828,7 @@ namespace CoreImage {
 		[CoreImageFilterProperty ("inputWeights")]
 		CIVector Weights { get; set; }
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[CoreImageFilterProperty ("inputImage")]
 		CIImage InputImage { get; set; }
 
@@ -10713,6 +12846,7 @@ namespace CoreImage {
 		[CoreImageFilterProperty ("inputWeights")]
 		CIVector Weights { get; set; }
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[CoreImageFilterProperty ("inputImage")]
 		CIImage InputImage { get; set; }
 
@@ -10730,6 +12864,7 @@ namespace CoreImage {
 		[CoreImageFilterProperty ("inputWeights")]
 		CIVector Weights { get; set; }
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[CoreImageFilterProperty ("inputImage")]
 		CIImage InputImage { get; set; }
 
@@ -10747,6 +12882,7 @@ namespace CoreImage {
 		[CoreImageFilterProperty ("inputBackgroundImage")]
 		CIImage BackgroundImage { get; set; }
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[CoreImageFilterProperty ("inputImage")]
 		CIImage InputImage { get; set; }
 	}
@@ -10763,6 +12899,7 @@ namespace CoreImage {
 	[Protocol (Name = "CIPersonSegmentation")]
 	interface CIPersonSegmentationProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -10782,6 +12919,7 @@ namespace CoreImage {
 		[CoreImageFilterProperty ("inputBackgroundImage")]
 		CIImage BackgroundImage { get; set; }
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[CoreImageFilterProperty ("inputImage")]
 		CIImage InputImage { get; set; }
 	}
@@ -10815,6 +12953,7 @@ namespace CoreImage {
 	[iOS (16, 0), TV (16, 0), Mac (13, 0), MacCatalyst (16, 0)]
 	[Protocol (Name = "CIConvertLab")]
 	interface CIConvertLabProtocol : CIFilterProtocol {
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -10855,6 +12994,7 @@ namespace CoreImage {
 	[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
 	[Protocol (Name = "CICannyEdgeDetector")]
 	interface CICannyEdgeDetectorProtocol : CIFilterProtocol {
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -10916,6 +13056,7 @@ namespace CoreImage {
 	[Protocol (Name = "CISobelGradients")]
 	interface CISobelGradientsProtocol : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -10923,7 +13064,7 @@ namespace CoreImage {
 
 	// LabToRGBFilter and RGBtoLabFilter are names for filter API but return the same type CIConvertLab
 	// Enabling these cause a large number of introspection errors
-	// https://github.com/xamarin/xamarin-macios/issues/15662
+	// https://github.com/dotnet/macios/issues/15662
 #if false
 	[CoreImageFilter]
 	[iOS (16,0), TV (16,0), Mac (13,0), MacCatalyst (16,0)]
@@ -10951,6 +13092,7 @@ namespace CoreImage {
 	[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 	[Protocol (Name = "CIMaximumScaleTransform", BackwardsCompatibleCodeGeneration = false)]
 	interface CIMaximumScaleTransformProtocol : CIFilterProtocol {
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -10973,6 +13115,7 @@ namespace CoreImage {
 	[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 	[Protocol (Name = "CIToneMapHeadroom", BackwardsCompatibleCodeGeneration = false)]
 	interface CIToneMapHeadroomProtocol : CIFilterProtocol {
+		/// <summary>Gets or sets an image to filter.</summary>
 		[Abstract]
 		[NullAllowed, Export ("inputImage", ArgumentSemantic.Retain)]
 		CIImage InputImage { get; set; }
@@ -11002,6 +13145,7 @@ namespace CoreImage {
 	[BaseType (typeof (CIFilter))]
 	interface CIDistanceGradientFromRedMask : CIFilterProtocol {
 
+		/// <summary>Gets or sets an image to filter.</summary>
 		[CoreImageFilterProperty ("inputImage")]
 		CIImage InputImage { get; set; }
 

@@ -42,6 +42,8 @@ using ObjCRuntime;
 
 namespace CoreFoundation {
 
+	/// <summary>An enumeration whose values can be used with the <see cref="CoreFoundation.CFSocket.DisableCallBacks(CoreFoundation.CFSocketCallBackType)" /> and <see cref="CoreFoundation.CFSocket.EnableCallBacks(CoreFoundation.CFSocketCallBackType)" /> methods.</summary>
+	///     <remarks>To be added.</remarks>
 	[Flags]
 	[Native]
 	// defined as CFOptionFlags (unsigned long [long] = nuint) - System/Library/Frameworks/CoreFoundation.framework/Headers/CFSocket.h
@@ -61,6 +63,8 @@ namespace CoreFoundation {
 	}
 
 	// defined as CFIndex (long [long] = nint) - System/Library/Frameworks/CoreFoundation.framework/Headers/CFSocket.h
+	/// <summary>An enumeration whose values specify errors relating to <see cref="CoreFoundation.CFSocket" />s.</summary>
+	///     <remarks>To be added.</remarks>
 	[Native]
 	public enum CFSocketError : long {
 		/// <summary>To be added.</summary>
@@ -71,6 +75,8 @@ namespace CoreFoundation {
 		Timeout = -2,
 	}
 
+	/// <summary>An enumeration whose values can be used with the <see cref="CoreFoundation.CFSocket.GetSocketFlags" /> and <see cref="CoreFoundation.CFSocket.SetSocketFlags(CoreFoundation.CFSocketFlags)" /> methods.</summary>
+	///     <remarks>To be added.</remarks>
 	[Flags]
 	// anonymous and typeless native enum - System/Library/Frameworks/CoreFoundation.framework/Headers/CFSocket.h
 	public enum CFSocketFlags {
@@ -88,6 +94,8 @@ namespace CoreFoundation {
 		CloseOnInvalidate = 128,
 	}
 
+	/// <summary>Type for the platform-specific native socket handle.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -110,6 +118,8 @@ namespace CoreFoundation {
 		}
 	}
 
+	/// <summary>An <see cref="System.Exception" /> that is raised by various methods of the <see cref="CoreFoundation.CFSocket" /> class.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -285,6 +295,8 @@ namespace CoreFoundation {
 		}
 	}
 
+	/// <summary>CoreFoundation low-level Socket library - use the <see cref="Network" /> APIs instead.</summary>
+	///     <remarks />
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -366,7 +378,7 @@ namespace CoreFoundation {
 
 		/// <summary>Creates a socket for the address family family INET, socket type STREAM, and protocol TCP.</summary>
 		///         <remarks>
-		///           <para>This constructor throws a <see cref="T:CoreFoundation.CFSocketException" /> if there is an error trying to create the socket.</para>
+		///           <para>This constructor throws a <see cref="CoreFoundation.CFSocketException" /> if there is an error trying to create the socket.</para>
 		///           <para>
 		///           </para>
 		///         </remarks>
@@ -378,8 +390,8 @@ namespace CoreFoundation {
 		/// <param name="family">Family type for the socket.</param>
 		///         <param name="type">Socket type to create.</param>
 		///         <param name="proto">Protocol type for the socket.</param>
-		///         <summary>Creates a socket by specifying an address family, scoket type and protocol type dispatched on the <see cref="P:CoreFoundation.CFRunLoop.Current" />.</summary>
-		///         <remarks>This constructor throws a <see cref="T:CoreFoundation.CFSocketException" /> if there is an error trying to create the socket.</remarks>
+		///         <summary>Creates a socket by specifying an address family, scoket type and protocol type dispatched on the <see cref="CoreFoundation.CFRunLoop.Current" />.</summary>
+		///         <remarks>This constructor throws a <see cref="CoreFoundation.CFSocketException" /> if there is an error trying to create the socket.</remarks>
 		public CFSocket (AddressFamily family, SocketType type, ProtocolType proto)
 			: this (family, type, proto, CFRunLoop.Current)
 		{
@@ -390,7 +402,7 @@ namespace CoreFoundation {
 		///         <param name="proto">Protocol type for the socket.</param>
 		///         <param name="loop">The run loop to which this CFSocket will be added as a source.</param>
 		///         <summary>Creates a socket by specifying an address family, socket type and protocol type with a specified run loop to dispatch on.</summary>
-		///         <remarks>This constructor throws a <see cref="T:CoreFoundation.CFSocketException" /> if there is an error trying to create the socket.</remarks>
+		///         <remarks>This constructor throws a <see cref="CoreFoundation.CFSocketException" /> if there is an error trying to create the socket.</remarks>
 		public CFSocket (AddressFamily family, SocketType type, ProtocolType proto, CFRunLoop loop)
 			: this (CFSocketSignature.AddressFamilyToInt (family),
 				CFSocketSignature.SocketTypeToInt (type),
@@ -451,7 +463,7 @@ namespace CoreFoundation {
 					runLoop.AddSource (source, CFRunLoop.ModeDefault);
 				}
 
-				this.Handle = handle;
+				InitializeHandle (handle);
 			} catch {
 				gch.Free ();
 				throw;
@@ -589,7 +601,7 @@ namespace CoreFoundation {
 		/// <param name="data">To be added.</param>
 		///         <param name="timeout">Time to wait for the operation to complete.  </param>
 		///         <summary>Sends data over the socket.</summary>
-		///         <remarks>This method raises an exception <see cref="T:CoreFoundation.CFSocketException" /> if the sending buffer is full, or the timeout expires before the data is sent.</remarks>
+		///         <remarks>This method raises an exception <see cref="CoreFoundation.CFSocketException" /> if the sending buffer is full, or the timeout expires before the data is sent.</remarks>
 		public void SendData (byte [] data, double timeout)
 		{
 			using (var buffer = new CFDataBuffer (data)) {
@@ -599,6 +611,9 @@ namespace CoreFoundation {
 			}
 		}
 
+		/// <summary>
+		///       <see cref="System.EventArgs" /> for the <see cref="CoreFoundation.CFSocket.AcceptEvent" /> event.</summary>
+		///     <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -617,23 +632,36 @@ namespace CoreFoundation {
 				private set;
 			}
 
+			/// <param name="handle">To be added.</param>
+			///         <param name="remote">To be added.</param>
+			///         <summary>To be added.</summary>
+			///         <remarks>To be added.</remarks>
 			public CFSocketAcceptEventArgs (CFSocketNativeHandle handle, IPEndPoint remote)
 			{
 				this.SocketHandle = handle;
 				this.RemoteEndPoint = remote;
 			}
 
+			/// <summary>Creates a new <see cref="CoreFoundation.CFSocket" /> from the accepted connection</summary>
+			///         <returns>The new instance of the created socket</returns>
+			///         <remarks>This could throw a <see cref="CoreFoundation.CFSocketException" /> if there is an error trying to create the socket.</remarks>
 			public CFSocket CreateSocket ()
 			{
 				return new CFSocket (SocketHandle);
 			}
 
+			/// <summary>Human readable description of the event arguments.</summary>
+			///         <returns>To be added.</returns>
+			///         <remarks>To be added.</remarks>
 			public override string ToString ()
 			{
 				return string.Format ("[CFSocketAcceptEventArgs: RemoteEndPoint={0}]", RemoteEndPoint);
 			}
 		}
 
+		/// <summary>
+		///       <see cref="System.EventArgs" /> for the <see cref="CoreFoundation.CFSocket.ConnectEvent" /> event.</summary>
+		///     <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -647,17 +675,25 @@ namespace CoreFoundation {
 				private set;
 			}
 
+			/// <param name="result">To be added.</param>
+			///         <summary>To be added.</summary>
+			///         <remarks>To be added.</remarks>
 			public CFSocketConnectEventArgs (CFSocketError result)
 			{
 				this.Result = result;
 			}
 
+			/// <summary>Human readable description of the event arguments.</summary>
+			///         <returns>To be added.</returns>
+			///         <remarks>To be added.</remarks>
 			public override string ToString ()
 			{
 				return string.Format ("[CFSocketConnectEventArgs: Result={0}]", Result);
 			}
 		}
 
+		/// <summary>Arguments for socket data events.</summary>
+		///     <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -679,6 +715,10 @@ namespace CoreFoundation {
 				private set;
 			}
 
+			/// <param name="remote">To be added.</param>
+			///         <param name="data">To be added.</param>
+			///         <summary>Constructs a new instance with an endpoint and a byte buffer.</summary>
+			///         <remarks>To be added.</remarks>
 			public CFSocketDataEventArgs (IPEndPoint remote, byte [] data)
 			{
 				this.RemoteEndPoint = remote;
@@ -686,19 +726,27 @@ namespace CoreFoundation {
 			}
 		}
 
+		/// <summary>Arguments for socket read events.</summary>
+		///     <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		public class CFSocketReadEventArgs : EventArgs {
+			/// <summary>To be added.</summary>
+			///         <remarks>To be added.</remarks>
 			public CFSocketReadEventArgs () { }
 		}
 
+		/// <summary>Arguments for socket write events.</summary>
+		///     <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		public class CFSocketWriteEventArgs : EventArgs {
+			/// <summary>To be added.</summary>
+			///         <remarks>To be added.</remarks>
 			public CFSocketWriteEventArgs () { }
 		}
 
@@ -741,11 +789,20 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static nint CFSocketConnectToAddress (IntPtr handle, IntPtr address, double timeout);
 
+		/// <param name="address">To be added.</param>
+		///         <param name="port">To be added.</param>
+		///         <param name="timeout">Time to wait for the operation to complete.   If the value is negative, no wait takes place, and instead the operation takes place in the background.</param>
+		///         <summary>Connects the socket to the specified IP address and port.</summary>
+		///         <remarks>This method throws a <see cref="CoreFoundation.CFSocketException" /> if the timeout expires before being able to complete the operation.</remarks>
 		public void Connect (IPAddress address, int port, double timeout)
 		{
 			Connect (new IPEndPoint (address, port), timeout);
 		}
 
+		/// <param name="endpoint">To be added.</param>
+		///         <param name="timeout">Time to wait for the operation to complete.   If the value is negative, no wait takes place, and instead the operation takes place in the background.</param>
+		///         <summary>Connects the socket to the specified endpoint.</summary>
+		///         <remarks>This method throws a <see cref="CoreFoundation.CFSocketException" /> if the timeout expires before being able to complete the operation.</remarks>
 		public void Connect (IPEndPoint endpoint, double timeout)
 		{
 			using (var address = new CFSocketAddress (endpoint)) {

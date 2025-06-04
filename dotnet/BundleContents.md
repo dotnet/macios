@@ -300,14 +300,14 @@ library project:
 </PropertyGroup>
 ```
 
-See https://github.com/xamarin/xamarin-macios/issues/20947 for more information.
+See https://github.com/dotnet/macios/issues/20947 for more information.
 
 ## References
 
-* [.NET: What to do about files in ResolvedFileToPublish](https://github.com/xamarin/xamarin-macios/issues/12572)
-* [[maccatalyst] NativeReference results in "bundle format is ambiguous (could be app or framework)"](https://github.com/xamarin/xamarin-macios/issues/12369)
-* [[.NET 6] Files copies into MonoBundle get folder structure flattened](https://github.com/xamarin/xamarin-macios/issues/12386)
-* [.NET: build fails when referencing BenchmarkDotNet](https://github.com/xamarin/xamarin-macios/issues/12418)
-* [Having multiple .frameworks in a nuget package fails to build due to multiple info.plist files](https://github.com/xamarin/xamarin-macios/issues/12440)
-* [Automatically include .framework or .a files in the NuGet's runtimes/ios/native folder](https://github.com/xamarin/xamarin-macios/issues/11667)
+* [.NET: What to do about files in ResolvedFileToPublish](https://github.com/dotnet/macios/issues/12572)
+* [[maccatalyst] NativeReference results in "bundle format is ambiguous (could be app or framework)"](https://github.com/dotnet/macios/issues/12369)
+* [[.NET 6] Files copies into MonoBundle get folder structure flattened](https://github.com/dotnet/macios/issues/12386)
+* [.NET: build fails when referencing BenchmarkDotNet](https://github.com/dotnet/macios/issues/12418)
+* [Having multiple .frameworks in a nuget package fails to build due to multiple info.plist files](https://github.com/dotnet/macios/issues/12440)
+* [Automatically include .framework or .a files in the NuGet's runtimes/ios/native folder](https://github.com/dotnet/macios/issues/11667)
 

@@ -18,7 +18,7 @@ using ObjCRuntime;
 
 namespace Metal {
 
-	/// <summary>Argument values for use with <see cref="T:Metal.MTLBlendOperation" />.</summary>
+	/// <summary>Argument values for use with <see cref="Metal.MTLBlendOperation" />.</summary>
 	[Native]
 	public enum MTLBlendFactor : ulong {
 		/// <summary>To be added.</summary>
@@ -842,16 +842,6 @@ namespace Metal {
 		FileNotFound,
 	}
 
-#if !NET // this enum/error was removed from the headers a few years ago (the macOS 10.12 SDK has it, the 10.13 SDK doesn't)
-	[Native]
-	[ErrorDomain ("MTLRenderPipelineErrorDomain")]
-	public enum MTLRenderPipelineError : ulong {
-		Internal = 1,
-		Unsupported,
-		InvalidInput,
-	}
-#endif
-
 	/// <summary>Holds a comparison test. When the comparison test passes, the incoming fragment is compared to the stored data at the specified location.</summary>
 	[Native]
 	public enum MTLCompareFunction : ulong {
@@ -981,7 +971,7 @@ namespace Metal {
 		WriteCombined,
 	}
 
-	/// <summary>Enumerates the ways in which a <see cref="T:Metal.IMTLTexture" /> may be used.</summary>
+	/// <summary>Enumerates the ways in which a <see cref="Metal.IMTLTexture" /> may be used.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	[Flags]
@@ -994,10 +984,6 @@ namespace Metal {
 		ShaderWrite = 0x0002,
 		/// <summary>A value that indicates that the texture will be used as a color, depth, or stencil render target in a rendering pass.</summary>
 		RenderTarget = 0x0004,
-#if !NET
-		[Obsolete ("This option is unavailable.")]
-		Blit = 0x0008,
-#endif
 		/// <summary>A value that indicates that the texture will be used for creating new textures.</summary>
 		PixelFormatView = 0x0010,
 
@@ -1475,12 +1461,12 @@ namespace Metal {
 		[NoMacCatalyst]
 		macOS_GPUFamily2_v1 = 10005,
 
+		/// <summary>The tvOS GPU Family 1 v1 feature set.</summary>
 #if XAMCORE_5_0
 		[NoMacCatalyst]
 #elif __MACCATALYST__
 		[Obsolete ("Not available on the current platform.")]
 #endif
-
 		[NoiOS, NoMac]
 		tvOS_GPUFamily1_v1 = 30000,
 

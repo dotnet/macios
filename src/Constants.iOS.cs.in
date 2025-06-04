@@ -4,22 +4,12 @@ namespace Xamarin.Bundler {
 namespace ObjCRuntime {
 #endif
 	public static partial class Constants {
+		/// <summary>The version of this Microsoft SDK for iOS.</summary>
 		public const string Version = "@VERSION@";
+
 		internal const string Revision = "@REVISION@";
+
+		/// <summary>The iOS version this library is built to support.</summary>
 		public const string SdkVersion = "@IOS_SDK_VERSION@";
-
-		public const string AccelerateImageLibrary = "/System/Library/Frameworks/Accelerate.framework/Frameworks/vImage.framework/vImage";
-		public const string QuartzLibrary = "/System/Library/Frameworks/QuartzCore.framework/QuartzCore";
-
-		// iOS 9
-		public const string libcompressionLibrary = "/usr/lib/libcompression.dylib";
-
-#if !XAMCORE_5_0
-		// Apple removed the NewsstandKit framework from iOS in Xcode 15.
-		public const string NewsstandKitLibrary = "/System/Library/Frameworks/NewsstandKit.framework/NewsstandKit";
-
-		// Apple removed the AssetsLibrary framework from iOS in Xcode 15.3.
-		public const string AssetsLibraryLibrary = "/System/Library/Frameworks/AssetsLibrary.framework/AssetsLibrary";
-#endif
 	}
 }

@@ -20,7 +20,7 @@ namespace Foundation;
 public partial class NSUserDefaults
 {
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	static readonly NativeHandle class_ptr = Class.GetHandle ("NSUserDefaults");
+	static readonly global::ObjCRuntime.NativeHandle class_ptr = global::ObjCRuntime.Class.GetHandle ("NSUserDefaults");
 
 	/// <summary>The Objective-C class handle for this class.</summary>
 	/// <value>The pointer to the Objective-C class.</value>
@@ -29,13 +29,13 @@ public partial class NSUserDefaults
 	///     This value contains the pointer to the Objective-C class.
 	///     It is similar to calling the managed <see cref=\"ObjCRuntime.Class.GetHandle(string)\" /> or the native <see href=\"https://developer.apple.com/documentation/objectivec/1418952-objc_getclass\">objc_getClass</see> method with the type name.
 	/// </remarks>
-	public override NativeHandle ClassHandle => class_ptr;
+	public override global::ObjCRuntime.NativeHandle ClassHandle => class_ptr;
 
 	/// <summary>Creates a new <see cref="NSUserDefaults" /> with default values.</summary>
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[DesignatedInitializer]
 	[Export ("init")]
-	public NSUserDefaults () : base (NSObjectFlag.Empty)
+	public NSUserDefaults () : base (global::Foundation.NSObjectFlag.Empty)
 	{
 		if (IsDirectBinding)
 			InitializeHandle (global::ObjCRuntime.Messaging.IntPtr_objc_msgSend (this.Handle, global::ObjCRuntime.Selector.GetHandle ("init")), "init");
@@ -90,7 +90,7 @@ public partial class NSUserDefaults
 	/// </remarks>
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable (EditorBrowsableState.Advanced)]
-	protected NSUserDefaults (NSObjectFlag t) : base (t) {}
+	protected NSUserDefaults (global::Foundation.NSObjectFlag t) : base (t) {}
 
 	/// <summary>A constructor used when creating managed representations of unmanaged objects. Called by the runtime.</summary>
 	/// <param name="handle">Pointer (handle) to the unmanaged object.</param>
@@ -102,60 +102,60 @@ public partial class NSUserDefaults
 	/// </remarks>
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[EditorBrowsable (EditorBrowsableState.Advanced)]
-	protected internal NSUserDefaults (NativeHandle handle) : base (handle) {}
+	protected internal NSUserDefaults (global::ObjCRuntime.NativeHandle handle) : base (handle) {}
 
-	static Foundation.NSString? _CompletedInitialSyncNotification;
+	static global::Foundation.NSString? _CompletedInitialSyncNotification;
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[Advice ("Use 'NSUserDefaults.Notifications.CompletedInitialSyncNotification' helper method instead.")]
-	public static partial Foundation.NSString CompletedInitialSyncNotification
+	public static partial global::Foundation.NSString CompletedInitialSyncNotification
 	{
 		get
 		{
 			if (_CompletedInitialSyncNotification is null)
-				_CompletedInitialSyncNotification = Dlfcn.GetStringConstant (Libraries.Foundation.Handle, "NSUbiquitousUserDefaultsCompletedInitialSyncNotification")!;
+				_CompletedInitialSyncNotification = global::ObjCRuntime.Dlfcn.GetStringConstant (global::ObjCRuntime.Libraries.Foundation.Handle, "NSUbiquitousUserDefaultsCompletedInitialSyncNotification")!;
 			return _CompletedInitialSyncNotification;
 		}
 	}
 
-	static Foundation.NSString? _DidChangeAccountsNotification;
+	static global::Foundation.NSString? _DidChangeAccountsNotification;
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[Advice ("Use 'NSUserDefaults.Notifications.DidChangeAccountsNotification' helper method instead.")]
-	public static partial Foundation.NSString DidChangeAccountsNotification
+	public static partial global::Foundation.NSString DidChangeAccountsNotification
 	{
 		get
 		{
 			if (_DidChangeAccountsNotification is null)
-				_DidChangeAccountsNotification = Dlfcn.GetStringConstant (Libraries.Foundation.Handle, "NSUbiquitousUserDefaultsDidChangeAccountsNotification")!;
+				_DidChangeAccountsNotification = global::ObjCRuntime.Dlfcn.GetStringConstant (global::ObjCRuntime.Libraries.Foundation.Handle, "NSUbiquitousUserDefaultsDidChangeAccountsNotification")!;
 			return _DidChangeAccountsNotification;
 		}
 	}
 
-	static Foundation.NSString? _NoCloudAccountNotification;
+	static global::Foundation.NSString? _NoCloudAccountNotification;
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[Advice ("Use 'NSUserDefaults.Notifications.NoCloudAccountNotification' helper method instead.")]
-	public static partial Foundation.NSString NoCloudAccountNotification
+	public static partial global::Foundation.NSString NoCloudAccountNotification
 	{
 		get
 		{
 			if (_NoCloudAccountNotification is null)
-				_NoCloudAccountNotification = Dlfcn.GetStringConstant (Libraries.Foundation.Handle, "NSUbiquitousUserDefaultsNoCloudAccountNotification")!;
+				_NoCloudAccountNotification = global::ObjCRuntime.Dlfcn.GetStringConstant (global::ObjCRuntime.Libraries.Foundation.Handle, "NSUbiquitousUserDefaultsNoCloudAccountNotification")!;
 			return _NoCloudAccountNotification;
 		}
 	}
 
-	static Foundation.NSString? _SizeLimitExceededNotification;
+	static global::Foundation.NSString? _SizeLimitExceededNotification;
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[Advice ("Use 'NSUserDefaults.Notifications.SizeLimitExceededNotification' helper method instead.")]
-	public static partial Foundation.NSString SizeLimitExceededNotification
+	public static partial global::Foundation.NSString SizeLimitExceededNotification
 	{
 		get
 		{
 			if (_SizeLimitExceededNotification is null)
-				_SizeLimitExceededNotification = Dlfcn.GetStringConstant (Libraries.Foundation.Handle, "NSUserDefaultsSizeLimitExceededNotification")!;
+				_SizeLimitExceededNotification = global::ObjCRuntime.Dlfcn.GetStringConstant (global::ObjCRuntime.Libraries.Foundation.Handle, "NSUserDefaultsSizeLimitExceededNotification")!;
 			return _SizeLimitExceededNotification;
 		}
 	}
@@ -163,44 +163,44 @@ public partial class NSUserDefaults
 	public static partial class Notifications
 	{
 
-		public static NSObject ObserveCompletedInitialSync (EventHandler<Foundation.MyNotificationArgs> handler)
+		public static global::Foundation.NSObject ObserveCompletedInitialSync (global::System.EventHandler<Foundation.MyNotificationArgs> handler)
 		{
 			return SharedWorkspace.NotificationCenter.AddObserver (CompletedInitialSyncNotification, notification => handler (null, new Foundation.MyNotificationArgs (notification)));
 		}
 
-		public static NSObject ObserveCompletedInitialSync (NSObject objectToObserve, EventHandler<Foundation.MyNotificationArgs> handler)
+		public static NSObject ObserveCompletedInitialSync (global::Foundation.NSObject objectToObserve, global::System.EventHandler<Foundation.MyNotificationArgs> handler)
 		{
 			return SharedWorkspace.NotificationCenter.AddObserver (CompletedInitialSyncNotification, notification => handler (null, new Foundation.MyNotificationArgs (notification)), objectToObserve);
 		}
 
-		public static NSObject ObserveDidChangeAccounts (EventHandler<Foundation.MyNotificationArgs> handler)
+		public static global::Foundation.NSObject ObserveDidChangeAccounts (global::System.EventHandler<Foundation.MyNotificationArgs> handler)
 		{
-			return NSNotificationCenter.DefaultCenter.AddObserver (DidChangeAccountsNotification, notification => handler (null, new Foundation.MyNotificationArgs (notification)));
+			return global::Foundation.NotificationCenter.DefaultCenter.AddObserver (DidChangeAccountsNotification, notification => handler (null, new Foundation.MyNotificationArgs (notification)));
 		}
 
-		public static NSObject ObserveDidChangeAccounts (NSObject objectToObserve, EventHandler<Foundation.MyNotificationArgs> handler)
+		public static NSObject ObserveDidChangeAccounts (global::Foundation.NSObject objectToObserve, global::System.EventHandler<Foundation.MyNotificationArgs> handler)
 		{
-			return NSNotificationCenter.DefaultCenter.AddObserver (DidChangeAccountsNotification, notification => handler (null, new Foundation.MyNotificationArgs (notification)), objectToObserve);
+			return global::Foundation.NotificationCenter.DefaultCenter.AddObserver (DidChangeAccountsNotification, notification => handler (null, new Foundation.MyNotificationArgs (notification)), objectToObserve);
 		}
 
-		public static NSObject ObserveNoCloudAccount (EventHandler<Foundation.NSNotificationEventArgs> handler)
+		public static global::Foundation.NSObject ObserveNoCloudAccount (global::System.EventHandler<global::Foundation.NSNotificationEventArgs> handler)
 		{
-			return SharedWorkspace.NotificationCenter.AddObserver (NoCloudAccountNotification, notification => handler (null, new Foundation.NSNotificationEventArgs (notification)));
+			return SharedWorkspace.NotificationCenter.AddObserver (NoCloudAccountNotification, notification => handler (null, new global::Foundation.NSNotificationEventArgs (notification)));
 		}
 
-		public static NSObject ObserveNoCloudAccount (NSObject objectToObserve, EventHandler<Foundation.NSNotificationEventArgs> handler)
+		public static NSObject ObserveNoCloudAccount (global::Foundation.NSObject objectToObserve, global::System.EventHandler<global::Foundation.NSNotificationEventArgs> handler)
 		{
-			return SharedWorkspace.NotificationCenter.AddObserver (NoCloudAccountNotification, notification => handler (null, new Foundation.NSNotificationEventArgs (notification)), objectToObserve);
+			return SharedWorkspace.NotificationCenter.AddObserver (NoCloudAccountNotification, notification => handler (null, new global::Foundation.NSNotificationEventArgs (notification)), objectToObserve);
 		}
 
-		public static NSObject ObserveSizeLimitExceeded (EventHandler<Foundation.NSNotificationEventArgs> handler)
+		public static global::Foundation.NSObject ObserveSizeLimitExceeded (global::System.EventHandler<global::Foundation.NSNotificationEventArgs> handler)
 		{
-			return NSNotificationCenter.DefaultCenter.AddObserver (SizeLimitExceededNotification, notification => handler (null, new Foundation.NSNotificationEventArgs (notification)));
+			return global::Foundation.NotificationCenter.DefaultCenter.AddObserver (SizeLimitExceededNotification, notification => handler (null, new global::Foundation.NSNotificationEventArgs (notification)));
 		}
 
-		public static NSObject ObserveSizeLimitExceeded (NSObject objectToObserve, EventHandler<Foundation.NSNotificationEventArgs> handler)
+		public static NSObject ObserveSizeLimitExceeded (global::Foundation.NSObject objectToObserve, global::System.EventHandler<global::Foundation.NSNotificationEventArgs> handler)
 		{
-			return NSNotificationCenter.DefaultCenter.AddObserver (SizeLimitExceededNotification, notification => handler (null, new Foundation.NSNotificationEventArgs (notification)), objectToObserve);
+			return global::Foundation.NotificationCenter.DefaultCenter.AddObserver (SizeLimitExceededNotification, notification => handler (null, new global::Foundation.NSNotificationEventArgs (notification)), objectToObserve);
 		}
 
 	}

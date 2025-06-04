@@ -92,12 +92,10 @@ namespace Foundation {
 			}
 		}
 
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		[Export ("trueExpression")]
 		public virtual NSExpression TrueExpression {
 			get {
@@ -110,12 +108,10 @@ namespace Foundation {
 			}
 		}
 
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		[Export ("falseExpression")]
 		public virtual NSExpression FalseExpression {
 			get {
@@ -174,15 +170,5 @@ namespace Foundation {
 				return _Operand;
 			}
 		}
-
-#if !NET
-		[Obsolete ("Use 'EvaluateWith' instead.")]
-		public virtual NSExpression ExpressionValueWithObject (NSObject obj, NSMutableDictionary context)
-		{
-			var result = EvaluateWith (obj, context);
-			// if it can be casted, do return an NSExpression else null
-			return result as NSExpression;
-		}
-#endif
 	}
 }

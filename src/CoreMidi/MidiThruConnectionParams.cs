@@ -22,6 +22,8 @@ using MidiEndpointRef = System.Int32;
 using MidiUniqueID = System.Int32;
 
 namespace CoreMidi {
+	/// <summary>MIDI transform types.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum MidiTransformType : ushort {
 		/// <summary>To be added.</summary>
 		None = 0,
@@ -41,6 +43,8 @@ namespace CoreMidi {
 		MapValue = 12,
 	}
 
+	/// <summary>MIDI Control Transformation Type.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum MidiTransformControlType : byte {
 		/// <summary>To be added.</summary>
 		SevenBit = 0,
@@ -56,6 +60,8 @@ namespace CoreMidi {
 		FourteenBitNRpn = 5,
 	}
 
+	/// <summary>Object that defines how a MIDI event is transformed.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -66,9 +72,13 @@ namespace CoreMidi {
 		///         <remarks>To be added.</remarks>
 		public MidiTransformType Transform;
 		/// <summary>Extra information needed by the transformation.</summary>
-		///         <remarks>This is ignored when <see cref="F:CoreMidi.MidiTransform.Transform" /> is set to <see cref="F:CoreMidi.MidiTransformType.None" /> or <see cref="F:CoreMidi.MidiTransformType.FilterOut" />.</remarks>
+		///         <remarks>This is ignored when <see cref="CoreMidi.MidiTransform.Transform" /> is set to <see cref="CoreMidi.MidiTransformType.None" /> or <see cref="CoreMidi.MidiTransformType.FilterOut" />.</remarks>
 		public short Param;
 
+		/// <param name="transform">Transformation type to be applied.</param>
+		///         <param name="param">Extra information needed by the transformation.</param>
+		///         <summary>Creates a new <see cref="CoreMidi.MidiTransform" />.</summary>
+		///         <remarks>To be added.</remarks>
 		public MidiTransform (MidiTransformType transform, short param)
 		{
 			Transform = transform;
@@ -76,6 +86,8 @@ namespace CoreMidi {
 		}
 	}
 
+	/// <summary>MIDI Value map.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -100,6 +112,8 @@ namespace CoreMidi {
 		}
 	}
 
+	/// <summary>Represents a transformation of a MIDI control.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -110,7 +124,7 @@ namespace CoreMidi {
 		///         <remarks>To be added.</remarks>
 		public MidiTransformControlType ControlType;
 		/// <summary>Resulting control type.</summary>
-		///         <remarks>This is only set when <see cref="F:CoreMidi.MidiTransformType.MapControl" /> is used.</remarks>
+		///         <remarks>This is only set when <see cref="CoreMidi.MidiTransformType.MapControl" /> is used.</remarks>
 		public MidiTransformControlType RemappedControlType;
 		/// <summary>Number of the control to be transformed.</summary>
 		///         <remarks>To be added.</remarks>
@@ -119,9 +133,16 @@ namespace CoreMidi {
 		///         <remarks>To be added.</remarks>
 		public MidiTransformType Transform;
 		/// <summary>Additional information for the transformation.</summary>
-		///         <remarks>This is ignored when <see cref="F:CoreMidi.MidiControlTransform.Transform" /> is set to <see cref="F:CoreMidi.MidiTransformType.None" /> or <see cref="F:CoreMidi.MidiTransformType.FilterOut" />.</remarks>
+		///         <remarks>This is ignored when <see cref="CoreMidi.MidiControlTransform.Transform" /> is set to <see cref="CoreMidi.MidiTransformType.None" /> or <see cref="CoreMidi.MidiTransformType.FilterOut" />.</remarks>
 		public short Param;
 
+		/// <param name="controlType">MIDI conrol type.</param>
+		///         <param name="remappedControlType">Resulting control type.</param>
+		///         <param name="controlNumber">Number of the control to be transformed.</param>
+		///         <param name="transform">Transformation type to be applied.</param>
+		///         <param name="param">Additional information for the transformation.</param>
+		///         <summary>Creates a new <see cref="CoreMidi.MidiControlTransform" />.</summary>
+		///         <remarks>To be added.</remarks>
 		public MidiControlTransform (MidiTransformControlType controlType,
 									 MidiTransformControlType remappedControlType,
 									 ushort controlNumber, MidiTransformType transform,
@@ -135,6 +156,8 @@ namespace CoreMidi {
 		}
 	}
 
+	/// <summary>Source or Destination of a <see cref="CoreMidi.MidiThruConnection" />.</summary>
+	///     <remarks>When <see cref="CoreMidi.MidiThruConnectionEndpoint.EndpointRef" /> is zero it is because the endpoint does not exist so <see cref="CoreMidi.MidiThruConnectionEndpoint.UniqueID" /> will be greater than 0.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -148,6 +171,10 @@ namespace CoreMidi {
 		///         <remarks>To be added.</remarks>
 		public MidiUniqueID UniqueID;
 
+		/// <param name="endpointRef">Endpoint ref.</param>
+		///         <param name="uniqueID">Endpoint unique id.</param>
+		///         <summary>Creates a new <see cref="CoreMidi.MidiThruConnectionEndpoint" />.</summary>
+		///         <remarks>Set <see cref="CoreMidi.MidiThruConnectionEndpoint.UniqueID" /> to 0 if the endpoint already exists.</remarks>
 		public MidiThruConnectionEndpoint (MidiEndpointRef endpointRef, MidiUniqueID uniqueID)
 		{
 			EndpointRef = endpointRef;
@@ -335,6 +362,8 @@ namespace CoreMidi {
 	}
 
 #if !COREBUILD
+	/// <summary>MIDI transformations and routings.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -347,6 +376,8 @@ namespace CoreMidi {
 		[DllImport (Constants.CoreMidiLibrary)]
 		unsafe extern static void MIDIThruConnectionParamsInitialize (MidiThruConnectionParamsStruct* inConnectionParams);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public MidiThruConnectionParams ()
 		{
 			// Always create a valid init point
@@ -403,11 +434,11 @@ namespace CoreMidi {
 		///         <value>To be added.</value>
 		///         <remarks>
 		///           <para>
-		///             <see cref="P:CoreMidi.MidiThruConnectionParams.HighNote" /> is greater than or equal to <see cref="P:CoreMidi.MidiThruConnectionParams.LowNote" /> means that notes outside this range will be filtered out.</para>
+		///             <see cref="CoreMidi.MidiThruConnectionParams.HighNote" /> is greater than or equal to <see cref="CoreMidi.MidiThruConnectionParams.LowNote" /> means that notes outside this range will be filtered out.</para>
 		///           <para>
 		///           </para>
 		///           <para>
-		///             <see cref="P:CoreMidi.MidiThruConnectionParams.LowNote" /> is greater than <see cref="P:CoreMidi.MidiThruConnectionParams.HighNote" /> means that notes inside this range will be filtered out.</para>
+		///             <see cref="CoreMidi.MidiThruConnectionParams.LowNote" /> is greater than <see cref="CoreMidi.MidiThruConnectionParams.HighNote" /> means that notes inside this range will be filtered out.</para>
 		///         </remarks>
 		public byte LowNote {
 			get { return connectionParams.LowNote; }
@@ -418,11 +449,11 @@ namespace CoreMidi {
 		///         <value>To be added.</value>
 		///         <remarks>
 		///           <para>
-		///             <see cref="P:CoreMidi.MidiThruConnectionParams.HighNote" /> is greater than or equal to <see cref="P:CoreMidi.MidiThruConnectionParams.LowNote" /> means that notes outside this range will be filtered out.</para>
+		///             <see cref="CoreMidi.MidiThruConnectionParams.HighNote" /> is greater than or equal to <see cref="CoreMidi.MidiThruConnectionParams.LowNote" /> means that notes outside this range will be filtered out.</para>
 		///           <para>
 		///           </para>
 		///           <para>
-		///             <see cref="P:CoreMidi.MidiThruConnectionParams.LowNote" /> is greater than <see cref="P:CoreMidi.MidiThruConnectionParams.HighNote" /> means that notes inside this range will be filtered out.</para>
+		///             <see cref="CoreMidi.MidiThruConnectionParams.LowNote" /> is greater than <see cref="CoreMidi.MidiThruConnectionParams.HighNote" /> means that notes inside this range will be filtered out.</para>
 		///         </remarks>
 		public byte HighNote {
 			get { return connectionParams.HighNote; }

@@ -1,14 +1,53 @@
 <Documentation>
   <Docs DocId="M:AudioUnit.AUGraph.Dispose(System.Boolean)">
-        <param name="disposing">
-          <para>If set to <see langword="true" />, the method is invoked directly and will dispose managed and unmanaged resources;   If set to <see langword="false" /> the method is being called by the garbage collector finalizer and should only release unmanaged resources.</para>
-        </param>
-        <summary>Releases the resources used by the AUGraph object.</summary>
-        <remarks>
-          <para>This Dispose method releases the resources used by the AUGraph class.</para>
-          <para>This method is called by both the Dispose() method and the object finalizer (Finalize).    When invoked by the Dispose method, the parameter disposing <paramref name="disposing" /> is set to <see langword="true" /> and any managed object references that this object holds are also disposed or released;  when invoked by the object finalizer, on the finalizer thread the value is set to <see langword="false" />. </para>
-          <para>Calling the Dispose method when the application is finished using the AUGraph ensures that all external resources used by this managed object are released as soon as possible.  Once developers have invoked the Dispose method, the object is no longer useful and developers should no longer make any calls to it.</para>
-          <para>  For more information on how to override this method and on the Dispose/IDisposable pattern, read the ``Implementing a Dispose Method'' document at https://msdn.microsoft.com/en-us/library/fs2xkftw.aspx</para>
-        </remarks>
-      </Docs>
+    <param name="disposing">
+      <para>If set to <see langword="true" />, the method is invoked directly and will dispose managed and unmanaged resources;   If set to <see langword="false" /> the method is being called by the garbage collector finalizer and should only release unmanaged resources.</para>
+    </param>
+    <summary>Releases the resources used by the AUGraph object.</summary>
+    <remarks>
+      <para>This Dispose method releases the resources used by the AUGraph class.</para>
+      <para>This method is called by both the Dispose() method and the object finalizer (Finalize).    When invoked by the Dispose method, the parameter disposing <paramref name="disposing" /> is set to <see langword="true" /> and any managed object references that this object holds are also disposed or released;  when invoked by the object finalizer, on the finalizer thread the value is set to <see langword="false" />. </para>
+      <para>Calling the Dispose method when the application is finished using the AUGraph ensures that all external resources used by this managed object are released as soon as possible.  Once developers have invoked the Dispose method, the object is no longer useful and developers should no longer make any calls to it.</para>
+      <para>  For more information on how to override this method and on the Dispose/IDisposable pattern, read the ``Implementing a Dispose Method'' document at https://msdn.microsoft.com/en-us/library/fs2xkftw.aspx</para>
+    </remarks>
+  </Docs>
+  <Docs DocId="T:AudioUnit.AUGraph">
+    <summary>An audio processing graph.</summary>
+    <remarks>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
+void createAUGraph ()
+{
+        AUGraphError result = 0;
+        int samplerNode, ioNode;
+
+        var sampler = new AudioComponentDescription () {
+                ComponentManufacturer = AudioComponentManufacturerType.Apple,
+		ComponentType = AudioComponentType.MusicDevice,
+		ComponentSubType = (int)AudioTypeMusicDevice.Sampler;
+        };
+
+        processingGraph = new AUGraph ();
+        samplerNode = processingGraph.AddNode (sampler);
+
+	var output = new AudioComponentDescription () {
+                ComponentManufacturer = AudioComponentManufacturerType.Apple,
+		ComponentType = AudioComponentType.Output;
+		ComponentSubType = (int)AudioTypeOutput.Remote;
+	};
+        ioNode = processingGraph.AddNode (output);
+
+        processingGraph.Open ();
+
+        result = processingGraph.ConnnectNodeInput (samplerNode, 0, ioNode, 0);
+        if (result != AUGraphError.OK)
+                throw new Exception ("Unable to open the audio processing graph.  Error code: " + result);
+        samplerUnit = processingGraph.GetNodeInfo (samplerNode);
+        ioUnit = processingGraph.GetNodeInfo (ioNode);
+}
+
+	]]></code>
+      </example>
+    </remarks>
+  </Docs>
 </Documentation>

@@ -303,13 +303,6 @@ namespace Introspection {
 					break;
 				}
 				break;
-			case "NSImage":
-				switch (selectorName) {
-				case "initByReferencingFile:":
-					return true;
-				}
-				break;
-
 			case "OSLogMessageComponent":
 				switch (selectorName) {
 				case "encodeWithCoder:":
@@ -1316,9 +1309,6 @@ namespace Introspection {
 
 		void CheckInit (Type t, MethodBase m, string name)
 		{
-			if (SkipInit (name, m))
-				return;
-
 			bool init = IsInitLike (name);
 			if (m is ConstructorInfo) {
 				if (!init)
@@ -1339,94 +1329,6 @@ namespace Introspection {
 			if (!selector.StartsWith ("init", StringComparison.OrdinalIgnoreCase))
 				return false;
 			return selector.Length < 5 || Char.IsUpper (selector [4]);
-		}
-
-		protected virtual bool SkipInit (string selector, MethodBase m)
-		{
-			switch (selector) {
-			// MPSGraphExecutable
-			case "initWithMPSGraphPackageAtURL:compilationDescriptor:":
-			case "initWithCoreMLPackageAtURL:compilationDescriptor:":
-			// NSAttributedString
-			case "initWithHTML:documentAttributes:":
-			case "initWithRTF:documentAttributes:":
-			case "initWithRTFD:documentAttributes:":
-			case "initWithURL:options:documentAttributes:error:":
-			case "initWithFileURL:options:documentAttributes:error:":
-			// AVAudioRecorder
-			case "initWithURL:settings:error:":
-			case "initWithURL:format:error:":
-			// NSUrlProtectionSpace
-			case "initWithHost:port:protocol:realm:authenticationMethod:":
-			case "initWithProxyHost:port:type:realm:authenticationMethod:":
-			// NSUserDefaults
-			case "initWithSuiteName:":
-			case "initWithUser:":
-			// GKScore
-			case "initWithCategory:":
-			case "initWithLeaderboardIdentifier:":
-			// MCSession
-			case "initWithPeer:securityIdentity:encryptionPreference:":
-			// INSetProfileInCarIntent and INSaveProfileInCarIntent
-			case "initWithProfileNumber:profileName:defaultProfile:":
-			case "initWithProfileNumber:profileLabel:defaultProfile:":
-			case "initWithProfileNumber:profileName:":
-			case "initWithProfileNumber:profileLabel:":
-			// MPSCnnBinaryConvolutionNode and MPSCnnBinaryFullyConnectedNode
-			case "initWithSource:weights:outputBiasTerms:outputScaleTerms:inputBiasTerms:inputScaleTerms:type:flags:":
-			// UISegmentedControl
-			case "initWithItems:":
-			// CLBeaconRegion
-			case "initWithUUID:identifier:":
-			case "initWithUUID:major:identifier:":
-			case "initWithUUID:major:minor:identifier:":
-			// Intents
-			case "initWithPersonHandle:nameComponents:displayName:image:contactIdentifier:customIdentifier:isMe:suggestionType:":
-			case "initWithPersonHandle:nameComponents:displayName:image:contactIdentifier:customIdentifier:isContactSuggestion:suggestionType:":
-			// NEHotspotConfiguration
-			case "initWithSSID:":
-			case "initWithSSID:passphrase:isWEP:":
-			case "initWithSSIDPrefix:":
-			case "initWithSSIDPrefix:passphrase:isWEP:":
-			// MapKit
-			case "initWithMaxCenterCoordinateDistance:":
-			case "initWithMinCenterCoordinateDistance:":
-			case "initExcludingCategories:":
-			case "initIncludingCategories:":
-			// NSImage
-			case "initWithDataIgnoringOrientation:":
-				var mi = m as MethodInfo;
-				return mi is not null && !mi.IsPublic && (mi.ReturnType.Name == "IntPtr" || mi.ReturnType.Name == "NativeHandle");
-			// NSAppleEventDescriptor
-			case "initListDescriptor":
-			case "initRecordDescriptor":
-			// SharedWithYouCore
-			case "initWithLocalIdentifier:":
-			case "initWithCollaborationIdentifier:":
-				return true;
-			// CloudKit
-			case "initWithExcludedZoneIDs:":
-			case "initWithZoneIDs:":
-			// DDDevicePickerViewController
-			case "initWithBrowseDescriptor:parameters:":
-				return true;
-			// MKAddressFilter
-			case "initExcludingOptions:":
-			case "initIncludingOptions:":
-				return true;
-			// GKGameCenterViewController
-			case "initWithAchievementID:":
-			case "initWithLeaderboardSetID:":
-				return true;
-			case "initWithBytes:length:":
-				switch (m.DeclaringType.Name) {
-				case "FSFileName":
-					return true;
-				}
-				return false;
-			default:
-				return false;
-			}
 		}
 
 		protected virtual void Dispose (NSObject obj, Type type)

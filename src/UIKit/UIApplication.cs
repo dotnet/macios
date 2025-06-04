@@ -17,13 +17,10 @@ using System.Runtime.InteropServices;
 using CoreFoundation;
 using Foundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 #nullable enable
 
 namespace UIKit {
+	/// <include file="../../docs/api/UIKit/UIKitThreadAccessException.xml" path="/Documentation/Docs[@DocId='T:UIKit.UIKitThreadAccessException']/*" />
 	public class UIKitThreadAccessException : Exception {
 		/// <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
@@ -155,6 +152,9 @@ namespace UIKit {
 		}
 	}
 
+	/// <summary>Provides data for the  event.</summary>
+	///     <remarks>
+	///     </remarks>
 	public partial class UIContentSizeCategoryChangedEventArgs {
 		/// <summary>The new size of the content, e.g., the new font size, in points.</summary>
 		///         <value>To be added.</value>

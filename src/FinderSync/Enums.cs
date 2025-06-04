@@ -4,6 +4,8 @@ using System;
 using ObjCRuntime;
 
 namespace FinderSync {
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[Native]
 	public enum FIMenuKind : ulong {
 		/// <summary>To be added.</summary>

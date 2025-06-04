@@ -14,8 +14,12 @@ using Foundation;
 
 namespace CoreFoundation {
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public partial class CFBundle : NativeObject {
 
+		/// <summary>To be added.</summary>
+		///     <remarks>To be added.</remarks>
 		public enum PackageType {
 			/// <summary>To be added.</summary>
 			Application,
@@ -25,6 +29,8 @@ namespace CoreFoundation {
 			Bundle,
 		}
 
+		/// <summary>To be added.</summary>
+		///     <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -649,6 +655,10 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static /* CFArray */ IntPtr CFBundleCopyPreferredLocalizationsFromArray (/* CFArrayRef */ IntPtr locArray);
 
+		/// <param name="locArray">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static string? []? GetPreferredLocalizations (string [] locArray)
 		{
 			if (locArray is null)
@@ -729,6 +739,10 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static /* NSDictionary */ IntPtr CFBundleCopyInfoDictionaryForURL (/* CFUrlRef */ IntPtr url);
 
+		/// <param name="url">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSDictionary? GetInfoDictionary (NSUrl url)
 		{
 			if (url is null)

@@ -23,8 +23,6 @@ namespace Extrospection {
 				return version.Major < 10 || (version.Major == 10 && version.Minor < 7);
 			case Platforms.tvOS:
 				return version.Major < 9;
-			case Platforms.watchOS:
-				return version.Major < 2;
 			case Platforms.MacCatalyst:
 				return version.Major < 13;
 			default:

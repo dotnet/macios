@@ -35,12 +35,10 @@ using ObjCRuntime;
 using System.Runtime.InteropServices;
 using System.Collections.Generic;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace Darwin {
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public class SystemLog : DisposableObject {
 		static SystemLog? _default;
 
@@ -55,6 +53,8 @@ namespace Darwin {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///     <remarks>To be added.</remarks>
 		[Flags]
 		public enum Option {
 			/// <summary>To be added.</summary>
@@ -253,7 +253,11 @@ namespace Darwin {
 		}
 	}
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public class Message : DisposableObject {
+		/// <summary>To be added.</summary>
+		///     <remarks>To be added.</remarks>
 		public enum Kind {
 			/// <summary>To be added.</summary>
 			Message,
@@ -261,6 +265,8 @@ namespace Darwin {
 			Query,
 		}
 
+		/// <summary>To be added.</summary>
+		///     <remarks>To be added.</remarks>
 		[Flags]
 		public enum Op {
 			/// <summary>To be added.</summary>
@@ -357,21 +363,12 @@ namespace Darwin {
 			asl_unset (Handle, keyStr);
 		}
 
-#if NET
 		[DllImport (Constants.SystemLibrary)]
 		extern static IntPtr asl_key (IntPtr handle, int /* uint32_t */ key);
-#else
-		[DllImport (Constants.SystemLibrary)]
-		extern static string asl_key (IntPtr handle, int /* uint32_t */ key);
-#endif
 
 		public string this [int key] {
 			get {
-#if NET
 				return Marshal.PtrToStringAuto (asl_key (Handle, key))!;
-#else
-				return asl_key (Handle, key);
-#endif
 			}
 		}
 

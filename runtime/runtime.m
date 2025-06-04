@@ -63,9 +63,7 @@ NSString * xamarin_custom_bundle_name = @"MonoBundle";
 bool xamarin_is_mkbundle = false;
 char *xamarin_entry_assembly_path = NULL;
 #endif
-#if defined (__i386__)
-const char *xamarin_arch_name = "i386";
-#elif defined (__x86_64__)
+#if defined (__x86_64__)
 const char *xamarin_arch_name = "x86_64";
 #else
 const char *xamarin_arch_name = NULL;
@@ -110,11 +108,9 @@ struct Trampolines {
 	void* retain_tramp;
 	void* static_tramp;
 	void* ctor_tramp;
-	void* x86_double_abi_stret_tramp;
 	void* static_fpret_single_tramp;
 	void* static_fpret_double_tramp;
 	void* static_stret_tramp;
-	void* x86_double_abi_static_stret_tramp;
 	void* long_tramp;
 	void* static_long_tramp;
 #if MONOMAC
@@ -171,19 +167,9 @@ static struct Trampolines trampolines = {
 	(void *) &xamarin_retain_trampoline,
 	(void *) &xamarin_static_trampoline,
 	(void *) &xamarin_ctor_trampoline,
-#if defined (__i386__)
-	(void *) &xamarin_x86_double_abi_stret_trampoline,
-#else
-	NULL,
-#endif
 	(void *) &xamarin_static_fpret_single_trampoline,
 	(void *) &xamarin_static_fpret_double_trampoline,
 	(void *) &xamarin_static_stret_trampoline,
-#if defined (__i386__)
-	(void *) &xamarin_static_x86_double_abi_stret_trampoline,
-#else
-	NULL,
-#endif
 	(void *) &xamarin_longret_trampoline,
 	(void *) &xamarin_static_longret_trampoline,
 #if MONOMAC
@@ -315,7 +301,7 @@ xamarin_get_managed_object_for_ptr_fast (id self, GCHandle *exception_gchandle)
 		mobj = xamarin_gchandle_get_target (gchandle);
 #if DEBUG
 		if (self != xamarin_get_nsobject_handle (mobj)) {
-			xamarin_assertion_message ("Internal consistency error, please file a bug (https://github.com/xamarin/xamarin-macios/issues/new). Additional data: found managed object %p=%p (%s) in native object %p (%s).\n",
+			xamarin_assertion_message ("Internal consistency error, please file a bug (https://github.com/dotnet/macios/issues/new). Additional data: found managed object %p=%p (%s) in native object %p (%s).\n",
 				mobj, xamarin_get_nsobject_handle (mobj), xamarin_class_get_full_name (mono_object_get_class (mobj), exception_gchandle), self, object_getClassName (self));
 		}
 #endif
@@ -801,7 +787,7 @@ xamarin_open_assembly_or_assert (const char *name)
 	MonoImageOpenStatus status = MONO_IMAGE_OK;
 	MonoAssembly *assembly = mono_assembly_open (name, &status);
 	if (assembly == NULL)
-		xamarin_assertion_message ("Failed to open the assembly '%s' from the app: %i (errno: %i). This is usually fixed by cleaning and rebuilding your project; if that doesn't work, please file a bug report: https://github.com/xamarin/xamarin-macios/issues/new", name, (int) status, errno);
+		xamarin_assertion_message ("Failed to open the assembly '%s' from the app: %i (errno: %i). This is usually fixed by cleaning and rebuilding your project; if that doesn't work, please file a bug report: https://github.com/dotnet/macios/issues/new", name, (int) status, errno);
 	return assembly;
 }
 
@@ -829,12 +815,12 @@ xamarin_open_assembly (const char *name)
 		if (assembly)
 			return assembly;
 
-		xamarin_assertion_message ("Could not find the assembly '%s' in the app nor as an already loaded assembly. This is usually fixed by cleaning and rebuilding your project; if that doesn't work, please file a bug report: https://github.com/xamarin/xamarin-macios/issues/new", name);
+		xamarin_assertion_message ("Could not find the assembly '%s' in the app nor as an already loaded assembly. This is usually fixed by cleaning and rebuilding your project; if that doesn't work, please file a bug report: https://github.com/dotnet/macios/issues/new", name);
 	}
 #endif
 
 	if (!exists)
-		xamarin_assertion_message ("Could not find the assembly '%s' in the app. This is usually fixed by cleaning and rebuilding your project; if that doesn't work, please file a bug report: https://github.com/xamarin/xamarin-macios/issues/new", name);
+		xamarin_assertion_message ("Could not find the assembly '%s' in the app. This is usually fixed by cleaning and rebuilding your project; if that doesn't work, please file a bug report: https://github.com/dotnet/macios/issues/new", name);
 
 	return xamarin_open_assembly_or_assert (path);
 }
@@ -1179,14 +1165,12 @@ xamarin_initialize ()
 #endif
 
 #if defined (CORECLR_RUNTIME)
-#if !defined(__arm__) // the dynamic trampolines haven't been implemented in 32-bit ARM assembly.
 	options.xamarin_objc_msgsend = (void *) xamarin_dyn_objc_msgSend;
 	options.xamarin_objc_msgsend_super = (void *) xamarin_dyn_objc_msgSendSuper;
 #if !defined(__aarch64__)
 	options.xamarin_objc_msgsend_stret = (void *) xamarin_dyn_objc_msgSend_stret;
 	options.xamarin_objc_msgsend_super_stret = (void *) xamarin_dyn_objc_msgSendSuper_stret;
 #endif // !defined(__aarch64__)
-#endif // !defined(__arm__)
 	options.unhandled_exception_handler = (void *) &xamarin_coreclr_unhandled_exception_handler;
 	options.reference_tracking_begin_end_callback = (void *) &xamarin_coreclr_reference_tracking_begin_end_callback;
 	options.reference_tracking_is_referenced_callback = (void *) &xamarin_coreclr_reference_tracking_is_referenced_callback;
@@ -1325,7 +1309,7 @@ objc_skip_type (const char *type)
 		case _C_ID:
 			type++;
 			if (*type == '"') {
-				// https://github.com/xamarin/xamarin-macios/issues/18562
+				// https://github.com/dotnet/macios/issues/18562
 				// @"..." is an object with the class name inside the quotes.
 				// https://github.com/llvm/llvm-project/blob/24a082878f7baec3651de56d54e5aa2b75a21b5f/clang/lib/AST/ASTContext.cpp#L8505-L8516
 				type++;
@@ -1333,7 +1317,7 @@ objc_skip_type (const char *type)
 					type++;
 				type++;
 			} else if (*type == '?' && type [1] == '<') {
-				// https://github.com/xamarin/xamarin-macios/issues/18562
+				// https://github.com/dotnet/macios/issues/18562
 				// @?<...> is a block pointer
 				// https://github.com/llvm/llvm-project/blob/24a082878f7baec3651de56d54e5aa2b75a21b5f/clang/lib/AST/ASTContext.cpp#L8405-L8426
 				type += 2;
@@ -1822,7 +1806,7 @@ xamarin_release_managed_ref (id self, bool user_type)
 		//       the GC, and deadlocks because thread T already has the
 		//       framework peer lock.
 		//
-		//    This is https://github.com/xamarin/xamarin-macios/issues/3943
+		//    This is https://github.com/dotnet/macios/issues/3943
 		//
 		// See also comment in xamarin_marshal_return_value_impl
 		xamarin_framework_peer_waypoint_safe ();
@@ -2475,7 +2459,7 @@ xamarin_pinvoke_override (const char *libraryName, const char *entrypointName)
 	if (!strcmp (libraryName, "__Internal")) {
 		symbol = dlsym (RTLD_DEFAULT, entrypointName);
 #if !defined (CORECLR_RUNTIME) // we're intercepting objc_msgSend calls using the managed System.Runtime.InteropServices.ObjectiveC.Bridge.SetMessageSendCallback instead.
-#if defined (__i386__) || defined (__x86_64__) || defined (__arm64__)
+#if defined (__x86_64__) || defined (__arm64__)
 	} else if (!strcmp (libraryName, "/usr/lib/libobjc.dylib")) {
 		if (xamarin_marshal_objectivec_exception_mode != MarshalObjectiveCExceptionModeDisable) {
 			if (!strcmp (entrypointName, "objc_msgSend")) {
@@ -2494,7 +2478,7 @@ xamarin_pinvoke_override (const char *libraryName, const char *entrypointName)
 		} else {
 			return NULL;
 		}
-#endif // defined (__i386__) || defined (__x86_64__) || defined (__arm64__)
+#endif // defined (__x86_64__) || defined (__arm64__)
 #endif // !defined (CORECLR_RUNTIME)
 	} else if (xamarin_is_native_library (libraryName)) {
 		switch (xamarin_libmono_native_link_mode) {
@@ -2718,7 +2702,7 @@ xamarin_locate_assembly_resource (const char *assembly_name, const char *culture
 		return true;
 	}
 
-#if !MONOMAC && (defined(__i386__) || defined (__x86_64__))
+#if !MONOMAC && defined (__x86_64__)
 	// In the simulator we also check in a 'simulator' subdirectory. This is
 	// so that we can create a framework that works for both simulator and
 	// device, without affecting device builds in any way (device-specific

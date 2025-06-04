@@ -20,6 +20,8 @@ using Foundation;
 using System.Runtime.Versioning;
 
 namespace CoreFoundation {
+	/// <summary>A collection of utility methods for setting Core Foundation preferences.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -414,6 +416,9 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		static extern byte CFPreferencesAppSynchronize (IntPtr applicationId);
 
+		/// <summary>For the current application, writes all newly set preferences to permanent storage and then loads all existing preferences.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static bool AppSynchronize ()
 		{
 			if (CurrentApplication is null)
@@ -421,6 +426,10 @@ namespace CoreFoundation {
 			return AppSynchronize (CurrentApplication);
 		}
 
+		/// <param name="applicationId">To be added.</param>
+		///         <summary>For the application that is identified by <paramref name="applicationId" />, writes all newly set preferences to permanent storage and then loads all existing preferences.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static bool AppSynchronize (string applicationId)
 		{
 			if (applicationId is null) {
@@ -432,6 +441,10 @@ namespace CoreFoundation {
 			}
 		}
 
+		/// <param name="applicationId">To be added.</param>
+		///         <summary>For the application that is identified by <paramref name="applicationId" />, writes all newly set preferences to permanent storage and then loads all existing preferences.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static bool AppSynchronize (NSString applicationId)
 		{
 			if (applicationId is null) {
@@ -446,6 +459,10 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		static extern byte CFPreferencesAppValueIsForced (IntPtr key, IntPtr applicationId);
 
+		/// <param name="key">To be added.</param>
+		///         <summary>Returns <see langword="true" /> if the user cannot change the preference that is identified by <paramref name="key" />, for the current application. Otherwise false.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static bool AppValueIsForced (string key)
 		{
 			if (CurrentApplication is null)
@@ -453,6 +470,11 @@ namespace CoreFoundation {
 			return AppValueIsForced (key, CurrentApplication);
 		}
 
+		/// <param name="key">To be added.</param>
+		///         <param name="applicationId">To be added.</param>
+		///         <summary>Returns <see langword="true" /> if the user cannot change the preference that is identified by <paramref name="key" />, for the application that is identified by <paramref name="applicationId" />. Otherwise false.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static bool AppValueIsForced (string key, string applicationId)
 		{
 			if (applicationId is null) {
@@ -464,6 +486,11 @@ namespace CoreFoundation {
 			}
 		}
 
+		/// <param name="key">To be added.</param>
+		///         <param name="applicationId">To be added.</param>
+		///         <summary>Returns <see langword="true" /> if the user cannot change the preference that is identified by <paramref name="key" />, for the application that is identified by <paramref name="applicationId" />. Otherwise false.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static bool AppValueIsForced (string key, NSString applicationId)
 		{
 			if (key is null) {

@@ -6,6 +6,9 @@ using System.Collections.Generic;
 #nullable enable
 
 namespace ObjCRuntime {
+	/// <summary>Class that represents an exception that occurs in the Xamarin runtime.</summary>
+	///     <remarks>
+	///     </remarks>
 	public class RuntimeException : Exception {
 		/// <param name="message">The error message that explains the reason for the exception.</param>
 		///         <param name="args">An object array that contains zero or more objects to format the error message.</param>

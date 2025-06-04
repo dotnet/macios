@@ -28,12 +28,13 @@ using System.Runtime.Versioning;
 #nullable disable
 
 namespace Foundation {
-#if NET
+	/// <summary>Represents a range given by a location and length.</summary>
+	///     <remarks>To be added.</remarks>
+	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/SimpleTextInput/">SimpleTextInput</related>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public struct NSRange : IEquatable<NSRange> {
 		/// <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
@@ -67,6 +68,9 @@ namespace Foundation {
 			return Location == other.Location && Length == other.Length;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override string ToString ()
 		{
 			return string.Format ("[Location={0},Length={1}]", Location, Length);

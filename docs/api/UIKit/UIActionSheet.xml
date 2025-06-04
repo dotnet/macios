@@ -1,10 +1,10 @@
 <Documentation>
   <Docs DocId="T:UIKit.UIActionSheet">
-    <summary>A <see cref="T:UIKit.UIView" /> that displays an action sheet with one or more buttons. (As of iOS 8, devs should use <see cref="T:UIKit.UIAlertController" /> rather than this class.)</summary>
+    <summary>A <see cref="UIKit.UIView" /> that displays an action sheet with one or more buttons. (As of iOS 8, devs should use <see cref="UIKit.UIAlertController" /> rather than this class.)</summary>
     <remarks>
-      <para>As of iOS 8, app devs should use <see cref="T:UIKit.UIAlertController" /> rather than this class. Extensions may not use this class at all.</para>
+      <para>As of iOS 8, app devs should use <see cref="UIKit.UIAlertController" /> rather than this class. Extensions may not use this class at all.</para>
       <para>
-        The <see cref="T:UIKit.UIActionSheet" /> control is a convenient way to allow the application user to choose among alternative actions. The following code and diagram are taken from the "Action Sheets" section of the "iOS Standard Controls" sample.
+        The <see cref="UIKit.UIActionSheet" /> control is a convenient way to allow the application user to choose among alternative actions. The following code and diagram are taken from the "Action Sheets" section of the "iOS Standard Controls" sample.
       </para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
@@ -35,7 +35,7 @@ protected void HandleBtnActionSheetWithOtherButtonsTouchUpInside (object sender,
       <para>
    The C# style allows the user to add or remove event handlers at runtime by assigning to the events of properties of this class.    Event handlers can be anyone of a method, an anonymous methods or a lambda expression.  Using the C# style events or properties will override any manual settings to the Objective-C Delegate or WeakDelegate settings.
 </para>
-      <para>The Objective-C style requires the user to create a new class derived from <see cref="T:UIKit.UIActionSheetDelegate" /> class and assign it to the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20Delegate&amp;scope=Xamarin" title="P:UIKit.Delegate">P:UIKit.Delegate</a></format> property.   Alternatively, for low-level control, by creating a class derived from <see cref="T:Foundation.NSObject" /> which has every entry point properly decorated with an [Export] attribute.   The instance of this object can then be assigned to the <see cref="P:UIKit.UIActionSheet.WeakDelegate" /> property.   
+      <para>The Objective-C style requires the user to create a new class derived from <see cref="UIKit.UIActionSheetDelegate" /> class and assign it to the <see cref="UIKit.Delegate" /> property.   Alternatively, for low-level control, by creating a class derived from <see cref="Foundation.NSObject" /> which has every entry point properly decorated with an [Export] attribute.   The instance of this object can then be assigned to the <see cref="UIKit.UIActionSheet.WeakDelegate" /> property.   
 </para>
     </remarks>
     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIActionSheet_Class/index.html">Apple documentation for <c>UIActionSheet</c></related>
@@ -45,8 +45,8 @@ protected void HandleBtnActionSheetWithOtherButtonsTouchUpInside (object sender,
         <param name="del">A delegate that will respond to taps in the action sheet.</param>
         <param name="cancelTitle">The title of the Cancel button. This will be displayed in a black button.</param>
         <param name="destroy">The title of the destructive button. This will be displayed in a red button.</param>
-        <param name="other">An array of <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> to use for other buttons in the <see cref="T:UIKit.UIActionSheet" />.</param>
-        <summary>Initializes a <see cref="T:UIKit.UIActionSheet" /> instance.</summary>
+        <param name="other">An array of <see cref="System.String" /> to use for other buttons in the <see cref="UIKit.UIActionSheet" />.</param>
+        <summary>Initializes a <see cref="UIKit.UIActionSheet" /> instance.</summary>
         <remarks>
           <para>Pass <see langword="null" /> to <paramref name="title" /> if there is no text to display in the title area.</para>
           <para>If the action sheet is being presented on an iPad, then the <paramref name="cancelTitle" /> should be set to <see langword="null" />.</para>

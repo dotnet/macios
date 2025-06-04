@@ -12,7 +12,7 @@ using ObjCRuntime;
 namespace MultipeerConnectivity {
 
 	// NSInteger -> MCSession.h
-	/// <summary>An enumeration whose values specify whether a message's delivery is guaranteed. Used with <see cref="M:MultipeerConnectivity.MCSession.SendData(Foundation.NSData,MultipeerConnectivity.MCPeerID[],MultipeerConnectivity.MCSessionSendDataMode,Foundation.NSError@)" />.</summary>
+	/// <summary>An enumeration whose values specify whether a message's delivery is guaranteed. Used with <see cref="MultipeerConnectivity.MCSession.SendData(Foundation.NSData,MultipeerConnectivity.MCPeerID[],MultipeerConnectivity.MCSessionSendDataMode,out Foundation.NSError)" />.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MCSessionSendDataMode : long {
@@ -23,20 +23,20 @@ namespace MultipeerConnectivity {
 	}
 
 	// NSInteger -> MCSession.h
-	/// <summary>An enumeration whose values indicate the state of a <see cref="T:MultipeerConnectivity.MCSession" />. Used with <see cref="M:MultipeerConnectivity.MCSessionDelegate.DidChangeState(MultipeerConnectivity.MCSession,MultipeerConnectivity.MCPeerID,MultipeerConnectivity.MCSessionState)" />.</summary>
+	/// <summary>An enumeration whose values indicate the state of a <see cref="MultipeerConnectivity.MCSession" />. Used with <see cref="MultipeerConnectivity.MCSessionDelegate.DidChangeState(MultipeerConnectivity.MCSession,MultipeerConnectivity.MCPeerID,MultipeerConnectivity.MCSessionState)" />.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MCSessionState : long {
-		/// <summary>Indicates that the <see cref="T:MultipeerConnectivity.MCSession" /> is not connected.</summary>
+		/// <summary>Indicates that the <see cref="MultipeerConnectivity.MCSession" /> is not connected.</summary>
 		NotConnected,
-		/// <summary>Indicates that the <see cref="T:MultipeerConnectivity.MCSession" /> is in the process of connecting.</summary>
+		/// <summary>Indicates that the <see cref="MultipeerConnectivity.MCSession" /> is in the process of connecting.</summary>
 		Connecting,
-		/// <summary>Indicates that the <see cref="T:MultipeerConnectivity.MCSession" /> is connected.</summary>
+		/// <summary>Indicates that the <see cref="MultipeerConnectivity.MCSession" /> is connected.</summary>
 		Connected,
 	}
 
 	// NSInteger -> MCSession.h
-	/// <summary>An enumeration whose values specify whether an <see cref="T:MultipeerConnectivity.MCSession" /> should encrypt its connection. Used with <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=C:MultipeerConnectivity.MCSession(MultipeerConnectivity.MCPeerID,Security.SecIdentity, MultipeerConnectivity.MCEncryptionPreference)&amp;scope=Xamarin" title="C:MultipeerConnectivity.MCSession(MultipeerConnectivity.MCPeerID,Security.SecIdentity, MultipeerConnectivity.MCEncryptionPreference)">C:MultipeerConnectivity.MCSession(MultipeerConnectivity.MCPeerID,Security.SecIdentity, MultipeerConnectivity.MCEncryptionPreference)</a></format>.</summary>
+	/// <summary>An enumeration whose values specify whether an <see cref="MultipeerConnectivity.MCSession" /> should encrypt its connection. Used with <see cref="MultipeerConnectivity.MCSession(MultipeerConnectivity.MCPeerID,Security.SecIdentity, MultipeerConnectivity.MCEncryptionPreference)" />.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MCEncryptionPreference : long {

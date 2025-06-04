@@ -2,9 +2,9 @@
   <Docs DocId="T:JavaScriptCore.JSContext">
     <summary>Encapsulates a JavaScript engine.</summary>
     <remarks>
-      <para>The <see cref="T:JavaScriptCore.JSContext" /> is the central object of the <c>JavaScriptCore</c> namespace. The <see cref="T:JavaScriptCore.JSContext" /> maintains a JavaScript environment (manipulated by the <see cref="P:JavaScriptCore.JSContext.Item(Foundation.NSObject)" /> property) and evaluates scripts with the <see cref="M:JavaScriptCore.JSContext.EvaluateScript(System.String,Foundation.NSUrl)" /> method.</para>
-      <para>Application developers will often want to assign a delegate to the <see cref="P:JavaScriptCore.JSContext.ExceptionHandler" /> property to gain access, in their Xamarin.iOS code, of exceptions raised in the JavaScript realm.</para>
-      <para>The following example shows the basic use of <see cref="T:JavaScriptCore.JSContext" />. The context is instantiated and a simple exception handler is assigned. One of the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Java%20Script%20Core%20JSValue%20From&amp;scope=Xamarin" title="M:JavaScriptCore.JSValue.From*">M:JavaScriptCore.JSValue.From*</a></format> method overloads is used to assign values to the JavaScript variables <c>arg1</c> and <c>arg2</c>. The <see cref="M:JavaScriptCore.JSContext.EvaluateScript(System.String,Foundation.NSUrl)" /> method evaluates the JavaScript and returns the result, which is converted back into a .NET object with the <see cref="M:JavaScriptCore.JSValue.ToInt32" /> method. </para>
+      <para>The <see cref="JavaScriptCore.JSContext" /> is the central object of the <c>JavaScriptCore</c> namespace. The <see cref="JavaScriptCore.JSContext" /> maintains a JavaScript environment (manipulated by the <see cref="JavaScriptCore.JSContext.Item(Foundation.NSObject)" /> property) and evaluates scripts with the <see cref="JavaScriptCore.JSContext.EvaluateScript(System.String,Foundation.NSUrl)" /> method.</para>
+      <para>Application developers will often want to assign a delegate to the <see cref="JavaScriptCore.JSContext.ExceptionHandler" /> property to gain access, in their Xamarin.iOS code, of exceptions raised in the JavaScript realm.</para>
+      <para>The following example shows the basic use of <see cref="JavaScriptCore.JSContext" />. The context is instantiated and a simple exception handler is assigned. One of the <see cref="JavaScriptCore.JSValue.From" /> method overloads is used to assign values to the JavaScript variables <c>arg1</c> and <c>arg2</c>. The <see cref="JavaScriptCore.JSContext.EvaluateScript(System.String,Foundation.NSUrl)" /> method evaluates the JavaScript and returns the result, which is converted back into a .NET object with the <see cref="JavaScriptCore.JSValue.ToInt32" /> method. </para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
 jsContext = new JSContext();
@@ -21,7 +21,7 @@ var jsResult = jsContext.EvaluateScript("arg1 + arg2;");
 var four = jsResult.ToInt32();
           ]]></code>
       </example>
-      <para>The <see cref="T:JavaScriptCore.JSContext" /> contains the global JavaScript context, including variables set by JavaScript calculations, as shown in the following example:</para>
+      <para>The <see cref="JavaScriptCore.JSContext" /> contains the global JavaScript context, including variables set by JavaScript calculations, as shown in the following example:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
 jsContext.EvaluateScript("sum = 2 + 2;");
@@ -31,7 +31,7 @@ var four = jsContext[(NSString)"sum"].ToInt32();
       <format type="text/html">
         <h3>Calling C# code from JavaScript</h3>
       </format>
-      <para>Developers can extend the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:JavascriptCore.IJSExport&amp;scope=Xamarin" title="T:JavascriptCore.IJSExport">T:JavascriptCore.IJSExport</a></format> interface to define methods that can be called from JavaScript. Developers must mark that interface with the <see cref="T:Foundation.ProtocolAttribute" /> attribute and must mark JavaScript-callable methods with the <see cref="T:Foundation.ExportAttribute" /> attribute. They must also add <c>--registrar:static</c> to the arguments used by <c>mtouch</c> during the build. For example:</para>
+      <para>Developers can extend the <see cref="JavascriptCore.IJSExport" /> interface to define methods that can be called from JavaScript. Developers must mark that interface with the <see cref="Foundation.ProtocolAttribute" /> attribute and must mark JavaScript-callable methods with the <see cref="Foundation.ExportAttribute" /> attribute. They must also add <c>--registrar:static</c> to the arguments used by <c>mtouch</c> during the build. For example:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
 [Protocol ()]
@@ -60,8 +60,8 @@ class MyJSExporter : NSObject, IMyJSVisibleProtocol
     ]]></code>
       </example>
       <para>The above example:
-      <list type="bullet"><item><term>Defines <c>IMyJSVisibleProtocol</c> as extending <see cref="T:JavaScriptCore.IJSExport" />;</term></item><item><term>Decorates <c>IMyJSVisibleProtocol</c> and it's method <c>MyFunc</c> with the <see cref="T:Foundation.ProtocolAttribute" /> and <see cref="T:Foundation.ExportAttribute" /> attributes;</term></item><item><term>Implements the interface</term></item></list></para>
-      <para>To expose the <c>IMyJSVisibleProtocol</c> to JavaScript, the developer could use code like the following in the <see cref="M:UIKit.UIViewController.ViewDidLoad" /> method of their <see cref="T:UIKit.UIViewController" />:</para>
+      <list type="bullet"><item><term>Defines <c>IMyJSVisibleProtocol</c> as extending <see cref="JavaScriptCore.IJSExport" />;</term></item><item><term>Decorates <c>IMyJSVisibleProtocol</c> and it's method <c>MyFunc</c> with the <see cref="Foundation.ProtocolAttribute" /> and <see cref="Foundation.ExportAttribute" /> attributes;</term></item><item><term>Implements the interface</term></item></list></para>
+      <para>To expose the <c>IMyJSVisibleProtocol</c> to JavaScript, the developer could use code like the following in the <see cref="UIKit.UIViewController.ViewDidLoad" /> method of their <see cref="UIKit.UIViewController" />:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
 webView = new UIWebView(UIScreen.MainScreen.Bounds);
@@ -76,8 +76,8 @@ webView.LoadRequest(NSUrlRequest.FromUrl(new NSUrl("MyHtmlFile.html", false)));
     ]]></code>
       </example>
       <para>The above C# code:
-        <list type="bullet"><item><term>Creates a <see cref="T:UIKit.UIWebView" /> which will be displayed to the end user;</term></item><item><term>Gets the <see cref="T:JavaScriptCore.JSContext" /> of the <see cref="T:UIKit.UIWebView" /> object's main frame;</term></item><item><term>Adds an exception handler so that JavaScript trouble will be visible to the Xamarin project;</term></item><item><term>Instantiates a new <c>MyJSExporter</c> object that, as described above, implements the <c>IMyJSVisibleProtocol</c>;</term></item><item><term>Adds that object to the <see cref="T:JavaScriptCore.JSContext" /> with the name <c>myCSharpObject</c>;</term></item><item><term>Loads an HTML file (see below)</term></item></list></para>
-      <para>Finally, the HTML file that is loaded into the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:UIKIt.UIWebView&amp;scope=Xamarin" title="T:UIKIt.UIWebView">T:UIKIt.UIWebView</a></format> and into whose <see cref="T:JavaScriptCore.JSContext" /> the <c>MyJSExporter</c> object has been placed can access the object from within JavaScript:</para>
+        <list type="bullet"><item><term>Creates a <see cref="UIKit.UIWebView" /> which will be displayed to the end user;</term></item><item><term>Gets the <see cref="JavaScriptCore.JSContext" /> of the <see cref="UIKit.UIWebView" /> object's main frame;</term></item><item><term>Adds an exception handler so that JavaScript trouble will be visible to the Xamarin project;</term></item><item><term>Instantiates a new <c>MyJSExporter</c> object that, as described above, implements the <c>IMyJSVisibleProtocol</c>;</term></item><item><term>Adds that object to the <see cref="JavaScriptCore.JSContext" /> with the name <c>myCSharpObject</c>;</term></item><item><term>Loads an HTML file (see below)</term></item></list></para>
+      <para>Finally, the HTML file that is loaded into the <see cref="UIKit.UIWebView" /> and into whose <see cref="JavaScriptCore.JSContext" /> the <c>MyJSExporter</c> object has been placed can access the object from within JavaScript:</para>
       <example>
         <code lang="HTML"><![CDATA[
 <html>
@@ -138,7 +138,7 @@ webView.LoadRequest(NSUrlRequest.FromUrl(new NSUrl("MyHtmlFile.html", false)));
 </html>
         ]]></code>
       </example>
-      <para>In the application, use <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Net%20Http%20Listener&amp;scope=Xamarin" title="T:System.Net.HttpListener">T:System.Net.HttpListener</a></format> to listen and respond to that request: </para>
+      <para>In the application, use <see cref="System.Net.HttpListener" /> to listen and respond to that request: </para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
 //Wire up listener
@@ -168,7 +168,7 @@ void Callback(IAsyncResult result)
 }
           ]]></code>
       </example>
-      <para>Finally, a third technique is to poll the <see cref="T:JavaScriptCore.JSContext" /> for a flag set by a JavaScript calculation.</para>
+      <para>Finally, a third technique is to poll the <see cref="JavaScriptCore.JSContext" /> for a flag set by a JavaScript calculation.</para>
     </remarks>
     <related type="externalDocumentation" href="https://developer.apple.com/reference/JavaScriptCore/JSContext">Apple documentation for <c>JSContext</c></related>
   </Docs>

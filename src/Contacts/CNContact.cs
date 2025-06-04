@@ -18,7 +18,7 @@ namespace Contacts {
 	public partial class CNContact {
 
 		/// <param name="options">To be added.</param>
-		///         <summary>Whether the key described in <paramref name="options" /> is available for this <see cref="T:Contacts.CNContact" />.</summary>
+		///         <summary>Whether the key described in <paramref name="options" /> is available for this <see cref="Contacts.CNContact" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		public virtual bool IsKeyAvailable (CNContactOptions options)
@@ -110,11 +110,7 @@ namespace Contacts {
 		public bool AreKeysAvailable (CNContactOptions options)
 		{
 			using (var array = new NSMutableArray ()) {
-#if NET
 				foreach (var value in Enum.GetValues<CNContactOptions> ()) {
-#else
-				foreach (CNContactOptions value in Enum.GetValues (typeof (CNContactOptions))) {
-#endif
 					if ((options & value) != CNContactOptions.None)
 						array.Add (ContactOptionsToNSString (value));
 				}

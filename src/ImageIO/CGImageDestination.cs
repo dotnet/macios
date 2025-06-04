@@ -35,10 +35,6 @@ using Foundation;
 using CoreFoundation;
 using CoreGraphics;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace ImageIO {
 
 	public partial class CGImageDestinationOptions {
@@ -62,7 +58,6 @@ namespace ImageIO {
 	}
 
 	public partial class CGCopyImageSourceOptions {
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -70,10 +65,8 @@ namespace ImageIO {
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public CGImageMetadata? Metadata { get; set; }
 
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -81,10 +74,8 @@ namespace ImageIO {
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public bool MergeMetadata { get; set; }
 
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -92,10 +83,8 @@ namespace ImageIO {
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public bool ShouldExcludeXMP { get; set; }
 
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -103,10 +92,8 @@ namespace ImageIO {
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public bool ShouldExcludeGPS { get; set; }
 
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -114,10 +101,8 @@ namespace ImageIO {
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public DateTime? DateTime { get; set; }
 
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -125,7 +110,6 @@ namespace ImageIO {
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public int? Orientation { get; set; }
 
 		internal NSMutableDictionary ToDictionary ()
@@ -159,6 +143,8 @@ namespace ImageIO {
 		}
 	}
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public partial class CGImageAuxiliaryDataInfo {
 
 		/// <summary>To be added.</summary>
@@ -174,20 +160,12 @@ namespace ImageIO {
 		}
 	}
 
-#if NET
+	/// <include file="../../docs/api/ImageIO/CGImageDestination.xml" path="/Documentation/Docs[@DocId='T:ImageIO.CGImageDestination']/*" />
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CGImageDestination : NativeObject {
-#if !NET
-		internal CGImageDestination (NativeHandle handle)
-			: base (handle, false)
-		{
-		}
-#endif
-
 		[Preserve (Conditional = true)]
 		internal CGImageDestination (NativeHandle handle, bool owns)
 			: base (handle, owns)
@@ -199,7 +177,7 @@ namespace ImageIO {
 		///         <remarks>
 		///           <para>The returned token is the CoreFoundation type identifier (CFType) that has been assigned to this class.</para>
 		///           <para>This can be used to determine type identity between different CoreFoundation objects.</para>
-		///           <para>You can retrieve the type of a CoreFoundation object by invoking the <see cref="M:CoreFoundation.CFType.GetTypeID(System.IntPtr)" /> on the native handle of the object</para>
+		///           <para>You can retrieve the type of a CoreFoundation object by invoking the <see cref="CoreFoundation.CFType.GetTypeID(System.IntPtr)" /> on the native handle of the object</para>
 		///           <example>
 		///             <code lang="csharp lang-csharp"><![CDATA[bool isCGImageDestination = (CFType.GetTypeID (foo.Handle) == CGImageDestination.GetTypeID ());]]></code>
 		///           </example>
@@ -256,6 +234,13 @@ namespace ImageIO {
 			/* CFMutableDataRef __nonnull */ IntPtr data, /* CFStringRef __nonnull */ IntPtr stringType,
 			/* size_t */ nint count, /* CFDictionaryRef __nullable */ IntPtr options);
 
+		/// <param name="data">To be added.</param>
+		///         <param name="typeIdentifier">To be added.</param>
+		///         <param name="imageCount">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static CGImageDestination? Create (NSMutableData data, string typeIdentifier, int imageCount, CGImageDestinationOptions? options = null)
 		{
 			if (data is null)
@@ -280,6 +265,12 @@ namespace ImageIO {
 			/* CFURLRef __nonnull */ IntPtr url, /* CFStringRef __nonnull */ IntPtr stringType,
 			/* size_t */ nint count, /* CFDictionaryRef __nullable */ IntPtr options);
 
+		/// <param name="url">To be added.</param>
+		///         <param name="typeIdentifier">To be added.</param>
+		///         <param name="imageCount">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static CGImageDestination? Create (NSUrl url, string typeIdentifier, int imageCount)
 		{
 			if (url is null)
@@ -301,6 +292,9 @@ namespace ImageIO {
 		extern static void CGImageDestinationSetProperties (/* CGImageDestinationRef __nonnull */ IntPtr idst,
 			/* CFDictionaryRef __nullable */ IntPtr properties);
 
+		/// <param name="properties">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void SetProperties (NSDictionary? properties)
 		{
 			CGImageDestinationSetProperties (Handle, properties.GetHandle ());
@@ -312,6 +306,10 @@ namespace ImageIO {
 			/* CGImageRef __nonnull */ IntPtr image,
 			/* CFDictionaryRef __nullable */ IntPtr properties);
 
+		/// <param name="image">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void AddImage (CGImage image, CGImageDestinationOptions? options = null)
 		{
 			if (image is null)
@@ -323,6 +321,10 @@ namespace ImageIO {
 			}
 		}
 
+		/// <param name="image">To be added.</param>
+		///         <param name="properties">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void AddImage (CGImage image, NSDictionary? properties)
 		{
 			if (image is null)
@@ -338,6 +340,11 @@ namespace ImageIO {
 			/* CGImageSourceRef __nonnull */ IntPtr sourceHandle, /* size_t */ nint index,
 			/* CFDictionaryRef __nullable */ IntPtr properties);
 
+		/// <param name="source">To be added.</param>
+		///         <param name="index">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void AddImage (CGImageSource source, int index, CGImageDestinationOptions? options = null)
 		{
 			if (source is null)
@@ -349,6 +356,11 @@ namespace ImageIO {
 			GC.KeepAlive (dict);
 		}
 
+		/// <param name="source">To be added.</param>
+		///         <param name="index">To be added.</param>
+		///         <param name="properties">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void AddImage (CGImageSource source, int index, NSDictionary? properties)
 		{
 			if (source is null)
@@ -362,6 +374,9 @@ namespace ImageIO {
 		[DllImport (Constants.ImageIOLibrary)]
 		extern static byte CGImageDestinationFinalize (/* CGImageDestinationRef __nonnull */ IntPtr idst);
 
+		/// <summary>Writes the images to the destination and disposes the object.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool Close ()
 		{
 			var success = CGImageDestinationFinalize (Handle);
@@ -369,23 +384,24 @@ namespace ImageIO {
 			return success != 0;
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		[DllImport (Constants.ImageIOLibrary)]
 		extern static void CGImageDestinationAddImageAndMetadata (/* CGImageDestinationRef __nonnull */ IntPtr idst,
 			/* CGImageRef __nonnull */ IntPtr image, /* CGImageMetadataRef __nullable */ IntPtr metadata,
 			/* CFDictionaryRef __nullable */ IntPtr options);
 
-#if NET
+		/// <param name="image">To be added.</param>
+		///         <param name="meta">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		public void AddImageAndMetadata (CGImage image, CGImageMetadata meta, NSDictionary? options)
 		{
@@ -397,35 +413,40 @@ namespace ImageIO {
 			GC.KeepAlive (options);
 		}
 
-#if NET
+		/// <param name="image">To be added.</param>
+		///         <param name="meta">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public void AddImageAndMetadata (CGImage image, CGImageMetadata meta, CGImageDestinationOptions? options)
 		{
 			using var o = options?.ToDictionary ();
 			AddImageAndMetadata (image, meta, o);
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		[DllImport (Constants.ImageIOLibrary)]
 		unsafe extern static byte CGImageDestinationCopyImageSource (/* CGImageDestinationRef __nonnull */ IntPtr idst,
 			/* CGImageSourceRef __nonnull */ IntPtr image, /* CFDictionaryRef __nullable */ IntPtr options,
 			/* CFErrorRef* */ IntPtr* err);
 
-#if NET
+		/// <param name="image">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		public bool CopyImageSource (CGImageSource image, NSDictionary? options, out NSError? error)
 		{
@@ -442,33 +463,37 @@ namespace ImageIO {
 			return result != 0;
 		}
 
-#if NET
+		/// <param name="image">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public bool CopyImageSource (CGImageSource image, CGCopyImageSourceOptions? options, out NSError? error)
 		{
 			using var o = options?.ToDictionary ();
 			return CopyImageSource (image, o, out error);
 		}
 
-#if NET
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		[DllImport (Constants.ImageIOLibrary)]
 		static extern void CGImageDestinationAddAuxiliaryDataInfo (IntPtr /* CGImageDestinationRef* */ idst, IntPtr /* CFStringRef* */ auxiliaryImageDataType, IntPtr /* CFDictionaryRef* */ auxiliaryDataInfoDictionary);
 
-#if NET
+		/// <param name="auxiliaryImageDataType">To be added.</param>
+		///         <param name="auxiliaryDataInfo">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public void AddAuxiliaryDataInfo (CGImageAuxiliaryDataType auxiliaryImageDataType, CGImageAuxiliaryDataInfo? auxiliaryDataInfo)
 		{
 			using (var dict = auxiliaryDataInfo?.Dictionary) {

@@ -19,14 +19,6 @@ namespace MonoTouchFixtures.CoreText {
 	[TestFixture]
 	[Preserve (AllMembers = true)]
 	public class CTFontCollectionTest {
-
-		[SetUp]
-		public void Setup ()
-		{
-			// CoreText was introduced in watchOS 2.2
-			TestRuntime.AssertXcodeVersion (7, 3);
-		}
-
 		[Test]
 		public void GetMatchingFontDescriptorsTest ()
 		{
@@ -39,7 +31,7 @@ namespace MonoTouchFixtures.CoreText {
 
 			Assert.IsTrue (sortIsCalled, "GetMatchingFontDescriptors delegate is called");
 
-			// Native crash (can't assert on it) if https://github.com/xamarin/xamarin-macios/pull/3871 fix not present.
+			// Native crash (can't assert on it) if https://github.com/dotnet/macios/pull/3871 fix not present.
 			descList.First ().GetAttributes ();
 		}
 

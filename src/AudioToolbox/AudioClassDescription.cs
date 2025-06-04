@@ -38,6 +38,8 @@ using System.Runtime.Versioning;
 namespace AudioToolbox {
 
 	// CoreAudio.framework - CoreAudioTypes.h
+	/// <summary>A class that describes an installed codec.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -97,6 +99,9 @@ namespace AudioToolbox {
 		*/
 	}
 
+	/// <summary>Enumeration of values used to specify linear PCM conversions.</summary>
+	///     <remarks>
+	///     </remarks>
 	public enum AudioCodecComponentType // Implictly cast to OSType in CoreAudio.framework - CoreAudioTypes.h
 	{
 		/// <summary>Value identifies decoders to linear PCM.</summary>

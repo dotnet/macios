@@ -26,13 +26,13 @@ using System.Runtime.InteropServices;
 
 using ObjCRuntime;
 
+#nullable enable
+
 namespace Foundation {
 
 	public partial class NSThread {
-
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Get or set the current thread's priority.</summary>
+		/// <value>The current thread's priority, between 0.0 (lowest priority) and 1.0 (highest priority).</value>
 		public static double Priority {
 			get { return _GetPriority (); }
 			// ignore the boolean return value
@@ -40,27 +40,31 @@ namespace Foundation {
 		}
 
 		[DllImport ("__Internal")]
-		static extern IntPtr xamarin_init_nsthread (IntPtr handle, byte is_direct_binding, IntPtr target, IntPtr selector, IntPtr argument);
+		static extern NativeHandle xamarin_init_nsthread (IntPtr handle, byte is_direct_binding, IntPtr target, IntPtr selector, IntPtr argument);
 
-		IntPtr InitNSThread (NSObject target, Selector selector, NSObject argument)
+		NativeHandle InitNSThread (NSObject target, Selector selector, NSObject? argument)
 		{
 			if (target is null)
-				throw new ArgumentNullException ("target");
+				ThrowHelper.ThrowArgumentNullException (nameof (target));
 			if (selector is null)
-				throw new ArgumentNullException ("selector");
+				ThrowHelper.ThrowArgumentNullException (nameof (selector));
 
-			IntPtr result = xamarin_init_nsthread (IsDirectBinding ? this.Handle : this.SuperHandle, IsDirectBinding.AsByte (), target.Handle, selector.Handle, argument is null ? IntPtr.Zero : argument.Handle);
+			IntPtr result = xamarin_init_nsthread (IsDirectBinding ? this.Handle : this.SuperHandle, IsDirectBinding.AsByte (), target.Handle, selector.Handle, argument.GetHandle ());
 			GC.KeepAlive (target);
 			GC.KeepAlive (selector);
 			GC.KeepAlive (argument);
 			return result;
 		}
 
+		/// <summary>Create a new thread.</summary>
+		/// <param name="target">The object with the method to execute on the new thread.</param>
+		/// <param name="selector">The selector that specifies the method to execute on the new thread.</param>
+		/// <param name="argument">The argument to pass to the method to execute on the new thread.</param>
 		[Export ("initWithTarget:selector:object:")]
-		public NSThread (NSObject target, Selector selector, NSObject argument)
-			: base ()
+		public NSThread (NSObject target, Selector selector, NSObject? argument)
+			: base (NSObjectFlag.Empty)
 		{
-			Handle = InitNSThread (target, selector, argument);
+			InitializeHandle (InitNSThread (target, selector, argument), "initWithTarget:selector:object:");
 		}
 	}
 }

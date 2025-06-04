@@ -3,10 +3,6 @@ using ObjCRuntime;
 using Foundation;
 using Security;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace LocalAuthentication {
 
 	/// <summary>Enumerates supported biometric authentication types.</summary>
@@ -18,19 +14,14 @@ namespace LocalAuthentication {
 		None,
 		/// <summary>Indicates that Touch ID is supported.</summary>
 		TouchId,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that Face ID is supported.</summary>
 		[MacCatalyst (13, 1)]
 		FaceId,
-#if !NET
-		[NoMac]
-		[Obsolete ("Use 'FaceId' instead.")]
-		TypeFaceId = FaceId,
-#endif
 		[iOS (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
 		OpticId = 1L << 2,
 	}
 
-	/// <summary>Signature for a function to be invoked in response to a <see cref="M:LocalAuthentication.LAContext.EvaluatePolicy(LocalAuthentication.LAPolicy,System.String,LocalAuthentication.LAContextReplyHandler)" /> invocation.</summary>
+	/// <summary>Signature for a function to be invoked in response to a <see cref="LocalAuthentication.LAContext.EvaluatePolicy(LocalAuthentication.LAPolicy,System.String,LocalAuthentication.LAContextReplyHandler)" /> invocation.</summary>
 	///     <remarks>The method when invoked returns a boolean indicating if the policy evaluation was successful, and on failure a detailed description of the error in the error parameter.</remarks>
 	[MacCatalyst (13, 1)]
 	delegate void LAContextReplyHandler (bool success, NSError error);
@@ -53,33 +44,68 @@ namespace LocalAuthentication {
 		[Export ("localizedFallbackTitle")]
 		string LocalizedFallbackTitle { get; set; }
 
-#if !NET
-		[NoTV]
-		[Field ("LAErrorDomain")]
-		NSString ErrorDomain { get; }
-#endif
-
+		/// <param name="policy">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>Preflights <paramref name="policy" />, and reports any errors in the <paramref name="error" /><see langword="out" /> parameter.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("canEvaluatePolicy:error:")]
 		bool CanEvaluatePolicy (LAPolicy policy, out NSError error);
 
-		[Async]
+		/// <param name="policy">To be added.</param>
+		///         <param name="localizedReason">To be added.</param>
+		///         <param name="reply">To be added.</param>
+		///         <summary>Evaluates the specified access control <paramref name="policy" />.</summary>
+		///         <remarks>To be added.</remarks>
+		[Async (XmlDocs = """
+			<param name="policy">To be added.</param>
+			<param name="localizedReason">To be added.</param>
+			<summary>Evaluates the specified access control <paramref name="policy" />.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous EvaluatePolicy operation.   The value of the TResult parameter is a LocalAuthentication.LAContextReplyHandler.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The EvaluatePolicyAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("evaluatePolicy:localizedReason:reply:")]
 		void EvaluatePolicy (LAPolicy policy, string localizedReason, LAContextReplyHandler reply);
 
+		/// <summary>Stops all pending policy evaluations and renders the context unusable for further policy evaluation.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("invalidate")]
 		void Invalidate ();
 
+		/// <param name="credential">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="type">To be added.</param>
+		///         <summary>Attempts to set the specified credential <paramref name="type" /> to the specified <paramref name="credential" />, and returns <see langword="true" /> if it succeeds. </summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("setCredential:type:")]
 		bool SetCredentialType ([NullAllowed] NSData credential, LACredentialType type);
 
 
+		/// <param name="type">To be added.</param>
+		///         <summary>Returns <see langword="true" /> if the specified credential <paramref name="type" /> is set.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("isCredentialSet:")]
 		bool IsCredentialSet (LACredentialType type);
 
 
+		/// <param name="accessControl">To be added.</param>
+		///         <param name="operation">To be added.</param>
+		///         <param name="localizedReason">To be added.</param>
+		///         <param name="reply">To be added.</param>
+		///         <summary>Evaluates <paramref name="accessControl" /> for the specified access control <paramref name="operation" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("evaluateAccessControl:operation:localizedReason:reply:")]
 		void EvaluateAccessControl (SecAccessControl accessControl, LAAccessControlOperation operation, string localizedReason, Action<bool, NSError> reply);

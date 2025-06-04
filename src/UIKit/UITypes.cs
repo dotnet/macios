@@ -20,6 +20,10 @@ using CoreGraphics;
 
 namespace UIKit {
 
+	/// <summary>Edge insets, used to reduce or expand rectangles.</summary>
+	///     <remarks>To be added.</remarks>
+	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/RecipesAndPrinting">print</related>
+	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/RecipesAndPrinting/">RecipesAndPrinting</related>
 	[StructLayout (LayoutKind.Sequential)]
 	public struct UIEdgeInsets {
 
@@ -53,6 +57,10 @@ namespace UIKit {
 		}
 
 		// note: UIEdgeInsetsInsetRect (UIGeometry.h) is a macro
+		/// <param name="rect">To be added.</param>
+		///         <summary>Adjusts a rectangle by the given edge insets.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CGRect InsetRect (CGRect rect)
 		{
 			return new CGRect (rect.X + Left,
@@ -62,6 +70,10 @@ namespace UIKit {
 		}
 
 		// note: UIEdgeInsetsEqualToEdgeInsets (UIGeometry.h) is a macro
+		/// <param name="other">To be added.</param>
+		///         <summary>Whether this is equivalent to <paramref name="other" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool Equals (UIEdgeInsets other)
 		{
 			if (Left != other.Left)
@@ -73,6 +85,10 @@ namespace UIKit {
 			return (Bottom == other.Bottom);
 		}
 
+		/// <param name="obj">To be added.</param>
+		///         <summary>Whether this is equivalent to the <paramref name="obj" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override bool Equals (object obj)
 		{
 			if (obj is UIEdgeInsets)
@@ -90,6 +106,9 @@ namespace UIKit {
 			return !insets1.Equals (insets2);
 		}
 
+		/// <summary>The hash for this <see cref="UIKit.UIEdgeInsets" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override int GetHashCode ()
 		{
 			return HashCode.Combine (Top, Left, Right, Bottom);
@@ -98,6 +117,10 @@ namespace UIKit {
 		[DllImport (Constants.UIKitLibrary)]
 		extern static UIEdgeInsets UIEdgeInsetsFromString (IntPtr /* NSString */ s);
 
+		/// <param name="s">To be added.</param>
+		///         <summary>Creates an edge inset from a string representation.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		static public UIEdgeInsets FromString (string s)
 		{
 			// note: null is allowed
@@ -111,6 +134,11 @@ namespace UIKit {
 		extern static IntPtr /* NSString */ NSStringFromUIEdgeInsets (UIEdgeInsets insets);
 
 		// note: ensure we can roundtrip ToString into FromString
+		/// <summary>Returns a human-readable version of the UIEdgeInset properties, for debugging.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public override string ToString ()
 		{
 			using (var ns = new NSString (NSStringFromUIEdgeInsets (this)))
@@ -119,11 +147,11 @@ namespace UIKit {
 #endif
 	}
 
-#if NET
+	/// <summary>A range of single-precision floating point numbers.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct UIFloatRange : IEquatable<UIFloatRange> {
 
@@ -156,8 +184,16 @@ namespace UIKit {
 		// [DllImport (Constants.UIKitLibrary)]
 		// static extern bool UIFloatRangeIsEqualToRange (UIFloatRange range, UIFloatRange otherRange);
 
+		/// <param name="other">To be added.</param>
+		///         <summary>Whether two <see cref="UIKit.UIFloatRange" /> objects have equal values.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool Equals (UIFloatRange other) => this.Minimum == other.Minimum && this.Maximum == other.Maximum;
 
+		/// <param name="other">To be added.</param>
+		///         <summary>Whether two <see cref="UIKit.UIFloatRange" /> objects have equal values.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override bool Equals (object other)
 		{
 			if (other is UIFloatRange)
@@ -165,12 +201,15 @@ namespace UIKit {
 			return false;
 		}
 
+		/// <summary>A hash for the interval.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override int GetHashCode ()
 		{
 			return HashCode.Combine (Minimum, Maximum);
 		}
 
-		/// <summary>Gets a <see cref="T:UIKit.UIFloatRange" /> that has no magnitude.</summary>
+		/// <summary>Gets a <see cref="UIKit.UIFloatRange" /> that has no magnitude.</summary>
 		///         <remarks>To be added.</remarks>
 		[Field ("UIFloatRangeZero")] // fake (but helps testing and could also help documentation)
 		public static UIFloatRange Zero;
@@ -182,13 +221,8 @@ namespace UIKit {
 	}
 
 #if IOS || __MACCATALYST__
-#if NET
 	[SupportedOSPlatform ("ios15.0")]
 	[SupportedOSPlatform ("maccatalyst")]
-#else
-	[Introduced (PlatformName.iOS, 15,0)]
-	[Introduced (PlatformName.MacCatalyst, 15,0)]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct UIPointerAccessoryPosition {
 		public nfloat Offset;

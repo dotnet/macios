@@ -22,18 +22,20 @@ public class DocumentationManager {
 		}
 	}
 
-	public void WriteDocumentation (StreamWriter sw, int indent, MemberInfo member)
+	public bool WriteDocumentation (StreamWriter sw, int indent, MemberInfo member, Func<XmlNode, XmlNode>? transformNode = null)
 	{
-		if (!TryGetDocumentation (member, out var docs))
-			return;
+		if (!TryGetDocumentation (member, out var docs, transformNode))
+			return false;
 
 		foreach (var line in docs) {
 			sw.Write ('\t', indent);
 			sw.WriteLine (line);
 		}
+
+		return true;
 	}
 
-	public bool TryGetDocumentation (MemberInfo member, [NotNullWhen (true)] out string []? documentation)
+	public bool TryGetDocumentation (MemberInfo member, [NotNullWhen (true)] out string []? documentation, Func<XmlNode, XmlNode>? transformNode = null)
 	{
 		documentation = null;
 
@@ -46,6 +48,9 @@ public class DocumentationManager {
 		var node = doc.SelectSingleNode ($"/doc/members/member[@name='{id}']");
 		if (node is null)
 			return false;
+
+		if (transformNode is not null)
+			node = transformNode (node);
 
 		// Remove indentation, make triple-slash comments
 		var lines = node.InnerXml.Split ('\n', '\r');
@@ -149,10 +154,11 @@ public class DocumentationManager {
 		} else {
 			if (tr.IsNested) {
 				var decl = tr.DeclaringType!;
-				while (decl.IsNested) {
-					name.Append (decl.Name);
-					name.Append ('.');
-					name.Append (name);
+				while (true) {
+					name.Insert (0, '.');
+					name.Insert (0, decl.Name);
+					if (!decl.IsNested)
+						break;
 					decl = decl.DeclaringType!;
 				}
 				name.Insert (0, '.');

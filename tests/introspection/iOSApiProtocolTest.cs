@@ -33,9 +33,7 @@ namespace Introspection {
 		{
 			switch (type.Namespace) {
 			case "MetalKit":
-			case "MonoTouch.MetalKit":
 			case "MetalPerformanceShaders":
-			case "MonoTouch.MetalPerformanceShaders":
 			case "MLCompute":
 			case "MediaSetup":
 			case "Phase":
@@ -151,9 +149,7 @@ namespace Introspection {
 		{
 			// some code cannot be run on the simulator (e.g. missing frameworks)
 			switch (type.Namespace) {
-			case "MonoTouch.Metal":
 			case "Metal":
-			case "MonoTouch.CoreAudioKit":
 			case "CoreAudioKit":
 				// they works with iOS9 beta 4 (but won't work on older simulators)
 				if (TestRuntime.IsSimulatorOrDesktop && !TestRuntime.CheckXcodeVersion (7, 0))
@@ -162,7 +158,6 @@ namespace Introspection {
 
 #if HAS_WATCHCONNECTIVITY
 			case "WatchConnectivity":
-			case "MonoTouch.WatchConnectivity":
 				if (!WCSession.IsSupported)
 					return true;
 				break;
@@ -961,7 +956,7 @@ namespace Introspection {
 				case "UISegmentedControl":
 				case "UITableView":
 				case "UITabBar":
-				case "UITabBarItem": // As https://github.com/xamarin/xamarin-macios/commit/e1873169f2d3b2b034d36f844909b6eb4e8abcca points out works as expected on both sim and device
+				case "UITabBarItem": // As https://github.com/dotnet/macios/commit/e1873169f2d3b2b034d36f844909b6eb4e8abcca points out works as expected on both sim and device
 				case "UIAlertController":
 				case "PKPaymentButton":
 				case "PKAddPassButton":

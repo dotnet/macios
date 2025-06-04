@@ -77,7 +77,7 @@ void ProvisionBrewPackages ()
 
 void SetDefaultXcodeInVSMac ()
 {
-	var appleSdkOverride = Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.UserProfile), "Library", "Preferences", "Xamarin", "Settings.plist");
+	var appleSdkOverride = Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.UserProfile), "Library", "Preferences", "maui", "Settings.plist");
 	Item ("Override Apple SDK Settings")
 		.Condition (item => !File.Exists (appleSdkOverride) || GetSettingValue (appleSdkOverride, "AppleSdkRoot") != GetSelectedXcodePath ())
 		.Action (item => {

@@ -7,8 +7,9 @@ using ObjCRuntime;
 
 #nullable enable
 
-#if NET
 namespace AppKit {
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public partial interface INSPasteboardReading {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public unsafe static T? CreateInstance<T> (NSObject propertyList, NSPasteboardType type) where T : NSObject, INSPasteboardReading
@@ -17,5 +18,4 @@ namespace AppKit {
 		}
 	}
 }
-#endif // NET
 #endif // !__MACCATALYST__

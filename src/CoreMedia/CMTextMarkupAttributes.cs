@@ -38,11 +38,19 @@ using ObjCRuntime;
 namespace CoreMedia {
 
 	// Convenience structure
+	/// <summary>A color to be used with <see cref="CoreMedia.CMTextMarkupAttributes.BackgroundColor" /> and <see cref="CoreMedia.CMTextMarkupAttributes.ForegroundColor" />.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public struct TextMarkupColor {
+		/// <param name="red">To be added.</param>
+		///         <param name="green">To be added.</param>
+		///         <param name="blue">To be added.</param>
+		///         <param name="alpha">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public TextMarkupColor (float red, float green, float blue, float alpha)
 			: this ()
 		{
@@ -79,6 +87,9 @@ namespace CoreMedia {
 		public float Alpha { get; private set; }
 	}
 
+	/// <summary>Manages the attributes used by <see cref="AVFoundation.AVTextStyleRule" />.</summary>
+	///     <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

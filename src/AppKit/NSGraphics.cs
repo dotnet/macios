@@ -31,13 +31,11 @@ using ObjCRuntime;
 using Foundation;
 using CoreGraphics;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 #nullable enable
 
 namespace AppKit {
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	public static class NSGraphics {
 		/// <summary>To be added.</summary>
@@ -93,6 +91,10 @@ namespace AppKit {
 		[DllImport (Constants.AppKitLibrary)]
 		extern static byte NSPlanarFromDepth (NSWindowDepth depth);
 
+		/// <param name="depth">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static bool PlanarFromDepth (NSWindowDepth depth)
 		{
 			return NSPlanarFromDepth (depth) != 0;
@@ -101,20 +103,36 @@ namespace AppKit {
 		[DllImport (Constants.AppKitLibrary)]
 		extern static IntPtr NSColorSpaceFromDepth (NSWindowDepth depth);
 
+		/// <param name="depth">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSString ColorSpaceFromDepth (NSWindowDepth depth)
 		{
 			return new NSString (NSColorSpaceFromDepth (depth));
 		}
 
+		/// <param name="depth">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[DllImport (Constants.AppKitLibrary, EntryPoint = "NSBitsPerSampleFromDepth")]
 		public extern static nint BitsPerSampleFromDepth (NSWindowDepth depth);
 
+		/// <param name="depth">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[DllImport (Constants.AppKitLibrary, EntryPoint = "NSBitsPerPixelFromDepth")]
 		public extern static nint BitsPerPixelFromDepth (NSWindowDepth depth);
 
 		[DllImport (Constants.AppKitLibrary)]
 		extern static nint NSNumberOfColorComponents (IntPtr str);
 
+		/// <param name="colorspaceName">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static nint NumberOfColorComponents (NSString colorspaceName)
 		{
 			if (colorspaceName is null)
@@ -149,11 +167,18 @@ namespace AppKit {
 			}
 		}
 
+		/// <param name="rect">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[DllImport (Constants.AppKitLibrary, EntryPoint = "NSRectFill")]
 		public extern static void RectFill (CGRect rect);
 
 		[DllImport (Constants.AppKitLibrary)]
 		extern static void NSRectFillUsingOperation (CGRect rect, nuint op);
+		/// <param name="rect">To be added.</param>
+		///         <param name="op">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static void RectFill (CGRect rect, NSCompositingOperation op)
 		{
 			NSRectFillUsingOperation (rect, (nuint) (ulong) op);
@@ -162,6 +187,9 @@ namespace AppKit {
 		[DllImport (Constants.AppKitLibrary, EntryPoint = "NSRectFillList")]
 		unsafe extern static void RectFillList (CGRect* rects, nint count);
 
+		/// <param name="rects">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static void RectFill (CGRect [] rects)
 		{
 			if (rects is null)
@@ -172,9 +200,15 @@ namespace AppKit {
 			}
 		}
 
+		/// <param name="rect">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[DllImport (Constants.AppKitLibrary, EntryPoint = "NSRectClip")]
 		public extern static void RectClip (CGRect rect);
 
+		/// <param name="rect">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[DllImport (Constants.AppKitLibrary, EntryPoint = "NSFrameRect")]
 		public extern static void FrameRect (CGRect rect);
 
@@ -197,6 +231,14 @@ namespace AppKit {
 		[DllImport (Constants.AppKitLibrary, EntryPoint = "NSShowAnimationEffect")]
 		extern static void NSShowAnimationEffect (nuint animationEffect, CGPoint centerLocation, CGSize size, NativeHandle animationDelegate, NativeHandle didEndSelector, IntPtr contextInfo);
 
+		/// <param name="animationEffect">To be added.</param>
+		///         <param name="centerLocation">To be added.</param>
+		///         <param name="size">To be added.</param>
+		///         <param name="animationDelegate">To be added.</param>
+		///         <param name="didEndSelector">To be added.</param>
+		///         <param name="contextInfo">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos14.0", "Use 'NSCursor.DisappearingItemCursor' instead.")]
 		public static void ShowAnimationEffect (NSAnimationEffect animationEffect, CGPoint centerLocation, CGSize size, NSObject animationDelegate, Selector didEndSelector, IntPtr contextInfo)
@@ -206,6 +248,12 @@ namespace AppKit {
 			GC.KeepAlive (didEndSelector);
 		}
 
+		/// <param name="animationEffect">To be added.</param>
+		///         <param name="centerLocation">To be added.</param>
+		///         <param name="size">To be added.</param>
+		///         <param name="endedCallback">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static void ShowAnimationEffect (NSAnimationEffect animationEffect, CGPoint centerLocation, CGSize size, Action endedCallback)
 		{
 			var d = new NSAsyncActionDispatcher (endedCallback);
@@ -213,6 +261,9 @@ namespace AppKit {
 			GC.KeepAlive (d);
 		}
 
+		/// <param name="placement">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static void SetFocusRingStyle (NSFocusRingPlacement placement)
 		{
 			SetFocusRingStyle ((nuint) (ulong) placement);
@@ -221,18 +272,38 @@ namespace AppKit {
 		[DllImport (Constants.AppKitLibrary, EntryPoint = "NSSetFocusRingStyle")]
 		extern static void SetFocusRingStyle (nuint placement);
 
+		/// <param name="aRect">To be added.</param>
+		///         <param name="clipRect">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[DllImport (Constants.AppKitLibrary, EntryPoint = "NSDrawWhiteBezel")]
 		public extern static void DrawWhiteBezel (CGRect aRect, CGRect clipRect);
 
+		/// <param name="aRect">To be added.</param>
+		///         <param name="clipRect">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[DllImport (Constants.AppKitLibrary, EntryPoint = "NSDrawLightBezel")]
 		public extern static void DrawLightBezel (CGRect aRect, CGRect clipRect);
 
+		/// <param name="aRect">To be added.</param>
+		///         <param name="clipRect">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[DllImport (Constants.AppKitLibrary, EntryPoint = "NSDrawGrayBezel")]
 		public extern static void DrawGrayBezel (CGRect aRect, CGRect clipRect);
 
+		/// <param name="aRect">To be added.</param>
+		///         <param name="clipRect">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[DllImport (Constants.AppKitLibrary, EntryPoint = "NSDrawDarkBezel")]
 		public extern static void DrawDarkBezel (CGRect aRect, CGRect clipRect);
 
+		/// <param name="aRect">To be added.</param>
+		///         <param name="clipRect">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[DllImport (Constants.AppKitLibrary, EntryPoint = "NSDrawGroove")]
 		public extern static void DrawGroove (CGRect aRect, CGRect clipRect);
 
@@ -254,14 +325,21 @@ namespace AppKit {
 			}
 		}
 
+		/// <param name="aRect">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[DllImport (Constants.AppKitLibrary, EntryPoint = "NSDrawWindowBackground")]
 		public extern static void DrawWindowBackground (CGRect aRect);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos10.11", "Not usually necessary, 'NSAnimationContext.RunAnimation' can be used instead and not suffer from performance issues.")]
 		[DllImport (Constants.AppKitLibrary, EntryPoint = "NSDisableScreenUpdates")]
 		public extern static void DisableScreenUpdates ();
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos10.11", "Not usually necessary, 'NSAnimationContext.RunAnimation' can be used instead and not suffer from performance issues.")]
 		[DllImport (Constants.AppKitLibrary, EntryPoint = "NSEnableScreenUpdates")]

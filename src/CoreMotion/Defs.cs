@@ -14,11 +14,11 @@ using ObjCRuntime;
 namespace CoreMotion {
 
 	// CMAccelerometer.h
-#if NET
+	/// <summary>A 3D vector containing acceleration values.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct CMAcceleration {
 		/// <summary>Acceleration along the X axis, in Gs.</summary>
@@ -34,7 +34,7 @@ namespace CoreMotion {
 		/// <param name="x">To be added.</param>
 		///         <param name="y">To be added.</param>
 		///         <param name="z">To be added.</param>
-		///         <summary>Creates a new <see cref="T:CoreMotion.CMAcceleration" /> object, along the specified axes, with values in Gs.</summary>
+		///         <summary>Creates a new <see cref="CoreMotion.CMAcceleration" /> object, along the specified axes, with values in Gs.</summary>
 		///         <remarks>To be added.</remarks>
 		public CMAcceleration (double x, double y, double z)
 		{
@@ -53,11 +53,10 @@ namespace CoreMotion {
 	}
 
 	// CMAttitude.h
-#if NET
+	/// <include file="../../docs/api/CoreMotion/CMRotationMatrix.xml" path="/Documentation/Docs[@DocId='T:CoreMotion.CMRotationMatrix']/*" />
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct CMRotationMatrix {
 		/// <summary>To be added.</summary>
@@ -90,11 +89,13 @@ namespace CoreMotion {
 	}
 
 	// CMAttitude.h
-#if NET
+	/// <summary>Represents a Quaternion, used as one of the possible CMAttitude representations.</summary>
+	///     <remarks>
+	///       <para>Quaternions can be used to specify a non-ambiguous rotation. They avoid the issue of gymbal lock and are simpler to compose.</para>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct CMQuaternion {
 		/// <summary>The imaginary x component.</summary>
@@ -114,7 +115,7 @@ namespace CoreMotion {
 		///         <param name="y">To be added.</param>
 		///         <param name="z">To be added.</param>
 		///         <param name="w">To be added.</param>
-		///         <summary>Constructs a new <see cref="T:CoreMotion.CMQuaternion" /> with the specified components.</summary>
+		///         <summary>Constructs a new <see cref="CoreMotion.CMQuaternion" /> with the specified components.</summary>
 		///         <remarks>To be added.</remarks>
 		public CMQuaternion (double x, double y, double z, double w)
 		{
@@ -134,11 +135,11 @@ namespace CoreMotion {
 	}
 
 	// CMGyro.h
-#if NET
+	/// <summary>3D rotation rate.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct CMRotationRate {
 		/// <summary>The rotation rate around the X axis, in radians per second.</summary>
@@ -154,7 +155,7 @@ namespace CoreMotion {
 		/// <param name="x">To be added.</param>
 		///         <param name="y">To be added.</param>
 		///         <param name="z">To be added.</param>
-		///         <summary>Creates a new <see cref="T:CoreMotion.CMRotationRate" /> that rotates around the various axes at the specified rate, in radians per second.</summary>
+		///         <summary>Creates a new <see cref="CoreMotion.CMRotationRate" /> that rotates around the various axes at the specified rate, in radians per second.</summary>
 		///         <remarks>To be added.</remarks>
 		public CMRotationRate (double x, double y, double z)
 		{
@@ -173,6 +174,8 @@ namespace CoreMotion {
 	}
 
 	// untyped enum -> CMDeviceMotion.h
+	/// <summary>An enumeration whose values specify the quality of the magnetometer calibration.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum CMMagneticFieldCalibrationAccuracy {
 		/// <summary>Magnetic calibration has not occurred.</summary>
 		Uncalibrated = -1,

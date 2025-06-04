@@ -94,6 +94,7 @@ namespace Xamarin.Tests {
 		[TestCase ("tvOS")]
 		[TestCase ("macOS")]
 		[TestCase ("MacCatalyst")]
+		[Category ("WindowsInclusive")]
 		public void BuildMyClassLibrary (string platform)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);
@@ -107,6 +108,7 @@ namespace Xamarin.Tests {
 		[TestCase ("tvOS")]
 		[TestCase ("macOS")]
 		[TestCase ("MacCatalyst")]
+		[Category ("WindowsInclusive")]
 		public void BuildEmbeddedResourcesTest (string platform)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);
@@ -139,6 +141,7 @@ namespace Xamarin.Tests {
 		[TestCase ("tvOS")]
 		[TestCase ("macOS")]
 		[TestCase ("MacCatalyst")]
+		[Category ("WindowsInclusive")]
 		public void BuildFSharpLibraryTest (string platform)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);
@@ -150,10 +153,10 @@ namespace Xamarin.Tests {
 			var result = DotNet.AssertBuild (project_path, verbosity);
 			var lines = BinLog.PrintToLines (result.BinLogPath);
 			// Find the resulting binding assembly from the build log
-			var assemblies = FilterToAssembly (lines, assemblyName);
+			var assemblies = FilterToAssembly (lines, assemblyName).Distinct ();
 			Assert.That (assemblies, Is.Not.Empty, "Assemblies");
 			// Make sure there's no other assembly confusing our logic
-			Assert.That (assemblies.Distinct ().Count (), Is.EqualTo (1), "Unique assemblies");
+			Assert.That (assemblies.Count (), Is.EqualTo (1), $"Unique assemblies:\n\t{string.Join ("\n\t", assemblies)}");
 			var asm = assemblies.First ();
 			Assert.That (asm, Does.Exist, "Assembly existence");
 			// Verify that there's no resources in the assembly
@@ -171,6 +174,7 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.TVOS)]
 		[TestCase (ApplePlatform.MacOSX)]
 		[TestCase (ApplePlatform.MacCatalyst)]
+		[Category ("WindowsInclusive")]
 		public void BuildBindingsTest (ApplePlatform platform)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);
@@ -204,6 +208,7 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.TVOS)]
 		[TestCase (ApplePlatform.MacOSX)]
 		[TestCase (ApplePlatform.MacCatalyst)]
+		[Category ("WindowsInclusive")]
 		public void BuildBindingsTest2 (ApplePlatform platform)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);
@@ -294,21 +299,7 @@ namespace Xamarin.Tests {
 			var result = DotNet.AssertBuild (project_path, verbosity);
 			var lines = BinLog.PrintToLines (result.BinLogPath);
 			// Find the resulting binding assembly from the build log
-			var assemblies = lines.
-				Select (v => v.Trim ()).
-				Where (v => {
-					if (v.Length < 10)
-						return false;
-					if (v [0] != '/')
-						return false;
-					if (!v.EndsWith ($"{assemblyName}.dll", StringComparison.Ordinal))
-						return false;
-					if (!v.Contains ("/bin/", StringComparison.Ordinal))
-						return false;
-					if (!v.Contains ($"{assemblyName}.app", StringComparison.Ordinal))
-						return false;
-					return true;
-				});
+			var assemblies = FilterToAssembly (lines, assemblyName, true);
 			Assert.That (assemblies, Is.Not.Empty, "Assemblies");
 			// Make sure there's no other assembly confusing our logic
 			assemblies = assemblies.Distinct ();
@@ -410,6 +401,7 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.iOS, "ios-arm64", true, null, "Release")]
 		[TestCase (ApplePlatform.iOS, "ios-arm64", true, "PublishTrimmed=true;UseInterpreter=true")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64;maccatalyst-x64", false)]
+		[Category ("WindowsInclusive")]
 		public void IsNotMacBuild (ApplePlatform platform, string runtimeIdentifiers, bool isDeviceBuild, string? extraProperties = null, string configuration = "Debug")
 		{
 			var project = "MySimpleApp";
@@ -725,7 +717,7 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64;maccatalyst-x64")]
 		[TestCase (ApplePlatform.MacOSX, "osx-x64")]
-		[TestCase (ApplePlatform.MacOSX, "osx-arm64;osx-x64")] // https://github.com/xamarin/xamarin-macios/issues/12410
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64;osx-x64")] // https://github.com/dotnet/macios/issues/12410
 		public void AppWithResources (ApplePlatform platform, string runtimeIdentifiers)
 		{
 			var project = "AppWithResources";
@@ -848,7 +840,7 @@ namespace Xamarin.Tests {
 			var rv = DotNet.AssertBuild (project_path, properties);
 
 			var allTargets = BinLog.GetAllTargets (rv.BinLogPath).Where (v => !v.Skipped).Select (v => v.TargetName);
-			// https://github.com/xamarin/xamarin-macios/issues/15031
+			// https://github.com/dotnet/macios/issues/15031
 			if (actualBundleOriginalResources) {
 				Assert.That (allTargets, Does.Not.Contain ("_CompileAppManifest"), "Didn't execute '_CompileAppManifest'");
 				Assert.That (allTargets, Does.Not.Contain ("_DetectSdkLocations"), "Didn't execute '_DetectSdkLocations'");
@@ -1097,7 +1089,7 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64;maccatalyst-x64")]
 		[TestCase (ApplePlatform.MacOSX, "osx-x64")]
-		[TestCase (ApplePlatform.MacOSX, "osx-arm64;osx-x64")] // https://github.com/xamarin/xamarin-macios/issues/12410
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64;osx-x64")] // https://github.com/dotnet/macios/issues/12410
 		public void DoubleBuild (ApplePlatform platform, string runtimeIdentifiers)
 		{
 			var project = "AppWithResources";
@@ -1115,12 +1107,13 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.TVOS)]
 		[TestCase (ApplePlatform.MacCatalyst)]
 		[TestCase (ApplePlatform.MacOSX)]
+		[Category ("WindowsInclusive")]
 		public void LibraryReferencingBindingLibrary (ApplePlatform platform)
 		{
 			var project = "LibraryReferencingBindingLibrary";
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 
-			var projectPath = GetProjectPath (project, runtimeIdentifiers: string.Empty, platform: platform, out _);
+			var projectPath = GetProjectPath (project, platform: platform);
 			Clean (projectPath);
 
 			DotNet.AssertBuild (projectPath, GetDefaultProperties ());
@@ -1294,21 +1287,31 @@ namespace Xamarin.Tests {
 			Assert.That (libxamarin, Has.Length.LessThanOrEqualTo (1), $"No more than one libxamarin should be present, but found {libxamarin.Length}:\n\t{string.Join ("\n\t", libxamarin)}");
 		}
 
-		IEnumerable<string> FilterToAssembly (IEnumerable<string> lines, string assemblyName)
+		IEnumerable<string> FilterToAssembly (IEnumerable<string> lines, string assemblyName, bool doAppCheckInsteadOfRefCheck = false)
 		{
 			return lines.
 				Select (v => v.Trim ()).
 				Where (v => {
 					if (v.Length < 10)
 						return false;
-					if (v [0] != '/' && !(char.IsAsciiLetter (v [0]) && v [1] == ':'))
-						return false;
+					if (Environment.OSVersion.Platform == PlatformID.Win32NT) {
+						if (v [1] != ':')
+							return false;
+					} else {
+						if (v [0] != '/')
+							return false;
+					}
 					if (!v.EndsWith ($"{assemblyName}.dll", StringComparison.Ordinal))
 						return false;
 					if (!(v.Contains ("/bin/", StringComparison.Ordinal) || v.Contains ("\\bin\\", StringComparison.Ordinal)))
 						return false;
-					if (v.Contains ("/ref/", StringComparison.Ordinal) || v.Contains ("\\ref\\", StringComparison.Ordinal))
+					if (!doAppCheckInsteadOfRefCheck && v.Contains (Path.DirectorySeparatorChar + "ref" + Path.DirectorySeparatorChar, StringComparison.Ordinal))
 						return false; // Skip reference assemblies
+					if (doAppCheckInsteadOfRefCheck && !v.Contains ($"{assemblyName}.app", StringComparison.Ordinal))
+						return false;
+					if (!File.Exists (v))
+						return false;
+
 					return true;
 				});
 		}
@@ -1324,7 +1327,7 @@ namespace Xamarin.Tests {
 
 			ExecutionHelper.Execute ("launchctl", new [] { "remove", "com.apple.CoreSimulator.CoreSimulatorService" }, timeout: TimeSpan.FromSeconds (10));
 
-			var to_kill = new string [] { "iPhone Simulator", "iOS Simulator", "Simulator", "Simulator (Watch)", "com.apple.CoreSimulator.CoreSimulatorService", "ibtoold" };
+			var to_kill = new string [] { "iPhone Simulator", "iOS Simulator", "Simulator", "com.apple.CoreSimulator.CoreSimulatorService", "ibtoold" };
 
 			var args = new List<string> ();
 			args.Add ("-9");
@@ -1332,7 +1335,6 @@ namespace Xamarin.Tests {
 			ExecutionHelper.Execute ("killall", args, timeout: TimeSpan.FromSeconds (10));
 
 			var dirsToBeDeleted = new [] {
-				Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.UserProfile), "Library", "Saved Application State", "com.apple.watchsimulator.savedState"),
 				Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.UserProfile), "Library", "Saved Application State", "com.apple.iphonesimulator.savedState"),
 			};
 
@@ -1345,7 +1347,7 @@ namespace Xamarin.Tests {
 				}
 			}
 
-			// https://github.com/xamarin/xamarin-macios/issues/10012
+			// https://github.com/dotnet/macios/issues/10012
 			ExecutionHelper.Execute ("xcrun", new [] { "simctl", "list" });
 		}
 
@@ -1681,7 +1683,7 @@ namespace Xamarin.Tests {
 			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath);
 			Clean (project_path);
 			var properties = GetDefaultProperties (runtimeIdentifiers);
-			var extraArgs = "--require-pinvoke-wrappers:true --registrar:static"; // enable the static registrar too, see https://github.com/xamarin/xamarin-macios/issues/15190.
+			var extraArgs = "--require-pinvoke-wrappers:true --registrar:static"; // enable the static registrar too, see https://github.com/dotnet/macios/issues/15190.
 			properties ["MonoBundlingExtraArgs"] = extraArgs;
 			properties ["MtouchExtraArgs"] = extraArgs;
 
@@ -2844,6 +2846,7 @@ namespace Xamarin.Tests {
 			"/System/Library/Frameworks/FileProviderUI.framework/Versions/A/FileProviderUI",
 			"/System/Library/Frameworks/FinderSync.framework/Versions/A/FinderSync",
 			"/System/Library/Frameworks/Foundation.framework/Versions/C/Foundation",
+			"/System/Library/Frameworks/FSKit.framework/Versions/A/FSKit",
 			"/System/Library/Frameworks/GameController.framework/Versions/A/GameController",
 			"/System/Library/Frameworks/GameKit.framework/Versions/A/GameKit",
 			"/System/Library/Frameworks/GameplayKit.framework/Versions/A/GameplayKit",
@@ -2876,6 +2879,7 @@ namespace Xamarin.Tests {
 			"/System/Library/Frameworks/ModelIO.framework/Versions/A/ModelIO",
 			"/System/Library/Frameworks/MultipeerConnectivity.framework/Versions/A/MultipeerConnectivity",
 			"/System/Library/Frameworks/NaturalLanguage.framework/Versions/A/NaturalLanguage",
+			"/System/Library/Frameworks/NearbyInteraction.framework/Versions/A/NearbyInteraction",
 			"/System/Library/Frameworks/Network.framework/Versions/A/Network",
 			"/System/Library/Frameworks/NetworkExtension.framework/Versions/A/NetworkExtension",
 			"/System/Library/Frameworks/NotificationCenter.framework/Versions/A/NotificationCenter",
@@ -3233,6 +3237,78 @@ namespace Xamarin.Tests {
 			var rv = DotNet.AssertBuildFailure (project_path, properties);
 			var errors = BinLog.GetBuildLogErrors (rv.BinLogPath).ToArray ();
 			AssertErrorMessages (errors, $"The SupportedOSPlatformVersion value '{version}' in the project file is lower than the minimum value '{minVersion}'.");
+		}
+
+		// macOS doesn't support UseNativeHttpHandler / any of our native http handlers being the default http handler.
+		[Test]
+		[TestCase (ApplePlatform.MacCatalyst, "NSUrlSessionHandler")]
+		[TestCase (ApplePlatform.iOS, "CFNetworkHandler")]
+		[TestCase (ApplePlatform.TVOS, "")]
+		[TestCase (ApplePlatform.MacCatalyst, "Invalid")]
+		public void HttpClientHandlerFeatureTrimmedAway (ApplePlatform platform, string handler)
+		{
+			var project = "ApiTestApp";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+
+			var runtimeIdentifiers = GetDefaultRuntimeIdentifier (platform);
+			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath);
+			Clean (project_path);
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties ["AdditionalDefineConstants"] = "HttpClientHandlerFeatureTrimmedAway";
+			properties ["TrimMode"] = "partial";
+			properties ["UseNativeHttpHandler"] = string.IsNullOrEmpty (handler) ? "false" : "true";
+			if (!string.IsNullOrEmpty (handler))
+				properties ["MtouchHttpClientHandler"] = handler;
+			properties ["ExcludeTouchUnitReference"] = "true"; // speed things up a bit
+			properties ["ExcludeNUnitLiteReference"] = "true"; // speed things up a bit
+			if (handler == "Invalid") {
+				var rv2 = DotNet.AssertBuildFailure (project_path, properties);
+				var errors = BinLog.GetBuildLogErrors (rv2.BinLogPath).ToArray ();
+				AssertErrorMessages (errors, $"Invalid value for 'MtouchHttpClientHandler' ('Invalid', must be either 'NSUrlSessionHandler' or 'CFNetworkHandler' (or not set at all).");
+				return;
+			}
+			var rv = DotNet.AssertBuild (project_path, properties);
+			var platformAssembly = Path.Combine (appPath, GetRelativeAssemblyDirectory (platform), $"Microsoft.{platform.AsString ()}.dll");
+			var ad = AssemblyDefinition.ReadAssembly (platformAssembly, new ReaderParameters { ReadingMode = ReadingMode.Deferred });
+			var runtimeType = ad.MainModule.Types.Single (v => v.FullName == "ObjCRuntime.Runtime");
+
+			var get_UseCFNetworkHandler = runtimeType.Methods.SingleOrDefault (v => v.Name == "get_UseCFNetworkHandler");
+			Assert.That (get_UseCFNetworkHandler, Is.Null, "get_UseCFNetworkHandler");
+			var get_UseNSUrlSessionHandler = runtimeType.Methods.SingleOrDefault (v => v.Name == "get_UseNSUrlSessionHandler");
+			Assert.That (get_UseNSUrlSessionHandler, Is.Null, "get_UseNSUrlSessionHandler");
+
+			string nsurlSessionHandleNamespace;
+			switch (platform) {
+			case ApplePlatform.iOS:
+			case ApplePlatform.TVOS:
+			case ApplePlatform.MacCatalyst:
+				nsurlSessionHandleNamespace = "System.Net.Http.NSUrlSessionHandler";
+				break;
+			case ApplePlatform.MacOSX:
+				nsurlSessionHandleNamespace = "Foundation.NSUrlSessionHandler";
+				break;
+			default:
+				throw new NotImplementedException ();
+			}
+
+			var cfnetworkHandlerType = ad.MainModule.Types.SingleOrDefault (v => v.FullName == "System.Net.Http.CFNetworkHandler");
+			var nsUrlSessionHandlerType = ad.MainModule.Types.SingleOrDefault (v => v.FullName == nsurlSessionHandleNamespace);
+			switch (handler) {
+			case "":
+				Assert.That (cfnetworkHandlerType, Is.Null, $"System.Net.Http.CFNetworkHandler: {platformAssembly}");
+				Assert.That (nsUrlSessionHandlerType, Is.Null, $"{nsurlSessionHandleNamespace}: {platformAssembly}");
+				break;
+			case "NSUrlSessionHandler":
+				Assert.That (cfnetworkHandlerType, Is.Null, $"System.Net.Http.CFNetworkHandler: {platformAssembly}");
+				Assert.That (nsUrlSessionHandlerType, Is.Not.Null, $"{nsurlSessionHandleNamespace}: {platformAssembly}");
+				break;
+			case "CFNetworkHandler":
+				Assert.That (cfnetworkHandlerType, Is.Not.Null, $"System.Net.Http.CFNetworkHandler: {platformAssembly}");
+				Assert.That (nsUrlSessionHandlerType, Is.Null, $"{nsurlSessionHandleNamespace}: {platformAssembly}");
+				break;
+			default:
+				throw new InvalidOperationException ();
+			}
 		}
 	}
 }

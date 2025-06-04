@@ -35,6 +35,9 @@ using ObjCRuntime;
 
 namespace CoreVideo {
 
+	/// <summary>Manages pixel buffer settings.</summary>
+	///     <remarks>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

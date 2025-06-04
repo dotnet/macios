@@ -18,6 +18,9 @@ using Foundation;
 
 namespace ImageIO {
 
+	/// <summary>Image Loader.</summary>
+	///     <remarks>
+	///     </remarks>
 	public partial class CGImageSource {
 
 		// CGImageSource.h
@@ -26,12 +29,10 @@ namespace ImageIO {
 			/* CGImageSourceRef __nonnull */ IntPtr isrc, /* size_t */ nint idx,
 			/* CFDictionaryRef __nullable */ IntPtr options);
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("macos")]
-#endif
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		public CGImageMetadata? CopyMetadata (nint index, NSDictionary? options)
 		{
@@ -40,12 +41,10 @@ namespace ImageIO {
 			return (result == IntPtr.Zero) ? null : new CGImageMetadata (result, true);
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("macos")]
-#endif
 		public CGImageMetadata? CopyMetadata (nint index, CGImageOptions? options)
 		{
 			using var o = options?.ToDictionary ();
@@ -53,22 +52,18 @@ namespace ImageIO {
 		}
 
 		// CGImageSource.h
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("macos")]
-#endif
 		[DllImport (Constants.ImageIOLibrary)]
 		extern static void CGImageSourceRemoveCacheAtIndex (/* CGImageSourceRef __nonnull */ IntPtr isrc,
 			/* size_t */ nint index);
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("macos")]
-#endif
 		public void RemoveCache (nint index)
 		{
 			CGImageSourceRemoveCacheAtIndex (Handle, index);

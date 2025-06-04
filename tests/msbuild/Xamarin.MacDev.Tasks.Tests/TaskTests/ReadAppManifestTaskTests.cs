@@ -23,7 +23,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			var task = CreateTask<ReadAppManifest> ();
 			task.AppManifest = new TaskItem (plistPath);
-			task.TargetFrameworkMoniker = TargetFramework.GetTargetFramework (platform, true).ToString ();
+			task.TargetFrameworkMoniker = TargetFramework.GetTargetFramework (platform).ToString ();
 
 			return task;
 		}

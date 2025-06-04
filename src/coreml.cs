@@ -19,10 +19,6 @@ using Metal;
 using Vision;
 using CoreImage;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreML {
 
 	/// <summary>Enumerates the kinds of features supported by CoreML.</summary>
@@ -41,7 +37,7 @@ namespace CoreML {
 		Image = 4,
 		/// <summary>A multidimensional array feature.</summary>
 		MultiArray = 5,
-		/// <summary>A dictionary / map feature. The dictionary is of type <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Object&amp;scope=Xamarin" title="T:System.Object">T:System.Object</a></format> -&gt; <see cref="T:Foundation.NSNumber" />.</summary>
+		/// <summary>A dictionary / map feature. The dictionary is of type <see cref="System.Object" /> -&gt; <see cref="Foundation.NSNumber" />.</summary>
 		Dictionary = 6,
 		/// <summary>Sequence data, such as a time series or words ordered as text.</summary>
 		[MacCatalyst (13, 1)]
@@ -57,7 +53,7 @@ namespace CoreML {
 	public enum MLModelError : long {
 		/// <summary>A non-specific generic error.</summary>
 		Generic = 0,
-		/// <summary>Indicates an error relating to some incompatibility of an <see cref="T:CoreML.MLFeatureType" />.</summary>
+		/// <summary>Indicates an error relating to some incompatibility of an <see cref="CoreML.MLFeatureType" />.</summary>
 		FeatureType = 1,
 		/// <summary>Indicates an I/O error.</summary>
 		IO = 3,
@@ -73,7 +69,7 @@ namespace CoreML {
 		PredictionCancelled = 11,
 	}
 
-	/// <summary>Enumerates the types of values stored in a <see cref="T:CoreML.MLMultiArray" />.</summary>
+	/// <summary>Enumerates the types of values stored in a <see cref="CoreML.MLMultiArray" />.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MLMultiArrayDataType : long {
@@ -91,7 +87,7 @@ namespace CoreML {
 		Int32 = 0x20000 | 32,
 	}
 
-	/// <summary>Enumerates the form of a <see cref="T:CoreML.MLImageSizeConstraint" />.</summary>
+	/// <summary>Enumerates the form of a <see cref="CoreML.MLImageSizeConstraint" />.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MLImageSizeConstraintType : long {
@@ -103,7 +99,7 @@ namespace CoreML {
 		Range = 3,
 	}
 
-	/// <summary>Enumerates the form of a <see cref="T:CoreML.MLMultiArrayShapeConstraint" />.</summary>
+	/// <summary>Enumerates the form of a <see cref="CoreML.MLMultiArrayShapeConstraint" />.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MLMultiArrayShapeConstraintType : long {
@@ -155,22 +151,26 @@ namespace CoreML {
 		Infrequent = 1,
 	}
 
-	/// <summary>An implementation of <see cref="T:CoreML.IMLFeatureProvider" /> that is backed by a <see cref="T:Foundation.NSDictionary" />.</summary>
+	/// <summary>An implementation of <see cref="CoreML.IMLFeatureProvider" /> that is backed by a <see cref="Foundation.NSDictionary" />.</summary>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MLDictionaryFeatureProvider : MLFeatureProvider, NSSecureCoding {
 
-		/// <summary>Gets the underlying <see cref="T:Foundation.NSDictionary" /> (String -&gt; <see cref="T:CoreML.MLFeatureValue" />).</summary>
+		/// <summary>Gets the underlying <see cref="Foundation.NSDictionary" /> (String -&gt; <see cref="CoreML.MLFeatureValue" />).</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("dictionary")]
 		NSDictionary<NSString, MLFeatureValue> Dictionary { get; }
 
+		/// <param name="dictionary">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>Constructor that creates a <see cref="CoreML.MLDictionaryFeatureProvider" /> based on the specified <paramref name="dictionary" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithDictionary:error:")]
 		NativeHandle Constructor (NSDictionary<NSString, NSObject> dictionary, out NSError error);
 	}
 
-	/// <summary>A developer-meaningful description of a <see cref="T:CoreML.MLModel" /> feature.</summary>
+	/// <summary>A developer-meaningful description of a <see cref="CoreML.MLModel" /> feature.</summary>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MLFeatureDescription : NSCopying, NSSecureCoding {
@@ -181,7 +181,7 @@ namespace CoreML {
 		[Export ("name")]
 		string Name { get; }
 
-		/// <summary>Gets the <see cref="T:CoreML.MLFeatureType" /> of this feature.</summary>
+		/// <summary>Gets the <see cref="CoreML.MLFeatureType" /> of this feature.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("type")]
@@ -193,6 +193,10 @@ namespace CoreML {
 		[Export ("optional")]
 		bool Optional { [Bind ("isOptional")] get; }
 
+		/// <param name="value">The value to check.</param>
+		///         <summary>Gets whether <paramref name="value" /> is a valid value (and kind) for this feature.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("isAllowedValue:")]
 		bool IsAllowed (MLFeatureValue value);
 
@@ -225,7 +229,7 @@ namespace CoreML {
 		[NullAllowed, Export ("dictionaryConstraint", ArgumentSemantic.Assign)]
 		MLDictionaryConstraint DictionaryConstraint { get; }
 
-		/// <summary>Gets the <see cref="T:CoreML.MLSequenceConstraint" />, if any, that describes allowable variations in the feature.</summary>
+		/// <summary>Gets the <see cref="CoreML.MLSequenceConstraint" />, if any, that describes allowable variations in the feature.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
@@ -244,22 +248,29 @@ namespace CoreML {
 	[Protocol]
 	interface MLFeatureProvider {
 
+		/// <summary>The names of the feature, as defined by the <see cref="CoreML.MLModel" />.</summary>
+		/// <value>The <see cref="Monotouch.Foundation.NSSet" /> of feature names.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("featureNames")]
 		NSSet<NSString> FeatureNames { get; }
 
+		/// <param name="featureName">The feature whose value will be returned.</param>
+		/// <summary>Retrieves the value of the <paramref name="featureName" />.</summary>
+		/// <returns>The value of the <paramref name="featureName" />.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("featureValueForName:")]
 		[return: NullAllowed]
 		MLFeatureValue GetFeatureValue (string featureName);
 	}
 
-	/// <summary>An immutable value and <see cref="T:CoreML.MLFeatureType" /> for a feature.</summary>
+	/// <summary>An immutable value and <see cref="CoreML.MLFeatureType" /> for a feature.</summary>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MLFeatureValue : NSCopying, NSSecureCoding {
 
-		/// <summary>Gets the <see cref="T:CoreML.MLFeatureType" /> kind of this <see cref="T:CoreML.MLFeatureValue" />.</summary>
+		/// <summary>Gets the <see cref="CoreML.MLFeatureType" /> kind of this <see cref="CoreML.MLFeatureValue" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("type")]
@@ -272,25 +283,25 @@ namespace CoreML {
 		[Export ("undefined")]
 		bool Undefined { [Bind ("isUndefined")] get; }
 
-		/// <summary>Gets the underlying <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Int%2064&amp;scope=Xamarin" title="T:System.Int64">T:System.Int64</a></format> feature value.</summary>
+		/// <summary>Gets the underlying <see cref="System.Int64" /> feature value.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("int64Value")]
 		long Int64Value { get; }
 
-		/// <summary>Gets the underlying <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Double&amp;scope=Xamarin" title="T:System.Double">T:System.Double</a></format> feature value.</summary>
+		/// <summary>Gets the underlying <see cref="System.Double" /> feature value.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("doubleValue")]
 		double DoubleValue { get; }
 
-		/// <summary>Gets the underlying <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> feature value.</summary>
+		/// <summary>Gets the underlying <see cref="System.String" /> feature value.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("stringValue")]
 		string StringValue { get; }
 
-		/// <summary>Gets the underlying <see cref="T:CoreML.MLMultiArray" /> feature value.</summary>
+		/// <summary>Gets the underlying <see cref="CoreML.MLMultiArray" /> feature value.</summary>
 		///         <value>
 		///           <para>(More documentation for this node is coming)</para>
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
@@ -299,13 +310,13 @@ namespace CoreML {
 		[NullAllowed, Export ("multiArrayValue")]
 		MLMultiArray MultiArrayValue { get; }
 
-		/// <summary>Gets the underlying <see cref="T:Foundation.NSDictionary" /> (Object-&gt;NSNumber) feature value.</summary>
+		/// <summary>Gets the underlying <see cref="Foundation.NSDictionary" /> (Object-&gt;NSNumber) feature value.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("dictionaryValue")]
 		NSDictionary<NSObject, NSNumber> DictionaryValue { get; }
 
-		/// <summary>Static factory method to create a <see cref="T:CoreML.MLFeatureValue" /> whose kind is <see cref="F:CoreML.MLFeatureType.Image" />.</summary>
+		/// <summary>Static factory method to create a <see cref="CoreML.MLFeatureValue" /> whose kind is <see cref="CoreML.MLFeatureType.Image" />.</summary>
 		///         <value>
 		///           <para>(More documentation for this node is coming)</para>
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
@@ -314,7 +325,7 @@ namespace CoreML {
 		[NullAllowed, Export ("imageBufferValue")]
 		CVPixelBuffer ImageBufferValue { get; }
 
-		/// <summary>Gets the underlying <see cref="T:CoreML.MLSequence" /> value.</summary>
+		/// <summary>Gets the underlying <see cref="CoreML.MLSequence" /> value.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
@@ -330,7 +341,7 @@ namespace CoreML {
 		MLFeatureValue Create (CVPixelBuffer value);
 
 		/// <param name="sequence">A sequence of data.</param>
-		///         <summary>Returns a <see cref="T:CoreML.MLFeatureValue" /> representing the <paramref name="sequence" />.</summary>
+		///         <summary>Returns a <see cref="CoreML.MLFeatureValue" /> representing the <paramref name="sequence" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
@@ -370,6 +381,10 @@ namespace CoreML {
 		[Export ("featureValueWithMultiArray:")]
 		MLFeatureValue Create (MLMultiArray value);
 
+		/// <param name="type">The kind of feature to create.</param>
+		///         <summary>Static factory method to create a <see cref="CoreML.MLFeatureValue" /> of the specified type but with an undefined value.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("undefinedFeatureValueWithType:")]
 		MLFeatureValue CreateUndefined (MLFeatureType type);
@@ -384,6 +399,10 @@ namespace CoreML {
 		[return: NullAllowed]
 		MLFeatureValue Create (NSDictionary<NSObject, NSNumber> value, out NSError error);
 
+		/// <param name="value">The value to compare against.</param>
+		///         <summary>Returns <see langword="true" /> if <paramref name="value" /> has the same <see cref="CoreML.MLFeatureType" /> and value as <c>this</c>.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("isEqualToFeatureValue:")]
 		bool IsEqual (MLFeatureValue value);
 
@@ -525,15 +544,15 @@ namespace CoreML {
 
 	/// <summary>Encapsulates a trained machine-learning model.</summary>
 	///     <remarks>
-	///       <para>The <see cref="T:CoreML.MLModel" /> class encapsulates a machine-learning model that maps a predefined set of input features to a predefined set of output features. Models are generally stored as .mlmodel files but these must be "compiled" into a .mlmodelc directory prior to inferencing. This compilation step generally occurs prior to deploymenty, but may be performed on the device with the time-consuming <see cref="M:CoreML.MLModel.CompileModel(Foundation.NSUrl,Foundation.NSError@)" /> method.</para>
+	///       <para>The <see cref="CoreML.MLModel" /> class encapsulates a machine-learning model that maps a predefined set of input features to a predefined set of output features. Models are generally stored as .mlmodel files but these must be "compiled" into a .mlmodelc directory prior to inferencing. This compilation step generally occurs prior to deploymenty, but may be performed on the device with the time-consuming <see cref="CoreML.MLModel.CompileModel(Foundation.NSUrl,out Foundation.NSError)" /> method.</para>
 	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MLModel {
 
-		/// <summary>A developer-meaningful description of this <see cref="T:CoreML.MLModel" />.</summary>
+		/// <summary>A developer-meaningful description of this <see cref="CoreML.MLModel" />.</summary>
 		///         <value>To be added.</value>
-		///         <remarks>A properly-specified <see cref="T:CoreML.MLModelDescription" /> contains all the detail necessary for a user of the model to properly create inputs and interpret outputs. For instance, image resolution, column- vs. row-major matrix forms, etc.</remarks>
+		///         <remarks>A properly-specified <see cref="CoreML.MLModelDescription" /> contains all the detail necessary for a user of the model to properly create inputs and interpret outputs. For instance, image resolution, column- vs. row-major matrix forms, etc.</remarks>
 		[Export ("modelDescription")]
 		MLModelDescription ModelDescription { get; }
 
@@ -591,6 +610,12 @@ namespace CoreML {
 		[return: NullAllowed]
 		IMLBatchProvider GetPredictions (IMLBatchProvider inputBatch, [NullAllowed] out NSError error);
 
+		/// <param name="inputBatch">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>Gets the <see cref="CoreML.IMLBatchProvider" /> describing the outputs for the <paramref name="inputBatch" /> and <paramref name="options" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("predictionsFromBatch:options:error:")]
 		[return: NullAllowed]
@@ -650,34 +675,34 @@ namespace CoreML {
 		IMLComputeDeviceProtocol [] AvailableComputeDevices { get; }
 	}
 
-	/// <summary>A developer-meaningful description of the <see cref="T:CoreML.MLModel" />.</summary>
+	/// <summary>A developer-meaningful description of the <see cref="CoreML.MLModel" />.</summary>
 	///     <remarks>
-	///       <para>The primary intention of this class is to provide the developer consuming the model information on the input, output, and metadata expectations of the <see cref="T:CoreML.MLModel" />.</para>
+	///       <para>The primary intention of this class is to provide the developer consuming the model information on the input, output, and metadata expectations of the <see cref="CoreML.MLModel" />.</para>
 	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MLModelDescription : NSSecureCoding {
 
-		/// <summary>An <see cref="T:Foundation.NSDictionary" /> of input feature names and their descriptions.</summary>
+		/// <summary>An <see cref="Foundation.NSDictionary" /> of input feature names and their descriptions.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("inputDescriptionsByName")]
 		NSDictionary<NSString, MLFeatureDescription> InputDescriptionsByName { get; }
 
-		/// <summary>An <see cref="T:Foundation.NSDictionary" /> of output feature names and their descriptions.</summary>
+		/// <summary>An <see cref="Foundation.NSDictionary" /> of output feature names and their descriptions.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("outputDescriptionsByName")]
 		NSDictionary<NSString, MLFeatureDescription> OutputDescriptionsByName { get; }
 
 		/// <summary>Gets the name of the predicted feature.</summary>
-		///         <value>The returned value should be a valid key in <see cref="P:CoreML.MLModelDescription.OutputDescriptionsByName" />.<para tool="nullallowed">This value can be <see langword="null" />.</para></value>
+		///         <value>The returned value should be a valid key in <see cref="CoreML.MLModelDescription.OutputDescriptionsByName" />.<para tool="nullallowed">This value can be <see langword="null" />.</para></value>
 		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("predictedFeatureName")]
 		string PredictedFeatureName { get; }
 
-		/// <summary>Gets the name of the probabilities of the <see cref="P:CoreML.MLModelDescription.PredictedFeatureName" /> feature.</summary>
-		///         <value>The returned value should be a valid key in <see cref="P:CoreML.MLModelDescription.OutputDescriptionsByName" />.<para tool="nullallowed">This value can be <see langword="null" />.</para></value>
+		/// <summary>Gets the name of the probabilities of the <see cref="CoreML.MLModelDescription.PredictedFeatureName" /> feature.</summary>
+		///         <value>The returned value should be a valid key in <see cref="CoreML.MLModelDescription.OutputDescriptionsByName" />.<para tool="nullallowed">This value can be <see langword="null" />.</para></value>
 		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("predictedProbabilitiesName")]
 		string PredictedProbabilitiesName { get; }
@@ -686,7 +711,7 @@ namespace CoreML {
 		[Internal]
 		NSDictionary _Metadata { get; }
 
-		/// <summary>Gets the <see cref="T:CoreML.MLModelMetadata" /> containing additional information about the <see cref="T:CoreML.MLModel" />.</summary>
+		/// <summary>Gets the <see cref="CoreML.MLModelMetadata" /> containing additional information about the <see cref="CoreML.MLModel" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Wrap ("_Metadata")]
@@ -742,19 +767,19 @@ namespace CoreML {
 		NSString CreatorDefinedKey { get; }
 	}
 
-	/// <summary>A <see cref="T:Foundation.DictionaryContainer" /> that holds metadata related to a <see cref="T:CoreML.MLModel" />.</summary>
+	/// <summary>A <see cref="Foundation.DictionaryContainer" /> that holds metadata related to a <see cref="CoreML.MLModel" />.</summary>
 	[MacCatalyst (13, 1)]
 	[StrongDictionary ("MLModelMetadataKeys")]
 	interface MLModelMetadata {
-		/// <summary>A developer-meaningful description of the <see cref="T:CoreML.MLModel" />.</summary>
+		/// <summary>A developer-meaningful description of the <see cref="CoreML.MLModel" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		string Description { get; }
-		/// <summary>A developer-meaningful identifier of the version of the <see cref="T:CoreML.MLModel" />.</summary>
+		/// <summary>A developer-meaningful identifier of the version of the <see cref="CoreML.MLModel" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		string VersionString { get; }
-		/// <summary>The author of the <see cref="T:CoreML.MLModel" />.</summary>
+		/// <summary>The author of the <see cref="CoreML.MLModel" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		string Author { get; }
@@ -813,6 +838,11 @@ namespace CoreML {
 
 		// From MLMultiArray (Creation) Category
 
+		/// <param name="shape">To be added.</param>
+		/// <param name="dataType">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>Creates a new MLMultiArray with the specified shape and data type.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithShape:dataType:error:")]
 		NativeHandle Constructor (NSNumber [] shape, MLMultiArrayDataType dataType, out NSError error);
 
@@ -820,6 +850,14 @@ namespace CoreML {
 		[Export ("initWithShape:dataType:strides:")]
 		NativeHandle Constructor (NSNumber [] shape, MLMultiArrayDataType dataType, NSNumber [] strides);
 
+		/// <param name="dataPointer">To be added.</param>
+		/// <param name="shape">To be added.</param>
+		/// <param name="dataType">To be added.</param>
+		/// <param name="strides">To be added.</param>
+		/// <param name="deallocator">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>Creates a new MLMultiArray with the specified details.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithDataPointer:shape:dataType:strides:deallocator:error:")]
 		NativeHandle Constructor (IntPtr dataPointer, NSNumber [] shape, MLMultiArrayDataType dataType, NSNumber [] strides, [NullAllowed] Action<IntPtr> deallocator, out NSError error);
 
@@ -829,9 +867,17 @@ namespace CoreML {
 
 		// From MLMultiArray (NSNumberDataAccess) Category
 
+		/// <param name="idx">A numeric identifier for the object to get.</param>
+		/// <summary>Retrieves the element at <paramref name="idx" />, as if the array were single-dimensional.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("objectAtIndexedSubscript:")]
 		NSNumber GetObject (nint idx);
 
+		/// <param name="key">A numeric identifier for the object to get.</param>
+		///         <summary>Retrieves the element at the point specified by <paramref name="key" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("objectForKeyedSubscript:")]
 		NSNumber GetObject (NSNumber [] key);
 
@@ -841,9 +887,17 @@ namespace CoreML {
 		// Bind 'key' as IntPtr to avoid multiple conversions (nint[] -> NSNumber[] -> NSArray)
 		NSNumber GetObjectInternal (IntPtr key);
 
+		/// <param name="obj">The new value.</param>
+		/// <param name="idx">A numeric identifier for the object to set.</param>
+		/// <summary>Sets the value at <paramref name="idx" /> to <paramref name="obj" />, as if the array were single-dimensional.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("setObject:atIndexedSubscript:")]
 		void SetObject (NSNumber obj, nint idx);
 
+		/// <param name="obj">The new value.</param>
+		///         <param name="key">A numeric identifier for the object to set.</param>
+		///         <summary>Sets the value at <paramref name="key" /> to <paramref name="obj" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setObject:forKeyedSubscript:")]
 		void SetObject (NSNumber obj, NSNumber [] key);
 
@@ -914,7 +968,7 @@ namespace CoreML {
 		[Export ("pixelFormatType")]
 		uint PixelFormatType { get; }
 
-		/// <summary>Gets the <see cref="T:CoreML.MLImageSizeConstraint" />, if it exists.</summary>
+		/// <summary>Gets the <see cref="CoreML.MLImageSizeConstraint" />, if it exists.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
@@ -938,7 +992,7 @@ namespace CoreML {
 		[Export ("dataType")]
 		MLMultiArrayDataType DataType { get; }
 
-		/// <summary>Gets the <see cref="T:CoreML.MLMultiArrayShapeConstraint" />, if any, describing constraints on the shape of the tensor.</summary>
+		/// <summary>Gets the <see cref="CoreML.MLMultiArrayShapeConstraint" />, if any, describing constraints on the shape of the tensor.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
@@ -977,38 +1031,68 @@ namespace CoreML {
 		//[Export ("initWithParameterDictionary:error:")]
 		//NativeHandle Constructor (NSDictionary<NSString, NSObject> parameters, [NullAllowed] out NSError error);
 
+		/// <param name="weights">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>Sets the internal weights of the layer.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("setWeightData:error:")]
 		bool SetWeightData (NSData [] weights, [NullAllowed] out NSError error);
 
+		/// <param name="inputShapes">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>Retrieves the output data shape, as an array of numbers describing the dimensions of the output tensor.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("outputShapesForInputShapes:error:")]
 		[return: NullAllowed]
 		NSArray [] GetOutputShapes (NSArray [] inputShapes, [NullAllowed] out NSError error);
 
+		/// <param name="inputs">To be added.</param>
+		/// <param name="outputs">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>Sets <paramref name="outputs" /> based on <paramref name="inputs" /> using the CPU to do the calculations.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("evaluateOnCPUWithInputs:outputs:error:")]
 		bool EvaluateOnCpu (MLMultiArray [] inputs, MLMultiArray [] outputs, [NullAllowed] out NSError error);
 
+		/// <param name="commandBuffer">To be added.</param>
+		/// <param name="inputs">To be added.</param>
+		/// <param name="outputs">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>Sets <paramref name="outputs" /> by applying <paramref name="inputs" /> to the function described by <paramref name="commandBuffer" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("encodeToCommandBuffer:inputs:outputs:error:")]
 		bool Encode (IMTLCommandBuffer commandBuffer, IMTLTexture [] inputs, IMTLTexture [] outputs, [NullAllowed] out NSError error);
 	}
 
-	/// <summary>An <see cref="T:CoreML.IMLBatchProvider" /> backed by an array.</summary>
+	/// <summary>An <see cref="CoreML.IMLBatchProvider" /> backed by an array.</summary>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MLArrayBatchProvider : MLBatchProvider {
 
-		/// <summary>Retrieves all the <see cref="T:CoreML.IMLFeatureProvider" /> objects in this batch.</summary>
+		/// <summary>Retrieves all the <see cref="CoreML.IMLFeatureProvider" /> objects in this batch.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("array")]
 		IMLFeatureProvider [] Array { get; }
 
+		/// <param name="array">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithFeatureProviderArray:")]
 		NativeHandle Constructor (IMLFeatureProvider [] array);
 
+		/// <param name="dictionary">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithDictionary:error:")]
 		NativeHandle Constructor (NSDictionary<NSString, NSArray> dictionary, out NSError error);
 	}
@@ -1020,10 +1104,17 @@ namespace CoreML {
 	[Protocol]
 	interface MLBatchProvider {
 
+		/// <summary>The number of <see cref="CoreML.IMLFeatureProvider" /> objects in the current batch.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("count")]
 		nint Count { get; }
 
+		/// <param name="index">To be added.</param>
+		/// <summary>Gets the <see cref="CoreML.IMLFeatureProvider" /> at <paramref name="index" /> for the current batch.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("featuresAtIndex:")]
 		IMLFeatureProvider GetFeatures (nint index);
@@ -1032,14 +1123,15 @@ namespace CoreML {
 	/// <summary>Interface defining a custom CoreML model.</summary>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
-#if NET
 	[Protocol, Model]
-#else
-	[Protocol, Model (AutoGeneratedName = true)]
-#endif
 	interface MLCustomModel {
 
 		// [Abstract]
+		/// <param name="modelDescription">To be added.</param>
+		/// <param name="parameters">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithModelDescription:parameterDictionary:error:")]
 		NativeHandle Constructor (MLModelDescription modelDescription, NSDictionary<NSString, NSObject> parameters, out NSError error);
 
@@ -1096,13 +1188,13 @@ namespace CoreML {
 		[Export ("type")]
 		MLImageSizeConstraintType Type { get; }
 
-		/// <summary>Gets an <see cref="T:Foundation.NSRange" /> that describes the allowable heights, in pixels, of image inputs.</summary>
+		/// <summary>Gets an <see cref="Foundation.NSRange" /> that describes the allowable heights, in pixels, of image inputs.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("pixelsWideRange")]
 		NSRange PixelsWideRange { get; }
 
-		/// <summary>Gets an <see cref="T:Foundation.NSRange" /> that describes the allowable heights, in pixels, of image inputs.</summary>
+		/// <summary>Gets an <see cref="Foundation.NSRange" /> that describes the allowable heights, in pixels, of image inputs.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("pixelsHighRange")]
@@ -1152,10 +1244,18 @@ namespace CoreML {
 		[Export ("type")]
 		MLFeatureType Type { get; }
 
+		/// <param name="type">To be added.</param>
+		///         <summary>Static factory method that creates an empty <see cref="CoreML.MLSequence" /> that works with the specified <paramref name="type" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("emptySequenceWithType:")]
 		MLSequence CreateEmpty (MLFeatureType type);
 
+		/// <param name="stringValues">To be added.</param>
+		///         <summary>Static factory method that creates an <see cref="CoreML.MLSequence" /> from the given <paramref name="stringValues" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("sequenceWithStringArray:")]
 		MLSequence Create (string [] stringValues);
@@ -1166,6 +1266,10 @@ namespace CoreML {
 		[Export ("stringValues")]
 		string [] StringValues { get; }
 
+		/// <param name="int64Values">To be added.</param>
+		///         <summary>Static factory method that creates an <see cref="CoreML.MLSequence" /> from the given <paramref name="int64Values" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("sequenceWithInt64Array:")]
 		MLSequence Create (NSNumber [] int64Values);

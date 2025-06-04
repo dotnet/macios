@@ -29,6 +29,8 @@ using System.IO;
 
 namespace ObjCRuntime {
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[AttributeUsage (AttributeTargets.Assembly, AllowMultiple = true)]
 	public class RequiredFrameworkAttribute : Attribute {
 		/// <summary>To be added.</summary>
@@ -36,6 +38,9 @@ namespace ObjCRuntime {
 		///         <remarks>To be added.</remarks>
 		public string Name { get; private set; }
 
+		/// <param name="name">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public RequiredFrameworkAttribute (string name)
 		{
 			Name = name;

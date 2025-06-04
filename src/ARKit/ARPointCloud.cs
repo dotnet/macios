@@ -9,11 +9,8 @@
 
 using System;
 using System.Runtime.InteropServices;
-#if NET
+
 using Vector3 = global::CoreGraphics.NVector3;
-#else
-using Vector3 = global::OpenTK.NVector3;
-#endif
 
 #nullable enable
 
@@ -34,7 +31,7 @@ namespace ARKit {
 			}
 		}
 
-		/// <summary>Gets an array of identifiers that correspond, index by index, to each point in <see cref="P:ARKit.ARPointCloud.Points" />.</summary>
+		/// <summary>Gets an array of identifiers that correspond, index by index, to each point in <see cref="ARKit.ARPointCloud.Points" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public unsafe ulong [] Identifiers {

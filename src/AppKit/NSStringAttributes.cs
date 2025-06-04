@@ -17,6 +17,8 @@ using Foundation;
 #nullable enable
 
 namespace AppKit {
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public partial class NSStringAttributes : DictionaryContainer {
 		static internal NSDictionary? ToDictionary (
 			NSFont? font,
@@ -166,10 +168,15 @@ namespace AppKit {
 			return dict.Count == 0 ? null : dict;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSStringAttributes () : base (new NSMutableDictionary ())
 		{
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSStringAttributes (NSDictionary dictionary) : base (dictionary)
 		{
 		}

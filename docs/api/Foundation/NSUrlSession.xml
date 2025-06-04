@@ -2,9 +2,9 @@
   <Docs DocId="T:Foundation.NSUrlSession">
     <summary>Coordinates a set of data-transfer tasks, including large background tasks.</summary>
     <remarks>
-      <para>In iOS 7 and later, <see cref="T:Foundation.NSUrlSession" /> and related classes are the preferred way to transfer larger files to and from the Web.</para>
+      <para>In iOS 7 and later, <see cref="Foundation.NSUrlSession" /> and related classes are the preferred way to transfer larger files to and from the Web.</para>
       <para>
-        <see cref="T:Foundation.NSUrlSession" /> downloads can work when the application is in the background.</para>
+        <see cref="Foundation.NSUrlSession" /> downloads can work when the application is in the background.</para>
       <para>Unlike regular tasks, background transfers are not constrained to 10 minutes, and instead will run until the transfer completes. Because background transfers are not bound by an arbitrary time limit, they can be used to upload or download large files, auto-update content in the background, and more.</para>
       <para>The following example shows a download request, capable of asynchronously downloading a large file:</para>
       <example>

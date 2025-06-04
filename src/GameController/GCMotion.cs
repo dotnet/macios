@@ -16,45 +16,30 @@ using ObjCRuntime;
 using Foundation;
 
 namespace GameController {
-
-#if NET
 	[SupportedOSPlatform ("ios13.0")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos13.0")]
 	[SupportedOSPlatform ("maccatalyst")]
-#else
-	[Introduced (PlatformName.iOS, 13, 0)]
-	[Introduced (PlatformName.TvOS, 13, 0)]
-#endif
 	public struct GCAcceleration {
 		public double X;
 		public double Y;
 		public double Z;
 	}
-#if NET
+
 	[SupportedOSPlatform ("ios13.0")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos13.0")]
 	[SupportedOSPlatform ("maccatalyst")]
-#else
-	[Introduced (PlatformName.iOS, 13, 0)]
-	[Introduced (PlatformName.TvOS, 13, 0)]
-#endif
 	public struct GCRotationRate {
 		public double X;
 		public double Y;
 		public double Z;
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios13.0")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos13.0")]
 	[SupportedOSPlatform ("maccatalyst")]
-#else
-	[Introduced (PlatformName.iOS, 13, 0)]
-	[Introduced (PlatformName.TvOS, 13, 0)]
-#endif
 	public struct GCQuaternion {
 		public double X;
 		public double Y;
@@ -63,16 +48,10 @@ namespace GameController {
 	}
 
 #if !XAMCORE_5_0
-#if NET
 	[SupportedOSPlatform ("ios15.4")]
 	[SupportedOSPlatform ("maccatalyst15.4")]
 	[SupportedOSPlatform ("macos12.3")]
 	[SupportedOSPlatform ("tvos15.4")]
-#else
-	[Introduced (PlatformName.iOS, 15, 4)]
-	[Introduced (PlatformName.MacOSX, 12, 3)]
-	[Introduced (PlatformName.TvOS, 15, 4)]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct GCDualSenseAdaptiveTriggerPositionalAmplitudes {
 
@@ -99,16 +78,10 @@ namespace GameController {
 
 	[StructLayout (LayoutKind.Sequential)]
 #if XAMCORE_5_0
-#if NET
 	[SupportedOSPlatform ("ios15.4")]
 	[SupportedOSPlatform ("maccatalyst15.4")]
 	[SupportedOSPlatform ("macos12.3")]
 	[SupportedOSPlatform ("tvos15.4")]
-#else
-	[Introduced (PlatformName.iOS, 15, 4)]
-	[Introduced (PlatformName.MacOSX, 12, 3)]
-	[Introduced (PlatformName.TvOS, 15, 4)]
-#endif
 	public struct GCDualSenseAdaptiveTriggerPositionalAmplitudes {
 #else
 	[NativeName ("GCDualSenseAdaptiveTriggerPositionalAmplitudes")]
@@ -176,16 +149,10 @@ namespace GameController {
 	}
 
 #if !XAMCORE_5_0
-#if NET
 	[SupportedOSPlatform ("ios15.4")]
 	[SupportedOSPlatform ("maccatalyst15.4")]
 	[SupportedOSPlatform ("macos12.3")]
 	[SupportedOSPlatform ("tvos15.4")]
-#else
-	[Introduced (PlatformName.iOS, 15, 4)]
-	[Introduced (PlatformName.MacOSX, 12, 3)]
-	[Introduced (PlatformName.TvOS, 15, 4)]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct GCDualSenseAdaptiveTriggerPositionalResistiveStrengths {
 
@@ -212,16 +179,10 @@ namespace GameController {
 
 	[StructLayout (LayoutKind.Sequential)]
 #if XAMCORE_5_0
-#if NET
 	[SupportedOSPlatform ("ios15.4")]
 	[SupportedOSPlatform ("maccatalyst15.4")]
 	[SupportedOSPlatform ("macos12.3")]
 	[SupportedOSPlatform ("tvos15.4")]
-#else
-	[Introduced (PlatformName.iOS, 15, 4)]
-	[Introduced (PlatformName.MacOSX, 12, 3)]
-	[Introduced (PlatformName.TvOS, 15, 4)]
-#endif
 	public struct GCDualSenseAdaptiveTriggerPositionalResistiveStrengths {
 #else
 	[NativeName ("GCDualSenseAdaptiveTriggerPositionalResistiveStrengths")]

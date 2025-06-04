@@ -6,10 +6,6 @@ using CoreGraphics;
 using Foundation;
 using ObjCRuntime;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace TVServices {
 
 	[Deprecated (PlatformName.TvOS, 13, 0, message: "Use 'TVTopShelfContentProvider' instead.")]

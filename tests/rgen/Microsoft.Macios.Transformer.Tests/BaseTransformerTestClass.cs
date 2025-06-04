@@ -28,7 +28,7 @@ public class BaseTransformerTestClass {
 	{
 		// get the dll for the current platform, this is needed because that way we will get the attributes that
 		// are used in the old dlls that are needed to test the transformer.
-		var targetFramework = TargetFramework.GetTargetFramework (platform, isDotNet: true);
+		var targetFramework = TargetFramework.GetTargetFramework (platform);
 		var workingDirectory = Path.Combine (Configuration.SourceRoot, "src");
 		if (!Configuration.TryGetApiDefinitionRsp (targetFramework, out var rspFile)) {
 			Assert.Fail ($"Could not find rsp file for {targetFramework}");

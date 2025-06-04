@@ -188,6 +188,11 @@ namespace CoreGraphics {
 		}
 	}
 
+	/// <summary>PDF Rendering CGContext class.  Use this class to create a CGContext that will output the results to a PDF file.</summary>
+	///     <remarks>You can use all of the regular CGContext methods, the
+	///     result, instead of being rendered into the screen or an image, the
+	///     commands are turned into PDF commands and stored in a PDF
+	///     file.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -502,6 +507,7 @@ namespace CoreGraphics {
 			GC.KeepAlive (pageTagStructureTreeDictionary);
 		}
 
+		/// <include file="../../docs/api/CoreGraphics/CGContextPDF.xml" path="/Documentation/Docs[@DocId='M:CoreGraphics.CGContextPDF.Dispose(System.Boolean)']/*" />
 		protected override void Dispose (bool disposing)
 		{
 			if (disposing)

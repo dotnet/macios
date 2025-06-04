@@ -8,7 +8,7 @@ Example input:
 <?xml version="1.0" encoding="utf-8"?>
 <root>
 	<data name="BI0000" xml:space="preserve">
-		<value>Unexpected error - Please fill a bug report at https://github.com/xamarin/xamarin-macios/issues/new</value>
+		<value>Unexpected error - Please fill a bug report at https://github.com/dotnet/macios/issues/new</value>
 	</data>
 </root>
 ```
@@ -23,7 +23,7 @@ Example output:
 //------------------------------------------------------------------------------
 namespace Xamarin.Bundler {
 	internal class Errors {
-		internal const string MT0000 = "Unexpected error - Please fill a bug report at https://github.com/xamarin/xamarin-macios/issues/new";
+		internal const string MT0000 = "Unexpected error - Please fill a bug report at https://github.com/dotnet/macios/issues/new";
 	}
 }
 ```

@@ -10,6 +10,7 @@ using Microsoft.Build.Utilities;
 
 using NUnit.Framework;
 
+using Xamarin.Tests;
 using Xamarin.Utils;
 
 #nullable enable
@@ -19,14 +20,11 @@ namespace Xamarin.MacDev.Tasks {
 	public class ComputeCodesignItemsTaskTests : TestBase {
 
 		[Test]
-		[TestCase (ApplePlatform.iOS, true)]
-		[TestCase (ApplePlatform.iOS, false)]
-		[TestCase (ApplePlatform.TVOS, true)]
-		[TestCase (ApplePlatform.TVOS, false)]
-		[TestCase (ApplePlatform.MacOSX, true)]
-		[TestCase (ApplePlatform.MacOSX, false)]
-		[TestCase (ApplePlatform.MacCatalyst, true)]
-		public void Compute (ApplePlatform platform, bool isDotNet)
+		[TestCase (ApplePlatform.iOS)]
+		[TestCase (ApplePlatform.TVOS)]
+		[TestCase (ApplePlatform.MacOSX)]
+		[TestCase (ApplePlatform.MacCatalyst)]
+		public void Compute (ApplePlatform platform)
 		{
 			var tmpdir = Cache.CreateTemporaryDirectory ();
 
@@ -345,7 +343,7 @@ namespace Xamarin.MacDev.Tasks {
 				task.CodesignStampPath = "codesign-stamp-path/";
 				task.GenerateDSymItems = generateDSymItems.ToArray ();
 				task.NativeStripItems = nativeStripItems.ToArray ();
-				task.TargetFrameworkMoniker = TargetFramework.GetTargetFramework (platform, isDotNet).ToString ();
+				task.TargetFrameworkMoniker = TargetFramework.GetTargetFramework (platform).ToString ();
 				Assert.IsTrue (task.Execute (), "Execute");
 				Assert.AreEqual (0, Engine.Logger.WarningsEvents.Count, "Warning Count");
 
@@ -356,14 +354,79 @@ namespace Xamarin.MacDev.Tasks {
 		}
 
 		[Test]
-		[TestCase (ApplePlatform.iOS, true)]
-		[TestCase (ApplePlatform.iOS, false)]
-		[TestCase (ApplePlatform.TVOS, true)]
-		[TestCase (ApplePlatform.TVOS, false)]
-		[TestCase (ApplePlatform.MacOSX, true)]
-		[TestCase (ApplePlatform.MacOSX, false)]
-		[TestCase (ApplePlatform.MacCatalyst, true)]
-		public void Duplicated (ApplePlatform platform, bool isDotNet)
+		[TestCase (ApplePlatform.MacOSX)]
+		[TestCase (ApplePlatform.MacCatalyst)]
+		public void Symlinks (ApplePlatform platform)
+		{
+			var tmpdir = Cache.CreateTemporaryDirectory ();
+
+			var currentDir = Environment.CurrentDirectory;
+			try {
+				Environment.CurrentDirectory = tmpdir;
+
+				var fwsdir = Path.Combine (tmpdir, "Bundle.app", "Contents", "Frameworks");
+				Directory.CreateDirectory (fwsdir);
+
+				var fwdir = Path.Combine (fwsdir, "XTest.framework");
+
+				Directory.CreateDirectory (Path.Combine (fwdir, "Versions", "A", "Resources"));
+				File.WriteAllText (Path.Combine (fwdir, "Versions", "A", "Resources", "Info.plist"), "Info.plist placeholder");
+				Directory.CreateDirectory (Path.Combine (fwdir, "Versions", "A", "Libraries"));
+				File.WriteAllText (Path.Combine (fwdir, "Versions", "A", "Libraries", "libTest.dylib"), "dylib placeholder");
+				File.WriteAllText (Path.Combine (fwdir, "Versions", "A", "XTest"), "Executable placeholder");
+				File.CreateSymbolicLink (Path.Combine (fwdir, "Versions", "Current"), "A");
+				File.CreateSymbolicLink (Path.Combine (fwdir, "Resources"), "Versions/A/Resources");
+				File.CreateSymbolicLink (Path.Combine (fwdir, "XTest"), "Versions/A/XTest");
+				File.CreateSymbolicLink (Path.Combine (fwdir, "Libraries"), "Versions/A/Libraries");
+
+				var codesignItems = new List<ITaskItem> ();
+				var codesignBundle = new List<ITaskItem> ();
+
+				string codeSignatureSubdirectory = string.Empty;
+				string symlinkSubdirectory = string.Empty;
+				switch (platform) {
+				case ApplePlatform.MacCatalyst:
+				case ApplePlatform.MacOSX:
+					codeSignatureSubdirectory = "Contents/";
+					symlinkSubdirectory = "Versions/A/";
+					break;
+				}
+
+				var bundleAppMetadata = new Dictionary<string, string> {
+					{ "RequireCodeSigning", "true" },
+					{ "CodesignSigningKey", "-" },
+				};
+
+				codesignBundle = new List<ITaskItem> {
+					new TaskItem ("Bundle.app", bundleAppMetadata),
+				};
+
+				var infos = new CodesignInfo [] {
+					new CodesignInfo ($"Bundle.app", Platforms.All, bundleAppMetadata.Set ("CodesignStampFile", $"codesign-stamp-path/Bundle.app/.stampfile")),
+					new CodesignInfo ($"Bundle.app/{codeSignatureSubdirectory}Frameworks/XTest.framework", Platforms.All, bundleAppMetadata.Set ("CodesignStampFile", $"codesign-stamp-path/Bundle.app/{codeSignatureSubdirectory}Frameworks/XTest.framework/.stampfile")),
+					new CodesignInfo ($"Bundle.app/{codeSignatureSubdirectory}Frameworks/XTest.framework/{symlinkSubdirectory}Libraries/libTest.dylib", Platforms.All, bundleAppMetadata.Set ("CodesignStampFile", $"codesign-stamp-path/Bundle.app/{codeSignatureSubdirectory}Frameworks/XTest.framework/{symlinkSubdirectory}Libraries/libTest.dylib")),
+				};
+
+				var task = CreateTask<ComputeCodesignItems> ();
+				task.AppBundleDir = "Bundle.app";
+				task.CodesignBundle = codesignBundle.ToArray ();
+				task.CodesignStampPath = "codesign-stamp-path/";
+				task.TargetFrameworkMoniker = TargetFramework.GetTargetFramework (platform).ToString ();
+				Assert.IsTrue (task.Execute (), "Execute");
+				Assert.AreEqual (0, Engine.Logger.WarningsEvents.Count, "Warning Count");
+
+				VerifyCodesigningResults (infos, task.OutputCodesignItems, platform);
+			} finally {
+				Environment.CurrentDirectory = currentDir;
+			}
+		}
+
+		[Test]
+		[TestCase (ApplePlatform.iOS)]
+		[TestCase (ApplePlatform.TVOS)]
+		[TestCase (ApplePlatform.MacOSX)]
+		[TestCase (ApplePlatform.MacCatalyst)]
+		public void Duplicated (ApplePlatform platform)
 		{
 			var tmpdir = Cache.CreateTemporaryDirectory ();
 
@@ -411,7 +474,7 @@ namespace Xamarin.MacDev.Tasks {
 				task.CodesignBundle = codesignBundle.ToArray ();
 				task.CodesignItems = codesignItems.ToArray ();
 				task.CodesignStampPath = "codesign-stamp-path/";
-				task.TargetFrameworkMoniker = TargetFramework.GetTargetFramework (platform, isDotNet).ToString ();
+				task.TargetFrameworkMoniker = TargetFramework.GetTargetFramework (platform).ToString ();
 				Assert.IsTrue (task.Execute (), "Execute");
 				Assert.AreEqual (0, Engine.Logger.WarningsEvents.Count, "Warning Count");
 
@@ -422,14 +485,11 @@ namespace Xamarin.MacDev.Tasks {
 		}
 
 		[Test]
-		[TestCase (ApplePlatform.iOS, true)]
-		[TestCase (ApplePlatform.iOS, false)]
-		[TestCase (ApplePlatform.TVOS, true)]
-		[TestCase (ApplePlatform.TVOS, false)]
-		[TestCase (ApplePlatform.MacOSX, true)]
-		[TestCase (ApplePlatform.MacOSX, false)]
-		[TestCase (ApplePlatform.MacCatalyst, true)]
-		public void DuplicatedWithDifferentMetadata (ApplePlatform platform, bool isDotNet)
+		[TestCase (ApplePlatform.iOS)]
+		[TestCase (ApplePlatform.TVOS)]
+		[TestCase (ApplePlatform.MacOSX)]
+		[TestCase (ApplePlatform.MacCatalyst)]
+		public void DuplicatedWithDifferentMetadata (ApplePlatform platform)
 		{
 			var tmpdir = Cache.CreateTemporaryDirectory ();
 
@@ -488,7 +548,7 @@ namespace Xamarin.MacDev.Tasks {
 				task.CodesignBundle = codesignBundle.ToArray ();
 				task.CodesignItems = codesignItems.ToArray ();
 				task.CodesignStampPath = "codesign-stamp-path/";
-				task.TargetFrameworkMoniker = TargetFramework.GetTargetFramework (platform, isDotNet).ToString ();
+				task.TargetFrameworkMoniker = TargetFramework.GetTargetFramework (platform).ToString ();
 				Assert.IsTrue (task.Execute (), "Execute");
 				Assert.AreEqual (3, Engine.Logger.WarningsEvents.Count, "Warning Count");
 				Assert.AreEqual ("Code signing has been requested multiple times for 'Bundle.app/Contents/MonoBundle/createdump', with different metadata. The metadata 'OnlyIn1=true' has been set for one item, but not the other.", Engine.Logger.WarningsEvents [0].Message, "Message #0");

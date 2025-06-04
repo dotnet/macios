@@ -1153,6 +1153,19 @@ namespace Xamarin.BindingMethods.Generator {
 
 			data.Add (
 				new FunctionData {
+					Comment = " // NativeHandle func (NativeHandleType, Vector2)",
+					Prefix = "simd__",
+					Variants = Variants.msgSend | Variants.msgSendSuper,
+					ReturnType = Types.NativeHandle,
+					Parameters = new ParameterData [] {
+						new ParameterData { TypeData = Types.NativeHandle },
+						new ParameterData { TypeData = Types.Vector2 },
+					},
+				}
+			);
+
+			data.Add (
+				new FunctionData {
 					Comment = " // IntPtr func (IntPtr, Vector2, Vector2); @try",
 					Prefix = "simd__",
 					Variants = Variants.msgSend | Variants.msgSendSuper,
@@ -3011,14 +3024,10 @@ namespace Xamarin.BindingMethods.Generator {
 			var nonstret = isSuper ? "objc_msgSendSuper" : "objc_msgSend";
 			var stret = isSuper ? "objc_msgSendSuper_stret" : "objc_msgSend_stret";
 
-			writer.WriteLine ("#if __i386__");
-			writer.WriteLine ("\tIMP msgSend = (IMP) {0};", type.IsX86Stret ? stret : nonstret);
-			writer.WriteLine ("#elif __x86_64__");
+			writer.WriteLine ("#if __x86_64__");
 			writer.WriteLine ("\tIMP msgSend = (IMP) {0};", type.IsX64Stret ? stret : nonstret);
 			writer.WriteLine ("#elif __arm64__");
 			writer.WriteLine ("\tIMP msgSend = (IMP) {0};", nonstret);
-			writer.WriteLine ("#elif __arm__");
-			writer.WriteLine ("\tIMP msgSend = (IMP) {0};", type.IsARMStret ? stret : nonstret);
 			writer.WriteLine ("#else");
 			writer.WriteLine ("#error unknown architecture");
 			writer.WriteLine ("#endif");

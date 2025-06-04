@@ -6,13 +6,13 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Macios.Generator.Extensions;
+using Microsoft.Macios.Generator.Formatters;
 using TypeInfo = Microsoft.Macios.Generator.DataModel.TypeInfo;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Microsoft.Macios.Generator.Emitters;
 
 static partial class BindingSyntaxFactory {
-	public const string Runtime = "Runtime";
 	public const string ClassPtr = "class_ptr";
 
 	/// <summary>
@@ -22,7 +22,7 @@ static partial class BindingSyntaxFactory {
 	/// <param name="args">The arguments to pass to the GetNSObject method.</param>
 	/// <param name="suppressNullableWarning">If we should suppress the nullable warning.</param>
 	/// <returns>The expression that calls GetNSObject method.</returns>
-	public static ExpressionSyntax GetNSObject (string nsObjectType, ImmutableArray<ArgumentSyntax> args,
+	public static ExpressionSyntax GetNSObject (TypeSyntax nsObjectType, ImmutableArray<ArgumentSyntax> args,
 		bool suppressNullableWarning = false)
 	{
 		var argsList = ArgumentList (SeparatedList<ArgumentSyntax> (args.ToSyntaxNodeOrTokenArray ()));
@@ -37,7 +37,7 @@ static partial class BindingSyntaxFactory {
 	/// <param name="args">The arguments to pass to the GetNSObject method.</param>
 	/// <param name="suppressNullableWarning">If we should suppress the nullable warning.</param>
 	/// <returns>The expression that calls GetNSObject method.</returns>
-	public static ExpressionSyntax GetINativeObject (string nsObjectType, ImmutableArray<ArgumentSyntax> args,
+	public static ExpressionSyntax GetINativeObject (TypeSyntax nsObjectType, ImmutableArray<ArgumentSyntax> args,
 		bool suppressNullableWarning = false)
 	{
 		var argsList = ArgumentList (SeparatedList<ArgumentSyntax> (args.ToSyntaxNodeOrTokenArray ()));
@@ -52,11 +52,26 @@ static partial class BindingSyntaxFactory {
 	/// <param name="args">The arguments to bass to the ArrayFromHandle method.</param>
 	/// <param name="suppressNullableWarning">If we should suppress the nullable warning.</param>
 	/// <returns>The expression that calls ArrayFromHandle method.</returns>
-	public static ExpressionSyntax GetNSArrayFromHandle (string nsObjectType, ImmutableArray<ArgumentSyntax> args,
+	public static ExpressionSyntax GetCFArrayFromHandle (TypeSyntax nsObjectType, ImmutableArray<ArgumentSyntax> args,
 		bool suppressNullableWarning = false)
 	{
 		var argsList = ArgumentList (SeparatedList<ArgumentSyntax> (args.ToSyntaxNodeOrTokenArray ()));
-		return StaticInvocationGenericExpression ("CFArray", "ArrayFromHandle",
+		return StaticInvocationGenericExpression (CFArray, "ArrayFromHandle",
+			nsObjectType, argsList, suppressNullableWarning);
+	}
+
+	/// <summary>
+	/// Generates a call to the method NSArray.ArrayFromHandle&lt;T&gt; to create a collection of NSObjects.
+	/// </summary>
+	/// <param name="nsObjectType">The type of the object to use as T</param>
+	/// <param name="args">The arguments to pass to the ArrayFromHandle method.</param>
+	/// <param name="suppressNullableWarning">If we should suppress the nullable warning.</param>
+	/// <returns>The expression that calls ArrayFromHandle method.</returns>
+	public static ExpressionSyntax GetNSArrayFromHandle (TypeSyntax nsObjectType, ImmutableArray<ArgumentSyntax> args,
+		bool suppressNullableWarning = false)
+	{
+		var argsList = ArgumentList (SeparatedList<ArgumentSyntax> (args.ToSyntaxNodeOrTokenArray ()));
+		return StaticInvocationGenericExpression (NSArray, "ArrayFromHandle",
 			nsObjectType, argsList, suppressNullableWarning);
 	}
 
@@ -77,7 +92,7 @@ static partial class BindingSyntaxFactory {
 		return InvocationExpression (
 				MemberAccessExpression (
 					SyntaxKind.SimpleMemberAccessExpression,
-					IdentifierName ("Selector"),
+					Selector,
 					IdentifierName ("GetHandle").WithTrailingTrivia (Space)))
 			.WithArgumentList (args);
 	}
@@ -165,7 +180,7 @@ static partial class BindingSyntaxFactory {
 		return InvocationExpression (
 				MemberAccessExpression (
 					SyntaxKind.SimpleMemberAccessExpression,
-					IdentifierName ("CFArray"),
+					CFArray,
 					IdentifierName ("StringArrayFromHandle").WithTrailingTrivia (Space)))
 			.WithArgumentList (argumentList);
 	}
@@ -185,7 +200,7 @@ static partial class BindingSyntaxFactory {
 		return InvocationExpression (
 				MemberAccessExpression (
 					SyntaxKind.SimpleMemberAccessExpression,
-					IdentifierName ("CFString"),
+					CFString,
 					IdentifierName ("FromHandle").WithTrailingTrivia (Space)))
 			.WithArgumentList (argumentList);
 	}
@@ -202,7 +217,7 @@ static partial class BindingSyntaxFactory {
 		return InvocationExpression (
 				MemberAccessExpression (
 					SyntaxKind.SimpleMemberAccessExpression,
-					IdentifierName ("CFString"),
+					CFString,
 					IdentifierName ("CreateNative").WithTrailingTrivia (Space))
 			).WithArgumentList (argumentList);
 	}
@@ -276,7 +291,7 @@ static partial class BindingSyntaxFactory {
 			return null;
 		return MemberAccessExpression (
 			SyntaxKind.SimpleMemberAccessExpression,
-			IdentifierName ("NSValue"),
+			GetIdentifierName ("NSValue"),
 			IdentifierName (memberName));
 	}
 
@@ -342,7 +357,7 @@ static partial class BindingSyntaxFactory {
 			return null;
 		return MemberAccessExpression (
 			SyntaxKind.SimpleMemberAccessExpression,
-			IdentifierName ("NSNumber"),
+			GetIdentifierName ("NSNumber"),
 			IdentifierName (memberName));
 	}
 
@@ -375,7 +390,7 @@ static partial class BindingSyntaxFactory {
 	/// <param name="returnType">The generic return type of the call.</param>
 	/// <param name="arguments">An immutable array of arguments.</param>
 	/// <returns>The invocation syntax for the method.</returns>
-	internal static InvocationExpressionSyntax NSArrayFromHandleFunc (string returnType,
+	internal static InvocationExpressionSyntax NSArrayFromHandleFunc (TypeSyntax returnType,
 		ImmutableArray<ArgumentSyntax> arguments)
 	{
 		// generate: (arg1, arg2, arg3)
@@ -383,13 +398,13 @@ static partial class BindingSyntaxFactory {
 			SeparatedList<ArgumentSyntax> (arguments.ToSyntaxNodeOrTokenArray ()));
 		// generate <returnType>
 		var genericsList = TypeArgumentList (
-			SingletonSeparatedList<TypeSyntax> (IdentifierName (returnType)));
+			SingletonSeparatedList (returnType));
 
 		// generate NSArray.ArrayFromHandleFunc<returnType> (arg1, arg2, arg3)
 		return InvocationExpression (
 				MemberAccessExpression (
 					SyntaxKind.SimpleMemberAccessExpression,
-					IdentifierName ("NSArray"),
+					NSArray,
 					GenericName ("ArrayFromHandleFunc")
 						.WithTypeArgumentList (genericsList)
 						.WithTrailingTrivia (Space)))
@@ -408,7 +423,7 @@ static partial class BindingSyntaxFactory {
 
 		return InvocationExpression (MemberAccessExpression (
 			SyntaxKind.SimpleMemberAccessExpression,
-			IdentifierName ("NSArray"),
+			NSArray,
 			IdentifierName ("FromNSObjects").WithTrailingTrivia (Space)))
 			.WithArgumentList (argumentList);
 	}
@@ -479,18 +494,11 @@ static partial class BindingSyntaxFactory {
 	/// <param name="arguments">The argument list for the object creation expression.</param>
 	/// <param name="global">If the global qualifier should be used.</param>
 	/// <returns>An object creation expression.</returns>
-	internal static ObjectCreationExpressionSyntax New (in TypeInfo type, ImmutableArray<ArgumentSyntax> arguments,
-		bool global = false)
+	internal static ObjectCreationExpressionSyntax New (in TypeInfo type, ImmutableArray<ArgumentSyntax> arguments)
 	{
 		var argumentList = ArgumentList (
 			SeparatedList<ArgumentSyntax> (arguments.ToSyntaxNodeOrTokenArray ()));
-		NameSyntax identifier = global
-			? AliasQualifiedName (
-				IdentifierName (Token (SyntaxKind.GlobalKeyword)),
-				IdentifierName (type.FullyQualifiedName))
-			: IdentifierName (type.FullyQualifiedName);
-
-		return ObjectCreationExpression (identifier.WithLeadingTrivia (Space).WithTrailingTrivia (Space))
+		return ObjectCreationExpression (type.GetIdentifierSyntax ().WithLeadingTrivia (Space).WithTrailingTrivia (Space))
 			.WithArgumentList (argumentList);
 	}
 
@@ -525,4 +533,21 @@ static partial class BindingSyntaxFactory {
 			nullExpression.WithLeadingTrivia (Space).WithTrailingTrivia (Space),
 			expressionSyntax.WithLeadingTrivia (Space));
 	}
+
+	/// <summary>
+	/// Generate a call to Runtime.RetainAndAutoreleaseNSObject (args) statement.
+	/// </summary>
+	/// <param name="arguments">The arguments to use to call Runtime.RetainAndAutoreleaseNSObject.</param>
+	/// <returns>The C# expression for the call.</returns>
+	internal static ExpressionSyntax RetainAndAutoreleaseNSObject (ImmutableArray<ArgumentSyntax> arguments)
+		=> StaticInvocationExpression (Runtime, "RetainAndAutoreleaseNSObject", arguments);
+
+	/// <summary>
+	/// Generate a call to Runtime.RetainAndAutoreleaseNativeObject (args) statement.
+	/// </summary>
+	/// <param name="arguments">The arguments to use to call Runtime.RetainAndAutoreleaseNSObject.</param>
+	/// <returns>The C# expression for the call.</returns>
+	internal static ExpressionSyntax RetainAndAutoreleaseNativeObject (ImmutableArray<ArgumentSyntax> arguments)
+		=> StaticInvocationExpression (Runtime, "RetainAndAutoreleaseNativeObject", arguments);
+
 }

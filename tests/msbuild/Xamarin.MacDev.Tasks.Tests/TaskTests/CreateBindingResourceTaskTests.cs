@@ -35,18 +35,26 @@ namespace Xamarin.MacDev.Tasks {
 		}
 
 		[Test]
-		[TestCase (true)]
-		[TestCase (false)]
-		public void Compressed (bool symlinks)
+		[TestCase (true, false)]
+		[TestCase (false, true)]
+		[TestCase (false, false)]
+		public void Compressed (bool symlinks, bool useSystemIOCompression)
 		{
-			var task = ExecuteTask ("true", symlinks, out var tmpdir);
+			var usedSystemIOCompression = Environment.GetEnvironmentVariable ("XAMARIN_USE_SYSTEM_IO_COMPRESSION");
+			try {
+				Environment.SetEnvironmentVariable ("XAMARIN_USE_SYSTEM_IO_COMPRESSION", useSystemIOCompression ? "1" : null);
 
-			var zipFile = task.BindingResourcePath + ".zip";
-			Assert.That (zipFile, Does.Exist, "Zip existence");
+				var task = ExecuteTask ("true", symlinks, out var tmpdir);
 
-			var extracted = Path.Combine (tmpdir, "Extracted");
-			Extract (zipFile, extracted);
-			AssertResourceDirectory (extracted, symlinks);
+				var zipFile = task.BindingResourcePath + ".zip";
+				Assert.That (zipFile, Does.Exist, "Zip existence");
+
+				var extracted = Path.Combine (tmpdir, "Extracted");
+				Extract (zipFile, extracted);
+				AssertResourceDirectory (extracted, symlinks);
+			} finally {
+				Environment.SetEnvironmentVariable ("XAMARIN_USE_SYSTEM_IO_COMPRESSION", usedSystemIOCompression);
+			}
 		}
 
 		[Test]

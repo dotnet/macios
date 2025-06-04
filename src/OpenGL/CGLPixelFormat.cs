@@ -36,25 +36,12 @@ using CoreFoundation;
 using ObjCRuntime;
 using Foundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace OpenGL {
-#if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	[ObsoletedOSPlatform ("macos10.14", "Use 'Metal' Framework instead.")]
-#else
-	[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'Metal' Framework instead.")]
-#endif
 	public class CGLPixelFormat : NativeObject {
-#if !NET
-		public CGLPixelFormat (NativeHandle handle)
-			: base (handle, false, verify: true)
-		{
-		}
-#endif
-
 		protected internal override void Retain ()
 		{
 			CGLRetainPixelFormat (GetCheckedHandle ());
@@ -81,6 +68,10 @@ namespace OpenGL {
 		unsafe extern static CGLErrorCode CGLChoosePixelFormat (CGLPixelFormatAttribute* attributes, IntPtr* /* CGLPixelFormatObj* */ pix, int* /* GLint* */ npix);
 
 #if !COREBUILD
+		/// <param name="attributes">To be added.</param>
+		///         <param name="npix">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CGLPixelFormat (CGLPixelFormatAttribute [] attributes, out int npix)
 			: base (Create (attributes, out npix), true)
 		{
@@ -111,11 +102,18 @@ namespace OpenGL {
 			return pixelFormatOut;
 		}
 
+		/// <param name="attributes">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CGLPixelFormat (params object [] attributes)
 			: base (Create (ConvertToAttributes (attributes), out _), true)
 		{
 		}
 
+		/// <param name="npix">To be added.</param>
+		///         <param name="attributes">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CGLPixelFormat (out int npix, params object [] attributes) : this (ConvertToAttributes (attributes), out npix)
 		{
 		}

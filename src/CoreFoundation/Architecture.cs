@@ -7,6 +7,8 @@ using Foundation;
 using CoreFoundation;
 
 namespace CoreFoundation {
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public partial class CFBundle {
 
 		// from machine.h
@@ -17,6 +19,8 @@ namespace CoreFoundation {
 		// #define CPU_TYPE_ARM64      (CPU_TYPE_ARM | CPU_ARCH_ABI64)
 		// #define CPU_TYPE_POWERPC    ((cpu_type_t) 18)
 		// #define CPU_TYPE_POWERPC64  (CPU_TYPE_POWERPC | CPU_ARCH_ABI64)
+		/// <summary>To be added.</summary>
+		///     <remarks>To be added.</remarks>
 		public enum Architecture {
 			/// <summary>To be added.</summary>
 			I386 = 0x00000007,

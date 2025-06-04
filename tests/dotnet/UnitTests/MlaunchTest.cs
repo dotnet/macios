@@ -89,9 +89,8 @@ namespace Xamarin.Tests {
 			expectedArguments.Append (isSim ? "--launchsim " : "--launchdev ");
 			expectedArguments.Append (appPath.Substring (Path.GetDirectoryName (project_path)!.Length + 1)).Append ('/');
 			if (isSim) {
-				expectedArguments.Append (" --device \"");
+				expectedArguments.Append (" --device ");
 				expectedArguments.Append (device);
-				expectedArguments.Append ('"');
 			}
 			expectedArguments.Append ($" --wait-for-exit:true");
 			Assert.AreEqual (expectedArguments.ToString (), mlaunchRunArguments);

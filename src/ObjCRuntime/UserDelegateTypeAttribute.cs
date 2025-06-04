@@ -35,6 +35,20 @@ namespace ObjCRuntime {
 
 	// This attribute is emitted by the generator and used at runtime.
 	// It's not supposed to be used by manually written code.
+	/// <summary>
+	///       <para>
+	///         This attribute is used on delegates created by the binding generator to properly map between signatures for Objective-C blocks and their corresponding exposed managed delegates.
+	///       </para>
+	///       <para>
+	///         When binding Objective-C blocks, the binding generator will create a managed delegate whose signature is equivalent
+	///         to the corresponding block's signature for the required binding code. However, this signature isn't necessarily accurate
+	///         enough to re-create the block's signature at runtime (which is needed in some circumstances). This attribute makes it
+	///         possible to find the type of the corresponding managed delegate that is exposed by the generated bindings, which does
+	///         have enough information to re-create the corresponding block's signature.
+	///       </para>
+	///     </summary>
+	///     <remarks>
+	///     </remarks>
 	[EditorBrowsable (EditorBrowsableState.Never)]
 	[AttributeUsage (AttributeTargets.Delegate | AttributeTargets.Method, AllowMultiple = false)]
 	public sealed class UserDelegateTypeAttribute : Attribute {

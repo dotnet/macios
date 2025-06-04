@@ -10,7 +10,7 @@ namespace Extrospection {
 
 		static SortedSet<string> Frameworks = new SortedSet<string> (StringComparer.OrdinalIgnoreCase);
 
-		static readonly string [] Platforms = new [] { "iOS", "tvOS", "watchOS", "macOS", "MacCatalyst" };
+		static readonly string [] Platforms = new [] { "iOS", "tvOS", "macOS", "MacCatalyst" };
 
 		public static bool ProcessFramework (string framework)
 		{

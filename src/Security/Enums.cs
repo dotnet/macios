@@ -618,6 +618,7 @@ namespace Security {
 		/// <summary>Indicates that the CRL authority was not valid.</summary>
 		InvalidCRLAuthority = -67827,   /* The CRL authority was not valid. */
 #if MONOMAC
+		/// <summary>To be added.</summary>
 		[Obsolete ("Use InvalidCRLAuthority.")]
 		InvaldCRLAuthority = InvalidCRLAuthority,
 #endif
@@ -672,6 +673,7 @@ namespace Security {
 		/// <summary>Indicates an invalid credentials tuple.</summary>
 		InvalidTupleCredentials = -67852,   /* The tuple credentials are not valid. */
 #if MONOMAC
+		/// <summary>To be added.</summary>
 		[Obsolete ("Use InvalidTupleCredentials.")]
 		InvalidTupleCredendtials = InvalidTupleCredentials,
 #endif
@@ -856,7 +858,7 @@ namespace Security {
 	}
 
 	// convenience enum mapping to kSecUseAuthenticationUI* fields
-	/// <summary>Enumeration whose values represent valid options for <see cref="P:Security.SecRecord.AuthenticationUI" />.</summary>
+	/// <summary>Enumeration whose values represent valid options for <see cref="Security.SecRecord.AuthenticationUI" />.</summary>
 	[MacCatalyst (13, 1)]
 	public enum SecAuthenticationUI {
 		/// <summary>To be added.</summary>
@@ -883,7 +885,7 @@ namespace Security {
 		Skip,
 	}
 
-	/// <summary>Enumeration defining valid options for <see cref="P:Security.SecRecord.TokenID" />.</summary>
+	/// <summary>Enumeration defining valid options for <see cref="Security.SecRecord.TokenID" />.</summary>
 	[MacCatalyst (13, 1)]
 	public enum SecTokenID {
 		/// <summary>To be added.</summary>

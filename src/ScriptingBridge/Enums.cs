@@ -25,6 +25,8 @@ using System;
 
 namespace ScriptingBridge {
 	// AE.framework/Headers/AEDataModel.h:typedef SInt32 AESendMode;
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[Flags]
 	public enum AESendMode : int {
 		/// <summary>To be added.</summary>
@@ -55,6 +57,8 @@ namespace ScriptingBridge {
 
 	// LaunchServices.framework/Headers/LSOpen.h:typedef OptionBits LSLaunchFlags;
 	// DirectoryService.framework/Headers/DirServicesTypes.h:typedef UInt32 OptionBits;
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[Flags]
 	public enum LSLaunchFlags : uint {
 		/// <summary>To be added.</summary>

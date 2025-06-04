@@ -18,26 +18,14 @@ using ObjCRuntime;
 using Foundation;
 using CoreMedia;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace VideoToolbox {
-
-#if NET
+	/// <summary>Sample buffers storage object, used in conjuction of a multi pass compression session</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst")]
-#endif
 	public class VTFrameSilo : NativeObject {
-#if !NET
-		protected internal VTFrameSilo (NativeHandle handle)
-			: base (handle, false)
-		{
-		}
-#endif
-
 		[Preserve (Conditional = true)]
 		internal VTFrameSilo (NativeHandle handle, bool owns)
 			: base (handle, owns)
@@ -52,6 +40,11 @@ namespace VideoToolbox {
 			/* CFDictionaryRef */ IntPtr options, /* Reserved, always null */
 			/* VTFrameSiloRef */ IntPtr* siloOut);
 
+		/// <param name="fileUrl">To be added.</param>
+		///         <param name="timeRange">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static VTFrameSilo? Create (NSUrl? fileUrl = null, CMTimeRange? timeRange = null)
 		{
 			VTStatus status;
@@ -77,6 +70,10 @@ namespace VideoToolbox {
 			/* VTFrameSiloRef */ IntPtr silo,
 			/* CMSampleBufferRef */ IntPtr sampleBuffer);
 
+		/// <param name="sampleBuffer">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public VTStatus AddSampleBuffer (CMSampleBuffer sampleBuffer)
 		{
 			if (sampleBuffer is null)
@@ -93,6 +90,10 @@ namespace VideoToolbox {
 			/* CMItemCount */ nint timeRangeCount,
 			/* const CMTimeRange * */ IntPtr timeRangeArray);
 
+		/// <param name="ranges">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public unsafe VTStatus SetTimeRangesForNextPass (CMTimeRange [] ranges)
 		{
 			if (ranges is null)
@@ -111,6 +112,10 @@ namespace VideoToolbox {
 			/* VTFrameSiloRef */ IntPtr silo,
 			/* Float32* */ float* progressOut);
 
+		/// <param name="progress">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public VTStatus GetProgressOfCurrentPass (out float progress)
 		{
 			progress = default;
@@ -119,19 +124,7 @@ namespace VideoToolbox {
 			}
 		}
 
-#if !NET
-		delegate VTStatus EachSampleBufferCallback (/* void* */ IntPtr callbackInfo, /* CMSampleBufferRef */ IntPtr sampleBufferPtr);
-
-		static EachSampleBufferCallback static_EachSampleBufferCallback = new EachSampleBufferCallback (BufferCallback);
-#endif
-
-#if NET
 		[UnmanagedCallersOnly]
-#else
-#if !MONOMAC
-		[MonoPInvokeCallback (typeof (EachSampleBufferCallback))]
-#endif
-#endif
 		static VTStatus BufferCallback (IntPtr callbackInfo, IntPtr sampleBufferPtr)
 		{
 			var gch = GCHandle.FromIntPtr (callbackInfo);
@@ -147,20 +140,17 @@ namespace VideoToolbox {
 			/* VTFrameSiloRef */ IntPtr silo,
 			/* CMTimeRange */ CMTimeRange timeRange, // CMTimeRange.Invalid retrieves all sample buffers
 			/* void* */ IntPtr callbackInfo,
-#if NET
 			/* */ delegate* unmanaged<IntPtr, IntPtr, VTStatus> callback);
-#else
-			/* */ EachSampleBufferCallback callback);
-#endif
 
+		/// <param name="callback">To be added.</param>
+		///         <param name="range">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public unsafe VTStatus ForEach (Func<CMSampleBuffer, VTStatus> callback, CMTimeRange? range = null)
 		{
 			var callbackHandle = GCHandle.Alloc (callback);
-#if NET
 			var foreachResult = VTFrameSiloCallFunctionForEachSampleBuffer (Handle, range ?? CMTimeRange.InvalidRange, GCHandle.ToIntPtr (callbackHandle), &BufferCallback);
-#else
-			var foreachResult = VTFrameSiloCallFunctionForEachSampleBuffer (Handle, range ?? CMTimeRange.InvalidRange, GCHandle.ToIntPtr (callbackHandle), static_EachSampleBufferCallback);
-#endif
 			callbackHandle.Free ();
 			return foreachResult;
 		}

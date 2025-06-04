@@ -23,8 +23,6 @@ SOFTWARE.
 
  */
 
-#if NET
-
 #if !MONOMAC
 #define PFLOAT_SINGLE
 #endif
@@ -78,7 +76,7 @@ namespace SceneKit {
 		 *
 		 * It's not obvious from this definitions whether the matrix is row-major or column-major, and neither the documentation
 		 * nor the headers are particularly helpful, but it's possible to do some math to figure it out. See this for more info:
-		 * https://github.com/xamarin/xamarin-macios/issues/15094#issuecomment-1139699662 (result: SCNMatrix4 is using a column-major layout)
+		 * https://github.com/dotnet/macios/issues/15094#issuecomment-1139699662 (result: SCNMatrix4 is using a column-major layout)
 		 *
 		 **/
 
@@ -154,6 +152,9 @@ namespace SceneKit {
 			Column3 = new SCNVector4 (m03, m13, m23, m33);
 		}
 
+		/// <param name="transform">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public SCNMatrix4 (CoreAnimation.CATransform3D transform)
 		{
 			Column0 = new SCNVector4 ((pfloat) transform.M11, (pfloat) transform.M12, (pfloat) transform.M13, (pfloat) transform.M14);
@@ -991,7 +992,7 @@ namespace SceneKit {
 #endif
 		{
 			SCNMatrix4 result;
-			// the matrices are reversed: https://github.com/xamarin/xamarin-macios/issues/15094#issuecomment-1139699662
+			// the matrices are reversed: https://github.com/dotnet/macios/issues/15094#issuecomment-1139699662
 #if XAMCORE_5_0
 			MatrixMultiply (ref secondTransformation, ref firstTransformation, out result);
 #else
@@ -1027,7 +1028,7 @@ namespace SceneKit {
 		public static void Mult (ref SCNMatrix4 left, ref SCNMatrix4 right, out SCNMatrix4 result)
 #endif
 		{
-			// the matrices are reversed: https://github.com/xamarin/xamarin-macios/issues/15094#issuecomment-1139699662
+			// the matrices are reversed: https://github.com/dotnet/macios/issues/15094#issuecomment-1139699662
 #if XAMCORE_5_0
 			MatrixMultiply (ref secondTransformation, ref firstTransformation, out result);
 #else
@@ -1335,6 +1336,3 @@ namespace SceneKit {
 #endif
 	}
 }
-
-#endif // NET
-

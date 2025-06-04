@@ -1,8 +1,8 @@
 <Documentation>
   <Docs DocId="T:CoreImage.CIRandomGenerator">
-    <summary>A <see cref="T:CoreImage.CIFilter" /> whose pixels are randomly colored.</summary>
+    <summary>A <see cref="CoreImage.CIFilter" /> whose pixels are randomly colored.</summary>
     <remarks>
-      <para>The <see cref="T:CoreImage.CIRandomGenerator" /> is idempotent: it always returns the same data. To retrieve a different random pattern, developers
+      <para>The <see cref="CoreImage.CIRandomGenerator" /> is idempotent: it always returns the same data. To retrieve a different random pattern, developers
         must retrieve the data from a random offset. For instance:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[

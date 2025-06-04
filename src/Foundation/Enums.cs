@@ -5,7 +5,7 @@ namespace Foundation {
 
 #if !XAMCORE_5_0
 	// Utility enum, ObjC uses NSString
-	/// <summary>An enumeration of known document types. Used with the <see cref="P:Foundation.NSAttributedStringDocumentAttributes.DocumentType" /> property.</summary>
+	/// <summary>An enumeration of known document types. Used with the <see cref="Foundation.NSAttributedStringDocumentAttributes.DocumentType" /> property.</summary>
 	public enum NSDocumentType {
 		/// <summary>To be added.</summary>
 		Unknown = -1,
@@ -39,7 +39,7 @@ namespace Foundation {
 #endif // !XAMCORE_5_0
 
 	// Utility enum, ObjC uses NSString
-	/// <summary>An enumeration that specifies how a document is being viewed. Used with the <see cref="P:Foundation.NSAttributedStringDocumentAttributes.ViewMode" /> property.</summary>
+	/// <summary>An enumeration that specifies how a document is being viewed. Used with the <see cref="Foundation.NSAttributedStringDocumentAttributes.ViewMode" /> property.</summary>
 	public enum NSDocumentViewMode {
 		/// <summary>To be added.</summary>
 		Normal,
@@ -48,7 +48,7 @@ namespace Foundation {
 
 	}
 
-	/// <summary>Run loop modes for <see cref="T:Foundation.NSRunLoop" />.</summary>
+	/// <summary>Run loop modes for <see cref="Foundation.NSRunLoop" />.</summary>
 	public enum NSRunLoopMode {
 
 		/// <summary>The default mode to handle input sources.   The most common run loop mode.</summary>
@@ -61,12 +61,15 @@ namespace Foundation {
 		Common,
 
 #if MONOMAC
+		/// <summary>To be added.</summary>
 		[Field ("NSConnectionReplyMode")]
 		ConnectionReply = 2,
 
+		/// <summary>To be added.</summary>
 		[Field ("NSModalPanelRunLoopMode", "AppKit")]
 		ModalPanel,
 
+		/// <summary>To be added.</summary>
 		[Field ("NSEventTrackingRunLoopMode", "AppKit")]
 		EventTracking,
 #else
@@ -196,7 +199,7 @@ namespace Foundation {
 		[Field ("NSLinguisticTagSchemeNameType")]
 		Name,
 
-		/// <summary>Indicates that tokens will be tagged those tags indicated by <see cref="F:Foundation.NSLinguisticTagScheme.LexicalClass" /> and <see cref="F:Foundation.NSLinguisticTagScheme.Name" />.</summary>
+		/// <summary>Indicates that tokens will be tagged those tags indicated by <see cref="Foundation.NSLinguisticTagScheme.LexicalClass" /> and <see cref="Foundation.NSLinguisticTagScheme.Name" />.</summary>
 		[Field ("NSLinguisticTagSchemeNameTypeOrLexicalClass")]
 		NameOrLexicalClass,
 
@@ -213,13 +216,9 @@ namespace Foundation {
 		Script,
 	}
 
-#if !NET
-	public enum NSLinguisticTagUnit {
-#else
-	/// <summary>Contains read-only static properties corresponding to the parts of speech recognized by a <see cref="T:Foundation.NSLinguisticTagger" />.</summary>
+	/// <summary>Contains read-only static properties corresponding to the parts of speech recognized by a <see cref="Foundation.NSLinguisticTagger" />.</summary>
 	/// <summary>Enumerates tag values for linguistic units.</summary>
 	public enum NSLinguisticTag {
-#endif
 		[Field ("NSLinguisticTagWord")]
 		Word,
 

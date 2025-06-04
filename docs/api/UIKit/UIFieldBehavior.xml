@@ -1,13 +1,13 @@
 <Documentation>
   <Docs DocId="T:UIKit.UIFieldBehavior">
-    <summary>A <see cref="T:UIKit.UIDynamicBehavior" /> that models a field, such as gravity, electricity, or turbulence.</summary>
+    <summary>A <see cref="UIKit.UIDynamicBehavior" /> that models a field, such as gravity, electricity, or turbulence.</summary>
     <remarks>
       <para>
-        <see cref="T:UIKit.UIFieldBehavior" /> objects apply a force vector to one or more <see cref="T:UIKit.IUIDynamicItem" /> objects (such as <see cref="T:UIKit.UIView" /> objects). The vector depends on the type of field generated, as shown in the following:</para>
+        <see cref="UIKit.UIFieldBehavior" /> objects apply a force vector to one or more <see cref="UIKit.IUIDynamicItem" /> objects (such as <see cref="UIKit.UIView" /> objects). The vector depends on the type of field generated, as shown in the following:</para>
       <para>
         <img href="~/UIKit/_images/UIFieldBehavior.Gallery.png" alt="Screenshots showing the forces in the various fields" />
       </para>
-      <para>A <see cref="T:UIKit.UIFieldBehavior" /> only applies to the <see cref="T:UIKit.IUIDynamicItem" /> objects in its <see cref="P:UIKit.UIFieldBehavior.Items" /> array. The following example creates a vortex field centered in the main screen. The field applies to each of the items in the <c>wanderers</c> array of <see cref="T:UIKit.UIView" /> objects. Once the <see cref="T:UIKit.UIFieldBehavior" /> is created and applied to the <see cref="T:UIKit.UIDynamicItemBehavior" /> objects associated with the views in <c>wanderers</c>, the behavior is added to the <see cref="T:UIKit.UIDynamicAnimator" />.</para>
+      <para>A <see cref="UIKit.UIFieldBehavior" /> only applies to the <see cref="UIKit.IUIDynamicItem" /> objects in its <see cref="UIKit.UIFieldBehavior.Items" /> array. The following example creates a vortex field centered in the main screen. The field applies to each of the items in the <c>wanderers</c> array of <see cref="UIKit.UIView" /> objects. Once the <see cref="UIKit.UIFieldBehavior" /> is created and applied to the <see cref="UIKit.UIDynamicItemBehavior" /> objects associated with the views in <c>wanderers</c>, the behavior is added to the <see cref="UIKit.UIDynamicAnimator" />.</para>
       <example>
         <code lang="F#"><![CDATA[
 let fieldBehavior = UIFieldBehavior.CreateVortexField()

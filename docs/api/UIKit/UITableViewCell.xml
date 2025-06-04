@@ -1,38 +1,38 @@
 <Documentation>
   <Docs DocId="T:UIKit.UITableViewCell">
-    <summary>A <see cref="T:UIKit.UIView" /> that displays an element displayed by the <see cref="T:UIKit.UITableView" />. Cells can be reused.</summary>
+    <summary>A <see cref="UIKit.UIView" /> that displays an element displayed by the <see cref="UIKit.UITableView" />. Cells can be reused.</summary>
     <remarks>
       <para>
-	A <see cref="T:UIKit.UITableViewCell" /> represents
-	a single cell (row) in a <see cref="T:UIKit.UITableView" />. <see cref="T:UIKit.UITableViewCell" />s are typically
-	allocated in the <see cref="M:UIKit.UITableViewSource.GetCell(UIKit.UITableView,Foundation.NSIndexPath)" /> method
-	of <see cref="T:UIKit.UITableViewSource" /> if <see cref="M:UIKit.UITableView.DequeueReusableCell(System.String,Foundation.NSIndexPath)" />
-	returns <see langword="null" />. (See discussion at <see cref="T:UIKit.UITableView" /> or <see cref="M:UIKit.UITableViewSource.GetCell(UIKit.UITableView,Foundation.NSIndexPath)" />).
+	A <see cref="UIKit.UITableViewCell" /> represents
+	a single cell (row) in a <see cref="UIKit.UITableView" />. <see cref="UIKit.UITableViewCell" />s are typically
+	allocated in the <see cref="UIKit.UITableViewSource.GetCell(UIKit.UITableView,Foundation.NSIndexPath)" /> method
+	of <see cref="UIKit.UITableViewSource" /> if <see cref="UIKit.UITableView.DequeueReusableCell(System.String,Foundation.NSIndexPath)" />
+	returns <see langword="null" />. (See discussion at <see cref="UIKit.UITableView" /> or <see cref="UIKit.UITableViewSource.GetCell(UIKit.UITableView,Foundation.NSIndexPath)" />).
       </para>
       <para>
-	There are four predefined <see cref="T:UIKit.UITableViewCell" /> styles, which can
-	be created by using the <see cref="M:UIKit.UITableViewCell.#ctor(UIKit.UITableViewCellStyle,Foundation.NSString)" /> constructor. These predefined styles appear as follows:
+	There are four predefined <see cref="UIKit.UITableViewCell" /> styles, which can
+	be created by using the <see cref="UIKit.UITableViewCell.UITableViewCell(UIKit.UITableViewCellStyle,Foundation.NSString)" /> constructor. These predefined styles appear as follows:
       </para>
       <para>
         <img href="~/UIKit/_images/UIKit.UITableViewCellStyle.png" alt="Image showing the different cell styles." />
       </para>
       <para>
-	All of the predefined styles have <see cref="P:UIKit.UITableViewCell.TextLabel" /> and <see cref="P:UIKit.UITableViewCell.DetailTextLabel" />
-	properties of type <see cref="T:UIKit.UILabel" />
-	and all but <see cref="F:UIKit.UITableViewCellStyle.Value2" /> have a
-	<format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UITable%20View%20Cell%20Image&amp;scope=Xamarin" title="P:UIKit.UITableViewCell.Image">P:UIKit.UITableViewCell.Image</a></format> of type
-	<see cref="T:UIKit.UIImage" />. Assignment to the
-	<format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UITable%20View%20Cell%20Image&amp;scope=Xamarin" title="P:UIKit.UITableViewCell.Image">P:UIKit.UITableViewCell.Image</a></format>
-	property of a cell initialized with the <see cref="F:UIKit.UITableViewCellStyle.Value2" /> style
+	All of the predefined styles have <see cref="UIKit.UITableViewCell.TextLabel" /> and <see cref="UIKit.UITableViewCell.DetailTextLabel" />
+	properties of type <see cref="UIKit.UILabel" />
+	and all but <see cref="UIKit.UITableViewCellStyle.Value2" /> have a
+	<see cref="UIKit.UITableViewCell.Image" /> of type
+	<see cref="UIKit.UIImage" />. Assignment to the
+	<see cref="UIKit.UITableViewCell.Image" />
+	property of a cell initialized with the <see cref="UIKit.UITableViewCellStyle.Value2" /> style
 	will result in a runtime exception.
       </para>
       <para>
-	A <see cref="T:UIKit.UITableViewCell" /> may combine
-	its <see cref="P:UIKit.UITableViewCell.ContentView" /> with a <see cref="T:UIKit.UIView" /> assigned to
-	its <see cref="P:UIKit.UITableViewCell.AccessoryView" />
-	property. Accessory views are often used with standard <see cref="T:UIKit.UITableViewCellAccessory" />s, such as
-	a checkmark or disclosure indicator. When being edited, a <see cref="T:UIKit.UITableViewCell" /> will combine its
-	<see cref="P:UIKit.UITableViewCell.ContentView" />
+	A <see cref="UIKit.UITableViewCell" /> may combine
+	its <see cref="UIKit.UITableViewCell.ContentView" /> with a <see cref="UIKit.UIView" /> assigned to
+	its <see cref="UIKit.UITableViewCell.AccessoryView" />
+	property. Accessory views are often used with standard <see cref="UIKit.UITableViewCellAccessory" />s, such as
+	a checkmark or disclosure indicator. When being edited, a <see cref="UIKit.UITableViewCell" /> will combine its
+	<see cref="UIKit.UITableViewCell.ContentView" />
 	with an editing control on the left and, optionally, a
 	reordering control on the right.
       </para>
@@ -40,23 +40,23 @@
         <img href="~/UIKit/_images/UIKit.UITableViewCell.Structure.png" alt="Diagram of the layout structure of a  UITableViewCell" />
       </para>
       <para>
-	In a non-selected cell, the <see cref="P:UIKit.UITableViewCell.BackgroundView" /> is
-	displayed, while a selected cell will show its <see cref="P:UIKit.UITableViewCell.SelectedBackgroundView" /> view.
+	In a non-selected cell, the <see cref="UIKit.UITableViewCell.BackgroundView" /> is
+	displayed, while a selected cell will show its <see cref="UIKit.UITableViewCell.SelectedBackgroundView" /> view.
       </para>
       <para>
-	To customize <see cref="T:UIKit.UITableViewCell" />s, application developers can either customize the views
-	used by one of the predefined styles or can subclass <see cref="T:UIKit.UITableViewCell" />. (In addition,
-	application developers will often override <see cref="M:UIKit.UITableViewSource.GetHeightForRow(UIKit.UITableView,Foundation.NSIndexPath)" />.)
+	To customize <see cref="UIKit.UITableViewCell" />s, application developers can either customize the views
+	used by one of the predefined styles or can subclass <see cref="UIKit.UITableViewCell" />. (In addition,
+	application developers will often override <see cref="UIKit.UITableViewSource.GetHeightForRow(UIKit.UITableView,Foundation.NSIndexPath)" />.)
       </para>
       <para>
 	Starting with iOS 8, table view cells can be auto-sized, and
-	no longer require the <see cref="M:UIKit.UITableViewSource.GetHeightForRow(UIKit.UITableView,Foundation.NSIndexPath)" /> to be implemented to size cells.  To do this, the cell
-	constructor should set the <see cref="P:UIKit.UITableViewCell.ContentView" /> constraints.
+	no longer require the <see cref="UIKit.UITableViewSource.GetHeightForRow(UIKit.UITableView,Foundation.NSIndexPath)" /> to be implemented to size cells.  To do this, the cell
+	constructor should set the <see cref="UIKit.UITableViewCell.ContentView" /> constraints.
 
       </para>
       <block subset="none" type="note">
         <para>
-	  Application developers should prefer subclassing <see cref="T:UIKit.UITableViewCell" /> over extensive
+	  Application developers should prefer subclassing <see cref="UIKit.UITableViewCell" /> over extensive
 	  customization of predefined styles. Xamarin's experience is
 	  that subclassing is less error-prone. Although subclassing
 	  introduces the normal overhead of a new class, this is
@@ -64,15 +64,15 @@
 	  and complexity of the customized cell.
 	</para>
         <para>
-	  Because <see cref="T:UIKit.UITableViewCell" />s
+	  Because <see cref="UIKit.UITableViewCell" />s
 	  appear rapidly during scrolling, application developers should
 	  avoid layout recalculations and higher-cost rendering
 	  techniques such as the use of transparent views.
 	</para>
         <para>
 	  Application developers should make a strong effort to reuse
-	  cells with the <see cref="M:UIKit.UITableView.DequeueReusableCell(System.String,Foundation.NSIndexPath)" />
-	  method of <see cref="T:UIKit.UITableView" />.
+	  cells with the <see cref="UIKit.UITableView.DequeueReusableCell(System.String,Foundation.NSIndexPath)" />
+	  method of <see cref="UIKit.UITableView" />.
 	</para>
       </block>
     </remarks>
@@ -84,8 +84,8 @@
         <param name="reuseIdentifier">A string used to identify the cell object if it should be reused for mutiple rows in a table view. Pass <see langword="null" /> if the object should not be reused. The same reuse identifier string should be used for all cells that use the same class and layout.</param>
         <summary>Create a table cell with the given style and reuse identifier.</summary>
         <remarks>
-          <para>The reuse identifier is associated with all cells (rows) in a table view that have the same layout (irrespective of their content) and can therefore be used interchangeably. The <see cref="M:UIKit.UITableViewSource.GetCell(UIKit.UITableView,Foundation.NSIndexPath)" /> implementation calls <see cref="M:UIKit.UITableView.DequeueReusableCell(Foundation.NSString)" /> with a specific reuse identifier string to obtain a cached cell object with a particular layout to use as the basis for the row being constructed for viewing.</para>
-          <para>To produce a layout different to those built-in to <see cref="T:UIKit.UITableViewCell" />, create a custom cell. To set the row height of each cell differently, implement <see cref="M:UIKit.UITableViewSource.GetHeightForRow(UIKit.UITableView,Foundation.NSIndexPath)" />.</para>
+          <para>The reuse identifier is associated with all cells (rows) in a table view that have the same layout (irrespective of their content) and can therefore be used interchangeably. The <see cref="UIKit.UITableViewSource.GetCell(UIKit.UITableView,Foundation.NSIndexPath)" /> implementation calls <see cref="UIKit.UITableView.DequeueReusableCell(Foundation.NSString)" /> with a specific reuse identifier string to obtain a cached cell object with a particular layout to use as the basis for the row being constructed for viewing.</para>
+          <para>To produce a layout different to those built-in to <see cref="UIKit.UITableViewCell" />, create a custom cell. To set the row height of each cell differently, implement <see cref="UIKit.UITableViewSource.GetHeightForRow(UIKit.UITableView,Foundation.NSIndexPath)" />.</para>
         </remarks>
       </Docs>
   <Docs DocId="P:UIKit.UITableViewCell.Highlighted">
@@ -93,8 +93,8 @@
         <value>Default value is <see langword="false" />.</value>
         <remarks>
           <para>Highlighting affects the appearance of labels, the image and background. When Highlighted is <see langword="true" />, the labels in the cell are drawn in their highlighted text color (which is white by default).</para>
-          <para>When this property is set to <see langword="true" />, the transition to the new appearance is not animated. Use the <see cref="M:UIKit.UITableViewCell.SetHighlighted(System.Boolean,System.Boolean)" /> method for animated highlight-state transitions.</para>
-          <para>For highlighting to work properly, set the <see cref="P:UIKit.UILabel.HighlightedTextColor" /> for the two labels (<see cref="P:UIKit.UITableViewCell.TextLabel" /> and <see cref="P:UIKit.UITableViewCell.DetailTextLabel" />), and set the <see cref="P:UIKit.UIImageView.HighlightedImage" /> property on the cell's <see cref="P:UIKit.UITableViewCell.ImageView" />. </para>
+          <para>When this property is set to <see langword="true" />, the transition to the new appearance is not animated. Use the <see cref="UIKit.UITableViewCell.SetHighlighted(System.Boolean,System.Boolean)" /> method for animated highlight-state transitions.</para>
+          <para>For highlighting to work properly, set the <see cref="UIKit.UILabel.HighlightedTextColor" /> for the two labels (<see cref="UIKit.UITableViewCell.TextLabel" /> and <see cref="UIKit.UITableViewCell.DetailTextLabel" />), and set the <see cref="UIKit.UIImageView.HighlightedImage" /> property on the cell's <see cref="UIKit.UITableViewCell.ImageView" />. </para>
         </remarks>
       </Docs>
 </Documentation>

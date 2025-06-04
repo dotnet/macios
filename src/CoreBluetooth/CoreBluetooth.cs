@@ -20,7 +20,7 @@ namespace CoreBluetooth {
 		}
 
 		/// <param name="dispatchQueue">To be added.</param>
-		///         <summary>Creates a new <see cref="T:CoreBluetooth.CBCentralManager" /> with the specified <paramref name="dispatchQueue" />.</summary>
+		///         <summary>Creates a new <see cref="CoreBluetooth.CBCentralManager" /> with the specified <paramref name="dispatchQueue" />.</summary>
 		///         <remarks>To be added.</remarks>
 		public CBCentralManager (DispatchQueue dispatchQueue) : this (new _CBCentralManagerDelegate (), dispatchQueue)
 		{

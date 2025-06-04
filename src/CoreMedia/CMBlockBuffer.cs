@@ -21,6 +21,8 @@ using ObjCRuntime;
 
 namespace CoreMedia {
 
+	/// <summary>A contiguous range of data offsets over a possibly non-contiguous memory region.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

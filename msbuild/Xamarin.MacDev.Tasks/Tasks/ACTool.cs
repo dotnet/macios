@@ -254,6 +254,18 @@ namespace Xamarin.MacDev.Tasks {
 			yield break;
 		}
 
+		void FindXCAssetsDirectory (string main, string secondary, out string mainResult, out string secondaryResult)
+		{
+			mainResult = main;
+			secondaryResult = secondary;
+
+			while (!string.IsNullOrEmpty (mainResult) && !mainResult.EndsWith (".xcassets", StringComparison.OrdinalIgnoreCase)) {
+				mainResult = Path.GetDirectoryName (mainResult)!;
+				if (!string.IsNullOrEmpty (secondaryResult))
+					secondaryResult = Path.GetDirectoryName (secondaryResult)!;
+			}
+		}
+
 		public override bool Execute ()
 		{
 			if (ShouldExecuteRemotely ())
@@ -285,10 +297,9 @@ namespace Xamarin.MacDev.Tasks {
 					var assetType = Path.GetExtension (catalog).TrimStart ('.');
 
 					// keep walking up the directory structure until we get to the .xcassets directory
-					while (!string.IsNullOrEmpty (catalog) && Path.GetExtension (catalog) != ".xcassets") {
-						catalog = Path.GetDirectoryName (catalog);
-						catalogFullPath = Path.GetDirectoryName (catalogFullPath);
-					}
+					FindXCAssetsDirectory (catalog, catalogFullPath, out var catalog2, out var catalogFullPath2);
+					catalog = catalog2;
+					catalogFullPath2 = catalogFullPath2;
 
 					return new AssetInfo (imageAsset, vpath, catalog, catalogFullPath, assetType);
 				})
@@ -368,7 +379,8 @@ namespace Xamarin.MacDev.Tasks {
 						item = new TaskItem (dest);
 						assetItem.CopyMetadataTo (item);
 						item.SetMetadata ("Link", vpath);
-						items.Add (new AssetInfo (item, vpath, asset.Catalog, asset.CatalogFullPath, asset.AssetType));
+						FindXCAssetsDirectory (Path.GetFullPath (dest), "", out var catalogFullPath, out var _);
+						items.Add (new AssetInfo (item, vpath, asset.Catalog, catalogFullPath, asset.AssetType));
 					} else {
 						// filter out everything except paths containing a Contents.json file since our main processing loop only cares about these
 						if (Path.GetFileName (vpath) != "Contents.json")

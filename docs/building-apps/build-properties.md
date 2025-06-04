@@ -339,8 +339,8 @@ Only applicable to macOS and Mac Catalyst.
 
 Enable components that are required for diagnostics (such as profiling) to work.
 
-It's enabled by default for debug builds (when [MtouchDebug](#MtouchDebug) or
-[MmpDebug](#MmpDebug) is enabled), but needs to be enabled manually before
+It's enabled by default for debug builds (when [MtouchDebug](#mtouchdebug) or
+[MmpDebug](#mmpdebug) is enabled), but needs to be enabled manually before
 profiling release builds:
 
 ```xml

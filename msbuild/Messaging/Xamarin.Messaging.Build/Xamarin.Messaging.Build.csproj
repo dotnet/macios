@@ -1,6 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net$(BundledNETCoreAppTargetFrameworkVersion)</TargetFramework>
+    <!-- When bumping the target framework version here, the VS side must be updated accordingly to make sure VS will install a version of .NET that's capable of running this project's output -->
+    <!-- See 72977a8f50c8acc2290281bb9b6d121084f3e579 in the ClientTools.Platform repository for an example -->
+    <TargetFramework>net9.0</TargetFramework>
     <OutputType>Exe</OutputType>
     <AssemblyName>Build</AssemblyName>
     <NoWarn>$(NoWarn);NU1603</NoWarn> <!-- Xamarin.Messaging.Build.Common 1.6.24 depends on Merq (>= 1.1.0) but Merq 1.1.0 was not found. An approximate best match of Merq 1.1.4 was resolved. -->

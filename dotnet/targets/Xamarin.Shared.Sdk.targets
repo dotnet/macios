@@ -462,6 +462,8 @@
 		<ItemGroup Condition="'$(_LibMonoLinkMode)' == 'static'">
 			<!-- Remove files mono told us not to link with -->
 			<_MonoLibrary Remove="@(_MonoRuntimeComponentDontLink -> '$(_MonoRuntimePackPath)native/%(Identity)')" />
+			<!-- Remove with either directory separator -->
+			<_MonoLibrary Remove="@(_MonoRuntimeComponentDontLink -> '$(_MonoRuntimePackPath)native\%(Identity)')" />
 
 			<!-- Add files mono told us to link with -->
 			<_MonoLibrary Include="@(_MonoRuntimeComponentLink -> '$(_MonoRuntimePackPath)native/%(Identity)')" />

@@ -52,7 +52,7 @@ namespace CoreMidi {
 
 		unsafe MidiDriverInterface* CreateDriver ()
 		{
-			var iface = (MidiDriverInterface *) Marshal.AllocHGlobal (sizeof (MidiDriverInterface));
+			var iface = (MidiDriverInterface*) Marshal.AllocHGlobal (sizeof (MidiDriverInterface));
 			iface->QueryInterface = &QueryInterface;
 			iface->AddRef = &AddRef;
 			iface->Release = &Release;
@@ -77,7 +77,7 @@ namespace CoreMidi {
 		}
 
 		[UnmanagedCallersOnly]
-		unsafe static HRESULT QueryInterface (MidiDriverInterface *self, CFUuidBytes iid, void * ppv)
+		unsafe static HRESULT QueryInterface (MidiDriverInterface* self, CFUuidBytes iid, void* ppv)
 		{
 			var driver = self->GetObject ();
 			Console.WriteLine ($"MidiDriver.QueryInterface ({(IntPtr) self}, {iid}, {(IntPtr) ppv}) => {driver}");
@@ -93,7 +93,7 @@ namespace CoreMidi {
 		static List<MidiDriver> strongReferences = new List<MidiDriver> ();
 
 		[UnmanagedCallersOnly]
-		unsafe static uint AddRef (MidiDriverInterface *self)
+		unsafe static uint AddRef (MidiDriverInterface* self)
 		{
 			var driver = self->GetObject ();
 			Console.WriteLine ($"MidiDriver.AddRef ({(IntPtr) self}) => {driver}");
@@ -114,7 +114,7 @@ namespace CoreMidi {
 		}
 
 		[UnmanagedCallersOnly]
-		unsafe static uint Release (MidiDriverInterface *self)
+		unsafe static uint Release (MidiDriverInterface* self)
 		{
 			var driver = self->GetObject ();
 			Console.WriteLine ($"MidiDriver.Release ({(IntPtr) self}) => {driver}");
@@ -141,7 +141,7 @@ namespace CoreMidi {
 		}
 
 		[UnmanagedCallersOnly]
-		unsafe static OSStatus FindDevices (MidiDriverInterface *self, MidiDeviceListRef devList)
+		unsafe static OSStatus FindDevices (MidiDriverInterface* self, MidiDeviceListRef devList)
 		{
 			var driver = self->GetObject ();
 			Console.WriteLine ($"MidiDriver.FindDevices ({(IntPtr) self}, {devList}) => {driver}");
@@ -341,7 +341,7 @@ namespace CoreMidi {
 #pragma warning disable CS0169 // The field 'MidiDriverInterface._reserved' is never used
 		IntPtr _reserved;
 #pragma warning restore CS0169
-		internal unsafe delegate* unmanaged<MidiDriverInterface* /* thisPointer */, CFUuidBytes /* REFIID iid */, void * /* ppv */, int /* HRESULT */> QueryInterface;
+		internal unsafe delegate* unmanaged<MidiDriverInterface* /* thisPointer */, CFUuidBytes /* REFIID iid */, void* /* ppv */, int /* HRESULT */> QueryInterface;
 		internal unsafe delegate* unmanaged<MidiDriverInterface* /* thisPointer */, uint /* ULONG */> AddRef;
 		internal unsafe delegate* unmanaged<MidiDriverInterface* /* thisPointer */, uint /* ULONG */ > Release;
 		internal unsafe delegate* unmanaged<MidiDriverInterface* /* self */, MidiDeviceListRef /* devList */, OSStatus> FindDevices;

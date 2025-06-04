@@ -88,7 +88,7 @@ namespace CoreMidi {
 			midiDataSize = size;
 			owns = true;
 			unsafe {
-				midiDataPointer = (MIDIEventList *) Marshal.AllocHGlobal (midiDataSize);
+				midiDataPointer = (MIDIEventList*) Marshal.AllocHGlobal (midiDataSize);
 				currentPacket = MIDIEventListInit (midiDataPointer, protocol);
 				if (currentPacket is null)
 					throw new Exception ($"Failed to create midi event list.");
@@ -101,7 +101,7 @@ namespace CoreMidi {
 		public MidiEventList (IntPtr eventListPointer)
 		{
 			unsafe {
-				midiDataPointer = (MIDIEventList *) eventListPointer;
+				midiDataPointer = (MIDIEventList*) eventListPointer;
 				owns = false;
 				midiDataSize = -1;
 			}

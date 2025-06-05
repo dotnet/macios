@@ -129,7 +129,7 @@ namespace Xamarin.Tests {
 			environment ["ServerUser"] = null;
 			environment ["ServerPassword"] = null;
 
-			var result = DotNet.GetItems (project_path, "_MonoLibrary", target: "ResolveFrameworkReferences;_ComputeVariables;_ComputeMonoLibraries", properties: properties);
+			var result = DotNet.GetItems (project_path, "_MonoLibrary", target: "ResolveFrameworkReferences;_ComputeVariables;_ComputeMonoLibraries", properties: properties, environment: environment);
 			var libs = result.
 							Split (['\n', '\r']).
 							Where (v => v.Contains ("\"Identity\": ")).

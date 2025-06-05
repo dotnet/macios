@@ -299,7 +299,7 @@ namespace Xamarin.MacDev.Tasks {
 					// keep walking up the directory structure until we get to the .xcassets directory
 					FindXCAssetsDirectory (catalog, catalogFullPath, out var catalog2, out var catalogFullPath2);
 					catalog = catalog2;
-					catalogFullPath2 = catalogFullPath2;
+					catalogFullPath = catalogFullPath2;
 
 					return new AssetInfo (imageAsset, vpath, catalog, catalogFullPath, assetType);
 				})

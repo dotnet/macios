@@ -382,6 +382,9 @@
       <Item ItemId=";BI1027" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Support for ZeroCopy strings is not implemented. Strings will be marshalled as NSStrings.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[未實作 ZeroCopy 字串的支援。將會以 NSStrings 封送處理字串。]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>

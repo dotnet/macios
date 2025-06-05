@@ -106,7 +106,7 @@ namespace Xamarin.MacDev.Tasks {
 		}
 
 		[return: NotNullIfNotNull (nameof (items))]
-		public static ITaskItem[]? VerifyLogicalNameUniqueness (TaskLoggingHelper Log, IEnumerable<ITaskItem>? items, string itemName)
+		public static ITaskItem []? VerifyLogicalNameUniqueness (TaskLoggingHelper Log, IEnumerable<ITaskItem>? items, string itemName)
 		{
 			if (items is null)
 				return null;
@@ -171,7 +171,7 @@ namespace Xamarin.MacDev.Tasks {
 		}
 
 		[return: NotNullIfNotNull (nameof (items))]
-		public static ITaskItem[]? ComputeLogicalNameAndDetectDuplicates<U> (U task, IEnumerable<ITaskItem>? items, string projectDir, string resourcePrefix, string itemName) where U : Task, IHasProjectDir, IHasResourcePrefix, IHasSessionId
+		public static ITaskItem []? ComputeLogicalNameAndDetectDuplicates<U> (U task, IEnumerable<ITaskItem>? items, string projectDir, string resourcePrefix, string itemName) where U : Task, IHasProjectDir, IHasResourcePrefix, IHasSessionId
 		{
 			if (items is null)
 				return null;

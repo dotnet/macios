@@ -2166,7 +2166,7 @@ namespace NS {
 				nsNumberParameterWithReturn,
 				$"var ret = del ({Global ("ObjCRuntime.Runtime")}.GetNSObject<{Global ("Foundation.NSNumber")}> (pointerParameter)!.Int32Value);",
 			];
-			
+
 			var nsNumberArrayParameterWithReturn = @"
 using System;
 using Foundation;
@@ -2203,7 +2203,7 @@ namespace NS {
 				nsValueParameterWithReturn,
 				$"var ret = del ({Global ("ObjCRuntime.Runtime")}.GetNSObject<{Global ("Foundation.NSValue")}> (size)!.CGSizeValue);",
 			];
-			
+
 			var nsValueArrayParameterWithReturn = @"
 using System;
 using Foundation;
@@ -2222,7 +2222,7 @@ namespace NS {
 				nsValueArrayParameterWithReturn,
 				$"var ret = del ({Global ("Foundation.NSArray")}.ArrayFromHandleFunc<{Global ("CoreGraphics.CGSize")}> (size, {Global ("Foundation.NSValue")}.ToCGSize, false)!);"
 			];
-			
+
 			var smartEnumParameterWithReturn = @"
 using System;
 using Foundation;
@@ -2252,7 +2252,7 @@ namespace NS {
 				smartEnumParameterWithReturn,
 				$"var ret = del ({Global ("NS.CustomLibraryEnum")}.GetValue ({Global ("ObjCRuntime.Runtime")}.GetNSObject<{Global ("Foundation.NSString")}> (level)!));",
 			];
-			
+
 			var smartEnumArrayParameterWithReturn = @"
 using System;
 using Foundation;

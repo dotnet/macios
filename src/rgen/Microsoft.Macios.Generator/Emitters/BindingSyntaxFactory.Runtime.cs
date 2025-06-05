@@ -432,7 +432,7 @@ static partial class BindingSyntaxFactory {
 	{
 		var extensionClassName = Nomenclator.GetSmartEnumExtensionClassName (enumType.FullyQualifiedName);
 		var getValueMethod = enumType.IsNullable ? "GetNullableValue" : "GetValue";
-		
+
 		return MemberAccessExpression (SyntaxKind.SimpleMemberAccessExpression,
 			AliasQualifiedName (
 				IdentifierName (Token (SyntaxKind.GlobalKeyword)),
@@ -458,7 +458,7 @@ static partial class BindingSyntaxFactory {
 			SeparatedList<ArgumentSyntax> (arguments.ToSyntaxNodeOrTokenArray ()));
 
 		// generate: global::extensionNamespace.extensionClassName.GetValue
-		var memberAccess = SmartEnumGetValue (enumType).WithTrailingTrivia (Space); 
+		var memberAccess = SmartEnumGetValue (enumType).WithTrailingTrivia (Space);
 
 		// generate the invocation with the given params
 		return InvocationExpression (memberAccess)

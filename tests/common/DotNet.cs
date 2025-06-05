@@ -149,7 +149,12 @@ namespace Xamarin.Tests {
 
 		public static ExecutionResult ExecuteCommand (string exe, params string [] args)
 		{
-			var env = new Dictionary<string, string?> ();
+			return ExecuteCommand (exe, null, args);
+		}
+
+		public static ExecutionResult ExecuteCommand (string exe, Dictionary<string, string?>? environment, params string [] args)
+		{
+			var env = environment ?? new Dictionary<string, string?> ();
 			env ["MSBuildSDKsPath"] = null;
 			env ["MSBUILD_EXE_PATH"] = null;
 
@@ -302,18 +307,18 @@ namespace Xamarin.Tests {
 			}
 		}
 
-		public static string GetProperty (string projectPath, string name, string? target = null, Dictionary<string, string>? properties = null)
+		public static string GetProperty (string projectPath, string name, string? target = null, Dictionary<string, string>? properties = null, Dictionary<string, string?>? environment = null)
 		{
 			return Get (projectPath, name, "Property", target, properties);
 		}
 
 		// returns json
-		public static string GetItems (string projectPath, string name, string? target = null, Dictionary<string, string>? properties = null)
+		public static string GetItems (string projectPath, string name, string? target = null, Dictionary<string, string>? properties = null, Dictionary<string, string?>? environment = null)
 		{
 			return Get (projectPath, name, "Item", target, properties);
 		}
 
-		static string Get (string projectPath, string name, string what, string? target = null, Dictionary<string, string>? properties = null)
+		static string Get (string projectPath, string name, string what, string? target = null, Dictionary<string, string>? properties = null, Dictionary<string, string?>? environment = null)
 		{
 			if (!File.Exists (projectPath))
 				throw new FileNotFoundException ($"The project file '{projectPath}' does not exist.");
@@ -343,7 +348,7 @@ namespace Xamarin.Tests {
 					}
 				}
 			}
-			ExecuteCommand (Executable, args.ToArray ());
+			ExecuteCommand (Executable, environment, args.ToArray ());
 			return File.ReadAllText (outputFile);
 		}
 

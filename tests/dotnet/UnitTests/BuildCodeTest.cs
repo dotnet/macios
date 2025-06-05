@@ -121,7 +121,14 @@ namespace Xamarin.Tests {
 
 			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath);
 			Clean (project_path);
-			var properties = GetDefaultProperties (runtimeIdentifiers, includeRemoteProperties: false); // we don't need to connect to the remote mac for this test
+
+			// we don't need to connect to the remote mac for this test
+			var properties = GetDefaultProperties (runtimeIdentifiers, includeRemoteProperties: false);
+			var environment = new Dictionary<string, string?> ();
+			environment ["ServerAddress"] = null;
+			environment ["ServerUser"] = null;
+			environment ["ServerPassword"] = null;
+
 			var result = DotNet.GetItems (project_path, "_MonoLibrary", target: "ResolveFrameworkReferences;_ComputeVariables;_ComputeMonoLibraries", properties: properties);
 			var libs = result.
 							Split (['\n', '\r']).

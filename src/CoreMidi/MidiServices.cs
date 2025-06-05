@@ -239,6 +239,14 @@ namespace CoreMidi {
 			get { return handle; }
 		}
 
+		internal MidiObjectRef GetCheckedHandle ()
+		{
+			if (handle == MidiObject.InvalidRef)
+				throw new ObjectDisposedException ("handle");
+
+			return handle;
+		}
+
 		internal MidiObject ()
 		{
 			owns = true;
@@ -1820,9 +1828,7 @@ namespace CoreMidi {
 
 		public MidiEntity? GetEntity (nint entityIndex)
 		{
-			if (handle == MidiObject.InvalidRef)
-				throw new ObjectDisposedException ("handle");
-			var h = MIDIDeviceGetEntity (handle, entityIndex);
+			var h = MIDIDeviceGetEntity (GetCheckedHandle (), entityIndex);
 			if (h == MidiObject.InvalidRef)
 				return null;
 			return new MidiEntity (h);
@@ -1836,10 +1842,8 @@ namespace CoreMidi {
 		[ObsoletedOSPlatform ("macos11.0")]
 		public int Add (string name, bool embedded, nuint numSourceEndpoints, nuint numDestinationEndpoints, MidiEntity newEntity)
 		{
-			if (handle == MidiObject.InvalidRef)
-				throw new ObjectDisposedException ("handle");
 			using (NSString nsName = new NSString (name)) {
-				return MIDIDeviceAddEntity (handle, nsName.Handle, embedded ? (byte) 1 : (byte) 0, numSourceEndpoints, numDestinationEndpoints, newEntity.Handle);
+				return MIDIDeviceAddEntity (GetCheckedHandle (), nsName.Handle, embedded ? (byte) 1 : (byte) 0, numSourceEndpoints, numDestinationEndpoints, newEntity.Handle);
 			}
 		}
 
@@ -2512,16 +2516,12 @@ namespace CoreMidi {
 		///         <remarks>To be added.</remarks>
 		public nuint GetNumberOfDevices ()
 		{
-			if (handle == MidiObject.InvalidRef)
-				throw new ObjectDisposedException ("handle");
-			return MIDIDeviceListGetNumberOfDevices (handle);
+			return MIDIDeviceListGetNumberOfDevices (GetCheckedHandle ());
 		}
 
 		public MidiDevice? Get (nuint index)
 		{
-			if (handle == MidiObject.InvalidRef)
-				throw new ObjectDisposedException ("handle");
-			var h = MIDIDeviceListGetDevice (handle, index);
+			var h = MIDIDeviceListGetDevice (GetCheckedHandle (), index);
 			if (h == MidiObject.InvalidRef)
 				return null;
 			return new MidiDevice (h);
@@ -2533,9 +2533,7 @@ namespace CoreMidi {
 		///         <remarks>To be added.</remarks>
 		public int Add (MidiDevice device)
 		{
-			if (handle == MidiObject.InvalidRef)
-				throw new ObjectDisposedException ("handle");
-			return MIDIDeviceListAddDevice (handle, device.Handle);
+			return MIDIDeviceListAddDevice (GetCheckedHandle (), device.Handle);
 		}
 
 		internal override void DisposeHandle ()

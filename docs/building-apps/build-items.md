@@ -204,18 +204,17 @@ An item group that contains metal assets.
 
 ## MlaunchAdditionalArguments
 
-An item group that contains extra arguments to the `mlaunch` tool, which is used to launch apps on device and in the simulator.
+An item group that contains extra arguments to the `mlaunch` tool, which is used to launch apps on device and in the simulator. The `mlaunch` tool is considered an internal tool, and behaviour may change at any time.
 
-Note: this only applies when launching the app from the command line (`dotnet run` or `dotnet build -t:Run`, not when launching from the IDE).
-
-Note: the `mlaunch` tool is considered an internal tool, and behaviour may change at any time.
+> [!NOTE]
+> This only applies when launching the app from the command line (`dotnet run` or `dotnet build -t:Run`), not when launching from the IDE.
 
 ## MlaunchEnvironmentVariables
 
-An item group that contains environment variables that will be set when the app is launched, either on device or in the simulator
+An item group that contains environment variables that will be set when the app is launched, either on device or in the simulator.
 
-Note: this only applies when launching the app from the command line (`dotnet
-run` or `dotnet build -t:Run`, not when launching from the IDE).
+> [!NOTE]
+> This only applies when launching the app from the command line (`dotnet run` or `dotnet build -t:Run`), not when launching from the IDE.
 
 ## NativeReference
 

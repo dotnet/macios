@@ -97,7 +97,7 @@ namespace CoreMedia {
 		///         <remarks>To be added.</remarks>
 		public static T? GetAttachment<T> (this ICMAttachmentBearer target, CMSampleBufferAttachmentKey key, out CMAttachmentMode attachmentModeOut) where T : class, INativeObject
 		{
-			return GetAttachment<T> (target, key.GetConstant (), out attachmentModeOut);
+			return GetAttachment<T> (target, key.GetConstant ()!, out attachmentModeOut);
 		}
 
 		[DllImport (Constants.CoreMediaLibrary)]

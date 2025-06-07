@@ -1453,10 +1453,10 @@ partial class TestRuntime {
 #endif
 	}
 
-	public static byte GetFlags (NSObject obj)
+	public static uint GetFlags (NSObject obj)
 	{
 		const string fieldName = "actual_flags";
-		return (byte) typeof (NSObject).GetField (fieldName, BindingFlags.Instance | BindingFlags.GetField | BindingFlags.NonPublic)!.GetValue (obj)!;
+		return (uint) typeof (NSObject).GetField (fieldName, BindingFlags.Instance | BindingFlags.GetField | BindingFlags.NonPublic)!.GetValue (obj)!;
 	}
 
 	// Determine if linkall was enabled by checking if an unused class in this assembly is still here.

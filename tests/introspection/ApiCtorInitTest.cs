@@ -213,7 +213,7 @@ namespace Introspection {
 
 		bool GetIsDirectBinding (NSObject obj)
 		{
-			int flags = TestRuntime.GetFlags (obj);
+			var flags = TestRuntime.GetFlags (obj);
 			return (flags & 4) == 4;
 		}
 

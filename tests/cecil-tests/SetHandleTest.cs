@@ -63,7 +63,11 @@ namespace Cecil.Tests {
 
 			var failures = new Dictionary<string, FailureWithMessageAndLocation> ();
 			foreach (var info in Helper.NetPlatformImplementationAssemblyDefinitions) {
-				foreach (var method in info.Assembly.EnumerateMethods (v => v.HasBody)) {
+				foreach (var method in info.Assembly.EnumerateMethods (v => v.HasBody && !v.IsObsolete () && !v.IsObsoletedOSPlatformAttribute ())) {
+					// Runtime.RegisterNSObject shouldn't call InitializeHandle, so skip it
+					if (method.DeclaringType.Is ("ObjCRuntime", "Runtime") && method.Name == "RegisterNSObject")
+						continue;
+
 					if (!VerifyMethod (method, method.Body.Instructions, out var failureReason)) {
 						var msg = $"{method.RenderMethod ()} Failed NSObject.Handle setter verification: {failureReason}";
 						// Uncomment this to make finding and fixing known failures easier

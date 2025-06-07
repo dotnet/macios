@@ -134,6 +134,8 @@
 	<PropertyGroup>
 		<_SdkIsSimulator Condition="$(RuntimeIdentifier.Contains('simulator')) Or $(RuntimeIdentifiers.Contains('simulator'))">true</_SdkIsSimulator>
 		<_SdkIsSimulator Condition="'$(_SdkIsSimulator)' == ''">false</_SdkIsSimulator>
+		<!-- Set a public property that specifies if we're building for the simulator. -->
+		<SdkIsSimulator>$(_SdkIsSimulator)</SdkIsSimulator>
 	</PropertyGroup>
 
 	<PropertyGroup>

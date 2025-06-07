@@ -255,25 +255,28 @@ static partial class BindingSyntaxFactory {
 	internal static (SyntaxToken ParameterName, TypeSyntax ParameterType) GetTrampolineInvokeParameter (in DelegateParameter parameter)
 	{
 		// in the general case we will return the low level type conversion of the parameter type but we 
-		// need to handle in a special case those parameters that are passed by reference
+		// need to handle in a special case those parameters that are passed by reference. We also need to ensure that
+		// if the parameter has been decorated with the BindFrom attribute, we will use the type specified in the attribute
+		// instead of the type of the parameter.
 		var parameterIdentifier = Identifier (parameter.Name);
+		TypeInfo parameterType = parameter.BindAs?.Type ?? parameter.Type; 
 #pragma warning disable format
-		(SyntaxToken ParameterName, TypeSyntax ParameterType) parameterInfo = parameter switch {
+		(SyntaxToken ParameterName, TypeSyntax ParameterType) parameterInfo = (IsByRef: parameter.IsByRef, Type: parameterType) switch {
 			// parameters that are passed by reference, depend on the type that is referenced
 			{ IsByRef: true, Type.IsReferenceType: false, Type.IsNullable: true} 
 				=> (parameterIdentifier, 
-					PointerType (GetLowLevelType (parameter.Type.ToNonNullable ()))),
+					PointerType (GetLowLevelType (parameterType.ToNonNullable ()))),
 			
 			{ IsByRef: true, Type.IsReferenceType: false, Type.IsNullable: false} 
 				=> (parameterIdentifier, 
-					PointerType (GetLowLevelType (parameter.Type))),
+					PointerType (GetLowLevelType (parameterType))),
 			
 			{ IsByRef: true, Type.IsReferenceType: true, Type.IsNullable: false} 
 				=> (parameterIdentifier,
 					PointerType (NativeHandle)),
 			
 			// by default, we will use the parameter name as is and the type of the parameter
-			_ => (parameterIdentifier, GetLowLevelType (parameter.Type)),
+			_ => (parameterIdentifier, GetLowLevelType (parameterType)),
 		};
 #pragma warning restore format
 		return parameterInfo;
@@ -287,37 +290,39 @@ static partial class BindingSyntaxFactory {
 	/// <returns>The argument syntax for the given parameter.</returns>
 	internal static ArgumentSyntax GetTrampolineInvokeArgument (string trampolineName, in DelegateParameter parameter)
 	{
-		// build the needed expression based on the information of the parameter.
+		// build the needed expression based on the information of the parameter and its type, taking into account
+		// that the type of the parameter might be different from the type specified in the BindAs attribute.
+		TypeInfo parameterType = parameter.BindAs?.Type ?? parameter.Type;
 		var parameterIdentifier = IdentifierName (parameter.Name);
 #pragma warning disable format
-		var expression = parameter switch {
+		var expression = (Type: parameterType, Parameter: parameter) switch {
 			// pointer parameter 
 			{ Type.IsPointer: true } => parameterIdentifier,
 			
 			// parameters that are passed by reference, the nomenclator will return the name of the
 			// temporary variable to use for the trampoline, there is no need for us to do anything
-			{ IsByRef: true, Type.IsReferenceType: false, Type.IsNullable: true} => 
+			{ Parameter.IsByRef: true, Type.IsReferenceType: false, Type.IsNullable: true} => 
 				IdentifierName (Nomenclator.GetNameForTempTrampolineVariable (parameter) ?? parameter.Name),
 			
-			{ IsByRef: true, Type.IsReferenceType: true } => 
+			{ Parameter.IsByRef: true, Type.IsReferenceType: true } => 
 				IdentifierName (Nomenclator.GetNameForTempTrampolineVariable (parameter) ?? parameter.Name),
 			
-			{ IsByRef: true, Type.SpecialType: SpecialType.System_Boolean } => 
+			{ Parameter.IsByRef: true, Type.SpecialType: SpecialType.System_Boolean } => 
 				IdentifierName (Nomenclator.GetNameForTempTrampolineVariable (parameter) ?? parameter.Name),
 			
 			// other cases in which we will use AsRef for the pointed type
-			{IsByRef: true } 
-				=> AsRef (parameter.Type.ToPointedAtType ().GetIdentifierSyntax (), 
+			{ Parameter.IsByRef: true } 
+				=> AsRef (parameterType.ToPointedAtType ().GetIdentifierSyntax (), 
 					[Argument (IdentifierName (parameter.Name))]),
 			
 			// delegate parameter, c callback
 			// System.Runtime.InteropServices.Marshal.GetDelegateForFunctionPointer<ParameterType> (ParameterName)
-			{ Type.IsDelegate: true, IsCCallback: true } => 
-				GetDelegateForFunctionPointer (parameter.Type.GetIdentifierSyntax (), [Argument (parameterIdentifier)]),
+			{ Type.IsDelegate: true, Parameter.IsCCallback: true } => 
+				GetDelegateForFunctionPointer (parameterType.GetIdentifierSyntax (), [Argument (parameterIdentifier)]),
 			
 			// delegate parameter, block callback
 			// TrampolineNativeInvocationClass.Create (ParameterName)!
-			{ Type.IsDelegate: true, IsBlockCallback: true } 
+			{ Type.IsDelegate: true, Parameter.IsBlockCallback: true } 
 				=> CreateTrampolineNativeInvocationClass (trampolineName, [Argument (parameterIdentifier)]),
 			
 			// native enum, return the conversion expression to the native type
@@ -326,19 +331,19 @@ static partial class BindingSyntaxFactory {
 			
 			// boolean, convert it to byte
 			{ Type.SpecialType: SpecialType.System_Boolean } 
-				=> CastToBool (parameter.Name, parameter.Type)!,
+				=> CastToBool (parameter.Name, parameterType)!,
 			
 			// array types
 			
 			// CFArray.ArrayFromHandle<{0}> ({1})!
 			{ Type.IsArray: true, Type.ArrayElementTypeIsWrapped: true } 
-				=> GetCFArrayFromHandle (parameter.Type.ToArrayElementType ().GetIdentifierSyntax (), [
+				=> GetCFArrayFromHandle (parameterType.ToArrayElementType ().GetIdentifierSyntax (), [
 					Argument (parameterIdentifier)
 				], suppressNullableWarning: true), 
 			
 			// NSArray.ArrayFromHandle<{0}> ({1})!
 			{ Type.IsArray: true, Type.ArrayElementIsINativeObject: true } 
-				=> GetNSArrayFromHandle (parameter.Type.ToArrayElementType ().GetIdentifierSyntax (), [
+				=> GetNSArrayFromHandle (parameterType.ToArrayElementType ().GetIdentifierSyntax (), [
 					Argument (parameterIdentifier)
 				], suppressNullableWarning: true),
 			
@@ -354,16 +359,16 @@ static partial class BindingSyntaxFactory {
 			
 			// Runtime.GetINativeObject<ParameterType> (ParameterName, false)!
 			{ Type.IsProtocol: true } => 
-				GetINativeObject (parameter.Type.GetIdentifierSyntax (), [
+				GetINativeObject (parameterType.GetIdentifierSyntax (), [
 						Argument (parameterIdentifier), 
 						BoolArgument (false)
 					], suppressNullableWarning: true),
 			// Runtime.GetINativeObject<ParameterType> (ParameterName, true, Forced.Owns)!
-			{ ForcedType: not null } => GetINativeObject (parameter.Type.GetIdentifierSyntax (), 
+			{ Parameter.ForcedType: not null } => GetINativeObject (parameterType.GetIdentifierSyntax (), 
 				[
 					Argument (parameterIdentifier),
 					BoolArgument (true),
-					BoolArgument (parameter.ForcedType.Value.Owns)
+					BoolArgument (parameter.ForcedType!.Value.Owns)
 				], suppressNullableWarning: true),
 			
 			// special types
@@ -372,39 +377,39 @@ static partial class BindingSyntaxFactory {
 			// {0} == IntPtr.Zero ? null! : new global::CoreMedia.CMSampleBuffer ({0}, false)
 			{ Type.FullyQualifiedName: "CoreMedia.CMSampleBuffer" } =>
 				IntPtrZeroCheck (parameter.Name, 
-					expressionSyntax: New (parameter.Type, [Argument (parameterIdentifier), BoolArgument (false)]), 
+					expressionSyntax: New (parameterType, [Argument (parameterIdentifier), BoolArgument (false)]), 
 					suppressNullableWarning: true),
 			
 			// AudioToolbox.AudioBuffers
 			// new global::AudioToolbox.AudioBuffers ({0})
 			{ Type.FullyQualifiedName: "AudioToolbox.AudioBuffers" } =>
-				New (parameter.Type, [Argument (parameterIdentifier)]),
+				New (parameterType, [Argument (parameterIdentifier)]),
 			
 			// general NSObject/INativeObject, has to be after the special types otherwise the special types will
 			// fall into the NSObject/INativeObject case
 			
 			// Runtime.GetNSObject<ParameterType> (ParameterName) 
 			{ Type.IsNSObject: true, Type.IsNullable: true} =>
-				GetNSObject (parameter.Type.ToNonNullable ().GetIdentifierSyntax (), [
+				GetNSObject (parameterType.ToNonNullable ().GetIdentifierSyntax (), [
 					Argument (parameterIdentifier)
 				], suppressNullableWarning: false),
 			
 			// Runtime.GetNSObject<ParameterType> (ParameterName)! 
 			{ Type.IsNSObject: true } =>
-				GetNSObject (parameter.Type.GetIdentifierSyntax (), [
+				GetNSObject (parameterType.GetIdentifierSyntax (), [
 					Argument (parameterIdentifier)
 				], suppressNullableWarning: true),
 			
 			// Runtime.GetINativeObject<ParameterType> (ParameterName, false)!
 			{ Type.IsINativeObject: true, Type.IsNullable: true } =>
-				GetINativeObject (parameter.Type.ToNonNullable ().GetIdentifierSyntax (), [
+				GetINativeObject (parameterType.ToNonNullable ().GetIdentifierSyntax (), [
 					Argument (parameterIdentifier), 
 					BoolArgument (false)
 				], suppressNullableWarning: false),
 			
 			// Runtime.GetINativeObject<ParameterType> (ParameterName, false)!
 			{ Type.IsINativeObject: true } =>
-				GetINativeObject (parameter.Type.GetIdentifierSyntax (), [
+				GetINativeObject (parameterType.GetIdentifierSyntax (), [
 					Argument (parameterIdentifier), 
 					BoolArgument (false)
 				], suppressNullableWarning: true),
@@ -414,6 +419,33 @@ static partial class BindingSyntaxFactory {
 		};
 #pragma warning restore format
 		
+		// at this point we have the native type to the manage type conversion done BUT if we are using a BindFrom
+		// attribute, we need get that expression and convert the NSValue/NSNumber to the expected type.
+		if (parameter.BindAs is not null) {
+#pragma warning disable format
+			expression = parameter.BindAs.Value.Type switch {
+				{ FullyQualifiedName: "Foundation.NSValue", IsArray: false } =>
+					MemberAccessExpression (
+						kind: SyntaxKind.SimpleMemberAccessExpression, 
+						expression: expression, 
+						name: IdentifierName (GetNSValueValue (parameter.Type))),
+				{ FullyQualifiedName: "Foundation.NSNumber", IsArray: false } =>
+					MemberAccessExpression (
+						kind: SyntaxKind.SimpleMemberAccessExpression, 
+						expression: expression, 
+						name: IdentifierName (GetNSNumberValue (parameter.Type))),
+				{ FullyQualifiedName: "Foundation.NSString", IsArray: false }
+					=> InvocationExpression(
+						MemberAccessExpression(
+							SyntaxKind.SimpleMemberAccessExpression,
+							parameter.Type.GetIdentifierSyntax (), // smart enum name
+							IdentifierName ("GetValue").WithTrailingTrivia (Space)))
+						.WithArgumentList (
+							ArgumentList (SingletonSeparatedList(Argument (expression)))), // pass the nsstring expression
+				_ => expression
+			};
+#pragma warning restore format
+		}
 		// Argument syntax is the same as the expression syntax, but we need to add the ref kind keyword if needed
 		var argument = Argument (expression);
 		if (parameter.IsByRef)
@@ -891,5 +923,29 @@ static partial class BindingSyntaxFactory {
 			.WithModifiers (modifiers).NormalizeWhitespace ()
 			.WithParameterList (parametersSyntax.WithLeadingTrivia (Space));
 		return method;
+	}
+
+	internal static ImmutableArray<SyntaxNode> GetTrampolineNativeInitializationByRefArgument (in DelegateParameter parameter)
+	{
+		// create the pointer variable and assign it to its default value
+		// generates the following:
+		// *{ParameterName} = default;
+		var expr = ExpressionStatement (
+			AssignmentExpression (
+				SyntaxKind.SimpleAssignmentExpression,
+					IdentifierName (parameter.Name),
+				LiteralExpression (
+					SyntaxKind.DefaultLiteralExpression,
+					Token (SyntaxKind.DefaultKeyword)))).NormalizeWhitespace ();
+		return [expr];
+	}
+
+	internal static ImmutableArray<SyntaxNode> GetTrampolineNativeInvokeArgumentInitializations (string trampolineName,
+		in DelegateParameter parameter)
+	{
+		// decide the type of conversion we need to do based on the type of the parameter
+		return parameter switch { { IsByRef: true, ReferenceKind: ReferenceKind.Out } => GetTrampolineNativeInitializationByRefArgument (parameter),
+			_ => []
+		};
 	}
 }
